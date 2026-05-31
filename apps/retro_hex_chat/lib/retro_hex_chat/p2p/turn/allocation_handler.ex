@@ -1,5 +1,6 @@
 defmodule RetroHexChat.P2P.Turn.AllocationHandler do
   @moduledoc false
+  use Gettext, backend: RetroHexChat.Gettext
   use GenServer, restart: :transient
 
   require Logger
@@ -66,7 +67,15 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
     config = Keyword.fetch!(args, :config)
 
     {c_ip, c_port, s_ip, s_port, _transport} = five_tuple
-    alloc_id = "(#{:inet.ntoa(c_ip)}:#{c_port}, #{:inet.ntoa(s_ip)}:#{s_port}, UDP)"
+
+    alloc_id =
+      gettext("(%{inet_ntoa_c_ip}:%{c_port}, %{inet_ntoa_s_ip}:%{s_port}, UDP)",
+        inet_ntoa_c_ip: :inet.ntoa(c_ip),
+        c_port: c_port,
+        inet_ntoa_s_ip: :inet.ntoa(s_ip),
+        s_port: s_port
+      )
+
     Logger.metadata(alloc: alloc_id)
     Logger.info("Starting new allocation handler")
 

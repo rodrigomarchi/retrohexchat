@@ -1,15 +1,18 @@
 <p>
-  Grants half-operator status to a user (prefix %). Half-operators can kick users of lower rank and grant/revoke voice (+v), but cannot set channel modes or ban users.
+  {gettext(
+    "Grants half-operator status to a user (prefix %). Half-operators can kick users of lower rank and grant/revoke voice (+v), but cannot set channel modes or ban users."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_modes}>Permissions</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{gettext("Permissions")}</.help_h4>
 <p>
-  Can: kick regular/voiced users, set +v/-v<br />Cannot: set channel modes, ban users, kick operators or owners
+  {gettext("Can: kick regular/voiced users, set +v/-v")}<br />{gettext(
+    "Cannot: set channel modes, ban users, kick operators or owners"
+  )}
 </p>
-<.help_h4 icon={:icon_terminal}>Usage</.help_h4>
-<pre>/mode +h Alice    — Make Alice a half-operator
-/mode -h Alice    — Remove half-operator from Alice</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
+<pre>{gettext("/mode +h Alice — Make Alice a half-operator /mode -h Alice — Remove half-operator from Alice")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="mode-q">Owner (+q)</.help_link>
-  · <.help_link topic="mode-o">Operator (+o)</.help_link>
+  <.help_link topic="mode-q">{gettext("Owner (+q)")}</.help_link>
+  · <.help_link topic="mode-o">{gettext("Operator (+o)")}</.help_link>
 </p>

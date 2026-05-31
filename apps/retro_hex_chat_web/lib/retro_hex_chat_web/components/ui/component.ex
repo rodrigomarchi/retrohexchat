@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Component do
   defmacro __using__(_) do
     quote do
       use Phoenix.Component
+      use Gettext, backend: RetroHexChatWeb.Gettext
 
       import RetroHexChatWeb.ComponentHelpers
 

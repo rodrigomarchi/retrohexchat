@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatLayout do
   @spec chat_layout(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_layout(assigns) do
     tabs =
-      [%{type: :status, label: "Status"}] ++
+      [%{type: :status, label: gettext("Status")}] ++
         Enum.map(assigns.channels, fn ch ->
           %{type: :channel, label: ch, active: ch == assigns.active_channel}
         end)

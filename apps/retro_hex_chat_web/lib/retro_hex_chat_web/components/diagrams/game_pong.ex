@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GamePong do
   @moduledoc "SVG game screen diagram for Hex Pong."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -15,7 +16,11 @@ defmodule RetroHexChatWeb.Components.Diagrams.GamePong do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Hex Pong game screen: two paddles and a ball on a dark field with dashed center line"
+      aria-label={
+        gettext(
+          "Hex Pong game screen: two paddles and a ball on a dark field with dashed center line"
+        )
+      }
     >
       {win98_chrome("Hex Pong")}
       <%!-- Center dashed line --%>

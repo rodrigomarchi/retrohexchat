@@ -1,44 +1,52 @@
 <p>
-  Every point wins a game — no 15-30-40, no deuce, no advantage.
-  First to 6 games takes the set. Pure pressure. One mistake can cost you
-  an entire game — there's no recovering from a bad point.
+  {gettext(
+    "Every point wins a game — no 15-30-40, no deuce, no advantage. First to 6 games takes the set. Pure pressure. One mistake can cost you an entire game — there's no recovering from a bad point."
+  )}
 </p>
 <.diagram_game_tennis class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow keys / WASD</strong> — Move player</li>
-  <li><strong>Space / Shift</strong> — Serve (during serving phase)</li>
+  <li><strong>{gettext("Arrow keys / WASD")}</strong> {gettext("— Move player")}</li>
+  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Serve (during serving phase)")}</li>
 </ul>
-<.help_h4 icon={:icon_rules}>Rules</.help_h4>
-<ul>
-  <li>Same hitting mechanics as Classic — automatic hitting, angle based on contact position</li>
-  <li>Each point won directly increments your games count</li>
-  <li>No traditional tennis scoring — just games</li>
-  <li>First to 6 games wins — no tiebreak, no win-by-2</li>
-  <li>Server alternates after every point</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>Strategy Tips</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
 <ul>
   <li>
-    <strong>Zero margin for error</strong>
-    — Every single rally decides a game. Stay focused for every point.
+    {gettext(
+      "Same hitting mechanics as Classic — automatic hitting, angle based on contact position"
+    )}
+  </li>
+  <li>{gettext("Each point won directly increments your games count")}</li>
+  <li>{gettext("No traditional tennis scoring — just games")}</li>
+  <li>{gettext("First to 6 games wins — no tiebreak, no win-by-2")}</li>
+  <li>{gettext("Server alternates after every point")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("Zero margin for error")}</strong>
+    {gettext("— Every single rally decides a game. Stay focused for every point.")}
   </li>
   <li>
-    <strong>Serve placement is king</strong>
-    — With one-point games, an ace or unreturnable serve is an instant game win.
+    <strong>{gettext("Serve placement is king")}</strong>
+    {gettext("— With one-point games, an ace or unreturnable serve is an instant game win.")}
   </li>
   <li>
-    <strong>Play it safe</strong>
-    — Risky shots that go out cost you a whole game. Consistency beats flash in Sudden Death.
+    <strong>{gettext("Play it safe")}</strong>
+    {gettext(
+      "— Risky shots that go out cost you a whole game. Consistency beats flash in Sudden Death."
+    )}
   </li>
   <li>
-    <strong>Watch the serve rotation</strong>
-    — Server alternates after every point. Know when you're serving to maximize advantage.
+    <strong>{gettext("Watch the serve rotation")}</strong>
+    {gettext(
+      "— Server alternates after every point. Know when you're serving to maximize advantage."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-tennis">Hex Tennis</.help_link>
-  · <.help_link topic="feature-hex-tennis-quick">Hex Tennis: Quick Match</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
+  <.help_link topic="feature-hex-tennis">{gettext("Hex Tennis")}</.help_link>
+  · <.help_link topic="feature-hex-tennis-quick">{gettext("Hex Tennis: Quick Match")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
 </p>

@@ -1,5 +1,6 @@
 defmodule RetroHexChat.P2P.Turn.Listener do
   @moduledoc false
+  use Gettext, backend: RetroHexChat.Gettext
   use Task, restart: :permanent
 
   require Logger
@@ -28,7 +29,8 @@ defmodule RetroHexChat.P2P.Turn.Listener do
 
   @spec listen(:inet.ip_address(), :inet.port_number(), integer(), Config.t()) :: :ok
   def listen(ip, port, id, config) do
-    listener_addr = "#{:inet.ntoa(ip)}:#{port}/UDP"
+    listener_addr =
+      gettext("%{inet_ntoa_ip}:%{port}/UDP", inet_ntoa_ip: :inet.ntoa(ip), port: port)
 
     Logger.info("TURN Listener #{id} started on: #{listener_addr}")
     Logger.metadata(listener: listener_addr)

@@ -18,6 +18,7 @@ import {
   getObstacleRect,
 } from "./physics.js";
 import { PHASE, GAME_MODE } from "./protocol.js";
+import { t, jt } from "../../i18n.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -427,12 +428,12 @@ function drawHUD(ctx, state, colors) {
   // P1 score (left)
   ctx.textAlign = "left";
   ctx.fillStyle = colors.fg;
-  ctx.fillText(`P1: ${state.score1}`, ARENA_LEFT + 4, hudY);
+  ctx.fillText(jt`P1: ${state.score1}`, ARENA_LEFT + 4, hudY);
 
   // P2 score (right)
   ctx.textAlign = "right";
   ctx.fillStyle = colors.accent;
-  ctx.fillText(`P2: ${state.score2}`, ARENA_RIGHT - 4, hudY);
+  ctx.fillText(jt`P2: ${state.score2}`, ARENA_RIGHT - 4, hudY);
 
   // Game title (center)
   ctx.textAlign = "center";
@@ -442,7 +443,7 @@ function drawHUD(ctx, state, colors) {
   // Game mode indicator
   ctx.font = "10px monospace";
   ctx.fillStyle = adjustAlpha(colors.rope, 0.6);
-  const modeNames = ["Quick Draw", "Ricochet", "Stagecoach", "No Man's Land"];
+  const modeNames = [t("Quick Draw"), "Ricochet", "Stagecoach", t("No Man's Land")];
   ctx.fillText(modeNames[state.gameMode] || "", CANVAS_W / 2, hudY + 16);
 
   // Score progress (small dots under P1/P2)
@@ -467,7 +468,7 @@ function drawHUD(ctx, state, colors) {
   ctx.font = "10px monospace";
   ctx.textAlign = "center";
   ctx.fillStyle = colors.muted;
-  ctx.fillText(`Round ${state.round}`, CANVAS_W / 2, bottomY - 4);
+  ctx.fillText(jt`Round ${state.round}`, CANVAS_W / 2, bottomY - 4);
 
   for (let i = 0; i < 3; i++) {
     const dx = CANVAS_W / 2 - 20 + i * 20;
@@ -490,13 +491,13 @@ function drawHUD(ctx, state, colors) {
 function drawPhaseOverlay(ctx, state, colors, frameCount) {
   switch (state.phase) {
     case PHASE.WAITING:
-      drawCenterText(ctx, "WAITING FOR OPPONENT", 16, colors.rope);
+      drawCenterText(ctx, t("WAITING FOR OPPONENT"), 16, colors.rope);
       break;
     case PHASE.COUNTDOWN:
       drawCenterText(ctx, `${state.countdown}`, 48, colors.hit);
       break;
     case PHASE.SPAWNING:
-      drawCenterText(ctx, "DRAW!", 36, colors.warning);
+      drawCenterText(ctx, t("DRAW!"), 36, colors.warning);
       break;
     case PHASE.HIT_PAUSE: {
       const scorer = state.lastHitPlayer;
@@ -506,21 +507,21 @@ function drawPhaseOverlay(ctx, state, colors, frameCount) {
         ctx.fillStyle = "rgba(255, 0, 0, 0.1)";
         ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
       }
-      drawCenterText(ctx, `P${scorer} SCORES!`, 28, scorerColor);
+      drawCenterText(ctx, jt`P${scorer} SCORES!`, 28, scorerColor);
       break;
     }
     case PHASE.ROUND_OVER: {
       const winner = state.score1 >= state.score2 ? "P1" : "P2";
       const winColor = winner === "P1" ? colors.fg : colors.accent;
-      drawCenterText(ctx, `ROUND ${state.round}`, 24, colors.rope);
+      drawCenterText(ctx, jt`ROUND ${state.round}`, 24, colors.rope);
       drawCenterTextOffset(ctx, `${winner} WINS`, 28, winColor, 30);
       break;
     }
     case PHASE.MATCH_OVER: {
       const matchWinner = state.roundWins1 >= state.roundWins2 ? "P1" : "P2";
       const mColor = matchWinner === "P1" ? colors.fg : colors.accent;
-      drawCenterText(ctx, "MATCH OVER", 24, colors.rope);
-      drawCenterTextOffset(ctx, `${matchWinner} WINS!`, 36, mColor, 35);
+      drawCenterText(ctx, t("MATCH OVER"), 24, colors.rope);
+      drawCenterTextOffset(ctx, jt`${matchWinner} WINS!`, 36, mColor, 35);
       break;
     }
     default:

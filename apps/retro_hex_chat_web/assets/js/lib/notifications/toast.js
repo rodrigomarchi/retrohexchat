@@ -1,3 +1,4 @@
+import { t } from "../i18n.js";
 /**
  * Toast DOM creation and animation.
  *
@@ -65,7 +66,7 @@ export function createToastElement(tip, options = {}) {
 
     const label = document.createElement("label");
     label.htmlFor = checkboxInput.id;
-    label.textContent = "Don't show tips again";
+    label.textContent = t("Don't show tips again");
 
     // Prevent label click from stealing focus
     label.addEventListener("mousedown", (e) => e.preventDefault());
@@ -80,7 +81,7 @@ export function createToastElement(tip, options = {}) {
   }
 
   const button = document.createElement("button");
-  button.textContent = "Got it!";
+  button.textContent = t("Got it!");
   // Prevent button from stealing focus from chat input
   button.addEventListener("mousedown", (e) => e.preventDefault());
   button.addEventListener("click", () => {

@@ -11,6 +11,8 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Chat.Search
 
   def handle_event("toggle_search", _params, socket) do
@@ -135,7 +137,7 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
           search_history_count: history_count,
           search_result_count: 0,
           search_current_index: 0,
-          search_error: if(invalid_regex?, do: "Invalid regex", else: nil)
+          search_error: if(invalid_regex?, do: invalid_regex_error(), else: nil)
         )
       else
         assign(socket,
@@ -143,7 +145,7 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
           search_results: [],
           search_history_count: 0,
           search_result_count: 0,
-          search_error: if(invalid_regex?, do: "Invalid regex", else: nil)
+          search_error: if(invalid_regex?, do: invalid_regex_error(), else: nil)
         )
       end
 
@@ -243,9 +245,11 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
     if Search.valid_regex?(socket.assigns.search_query) do
       assign(socket, search_error: nil)
     else
-      assign(socket, search_error: "Invalid regex")
+      assign(socket, search_error: invalid_regex_error())
     end
   end
+
+  defp invalid_regex_error, do: gettext("Invalid regex")
 
   defp build_search_opts(assigns) do
     opts = [

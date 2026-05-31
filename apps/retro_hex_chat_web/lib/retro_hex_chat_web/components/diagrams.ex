@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.Components.Diagrams do
   | `Diagrams.Arcade*`         | Solo Arcade game logos/cover art (1 per game) |
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   # ── P2P ───────────────────────────────────────────
   defdelegate diagram_p2p_flow(assigns), to: RetroHexChatWeb.Components.Diagrams.P2pFlow

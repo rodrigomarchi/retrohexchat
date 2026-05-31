@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   On success, a hidden form POSTs to `/chat/session`.
   """
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -40,7 +41,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
        step: :nickname,
        auth_token: nil,
        submit_connect: false,
-       page_title: "Connect - RetroHexChat"
+       page_title: gettext("Connect - RetroHexChat")
      )}
   end
 
@@ -55,15 +56,15 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   end
 
   @spec reason_to_message(String.t()) :: String.t()
-  defp reason_to_message("expired"), do: "Session expired"
-  defp reason_to_message("disconnected"), do: "Session ended"
-  defp reason_to_message("banned"), do: "Server banned"
+  defp reason_to_message("expired"), do: gettext("Session expired")
+  defp reason_to_message("disconnected"), do: gettext("Session ended")
+  defp reason_to_message("banned"), do: gettext("Server banned")
   defp reason_to_message(reason), do: reason
 
   @impl true
   def handle_event("validate", %{"nickname" => nickname}, socket) do
     error =
-      case NicknameValidator.validate(nickname) do
+      case validate_nickname(nickname) do
         :ok -> nil
         {:error, msg} -> msg
       end
@@ -72,7 +73,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   end
 
   def handle_event("connect", %{"nickname" => nickname}, socket) do
-    case NicknameValidator.validate(nickname) do
+    case validate_nickname(nickname) do
       :ok ->
         if NickServ.registered?(nickname) do
           {:noreply,
@@ -111,7 +112,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
          |> push_event("submit_connect", %{})}
 
       {:error, _msg} ->
-        {:noreply, assign(socket, password_error: "Incorrect password", password: "")}
+        {:noreply, assign(socket, password_error: gettext("Incorrect password"), password: "")}
     end
   end
 
@@ -130,10 +131,11 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
 
     cond do
       String.length(password) < 5 ->
-        {:noreply, assign(socket, password_error: "Password must be at least 5 characters")}
+        {:noreply,
+         assign(socket, password_error: gettext("Password must be at least 5 characters"))}
 
       password != password_confirm ->
-        {:noreply, assign(socket, password_error: "Passwords do not match")}
+        {:noreply, assign(socket, password_error: gettext("Passwords do not match"))}
 
       true ->
         case NickServ.register(nickname, password) do
@@ -162,16 +164,40 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
      )}
   end
 
+  defp validate_nickname(nickname) do
+    case NicknameValidator.validate(nickname) do
+      :ok -> :ok
+      {:error, message} -> {:error, translate_nickname_error(message)}
+    end
+  end
+
+  defp translate_nickname_error("Nickname must be a string"),
+    do: gettext("Nickname must be a string")
+
+  defp translate_nickname_error("Nickname cannot be empty"),
+    do: gettext("Nickname cannot be empty")
+
+  defp translate_nickname_error("Nickname must be at most 16 characters"),
+    do: gettext("Nickname must be at most 16 characters")
+
+  defp translate_nickname_error("Nickname must start with a letter or special character"),
+    do: gettext("Nickname must start with a letter or special character")
+
+  defp translate_nickname_error("Nickname cannot contain spaces"),
+    do: gettext("Nickname cannot contain spaces")
+
+  defp translate_nickname_error(message), do: message
+
   attr :nickname, :string, required: true
   attr :nickname_error, :string, default: nil
 
   defp nickname_step(assigns) do
     ~H"""
     <form phx-submit="connect" phx-change="validate">
-      <.retro_fieldset legend="User Information">
+      <.retro_fieldset legend={gettext("User Information")}>
         <.field_row stacked>
           <.label for="nickname">
-            <.icon_status_user class="w-3.5 h-3.5 inline-block" /> Nickname
+            <.icon_status_user class="w-3.5 h-3.5 inline-block" /> {gettext("Nickname")}
           </.label>
           <.input
             type="text"
@@ -180,16 +206,18 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
             value={@nickname}
             maxlength="16"
             autocomplete="off"
-            placeholder="Enter your nickname..."
+            placeholder={gettext("Enter your nickname...")}
             phx-debounce="300"
             phx-mounted={JS.focus()}
           />
         </.field_row>
         <ul class="text-xs mt-2 space-y-0.5 text-muted-foreground">
-          <li><.icon_checkmark class="w-3 h-3 inline-block" /> 1–16 characters</li>
-          <li><.icon_checkmark class="w-3 h-3 inline-block" /> Must start with a letter</li>
-          <li><.icon_checkmark class="w-3 h-3 inline-block" /> No spaces allowed</li>
-          <li><.icon_checkmark class="w-3 h-3 inline-block" /> Case sensitive</li>
+          <li><.icon_checkmark class="w-3 h-3 inline-block" /> {gettext("1-16 characters")}</li>
+          <li>
+            <.icon_checkmark class="w-3 h-3 inline-block" /> {gettext("Must start with a letter")}
+          </li>
+          <li><.icon_checkmark class="w-3 h-3 inline-block" /> {gettext("No spaces allowed")}</li>
+          <li><.icon_checkmark class="w-3 h-3 inline-block" /> {gettext("Case sensitive")}</li>
         </ul>
         <p :if={@nickname_error} class="text-destructive text-xs mt-2">
           <.icon_reject class="w-3 h-3 inline-block" /> {@nickname_error}
@@ -203,7 +231,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
           disabled={@nickname_error != nil or @nickname == ""}
         >
           <:icon><.icon_connect /></:icon>
-          Connect
+          {gettext("Connect")}
         </.button>
       </div>
 
@@ -211,18 +239,18 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
         <div class="flex gap-2 items-start p-2 bg-canvas shadow-retro-field">
           <.icon_connect class="w-3.5 h-3.5 shrink-0 mt-0.5" />
           <div>
-            <strong>One session per nickname</strong>
+            <strong>{gettext("One session per nickname")}</strong>
             <p class="text-muted-foreground">
-              Connecting from another window ends the previous session.
+              {gettext("Connecting from another window ends the previous session.")}
             </p>
           </div>
         </div>
         <div class="flex gap-2 items-start p-2 bg-canvas shadow-retro-field">
           <.icon_clock class="w-3.5 h-3.5 shrink-0 mt-0.5" />
           <div>
-            <strong>Session expiry</strong>
+            <strong>{gettext("Session expiry")}</strong>
             <p class="text-muted-foreground">
-              Sessions expire after 10 failed reconnection attempts.
+              {gettext("Sessions expire after 10 failed reconnection attempts.")}
             </p>
           </div>
         </div>
@@ -232,9 +260,9 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
         >
           <.icon_warning class="w-3.5 h-3.5 shrink-0 mt-0.5" />
           <div>
-            <strong>Nickname cleanup</strong>
+            <strong>{gettext("Nickname cleanup")}</strong>
             <p class="text-muted-foreground">
-              Nicknames unused for 7 days are automatically released.
+              {gettext("Nicknames unused for 7 days are automatically released.")}
             </p>
           </div>
         </div>
@@ -250,18 +278,20 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   defp password_step(assigns) do
     ~H"""
     <form phx-submit="authenticate" phx-change="validate_password" autocomplete="off">
-      <.retro_fieldset legend="Authentication">
+      <.retro_fieldset legend={gettext("Authentication")}>
         <.alert class="mb-3">
           <:icon><.icon_shield /></:icon>
           <.alert_description>
-            The nickname <strong>{@nickname}</strong>
-            is registered. Please enter your password to continue.
+            {gettext(
+              "The nickname %{nickname} is registered. Please enter your password to continue.",
+              nickname: @nickname
+            )}
           </.alert_description>
         </.alert>
 
         <.field_row stacked>
           <.label for="password">
-            <.icon_lock class="w-3.5 h-3.5 inline-block" /> Password
+            <.icon_lock class="w-3.5 h-3.5 inline-block" /> {gettext("Password")}
           </.label>
           <.input
             type="text"
@@ -269,7 +299,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
             id="password"
             name="password"
             value={@password}
-            placeholder="Enter your password..."
+            placeholder={gettext("Enter your password...")}
             autocomplete="off"
             data-1p-ignore
             data-lpignore="true"
@@ -285,11 +315,11 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
       <div class="flex justify-end gap-2 mt-4">
         <.button type="button" variant="outline" phx-click="back" data-testid="back-btn">
           <:icon><.icon_btn_prev /></:icon>
-          Back
+          {gettext("Back")}
         </.button>
         <.button type="submit" data-testid="auth-btn" disabled={@password == ""}>
           <:icon><.icon_connect /></:icon>
-          Connect
+          {gettext("Connect")}
         </.button>
       </div>
     </form>
@@ -304,17 +334,19 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
   defp register_step(assigns) do
     ~H"""
     <form phx-submit="register" phx-change="validate_register" autocomplete="off">
-      <.retro_fieldset legend="Registration">
+      <.retro_fieldset legend={gettext("Registration")}>
         <.alert class="mb-3">
           <:icon><.icon_checkmark /></:icon>
           <.alert_description>
-            The nickname <strong>{@nickname}</strong> is available! Choose a password to register it.
+            {gettext("The nickname %{nickname} is available! Choose a password to register it.",
+              nickname: @nickname
+            )}
           </.alert_description>
         </.alert>
 
         <.field_row stacked class="mb-2">
           <.label for="reg-password">
-            <.icon_lock class="w-3.5 h-3.5 inline-block" /> Password
+            <.icon_lock class="w-3.5 h-3.5 inline-block" /> {gettext("Password")}
           </.label>
           <.input
             type="text"
@@ -322,7 +354,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
             id="reg-password"
             name="password"
             value={@password}
-            placeholder="Choose a password (min. 5 characters)..."
+            placeholder={gettext("Choose a password (min. 5 characters)...")}
             autocomplete="off"
             data-1p-ignore
             data-lpignore="true"
@@ -333,7 +365,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
 
         <.field_row stacked>
           <.label for="reg-password-confirm">
-            <.icon_lock class="w-3.5 h-3.5 inline-block" /> Confirm password
+            <.icon_lock class="w-3.5 h-3.5 inline-block" /> {gettext("Confirm password")}
           </.label>
           <.input
             type="text"
@@ -341,7 +373,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
             id="reg-password-confirm"
             name="password_confirm"
             value={@password_confirm}
-            placeholder="Repeat your password..."
+            placeholder={gettext("Repeat your password...")}
             autocomplete="off"
             data-1p-ignore
             data-lpignore="true"
@@ -356,7 +388,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
       <div class="flex justify-end gap-2 mt-4">
         <.button type="button" variant="outline" phx-click="back" data-testid="back-btn">
           <:icon><.icon_btn_prev /></:icon>
-          Back
+          {gettext("Back")}
         </.button>
         <.button
           type="submit"
@@ -364,7 +396,7 @@ defmodule RetroHexChatWeb.V2.ConnectLive do
           disabled={@password == "" or @password_confirm == ""}
         >
           <:icon><.icon_connect /></:icon>
-          Register &amp; Connect
+          {gettext("Register & Connect")}
         </.button>
       </div>
     </form>

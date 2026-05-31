@@ -11,6 +11,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   Attached as `attach_hook(:pubsub_handlers, :handle_info, ...)` in ChatLive.mount/3.
   """
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Chat.IgnoreList
 
   alias __MODULE__.{ChannelState, Membership, Messages, Presence, ServerMessages}
@@ -177,13 +179,18 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     else
       label =
         case session_type do
-          "audio_call" -> "Audio call from #{from}"
-          "video_call" -> "Video call from #{from}"
-          "file_transfer" -> "File transfer from #{from}"
-          _ -> "P2P invite from #{from}"
+          "audio_call" -> gettext("Audio call from %{from}", from: from)
+          "video_call" -> gettext("Video call from %{from}", from: from)
+          "file_transfer" -> gettext("File transfer from %{from}", from: from)
+          _ -> gettext("P2P invite from %{from}", from: from)
         end
 
-      {:halt, push_status_message(socket, "#{label} — /p2p/#{token}", :system)}
+      {:halt,
+       push_status_message(
+         socket,
+         gettext("%{label} — /p2p/%{token}", label: label, token: token),
+         :system
+       )}
     end
   end
 
@@ -197,7 +204,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     if ignored_invite?(socket, from) do
       {:halt, socket}
     else
-      {:halt, push_status_message(socket, "Game invite from #{from} — /game/#{token}", :system)}
+      {:halt,
+       push_status_message(
+         socket,
+         gettext("Game invite from %{from} — /game/%{token}", from: from, token: token),
+         :system
+       )}
     end
   end
 
@@ -211,13 +223,20 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     label =
       case type do
-        "audio_call" -> "Audio call"
-        "video_call" -> "Video call"
-        "file_transfer" -> "File transfer"
-        _ -> "P2P session"
+        "audio_call" -> gettext("Audio call")
+        "video_call" -> gettext("Video call")
+        "file_transfer" -> gettext("File transfer")
+        _ -> gettext("P2P session")
       end
 
-    text = "#{label} with #{peer} ended (#{format_duration(secs)}) — #{humanize_reason(reason)}"
+    text =
+      gettext("%{label} with %{peer} ended (%{duration}) — %{reason}",
+        label: label,
+        peer: peer,
+        duration: format_duration(secs),
+        reason: humanize_reason(reason)
+      )
+
     {:halt, push_status_message(socket, text, :system)}
   end
 
@@ -226,19 +245,31 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     %{payload: payload} = msg
     peer = payload.peer_nick
-    game_label = payload.game_name || "Game"
+    game_label = payload.game_name || gettext("Game")
     reason = payload.reason
     duration = payload[:duration_seconds]
     result = payload[:game_result]
 
     base =
       case reason do
-        r when r in ["finished", "game_over"] -> "#{game_label} with #{peer} finished"
-        _ -> "#{game_label} with #{peer} ended — #{humanize_reason(reason)}"
+        r when r in ["finished", "game_over"] ->
+          gettext("%{game} with %{peer} finished", game: game_label, peer: peer)
+
+        _ ->
+          gettext("%{game} with %{peer} ended — %{reason}",
+            game: game_label,
+            peer: peer,
+            reason: humanize_reason(reason)
+          )
       end
 
     parts = [base]
-    parts = if duration, do: parts ++ ["(#{format_duration(duration)})"], else: parts
+
+    parts =
+      if duration,
+        do: parts ++ [gettext("(%{duration})", duration: format_duration(duration))],
+        else: parts
+
     result_text = format_game_result(result)
     parts = if result_text != "", do: parts ++ [result_text], else: parts
 
@@ -251,7 +282,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     msg = %{
       id: "system-#{System.unique_integer([:positive])}",
-      author: "System",
+      author: gettext("System"),
       content: payload.content,
       type: :arcade_link,
       timestamp: DateTime.utc_now()
@@ -260,7 +291,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     socket =
       socket
       |> stream_insert(:chat_messages, msg)
-      |> push_status_message("#{payload.bot}: Arcade session ready!", :system)
+      |> push_status_message(
+        gettext("%{bot}: Arcade session ready!", bot: payload.bot),
+        :system
+      )
 
     {:halt, socket}
   end
@@ -269,18 +303,28 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
 
     %{payload: payload} = msg
-    game_label = payload.game_name || "Arcade game"
+    game_label = payload.game_name || gettext("Arcade game")
     reason = payload.reason
     duration = payload[:duration_seconds]
 
     base =
       case reason do
-        r when r in ["finished", "game_over"] -> "#{game_label} finished"
-        _ -> "#{game_label} ended — #{humanize_reason(reason)}"
+        r when r in ["finished", "game_over"] ->
+          gettext("%{game} finished", game: game_label)
+
+        _ ->
+          gettext("%{game} ended — %{reason}",
+            game: game_label,
+            reason: humanize_reason(reason)
+          )
       end
 
     parts = [base]
-    parts = if duration, do: parts ++ ["(#{format_duration(duration)})"], else: parts
+
+    parts =
+      if duration,
+        do: parts ++ [gettext("(%{duration})", duration: format_duration(duration))],
+        else: parts
 
     {:halt, push_status_message(socket, Enum.join(parts, " "), :system)}
   end
@@ -303,38 +347,38 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   defp format_duration(secs) when is_integer(secs) and secs >= 3600 do
     h = div(secs, 3600)
     m = div(rem(secs, 3600), 60)
-    "#{h}h #{m}m"
+    gettext("%{hours}h %{minutes}m", hours: h, minutes: m)
   end
 
   defp format_duration(secs) when is_integer(secs) and secs >= 60 do
     m = div(secs, 60)
     s = rem(secs, 60)
-    "#{m}m #{s}s"
+    gettext("%{minutes}m %{seconds}s", minutes: m, seconds: s)
   end
 
   defp format_duration(secs) when is_integer(secs), do: "#{secs}s"
   defp format_duration(_), do: "0s"
 
   defp format_game_result(%{"score" => %{"p1" => p1, "p2" => p2}, "winner" => w}),
-    do: "— #{p1} × #{p2}#{format_winner(w)}"
+    do: gettext("— %{p1} × %{p2}%{winner}", p1: p1, p2: p2, winner: format_winner(w))
 
   defp format_game_result(%{"score_p1" => p1, "score_p2" => p2, "winner" => w}),
-    do: "— #{p1} × #{p2}#{format_winner(w)}"
+    do: gettext("— %{p1} × %{p2}%{winner}", p1: p1, p2: p2, winner: format_winner(w))
 
   defp format_game_result(_), do: ""
 
-  defp format_winner("draw"), do: ", draw"
-  defp format_winner(0), do: ", draw"
+  defp format_winner("draw"), do: gettext(", draw")
+  defp format_winner(0), do: gettext(", draw")
   defp format_winner(_), do: ""
 
-  defp humanize_reason("user_closed"), do: "closed by user"
-  defp humanize_reason("disconnected"), do: "disconnected"
-  defp humanize_reason("expired"), do: "expired"
-  defp humanize_reason("pending_timeout"), do: "invite expired"
-  defp humanize_reason("failed"), do: "connection failed"
-  defp humanize_reason("lobby_inactivity"), do: "inactivity timeout"
-  defp humanize_reason("game_ended"), do: "ended"
-  defp humanize_reason("game_over"), do: "game over"
+  defp humanize_reason("user_closed"), do: gettext("closed by user")
+  defp humanize_reason("disconnected"), do: gettext("disconnected")
+  defp humanize_reason("expired"), do: gettext("expired")
+  defp humanize_reason("pending_timeout"), do: gettext("invite expired")
+  defp humanize_reason("failed"), do: gettext("connection failed")
+  defp humanize_reason("lobby_inactivity"), do: gettext("inactivity timeout")
+  defp humanize_reason("game_ended"), do: gettext("ended")
+  defp humanize_reason("game_over"), do: gettext("game over")
   defp humanize_reason(reason) when is_binary(reason), do: reason
-  defp humanize_reason(_), do: "ended"
+  defp humanize_reason(_), do: gettext("ended")
 end

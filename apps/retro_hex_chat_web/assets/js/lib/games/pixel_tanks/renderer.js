@@ -16,6 +16,7 @@ import {
   ROUNDS_TO_WIN,
   formatTimer,
 } from "./physics.js";
+import { t, jt } from "../../i18n.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -237,13 +238,13 @@ function drawHUD(ctx, state, colors, time) {
   ctx.shadowColor = colors.fg;
   ctx.shadowBlur = 4;
   ctx.textAlign = "left";
-  ctx.fillText(`P1: ${state.score1}`, 8, 6);
+  ctx.fillText(jt`P1: ${state.score1}`, 8, 6);
 
   // P2 score (right)
   ctx.fillStyle = colors.accent;
   ctx.shadowColor = colors.accent;
   ctx.textAlign = "right";
-  ctx.fillText(`P2: ${state.score2}`, CANVAS_W - 8, 6);
+  ctx.fillText(jt`P2: ${state.score2}`, CANVAS_W - 8, 6);
 
   ctx.shadowBlur = 0;
 
@@ -258,7 +259,7 @@ function drawHUD(ctx, state, colors, time) {
       ctx.fillStyle = colors.explosion;
     }
   }
-  ctx.fillText(`R${state.round}  ${timerStr}`, CANVAS_W / 2, 6);
+  ctx.fillText(jt`R${state.round}  ${timerStr}`, CANVAS_W / 2, 6);
 
   // Round wins dots (below scores)
   ctx.font = "12px monospace";
@@ -283,7 +284,7 @@ function drawWaiting(ctx, colors) {
   ctx.font = "bold 16px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("WAITING FOR OPPONENT...", CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(t("WAITING FOR OPPONENT..."), CANVAS_W / 2, CANVAS_H / 2);
 }
 
 function drawCountdown(ctx, countdown, colors) {
@@ -305,7 +306,7 @@ function drawSpawning(ctx, colors) {
   ctx.font = "bold 20px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("ENGAGE!", CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(t("ENGAGE!"), CANVAS_W / 2, CANVAS_H / 2);
 }
 
 function drawRoundOver(ctx, state, colors) {
@@ -315,14 +316,14 @@ function drawRoundOver(ctx, state, colors) {
 
   ctx.fillStyle = colors.warning;
   ctx.font = "bold 24px monospace";
-  ctx.fillText("ROUND OVER", CANVAS_W / 2, CANVAS_H / 2 - 20);
+  ctx.fillText(t("ROUND OVER"), CANVAS_W / 2, CANVAS_H / 2 - 20);
 
   ctx.font = "bold 16px monospace";
   const s1 = state.score1;
   const s2 = state.score2;
   let result;
-  if (s1 > s2) result = "P1 WINS ROUND";
-  else if (s2 > s1) result = "P2 WINS ROUND";
+  if (s1 > s2) result = t("P1 WINS ROUND");
+  else if (s2 > s1) result = t("P2 WINS ROUND");
   else result = "DRAW";
 
   ctx.fillStyle = s1 > s2 ? colors.fg : s2 > s1 ? colors.accent : colors.warning;
@@ -342,13 +343,13 @@ function drawMatchOver(ctx, state, colors) {
   ctx.shadowColor = winColor;
   ctx.shadowBlur = 10;
   ctx.font = "bold 28px monospace";
-  ctx.fillText(`PLAYER ${winner} WINS!`, CANVAS_W / 2, CANVAS_H / 2 - 20);
+  ctx.fillText(jt`PLAYER ${winner} WINS!`, CANVAS_W / 2, CANVAS_H / 2 - 20);
 
   ctx.shadowBlur = 0;
   ctx.font = "bold 16px monospace";
   ctx.fillStyle = colors.warning;
   ctx.fillText(
-    `ROUNDS: ${state.roundWins1} - ${state.roundWins2}`,
+    jt`ROUNDS: ${state.roundWins1} - ${state.roundWins2}`,
     CANVAS_W / 2,
     CANVAS_H / 2 + 15,
   );

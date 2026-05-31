@@ -4,6 +4,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   Simplified state machine: pending → lobby → playing → terminal (finished/closed/expired).
   No peer, no consent flow, no WebRTC signaling.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   use GenServer, restart: :transient
 
@@ -37,7 +38,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   def join(token, user_id) do
     case Registry.lookup(token) do
       {:ok, pid} -> GenServer.call(pid, {:join, user_id})
-      {:error, :not_found} -> {:error, "Session process not running"}
+      {:error, :not_found} -> {:error, gettext("Session process not running")}
     end
   end
 
@@ -45,7 +46,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
   def close(token, user_id, reason) do
     case Registry.lookup(token) do
       {:ok, pid} -> GenServer.call(pid, {:close, user_id, reason})
-      {:error, :not_found} -> {:error, "Session process not running"}
+      {:error, :not_found} -> {:error, gettext("Session process not running")}
     end
   end
 
@@ -113,7 +114,7 @@ defmodule RetroHexChat.Arcade.SoloSessionServer do
       state = maybe_transition_to_lobby(state)
       {:reply, :ok, state}
     else
-      {:reply, {:error, "Not the session creator"}, state}
+      {:reply, {:error, gettext("Not the session creator")}, state}
     end
   end
 

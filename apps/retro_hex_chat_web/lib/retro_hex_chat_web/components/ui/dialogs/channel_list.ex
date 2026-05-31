@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   def channel_list(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} on_cancel={@on_close}>
-      <.dialog_header id={@id} title="Channel List" on_close={@on_close}>
+      <.dialog_header id={@id} title={gettext("Channel List")} on_close={@on_close}>
         <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
       </.dialog_header>
 
@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
           <.input
             type="text"
             value={@search}
-            placeholder="Filter channels..."
+            placeholder={gettext("Filter channels...")}
             class="flex-1"
             phx-change={@on_search}
             phx-debounce="300"
@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
           />
           <.button size="sm" variant="outline" phx-click={@on_search}>
             <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
-            Search
+            {gettext("Search")}
           </.button>
         </div>
 
@@ -62,21 +62,21 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
         <div class="max-h-[300px] overflow-y-auto retro-scrollbar">
           <%= if @loading do %>
             <div class="flex items-center justify-center py-retro-24">
-              <.loading_spinner size="sm" text="Searching..." />
+              <.loading_spinner size="sm" text={gettext("Searching...")} />
             </div>
           <% else %>
             <.table>
               <.table_header>
                 <.table_row>
-                  <.table_head>Channel</.table_head>
-                  <.table_head>Users</.table_head>
-                  <.table_head>Topic</.table_head>
+                  <.table_head>{gettext("Channel")}</.table_head>
+                  <.table_head>{gettext("Users")}</.table_head>
+                  <.table_head>{gettext("Topic")}</.table_head>
                 </.table_row>
               </.table_header>
               <.table_body>
                 <.table_row :if={@channels == []}>
                   <.table_cell colspan="3" class="text-center text-muted-foreground py-4">
-                    No channels found
+                    {gettext("No channels found")}
                   </.table_cell>
                 </.table_row>
                 <.table_row
@@ -110,7 +110,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
           data-testid="channel-list-join"
         >
           <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-          Join
+          {gettext("Join")}
         </.button>
         <.button
           variant="outline"
@@ -118,7 +118,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
           data-testid="channel-list-close"
         >
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          Close
+          {gettext("Close")}
         </.button>
       </.dialog_footer>
     </.dialog>

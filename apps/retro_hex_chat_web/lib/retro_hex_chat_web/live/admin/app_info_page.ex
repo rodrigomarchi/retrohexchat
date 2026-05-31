@@ -1,4 +1,6 @@
 defmodule RetroHexChatWeb.Admin.AppInfoPage do
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   @moduledoc """
   Custom LiveDashboard page showing RetroHexChat application info:
   active channels, connected users, and P2P sessions.
@@ -11,7 +13,7 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
 
   @impl true
   def menu_link(_, _) do
-    {:ok, "App Info"}
+    {:ok, gettext("App Info")}
   end
 
   @impl true
@@ -23,7 +25,9 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
     channel_fields =
       Enum.map(channels, fn name ->
         users = Tracker.list_users("channel:#{name}")
-        {"##{name}", "#{length(users)} users"}
+
+        {gettext("#%{name}", name: name),
+         gettext("%{users_count} users", users_count: length(users))}
       end)
 
     assigns =
@@ -37,7 +41,7 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
     <.row>
       <:col>
         <.fields_card
-          title="Overview"
+          title={gettext("Overview")}
           inner_title="Application Stats"
           fields={[
             {"Active Channels", @channel_count},
@@ -48,7 +52,7 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
       </:col>
       <:col>
         <.fields_card
-          title="Channels"
+          title={gettext("Channels")}
           fields={@channel_fields}
         />
       </:col>

@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.Components.UI.GameSessionEnded do
       data-testid="game-session-ended"
       {@rest}
     >
-      <.window_title_bar title="Game Session" controls={[:close]}>
+      <.window_title_bar title={gettext("Game Session")} controls={[:close]}>
         <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
       </.window_title_bar>
 
@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.GameSessionEnded do
         <%!-- Game result card --%>
         <div :if={@score} class="shadow-retro-field bg-white p-4 text-center space-y-2">
           <p class="text-xs font-bold uppercase tracking-wider text-muted-foreground">
-            Final Score
+            {gettext("Final Score")}
           </p>
           <div :if={@game_name} class="text-xs text-muted-foreground">{@game_name}</div>
           <div class="flex items-center justify-center gap-4 text-sm">
@@ -77,20 +77,20 @@ defmodule RetroHexChatWeb.Components.UI.GameSessionEnded do
               @score.winner == 1 && "text-foreground",
               @score.winner != 1 && "text-muted-foreground"
             ]}>
-              P1 {@score.p1}
+              {gettext("P1 %{score}", score: @score.p1)}
             </span>
-            <span class="text-muted-foreground">&times;</span>
+            <span class="text-muted-foreground">{gettext("&times;")}</span>
             <span class={[
               "font-bold",
               @score.winner == 2 && "text-foreground",
               @score.winner != 2 && "text-muted-foreground"
             ]}>
-              {@score.p2} P2
+              {gettext("%{score} P2", score: @score.p2)}
             </span>
           </div>
           <div :if={@score.winner}>
             <.badge variant="default">
-              Player {@score.winner} wins!
+              {gettext("Player %{winner} wins!", winner: @score.winner)}
             </.badge>
           </div>
         </div>
@@ -99,12 +99,14 @@ defmodule RetroHexChatWeb.Components.UI.GameSessionEnded do
         <div class="shadow-retro-field bg-white p-4 text-center space-y-2">
           <div class="flex items-center justify-center gap-2">
             <Icons.icon_close class="w-4 h-4 text-muted-foreground" />
-            <span class="text-sm font-bold">Session Ended</span>
+            <span class="text-sm font-bold">{gettext("Session Ended")}</span>
           </div>
           <p class="text-xs text-muted-foreground">{@reason}</p>
           <div :if={@formatted_duration} class="pt-1">
             <.badge variant="outline">
-              <Icons.icon_clock class="w-3 h-3 mr-1" /> Duration: {@formatted_duration}
+              <Icons.icon_clock class="w-3 h-3 mr-1" /> {gettext("Duration: %{duration}",
+                duration: @formatted_duration
+              )}
             </.badge>
           </div>
         </div>
@@ -137,13 +139,20 @@ defmodule RetroHexChatWeb.Components.UI.GameSessionEnded do
 
     cond do
       hours > 0 ->
-        "#{hours}h #{String.pad_leading(to_string(minutes), 2, "0")}m #{String.pad_leading(to_string(secs), 2, "0")}s"
+        gettext("%{hours}h %{minutes}m %{seconds}s",
+          hours: hours,
+          minutes: String.pad_leading(to_string(minutes), 2, "0"),
+          seconds: String.pad_leading(to_string(secs), 2, "0")
+        )
 
       minutes > 0 ->
-        "#{minutes}m #{String.pad_leading(to_string(secs), 2, "0")}s"
+        gettext("%{minutes}m %{seconds}s",
+          minutes: minutes,
+          seconds: String.pad_leading(to_string(secs), 2, "0")
+        )
 
       true ->
-        "#{secs}s"
+        gettext("%{seconds}s", seconds: secs)
     end
   end
 end

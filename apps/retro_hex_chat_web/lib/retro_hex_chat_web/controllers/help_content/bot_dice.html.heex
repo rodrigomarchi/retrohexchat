@@ -1,74 +1,76 @@
 <p>
-  The Dice capability adds RPG-style dice rolling to your bot. Users can roll dice
-  using standard tabletop notation with modifiers and keep-highest/keep-lowest options.
+  {gettext(
+    "The Dice capability adds RPG-style dice rolling to your bot. Users can roll dice using standard tabletop notation with modifiers and keep-highest/keep-lowest options."
+  )}
 </p>
 
-<.help_h4 icon={:icon_code}>Commands</.help_h4>
-<pre>!BotName roll &lt;notation&gt;
-!BotName roll          (uses default notation)</pre>
+<.help_h4 icon={:icon_code}>{gettext("Commands")}</.help_h4>
+<pre>{gettext("!BotName roll <notation> !BotName roll (uses default notation)")}</pre>
 
-<.help_h4 icon={:icon_dice}>Dice Notation</.help_h4>
+<.help_h4 icon={:icon_dice}>{gettext("Dice Notation")}</.help_h4>
 <table>
   <thead>
     <tr>
-      <th>Notation</th>
-      <th>Description</th>
-      <th>Example</th>
+      <th>{gettext("Notation")}</th>
+      <th>{gettext("Description")}</th>
+      <th>{gettext("Example")}</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><code>NdS</code></td>
-      <td>Roll N dice with S sides</td>
+      <td><code>{gettext("NdS")}</code></td>
+      <td>{gettext("Roll N dice with S sides")}</td>
       <td><code>2d6</code></td>
     </tr>
     <tr>
-      <td><code>dS</code></td>
-      <td>Roll 1 die with S sides</td>
+      <td><code>{gettext("dS")}</code></td>
+      <td>{gettext("Roll 1 die with S sides")}</td>
       <td><code>d20</code></td>
     </tr>
     <tr>
-      <td><code>NdS+M</code></td>
-      <td>Add modifier M</td>
-      <td><code>d20+5</code></td>
+      <td><code>{gettext("NdS+M")}</code></td>
+      <td>{gettext("Add modifier M")}</td>
+      <td><code>{gettext("d20+5")}</code></td>
     </tr>
     <tr>
-      <td><code>NdS-M</code></td>
-      <td>Subtract modifier M</td>
+      <td><code>{gettext("NdS-M")}</code></td>
+      <td>{gettext("Subtract modifier M")}</td>
       <td><code>d8-2</code></td>
     </tr>
     <tr>
-      <td><code>NdSkhK</code></td>
-      <td>Keep highest K dice</td>
+      <td><code>{gettext("NdSkhK")}</code></td>
+      <td>{gettext("Keep highest K dice")}</td>
       <td><code>4d6kh3</code></td>
     </tr>
     <tr>
-      <td><code>NdSklK</code></td>
-      <td>Keep lowest K dice</td>
+      <td><code>{gettext("NdSklK")}</code></td>
+      <td>{gettext("Keep lowest K dice")}</td>
       <td><code>2d20kl1</code></td>
     </tr>
   </tbody>
 </table>
 
-<.help_h4 icon={:icon_wrench}>Configuration</.help_h4>
-<p>Admins can configure the Dice capability using <code>/bot set</code>:</p>
-<ul>
-  <li><code>dice_max_dice</code> — Maximum number of dice per roll (default: 100)</li>
-  <li><code>dice_max_sides</code> — Maximum sides per die (default: 1000)</li>
-  <li><code>dice_default</code> — Default notation when no argument given (default: d20)</li>
-</ul>
-<pre>/bot set MyBot dice_max_dice 20
-/bot set MyBot dice_max_sides 100</pre>
-
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>!MyBot roll 2d6+3     → [4, 2] + 3 = 9
-!MyBot roll 4d6kh3    → [6, 4, 3, 1] keep [6, 4, 3] = 13
-!MyBot roll d20       → [17] = 17
-!MyBot roll           → (uses default notation)</pre>
-
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_wrench}>{gettext("Configuration")}</.help_h4>
 <p>
-  <.help_link topic="botservice">BotService Overview</.help_link>
-  · <.help_link topic="bot-command">/bot Command Reference</.help_link>
-  · <.help_link topic="bot-trivia">Bot Trivia</.help_link>
+  {gettext("Admins can configure the Dice capability using")} <code>{gettext("/bot set")}</code>:
+</p>
+<ul>
+  <li>
+    <code>dice_max_dice</code> {gettext("— Maximum number of dice per roll (default: 100)")}
+  </li>
+  <li><code>dice_max_sides</code> {gettext("— Maximum sides per die (default: 1000)")}</li>
+  <li>
+    <code>dice_default</code> {gettext("— Default notation when no argument given (default: d20)")}
+  </li>
+</ul>
+<pre>{gettext("/bot set MyBot dice_max_dice 20 /bot set MyBot dice_max_sides 100")}</pre>
+
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("!MyBot roll 2d6+3 → [4, 2] + 3 = 9 !MyBot roll 4d6kh3 → [6, 4, 3, 1] keep [6, 4, 3] = 13 !MyBot roll d20 → [17] = 17 !MyBot roll → (uses default notation)")}</pre>
+
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p>
+  <.help_link topic="botservice">{gettext("BotService Overview")}</.help_link>
+  · <.help_link topic="bot-command">{gettext("/bot Command Reference")}</.help_link>
+  · <.help_link topic="bot-trivia">{gettext("Bot Trivia")}</.help_link>
 </p>

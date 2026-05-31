@@ -38,15 +38,16 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
     ~H"""
     <span data-testid="paste-confirm-dialog">
       <.dialog id={@id} show={@show}>
-        <.dialog_header id={@id} title="Paste Confirmation">
+        <.dialog_header id={@id} title={gettext("Paste Confirmation")}>
           <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
         </.dialog_header>
 
         <.dialog_body>
           <div class="space-y-retro-8">
             <p class="text-xs">
-              You are about to send <span class="font-bold">{@line_count}</span>
-              {if @line_count == 1, do: "line", else: "lines"} of text.
+              {gettext("You are about to send %{count} of text.",
+                count: ngettext("%{count} line", "%{count} lines", @line_count)
+              )}
             </p>
 
             <div
@@ -56,12 +57,14 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
             >
               <Icons.icon_warning class="w-4 h-4 shrink-0 mt-[1px]" />
               <p class="text-xs">
-                Warning: This exceeds the flood protection limit. Messages may be throttled.
+                {gettext(
+                  "Warning: This exceeds the flood protection limit. Messages may be throttled."
+                )}
               </p>
             </div>
 
             <p class="text-xs text-muted-foreground">
-              Are you sure you want to send all lines at once?
+              {gettext("Are you sure you want to send all lines at once?")}
             </p>
           </div>
         </.dialog_body>
@@ -74,7 +77,7 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
             data-testid="paste-confirm-send"
           >
             <:icon><Icons.icon_dialog_paste class="w-4 h-4" /></:icon>
-            Send All
+            {gettext("Send All")}
           </.button>
           <.button
             variant="outline"
@@ -82,7 +85,7 @@ defmodule RetroHexChatWeb.Components.UI.PasteConfirmDialog do
             data-testid="paste-confirm-cancel"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            Cancel
+            {gettext("Cancel")}
           </.button>
         </.dialog_footer>
       </.dialog>

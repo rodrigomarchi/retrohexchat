@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
       }
       on_cancel={@on_cancel}
     >
-      <.dialog_header id={@id} title="Perform" on_close={@on_cancel}>
+      <.dialog_header id={@id} title={gettext("Perform")} on_close={@on_cancel}>
         <:icon><Icons.icon_dialog_perform /></:icon>
       </.dialog_header>
       <.dialog_body>
@@ -77,11 +77,11 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           <.tabs_list>
             <.tabs_trigger builder={builder} value="commands">
               <:icon><Icons.icon_tab_commands class="w-4 h-4" /></:icon>
-              Commands
+              {gettext("Commands")}
             </.tabs_trigger>
             <.tabs_trigger builder={builder} value="autojoin">
               <:icon><Icons.icon_tab_autojoin class="w-4 h-4" /></:icon>
-              Auto-Join
+              {gettext("Auto-Join")}
             </.tabs_trigger>
           </.tabs_list>
 
@@ -115,11 +115,11 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
       <.dialog_footer>
         <.button phx-click={@on_ok}>
           <:icon><Icons.icon_checkmark /></:icon>
-          OK
+          {gettext("OK")}
         </.button>
         <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
           <:icon><Icons.icon_close /></:icon>
-          Cancel
+          {gettext("Cancel")}
         </.button>
       </.dialog_footer>
     </.dialog>
@@ -150,21 +150,29 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">Add Perform Command</span>
+          <span class="text-xs font-bold text-white truncate select-none">
+            {gettext("Add Perform Command")}
+          </span>
           <div class="ml-auto">
-            <button type="button" aria-label="Close" phx-click="close_perform_add_dialog" />
+            <button
+              type="button"
+              aria-label={gettext("Close")}
+              phx-click="close_perform_add_dialog"
+            />
           </div>
         </div>
         <div class="p-2">
           <form phx-submit="perform_dialog_add_confirm" data-testid="perform-add-dialog">
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="perform-command-input">Command:</label>
+              <label class="text-xs font-bold" for="perform-command-input">
+                {gettext("Command")}:
+              </label>
               <.input
                 type="text"
                 id="perform-command-input"
                 name="command"
                 maxlength="500"
-                placeholder="/join #channel"
+                placeholder={gettext("/join #channel")}
                 required
                 autofocus
                 class="w-full"
@@ -173,7 +181,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
             <div class="flex justify-end gap-1">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark /></:icon>
-                OK
+                {gettext("OK")}
               </.button>
               <.button
                 type="button"
@@ -182,7 +190,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 phx-click="close_perform_add_dialog"
               >
                 <:icon><Icons.icon_close /></:icon>
-                Cancel
+                {gettext("Cancel")}
               </.button>
             </div>
           </form>
@@ -203,15 +211,21 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">Edit Perform Command</span>
+          <span class="text-xs font-bold text-white truncate select-none">
+            {gettext("Edit Perform Command")}
+          </span>
           <div class="ml-auto">
-            <button type="button" aria-label="Close" phx-click="close_perform_edit_dialog" />
+            <button
+              type="button"
+              aria-label={gettext("Close")}
+              phx-click="close_perform_edit_dialog"
+            />
           </div>
         </div>
         <div class="p-2">
           <form phx-submit="perform_dialog_edit_confirm" data-testid="perform-edit-dialog">
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="perform-edit-input">Command:</label>
+              <label class="text-xs font-bold" for="perform-edit-input">{gettext("Command")}:</label>
               <.input
                 type="text"
                 id="perform-edit-input"
@@ -226,7 +240,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
             <div class="flex justify-end gap-1">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark /></:icon>
-                OK
+                {gettext("OK")}
               </.button>
               <.button
                 type="button"
@@ -235,7 +249,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 phx-click="close_perform_edit_dialog"
               >
                 <:icon><Icons.icon_close /></:icon>
-                Cancel
+                {gettext("Cancel")}
               </.button>
             </div>
           </form>
@@ -250,15 +264,23 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-xs">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">Add Auto-Join Channel</span>
+          <span class="text-xs font-bold text-white truncate select-none">
+            {gettext("Add Auto-Join Channel")}
+          </span>
           <div class="ml-auto">
-            <button type="button" aria-label="Close" phx-click="close_autojoin_add_dialog" />
+            <button
+              type="button"
+              aria-label={gettext("Close")}
+              phx-click="close_autojoin_add_dialog"
+            />
           </div>
         </div>
         <div class="p-2">
           <form phx-submit="autojoin_dialog_add_confirm" data-testid="autojoin-add-dialog">
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="autojoin-channel-input">Channel:</label>
+              <label class="text-xs font-bold" for="autojoin-channel-input">
+                {gettext("Channel")}:
+              </label>
               <.input
                 type="text"
                 id="autojoin-channel-input"
@@ -271,20 +293,20 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               />
             </div>
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="autojoin-key-input">Key:</label>
+              <label class="text-xs font-bold" for="autojoin-key-input">{gettext("Key")}:</label>
               <.input
                 type="text"
                 id="autojoin-key-input"
                 name="key"
                 maxlength="50"
-                placeholder="Leave empty if no key"
+                placeholder={gettext("Leave empty if no key")}
                 class="w-full"
               />
             </div>
             <div class="flex justify-end gap-1">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark /></:icon>
-                OK
+                {gettext("OK")}
               </.button>
               <.button
                 type="button"
@@ -293,7 +315,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 phx-click="close_autojoin_add_dialog"
               >
                 <:icon><Icons.icon_close /></:icon>
-                Cancel
+                {gettext("Cancel")}
               </.button>
             </div>
           </form>
@@ -320,17 +342,23 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-xs">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
           <span class="text-xs font-bold text-white truncate select-none">
-            Edit Auto-Join Channel
+            {gettext("Edit Auto-Join Channel")}
           </span>
           <div class="ml-auto">
-            <button type="button" aria-label="Close" phx-click="close_autojoin_edit_dialog" />
+            <button
+              type="button"
+              aria-label={gettext("Close")}
+              phx-click="close_autojoin_edit_dialog"
+            />
           </div>
         </div>
         <div class="p-2">
           <form phx-submit="autojoin_dialog_edit_confirm" data-testid="autojoin-edit-dialog">
             <input type="hidden" name="channel" value={@edit_channel} />
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="autojoin-edit-channel">Channel:</label>
+              <label class="text-xs font-bold" for="autojoin-edit-channel">
+                {gettext("Channel")}:
+              </label>
               <.input
                 type="text"
                 id="autojoin-edit-channel"
@@ -341,7 +369,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               />
             </div>
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="autojoin-edit-key">Key:</label>
+              <label class="text-xs font-bold" for="autojoin-edit-key">{gettext("Key")}:</label>
               <.input
                 type="text"
                 id="autojoin-edit-key"
@@ -355,7 +383,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
             <div class="flex justify-end gap-1">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark /></:icon>
-                OK
+                {gettext("OK")}
               </.button>
               <.button
                 type="button"
@@ -364,7 +392,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 phx-click="close_autojoin_edit_dialog"
               >
                 <:icon><Icons.icon_close /></:icon>
-                Cancel
+                {gettext("Cancel")}
               </.button>
             </div>
           </form>
@@ -405,7 +433,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         <.table_header>
           <.table_row>
             <.table_head class="w-[60px] text-xs px-2 py-1">#</.table_head>
-            <.table_head class="text-xs px-2 py-1">Command</.table_head>
+            <.table_head class="text-xs px-2 py-1">{gettext("Command")}</.table_head>
           </.table_row>
         </.table_header>
         <.table_body>
@@ -427,7 +455,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           </.table_row>
           <tr :if={@entries == []}>
             <td colspan="2" class="px-2 py-4 text-xs text-center text-muted-foreground">
-              No commands configured. Click Add to create one.
+              {gettext("No commands configured. Click Add to create one.")}
             </td>
           </tr>
         </.table_body>
@@ -437,15 +465,15 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     <div class="flex gap-1 mb-2">
       <.button size="sm" phx-click={@on_add}>
         <:icon><Icons.icon_btn_add /></:icon>
-        Add
+        {gettext("Add")}
       </.button>
       <.button size="sm" phx-click={@on_edit} disabled={!@has_selection}>
         <:icon><Icons.icon_btn_edit /></:icon>
-        Edit
+        {gettext("Edit")}
       </.button>
       <.button size="sm" variant="destructive" phx-click={@on_remove} disabled={!@has_selection}>
         <:icon><Icons.icon_btn_remove /></:icon>
-        Remove
+        {gettext("Remove")}
       </.button>
       <.button
         size="sm"
@@ -454,7 +482,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         disabled={!@has_selection || @selected == @first_pos}
       >
         <:icon><Icons.icon_btn_up /></:icon>
-        Up
+        {gettext("Up")}
       </.button>
       <.button
         size="sm"
@@ -463,7 +491,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         disabled={!@has_selection || @selected == @last_pos}
       >
         <:icon><Icons.icon_btn_down /></:icon>
-        Down
+        {gettext("Down")}
       </.button>
     </div>
 
@@ -474,7 +502,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         name="perform_enabled"
         value={@enabled}
         phx-click={@on_toggle_enabled}
-      /> Enable perform on connect
+      /> {gettext("Enable perform on connect")}
     </label>
     """
   end
@@ -497,8 +525,8 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
       <.table>
         <.table_header>
           <.table_row>
-            <.table_head class="text-xs px-2 py-1">Channel</.table_head>
-            <.table_head class="w-[80px] text-xs px-2 py-1">Key</.table_head>
+            <.table_head class="text-xs px-2 py-1">{gettext("Channel")}</.table_head>
+            <.table_head class="w-[80px] text-xs px-2 py-1">{gettext("Key")}</.table_head>
           </.table_row>
         </.table_header>
         <.table_body>
@@ -520,7 +548,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
           </.table_row>
           <tr :if={@entries == []}>
             <td colspan="2" class="px-2 py-4 text-xs text-center text-muted-foreground">
-              No auto-join channels. Click Add to create one.
+              {gettext("No auto-join channels. Click Add to create one.")}
             </td>
           </tr>
         </.table_body>
@@ -530,15 +558,15 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     <div class="flex gap-1">
       <.button size="sm" phx-click={@on_add}>
         <:icon><Icons.icon_btn_add /></:icon>
-        Add
+        {gettext("Add")}
       </.button>
       <.button size="sm" phx-click={@on_edit} disabled={!@has_selection}>
         <:icon><Icons.icon_btn_edit /></:icon>
-        Edit
+        {gettext("Edit")}
       </.button>
       <.button size="sm" variant="destructive" phx-click={@on_remove} disabled={!@has_selection}>
         <:icon><Icons.icon_btn_remove /></:icon>
-        Remove
+        {gettext("Remove")}
       </.button>
     </div>
     """

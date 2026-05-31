@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Tooltip do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,26 +15,29 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Tooltip do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Tooltip", active_page: "tooltip")}
+    {:ok, assign(socket, page_title: gettext("Tooltip"), active_page: "tooltip")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Tooltip</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Tooltip")}</h2>
 
-      <.showcase_card title="Usage" description="A popup that displays information on hover.">
+      <.showcase_card
+        title={gettext("Usage")}
+        description="A popup that displays information on hover."
+      >
         <.tooltip>
           <.tooltip_trigger>
             <.button variant="outline">
               <:icon><Icons.icon_btn_info /></:icon>
-              Hover me
+              {gettext("Hover me")}
             </.button>
           </.tooltip_trigger>
           <.tooltip_content>
             <:icon><Icons.icon_lightbulb class="w-4 h-4" /></:icon>
-            <p>This is a tooltip</p>
+            <p>{gettext("This is a tooltip")}</p>
           </.tooltip_content>
         </.tooltip>
         <.code_example>

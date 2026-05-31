@@ -32,6 +32,7 @@ import {
   SHOWDOWN_TARGET,
 } from "./physics.js";
 import { PHASE, GAME_MODE } from "./protocol.js";
+import { t, jt } from "../../i18n.js";
 
 // ── Direction vectors for stick drawing ────────────────────────
 const SQRT2 = Math.SQRT1_2;
@@ -400,18 +401,18 @@ function drawHUD(ctx, state, colors) {
   // Scores
   ctx.fillStyle = colors.fg;
   ctx.textAlign = "left";
-  ctx.fillText(`P1: ${state.scoreP1}`, 30, y);
+  ctx.fillText(jt`P1: ${state.scoreP1}`, 30, y);
 
   ctx.fillStyle = colors.accent;
   ctx.textAlign = "right";
-  ctx.fillText(`P2: ${state.scoreP2}`, CANVAS_W - 30, y);
+  ctx.fillText(jt`P2: ${state.scoreP2}`, CANVAS_W - 30, y);
 
   // Game title
   ctx.fillStyle = colors.puck || "#ffffff";
   ctx.globalAlpha = 0.5;
   ctx.textAlign = "center";
   ctx.font = "bold 10px monospace";
-  ctx.fillText("HEX HOCKEY", RINK_CX, y - 2);
+  ctx.fillText(t("HEX HOCKEY"), RINK_CX, y - 2);
   ctx.globalAlpha = 1.0;
 
   // Period & Timer
@@ -420,7 +421,7 @@ function drawHUD(ctx, state, colors) {
   ctx.globalAlpha = 0.8;
 
   if (state.mode === GAME_MODE.SHOWDOWN) {
-    ctx.fillText(`First to ${SHOWDOWN_TARGET}`, RINK_CX, y + 14);
+    ctx.fillText(jt`First to ${SHOWDOWN_TARGET}`, RINK_CX, y + 14);
   } else {
     const hudMaxP = state.mode === GAME_MODE.BLITZ ? 1 : 3;
     const isSudden = state.period > hudMaxP || state.phase === PHASE.SUDDEN_DEATH;
@@ -464,7 +465,7 @@ function drawFaceoff(ctx, state, colors, frameCount) {
     ctx.textBaseline = "middle";
     ctx.fillStyle = colors.warning;
     ctx.globalAlpha = 0.5 + 0.5 * Math.sin(frameCount * 0.3);
-    ctx.fillText("GO!", RINK_CX, RINK_CY);
+    ctx.fillText(t("GO!"), RINK_CX, RINK_CY);
     ctx.globalAlpha = 1.0;
     ctx.textBaseline = "alphabetic";
   }
@@ -482,7 +483,7 @@ function drawGoalCelebration(ctx, state, colors, frameCount) {
   const pulse = 0.6 + 0.4 * Math.sin(frameCount * 0.2);
   ctx.fillStyle = colors.goalColor;
   ctx.globalAlpha = pulse;
-  ctx.fillText("GOAL!", RINK_CX, RINK_CY - 20);
+  ctx.fillText(t("GOAL!"), RINK_CX, RINK_CY - 20);
 
   // Score display
   ctx.font = "bold 24px monospace";
@@ -495,14 +496,15 @@ function drawGoalCelebration(ctx, state, colors, frameCount) {
 
   // Particles burst (simple star effect)
   const numParticles = 12;
-  const t = (GOAL_CELEBRATION_FRAMES - (state.celebrationFrames || 0)) / GOAL_CELEBRATION_FRAMES;
+  const progress =
+    (GOAL_CELEBRATION_FRAMES - (state.celebrationFrames || 0)) / GOAL_CELEBRATION_FRAMES;
   for (let i = 0; i < numParticles; i++) {
     const angle = (i / numParticles) * Math.PI * 2 + frameCount * 0.05;
-    const dist = 20 + t * 80;
+    const dist = 20 + progress * 80;
     const px = RINK_CX + Math.cos(angle) * dist;
     const py = RINK_CY + Math.sin(angle) * dist;
     ctx.fillStyle = i % 2 === 0 ? colors.fg : colors.accent;
-    ctx.globalAlpha = 1 - t;
+    ctx.globalAlpha = 1 - progress;
     ctx.fillRect(px - 2, py - 2, 4, 4);
   }
   ctx.globalAlpha = 1.0;
@@ -523,7 +525,7 @@ function drawPeriodBreak(ctx, state, colors, _frameCount) {
   ctx.fillStyle = colors.fg;
 
   const prevPeriod = state.period - 1;
-  ctx.fillText(`END OF PERIOD ${prevPeriod}`, RINK_CX, RINK_CY - 30);
+  ctx.fillText(jt`END OF PERIOD ${prevPeriod}`, RINK_CX, RINK_CY - 30);
 
   ctx.font = "bold 32px monospace";
   ctx.fillStyle = colors.puck || "#ffffff";
@@ -532,7 +534,7 @@ function drawPeriodBreak(ctx, state, colors, _frameCount) {
   ctx.font = "14px monospace";
   ctx.fillStyle = colors.accent;
   ctx.globalAlpha = 0.6;
-  ctx.fillText("Switching sides...", RINK_CX, RINK_CY + 45);
+  ctx.fillText(t("Switching sides..."), RINK_CX, RINK_CY + 45);
 
   ctx.globalAlpha = 1.0;
   ctx.textBaseline = "alphabetic";
@@ -554,7 +556,7 @@ function drawSuddenDeathOverlay(ctx, colors, frameCount) {
   ctx.textAlign = "center";
   ctx.fillStyle = colors.warning;
   ctx.globalAlpha = 0.5 + 0.3 * Math.sin(frameCount * 0.1);
-  ctx.fillText("SUDDEN DEATH", RINK_CX, RINK_TOP + 15);
+  ctx.fillText(t("SUDDEN DEATH"), RINK_CX, RINK_TOP + 15);
   ctx.globalAlpha = 1.0;
 }
 
@@ -574,13 +576,13 @@ function drawGameOver(ctx, state, colors, _frameCount) {
   ctx.font = "bold 28px monospace";
   if (state.scoreP1 > state.scoreP2) {
     ctx.fillStyle = colors.fg;
-    ctx.fillText("PLAYER 1 WINS!", RINK_CX, RINK_CY - 40);
+    ctx.fillText(t("PLAYER 1 WINS!"), RINK_CX, RINK_CY - 40);
   } else if (state.scoreP2 > state.scoreP1) {
     ctx.fillStyle = colors.accent;
-    ctx.fillText("PLAYER 2 WINS!", RINK_CX, RINK_CY - 40);
+    ctx.fillText(t("PLAYER 2 WINS!"), RINK_CX, RINK_CY - 40);
   } else {
     ctx.fillStyle = colors.puck || "#ffffff";
-    ctx.fillText("DRAW!", RINK_CX, RINK_CY - 40);
+    ctx.fillText(t("DRAW!"), RINK_CX, RINK_CY - 40);
   }
 
   // Final score
@@ -592,7 +594,7 @@ function drawGameOver(ctx, state, colors, _frameCount) {
   ctx.font = "14px monospace";
   ctx.fillStyle = colors.fg;
   ctx.globalAlpha = 0.6;
-  const periodText = state.period > 3 ? "After Sudden Death" : `${state.period} Periods`;
+  const periodText = state.period > 3 ? t("After Sudden Death") : `${state.period} Periods`;
   ctx.fillText(periodText, RINK_CX, RINK_CY + 50);
 
   ctx.globalAlpha = 1.0;
@@ -607,7 +609,7 @@ function drawWaitingScreen(ctx, colors, frameCount) {
   ctx.textBaseline = "middle";
   ctx.fillStyle = colors.fg;
   ctx.globalAlpha = 0.5 + 0.3 * Math.sin(frameCount * 0.05);
-  ctx.fillText("Waiting for opponent...", RINK_CX, RINK_CY);
+  ctx.fillText(t("Waiting for opponent..."), RINK_CX, RINK_CY);
   ctx.globalAlpha = 1.0;
   ctx.textBaseline = "alphabetic";
 }

@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NotifyListPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -17,14 +18,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NotifyListPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Notify List",
+       page_title: gettext("Notify List"),
        active_page: "notify-list",
        entries: [
          %{tracked_nickname: "alice", online: true, last_seen_at: "now"},
-         %{tracked_nickname: "bob", online: false, last_seen_at: "2h ago"},
+         %{tracked_nickname: "bob", online: false, last_seen_at: gettext("2h ago")},
          %{tracked_nickname: "carol", online: true, last_seen_at: "now"},
          %{tracked_nickname: "dave", online: false, last_seen_at: "yesterday"},
-         %{tracked_nickname: "eve", online: false, last_seen_at: "3d ago"}
+         %{tracked_nickname: "eve", online: false, last_seen_at: gettext("3d ago")}
        ]
      )}
   end
@@ -33,15 +34,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NotifyListPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Notify List</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Notify List")}</h2>
 
       <.showcase_card
-        title="Notify List"
+        title={gettext("Notify List")}
         description="Track nicks and get notified when they come online or go offline."
       >
         <.button variant="outline" phx-click={show_modal("notify-list-demo")}>
           <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
-          Notify List
+          {gettext("Notify List")}
         </.button>
         <.notify_list id="notify-list-demo" entries={@entries} />
         <.code_example>
@@ -57,12 +58,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NotifyListPage do
       </.showcase_card>
 
       <.showcase_card
-        title="With Selection"
+        title={gettext("With Selection")}
         description="Notify list with a nick pre-selected. Edit/Remove buttons are enabled."
       >
         <.button variant="outline" phx-click={show_modal("notify-list-selected")}>
           <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
-          Notify List (Selected)
+          {gettext("Notify List (Selected)")}
         </.button>
         <.notify_list
           id="notify-list-selected"
@@ -72,12 +73,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NotifyListPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Auto-Whois Enabled"
+        title={gettext("Auto-Whois Enabled")}
         description="Notify list with the Auto-Whois checkbox ticked."
       >
         <.button variant="outline" phx-click={show_modal("notify-list-whois")}>
           <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
-          Notify List (Auto-Whois)
+          {gettext("Notify List (Auto-Whois)")}
         </.button>
         <.notify_list
           id="notify-list-whois"
@@ -87,12 +88,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NotifyListPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Empty State"
+        title={gettext("Empty State")}
         description="Notify list with no tracked nicks."
       >
         <.button variant="outline" phx-click={show_modal("notify-list-empty")}>
           <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
-          Notify List (Empty)
+          {gettext("Notify List (Empty)")}
         </.button>
         <.notify_list id="notify-list-empty" entries={[]} />
       </.showcase_card>

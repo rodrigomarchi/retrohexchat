@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Unmute do
   @moduledoc "Handler for /unmute <nickname> — remove channel-level mute."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -10,7 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /unmute <nickname>"}
+  def execute([], _context), do: {:error, gettext("Usage: /unmute <nickname>")}
 
   def execute([nick | _], context) do
     with {:ok, channel} <- require_channel(context),
@@ -23,10 +24,10 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
   def help do
     %{
       name: "unmute",
-      syntax: "/unmute <nickname>",
+      syntax: gettext("/unmute <nickname>"),
       description:
-        "Remove a channel-level mute from a user.\nRequires: channel operator or owner.",
-      examples: ["/unmute alice"]
+        gettext("Remove a channel-level mute from a user.\nRequires: channel operator or owner."),
+      examples: [gettext("/unmute alice")]
     }
   end
 
@@ -41,8 +42,8 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
 
     %CommandSyntax{
       command: "unmute",
-      syntax: "/unmute <nickname>",
-      description: "Remove a channel-level mute from a user.",
+      syntax: gettext("/unmute <nickname>"),
+      description: gettext("Remove a channel-level mute from a user."),
       category: :channel,
       parameters: [
         %Parameter{
@@ -50,21 +51,23 @@ defmodule RetroHexChat.Commands.Handlers.Unmute do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to unmute"
+          description: gettext("User to unmute")
         }
       ],
-      examples: ["/unmute alice"]
+      examples: [gettext("/unmute alice")]
     }
   end
 
-  defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
+  defp require_channel(%{active_channel: nil}),
+    do: {:error, gettext("You are not in any channel")}
+
   defp require_channel(%{active_channel: ch}), do: {:ok, ch}
 
   defp require_operator(context, channel) do
     if channel in context.operator_in do
       :ok
     else
-      {:error, "You must be a channel operator to use this command"}
+      {:error, gettext("You must be a channel operator to use this command")}
     end
   end
 end

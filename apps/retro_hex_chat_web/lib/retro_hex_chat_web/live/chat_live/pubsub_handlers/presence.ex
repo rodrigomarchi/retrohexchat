@@ -7,6 +7,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       system_event: 2,
@@ -60,8 +62,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
     msg =
       if online?,
-        do: "* #{nickname} is now online",
-        else: "* #{nickname} has gone offline"
+        do: gettext("* %{nickname} is now online", nickname: nickname),
+        else: gettext("* %{nickname} has gone offline", nickname: nickname)
 
     type = if online?, do: :notify_online, else: :notify_offline
 
@@ -138,7 +140,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
       socket =
         socket
         |> join_channel_in_background(channel, session)
-        |> system_event("* You have been invited to #{channel} by #{inviter} (auto-joined)")
+        |> system_event(
+          gettext("* You have been invited to %{channel} by %{inviter} (auto-joined)",
+            channel: channel,
+            inviter: inviter
+          )
+        )
 
       {:halt, socket}
     else
@@ -156,7 +163,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
       socket =
         socket
         |> assign(pending_invites: pending ++ [invite])
-        |> push_status_message("* #{inviter} has invited you to #{channel}", :system)
+        |> push_status_message(
+          gettext("* %{inviter} has invited you to %{channel}",
+            inviter: inviter,
+            channel: channel
+          ),
+          :system
+        )
 
       {:halt, socket}
     end

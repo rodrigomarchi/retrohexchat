@@ -1,24 +1,28 @@
 <p>
-  Set the server's Message of the Day — a welcome message shown to all users when they connect.
+  {gettext(
+    "Set the server's Message of the Day — a welcome message shown to all users when they connect."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/setmotd &lt;text&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>text</code> — The MOTD content to display.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/setmotd <text>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>text</code> {gettext("— The MOTD content to display.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Existing connected users are not notified — only new connections see the MOTD. Any previous MOTD is replaced.
+  {gettext(
+    "Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Existing connected users are not notified — only new connections see the MOTD. Any previous MOTD is replaced."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Server administrator only</li>
-  <li>Message text is required</li>
+  <li>{gettext("Server administrator only")}</li>
+  <li>{gettext("Message text is required")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/setmotd Welcome to RetroHexChat! Please read the rules in #rules.</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/setmotd Welcome to RetroHexChat! Please read the rules in #rules.")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-motd">/motd</.help_link>
-  · <.help_link topic="cmd-clearmotd">/clearmotd</.help_link>
-  · <.help_link topic="feature-special-messages">Special Messages</.help_link>
+  <.help_link topic="cmd-motd">{gettext("/motd")}</.help_link>
+  · <.help_link topic="cmd-clearmotd">{gettext("/clearmotd")}</.help_link>
+  · <.help_link topic="feature-special-messages">{gettext("Special Messages")}</.help_link>
 </p>

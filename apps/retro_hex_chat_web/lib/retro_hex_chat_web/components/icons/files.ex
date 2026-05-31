@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Files do
   Icons depicting files, folders, and document concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

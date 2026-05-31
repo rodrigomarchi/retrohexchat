@@ -1,61 +1,70 @@
 <p>
-  Bots can have custom commands that respond to specific triggers. When a user types the bot's
-  command prefix followed by the bot name and a trigger word, the bot replies with the configured response.
+  {gettext(
+    "Bots can have custom commands that respond to specific triggers. When a user types the bot's command prefix followed by the bot name and a trigger word, the bot replies with the configured response."
+  )}
 </p>
 
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>!BotName trigger</pre>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("!BotName trigger")}</pre>
 <p>
-  The prefix (<code>!</code> by default) and bot name are required before the trigger word.
-  For example, if a bot named "FAQ" has a command "rules":
+  {gettext("The prefix (")}<code>!</code> {gettext(
+    "by default) and bot name are required before the trigger word. For example, if a bot named \"FAQ\" has a command \"rules\":"
+  )}
 </p>
-<pre>!FAQ rules</pre>
+<pre>{gettext("!FAQ rules")}</pre>
 
-<.help_h4 icon={:icon_tab_control}>Creating Commands</.help_h4>
-<p>Use the <code>/bot addcmd</code> command or the Bot Management dialog:</p>
-<pre>/bot addcmd FAQ rules Please read the #rules channel
-/bot addcmd FAQ hours We're available 9am-5pm EST</pre>
+<.help_h4 icon={:icon_tab_control}>{gettext("Creating Commands")}</.help_h4>
 <p>
-  Each command has a <strong>trigger</strong>
-  (the word users type) and a <strong>response</strong>
-  (what the bot says). An optional description is shown in the <code>!BotName help</code>
-  listing.
+  {gettext("Use the")}
+  <code>{gettext("/bot addcmd")}</code> {gettext("command or the Bot Management dialog:")}
+</p>
+<pre>{gettext("/bot addcmd FAQ rules Please read the #rules channel /bot addcmd FAQ hours We're available 9am-5pm EST")}</pre>
+<p>
+  {gettext("Each command has a")} <strong>trigger</strong>
+  {gettext("(the word users type) and a")} <strong>response</strong>
+  {gettext("(what the bot says). An optional description is shown in the")}
+  <code>{gettext("!BotName help")}</code>
+  {gettext("listing.")}
 </p>
 
-<.help_h4 icon={:icon_code}>Template Placeholders</.help_h4>
-<p>Command responses support dynamic placeholders:</p>
+<.help_h4 icon={:icon_code}>{gettext("Template Placeholders")}</.help_h4>
+<p>{gettext("Command responses support dynamic placeholders:")}</p>
 <ul>
-  <li><code>{"{nickname}"}</code> — the user who invoked the command</li>
-  <li><code>{"{channel}"}</code> — the channel where the command was used</li>
-  <li><code>{"{prefix}"}</code> — the bot's command prefix</li>
-  <li><code>{"{botname}"}</code> — the bot's name</li>
+  <li><code>{"{nickname}"}</code> {gettext("— the user who invoked the command")}</li>
+  <li><code>{"{channel}"}</code> {gettext("— the channel where the command was used")}</li>
+  <li><code>{"{prefix}"}</code> {gettext("— the bot's command prefix")}</li>
+  <li><code>{"{botname}"}</code> {gettext("— the bot's name")}</li>
 </ul>
-<pre>/bot addcmd FAQ welcome Hello {"{nickname}"}, welcome to {"{channel}"}!</pre>
+<pre>{gettext("/bot addcmd FAQ welcome Hello")} {"{nickname}"}{gettext(", welcome to")} {"{channel}"}!</pre>
 
-<.help_h4 icon={:icon_lightbulb}>Built-in Help Command</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Built-in Help Command")}</.help_h4>
 <p>
-  If the Help capability is enabled, typing <code>!BotName help</code> lists all available
-  commands with their descriptions. This is automatic — no setup required.
+  {gettext("If the Help capability is enabled, typing")}
+  <code>{gettext("!BotName help")}</code> {gettext(
+    "lists all available commands with their descriptions. This is automatic — no setup required."
+  )}
 </p>
-<pre>!FAQ help</pre>
+<pre>{gettext("!FAQ help")}</pre>
 
-<.help_h4 icon={:icon_rules}>Rules & Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Triggers must be unique per bot (case-sensitive)</li>
-  <li>The Custom Commands capability must be enabled on the bot</li>
-  <li>Only admins and server operators can add or remove commands</li>
-  <li>Bot cooldown applies — rapid invocations may be ignored</li>
+  <li>{gettext("Triggers must be unique per bot (case-sensitive)")}</li>
+  <li>{gettext("The Custom Commands capability must be enabled on the bot")}</li>
+  <li>{gettext("Only admins and server operators can add or remove commands")}</li>
+  <li>{gettext("Bot cooldown applies — rapid invocations may be ignored")}</li>
 </ul>
 
-<.help_h4 icon={:icon_laptop}>Managing via Dialog</.help_h4>
+<.help_h4 icon={:icon_laptop}>{gettext("Managing via Dialog")}</.help_h4>
 <p>
-  Open the Bot Management dialog (<strong>Tools → Bot Management</strong>), select a bot,
-  and click the <strong>Commands</strong> tab. Use <strong>Add Command...</strong> to create
-  new commands or <strong>Remove</strong> to delete existing ones.
+  {gettext("Open the Bot Management dialog (")}<strong>{gettext("Tools → Bot Management")}</strong>{gettext(
+    "), select a bot, and click the"
+  )} <strong>{gettext("Commands")}</strong> {gettext("tab. Use")}
+  <strong>{gettext("Add Command...")}</strong> {gettext("to create new commands or")}
+  <strong>{gettext("Remove")}</strong> {gettext("to delete existing ones.")}
 </p>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="botservice">BotService Overview</.help_link>
-  · <.help_link topic="bot-command">/bot Command Reference</.help_link>
+  <.help_link topic="botservice">{gettext("BotService Overview")}</.help_link>
+  · <.help_link topic="bot-command">{gettext("/bot Command Reference")}</.help_link>
 </p>

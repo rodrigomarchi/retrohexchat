@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Services.Queries do
   @moduledoc "Database queries for NickServ and ChanServ services."
+  use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
 

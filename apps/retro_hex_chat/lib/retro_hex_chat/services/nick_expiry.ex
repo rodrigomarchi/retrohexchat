@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Services.NickExpiry do
   @moduledoc "Periodic purge of inactive registered nicknames."
+  use Gettext, backend: RetroHexChat.Gettext
   use GenServer
 
   require Logger
@@ -97,7 +98,7 @@ defmodule RetroHexChat.Services.NickExpiry do
 
   defp promote_successor(channel_name, successor) do
     Queries.remove_access(channel_name, successor.nickname)
-    Queries.add_access(channel_name, successor.nickname, "founder", "NickExpiry")
+    Queries.add_access(channel_name, successor.nickname, "founder", gettext("NickExpiry"))
     Queries.update_channel_founder(channel_name, successor.nickname)
   end
 

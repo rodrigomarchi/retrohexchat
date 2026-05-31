@@ -1,13 +1,15 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">Chat Context Menu</h2>
+  <h2 class="text-lg font-bold mb-3">{gettext("Chat Context Menu")}</h2>
 
   <.showcase_card
-    title="Nick Menu"
+    title={gettext("Nick Menu")}
     description="Right-click on a nickname. Shows PM, Whois, Copy, Ignore, Address Book, P2P actions (when identified), and Op actions (when viewer is op)."
   >
     <div class="flex gap-6 flex-wrap">
       <div>
-        <p class="text-xs font-bold mb-2 text-muted-foreground">Basic (regular user)</p>
+        <p class="text-xs font-bold mb-2 text-muted-foreground">
+          {gettext("Basic (regular user)")}
+        </p>
         <div class="relative inline-block">
           <.chat_context_menu
             visible
@@ -26,7 +28,7 @@
       </div>
       <div>
         <p class="text-xs font-bold mb-2 text-muted-foreground">
-          Identified user (P2P actions)
+          {gettext("Identified user (P2P actions)")}
         </p>
         <div class="relative inline-block">
           <.chat_context_menu
@@ -45,7 +47,9 @@
         </div>
       </div>
       <div>
-        <p class="text-xs font-bold mb-2 text-muted-foreground">Op viewer (full menu)</p>
+        <p class="text-xs font-bold mb-2 text-muted-foreground">
+          {gettext("Op viewer (full menu)")}
+        </p>
         <div class="relative inline-block">
           <.chat_context_menu
             visible
@@ -76,12 +80,12 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Nick Menu — Edge Cases"
+    title={gettext("Nick Menu — Edge Cases")}
     description="Self-targeting (Ignore disabled) and ignored user (Unignore shown)."
   >
     <div class="flex gap-6 flex-wrap">
       <div>
-        <p class="text-xs font-bold mb-2 text-muted-foreground">Self target</p>
+        <p class="text-xs font-bold mb-2 text-muted-foreground">{gettext("Self target")}</p>
         <div class="relative inline-block">
           <.chat_context_menu
             visible
@@ -99,7 +103,7 @@
         </div>
       </div>
       <div>
-        <p class="text-xs font-bold mb-2 text-muted-foreground">Ignored user</p>
+        <p class="text-xs font-bold mb-2 text-muted-foreground">{gettext("Ignored user")}</p>
         <div class="relative inline-block">
           <.chat_context_menu
             visible
@@ -124,7 +128,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title="URL Menu"
+    title={gettext("URL Menu")}
     description="Right-click on a URL in chat. Open, Copy, or Save to URL list."
   >
     <div class="relative inline-block">
@@ -147,12 +151,12 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Channel Menu"
+    title={gettext("Channel Menu")}
     description="Right-click on a #channel name. Join (disabled if already joined), Copy, Info."
   >
     <div class="flex gap-6 flex-wrap">
       <div>
-        <p class="text-xs font-bold mb-2 text-muted-foreground">Not joined</p>
+        <p class="text-xs font-bold mb-2 text-muted-foreground">{gettext("Not joined")}</p>
         <div class="relative inline-block">
           <.chat_context_menu
             visible
@@ -166,7 +170,7 @@
         </div>
       </div>
       <div>
-        <p class="text-xs font-bold mb-2 text-muted-foreground">Already joined</p>
+        <p class="text-xs font-bold mb-2 text-muted-foreground">{gettext("Already joined")}</p>
         <div class="relative inline-block">
           <.chat_context_menu
             visible
@@ -187,12 +191,12 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Message Menu"
+    title={gettext("Message Menu")}
     description="Right-click on a message body. Copy, Reply, Delete (own messages only), Ignore Sender."
   >
     <div class="flex gap-6 flex-wrap">
       <div>
-        <p class="text-xs font-bold mb-2 text-muted-foreground">Own message</p>
+        <p class="text-xs font-bold mb-2 text-muted-foreground">{gettext("Own message")}</p>
         <div class="relative inline-block">
           <.chat_context_menu
             visible
@@ -209,7 +213,9 @@
         </div>
       </div>
       <div>
-        <p class="text-xs font-bold mb-2 text-muted-foreground">Other user's message</p>
+        <p class="text-xs font-bold mb-2 text-muted-foreground">
+          {gettext("Other user's message")}
+        </p>
         <div class="relative inline-block">
           <.chat_context_menu
             visible

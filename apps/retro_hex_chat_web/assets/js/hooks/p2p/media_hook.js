@@ -27,6 +27,7 @@ import {
   togglePiP,
   QUALITY_LABELS,
 } from "../../lib/p2p/media.js";
+import { t } from "../../lib/i18n.js";
 
 const MediaHook = {
   mounted() {
@@ -86,7 +87,7 @@ const MediaHook = {
 
   _handlePcClosed() {
     if (this.callType) {
-      this._endCall("Peer desconectou");
+      this._endCall(t("Peer disconnected"));
     }
   },
 
@@ -330,7 +331,7 @@ const MediaHook = {
       }
     } catch {
       this.pushEvent("media_device_fallback", {
-        message: "Dispositivo desconectado, usando dispositivo padrao",
+        message: t("Device disconnected, using default device"),
       });
     }
   },
@@ -392,7 +393,7 @@ const MediaHook = {
           try {
             this.localStream = await switchAudioInput(this.localStream, this.senders, "default");
             this.pushEvent("media_device_fallback", {
-              message: "Dispositivo desconectado, usando dispositivo padrao",
+              message: t("Device disconnected, using default device"),
             });
           } catch {
             // Fallback failed

@@ -5,6 +5,7 @@ defmodule RetroHexChat.Chat.SoundSettings do
   Provides in-memory CRUD operations on the settings map
   and persistence functions (save/2, load/1) for registered users.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Chat.Schemas.SoundSetting
   alias RetroHexChat.Repo
@@ -23,21 +24,21 @@ defmodule RetroHexChat.Chat.SoundSettings do
   ]
 
   @sound_catalog [
-    {"none", "None"},
-    {"beep", "Beep"},
-    {"ding_low", "Ding Low"},
-    {"ding_high", "Ding High"},
-    {"chime_short", "Chime Short"},
-    {"chime_long", "Chime Long"},
-    {"chime_high", "Chime High"},
-    {"chime_low", "Chime Low"},
-    {"alert", "Alert"},
-    {"buzz", "Buzz"},
-    {"click", "Click"},
-    {"ring", "Ring"},
-    {"notify", "Notify"},
-    {"blip", "Blip"},
-    {"whoosh", "Whoosh"}
+    {"none", gettext("None")},
+    {"beep", gettext("Beep")},
+    {"ding_low", gettext("Ding Low")},
+    {"ding_high", gettext("Ding High")},
+    {"chime_short", gettext("Chime Short")},
+    {"chime_long", gettext("Chime Long")},
+    {"chime_high", gettext("Chime High")},
+    {"chime_low", gettext("Chime Low")},
+    {"alert", gettext("Alert")},
+    {"buzz", gettext("Buzz")},
+    {"click", gettext("Click")},
+    {"ring", gettext("Ring")},
+    {"notify", gettext("Notify")},
+    {"blip", gettext("Blip")},
+    {"whoosh", gettext("Whoosh")}
   ]
 
   @valid_sound_names Enum.map(@sound_catalog, &elem(&1, 0))

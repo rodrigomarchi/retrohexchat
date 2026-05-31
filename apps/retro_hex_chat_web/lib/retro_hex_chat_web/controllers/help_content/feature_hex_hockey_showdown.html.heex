@@ -1,44 +1,66 @@
 <p>
-  No timer — first to 5 goals wins. The puck speeds up after every goal
-  scored, building pressure as the match intensifies. The escalating speed
-  turns the final goals into frantic, blink-and-you-miss-it moments.
+  {gettext(
+    "No timer — first to 5 goals wins. The puck speeds up after every goal scored, building pressure as the match intensifies. The escalating speed turns the final goals into frantic, blink-and-you-miss-it moments."
+  )}
 </p>
 <.diagram_game_hockey class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow keys or WASD</strong> — Move in 8 directions</li>
-  <li><strong>Space or Shift (with puck)</strong> — Shoot in your facing direction</li>
-  <li><strong>Space or Shift (without puck)</strong> — Tackle opponent to steal puck</li>
-</ul>
-<.help_h4 icon={:icon_rules}>Showdown Differences</.help_h4>
-<ul>
-  <li><strong>No time limit</strong> — play until someone reaches 5 goals</li>
-  <li><strong>Escalating speed</strong> — puck gets faster with each goal scored</li>
-  <li><strong>Standard tackle</strong> — 60% success rate (same as Classic)</li>
-  <li>No period breaks or side switching</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>Strategy Tips</.help_h4>
-<ul>
+  <li><strong>{gettext("Arrow keys or WASD")}</strong> {gettext("— Move in 8 directions")}</li>
   <li>
-    <strong>Score early</strong>
-    — The first few goals are at normal puck speed. Build a lead before the puck becomes a missile.
+    <strong>{gettext("Space or Shift (with puck)")}</strong> {gettext(
+      "— Shoot in your facing direction"
+    )}
   </li>
   <li>
-    <strong>Position defensively at high speed</strong>
-    — When the puck is fast, stay between the puck and your goal. Reaction time shrinks.
-  </li>
-  <li>
-    <strong>Use tackles wisely</strong>
-    — Standard 60% success rate. Don't commit to a tackle unless you're sure you're close enough.
-  </li>
-  <li>
-    <strong>Corner shots at high speed</strong>
-    — Fast pucks that hit the corners of the goal are nearly impossible to save.
+    <strong>{gettext("Space or Shift (without puck)")}</strong> {gettext(
+      "— Tackle opponent to steal puck"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Showdown Differences")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("No time limit")}</strong> {gettext("— play until someone reaches 5 goals")}
+  </li>
+  <li>
+    <strong>{gettext("Escalating speed")}</strong> {gettext(
+      "— puck gets faster with each goal scored"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Standard tackle")}</strong> {gettext("— 60% success rate (same as Classic)")}
+  </li>
+  <li>{gettext("No period breaks or side switching")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("Score early")}</strong>
+    {gettext(
+      "— The first few goals are at normal puck speed. Build a lead before the puck becomes a missile."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Position defensively at high speed")}</strong>
+    {gettext(
+      "— When the puck is fast, stay between the puck and your goal. Reaction time shrinks."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Use tackles wisely")}</strong>
+    {gettext(
+      "— Standard 60% success rate. Don't commit to a tackle unless you're sure you're close enough."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Corner shots at high speed")}</strong>
+    {gettext("— Fast pucks that hit the corners of the goal are nearly impossible to save.")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-hockey">Hex Hockey</.help_link>
-  · <.help_link topic="feature-hex-hockey-blitz">Blitz</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
+  <.help_link topic="feature-hex-hockey">{gettext("Hex Hockey")}</.help_link>
+  · <.help_link topic="feature-hex-hockey-blitz">{gettext("Blitz")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
 </p>

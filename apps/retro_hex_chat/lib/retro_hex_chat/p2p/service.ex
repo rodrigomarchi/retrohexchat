@@ -2,6 +2,7 @@ defmodule RetroHexChat.P2P.Service do
   @moduledoc """
   Orchestrates P2P session operations: policy check → persist → process → notify.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   require Logger
 
@@ -51,16 +52,20 @@ defmodule RetroHexChat.P2P.Service do
         :ok ->
           :ok
 
-        {:error, "Session process not running"} ->
-          # GenServer not running — update DB directly
-          now = DateTime.utc_now()
+        {:error, message} ->
+          if session_process_not_running?(message) do
+            # GenServer not running — update DB directly
+            now = DateTime.utc_now()
 
-          Queries.update_status(session, "closed", %{
-            closed_at: now,
-            closed_reason: reason
-          })
+            Queries.update_status(session, "closed", %{
+              closed_at: now,
+              closed_reason: reason
+            })
 
-          :ok
+            :ok
+          else
+            {:error, message}
+          end
 
         error ->
           error
@@ -77,13 +82,15 @@ defmodule RetroHexChat.P2P.Service do
         :ok ->
           :ok
 
-        {:error, "Session process not running"} ->
-          now = DateTime.utc_now()
+        {:error, message} ->
+          if session_process_not_running?(message) do
+            now = DateTime.utc_now()
 
-          Queries.update_status(session, "closed", %{
-            closed_at: now,
-            closed_reason: "user_blocked"
-          })
+            Queries.update_status(session, "closed", %{
+              closed_at: now,
+              closed_reason: "user_blocked"
+            })
+          end
 
         _error ->
           :ok
@@ -91,6 +98,10 @@ defmodule RetroHexChat.P2P.Service do
     end
 
     :ok
+  end
+
+  defp session_process_not_running?(message) do
+    message in ["Session process not running", gettext("Session process not running")]
   end
 
   @valid_action_types ~w(audio_call video_call file_transfer)
@@ -149,7 +160,7 @@ defmodule RetroHexChat.P2P.Service do
 
       {:error, changeset} ->
         Logger.warning("Failed to insert P2P session: #{inspect(changeset.errors)}")
-        {:error, "Failed to create session"}
+        {:error, gettext("Failed to create session")}
     end
   end
 
@@ -162,7 +173,7 @@ defmodule RetroHexChat.P2P.Service do
 
   defp fetch_session(token) do
     case Queries.get_session_by_token(token) do
-      nil -> {:error, "Session not found"}
+      nil -> {:error, gettext("Session not found")}
       session -> {:ok, session}
     end
   end

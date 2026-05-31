@@ -1,17 +1,21 @@
 <p>
-  View the server's Message of the Day — a welcome message from the server administrators that is also shown automatically when you first connect.
+  {gettext(
+    "View the server's Message of the Day — a welcome message from the server administrators that is also shown automatically when you first connect."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/motd</pre>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/motd")}</pre>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Displays the current server MOTD in the Status tab. The MOTD is shown automatically when you connect, but you can use this command to view it again at any time. If no MOTD has been set by the administrators, you'll see a "No MOTD has been set" message.
+  {gettext(
+    "Displays the current server MOTD in the Status tab. The MOTD is shown automatically when you connect, but you can use this command to view it again at any time. If no MOTD has been set by the administrators, you'll see a \"No MOTD has been set\" message."
+  )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/motd</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/motd")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-setmotd">/setmotd</.help_link>
-  · <.help_link topic="cmd-clearmotd">/clearmotd</.help_link>
-  · <.help_link topic="feature-special-messages">Special Messages</.help_link>
+  <.help_link topic="cmd-setmotd">{gettext("/setmotd")}</.help_link>
+  · <.help_link topic="cmd-clearmotd">{gettext("/clearmotd")}</.help_link>
+  · <.help_link topic="feature-special-messages">{gettext("Special Messages")}</.help_link>
 </p>

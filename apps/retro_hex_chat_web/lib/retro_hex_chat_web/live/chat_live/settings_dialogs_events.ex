@@ -14,6 +14,9 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
 
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [stream_insert: 3, push_event: 3]
+
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers, only: [system_message: 1]
 
   alias RetroHexChat.Accounts.Session
@@ -55,7 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
      |> assign(session: new_session, show_flood_protection_dialog: false)
      |> stream_insert(
        :chat_messages,
-       system_message("* Flood protection settings saved")
+       system_message(gettext("* Flood protection settings saved"))
      )}
   end
 
@@ -73,7 +76,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
      |> assign(session: new_session, show_flood_protection_dialog: false)
      |> stream_insert(
        :chat_messages,
-       system_message("* Flood protection settings reset to defaults")
+       system_message(gettext("* Flood protection settings reset to defaults"))
      )}
   end
 
@@ -160,7 +163,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
      |> assign(session: new_session)
      |> stream_insert(
        :chat_messages,
-       system_message("* Sound settings applied")
+       system_message(gettext("* Sound settings applied"))
      )}
   end
 
@@ -182,7 +185,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
      )
      |> stream_insert(
        :chat_messages,
-       system_message("* Sound settings saved")
+       system_message(gettext("* Sound settings saved"))
      )}
   end
 

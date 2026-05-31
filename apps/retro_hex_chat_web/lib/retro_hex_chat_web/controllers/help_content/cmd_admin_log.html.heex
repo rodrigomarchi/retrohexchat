@@ -1,41 +1,52 @@
 <p>
-  Query the audit log of all admin actions. Every state-changing admin command
-  is automatically recorded with timestamp, actor, action, and target.
+  {gettext(
+    "Query the audit log of all admin actions. Every state-changing admin command is automatically recorded with timestamp, actor, action, and target."
+  )}
 </p>
 
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/admin log [--last N] [--user nick]</pre>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/admin log [--last N] [--user nick]")}</pre>
 
-<.help_h4 icon={:icon_tag}>Options</.help_h4>
+<.help_h4 icon={:icon_tag}>{gettext("Options")}</.help_h4>
 <ul>
-  <li><code>--last N</code> — Show the last N entries (default: 20)</li>
-  <li><code>--user nick</code> — Filter to actions by a specific admin</li>
-</ul>
-
-<.help_h4 icon={:icon_tab_control}>Log Entry Format</.help_h4>
-<p>
-  Each entry shows: <code>[timestamp] actor action → target_type:target_id</code>
-</p>
-<p>Common action types include:</p>
-<ul>
-  <li><code>user.ban</code>, <code>user.unban</code>, <code>user.kick</code></li>
+  <li><code>{gettext("--last N")}</code> {gettext("— Show the last N entries (default: 20)")}</li>
   <li>
-    <code>user.mute</code>, <code>user.unmute</code>, <code>user.rename</code>,
-    <code>user.role</code>
+    <code>{gettext("--user nick")}</code> {gettext("— Filter to actions by a specific admin")}
   </li>
-  <li><code>channel.create</code>, <code>channel.delete</code>, <code>channel.purge</code></li>
-  <li><code>ns.drop</code>, <code>ns.resetpass</code></li>
-  <li><code>cs.drop</code>, <code>cs.transfer</code>, <code>cs.access</code></li>
-  <li><code>server.set</code>, <code>server.info</code></li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/admin log
-/admin log --last 50
-/admin log --user Admin --last 10</pre>
-
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("Log Entry Format")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">/admin</.help_link>
-  · <.help_link topic="cmd-admin-server">/admin server</.help_link>
+  {gettext("Each entry shows:")}
+  <code>{gettext("[timestamp] actor action → target_type:target_id")}</code>
+</p>
+<p>{gettext("Common action types include:")}</p>
+<ul>
+  <li>
+    <code>{gettext("user.ban")}</code>, <code>{gettext("user.unban")}</code>,
+    <code>{gettext("user.kick")}</code>
+  </li>
+  <li>
+    <code>{gettext("user.mute")}</code>, <code>{gettext("user.unmute")}</code>, <code>{gettext("user.rename")}</code>,
+    <code>{gettext("user.role")}</code>
+  </li>
+  <li>
+    <code>{gettext("channel.create")}</code>, <code>{gettext("channel.delete")}</code>,
+    <code>{gettext("channel.purge")}</code>
+  </li>
+  <li><code>{gettext("ns.drop")}</code>, <code>{gettext("ns.resetpass")}</code></li>
+  <li>
+    <code>{gettext("cs.drop")}</code>, <code>{gettext("cs.transfer")}</code>,
+    <code>{gettext("cs.access")}</code>
+  </li>
+  <li><code>{gettext("server.set")}</code>, <code>{gettext("server.info")}</code></li>
+</ul>
+
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/admin log /admin log --last 50 /admin log --user Admin --last 10")}</pre>
+
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-admin">{gettext("/admin")}</.help_link>
+  · <.help_link topic="cmd-admin-server">{gettext("/admin server")}</.help_link>
 </p>

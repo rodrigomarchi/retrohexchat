@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
 
   import Phoenix.Component, only: [assign: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [system_event: 2, push_status_message: 3]
 
@@ -23,10 +25,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
 
     case Server.set_welcome(channel, message, nickname) do
       :ok ->
-        system_event(socket, "Welcome message for #{channel} has been set.")
+        system_event(
+          socket,
+          gettext("Welcome message for %{channel} has been set.", channel: channel)
+        )
 
       {:error, msg} ->
-        system_event(socket, "Error: #{msg}")
+        system_event(socket, gettext("Error: %{message}", message: msg))
     end
   end
 
@@ -35,10 +40,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
 
     case Server.clear_welcome(channel, nickname) do
       :ok ->
-        system_event(socket, "Welcome message for #{channel} has been cleared.")
+        system_event(
+          socket,
+          gettext("Welcome message for %{channel} has been cleared.", channel: channel)
+        )
 
       {:error, msg} ->
-        system_event(socket, "Error: #{msg}")
+        system_event(socket, gettext("Error: %{message}", message: msg))
     end
   end
 
@@ -61,9 +69,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
 
     if mode do
       new_session = Session.set_mode(session, mode)
-      {:ok, new_session, "User mode +#{flag} enabled."}
+      {:ok, new_session, gettext("User mode +%{flag} enabled.", flag: flag)}
     else
-      {:error, "Unknown user mode: #{flag}"}
+      {:error, gettext("Unknown user mode: %{flag}", flag: flag)}
     end
   end
 
@@ -72,13 +80,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.ServerMessages do
 
     if mode do
       new_session = Session.unset_mode(session, mode)
-      {:ok, new_session, "User mode -#{flag} disabled."}
+      {:ok, new_session, gettext("User mode -%{flag} disabled.", flag: flag)}
     else
-      {:error, "Unknown user mode: #{flag}"}
+      {:error, gettext("Unknown user mode: %{flag}", flag: flag)}
     end
   end
 
-  defp parse_and_apply_mode(_session, _), do: {:error, "Invalid mode string."}
+  defp parse_and_apply_mode(_session, _), do: {:error, gettext("Invalid mode string.")}
 
   defp flag_to_mode("w"), do: :wallops
   defp flag_to_mode(_), do: nil

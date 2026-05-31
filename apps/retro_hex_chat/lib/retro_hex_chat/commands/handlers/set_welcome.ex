@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.SetWelcome do
   @moduledoc "Handler for /setwelcome <message> — operator sets channel welcome."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -11,14 +12,14 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{active_channel: nil}) do
-    {:error, "You must be in a channel to use this command."}
+    {:error, gettext("You must be in a channel to use this command.")}
   end
 
   def execute([], %{active_channel: channel} = context) do
     if operator_or_owner?(channel, context) do
       {:ok, :ui_action, :clear_welcome, %{channel: channel}}
     else
-      {:error, "Permission denied: you must be a channel operator."}
+      {:error, gettext("Permission denied: you must be a channel operator.")}
     end
   end
 
@@ -27,7 +28,7 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
       message = Enum.join(args, " ")
       {:ok, :ui_action, :set_welcome, %{channel: channel, message: message}}
     else
-      {:error, "Permission denied: you must be a channel operator."}
+      {:error, gettext("Permission denied: you must be a channel operator.")}
     end
   end
 
@@ -41,10 +42,12 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
   def help do
     %{
       name: "setwelcome",
-      syntax: "/setwelcome <message>",
+      syntax: gettext("/setwelcome <message>"),
       description:
-        "Set a message shown once to each user when they join the current channel.\nRequires: channel operator. Must be in a channel.\nWith no args: clears the welcome message (same as /clearwelcome).",
-      examples: ["/setwelcome Welcome to our channel!"]
+        gettext(
+          "Set a message shown once to each user when they join the current channel.\nRequires: channel operator. Must be in a channel.\nWith no args: clears the welcome message (same as /clearwelcome)."
+        ),
+      examples: [gettext("/setwelcome Welcome to our channel!")]
     }
   end
 
@@ -63,8 +66,9 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
 
     %CommandSyntax{
       command: "setwelcome",
-      syntax: "/setwelcome <message>",
-      description: "Set a message shown once to each user when they join the current channel.",
+      syntax: gettext("/setwelcome <message>"),
+      description:
+        gettext("Set a message shown once to each user when they join the current channel."),
       category: :advanced,
       parameters: [
         %Parameter{
@@ -72,10 +76,10 @@ defmodule RetroHexChat.Commands.Handlers.SetWelcome do
           required: true,
           type: :text,
           position: 0,
-          description: "Channel welcome message"
+          description: gettext("Channel welcome message")
         }
       ],
-      examples: ["/setwelcome Welcome to our channel!"]
+      examples: [gettext("/setwelcome Welcome to our channel!")]
     }
   end
 end

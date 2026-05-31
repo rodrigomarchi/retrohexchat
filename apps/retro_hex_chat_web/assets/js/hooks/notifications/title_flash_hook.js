@@ -6,13 +6,14 @@
  * Stops when the user focuses the tab.
  */
 import { createTitleFlasher } from "../../lib/ui/title_flash.js";
+import { t } from "../../lib/i18n.js";
 
 const TitleFlashHook = {
   mounted() {
     this.flasher = createTitleFlasher();
 
     this.handleEvent("title_flash_start", ({ message }) => {
-      this.flasher.start(message || "* New activity");
+      this.flasher.start(message || t("* New activity"));
     });
 
     this.handleEvent("title_flash_stop", () => {

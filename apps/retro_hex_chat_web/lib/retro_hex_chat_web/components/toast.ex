@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.Toast do
   dismissal client-side via localStorage state.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   @spec toast_container(map()) :: Phoenix.LiveView.Rendered.t()
   def toast_container(assigns) do

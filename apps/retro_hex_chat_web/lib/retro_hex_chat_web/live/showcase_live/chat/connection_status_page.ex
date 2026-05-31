@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConnectionStatusPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,17 +13,18 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConnectionStatusPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Connection Status", active_page: "connection-status")}
+    {:ok,
+     assign(socket, page_title: gettext("Connection Status"), active_page: "connection-status")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Connection Status</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Connection Status")}</h2>
 
       <.showcase_card
-        title="Connected"
+        title={gettext("Connected")}
         description="Successfully connected to server."
       >
         <.connection_status state="connected" server="irc.example.com" />
@@ -32,14 +34,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConnectionStatusPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Reconnecting"
+        title={gettext("Reconnecting")}
         description="Attempting to reconnect with progress."
       >
         <.connection_status state="reconnecting" attempt={3} max_attempts={5} />
       </.showcase_card>
 
       <.showcase_card
-        title="Disconnected"
+        title={gettext("Disconnected")}
         description="Connection lost with reconnect button."
       >
         <.connection_status state="disconnected" />

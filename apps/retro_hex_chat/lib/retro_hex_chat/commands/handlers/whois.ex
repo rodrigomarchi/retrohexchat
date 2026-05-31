@@ -1,17 +1,18 @@
 defmodule RetroHexChat.Commands.Handlers.Whois do
   @moduledoc "Handler for /whois <nickname>"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Usage: /whois <nickname>"}
+  def validate(""), do: {:error, gettext("Usage: /whois <nickname>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /whois <nickname>"}
+  def execute([], _context), do: {:error, gettext("Usage: /whois <nickname>")}
 
   def execute([target | _rest], _context) do
     {:ok, :ui_action, :show_whois_info, %{nickname: target}}
@@ -27,10 +28,12 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
   def help do
     %{
       name: "whois",
-      syntax: "/whois <nickname>",
+      syntax: gettext("/whois <nickname>"),
       description:
-        "Look up detailed information about an online user.\nShows: nickname, channels (shared channels highlighted), idle time, away status, bio, and registration status.\nUser must be online. For offline users, use /whowas.",
-      examples: ["/whois SomeUser"]
+        gettext(
+          "Look up detailed information about an online user.\nShows: nickname, channels (shared channels highlighted), idle time, away status, bio, and registration status.\nUser must be online. For offline users, use /whowas."
+        ),
+      examples: [gettext("/whois SomeUser")]
     }
   end
 
@@ -45,8 +48,8 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
 
     %CommandSyntax{
       command: "whois",
-      syntax: "/whois <nickname>",
-      description: "Look up detailed information about an online user.",
+      syntax: gettext("/whois <nickname>"),
+      description: gettext("Look up detailed information about an online user."),
       category: :user,
       parameters: [
         %Parameter{
@@ -54,10 +57,10 @@ defmodule RetroHexChat.Commands.Handlers.Whois do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to look up"
+          description: gettext("User to look up")
         }
       ],
-      examples: ["/whois SomeUser"]
+      examples: [gettext("/whois SomeUser")]
     }
   end
 end

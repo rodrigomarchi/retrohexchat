@@ -1,32 +1,32 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">Context Menu</h2>
+  <h2 class="text-lg font-bold mb-3">{gettext("Context Menu")}</h2>
 
   <.showcase_card
-    title="Basic"
+    title={gettext("Basic")}
     description="Right-click context menu with icons and separator."
   >
     <div class="relative h-[200px]">
       <.context_menu id="demo-basic" position="absolute" x={16} y={16}>
         <.context_menu_item>
           <:icon><Icons.icon_tab_pm class="w-[14px] h-[14px]" /></:icon>
-          Query (PM)
+          {gettext("Query (PM)")}
         </.context_menu_item>
         <.context_menu_item>
           <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
-          Whois
+          {gettext("Whois")}
         </.context_menu_item>
         <.context_menu_separator />
         <.context_menu_item>
           <:icon><Icons.icon_tab_contacts class="w-[14px] h-[14px]" /></:icon>
-          Add to Contacts
+          {gettext("Add to Contacts")}
         </.context_menu_item>
         <.context_menu_item>
           <:icon><Icons.icon_palette class="w-[14px] h-[14px]" /></:icon>
-          Set Nick Color
+          {gettext("Set Nick Color")}
         </.context_menu_item>
         <.context_menu_item>
           <:icon><Icons.icon_btn_ignore class="w-[14px] h-[14px]" /></:icon>
-          Ignore
+          {gettext("Ignore")}
         </.context_menu_item>
       </.context_menu>
     </div>
@@ -43,26 +43,26 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Disabled Items"
+    title={gettext("Disabled Items")}
     description="Items can be disabled to prevent interaction."
   >
     <div class="relative h-[180px]">
       <.context_menu id="demo-disabled" position="absolute" x={16} y={16}>
         <.context_menu_item>
           <:icon><Icons.icon_p2p class="w-[14px] h-[14px]" /></:icon>
-          P2P Session
+          {gettext("P2P Session")}
         </.context_menu_item>
         <.context_menu_item disabled>
           <:icon><Icons.icon_microphone class="w-[14px] h-[14px]" /></:icon>
-          Audio Call
+          {gettext("Audio Call")}
         </.context_menu_item>
         <.context_menu_item disabled>
           <:icon><Icons.icon_camera class="w-[14px] h-[14px]" /></:icon>
-          Video Call
+          {gettext("Video Call")}
         </.context_menu_item>
         <.context_menu_item disabled>
           <:icon><Icons.icon_file_send class="w-[14px] h-[14px]" /></:icon>
-          Send File
+          {gettext("Send File")}
         </.context_menu_item>
       </.context_menu>
     </div>
@@ -75,26 +75,26 @@
   </.showcase_card>
 
   <.showcase_card
-    title="With Shortcuts"
+    title={gettext("With Shortcuts")}
     description="Items can display keyboard shortcut hints on the right side."
   >
     <div class="relative h-[160px]">
       <.context_menu id="demo-shortcuts" position="absolute" x={16} y={16}>
         <.context_menu_item>
           <:icon><Icons.icon_tab_pm class="w-[14px] h-[14px]" /></:icon>
-          <:shortcut>Ctrl+Q</:shortcut>
-          Query (PM)
+          <:shortcut>{gettext("Ctrl+Q")}</:shortcut>
+          {gettext("Query (PM)")}
         </.context_menu_item>
         <.context_menu_item>
           <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
-          <:shortcut>Ctrl+W</:shortcut>
-          Whois
+          <:shortcut>{gettext("Ctrl+W")}</:shortcut>
+          {gettext("Whois")}
         </.context_menu_item>
         <.context_menu_separator />
         <.context_menu_item>
           <:icon><Icons.icon_btn_find class="w-[14px] h-[14px]" /></:icon>
-          <:shortcut>Ctrl+F</:shortcut>
-          Find
+          <:shortcut>{gettext("Ctrl+F")}</:shortcut>
+          {gettext("Find")}
         </.context_menu_item>
       </.context_menu>
     </div>
@@ -108,29 +108,29 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Group Labels"
+    title={gettext("Group Labels")}
     description="Non-interactive labels for grouping related items."
   >
     <div class="relative h-[240px]">
       <.context_menu id="demo-labels" position="absolute" x={16} y={16}>
-        <.context_menu_label>User Actions</.context_menu_label>
+        <.context_menu_label>{gettext("User Actions")}</.context_menu_label>
         <.context_menu_item>
           <:icon><Icons.icon_tab_pm class="w-[14px] h-[14px]" /></:icon>
-          Query (PM)
+          {gettext("Query (PM)")}
         </.context_menu_item>
         <.context_menu_item>
           <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
-          Whois
+          {gettext("Whois")}
         </.context_menu_item>
         <.context_menu_separator />
-        <.context_menu_label>Operator</.context_menu_label>
+        <.context_menu_label>{gettext("Operator")}</.context_menu_label>
         <.context_menu_item>
           <:icon><Icons.icon_dialog_kick class="w-[14px] h-[14px]" /></:icon>
-          Kick
+          {gettext("Kick")}
         </.context_menu_item>
         <.context_menu_item>
           <:icon><Icons.icon_ban class="w-[14px] h-[14px]" /></:icon>
-          Ban
+          {gettext("Ban")}
         </.context_menu_item>
       </.context_menu>
     </div>

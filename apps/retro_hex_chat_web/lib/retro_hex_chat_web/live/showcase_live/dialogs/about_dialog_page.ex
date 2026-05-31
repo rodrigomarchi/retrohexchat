@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AboutDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -15,22 +16,22 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AboutDialogPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "About Dialog", active_page: "about-dialog")}
+    {:ok, assign(socket, page_title: gettext("About Dialog"), active_page: "about-dialog")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">About Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("About Dialog")}</h2>
 
       <.showcase_card
-        title="About Dialog"
+        title={gettext("About Dialog")}
         description="Application info with logo, version, and credits."
       >
         <.button variant="outline" phx-click={show_modal("about-demo")}>
           <:icon><Icons.icon_lightbulb class="w-4 h-4" /></:icon>
-          About
+          {gettext("About")}
         </.button>
         <.about_dialog id="about-demo" version="2.1.0" />
         <.code_example>

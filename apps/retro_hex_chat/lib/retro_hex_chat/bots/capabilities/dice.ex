@@ -9,6 +9,8 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
     - `!Bot roll 4d6kh3` → "Rolling 4d6kh3: [6, 4, 3, 1] → keeping [6, 4, 3] = 13"
     - `!Bot roll d20+5` → "Rolling 1d20+5: [17] + 5 = 22"
   """
+  use Gettext, backend: RetroHexChat.Gettext
+
   @behaviour RetroHexChat.Bots.Capability
 
   @max_dice_default 100
@@ -23,7 +25,7 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: "Dice rolling for RPG games (e.g., 2d6, d20+5, 4d6kh3)"
+  def description, do: gettext("Dice rolling for RPG games (e.g., 2d6, d20+5, 4d6kh3)")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
@@ -62,10 +64,10 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
 
     cond do
       not is_integer(max_dice) or max_dice < 1 or max_dice > 1000 ->
-        {:error, "max_dice must be between 1 and 1000"}
+        {:error, gettext("max_dice must be between 1 and 1000")}
 
       not is_integer(max_sides) or max_sides < 2 or max_sides > 10_000 ->
-        {:error, "max_sides must be between 2 and 10_000"}
+        {:error, gettext("max_sides must be between 2 and 10_000")}
 
       true ->
         :ok
@@ -76,8 +78,8 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]
   def commands do
     [
-      %{trigger: "roll", description: "Roll dice (e.g., 2d6, d20+5, 4d6kh3)"},
-      %{trigger: "dice", description: "Alias for roll"}
+      %{trigger: "roll", description: gettext("Roll dice (e.g., 2d6, d20+5, 4d6kh3)")},
+      %{trigger: "dice", description: gettext("Alias for roll")}
     ]
   end
 
@@ -137,13 +139,13 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
   defp validate_and_roll(parsed, notation, max_dice, max_sides) do
     cond do
       parsed.count > max_dice ->
-        {:reply, "Error: Maximum #{max_dice} dice allowed."}
+        {:reply, gettext("Error: Maximum %{max} dice allowed.", max: max_dice)}
 
       parsed.sides > max_sides ->
-        {:reply, "Error: Maximum #{max_sides} sides allowed."}
+        {:reply, gettext("Error: Maximum %{max} sides allowed.", max: max_sides)}
 
       parsed.sides < 2 ->
-        {:reply, "Error: Dice must have at least 2 sides."}
+        {:reply, gettext("Error: Dice must have at least 2 sides.")}
 
       true ->
         rolls = roll_dice(parsed.count, parsed.sides)
@@ -173,7 +175,10 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
         build_parsed(count_str, sides_str, "", "", "")
 
       _ ->
-        {:error, "Invalid dice notation '#{notation}'. Use format: NdS, NdS+M, NdSkh/klN"}
+        {:error,
+         gettext("Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN",
+           notation: notation
+         )}
     end
   end
 
@@ -204,10 +209,18 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
     n = String.to_integer(n_str)
 
     cond do
-      n < 1 -> {:error, "Keep count must be at least 1."}
-      n > count -> {:error, "Cannot keep #{n} dice when only rolling #{count}."}
-      dir == "kh" -> {:high, n}
-      dir == "kl" -> {:low, n}
+      n < 1 ->
+        {:error, gettext("Keep count must be at least 1.")}
+
+      n > count ->
+        {:error,
+         gettext("Cannot keep %{keep} dice when only rolling %{count}.", keep: n, count: count)}
+
+      dir == "kh" ->
+        {:high, n}
+
+      dir == "kl" ->
+        {:low, n}
     end
   end
 
@@ -233,13 +246,24 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
   @spec format_simple_result(String.t(), [pos_integer()], integer()) :: String.t()
   defp format_simple_result(notation, rolls, modifier) do
     sum = Enum.sum(rolls)
-    rolls_str = "[#{Enum.join(rolls, ", ")}]"
+    rolls_str = format_rolls(rolls)
 
     if modifier == 0 do
-      "Rolling #{notation}: #{rolls_str} = #{sum}"
+      gettext("Rolling %{notation}: %{rolls} = %{sum}",
+        notation: notation,
+        rolls: rolls_str,
+        sum: sum
+      )
     else
       sign = if modifier > 0, do: "+", else: ""
-      "Rolling #{notation}: #{rolls_str} #{sign} #{modifier} = #{sum + modifier}"
+
+      gettext("Rolling %{notation}: %{rolls} %{sign} %{modifier} = %{total}",
+        notation: notation,
+        rolls: rolls_str,
+        sign: sign,
+        modifier: modifier,
+        total: sum + modifier
+      )
     end
   end
 
@@ -254,16 +278,29 @@ defmodule RetroHexChat.Bots.Capabilities.Dice do
 
     kept = Enum.take(sorted, keep_n)
     sum = Enum.sum(kept)
-    rolls_str = "[#{Enum.join(rolls, ", ")}]"
-    kept_str = "[#{Enum.join(kept, ", ")}]"
+    rolls_str = format_rolls(rolls)
+    kept_str = format_rolls(kept)
 
-    base = "Rolling #{notation}: #{rolls_str} → keeping #{kept_str}"
+    base =
+      gettext("Rolling %{notation}: %{rolls} → keeping %{kept}",
+        notation: notation,
+        rolls: rolls_str,
+        kept: kept_str
+      )
 
     if modifier == 0 do
-      "#{base} = #{sum}"
+      gettext("%{base} = %{sum}", base: base, sum: sum)
     else
       sign = if modifier > 0, do: "+", else: ""
-      "#{base} #{sign} #{modifier} = #{sum + modifier}"
+
+      gettext("%{base} %{sign} %{modifier} = %{total}",
+        base: base,
+        sign: sign,
+        modifier: modifier,
+        total: sum + modifier
+      )
     end
   end
+
+  defp format_rolls(rolls), do: "[" <> Enum.join(rolls, ", ") <> "]"
 end

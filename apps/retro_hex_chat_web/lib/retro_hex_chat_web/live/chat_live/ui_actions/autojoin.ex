@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
 
   import Phoenix.Component, only: [assign: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [system_event: 2, error_event: 2, maybe_persist_autojoin_list: 2]
 
@@ -19,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
     entries = AutoJoinList.entries(session.autojoin_list)
 
     if entries == [] do
-      system_event(socket, "Your auto-join list is empty")
+      system_event(socket, gettext("Your auto-join list is empty"))
     else
       Enum.reduce(entries, socket, fn entry, acc ->
         system_event(acc, format_autojoin_entry(entry))
@@ -38,10 +40,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
         socket
         |> assign(session: new_session)
         |> maybe_persist_autojoin_list(new_session)
-        |> system_event("* Added to auto-join list: #{channel}")
+        |> system_event(gettext("* Added to auto-join list: %{channel}", channel: channel))
 
       {:error, reason} ->
-        error_event(socket, "Failed to add auto-join channel: #{reason}")
+        error_event(socket, gettext("Failed to add auto-join channel: %{reason}", reason: reason))
     end
   end
 
@@ -55,10 +57,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
         socket
         |> assign(session: new_session)
         |> maybe_persist_autojoin_list(new_session)
-        |> system_event("* Removed #{channel} from auto-join list")
+        |> system_event(gettext("* Removed %{channel} from auto-join list", channel: channel))
 
       {:error, :not_found} ->
-        error_event(socket, "#{channel} is not in your auto-join list")
+        error_event(
+          socket,
+          gettext("%{channel} is not in your auto-join list", channel: channel)
+        )
     end
   end
 
@@ -70,11 +75,11 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Autojoin do
     socket
     |> assign(session: new_session)
     |> maybe_persist_autojoin_list(new_session)
-    |> system_event("* Auto-join list cleared")
+    |> system_event(gettext("* Auto-join list cleared"))
   end
 
   defp format_autojoin_entry(entry) do
-    key_part = if entry.channel_key, do: " (key: ****)", else: ""
-    "  #{entry.channel_name}#{key_part}"
+    key_part = if entry.channel_key, do: gettext(" (key: ****)"), else: ""
+    gettext("  %{channel}%{key}", channel: entry.channel_name, key: key_part)
   end
 end

@@ -7,6 +7,8 @@ defmodule RetroHexChat.Bots.Capabilities.Arcade do
 
   Requirements: user must be registered and identified via NickServ.
   """
+
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Services.{NickServ, RegisteredNick}
@@ -17,7 +19,7 @@ defmodule RetroHexChat.Bots.Capabilities.Arcade do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: "Start solo arcade sessions with !play"
+  def description, do: gettext("Start solo arcade sessions with !play")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
@@ -48,7 +50,7 @@ defmodule RetroHexChat.Bots.Capabilities.Arcade do
   @impl true
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]
   def commands do
-    [%{trigger: "play", description: "Start a solo arcade session"}]
+    [%{trigger: "play", description: gettext("Start a solo arcade session")}]
   end
 
   # ── Internal ──
@@ -88,7 +90,10 @@ defmodule RetroHexChat.Bots.Capabilities.Arcade do
     if NickServ.identified?(author) do
       :ok
     else
-      {:reply, "#{author}: You must be identified to play. Use /ns identify <password> first."}
+      {:reply,
+       gettext("%{author}: You must be identified to play. Use /ns identify <password> first.",
+         author: author
+       )}
     end
   end
 
@@ -96,7 +101,10 @@ defmodule RetroHexChat.Bots.Capabilities.Arcade do
   defp resolve_registered_nick(author) do
     case RetroHexChat.Repo.get_by(RegisteredNick, nickname: author) do
       nil ->
-        {:reply, "#{author}: You must be registered to play. Use /ns register <password> first."}
+        {:reply,
+         gettext("%{author}: You must be registered to play. Use /ns register <password> first.",
+           author: author
+         )}
 
       nick ->
         {:ok, nick.id}

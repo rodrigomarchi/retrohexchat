@@ -85,13 +85,20 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
         assigns
       end
 
+    assigns =
+      assign(
+        assigns,
+        :max_file_size_mb,
+        Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500)
+      )
+
     ~H"""
     <.window
       class={classes(["w-full max-w-[600px]", @class])}
       data-testid="p2p-lobby"
       {@rest}
     >
-      <.window_title_bar title="P2P Connection" controls={[:close]}>
+      <.window_title_bar title={gettext("P2P Connection")} controls={[:close]}>
         <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
       </.window_title_bar>
 
@@ -121,15 +128,15 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             data-testid="p2p-lobby-cancel"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            Cancel
+            {gettext("Cancel")}
           </.button>
         </div>
 
         <%!-- Chat area: messages + input --%>
-        <.retro_fieldset legend="Chat">
+        <.retro_fieldset legend={gettext("Chat")}>
           <.scroll_area class="shadow-retro-field bg-white p-2 max-h-[160px] min-h-[60px]">
             <div :if={@messages == []} class="text-xs text-muted-foreground italic py-1">
-              No messages yet.
+              {gettext("No messages yet.")}
             </div>
             <div :for={msg <- @messages} class="text-xs py-[2px]">
               <span :if={msg.type != "system"} class="font-bold">{msg.sender_nick}: </span>
@@ -145,13 +152,13 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             <.input
               type="text"
               name="content"
-              placeholder="Type a message..."
+              placeholder={gettext("Type a message...")}
               autocomplete="off"
               class="flex-1 h-8 text-xs py-1 px-2"
             />
             <.button type="submit" size="sm">
               <:icon><Icons.icon_send class="w-4 h-4" /></:icon>
-              Send
+              {gettext("Send")}
             </.button>
           </form>
         </.retro_fieldset>
@@ -190,7 +197,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
               data-testid="media-peer-camera-off-indicator"
               class="w-full aspect-video bg-black flex items-center justify-center"
             >
-              <span class="text-white text-xs">Camera off</span>
+              <span class="text-white text-xs">{gettext("Camera off")}</span>
             </div>
             <video
               id="local-video"
@@ -208,12 +215,12 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             data-testid="media-peer-muted-indicator"
             class="px-2 pt-2 text-center text-xs font-bold"
           >
-            Peer muted
+            {gettext("Peer muted")}
           </div>
           <%!-- Media controls toolbar --%>
           <.toolbar class="gap-1 p-2 justify-center">
             <.toolbar_button
-              label={if @local_muted, do: "Unmute", else: "Mute"}
+              label={if @local_muted, do: gettext("Unmute"), else: gettext("Mute")}
               active={@local_muted}
               variant="compact"
               data-media-action="mute"
@@ -224,7 +231,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             </.toolbar_button>
             <.toolbar_button
               :if={@call[:type] == "video"}
-              label={if @local_camera_off, do: "Camera On", else: "Camera Off"}
+              label={if @local_camera_off, do: gettext("Camera On"), else: gettext("Camera Off")}
               active={@local_camera_off}
               variant="compact"
               data-media-action="camera"
@@ -235,7 +242,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             </.toolbar_button>
             <.toolbar_button
               :if={@call[:type] == "audio"}
-              label="Add Video"
+              label={gettext("Add Video")}
               variant="compact"
               data-media-action="upgrade"
             >
@@ -243,14 +250,14 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             </.toolbar_button>
             <.toolbar_button
               :if={@call[:type] == "video"}
-              label="Picture-in-Picture"
+              label={gettext("Picture-in-Picture")}
               variant="compact"
               data-media-action="pip"
             >
               <Icons.icon_pip class="w-4 h-4" />
             </.toolbar_button>
             <.toolbar_button
-              label="Devices"
+              label={gettext("Devices")}
               variant="compact"
               data-media-action="device-settings"
             >
@@ -258,7 +265,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             </.toolbar_button>
             <.toolbar_separator variant="compact" />
             <.toolbar_button
-              label="End Call"
+              label={gettext("End Call")}
               variant="compact"
               data-media-action="end-call"
               data-testid="media-controls-end-call"
@@ -276,7 +283,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             class="flex items-center gap-2 p-2 text-xs bg-accent"
           >
             <Icons.icon_upgrade_video class="w-3 h-3" />
-            <span class="flex-1">{@peer} wants to add video</span>
+            <span class="flex-1">{gettext("%{peer} wants to add video", peer: @peer)}</span>
             <.button
               size="sm"
               variant="default"
@@ -284,7 +291,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
               phx-value-accepted="true"
             >
               <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-              Accept
+              {gettext("Accept")}
             </.button>
             <.button
               size="sm"
@@ -293,7 +300,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
               phx-value-accepted="false"
             >
               <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-              Decline
+              {gettext("Decline")}
             </.button>
           </div>
           <%!-- Quality presets --%>
@@ -301,9 +308,9 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             :if={@call[:quality_label]}
             class="flex items-center gap-2 p-2 text-xs text-muted-foreground"
           >
-            <span>Quality: {@call[:quality_label]}</span>
+            <span>{gettext("Quality: %{quality}", quality: @call[:quality_label])}</span>
             <.toolbar_button
-              label="High"
+              label={gettext("High")}
               variant="compact"
               phx-click="media_select_preset"
               phx-value-preset="high"
@@ -311,7 +318,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
               <Icons.icon_quality_high class="w-4 h-4" />
             </.toolbar_button>
             <.toolbar_button
-              label="Medium"
+              label={gettext("Medium")}
               variant="compact"
               phx-click="media_select_preset"
               phx-value-preset="medium"
@@ -319,7 +326,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
               <Icons.icon_quality_medium class="w-4 h-4" />
             </.toolbar_button>
             <.toolbar_button
-              label="Low"
+              label={gettext("Low")}
               variant="compact"
               phx-click="media_select_preset"
               phx-value-preset="low"
@@ -353,21 +360,21 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             >
               {@file_transfer[:validation_error]}
             </p>
-            <p class="mb-2">Drag a file here or click to browse</p>
+            <p class="mb-2">{gettext("Drag a file here or click to browse")}</p>
             <p class="text-muted-foreground mb-2">
-              Max: {Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500)} MB
+              {gettext("Max: %{size} MB", size: @max_file_size_mb)}
             </p>
             <label for="p2p-file-input">
               <.button type="button" size="sm">
                 <:icon><Icons.icon_choose_file class="w-4 h-4" /></:icon>
-                Browse Files
+                {gettext("Browse Files")}
               </.button>
             </label>
           </div>
           <%!-- File transfer progress/status display --%>
           <.file_transfer
             :if={@file_transfer[:file_name]}
-            file_name={@file_transfer[:file_name] || "unknown"}
+            file_name={@file_transfer[:file_name] || gettext("unknown")}
             progress={@file_transfer[:percent] || 0}
             speed={@file_transfer[:speed]}
             formatted_size={@file_transfer[:formatted_size]}
@@ -391,7 +398,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             phx-click="close_session"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            Close Session
+            {gettext("Close Session")}
           </.button>
           <.button
             :if={@state in ["pending", "lobby"] && @turn_configured}
@@ -400,7 +407,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             phx-click="toggle_privacy_mode"
           >
             <:icon><Icons.icon_privacy class="w-4 h-4" /></:icon>
-            {if @turn_only, do: "Privacy: ON", else: "Privacy: OFF"}
+            {if @turn_only, do: gettext("Privacy: ON"), else: gettext("Privacy: OFF")}
           </.button>
           <.button
             :if={@state == "lobby"}
@@ -409,7 +416,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             phx-value-action_type="audio_call"
           >
             <:icon><Icons.icon_microphone class="w-4 h-4" /></:icon>
-            Audio Call
+            {gettext("Audio Call")}
           </.button>
           <.button
             :if={@state == "lobby"}
@@ -418,7 +425,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             phx-value-action_type="video_call"
           >
             <:icon><Icons.icon_camera class="w-4 h-4" /></:icon>
-            Video Call
+            {gettext("Video Call")}
           </.button>
           <.button
             :if={@state == "lobby"}
@@ -427,20 +434,22 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
             phx-value-action_type="file_transfer"
           >
             <:icon><Icons.icon_file_send class="w-4 h-4" /></:icon>
-            Send File
+            {gettext("Send File")}
           </.button>
         </div>
 
         <%!-- Connection status --%>
         <.badge :if={@webrtc_state} variant="outline">
-          <Icons.icon_webrtc class="w-3 h-3 mr-1" /> WebRTC: {@webrtc_state}
+          <Icons.icon_webrtc class="w-3 h-3 mr-1" /> {gettext("WebRTC: %{state}",
+            state: @webrtc_state
+          )}
         </.badge>
 
         <%!-- Inactivity warning --%>
         <.alert :if={@inactivity_warning} variant="destructive">
           <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
           <.alert_description>
-            Session will be closed due to inactivity soon.
+            {gettext("Session will be closed due to inactivity soon.")}
           </.alert_description>
         </.alert>
       </.window_body>
@@ -456,16 +465,18 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
     ~H"""
     <div class="shadow-retro-raised bg-accent p-3">
       <p class="text-xs font-bold mb-2">
-        Action Request: {Map.get(@action_request, :action_type, "unknown")}
+        {gettext("Action Request: %{action}",
+          action: action_request_label(Map.get(@action_request, :action_type, "unknown"))
+        )}
       </p>
       <div class="flex gap-2 justify-end">
         <.button size="sm" phx-click="respond_action" phx-value-accepted="true">
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          Accept
+          {gettext("Accept")}
         </.button>
         <.button size="sm" variant="outline" phx-click="respond_action" phx-value-accepted="false">
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          Decline
+          {gettext("Decline")}
         </.button>
       </div>
     </div>
@@ -476,4 +487,9 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
   defp ft_direction(ft, nickname) do
     if Map.get(ft, :sender_nick) == nickname, do: "sending", else: "receiving"
   end
+
+  defp action_request_label("audio_call"), do: gettext("Audio Call")
+  defp action_request_label("video_call"), do: gettext("Video Call")
+  defp action_request_label("file_transfer"), do: gettext("File Transfer")
+  defp action_request_label(_), do: gettext("unknown")
 end

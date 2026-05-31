@@ -6,6 +6,7 @@
 
 import { PHASE } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, PADDLE_W, PADDLE_H, PADDLE_MARGIN, BALL_SIZE } from "./physics.js";
+import { t, jt } from "../../i18n.js";
 
 // Bitmap digits 5x7 for retro score display (each row is a 5-bit mask)
 const DIGITS = [
@@ -284,7 +285,7 @@ export function drawServing(ctx, colors, time) {
   ctx.font = "bold 24px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("GET READY", CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(t("GET READY"), CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 
@@ -301,7 +302,7 @@ export function drawWaiting(ctx, colors, time) {
   ctx.font = "18px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(`WAITING FOR OPPONENT${dots}`, CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(jt`WAITING FOR OPPONENT${dots}`, CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 
@@ -309,7 +310,7 @@ export function drawWaiting(ctx, colors, time) {
  * Draw winner announcement with glitch text effect.
  */
 export function drawWinner(ctx, winner, colors, time) {
-  const text = `PLAYER ${winner} WINS!`;
+  const text = jt`PLAYER ${winner} WINS!`;
   const color = winner === 1 ? colors.fg : colors.accent;
 
   ctx.save();
@@ -343,7 +344,7 @@ export function drawWinner(ctx, winner, colors, time) {
   ctx.fillStyle = colors.muted;
   const pulse = 0.5 + 0.5 * Math.sin(time * 0.005);
   ctx.globalAlpha = pulse;
-  ctx.fillText("GAME OVER", CANVAS_W / 2, CANVAS_H / 2 + 40);
+  ctx.fillText(t("GAME OVER"), CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();
 }

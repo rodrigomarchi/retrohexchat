@@ -1,33 +1,59 @@
-<p>Search through messages in the current channel or PM with real-time highlighting.</p>
-<.help_h4 icon={:icon_folder}>Opening</.help_h4>
-<p>Press <strong>Ctrl+Shift+F</strong> or go to <strong>View &gt; Find</strong>.</p>
-<.help_h4 icon={:icon_dialog_highlight}>Highlighting</.help_h4>
 <p>
-  As you type, all matching occurrences in the chat are highlighted with a yellow background. The active match is highlighted in orange. The counter shows your position (e.g., "3 of 17").
+  {gettext("Search through messages in the current channel or PM with real-time highlighting.")}
 </p>
-<.help_h4 icon={:icon_btn_next}>Navigation</.help_h4>
+<.help_h4 icon={:icon_folder}>{gettext("Opening")}</.help_h4>
 <p>
-  Use <strong>Prev</strong>/<strong>Next</strong> buttons, or press <strong>Arrow Down</strong>/<strong>Arrow Up</strong> in the search input to jump between matches. The chat scrolls to each match automatically.
+  {gettext("Press")}
+  <strong>{gettext("Ctrl+Shift+F")}</strong> {gettext("or go to")} <strong>{gettext("View > Find")}</strong>.
 </p>
-<.help_h4 icon={:icon_btn_search}>Search Filters</.help_h4>
+<.help_h4 icon={:icon_dialog_highlight}>{gettext("Highlighting")}</.help_h4>
 <p>
-  <strong>Case:</strong>
-  Case-sensitive matching (default: case-insensitive).<br /><strong>Regex:</strong>
-  Regular expression matching (e.g., <code>error|warn</code>). Invalid regex patterns show an inline error.<br />
+  {gettext(
+    "As you type, all matching occurrences in the chat are highlighted with a yellow background. The active match is highlighted in orange. The counter shows your position (e.g., \"3 of 17\")."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_next}>{gettext("Navigation")}</.help_h4>
+<p>
+  {gettext("Use")} <strong>{gettext("Prev")}</strong>/<strong>{gettext("Next")}</strong> {gettext(
+    "buttons, or press"
+  )} <strong>{gettext("Arrow Down")}</strong>/<strong>{gettext("Arrow Up")}</strong> {gettext(
+    "in the search input to jump between matches. The chat scrolls to each match automatically."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_search}>{gettext("Search Filters")}</.help_h4>
+<p>
+  <strong>{gettext("Case:")}</strong>
+  {gettext("Case-sensitive matching (default: case-insensitive).")}<br />
   <strong>
-    My nick:
+    {gettext("Regex:")}
   </strong>
-  Only search messages that mention your nickname.<br /><strong>History:</strong>
-  Extend search into the database beyond currently loaded messages.
+  {gettext("Regular expression matching (e.g.,")} <code>{gettext("error|warn")}</code>{gettext(
+    "). Invalid regex patterns show an inline error."
+  )}<br />
+  <strong>
+    {gettext("My nick:")}
+  </strong>
+  {gettext("Only search messages that mention your nickname.")}<br />
+  <strong>
+    {gettext("History:")}
+  </strong>
+  {gettext("Extend search into the database beyond currently loaded messages.")}
 </p>
-<.help_h4 icon={:icon_backup}>Session Memory</.help_h4>
+<.help_h4 icon={:icon_backup}>{gettext("Session Memory")}</.help_h4>
 <p>
-  The search bar remembers your last search term. When you reopen it, the previous query is restored and matches are re-highlighted.
+  {gettext(
+    "The search bar remembers your last search term. When you reopen it, the previous query is restored and matches are re-highlighted."
+  )}
 </p>
-<.help_h4 icon={:icon_close}>Closing</.help_h4>
-<p>Press <strong>Escape</strong> or click the close button. All highlights are removed.</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_close}>{gettext("Closing")}</.help_h4>
 <p>
-  <.help_link topic="keyboard-shortcuts">Keyboard Shortcuts</.help_link>
-  · <.help_link topic="feature-cheatsheet">Shortcut Cheatsheet</.help_link>
+  {gettext("Press")}
+  <strong>{gettext("Escape")}</strong> {gettext(
+    "or click the close button. All highlights are removed."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p>
+  <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
+  · <.help_link topic="feature-cheatsheet">{gettext("Shortcut Cheatsheet")}</.help_link>
 </p>

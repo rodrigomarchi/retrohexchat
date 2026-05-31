@@ -1,32 +1,37 @@
 <p>
-  Request to be let into an invite-only (+i) channel. Channel operators see your knock and can choose to invite you in.
+  {gettext(
+    "Request to be let into an invite-only (+i) channel. Channel operators see your knock and can choose to invite you in."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/knock &lt;#channel&gt; [message]</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/knock <#channel> [message]")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
   <code>#channel</code>
-  — The invite-only channel you want to join.<br /><code>message</code>
-  — Optional message to include with your knock (e.g., who referred you).
+  {gettext("— The invite-only channel you want to join.")}<br /><code>message</code>
+  {gettext("— Optional message to include with your knock (e.g., who referred you).")}
 </p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  When you knock on a channel, all operators and owners in that channel receive a notification showing your nickname and optional message. They can then decide whether to invite you using <code>/invite</code>. Think of it as ringing the doorbell of a private room.
+  {gettext(
+    "When you knock on a channel, all operators and owners in that channel receive a notification showing your nickname and optional message. They can then decide whether to invite you using"
+  )} <code>{gettext("/invite")}</code>{gettext(
+    ". Think of it as ringing the doorbell of a private room."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>The channel must be invite-only (+i)</li>
-  <li>Cannot knock if you are banned from the channel</li>
-  <li>Cannot knock if you are already a member</li>
-  <li>Rate limited: once per 60 seconds per channel</li>
-  <li>Disabled if the channel has +K (no knock) mode set</li>
+  <li>{gettext("The channel must be invite-only (+i)")}</li>
+  <li>{gettext("Cannot knock if you are banned from the channel")}</li>
+  <li>{gettext("Cannot knock if you are already a member")}</li>
+  <li>{gettext("Rate limited: once per 60 seconds per channel")}</li>
+  <li>{gettext("Disabled if the channel has +K (no knock) mode set")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/knock #private
-/knock #private Hey, Alice referred me!</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/knock #private /knock #private Hey, Alice referred me!")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-invite">/invite</.help_link>
-  · <.help_link topic="cmd-join">/join</.help_link>
-  · <.help_link topic="cmd-mode">/mode</.help_link>
+  <.help_link topic="cmd-invite">{gettext("/invite")}</.help_link>
+  · <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
+  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
 </p>

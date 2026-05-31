@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NickChangeDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -16,22 +17,23 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NickChangeDialogPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Nick Change Dialog", active_page: "nick-change-dialog")}
+    {:ok,
+     assign(socket, page_title: gettext("Nick Change Dialog"), active_page: "nick-change-dialog")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Nick Change Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Nick Change Dialog")}</h2>
 
       <.showcase_card
-        title="Unregistered Nick"
+        title={gettext("Unregistered Nick")}
         description="Simple confirmation — no password required for unregistered nicknames."
       >
         <.button variant="outline" phx-click={show_modal("nick-change-unreg")}>
           <:icon><Icons.icon_dialog_nick class="w-4 h-4" /></:icon>
-          Change to Unregistered Nick
+          {gettext("Change to Unregistered Nick")}
         </.button>
         <.nick_change_dialog
           id="nick-change-unreg"
@@ -49,12 +51,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NickChangeDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Registered Nick"
+        title={gettext("Registered Nick")}
         description="Password field shown when the target nick is registered with NickServ."
       >
         <.button variant="outline" phx-click={show_modal("nick-change-reg")}>
           <:icon><Icons.icon_dialog_nick class="w-4 h-4" /></:icon>
-          Change to Registered Nick
+          {gettext("Change to Registered Nick")}
         </.button>
         <.nick_change_dialog
           id="nick-change-reg"
@@ -64,12 +66,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.NickChangeDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Password Error State"
+        title={gettext("Password Error State")}
         description="Error message shown when the NickServ password is incorrect."
       >
         <.button variant="outline" phx-click={show_modal("nick-change-error")}>
           <:icon><Icons.icon_dialog_nick class="w-4 h-4" /></:icon>
-          Change Nick (with Error)
+          {gettext("Change Nick (with Error)")}
         </.button>
         <.nick_change_dialog
           id="nick-change-error"

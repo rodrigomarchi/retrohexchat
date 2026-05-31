@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
   and the game canvas container.
   """
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -419,15 +420,18 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
     end
   end
 
-  defp expired_reason_label("user_closed"), do: "Session closed by user."
-  defp expired_reason_label("game_ended"), do: "Game ended."
-  defp expired_reason_label("rejected"), do: "Game invite was rejected."
-  defp expired_reason_label("tab_closed"), do: "Session closed (disconnected)."
-  defp expired_reason_label("disconnected"), do: "Session closed (disconnected)."
-  defp expired_reason_label("expired"), do: "Session expired due to inactivity."
-  defp expired_reason_label("pending_timeout"), do: "Session expired — peer did not join."
-  defp expired_reason_label("lobby_inactivity"), do: "Session expired due to inactivity."
-  defp expired_reason_label(_reason), do: "Game session ended."
+  defp expired_reason_label("user_closed"), do: gettext("Session closed by user.")
+  defp expired_reason_label("game_ended"), do: gettext("Game ended.")
+  defp expired_reason_label("rejected"), do: gettext("Game invite was rejected.")
+  defp expired_reason_label("tab_closed"), do: gettext("Session closed (disconnected).")
+  defp expired_reason_label("disconnected"), do: gettext("Session closed (disconnected).")
+  defp expired_reason_label("expired"), do: gettext("Session expired due to inactivity.")
+
+  defp expired_reason_label("pending_timeout"),
+    do: gettext("Session expired — peer did not join.")
+
+  defp expired_reason_label("lobby_inactivity"), do: gettext("Session expired due to inactivity.")
+  defp expired_reason_label(_reason), do: gettext("Game session ended.")
 
   defp fetch_session_result(socket) do
     case socket.assigns[:token] && Games.get_session(socket.assigns.token) do
@@ -436,12 +440,12 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
     end
   end
 
-  defp session_ended_label("game_over"), do: "Game over."
-  defp session_ended_label("finished"), do: "Game finished."
-  defp session_ended_label("user_closed"), do: "Session closed by user."
-  defp session_ended_label("disconnected"), do: "Peer disconnected."
-  defp session_ended_label("inactivity"), do: "Session closed due to inactivity."
-  defp session_ended_label("lobby_inactivity"), do: "Session closed due to inactivity."
+  defp session_ended_label("game_over"), do: gettext("Game over.")
+  defp session_ended_label("finished"), do: gettext("Game finished.")
+  defp session_ended_label("user_closed"), do: gettext("Session closed by user.")
+  defp session_ended_label("disconnected"), do: gettext("Peer disconnected.")
+  defp session_ended_label("inactivity"), do: gettext("Session closed due to inactivity.")
+  defp session_ended_label("lobby_inactivity"), do: gettext("Session closed due to inactivity.")
   defp session_ended_label(reason), do: expired_reason_label(reason)
 
   defp notify_session_ended(socket, reason) do

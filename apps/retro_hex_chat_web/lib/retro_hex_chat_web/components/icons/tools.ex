@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Tools do
   Icons depicting configuration, editing, and customization concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

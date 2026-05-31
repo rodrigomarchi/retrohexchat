@@ -1,28 +1,41 @@
-<p>Edit your own messages within 5 minutes of sending to fix typos or correct content.</p>
-<.help_h4 icon={:icon_btn_edit}>How to Edit</.help_h4>
 <p>
-  <strong>↑ key:</strong>
-  Press the up arrow in an empty input to edit your last message. The input fills with the message text, and the message gets a dashed border indicating edit mode.
+  {gettext("Edit your own messages within 5 minutes of sending to fix typos or correct content.")}
 </p>
-<.help_h4 icon={:icon_btn_ok}>Submitting &amp; Canceling</.help_h4>
+<.help_h4 icon={:icon_btn_edit}>{gettext("How to Edit")}</.help_h4>
 <p>
-  <strong>Enter:</strong>
-  Submit the edit. The message updates for all viewers with an "(editado)" tag.<br />
+  <strong>{gettext("↑ key:")}</strong>
+  {gettext(
+    "Press the up arrow in an empty input to edit your last message. The input fills with the message text, and the message gets a dashed border indicating edit mode."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_ok}>{gettext("Submitting & Canceling")}</.help_h4>
+<p>
+  <strong>{gettext("Enter:")}</strong>
+  {gettext("Submit the edit. The message updates for all viewers with an \"(editado)\" tag.")}<br />
   <strong>
-    Escape:
+    {gettext("Escape:")}
   </strong>
-  Cancel the edit and restore the input to its previous state.<br /><strong>Empty edit:</strong>
-  Submitting with empty text opens a delete confirmation dialog.
+  {gettext("Cancel the edit and restore the input to its previous state.")}<br />
+  <strong>
+    {gettext("Empty edit:")}
+  </strong>
+  {gettext("Submitting with empty text opens a delete confirmation dialog.")}
 </p>
-<.help_h4 icon={:icon_btn_edit}>Edited Indicator</.help_h4>
-<p>Edited messages show a small "(editado)" tag. Hover over it to see the edit timestamp.</p>
-<.help_h4 icon={:icon_warning}>Limitations</.help_h4>
+<.help_h4 icon={:icon_btn_edit}>{gettext("Edited Indicator")}</.help_h4>
 <p>
-  You can only edit your own messages. The 5-minute time limit is enforced server-side. Editing preserves any reply context (if the message was a reply).
+  {gettext(
+    "Edited messages show a small \"(editado)\" tag. Hover over it to see the edit timestamp."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_warning}>{gettext("Limitations")}</.help_h4>
 <p>
-  <.help_link topic="feature-message-reply">Message Reply</.help_link>
-  · <.help_link topic="feature-message-delete">Message Delete</.help_link>
-  · <.help_link topic="keyboard-shortcuts">Keyboard Shortcuts</.help_link>
+  {gettext(
+    "You can only edit your own messages. The 5-minute time limit is enforced server-side. Editing preserves any reply context (if the message was a reply)."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-message-reply">{gettext("Message Reply")}</.help_link>
+  · <.help_link topic="feature-message-delete">{gettext("Message Delete")}</.help_link>
+  · <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
 </p>

@@ -2,6 +2,8 @@ defmodule RetroHexChat.Bots.Capabilities.Help do
   @moduledoc """
   Capability that responds to !prefix help with a list of available commands.
   """
+
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Bots.Capability
 
   @impl true
@@ -10,7 +12,7 @@ defmodule RetroHexChat.Bots.Capabilities.Help do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: "Built-in !help command listing available commands"
+  def description, do: gettext("Built-in !help command listing available commands")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
@@ -51,14 +53,14 @@ defmodule RetroHexChat.Bots.Capabilities.Help do
   @impl true
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]
   def commands do
-    [%{trigger: "help", description: "Show this help message"}]
+    [%{trigger: "help", description: gettext("Show this help message")}]
   end
 
   # ── Helpers ──
 
   @spec build_help_lines(String.t(), String.t(), map()) :: [String.t()]
   defp build_help_lines(bot_name, prefix, commands) do
-    header = "#{bot_name} — Available Commands:"
+    header = gettext("%{bot_name} — Available Commands:", bot_name: bot_name)
 
     cmd_lines =
       commands
@@ -66,10 +68,15 @@ defmodule RetroHexChat.Bots.Capabilities.Help do
       |> Enum.sort_by(fn {trigger, _} -> trigger end)
       |> Enum.map(fn {trigger, cmd} ->
         desc = Map.get(cmd, "description", "")
-        "  #{prefix}#{trigger} — #{desc}"
+
+        gettext("  %{prefix}%{trigger} — %{description}",
+          prefix: prefix,
+          trigger: trigger,
+          description: desc
+        )
       end)
 
-    help_line = "  #{prefix}help — Show this help message"
+    help_line = gettext("  %{prefix}help — Show this help message", prefix: prefix)
 
     if cmd_lines == [] do
       [header, help_line]

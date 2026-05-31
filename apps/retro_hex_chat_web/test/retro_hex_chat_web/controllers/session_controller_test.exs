@@ -118,5 +118,16 @@ defmodule RetroHexChatWeb.SessionControllerTest do
 
       assert redirected_to(conn) == "/connect?reason=disconnected"
     end
+
+    test "preserves locale while clearing chat session", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{chat_nickname: "LocaleNick", locale: "pt_BR"})
+        |> get(~p"/chat/session/clear")
+
+      assert redirected_to(conn) == "/connect?reason=disconnected"
+      assert get_session(conn, :locale) == "pt_BR"
+      refute get_session(conn, :chat_nickname)
+    end
   end
 end

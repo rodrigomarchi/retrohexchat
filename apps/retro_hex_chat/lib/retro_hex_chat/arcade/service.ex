@@ -2,6 +2,7 @@ defmodule RetroHexChat.Arcade.Service do
   @moduledoc """
   Orchestrates solo arcade session operations: policy check → persist → process.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   require Logger
 
@@ -41,20 +42,28 @@ defmodule RetroHexChat.Arcade.Service do
         :ok ->
           :ok
 
-        {:error, "Session process not running"} ->
-          now = DateTime.utc_now()
+        {:error, message} ->
+          if session_process_not_running?(message) do
+            now = DateTime.utc_now()
 
-          Queries.update_status(session, "closed", %{
-            closed_at: now,
-            closed_reason: reason
-          })
+            Queries.update_status(session, "closed", %{
+              closed_at: now,
+              closed_reason: reason
+            })
 
-          :ok
+            :ok
+          else
+            {:error, message}
+          end
 
         error ->
           error
       end
     end
+  end
+
+  defp session_process_not_running?(message) do
+    message in ["Session process not running", gettext("Session process not running")]
   end
 
   @spec select_game(String.t(), integer(), String.t()) :: :ok | {:error, atom() | String.t()}
@@ -102,13 +111,13 @@ defmodule RetroHexChat.Arcade.Service do
 
       {:error, changeset} ->
         Logger.warning("Failed to insert arcade session: #{inspect(changeset.errors)}")
-        {:error, "Failed to create session"}
+        {:error, gettext("Failed to create session")}
     end
   end
 
   defp fetch_session(token) do
     case Queries.get_session_by_token(token) do
-      nil -> {:error, "Session not found"}
+      nil -> {:error, gettext("Session not found")}
       session -> {:ok, session}
     end
   end

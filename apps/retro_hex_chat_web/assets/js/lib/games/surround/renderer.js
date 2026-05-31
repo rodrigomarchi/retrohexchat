@@ -6,6 +6,7 @@
 
 import { PHASE, GRID_W, GRID_H } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, CELL_SIZE, GRID_OFFSET_X, GRID_OFFSET_Y, CELL } from "./physics.js";
+import { t, jt } from "../../i18n.js";
 
 // Bitmap digits 5x7 for retro score display (each row is a 5-bit mask)
 const DIGITS = [
@@ -261,7 +262,7 @@ export function drawHUD(ctx, state, colors) {
   ctx.font = "12px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.fillText(`ROUND ${state.round + 1}`, CANVAS_W / 2, 8);
+  ctx.fillText(jt`ROUND ${state.round + 1}`, CANVAS_W / 2, 8);
 
   ctx.shadowBlur = 0;
   ctx.shadowColor = "transparent";
@@ -314,10 +315,10 @@ export function drawRoundOver(ctx, state, colors, _time) {
     text = "DRAW";
     color = colors.warning;
   } else if (p1Won) {
-    text = "P1 WINS ROUND";
+    text = t("P1 WINS ROUND");
     color = colors.fg;
   } else {
-    text = "P2 WINS ROUND";
+    text = t("P2 WINS ROUND");
     color = colors.accent;
   }
 
@@ -354,7 +355,7 @@ export function drawRoundOver(ctx, state, colors, _time) {
  */
 export function drawMatchOver(ctx, state, colors, time) {
   const p1Won = state.score1 >= state.score2;
-  const text = p1Won ? "P1 VICTORY!" : "P2 VICTORY!";
+  const text = p1Won ? t("P1 VICTORY!") : t("P2 VICTORY!");
   const color = p1Won ? colors.fg : colors.accent;
 
   ctx.save();
@@ -406,7 +407,7 @@ export function drawWaiting(ctx, colors, time) {
   ctx.font = "18px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(`WAITING FOR PARTNER${dots}`, CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(jt`WAITING FOR PARTNER${dots}`, CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 

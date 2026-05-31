@@ -1,42 +1,54 @@
 <p>
-  Pseudo-3D racing duel through day, snow, fog, and night. Both players race on the same road —
-  overtake AI cars and your opponent for points. Manage fuel, use turbo boosts, and draft in slipstreams.
-  Best of 3 days.
+  {gettext(
+    "Pseudo-3D racing duel through day, snow, fog, and night. Both players race on the same road — overtake AI cars and your opponent for points. Manage fuel, use turbo boosts, and draft in slipstreams. Best of 3 days."
+  )}
 </p>
 <.diagram_game_enduro class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow Left / A</strong> — Change lane left</li>
-  <li><strong>Arrow Right / D</strong> — Change lane right</li>
-  <li><strong>Arrow Up / W</strong> — Accelerate</li>
-  <li><strong>Arrow Down / S</strong> — Brake</li>
-  <li><strong>Space / Shift</strong> — Activate turbo boost</li>
+  <li><strong>{gettext("Arrow Left / A")}</strong> {gettext("— Change lane left")}</li>
+  <li><strong>{gettext("Arrow Right / D")}</strong> {gettext("— Change lane right")}</li>
+  <li><strong>{gettext("Arrow Up / W")}</strong> {gettext("— Accelerate")}</li>
+  <li><strong>{gettext("Arrow Down / S")}</strong> {gettext("— Brake")}</li>
+  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Activate turbo boost")}</li>
 </ul>
-<.help_h4 icon={:icon_rules}>Rules</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
 <ul>
-  <li>Both players race on a 3-lane pseudo-3D road with AI traffic</li>
-  <li>Overtake AI cars for 1 point, overtake your opponent for 5 points</li>
-  <li>Collect fuel stations for 3 points and to refuel your tank</li>
-  <li>Turbo boost gives a temporary speed increase (costs fuel)</li>
-  <li>Draft behind your opponent in a slipstream for a speed bonus</li>
-  <li>Collisions with AI cars slow you down temporarily</li>
-  <li>Running out of fuel ends the day early</li>
-  <li>Weather cycles: Day → Snow → Fog → Night → Dawn (~3.5 min per day)</li>
-  <li>Snow reduces max speed, fog limits visibility, night shows headlights only</li>
-  <li>Best of 3 days — highest total score wins</li>
+  <li>{gettext("Both players race on a 3-lane pseudo-3D road with AI traffic")}</li>
+  <li>{gettext("Overtake AI cars for 1 point, overtake your opponent for 5 points")}</li>
+  <li>{gettext("Collect fuel stations for 3 points and to refuel your tank")}</li>
+  <li>{gettext("Turbo boost gives a temporary speed increase (costs fuel)")}</li>
+  <li>{gettext("Draft behind your opponent in a slipstream for a speed bonus")}</li>
+  <li>{gettext("Collisions with AI cars slow you down temporarily")}</li>
+  <li>{gettext("Running out of fuel ends the day early")}</li>
+  <li>{gettext("Weather cycles: Day → Snow → Fog → Night → Dawn (~3.5 min per day)")}</li>
+  <li>{gettext("Snow reduces max speed, fog limits visibility, night shows headlights only")}</li>
+  <li>{gettext("Best of 3 days — highest total score wins")}</li>
 </ul>
-<.help_h4 icon={:icon_tab_modes}>Modes</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
 <ul>
-  <li><strong>Hex Enduro</strong> — Full Classic Duel: 3 days with weather cycle</li>
-  <li><strong>Night Race</strong> — 3-minute race in permanent darkness with fog bursts</li>
-  <li><strong>Sprint</strong> — 90-second daylight sprint, no weather, no fuel drain</li>
+  <li>
+    <strong>{gettext("Hex Enduro")}</strong> {gettext(
+      "— Full Classic Duel: 3 days with weather cycle"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Night Race")}</strong> {gettext(
+      "— 3-minute race in permanent darkness with fog bursts"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Sprint")}</strong> {gettext(
+      "— 90-second daylight sprint, no weather, no fuel drain"
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Inspired by Activision's Enduro (1983).</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<p>{gettext("Inspired by Activision's Enduro (1983).")}</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-enduro-night">Hex Enduro: Night Race</.help_link>
-  · <.help_link topic="feature-hex-enduro-sprint">Hex Enduro: Sprint</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-hex-enduro-night">{gettext("Hex Enduro: Night Race")}</.help_link>
+  · <.help_link topic="feature-hex-enduro-sprint">{gettext("Hex Enduro: Sprint")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

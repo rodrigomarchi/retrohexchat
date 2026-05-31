@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, stream_delete: 3, stream_insert: 3]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       notice_message: 2,
@@ -376,13 +378,18 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if session.away && sender != session.nickname &&
          not MapSet.member?(replied_to, sender) do
       away_msg = session.away_message
-      reply = "#{session.nickname} is away: #{away_msg}"
+
+      reply =
+        gettext("%{nickname} is away: %{message}", nickname: session.nickname, message: away_msg)
 
       case Service.send_private_message(session.nickname, sender, reply, "system") do
         {:ok, _pm} ->
           socket
           |> assign(away_replied_to: MapSet.put(replied_to, sender))
-          |> push_status_message("* Sent away auto-reply to #{sender}", :system)
+          |> push_status_message(
+            gettext("* Sent away auto-reply to %{sender}", sender: sender),
+            :system
+          )
 
         {:error, _reason} ->
           socket

@@ -6,16 +6,17 @@
  * Updates the status bar connection indicator directly (server can't know about WS drops).
  */
 import { createConnectionStateMachine } from "../../lib/connection/connection_state_machine.js";
+import { t, jt } from "../../lib/i18n.js";
 
 /** @type {Record<string, {indicator: string, text: string, css: string}>} */
 const STATUS_BAR_MAP = {
   connecting: { indicator: "◌", text: "...", css: "connecting" },
-  connected: { indicator: "●", text: "On", css: "connected" },
-  disconnected: { indicator: "●", text: "Off", css: "disconnected" },
+  connected: { indicator: "●", text: t("On"), css: "connected" },
+  disconnected: { indicator: "●", text: t("Off"), css: "disconnected" },
   reconnecting: { indicator: "↻", text: "...", css: "reconnecting" },
-  reconnected: { indicator: "●", text: "On", css: "connected" },
-  cancelled: { indicator: "●", text: "Off", css: "disconnected" },
-  failed: { indicator: "●", text: "Off", css: "disconnected" },
+  reconnected: { indicator: "●", text: t("On"), css: "connected" },
+  cancelled: { indicator: "●", text: t("Off"), css: "disconnected" },
+  failed: { indicator: "●", text: t("Off"), css: "disconnected" },
 };
 
 const ConnectionStatusHook = {
@@ -101,27 +102,27 @@ const ConnectionStatusHook = {
 
     switch (state) {
       case "disconnected":
-        this._bannerText.textContent = "⚠️ Desconectado — Reconectando...";
+        this._bannerText.textContent = t("⚠️ Disconnected — Reconnecting...");
         this._banner.classList.add("connection-banner--visible", "connection-banner--disconnected");
         break;
 
       case "reconnected":
-        this._bannerText.textContent = "✓ Reconectado!";
+        this._bannerText.textContent = t("✓ Reconnected!");
         this._banner.classList.add("connection-banner--visible", "connection-banner--reconnected");
         break;
 
       case "reconnecting":
         this._overlay.classList.add("reconnect-overlay--visible");
-        this._overlayInfo.textContent = `Reconnection attempt ${data.attempt} of ${data.maxAttempts}`;
-        this._overlayCountdown.textContent = `Reconnecting in ${data.remaining}s...`;
-        this._overlayAction.textContent = "Cancel";
+        this._overlayInfo.textContent = jt`Reconnection attempt ${data.attempt} of ${data.maxAttempts}`;
+        this._overlayCountdown.textContent = jt`Reconnecting in ${data.remaining}s...`;
+        this._overlayAction.textContent = t("Cancel");
         break;
 
       case "cancelled":
         this._overlay.classList.add("reconnect-overlay--visible");
         this._overlayInfo.textContent = "";
-        this._overlayCountdown.textContent = "Reconnection cancelled. Refresh to try again.";
-        this._overlayAction.textContent = "Refresh";
+        this._overlayCountdown.textContent = t("Reconnection cancelled. Refresh to try again.");
+        this._overlayAction.textContent = t("Refresh");
         break;
 
       // connected, connecting, failed — nothing visible

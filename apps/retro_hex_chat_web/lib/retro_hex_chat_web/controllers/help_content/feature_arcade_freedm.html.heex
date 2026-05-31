@@ -1,71 +1,82 @@
 <p>
-  32 deathmatch-focused arena maps for the DOOM engine — compact, weapon-rich levels designed
-  for fast-paced multiplayer action. Part of the Freedoom project, released under the BSD license.
+  {gettext(
+    "32 deathmatch-focused arena maps for the DOOM engine — compact, weapon-rich levels designed for fast-paced multiplayer action. Part of the Freedoom project, released under the BSD license."
+  )}
 </p>
 <.diagram_arcade_doom class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>About</.help_h4>
+<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
 <p>
-  FreeDM is the deathmatch-only component of the Freedoom project — 32 arena-style maps with
-  no monsters, designed purely for player-vs-player combat. Unlike Phase 1 and Phase 2, which
-  are single-player campaigns, FreeDM focuses on tight, weapon-dense arena layouts.
+  {gettext(
+    "FreeDM is the deathmatch-only component of the Freedoom project — 32 arena-style maps with no monsters, designed purely for player-vs-player combat. Unlike Phase 1 and Phase 2, which are single-player campaigns, FreeDM focuses on tight, weapon-dense arena layouts."
+  )}
 </p>
 <p>
-  Originally maintained by Jim "Rellik" McDougald, FreeDM has undergone major overhauls with
-  new levels replacing weaker ones. The maps feature Aquatex and Egyptian texture sets and
-  work in single-player as exploration arenas. It runs on the PrBoom+ engine compiled to
-  WebAssembly.
+  {gettext(
+    "Originally maintained by Jim \"Rellik\" McDougald, FreeDM has undergone major overhauls with new levels replacing weaker ones. The maps feature Aquatex and Egyptian texture sets and work in single-player as exploration arenas. It runs on the PrBoom+ engine compiled to WebAssembly."
+  )}
 </p>
-<.help_h4 icon={:icon_send}>Controls</.help_h4>
+<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>W / ↑</strong> — Move forward</li>
-  <li><strong>S / ↓</strong> — Move backward</li>
-  <li><strong>A</strong> — Strafe left</li>
-  <li><strong>D</strong> — Strafe right</li>
-  <li><strong>Mouse</strong> — Aim / turn</li>
-  <li><strong>Left Click</strong> — Fire weapon</li>
-  <li><strong>E</strong> — Use / open doors</li>
-  <li><strong>Space</strong> — Jump (PrBoom+)</li>
-  <li><strong>1–7</strong> — Select weapon</li>
-  <li><strong>Tab</strong> — Toggle automap</li>
-  <li><strong>Shift</strong> — Run (hold)</li>
-  <li><strong>Esc</strong> — Menu</li>
+  <li><strong>{gettext("W / ↑")}</strong> {gettext("— Move forward")}</li>
+  <li><strong>{gettext("S / ↓")}</strong> {gettext("— Move backward")}</li>
+  <li><strong>A</strong> {gettext("— Strafe left")}</li>
+  <li><strong>D</strong> {gettext("— Strafe right")}</li>
+  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim / turn")}</li>
+  <li><strong>{gettext("Left Click")}</strong> {gettext("— Fire weapon")}</li>
+  <li><strong>E</strong> {gettext("— Use / open doors")}</li>
+  <li><strong>{gettext("Space")}</strong> {gettext("— Jump (PrBoom+)")}</li>
+  <li><strong>1–7</strong> {gettext("— Select weapon")}</li>
+  <li><strong>{gettext("Tab")}</strong> {gettext("— Toggle automap")}</li>
+  <li><strong>{gettext("Shift")}</strong> {gettext("— Run (hold)")}</li>
+  <li><strong>{gettext("Esc")}</strong> {gettext("— Menu")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Gameplay Tips</.help_h4>
-<ul>
-  <li>
-    <strong>Compact arenas</strong>
-    — Maps are small and weapon-dense. Expect enemies from every direction.
-  </li>
-  <li>
-    <strong>Jump between maps</strong> — Use the IDCLEV## cheat code to warp to any map number.
-  </li>
-  <li>
-    <strong>Arena combat</strong>
-    — No monsters by design — these are PvP arenas. In solo play, treat them as weapon testing grounds.
-  </li>
-  <li>
-    <strong>Practice your aim</strong>
-    — Great for learning weapon behavior and movement techniques before tackling Phase 1 or Phase 2.
-  </li>
-</ul>
-<.help_h4 icon={:icon_star}>Did You Know?</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    FreeDM contains no monsters in its entire mapset — it's purely designed for deathmatch
-    combat, unlike Phase 1 and Phase 2 which are single-player campaigns.
+    <strong>{gettext("Compact arenas")}</strong>
+    {gettext("— Maps are small and weapon-dense. Expect enemies from every direction.")}
   </li>
   <li>
-    Like Phase 2, FreeDM is compatible with DOOM II and Final Doom PWADs, and features
-    Aquatex and Egyptian texture sets added during a major overhaul.
+    <strong>{gettext("Jump between maps")}</strong> {gettext(
+      "— Use the IDCLEV## cheat code to warp to any map number."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Arena combat")}</strong>
+    {gettext(
+      "— No monsters by design — these are PvP arenas. In solo play, treat them as weapon testing grounds."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Practice your aim")}</strong>
+    {gettext(
+      "— Great for learning weapon behavior and movement techniques before tackling Phase 1 or Phase 2."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<ul>
+  <li>
+    {gettext(
+      "FreeDM contains no monsters in its entire mapset — it's purely designed for deathmatch combat, unlike Phase 1 and Phase 2 which are single-player campaigns."
+    )}
+  </li>
+  <li>
+    {gettext(
+      "Like Phase 2, FreeDM is compatible with DOOM II and Final Doom PWADs, and features Aquatex and Egyptian texture sets added during a major overhaul."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-doom">DOOM (Arcade)</.help_link>
-  · <.help_link topic="feature-arcade-doom-shareware">DOOM: Knee-Deep in the Dead</.help_link>
-  · <.help_link topic="feature-arcade-freedoom1">Freedoom: Phase 1</.help_link>
-  · <.help_link topic="feature-arcade-freedoom2">Freedoom: Phase 2</.help_link>
-  · <.help_link topic="feature-arcade-chex-quest">Chex Quest</.help_link>
-  · <.help_link topic="feature-arcade-hacx">HacX</.help_link>
-  · <.help_link topic="feature-arcade-rekkr">REKKR</.help_link>
+  <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-doom-shareware">
+    {gettext("DOOM: Knee-Deep in the Dead")}
+  </.help_link>
+  · <.help_link topic="feature-arcade-freedoom1">{gettext("Freedoom: Phase 1")}</.help_link>
+  · <.help_link topic="feature-arcade-freedoom2">{gettext("Freedoom: Phase 2")}</.help_link>
+  · <.help_link topic="feature-arcade-chex-quest">{gettext("Chex Quest")}</.help_link>
+  · <.help_link topic="feature-arcade-hacx">{gettext("HacX")}</.help_link>
+  · <.help_link topic="feature-arcade-rekkr">{gettext("REKKR")}</.help_link>
 </p>

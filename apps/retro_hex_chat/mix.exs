@@ -25,7 +25,8 @@ defmodule RetroHexChat.MixProject do
           RetroHexChat.Chat.HelpTopics.Services,
           RetroHexChat.Chat.HelpTopics.SpecialMessages,
           RetroHexChat.Chat.HelpTopics.TextFormatting,
-          RetroHexChat.Chat.HelpTopics.UserInterface
+          RetroHexChat.Chat.HelpTopics.UserInterface,
+          RetroHexChat.Gettext
         ]
       ]
     ]
@@ -58,6 +59,7 @@ defmodule RetroHexChat.MixProject do
       {:jason, "~> 1.2"},
       {:bcrypt_elixir, "~> 3.0"},
       {:phoenix_html, "~> 4.0"},
+      {:gettext, "~> 1.0"},
       {:req, "~> 0.5"},
       {:ex_stun, "~> 0.2.0"},
       {:ecto_psql_extras, "~> 0.8"},

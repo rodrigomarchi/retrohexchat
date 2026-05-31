@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Admin.Log do
   @moduledoc "Admin subcommand for viewing the audit log."
+  use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Commands.Handler
@@ -16,9 +17,10 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
 
     text =
       if entries == [] do
-        "*** No audit log entries found."
+        gettext("*** No audit log entries found.")
       else
-        header = "*** Audit Log (#{length(entries)} entries) ***"
+        header =
+          gettext("*** Audit Log (%{entries_count} entries) ***", entries_count: length(entries))
 
         lines = Enum.map(entries, &format_log_entry/1)
 
@@ -29,10 +31,25 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Log do
   end
 
   defp format_log_entry(e) do
-    target = if e.target_type, do: " → #{e.target_type}:#{e.target_id}", else: ""
+    target =
+      if e.target_type,
+        do:
+          gettext(" → %{target_type}:%{target_id}",
+            target_type: e.target_type,
+            target_id: e.target_id
+          ),
+        else: ""
+
     details = format_details(e.details)
     time = Calendar.strftime(e.inserted_at, "%Y-%m-%d %H:%M:%S")
-    "  [#{time}] #{e.actor} #{e.action}#{target}#{details}"
+
+    gettext("  [%{time}] %{actor} %{action}%{target}%{details}",
+      time: time,
+      actor: e.actor,
+      action: e.action,
+      target: target,
+      details: details
+    )
   end
 
   defp format_details(nil), do: ""

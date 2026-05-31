@@ -3,6 +3,7 @@ defmodule RetroHexChat.Bots.Policy do
   Authorization checks for bot management.
   Only admins and server operators can create/manage bots.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   @type context :: %{
           is_admin: boolean(),
@@ -21,6 +22,6 @@ defmodule RetroHexChat.Bots.Policy do
   def authorize(context) do
     if can_manage?(context),
       do: :ok,
-      else: {:error, "Only admins and server operators can manage bots"}
+      else: {:error, gettext("Only admins and server operators can manage bots")}
   end
 end

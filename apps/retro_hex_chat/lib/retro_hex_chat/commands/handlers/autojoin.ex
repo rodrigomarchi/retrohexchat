@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.AutoJoin do
   @moduledoc "Handler for /autojoin [subcommand] [args]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -13,7 +14,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
   def validate("add " <> rest) do
     case String.trim(rest) do
       "" ->
-        {:error, "Usage: /autojoin add #channel [key]"}
+        {:error, gettext("Usage: /autojoin add #channel [key]")}
 
       trimmed ->
         channel = trimmed |> String.split(" ", parts: 2) |> List.first()
@@ -21,16 +22,16 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
     end
   end
 
-  def validate("add"), do: {:error, "Usage: /autojoin add #channel [key]"}
+  def validate("add"), do: {:error, gettext("Usage: /autojoin add #channel [key]")}
 
   def validate("remove " <> rest) do
     case String.trim(rest) do
-      "" -> {:error, "Usage: /autojoin remove #channel"}
+      "" -> {:error, gettext("Usage: /autojoin remove #channel")}
       channel -> validate_channel_name(channel)
     end
   end
 
-  def validate("remove"), do: {:error, "Usage: /autojoin remove #channel"}
+  def validate("remove"), do: {:error, gettext("Usage: /autojoin remove #channel")}
 
   def validate(args) do
     subcmd = args |> String.split(" ", parts: 2) |> List.first()
@@ -74,16 +75,18 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
   def help do
     %{
       name: "autojoin",
-      syntax: "/autojoin [list|add|remove|clear]",
+      syntax: gettext("/autojoin [list|add|remove|clear]"),
       description:
-        "Set channels to join automatically every time you connect.\nSubcommands: list, add <#channel> [key], remove <#channel>, clear. No args opens the Perform dialog.\nChannel names must start with #. Registered users only.",
+        gettext(
+          "Set channels to join automatically every time you connect.\nSubcommands: list, add <#channel> [key], remove <#channel>, clear. No args opens the Perform dialog.\nChannel names must start with #. Registered users only."
+        ),
       examples: [
         "/autojoin",
-        "/autojoin list",
-        "/autojoin add #elixir",
-        "/autojoin add #secret mykey",
-        "/autojoin remove #elixir",
-        "/autojoin clear"
+        gettext("/autojoin list"),
+        gettext("/autojoin add #elixir"),
+        gettext("/autojoin add #secret mykey"),
+        gettext("/autojoin remove #elixir"),
+        gettext("/autojoin clear")
       ]
     }
   end
@@ -93,7 +96,7 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
     if String.starts_with?(channel, "#") do
       :ok
     else
-      {:error, "Channel name must start with #"}
+      {:error, gettext("Channel name must start with #")}
     end
   end
 
@@ -108,8 +111,8 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
 
     %CommandSyntax{
       command: "autojoin",
-      syntax: "/autojoin [list|add|remove|clear]",
-      description: "Set channels to join automatically every time you connect.",
+      syntax: gettext("/autojoin [list|add|remove|clear]"),
+      description: gettext("Set channels to join automatically every time you connect."),
       category: :config,
       parameters: [
         %Parameter{
@@ -117,29 +120,29 @@ defmodule RetroHexChat.Commands.Handlers.AutoJoin do
           required: false,
           type: :text,
           position: 0,
-          description: "Subcommand: list, add, remove, clear"
+          description: gettext("Subcommand: list, add, remove, clear")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Subcommand arguments"
+          description: gettext("Subcommand arguments")
         }
       ],
       examples: [
         "/autojoin",
-        "/autojoin list",
-        "/autojoin add #elixir",
-        "/autojoin add #secret mykey",
-        "/autojoin remove #elixir",
-        "/autojoin clear"
+        gettext("/autojoin list"),
+        gettext("/autojoin add #elixir"),
+        gettext("/autojoin add #secret mykey"),
+        gettext("/autojoin remove #elixir"),
+        gettext("/autojoin clear")
       ],
       subcommands: [
-        %{name: "list", description: "Show your autojoin list"},
-        %{name: "add", description: "Add a channel to autojoin"},
-        %{name: "remove", description: "Remove a channel from autojoin"},
-        %{name: "clear", description: "Clear your entire autojoin list"}
+        %{name: "list", description: gettext("Show your autojoin list")},
+        %{name: "add", description: gettext("Add a channel to autojoin")},
+        %{name: "remove", description: gettext("Remove a channel from autojoin")},
+        %{name: "clear", description: gettext("Clear your entire autojoin list")}
       ]
     }
   end

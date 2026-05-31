@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Layout.DialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -16,45 +17,48 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.DialogPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Dialog", active_page: "dialog")}
+    {:ok, assign(socket, page_title: gettext("Dialog"), active_page: "dialog")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Dialog")}</h2>
 
-      <.showcase_card title="Basic Dialog" description="Click the button to open a modal dialog.">
+      <.showcase_card
+        title={gettext("Basic Dialog")}
+        description="Click the button to open a modal dialog."
+      >
         <.button phx-click={show_modal("basic-dialog")}>
           <:icon><Icons.icon_btn_open /></:icon>
-          Open Dialog
+          {gettext("Open Dialog")}
         </.button>
         <.dialog id="basic-dialog">
-          <.dialog_header id="basic-dialog" title="Edit Profile">
+          <.dialog_header id="basic-dialog" title={gettext("Edit Profile")}>
             <:icon><Icons.icon_btn_edit /></:icon>
           </.dialog_header>
           <.dialog_body>
             <.dialog_description class="mb-retro-8">
-              Make changes to your profile here. Click save when you're done.
+              {gettext("Make changes to your profile here. Click save when you're done.")}
             </.dialog_description>
             <div class="flex items-center gap-retro-8 mb-retro-4">
-              <.label class="text-xs w-16 text-right">Name:</.label>
+              <.label class="text-xs w-16 text-right">{gettext("Name:")}</.label>
               <.input type="text" value="Troll" class="flex-1" />
             </div>
             <div class="flex items-center gap-retro-8">
-              <.label class="text-xs w-16 text-right">Username:</.label>
+              <.label class="text-xs w-16 text-right">{gettext("Username:")}</.label>
               <.input type="text" value="@troll" class="flex-1" />
             </div>
           </.dialog_body>
           <.dialog_footer>
             <.button variant="outline" phx-click={hide_modal("basic-dialog")}>
               <:icon><Icons.icon_btn_cancel /></:icon>
-              Cancel
+              {gettext("Cancel")}
             </.button>
             <.button phx-click={hide_modal("basic-dialog")}>
               <:icon><Icons.icon_btn_save /></:icon>
-              Save
+              {gettext("Save")}
             </.button>
           </.dialog_footer>
         </.dialog>
@@ -77,28 +81,31 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.DialogPage do
         </.code_example>
       </.showcase_card>
 
-      <.showcase_card title="Confirmation Dialog" description="A simple confirmation dialog.">
+      <.showcase_card
+        title={gettext("Confirmation Dialog")}
+        description="A simple confirmation dialog."
+      >
         <.button variant="destructive" phx-click={show_modal("confirm-dialog")}>
           <:icon><Icons.icon_btn_trash /></:icon>
-          Delete Account
+          {gettext("Delete Account")}
         </.button>
         <.dialog id="confirm-dialog">
-          <.dialog_header id="confirm-dialog" title="Are you sure?">
+          <.dialog_header id="confirm-dialog" title={gettext("Are you sure?")}>
             <:icon><Icons.icon_dialog_delete /></:icon>
           </.dialog_header>
           <.dialog_body>
             <.dialog_description>
-              This action cannot be undone. This will permanently delete your account.
+              {gettext("This action cannot be undone. This will permanently delete your account.")}
             </.dialog_description>
           </.dialog_body>
           <.dialog_footer>
             <.button variant="outline" phx-click={hide_modal("confirm-dialog")}>
               <:icon><Icons.icon_btn_cancel /></:icon>
-              Cancel
+              {gettext("Cancel")}
             </.button>
             <.button variant="destructive" phx-click={hide_modal("confirm-dialog")}>
               <:icon><Icons.icon_btn_trash /></:icon>
-              Delete
+              {gettext("Delete")}
             </.button>
           </.dialog_footer>
         </.dialog>

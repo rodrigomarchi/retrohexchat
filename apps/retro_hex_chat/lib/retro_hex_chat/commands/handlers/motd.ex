@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Motd do
   @moduledoc "Handler for /motd — view the current Message of the Day."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -13,7 +14,7 @@ defmodule RetroHexChat.Commands.Handlers.Motd do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, _context) do
     case Motd.get() do
-      nil -> {:ok, :system, %{content: "No MOTD has been set."}}
+      nil -> {:ok, :system, %{content: gettext("No MOTD has been set.")}}
       content -> {:ok, :ui_action, :show_motd, %{content: content}}
     end
   end
@@ -30,7 +31,9 @@ defmodule RetroHexChat.Commands.Handlers.Motd do
       name: "motd",
       syntax: "/motd",
       description:
-        "View the server's Message of the Day, which is also shown automatically when you connect.",
+        gettext(
+          "View the server's Message of the Day, which is also shown automatically when you connect."
+        ),
       examples: ["/motd"]
     }
   end
@@ -47,7 +50,9 @@ defmodule RetroHexChat.Commands.Handlers.Motd do
       command: "motd",
       syntax: "/motd",
       description:
-        "View the server's Message of the Day, which is also shown automatically when you connect.",
+        gettext(
+          "View the server's Message of the Day, which is also shown automatically when you connect."
+        ),
       category: :advanced,
       parameters: [],
       examples: ["/motd"]

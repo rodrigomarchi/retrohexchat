@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, stream: 4]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [maybe_persist_notify_list: 2]
 
@@ -113,7 +115,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       socket.assigns.show_status_tab ->
         Messages.push_status_message(
           socket,
-          "Cannot send text to status window. Use /commands.",
+          gettext("Cannot send text to status window. Use /commands."),
           :error
         )
 
@@ -145,7 +147,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     else
       Messages.error_event(
         socket,
-        "You must be a member of #{channel} to send notices there"
+        gettext("You must be a member of %{channel} to send notices there", channel: channel)
       )
     end
   end

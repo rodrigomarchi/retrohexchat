@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Bio do
   @moduledoc "Handler for /bio [text|clear]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -42,10 +43,12 @@ defmodule RetroHexChat.Commands.Handlers.Bio do
   def help do
     %{
       name: "bio",
-      syntax: "/bio [<text>|clear]",
+      syntax: gettext("/bio [<text>|clear]"),
       description:
-        "Set a short 'about me' text visible when others look you up with /whois.\nMax 200 characters (text beyond this limit is silently truncated). Use /bio to view, /bio clear to remove.",
-      examples: ["/bio Elixir enthusiast from Brazil", "/bio", "/bio clear"]
+        gettext(
+          "Set a short 'about me' text visible when others look you up with /whois.\nMax 200 characters (text beyond this limit is silently truncated). Use /bio to view, /bio clear to remove."
+        ),
+      examples: [gettext("/bio Elixir enthusiast from Brazil"), "/bio", gettext("/bio clear")]
     }
   end
 
@@ -60,8 +63,9 @@ defmodule RetroHexChat.Commands.Handlers.Bio do
 
     %CommandSyntax{
       command: "bio",
-      syntax: "/bio [<text>|clear]",
-      description: "Set a short 'about me' text visible when others look you up with /whois.",
+      syntax: gettext("/bio [<text>|clear]"),
+      description:
+        gettext("Set a short 'about me' text visible when others look you up with /whois."),
       category: :basics,
       parameters: [
         %Parameter{
@@ -69,10 +73,10 @@ defmodule RetroHexChat.Commands.Handlers.Bio do
           required: false,
           type: :text,
           position: 0,
-          description: "Bio text (or 'clear' to remove)"
+          description: gettext("Bio text (or 'clear' to remove)")
         }
       ],
-      examples: ["/bio Elixir enthusiast from Brazil", "/bio", "/bio clear"]
+      examples: [gettext("/bio Elixir enthusiast from Brazil"), "/bio", gettext("/bio clear")]
     }
   end
 end

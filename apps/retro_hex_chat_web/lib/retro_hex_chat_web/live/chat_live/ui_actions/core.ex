@@ -7,6 +7,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [stream: 4]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       system_event: 2,
@@ -63,7 +65,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     broadcast_away_change(session, true, message)
 
     socket
-    |> system_event("You are now away: #{message}")
+    |> system_event(gettext("You are now away: %{message}", message: message))
     |> assign(session: session, away_replied_to: MapSet.new())
   end
 
@@ -78,7 +80,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     broadcast_away_change(new_session, false, nil)
 
     socket
-    |> system_event("You are no longer away")
+    |> system_event(gettext("You are no longer away"))
     |> assign(session: new_session, away_replied_to: MapSet.new())
   end
 
@@ -92,9 +94,12 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   def handle_ui_action(socket, :view_topic, %{channel: channel}) do
     case Server.get_state(channel) do
       {:ok, state} ->
-        topic_text = if state.topic == "", do: "No topic set", else: state.topic
+        topic_text = if state.topic == "", do: gettext("No topic set"), else: state.topic
 
-        system_event(socket, "Topic for #{channel}: #{topic_text}")
+        system_event(
+          socket,
+          gettext("Topic for %{channel}: %{topic}", channel: channel, topic: topic_text)
+        )
 
       {:error, _} ->
         socket
@@ -105,10 +110,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     do: show_whois_text(socket, target)
 
   def handle_ui_action(socket, :show_help, %{commands: commands}) do
+    command_list = Enum.join(Enum.map(commands, &"/#{&1}"), ", ")
+
     text =
-      "Available commands: " <>
-        Enum.join(Enum.map(commands, &"/#{&1}"), ", ") <>
-        "\nType /help <command> for details, or open Help Topics from the menu for the full help system."
+      gettext(
+        "Available commands: %{commands}\nType /help <command> for details, or open Help Topics from the menu for the full help system.",
+        commands: command_list
+      )
 
     system_event(socket, text)
   end
@@ -121,7 +129,12 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
         inline_help_event(socket, topic_id, title)
 
       nil ->
-        text = "#{help.syntax} - #{help.description}"
+        text =
+          gettext("%{syntax} - %{description}",
+            syntax: help.syntax,
+            description: help.description
+          )
+
         system_event(socket, text)
     end
   end
@@ -170,15 +183,27 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     duration = Map.get(payload, :duration, :permanent)
 
     case Server.channel_mute(channel, socket.assigns.session.nickname, target, duration) do
-      :ok -> system_event(socket, "#{target} has been muted in #{channel}.")
-      {:error, msg} -> error_event(socket, msg)
+      :ok ->
+        system_event(
+          socket,
+          gettext("%{target} has been muted in %{channel}.", target: target, channel: channel)
+        )
+
+      {:error, msg} ->
+        error_event(socket, msg)
     end
   end
 
   def handle_ui_action(socket, :channel_unmute_user, %{channel: channel, target: target}) do
     case Server.channel_unmute(channel, socket.assigns.session.nickname, target) do
-      :ok -> system_event(socket, "#{target} has been unmuted in #{channel}.")
-      {:error, msg} -> error_event(socket, msg)
+      :ok ->
+        system_event(
+          socket,
+          gettext("%{target} has been unmuted in %{channel}.", target: target, channel: channel)
+        )
+
+      {:error, msg} ->
+        error_event(socket, msg)
     end
   end
 
@@ -186,8 +211,14 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     nick = socket.assigns.session.nickname
 
     case Server.transfer_ownership(channel, nick, target) do
-      :ok -> system_event(socket, "Channel ownership transferred to #{target}.")
-      {:error, msg} -> error_event(socket, msg)
+      :ok ->
+        system_event(
+          socket,
+          gettext("Channel ownership transferred to %{target}.", target: target)
+        )
+
+      {:error, msg} ->
+        error_event(socket, msg)
     end
   end
 
@@ -197,7 +228,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     now = System.monotonic_time(:millisecond)
 
     if throttled_knock?(knock_timestamps, channel, now) do
-      error_event(socket, "Please wait before knocking on #{channel} again")
+      error_event(
+        socket,
+        gettext("Please wait before knocking on %{channel} again", channel: channel)
+      )
     else
       case Server.knock(channel, socket.assigns.session.nickname, message) do
         :ok ->
@@ -205,7 +239,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
 
           socket
           |> assign(knock_timestamps: updated_timestamps)
-          |> system_event("Knock sent to #{channel}")
+          |> system_event(gettext("Knock sent to %{channel}", channel: channel))
 
         {:error, msg} ->
           error_event(socket, msg)

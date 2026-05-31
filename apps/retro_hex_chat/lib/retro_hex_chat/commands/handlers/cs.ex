@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Cs do
   @moduledoc "Handler for /cs (ChanServ commands)"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Channels.Server
@@ -15,7 +16,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, "Usage: /cs <register|drop|info|sop|aop|vop|help> [args]"}
+    {:error, gettext("Usage: /cs <register|drop|info|sop|aop|vop|help> [args]")}
   end
 
   def execute(["register" | _], context) do
@@ -74,16 +75,18 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
   def help do
     %{
       name: "cs",
-      syntax: "/cs <subcommand> [args]",
+      syntax: gettext("/cs <subcommand> [args]"),
       description:
-        "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop requires being the channel founder.",
+        gettext(
+          "Manage channel registration and access lists through ChanServ.\nSubcommands: register, drop, info, sop/aop/vop add|del|list, help. Must be in a channel.\nAccess hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\nRegister requires channel operator. Drop requires being the channel founder."
+        ),
       examples: [
-        "/cs register",
-        "/cs drop",
-        "/cs info",
-        "/cs sop add nick",
-        "/cs aop del nick",
-        "/cs vop list"
+        gettext("/cs register"),
+        gettext("/cs drop"),
+        gettext("/cs info"),
+        gettext("/cs sop add nick"),
+        gettext("/cs aop del nick"),
+        gettext("/cs vop list")
       ]
     }
   end
@@ -96,17 +99,17 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     case ChanServ.register(channel, founder, server) do
       {:ok, msg} ->
         _ = Server.mark_registered(channel)
-        {:ok, :system, %{content: "[ChanServ] #{msg}"}}
+        {:ok, :system, %{content: gettext("[ChanServ] %{message}", message: msg)}}
 
       {:error, msg} ->
-        {:error, "[ChanServ] #{msg}"}
+        {:error, gettext("[ChanServ] %{message}", message: msg)}
     end
   end
 
   defp call_drop(channel, nickname, server) do
     case ChanServ.drop(channel, nickname, server) do
-      {:ok, msg} -> {:ok, :system, %{content: "[ChanServ] #{msg}"}}
-      {:error, msg} -> {:error, "[ChanServ] #{msg}"}
+      {:ok, msg} -> {:ok, :system, %{content: gettext("[ChanServ] %{message}", message: msg)}}
+      {:error, msg} -> {:error, gettext("[ChanServ] %{message}", message: msg)}
     end
   end
 
@@ -114,19 +117,23 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
     case ChanServ.info(channel, server) do
       {:ok, info} ->
         text =
-          "[ChanServ] #{info.name}: founder=#{info.founder}, registered=#{info.registered_at}"
+          gettext("[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}",
+            name: info.name,
+            founder: info.founder,
+            registered_at: info.registered_at
+          )
 
         {:ok, :system, %{content: text}}
 
       {:error, msg} ->
-        {:error, "[ChanServ] #{msg}"}
+        {:error, gettext("[ChanServ] %{message}", message: msg)}
     end
   end
 
   defp call_manage_access(channel, action, level, target, requester, server) do
     case ChanServ.manage_access(channel, action, level, target, requester, server) do
-      {:ok, msg} -> {:ok, :system, %{content: "[ChanServ] #{msg}"}}
-      {:error, msg} -> {:error, "[ChanServ] #{msg}"}
+      {:ok, msg} -> {:ok, :system, %{content: gettext("[ChanServ] %{message}", message: msg)}}
+      {:error, msg} -> {:error, gettext("[ChanServ] %{message}", message: msg)}
     end
   end
 
@@ -136,7 +143,7 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
         {:ok, :system, %{content: format_access_list(channel, level)}}
 
       {:error, msg} ->
-        {:error, "[ChanServ] #{msg}"}
+        {:error, gettext("[ChanServ] %{message}", message: msg)}
     end
   end
 
@@ -146,15 +153,22 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
       |> Queries.list_access()
       |> Enum.filter(&(&1.level == level))
 
-    ["[ChanServ] Access list for #{channel} (#{level})" | format_access_lines(entries)]
+    [
+      gettext("[ChanServ] Access list for %{channel} (%{level})", channel: channel, level: level)
+      | format_access_lines(entries)
+    ]
     |> Enum.join("\n")
   end
 
-  defp format_access_lines([]), do: ["  (empty)"]
+  defp format_access_lines([]), do: [gettext("  (empty)")]
 
   defp format_access_lines(entries) do
     Enum.map(entries, fn entry ->
-      "  #{entry.nickname} [#{entry.level}] (added by #{entry.added_by})"
+      gettext("  %{nickname} [%{level}] (added by %{added_by})",
+        nickname: entry.nickname,
+        level: entry.level,
+        added_by: entry.added_by
+      )
     end)
   end
 
@@ -169,8 +183,8 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
 
     %CommandSyntax{
       command: "cs",
-      syntax: "/cs <subcommand> [args]",
-      description: "Manage channel registration and access lists through ChanServ.",
+      syntax: gettext("/cs <subcommand> [args]"),
+      description: gettext("Manage channel registration and access lists through ChanServ."),
       category: :advanced,
       parameters: [
         %Parameter{
@@ -178,32 +192,32 @@ defmodule RetroHexChat.Commands.Handlers.Cs do
           required: true,
           type: :text,
           position: 0,
-          description: "Subcommand: register, drop, info, sop, aop, vop"
+          description: gettext("Subcommand: register, drop, info, sop, aop, vop")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Subcommand arguments"
+          description: gettext("Subcommand arguments")
         }
       ],
       examples: [
-        "/cs register",
-        "/cs drop",
-        "/cs info",
-        "/cs sop add nick",
-        "/cs aop del nick",
-        "/cs vop list"
+        gettext("/cs register"),
+        gettext("/cs drop"),
+        gettext("/cs info"),
+        gettext("/cs sop add nick"),
+        gettext("/cs aop del nick"),
+        gettext("/cs vop list")
       ],
       subcommands: [
-        %{name: "register", description: "Register the current channel"},
-        %{name: "drop", description: "Drop channel registration"},
-        %{name: "info", description: "View channel registration info"},
-        %{name: "sop", description: "Manage super-operator access list"},
-        %{name: "aop", description: "Manage auto-operator access list"},
-        %{name: "vop", description: "Manage auto-voice access list"},
-        %{name: "help", description: "Show ChanServ help"}
+        %{name: "register", description: gettext("Register the current channel")},
+        %{name: "drop", description: gettext("Drop channel registration")},
+        %{name: "info", description: gettext("View channel registration info")},
+        %{name: "sop", description: gettext("Manage super-operator access list")},
+        %{name: "aop", description: gettext("Manage auto-operator access list")},
+        %{name: "vop", description: gettext("Manage auto-voice access list")},
+        %{name: "help", description: gettext("Show ChanServ help")}
       ]
     }
   end

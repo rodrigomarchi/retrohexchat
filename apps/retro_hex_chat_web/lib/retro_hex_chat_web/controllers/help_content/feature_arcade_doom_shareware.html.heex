@@ -1,84 +1,85 @@
 <p>
-  The original shareware episode of DOOM (1993) — "Knee-Deep in the Dead" — the game that
-  launched the FPS genre into the mainstream. Nine levels of demon-infested corridors on the
-  Martian moon Phobos, where a UAC teleportation experiment has gone horribly wrong.
+  {gettext(
+    "The original shareware episode of DOOM (1993) — \"Knee-Deep in the Dead\" — the game that launched the FPS genre into the mainstream. Nine levels of demon-infested corridors on the Martian moon Phobos, where a UAC teleportation experiment has gone horribly wrong."
+  )}
 </p>
 <.diagram_arcade_doom class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_clock}>About</.help_h4>
+<.help_h4 icon={:icon_clock}>{gettext("About")}</.help_h4>
 <p>
-  Developed by id Software (John Carmack, John Romero, Sandy Petersen) and released on
-  December 10, 1993, DOOM was uploaded to an FTP server at the University of Wisconsin
-  and spread like wildfire across the early internet. As a lone space marine, fight your
-  way through military bases overrun by hellspawn using an arsenal that includes the iconic
-  shotgun, chaingun, and rocket launcher.
+  {gettext(
+    "Developed by id Software (John Carmack, John Romero, Sandy Petersen) and released on December 10, 1993, DOOM was uploaded to an FTP server at the University of Wisconsin and spread like wildfire across the early internet. As a lone space marine, fight your way through military bases overrun by hellspawn using an arsenal that includes the iconic shotgun, chaingun, and rocket launcher."
+  )}
 </p>
 <p>
-  This is the freely distributable shareware release — Episode 1 of the original DOOM,
-  exactly as id Software released it. The level design by John Romero and Sandy Petersen
-  remains a masterclass in non-linear FPS map design. It runs on the PrBoom+ engine
-  compiled to WebAssembly.
+  {gettext(
+    "This is the freely distributable shareware release — Episode 1 of the original DOOM, exactly as id Software released it. The level design by John Romero and Sandy Petersen remains a masterclass in non-linear FPS map design. It runs on the PrBoom+ engine compiled to WebAssembly."
+  )}
 </p>
-<.help_h4 icon={:icon_send}>Controls</.help_h4>
+<.help_h4 icon={:icon_send}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>W / ↑</strong> — Move forward</li>
-  <li><strong>S / ↓</strong> — Move backward</li>
-  <li><strong>A</strong> — Strafe left</li>
-  <li><strong>D</strong> — Strafe right</li>
-  <li><strong>Mouse</strong> — Aim / turn</li>
-  <li><strong>Left Click</strong> — Fire weapon</li>
-  <li><strong>E</strong> — Use / open doors</li>
-  <li><strong>Space</strong> — Jump (PrBoom+)</li>
-  <li><strong>1–7</strong> — Select weapon</li>
-  <li><strong>Tab</strong> — Toggle automap</li>
-  <li><strong>Shift</strong> — Run (hold)</li>
-  <li><strong>Esc</strong> — Menu</li>
+  <li><strong>{gettext("W / ↑")}</strong> {gettext("— Move forward")}</li>
+  <li><strong>{gettext("S / ↓")}</strong> {gettext("— Move backward")}</li>
+  <li><strong>A</strong> {gettext("— Strafe left")}</li>
+  <li><strong>D</strong> {gettext("— Strafe right")}</li>
+  <li><strong>{gettext("Mouse")}</strong> {gettext("— Aim / turn")}</li>
+  <li><strong>{gettext("Left Click")}</strong> {gettext("— Fire weapon")}</li>
+  <li><strong>E</strong> {gettext("— Use / open doors")}</li>
+  <li><strong>{gettext("Space")}</strong> {gettext("— Jump (PrBoom+)")}</li>
+  <li><strong>1–7</strong> {gettext("— Select weapon")}</li>
+  <li><strong>{gettext("Tab")}</strong> {gettext("— Toggle automap")}</li>
+  <li><strong>{gettext("Shift")}</strong> {gettext("— Run (hold)")}</li>
+  <li><strong>{gettext("Esc")}</strong> {gettext("— Menu")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Gameplay Tips</.help_h4>
-<ul>
-  <li>
-    <strong>Hold Shift to run</strong>
-    — Movement speed doubles, essential for dodging projectiles.
-  </li>
-  <li>
-    <strong>Quicksave often</strong>
-    — Use F6 for quicksave and F9 for quickload, especially before new areas.
-  </li>
-  <li>
-    <strong>Hunt for secrets</strong>
-    — Look for misaligned wall textures and listen for hidden doors.
-  </li>
-  <li>
-    <strong>Chainsaw vs. Pinkies</strong>
-    — The chainsaw is devastating against Demons — it stunlocks them completely.
-  </li>
-  <li>
-    <strong>Strafe-running</strong>
-    — Moving forward + strafe simultaneously makes you ~40% faster than running straight.
-  </li>
-</ul>
-<.help_h4 icon={:icon_star}>Did You Know?</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Gameplay Tips")}</.help_h4>
 <ul>
   <li>
-    By late 1995, DOOM was estimated to be installed on more computers worldwide than
-    Windows 95. The shareware version alone was downloaded over 20 million times by June 1996.
+    <strong>{gettext("Hold Shift to run")}</strong>
+    {gettext("— Movement speed doubles, essential for dodging projectiles.")}
   </li>
   <li>
-    id Software estimated only 1% of shareware downloaders bought the full game — yet this
-    generated $100,000 per day in initial revenue, selling in one day what Wolfenstein 3D
-    had sold in one month.
+    <strong>{gettext("Quicksave often")}</strong>
+    {gettext("— Use F6 for quicksave and F9 for quickload, especially before new areas.")}
   </li>
   <li>
-    The original DOOM engine has no true vertical look — all aiming is horizontal. The engine
-    auto-aims vertically.
+    <strong>{gettext("Hunt for secrets")}</strong>
+    {gettext("— Look for misaligned wall textures and listen for hidden doors.")}
+  </li>
+  <li>
+    <strong>{gettext("Chainsaw vs. Pinkies")}</strong>
+    {gettext("— The chainsaw is devastating against Demons — it stunlocks them completely.")}
+  </li>
+  <li>
+    <strong>{gettext("Strafe-running")}</strong>
+    {gettext(
+      "— Moving forward + strafe simultaneously makes you ~40% faster than running straight."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_star}>{gettext("Did You Know?")}</.help_h4>
+<ul>
+  <li>
+    {gettext(
+      "By late 1995, DOOM was estimated to be installed on more computers worldwide than Windows 95. The shareware version alone was downloaded over 20 million times by June 1996."
+    )}
+  </li>
+  <li>
+    {gettext(
+      "id Software estimated only 1% of shareware downloaders bought the full game — yet this generated $100,000 per day in initial revenue, selling in one day what Wolfenstein 3D had sold in one month."
+    )}
+  </li>
+  <li>
+    {gettext(
+      "The original DOOM engine has no true vertical look — all aiming is horizontal. The engine auto-aims vertically."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-doom">DOOM (Arcade)</.help_link>
-  · <.help_link topic="feature-arcade-freedoom1">Freedoom: Phase 1</.help_link>
-  · <.help_link topic="feature-arcade-freedoom2">Freedoom: Phase 2</.help_link>
-  · <.help_link topic="feature-arcade-freedm">FreeDM</.help_link>
-  · <.help_link topic="feature-arcade-chex-quest">Chex Quest</.help_link>
-  · <.help_link topic="feature-arcade-hacx">HacX</.help_link>
-  · <.help_link topic="feature-arcade-rekkr">REKKR</.help_link>
+  <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
+  · <.help_link topic="feature-arcade-freedoom1">{gettext("Freedoom: Phase 1")}</.help_link>
+  · <.help_link topic="feature-arcade-freedoom2">{gettext("Freedoom: Phase 2")}</.help_link>
+  · <.help_link topic="feature-arcade-freedm">{gettext("FreeDM")}</.help_link>
+  · <.help_link topic="feature-arcade-chex-quest">{gettext("Chex Quest")}</.help_link>
+  · <.help_link topic="feature-arcade-hacx">{gettext("HacX")}</.help_link>
+  · <.help_link topic="feature-arcade-rekkr">{gettext("REKKR")}</.help_link>
 </p>

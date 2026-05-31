@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
   @moduledoc false
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.Window
@@ -37,43 +38,47 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
                 type="button"
                 class="inline-flex items-center gap-1 h-7 px-3 text-xs shadow-retro-raised bg-surface active:shadow-retro-sunken"
               >
-                <Icons.icon_connect class="w-4 h-4" /> Connect
+                <Icons.icon_connect class="w-4 h-4" /> {gettext("Connect")}
               </button>
             </a>
             <.nav_link
               href="/how-it-works"
-              label="How It Works"
+              label={gettext("How It Works")}
               active={@active_page == :how_it_works}
             >
               <Icons.icon_server class="w-3 h-3" />
             </.nav_link>
-            <.nav_link href="/features" label="Features" active={@active_page == :features}>
+            <.nav_link href="/features" label={gettext("Features")} active={@active_page == :features}>
               <Icons.icon_chat class="w-3 h-3" />
             </.nav_link>
-            <.nav_link href="/privacy" label="Privacy" active={@active_page == :privacy}>
+            <.nav_link href="/privacy" label={gettext("Privacy")} active={@active_page == :privacy}>
               <Icons.icon_lock class="w-3 h-3" />
             </.nav_link>
-            <.nav_link href="/install" label="Install" active={@active_page == :install}>
+            <.nav_link href="/install" label={gettext("Install")} active={@active_page == :install}>
               <Icons.icon_terminal class="w-3 h-3" />
             </.nav_link>
-            <.nav_link href="/community" label="Community" active={@active_page == :community}>
+            <.nav_link
+              href="/community"
+              label={gettext("Community")}
+              active={@active_page == :community}
+            >
               <Icons.icon_code class="w-3 h-3" />
             </.nav_link>
-            <.nav_link href="/faq" label="FAQ" active={@active_page == :faq}>
+            <.nav_link href="/faq" label={gettext("FAQ")} active={@active_page == :faq}>
               <Icons.icon_question class="w-3 h-3" />
             </.nav_link>
             <a
               href="/chat/help"
               class="hidden lg:inline-flex items-center gap-1 px-2 text-xs hover:underline no-underline text-text"
             >
-              <Icons.icon_notepad class="w-3 h-3" /> Docs
+              <Icons.icon_notepad class="w-3 h-3" /> {gettext("Docs")}
             </a>
             <%!-- Mobile menu toggle --%>
             <button
               type="button"
               class="lg:hidden ml-auto inline-flex items-center h-7 px-2 text-xs shadow-retro-raised bg-surface active:shadow-retro-sunken"
               phx-click={JS.toggle(to: "#mobile-nav")}
-              aria-label="Menu"
+              aria-label={gettext("Menu")}
             >
               <Icons.icon_btn_menu class="w-4 h-4" />
             </button>
@@ -88,27 +93,43 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
         <div class="flex flex-col gap-1">
           <.mobile_nav_link
             href="/how-it-works"
-            label="How It Works"
+            label={gettext("How It Works")}
             active={@active_page == :how_it_works}
           >
             <Icons.icon_server class="w-3 h-3" />
           </.mobile_nav_link>
-          <.mobile_nav_link href="/features" label="Features" active={@active_page == :features}>
+          <.mobile_nav_link
+            href="/features"
+            label={gettext("Features")}
+            active={@active_page == :features}
+          >
             <Icons.icon_chat class="w-3 h-3" />
           </.mobile_nav_link>
-          <.mobile_nav_link href="/privacy" label="Privacy" active={@active_page == :privacy}>
+          <.mobile_nav_link
+            href="/privacy"
+            label={gettext("Privacy")}
+            active={@active_page == :privacy}
+          >
             <Icons.icon_lock class="w-3 h-3" />
           </.mobile_nav_link>
-          <.mobile_nav_link href="/install" label="Install" active={@active_page == :install}>
+          <.mobile_nav_link
+            href="/install"
+            label={gettext("Install")}
+            active={@active_page == :install}
+          >
             <Icons.icon_terminal class="w-3 h-3" />
           </.mobile_nav_link>
-          <.mobile_nav_link href="/community" label="Community" active={@active_page == :community}>
+          <.mobile_nav_link
+            href="/community"
+            label={gettext("Community")}
+            active={@active_page == :community}
+          >
             <Icons.icon_code class="w-3 h-3" />
           </.mobile_nav_link>
-          <.mobile_nav_link href="/faq" label="FAQ" active={@active_page == :faq}>
+          <.mobile_nav_link href="/faq" label={gettext("FAQ")} active={@active_page == :faq}>
             <Icons.icon_question class="w-3 h-3" />
           </.mobile_nav_link>
-          <.mobile_nav_link href="/chat/help" label="Docs" active={false}>
+          <.mobile_nav_link href="/chat/help" label={gettext("Docs")} active={false}>
             <Icons.icon_notepad class="w-3 h-3" />
           </.mobile_nav_link>
         </div>
@@ -161,19 +182,21 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
     ~H"""
     <footer class="m-4 mt-8">
       <.window>
-        <.window_title_bar title="About" inactive controls={[:close]}>
+        <.window_title_bar title={gettext("About")} inactive controls={[:close]}>
           <:icon><Icons.icon_lightbulb class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
           <p class="text-sm mb-3">
-            Retro Hex Chat is free software, licensed under MIT.<br />
-            Built with Elixir, Phoenix, and LiveView.<br />
-            Inspired by the IRC of the 2000s and the freedom it represented.
+            {gettext("Retro Hex Chat is free software, licensed under MIT.")}<br />
+            {gettext("Built with Elixir, Phoenix, and LiveView.")}<br />
+            {gettext("Inspired by the IRC of the 2000s and the freedom it represented.")}
           </p>
 
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 text-xs mb-3">
             <div>
-              <h3 class="font-bold mb-1"><Icons.icon_code class="w-3 h-3 inline" /> Project</h3>
+              <h3 class="font-bold mb-1">
+                <Icons.icon_code class="w-3 h-3 inline" /> {gettext("Project")}
+              </h3>
               <ul class="space-y-1">
                 <li>
                   <a
@@ -181,7 +204,7 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
                     target="_blank"
                     rel="noopener"
                   >
-                    GitHub
+                    {gettext("GitHub")}
                   </a>
                 </li>
                 <li>
@@ -190,7 +213,7 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
                     target="_blank"
                     rel="noopener"
                   >
-                    Contribute
+                    {gettext("Contribute")}
                   </a>
                 </li>
                 <li>
@@ -199,15 +222,15 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
                     target="_blank"
                     rel="noopener"
                   >
-                    License (MIT)
+                    {gettext("License (MIT)")}
                   </a>
                 </li>
-                <li><a href="/chat/help">Documentation</a></li>
+                <li><a href="/chat/help">{gettext("Documentation")}</a></li>
               </ul>
             </div>
             <div>
               <h3 class="font-bold mb-1">
-                <Icons.icon_community class="w-3 h-3 inline" /> Community
+                <Icons.icon_community class="w-3 h-3 inline" /> {gettext("Community")}
               </h3>
               <ul class="space-y-1">
                 <li><a href="/connect">#general</a></li>
@@ -216,7 +239,9 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
               </ul>
             </div>
             <div>
-              <h3 class="font-bold mb-1"><Icons.icon_legal class="w-3 h-3 inline" /> Legal</h3>
+              <h3 class="font-bold mb-1">
+                <Icons.icon_legal class="w-3 h-3 inline" /> {gettext("Legal")}
+              </h3>
               <ul class="space-y-1">
                 <li>
                   <a
@@ -224,7 +249,7 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
                     target="_blank"
                     rel="noopener"
                   >
-                    MIT License
+                    {gettext("MIT License")}
                   </a>
                 </li>
                 <li>
@@ -233,17 +258,19 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
                     target="_blank"
                     rel="noopener"
                   >
-                    Security
+                    {gettext("Security")}
                   </a>
                 </li>
               </ul>
             </div>
             <div>
-              <h3 class="font-bold mb-1"><Icons.icon_heart class="w-3 h-3 inline" /> Support</h3>
+              <h3 class="font-bold mb-1">
+                <Icons.icon_heart class="w-3 h-3 inline" /> {gettext("Support")}
+              </h3>
               <ul class="space-y-1">
                 <li>
                   <a href="https://github.com/sponsors/rodrigomarchi" target="_blank" rel="noopener">
-                    GitHub Sponsors
+                    {gettext("GitHub Sponsors")}
                   </a>
                 </li>
               </ul>
@@ -251,18 +278,18 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
           </div>
 
           <p class="text-sm text-center italic mb-2">
-            &ldquo;Your data. Your rules. Nobody in between.&rdquo;
+            {gettext("&ldquo;Your data. Your rules. Nobody in between.&rdquo;")}
           </p>
 
           <div class="flex justify-center gap-4 text-xs text-gray-600">
-            <span>v0.1.0</span>
-            <span>Made by humans</span>
-            <span>2025&ndash;2026</span>
+            <span>{gettext("v0.1.0")}</span>
+            <span>{gettext("Made by humans")}</span>
+            <span>{gettext("2025&ndash;2026")}</span>
           </div>
         </.window_body>
         <.window_status_bar>
-          <.window_status_bar_field grow>MIT License</.window_status_bar_field>
-          <.window_status_bar_field>v0.1.0</.window_status_bar_field>
+          <.window_status_bar_field grow>{gettext("MIT License")}</.window_status_bar_field>
+          <.window_status_bar_field>{gettext("v0.1.0")}</.window_status_bar_field>
         </.window_status_bar>
       </.window>
     </footer>

@@ -7,6 +7,7 @@ defmodule RetroHexChat.Channels.Server do
   bans, and topic. All mutations go through this process to ensure
   serialized access to channel state.
   """
+  use Gettext, backend: RetroHexChat.Gettext
   use GenServer, restart: :transient
 
   require Logger
@@ -64,10 +65,10 @@ defmodule RetroHexChat.Channels.Server do
   def part(channel_name, nickname, reason \\ nil) do
     case Registry.lookup(channel_name) do
       {:ok, pid} -> GenServer.call(pid, {:part, nickname, reason})
-      {:error, :not_found} -> {:error, "Channel not found"}
+      {:error, :not_found} -> {:error, gettext("Channel not found")}
     end
   catch
-    :exit, _reason -> {:error, "Channel not found"}
+    :exit, _reason -> {:error, gettext("Channel not found")}
   end
 
   @doc """
@@ -218,10 +219,10 @@ defmodule RetroHexChat.Channels.Server do
   def mark_registered(channel_name) do
     case Registry.lookup(channel_name) do
       {:ok, pid} -> GenServer.call(pid, :mark_registered)
-      {:error, :not_found} -> {:error, "Channel not found"}
+      {:error, :not_found} -> {:error, gettext("Channel not found")}
     end
   catch
-    :exit, _reason -> {:error, "Channel not found"}
+    :exit, _reason -> {:error, gettext("Channel not found")}
   end
 
   # ──────────────────────────────────────────────────────────────
@@ -313,7 +314,7 @@ defmodule RetroHexChat.Channels.Server do
         {:reply, :ok, new_state}
       end
     else
-      {:reply, {:error, "Not in channel"}, state}
+      {:reply, {:error, gettext("Not in channel")}, state}
     end
   end
 
@@ -435,7 +436,7 @@ defmodule RetroHexChat.Channels.Server do
            }}
         )
 
-        new_state = eject_ban_matches(new_state, actor_nick, target_nick, "Banned")
+        new_state = eject_ban_matches(new_state, actor_nick, target_nick, gettext("Banned"))
 
         {:reply, :ok, new_state}
 
@@ -496,7 +497,7 @@ defmodule RetroHexChat.Channels.Server do
 
       {:reply, :ok, new_state}
     else
-      {:reply, {:error, "You must be a channel operator"}, state}
+      {:reply, {:error, gettext("You must be a channel operator")}, state}
     end
   end
 
@@ -522,7 +523,7 @@ defmodule RetroHexChat.Channels.Server do
 
       {:reply, :ok, new_state}
     else
-      {:reply, {:error, "You must be a channel operator"}, state}
+      {:reply, {:error, gettext("You must be a channel operator")}, state}
     end
   end
 
@@ -548,7 +549,7 @@ defmodule RetroHexChat.Channels.Server do
 
       {:reply, :ok, new_state}
     else
-      {:reply, {:error, "You must be a channel operator"}, state}
+      {:reply, {:error, gettext("You must be a channel operator")}, state}
     end
   end
 
@@ -574,7 +575,7 @@ defmodule RetroHexChat.Channels.Server do
 
       {:reply, :ok, new_state}
     else
-      {:reply, {:error, "You must be a channel operator"}, state}
+      {:reply, {:error, gettext("You must be a channel operator")}, state}
     end
   end
 
@@ -592,7 +593,7 @@ defmodule RetroHexChat.Channels.Server do
 
       {:reply, :ok, new_state}
     else
-      {:reply, {:error, "You must be a channel operator to unban users"}, state}
+      {:reply, {:error, gettext("You must be a channel operator to unban users")}, state}
     end
   end
 
@@ -642,17 +643,17 @@ defmodule RetroHexChat.Channels.Server do
   def handle_call({:knock, nickname, message}, _from, state) do
     cond do
       not Modes.invite_only?(state.modes) ->
-        {:reply, {:error, "Channel is not invite-only"}, state}
+        {:reply, {:error, gettext("Channel is not invite-only")}, state}
 
       Modes.no_knock?(state.modes) ->
-        {:reply, {:error, "Knocking is disabled for this channel"}, state}
+        {:reply, {:error, gettext("Knocking is disabled for this channel")}, state}
 
       Masks.matches_any?(state.bans, nickname) and
           not Masks.matches_any?(state.ban_exceptions, nickname) ->
-        {:reply, {:error, "You are banned from that channel"}, state}
+        {:reply, {:error, gettext("You are banned from that channel")}, state}
 
       Membership.member?(state.membership, nickname) ->
-        {:reply, {:error, "You are already in that channel"}, state}
+        {:reply, {:error, gettext("You are already in that channel")}, state}
 
       true ->
         broadcast(
@@ -681,8 +682,8 @@ defmodule RetroHexChat.Channels.Server do
       broadcast(state.name, {:user_channel_muted, %{target: target_nick, channel: state.name}})
       {:reply, :ok, new_state}
     else
-      {:error, :not_member} -> {:reply, {:error, "User is not in channel"}, state}
-      false -> {:reply, {:error, "Insufficient privileges"}, state}
+      {:error, :not_member} -> {:reply, {:error, gettext("User is not in channel")}, state}
+      false -> {:reply, {:error, gettext("Insufficient privileges")}, state}
     end
   end
 
@@ -695,8 +696,8 @@ defmodule RetroHexChat.Channels.Server do
       broadcast(state.name, {:user_channel_unmuted, %{target: target_nick, channel: state.name}})
       {:reply, :ok, new_state}
     else
-      {:error, :not_member} -> {:reply, {:error, "Insufficient privileges"}, state}
-      false -> {:reply, {:error, "Insufficient privileges"}, state}
+      {:error, :not_member} -> {:reply, {:error, gettext("Insufficient privileges")}, state}
+      false -> {:reply, {:error, gettext("Insufficient privileges")}, state}
     end
   end
 
@@ -745,8 +746,11 @@ defmodule RetroHexChat.Channels.Server do
 
       {:reply, :ok, new_state}
     else
-      {:ok, _role} -> {:reply, {:error, "Only the channel owner can transfer ownership"}, state}
-      {:error, :not_member} -> {:reply, {:error, "User is not in channel"}, state}
+      {:ok, _role} ->
+        {:reply, {:error, gettext("Only the channel owner can transfer ownership")}, state}
+
+      {:error, :not_member} ->
+        {:reply, {:error, gettext("User is not in channel")}, state}
     end
   end
 
@@ -836,7 +840,7 @@ defmodule RetroHexChat.Channels.Server do
         {:user_banned, %{channel: state.name, operator: nickname, target: target, reason: nil}}
       )
 
-      {:ok, eject_ban_matches(new_state, nickname, target, "Banned")}
+      {:ok, eject_ban_matches(new_state, nickname, target, gettext("Banned"))}
     end
   end
 
@@ -852,7 +856,7 @@ defmodule RetroHexChat.Channels.Server do
 
       {:ok, new_state}
     else
-      {:error, "You must be a channel operator to unban users"}
+      {:error, gettext("You must be a channel operator to unban users")}
     end
   end
 
@@ -907,7 +911,7 @@ defmodule RetroHexChat.Channels.Server do
     if Membership.member?(mem, target) do
       {:cont, {:ok, Membership.set_role(mem, target, role)}}
     else
-      {:halt, {:error, "User #{target} is not in channel"}}
+      {:halt, {:error, gettext("User %{target} is not in channel", target: target)}}
     end
   end
 
@@ -950,7 +954,7 @@ defmodule RetroHexChat.Channels.Server do
 
   defp check_channel_mute(state, nickname) do
     if MapSet.member?(state.channel_mutes, nickname) do
-      {:error, "You are muted in this channel"}
+      {:error, gettext("You are muted in this channel")}
     else
       :ok
     end
@@ -1014,7 +1018,7 @@ defmodule RetroHexChat.Channels.Server do
 
   defp check_not_member(state, nickname) do
     if Membership.member?(state.membership, nickname) do
-      {:error, "Already in channel"}
+      {:error, gettext("Already in channel")}
     else
       :ok
     end
@@ -1038,7 +1042,7 @@ defmodule RetroHexChat.Channels.Server do
       end)
 
     if recent >= count,
-      do: {:error, "Channel join throttle active, please try again shortly"},
+      do: {:error, gettext("Channel join throttle active, please try again shortly")},
       else: :ok
   end
 

@@ -1,26 +1,31 @@
 <p>
-  Look up information about a user who recently disconnected, such as when they were last seen and what channels they were in.
+  {gettext(
+    "Look up information about a user who recently disconnected, such as when they were last seen and what channels they were in."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/whowas &lt;nickname&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>nickname</code> — The user to look up.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/whowas <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>nickname</code> {gettext("— The user to look up.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Shows information about a user who has disconnected within the configured retention period: their last seen time, which channels they were in, and their quit message (if they provided one). This is useful when you notice someone has left and want to know when and why. Lookups are case-insensitive. If no record exists, a "no whowas information available" message is shown.
+  {gettext(
+    "Shows information about a user who has disconnected within the configured retention period: their last seen time, which channels they were in, and their quit message (if they provided one). This is useful when you notice someone has left and want to know when and why. Lookups are case-insensitive. If no record exists, a \"no whowas information available\" message is shown."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
   <li>
-    Data is cached for up to the configured retention period after disconnect (default: 1 hour)
+    {gettext(
+      "Data is cached for up to the configured retention period after disconnect (default: 1 hour)"
+    )}
   </li>
-  <li>The user must have been online recently</li>
+  <li>{gettext("The user must have been online recently")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/whowas Bob
-/whowas Alice</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/whowas Bob /whowas Alice")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-whois">/whois</.help_link>
-  · <.help_link topic="feature-notify-list">Notify List</.help_link>
+  <.help_link topic="cmd-whois">{gettext("/whois")}</.help_link>
+  · <.help_link topic="feature-notify-list">{gettext("Notify List")}</.help_link>
 </p>

@@ -1,26 +1,32 @@
 <p>
-  Look up detailed information about an online user, including their channels, idle time, bio, and registration status.
+  {gettext(
+    "Look up detailed information about an online user, including their channels, idle time, bio, and registration status."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/whois &lt;nickname&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>nickname</code> — The user to look up.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/whois <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>nickname</code> {gettext("— The user to look up.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Displays comprehensive information about the user in the Status tab. You can see: their channels (with shared channels highlighted), how long they've been online, how long they've been idle, their away message (if set), their bio (if set), whether they're registered with NickServ, and client details (browser, OS, screen resolution, language, and timezone) when available. You can also trigger
-  <code>/whois</code>
-  by double-clicking a nickname in the nick list. You can look up yourself too.
+  {gettext(
+    "Displays comprehensive information about the user in the Status tab. You can see: their channels (with shared channels highlighted), how long they've been online, how long they've been idle, their away message (if set), their bio (if set), whether they're registered with NickServ, and client details (browser, OS, screen resolution, language, and timezone) when available. You can also trigger"
+  )}
+  <code>{gettext("/whois")}</code>
+  {gettext("by double-clicking a nickname in the nick list. You can look up yourself too.")}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>The user must be online (for offline users, use <code>/whowas</code> instead)</li>
+  <li>
+    {gettext("The user must be online (for offline users, use")}
+    <code>{gettext("/whowas")}</code> {gettext("instead)")}
+  </li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/whois Alice
-/whois YourOwnNick</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/whois Alice /whois YourOwnNick")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-whowas">/whowas</.help_link>
-  · <.help_link topic="cmd-bio">/bio</.help_link>
-  · <.help_link topic="feature-notify-list">Notify List</.help_link>
+  <.help_link topic="cmd-whowas">{gettext("/whowas")}</.help_link>
+  · <.help_link topic="cmd-bio">{gettext("/bio")}</.help_link>
+  · <.help_link topic="feature-notify-list">{gettext("Notify List")}</.help_link>
 </p>

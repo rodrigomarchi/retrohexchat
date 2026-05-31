@@ -1,17 +1,19 @@
 <p>
-  Prevents users from sending <.help_link topic="cmd-knock">/knock</.help_link>
-  requests to the channel.
+  {gettext("Prevents users from sending")}
+  <.help_link topic="cmd-knock">{gettext("/knock")}</.help_link>
+  {gettext("requests to the channel.")}
 </p>
-<.help_h4 icon={:icon_terminal}>Usage</.help_h4>
-<pre>/mode +K    — Enable no-knock mode
-/mode -K    — Disable no-knock mode</pre>
-<.help_h4 icon={:icon_lightbulb}>Details</.help_h4>
+<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
+<pre>{gettext("/mode +K — Enable no-knock mode /mode -K — Disable no-knock mode")}</pre>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Details")}</.help_h4>
 <p>
-  When <code>+K</code> is set, any <code>/knock</code> attempt will be silently rejected.
-  This is useful for invite-only channels that do not want to receive join requests.
+  {gettext("When")} <code>{gettext("+K")}</code> {gettext("is set, any")}
+  <code>{gettext("/knock")}</code> {gettext(
+    "attempt will be silently rejected. This is useful for invite-only channels that do not want to receive join requests."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-knock">/knock</.help_link>, <.help_link topic="mode-i">+i Invite Only</.help_link>,
-  <.help_link topic="channel-modes-overview">Channel Modes Overview</.help_link>
+  <.help_link topic="cmd-knock">{gettext("/knock")}</.help_link>, <.help_link topic="mode-i">{gettext("+i Invite Only")}</.help_link>,
+  <.help_link topic="channel-modes-overview">{gettext("Channel Modes Overview")}</.help_link>
 </p>

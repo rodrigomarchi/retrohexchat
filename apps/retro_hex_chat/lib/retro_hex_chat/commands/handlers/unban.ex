@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Unban do
   @moduledoc "Handler for /unban <nickname>"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -11,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, "Usage: /unban <nickname>"}
+    {:error, gettext("Usage: /unban <nickname>")}
   end
 
   def execute([target | _rest], context) do
@@ -31,21 +32,25 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
   def help do
     %{
       name: "unban",
-      syntax: "/unban <nickname>",
+      syntax: gettext("/unban <nickname>"),
       description:
-        "Remove a ban from a user, allowing them to rejoin the channel.\nRequires: channel operator. Must be in a channel.",
-      examples: ["/unban user123"]
+        gettext(
+          "Remove a ban from a user, allowing them to rejoin the channel.\nRequires: channel operator. Must be in a channel."
+        ),
+      examples: [gettext("/unban user123")]
     }
   end
 
-  defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
+  defp require_channel(%{active_channel: nil}),
+    do: {:error, gettext("You are not in any channel")}
+
   defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
   defp require_operator(%{operator_in: operator_in}, channel) do
     if channel in operator_in do
       :ok
     else
-      {:error, "You must be a channel operator to unban users"}
+      {:error, gettext("You must be a channel operator to unban users")}
     end
   end
 
@@ -60,8 +65,8 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
 
     %CommandSyntax{
       command: "unban",
-      syntax: "/unban <nickname>",
-      description: "Remove a ban from a user, allowing them to rejoin the channel.",
+      syntax: gettext("/unban <nickname>"),
+      description: gettext("Remove a ban from a user, allowing them to rejoin the channel."),
       category: :channel,
       parameters: [
         %Parameter{
@@ -69,10 +74,10 @@ defmodule RetroHexChat.Commands.Handlers.Unban do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to unban"
+          description: gettext("User to unban")
         }
       ],
-      examples: ["/unban user123"]
+      examples: [gettext("/unban user123")]
     }
   end
 end

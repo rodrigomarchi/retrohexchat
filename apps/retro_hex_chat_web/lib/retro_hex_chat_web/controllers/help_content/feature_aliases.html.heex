@@ -1,34 +1,46 @@
 <p>
-  Aliases let you create custom command shortcuts. Type a short name and it expands into a longer command or message, with optional variable substitution.
+  {gettext(
+    "Aliases let you create custom command shortcuts. Type a short name and it expands into a longer command or message, with optional variable substitution."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_alias}>Creating Aliases</.help_h4>
+<.help_h4 icon={:icon_dialog_alias}>{gettext("Creating Aliases")}</.help_h4>
 <p>
-  Use <code>/alias add &lt;name&gt; &lt;expansion&gt;</code>
-  or open the <strong>Alias Editor</strong>
-  from <strong>Tools &gt; Alias Editor</strong>.
+  {gettext("Use")} <code>{gettext("/alias add <name> <expansion>")}</code>
+  {gettext("or open the")} <strong>{gettext("Alias Editor")}</strong>
+  from <strong>{gettext("Tools > Alias Editor")}</strong>.
 </p>
-<.help_h4 icon={:icon_tag}>Variable Expansion</.help_h4>
+<.help_h4 icon={:icon_tag}>{gettext("Variable Expansion")}</.help_h4>
 <p>
-  <code>$1</code>–<code>$9</code> — Positional arguments (words typed after the alias).<br />
+  <code>$1</code>–<code>$9</code> {gettext(
+    "— Positional arguments (words typed after the alias)."
+  )}<br />
   <code>
-    $nick
+    {gettext("$nick")}
   </code>
-  — Your current nickname.<br /><code>$chan</code>
-  — Current channel name.<br /><code>$$</code>
-  — Literal <code>$</code>
-  character.
+  {gettext("— Your current nickname.")}<br /><code>{gettext("$chan")}</code>
+  {gettext("— Current channel name.")}<br /><code>$$</code>
+  {gettext("— Literal")} <code>$</code>
+  {gettext("character.")}
 </p>
-<.help_h4 icon={:icon_shield}>Safety Features</.help_h4>
+<.help_h4 icon={:icon_shield}>{gettext("Safety Features")}</.help_h4>
 <p>
-  - <strong>No command chaining</strong>: Expansions cannot contain <code>|</code>, <code>&amp;&amp;</code>, <code>;</code>, or newlines.<br />- <strong>Recursion detection</strong>: Alias chains (A → B → A) are caught at 5 levels.<br />- <strong>Shadowing warning</strong>: Creating an alias that matches a built-in command shows a warning but is allowed.
+  - <strong>{gettext("No command chaining")}</strong>{gettext(": Expansions cannot contain")} <code>|</code>, <code>&amp;&amp;</code>, <code>;</code>{gettext(
+    ", or newlines."
+  )}<br />- <strong>{gettext("Recursion detection")}</strong>{gettext(
+    ": Alias chains (A → B → A) are caught at 5 levels."
+  )}<br />- <strong>{gettext("Shadowing warning")}</strong>{gettext(
+    ": Creating an alias that matches a built-in command shows a warning but is allowed."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Limits")}</.help_h4>
 <p>
-  Maximum 50 aliases per user. Names: 1–30 characters (alphanumeric, hyphens, underscores). Expansions: up to 500 characters. Persisted for registered users.
+  {gettext(
+    "Maximum 50 aliases per user. Names: 1–30 characters (alphanumeric, hyphens, underscores). Expansions: up to 500 characters. Persisted for registered users."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-alias">/alias Command</.help_link>
-  · <.help_link topic="feature-timers">Timers</.help_link>
-  · <.help_link topic="feature-custom-menus">Custom Menus</.help_link>
+  <.help_link topic="cmd-alias">{gettext("/alias Command")}</.help_link>
+  · <.help_link topic="feature-timers">{gettext("Timers")}</.help_link>
+  · <.help_link topic="feature-custom-menus">{gettext("Custom Menus")}</.help_link>
 </p>

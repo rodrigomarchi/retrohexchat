@@ -1,49 +1,60 @@
 <p>
-  Top-down alpine descent through toxic wastelands. Race your opponent downhill through
-  procedurally generated obstacles while outrunning a rising avalanche of radioactive debris.
+  {gettext(
+    "Top-down alpine descent through toxic wastelands. Race your opponent downhill through procedurally generated obstacles while outrunning a rising avalanche of radioactive debris."
+  )}
 </p>
 <.diagram_game_skiing class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow keys (←/→) or A/D</strong> — Steer left/right</li>
-  <li>Gravity handles forward momentum — steering slows you down</li>
+  <li><strong>{gettext("Arrow keys (←/→) or A/D")}</strong> {gettext("— Steer left/right")}</li>
+  <li>{gettext("Gravity handles forward momentum — steering slows you down")}</li>
 </ul>
-<.help_h4 icon={:icon_rules}>Rules</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
 <ul>
-  <li>Best of 3 rounds with increasing difficulty</li>
-  <li>Dodge trees, rocks, and ice patches as you descend</li>
-  <li>Pass through slalom gates for a time bonus (-2s per gate)</li>
-  <li>Collect speed boosts (lightning bolt) for a 3-second burst</li>
-  <li>Steering reduces descent speed — go straight for maximum velocity</li>
-  <li>Collisions stun you for 1-1.5 seconds (timer keeps running)</li>
-  <li>The avalanche creeps closer — if it catches you, the round is lost</li>
-  <li>Blizzard events reduce visibility periodically</li>
-  <li>First to reach the finish line wins the round</li>
-  <li>If both are engulfed, the skier who descended further wins</li>
+  <li>{gettext("Best of 3 rounds with increasing difficulty")}</li>
+  <li>{gettext("Dodge trees, rocks, and ice patches as you descend")}</li>
+  <li>{gettext("Pass through slalom gates for a time bonus (-2s per gate)")}</li>
+  <li>{gettext("Collect speed boosts (lightning bolt) for a 3-second burst")}</li>
+  <li>{gettext("Steering reduces descent speed — go straight for maximum velocity")}</li>
+  <li>{gettext("Collisions stun you for 1-1.5 seconds (timer keeps running)")}</li>
+  <li>{gettext("The avalanche creeps closer — if it catches you, the round is lost")}</li>
+  <li>{gettext("Blizzard events reduce visibility periodically")}</li>
+  <li>{gettext("First to reach the finish line wins the round")}</li>
+  <li>{gettext("If both are engulfed, the skier who descended further wins")}</li>
 </ul>
-<.help_h4 icon={:icon_tab_modes}>Modes</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-hex-skiing-escape">Escape</.help_link>
-    — Infinite descent, ever-accelerating avalanche, last skier standing wins
+    <.help_link topic="feature-hex-skiing-escape">{gettext("Escape")}</.help_link>
+    {gettext("— Infinite descent, ever-accelerating avalanche, last skier standing wins")}
   </li>
   <li>
-    <.help_link topic="feature-hex-skiing-clean">Clean Run</.help_link>
-    — No avalanche, no items, pure time trial racing
+    <.help_link topic="feature-hex-skiing-clean">{gettext("Clean Run")}</.help_link>
+    {gettext("— No avalanche, no items, pure time trial racing")}
   </li>
 </ul>
-<.help_h4 icon={:icon_rules}>Difficulty Progression</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Difficulty Progression")}</.help_h4>
 <ul>
-  <li><strong>Round 1</strong> — Sparse obstacles, slow avalanche, wide gates</li>
-  <li><strong>Round 2</strong> — More rocks, faster avalanche, medium gates</li>
-  <li><strong>Round 3</strong> — Dense ice patches, fast avalanche, narrow gates</li>
+  <li>
+    <strong>{gettext("Round 1")}</strong> {gettext(
+      "— Sparse obstacles, slow avalanche, wide gates"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Round 2")}</strong> {gettext("— More rocks, faster avalanche, medium gates")}
+  </li>
+  <li>
+    <strong>{gettext("Round 3")}</strong> {gettext(
+      "— Dense ice patches, fast avalanche, narrow gates"
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Inspired by Activision Skiing (1980).</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<p>{gettext("Inspired by Activision Skiing (1980).")}</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-skiing-escape">Hex Skiing: Escape</.help_link>
-  · <.help_link topic="feature-hex-skiing-clean">Hex Skiing: Clean Run</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-hex-skiing-escape">{gettext("Hex Skiing: Escape")}</.help_link>
+  · <.help_link topic="feature-hex-skiing-clean">{gettext("Hex Skiing: Clean Run")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

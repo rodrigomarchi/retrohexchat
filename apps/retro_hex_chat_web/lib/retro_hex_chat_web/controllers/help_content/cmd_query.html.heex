@@ -1,22 +1,25 @@
 <p>
-  Open a private message tab with a user without sending any message. Unlike <code>/msg</code>, this just creates the conversation window.
+  {gettext("Open a private message tab with a user without sending any message. Unlike")} <code>{gettext("/msg")}</code>{gettext(
+    ", this just creates the conversation window."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/query &lt;nickname&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>nickname</code> — The user to open a PM tab with.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/query <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>nickname</code> {gettext("— The user to open a PM tab with.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Creates or switches to a PM conversation tab with the specified user. No message is sent — it simply opens the window so you can start typing. If you already have a PM tab open with that user, it switches to it. If you want to open the tab
+  {gettext(
+    "Creates or switches to a PM conversation tab with the specified user. No message is sent — it simply opens the window so you can start typing. If you already have a PM tab open with that user, it switches to it. If you want to open the tab"
+  )}
   <em>and</em>
-  send a message in one step, use <code>/msg</code>
-  instead.
+  {gettext("send a message in one step, use")} <code>{gettext("/msg")}</code>
+  {gettext("instead.")}
 </p>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/query Alice
-/query Bob</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/query Alice /query Bob")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-msg">/msg</.help_link>
-  · <.help_link topic="private-messages">Private Messages</.help_link>
+  <.help_link topic="cmd-msg">{gettext("/msg")}</.help_link>
+  · <.help_link topic="private-messages">{gettext("Private Messages")}</.help_link>
 </p>

@@ -1,19 +1,25 @@
-<p>Remove the server's Message of the Day so that new users connecting won't see any MOTD.</p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/clearmotd</pre>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
 <p>
-  Clears the server MOTD that is normally displayed to users when they connect. After clearing, the MOTD section is simply skipped during connection. You can set a new MOTD at any time with <code>/setmotd</code>.
+  {gettext(
+    "Remove the server's Message of the Day so that new users connecting won't see any MOTD."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
-<ul>
-  <li>Server administrator only</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/clearmotd</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/clearmotd")}</pre>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  <.help_link topic="cmd-motd">/motd</.help_link>
-  · <.help_link topic="cmd-setmotd">/setmotd</.help_link>
-  · <.help_link topic="feature-special-messages">Special Messages</.help_link>
+  {gettext(
+    "Clears the server MOTD that is normally displayed to users when they connect. After clearing, the MOTD section is simply skipped during connection. You can set a new MOTD at any time with"
+  )} <code>{gettext("/setmotd")}</code>.
+</p>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<ul>
+  <li>{gettext("Server administrator only")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/clearmotd")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-motd">{gettext("/motd")}</.help_link>
+  · <.help_link topic="cmd-setmotd">{gettext("/setmotd")}</.help_link>
+  · <.help_link topic="feature-special-messages">{gettext("Special Messages")}</.help_link>
 </p>

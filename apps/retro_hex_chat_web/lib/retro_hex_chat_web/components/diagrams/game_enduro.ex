@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameEnduro do
   @moduledoc "SVG game screen diagram for Hex Enduro."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -15,7 +16,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameEnduro do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Hex Enduro game screen: pseudo-3D road with two racing cars and AI traffic"
+      aria-label={
+        gettext("Hex Enduro game screen: pseudo-3D road with two racing cars and AI traffic")
+      }
     >
       {win98_chrome("Hex Enduro")}
       <%!-- Road (perspective trapezoid) --%>
@@ -62,18 +65,20 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameEnduro do
       <rect x="300" y="280" width="20" height="12" fill="#00d4ff" />
       <%!-- HUD --%>
       <text x="30" y="44" fill="#00ff41" font-size="10" font-family="'Courier New',monospace">
-        P1: 42
+        {gettext("P1: 42")}
       </text>
       <text x="430" y="44" fill="#00d4ff" font-size="10" font-family="'Courier New',monospace">
-        P2: 38
+        {gettext("P2: 38")}
       </text>
       <text x="200" y="44" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        DAY 1  2:15
+        {gettext("DAY 1 2:15")}
       </text>
       <%!-- Fuel gauge --%>
       <rect x="30" y="320" width="60" height="6" fill="#333" />
       <rect x="30" y="320" width="40" height="6" fill="#00ff00" />
-      <text x="30" y="338" fill="#aaa" font-size="8" font-family="'Courier New',monospace">FUEL</text>
+      <text x="30" y="338" fill="#aaa" font-size="8" font-family="'Courier New',monospace">
+        {gettext("FUEL")}
+      </text>
     </svg>
     """
   end

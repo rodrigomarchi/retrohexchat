@@ -1,23 +1,31 @@
-<p>Delete your own messages within 5 minutes of sending.</p>
-<.help_h4 icon={:icon_trash}>How to Delete</.help_h4>
+<p>{gettext("Delete your own messages within 5 minutes of sending.")}</p>
+<.help_h4 icon={:icon_trash}>{gettext("How to Delete")}</.help_h4>
 <p>
-  Right-click your message and select "Apagar mensagem". A confirmation dialog appears with Confirmar/Cancelar buttons. Press Escape or click Cancelar to dismiss.
+  {gettext(
+    "Right-click your message and select \"Apagar mensagem\". A confirmation dialog appears with Confirmar/Cancelar buttons. Press Escape or click Cancelar to dismiss."
+  )}
 </p>
-<.help_h4 icon={:icon_question}>What Happens</.help_h4>
+<.help_h4 icon={:icon_question}>{gettext("What Happens")}</.help_h4>
 <p>
-  The message is replaced with "[mensagem removida]" in italic text for all viewers. The original content is preserved in the database (soft-delete) for audit purposes.
+  {gettext(
+    "The message is replaced with \"[mensagem removida]\" in italic text for all viewers. The original content is preserved in the database (soft-delete) for audit purposes."
+  )}
 </p>
-<.help_h4 icon={:icon_warning}>Limitations</.help_h4>
+<.help_h4 icon={:icon_warning}>{gettext("Limitations")}</.help_h4>
 <p>
-  You can only delete your own messages. The 5-minute time limit is enforced server-side. Channel operators cannot delete other users' messages.
+  {gettext(
+    "You can only delete your own messages. The 5-minute time limit is enforced server-side. Channel operators cannot delete other users' messages."
+  )}
 </p>
-<.help_h4 icon={:icon_chat}>Replies to Deleted Messages</.help_h4>
+<.help_h4 icon={:icon_chat}>{gettext("Replies to Deleted Messages")}</.help_h4>
 <p>
-  If someone replied to a message that is later deleted, the reply quote shows "[mensagem removida]" instead of the original content.
+  {gettext(
+    "If someone replied to a message that is later deleted, the reply quote shows \"[mensagem removida]\" instead of the original content."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-message-reply">Message Reply</.help_link>
-  · <.help_link topic="feature-message-edit">Message Edit</.help_link>
-  · <.help_link topic="keyboard-shortcuts">Keyboard Shortcuts</.help_link>
+  <.help_link topic="feature-message-reply">{gettext("Message Reply")}</.help_link>
+  · <.help_link topic="feature-message-edit">{gettext("Message Edit")}</.help_link>
+  · <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
 </p>

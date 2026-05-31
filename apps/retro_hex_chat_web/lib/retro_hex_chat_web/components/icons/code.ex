@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Code do
   Icons depicting programming, scripting, and automation concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

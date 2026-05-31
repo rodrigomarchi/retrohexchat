@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.Components.UI.ReplyBar do
       {@rest}
     >
       <Icons.icon_retry class="w-3 h-3 shrink-0 text-muted-foreground" />
-      <span class="font-bold shrink-0">Replying to {" "}{@author}</span>
+      <span class="font-bold shrink-0">{gettext("Replying to")} {" "}{@author}</span>
       <span :if={@message} class="flex-1 truncate text-muted-foreground">
         {@message}
       </span>

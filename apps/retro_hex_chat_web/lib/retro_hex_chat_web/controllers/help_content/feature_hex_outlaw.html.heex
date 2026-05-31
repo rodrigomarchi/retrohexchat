@@ -1,51 +1,56 @@
 <p>
-  Western duel — two gunslingers face off across a cactus obstacle.
-  Dodge bullets you can see coming and shoot your opponent. First to 10 points wins the
-  round, best of 3 rounds. Four distinct game modes offer different obstacles and bullet
-  mechanics.
+  {gettext(
+    "Western duel — two gunslingers face off across a cactus obstacle. Dodge bullets you can see coming and shoot your opponent. First to 10 points wins the round, best of 3 rounds. Four distinct game modes offer different obstacles and bullet mechanics."
+  )}
 </p>
 <.diagram_game_outlaw class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>Arrow keys / WASD</strong> — Move gunslinger (vertical; horizontal in No Man's Land)
+    <strong>{gettext("Arrow keys / WASD")}</strong> {gettext(
+      "— Move gunslinger (vertical; horizontal in No Man's Land)"
+    )}
   </li>
-  <li><strong>Space / Shift</strong> — Fire (one bullet at a time)</li>
+  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Fire (one bullet at a time)")}</li>
 </ul>
-<.help_h4 icon={:icon_rules}>Rules</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
 <ul>
-  <li>Each hit scores 1 point — first to 10 wins the round</li>
-  <li>Best of 3 rounds — first to 2 round wins takes the match</li>
-  <li>One bullet per player at a time — wait for it to hit or miss before firing again</li>
-  <li>Bullets travel horizontally and are blocked by obstacles</li>
-  <li>After each hit, a 1.5-second pause then positions reset (scores don't)</li>
-  <li>Bullets are visible — dodge by moving vertically</li>
+  <li>{gettext("Each hit scores 1 point — first to 10 wins the round")}</li>
+  <li>{gettext("Best of 3 rounds — first to 2 round wins takes the match")}</li>
+  <li>
+    {gettext("One bullet per player at a time — wait for it to hit or miss before firing again")}
+  </li>
+  <li>{gettext("Bullets travel horizontally and are blocked by obstacles")}</li>
+  <li>{gettext("After each hit, a 1.5-second pause then positions reset (scores don't)")}</li>
+  <li>{gettext("Bullets are visible — dodge by moving vertically")}</li>
 </ul>
-<.help_h4 icon={:icon_tab_modes}>Modes</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
 <ul>
   <li>
-    <strong>Quick Draw</strong> (this mode) — Cactus obstacle in the center blocks direct shots
+    <strong>{gettext("Quick Draw")}</strong> {gettext(
+      "(this mode) — Cactus obstacle in the center blocks direct shots"
+    )}
   </li>
   <li>
-    <.help_link topic="feature-hex-outlaw-ricochet">Ricochet</.help_link>
-    — Bullets fire at 30-degree angles and bounce once off ceiling/floor
+    <.help_link topic="feature-hex-outlaw-ricochet">{gettext("Ricochet")}</.help_link>
+    {gettext("— Bullets fire at 30-degree angles and bounce once off ceiling/floor")}
   </li>
   <li>
-    <.help_link topic="feature-hex-outlaw-stagecoach">Stagecoach</.help_link>
-    — A moving stagecoach blocks shots with unpredictable timing
+    <.help_link topic="feature-hex-outlaw-stagecoach">{gettext("Stagecoach")}</.help_link>
+    {gettext("— A moving stagecoach blocks shots with unpredictable timing")}
   </li>
   <li>
-    <.help_link topic="feature-hex-outlaw-nml">No Man's Land</.help_link>
-    — No obstacle, but players can advance horizontally within their half
+    <.help_link topic="feature-hex-outlaw-nml">{gettext("No Man's Land")}</.help_link>
+    {gettext("— No obstacle, but players can advance horizontally within their half")}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Based on Outlaw (1978) by David Crane for the Atari 2600.</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<p>{gettext("Based on Outlaw (1978) by David Crane for the Atari 2600.")}</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-outlaw-ricochet">Ricochet</.help_link>
-  · <.help_link topic="feature-hex-outlaw-stagecoach">Stagecoach</.help_link>
-  · <.help_link topic="feature-hex-outlaw-nml">No Man's Land</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-hex-outlaw-ricochet">{gettext("Ricochet")}</.help_link>
+  · <.help_link topic="feature-hex-outlaw-stagecoach">{gettext("Stagecoach")}</.help_link>
+  · <.help_link topic="feature-hex-outlaw-nml">{gettext("No Man's Land")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

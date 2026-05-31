@@ -3,6 +3,7 @@ defmodule RetroHexChat.P2P.SessionToken do
   Token generation and verification for P2P sessions.
   Uses Phoenix.Token with a dedicated salt.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   @salt "p2p_session"
   @max_age 86_400
@@ -26,6 +27,6 @@ defmodule RetroHexChat.P2P.SessionToken do
 
   defp secret_key_base do
     Application.get_env(:retro_hex_chat, :p2p_token_secret) ||
-      raise "Missing :p2p_token_secret configuration"
+      raise gettext("Missing :p2p_token_secret configuration")
   end
 end

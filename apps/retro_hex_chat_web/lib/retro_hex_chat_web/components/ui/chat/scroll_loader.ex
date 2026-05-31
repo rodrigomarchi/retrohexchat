@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.ScrollLoader do
       data-testid="scroll-loader"
       role="status"
       aria-live="polite"
-      aria-label="Loading messages"
+      aria-label={gettext("Loading messages")}
     >
       <div :if={@loading} class="flex flex-col items-center gap-retro-8">
         <div class={[
@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.Components.UI.ScrollLoader do
           "bg-[length:20px_14px] animate-[progress-scroll_1s_linear_infinite]",
           "bg-[repeating-linear-gradient(90deg,theme(colors.link)_0,theme(colors.link)_8px,transparent_8px,transparent_12px)]"
         ]} />
-        <span class="text-xs text-muted-foreground">Loading messages...</span>
+        <span class="text-xs text-muted-foreground">{gettext("Loading messages...")}</span>
       </div>
     </div>
     """

@@ -125,7 +125,7 @@ defmodule Mix.Tasks.Lint.CssConsistency do
   end
 
   defp remove_css_comments(content) do
-    Regex.replace(~r"/\*[\s\S]*?\*/", content, "")
+    Regex.replace(~r/\/\*[\s\S]*?\*\//, content, "")
   end
 
   defp import_line?(line), do: String.match?(String.trim(line), ~r/^@import\b/)

@@ -1,34 +1,43 @@
 <p>
-  Toggle personal user modes that affect what messages you receive. User modes are settings that apply to you, not to a channel.
+  {gettext(
+    "Toggle personal user modes that affect what messages you receive. User modes are settings that apply to you, not to a channel."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/umode &lt;+/-mode&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>+/-mode</code> — Use + to enable or - to disable a user mode.</p>
-<.help_h4 icon={:icon_tab_modes}>Available Modes</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/umode <+/-mode>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
-  <code>+w</code>
-  — Receive wallops messages (broadcast messages from server operators). These appear in the Status tab.<br />
+  <code>{gettext("+/-mode")}</code> {gettext("— Use + to enable or - to disable a user mode.")}
+</p>
+<.help_h4 icon={:icon_tab_modes}>{gettext("Available Modes")}</.help_h4>
+<p>
+  <code>{gettext("+w")}</code>
+  {gettext(
+    "— Receive wallops messages (broadcast messages from server operators). These appear in the Status tab."
+  )}<br />
   <code>
     -w
   </code>
-  — Stop receiving wallops messages.
+  {gettext("— Stop receiving wallops messages.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  User modes are personal settings that only affect you. Currently, the only available user mode is
-  <code>+w</code>
-  (wallops), which opts you in to receiving operator broadcast messages sent via <code>/wallops</code>. By default, wallops are disabled.
+  {gettext(
+    "User modes are personal settings that only affect you. Currently, the only available user mode is"
+  )}
+  <code>{gettext("+w")}</code>
+  {gettext("(wallops), which opts you in to receiving operator broadcast messages sent via")} <code>{gettext("/wallops")}</code>{gettext(
+    ". By default, wallops are disabled."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>User modes are session-scoped — they reset when you disconnect</li>
+  <li>{gettext("User modes are session-scoped — they reset when you disconnect")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/umode +w
-/umode -w</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/umode +w /umode -w")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-wallops">/wallops</.help_link>
-  · <.help_link topic="cmd-mode">/mode</.help_link>
+  <.help_link topic="cmd-wallops">{gettext("/wallops")}</.help_link>
+  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
 </p>

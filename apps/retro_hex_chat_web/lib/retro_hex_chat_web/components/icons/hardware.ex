@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Hardware do
   Icons depicting hardware, infrastructure, and technology platforms.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

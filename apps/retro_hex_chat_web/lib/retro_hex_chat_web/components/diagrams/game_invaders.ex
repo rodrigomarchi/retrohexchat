@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameInvaders do
   @moduledoc "SVG game screen diagram for Hex Invaders."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -15,7 +16,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameInvaders do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Hex Invaders game screen: split-screen Space Invaders with alien grids on each side"
+      aria-label={
+        gettext("Hex Invaders game screen: split-screen Space Invaders with alien grids on each side")
+      }
     >
       {win98_chrome("Hex Invaders")}
       <%!-- Divider --%>
@@ -68,13 +71,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameInvaders do
       <rect x="117" y="280" width="2" height="6" fill="#fff" />
       <%!-- Scores --%>
       <text x="30" y="44" fill="#00ff41" font-size="10" font-family="'Courier New',monospace">
-        P1: 820
+        {gettext("P1: 820")}
       </text>
       <text x="420" y="44" fill="#00d4ff" font-size="10" font-family="'Courier New',monospace">
-        P2: 640
+        {gettext("P2: 640")}
       </text>
       <text x="210" y="44" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        WAVE 3
+        {gettext("WAVE 3")}
       </text>
     </svg>
     """

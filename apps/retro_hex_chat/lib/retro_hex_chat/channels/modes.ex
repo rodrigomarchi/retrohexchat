@@ -6,6 +6,7 @@ defmodule RetroHexChat.Channels.Modes do
   K (no knock), j (join throttle).
   User modes (o, v, q, h) are handled by Membership, not here.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   @type t :: %__MODULE__{
           flags: MapSet.t(),
@@ -119,7 +120,7 @@ defmodule RetroHexChat.Channels.Modes do
     case String.split(mode_string, "", trim: true) do
       ["+" | flags] -> {:ok, parse_flags(:add, flags, params)}
       ["-" | flags] -> {:ok, parse_flags(:remove, flags, params)}
-      _ -> {:error, "Invalid mode string: must start with + or -"}
+      _ -> {:error, gettext("Invalid mode string: must start with + or -")}
     end
   end
 
@@ -212,7 +213,7 @@ defmodule RetroHexChat.Channels.Modes do
 
   defp validate_mutual_exclusivity(%__MODULE__{flags: flags} = modes) do
     if MapSet.member?(flags, :secret) and MapSet.member?(flags, :private) do
-      {:error, "+s and +p are mutually exclusive"}
+      {:error, gettext("+s and +p are mutually exclusive")}
     else
       {:ok, modes}
     end

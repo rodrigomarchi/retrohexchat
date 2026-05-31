@@ -1,56 +1,62 @@
 defmodule RetroHexChat.Chat.HelpTopics.Bots do
   @moduledoc false
 
+  use Gettext, backend: RetroHexChat.Gettext
+
   @spec topics() :: [map()]
   def topics do
     [
       %{
         id: "botservice",
-        title: "BotService Overview",
-        category: "Bots",
+        title: gettext("BotService Overview"),
+        category: gettext("Bots"),
         keywords: [
           "bot",
           "botservice",
-          "bot service",
+          gettext("bot service"),
           "bots",
           "capabilities",
           "automation",
           "greeter",
-          "custom commands"
+          gettext("custom commands")
         ],
         icon: :icon_wrench,
         description:
-          "Create and manage extensible bots with pluggable capabilities for channel automation."
+          gettext(
+            "Create and manage extensible bots with pluggable capabilities for channel automation."
+          )
       },
       %{
         id: "bot-command",
-        title: "/bot Command Reference",
-        category: "Bots",
+        title: gettext("/bot Command Reference"),
+        category: gettext("Bots"),
         keywords: [
-          "bot command",
+          gettext("bot command"),
           "/bot",
-          "bot create",
-          "bot destroy",
-          "bot join",
-          "bot part",
-          "bot enable",
-          "bot disable",
-          "bot set",
-          "bot addcmd",
-          "bot delcmd"
+          gettext("bot create"),
+          gettext("bot destroy"),
+          gettext("bot join"),
+          gettext("bot part"),
+          gettext("bot enable"),
+          gettext("bot disable"),
+          gettext("bot set"),
+          gettext("bot addcmd"),
+          gettext("bot delcmd")
         ],
         icon: :icon_terminal,
         description:
-          "Reference for all /bot subcommands: create, destroy, join, part, enable, disable, set, addcmd, delcmd."
+          gettext(
+            "Reference for all /bot subcommands: create, destroy, join, part, enable, disable, set, addcmd, delcmd."
+          )
       },
       %{
         id: "bot-custom-commands",
-        title: "Bot Custom Commands",
-        category: "Bots",
+        title: gettext("Bot Custom Commands"),
+        category: gettext("Bots"),
         keywords: [
-          "bot commands",
-          "custom commands",
-          "!prefix",
+          gettext("bot commands"),
+          gettext("custom commands"),
+          gettext("!prefix"),
           "trigger",
           "response",
           "addcmd",
@@ -58,83 +64,90 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
         ],
         icon: :icon_code,
         description:
-          "How to create and use custom bot commands (!prefix trigger) for automated responses."
+          gettext(
+            "How to create and use custom bot commands (!prefix trigger) for automated responses."
+          )
       },
       %{
         id: "bot-dice",
-        title: "Bot Dice Capability",
-        category: "Bots",
+        title: gettext("Bot Dice Capability"),
+        category: gettext("Bots"),
         keywords: [
           "dice",
           "roll",
           "d20",
           "rpg",
           "random",
-          "bot dice",
-          "dice notation",
-          "keep highest",
-          "keep lowest"
+          gettext("bot dice"),
+          gettext("dice notation"),
+          gettext("keep highest"),
+          gettext("keep lowest")
         ],
         icon: :icon_dice,
         description:
-          "RPG dice rolling with standard notation (NdS, modifiers, keep highest/lowest)."
+          gettext(
+            "RPG dice rolling with standard notation (NdS, modifiers, keep highest/lowest)."
+          )
       },
       %{
         id: "bot-trivia",
-        title: "Bot Trivia Capability",
-        category: "Bots",
+        title: gettext("Bot Trivia Capability"),
+        category: gettext("Bots"),
         keywords: [
           "trivia",
           "quiz",
           "questions",
           "score",
-          "bot trivia",
+          gettext("bot trivia"),
           "categories",
           "game",
           "answer"
         ],
         icon: :icon_question,
         description:
-          "Interactive trivia quiz with multiple categories, scoring, and configurable timers."
+          gettext(
+            "Interactive trivia quiz with multiple categories, scoring, and configurable timers."
+          )
       },
       %{
         id: "bot-scheduler",
-        title: "Bot Scheduler Capability",
-        category: "Bots",
+        title: gettext("Bot Scheduler Capability"),
+        category: gettext("Bots"),
         keywords: [
           "scheduler",
           "schedule",
           "interval",
           "daily",
           "periodic",
-          "bot scheduler",
+          gettext("bot scheduler"),
           "cron",
           "timer"
         ],
         icon: :icon_clock,
-        description: "Schedule periodic or daily messages to channels automatically."
+        description: gettext("Schedule periodic or daily messages to channels automatically.")
       },
       %{
         id: "bot-rss",
-        title: "Bot RSS Capability",
-        category: "Bots",
+        title: gettext("Bot RSS Capability"),
+        category: gettext("Bots"),
         keywords: [
           "rss",
           "feed",
           "atom",
           "news",
-          "bot rss",
+          gettext("bot rss"),
           "poll",
           "syndication",
           "updates"
         ],
         icon: :icon_rss,
-        description: "Monitor RSS/Atom feeds and post new items to channels automatically."
+        description:
+          gettext("Monitor RSS/Atom feeds and post new items to channels automatically.")
       },
       %{
         id: "bot-moderation",
-        title: "Bot Moderation Capability",
-        category: "Bots",
+        title: gettext("Bot Moderation Capability"),
+        category: gettext("Bots"),
         keywords: [
           "moderation",
           "mod",
@@ -142,12 +155,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           "spam",
           "flood",
           "blocked words",
-          "bot moderation",
+          gettext("bot moderation"),
           "auto-mod"
         ],
         icon: :icon_shield,
         description:
-          "Auto-moderation: word filtering, spam/flood detection, caps lock abuse prevention."
+          gettext(
+            "Auto-moderation: word filtering, spam/flood detection, caps lock abuse prevention."
+          )
       }
     ]
   end

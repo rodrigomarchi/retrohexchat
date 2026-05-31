@@ -2,6 +2,8 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
   @moduledoc """
   Capability that responds when the bot is mentioned by name in a message.
   """
+
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.TemplateEngine
@@ -12,7 +14,7 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: "Respond when mentioned by name"
+  def description, do: gettext("Respond when mentioned by name")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::
@@ -48,11 +50,14 @@ defmodule RetroHexChat.Bots.Capabilities.Mention do
   @impl true
   @spec validate_config(map()) :: :ok | {:error, String.t()}
   def validate_config(%{"response" => r}) when is_binary(r) and byte_size(r) > 0, do: :ok
-  def validate_config(%{"response" => _}), do: {:error, "Response must be a non-empty string"}
+
+  def validate_config(%{"response" => _}),
+    do: {:error, gettext("Response must be a non-empty string")}
+
   def validate_config(_), do: :ok
 
   @spec default_response() :: String.t()
-  defp default_response, do: "Hi {nickname}! Try {prefix}help for my commands."
+  defp default_response, do: gettext("Hi {nickname}! Try {prefix}help for my commands.")
 
   @spec mentions_bot?(String.t(), String.t()) :: boolean()
   defp mentions_bot?(content, bot_nickname) do

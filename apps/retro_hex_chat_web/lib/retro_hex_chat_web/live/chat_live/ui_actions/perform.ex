@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
 
   import Phoenix.Component, only: [assign: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [system_event: 2, error_event: 2, maybe_persist_perform_list: 2]
 
@@ -24,12 +26,12 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
     entries = PerformList.entries(session.perform_list)
 
     if entries == [] do
-      system_event(socket, "Your perform list is empty")
+      system_event(socket, gettext("Your perform list is empty"))
     else
       Enum.with_index(entries)
       |> Enum.reduce(socket, fn {entry, idx}, acc ->
         masked = PerformList.mask_command(entry.command)
-        system_event(acc, "  #{idx}: #{masked}")
+        system_event(acc, gettext("  %{index}: %{command}", index: idx, command: masked))
       end)
     end
   end
@@ -45,19 +47,19 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
         socket
         |> assign(session: new_session)
         |> maybe_persist_perform_list(new_session)
-        |> system_event("* Added to perform list: #{masked}")
+        |> system_event(gettext("* Added to perform list: %{command}", command: masked))
 
       {:error, :invalid_command} ->
-        error_event(socket, "Invalid command. Commands must start with /")
+        error_event(socket, gettext("Invalid command. Commands must start with /"))
 
       {:error, :disallowed_command} ->
-        error_event(socket, "That command cannot be added to the perform list")
+        error_event(socket, gettext("That command cannot be added to the perform list"))
 
       {:error, :command_too_long} ->
-        error_event(socket, "Command too long (max 500 characters)")
+        error_event(socket, gettext("Command too long (max 500 characters)"))
 
       {:error, :list_full} ->
-        error_event(socket, "Perform list is full (max 50 commands)")
+        error_event(socket, gettext("Perform list is full (max 50 commands)"))
     end
   end
 
@@ -71,10 +73,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
         socket
         |> assign(session: new_session)
         |> maybe_persist_perform_list(new_session)
-        |> system_event("* Removed command at position #{position}")
+        |> system_event(gettext("* Removed command at position %{position}", position: position))
 
       {:error, :not_found} ->
-        error_event(socket, "No command at position #{position}")
+        error_event(socket, gettext("No command at position %{position}", position: position))
     end
   end
 
@@ -88,13 +90,15 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
         socket
         |> assign(session: new_session)
         |> maybe_persist_perform_list(new_session)
-        |> system_event("* Moved command from position #{from} to #{to}")
+        |> system_event(
+          gettext("* Moved command from position %{from} to %{to}", from: from, to: to)
+        )
 
       {:error, :same_position} ->
-        error_event(socket, "Source and destination are the same")
+        error_event(socket, gettext("Source and destination are the same"))
 
       {:error, :invalid_position} ->
-        error_event(socket, "Invalid position")
+        error_event(socket, gettext("Invalid position"))
     end
   end
 
@@ -106,6 +110,6 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Perform do
     socket
     |> assign(session: new_session)
     |> maybe_persist_perform_list(new_session)
-    |> system_event("* Perform list cleared")
+    |> system_event(gettext("* Perform list cleared"))
   end
 end

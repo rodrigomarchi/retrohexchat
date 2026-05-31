@@ -1,45 +1,47 @@
 <p>
-  Classic co-op Space Invaders — two cannons fighting the same alien waves on a shared screen.
-  No alien drop mechanic. Survive together or fall together. Communication and coordination
-  are everything — divide the screen and cover each other's blind spots.
+  {gettext(
+    "Classic co-op Space Invaders — two cannons fighting the same alien waves on a shared screen. No alien drop mechanic. Survive together or fall together. Communication and coordination are everything — divide the screen and cover each other's blind spots."
+  )}
 </p>
 <.diagram_game_invaders class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow Left / A</strong> — Move cannon left</li>
-  <li><strong>Arrow Right / D</strong> — Move cannon right</li>
-  <li><strong>Space</strong> — Fire missile</li>
+  <li><strong>{gettext("Arrow Left / A")}</strong> {gettext("— Move cannon left")}</li>
+  <li><strong>{gettext("Arrow Right / D")}</strong> {gettext("— Move cannon right")}</li>
+  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
 </ul>
-<.help_h4 icon={:icon_rules}>Rules</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
 <ul>
-  <li>Both players share the same screen and fight the same alien waves</li>
-  <li>Destroyed aliens are simply destroyed — no drops on opponent</li>
-  <li>Game over when aliens reach the ground or both players lose all lives</li>
-  <li>Scores tracked individually but the goal is shared survival</li>
-  <li>10 waves of increasing difficulty</li>
+  <li>{gettext("Both players share the same screen and fight the same alien waves")}</li>
+  <li>{gettext("Destroyed aliens are simply destroyed — no drops on opponent")}</li>
+  <li>{gettext("Game over when aliens reach the ground or both players lose all lives")}</li>
+  <li>{gettext("Scores tracked individually but the goal is shared survival")}</li>
+  <li>{gettext("10 waves of increasing difficulty")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Strategy Tips</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
 <ul>
   <li>
-    <strong>Split the screen</strong>
-    — Each player takes a side. Overlapping coverage wastes shots and leaves gaps.
+    <strong>{gettext("Split the screen")}</strong>
+    {gettext("— Each player takes a side. Overlapping coverage wastes shots and leaves gaps.")}
   </li>
   <li>
-    <strong>Focus fire on edges</strong>
-    — Clearing aliens from the sides slows horizontal movement for the entire wave.
+    <strong>{gettext("Focus fire on edges")}</strong>
+    {gettext("— Clearing aliens from the sides slows horizontal movement for the entire wave.")}
   </li>
   <li>
-    <strong>Protect your partner</strong>
-    — If one cannon goes down, the other faces the full wave alone. Keep each other alive.
+    <strong>{gettext("Protect your partner")}</strong>
+    {gettext(
+      "— If one cannon goes down, the other faces the full wave alone. Keep each other alive."
+    )}
   </li>
   <li>
-    <strong>Save lives for later waves</strong>
-    — Earlier waves are easier. Play conservatively to have lives for waves 8-10.
+    <strong>{gettext("Save lives for later waves")}</strong>
+    {gettext("— Earlier waves are easier. Play conservatively to have lives for waves 8-10.")}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-invaders">Hex Invaders</.help_link>
-  · <.help_link topic="feature-hex-invaders-blitz">Hex Invaders: Blitz</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
+  <.help_link topic="feature-hex-invaders">{gettext("Hex Invaders")}</.help_link>
+  · <.help_link topic="feature-hex-invaders-blitz">{gettext("Hex Invaders: Blitz")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
 </p>

@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Knock do
   @moduledoc "Handler for /knock #channel [message]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -11,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, "Usage: /knock #channel [message]"}
+    {:error, gettext("Usage: /knock #channel [message]")}
   end
 
   def execute([channel_name | rest], _context) do
@@ -19,7 +20,7 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
       message = if rest == [], do: nil, else: Enum.join(rest, " ")
       {:ok, :ui_action, :knock_channel, %{channel: channel_name, message: message}}
     else
-      {:error, "Usage: /knock #channel [message]"}
+      {:error, gettext("Usage: /knock #channel [message]")}
     end
   end
 
@@ -33,12 +34,14 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
   def help do
     %{
       name: "knock",
-      syntax: "/knock #channel [message]",
+      syntax: gettext("/knock #channel [message]"),
       description:
-        "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\nChannel name must start with #.",
+        gettext(
+          "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\nChannel name must start with #."
+        ),
       examples: [
-        "/knock #private",
-        "/knock #private Hey, can I join?"
+        gettext("/knock #private"),
+        gettext("/knock #private Hey, can I join?")
       ]
     }
   end
@@ -54,9 +57,11 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
 
     %CommandSyntax{
       command: "knock",
-      syntax: "/knock #channel [message]",
+      syntax: gettext("/knock #channel [message]"),
       description:
-        "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\nChannel name must start with #.",
+        gettext(
+          "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\nChannel name must start with #."
+        ),
       category: :channel,
       parameters: [
         %Parameter{
@@ -64,19 +69,19 @@ defmodule RetroHexChat.Commands.Handlers.Knock do
           required: true,
           type: :channel,
           position: 0,
-          description: "Channel to request access to"
+          description: gettext("Channel to request access to")
         },
         %Parameter{
           name: "message",
           required: false,
           type: :text,
           position: 1,
-          description: "Message for the channel operators"
+          description: gettext("Message for the channel operators")
         }
       ],
       examples: [
-        "/knock #private",
-        "/knock #private Hey, can I join?"
+        gettext("/knock #private"),
+        gettext("/knock #private Hey, can I join?")
       ]
     }
   end

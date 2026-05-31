@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ComponentHelpers do
   @moduledoc false
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import Phoenix.Component
 
@@ -336,7 +337,7 @@ defmodule RetroHexChatWeb.ComponentHelpers do
             __STACKTRACE__
           )
 
-          "invalid value"
+          dgettext("errors", "invalid value")
       end
     end)
   end

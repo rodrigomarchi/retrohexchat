@@ -14,6 +14,7 @@ import {
   clearHighlights,
   scrollToMatch,
 } from "../../lib/chat/search.js";
+import { t } from "../../lib/i18n.js";
 
 const SearchHighlightHook = {
   mounted() {
@@ -102,7 +103,7 @@ const SearchHighlightHook = {
 
     const pattern = compilePattern(query, case_sensitive, regex);
     if (!pattern) {
-      this.pushEvent("search_highlight_count", { count: 0, error: "Invalid regex" });
+      this.pushEvent("search_highlight_count", { count: 0, error: t("Invalid regex") });
       return;
     }
 

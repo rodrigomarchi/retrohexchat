@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, stream: 4]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   require Logger
 
   alias RetroHexChat.Accounts.Session
@@ -48,7 +50,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       {:ok, _state} ->
         setup_joined_channel(socket, channel_name, session, join_mode)
 
-      {:error, "Already in channel"} ->
+      {:error, reason} when reason == "Already in channel" ->
         Logger.info("Rejoining channel #{channel_name} (already a member in server)")
         setup_joined_channel(socket, channel_name, session, join_mode)
 
@@ -277,7 +279,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
           socket
           |> assign(session: new_session)
-          |> Messages.system_event("[Welcome] #{message}")
+          |> Messages.system_event(gettext("[Welcome] %{message}", message: message))
         else
           socket
         end
@@ -329,11 +331,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     end
   end
 
-  @spec cleanup_channels(Session.t(), String.t()) :: :ok
-  def cleanup_channels(session, reason \\ "Connection lost") do
+  @spec cleanup_channels(Session.t(), String.t() | nil) :: :ok
+  def cleanup_channels(session, reason \\ nil) do
     alias RetroHexChat.Services.NickServ
     NickServ.cancel_identify_timer(session.nickname)
 
+    reason = reason || gettext("Connection lost")
     truncated = String.slice(reason, 0, 200)
 
     Enum.each(session.channels, fn channel ->
@@ -357,11 +360,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         if target in member_nicks do
           :ok
         else
-          {:error, "* User '#{target}' not found"}
+          {:error, gettext("* User '%{target}' not found", target: target)}
         end
 
       {:error, _} ->
-        {:error, "* User '#{target}' not found"}
+        {:error, gettext("* User '%{target}' not found", target: target)}
     end
   end
 

@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Layout.Table do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,38 +13,41 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Table do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Table", active_page: "table")}
+    {:ok, assign(socket, page_title: gettext("Table"), active_page: "table")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Table</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Table")}</h2>
 
-      <.showcase_card title="Usage" description="Displays tabular data with header and body rows.">
+      <.showcase_card
+        title={gettext("Usage")}
+        description="Displays tabular data with header and body rows."
+      >
         <.table>
           <.table_header>
             <.table_row>
-              <.table_head>Nickname</.table_head>
-              <.table_head>Status</.table_head>
-              <.table_head>Channel</.table_head>
+              <.table_head>{gettext("Nickname")}</.table_head>
+              <.table_head>{gettext("Status")}</.table_head>
+              <.table_head>{gettext("Channel")}</.table_head>
             </.table_row>
           </.table_header>
           <.table_body>
             <.table_row>
-              <.table_cell>Alice</.table_cell>
-              <.table_cell>Online</.table_cell>
+              <.table_cell>{gettext("Alice")}</.table_cell>
+              <.table_cell>{gettext("Online")}</.table_cell>
               <.table_cell>#general</.table_cell>
             </.table_row>
             <.table_row>
-              <.table_cell>Bob</.table_cell>
-              <.table_cell>Away</.table_cell>
+              <.table_cell>{gettext("Bob")}</.table_cell>
+              <.table_cell>{gettext("Away")}</.table_cell>
               <.table_cell>#random</.table_cell>
             </.table_row>
             <.table_row>
-              <.table_cell>Charlie</.table_cell>
-              <.table_cell>Offline</.table_cell>
+              <.table_cell>{gettext("Charlie")}</.table_cell>
+              <.table_cell>{gettext("Offline")}</.table_cell>
               <.table_cell>#help</.table_cell>
             </.table_row>
           </.table_body>
@@ -67,33 +71,33 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.Table do
       </.showcase_card>
 
       <.showcase_card
-        title="Caption & Footer"
+        title={gettext("Caption & Footer")}
         description="Table with caption and footer row for summaries."
       >
         <.table>
-          <.table_caption>Server statistics — March 2026</.table_caption>
+          <.table_caption>{gettext("Server statistics — March 2026")}</.table_caption>
           <.table_header>
             <.table_row>
-              <.table_head>Server</.table_head>
-              <.table_head>Users</.table_head>
-              <.table_head>Channels</.table_head>
+              <.table_head>{gettext("Server")}</.table_head>
+              <.table_head>{gettext("Users")}</.table_head>
+              <.table_head>{gettext("Channels")}</.table_head>
             </.table_row>
           </.table_header>
           <.table_body>
             <.table_row>
-              <.table_cell>Sun</.table_cell>
+              <.table_cell>{gettext("Sun")}</.table_cell>
               <.table_cell>128</.table_cell>
               <.table_cell>24</.table_cell>
             </.table_row>
             <.table_row>
-              <.table_cell>Moon</.table_cell>
+              <.table_cell>{gettext("Moon")}</.table_cell>
               <.table_cell>64</.table_cell>
               <.table_cell>12</.table_cell>
             </.table_row>
           </.table_body>
           <.table_footer>
             <.table_row>
-              <.table_cell class="font-bold">Total</.table_cell>
+              <.table_cell class="font-bold">{gettext("Total")}</.table_cell>
               <.table_cell class="font-bold">192</.table_cell>
               <.table_cell class="font-bold">36</.table_cell>
             </.table_row>

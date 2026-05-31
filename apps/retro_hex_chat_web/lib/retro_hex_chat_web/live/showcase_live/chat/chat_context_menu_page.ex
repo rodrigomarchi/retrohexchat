@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatContextMenuPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,6 +13,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatContextMenuPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Chat Context Menu", active_page: :chat_context_menu)}
+    {:ok,
+     assign(socket, page_title: gettext("Chat Context Menu"), active_page: :chat_context_menu)}
   end
 end

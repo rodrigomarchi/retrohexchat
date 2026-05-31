@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameWarlords do
   @moduledoc "SVG game screen diagram for Hex Warlords."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -15,7 +16,11 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameWarlords do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Hex Warlords game screen: two castles with brick walls and a fireball bouncing between them"
+      aria-label={
+        gettext(
+          "Hex Warlords game screen: two castles with brick walls and a fireball bouncing between them"
+        )
+      }
     >
       {win98_chrome("Hex Warlords")}
       <%!-- P1 castle bricks (left, 4 cols x 6 rows) --%>
@@ -67,10 +72,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameWarlords do
       <rect x="252" y="152" width="3" height="3" fill="#ff6600" />
       <%!-- Lives --%>
       <text x="30" y="44" fill="#00ff41" font-size="12" font-family="'Courier New',monospace">
-        Lives: 3
+        {gettext("Lives: 3")}
       </text>
       <text x="420" y="44" fill="#00d4ff" font-size="12" font-family="'Courier New',monospace">
-        Lives: 2
+        {gettext("Lives: 2")}
       </text>
     </svg>
     """

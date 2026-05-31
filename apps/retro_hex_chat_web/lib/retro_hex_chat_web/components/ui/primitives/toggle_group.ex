@@ -30,8 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.ToggleGroup do
 
   attr :value, :string,
     default: nil,
-    doc:
-      "The value of the toggle group. It's a single value for single type and a list of values for multiple type."
+    doc: "The value of the toggle group"
 
   attr :disabled, :boolean, default: false
   attr :class, :string, default: nil

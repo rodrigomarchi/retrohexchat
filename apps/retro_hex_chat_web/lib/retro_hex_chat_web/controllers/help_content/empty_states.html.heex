@@ -1,18 +1,26 @@
-<p>When a UI container has no content, a friendly placeholder message appears with guidance:</p>
-<.help_h4 icon={:icon_chat}>Channel Messages</.help_h4>
-<p>An empty channel shows a welcome message and tips for getting started.</p>
-<.help_h4 icon={:icon_tab_nicklist}>Nicklist</.help_h4>
-<p>Shows "Nobody here" when you are the only user (or the channel is truly empty).</p>
-<.help_h4 icon={:icon_tab_conversations}>Conversations</.help_h4>
 <p>
-  When no channels are joined, shows a hint to use <code>/join</code>
-  and an "Browse channels" button.
+  {gettext(
+    "When a UI container has no content, a friendly placeholder message appears with guidance:"
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_url}>URL Catcher</.help_h4>
-<p>Shows "No URLs captured" until URLs appear in chat.</p>
-<.help_h4 icon={:icon_document_alert}>Notes</.help_h4>
+<.help_h4 icon={:icon_chat}>{gettext("Channel Messages")}</.help_h4>
+<p>{gettext("An empty channel shows a welcome message and tips for getting started.")}</p>
+<.help_h4 icon={:icon_tab_nicklist}>{gettext("Nicklist")}</.help_h4>
 <p>
-  Empty state messages disappear automatically when content arrives. The text is not selectable.
+  {gettext("Shows \"Nobody here\" when you are the only user (or the channel is truly empty).")}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
-<p><.help_link topic="ui-overview">UI Overview</.help_link></p>
+<.help_h4 icon={:icon_tab_conversations}>{gettext("Conversations")}</.help_h4>
+<p>
+  {gettext("When no channels are joined, shows a hint to use")} <code>{gettext("/join")}</code>
+  {gettext("and an \"Browse channels\" button.")}
+</p>
+<.help_h4 icon={:icon_dialog_url}>{gettext("URL Catcher")}</.help_h4>
+<p>{gettext("Shows \"No URLs captured\" until URLs appear in chat.")}</p>
+<.help_h4 icon={:icon_document_alert}>{gettext("Notes")}</.help_h4>
+<p>
+  {gettext(
+    "Empty state messages disappear automatically when content arrives. The text is not selectable."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p><.help_link topic="ui-overview">{gettext("UI Overview")}</.help_link></p>

@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Ban do
   @moduledoc "Handler for /ban <nickname> [reason]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -11,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, "Usage: /ban <nickname> [reason]"}
+    {:error, gettext("Usage: /ban <nickname> [reason]")}
   end
 
   def execute([target | rest], context) do
@@ -33,21 +34,25 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
   def help do
     %{
       name: "ban",
-      syntax: "/ban <nickname> [reason]",
+      syntax: gettext("/ban <nickname> [reason]"),
       description:
-        "Permanently block a user from the channel. The ban persists until removed with /mode -b.\nRequires: channel operator. Must be in a channel.",
-      examples: ["/ban troll", "/ban troll Repeated violations"]
+        gettext(
+          "Permanently block a user from the channel. The ban persists until removed with /mode -b.\nRequires: channel operator. Must be in a channel."
+        ),
+      examples: [gettext("/ban troll"), gettext("/ban troll Repeated violations")]
     }
   end
 
-  defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
+  defp require_channel(%{active_channel: nil}),
+    do: {:error, gettext("You are not in any channel")}
+
   defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
   defp require_operator(%{operator_in: operator_in}, channel) do
     if channel in operator_in do
       :ok
     else
-      {:error, "You must be a channel operator to ban users"}
+      {:error, gettext("You must be a channel operator to ban users")}
     end
   end
 
@@ -62,9 +67,11 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
 
     %CommandSyntax{
       command: "ban",
-      syntax: "/ban <nickname> [reason]",
+      syntax: gettext("/ban <nickname> [reason]"),
       description:
-        "Permanently block a user from the channel. The ban persists until removed with /mode -b.",
+        gettext(
+          "Permanently block a user from the channel. The ban persists until removed with /mode -b."
+        ),
       category: :channel,
       parameters: [
         %Parameter{
@@ -72,17 +79,17 @@ defmodule RetroHexChat.Commands.Handlers.Ban do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to ban"
+          description: gettext("User to ban")
         },
         %Parameter{
           name: "reason",
           required: false,
           type: :text,
           position: 1,
-          description: "Reason for the ban"
+          description: gettext("Reason for the ban")
         }
       ],
-      examples: ["/ban troll", "/ban troll Repeated violations"]
+      examples: [gettext("/ban troll"), gettext("/ban troll Repeated violations")]
     }
   end
 end

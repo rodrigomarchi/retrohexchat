@@ -13,6 +13,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, stream: 4, stream_delete: 3]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       join_channel: 3,
@@ -414,7 +416,9 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     {:halt,
      MessageHelpers.system_event(
        socket,
-       "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+       gettext(
+         "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+       )
      )}
   end
 
@@ -712,7 +716,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       true ->
         case Enum.at(syntax.parameters, current_index) do
           nil -> nil
-          param -> "Next: #{param.name}"
+          param -> gettext("Next: %{parameter}", parameter: param.name)
         end
     end
   end
@@ -722,7 +726,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
     case Enum.find(sub_options, &String.starts_with?(first_arg, &1.flag)) do
       nil -> nil
-      opt -> "You are setting: #{opt.flag} (#{opt.label})"
+      opt -> gettext("You are setting: %{flag} (%{label})", flag: opt.flag, label: opt.label)
     end
   end
 
@@ -734,7 +738,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       nick_in_use?(target, socket.assigns.session.nickname) ->
         socket
         |> assign(nick_change_dialog: nil)
-        |> error_event("Nickname #{target} is already in use")
+        |> error_event(gettext("Nickname %{nickname} is already in use", nickname: target))
 
       dialog.registered ->
         case NickServ.identify(target, password) do
@@ -746,7 +750,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
               nick_change_dialog: nil,
               nick_change_target: target,
               nick_change_token: token,
-              quit_reason: "Changing nickname"
+              quit_reason: gettext("Changing nickname")
             )
             |> push_event("submit_nick_change", %{
               nickname: target,
@@ -755,7 +759,11 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
           {:error, _} ->
             assign(socket,
-              nick_change_dialog: %{dialog | password_error: "Incorrect password", password: ""}
+              nick_change_dialog: %{
+                dialog
+                | password_error: gettext("Incorrect password"),
+                  password: ""
+              }
             )
         end
 
@@ -765,7 +773,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
           nick_change_dialog: nil,
           nick_change_target: target,
           nick_change_token: nil,
-          quit_reason: "Changing nickname"
+          quit_reason: gettext("Changing nickname")
         )
         |> push_event("submit_nick_change", %{
           nickname: target,

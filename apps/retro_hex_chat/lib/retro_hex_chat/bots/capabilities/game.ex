@@ -1,4 +1,5 @@
 defmodule RetroHexChat.Bots.Capabilities.Game do
+  use Gettext, backend: RetroHexChat.Gettext
   @moduledoc "P2P game AI (Coming soon)"
   @behaviour RetroHexChat.Bots.Capability
 
@@ -8,7 +9,7 @@ defmodule RetroHexChat.Bots.Capabilities.Game do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)"
+  def description, do: gettext("AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::

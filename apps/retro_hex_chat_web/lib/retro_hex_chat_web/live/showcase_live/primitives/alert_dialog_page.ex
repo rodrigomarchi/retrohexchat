@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Primitives.AlertDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,38 +15,39 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.AlertDialogPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Alert Dialog", active_page: "alert-dialog")}
+    {:ok, assign(socket, page_title: gettext("Alert Dialog"), active_page: "alert-dialog")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Alert Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Alert Dialog")}</h2>
 
       <.showcase_card
-        title="Default"
+        title={gettext("Default")}
         description="Alert dialog for confirming important actions."
       >
         <.alert_dialog :let={builder} id="alert-default">
           <.alert_dialog_trigger builder={builder}>
             <.button variant="outline">
               <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
-              Show Alert Dialog
+              {gettext("Show Alert Dialog")}
             </.button>
           </.alert_dialog_trigger>
           <.alert_dialog_content builder={builder}>
             <.alert_dialog_header>
               <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
-              <.alert_dialog_title>Are you absolutely sure?</.alert_dialog_title>
+              <.alert_dialog_title>{gettext("Are you absolutely sure?")}</.alert_dialog_title>
               <.alert_dialog_description>
-                This action cannot be undone. This will permanently delete your
-                account and remove your data from our servers.
+                {gettext(
+                  "This action cannot be undone. This will permanently delete your account and remove your data from our servers."
+                )}
               </.alert_dialog_description>
             </.alert_dialog_header>
             <.alert_dialog_footer>
-              <.alert_dialog_cancel builder={builder}>Cancel</.alert_dialog_cancel>
-              <.alert_dialog_action>Continue</.alert_dialog_action>
+              <.alert_dialog_cancel builder={builder}>{gettext("Cancel")}</.alert_dialog_cancel>
+              <.alert_dialog_action>{gettext("Continue")}</.alert_dialog_action>
             </.alert_dialog_footer>
           </.alert_dialog_content>
         </.alert_dialog>
@@ -70,29 +72,30 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.AlertDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Destructive"
+        title={gettext("Destructive")}
         description="Alert dialog with destructive action styling."
       >
         <.alert_dialog :let={builder} id="alert-destructive">
           <.alert_dialog_trigger builder={builder}>
             <.button variant="destructive">
               <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              Delete Account
+              {gettext("Delete Account")}
             </.button>
           </.alert_dialog_trigger>
           <.alert_dialog_content builder={builder}>
             <.alert_dialog_header>
               <:icon><Icons.icon_warning class="w-4 h-4 text-destructive" /></:icon>
-              <.alert_dialog_title>Delete Account</.alert_dialog_title>
+              <.alert_dialog_title>{gettext("Delete Account")}</.alert_dialog_title>
               <.alert_dialog_description>
-                This will permanently delete your account and all associated data.
-                This action cannot be reversed.
+                {gettext(
+                  "This will permanently delete your account and all associated data. This action cannot be reversed."
+                )}
               </.alert_dialog_description>
             </.alert_dialog_header>
             <.alert_dialog_footer>
-              <.alert_dialog_cancel builder={builder}>Cancel</.alert_dialog_cancel>
+              <.alert_dialog_cancel builder={builder}>{gettext("Cancel")}</.alert_dialog_cancel>
               <.alert_dialog_action class="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                Delete
+                {gettext("Delete")}
               </.alert_dialog_action>
             </.alert_dialog_footer>
           </.alert_dialog_content>

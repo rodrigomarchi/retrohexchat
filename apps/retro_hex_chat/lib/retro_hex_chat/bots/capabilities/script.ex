@@ -1,4 +1,5 @@
 defmodule RetroHexChat.Bots.Capabilities.Script do
+  use Gettext, backend: RetroHexChat.Gettext
   @moduledoc "Custom script engine (Coming soon)"
   @behaviour RetroHexChat.Bots.Capability
 
@@ -8,7 +9,7 @@ defmodule RetroHexChat.Bots.Capabilities.Script do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: "Custom script engine (Coming soon)"
+  def description, do: gettext("Custom script engine (Coming soon)")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::

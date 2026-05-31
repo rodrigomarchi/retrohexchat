@@ -1,33 +1,46 @@
 <p>
-  Chat messages contain interactive elements that respond to hover and click actions. URLs, channel names, and nicknames are all clickable.
+  {gettext(
+    "Chat messages contain interactive elements that respond to hover and click actions. URLs, channel names, and nicknames are all clickable."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>URLs</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("URLs")}</.help_h4>
 <p>
-  URLs in messages are underlined on hover with a pointer cursor. Hover to see the page title (fetched automatically). Click to open in a new browser tab.
+  {gettext(
+    "URLs in messages are underlined on hover with a pointer cursor. Hover to see the page title (fetched automatically). Click to open in a new browser tab."
+  )}
 </p>
-<.help_h4 icon={:icon_channels}>Channel Names</.help_h4>
+<.help_h4 icon={:icon_channels}>{gettext("Channel Names")}</.help_h4>
 <p>
-  Channel names (e.g., <code>#general</code>) are clickable. Hover to see a tooltip with the channel name, user count, and action hint. Click to join the channel (or switch to it if already joined).
+  {gettext("Channel names (e.g.,")} <code>#general</code>{gettext(
+    ") are clickable. Hover to see a tooltip with the channel name, user count, and action hint. Click to join the channel (or switch to it if already joined)."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_nick}>Nicknames</.help_h4>
+<.help_h4 icon={:icon_dialog_nick}>{gettext("Nicknames")}</.help_h4>
 <p>
-  Hover over a nickname in a chat message for 500ms to see a hover card with user info: online duration, channels, away status, client details (browser, OS, screen, language, timezone), and contact/ignore badges.
+  {gettext(
+    "Hover over a nickname in a chat message for 500ms to see a hover card with user info: online duration, channels, away status, client details (browser, OS, screen, language, timezone), and contact/ignore badges."
+  )}
 </p>
 <p>
-  <strong>Single-click:</strong>
-  Inserts <code>Nick: </code>
-  into your input field.<br /><strong>Double-click:</strong>
-  Opens a private message conversation.<br /><strong>Right-click:</strong>
-  Opens the context menu (see Context Menus).
+  <strong>{gettext("Single-click:")}</strong>
+  {gettext("Inserts")} <code>{gettext("Nick:")}</code>
+  {gettext("into your input field.")}<br /><strong>{gettext("Double-click:")}</strong>
+  {gettext("Opens a private message conversation.")}<br />
+  <strong>
+    {gettext("Right-click:")}
+  </strong>
+  {gettext("Opens the context menu (see Context Menus).")}
 </p>
-<.help_h4 icon={:icon_document_alert}>Notes</.help_h4>
+<.help_h4 icon={:icon_document_alert}>{gettext("Notes")}</.help_h4>
 <p>
-  Interactive elements do not trigger during text selection. The nick hover card does not appear for your own nickname. Hover tooltips dismiss when the mouse leaves the viewport.
+  {gettext(
+    "Interactive elements do not trigger during text selection. The nick hover card does not appear for your own nickname. Hover tooltips dismiss when the mouse leaves the viewport."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-context-menus">Context Menus</.help_link>
-  · <.help_link topic="feature-url-catcher">URL Catcher</.help_link>
-  · <.help_link topic="cmd-join">/join Command</.help_link>
-  · <.help_link topic="cmd-msg">/msg Command</.help_link>
+  <.help_link topic="feature-context-menus">{gettext("Context Menus")}</.help_link>
+  · <.help_link topic="feature-url-catcher">{gettext("URL Catcher")}</.help_link>
+  · <.help_link topic="cmd-join">{gettext("/join Command")}</.help_link>
+  · <.help_link topic="cmd-msg">{gettext("/msg Command")}</.help_link>
 </p>

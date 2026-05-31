@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Timer do
   @moduledoc "Handler for /timer [subcommand] [args]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Chat.TimerManager
@@ -15,10 +16,10 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
     {:ok, :system,
      %{
        content:
-         "Usage: /timer <name> <seconds> <command> — one-shot timer\n" <>
-           "       /timer <name> repeat <seconds> <command> — repeating timer\n" <>
-           "       /timer list — show active timers\n" <>
-           "       /timer stop <name> — cancel a timer"
+         gettext("Usage: /timer <name> <seconds> <command> — one-shot timer\n") <>
+           gettext("       /timer <name> repeat <seconds> <command> — repeating timer\n") <>
+           gettext("       /timer list — show active timers\n") <>
+           gettext("       /timer stop <name> — cancel a timer")
      }}
   end
 
@@ -54,14 +55,16 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
   def help do
     %{
       name: "timer",
-      syntax: "/timer <name> [repeat] <seconds> <command>",
+      syntax: gettext("/timer <name> [repeat] <seconds> <command>"),
       description:
-        "Schedule a command to run after a delay or on a repeating interval.\nCreate: /timer <name> <seconds> <command>. Repeat: /timer <name> repeat <seconds> <command>.\nTimers run in the window that was active when they were created and do not switch your current window when they fire.\nManage: /timer list, /timer stop <name>.\nMax 5 timers. One-shot: 1-86400s. Repeat minimum: 10s. Session-only (lost on disconnect).",
+        gettext(
+          "Schedule a command to run after a delay or on a repeating interval.\nCreate: /timer <name> <seconds> <command>. Repeat: /timer <name> repeat <seconds> <command>.\nTimers run in the window that was active when they were created and do not switch your current window when they fire.\nManage: /timer list, /timer stop <name>.\nMax 5 timers. One-shot: 1-86400s. Repeat minimum: 10s. Session-only (lost on disconnect)."
+        ),
       examples: [
-        "/timer remind 1800 /me reminds everyone: standup in 30 minutes",
-        "/timer heartbeat repeat 600 /me is still here",
-        "/timer list",
-        "/timer stop heartbeat"
+        gettext("/timer remind 1800 /me reminds everyone: standup in 30 minutes"),
+        gettext("/timer heartbeat repeat 600 /me is still here"),
+        gettext("/timer list"),
+        gettext("/timer stop heartbeat")
       ]
     }
   end
@@ -77,9 +80,11 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
 
     %CommandSyntax{
       command: "timer",
-      syntax: "/timer <name> [repeat] <seconds> <command>",
+      syntax: gettext("/timer <name> [repeat] <seconds> <command>"),
       description:
-        "Schedule a command to run after a delay or on a repeating interval. The command runs in the window that was active when the timer was created.",
+        gettext(
+          "Schedule a command to run after a delay or on a repeating interval. The command runs in the window that was active when the timer was created."
+        ),
       category: :config,
       parameters: [
         %Parameter{
@@ -87,25 +92,25 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
           required: true,
           type: :text,
           position: 0,
-          description: "Timer name"
+          description: gettext("Timer name")
         },
         %Parameter{
           name: "args",
           required: true,
           type: :text,
           position: 1,
-          description: "Configuration: [repeat] <seconds> <command>"
+          description: gettext("Configuration: [repeat] <seconds> <command>")
         }
       ],
       examples: [
-        "/timer remind 1800 /me reminds everyone: standup in 30 minutes",
-        "/timer heartbeat repeat 600 /me is still here",
-        "/timer list",
-        "/timer stop heartbeat"
+        gettext("/timer remind 1800 /me reminds everyone: standup in 30 minutes"),
+        gettext("/timer heartbeat repeat 600 /me is still here"),
+        gettext("/timer list"),
+        gettext("/timer stop heartbeat")
       ],
       subcommands: [
-        %{name: "list", description: "Show active timers"},
-        %{name: "stop", description: "Stop a running timer"}
+        %{name: "list", description: gettext("Show active timers")},
+        %{name: "stop", description: gettext("Stop a running timer")}
       ]
     }
   end

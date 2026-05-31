@@ -25,10 +25,10 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
   @doc "Renders a reusable confirmation dialog."
   attr :id, :string, required: true
   attr :show, :boolean, default: false
-  attr :title, :string, default: "Confirm"
+  attr :title, :string, default: nil
   attr :message, :string, required: true
-  attr :confirm_label, :string, default: "OK"
-  attr :cancel_label, :string, default: "Cancel"
+  attr :confirm_label, :string, default: nil
+  attr :cancel_label, :string, default: nil
   attr :variant, :string, default: "default", values: ~w(default destructive)
   attr :on_confirm, :any, default: nil, doc: "JS command or event name for confirm"
 
@@ -41,9 +41,15 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
 
   @spec confirm_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   def confirm_dialog(assigns) do
+    assigns =
+      assigns
+      |> assign(:resolved_title, assigns.title || gettext("Confirm"))
+      |> assign(:resolved_confirm_label, assigns.confirm_label || gettext("OK"))
+      |> assign(:resolved_cancel_label, assigns.cancel_label || gettext("Cancel"))
+
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header id={@id} title={@title}>
+      <.dialog_header id={@id} title={@resolved_title}>
         <:icon>
           <%= if @icon != [] do %>
             {render_slot(@icon)}
@@ -60,7 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
       <.dialog_footer>
         <.button variant={@variant} phx-click={@on_confirm} data-testid="confirm-dialog-confirm">
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {@confirm_label}
+          {@resolved_confirm_label}
         </.button>
         <.button
           variant="outline"
@@ -68,7 +74,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfirmDialog do
           data-testid="confirm-dialog-cancel"
         >
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {@cancel_label}
+          {@resolved_cancel_label}
         </.button>
       </.dialog_footer>
     </.dialog>

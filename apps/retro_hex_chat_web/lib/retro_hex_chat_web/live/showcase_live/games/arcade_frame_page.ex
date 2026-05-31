@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Games.ArcadeFramePage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,17 +13,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.ArcadeFramePage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Arcade Frame", active_page: "arcade-frame")}
+    {:ok, assign(socket, page_title: gettext("Arcade Frame"), active_page: "arcade-frame")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Arcade Frame</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Arcade Frame")}</h2>
 
       <.showcase_card
-        title="Default"
+        title={gettext("Default")}
         description="Arcade game iframe container with game name, player nickname, and Leave Game button."
       >
         <.arcade_frame
@@ -42,7 +43,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.ArcadeFramePage do
       </.showcase_card>
 
       <.showcase_card
-        title="Different Game"
+        title={gettext("Different Game")}
         description="Same component with a different game and player."
       >
         <.arcade_frame
@@ -54,7 +55,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.ArcadeFramePage do
       </.showcase_card>
 
       <.showcase_card
-        title="Long Game Name"
+        title={gettext("Long Game Name")}
         description="Title bar truncates long game names gracefully."
       >
         <.arcade_frame

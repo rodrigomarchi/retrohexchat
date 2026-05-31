@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.ClearWelcome do
   @moduledoc "Handler for /clearwelcome — operator clears channel welcome."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -11,14 +12,14 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcome do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{active_channel: nil}) do
-    {:error, "You must be in a channel to use this command."}
+    {:error, gettext("You must be in a channel to use this command.")}
   end
 
   def execute(_args, %{active_channel: channel} = context) do
     if channel in context.operator_in do
       {:ok, :ui_action, :clear_welcome, %{channel: channel}}
     else
-      {:error, "Permission denied: you must be a channel operator."}
+      {:error, gettext("Permission denied: you must be a channel operator.")}
     end
   end
 
@@ -34,7 +35,9 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcome do
       name: "clearwelcome",
       syntax: "/clearwelcome",
       description:
-        "Remove the welcome message from the current channel so new joiners won't see one.\nRequires: channel operator. Must be in a channel.",
+        gettext(
+          "Remove the welcome message from the current channel so new joiners won't see one.\nRequires: channel operator. Must be in a channel."
+        ),
       examples: ["/clearwelcome"]
     }
   end
@@ -51,7 +54,9 @@ defmodule RetroHexChat.Commands.Handlers.ClearWelcome do
       command: "clearwelcome",
       syntax: "/clearwelcome",
       description:
-        "Remove the welcome message from the current channel so new joiners won't see one.",
+        gettext(
+          "Remove the welcome message from the current channel so new joiners won't see one."
+        ),
       category: :advanced,
       parameters: [],
       examples: ["/clearwelcome"]

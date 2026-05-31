@@ -9,6 +9,7 @@ defmodule RetroHexChat.Chat.AliasExpander do
     - $chan: the current channel name (empty string if nil)
     - $$: literal dollar sign
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   @chaining_pattern ~r/[|;\r\n]|&&/
 
@@ -25,7 +26,8 @@ defmodule RetroHexChat.Chat.AliasExpander do
   @spec validate_expansion(String.t()) :: :ok | {:error, String.t()}
   def validate_expansion(expansion) do
     if contains_chaining?(expansion) do
-      {:error, "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"}
+      {:error,
+       gettext("Expansion must not contain command chaining characters (|, &&, ;, or newlines)")}
     else
       :ok
     end

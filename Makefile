@@ -5,6 +5,7 @@
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.gettext.extract i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.fix lint.css precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -208,6 +209,26 @@ ci: ## Run all CI checks locally with maximum parallelism
 
 ci.quick: ## Run CI checks without dialyzer (faster iteration)
 	elixir scripts/ci.exs --quick
+
+i18n.audit: ## Find hardcoded user-visible strings that still need i18n
+	elixir scripts/i18n_audit.exs
+
+i18n.audit.check: ## Fail when hardcoded user-visible strings are found
+	elixir scripts/i18n_audit.exs --fail-on-findings
+
+i18n.status: ## Report translated, empty, and fuzzy Gettext catalog entries
+	elixir scripts/i18n_po_status.exs
+
+i18n.catalog.check: ## Fail while pt_BR catalogs still have empty or fuzzy entries
+	elixir scripts/i18n_po_status.exs --fail-on-untranslated --fail-locale pt_BR
+
+i18n.gettext.extract: ## Extract and merge Gettext catalogs for all apps
+	cd $(DOMAIN_APP) && mix gettext.extract --merge --no-fuzzy
+	cd $(WEB_APP) && mix gettext.extract --merge --no-fuzzy
+
+i18n.gettext.check: ## Verify Gettext catalogs are up to date for all apps
+	cd $(DOMAIN_APP) && mix gettext.extract --check-up-to-date
+	cd $(WEB_APP) && mix gettext.extract --check-up-to-date
 
 precommit: ## Run pre-commit pipeline (compile + format + test)
 	mix precommit

@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
   attr :id, :string, default: nil, doc: "Wrapper element ID (for hooks)"
   attr :input_id, :string, default: nil, doc: "Textarea element ID (for hooks and JS focus)"
   attr :value, :string, default: "", doc: "Current input value"
-  attr :placeholder, :string, default: "Type a message..."
+  attr :placeholder, :string, default: nil
   attr :max_length, :integer, default: 1000
   attr :name, :string, default: "message", doc: "Textarea field name"
   attr :disabled, :boolean, default: false
@@ -58,7 +58,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
 
   @spec chat_input(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_input(assigns) do
-    assigns = assign(assigns, :char_count, String.length(assigns.value || ""))
+    assigns =
+      assigns
+      |> assign(:char_count, String.length(assigns.value || ""))
+      |> assign(:placeholder, assigns.placeholder || gettext("Type a message..."))
 
     ~H"""
     <div
@@ -103,7 +106,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
             class="min-w-[60px]"
           >
             <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
-            Send
+            {gettext("Send")}
           </.button>
           <span class="hidden md:block text-[10px] text-muted-foreground" data-testid="char-counter">
             {@char_count}/{@max_length}

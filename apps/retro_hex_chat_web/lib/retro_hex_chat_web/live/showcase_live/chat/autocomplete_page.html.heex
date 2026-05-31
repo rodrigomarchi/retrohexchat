@@ -1,8 +1,8 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">Autocomplete</h2>
+  <h2 class="text-lg font-bold mb-3">{gettext("Autocomplete")}</h2>
 
   <.showcase_card
-    title="Command Mode"
+    title={gettext("Command Mode")}
     description="Autocomplete dropdown with command suggestions grouped by category (native backend data)."
   >
     <.autocomplete
@@ -48,7 +48,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Nick Mode"
+    title={gettext("Nick Mode")}
     description="Autocomplete showing nick suggestions with online status dots and color classes."
   >
     <.autocomplete
@@ -68,7 +68,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Channel Mode"
+    title={gettext("Channel Mode")}
     description="Autocomplete showing channels with joined checkmark and user counts."
   >
     <.autocomplete
@@ -84,7 +84,7 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Subcommand Mode"
+    title={gettext("Subcommand Mode")}
     description="Autocomplete for subcommands (e.g., /ns options)."
   >
     <.autocomplete
@@ -100,18 +100,18 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Empty State"
+    title={gettext("Empty State")}
     description="Autocomplete with no matching results."
   >
     <.autocomplete items={[]} />
   </.showcase_card>
 
   <.showcase_card
-    title="Hidden"
+    title={gettext("Hidden")}
     description="Autocomplete with visible=false (nothing renders)."
   >
     <div class="text-xs text-muted-foreground italic p-2">
-      (autocomplete is hidden — nothing rendered below)
+      {gettext("(autocomplete is hidden — nothing rendered below)")}
     </div>
     <.autocomplete visible={false} items={[]} />
   </.showcase_card>

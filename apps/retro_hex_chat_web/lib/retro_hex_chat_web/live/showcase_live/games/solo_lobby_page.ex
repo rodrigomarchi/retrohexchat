@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Games.SoloLobbyPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -11,39 +12,59 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.SoloLobbyPage do
   import RetroHexChatWeb.ShowcaseHelpers
 
   @sample_games [
-    %{id: "doom", name: "DOOM", description: "Episode 1", engine: "DOOM Engine"},
-    %{id: "freedoom1", name: "Freedoom Phase 1", description: "36 levels", engine: "DOOM Engine"},
-    %{id: "quake", name: "LibreQuake", description: "Open-source Quake", engine: "Quake Engine"},
+    %{id: "doom", name: "DOOM", description: "Episode 1", engine: gettext("DOOM Engine")},
+    %{
+      id: "freedoom1",
+      name: "Freedoom Phase 1",
+      description: gettext("36 levels"),
+      engine: gettext("DOOM Engine")
+    },
+    %{
+      id: "quake",
+      name: "LibreQuake",
+      description: gettext("Open-source Quake"),
+      engine: gettext("Quake Engine")
+    },
     %{
       id: "wolfenstein",
       name: "Wolfenstein 3D",
-      description: "Shareware Classic",
-      engine: "Wolf3D Engine"
+      description: gettext("Shareware Classic"),
+      engine: gettext("Wolf3D Engine")
     },
-    %{id: "bass", name: "Beneath a Steel Sky", description: "Point & Click", engine: "ScummVM"},
-    %{id: "chex", name: "Chex Quest", description: "Cereal box classic", engine: "DOOM Engine"}
+    %{
+      id: "bass",
+      name: "Beneath a Steel Sky",
+      description: gettext("Point & Click"),
+      engine: gettext("ScummVM")
+    },
+    %{
+      id: "chex",
+      name: "Chex Quest",
+      description: gettext("Cereal box classic"),
+      engine: gettext("DOOM Engine")
+    }
   ]
 
   @sample_preview %{
     id: "doom",
     name: "DOOM",
-    description: "Episode 1 — The Original",
-    engine: "DOOM Engine (PrBoom+)",
+    description: gettext("Episode 1 — The Original"),
+    engine: gettext("DOOM Engine (PrBoom+)"),
     about: [
-      "The original first-person shooter that defined the genre.",
-      "Fight through hordes of demons from Hell in this classic 1993 game."
+      gettext("The original first-person shooter that defined the genre."),
+      gettext("Fight through hordes of demons from Hell in this classic 1993 game.")
     ],
     controls: [
-      {"WASD", "Move"},
-      {"Mouse", "Look / Aim"},
-      {"Left Click", "Shoot"},
-      {"E", "Use / Open doors"},
-      {"1-7", "Switch weapons"}
+      {gettext("WASD"), gettext("Move")},
+      {gettext("Mouse"), gettext("Look / Aim")},
+      {gettext("Left Click"), gettext("Shoot")},
+      {"E", gettext("Use / Open doors")},
+      {"1-7", gettext("Switch weapons")}
     ],
     tips: [
-      "Look for secret walls by pressing Use against suspicious textures",
-      "Save often - ammo and health can be scarce",
-      "The chainsaw is surprisingly effective against Pinkies"
+      gettext("Look for secret walls by pressing Use against suspicious textures"),
+      gettext("Save often - ammo and health can be scarce"),
+      gettext("The chainsaw is surprisingly effective against Pinkies")
     ]
   }
 
@@ -51,7 +72,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Games.SoloLobbyPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Solo Lobby",
+       page_title: gettext("Solo Lobby"),
        active_page: "solo-lobby",
        sample_games: @sample_games,
        sample_preview: @sample_preview

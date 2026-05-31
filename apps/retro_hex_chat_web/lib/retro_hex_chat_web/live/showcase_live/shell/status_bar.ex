@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBar do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -13,6 +14,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBar do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Status Bar", active_page: "status-bar")}
+    {:ok, assign(socket, page_title: gettext("Status Bar"), active_page: "status-bar")}
   end
 end

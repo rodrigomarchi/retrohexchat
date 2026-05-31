@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   def bot_management_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-2xl">
-      <.dialog_header id={@id} title="Bot Management">
+      <.dialog_header id={@id} title={gettext("Bot Management")}>
         <:icon><Icons.icon_dialog_bot_management class="w-[16px] h-[16px]" /></:icon>
       </.dialog_header>
       <.dialog_body class="min-h-[400px]">
@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
           <%!-- Left panel: bot list --%>
           <div class="w-full md:w-[180px] md:shrink-0 flex flex-col">
             <div class="text-xs font-bold mb-retro-4 flex items-center gap-retro-4">
-              <Icons.icon_btn_bot_management class="w-[14px] h-[14px]" /> Bots
+              <Icons.icon_btn_bot_management class="w-[14px] h-[14px]" /> {gettext("Bots")}
             </div>
             <div class="flex-1 shadow-retro-sunken bg-white overflow-y-auto p-retro-2">
               <ul class="list-none m-0 p-0" data-testid="bot-list">
@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
             <div :if={@is_admin} class="flex gap-retro-4 mt-retro-4">
               <.button type="button" size="sm" phx-click="open_new_bot_dialog">
                 <:icon><Icons.icon_btn_add class="w-[14px] h-[14px]" /></:icon>
-                New
+                {gettext("New")}
               </.button>
               <.button
                 type="button"
@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                 phx-value-name={@selected && @selected.name}
               >
                 <:icon><Icons.icon_trash class="w-[14px] h-[14px]" /></:icon>
-                Delete
+                {gettext("Delete")}
               </.button>
             </div>
           </div>
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
               :if={@selected == nil}
               class="flex items-center justify-center h-full text-muted-foreground text-sm"
             >
-              Select a bot to view details
+              {gettext("Select a bot to view details")}
             </div>
             <div :if={@selected != nil} class="h-full flex flex-col">
               <.tabs id="bot-tabs" default="general" class="flex-1">
@@ -98,7 +98,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                     phx-value-tab="general"
                   >
                     <:icon><Icons.icon_tab_general class="w-[16px] h-[16px]" /></:icon>
-                    General
+                    {gettext("General")}
                   </.tabs_trigger>
                   <.tabs_trigger
                     builder={%{id: "bot-tabs", default: "general"}}
@@ -107,7 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                     phx-value-tab="capabilities"
                   >
                     <:icon><Icons.icon_tab_control class="w-[16px] h-[16px]" /></:icon>
-                    Capabilities
+                    {gettext("Capabilities")}
                   </.tabs_trigger>
                   <.tabs_trigger
                     builder={%{id: "bot-tabs", default: "general"}}
@@ -116,7 +116,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                     phx-value-tab="channels"
                   >
                     <:icon><Icons.icon_tab_channel class="w-[16px] h-[16px]" /></:icon>
-                    Channels
+                    {gettext("Channels")}
                   </.tabs_trigger>
                   <.tabs_trigger
                     builder={%{id: "bot-tabs", default: "general"}}
@@ -125,7 +125,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                     phx-value-tab="commands"
                   >
                     <:icon><Icons.icon_tab_commands class="w-[16px] h-[16px]" /></:icon>
-                    Commands
+                    {gettext("Commands")}
                   </.tabs_trigger>
                   <.tabs_trigger
                     builder={%{id: "bot-tabs", default: "general"}}
@@ -134,7 +134,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                     phx-value-tab="events"
                   >
                     <:icon><Icons.icon_clock class="w-[16px] h-[16px]" /></:icon>
-                    Events
+                    {gettext("Events")}
                   </.tabs_trigger>
                 </.tabs_list>
 
@@ -142,29 +142,31 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                 <.tabs_content value="general">
                   <div class="space-y-retro-8 p-retro-4 text-sm">
                     <div class="flex items-center gap-retro-8">
-                      <span class="font-bold w-[80px]">Name:</span>
+                      <span class="font-bold w-[80px]">{gettext("Name")}:</span>
                       <span>{@selected.name}</span>
                     </div>
                     <div class="flex items-center gap-retro-8">
-                      <span class="font-bold w-[80px]">Nickname:</span>
+                      <span class="font-bold w-[80px]">{gettext("Nickname")}:</span>
                       <span>{Map.get(@selected, :nickname, @selected.name)}</span>
                     </div>
                     <div class="flex items-center gap-retro-8">
-                      <span class="font-bold w-[80px]">Prefix:</span>
+                      <span class="font-bold w-[80px]">{gettext("Prefix")}:</span>
                       <span class="font-mono">{Map.get(@selected, :prefix, "!")}</span>
                     </div>
                     <div class="flex items-center gap-retro-8">
-                      <span class="font-bold w-[80px]">Status:</span>
+                      <span class="font-bold w-[80px]">{gettext("Status")}:</span>
                       <span class={
                         if Map.get(@selected, :enabled, true),
                           do: "text-green-700",
                           else: "text-red-700"
                       }>
-                        {if Map.get(@selected, :enabled, true), do: "Enabled", else: "Disabled"}
+                        {if Map.get(@selected, :enabled, true),
+                          do: gettext("Enabled"),
+                          else: gettext("Disabled")}
                       </span>
                     </div>
                     <.separator />
-                    <div class="font-bold text-xs">Capabilities</div>
+                    <div class="font-bold text-xs">{gettext("Capabilities")}</div>
                     <div class="flex flex-wrap gap-retro-4">
                       <span
                         :for={cap <- capability_names(@selected)}
@@ -176,19 +178,19 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                         :if={capability_names(@selected) == []}
                         class="text-muted-foreground text-xs"
                       >
-                        No capabilities configured
+                        {gettext("No capabilities configured")}
                       </span>
                     </div>
                     <div :if={@stats} class="mt-retro-4">
                       <.separator />
-                      <div class="font-bold text-xs mb-retro-4">Statistics</div>
+                      <div class="font-bold text-xs mb-retro-4">{gettext("Statistics")}</div>
                       <div class="grid grid-cols-2 gap-retro-4 text-xs">
-                        <span>Messages:</span>
+                        <span>{gettext("Messages")}:</span>
                         <span>{Map.get(@stats, :messages, 0)}</span>
-                        <span>Commands:</span>
+                        <span>{gettext("Commands")}:</span>
                         <span>{Map.get(@stats, :commands, 0)}</span>
-                        <span>Uptime:</span>
-                        <span>{Map.get(@stats, :uptime, "N/A")}</span>
+                        <span>{gettext("Uptime")}:</span>
+                        <span>{Map.get(@stats, :uptime, gettext("N/A"))}</span>
                       </div>
                     </div>
                   </div>
@@ -209,7 +211,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                       :if={@channels == []}
                       class="text-center text-muted-foreground text-sm py-retro-16"
                     >
-                      No channels assigned
+                      {gettext("No channels assigned")}
                     </div>
                     <div
                       :if={@channels != []}
@@ -218,8 +220,12 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                       <table class="w-full text-xs">
                         <thead>
                           <tr class="bg-surface">
-                            <th class="text-left px-retro-4 py-retro-2 font-bold">Channel</th>
-                            <th class="text-left px-retro-4 py-retro-2 font-bold">Status</th>
+                            <th class="text-left px-retro-4 py-retro-2 font-bold">
+                              {gettext("Channel")}
+                            </th>
+                            <th class="text-left px-retro-4 py-retro-2 font-bold">
+                              {gettext("Status")}
+                            </th>
                             <th
                               :if={@is_admin}
                               class="text-right px-retro-4 py-retro-2 font-bold w-[60px]"
@@ -231,7 +237,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                           <tr :for={ch <- @channels} class="border-t border-separator">
                             <td class="px-retro-4 py-retro-2">{Map.get(ch, :name, ch)}</td>
                             <td class="px-retro-4 py-retro-2">
-                              {if is_map(ch), do: Map.get(ch, :status, "joined"), else: "joined"}
+                              {channel_status(ch)}
                             </td>
                             <td :if={@is_admin} class="px-retro-4 py-retro-2 text-right">
                               <button
@@ -241,7 +247,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                                 phx-value-channel={Map.get(ch, :name, ch)}
                                 phx-value-bot_name={@selected.name}
                               >
-                                Remove
+                                {gettext("Remove")}
                               </button>
                             </td>
                           </tr>
@@ -263,7 +269,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                       />
                       <.button type="submit" size="sm">
                         <:icon><Icons.icon_btn_add class="w-[14px] h-[14px]" /></:icon>
-                        Add
+                        {gettext("Add")}
                       </.button>
                     </form>
                   </div>
@@ -276,7 +282,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                       :if={@commands == []}
                       class="text-center text-muted-foreground text-sm py-retro-16"
                     >
-                      No custom commands
+                      {gettext("No custom commands")}
                     </div>
                     <div
                       :if={@commands != []}
@@ -285,8 +291,12 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                       <table class="w-full text-xs">
                         <thead>
                           <tr class="bg-surface">
-                            <th class="text-left px-retro-4 py-retro-2 font-bold">Trigger</th>
-                            <th class="text-left px-retro-4 py-retro-2 font-bold">Response</th>
+                            <th class="text-left px-retro-4 py-retro-2 font-bold">
+                              {gettext("Trigger")}
+                            </th>
+                            <th class="text-left px-retro-4 py-retro-2 font-bold">
+                              {gettext("Response")}
+                            </th>
                             <th
                               :if={@is_admin}
                               class="text-right px-retro-4 py-retro-2 font-bold w-[60px]"
@@ -310,7 +320,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                                 phx-value-trigger={Map.get(cmd, :trigger, "")}
                                 phx-value-bot_name={@selected.name}
                               >
-                                Remove
+                                {gettext("Remove")}
                               </button>
                             </td>
                           </tr>
@@ -320,7 +330,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                     <div :if={@is_admin} class="flex gap-retro-4 mt-retro-4">
                       <.button type="button" size="sm" phx-click="open_add_command_dialog">
                         <:icon><Icons.icon_btn_add class="w-[14px] h-[14px]" /></:icon>
-                        Add
+                        {gettext("Add")}
                       </.button>
                     </div>
                   </div>
@@ -333,7 +343,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                       :if={@events == []}
                       class="text-center text-muted-foreground text-sm py-retro-16"
                     >
-                      No recent events
+                      {gettext("No recent events")}
                     </div>
                     <div
                       :if={@events != []}
@@ -359,7 +369,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
       <.dialog_footer>
         <.button type="button" phx-click={@on_close}>
           <:icon><Icons.icon_checkmark class="w-[14px] h-[14px]" /></:icon>
-          Close
+          {gettext("Close")}
         </.button>
       </.dialog_footer>
     </.dialog>
@@ -383,7 +393,7 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
         :if={@cap_names == []}
         class="text-center text-muted-foreground text-sm py-retro-16"
       >
-        No configurable capabilities enabled.
+        {gettext("No configurable capabilities enabled.")}
       </div>
       <div :if={@cap_names != []} class="space-y-retro-8">
         <fieldset
@@ -419,9 +429,9 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   defp cap_toggle_row(assigns) do
     ~H"""
     <div class="flex items-center gap-retro-4 text-xs">
-      <span class="font-bold w-[100px]">Status:</span>
+      <span class="font-bold w-[100px]">{gettext("Status")}:</span>
       <span class={if @enabled, do: "text-green-700", else: "text-red-700"}>
-        {if @enabled, do: "Enabled", else: "Disabled"}
+        {if @enabled, do: gettext("Enabled"), else: gettext("Disabled")}
       </span>
       <button
         :if={@is_admin}
@@ -432,20 +442,20 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
         phx-value-bot_name={@bot_name}
         data-testid={"toggle-cap-#{@cap_name}"}
       >
-        {if @enabled, do: "Disable", else: "Enable"}
+        {if @enabled, do: gettext("Disable"), else: gettext("Enable")}
       </button>
     </div>
     """
   end
 
   @spec cap_display_name(String.t()) :: String.t()
-  defp cap_display_name("dice"), do: "Dice"
-  defp cap_display_name("moderation"), do: "Moderation"
-  defp cap_display_name("trivia"), do: "Trivia"
-  defp cap_display_name("scheduler"), do: "Scheduler"
-  defp cap_display_name("rss"), do: "RSS"
-  defp cap_display_name("greeter"), do: "Greeter"
-  defp cap_display_name("mention"), do: "Mention"
+  defp cap_display_name("dice"), do: gettext("Dice")
+  defp cap_display_name("moderation"), do: gettext("Moderation")
+  defp cap_display_name("trivia"), do: gettext("Trivia")
+  defp cap_display_name("scheduler"), do: gettext("Scheduler")
+  defp cap_display_name("rss"), do: gettext("RSS")
+  defp cap_display_name("greeter"), do: gettext("Greeter")
+  defp cap_display_name("mention"), do: gettext("Mention")
   defp cap_display_name(other), do: String.capitalize(other)
 
   defp capability_names(selected) do
@@ -466,7 +476,21 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   end
 
   @spec inspect_cap_value(any()) :: String.t()
-  defp inspect_cap_value(val) when is_list(val), do: "#{length(val)} item(s)"
-  defp inspect_cap_value(val) when is_map(val), do: "#{map_size(val)} entries"
+  defp inspect_cap_value(val) when is_list(val),
+    do: ngettext("%{count} item", "%{count} items", length(val))
+
+  defp inspect_cap_value(val) when is_map(val),
+    do: ngettext("%{count} entry", "%{count} entries", map_size(val))
+
   defp inspect_cap_value(val), do: to_string(val)
+
+  defp channel_status(ch) do
+    status = if is_map(ch), do: Map.get(ch, :status, "joined"), else: "joined"
+
+    case status do
+      "joined" -> gettext("joined")
+      "parted" -> gettext("parted")
+      other -> other
+    end
+  end
 end

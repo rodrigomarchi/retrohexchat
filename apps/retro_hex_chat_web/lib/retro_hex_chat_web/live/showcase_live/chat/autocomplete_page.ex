@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Chat.AutocompletePage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,6 +13,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.AutocompletePage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Autocomplete", active_page: "autocomplete")}
+    {:ok, assign(socket, page_title: gettext("Autocomplete"), active_page: "autocomplete")}
   end
 end

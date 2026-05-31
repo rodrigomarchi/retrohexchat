@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
   Voice/video call SVG diagrams and mockups.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   # ──────────────────────────────────────────────────
   # Voice Call Mockup Diagram (features page — feat-p2p)
@@ -19,7 +20,11 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Retro-style voice call window showing timer, mute, camera, screen share, and end call buttons"
+      aria-label={
+        gettext(
+          "Retro-style voice call window showing timer, mute, camera, screen share, and end call buttons"
+        )
+      }
     >
       <!-- Shadow -->
       <rect x="14" y="14" width="320" height="130" fill="#000" />
@@ -38,7 +43,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
         font-family="'Segoe UI',Tahoma,sans-serif"
         font-weight="bold"
       >
-        Voice Call with Bob
+        {gettext("Voice Call with Bob")}
       </text>
       
     <!-- Title bar buttons (fake) -->
@@ -76,7 +81,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
       
     <!-- Small avatar icon square -->
       <rect x="30" y="52" width="32" height="32" fill="#008080" stroke="#fff" stroke-width="1" />
-      <text x="46" y="74" text-anchor="middle" fill="#fff" font-size="20">&#x1F469;</text>
+      <text x="46" y="74" text-anchor="middle" fill="#fff" font-size="20">
+        {gettext("&#x1F469;")}
+      </text>
       
     <!-- Timer elements -->
       <circle cx="95" cy="68" r="5" fill="#00ff00" />
@@ -109,7 +116,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
         font-size="11"
         font-family="'Segoe UI',Tahoma,sans-serif"
       >
-        Mute
+        {gettext("Mute")}
       </text>
       
     <!-- Camera -->
@@ -124,7 +131,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
         font-size="11"
         font-family="'Segoe UI',Tahoma,sans-serif"
       >
-        Camera
+        {gettext("Camera")}
       </text>
       
     <!-- Screen -->
@@ -139,7 +146,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
         font-size="11"
         font-family="'Segoe UI',Tahoma,sans-serif"
       >
-        Screen
+        {gettext("Screen")}
       </text>
       
     <!-- End Call (Disabled/Red style) -->
@@ -160,7 +167,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
         font-family="'Segoe UI',Tahoma,sans-serif"
         font-weight="bold"
       >
-        End
+        {gettext("End")}
       </text>
     </svg>
     """

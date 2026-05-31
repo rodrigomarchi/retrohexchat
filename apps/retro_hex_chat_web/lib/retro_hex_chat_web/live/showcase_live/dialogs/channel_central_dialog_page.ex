@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelCentralDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -26,7 +27,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelCentralDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Channel Central Dialog",
+       page_title: gettext("Channel Central Dialog"),
        active_page: :channel_central_dialog,
        ban_selected: nil,
        ban_ex_selected: nil,
@@ -46,21 +47,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelCentralDialogPage do
 
   defp sample_bans do
     [
-      %{mask: "*!*@troll.host", set_by: "Admin", set_at: "2025-12-01"},
-      %{mask: "spammer!*@*", set_by: "Troll", set_at: "2025-12-10"},
-      %{mask: "*!*@*.bad.isp", set_by: "Admin", set_at: "2025-12-14"}
+      %{mask: gettext("*!*@troll.host"), set_by: gettext("Admin"), set_at: "2025-12-01"},
+      %{mask: gettext("spammer!*@*"), set_by: gettext("Troll"), set_at: "2025-12-10"},
+      %{mask: gettext("*!*@*.bad.isp"), set_by: gettext("Admin"), set_at: "2025-12-14"}
     ]
   end
 
   defp sample_ban_exceptions do
     [
-      %{mask: "friend!*@troll.host", set_by: "Admin", set_at: "2025-12-02"}
+      %{mask: gettext("friend!*@troll.host"), set_by: gettext("Admin"), set_at: "2025-12-02"}
     ]
   end
 
   defp sample_invite_exceptions do
     [
-      %{mask: "vip!*@*.good.isp", set_by: "Troll", set_at: "2025-12-05"}
+      %{mask: gettext("vip!*@*.good.isp"), set_by: gettext("Troll"), set_at: "2025-12-05"}
     ]
   end
 end

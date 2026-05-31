@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{IgnoreList, TimeFormatter}
@@ -142,7 +144,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
     %{
       loading: false,
       data: data,
-      away: if(data.away, do: data.away_message || "Away"),
+      away: if(data.away, do: data.away_message || gettext("Away")),
       host: data.hostname,
       registered: data.registered,
       online_for: data.online_for,
@@ -174,7 +176,7 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   end
 
   @spec format_online_time(map() | nil) :: String.t()
-  defp format_online_time(nil), do: "Unknown"
+  defp format_online_time(nil), do: gettext("Unknown")
 
   defp format_online_time(meta) do
     joined_at = meta[:joined_at] || meta[:connected_at]
@@ -183,17 +185,17 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
       seconds = DateTime.diff(DateTime.utc_now(), joined_at, :second)
       TimeFormatter.format_duration(seconds)
     else
-      "Unknown"
+      gettext("Unknown")
     end
   end
 
   @spec format_idle_time(map() | nil) :: String.t()
-  defp format_idle_time(nil), do: "Unknown"
+  defp format_idle_time(nil), do: gettext("Unknown")
 
   defp format_idle_time(meta) do
     case meta[:last_activity_at] do
       nil ->
-        "Unknown"
+        gettext("Unknown")
 
       last_activity_at ->
         seconds = DateTime.diff(DateTime.utc_now(), last_activity_at, :second)

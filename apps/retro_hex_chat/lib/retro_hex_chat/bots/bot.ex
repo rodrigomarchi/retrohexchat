@@ -2,6 +2,7 @@ defmodule RetroHexChat.Bots.Bot do
   @moduledoc """
   Ecto schema for bot configuration and persistence.
   """
+  use Gettext, backend: RetroHexChat.Gettext
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -38,9 +39,11 @@ defmodule RetroHexChat.Bots.Bot do
     |> validate_length(:nickname, min: 2, max: 16)
     |> validate_length(:command_prefix, min: 1, max: 3)
     |> validate_number(:cooldown_ms, greater_than_or_equal_to: 500)
-    |> validate_format(:name, ~r/^[a-zA-Z0-9_-]+$/, message: "only letters, numbers, _ and -")
+    |> validate_format(:name, ~r/^[a-zA-Z0-9_-]+$/,
+      message: gettext("only letters, numbers, _ and -")
+    )
     |> validate_format(:nickname, ~r/^[a-zA-Z][a-zA-Z0-9_-]*$/,
-      message: "must start with a letter"
+      message: gettext("must start with a letter")
     )
     |> unique_constraint(:name, name: :bots_name_index)
     |> unique_constraint(:nickname, name: :bots_nickname_index)

@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2, stream_insert: 3]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
     router: RetroHexChatWeb.Router,
@@ -94,7 +96,11 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   def send_plain_message(socket, session, text) do
     cond do
       socket.assigns.show_status_tab ->
-        push_status_message(socket, "Cannot send text to status window. Use /commands.", :error)
+        push_status_message(
+          socket,
+          gettext("Cannot send text to status window. Use /commands."),
+          :error
+        )
 
       session.active_pm ->
         send_pm_message(socket, session, text)
@@ -111,7 +117,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp send_pm_message(socket, session, text) do
     if GlobalMutes.muted?(session.nickname) do
-      error_event(socket, "You are muted by an administrator")
+      error_event(socket, gettext("You are muted by an administrator"))
     else
       do_send_pm_message(socket, session, text)
     end
@@ -139,7 +145,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp send_channel_message(socket, session, text) do
     if GlobalMutes.muted?(session.nickname) do
-      error_event(socket, "You are muted by an administrator")
+      error_event(socket, gettext("You are muted by an administrator"))
     else
       do_send_channel_message(socket, session, text)
     end
@@ -204,7 +210,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp try_alias_expansion(session, name, args, context, alias_depth) do
     if alias_depth >= 5 do
-      {:error, "Alias recursion limit reached (max 5 levels)"}
+      {:error, gettext("Alias recursion limit reached (max 5 levels)")}
     else
       case AliasList.find_entry(session.aliases, name) do
         nil ->
@@ -250,7 +256,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp handle_dispatch_result(socket, _session, {:ok, :nick_change, new_nick}) do
     if nick_in_use?(new_nick, socket.assigns.session.nickname) do
-      error_event(socket, "Nickname #{new_nick} is already in use")
+      error_event(socket, gettext("Nickname %{nickname} is already in use", nickname: new_nick))
     else
       registered = NickServ.registered?(new_nick)
 
@@ -286,7 +292,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
     msg = %{
       id: "system-#{System.unique_integer([:positive])}",
-      author: "System",
+      author: gettext("System"),
       content: url,
       type: :arcade_link,
       timestamp: DateTime.utc_now()
@@ -294,7 +300,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
     socket
     |> stream_insert(:chat_messages, msg)
-    |> push_status_message("Arcade session ready! Open: #{url}", :system)
+    |> push_status_message(gettext("Arcade session ready! Open: %{url}", url: url), :system)
   end
 
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, action, payload}),
@@ -346,7 +352,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp handle_quit(socket, reason) do
     session = socket.assigns.session
-    quit_reason = reason || "Leaving"
+    quit_reason = reason || gettext("Leaving")
     cleanup_channels(session, quit_reason)
 
     socket
@@ -407,7 +413,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp detect_service_author("[ChanServ]" <> _), do: "ChanServ"
   defp detect_service_author("[NickServ]" <> _), do: "NickServ"
-  defp detect_service_author(_), do: "Service"
+  defp detect_service_author(_), do: gettext("Service")
 
   defp nick_in_use?(nickname, current_nickname) do
     String.downcase(nickname) != String.downcase(current_nickname) and
@@ -436,7 +442,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         {:error, :list_full} ->
           system_event(
             socket,
-            "Auto-join list is full (20 channels). #{channel_name} was not added to auto-join."
+            gettext(
+              "Auto-join list is full (20 channels). %{channel} was not added to auto-join.",
+              channel: channel_name
+            )
           )
 
         {:error, :duplicate} ->

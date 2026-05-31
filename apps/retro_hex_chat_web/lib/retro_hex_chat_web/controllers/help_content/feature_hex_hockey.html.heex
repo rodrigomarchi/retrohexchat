@@ -1,63 +1,97 @@
 <p>
-  Top-down ice hockey in a cyberpunk neon arena. Control your field player
-  while an AI goalie defends your net. Shoot, tackle, and outplay your
-  opponent across 3 periods of intense action.
+  {gettext(
+    "Top-down ice hockey in a cyberpunk neon arena. Control your field player while an AI goalie defends your net. Shoot, tackle, and outplay your opponent across 3 periods of intense action."
+  )}
 </p>
 <.diagram_game_hockey class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow keys or WASD</strong> — Move in 8 directions</li>
-  <li><strong>Space or Shift (with puck)</strong> — Shoot in your facing direction</li>
-  <li><strong>Space or Shift (without puck)</strong> — Tackle opponent to steal puck</li>
-</ul>
-<.help_h4 icon={:icon_rules}>Puck Mechanics</.help_h4>
-<ul>
-  <li><strong>Capture</strong> — Walk into the free puck to pick it up automatically</li>
+  <li><strong>{gettext("Arrow keys or WASD")}</strong> {gettext("— Move in 8 directions")}</li>
   <li>
-    <strong>Shoot</strong> — Launches puck at 2× your movement speed in your facing direction
-  </li>
-  <li><strong>Wall bounce</strong> — Puck reflects off top/bottom walls</li>
-  <li><strong>Friction</strong> — Free puck gradually slows down on the ice</li>
-  <li><strong>Stuck puck</strong> — If the puck stops for 5 seconds, a face-off is called</li>
-</ul>
-<.help_h4 icon={:icon_rules}>Tackle</.help_h4>
-<ul>
-  <li>Press action near an opponent who has the puck to attempt a steal</li>
-  <li><strong>60% success rate</strong> — puck is freed at opponent's position</li>
-  <li><strong>40% failure</strong> — you are stunned for 300ms (can't move or act)</li>
-  <li>Risk vs reward: aggressive tackles can backfire!</li>
-</ul>
-<.help_h4 icon={:icon_rules}>Goalie AI</.help_h4>
-<ul>
-  <li>Your goalie moves automatically, tracking the puck vertically</li>
-  <li>Goalie reacts faster when the puck is nearby</li>
-  <li>Goalie is not perfect — angled shots can beat it</li>
-  <li>Blocked shots ricochet back into play</li>
-</ul>
-<.help_h4 icon={:icon_rules}>Match Format</.help_h4>
-<ul>
-  <li><strong>3 periods</strong> of 2 minutes each (6 minutes total)</li>
-  <li>Teams switch sides after each period</li>
-  <li>Face-off at center after every goal and period start</li>
-  <li><strong>Tied at the end?</strong> Sudden death — next goal wins!</li>
-</ul>
-<.help_h4 icon={:icon_tab_modes}>Modes</.help_h4>
-<ul>
-  <li>
-    <.help_link topic="feature-hex-hockey-blitz">Blitz</.help_link>
-    — 1 period of 3 minutes, faster puck, 80% tackle success
+    <strong>{gettext("Space or Shift (with puck)")}</strong> {gettext(
+      "— Shoot in your facing direction"
+    )}
   </li>
   <li>
-    <.help_link topic="feature-hex-hockey-showdown">Showdown</.help_link>
-    — No timer, first to 5 goals, puck speeds up with each goal
+    <strong>{gettext("Space or Shift (without puck)")}</strong> {gettext(
+      "— Tackle opponent to steal puck"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Based on Activision's Ice Hockey (1981) for the Atari 2600.</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Puck Mechanics")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("Capture")}</strong> {gettext(
+      "— Walk into the free puck to pick it up automatically"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Shoot")}</strong> {gettext(
+      "— Launches puck at 2× your movement speed in your facing direction"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Wall bounce")}</strong> {gettext("— Puck reflects off top/bottom walls")}
+  </li>
+  <li>
+    <strong>{gettext("Friction")}</strong> {gettext("— Free puck gradually slows down on the ice")}
+  </li>
+  <li>
+    <strong>{gettext("Stuck puck")}</strong> {gettext(
+      "— If the puck stops for 5 seconds, a face-off is called"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{gettext("Tackle")}</.help_h4>
+<ul>
+  <li>{gettext("Press action near an opponent who has the puck to attempt a steal")}</li>
+  <li>
+    <strong>{gettext("60% success rate")}</strong> {gettext(
+      "— puck is freed at opponent's position"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("40% failure")}</strong> {gettext(
+      "— you are stunned for 300ms (can't move or act)"
+    )}
+  </li>
+  <li>{gettext("Risk vs reward: aggressive tackles can backfire!")}</li>
+</ul>
+<.help_h4 icon={:icon_rules}>{gettext("Goalie AI")}</.help_h4>
+<ul>
+  <li>{gettext("Your goalie moves automatically, tracking the puck vertically")}</li>
+  <li>{gettext("Goalie reacts faster when the puck is nearby")}</li>
+  <li>{gettext("Goalie is not perfect — angled shots can beat it")}</li>
+  <li>{gettext("Blocked shots ricochet back into play")}</li>
+</ul>
+<.help_h4 icon={:icon_rules}>{gettext("Match Format")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("3 periods")}</strong> {gettext("of 2 minutes each (6 minutes total)")}
+  </li>
+  <li>{gettext("Teams switch sides after each period")}</li>
+  <li>{gettext("Face-off at center after every goal and period start")}</li>
+  <li>
+    <strong>{gettext("Tied at the end?")}</strong> {gettext("Sudden death — next goal wins!")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
+<ul>
+  <li>
+    <.help_link topic="feature-hex-hockey-blitz">{gettext("Blitz")}</.help_link>
+    {gettext("— 1 period of 3 minutes, faster puck, 80% tackle success")}
+  </li>
+  <li>
+    <.help_link topic="feature-hex-hockey-showdown">{gettext("Showdown")}</.help_link>
+    {gettext("— No timer, first to 5 goals, puck speeds up with each goal")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<p>{gettext("Based on Activision's Ice Hockey (1981) for the Atari 2600.")}</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-hockey-blitz">Blitz</.help_link>
-  · <.help_link topic="feature-hex-hockey-showdown">Showdown</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-hex-hockey-blitz">{gettext("Blitz")}</.help_link>
+  · <.help_link topic="feature-hex-hockey-showdown">{gettext("Showdown")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

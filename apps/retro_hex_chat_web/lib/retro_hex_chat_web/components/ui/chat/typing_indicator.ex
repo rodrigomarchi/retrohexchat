@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.TypingIndicator do
       data-testid="typing-indicator"
       {@rest}
     >
-      {@nick} is typing...
+      {@nick} {gettext("is typing...")}
     </div>
     """
   end

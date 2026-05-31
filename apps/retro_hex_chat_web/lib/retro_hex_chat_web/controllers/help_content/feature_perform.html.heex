@@ -1,32 +1,44 @@
 <p>
-  The Perform system lets you define commands that execute automatically every time you connect, followed by a list of channels to join.
+  {gettext(
+    "The Perform system lets you define commands that execute automatically every time you connect, followed by a list of channels to join."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_perform}>Perform List</.help_h4>
+<.help_h4 icon={:icon_dialog_perform}>{gettext("Perform List")}</.help_h4>
 <p>
-  The perform list contains commands (e.g., <code>/ns identify</code>, <code>/mode +x</code>) that run sequentially on connect. Use
-  <code>/perform add &lt;command&gt;</code>
-  to add commands, or manage them visually in the Perform Dialog.
+  {gettext("The perform list contains commands (e.g.,")} <code>{gettext("/ns identify")}</code>, <code>{gettext("/mode +x")}</code>{gettext(
+    ") that run sequentially on connect. Use"
+  )}
+  <code>{gettext("/perform add <command>")}</code>
+  {gettext("to add commands, or manage them visually in the Perform Dialog.")}
 </p>
-<.help_h4 icon={:icon_tab_autojoin}>Auto-Join Channels</.help_h4>
+<.help_h4 icon={:icon_tab_autojoin}>{gettext("Auto-Join Channels")}</.help_h4>
 <p>
-  Auto-join channels are separate from perform commands. They are joined after all perform commands complete, ensuring that NickServ identification and other setup happens first.
+  {gettext(
+    "Auto-join channels are separate from perform commands. They are joined after all perform commands complete, ensuring that NickServ identification and other setup happens first."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_perform}>Perform Dialog</.help_h4>
+<.help_h4 icon={:icon_dialog_perform}>{gettext("Perform Dialog")}</.help_h4>
 <p>
-  Press <strong>Ctrl+Shift+E</strong>
-  to open the Perform Dialog, which provides a visual interface for managing both the perform list and auto-join channels.
+  {gettext("Press")} <strong>{gettext("Ctrl+Shift+E")}</strong>
+  {gettext(
+    "to open the Perform Dialog, which provides a visual interface for managing both the perform list and auto-join channels."
+  )}
 </p>
-<.help_h4 icon={:icon_checkmark}>Enable / Disable</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{gettext("Enable / Disable")}</.help_h4>
 <p>
-  The perform system can be toggled on or off. When disabled, no commands execute and no channels are auto-joined on connect.
+  {gettext(
+    "The perform system can be toggled on or off. When disabled, no commands execute and no channels are auto-joined on connect."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_perform}>Execution Order</.help_h4>
+<.help_h4 icon={:icon_dialog_perform}>{gettext("Execution Order")}</.help_h4>
 <p>
-  1. Perform commands execute sequentially.<br />2. Auto-join channels are joined after all perform commands complete.
+  {gettext("1. Perform commands execute sequentially.")}<br />{gettext(
+    "2. Auto-join channels are joined after all perform commands complete."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-perform">/perform Command</.help_link>
-  · <.help_link topic="cmd-autojoin">/autojoin Command</.help_link>
-  · <.help_link topic="feature-auto-reconnect">Auto-Reconnect</.help_link>
+  <.help_link topic="cmd-perform">{gettext("/perform Command")}</.help_link>
+  · <.help_link topic="cmd-autojoin">{gettext("/autojoin Command")}</.help_link>
+  · <.help_link topic="feature-auto-reconnect">{gettext("Auto-Reconnect")}</.help_link>
 </p>

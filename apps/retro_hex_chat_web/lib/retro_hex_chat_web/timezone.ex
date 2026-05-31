@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Timezone do
   Timezone helpers for converting UTC DateTimes to the user's local timezone.
   Web layer only — domain modules remain timezone-agnostic.
   """
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   @doc """
   Shifts a UTC DateTime to the given IANA timezone.
@@ -60,9 +61,13 @@ defmodule RetroHexChatWeb.Timezone do
     minutes = div(rem(abs_seconds, 3600), 60)
 
     if minutes == 0 do
-      "UTC#{sign}#{hours}"
+      gettext("UTC%{sign}%{hours}", sign: sign, hours: hours)
     else
-      "UTC#{sign}#{hours}:#{String.pad_leading(Integer.to_string(minutes), 2, "0")}"
+      gettext("UTC%{sign}%{hours}:%{minutes}",
+        sign: sign,
+        hours: hours,
+        minutes: String.pad_leading(Integer.to_string(minutes), 2, "0")
+      )
     end
   end
 end

@@ -1,40 +1,52 @@
 <p>
-  Add custom items to the user list and channel right-click context menus. Each item executes a command with variable expansion when clicked.
+  {gettext(
+    "Add custom items to the user list and channel right-click context menus. Each item executes a command with variable expansion when clicked."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_custom_menus}>Menu Types</.help_h4>
+<.help_h4 icon={:icon_dialog_custom_menus}>{gettext("Menu Types")}</.help_h4>
 <p>
-  <strong>Nicklist</strong>: Items appear when clicking a nickname in the user list. Use
+  <strong>{gettext("Nicklist")}</strong>{gettext(
+    ": Items appear when clicking a nickname in the user list. Use"
+  )}
   <code>$1</code>
-  for the target nickname.
+  {gettext("for the target nickname.")}
 </p>
 <p>
-  <strong>Channel</strong>: Items appear when right-clicking a channel in the conversations sidebar. Use
+  <strong>{gettext("Channel")}</strong>{gettext(
+    ": Items appear when right-clicking a channel in the conversations sidebar. Use"
+  )}
   <code>$1</code>
-  for the target channel name.
+  {gettext("for the target channel name.")}
 </p>
 <p>
-  <strong>Chat</strong>: Items appear when right-clicking a nickname in chat messages. Use
+  <strong>{gettext("Chat")}</strong>{gettext(
+    ": Items appear when right-clicking a nickname in chat messages. Use"
+  )}
   <code>$1</code>
-  for the target nickname.
+  {gettext("for the target nickname.")}
 </p>
-<.help_h4 icon={:icon_wrench}>Managing Items</.help_h4>
+<.help_h4 icon={:icon_wrench}>{gettext("Managing Items")}</.help_h4>
 <p>
-  Use <code>/popups</code>
-  or open <strong>Tools &gt; Custom Menus</strong>. Switch between Nicklist, Channel, and Chat tabs. Each item has a label (display text) and a command (what runs on click).
+  {gettext("Use")} <code>{gettext("/popups")}</code>
+  {gettext("or open")} <strong>{gettext("Tools > Custom Menus")}</strong>{gettext(
+    ". Switch between Nicklist, Channel, and Chat tabs. Each item has a label (display text) and a command (what runs on click)."
+  )}
 </p>
-<.help_h4 icon={:icon_tag}>Variables</.help_h4>
+<.help_h4 icon={:icon_tag}>{gettext("Variables")}</.help_h4>
 <p>
   <code>$1</code>
-  — Target nickname or channel name.<br /><code>$nick</code>
-  — Your nickname.<br /><code>$chan</code>
-  — Current channel.
+  {gettext("— Target nickname or channel name.")}<br /><code>{gettext("$nick")}</code>
+  {gettext("— Your nickname.")}<br /><code>{gettext("$chan")}</code>
+  {gettext("— Current channel.")}
 </p>
-<.help_h4 icon={:icon_rules}>Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Limits")}</.help_h4>
 <p>
-  Maximum 10 custom items per menu type. Labels: up to 50 characters. Commands: up to 500 characters. Custom items append to (not replace) built-in menu items. Persisted for registered users.
+  {gettext(
+    "Maximum 10 custom items per menu type. Labels: up to 50 characters. Commands: up to 500 characters. Custom items append to (not replace) built-in menu items. Persisted for registered users."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-popups">/popups Command</.help_link>
-  · <.help_link topic="feature-aliases">Aliases</.help_link>
+  <.help_link topic="cmd-popups">{gettext("/popups Command")}</.help_link>
+  · <.help_link topic="feature-aliases">{gettext("Aliases")}</.help_link>
 </p>

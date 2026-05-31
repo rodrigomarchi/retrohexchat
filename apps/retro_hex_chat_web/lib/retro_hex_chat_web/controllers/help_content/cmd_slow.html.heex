@@ -1,38 +1,38 @@
 <p>
-  Enable or disable slow mode (join throttle) in the current channel.
-  This is a shorthand for <code>/mode +j</code> or <code>/mode -j</code>.
+  {gettext(
+    "Enable or disable slow mode (join throttle) in the current channel. This is a shorthand for"
+  )} <code>{gettext("/mode +j")}</code>
+  or <code>{gettext("/mode -j")}</code>.
 </p>
 
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/slow [seconds]
-/slow 0</pre>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/slow [seconds] /slow 0")}</pre>
 
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
   <code>seconds</code>
-  — Join throttle window in seconds (default: 5). Use <code>0</code>
-  to disable.
+  {gettext("— Join throttle window in seconds (default: 5). Use")} <code>0</code>
+  {gettext("to disable.")}
 </p>
 
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  When enabled, new joins are throttled to prevent flooding. The mode allows a limited number
-  of joins per time window. Use <code>/slow 0</code> to disable slow mode.
+  {gettext(
+    "When enabled, new joins are throttled to prevent flooding. The mode allows a limited number of joins per time window. Use"
+  )} <code>{gettext("/slow 0")}</code> {gettext("to disable slow mode.")}
 </p>
 
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Requires operator (@) or owner (~) status</li>
-  <li>Default window is 5 seconds if no value is specified</li>
+  <li>{gettext("Requires operator (@) or owner (~) status")}</li>
+  <li>{gettext("Default window is 5 seconds if no value is specified")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/slow
-/slow 10
-/slow 0</pre>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/slow /slow 10 /slow 0")}</pre>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-mode">/mode</.help_link>
-  · <.help_link topic="mode-j">Mode +j (Join Throttle)</.help_link>
+  <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
+  · <.help_link topic="mode-j">{gettext("Mode +j (Join Throttle)")}</.help_link>
 </p>

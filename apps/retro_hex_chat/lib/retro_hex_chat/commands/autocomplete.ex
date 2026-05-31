@@ -9,6 +9,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
 
   All matching is done server-side using subsequence-based fuzzy matching.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   # Result types
 
@@ -130,7 +131,7 @@ defmodule RetroHexChat.Commands.Autocomplete do
       if recent_matches == [] do
         []
       else
-        ["Recent" | recent_matches]
+        [gettext("Recent") | recent_matches]
       end
 
     remaining_limit = remaining_limit(limit, length(recent_matches))

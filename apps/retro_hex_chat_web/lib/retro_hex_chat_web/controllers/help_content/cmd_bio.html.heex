@@ -1,33 +1,34 @@
-<p>Set a short "about me" text that appears when others look you up with <code>/whois</code>.</p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/bio &lt;text&gt;
-/bio
-/bio clear</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p>
+  {gettext("Set a short \"about me\" text that appears when others look you up with")} <code>{gettext("/whois")}</code>.
+</p>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/bio <text> /bio /bio clear")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
   <code>text</code>
-  — Your bio text (max 200 characters). Use <code>clear</code>
-  to remove your bio.
+  {gettext("— Your bio text (max 200 characters). Use")} <code>clear</code>
+  {gettext("to remove your bio.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Your bio is displayed in the <code>/whois</code>
-  output when other users look you up. Running <code>/bio</code>
-  with no arguments shows your current bio. If your text exceeds 200 characters, it is automatically truncated with a warning. When no bio is set, the bio field simply doesn't appear in
-  <code>/whois</code>
-  output.
+  {gettext("Your bio is displayed in the")} <code>{gettext("/whois")}</code>
+  {gettext("output when other users look you up. Running")} <code>{gettext("/bio")}</code>
+  {gettext(
+    "with no arguments shows your current bio. If your text exceeds 200 characters, it is automatically truncated with a warning. When no bio is set, the bio field simply doesn't appear in"
+  )}
+  <code>{gettext("/whois")}</code>
+  {gettext("output.")}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Maximum 200 characters</li>
-  <li>Registered users: bio is saved across sessions</li>
-  <li>Guests: bio lasts only for the current session</li>
+  <li>{gettext("Maximum 200 characters")}</li>
+  <li>{gettext("Registered users: bio is saved across sessions")}</li>
+  <li>{gettext("Guests: bio lasts only for the current session")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/bio Elixir enthusiast from Brazil
-/bio
-/bio clear</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/bio Elixir enthusiast from Brazil /bio /bio clear")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-whois">/whois</.help_link> · <.help_link topic="cmd-ns">/ns</.help_link>
+  <.help_link topic="cmd-whois">{gettext("/whois")}</.help_link>
+  · <.help_link topic="cmd-ns">{gettext("/ns")}</.help_link>
 </p>

@@ -4,6 +4,8 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
   Uses Erlang's `:xmerl` library (stdlib, zero external deps).
   """
 
+  use Gettext, backend: RetroHexChat.Gettext
+
   @type feed_item :: %{
           title: String.t(),
           link: String.t(),
@@ -24,11 +26,11 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
         cond do
           rss_feed?(doc) -> {:ok, parse_rss(doc)}
           atom_feed?(doc) -> {:ok, parse_atom(doc)}
-          true -> {:error, "Unknown feed format (expected RSS 2.0 or Atom)"}
+          true -> {:error, gettext("Unknown feed format (expected RSS 2.0 or Atom)")}
         end
 
       {:error, reason} ->
-        {:error, "XML parse error: #{inspect(reason)}"}
+        {:error, gettext("XML parse error: %{reason}", reason: inspect(reason))}
     end
   end
 
@@ -82,7 +84,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
   @spec parse_rss_item(tuple()) :: feed_item()
   defp parse_rss_item(item) do
     %{
-      title: child_text(item, :title) || "(no title)",
+      title: child_text(item, :title) || gettext("(no title)"),
       link: child_text(item, :link) || "",
       published: child_text(item, :pubDate)
     }
@@ -100,7 +102,7 @@ defmodule RetroHexChat.Bots.Capabilities.RSS.FeedParser do
   @spec parse_atom_entry(tuple()) :: feed_item()
   defp parse_atom_entry(entry) do
     %{
-      title: child_text(entry, :title) || "(no title)",
+      title: child_text(entry, :title) || gettext("(no title)"),
       link: atom_link(entry) || "",
       published: child_text(entry, :published) || child_text(entry, :updated)
     }

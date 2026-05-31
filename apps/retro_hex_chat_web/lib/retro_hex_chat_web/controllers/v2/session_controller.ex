@@ -35,9 +35,11 @@ defmodule RetroHexChatWeb.V2.SessionController do
   @spec delete(Plug.Conn.t(), map()) :: Plug.Conn.t()
   def delete(conn, params) do
     reason = params["reason"] || "disconnected"
+    locale = get_session(conn, :locale)
 
     conn
     |> clear_session()
+    |> maybe_restore_locale(locale)
     |> redirect(to: ~p"/connect?reason=#{reason}")
   end
 
@@ -63,4 +65,10 @@ defmodule RetroHexChatWeb.V2.SessionController do
   end
 
   defp maybe_put_nick_change_flash(conn, _old_nickname, _new_nickname), do: conn
+
+  defp maybe_restore_locale(conn, locale) when is_binary(locale) and locale != "" do
+    put_session(conn, :locale, locale)
+  end
+
+  defp maybe_restore_locale(conn, _locale), do: conn
 end

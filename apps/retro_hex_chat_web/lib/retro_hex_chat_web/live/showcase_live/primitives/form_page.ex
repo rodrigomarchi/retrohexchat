@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Primitives.FormPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -15,38 +16,38 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.FormPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Form", active_page: "form")}
+    {:ok, assign(socket, page_title: gettext("Form"), active_page: "form")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Form</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Form")}</h2>
 
       <.showcase_card
-        title="Form Components"
+        title={gettext("Form Components")}
         description="Form layout primitives: item, label, control, description, and message."
       >
         <div class="max-w-sm space-y-4">
           <.form_item>
-            <.form_label>Username</.form_label>
+            <.form_label>{gettext("Username")}</.form_label>
             <.form_control>
-              <.input type="text" name="username" placeholder="Enter username" />
+              <.input type="text" name="username" placeholder={gettext("Enter username")} />
             </.form_control>
-            <.form_description>This is your public display name.</.form_description>
+            <.form_description>{gettext("This is your public display name.")}</.form_description>
           </.form_item>
 
           <.form_item>
-            <.form_label>Email</.form_label>
+            <.form_label>{gettext("Email")}</.form_label>
             <.form_control>
-              <.input type="email" name="email" placeholder="user@example.com" />
+              <.input type="email" name="email" placeholder={gettext("user@example.com")} />
             </.form_control>
-            <.form_description>We'll never share your email.</.form_description>
+            <.form_description>{gettext("We'll never share your email.")}</.form_description>
           </.form_item>
 
           <.form_item>
-            <.form_label error={true}>Password</.form_label>
+            <.form_label error={true}>{gettext("Password")}</.form_label>
             <.form_control>
               <.input type="password" name="password" />
             </.form_control>
@@ -55,7 +56,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.FormPage do
 
           <.button type="submit">
             <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-            Submit
+            {gettext("Submit")}
           </.button>
         </div>
         <.code_example>

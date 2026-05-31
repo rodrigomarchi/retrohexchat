@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Symbols do
   Icons depicting abstract symbols, currency, and miscellaneous concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

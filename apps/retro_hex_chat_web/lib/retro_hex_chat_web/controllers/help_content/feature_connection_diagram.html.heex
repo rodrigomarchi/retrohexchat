@@ -1,41 +1,58 @@
 <p>
-  The connection diagram is an animated visual indicator at the top of every P2P session,
-  showing the real-time bilateral link between you and the other peer.
+  {gettext(
+    "The connection diagram is an animated visual indicator at the top of every P2P session, showing the real-time bilateral link between you and the other peer."
+  )}
 </p>
-<.help_h4 icon={:icon_p2p}>Visual States</.help_h4>
+<.help_h4 icon={:icon_p2p}>{gettext("Visual States")}</.help_h4>
 <p>
-  The diagram shows both peers as browser icons connected by a line that animates based on the
-  current state:
+  {gettext(
+    "The diagram shows both peers as browser icons connected by a line that animates based on the current state:"
+  )}
 </p>
 <ul>
-  <li><strong>Waiting</strong> — dotted gray line; peer's indicator pulses slowly</li>
-  <li><strong>Ready</strong> — dashed gray line; both peers online</li>
-  <li><strong>Connecting</strong> — yellow dashes scroll bidirectionally</li>
-  <li><strong>Connected</strong> — solid green line with a brief flash effect</li>
-  <li><strong>Reconnecting</strong> — yellow broken dashes with attempt counter</li>
-  <li><strong>Failed</strong> — static red dashed line</li>
+  <li>
+    <strong>{gettext("Waiting")}</strong> {gettext(
+      "— dotted gray line; peer's indicator pulses slowly"
+    )}
+  </li>
+  <li><strong>{gettext("Ready")}</strong> {gettext("— dashed gray line; both peers online")}</li>
+  <li>
+    <strong>{gettext("Connecting")}</strong> {gettext("— yellow dashes scroll bidirectionally")}
+  </li>
+  <li>
+    <strong>{gettext("Connected")}</strong> {gettext(
+      "— solid green line with a brief flash effect"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Reconnecting")}</strong> {gettext(
+      "— yellow broken dashes with attempt counter"
+    )}
+  </li>
+  <li><strong>{gettext("Failed")}</strong> {gettext("— static red dashed line")}</li>
 </ul>
-<.help_h4 icon={:icon_file_send}>File Transfer Visualization</.help_h4>
+<.help_h4 icon={:icon_file_send}>{gettext("File Transfer Visualization")}</.help_h4>
 <p>
-  During a file transfer, data dots flow along the line from sender to receiver.
-  The center badge shows the file name, transfer speed, and a mini progress bar.
+  {gettext(
+    "During a file transfer, data dots flow along the line from sender to receiver. The center badge shows the file name, transfer speed, and a mini progress bar."
+  )}
 </p>
-<.help_h4 icon={:icon_microphone}>Call Visualization</.help_h4>
+<.help_h4 icon={:icon_microphone}>{gettext("Call Visualization")}</.help_h4>
 <p>
-  During audio/video calls, the line shows bidirectional data flow dots.
-  The center badge displays the call type, duration, and quality level.
-  Video calls show a thicker line to indicate higher bandwidth.
+  {gettext(
+    "During audio/video calls, the line shows bidirectional data flow dots. The center badge displays the call type, duration, and quality level. Video calls show a thicker line to indicate higher bandwidth."
+  )}
 </p>
-<.help_h4 icon={:icon_laptop}>Peer Info (Whois)</.help_h4>
+<.help_h4 icon={:icon_laptop}>{gettext("Peer Info (Whois)")}</.help_h4>
 <p>
-  Each side of the diagram shows detailed information about the peer's browser environment:
-  browser name and version, operating system, screen resolution, language, timezone,
-  CPU cores, and color depth. Touch-enabled devices show a touch indicator.
+  {gettext(
+    "Each side of the diagram shows detailed information about the peer's browser environment: browser name and version, operating system, screen resolution, language, timezone, CPU cores, and color depth. Touch-enabled devices show a touch indicator."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-sessions">P2P Sessions</.help_link>
-  · <.help_link topic="feature-file-transfer">File Transfer</.help_link>
-  · <.help_link topic="feature-audio-call">Audio Call</.help_link>
-  · <.help_link topic="feature-video-call">Video Call</.help_link>
+  <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
+  · <.help_link topic="feature-file-transfer">{gettext("File Transfer")}</.help_link>
+  · <.help_link topic="feature-audio-call">{gettext("Audio Call")}</.help_link>
+  · <.help_link topic="feature-video-call">{gettext("Video Call")}</.help_link>
 </p>

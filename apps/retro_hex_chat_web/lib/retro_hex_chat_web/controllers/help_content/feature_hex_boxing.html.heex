@@ -1,30 +1,40 @@
 <p>
-  Top-down boxing in a cyberpunk underground ring. Close punches score more —
-  get in your opponent's face for maximum damage, but risk taking hits yourself.
-  First to 100 points triggers a KO. Best of 3 rounds, 2 minutes each.
+  {gettext(
+    "Top-down boxing in a cyberpunk underground ring. Close punches score more — get in your opponent's face for maximum damage, but risk taking hits yourself. First to 100 points triggers a KO. Best of 3 rounds, 2 minutes each."
+  )}
 </p>
 <.diagram_game_boxing class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow keys / WASD</strong> — Move boxer (8 directions)</li>
-  <li><strong>Space / Shift</strong> — Punch (alternates left/right arm automatically)</li>
+  <li>
+    <strong>{gettext("Arrow keys / WASD")}</strong> {gettext("— Move boxer (8 directions)")}
+  </li>
+  <li>
+    <strong>{gettext("Space / Shift")}</strong> {gettext(
+      "— Punch (alternates left/right arm automatically)"
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_rules}>Rules</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
 <ul>
-  <li>Distance-based scoring: close punch = 3 points, medium = 2, long range = 1</li>
-  <li>First to 100 points scores a KO — the round ends immediately</li>
-  <li>If the 2-minute timer runs out, the fighter with more points wins the round</li>
-  <li>Tied at time-up goes to Player 1 (host)</li>
-  <li>Best of 3 rounds — first to 2 round wins takes the match</li>
-  <li>Punches are edge-triggered — tap to punch, no holding for rapid fire</li>
-  <li>Each punch has a brief cooldown before you can punch again</li>
-  <li>Boxers cannot pass through each other — body collision pushes the mover back</li>
-  <li>No blocking — defense is all about movement and spacing</li>
+  <li>{gettext("Distance-based scoring: close punch = 3 points, medium = 2, long range = 1")}</li>
+  <li>{gettext("First to 100 points scores a KO — the round ends immediately")}</li>
+  <li>
+    {gettext("If the 2-minute timer runs out, the fighter with more points wins the round")}
+  </li>
+  <li>{gettext("Tied at time-up goes to Player 1 (host)")}</li>
+  <li>{gettext("Best of 3 rounds — first to 2 round wins takes the match")}</li>
+  <li>{gettext("Punches are edge-triggered — tap to punch, no holding for rapid fire")}</li>
+  <li>{gettext("Each punch has a brief cooldown before you can punch again")}</li>
+  <li>
+    {gettext("Boxers cannot pass through each other — body collision pushes the mover back")}
+  </li>
+  <li>{gettext("No blocking — defense is all about movement and spacing")}</li>
 </ul>
-<.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Based on Activision's Boxing (1980) for the Atari 2600.</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<p>{gettext("Based on Activision's Boxing (1980) for the Atari 2600.")}</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

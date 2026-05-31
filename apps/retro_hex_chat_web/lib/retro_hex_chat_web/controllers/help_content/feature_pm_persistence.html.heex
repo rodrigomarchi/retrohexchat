@@ -1,36 +1,54 @@
 <p>
-  Private message conversations are automatically restored when registered users connect. Your PM conversation list is rebuilt from your message history, ordered by most recent activity.
+  {gettext(
+    "Private message conversations are automatically restored when registered users connect. Your PM conversation list is rebuilt from your message history, ordered by most recent activity."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <ul>
   <li>
-    <strong>On connect</strong>: The Private section in the conversations sidebar is populated with everyone you've exchanged PMs with, ordered by most recent conversation first.
-  </li>
-  <li><strong>Limit</strong>: Up to 50 most recent PM partners are restored.</li>
-  <li>
-    <strong>Auto-open</strong>: When someone sends you a PM and the conversation isn't already in your list, it automatically appears at the top of the Private section with an unread badge.
+    <strong>{gettext("On connect")}</strong>{gettext(
+      ": The Private section in the conversations sidebar is populated with everyone you've exchanged PMs with, ordered by most recent conversation first."
+    )}
   </li>
   <li>
-    <strong>Recency ordering</strong>: Every sent or received PM moves that conversation to the top of the list.
+    <strong>{gettext("Limit")}</strong>{gettext(
+      ": Up to 50 most recent PM partners are restored."
+    )}
   </li>
   <li>
-    <strong>Closing</strong>: Closing a PM conversation via the conversations sidebar only removes it for the current session. It will reappear on your next connection.
+    <strong>{gettext("Auto-open")}</strong>{gettext(
+      ": When someone sends you a PM and the conversation isn't already in your list, it automatically appears at the top of the Private section with an unread badge."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Recency ordering")}</strong>{gettext(
+      ": Every sent or received PM moves that conversation to the top of the list."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Closing")}</strong>{gettext(
+      ": Closing a PM conversation via the conversations sidebar only removes it for the current session. It will reappear on your next connection."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_checkmark}>Requirements</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{gettext("Requirements")}</.help_h4>
 <ul>
-  <li>You must be registered and identified with NickServ to get PM persistence.</li>
-  <li>Guest users get in-session PM tracking only (conversations are lost on disconnect).</li>
+  <li>{gettext("You must be registered and identified with NickServ to get PM persistence.")}</li>
+  <li>
+    {gettext(
+      "Guest users get in-session PM tracking only (conversations are lost on disconnect)."
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_warning}>Edge Cases</.help_h4>
+<.help_h4 icon={:icon_warning}>{gettext("Edge Cases")}</.help_h4>
 <ul>
-  <li>PMs from ignored users do NOT auto-open conversations.</li>
-  <li>Self-PMs are excluded from the restored conversation list.</li>
+  <li>{gettext("PMs from ignored users do NOT auto-open conversations.")}</li>
+  <li>{gettext("Self-PMs are excluded from the restored conversation list.")}</li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="private-messages">Private Messages</.help_link>
-  · <.help_link topic="cmd-query">/query</.help_link>
-  · <.help_link topic="feature-ignore-list">Ignore List</.help_link>
-  · <.help_link topic="nickserv">NickServ</.help_link>
+  <.help_link topic="private-messages">{gettext("Private Messages")}</.help_link>
+  · <.help_link topic="cmd-query">{gettext("/query")}</.help_link>
+  · <.help_link topic="feature-ignore-list">{gettext("Ignore List")}</.help_link>
+  · <.help_link topic="nickserv">{gettext("NickServ")}</.help_link>
 </p>

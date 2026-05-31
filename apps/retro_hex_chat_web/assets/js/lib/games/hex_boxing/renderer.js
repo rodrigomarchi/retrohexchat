@@ -21,6 +21,7 @@ import {
   DIR_DY,
 } from "./physics.js";
 import { PHASE, PUNCH_STATE } from "./protocol.js";
+import { t, jt } from "../../i18n.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -274,12 +275,12 @@ function drawHUD(ctx, state, colors, frameCount) {
   // P1 score (left)
   ctx.textAlign = "left";
   ctx.fillStyle = colors.fg;
-  ctx.fillText(`P1: ${state.score1}`, RING_LEFT + 4, hudY);
+  ctx.fillText(jt`P1: ${state.score1}`, RING_LEFT + 4, hudY);
 
   // P2 score (right)
   ctx.textAlign = "right";
   ctx.fillStyle = colors.accent;
-  ctx.fillText(`P2: ${state.score2}`, RING_RIGHT - 4, hudY);
+  ctx.fillText(jt`P2: ${state.score2}`, RING_RIGHT - 4, hudY);
 
   // Game title (center)
   ctx.textAlign = "center";
@@ -328,7 +329,7 @@ function drawHUD(ctx, state, colors, frameCount) {
   ctx.textAlign = "center";
   ctx.font = "10px monospace";
   ctx.fillStyle = colors.muted;
-  ctx.fillText(`Round ${state.round}`, CANVAS_W / 2, dotY);
+  ctx.fillText(jt`Round ${state.round}`, CANVAS_W / 2, dotY);
 
   // Round win dots
   for (let i = 0; i < 3; i++) {
@@ -357,7 +358,7 @@ function drawPhaseOverlay(ctx, state, colors, frameCount) {
       drawCenterText(ctx, `${state.countdown}`, 48, colors.hit);
       break;
     case PHASE.SPAWNING:
-      drawCenterText(ctx, "FIGHT!", 36, colors.warning);
+      drawCenterText(ctx, t("FIGHT!"), 36, colors.warning);
       break;
     case PHASE.ROUND_OVER: {
       // Derive round winner from current scores (not yet reset at this phase)
@@ -370,9 +371,9 @@ function drawPhaseOverlay(ctx, state, colors, frameCount) {
           ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
           ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
         }
-        drawCenterText(ctx, "KO!", 48, colors.warning);
+        drawCenterText(ctx, t("KO!"), 48, colors.warning);
       } else {
-        drawCenterText(ctx, `ROUND ${state.round}`, 24, colors.rope);
+        drawCenterText(ctx, jt`ROUND ${state.round}`, 24, colors.rope);
         drawCenterTextOffset(ctx, `${winner} WINS`, 28, winColor, 30);
       }
       break;
@@ -380,8 +381,8 @@ function drawPhaseOverlay(ctx, state, colors, frameCount) {
     case PHASE.MATCH_OVER: {
       const matchWinner = state.roundWins1 >= state.roundWins2 ? "P1" : "P2";
       const mColor = matchWinner === "P1" ? colors.fg : colors.accent;
-      drawCenterText(ctx, "MATCH OVER", 24, colors.rope);
-      drawCenterTextOffset(ctx, `${matchWinner} WINS!`, 36, mColor, 35);
+      drawCenterText(ctx, t("MATCH OVER"), 24, colors.rope);
+      drawCenterTextOffset(ctx, jt`${matchWinner} WINS!`, 36, mColor, 35);
       break;
     }
     default:

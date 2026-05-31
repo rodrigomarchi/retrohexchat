@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
 
   import Phoenix.Component, only: [assign: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [system_event: 2, error_event: 2, maybe_persist_autorespond_rules: 2]
 
@@ -36,12 +38,19 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
         socket
         |> assign(session: new_session)
         |> maybe_persist_autorespond_rules(new_session)
-        |> system_event("Auto-respond rule added: #{trigger} → #{command}")
+        |> system_event(
+          gettext("Auto-respond rule added: %{trigger} → %{command}",
+            trigger: trigger,
+            command: command
+          )
+        )
 
       {:error, reason} ->
         system_event(
           socket,
-          "Error adding auto-respond rule: #{autorespond_error_msg(reason)}"
+          gettext("Error adding auto-respond rule: %{message}",
+            message: autorespond_error_msg(reason)
+          )
         )
     end
   end
@@ -56,10 +65,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
         socket
         |> assign(session: new_session)
         |> maybe_persist_autorespond_rules(new_session)
-        |> system_event("Auto-respond rule removed.")
+        |> system_event(gettext("Auto-respond rule removed."))
 
       {:error, :not_found} ->
-        system_event(socket, "Auto-respond rule not found.")
+        system_event(socket, gettext("Auto-respond rule not found."))
     end
   end
 
@@ -68,10 +77,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
     entries = AutoRespondRules.entries(session.autorespond_rules)
 
     if entries == [] do
-      system_event(socket, "No auto-respond rules configured.")
+      system_event(socket, gettext("No auto-respond rules configured."))
     else
       lines = Enum.map(entries, &format_autorespond_entry/1)
-      msg = ["Auto-respond rules:" | lines] |> Enum.join("\n")
+      msg = [gettext("Auto-respond rules:") | lines] |> Enum.join("\n")
       system_event(socket, msg)
     end
   end
@@ -114,16 +123,21 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
 
         socket =
           if notice do
-            system_event(socket, "* #{notice}")
+            system_event(socket, gettext("* %{notice}", notice: notice))
           else
             socket
           end
 
-        type_label = if type == :repeat, do: "repeat", else: "one-shot"
+        type_label = if type == :repeat, do: gettext("repeat"), else: gettext("one-shot")
 
         system_event(
           socket,
-          "* Timer '#{name}' set: #{type_label}, #{clamped_interval}s → #{command}"
+          gettext("* Timer '%{name}' set: %{type}, %{interval}s → %{command}",
+            name: name,
+            type: type_label,
+            interval: clamped_interval,
+            command: command
+          )
         )
 
       {:error, msg} ->
@@ -141,10 +155,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
 
         socket
         |> assign(user_timers: new_timers)
-        |> system_event("* Timer '#{name}' stopped")
+        |> system_event(gettext("* Timer '%{name}' stopped", name: name))
 
       nil ->
-        error_event(socket, "Timer '#{name}' not found")
+        error_event(socket, gettext("Timer '%{name}' not found", name: name))
     end
   end
 
@@ -162,18 +176,27 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
 
   defp format_autorespond_entry(entry) do
     status = if entry.enabled, do: "[ON]", else: "[OFF]"
-    channel = entry.channel_filter || "(all)"
-    "  #{entry.position}: #{status} #{entry.trigger_event} #{channel} → #{entry.command}"
+    channel = entry.channel_filter || gettext("(all)")
+
+    gettext("  %{position}: %{status} %{trigger} %{channel} → %{command}",
+      position: entry.position,
+      status: status,
+      trigger: entry.trigger_event,
+      channel: channel,
+      command: entry.command
+    )
   end
 
-  defp autorespond_error_msg(:list_full), do: "Maximum 10 auto-respond rules"
-  defp autorespond_error_msg(:invalid_trigger), do: "Invalid trigger event"
-  defp autorespond_error_msg(:invalid_channel), do: "Channel filter must start with #"
-  defp autorespond_error_msg(:invalid_command), do: "Command is required"
-  defp autorespond_error_msg(:command_too_long), do: "Command too long (max 500 characters)"
+  defp autorespond_error_msg(:list_full), do: gettext("Maximum 10 auto-respond rules")
+  defp autorespond_error_msg(:invalid_trigger), do: gettext("Invalid trigger event")
+  defp autorespond_error_msg(:invalid_channel), do: gettext("Channel filter must start with #")
+  defp autorespond_error_msg(:invalid_command), do: gettext("Command is required")
+
+  defp autorespond_error_msg(:command_too_long),
+    do: gettext("Command too long (max 500 characters)")
 
   defp autorespond_error_msg(:command_chaining),
-    do: "Command must not contain chaining (|, &&, ;)"
+    do: gettext("Command must not contain chaining (|, &&, ;)")
 
   defp active_window(socket, session) do
     cond do

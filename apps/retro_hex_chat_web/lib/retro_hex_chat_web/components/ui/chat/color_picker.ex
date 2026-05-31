@@ -12,22 +12,22 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
   use RetroHexChatWeb.Component
 
   @irc_colors [
-    {"White", "#ffffff"},
-    {"Black", "#000000"},
-    {"Navy", "#00007f"},
-    {"Green", "#009300"},
-    {"Red", "#ff0000"},
-    {"Maroon", "#7f0000"},
-    {"Purple", "#9c009c"},
-    {"Orange", "#fc7f00"},
-    {"Yellow", "#ffff00"},
-    {"Lime", "#00fc00"},
-    {"Teal", "#009393"},
-    {"Cyan", "#00ffff"},
-    {"Royal Blue", "#0000fc"},
-    {"Magenta", "#ff00ff"},
-    {"Gray", "#7f7f7f"},
-    {"Silver", "#d2d2d2"}
+    {:white, "#ffffff"},
+    {:black, "#000000"},
+    {:navy, "#00007f"},
+    {:green, "#009300"},
+    {:red, "#ff0000"},
+    {:maroon, "#7f0000"},
+    {:purple, "#9c009c"},
+    {:orange, "#fc7f00"},
+    {:yellow, "#ffff00"},
+    {:lime, "#00fc00"},
+    {:teal, "#009393"},
+    {:cyan, "#00ffff"},
+    {:royal_blue, "#0000fc"},
+    {:magenta, "#ff00ff"},
+    {:gray, "#7f7f7f"},
+    {:silver, "#d2d2d2"}
   ]
 
   @doc """
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
     >
       <div class="grid grid-cols-4 gap-[2px]">
         <button
-          :for={{{name, hex}, idx} <- @colors}
+          :for={{{color, hex}, idx} <- @colors}
           type="button"
           class={[
             "w-[18px] h-[18px] border cursor-pointer",
@@ -71,8 +71,8 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
             )
           ]}
           style={"background-color: #{hex};"}
-          title={name}
-          aria-label={"Color #{idx}: #{name}"}
+          title={color_name(color)}
+          aria-label={gettext("Color %{index}: %{name}", index: idx, name: color_name(color))}
           phx-click={@on_select}
           phx-value-index={idx}
           phx-value-picker={@id}
@@ -85,5 +85,24 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
 
   @doc "Returns the list of IRC colors as {name, hex} tuples."
   @spec irc_colors() :: [{String.t(), String.t()}]
-  def irc_colors, do: @irc_colors
+  def irc_colors do
+    Enum.map(@irc_colors, fn {color, hex} -> {color_name(color), hex} end)
+  end
+
+  defp color_name(:white), do: gettext("White")
+  defp color_name(:black), do: gettext("Black")
+  defp color_name(:navy), do: gettext("Navy")
+  defp color_name(:green), do: gettext("Green")
+  defp color_name(:red), do: gettext("Red")
+  defp color_name(:maroon), do: gettext("Maroon")
+  defp color_name(:purple), do: gettext("Purple")
+  defp color_name(:orange), do: gettext("Orange")
+  defp color_name(:yellow), do: gettext("Yellow")
+  defp color_name(:lime), do: gettext("Lime")
+  defp color_name(:teal), do: gettext("Teal")
+  defp color_name(:cyan), do: gettext("Cyan")
+  defp color_name(:royal_blue), do: gettext("Royal Blue")
+  defp color_name(:magenta), do: gettext("Magenta")
+  defp color_name(:gray), do: gettext("Gray")
+  defp color_name(:silver), do: gettext("Silver")
 end

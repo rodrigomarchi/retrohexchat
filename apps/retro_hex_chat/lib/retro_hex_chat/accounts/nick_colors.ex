@@ -5,6 +5,7 @@ defmodule RetroHexChat.Accounts.NickColors do
   Provides in-memory CRUD operations on the nick colors map structure,
   plus persistence functions that delegate to Ecto/Repo for database storage.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
 
@@ -14,22 +15,22 @@ defmodule RetroHexChat.Accounts.NickColors do
   @max_entries 50
 
   @irc_color_names %{
-    0 => "White",
-    1 => "Black",
-    2 => "Navy",
-    3 => "Green",
-    4 => "Red",
-    5 => "Maroon",
-    6 => "Purple",
-    7 => "Orange",
-    8 => "Yellow",
-    9 => "Lime",
-    10 => "Teal",
-    11 => "Cyan",
-    12 => "Blue",
-    13 => "Magenta",
-    14 => "Grey",
-    15 => "Silver"
+    0 => gettext("White"),
+    1 => gettext("Black"),
+    2 => gettext("Navy"),
+    3 => gettext("Green"),
+    4 => gettext("Red"),
+    5 => gettext("Maroon"),
+    6 => gettext("Purple"),
+    7 => gettext("Orange"),
+    8 => gettext("Yellow"),
+    9 => gettext("Lime"),
+    10 => gettext("Teal"),
+    11 => gettext("Cyan"),
+    12 => gettext("Blue"),
+    13 => gettext("Magenta"),
+    14 => gettext("Grey"),
+    15 => gettext("Silver")
   }
 
   # ---------------------------------------------------------------------------

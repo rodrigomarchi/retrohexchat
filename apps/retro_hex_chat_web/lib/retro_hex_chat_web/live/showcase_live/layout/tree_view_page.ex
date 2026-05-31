@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Layout.TreeViewPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,26 +13,29 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.TreeViewPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Tree View", active_page: "tree-view")}
+    {:ok, assign(socket, page_title: gettext("Tree View"), active_page: "tree-view")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Tree View</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Tree View")}</h2>
 
-      <.showcase_card title="Basic Tree" description="A simple two-level tree with groups and items.">
+      <.showcase_card
+        title={gettext("Basic Tree")}
+        description="A simple two-level tree with groups and items."
+      >
         <div class="max-w-xs">
           <.tree_view>
-            <.tree_view_group label="Documents">
-              <.tree_view_item>readme.txt</.tree_view_item>
-              <.tree_view_item>notes.md</.tree_view_item>
-              <.tree_view_item active>report.pdf</.tree_view_item>
+            <.tree_view_group label={gettext("Documents")}>
+              <.tree_view_item>{gettext("readme.txt")}</.tree_view_item>
+              <.tree_view_item>{gettext("notes.md")}</.tree_view_item>
+              <.tree_view_item active>{gettext("report.pdf")}</.tree_view_item>
             </.tree_view_group>
-            <.tree_view_group label="Images">
-              <.tree_view_item>photo.jpg</.tree_view_item>
-              <.tree_view_item>logo.png</.tree_view_item>
+            <.tree_view_group label={gettext("Images")}>
+              <.tree_view_item>{gettext("photo.jpg")}</.tree_view_item>
+              <.tree_view_item>{gettext("logo.png")}</.tree_view_item>
             </.tree_view_group>
           </.tree_view>
         </div>
@@ -46,21 +50,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.TreeViewPage do
       </.showcase_card>
 
       <.showcase_card
-        title="IRC Sidebar"
+        title={gettext("IRC Sidebar")}
         description="Platform-style sidebar with channels, PMs, and collapsible groups."
       >
         <div class="max-w-[200px]">
           <.tree_view>
-            <.tree_view_group label="My Channels">
+            <.tree_view_group label={gettext("My Channels")}>
               <.tree_view_item active>
                 <:icon><span class="text-teal font-bold text-xs">#</span></:icon>
-                #lobby (4)
+                {gettext("#lobby (4)")}
               </.tree_view_item>
             </.tree_view_group>
-            <.tree_view_group label="Private Messages">
+            <.tree_view_group label={gettext("Private Messages")}>
               <.tree_view_item>
                 <:icon><span class="text-action font-bold text-xs">M</span></:icon>
-                DoeJoe
+                {gettext("DoeJoe")}
               </.tree_view_item>
               <.tree_view_item>
                 <:icon><span class="text-action font-bold text-xs">M</span></:icon>
@@ -68,10 +72,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.TreeViewPage do
               </.tree_view_item>
               <.tree_view_item>
                 <:icon><span class="text-action font-bold text-xs">M</span></:icon>
-                Reginald
+                {gettext("Reginald")}
               </.tree_view_item>
             </.tree_view_group>
-            <.tree_view_group label="Popular Channels" open={false}>
+            <.tree_view_group label={gettext("Popular Channels")} open={false}>
               <.tree_view_item>
                 <:icon><span class="text-teal font-bold text-xs">#</span></:icon>
                 #general
@@ -94,18 +98,18 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.TreeViewPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Collapsed Groups"
+        title={gettext("Collapsed Groups")}
         description="Groups can start collapsed using open={false}."
       >
         <div class="max-w-xs">
           <.tree_view>
-            <.tree_view_group label="Open Group">
-              <.tree_view_item>Item 1</.tree_view_item>
-              <.tree_view_item>Item 2</.tree_view_item>
+            <.tree_view_group label={gettext("Open Group")}>
+              <.tree_view_item>{gettext("Item 1")}</.tree_view_item>
+              <.tree_view_item>{gettext("Item 2")}</.tree_view_item>
             </.tree_view_group>
-            <.tree_view_group label="Collapsed Group" open={false}>
-              <.tree_view_item>Hidden Item 1</.tree_view_item>
-              <.tree_view_item>Hidden Item 2</.tree_view_item>
+            <.tree_view_group label={gettext("Collapsed Group")} open={false}>
+              <.tree_view_item>{gettext("Hidden Item 1")}</.tree_view_item>
+              <.tree_view_item>{gettext("Hidden Item 2")}</.tree_view_item>
             </.tree_view_group>
           </.tree_view>
         </div>

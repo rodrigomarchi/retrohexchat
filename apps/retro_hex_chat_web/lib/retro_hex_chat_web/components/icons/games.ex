@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.Icons.Games do
   Each icon is 32×32 and follows the project icon conventions.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   @doc """
   Renders the icon for a given game_id string.

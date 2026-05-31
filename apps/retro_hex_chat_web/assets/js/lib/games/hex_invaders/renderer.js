@@ -6,6 +6,7 @@
 
 import { PHASE, GAME_MODE, ALIEN_TYPE } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, INITIAL_LIVES, SHIELD_SEGMENTS } from "./physics.js";
+import { t, jt } from "../../i18n.js";
 
 const DIVIDER_X = 320;
 const CANNON_Y = 450;
@@ -64,13 +65,13 @@ export function render(ctx, state, colors, time) {
 
   // Phase overlays
   if (state.phase === PHASE.WAITING) {
-    drawOverlayText(ctx, colors, "WAITING FOR OPPONENT...", colors.p1);
+    drawOverlayText(ctx, colors, t("WAITING FOR OPPONENT..."), colors.p1);
   } else if (state.phase === PHASE.COUNTDOWN) {
     drawOverlayText(ctx, colors, String(state.countdown), colors.warning, 64);
   } else if (state.phase === PHASE.WAVE_CLEAR) {
-    drawOverlayText(ctx, colors, `WAVE ${state.wave} CLEARED`, colors.p1, 28);
+    drawOverlayText(ctx, colors, jt`WAVE ${state.wave} CLEARED`, colors.p1, 28);
   } else if (state.phase === PHASE.WAVE_START) {
-    drawOverlayText(ctx, colors, `WAVE ${state.wave}`, colors.warning, 36);
+    drawOverlayText(ctx, colors, jt`WAVE ${state.wave}`, colors.warning, 36);
   } else if (state.phase === PHASE.FINISHED) {
     drawGameOver(ctx, state, colors);
   }
@@ -392,19 +393,19 @@ function drawHUD(ctx, state, colors, time) {
   // P1 score
   ctx.fillStyle = colors.p1;
   ctx.textAlign = "left";
-  ctx.fillText(`P1: ${state.score1}`, 8, 11);
+  ctx.fillText(jt`P1: ${state.score1}`, 8, 11);
 
   // Center: wave + mode
   ctx.fillStyle = "#ffffff";
   ctx.textAlign = "center";
   const modeLabel =
     state.mode === GAME_MODE.BLITZ ? "BLITZ" : state.mode === GAME_MODE.COOP ? "CO-OP" : "WAR";
-  ctx.fillText(`${modeLabel}  Wv:${state.wave}`, CANVAS_W / 2, 11);
+  ctx.fillText(jt`${modeLabel}  Wv:${state.wave}`, CANVAS_W / 2, 11);
 
   // P2 score
   ctx.fillStyle = colors.p2;
   ctx.textAlign = "right";
-  ctx.fillText(`P2: ${state.score2}`, CANVAS_W - 8, 11);
+  ctx.fillText(jt`P2: ${state.score2}`, CANVAS_W - 8, 11);
 
   // Bottom bar
   ctx.fillStyle = "rgba(0,0,0,0.6)";
@@ -478,24 +479,28 @@ function drawGameOver(ctx, state, colors) {
   if (state.mode === GAME_MODE.COOP) {
     const survived = state.lives1 > 0 || state.lives2 > 0;
     ctx.fillStyle = survived ? colors.p1 : colors.warning;
-    ctx.fillText(survived ? "MISSION COMPLETE" : "EARTH INVADED", CANVAS_W / 2, CANVAS_H / 2 - 40);
+    ctx.fillText(
+      survived ? t("MISSION COMPLETE") : t("EARTH INVADED"),
+      CANVAS_W / 2,
+      CANVAS_H / 2 - 40,
+    );
   } else {
     // Determine winner display
     const winner = state.score1 > state.score2 ? 1 : state.score2 > state.score1 ? 2 : 1;
     ctx.fillStyle = winner === 1 ? colors.p1 : colors.p2;
-    ctx.fillText(`PLAYER ${winner} WINS`, CANVAS_W / 2, CANVAS_H / 2 - 40);
+    ctx.fillText(jt`PLAYER ${winner} WINS`, CANVAS_W / 2, CANVAS_H / 2 - 40);
   }
 
   // Final scores
   ctx.font = "18px monospace";
   ctx.fillStyle = colors.p1;
-  ctx.fillText(`P1: ${state.score1}`, CANVAS_W / 2 - 80, CANVAS_H / 2 + 10);
+  ctx.fillText(jt`P1: ${state.score1}`, CANVAS_W / 2 - 80, CANVAS_H / 2 + 10);
   ctx.fillStyle = colors.p2;
-  ctx.fillText(`P2: ${state.score2}`, CANVAS_W / 2 + 80, CANVAS_H / 2 + 10);
+  ctx.fillText(jt`P2: ${state.score2}`, CANVAS_W / 2 + 80, CANVAS_H / 2 + 10);
 
   ctx.font = "12px monospace";
   ctx.fillStyle = "#888888";
-  ctx.fillText("Game Over", CANVAS_W / 2, CANVAS_H / 2 + 40);
+  ctx.fillText(t("Game Over"), CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();
 }

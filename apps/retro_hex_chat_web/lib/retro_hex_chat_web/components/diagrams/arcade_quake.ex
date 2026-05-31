@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeQuake do
   SVG logo/cover art for the Quake arcade help page.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -17,7 +18,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeQuake do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Quake arcade logo: stylized Q symbol in bronze on dark background"
+      aria-label={gettext("Quake arcade logo: stylized Q symbol in bronze on dark background")}
     >
       {win98_chrome("Quake - Arcade")}
       <%!-- Background --%>
@@ -43,7 +44,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeQuake do
         font-family="'Courier New',monospace"
         font-weight="bold"
       >
-        QUAKE
+        {gettext("QUAKE")}
       </text>
       <%!-- Subtitle --%>
       <text
@@ -54,7 +55,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeQuake do
         font-size="11"
         font-family="'Courier New',monospace"
       >
-        QuakeSpasm WebAssembly
+        {gettext("QuakeSpasm WebAssembly")}
       </text>
       <%!-- Corner rivets --%>
       <circle cx="30" cy="46" r="4" fill="#8b6914" opacity="0.5" />

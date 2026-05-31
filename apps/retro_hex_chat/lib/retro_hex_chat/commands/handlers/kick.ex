@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Kick do
   @moduledoc "Handler for /kick <nickname> [reason]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -11,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, "Usage: /kick <nickname> [reason]"}
+    {:error, gettext("Usage: /kick <nickname> [reason]")}
   end
 
   def execute([target | rest], context) do
@@ -33,14 +34,18 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
   def help do
     %{
       name: "kick",
-      syntax: "/kick <nickname> [reason]",
+      syntax: gettext("/kick <nickname> [reason]"),
       description:
-        "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\nRequires: channel operator or half-operator. Must be in a channel.",
-      examples: ["/kick troll", "/kick troll Spamming the channel"]
+        gettext(
+          "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\nRequires: channel operator or half-operator. Must be in a channel."
+        ),
+      examples: [gettext("/kick troll"), gettext("/kick troll Spamming the channel")]
     }
   end
 
-  defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
+  defp require_channel(%{active_channel: nil}),
+    do: {:error, gettext("You are not in any channel")}
+
   defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
   defp require_kick_privilege(context, channel) do
@@ -50,7 +55,7 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
     if is_operator or is_half_op do
       :ok
     else
-      {:error, "You must be a channel operator to kick users"}
+      {:error, gettext("You must be a channel operator to kick users")}
     end
   end
 
@@ -65,9 +70,11 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
 
     %CommandSyntax{
       command: "kick",
-      syntax: "/kick <nickname> [reason]",
+      syntax: gettext("/kick <nickname> [reason]"),
       description:
-        "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\nRequires: channel operator or half-operator. Must be in a channel.",
+        gettext(
+          "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\nRequires: channel operator or half-operator. Must be in a channel."
+        ),
       category: :channel,
       parameters: [
         %Parameter{
@@ -75,17 +82,17 @@ defmodule RetroHexChat.Commands.Handlers.Kick do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to kick"
+          description: gettext("User to kick")
         },
         %Parameter{
           name: "reason",
           required: false,
           type: :text,
           position: 1,
-          description: "Reason for the kick"
+          description: gettext("Reason for the kick")
         }
       ],
-      examples: ["/kick troll", "/kick troll Spamming the channel"]
+      examples: [gettext("/kick troll"), gettext("/kick troll Spamming the channel")]
     }
   end
 end

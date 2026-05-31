@@ -210,7 +210,7 @@ describe("FileTransferHook", () => {
 
       const failed = hook.__pushEvents.filter((e) => e.event === "ft_failed");
       expect(failed.length).toBe(1);
-      expect(failed[0].payload.reason).toContain("integridade");
+      expect(failed[0].payload.reason).toContain("Integrity");
     });
   });
 

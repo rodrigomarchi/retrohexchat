@@ -187,7 +187,7 @@ defmodule RetroHexChatWeb.Components.UI.Breadcrumb do
     >
       <Icons.icon_ellipsis class="w-4 h-4" />
 
-      <span class="sr-only">More</span>
+      <span class="sr-only">{gettext("More")}</span>
     </div>
     """
   end

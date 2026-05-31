@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
   Security-related SVG diagrams: encryption layers and protocol illustrations.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   # ──────────────────────────────────────────────────
   # Security Layers Diagram (how_it_works — tab-security)
@@ -19,7 +20,11 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Two security layers: browser to server via HTTPS/WSS with TLS, and browser to browser via DTLS-SRTP for P2P calls"
+      aria-label={
+        gettext(
+          "Two security layers: browser to server via HTTPS/WSS with TLS, and browser to browser via DTLS-SRTP for P2P calls"
+        )
+      }
     >
       <!-- Common Window styles -->
 
@@ -33,7 +38,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        LAYER 1 — Server Connection
+        {gettext("LAYER 1 — Server Connection")}
       </text>
       
     <!-- Browser box (left) -->
@@ -55,7 +60,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        Browser
+        {gettext("Browser")}
       </text>
       
     <!-- Inside lock area -->
@@ -71,7 +76,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        TLS 1.3
+        {gettext("TLS 1.3")}
       </text>
       
     <!-- Server box (right) -->
@@ -93,7 +98,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        Server
+        {gettext("Server")}
       </text>
       
     <!-- Shield icon -->
@@ -107,7 +112,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        Protected
+        {gettext("Protected")}
       </text>
       
     <!-- HTTPS/WSS connection line -->
@@ -133,7 +138,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        HTTPS / WSS
+        {gettext("HTTPS / WSS")}
       </text>
       
     <!-- Server features (Tooltip style) -->
@@ -148,7 +153,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        · bcrypt hashing
+        {gettext("· bcrypt hashing")}
       </text>
       <text
         x="434"
@@ -158,7 +163,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        · rate limiting
+        {gettext("· rate limiting")}
       </text>
       <text
         x="434"
@@ -168,7 +173,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        · CSRF protection
+        {gettext("· CSRF protection")}
       </text>
       
     <!-- Separator line (engraved style) -->
@@ -193,7 +198,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        LAYER 2 — P2P Calls (end-to-end)
+        {gettext("LAYER 2 — P2P Calls (end-to-end)")}
       </text>
       
     <!-- Browser box (left, Bottom) -->
@@ -212,7 +217,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        Browser
+        {gettext("Browser")}
       </text>
 
       <rect x="54" y="205" width="12" height="10" fill="#008080" stroke="#000" stroke-width="1" />
@@ -226,7 +231,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        E2E enc
+        {gettext("E2E enc")}
       </text>
       
     <!-- Browser box (right, Bottom) -->
@@ -245,7 +250,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        Browser
+        {gettext("Browser")}
       </text>
 
       <rect x="394" y="205" width="12" height="10" fill="#008080" stroke="#000" stroke-width="1" />
@@ -259,7 +264,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        E2E enc
+        {gettext("E2E enc")}
       </text>
       
     <!-- DTLS-SRTP connection line -->
@@ -284,7 +289,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        DTLS / SRTP
+        {gettext("DTLS / SRTP")}
       </text>
       
     <!-- P2P description -->
@@ -301,7 +306,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        P2P calls encrypted end-to-end via WebRTC
+        {gettext("P2P calls encrypted end-to-end via WebRTC")}
       </text>
       <text
         x="260"
@@ -311,7 +316,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Security do
         font-size="10"
         font-family="Tahoma,sans-serif"
       >
-        Server never sees voice/video data
+        {gettext("Server never sees voice/video data")}
       </text>
     </svg>
     """

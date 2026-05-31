@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.LandingLive.Community do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.LandingLive.LandingHelpers
   import RetroHexChatWeb.Components.UI.Window
@@ -13,9 +14,11 @@ defmodule RetroHexChatWeb.LandingLive.Community do
     {:ok,
      assign(socket,
        active_page: :community,
-       page_title: "Open Source & Community — Retro Hex Chat",
+       page_title: gettext("Open Source & Community — Retro Hex Chat"),
        page_description:
-         "Retro Hex Chat is MIT-licensed open source software. Contribute, star, share, or sponsor the project on GitHub."
+         gettext(
+           "Retro Hex Chat is MIT-licensed open source software. Contribute, star, share, or sponsor the project on GitHub."
+         )
      )}
   end
 end

@@ -1,16 +1,22 @@
 <p>
-  When you are <code>/away</code>
-  and someone sends you a private message, the system automatically replies with your away message.
+  {gettext("When you are")} <code>{gettext("/away")}</code>
+  {gettext(
+    "and someone sends you a private message, the system automatically replies with your away message."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  1. Set yourself away: <code>/away Gone for lunch</code>
-  <br />2. When someone PMs you, they see: <em>* YourNick is away: Gone for lunch</em>
-  <br />3. The auto-reply is sent only <strong>once per unique sender</strong> until you return.
+  {gettext("1. Set yourself away:")} <code>{gettext("/away Gone for lunch")}</code>
+  <br />{gettext("2. When someone PMs you, they see:")}
+  <em>{gettext("* YourNick is away: Gone for lunch")}</em>
+  <br />{gettext("3. The auto-reply is sent only")}
+  <strong>{gettext("once per unique sender")}</strong> {gettext("until you return.")}
 </p>
-<.help_h4 icon={:icon_document_alert}>Notes</.help_h4>
+<.help_h4 icon={:icon_document_alert}>{gettext("Notes")}</.help_h4>
 <p>
-  Auto-replies are NOT sent for notices (per IRC convention). The replied-to set resets when you clear your away status.
+  {gettext(
+    "Auto-replies are NOT sent for notices (per IRC convention). The replied-to set resets when you clear your away status."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
-<p><.help_link topic="cmd-away">/away Command</.help_link></p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p><.help_link topic="cmd-away">{gettext("/away Command")}</.help_link></p>

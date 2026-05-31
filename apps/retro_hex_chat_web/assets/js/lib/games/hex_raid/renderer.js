@@ -15,6 +15,7 @@ import {
   getBankAtWorld,
   formatFuel,
 } from "./physics.js";
+import { t, jt } from "../../i18n.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -64,7 +65,7 @@ export function render(ctx, state, colors, time, particles) {
 
   // Phase overlays
   if (state.phase === PHASE.WAITING) {
-    drawOverlayText(ctx, colors, "WAITING FOR OPPONENT...", colors.p1);
+    drawOverlayText(ctx, colors, t("WAITING FOR OPPONENT..."), colors.p1);
   } else if (state.phase === PHASE.COUNTDOWN) {
     drawOverlayText(ctx, colors, String(state.countdown), colors.warning, 64);
   } else if (state.phase === PHASE.FINISHED) {
@@ -591,7 +592,7 @@ function drawHUD(ctx, state, colors, time) {
   ctx.shadowColor = colors.p1;
   ctx.shadowBlur = 4;
   ctx.textAlign = "left";
-  ctx.fillText(`P1: ${state.score1}`, 8, 5);
+  ctx.fillText(jt`P1: ${state.score1}`, 8, 5);
 
   // Distance / mode (top center)
   ctx.fillStyle = colors.warning;
@@ -604,13 +605,13 @@ function drawHUD(ctx, state, colors, time) {
         ? "BLITZ"
         : "RAID";
   const dist = Math.floor(state.scrollY / 100);
-  ctx.fillText(`${modeName} ${dist}m`, CANVAS_W / 2, 5);
+  ctx.fillText(jt`${modeName} ${dist}m`, CANVAS_W / 2, 5);
 
   // P2 score (top right)
   ctx.fillStyle = colors.p2;
   ctx.shadowColor = colors.p2;
   ctx.textAlign = "right";
-  ctx.fillText(`P2: ${state.score2}`, CANVAS_W - 8, 5);
+  ctx.fillText(jt`P2: ${state.score2}`, CANVAS_W - 8, 5);
 
   ctx.shadowBlur = 0;
 
@@ -701,7 +702,7 @@ function drawGameOver(ctx, state, colors) {
   ctx.font = "bold 28px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(`PLAYER ${winner} WINS!`, CANVAS_W / 2, CANVAS_H / 2 - 25);
+  ctx.fillText(jt`PLAYER ${winner} WINS!`, CANVAS_W / 2, CANVAS_H / 2 - 25);
 
   ctx.shadowBlur = 0;
   ctx.font = "bold 16px monospace";

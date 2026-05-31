@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Slow do
   @moduledoc "Handler for /slow [seconds] — set join throttle on the channel. 0 to disable."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -10,7 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.Slow do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /slow <seconds> (0 to disable)"}
+  def execute([], _context), do: {:error, gettext("Usage: /slow <seconds> (0 to disable)")}
 
   def execute(["0"], context) do
     with {:ok, channel} <- require_channel(context),
@@ -24,11 +25,11 @@ defmodule RetroHexChat.Commands.Handlers.Slow do
          :ok <- require_operator(context, channel),
          {seconds, ""} <- Integer.parse(seconds_str),
          true <- seconds > 0 do
-      param = "5:#{seconds}"
+      param = gettext("5:%{seconds}", seconds: seconds)
       {:ok, :ui_action, :set_mode, %{channel: channel, mode_string: "+j", params: [param]}}
     else
       {:error, _} = err -> err
-      _ -> {:error, "Usage: /slow <seconds> — must be a positive number (0 to disable)"}
+      _ -> {:error, gettext("Usage: /slow <seconds> — must be a positive number (0 to disable)")}
     end
   end
 
@@ -36,10 +37,12 @@ defmodule RetroHexChat.Commands.Handlers.Slow do
   def help do
     %{
       name: "slow",
-      syntax: "/slow <seconds>",
+      syntax: gettext("/slow <seconds>"),
       description:
-        "Set join throttle on the channel (5 joins per N seconds). Use /slow 0 to disable.\nRequires: channel operator or owner.",
-      examples: ["/slow 30", "/slow 0"]
+        gettext(
+          "Set join throttle on the channel (5 joins per N seconds). Use /slow 0 to disable.\nRequires: channel operator or owner."
+        ),
+      examples: [gettext("/slow 30"), gettext("/slow 0")]
     }
   end
 
@@ -54,8 +57,8 @@ defmodule RetroHexChat.Commands.Handlers.Slow do
 
     %CommandSyntax{
       command: "slow",
-      syntax: "/slow <seconds>",
-      description: "Set join throttle. 0 to disable.",
+      syntax: gettext("/slow <seconds>"),
+      description: gettext("Set join throttle. 0 to disable."),
       category: :channel,
       parameters: [
         %Parameter{
@@ -63,21 +66,23 @@ defmodule RetroHexChat.Commands.Handlers.Slow do
           required: true,
           type: :text,
           position: 0,
-          description: "Throttle interval in seconds (0 to disable)"
+          description: gettext("Throttle interval in seconds (0 to disable)")
         }
       ],
-      examples: ["/slow 30", "/slow 0"]
+      examples: [gettext("/slow 30"), gettext("/slow 0")]
     }
   end
 
-  defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
+  defp require_channel(%{active_channel: nil}),
+    do: {:error, gettext("You are not in any channel")}
+
   defp require_channel(%{active_channel: ch}), do: {:ok, ch}
 
   defp require_operator(context, channel) do
     if channel in context.operator_in do
       :ok
     else
-      {:error, "You must be a channel operator to use this command"}
+      {:error, gettext("You must be a channel operator to use this command")}
     end
   end
 end

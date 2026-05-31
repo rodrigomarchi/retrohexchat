@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.P2P.FileTransferPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,16 +13,16 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.FileTransferPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "File Transfer", active_page: "file-transfer")}
+    {:ok, assign(socket, page_title: gettext("File Transfer"), active_page: "file-transfer")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">File Transfer</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("File Transfer")}</h2>
 
-      <.showcase_card title="Receiving" description="File being received with progress.">
+      <.showcase_card title={gettext("Receiving")} description="File being received with progress.">
         <.file_transfer
           file_name="vacation_photos.zip"
           progress={65}
@@ -39,7 +40,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.FileTransferPage do
         </.code_example>
       </.showcase_card>
 
-      <.showcase_card title="Sending" description="File being sent.">
+      <.showcase_card title={gettext("Sending")} description="File being sent.">
         <.file_transfer
           file_name="document.pdf"
           progress={30}
@@ -50,7 +51,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.FileTransferPage do
         />
       </.showcase_card>
 
-      <.showcase_card title="Pending (Incoming)" description="Waiting for acceptance.">
+      <.showcase_card title={gettext("Pending (Incoming)")} description="Waiting for acceptance.">
         <.file_transfer
           file_name="setup.exe"
           progress={0}
@@ -60,7 +61,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.FileTransferPage do
         />
       </.showcase_card>
 
-      <.showcase_card title="Complete" description="Transfer finished.">
+      <.showcase_card title={gettext("Complete")} description="Transfer finished.">
         <.file_transfer
           file_name="music.mp3"
           progress={100}
@@ -69,7 +70,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.FileTransferPage do
         />
       </.showcase_card>
 
-      <.showcase_card title="Failed" description="Transfer failed.">
+      <.showcase_card title={gettext("Failed")} description="Transfer failed.">
         <.file_transfer
           file_name="large_file.iso"
           progress={42}

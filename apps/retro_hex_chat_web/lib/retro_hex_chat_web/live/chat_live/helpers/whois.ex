@@ -3,6 +3,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   Whois and Whowas text output helpers.
   """
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{TimeFormatter, UserBio}
@@ -16,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
     target_meta = find_user_presence(target, session.channels)
 
     if target_meta == nil and target != session.nickname do
-      Messages.system_event(socket, "* #{target} is not online.")
+      Messages.system_event(socket, gettext("* %{target} is not online.", target: target))
     else
       lines = build_whois_lines(socket, session, target, target_meta)
 
@@ -31,7 +33,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
     if Tracker.online?("presence:global", target) do
       Messages.system_event(
         socket,
-        "* #{target} is online. Use /whois #{target} for current info."
+        gettext("* %{target} is online. Use /whois %{target} for current info.",
+          target: target
+        )
       )
     else
       show_cached_whowas(socket, target)
@@ -50,17 +54,23 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
         end)
 
       {:error, :not_found} ->
-        Messages.system_event(socket, "* No whowas information available for #{target}.")
+        Messages.system_event(
+          socket,
+          gettext("* No whowas information available for %{target}.", target: target)
+        )
     end
   end
 
   defp whowas_lines(entry) do
     [
-      "----- Whowas: #{entry.nickname} -----",
-      "Last seen: #{TimeFormatter.format_relative(entry.disconnected_at)}",
-      "Channels: #{Enum.join(entry.channels, ", ")}"
+      gettext("----- Whowas: %{nickname} -----", nickname: entry.nickname),
+      gettext("Last seen: %{time}", time: TimeFormatter.format_relative(entry.disconnected_at)),
+      gettext("Channels: %{channels}", channels: Enum.join(entry.channels, ", "))
     ]
-    |> maybe_append(entry.quit_message != nil, "Quit message: #{entry.quit_message}")
+    |> maybe_append(
+      entry.quit_message != nil,
+      gettext("Quit message: %{message}", message: entry.quit_message)
+    )
     |> Kernel.++(["-----------------------------"])
   end
 
@@ -133,34 +143,78 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   end
 
   defp format_whois_lines(data, target, my_nick) do
-    lines = ["----- Whois: #{target} -----"]
+    lines = [gettext("----- Whois: %{target} -----", target: target)]
 
     lines =
       maybe_append(
         lines,
         data.target_channels != [],
-        "Channels: #{Enum.join(data.target_channels, ", ")}"
+        gettext("Channels: %{channels}", channels: Enum.join(data.target_channels, ", "))
       )
 
     lines =
       maybe_append(
         lines,
         data.shared_channels != [] and target != my_nick,
-        "Shared channels: #{Enum.join(data.shared_channels, ", ")}"
+        gettext("Shared channels: %{channels}", channels: Enum.join(data.shared_channels, ", "))
       )
 
-    lines = lines ++ ["Online for: #{TimeFormatter.format_duration(data.online_seconds)}"]
-    lines = lines ++ ["Idle for: #{TimeFormatter.format_duration(data.idle_seconds)}"]
-    lines = lines ++ ["Registered: #{if data.registered, do: "Yes", else: "No"}"]
-    lines = maybe_append(lines, data.away, "Away: #{data.away_message || ""}")
-    lines = maybe_append(lines, data.bio != nil, "Bio: #{data.bio}")
-    lines = maybe_append(lines, data.contact_note != nil, "Contact note: #{data.contact_note}")
+    lines =
+      lines ++
+        [
+          gettext("Online for: %{duration}",
+            duration: TimeFormatter.format_duration(data.online_seconds)
+          )
+        ]
+
+    lines =
+      lines ++
+        [
+          gettext("Idle for: %{duration}",
+            duration: TimeFormatter.format_duration(data.idle_seconds)
+          )
+        ]
+
+    registered = if data.registered, do: gettext("Yes"), else: gettext("No")
+    lines = lines ++ [gettext("Registered: %{status}", status: registered)]
+
+    lines =
+      maybe_append(
+        lines,
+        data.away,
+        gettext("Away: %{message}", message: data.away_message || "")
+      )
+
+    lines = maybe_append(lines, data.bio != nil, gettext("Bio: %{bio}", bio: data.bio))
+
+    lines =
+      maybe_append(
+        lines,
+        data.contact_note != nil,
+        gettext("Contact note: %{note}", note: data.contact_note)
+      )
 
     client_label = client_display(data.browser, data.os)
-    lines = maybe_append(lines, client_label != nil, "Client: #{client_label}")
-    lines = maybe_append(lines, data.screen != nil, "Screen: #{data.screen}")
-    lines = maybe_append(lines, data.language != nil, "Language: #{data.language}")
-    lines = maybe_append(lines, data.client_timezone != nil, "Timezone: #{data.client_timezone}")
+
+    lines =
+      maybe_append(lines, client_label != nil, gettext("Client: %{client}", client: client_label))
+
+    lines =
+      maybe_append(lines, data.screen != nil, gettext("Screen: %{screen}", screen: data.screen))
+
+    lines =
+      maybe_append(
+        lines,
+        data.language != nil,
+        gettext("Language: %{language}", language: data.language)
+      )
+
+    lines =
+      maybe_append(
+        lines,
+        data.client_timezone != nil,
+        gettext("Timezone: %{timezone}", timezone: data.client_timezone)
+      )
 
     lines ++ ["-----------------------------"]
   end
@@ -168,7 +222,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   defp client_display(nil, nil), do: nil
   defp client_display(browser, nil), do: browser
   defp client_display(nil, os), do: os
-  defp client_display(browser, os), do: "#{browser} — #{os}"
+  defp client_display(browser, os), do: gettext("%{browser} — %{os}", browser: browser, os: os)
 
   defp maybe_append(lines, true, line), do: lines ++ [line]
   defp maybe_append(lines, _, _line), do: lines

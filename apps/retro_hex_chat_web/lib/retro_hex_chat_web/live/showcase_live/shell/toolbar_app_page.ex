@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Shell.ToolbarAppPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,7 +15,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ToolbarAppPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Toolbar App",
+       page_title: gettext("Toolbar App"),
        active_page: "toolbar-app",
        last_action: nil
      )}
@@ -29,10 +30,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ToolbarAppPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Toolbar App</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Toolbar App")}</h2>
 
       <.showcase_card
-        title="Disconnected State"
+        title={gettext("Disconnected State")}
         description="Full application toolbar showing the Connect button when not connected."
       >
         <.toolbar_app connected={false} on_action="toolbar-action" />
@@ -42,7 +43,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ToolbarAppPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Connected State (Admin)"
+        title={gettext("Connected State (Admin)")}
         description="Toolbar with Disconnect button and admin option visible in the Options dropdown."
       >
         <.toolbar_app connected={true} is_admin={true} on_action="toolbar-action" />
@@ -52,11 +53,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ToolbarAppPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Action Log"
+        title={gettext("Action Log")}
         description="Click any toolbar button to see its action value here."
       >
         <p class="text-sm">
-          Last action: <span class="font-bold font-mono">{@last_action || "none"}</span>
+          {gettext("Last action:")} <span class="font-bold font-mono">{@last_action || "none"}</span>
         </p>
       </.showcase_card>
     </.showcase_layout>

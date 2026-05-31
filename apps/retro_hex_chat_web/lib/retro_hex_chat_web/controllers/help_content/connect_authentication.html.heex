@@ -1,34 +1,42 @@
 <p>
-  RetroHexChat handles all authentication directly on the connection screen — no need to run
-  <code>/ns identify</code>
-  or <code>/ns register</code>
-  manually.
+  {gettext(
+    "RetroHexChat handles all authentication directly on the connection screen — no need to run"
+  )}
+  <code>{gettext("/ns identify")}</code>
+  or <code>{gettext("/ns register")}</code>
+  {gettext("manually.")}
 </p>
-<.help_h4 icon={:icon_lock}>Registered Nicknames</.help_h4>
-<p>1. Enter your registered nickname and click <strong>Connect</strong>.</p>
-<p>2. A password prompt appears. Enter your NickServ password.</p>
+<.help_h4 icon={:icon_lock}>{gettext("Registered Nicknames")}</.help_h4>
 <p>
-  3. On success, you join the chat already identified — the 60-second identify timer is skipped.
+  {gettext("1. Enter your registered nickname and click")} <strong>{gettext("Connect")}</strong>.
 </p>
-<.help_h4 icon={:icon_dialog_nick}>New Nicknames</.help_h4>
-<p>1. Enter a nickname that isn't registered yet and click <strong>Connect</strong>.</p>
+<p>{gettext("2. A password prompt appears. Enter your NickServ password.")}</p>
 <p>
-  2. A registration form appears with <strong>Password</strong>
-  and <strong>Confirm password</strong>
-  fields.
+  {gettext(
+    "3. On success, you join the chat already identified — the 60-second identify timer is skipped."
+  )}
+</p>
+<.help_h4 icon={:icon_dialog_nick}>{gettext("New Nicknames")}</.help_h4>
+<p>
+  {gettext("1. Enter a nickname that isn't registered yet and click")} <strong>{gettext("Connect")}</strong>.
 </p>
 <p>
-  3. Choose a password (minimum 5 characters) and click <strong>Register &amp; Connect</strong>.
+  {gettext("2. A registration form appears with")} <strong>{gettext("Password")}</strong>
+  and <strong>{gettext("Confirm password")}</strong>
+  {gettext("fields.")}
 </p>
-<p>4. Your nickname is registered and you join the chat already identified.</p>
-<.help_h4 icon={:icon_lock}>Password Rules</.help_h4>
+<p>
+  {gettext("3. Choose a password (minimum 5 characters) and click")} <strong>{gettext("Register & Connect")}</strong>.
+</p>
+<p>{gettext("4. Your nickname is registered and you join the chat already identified.")}</p>
+<.help_h4 icon={:icon_lock}>{gettext("Password Rules")}</.help_h4>
 <ul>
-  <li>Minimum 5 characters, maximum 100 characters</li>
-  <li>Stored securely with bcrypt hashing — never in plain text</li>
+  <li>{gettext("Minimum 5 characters, maximum 100 characters")}</li>
+  <li>{gettext("Stored securely with bcrypt hashing — never in plain text")}</li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="connecting">Connecting</.help_link>
-  · <.help_link topic="nickserv">NickServ Overview</.help_link>
-  · <.help_link topic="cmd-ns">/ns Command</.help_link>
+  <.help_link topic="connecting">{gettext("Connecting")}</.help_link>
+  · <.help_link topic="nickserv">{gettext("NickServ Overview")}</.help_link>
+  · <.help_link topic="cmd-ns">{gettext("/ns Command")}</.help_link>
 </p>

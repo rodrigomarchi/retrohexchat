@@ -1,71 +1,77 @@
 <p>
-  The RSS capability monitors RSS and Atom feeds and automatically posts new items
-  to designated channels.
+  {gettext(
+    "The RSS capability monitors RSS and Atom feeds and automatically posts new items to designated channels."
+  )}
 </p>
 
-<.help_h4 icon={:icon_code}>Commands</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Commands")}</.help_h4>
 <table>
   <thead>
     <tr>
-      <th>Command</th>
-      <th>Description</th>
+      <th>{gettext("Command")}</th>
+      <th>{gettext("Description")}</th>
     </tr>
   </thead>
   <tbody>
     <tr>
-      <td><code>!Bot rss add &lt;url&gt; &lt;#channel&gt;</code></td>
-      <td>Add an RSS/Atom feed</td>
+      <td><code>{gettext("!Bot rss add <url> <#channel>")}</code></td>
+      <td>{gettext("Add an RSS/Atom feed")}</td>
     </tr>
     <tr>
-      <td><code>!Bot rss list</code></td>
-      <td>List all configured feeds</td>
+      <td><code>{gettext("!Bot rss list")}</code></td>
+      <td>{gettext("List all configured feeds")}</td>
     </tr>
     <tr>
-      <td><code>!Bot rss remove &lt;id&gt;</code></td>
-      <td>Remove a feed by ID</td>
+      <td><code>{gettext("!Bot rss remove <id>")}</code></td>
+      <td>{gettext("Remove a feed by ID")}</td>
     </tr>
     <tr>
-      <td><code>!Bot rss check &lt;id&gt;</code></td>
-      <td>Force-check a feed immediately</td>
+      <td><code>{gettext("!Bot rss check <id>")}</code></td>
+      <td>{gettext("Force-check a feed immediately")}</td>
     </tr>
   </tbody>
 </table>
 
-<.help_h4 icon={:icon_rss}>How It Works</.help_h4>
+<.help_h4 icon={:icon_rss}>{gettext("How It Works")}</.help_h4>
 <ul>
-  <li>Feeds are polled at a configurable interval (default: every 30 minutes)</li>
-  <li>Only new items since the last check are posted</li>
-  <li>Uses HTTP conditional requests (ETag/Last-Modified) for efficiency</li>
-  <li>Feed titles are auto-detected from the feed metadata</li>
-  <li>Items are posted in the format: <code>[Feed Title] Item Title — Link</code></li>
+  <li>{gettext("Feeds are polled at a configurable interval (default: every 30 minutes)")}</li>
+  <li>{gettext("Only new items since the last check are posted")}</li>
+  <li>{gettext("Uses HTTP conditional requests (ETag/Last-Modified) for efficiency")}</li>
+  <li>{gettext("Feed titles are auto-detected from the feed metadata")}</li>
+  <li>
+    {gettext("Items are posted in the format:")}
+    <code>{gettext("[Feed Title] Item Title — Link")}</code>
+  </li>
 </ul>
 
-<.help_h4 icon={:icon_wrench}>Configuration</.help_h4>
-<p>Admins can configure via <code>/bot set</code>:</p>
+<.help_h4 icon={:icon_wrench}>{gettext("Configuration")}</.help_h4>
+<p>{gettext("Admins can configure via")} <code>{gettext("/bot set")}</code>:</p>
 <ul>
-  <li><code>rss_interval</code> — Poll interval in minutes (default: 30)</li>
-  <li><code>rss_max_feeds</code> — Maximum feeds per bot (default: 5)</li>
-  <li><code>rss_max_items</code> — Maximum items posted per poll (default: 3)</li>
+  <li><code>rss_interval</code> {gettext("— Poll interval in minutes (default: 30)")}</li>
+  <li><code>rss_max_feeds</code> {gettext("— Maximum feeds per bot (default: 5)")}</li>
+  <li><code>rss_max_items</code> {gettext("— Maximum items posted per poll (default: 3)")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>!MyBot rss add https://blog.example.com/feed.xml #news
-!MyBot rss add https://example.com/rss news
-!MyBot rss list
-!MyBot rss check f1a2b3
-!MyBot rss remove f1a2b3</pre>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("!MyBot rss add https://blog.example.com/feed.xml #news !MyBot rss add https://example.com/rss news !MyBot rss list !MyBot rss check f1a2b3 !MyBot rss remove f1a2b3")}</pre>
 
-<.help_h4 icon={:icon_rules}>Notes</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Notes")}</.help_h4>
 <ul>
-  <li>URLs must start with <code>http://</code> or <code>https://</code></li>
-  <li>The <code>#</code> prefix on channel names is added automatically if missing</li>
-  <li>Polling timers automatically reschedule after each poll</li>
-  <li>Fetch errors are logged but do not stop future polls</li>
+  <li>
+    {gettext("URLs must start with")} <code>{gettext("http://")}</code>
+    or <code>{gettext("https://")}</code>
+  </li>
+  <li>
+    {gettext("The")}
+    <code>#</code> {gettext("prefix on channel names is added automatically if missing")}
+  </li>
+  <li>{gettext("Polling timers automatically reschedule after each poll")}</li>
+  <li>{gettext("Fetch errors are logged but do not stop future polls")}</li>
 </ul>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="botservice">BotService Overview</.help_link>
-  · <.help_link topic="bot-command">/bot Command Reference</.help_link>
-  · <.help_link topic="bot-scheduler">Bot Scheduler</.help_link>
+  <.help_link topic="botservice">{gettext("BotService Overview")}</.help_link>
+  · <.help_link topic="bot-command">{gettext("/bot Command Reference")}</.help_link>
+  · <.help_link topic="bot-scheduler">{gettext("Bot Scheduler")}</.help_link>
 </p>

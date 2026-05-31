@@ -3,6 +3,7 @@ defmodule RetroHexChat.Accounts.NicknameValidator do
   Validates IRC nicknames per RFC 2812 rules adapted for RetroHexChat.
   Max 16 chars, starts with letter or special, no spaces.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   @max_length 16
   # IRC special chars: [ ] \ ^ _ ` { | }
@@ -22,19 +23,19 @@ defmodule RetroHexChat.Accounts.NicknameValidator do
   def validate(nickname) do
     cond do
       not is_binary(nickname) ->
-        {:error, "Nickname must be a string"}
+        {:error, gettext("Nickname must be a string")}
 
       byte_size(nickname) == 0 ->
-        {:error, "Nickname cannot be empty"}
+        {:error, gettext("Nickname cannot be empty")}
 
       byte_size(nickname) > @max_length ->
         {:error, "Nickname must be at most #{@max_length} characters"}
 
       not valid_first_char?(nickname) ->
-        {:error, "Nickname must start with a letter or special character"}
+        {:error, gettext("Nickname must start with a letter or special character")}
 
       not no_spaces?(nickname) ->
-        {:error, "Nickname cannot contain spaces"}
+        {:error, gettext("Nickname cannot contain spaces")}
 
       true ->
         :ok

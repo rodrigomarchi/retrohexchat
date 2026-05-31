@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.SendFile do
   @moduledoc "Handler for /sendfile <nickname> — initiate a P2P file transfer."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -7,12 +8,12 @@ defmodule RetroHexChat.Commands.Handlers.SendFile do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Usage: /sendfile <nickname>"}
+  def validate(""), do: {:error, gettext("Usage: /sendfile <nickname>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /sendfile <nickname>"}
+  def execute([], _context), do: {:error, gettext("Usage: /sendfile <nickname>")}
 
   def execute([target | _rest], context) do
     P2p.do_execute(target, "file_transfer", context)
@@ -28,10 +29,12 @@ defmodule RetroHexChat.Commands.Handlers.SendFile do
   def help do
     %{
       name: "sendfile",
-      syntax: "/sendfile <nickname>",
+      syntax: gettext("/sendfile <nickname>"),
       description:
-        "Send a file to another user through a direct peer-to-peer connection.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou cannot send files to yourself. Creates a P2P session — the peer must accept.",
-      examples: ["/sendfile mario"]
+        gettext(
+          "Send a file to another user through a direct peer-to-peer connection.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou cannot send files to yourself. Creates a P2P session — the peer must accept."
+        ),
+      examples: [gettext("/sendfile mario")]
     }
   end
 
@@ -46,9 +49,11 @@ defmodule RetroHexChat.Commands.Handlers.SendFile do
 
     %CommandSyntax{
       command: "sendfile",
-      syntax: "/sendfile <nickname>",
+      syntax: gettext("/sendfile <nickname>"),
       description:
-        "Send a file to another user through a direct peer-to-peer connection.\nRequires: both users must be registered and identified (/ns identify).",
+        gettext(
+          "Send a file to another user through a direct peer-to-peer connection.\nRequires: both users must be registered and identified (/ns identify)."
+        ),
       category: :user,
       parameters: [
         %Parameter{
@@ -56,10 +61,10 @@ defmodule RetroHexChat.Commands.Handlers.SendFile do
           required: true,
           type: :nick,
           position: 0,
-          description: "File recipient"
+          description: gettext("File recipient")
         }
       ],
-      examples: ["/sendfile mario"]
+      examples: [gettext("/sendfile mario")]
     }
   end
 end

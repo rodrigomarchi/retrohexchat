@@ -1,49 +1,69 @@
 <p>
-  Star Duel variant with 8 floating asteroids that block missiles and destroy ships on
-  contact. Use the debris as cover — or watch it destroy you. The asteroid layout changes
-  every match, forcing you to adapt your strategy on the fly.
+  {gettext(
+    "Star Duel variant with 8 floating asteroids that block missiles and destroy ships on contact. Use the debris as cover — or watch it destroy you. The asteroid layout changes every match, forcing you to adapt your strategy on the fly."
+  )}
 </p>
 <.diagram_game_space class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow Up / W</strong> — Thrust forward</li>
-  <li><strong>Arrow Left / A</strong> — Rotate left</li>
-  <li><strong>Arrow Right / D</strong> — Rotate right</li>
-  <li><strong>Space</strong> — Fire missile</li>
-  <li><strong>Arrow Down / S</strong> — Hyperspace warp (random teleport, 20% death chance)</li>
-</ul>
-<.help_h4 icon={:icon_rules}>What's Different</.help_h4>
-<ul>
-  <li>8 asteroids of varying sizes are scattered across the arena</li>
-  <li>Colliding with an asteroid is instant death (scores a point for your opponent)</li>
-  <li>Missiles are destroyed when they hit asteroids — use them as cover</li>
-  <li>Asteroids are static — same layout for both players, randomly generated per match</li>
-  <li>Warp is extra risky — you might teleport onto an asteroid</li>
-  <li>All other rules are identical to Star Duel (first to 7, wraparound, hyperspace warp)</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>Strategy Tips</.help_h4>
-<ul>
+  <li><strong>{gettext("Arrow Up / W")}</strong> {gettext("— Thrust forward")}</li>
+  <li><strong>{gettext("Arrow Left / A")}</strong> {gettext("— Rotate left")}</li>
+  <li><strong>{gettext("Arrow Right / D")}</strong> {gettext("— Rotate right")}</li>
+  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
   <li>
-    <strong>Use asteroids as shields</strong>
-    — Park behind a large asteroid and force your opponent to come to you. Patience wins in the debris field.
-  </li>
-  <li>
-    <strong>Mind your warp</strong>
-    — Hyperspace has a chance of dropping you on an asteroid. The more debris, the more dangerous warping becomes.
-  </li>
-  <li>
-    <strong>Herd your opponent</strong>
-    — Use missiles to force your opponent toward asteroid clusters where they have less room to maneuver.
-  </li>
-  <li>
-    <strong>Learn the layout fast</strong>
-    — Spend the first few seconds memorizing asteroid positions. The layout stays fixed for the entire match.
+    <strong>{gettext("Arrow Down / S")}</strong> {gettext(
+      "— Hyperspace warp (random teleport, 20% death chance)"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("What's Different")}</.help_h4>
+<ul>
+  <li>{gettext("8 asteroids of varying sizes are scattered across the arena")}</li>
+  <li>
+    {gettext("Colliding with an asteroid is instant death (scores a point for your opponent)")}
+  </li>
+  <li>{gettext("Missiles are destroyed when they hit asteroids — use them as cover")}</li>
+  <li>
+    {gettext("Asteroids are static — same layout for both players, randomly generated per match")}
+  </li>
+  <li>{gettext("Warp is extra risky — you might teleport onto an asteroid")}</li>
+  <li>
+    {gettext(
+      "All other rules are identical to Star Duel (first to 7, wraparound, hyperspace warp)"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("Use asteroids as shields")}</strong>
+    {gettext(
+      "— Park behind a large asteroid and force your opponent to come to you. Patience wins in the debris field."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Mind your warp")}</strong>
+    {gettext(
+      "— Hyperspace has a chance of dropping you on an asteroid. The more debris, the more dangerous warping becomes."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Herd your opponent")}</strong>
+    {gettext(
+      "— Use missiles to force your opponent toward asteroid clusters where they have less room to maneuver."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Learn the layout fast")}</strong>
+    {gettext(
+      "— Spend the first few seconds memorizing asteroid positions. The layout stays fixed for the entire match."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-star-duel">Star Duel</.help_link>
-  · <.help_link topic="feature-gravity-well">Gravity Well</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-star-duel">{gettext("Star Duel")}</.help_link>
+  · <.help_link topic="feature-gravity-well">{gettext("Gravity Well")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

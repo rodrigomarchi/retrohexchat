@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Popups do
   @moduledoc "Handler for /popups — opens the Custom Menus dialog"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -30,7 +31,9 @@ defmodule RetroHexChat.Commands.Handlers.Popups do
       name: "popups",
       syntax: "/popups",
       description:
-        "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list and channels.",
+        gettext(
+          "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list and channels."
+        ),
       examples: [
         "/popups"
       ]
@@ -49,7 +52,9 @@ defmodule RetroHexChat.Commands.Handlers.Popups do
       command: "popups",
       syntax: "/popups",
       description:
-        "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list and channels.",
+        gettext(
+          "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list and channels."
+        ),
       category: :config,
       parameters: [],
       examples: [

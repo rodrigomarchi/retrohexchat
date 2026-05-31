@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.V2.SoloSessionLive do
   No WebRTC, no peer — isolated from the P2P game system.
   """
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -341,12 +342,12 @@ defmodule RetroHexChatWeb.V2.SoloSessionLive do
     end
   end
 
-  defp expired_reason_label("user_closed"), do: "Session closed by user."
-  defp expired_reason_label("tab_closed"), do: "Session closed (disconnected)."
-  defp expired_reason_label("disconnected"), do: "Session closed (disconnected)."
-  defp expired_reason_label("expired"), do: "Session expired due to inactivity."
-  defp expired_reason_label("game_over"), do: "Game session ended."
-  defp expired_reason_label("pending_timeout"), do: "Session expired."
-  defp expired_reason_label("lobby_inactivity"), do: "Session expired due to inactivity."
-  defp expired_reason_label(_reason), do: "Arcade session ended."
+  defp expired_reason_label("user_closed"), do: gettext("Session closed by user.")
+  defp expired_reason_label("tab_closed"), do: gettext("Session closed (disconnected).")
+  defp expired_reason_label("disconnected"), do: gettext("Session closed (disconnected).")
+  defp expired_reason_label("expired"), do: gettext("Session expired due to inactivity.")
+  defp expired_reason_label("game_over"), do: gettext("Game session ended.")
+  defp expired_reason_label("pending_timeout"), do: gettext("Session expired.")
+  defp expired_reason_label("lobby_inactivity"), do: gettext("Session expired due to inactivity.")
+  defp expired_reason_label(_reason), do: gettext("Arcade session ended.")
 end

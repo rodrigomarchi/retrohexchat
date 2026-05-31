@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBarAppPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,17 +13,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBarAppPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Status Bar App", active_page: "status-bar-app")}
+    {:ok, assign(socket, page_title: gettext("Status Bar App"), active_page: "status-bar-app")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Status Bar App</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Status Bar App")}</h2>
 
       <.showcase_card
-        title="Channel Mode"
+        title={gettext("Channel Mode")}
         description="Status bar showing a channel tab with user count and normal lag."
       >
         <.status_bar_app
@@ -46,7 +47,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBarAppPage do
       </.showcase_card>
 
       <.showcase_card
-        title="PM Mode"
+        title={gettext("PM Mode")}
         description="Status bar showing a private message tab (no user count)."
       >
         <.status_bar_app
@@ -59,7 +60,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBarAppPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Warning Lag"
+        title={gettext("Warning Lag")}
         description="Lag is elevated — displayed in warning colour."
       >
         <.status_bar_app
@@ -73,7 +74,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBarAppPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Critical Lag"
+        title={gettext("Critical Lag")}
         description="Lag is dangerously high — displayed in error colour."
       >
         <.status_bar_app
@@ -87,7 +88,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBarAppPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Timeout"
+        title={gettext("Timeout")}
         description="Server not responding — lag shown as '?' in error colour."
       >
         <.status_bar_app
@@ -101,7 +102,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.StatusBarAppPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Muted"
+        title={gettext("Muted")}
         description="Notifications muted — mute icon displayed in the last zone."
       >
         <.status_bar_app

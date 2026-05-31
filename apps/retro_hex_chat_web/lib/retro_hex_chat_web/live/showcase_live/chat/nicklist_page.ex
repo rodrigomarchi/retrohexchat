@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Chat.NicklistPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,16 +13,19 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.NicklistPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Nicklist", active_page: "nicklist")}
+    {:ok, assign(socket, page_title: gettext("Nicklist"), active_page: "nicklist")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Nicklist</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Nicklist")}</h2>
 
-      <.showcase_card title="Basic Nicklist" description="User list with status indicators.">
+      <.showcase_card
+        title={gettext("Basic Nicklist")}
+        description="User list with status indicators."
+      >
         <div class="max-w-[180px]">
           <.nicklist class="min-h-[120px]">
             <.nicklist_item
@@ -44,7 +48,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.NicklistPage do
         </.code_example>
       </.showcase_card>
 
-      <.showcase_card title="User Statuses" description="Online, away, and offline status indicators.">
+      <.showcase_card
+        title={gettext("User Statuses")}
+        description="Online, away, and offline status indicators."
+      >
         <div class="max-w-[180px]">
           <.nicklist>
             <.nicklist_item nick="OnlineUser" status="online" />
@@ -59,7 +66,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.NicklistPage do
         </.code_example>
       </.showcase_card>
 
-      <.showcase_card title="Roles" description="Users with operator (@) and voice (+) prefixes.">
+      <.showcase_card
+        title={gettext("Roles")}
+        description="Users with operator (@) and voice (+) prefixes."
+      >
         <div class="max-w-[180px]">
           <.nicklist>
             <.nicklist_item nick="Admin" status="online" role={:operator} nick_color="text-error" />

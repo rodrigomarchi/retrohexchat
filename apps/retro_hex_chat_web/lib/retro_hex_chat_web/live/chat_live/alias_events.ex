@@ -13,6 +13,8 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
   import Phoenix.Component, only: [assign: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [maybe_persist_aliases: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AliasList
 
@@ -155,32 +157,34 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
 
   # ── Private helpers ────────────────────────────────────────
 
-  defp alias_error_msg(:duplicate_name, name), do: "Alias /#{name} already exists"
+  defp alias_error_msg(:duplicate_name, name),
+    do: gettext("Alias /%{name} already exists", name: name)
 
   defp alias_error_msg(:invalid_name, _),
-    do: "Invalid name. Use letters, numbers, hyphens, underscores."
+    do: gettext("Invalid name. Use letters, numbers, hyphens, underscores.")
 
-  defp alias_error_msg(:invalid_expansion, _), do: "Expansion is required"
+  defp alias_error_msg(:invalid_expansion, _), do: gettext("Expansion is required")
 
-  defp alias_error_msg(:expansion_too_long, _), do: "Expansion too long (max 500 characters)"
+  defp alias_error_msg(:expansion_too_long, _),
+    do: gettext("Expansion too long (max 500 characters)")
 
   defp alias_error_msg(:command_chaining, _),
-    do: "Expansion must not contain chaining (|, &&, ;, newlines)"
+    do: gettext("Expansion must not contain chaining (|, &&, ;, newlines)")
 
-  defp alias_error_msg(:list_full, _), do: "Alias list is full (max 50)"
-  defp alias_error_msg(:not_found, _), do: "Alias not found"
+  defp alias_error_msg(:list_full, _), do: gettext("Alias list is full (max 50)")
+  defp alias_error_msg(:not_found, _), do: gettext("Alias not found")
 
   defp alias_warning(name, expansion) do
     [
-      if(AliasList.shadows_builtin?(name), do: "shadows built-in /#{name}"),
+      if(AliasList.shadows_builtin?(name), do: gettext("shadows built-in /%{name}", name: name)),
       if(AliasList.recursive_expansion?(name, expansion),
-        do: "expands to itself and will hit the recursion limit"
+        do: gettext("expands to itself and will hit the recursion limit")
       )
     ]
     |> Enum.reject(&is_nil/1)
     |> case do
       [] -> nil
-      warnings -> "Warning: " <> Enum.join(warnings, "; ")
+      warnings -> gettext("Warning: %{warnings}", warnings: Enum.join(warnings, "; "))
     end
   end
 end

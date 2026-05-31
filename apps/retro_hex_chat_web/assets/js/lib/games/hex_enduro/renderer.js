@@ -20,6 +20,7 @@ import {
   MAX_DAYS,
   LANE_COUNT,
 } from "./physics.js";
+import { t, jt } from "../../i18n.js";
 
 // ── Road colors (per weather) ──
 const SKY_COLORS = {
@@ -436,20 +437,20 @@ function drawHUD(ctx, state, colors, player, opponent, pColor, oppColor, isHost,
   const pLabel = isHost ? "P1" : "P2";
   const oLabel = isHost ? "P2" : "P1";
   ctx.fillStyle = pColor;
-  ctx.fillText(`${pLabel}: ${player.score}pts`, 6, 16);
+  ctx.fillText(jt`${pLabel}: ${player.score}pts`, 6, 16);
 
   // Opponent label + score (right)
   ctx.fillStyle = oppColor;
-  const oppText = `${oLabel}: ${opponent.score}pts`;
+  const oppText = jt`${oLabel}: ${opponent.score}pts`;
   ctx.fillText(oppText, CANVAS_W - ctx.measureText(oppText).width - 6, 16);
 
   // Center: game info
   ctx.fillStyle = "#aaaacc";
   const modeLabel =
     state.mode === GAME_MODE.CLASSIC_DUEL
-      ? `Day ${Math.min(state.dayNumber, MAX_DAYS)}/${MAX_DAYS}`
+      ? jt`Day ${Math.min(state.dayNumber, MAX_DAYS)}/${MAX_DAYS}`
       : state.mode === GAME_MODE.NIGHT_RACE
-        ? "NIGHT RACE"
+        ? t("NIGHT RACE")
         : "SPRINT";
   const weatherLabel =
     state.mode === GAME_MODE.CLASSIC_DUEL ? ` - ${WEATHER_LABELS[state.weather] || ""}` : "";
@@ -481,7 +482,7 @@ function drawHUD(ctx, state, colors, player, opponent, pColor, oppColor, isHost,
     state.mode === GAME_MODE.CLASSIC_DUEL
       ? `${player.overtakes}/${state.dayOvertakeTarget}`
       : `${player.overtakes}`;
-  ctx.fillText(`OVT: ${overtakeText}`, 270, CANVAS_H - 10);
+  ctx.fillText(jt`OVT: ${overtakeText}`, 270, CANVAS_H - 10);
 
   // Timer (right) for timed modes
   if (state.mode !== GAME_MODE.CLASSIC_DUEL) {
@@ -496,7 +497,7 @@ function drawHUD(ctx, state, colors, player, opponent, pColor, oppColor, isHost,
   // Boost indicator (after overtakes, before timer)
   if (player.boost > 0) {
     ctx.fillStyle = "#ff8800";
-    ctx.fillText("TURBO!", 350, CANVAS_H - 10);
+    ctx.fillText(t("TURBO!"), 350, CANVAS_H - 10);
   }
 
   ctx.restore();
@@ -553,13 +554,13 @@ function drawDayEnd(ctx, state, colors) {
 
   ctx.font = "bold 28px monospace";
   ctx.fillStyle = "#aaaacc";
-  ctx.fillText(`Day ${state.dayNumber - 1} Complete`, CANVAS_W / 2, CANVAS_H / 2 - 30);
+  ctx.fillText(jt`Day ${state.dayNumber - 1} Complete`, CANVAS_W / 2, CANVAS_H / 2 - 30);
 
   ctx.font = "bold 16px monospace";
   ctx.fillStyle = colors.p1;
-  ctx.fillText(`P1: ${state.p1.score}pts`, CANVAS_W / 2 - 80, CANVAS_H / 2 + 10);
+  ctx.fillText(jt`P1: ${state.p1.score}pts`, CANVAS_W / 2 - 80, CANVAS_H / 2 + 10);
   ctx.fillStyle = colors.p2;
-  ctx.fillText(`P2: ${state.p2.score}pts`, CANVAS_W / 2 + 80, CANVAS_H / 2 + 10);
+  ctx.fillText(jt`P2: ${state.p2.score}pts`, CANVAS_W / 2 + 80, CANVAS_H / 2 + 10);
   ctx.restore();
 }
 
@@ -573,18 +574,18 @@ function drawFinished(ctx, state, colors, time) {
 
   ctx.font = "bold 36px monospace";
   ctx.fillStyle = "#aaaacc";
-  ctx.fillText("RACE OVER", CANVAS_W / 2, CANVAS_H / 2 - 60);
+  ctx.fillText(t("RACE OVER"), CANVAS_W / 2, CANVAS_H / 2 - 60);
 
   ctx.font = "bold 20px monospace";
   ctx.fillStyle = colors.p1;
   ctx.fillText(
-    `P1: ${state.p1.score}pts (${state.p1.overtakes} ovt)`,
+    jt`P1: ${state.p1.score}pts (${state.p1.overtakes} ovt)`,
     CANVAS_W / 2,
     CANVAS_H / 2 - 15,
   );
   ctx.fillStyle = colors.p2;
   ctx.fillText(
-    `P2: ${state.p2.score}pts (${state.p2.overtakes} ovt)`,
+    jt`P2: ${state.p2.score}pts (${state.p2.overtakes} ovt)`,
     CANVAS_W / 2,
     CANVAS_H / 2 + 15,
   );
@@ -596,10 +597,10 @@ function drawFinished(ctx, state, colors, time) {
 
   if (draw) {
     ctx.fillStyle = "#aaaacc";
-    ctx.fillText("DRAW!", CANVAS_W / 2, CANVAS_H / 2 + 55);
+    ctx.fillText(t("DRAW!"), CANVAS_W / 2, CANVAS_H / 2 + 55);
   } else {
     const winnerColor = p1Wins ? colors.p1 : colors.p2;
-    const winnerLabel = p1Wins ? "P1 WINS!" : "P2 WINS!";
+    const winnerLabel = p1Wins ? t("P1 WINS!") : t("P2 WINS!");
     ctx.fillStyle = time % 500 < 250 ? winnerColor : "#ffffff";
     ctx.fillText(winnerLabel, CANVAS_W / 2, CANVAS_H / 2 + 55);
   }

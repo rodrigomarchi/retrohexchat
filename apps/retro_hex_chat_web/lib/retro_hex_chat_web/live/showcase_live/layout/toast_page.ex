@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Layout.ToastPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -15,6 +16,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ToastPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Toast", active_page: "toast")}
+    {:ok, assign(socket, page_title: gettext("Toast"), active_page: "toast")}
   end
 end

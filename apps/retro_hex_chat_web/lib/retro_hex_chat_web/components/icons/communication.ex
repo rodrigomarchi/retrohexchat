@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Communication do
   Icons depicting messaging, networking, and communication concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

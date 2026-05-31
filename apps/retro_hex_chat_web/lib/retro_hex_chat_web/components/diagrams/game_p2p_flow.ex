@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
   @moduledoc "SVG diagram for P2P multiplayer games flow."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 
@@ -13,7 +14,11 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="P2P multiplayer games flow: type /game command, join lobby, select game, play via WebRTC DataChannel between two players"
+      aria-label={
+        gettext(
+          "P2P multiplayer games flow: type /game command, join lobby, select game, play via WebRTC DataChannel between two players"
+        )
+      }
     >
       <%!-- ── Step 1: /game bob command ── --%>
       <%!-- Shadow --%>
@@ -46,7 +51,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        Chat
+        {gettext("Chat")}
       </text>
       <%!-- Content: input field with /game bob --%>
       <rect x="16" y="34" width="148" height="30" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -61,7 +66,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="9"
         font-family="'Courier New',monospace"
       >
-        /game bob
+        {gettext("/game bob")}
       </text>
       <%!-- Send button --%>
       <rect x="130" y="40" width="30" height="16" fill="#c0c0c0" stroke="#000" stroke-width="1" />
@@ -75,7 +80,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        Send
+        {gettext("Send")}
       </text>
 
       <%!-- Arrow 1 → 2 --%>
@@ -113,7 +118,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        P2P Lobby
+        {gettext("P2P Lobby")}
       </text>
       <%!-- Content --%>
       <rect x="202" y="34" width="108" height="30" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -128,7 +133,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        Alice (you)
+        {gettext("Alice (you)")}
       </text>
       <circle cx="212" cy="57" r="3" fill="#00ff00" stroke="#000" stroke-width="1" />
       <text
@@ -138,7 +143,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="8"
         font-family="Tahoma,sans-serif"
       >
-        Bob (joined)
+        {gettext("Bob (joined)")}
       </text>
 
       <%!-- Arrow 2 → 3 --%>
@@ -176,7 +181,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        Choose Game
+        {gettext("Choose Game")}
       </text>
       <%!-- Content: 2x2 game grid --%>
       <rect x="348" y="34" width="148" height="30" fill="#dfdfdf" stroke="#000" stroke-width="1" />
@@ -194,7 +199,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="7"
         font-family="Tahoma,sans-serif"
       >
-        Hex Pong
+        {gettext("Hex Pong")}
       </text>
       <rect x="422" y="37" width="66" height="11" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -205,7 +210,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="7"
         font-family="Tahoma,sans-serif"
       >
-        Star Duel
+        {gettext("Star Duel")}
       </text>
       <rect x="352" y="51" width="66" height="11" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -216,7 +221,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="7"
         font-family="Tahoma,sans-serif"
       >
-        Pixel Tanks
+        {gettext("Pixel Tanks")}
       </text>
       <rect x="422" y="51" width="66" height="11" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
@@ -227,7 +232,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="7"
         font-family="Tahoma,sans-serif"
       >
-        Light Trails
+        {gettext("Light Trails")}
       </text>
 
       <%!-- Arrow 3 → 4 (down, green accent) --%>
@@ -271,7 +276,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        Hex Pong — Alice vs Bob
+        {gettext("Hex Pong — Alice vs Bob")}
       </text>
       <%!-- Game canvas area (black) --%>
       <rect x="190" y="126" width="300" height="84" fill="#000" stroke="#808080" stroke-width="1" />
@@ -314,9 +319,11 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        Alice
+        {gettext("Alice")}
       </text>
-      <text x="130" y="264" text-anchor="middle" fill="#000" font-size="18">&#x1F468;</text>
+      <text x="130" y="264" text-anchor="middle" fill="#000" font-size="18">
+        {gettext("&#x1F468;")}
+      </text>
 
       <%!-- Bob node --%>
       <rect x="354" y="244" width="80" height="30" fill="#000" />
@@ -333,9 +340,11 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        Bob
+        {gettext("Bob")}
       </text>
-      <text x="390" y="264" text-anchor="middle" fill="#000" font-size="18">&#x1F469;</text>
+      <text x="390" y="264" text-anchor="middle" fill="#000" font-size="18">
+        {gettext("&#x1F469;")}
+      </text>
 
       <%!-- Bidirectional green arrow --%>
       <rect x="170" y="252" width="180" height="6" fill="#000" />
@@ -360,7 +369,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        WebRTC DataChannel
+        {gettext("WebRTC DataChannel")}
       </text>
 
       <%!-- Tooltip --%>
@@ -375,7 +384,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="9"
         font-family="Tahoma,sans-serif"
       >
-        28 games · Real-time sync · No server
+        {gettext("28 games · Real-time sync · No server")}
       </text>
 
       <%!-- Dashed lines from nodes to game window --%>

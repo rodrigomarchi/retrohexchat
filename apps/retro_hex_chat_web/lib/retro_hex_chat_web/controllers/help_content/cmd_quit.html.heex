@@ -1,16 +1,19 @@
 <p>
-  Disconnect from the server and return to the connect screen. Other users see your optional quit message in all channels you were in.
+  {gettext(
+    "Disconnect from the server and return to the connect screen. Other users see your optional quit message in all channels you were in."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/quit [message]</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>message</code> — Optional goodbye message shown to other users.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/quit [message]")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>message</code> {gettext("— Optional goodbye message shown to other users.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  You are disconnected from the server and returned to the connect screen. All your channel memberships end, and other users see a quit notification with your optional message. Your session is fully ended — to rejoin, you'll need to connect again from the connect screen.
+  {gettext(
+    "You are disconnected from the server and returned to the connect screen. All your channel memberships end, and other users see a quit notification with your optional message. Your session is fully ended — to rejoin, you'll need to connect again from the connect screen."
+  )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/quit
-/quit Goodnight everyone!</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
-<p><.help_link topic="cmd-part">/part</.help_link></p>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/quit /quit Goodnight everyone!")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p><.help_link topic="cmd-part">{gettext("/part")}</.help_link></p>

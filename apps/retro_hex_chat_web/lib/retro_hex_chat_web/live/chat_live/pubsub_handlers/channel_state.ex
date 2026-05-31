@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
   import Phoenix.Component, only: [assign: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       system_event: 2,
@@ -22,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
         {:mode_changed, %{nickname: nick, mode_string: mode_string, params: params} = payload},
         socket
       ) do
-    msg = "#{nick} sets mode #{mode_string}"
+    msg = gettext("%{nickname} sets mode %{mode}", nickname: nick, mode: mode_string)
     users = apply_mode_to_users(socket.assigns.channel_users, mode_string, params)
 
     socket =
@@ -35,7 +37,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   def handle_info({:mode_changed, %{nickname: nick, mode_string: mode_string} = payload}, socket) do
-    msg = "#{nick} sets mode #{mode_string}"
+    msg = gettext("%{nickname} sets mode %{mode}", nickname: nick, mode: mode_string)
     channel = Map.get(payload, :channel)
 
     socket =
@@ -50,7 +52,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   # ── User kicked/banned/unbanned ───────────────────────────
 
   def handle_info({:user_kicked, %{operator: op, target: target, reason: reason}}, socket) do
-    msg = "#{target} was kicked by #{op}" <> if(reason, do: " (#{reason})", else: "")
+    msg =
+      append_reason(
+        gettext("%{target} was kicked by %{operator}", target: target, operator: op),
+        reason
+      )
+
     users = Enum.reject(socket.assigns.channel_users, &(&1.nickname == target))
 
     if target == socket.assigns.session.nickname do
@@ -81,7 +88,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
         {:user_banned, %{operator: op, target: target, reason: reason} = payload},
         socket
       ) do
-    msg = "#{target} was banned by #{op}" <> if(reason, do: " (#{reason})", else: "")
+    msg =
+      append_reason(
+        gettext("%{target} was banned by %{operator}", target: target, operator: op),
+        reason
+      )
+
     channel = Map.get(payload, :channel)
 
     {:halt,
@@ -91,7 +103,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   def handle_info({:user_unbanned, %{operator: op, target: target} = payload}, socket) do
-    msg = "#{target} was unbanned by #{op}"
+    msg = gettext("%{target} was unbanned by %{operator}", target: target, operator: op)
     channel = Map.get(payload, :channel)
 
     {:halt,
@@ -109,7 +121,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     socket =
       socket
       |> maybe_refresh_cc(channel)
-      |> system_event("#{op} added ban exception for #{nick} in #{channel}")
+      |> system_event(
+        gettext("%{operator} added ban exception for %{nickname} in %{channel}",
+          operator: op,
+          nickname: nick,
+          channel: channel
+        )
+      )
 
     {:halt, socket}
   end
@@ -121,7 +139,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     socket =
       socket
       |> maybe_refresh_cc(channel)
-      |> system_event("#{op} removed ban exception for #{nick} in #{channel}")
+      |> system_event(
+        gettext("%{operator} removed ban exception for %{nickname} in %{channel}",
+          operator: op,
+          nickname: nick,
+          channel: channel
+        )
+      )
 
     {:halt, socket}
   end
@@ -133,7 +157,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     socket =
       socket
       |> maybe_refresh_cc(channel)
-      |> system_event("#{op} added invite exception for #{nick} in #{channel}")
+      |> system_event(
+        gettext("%{operator} added invite exception for %{nickname} in %{channel}",
+          operator: op,
+          nickname: nick,
+          channel: channel
+        )
+      )
 
     {:halt, socket}
   end
@@ -145,7 +175,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     socket =
       socket
       |> maybe_refresh_cc(channel)
-      |> system_event("#{op} removed invite exception for #{nick} in #{channel}")
+      |> system_event(
+        gettext("%{operator} removed invite exception for %{nickname} in %{channel}",
+          operator: op,
+          nickname: nick,
+          channel: channel
+        )
+      )
 
     {:halt, socket}
   end
@@ -153,7 +189,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   # ── Topic changed ─────────────────────────────────────────
 
   def handle_info({:topic_changed, %{nickname: nick, topic: topic} = payload}, socket) do
-    msg = "#{nick} changed the topic to: #{topic}"
+    msg = gettext("%{nickname} changed the topic to: %{topic}", nickname: nick, topic: topic)
     channel = Map.get(payload, :channel)
 
     socket =
@@ -175,10 +211,22 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     if channel == socket.assigns.session.active_channel do
       {:halt,
        socket
-       |> system_event("Channel #{channel} has been deleted by #{admin}.")
+       |> system_event(
+         gettext("Channel %{channel} has been deleted by %{admin}.",
+           channel: channel,
+           admin: admin
+         )
+       )
        |> part_channel_after_kick(channel)}
     else
-      {:halt, system_event(socket, "Channel #{channel} has been deleted by #{admin}.")}
+      {:halt,
+       system_event(
+         socket,
+         gettext("Channel %{channel} has been deleted by %{admin}.",
+           channel: channel,
+           admin: admin
+         )
+       )}
     end
   end
 
@@ -186,8 +234,17 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     if channel == socket.assigns.session.active_channel do
       msg =
         if from,
-          do: "Channel #{channel} history from #{from} was purged by #{admin}.",
-          else: "Channel #{channel} history was purged by #{admin}."
+          do:
+            gettext("Channel %{channel} history from %{from} was purged by %{admin}.",
+              channel: channel,
+              from: from,
+              admin: admin
+            ),
+          else:
+            gettext("Channel %{channel} history was purged by %{admin}.",
+              channel: channel,
+              admin: admin
+            )
 
       {:halt,
        socket
@@ -199,11 +256,19 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   def handle_info({:user_channel_muted, %{target: target, channel: channel}}, socket) do
-    {:halt, system_event(socket, "#{target} has been muted in #{channel}.")}
+    {:halt,
+     system_event(
+       socket,
+       gettext("%{target} has been muted in %{channel}.", target: target, channel: channel)
+     )}
   end
 
   def handle_info({:user_channel_unmuted, %{target: target, channel: channel}}, socket) do
-    {:halt, system_event(socket, "#{target} has been unmuted in #{channel}.")}
+    {:halt,
+     system_event(
+       socket,
+       gettext("%{target} has been unmuted in %{channel}.", target: target, channel: channel)
+     )}
   end
 
   # ── Knock notification ────────────────────────────────────
@@ -220,9 +285,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     if is_privileged do
       msg =
         if message && message != "" do
-          "* #{nick} has knocked on #{channel} (#{message})"
+          gettext("* %{nickname} has knocked on %{channel} (%{message})",
+            nickname: nick,
+            channel: channel,
+            message: message
+          )
         else
-          "* #{nick} has knocked on #{channel}"
+          gettext("* %{nickname} has knocked on %{channel}", nickname: nick, channel: channel)
         end
 
       {:halt, system_event(socket, msg)}
@@ -236,6 +305,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   def handle_info(_, socket), do: {:cont, socket}
 
   # ── Private helpers ───────────────────────────────────────
+
+  defp append_reason(message, nil), do: message
+  defp append_reason(message, ""), do: message
+
+  defp append_reason(message, reason),
+    do: gettext("%{message} (%{reason})", message: message, reason: reason)
 
   defp apply_mode_to_users(users, "+q", params) do
     Enum.map(users, fn user ->

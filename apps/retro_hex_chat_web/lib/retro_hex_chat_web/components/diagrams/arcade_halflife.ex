@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeHalflife do
   SVG logo/cover art for the Half-Life arcade help page.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -17,7 +18,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeHalflife do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Half-Life arcade logo: orange lambda symbol on dark background"
+      aria-label={gettext("Half-Life arcade logo: orange lambda symbol on dark background")}
     >
       {win98_chrome("Half-Life - Arcade")}
       <%!-- Background --%>
@@ -47,7 +48,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeHalflife do
         font-family="'Courier New',monospace"
         font-weight="bold"
       >
-        HALF-LIFE
+        {gettext("HALF-LIFE")}
       </text>
       <%!-- Subtitle --%>
       <text
@@ -58,7 +59,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeHalflife do
         font-size="11"
         font-family="'Courier New',monospace"
       >
-        Xash3D-FWGS WebAssembly
+        {gettext("Xash3D-FWGS WebAssembly")}
       </text>
       <%!-- Uplink badge --%>
       <rect
@@ -80,7 +81,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeHalflife do
         font-family="'Courier New',monospace"
         opacity="0.7"
       >
-        UPLINK DEMO
+        {gettext("UPLINK DEMO")}
       </text>
     </svg>
     """

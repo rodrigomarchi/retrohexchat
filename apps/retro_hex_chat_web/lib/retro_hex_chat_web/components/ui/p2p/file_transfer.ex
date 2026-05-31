@@ -31,8 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
 
   attr :state, :string,
     default: "transferring",
-    doc:
-      "Transfer status string: offering, offer_received, ready, transferring, completed, failed, rejected, cancelled, validation_error, paused, resuming"
+    doc: "Transfer status string"
 
   attr :on_cancel, :any, default: nil, doc: "Cancel transfer callback"
   attr :on_accept, :any, default: nil, doc: "Accept incoming transfer callback"
@@ -58,7 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
         <Icons.icon_file_send class="w-4 h-4 shrink-0" />
         <span class="font-bold flex-1 truncate">{@file_name}</span>
         <.badge variant="outline" class="text-[10px] px-1 py-0">
-          {if @direction == "sending", do: "Sending", else: "Receiving"}
+          {direction_label(@direction)}
         </.badge>
       </div>
 
@@ -73,26 +72,28 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
           data-testid="file-transfer-status"
           class="text-success font-bold"
         >
-          Complete
+          {gettext("Complete")}
         </span>
         <span :if={@state == "cancelled"} data-testid="file-transfer-status" class="font-bold">
-          {if @cancelled_by, do: "Cancelled by #{@cancelled_by}", else: "Cancelled"}
+          {cancelled_label(@cancelled_by)}
         </span>
         <span
           :if={@state == "rejected"}
           data-testid="file-transfer-status"
           class="text-error font-bold"
         >
-          Rejected
+          {gettext("Rejected")}
         </span>
         <span
           :if={@state in ~w(failed validation_error)}
           data-testid="file-transfer-status"
           class="text-error font-bold"
         >
-          Failed
+          {gettext("Failed")}
         </span>
-        <span :if={@state in ~w(offering offer_received ready)} class="italic">Pending...</span>
+        <span :if={@state in ~w(offering offer_received ready)} class="italic">
+          {gettext("Pending...")}
+        </span>
         <span :if={@speed && @state in ~w(transferring paused resuming)}>{@speed}</span>
         <span :if={@formatted_size}>{@formatted_size}</span>
         <div class="flex-1" />
@@ -104,7 +105,7 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
           data-testid="file-transfer-accept"
         >
           <:icon><Icons.icon_checkmark class="w-3 h-3" /></:icon>
-          Accept
+          {gettext("Accept")}
         </.button>
         <.button
           :if={@state in ~w(offering offer_received ready transferring paused resuming)}
@@ -114,10 +115,16 @@ defmodule RetroHexChatWeb.Components.UI.FileTransfer do
           data-testid="file-transfer-cancel"
         >
           <:icon><Icons.icon_close class="w-3 h-3" /></:icon>
-          Cancel
+          {gettext("Cancel")}
         </.button>
       </div>
     </div>
     """
   end
+
+  defp direction_label("sending"), do: gettext("Sending")
+  defp direction_label(_direction), do: gettext("Receiving")
+
+  defp cancelled_label(nil), do: gettext("Cancelled")
+  defp cancelled_label(nickname), do: gettext("Cancelled by %{nickname}", nickname: nickname)
 end

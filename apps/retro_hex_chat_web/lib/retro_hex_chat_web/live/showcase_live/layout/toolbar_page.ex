@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Layout.ToolbarPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,6 +15,6 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ToolbarPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Toolbar", active_page: "toolbar")}
+    {:ok, assign(socket, page_title: gettext("Toolbar"), active_page: "toolbar")}
   end
 end

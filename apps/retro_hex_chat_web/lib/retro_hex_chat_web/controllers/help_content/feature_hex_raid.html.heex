@@ -1,37 +1,50 @@
 <p>
-  River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points,
-  steal fuel, and drop mines on your rival. 10 sections of increasing difficulty.
+  {gettext(
+    "River Raid reimagined for two — race through a scrolling toxic canal, destroy enemies for points, steal fuel, and drop mines on your rival. 10 sections of increasing difficulty."
+  )}
 </p>
 <.diagram_game_raid class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow Left/Right</strong> — Steer jet laterally</li>
-  <li><strong>Arrow Up</strong> — Accelerate</li>
-  <li><strong>Arrow Down</strong> — Decelerate</li>
-  <li><strong>Space</strong> — Fire missile</li>
-  <li><strong>Shift</strong> — Drop mine</li>
+  <li><strong>{gettext("Arrow Left/Right")}</strong> {gettext("— Steer jet laterally")}</li>
+  <li><strong>{gettext("Arrow Up")}</strong> {gettext("— Accelerate")}</li>
+  <li><strong>{gettext("Arrow Down")}</strong> {gettext("— Decelerate")}</li>
+  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
+  <li><strong>{gettext("Shift")}</strong> {gettext("— Drop mine")}</li>
 </ul>
-<.help_h4 icon={:icon_rules}>Rules</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
 <ul>
-  <li>Destroy enemies (boats, helicopters, jets) for points</li>
-  <li>Fly over fuel stations to capture fuel — first come, first served</li>
-  <li>Destroy bridges (3 HP) to advance to the next section</li>
-  <li>Drop mines to sabotage your opponent</li>
-  <li>Run out of fuel or crash into banks/enemies and you lose a life</li>
-  <li>3 lives per player — highest score when all sections clear or both out of lives wins</li>
+  <li>{gettext("Destroy enemies (boats, helicopters, jets) for points")}</li>
+  <li>{gettext("Fly over fuel stations to capture fuel — first come, first served")}</li>
+  <li>{gettext("Destroy bridges (3 HP) to advance to the next section")}</li>
+  <li>{gettext("Drop mines to sabotage your opponent")}</li>
+  <li>{gettext("Run out of fuel or crash into banks/enemies and you lose a life")}</li>
+  <li>
+    {gettext(
+      "3 lives per player — highest score when all sections clear or both out of lives wins"
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_tab_modes}>Modes</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
 <ul>
-  <li><strong>Hex Raid</strong> — Full rules: mines, fuel competition, 10 sections</li>
-  <li><strong>Pacifist</strong> — No mines, pure skill competition</li>
-  <li><strong>Blitz</strong> — 5 sections, narrow river, faster mine recharge</li>
+  <li>
+    <strong>{gettext("Hex Raid")}</strong> {gettext(
+      "— Full rules: mines, fuel competition, 10 sections"
+    )}
+  </li>
+  <li><strong>{gettext("Pacifist")}</strong> {gettext("— No mines, pure skill competition")}</li>
+  <li>
+    <strong>{gettext("Blitz")}</strong> {gettext(
+      "— 5 sections, narrow river, faster mine recharge"
+    )}
+  </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Inspired by Activision's River Raid (1982) for the Atari 2600.</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<p>{gettext("Inspired by Activision's River Raid (1982) for the Atari 2600.")}</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-raid-pacifist">Hex Raid: Pacifist</.help_link>
-  · <.help_link topic="feature-hex-raid-blitz">Hex Raid: Blitz</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-hex-raid-pacifist">{gettext("Hex Raid: Pacifist")}</.help_link>
+  · <.help_link topic="feature-hex-raid-blitz">{gettext("Hex Raid: Blitz")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

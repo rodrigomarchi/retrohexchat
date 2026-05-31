@@ -1,13 +1,21 @@
 <p>
-  Select text in the chat area by clicking and dragging. Right-click to see a context menu with <strong>Copy</strong>, or use <kbd>Ctrl+C</kbd>.
+  {gettext(
+    "Select text in the chat area by clicking and dragging. Right-click to see a context menu with"
+  )} <strong>{gettext("Copy")}</strong>{gettext(", or use")} <kbd>{gettext("Ctrl+C")}</kbd>.
 </p>
-<.help_h4 icon={:icon_terminal}>Usage</.help_h4>
+<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
 <p>
-  1. Click and drag to select text in the chat area.<br />2. Right-click and choose <strong>Copy</strong>, or press <kbd>Ctrl+C</kbd>.<br />3. The selected text is copied to your clipboard as plain text.
+  {gettext("1. Click and drag to select text in the chat area.")}<br />{gettext(
+    "2. Right-click and choose"
+  )} <strong>{gettext("Copy")}</strong>{gettext(", or press")} <kbd>{gettext("Ctrl+C")}</kbd>.<br />{gettext(
+    "3. The selected text is copied to your clipboard as plain text."
+  )}
 </p>
-<.help_h4 icon={:icon_document_alert}>Notes</.help_h4>
+<.help_h4 icon={:icon_document_alert}>{gettext("Notes")}</.help_h4>
 <p>
-  If no text is selected, the Copy option appears disabled. Rich formatting is stripped — only plain text is copied.
+  {gettext(
+    "If no text is selected, the Copy option appears disabled. Rich formatting is stripped — only plain text is copied."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
-<p><.help_link topic="feature-context-menus">Context Menus</.help_link></p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p><.help_link topic="feature-context-menus">{gettext("Context Menus")}</.help_link></p>

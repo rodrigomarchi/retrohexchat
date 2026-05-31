@@ -1,25 +1,28 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">Toolbar</h2>
+  <h2 class="text-lg font-bold mb-3">{gettext("Toolbar")}</h2>
 
-  <.showcase_card title="Default Toolbar" description="Standard toolbar with 34x34 icon buttons.">
+  <.showcase_card
+    title={gettext("Default Toolbar")}
+    description="Standard toolbar with 34x34 icon buttons."
+  >
     <.toolbar>
-      <.toolbar_button label="New">
+      <.toolbar_button label={gettext("New")}>
         <Icons.icon_notepad class="w-[32px] h-[32px]" />
       </.toolbar_button>
-      <.toolbar_button label="Open">
+      <.toolbar_button label={gettext("Open")}>
         <Icons.icon_folder class="w-[32px] h-[32px]" />
       </.toolbar_button>
-      <.toolbar_button label="Save">
+      <.toolbar_button label={gettext("Save")}>
         <Icons.icon_btn_save class="w-[16px] h-[16px]" />
       </.toolbar_button>
       <.toolbar_separator />
-      <.toolbar_button label="Cut">
+      <.toolbar_button label={gettext("Cut")}>
         <Icons.icon_btn_edit class="w-[16px] h-[16px]" />
       </.toolbar_button>
-      <.toolbar_button label="Copy">
+      <.toolbar_button label={gettext("Copy")}>
         <Icons.icon_copy class="w-[32px] h-[32px]" />
       </.toolbar_button>
-      <.toolbar_button label="Paste">
+      <.toolbar_button label={gettext("Paste")}>
         <Icons.icon_dialog_paste class="w-[16px] h-[16px]" />
       </.toolbar_button>
     </.toolbar>
@@ -37,24 +40,24 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Compact Toolbar"
+    title={gettext("Compact Toolbar")}
     description="Smaller 24x24 buttons for formatting toolbars."
   >
     <.toolbar variant="compact">
-      <.toolbar_button variant="compact" label="Bold">
+      <.toolbar_button variant="compact" label={gettext("Bold")}>
         <Icons.icon_fmt_bold class="w-[14px] h-[14px]" />
       </.toolbar_button>
-      <.toolbar_button variant="compact" label="Italic">
+      <.toolbar_button variant="compact" label={gettext("Italic")}>
         <Icons.icon_fmt_italic class="w-[14px] h-[14px]" />
       </.toolbar_button>
-      <.toolbar_button variant="compact" label="Underline">
+      <.toolbar_button variant="compact" label={gettext("Underline")}>
         <Icons.icon_fmt_underline class="w-[14px] h-[14px]" />
       </.toolbar_button>
       <.toolbar_separator variant="compact" />
-      <.toolbar_button variant="compact" label="Text Color">
+      <.toolbar_button variant="compact" label={gettext("Text Color")}>
         <Icons.icon_fmt_color class="w-[14px] h-[14px]" />
       </.toolbar_button>
-      <.toolbar_button variant="compact" label="Background Color">
+      <.toolbar_button variant="compact" label={gettext("Background Color")}>
         <Icons.icon_fmt_reverse class="w-[14px] h-[14px]" />
       </.toolbar_button>
     </.toolbar>
@@ -69,17 +72,17 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Active & Disabled States"
+    title={gettext("Active & Disabled States")}
     description="Buttons can be active (pressed) or disabled."
   >
     <.toolbar>
-      <.toolbar_button label="Connect">
+      <.toolbar_button label={gettext("Connect")}>
         <Icons.icon_btn_connect_lightning class="w-[16px] h-[16px]" />
       </.toolbar_button>
-      <.toolbar_button label="Disconnect" active>
+      <.toolbar_button label={gettext("Disconnect")} active>
         <Icons.icon_btn_disconnect class="w-[16px] h-[16px]" />
       </.toolbar_button>
-      <.toolbar_button label="Disabled" disabled>
+      <.toolbar_button label={gettext("Disabled")} disabled>
         <Icons.icon_btn_connect_disabled class="w-[16px] h-[16px]" />
       </.toolbar_button>
     </.toolbar>
@@ -97,28 +100,28 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Platform Main Toolbar"
+    title={gettext("Platform Main Toolbar")}
     description="Replicating the platform's main toolbar with icon groups."
   >
     <.toolbar>
-      <.toolbar_button label="Home">
+      <.toolbar_button label={gettext("Home")}>
         <Icons.icon_community class="w-[32px] h-[32px]" />
       </.toolbar_button>
-      <.toolbar_button label="Settings">
+      <.toolbar_button label={gettext("Settings")}>
         <Icons.icon_btn_settings class="w-[16px] h-[16px]" />
       </.toolbar_button>
-      <.toolbar_button label="Channels">
+      <.toolbar_button label={gettext("Channels")}>
         <Icons.icon_btn_channel_list class="w-[16px] h-[16px]" />
       </.toolbar_button>
       <.toolbar_separator />
-      <.toolbar_button label="Sounds">
+      <.toolbar_button label={gettext("Sounds")}>
         <Icons.icon_btn_sounds class="w-[16px] h-[16px]" />
       </.toolbar_button>
-      <.toolbar_button label="DND">
+      <.toolbar_button label={gettext("DND")}>
         <Icons.icon_btn_dnd class="w-[16px] h-[16px]" />
       </.toolbar_button>
       <.toolbar_separator />
-      <.toolbar_button label="Help">
+      <.toolbar_button label={gettext("Help")}>
         <Icons.icon_btn_help_topics class="w-[16px] h-[16px]" />
       </.toolbar_button>
     </.toolbar>

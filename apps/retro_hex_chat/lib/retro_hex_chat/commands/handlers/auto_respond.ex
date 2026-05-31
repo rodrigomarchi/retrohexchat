@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.AutoRespond do
   @moduledoc "Handler for /autorespond [subcommand] [args]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -19,24 +20,26 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
         :ok
 
       [_trigger] ->
-        {:error, "Usage: /autorespond add <trigger> [#channel] <command>"}
+        {:error, gettext("Usage: /autorespond add <trigger> [#channel] <command>")}
 
       _ ->
-        {:error, "Usage: /autorespond add <on_join|on_part|on_nick_change> [#channel] <command>"}
+        {:error,
+         gettext("Usage: /autorespond add <on_join|on_part|on_nick_change> [#channel] <command>")}
     end
   end
 
-  def validate("add"), do: {:error, "Usage: /autorespond add <trigger> [#channel] <command>"}
+  def validate("add"),
+    do: {:error, gettext("Usage: /autorespond add <trigger> [#channel] <command>")}
 
   def validate("remove " <> rest) do
     if String.trim(rest) == "" do
-      {:error, "Usage: /autorespond remove <position>"}
+      {:error, gettext("Usage: /autorespond remove <position>")}
     else
       :ok
     end
   end
 
-  def validate("remove"), do: {:error, "Usage: /autorespond remove <position>"}
+  def validate("remove"), do: {:error, gettext("Usage: /autorespond remove <position>")}
 
   def validate(_), do: :ok
 
@@ -61,7 +64,10 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
 
       :error ->
         {:error,
-         "Invalid trigger '#{trigger_str}'. Valid triggers: on_join, on_part, on_nick_change"}
+         gettext(
+           "Invalid trigger '%{trigger_str}'. Valid triggers: on_join, on_part, on_nick_change",
+           trigger_str: trigger_str
+         )}
     end
   end
 
@@ -89,15 +95,17 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
   def help do
     %{
       name: "autorespond",
-      syntax: "/autorespond [list|add|remove]",
+      syntax: gettext("/autorespond [list|add|remove]"),
       description:
-        "Automatically run a command when someone joins, leaves, or changes their nickname.\nSubcommands: list, add <trigger> [#channel] <command>, remove <position>. No args opens the dialog.\nValid triggers: on_join, on_part, on_nick_change.\nUse $nick in your command to reference the triggering user. The remove subcommand takes a 0-based index number.",
+        gettext(
+          "Automatically run a command when someone joins, leaves, or changes their nickname.\nSubcommands: list, add <trigger> [#channel] <command>, remove <position>. No args opens the dialog.\nValid triggers: on_join, on_part, on_nick_change.\nUse $nick in your command to reference the triggering user. The remove subcommand takes a 0-based index number."
+        ),
       examples: [
         "/autorespond",
-        "/autorespond list",
-        "/autorespond add on_join #welcome /notice $nick Welcome!",
-        "/autorespond add on_part /say $nick left",
-        "/autorespond remove 0"
+        gettext("/autorespond list"),
+        gettext("/autorespond add on_join #welcome /notice $nick Welcome!"),
+        gettext("/autorespond add on_part /say $nick left"),
+        gettext("/autorespond remove 0")
       ]
     }
   end
@@ -142,9 +150,11 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
 
     %CommandSyntax{
       command: "autorespond",
-      syntax: "/autorespond [list|add|remove]",
+      syntax: gettext("/autorespond [list|add|remove]"),
       description:
-        "Automatically run a command when someone joins, leaves, or changes their nickname.",
+        gettext(
+          "Automatically run a command when someone joins, leaves, or changes their nickname."
+        ),
       category: :config,
       parameters: [
         %Parameter{
@@ -152,27 +162,27 @@ defmodule RetroHexChat.Commands.Handlers.AutoRespond do
           required: false,
           type: :text,
           position: 0,
-          description: "Subcommand: list, add, remove"
+          description: gettext("Subcommand: list, add, remove")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Subcommand arguments"
+          description: gettext("Subcommand arguments")
         }
       ],
       examples: [
         "/autorespond",
-        "/autorespond list",
-        "/autorespond add on_join #welcome /notice $nick Welcome!",
-        "/autorespond add on_part /say $nick left",
-        "/autorespond remove 0"
+        gettext("/autorespond list"),
+        gettext("/autorespond add on_join #welcome /notice $nick Welcome!"),
+        gettext("/autorespond add on_part /say $nick left"),
+        gettext("/autorespond remove 0")
       ],
       subcommands: [
-        %{name: "list", description: "Show auto-respond rules"},
-        %{name: "add", description: "Add an auto-respond rule"},
-        %{name: "remove", description: "Remove an auto-respond rule"}
+        %{name: "list", description: gettext("Show auto-respond rules")},
+        %{name: "add", description: gettext("Add an auto-respond rule")},
+        %{name: "remove", description: gettext("Remove an auto-respond rule")}
       ]
     }
   end

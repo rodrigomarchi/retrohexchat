@@ -41,14 +41,14 @@ defmodule RetroHexChatWeb.Components.UI.MessageReplyBlock do
       phx-click={@on_click}
       phx-value-parent_id={@parent_id}
       role="link"
-      aria-label={"Replying to #{@author}"}
+      aria-label={gettext("Replying to %{author}", author: @author)}
       data-testid="reply-block"
       {@rest}
     >
       <Icons.icon_btn_prev class="w-3 h-3 rotate-180" />
       <span class={@nick_color}>{@author}</span>
       <span :if={@preview} class="truncate">{@preview}</span>
-      <span :if={!@preview} class="italic">[message deleted]</span>
+      <span :if={!@preview} class="italic">{gettext("[message deleted]")}</span>
     </div>
     """
   end

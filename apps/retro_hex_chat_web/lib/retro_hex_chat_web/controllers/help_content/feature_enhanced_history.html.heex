@@ -1,32 +1,45 @@
 <p>
-  Navigate your command and message history with draft preservation and reverse search. History persists across page reloads.
+  {gettext(
+    "Navigate your command and message history with draft preservation and reverse search. History persists across page reloads."
+  )}
 </p>
-<.help_h4 icon={:icon_btn_save}>Draft-Preserving Navigation</.help_h4>
+<.help_h4 icon={:icon_btn_save}>{gettext("Draft-Preserving Navigation")}</.help_h4>
 <p>
-  <strong>Ctrl+Up</strong>
-  — Save current text as draft and show previous history entry.<br /><strong>Ctrl+Down</strong>
-  — Show next entry, or restore your draft when past the newest entry.<br />Regular
-  <strong>Up/Down</strong>
-  in an empty input works as before (server-side history).
+  <strong>{gettext("Ctrl+Up")}</strong>
+  {gettext("— Save current text as draft and show previous history entry.")}<br />
+  <strong>
+    {gettext("Ctrl+Down")}
+  </strong>
+  {gettext("— Show next entry, or restore your draft when past the newest entry.")}<br />{gettext(
+    "Regular"
+  )}
+  <strong>{gettext("Up/Down")}</strong>
+  {gettext("in an empty input works as before (server-side history).")}
 </p>
-<.help_h4 icon={:icon_btn_search}>Reverse Search (Ctrl+R)</.help_h4>
+<.help_h4 icon={:icon_btn_search}>{gettext("Reverse Search (Ctrl+R)")}</.help_h4>
 <p>
-  Press <strong>Ctrl+R</strong>
-  to open an inline search bar. Type to filter history entries by substring match. Press
-  <strong>Enter</strong>
-  to accept the match, or <strong>Escape</strong>
-  to cancel.
+  {gettext("Press")} <strong>{gettext("Ctrl+R")}</strong>
+  {gettext(
+    "to open an inline search bar. Type to filter history entries by substring match. Press"
+  )}
+  <strong>{gettext("Enter")}</strong>
+  {gettext("to accept the match, or")} <strong>{gettext("Escape")}</strong>
+  {gettext("to cancel.")}
 </p>
-<.help_h4 icon={:icon_btn_save}>Persistence</.help_h4>
+<.help_h4 icon={:icon_btn_save}>{gettext("Persistence")}</.help_h4>
 <p>
-  The last 100 entries are stored in your browser's localStorage. History survives page reloads and browser restarts.
+  {gettext(
+    "The last 100 entries are stored in your browser's localStorage. History survives page reloads and browser restarts."
+  )}
 </p>
-<.help_h4 icon={:icon_privacy}>Privacy</.help_h4>
+<.help_h4 icon={:icon_privacy}>{gettext("Privacy")}</.help_h4>
 <p>
-  Sensitive commands (<code>/identify</code>, <code>/nickserv</code>, <code>/ns</code>) are never saved to localStorage.
+  {gettext("Sensitive commands (")}<code>{gettext("/identify")}</code>, <code>{gettext("/nickserv")}</code>, <code>{gettext("/ns")}</code>{gettext(
+    ") are never saved to localStorage."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-smart-input">Smart Input</.help_link>
-  · <.help_link topic="keyboard-shortcuts">Keyboard Shortcuts</.help_link>
+  <.help_link topic="feature-smart-input">{gettext("Smart Input")}</.help_link>
+  · <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
 </p>

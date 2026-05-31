@@ -1,39 +1,35 @@
 <p>
-  Set up commands that automatically run every time you connect, like identifying with NickServ or joining channels.
+  {gettext(
+    "Set up commands that automatically run every time you connect, like identifying with NickServ or joining channels."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/perform
-/perform list
-/perform add &lt;command&gt;
-/perform remove &lt;position&gt;
-/perform move &lt;from&gt; &lt;to&gt;
-/perform clear</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/perform /perform list /perform add <command> /perform remove <position> /perform move <from> <to> /perform clear")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
   <code>command</code>
-  — A slash command to add to the perform list.<br /><code>position</code>
-  — The position number of the command (shown in <code>/perform list</code>).<br /><code>from</code>,
+  {gettext("— A slash command to add to the perform list.")}<br /><code>position</code>
+  {gettext("— The position number of the command (shown in")} <code>{gettext("/perform list")}</code>).<br /><code>from</code>,
   <code>to</code>
-  — Position numbers for reordering commands.
+  {gettext("— Position numbers for reordering commands.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Perform commands execute sequentially when you connect, before auto-join channels are joined. This ensures that commands like
-  <code>/ns identify</code>
-  run first, so you're identified before entering channels. Passwords in <code>/ns identify</code>
-  commands are masked in the list display for security. Running <code>/perform</code>
-  with no arguments opens the Perform dialog.
+  {gettext(
+    "Perform commands execute sequentially when you connect, before auto-join channels are joined. This ensures that commands like"
+  )}
+  <code>{gettext("/ns identify")}</code>
+  {gettext("run first, so you're identified before entering channels. Passwords in")}
+  <code>{gettext("/ns identify")}</code>
+  {gettext("commands are masked in the list display for security. Running")}
+  <code>{gettext("/perform")}</code>
+  {gettext("with no arguments opens the Perform dialog.")}
 </p>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/perform list
-/perform add /ns identify mypassword
-/perform add /away AFK
-/perform remove 2
-/perform move 3 1
-/perform clear</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/perform list /perform add /ns identify mypassword /perform add /away AFK /perform remove 2 /perform move 3 1 /perform clear")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-autojoin">/autojoin</.help_link>
-  · <.help_link topic="cmd-ns">/ns</.help_link>
-  · <.help_link topic="feature-perform">Perform / Auto-Commands</.help_link>
+  <.help_link topic="cmd-autojoin">{gettext("/autojoin")}</.help_link>
+  · <.help_link topic="cmd-ns">{gettext("/ns")}</.help_link>
+  · <.help_link topic="feature-perform">{gettext("Perform / Auto-Commands")}</.help_link>
 </p>

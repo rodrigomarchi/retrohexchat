@@ -24,50 +24,63 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
   def new_bot_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-md">
-      <.dialog_header id={@id} title="Create New Bot">
+      <.dialog_header id={@id} title={gettext("Create New Bot")}>
         <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
       </.dialog_header>
       <form phx-submit="create_bot">
         <.dialog_body>
           <div class="space-y-retro-8">
             <div>
-              <.label for="bot-name">Name</.label>
-              <.input id="bot-name" name="name" type="text" placeholder="MyBot" required />
+              <.label for="bot-name">{gettext("Name")}</.label>
+              <.input id="bot-name" name="name" type="text" placeholder={gettext("MyBot")} required />
             </div>
             <div>
-              <.label for="bot-nickname">Nickname</.label>
-              <.input id="bot-nickname" name="nickname" type="text" placeholder="MyBot" />
+              <.label for="bot-nickname">{gettext("Nickname")}</.label>
+              <.input id="bot-nickname" name="nickname" type="text" placeholder={gettext("MyBot")} />
             </div>
             <div>
-              <.label for="bot-description">Description</.label>
-              <.input id="bot-description" name="description" type="text" placeholder="A helpful bot" />
+              <.label for="bot-description">{gettext("Description")}</.label>
+              <.input
+                id="bot-description"
+                name="description"
+                type="text"
+                placeholder={gettext("A helpful bot")}
+              />
             </div>
             <div class="flex gap-retro-16">
               <div>
-                <.label for="bot-prefix">Command Prefix</.label>
+                <.label for="bot-prefix">{gettext("Command Prefix")}</.label>
                 <.input id="bot-prefix" name="prefix" type="text" value="!" class="w-[60px]" />
               </div>
               <div>
-                <.label for="bot-cooldown">Cooldown (s)</.label>
+                <.label for="bot-cooldown">{gettext("Cooldown (s)")}</.label>
                 <.input id="bot-cooldown" name="cooldown" type="number" value="3" class="w-[80px]" />
               </div>
             </div>
             <fieldset class="shadow-retro-sunken p-retro-8">
-              <legend class="text-xs font-bold px-retro-4">Capabilities</legend>
+              <legend class="text-xs font-bold px-retro-4">{gettext("Capabilities")}</legend>
               <div class="grid grid-cols-2 gap-retro-4">
-                <.checkbox_item id="cap-mention" name="cap_mention" label="Mention Response" />
-                <.checkbox_item id="cap-greeter" name="cap_greeter" label="Greeter" />
+                <.checkbox_item
+                  id="cap-mention"
+                  name="cap_mention"
+                  label={gettext("Mention Response")}
+                />
+                <.checkbox_item id="cap-greeter" name="cap_greeter" label={gettext("Greeter")} />
                 <.checkbox_item
                   id="cap-custom-commands"
                   name="cap_custom_commands"
-                  label="Custom Commands"
+                  label={gettext("Custom Commands")}
                 />
-                <.checkbox_item id="cap-help" name="cap_help" label="Help" />
-                <.checkbox_item id="cap-dice" name="cap_dice" label="Dice" />
-                <.checkbox_item id="cap-moderation" name="cap_moderation" label="Moderation" />
-                <.checkbox_item id="cap-trivia" name="cap_trivia" label="Trivia" />
-                <.checkbox_item id="cap-scheduler" name="cap_scheduler" label="Scheduler" />
-                <.checkbox_item id="cap-rss" name="cap_rss" label="RSS" />
+                <.checkbox_item id="cap-help" name="cap_help" label={gettext("Help")} />
+                <.checkbox_item id="cap-dice" name="cap_dice" label={gettext("Dice")} />
+                <.checkbox_item
+                  id="cap-moderation"
+                  name="cap_moderation"
+                  label={gettext("Moderation")}
+                />
+                <.checkbox_item id="cap-trivia" name="cap_trivia" label={gettext("Trivia")} />
+                <.checkbox_item id="cap-scheduler" name="cap_scheduler" label={gettext("Scheduler")} />
+                <.checkbox_item id="cap-rss" name="cap_rss" label={gettext("RSS")} />
               </div>
             </fieldset>
           </div>
@@ -75,11 +88,11 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
         <.dialog_footer>
           <.button type="submit">
             <:icon><Icons.icon_checkmark class="w-[14px] h-[14px]" /></:icon>
-            Create
+            {gettext("Create")}
           </.button>
           <.button type="button" variant="outline" phx-click={@on_close}>
             <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
-            Cancel
+            {gettext("Cancel")}
           </.button>
         </.dialog_footer>
       </form>
@@ -98,7 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
   def add_command_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-md">
-      <.dialog_header id={@id} title={"Add Command — #{@bot_name}"}>
+      <.dialog_header id={@id} title={gettext("Add Command — %{bot}", bot: @bot_name)}>
         <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
       </.dialog_header>
       <form phx-submit="bot_add_command">
@@ -106,38 +119,38 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
         <.dialog_body>
           <div class="space-y-retro-8">
             <div>
-              <.label for="cmd-trigger">Trigger</.label>
+              <.label for="cmd-trigger">{gettext("Trigger")}</.label>
               <.input
                 id="cmd-trigger"
                 name="trigger"
                 type="text"
-                placeholder="!hello"
+                placeholder={gettext("!hello")}
                 required
               />
               <p class="text-xs text-muted-foreground mt-retro-2">
-                The command that triggers this response (e.g. !hello)
+                {gettext("The command that triggers this response (e.g. !hello)")}
               </p>
             </div>
             <div>
-              <.label for="cmd-response">Response</.label>
+              <.label for="cmd-response">{gettext("Response")}</.label>
               <.input
                 id="cmd-response"
                 name="response"
                 type="text"
-                placeholder="Hello, {nick}!"
+                placeholder={gettext("Hello, {nick}!")}
                 required
               />
               <p class="text-xs text-muted-foreground mt-retro-2">
-                {"Use {nick} for the caller's name, {channel} for the channel"}
+                {gettext("Use {nick} for the caller's name, {channel} for the channel")}
               </p>
             </div>
             <div>
-              <.label for="cmd-description">Description</.label>
+              <.label for="cmd-description">{gettext("Description")}</.label>
               <.input
                 id="cmd-description"
                 name="description"
                 type="text"
-                placeholder="Greets the user"
+                placeholder={gettext("Greets the user")}
               />
             </div>
           </div>
@@ -145,11 +158,11 @@ defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
         <.dialog_footer>
           <.button type="submit">
             <:icon><Icons.icon_checkmark class="w-[14px] h-[14px]" /></:icon>
-            Add
+            {gettext("Add")}
           </.button>
           <.button type="button" variant="outline" phx-click={@on_close}>
             <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
-            Cancel
+            {gettext("Cancel")}
           </.button>
         </.dialog_footer>
       </form>

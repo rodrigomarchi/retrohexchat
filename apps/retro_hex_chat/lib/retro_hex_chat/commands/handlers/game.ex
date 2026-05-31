@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Game do
   @moduledoc "Handler for /game <nickname> — initiate a P2P game session."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -8,12 +9,12 @@ defmodule RetroHexChat.Commands.Handlers.Game do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Usage: /game <nickname>"}
+  def validate(""), do: {:error, gettext("Usage: /game <nickname>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /game <nickname>"}
+  def execute([], _context), do: {:error, gettext("Usage: /game <nickname>")}
 
   def execute([target | _rest], context) do
     with :ok <- validate_identified(context),
@@ -37,10 +38,12 @@ defmodule RetroHexChat.Commands.Handlers.Game do
   def help do
     %{
       name: "game",
-      syntax: "/game <nickname>",
+      syntax: gettext("/game <nickname>"),
       description:
-        "Start a peer-to-peer game session with another user.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou pick a game in the lobby after both players join.",
-      examples: ["/game mario"]
+        gettext(
+          "Start a peer-to-peer game session with another user.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou pick a game in the lobby after both players join."
+        ),
+      examples: [gettext("/game mario")]
     }
   end
 
@@ -55,9 +58,11 @@ defmodule RetroHexChat.Commands.Handlers.Game do
 
     %CommandSyntax{
       command: "game",
-      syntax: "/game <nickname>",
+      syntax: gettext("/game <nickname>"),
       description:
-        "Start a peer-to-peer game session with another user.\nRequires: both users must be registered and identified (/ns identify).",
+        gettext(
+          "Start a peer-to-peer game session with another user.\nRequires: both users must be registered and identified (/ns identify)."
+        ),
       category: :user,
       parameters: [
         %Parameter{
@@ -65,19 +70,19 @@ defmodule RetroHexChat.Commands.Handlers.Game do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to play with"
+          description: gettext("User to play with")
         }
       ],
-      examples: ["/game mario"]
+      examples: [gettext("/game mario")]
     }
   end
 
   defp validate_identified(%{identified: true}), do: :ok
-  defp validate_identified(_), do: {:error, "You must be identified to use /game."}
+  defp validate_identified(_), do: {:error, gettext("You must be identified to use /game.")}
 
   defp validate_not_self(target, %{nickname: nick}) do
     if String.downcase(target) == String.downcase(nick) do
-      {:error, "You cannot start a game session with yourself."}
+      {:error, gettext("You cannot start a game session with yourself.")}
     else
       :ok
     end
@@ -85,7 +90,7 @@ defmodule RetroHexChat.Commands.Handlers.Game do
 
   defp resolve_registered_nick(nickname) do
     case RetroHexChat.Repo.get_by(RegisteredNick, nickname: nickname) do
-      nil -> {:error, "User '#{nickname}' is not registered."}
+      nil -> {:error, gettext("User '%{nickname}' is not registered.", nickname: nickname)}
       nick -> {:ok, nick.id}
     end
   end

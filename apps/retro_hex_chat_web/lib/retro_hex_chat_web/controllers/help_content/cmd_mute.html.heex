@@ -1,39 +1,40 @@
 <p>
-  Mute a user in the current channel, preventing them from sending messages.
-  Unlike <code>/mode +m</code> which moderates the entire channel, this targets a specific user.
+  {gettext("Mute a user in the current channel, preventing them from sending messages. Unlike")}
+  <code>{gettext("/mode +m")}</code> {gettext(
+    "which moderates the entire channel, this targets a specific user."
+  )}
 </p>
 
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/mute &lt;nickname&gt; [duration]</pre>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/mute <nickname> [duration]")}</pre>
 
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
-  <code>nickname</code> — The user to mute.<br />
-  <code>duration</code> — Optional duration in seconds. Omit for permanent mute.
+  <code>nickname</code> {gettext("— The user to mute.")}<br />
+  <code>duration</code> {gettext("— Optional duration in seconds. Omit for permanent mute.")}
 </p>
 
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  The muted user cannot send messages in the channel but can still read them.
-  If a duration is specified, the mute automatically expires after that time.
-  Channel operators and above can mute users with lower rank.
+  {gettext(
+    "The muted user cannot send messages in the channel but can still read them. If a duration is specified, the mute automatically expires after that time. Channel operators and above can mute users with lower rank."
+  )}
 </p>
 
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Requires half-operator (%) status or higher</li>
-  <li>Cannot mute users with equal or higher rank</li>
-  <li>The target must be in the channel</li>
+  <li>{gettext("Requires half-operator (%) status or higher")}</li>
+  <li>{gettext("Cannot mute users with equal or higher rank")}</li>
+  <li>{gettext("The target must be in the channel")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/mute Spammer
-/mute Spammer 300</pre>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/mute Spammer /mute Spammer 300")}</pre>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-unmute">/unmute</.help_link>
-  · <.help_link topic="cmd-kick">/kick</.help_link>
-  · <.help_link topic="cmd-ban">/ban</.help_link>
-  · <.help_link topic="channel-permissions">Channel Permissions</.help_link>
+  <.help_link topic="cmd-unmute">{gettext("/unmute")}</.help_link>
+  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
+  · <.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
+  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
 </p>

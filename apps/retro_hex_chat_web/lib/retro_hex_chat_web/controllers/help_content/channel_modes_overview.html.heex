@@ -1,75 +1,109 @@
 <p>
-  Channel modes control how a channel behaves. Only channel operators (or owners) can change modes using <code>/mode</code>.
+  {gettext(
+    "Channel modes control how a channel behaves. Only channel operators (or owners) can change modes using"
+  )} <code>{gettext("/mode")}</code>.
 </p>
-<.help_h4 icon={:icon_tab_modes}>User Modes</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{gettext("User Modes")}</.help_h4>
 <p>
-  <strong>+q</strong>
-  — <.help_link topic="mode-q">Owner</.help_link>: Channel owner with full control (~).<br />
+  <strong>{gettext("+q")}</strong>
+  — <.help_link topic="mode-q">{gettext("Owner")}</.help_link>{gettext(
+    ": Channel owner with full control (~)."
+  )}<br />
   <strong>
-    +o
+    {gettext("+o")}
   </strong>
-  — <.help_link topic="mode-o">Operator</.help_link>: Channel operator (@).<br />
+  — <.help_link topic="mode-o">{gettext("Operator")}</.help_link>{gettext(
+    ": Channel operator (@)."
+  )}<br />
   <strong>
-    +h
+    {gettext("+h")}
   </strong>
-  — <.help_link topic="mode-h">Half-Operator</.help_link>: Limited operator (%).<br />
+  — <.help_link topic="mode-h">{gettext("Half-Operator")}</.help_link>{gettext(
+    ": Limited operator (%)."
+  )}<br />
   <strong>
-    +v
+    {gettext("+v")}
   </strong>
-  — <.help_link topic="mode-v">Voice</.help_link>: Can speak in moderated channels (+).
+  — <.help_link topic="mode-v">{gettext("Voice")}</.help_link>{gettext(
+    ": Can speak in moderated channels (+)."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_modes}>Channel Modes</.help_h4>
+<.help_h4 icon={:icon_tab_modes}>{gettext("Channel Modes")}</.help_h4>
 <p>
-  <strong>+m</strong>
-  — <.help_link topic="mode-m">Moderated</.help_link>: Only operators and voiced users can speak.<br />
+  <strong>{gettext("+m")}</strong>
+  — <.help_link topic="mode-m">{gettext("Moderated")}</.help_link>{gettext(
+    ": Only operators and voiced users can speak."
+  )}<br />
   <strong>
-    +i
+    {gettext("+i")}
   </strong>
-  — <.help_link topic="mode-i">Invite Only</.help_link>: Users must be invited to join.<br />
+  — <.help_link topic="mode-i">{gettext("Invite Only")}</.help_link>{gettext(
+    ": Users must be invited to join."
+  )}<br />
   <strong>
-    +t
+    {gettext("+t")}
   </strong>
-  — <.help_link topic="mode-t">Topic Lock</.help_link>: Only operators can change the topic.<br />
+  — <.help_link topic="mode-t">{gettext("Topic Lock")}</.help_link>{gettext(
+    ": Only operators can change the topic."
+  )}<br />
   <strong>
-    +k
+    {gettext("+k")}
   </strong>
-  — <.help_link topic="mode-k">Key</.help_link>: Requires a password to join.<br />
+  — <.help_link topic="mode-k">{gettext("Key")}</.help_link>{gettext(
+    ": Requires a password to join."
+  )}<br />
   <strong>
-    +l
+    {gettext("+l")}
   </strong>
-  — <.help_link topic="mode-l">User Limit</.help_link>: Limits the number of users.<br />
+  — <.help_link topic="mode-l">{gettext("User Limit")}</.help_link>{gettext(
+    ": Limits the number of users."
+  )}<br />
   <strong>
-    +n
+    {gettext("+n")}
   </strong>
-  — <.help_link topic="mode-n">No External</.help_link>: Only members can send messages.<br />
+  — <.help_link topic="mode-n">{gettext("No External")}</.help_link>{gettext(
+    ": Only members can send messages."
+  )}<br />
   <strong>
-    +s
+    {gettext("+s")}
   </strong>
-  — <.help_link topic="mode-s">Secret</.help_link>: Channel hidden from /list and /whois.<br />
+  — <.help_link topic="mode-s">{gettext("Secret")}</.help_link>{gettext(
+    ": Channel hidden from /list and /whois."
+  )}<br />
   <strong>
-    +p
+    {gettext("+p")}
   </strong>
-  — <.help_link topic="mode-p">Private</.help_link>: Channel shown as "Prv" in /list.<br />
+  — <.help_link topic="mode-p">{gettext("Private")}</.help_link>{gettext(
+    ": Channel shown as \"Prv\" in /list."
+  )}<br />
   <strong>
-    +c
+    {gettext("+c")}
   </strong>
-  — <.help_link topic="mode-c">Strip Colors</.help_link>: Remove formatting from messages.<br />
+  — <.help_link topic="mode-c">{gettext("Strip Colors")}</.help_link>{gettext(
+    ": Remove formatting from messages."
+  )}<br />
   <strong>
-    +R
+    {gettext("+R")}
   </strong>
-  — <.help_link topic="mode-r">Registered Only</.help_link>: Only registered users can join.<br />
+  — <.help_link topic="mode-r">{gettext("Registered Only")}</.help_link>{gettext(
+    ": Only registered users can join."
+  )}<br />
   <strong>
-    +K
+    {gettext("+K")}
   </strong>
-  — <.help_link topic="mode-nk">No Knock</.help_link>: Disable /knock requests.<br />
+  — <.help_link topic="mode-nk">{gettext("No Knock")}</.help_link>{gettext(
+    ": Disable /knock requests."
+  )}<br />
   <strong>
-    +j
+    {gettext("+j")}
   </strong>
-  — <.help_link topic="mode-j">Join Throttle</.help_link>: Limit join rate.
+  — <.help_link topic="mode-j">{gettext("Join Throttle")}</.help_link>{gettext(
+    ": Limit join rate."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-mode">/mode Command</.help_link>
-  · <.help_link topic="channel-permissions">Channel Permissions</.help_link>
-  · <.help_link topic="cmd-knock">/knock Command</.help_link>
+  <.help_link topic="cmd-mode">{gettext("/mode Command")}</.help_link>
+  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
+  · <.help_link topic="cmd-knock">{gettext("/knock Command")}</.help_link>
 </p>

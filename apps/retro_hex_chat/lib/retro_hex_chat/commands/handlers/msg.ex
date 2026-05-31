@@ -1,20 +1,21 @@
 defmodule RetroHexChat.Commands.Handlers.Msg do
   @moduledoc "Handler for /msg <nickname> <message>"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Usage: /msg <nickname> <message>"}
+  def validate(""), do: {:error, gettext("Usage: /msg <nickname> <message>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /msg <nickname> <message>"}
+  def execute([], _context), do: {:error, gettext("Usage: /msg <nickname> <message>")}
 
   def execute([_target], _context),
-    do: {:error, "No message specified. Usage: /msg <nickname> <message>"}
+    do: {:error, gettext("No message specified. Usage: /msg <nickname> <message>")}
 
   def execute([target | rest], _context) do
     content = Enum.join(rest, " ")
@@ -31,10 +32,12 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
   def help do
     %{
       name: "msg",
-      syntax: "/msg <nickname> <message>",
+      syntax: gettext("/msg <nickname> <message>"),
       description:
-        "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required.",
-      examples: ["/msg Nick Hello there!", "/msg Nick How are you?"]
+        gettext(
+          "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required."
+        ),
+      examples: [gettext("/msg Nick Hello there!"), gettext("/msg Nick How are you?")]
     }
   end
 
@@ -49,9 +52,11 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
 
     %CommandSyntax{
       command: "msg",
-      syntax: "/msg <nickname> <message>",
+      syntax: gettext("/msg <nickname> <message>"),
       description:
-        "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required.",
+        gettext(
+          "Send a private message to another user, opening a PM conversation tab.\nBoth nickname and message text are required."
+        ),
       category: :user,
       parameters: [
         %Parameter{
@@ -59,17 +64,17 @@ defmodule RetroHexChat.Commands.Handlers.Msg do
           required: true,
           type: :nick,
           position: 0,
-          description: "Message recipient"
+          description: gettext("Message recipient")
         },
         %Parameter{
           name: "message",
           required: true,
           type: :text,
           position: 1,
-          description: "Message content"
+          description: gettext("Message content")
         }
       ],
-      examples: ["/msg Nick Hello there!", "/msg Nick How are you?"]
+      examples: [gettext("/msg Nick Hello there!"), gettext("/msg Nick How are you?")]
     }
   end
 end

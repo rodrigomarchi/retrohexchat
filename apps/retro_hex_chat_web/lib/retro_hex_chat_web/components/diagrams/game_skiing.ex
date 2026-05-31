@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameSkiing do
   @moduledoc "SVG game screen diagram for Hex Skiing."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -15,7 +16,11 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameSkiing do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Hex Skiing game screen: two skiers descending through trees and slalom gates with avalanche behind"
+      aria-label={
+        gettext(
+          "Hex Skiing game screen: two skiers descending through trees and slalom gates with avalanche behind"
+        )
+      }
     >
       {win98_chrome("Hex Skiing")}
       <%!-- Snow ground --%>
@@ -41,13 +46,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameSkiing do
       <rect x="280" y="280" width="6" height="8" fill="#00d4ff" />
       <%!-- HUD --%>
       <text x="30" y="340" fill="#00ff41" font-size="10" font-family="'Courier New',monospace">
-        P1: 42.3s
+        {gettext("P1: 42.3s")}
       </text>
       <text x="400" y="340" fill="#00d4ff" font-size="10" font-family="'Courier New',monospace">
-        P2: 39.8s
+        {gettext("P2: 39.8s")}
       </text>
       <text x="210" y="340" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        R1
+        {gettext("R1")}
       </text>
     </svg>
     """

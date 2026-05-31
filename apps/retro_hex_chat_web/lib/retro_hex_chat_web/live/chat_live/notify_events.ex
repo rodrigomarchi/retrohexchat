@@ -11,6 +11,8 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
 
   import Phoenix.Component, only: [assign: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       maybe_persist_notify_list: 2,
@@ -40,16 +42,26 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
          socket
          |> assign(session: new_session, show_notify_add_dialog: false)
          |> maybe_persist_notify_list(new_session)
-         |> push_status_message("Added #{nick} to notify list", :system)}
+         |> push_status_message(
+           gettext("Added %{nickname} to notify list", nickname: nick),
+           :system
+         )}
 
       {:error, :self_add} ->
-        {:halt, push_status_message(socket, "Cannot add yourself to the notify list", :system)}
+        {:halt,
+         push_status_message(socket, gettext("Cannot add yourself to the notify list"), :system)}
 
       {:error, :duplicate} ->
-        {:halt, push_status_message(socket, "#{nick} is already in your notify list", :system)}
+        {:halt,
+         push_status_message(
+           socket,
+           gettext("%{nickname} is already in your notify list", nickname: nick),
+           :system
+         )}
 
       {:error, :list_full} ->
-        {:halt, push_status_message(socket, "Notify list is full (max 50 entries)", :system)}
+        {:halt,
+         push_status_message(socket, gettext("Notify list is full (max 50 entries)"), :system)}
     end
   end
 
@@ -70,10 +82,18 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
            socket
            |> assign(session: new_session, notify_selected: nil, selected_notify_note: "")
            |> maybe_persist_notify_list(new_session)
-           |> push_status_message("Removed #{nick} from notify list", :system)}
+           |> push_status_message(
+             gettext("Removed %{nickname} from notify list", nickname: nick),
+             :system
+           )}
 
         {:error, :not_found} ->
-          {:halt, push_status_message(socket, "#{nick} is not in your notify list", :system)}
+          {:halt,
+           push_status_message(
+             socket,
+             gettext("%{nickname} is not in your notify list", nickname: nick),
+             :system
+           )}
       end
     else
       {:halt, socket}
@@ -96,10 +116,15 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
            selected_notify_note: note || ""
          )
          |> maybe_persist_notify_list(new_session)
-         |> push_status_message("Updated note for #{nick}", :system)}
+         |> push_status_message(gettext("Updated note for %{nickname}", nickname: nick), :system)}
 
       {:error, :not_found} ->
-        {:halt, push_status_message(socket, "#{nick} is not in your notify list", :system)}
+        {:halt,
+         push_status_message(
+           socket,
+           gettext("%{nickname} is not in your notify list", nickname: nick),
+           :system
+         )}
     end
   end
 

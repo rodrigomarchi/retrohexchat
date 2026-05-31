@@ -1,69 +1,122 @@
 <p>
-  RetroHexChat supports the following slash commands. Type them in the chat input and press Enter.
+  {gettext(
+    "RetroHexChat supports the following slash commands. Type them in the chat input and press Enter."
+  )}
 </p>
-<.help_h4 icon={:icon_connect}>Connection &amp; Navigation</.help_h4>
+<.help_h4 icon={:icon_connect}>{gettext("Connection & Navigation")}</.help_h4>
 <p>
-  <.help_link topic="cmd-join">/join</.help_link>
-  — Join a channel<br /><.help_link topic="cmd-part">/part</.help_link>
-  — Leave a channel<br /><.help_link topic="cmd-quit">/quit</.help_link>
-  — Disconnect from chat<br /><.help_link topic="cmd-list">/list</.help_link>
-  — List available channels
+  <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
+  {gettext("— Join a channel")}<br /><.help_link topic="cmd-part">{gettext("/part")}</.help_link>
+  {gettext("— Leave a channel")}<br /><.help_link topic="cmd-quit">{gettext("/quit")}</.help_link>
+  {gettext("— Disconnect from chat")}<br />
+  <.help_link topic="cmd-list">
+    {gettext("/list")}
+  </.help_link>
+  {gettext("— List available channels")}
 </p>
-<.help_h4 icon={:icon_send}>Messaging</.help_h4>
+<.help_h4 icon={:icon_send}>{gettext("Messaging")}</.help_h4>
 <p>
-  <.help_link topic="cmd-msg">/msg</.help_link>
-  — Send a private message<br /><.help_link topic="cmd-query">/query</.help_link>
-  — Open a PM window<br /><.help_link topic="cmd-me">/me</.help_link>
-  — Send an action message<br /><.help_link topic="cmd-notice">/notice</.help_link>
-  — Send a notice
+  <.help_link topic="cmd-msg">{gettext("/msg")}</.help_link>
+  {gettext("— Send a private message")}<br />
+  <.help_link topic="cmd-query">
+    {gettext("/query")}
+  </.help_link>
+  {gettext("— Open a PM window")}<br /><.help_link topic="cmd-me">{gettext("/me")}</.help_link>
+  {gettext("— Send an action message")}<br />
+  <.help_link topic="cmd-notice">
+    {gettext("/notice")}
+  </.help_link>
+  {gettext("— Send a notice")}
 </p>
-<.help_h4 icon={:icon_wrench}>User Management</.help_h4>
+<.help_h4 icon={:icon_wrench}>{gettext("User Management")}</.help_h4>
 <p>
-  <.help_link topic="cmd-nick">/nick</.help_link>
-  — Change nickname<br /><.help_link topic="cmd-away">/away</.help_link>
-  — Set/clear away status<br /><.help_link topic="cmd-whois">/whois</.help_link>
-  — Look up user info<br /><.help_link topic="cmd-whowas">/whowas</.help_link>
-  — Look up past user info<br /><.help_link topic="cmd-ignore">/ignore</.help_link>
-  — Ignore a user<br /><.help_link topic="cmd-unignore">/unignore</.help_link>
-  — Remove ignore
+  <.help_link topic="cmd-nick">{gettext("/nick")}</.help_link>
+  {gettext("— Change nickname")}<br /><.help_link topic="cmd-away">{gettext("/away")}</.help_link>
+  {gettext("— Set/clear away status")}<br />
+  <.help_link topic="cmd-whois">
+    {gettext("/whois")}
+  </.help_link>
+  {gettext("— Look up user info")}<br />
+  <.help_link topic="cmd-whowas">
+    {gettext("/whowas")}
+  </.help_link>
+  {gettext("— Look up past user info")}<br />
+  <.help_link topic="cmd-ignore">
+    {gettext("/ignore")}
+  </.help_link>
+  {gettext("— Ignore a user")}<br />
+  <.help_link topic="cmd-unignore">
+    {gettext("/unignore")}
+  </.help_link>
+  {gettext("— Remove ignore")}
 </p>
-<.help_h4 icon={:icon_wrench}>Channel Management</.help_h4>
+<.help_h4 icon={:icon_wrench}>{gettext("Channel Management")}</.help_h4>
 <p>
-  <.help_link topic="cmd-topic">/topic</.help_link>
-  — View/set channel topic<br /><.help_link topic="cmd-mode">/mode</.help_link>
-  — Set channel or user modes<br /><.help_link topic="cmd-kick">/kick</.help_link>
-  — Kick a user<br /><.help_link topic="cmd-ban">/ban</.help_link>
-  — Ban a user<br /><.help_link topic="cmd-invite">/invite</.help_link>
-  — Invite a user
+  <.help_link topic="cmd-topic">{gettext("/topic")}</.help_link>
+  {gettext("— View/set channel topic")}<br />
+  <.help_link topic="cmd-mode">
+    {gettext("/mode")}
+  </.help_link>
+  {gettext("— Set channel or user modes")}<br />
+  <.help_link topic="cmd-kick">
+    {gettext("/kick")}
+  </.help_link>
+  {gettext("— Kick a user")}<br /><.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
+  {gettext("— Ban a user")}<br /><.help_link topic="cmd-invite">{gettext("/invite")}</.help_link>
+  {gettext("— Invite a user")}
 </p>
-<.help_h4 icon={:icon_shield}>Services</.help_h4>
+<.help_h4 icon={:icon_shield}>{gettext("Services")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ns">/ns</.help_link>
-  — NickServ commands<br /><.help_link topic="cmd-cs">/cs</.help_link>
-  — ChanServ commands
+  <.help_link topic="cmd-ns">{gettext("/ns")}</.help_link>
+  {gettext("— NickServ commands")}<br /><.help_link topic="cmd-cs">{gettext("/cs")}</.help_link>
+  {gettext("— ChanServ commands")}
 </p>
-<.help_h4 icon={:icon_dialog_options}>Customization</.help_h4>
+<.help_h4 icon={:icon_dialog_options}>{gettext("Customization")}</.help_h4>
 <p>
-  <.help_link topic="cmd-notify">/notify</.help_link>
-  — Manage notify list<br /><.help_link topic="cmd-perform">/perform</.help_link>
-  — Auto-run commands<br /><.help_link topic="cmd-autojoin">/autojoin</.help_link>
-  — Auto-join channels<br /><.help_link topic="cmd-alias">/alias</.help_link>
-  — Create command aliases<br /><.help_link topic="cmd-timer">/timer</.help_link>
-  — Schedule commands<br /><.help_link topic="cmd-autorespond">/autorespond</.help_link>
-  — Auto-respond rules
+  <.help_link topic="cmd-notify">{gettext("/notify")}</.help_link>
+  {gettext("— Manage notify list")}<br />
+  <.help_link topic="cmd-perform">
+    {gettext("/perform")}
+  </.help_link>
+  {gettext("— Auto-run commands")}<br />
+  <.help_link topic="cmd-autojoin">
+    {gettext("/autojoin")}
+  </.help_link>
+  {gettext("— Auto-join channels")}<br />
+  <.help_link topic="cmd-alias">
+    {gettext("/alias")}
+  </.help_link>
+  {gettext("— Create command aliases")}<br />
+  <.help_link topic="cmd-timer">
+    {gettext("/timer")}
+  </.help_link>
+  {gettext("— Schedule commands")}<br />
+  <.help_link topic="cmd-autorespond">
+    {gettext("/autorespond")}
+  </.help_link>
+  {gettext("— Auto-respond rules")}
 </p>
-<.help_h4 icon={:icon_p2p}>P2P</.help_h4>
+<.help_h4 icon={:icon_p2p}>{gettext("P2P")}</.help_h4>
 <p>
-  <.help_link topic="cmd-p2p">/p2p</.help_link>
-  — Start a P2P session<br /><.help_link topic="cmd-call">/call</.help_link>
-  — Start an audio call<br /><.help_link topic="cmd-sendfile">/sendfile</.help_link>
-  — Send a file
+  <.help_link topic="cmd-p2p">{gettext("/p2p")}</.help_link>
+  {gettext("— Start a P2P session")}<br />
+  <.help_link topic="cmd-call">
+    {gettext("/call")}
+  </.help_link>
+  {gettext("— Start an audio call")}<br />
+  <.help_link topic="cmd-sendfile">
+    {gettext("/sendfile")}
+  </.help_link>
+  {gettext("— Send a file")}
 </p>
-<.help_h4 icon={:icon_wrench}>Utility</.help_h4>
+<.help_h4 icon={:icon_wrench}>{gettext("Utility")}</.help_h4>
 <p>
-  <.help_link topic="cmd-clear">/clear</.help_link>
-  — Clear chat window<br /><.help_link topic="cmd-help">/help</.help_link>
-  — Show help
+  <.help_link topic="cmd-clear">{gettext("/clear")}</.help_link>
+  {gettext("— Clear chat window")}<br />
+  <.help_link topic="cmd-help">
+    {gettext("/help")}
+  </.help_link>
+  {gettext("— Show help")}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
-<p><.help_link topic="keyboard-shortcuts">Keyboard Shortcuts</.help_link></p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p><.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link></p>

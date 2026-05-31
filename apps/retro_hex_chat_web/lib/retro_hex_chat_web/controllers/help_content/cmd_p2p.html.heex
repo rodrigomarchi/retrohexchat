@@ -1,33 +1,36 @@
 <p>
-  Start a direct peer-to-peer session with another user. P2P sessions let you transfer files, make audio calls, or start video calls — all directly between your browsers.
+  {gettext(
+    "Start a direct peer-to-peer session with another user. P2P sessions let you transfer files, make audio calls, or start video calls — all directly between your browsers."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/p2p &lt;nickname&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>nickname</code> — The user to start a P2P session with.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/p2p <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>nickname</code> {gettext("— The user to start a P2P session with.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Running <code>/p2p</code>
-  creates a session and both users enter a lobby window. From the lobby, you can start file transfers, audio calls, or video calls. All data flows directly between your browsers (peer-to-peer) without going through the server, ensuring privacy. If you specifically want to start an audio call or file transfer, you can use
-  <code>/call</code>
-  or <code>/sendfile</code>
-  instead — they create the P2P session and automatically start the respective action.
+  {gettext("Running")} <code>{gettext("/p2p")}</code>
+  {gettext(
+    "creates a session and both users enter a lobby window. From the lobby, you can start file transfers, audio calls, or video calls. All data flows directly between your browsers (peer-to-peer) without going through the server, ensuring privacy. If you specifically want to start an audio call or file transfer, you can use"
+  )}
+  <code>{gettext("/call")}</code>
+  or <code>{gettext("/sendfile")}</code>
+  {gettext("instead — they create the P2P session and automatically start the respective action.")}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
   <li>
-    Both you and the target must be registered and identified (via <code>/ns identify</code>)
+    {gettext("Both you and the target must be registered and identified (via")} <code>{gettext("/ns identify")}</code>)
   </li>
-  <li>Cannot start a P2P session with yourself</li>
-  <li>Only one active session per user pair at a time</li>
+  <li>{gettext("Cannot start a P2P session with yourself")}</li>
+  <li>{gettext("Only one active session per user pair at a time")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/p2p Mario
-/p2p Alice</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/p2p Mario /p2p Alice")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-call">/call</.help_link>
-  · <.help_link topic="cmd-sendfile">/sendfile</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
-  · <.help_link topic="feature-p2p-sessions">P2P Sessions</.help_link>
+  <.help_link topic="cmd-call">{gettext("/call")}</.help_link>
+  · <.help_link topic="cmd-sendfile">{gettext("/sendfile")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  · <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
 </p>

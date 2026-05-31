@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.LandingLive.Index do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.LandingLive.LandingHelpers
   import RetroHexChatWeb.Components.UI.Window

@@ -73,8 +73,7 @@ defmodule RetroHexChatWeb.Components.UI.Popover do
   """
   attr :id, :string,
     required: true,
-    doc:
-      "The id of target element to show popover, this must be the same as the target in popover_trigger"
+    doc: "The id of target element to show popover"
 
   attr :class, :string, default: nil
   attr :side, :string, values: ~w(bottom left right top), default: "top"

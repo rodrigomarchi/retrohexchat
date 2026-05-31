@@ -1,4 +1,5 @@
 defmodule RetroHexChatWeb.Endpoint do
+  use Gettext, backend: RetroHexChatWeb.Gettext
   use Phoenix.Endpoint, otp_app: :retro_hex_chat_web
 
   # The session cookie is signed and encrypted to protect sensitive data
@@ -8,7 +9,7 @@ defmodule RetroHexChatWeb.Endpoint do
     key: "_retro_hex_chat_web_key",
     signing_salt: "OLXEOjJq",
     encryption_salt: "encrypted_cookie",
-    same_site: "Lax"
+    same_site: gettext("Lax")
   ]
 
   socket "/live", Phoenix.LiveView.Socket,

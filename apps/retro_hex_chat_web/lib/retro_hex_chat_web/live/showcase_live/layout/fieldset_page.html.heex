@@ -1,17 +1,17 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">Fieldset</h2>
+  <h2 class="text-lg font-bold mb-3">{gettext("Fieldset")}</h2>
 
   <.showcase_card
-    title="Basic Fieldset"
+    title={gettext("Basic Fieldset")}
     description="A Win98 groupbox with etched groove border and legend."
   >
-    <.retro_fieldset legend="Personal Information">
+    <.retro_fieldset legend={gettext("Personal Information")}>
       <.field_row>
-        <.label class="text-sm w-24">Name:</.label>
+        <.label class="text-sm w-24">{gettext("Name:")}</.label>
         <.input type="text" value="Troll" class="flex-1" />
       </.field_row>
       <.field_row>
-        <.label class="text-sm w-24">Email:</.label>
+        <.label class="text-sm w-24">{gettext("Email:")}</.label>
         <.input type="text" value="troll@retro.chat" class="flex-1" />
       </.field_row>
     </.retro_fieldset>
@@ -26,17 +26,17 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Event Sounds"
+    title={gettext("Event Sounds")}
     description="Replicating the platform's Sounds dialog fieldset."
   >
-    <.retro_fieldset legend="Event Sounds">
+    <.retro_fieldset legend={gettext("Event Sounds")}>
       <div class="shadow-retro-field bg-white">
         <table class="w-full text-sm">
           <thead>
             <tr class="border-b border-gray-300">
-              <th class="text-left px-2 py-1 font-bold">Event</th>
-              <th class="text-left px-2 py-1 font-bold">Sound</th>
-              <th class="text-left px-2 py-1 font-bold">Flash</th>
+              <th class="text-left px-2 py-1 font-bold">{gettext("Event")}</th>
+              <th class="text-left px-2 py-1 font-bold">{gettext("Sound")}</th>
+              <th class="text-left px-2 py-1 font-bold">{gettext("Flash")}</th>
             </tr>
           </thead>
           <tbody>
@@ -73,7 +73,7 @@
               <td class="px-2 py-1">
                 <.button variant="outline" size="sm">
                   <:icon><Icons.icon_btn_play /></:icon>
-                  Play
+                  {gettext("Play")}
                 </.button>
               </td>
             </tr>
@@ -83,19 +83,19 @@
     </.retro_fieldset>
   </.showcase_card>
 
-  <.showcase_card title="Without Legend" description="Fieldset without a legend text.">
+  <.showcase_card title={gettext("Without Legend")} description="Fieldset without a legend text.">
     <.retro_fieldset>
       <.field_row>
         <.checkbox value={true} />
-        <.label class="text-sm">Enable notifications</.label>
+        <.label class="text-sm">{gettext("Enable notifications")}</.label>
       </.field_row>
       <.field_row>
         <.checkbox value={false} />
-        <.label class="text-sm">Play sounds</.label>
+        <.label class="text-sm">{gettext("Play sounds")}</.label>
       </.field_row>
       <.field_row>
         <.checkbox value={true} />
-        <.label class="text-sm">Flash taskbar</.label>
+        <.label class="text-sm">{gettext("Flash taskbar")}</.label>
       </.field_row>
     </.retro_fieldset>
     <.code_example>
@@ -108,14 +108,17 @@
     </.code_example>
   </.showcase_card>
 
-  <.showcase_card title="Stacked Layout" description="Field rows in vertical (stacked) layout.">
-    <.retro_fieldset legend="Connection Settings">
+  <.showcase_card
+    title={gettext("Stacked Layout")}
+    description="Field rows in vertical (stacked) layout."
+  >
+    <.retro_fieldset legend={gettext("Connection Settings")}>
       <.field_row stacked>
-        <.label class="text-sm font-bold">Server Address:</.label>
+        <.label class="text-sm font-bold">{gettext("Server Address:")}</.label>
         <.input type="text" value="irc.retro.chat" class="w-full" />
       </.field_row>
       <.field_row stacked>
-        <.label class="text-sm font-bold">Port:</.label>
+        <.label class="text-sm font-bold">{gettext("Port:")}</.label>
         <.input type="text" value="6667" class="w-32" />
       </.field_row>
     </.retro_fieldset>

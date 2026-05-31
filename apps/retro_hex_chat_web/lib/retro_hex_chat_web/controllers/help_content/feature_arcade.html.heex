@@ -1,101 +1,117 @@
 <p>
-  The Solo Arcade lets you play classic FPS games directly in your browser via WebAssembly. No downloads, no plugins — the game engine runs natively in your browser.
+  {gettext(
+    "The Solo Arcade lets you play classic FPS games directly in your browser via WebAssembly. No downloads, no plugins — the game engine runs natively in your browser."
+  )}
 </p>
-<.help_h4 icon={:icon_send}>Starting an Arcade Session</.help_h4>
+<.help_h4 icon={:icon_send}>{gettext("Starting an Arcade Session")}</.help_h4>
 <p>
-  Join <strong>#games</strong> and type:
+  {gettext("Join")} <strong>#games</strong> {gettext("and type:")}
 </p>
-<pre>!play</pre>
+<pre>{gettext("!play")}</pre>
 <p>
-  The arcade bot will create a solo arcade session and send you a link to the game lobby where you can browse and select a game from the catalog.
-  You must be registered and identified (<code>/ns identify</code>) to play.
+  {gettext(
+    "The arcade bot will create a solo arcade session and send you a link to the game lobby where you can browse and select a game from the catalog. You must be registered and identified ("
+  )}<code>{gettext("/ns identify")}</code>{gettext(") to play.")}
 </p>
-<.help_h4 icon={:icon_game_halflife}>Available Games — Half-Life Engine</.help_h4>
+<.help_h4 icon={:icon_game_halflife}>{gettext("Available Games — Half-Life Engine")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-arcade-halflife-uplink">Half-Life: Uplink</.help_link>
-    — The official Valve demo with 3 unique missions (1999)
+    <.help_link topic="feature-arcade-halflife-uplink">{gettext("Half-Life: Uplink")}</.help_link>
+    {gettext("— The official Valve demo with 3 unique missions (1999)")}
   </li>
 </ul>
-<.help_h4 icon={:icon_game_wolfenstein}>Available Games — Wolf3D Engine</.help_h4>
+<.help_h4 icon={:icon_game_wolfenstein}>{gettext("Available Games — Wolf3D Engine")}</.help_h4>
 <ul>
   <li>
     <.help_link topic="feature-arcade-wolfenstein-3d">
-      Wolfenstein 3D: Escape from Castle
+      {gettext("Wolfenstein 3D: Escape from Castle")}
     </.help_link>
-    — The shareware Episode 1 (1992) — the grandfather of FPS games
+    {gettext("— The shareware Episode 1 (1992) — the grandfather of FPS games")}
   </li>
 </ul>
-<.help_h4 icon={:icon_game_arcade}>Available Games — DOOM Engine</.help_h4>
+<.help_h4 icon={:icon_game_arcade}>{gettext("Available Games — DOOM Engine")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-arcade-doom-shareware">DOOM: Knee-Deep in the Dead</.help_link>
-    — The original shareware Episode 1 (1993)
+    <.help_link topic="feature-arcade-doom-shareware">
+      {gettext("DOOM: Knee-Deep in the Dead")}
+    </.help_link>
+    {gettext("— The original shareware Episode 1 (1993)")}
   </li>
   <li>
-    <.help_link topic="feature-arcade-freedoom1">Freedoom: Phase 1</.help_link>
-    — 36 levels of open-source DOOM (BSD license)
+    <.help_link topic="feature-arcade-freedoom1">{gettext("Freedoom: Phase 1")}</.help_link>
+    {gettext("— 36 levels of open-source DOOM (BSD license)")}
   </li>
   <li>
-    <.help_link topic="feature-arcade-freedoom2">Freedoom: Phase 2</.help_link>
-    — 32 levels, Doom II compatible (BSD license)
+    <.help_link topic="feature-arcade-freedoom2">{gettext("Freedoom: Phase 2")}</.help_link>
+    {gettext("— 32 levels, Doom II compatible (BSD license)")}
   </li>
   <li>
-    <.help_link topic="feature-arcade-freedm">FreeDM</.help_link>
-    — 32 deathmatch arenas (BSD license)
+    <.help_link topic="feature-arcade-freedm">{gettext("FreeDM")}</.help_link>
+    {gettext("— 32 deathmatch arenas (BSD license)")}
   </li>
   <li>
-    <.help_link topic="feature-arcade-chex-quest">Chex Quest</.help_link>
-    — The 1996 cereal box classic
+    <.help_link topic="feature-arcade-chex-quest">{gettext("Chex Quest")}</.help_link>
+    {gettext("— The 1996 cereal box classic")}
   </li>
   <li>
-    <.help_link topic="feature-arcade-hacx">HacX: Twitch 'n Kill</.help_link>
-    — Cyberpunk total conversion
+    <.help_link topic="feature-arcade-hacx">{gettext("HacX: Twitch 'n Kill")}</.help_link>
+    {gettext("— Cyberpunk total conversion")}
   </li>
   <li>
-    <.help_link topic="feature-arcade-rekkr">REKKR: Sunken Land</.help_link>
-    — Viking-themed standalone
+    <.help_link topic="feature-arcade-rekkr">{gettext("REKKR: Sunken Land")}</.help_link>
+    {gettext("— Viking-themed standalone")}
   </li>
 </ul>
-<.help_h4 icon={:icon_game_quake}>Available Games — Quake Engine</.help_h4>
+<.help_h4 icon={:icon_game_quake}>{gettext("Available Games — Quake Engine")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-arcade-quake-shareware">Quake: Dimension of the Doomed</.help_link>
-    — The original shareware Episode 1 (1996)
+    <.help_link topic="feature-arcade-quake-shareware">
+      {gettext("Quake: Dimension of the Doomed")}
+    </.help_link>
+    {gettext("— The original shareware Episode 1 (1996)")}
   </li>
   <li>
-    <.help_link topic="feature-arcade-librequake">LibreQuake</.help_link>
-    — Open-source Quake replacement (BSD license)
+    <.help_link topic="feature-arcade-librequake">{gettext("LibreQuake")}</.help_link>
+    {gettext("— Open-source Quake replacement (BSD license)")}
   </li>
 </ul>
-<.help_h4 icon={:icon_game_quake2}>Available Games — Quake II Engine</.help_h4>
+<.help_h4 icon={:icon_game_quake2}>{gettext("Available Games — Quake II Engine")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-arcade-quake2-shareware">Quake II: The Invasion</.help_link>
-    — The official demo (1997) — Unit 1 of the singleplayer campaign
+    <.help_link topic="feature-arcade-quake2-shareware">
+      {gettext("Quake II: The Invasion")}
+    </.help_link>
+    {gettext("— The official demo (1997) — Unit 1 of the singleplayer campaign")}
   </li>
 </ul>
-<.help_h4 icon={:icon_webrtc}>Technology</.help_h4>
+<.help_h4 icon={:icon_webrtc}>{gettext("Technology")}</.help_h4>
 <p>
-  Half-Life: Uplink is powered by <strong>Xash3D-FWGS</strong>
-  (GoldSource reimplementation compiled to WebAssembly). Wolfenstein 3D is powered by
-  <strong>ECWolf-JS</strong>
-  (ECWolf compiled to WebAssembly via Emscripten). DOOM games are powered by
-  <strong>Dwasm</strong>
-  (PrBoom+ compiled to WebAssembly). Quake games are powered by <strong>Qwasm</strong>
-  (QuakeSpasm compiled to WebAssembly). Quake II is powered by <strong>Qwasm2</strong>
-  (Yamagi Quake II compiled to WebAssembly). All support keyboard, mouse, and gamepad input.
+  {gettext("Half-Life: Uplink is powered by")} <strong>{gettext("Xash3D-FWGS")}</strong>
+  {gettext("(GoldSource reimplementation compiled to WebAssembly). Wolfenstein 3D is powered by")}
+  <strong>{gettext("ECWolf-JS")}</strong>
+  {gettext("(ECWolf compiled to WebAssembly via Emscripten). DOOM games are powered by")}
+  <strong>{gettext("Dwasm")}</strong>
+  {gettext("(PrBoom+ compiled to WebAssembly). Quake games are powered by")}
+  <strong>{gettext("Qwasm")}</strong>
+  {gettext("(QuakeSpasm compiled to WebAssembly). Quake II is powered by")}
+  <strong>{gettext("Qwasm2")}</strong>
+  {gettext(
+    "(Yamagi Quake II compiled to WebAssembly). All support keyboard, mouse, and gamepad input."
+  )}
 </p>
-<.help_h4 icon={:icon_clock}>Session Timeouts</.help_h4>
+<.help_h4 icon={:icon_clock}>{gettext("Session Timeouts")}</.help_h4>
 <p>
-  Pending sessions expire in 5 minutes. The lobby expires after 15 minutes of inactivity (with a warning at 10 minutes).
+  {gettext(
+    "Pending sessions expire in 5 minutes. The lobby expires after 15 minutes of inactivity (with a warning at 10 minutes)."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade-halflife">Half-Life (Arcade)</.help_link>
-  · <.help_link topic="feature-arcade-wolfenstein">Wolfenstein 3D (Arcade)</.help_link>
-  · <.help_link topic="feature-arcade-doom">DOOM (Arcade)</.help_link>
-  · <.help_link topic="feature-arcade-quake">Quake (Arcade)</.help_link>
-  · <.help_link topic="feature-arcade-quake2">Quake II (Arcade)</.help_link>
-  · <.help_link topic="feature-arcade-scummvm">ScummVM Adventures</.help_link>
+  <.help_link topic="feature-arcade-halflife">{gettext("Half-Life (Arcade)")}</.help_link>
+  ·
+  <.help_link topic="feature-arcade-wolfenstein">{gettext("Wolfenstein 3D (Arcade)")}</.help_link>
+  · <.help_link topic="feature-arcade-doom">{gettext("DOOM (Arcade)")}</.help_link>
+  · <.help_link topic="feature-arcade-quake">{gettext("Quake (Arcade)")}</.help_link>
+  · <.help_link topic="feature-arcade-quake2">{gettext("Quake II (Arcade)")}</.help_link>
+  · <.help_link topic="feature-arcade-scummvm">{gettext("ScummVM Adventures")}</.help_link>
 </p>

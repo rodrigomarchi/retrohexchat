@@ -17,6 +17,7 @@ import {
   WIN_SCORE,
   WARP_COOLDOWN,
 } from "./physics.js";
+import { t, jt } from "../../i18n.js";
 
 // --- Deterministic starfield (golden ratio distribution, no flickering) ---
 
@@ -406,14 +407,14 @@ export function drawHUD(ctx, state, colors, _time) {
   ctx.shadowColor = colors.p1;
   ctx.shadowBlur = 10;
   ctx.fillStyle = colors.p1;
-  ctx.fillText(`P1  ${score1}`, 16, 12);
+  ctx.fillText(jt`P1  ${score1}`, 16, 12);
 
   // P2 score (right side of center area, cyan glow)
   ctx.textAlign = "right";
   ctx.shadowColor = colors.p2;
   ctx.shadowBlur = 10;
   ctx.fillStyle = colors.p2;
-  ctx.fillText(`${score2}  P2`, CANVAS_W - 16, 12);
+  ctx.fillText(jt`${score2}  P2`, CANVAS_W - 16, 12);
 
   // Dash separator
   ctx.textAlign = "center";
@@ -426,7 +427,7 @@ export function drawHUD(ctx, state, colors, _time) {
   ctx.shadowColor = "transparent";
 
   // Mode name (top-right corner)
-  const modeNames = ["OPEN SPACE", "GRAVITY WELL", "DEBRIS FIELD"];
+  const modeNames = [t("OPEN SPACE"), t("GRAVITY WELL"), t("DEBRIS FIELD")];
   const modeName = modeNames[state.mode] || "UNKNOWN";
   ctx.font = "10px monospace";
   ctx.textAlign = "right";
@@ -506,7 +507,7 @@ export function drawWaiting(ctx, colors, time) {
   ctx.font = "18px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(`WAITING FOR OPPONENT${dots}`, CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(jt`WAITING FOR OPPONENT${dots}`, CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 
@@ -527,7 +528,7 @@ export function drawSpawning(ctx, colors, time) {
   ctx.font = "bold 24px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("GET READY", CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(t("GET READY"), CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 
@@ -561,9 +562,9 @@ export function drawRoundOver(ctx, state, colors, time) {
     // Mutual kill — no scorer
     ctx.fillStyle = colors.warning;
     ctx.shadowColor = colors.warning;
-    ctx.fillText("DRAW!", CANVAS_W / 2, CANVAS_H / 2);
+    ctx.fillText(t("DRAW!"), CANVAS_W / 2, CANVAS_H / 2);
   } else {
-    ctx.fillText(`PLAYER ${scorer} SCORES!`, CANVAS_W / 2, CANVAS_H / 2);
+    ctx.fillText(jt`PLAYER ${scorer} SCORES!`, CANVAS_W / 2, CANVAS_H / 2);
   }
 
   ctx.restore();
@@ -579,7 +580,7 @@ export function drawRoundOver(ctx, state, colors, time) {
 export function drawWinner(ctx, state, colors, time) {
   const s1 = state.score1 || 0;
   const winner = s1 >= WIN_SCORE ? 1 : 2;
-  const text = `PLAYER ${winner} WINS!`;
+  const text = jt`PLAYER ${winner} WINS!`;
   const color = winner === 1 ? colors.p1 : colors.p2;
 
   ctx.save();
@@ -614,7 +615,7 @@ export function drawWinner(ctx, state, colors, time) {
   ctx.fillStyle = colors.muted;
   const pulse = 0.5 + 0.5 * Math.sin(time * 0.005);
   ctx.globalAlpha = pulse;
-  ctx.fillText(`FIRST TO ${WIN_SCORE}`, CANVAS_W / 2, CANVAS_H / 2 + 40);
+  ctx.fillText(jt`FIRST TO ${WIN_SCORE}`, CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();
 }

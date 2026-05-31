@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Alerts do
   Icons depicting notifications, information, and alert concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

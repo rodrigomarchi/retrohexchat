@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   import Phoenix.Component, only: [assign: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [system_event: 2, error_event: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Dice, Greeter, Help, Mention, Moderation}
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
@@ -21,7 +23,8 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       bots = Queries.list_bots()
       {:halt, assign(socket, show_bot_dialog: true, bot_dialog_bots: bots)}
     else
-      {:halt, error_event(socket, "Bot management is restricted to server administrators.")}
+      {:halt,
+       error_event(socket, gettext("Bot management is restricted to server administrators."))}
     end
   end
 
@@ -66,12 +69,14 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       notify_bot_if_running(bot.nickname, &Server.set_enabled(&1, new_enabled))
 
       bots = Queries.list_bots()
-      action = if new_enabled, do: "enabled", else: "disabled"
+      action = if new_enabled, do: gettext("enabled"), else: gettext("disabled")
 
       {:halt,
        socket
        |> assign(bot_dialog_bots: bots)
-       |> system_event("[BotService] Bot '#{name}' #{action}.")}
+       |> system_event(
+         gettext("[BotService] Bot '%{name}' %{action}.", name: name, action: action)
+       )}
     else
       {:halt, socket}
     end
@@ -92,7 +97,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
          bot_dialog_channels: [],
          bot_dialog_commands: []
        )
-       |> system_event("[BotService] Bot '#{name}' destroyed.")}
+       |> system_event(gettext("[BotService] Bot '%{name}' destroyed.", name: name))}
     else
       {:halt, socket}
     end
@@ -149,11 +154,19 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         {:halt,
          socket
          |> assign(show_new_bot_dialog: false, bot_dialog_bots: bots)
-         |> system_event("[BotService] Bot '#{name}' created.")}
+         |> system_event(gettext("[BotService] Bot '%{name}' created.", name: name))}
 
       {:error, changeset} ->
         msg = format_changeset_errors(changeset)
-        {:halt, error_event(socket, "[BotService] Failed to create bot '#{name}': #{msg}")}
+
+        {:halt,
+         error_event(
+           socket,
+           gettext("[BotService] Failed to create bot '%{name}': %{message}",
+             name: name,
+             message: msg
+           )
+         )}
     end
   end
 
@@ -180,7 +193,12 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       {:halt,
        socket
        |> assign(bot_dialog_channels: channels)
-       |> system_event("[BotService] Bot '#{bot_name}' left #{channel}.")}
+       |> system_event(
+         gettext("[BotService] Bot '%{name}' left %{channel}.",
+           name: bot_name,
+           channel: channel
+         )
+       )}
     else
       {:halt, socket}
     end
@@ -209,10 +227,11 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
           {:halt,
            socket
            |> assign(bot_dialog_commands: commands, show_add_command_dialog: false)
-           |> system_event("[BotService] Command '#{trigger}' added.")}
+           |> system_event(gettext("[BotService] Command '%{trigger}' added.", trigger: trigger))}
 
         {:error, _} ->
-          {:halt, error_event(socket, "Command '#{trigger}' already exists.")}
+          {:halt,
+           error_event(socket, gettext("Command '%{trigger}' already exists.", trigger: trigger))}
       end
     else
       {:halt, socket}
@@ -230,7 +249,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       {:halt,
        socket
        |> assign(bot_dialog_commands: commands)
-       |> system_event("[BotService] Command '#{trigger}' removed.")}
+       |> system_event(gettext("[BotService] Command '%{trigger}' removed.", trigger: trigger))}
     else
       {:halt, socket}
     end
@@ -263,7 +282,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     if bot do
       handle_field_update(bot, field, value, socket)
     else
-      {:halt, error_event(socket, "Bot not found.")}
+      {:halt, error_event(socket, gettext("Bot not found."))}
     end
   end
 
@@ -305,10 +324,12 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
           {:halt,
            socket
            |> assign(bot_dialog_selected: updated_bot)
-           |> system_event("[BotService] #{cap_name} config updated.")}
+           |> system_event(
+             gettext("[BotService] %{capability} config updated.", capability: cap_name)
+           )}
 
         {:error, _} ->
-          {:halt, error_event(socket, "Failed to update config.")}
+          {:halt, error_event(socket, gettext("Failed to update config."))}
       end
     else
       {:halt, socket}
@@ -337,10 +358,15 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         {:halt,
          socket
          |> assign(bot_dialog_channels: channels)
-         |> system_event("[BotService] Bot '#{bot_name}' joined #{channel}.")}
+         |> system_event(
+           gettext("[BotService] Bot '%{name}' joined %{channel}.",
+             name: bot_name,
+             channel: channel
+           )
+         )}
 
       {:error, _} ->
-        {:halt, error_event(socket, "Bot already in #{channel}.")}
+        {:halt, error_event(socket, gettext("Bot already in %{channel}.", channel: channel))}
     end
   end
 
@@ -399,16 +425,16 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         {:halt,
          socket
          |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
-         |> system_event("[BotService] Description updated.")}
+         |> system_event(gettext("[BotService] Description updated."))}
 
       {:error, _} ->
-        {:halt, error_event(socket, "Failed to update description.")}
+        {:halt, error_event(socket, gettext("Failed to update description."))}
     end
   end
 
   defp handle_field_update(bot, "prefix", value, socket) do
     if value == "" do
-      {:halt, error_event(socket, "Prefix cannot be empty.")}
+      {:halt, error_event(socket, gettext("Prefix cannot be empty."))}
     else
       case Queries.update_bot(bot, %{command_prefix: value}) do
         {:ok, updated_bot} ->
@@ -417,10 +443,10 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
           {:halt,
            socket
            |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
-           |> system_event("[BotService] Prefix updated to '#{value}'.")}
+           |> system_event(gettext("[BotService] Prefix updated to '%{prefix}'.", prefix: value))}
 
         {:error, _} ->
-          {:halt, error_event(socket, "Failed to update prefix.")}
+          {:halt, error_event(socket, gettext("Failed to update prefix."))}
       end
     end
   end
@@ -435,22 +461,24 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
             {:halt,
              socket
              |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
-             |> system_event("[BotService] Cooldown updated to #{n}ms.")}
+             |> system_event(
+               gettext("[BotService] Cooldown updated to %{cooldown}ms.", cooldown: n)
+             )}
 
           {:error, _} ->
-            {:halt, error_event(socket, "Failed to update cooldown.")}
+            {:halt, error_event(socket, gettext("Failed to update cooldown."))}
         end
 
       {_, _} ->
-        {:halt, error_event(socket, "Cooldown must be at least 500ms.")}
+        {:halt, error_event(socket, gettext("Cooldown must be at least 500ms."))}
 
       :error ->
-        {:halt, error_event(socket, "Cooldown must be a number.")}
+        {:halt, error_event(socket, gettext("Cooldown must be a number."))}
     end
   end
 
   defp handle_field_update(_bot, _field, _value, socket) do
-    {:halt, error_event(socket, "Unknown field.")}
+    {:halt, error_event(socket, gettext("Unknown field."))}
   end
 
   defp do_toggle_capability(nil, _cap_name, socket), do: socket
@@ -465,14 +493,19 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     case Queries.update_bot(bot, %{capabilities: new_caps}) do
       {:ok, updated_bot} ->
         restart_bot_if_running(updated_bot)
-        action = if currently_enabled, do: "disabled", else: "enabled"
+        action = if currently_enabled, do: gettext("disabled"), else: gettext("enabled")
 
         socket
         |> assign(bot_dialog_selected: updated_bot)
-        |> system_event("[BotService] Capability '#{cap_name}' #{action}.")
+        |> system_event(
+          gettext("[BotService] Capability '%{capability}' %{action}.",
+            capability: cap_name,
+            action: action
+          )
+        )
 
       {:error, _} ->
-        error_event(socket, "Failed to update capability.")
+        error_event(socket, gettext("Failed to update capability."))
     end
   end
 
@@ -489,11 +522,17 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         new_enabled = !config.enabled
         Queries.update_channel_config(config, %{enabled: new_enabled})
         channels = Queries.list_channel_configs(bot.id)
-        action = if new_enabled, do: "enabled", else: "disabled"
+        action = if new_enabled, do: gettext("enabled"), else: gettext("disabled")
 
         socket
         |> assign(bot_dialog_channels: channels)
-        |> system_event("[BotService] #{bot_name} #{action} in #{channel}.")
+        |> system_event(
+          gettext("[BotService] %{bot} %{action} in %{channel}.",
+            bot: bot_name,
+            action: action,
+            channel: channel
+          )
+        )
     end
   end
 
@@ -554,7 +593,9 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
         opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
       end)
     end)
-    |> Enum.map(fn {field, errors} -> "#{field}: #{Enum.join(errors, ", ")}" end)
+    |> Enum.map(fn {field, errors} ->
+      gettext("%{field}: %{errors}", field: to_string(field), errors: Enum.join(errors, ", "))
+    end)
     |> Enum.join("; ")
   end
 

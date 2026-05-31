@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Assets.Icons do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -10,20 +11,22 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Icons do
   import RetroHexChatWeb.ShowcaseHelpers
 
   @submodules [
-    {RetroHexChatWeb.Icons.People, "People", "Users, contacts, social"},
-    {RetroHexChatWeb.Icons.Communication, "Communication", "Chat, channels, networking"},
-    {RetroHexChatWeb.Icons.Media, "Media", "Audio, video, devices"},
-    {RetroHexChatWeb.Icons.Files, "Files", "Documents, folders, clipboard"},
-    {RetroHexChatWeb.Icons.Hardware, "Hardware", "Servers, databases, platforms"},
-    {RetroHexChatWeb.Icons.Code, "Code", "Terminal, scripting, automation"},
-    {RetroHexChatWeb.Icons.Security, "Security", "Locks, shields, bans"},
-    {RetroHexChatWeb.Icons.Arrows, "Arrows", "Directional, navigation"},
-    {RetroHexChatWeb.Icons.Marks, "Marks", "Checkmarks, X marks, status"},
-    {RetroHexChatWeb.Icons.Tools, "Tools", "Settings, editing, search"},
-    {RetroHexChatWeb.Icons.Alerts, "Alerts", "Notifications, info, warnings"},
-    {RetroHexChatWeb.Icons.Symbols, "Symbols", "Currency, stars, misc"},
-    {RetroHexChatWeb.Icons.Formatting, "Formatting", "Text formatting (14x14)"},
-    {RetroHexChatWeb.Icons.Games, "Games", "P2P game icons (32x32)"}
+    {RetroHexChatWeb.Icons.People, gettext("People"), gettext("Users, contacts, social")},
+    {RetroHexChatWeb.Icons.Communication, gettext("Communication"),
+     gettext("Chat, channels, networking")},
+    {RetroHexChatWeb.Icons.Media, gettext("Media"), gettext("Audio, video, devices")},
+    {RetroHexChatWeb.Icons.Files, gettext("Files"), gettext("Documents, folders, clipboard")},
+    {RetroHexChatWeb.Icons.Hardware, gettext("Hardware"),
+     gettext("Servers, databases, platforms")},
+    {RetroHexChatWeb.Icons.Code, gettext("Code"), gettext("Terminal, scripting, automation")},
+    {RetroHexChatWeb.Icons.Security, gettext("Security"), gettext("Locks, shields, bans")},
+    {RetroHexChatWeb.Icons.Arrows, gettext("Arrows"), gettext("Directional, navigation")},
+    {RetroHexChatWeb.Icons.Marks, gettext("Marks"), gettext("Checkmarks, X marks, status")},
+    {RetroHexChatWeb.Icons.Tools, gettext("Tools"), gettext("Settings, editing, search")},
+    {RetroHexChatWeb.Icons.Alerts, gettext("Alerts"), gettext("Notifications, info, warnings")},
+    {RetroHexChatWeb.Icons.Symbols, gettext("Symbols"), gettext("Currency, stars, misc")},
+    {RetroHexChatWeb.Icons.Formatting, gettext("Formatting"), gettext("Text formatting (14x14)")},
+    {RetroHexChatWeb.Icons.Games, gettext("Games"), gettext("P2P game icons (32x32)")}
   ]
 
   # Build a compile-time map of {module, function_name} => viewBox size
@@ -34,7 +37,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Icons do
                    source = File.read!(source_path)
 
                    sizes =
-                     Regex.scan(~r/def (icon_\w+)\(.*?viewBox="0 0 (\d+) \d+"/s, source)
+                     Regex.scan(~r/def (icon_\w+)\(.*?viewBox=gettext("0 0 (\d+) \d+")/s, source)
                      |> Enum.reduce(%{}, fn [_, name, size_str], inner ->
                        atom = String.to_existing_atom(name)
 
@@ -55,7 +58,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Icons do
   @impl true
   def mount(_params, _session, socket) do
     groups = build_groups()
-    {:ok, assign(socket, page_title: "Icons", active_page: "icons", groups: groups)}
+    {:ok, assign(socket, page_title: gettext("Icons"), active_page: "icons", groups: groups)}
   end
 
   defp build_groups do
@@ -76,9 +79,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Icons do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Icons</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Icons")}</h2>
       <p class="text-xs text-muted-foreground mb-4">
-        Auto-discovered from submodules. New icons appear here automatically.
+        {gettext("Auto-discovered from submodules. New icons appear here automatically.")}
       </p>
 
       <.icon_group
@@ -141,7 +144,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Icons do
     """
   end
 
-  defp bg_class(:small_dark), do: "bg-gradient-to-r from-primary to-[#1084d0]"
+  defp bg_class(:small_dark), do: gettext("bg-gradient-to-r from-primary to-[#1084d0]")
   defp bg_class(_), do: "bg-surface"
 
   # Native pixel size classes — icons must not be resized

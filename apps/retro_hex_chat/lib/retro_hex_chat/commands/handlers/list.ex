@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.List do
   @moduledoc "Handler for /list"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -25,7 +26,8 @@ defmodule RetroHexChat.Commands.Handlers.List do
     %{
       name: "list",
       syntax: "/list",
-      description: "Browse all public channels on the server in a sortable, filterable dialog.",
+      description:
+        gettext("Browse all public channels on the server in a sortable, filterable dialog."),
       examples: ["/list"]
     }
   end
@@ -41,7 +43,8 @@ defmodule RetroHexChat.Commands.Handlers.List do
     %CommandSyntax{
       command: "list",
       syntax: "/list",
-      description: "Browse all public channels on the server in a sortable, filterable dialog.",
+      description:
+        gettext("Browse all public channels on the server in a sortable, filterable dialog."),
       category: :channel,
       parameters: [],
       examples: ["/list"]

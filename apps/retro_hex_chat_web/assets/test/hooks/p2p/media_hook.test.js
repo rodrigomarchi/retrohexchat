@@ -160,7 +160,7 @@ describe("MediaHook — Audio Call", () => {
     hook._handlePcClosed();
 
     expect(hook.pushEvent).toHaveBeenCalledWith("media_call_ended", {
-      reason: "Peer desconectou",
+      reason: "Peer disconnected",
     });
   });
 

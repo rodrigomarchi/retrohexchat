@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.ArcadeFrame do
         >
           <div class="text-center text-xs text-muted-foreground space-y-retro-4">
             <Icons.icon_game_arcade class="w-8 h-8 mx-auto" />
-            <p class="font-bold">Game area</p>
+            <p class="font-bold">{gettext("Game area")}</p>
             <p class="text-muted-foreground">{@game_url}</p>
           </div>
         </div>
@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.Components.UI.ArcadeFrame do
             data-testid="arcade-frame-leave"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            Leave Game
+            {gettext("Leave Game")}
           </.button>
         </div>
       </.window_body>

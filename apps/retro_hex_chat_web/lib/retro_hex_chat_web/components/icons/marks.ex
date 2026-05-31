@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Marks do
   Icons depicting confirmation, cancellation, and status mark concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

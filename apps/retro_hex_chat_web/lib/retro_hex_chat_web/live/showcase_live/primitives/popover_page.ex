@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PopoverPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,17 +15,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PopoverPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Popover", active_page: "popover")}
+    {:ok, assign(socket, page_title: gettext("Popover"), active_page: "popover")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Popover</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Popover")}</h2>
 
       <.showcase_card
-        title="Default (Top)"
+        title={gettext("Default (Top)")}
         description="Popover that appears above the trigger."
       >
         <div class="flex justify-center py-8">
@@ -32,13 +33,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PopoverPage do
             <.popover_trigger target="pop-top">
               <.button variant="outline">
                 <:icon><Icons.icon_lightbulb class="w-4 h-4" /></:icon>
-                Open Popover
+                {gettext("Open Popover")}
               </.button>
             </.popover_trigger>
             <.popover_content id="pop-top" side="top">
               <div class="space-y-2">
-                <h4 class="font-bold text-sm">Dimensions</h4>
-                <p class="text-xs text-muted-foreground">Set the dimensions for the layer.</p>
+                <h4 class="font-bold text-sm">{gettext("Dimensions")}</h4>
+                <p class="text-xs text-muted-foreground">
+                  {gettext("Set the dimensions for the layer.")}
+                </p>
               </div>
             </.popover_content>
           </.popover>
@@ -56,7 +59,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PopoverPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Sides"
+        title={gettext("Sides")}
         description="Popover can appear on different sides of the trigger."
       >
         <div class="flex flex-wrap justify-center gap-4 py-8">
@@ -64,11 +67,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PopoverPage do
             <.popover_trigger target="pop-bottom">
               <.button variant="outline" size="sm">
                 <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
-                Bottom
+                {gettext("Bottom")}
               </.button>
             </.popover_trigger>
             <.popover_content id="pop-bottom" side="bottom">
-              <p class="text-xs">This popover opens below.</p>
+              <p class="text-xs">{gettext("This popover opens below.")}</p>
             </.popover_content>
           </.popover>
 
@@ -76,11 +79,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PopoverPage do
             <.popover_trigger target="pop-left">
               <.button variant="outline" size="sm">
                 <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
-                Left
+                {gettext("Left")}
               </.button>
             </.popover_trigger>
             <.popover_content id="pop-left" side="left">
-              <p class="text-xs">This popover opens to the left.</p>
+              <p class="text-xs">{gettext("This popover opens to the left.")}</p>
             </.popover_content>
           </.popover>
 
@@ -88,11 +91,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.PopoverPage do
             <.popover_trigger target="pop-right">
               <.button variant="outline" size="sm">
                 <:icon><Icons.icon_btn_next class="w-4 h-4" /></:icon>
-                Right
+                {gettext("Right")}
               </.button>
             </.popover_trigger>
             <.popover_content id="pop-right" side="right">
-              <p class="text-xs">This popover opens to the right.</p>
+              <p class="text-xs">{gettext("This popover opens to the right.")}</p>
             </.popover_content>
           </.popover>
         </div>

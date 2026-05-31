@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Primitives.RadioGroup do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -13,32 +14,32 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.RadioGroup do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Radio Group", active_page: "radio-group")}
+    {:ok, assign(socket, page_title: gettext("Radio Group"), active_page: "radio-group")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Radio Group</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Radio Group")}</h2>
 
       <.showcase_card
-        title="Usage"
+        title={gettext("Usage")}
         description="A set of checkable buttons where only one can be checked at a time. Uses the builder pattern."
       >
         <.radio_group :let={builder} name="preference" value="option-1">
           <div class="space-y-2">
             <div class="flex items-center gap-2">
               <.radio_group_item builder={builder} value="option-1" id="r1" />
-              <.label for="r1">Default</.label>
+              <.label for="r1">{gettext("Default")}</.label>
             </div>
             <div class="flex items-center gap-2">
               <.radio_group_item builder={builder} value="option-2" id="r2" />
-              <.label for="r2">Comfortable</.label>
+              <.label for="r2">{gettext("Comfortable")}</.label>
             </div>
             <div class="flex items-center gap-2">
               <.radio_group_item builder={builder} value="option-3" id="r3" />
-              <.label for="r3">Compact</.label>
+              <.label for="r3">{gettext("Compact")}</.label>
             </div>
           </div>
         </.radio_group>

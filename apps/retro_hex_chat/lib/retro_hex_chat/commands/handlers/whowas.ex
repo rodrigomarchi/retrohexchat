@@ -1,17 +1,18 @@
 defmodule RetroHexChat.Commands.Handlers.Whowas do
   @moduledoc "Handler for /whowas <nickname>"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Usage: /whowas <nickname>"}
+  def validate(""), do: {:error, gettext("Usage: /whowas <nickname>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /whowas <nickname>"}
+  def execute([], _context), do: {:error, gettext("Usage: /whowas <nickname>")}
 
   def execute([target | _rest], _context) do
     {:ok, :ui_action, :show_whowas_info, %{nickname: target}}
@@ -27,10 +28,12 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
   def help do
     %{
       name: "whowas",
-      syntax: "/whowas <nickname>",
+      syntax: gettext("/whowas <nickname>"),
       description:
-        "Look up information about a user who recently disconnected.\nShows last seen time, channels, and quit message. Data cached for up to 1 hour.\nFor online users, use /whois instead.",
-      examples: ["/whowas SomeUser"]
+        gettext(
+          "Look up information about a user who recently disconnected.\nShows last seen time, channels, and quit message. Data cached for up to 1 hour.\nFor online users, use /whois instead."
+        ),
+      examples: [gettext("/whowas SomeUser")]
     }
   end
 
@@ -45,8 +48,8 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
 
     %CommandSyntax{
       command: "whowas",
-      syntax: "/whowas <nickname>",
-      description: "Look up information about a user who recently disconnected.",
+      syntax: gettext("/whowas <nickname>"),
+      description: gettext("Look up information about a user who recently disconnected."),
       category: :user,
       parameters: [
         %Parameter{
@@ -54,10 +57,10 @@ defmodule RetroHexChat.Commands.Handlers.Whowas do
           required: true,
           type: :nick,
           position: 0,
-          description: "Recently disconnected user"
+          description: gettext("Recently disconnected user")
         }
       ],
-      examples: ["/whowas SomeUser"]
+      examples: [gettext("/whowas SomeUser")]
     }
   end
 end

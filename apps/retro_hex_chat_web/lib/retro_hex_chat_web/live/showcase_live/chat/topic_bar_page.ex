@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Chat.TopicBarPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,17 +13,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.TopicBarPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Topic Bar", active_page: "topic-bar")}
+    {:ok, assign(socket, page_title: gettext("Topic Bar"), active_page: "topic-bar")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Topic Bar</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Topic Bar")}</h2>
 
       <.showcase_card
-        title="Channel Topic"
+        title={gettext("Channel Topic")}
         description="Channel topic with mode badges."
       >
         <.topic_bar
@@ -41,7 +42,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.TopicBarPage do
       </.showcase_card>
 
       <.showcase_card
-        title="PM Topic"
+        title={gettext("PM Topic")}
         description="Private message variant."
       >
         <.topic_bar
@@ -52,7 +53,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.TopicBarPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Status Window"
+        title={gettext("Status Window")}
         description="Status variant for server messages."
       >
         <.topic_bar
@@ -63,7 +64,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.TopicBarPage do
       </.showcase_card>
 
       <.showcase_card
-        title="No Topic"
+        title={gettext("No Topic")}
         description="When no topic is set."
       >
         <.topic_bar

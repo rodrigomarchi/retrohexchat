@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -17,7 +18,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Auto Respond Dialog",
+       page_title: gettext("Auto Respond Dialog"),
        active_page: "auto-respond-dialog",
        rules: [
          %{
@@ -49,15 +50,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Auto Respond Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Auto Respond Dialog")}</h2>
 
       <.showcase_card
-        title="Default State"
+        title={gettext("Default State")}
         description="Auto-respond rules list. Rules can be enabled/disabled per row with the checkbox. Trigger types: On Join, On Part, On Nick Change."
       >
         <.button variant="outline" phx-click={show_modal("auto-respond-demo")}>
           <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
-          Open Auto Respond
+          {gettext("Open Auto Respond")}
         </.button>
         <.auto_respond_dialog id="auto-respond-demo" rules={@rules} />
         <.code_example>
@@ -77,12 +78,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Editing State"
+        title={gettext("Editing State")}
         description="Edit form panel visible on the right. The draft fields are pre-populated for editing an existing rule."
       >
         <.button variant="outline" phx-click={show_modal("auto-respond-editing")}>
           <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
-          Open Auto Respond (Editing)
+          {gettext("Open Auto Respond (Editing)")}
         </.button>
         <.auto_respond_dialog
           id="auto-respond-editing"
@@ -96,12 +97,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AutoRespondDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Empty State"
+        title={gettext("Empty State")}
         description="Auto-respond dialog with no rules configured yet."
       >
         <.button variant="outline" phx-click={show_modal("auto-respond-empty")}>
           <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
-          Open Auto Respond (Empty)
+          {gettext("Open Auto Respond (Empty)")}
         </.button>
         <.auto_respond_dialog id="auto-respond-empty" rules={[]} />
       </.showcase_card>

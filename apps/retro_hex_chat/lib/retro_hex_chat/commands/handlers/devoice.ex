@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Devoice do
   @moduledoc "Handler for /devoice <nickname> — remove voice status."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -10,7 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.Devoice do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /devoice <nickname>"}
+  def execute([], _context), do: {:error, gettext("Usage: /devoice <nickname>")}
 
   def execute([nick | _], context) do
     with {:ok, channel} <- require_channel(context),
@@ -23,10 +24,12 @@ defmodule RetroHexChat.Commands.Handlers.Devoice do
   def help do
     %{
       name: "devoice",
-      syntax: "/devoice <nickname>",
+      syntax: gettext("/devoice <nickname>"),
       description:
-        "Remove voice status from a user. Shortcut for /mode -v <nickname>.\nRequires: half-operator, operator, or owner.",
-      examples: ["/devoice alice"]
+        gettext(
+          "Remove voice status from a user. Shortcut for /mode -v <nickname>.\nRequires: half-operator, operator, or owner."
+        ),
+      examples: [gettext("/devoice alice")]
     }
   end
 
@@ -41,8 +44,8 @@ defmodule RetroHexChat.Commands.Handlers.Devoice do
 
     %CommandSyntax{
       command: "devoice",
-      syntax: "/devoice <nickname>",
-      description: "Remove voice status from a user.",
+      syntax: gettext("/devoice <nickname>"),
+      description: gettext("Remove voice status from a user."),
       category: :channel,
       parameters: [
         %Parameter{
@@ -50,14 +53,16 @@ defmodule RetroHexChat.Commands.Handlers.Devoice do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to remove voice from"
+          description: gettext("User to remove voice from")
         }
       ],
-      examples: ["/devoice alice"]
+      examples: [gettext("/devoice alice")]
     }
   end
 
-  defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
+  defp require_channel(%{active_channel: nil}),
+    do: {:error, gettext("You are not in any channel")}
+
   defp require_channel(%{active_channel: ch}), do: {:ok, ch}
 
   defp require_half_op_or_above(context, channel) do
@@ -67,7 +72,7 @@ defmodule RetroHexChat.Commands.Handlers.Devoice do
     if is_op or is_half_op do
       :ok
     else
-      {:error, "You must be at least a half-operator to use this command"}
+      {:error, gettext("You must be at least a half-operator to use this command")}
     end
   end
 end

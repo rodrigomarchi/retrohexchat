@@ -45,7 +45,13 @@ defmodule RetroHexChatWeb.Components.UI.GameCanvas do
       {@rest}
     >
       <.window_title_bar
-        title={"#{@game_name} — #{@nickname} vs #{@peer_nick}"}
+        title={
+          gettext("%{game} — %{nickname} vs %{peer}",
+            game: @game_name,
+            nickname: @nickname,
+            peer: @peer_nick
+          )
+        }
         controls={[:minimize, :close]}
       >
         <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
@@ -56,7 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.GameCanvas do
         <div class="shadow-retro-field bg-black h-[400px] relative overflow-hidden">
           <canvas id="game-surface" width="640" height="480" class="w-full h-full"></canvas>
           <p class="game-canvas__stub absolute inset-0 flex items-center justify-center text-xs text-gray-400">
-            Game engine initializing... Waiting for WebRTC connection.
+            {gettext("Game engine initializing... Waiting for WebRTC connection.")}
           </p>
         </div>
 
@@ -67,13 +73,13 @@ defmodule RetroHexChatWeb.Components.UI.GameCanvas do
             <div class="flex items-center gap-retro-2">
               <Icons.icon_status_user class="w-3 h-3 shrink-0" />
               <span class="font-bold">{@nickname}</span>
-              <span :if={@role == :creator} class="text-muted-foreground">(host)</span>
+              <span :if={@role == :creator} class="text-muted-foreground">{gettext("(host)")}</span>
             </div>
-            <span class="text-muted-foreground">vs</span>
+            <span class="text-muted-foreground">{gettext("vs")}</span>
             <div class="flex items-center gap-retro-2">
               <Icons.icon_status_user class="w-3 h-3 shrink-0" />
               <span class="font-bold">{@peer_nick}</span>
-              <span :if={@role != :creator} class="text-muted-foreground">(host)</span>
+              <span :if={@role != :creator} class="text-muted-foreground">{gettext("(host)")}</span>
             </div>
           </div>
 
@@ -85,7 +91,7 @@ defmodule RetroHexChatWeb.Components.UI.GameCanvas do
             data-testid="game-canvas-end"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            End Game
+            {gettext("End Game")}
           </.button>
         </div>
       </.window_body>

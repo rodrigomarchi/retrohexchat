@@ -1,16 +1,20 @@
 <p>
-  RetroHexChat highlights messages that mention your nickname or custom words. Highlighted messages have a colored background and the channel flashes in the conversations sidebar and tab bar.
+  {gettext(
+    "RetroHexChat highlights messages that mention your nickname or custom words. Highlighted messages have a colored background and the channel flashes in the conversations sidebar and tab bar."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_general}>Default Behavior</.help_h4>
-<p>Your own nickname is always highlighted (case-insensitive, whole-word match).</p>
-<.help_h4 icon={:icon_notepad}>Custom Words</.help_h4>
+<.help_h4 icon={:icon_tab_general}>{gettext("Default Behavior")}</.help_h4>
+<p>{gettext("Your own nickname is always highlighted (case-insensitive, whole-word match).")}</p>
+<.help_h4 icon={:icon_notepad}>{gettext("Custom Words")}</.help_h4>
 <p>
-  Open the Highlight Words dialog (<strong>Ctrl+Shift+H</strong> or <strong>Tools &gt; Highlight Words</strong>) to add custom trigger words with optional background colors.
+  {gettext("Open the Highlight Words dialog (")}<strong>{gettext("Ctrl+Shift+H")}</strong> or <strong>{gettext("Tools > Highlight Words")}</strong>{gettext(
+    ") to add custom trigger words with optional background colors."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_sound}>Sound Notifications</.help_h4>
-<p>A notification sound plays when a highlight match occurs.</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_dialog_sound}>{gettext("Sound Notifications")}</.help_h4>
+<p>{gettext("A notification sound plays when a highlight match occurs.")}</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-address-book">Address Book</.help_link>
-  · <.help_link topic="feature-notify-list">Notify List</.help_link>
+  <.help_link topic="feature-address-book">{gettext("Address Book")}</.help_link>
+  · <.help_link topic="feature-notify-list">{gettext("Notify List")}</.help_link>
 </p>

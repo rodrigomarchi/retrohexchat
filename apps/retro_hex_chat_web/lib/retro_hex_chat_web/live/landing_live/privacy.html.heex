@@ -1,90 +1,96 @@
 <.landing_layout active_page={@active_page}>
   <section class="m-4" aria-labelledby="privacy-heading">
-    <h2 id="privacy-heading" class="sr-only">Privacy</h2>
+    <h2 id="privacy-heading" class="sr-only">{gettext("Privacy")}</h2>
 
     <div class="grid md:grid-cols-2 gap-4 mb-4">
       <%!-- ══════════════ BIG TECH ══════════════ --%>
       <.window>
-        <.window_title_bar title="Big Tech Platforms" controls={[:close]}>
+        <.window_title_bar title={gettext("Big Tech Platforms")} controls={[:close]}>
           <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">What they do with your data.</h3>
+          <h3 class="text-sm font-bold mb-2">{gettext("What they do with your data.")}</h3>
           <ul class="space-y-2 text-sm">
             <li class="flex items-start gap-2">
               <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>Messages stored on <strong>their</strong> servers, mined for ads</span>
+              <span>
+                {gettext("Messages stored on")}
+                <strong>their</strong> {gettext("servers, mined for ads")}
+              </span>
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>Calls routed through corporate infrastructure</span>
+              <span>{gettext("Calls routed through corporate infrastructure")}</span>
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>Your data trains their AI, sold to advertisers</span>
+              <span>{gettext("Your data trains their AI, sold to advertisers")}</span>
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>Closed source &mdash; &ldquo;trust us&rdquo;</span>
+              <span>{gettext("Closed source &mdash; &ldquo;trust us&rdquo;")}</span>
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>They can ban your community at any time</span>
+              <span>{gettext("They can ban your community at any time")}</span>
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>They read your messages &mdash; and they do</span>
+              <span>{gettext("They read your messages &mdash; and they do")}</span>
             </li>
           </ul>
         </.window_body>
         <.window_status_bar>
-          <.window_status_bar_field grow>Their rules</.window_status_bar_field>
+          <.window_status_bar_field grow>{gettext("Their rules")}</.window_status_bar_field>
         </.window_status_bar>
       </.window>
 
       <%!-- ══════════════ RETRO HEX CHAT ══════════════ --%>
       <.window>
-        <.window_title_bar title="Retro Hex Chat" controls={[:close]}>
+        <.window_title_bar title={gettext("Retro Hex Chat")} controls={[:close]}>
           <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">Your data stays with you. Period.</h3>
+          <h3 class="text-sm font-bold mb-2">{gettext("Your data stays with you. Period.")}</h3>
           <ul class="space-y-2 text-sm">
             <li class="flex items-start gap-2">
               <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>Messages stored on <strong>your</strong> server, never leave</span>
+              <span>
+                {gettext("Messages stored on")}
+                <strong>your</strong> {gettext("server, never leave")}
+              </span>
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>Calls go direct P2P &mdash; server never sees them</span>
+              <span>{gettext("Calls go direct P2P &mdash; server never sees them")}</span>
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>Your data stays in your database, period</span>
+              <span>{gettext("Your data stays in your database, period")}</span>
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>Open source &mdash; verify yourself</span>
+              <span>{gettext("Open source &mdash; verify yourself")}</span>
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>You own the server &mdash; nobody can shut you down</span>
+              <span>{gettext("You own the server &mdash; nobody can shut you down")}</span>
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>Only you have access to your messages</span>
+              <span>{gettext("Only you have access to your messages")}</span>
             </li>
           </ul>
         </.window_body>
         <.window_status_bar>
-          <.window_status_bar_field grow>Your rules</.window_status_bar_field>
+          <.window_status_bar_field grow>{gettext("Your rules")}</.window_status_bar_field>
         </.window_status_bar>
       </.window>
     </div>
 
     <%!-- ══════════════ COMPARISON TABLE ══════════════ --%>
     <.window>
-      <.window_title_bar title="Side-by-side comparison" controls={[:close]}>
+      <.window_title_bar title={gettext("Side-by-side comparison")} controls={[:close]}>
         <:icon><Icons.icon_lock class="w-4 h-4" /></:icon>
       </.window_title_bar>
       <.window_body>
@@ -94,70 +100,87 @@
               <tr>
                 <th class="text-left p-1 border-b border-gray-400"></th>
                 <th class="text-left p-1 border-b border-gray-400">
-                  Discord / Slack / Telegram
+                  {gettext("Discord / Slack / Telegram")}
                 </th>
-                <th class="text-left p-1 border-b border-gray-400">Retro Hex Chat</th>
+                <th class="text-left p-1 border-b border-gray-400">
+                  {gettext("Retro Hex Chat")}
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td class="p-1 border-b border-gray-200">
-                  <strong>Who owns the server?</strong>
+                  <strong>{gettext("Who owns the server?")}</strong>
                 </td>
-                <td class="p-1 border-b border-gray-200">A corporation</td>
-                <td class="p-1 border-b border-gray-200">You</td>
+                <td class="p-1 border-b border-gray-200">{gettext("A corporation")}</td>
+                <td class="p-1 border-b border-gray-200">{gettext("You")}</td>
               </tr>
               <tr>
                 <td class="p-1 border-b border-gray-200">
-                  <strong>Where are messages stored?</strong>
+                  <strong>{gettext("Where are messages stored?")}</strong>
                 </td>
-                <td class="p-1 border-b border-gray-200">Their cloud, their terms</td>
-                <td class="p-1 border-b border-gray-200">Your server, your database</td>
+                <td class="p-1 border-b border-gray-200">
+                  {gettext("Their cloud, their terms")}
+                </td>
+                <td class="p-1 border-b border-gray-200">
+                  {gettext("Your server, your database")}
+                </td>
               </tr>
               <tr>
                 <td class="p-1 border-b border-gray-200">
-                  <strong>Voice and video calls</strong>
+                  <strong>{gettext("Voice and video calls")}</strong>
                 </td>
-                <td class="p-1 border-b border-gray-200">Routed through their servers</td>
-                <td class="p-1 border-b border-gray-200">Direct P2P via WebRTC</td>
+                <td class="p-1 border-b border-gray-200">
+                  {gettext("Routed through their servers")}
+                </td>
+                <td class="p-1 border-b border-gray-200">{gettext("Direct P2P via WebRTC")}</td>
               </tr>
               <tr>
                 <td class="p-1 border-b border-gray-200">
-                  <strong>Can they read your messages?</strong>
+                  <strong>{gettext("Can they read your messages?")}</strong>
                 </td>
-                <td class="p-1 border-b border-gray-200">Yes &mdash; and they do</td>
-                <td class="p-1 border-b border-gray-200">No &mdash; only you have access</td>
+                <td class="p-1 border-b border-gray-200">{gettext("Yes &mdash; and they do")}</td>
+                <td class="p-1 border-b border-gray-200">
+                  {gettext("No &mdash; only you have access")}
+                </td>
               </tr>
               <tr>
                 <td class="p-1 border-b border-gray-200">
-                  <strong>Data used for AI training?</strong>
+                  <strong>{gettext("Data used for AI training?")}</strong>
                 </td>
-                <td class="p-1 border-b border-gray-200">Often, and without consent</td>
-                <td class="p-1 border-b border-gray-200">Never. Your data is yours.</td>
+                <td class="p-1 border-b border-gray-200">
+                  {gettext("Often, and without consent")}
+                </td>
+                <td class="p-1 border-b border-gray-200">
+                  {gettext("Never. Your data is yours.")}
+                </td>
               </tr>
               <tr>
                 <td class="p-1 border-b border-gray-200">
-                  <strong>Can they ban your community?</strong>
+                  <strong>{gettext("Can they ban your community?")}</strong>
                 </td>
-                <td class="p-1 border-b border-gray-200">Yes, at any time</td>
-                <td class="p-1 border-b border-gray-200">No &mdash; you own the server</td>
+                <td class="p-1 border-b border-gray-200">{gettext("Yes, at any time")}</td>
+                <td class="p-1 border-b border-gray-200">
+                  {gettext("No &mdash; you own the server")}
+                </td>
               </tr>
               <tr>
-                <td class="p-1"><strong>Source code</strong></td>
-                <td class="p-1">Closed. Trust them blindly.</td>
-                <td class="p-1">Open source. Audit it yourself.</td>
+                <td class="p-1"><strong>{gettext("Source code")}</strong></td>
+                <td class="p-1">{gettext("Closed. Trust them blindly.")}</td>
+                <td class="p-1">{gettext("Open source. Audit it yourself.")}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
         <p class="text-sm">
-          No tracking. No profiling. No data harvesting.
-          Just a chat server that <strong>respects your privacy</strong>.
+          {gettext("No tracking. No profiling. No data harvesting. Just a chat server that")} <strong>{gettext("respects your privacy")}</strong>.
         </p>
       </.window_body>
       <.window_status_bar>
-        <.window_status_bar_field grow>Your data. Your rules.</.window_status_bar_field>
+        <.window_status_bar_field grow>
+          {gettext("Your data. Your rules.")}
+        </.window_status_bar_field>
       </.window_status_bar>
     </.window>
   </section>

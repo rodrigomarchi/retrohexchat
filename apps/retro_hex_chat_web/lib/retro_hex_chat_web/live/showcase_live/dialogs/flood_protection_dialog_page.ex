@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.FloodProtectionDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -18,7 +19,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.FloodProtectionDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Flood Protection Dialog",
+       page_title: gettext("Flood Protection Dialog"),
        active_page: "flood-protection-dialog"
      )}
   end
@@ -27,15 +28,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.FloodProtectionDialogPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Flood Protection Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Flood Protection Dialog")}</h2>
 
       <.showcase_card
-        title="Default Settings"
+        title={gettext("Default Settings")}
         description="Flood protection with factory defaults: 5 lines per 2 s window, 512 bytes max, 5 s penalty."
       >
         <.button variant="outline" phx-click={show_modal("flood-default")}>
           <:icon><Icons.icon_dialog_flood class="w-4 h-4" /></:icon>
-          Flood Protection (Defaults)
+          {gettext("Flood Protection (Defaults)")}
         </.button>
         <.flood_protection_dialog
           id="flood-default"
@@ -53,12 +54,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.FloodProtectionDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Strict Settings"
+        title={gettext("Strict Settings")}
         description="Tighter limits: 3 lines per 1 s, 256 bytes, 10 s penalty — suitable for high-traffic channels."
       >
         <.button variant="outline" phx-click={show_modal("flood-strict")}>
           <:icon><Icons.icon_dialog_flood class="w-4 h-4" /></:icon>
-          Flood Protection (Strict)
+          {gettext("Flood Protection (Strict)")}
         </.button>
         <.flood_protection_dialog
           id="flood-strict"
@@ -67,12 +68,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.FloodProtectionDialogPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Lenient Settings"
+        title={gettext("Lenient Settings")}
         description="Relaxed limits: 20 lines per 5 s, 2048 bytes, 1 s penalty — for trusted environments."
       >
         <.button variant="outline" phx-click={show_modal("flood-lenient")}>
           <:icon><Icons.icon_dialog_flood class="w-4 h-4" /></:icon>
-          Flood Protection (Lenient)
+          {gettext("Flood Protection (Lenient)")}
         </.button>
         <.flood_protection_dialog
           id="flood-lenient"

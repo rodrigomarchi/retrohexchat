@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
 
   import Phoenix.Component, only: [assign: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [system_event: 2, show_whowas_text: 2, safe_update_bio: 3]
 
@@ -18,7 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
     do: show_whowas_text(socket, target)
 
   def handle_ui_action(socket, :notice_routing_show, _payload) do
-    system_event(socket, "* Notice routing is hardcoded to: active")
+    system_event(socket, gettext("* Notice routing is hardcoded to: active"))
   end
 
   def handle_ui_action(socket, :set_bio, %{text: text, truncated: truncated}) do
@@ -35,12 +37,12 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
 
     msg =
       if truncated,
-        do: "Bio truncated to 200 characters and set.",
-        else: "Bio set: #{text}"
+        do: gettext("* Bio truncated to 200 characters and set."),
+        else: gettext("* Bio set: %{text}", text: text)
 
     socket
     |> assign(session: new_session)
-    |> system_event("* #{msg}")
+    |> system_event(msg)
   end
 
   def handle_ui_action(socket, :view_bio, _payload) do
@@ -48,11 +50,11 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
 
     msg =
       case Session.get_bio(session) do
-        nil -> "No bio set. Use /bio <text> to set one."
-        bio -> "Your bio: #{bio}"
+        nil -> gettext("* No bio set. Use /bio <text> to set one.")
+        bio -> gettext("* Your bio: %{bio}", bio: bio)
       end
 
-    system_event(socket, "* #{msg}")
+    system_event(socket, msg)
   end
 
   def handle_ui_action(socket, :clear_bio, _payload) do
@@ -69,6 +71,6 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
 
     socket
     |> assign(session: new_session)
-    |> system_event("* Bio cleared.")
+    |> system_event(gettext("* Bio cleared."))
   end
 end

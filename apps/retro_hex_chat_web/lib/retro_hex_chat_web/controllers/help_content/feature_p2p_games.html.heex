@@ -1,193 +1,201 @@
 <p>
-  P2P Games lets you play retro arcade games directly with another user. Games run in real-time over WebRTC DataChannel — no server relay, minimal latency. 15 base games with 20 additional mode variants across action, sports, racing, and co-op genres.
+  {gettext(
+    "P2P Games lets you play retro arcade games directly with another user. Games run in real-time over WebRTC DataChannel — no server relay, minimal latency. 15 base games with 20 additional mode variants across action, sports, racing, and co-op genres."
+  )}
 </p>
-<.help_h4 icon={:icon_send}>Starting a Game</.help_h4>
-<pre>/game &lt;nickname&gt;</pre>
+<.help_h4 icon={:icon_send}>{gettext("Starting a Game")}</.help_h4>
+<pre>{gettext("/game <nickname>")}</pre>
 <p>
-  This creates a game session and sends an invite via PM. The target user clicks the link to join the game lobby.
+  {gettext(
+    "This creates a game session and sends an invite via PM. The target user clicks the link to join the game lobby."
+  )}
 </p>
-<.help_h4 icon={:icon_community}>Game Lobby</.help_h4>
+<.help_h4 icon={:icon_community}>{gettext("Game Lobby")}</.help_h4>
 <p>
-  The lobby is where both players meet before starting a game. You can:
+  {gettext("The lobby is where both players meet before starting a game. You can:")}
 </p>
 <ul>
-  <li>Chat with your opponent</li>
-  <li>Browse and select from 35 available games across 15 families</li>
-  <li>Wait for your opponent to accept or decline</li>
+  <li>{gettext("Chat with your opponent")}</li>
+  <li>{gettext("Browse and select from 35 available games across 15 families")}</li>
+  <li>{gettext("Wait for your opponent to accept or decline")}</li>
 </ul>
 <p>
-  Game selection requires <strong>bilateral consent</strong>
-  — one player picks a game, the other must accept before it starts.
+  {gettext("Game selection requires")} <strong>{gettext("bilateral consent")}</strong>
+  {gettext("— one player picks a game, the other must accept before it starts.")}
 </p>
-<.help_h4 icon={:icon_game_generic}>Available Games</.help_h4>
+<.help_h4 icon={:icon_game_generic}>{gettext("Available Games")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-hex-pong">Hex Pong</.help_link>
-    — Cyberpunk Pong, first to 11 (win by 2)
+    <.help_link topic="feature-hex-pong">{gettext("Hex Pong")}</.help_link>
+    {gettext("— Cyberpunk Pong, first to 11 (win by 2)")}
   </li>
   <li>
-    <.help_link topic="feature-light-trails">Light Trails</.help_link>
-    — Neon grid trail race, trap your opponent
+    <.help_link topic="feature-light-trails">{gettext("Light Trails")}</.help_link>
+    {gettext("— Neon grid trail race, trap your opponent")}
   </li>
   <li>
-    <.help_link topic="feature-hex-warlords">Hex Warlords</.help_link>
-    — Versus Breakout castle battle, last king standing
+    <.help_link topic="feature-hex-warlords">{gettext("Hex Warlords")}</.help_link>
+    {gettext("— Versus Breakout castle battle, last king standing")}
   </li>
   <li>
-    <.help_link topic="feature-hex-boxing">Hex Boxing</.help_link>
-    — Top-down boxing, distance-based scoring, first to KO
+    <.help_link topic="feature-hex-boxing">{gettext("Hex Boxing")}</.help_link>
+    {gettext("— Top-down boxing, distance-based scoring, first to KO")}
   </li>
   <li>
-    <.help_link topic="feature-pixel-tanks">Pixel Tanks</.help_link>
-    — Tank combat in destructible mazes, best of 3 rounds
+    <.help_link topic="feature-pixel-tanks">{gettext("Pixel Tanks")}</.help_link>
+    {gettext("— Tank combat in destructible mazes, best of 3 rounds")}
   </li>
   <li>
-    <.help_link topic="feature-star-duel">Star Duel</.help_link>
-    — Newtonian space combat with wraparound arena
+    <.help_link topic="feature-star-duel">{gettext("Star Duel")}</.help_link>
+    {gettext("— Newtonian space combat with wraparound arena")}
     <ul>
       <li>
-        <.help_link topic="feature-gravity-well">Gravity Well</.help_link>
-        — Central star pulls ships into orbital trajectories
+        <.help_link topic="feature-gravity-well">{gettext("Gravity Well")}</.help_link>
+        {gettext("— Central star pulls ships into orbital trajectories")}
       </li>
       <li>
-        <.help_link topic="feature-debris-field">Debris Field</.help_link>
-        — 8 asteroids block missiles and kill ships
+        <.help_link topic="feature-debris-field">{gettext("Debris Field")}</.help_link>
+        {gettext("— 8 asteroids block missiles and kill ships")}
       </li>
     </ul>
   </li>
   <li>
-    <.help_link topic="feature-block-breakers">Block Breakers</.help_link>
-    — Cooperative Breakout with two paddles
+    <.help_link topic="feature-block-breakers">{gettext("Block Breakers")}</.help_link>
+    {gettext("— Cooperative Breakout with two paddles")}
   </li>
   <li>
-    <.help_link topic="feature-hex-outlaw">Hex Outlaw</.help_link>
-    — Western duel across a cactus obstacle
+    <.help_link topic="feature-hex-outlaw">{gettext("Hex Outlaw")}</.help_link>
+    {gettext("— Western duel across a cactus obstacle")}
     <ul>
       <li>
-        <.help_link topic="feature-hex-outlaw-ricochet">Ricochet</.help_link>
-        — Bullets bounce off walls at 30-degree angles
+        <.help_link topic="feature-hex-outlaw-ricochet">{gettext("Ricochet")}</.help_link>
+        {gettext("— Bullets bounce off walls at 30-degree angles")}
       </li>
       <li>
-        <.help_link topic="feature-hex-outlaw-stagecoach">Stagecoach</.help_link>
-        — Moving stagecoach blocks shots
+        <.help_link topic="feature-hex-outlaw-stagecoach">{gettext("Stagecoach")}</.help_link>
+        {gettext("— Moving stagecoach blocks shots")}
       </li>
       <li>
-        <.help_link topic="feature-hex-outlaw-nml">No Man's Land</.help_link>
-        — Open field, full horizontal movement
+        <.help_link topic="feature-hex-outlaw-nml">{gettext("No Man's Land")}</.help_link>
+        {gettext("— Open field, full horizontal movement")}
       </li>
     </ul>
   </li>
   <li>
-    <.help_link topic="feature-hex-hockey">Hex Hockey</.help_link>
-    — Ice hockey with AI goalies, 3 periods
+    <.help_link topic="feature-hex-hockey">{gettext("Hex Hockey")}</.help_link>
+    {gettext("— Ice hockey with AI goalies, 3 periods")}
     <ul>
       <li>
-        <.help_link topic="feature-hex-hockey-blitz">Blitz</.help_link>
-        — 1 period, faster puck, 80% tackle success
+        <.help_link topic="feature-hex-hockey-blitz">{gettext("Blitz")}</.help_link>
+        {gettext("— 1 period, faster puck, 80% tackle success")}
       </li>
       <li>
-        <.help_link topic="feature-hex-hockey-showdown">Showdown</.help_link>
-        — No timer, first to 5 goals, escalating puck speed
+        <.help_link topic="feature-hex-hockey-showdown">{gettext("Showdown")}</.help_link>
+        {gettext("— No timer, first to 5 goals, escalating puck speed")}
       </li>
     </ul>
   </li>
   <li>
-    <.help_link topic="feature-hex-tennis">Hex Tennis</.help_link>
-    — Full set with deuce, advantage, tiebreak
+    <.help_link topic="feature-hex-tennis">{gettext("Hex Tennis")}</.help_link>
+    {gettext("— Full set with deuce, advantage, tiebreak")}
     <ul>
       <li>
-        <.help_link topic="feature-hex-tennis-quick">Quick Match</.help_link>
-        — First to 3 games wins
+        <.help_link topic="feature-hex-tennis-quick">{gettext("Quick Match")}</.help_link>
+        {gettext("— First to 3 games wins")}
       </li>
       <li>
-        <.help_link topic="feature-hex-tennis-sudden">Sudden Death</.help_link>
-        — Every point wins a game, first to 6
+        <.help_link topic="feature-hex-tennis-sudden">{gettext("Sudden Death")}</.help_link>
+        {gettext("— Every point wins a game, first to 6")}
       </li>
     </ul>
   </li>
   <li>
-    <.help_link topic="feature-hex-enduro">Hex Enduro</.help_link>
-    — Pseudo-3D racing with weather cycle, best of 3 days
+    <.help_link topic="feature-hex-enduro">{gettext("Hex Enduro")}</.help_link>
+    {gettext("— Pseudo-3D racing with weather cycle, best of 3 days")}
     <ul>
       <li>
-        <.help_link topic="feature-hex-enduro-night">Night Race</.help_link>
-        — Permanent darkness with fog bursts
+        <.help_link topic="feature-hex-enduro-night">{gettext("Night Race")}</.help_link>
+        {gettext("— Permanent darkness with fog bursts")}
       </li>
       <li>
-        <.help_link topic="feature-hex-enduro-sprint">Sprint</.help_link>
-        — 90-second daylight sprint, no weather
+        <.help_link topic="feature-hex-enduro-sprint">{gettext("Sprint")}</.help_link>
+        {gettext("— 90-second daylight sprint, no weather")}
       </li>
     </ul>
   </li>
   <li>
-    <.help_link topic="feature-hex-raid">Hex Raid</.help_link>
-    — River Raid for two, 10 sections with mines and fuel
+    <.help_link topic="feature-hex-raid">{gettext("Hex Raid")}</.help_link>
+    {gettext("— River Raid for two, 10 sections with mines and fuel")}
     <ul>
       <li>
-        <.help_link topic="feature-hex-raid-pacifist">Pacifist</.help_link>
-        — No mines, pure skill competition
+        <.help_link topic="feature-hex-raid-pacifist">{gettext("Pacifist")}</.help_link>
+        {gettext("— No mines, pure skill competition")}
       </li>
       <li>
-        <.help_link topic="feature-hex-raid-blitz">Blitz</.help_link>
-        — 5 sections, narrow river, faster mines
+        <.help_link topic="feature-hex-raid-blitz">{gettext("Blitz")}</.help_link>
+        {gettext("— 5 sections, narrow river, faster mines")}
       </li>
     </ul>
   </li>
   <li>
-    <.help_link topic="feature-hex-invaders">Hex Invaders</.help_link>
-    — Split-screen Space Invaders with alien drops
+    <.help_link topic="feature-hex-invaders">{gettext("Hex Invaders")}</.help_link>
+    {gettext("— Split-screen Space Invaders with alien drops")}
     <ul>
       <li>
-        <.help_link topic="feature-hex-invaders-coop">Co-op</.help_link>
-        — Shared screen, fight waves together
+        <.help_link topic="feature-hex-invaders-coop">{gettext("Co-op")}</.help_link>
+        {gettext("— Shared screen, fight waves together")}
       </li>
       <li>
-        <.help_link topic="feature-hex-invaders-blitz">Blitz</.help_link>
-        — Instant drops, 5 waves of chaos
+        <.help_link topic="feature-hex-invaders-blitz">{gettext("Blitz")}</.help_link>
+        {gettext("— Instant drops, 5 waves of chaos")}
       </li>
     </ul>
   </li>
   <li>
-    <.help_link topic="feature-hex-frost">Hex Frost</.help_link>
-    — Arctic igloo construction race on floating ice
+    <.help_link topic="feature-hex-frost">{gettext("Hex Frost")}</.help_link>
+    {gettext("— Arctic igloo construction race on floating ice")}
     <ul>
       <li>
-        <.help_link topic="feature-hex-frost-blizzard">Blizzard</.help_link>
-        — 1 epic round, 20-piece igloo, all enemies
+        <.help_link topic="feature-hex-frost-blizzard">{gettext("Blizzard")}</.help_link>
+        {gettext("— 1 epic round, 20-piece igloo, all enemies")}
       </li>
       <li>
-        <.help_link topic="feature-hex-frost-peaceful">Peaceful</.help_link>
-        — No block stealing, pure construction race
+        <.help_link topic="feature-hex-frost-peaceful">{gettext("Peaceful")}</.help_link>
+        {gettext("— No block stealing, pure construction race")}
       </li>
     </ul>
   </li>
   <li>
-    <.help_link topic="feature-hex-skiing">Hex Skiing</.help_link>
-    — Alpine descent through obstacles, outrun the avalanche
+    <.help_link topic="feature-hex-skiing">{gettext("Hex Skiing")}</.help_link>
+    {gettext("— Alpine descent through obstacles, outrun the avalanche")}
     <ul>
       <li>
-        <.help_link topic="feature-hex-skiing-escape">Escape</.help_link>
-        — Infinite descent, ever-accelerating avalanche
+        <.help_link topic="feature-hex-skiing-escape">{gettext("Escape")}</.help_link>
+        {gettext("— Infinite descent, ever-accelerating avalanche")}
       </li>
       <li>
-        <.help_link topic="feature-hex-skiing-clean">Clean Run</.help_link>
-        — No avalanche, pure time trial
+        <.help_link topic="feature-hex-skiing-clean">{gettext("Clean Run")}</.help_link>
+        {gettext("— No avalanche, pure time trial")}
       </li>
     </ul>
   </li>
 </ul>
-<.help_h4 icon={:icon_webrtc}>Architecture</.help_h4>
+<.help_h4 icon={:icon_webrtc}>{gettext("Architecture")}</.help_h4>
 <p>
-  The session creator acts as <strong>host</strong>
-  and runs the game loop at ~60fps. The peer sends keyboard inputs via DataChannel and receives game state snapshots. This keeps both players in sync with minimal bandwidth.
+  {gettext("The session creator acts as")} <strong>host</strong>
+  {gettext(
+    "and runs the game loop at ~60fps. The peer sends keyboard inputs via DataChannel and receives game state snapshots. This keeps both players in sync with minimal bandwidth."
+  )}
 </p>
-<.help_h4 icon={:icon_clock}>Timeouts</.help_h4>
+<.help_h4 icon={:icon_clock}>{gettext("Timeouts")}</.help_h4>
 <p>
-  Pending sessions expire in 5 minutes. The lobby expires after 15 minutes of inactivity (with a warning at 10 minutes).
+  {gettext(
+    "Pending sessions expire in 5 minutes. The lobby expires after 15 minutes of inactivity (with a warning at 10 minutes)."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-game">/game</.help_link>
-  · <.help_link topic="feature-p2p-sessions">P2P Sessions</.help_link>
-  · <.help_link topic="feature-arcade">Solo Arcade</.help_link>
+  <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
+  · <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
+  · <.help_link topic="feature-arcade">{gettext("Solo Arcade")}</.help_link>
 </p>

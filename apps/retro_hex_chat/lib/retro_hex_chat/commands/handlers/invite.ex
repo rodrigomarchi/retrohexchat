@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Invite do
   @moduledoc "Handler for /invite <nickname> [#channel]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -11,7 +12,7 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, "Usage: /invite <nickname> [#channel]"}
+    {:error, gettext("Usage: /invite <nickname> [#channel]")}
   end
 
   def execute(["auto"], _context) do
@@ -38,15 +39,23 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
   def help do
     %{
       name: "invite",
-      syntax: "/invite <nickname> [#channel]",
+      syntax: gettext("/invite <nickname> [#channel]"),
       description:
-        "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited.",
-      examples: ["/invite Alice", "/invite Alice #private", "/invite auto"]
+        gettext(
+          "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited."
+        ),
+      examples: [
+        gettext("/invite Alice"),
+        gettext("/invite Alice #private"),
+        gettext("/invite auto")
+      ]
     }
   end
 
   @spec require_channel(Handler.context()) :: {:ok, String.t()} | {:error, String.t()}
-  defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
+  defp require_channel(%{active_channel: nil}),
+    do: {:error, gettext("You are not in any channel")}
+
   defp require_channel(%{active_channel: channel}), do: {:ok, channel}
 
   @impl true
@@ -60,9 +69,11 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
 
     %CommandSyntax{
       command: "invite",
-      syntax: "/invite <nickname> [#channel]",
+      syntax: gettext("/invite <nickname> [#channel]"),
       description:
-        "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited.",
+        gettext(
+          "Send a channel invitation to another user. Required for invite-only (+i) channels.\nDefaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n/invite auto — toggles whether you automatically join channels when invited."
+        ),
       category: :channel,
       parameters: [
         %Parameter{
@@ -70,17 +81,21 @@ defmodule RetroHexChat.Commands.Handlers.Invite do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to invite"
+          description: gettext("User to invite")
         },
         %Parameter{
           name: "#channel",
           required: false,
           type: :channel,
           position: 1,
-          description: "Target channel (defaults to current channel)"
+          description: gettext("Target channel (defaults to current channel)")
         }
       ],
-      examples: ["/invite Alice", "/invite Alice #private", "/invite auto"]
+      examples: [
+        gettext("/invite Alice"),
+        gettext("/invite Alice #private"),
+        gettext("/invite auto")
+      ]
     }
   end
 end

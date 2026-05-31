@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Flood do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [stream_insert: 3]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{FloodProtection, FloodTracker, IgnoreList}
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
@@ -75,7 +77,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Flood do
           |> stream_insert(
             :chat_messages,
             Messages.system_message(
-              "* #{sender} has been auto-ignored for flooding (#{duration_str})"
+              gettext("* %{sender} has been auto-ignored for flooding (%{duration})",
+                sender: sender,
+                duration: duration_str
+              )
             )
           )
 
@@ -116,15 +121,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Flood do
   @spec format_duration(integer()) :: String.t()
   def format_duration(seconds) when seconds >= 3600 do
     hours = div(seconds, 3600)
-    "#{hours} hour#{if hours > 1, do: "s", else: ""}"
+    ngettext("%{count} hour", "%{count} hours", hours)
   end
 
   def format_duration(seconds) when seconds >= 60 do
     minutes = div(seconds, 60)
-    "#{minutes} minute#{if minutes > 1, do: "s", else: ""}"
+    ngettext("%{count} minute", "%{count} minutes", minutes)
   end
 
-  def format_duration(seconds), do: "#{seconds} seconds"
+  def format_duration(seconds), do: ngettext("%{count} second", "%{count} seconds", seconds)
 
   # Private helpers
 

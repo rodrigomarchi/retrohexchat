@@ -2,6 +2,7 @@ defmodule RetroHexChat.Arcade.Policy do
   @moduledoc """
   Authorization rules for solo arcade session operations.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
 
@@ -37,7 +38,7 @@ defmodule RetroHexChat.Arcade.Policy do
     if exists do
       :ok
     else
-      {:error, "You must be registered to play arcade games"}
+      {:error, gettext("You must be registered to play arcade games")}
     end
   end
 
@@ -45,13 +46,13 @@ defmodule RetroHexChat.Arcade.Policy do
     if user_id == session.creator_id do
       :ok
     else
-      {:error, "You are not the owner of this arcade session"}
+      {:error, gettext("You are not the owner of this arcade session")}
     end
   end
 
   defp check_not_terminal(session) do
     if SoloSession.terminal?(session.status) do
-      {:error, "Arcade session is no longer active"}
+      {:error, gettext("Arcade session is no longer active")}
     else
       :ok
     end

@@ -3,6 +3,7 @@ defmodule RetroHexChat.P2P do
   Public API for the P2P bounded context.
   All external callers use this module.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.P2P.{Queries, Service, SessionServer}
   alias RetroHexChat.P2P.Schema.Session
@@ -88,13 +89,18 @@ defmodule RetroHexChat.P2P do
 
       [
         %{
-          urls: ["turn:#{relay_ip}:#{listen_port}?transport=udp"],
+          urls: [
+            gettext("turn:%{relay_ip}:%{listen_port}?transport=udp",
+              relay_ip: relay_ip,
+              listen_port: listen_port
+            )
+          ],
           username: creds.username,
           credential: creds.password
         }
       ]
     else
-      [%{urls: ["stun:stun.l.google.com:19302"]}]
+      [%{urls: [gettext("stun:stun.l.google.com:19302")]}]
     end
   end
 end

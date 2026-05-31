@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.PerformDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -17,7 +18,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.PerformDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Perform Dialog",
+       page_title: gettext("Perform Dialog"),
        active_page: :perform_dialog,
        perform_selected: nil,
        autojoin_selected: nil,

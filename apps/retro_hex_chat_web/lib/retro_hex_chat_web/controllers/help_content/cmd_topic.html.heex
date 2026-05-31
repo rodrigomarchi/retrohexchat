@@ -1,28 +1,38 @@
 <p>
-  View or change the channel topic — the text displayed in the topic bar at the top of the channel window.
+  {gettext(
+    "View or change the channel topic — the text displayed in the topic bar at the top of the channel window."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/topic [new topic text]</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>new topic text</code> — The new topic to set. If omitted, shows the current topic.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/topic [new topic text]")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
-  Running <code>/topic</code>
-  with no arguments displays the current channel topic and who set it. Providing text sets a new topic that appears in the topic bar at the top of the channel for all members to see. The topic bar is always visible, making it a good place for channel rules, links, or the current discussion subject.
+  <code>{gettext("new topic text")}</code> {gettext(
+    "— The new topic to set. If omitted, shows the current topic."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<p>
+  {gettext("Running")} <code>{gettext("/topic")}</code>
+  {gettext(
+    "with no arguments displays the current channel topic and who set it. Providing text sets a new topic that appears in the topic bar at the top of the channel for all members to see. The topic bar is always visible, making it a good place for channel rules, links, or the current discussion subject."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>If the channel has +t mode (topic lock), only operators and owners can change the topic</li>
-  <li>Without +t, any channel member can change the topic</li>
-  <li>Must be in a channel to use this command</li>
+  <li>
+    {gettext(
+      "If the channel has +t mode (topic lock), only operators and owners can change the topic"
+    )}
+  </li>
+  <li>{gettext("Without +t, any channel member can change the topic")}</li>
+  <li>{gettext("Must be in a channel to use this command")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/topic
-/topic Welcome to #elixir! Today: LiveView discussion
-/topic Rules: Be respectful, no spam</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/topic /topic Welcome to #elixir! Today: LiveView discussion /topic Rules: Be respectful, no spam")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-mode">/mode</.help_link>
-  · <.help_link topic="cmd-join">/join</.help_link>
-  · <.help_link topic="channel-permissions">Channel Permissions</.help_link>
+  <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
+  · <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
+  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
 </p>

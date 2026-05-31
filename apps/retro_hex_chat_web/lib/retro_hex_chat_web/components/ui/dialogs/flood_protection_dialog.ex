@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
 
     ~H"""
     <.dialog id={@id} show={@show} on_cancel={@on_cancel}>
-      <.dialog_header id={@id} title="Flood Protection" on_close={@on_cancel}>
+      <.dialog_header id={@id} title={gettext("Flood Protection")} on_close={@on_cancel}>
         <:icon><Icons.icon_dialog_flood class="w-4 h-4" /></:icon>
       </.dialog_header>
 
@@ -66,15 +66,19 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
         <form phx-submit={@on_save}>
           <div class="space-y-retro-8">
             <p class="text-xs text-muted-foreground">
-              Configure limits to prevent message flooding in channels and private messages.
+              {gettext(
+                "Configure limits to prevent message flooding in channels and private messages."
+              )}
             </p>
 
             <%!-- Message Flood --%>
             <fieldset class="shadow-retro-field p-retro-8">
-              <legend class="text-xs font-bold px-1">Message Flood</legend>
+              <legend class="text-xs font-bold px-1">{gettext("Message Flood")}</legend>
               <div class="space-y-retro-4">
                 <div class="flex items-center gap-retro-4">
-                  <label for={"#{@id}-threshold"} class="text-xs w-[120px]">Threshold:</label>
+                  <label for={"#{@id}-threshold"} class="text-xs w-[120px]">
+                    {gettext("Threshold:")}
+                  </label>
                   <.input
                     id={"#{@id}-threshold"}
                     name="flood_threshold"
@@ -84,10 +88,12 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
                     max="100"
                     class="w-16 text-xs h-7"
                   />
-                  <span class="text-xs text-muted-foreground">messages</span>
+                  <span class="text-xs text-muted-foreground">{gettext("messages")}</span>
                 </div>
                 <div class="flex items-center gap-retro-4">
-                  <label for={"#{@id}-window"} class="text-xs w-[120px]">Time window:</label>
+                  <label for={"#{@id}-window"} class="text-xs w-[120px]">
+                    {gettext("Time window:")}
+                  </label>
                   <.input
                     id={"#{@id}-window"}
                     name="flood_window_seconds"
@@ -97,18 +103,20 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
                     max="300"
                     class="w-16 text-xs h-7"
                   />
-                  <span class="text-xs text-muted-foreground">seconds</span>
+                  <span class="text-xs text-muted-foreground">{gettext("seconds")}</span>
                 </div>
               </div>
             </fieldset>
 
             <%!-- Anti-Spam --%>
             <fieldset class="shadow-retro-field p-retro-8">
-              <legend class="text-xs font-bold px-1">Anti-Spam (Duplicate Detection)</legend>
+              <legend class="text-xs font-bold px-1">
+                {gettext("Anti-Spam (Duplicate Detection)")}
+              </legend>
               <div class="space-y-retro-4">
                 <div class="flex items-center gap-retro-4">
                   <label for={"#{@id}-spam-threshold"} class="text-xs w-[120px]">
-                    Duplicate limit:
+                    {gettext("Duplicate limit:")}
                   </label>
                   <.input
                     id={"#{@id}-spam-threshold"}
@@ -119,10 +127,12 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
                     max="50"
                     class="w-16 text-xs h-7"
                   />
-                  <span class="text-xs text-muted-foreground">identical msgs</span>
+                  <span class="text-xs text-muted-foreground">{gettext("identical msgs")}</span>
                 </div>
                 <div class="flex items-center gap-retro-4">
-                  <label for={"#{@id}-spam-window"} class="text-xs w-[120px]">Time window:</label>
+                  <label for={"#{@id}-spam-window"} class="text-xs w-[120px]">
+                    {gettext("Time window:")}
+                  </label>
                   <.input
                     id={"#{@id}-spam-window"}
                     name="spam_window_seconds"
@@ -132,16 +142,18 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
                     max="120"
                     class="w-16 text-xs h-7"
                   />
-                  <span class="text-xs text-muted-foreground">seconds</span>
+                  <span class="text-xs text-muted-foreground">{gettext("seconds")}</span>
                 </div>
               </div>
             </fieldset>
 
             <%!-- Auto-Ignore --%>
             <fieldset class="shadow-retro-field p-retro-8">
-              <legend class="text-xs font-bold px-1">Auto-Ignore</legend>
+              <legend class="text-xs font-bold px-1">{gettext("Auto-Ignore")}</legend>
               <div class="flex items-center gap-retro-4">
-                <label for={"#{@id}-ignore-duration"} class="text-xs w-[120px]">Duration:</label>
+                <label for={"#{@id}-ignore-duration"} class="text-xs w-[120px]">
+                  {gettext("Duration:")}
+                </label>
                 <.input
                   id={"#{@id}-ignore-duration"}
                   name="auto_ignore_duration_seconds"
@@ -151,7 +163,7 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
                   max="86400"
                   class="w-20 text-xs h-7"
                 />
-                <span class="text-xs text-muted-foreground">seconds</span>
+                <span class="text-xs text-muted-foreground">{gettext("seconds")}</span>
               </div>
             </fieldset>
           </div>
@@ -159,15 +171,15 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
           <.dialog_footer>
             <.button type="submit" variant="default">
               <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
-              Save
+              {gettext("Save")}
             </.button>
             <.button type="button" variant="outline" phx-click={@on_reset}>
               <:icon><Icons.icon_btn_reset class="w-4 h-4" /></:icon>
-              Reset Defaults
+              {gettext("Reset Defaults")}
             </.button>
             <.button type="button" variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
               <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-              Cancel
+              {gettext("Cancel")}
             </.button>
           </.dialog_footer>
         </form>

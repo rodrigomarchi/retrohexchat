@@ -1,121 +1,149 @@
 <p>
-  BotService lets you create and manage extensible bots that live in channels, respond to messages,
-  greet users, and execute custom commands. Bots are built on a pluggable capability system — each
-  bot can be configured with different behaviors.
+  {gettext(
+    "BotService lets you create and manage extensible bots that live in channels, respond to messages, greet users, and execute custom commands. Bots are built on a pluggable capability system — each bot can be configured with different behaviors."
+  )}
 </p>
 
-<.help_h4 icon={:icon_wrench}>Capabilities</.help_h4>
-<p>Each bot can have one or more capabilities enabled:</p>
+<.help_h4 icon={:icon_wrench}>{gettext("Capabilities")}</.help_h4>
+<p>{gettext("Each bot can have one or more capabilities enabled:")}</p>
 <ul>
-  <li><strong>Mentions</strong> — responds when someone mentions the bot by name</li>
   <li>
-    <strong>Greeter</strong>
-    — welcomes users when they join a channel, optionally says goodbye on part
+    <strong>{gettext("Mentions")}</strong> {gettext(
+      "— responds when someone mentions the bot by name"
+    )}
   </li>
   <li>
-    <strong>Custom Commands</strong>
-    — user-defined <code>!BotName trigger</code>
-    commands with configurable responses
+    <strong>{gettext("Greeter")}</strong>
+    {gettext("— welcomes users when they join a channel, optionally says goodbye on part")}
   </li>
   <li>
-    <strong>Help</strong>
-    — built-in <code>!BotName help</code>
-    command that lists available commands
+    <strong>{gettext("Custom Commands")}</strong>
+    {gettext("— user-defined")} <code>{gettext("!BotName trigger")}</code>
+    {gettext("commands with configurable responses")}
   </li>
   <li>
-    <strong>Dice</strong>
-    — RPG dice rolling with standard notation (<code>2d6</code>, <code>d20+5</code>, <code>4d6kh3</code>).
-    Use <code>!BotName roll &lt;notation&gt;</code>
-    to roll dice
+    <strong>{gettext("Help")}</strong>
+    {gettext("— built-in")} <code>{gettext("!BotName help")}</code>
+    {gettext("command that lists available commands")}
   </li>
   <li>
-    <strong>Moderation</strong>
-    — auto-moderation that monitors all messages for blocked words, spam, flood, and caps lock abuse.
-    Configurable actions: warn, mute, or kick
+    <strong>{gettext("Dice")}</strong>
+    {gettext("— RPG dice rolling with standard notation (")}<code>2d6</code>, <code>{gettext("d20+5")}</code>, <code>4d6kh3</code>{gettext(
+      "). Use"
+    )} <code>{gettext("!BotName roll <notation>")}</code>
+    {gettext("to roll dice")}
   </li>
   <li>
-    <strong>Trivia</strong> — interactive quiz with 6 categories, scoring, and timers.
-    Use <code>!BotName trivia start</code> to begin a round
+    <strong>{gettext("Moderation")}</strong>
+    {gettext(
+      "— auto-moderation that monitors all messages for blocked words, spam, flood, and caps lock abuse. Configurable actions: warn, mute, or kick"
+    )}
   </li>
   <li>
-    <strong>Scheduler</strong> — posts scheduled/periodic messages to channels.
-    Supports interval (every N minutes) and daily (at HH:MM UTC) schedules
+    <strong>{gettext("Trivia")}</strong> {gettext(
+      "— interactive quiz with 6 categories, scoring, and timers. Use"
+    )} <code>{gettext("!BotName trivia start")}</code> {gettext("to begin a round")}
   </li>
   <li>
-    <strong>RSS</strong> — monitors RSS/Atom feeds and posts new items to channels.
-    Use <code>!BotName rss add &lt;url&gt; &lt;#channel&gt;</code> to add a feed
+    <strong>{gettext("Scheduler")}</strong> {gettext(
+      "— posts scheduled/periodic messages to channels. Supports interval (every N minutes) and daily (at HH:MM UTC) schedules"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("RSS")}</strong> {gettext(
+      "— monitors RSS/Atom feeds and posts new items to channels. Use"
+    )} <code>{gettext("!BotName rss add <url> <#channel>")}</code> {gettext("to add a feed")}
   </li>
 </ul>
 <p>
-  Additional capabilities (LLM, Script, Game) are planned for future releases.
+  {gettext("Additional capabilities (LLM, Script, Game) are planned for future releases.")}
 </p>
 
-<.help_h4 icon={:icon_tab_control}>How Bots Work</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How Bots Work")}</.help_h4>
 <p>
-  Each bot runs as its own process on the server. When a message arrives in a channel the bot has joined,
-  the bot checks each capability in order. Passive capabilities (like Moderation) run on every message,
-  while active capabilities use first-match-wins. A cooldown timer prevents the bot from responding too frequently.
+  {gettext(
+    "Each bot runs as its own process on the server. When a message arrives in a channel the bot has joined, the bot checks each capability in order. Passive capabilities (like Moderation) run on every message, while active capabilities use first-match-wins. A cooldown timer prevents the bot from responding too frequently."
+  )}
 </p>
 <p>
-  Bots appear in the channel nicklist with a <strong>⚙</strong>
-  prefix and are grouped below regular users.
-  They can be kicked or banned from channels like normal users.
-</p>
-
-<.help_h4 icon={:icon_shield}>Permissions</.help_h4>
-<p>
-  Only <strong>admins</strong>
-  and <strong>server operators</strong>
-  can create, modify, or delete bots.
-  All users can view bot info and use bot commands.
+  {gettext("Bots appear in the channel nicklist with a")} <strong>⚙</strong>
+  {gettext(
+    "prefix and are grouped below regular users. They can be kicked or banned from channels like normal users."
+  )}
 </p>
 
-<.help_h4 icon={:icon_dice}>Dice Notation</.help_h4>
-<p>The Dice capability supports standard RPG notation:</p>
+<.help_h4 icon={:icon_shield}>{gettext("Permissions")}</.help_h4>
+<p>
+  {gettext("Only")} <strong>admins</strong>
+  and <strong>{gettext("server operators")}</strong>
+  {gettext(
+    "can create, modify, or delete bots. All users can view bot info and use bot commands."
+  )}
+</p>
+
+<.help_h4 icon={:icon_dice}>{gettext("Dice Notation")}</.help_h4>
+<p>{gettext("The Dice capability supports standard RPG notation:")}</p>
 <ul>
-  <li><code>NdS</code> — roll N dice with S sides (e.g., <code>2d6</code>)</li>
-  <li><code>dS</code> — shorthand for 1 die (e.g., <code>d20</code>)</li>
-  <li><code>NdS+M</code> — add modifier (e.g., <code>d20+5</code>)</li>
-  <li><code>NdS-M</code> — subtract modifier (e.g., <code>d8-2</code>)</li>
-  <li><code>NdSkhK</code> — keep highest K dice (e.g., <code>4d6kh3</code>)</li>
-  <li><code>NdSklK</code> — keep lowest K dice (e.g., <code>2d20kl1</code>)</li>
+  <li>
+    <code>{gettext("NdS")}</code> {gettext("— roll N dice with S sides (e.g.,")} <code>2d6</code>)
+  </li>
+  <li>
+    <code>{gettext("dS")}</code> {gettext("— shorthand for 1 die (e.g.,")} <code>d20</code>)
+  </li>
+  <li>
+    <code>{gettext("NdS+M")}</code> {gettext("— add modifier (e.g.,")} <code>{gettext("d20+5")}</code>)
+  </li>
+  <li>
+    <code>{gettext("NdS-M")}</code> {gettext("— subtract modifier (e.g.,")} <code>d8-2</code>)
+  </li>
+  <li>
+    <code>{gettext("NdSkhK")}</code> {gettext("— keep highest K dice (e.g.,")} <code>4d6kh3</code>)
+  </li>
+  <li>
+    <code>{gettext("NdSklK")}</code> {gettext("— keep lowest K dice (e.g.,")} <code>2d20kl1</code>)
+  </li>
 </ul>
 
-<.help_h4 icon={:icon_question}>Trivia Categories</.help_h4>
+<.help_h4 icon={:icon_question}>{gettext("Trivia Categories")}</.help_h4>
 <p>
-  Available trivia categories: general, science, history, geography, technology, entertainment.
+  {gettext(
+    "Available trivia categories: general, science, history, geography, technology, entertainment."
+  )}
 </p>
 <p>
-  Commands: <code>!Bot trivia start</code>, <code>!Bot trivia stop</code>, <code>!Bot trivia score</code>,
-  <code>!Bot answer &lt;text&gt;</code>
+  {gettext("Commands:")} <code>{gettext("!Bot trivia start")}</code>, <code>{gettext("!Bot trivia stop")}</code>, <code>{gettext("!Bot trivia score")}</code>,
+  <code>{gettext("!Bot answer <text>")}</code>
 </p>
 
-<.help_h4 icon={:icon_code}>Template Placeholders</.help_h4>
-<p>Bot responses support these placeholders:</p>
+<.help_h4 icon={:icon_code}>{gettext("Template Placeholders")}</.help_h4>
+<p>{gettext("Bot responses support these placeholders:")}</p>
 <ul>
-  <li><code>{"{nickname}"}</code> — the user who triggered the response</li>
-  <li><code>{"{channel}"}</code> — the current channel name</li>
-  <li><code>{"{topic}"}</code> — the current channel topic</li>
-  <li><code>{"{prefix}"}</code> — the bot's command prefix (e.g., <code>!</code>)</li>
-  <li><code>{"{botname}"}</code> — the bot's display name</li>
+  <li><code>{"{nickname}"}</code> {gettext("— the user who triggered the response")}</li>
+  <li><code>{"{channel}"}</code> {gettext("— the current channel name")}</li>
+  <li><code>{"{topic}"}</code> {gettext("— the current channel topic")}</li>
+  <li>
+    <code>{"{prefix}"}</code> {gettext("— the bot's command prefix (e.g.,")} <code>!</code>)
+  </li>
+  <li><code>{"{botname}"}</code> {gettext("— the bot's display name")}</li>
 </ul>
 
-<.help_h4 icon={:icon_laptop}>Management Dialog</.help_h4>
+<.help_h4 icon={:icon_laptop}>{gettext("Management Dialog")}</.help_h4>
 <p>
-  Open the Bot Management dialog from the <strong>Tools</strong>
-  menu or by typing <code>/bot</code>
-  with no arguments (admin only). The dialog shows all bots with a split-view: select a bot on the left
-  to see its details, channels, commands, and event hooks on the right.
+  {gettext("Open the Bot Management dialog from the")} <strong>{gettext("Tools")}</strong>
+  {gettext("menu or by typing")} <code>{gettext("/bot")}</code>
+  {gettext(
+    "with no arguments (admin only). The dialog shows all bots with a split-view: select a bot on the left to see its details, channels, commands, and event hooks on the right."
+  )}
 </p>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="bot-command">/bot Command Reference</.help_link>
-  · <.help_link topic="bot-custom-commands">Bot Custom Commands</.help_link>
-  · <.help_link topic="bot-dice">Dice</.help_link>
-  · <.help_link topic="bot-trivia">Trivia</.help_link>
-  · <.help_link topic="bot-scheduler">Scheduler</.help_link>
-  · <.help_link topic="bot-rss">RSS</.help_link>
-  · <.help_link topic="bot-moderation">Moderation</.help_link>
-  · <.help_link topic="chanserv">ChanServ</.help_link>
+  <.help_link topic="bot-command">{gettext("/bot Command Reference")}</.help_link>
+  · <.help_link topic="bot-custom-commands">{gettext("Bot Custom Commands")}</.help_link>
+  · <.help_link topic="bot-dice">{gettext("Dice")}</.help_link>
+  · <.help_link topic="bot-trivia">{gettext("Trivia")}</.help_link>
+  · <.help_link topic="bot-scheduler">{gettext("Scheduler")}</.help_link>
+  · <.help_link topic="bot-rss">{gettext("RSS")}</.help_link>
+  · <.help_link topic="bot-moderation">{gettext("Moderation")}</.help_link>
+  · <.help_link topic="chanserv">{gettext("ChanServ")}</.help_link>
 </p>

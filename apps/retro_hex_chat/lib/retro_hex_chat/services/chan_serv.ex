@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Services.ChanServ do
   @moduledoc "ChanServ: Channel registration and access list management."
+  use Gettext, backend: RetroHexChat.Gettext
   use GenServer
 
   require Logger
@@ -98,7 +99,12 @@ defmodule RetroHexChat.Services.ChanServ do
   def handle_call({:register, channel_name, founder_nick}, _from, state) do
     with :ok <- check_identified(founder_nick, state),
          {:ok, _channel} <- do_register_channel(channel_name, founder_nick) do
-      {:reply, {:ok, "Channel #{channel_name} registered by #{founder_nick}"}, state}
+      {:reply,
+       {:ok,
+        gettext("Channel %{channel_name} registered by %{founder_nick}",
+          channel_name: channel_name,
+          founder_nick: founder_nick
+        )}, state}
     else
       {:error, msg} -> {:reply, {:error, msg}, state}
     end
@@ -110,7 +116,9 @@ defmodule RetroHexChat.Services.ChanServ do
          :ok <- verify_founder(channel, nickname) do
       cleanup_channel(channel_name)
       Queries.delete_registered_channel(channel)
-      {:reply, {:ok, "Channel #{channel_name} dropped"}, state}
+
+      {:reply, {:ok, gettext("Channel %{channel_name} dropped", channel_name: channel_name)},
+       state}
     else
       {:error, msg} -> {:reply, {:error, msg}, state}
     end
@@ -119,7 +127,10 @@ defmodule RetroHexChat.Services.ChanServ do
   def handle_call({:info, channel_name}, _from, state) do
     case Queries.find_registered_channel(channel_name) do
       nil ->
-        {:reply, {:error, "Channel #{channel_name} is not registered"}, state}
+        {:reply,
+         {:error,
+          gettext("Channel %{channel_name} is not registered", channel_name: channel_name)},
+         state}
 
       channel ->
         info = %{
@@ -159,7 +170,10 @@ defmodule RetroHexChat.Services.ChanServ do
       {:ok, channel} ->
         cleanup_channel(channel_name)
         Queries.delete_registered_channel(channel)
-        {:reply, {:ok, "Channel #{channel_name} dropped by admin"}, state}
+
+        {:reply,
+         {:ok, gettext("Channel %{channel_name} dropped by admin", channel_name: channel_name)},
+         state}
 
       {:error, msg} ->
         {:reply, {:error, msg}, state}
@@ -175,7 +189,13 @@ defmodule RetroHexChat.Services.ChanServ do
         Queries.remove_access(channel_name, new_founder)
         Queries.add_access(channel_name, new_founder, "founder", "admin")
         Queries.update_channel_founder(channel_name, new_founder)
-        {:reply, {:ok, "Founder of #{channel_name} transferred to #{new_founder}"}, state}
+
+        {:reply,
+         {:ok,
+          gettext("Founder of %{channel_name} transferred to %{new_founder}",
+            channel_name: channel_name,
+            new_founder: new_founder
+          )}, state}
 
       {:error, msg} ->
         {:reply, {:error, msg}, state}
@@ -200,7 +220,7 @@ defmodule RetroHexChat.Services.ChanServ do
 
     case NickServ.info(nickname, nick_serv) do
       {:ok, %{identified: true}} -> :ok
-      _ -> {:error, "You must be identified to use ChanServ"}
+      _ -> {:error, gettext("You must be identified to use ChanServ")}
     end
   end
 
@@ -217,8 +237,11 @@ defmodule RetroHexChat.Services.ChanServ do
 
   defp find_channel_or_error(channel_name) do
     case Queries.find_registered_channel(channel_name) do
-      nil -> {:error, "Channel #{channel_name} is not registered"}
-      channel -> {:ok, channel}
+      nil ->
+        {:error, gettext("Channel %{channel_name} is not registered", channel_name: channel_name)}
+
+      channel ->
+        {:ok, channel}
     end
   end
 
@@ -226,7 +249,7 @@ defmodule RetroHexChat.Services.ChanServ do
     if channel.founder_nickname == nickname do
       :ok
     else
-      {:error, "Only the founder can drop a channel"}
+      {:error, gettext("Only the founder can drop a channel")}
     end
   end
 
@@ -283,15 +306,34 @@ defmodule RetroHexChat.Services.ChanServ do
 
   defp do_manage_access(channel_name, :add, level, target_nick, requester_nick) do
     case Queries.add_access(channel_name, target_nick, level, requester_nick) do
-      {:ok, _} -> {:ok, "#{target_nick} added to #{level} list of #{channel_name}"}
-      {:error, _} -> {:error, "Failed to add #{target_nick} to #{level} list"}
+      {:ok, _} ->
+        {:ok,
+         gettext("%{target_nick} added to %{level} list of %{channel_name}",
+           target_nick: target_nick,
+           level: level,
+           channel_name: channel_name
+         )}
+
+      {:error, _} ->
+        {:error,
+         gettext("Failed to add %{target_nick} to %{level} list",
+           target_nick: target_nick,
+           level: level
+         )}
     end
   end
 
   defp do_manage_access(channel_name, :remove, _level, target_nick, _requester_nick) do
     case Queries.remove_access(channel_name, target_nick) do
-      :ok -> {:ok, "#{target_nick} removed from access list of #{channel_name}"}
-      {:error, :not_found} -> {:error, "#{target_nick} not found in access list"}
+      :ok ->
+        {:ok,
+         gettext("%{target_nick} removed from access list of %{channel_name}",
+           target_nick: target_nick,
+           channel_name: channel_name
+         )}
+
+      {:error, :not_found} ->
+        {:error, gettext("%{target_nick} not found in access list", target_nick: target_nick)}
     end
   end
 
@@ -302,7 +344,7 @@ defmodule RetroHexChat.Services.ChanServ do
       end)
     end)
     |> Enum.map_join(", ", fn {field, errors} ->
-      "#{field}: #{Enum.join(errors, ", ")}"
+      gettext("%{field}: %{errors}", field: field, errors: Enum.join(errors, ", "))
     end)
   end
 end

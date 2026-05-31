@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -17,11 +18,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Channel Dialog",
+       page_title: gettext("Channel Dialog"),
        active_page: "channel-dialog",
        bans: [
-         %{mask: "*!*@bad.host.com", set_by: "admin", date: "2024-01-15"},
-         %{mask: "spammer!*@*", set_by: "moderator", date: "2024-02-20"}
+         %{mask: gettext("*!*@bad.host.com"), set_by: "admin", date: "2024-01-15"},
+         %{mask: gettext("spammer!*@*"), set_by: "moderator", date: "2024-02-20"}
        ]
      )}
   end
@@ -30,15 +31,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelDialogPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Channel Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Channel Dialog")}</h2>
 
       <.showcase_card
-        title="Channel Settings"
+        title={gettext("Channel Settings")}
         description="Channel dialog with General/Modes/Bans tabs."
       >
         <.button variant="outline" phx-click={show_modal("channel-demo")}>
           <:icon><Icons.icon_tab_channel class="w-4 h-4" /></:icon>
-          Channel Settings
+          {gettext("Channel Settings")}
         </.button>
         <.channel_dialog
           id="channel-demo"

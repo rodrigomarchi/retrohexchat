@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeDoom do
   SVG logo/cover art for the DOOM arcade help page.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -17,7 +18,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeDoom do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="DOOM arcade logo: bold red angular letters on dark background"
+      aria-label={gettext("DOOM arcade logo: bold red angular letters on dark background")}
     >
       {win98_chrome("DOOM - Arcade")}
       <%!-- Background gradient effect --%>
@@ -83,7 +84,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeDoom do
         font-size="11"
         font-family="'Courier New',monospace"
       >
-        PrBoom+ WebAssembly
+        {gettext("PrBoom+ WebAssembly")}
       </text>
       <%!-- Pentagram star (simplified) --%>
       <polygon

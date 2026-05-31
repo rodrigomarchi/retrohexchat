@@ -9,6 +9,8 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   import Phoenix.Component, only: [assign: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [error_event: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
   alias RetroHexChat.Commands.{Dispatcher, Parser}
@@ -20,7 +22,8 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     if admin?(socket) do
       {:halt, assign(socket, show_admin_console: true, admin_console_results: [])}
     else
-      {:halt, error_event(socket, "Admin Console is restricted to server administrators.")}
+      {:halt,
+       error_event(socket, gettext("Admin Console is restricted to server administrators."))}
     end
   end
 
@@ -33,7 +36,8 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       results = execute_batch(input, socket)
       {:halt, assign(socket, admin_console_results: results)}
     else
-      {:halt, error_event(socket, "Admin Console is restricted to server administrators.")}
+      {:halt,
+       error_event(socket, gettext("Admin Console is restricted to server administrators."))}
     end
   end
 
@@ -89,7 +93,12 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
         {entry, new_ctx}
 
       {:message, _text} ->
-        entry = %{line: line, status: :error, message: "Not a command (must start with /)"}
+        entry = %{
+          line: line,
+          status: :error,
+          message: gettext("Not a command (must start with /)")
+        }
+
         {entry, context}
     end
   end
@@ -153,18 +162,25 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   defp result_status(_), do: :ok
 
   defp result_message({:ok, :system, %{content: text}}), do: text
-  defp result_message({:ok, :join, channel}), do: "Joined #{channel}"
-  defp result_message({:ok, :join, channel, _pw}), do: "Joined #{channel}"
-  defp result_message({:ok, :ui_action, :set_topic, %{topic: t}}), do: "Topic set: #{t}"
-  defp result_message({:ok, :ui_action, :set_mode, %{mode_string: m}}), do: "Mode set: #{m}"
-  defp result_message({:ok, :ui_action, :view_topic, _}), do: "Done"
+  defp result_message({:ok, :join, channel}), do: gettext("Joined %{channel}", channel: channel)
+
+  defp result_message({:ok, :join, channel, _pw}),
+    do: gettext("Joined %{channel}", channel: channel)
+
+  defp result_message({:ok, :ui_action, :set_topic, %{topic: t}}),
+    do: gettext("Topic set: %{topic}", topic: t)
+
+  defp result_message({:ok, :ui_action, :set_mode, %{mode_string: m}}),
+    do: gettext("Mode set: %{mode}", mode: m)
+
+  defp result_message({:ok, :ui_action, :view_topic, _}), do: gettext("Done")
   defp result_message({:error, msg}), do: msg
 
   defp result_message({:ok, _type, payload}) when is_map(payload) do
-    payload |> Map.get(:content, Map.get(payload, :message, "Done")) |> to_string()
+    payload |> Map.get(:content, Map.get(payload, :message, gettext("Done"))) |> to_string()
   end
 
-  defp result_message(_), do: "Done"
+  defp result_message(_), do: gettext("Done")
 
   defp blank?(""), do: true
   defp blank?(_), do: false

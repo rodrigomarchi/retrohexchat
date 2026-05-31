@@ -14,6 +14,8 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
   import Phoenix.Component, only: [assign: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [maybe_persist_custom_menus: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{AliasExpander, CustomMenus}
   alias RetroHexChat.Commands.Parser
@@ -203,11 +205,16 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
 
   # ── Private helpers ────────────────────────────────────────
 
-  defp custom_menu_error_msg(:duplicate_label), do: "An item with that label already exists"
-  defp custom_menu_error_msg(:invalid_label), do: "Invalid label (1-50 characters)"
-  defp custom_menu_error_msg(:invalid_command), do: "Command is required"
-  defp custom_menu_error_msg(:command_too_long), do: "Command too long (max 500 characters)"
-  defp custom_menu_error_msg(:command_chaining), do: "Command must not contain chaining"
-  defp custom_menu_error_msg(:menu_full), do: "Menu is full (max 10 items per type)"
-  defp custom_menu_error_msg(:not_found), do: "Item not found"
+  defp custom_menu_error_msg(:duplicate_label),
+    do: gettext("An item with that label already exists")
+
+  defp custom_menu_error_msg(:invalid_label), do: gettext("Invalid label (1-50 characters)")
+  defp custom_menu_error_msg(:invalid_command), do: gettext("Command is required")
+
+  defp custom_menu_error_msg(:command_too_long),
+    do: gettext("Command too long (max 500 characters)")
+
+  defp custom_menu_error_msg(:command_chaining), do: gettext("Command must not contain chaining")
+  defp custom_menu_error_msg(:menu_full), do: gettext("Menu is full (max 10 items per type)")
+  defp custom_menu_error_msg(:not_found), do: gettext("Item not found")
 end

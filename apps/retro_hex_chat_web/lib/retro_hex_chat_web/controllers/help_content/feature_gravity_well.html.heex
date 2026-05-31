@@ -1,50 +1,71 @@
 <p>
-  Star Duel variant with a central gravity star that pulls ships and missiles into curved
-  trajectories. Use gravity slingshots for speed — but fly too close and the star kills you.
-  Mastering orbital mechanics is the key to victory — every thrust and shot must account for
-  the star's relentless pull.
+  {gettext(
+    "Star Duel variant with a central gravity star that pulls ships and missiles into curved trajectories. Use gravity slingshots for speed — but fly too close and the star kills you. Mastering orbital mechanics is the key to victory — every thrust and shot must account for the star's relentless pull."
+  )}
 </p>
 <.diagram_game_space class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow Up / W</strong> — Thrust forward</li>
-  <li><strong>Arrow Left / A</strong> — Rotate left</li>
-  <li><strong>Arrow Right / D</strong> — Rotate right</li>
-  <li><strong>Space</strong> — Fire missile</li>
-  <li><strong>Arrow Down / S</strong> — Hyperspace warp (random teleport, 20% death chance)</li>
-</ul>
-<.help_h4 icon={:icon_rules}>What's Different</.help_h4>
-<ul>
-  <li>A central star exerts gravitational pull on all ships and missiles</li>
-  <li>Gravity curves missile trajectories — use the star to bend shots around obstacles</li>
-  <li>Use gravity slingshots to accelerate without thrust</li>
-  <li>Flying into the star's danger zone is instant death (scores a point for your opponent)</li>
-  <li>Thrust fights gravity, not friction — orbit management is critical</li>
-  <li>All other rules are identical to Star Duel (first to 7, wraparound, hyperspace warp)</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>Strategy Tips</.help_h4>
-<ul>
+  <li><strong>{gettext("Arrow Up / W")}</strong> {gettext("— Thrust forward")}</li>
+  <li><strong>{gettext("Arrow Left / A")}</strong> {gettext("— Rotate left")}</li>
+  <li><strong>{gettext("Arrow Right / D")}</strong> {gettext("— Rotate right")}</li>
+  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
   <li>
-    <strong>Orbit, don't fight</strong>
-    — Use lateral thrust to orbit the star instead of burning away from it. Orbiting conserves fuel and keeps you moving unpredictably.
-  </li>
-  <li>
-    <strong>Gravity-bent shots</strong>
-    — Fire missiles on curved paths by shooting tangentially past the star. Your opponent can't dodge what they can't predict.
-  </li>
-  <li>
-    <strong>Slingshot ambush</strong>
-    — Dive toward the star for a speed boost, then slingshot around for a high-speed attack run. Risky but devastating.
-  </li>
-  <li>
-    <strong>Warp is suicide</strong>
-    — Hyperspace warp can teleport you onto the star's danger zone. Only use it as an absolute last resort.
+    <strong>{gettext("Arrow Down / S")}</strong> {gettext(
+      "— Hyperspace warp (random teleport, 20% death chance)"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("What's Different")}</.help_h4>
+<ul>
+  <li>{gettext("A central star exerts gravitational pull on all ships and missiles")}</li>
+  <li>
+    {gettext("Gravity curves missile trajectories — use the star to bend shots around obstacles")}
+  </li>
+  <li>{gettext("Use gravity slingshots to accelerate without thrust")}</li>
+  <li>
+    {gettext(
+      "Flying into the star's danger zone is instant death (scores a point for your opponent)"
+    )}
+  </li>
+  <li>{gettext("Thrust fights gravity, not friction — orbit management is critical")}</li>
+  <li>
+    {gettext(
+      "All other rules are identical to Star Duel (first to 7, wraparound, hyperspace warp)"
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("Orbit, don't fight")}</strong>
+    {gettext(
+      "— Use lateral thrust to orbit the star instead of burning away from it. Orbiting conserves fuel and keeps you moving unpredictably."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Gravity-bent shots")}</strong>
+    {gettext(
+      "— Fire missiles on curved paths by shooting tangentially past the star. Your opponent can't dodge what they can't predict."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Slingshot ambush")}</strong>
+    {gettext(
+      "— Dive toward the star for a speed boost, then slingshot around for a high-speed attack run. Risky but devastating."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Warp is suicide")}</strong>
+    {gettext(
+      "— Hyperspace warp can teleport you onto the star's danger zone. Only use it as an absolute last resort."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-star-duel">Star Duel</.help_link>
-  · <.help_link topic="feature-debris-field">Debris Field</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-star-duel">{gettext("Star Duel")}</.help_link>
+  · <.help_link topic="feature-debris-field">{gettext("Debris Field")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

@@ -1,24 +1,27 @@
 <.showcase_layout active_page={@active_page}>
-  <h2 class="text-lg font-bold mb-3">Menu</h2>
+  <h2 class="text-lg font-bold mb-3">{gettext("Menu")}</h2>
 
-  <.showcase_card title="Basic Menu" description="A simple context menu with items and icons.">
+  <.showcase_card
+    title={gettext("Basic Menu")}
+    description="A simple context menu with items and icons."
+  >
     <div class="inline-block">
       <.menu>
         <.menu_item>
           <:icon><Icons.icon_btn_channel_list class="w-[16px] h-[16px]" /></:icon>
-          Channel List
+          {gettext("Channel List")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_conversations class="w-[16px] h-[16px]" /></:icon>
-          Toggle Conversations
+          {gettext("Toggle Conversations")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_nicklist class="w-[16px] h-[16px]" /></:icon>
-          Toggle Nicklist
+          {gettext("Toggle Nicklist")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_find class="w-[16px] h-[16px]" /></:icon>
-          Find
+          {gettext("Find")}
         </.menu_item>
       </.menu>
     </div>
@@ -32,50 +35,53 @@
     </.code_example>
   </.showcase_card>
 
-  <.showcase_card title="With Separators" description="Menu items grouped by separators.">
+  <.showcase_card
+    title={gettext("With Separators")}
+    description="Menu items grouped by separators."
+  >
     <div class="inline-block">
       <.menu>
         <.menu_item>
           <:icon><Icons.icon_btn_channel_list class="w-[16px] h-[16px]" /></:icon>
-          Channel List
+          {gettext("Channel List")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_conversations class="w-[16px] h-[16px]" /></:icon>
-          Toggle Conversations
+          {gettext("Toggle Conversations")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_nicklist class="w-[16px] h-[16px]" /></:icon>
-          Toggle Nicklist
+          {gettext("Toggle Nicklist")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_find class="w-[16px] h-[16px]" /></:icon>
-          Find
+          {gettext("Find")}
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_address_book class="w-[16px] h-[16px]" /></:icon>
-          Address Book
+          {gettext("Address Book")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_highlight_words class="w-[16px] h-[16px]" /></:icon>
-          Highlight Words
+          {gettext("Highlight Words")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_ignore_list class="w-[16px] h-[16px]" /></:icon>
-          Ignore List
+          {gettext("Ignore List")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_url_catcher class="w-[16px] h-[16px]" /></:icon>
-          URL Catcher
+          {gettext("URL Catcher")}
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_settings class="w-[16px] h-[16px]" /></:icon>
-          Settings
+          {gettext("Settings")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
-          Bot Management
+          {gettext("Bot Management")}
         </.menu_item>
       </.menu>
     </div>
@@ -92,29 +98,32 @@
     </.code_example>
   </.showcase_card>
 
-  <.showcase_card title="With Shortcuts" description="Menu items with keyboard shortcut hints.">
+  <.showcase_card
+    title={gettext("With Shortcuts")}
+    description="Menu items with keyboard shortcut hints."
+  >
     <div class="inline-block">
       <.menu>
         <.menu_item>
           <:icon><Icons.icon_btn_edit class="w-[16px] h-[16px]" /></:icon>
-          Cut
-          <:shortcut>Ctrl+X</:shortcut>
+          {gettext("Cut")}
+          <:shortcut>{gettext("Ctrl+X")}</:shortcut>
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_copy class="w-[16px] h-[16px]" /></:icon>
-          Copy
-          <:shortcut>Ctrl+C</:shortcut>
+          {gettext("Copy")}
+          <:shortcut>{gettext("Ctrl+C")}</:shortcut>
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_dialog_paste class="w-[16px] h-[16px]" /></:icon>
-          Paste
-          <:shortcut>Ctrl+V</:shortcut>
+          {gettext("Paste")}
+          <:shortcut>{gettext("Ctrl+V")}</:shortcut>
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_search class="w-[16px] h-[16px]" /></:icon>
-          Select All
-          <:shortcut>Ctrl+A</:shortcut>
+          {gettext("Select All")}
+          <:shortcut>{gettext("Ctrl+A")}</:shortcut>
         </.menu_item>
       </.menu>
     </div>
@@ -127,29 +136,29 @@
     </.code_example>
   </.showcase_card>
 
-  <.showcase_card title="Disabled Items" description="Some menu items can be disabled.">
+  <.showcase_card title={gettext("Disabled Items")} description="Some menu items can be disabled.">
     <div class="inline-block">
       <.menu>
         <.menu_item>
           <:icon><Icons.icon_folder class="w-[16px] h-[16px]" /></:icon>
-          Open
+          {gettext("Open")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_save class="w-[16px] h-[16px]" /></:icon>
-          Save
+          {gettext("Save")}
         </.menu_item>
         <.menu_item disabled>
           <:icon><Icons.icon_btn_save class="w-[16px] h-[16px]" /></:icon>
-          Save As...
+          {gettext("Save As...")}
         </.menu_item>
         <.menu_separator />
         <.menu_item disabled>
           <:icon><Icons.icon_notepad class="w-[16px] h-[16px]" /></:icon>
-          Print
+          {gettext("Print")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_close class="w-[16px] h-[16px]" /></:icon>
-          Exit
+          {gettext("Exit")}
         </.menu_item>
       </.menu>
     </div>
@@ -162,81 +171,81 @@
   </.showcase_card>
 
   <.showcase_card
-    title="Platform-Style Tools Menu"
+    title={gettext("Platform-Style Tools Menu")}
     description="Replicating the platform's Tools dropdown menu with icons."
   >
     <div class="inline-block">
       <.menu class="min-w-[200px]">
         <.menu_item>
           <:icon><Icons.icon_btn_channel_list class="w-[16px] h-[16px]" /></:icon>
-          Channel List
+          {gettext("Channel List")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_conversations class="w-[16px] h-[16px]" /></:icon>
-          Toggle Conversations
+          {gettext("Toggle Conversations")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_toggle_nicklist class="w-[16px] h-[16px]" /></:icon>
-          Toggle Nicklist
+          {gettext("Toggle Nicklist")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_find class="w-[16px] h-[16px]" /></:icon>
-          Find
+          {gettext("Find")}
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_address_book class="w-[16px] h-[16px]" /></:icon>
-          Address Book
+          {gettext("Address Book")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_highlight_words class="w-[16px] h-[16px]" /></:icon>
-          Highlight Words
+          {gettext("Highlight Words")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_ignore_list class="w-[16px] h-[16px]" /></:icon>
-          Ignore List
+          {gettext("Ignore List")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_url_catcher class="w-[16px] h-[16px]" /></:icon>
-          URL Catcher
+          {gettext("URL Catcher")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_channel_central class="w-[16px] h-[16px]" /></:icon>
-          Channel Central
+          {gettext("Channel Central")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_perform class="w-[16px] h-[16px]" /></:icon>
-          Perform
+          {gettext("Perform")}
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_sounds class="w-[16px] h-[16px]" /></:icon>
-          Sounds
+          {gettext("Sounds")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_flood_protection class="w-[16px] h-[16px]" /></:icon>
-          Flood Protection
+          {gettext("Flood Protection")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_alias_editor class="w-[16px] h-[16px]" /></:icon>
-          Alias Editor
+          {gettext("Alias Editor")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_custom_menus class="w-[16px] h-[16px]" /></:icon>
-          Custom Menus
+          {gettext("Custom Menus")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_auto_respond class="w-[16px] h-[16px]" /></:icon>
-          Auto-Respond
+          {gettext("Auto-Respond")}
         </.menu_item>
         <.menu_separator />
         <.menu_item>
           <:icon><Icons.icon_btn_settings class="w-[16px] h-[16px]" /></:icon>
-          Settings
+          {gettext("Settings")}
         </.menu_item>
         <.menu_item>
           <:icon><Icons.icon_btn_bot_management class="w-[16px] h-[16px]" /></:icon>
-          Bot Management
+          {gettext("Bot Management")}
         </.menu_item>
       </.menu>
     </div>

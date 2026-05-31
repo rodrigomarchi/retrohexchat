@@ -1,3 +1,4 @@
+import { t, jt } from "../i18n.js";
 /**
  * Interactive chat element utilities.
  *
@@ -140,9 +141,9 @@ export function repositionWithinViewport(x, y, width, height, margin = 4) {
  * @returns {string}
  */
 export function formatChannelTooltip(channel, count, joined) {
-  const users = count === 1 ? "1 user" : `${count} users`;
-  const action = joined ? "Click to switch" : "Click to join";
-  return `${channel} \u2014 ${users} \u2014 ${action}`;
+  const users = count === 1 ? t("1 user") : `${count} users`;
+  const action = joined ? t("Click to switch") : t("Click to join");
+  return jt`${channel} \u2014 ${users} \u2014 ${action}`;
 }
 
 /** @type {number | null} */

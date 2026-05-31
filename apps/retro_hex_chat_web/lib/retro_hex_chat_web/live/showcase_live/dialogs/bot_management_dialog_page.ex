@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.BotManagementDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -34,17 +35,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.BotManagementDialogPage do
 
     {:ok,
      assign(socket,
-       page_title: "Bot Management Dialog",
+       page_title: gettext("Bot Management Dialog"),
        active_page: "bot-management-dialog",
        bots: bots,
        selected: List.first(bots),
        channels: [%{name: "#general", status: "joined"}, %{name: "#games", status: "joined"}],
-       commands: [%{trigger: "!roll", response: "Rolls a dice (1-20)"}],
+       commands: [%{trigger: "!roll", response: gettext("Rolls a dice (1-20)")}],
        events: [
-         %{timestamp: "12:30", message: "DiceBot joined #general"},
-         %{timestamp: "12:31", message: "DiceBot responded to !roll"}
+         %{timestamp: "12:30", message: gettext("DiceBot joined #general")},
+         %{timestamp: "12:31", message: gettext("DiceBot responded to !roll")}
        ],
-       stats: %{messages: 1234, commands: 567, uptime: "3d 12h"},
+       stats: %{messages: 1234, commands: 567, uptime: gettext("3d 12h")},
        is_admin: true
      )}
   end
@@ -53,15 +54,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.BotManagementDialogPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Bot Management Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Bot Management Dialog")}</h2>
 
       <.showcase_card
-        title="Bot Management"
+        title={gettext("Bot Management")}
         description="Split-view dialog with bot list, details, and admin controls."
       >
         <.button variant="outline" phx-click={show_modal("bot-mgmt-demo")}>
           <:icon><Icons.icon_dialog_bot_management class="w-4 h-4" /></:icon>
-          Open Bot Management
+          {gettext("Open Bot Management")}
         </.button>
         <.bot_management_dialog
           id="bot-mgmt-demo"

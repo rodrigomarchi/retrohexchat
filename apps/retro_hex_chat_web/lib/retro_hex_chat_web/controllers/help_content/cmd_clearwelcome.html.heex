@@ -1,21 +1,25 @@
 <p>
-  Remove the welcome message from the current channel so that new users joining won't see one.
+  {gettext(
+    "Remove the welcome message from the current channel so that new users joining won't see one."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/clearwelcome</pre>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/clearwelcome")}</pre>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Clears the welcome message that is shown to users when they join the current channel. After clearing, no welcome message is displayed until a new one is set with <code>/setwelcome</code>.
+  {gettext(
+    "Clears the welcome message that is shown to users when they join the current channel. After clearing, no welcome message is displayed until a new one is set with"
+  )} <code>{gettext("/setwelcome")}</code>.
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>You must be a channel operator or owner</li>
-  <li>Must be used inside a channel</li>
+  <li>{gettext("You must be a channel operator or owner")}</li>
+  <li>{gettext("Must be used inside a channel")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/clearwelcome</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/clearwelcome")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-setwelcome">/setwelcome</.help_link>
-  · <.help_link topic="feature-special-messages">Special Messages</.help_link>
+  <.help_link topic="cmd-setwelcome">{gettext("/setwelcome")}</.help_link>
+  · <.help_link topic="feature-special-messages">{gettext("Special Messages")}</.help_link>
 </p>

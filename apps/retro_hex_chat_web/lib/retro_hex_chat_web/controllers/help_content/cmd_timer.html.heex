@@ -1,39 +1,45 @@
 <p>
-  Schedule a command to run after a delay, optionally repeating at a regular interval. Useful for reminders, periodic announcements, and automated tasks.
+  {gettext(
+    "Schedule a command to run after a delay, optionally repeating at a regular interval. Useful for reminders, periodic announcements, and automated tasks."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/timer &lt;name&gt; &lt;seconds&gt; &lt;command&gt;
-/timer &lt;name&gt; repeat &lt;seconds&gt; &lt;command&gt;
-/timer list
-/timer stop &lt;name&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/timer <name> <seconds> <command> /timer <name> repeat <seconds> <command> /timer list /timer stop <name>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
   <code>name</code>
-  — Unique name for the timer (letters, numbers, hyphens, underscores).<br /><code>seconds</code>
-  — Delay in seconds before the command runs.<br /><code>repeat</code>
-  — Add this keyword to make the timer repeat every &lt;seconds&gt;.<br /><code>command</code>
-  — The slash command to execute when the timer fires.
+  {gettext("— Unique name for the timer (letters, numbers, hyphens, underscores).")}<br />
+  <code>
+    seconds
+  </code>
+  {gettext("— Delay in seconds before the command runs.")}<br /><code>repeat</code>
+  {gettext("— Add this keyword to make the timer repeat every <seconds>.")}<br />
+  <code>
+    command
+  </code>
+  {gettext("— The slash command to execute when the timer fires.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  One-shot timers run the command once after the specified delay. Repeating timers run the command every &lt;seconds&gt; indefinitely until stopped. Timer commands support alias expansion, so you can use variables like
-  <code>$nick</code>
-  and <code>$chan</code>. Timer commands run in the window that was active when the timer was created and do not switch your current window when they fire. Creating a timer with the same name as an existing one replaces the old timer.
+  {gettext(
+    "One-shot timers run the command once after the specified delay. Repeating timers run the command every <seconds> indefinitely until stopped. Timer commands support alias expansion, so you can use variables like"
+  )}
+  <code>{gettext("$nick")}</code>
+  and <code>{gettext("$chan")}</code>{gettext(
+    ". Timer commands run in the window that was active when the timer was created and do not switch your current window when they fire. Creating a timer with the same name as an existing one replaces the old timer."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Maximum 5 concurrent timers per session</li>
-  <li>One-shot: 1 to 86,400 seconds (1 second to 24 hours)</li>
-  <li>Repeating: 10 to 86,400 seconds minimum interval</li>
-  <li>Timers are session-only — they do not survive page reload or disconnect</li>
+  <li>{gettext("Maximum 5 concurrent timers per session")}</li>
+  <li>{gettext("One-shot: 1 to 86,400 seconds (1 second to 24 hours)")}</li>
+  <li>{gettext("Repeating: 10 to 86,400 seconds minimum interval")}</li>
+  <li>{gettext("Timers are session-only — they do not survive page reload or disconnect")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/timer remind 1800 /me standup in 30 minutes
-/timer heartbeat repeat 600 /me is still here
-/timer list
-/timer stop heartbeat</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/timer remind 1800 /me standup in 30 minutes /timer heartbeat repeat 600 /me is still here /timer list /timer stop heartbeat")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-timers">Timers Feature</.help_link>
-  · <.help_link topic="cmd-alias">/alias</.help_link>
+  <.help_link topic="feature-timers">{gettext("Timers Feature")}</.help_link>
+  · <.help_link topic="cmd-alias">{gettext("/alias")}</.help_link>
 </p>

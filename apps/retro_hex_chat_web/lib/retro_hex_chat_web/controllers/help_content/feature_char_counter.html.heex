@@ -1,11 +1,15 @@
 <p>
-  A real-time character counter appears near the input box showing <code>current/maximum</code>
-  (e.g., <code>127/1000</code>).
+  {gettext("A real-time character counter appears near the input box showing")}
+  <code>{gettext("current/maximum")}</code>
+  {gettext("(e.g.,")} <code>127/1000</code>).
 </p>
-<.help_h4 icon={:icon_palette}>Color Indicators</.help_h4>
+<.help_h4 icon={:icon_palette}>{gettext("Color Indicators")}</.help_h4>
 <p>
-  The counter changes color as you approach the limit:<br /><strong>Green</strong>
-  — under 80% used<br /><strong>Orange</strong>
-  — 80-95% used<br /><strong>Red</strong>
-  — over 95% used
+  {gettext("The counter changes color as you approach the limit:")}<br />
+  <strong>
+    {gettext("Green")}
+  </strong>
+  {gettext("— under 80% used")}<br /><strong>{gettext("Orange")}</strong>
+  {gettext("— 80-95% used")}<br /><strong>{gettext("Red")}</strong>
+  {gettext("— over 95% used")}
 </p>

@@ -1,30 +1,33 @@
 <p>
-  Send a file to another user through a direct peer-to-peer connection. The file transfers directly between your browsers without going through the server.
+  {gettext(
+    "Send a file to another user through a direct peer-to-peer connection. The file transfers directly between your browsers without going through the server."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/sendfile &lt;nickname&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>nickname</code> — The user to send a file to.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/sendfile <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>nickname</code> {gettext("— The user to send a file to.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Running <code>/sendfile</code>
-  creates a P2P session and both users enter a lobby. The file transfer dialog opens automatically — you select a file, and the recipient gets a notification to accept or decline the transfer. Once accepted, the file is sent directly between browsers (peer-to-peer). You can see the transfer progress in the lobby window.
+  {gettext("Running")} <code>{gettext("/sendfile")}</code>
+  {gettext(
+    "creates a P2P session and both users enter a lobby. The file transfer dialog opens automatically — you select a file, and the recipient gets a notification to accept or decline the transfer. Once accepted, the file is sent directly between browsers (peer-to-peer). You can see the transfer progress in the lobby window."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
   <li>
-    Both you and the target must be registered and identified (via <code>/ns identify</code>)
+    {gettext("Both you and the target must be registered and identified (via")} <code>{gettext("/ns identify")}</code>)
   </li>
-  <li>Cannot send files to yourself</li>
-  <li>Only one active P2P session per user pair at a time</li>
+  <li>{gettext("Cannot send files to yourself")}</li>
+  <li>{gettext("Only one active P2P session per user pair at a time")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/sendfile Mario
-/sendfile Alice</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/sendfile Mario /sendfile Alice")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-p2p">/p2p</.help_link>
-  · <.help_link topic="cmd-call">/call</.help_link>
-  · <.help_link topic="feature-file-transfer">File Transfer</.help_link>
-  · <.help_link topic="feature-p2p-sessions">P2P Sessions</.help_link>
+  <.help_link topic="cmd-p2p">{gettext("/p2p")}</.help_link>
+  · <.help_link topic="cmd-call">{gettext("/call")}</.help_link>
+  · <.help_link topic="feature-file-transfer">{gettext("File Transfer")}</.help_link>
+  · <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
 </p>

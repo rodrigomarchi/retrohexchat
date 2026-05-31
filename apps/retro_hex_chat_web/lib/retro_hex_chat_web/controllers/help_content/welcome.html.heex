@@ -1,16 +1,25 @@
 <p>
-  RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more.
+  {gettext(
+    "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
+  )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>Quick Start</.help_h4>
-<p>1. Enter a nickname on the connect screen and click <strong>Connect</strong>.</p>
-<p>2. You will automatically join <strong>#lobby</strong>.</p>
-<p>3. Type messages in the input box and press <strong>Enter</strong> to send.</p>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Quick Start")}</.help_h4>
 <p>
-  4. Use <code>/commands</code> for advanced features — type <code>/help</code> to see them all.
+  {gettext("1. Enter a nickname on the connect screen and click")} <strong>{gettext("Connect")}</strong>.
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<p>{gettext("2. You will automatically join")} <strong>#lobby</strong>.</p>
 <p>
-  <.help_link topic="connecting">Connecting</.help_link>
-  · <.help_link topic="channels">Channels</.help_link>
-  · <.help_link topic="keyboard-shortcuts">Keyboard Shortcuts</.help_link>
+  {gettext("3. Type messages in the input box and press")}
+  <strong>{gettext("Enter")}</strong> {gettext("to send.")}
+</p>
+<p>
+  {gettext("4. Use")}
+  <code>{gettext("/commands")}</code> {gettext("for advanced features — type")}
+  <code>{gettext("/help")}</code> {gettext("to see them all.")}
+</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p>
+  <.help_link topic="connecting">{gettext("Connecting")}</.help_link>
+  · <.help_link topic="channels">{gettext("Channels")}</.help_link>
+  · <.help_link topic="keyboard-shortcuts">{gettext("Keyboard Shortcuts")}</.help_link>
 </p>

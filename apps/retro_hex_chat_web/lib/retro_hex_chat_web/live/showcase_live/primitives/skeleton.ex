@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Skeleton do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,16 +13,16 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Skeleton do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Skeleton", active_page: "skeleton")}
+    {:ok, assign(socket, page_title: gettext("Skeleton"), active_page: "skeleton")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Skeleton</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Skeleton")}</h2>
 
-      <.showcase_card title="Shapes" description="Placeholder while content is loading.">
+      <.showcase_card title={gettext("Shapes")} description="Placeholder while content is loading.">
         <div class="space-y-3 max-w-sm">
           <.skeleton class="h-4 w-3/4" />
           <.skeleton class="h-4 w-1/2" />

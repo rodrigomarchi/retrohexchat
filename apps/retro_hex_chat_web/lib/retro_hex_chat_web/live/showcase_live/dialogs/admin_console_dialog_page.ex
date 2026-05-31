@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AdminConsoleDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -16,13 +17,21 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AdminConsoleDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Admin Console Dialog",
+       page_title: gettext("Admin Console Dialog"),
        active_page: "admin-console-dialog",
        show_console: false,
        results: [
-         %{line: "help", status: :ok, message: "Available commands: kick, ban, mute, stats"},
-         %{line: "stats", status: :ok, message: "Users: 42, Channels: 8, Uptime: 3d 12h"},
-         %{line: "invalid", status: :error, message: "Unknown command: invalid"}
+         %{
+           line: "help",
+           status: :ok,
+           message: gettext("Available commands: kick, ban, mute, stats")
+         },
+         %{
+           line: "stats",
+           status: :ok,
+           message: gettext("Users: 42, Channels: 8, Uptime: 3d 12h")
+         },
+         %{line: "invalid", status: :error, message: gettext("Unknown command: invalid")}
        ]
      )}
   end
@@ -40,15 +49,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AdminConsoleDialogPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Admin Console Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Admin Console Dialog")}</h2>
 
       <.showcase_card
-        title="Admin Console"
+        title={gettext("Admin Console")}
         description="Command-line style admin interface with terminal output."
       >
         <.button variant="outline" phx-click="toggle_console">
           <:icon><Icons.icon_dialog_admin_console class="w-4 h-4" /></:icon>
-          Open Admin Console
+          {gettext("Open Admin Console")}
         </.button>
         <.admin_console_dialog
           id="admin-console-demo"

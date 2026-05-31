@@ -1,53 +1,65 @@
 defmodule RetroHexChat.Chat.HelpTopics.GettingStarted do
   @moduledoc false
 
+  use Gettext, backend: RetroHexChat.Gettext
+
   @spec topics() :: [map()]
   def topics do
     [
       %{
         id: "welcome",
-        title: "Welcome to RetroHexChat",
-        category: "Getting Started",
+        title: gettext("Welcome to RetroHexChat"),
+        category: gettext("Getting Started"),
         keywords: ["welcome", "introduction", "about", "overview"],
         icon: :icon_lightbulb,
         description:
-          "Get started with RetroHexChat, a web-based IRC client with a faithful retro look and feel."
+          gettext(
+            "Get started with RetroHexChat, a web-based IRC client with a faithful retro look and feel."
+          )
       },
       %{
         id: "connecting",
-        title: "Connecting",
-        category: "Getting Started",
+        title: gettext("Connecting"),
+        category: gettext("Getting Started"),
         keywords: ["connect", "login", "nickname", "join"],
         icon: :icon_connect,
         description:
-          "Learn how to connect to the RetroHexChat server by choosing a nickname and joining channels."
+          gettext(
+            "Learn how to connect to the RetroHexChat server by choosing a nickname and joining channels."
+          )
       },
       %{
         id: "channels",
-        title: "Channels",
-        category: "Getting Started",
-        keywords: ["channel", "room", "chat room", "join channel"],
+        title: gettext("Channels"),
+        category: gettext("Getting Started"),
+        keywords: ["channel", "room", gettext("chat room"), gettext("join channel")],
         icon: :icon_channels,
         description:
-          "Understand how chat channels work, including joining, leaving, and participating in conversations."
+          gettext(
+            "Understand how chat channels work, including joining, leaving, and participating in conversations."
+          )
       },
       %{
         id: "private-messages",
-        title: "Private Messages",
-        category: "Getting Started",
-        keywords: ["pm", "private message", "direct message", "dm", "whisper", "query"],
+        title: gettext("Private Messages"),
+        category: gettext("Getting Started"),
+        keywords: ["pm", "private message", gettext("direct message"), "dm", "whisper", "query"],
         icon: :icon_p2p,
         description:
-          "Send and receive private messages with other users using the /msg and /query commands."
+          gettext(
+            "Send and receive private messages with other users using the /msg and /query commands."
+          )
       },
       %{
         id: "connect-authentication",
-        title: "Connect Authentication",
-        category: "Getting Started",
+        title: gettext("Connect Authentication"),
+        category: gettext("Getting Started"),
         keywords: ["authentication", "login", "password", "registered", "identify"],
         icon: :icon_lock,
         description:
-          "Authenticate with your registered nickname on connect to access your saved settings and channels."
+          gettext(
+            "Authenticate with your registered nickname on connect to access your saved settings and channels."
+          )
       }
     ]
   end

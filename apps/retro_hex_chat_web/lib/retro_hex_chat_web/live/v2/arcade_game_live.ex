@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.V2.ArcadeGameLive do
   On disconnect/close, signals the session server that the game finished.
   """
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,

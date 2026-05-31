@@ -11,6 +11,8 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
   Returns `{:side_effect, action}` or `:ignore`. Does NOT consume the message
   dispatch (other capabilities can still respond).
   """
+
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Bots.Capability
 
   @impl true
@@ -19,7 +21,8 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: "Auto-moderation — blocked words, spam/flood detection, caps filter"
+  def description,
+    do: gettext("Auto-moderation — blocked words, spam/flood detection, caps filter")
 
   @impl true
   @spec passive?() :: boolean()
@@ -79,7 +82,7 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
       "caps_threshold" => 0.7,
       "caps_min_length" => 10,
       "action" => "warn",
-      "warn_message" => "Hey {nickname}, please keep it civil.",
+      "warn_message" => gettext("Hey {nickname}, please keep it civil."),
       "exempt_roles" => ["op", "admin"]
     }
   end
@@ -92,7 +95,7 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
     if action in ["warn", "mute", "kick"] do
       :ok
     else
-      {:error, "action must be one of: warn, mute, kick"}
+      {:error, gettext("action must be one of: warn, mute, kick")}
     end
   end
 
@@ -121,7 +124,7 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
     lower = String.downcase(content)
 
     if Enum.any?(blocked, &String.contains?(lower, String.downcase(&1))) do
-      {:violation, "using blocked words"}
+      {:violation, gettext("using blocked words")}
     end
   end
 
@@ -139,7 +142,7 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
       |> length()
 
     if recent_same >= threshold do
-      {:violation, "spamming (#{recent_same} identical messages)"}
+      {:violation, gettext("spamming (%{count} identical messages)", count: recent_same)}
     end
   end
 
@@ -154,7 +157,11 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
       |> Enum.count(fn {_msg, ts} -> now - ts <= window end)
 
     if recent_count >= threshold do
-      {:violation, "flooding (#{recent_count} messages in #{window}s)"}
+      {:violation,
+       gettext("flooding (%{count} messages in %{window}s)",
+         count: recent_count,
+         window: window
+       )}
     end
   end
 
@@ -169,7 +176,7 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
       ratio = uppers / String.length(letters)
 
       if ratio >= threshold do
-        {:violation, "excessive caps lock"}
+        {:violation, gettext("excessive caps lock")}
       end
     end
   end
@@ -205,9 +212,9 @@ defmodule RetroHexChat.Bots.Capabilities.Moderation do
     warn_count = Map.get(state.warnings, author, 0) + 1
     new_state = put_in(state, [:warnings, author], warn_count)
 
-    template = Map.get(config, "warn_message", "Hey {nickname}, please keep it civil.")
-    message = String.replace(template, "{nickname}", author)
-    message = "#{message} (#{reason})"
+    template = Map.get(config, "warn_message", gettext("Hey {nickname}, please keep it civil."))
+    message = String.replace(template, gettext("{nickname}"), author)
+    message = gettext("%{message} (%{reason})", message: message, reason: reason)
 
     {message, new_state}
   end

@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.MuteCmd do
   @moduledoc "Handler for /mute <nickname> [duration] — channel-level mute."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.{Duration, Handler}
@@ -10,7 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.MuteCmd do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /mute <nickname> [duration]"}
+  def execute([], _context), do: {:error, gettext("Usage: /mute <nickname> [duration]")}
 
   def execute([nick | rest], context) do
     with {:ok, channel} <- require_channel(context),
@@ -25,10 +26,12 @@ defmodule RetroHexChat.Commands.Handlers.MuteCmd do
   def help do
     %{
       name: "mute",
-      syntax: "/mute <nickname> [duration]",
+      syntax: gettext("/mute <nickname> [duration]"),
       description:
-        "Mute a user in the current channel. They cannot send messages.\nDuration: 30s, 5m, 1h, 1d. Omit for permanent.\nRequires: channel operator or owner.",
-      examples: ["/mute troll", "/mute troll 30m"]
+        gettext(
+          "Mute a user in the current channel. They cannot send messages.\nDuration: 30s, 5m, 1h, 1d. Omit for permanent.\nRequires: channel operator or owner."
+        ),
+      examples: [gettext("/mute troll"), gettext("/mute troll 30m")]
     }
   end
 
@@ -43,8 +46,8 @@ defmodule RetroHexChat.Commands.Handlers.MuteCmd do
 
     %CommandSyntax{
       command: "mute",
-      syntax: "/mute <nickname> [duration]",
-      description: "Mute a user in the current channel.",
+      syntax: gettext("/mute <nickname> [duration]"),
+      description: gettext("Mute a user in the current channel."),
       category: :channel,
       parameters: [
         %Parameter{
@@ -52,28 +55,30 @@ defmodule RetroHexChat.Commands.Handlers.MuteCmd do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to mute"
+          description: gettext("User to mute")
         },
         %Parameter{
           name: "duration",
           required: false,
           type: :text,
           position: 1,
-          description: "Duration (e.g. 30s, 5m, 1h)"
+          description: gettext("Duration (e.g. 30s, 5m, 1h)")
         }
       ],
-      examples: ["/mute troll", "/mute troll 30m"]
+      examples: [gettext("/mute troll"), gettext("/mute troll 30m")]
     }
   end
 
-  defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
+  defp require_channel(%{active_channel: nil}),
+    do: {:error, gettext("You are not in any channel")}
+
   defp require_channel(%{active_channel: ch}), do: {:ok, ch}
 
   defp require_operator(context, channel) do
     if channel in context.operator_in do
       :ok
     else
-      {:error, "You must be a channel operator to use this command"}
+      {:error, gettext("You must be a channel operator to use this command")}
     end
   end
 end

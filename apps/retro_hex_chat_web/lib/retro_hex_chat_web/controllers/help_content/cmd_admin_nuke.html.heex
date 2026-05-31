@@ -1,42 +1,41 @@
 <p>
-  <strong>DESTRUCTIVE</strong> — Factory reset the entire system.
-  Destroys all data (users, channels, messages, preferences, bots, P2P sessions)
-  except admin roles, audit logs, and server bans.
-  Requires server administrator role.
+  <strong>{gettext("DESTRUCTIVE")}</strong> {gettext(
+    "— Factory reset the entire system. Destroys all data (users, channels, messages, preferences, bots, P2P sessions) except admin roles, audit logs, and server bans. Requires server administrator role."
+  )}
 </p>
 
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/admin nuke
-/admin nuke --confirm</pre>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/admin nuke /admin nuke --confirm")}</pre>
 
-<.help_h4 icon={:icon_tag}>Modes</.help_h4>
+<.help_h4 icon={:icon_tag}>{gettext("Modes")}</.help_h4>
 <ul>
   <li>
-    <code>/admin nuke</code>
-    — Preview mode: shows a count of records per table that will be deleted. No data is modified.
+    <code>{gettext("/admin nuke")}</code>
+    {gettext(
+      "— Preview mode: shows a count of records per table that will be deleted. No data is modified."
+    )}
   </li>
   <li>
-    <code>/admin nuke --confirm</code>
-    — Execute mode: deletes all data in a single transaction.
-    <strong>THIS CANNOT BE UNDONE.</strong>
+    <code>{gettext("/admin nuke --confirm")}</code>
+    {gettext("— Execute mode: deletes all data in a single transaction.")}
+    <strong>{gettext("THIS CANNOT BE UNDONE.")}</strong>
   </li>
 </ul>
 
-<.help_h4 icon={:icon_shield}>What is Preserved</.help_h4>
+<.help_h4 icon={:icon_shield}>{gettext("What is Preserved")}</.help_h4>
 <ul>
-  <li><code>admin_roles</code> — Admin and server operator assignments</li>
-  <li><code>audit_logs</code> — Full audit trail (the nuke itself is logged)</li>
-  <li><code>server_bans</code> — Active server bans</li>
-  <li><code>server_settings</code> — Server configuration</li>
+  <li><code>admin_roles</code> {gettext("— Admin and server operator assignments")}</li>
+  <li><code>audit_logs</code> {gettext("— Full audit trail (the nuke itself is logged)")}</li>
+  <li><code>server_bans</code> {gettext("— Active server bans")}</li>
+  <li><code>server_settings</code> {gettext("— Server configuration")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/admin nuke            — See what would be deleted
-/admin nuke --confirm  — Execute the system wipe</pre>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/admin nuke — See what would be deleted /admin nuke --confirm — Execute the system wipe")}</pre>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">/admin</.help_link>
-  · <.help_link topic="cmd-admin-channel">/admin channel</.help_link>
-  · <.help_link topic="cmd-admin-log">/admin log</.help_link>
+  <.help_link topic="cmd-admin">{gettext("/admin")}</.help_link>
+  · <.help_link topic="cmd-admin-channel">{gettext("/admin channel")}</.help_link>
+  · <.help_link topic="cmd-admin-log">{gettext("/admin log")}</.help_link>
 </p>

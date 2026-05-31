@@ -3,6 +3,7 @@ defmodule RetroHexChat.Services.Motd do
   Manages the Message of the Day (MOTD) with in-memory cache.
   Uses Application env for caching to avoid a DB query on every connection.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Services.Queries
 
@@ -28,7 +29,7 @@ defmodule RetroHexChat.Services.Motd do
         :ok
 
       {:error, _changeset} ->
-        {:error, "Failed to save MOTD."}
+        {:error, gettext("Failed to save MOTD.")}
     end
   end
 

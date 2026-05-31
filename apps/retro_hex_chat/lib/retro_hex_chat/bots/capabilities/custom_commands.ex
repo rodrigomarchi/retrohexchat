@@ -3,6 +3,8 @@ defmodule RetroHexChat.Bots.Capabilities.CustomCommands do
   Capability that handles custom !prefix commands defined by the bot owner.
   Commands are stored in `bot_custom_commands` and loaded into the GenServer state.
   """
+
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.TemplateEngine
@@ -13,7 +15,7 @@ defmodule RetroHexChat.Bots.Capabilities.CustomCommands do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: "Custom bot commands (!prefix trigger)"
+  def description, do: gettext("Custom bot commands (!prefix trigger)")
 
   @impl true
   @spec handle_message(String.t(), String.t(), RetroHexChat.Bots.Capability.bot_context()) ::

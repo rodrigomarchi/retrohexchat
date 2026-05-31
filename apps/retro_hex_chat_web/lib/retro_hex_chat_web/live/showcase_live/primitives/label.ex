@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Label do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -13,22 +14,22 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Label do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Label", active_page: "label")}
+    {:ok, assign(socket, page_title: gettext("Label"), active_page: "label")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Label</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Label")}</h2>
 
       <.showcase_card
-        title="Usage"
+        title={gettext("Usage")}
         description="Caption for form fields. Associates with inputs via for attribute."
       >
         <div class="space-y-2 max-w-sm">
-          <.label for="demo-input">Username</.label>
-          <.input id="demo-input" type="text" placeholder="Enter username..." />
+          <.label for="demo-input">{gettext("Username")}</.label>
+          <.input id="demo-input" type="text" placeholder={gettext("Enter username...")} />
         </div>
         <.code_example>
           &lt;.label for="username"&gt;Username&lt;/.label&gt;

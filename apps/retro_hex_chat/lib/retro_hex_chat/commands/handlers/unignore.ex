@@ -1,12 +1,13 @@
 defmodule RetroHexChat.Commands.Handlers.Unignore do
   @moduledoc "Handler for /unignore <nickname>"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Usage: /unignore <nickname>"}
+  def validate(""), do: {:error, gettext("Usage: /unignore <nickname>")}
   def validate(_args), do: :ok
 
   @impl true
@@ -25,11 +26,13 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
   def help do
     %{
       name: "unignore",
-      syntax: "/unignore <nickname>",
+      syntax: gettext("/unignore <nickname>"),
       description:
-        "Stop ignoring a user you previously blocked, making their messages visible again.\nNickname is required. Use /ignore with no args to see your ignore list first.",
+        gettext(
+          "Stop ignoring a user you previously blocked, making their messages visible again.\nNickname is required. Use /ignore with no args to see your ignore list first."
+        ),
       examples: [
-        "/unignore SpamBot"
+        gettext("/unignore SpamBot")
       ]
     }
   end
@@ -45,9 +48,11 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
 
     %CommandSyntax{
       command: "unignore",
-      syntax: "/unignore <nickname>",
+      syntax: gettext("/unignore <nickname>"),
       description:
-        "Stop ignoring a user you previously blocked, making their messages visible again.",
+        gettext(
+          "Stop ignoring a user you previously blocked, making their messages visible again."
+        ),
       category: :user,
       parameters: [
         %Parameter{
@@ -55,11 +60,11 @@ defmodule RetroHexChat.Commands.Handlers.Unignore do
           required: true,
           type: :nick,
           position: 0,
-          description: "Remove user from ignore list"
+          description: gettext("Remove user from ignore list")
         }
       ],
       examples: [
-        "/unignore SpamBot"
+        gettext("/unignore SpamBot")
       ]
     }
   end

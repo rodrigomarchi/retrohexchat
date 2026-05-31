@@ -1,11 +1,12 @@
 <p>
-  Grants channel operator status to a user (prefix @). Operators can change channel modes, kick/ban users, and set the topic. They cannot kick owners.
+  {gettext(
+    "Grants channel operator status to a user (prefix @). Operators can change channel modes, kick/ban users, and set the topic. They cannot kick owners."
+  )}
 </p>
-<.help_h4 icon={:icon_terminal}>Usage</.help_h4>
-<pre>/mode +o Alice    — Give operator to Alice
-/mode -o Alice    — Remove operator from Alice</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_terminal}>{gettext("Usage")}</.help_h4>
+<pre>{gettext("/mode +o Alice — Give operator to Alice /mode -o Alice — Remove operator from Alice")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="mode-q">Owner (+q)</.help_link>
-  · <.help_link topic="mode-h">Half-Operator (+h)</.help_link>
+  <.help_link topic="mode-q">{gettext("Owner (+q)")}</.help_link>
+  · <.help_link topic="mode-h">{gettext("Half-Operator (+h)")}</.help_link>
 </p>

@@ -30,9 +30,9 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
   @doc "Renders the config form dialog."
   attr :id, :string, required: true
   attr :show, :boolean, default: false
-  attr :title, :string, default: "Configuration"
+  attr :title, :string, default: nil
   attr :items, :list, default: []
-  attr :columns, :list, default: ["Name", "Value"]
+  attr :columns, :list, default: nil
   attr :selected_index, :integer, default: nil, doc: "Currently selected row index"
   attr :editing, :boolean, default: false, doc: "True when editing (vs adding)"
   attr :on_select, :any, default: nil, doc: "Row click callback"
@@ -46,9 +46,14 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
 
   @spec config_form(map()) :: Phoenix.LiveView.Rendered.t()
   def config_form(assigns) do
+    assigns =
+      assigns
+      |> assign(:resolved_title, assigns.title || gettext("Configuration"))
+      |> assign(:resolved_columns, assigns.columns || [:name, :value])
+
     ~H"""
     <.dialog id={@id} show={@show}>
-      <.dialog_header id={@id} title={@title}>
+      <.dialog_header id={@id} title={@resolved_title}>
         <:icon><Icons.icon_btn_settings class="w-4 h-4" /></:icon>
       </.dialog_header>
 
@@ -59,7 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
             <.table>
               <.table_header>
                 <.table_row>
-                  <.table_head :for={col <- @columns}>{col}</.table_head>
+                  <.table_head :for={col <- @resolved_columns}>{translate_column(col)}</.table_head>
                 </.table_row>
               </.table_header>
               <.table_body>
@@ -81,7 +86,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
           <div class="flex gap-retro-4">
             <.button size="sm" variant="outline" phx-click={@on_add}>
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-              Add
+              {gettext("Add")}
             </.button>
             <.button
               size="sm"
@@ -90,7 +95,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
               disabled={@selected_index == nil}
             >
               <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-              Edit
+              {gettext("Edit")}
             </.button>
             <.button
               size="sm"
@@ -99,7 +104,7 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
               disabled={@selected_index == nil}
             >
               <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              Remove
+              {gettext("Remove")}
             </.button>
           </div>
         </div>
@@ -109,7 +114,9 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
           :if={@form != []}
           class="w-full md:w-[200px] md:shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
         >
-          <h3 class="font-bold text-xs mb-retro-4">{if @editing, do: "Edit", else: "Add"}</h3>
+          <h3 class="font-bold text-xs mb-retro-4">
+            {if @editing, do: gettext("Edit"), else: gettext("Add")}
+          </h3>
           {render_slot(@form)}
         </div>
       </.dialog_body>
@@ -117,14 +124,20 @@ defmodule RetroHexChatWeb.Components.UI.ConfigForm do
       <.dialog_footer>
         <.button variant="default" phx-click={@on_ok || hide_modal(@id)}>
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          OK
+          {gettext("OK")}
         </.button>
         <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          Cancel
+          {gettext("Cancel")}
         </.button>
       </.dialog_footer>
     </.dialog>
     """
   end
+
+  defp translate_column("Name"), do: gettext("Name")
+  defp translate_column("Value"), do: gettext("Value")
+  defp translate_column(:name), do: gettext("Name")
+  defp translate_column(:value), do: gettext("Value")
+  defp translate_column(column), do: column
 end

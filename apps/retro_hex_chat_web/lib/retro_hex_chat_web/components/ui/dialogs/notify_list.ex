@@ -47,7 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     ~H"""
     <.dialog id={@id} show={@show} lock={@show_add_dialog || @show_edit_dialog}>
       <div data-testid="notify-list">
-        <.dialog_header id={@id} title="Notify List">
+        <.dialog_header id={@id} title={gettext("Notify List")}>
           <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
         </.dialog_header>
 
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 id={"#{@id}-auto-add-pm"}
               />
               <label for={"#{@id}-auto-add-pm"} class="text-xs cursor-pointer select-none">
-                Auto-add PM contacts to notify list
+                {gettext("Auto-add PM contacts to notify list")}
               </label>
             </div>
             <div class="flex items-center gap-retro-4">
@@ -73,7 +73,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 id={"#{@id}-auto-whois"}
               />
               <label for={"#{@id}-auto-whois"} class="text-xs cursor-pointer select-none">
-                Perform WHOIS on notify nicks when they come online
+                {gettext("Perform WHOIS on notify nicks when they come online")}
               </label>
             </div>
           </div>
@@ -83,9 +83,9 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
             <.table>
               <.table_header>
                 <.table_row>
-                  <.table_head>Nick</.table_head>
-                  <.table_head>Status</.table_head>
-                  <.table_head>Last Seen</.table_head>
+                  <.table_head>{gettext("Nick")}</.table_head>
+                  <.table_head>{gettext("Status")}</.table_head>
+                  <.table_head>{gettext("Last Seen")}</.table_head>
                 </.table_row>
               </.table_header>
               <.table_body>
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
           <div class="flex gap-retro-4">
             <.button size="sm" variant="outline" phx-click={@on_add}>
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-              Add
+              {gettext("Add")}
             </.button>
             <.button
               size="sm"
@@ -124,7 +124,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               disabled={@selected_entry == nil}
             >
               <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-              Edit
+              {gettext("Edit")}
             </.button>
             <.button
               size="sm"
@@ -134,7 +134,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               disabled={@selected_entry == nil}
             >
               <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              Remove
+              {gettext("Remove")}
             </.button>
           </div>
         </.dialog_body>
@@ -142,7 +142,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
         <.dialog_footer>
           <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            Close
+            {gettext("Close")}
           </.button>
         </.dialog_footer>
       </div>
@@ -166,15 +166,19 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">Add Notify Entry</span>
+          <span class="text-xs font-bold text-white truncate select-none">
+            {gettext("Add Notify Entry")}
+          </span>
           <div class="ml-auto">
-            <button type="button" aria-label="Close" phx-click="notify_add_cancel" />
+            <button type="button" aria-label={gettext("Close")} phx-click="notify_add_cancel" />
           </div>
         </div>
         <div class="p-2">
           <form phx-submit="notify_add" data-testid="notify-add-form">
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="notify-add-nickname">Nickname:</label>
+              <label class="text-xs font-bold" for="notify-add-nickname">
+                {gettext("Nickname:")}
+              </label>
               <.input
                 type="text"
                 id="notify-add-nickname"
@@ -186,7 +190,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               />
             </div>
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="notify-add-note">Note:</label>
+              <label class="text-xs font-bold" for="notify-add-note">{gettext("Note:")}</label>
               <.input
                 type="text"
                 id="notify-add-note"
@@ -199,11 +203,11 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
             <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                OK
+                {gettext("OK")}
               </.button>
               <.button type="button" size="sm" variant="outline" phx-click="notify_add_cancel">
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                Cancel
+                {gettext("Cancel")}
               </.button>
             </div>
           </form>
@@ -221,15 +225,19 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
         <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">Edit Notify Entry</span>
+          <span class="text-xs font-bold text-white truncate select-none">
+            {gettext("Edit Notify Entry")}
+          </span>
           <div class="ml-auto">
-            <button type="button" aria-label="Close" phx-click="notify_edit_cancel" />
+            <button type="button" aria-label={gettext("Close")} phx-click="notify_edit_cancel" />
           </div>
         </div>
         <div class="p-2">
           <form phx-submit="notify_edit" data-testid="notify-edit-form">
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="notify-edit-nickname">Nickname:</label>
+              <label class="text-xs font-bold" for="notify-edit-nickname">
+                {gettext("Nickname:")}
+              </label>
               <.input
                 type="text"
                 id="notify-edit-nickname"
@@ -240,7 +248,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               />
             </div>
             <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="notify-edit-note">Note:</label>
+              <label class="text-xs font-bold" for="notify-edit-note">{gettext("Note:")}</label>
               <.input
                 type="text"
                 id="notify-edit-note"
@@ -254,11 +262,11 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
             <div class="flex justify-end gap-2">
               <.button type="submit" size="sm">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                OK
+                {gettext("OK")}
               </.button>
               <.button type="button" size="sm" variant="outline" phx-click="notify_edit_cancel">
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                Cancel
+                {gettext("Cancel")}
               </.button>
             </div>
           </form>
@@ -275,7 +283,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   defp online_status(%{online: true} = assigns) do
     ~H"""
     <span class="inline-flex items-center gap-retro-2 text-xs">
-      <span class="w-2 h-2 rounded-full bg-success inline-block" /> Online
+      <span class="w-2 h-2 rounded-full bg-success inline-block" /> {gettext("Online")}
     </span>
     """
   end
@@ -283,7 +291,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   defp online_status(assigns) do
     ~H"""
     <span class="inline-flex items-center gap-retro-2 text-xs text-muted-foreground">
-      <span class="w-2 h-2 rounded-full bg-muted-foreground inline-block" /> Offline
+      <span class="w-2 h-2 rounded-full bg-muted-foreground inline-block" /> {gettext("Offline")}
     </span>
     """
   end

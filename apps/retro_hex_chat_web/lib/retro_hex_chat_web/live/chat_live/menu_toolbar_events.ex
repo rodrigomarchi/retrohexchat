@@ -14,6 +14,8 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
       cleanup_channels: 2,
@@ -29,7 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("quit_chat", _params, socket) do
     session = socket.assigns.session
-    cleanup_channels(session, "Leaving")
+    cleanup_channels(session, gettext("Leaving"))
 
     {:halt,
      socket
@@ -331,7 +333,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("confirm_disconnect", _params, socket) do
     session = socket.assigns.session
-    cleanup_channels(session, "Leaving")
+    cleanup_channels(session, gettext("Leaving"))
 
     {:halt,
      socket

@@ -27,8 +27,7 @@ defmodule RetroHexChatWeb.Components.UI.SyntaxTooltip do
 
   attr :tooltip, :any,
     default: nil,
-    doc:
-      "Map with keys: command, parameters (list of maps with :name, :required), current_param_index, description, sub_options, context_message, examples. Can be nil to render nothing."
+    doc: "Command syntax tooltip data. Can be nil to render nothing."
 
   attr :detail_level, :atom,
     default: :beginner,

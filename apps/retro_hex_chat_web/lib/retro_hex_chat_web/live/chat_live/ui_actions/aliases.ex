@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Aliases do
 
   import Phoenix.Component, only: [assign: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [system_event: 2, error_event: 2, maybe_persist_aliases: 2]
 
@@ -30,31 +32,33 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Aliases do
         socket
         |> assign(session: new_session)
         |> maybe_persist_aliases(new_session)
-        |> system_event("* Alias /#{name} created#{warning}")
+        |> system_event(
+          gettext("* Alias /%{name} created%{warning}", name: name, warning: warning)
+        )
 
       {:error, :duplicate_name} ->
-        error_event(socket, "Alias /#{name} already exists")
+        error_event(socket, gettext("Alias /%{name} already exists", name: name))
 
       {:error, :invalid_name} ->
         error_event(
           socket,
-          "Invalid alias name. Use only letters, numbers, hyphens, underscores."
+          gettext("Invalid alias name. Use only letters, numbers, hyphens, underscores.")
         )
 
       {:error, :invalid_expansion} ->
-        error_event(socket, "Expansion is required")
+        error_event(socket, gettext("Expansion is required"))
 
       {:error, :expansion_too_long} ->
-        error_event(socket, "Expansion too long (max 500 characters)")
+        error_event(socket, gettext("Expansion too long (max 500 characters)"))
 
       {:error, :command_chaining} ->
         error_event(
           socket,
-          "Expansion must not contain command chaining (|, &&, ;, newlines)"
+          gettext("Expansion must not contain command chaining (|, &&, ;, newlines)")
         )
 
       {:error, :list_full} ->
-        error_event(socket, "Alias list is full (max 50)")
+        error_event(socket, gettext("Alias list is full (max 50)"))
     end
   end
 
@@ -68,10 +72,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Aliases do
         socket
         |> assign(session: new_session)
         |> maybe_persist_aliases(new_session)
-        |> system_event("* Alias /#{name} removed")
+        |> system_event(gettext("* Alias /%{name} removed", name: name))
 
       {:error, :not_found} ->
-        error_event(socket, "Alias /#{name} not found")
+        error_event(socket, gettext("Alias /%{name} not found", name: name))
     end
   end
 
@@ -80,25 +84,28 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Aliases do
     entries = AliasList.entries(session.aliases)
 
     if entries == [] do
-      system_event(socket, "Your alias list is empty")
+      system_event(socket, gettext("Your alias list is empty"))
     else
       Enum.reduce(entries, socket, fn entry, acc ->
-        system_event(acc, "  /#{entry.name} → #{entry.expansion}")
+        system_event(
+          acc,
+          gettext("  /%{name} → %{expansion}", name: entry.name, expansion: entry.expansion)
+        )
       end)
     end
   end
 
   defp alias_warning_suffix(name, expansion) do
     [
-      if(AliasList.shadows_builtin?(name), do: "shadows built-in /#{name}"),
+      if(AliasList.shadows_builtin?(name), do: gettext("shadows built-in /%{name}", name: name)),
       if(AliasList.recursive_expansion?(name, expansion),
-        do: "expands to itself and will hit the recursion limit"
+        do: gettext("expands to itself and will hit the recursion limit")
       )
     ]
     |> Enum.reject(&is_nil/1)
     |> case do
       [] -> ""
-      warnings -> " (warning: " <> Enum.join(warnings, "; ") <> ")"
+      warnings -> gettext(" (warning: %{warnings})", warnings: Enum.join(warnings, "; "))
     end
   end
 end

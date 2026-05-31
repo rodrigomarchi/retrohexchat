@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Chat.TabBarPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,17 +13,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.TabBarPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Tab Bar", active_page: "tab-bar")}
+    {:ok, assign(socket, page_title: gettext("Tab Bar"), active_page: "tab-bar")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Tab Bar</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Tab Bar")}</h2>
 
       <.showcase_card
-        title="Mixed Tabs"
+        title={gettext("Mixed Tabs")}
         description="Status, channel, and PM tabs with various states."
       >
         <.tab_bar tabs={[
@@ -43,7 +44,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.TabBarPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Status Only"
+        title={gettext("Status Only")}
         description="Just the status tab."
       >
         <.tab_bar tabs={[
@@ -52,7 +53,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.TabBarPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Many Channels"
+        title={gettext("Many Channels")}
         description="Tab bar with many channel tabs."
       >
         <.tab_bar tabs={[

@@ -1,35 +1,47 @@
 <p>
-  The Ignore List lets you hide messages from specific users without moderator intervention. Ignored users are not notified — filtering happens entirely on your side.
+  {gettext(
+    "The Ignore List lets you hide messages from specific users without moderator intervention. Ignored users are not notified — filtering happens entirely on your side."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_ignore}>Accessing the Ignore List</.help_h4>
+<.help_h4 icon={:icon_dialog_ignore}>{gettext("Accessing the Ignore List")}</.help_h4>
 <p>
-  Press <strong>Ctrl+Shift+G</strong>, go to <strong>Tools &gt; Ignore List</strong>, or open the Address Book (<strong>Ctrl+Shift+A</strong>) and switch to the
-  <strong>Control</strong>
-  tab.
+  {gettext("Press")} <strong>{gettext("Ctrl+Shift+G")}</strong>{gettext(", go to")} <strong>{gettext("Tools > Ignore List")}</strong>{gettext(
+    ", or open the Address Book ("
+  )}<strong>{gettext("Ctrl+Shift+A")}</strong>{gettext(") and switch to the")}
+  <strong>{gettext("Control")}</strong>
+  {gettext("tab.")}
 </p>
-<.help_h4 icon={:icon_star}>Features</.help_h4>
+<.help_h4 icon={:icon_star}>{gettext("Features")}</.help_h4>
 <p>
-  <strong>Per-Type Filtering:</strong>
-  Ignore all content, or just messages, PMs, actions, notices, or invites.<br />
+  <strong>{gettext("Per-Type Filtering:")}</strong>
+  {gettext("Ignore all content, or just messages, PMs, actions, notices, or invites.")}<br />
   <strong>
-    Timed Ignores:
+    {gettext("Timed Ignores:")}
   </strong>
-  Set a duration (e.g., 5m, 2h, 1d) — the ignore automatically expires.<br />
+  {gettext("Set a duration (e.g., 5m, 2h, 1d) — the ignore automatically expires.")}<br />
   <strong>
-    Dialog Management:
+    {gettext("Dialog Management:")}
   </strong>
-  View, add, and remove ignores from the visual dialog.<br /><strong>Context Menu:</strong>
-  Right-click a nickname to quickly Ignore or Unignore.<br /><strong>Persistence:</strong>
-  Registered users' ignore lists are saved across sessions.
+  {gettext("View, add, and remove ignores from the visual dialog.")}<br />
+  <strong>
+    {gettext("Context Menu:")}
+  </strong>
+  {gettext("Right-click a nickname to quickly Ignore or Unignore.")}<br />
+  <strong>
+    {gettext("Persistence:")}
+  </strong>
+  {gettext("Registered users' ignore lists are saved across sessions.")}
 </p>
-<.help_h4 icon={:icon_btn_search}>Filtering Rules</.help_h4>
+<.help_h4 icon={:icon_btn_search}>{gettext("Filtering Rules")}</.help_h4>
 <p>
-  User-authored content (messages, PMs, /me actions, notices, and invites) is hidden. System messages (joins, parts, kicks) from ignored users remain visible to maintain channel context.
+  {gettext(
+    "User-authored content (messages, PMs, /me actions, notices, and invites) is hidden. System messages (joins, parts, kicks) from ignored users remain visible to maintain channel context."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ignore">/ignore Command</.help_link>
-  · <.help_link topic="cmd-unignore">/unignore Command</.help_link>
-  · <.help_link topic="feature-notify-list">Notify List</.help_link>
-  · <.help_link topic="feature-flood-protection">Flood Protection</.help_link>
+  <.help_link topic="cmd-ignore">{gettext("/ignore Command")}</.help_link>
+  · <.help_link topic="cmd-unignore">{gettext("/unignore Command")}</.help_link>
+  · <.help_link topic="feature-notify-list">{gettext("Notify List")}</.help_link>
+  · <.help_link topic="feature-flood-protection">{gettext("Flood Protection")}</.help_link>
 </p>

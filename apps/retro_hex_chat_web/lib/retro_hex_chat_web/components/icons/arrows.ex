@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Arrows do
   Icons depicting directional arrows, navigation, and flow concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

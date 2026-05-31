@@ -4,6 +4,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
   """
 
   import Phoenix.Component, only: [assign: 2]
+
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers, only: [error_event: 2]
 
   alias RetroHexChat.Accounts.ServerRoles
@@ -19,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
       bots = Queries.list_bots()
       assign(socket, show_bot_dialog: true, bot_dialog_bots: bots)
     else
-      error_event(socket, "Bot management is restricted to server administrators.")
+      error_event(socket, gettext("Bot management is restricted to server administrators."))
     end
   end
 

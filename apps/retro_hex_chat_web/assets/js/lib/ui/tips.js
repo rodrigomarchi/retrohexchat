@@ -1,3 +1,4 @@
+import { t } from "../i18n.js";
 /**
  * Contextual tip state management via localStorage.
  *
@@ -14,16 +15,16 @@ export const TIP_IDS = {
 };
 
 export const TIPS = [
-  { id: "first_message", text: "Use ↑ to edit your last message" },
-  { id: "first_join", text: "Channels you join appear in the left panel" },
-  { id: "first_pm", text: "PMs appear as separate conversations in the sidebar" },
+  { id: "first_message", text: t("Use ↑ to edit your last message") },
+  { id: "first_join", text: t("Channels you join appear in the left panel") },
+  { id: "first_pm", text: t("PMs appear as separate conversations in the sidebar") },
   {
     id: "first_highlight",
-    text: "Your nick was mentioned! Configure alerts in Settings",
+    text: t("Your nick was mentioned! Configure alerts in Settings"),
   },
   {
     id: "idle_help",
-    text: "Type /help to see all commands",
+    text: t("Type /help to see all commands"),
     preemptedBy: "help_used",
   },
 ];

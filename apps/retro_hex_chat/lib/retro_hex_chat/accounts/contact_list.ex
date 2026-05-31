@@ -5,6 +5,7 @@ defmodule RetroHexChat.Accounts.ContactList do
   Provides in-memory CRUD operations on the contact list map structure,
   plus persistence functions that delegate to Ecto/Repo for database storage.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
 

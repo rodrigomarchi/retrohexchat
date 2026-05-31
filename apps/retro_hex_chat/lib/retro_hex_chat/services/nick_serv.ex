@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Services.NickServ do
   @moduledoc "NickServ: Nick registration and protection service."
+  use Gettext, backend: RetroHexChat.Gettext
   use GenServer
 
   require Logger
@@ -106,12 +107,16 @@ defmodule RetroHexChat.Services.NickServ do
   @impl true
   def handle_call({:register, nickname, password}, _from, state) do
     if Queries.get_setting("registration") == "closed" do
-      {:reply, {:error, "Registration is currently closed by the server administrator"}, state}
+      {:reply, {:error, gettext("Registration is currently closed by the server administrator")},
+       state}
     else
       case Queries.insert_registered_nick(nickname, password) do
         {:ok, _} ->
           new_state = %{state | identified: MapSet.put(state.identified, nickname)}
-          {:reply, {:ok, "Nickname #{nickname} registered successfully"}, new_state}
+
+          {:reply,
+           {:ok, gettext("Nickname %{nickname} registered successfully", nickname: nickname)},
+           new_state}
 
         {:error, changeset} ->
           msg = format_changeset_error(changeset)
@@ -123,15 +128,18 @@ defmodule RetroHexChat.Services.NickServ do
   def handle_call({:identify, nickname, password}, _from, state) do
     case Queries.find_by_nickname(nickname) do
       nil ->
-        {:reply, {:error, "Nickname #{nickname} is not registered"}, state}
+        {:reply, {:error, gettext("Nickname %{nickname} is not registered", nickname: nickname)},
+         state}
 
       %RegisteredNick{} = nick ->
         if RegisteredNick.verify_password(nick, password) do
           Queries.update_last_seen(nick)
           new_state = mark_identified(state, nickname)
-          {:reply, {:ok, "You are now identified as #{nickname}"}, new_state}
+
+          {:reply, {:ok, gettext("You are now identified as %{nickname}", nickname: nickname)},
+           new_state}
         else
-          {:reply, {:error, "Invalid password"}, state}
+          {:reply, {:error, gettext("Invalid password")}, state}
         end
     end
   end
@@ -147,7 +155,8 @@ defmodule RetroHexChat.Services.NickServ do
   def handle_call({:info, nickname}, _from, state) do
     case Queries.find_by_nickname(nickname) do
       nil ->
-        {:reply, {:error, "Nickname #{nickname} is not registered"}, state}
+        {:reply, {:error, gettext("Nickname %{nickname} is not registered", nickname: nickname)},
+         state}
 
       %RegisteredNick{} = nick ->
         info = %{
@@ -164,7 +173,9 @@ defmodule RetroHexChat.Services.NickServ do
   def handle_call({:ghost, target_nick, password, requester_nick}, _from, state) do
     case Queries.find_by_nickname(target_nick) do
       nil ->
-        {:reply, {:error, "Nickname #{target_nick} is not registered"}, state}
+        {:reply,
+         {:error, gettext("Nickname %{target_nick} is not registered", target_nick: target_nick)},
+         state}
 
       %RegisteredNick{} = nick ->
         handle_ghost_for_registered_nick(nick, target_nick, password, requester_nick, state)
@@ -178,15 +189,18 @@ defmodule RetroHexChat.Services.NickServ do
   def handle_call({:drop, nickname, password}, _from, state) do
     case Queries.find_by_nickname(nickname) do
       nil ->
-        {:reply, {:error, "Nickname #{nickname} is not registered"}, state}
+        {:reply, {:error, gettext("Nickname %{nickname} is not registered", nickname: nickname)},
+         state}
 
       %RegisteredNick{} = nick ->
         if RegisteredNick.verify_password(nick, password) do
           Queries.delete_registered_nick(nick)
           new_state = %{state | identified: MapSet.delete(state.identified, nickname)}
-          {:reply, {:ok, "Registration for #{nickname} dropped"}, new_state}
+
+          {:reply, {:ok, gettext("Registration for %{nickname} dropped", nickname: nickname)},
+           new_state}
         else
-          {:reply, {:error, "Invalid password"}, state}
+          {:reply, {:error, gettext("Invalid password")}, state}
         end
     end
   end
@@ -194,29 +208,37 @@ defmodule RetroHexChat.Services.NickServ do
   def handle_call({:admin_drop, nickname}, _from, state) do
     case Queries.find_by_nickname(nickname) do
       nil ->
-        {:reply, {:error, "Nickname #{nickname} is not registered"}, state}
+        {:reply, {:error, gettext("Nickname %{nickname} is not registered", nickname: nickname)},
+         state}
 
       %RegisteredNick{} = nick ->
         Queries.delete_registered_nick(nick)
         new_state = %{state | identified: MapSet.delete(state.identified, nickname)}
-        {:reply, {:ok, "Registration for #{nickname} dropped by admin"}, new_state}
+
+        {:reply,
+         {:ok, gettext("Registration for %{nickname} dropped by admin", nickname: nickname)},
+         new_state}
     end
   end
 
   def handle_call({:admin_reset_password, nickname, new_password}, _from, state) do
     case Queries.find_by_nickname(nickname) do
       nil ->
-        {:reply, {:error, "Nickname #{nickname} is not registered"}, state}
+        {:reply, {:error, gettext("Nickname %{nickname} is not registered", nickname: nickname)},
+         state}
 
       %RegisteredNick{} ->
         new_hash = Bcrypt.hash_pwd_salt(new_password)
 
         case Queries.update_password_hash(nickname, new_hash) do
           {:ok, _} ->
-            {:reply, {:ok, "Password for #{nickname} has been reset"}, state}
+            {:reply,
+             {:ok, gettext("Password for %{nickname} has been reset", nickname: nickname)}, state}
 
           {:error, _} ->
-            {:reply, {:error, "Failed to reset password for #{nickname}"}, state}
+            {:reply,
+             {:error, gettext("Failed to reset password for %{nickname}", nickname: nickname)},
+             state}
         end
     end
   end
@@ -252,7 +274,7 @@ defmodule RetroHexChat.Services.NickServ do
     case Phoenix.PubSub.broadcast(
            RetroHexChat.PubSub,
            "user:#{nickname}",
-           {:force_rename, %{reason: "Identify timeout (60s)"}}
+           {:force_rename, %{reason: gettext("Identify timeout (60s)")}}
          ) do
       :ok ->
         :ok
@@ -302,9 +324,11 @@ defmodule RetroHexChat.Services.NickServ do
   defp handle_ghost_for_registered_nick(nick, target_nick, password, requester_nick, state) do
     if RegisteredNick.verify_password(nick, password) do
       broadcast_ghost_disconnect(target_nick, requester_nick)
-      {:reply, {:ok, "Ghost command sent for #{target_nick}"}, state}
+
+      {:reply, {:ok, gettext("Ghost command sent for %{target_nick}", target_nick: target_nick)},
+       state}
     else
-      {:reply, {:error, "Invalid password"}, state}
+      {:reply, {:error, gettext("Invalid password")}, state}
     end
   end
 
@@ -312,7 +336,8 @@ defmodule RetroHexChat.Services.NickServ do
     case Phoenix.PubSub.broadcast(
            RetroHexChat.PubSub,
            "user:#{target_nick}",
-           {:force_disconnect, %{reason: "Ghosted by #{requester_nick}"}}
+           {:force_disconnect,
+            %{reason: gettext("Ghosted by %{requester_nick}", requester_nick: requester_nick)}}
          ) do
       :ok ->
         :ok
@@ -329,7 +354,7 @@ defmodule RetroHexChat.Services.NickServ do
       end)
     end)
     |> Enum.map_join(", ", fn {field, errors} ->
-      "#{field}: #{Enum.join(errors, ", ")}"
+      gettext("%{field}: %{errors}", field: field, errors: Enum.join(errors, ", "))
     end)
   end
 end

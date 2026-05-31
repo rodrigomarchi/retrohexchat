@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Op do
   @moduledoc "Handler for /op <nickname> — give channel operator status."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -10,7 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.Op do
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /op <nickname>"}
+  def execute([], _context), do: {:error, gettext("Usage: /op <nickname>")}
 
   def execute([nick | _], context) do
     with {:ok, channel} <- require_channel(context),
@@ -23,10 +24,12 @@ defmodule RetroHexChat.Commands.Handlers.Op do
   def help do
     %{
       name: "op",
-      syntax: "/op <nickname>",
+      syntax: gettext("/op <nickname>"),
       description:
-        "Give channel operator status to a user. Shortcut for /mode +o <nickname>.\nRequires: channel operator or owner.",
-      examples: ["/op alice"]
+        gettext(
+          "Give channel operator status to a user. Shortcut for /mode +o <nickname>.\nRequires: channel operator or owner."
+        ),
+      examples: [gettext("/op alice")]
     }
   end
 
@@ -41,8 +44,8 @@ defmodule RetroHexChat.Commands.Handlers.Op do
 
     %CommandSyntax{
       command: "op",
-      syntax: "/op <nickname>",
-      description: "Give channel operator status to a user.",
+      syntax: gettext("/op <nickname>"),
+      description: gettext("Give channel operator status to a user."),
       category: :channel,
       parameters: [
         %Parameter{
@@ -50,21 +53,23 @@ defmodule RetroHexChat.Commands.Handlers.Op do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to give operator status"
+          description: gettext("User to give operator status")
         }
       ],
-      examples: ["/op alice"]
+      examples: [gettext("/op alice")]
     }
   end
 
-  defp require_channel(%{active_channel: nil}), do: {:error, "You are not in any channel"}
+  defp require_channel(%{active_channel: nil}),
+    do: {:error, gettext("You are not in any channel")}
+
   defp require_channel(%{active_channel: ch}), do: {:ok, ch}
 
   defp require_operator(context, channel) do
     if channel in context.operator_in do
       :ok
     else
-      {:error, "You must be a channel operator to use this command"}
+      {:error, gettext("You must be a channel operator to use this command")}
     end
   end
 end

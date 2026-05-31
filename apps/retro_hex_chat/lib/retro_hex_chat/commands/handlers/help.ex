@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Help do
   @moduledoc "Handler for /help [command]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -36,10 +37,12 @@ defmodule RetroHexChat.Commands.Handlers.Help do
   def help do
     %{
       name: "help",
-      syntax: "/help [command]",
+      syntax: gettext("/help [command]"),
       description:
-        "View help for any command, or browse all available commands.\nWith no args: lists all commands. With a command name: shows detailed help.\nAlso accessible via Help Topics in the toolbar.",
-      examples: ["/help", "/help join"]
+        gettext(
+          "View help for any command, or browse all available commands.\nWith no args: lists all commands. With a command name: shows detailed help.\nAlso accessible via Help Topics in the toolbar."
+        ),
+      examples: ["/help", gettext("/help join")]
     }
   end
 
@@ -54,9 +57,11 @@ defmodule RetroHexChat.Commands.Handlers.Help do
 
     %CommandSyntax{
       command: "help",
-      syntax: "/help [command]",
+      syntax: gettext("/help [command]"),
       description:
-        "View help for any command, or browse all available commands.\nWith no args: lists all commands. With a command name: shows detailed help.\nAlso accessible via Help Topics in the toolbar.",
+        gettext(
+          "View help for any command, or browse all available commands.\nWith no args: lists all commands. With a command name: shows detailed help.\nAlso accessible via Help Topics in the toolbar."
+        ),
       category: :basics,
       parameters: [
         %Parameter{
@@ -64,10 +69,10 @@ defmodule RetroHexChat.Commands.Handlers.Help do
           required: false,
           type: :command,
           position: 0,
-          description: "Command name to view detailed help"
+          description: gettext("Command name to view detailed help")
         }
       ],
-      examples: ["/help", "/help join"]
+      examples: ["/help", gettext("/help join")]
     }
   end
 end

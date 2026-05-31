@@ -25,11 +25,11 @@ defmodule RetroHexChatWeb.Components.UI.MessageIndicators do
     ~H"""
     <span
       class={classes(["text-[10px] text-muted-foreground ml-1", @class])}
-      title={"Edited at #{@timestamp}"}
+      title={gettext("Edited at %{timestamp}", timestamp: @timestamp)}
       data-testid="edited-tag"
       {@rest}
     >
-      (edited)
+      {gettext("(edited)")}
     </span>
     """
   end
@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageIndicators do
       data-testid="deleted-message"
       {@rest}
     >
-      [message deleted]
+      {gettext("[message deleted]")}
     </span>
     """
   end
@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.MessageIndicators do
       phx-value-temp_id={@temp_id}
       phx-value-content={@content}
       phx-value-target={@target}
-      title="Failed to send. Click to retry"
+      title={gettext("Failed to send. Click to retry")}
       data-testid="retry-message"
       {@rest}
     >

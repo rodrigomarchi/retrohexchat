@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameScreens do
   their own modules under `Diagrams.Game*`.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   @doc false
   def win98_chrome(title, step \\ nil) do

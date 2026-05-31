@@ -33,6 +33,7 @@ import {
   isTransferActive,
   createQueueEntry,
 } from "../../lib/p2p/file_transfer.js";
+import { t } from "../../lib/i18n.js";
 
 const FileTransferHook = {
   mounted() {
@@ -185,7 +186,7 @@ const FileTransferHook = {
   async _handleFileSelected(file) {
     if (!this._config) {
       this.pushEvent("ft_validation_error", {
-        error: "Aguarde a configuracao carregar e tente novamente.",
+        error: t("Wait for configuration to load and try again."),
       });
       return;
     }
@@ -408,7 +409,7 @@ const FileTransferHook = {
     } else {
       this._session.state = STATE.FAILED;
       this.pushEvent("ft_failed", {
-        reason: "Verificacao de integridade falhou",
+        reason: t("Integrity check failed"),
       });
     }
   },
@@ -429,7 +430,7 @@ const FileTransferHook = {
     } else {
       this._session.state = STATE.FAILED;
       this.pushEvent("ft_failed", {
-        reason: "Verificacao de integridade falhou",
+        reason: t("Integrity check failed"),
       });
     }
   },

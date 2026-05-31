@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConversationsPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,7 +15,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ConversationsPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Conversations",
+       page_title: gettext("Conversations"),
        active_page: "conversations"
      )}
   end

@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.Icons.Formatting do
   All icons use a 14×14 viewBox and `fill="currentColor"` for theme inheritance.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

@@ -1,21 +1,22 @@
 defmodule RetroHexChat.Commands.Handlers.Me do
   @moduledoc "Handler for /me <action>"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Usage: /me <action>"}
+  def validate(""), do: {:error, gettext("Usage: /me <action>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /me <action>"}
+  def execute([], _context), do: {:error, gettext("Usage: /me <action>")}
 
   def execute(args, context) do
     if context.active_channel == nil do
-      {:error, "You are not in any channel"}
+      {:error, gettext("You are not in any channel")}
     else
       content = Enum.join(args, " ")
       {:ok, :action, %{content: content}}
@@ -32,10 +33,12 @@ defmodule RetroHexChat.Commands.Handlers.Me do
   def help do
     %{
       name: "me",
-      syntax: "/me <action>",
+      syntax: gettext("/me <action>"),
       description:
-        "Send an action message that appears as '* YourNick does something' to everyone in the channel.\nMust be in a channel. Action text is required.",
-      examples: ["/me waves hello", "/me is away"]
+        gettext(
+          "Send an action message that appears as '* YourNick does something' to everyone in the channel.\nMust be in a channel. Action text is required."
+        ),
+      examples: [gettext("/me waves hello"), gettext("/me is away")]
     }
   end
 
@@ -50,9 +53,11 @@ defmodule RetroHexChat.Commands.Handlers.Me do
 
     %CommandSyntax{
       command: "me",
-      syntax: "/me <action>",
+      syntax: gettext("/me <action>"),
       description:
-        "Send an action message that appears as '* YourNick does something' to everyone in the channel.\nMust be in a channel. Action text is required.",
+        gettext(
+          "Send an action message that appears as '* YourNick does something' to everyone in the channel.\nMust be in a channel. Action text is required."
+        ),
       category: :basics,
       parameters: [
         %Parameter{
@@ -60,10 +65,10 @@ defmodule RetroHexChat.Commands.Handlers.Me do
           required: true,
           type: :text,
           position: 0,
-          description: "Action text"
+          description: gettext("Action text")
         }
       ],
-      examples: ["/me waves hello", "/me is away"]
+      examples: [gettext("/me waves hello"), gettext("/me is away")]
     }
   end
 end

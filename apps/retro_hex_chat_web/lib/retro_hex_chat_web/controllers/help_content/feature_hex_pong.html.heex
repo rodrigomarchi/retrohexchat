@@ -1,32 +1,34 @@
 <p>
-  Cyberpunk Pong with neon glow, CRT scanlines, and synth audio. Two paddles, one ball,
-  pure skill. The ball accelerates with every rally — first to 11 points wins (must win by 2
-  after 10-10). Games are fast and intense, typically lasting 2-3 minutes.
+  {gettext(
+    "Cyberpunk Pong with neon glow, CRT scanlines, and synth audio. Two paddles, one ball, pure skill. The ball accelerates with every rally — first to 11 points wins (must win by 2 after 10-10). Games are fast and intense, typically lasting 2-3 minutes."
+  )}
 </p>
 <.diagram_game_pong class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow Up / Arrow Down</strong> — Move paddle</li>
-  <li><strong>W / S</strong> — Alternative controls</li>
+  <li><strong>{gettext("Arrow Up / Arrow Down")}</strong> {gettext("— Move paddle")}</li>
+  <li><strong>{gettext("W / S")}</strong> {gettext("— Alternative controls")}</li>
 </ul>
-<.help_h4 icon={:icon_rules}>Rules</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
 <ul>
-  <li>Each player controls a paddle on their side of the screen</li>
-  <li>The ball bounces off the top and bottom walls</li>
-  <li>If the ball passes your paddle, your opponent scores a point</li>
-  <li>Ball speed increases with each paddle hit, up to 2.4x initial speed</li>
-  <li>Speed resets after each point scored</li>
+  <li>{gettext("Each player controls a paddle on their side of the screen")}</li>
+  <li>{gettext("The ball bounces off the top and bottom walls")}</li>
+  <li>{gettext("If the ball passes your paddle, your opponent scores a point")}</li>
+  <li>{gettext("Ball speed increases with each paddle hit, up to 2.4x initial speed")}</li>
+  <li>{gettext("Speed resets after each point scored")}</li>
   <li>
-    Ball angle depends on where it hits the paddle — center gives a shallow bounce, edges give steep angles (up to 60 degrees)
+    {gettext(
+      "Ball angle depends on where it hits the paddle — center gives a shallow bounce, edges give steep angles (up to 60 degrees)"
+    )}
   </li>
-  <li>First to 11 points wins — deuce rule applies after 10-10 (must win by 2)</li>
+  <li>{gettext("First to 11 points wins — deuce rule applies after 10-10 (must win by 2)")}</li>
 </ul>
-<.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Based on Atari's Pong (1972) — the game that started the video game industry.</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<p>{gettext("Based on Atari's Pong (1972) — the game that started the video game industry.")}</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="feature-block-breakers">Block Breakers</.help_link>
-  · <.help_link topic="feature-hex-warlords">Hex Warlords</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="feature-block-breakers">{gettext("Block Breakers")}</.help_link>
+  · <.help_link topic="feature-hex-warlords">{gettext("Hex Warlords")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

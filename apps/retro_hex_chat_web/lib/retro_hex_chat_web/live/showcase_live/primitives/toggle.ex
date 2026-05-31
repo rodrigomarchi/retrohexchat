@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Toggle do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,19 +13,22 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Toggle do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Toggle", active_page: "toggle")}
+    {:ok, assign(socket, page_title: gettext("Toggle"), active_page: "toggle")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Toggle</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Toggle")}</h2>
 
-      <.showcase_card title="Variants" description="A two-state button that can be toggled on or off.">
+      <.showcase_card
+        title={gettext("Variants")}
+        description="A two-state button that can be toggled on or off."
+      >
         <div class="flex gap-2">
-          <.toggle>Toggle</.toggle>
-          <.toggle variant="outline">Outline</.toggle>
+          <.toggle>{gettext("Toggle")}</.toggle>
+          <.toggle variant="outline">{gettext("Outline")}</.toggle>
         </div>
         <.code_example>
           &lt;.toggle&gt;Toggle&lt;/.toggle&gt;

@@ -1,33 +1,41 @@
 <p>
-  Flood Protection automatically detects and handles various types of abuse, including message flooding and duplicate spam. All detection runs on your side — other users are not affected.
+  {gettext(
+    "Flood Protection automatically detects and handles various types of abuse, including message flooding and duplicate spam. All detection runs on your side — other users are not affected."
+  )}
 </p>
-<.help_h4 icon={:icon_star}>Features</.help_h4>
+<.help_h4 icon={:icon_star}>{gettext("Features")}</.help_h4>
 <p>
-  <strong>Duplicate Detection:</strong>
-  Detects repeated identical messages from the same sender. Default: 3 identical messages in 10 seconds triggers blocking.<br />
+  <strong>{gettext("Duplicate Detection:")}</strong>
+  {gettext(
+    "Detects repeated identical messages from the same sender. Default: 3 identical messages in 10 seconds triggers blocking."
+  )}<br />
   <strong>
-    Auto-Ignore:
+    {gettext("Auto-Ignore:")}
   </strong>
-  Users who exceed the message flood threshold are automatically added to your ignore list for a configurable duration (default: 5 minutes). The ignore is automatically removed when the timer expires.<br />
+  {gettext(
+    "Users who exceed the message flood threshold are automatically added to your ignore list for a configurable duration (default: 5 minutes). The ignore is automatically removed when the timer expires."
+  )}<br />
   <strong>
-    Cooldown:
+    {gettext("Cooldown:")}
   </strong>
-  If you manually un-ignore an auto-ignored user, a 60-second cooldown prevents the auto-ignore from re-triggering immediately.
+  {gettext(
+    "If you manually un-ignore an auto-ignored user, a 60-second cooldown prevents the auto-ignore from re-triggering immediately."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_general}>Default Thresholds</.help_h4>
-<pre>Flood Threshold:    10 messages in 15 seconds
-Spam Threshold:      3 duplicates in 10 seconds
-Auto-Ignore Duration: 5 minutes</pre>
-<.help_h4 icon={:icon_dialog_options}>Customizing Settings</.help_h4>
+<.help_h4 icon={:icon_tab_general}>{gettext("Default Thresholds")}</.help_h4>
+<pre>{gettext("Flood Threshold: 10 messages in 15 seconds Spam Threshold: 3 duplicates in 10 seconds Auto-Ignore Duration: 5 minutes")}</pre>
+<.help_h4 icon={:icon_dialog_options}>{gettext("Customizing Settings")}</.help_h4>
 <p>
-  Go to <strong>Tools &gt; Flood Protection</strong>
-  to customize all thresholds. Settings persist for registered (identified) users.
+  {gettext("Go to")} <strong>{gettext("Tools > Flood Protection")}</strong>
+  {gettext("to customize all thresholds. Settings persist for registered (identified) users.")}
 </p>
-<.help_h4 icon={:icon_tab_exceptions}>Exemptions</.help_h4>
+<.help_h4 icon={:icon_tab_exceptions}>{gettext("Exemptions")}</.help_h4>
 <p>
-  - System messages (joins, parts, kicks) are never filtered<br />- Your own messages do not trigger flood tracking<br />- Different channels/PM targets are tracked independently
+  {gettext("- System messages (joins, parts, kicks) are never filtered")}<br />{gettext(
+    "- Your own messages do not trigger flood tracking"
+  )}<br />{gettext("- Different channels/PM targets are tracked independently")}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-ignore-list">Ignore List</.help_link>
+  <.help_link topic="feature-ignore-list">{gettext("Ignore List")}</.help_link>
 </p>

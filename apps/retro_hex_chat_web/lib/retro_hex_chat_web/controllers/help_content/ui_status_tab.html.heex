@@ -1,28 +1,38 @@
 <p>
-  The Status tab is the central observability point for your session. <strong>Every</strong>
-  system event, command result, and error is mirrored here, so you never miss important information even if you are looking at a different channel.
+  {gettext("The Status tab is the central observability point for your session.")}
+  <strong>{gettext("Every")}</strong>
+  {gettext(
+    "system event, command result, and error is mirrored here, so you never miss important information even if you are looking at a different channel."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_status}>What Appears in Status</.help_h4>
+<.help_h4 icon={:icon_tab_status}>{gettext("What Appears in Status")}</.help_h4>
 <p>
-  <strong>System events:</strong>
-  joins, parts, kicks, bans, mode changes, topic changes, nick changes, knocks.<br />
+  <strong>{gettext("System events:")}</strong>
+  {gettext("joins, parts, kicks, bans, mode changes, topic changes, nick changes, knocks.")}<br />
   <strong>
-    Command results:
+    {gettext("Command results:")}
   </strong>
-  /whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode, /timer output.<br />
+  {gettext(
+    "/whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode, /timer output."
+  )}<br />
   <strong>
-    Errors:
+    {gettext("Errors:")}
   </strong>
-  permission errors, rate limits, invalid commands, send failures.<br /><strong>Services:</strong>
-  NickServ, ChanServ responses.<br /><strong>Notifications:</strong>
-  notify list online/offline, wallops.
+  {gettext("permission errors, rate limits, invalid commands, send failures.")}<br />
+  <strong>
+    {gettext("Services:")}
+  </strong>
+  {gettext("NickServ, ChanServ responses.")}<br /><strong>{gettext("Notifications:")}</strong>
+  {gettext("notify list online/offline, wallops.")}
 </p>
 <p>
-  Click the <strong>Status</strong>
-  tab in the tab bar or conversations sidebar to view it. Status data is session-only and is not persisted.
+  {gettext("Click the")} <strong>{gettext("Status")}</strong>
+  {gettext(
+    "tab in the tab bar or conversations sidebar to view it. Status data is session-only and is not persisted."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-status-bar">Status Bar</.help_link>
-  · <.help_link topic="cmd-whois">Whois Command</.help_link>
+  <.help_link topic="feature-status-bar">{gettext("Status Bar")}</.help_link>
+  · <.help_link topic="cmd-whois">{gettext("Whois Command")}</.help_link>
 </p>

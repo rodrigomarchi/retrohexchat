@@ -1,38 +1,44 @@
-<p>RetroHexChat supports several types of special server and channel messages:</p>
-<.help_h4 icon={:icon_notepad}>Message of the Day (MOTD)</.help_h4>
+<p>{gettext("RetroHexChat supports several types of special server and channel messages:")}</p>
+<.help_h4 icon={:icon_notepad}>{gettext("Message of the Day (MOTD)")}</.help_h4>
 <p>
-  Server administrators can set a MOTD that all users see when they connect. Use
-  <code>/motd</code>
-  to re-read it at any time.
+  {gettext("Server administrators can set a MOTD that all users see when they connect. Use")}
+  <code>{gettext("/motd")}</code>
+  {gettext("to re-read it at any time.")}
 </p>
-<.help_h4 icon={:icon_megaphone}>Channel Welcome Messages</.help_h4>
+<.help_h4 icon={:icon_megaphone}>{gettext("Channel Welcome Messages")}</.help_h4>
 <p>
-  Channel operators can set a welcome message shown once to users when they first join. The message is not shown to the user who set it, and not repeated on rejoin within the same session.
+  {gettext(
+    "Channel operators can set a welcome message shown once to users when they first join. The message is not shown to the user who set it, and not repeated on rejoin within the same session."
+  )}
 </p>
-<.help_h4 icon={:icon_megaphone}>Wallops</.help_h4>
+<.help_h4 icon={:icon_megaphone}>{gettext("Wallops")}</.help_h4>
 <p>
-  Server operators can send wallops messages to users who opt in with <code>/umode +w</code>. Wallops appear in the Status tab.
+  {gettext("Server operators can send wallops messages to users who opt in with")} <code>{gettext("/umode +w")}</code>{gettext(
+    ". Wallops appear in the Status tab."
+  )}
 </p>
-<.help_h4 icon={:icon_megaphone}>Global Announcements</.help_h4>
+<.help_h4 icon={:icon_megaphone}>{gettext("Global Announcements")}</.help_h4>
 <p>
-  Server administrators can send announcements that appear in every user's active window. Announcements bypass ignore lists and have distinctive bold styling.
+  {gettext(
+    "Server administrators can send announcements that appear in every user's active window. Announcements bypass ignore lists and have distinctive bold styling."
+  )}
 </p>
-<.help_h4 icon={:icon_terminal}>Commands</.help_h4>
+<.help_h4 icon={:icon_terminal}>{gettext("Commands")}</.help_h4>
 <p>
-  <code>/motd</code>
-  — View the MOTD<br /><code>/setmotd</code>
-  — Set the MOTD (admin)<br /><code>/clearmotd</code>
-  — Clear the MOTD (admin)<br /><code>/setwelcome</code>
-  — Set channel welcome (operator)<br /><code>/clearwelcome</code>
-  — Clear channel welcome (operator)<br /><code>/wallops</code>
-  — Send wallops message (operator)<br /><code>/announce</code>
-  — Send global announcement (admin)<br /><code>/umode</code>
-  — Set user modes (+w for wallops)
+  <code>{gettext("/motd")}</code>
+  {gettext("— View the MOTD")}<br /><code>{gettext("/setmotd")}</code>
+  {gettext("— Set the MOTD (admin)")}<br /><code>{gettext("/clearmotd")}</code>
+  {gettext("— Clear the MOTD (admin)")}<br /><code>{gettext("/setwelcome")}</code>
+  {gettext("— Set channel welcome (operator)")}<br /><code>{gettext("/clearwelcome")}</code>
+  {gettext("— Clear channel welcome (operator)")}<br /><code>{gettext("/wallops")}</code>
+  {gettext("— Send wallops message (operator)")}<br /><code>{gettext("/announce")}</code>
+  {gettext("— Send global announcement (admin)")}<br /><code>{gettext("/umode")}</code>
+  {gettext("— Set user modes (+w for wallops)")}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-motd">/motd</.help_link>
-  · <.help_link topic="cmd-wallops">/wallops</.help_link>
-  · <.help_link topic="cmd-announce">/announce</.help_link>
-  · <.help_link topic="cmd-umode">/umode</.help_link>
+  <.help_link topic="cmd-motd">{gettext("/motd")}</.help_link>
+  · <.help_link topic="cmd-wallops">{gettext("/wallops")}</.help_link>
+  · <.help_link topic="cmd-announce">{gettext("/announce")}</.help_link>
+  · <.help_link topic="cmd-umode">{gettext("/umode")}</.help_link>
 </p>

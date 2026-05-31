@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Chat.HoverCardPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -13,17 +14,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.HoverCardPage do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Hover Card", active_page: "hover-card")}
+    {:ok, assign(socket, page_title: gettext("Hover Card"), active_page: "hover-card")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Hover Card</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Hover Card")}</h2>
 
       <.showcase_card
-        title="Full Info Card"
+        title={gettext("Full Info Card")}
         description="Hover card with all nick info fields, role badges, channels, and contact status."
       >
         <.hover_card
@@ -41,8 +42,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.HoverCardPage do
           is_contact={true}
         >
           <:role_badges>
-            <.badge variant="destructive">Owner</.badge>
-            <.badge variant="default">Operator</.badge>
+            <.badge variant="destructive">{gettext("Owner")}</.badge>
+            <.badge variant="default">{gettext("Operator")}</.badge>
           </:role_badges>
         </.hover_card>
         <.code_example>
@@ -60,14 +61,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.HoverCardPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Loading State"
+        title={gettext("Loading State")}
         description="Hover card in loading state while WHOIS data is being fetched."
       >
         <.hover_card nick="unknown_user" loading={true} />
       </.showcase_card>
 
       <.showcase_card
-        title="Role Badge (via role attr)"
+        title={gettext("Role Badge (via role attr)")}
         description="Hover card using the role atom attr instead of the role_badges slot."
       >
         <.hover_card
@@ -79,7 +80,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.HoverCardPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Bot User"
+        title={gettext("Bot User")}
         description="Hover card for a bot with the :bot role."
       >
         <.hover_card
@@ -92,14 +93,14 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.HoverCardPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Minimal Card"
+        title={gettext("Minimal Card")}
         description="Just nick and host — no roles, channels, or status."
       >
         <.hover_card nick="guest123" host="guest@webchat.example.com" />
       </.showcase_card>
 
       <.showcase_card
-        title="Ignored User"
+        title={gettext("Ignored User")}
         description="Card showing ignored status badge."
       >
         <.hover_card

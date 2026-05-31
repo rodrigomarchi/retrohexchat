@@ -2,6 +2,7 @@ defmodule RetroHexChat.Channels.Policy do
   @moduledoc """
   Authorization checks for channel operations.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Channels.{Masks, Membership, Modes}
 
@@ -31,25 +32,25 @@ defmodule RetroHexChat.Channels.Policy do
 
   defp check_limit(modes, membership) do
     if Modes.has_limit?(modes) and Membership.count(membership) >= modes.limit,
-      do: {:error, "Channel is full (+l)"},
+      do: {:error, gettext("Channel is full (+l)")},
       else: :ok
   end
 
   defp check_invite(modes, invite_exceptions, nickname) do
     if Modes.invite_only?(modes) and not Masks.matches_any?(invite_exceptions, nickname),
-      do: {:error, "Channel is invite-only (+i)"},
+      do: {:error, gettext("Channel is invite-only (+i)")},
       else: :ok
   end
 
   defp check_key(modes, password) do
     if Modes.has_key?(modes) and password != modes.key,
-      do: {:error, "Bad channel key (+k)"},
+      do: {:error, gettext("Bad channel key (+k)")},
       else: :ok
   end
 
   defp check_registered(modes, identified) do
     if Modes.registered_only?(modes) and not identified,
-      do: {:error, "You must be registered to join this channel"},
+      do: {:error, gettext("You must be registered to join this channel")},
       else: :ok
   end
 
@@ -59,20 +60,25 @@ defmodule RetroHexChat.Channels.Policy do
 
     cond do
       Modes.no_external?(modes) and not is_member ->
-        {:error, "Cannot send to channel (no external messages)"}
+        {:error, gettext("Cannot send to channel (no external messages)")}
 
       Modes.moderated?(modes) ->
         case Membership.role(membership, nickname) do
-          {:ok, role} when role in [:owner, :operator, :half_operator, :voiced] -> :ok
-          {:ok, :regular} -> {:error, "Channel is moderated (+m). You need voice (+v) to speak."}
-          {:error, :not_member} -> {:error, "You are not in this channel"}
+          {:ok, role} when role in [:owner, :operator, :half_operator, :voiced] ->
+            :ok
+
+          {:ok, :regular} ->
+            {:error, gettext("Channel is moderated (+m). You need voice (+v) to speak.")}
+
+          {:error, :not_member} ->
+            {:error, gettext("You are not in this channel")}
         end
 
       is_member ->
         :ok
 
       true ->
-        {:error, "You are not in this channel"}
+        {:error, gettext("You are not in this channel")}
     end
   end
 
@@ -81,13 +87,13 @@ defmodule RetroHexChat.Channels.Policy do
     if Modes.topic_locked?(modes) do
       case Membership.role(membership, nickname) do
         {:ok, role} when role in [:owner, :operator] -> :ok
-        _ -> {:error, "You must be a channel operator to change the topic"}
+        _ -> {:error, gettext("You must be a channel operator to change the topic")}
       end
     else
       if Membership.member?(membership, nickname) do
         :ok
       else
-        {:error, "You are not in this channel"}
+        {:error, gettext("You are not in this channel")}
       end
     end
   end
@@ -106,8 +112,8 @@ defmodule RetroHexChat.Channels.Policy do
          true <- Membership.rank(actor_role) >= Membership.rank(:half_operator) do
       check_kick_target(membership, actor_role, target)
     else
-      {:error, :not_member} -> {:error, "Insufficient privileges"}
-      false -> {:error, "Insufficient privileges"}
+      {:error, :not_member} -> {:error, gettext("Insufficient privileges")}
+      false -> {:error, gettext("Insufficient privileges")}
     end
   end
 
@@ -116,7 +122,7 @@ defmodule RetroHexChat.Channels.Policy do
       {:ok, target_role} ->
         if Membership.rank(actor_role) > Membership.rank(target_role),
           do: :ok,
-          else: {:error, "Cannot kick a higher-ranked user"}
+          else: {:error, gettext("Cannot kick a higher-ranked user")}
 
       {:error, :not_member} ->
         {:error, "User #{target} is not in channel"}
@@ -126,14 +132,14 @@ defmodule RetroHexChat.Channels.Policy do
   @spec can_ban?(Membership.t(), String.t(), String.t()) :: :ok | {:error, String.t()}
   def can_ban?(membership, actor, target) do
     if actor == target do
-      {:error, "You cannot ban yourself"}
+      {:error, gettext("You cannot ban yourself")}
     else
       with {:ok, actor_role} <- Membership.role(membership, actor),
            true <- actor_role in [:owner, :operator] do
         check_ban_target(membership, actor_role, target)
       else
-        {:error, :not_member} -> {:error, "Insufficient privileges"}
-        false -> {:error, "Insufficient privileges"}
+        {:error, :not_member} -> {:error, gettext("Insufficient privileges")}
+        false -> {:error, gettext("Insufficient privileges")}
       end
     end
   end
@@ -143,7 +149,7 @@ defmodule RetroHexChat.Channels.Policy do
       {:ok, target_role} ->
         if Membership.rank(actor_role) > Membership.rank(target_role),
           do: :ok,
-          else: {:error, "Cannot ban a user with equal or higher rank"}
+          else: {:error, gettext("Cannot ban a user with equal or higher rank")}
 
       {:error, :not_member} ->
         :ok
@@ -159,11 +165,11 @@ defmodule RetroHexChat.Channels.Policy do
         if Membership.rank(actor_role) >= required_rank do
           :ok
         else
-          {:error, "Insufficient privileges to set channel modes"}
+          {:error, gettext("Insufficient privileges to set channel modes")}
         end
 
       {:error, :not_member} ->
-        {:error, "Insufficient privileges to set channel modes"}
+        {:error, gettext("Insufficient privileges to set channel modes")}
     end
   end
 

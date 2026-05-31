@@ -1,26 +1,35 @@
-<p>Send a private message to another user. This opens a PM conversation tab for both of you.</p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/msg &lt;nickname&gt; &lt;message&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>nickname</code> — The user to message.<br /><code>message</code> — The text to send.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
 <p>
-  Your message is delivered privately — only you and the recipient can see it. A PM tab opens on both sides for the conversation. The recipient receives a notification if they have notifications enabled. If you just want to open a PM tab without sending a message, use
-  <code>/query</code>
-  instead.
+  {gettext(
+    "Send a private message to another user. This opens a PM conversation tab for both of you."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
-<ul>
-  <li>The recipient must be online</li>
-  <li>Both nickname and message are required</li>
-  <li>Can be blocked if the recipient has you on their ignore list</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/msg Alice Hey, how are you?
-/msg Bob Check out #project</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/msg <nickname> <message>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
-  <.help_link topic="cmd-query">/query</.help_link>
-  · <.help_link topic="cmd-notice">/notice</.help_link>
-  · <.help_link topic="private-messages">Private Messages</.help_link>
+  <code>nickname</code> {gettext("— The user to message.")}<br /><code>message</code> {gettext(
+    "— The text to send."
+  )}
+</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
+<p>
+  {gettext(
+    "Your message is delivered privately — only you and the recipient can see it. A PM tab opens on both sides for the conversation. The recipient receives a notification if they have notifications enabled. If you just want to open a PM tab without sending a message, use"
+  )}
+  <code>{gettext("/query")}</code>
+  {gettext("instead.")}
+</p>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
+<ul>
+  <li>{gettext("The recipient must be online")}</li>
+  <li>{gettext("Both nickname and message are required")}</li>
+  <li>{gettext("Can be blocked if the recipient has you on their ignore list")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/msg Alice Hey, how are you? /msg Bob Check out #project")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-query">{gettext("/query")}</.help_link>
+  · <.help_link topic="cmd-notice">{gettext("/notice")}</.help_link>
+  · <.help_link topic="private-messages">{gettext("Private Messages")}</.help_link>
 </p>

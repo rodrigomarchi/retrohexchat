@@ -64,7 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
       {@rest}
     >
       <.window_title_bar
-        title={"Game Lobby \u2014 #{@nickname} vs #{@peer_nick}"}
+        title={gettext("Game Lobby — %{nickname} vs %{peer}", nickname: @nickname, peer: @peer_nick)}
         controls={[:close]}
         on_close={@on_close}
       >
@@ -88,7 +88,9 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
           class="flex items-center gap-retro-4 shadow-retro-field bg-warning-light px-retro-8 py-retro-4 text-xs"
         >
           <Icons.icon_warning class="w-4 h-4 flex-shrink-0" />
-          <span>Inactivity detected — this lobby will close soon if no game is selected.</span>
+          <span>
+            {gettext("Inactivity detected — this lobby will close soon if no game is selected.")}
+          </span>
         </div>
 
         <%!-- Game consent banner (guest sees accept/decline) --%>
@@ -98,7 +100,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
         >
           <p class="text-xs font-bold">
             <span class="font-normal">{@game_request.requester_nick}</span>
-            wants to play <span class="font-normal">{@game_request.game_name}</span>
+            {gettext("wants to play")} <span class="font-normal">{@game_request.game_name}</span>
           </p>
           <div class="flex gap-retro-4">
             <.button
@@ -109,7 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
               data-testid="game-lobby-accept"
             >
               <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-              Accept
+              {gettext("Accept")}
             </.button>
             <.button
               size="sm"
@@ -119,7 +121,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
               data-testid="game-lobby-decline"
             >
               <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-              Decline
+              {gettext("Decline")}
             </.button>
           </div>
         </div>
@@ -131,14 +133,14 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
         >
           <Icons.icon_clock class="w-4 h-4 flex-shrink-0 animate-spin" />
           <span>
-            Waiting for <strong>{@peer_nick}</strong>
-            to accept <strong>{@game_request.game_name}</strong>...
+            {gettext("Waiting for")} <strong>{@peer_nick}</strong>
+            {gettext("to accept")} <strong>{@game_request.game_name}</strong>...
           </span>
         </div>
 
         <%!-- Game picker grid (host only) --%>
         <div :if={@role == :creator and @games != [] and @game_request == nil}>
-          <p class="text-xs font-bold mb-retro-4">Choose a game:</p>
+          <p class="text-xs font-bold mb-retro-4">{gettext("Choose a game:")}</p>
           <div class="grid grid-cols-5 gap-retro-4">
             <button
               :for={game <- @games}
@@ -160,7 +162,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
           class="flex items-center gap-retro-4 shadow-retro-field bg-white px-retro-8 py-retro-8 text-xs"
         >
           <Icons.icon_clock class="w-4 h-4 flex-shrink-0 animate-spin" />
-          <span>Waiting for <strong>{@peer_nick}</strong> to choose a game...</span>
+          <span>{gettext("Waiting for %{peer} to choose a game...", peer: @peer_nick)}</span>
         </div>
 
         <%!-- Empty state (host, no games available) --%>
@@ -168,7 +170,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
           :if={@role == :creator and @games == [] and @game_request == nil}
           class="shadow-retro-field bg-white p-retro-16 text-center text-xs text-muted-foreground"
         >
-          No games available
+          {gettext("No games available")}
         </div>
 
         <%!-- Leave button --%>
@@ -179,7 +181,7 @@ defmodule RetroHexChatWeb.Components.UI.GameLobby do
             data-testid="game-lobby-leave"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            Leave
+            {gettext("Leave")}
           </.button>
         </div>
       </.window_body>

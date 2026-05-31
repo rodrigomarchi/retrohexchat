@@ -8,6 +8,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.GameInvite do
 
   import Phoenix.LiveView, only: [push_event: 3]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Chat.Service
   alias RetroHexChatWeb.ChatLive.Helpers.{Messages, PM}
 
@@ -16,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.GameInvite do
   def handle_game_invite(socket, session, payload) do
     %{target: target, token: token} = payload
 
-    pm_content = "Game session started! Join the lobby: /game/#{token}"
+    pm_content = gettext("Game session started! Join the lobby: /game/%{token}", token: token)
 
     socket =
       case Service.send_private_message(session.nickname, target, pm_content, "p2p_invite") do
@@ -36,10 +38,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.GameInvite do
 
           socket
           |> PM.open_pm_conversation(target)
-          |> Messages.system_event("Game invite sent to #{target}. Waiting for response...")
+          |> Messages.system_event(
+            gettext("Game invite sent to %{target}. Waiting for response...", target: target)
+          )
 
         {:error, _reason} ->
-          Messages.system_event(socket, "Failed to send game invite to #{target}.")
+          Messages.system_event(
+            socket,
+            gettext("Failed to send game invite to %{target}.", target: target)
+          )
       end
 
     push_event(socket, "scroll_to_bottom", %{})

@@ -1,33 +1,36 @@
 <p>
-  Start a peer-to-peer game session with another user. Choose from 5 retro arcade games and play directly in the browser via WebRTC.
+  {gettext(
+    "Start a peer-to-peer game session with another user. Choose from 5 retro arcade games and play directly in the browser via WebRTC."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/game &lt;nickname&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>nickname</code> — The user to start a game session with.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/game <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>nickname</code> {gettext("— The user to start a game session with.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Running <code>/game</code>
-  creates a game session and sends an invite to the target user. Both users enter a game lobby where they can chat and pick a game. Once both agree on a game, a WebRTC DataChannel connects the players and the game begins. The session creator acts as host (runs the game loop), while the peer sends inputs and receives state updates.
+  {gettext("Running")} <code>{gettext("/game")}</code>
+  {gettext(
+    "creates a game session and sends an invite to the target user. Both users enter a game lobby where they can chat and pick a game. Once both agree on a game, a WebRTC DataChannel connects the players and the game begins. The session creator acts as host (runs the game loop), while the peer sends inputs and receives state updates."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Both you and the target must be registered and identified</li>
-  <li>Cannot start a game session with yourself</li>
-  <li>Only one active game session per user pair at a time</li>
-  <li>Sessions expire after 5 minutes if the peer doesn't join</li>
-  <li>The lobby expires after 15 minutes of inactivity</li>
+  <li>{gettext("Both you and the target must be registered and identified")}</li>
+  <li>{gettext("Cannot start a game session with yourself")}</li>
+  <li>{gettext("Only one active game session per user pair at a time")}</li>
+  <li>{gettext("Sessions expire after 5 minutes if the peer doesn't join")}</li>
+  <li>{gettext("The lobby expires after 15 minutes of inactivity")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/game Mario
-/game Alice</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/game Mario /game Alice")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="feature-hex-pong">Hex Pong</.help_link>
-  · <.help_link topic="feature-light-trails">Light Trails</.help_link>
-  · <.help_link topic="feature-pixel-tanks">Pixel Tanks</.help_link>
-  · <.help_link topic="feature-star-duel">Star Duel</.help_link>
-  · <.help_link topic="feature-block-breakers">Block Breakers</.help_link>
-  · <.help_link topic="cmd-p2p">/p2p</.help_link>
+  <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="feature-hex-pong">{gettext("Hex Pong")}</.help_link>
+  · <.help_link topic="feature-light-trails">{gettext("Light Trails")}</.help_link>
+  · <.help_link topic="feature-pixel-tanks">{gettext("Pixel Tanks")}</.help_link>
+  · <.help_link topic="feature-star-duel">{gettext("Star Duel")}</.help_link>
+  · <.help_link topic="feature-block-breakers">{gettext("Block Breakers")}</.help_link>
+  · <.help_link topic="cmd-p2p">{gettext("/p2p")}</.help_link>
 </p>

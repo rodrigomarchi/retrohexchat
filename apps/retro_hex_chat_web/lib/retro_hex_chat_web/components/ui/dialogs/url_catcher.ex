@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-2xl" on_cancel={@on_close}>
       <div id={"#{@id}-content"} phx-hook="URLCatcherHook" data-testid="url-catcher">
-        <.dialog_header id={@id} title="URL Catcher" on_close={@on_close}>
+        <.dialog_header id={@id} title={gettext("URL Catcher")} on_close={@on_close}>
           <:icon><Icons.icon_link class="w-4 h-4" /></:icon>
         </.dialog_header>
 
@@ -59,14 +59,14 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                 id="url-catcher-channel-filter"
                 name="channel"
                 value={@filter_channel || ""}
-                label={@filter_channel || "All Channels"}
-                placeholder="All Channels"
+                label={@filter_channel || gettext("All Channels")}
+                placeholder={gettext("All Channels")}
               >
                 <.select_trigger builder={builder} class="h-7 text-xs w-[140px]" />
                 <.select_content builder={builder}>
                   <.select_group>
-                    <.select_item builder={builder} value="" label="All Channels">
-                      All Channels
+                    <.select_item builder={builder} value="" label={gettext("All Channels")}>
+                      {gettext("All Channels")}
                     </.select_item>
                     <.select_item
                       :for={ch <- @channels}
@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
               <.input
                 type="text"
                 value={@search_query}
-                placeholder="Search URLs..."
+                placeholder={gettext("Search URLs...")}
                 class="flex-1"
                 phx-debounce="300"
                 name="query"
@@ -94,7 +94,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
               />
               <.button type="submit" size="sm" variant="outline">
                 <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
-                Search
+                {gettext("Search")}
               </.button>
             </form>
           </div>
@@ -114,7 +114,8 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       phx-value-column="url"
                     >
                       <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
-                      URL <.sort_indicator col={:url} active={@sort_column} dir={@sort_direction} />
+                      {gettext("URL")}
+                      <.sort_indicator col={:url} active={@sort_column} dir={@sort_direction} />
                     </.button>
                   </.table_head>
                   <.table_head>
@@ -127,7 +128,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       phx-value-column="posted_by"
                     >
                       <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
-                      Nick
+                      {gettext("Nick")}
                       <.sort_indicator col={:posted_by} active={@sort_column} dir={@sort_direction} />
                     </.button>
                   </.table_head>
@@ -141,7 +142,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       phx-value-column="source"
                     >
                       <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
-                      Channel
+                      {gettext("Channel")}
                       <.sort_indicator col={:source} active={@sort_column} dir={@sort_direction} />
                     </.button>
                   </.table_head>
@@ -155,7 +156,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
                       phx-value-column="timestamp"
                     >
                       <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
-                      Time
+                      {gettext("Time")}
                       <.sort_indicator col={:timestamp} active={@sort_column} dir={@sort_direction} />
                     </.button>
                   </.table_head>
@@ -203,7 +204,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
         <.dialog_footer>
           <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            Close
+            {gettext("Close")}
           </.button>
         </.dialog_footer>
       </div>
@@ -236,7 +237,7 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   defp format_timestamp(_, _), do: ""
 
   @spec entry_count_label(integer()) :: String.t()
-  defp entry_count_label(0), do: "No URLs captured"
-  defp entry_count_label(1), do: "1 URL"
-  defp entry_count_label(n), do: "#{n} URLs"
+  defp entry_count_label(0), do: gettext("No URLs captured")
+  defp entry_count_label(1), do: gettext("1 URL")
+  defp entry_count_label(n), do: ngettext("1 URL", "%{count} URLs", n)
 end

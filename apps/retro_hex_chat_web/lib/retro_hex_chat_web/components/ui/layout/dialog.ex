@@ -171,7 +171,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
         ])
       }
       phx-click={close_modal(@on_close, @id)}
-      aria-label="Close"
+      aria-label={gettext("Close")}
     >
       <Icons.icon_close_pixel class="w-[8px] h-[7px]" />
     </button>

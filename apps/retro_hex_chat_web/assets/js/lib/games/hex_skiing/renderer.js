@@ -22,6 +22,7 @@ import {
   COURSE_LENGTH,
 } from "./physics.js";
 import { PHASE, GAME_MODE, SKIER_STATE } from "./protocol.js";
+import { t, jt } from "../../i18n.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -491,14 +492,14 @@ function drawHUD(ctx, state, colors) {
   // P1 timer (left)
   ctx.fillStyle = colors.fg;
   ctx.textAlign = "left";
-  ctx.fillText(`P1 ${formatTime(state.p1.timer)}`, 8, 12);
+  ctx.fillText(jt`P1 ${formatTime(state.p1.timer)}`, 8, 12);
 
   // Game title + round (center)
   ctx.fillStyle = "#aaaaaa";
   ctx.textAlign = "center";
   const modeLabel = getModeLabel(state.mode);
   if (state.mode === GAME_MODE.ALPINE_RACE) {
-    ctx.fillText(`${modeLabel} R${state.round + 1}/3`, CANVAS_W / 2, 12);
+    ctx.fillText(jt`${modeLabel} R${state.round + 1}/3`, CANVAS_W / 2, 12);
   } else {
     ctx.fillText(modeLabel, CANVAS_W / 2, 12);
   }
@@ -506,7 +507,7 @@ function drawHUD(ctx, state, colors) {
   // P2 timer (right)
   ctx.fillStyle = colors.accent;
   ctx.textAlign = "right";
-  ctx.fillText(`P2 ${formatTime(state.p2.timer)}`, CANVAS_W - 8, 12);
+  ctx.fillText(jt`P2 ${formatTime(state.p2.timer)}`, CANVAS_W - 8, 12);
 
   // Round wins indicators
   if (state.mode === GAME_MODE.ALPINE_RACE) {
@@ -585,18 +586,18 @@ function drawWaitingScreen(ctx, colors, frameCount) {
   ctx.font = "bold 28px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("HEX SKIING", CANVAS_W / 2, CANVAS_H / 2 - 40);
+  ctx.fillText(t("HEX SKIING"), CANVAS_W / 2, CANVAS_H / 2 - 40);
 
   // Subtitle
   ctx.fillStyle = colors.accent;
   ctx.font = "12px monospace";
-  ctx.fillText("TOXIC DESCENT", CANVAS_W / 2, CANVAS_H / 2 - 10);
+  ctx.fillText(t("TOXIC DESCENT"), CANVAS_W / 2, CANVAS_H / 2 - 10);
 
   // Waiting text
   ctx.fillStyle = colors.muted;
   ctx.font = "11px monospace";
   const dots = ".".repeat((Math.floor(frameCount / 30) % 3) + 1);
-  ctx.fillText(`Waiting for opponent${dots}`, CANVAS_W / 2, CANVAS_H / 2 + 30);
+  ctx.fillText(jt`Waiting for opponent${dots}`, CANVAS_W / 2, CANVAS_H / 2 + 30);
 
   // Decorative mountains
   ctx.fillStyle = "#151525";
@@ -632,7 +633,7 @@ function drawCountdown(ctx, state, colors, frameCount) {
   ctx.font = "bold 64px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(num > 0 ? String(num) : "GO!", 0, 0);
+  ctx.fillText(num > 0 ? String(num) : t("GO!"), 0, 0);
   ctx.restore();
 }
 
@@ -646,20 +647,20 @@ function drawRoundEnd(ctx, state, colors, frameCount) {
   // Round result
   ctx.fillStyle = colors.fg;
   ctx.font = "bold 20px monospace";
-  ctx.fillText(`ROUND ${state.round + 1} COMPLETE`, CANVAS_W / 2, CANVAS_H / 2 - 40);
+  ctx.fillText(jt`ROUND ${state.round + 1} COMPLETE`, CANVAS_W / 2, CANVAS_H / 2 - 40);
 
   // Times
   ctx.font = "14px monospace";
   ctx.fillStyle = colors.fg;
-  ctx.fillText(`P1: ${formatTime(state.p1.timer)}`, CANVAS_W / 2, CANVAS_H / 2 - 10);
+  ctx.fillText(jt`P1: ${formatTime(state.p1.timer)}`, CANVAS_W / 2, CANVAS_H / 2 - 10);
   ctx.fillStyle = colors.accent;
-  ctx.fillText(`P2: ${formatTime(state.p2.timer)}`, CANVAS_W / 2, CANVAS_H / 2 + 10);
+  ctx.fillText(jt`P2: ${formatTime(state.p2.timer)}`, CANVAS_W / 2, CANVAS_H / 2 + 10);
 
   // Score
   ctx.fillStyle = "#aaaaaa";
   ctx.font = "12px monospace";
   ctx.fillText(
-    `Score: ${state.p1RoundWins} - ${state.p2RoundWins}`,
+    jt`Score: ${state.p1RoundWins} - ${state.p2RoundWins}`,
     CANVAS_W / 2,
     CANVAS_H / 2 + 40,
   );
@@ -668,7 +669,7 @@ function drawRoundEnd(ctx, state, colors, frameCount) {
   if (frameCount % 60 < 40) {
     ctx.fillStyle = colors.muted;
     ctx.font = "10px monospace";
-    ctx.fillText("Next round starting...", CANVAS_W / 2, CANVAS_H / 2 + 70);
+    ctx.fillText(t("Next round starting..."), CANVAS_W / 2, CANVAS_H / 2 + 70);
   }
 }
 
@@ -686,13 +687,13 @@ function drawFinished(ctx, state, colors, frameCount) {
   ctx.font = "bold 24px monospace";
   if (winner === 1) {
     ctx.fillStyle = colors.fg;
-    ctx.fillText("PLAYER 1 WINS!", CANVAS_W / 2, CANVAS_H / 2 - 40);
+    ctx.fillText(t("PLAYER 1 WINS!"), CANVAS_W / 2, CANVAS_H / 2 - 40);
   } else if (winner === 2) {
     ctx.fillStyle = colors.accent;
-    ctx.fillText("PLAYER 2 WINS!", CANVAS_W / 2, CANVAS_H / 2 - 40);
+    ctx.fillText(t("PLAYER 2 WINS!"), CANVAS_W / 2, CANVAS_H / 2 - 40);
   } else {
     ctx.fillStyle = "#aaaaaa";
-    ctx.fillText("DRAW!", CANVAS_W / 2, CANVAS_H / 2 - 40);
+    ctx.fillText(t("DRAW!"), CANVAS_W / 2, CANVAS_H / 2 - 40);
   }
 
   // Final score
@@ -752,11 +753,11 @@ function formatTime(seconds) {
 function getModeLabel(mode) {
   switch (mode) {
     case GAME_MODE.ALPINE_RACE:
-      return "ALPINE RACE";
+      return t("ALPINE RACE");
     case GAME_MODE.AVALANCHE_ESCAPE:
-      return "AVALANCHE ESCAPE";
+      return t("AVALANCHE ESCAPE");
     case GAME_MODE.CLEAN_RUN:
-      return "CLEAN RUN";
+      return t("CLEAN RUN");
     default:
       return "SKIING";
   }

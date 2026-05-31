@@ -2,6 +2,7 @@ defmodule RetroHexChat.Bots.Lifecycle do
   @moduledoc """
   Runtime lifecycle operations for configured bots.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Bots.{Bot, Queries, Registry, Server, Supervisor}
 
@@ -43,7 +44,7 @@ defmodule RetroHexChat.Bots.Lifecycle do
   defp direct_channel_part(channel, nickname) do
     case RetroHexChat.Channels.Registry.lookup(channel) do
       {:ok, _pid} ->
-        RetroHexChat.Channels.Server.part(channel, nickname, "Bot destroyed")
+        RetroHexChat.Channels.Server.part(channel, nickname, gettext("Bot destroyed"))
         :ok
 
       {:error, :not_found} ->

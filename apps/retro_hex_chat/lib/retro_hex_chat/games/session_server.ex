@@ -3,6 +3,7 @@ defmodule RetroHexChat.Games.SessionServer do
   GenServer managing a single game session's lifecycle.
   State machine: pending → lobby → playing → terminal (finished/closed/expired).
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   use GenServer, restart: :transient
 
@@ -39,7 +40,7 @@ defmodule RetroHexChat.Games.SessionServer do
   def join(token, user_id) do
     case Registry.lookup(token) do
       {:ok, pid} -> GenServer.call(pid, {:join, user_id})
-      {:error, :not_found} -> {:error, "Session process not running"}
+      {:error, :not_found} -> {:error, gettext("Session process not running")}
     end
   end
 
@@ -47,7 +48,7 @@ defmodule RetroHexChat.Games.SessionServer do
   def close(token, user_id, reason) do
     case Registry.lookup(token) do
       {:ok, pid} -> call_close(pid, user_id, reason)
-      {:error, :not_found} -> {:error, "Session process not running"}
+      {:error, :not_found} -> {:error, gettext("Session process not running")}
     end
   end
 
@@ -63,7 +64,7 @@ defmodule RetroHexChat.Games.SessionServer do
   def transition(token, new_status) do
     case Registry.lookup(token) do
       {:ok, pid} -> GenServer.call(pid, {:transition, new_status})
-      {:error, :not_found} -> {:error, "Session process not running"}
+      {:error, :not_found} -> {:error, gettext("Session process not running")}
     end
   end
 
@@ -151,7 +152,7 @@ defmodule RetroHexChat.Games.SessionServer do
         {:reply, :ok, state}
 
       true ->
-        {:reply, {:error, "Not a participant"}, state}
+        {:reply, {:error, gettext("Not a participant")}, state}
     end
   end
 
@@ -167,8 +168,12 @@ defmodule RetroHexChat.Games.SessionServer do
       state = do_transition(state, new_status_str)
       {:reply, :ok, state}
     else
-      {:reply, {:error, "Invalid transition from #{state.session.status} to #{new_status_str}"},
-       state}
+      {:reply,
+       {:error,
+        gettext("Invalid transition from %{state_session_status} to %{new_status_str}",
+          state_session_status: state.session.status,
+          new_status_str: new_status_str
+        )}, state}
     end
   end
 
@@ -441,9 +446,9 @@ defmodule RetroHexChat.Games.SessionServer do
   defp call_close(pid, user_id, reason) do
     GenServer.call(pid, {:close, user_id, reason})
   catch
-    :exit, :normal -> {:error, "Session process not running"}
-    :exit, {:normal, _call} -> {:error, "Session process not running"}
-    :exit, {:noproc, _call} -> {:error, "Session process not running"}
+    :exit, :normal -> {:error, gettext("Session process not running")}
+    :exit, {:normal, _call} -> {:error, gettext("Session process not running")}
+    :exit, {:noproc, _call} -> {:error, gettext("Session process not running")}
   end
 
   defp handle_send_message(state, user_id, sender_nick, content) do

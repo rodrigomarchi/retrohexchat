@@ -19,6 +19,7 @@ import {
   P2_KING_X,
   P2_KING_Y,
 } from "./physics.js";
+import { t, jt } from "../../i18n.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -309,7 +310,7 @@ export function drawHUD(ctx, state, colors, _time) {
   ctx.font = "12px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.fillText(`ROUND ${state.round}`, CANVAS_W / 2, 6);
+  ctx.fillText(jt`ROUND ${state.round}`, CANVAS_W / 2, 6);
   ctx.restore();
 
   // Title
@@ -320,7 +321,7 @@ export function drawHUD(ctx, state, colors, _time) {
   ctx.font = "bold 14px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
-  ctx.fillText("HEX WARLORDS", CANVAS_W / 2, CANVAS_H - 18);
+  ctx.fillText(t("HEX WARLORDS"), CANVAS_W / 2, CANVAS_H - 18);
   ctx.restore();
 }
 
@@ -374,7 +375,7 @@ export function drawWaiting(ctx, colors, time) {
   ctx.font = "18px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(`WAITING FOR OPPONENT${dots}`, CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(jt`WAITING FOR OPPONENT${dots}`, CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 
@@ -384,7 +385,7 @@ export function drawWaiting(ctx, colors, time) {
 export function drawKingHitOverlay(ctx, state, colors, time) {
   const hitPlayer = state.kingHitPlayer || 0;
   const color = hitPlayer === 1 ? colors.fg : colors.accent;
-  const text = hitPlayer === 1 ? "P1 KING HIT!" : "P2 KING HIT!";
+  const text = hitPlayer === 1 ? t("P1 KING HIT!") : t("P2 KING HIT!");
   const pulse = 0.5 + 0.5 * Math.sin(time * 0.015);
 
   ctx.save();
@@ -415,7 +416,7 @@ export function drawKingHitOverlay(ctx, state, colors, time) {
 export function drawFinished(ctx, state, colors, time) {
   const winner = state.winner || 0;
   const isP1 = winner === 1;
-  const text = isP1 ? "P1 WINS!" : "P2 WINS!";
+  const text = isP1 ? t("P1 WINS!") : t("P2 WINS!");
   const color = isP1 ? colors.fg : colors.accent;
 
   ctx.save();

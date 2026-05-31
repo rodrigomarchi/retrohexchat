@@ -1,23 +1,27 @@
-<p>Monitor and adjust connection quality during calls.</p>
-<.help_h4 icon={:icon_quality_high}>Quality Indicator</.help_h4>
-<p>The 4 bars indicate connection quality:</p>
+<p>{gettext("Monitor and adjust connection quality during calls.")}</p>
+<.help_h4 icon={:icon_quality_high}>{gettext("Quality Indicator")}</.help_h4>
+<p>{gettext("The 4 bars indicate connection quality:")}</p>
 <ul>
-  <li>4 green bars — Excellent</li>
-  <li>3 green bars — Good</li>
-  <li>2 yellow bars — Fair</li>
-  <li>1 red bar — Poor</li>
+  <li>{gettext("4 green bars — Excellent")}</li>
+  <li>{gettext("3 green bars — Good")}</li>
+  <li>{gettext("2 yellow bars — Fair")}</li>
+  <li>{gettext("1 red bar — Poor")}</li>
 </ul>
-<.help_h4 icon={:icon_quality_high}>Manual Quality Adjustment</.help_h4>
+<.help_h4 icon={:icon_quality_high}>{gettext("Manual Quality Adjustment")}</.help_h4>
 <p>
-  Use the <strong>High</strong>
-  (1.5 Mbps), <strong>Medium</strong>
-  (500 Kbps), or <strong>Low</strong>
-  (150 Kbps) buttons to adjust the bitrate manually.
+  {gettext("Use the")} <strong>{gettext("High")}</strong>
+  {gettext("(1.5 Mbps),")} <strong>{gettext("Medium")}</strong>
+  {gettext("(500 Kbps), or")} <strong>{gettext("Low")}</strong>
+  {gettext("(150 Kbps) buttons to adjust the bitrate manually.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>Automatic Adaptation</.help_h4>
-<p>WebRTC automatically adjusts the resolution and framerate based on network conditions.</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("Automatic Adaptation")}</.help_h4>
 <p>
-  <.help_link topic="feature-audio-call">Audio Call</.help_link>
-  · <.help_link topic="feature-video-call">Video Call</.help_link>
+  {gettext(
+    "WebRTC automatically adjusts the resolution and framerate based on network conditions."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-audio-call">{gettext("Audio Call")}</.help_link>
+  · <.help_link topic="feature-video-call">{gettext("Video Call")}</.help_link>
 </p>

@@ -14,6 +14,7 @@ import {
   BALL_SIZE,
   INITIAL_LIVES,
 } from "./physics.js";
+import { t, jt } from "../../i18n.js";
 
 // Bitmap digits 5x7 for retro score display (each row is a 5-bit mask)
 const DIGITS = [
@@ -314,7 +315,7 @@ export function drawServing(ctx, colors, time) {
   ctx.font = "bold 24px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText("GET READY", CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(t("GET READY"), CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 
@@ -331,7 +332,7 @@ export function drawWaiting(ctx, colors, time) {
   ctx.font = "18px monospace";
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.fillText(`WAITING FOR PARTNER${dots}`, CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(jt`WAITING FOR PARTNER${dots}`, CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 
@@ -339,7 +340,7 @@ export function drawWaiting(ctx, colors, time) {
  * Draw victory or game over with glitch text effect.
  */
 export function drawFinished(ctx, won, colors, time) {
-  const text = won ? "VICTORY!" : "GAME OVER";
+  const text = won ? t("VICTORY!") : t("GAME OVER");
   const color = won ? colors.fg : colors.accent;
 
   ctx.save();
@@ -373,7 +374,7 @@ export function drawFinished(ctx, won, colors, time) {
   ctx.fillStyle = colors.muted;
   const pulse = 0.5 + 0.5 * Math.sin(time * 0.005);
   ctx.globalAlpha = pulse;
-  const subText = won ? "ALL BLOCKS CLEARED" : "NO LIVES REMAINING";
+  const subText = won ? t("ALL BLOCKS CLEARED") : t("NO LIVES REMAINING");
   ctx.fillText(subText, CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();

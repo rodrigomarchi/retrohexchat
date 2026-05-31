@@ -3,6 +3,7 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRouting do
   Handler for the /notice_routing command.
   Notice routing is now hardcoded to active window.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   @behaviour RetroHexChat.Commands.Handler
 
@@ -27,7 +28,7 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRouting do
     %{
       name: "notice_routing",
       syntax: "/notice_routing",
-      description: "Notices are always routed to the active window.",
+      description: gettext("Notices are always routed to the active window."),
       examples: ["/notice_routing"]
     }
   end
@@ -43,7 +44,7 @@ defmodule RetroHexChat.Commands.Handlers.NoticeRouting do
     %CommandSyntax{
       command: "notice_routing",
       syntax: "/notice_routing",
-      description: "Notices are always routed to the active window.",
+      description: gettext("Notices are always routed to the active window."),
       category: :user,
       parameters: [],
       examples: ["/notice_routing"]

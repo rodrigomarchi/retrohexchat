@@ -1,178 +1,198 @@
 defmodule RetroHexChat.Chat.HelpTopics.Features do
   @moduledoc false
 
+  use Gettext, backend: RetroHexChat.Gettext
+
   @spec topics() :: [map()]
   def topics do
     [
       %{
         id: "feature-notify-list",
-        title: "Notify List (Buddy List)",
-        category: "Contacts & Notify",
-        keywords: ["notify", "buddy", "friend list", "online", "offline", "track"],
+        title: gettext("Notify List (Buddy List)"),
+        category: gettext("Contacts & Notify"),
+        keywords: ["notify", "buddy", gettext("friend list"), "online", "offline", "track"],
         icon: :icon_tab_notify,
-        description: "Track when specific users connect or disconnect with the notify list."
+        description:
+          gettext("Track when specific users connect or disconnect with the notify list.")
       },
       %{
         id: "feature-address-book",
-        title: "Address Book",
-        category: "Contacts & Notify",
-        keywords: ["address book", "contacts", "nick colors", "color override"],
+        title: gettext("Address Book"),
+        category: gettext("Contacts & Notify"),
+        keywords: [
+          gettext("address book"),
+          "contacts",
+          gettext("nick colors"),
+          gettext("color override")
+        ],
         icon: :icon_dialog_address_book,
-        description: "Manage contacts, assign custom nick colors, and organize your notify list."
+        description:
+          gettext("Manage contacts, assign custom nick colors, and organize your notify list.")
       },
       %{
         id: "feature-highlight-words",
-        title: "Highlight Words",
-        category: "Contacts & Notify",
+        title: gettext("Highlight Words"),
+        category: gettext("Contacts & Notify"),
         keywords: ["highlight", "mention", "alert", "notification", "flash"],
         icon: :icon_dialog_highlight,
         description:
-          "Configure words that trigger visual and audio alerts when mentioned in chat."
+          gettext("Configure words that trigger visual and audio alerts when mentioned in chat.")
       },
       %{
         id: "feature-url-catcher",
-        title: "URL Catcher",
-        category: "Chat Display",
+        title: gettext("URL Catcher"),
+        category: gettext("Chat Display"),
         keywords: ["url", "link", "catcher", "preview", "web"],
         icon: :icon_dialog_url,
-        description: "View and manage URLs shared across all channels with link previews."
+        description:
+          gettext("View and manage URLs shared across all channels with link previews.")
       },
       %{
         id: "feature-ignore-list",
-        title: "Ignore List",
-        category: "Contacts & Notify",
+        title: gettext("Ignore List"),
+        category: gettext("Contacts & Notify"),
         keywords: ["ignore", "block", "silence", "mute", "filter", "hide", "unignore"],
         icon: :icon_dialog_ignore,
-        description: "Manage your ignore list to hide messages and actions from specific users."
+        description:
+          gettext("Manage your ignore list to hide messages and actions from specific users.")
       },
       %{
         id: "feature-channel-central",
-        title: "Channel Central",
-        category: "Channel Settings",
+        title: gettext("Channel Central"),
+        category: gettext("Channel Settings"),
         keywords: [
-          "channel central",
-          "channel info",
-          "channel settings",
+          gettext("channel central"),
+          gettext("channel info"),
+          gettext("channel settings"),
           "modes",
           "bans",
-          "ban exceptions",
-          "invite exceptions",
+          gettext("ban exceptions"),
+          gettext("invite exceptions"),
           "tabs"
         ],
         icon: :icon_dialog_channel_central,
         description:
-          "View and manage channel settings, bans, exceptions, and modes in one dialog."
+          gettext("View and manage channel settings, bans, exceptions, and modes in one dialog.")
       },
       %{
         id: "feature-ban-exceptions",
-        title: "Ban Exceptions (+e)",
-        category: "Channel Settings",
+        title: gettext("Ban Exceptions (+e)"),
+        category: gettext("Channel Settings"),
         keywords: [
-          "ban exception",
-          "ban exempt",
+          gettext("ban exception"),
+          gettext("ban exempt"),
           "exception",
           "exempt",
-          "bypass ban",
+          gettext("bypass ban"),
           "+e"
         ],
         icon: :icon_tab_exceptions,
-        description: "Allow specific users to bypass channel bans using ban exception masks."
+        description:
+          gettext("Allow specific users to bypass channel bans using ban exception masks.")
       },
       %{
         id: "feature-invite-exceptions",
-        title: "Invite Exceptions (+I)",
-        category: "Channel Settings",
+        title: gettext("Invite Exceptions (+I)"),
+        category: gettext("Channel Settings"),
         keywords: [
-          "invite exception",
-          "invite exempt",
-          "invite bypass",
+          gettext("invite exception"),
+          gettext("invite exempt"),
+          gettext("invite bypass"),
           "+I",
-          "invite-only bypass"
+          gettext("invite-only bypass")
         ],
         icon: :icon_tab_exceptions,
         description:
-          "Allow specific users to join invite-only channels without an explicit invitation."
+          gettext(
+            "Allow specific users to join invite-only channels without an explicit invitation."
+          )
       },
       %{
         id: "feature-channel-invites",
-        title: "Channel Invites",
-        category: "Channel Settings",
+        title: gettext("Channel Invites"),
+        category: gettext("Channel Settings"),
         keywords: [
           "invite",
-          "channel invite",
-          "invite dialog",
-          "auto-join on invite",
-          "invite expiration",
+          gettext("channel invite"),
+          gettext("invite dialog"),
+          gettext("auto-join on invite"),
+          gettext("invite expiration"),
           "invite-only"
         ],
         icon: :icon_dialog_invite,
-        description: "Receive and manage channel invitations with optional auto-join on invite."
+        description:
+          gettext("Receive and manage channel invitations with optional auto-join on invite.")
       },
       %{
         id: "feature-search",
-        title: "Search",
-        category: "Channel Settings",
+        title: gettext("Search"),
+        category: gettext("Channel Settings"),
         keywords: [
           "search",
           "find",
           "ctrl+f",
-          "text search",
+          gettext("text search"),
           "highlight",
           "regex",
-          "case sensitive",
-          "history search"
+          gettext("case sensitive"),
+          gettext("history search")
         ],
         icon: :icon_btn_search,
         description:
-          "Find text in the current channel using search with regex and case-sensitive options."
+          gettext(
+            "Find text in the current channel using search with regex and case-sensitive options."
+          )
       },
       %{
         id: "feature-perform",
-        title: "Perform / Auto-Commands",
-        category: "Automation",
+        title: gettext("Perform / Auto-Commands"),
+        category: gettext("Automation"),
         keywords: [
           "perform",
           "auto-commands",
-          "auto commands",
-          "on connect",
+          gettext("auto commands"),
+          gettext("on connect"),
           "autojoin",
           "auto-join",
-          "perform list",
-          "auto execute"
+          gettext("perform list"),
+          gettext("auto execute")
         ],
         icon: :icon_dialog_perform,
         description:
-          "Configure commands and channels that execute automatically when you connect."
+          gettext("Configure commands and channels that execute automatically when you connect.")
       },
       %{
         id: "feature-auto-reconnect",
-        title: "Auto-Reconnect",
-        category: "Connection",
+        title: gettext("Auto-Reconnect"),
+        category: gettext("Connection"),
         keywords: [
           "reconnect",
           "auto-reconnect",
-          "auto reconnect",
+          gettext("auto reconnect"),
           "disconnect",
-          "connection lost",
+          gettext("connection lost"),
           "retry",
           "backoff"
         ],
         icon: :icon_retry,
         description:
-          "Automatically reconnect to the server when the connection is lost with exponential backoff."
+          gettext(
+            "Automatically reconnect to the server when the connection is lost with exponential backoff."
+          )
       },
       %{
         id: "feature-notices",
-        title: "Notices",
-        category: "Notifications & Sounds",
-        keywords: ["notice", "notification", "announce", "lightweight message"],
+        title: gettext("Notices"),
+        category: gettext("Notifications & Sounds"),
+        keywords: ["notice", "notification", "announce", gettext("lightweight message")],
         icon: :icon_megaphone,
-        description: "Lightweight messages used for server announcements and automated responses."
+        description:
+          gettext("Lightweight messages used for server announcements and automated responses.")
       },
       %{
         id: "feature-flood-protection",
-        title: "Flood Protection",
-        category: "Notifications & Sounds",
+        title: gettext("Flood Protection"),
+        category: gettext("Notifications & Sounds"),
         keywords: [
           "flood",
           "spam",
@@ -180,16 +200,18 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "auto-ignore",
           "protection",
           "anti-spam",
-          "rate limit"
+          gettext("rate limit")
         ],
         icon: :icon_dialog_flood,
         description:
-          "Protect against message flooding with rate limiting and automatic ignore rules."
+          gettext(
+            "Protect against message flooding with rate limiting and automatic ignore rules."
+          )
       },
       %{
         id: "feature-sounds",
-        title: "Sounds",
-        category: "Notifications & Sounds",
+        title: gettext("Sounds"),
+        category: gettext("Notifications & Sounds"),
         keywords: [
           "sounds",
           "sound",
@@ -198,313 +220,341 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "ding",
           "alert",
           "chime",
-          "notification sound"
+          gettext("notification sound")
         ],
         icon: :icon_dialog_sound,
         description:
-          "Configure sound notifications for events like mentions, private messages, and joins."
+          gettext(
+            "Configure sound notifications for events like mentions, private messages, and joins."
+          )
       },
       %{
         id: "feature-mute",
-        title: "Mute",
-        category: "Notifications & Sounds",
-        keywords: ["mute", "unmute", "silence", "sound off", "quiet"],
+        title: gettext("Mute"),
+        category: gettext("Notifications & Sounds"),
+        keywords: ["mute", "unmute", "silence", gettext("sound off"), "quiet"],
         icon: :icon_mute,
-        description: "Mute all sounds globally or per-channel to silence notifications."
+        description: gettext("Mute all sounds globally or per-channel to silence notifications.")
       },
       %{
         id: "feature-typing-indicator",
-        title: "Typing Indicator",
-        category: "Chat & Messaging",
-        keywords: ["typing", "indicator", "is typing", "pm typing"],
+        title: gettext("Typing Indicator"),
+        category: gettext("Chat & Messaging"),
+        keywords: ["typing", "indicator", gettext("is typing"), gettext("pm typing")],
         icon: :icon_chat,
-        description: "See when someone is typing a message in a private conversation."
+        description: gettext("See when someone is typing a message in a private conversation.")
       },
       %{
         id: "feature-aliases",
-        title: "Aliases",
-        category: "Automation",
+        title: gettext("Aliases"),
+        category: gettext("Automation"),
         keywords: ["alias", "aliases", "shortcut", "macro", "expansion", "scripting"],
         icon: :icon_dialog_alias,
         description:
-          "Create custom command shortcuts that expand into one or more commands with variable support."
+          gettext(
+            "Create custom command shortcuts that expand into one or more commands with variable support."
+          )
       },
       %{
         id: "feature-timers",
-        title: "Timers",
-        category: "Automation",
+        title: gettext("Timers"),
+        category: gettext("Automation"),
         keywords: ["timer", "timers", "schedule", "delay", "repeat", "interval"],
         icon: :icon_clock,
-        description: "Schedule commands to execute after a delay or repeat at regular intervals."
+        description:
+          gettext("Schedule commands to execute after a delay or repeat at regular intervals.")
       },
       %{
         id: "feature-custom-menus",
-        title: "Custom Menus",
-        category: "Automation",
+        title: gettext("Custom Menus"),
+        category: gettext("Automation"),
         keywords: [
-          "custom menu",
+          gettext("custom menu"),
           "popup",
-          "context menu",
+          gettext("context menu"),
           "right-click",
-          "nicklist menu",
-          "channel menu",
-          "chat menu"
+          gettext("nicklist menu"),
+          gettext("channel menu"),
+          gettext("chat menu")
         ],
         icon: :icon_dialog_custom_menus,
-        description: "Add custom items to right-click context menus for quick access to commands."
+        description:
+          gettext("Add custom items to right-click context menus for quick access to commands.")
       },
       %{
         id: "feature-display-settings",
-        title: "Display Settings",
-        category: "Settings & Preferences",
+        title: gettext("Display Settings"),
+        category: gettext("Settings & Preferences"),
         keywords: [
           "display",
           "toolbar",
           "conversations",
           "switchbar",
-          "status bar",
-          "compact mode",
-          "line shading"
+          gettext("status bar"),
+          gettext("compact mode"),
+          gettext("line shading")
         ],
         icon: :icon_tab_display,
         description:
-          "Customize which interface elements are visible and toggle compact display mode."
+          gettext(
+            "Customize which interface elements are visible and toggle compact display mode."
+          )
       },
       %{
         id: "feature-key-bindings",
-        title: "Key Bindings",
-        category: "Settings & Preferences",
+        title: gettext("Key Bindings"),
+        category: gettext("Settings & Preferences"),
         keywords: [
-          "key bindings",
+          gettext("key bindings"),
           "keybindings",
-          "keyboard shortcuts",
-          "customize shortcuts",
+          gettext("keyboard shortcuts"),
+          gettext("customize shortcuts"),
           "rebind",
           "shortcut"
         ],
         icon: :icon_dialog_cheatsheet,
-        description: "Customize keyboard shortcuts by rebinding keys to different actions."
+        description:
+          gettext("Customize keyboard shortcuts by rebinding keys to different actions.")
       },
       %{
         id: "feature-autorespond",
-        title: "Auto-Respond",
-        category: "Automation",
+        title: gettext("Auto-Respond"),
+        category: gettext("Automation"),
         keywords: [
           "auto-respond",
           "autorespond",
-          "auto greet",
+          gettext("auto greet"),
           "trigger",
           "event",
-          "join greet",
+          gettext("join greet"),
           "welcome"
         ],
         icon: :icon_dialog_auto_respond,
         description:
-          "Configure automatic responses triggered by events like user joins or keyword matches."
+          gettext(
+            "Configure automatic responses triggered by events like user joins or keyword matches."
+          )
       },
       %{
         id: "feature-interactive-elements",
-        title: "Interactive Chat Elements",
-        category: "Chat Display",
+        title: gettext("Interactive Chat Elements"),
+        category: gettext("Chat Display"),
         keywords: [
           "interactive",
           "clickable",
           "hover",
           "tooltip",
-          "hover card",
-          "channel click",
-          "nick click",
-          "url hover",
-          "link preview"
+          gettext("hover card"),
+          gettext("channel click"),
+          gettext("nick click"),
+          gettext("url hover"),
+          gettext("link preview")
         ],
         icon: :icon_community,
-        description: "Clickable nicknames, channels, and URLs with hover cards and link previews."
+        description:
+          gettext("Clickable nicknames, channels, and URLs with hover cards and link previews.")
       },
       %{
         id: "feature-nick-alignment",
-        title: "Nick Column Alignment",
-        category: "Chat Display",
+        title: gettext("Nick Column Alignment"),
+        category: gettext("Chat Display"),
         keywords: ["nick", "alignment", "column", "grid", "layout", "readability"],
         icon: :icon_tab_nicklist,
-        description: "Align nicknames in a fixed-width column for improved chat readability."
+        description:
+          gettext("Align nicknames in a fixed-width column for improved chat readability.")
       },
       %{
         id: "feature-copy",
-        title: "Right-Click Copy",
-        category: "Chat Display",
-        keywords: ["copy", "clipboard", "right-click", "context menu", "select", "text"],
+        title: gettext("Right-Click Copy"),
+        category: gettext("Chat Display"),
+        keywords: ["copy", "clipboard", "right-click", gettext("context menu"), "select", "text"],
         icon: :icon_copy,
-        description: "Copy message text to the clipboard using the right-click context menu."
+        description:
+          gettext("Copy message text to the clipboard using the right-click context menu.")
       },
       %{
         id: "feature-paste-dialog",
-        title: "Multi-Line Paste Dialog",
-        category: "Chat Input",
+        title: gettext("Multi-Line Paste Dialog"),
+        category: gettext("Chat Input"),
         keywords: ["paste", "multiline", "flood", "confirmation", "send"],
         icon: :icon_dialog_paste,
         description:
-          "Review and confirm multi-line pastes before sending to prevent accidental flooding."
+          gettext(
+            "Review and confirm multi-line pastes before sending to prevent accidental flooding."
+          )
       },
       %{
         id: "feature-char-counter",
-        title: "Character Counter",
-        category: "Chat Input",
+        title: gettext("Character Counter"),
+        category: gettext("Chat Input"),
         keywords: ["character", "counter", "limit", "length", "input"],
         icon: :icon_notepad,
-        description: "See how many characters remain before reaching the message length limit."
+        description:
+          gettext("See how many characters remain before reaching the message length limit.")
       },
       %{
         id: "feature-quit-message",
-        title: "Quit Messages",
-        category: "Users & Identity",
+        title: gettext("Quit Messages"),
+        category: gettext("Users & Identity"),
         keywords: ["quit", "disconnect", "message", "goodbye", "leaving"],
         icon: :icon_close,
         description:
-          "Customize the message displayed to others when you disconnect from the server."
+          gettext(
+            "Customize the message displayed to others when you disconnect from the server."
+          )
       },
       %{
         id: "feature-away-reply",
-        title: "Away Auto-Reply",
-        category: "Users & Identity",
+        title: gettext("Away Auto-Reply"),
+        category: gettext("Users & Identity"),
         keywords: ["away", "auto-reply", "automatic", "reply", "pm", "message"],
         icon: :icon_clock,
-        description: "Automatically reply to private messages when you are marked as away."
+        description:
+          gettext("Automatically reply to private messages when you are marked as away.")
       },
       %{
         id: "feature-emoji",
-        title: "Emoji Picker",
-        category: "Chat Input",
+        title: gettext("Emoji Picker"),
+        category: gettext("Chat Input"),
         keywords: ["emoji", "smiley", "picker", "unicode", "emoticon"],
         icon: :icon_heart,
-        description: "Browse and insert emoji into your messages using the emoji picker."
+        description: gettext("Browse and insert emoji into your messages using the emoji picker.")
       },
       %{
         id: "feature-timestamp-format",
-        title: "Timestamp Configuration",
-        category: "Chat Display",
+        title: gettext("Timestamp Configuration"),
+        category: gettext("Chat Display"),
         keywords: ["timestamp", "time", "format", "clock", "date"],
         icon: :icon_clock,
-        description: "Customize how timestamps are displayed next to messages."
+        description: gettext("Customize how timestamps are displayed next to messages.")
       },
       %{
         id: "feature-autocomplete",
-        title: "Autocomplete",
-        category: "Chat Input",
+        title: gettext("Autocomplete"),
+        category: gettext("Chat Input"),
         keywords: [
           "autocomplete",
           "auto-complete",
-          "tab complete",
-          "command palette",
-          "fuzzy search",
-          "nick completion",
-          "channel completion"
+          gettext("tab complete"),
+          gettext("command palette"),
+          gettext("fuzzy search"),
+          gettext("nick completion"),
+          gettext("channel completion")
         ],
         icon: :icon_btn_search,
-        description: "Tab-complete nicknames, commands, channels, and emoji with fuzzy matching."
+        description:
+          gettext("Tab-complete nicknames, commands, channels, and emoji with fuzzy matching.")
       },
       %{
         id: "feature-command-syntax-tooltip",
-        title: "Command Syntax Tooltip",
-        category: "Chat Input",
+        title: gettext("Command Syntax Tooltip"),
+        category: gettext("Chat Input"),
         keywords: [
           "syntax",
           "tooltip",
-          "command help",
+          gettext("command help"),
           "parameter",
           "hint",
           "inline help",
           "mode helper"
         ],
         icon: :icon_code,
-        description: "See command syntax and parameter hints as you type slash commands."
+        description: gettext("See command syntax and parameter hints as you type slash commands.")
       },
       %{
         id: "feature-smart-input",
-        title: "Smart Input",
-        category: "Chat Input",
+        title: gettext("Smart Input"),
+        category: gettext("Chat Input"),
         keywords: [
-          "smart input",
+          gettext("smart input"),
           "textarea",
           "multiline",
           "placeholder",
           "expand",
-          "input box"
+          gettext("input box")
         ],
         icon: :icon_terminal,
         description:
-          "Auto-expanding input box with multi-line support and contextual placeholders."
+          gettext("Auto-expanding input box with multi-line support and contextual placeholders.")
       },
       %{
         id: "feature-cheatsheet",
-        title: "Shortcut Cheatsheet",
-        category: "User Interface",
+        title: gettext("Shortcut Cheatsheet"),
+        category: gettext("User Interface"),
         keywords: [
           "cheatsheet",
-          "cheat sheet",
-          "shortcut list",
-          "keyboard reference",
-          "quick reference"
+          gettext("cheat sheet"),
+          gettext("shortcut list"),
+          gettext("keyboard reference"),
+          gettext("quick reference")
         ],
         icon: :icon_dialog_cheatsheet,
-        description: "Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+/."
+        description:
+          gettext("Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+/.")
       },
       %{
         id: "feature-context-menus",
-        title: "Context Menus",
-        category: "Settings & Preferences",
+        title: gettext("Context Menus"),
+        category: gettext("Settings & Preferences"),
         keywords: [
-          "context menu",
+          gettext("context menu"),
           "right-click",
-          "right click",
+          gettext("right click"),
           "popup menu",
-          "nick menu",
-          "url menu",
-          "channel menu",
+          gettext("nick menu"),
+          gettext("url menu"),
+          gettext("channel menu"),
           "message menu",
-          "conversations menu",
-          "mute channel"
+          gettext("conversations menu"),
+          gettext("mute channel")
         ],
         icon: :icon_dialog_custom_menus,
         description:
-          "Right-click context menus for nicknames, messages, URLs, channels, and conversations."
+          gettext(
+            "Right-click context menus for nicknames, messages, URLs, channels, and conversations."
+          )
       },
       %{
         id: "feature-enhanced-history",
-        title: "Enhanced History",
-        category: "Chat Input",
+        title: gettext("Enhanced History"),
+        category: gettext("Chat Input"),
         keywords: [
           "history",
           "ctrl+up",
           "ctrl+down",
           "ctrl+r",
-          "reverse search",
+          gettext("reverse search"),
           "draft",
           "persistence",
           "localStorage"
         ],
         icon: :icon_backup,
         description:
-          "Navigate command history with Ctrl+Up/Down and search with Ctrl+R. Drafts persist per channel."
+          gettext(
+            "Navigate command history with Ctrl+Up/Down and search with Ctrl+R. Drafts persist per channel."
+          )
       },
       %{
         id: "feature-contextual-tips",
-        title: "Contextual Tips",
-        category: "Chat Display",
+        title: gettext("Contextual Tips"),
+        category: gettext("Chat Display"),
         keywords: [
           "tips",
           "contextual",
           "toast",
           "hint",
-          "progressive disclosure"
+          gettext("progressive disclosure")
         ],
         icon: :icon_lightbulb,
         description:
-          "Helpful tips that appear contextually to guide you through features as you use them."
+          gettext(
+            "Helpful tips that appear contextually to guide you through features as you use them."
+          )
       },
       %{
         id: "feature-unread-indicators",
-        title: "Unread Indicators",
-        category: "Chat Display",
+        title: gettext("Unread Indicators"),
+        category: gettext("Chat Display"),
         keywords: [
           "unread",
           "badge",
@@ -518,21 +568,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_document_alert,
         description:
-          "Unread message badges on tabs and conversations showing message and mention counts."
+          gettext(
+            "Unread message badges on tabs and conversations showing message and mention counts."
+          )
       },
       %{
         id: "feature-kick-notifications",
-        title: "Kick Notifications",
-        category: "Chat Display",
+        title: gettext("Kick Notifications"),
+        category: gettext("Chat Display"),
         keywords: ["kick", "kicked", "expelled", "dialog", "notification"],
         icon: :icon_dialog_kick,
         description:
-          "Dialog notification when you are kicked from a channel with the reason and rejoin option."
+          gettext(
+            "Dialog notification when you are kicked from a channel with the reason and rejoin option."
+          )
       },
       %{
         id: "feature-copy-feedback",
-        title: "Copy Feedback",
-        category: "Chat Display",
+        title: gettext("Copy Feedback"),
+        category: gettext("Chat Display"),
         keywords: [
           "copy",
           "clipboard",
@@ -543,28 +597,30 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_copy,
         description:
-          "Visual toast confirmation when text or settings are copied to the clipboard."
+          gettext("Visual toast confirmation when text or settings are copied to the clipboard.")
       },
       %{
         id: "feature-status-bar",
-        title: "Status Bar",
-        category: "User Interface",
+        title: gettext("Status Bar"),
+        category: gettext("User Interface"),
         keywords: [
-          "status bar",
+          gettext("status bar"),
           "lag",
           "clock",
           "connection",
           "mute",
-          "channel info"
+          gettext("channel info")
         ],
         icon: :icon_tab_status,
         description:
-          "Bottom bar showing connection status, lag indicator, clock, and channel information."
+          gettext(
+            "Bottom bar showing connection status, lag indicator, clock, and channel information."
+          )
       },
       %{
         id: "feature-lag-indicator",
-        title: "Lag Indicator",
-        category: "Connection",
+        title: gettext("Lag Indicator"),
+        category: gettext("Connection"),
         keywords: [
           "lag",
           "latency",
@@ -576,12 +632,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_status_signal,
         description:
-          "Real-time latency indicator in the status bar showing network delay to the server."
+          gettext(
+            "Real-time latency indicator in the status bar showing network delay to the server."
+          )
       },
       %{
         id: "feature-connection-states",
-        title: "Connection States",
-        category: "Connection",
+        title: gettext("Connection States"),
+        category: gettext("Connection"),
         keywords: [
           "connection",
           "connected",
@@ -593,55 +651,59 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_websocket,
         description:
-          "Visual indicators for connection status including banners, overlays, and status bar changes."
+          gettext(
+            "Visual indicators for connection status including banners, overlays, and status bar changes."
+          )
       },
       %{
         id: "feature-message-reply",
-        title: "Message Reply",
-        category: "Chat & Messaging",
+        title: gettext("Message Reply"),
+        category: gettext("Chat & Messaging"),
         keywords: [
           "reply",
           "quote",
           "respond",
           "responder",
-          "reply to",
-          "quote message"
+          gettext("reply to"),
+          gettext("quote message")
         ],
         icon: :icon_chat,
-        description: "Reply to specific messages with quoted context for threaded conversations."
+        description:
+          gettext("Reply to specific messages with quoted context for threaded conversations.")
       },
       %{
         id: "feature-message-edit",
-        title: "Message Edit",
-        category: "Chat & Messaging",
+        title: gettext("Message Edit"),
+        category: gettext("Chat & Messaging"),
         keywords: [
           "edit",
           "edited",
           "modify",
           "correct",
           "typo",
-          "fix message"
+          gettext("fix message")
         ],
         icon: :icon_btn_edit,
-        description: "Edit your recently sent messages to fix typos or update content."
+        description: gettext("Edit your recently sent messages to fix typos or update content.")
       },
       %{
         id: "feature-message-delete",
-        title: "Message Delete",
-        category: "Chat & Messaging",
+        title: gettext("Message Delete"),
+        category: gettext("Chat & Messaging"),
         keywords: [
           "delete",
           "remove",
-          "message removed",
-          "soft delete"
+          gettext("message removed"),
+          gettext("soft delete")
         ],
         icon: :icon_dialog_delete,
-        description: "Delete your own messages with a soft-delete that shows a removal notice."
+        description:
+          gettext("Delete your own messages with a soft-delete that shows a removal notice.")
       },
       %{
         id: "feature-audio-call",
-        title: "Audio Call",
-        category: "P2P & Calls",
+        title: gettext("Audio Call"),
+        category: gettext("P2P & Calls"),
         keywords: [
           "audio",
           "call",
@@ -650,12 +712,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "p2p"
         ],
         icon: :icon_microphone,
-        description: "Make peer-to-peer audio calls with mute controls and quality indicators."
+        description:
+          gettext("Make peer-to-peer audio calls with mute controls and quality indicators.")
       },
       %{
         id: "feature-video-call",
-        title: "Video Call",
-        category: "P2P & Calls",
+        title: gettext("Video Call"),
+        category: gettext("P2P & Calls"),
         keywords: [
           "video",
           "call",
@@ -666,12 +729,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_camera,
         description:
-          "Make video calls with camera controls, picture-in-picture, and quality settings."
+          gettext(
+            "Make video calls with camera controls, picture-in-picture, and quality settings."
+          )
       },
       %{
         id: "feature-media-devices",
-        title: "Media Devices",
-        category: "P2P & Calls",
+        title: gettext("Media Devices"),
+        category: gettext("P2P & Calls"),
         keywords: [
           "device",
           "microphone",
@@ -680,12 +745,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "fallback"
         ],
         icon: :icon_devices,
-        description: "Select and switch between microphones, cameras, and speakers during calls."
+        description:
+          gettext("Select and switch between microphones, cameras, and speakers during calls.")
       },
       %{
         id: "feature-call-quality",
-        title: "Call Quality",
-        category: "P2P & Calls",
+        title: gettext("Call Quality"),
+        category: gettext("P2P & Calls"),
         keywords: [
           "quality",
           "bitrate",
@@ -695,12 +761,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_quality_high,
         description:
-          "Monitor and adjust call quality with bitrate presets and real-time quality indicators."
+          gettext(
+            "Monitor and adjust call quality with bitrate presets and real-time quality indicators."
+          )
       },
       %{
         id: "feature-p2p-sessions",
-        title: "P2P Sessions",
-        category: "P2P & Calls",
+        title: gettext("P2P Sessions"),
+        category: gettext("P2P & Calls"),
         keywords: [
           "p2p",
           "peer",
@@ -712,12 +780,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_p2p,
         description:
-          "Establish peer-to-peer sessions with bilateral consent for calls and file transfers."
+          gettext(
+            "Establish peer-to-peer sessions with bilateral consent for calls and file transfers."
+          )
       },
       %{
         id: "feature-connection-diagram",
-        title: "Connection Diagram",
-        category: "P2P & Calls",
+        title: gettext("Connection Diagram"),
+        category: gettext("P2P & Calls"),
         keywords: [
           "connection",
           "diagram",
@@ -732,12 +802,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_p2p,
         description:
-          "Animated visual diagram showing the bilateral P2P link with real-time status and peer info."
+          gettext(
+            "Animated visual diagram showing the bilateral P2P link with real-time status and peer info."
+          )
       },
       %{
         id: "feature-file-transfer",
-        title: "File Transfer",
-        category: "P2P & Calls",
+        title: gettext("File Transfer"),
+        category: gettext("P2P & Calls"),
         keywords: [
           "file",
           "transfer",
@@ -749,12 +821,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_file_send,
         description:
-          "Send files directly to other users via peer-to-peer with drag-and-drop support."
+          gettext(
+            "Send files directly to other users via peer-to-peer with drag-and-drop support."
+          )
       },
       %{
         id: "feature-privacy-settings",
-        title: "Privacy Settings",
-        category: "Settings & Preferences",
+        title: gettext("Privacy Settings"),
+        category: gettext("Settings & Preferences"),
         keywords: [
           "privacy",
           "turn",
@@ -765,12 +839,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_privacy,
         description:
-          "Enable TURN-only relay mode to hide your IP address during peer-to-peer connections."
+          gettext(
+            "Enable TURN-only relay mode to hide your IP address during peer-to-peer connections."
+          )
       },
       %{
         id: "feature-pm-persistence",
-        title: "PM Persistence",
-        category: "Chat & Messaging",
+        title: gettext("PM Persistence"),
+        category: gettext("Chat & Messaging"),
         keywords: [
           "pm",
           "private message",
@@ -783,12 +859,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_p2p,
         description:
-          "Private message conversations are restored automatically on reconnect, ordered by recency."
+          gettext(
+            "Private message conversations are restored automatically on reconnect, ordered by recency."
+          )
       },
       %{
         id: "feature-auto-join-channels",
-        title: "Auto-Join Channels",
-        category: "Channel Settings",
+        title: gettext("Auto-Join Channels"),
+        category: gettext("Channel Settings"),
         keywords: [
           "auto-join",
           "autojoin",
@@ -799,47 +877,51 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "reconnect"
         ],
         icon: :icon_tab_autojoin,
-        description: "Channels are automatically remembered and rejoined when you reconnect."
+        description:
+          gettext("Channels are automatically remembered and rejoined when you reconnect.")
       },
       %{
         id: "feature-single-session",
-        title: "Single Session",
-        category: "Users & Identity",
+        title: gettext("Single Session"),
+        category: gettext("Users & Identity"),
         keywords: [
-          "single session",
+          gettext("single session"),
           "session",
           "duplicate",
-          "multiple tabs",
-          "another window",
+          gettext("multiple tabs"),
+          gettext("another window"),
           "disconnect",
           "expired",
-          "one session"
+          gettext("one session")
         ],
         icon: :icon_lock,
-        description: "Only one active session per nickname is allowed to prevent conflicts."
+        description:
+          gettext("Only one active session per nickname is allowed to prevent conflicts.")
       },
       %{
         id: "feature-nick-expiry",
-        title: "Nick Expiration",
-        category: "Users & Identity",
+        title: gettext("Nick Expiration"),
+        category: gettext("Users & Identity"),
         keywords: [
-          "nick expiry",
+          gettext("nick expiry"),
           "expiration",
           "inactive",
           "purge",
-          "7 days",
+          gettext("7 days"),
           "automatic",
           "freed",
           "released"
         ],
         icon: :icon_clock,
         description:
-          "Registered nicknames expire after 7 days of inactivity and become available again."
+          gettext(
+            "Registered nicknames expire after 7 days of inactivity and become available again."
+          )
       },
       %{
         id: "feature-admin-console",
-        title: "Admin Console",
-        category: "Admin & Server",
+        title: gettext("Admin Console"),
+        category: gettext("Admin & Server"),
         keywords: [
           "admin",
           "console",
@@ -852,12 +934,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_terminal,
         description:
-          "Execute multiple commands at once by pasting them into the Admin Console (admin only)."
+          gettext(
+            "Execute multiple commands at once by pasting them into the Admin Console (admin only)."
+          )
       },
       %{
         id: "feature-p2p-games",
-        title: "P2P Games",
-        category: "P2P Games: Action",
+        title: gettext("P2P Games"),
+        category: gettext("P2P Games: Action"),
         keywords: [
           "game",
           "games",
@@ -871,7 +955,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_generic,
         description:
-          "Play retro arcade games directly with other users via peer-to-peer WebRTC connections.",
+          gettext(
+            "Play retro arcade games directly with other users via peer-to-peer WebRTC connections."
+          ),
         see_also: [
           "feature-hex-pong",
           "feature-light-trails",
@@ -912,30 +998,32 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-pong",
-        title: "Hex Pong",
-        category: "P2P Games: Action",
+        title: gettext("Hex Pong"),
+        category: gettext("P2P Games: Action"),
         keywords: ["hex pong", "pong", "paddle", "ball", "game", "cyberpunk", "neon"],
         icon: :icon_game_pong,
         description:
-          "Cyberpunk Pong with neon visuals, CRT effects, and synth audio. First to 11 (win by 2). Use Arrow keys or W/S.",
+          gettext(
+            "Cyberpunk Pong with neon visuals, CRT effects, and synth audio. First to 11 (win by 2). Use Arrow keys or W/S."
+          ),
         see_also: ["feature-p2p-games"]
       },
       %{
         id: "feature-light-trails",
-        title: "Light Trails",
-        category: "P2P Games: Action",
-        keywords: ["light trails", "tron", "trails", "grid", "arena", "game"],
+        title: gettext("Light Trails"),
+        category: gettext("P2P Games: Action"),
+        keywords: [gettext("light trails"), "tron", "trails", "grid", "arena", "game"],
         icon: :icon_game_trails,
         description:
-          "Race across a grid leaving a glowing trail. Hit a trail or wall and you lose.",
+          gettext("Race across a grid leaving a glowing trail. Hit a trail or wall and you lose."),
         see_also: ["feature-p2p-games"]
       },
       %{
         id: "feature-pixel-tanks",
-        title: "Pixel Tanks",
-        category: "P2P Games: Action",
+        title: gettext("Pixel Tanks"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "pixel tanks",
+          gettext("pixel tanks"),
           "tank",
           "combat",
           "maze",
@@ -946,18 +1034,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_tanks,
         description:
-          "Top-down tank combat in a maze arena. Rotate your tank, drive forward, and fire " <>
-            "missiles to hit your opponent. One missile at a time — miss and you're vulnerable. " <>
-            "2-minute rounds, best of 3. Modes: Classic (open field) and Maze Battle. " <>
-            "Controls: Arrow keys (Left/Right rotate, Up forward) or A/D/W, Space or Shift to fire.",
+          gettext(
+            "Top-down tank combat in a maze arena. Rotate your tank, drive forward, and fire "
+          ) <>
+            gettext(
+              "missiles to hit your opponent. One missile at a time — miss and you're vulnerable. "
+            ) <>
+            gettext("2-minute rounds, best of 3. Modes: Classic (open field) and Maze Battle. ") <>
+            gettext(
+              "Controls: Arrow keys (Left/Right rotate, Up forward) or A/D/W, Space or Shift to fire."
+            ),
         see_also: ["feature-p2p-games"]
       },
       %{
         id: "feature-star-duel",
-        title: "Star Duel",
-        category: "P2P Games: Action",
+        title: gettext("Star Duel"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "star duel",
+          gettext("star duel"),
           "space",
           "spaceship",
           "dogfight",
@@ -968,17 +1062,19 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_space,
         description:
-          "Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles. " <>
-            "Wraparound edges, hyperspace warp with 20% death chance. First to 7 wins. " <>
-            "Controls: Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp.",
+          gettext("Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles. ") <>
+            gettext("Wraparound edges, hyperspace warp with 20% death chance. First to 7 wins. ") <>
+            gettext(
+              "Controls: Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp."
+            ),
         see_also: ["feature-gravity-well", "feature-debris-field", "feature-p2p-games"]
       },
       %{
         id: "feature-gravity-well",
-        title: "Gravity Well",
-        category: "P2P Games: Action",
+        title: gettext("Gravity Well"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "gravity well",
+          gettext("gravity well"),
           "gravity",
           "orbital",
           "star",
@@ -988,17 +1084,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_gravity,
         description:
-          "Orbital combat around a central gravity star. Ships are pulled toward the star — " <>
-            "use gravity slingshots for speed, but fly too close and you die. Same controls " <>
-            "as Star Duel. First to 7 wins.",
+          gettext(
+            "Orbital combat around a central gravity star. Ships are pulled toward the star — "
+          ) <>
+            gettext(
+              "use gravity slingshots for speed, but fly too close and you die. Same controls "
+            ) <>
+            gettext("as Star Duel. First to 7 wins."),
         see_also: ["feature-star-duel", "feature-debris-field", "feature-p2p-games"]
       },
       %{
         id: "feature-debris-field",
-        title: "Debris Field",
-        category: "P2P Games: Action",
+        title: gettext("Debris Field"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "debris field",
+          gettext("debris field"),
           "debris",
           "asteroids",
           "obstacles",
@@ -1008,17 +1108,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_debris,
         description:
-          "Space combat through floating asteroid obstacles. Asteroids block missiles and " <>
-            "kill ships on contact. Use debris for cover or it destroys you. Same controls " <>
-            "as Star Duel. First to 7 wins.",
+          gettext(
+            "Space combat through floating asteroid obstacles. Asteroids block missiles and "
+          ) <>
+            gettext(
+              "kill ships on contact. Use debris for cover or it destroys you. Same controls "
+            ) <>
+            gettext("as Star Duel. First to 7 wins."),
         see_also: ["feature-star-duel", "feature-gravity-well", "feature-p2p-games"]
       },
       %{
         id: "feature-block-breakers",
-        title: "Block Breakers",
-        category: "P2P Games: Action",
+        title: gettext("Block Breakers"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "block breakers",
+          gettext("block breakers"),
           "breakout",
           "cooperative",
           "coop",
@@ -1030,14 +1134,18 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_breakout,
         description:
-          "Cooperative Breakout with cyberpunk visuals. P1 controls the bottom paddle, P2 the top. " <>
-            "3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D to move.",
+          gettext(
+            "Cooperative Breakout with cyberpunk visuals. P1 controls the bottom paddle, P2 the top. "
+          ) <>
+            gettext(
+              "3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D to move."
+            ),
         see_also: ["feature-p2p-games"]
       },
       %{
         id: "feature-hex-warlords",
-        title: "Hex Warlords",
-        category: "P2P Games: Action",
+        title: gettext("Hex Warlords"),
+        category: gettext("P2P Games: Action"),
         keywords: [
           "hex warlords",
           "warlords",
@@ -1052,19 +1160,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_warlords,
         description:
-          "Versus Breakout battle — each player defends a brick castle with a king inside. " <>
-            "Deflect or catch the fireball with your shield to smash your opponent's walls. " <>
-            "Hold Space to catch, release to aim. Best of 3 lives. " <>
-            "Controls: Arrow keys (Up/Down) to move shield, Space to catch/release fireball.",
+          gettext(
+            "Versus Breakout battle — each player defends a brick castle with a king inside. "
+          ) <>
+            gettext(
+              "Deflect or catch the fireball with your shield to smash your opponent's walls. "
+            ) <>
+            gettext("Hold Space to catch, release to aim. Best of 3 lives. ") <>
+            gettext(
+              "Controls: Arrow keys (Up/Down) to move shield, Space to catch/release fireball."
+            ),
         see_also: ["feature-block-breakers", "feature-p2p-games"]
       },
       %{
         id: "feature-hex-raid",
-        title: "Hex Raid",
-        category: "P2P Games: Action",
+        title: gettext("Hex Raid"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex raid",
-          "river raid",
+          gettext("hex raid"),
+          gettext("river raid"),
           "river",
           "raid",
           "plane",
@@ -1077,10 +1191,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_raid,
         description:
-          "River Raid reimagined for two — race through a scrolling toxic canal, " <>
-            "destroy enemies for points, steal fuel, and drop mines on your rival. " <>
-            "10 sections of increasing difficulty. Destroy bridges to advance. " <>
-            "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine.",
+          gettext("River Raid reimagined for two — race through a scrolling toxic canal, ") <>
+            gettext("destroy enemies for points, steal fuel, and drop mines on your rival. ") <>
+            gettext("10 sections of increasing difficulty. Destroy bridges to advance. ") <>
+            gettext("Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine."),
         see_also: [
           "feature-hex-raid-pacifist",
           "feature-hex-raid-blitz",
@@ -1089,32 +1203,32 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-raid-pacifist",
-        title: "Hex Raid: Pacifist",
-        category: "P2P Games: Action",
+        title: gettext("Hex Raid: Pacifist"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex raid",
+          gettext("hex raid"),
           "pacifist",
-          "river raid",
-          "no mines",
+          gettext("river raid"),
+          gettext("no mines"),
           "pure",
           "skill",
           "game"
         ],
         icon: :icon_game_raid,
         description:
-          "River Raid without sabotage — no mines allowed. " <>
-            "Pure competition for points, fuel, and survival across 10 sections. " <>
-            "Controls: Arrow keys to move/speed, Space to fire.",
+          gettext("River Raid without sabotage — no mines allowed. ") <>
+            gettext("Pure competition for points, fuel, and survival across 10 sections. ") <>
+            gettext("Controls: Arrow keys to move/speed, Space to fire."),
         see_also: ["feature-hex-raid", "feature-hex-raid-blitz", "feature-p2p-games"]
       },
       %{
         id: "feature-hex-raid-blitz",
-        title: "Hex Raid: Blitz",
-        category: "P2P Games: Action",
+        title: gettext("Hex Raid: Blitz"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex raid",
+          gettext("hex raid"),
           "blitz",
-          "river raid",
+          gettext("river raid"),
           "fast",
           "quick",
           "intense",
@@ -1122,17 +1236,17 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_raid,
         description:
-          "5 sections of intense River Raid action — river starts narrow, " <>
-            "fuel is scarce, mines recharge faster. Quick and chaotic. " <>
-            "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine.",
+          gettext("5 sections of intense River Raid action — river starts narrow, ") <>
+            gettext("fuel is scarce, mines recharge faster. Quick and chaotic. ") <>
+            gettext("Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine."),
         see_also: ["feature-hex-raid", "feature-hex-raid-pacifist", "feature-p2p-games"]
       },
       %{
         id: "feature-hex-boxing",
-        title: "Hex Boxing",
-        category: "P2P Games: Action",
+        title: gettext("Hex Boxing"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex boxing",
+          gettext("hex boxing"),
           "boxing",
           "fight",
           "punch",
@@ -1144,32 +1258,34 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_boxing,
         description:
-          "Top-down boxing in a cyberpunk ring — close punches score 3 points, " <>
-            "medium 2, far 1. First to 100 is KO! Best of 3 rounds, 2 minutes each. " <>
-            "Controls: Arrow keys or WASD to move, Space or Shift to punch.",
+          gettext("Top-down boxing in a cyberpunk ring — close punches score 3 points, ") <>
+            gettext("medium 2, far 1. First to 100 is KO! Best of 3 rounds, 2 minutes each. ") <>
+            gettext("Controls: Arrow keys or WASD to move, Space or Shift to punch."),
         see_also: ["feature-p2p-games"]
       },
       %{
         id: "feature-hex-outlaw",
-        title: "Hex Outlaw",
-        category: "P2P Games: Action",
+        title: gettext("Hex Outlaw"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex outlaw",
+          gettext("hex outlaw"),
           "outlaw",
           "western",
           "duel",
           "gunslinger",
           "cowboy",
           "shooter",
-          "quick draw",
+          gettext("quick draw"),
           "cactus",
           "game"
         ],
         icon: :icon_game_outlaw,
         description:
-          "Western duel — two gunslingers face off across a cactus obstacle. " <>
-            "Dodge visible bullets and shoot your opponent. First to 10, best of 3 rounds. " <>
-            "Controls: Arrow keys or WASD to move, Space or Shift to fire.",
+          gettext("Western duel — two gunslingers face off across a cactus obstacle. ") <>
+            gettext(
+              "Dodge visible bullets and shoot your opponent. First to 10, best of 3 rounds. "
+            ) <>
+            gettext("Controls: Arrow keys or WASD to move, Space or Shift to fire."),
         see_also: [
           "feature-hex-outlaw-ricochet",
           "feature-hex-outlaw-stagecoach",
@@ -1179,10 +1295,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-outlaw-ricochet",
-        title: "Hex Outlaw: Ricochet",
-        category: "P2P Games: Action",
+        title: gettext("Hex Outlaw: Ricochet"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex outlaw",
+          gettext("hex outlaw"),
           "ricochet",
           "bounce",
           "western",
@@ -1192,10 +1308,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_outlaw,
         description:
-          "Western duel with bouncing bullets — fire at angles to bypass the wall. " <>
-            "Bullets ricochet once off ceiling/floor. Aim up or down with arrow keys. " <>
-            "First to 10, best of 3 rounds. " <>
-            "Controls: Arrow keys or WASD to move/aim, Space or Shift to fire.",
+          gettext("Western duel with bouncing bullets — fire at angles to bypass the wall. ") <>
+            gettext("Bullets ricochet once off ceiling/floor. Aim up or down with arrow keys. ") <>
+            gettext("First to 10, best of 3 rounds. ") <>
+            gettext("Controls: Arrow keys or WASD to move/aim, Space or Shift to fire."),
         see_also: [
           "feature-hex-outlaw",
           "feature-hex-outlaw-stagecoach",
@@ -1205,10 +1321,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-outlaw-stagecoach",
-        title: "Hex Outlaw: Stagecoach",
-        category: "P2P Games: Action",
+        title: gettext("Hex Outlaw: Stagecoach"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex outlaw",
+          gettext("hex outlaw"),
           "stagecoach",
           "moving",
           "western",
@@ -1218,9 +1334,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_outlaw,
         description:
-          "Western duel with a stagecoach rolling across the arena. " <>
-            "Time your shots around the moving obstacle. First to 10, best of 3 rounds. " <>
-            "Controls: Arrow keys or WASD to move, Space or Shift to fire.",
+          gettext("Western duel with a stagecoach rolling across the arena. ") <>
+            gettext("Time your shots around the moving obstacle. First to 10, best of 3 rounds. ") <>
+            gettext("Controls: Arrow keys or WASD to move, Space or Shift to fire."),
         see_also: [
           "feature-hex-outlaw",
           "feature-hex-outlaw-ricochet",
@@ -1230,11 +1346,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-outlaw-nml",
-        title: "Hex Outlaw: No Man's Land",
-        category: "P2P Games: Action",
+        title: gettext("Hex Outlaw: No Man's Land"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex outlaw",
-          "no man's land",
+          gettext("hex outlaw"),
+          gettext("no man's land"),
           "open",
           "western",
           "duel",
@@ -1243,9 +1359,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_outlaw,
         description:
-          "Western duel in open field — no obstacle, full horizontal movement. " <>
-            "Dodge freely in your half of the arena. First to 10, best of 3 rounds. " <>
-            "Controls: Arrow keys or WASD to move, Space or Shift to fire.",
+          gettext("Western duel in open field — no obstacle, full horizontal movement. ") <>
+            gettext("Dodge freely in your half of the arena. First to 10, best of 3 rounds. ") <>
+            gettext("Controls: Arrow keys or WASD to move, Space or Shift to fire."),
         see_also: [
           "feature-hex-outlaw",
           "feature-hex-outlaw-ricochet",
@@ -1255,11 +1371,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-invaders",
-        title: "Hex Invaders",
-        category: "P2P Games: Action",
+        title: gettext("Hex Invaders"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex invaders",
-          "space invaders",
+          gettext("hex invaders"),
+          gettext("space invaders"),
           "invaders",
           "alien",
           "aliens",
@@ -1273,9 +1389,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_invaders,
         description:
-          "Split-screen Space Invaders — aliens you destroy fall on your opponent as reinforcements. " <>
-            "Combos send extra drops. UFO kills send armored aliens. 10 waves of escalating chaos. " <>
-            "Controls: Arrow keys or A/D to move, Space to fire.",
+          gettext(
+            "Split-screen Space Invaders — aliens you destroy fall on your opponent as reinforcements. "
+          ) <>
+            gettext(
+              "Combos send extra drops. UFO kills send armored aliens. 10 waves of escalating chaos. "
+            ) <>
+            gettext("Controls: Arrow keys or A/D to move, Space to fire."),
         see_also: [
           "feature-hex-invaders-coop",
           "feature-hex-invaders-blitz",
@@ -1284,22 +1404,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-invaders-coop",
-        title: "Hex Invaders: Co-op",
-        category: "P2P Games: Action",
+        title: gettext("Hex Invaders: Co-op"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex invaders",
+          gettext("hex invaders"),
           "coop",
           "co-op",
           "cooperative",
-          "space invaders",
+          gettext("space invaders"),
           "shared",
           "game"
         ],
         icon: :icon_game_invaders,
         description:
-          "Classic co-op Space Invaders — two cannons fighting the same alien waves on a shared screen. " <>
-            "No alien drop mechanic. Survive together or fall together. " <>
-            "Controls: Arrow keys or A/D to move, Space to fire.",
+          gettext(
+            "Classic co-op Space Invaders — two cannons fighting the same alien waves on a shared screen. "
+          ) <>
+            gettext("No alien drop mechanic. Survive together or fall together. ") <>
+            gettext("Controls: Arrow keys or A/D to move, Space to fire."),
         see_also: [
           "feature-hex-invaders",
           "feature-hex-invaders-blitz",
@@ -1308,22 +1430,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-invaders-blitz",
-        title: "Hex Invaders: Blitz",
-        category: "P2P Games: Action",
+        title: gettext("Hex Invaders: Blitz"),
+        category: gettext("P2P Games: Action"),
         keywords: [
-          "hex invaders",
+          gettext("hex invaders"),
           "blitz",
           "fast",
           "quick",
           "intense",
-          "space invaders",
+          gettext("space invaders"),
           "game"
         ],
         icon: :icon_game_invaders,
         description:
-          "Blitz Space Invaders — instant alien drops, easier combo thresholds, " <>
-            "5 waves of pure chaos from the start. " <>
-            "Controls: Arrow keys or A/D to move, Space to fire.",
+          gettext("Blitz Space Invaders — instant alien drops, easier combo thresholds, ") <>
+            gettext("5 waves of pure chaos from the start. ") <>
+            gettext("Controls: Arrow keys or A/D to move, Space to fire."),
         see_also: [
           "feature-hex-invaders",
           "feature-hex-invaders-coop",
@@ -1332,10 +1454,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-enduro",
-        title: "Hex Enduro",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Enduro"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex enduro",
+          gettext("hex enduro"),
           "enduro",
           "racing",
           "road",
@@ -1347,10 +1469,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_enduro,
         description:
-          "Pseudo-3D racing duel through day, snow, fog, and night. " <>
-            "Both players race on the same road — overtake AI cars and your opponent for points. " <>
-            "Manage fuel, use turbo boosts, and draft in slipstreams. Best of 3 days. " <>
-            "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo.",
+          gettext("Pseudo-3D racing duel through day, snow, fog, and night. ") <>
+            gettext(
+              "Both players race on the same road — overtake AI cars and your opponent for points. "
+            ) <>
+            gettext("Manage fuel, use turbo boosts, and draft in slipstreams. Best of 3 days. ") <>
+            gettext(
+              "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo."
+            ),
         see_also: [
           "feature-hex-enduro-night",
           "feature-hex-enduro-sprint",
@@ -1359,10 +1485,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-enduro-night",
-        title: "Hex Enduro: Night Race",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Enduro: Night Race"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex enduro",
+          gettext("hex enduro"),
           "night",
           "dark",
           "headlights",
@@ -1371,9 +1497,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_enduro,
         description:
-          "3-minute race in permanent darkness with fog bursts. " <>
-            "Headlights-only visibility — pure reflexes. Most overtakes wins. " <>
-            "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo.",
+          gettext("3-minute race in permanent darkness with fog bursts. ") <>
+            gettext("Headlights-only visibility — pure reflexes. Most overtakes wins. ") <>
+            gettext(
+              "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo."
+            ),
         see_also: [
           "feature-hex-enduro",
           "feature-hex-enduro-sprint",
@@ -1382,10 +1510,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-enduro-sprint",
-        title: "Hex Enduro: Sprint",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Enduro: Sprint"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex enduro",
+          gettext("hex enduro"),
           "sprint",
           "fast",
           "quick",
@@ -1395,9 +1523,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_enduro,
         description:
-          "Daylight sprint — no weather changes, no fuel drain, just speed. " <>
-            "90 seconds to score maximum overtakes. " <>
-            "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo.",
+          gettext("Daylight sprint — no weather changes, no fuel drain, just speed. ") <>
+            gettext("90 seconds to score maximum overtakes. ") <>
+            gettext(
+              "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo."
+            ),
         see_also: [
           "feature-hex-enduro",
           "feature-hex-enduro-night",
@@ -1406,10 +1536,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-tennis",
-        title: "Hex Tennis",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Tennis"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex tennis",
+          gettext("hex tennis"),
           "tennis",
           "serve",
           "rally",
@@ -1420,9 +1550,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_tennis,
         description:
-          "Top-down tennis duel — automatic hitting where shot angle depends on contact position. " <>
-            "Full set with deuce, advantage, and tiebreak at 6-6. " <>
-            "Controls: Arrow keys or WASD to move, Space or Shift to serve.",
+          gettext(
+            "Top-down tennis duel — automatic hitting where shot angle depends on contact position. "
+          ) <>
+            gettext("Full set with deuce, advantage, and tiebreak at 6-6. ") <>
+            gettext("Controls: Arrow keys or WASD to move, Space or Shift to serve."),
         see_also: [
           "feature-hex-tennis-quick",
           "feature-hex-tennis-sudden",
@@ -1431,10 +1563,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-tennis-quick",
-        title: "Hex Tennis: Quick Match",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Tennis: Quick Match"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex tennis",
+          gettext("hex tennis"),
           "tennis",
           "quick",
           "fast",
@@ -1443,9 +1575,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_tennis,
         description:
-          "Quick tennis match — first to 3 games wins. " <>
-            "Same gameplay, shorter format. No tiebreak needed. " <>
-            "Controls: Arrow keys or WASD to move, Space or Shift to serve.",
+          gettext("Quick tennis match — first to 3 games wins. ") <>
+            gettext("Same gameplay, shorter format. No tiebreak needed. ") <>
+            gettext("Controls: Arrow keys or WASD to move, Space or Shift to serve."),
         see_also: [
           "feature-hex-tennis",
           "feature-hex-tennis-sudden",
@@ -1454,21 +1586,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-tennis-sudden",
-        title: "Hex Tennis: Sudden Death",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Tennis: Sudden Death"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex tennis",
+          gettext("hex tennis"),
           "tennis",
-          "sudden death",
-          "one point",
+          gettext("sudden death"),
+          gettext("one point"),
           "pressure",
           "game"
         ],
         icon: :icon_game_tennis,
         description:
-          "Every point wins a game — no 15-30-40, no deuce. " <>
-            "First to 6 games takes the set. Pure pressure. " <>
-            "Controls: Arrow keys or WASD to move, Space or Shift to serve.",
+          gettext("Every point wins a game — no 15-30-40, no deuce. ") <>
+            gettext("First to 6 games takes the set. Pure pressure. ") <>
+            gettext("Controls: Arrow keys or WASD to move, Space or Shift to serve."),
         see_also: [
           "feature-hex-tennis",
           "feature-hex-tennis-quick",
@@ -1477,10 +1609,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-skiing",
-        title: "Hex Skiing",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Skiing"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex skiing",
+          gettext("hex skiing"),
           "skiing",
           "alpine",
           "avalanche",
@@ -1491,10 +1623,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_skiing,
         description:
-          "Top-down alpine descent through toxic wastelands — dodge mutant trees and irradiated rocks, " <>
-            "clear slalom gates for time bonuses, and outrun the radioactive avalanche. " <>
-            "Best of 3 runs with rising difficulty. " <>
-            "Controls: Arrow keys (←/→) or A/D to steer.",
+          gettext(
+            "Top-down alpine descent through toxic wastelands — dodge mutant trees and irradiated rocks, "
+          ) <>
+            gettext("clear slalom gates for time bonuses, and outrun the radioactive avalanche. ") <>
+            gettext("Best of 3 runs with rising difficulty. ") <>
+            gettext("Controls: Arrow keys (←/→) or A/D to steer."),
         see_also: [
           "feature-hex-skiing-escape",
           "feature-hex-skiing-clean",
@@ -1503,10 +1637,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-skiing-escape",
-        title: "Hex Skiing: Escape",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Skiing: Escape"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex skiing",
+          gettext("hex skiing"),
           "skiing",
           "escape",
           "avalanche",
@@ -1516,9 +1650,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_skiing,
         description:
-          "Infinite descent — the avalanche never stops accelerating. " <>
-            "Last skier standing wins. Pure survival mode. " <>
-            "Controls: Arrow keys (←/→) or A/D to steer.",
+          gettext("Infinite descent — the avalanche never stops accelerating. ") <>
+            gettext("Last skier standing wins. Pure survival mode. ") <>
+            gettext("Controls: Arrow keys (←/→) or A/D to steer."),
         see_also: [
           "feature-hex-skiing",
           "feature-hex-skiing-clean",
@@ -1527,22 +1661,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-skiing-clean",
-        title: "Hex Skiing: Clean Run",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Skiing: Clean Run"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex skiing",
+          gettext("hex skiing"),
           "skiing",
           "clean",
           "pure",
-          "no avalanche",
-          "time trial",
+          gettext("no avalanche"),
+          gettext("time trial"),
           "game"
         ],
         icon: :icon_game_skiing,
         description:
-          "No avalanche, no items — just trees, rocks, and slalom gates. " <>
-            "Fastest time down the mountain wins. The purist mode. " <>
-            "Controls: Arrow keys (←/→) or A/D to steer.",
+          gettext("No avalanche, no items — just trees, rocks, and slalom gates. ") <>
+            gettext("Fastest time down the mountain wins. The purist mode. ") <>
+            gettext("Controls: Arrow keys (←/→) or A/D to steer."),
         see_also: [
           "feature-hex-skiing",
           "feature-hex-skiing-escape",
@@ -1551,10 +1685,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-frost",
-        title: "Hex Frost",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Frost"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex frost",
+          gettext("hex frost"),
           "frostbite",
           "igloo",
           "ice",
@@ -1566,11 +1700,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_frost,
         description:
-          "Arctic construction race — jump on floating ice blocks to build your igloo while " <>
-            "stealing your opponent's blocks. Blocks have 3 states: white (neutral), your color, " <>
-            "or opponent's color. Stepping on opponent's block steals it (2-piece swing!). " <>
-            "Dodge polar bears, crabs, geese, and clams. Best of 5 rounds with progressive difficulty. " <>
-            "Temperature timer adds urgency. Controls: Arrow keys or WASD to move, Up/Down to jump between rows.",
+          gettext(
+            "Arctic construction race — jump on floating ice blocks to build your igloo while "
+          ) <>
+            gettext(
+              "stealing your opponent's blocks. Blocks have 3 states: white (neutral), your color, "
+            ) <>
+            gettext(
+              "or opponent's color. Stepping on opponent's block steals it (2-piece swing!). "
+            ) <>
+            gettext(
+              "Dodge polar bears, crabs, geese, and clams. Best of 5 rounds with progressive difficulty. "
+            ) <>
+            gettext(
+              "Temperature timer adds urgency. Controls: Arrow keys or WASD to move, Up/Down to jump between rows."
+            ),
         see_also: [
           "feature-hex-frost-blizzard",
           "feature-hex-frost-peaceful",
@@ -1579,10 +1723,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-frost-blizzard",
-        title: "Hex Frost: Blizzard",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Frost: Blizzard"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex frost",
+          gettext("hex frost"),
           "frostbite",
           "blizzard",
           "endurance",
@@ -1591,9 +1735,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_frost,
         description:
-          "1 long epic round — igloo needs 20 pieces, all enemies from the start, " <>
-            "temperature starts at 60° and drops slowly. Arctic endurance mode. " <>
-            "Controls: Arrow keys or WASD to move, Up/Down to jump between rows.",
+          gettext("1 long epic round — igloo needs 20 pieces, all enemies from the start, ") <>
+            gettext("temperature starts at 60° and drops slowly. Arctic endurance mode. ") <>
+            gettext("Controls: Arrow keys or WASD to move, Up/Down to jump between rows."),
         see_also: [
           "feature-hex-frost",
           "feature-hex-frost-peaceful",
@@ -1602,22 +1746,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-frost-peaceful",
-        title: "Hex Frost: Peaceful",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Frost: Peaceful"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
-          "hex frost",
+          gettext("hex frost"),
           "frostbite",
           "peaceful",
-          "no steal",
+          gettext("no steal"),
           "pure",
           "race",
           "game"
         ],
         icon: :icon_game_frost,
         description:
-          "Pure construction race — no block stealing allowed. Stepping on opponent's blocks " <>
-            "has no effect. First to complete the igloo wins. Fair and square. " <>
-            "Controls: Arrow keys or WASD to move, Up/Down to jump between rows.",
+          gettext(
+            "Pure construction race — no block stealing allowed. Stepping on opponent's blocks "
+          ) <>
+            gettext("has no effect. First to complete the igloo wins. Fair and square. ") <>
+            gettext("Controls: Arrow keys or WASD to move, Up/Down to jump between rows."),
         see_also: [
           "feature-hex-frost",
           "feature-hex-frost-blizzard",
@@ -1626,11 +1772,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-hockey",
-        title: "Hex Hockey",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Hockey"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
           "hex hockey",
-          "ice hockey",
+          gettext("ice hockey"),
           "hockey",
           "puck",
           "goalie",
@@ -1644,10 +1790,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_hockey,
         description:
-          "Top-down ice hockey in a cyberpunk neon arena. Control your field player while " <>
-            "an AI goalie defends your net. Capture the puck, shoot with Space, or tackle " <>
-            "to steal (60% chance, fail = stun). 3 periods of 2 minutes. Tied? Sudden death. " <>
-            "Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle.",
+          gettext(
+            "Top-down ice hockey in a cyberpunk neon arena. Control your field player while "
+          ) <>
+            gettext(
+              "an AI goalie defends your net. Capture the puck, shoot with Space, or tackle "
+            ) <>
+            gettext(
+              "to steal (60% chance, fail = stun). 3 periods of 2 minutes. Tied? Sudden death. "
+            ) <>
+            gettext("Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle."),
         see_also: [
           "feature-hex-hockey-blitz",
           "feature-hex-hockey-showdown",
@@ -1656,8 +1808,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-hockey-blitz",
-        title: "Hex Hockey: Blitz",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Hockey: Blitz"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
           "hex hockey",
           "hockey",
@@ -1668,9 +1820,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_hockey,
         description:
-          "One intense period of 3 minutes. Puck moves 25% faster, tackles succeed 80% of the time. " <>
-            "Pure intensity from start to finish. " <>
-            "Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle.",
+          gettext(
+            "One intense period of 3 minutes. Puck moves 25% faster, tackles succeed 80% of the time. "
+          ) <>
+            gettext("Pure intensity from start to finish. ") <>
+            gettext("Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle."),
         see_also: [
           "feature-hex-hockey",
           "feature-hex-hockey-showdown",
@@ -1679,21 +1833,23 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-hex-hockey-showdown",
-        title: "Hex Hockey: Showdown",
-        category: "P2P Games: Sports",
+        title: gettext("Hex Hockey: Showdown"),
+        category: gettext("P2P Games: Sports"),
         keywords: [
           "hex hockey",
           "hockey",
           "showdown",
-          "first to five",
+          gettext("first to five"),
           "puck",
           "game"
         ],
         icon: :icon_game_hockey,
         description:
-          "No timer — first to 5 goals wins. The puck speeds up after every goal scored, " <>
-            "building pressure as the match intensifies. " <>
-            "Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle.",
+          gettext(
+            "No timer — first to 5 goals wins. The puck speeds up after every goal scored, "
+          ) <>
+            gettext("building pressure as the match intensifies. ") <>
+            gettext("Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle."),
         see_also: [
           "feature-hex-hockey",
           "feature-hex-hockey-blitz",
@@ -1703,12 +1859,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade ──────────────────────────────────
       %{
         id: "feature-arcade",
-        title: "Solo Arcade",
-        category: "Solo Arcade: FPS",
+        title: gettext("Solo Arcade"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "arcade",
           "singleplayer",
-          "single player",
+          gettext("single player"),
           "solo",
           "doom",
           "quake",
@@ -1716,7 +1872,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "wolf3d",
           "freedoom",
           "freedm",
-          "chex quest",
+          gettext("chex quest"),
           "hacx",
           "rekkr",
           "librequake",
@@ -1726,9 +1882,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "xash3d",
           "valve",
           "scummvm",
-          "point and click",
+          gettext("point and click"),
           "adventure",
-          "beneath a steel sky",
+          gettext("beneath a steel sky"),
           "wasm",
           "webassembly",
           "fps",
@@ -1737,12 +1893,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_arcade,
         description:
-          "Play classic games in your browser via WebAssembly — 18 games including " <>
-            "Beneath a Steel Sky, Dreamweb, Drascula, Flight of the Amazon Queen, " <>
-            "Lure of the Temptress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM, " <>
-            "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. " <>
-            "Click any game to see its detailed description, keyboard controls, and " <>
-            "gameplay tips before launching. Join #games and type !play to start.",
+          gettext("Play classic games in your browser via WebAssembly — 18 games including ") <>
+            gettext("Beneath a Steel Sky, Dreamweb, Drascula, Flight of the Amazon Queen, ") <>
+            gettext("Lure of the Temptress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM, ") <>
+            gettext("Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. ") <>
+            gettext("Click any game to see its detailed description, keyboard controls, and ") <>
+            gettext("gameplay tips before launching. Join #games and type !play to start."),
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-quake",
@@ -1759,13 +1915,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-doom",
-        title: "DOOM (Arcade)",
-        category: "Solo Arcade: FPS",
+        title: gettext("DOOM (Arcade)"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "doom",
           "freedoom",
           "freedm",
-          "chex quest",
+          gettext("chex quest"),
           "chex",
           "hacx",
           "rekkr",
@@ -1773,15 +1929,19 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "cyberpunk",
           "fps",
           "shareware",
-          "knee deep",
+          gettext("knee deep"),
           "phobos",
           "wasm",
-          "id software"
+          gettext("id software")
         ],
         icon: :icon_game_doom,
         description:
-          "Play 7 DOOM-engine games in your browser — DOOM shareware, Freedoom Phase 1 & 2, " <>
-            "FreeDM, Chex Quest, HacX, and REKKR. Powered by Dwasm (PrBoom+ → WebAssembly).",
+          gettext(
+            "Play 7 DOOM-engine games in your browser — DOOM shareware, Freedoom Phase 1 & 2, "
+          ) <>
+            gettext(
+              "FreeDM, Chex Quest, HacX, and REKKR. Powered by Dwasm (PrBoom+ → WebAssembly)."
+            ),
         see_also: [
           "feature-arcade",
           "feature-arcade-doom-shareware",
@@ -1797,22 +1957,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-quake",
-        title: "Quake (Arcade)",
-        category: "Solo Arcade: FPS",
+        title: gettext("Quake (Arcade)"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "quake",
           "librequake",
           "fps",
           "shareware",
-          "dimension of the doomed",
+          gettext("dimension of the doomed"),
           "wasm",
-          "id software",
+          gettext("id software"),
           "lovecraft"
         ],
         icon: :icon_game_quake,
         description:
-          "Play 2 Quake-engine games in your browser — Quake shareware and LibreQuake (open-source). " <>
-            "Powered by Qwasm (QuakeSpasm → WebAssembly).",
+          gettext(
+            "Play 2 Quake-engine games in your browser — Quake shareware and LibreQuake (open-source). "
+          ) <>
+            gettext("Powered by Qwasm (QuakeSpasm → WebAssembly)."),
         see_also: [
           "feature-arcade",
           "feature-arcade-quake-shareware",
@@ -1823,25 +1985,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-wolfenstein",
-        title: "Wolfenstein 3D (Arcade)",
-        category: "Solo Arcade: FPS",
+        title: gettext("Wolfenstein 3D (Arcade)"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "wolfenstein",
           "wolf3d",
-          "wolf 3d",
+          gettext("wolf 3d"),
           "fps",
           "shareware",
           "castle",
           "wasm",
-          "id software",
+          gettext("id software"),
           "1992",
           "ecwolf"
         ],
         icon: :icon_game_wolfenstein,
         description:
-          "Play Wolfenstein 3D Episode 1 (shareware) in your browser — 10 levels of the " <>
-            "classic that launched the FPS genre. " <>
-            "Powered by ECWolf-JS (ECWolf → WebAssembly).",
+          gettext("Play Wolfenstein 3D Episode 1 (shareware) in your browser — 10 levels of the ") <>
+            gettext("classic that launched the FPS genre. ") <>
+            gettext("Powered by ECWolf-JS (ECWolf → WebAssembly)."),
         see_also: [
           "feature-arcade",
           "feature-arcade-wolfenstein-3d",
@@ -1852,8 +2014,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-halflife",
-        title: "Half-Life (Arcade)",
-        category: "Solo Arcade: FPS",
+        title: gettext("Half-Life (Arcade)"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "half-life",
           "halflife",
@@ -1863,15 +2025,17 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "valve",
           "goldsource",
           "xash3d",
-          "black mesa",
+          gettext("black mesa"),
           "wasm",
           "1998"
         ],
         icon: :icon_game_halflife,
         description:
-          "Play Half-Life: Uplink in your browser — the official 1999 demo with 3 unique levels " <>
-            "not found in the full game. " <>
-            "Powered by Xash3D-FWGS (GoldSource reimplementation → WebAssembly).",
+          gettext(
+            "Play Half-Life: Uplink in your browser — the official 1999 demo with 3 unique levels "
+          ) <>
+            gettext("not found in the full game. ") <>
+            gettext("Powered by Xash3D-FWGS (GoldSource reimplementation → WebAssembly)."),
         see_also: [
           "feature-arcade",
           "feature-arcade-halflife-uplink",
@@ -1882,26 +2046,28 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-quake2",
-        title: "Quake II (Arcade)",
-        category: "Solo Arcade: FPS",
+        title: gettext("Quake II (Arcade)"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
-          "quake 2",
-          "quake ii",
+          gettext("quake 2"),
+          gettext("quake ii"),
           "quake2",
           "strogg",
           "fps",
           "shareware",
           "demo",
           "wasm",
-          "id software",
+          gettext("id software"),
           "yamagi",
           "qwasm2",
           "1997"
         ],
         icon: :icon_game_quake2,
         description:
-          "Play the Quake II demo in your browser — Unit 1 of the singleplayer campaign. " <>
-            "Powered by Qwasm2 (Yamagi Quake II → WebAssembly).",
+          gettext(
+            "Play the Quake II demo in your browser — Unit 1 of the singleplayer campaign. "
+          ) <>
+            gettext("Powered by Qwasm2 (Yamagi Quake II → WebAssembly)."),
         see_also: [
           "feature-arcade",
           "feature-arcade-quake2-shareware",
@@ -1913,37 +2079,37 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── ScummVM (Point & Click Adventures) ──────────
       %{
         id: "feature-arcade-scummvm",
-        title: "ScummVM Adventures (Arcade)",
-        category: "Solo Arcade: Adventures",
+        title: gettext("ScummVM Adventures (Arcade)"),
+        category: gettext("Solo Arcade: Adventures"),
         keywords: [
           "scummvm",
-          "point and click",
-          "point & click",
+          gettext("point and click"),
+          gettext("point & click"),
           "adventure",
-          "beneath a steel sky",
+          gettext("beneath a steel sky"),
           "bass",
-          "revolution software",
+          gettext("revolution software"),
           "cyberpunk",
           "1994",
           "drascula",
           "vampire",
           "1996",
           "dreamweb",
-          "creative reality",
+          gettext("creative reality"),
           "top-down",
-          "flight of the amazon queen",
+          gettext("flight of the amazon queen"),
           "fotaq",
-          "joe king",
+          gettext("joe king"),
           "amazon",
           "1995",
-          "lure of the temptress",
+          gettext("lure of the temptress"),
           "lure",
           "turnvale",
           "selena",
-          "virtual theatre",
+          gettext("virtual theatre"),
           "1992",
           "soltys",
-          "lk avalon",
+          gettext("lk avalon"),
           "polish",
           "puzzle",
           "underground",
@@ -1952,10 +2118,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_bass,
         description:
-          "Play classic point & click adventures in your browser — Beneath a Steel Sky (1994), " <>
-            "Drascula (1996), Dreamweb (1994), Flight of the Amazon Queen (1995), " <>
-            "Lure of the Temptress (1992), and Soltys (1995). " <>
-            "Powered by ScummVM (official Emscripten backend → WebAssembly).",
+          gettext(
+            "Play classic point & click adventures in your browser — Beneath a Steel Sky (1994), "
+          ) <>
+            gettext("Drascula (1996), Dreamweb (1994), Flight of the Amazon Queen (1995), ") <>
+            gettext("Lure of the Temptress (1992), and Soltys (1995). ") <>
+            gettext("Powered by ScummVM (official Emscripten backend → WebAssembly)."),
         see_also: [
           "feature-arcade",
           "feature-arcade-scummvm-bass",
@@ -1971,12 +2139,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual DOOM Engine Games ──────────
       %{
         id: "feature-arcade-doom-shareware",
-        title: "DOOM: Knee-Deep in the Dead",
-        category: "Solo Arcade: FPS",
-        keywords: ["doom", "shareware", "phobos", "episode 1", "id software", "1993", "knee deep"],
+        title: gettext("DOOM: Knee-Deep in the Dead"),
+        category: gettext("Solo Arcade: FPS"),
+        keywords: [
+          "doom",
+          "shareware",
+          "phobos",
+          gettext("episode 1"),
+          gettext("id software"),
+          "1993",
+          gettext("knee deep")
+        ],
         icon: :icon_game_doom,
         description:
-          "The original 1993 shareware episode — 9 levels of demon-infested corridors on Phobos.",
+          gettext(
+            "The original 1993 shareware episode — 9 levels of demon-infested corridors on Phobos."
+          ),
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-freedoom1",
@@ -1989,12 +2167,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-freedoom1",
-        title: "Freedoom: Phase 1",
-        category: "Solo Arcade: FPS",
-        keywords: ["freedoom", "phase 1", "open source", "bsd", "free", "ultimate doom"],
+        title: gettext("Freedoom: Phase 1"),
+        category: gettext("Solo Arcade: FPS"),
+        keywords: [
+          "freedoom",
+          gettext("phase 1"),
+          gettext("open source"),
+          "bsd",
+          "free",
+          gettext("ultimate doom")
+        ],
         icon: :icon_game_freedoom1,
         description:
-          "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels with original art and music.",
+          gettext(
+            "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels with original art and music."
+          ),
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-doom-shareware",
@@ -2007,21 +2194,23 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-freedoom2",
-        title: "Freedoom: Phase 2",
-        category: "Solo Arcade: FPS",
+        title: gettext("Freedoom: Phase 2"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "freedoom",
-          "phase 2",
-          "open source",
+          gettext("phase 2"),
+          gettext("open source"),
           "bsd",
           "free",
-          "doom ii",
-          "super shotgun",
+          gettext("doom ii"),
+          gettext("super shotgun"),
           "pwad"
         ],
         icon: :icon_game_freedoom2,
         description:
-          "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. Compatible with community PWAD mods.",
+          gettext(
+            "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. Compatible with community PWAD mods."
+          ),
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-doom-shareware",
@@ -2034,11 +2223,20 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-freedm",
-        title: "FreeDM",
-        category: "Solo Arcade: FPS",
-        keywords: ["freedm", "deathmatch", "arena", "open source", "bsd", "free", "multiplayer"],
+        title: gettext("FreeDM"),
+        category: gettext("Solo Arcade: FPS"),
+        keywords: [
+          "freedm",
+          "deathmatch",
+          "arena",
+          gettext("open source"),
+          "bsd",
+          "free",
+          "multiplayer"
+        ],
         icon: :icon_game_freedm,
-        description: "32 deathmatch-focused arena maps for the DOOM engine. BSD license.",
+        description:
+          gettext("32 deathmatch-focused arena maps for the DOOM engine. BSD license."),
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-doom-shareware",
@@ -2051,21 +2249,23 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-chex-quest",
-        title: "Chex Quest",
-        category: "Solo Arcade: FPS",
+        title: gettext("Chex Quest"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "chex",
-          "chex quest",
+          gettext("chex quest"),
           "cereal",
           "zorcher",
           "flemoid",
           "1996",
-          "digital cafe",
-          "kid friendly"
+          gettext("digital cafe"),
+          gettext("kid friendly")
         ],
         icon: :icon_game_chex,
         description:
-          "The legendary 1996 cereal box promotion — a kid-friendly DOOM total conversion where you zap Flemoids with the Zorcher.",
+          gettext(
+            "The legendary 1996 cereal box promotion — a kid-friendly DOOM total conversion where you zap Flemoids with the Zorcher."
+          ),
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-doom-shareware",
@@ -2078,20 +2278,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-hacx",
-        title: "HacX: Twitch 'n Kill",
-        category: "Solo Arcade: FPS",
+        title: gettext("HacX: Twitch 'n Kill"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "hacx",
           "cyberpunk",
-          "total conversion",
-          "banjo software",
+          gettext("total conversion"),
+          gettext("banjo software"),
           "1997",
           "hacker",
           "dystopian"
         ],
         icon: :icon_game_hacx,
         description:
-          "A cyberpunk DOOM total conversion with new weapons, enemies, and levels. Standalone v1.2 IWAD.",
+          gettext(
+            "A cyberpunk DOOM total conversion with new weapons, enemies, and levels. Standalone v1.2 IWAD."
+          ),
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-doom-shareware",
@@ -2104,14 +2306,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-rekkr",
-        title: "REKKR: Sunken Land",
-        category: "Solo Arcade: FPS",
+        title: gettext("REKKR: Sunken Land"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "rekkr",
           "viking",
           "norse",
-          "pixel art",
-          "total conversion",
+          gettext("pixel art"),
+          gettext("total conversion"),
           "cacoward",
           "2018",
           "axe",
@@ -2119,7 +2321,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_rekkr,
         description:
-          "A Viking-themed DOOM total conversion with hand-drawn pixel art — axes, bows, and runic magic. Cacoward 2018 winner.",
+          gettext(
+            "A Viking-themed DOOM total conversion with hand-drawn pixel art — axes, bows, and runic magic. Cacoward 2018 winner."
+          ),
         see_also: [
           "feature-arcade-doom",
           "feature-arcade-doom-shareware",
@@ -2133,20 +2337,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual Quake Engine Games ──────────
       %{
         id: "feature-arcade-quake-shareware",
-        title: "Quake: Dimension of the Doomed",
-        category: "Solo Arcade: FPS",
+        title: gettext("Quake: Dimension of the Doomed"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "quake",
           "shareware",
-          "episode 1",
-          "id software",
+          gettext("episode 1"),
+          gettext("id software"),
           "1996",
           "lovecraft",
-          "dimension of the doomed"
+          gettext("dimension of the doomed")
         ],
         icon: :icon_game_quake,
         description:
-          "The original 1996 shareware episode — full 3D FPS with Lovecraftian horrors and a Trent Reznor soundtrack.",
+          gettext(
+            "The original 1996 shareware episode — full 3D FPS with Lovecraftian horrors and a Trent Reznor soundtrack."
+          ),
         see_also: [
           "feature-arcade-quake",
           "feature-arcade-librequake",
@@ -2156,19 +2362,21 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-librequake",
-        title: "LibreQuake",
-        category: "Solo Arcade: FPS",
+        title: gettext("LibreQuake"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "librequake",
-          "open source",
+          gettext("open source"),
           "bsd",
           "free",
-          "quake replacement",
+          gettext("quake replacement"),
           "community"
         ],
         icon: :icon_game_librequake,
         description:
-          "A complete free replacement for Quake — original levels, art, and music under BSD license.",
+          gettext(
+            "A complete free replacement for Quake — original levels, art, and music under BSD license."
+          ),
         see_also: [
           "feature-arcade-quake",
           "feature-arcade-quake-shareware",
@@ -2179,21 +2387,23 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual Quake II Game ──────────
       %{
         id: "feature-arcade-quake2-shareware",
-        title: "Quake II: The Invasion",
-        category: "Solo Arcade: FPS",
+        title: gettext("Quake II: The Invasion"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
-          "quake 2",
-          "quake ii",
+          gettext("quake 2"),
+          gettext("quake ii"),
           "shareware",
           "demo",
           "strogg",
           "1997",
-          "id software",
-          "unit 1"
+          gettext("id software"),
+          gettext("unit 1")
         ],
         icon: :icon_game_quake2,
         description:
-          "The official 1997 Quake II demo — Unit 1 of the singleplayer campaign against the Strogg.",
+          gettext(
+            "The official 1997 Quake II demo — Unit 1 of the singleplayer campaign against the Strogg."
+          ),
         see_also: [
           "feature-arcade-quake2",
           "feature-arcade-quake-shareware",
@@ -2204,21 +2414,23 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual Wolfenstein 3D Game ──────────
       %{
         id: "feature-arcade-wolfenstein-3d",
-        title: "Wolfenstein 3D: Escape from Castle",
-        category: "Solo Arcade: FPS",
+        title: gettext("Wolfenstein 3D: Escape from Castle"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "wolfenstein",
           "wolf3d",
           "shareware",
-          "episode 1",
+          gettext("episode 1"),
           "1992",
-          "id software",
+          gettext("id software"),
           "castle",
           "raycasting"
         ],
         icon: :icon_game_wolfenstein,
         description:
-          "The grandfather of FPS games (1992) — 10 levels of castle-storming action in the shareware episode.",
+          gettext(
+            "The grandfather of FPS games (1992) — 10 levels of castle-storming action in the shareware episode."
+          ),
         see_also: [
           "feature-arcade-wolfenstein",
           "feature-arcade-doom-shareware",
@@ -2229,8 +2441,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual Half-Life Game ──────────
       %{
         id: "feature-arcade-halflife-uplink",
-        title: "Half-Life: Uplink",
-        category: "Solo Arcade: FPS",
+        title: gettext("Half-Life: Uplink"),
+        category: gettext("Solo Arcade: FPS"),
         keywords: [
           "half-life",
           "halflife",
@@ -2238,12 +2450,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "demo",
           "valve",
           "1999",
-          "black mesa",
-          "gordon freeman"
+          gettext("black mesa"),
+          gettext("gordon freeman")
         ],
         icon: :icon_game_halflife,
         description:
-          "The official 1999 Valve demo — 3 unique levels not found in the full game, set in Black Mesa.",
+          gettext(
+            "The official 1999 Valve demo — 3 unique levels not found in the full game, set in Black Mesa."
+          ),
         see_also: [
           "feature-arcade-halflife",
           "feature-arcade-wolfenstein-3d",
@@ -2254,21 +2468,23 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       # ── Solo Arcade: Individual ScummVM Adventure Games ──────────
       %{
         id: "feature-arcade-scummvm-bass",
-        title: "Beneath a Steel Sky",
-        category: "Solo Arcade: Adventures",
+        title: gettext("Beneath a Steel Sky"),
+        category: gettext("Solo Arcade: Adventures"),
         keywords: [
-          "beneath a steel sky",
+          gettext("beneath a steel sky"),
           "bass",
-          "revolution software",
+          gettext("revolution software"),
           "cyberpunk",
           "1994",
-          "dave gibbons",
+          gettext("dave gibbons"),
           "joey",
-          "union city"
+          gettext("union city")
         ],
         icon: :icon_game_bass,
         description:
-          "Cyberpunk masterpiece by Revolution Software (1994) — escape Union City with your robot companion Joey.",
+          gettext(
+            "Cyberpunk masterpiece by Revolution Software (1994) — escape Union City with your robot companion Joey."
+          ),
         see_also: [
           "feature-arcade-scummvm",
           "feature-arcade-scummvm-drascula",
@@ -2280,13 +2496,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-scummvm-drascula",
-        title: "Drascula: The Vampire Strikes Back",
-        category: "Solo Arcade: Adventures",
+        title: gettext("Drascula: The Vampire Strikes Back"),
+        category: gettext("Solo Arcade: Adventures"),
         keywords: [
           "drascula",
           "vampire",
           "spanish",
-          "alcachofa soft",
+          gettext("alcachofa soft"),
           "1996",
           "comedy",
           "parody",
@@ -2294,7 +2510,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_drascula,
         description:
-          "Hilarious Spanish point & click parody of Dracula (1996) — defeat the vampire Drascula with absurd humor.",
+          gettext(
+            "Hilarious Spanish point & click parody of Dracula (1996) — defeat the vampire Drascula with absurd humor."
+          ),
         see_also: [
           "feature-arcade-scummvm",
           "feature-arcade-scummvm-bass",
@@ -2306,11 +2524,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-scummvm-dreamweb",
-        title: "Dreamweb",
-        category: "Solo Arcade: Adventures",
+        title: gettext("Dreamweb"),
+        category: gettext("Solo Arcade: Adventures"),
         keywords: [
           "dreamweb",
-          "creative reality",
+          gettext("creative reality"),
           "cyberpunk",
           "top-down",
           "1994",
@@ -2320,7 +2538,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_dreamweb,
         description:
-          "Dark cyberpunk top-down adventure by Creative Reality (1994) — explore the Dreamweb to save reality.",
+          gettext(
+            "Dark cyberpunk top-down adventure by Creative Reality (1994) — explore the Dreamweb to save reality."
+          ),
         see_also: [
           "feature-arcade-scummvm",
           "feature-arcade-scummvm-bass",
@@ -2332,21 +2552,23 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-scummvm-fotaq",
-        title: "Flight of the Amazon Queen",
-        category: "Solo Arcade: Adventures",
+        title: gettext("Flight of the Amazon Queen"),
+        category: gettext("Solo Arcade: Adventures"),
         keywords: [
-          "flight of the amazon queen",
+          gettext("flight of the amazon queen"),
           "fotaq",
-          "joe king",
+          gettext("joe king"),
           "amazon",
           "1995",
-          "indiana jones",
+          gettext("indiana jones"),
           "dinosaurs",
           "comedy"
         ],
         icon: :icon_game_fotaq,
         description:
-          "Comic Indiana Jones-style adventure in the Amazon (1995) — pilot Joe King vs. a mad scientist's dinosaur plot.",
+          gettext(
+            "Comic Indiana Jones-style adventure in the Amazon (1995) — pilot Joe King vs. a mad scientist's dinosaur plot."
+          ),
         see_also: [
           "feature-arcade-scummvm",
           "feature-arcade-scummvm-bass",
@@ -2358,21 +2580,23 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-scummvm-lure",
-        title: "Lure of the Temptress",
-        category: "Solo Arcade: Adventures",
+        title: gettext("Lure of the Temptress"),
+        category: gettext("Solo Arcade: Adventures"),
         keywords: [
-          "lure of the temptress",
+          gettext("lure of the temptress"),
           "lure",
-          "revolution software",
+          gettext("revolution software"),
           "1992",
           "medieval",
-          "virtual theatre",
+          gettext("virtual theatre"),
           "turnvale",
           "selena"
         ],
         icon: :icon_game_lure,
         description:
-          "Revolution Software's 1992 debut — medieval fantasy with the pioneering Virtual Theatre NPC AI system.",
+          gettext(
+            "Revolution Software's 1992 debut — medieval fantasy with the pioneering Virtual Theatre NPC AI system."
+          ),
         see_also: [
           "feature-arcade-scummvm",
           "feature-arcade-scummvm-bass",
@@ -2384,11 +2608,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
       },
       %{
         id: "feature-arcade-scummvm-soltys",
-        title: "Soltys",
-        category: "Solo Arcade: Adventures",
+        title: gettext("Soltys"),
+        category: gettext("Solo Arcade: Adventures"),
         keywords: [
           "soltys",
-          "lk avalon",
+          gettext("lk avalon"),
           "polish",
           "1995",
           "surreal",
@@ -2398,7 +2622,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ],
         icon: :icon_game_soltys,
         description:
-          "Surreal Polish puzzle adventure by LK Avalon (1995) — rescue your grandfather from underground pirates.",
+          gettext(
+            "Surreal Polish puzzle adventure by LK Avalon (1995) — rescue your grandfather from underground pirates."
+          ),
         see_also: [
           "feature-arcade-scummvm",
           "feature-arcade-scummvm-bass",

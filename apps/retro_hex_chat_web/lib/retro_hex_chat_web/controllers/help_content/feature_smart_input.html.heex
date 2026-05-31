@@ -1,22 +1,33 @@
-<p>The chat input provides contextual hints and adapts to your content.</p>
-<.help_h4 icon={:icon_terminal}>Contextual Placeholder</.help_h4>
+<p>{gettext("The chat input provides contextual hints and adapts to your content.")}</p>
+<.help_h4 icon={:icon_terminal}>{gettext("Contextual Placeholder")}</.help_h4>
 <p>
-  The placeholder text changes based on your current context:<br />In a channel:
-  <em>Mensagem para #channel — / para comandos</em>
-  <br />In a PM: <em>Mensagem para NickName — / para comandos</em>
-  <br />In Status: <em>Digite um comando — / para lista</em>
+  {gettext("The placeholder text changes based on your current context:")}<br />{gettext(
+    "In a channel:"
+  )}
+  <em>{gettext("Mensagem para #channel — / para comandos")}</em>
+  <br />{gettext("In a PM:")} <em>{gettext("Mensagem para NickName — / para comandos")}</em>
+  <br />{gettext("In Status:")} <em>{gettext("Digite um comando — / para lista")}</em>
 </p>
-<.help_h4 icon={:icon_notepad}>Multi-Line Expansion</.help_h4>
+<.help_h4 icon={:icon_notepad}>{gettext("Multi-Line Expansion")}</.help_h4>
 <p>
-  The input grows vertically as you type or paste multi-line text, up to 5 visible lines. Beyond that, a scrollbar appears. The chat messages area compresses above to make room.
+  {gettext(
+    "The input grows vertically as you type or paste multi-line text, up to 5 visible lines. Beyond that, a scrollbar appears. The chat messages area compresses above to make room."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_cheatsheet}>Keyboard</.help_h4>
+<.help_h4 icon={:icon_dialog_cheatsheet}>{gettext("Keyboard")}</.help_h4>
 <p>
-  <strong>Enter</strong> — Send message.<br /><strong>Shift+Enter</strong> — Insert a new line.
+  <strong>{gettext("Enter")}</strong> {gettext("— Send message.")}<br />
+  <strong>
+    {gettext("Shift+Enter")}
+  </strong>
+  {gettext("— Insert a new line.")}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-enhanced-history">Enhanced History</.help_link>
-  · <.help_link topic="feature-command-syntax-tooltip">Command Syntax Tooltip</.help_link>
-  · <.help_link topic="feature-char-counter">Character Counter</.help_link>
+  <.help_link topic="feature-enhanced-history">{gettext("Enhanced History")}</.help_link>
+  ·
+  <.help_link topic="feature-command-syntax-tooltip">
+    {gettext("Command Syntax Tooltip")}
+  </.help_link>
+  · <.help_link topic="feature-char-counter">{gettext("Character Counter")}</.help_link>
 </p>

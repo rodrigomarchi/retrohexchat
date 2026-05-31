@@ -1,46 +1,58 @@
 <p>
-  Hex Outlaw variant with a moving obstacle. A stagecoach bounces vertically through the
-  center of the arena, blocking bullets with unpredictable timing. Time your shots for the gaps.
-  The stagecoach adds a rhythm-based element to the classic duel.
+  {gettext(
+    "Hex Outlaw variant with a moving obstacle. A stagecoach bounces vertically through the center of the arena, blocking bullets with unpredictable timing. Time your shots for the gaps. The stagecoach adds a rhythm-based element to the classic duel."
+  )}
 </p>
 <.diagram_game_outlaw class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
-<ul>
-  <li><strong>Arrow keys / WASD</strong> — Move gunslinger vertically</li>
-  <li><strong>Space / Shift</strong> — Fire (one bullet at a time)</li>
-</ul>
-<.help_h4 icon={:icon_rules}>What's Different</.help_h4>
-<ul>
-  <li>A stagecoach moves up and down continuously through the center of the arena</li>
-  <li>The stagecoach blocks bullets on contact — time your shots around it</li>
-  <li>Bullets travel straight horizontally (no ricochet)</li>
-  <li>The stagecoach keeps moving even during hit pauses</li>
-  <li>Same scoring: first to 10 points, best of 3 rounds</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>Strategy Tips</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>Learn the rhythm</strong>
-    — The stagecoach bounces at a constant speed. Count the timing and fire during the gap windows.
+    <strong>{gettext("Arrow keys / WASD")}</strong> {gettext("— Move gunslinger vertically")}
+  </li>
+  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Fire (one bullet at a time)")}</li>
+</ul>
+<.help_h4 icon={:icon_rules}>{gettext("What's Different")}</.help_h4>
+<ul>
+  <li>
+    {gettext("A stagecoach moves up and down continuously through the center of the arena")}
+  </li>
+  <li>{gettext("The stagecoach blocks bullets on contact — time your shots around it")}</li>
+  <li>{gettext("Bullets travel straight horizontally (no ricochet)")}</li>
+  <li>{gettext("The stagecoach keeps moving even during hit pauses")}</li>
+  <li>{gettext("Same scoring: first to 10 points, best of 3 rounds")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("Learn the rhythm")}</strong>
+    {gettext(
+      "— The stagecoach bounces at a constant speed. Count the timing and fire during the gap windows."
+    )}
   </li>
   <li>
-    <strong>Shoot when it's at the edges</strong>
-    — The stagecoach spends the least time at the top and bottom of its bounce, creating wider shooting windows.
+    <strong>{gettext("Shoot when it's at the edges")}</strong>
+    {gettext(
+      "— The stagecoach spends the least time at the top and bottom of its bounce, creating wider shooting windows."
+    )}
   </li>
   <li>
-    <strong>Move with the coach</strong>
-    — Match your vertical position to stay in the gap the stagecoach leaves behind as it moves.
+    <strong>{gettext("Move with the coach")}</strong>
+    {gettext(
+      "— Match your vertical position to stay in the gap the stagecoach leaves behind as it moves."
+    )}
   </li>
   <li>
-    <strong>Don't panic fire</strong>
-    — One bullet at a time. A wasted shot on the stagecoach gives your opponent a free window to reposition.
+    <strong>{gettext("Don't panic fire")}</strong>
+    {gettext(
+      "— One bullet at a time. A wasted shot on the stagecoach gives your opponent a free window to reposition."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-outlaw">Hex Outlaw</.help_link>
-  · <.help_link topic="feature-hex-outlaw-ricochet">Ricochet</.help_link>
-  · <.help_link topic="feature-hex-outlaw-nml">No Man's Land</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-hex-outlaw">{gettext("Hex Outlaw")}</.help_link>
+  · <.help_link topic="feature-hex-outlaw-ricochet">{gettext("Ricochet")}</.help_link>
+  · <.help_link topic="feature-hex-outlaw-nml">{gettext("No Man's Land")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

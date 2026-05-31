@@ -34,13 +34,13 @@ defmodule RetroHexChatWeb.Components.UI.DisconnectConfirmDialog do
     ~H"""
     <span data-testid="disconnect-confirm-dialog">
       <.dialog id={@id} show={@show}>
-        <.dialog_header id={@id} title="Disconnect from Server">
+        <.dialog_header id={@id} title={gettext("Disconnect from Server")}>
           <:icon><Icons.icon_btn_disconnect class="w-[16px] h-[16px]" /></:icon>
         </.dialog_header>
 
         <.dialog_body>
           <p class="text-xs">
-            Are you sure you want to disconnect from the server?
+            {gettext("Are you sure you want to disconnect from the server?")}
           </p>
         </.dialog_body>
 
@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.Components.UI.DisconnectConfirmDialog do
             data-testid="disconnect-confirm-dialog-confirm"
           >
             <:icon><Icons.icon_btn_disconnect class="w-4 h-4" /></:icon>
-            Disconnect
+            {gettext("Disconnect")}
           </.button>
           <.button
             variant="outline"
@@ -59,7 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.DisconnectConfirmDialog do
             data-testid="disconnect-confirm-dialog-cancel"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            Cancel
+            {gettext("Cancel")}
           </.button>
         </.dialog_footer>
       </.dialog>

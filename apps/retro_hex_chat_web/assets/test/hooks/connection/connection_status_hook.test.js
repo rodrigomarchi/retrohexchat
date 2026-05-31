@@ -110,7 +110,7 @@ describe("ConnectionStatusHook", () => {
       expect(banner.classList.contains("connection-banner--disconnected")).toBe(true);
 
       const text = hook.el.querySelector('[data-role="banner-text"]');
-      expect(text.textContent).toContain("Desconectado");
+      expect(text.textContent).toContain("Disconnected");
     });
 
     it("updates status bar to Off", () => {
@@ -189,7 +189,7 @@ describe("ConnectionStatusHook", () => {
       expect(banner.classList.contains("connection-banner--reconnected")).toBe(true);
 
       const text = hook.el.querySelector('[data-role="banner-text"]');
-      expect(text.textContent).toContain("Reconectado");
+      expect(text.textContent).toContain("Reconnected");
     });
 
     it("green banner fades after reconnectedFadeMs", () => {

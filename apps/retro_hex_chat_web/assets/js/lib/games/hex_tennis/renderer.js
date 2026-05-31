@@ -20,15 +20,16 @@ import {
   CENTER_LINE_X,
   BALL_RADIUS,
 } from "./physics.js";
+import { t, jt } from "../../i18n.js";
 
 // Point display names
 const POINT_DISPLAY = ["LOVE", "15", "30", "40"];
 
 // Announcement text
-const ANN_TEXT = ["", "DEUCE", "ADVANTAGE P1", "ADVANTAGE P2", "GAME!", "TIEBREAK!"];
+const ANN_TEXT = ["", "DEUCE", t("ADVANTAGE P1"), t("ADVANTAGE P2"), t("GAME!"), t("TIEBREAK!")];
 
 // Out type text
-const OUT_TEXT = ["", "OUT!", "LONG!", "ACE!", "DEAD BALL"];
+const OUT_TEXT = ["", t("OUT!"), t("LONG!"), t("ACE!"), t("DEAD BALL")];
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -127,7 +128,7 @@ export function render(ctx, state, colors, time) {
       annY += 36;
     }
     if (state.netFault) {
-      drawAnnouncement(ctx, "NET!", colors.netColor || colors.accent, time, annY);
+      drawAnnouncement(ctx, t("NET!"), colors.netColor || colors.accent, time, annY);
       annY += 36;
     }
     if (state.phase === PHASE.CHANGEOVER) {
@@ -312,14 +313,14 @@ function drawScoreboard(ctx, state, colors) {
   ctx.shadowBlur = 4;
   ctx.fillStyle = colors.fg;
   const p1Text = getPointText(state.p1Points, state.p2Points, state.isTiebreak);
-  ctx.fillText(`P1: ${p1Text}`, 10, y);
+  ctx.fillText(jt`P1: ${p1Text}`, 10, y);
 
   // P2 points (right)
   ctx.textAlign = "right";
   ctx.shadowColor = colors.accent;
   ctx.fillStyle = colors.accent;
   const p2Text = getPointText(state.p2Points, state.p1Points, state.isTiebreak);
-  ctx.fillText(`P2: ${p2Text}`, CANVAS_W - 10, y);
+  ctx.fillText(jt`P2: ${p2Text}`, CANVAS_W - 10, y);
 
   // Games score (center)
   ctx.textAlign = "center";
@@ -385,7 +386,7 @@ function drawWaiting(ctx, colors, time) {
   ctx.shadowColor = colors.fg;
   ctx.shadowBlur = 10;
   ctx.fillStyle = colors.fg;
-  ctx.fillText("WAITING FOR OPPONENT", CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(t("WAITING FOR OPPONENT"), CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
 
@@ -417,7 +418,7 @@ function drawServing(ctx, state, colors, time) {
   ctx.shadowBlur = 8;
   ctx.fillStyle = serverColor;
 
-  const label = state.isSecondServe ? "SECOND SERVE" : "SERVE";
+  const label = state.isSecondServe ? t("SECOND SERVE") : "SERVE";
   ctx.fillText(label, CANVAS_W / 2, CANVAS_H / 2);
   ctx.restore();
 }
@@ -435,16 +436,16 @@ function drawWinner(ctx, state, colors, time) {
   ctx.globalAlpha = 0.4;
   ctx.font = `bold ${size}px monospace`;
   ctx.fillStyle = "#ff0000";
-  ctx.fillText(`PLAYER ${state.winner} WINS!`, CANVAS_W / 2 - 1, CANVAS_H / 2 - 20);
+  ctx.fillText(jt`PLAYER ${state.winner} WINS!`, CANVAS_W / 2 - 1, CANVAS_H / 2 - 20);
   ctx.fillStyle = "#0000ff";
-  ctx.fillText(`PLAYER ${state.winner} WINS!`, CANVAS_W / 2 + 1, CANVAS_H / 2 - 20);
+  ctx.fillText(jt`PLAYER ${state.winner} WINS!`, CANVAS_W / 2 + 1, CANVAS_H / 2 - 20);
 
   // Main text
   ctx.globalAlpha = 1.0;
   ctx.shadowColor = winnerColor;
   ctx.shadowBlur = 16;
   ctx.fillStyle = winnerColor;
-  ctx.fillText(`PLAYER ${state.winner} WINS!`, CANVAS_W / 2, CANVAS_H / 2 - 20);
+  ctx.fillText(jt`PLAYER ${state.winner} WINS!`, CANVAS_W / 2, CANVAS_H / 2 - 20);
 
   // Score
   ctx.font = "bold 18px monospace";
@@ -456,7 +457,7 @@ function drawWinner(ctx, state, colors, time) {
   ctx.font = "14px monospace";
   ctx.fillStyle = colors.muted;
   ctx.shadowBlur = 4;
-  ctx.fillText("GAME OVER", CANVAS_W / 2, CANVAS_H / 2 + 40);
+  ctx.fillText(t("GAME OVER"), CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();
 }

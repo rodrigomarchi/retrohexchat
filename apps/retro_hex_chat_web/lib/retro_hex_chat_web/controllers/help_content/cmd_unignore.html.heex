@@ -1,21 +1,24 @@
 <p>
-  Stop ignoring a user you previously blocked with <code>/ignore</code>, making their messages visible to you again.
+  {gettext("Stop ignoring a user you previously blocked with")} <code>{gettext("/ignore")}</code>{gettext(
+    ", making their messages visible to you again."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/unignore &lt;nickname&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>nickname</code> — The user to stop ignoring.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/unignore <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>nickname</code> {gettext("— The user to stop ignoring.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Removes the user from your ignore list. Their messages, PMs, actions, and invites (whichever were being blocked) will be visible again immediately. To see who you're currently ignoring, run
-  <code>/ignore</code>
-  with no arguments first.
+  {gettext(
+    "Removes the user from your ignore list. Their messages, PMs, actions, and invites (whichever were being blocked) will be visible again immediately. To see who you're currently ignoring, run"
+  )}
+  <code>{gettext("/ignore")}</code>
+  {gettext("with no arguments first.")}
 </p>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/unignore SpamBot
-/unignore Alice</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/unignore SpamBot /unignore Alice")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ignore">/ignore</.help_link>
-  · <.help_link topic="feature-ignore-list">Ignore List</.help_link>
+  <.help_link topic="cmd-ignore">{gettext("/ignore")}</.help_link>
+  · <.help_link topic="feature-ignore-list">{gettext("Ignore List")}</.help_link>
 </p>

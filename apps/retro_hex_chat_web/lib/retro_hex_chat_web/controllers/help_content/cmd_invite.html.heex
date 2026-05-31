@@ -1,35 +1,38 @@
 <p>
-  Send a channel invitation to another user. This is required for invite-only (+i) channels where users cannot join on their own.
+  {gettext(
+    "Send a channel invitation to another user. This is required for invite-only (+i) channels where users cannot join on their own."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/invite &lt;nickname&gt; [#channel]
-/invite auto</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/invite <nickname> [#channel] /invite auto")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
   <code>nickname</code>
-  — The user to invite.<br /><code>#channel</code>
-  — Target channel (defaults to your current channel).<br /><code>auto</code>
-  — Toggle whether you auto-join channels when you receive invitations.
+  {gettext("— The user to invite.")}<br /><code>#channel</code>
+  {gettext("— Target channel (defaults to your current channel).")}<br /><code>auto</code>
+  {gettext("— Toggle whether you auto-join channels when you receive invitations.")}
 </p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  The invited user receives a popup dialog with options to Join or Decline the invitation. The invitation expires after 5 minutes if not acted upon. For invite-only (+i) channels, only channel operators can send invites. Using
-  <code>/invite auto</code>
-  toggles your personal preference for automatically joining channels when someone invites you.
+  {gettext(
+    "The invited user receives a popup dialog with options to Join or Decline the invitation. The invitation expires after 5 minutes if not acted upon. For invite-only (+i) channels, only channel operators can send invites. Using"
+  )}
+  <code>{gettext("/invite auto")}</code>
+  {gettext(
+    "toggles your personal preference for automatically joining channels when someone invites you."
+  )}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>You must be in the channel to invite someone to it</li>
-  <li>For +i channels, you must be a channel operator</li>
-  <li>Invitations expire after 5 minutes</li>
+  <li>{gettext("You must be in the channel to invite someone to it")}</li>
+  <li>{gettext("For +i channels, you must be a channel operator")}</li>
+  <li>{gettext("Invitations expire after 5 minutes")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/invite Alice
-/invite Alice #private
-/invite auto</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/invite Alice /invite Alice #private /invite auto")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-join">/join</.help_link>
-  · <.help_link topic="cmd-knock">/knock</.help_link>
-  · <.help_link topic="cmd-mode">/mode</.help_link>
+  <.help_link topic="cmd-join">{gettext("/join")}</.help_link>
+  · <.help_link topic="cmd-knock">{gettext("/knock")}</.help_link>
+  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
 </p>

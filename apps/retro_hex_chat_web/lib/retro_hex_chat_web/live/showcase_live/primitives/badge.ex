@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -12,25 +13,25 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Badge", active_page: "badge")}
+    {:ok, assign(socket, page_title: gettext("Badge"), active_page: "badge")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Badge</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Badge")}</h2>
 
       <.showcase_card
-        title="Variants"
+        title={gettext("Variants")}
         description="All badge variants — sunken status-bar panel style."
       >
         <div class="flex flex-wrap items-center gap-2">
-          <.badge>Default</.badge>
-          <.badge variant="secondary">Secondary</.badge>
-          <.badge variant="destructive">Destructive</.badge>
-          <.badge variant="outline">Outline</.badge>
-          <.badge variant="success">Success</.badge>
+          <.badge>{gettext("Default")}</.badge>
+          <.badge variant="secondary">{gettext("Secondary")}</.badge>
+          <.badge variant="destructive">{gettext("Destructive")}</.badge>
+          <.badge variant="outline">{gettext("Outline")}</.badge>
+          <.badge variant="success">{gettext("Success")}</.badge>
         </div>
         <.code_example>
           &lt;.badge&gt;Default&lt;/.badge&gt;
@@ -42,38 +43,41 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Badge do
       </.showcase_card>
 
       <.showcase_card
-        title="Status Indicators"
+        title={gettext("Status Indicators")}
         description="Badges as connection or session state labels."
       >
         <div class="flex flex-wrap items-center gap-2">
-          <.badge variant="success">Connected</.badge>
-          <.badge variant="secondary">Waiting</.badge>
-          <.badge variant="destructive">Failed</.badge>
-          <.badge variant="outline">Idle</.badge>
-          <.badge>In Call</.badge>
-        </div>
-      </.showcase_card>
-
-      <.showcase_card title="Role Labels" description="Badges as user role indicators in chat.">
-        <div class="flex flex-wrap items-center gap-2">
-          <.badge variant="destructive">Owner</.badge>
-          <.badge>Operator</.badge>
-          <.badge variant="secondary">Half-Op</.badge>
-          <.badge variant="success">Voiced</.badge>
-          <.badge variant="outline">Regular</.badge>
+          <.badge variant="success">{gettext("Connected")}</.badge>
+          <.badge variant="secondary">{gettext("Waiting")}</.badge>
+          <.badge variant="destructive">{gettext("Failed")}</.badge>
+          <.badge variant="outline">{gettext("Idle")}</.badge>
+          <.badge>{gettext("In Call")}</.badge>
         </div>
       </.showcase_card>
 
       <.showcase_card
-        title="Metadata Tags"
+        title={gettext("Role Labels")}
+        description="Badges as user role indicators in chat."
+      >
+        <div class="flex flex-wrap items-center gap-2">
+          <.badge variant="destructive">{gettext("Owner")}</.badge>
+          <.badge>{gettext("Operator")}</.badge>
+          <.badge variant="secondary">{gettext("Half-Op")}</.badge>
+          <.badge variant="success">{gettext("Voiced")}</.badge>
+          <.badge variant="outline">{gettext("Regular")}</.badge>
+        </div>
+      </.showcase_card>
+
+      <.showcase_card
+        title={gettext("Metadata Tags")}
         description="Badges as small metadata tags on channels or files."
       >
         <div class="flex flex-wrap items-center gap-2">
-          <.badge variant="outline">+nt</.badge>
-          <.badge variant="outline">+s</.badge>
-          <.badge variant="secondary">PNG</.badge>
-          <.badge variant="secondary">2.4 MB</.badge>
-          <.badge>ScummVM</.badge>
+          <.badge variant="outline">{gettext("+nt")}</.badge>
+          <.badge variant="outline">{gettext("+s")}</.badge>
+          <.badge variant="secondary">{gettext("PNG")}</.badge>
+          <.badge variant="secondary">{gettext("2.4 MB")}</.badge>
+          <.badge>{gettext("ScummVM")}</.badge>
         </div>
       </.showcase_card>
     </.showcase_layout>

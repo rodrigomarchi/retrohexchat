@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameBoxing do
   @moduledoc "SVG game screen diagram for Hex Boxing."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -15,7 +16,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameBoxing do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Hex Boxing game screen: two boxers in a ring, close quarters punching"
+      aria-label={gettext("Hex Boxing game screen: two boxers in a ring, close quarters punching")}
     >
       {win98_chrome("Hex Boxing")}
       <%!-- Ring ropes --%>
@@ -33,13 +34,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameBoxing do
       <rect x="288" y="182" width="6" height="6" fill="#00d4ff" />
       <%!-- Scores --%>
       <text x="30" y="44" fill="#00ff41" font-size="14" font-family="'Courier New',monospace">
-        P1: 47
+        {gettext("P1: 47")}
       </text>
       <text x="420" y="44" fill="#00d4ff" font-size="14" font-family="'Courier New',monospace">
-        P2: 63
+        {gettext("P2: 63")}
       </text>
       <text x="200" y="44" fill="#ffaa00" font-size="12" font-family="'Courier New',monospace">
-        R2  1:24
+        {gettext("R2 1:24")}
       </text>
     </svg>
     """

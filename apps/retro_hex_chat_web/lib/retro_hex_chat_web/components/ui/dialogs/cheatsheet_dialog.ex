@@ -36,8 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
 
   attr :bindings, :list,
     default: [],
-    doc:
-      "List of binding groups, each a map with :category and :items (list of maps with :action, :keys, :description)"
+    doc: "List of binding groups, each a map with :category and :items"
 
   attr :on_close, :any, default: nil, doc: "JS command or event name for close"
 
@@ -45,14 +44,14 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
   def cheatsheet_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-xl">
-      <.dialog_header id={@id} title="Keyboard Shortcuts">
+      <.dialog_header id={@id} title={gettext("Keyboard Shortcuts")}>
         <:icon><Icons.icon_dialog_cheatsheet class="w-4 h-4" /></:icon>
       </.dialog_header>
 
       <.dialog_body class="max-h-96 overflow-y-auto">
         <div data-testid="cheatsheet-dialog">
           <div :if={@bindings == []} class="text-xs text-muted-foreground italic">
-            No shortcuts defined.
+            {gettext("No shortcuts defined.")}
           </div>
 
           <div :for={group <- @bindings} class="mb-retro-8 last:mb-0">
@@ -62,9 +61,9 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
             <.table>
               <.table_header>
                 <.table_row>
-                  <.table_head class="text-xs w-1/3">Action</.table_head>
-                  <.table_head class="text-xs w-1/4">Keys</.table_head>
-                  <.table_head class="text-xs">Description</.table_head>
+                  <.table_head class="text-xs w-1/3">{gettext("Action")}</.table_head>
+                  <.table_head class="text-xs w-1/4">{gettext("Keys")}</.table_head>
+                  <.table_head class="text-xs">{gettext("Description")}</.table_head>
                 </.table_row>
               </.table_header>
               <.table_body>
@@ -94,7 +93,7 @@ defmodule RetroHexChatWeb.Components.UI.CheatsheetDialog do
           data-testid="cheatsheet-dialog-close"
         >
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          Close
+          {gettext("Close")}
         </.button>
       </.dialog_footer>
     </.dialog>

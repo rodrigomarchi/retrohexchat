@@ -29,11 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
 
   alias RetroHexChatWeb.Icons
 
-  @trigger_labels %{
-    "on_join" => "On Join",
-    "on_part" => "On Part",
-    "on_nick_change" => "On Nick Change"
-  }
+  @trigger_keys ~w(on_join on_part on_nick_change)
 
   @doc "Renders the auto-respond rules dialog."
   attr :id, :string, required: true
@@ -63,7 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   def auto_respond_dialog(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} on_cancel={@on_close}>
-      <.dialog_header id={@id} title="Auto Respond" on_close={@on_close}>
+      <.dialog_header id={@id} title={gettext("Auto Respond")} on_close={@on_close}>
         <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
       </.dialog_header>
 
@@ -74,10 +70,10 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
             <.table>
               <.table_header>
                 <.table_row>
-                  <.table_head class="w-[40px]">Enable</.table_head>
-                  <.table_head>Trigger</.table_head>
-                  <.table_head>Channel</.table_head>
-                  <.table_head>Command</.table_head>
+                  <.table_head class="w-[40px]">{gettext("Enable")}</.table_head>
+                  <.table_head>{gettext("Trigger")}</.table_head>
+                  <.table_head>{gettext("Channel")}</.table_head>
+                  <.table_head>{gettext("Command")}</.table_head>
                 </.table_row>
               </.table_header>
               <.table_body>
@@ -112,7 +108,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
           <div class="flex gap-retro-4">
             <.button size="sm" variant="outline" phx-click={@on_add}>
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-              Add
+              {gettext("Add")}
             </.button>
             <.button
               size="sm"
@@ -121,7 +117,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
               disabled={@selected_position == nil}
             >
               <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-              Edit
+              {gettext("Edit")}
             </.button>
             <.button
               size="sm"
@@ -130,7 +126,7 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
               disabled={@selected_position == nil}
             >
               <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              Remove
+              {gettext("Remove")}
             </.button>
           </div>
         </div>
@@ -142,12 +138,12 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
           class="w-[220px] shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
         >
           <h3 class="font-bold text-xs mb-retro-4">
-            {if @selected_position == nil, do: "Add Rule", else: "Edit Rule"}
+            {if @selected_position == nil, do: gettext("Add Rule"), else: gettext("Edit Rule")}
           </h3>
 
           <div class="space-y-retro-4">
             <div>
-              <.label class="text-xs font-bold block mb-retro-2">Trigger</.label>
+              <.label class="text-xs font-bold block mb-retro-2">{gettext("Trigger")}</.label>
               <.select
                 :let={builder}
                 id="draft-trigger-select"
@@ -173,7 +169,9 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
             </div>
 
             <div>
-              <.label class="text-xs font-bold block mb-retro-2">Channel (optional)</.label>
+              <.label class="text-xs font-bold block mb-retro-2">
+                {gettext("Channel (optional)")}
+              </.label>
               <.input
                 type="text"
                 name="channel"
@@ -185,12 +183,12 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
             </div>
 
             <div>
-              <.label class="text-xs font-bold block mb-retro-2">Command</.label>
+              <.label class="text-xs font-bold block mb-retro-2">{gettext("Command")}</.label>
               <.input
                 type="text"
                 name="command"
                 value={@draft_command}
-                placeholder="/say Hello!"
+                placeholder={gettext("/say Hello!")}
                 class="w-full"
                 maxlength="500"
               />
@@ -201,11 +199,11 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
             <div class="flex gap-retro-4 pt-retro-4">
               <.button type="submit" size="sm" variant="default">
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                Save
+                {gettext("Save")}
               </.button>
               <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                Cancel
+                {gettext("Cancel")}
               </.button>
             </div>
           </div>
@@ -215,11 +213,11 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
       <.dialog_footer>
         <.button variant="default" phx-click={@on_close || hide_modal(@id)}>
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          OK
+          {gettext("OK")}
         </.button>
         <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          Cancel
+          {gettext("Cancel")}
         </.button>
       </.dialog_footer>
     </.dialog>
@@ -227,11 +225,14 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
   end
 
   @spec trigger_label(String.t()) :: String.t()
-  defp trigger_label(trigger), do: Map.get(@trigger_labels, trigger, trigger)
+  defp trigger_label("on_join"), do: gettext("On Join")
+  defp trigger_label("on_part"), do: gettext("On Part")
+  defp trigger_label("on_nick_change"), do: gettext("On Nick Change")
+  defp trigger_label(trigger), do: trigger
 
   @spec trigger_options() :: [{String.t(), String.t()}]
   defp trigger_options do
-    Enum.map(@trigger_labels, fn {k, v} -> {k, v} end)
+    Enum.map(@trigger_keys, fn key -> {key, trigger_label(key)} end)
   end
 
   defp rule_trigger(rule) do

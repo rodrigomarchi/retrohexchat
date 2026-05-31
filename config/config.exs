@@ -35,6 +35,8 @@ config :retro_hex_chat_web,
   ecto_repos: [RetroHexChat.Repo],
   generators: [context_app: :retro_hex_chat]
 
+config :gettext, :default_locale, "en"
+
 # Configures the endpoint
 config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   url: [host: "localhost"],

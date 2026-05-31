@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Admin.ServerBans do
   @moduledoc "Context for server-level ban management."
+  use Gettext, backend: RetroHexChat.Gettext
 
   import Ecto.Query
 
@@ -47,7 +48,7 @@ defmodule RetroHexChat.Admin.ServerBans do
         |> Repo.update()
 
         BanCache.remove(nickname)
-        {:ok, "#{nickname} has been unbanned"}
+        {:ok, gettext("%{nickname} has been unbanned", nickname: nickname)}
     end
   end
 

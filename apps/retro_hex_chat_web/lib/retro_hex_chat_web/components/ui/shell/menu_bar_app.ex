@@ -48,18 +48,18 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
     >
       <%!-- File menu --%>
       <div class="relative inline-flex">
-        <.menu_trigger label="File" disabled={!@connected} />
+        <.menu_trigger label={gettext("File")} disabled={!@connected} />
         <.menu_dropdown :if={@connected}>
           <.menu_item
             icon_fn={:icon_btn_disconnect}
-            label="Disconnect"
+            label={gettext("Disconnect")}
             action="disconnect"
             on_action={@on_action}
           />
           <.menu_item
             :if={@is_admin}
             icon_fn={:icon_dialog_admin_console}
-            label="Admin Console"
+            label={gettext("Admin Console")}
             action="open_admin_console"
             on_action={@on_action}
           />
@@ -68,29 +68,29 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
 
       <%!-- View menu --%>
       <div class="relative inline-flex">
-        <.menu_trigger label="View" disabled={!@connected} />
+        <.menu_trigger label={gettext("View")} disabled={!@connected} />
         <.menu_dropdown :if={@connected}>
           <.menu_item
             icon_fn={:icon_btn_channel_list}
-            label="Channel List"
+            label={gettext("Channel List")}
             action="toggle_channel_list"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_toggle_conversations}
-            label="Toggle Conversations"
+            label={gettext("Toggle Conversations")}
             action="toggle_conversations"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_toggle_nicklist}
-            label="Toggle Nicklist"
+            label={gettext("Toggle Nicklist")}
             action="toggle_nicklist"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_find}
-            label="Find"
+            label={gettext("Find")}
             action="toggle_search"
             on_action={@on_action}
           />
@@ -99,66 +99,66 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
 
       <%!-- Tools menu --%>
       <div class="relative inline-flex">
-        <.menu_trigger label="Tools" disabled={!@connected} />
+        <.menu_trigger label={gettext("Tools")} disabled={!@connected} />
         <.menu_dropdown :if={@connected}>
           <.menu_item
             icon_fn={:icon_btn_address_book}
-            label="Address Book"
+            label={gettext("Address Book")}
             action="toggle_address_book"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_highlight_words}
-            label="Highlight Words"
+            label={gettext("Highlight Words")}
             action="open_highlight_dialog"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_url_catcher}
-            label="URL Catcher"
+            label={gettext("URL Catcher")}
             action="toggle_url_catcher"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_channel_central}
-            label="Channel Central"
+            label={gettext("Channel Central")}
             action="open_channel_central"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_perform}
-            label="Perform"
+            label={gettext("Perform")}
             action="open_perform_dialog"
             on_action={@on_action}
           />
           <.context_menu_separator />
           <.menu_item
             icon_fn={:icon_btn_sounds}
-            label="Sounds"
+            label={gettext("Sounds")}
             action="open_sound_settings_dialog"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_flood_protection}
-            label="Flood Protection"
+            label={gettext("Flood Protection")}
             action="open_flood_protection_dialog"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_alias_editor}
-            label="Alias Editor"
+            label={gettext("Alias Editor")}
             action="open_alias_dialog"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_custom_menus}
-            label="Custom Menus"
+            label={gettext("Custom Menus")}
             action="open_custom_menus_dialog"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_btn_auto_respond}
-            label="Auto Respond"
+            label={gettext("Auto Respond")}
             action="open_autorespond_dialog"
             on_action={@on_action}
           />
@@ -167,24 +167,24 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
 
       <%!-- Help menu (always enabled) --%>
       <div class="relative inline-flex">
-        <.menu_trigger label="Help" disabled={false} />
+        <.menu_trigger label={gettext("Help")} disabled={false} />
         <.menu_dropdown>
           <.menu_item
             icon_fn={:icon_btn_help_topics}
-            label="Help Topics"
+            label={gettext("Help Topics")}
             action="help_topics"
             on_action={@on_action}
           />
           <.menu_item
             icon_fn={:icon_dialog_cheatsheet}
-            label="Shortcut Cheatsheet"
+            label={gettext("Shortcut Cheatsheet")}
             action="toggle_cheatsheet"
             on_action={@on_action}
           />
           <.context_menu_separator />
           <.context_menu_item on_click={show_modal("about-dialog")} action="show_about">
             <:icon>{apply(Icons, :icon_dialog_about, [%{class: "w-[14px] h-[14px]"}])}</:icon>
-            About RetroHexChat
+            {gettext("About RetroHexChat")}
           </.context_menu_item>
         </.menu_dropdown>
       </div>

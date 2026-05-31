@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeWolfenstein do
   SVG logo/cover art for the Wolfenstein 3D arcade help page.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -17,7 +18,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeWolfenstein do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Wolfenstein 3D arcade logo: shield emblem in grey tones on dark blue background"
+      aria-label={
+        gettext("Wolfenstein 3D arcade logo: shield emblem in grey tones on dark blue background")
+      }
     >
       {win98_chrome("Wolfenstein 3D - Arcade")}
       <%!-- Background --%>
@@ -56,7 +59,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeWolfenstein do
         font-size="14"
         font-family="'Courier New',monospace"
       >
-        3D
+        {gettext("3D")}
       </text>
       <%!-- Crossed swords behind shield --%>
       <line x1="170" y1="80" x2="342" y2="260" stroke="#606060" stroke-width="3" />
@@ -71,7 +74,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeWolfenstein do
         font-family="'Courier New',monospace"
         font-weight="bold"
       >
-        WOLFENSTEIN 3D
+        {gettext("WOLFENSTEIN 3D")}
       </text>
       <%!-- Subtitle --%>
       <text
@@ -82,7 +85,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.ArcadeWolfenstein do
         font-size="11"
         font-family="'Courier New',monospace"
       >
-        ECWolf WebAssembly
+        {gettext("ECWolf WebAssembly")}
       </text>
     </svg>
     """

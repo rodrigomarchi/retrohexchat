@@ -1,26 +1,27 @@
-<p>Choose where incoming notices from other users appear on your screen.</p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/notice_routing [active|status|sender]</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<p>{gettext("Choose where incoming notices from other users appear on your screen.")}</p>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/notice_routing [active|status|sender]")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
   <code>active</code>
-  — Show notices in your currently active window (default).<br /><code>status</code>
-  — Show notices in the Status tab.<br /><code>sender</code>
-  — Show notices in the sender's PM window (opens one if needed).
+  {gettext("— Show notices in your currently active window (default).")}<br /><code>status</code>
+  {gettext("— Show notices in the Status tab.")}<br /><code>sender</code>
+  {gettext("— Show notices in the sender's PM window (opens one if needed).")}
 </p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  This controls the delivery of user-targeted notices (sent via <code>/notice</code>). Channel notices always go to the channel window regardless of this setting. Running
-  <code>/notice_routing</code>
-  with no arguments shows your current preference. The setting is saved across sessions for registered users.
+  {gettext("This controls the delivery of user-targeted notices (sent via")} <code>{gettext("/notice")}</code>{gettext(
+    "). Channel notices always go to the channel window regardless of this setting. Running"
+  )}
+  <code>{gettext("/notice_routing")}</code>
+  {gettext(
+    "with no arguments shows your current preference. The setting is saved across sessions for registered users."
+  )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/notice_routing
-/notice_routing status
-/notice_routing sender
-/notice_routing active</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/notice_routing /notice_routing status /notice_routing sender /notice_routing active")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-notice">/notice</.help_link>
-  · <.help_link topic="feature-notices">Notices</.help_link>
+  <.help_link topic="cmd-notice">{gettext("/notice")}</.help_link>
+  · <.help_link topic="feature-notices">{gettext("Notices")}</.help_link>
 </p>

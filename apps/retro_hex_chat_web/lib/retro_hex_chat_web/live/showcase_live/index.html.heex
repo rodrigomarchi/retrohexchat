@@ -3,23 +3,23 @@
     <%!-- Hero header --%>
     <div class="shadow-retro-window bg-surface p-1">
       <div class="bg-gradient-to-r from-primary to-highlight-light text-white px-3 py-2 font-bold text-sm flex items-center gap-2">
-        <Icons.icon_palette class="w-5 h-5" /> RetroHexChat Component Showcase
+        <Icons.icon_palette class="w-5 h-5" /> {gettext("RetroHexChat Component Showcase")}
       </div>
       <div class="p-4 space-y-3">
         <p class="text-sm">
-          Interactive catalog of all UI components used in RetroHexChat.
-          Each component is a reusable, self-contained building block with generic
-          callbacks — no hardcoded event names.
+          {gettext(
+            "Interactive catalog of all UI components used in RetroHexChat. Each component is a reusable, self-contained building block with generic callbacks — no hardcoded event names."
+          )}
         </p>
         <div class="flex items-center gap-4 text-xs text-muted-foreground">
           <span class="flex items-center gap-1">
-            <Icons.icon_group_view class="w-3 h-3" /> 98 components
+            <Icons.icon_group_view class="w-3 h-3" /> {gettext("98 components")}
           </span>
           <span class="flex items-center gap-1">
-            <Icons.icon_folder class="w-3 h-3" /> 8 categories
+            <Icons.icon_folder class="w-3 h-3" /> {gettext("8 categories")}
           </span>
           <span class="flex items-center gap-1">
-            <Icons.icon_code class="w-3 h-3" /> Live examples + code
+            <Icons.icon_code class="w-3 h-3" /> {gettext("Live examples + code")}
           </span>
         </div>
       </div>
@@ -43,7 +43,10 @@
     </div>
 
     <%!-- Design tokens --%>
-    <.showcase_card title="Colors" description="Semantic color tokens mapped to retro palette.">
+    <.showcase_card
+      title={gettext("Colors")}
+      description="Semantic color tokens mapped to retro palette."
+    >
       <div class="grid grid-cols-4 gap-2">
         <div :for={
           {name, class} <- [
@@ -64,19 +67,22 @@
       </div>
     </.showcase_card>
 
-    <.showcase_card title="Typography" description="Font sizes using Source Code Pro monospace.">
+    <.showcase_card
+      title={gettext("Typography")}
+      description="Font sizes using Source Code Pro monospace."
+    >
       <div class="space-y-2">
-        <p class="text-xs">text-xs — 12px — Caption text</p>
-        <p class="text-sm">text-sm — 14px — Small text</p>
-        <p class="text-base">text-base — 16px — Body text</p>
-        <p class="text-lg">text-lg — 18px — Large text</p>
-        <p class="text-xl">text-xl — 22px — Heading</p>
-        <p class="text-2xl">text-2xl — 26px — Title</p>
+        <p class="text-xs">{gettext("text-xs — 12px — Caption text")}</p>
+        <p class="text-sm">{gettext("text-sm — 14px — Small text")}</p>
+        <p class="text-base">{gettext("text-base — 16px — Body text")}</p>
+        <p class="text-lg">{gettext("text-lg — 18px — Large text")}</p>
+        <p class="text-xl">{gettext("text-xl — 22px — Heading")}</p>
+        <p class="text-2xl">{gettext("text-2xl — 26px — Title")}</p>
       </div>
     </.showcase_card>
 
     <.showcase_card
-      title="Shadows (3D Borders)"
+      title={gettext("Shadows (3D Borders)")}
       description="Win98-style inset box shadows for retro depth."
     >
       <div class="grid grid-cols-3 gap-3">
@@ -98,7 +104,7 @@
     </.showcase_card>
 
     <.showcase_card
-      title="Spacing"
+      title={gettext("Spacing")}
       description="Retro spacing tokens (retro-1 through retro-32)."
     >
       <div class="space-y-1">
@@ -123,12 +129,12 @@
 
     <%!-- Status & Semantic Colors --%>
     <.showcase_card
-      title="Status & Semantic Colors"
+      title={gettext("Status & Semantic Colors")}
       description="Contextual colors for feedback, online status, and IRC roles."
     >
       <div class="space-y-3">
         <div>
-          <p class="text-xs font-bold mb-1">Feedback</p>
+          <p class="text-xs font-bold mb-1">{gettext("Feedback")}</p>
           <div class="grid grid-cols-4 gap-2">
             <div :for={
               {name, class} <- [
@@ -143,7 +149,7 @@
           </div>
         </div>
         <div>
-          <p class="text-xs font-bold mb-1">Online Status</p>
+          <p class="text-xs font-bold mb-1">{gettext("Online Status")}</p>
           <div class="flex items-center gap-4">
             <div :for={
               {name, class} <- [
@@ -160,27 +166,27 @@
           </div>
         </div>
         <div>
-          <p class="text-xs font-bold mb-1">IRC Role Badges</p>
+          <p class="text-xs font-bold mb-1">{gettext("IRC Role Badges")}</p>
           <div class="flex items-center gap-4">
             <div class="flex items-center gap-1">
               <Icons.icon_role_owner class="w-4 h-4" />
-              <span class="text-xs">Owner</span>
+              <span class="text-xs">{gettext("Owner")}</span>
             </div>
             <div class="flex items-center gap-1">
               <Icons.icon_role_operator class="w-4 h-4" />
-              <span class="text-xs">Operator</span>
+              <span class="text-xs">{gettext("Operator")}</span>
             </div>
             <div class="flex items-center gap-1">
               <Icons.icon_role_halfop class="w-4 h-4" />
-              <span class="text-xs">Half-Op</span>
+              <span class="text-xs">{gettext("Half-Op")}</span>
             </div>
             <div class="flex items-center gap-1">
               <Icons.icon_role_voiced class="w-4 h-4" />
-              <span class="text-xs">Voiced</span>
+              <span class="text-xs">{gettext("Voiced")}</span>
             </div>
             <div class="flex items-center gap-1">
               <Icons.icon_role_regular class="w-4 h-4" />
-              <span class="text-xs">Regular</span>
+              <span class="text-xs">{gettext("Regular")}</span>
             </div>
           </div>
         </div>
@@ -189,7 +195,7 @@
 
     <%!-- Z-Index Scale --%>
     <.showcase_card
-      title="Z-Index Scale"
+      title={gettext("Z-Index Scale")}
       description="7-layer stacking context for overlays, modals, and tooltips."
     >
       <div class="space-y-1">
@@ -217,7 +223,7 @@
 
     <%!-- Icon Sizes --%>
     <.showcase_card
-      title="Icon Sizes"
+      title={gettext("Icon Sizes")}
       description="4 standardized SVG icon sizes used across the design system."
     >
       <div class="flex items-end gap-6">
@@ -245,22 +251,24 @@
 
     <%!-- Focus & Border Radius --%>
     <.showcase_card
-      title="Focus & Border Radius"
+      title={gettext("Focus & Border Radius")}
       description="Retro-style focus indicators and the two border-radius tokens."
     >
       <div class="space-y-3">
         <div>
-          <p class="text-xs font-bold mb-2">Focus Ring</p>
+          <p class="text-xs font-bold mb-2">{gettext("Focus Ring")}</p>
           <div class="flex items-center gap-4">
             <.button class="outline outline-1 outline-dotted outline-black -outline-offset-4">
               <:icon><Icons.icon_btn_ok /></:icon>
-              Focused Button
+              {gettext("Focused Button")}
             </.button>
-            <span class="text-xs text-muted-foreground">1px dotted outline, -4px offset</span>
+            <span class="text-xs text-muted-foreground">
+              {gettext("1px dotted outline, -4px offset")}
+            </span>
           </div>
         </div>
         <div>
-          <p class="text-xs font-bold mb-2">Border Radius</p>
+          <p class="text-xs font-bold mb-2">{gettext("Border Radius")}</p>
           <div class="flex items-center gap-4">
             <div :for={
               {name, class} <- [

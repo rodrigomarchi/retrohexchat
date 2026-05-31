@@ -1,74 +1,74 @@
 <p>
-  The Scheduler capability lets bots send messages on a schedule. Supports both recurring
-  interval schedules and daily schedules at specific times.
+  {gettext(
+    "The Scheduler capability lets bots send messages on a schedule. Supports both recurring interval schedules and daily schedules at specific times."
+  )}
 </p>
 
-<.help_h4 icon={:icon_code}>Commands</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Commands")}</.help_h4>
 <table>
   <thead>
     <tr>
-      <th>Command</th>
-      <th>Description</th>
+      <th>{gettext("Command")}</th>
+      <th>{gettext("Description")}</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td>
-        <code>!Bot schedule add interval &lt;min&gt; &lt;#channel&gt; &lt;message&gt;</code>
+        <code>{gettext("!Bot schedule add interval <min> <#channel> <message>")}</code>
       </td>
-      <td>Add a recurring schedule</td>
+      <td>{gettext("Add a recurring schedule")}</td>
     </tr>
     <tr>
-      <td><code>!Bot schedule add daily &lt;HH:MM&gt; &lt;#channel&gt; &lt;message&gt;</code></td>
-      <td>Add a daily schedule (UTC)</td>
+      <td><code>{gettext("!Bot schedule add daily <HH:MM> <#channel> <message>")}</code></td>
+      <td>{gettext("Add a daily schedule (UTC)")}</td>
     </tr>
     <tr>
-      <td><code>!Bot schedule list</code></td>
-      <td>List all active schedules</td>
+      <td><code>{gettext("!Bot schedule list")}</code></td>
+      <td>{gettext("List all active schedules")}</td>
     </tr>
     <tr>
-      <td><code>!Bot schedule remove &lt;id&gt;</code></td>
-      <td>Remove a schedule by ID</td>
+      <td><code>{gettext("!Bot schedule remove <id>")}</code></td>
+      <td>{gettext("Remove a schedule by ID")}</td>
     </tr>
   </tbody>
 </table>
 
-<.help_h4 icon={:icon_clock}>Schedule Types</.help_h4>
+<.help_h4 icon={:icon_clock}>{gettext("Schedule Types")}</.help_h4>
 <ul>
   <li>
-    <strong>Interval</strong> — Fires every N minutes (e.g., every 30 minutes).
-    The minimum interval is configurable (default: 5 minutes).
+    <strong>{gettext("Interval")}</strong> {gettext(
+      "— Fires every N minutes (e.g., every 30 minutes). The minimum interval is configurable (default: 5 minutes)."
+    )}
   </li>
   <li>
-    <strong>Daily</strong> — Fires once per day at a specific time in UTC (e.g., 09:00).
-    Uses 24-hour format.
+    <strong>{gettext("Daily")}</strong> {gettext(
+      "— Fires once per day at a specific time in UTC (e.g., 09:00). Uses 24-hour format."
+    )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_wrench}>Configuration</.help_h4>
-<p>Admins can configure via <code>/bot set</code>:</p>
+<.help_h4 icon={:icon_wrench}>{gettext("Configuration")}</.help_h4>
+<p>{gettext("Admins can configure via")} <code>{gettext("/bot set")}</code>:</p>
 <ul>
-  <li><code>sched_max</code> — Maximum active schedules (default: 10)</li>
-  <li><code>sched_min_interval</code> — Minimum interval in minutes (default: 5)</li>
+  <li><code>sched_max</code> {gettext("— Maximum active schedules (default: 10)")}</li>
+  <li><code>sched_min_interval</code> {gettext("— Minimum interval in minutes (default: 5)")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>!MyBot schedule add interval 60 #general Take a break!
-!MyBot schedule add daily 09:00 #general Good morning, team!
-!MyBot schedule list
-!MyBot schedule remove s1a2b3</pre>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("!MyBot schedule add interval 60 #general Take a break! !MyBot schedule add daily 09:00 #general Good morning, team! !MyBot schedule list !MyBot schedule remove s1a2b3")}</pre>
 
-<.help_h4 icon={:icon_rules}>Notes</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Notes")}</.help_h4>
 <ul>
-  <li>All times are in UTC</li>
-  <li>Schedules persist across bot restarts</li>
-  <li>Each schedule has a unique ID shown in the list command</li>
-  <li>Timers automatically reschedule after firing</li>
+  <li>{gettext("All times are in UTC")}</li>
+  <li>{gettext("Schedules persist across bot restarts")}</li>
+  <li>{gettext("Each schedule has a unique ID shown in the list command")}</li>
+  <li>{gettext("Timers automatically reschedule after firing")}</li>
 </ul>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="botservice">BotService Overview</.help_link>
-  · <.help_link topic="bot-command">/bot Command Reference</.help_link>
-  · <.help_link topic="bot-rss">Bot RSS</.help_link>
+  <.help_link topic="botservice">{gettext("BotService Overview")}</.help_link>
+  · <.help_link topic="bot-command">{gettext("/bot Command Reference")}</.help_link>
+  · <.help_link topic="bot-rss">{gettext("Bot RSS")}</.help_link>
 </p>

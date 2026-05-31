@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Router do
   pipeline :landing_live do
     plug :accepts, ["html"]
     plug :fetch_session
+    plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :landing_live}
     plug :protect_from_forgery
@@ -23,18 +24,21 @@ defmodule RetroHexChatWeb.Router do
   scope "/", RetroHexChatWeb do
     pipe_through :landing_live
 
-    live "/", LandingLive.Index
-    live "/how-it-works", LandingLive.HowItWorks
-    live "/features", LandingLive.Features
-    live "/privacy", LandingLive.Privacy
-    live "/install", LandingLive.Install
-    live "/community", LandingLive.Community
-    live "/faq", LandingLive.Faq
+    live_session :landing_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+      live "/", LandingLive.Index
+      live "/how-it-works", LandingLive.HowItWorks
+      live "/features", LandingLive.Features
+      live "/privacy", LandingLive.Privacy
+      live "/install", LandingLive.Install
+      live "/community", LandingLive.Community
+      live "/faq", LandingLive.Faq
+    end
   end
 
   pipeline :help_live do
     plug :accepts, ["html"]
     plug :fetch_session
+    plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :help_live}
     plug :protect_from_forgery
@@ -44,8 +48,11 @@ defmodule RetroHexChatWeb.Router do
   scope "/", RetroHexChatWeb do
     pipe_through :help_live
 
-    live "/chat/help", HelpLive.Index, :index
-    live "/chat/help/:topic", HelpLive.Index, :show
+    live_session :help_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+      live "/chat/help", HelpLive.Index, :index
+      live "/chat/help/:topic", HelpLive.Index, :show
+    end
+
     get "/sitemap.xml", SitemapController, :index
   end
 
@@ -56,21 +63,30 @@ defmodule RetroHexChatWeb.Router do
   pipeline :v2_app do
     plug :accepts, ["html"]
     plug :fetch_session
+    plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :v2}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
+  scope "/", RetroHexChatWeb do
+    pipe_through :v2_app
+
+    get "/locale/:locale", LocaleController, :update
+  end
+
   scope "/", RetroHexChatWeb.V2 do
     pipe_through :v2_app
 
-    live "/connect", ConnectLive
-    live "/chat", ChatLive
-    live "/p2p/:token", P2PSessionLive
-    live "/game/:token", GameSessionLive
-    live "/solo/:token", SoloSessionLive
-    live "/arcade/:token/:game_id", ArcadeGameLive
+    live_session :v2_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+      live "/connect", ConnectLive
+      live "/chat", ChatLive
+      live "/p2p/:token", P2PSessionLive
+      live "/game/:token", GameSessionLive
+      live "/solo/:token", SoloSessionLive
+      live "/arcade/:token/:game_id", ArcadeGameLive
+    end
   end
 
   scope "/", RetroHexChatWeb.V2 do
@@ -83,6 +99,7 @@ defmodule RetroHexChatWeb.Router do
   pipeline :showcase do
     plug :accepts, ["html"]
     plug :fetch_session
+    plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :showcase}
     plug :protect_from_forgery
@@ -92,125 +109,127 @@ defmodule RetroHexChatWeb.Router do
   scope "/showcase", RetroHexChatWeb.ShowcaseLive do
     pipe_through :showcase
 
-    live "/", Index
+    live_session :showcase_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+      live "/", Index
 
-    # Primitives
-    live "/button", Primitives.Button
-    live "/input", Primitives.Input
-    live "/label", Primitives.Label
-    live "/textarea", Primitives.Textarea
-    live "/select", Primitives.Select
-    live "/checkbox", Primitives.Checkbox
-    live "/radio-group", Primitives.RadioGroup
-    live "/switch", Primitives.Switch
-    live "/slider", Primitives.Slider
-    live "/toggle", Primitives.Toggle
-    live "/toggle-group", Primitives.ToggleGroup
-    live "/alert", Primitives.Alert
-    live "/badge", Primitives.Badge
-    live "/progress", Primitives.Progress
-    live "/skeleton", Primitives.Skeleton
-    live "/tooltip", Primitives.Tooltip
-    live "/card", Primitives.Card
-    live "/separator", Primitives.Separator
-    live "/accordion", Primitives.Accordion
-    live "/avatar", Primitives.Avatar
-    live "/breadcrumb", Primitives.BreadcrumbPage
-    live "/dropdown-menu", Primitives.DropdownMenuPage
-    live "/pagination", Primitives.PaginationPage
-    live "/alert-dialog", Primitives.AlertDialogPage
-    live "/popover", Primitives.PopoverPage
-    live "/sheet", Primitives.SheetPage
-    live "/form", Primitives.FormPage
+      # Primitives
+      live "/button", Primitives.Button
+      live "/input", Primitives.Input
+      live "/label", Primitives.Label
+      live "/textarea", Primitives.Textarea
+      live "/select", Primitives.Select
+      live "/checkbox", Primitives.Checkbox
+      live "/radio-group", Primitives.RadioGroup
+      live "/switch", Primitives.Switch
+      live "/slider", Primitives.Slider
+      live "/toggle", Primitives.Toggle
+      live "/toggle-group", Primitives.ToggleGroup
+      live "/alert", Primitives.Alert
+      live "/badge", Primitives.Badge
+      live "/progress", Primitives.Progress
+      live "/skeleton", Primitives.Skeleton
+      live "/tooltip", Primitives.Tooltip
+      live "/card", Primitives.Card
+      live "/separator", Primitives.Separator
+      live "/accordion", Primitives.Accordion
+      live "/avatar", Primitives.Avatar
+      live "/breadcrumb", Primitives.BreadcrumbPage
+      live "/dropdown-menu", Primitives.DropdownMenuPage
+      live "/pagination", Primitives.PaginationPage
+      live "/alert-dialog", Primitives.AlertDialogPage
+      live "/popover", Primitives.PopoverPage
+      live "/sheet", Primitives.SheetPage
+      live "/form", Primitives.FormPage
 
-    # Layout
-    live "/tabs", Layout.Tabs
-    live "/table", Layout.Table
-    live "/window", Layout.Window
-    live "/dialog", Layout.DialogPage
-    live "/menu", Layout.MenuPage
-    live "/toolbar", Layout.ToolbarPage
-    live "/fieldset", Layout.FieldsetPage
-    live "/context-menu", Layout.ContextMenuPage
-    live "/scroll-area", Layout.ScrollAreaPage
-    live "/toast", Layout.ToastPage
-    live "/tree-view", Layout.TreeViewPage
+      # Layout
+      live "/tabs", Layout.Tabs
+      live "/table", Layout.Table
+      live "/window", Layout.Window
+      live "/dialog", Layout.DialogPage
+      live "/menu", Layout.MenuPage
+      live "/toolbar", Layout.ToolbarPage
+      live "/fieldset", Layout.FieldsetPage
+      live "/context-menu", Layout.ContextMenuPage
+      live "/scroll-area", Layout.ScrollAreaPage
+      live "/toast", Layout.ToastPage
+      live "/tree-view", Layout.TreeViewPage
 
-    # Chat
-    live "/irc-tabs", Chat.IrcTabsPage
-    live "/chat-message", Chat.ChatMessagePage
-    live "/chat-input", Chat.ChatInputPage
-    live "/nicklist", Chat.NicklistPage
-    live "/conversations", Chat.ConversationsPage
-    live "/hover-card", Chat.HoverCardPage
-    live "/search-bar", Chat.SearchBarPage
-    live "/topic-bar", Chat.TopicBarPage
-    live "/formatting-toolbar", Chat.FormattingToolbarPage
-    live "/emoji-picker", Chat.EmojiPickerPage
-    live "/autocomplete", Chat.AutocompletePage
-    live "/tab-bar", Chat.TabBarPage
-    live "/reply-bar", Chat.ReplyBarPage
-    live "/connection-status", Chat.ConnectionStatusPage
-    live "/color-picker", Chat.ColorPickerPage
-    live "/scroll-loader", Chat.ScrollLoaderPage
-    live "/history-search", Chat.HistorySearchPage
-    live "/chat-layout", Chat.ChatLayoutPage
-    live "/conversations-context-menu", Chat.ConversationsContextMenuPage
-    live "/chat-context-menu", Chat.ChatContextMenuPage
-    live "/syntax-tooltip", Chat.SyntaxTooltipPage
+      # Chat
+      live "/irc-tabs", Chat.IrcTabsPage
+      live "/chat-message", Chat.ChatMessagePage
+      live "/chat-input", Chat.ChatInputPage
+      live "/nicklist", Chat.NicklistPage
+      live "/conversations", Chat.ConversationsPage
+      live "/hover-card", Chat.HoverCardPage
+      live "/search-bar", Chat.SearchBarPage
+      live "/topic-bar", Chat.TopicBarPage
+      live "/formatting-toolbar", Chat.FormattingToolbarPage
+      live "/emoji-picker", Chat.EmojiPickerPage
+      live "/autocomplete", Chat.AutocompletePage
+      live "/tab-bar", Chat.TabBarPage
+      live "/reply-bar", Chat.ReplyBarPage
+      live "/connection-status", Chat.ConnectionStatusPage
+      live "/color-picker", Chat.ColorPickerPage
+      live "/scroll-loader", Chat.ScrollLoaderPage
+      live "/history-search", Chat.HistorySearchPage
+      live "/chat-layout", Chat.ChatLayoutPage
+      live "/conversations-context-menu", Chat.ConversationsContextMenuPage
+      live "/chat-context-menu", Chat.ChatContextMenuPage
+      live "/syntax-tooltip", Chat.SyntaxTooltipPage
 
-    # Shell
-    live "/status-bar", Shell.StatusBar
-    live "/toolbar-app", Shell.ToolbarAppPage
-    live "/status-bar-app", Shell.StatusBarAppPage
-    live "/app-header", Shell.AppHeaderPage
-    live "/loading-spinner", Shell.LoadingSpinnerPage
-    live "/empty-state", Shell.EmptyStatePage
-    live "/config-form", Shell.ConfigFormPage
+      # Shell
+      live "/status-bar", Shell.StatusBar
+      live "/toolbar-app", Shell.ToolbarAppPage
+      live "/status-bar-app", Shell.StatusBarAppPage
+      live "/app-header", Shell.AppHeaderPage
+      live "/loading-spinner", Shell.LoadingSpinnerPage
+      live "/empty-state", Shell.EmptyStatePage
+      live "/config-form", Shell.ConfigFormPage
 
-    # Dialogs
-    live "/confirm-dialog", Dialogs.ConfirmDialogPage
+      # Dialogs
+      live "/confirm-dialog", Dialogs.ConfirmDialogPage
 
-    live "/channel-dialog", Dialogs.ChannelDialogPage
-    live "/address-book", Dialogs.AddressBookPage
-    live "/about-dialog", Dialogs.AboutDialogPage
-    live "/channel-list", Dialogs.ChannelListPage
-    live "/highlight-dialog", Dialogs.HighlightDialogPage
-    live "/kick-dialog", Dialogs.KickDialogPage
-    live "/delete-confirm-dialog", Dialogs.DeleteConfirmDialogPage
-    live "/disconnect-confirm-dialog", Dialogs.DisconnectConfirmDialogPage
-    live "/alias-dialog", Dialogs.AliasDialogPage
-    live "/flood-protection-dialog", Dialogs.FloodProtectionDialogPage
+      live "/channel-dialog", Dialogs.ChannelDialogPage
+      live "/address-book", Dialogs.AddressBookPage
+      live "/about-dialog", Dialogs.AboutDialogPage
+      live "/channel-list", Dialogs.ChannelListPage
+      live "/highlight-dialog", Dialogs.HighlightDialogPage
+      live "/kick-dialog", Dialogs.KickDialogPage
+      live "/delete-confirm-dialog", Dialogs.DeleteConfirmDialogPage
+      live "/disconnect-confirm-dialog", Dialogs.DisconnectConfirmDialogPage
+      live "/alias-dialog", Dialogs.AliasDialogPage
+      live "/flood-protection-dialog", Dialogs.FloodProtectionDialogPage
 
-    live "/notify-list", Dialogs.NotifyListPage
-    live "/url-catcher", Dialogs.UrlCatcherPage
-    live "/auto-respond-dialog", Dialogs.AutoRespondDialogPage
-    live "/custom-menus-dialog", Dialogs.CustomMenusDialogPage
-    live "/sound-settings-dialog", Dialogs.SoundSettingsDialogPage
-    live "/invite-dialog", Dialogs.InviteDialogPage
-    live "/paste-confirm-dialog", Dialogs.PasteConfirmDialogPage
-    live "/cheatsheet-dialog", Dialogs.CheatsheetDialogPage
-    live "/nick-change-dialog", Dialogs.NickChangeDialogPage
-    live "/perform-dialog", Dialogs.PerformDialogPage
-    live "/channel-central-dialog", Dialogs.ChannelCentralDialogPage
-    live "/admin-console-dialog", Dialogs.AdminConsoleDialogPage
-    live "/bot-management-dialog", Dialogs.BotManagementDialogPage
+      live "/notify-list", Dialogs.NotifyListPage
+      live "/url-catcher", Dialogs.UrlCatcherPage
+      live "/auto-respond-dialog", Dialogs.AutoRespondDialogPage
+      live "/custom-menus-dialog", Dialogs.CustomMenusDialogPage
+      live "/sound-settings-dialog", Dialogs.SoundSettingsDialogPage
+      live "/invite-dialog", Dialogs.InviteDialogPage
+      live "/paste-confirm-dialog", Dialogs.PasteConfirmDialogPage
+      live "/cheatsheet-dialog", Dialogs.CheatsheetDialogPage
+      live "/nick-change-dialog", Dialogs.NickChangeDialogPage
+      live "/perform-dialog", Dialogs.PerformDialogPage
+      live "/channel-central-dialog", Dialogs.ChannelCentralDialogPage
+      live "/admin-console-dialog", Dialogs.AdminConsoleDialogPage
+      live "/bot-management-dialog", Dialogs.BotManagementDialogPage
 
-    # P2P
-    live "/p2p-lobby", P2P.P2PLobbyPage
-    live "/media-controls", P2P.MediaControlsPage
-    live "/file-transfer", P2P.FileTransferPage
+      # P2P
+      live "/p2p-lobby", P2P.P2PLobbyPage
+      live "/media-controls", P2P.MediaControlsPage
+      live "/file-transfer", P2P.FileTransferPage
 
-    # Games
-    live "/game-cards", Games.GameCardsPage
-    live "/game-canvas", Games.GameCanvasPage
-    live "/game-lobby", Games.GameLobbyPage
-    live "/solo-lobby", Games.SoloLobbyPage
-    live "/arcade-frame", Games.ArcadeFramePage
+      # Games
+      live "/game-cards", Games.GameCardsPage
+      live "/game-canvas", Games.GameCanvasPage
+      live "/game-lobby", Games.GameLobbyPage
+      live "/solo-lobby", Games.SoloLobbyPage
+      live "/arcade-frame", Games.ArcadeFramePage
 
-    # Assets
-    live "/icons", Assets.Icons
-    live "/diagrams", Assets.Diagrams
+      # Assets
+      live "/icons", Assets.Icons
+      live "/diagrams", Assets.Diagrams
+    end
   end
 
   import Phoenix.LiveDashboard.Router
@@ -218,6 +237,7 @@ defmodule RetroHexChatWeb.Router do
   pipeline :admin do
     plug :accepts, ["html"]
     plug :fetch_session
+    plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :v2}
     plug :protect_from_forgery

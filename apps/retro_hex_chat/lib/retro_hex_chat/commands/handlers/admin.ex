@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Admin do
   @moduledoc "Handler for /admin — dispatches to subcommand modules."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -12,14 +13,15 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:error, "Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> [args]"}
+    {:error,
+     gettext("Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> [args]")}
   end
 
   def execute(args, context) do
     if context.is_admin do
       dispatch(args, context)
     else
-      {:error, "You must be a server administrator to use this command"}
+      {:error, gettext("You must be a server administrator to use this command")}
     end
   end
 
@@ -35,30 +37,33 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
 
   defp dispatch([subcmd | _], _context) do
     {:error,
-     "Unknown admin subcommand: #{subcmd}. Try: server, user, channel, ns, cs, debug, log, turn, nuke"}
+     gettext(
+       "Unknown admin subcommand: %{subcmd}. Try: server, user, channel, ns, cs, debug, log, turn, nuke",
+       subcmd: subcmd
+     )}
   end
 
   @impl true
   def help do
     %{
       name: "admin",
-      syntax: "/admin <subcommand> [args]",
+      syntax: gettext("/admin <subcommand> [args]"),
       description:
-        "Server administration commands. Requires admin privilege.\n" <>
-          "Subcommands: server, user, channel, ns, cs, debug, log, turn, nuke.\n" <>
-          "Type /admin <subcommand> for usage details.",
+        gettext("Server administration commands. Requires admin privilege.\n") <>
+          gettext("Subcommands: server, user, channel, ns, cs, debug, log, turn, nuke.\n") <>
+          gettext("Type /admin <subcommand> for usage details."),
       examples: [
-        "/admin server info",
-        "/admin user list",
-        "/admin user ban @nick --reason Spam",
-        "/admin channel delete #canal",
-        "/admin ns drop @nick",
-        "/admin cs transfer #canal @nick",
-        "/admin debug memory",
-        "/admin log --last 20",
-        "/admin turn stats",
-        "/admin nuke",
-        "/admin nuke --confirm"
+        gettext("/admin server info"),
+        gettext("/admin user list"),
+        gettext("/admin user ban @nick --reason Spam"),
+        gettext("/admin channel delete #canal"),
+        gettext("/admin ns drop @nick"),
+        gettext("/admin cs transfer #canal @nick"),
+        gettext("/admin debug memory"),
+        gettext("/admin log --last 20"),
+        gettext("/admin turn stats"),
+        gettext("/admin nuke"),
+        gettext("/admin nuke --confirm")
       ]
     }
   end
@@ -74,8 +79,8 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
 
     %CommandSyntax{
       command: "admin",
-      syntax: "/admin <subcommand> [args]",
-      description: "Server administration commands. Requires admin privilege.",
+      syntax: gettext("/admin <subcommand> [args]"),
+      description: gettext("Server administration commands. Requires admin privilege."),
       category: :advanced,
       parameters: [
         %Parameter{
@@ -83,36 +88,36 @@ defmodule RetroHexChat.Commands.Handlers.Admin do
           required: true,
           type: :text,
           position: 0,
-          description: "server, user, channel, ns, cs, debug, log, turn, or nuke"
+          description: gettext("server, user, channel, ns, cs, debug, log, turn, or nuke")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Subcommand arguments"
+          description: gettext("Subcommand arguments")
         }
       ],
       examples: [
-        "/admin server info",
-        "/admin user list",
-        "/admin user ban @nick",
-        "/admin log",
-        "/admin turn stats",
-        "/admin nuke --confirm"
+        gettext("/admin server info"),
+        gettext("/admin user list"),
+        gettext("/admin user ban @nick"),
+        gettext("/admin log"),
+        gettext("/admin turn stats"),
+        gettext("/admin nuke --confirm")
       ],
       subcommands: [
-        %{name: "server", description: "Server info and settings"},
-        %{name: "user", description: "User management (ban, kick, mute, rename, role)"},
-        %{name: "channel", description: "Channel management (create, delete, purge)"},
-        %{name: "ns", description: "NickServ admin (drop, info, resetpass)"},
-        %{name: "cs", description: "ChanServ admin (drop, info, transfer, access)"},
-        %{name: "debug", description: "Debug info (connections, processes, memory)"},
-        %{name: "log", description: "View audit log"},
-        %{name: "turn", description: "TURN server status and allocations"},
+        %{name: "server", description: gettext("Server info and settings")},
+        %{name: "user", description: gettext("User management (ban, kick, mute, rename, role)")},
+        %{name: "channel", description: gettext("Channel management (create, delete, purge)")},
+        %{name: "ns", description: gettext("NickServ admin (drop, info, resetpass)")},
+        %{name: "cs", description: gettext("ChanServ admin (drop, info, transfer, access)")},
+        %{name: "debug", description: gettext("Debug info (connections, processes, memory)")},
+        %{name: "log", description: gettext("View audit log")},
+        %{name: "turn", description: gettext("TURN server status and allocations")},
         %{
           name: "nuke",
-          description: "Factory reset — destroy all data except admin infrastructure"
+          description: gettext("Factory reset — destroy all data except admin infrastructure")
         }
       ]
     }

@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.LandingLive.Faq do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.LandingLive.LandingHelpers
   import RetroHexChatWeb.Components.UI.Window
@@ -14,9 +15,11 @@ defmodule RetroHexChatWeb.LandingLive.Faq do
     {:ok,
      assign(socket,
        active_page: :faq,
-       page_title: "FAQ — Retro Hex Chat",
+       page_title: gettext("FAQ — Retro Hex Chat"),
        page_description:
-         "Frequently asked questions about Retro Hex Chat: P2P calls, server requirements, security, contributing, and more."
+         gettext(
+           "Frequently asked questions about Retro Hex Chat: P2P calls, server requirements, security, contributing, and more."
+         )
      )}
   end
 end

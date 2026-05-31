@@ -1,46 +1,53 @@
 <p>
-  Manage server channels: list, view details, create, delete, purge messages, and view bans.
-  Requires server administrator role.
+  {gettext(
+    "Manage server channels: list, view details, create, delete, purge messages, and view bans. Requires server administrator role."
+  )}
 </p>
 
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/admin channel list [--search Q]
-/admin channel info #&lt;channel&gt;
-/admin channel create #&lt;channel&gt;
-/admin channel delete #&lt;channel&gt;
-/admin channel purge #&lt;channel&gt; [--from @nick]
-/admin channel banlist #&lt;channel&gt;</pre>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/admin channel list [--search Q] /admin channel info #<channel> /admin channel create #<channel> /admin channel delete #<channel> /admin channel purge #<channel> [--from @nick] /admin channel banlist #<channel>")}</pre>
 
-<.help_h4 icon={:icon_tag}>Subcommands</.help_h4>
+<.help_h4 icon={:icon_tag}>{gettext("Subcommands")}</.help_h4>
 <ul>
-  <li><code>list</code> — List active channels with member counts and registration status</li>
-  <li><code>info</code> — Show detailed channel info: members, modes, topic, bans</li>
-  <li><code>create</code> — Create and register a new channel (admin becomes founder)</li>
-  <li><code>delete</code> — Delete a channel: kicks all members and drops registration</li>
+  <li>
+    <code>list</code> {gettext(
+      "— List active channels with member counts and registration status"
+    )}
+  </li>
+  <li>
+    <code>info</code> {gettext("— Show detailed channel info: members, modes, topic, bans")}
+  </li>
+  <li>
+    <code>create</code> {gettext("— Create and register a new channel (admin becomes founder)")}
+  </li>
+  <li>
+    <code>delete</code> {gettext("— Delete a channel: kicks all members and drops registration")}
+  </li>
   <li>
     <code>purge</code>
-    — Delete stored messages. Use <code>--from @nick</code>
-    to target a specific user
+    {gettext("— Delete stored messages. Use")} <code>{gettext("--from @nick")}</code>
+    {gettext("to target a specific user")}
   </li>
-  <li><code>banlist</code> — List banned users in a channel</li>
+  <li><code>banlist</code> {gettext("— List banned users in a channel")}</li>
 </ul>
 
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Channel deletion broadcasts to all members before closing</li>
-  <li>Purge only affects stored messages (already-rendered messages stay until page reload)</li>
-  <li>All actions are recorded in the audit log</li>
+  <li>{gettext("Channel deletion broadcasts to all members before closing")}</li>
+  <li>
+    {gettext(
+      "Purge only affects stored messages (already-rendered messages stay until page reload)"
+    )}
+  </li>
+  <li>{gettext("All actions are recorded in the audit log")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/admin channel list --search lobby
-/admin channel info #general
-/admin channel delete #spam
-/admin channel purge #general --from @Spammer</pre>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/admin channel list --search lobby /admin channel info #general /admin channel delete #spam /admin channel purge #general --from @Spammer")}</pre>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-admin">/admin</.help_link>
-  · <.help_link topic="cmd-admin-cs">/admin cs</.help_link>
-  · <.help_link topic="cmd-kick">/kick</.help_link>
+  <.help_link topic="cmd-admin">{gettext("/admin")}</.help_link>
+  · <.help_link topic="cmd-admin-cs">{gettext("/admin cs")}</.help_link>
+  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
 </p>

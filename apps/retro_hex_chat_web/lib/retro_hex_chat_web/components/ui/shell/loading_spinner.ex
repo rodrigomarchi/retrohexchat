@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
   @doc """
   Renders a retro-styled loading spinner with animated progress bar.
   """
-  attr :text, :string, default: "Loading..."
+  attr :text, :string, default: nil
   attr :size, :string, default: "default", values: ~w(sm default lg)
   attr :show_retry, :boolean, default: false, doc: "Show retry button below spinner"
   attr :on_retry, :any, default: nil, doc: "JS command or event name for retry"
@@ -29,6 +29,8 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
 
   @spec loading_spinner(map()) :: Phoenix.LiveView.Rendered.t()
   def loading_spinner(assigns) do
+    assigns = assign(assigns, :resolved_text, assigns.text || gettext("Loading..."))
+
     ~H"""
     <div
       class={
@@ -40,7 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
         ])
       }
       role="status"
-      aria-label={@text}
+      aria-label={@resolved_text}
       {@rest}
     >
       <div class={[
@@ -49,7 +51,7 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
         "bg-[length:20px_14px] animate-[progress-scroll_1s_linear_infinite]",
         "bg-[repeating-linear-gradient(90deg,theme(colors.link)_0,theme(colors.link)_8px,transparent_8px,transparent_12px)]"
       ]} />
-      <span class="text-xs text-muted-foreground">{@text}</span>
+      <span class="text-xs text-muted-foreground">{@resolved_text}</span>
       <.button
         :if={@show_retry}
         variant="outline"
@@ -58,7 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.LoadingSpinner do
         class="pointer-events-auto"
       >
         <:icon><Icons.icon_retry class="w-4 h-4" /></:icon>
-        Retry
+        {gettext("Retry")}
       </.button>
       {render_slot(@inner_block)}
     </div>

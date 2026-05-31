@@ -1,23 +1,25 @@
-<p>Remove a ban from a user, allowing them to rejoin the channel.</p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/unban &lt;nickname&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>nickname</code> — The user to unban.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<p>{gettext("Remove a ban from a user, allowing them to rejoin the channel.")}</p>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/unban <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>nickname</code> {gettext("— The user to unban.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Removes the ban entry for the specified user. Once unbanned, the user can rejoin the channel normally. For registered channels, the unban is persisted. You can also unban using <code>/mode -b nickname</code>.
+  {gettext(
+    "Removes the ban entry for the specified user. Once unbanned, the user can rejoin the channel normally. For registered channels, the unban is persisted. You can also unban using"
+  )} <code>{gettext("/mode -b nickname")}</code>.
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Requires channel operator or owner status</li>
+  <li>{gettext("Requires channel operator or owner status")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/unban user123</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/unban user123")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-ban">/ban</.help_link>
-  · <.help_link topic="cmd-kick">/kick</.help_link>
-  · <.help_link topic="cmd-mode">/mode</.help_link>
-  · <.help_link topic="channel-permissions">Channel Permissions</.help_link>
-  · <.help_link topic="feature-channel-central">Channel Central</.help_link>
+  <.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
+  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
+  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
+  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
+  · <.help_link topic="feature-channel-central">{gettext("Channel Central")}</.help_link>
 </p>

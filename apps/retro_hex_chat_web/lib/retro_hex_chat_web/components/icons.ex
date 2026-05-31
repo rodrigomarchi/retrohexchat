@@ -98,6 +98,7 @@ defmodule RetroHexChatWeb.Icons do
   6. Run `mix compile --warnings-as-errors` to verify.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   # ── People ──────────────────────────────────────────────
   defdelegate icon_community(assigns), to: RetroHexChatWeb.Icons.People

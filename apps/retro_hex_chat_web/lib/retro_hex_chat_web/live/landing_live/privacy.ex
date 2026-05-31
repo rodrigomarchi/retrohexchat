@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.LandingLive.Privacy do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.LandingLive.LandingHelpers
   import RetroHexChatWeb.Components.UI.Window
@@ -13,9 +14,11 @@ defmodule RetroHexChatWeb.LandingLive.Privacy do
     {:ok,
      assign(socket,
        active_page: :privacy,
-       page_title: "Privacy Comparison — Retro Hex Chat vs Discord, Slack & Telegram",
+       page_title: gettext("Privacy Comparison — Retro Hex Chat vs Discord, Slack & Telegram"),
        page_description:
-         "Side-by-side privacy comparison: data ownership, call routing, message access, AI training, and source code transparency."
+         gettext(
+           "Side-by-side privacy comparison: data ownership, call routing, message access, AI training, and source code transparency."
+         )
      )}
   end
 end

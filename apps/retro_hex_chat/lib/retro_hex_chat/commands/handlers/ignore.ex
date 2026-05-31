@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Ignore do
   @moduledoc "Handler for /ignore [nickname] [type] [duration]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Chat.IgnoreEntry
@@ -18,7 +19,7 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
 
   def execute([nick | rest], %{nickname: own_nick}) do
     if String.downcase(nick) == String.downcase(own_nick) do
-      {:error, "You cannot ignore yourself"}
+      {:error, gettext("You cannot ignore yourself")}
     else
       parse_type_and_duration(nick, rest)
     end
@@ -34,13 +35,15 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
   def help do
     %{
       name: "ignore",
-      syntax: "/ignore [nickname] [type] [duration]",
+      syntax: gettext("/ignore [nickname] [type] [duration]"),
       description:
-        "Hide messages from a specific user.\nTypes: all (default), messages, pms, actions, notices, invites.\nDuration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\nNo args: show your ignore list. You cannot ignore yourself.",
+        gettext(
+          "Hide messages from a specific user.\nTypes: all (default), messages, pms, actions, notices, invites.\nDuration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\nNo args: show your ignore list. You cannot ignore yourself."
+        ),
       examples: [
-        "/ignore SpamBot",
-        "/ignore AnnoyingGuy pms",
-        "/ignore LoudPerson all 5m",
+        gettext("/ignore SpamBot"),
+        gettext("/ignore AnnoyingGuy pms"),
+        gettext("/ignore LoudPerson all 5m"),
         "/ignore"
       ]
     }
@@ -76,7 +79,7 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
   end
 
   defp build_ignore_result(_nick, _type, _) do
-    {:error, "Usage: /ignore <nickname> [type] [duration]"}
+    {:error, gettext("Usage: /ignore <nickname> [type] [duration]")}
   end
 
   @spec parse_duration(String.t()) :: {:ok, pos_integer()} | {:error, String.t()}
@@ -86,7 +89,7 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
         num = String.to_integer(num_str)
 
         if num <= 0 do
-          {:error, "Duration must be positive"}
+          {:error, gettext("Duration must be positive")}
         else
           seconds = num * unit_multiplier(unit)
           {:ok, seconds}
@@ -112,9 +115,11 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
 
     %CommandSyntax{
       command: "ignore",
-      syntax: "/ignore [nickname] [type] [duration]",
+      syntax: gettext("/ignore [nickname] [type] [duration]"),
       description:
-        "Hide messages from a specific user.\nTypes: all (default), messages, pms, actions, notices, invites.\nDuration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\nNo args: show your ignore list. You cannot ignore yourself.",
+        gettext(
+          "Hide messages from a specific user.\nTypes: all (default), messages, pms, actions, notices, invites.\nDuration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\nNo args: show your ignore list. You cannot ignore yourself."
+        ),
       category: :user,
       parameters: [
         %Parameter{
@@ -122,27 +127,27 @@ defmodule RetroHexChat.Commands.Handlers.Ignore do
           required: false,
           type: :nick,
           position: 0,
-          description: "User to ignore"
+          description: gettext("User to ignore")
         },
         %Parameter{
           name: "type",
           required: false,
           type: :text,
           position: 1,
-          description: "Type: all, messages, pms, actions, notices, invites"
+          description: gettext("Type: all, messages, pms, actions, notices, invites")
         },
         %Parameter{
           name: "duration",
           required: false,
           type: :text,
           position: 2,
-          description: "Duration: 5m, 1h, 2d"
+          description: gettext("Duration: 5m, 1h, 2d")
         }
       ],
       examples: [
-        "/ignore SpamBot",
-        "/ignore AnnoyingGuy pms",
-        "/ignore LoudPerson all 5m",
+        gettext("/ignore SpamBot"),
+        gettext("/ignore AnnoyingGuy pms"),
+        gettext("/ignore LoudPerson all 5m"),
         "/ignore"
       ]
     }

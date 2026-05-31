@@ -2,6 +2,7 @@ defmodule RetroHexChat.Chat.Service do
   @moduledoc """
   Orchestrates message sending: policy check -> persist -> PubSub broadcast.
   """
+  use Gettext, backend: RetroHexChat.Gettext
 
   require Logger
 
@@ -26,7 +27,8 @@ defmodule RetroHexChat.Chat.Service do
           {:ok, RetroHexChat.Chat.Message.t()} | {:error, String.t()}
   def edit_message(message_id, nickname, new_content) do
     with :ok <- Policy.validate_content(new_content),
-         %{} = message <- Queries.get_message(message_id) || {:error, "Message not found."},
+         %{} = message <-
+           Queries.get_message(message_id) || {:error, gettext("Message not found.")},
          :ok <- Policy.can_edit?(message, nickname),
          now <- DateTime.utc_now(),
          {:ok, updated} <- Queries.update_message_content(message, new_content, now) do
@@ -41,7 +43,7 @@ defmodule RetroHexChat.Chat.Service do
   def edit_private_message(pm_id, nickname, new_content) do
     with :ok <- Policy.validate_content(new_content),
          %{} = pm <-
-           Queries.get_private_message(pm_id) || {:error, "Message not found."},
+           Queries.get_private_message(pm_id) || {:error, gettext("Message not found.")},
          :ok <- Policy.can_edit?(Map.put(pm, :author_nickname, pm.sender_nickname), nickname),
          now <- DateTime.utc_now(),
          {:ok, updated} <- Queries.update_pm_content(pm, new_content, now) do
@@ -61,7 +63,8 @@ defmodule RetroHexChat.Chat.Service do
   @spec delete_message(integer(), String.t()) ::
           {:ok, RetroHexChat.Chat.Message.t()} | {:error, String.t()}
   def delete_message(message_id, nickname) do
-    with %{} = message <- Queries.get_message(message_id) || {:error, "Message not found."},
+    with %{} = message <-
+           Queries.get_message(message_id) || {:error, gettext("Message not found.")},
          :ok <- Policy.can_delete?(message, nickname),
          now <- DateTime.utc_now(),
          {:ok, deleted} <- Queries.soft_delete_message(message, now) do
@@ -74,7 +77,7 @@ defmodule RetroHexChat.Chat.Service do
   @spec delete_private_message(integer(), String.t()) ::
           {:ok, RetroHexChat.Chat.PrivateMessage.t()} | {:error, String.t()}
   def delete_private_message(pm_id, nickname) do
-    with %{} = pm <- Queries.get_private_message(pm_id) || {:error, "Message not found."},
+    with %{} = pm <- Queries.get_private_message(pm_id) || {:error, gettext("Message not found.")},
          :ok <- Policy.can_delete?(Map.put(pm, :author_nickname, pm.sender_nickname), nickname),
          now <- DateTime.utc_now(),
          {:ok, deleted} <- Queries.soft_delete_pm(pm, now) do
@@ -89,7 +92,7 @@ defmodule RetroHexChat.Chat.Service do
   def send_system_message(channel_name, content) do
     case Queries.insert_message(%{
            channel_name: channel_name,
-           author_nickname: "System",
+           author_nickname: gettext("System"),
            content: content,
            type: "system"
          }) do
@@ -122,7 +125,7 @@ defmodule RetroHexChat.Chat.Service do
   defp resolve_reply_attrs(reply_to_id, :message) do
     case Queries.get_message(reply_to_id) do
       nil ->
-        {:error, "Original message not found."}
+        {:error, gettext("Original message not found.")}
 
       parent ->
         preview = truncate_preview(parent.content)
@@ -139,7 +142,7 @@ defmodule RetroHexChat.Chat.Service do
   defp resolve_reply_attrs(reply_to_id, :pm) do
     case Queries.get_private_message(reply_to_id) do
       nil ->
-        {:error, "Original message not found."}
+        {:error, gettext("Original message not found.")}
 
       parent ->
         preview = truncate_preview(parent.content)

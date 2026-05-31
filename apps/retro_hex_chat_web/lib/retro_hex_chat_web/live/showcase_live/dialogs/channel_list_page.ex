@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -17,15 +18,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Channel List",
+       page_title: gettext("Channel List"),
        active_page: "channel-list",
        channels: [
-         %{name: "#lobby", user_count: 142, topic: "Welcome to RetroHexChat!"},
-         %{name: "#help", user_count: 38, topic: "Ask your questions here"},
-         %{name: "#dev", user_count: 24, topic: "Development discussion"},
-         %{name: "#music", user_count: 67, topic: "Share your favorite tunes"},
-         %{name: "#gaming", user_count: 89, topic: "Game on!"},
-         %{name: "#random", user_count: 53, topic: "Anything goes"}
+         %{name: "#lobby", user_count: 142, topic: gettext("Welcome to RetroHexChat!")},
+         %{name: "#help", user_count: 38, topic: gettext("Ask your questions here")},
+         %{name: "#dev", user_count: 24, topic: gettext("Development discussion")},
+         %{name: "#music", user_count: 67, topic: gettext("Share your favorite tunes")},
+         %{name: "#gaming", user_count: 89, topic: gettext("Game on!")},
+         %{name: "#random", user_count: 53, topic: gettext("Anything goes")}
        ]
      )}
   end
@@ -34,15 +35,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Channel List</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Channel List")}</h2>
 
       <.showcase_card
-        title="Channel List"
+        title={gettext("Channel List")}
         description="Searchable channel table with user count and topic."
       >
         <.button variant="outline" phx-click={show_modal("channel-list-demo")}>
           <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-          Channel List
+          {gettext("Channel List")}
         </.button>
         <.channel_list id="channel-list-demo" channels={@channels} />
         <.code_example>
@@ -57,12 +58,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
       </.showcase_card>
 
       <.showcase_card
-        title="With Selection"
+        title={gettext("With Selection")}
         description="Channel list with a channel pre-selected. Join button is enabled."
       >
         <.button variant="outline" phx-click={show_modal("channel-list-selected")}>
           <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-          Channel List (Selected)
+          {gettext("Channel List (Selected)")}
         </.button>
         <.channel_list
           id="channel-list-selected"
@@ -72,12 +73,12 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Loading State"
+        title={gettext("Loading State")}
         description="Channel list showing the 'Searching...' state while fetching channels."
       >
         <.button variant="outline" phx-click={show_modal("channel-list-loading")}>
           <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-          Channel List (Loading)
+          {gettext("Channel List (Loading)")}
         </.button>
         <.channel_list
           id="channel-list-loading"

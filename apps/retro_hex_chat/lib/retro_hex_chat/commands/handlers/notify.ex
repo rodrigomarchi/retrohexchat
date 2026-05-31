@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Notify do
   @moduledoc "Handler for /notify [add|remove|edit|list] [args]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -10,29 +11,30 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
   def validate("list"), do: :ok
 
   def validate("add") do
-    {:error, "Usage: /notify add <nickname> [note]"}
+    {:error, gettext("Usage: /notify add <nickname> [note]")}
   end
 
   def validate("add " <> _rest), do: :ok
 
   def validate("remove") do
-    {:error, "Usage: /notify remove <nickname>"}
+    {:error, gettext("Usage: /notify remove <nickname>")}
   end
 
   def validate("remove " <> _rest), do: :ok
 
   def validate("edit") do
-    {:error, "Usage: /notify edit <nickname> <note>"}
+    {:error, gettext("Usage: /notify edit <nickname> <note>")}
   end
 
   def validate("edit " <> rest) do
     case String.split(rest) do
-      [_nick] -> {:error, "Usage: /notify edit <nickname> <note>"}
+      [_nick] -> {:error, gettext("Usage: /notify edit <nickname> <note>")}
       [_nick | _note_words] -> :ok
     end
   end
 
-  def validate(_), do: {:error, "Unknown /notify subcommand. Use: add, remove, edit, list"}
+  def validate(_),
+    do: {:error, gettext("Unknown /notify subcommand. Use: add, remove, edit, list")}
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
@@ -70,14 +72,16 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
   def help do
     %{
       name: "notify",
-      syntax: "/notify [add|remove|edit|list] [args]",
+      syntax: gettext("/notify [add|remove|edit|list] [args]"),
       description:
-        "Track when specific users come online or go offline with your buddy list.\nSubcommands: add <nick> [note], remove <nick>, edit <nick> <note>, list. No args opens the dialog.\nRegistered users: persisted. Guests: session-only.",
+        gettext(
+          "Track when specific users come online or go offline with your buddy list.\nSubcommands: add <nick> [note], remove <nick>, edit <nick> <note>, list. No args opens the dialog.\nRegistered users: persisted. Guests: session-only."
+        ),
       examples: [
-        "/notify add Alice Works on Elixir",
-        "/notify remove Alice",
-        "/notify edit Alice New note",
-        "/notify list",
+        gettext("/notify add Alice Works on Elixir"),
+        gettext("/notify remove Alice"),
+        gettext("/notify edit Alice New note"),
+        gettext("/notify list"),
         "/notify"
       ]
     }
@@ -94,8 +98,9 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
 
     %CommandSyntax{
       command: "notify",
-      syntax: "/notify [add|remove|edit|list] [args]",
-      description: "Track when specific users come online or go offline with your buddy list.",
+      syntax: gettext("/notify [add|remove|edit|list] [args]"),
+      description:
+        gettext("Track when specific users come online or go offline with your buddy list."),
       category: :config,
       parameters: [
         %Parameter{
@@ -103,28 +108,28 @@ defmodule RetroHexChat.Commands.Handlers.Notify do
           required: false,
           type: :text,
           position: 0,
-          description: "Subcommand: add, remove, edit, list"
+          description: gettext("Subcommand: add, remove, edit, list")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Subcommand arguments"
+          description: gettext("Subcommand arguments")
         }
       ],
       examples: [
-        "/notify add Alice Works on Elixir",
-        "/notify remove Alice",
-        "/notify edit Alice New note",
-        "/notify list",
+        gettext("/notify add Alice Works on Elixir"),
+        gettext("/notify remove Alice"),
+        gettext("/notify edit Alice New note"),
+        gettext("/notify list"),
         "/notify"
       ],
       subcommands: [
-        %{name: "add", description: "Add a user to your notify list"},
-        %{name: "remove", description: "Remove a user from your notify list"},
-        %{name: "edit", description: "Edit a user's note"},
-        %{name: "list", description: "Show your notify list"}
+        %{name: "add", description: gettext("Add a user to your notify list")},
+        %{name: "remove", description: gettext("Remove a user from your notify list")},
+        %{name: "edit", description: gettext("Edit a user's note")},
+        %{name: "list", description: gettext("Show your notify list")}
       ]
     }
   end

@@ -6,6 +6,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   require Logger
 
   alias RetroHexChat.Accounts.{NickColors, Session}
@@ -204,14 +206,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     alias RetroHexChat.Presence.NotifyList
     {:ok, info} = NotifyList.whois_info(nickname)
 
-    info_lines = ["[Auto-Whois] #{nickname}:"]
+    info_lines = [gettext("[Auto-Whois] %{nickname}:", nickname: nickname)]
 
     info_lines =
       if info.registered do
-        registered = if info.identified, do: "identified", else: "not identified"
-        info_lines ++ ["  Registered: yes (#{registered})"]
+        registered =
+          if info.identified, do: gettext("identified"), else: gettext("not identified")
+
+        info_lines ++
+          [gettext("  Registered: yes (%{status})", status: registered)]
       else
-        info_lines ++ ["  Registered: no"]
+        info_lines ++ [gettext("  Registered: no")]
       end
 
     Enum.reduce(info_lines, socket, fn line, acc ->
@@ -249,7 +254,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
       socket
       |> assign(flash_channels: flash)
-      |> push_event("title_flash_start", %{message: "* New activity"})
+      |> push_event("title_flash_start", %{message: gettext("* New activity")})
     else
       socket
     end
@@ -295,7 +300,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       socket
       |> restore_welcomed_channels(Map.get(params, "welcomed_channels", []))
       |> assign(reconnect_active_channel: active_channel, reconnect_active_pm: active_pm)
-      |> Messages.system_event("* Restoring session...")
+      |> Messages.system_event(gettext("* Restoring session..."))
 
     if channels != [] do
       Process.send_after(self(), {:execute_rejoin, 0, channels}, 200)
@@ -402,14 +407,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       end)
 
     socket
-    |> Messages.system_event("You are now known as #{new_nick}")
+    |> Messages.system_event(gettext("You are now known as %{nickname}", nickname: new_nick))
     |> assign(session: session, channel_users: users)
   end
 
   @spec handle_quit(Phoenix.LiveView.Socket.t(), String.t() | nil) :: Phoenix.LiveView.Socket.t()
   def handle_quit(socket, reason) do
     session = socket.assigns.session
-    quit_reason = reason || "Leaving"
+    quit_reason = reason || gettext("Leaving")
     ChannelHelpers.cleanup_channels(session, quit_reason)
 
     socket
@@ -427,7 +432,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     end)
 
     socket
-    |> Messages.system_event("You are now away: #{message}")
+    |> Messages.system_event(gettext("You are now away: %{message}", message: message))
     |> assign(session: session)
   end
 
@@ -451,14 +456,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
         socket
         |> assign(session: session)
         |> rebuild_nick_color_fn(session)
-        |> Messages.system_event("You are now identified as #{nickname}")
+        |> Messages.system_event(
+          gettext("You are now identified as %{nickname}", nickname: nickname)
+        )
 
       NickServ.registered?(nickname) ->
         NickServ.start_identify_timer(nickname)
 
         notice =
-          "[NickServ] This nickname is registered. " <>
-            "You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+          gettext(
+            "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+          )
 
         Messages.service_event(socket, "NickServ", notice)
 

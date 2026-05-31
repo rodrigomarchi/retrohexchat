@@ -23,19 +23,19 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
   alias RetroHexChatWeb.Icons
 
   @default_categories [
-    {"Smileys", ~w(😀 😃 😄 😁 😆 😅 🤣 😂 🙂 🙃 😉 😊 😇 🥰 😍 🤩 😘 😗 😚 😙 🥲 😋 😛 😜 🤪 😝)},
-    {"People", ~w(👋 🤚 🖐 ✋ 🖖 👌 🤌 🤏 ✌ 🤞 🤟 🤘 🤙 👈 👉 👆 🖕 👇 ☝ 👍 👎 ✊ 👊 🤛 🤜)},
-    {"Nature", ~w(🐶 🐱 🐭 🐹 🐰 🦊 🐻 🐼 🐨 🐯 🦁 🐮 🐷 🐸 🐵 🐔 🐧 🐦 🐤 🦆 🦅 🦉 🦇 🐺)},
-    {"Food", ~w(🍎 🍐 🍊 🍋 🍌 🍉 🍇 🍓 🫐 🍈 🍒 🍑 🥭 🍍 🥥 🥝 🍅 🥑 🍆 🥒 🌶 🫑 🌽 🥕)},
-    {"Objects", ~w(⌚ 📱 💻 ⌨ 🖥 🖨 🖱 🖲 🕹 🗜 💾 💿 📼 📷 📹 🎥 📞 ☎ 📟 📠 📺 📻 🎙 🎚)},
-    {"Symbols", ~w(❤ 🧡 💛 💚 💙 💜 🖤 🤍 🤎 💔 ❣ 💕 💞 💓 💗 💖 💘 💝 💟 ☮ ✝ ☪ 🕉 ☸)}
+    {"smileys", ~w(😀 😃 😄 😁 😆 😅 🤣 😂 🙂 🙃 😉 😊 😇 🥰 😍 🤩 😘 😗 😚 😙 🥲 😋 😛 😜 🤪 😝)},
+    {"people", ~w(👋 🤚 🖐 ✋ 🖖 👌 🤌 🤏 ✌ 🤞 🤟 🤘 🤙 👈 👉 👆 🖕 👇 ☝ 👍 👎 ✊ 👊 🤛 🤜)},
+    {"nature", ~w(🐶 🐱 🐭 🐹 🐰 🦊 🐻 🐼 🐨 🐯 🦁 🐮 🐷 🐸 🐵 🐔 🐧 🐦 🐤 🦆 🦅 🦉 🦇 🐺)},
+    {"food", ~w(🍎 🍐 🍊 🍋 🍌 🍉 🍇 🍓 🫐 🍈 🍒 🍑 🥭 🍍 🥥 🥝 🍅 🥑 🍆 🥒 🌶 🫑 🌽 🥕)},
+    {"objects", ~w(⌚ 📱 💻 ⌨ 🖥 🖨 🖱 🖲 🕹 🗜 💾 💿 📼 📷 📹 🎥 📞 ☎ 📟 📠 📺 📻 🎙 🎚)},
+    {"symbols", ~w(❤ 🧡 💛 💚 💙 💜 🖤 🤍 🤎 💔 ❣ 💕 💞 💓 💗 💖 💘 💝 💟 ☮ ✝ ☪ 🕉 ☸)}
   ]
 
   @doc "Renders the emoji picker window."
   attr :id, :string, required: true
   attr :visible, :boolean, default: true, doc: "Show/hide the picker"
   attr :search, :string, default: ""
-  attr :active_category, :string, default: "Smileys"
+  attr :active_category, :string, default: "smileys"
   attr :selected_emoji, :string, default: nil, doc: "Currently previewed emoji"
 
   attr :categories, :list,
@@ -69,7 +69,7 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
       data-testid="emoji-picker"
       {@rest}
     >
-      <.window_title_bar title="Emoji" controls={[:close]} on_close={@on_close}>
+      <.window_title_bar title={gettext("Emoji")} controls={[:close]} on_close={@on_close}>
         <:icon><Icons.icon_fmt_emoji class="w-4 h-4" /></:icon>
       </.window_title_bar>
 
@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
             type="button"
             class={[
               "px-retro-4 py-retro-2 text-[10px] border-b-2 cursor-pointer",
-              if(name == @active_category,
+              if(category_active?(name, @active_category),
                 do: "border-primary font-bold",
                 else: "border-transparent text-muted-foreground hover:text-foreground"
               )
@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
             phx-click={@on_category}
             phx-value-category={name}
           >
-            {name}
+            {translate_category(name)}
           </button>
         </div>
 
@@ -99,7 +99,7 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
             <.input
               type="text"
               value={@search}
-              placeholder="Search emoji..."
+              placeholder={gettext("Search emoji...")}
               class="w-full text-xs"
               name="emoji_search"
               phx-debounce="200"
@@ -112,7 +112,7 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
         <div class="h-[180px] overflow-y-auto retro-scrollbar px-retro-4 pb-retro-4">
           <div
             :for={{name, emojis} <- @resolved_categories}
-            class={if(name != @active_category, do: "hidden")}
+            class={unless(category_active?(name, @active_category), do: "hidden")}
           >
             <div class="grid grid-cols-8 gap-retro-2">
               <button
@@ -132,7 +132,7 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
         <div class="flex items-center gap-retro-4 px-retro-4 py-retro-2 border-t border-border bg-surface text-xs">
           <span class="text-lg">{@selected_emoji || "😀"}</span>
           <span class="text-muted-foreground">
-            {if @selected_emoji, do: "click to insert", else: "hover to preview"}
+            {if @selected_emoji, do: gettext("click to insert"), else: gettext("hover to preview")}
           </span>
         </div>
       </.window_body>
@@ -143,4 +143,32 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
   @spec emoji_char(map() | String.t()) :: String.t()
   defp emoji_char(%{char: char}), do: char
   defp emoji_char(str) when is_binary(str), do: str
+
+  defp category_active?(name, active_category) do
+    normalize_category(name) == normalize_category(active_category)
+  end
+
+  defp normalize_category(category) when is_binary(category) do
+    category
+    |> String.downcase()
+    |> String.replace(~r/[^a-z0-9]+/u, "_")
+    |> String.trim("_")
+  end
+
+  defp normalize_category(category), do: category |> to_string() |> normalize_category()
+
+  defp translate_category("smileys"), do: gettext("Smileys")
+  defp translate_category("people"), do: gettext("People")
+  defp translate_category("nature"), do: gettext("Nature")
+  defp translate_category("food"), do: gettext("Food")
+  defp translate_category("Smileys & Emotion"), do: gettext("Smileys & Emotion")
+  defp translate_category("People & Body"), do: gettext("People & Body")
+  defp translate_category("Animals & Nature"), do: gettext("Animals & Nature")
+  defp translate_category("Food & Drink"), do: gettext("Food & Drink")
+  defp translate_category("Travel & Places"), do: gettext("Travel & Places")
+  defp translate_category("Activities"), do: gettext("Activities")
+  defp translate_category("Objects"), do: gettext("Objects")
+  defp translate_category("Symbols"), do: gettext("Symbols")
+  defp translate_category("search_results"), do: gettext("Search Results")
+  defp translate_category(category), do: category
 end

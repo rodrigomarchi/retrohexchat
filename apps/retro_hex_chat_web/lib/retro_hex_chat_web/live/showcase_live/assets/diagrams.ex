@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Assets.Diagrams do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,7 +15,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Diagrams do
   @impl true
   def mount(_params, _session, socket) do
     groups = build_groups()
-    {:ok, assign(socket, page_title: "Diagrams", active_page: "diagrams", groups: groups)}
+
+    {:ok,
+     assign(socket, page_title: gettext("Diagrams"), active_page: "diagrams", groups: groups)}
   end
 
   defp build_groups do
@@ -31,15 +34,17 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Diagrams do
 
   defp categorize(diagrams) do
     groups = [
-      {"P2P", "Flow and architecture diagrams", &String.starts_with?(&1, "diagram_p2p_")},
-      {"Security", "Encryption layers and protocol diagrams",
+      {"P2P", gettext("Flow and architecture diagrams"),
+       &String.starts_with?(&1, "diagram_p2p_")},
+      {gettext("Security"), gettext("Encryption layers and protocol diagrams"),
        &String.starts_with?(&1, "diagram_security_")},
-      {"Voice", "Voice/video call mockups", &String.starts_with?(&1, "diagram_voice_")},
-      {"Game Flows", "P2P multiplayer and solo arcade flow",
+      {gettext("Voice"), gettext("Voice/video call mockups"),
+       &String.starts_with?(&1, "diagram_voice_")},
+      {gettext("Game Flows"), gettext("P2P multiplayer and solo arcade flow"),
        &(&1 in ["diagram_p2p_games", "diagram_arcade_flow"])},
-      {"Game Screens", "Win98-style game screen illustrations",
+      {gettext("Game Screens"), gettext("Win98-style game screen illustrations"),
        &String.starts_with?(&1, "diagram_game_")},
-      {"Arcade Logos", "Solo Arcade game logos/cover art",
+      {gettext("Arcade Logos"), gettext("Solo Arcade game logos/cover art"),
        &(String.starts_with?(&1, "diagram_arcade_") and &1 != "diagram_arcade_flow")}
     ]
 
@@ -54,9 +59,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Diagrams do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Diagrams</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Diagrams")}</h2>
       <p class="text-xs text-muted-foreground mb-4">
-        Auto-discovered from submodules. Each diagram gets its own window.
+        {gettext("Auto-discovered from submodules. Each diagram gets its own window.")}
       </p>
 
       <div :for={{mod, _title, _description, diagrams} <- @groups}>

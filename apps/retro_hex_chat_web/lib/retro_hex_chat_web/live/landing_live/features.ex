@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.LandingLive.Features do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.LandingLive.LandingHelpers
   import RetroHexChatWeb.Components.UI.Window
@@ -14,10 +15,12 @@ defmodule RetroHexChatWeb.LandingLive.Features do
     {:ok,
      assign(socket,
        active_page: :features,
-       page_title: "Features — Retro Hex Chat",
+       page_title: gettext("Features — Retro Hex Chat"),
        page_description:
-         "Real-time chat, channels, P2P voice/video calls, 28 multiplayer games, " <>
-           "18 classic arcade games, programmable bots, IRC-style commands, and built-in help."
+         gettext("Real-time chat, channels, P2P voice/video calls, 28 multiplayer games, ") <>
+           gettext(
+             "18 classic arcade games, programmable bots, IRC-style commands, and built-in help."
+           )
      )}
   end
 

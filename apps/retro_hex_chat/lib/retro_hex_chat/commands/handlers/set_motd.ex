@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.SetMotd do
   @moduledoc "Handler for /setmotd <text> — admin sets the MOTD."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -12,18 +13,18 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{is_admin: false}) do
-    {:error, "Permission denied: you must be a server administrator."}
+    {:error, gettext("Permission denied: you must be a server administrator.")}
   end
 
   def execute([], _context) do
-    {:error, "Usage: /setmotd <text>"}
+    {:error, gettext("Usage: /setmotd <text>")}
   end
 
   def execute(args, %{is_admin: true, nickname: nickname}) do
     content = Enum.join(args, " ")
 
     case Motd.set(content, nickname) do
-      :ok -> {:ok, :system, %{content: "MOTD has been updated."}}
+      :ok -> {:ok, :system, %{content: gettext("MOTD has been updated.")}}
       {:error, msg} -> {:error, msg}
     end
   end
@@ -38,10 +39,12 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
   def help do
     %{
       name: "setmotd",
-      syntax: "/setmotd <text>",
+      syntax: gettext("/setmotd <text>"),
       description:
-        "Set the server's Message of the Day shown to all users when they connect.\nRequires: server administrator. Message text is required.",
-      examples: ["/setmotd Welcome to RetroHexChat!"]
+        gettext(
+          "Set the server's Message of the Day shown to all users when they connect.\nRequires: server administrator. Message text is required."
+        ),
+      examples: [gettext("/setmotd Welcome to RetroHexChat!")]
     }
   end
 
@@ -56,8 +59,9 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
 
     %CommandSyntax{
       command: "setmotd",
-      syntax: "/setmotd <text>",
-      description: "Set the server's Message of the Day shown to all users when they connect.",
+      syntax: gettext("/setmotd <text>"),
+      description:
+        gettext("Set the server's Message of the Day shown to all users when they connect."),
       category: :advanced,
       parameters: [
         %Parameter{
@@ -65,10 +69,10 @@ defmodule RetroHexChat.Commands.Handlers.SetMotd do
           required: true,
           type: :text,
           position: 0,
-          description: "Message of the Day text"
+          description: gettext("Message of the Day text")
         }
       ],
-      examples: ["/setmotd Welcome to RetroHexChat!"]
+      examples: [gettext("/setmotd Welcome to RetroHexChat!")]
     }
   end
 end

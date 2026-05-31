@@ -7,6 +7,7 @@ defmodule RetroHexChat.Bots.Server do
   Supports stateful capabilities via `capability_states` and timer-driven
   capabilities via `capability_timers`.
   """
+  use Gettext, backend: RetroHexChat.Gettext
   use GenServer, restart: :transient
 
   require Logger
@@ -140,7 +141,7 @@ defmodule RetroHexChat.Bots.Server do
 
   def handle_call({:join_channel, channel_name}, _from, state) do
     if Map.has_key?(state.channels, channel_name) do
-      {:reply, {:error, "Already in channel"}, state}
+      {:reply, {:error, gettext("Already in channel")}, state}
     else
       Phoenix.PubSub.subscribe(@pubsub, "channel:#{channel_name}")
 
@@ -159,7 +160,7 @@ defmodule RetroHexChat.Bots.Server do
       new_channels = Map.delete(state.channels, channel_name)
       {:reply, :ok, %{state | channels: new_channels}}
     else
-      {:reply, {:error, "Not in channel"}, state}
+      {:reply, {:error, gettext("Not in channel")}, state}
     end
   end
 
@@ -752,7 +753,7 @@ defmodule RetroHexChat.Bots.Server do
 
   @spec part_channel_process(String.t(), String.t()) :: :ok
   defp part_channel_process(channel_name, nickname) do
-    Channels.Server.part(channel_name, nickname, "Bot leaving")
+    Channels.Server.part(channel_name, nickname, gettext("Bot leaving"))
     :ok
   rescue
     _ -> :ok

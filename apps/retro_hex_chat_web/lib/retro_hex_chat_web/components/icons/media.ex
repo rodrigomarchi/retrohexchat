@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Media do
   Icons depicting audio, video, and media device concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

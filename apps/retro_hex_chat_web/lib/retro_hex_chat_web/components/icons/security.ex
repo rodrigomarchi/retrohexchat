@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.Security do
   Icons depicting security, privacy, and access control concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

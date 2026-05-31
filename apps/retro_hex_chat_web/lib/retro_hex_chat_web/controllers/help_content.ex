@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.HelpContent do
   replacing hyphens with underscores (e.g., `"cmd-join"` → `cmd_join/1`).
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.HelpLive.HelpHelpers, only: [help_h4: 1, help_link: 1]
   import RetroHexChatWeb.Components.Diagrams

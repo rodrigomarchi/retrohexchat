@@ -1,44 +1,60 @@
 <p>
-  One intense period of 3 minutes — the puck moves 25% faster and tackles
-  succeed 80% of the time. Pure intensity from start to finish. With nearly
-  guaranteed tackles, defense is almost impossible — score fast or get scored on.
+  {gettext(
+    "One intense period of 3 minutes — the puck moves 25% faster and tackles succeed 80% of the time. Pure intensity from start to finish. With nearly guaranteed tackles, defense is almost impossible — score fast or get scored on."
+  )}
 </p>
 <.diagram_game_hockey class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow keys or WASD</strong> — Move in 8 directions</li>
-  <li><strong>Space or Shift (with puck)</strong> — Shoot in your facing direction</li>
-  <li><strong>Space or Shift (without puck)</strong> — Tackle opponent to steal puck</li>
-</ul>
-<.help_h4 icon={:icon_rules}>Blitz Differences</.help_h4>
-<ul>
-  <li><strong>1 period</strong> of 3 minutes (no side switching)</li>
-  <li><strong>Faster puck</strong> — 25% speed increase on all shots</li>
-  <li><strong>80% tackle success</strong> — more aggressive, less risk</li>
-  <li>Tied at the end? Sudden death — next goal wins</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>Strategy Tips</.help_h4>
-<ul>
+  <li><strong>{gettext("Arrow keys or WASD")}</strong> {gettext("— Move in 8 directions")}</li>
   <li>
-    <strong>Shoot immediately</strong>
-    — With 80% tackle success, holding the puck is dangerous. Shoot on sight.
+    <strong>{gettext("Space or Shift (with puck)")}</strong> {gettext(
+      "— Shoot in your facing direction"
+    )}
   </li>
   <li>
-    <strong>Tackle aggressively</strong>
-    — The 80% success rate means tackling is almost always worth it. Chase the puck carrier relentlessly.
-  </li>
-  <li>
-    <strong>Use the faster puck</strong>
-    — The 25% speed boost makes long-range shots more effective. Catch the opponent off guard.
-  </li>
-  <li>
-    <strong>Sudden death mindset</strong>
-    — If tied at the end, the next goal wins. Stay composed under pressure.
+    <strong>{gettext("Space or Shift (without puck)")}</strong> {gettext(
+      "— Tackle opponent to steal puck"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Blitz Differences")}</.help_h4>
+<ul>
+  <li><strong>{gettext("1 period")}</strong> {gettext("of 3 minutes (no side switching)")}</li>
+  <li>
+    <strong>{gettext("Faster puck")}</strong> {gettext("— 25% speed increase on all shots")}
+  </li>
+  <li>
+    <strong>{gettext("80% tackle success")}</strong> {gettext("— more aggressive, less risk")}
+  </li>
+  <li>{gettext("Tied at the end? Sudden death — next goal wins")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("Shoot immediately")}</strong>
+    {gettext("— With 80% tackle success, holding the puck is dangerous. Shoot on sight.")}
+  </li>
+  <li>
+    <strong>{gettext("Tackle aggressively")}</strong>
+    {gettext(
+      "— The 80% success rate means tackling is almost always worth it. Chase the puck carrier relentlessly."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Use the faster puck")}</strong>
+    {gettext(
+      "— The 25% speed boost makes long-range shots more effective. Catch the opponent off guard."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Sudden death mindset")}</strong>
+    {gettext("— If tied at the end, the next goal wins. Stay composed under pressure.")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-hockey">Hex Hockey</.help_link>
-  · <.help_link topic="feature-hex-hockey-showdown">Showdown</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
+  <.help_link topic="feature-hex-hockey">{gettext("Hex Hockey")}</.help_link>
+  · <.help_link topic="feature-hex-hockey-showdown">{gettext("Showdown")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
 </p>

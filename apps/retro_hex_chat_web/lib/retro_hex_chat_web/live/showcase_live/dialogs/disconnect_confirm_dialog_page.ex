@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.DisconnectConfirmDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -17,7 +18,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.DisconnectConfirmDialogPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Disconnect Confirm Dialog",
+       page_title: gettext("Disconnect Confirm Dialog"),
        active_page: "disconnect-confirm-dialog"
      )}
   end
@@ -26,15 +27,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.DisconnectConfirmDialogPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Disconnect Confirm Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Disconnect Confirm Dialog")}</h2>
 
       <.showcase_card
-        title="Disconnect from Server"
+        title={gettext("Disconnect from Server")}
         description="Confirmation dialog shown before disconnecting from the IRC server."
       >
         <.button variant="destructive" phx-click={show_modal("disconnect-confirm")}>
           <:icon><Icons.icon_btn_disconnect class="w-4 h-4" /></:icon>
-          Disconnect
+          {gettext("Disconnect")}
         </.button>
         <.disconnect_confirm_dialog id="disconnect-confirm" />
         <.code_example>

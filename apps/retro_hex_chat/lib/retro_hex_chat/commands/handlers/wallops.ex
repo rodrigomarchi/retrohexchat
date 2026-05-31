@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Wallops do
   @moduledoc "Handler for /wallops <message> — broadcast to +w users."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -14,11 +15,11 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(_args, %{is_admin: false, is_server_operator: false}) do
-    {:error, "Permission denied: you must be a server operator."}
+    {:error, gettext("Permission denied: you must be a server operator.")}
   end
 
   def execute([], _context) do
-    {:error, "Usage: /wallops <message>"}
+    {:error, gettext("Usage: /wallops <message>")}
   end
 
   def execute(args, context) do
@@ -35,7 +36,7 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
        }}
     )
 
-    {:ok, :system, %{content: "Wallops sent."}}
+    {:ok, :system, %{content: gettext("Wallops sent.")}}
   end
 
   @impl true
@@ -48,10 +49,12 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
   def help do
     %{
       name: "wallops",
-      syntax: "/wallops <message>",
+      syntax: gettext("/wallops <message>"),
       description:
-        "Send a message to all users who opted in to operator announcements via /umode +w.\nRequires: server operator or server administrator. Message text is required.",
-      examples: ["/wallops Server maintenance in 10 minutes"]
+        gettext(
+          "Send a message to all users who opted in to operator announcements via /umode +w.\nRequires: server operator or server administrator. Message text is required."
+        ),
+      examples: [gettext("/wallops Server maintenance in 10 minutes")]
     }
   end
 
@@ -66,9 +69,11 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
 
     %CommandSyntax{
       command: "wallops",
-      syntax: "/wallops <message>",
+      syntax: gettext("/wallops <message>"),
       description:
-        "Send a message to all users who opted in to operator announcements via /umode +w.",
+        gettext(
+          "Send a message to all users who opted in to operator announcements via /umode +w."
+        ),
       category: :user,
       parameters: [
         %Parameter{
@@ -76,10 +81,10 @@ defmodule RetroHexChat.Commands.Handlers.Wallops do
           required: true,
           type: :text,
           position: 0,
-          description: "Message for all users with +w mode"
+          description: gettext("Message for all users with +w mode")
         }
       ],
-      examples: ["/wallops Server maintenance in 10 minutes"]
+      examples: [gettext("/wallops Server maintenance in 10 minutes")]
     }
   end
 end

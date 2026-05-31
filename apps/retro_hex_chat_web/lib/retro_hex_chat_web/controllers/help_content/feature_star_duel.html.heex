@@ -1,47 +1,51 @@
 <p>
-  Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles while drifting
-  through wraparound space. Use hyperspace warp to escape — but there's a 20% chance it
-  kills you. First to 7 wins.
+  {gettext(
+    "Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles while drifting through wraparound space. Use hyperspace warp to escape — but there's a 20% chance it kills you. First to 7 wins."
+  )}
 </p>
 <.diagram_game_space class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
-  <li><strong>Arrow Up / W</strong> — Thrust forward</li>
-  <li><strong>Arrow Left / A</strong> — Rotate left</li>
-  <li><strong>Arrow Right / D</strong> — Rotate right</li>
-  <li><strong>Space</strong> — Fire missile</li>
-  <li><strong>Arrow Down / S</strong> — Hyperspace warp (random teleport, 20% death chance)</li>
-</ul>
-<.help_h4 icon={:icon_rules}>Rules</.help_h4>
-<ul>
-  <li>Ships have full Newtonian inertia — you keep drifting after thrusting</li>
-  <li>Slight drag slows you gradually, but momentum is king</li>
-  <li>The arena wraps around — fly off one edge, appear on the other</li>
-  <li>Up to 3 missiles in flight per player, with a brief cooldown between shots</li>
-  <li>Missiles inherit your ship's velocity plus their own thrust</li>
-  <li>Missiles expire after 1.5 seconds if they don't hit anything</li>
-  <li>Ship-to-ship collision kills both players (no point awarded)</li>
-  <li>Hyperspace warp: random position, 20% death chance, 3-second cooldown</li>
-  <li>2 seconds of invulnerability after each respawn</li>
-  <li>First to 7 kills wins the match</li>
-</ul>
-<.help_h4 icon={:icon_tab_modes}>Modes</.help_h4>
-<ul>
+  <li><strong>{gettext("Arrow Up / W")}</strong> {gettext("— Thrust forward")}</li>
+  <li><strong>{gettext("Arrow Left / A")}</strong> {gettext("— Rotate left")}</li>
+  <li><strong>{gettext("Arrow Right / D")}</strong> {gettext("— Rotate right")}</li>
+  <li><strong>{gettext("Space")}</strong> {gettext("— Fire missile")}</li>
   <li>
-    <.help_link topic="feature-gravity-well">Gravity Well</.help_link>
-    — Central star pulls ships and missiles into orbital trajectories
-  </li>
-  <li>
-    <.help_link topic="feature-debris-field">Debris Field</.help_link>
-    — 8 asteroids block missiles and kill ships on contact
+    <strong>{gettext("Arrow Down / S")}</strong> {gettext(
+      "— Hyperspace warp (random teleport, 20% death chance)"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Based on Spacewar! (1962) — the grandfather of space combat games.</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules")}</.help_h4>
+<ul>
+  <li>{gettext("Ships have full Newtonian inertia — you keep drifting after thrusting")}</li>
+  <li>{gettext("Slight drag slows you gradually, but momentum is king")}</li>
+  <li>{gettext("The arena wraps around — fly off one edge, appear on the other")}</li>
+  <li>{gettext("Up to 3 missiles in flight per player, with a brief cooldown between shots")}</li>
+  <li>{gettext("Missiles inherit your ship's velocity plus their own thrust")}</li>
+  <li>{gettext("Missiles expire after 1.5 seconds if they don't hit anything")}</li>
+  <li>{gettext("Ship-to-ship collision kills both players (no point awarded)")}</li>
+  <li>{gettext("Hyperspace warp: random position, 20% death chance, 3-second cooldown")}</li>
+  <li>{gettext("2 seconds of invulnerability after each respawn")}</li>
+  <li>{gettext("First to 7 kills wins the match")}</li>
+</ul>
+<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
+<ul>
+  <li>
+    <.help_link topic="feature-gravity-well">{gettext("Gravity Well")}</.help_link>
+    {gettext("— Central star pulls ships and missiles into orbital trajectories")}
+  </li>
+  <li>
+    <.help_link topic="feature-debris-field">{gettext("Debris Field")}</.help_link>
+    {gettext("— 8 asteroids block missiles and kill ships on contact")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<p>{gettext("Based on Spacewar! (1962) — the grandfather of space combat games.")}</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-gravity-well">Gravity Well</.help_link>
-  · <.help_link topic="feature-debris-field">Debris Field</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-gravity-well">{gettext("Gravity Well")}</.help_link>
+  · <.help_link topic="feature-debris-field">{gettext("Debris Field")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Join do
   @moduledoc "Handler for /join #channel [password]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -9,25 +10,25 @@ defmodule RetroHexChat.Commands.Handlers.Join do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Usage: /join #channel [password]"}
+  def validate(""), do: {:error, gettext("Usage: /join #channel [password]")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /join #channel [password]"}
+  def execute([], _context), do: {:error, gettext("Usage: /join #channel [password]")}
 
   def execute([channel_name | rest], context) do
     password = List.first(rest)
 
     cond do
       not String.starts_with?(channel_name, "#") ->
-        {:error, "Invalid channel name. Channel names must start with #"}
+        {:error, gettext("Invalid channel name. Channel names must start with #")}
 
       String.length(channel_name) > 50 ->
-        {:error, "Channel name too long (max 50 characters)"}
+        {:error, gettext("Channel name too long (max 50 characters)")}
 
       String.contains?(channel_name, " ") ->
-        {:error, "Channel name cannot contain spaces"}
+        {:error, gettext("Channel name cannot contain spaces")}
 
       length(context.channels) >= max_channels() ->
         {:error, "Maximum channel limit reached (#{max_channels()})"}
@@ -50,10 +51,12 @@ defmodule RetroHexChat.Commands.Handlers.Join do
   def help do
     %{
       name: "join",
-      syntax: "/join #channel [password]",
+      syntax: gettext("/join #channel [password]"),
       description:
-        "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set.",
-      examples: ["/join #elixir", "/join #secret mypassword"]
+        gettext(
+          "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set."
+        ),
+      examples: [gettext("/join #elixir"), gettext("/join #secret mypassword")]
     }
   end
 
@@ -68,9 +71,11 @@ defmodule RetroHexChat.Commands.Handlers.Join do
 
     %CommandSyntax{
       command: "join",
-      syntax: "/join #channel [password]",
+      syntax: gettext("/join #channel [password]"),
       description:
-        "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set.",
+        gettext(
+          "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\nChannel name must start with #, max 50 characters, no spaces.\nMax 10 channels at once. Password required if channel has +k mode set."
+        ),
       category: :channel,
       parameters: [
         %Parameter{
@@ -78,17 +83,17 @@ defmodule RetroHexChat.Commands.Handlers.Join do
           required: true,
           type: :channel,
           position: 0,
-          description: "Channel name"
+          description: gettext("Channel name")
         },
         %Parameter{
           name: "password",
           required: false,
           type: :text,
           position: 1,
-          description: "Channel password (if key-protected)"
+          description: gettext("Channel password (if key-protected)")
         }
       ],
-      examples: ["/join #elixir", "/join #secret mypassword"]
+      examples: [gettext("/join #elixir"), gettext("/join #secret mypassword")]
     }
   end
 

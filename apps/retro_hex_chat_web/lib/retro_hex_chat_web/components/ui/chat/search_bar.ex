@@ -51,7 +51,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
       data-testid="search-bar"
       {@rest}
     >
-      <.window_title_bar title="Find" controls={[:close]} on_close={@on_close}>
+      <.window_title_bar title={gettext("Find")} controls={[:close]} on_close={@on_close}>
         <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
       </.window_title_bar>
 
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
             type="text"
             id="search-bar-input"
             value={@query}
-            placeholder="Find text..."
+            placeholder={gettext("Find text...")}
             class="flex-1"
             name="query"
             phx-debounce="300"
@@ -91,7 +91,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
             data-testid="search-bar-prev"
           >
             <:icon><Icons.icon_btn_prev class="w-4 h-4" /></:icon>
-            Prev
+            {gettext("Prev")}
           </.button>
           <.button
             size="sm"
@@ -101,7 +101,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
             data-testid="search-bar-next"
           >
             <:icon><Icons.icon_btn_next class="w-4 h-4" /></:icon>
-            Next
+            {gettext("Next")}
           </.button>
         </div>
 
@@ -114,7 +114,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
               phx-click={@on_toggle_filter}
               phx-value-filter="case_sensitive"
               data-testid="search-bar-case-sensitive"
-            /> Case sensitive
+            /> {gettext("Case sensitive")}
           </label>
           <label class="flex items-center gap-retro-4 text-xs cursor-pointer">
             <.checkbox
@@ -123,7 +123,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
               phx-click={@on_toggle_filter}
               phx-value-filter="regex"
               data-testid="search-bar-regex"
-            /> Regex
+            /> {gettext("Regex")}
           </label>
           <label class="flex items-center gap-retro-4 text-xs cursor-pointer">
             <.checkbox
@@ -132,7 +132,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
               phx-click={@on_toggle_filter}
               phx-value-filter="my_mentions"
               data-testid="search-bar-my-mentions"
-            /> My mentions
+            /> {gettext("My mentions")}
           </label>
           <label class="flex items-center gap-retro-4 text-xs cursor-pointer">
             <.checkbox
@@ -141,7 +141,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
               phx-click={@on_toggle_filter}
               phx-value-filter="history"
               data-testid="search-bar-history"
-            /> Search history
+            /> {gettext("Search history")}
           </label>
         </div>
       </.window_body>

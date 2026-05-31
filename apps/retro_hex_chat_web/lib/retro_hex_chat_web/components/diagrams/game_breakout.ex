@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameBreakout do
   @moduledoc "SVG game screen diagram for Block Breakers."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -15,7 +16,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameBreakout do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Block Breakers game screen: two paddles with colored block rows between them"
+      aria-label={
+        gettext("Block Breakers game screen: two paddles with colored block rows between them")
+      }
     >
       {win98_chrome("Block Breakers")}
       <%!-- Block rows --%>
@@ -38,10 +41,10 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameBreakout do
       <rect x="250" y="220" width="6" height="6" fill="#fff" />
       <%!-- Score + Lives --%>
       <text x="30" y="340" fill="#00ff41" font-size="10" font-family="'Courier New',monospace">
-        Score: 340
+        {gettext("Score: 340")}
       </text>
       <text x="420" y="340" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        Lives: 2
+        {gettext("Lives: 2")}
       </text>
     </svg>
     """

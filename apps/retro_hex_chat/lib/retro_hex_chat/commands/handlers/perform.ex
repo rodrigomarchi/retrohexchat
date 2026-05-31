@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Perform do
   @moduledoc "Handler for /perform [subcommand] [args]"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -12,28 +13,34 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
 
   def validate("add " <> rest) do
     if String.trim(rest) == "" do
-      {:error, "Usage: /perform add <command>"}
+      {:error, gettext("Usage: /perform add <command>")}
     else
       :ok
     end
   end
 
-  def validate("add"), do: {:error, "Usage: /perform add <command>"}
+  def validate("add"), do: {:error, gettext("Usage: /perform add <command>")}
 
   def validate("remove " <> rest) do
     case Integer.parse(String.trim(rest)) do
-      {_, ""} -> :ok
-      _ -> {:error, "Invalid position: #{String.trim(rest)}. Must be a number."}
+      {_, ""} ->
+        :ok
+
+      _ ->
+        {:error,
+         gettext("Invalid position: %{string_trim_rest}. Must be a number.",
+           string_trim_rest: String.trim(rest)
+         )}
     end
   end
 
-  def validate("remove"), do: {:error, "Usage: /perform remove <number>"}
+  def validate("remove"), do: {:error, gettext("Usage: /perform remove <number>")}
 
   def validate("move " <> rest) do
     validate_move_args(String.trim(rest))
   end
 
-  def validate("move"), do: {:error, "Usage: /perform move <from> <to>"}
+  def validate("move"), do: {:error, gettext("Usage: /perform move <from> <to>")}
 
   def validate(args) do
     subcmd = args |> String.split(" ", parts: 2) |> List.first()
@@ -80,17 +87,19 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
   def help do
     %{
       name: "perform",
-      syntax: "/perform [list|add|remove|move|clear]",
+      syntax: gettext("/perform [list|add|remove|move|clear]"),
       description:
-        "Set up commands that automatically run every time you connect.\nSubcommands: list, add <command>, remove <index>, move <from> <to>, clear. No args opens the dialog.\nCommon use: /perform add /ns identify mypassword\nPositions are 0-based index numbers. Passwords are masked in the list display.",
+        gettext(
+          "Set up commands that automatically run every time you connect.\nSubcommands: list, add <command>, remove <index>, move <from> <to>, clear. No args opens the dialog.\nCommon use: /perform add /ns identify mypassword\nPositions are 0-based index numbers. Passwords are masked in the list display."
+        ),
       examples: [
         "/perform",
-        "/perform list",
-        "/perform add /join #elixir",
-        "/perform add /ns identify mypassword",
-        "/perform remove 0",
-        "/perform move 0 2",
-        "/perform clear"
+        gettext("/perform list"),
+        gettext("/perform add /join #elixir"),
+        gettext("/perform add /ns identify mypassword"),
+        gettext("/perform remove 0"),
+        gettext("/perform move 0 2"),
+        gettext("/perform clear")
       ]
     }
   end
@@ -103,11 +112,11 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
              {_, ""} <- Integer.parse(to_str) do
           :ok
         else
-          _ -> {:error, "Invalid positions. Must be numbers."}
+          _ -> {:error, gettext("Invalid positions. Must be numbers.")}
         end
 
       _ ->
-        {:error, "Usage: /perform move <from> <to>"}
+        {:error, gettext("Usage: /perform move <from> <to>")}
     end
   end
 
@@ -122,9 +131,11 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
 
     %CommandSyntax{
       command: "perform",
-      syntax: "/perform [list|add|remove|move|clear]",
+      syntax: gettext("/perform [list|add|remove|move|clear]"),
       description:
-        "Set up commands that automatically run every time you connect, like identifying with NickServ.",
+        gettext(
+          "Set up commands that automatically run every time you connect, like identifying with NickServ."
+        ),
       category: :config,
       parameters: [
         %Parameter{
@@ -132,31 +143,31 @@ defmodule RetroHexChat.Commands.Handlers.Perform do
           required: false,
           type: :text,
           position: 0,
-          description: "Subcommand: list, add, remove, move, clear"
+          description: gettext("Subcommand: list, add, remove, move, clear")
         },
         %Parameter{
           name: "args",
           required: false,
           type: :text,
           position: 1,
-          description: "Subcommand arguments"
+          description: gettext("Subcommand arguments")
         }
       ],
       examples: [
         "/perform",
-        "/perform list",
-        "/perform add /join #elixir",
-        "/perform add /ns identify mypassword",
-        "/perform remove 0",
-        "/perform move 0 2",
-        "/perform clear"
+        gettext("/perform list"),
+        gettext("/perform add /join #elixir"),
+        gettext("/perform add /ns identify mypassword"),
+        gettext("/perform remove 0"),
+        gettext("/perform move 0 2"),
+        gettext("/perform clear")
       ],
       subcommands: [
-        %{name: "list", description: "Show perform commands"},
-        %{name: "add", description: "Add a command to perform on connect"},
-        %{name: "remove", description: "Remove a perform command"},
-        %{name: "move", description: "Reorder a perform command"},
-        %{name: "clear", description: "Clear all perform commands"}
+        %{name: "list", description: gettext("Show perform commands")},
+        %{name: "add", description: gettext("Add a command to perform on connect")},
+        %{name: "remove", description: gettext("Remove a perform command")},
+        %{name: "move", description: gettext("Reorder a perform command")},
+        %{name: "clear", description: gettext("Clear all perform commands")}
       ]
     }
   end

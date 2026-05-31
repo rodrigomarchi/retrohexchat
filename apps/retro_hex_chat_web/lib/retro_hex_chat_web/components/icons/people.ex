@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Icons.People do
   Icons depicting people, users, and social concepts.
   """
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   attr :class, :string, default: nil
 

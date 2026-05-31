@@ -36,13 +36,13 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
     ~H"""
     <span data-testid="delete-confirm-dialog">
       <.dialog id={@id} show={@show}>
-        <.dialog_header id={@id} title="Delete Message">
+        <.dialog_header id={@id} title={gettext("Delete Message")}>
           <:icon><Icons.icon_dialog_delete class="w-[16px] h-[16px]" /></:icon>
         </.dialog_header>
 
         <.dialog_body>
           <p class="text-xs">
-            Are you sure you want to delete this message? This action cannot be undone.
+            {gettext("Are you sure you want to delete this message? This action cannot be undone.")}
           </p>
         </.dialog_body>
 
@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
             data-testid="delete-confirm-dialog-confirm"
           >
             <:icon><Icons.icon_dialog_delete class="w-4 h-4" /></:icon>
-            Delete
+            {gettext("Delete")}
           </.button>
           <.button
             variant="outline"
@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.DeleteConfirmDialog do
             data-testid="delete-confirm-dialog-cancel"
           >
             <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            Cancel
+            {gettext("Cancel")}
           </.button>
         </.dialog_footer>
       </.dialog>

@@ -1,3 +1,4 @@
+import { t, jt } from "../i18n.js";
 /**
  * P2P file transfer protocol — pure logic, no DOM or LiveView dependencies.
  * @module file_transfer
@@ -48,7 +49,7 @@ export function validateFile(file, config) {
     const maxMB = Math.round(config.maxSizeBytes / (1024 * 1024));
     return {
       valid: false,
-      error: `Arquivo excede o limite de ${maxMB} MB (${formatFileSize(file.size)})`,
+      error: jt`File exceeds the ${maxMB} MB limit (${formatFileSize(file.size)})`,
     };
   }
 
@@ -58,7 +59,7 @@ export function validateFile(file, config) {
     if (blocked) {
       return {
         valid: false,
-        error: `Tipo de arquivo bloqueado: ${blocked.toLowerCase()}`,
+        error: jt`Blocked file type: ${blocked.toLowerCase()}`,
       };
     }
   }
@@ -196,7 +197,7 @@ export async function computeHash(buffer) {
  * @returns {string}
  */
 export function formatFileSize(bytes) {
-  if (bytes === 0) return "0 B";
+  if (bytes === 0) return t("0 B");
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   if (bytes < 1024 * 1024 * 1024) return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
@@ -209,7 +210,7 @@ export function formatFileSize(bytes) {
  * @returns {string}
  */
 export function formatSpeed(bytesPerSecond) {
-  if (bytesPerSecond === 0) return "0 B/s";
+  if (bytesPerSecond === 0) return t("0 B/s");
   if (bytesPerSecond < 1024) return `${Math.round(bytesPerSecond)} B/s`;
   if (bytesPerSecond < 1024 * 1024) return `${(bytesPerSecond / 1024).toFixed(1)} KB/s`;
   return `${(bytesPerSecond / (1024 * 1024)).toFixed(1)} MB/s`;
@@ -228,8 +229,8 @@ export function formatEta(seconds) {
   const m = Math.floor((seconds % 3600) / 60);
   const s = Math.floor(seconds % 60);
 
-  if (h > 0) return `${h}h ${m}m ${s}s`;
-  if (m > 0) return `${m}m ${s}s`;
+  if (h > 0) return jt`${h}h ${m}m ${s}s`;
+  if (m > 0) return jt`${m}m ${s}s`;
   return `${s}s`;
 }
 

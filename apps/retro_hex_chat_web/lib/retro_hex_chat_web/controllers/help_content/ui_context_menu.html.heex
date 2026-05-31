@@ -1,29 +1,37 @@
-<p>Click a nickname in the user list to open the context menu.</p>
-<.help_h4 icon={:icon_dialog_options}>Options</.help_h4>
+<p>{gettext("Click a nickname in the user list to open the context menu.")}</p>
+<.help_h4 icon={:icon_dialog_options}>{gettext("Options")}</.help_h4>
 <p>
-  <strong>Query:</strong>
-  Open a PM with the user.<br /><strong>Whois:</strong>
-  Look up user information.<br /><strong>Add to Contacts:</strong>
-  Save to your address book.<br /><strong>Set Nick Color:</strong>
-  Override the display color for this nick.<br /><strong>Ignore / Unignore:</strong>
-  Block messages from the user.
+  <strong>{gettext("Query:")}</strong>
+  {gettext("Open a PM with the user.")}<br /><strong>{gettext("Whois:")}</strong>
+  {gettext("Look up user information.")}<br /><strong>{gettext("Add to Contacts:")}</strong>
+  {gettext("Save to your address book.")}<br /><strong>{gettext("Set Nick Color:")}</strong>
+  {gettext("Override the display color for this nick.")}<br />
+  <strong>
+    {gettext("Ignore / Unignore:")}
+  </strong>
+  {gettext("Block messages from the user.")}
 </p>
-<.help_h4 icon={:icon_p2p}>P2P Actions (registered users only)</.help_h4>
+<.help_h4 icon={:icon_p2p}>{gettext("P2P Actions (registered users only)")}</.help_h4>
 <p>
-  <strong>P2P Session:</strong>
-  Start a generic P2P session.<br /><strong>Audio Call:</strong>
-  Start an audio call.<br /><strong>Video Call:</strong>
-  Start a video call.<br /><strong>Send File:</strong>
-  Send a file.<br />These items are disabled if the target is not registered or is yourself.
+  <strong>{gettext("P2P Session:")}</strong>
+  {gettext("Start a generic P2P session.")}<br /><strong>{gettext("Audio Call:")}</strong>
+  {gettext("Start an audio call.")}<br /><strong>{gettext("Video Call:")}</strong>
+  {gettext("Start a video call.")}<br /><strong>{gettext("Send File:")}</strong>
+  {gettext("Send a file.")}<br />{gettext(
+    "These items are disabled if the target is not registered or is yourself."
+  )}
 </p>
-<.help_h4 icon={:icon_role_operator}>Operator Actions</.help_h4>
+<.help_h4 icon={:icon_role_operator}>{gettext("Operator Actions")}</.help_h4>
 <p>
-  <strong>Kick / Ban:</strong>
-  Moderation (operators only).<br /><strong>Give Op (+o) / Give Voice (+v):</strong>
-  Mode changes (operators only).
+  <strong>{gettext("Kick / Ban:")}</strong>
+  {gettext("Moderation (operators only).")}<br />
+  <strong>
+    {gettext("Give Op (+o) / Give Voice (+v):")}
+  </strong>
+  {gettext("Mode changes (operators only).")}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-context-menus">Context Menus</.help_link>
-  · <.help_link topic="feature-p2p-sessions">P2P Sessions</.help_link>
+  <.help_link topic="feature-context-menus">{gettext("Context Menus")}</.help_link>
+  · <.help_link topic="feature-p2p-sessions">{gettext("P2P Sessions")}</.help_link>
 </p>

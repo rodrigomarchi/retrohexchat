@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Shell.ConfigFormPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -19,7 +20,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ConfigFormPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Config Form",
+       page_title: gettext("Config Form"),
        active_page: "config-form",
        aliases: [
          %{name: "/hi", value: "/msg $1 hello!"},
@@ -38,26 +39,26 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ConfigFormPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Config Form</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Config Form")}</h2>
 
       <.showcase_card
-        title="Alias Configuration"
+        title={gettext("Alias Configuration")}
         description="Generic config pattern: list + edit form. Used for Alias, Perform, Flood Protection, etc."
       >
         <.button variant="outline" phx-click={show_modal("config-form-demo")}>
           <:icon><Icons.icon_btn_settings class="w-4 h-4" /></:icon>
-          Aliases
+          {gettext("Aliases")}
         </.button>
-        <.config_form id="config-form-demo" title="Aliases" items={@aliases}>
+        <.config_form id="config-form-demo" title={gettext("Aliases")} items={@aliases}>
           <:form>
             <div class="space-y-retro-4">
               <div>
-                <.label class="text-xs font-bold block mb-retro-2">Name</.label>
-                <.input type="text" placeholder="/alias" class="w-full" />
+                <.label class="text-xs font-bold block mb-retro-2">{gettext("Name")}</.label>
+                <.input type="text" placeholder={gettext("/alias")} class="w-full" />
               </div>
               <div>
-                <.label class="text-xs font-bold block mb-retro-2">Value</.label>
-                <.input type="text" placeholder="/command $1" class="w-full" />
+                <.label class="text-xs font-bold block mb-retro-2">{gettext("Value")}</.label>
+                <.input type="text" placeholder={gettext("/command $1")} class="w-full" />
               </div>
             </div>
           </:form>
@@ -72,16 +73,16 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ConfigFormPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Editing State"
+        title={gettext("Editing State")}
         description="Config form with a row selected and editing=true. The form header shows 'Edit' instead of 'Add'."
       >
         <.button variant="outline" phx-click={show_modal("config-form-editing")}>
           <:icon><Icons.icon_btn_settings class="w-4 h-4" /></:icon>
-          Aliases (Editing)
+          {gettext("Aliases (Editing)")}
         </.button>
         <.config_form
           id="config-form-editing"
-          title="Aliases"
+          title={gettext("Aliases")}
           items={@aliases}
           selected_index={1}
           editing={true}
@@ -89,11 +90,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ConfigFormPage do
           <:form>
             <div class="space-y-retro-4">
               <div>
-                <.label class="text-xs font-bold block mb-retro-2">Name</.label>
+                <.label class="text-xs font-bold block mb-retro-2">{gettext("Name")}</.label>
                 <.input type="text" value="/bye" class="w-full" />
               </div>
               <div>
-                <.label class="text-xs font-bold block mb-retro-2">Value</.label>
+                <.label class="text-xs font-bold block mb-retro-2">{gettext("Value")}</.label>
                 <.input type="text" value="/msg $1 goodbye!" class="w-full" />
               </div>
             </div>
@@ -102,28 +103,28 @@ defmodule RetroHexChatWeb.ShowcaseLive.Shell.ConfigFormPage do
       </.showcase_card>
 
       <.showcase_card
-        title="Custom Columns"
+        title={gettext("Custom Columns")}
         description="Config form with custom column headers (Event / Command) for a Perform config."
       >
         <.button variant="outline" phx-click={show_modal("config-form-perform")}>
           <:icon><Icons.icon_btn_settings class="w-4 h-4" /></:icon>
-          Perform
+          {gettext("Perform")}
         </.button>
         <.config_form
           id="config-form-perform"
-          title="Perform"
+          title={gettext("Perform")}
           items={@perform_items}
           columns={["Event", "Command"]}
         >
           <:form>
             <div class="space-y-retro-4">
               <div>
-                <.label class="text-xs font-bold block mb-retro-2">Event</.label>
-                <.input type="text" placeholder="connect / #channel" class="w-full" />
+                <.label class="text-xs font-bold block mb-retro-2">{gettext("Event")}</.label>
+                <.input type="text" placeholder={gettext("connect / #channel")} class="w-full" />
               </div>
               <div>
-                <.label class="text-xs font-bold block mb-retro-2">Command</.label>
-                <.input type="text" placeholder="/command args" class="w-full" />
+                <.label class="text-xs font-bold block mb-retro-2">{gettext("Command")}</.label>
+                <.input type="text" placeholder={gettext("/command args")} class="w-full" />
               </div>
             </div>
           </:form>

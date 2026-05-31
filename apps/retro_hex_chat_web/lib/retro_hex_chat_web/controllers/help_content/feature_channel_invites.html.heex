@@ -1,25 +1,35 @@
 <p>
-  The channel invite system allows operators of invite-only (+i) channels to invite specific users to join. Invited users receive a retro-style dialog with Join and Ignore options.
+  {gettext(
+    "The channel invite system allows operators of invite-only (+i) channels to invite specific users to join. Invited users receive a retro-style dialog with Join and Ignore options."
+  )}
 </p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  1. An operator uses <code>/invite &lt;nickname&gt;</code>
-  to invite a user.<br />2. The invited user sees a popup dialog with the inviter's name and channel.<br />3. Clicking
-  <strong>Join</strong>
-  joins the channel. Clicking <strong>Ignore</strong>
-  dismisses the dialog.<br />4. Invitations expire after 5 minutes if not accepted.
+  {gettext("1. An operator uses")} <code>{gettext("/invite <nickname>")}</code>
+  {gettext("to invite a user.")}<br />{gettext(
+    "2. The invited user sees a popup dialog with the inviter's name and channel."
+  )}<br />{gettext("3. Clicking")}
+  <strong>{gettext("Join")}</strong>
+  {gettext("joins the channel. Clicking")} <strong>{gettext("Ignore")}</strong>
+  {gettext("dismisses the dialog.")}<br />{gettext(
+    "4. Invitations expire after 5 minutes if not accepted."
+  )}
 </p>
-<.help_h4 icon={:icon_dialog_invite}>Auto-Join on Invite</.help_h4>
+<.help_h4 icon={:icon_dialog_invite}>{gettext("Auto-Join on Invite")}</.help_h4>
 <p>
-  Users can enable auto-join with <code>/invite auto</code>. When enabled, incoming invitations are accepted automatically without showing a dialog. This is disabled by default for security.
+  {gettext("Users can enable auto-join with")} <code>{gettext("/invite auto")}</code>{gettext(
+    ". When enabled, incoming invitations are accepted automatically without showing a dialog. This is disabled by default for security."
+  )}
 </p>
-<.help_h4 icon={:icon_checkmark}>Requirements</.help_h4>
+<.help_h4 icon={:icon_checkmark}>{gettext("Requirements")}</.help_h4>
 <p>
-  Only channel operators can send invites. The channel must have +i (invite-only) mode set. The target user must be online and not already in the channel.
+  {gettext(
+    "Only channel operators can send invites. The channel must have +i (invite-only) mode set. The target user must be online and not already in the channel."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-invite">/invite Command</.help_link>
-  · <.help_link topic="mode-i">+i Invite Only</.help_link>
-  · <.help_link topic="feature-invite-exceptions">Invite Exceptions</.help_link>
+  <.help_link topic="cmd-invite">{gettext("/invite Command")}</.help_link>
+  · <.help_link topic="mode-i">{gettext("+i Invite Only")}</.help_link>
+  · <.help_link topic="feature-invite-exceptions">{gettext("Invite Exceptions")}</.help_link>
 </p>

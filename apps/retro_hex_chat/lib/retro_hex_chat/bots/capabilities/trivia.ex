@@ -8,6 +8,8 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
     - `!Bot trivia score` — show current scores
     - `!Bot answer <text>` — submit an answer
   """
+  use Gettext, backend: RetroHexChat.Gettext
+
   @behaviour RetroHexChat.Bots.Capability
 
   alias RetroHexChat.Bots.Capabilities.Trivia.QuestionBank
@@ -18,7 +20,7 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
 
   @impl true
   @spec description() :: String.t()
-  def description, do: "Interactive quiz and trivia with scoring"
+  def description, do: gettext("Interactive quiz and trivia with scoring")
 
   @impl true
   @spec init_state(map()) :: map()
@@ -69,7 +71,7 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
         hint = get_hint(game.question)
 
         if hint do
-          {{:reply, "Hint: #{hint}"}, state}
+          {{:reply, gettext("Hint: %{hint}", hint: hint)}, state}
         else
           {:ignore, state}
         end
@@ -87,9 +89,9 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
 
         timeout_msg =
           if show_answer do
-            "Time's up! The answer was: #{game.question.answer}"
+            gettext("Time's up! The answer was: %{answer}", answer: game.question.answer)
           else
-            "Time's up! Nobody got it."
+            gettext("Time's up! Nobody got it.")
           end
 
         {result, new_state} = advance_question(channel, game, state, config, timeout_msg)
@@ -122,7 +124,10 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
       :ok
     else
       {:error,
-       "Unknown category '#{category}'. Available: #{Enum.join(QuestionBank.categories(), ", ")}"}
+       gettext("Unknown category '%{category}'. Available: %{categories}",
+         category: category,
+         categories: Enum.join(QuestionBank.categories(), ", ")
+       )}
     end
   end
 
@@ -130,10 +135,10 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
   @spec commands() :: [%{trigger: String.t(), description: String.t()}]
   def commands do
     [
-      %{trigger: "trivia start", description: "Start a trivia round"},
-      %{trigger: "trivia stop", description: "Stop the current round"},
-      %{trigger: "trivia score", description: "Show current scores"},
-      %{trigger: "answer", description: "Submit a trivia answer"}
+      %{trigger: "trivia start", description: gettext("Start a trivia round")},
+      %{trigger: "trivia stop", description: gettext("Stop the current round")},
+      %{trigger: "trivia score", description: gettext("Show current scores")},
+      %{trigger: "answer", description: gettext("Submit a trivia answer")}
     ]
   end
 
@@ -176,7 +181,7 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
           RetroHexChat.Bots.Capability.capability_result()
   defp handle_start(channel, state, config) do
     if get_game(state, channel) do
-      {:reply, "A trivia round is already in progress! Use 'trivia stop' to end it."}
+      {:reply, gettext("A trivia round is already in progress! Use 'trivia stop' to end it.")}
     else
       category = Map.get(config, "category", "general")
       count = Map.get(config, "questions_per_round", 10)
@@ -184,7 +189,8 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
 
       case questions do
         [] ->
-          {:reply, "No questions available for category '#{category}'."}
+          {:reply,
+           gettext("No questions available for category '%{category}'.", category: category)}
 
         [first | rest] ->
           game = %{
@@ -199,8 +205,12 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
           new_state = put_game(state, channel, game)
           q_text = format_question(game)
 
-          {:reply, "Trivia started! (#{category}, #{game.total_questions} questions)\n#{q_text}",
-           new_state}
+          {:reply,
+           gettext("Trivia started! (%{category}, %{count} questions)\n%{question}",
+             category: category,
+             count: game.total_questions,
+             question: q_text
+           ), new_state}
       end
     end
   end
@@ -209,12 +219,12 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
   defp handle_stop(channel, state) do
     case get_game(state, channel) do
       nil ->
-        {:reply, "No trivia round in progress."}
+        {:reply, gettext("No trivia round in progress.")}
 
       game ->
         new_state = remove_game(state, channel)
         scores_text = format_final_scores(game.scores)
-        {:reply, "Trivia stopped! #{scores_text}", new_state}
+        {:reply, gettext("Trivia stopped! %{scores}", scores: scores_text), new_state}
     end
   end
 
@@ -222,7 +232,7 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
   defp handle_score(channel, state) do
     case get_game(state, channel) do
       nil ->
-        {:reply, "No trivia round in progress."}
+        {:reply, gettext("No trivia round in progress.")}
 
       game ->
         {:reply, format_scores(game.scores, game.question_number, game.total_questions)}
@@ -242,7 +252,9 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
           new_scores = Map.update(game.scores, author, points, &(&1 + points))
           game = %{game | scores: new_scores}
 
-          correct_msg = "Correct, #{author}! (+#{points} points)"
+          correct_msg =
+            gettext("Correct, %{author}! (+%{points} points)", author: author, points: points)
+
           unwrap_advance(advance_question(channel, game, state, config, correct_msg))
         else
           :ignore
@@ -257,7 +269,10 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
       [] ->
         new_state = remove_game(state, channel)
         scores_text = format_final_scores(game.scores)
-        {{:reply, "#{prefix_msg}\nRound over! #{scores_text}"}, new_state}
+
+        {{:reply,
+          gettext("%{prefix}\nRound over! %{scores}", prefix: prefix_msg, scores: scores_text)},
+         new_state}
 
       [next | rest] ->
         new_game = %{
@@ -305,12 +320,16 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
 
   @spec format_question(map()) :: String.t()
   defp format_question(game) do
-    "Q#{game.question_number}/#{game.total_questions}: #{game.question.question}"
+    gettext("Q%{number}/%{total}: %{question}",
+      number: game.question_number,
+      total: game.total_questions,
+      question: game.question.question
+    )
   end
 
   @spec format_scores(map(), integer(), integer()) :: String.t()
   defp format_scores(scores, q_num, total) when map_size(scores) == 0 do
-    "Scores (Q#{q_num}/#{total}): No scores yet."
+    gettext("Scores (Q%{number}/%{total}): No scores yet.", number: q_num, total: total)
   end
 
   defp format_scores(scores, q_num, total) do
@@ -318,15 +337,21 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
       scores
       |> Enum.sort_by(fn {_name, pts} -> pts end, :desc)
       |> Enum.with_index(1)
-      |> Enum.map(fn {{name, pts}, rank} -> "#{rank}. #{name}: #{pts}pts" end)
+      |> Enum.map(fn {{name, pts}, rank} ->
+        gettext("%{rank}. %{name}: %{points}pts", rank: rank, name: name, points: pts)
+      end)
       |> Enum.join(", ")
 
-    "Scores (Q#{q_num}/#{total}): #{ranked}"
+    gettext("Scores (Q%{number}/%{total}): %{ranked}",
+      number: q_num,
+      total: total,
+      ranked: ranked
+    )
   end
 
   @spec format_final_scores(map()) :: String.t()
   defp format_final_scores(scores) when map_size(scores) == 0 do
-    "No scores recorded."
+    gettext("No scores recorded.")
   end
 
   defp format_final_scores(scores) do
@@ -334,10 +359,12 @@ defmodule RetroHexChat.Bots.Capabilities.Trivia do
       scores
       |> Enum.sort_by(fn {_name, pts} -> pts end, :desc)
       |> Enum.with_index(1)
-      |> Enum.map(fn {{name, pts}, rank} -> "#{rank}. #{name}: #{pts}pts" end)
+      |> Enum.map(fn {{name, pts}, rank} ->
+        gettext("%{rank}. %{name}: %{points}pts", rank: rank, name: name, points: pts)
+      end)
       |> Enum.join(", ")
 
-    "Final scores: #{ranked}"
+    gettext("Final scores: %{ranked}", ranked: ranked)
   end
 
   @spec get_hint(map()) :: String.t() | nil

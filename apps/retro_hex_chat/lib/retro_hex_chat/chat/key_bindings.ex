@@ -8,6 +8,8 @@ defmodule RetroHexChat.Chat.KeyBindings do
   for the shortcut cheatsheet dialog.
   """
 
+  use Gettext, backend: RetroHexChat.Gettext
+
   @type binding :: %{key: String.t(), modifiers: [atom()]}
   @type bindings_map :: %{atom() => binding() | nil}
   @type category :: :navigation | :chat | :formatting | :system
@@ -47,117 +49,117 @@ defmodule RetroHexChat.Chat.KeyBindings do
     # System category
     toggle_search: %{
       category: :system,
-      label: "Toggle Search",
-      description: "Open/close search bar",
+      label: gettext_noop("Toggle Search"),
+      description: gettext_noop("Open/close search bar"),
       customizable: true
     },
     toggle_address_book: %{
       category: :system,
-      label: "Open Address Book",
-      description: "Open/close the address book",
+      label: gettext_noop("Open Address Book"),
+      description: gettext_noop("Open/close the address book"),
       customizable: true
     },
     toggle_ignore_dialog: %{
       category: :system,
-      label: "Open Ignore List",
-      description: "Open/close the ignore list",
+      label: gettext_noop("Open Ignore List"),
+      description: gettext_noop("Open/close the ignore list"),
       customizable: true
     },
     toggle_highlight_dialog: %{
       category: :system,
-      label: "Open Highlight Dialog",
-      description: "Open/close highlight word settings",
+      label: gettext_noop("Open Highlight Dialog"),
+      description: gettext_noop("Open/close highlight word settings"),
       customizable: true
     },
     toggle_url_catcher: %{
       category: :system,
-      label: "Open URL Catcher",
-      description: "Open/close the URL catcher",
+      label: gettext_noop("Open URL Catcher"),
+      description: gettext_noop("Open/close the URL catcher"),
       customizable: true
     },
     toggle_perform_dialog: %{
       category: :system,
-      label: "Open Perform Dialog",
-      description: "Open/close auto-perform settings",
+      label: gettext_noop("Open Perform Dialog"),
+      description: gettext_noop("Open/close auto-perform settings"),
       customizable: true
     },
     open_help: %{
       category: :system,
-      label: "Open Help",
-      description: "Open the help dialog (menu only)",
+      label: gettext_noop("Open Help"),
+      description: gettext_noop("Open the help dialog (menu only)"),
       customizable: true
     },
     toggle_cheatsheet: %{
       category: :system,
-      label: "Shortcut Cheatsheet",
-      description: "Open/close the keyboard shortcut cheatsheet",
+      label: gettext_noop("Shortcut Cheatsheet"),
+      description: gettext_noop("Open/close the keyboard shortcut cheatsheet"),
       customizable: true
     },
     # Navigation category
     window_next: %{
       category: :navigation,
-      label: "Next Window",
-      description: "Switch to the next channel or PM",
+      label: gettext_noop("Next Window"),
+      description: gettext_noop("Switch to the next channel or PM"),
       customizable: true
     },
     window_prev: %{
       category: :navigation,
-      label: "Previous Window",
-      description: "Switch to the previous channel or PM",
+      label: gettext_noop("Previous Window"),
+      description: gettext_noop("Switch to the previous channel or PM"),
       customizable: true
     },
     window_1: %{
       category: :navigation,
-      label: "Window 1",
-      description: "Switch to window 1",
+      label: gettext_noop("Window 1"),
+      description: gettext_noop("Switch to window 1"),
       customizable: false
     },
     window_2: %{
       category: :navigation,
-      label: "Window 2",
-      description: "Switch to window 2",
+      label: gettext_noop("Window 2"),
+      description: gettext_noop("Switch to window 2"),
       customizable: false
     },
     window_3: %{
       category: :navigation,
-      label: "Window 3",
-      description: "Switch to window 3",
+      label: gettext_noop("Window 3"),
+      description: gettext_noop("Switch to window 3"),
       customizable: false
     },
     window_4: %{
       category: :navigation,
-      label: "Window 4",
-      description: "Switch to window 4",
+      label: gettext_noop("Window 4"),
+      description: gettext_noop("Switch to window 4"),
       customizable: false
     },
     window_5: %{
       category: :navigation,
-      label: "Window 5",
-      description: "Switch to window 5",
+      label: gettext_noop("Window 5"),
+      description: gettext_noop("Switch to window 5"),
       customizable: false
     },
     window_6: %{
       category: :navigation,
-      label: "Window 6",
-      description: "Switch to window 6",
+      label: gettext_noop("Window 6"),
+      description: gettext_noop("Switch to window 6"),
       customizable: false
     },
     window_7: %{
       category: :navigation,
-      label: "Window 7",
-      description: "Switch to window 7",
+      label: gettext_noop("Window 7"),
+      description: gettext_noop("Switch to window 7"),
       customizable: false
     },
     window_8: %{
       category: :navigation,
-      label: "Window 8",
-      description: "Switch to window 8",
+      label: gettext_noop("Window 8"),
+      description: gettext_noop("Switch to window 8"),
       customizable: false
     },
     window_9: %{
       category: :navigation,
-      label: "Window 9",
-      description: "Switch to window 9",
+      label: gettext_noop("Window 9"),
+      description: gettext_noop("Switch to window 9"),
       customizable: false
     }
   }
@@ -196,6 +198,7 @@ defmodule RetroHexChat.Chat.KeyBindings do
   @spec actions() :: [{atom(), String.t()}]
   def actions do
     @action_labels
+    |> Enum.map(fn {action, label} -> {action, t(label)} end)
     |> Enum.sort_by(fn {_action, label} -> label end)
   end
 
@@ -213,8 +216,8 @@ defmodule RetroHexChat.Chat.KeyBindings do
       %{
         action: action,
         category: meta.category,
-        label: meta.label,
-        description: meta.description,
+        label: t(meta.label),
+        description: t(meta.description),
         binding: Map.get(bindings, action),
         default_binding: Map.get(@default_bindings, action),
         customizable: meta.customizable
@@ -235,10 +238,10 @@ defmodule RetroHexChat.Chat.KeyBindings do
   end
 
   @spec category_label(category()) :: String.t()
-  def category_label(:navigation), do: "Navigation"
-  def category_label(:chat), do: "Chat"
-  def category_label(:formatting), do: "Formatting"
-  def category_label(:system), do: "System"
+  def category_label(:navigation), do: gettext("Navigation")
+  def category_label(:chat), do: gettext("Chat")
+  def category_label(:formatting), do: gettext("Formatting")
+  def category_label(:system), do: gettext("System")
 
   defp category_order(:navigation), do: 0
   defp category_order(:chat), do: 1
@@ -322,7 +325,12 @@ defmodule RetroHexChat.Chat.KeyBindings do
 
     case result do
       {:conflict, a1, a2, combo} ->
-        {:error, "Conflict: #{a1} and #{a2} both bound to #{combo}"}
+        {:error,
+         gettext("Conflict: %{first_action} and %{second_action} both bound to %{combo}",
+           first_action: a1,
+           second_action: a2,
+           combo: combo
+         )}
 
       _map ->
         :ok
@@ -331,7 +339,9 @@ defmodule RetroHexChat.Chat.KeyBindings do
 
   @spec action_label(atom()) :: String.t()
   def action_label(action) do
-    Map.get(@action_labels, action, to_string(action))
+    action
+    |> then(&Map.get(@action_labels, &1, to_string(&1)))
+    |> t()
   end
 
   @spec to_persistable(bindings_map()) :: map()
@@ -392,9 +402,9 @@ defmodule RetroHexChat.Chat.KeyBindings do
   defp normalize_key(key) when byte_size(key) == 1, do: String.downcase(key)
   defp normalize_key(key), do: key
 
-  defp modifier_label(:alt), do: "Alt"
-  defp modifier_label(:ctrl), do: "Ctrl"
-  defp modifier_label(:shift), do: "Shift"
+  defp modifier_label(:alt), do: gettext("Alt")
+  defp modifier_label(:ctrl), do: gettext("Ctrl")
+  defp modifier_label(:shift), do: gettext("Shift")
 
   defp format_key(key) when byte_size(key) == 1, do: String.upcase(key)
   defp format_key(key), do: key
@@ -403,4 +413,6 @@ defmodule RetroHexChat.Chat.KeyBindings do
     mods = modifiers |> Enum.sort() |> Enum.join(",")
     "#{normalize_key(key)}:#{mods}"
   end
+
+  defp t(msgid), do: Gettext.gettext(RetroHexChat.Gettext, msgid)
 end

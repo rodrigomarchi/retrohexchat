@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
   @moduledoc "Admin subcommands for channel management."
+  use Gettext, backend: RetroHexChat.Gettext
 
   alias RetroHexChat.Admin
   alias RetroHexChat.Admin.AuditLogs
@@ -10,7 +11,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["list" | opts], context) do
     search = find_opt(opts, "--search")
-    AuditLogs.log(context.nickname, "channel.list")
+    AuditLogs.log(context.nickname, gettext("channel.list"))
 
     channels =
       case Registry.select(RetroHexChat.Channels.ChannelRegistry, [{{:"$1", :_, :_}, [], [:"$1"]}]) do
@@ -26,9 +27,10 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
 
     text =
       if filtered == [] do
-        "*** No active channels."
+        gettext("*** No active channels.")
       else
-        header = "*** Channel List (#{length(filtered)}) ***"
+        header =
+          gettext("*** Channel List (%{filtered_count}) ***", filtered_count: length(filtered))
 
         lines = Enum.map(filtered, &format_channel_entry/1)
 
@@ -39,7 +41,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
   end
 
   def execute(["info", channel], context) do
-    AuditLogs.log(context.nickname, "channel.info", {"channel", channel})
+    AuditLogs.log(context.nickname, gettext("channel.info"), {"channel", channel})
 
     case Server.get_state(channel) do
       {:ok, state} ->
@@ -47,22 +49,29 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
 
         members =
           state.members
-          |> Enum.map(fn {nick, role} -> "#{nick} (#{role})" end)
+          |> Enum.map(fn {nick, role} -> gettext("%{nick} (%{role})", nick: nick, role: role) end)
           |> Enum.join(", ")
 
         reg_info =
           if registered do
-            "  Registered: yes (founder: #{registered.founder_nickname})"
+            gettext("  Registered: yes (founder: %{founder_nickname})",
+              founder_nickname: registered.founder_nickname
+            )
           else
-            "  Registered: no"
+            gettext("  Registered: no")
           end
 
+        topic = state.topic || gettext("(none)")
+
         text =
-          "*** Channel: #{channel}\n" <>
-            "  Topic: #{state.topic || "(none)"}\n" <>
-            "  Members (#{state.member_count}): #{members}\n" <>
-            "  Modes: #{state.modes}\n" <>
-            "  Bans: #{length(state.bans)}\n" <>
+          gettext("*** Channel: %{channel}\n", channel: channel) <>
+            gettext("  Topic: %{topic}\n", topic: topic) <>
+            gettext("  Members (%{member_count}): %{members}\n",
+              member_count: state.member_count,
+              members: members
+            ) <>
+            gettext("  Modes: %{modes}\n", modes: state.modes) <>
+            gettext("  Bans: %{state_bans_count}\n", state_bans_count: length(state.bans)) <>
             reg_info
 
         {:ok, :system, %{content: text}}
@@ -74,14 +83,14 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
 
   def execute(["create", channel], context) do
     case Admin.create_channel(channel, context.nickname) do
-      {:ok, msg} -> {:ok, :system, %{content: "*** #{msg}"}}
+      {:ok, msg} -> {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
       {:error, msg} -> {:error, msg}
     end
   end
 
   def execute(["delete", channel], context) do
     {:ok, msg} = Admin.delete_channel(channel, context.nickname)
-    {:ok, :system, %{content: "*** #{msg}"}}
+    {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
   end
 
   def execute(["purge", channel | opts], context) do
@@ -89,7 +98,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
     purge_opts = if from, do: [from: strip_at(from)], else: []
 
     {:ok, msg} = Admin.purge_channel(channel, purge_opts, context.nickname)
-    {:ok, :system, %{content: "*** #{msg}"}}
+    {:ok, :system, %{content: gettext("*** %{message}", message: msg)}}
   end
 
   def execute(["banlist", channel], _context) do
@@ -99,9 +108,14 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
 
         text =
           if bans == [] do
-            "*** No bans in #{channel}."
+            gettext("*** No bans in %{channel}.", channel: channel)
           else
-            header = "*** Ban List for #{channel} (#{length(bans)}) ***"
+            header =
+              gettext("*** Ban List for %{channel} (%{bans_count}) ***",
+                channel: channel,
+                bans_count: length(bans)
+              )
+
             lines = Enum.map(bans, &format_ban_entry/1)
             Enum.join([header | lines], "\n")
           end
@@ -114,7 +128,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
   end
 
   def execute([], _context) do
-    {:error, "Usage: /admin channel <list|info|create|delete|purge|banlist>"}
+    {:error, gettext("Usage: /admin channel <list|info|create|delete|purge|banlist>")}
   end
 
   def execute([subcmd | _], _context) do
@@ -131,7 +145,12 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Channel do
       end
 
     reg = if registered, do: " [registered]", else: ""
-    "  #{name} (#{member_count} members)#{reg}"
+
+    gettext("  %{name} (%{member_count} members)%{reg}",
+      name: name,
+      member_count: member_count,
+      reg: reg
+    )
   end
 
   defp format_ban_entry(nick) do

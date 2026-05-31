@@ -1,36 +1,37 @@
 <p>
-  Transfer channel ownership to another user. The current owner is demoted to operator
-  and the target becomes the new owner.
+  {gettext(
+    "Transfer channel ownership to another user. The current owner is demoted to operator and the target becomes the new owner."
+  )}
 </p>
 
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/transfer &lt;nickname&gt;</pre>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/transfer <nickname>")}</pre>
 
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
-  <code>nickname</code> — The user to transfer ownership to. Must be in the channel.
+  <code>nickname</code> {gettext("— The user to transfer ownership to. Must be in the channel.")}
 </p>
 
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  The current channel owner gives up ownership to the specified user.
-  The previous owner is automatically set as an operator.
-  If the channel is registered, the ChanServ access list is updated accordingly.
+  {gettext(
+    "The current channel owner gives up ownership to the specified user. The previous owner is automatically set as an operator. If the channel is registered, the ChanServ access list is updated accordingly."
+  )}
 </p>
 
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Only the channel owner (~) can transfer ownership</li>
-  <li>The target must be in the channel</li>
-  <li>This action cannot be undone without the new owner's cooperation</li>
+  <li>{gettext("Only the channel owner (~) can transfer ownership")}</li>
+  <li>{gettext("The target must be in the channel")}</li>
+  <li>{gettext("This action cannot be undone without the new owner's cooperation")}</li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/transfer Alice</pre>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/transfer Alice")}</pre>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-op">/op</.help_link>
-  · <.help_link topic="cmd-mode">/mode</.help_link>
-  · <.help_link topic="channel-permissions">Channel Permissions</.help_link>
+  <.help_link topic="cmd-op">{gettext("/op")}</.help_link>
+  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
+  · <.help_link topic="channel-permissions">{gettext("Channel Permissions")}</.help_link>
 </p>

@@ -4,6 +4,8 @@ defmodule RetroHexChatWeb.V2.V2Helpers do
   Extracted from ChatLive private functions to enable reuse across v2 modules.
   """
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Accounts.{NickColors, Session}
   alias RetroHexChat.Chat.{Formatter, URLDetector}
   alias RetroHexChatWeb.Timezone
@@ -105,16 +107,16 @@ defmodule RetroHexChatWeb.V2.V2Helpers do
   def input_placeholder(assigns) do
     cond do
       assigns.show_status_tab ->
-        "Type a command — / for list"
+        gettext("Type a command — / for list")
 
       assigns.session.active_pm != nil ->
-        "Message to #{assigns.session.active_pm} — / for commands"
+        gettext("Message to %{target} — / for commands", target: assigns.session.active_pm)
 
       assigns.session.active_channel != nil ->
-        "Message to #{assigns.session.active_channel} — / for commands"
+        gettext("Message to %{target} — / for commands", target: assigns.session.active_channel)
 
       true ->
-        "Type a command — / for list"
+        gettext("Type a command — / for list")
     end
   end
 end

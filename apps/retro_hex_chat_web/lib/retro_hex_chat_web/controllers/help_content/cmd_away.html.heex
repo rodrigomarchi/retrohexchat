@@ -1,23 +1,30 @@
 <p>
-  Mark yourself as temporarily unavailable, with an optional message explaining why. Other users will see your away status when they look you up.
+  {gettext(
+    "Mark yourself as temporarily unavailable, with an optional message explaining why. Other users will see your away status when they look you up."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/away [message]</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>message</code> — Optional reason for being away. If omitted, clears your away status.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/away [message]")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
 <p>
-  When you set an away message, your status changes to "away" in the user list. Anyone who uses
-  <code>/whois</code>
-  on you will see your away message. To come back, simply run <code>/away</code>
-  with no message. Your away status is session-scoped — it resets when you disconnect.
+  <code>message</code> {gettext(
+    "— Optional reason for being away. If omitted, clears your away status."
+  )}
 </p>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/away Gone for lunch, back in 30 min
-/away Meeting until 3pm
-/away</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  <.help_link topic="cmd-whois">/whois</.help_link>
-  · <.help_link topic="cmd-nick">/nick</.help_link>
+  {gettext(
+    "When you set an away message, your status changes to \"away\" in the user list. Anyone who uses"
+  )}
+  <code>{gettext("/whois")}</code>
+  {gettext("on you will see your away message. To come back, simply run")}
+  <code>{gettext("/away")}</code>
+  {gettext("with no message. Your away status is session-scoped — it resets when you disconnect.")}
+</p>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/away Gone for lunch, back in 30 min /away Meeting until 3pm /away")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-whois">{gettext("/whois")}</.help_link>
+  · <.help_link topic="cmd-nick">{gettext("/nick")}</.help_link>
 </p>

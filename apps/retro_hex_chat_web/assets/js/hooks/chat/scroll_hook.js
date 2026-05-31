@@ -32,6 +32,7 @@ import {
   cancelNickHoverTimer,
 } from "../../lib/chat/interactive.js";
 import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
+import { t } from "../../lib/i18n.js";
 
 const ScrollHook = {
   mounted() {
@@ -279,7 +280,7 @@ const ScrollHook = {
     // Clipboard copy handler (server → client)
     this.handleEvent("clipboard_copy", ({ text }) => {
       navigator.clipboard.writeText(text).then(() => {
-        showFeedbackToast(this.el, "Copied!", 2000);
+        showFeedbackToast(this.el, t("Copied!"), 2000);
       });
     });
 
@@ -288,7 +289,7 @@ const ScrollHook = {
       const selection = window.getSelection().toString();
       if (selection) {
         navigator.clipboard.writeText(selection).then(() => {
-          showFeedbackToast(this.el, "Copied!", 2000);
+          showFeedbackToast(this.el, t("Copied!"), 2000);
         });
       }
     });
@@ -391,7 +392,7 @@ const ScrollHook = {
     if (!btn) {
       btn = document.createElement("button");
       btn.className = "new-messages-btn";
-      btn.textContent = "New messages";
+      btn.textContent = t("New messages");
       btn.addEventListener("click", () => {
         this.scrollToBottom();
         this.hideNewMessagesButton();

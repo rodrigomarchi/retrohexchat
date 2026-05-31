@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.DeleteConfirmDialogPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -16,22 +17,25 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.DeleteConfirmDialogPage do
   @impl true
   def mount(_params, _session, socket) do
     {:ok,
-     assign(socket, page_title: "Delete Confirm Dialog", active_page: "delete-confirm-dialog")}
+     assign(socket,
+       page_title: gettext("Delete Confirm Dialog"),
+       active_page: "delete-confirm-dialog"
+     )}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Delete Confirm Dialog</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Delete Confirm Dialog")}</h2>
 
       <.showcase_card
-        title="Delete Message"
+        title={gettext("Delete Message")}
         description="Destructive confirmation dialog for message deletion."
       >
         <.button variant="destructive" phx-click={show_modal("delete-msg-confirm")}>
           <:icon><Icons.icon_dialog_delete class="w-4 h-4" /></:icon>
-          Delete Message
+          {gettext("Delete Message")}
         </.button>
         <.delete_confirm_dialog id="delete-msg-confirm" message_id={42} />
         <.code_example>

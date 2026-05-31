@@ -1,3 +1,4 @@
+import { t, jt } from "./i18n.js";
 /**
  * Game engine base — pure scaffolding for lifecycle, event wiring, and canvas setup.
  * Each concrete game provides its own binary DataView protocol via protocol.js.
@@ -98,8 +99,8 @@ export class GameEngine {
 
     ctx.font = "14px monospace";
     ctx.fillStyle = mutedColor;
-    ctx.fillText("Game implementation coming soon!", w / 2, h / 2 + 10);
-    ctx.fillText(`Role: ${this.isHost ? "HOST" : "PEER"}`, w / 2, h / 2 + 40);
+    ctx.fillText(t("Game implementation coming soon!"), w / 2, h / 2 + 10);
+    ctx.fillText(jt`Role: ${this.isHost ? "HOST" : "PEER"}`, w / 2, h / 2 + 40);
 
     // Draw decorative border
     ctx.strokeStyle = fgColor;

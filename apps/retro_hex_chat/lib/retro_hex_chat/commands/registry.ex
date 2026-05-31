@@ -4,6 +4,8 @@ defmodule RetroHexChat.Commands.Registry do
   Handlers are registered at compile time.
   """
 
+  use Gettext, backend: RetroHexChat.Gettext
+
   @commands %{
     "admin" => RetroHexChat.Commands.Handlers.Admin,
     "alias" => RetroHexChat.Commands.Handlers.Alias,
@@ -67,28 +69,12 @@ defmodule RetroHexChat.Commands.Registry do
 
   @category_order [:basics, :channel, :user, :config, :advanced]
   @category_labels %{
-    basics: "Basics",
-    channel: "Channel",
-    user: "User",
-    config: "Configuration",
-    advanced: "Advanced"
+    basics: gettext_noop("Basics"),
+    channel: gettext_noop("Channel"),
+    user: gettext_noop("User"),
+    config: gettext_noop("Configuration"),
+    advanced: gettext_noop("Advanced")
   }
-
-  @command_metadata (for {name, module} <- @commands do
-                       help = module.help()
-
-                       category =
-                         if function_exported?(module, :category, 0),
-                           do: module.category(),
-                           else: :basics
-
-                       %{
-                         name: name,
-                         description: help.description,
-                         category: Map.fetch!(@category_labels, category),
-                         category_atom: category
-                       }
-                     end)
 
   @spec lookup(String.t()) :: {:ok, module()} | {:error, :unknown_command}
   def lookup(name) do
@@ -117,34 +103,57 @@ defmodule RetroHexChat.Commands.Registry do
             category_atom: atom()
           }
         ]
-  def command_metadata, do: @command_metadata
+  def command_metadata do
+    for {name, module} <- @commands do
+      help = module.help()
 
-  @syntax_definitions (for {name, module} <- @commands do
-                         syntax =
-                           if function_exported?(module, :syntax_definition, 0) do
-                             module.syntax_definition()
-                           else
-                             nil
-                           end
+      category =
+        if function_exported?(module, :category, 0),
+          do: module.category(),
+          else: :basics
 
-                         {name, syntax}
-                       end)
-                      |> Enum.reject(fn {_name, syntax} -> is_nil(syntax) end)
-                      |> Map.new()
+      %{
+        name: name,
+        description: help.description,
+        category: @category_labels |> Map.fetch!(category) |> t(),
+        category_atom: category
+      }
+    end
+  end
 
   @doc """
   Returns the syntax definition for a given command name, or nil if not available.
   """
   @spec get_syntax(String.t()) :: RetroHexChat.Commands.CommandSyntax.t() | nil
   def get_syntax(name) do
-    Map.get(@syntax_definitions, name)
+    case Map.fetch(@commands, name) do
+      {:ok, module} ->
+        if function_exported?(module, :syntax_definition, 0) do
+          module.syntax_definition()
+        end
+
+      :error ->
+        nil
+    end
   end
 
   @doc """
   Returns all available syntax definitions as a map of command name to CommandSyntax.
   """
   @spec all_syntax_definitions() :: %{String.t() => RetroHexChat.Commands.CommandSyntax.t()}
-  def all_syntax_definitions, do: @syntax_definitions
+  def all_syntax_definitions do
+    @commands
+    |> Enum.map(fn {name, module} ->
+      syntax =
+        if function_exported?(module, :syntax_definition, 0) do
+          module.syntax_definition()
+        end
+
+      {name, syntax}
+    end)
+    |> Enum.reject(fn {_name, syntax} -> is_nil(syntax) end)
+    |> Map.new()
+  end
 
   @doc """
   Returns commands grouped by category in display order.
@@ -153,13 +162,15 @@ defmodule RetroHexChat.Commands.Registry do
   @spec commands_by_category() :: [{String.t(), [%{name: String.t(), description: String.t()}]}]
   def commands_by_category do
     grouped =
-      @command_metadata
+      command_metadata()
       |> Enum.group_by(& &1.category_atom)
 
     for cat <- @category_order, commands = Map.get(grouped, cat, []), commands != [] do
-      label = Map.fetch!(@category_labels, cat)
+      label = @category_labels |> Map.fetch!(cat) |> t()
       sorted = Enum.sort_by(commands, & &1.name)
       {label, Enum.map(sorted, &Map.take(&1, [:name, :description]))}
     end
   end
+
+  defp t(msgid), do: Gettext.gettext(RetroHexChat.Gettext, msgid)
 end

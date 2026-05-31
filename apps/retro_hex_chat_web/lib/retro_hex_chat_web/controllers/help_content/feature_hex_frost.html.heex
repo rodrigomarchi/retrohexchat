@@ -1,67 +1,97 @@
 <p>
-  Arctic construction race — jump on floating ice blocks to build your igloo while
-  competing against your opponent. The twist: blocks are shared, and stepping on
-  opponent-owned blocks steals their pieces!
+  {gettext(
+    "Arctic construction race — jump on floating ice blocks to build your igloo while competing against your opponent. The twist: blocks are shared, and stepping on opponent-owned blocks steals their pieces!"
+  )}
 </p>
 <.diagram_game_frost class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
-<ul>
-  <li><strong>Arrow keys (←/→) or A/D</strong> — Move left/right on blocks or shore</li>
-  <li><strong>Arrow Up or W</strong> — Jump to the row above (toward shore)</li>
-  <li><strong>Arrow Down or S</strong> — Jump to the row below (toward water)</li>
-</ul>
-<.help_h4 icon={:icon_rules}>Block Mechanics</.help_h4>
-<ul>
-  <li><strong>White block</strong> — Neutral. Step on it to claim it (+1 igloo piece)</li>
-  <li><strong>Your block</strong> — Step on your own block to undo it (-1 piece)</li>
-  <li>
-    <strong>Opponent's block</strong>
-    — Step to steal it! You +1 piece, they -1 piece (2-piece swing!)
-  </li>
-  <li>4 rows of ice blocks float horizontally (alternating directions)</li>
-  <li>You must time your jumps to land on moving blocks</li>
-  <li>Miss a block and fall in the water — lose a life!</li>
-</ul>
-<.help_h4 icon={:icon_rules}>Igloo & Winning</.help_h4>
-<ul>
-  <li>Build your igloo by collecting 15 pieces from ice blocks</li>
-  <li>Once complete, return to shore and enter your igloo to win the round</li>
-  <li>Temperature bonus: remaining temperature × 10 points</li>
-  <li>Best of 5 rounds (first to 3 wins)</li>
-</ul>
-<.help_h4 icon={:icon_rules}>Enemies</.help_h4>
-<ul>
-  <li><strong>Polar Bear</strong> — Patrols the shore. Dodge to reach your igloo!</li>
-  <li><strong>Crabs</strong> — Ride the ice blocks (from round 2)</li>
-  <li><strong>Geese</strong> — Fly between rows, danger during jumps (from round 3)</li>
-  <li>
-    <strong>Clams</strong> — Open/close on blocks. Open = dangerous, closed = safe (from round 4)
-  </li>
-  <li><strong>Fish</strong> — Bonus collectible between rows (200 points)</li>
-</ul>
-<.help_h4 icon={:icon_tab_modes}>Modes</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
   <li>
-    <.help_link topic="feature-hex-frost-blizzard">Blizzard</.help_link>
-    — 1 epic round, 20-piece igloo, all enemies from the start
+    <strong>{gettext("Arrow keys (←/→) or A/D")}</strong> {gettext(
+      "— Move left/right on blocks or shore"
+    )}
   </li>
   <li>
-    <.help_link topic="feature-hex-frost-peaceful">Peaceful</.help_link>
-    — No block stealing, pure construction race
+    <strong>{gettext("Arrow Up or W")}</strong> {gettext("— Jump to the row above (toward shore)")}
+  </li>
+  <li>
+    <strong>{gettext("Arrow Down or S")}</strong> {gettext(
+      "— Jump to the row below (toward water)"
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_rules}>Temperature</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Block Mechanics")}</.help_h4>
 <ul>
-  <li>Shared timer starts at 45° and drops ~1°/second</li>
-  <li>If it reaches 0°, the round ends — most igloo pieces wins</li>
-  <li>Build fast to maximize your temperature bonus!</li>
+  <li>
+    <strong>{gettext("White block")}</strong> {gettext(
+      "— Neutral. Step on it to claim it (+1 igloo piece)"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Your block")}</strong> {gettext(
+      "— Step on your own block to undo it (-1 piece)"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Opponent's block")}</strong>
+    {gettext("— Step to steal it! You +1 piece, they -1 piece (2-piece swing!)")}
+  </li>
+  <li>{gettext("4 rows of ice blocks float horizontally (alternating directions)")}</li>
+  <li>{gettext("You must time your jumps to land on moving blocks")}</li>
+  <li>{gettext("Miss a block and fall in the water — lose a life!")}</li>
 </ul>
-<.help_h4 icon={:icon_joystick}>Inspiration</.help_h4>
-<p>Inspired by Activision Frostbite (1983) by Steve Cartwright.</p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Igloo & Winning")}</.help_h4>
+<ul>
+  <li>{gettext("Build your igloo by collecting 15 pieces from ice blocks")}</li>
+  <li>{gettext("Once complete, return to shore and enter your igloo to win the round")}</li>
+  <li>{gettext("Temperature bonus: remaining temperature × 10 points")}</li>
+  <li>{gettext("Best of 5 rounds (first to 3 wins)")}</li>
+</ul>
+<.help_h4 icon={:icon_rules}>{gettext("Enemies")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("Polar Bear")}</strong> {gettext(
+      "— Patrols the shore. Dodge to reach your igloo!"
+    )}
+  </li>
+  <li><strong>{gettext("Crabs")}</strong> {gettext("— Ride the ice blocks (from round 2)")}</li>
+  <li>
+    <strong>{gettext("Geese")}</strong> {gettext(
+      "— Fly between rows, danger during jumps (from round 3)"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Clams")}</strong> {gettext(
+      "— Open/close on blocks. Open = dangerous, closed = safe (from round 4)"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Fish")}</strong> {gettext("— Bonus collectible between rows (200 points)")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_tab_modes}>{gettext("Modes")}</.help_h4>
+<ul>
+  <li>
+    <.help_link topic="feature-hex-frost-blizzard">{gettext("Blizzard")}</.help_link>
+    {gettext("— 1 epic round, 20-piece igloo, all enemies from the start")}
+  </li>
+  <li>
+    <.help_link topic="feature-hex-frost-peaceful">{gettext("Peaceful")}</.help_link>
+    {gettext("— No block stealing, pure construction race")}
+  </li>
+</ul>
+<.help_h4 icon={:icon_rules}>{gettext("Temperature")}</.help_h4>
+<ul>
+  <li>{gettext("Shared timer starts at 45° and drops ~1°/second")}</li>
+  <li>{gettext("If it reaches 0°, the round ends — most igloo pieces wins")}</li>
+  <li>{gettext("Build fast to maximize your temperature bonus!")}</li>
+</ul>
+<.help_h4 icon={:icon_joystick}>{gettext("Inspiration")}</.help_h4>
+<p>{gettext("Inspired by Activision Frostbite (1983) by Steve Cartwright.")}</p>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-frost-blizzard">Hex Frost: Blizzard</.help_link>
-  · <.help_link topic="feature-hex-frost-peaceful">Hex Frost: Peaceful</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-hex-frost-blizzard">{gettext("Hex Frost: Blizzard")}</.help_link>
+  · <.help_link topic="feature-hex-frost-peaceful">{gettext("Hex Frost: Peaceful")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

@@ -11,6 +11,8 @@ defmodule RetroHexChatWeb.ChatLive.HighlightEvents do
 
   import Phoenix.Component, only: [assign: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [maybe_persist_highlight_words: 2, push_status_message: 3]
 
@@ -88,7 +90,12 @@ defmodule RetroHexChatWeb.ChatLive.HighlightEvents do
          |> maybe_persist_highlight_words(new_session)}
 
       {:error, reason} ->
-        {:halt, push_status_message(socket, "Cannot add highlight: #{reason}", :error)}
+        {:halt,
+         push_status_message(
+           socket,
+           gettext("Cannot add highlight: %{reason}", reason: reason),
+           :error
+         )}
     end
   end
 
@@ -105,7 +112,7 @@ defmodule RetroHexChatWeb.ChatLive.HighlightEvents do
          |> maybe_persist_highlight_words(new_session)}
 
       {:error, :not_found} ->
-        {:halt, push_status_message(socket, "Word not in highlight list", :error)}
+        {:halt, push_status_message(socket, gettext("Word not in highlight list"), :error)}
     end
   end
 
@@ -123,7 +130,12 @@ defmodule RetroHexChatWeb.ChatLive.HighlightEvents do
          |> maybe_persist_highlight_words(new_session)}
 
       {:error, reason} ->
-        {:halt, push_status_message(socket, "Cannot update highlight: #{reason}", :error)}
+        {:halt,
+         push_status_message(
+           socket,
+           gettext("Cannot update highlight: %{reason}", reason: reason),
+           :error
+         )}
     end
   end
 

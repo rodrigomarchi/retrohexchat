@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameTrails do
   @moduledoc "SVG game screen diagram for Light Trails."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -15,7 +16,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameTrails do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Light Trails game screen: two glowing trails on a dark grid, green and cyan"
+      aria-label={
+        gettext("Light Trails game screen: two glowing trails on a dark grid, green and cyan")
+      }
     >
       {win98_chrome("Light Trails")}
       <%!-- Subtle grid --%>
@@ -74,13 +77,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameTrails do
       <rect x="440" y="156" width="8" height="8" fill="#fff" />
       <%!-- Scores --%>
       <text x="30" y="44" fill="#00ff41" font-size="14" font-family="'Courier New',monospace">
-        P1: 2
+        {gettext("P1: 2")}
       </text>
       <text x="440" y="44" fill="#00d4ff" font-size="14" font-family="'Courier New',monospace">
-        P2: 1
+        {gettext("P2: 1")}
       </text>
       <text x="230" y="44" fill="#ffaa00" font-size="12" font-family="'Courier New',monospace">
-        ROUND 4
+        {gettext("ROUND 4")}
       </text>
     </svg>
     """

@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Card do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,37 +15,37 @@ defmodule RetroHexChatWeb.ShowcaseLive.Primitives.Card do
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, page_title: "Card", active_page: "card")}
+    {:ok, assign(socket, page_title: gettext("Card"), active_page: "card")}
   end
 
   @impl true
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Card</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Card")}</h2>
 
       <.showcase_card
-        title="Usage"
+        title={gettext("Usage")}
         description="Container for grouping related content with header, content, and footer."
       >
         <div class="max-w-sm">
           <.card>
             <.card_header>
               <:icon><Icons.icon_notepad class="w-4 h-4" /></:icon>
-              <.card_title>Card Title</.card_title>
-              <.card_description>Card description goes here.</.card_description>
+              <.card_title>{gettext("Card Title")}</.card_title>
+              <.card_description>{gettext("Card description goes here.")}</.card_description>
             </.card_header>
             <.card_content>
-              <p>This is the card content area. You can put any content here.</p>
+              <p>{gettext("This is the card content area. You can put any content here.")}</p>
             </.card_content>
             <.card_footer>
               <.button variant="outline" size="sm">
                 <:icon><Icons.icon_btn_cancel /></:icon>
-                Cancel
+                {gettext("Cancel")}
               </.button>
               <.button size="sm">
                 <:icon><Icons.icon_btn_save /></:icon>
-                Save
+                {gettext("Save")}
               </.button>
             </.card_footer>
           </.card>

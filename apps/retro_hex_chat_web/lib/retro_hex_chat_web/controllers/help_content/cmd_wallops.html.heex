@@ -1,28 +1,34 @@
 <p>
-  Send a message to all users who have opted in to receive operator announcements by enabling +w user mode.
+  {gettext(
+    "Send a message to all users who have opted in to receive operator announcements by enabling +w user mode."
+  )}
 </p>
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/wallops &lt;message&gt;</pre>
-<.help_h4 icon={:icon_tag}>Parameters</.help_h4>
-<p><code>message</code> — The broadcast message to send.</p>
-<.help_h4 icon={:icon_tab_control}>How It Works</.help_h4>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/wallops <message>")}</pre>
+<.help_h4 icon={:icon_tag}>{gettext("Parameters")}</.help_h4>
+<p><code>message</code> {gettext("— The broadcast message to send.")}</p>
+<.help_h4 icon={:icon_tab_control}>{gettext("How It Works")}</.help_h4>
 <p>
-  Wallops messages are delivered to all users who have enabled the <code>+w</code>
-  user mode (via <code>/umode +w</code>). The message appears in each recipient's Status tab. Unlike <code>/announce</code>, wallops can be opted out of — users who haven't enabled
-  <code>+w</code>
-  won't see them. This makes wallops suitable for non-critical operator announcements.
+  {gettext("Wallops messages are delivered to all users who have enabled the")}
+  <code>{gettext("+w")}</code>
+  {gettext("user mode (via")} <code>{gettext("/umode +w")}</code>{gettext(
+    "). The message appears in each recipient's Status tab. Unlike"
+  )} <code>{gettext("/announce")}</code>{gettext(
+    ", wallops can be opted out of — users who haven't enabled"
+  )}
+  <code>{gettext("+w")}</code>
+  {gettext("won't see them. This makes wallops suitable for non-critical operator announcements.")}
 </p>
-<.help_h4 icon={:icon_rules}>Rules &amp; Limits</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Rules & Limits")}</.help_h4>
 <ul>
-  <li>Server operator or administrator only</li>
-  <li>Only users with +w mode enabled will see the message</li>
+  <li>{gettext("Server operator or administrator only")}</li>
+  <li>{gettext("Only users with +w mode enabled will see the message")}</li>
 </ul>
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/wallops Server maintenance in 10 minutes
-/wallops New chat features available — check #announcements</pre>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/wallops Server maintenance in 10 minutes /wallops New chat features available — check #announcements")}</pre>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-umode">/umode</.help_link>
-  · <.help_link topic="cmd-announce">/announce</.help_link>
-  · <.help_link topic="feature-special-messages">Special Messages</.help_link>
+  <.help_link topic="cmd-umode">{gettext("/umode")}</.help_link>
+  · <.help_link topic="cmd-announce">{gettext("/announce")}</.help_link>
+  · <.help_link topic="feature-special-messages">{gettext("Special Messages")}</.help_link>
 </p>

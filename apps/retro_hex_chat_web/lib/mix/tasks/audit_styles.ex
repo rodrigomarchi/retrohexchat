@@ -41,7 +41,9 @@ defmodule Mix.Tasks.Audit.Styles do
   @impl Mix.Task
   @spec run(list()) :: :ok
   def run(_args) do
-    elixir_files = list_files(@web_lib, "**/*.ex") ++ list_files(@domain_lib, "**/*.ex")
+    elixir_files =
+      list_files(@web_lib, "**/*.ex") ++ list_files(@domain_lib, "**/*.ex")
+
     heex_files = list_files(@web_lib, "**/*.heex")
     js_files = list_files(@js_dir, "**/*.js")
 
@@ -323,9 +325,14 @@ defmodule Mix.Tasks.Audit.Styles do
   defp category_label(:js_style_prop), do: "JS el.style.* property assignments"
   defp category_label(:js_color), do: "Hex colors in JavaScript"
 
-  defp suggestion(:inline_style), do: "Replace with CSS classes (e.g. class=\"u-hidden\")"
+  defp suggestion(:inline_style),
+    do: "Replace with CSS classes (e.g. class=\"u-hidden\")"
+
   defp suggestion(:color_attr), do: "Move color palettes to CSS custom properties"
-  defp suggestion(:style_helper), do: "Eliminate helpers, use dynamic CSS classes instead"
+
+  defp suggestion(:style_helper),
+    do: "Eliminate helpers, use dynamic CSS classes instead"
+
   defp suggestion(:js_style_prop), do: "Replace with classList.toggle() or CSS classes"
   defp suggestion(:js_color), do: "Use CSS custom properties via getComputedStyle()"
 

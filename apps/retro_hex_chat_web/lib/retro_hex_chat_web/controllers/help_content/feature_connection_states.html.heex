@@ -1,22 +1,29 @@
-<p>The status bar shows four possible connection states with visual indicators.</p>
-<.help_h4 icon={:icon_tab_status}>States</.help_h4>
+<p>{gettext("The status bar shows four possible connection states with visual indicators.")}</p>
+<.help_h4 icon={:icon_tab_status}>{gettext("States")}</.help_h4>
 <p>
-  <strong>● Connected:</strong>
-  Normal operation — you are connected to the server.<br /><strong>◌ Connecting:</strong>
-  Initial connection in progress.<br /><strong>● Disconnected:</strong>
-  Connection lost — shown in red.<br /><strong>↻ Reconnecting:</strong>
-  Attempting to reconnect automatically.
+  <strong>{gettext("● Connected:")}</strong>
+  {gettext("Normal operation — you are connected to the server.")}<br />
+  <strong>
+    {gettext("◌ Connecting:")}
+  </strong>
+  {gettext("Initial connection in progress.")}<br /><strong>{gettext("● Disconnected:")}</strong>
+  {gettext("Connection lost — shown in red.")}<br /><strong>{gettext("↻ Reconnecting:")}</strong>
+  {gettext("Attempting to reconnect automatically.")}
 </p>
-<.help_h4 icon={:icon_megaphone}>Connection Banners</.help_h4>
+<.help_h4 icon={:icon_megaphone}>{gettext("Connection Banners")}</.help_h4>
 <p>
-  For brief disconnections (over 1 second), a red banner appears at the top of the chat area. When reconnected, a green banner shows briefly and fades after 3 seconds. Very brief disconnections (under 1 second) are suppressed to avoid flicker.
+  {gettext(
+    "For brief disconnections (over 1 second), a red banner appears at the top of the chat area. When reconnected, a green banner shows briefly and fades after 3 seconds. Very brief disconnections (under 1 second) are suppressed to avoid flicker."
+  )}
 </p>
-<.help_h4 icon={:icon_retry}>Reconnect Overlay</.help_h4>
+<.help_h4 icon={:icon_retry}>{gettext("Reconnect Overlay")}</.help_h4>
 <p>
-  For extended disconnections, a full-screen overlay with countdown and retry appears. The banner hides when the overlay is active to avoid duplication.
+  {gettext(
+    "For extended disconnections, a full-screen overlay with countdown and retry appears. The banner hides when the overlay is active to avoid duplication."
+  )}
 </p>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-status-bar">Status Bar</.help_link>
-  · <.help_link topic="feature-lag-indicator">Lag Indicator</.help_link>
+  <.help_link topic="feature-status-bar">{gettext("Status Bar")}</.help_link>
+  · <.help_link topic="feature-lag-indicator">{gettext("Lag Indicator")}</.help_link>
 </p>

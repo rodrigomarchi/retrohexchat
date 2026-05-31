@@ -1,122 +1,170 @@
 <p>
-  Every channel member has a rank that determines what they can do. Higher ranks inherit all privileges of lower ranks.
+  {gettext(
+    "Every channel member has a rank that determines what they can do. Higher ranks inherit all privileges of lower ranks."
+  )}
 </p>
 
-<.help_h4 icon={:icon_role_owner}>Rank Hierarchy</.help_h4>
+<.help_h4 icon={:icon_role_owner}>{gettext("Rank Hierarchy")}</.help_h4>
 <p>
   <strong>~</strong>
-  Owner (rank 4) — Full control over the channel.<br />
+  {gettext("Owner (rank 4) — Full control over the channel.")}<br />
   <strong>@</strong>
-  Operator (rank 3) — Day-to-day channel management.<br />
+  {gettext("Operator (rank 3) — Day-to-day channel management.")}<br />
   <strong>%</strong>
-  Half-Operator (rank 2) — Limited moderation duties.<br />
+  {gettext("Half-Operator (rank 2) — Limited moderation duties.")}<br />
   <strong>+</strong>
-  Voiced (rank 1) — Can speak in moderated channels.<br />
-  &nbsp;&nbsp; Regular (rank 0) — Standard member, no special privileges.
+  {gettext("Voiced (rank 1) — Can speak in moderated channels.")}<br />
+  {gettext("Regular (rank 0) — Standard member, no special privileges.")}
 </p>
 
-<.help_h4 icon={:icon_role_operator}>What Each Rank Can Do</.help_h4>
+<.help_h4 icon={:icon_role_operator}>{gettext("What Each Rank Can Do")}</.help_h4>
 
-<p><strong>Owner (~)</strong></p>
+<p><strong>{gettext("Owner (~)")}</strong></p>
 <ul>
-  <li>Everything an Operator can do</li>
-  <li>Grant/revoke Owner status (<code>/mode +q</code>)</li>
-  <li>Cannot be kicked or banned by anyone</li>
-  <li>Drop (unregister) the channel via ChanServ</li>
+  <li>{gettext("Everything an Operator can do")}</li>
+  <li>{gettext("Grant/revoke Owner status (")}<code>{gettext("/mode +q")}</code>)</li>
+  <li>{gettext("Cannot be kicked or banned by anyone")}</li>
+  <li>{gettext("Drop (unregister) the channel via ChanServ")}</li>
 </ul>
 
-<p><strong>Operator (@)</strong></p>
+<p><strong>{gettext("Operator (@)")}</strong></p>
 <ul>
-  <li>Everything a Half-Operator can do</li>
+  <li>{gettext("Everything a Half-Operator can do")}</li>
   <li>
-    Grant/revoke Operator and Half-Operator status (<code>/mode +o</code>, <code>/mode +h</code>)
-  </li>
-  <li>Ban and unban users (<code>/ban</code>, <code>/unban</code>, <code>/mode +b/-b</code>)</li>
-  <li>
-    Set all channel modes (<code>/mode +m</code>, <code>+i</code>, <code>+t</code>, <code>+k</code>, <code>+l</code>, <code>+n</code>, <code>+s</code>, <code>+p</code>, <code>+c</code>, <code>+R</code>, <code>+K</code>, <code>+j</code>)
-  </li>
-  <li>Change topic when channel is +t (topic locked)</li>
-</ul>
-
-<p><strong>Half-Operator (%)</strong></p>
-<ul>
-  <li>Kick users of lower rank</li>
-  <li>Grant/revoke Voice (<code>/mode +v</code>)</li>
-</ul>
-
-<p><strong>Voiced (+)</strong></p>
-<ul>
-  <li>Speak in moderated (+m) channels</li>
-</ul>
-
-<p><strong>Regular</strong></p>
-<ul>
-  <li>Send messages (unless channel is +m moderated)</li>
-  <li>Change topic (unless channel is +t topic-locked)</li>
-  <li>Join channel (subject to +i, +k, +l, +R, +b restrictions)</li>
-</ul>
-
-<.help_h4 icon={:icon_rules}>Key Rules</.help_h4>
-<ul>
-  <li>
-    <strong>Rank comparison</strong>: You can only kick or ban users with a
-    <em>strictly lower</em>
-    rank than yours. An operator cannot kick another operator.
-  </li>
-  <li><strong>Self-actions</strong>: You cannot ban yourself.</li>
-  <li>
-    <strong>Ban vs. Kick</strong>: Kicking requires Half-Operator or higher. Banning requires Operator or higher.
+    {gettext("Grant/revoke Operator and Half-Operator status (")}<code>{gettext("/mode +o")}</code>, <code>{gettext("/mode +h")}</code>)
   </li>
   <li>
-    <strong>Mode setting</strong>: Most channel modes require Operator. Only Owners can grant +q. Half-Operators can only grant +v.
+    {gettext("Ban and unban users (")}<code>{gettext("/ban")}</code>, <code>{gettext("/unban")}</code>, <code>{gettext("/mode +b/-b")}</code>)
+  </li>
+  <li>
+    {gettext("Set all channel modes (")}<code>{gettext("/mode +m")}</code>, <code>{gettext("+i")}</code>, <code>{gettext("+t")}</code>, <code>{gettext("+k")}</code>, <code>{gettext("+l")}</code>, <code>{gettext("+n")}</code>, <code>{gettext("+s")}</code>, <code>{gettext("+p")}</code>, <code>{gettext("+c")}</code>, <code>{gettext("+R")}</code>, <code>{gettext("+K")}</code>, <code>{gettext("+j")}</code>)
+  </li>
+  <li>{gettext("Change topic when channel is +t (topic locked)")}</li>
+</ul>
+
+<p><strong>{gettext("Half-Operator (%)")}</strong></p>
+<ul>
+  <li>{gettext("Kick users of lower rank")}</li>
+  <li>{gettext("Grant/revoke Voice (")}<code>{gettext("/mode +v")}</code>)</li>
+</ul>
+
+<p><strong>{gettext("Voiced (+)")}</strong></p>
+<ul>
+  <li>{gettext("Speak in moderated (+m) channels")}</li>
+</ul>
+
+<p><strong>{gettext("Regular")}</strong></p>
+<ul>
+  <li>{gettext("Send messages (unless channel is +m moderated)")}</li>
+  <li>{gettext("Change topic (unless channel is +t topic-locked)")}</li>
+  <li>{gettext("Join channel (subject to +i, +k, +l, +R, +b restrictions)")}</li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>{gettext("Key Rules")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("Rank comparison")}</strong>{gettext(
+      ": You can only kick or ban users with a"
+    )}
+    <em>{gettext("strictly lower")}</em>
+    {gettext("rank than yours. An operator cannot kick another operator.")}
+  </li>
+  <li><strong>{gettext("Self-actions")}</strong>{gettext(": You cannot ban yourself.")}</li>
+  <li>
+    <strong>{gettext("Ban vs. Kick")}</strong>{gettext(
+      ": Kicking requires Half-Operator or higher. Banning requires Operator or higher."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Mode setting")}</strong>{gettext(
+      ": Most channel modes require Operator. Only Owners can grant +q. Half-Operators can only grant +v."
+    )}
   </li>
 </ul>
 
-<.help_h4 icon={:icon_shield}>ChanServ Auto-Grant</.help_h4>
-<p>For registered channels, ChanServ automatically assigns ranks when identified users join:</p>
+<.help_h4 icon={:icon_shield}>{gettext("ChanServ Auto-Grant")}</.help_h4>
+<p>
+  {gettext(
+    "For registered channels, ChanServ automatically assigns ranks when identified users join:"
+  )}
+</p>
 <ul>
-  <li><strong>Founder</strong> &rarr; Owner (~) automatically on join</li>
-  <li><strong>SOP</strong> (Super Operator) &rarr; Operator (@) automatically on join</li>
-  <li><strong>AOP</strong> (Auto Operator) &rarr; Operator (@) automatically on join</li>
-  <li><strong>VOP</strong> (Auto Voice) &rarr; Voiced (+) automatically on join</li>
+  <li>
+    <strong>{gettext("Founder")}</strong> {gettext("&rarr; Owner (~) automatically on join")}
+  </li>
+  <li>
+    <strong>{gettext("SOP")}</strong> {gettext(
+      "(Super Operator) &rarr; Operator (@) automatically on join"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("AOP")}</strong> {gettext(
+      "(Auto Operator) &rarr; Operator (@) automatically on join"
+    )}
+  </li>
+  <li>
+    <strong>{gettext("VOP")}</strong> {gettext(
+      "(Auto Voice) &rarr; Voiced (+) automatically on join"
+    )}
+  </li>
 </ul>
 <p>
-  You must be identified with NickServ (<code>/ns identify</code>) for ChanServ to recognize your access level.
+  {gettext("You must be identified with NickServ (")}<code>{gettext("/ns identify")}</code>{gettext(
+    ") for ChanServ to recognize your access level."
+  )}
 </p>
 
-<.help_h4 icon={:icon_ban}>Join Restrictions</.help_h4>
-<p>Channel modes can restrict who may join:</p>
+<.help_h4 icon={:icon_ban}>{gettext("Join Restrictions")}</.help_h4>
+<p>{gettext("Channel modes can restrict who may join:")}</p>
 <ul>
   <li>
-    <strong>+b</strong>
-    (banned) — Banned users cannot join. Removed with <code>/unban</code>
-    or <code>/mode -b</code>.
+    <strong>{gettext("+b")}</strong>
+    {gettext("(banned) — Banned users cannot join. Removed with")}
+    <code>{gettext("/unban")}</code> or <code>{gettext("/mode -b")}</code>.
   </li>
   <li>
-    <strong>+i</strong> (invite-only) — Only invited users or those with ban exceptions can join.
+    <strong>{gettext("+i")}</strong> {gettext(
+      "(invite-only) — Only invited users or those with ban exceptions can join."
+    )}
   </li>
   <li>
-    <strong>+k</strong>
-    (key) — Requires the correct password: <code>/join #channel password</code>.
+    <strong>{gettext("+k")}</strong>
+    {gettext("(key) — Requires the correct password:")} <code>{gettext("/join #channel password")}</code>.
   </li>
-  <li><strong>+l</strong> (limit) — Channel cannot exceed the user limit.</li>
-  <li><strong>+R</strong> (registered-only) — Only registered and identified users can join.</li>
-  <li><strong>+j</strong> (throttle) — Limits the rate of joins (anti-flood).</li>
+  <li>
+    <strong>{gettext("+l")}</strong> {gettext("(limit) — Channel cannot exceed the user limit.")}
+  </li>
+  <li>
+    <strong>{gettext("+R")}</strong> {gettext(
+      "(registered-only) — Only registered and identified users can join."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("+j")}</strong> {gettext(
+      "(throttle) — Limits the rate of joins (anti-flood)."
+    )}
+  </li>
 </ul>
 
-<.help_h4 icon={:icon_mute}>Speaking Restrictions</.help_h4>
+<.help_h4 icon={:icon_mute}>{gettext("Speaking Restrictions")}</.help_h4>
 <ul>
   <li>
-    <strong>+m</strong> (moderated) — Only Voiced, Half-Operator, Operator, and Owner can speak.
+    <strong>{gettext("+m")}</strong> {gettext(
+      "(moderated) — Only Voiced, Half-Operator, Operator, and Owner can speak."
+    )}
   </li>
-  <li><strong>+n</strong> (no external) — Only channel members can send messages.</li>
+  <li>
+    <strong>{gettext("+n")}</strong> {gettext(
+      "(no external) — Only channel members can send messages."
+    )}
+  </li>
 </ul>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="chanserv">ChanServ Overview</.help_link>
-  · <.help_link topic="channel-modes-overview">Channel Modes</.help_link>
-  · <.help_link topic="cmd-mode">/mode</.help_link>
-  · <.help_link topic="cmd-ban">/ban</.help_link>
-  · <.help_link topic="cmd-kick">/kick</.help_link>
+  <.help_link topic="chanserv">{gettext("ChanServ Overview")}</.help_link>
+  · <.help_link topic="channel-modes-overview">{gettext("Channel Modes")}</.help_link>
+  · <.help_link topic="cmd-mode">{gettext("/mode")}</.help_link>
+  · <.help_link topic="cmd-ban">{gettext("/ban")}</.help_link>
+  · <.help_link topic="cmd-kick">{gettext("/kick")}</.help_link>
 </p>

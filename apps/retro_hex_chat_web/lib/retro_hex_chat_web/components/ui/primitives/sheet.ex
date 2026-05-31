@@ -142,7 +142,7 @@ defmodule RetroHexChatWeb.Components.UI.Sheet do
             >
               <Icons.icon_close_thin class="h-4 w-4" />
 
-              <span class="sr-only">Close</span>
+              <span class="sr-only">{gettext("Close")}</span>
             </button>
           <% end %>
         </div>

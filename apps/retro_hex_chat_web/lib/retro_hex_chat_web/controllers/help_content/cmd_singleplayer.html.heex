@@ -1,22 +1,27 @@
 <p>
-  Start a solo arcade session from chat. This is an administrator-only command used for direct arcade session creation.
+  {gettext(
+    "Start a solo arcade session from chat. This is an administrator-only command used for direct arcade session creation."
+  )}
 </p>
 
-<.help_h4 icon={:icon_code}>Syntax</.help_h4>
-<pre>/singleplayer</pre>
+<.help_h4 icon={:icon_code}>{gettext("Syntax")}</.help_h4>
+<pre>{gettext("/singleplayer")}</pre>
 
-<.help_h4 icon={:icon_rules}>Requirements</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("Requirements")}</.help_h4>
 <ul>
-  <li>You must be a server administrator.</li>
-  <li>Your nickname must be registered and identified.</li>
-  <li>Regular users should join <code>#games</code> and type <code>!play</code> instead.</li>
+  <li>{gettext("You must be a server administrator.")}</li>
+  <li>{gettext("Your nickname must be registered and identified.")}</li>
+  <li>
+    {gettext("Regular users should join")} <code>#games</code> {gettext("and type")}
+    <code>{gettext("!play")}</code> {gettext("instead.")}
+  </li>
 </ul>
 
-<.help_h4 icon={:icon_lightbulb}>Examples</.help_h4>
-<pre>/singleplayer</pre>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Examples")}</.help_h4>
+<pre>{gettext("/singleplayer")}</pre>
 
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-arcade">Solo Arcade</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-arcade">{gettext("Solo Arcade")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

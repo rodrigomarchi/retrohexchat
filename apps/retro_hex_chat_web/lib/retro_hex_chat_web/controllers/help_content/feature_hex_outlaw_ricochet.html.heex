@@ -1,51 +1,64 @@
 <p>
-  Hex Outlaw variant with bouncing bullets. A wide wall blocks direct horizontal shots —
-  fire at 30-degree angles and bounce bullets off the ceiling or floor to hit your opponent.
-  This variant rewards geometric thinking and precise vertical positioning.
+  {gettext(
+    "Hex Outlaw variant with bouncing bullets. A wide wall blocks direct horizontal shots — fire at 30-degree angles and bounce bullets off the ceiling or floor to hit your opponent. This variant rewards geometric thinking and precise vertical positioning."
+  )}
 </p>
 <.diagram_game_outlaw class="w-full max-w-lg mx-auto my-4" />
-<.help_h4 icon={:icon_btn_keyboard}>Controls</.help_h4>
+<.help_h4 icon={:icon_btn_keyboard}>{gettext("Controls")}</.help_h4>
 <ul>
   <li>
-    <strong>Arrow Up / Down</strong>
-    or <strong>W / S</strong>
-    — Move vertically and set aim direction (last pressed determines angle)
+    <strong>{gettext("Arrow Up / Down")}</strong> or <strong>{gettext("W / S")}</strong>
+    {gettext("— Move vertically and set aim direction (last pressed determines angle)")}
   </li>
-  <li><strong>Space / Shift</strong> — Fire (one bullet at a time)</li>
+  <li><strong>{gettext("Space / Shift")}</strong> {gettext("— Fire (one bullet at a time)")}</li>
 </ul>
-<.help_h4 icon={:icon_rules}>What's Different</.help_h4>
-<ul>
-  <li>A wide wall (60% of arena height) replaces the cactus — no straight shots get through</li>
-  <li>
-    Bullets fire at a fixed 30-degree angle, aimed up or down based on your last vertical input
-  </li>
-  <li>Each bullet bounces once off the ceiling or floor, then flies straight</li>
-  <li>Same scoring: first to 10 points, best of 3 rounds</li>
-</ul>
-<.help_h4 icon={:icon_lightbulb}>Strategy Tips</.help_h4>
+<.help_h4 icon={:icon_rules}>{gettext("What's Different")}</.help_h4>
 <ul>
   <li>
-    <strong>Predict the bounce</strong>
-    — Bullets always bounce at matching angles. Position yourself so the ricochet lands where your opponent tends to stand.
+    {gettext(
+      "A wide wall (60% of arena height) replaces the cactus — no straight shots get through"
+    )}
   </li>
   <li>
-    <strong>Stay mobile vertically</strong>
-    — Your last directional input sets your aim. Keep moving up and down to make your shots unpredictable.
+    {gettext(
+      "Bullets fire at a fixed 30-degree angle, aimed up or down based on your last vertical input"
+    )}
+  </li>
+  <li>{gettext("Each bullet bounces once off the ceiling or floor, then flies straight")}</li>
+  <li>{gettext("Same scoring: first to 10 points, best of 3 rounds")}</li>
+</ul>
+<.help_h4 icon={:icon_lightbulb}>{gettext("Strategy Tips")}</.help_h4>
+<ul>
+  <li>
+    <strong>{gettext("Predict the bounce")}</strong>
+    {gettext(
+      "— Bullets always bounce at matching angles. Position yourself so the ricochet lands where your opponent tends to stand."
+    )}
   </li>
   <li>
-    <strong>Hug the edges</strong>
-    — Standing near the ceiling or floor gives your bullets a shorter bounce path, making them harder to dodge.
+    <strong>{gettext("Stay mobile vertically")}</strong>
+    {gettext(
+      "— Your last directional input sets your aim. Keep moving up and down to make your shots unpredictable."
+    )}
   </li>
   <li>
-    <strong>Wait for the shot</strong>
-    — You can only fire one bullet at a time. Don't waste shots — wait for a clear angle.
+    <strong>{gettext("Hug the edges")}</strong>
+    {gettext(
+      "— Standing near the ceiling or floor gives your bullets a shorter bounce path, making them harder to dodge."
+    )}
+  </li>
+  <li>
+    <strong>{gettext("Wait for the shot")}</strong>
+    {gettext(
+      "— You can only fire one bullet at a time. Don't waste shots — wait for a clear angle."
+    )}
   </li>
 </ul>
-<.help_h4 icon={:icon_link}>See Also</.help_h4>
+<.help_h4 icon={:icon_link}>{gettext("See Also")}</.help_h4>
 <p>
-  <.help_link topic="feature-hex-outlaw">Hex Outlaw</.help_link>
-  · <.help_link topic="feature-hex-outlaw-stagecoach">Stagecoach</.help_link>
-  · <.help_link topic="feature-hex-outlaw-nml">No Man's Land</.help_link>
-  · <.help_link topic="feature-p2p-games">P2P Games</.help_link>
-  · <.help_link topic="cmd-game">/game</.help_link>
+  <.help_link topic="feature-hex-outlaw">{gettext("Hex Outlaw")}</.help_link>
+  · <.help_link topic="feature-hex-outlaw-stagecoach">{gettext("Stagecoach")}</.help_link>
+  · <.help_link topic="feature-hex-outlaw-nml">{gettext("No Man's Land")}</.help_link>
+  · <.help_link topic="feature-p2p-games">{gettext("P2P Games")}</.help_link>
+  · <.help_link topic="cmd-game">{gettext("/game")}</.help_link>
 </p>

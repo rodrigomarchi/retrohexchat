@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameOutlaw do
   @moduledoc "SVG game screen diagram for Hex Outlaw."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -15,7 +16,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameOutlaw do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Hex Outlaw game screen: two gunslingers facing off across a cactus"
+      aria-label={gettext("Hex Outlaw game screen: two gunslingers facing off across a cactus")}
     >
       {win98_chrome("Hex Outlaw")}
       <%!-- Desert ground line --%>
@@ -36,13 +37,13 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameOutlaw do
       <rect x="160" y="188" width="4" height="3" fill="#ff0" />
       <%!-- Scores --%>
       <text x="30" y="44" fill="#00ff41" font-size="14" font-family="'Courier New',monospace">
-        P1: 6
+        {gettext("P1: 6")}
       </text>
       <text x="440" y="44" fill="#00d4ff" font-size="14" font-family="'Courier New',monospace">
-        P2: 4
+        {gettext("P2: 4")}
       </text>
       <text x="210" y="44" fill="#ffaa00" font-size="12" font-family="'Courier New',monospace">
-        ROUND 2
+        {gettext("ROUND 2")}
       </text>
     </svg>
     """

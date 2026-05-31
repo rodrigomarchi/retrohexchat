@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.Components.Diagrams.GameHockey do
   @moduledoc "SVG game screen diagram for Hex Hockey."
   use Phoenix.Component
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.Components.Diagrams.GameScreens, only: [win98_chrome: 1]
 
@@ -15,7 +16,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameHockey do
       shape-rendering="crispEdges"
       xmlns="http://www.w3.org/2000/svg"
       role="img"
-      aria-label="Hex Hockey game screen: ice hockey rink with players, goalies, and a puck"
+      aria-label={
+        gettext("Hex Hockey game screen: ice hockey rink with players, goalies, and a puck")
+      }
     >
       {win98_chrome("Hex Hockey")}
       <%!-- Rink outline --%>
@@ -80,7 +83,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameHockey do
         -
       </text>
       <text x="210" y="340" fill="#ffaa00" font-size="10" font-family="'Courier New',monospace">
-        Period 2  1:34
+        {gettext("Period 2 1:34")}
       </text>
     </svg>
     """

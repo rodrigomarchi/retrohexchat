@@ -1,3 +1,4 @@
+import { t, jt } from "../i18n.js";
 /**
  * Media management for audio/video calls — pure logic, no DOM or LiveView dependencies.
  * @module media
@@ -7,10 +8,10 @@
  * Quality level labels.
  */
 export const QUALITY_LABELS = {
-  excellent: "Excellent",
-  good: "Good",
-  fair: "Fair",
-  poor: "Poor",
+  excellent: t("Excellent"),
+  good: t("Good"),
+  fair: t("Fair"),
+  poor: t("Poor"),
 };
 
 /**
@@ -50,24 +51,26 @@ export function categorizeMediaError(error) {
     case "NotAllowedError":
       return {
         code: "permission_denied",
-        message:
+        message: t(
           "Microphone permission denied. Enable microphone permission in your browser and try again.",
+        ),
       };
     case "NotReadableError":
       return {
         code: "not_readable",
-        message:
+        message: t(
           "Camera in use by another application. Try closing other programs using the camera.",
+        ),
       };
     case "NotFoundError":
       return {
         code: "not_found",
-        message: "No camera found.",
+        message: t("No camera found."),
       };
     default:
       return {
         code: "unknown",
-        message: `Error accessing media: ${error.message}`,
+        message: jt`Error accessing media: ${error.message}`,
       };
   }
 }

@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatLayoutPage do
   @moduledoc false
   use Phoenix.LiveView
+  use Gettext, backend: RetroHexChatWeb.Gettext
 
   use Phoenix.VerifiedRoutes,
     endpoint: RetroHexChatWeb.Endpoint,
@@ -14,36 +15,46 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatLayoutPage do
   def mount(_params, _session, socket) do
     {:ok,
      assign(socket,
-       page_title: "Chat Layout",
+       page_title: gettext("Chat Layout"),
        active_page: "chat-layout",
        messages: [
-         %{timestamp: "14:20", nick: "alice", text: "Hey everyone!", nick_color: "text-blue-600"},
+         %{
+           timestamp: "14:20",
+           nick: "alice",
+           text: gettext("Hey everyone!"),
+           nick_color: "text-blue-600"
+         },
          %{
            timestamp: "14:21",
            nick: "bob",
-           text: "Hi alice! How's it going?",
+           text: gettext("Hi alice! How's it going?"),
            nick_color: "text-green-600"
          },
          %{
            timestamp: "14:22",
            nick: "carol",
-           text: "Welcome to #lobby!",
+           text: gettext("Welcome to #lobby!"),
            nick_color: "text-red-600"
          },
          %{
            timestamp: "14:23",
            nick: "alice",
-           text: "Pretty good, working on some code",
+           text: gettext("Pretty good, working on some code"),
            nick_color: "text-blue-600"
          },
-         %{timestamp: "14:24", nick: "dave", text: "Anyone up for a game?"},
+         %{timestamp: "14:24", nick: "dave", text: gettext("Anyone up for a game?")},
          %{
            timestamp: "14:25",
            nick: "bob",
-           text: "Sure! What game?",
+           text: gettext("Sure! What game?"),
            nick_color: "text-green-600"
          },
-         %{timestamp: "14:25", nick: "System", text: "eve has joined #lobby", type: "system"}
+         %{
+           timestamp: "14:25",
+           nick: gettext("System"),
+           text: gettext("eve has joined #lobby"),
+           type: "system"
+         }
        ],
        users: [
          %{nick: "alice", role: "op", status: "online"},
@@ -59,10 +70,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatLayoutPage do
   def render(assigns) do
     ~H"""
     <.showcase_layout active_page={@active_page}>
-      <h2 class="text-lg font-bold mb-3">Chat Layout</h2>
+      <h2 class="text-lg font-bold mb-3">{gettext("Chat Layout")}</h2>
 
       <.showcase_card
-        title="Full MDI Layout"
+        title={gettext("Full MDI Layout")}
         description="Complete chat interface: sidebar + tabs + topic + messages + nicklist + input."
       >
         <.chat_layout

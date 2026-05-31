@@ -33,6 +33,7 @@ import {
   getBlockAbsX,
 } from "./physics.js";
 import { PHASE, GAME_MODE, BAILEY_STATE, ENEMY_TYPE, BLOCK_STATE } from "./protocol.js";
+import { t, jt } from "../../i18n.js";
 
 // ── Color reading ──────────────────────────────────────────────
 
@@ -144,7 +145,7 @@ function drawWaitingScreen(ctx, colors, frameCount) {
   ctx.globalAlpha = pulse;
   ctx.font = "bold 16px monospace";
   ctx.textAlign = "center";
-  ctx.fillText("WAITING FOR OPPONENT...", CANVAS_W / 2, CANVAS_H / 2);
+  ctx.fillText(t("WAITING FOR OPPONENT..."), CANVAS_W / 2, CANVAS_H / 2);
   ctx.globalAlpha = 1;
 }
 
@@ -721,7 +722,7 @@ function drawHUD(ctx, state, colors) {
   ctx.fillStyle = colors.fg;
   ctx.font = "bold 10px monospace";
   ctx.textAlign = "left";
-  ctx.fillText(`P1: ${p1.score}`, 8, 14);
+  ctx.fillText(jt`P1: ${p1.score}`, 8, 14);
 
   // P1 lives
   for (let i = 0; i < p1.lives; i++) {
@@ -747,8 +748,8 @@ function drawHUD(ctx, state, colors) {
       ? "BLIZZARD"
       : state.mode === GAME_MODE.PEACEFUL
         ? "PEACEFUL"
-        : `R${state.round}/5`;
-  ctx.fillText(`FROSTBITE  ${modeLabel}`, CANVAS_W / 2, 14);
+        : jt`R${state.round}/5`;
+  ctx.fillText(jt`FROSTBITE  ${modeLabel}`, CANVAS_W / 2, 14);
 
   // Round wins
   ctx.font = "9px monospace";
@@ -760,7 +761,7 @@ function drawHUD(ctx, state, colors) {
   ctx.fillStyle = colors.accent;
   ctx.font = "bold 10px monospace";
   ctx.textAlign = "right";
-  ctx.fillText(`P2: ${p2.score}`, CANVAS_W - 8, 14);
+  ctx.fillText(jt`P2: ${p2.score}`, CANVAS_W - 8, 14);
 
   // P2 lives
   for (let i = 0; i < p2.lives; i++) {
@@ -784,7 +785,7 @@ function drawCountdown(ctx, state, colors, frameCount) {
   ctx.fillRect(0, CANVAS_H / 2 - 40, CANVAS_W, 80);
   ctx.globalAlpha = 1;
 
-  const text = state.countdown > 0 ? `${state.countdown}` : "BUILD!";
+  const text = state.countdown > 0 ? `${state.countdown}` : t("BUILD!");
   const pulse = 1 + Math.sin(frameCount * 0.15) * 0.1;
 
   ctx.save();
@@ -812,22 +813,22 @@ function drawRoundEnd(ctx, state, colors, _frameCount) {
   if (state.roundWinner > 0) {
     const winColor = state.roundWinner === 1 ? colors.fg : colors.accent;
     ctx.fillStyle = winColor;
-    ctx.fillText(`PLAYER ${state.roundWinner} WINS THE ROUND!`, CANVAS_W / 2, CANVAS_H / 2 - 20);
+    ctx.fillText(jt`PLAYER ${state.roundWinner} WINS THE ROUND!`, CANVAS_W / 2, CANVAS_H / 2 - 20);
   } else {
     ctx.fillStyle = colors.blockWhite;
-    ctx.fillText("ROUND DRAW!", CANVAS_W / 2, CANVAS_H / 2 - 20);
+    ctx.fillText(t("ROUND DRAW!"), CANVAS_W / 2, CANVAS_H / 2 - 20);
   }
 
   // Igloo comparison
   ctx.font = "10px monospace";
   ctx.fillStyle = colors.fg;
-  ctx.fillText(`P1: ${state.p1.iglooPieces} pieces`, CANVAS_W / 2 - 80, CANVAS_H / 2 + 10);
+  ctx.fillText(jt`P1: ${state.p1.iglooPieces} pieces`, CANVAS_W / 2 - 80, CANVAS_H / 2 + 10);
   ctx.fillStyle = colors.accent;
-  ctx.fillText(`P2: ${state.p2.iglooPieces} pieces`, CANVAS_W / 2 + 80, CANVAS_H / 2 + 10);
+  ctx.fillText(jt`P2: ${state.p2.iglooPieces} pieces`, CANVAS_W / 2 + 80, CANVAS_H / 2 + 10);
 
   // Score
   ctx.fillStyle = colors.blockWhite;
-  ctx.fillText(`Score: ${state.p1.score} - ${state.p2.score}`, CANVAS_W / 2, CANVAS_H / 2 + 30);
+  ctx.fillText(jt`Score: ${state.p1.score} - ${state.p2.score}`, CANVAS_W / 2, CANVAS_H / 2 + 30);
 }
 
 // ── Finished overlay ───────────────────────────────────────────
@@ -870,16 +871,16 @@ function drawFinished(ctx, state, colors, frameCount) {
   if (winner > 0) {
     const winColor = winner === 1 ? colors.fg : colors.accent;
     ctx.fillStyle = winColor;
-    ctx.fillText(`PLAYER ${winner} WINS!`, CANVAS_W / 2, CANVAS_H / 2 - 20);
+    ctx.fillText(jt`PLAYER ${winner} WINS!`, CANVAS_W / 2, CANVAS_H / 2 - 20);
   } else {
     ctx.fillStyle = colors.blockWhite;
-    ctx.fillText("DRAW!", CANVAS_W / 2, CANVAS_H / 2 - 20);
+    ctx.fillText(t("DRAW!"), CANVAS_W / 2, CANVAS_H / 2 - 20);
   }
 
   ctx.font = "12px monospace";
   ctx.fillStyle = colors.blockWhite;
   ctx.fillText(
-    `Rounds: ${p1Wins} - ${p2Wins}  |  Score: ${state.p1.score} - ${state.p2.score}`,
+    jt`Rounds: ${p1Wins} - ${p2Wins}  |  Score: ${state.p1.score} - ${state.p2.score}`,
     CANVAS_W / 2,
     CANVAS_H / 2 + 15,
   );
@@ -888,7 +889,7 @@ function drawFinished(ctx, state, colors, frameCount) {
   if (Math.floor(frameCount / 30) % 2 === 0) {
     ctx.font = "bold 10px monospace";
     ctx.fillStyle = colors.muted;
-    ctx.fillText("GAME OVER", CANVAS_W / 2, CANVAS_H / 2 + 40);
+    ctx.fillText(t("GAME OVER"), CANVAS_W / 2, CANVAS_H / 2 + 40);
   }
 }
 

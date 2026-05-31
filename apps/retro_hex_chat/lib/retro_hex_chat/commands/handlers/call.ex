@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Call do
   @moduledoc "Handler for /call <nickname> — initiate a P2P audio call."
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -7,12 +8,12 @@ defmodule RetroHexChat.Commands.Handlers.Call do
 
   @impl true
   @spec validate(String.t()) :: :ok | {:error, String.t()}
-  def validate(""), do: {:error, "Usage: /call <nickname>"}
+  def validate(""), do: {:error, gettext("Usage: /call <nickname>")}
   def validate(_), do: :ok
 
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
-  def execute([], _context), do: {:error, "Usage: /call <nickname>"}
+  def execute([], _context), do: {:error, gettext("Usage: /call <nickname>")}
 
   def execute([target | _rest], context) do
     P2p.do_execute(target, "audio_call", context)
@@ -28,10 +29,12 @@ defmodule RetroHexChat.Commands.Handlers.Call do
   def help do
     %{
       name: "call",
-      syntax: "/call <nickname>",
+      syntax: gettext("/call <nickname>"),
       description:
-        "Start a peer-to-peer audio call with another user.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou cannot call yourself. Creates a P2P session — the peer must accept in their lobby.",
-      examples: ["/call mario"]
+        gettext(
+          "Start a peer-to-peer audio call with another user.\nRequires: both you and the target must be registered and identified (/ns identify).\nYou cannot call yourself. Creates a P2P session — the peer must accept in their lobby."
+        ),
+      examples: [gettext("/call mario")]
     }
   end
 
@@ -46,9 +49,11 @@ defmodule RetroHexChat.Commands.Handlers.Call do
 
     %CommandSyntax{
       command: "call",
-      syntax: "/call <nickname>",
+      syntax: gettext("/call <nickname>"),
       description:
-        "Start a peer-to-peer audio call with another user.\nRequires: both users must be registered and identified (/ns identify).",
+        gettext(
+          "Start a peer-to-peer audio call with another user.\nRequires: both users must be registered and identified (/ns identify)."
+        ),
       category: :user,
       parameters: [
         %Parameter{
@@ -56,10 +61,10 @@ defmodule RetroHexChat.Commands.Handlers.Call do
           required: true,
           type: :nick,
           position: 0,
-          description: "User to call"
+          description: gettext("User to call")
         }
       ],
-      examples: ["/call mario"]
+      examples: [gettext("/call mario")]
     }
   end
 end

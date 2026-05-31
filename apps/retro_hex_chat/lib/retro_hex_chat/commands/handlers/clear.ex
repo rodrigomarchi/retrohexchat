@@ -1,5 +1,6 @@
 defmodule RetroHexChat.Commands.Handlers.Clear do
   @moduledoc "Handler for /clear"
+  use Gettext, backend: RetroHexChat.Gettext
   @behaviour RetroHexChat.Commands.Handler
 
   alias RetroHexChat.Commands.Handler
@@ -26,7 +27,9 @@ defmodule RetroHexChat.Commands.Handlers.Clear do
       name: "clear",
       syntax: "/clear",
       description:
-        "Clear all messages from the current chat window, giving you a fresh screen. Cannot be undone.",
+        gettext(
+          "Clear all messages from the current chat window, giving you a fresh screen. Cannot be undone."
+        ),
       examples: ["/clear"]
     }
   end
@@ -43,7 +46,9 @@ defmodule RetroHexChat.Commands.Handlers.Clear do
       command: "clear",
       syntax: "/clear",
       description:
-        "Clear all messages from the current chat window, giving you a fresh screen. Cannot be undone.",
+        gettext(
+          "Clear all messages from the current chat window, giving you a fresh screen. Cannot be undone."
+        ),
       category: :basics,
       parameters: [],
       examples: ["/clear"]
