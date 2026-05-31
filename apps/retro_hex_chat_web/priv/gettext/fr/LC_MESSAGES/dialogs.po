@@ -1,0 +1,1691 @@
+# "msgid"s in this file come from dialogs.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: fr; status: enabled; wave: 1.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: fr\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:152
+#, elixir-autogen, elixir-format
+msgid "!hello"
+msgstr "Bonjour."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:43
+#, elixir-autogen, elixir-format
+msgid "%{channel} Settings"
+msgstr "Paramètres %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:485
+#, elixir-autogen, elixir-format
+msgid "%{count} entry"
+msgid_plural "%{count} entries"
+msgstr[0] "Entrée %{count}"
+msgstr[1] "Entrées %{count}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:482
+#, elixir-autogen, elixir-format
+msgid "%{count} item"
+msgid_plural "%{count} items"
+msgstr[0] "%{count} élément"
+msgstr[1] "%{count} éléments"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:49
+#, elixir-autogen, elixir-format
+msgid "%{count} line"
+msgid_plural "%{count} lines"
+msgstr[0] "Ligne %{count}"
+msgstr[1] "Lignes %{count}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:67
+#, elixir-autogen, elixir-format
+msgid "%{inviter} has invited you to join %{channel}."
+msgstr "%{inviter} vous a invité à rejoindre %{channel}."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:87
+#, elixir-autogen, elixir-format
+msgid "(you)"
+msgstr "(vous)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:285
+#, elixir-autogen, elixir-format
+msgid "/command $1"
+msgstr "/command $1"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:175
+#, elixir-autogen, elixir-format
+msgid "/join #channel"
+msgstr "/join #channel"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:197
+#, elixir-autogen, elixir-format
+msgid "/say Hello!"
+msgstr "/say Hello!"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:245
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:246
+#, elixir-autogen, elixir-format
+msgid "1 URL"
+msgid_plural "%{count} URLs"
+msgstr[0] "1 URL"
+msgstr[1] "URLs %{count}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:58
+#, elixir-autogen, elixir-format
+msgid "A helpful bot"
+msgstr "Un robot utile"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:59
+#, elixir-autogen, elixir-format
+msgid ""
+"A retro-styled IRC chat platform inspired by the classic desktop chat "
+"clients of the late '90s. Real-time messaging, channels, peer-to-peer "
+"sessions, and arcade games — all in the browser."
+msgstr ""
+"Une plateforme de chat IRC rétro inspirée par les clients classiques du chat"
+" de bureau de la fin des années 90. Messagerie en temps réel, canaux, "
+"sessions de pair à pair et jeux d'arcade — tout cela dans le navigateur."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:30
+#, elixir-autogen, elixir-format
+msgid "About RetroHexChat"
+msgstr "À propos de RetroHexChat"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:64
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "Décision"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:919
+#, elixir-autogen, elixir-format
+msgid "Actions"
+msgstr "Actions"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:194
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:851
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:181
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:111
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:186
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:274
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:335
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:637
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:139
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:229
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:68
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:215
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:118
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:474
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:567
+#, elixir-autogen, elixir-format
+msgid "Add"
+msgstr "Ajouter"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:121
+#, elixir-autogen, elixir-format
+msgid "Add Alias"
+msgstr "Ajouter Alias"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:270
+#, elixir-autogen, elixir-format
+msgid "Add Auto-Join Channel"
+msgstr "Ajouter un canal de connexion automatique"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:232
+#, elixir-autogen, elixir-format
+msgid "Add Ban"
+msgstr "Ajouter une interdiction"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:283
+#, elixir-autogen, elixir-format
+msgid "Add Ban Exception"
+msgstr "Ajouter l'exception d'interdiction"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:139
+#, elixir-autogen, elixir-format
+msgid "Add Command — %{bot}"
+msgstr "Ajouter une commande — %{bot}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:263
+#, elixir-autogen, elixir-format
+msgid "Add Contact"
+msgstr "Ajouter un contact"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:261
+#, elixir-autogen, elixir-format
+msgid "Add Entry"
+msgstr "Ajouter une entrée"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:175
+#, elixir-autogen, elixir-format
+msgid "Add Highlight Word"
+msgstr "Ajouter un mot surligné"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:885
+#, elixir-autogen, elixir-format
+msgid "Add Ignore Entry"
+msgstr "Ajouter Ignorer l'entrée"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:334
+#, elixir-autogen, elixir-format
+msgid "Add Invite Exception"
+msgstr "Ajouter l'exception d'invitation"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:514
+#, elixir-autogen, elixir-format
+msgid "Add Nick Color"
+msgstr "Ajouter une couleur Nick"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:388
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:170
+#, elixir-autogen, elixir-format
+msgid "Add Notify Entry"
+msgstr "Ajouter un avis d'entrée"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:154
+#, elixir-autogen, elixir-format
+msgid "Add Perform Command"
+msgstr "Ajouter la commande Exécution"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:142
+#, elixir-autogen, elixir-format
+msgid "Add Rule"
+msgstr "Ajouter une règle"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:93
+#, elixir-autogen, elixir-format
+msgid "Address Book"
+msgstr "Carnet d'adresses"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:28
+#, elixir-autogen, elixir-format
+msgid "Admin Console"
+msgstr "Console d'administration"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:62
+#, elixir-autogen, elixir-format
+msgid "Alias Editor"
+msgstr "Éditeur Alias"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:916
+#, elixir-autogen, elixir-format
+msgid "All"
+msgstr "Tous"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:62
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:63
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:71
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:73
+#, elixir-autogen, elixir-format
+msgid "All Channels"
+msgstr "Toutes les chaînes"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:115
+#, elixir-autogen, elixir-format
+msgid "Anti-Spam (Duplicate Detection)"
+msgstr "Anti-spam (détection double)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:167
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "Appliquer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:534
+#, elixir-autogen, elixir-format
+msgid "Apply Modes"
+msgstr "Appliquer les modes"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:45
+#, elixir-autogen, elixir-format
+msgid ""
+"Are you sure you want to delete this message? This action cannot be undone."
+msgstr ""
+"Voulez-vous vraiment supprimer ce message ? Cette action ne peut être "
+"annulée."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:43
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to disconnect from the server?"
+msgstr "Voulez-vous vraiment vous déconnecter du serveur ?"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:68
+#, elixir-autogen, elixir-format
+msgid "Are you sure you want to send all lines at once?"
+msgstr "Voulez-vous vraiment envoyer toutes les lignes en même temps ?"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:62
+#, elixir-autogen, elixir-format
+msgid "Auto Respond"
+msgstr "Réponse automatique"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:155
+#, elixir-autogen, elixir-format
+msgid "Auto-Ignore"
+msgstr "Ignorer automatiquement"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:84
+#, elixir-autogen, elixir-format
+msgid "Auto-Join"
+msgstr "Intégration automatique"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:65
+#, elixir-autogen, elixir-format
+msgid "Auto-add PM contacts to notify list"
+msgstr "Ajout automatique de contacts PM pour notifier la liste"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:204
+#, elixir-autogen, elixir-format
+msgid "Background Color (optional):"
+msgstr "Couleur de fond (facultative):"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:258
+#, elixir-autogen, elixir-format
+msgid "Background Color:"
+msgstr "Couleur de fond & #160;:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:133
+#, elixir-autogen, elixir-format
+msgid "Ban Exc."
+msgstr "Excl."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:124
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:60
+#, elixir-autogen, elixir-format
+msgid "Bans"
+msgstr "Interdictions"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:35
+#, elixir-autogen, elixir-format
+msgid "Bot Management"
+msgstr "Gestion du bot"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:43
+#, elixir-autogen, elixir-format
+msgid "Bots"
+msgstr "Bots"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:184
+#, elixir-autogen, elixir-format
+msgid "Buddy Offline"
+msgstr "Buddy Hors Ligne"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:183
+#, elixir-autogen, elixir-format
+msgid "Buddy Online"
+msgstr "Buddy en ligne"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:218
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:308
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:372
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:432
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:496
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:564
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:633
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:944
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:172
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:212
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:226
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:120
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:190
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:264
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:315
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:371
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:158
+#: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:48
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:168
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:303
+#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:67
+#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:62
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:185
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:224
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:277
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:106
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:216
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:281
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:89
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:122
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:193
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:254
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:322
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:401
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:163
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Annuler"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:73
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:110
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:169
+#, elixir-autogen, elixir-format
+msgid "Capabilities"
+msgstr "Capacités"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:46
+#, elixir-autogen, elixir-format
+msgid "Change Nickname"
+msgstr "Modifier le Pseudo"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:54
+#, elixir-autogen, elixir-format
+msgid "Changing nickname to:"
+msgstr "Changer le pseudonyme en :"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:75
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:226
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:71
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:89
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:284
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:364
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:534
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:149
+#, elixir-autogen, elixir-format
+msgid "Channel"
+msgstr "Chaîne"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:177
+#, elixir-autogen, elixir-format
+msgid "Channel (optional)"
+msgstr "Canal (facultatif)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:90
+#, elixir-autogen, elixir-format
+msgid "Channel Central: %{channel}"
+msgstr "Centre du canal : %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:45
+#, elixir-autogen, elixir-format
+msgid "Channel Invite"
+msgstr "Invitation à la chaîne"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:38
+#, elixir-autogen, elixir-format
+msgid "Channel List"
+msgstr "Liste des canaux"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:175
+#, elixir-autogen, elixir-format
+msgid "Channel Message"
+msgstr "Message canal"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:462
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:539
+#, elixir-autogen, elixir-format
+msgid "Channel Modes"
+msgstr "Modes de canaux"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:119
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "Canaux"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:47
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:98
+#, elixir-autogen, elixir-format
+msgid "Chat"
+msgstr "Chat"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:80
+#, elixir-autogen, elixir-format
+msgid "Clear"
+msgstr "Effacer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:268
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:332
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:393
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:456
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:519
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:588
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:890
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:84
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:207
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:374
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:207
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:237
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:288
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:339
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:121
+#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:96
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:180
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:248
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:145
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:175
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:240
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:159
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:220
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:275
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:354
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:211
+#, elixir-autogen, elixir-format
+msgid "Close"
+msgstr "Fermer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:545
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:614
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:757
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:77
+#, elixir-autogen, elixir-format
+msgid "Color"
+msgstr "Couleur"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:76
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:191
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:201
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:280
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:168
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:229
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:442
+#, elixir-autogen, elixir-format
+msgid "Command"
+msgstr "Commande"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:63
+#, elixir-autogen, elixir-format
+msgid "Command Prefix"
+msgstr "Préfixe de commande"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:128
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:192
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:80
+#, elixir-autogen, elixir-format
+msgid "Commands"
+msgstr "Commandes"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:69
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure limits to prevent message flooding in channels and private "
+"messages."
+msgstr ""
+"Configurer les limites pour éviter l'inondation des messages dans les canaux"
+" et les messages privés."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:46
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:98
+#, elixir-autogen, elixir-format
+msgid "Confirm"
+msgstr "Confirmer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:181
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "Connecté"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:107
+#, elixir-autogen, elixir-format
+msgid "Contacts"
+msgstr "Personnes-ressources"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:124
+#, elixir-autogen, elixir-format
+msgid "Control"
+msgstr "Contrôle"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:67
+#, elixir-autogen, elixir-format
+msgid "Cooldown (s)"
+msgstr "Refroidissement (s)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:116
+#, elixir-autogen, elixir-format
+msgid "Create"
+msgstr "Créer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:27
+#, elixir-autogen, elixir-format
+msgid "Create New Bot"
+msgstr "Créer un nouveau Bot"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:401
+#, elixir-autogen, elixir-format
+msgid "Created"
+msgstr "Créé"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:89
+#, elixir-autogen, elixir-format
+msgid "Custom Commands"
+msgstr "Commandes personnalisées"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:66
+#, elixir-autogen, elixir-format
+msgid "Custom Menus"
+msgstr "Menus personnalisés"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:125
+#, elixir-autogen, elixir-format
+msgid "Date"
+msgstr "Date"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:78
+#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:59
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "Supprimer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/delete_confirm_dialog.ex:39
+#, elixir-autogen, elixir-format
+msgid "Delete Message"
+msgstr "Supprimer le message"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:53
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:173
+#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:66
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "Désignation des marchandises"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:92
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:454
+#, elixir-autogen, elixir-format
+msgid "Dice"
+msgstr "Sérum"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:447
+#, elixir-autogen, elixir-format
+msgid "Disable"
+msgstr "Désactiver"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:165
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:436
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "Handicapé"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:54
+#, elixir-autogen, elixir-format
+msgid "Disconnect"
+msgstr "Déconnecter"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/disconnect_confirm_dialog.ex:37
+#, elixir-autogen, elixir-format
+msgid "Disconnect from Server"
+msgstr "Déconnecter du serveur"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:182
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "Déconnecté"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:500
+#, elixir-autogen, elixir-format
+msgid "Down"
+msgstr "Baisse"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:120
+#, elixir-autogen, elixir-format
+msgid "Duplicate limit:"
+msgstr "Limite du double:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:926
+#, elixir-autogen, elixir-format
+msgid "Duration (leave empty for permanent)"
+msgstr "Durée (permanente)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:158
+#, elixir-autogen, elixir-format
+msgid "Duration:"
+msgstr "Durée:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:861
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:190
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:120
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:238
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:120
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:127
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:478
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:571
+#, elixir-autogen, elixir-format
+msgid "Edit"
+msgstr "Modifier"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:120
+#, elixir-autogen, elixir-format
+msgid "Edit Alias"
+msgstr "Modifier Alias"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:349
+#, elixir-autogen, elixir-format
+msgid "Edit Auto-Join Channel"
+msgstr "Modifier le canal d'inscription automatique"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:327
+#, elixir-autogen, elixir-format
+msgid "Edit Contact"
+msgstr "Modifier le contact"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:262
+#, elixir-autogen, elixir-format
+msgid "Edit Entry"
+msgstr "Modifier l'entrée"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:243
+#, elixir-autogen, elixir-format
+msgid "Edit Highlight Color"
+msgstr "Modifier la couleur de mise en évidence"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:583
+#, elixir-autogen, elixir-format
+msgid "Edit Nick Color"
+msgstr "Modifier la couleur de Nick"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:451
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:235
+#, elixir-autogen, elixir-format
+msgid "Edit Notify Entry"
+msgstr "Modifier l'entrée d'avis"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:215
+#, elixir-autogen, elixir-format
+msgid "Edit Perform Command"
+msgstr "Modifier la commande Exécution"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:143
+#, elixir-autogen, elixir-format
+msgid "Edit Rule"
+msgstr "Modifier la règle"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:72
+#, elixir-autogen, elixir-format
+msgid "Elixir"
+msgstr "Elixir"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:73
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:447
+#, elixir-autogen, elixir-format
+msgid "Enable"
+msgstr "Activer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:511
+#, elixir-autogen, elixir-format
+msgid "Enable perform on connect"
+msgstr "Activer l'exécution sur la connexion"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:164
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:436
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "Activé"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:66
+#, elixir-autogen, elixir-format
+msgid "Enter admin command(s)... (one per line)"
+msgstr "Saisissez la commande admin... (une par ligne)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:76
+#, elixir-autogen, elixir-format
+msgid "Enter password"
+msgstr "Saisissez le mot de passe"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:85
+#, elixir-autogen, elixir-format
+msgid "Event"
+msgstr "Événement"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:137
+#, elixir-autogen, elixir-format
+msgid "Events"
+msgstr "Événements"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:73
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:140
+#, elixir-autogen, elixir-format
+msgid "Expansion"
+msgstr "Expansion"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:990
+#, elixir-autogen, elixir-format
+msgid "Expired"
+msgstr "Expiré"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:802
+#, elixir-autogen, elixir-format
+msgid "Expires"
+msgstr "Expire"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:48
+#, elixir-autogen, elixir-format
+msgid "Filter channels..."
+msgstr "Filtres..."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:87
+#, elixir-autogen, elixir-format
+msgid "Flash"
+msgstr "Flash"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:61
+#, elixir-autogen, elixir-format
+msgid "Flood Protection"
+msgstr "Protection contre les inondations"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:101
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:106
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:52
+#, elixir-autogen, elixir-format
+msgid "General"
+msgstr "Généralités"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:84
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:459
+#, elixir-autogen, elixir-format
+msgid "Greeter"
+msgstr "Greeter"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:178
+#, elixir-autogen, elixir-format
+msgid "Greets the user"
+msgstr "Salute l'utilisateur"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:165
+#, elixir-autogen, elixir-format
+msgid "Hello, {nick}!"
+msgstr "Bonjour !"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:91
+#, elixir-autogen, elixir-format
+msgid "Help"
+msgstr "Aide"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:47
+#, elixir-autogen, elixir-format
+msgid "Hex"
+msgstr "Hex"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:59
+#, elixir-autogen, elixir-format
+msgid "Highlight Words"
+msgstr "Mettre en évidence les mots"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:177
+#, elixir-autogen, elixir-format
+msgid "Highlight/Mention"
+msgstr "Mettre en évidence/Mention"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:246
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:297
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:348
+#, elixir-autogen, elixir-format
+msgid "Hostmask"
+msgstr "Hostmask"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:89
+#, elixir-autogen, elixir-format
+msgid "Ignore"
+msgstr "Ignorer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:142
+#, elixir-autogen, elixir-format
+msgid "Invite Exc."
+msgstr "Inviter Exc."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:481
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:549
+#, elixir-autogen, elixir-format
+msgid "Invite Only (+i)"
+msgstr "Inviter seulement (+i)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:113
+#, elixir-autogen, elixir-format
+msgid "Invite only (+i)"
+msgstr "Inviter seulement (+i)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:921
+#, elixir-autogen, elixir-format
+msgid "Invites"
+msgstr "Invite"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:113
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:80
+#, elixir-autogen, elixir-format
+msgid "Join"
+msgstr "Rejoignez"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:299
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:377
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:535
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "Clé"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:502
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:561
+#, elixir-autogen, elixir-format
+msgid "Key (+k)"
+msgstr "Clé (+k)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:47
+#, elixir-autogen, elixir-format
+msgid "Keyboard Shortcuts"
+msgstr "Raccourcis clavier"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:65
+#, elixir-autogen, elixir-format
+msgid "Keys"
+msgstr "Clés"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:39
+#, elixir-autogen, elixir-format
+msgid "Kicked from Channel"
+msgstr "Coupé de la Manche"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:200
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:267
+#, elixir-autogen, elixir-format
+msgid "Label"
+msgstr "Étiquette"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:709
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:88
+#, elixir-autogen, elixir-format
+msgid "Last Seen"
+msgstr "Dernière vue"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:306
+#, elixir-autogen, elixir-format
+msgid "Leave empty if no key"
+msgstr "Laisser vide si aucune clé"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:519
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:568
+#, elixir-autogen, elixir-format
+msgid "Limit (+l)"
+msgstr "Limite (+l)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:78
+#, elixir-autogen, elixir-format
+msgid "LiveView"
+msgstr "Affichage en direct"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:603
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:123
+#, elixir-autogen, elixir-format
+msgid "Mask"
+msgstr "Masque"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:403
+#, elixir-autogen, elixir-format
+msgid "Members"
+msgstr "Membres"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:460
+#, elixir-autogen, elixir-format
+msgid "Mention"
+msgstr "Mention"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:79
+#, elixir-autogen, elixir-format
+msgid "Mention Response"
+msgstr "Réponse"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:272
+#, elixir-autogen, elixir-format
+msgid "Menu item text"
+msgstr "Texte de l'élément de menu"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:77
+#, elixir-autogen, elixir-format
+msgid "Message Flood"
+msgstr "Inondation du message"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:917
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:190
+#, elixir-autogen, elixir-format
+msgid "Messages"
+msgstr "Messages"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:471
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:543
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:105
+#, elixir-autogen, elixir-format
+msgid "Moderated (+m)"
+msgstr "Modéré (+m)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:96
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:455
+#, elixir-autogen, elixir-format
+msgid "Moderation"
+msgstr "Modération"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:115
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:56
+#, elixir-autogen, elixir-format
+msgid "Modes"
+msgstr "Modes"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:39
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:49
+#, elixir-autogen, elixir-format
+msgid "MyBot"
+msgstr "Mon Bot"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:195
+#, elixir-autogen, elixir-format
+msgid "N/A"
+msgstr "N/A"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:72
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:126
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:34
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:145
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "Dénomination"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:975
+#, elixir-autogen, elixir-format
+msgid "Never"
+msgstr "Jamais"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:67
+#, elixir-autogen, elixir-format
+msgid "New"
+msgstr "Nouveau"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:656
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:706
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:756
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:800
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:86
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:135
+#, elixir-autogen, elixir-format
+msgid "Nick"
+msgstr "- Oui."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:115
+#, elixir-autogen, elixir-format
+msgid "Nick Colors"
+msgstr "Couleurs de Nick"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:69
+#, elixir-autogen, elixir-format
+msgid "NickServ password:"
+msgstr "Mot de passe NickServ :"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:80
+#, elixir-autogen, elixir-format
+msgid "Nicklist"
+msgstr "Nicklist"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:277
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:341
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:402
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:465
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:528
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:597
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:899
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:44
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:149
+#, elixir-autogen, elixir-format
+msgid "Nickname"
+msgstr "Pseudo"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:184
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:249
+#, elixir-autogen, elixir-format
+msgid "Nickname:"
+msgstr "Pseudo :"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:244
+#, elixir-autogen, elixir-format
+msgid "No URLs captured"
+msgstr "Aucune URL capturée"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:79
+#, elixir-autogen, elixir-format
+msgid "No aliases configured. Click \"Add\" to create one."
+msgstr "Pas d'alias configuré. Cliquez sur \"Ajouter\" pour en créer un."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:557
+#, elixir-autogen, elixir-format
+msgid "No auto-join channels. Click Add to create one."
+msgstr ""
+"Pas de chaînes d'accès automatique. Cliquez sur Ajouter pour en créer un."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:187
+#, elixir-autogen, elixir-format
+msgid "No ban exceptions set."
+msgstr "Aucune exception n'est fixée."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:175
+#, elixir-autogen, elixir-format
+msgid "No bans set on this channel."
+msgstr "Aucune interdiction sur cette chaîne."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:181
+#, elixir-autogen, elixir-format
+msgid "No capabilities configured"
+msgstr "Aucune fonctionnalité configurée"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:216
+#, elixir-autogen, elixir-format
+msgid "No channels assigned"
+msgstr "Aucun canal attribué"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:79
+#, elixir-autogen, elixir-format
+msgid "No channels found"
+msgstr "Aucun canal trouvé"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:464
+#, elixir-autogen, elixir-format
+msgid "No commands configured. Click Add to create one."
+msgstr "Aucune commande configurée. Cliquez sur Ajouter pour en créer un."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:398
+#, elixir-autogen, elixir-format
+msgid "No configurable capabilities enabled."
+msgstr "Aucune capacité configurable activée."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:664
+#, elixir-autogen, elixir-format
+msgid "No contacts saved"
+msgstr "Aucun contact enregistré"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:763
+#, elixir-autogen, elixir-format
+msgid "No custom colors set. Nicknames use automatic colors."
+msgstr ""
+"Pas de couleurs personnalisées. Les Pseudos utilisent des couleurs "
+"automatiques."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:287
+#, elixir-autogen, elixir-format
+msgid "No custom commands"
+msgstr "Aucune commande personnalisée"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:596
+#, elixir-autogen, elixir-format
+msgid "No entries."
+msgstr "Pas d'entrée."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:715
+#, elixir-autogen, elixir-format
+msgid "No entries. Click Add to track a nickname."
+msgstr "Pas d'entrée. Cliquez sur Ajouter pour suivre un surnom."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:89
+#, elixir-autogen, elixir-format
+msgid "No external messages (+n)"
+msgstr "Pas de messages externes (+n)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:808
+#, elixir-autogen, elixir-format
+msgid "No ignored users. Click Add to ignore a nickname."
+msgstr "Aucun utilisateur ignoré. Cliquez sur Ajouter pour ignorer un surnom."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:199
+#, elixir-autogen, elixir-format
+msgid "No invite exceptions set."
+msgstr "Pas d'exceptions d'invitation."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:97
+#, elixir-autogen, elixir-format
+msgid "No pending invites."
+msgstr "Aucune invitation en attente."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:348
+#, elixir-autogen, elixir-format
+msgid "No recent events"
+msgstr "Pas d'événements récents"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/cheatsheet_dialog.ex:54
+#, elixir-autogen, elixir-format
+msgid "No shortcuts defined."
+msgstr "Pas de raccourcis définis."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:416
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:435
+#, elixir-autogen, elixir-format
+msgid "No topic set"
+msgstr "Aucun ensemble de sujets"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:415
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:478
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:708
+#, elixir-autogen, elixir-format
+msgid "Note"
+msgstr "Remarque"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:198
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:262
+#, elixir-autogen, elixir-format
+msgid "Note:"
+msgstr "Remarque:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:291
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:354
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:657
+#, elixir-autogen, elixir-format
+msgid "Notes"
+msgstr "Annexe"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:920
+#, elixir-autogen, elixir-format
+msgid "Notices"
+msgstr "Avis"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:111
+#, elixir-autogen, elixir-format
+msgid "Notify"
+msgstr "Avis"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:50
+#, elixir-autogen, elixir-format
+msgid "Notify List"
+msgstr "Liste des notifications"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:101
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:214
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:304
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:368
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:428
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:492
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:555
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:624
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:940
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:222
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:260
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:311
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:362
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:154
+#: lib/retro_hex_chat_web/components/ui/dialogs/confirm_dialog.ex:47
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:164
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:145
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:268
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:64
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:212
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:277
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:118
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:184
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:245
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:313
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:392
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:159
+#, elixir-autogen, elixir-format
+msgid "OK"
+msgstr "Très bien."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:732
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:306
+#, elixir-autogen, elixir-format
+msgid "Offline"
+msgstr "Hors ligne"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:234
+#, elixir-autogen, elixir-format
+msgid "On Join"
+msgstr "Au moment de l'adhésion"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:236
+#, elixir-autogen, elixir-format
+msgid "On Nick Change"
+msgstr "Sur Nick Change"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:235
+#, elixir-autogen, elixir-format
+msgid "On Part"
+msgstr "En partie"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:731
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:298
+#, elixir-autogen, elixir-format
+msgid "Online"
+msgstr "En ligne"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:918
+#, elixir-autogen, elixir-format
+msgid "PMs"
+msgstr "PM"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:41
+#, elixir-autogen, elixir-format
+msgid "Paste Confirmation"
+msgstr "Confirmation du collage"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:72
+#, elixir-autogen, elixir-format
+msgid "Perform"
+msgstr "Exécution"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:76
+#, elixir-autogen, elixir-format
+msgid "Perform WHOIS on notify nicks when they come online"
+msgstr "Effectuez WHOIS sur avisez Nicks quand ils viennent en ligne"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:984
+#, elixir-autogen, elixir-format
+msgid "Permanent"
+msgstr "Permanent"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:75
+#, elixir-autogen, elixir-format
+msgid "Phoenix"
+msgstr "Phoenix"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:147
+#, elixir-autogen, elixir-format
+msgid "Play"
+msgstr "Jouer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:153
+#, elixir-autogen, elixir-format
+msgid "Prefix"
+msgstr "Préfixe"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:89
+#, elixir-autogen, elixir-format
+msgid "Preview"
+msgstr "Aperçu"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:176
+#, elixir-autogen, elixir-format
+msgid "Private Message"
+msgstr "Message privé"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:57
+#, elixir-autogen, elixir-format
+msgid "Public Chat Platform"
+msgstr "Plateforme de discussion publique"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:108
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:458
+#, elixir-autogen, elixir-format
+msgid "RSS"
+msgstr "Autres"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:204
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:871
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:199
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:129
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:252
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:325
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:641
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:143
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:247
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:130
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:137
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:482
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:575
+#, elixir-autogen, elixir-format
+msgid "Remove"
+msgstr "Supprimer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:181
+#, elixir-autogen, elixir-format
+msgid "Reset Defaults"
+msgstr "Réinitialiser les valeurs par défaut"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:160
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:300
+#, elixir-autogen, elixir-format
+msgid "Response"
+msgstr "Réponse"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:47
+#, elixir-autogen, elixir-format
+msgid "Retro"
+msgstr "Rétro"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:39
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat"
+msgstr "RetroHexChat"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:73
+#, elixir-autogen, elixir-format
+msgid "Run"
+msgstr "Cours"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:168
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:208
+#: lib/retro_hex_chat_web/components/ui/dialogs/custom_menus_dialog.ex:299
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:177
+#, elixir-autogen, elixir-format
+msgid "Save"
+msgstr "Enregistrer"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:425
+#, elixir-autogen, elixir-format
+msgid "Save Topic"
+msgstr "Enregistrer le sujet"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:106
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:457
+#, elixir-autogen, elixir-format
+msgid "Scheduler"
+msgstr "Planificateur"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:57
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:101
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "Rechercher"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:93
+#, elixir-autogen, elixir-format
+msgid "Search URLs..."
+msgstr "Rechercher les URLs..."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:65
+#, elixir-autogen, elixir-format
+msgid "Searching..."
+msgstr "Recherche..."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:89
+#, elixir-autogen, elixir-format
+msgid "Select a bot to view details"
+msgstr "Sélectionnez un bot pour afficher les détails"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:81
+#, elixir-autogen, elixir-format
+msgid "Send All"
+msgstr "Envoyer tout"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:608
+#, elixir-autogen, elixir-format
+msgid "Set At"
+msgstr "Réglé à"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:605
+#, elixir-autogen, elixir-format
+msgid "Set By"
+msgstr "Défini par"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:124
+#, elixir-autogen, elixir-format
+msgid "Set by"
+msgstr "Définie par"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:420
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:440
+#, elixir-autogen, elixir-format
+msgid "Set by %{nick}"
+msgstr "Défini par %{nick}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:658
+#, elixir-autogen, elixir-format
+msgid "Since"
+msgstr "Depuis"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:108
+#, elixir-autogen, elixir-format
+msgid "Someone"
+msgstr "Quelqu'un"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:86
+#, elixir-autogen, elixir-format
+msgid "Sound"
+msgstr "Son"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:76
+#, elixir-autogen, elixir-format
+msgid "Sound Settings"
+msgstr "Paramètres sonores"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:187
+#, elixir-autogen, elixir-format
+msgid "Statistics"
+msgstr "Statistiques"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:707
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:157
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:229
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:434
+#: lib/retro_hex_chat_web/components/ui/dialogs/notify_list.ex:87
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "État"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:156
+#, elixir-autogen, elixir-format
+msgid "The command that triggers this response (e.g. !hello)"
+msgstr "La commande qui déclenche cette réponse (par exemple !hello)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/nick_change_dialog.ex:60
+#, elixir-autogen, elixir-format
+msgid ""
+"This nickname is registered. Please enter the NickServ password to identify."
+msgstr ""
+"Ce surnom est enregistré. Veuillez saisir le mot de passe NickServ pour vous"
+" identifier."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:81
+#, elixir-autogen, elixir-format
+msgid "Threshold:"
+msgstr "Seuil:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:163
+#, elixir-autogen, elixir-format
+msgid "Time"
+msgstr "Heure"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:96
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:137
+#, elixir-autogen, elixir-format
+msgid "Time window:"
+msgstr "Fenêtre horaire & #160;:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:411
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:430
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:68
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:73
+#, elixir-autogen, elixir-format
+msgid "Topic"
+msgstr "Thème"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:491
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:555
+#, elixir-autogen, elixir-format
+msgid "Topic Lock (+t)"
+msgstr "Verrouillage du sujet (+t)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_dialog.ex:97
+#, elixir-autogen, elixir-format
+msgid "Topic settable by ops only (+t)"
+msgstr "Sujet défini par ops seulement (+t)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:74
+#: lib/retro_hex_chat_web/components/ui/dialogs/auto_respond_dialog.ex:149
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:147
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:297
+#, elixir-autogen, elixir-format
+msgid "Trigger"
+msgstr "Déclencheur"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:101
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:456
+#, elixir-autogen, elixir-format
+msgid "Trivia"
+msgstr "Trivia"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:801
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:913
+#, elixir-autogen, elixir-format
+msgid "Type"
+msgstr "Type"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/admin_console_dialog.ex:53
+#, elixir-autogen, elixir-format
+msgid "Type a command and press Enter. Type \"help\" for available commands."
+msgstr ""
+"Saisissez une commande et appuyez sur Entrée. Tapez \"aide\" pour les "
+"commandes disponibles."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:121
+#, elixir-autogen, elixir-format
+msgid "URL"
+msgstr "URL"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/url_catcher.ex:48
+#, elixir-autogen, elixir-format
+msgid "URL Catcher"
+msgstr "Capteur d'URL"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:402
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "Inconnu"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/perform_dialog.ex:491
+#, elixir-autogen, elixir-format
+msgid "Up"
+msgstr "En haut"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:194
+#, elixir-autogen, elixir-format
+msgid "Uptime"
+msgstr "Temps de disponibilité"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_form_dialog.ex:169
+#, elixir-autogen, elixir-format
+msgid "Use {nick} for the caller's name, {channel} for the channel"
+msgstr "Utilisez {nick} pour le nom de l'appelant, {canal} pour le canal"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:178
+#, elixir-autogen, elixir-format
+msgid "User Joined"
+msgstr "Utilisateur rejoint"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:180
+#, elixir-autogen, elixir-format
+msgid "User Kicked"
+msgstr "Lancement de l'utilisateur"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/sound_settings_dialog.ex:179
+#, elixir-autogen, elixir-format
+msgid "User Left"
+msgstr "Utilisateur à gauche"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_list.ex:72
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "Utilisateur"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:153
+#, elixir-autogen, elixir-format
+msgid "Variables: $1–$9 (args), $nick (your nick), $chan (channel)"
+msgstr "Variables : $1–$9 (args), $nick (votre nick), $chan (canal)"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:50
+#, elixir-autogen, elixir-format
+msgid "Version %{version}"
+msgstr "Version %{version}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:60
+#, elixir-autogen, elixir-format
+msgid ""
+"Warning: This exceeds the flood protection limit. Messages may be throttled."
+msgstr ""
+"Avertissement : Cela dépasse la limite de protection contre les inondations."
+" Les messages peuvent être étranglés."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:81
+#, elixir-autogen, elixir-format
+msgid "WebRTC"
+msgstr "WebRTC"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:76
+#, elixir-autogen, elixir-format
+msgid "Word"
+msgstr "Mots"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/highlight_dialog.ex:189
+#, elixir-autogen, elixir-format
+msgid "Word:"
+msgstr "Mots:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/paste_confirm_dialog.ex:48
+#, elixir-autogen, elixir-format
+msgid "You are about to send %{count} of text."
+msgstr "Vous allez envoyer %{count} du texte."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/invite_dialog.ex:52
+#, elixir-autogen, elixir-format
+msgid "You have been invited to join the following channels:"
+msgstr "Vous avez été invité à rejoindre les canaux suivants:"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:573
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to change modes."
+msgstr "Vous devez être un opérateur de canal pour changer de mode."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:444
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to edit the topic."
+msgstr "Vous devez être un opérateur de canal pour modifier le sujet."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:646
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to manage this list."
+msgstr "Vous devez être un opérateur de canal pour gérer cette liste."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:46
+#, elixir-autogen, elixir-format
+msgid "You were kicked from %{channel} by %{kicker} (%{reason})."
+msgstr "Vous avez été frappé de %{channel} par %{kicker} (%{reason})."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/kick_dialog.ex:52
+#, elixir-autogen, elixir-format
+msgid "You were kicked from the channel."
+msgstr "Tu as été viré de la chaîne."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:146
+#, elixir-autogen, elixir-format
+msgid "e.g. /msg $1 hello!"
+msgstr "Par exemple /msg $1 bonjour!"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/address_book.ex:932
+#, elixir-autogen, elixir-format
+msgid "e.g. 5m, 1h, 2d"
+msgstr "e.g. 5m, 1h, 2d"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/alias_dialog.ex:131
+#, elixir-autogen, elixir-format
+msgid "e.g. hi"
+msgstr "Par exemple bonjour"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:132
+#, elixir-autogen, elixir-format
+msgid "identical msgs"
+msgstr "msgs identiques"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:493
+#, elixir-autogen, elixir-format
+msgid "joined"
+msgstr "rejoint"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:92
+#, elixir-autogen, elixir-format
+msgid "messages"
+msgstr "messages"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:421
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:441
+#, elixir-autogen, elixir-format
+msgid "on %{date}"
+msgstr "le %{date}"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/bot_management_dialog.ex:494
+#, elixir-autogen, elixir-format
+msgid "parted"
+msgstr "divisé"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:107
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:148
+#: lib/retro_hex_chat_web/components/ui/dialogs/flood_protection_dialog.ex:169
+#, elixir-autogen, elixir-format
+msgid "seconds"
+msgstr "secondes"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/channel_central_dialog.ex:562
+#, elixir-autogen, elixir-format
+msgid "set"
+msgstr "ensemble"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/about_dialog.ex:89
+#, elixir-autogen, elixir-format
+msgid "© 2024–2026 RetroHexChat Contributors"
+msgstr "© 2024-2026 RetroHexChat Contributeurs"

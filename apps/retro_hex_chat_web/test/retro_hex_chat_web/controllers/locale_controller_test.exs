@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.LocaleControllerTest do
       conn =
         conn
         |> init_test_session(%{})
-        |> get("/locale/es?return_to=/connect")
+        |> get("/locale/xx?return_to=/connect")
 
       assert redirected_to(conn) == "/connect"
       assert get_session(conn, :locale) == "en"

@@ -1,0 +1,2438 @@
+# "msgid"s in this file come from bots.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: ja\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:169
+#, elixir-autogen, elixir-format
+msgid "  %{id} | %{title} | %{channel} | %{url}"
+msgstr "%{id} | %{title} | %{channel} | %{url}"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:186
+#, elixir-autogen, elixir-format
+msgid "  %{id} | %{type} | %{channel} | %{message}"
+msgstr ""
+"の特長\n"
+"%{id} | %{type} | %{channel} | %{message}"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:72
+#, elixir-autogen, elixir-format
+msgid "  %{prefix}%{trigger} — %{description}"
+msgstr ""
+"の特長\n"
+"%{prefix}%{trigger} - %{description}"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:79
+#, elixir-autogen, elixir-format
+msgid "  %{prefix}help — Show this help message"
+msgstr ""
+"の特長\n"
+"%{prefix}ヘルプ — このヘルプメッセージを表示する"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
+#, elixir-autogen, elixir-format
+msgid ""
+"%{author}: You must be identified to play. Use /ns identify <password> "
+"first."
+msgstr "%{author}: プレイするには本人確認が必要です。先に /ns identify <password> を使用してください。"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
+#, elixir-autogen, elixir-format
+msgid ""
+"%{author}: You must be registered to play. Use /ns register <password> "
+"first."
+msgstr "%{author}: プレイするには登録が必要です。先に /ns register <password> を使用してください。"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:301
+#, elixir-autogen, elixir-format
+msgid "%{base} %{sign} %{modifier} = %{total}"
+msgstr ""
+"の特長\n"
+"%{base} %{sign} %{modifier} = %{total}"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:297
+#, elixir-autogen, elixir-format
+msgid "%{base} = %{sum}"
+msgstr ""
+"の特長\n"
+"%{base} = %{sum}"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:63
+#, elixir-autogen, elixir-format
+msgid "%{bot_name} — Available Commands:"
+msgstr ""
+"の特長\n"
+"%{bot_name} — 利用可能なコマンド:"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:219
+#, elixir-autogen, elixir-format
+msgid "%{message} (%{reason})"
+msgstr ""
+"の特長\n"
+"%{message} (%{reason})"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
+#, elixir-autogen, elixir-format
+msgid ""
+"%{prefix}\n"
+"Round over! %{scores}"
+msgstr ""
+"%{prefix}\n"
+"ラウンド終了！ %{scores}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:375
+#, elixir-autogen, elixir-format
+msgid "%{prefix} %{title} — %{link}"
+msgstr ""
+"の特長\n"
+"%{prefix} %{title} - %{link}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:349
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:371
+#, elixir-autogen, elixir-format
+msgid "%{rank}. %{name}: %{points}pts"
+msgstr ""
+"の特長\n"
+"%{rank}. %{name}: %{points}pts"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:87
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:105
+#, elixir-autogen, elixir-format
+msgid "(no title)"
+msgstr ""
+"の特長\n"
+"(タイトルなし)"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:167
+#, elixir-autogen, elixir-format
+msgid "(untitled)"
+msgstr ""
+"の特長\n"
+"(必須)"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:215
+#, elixir-autogen, elixir-format
+msgid "15th century"
+msgstr ""
+"の特長\n"
+"15世紀"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:51
+#, elixir-autogen, elixir-format
+msgid "4th from sun"
+msgstr ""
+"の特長\n"
+"太陽から4日"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:205
+#, elixir-autogen, elixir-format
+msgid "A flower"
+msgstr ""
+"の特長\n"
+"フラワーズ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:46
+#, elixir-autogen, elixir-format
+msgid "A gem"
+msgstr ""
+"の特長\n"
+"宝石"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:153
+#, elixir-autogen, elixir-format
+msgid "A single letter"
+msgstr ""
+"の特長\n"
+"シングルレター"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:185
+#, elixir-autogen, elixir-format
+msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
+msgstr ""
+"の特長\n"
+"トライビアラウンドが進行中です! \"trivia stop\" を使用して終了します。"
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:13
+#, elixir-autogen, elixir-format
+msgid "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)"
+msgstr ""
+"の特長\n"
+"P2PゲームのためのAI — チェス, tic-tac-toe, トリビア (近日公開)"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:194
+#, elixir-autogen, elixir-format
+msgid "Active schedules:"
+msgstr ""
+"の特長\n"
+"活動的なスケジュール:"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:148
+#, elixir-autogen, elixir-format
+msgid "Add a scheduled message"
+msgstr ""
+"の特長\n"
+"スケジュールされたメッセージを追加する"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:130
+#, elixir-autogen, elixir-format
+msgid "Add an RSS feed"
+msgstr ""
+"の特長\n"
+"RSSフィードを追加する"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:465
+#, elixir-autogen, elixir-format
+msgid "Aladdin"
+msgstr ""
+"の特長\n"
+"アラジン"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:239
+#, elixir-autogen, elixir-format
+msgid "Alexander Fleming"
+msgstr ""
+"の特長\n"
+"アレクサンダー・フレミング"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:383
+#, elixir-autogen, elixir-format
+msgid "Alexander Graham Bell"
+msgstr ""
+"の特長\n"
+"アレクサンダー・グラハム・ベル"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:316
+#, elixir-autogen, elixir-format
+msgid "Algeria"
+msgstr ""
+"の特長\n"
+"アルジェリア"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:82
+#, elixir-autogen, elixir-format
+msgid "Alias for roll"
+msgstr ""
+"の特長\n"
+"ロールのための別名"
+
+#: lib/retro_hex_chat/bots/server.ex:144
+#, elixir-autogen, elixir-format
+msgid "Already in channel"
+msgstr ""
+"の特長\n"
+"チャンネルで既に"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:292
+#, elixir-autogen, elixir-format
+msgid "Also a country"
+msgstr ""
+"の特長\n"
+"また、国"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:359
+#, elixir-autogen, elixir-format
+msgid "And Paul Allen"
+msgstr ""
+"の特長\n"
+"ポールアレン"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:220
+#, elixir-autogen, elixir-format
+msgid "Apollo 11"
+msgstr ""
+"の特長\n"
+"アポロ11"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:398
+#, elixir-autogen, elixir-format
+msgid "Application Programming Interface"
+msgstr ""
+"の特長\n"
+"アプリケーションプログラミングインターフェイス"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:60
+#, elixir-autogen, elixir-format
+msgid "Au"
+msgstr ""
+"の特長\n"
+"オーラ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:291
+#, elixir-autogen, elixir-format
+msgid "Australia"
+msgstr ""
+"の特長\n"
+"オーストラリア"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:25
+#, elixir-autogen, elixir-format
+msgid "Auto-moderation — blocked words, spam/flood detection, caps filter"
+msgstr ""
+"の特長\n"
+"自動変調 — ブロックされた単語、スパム/flood の検出、帽子フィルター"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:420
+#, elixir-autogen, elixir-format
+msgid "Avatar"
+msgstr ""
+"の特長\n"
+"アバター"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:374
+#, elixir-autogen, elixir-format
+msgid "BEAM VM"
+msgstr ""
+"の特長\n"
+"ビームVM"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:225
+#, elixir-autogen, elixir-format
+msgid "Bastille"
+msgstr ""
+"の特長\n"
+"バスティユ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:384
+#, elixir-autogen, elixir-format
+msgid "Bell Labs"
+msgstr ""
+"の特長\n"
+"ベルラボ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:306
+#, elixir-autogen, elixir-format
+msgid "Bering Strait"
+msgstr ""
+"の特長\n"
+"バーニング・ストライト"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:358
+#, elixir-autogen, elixir-format
+msgid "Bill Gates"
+msgstr ""
+"の特長\n"
+"ビルゲート"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:431
+#, elixir-autogen, elixir-format
+msgid "Black and white"
+msgstr ""
+"の特長\n"
+"黒と白"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:451
+#, elixir-autogen, elixir-format
+msgid "Blocks"
+msgstr ""
+"の特長\n"
+"ブロック"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:421
+#, elixir-autogen, elixir-format
+msgid "Blue aliens"
+msgstr ""
+"の特長\n"
+"ブルーエイリアン"
+
+#: lib/retro_hex_chat/bots/lifecycle.ex:47
+#, elixir-autogen, elixir-format
+msgid "Bot destroyed"
+msgstr ""
+"の特長\n"
+"破壊されたボット"
+
+#: lib/retro_hex_chat/bots/server.ex:756
+#, elixir-autogen, elixir-format
+msgid "Bot leaving"
+msgstr "ボットを残します"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:344
+#, elixir-autogen, elixir-format
+msgid "Brain of computer"
+msgstr ""
+"の特長\n"
+"コンピュータの脳"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:426
+#, elixir-autogen, elixir-format
+msgid "British author"
+msgstr ""
+"の特長\n"
+"英国の著者"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:15
+#, elixir-autogen, elixir-format
+msgid "Built-in !help command listing available commands"
+msgstr ""
+"の特長\n"
+"組み込み !help コマンドは利用可能なコマンドをリストします"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:321
+#, elixir-autogen, elixir-format
+msgid "Cairo"
+msgstr ""
+"の特長\n"
+"カイロ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:286
+#, elixir-autogen, elixir-format
+msgid "Canberra"
+msgstr ""
+"の特長\n"
+"キャンベラ"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:219
+#, elixir-autogen, elixir-format
+msgid "Cannot keep %{keep} dice when only rolling %{count}."
+msgstr ""
+"の特長\n"
+"%{count}を転がすときだけ%{keep}ダイスを保つことができません。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:343
+#, elixir-autogen, elixir-format
+msgid "Central Processing Unit"
+msgstr ""
+"の特長\n"
+"中央処理ユニット"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:250
+#, elixir-autogen, elixir-format
+msgid "Checked feed '%{id}'. New items found."
+msgstr ""
+"の特長\n"
+"チェックフィード '%{id}'. 新規商品が見つかりました。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:21
+#, elixir-autogen, elixir-format
+msgid "City of Light"
+msgstr ""
+"の特長\n"
+"光の都市"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:259
+#, elixir-autogen, elixir-format
+msgid "Correct, %{author}! (+%{points} points)"
+msgstr "正解です、%{author}！ (+%{points} ポイント)"
+
+#: lib/retro_hex_chat/bots/capabilities/custom_commands.ex:18
+#, elixir-autogen, elixir-format
+msgid "Custom bot commands (!prefix trigger)"
+msgstr ""
+"の特長\n"
+"カスタムボットコマンド(!prefixトリガー)"
+
+#: lib/retro_hex_chat/bots/capabilities/script.ex:12
+#, elixir-autogen, elixir-format
+msgid "Custom script engine (Coming soon)"
+msgstr ""
+"の特長\n"
+"カスタムスクリプトエンジン(近日公開)"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:312
+#, elixir-autogen, elixir-format
+msgid "Danish territory"
+msgstr ""
+"の特長\n"
+"デンマーク領土"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:379
+#, elixir-autogen, elixir-format
+msgid "Databases"
+msgstr ""
+"の特長\n"
+"データベース"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:28
+#, elixir-autogen, elixir-format
+msgid "Dice rolling for RPG games (e.g., 2d6, d20+5, 4d6kh3)"
+msgstr ""
+"の特長\n"
+"RPGゲーム(例:2d6、d20+5、4d6kh3)用ダイスロール"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:180
+#, elixir-autogen, elixir-format
+msgid "Dollar bill"
+msgstr ""
+"の特長\n"
+"ドル 請求書"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:456
+#, elixir-autogen, elixir-format
+msgid "Dutch painter"
+msgstr ""
+"の特長\n"
+"オランダの画家"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:36
+#, elixir-autogen, elixir-format
+msgid "Early 20th century"
+msgstr ""
+"の特長\n"
+"20世紀初頭"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:461
+#, elixir-autogen, elixir-format
+msgid "Elementary"
+msgstr ""
+"の特長\n"
+"小学生"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:373
+#, elixir-autogen, elixir-format
+msgid "Erlang"
+msgstr ""
+"の特長\n"
+"エルラン"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:148
+#, elixir-autogen, elixir-format
+msgid "Error: Dice must have at least 2 sides."
+msgstr ""
+"の特長\n"
+"エラー:ダイスは少なくとも2つの側面を持っている必要があります。"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:142
+#, elixir-autogen, elixir-format
+msgid "Error: Maximum %{max} dice allowed."
+msgstr ""
+"の特長\n"
+"エラー:最大%{max}のダイスが許可されています。"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:145
+#, elixir-autogen, elixir-format
+msgid "Error: Maximum %{max} sides allowed."
+msgstr ""
+"の特長\n"
+"間違い: 許される最高の%{max}側面。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:103
+#, elixir-autogen, elixir-format
+msgid "Famous for rings"
+msgstr ""
+"の特長\n"
+"リングのために有名"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:220
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' added: %{url} → %{channel}"
+msgstr ""
+"の特長\n"
+"フィード '%{id}' 追加: %{url} → %{channel}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:254
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' checked. No new items."
+msgstr ""
+"の特長\n"
+"'%{id}' をチェックするフィード。 新しいアイテムはありません。"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:236
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:245
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' not found."
+msgstr ""
+"の特長\n"
+"'%{id}' が見つかりません。"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:234
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' removed."
+msgstr ""
+"の特長\n"
+"'%{id}' を削除しました。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:375
+#, elixir-autogen, elixir-format
+msgid "Final scores: %{ranked}"
+msgstr ""
+"の特長\n"
+"最終スコア: %{ranked}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:334
+#, elixir-autogen, elixir-format
+msgid "Finnish"
+msgstr ""
+"の特長\n"
+"フィンランド語"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:133
+#, elixir-autogen, elixir-format
+msgid "Force check a feed now"
+msgstr ""
+"の特長\n"
+"今すぐフィードを強制チェック"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:416
+#, elixir-autogen, elixir-format
+msgid "Freddie Mercury"
+msgstr ""
+"の特長\n"
+"フレディ・マーキュリー"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:224
+#, elixir-autogen, elixir-format
+msgid "French Revolution"
+msgstr ""
+"の特長\n"
+"フランス革命"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:61
+#, elixir-autogen, elixir-format
+msgid "From Latin aurum"
+msgstr ""
+"の特長\n"
+"ラテン アーラムから"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:435
+#, elixir-autogen, elixir-format
+msgid "Game of Thrones"
+msgstr ""
+"の特長\n"
+"魂のゲーム"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:179
+#, elixir-autogen, elixir-format
+msgid "George Washington"
+msgstr ""
+"の特長\n"
+"ジョージ・ワシントン"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:195
+#, elixir-autogen, elixir-format
+msgid "German philosopher"
+msgstr ""
+"の特長\n"
+"ドイツ哲学者"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:311
+#, elixir-autogen, elixir-format
+msgid "Greenland"
+msgstr ""
+"の特長\n"
+"グリーンランド"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:17
+#, elixir-autogen, elixir-format
+msgid "Greet users on join, say goodbye on part"
+msgstr ""
+"の特長\n"
+"グレットユーザーが参加し、パートで善意を言う"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:209
+#, elixir-autogen, elixir-format
+msgid "Gutenberg"
+msgstr ""
+"の特長\n"
+"グテンベルク"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:436
+#, elixir-autogen, elixir-format
+msgid "HBO"
+msgstr ""
+"の特長\n"
+"HBOの特長"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:321
+#, elixir-autogen, elixir-format
+msgid "HTTP %{status}"
+msgstr ""
+"の特長\n"
+"HTTP %{status}の"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:56
+#, elixir-autogen, elixir-format
+msgid "Hex = six"
+msgstr ""
+"の特長\n"
+"六角 = 6"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:85
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:216
+#, elixir-autogen, elixir-format
+msgid "Hey {nickname}, please keep it civil."
+msgstr ""
+"の特長\n"
+"こんにちは。"
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:60
+#, elixir-autogen, elixir-format
+msgid "Hi {nickname}! Try {prefix}help for my commands."
+msgstr ""
+"の特長\n"
+"お問い合わせ コマンドの {prefix}help をお試しください。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:74
+#, elixir-autogen, elixir-format
+msgid "Hint: %{hint}"
+msgstr "ヒント: %{hint}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:441
+#, elixir-autogen, elixir-format
+msgid "Hollywood legend"
+msgstr ""
+"の特長\n"
+"ハリウッド伝説"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:79
+#, elixir-autogen, elixir-format
+msgid "How many bones in the adult human body?"
+msgstr "大人の人体内の骨はいくつですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:39
+#, elixir-autogen, elixir-format
+msgid "How many colors in a rainbow?"
+msgstr ""
+"の特長\n"
+"虹色は何色?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:24
+#, elixir-autogen, elixir-format
+msgid "How many continents are there?"
+msgstr ""
+"の特長\n"
+"どのような大陸がありますか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:131
+#, elixir-autogen, elixir-format
+msgid "How many planets in our solar system?"
+msgstr ""
+"の特長\n"
+"太陽系ではいくつの惑星がありますか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:54
+#, elixir-autogen, elixir-format
+msgid "How many sides does a hexagon have?"
+msgstr ""
+"の特長\n"
+"六角形はいくつありますか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:328
+#, elixir-autogen, elixir-format
+msgid "HyperText Markup Language"
+msgstr ""
+"の特長\n"
+"ハイパーテキストマークアップ言語"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:353
+#, elixir-autogen, elixir-format
+msgid "HyperText Transfer Protocol"
+msgstr ""
+"の特長\n"
+"HyperText転送プロトコル"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:252
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:267
+#, elixir-autogen, elixir-format
+msgid "In Africa"
+msgstr ""
+"の特長\n"
+"アフリカ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:200
+#, elixir-autogen, elixir-format
+msgid "In Italy"
+msgstr ""
+"の特長\n"
+"イタリア"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:257
+#, elixir-autogen, elixir-format
+msgid "In Nepal"
+msgstr ""
+"の特長\n"
+"ネパール"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:91
+#, elixir-autogen, elixir-format
+msgid "In Rome"
+msgstr ""
+"の特長\n"
+"ローマで"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:163
+#, elixir-autogen, elixir-format
+msgid "In the nucleus"
+msgstr ""
+"の特長\n"
+"核核に"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:173
+#, elixir-autogen, elixir-format
+msgid "In what year did World War II end?"
+msgstr ""
+"の特長\n"
+"第二次世界大戦が終わったのは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:244
+#, elixir-autogen, elixir-format
+msgid "Inca"
+msgstr ""
+"の特長\n"
+"インカ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:261
+#, elixir-autogen, elixir-format
+msgid "India"
+msgstr ""
+"の特長\n"
+"インド"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:399
+#, elixir-autogen, elixir-format
+msgid "Integration"
+msgstr ""
+"の特長\n"
+"インテグレーション"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:23
+#, elixir-autogen, elixir-format
+msgid "Interactive quiz and trivia with scoring"
+msgstr ""
+"の特長\n"
+"インタラクティブなクイズとスコアリング付きトリビア"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:226
+#, elixir-autogen, elixir-format
+msgid "Invalid URL. Must start with http:// or https://"
+msgstr ""
+"の特長\n"
+"無効なURL。 http:// または https:// から始まる必要があります。"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:179
+#, elixir-autogen, elixir-format
+msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
+msgstr ""
+"の特長\n"
+"無効なダイスの表記「%{notation}」。 使用フォーマット: NdS、NdS+M、NdSkh/klN"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
+#, elixir-autogen, elixir-format
+msgid "Invalid time format. Use HH:MM (24h UTC)."
+msgstr ""
+"の特長\n"
+"無効な時間フォーマット。 HH:MM (24h UTC) を使用します。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:425
+#, elixir-autogen, elixir-format
+msgid "J.K. Rowling"
+msgstr ""
+"の特長\n"
+"J.K. ローリング"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:210
+#, elixir-autogen, elixir-format
+msgid "Johannes"
+msgstr ""
+"の特長\n"
+"ヨハネス"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:194
+#, elixir-autogen, elixir-format
+msgid "Karl Marx"
+msgstr ""
+"の特長\n"
+"カール・マルクス"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:215
+#, elixir-autogen, elixir-format
+msgid "Keep count must be at least 1."
+msgstr ""
+"の特長\n"
+"数が少なくとも1でなければなりません。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:476
+#, elixir-autogen, elixir-format
+msgid "King of Pop"
+msgstr ""
+"の特長\n"
+"ポップスの王"
+
+#: lib/retro_hex_chat/bots/capabilities/llm.ex:12
+#, elixir-autogen, elixir-format
+msgid "LLM-powered intelligent responses (Coming soon)"
+msgstr ""
+"の特長\n"
+"LLMを搭載したインテリジェントな応答(近日公開)"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:190
+#, elixir-autogen, elixir-format
+msgid "Late 1980s"
+msgstr ""
+"の特長\n"
+"1980年代後半"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:394
+#, elixir-autogen, elixir-format
+msgid "Late 1990s"
+msgstr ""
+"の特長\n"
+"1990年代後半"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:339
+#, elixir-autogen, elixir-format
+msgid "Late 2000s"
+msgstr ""
+"の特長\n"
+"2000年代後半"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:229
+#, elixir-autogen, elixir-format
+msgid "Leonardo da Vinci"
+msgstr ""
+"の特長\n"
+"レオナルド・ダ・ヴィンチ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:113
+#, elixir-autogen, elixir-format
+msgid "Lightest"
+msgstr ""
+"の特長\n"
+"ライトベスト"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:184
+#, elixir-autogen, elixir-format
+msgid "Lighthouse"
+msgstr ""
+"の特長\n"
+"ライトハウス"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:333
+#, elixir-autogen, elixir-format
+msgid "Linus Torvalds"
+msgstr ""
+"の特長\n"
+"リンス・トルヴァルド"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:131
+#, elixir-autogen, elixir-format
+msgid "List RSS feeds"
+msgstr ""
+"の特長\n"
+"RSSフィードの一覧"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:149
+#, elixir-autogen, elixir-format
+msgid "List active schedules"
+msgstr ""
+"の特長\n"
+"アクティブなスケジュールをリスト"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:66
+#, elixir-autogen, elixir-format
+msgid "Lives in the ocean"
+msgstr ""
+"の特長\n"
+"海に生きる"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:118
+#, elixir-autogen, elixir-format
+msgid "Look up"
+msgstr ""
+"の特長\n"
+"お問い合わせ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:276
+#, elixir-autogen, elixir-format
+msgid "Mariana Trench"
+msgstr ""
+"の特長\n"
+"マリアナ・トレンチ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:50
+#, elixir-autogen, elixir-format
+msgid "Mars"
+msgstr ""
+"の特長\n"
+"マース"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:186
+#, elixir-autogen, elixir-format
+msgid "Maximum %{max} feeds reached."
+msgstr ""
+"の特長\n"
+"最大%{max}フィードに達しました。"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:204
+#, elixir-autogen, elixir-format
+msgid "Maximum %{max} schedules reached."
+msgstr ""
+"の特長\n"
+"最大%{max}のスケジュールに達しました。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:204
+#, elixir-autogen, elixir-format
+msgid "Mayflower"
+msgstr ""
+"の特長\n"
+"メイフラワー"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:296
+#, elixir-autogen, elixir-format
+msgid "Mediterranean"
+msgstr ""
+"の特長\n"
+"地中海"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:475
+#, elixir-autogen, elixir-format
+msgid "Michael Jackson"
+msgstr ""
+"の特長\n"
+"マイケル・ジャクソン"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:297
+#, elixir-autogen, elixir-format
+msgid "Middle earth"
+msgstr ""
+"の特長\n"
+"中間地球"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:450
+#, elixir-autogen, elixir-format
+msgid "Minecraft"
+msgstr ""
+"の特長\n"
+"マインクラフト"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:227
+#, elixir-autogen, elixir-format
+msgid "Minimum interval is %{minutes} minutes."
+msgstr ""
+"の特長\n"
+"最小間隔は%{minutes}分です。"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#, elixir-autogen, elixir-format
+msgid "Missing channel. Usage: rss add <url> <#channel>"
+msgstr ""
+"の特長\n"
+"チャネルを欠く。 使用法:rssは<url> <#channel>を加えます"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:470
+#, elixir-autogen, elixir-format
+msgid "Monopoly"
+msgstr "モノポリ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:26
+#, elixir-autogen, elixir-format
+msgid "More than 5"
+msgstr ""
+"の特長\n"
+"5以上"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:256
+#, elixir-autogen, elixir-format
+msgid "Mount Everest"
+msgstr ""
+"の特長\n"
+"エベレストマウント"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:168
+#, elixir-autogen, elixir-format
+msgid "Myco-"
+msgstr ""
+"の特長\n"
+"マイコ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:137
+#, elixir-autogen, elixir-format
+msgid "NaCl"
+msgstr ""
+"の特長\n"
+"ナクラ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:307
+#, elixir-autogen, elixir-format
+msgid "Named after Vitus"
+msgstr ""
+"の特長\n"
+"ビトゥスの後の名前"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:219
+#, elixir-autogen, elixir-format
+msgid "Neil Armstrong"
+msgstr ""
+"の特長\n"
+"ニールアームストロング"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:123
+#, elixir-autogen, elixir-format
+msgid "Neutral"
+msgstr ""
+"の特長\n"
+"ニュートラル"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:143
+#, elixir-autogen, elixir-format
+msgid "Newton's apple"
+msgstr ""
+"の特長\n"
+"ニュートンのリンゴ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:251
+#, elixir-autogen, elixir-format
+msgid "Nile"
+msgstr ""
+"の特長\n"
+"ナイル"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:446
+#, elixir-autogen, elixir-format
+msgid "Nintendo"
+msgstr ""
+"の特長\n"
+"ニンテンドー"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:163
+#, elixir-autogen, elixir-format
+msgid "No RSS feeds configured."
+msgstr ""
+"の特長\n"
+"RSSフィードの設定はありません。"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:180
+#, elixir-autogen, elixir-format
+msgid "No active schedules."
+msgstr ""
+"の特長\n"
+"アクティブなスケジュールはありません。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:194
+#, elixir-autogen, elixir-format
+msgid "No questions available for category '%{category}'."
+msgstr ""
+"の特長\n"
+"カテゴリ '%{category}' で利用可能な質問はありません。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:362
+#, elixir-autogen, elixir-format
+msgid "No scores recorded."
+msgstr ""
+"の特長\n"
+"スコアは記録しません。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:225
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:238
+#, elixir-autogen, elixir-format
+msgid "No trivia round in progress."
+msgstr ""
+"の特長\n"
+"進行中のトライビアラウンドはありません。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:317
+#, elixir-autogen, elixir-format
+msgid "North Africa"
+msgstr ""
+"の特長\n"
+"北アフリカ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:287
+#, elixir-autogen, elixir-format
+msgid "Not Sydney"
+msgstr ""
+"の特長\n"
+"シドニー"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:302
+#, elixir-autogen, elixir-format
+msgid "Not Toronto"
+msgstr ""
+"の特長\n"
+"トロント"
+
+#: lib/retro_hex_chat/bots/server.ex:163
+#, elixir-autogen, elixir-format
+msgid "Not in channel"
+msgstr ""
+"の特長\n"
+"チャネルではなく"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:349
+#, elixir-autogen, elixir-format
+msgid "Now Oracle"
+msgstr ""
+"の特長\n"
+"今すぐOracle"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:322
+#, elixir-autogen, elixir-format
+msgid "On the Nile"
+msgstr ""
+"の特長\n"
+"ナイルで"
+
+#: lib/retro_hex_chat/bots/policy.ex:25
+#, elixir-autogen, elixir-format
+msgid "Only admins and server operators can manage bots"
+msgstr ""
+"の特長\n"
+"管理者およびサーバー オペレータだけがボットを管理することができます"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:108
+#, elixir-autogen, elixir-format
+msgid "Organelle"
+msgstr ""
+"の特長\n"
+"オルガネル"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:301
+#, elixir-autogen, elixir-format
+msgid "Ottawa"
+msgstr ""
+"の特長\n"
+"オタワ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:158
+#, elixir-autogen, elixir-format
+msgid "Outside"
+msgstr ""
+"の特長\n"
+"外部リンク"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:81
+#, elixir-autogen, elixir-format
+msgid "Over 200"
+msgstr ""
+"の特長\n"
+"200以上"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:30
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:277
+#, elixir-autogen, elixir-format
+msgid "Pacific"
+msgstr ""
+"の特長\n"
+"パシフィック"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:20
+#, elixir-autogen, elixir-format
+msgid "Paris"
+msgstr ""
+"の特長\n"
+"パリ パリ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:471
+#, elixir-autogen, elixir-format
+msgid "Pass Go"
+msgstr ""
+"の特長\n"
+"パスゴー"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:31
+#, elixir-autogen, elixir-format
+msgid "Peaceful"
+msgstr ""
+"の特長\n"
+"平和"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:185
+#, elixir-autogen, elixir-format
+msgid "Pharos"
+msgstr ""
+"の特長\n"
+"フィロス"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:389
+#, elixir-autogen, elixir-format
+msgid "Plug it in"
+msgstr ""
+"の特長\n"
+"プラグイン"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:133
+#, elixir-autogen, elixir-format
+msgid "Pluto was demoted"
+msgstr ""
+"の特長\n"
+"Pluto がデモされました"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:331
+#, elixir-autogen, elixir-format
+msgid "Q%{number}/%{total}: %{question}"
+msgstr "問題%{number}/%{total}: %{question}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:415
+#, elixir-autogen, elixir-format
+msgid "Queen"
+msgstr ""
+"の特長\n"
+"クイーン"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:411
+#, elixir-autogen, elixir-format
+msgid "RDJ"
+msgstr ""
+"の特長\n"
+"ログイン"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:41
+#, elixir-autogen, elixir-format
+msgid "ROY G BIV"
+msgstr ""
+"の特長\n"
+"ROY G BIV(レイジー)"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:177
+#, elixir-autogen, elixir-format
+msgid "RSS Feeds:"
+msgstr ""
+"の特長\n"
+"RSSフィード:"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:26
+#, elixir-autogen, elixir-format
+msgid "RSS feed reader that posts updates to channels"
+msgstr ""
+"の特長\n"
+"チャンネルの更新を投稿するRSSフィードリーダー"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:368
+#, elixir-autogen, elixir-format
+msgid "Random Access Memory"
+msgstr ""
+"の特長\n"
+"ランダムアクセスメモリ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:406
+#, elixir-autogen, elixir-format
+msgid "Red pill"
+msgstr ""
+"の特長\n"
+"赤い丸薬"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:150
+#, elixir-autogen, elixir-format
+msgid "Remove a schedule"
+msgstr ""
+"の特長\n"
+"スケジュールを削除"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:132
+#, elixir-autogen, elixir-format
+msgid "Remove an RSS feed"
+msgstr ""
+"の特長\n"
+"RSSフィードを削除します"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:230
+#, elixir-autogen, elixir-format
+msgid "Renaissance"
+msgstr ""
+"の特長\n"
+"ルネッサンス"
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:17
+#, elixir-autogen, elixir-format
+msgid "Respond when mentioned by name"
+msgstr ""
+"の特長\n"
+"名前で述べたときの応答"
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:55
+#, elixir-autogen, elixir-format
+msgid "Response must be a non-empty string"
+msgstr ""
+"の特長\n"
+"応答は空でない文字列でなければなりません"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:334
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat-RSS/1.0"
+msgstr ""
+"の特長\n"
+"レトロヘックスチャットRSS/1.0"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:410
+#, elixir-autogen, elixir-format
+msgid "Robert Downey Jr"
+msgstr "ロバート・ダウディ・ジュニア"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:81
+#, elixir-autogen, elixir-format
+msgid "Roll dice (e.g., 2d6, d20+5, 4d6kh3)"
+msgstr ""
+"の特長\n"
+"ロールダイス(例えば、2d6、d20+5、4d6kh3)"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:265
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
+msgstr "%{notation} をロール: %{rolls} %{sign} %{modifier} = %{total}"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:257
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} = %{sum}"
+msgstr "%{notation} をロール: %{rolls} = %{sum}"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:290
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} → keeping %{kept}"
+msgstr ""
+"の特長\n"
+"%{notation}: %{rolls} → %{kept} をキープ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:199
+#, elixir-autogen, elixir-format
+msgid "Roman"
+msgstr ""
+"の特長\n"
+"ログイン"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:266
+#, elixir-autogen, elixir-format
+msgid "Sahara"
+msgstr ""
+"の特長\n"
+"サハラ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:102
+#, elixir-autogen, elixir-format
+msgid "Saturn"
+msgstr ""
+"の特長\n"
+"サターン"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:269
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' added: daily at %{time} UTC in %{channel}."
+msgstr ""
+"の特長\n"
+"スケジュール「%{id}」を追加:%{time} UTCで毎日%{channel}."
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:243
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' added: every %{minutes}min in %{channel}."
+msgstr ""
+"の特長\n"
+"スケジュール「%{id}」追加:%{channel}で%{minutes}minごと。"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:286
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' not found."
+msgstr ""
+"の特長\n"
+"「%{id}」が見つかりません。"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:284
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' removed."
+msgstr ""
+"の特長\n"
+"スケジュール '%{id}' 削除。"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:27
+#, elixir-autogen, elixir-format
+msgid "Scheduled and periodic messages"
+msgstr ""
+"の特長\n"
+"スケジュールと定期的なメッセージ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:353
+#, elixir-autogen, elixir-format
+msgid "Scores (Q%{number}/%{total}): %{ranked}"
+msgstr "スコア（Q%{number}/%{total}）: %{ranked}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:340
+#, elixir-autogen, elixir-format
+msgid "Scores (Q%{number}/%{total}): No scores yet."
+msgstr "スコア（Q%{number}/%{total}）: まだスコアはありません。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:240
+#, elixir-autogen, elixir-format
+msgid "Scottish"
+msgstr ""
+"の特長\n"
+"スコティッシュ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:460
+#, elixir-autogen, elixir-format
+msgid "Sherlock Holmes"
+msgstr ""
+"の特長\n"
+"シャーロック・ホームズ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:140
+#, elixir-autogen, elixir-format
+msgid "Show current scores"
+msgstr ""
+"の特長\n"
+"現在のスコアを表示"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:56
+#, elixir-autogen, elixir-format
+msgid "Show this help message"
+msgstr ""
+"の特長\n"
+"このヘルプメッセージを表示する"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:138
+#, elixir-autogen, elixir-format
+msgid "Sodium..."
+msgstr ""
+"の特長\n"
+"ナトリウム..."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:245
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:281
+#, elixir-autogen, elixir-format
+msgid "South America"
+msgstr ""
+"の特長\n"
+"南米"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:262
+#, elixir-autogen, elixir-format
+msgid "South Asia"
+msgstr ""
+"の特長\n"
+"南アジア"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:282
+#, elixir-autogen, elixir-format
+msgid "Southern hemisphere"
+msgstr ""
+"の特長\n"
+"南半球"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:53
+#, elixir-autogen, elixir-format
+msgid "Start a solo arcade session"
+msgstr ""
+"の特長\n"
+"ソロ・アーケード・セッションを始める"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:138
+#, elixir-autogen, elixir-format
+msgid "Start a trivia round"
+msgstr ""
+"の特長\n"
+"トライビアラウンドを開始"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:22
+#, elixir-autogen, elixir-format
+msgid "Start solo arcade sessions with !play"
+msgstr ""
+"の特長\n"
+"ソロのアーケードセッションをスタート!play"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
+#, elixir-autogen, elixir-format
+msgid "Starts with T"
+msgstr ""
+"の特長\n"
+"Tで始まる"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:440
+#, elixir-autogen, elixir-format
+msgid "Steven Spielberg"
+msgstr ""
+"の特長\n"
+"スティーブン・スピルバーグ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:139
+#, elixir-autogen, elixir-format
+msgid "Stop the current round"
+msgstr ""
+"の特長\n"
+"現在のラウンドを止める"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:378
+#, elixir-autogen, elixir-format
+msgid "Structured Query Language"
+msgstr ""
+"の特長\n"
+"構造化されたクエリ言語"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:141
+#, elixir-autogen, elixir-format
+msgid "Submit a trivia answer"
+msgstr ""
+"の特長\n"
+"トリビアの回答を提出する"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:117
+#, elixir-autogen, elixir-format
+msgid "Sun"
+msgstr ""
+"の特長\n"
+"日曜日"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:348
+#, elixir-autogen, elixir-format
+msgid "Sun Microsystems"
+msgstr ""
+"の特長\n"
+"サンマイクロシステム"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:445
+#, elixir-autogen, elixir-format
+msgid "Super Mario Bros"
+msgstr ""
+"の特長\n"
+"スーパーマリオブラザーズ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:405
+#, elixir-autogen, elixir-format
+msgid "The Matrix"
+msgstr ""
+"の特長\n"
+"マトリックス"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:76
+#, elixir-autogen, elixir-format
+msgid "Three digits"
+msgstr ""
+"の特長\n"
+"3桁"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:466
+#, elixir-autogen, elixir-format
+msgid "Three wishes"
+msgstr ""
+"の特長\n"
+"願いを込めて"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:364
+#, elixir-autogen, elixir-format
+msgid "Tim Berners-Lee"
+msgstr ""
+"の特長\n"
+"ティム・バーナーズ・リー"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:94
+#, elixir-autogen, elixir-format
+msgid "Time's up! Nobody got it."
+msgstr ""
+"の特長\n"
+"タイムアップ! 誰も持っていません。"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:92
+#, elixir-autogen, elixir-format
+msgid "Time's up! The answer was: %{answer}"
+msgstr ""
+"の特長\n"
+"タイムアップ! 答えは: %{answer}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:271
+#, elixir-autogen, elixir-format
+msgid "Tokyo"
+msgstr ""
+"の特長\n"
+"東京"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
+#, elixir-autogen, elixir-format
+msgid ""
+"Trivia started! (%{category}, %{count} questions)\n"
+"%{question}"
+msgstr ""
+"トリビア開始！（%{category}、%{count}問）\n"
+"%{question}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
+#, elixir-autogen, elixir-format
+msgid "Trivia stopped! %{scores}"
+msgstr "トリビアを停止しました！ %{scores}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:98
+#, elixir-autogen, elixir-format
+msgid "Two elements"
+msgstr ""
+"の特長\n"
+"2つの要素"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:388
+#, elixir-autogen, elixir-format
+msgid "Universal Serial Bus"
+msgstr ""
+"の特長\n"
+"ユニバーサルシリアルバス"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:127
+#, elixir-autogen, elixir-format
+msgid "Unknown category '%{category}'. Available: %{categories}"
+msgstr ""
+"の特長\n"
+"不明なカテゴリ「%{category}」。 利用できる: %{categories}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unknown feed format (expected RSS 2.0 or Atom)"
+msgstr ""
+"の特長\n"
+"既知のフィード形式(RSS 2.0 または Atom を期待)"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:196
+#, elixir-autogen, elixir-format
+msgid "Usage: rss add <url> <#channel>"
+msgstr ""
+"の特長\n"
+"使用法:rssは<url> <#channel>を加えます"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
+#, elixir-autogen, elixir-format
+msgid ""
+"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
+"daily <HH:MM> <#channel> <message>"
+msgstr ""
+"使用法: スケジュールは間隔 <min> <#channel> <message> を加えますまたはスケジュールは毎日 <HH:MM> "
+"<#channel> <message> を加えます"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
+#, elixir-autogen, elixir-format
+msgid "Vatican City"
+msgstr ""
+"の特長\n"
+"バチカン市"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:148
+#, elixir-autogen, elixir-format
+msgid "Very cold"
+msgstr ""
+"の特長\n"
+"非常に風邪"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:455
+#, elixir-autogen, elixir-format
+msgid "Vincent van Gogh"
+msgstr ""
+"の特長\n"
+"ヴィンセント・ファン・ゴッホ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:369
+#, elixir-autogen, elixir-format
+msgid "Volatile"
+msgstr ""
+"の特長\n"
+"揮発性"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:354
+#, elixir-autogen, elixir-format
+msgid "Web"
+msgstr ""
+"の特長\n"
+"サイトマップ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:329
+#, elixir-autogen, elixir-format
+msgid "Web pages"
+msgstr ""
+"の特長\n"
+"サイトマップ"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:50
+#, elixir-autogen, elixir-format
+msgid "Welcome, {nickname}!"
+msgstr ""
+"の特長\n"
+"お問い合わせ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:464
+#, elixir-autogen, elixir-format
+msgid "What Disney movie features a genie?"
+msgstr ""
+"の特長\n"
+"ディズニー映画はどのようなジャンルがありますか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:434
+#, elixir-autogen, elixir-format
+msgid "What TV show features dragons and an iron throne?"
+msgstr ""
+"の特長\n"
+"ドラゴンと鉄骨が特徴のテレビ番組は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:183
+#, elixir-autogen, elixir-format
+msgid "What ancient wonder was in Alexandria?"
+msgstr ""
+"の特長\n"
+"アレクサンドリアの古代の不思議は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:414
+#, elixir-autogen, elixir-format
+msgid "What band wrote 'Bohemian Rhapsody'?"
+msgstr ""
+"の特長\n"
+"「ボヘミアン・ラプソディ」とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:469
+#, elixir-autogen, elixir-format
+msgid "What board game has properties like Boardwalk?"
+msgstr ""
+"の特長\n"
+"ボードウォークのようなプロパティを持つボードゲームは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:243
+#, elixir-autogen, elixir-format
+msgid "What civilization built Machu Picchu?"
+msgstr ""
+"の特長\n"
+"マチュピチュの文明は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:347
+#, elixir-autogen, elixir-format
+msgid "What company created Java?"
+msgstr ""
+"の特長\n"
+"Java を作った会社は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:280
+#, elixir-autogen, elixir-format
+msgid "What continent is Brazil in?"
+msgstr ""
+"の特長\n"
+"ブラジルはどのような大陸ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:260
+#, elixir-autogen, elixir-format
+msgid "What country has the most people?"
+msgstr ""
+"の特長\n"
+"どの国が最も多くの人を持っていますか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:315
+#, elixir-autogen, elixir-format
+msgid "What country is the Sahara Desert mostly in?"
+msgstr ""
+"の特長\n"
+"サハラ砂漠の国は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:397
+#, elixir-autogen, elixir-format
+msgid "What does API stand for?"
+msgstr ""
+"の特長\n"
+"API のスタンドは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:342
+#, elixir-autogen, elixir-format
+msgid "What does CPU stand for?"
+msgstr ""
+"の特長\n"
+"CPUスタンドとは何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:327
+#, elixir-autogen, elixir-format
+msgid "What does HTML stand for?"
+msgstr ""
+"の特長\n"
+"HTMLスタンドとは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:352
+#, elixir-autogen, elixir-format
+msgid "What does HTTP stand for?"
+msgstr ""
+"の特長\n"
+"HTTPスタンドとは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:367
+#, elixir-autogen, elixir-format
+msgid "What does RAM stand for?"
+msgstr ""
+"の特長\n"
+"どのようなRAMスタンドですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:377
+#, elixir-autogen, elixir-format
+msgid "What does SQL stand for?"
+msgstr ""
+"の特長\n"
+"SQL スタンドとは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:387
+#, elixir-autogen, elixir-format
+msgid "What does USB stand for?"
+msgstr ""
+"の特長\n"
+"USBスタンドとは何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:111
+#, elixir-autogen, elixir-format
+msgid "What element has atomic number 1?"
+msgstr ""
+"の特長\n"
+"原子番号1の要素は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:198
+#, elixir-autogen, elixir-format
+msgid "What empire built the Colosseum?"
+msgstr ""
+"の特長\n"
+"Colosseumを作ったエンパイアは何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:459
+#, elixir-autogen, elixir-format
+msgid "What fictional detective lived at 221B Baker Street?"
+msgstr ""
+"の特長\n"
+"221B Baker Streetに住んでいたフィクション探偵は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:141
+#, elixir-autogen, elixir-format
+msgid "What force keeps planets in orbit?"
+msgstr ""
+"の特長\n"
+"惑星を軌道に保つ力とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:444
+#, elixir-autogen, elixir-format
+msgid "What game features a plumber named Mario?"
+msgstr ""
+"の特長\n"
+"マリオという名前のプラムはどのようなゲームがありますか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:69
+#, elixir-autogen, elixir-format
+msgid "What gas do plants absorb?"
+msgstr ""
+"の特長\n"
+"植物が吸収するガスとは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:126
+#, elixir-autogen, elixir-format
+msgid "What gas makes up 78% of Earth's atmosphere?"
+msgstr ""
+"の特長\n"
+"地球の大気の78%を構成するガスは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:429
+#, elixir-autogen, elixir-format
+msgid "What instrument has 88 keys?"
+msgstr ""
+"の特長\n"
+"どのような楽器は88キーを持っていますか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:146
+#, elixir-autogen, elixir-format
+msgid "What is absolute zero in Celsius?"
+msgstr ""
+"の特長\n"
+"摂氏中の絶対ゼロとは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:449
+#, elixir-autogen, elixir-format
+msgid "What is the best-selling video game of all time?"
+msgstr ""
+"の特長\n"
+"常に最高のビデオゲームは何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:74
+#, elixir-autogen, elixir-format
+msgid "What is the boiling point of water in Celsius?"
+msgstr ""
+"の特長\n"
+"摂氏中の水の沸点は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:285
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Australia?"
+msgstr ""
+"の特長\n"
+"オーストラリアの首都とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:300
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Canada?"
+msgstr ""
+"の特長\n"
+"カナダの首都とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:320
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Egypt?"
+msgstr ""
+"の特長\n"
+"エジプトの首都とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:19
+#, elixir-autogen, elixir-format
+msgid "What is the capital of France?"
+msgstr ""
+"の特長\n"
+"フランス首都とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:270
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Japan?"
+msgstr ""
+"の特長\n"
+"日本資本金とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:136
+#, elixir-autogen, elixir-format
+msgid "What is the chemical formula for table salt?"
+msgstr ""
+"の特長\n"
+"テーブル塩の化学式は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:59
+#, elixir-autogen, elixir-format
+msgid "What is the chemical symbol for gold?"
+msgstr ""
+"の特長\n"
+"金のための化学シンボルは何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:96
+#, elixir-autogen, elixir-format
+msgid "What is the chemical symbol for water?"
+msgstr ""
+"の特長\n"
+"水のための化学シンボルは何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:116
+#, elixir-autogen, elixir-format
+msgid "What is the closest star to Earth?"
+msgstr ""
+"の特長\n"
+"地球に一番近い星は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:275
+#, elixir-autogen, elixir-format
+msgid "What is the deepest ocean trench?"
+msgstr ""
+"の特長\n"
+"最深海トレンチとは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:44
+#, elixir-autogen, elixir-format
+msgid "What is the hardest natural substance?"
+msgstr ""
+"の特長\n"
+"最も困難な天然物質は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:419
+#, elixir-autogen, elixir-format
+msgid "What is the highest-grossing film of all time?"
+msgstr ""
+"の特長\n"
+"史上最高峰のフィルムとは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:265
+#, elixir-autogen, elixir-format
+msgid "What is the largest desert?"
+msgstr "最大の砂漠は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:310
+#, elixir-autogen, elixir-format
+msgid "What is the largest island?"
+msgstr ""
+"の特長\n"
+"最大の島は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:64
+#, elixir-autogen, elixir-format
+msgid "What is the largest mammal?"
+msgstr ""
+"の特長\n"
+"最大の哺乳類は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:29
+#, elixir-autogen, elixir-format
+msgid "What is the largest ocean?"
+msgstr ""
+"の特長\n"
+"最大の海とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:156
+#, elixir-autogen, elixir-format
+msgid "What is the largest organ in the human body?"
+msgstr ""
+"の特長\n"
+"人体の中で最大の臓器は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:250
+#, elixir-autogen, elixir-format
+msgid "What is the longest river in the world?"
+msgstr ""
+"の特長\n"
+"世界最長の川とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:121
+#, elixir-autogen, elixir-format
+msgid "What is the pH of pure water?"
+msgstr ""
+"の特長\n"
+"純水のpHとは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:106
+#, elixir-autogen, elixir-format
+msgid "What is the powerhouse of the cell?"
+msgstr ""
+"の特長\n"
+"細胞のパワーハウスとは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:290
+#, elixir-autogen, elixir-format
+msgid "What is the smallest continent?"
+msgstr ""
+"の特長\n"
+"最も小さい大陸は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:89
+#, elixir-autogen, elixir-format
+msgid "What is the smallest country by area?"
+msgstr ""
+"の特長\n"
+"エリアで一番小さい国は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:84
+#, elixir-autogen, elixir-format
+msgid "What is the speed of light (km/s)?"
+msgstr ""
+"の特長\n"
+"光の速度(km/s)は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:166
+#, elixir-autogen, elixir-format
+msgid "What is the study of fungi called?"
+msgstr ""
+"の特長\n"
+"真木の勉強とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:255
+#, elixir-autogen, elixir-format
+msgid "What is the tallest mountain?"
+msgstr ""
+"の特長\n"
+"標高の高い山は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:404
+#, elixir-autogen, elixir-format
+msgid "What movie features a character named Neo?"
+msgstr ""
+"の特長\n"
+"ネオブという名前のキャラクターがどのような映画なのか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:161
+#, elixir-autogen, elixir-format
+msgid "What particle has a positive charge?"
+msgstr ""
+"の特長\n"
+"粒子が正充電しているものは何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:101
+#, elixir-autogen, elixir-format
+msgid "What planet has the most moons?"
+msgstr ""
+"の特長\n"
+"惑星がほとんどの月を持っているのは何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:49
+#, elixir-autogen, elixir-format
+msgid "What planet is known as the Red Planet?"
+msgstr ""
+"の特長\n"
+"レッドプラネットとして知られている惑星は何ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:372
+#, elixir-autogen, elixir-format
+msgid "What programming language is Elixir built on?"
+msgstr ""
+"の特長\n"
+"プログラミング言語は Elixir に組み込まれていますか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:223
+#, elixir-autogen, elixir-format
+msgid "What revolution started in 1789?"
+msgstr ""
+"の特長\n"
+"1789年創業の革命とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:295
+#, elixir-autogen, elixir-format
+msgid "What sea is between Europe and Africa?"
+msgstr ""
+"の特長\n"
+"ヨーロッパとアフリカの海とは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:203
+#, elixir-autogen, elixir-format
+msgid "What ship brought Pilgrims to America?"
+msgstr ""
+"の特長\n"
+"Pilgrimsをアメリカに持ち込んだ船は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:305
+#, elixir-autogen, elixir-format
+msgid "What strait separates Asia and North America?"
+msgstr ""
+"の特長\n"
+"アジアと北アメリカを分離するストライツとは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:151
+#, elixir-autogen, elixir-format
+msgid "What vitamin does the sun provide?"
+msgstr ""
+"の特長\n"
+"太陽はどんなビタミンがありますか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:213
+#, elixir-autogen, elixir-format
+msgid "What year did Columbus reach America?"
+msgstr ""
+"の特長\n"
+"コロンバスがアメリカに通った年は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:188
+#, elixir-autogen, elixir-format
+msgid "What year did the Berlin Wall fall?"
+msgstr ""
+"の特長\n"
+"ベルリンの壁が落ちた年は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:34
+#, elixir-autogen, elixir-format
+msgid "What year did the Titanic sink?"
+msgstr ""
+"の特長\n"
+"タイタニックシンクは何年でしたか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:392
+#, elixir-autogen, elixir-format
+msgid "What year was Google founded?"
+msgstr ""
+"の特長\n"
+"Googleが設立した年は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:233
+#, elixir-autogen, elixir-format
+msgid "What year was the Declaration of Independence signed?"
+msgstr ""
+"の特長\n"
+"独立宣言は何年でしたか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:362
+#, elixir-autogen, elixir-format
+msgid "What year was the World Wide Web invented?"
+msgstr ""
+"の特長\n"
+"ワールドワイドウェブが発明した年は?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:337
+#, elixir-autogen, elixir-format
+msgid "What year was the first iPhone released?"
+msgstr ""
+"の特長\n"
+"最初のiPhoneがリリースされましたか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:332
+#, elixir-autogen, elixir-format
+msgid "Who created Linux?"
+msgstr ""
+"の特長\n"
+"誰がLinuxを作成しましたか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:439
+#, elixir-autogen, elixir-format
+msgid "Who directed Jurassic Park?"
+msgstr ""
+"の特長\n"
+"誰がジュラシックパークを指示?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:238
+#, elixir-autogen, elixir-format
+msgid "Who discovered penicillin?"
+msgstr ""
+"の特長\n"
+"ペニシリンを発見した人?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:357
+#, elixir-autogen, elixir-format
+msgid "Who founded Microsoft?"
+msgstr ""
+"の特長\n"
+"マイクロソフトは誰ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:208
+#, elixir-autogen, elixir-format
+msgid "Who invented the printing press?"
+msgstr ""
+"の特長\n"
+"印刷機を発明したのは?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:382
+#, elixir-autogen, elixir-format
+msgid "Who invented the telephone?"
+msgstr ""
+"の特長\n"
+"誰が電話を発明しましたか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:228
+#, elixir-autogen, elixir-format
+msgid "Who painted the Mona Lisa?"
+msgstr ""
+"の特長\n"
+"モナ・リサを塗った人?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:454
+#, elixir-autogen, elixir-format
+msgid "Who painted the Starry Night?"
+msgstr ""
+"の特長\n"
+"星の夜を描いた人?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:409
+#, elixir-autogen, elixir-format
+msgid "Who played Iron Man in the MCU?"
+msgstr ""
+"の特長\n"
+"誰がMCUでアイアンマンを果たしましたか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:474
+#, elixir-autogen, elixir-format
+msgid "Who sang 'Thriller'?"
+msgstr ""
+"の特長\n"
+"誰が「スリラー」を歌いますか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:218
+#, elixir-autogen, elixir-format
+msgid "Who was the first man on the moon?"
+msgstr ""
+"の特長\n"
+"月の最初の男は誰でしたか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:178
+#, elixir-autogen, elixir-format
+msgid "Who was the first president of the USA?"
+msgstr ""
+"の特長\n"
+"アメリカ初代社長は誰でしたか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:424
+#, elixir-autogen, elixir-format
+msgid "Who wrote Harry Potter?"
+msgstr ""
+"の特長\n"
+"ハリー・ポッターは誰ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:193
+#, elixir-autogen, elixir-format
+msgid "Who wrote the Communist Manifesto?"
+msgstr ""
+"の特長\n"
+"コミュニスト・マニフェストは誰ですか?"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:33
+#, elixir-autogen, elixir-format
+msgid "XML parse error: %{reason}"
+msgstr ""
+"の特長\n"
+"XML解析エラー:%{reason}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:372
+#, elixir-autogen, elixir-format
+msgid "[%{title}]"
+msgstr ""
+"の特長\n"
+"[%{title}]"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:98
+#, elixir-autogen, elixir-format
+msgid "action must be one of: warn, mute, kick"
+msgstr ""
+"の特長\n"
+"アクションは、警告、ミュート、キックのいずれかでなければなりません"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:65
+#, elixir-autogen, elixir-format
+msgid "blue whale"
+msgstr ""
+"の特長\n"
+"ブルー・ホエール"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:70
+#, elixir-autogen, elixir-format
+msgid "carbon dioxide"
+msgstr "二酸化炭素"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:380
+#, elixir-autogen, elixir-format
+msgid "daily@%{time}"
+msgstr ""
+"の特長\n"
+"毎日@%{time}"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:179
+#, elixir-autogen, elixir-format
+msgid "excessive caps lock"
+msgstr ""
+"の特長\n"
+"過度の帽子ロック"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:161
+#, elixir-autogen, elixir-format
+msgid "flooding (%{count} messages in %{window}s)"
+msgstr ""
+"の特長\n"
+"フラッド (%{count} のメッセージ %{window}s)"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:67
+#, elixir-autogen, elixir-format
+msgid "max_dice must be between 1 and 1000"
+msgstr ""
+"の特長\n"
+"max dice は 1 と 1000 の間でなければなりません"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:70
+#, elixir-autogen, elixir-format
+msgid "max_sides must be between 2 and 10_000"
+msgstr ""
+"の特長\n"
+"max sides は 2 と 10 000 の間でなければなりません"
+
+#: lib/retro_hex_chat/bots/bot.ex:46
+#, elixir-autogen, elixir-format
+msgid "must start with a letter"
+msgstr ""
+"の特長\n"
+"手紙で始める必要があります"
+
+#: lib/retro_hex_chat/bots/bot.ex:43
+#: lib/retro_hex_chat/bots/bot_custom_command.ex:32
+#, elixir-autogen, elixir-format
+msgid "only letters, numbers, _ and -"
+msgstr ""
+"の特長\n"
+"文字、数字、および -"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:377
+#, elixir-autogen, elixir-format
+msgid "q/%{minutes}min"
+msgstr "q/%{minutes}min"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:145
+#, elixir-autogen, elixir-format
+msgid "spamming (%{count} identical messages)"
+msgstr ""
+"の特長\n"
+"スパム(%{count}同一メッセージ)"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:127
+#, elixir-autogen, elixir-format
+msgid "using blocked words"
+msgstr ""
+"の特長\n"
+"ブロックされた単語を使う"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:218
+#, elixir-autogen, elixir-format
+msgid "{nickname}"
+msgstr ""
+"の特長\n"
+"お問い合わせ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:86
+#, elixir-autogen, elixir-format
+msgid "~3 x 10^5 km/s"
+msgstr ""
+"の特長\n"
+"3 x 10^5 km/s"

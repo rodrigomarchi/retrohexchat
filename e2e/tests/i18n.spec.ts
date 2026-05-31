@@ -16,7 +16,7 @@ test.describe("Internationalization", () => {
 
     await page
       .getByTestId("locale-switcher")
-      .getByRole("link", { name: "Portuguese" })
+      .getByRole("link", { name: "Português (Brasil)" })
       .click();
 
     await expect(page).toHaveURL(/\/connect$/);
@@ -34,7 +34,7 @@ test.describe("Internationalization", () => {
 
     await page
       .getByTestId("locale-switcher")
-      .getByRole("link", { name: "Inglês" })
+      .getByRole("link", { name: "English" })
       .click();
 
     await expect(page.locator("html")).toHaveAttribute("lang", "en");

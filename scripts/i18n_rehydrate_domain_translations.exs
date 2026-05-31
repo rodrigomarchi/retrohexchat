@@ -3,13 +3,14 @@
 defmodule I18nRehydrateDomainTranslations do
   @moduledoc false
 
+  Code.require_file("scripts/i18n_locale_helpers.exs")
+
   alias Expo.Message
   alias Expo.Message.{Plural, Singular}
   alias Expo.Messages
   alias Expo.PO
 
   @apps ~w(apps/retro_hex_chat apps/retro_hex_chat_web)
-  @locales ~w(en pt_BR)
 
   @manual_translations %{
     "en" => %{
@@ -26,9 +27,9 @@ defmodule I18nRehydrateDomainTranslations do
     }
   }
 
-  def main(_args) do
-    for app <- @apps, locale <- @locales do
-      index = translation_index(app, locale)
+  def main(args) do
+    for app <- @apps, locale <- I18nLocaleHelpers.locales_from_args(args) do
+      index = translation_index(app, locale.code)
 
       app
       |> Path.join("priv/gettext/*.pot")
@@ -48,12 +49,12 @@ defmodule I18nRehydrateDomainTranslations do
       |> Enum.map(&hydrate_message(&1, locale, index))
 
     output = %Messages{
-      headers: headers(locale),
-      top_comments: top_comments(domain),
+      headers: I18nLocaleHelpers.headers(locale),
+      top_comments: I18nLocaleHelpers.top_comments(domain, locale),
       messages: messages
     }
 
-    target = Path.join([app, "priv/gettext", locale, "LC_MESSAGES", "#{domain}.po"])
+    target = Path.join([app, "priv/gettext", locale.code, "LC_MESSAGES", "#{domain}.po"])
     File.mkdir_p!(Path.dirname(target))
 
     target
@@ -66,8 +67,8 @@ defmodule I18nRehydrateDomainTranslations do
     msgid = string(message.msgid)
 
     msgstr =
-      case lookup(index, message) || manual_translation(locale, msgid) do
-        nil when locale == "en" -> [msgid]
+      case lookup(index, message) || manual_translation(locale.code, msgid) do
+        nil when locale.code == "en" -> [msgid]
         nil -> [msgid]
         value when is_binary(value) -> [value]
         value when is_list(value) -> value
@@ -82,12 +83,42 @@ defmodule I18nRehydrateDomainTranslations do
 
     msgstr =
       case lookup(index, message) do
-        nil when locale == "en" -> %{0 => [msgid], 1 => [msgid_plural]}
-        nil -> %{0 => [msgid], 1 => [msgid_plural]}
-        value -> value
+        nil -> default_plural_msgstr(locale, msgid, msgid_plural)
+        value -> normalize_plural_msgstr(locale, value, msgid, msgid_plural)
       end
 
     %Plural{message | msgstr: msgstr, previous_messages: [], obsolete: false}
+  end
+
+  defp default_plural_msgstr(locale, msgid, msgid_plural) do
+    single_form_uses_plural = locale.code in ~w(id ja zh_Hans ko vi zh_Hant)
+
+    locale
+    |> nplurals()
+    |> plural_indexes()
+    |> Map.new(fn
+      0 when single_form_uses_plural -> {0, [msgid_plural]}
+      0 -> {0, [msgid]}
+      index -> {index, [msgid_plural]}
+    end)
+  end
+
+  defp normalize_plural_msgstr(locale, value, msgid, msgid_plural) do
+    defaults = default_plural_msgstr(locale, msgid, msgid_plural)
+
+    locale
+    |> nplurals()
+    |> plural_indexes()
+    |> Map.new(fn index -> {index, Map.get(value, index, Map.fetch!(defaults, index))} end)
+  end
+
+  defp plural_indexes(count), do: Enum.to_list(0..(count - 1)//1)
+
+  defp nplurals(locale) do
+    case Regex.run(~r/nplurals=(\d+)/, locale.plural_forms) do
+      [_, count] -> String.to_integer(count)
+      _missing -> 2
+    end
   end
 
   defp translation_index(app, locale) do
@@ -172,44 +203,6 @@ defmodule I18nRehydrateDomainTranslations do
   defp string(nil), do: ""
   defp string(value), do: IO.iodata_to_binary(value)
 
-  defp headers("en") do
-    [
-      "Project-Id-Version: RetroHexChat\n",
-      "PO-Revision-Date: 2026-05-30 00:00+0000\n",
-      "Last-Translator: RetroHexChat Team\n",
-      "Language-Team: en\n",
-      "Language: en\n",
-      "MIME-Version: 1.0\n",
-      "Content-Type: text/plain; charset=UTF-8\n",
-      "Content-Transfer-Encoding: 8bit\n",
-      "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-    ]
-  end
-
-  defp headers("pt_BR") do
-    [
-      "Project-Id-Version: RetroHexChat\n",
-      "PO-Revision-Date: 2026-05-30 00:00+0000\n",
-      "Last-Translator: RetroHexChat Team\n",
-      "Language-Team: pt_BR\n",
-      "Language: pt_BR\n",
-      "MIME-Version: 1.0\n",
-      "Content-Type: text/plain; charset=UTF-8\n",
-      "Content-Transfer-Encoding: 8bit\n",
-      "Plural-Forms: nplurals=2; plural=(n>1);\n"
-    ]
-  end
-
-  defp top_comments(domain) do
-    [
-      [
-        ~s( "msgid"s in this file come from #{domain}.pot.),
-        " ",
-        " Do not add, change, or remove msgids manually.",
-        " Use mix gettext.extract --merge and the i18n scripts to refresh catalogs."
-      ]
-    ]
-  end
 end
 
 I18nRehydrateDomainTranslations.main(System.argv())

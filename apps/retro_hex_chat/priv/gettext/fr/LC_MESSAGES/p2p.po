@@ -1,0 +1,253 @@
+# "msgid"s in this file come from p2p.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: fr; status: enabled; wave: 1.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: fr\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/retro_hex_chat/p2p/turn/listener.ex:33
+#, elixir-autogen, elixir-format
+msgid "%{inet_ntoa_ip}:%{port}/UDP"
+msgstr "%{inet_ntoa_ip}:%{port}/UDP"
+
+#: lib/retro_hex_chat/p2p/turn/allocation_handler.ex:72
+#, elixir-autogen, elixir-format
+msgid "(%{inet_ntoa_c_ip}:%{c_port}, %{inet_ntoa_s_ip}:%{s_port}, UDP)"
+msgstr "(%{inet_ntoa_c_ip}:%{c_port}, %{inet_ntoa_s_ip}:%{s_port}, UDP)"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:57
+#, elixir-autogen, elixir-format
+msgid ", rejected"
+msgstr ", rejetée"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:152
+#, elixir-autogen, elixir-format
+msgid "Address is already bound to channel"
+msgstr "L'adresse est déjà liée au canal"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:72
+#, elixir-autogen, elixir-format
+msgid "Allocation mismatch: allocation already exists"
+msgstr "Inadéquation de l'allocation: l'allocation existe déjà"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:69
+#, elixir-autogen, elixir-format
+msgid "Allocation mismatch: allocation does not exist"
+msgstr "Inadéquation de l'allocation: l'allocation n'existe pas"
+
+#: lib/retro_hex_chat/p2p/policy.ex:64
+#, elixir-autogen, elixir-format
+msgid "An active session already exists with this user"
+msgstr "Une session active existe déjà avec cet utilisateur"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:110
+#, elixir-autogen, elixir-format
+msgid "Auth failed, invalid MESSAGE-INTEGRITY"
+msgstr "Auth échoué, invalide MESSAGE-INTEGRITÉ"
+
+#: lib/retro_hex_chat/p2p/policy.ex:43
+#, elixir-autogen, elixir-format
+msgid "Cannot create a session with yourself"
+msgstr "Impossible de créer une session avec vous-même"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:149
+#, elixir-autogen, elixir-format
+msgid "Channel number is already bound"
+msgstr "Le numéro du canal est déjà lié"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:146
+#, elixir-autogen, elixir-format
+msgid "Channel number is out of allowed range"
+msgstr "Le numéro du canal est hors de portée autorisée"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:101
+#, elixir-autogen, elixir-format
+msgid "EVEN-PORT unsupported"
+msgstr "EVEN-PORT non soutenu"
+
+#: lib/retro_hex_chat/p2p/service.ex:163
+#, elixir-autogen, elixir-format
+msgid "Failed to create session"
+msgstr "Impossible de créer la session"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:143
+#, elixir-autogen, elixir-format
+msgid "Failed to decode CHANNEL-NUMBER"
+msgstr "Impossible de décoder CHANNEL-NUMBRE"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:137
+#, elixir-autogen, elixir-format
+msgid "Failed to decode DATA"
+msgstr "Impossible de décoder les données"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:81
+#, elixir-autogen, elixir-format
+msgid "Failed to decode EVEN-PORT"
+msgstr "Impossible de décoder EVEN-PORT"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:107
+#, elixir-autogen, elixir-format
+msgid "Failed to decode LIFETIME"
+msgstr "Impossible de décoder LIFETIME"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:84
+#, elixir-autogen, elixir-format
+msgid "Failed to decode REQUESTED-ADDRESS-FAMILY"
+msgstr "Échec du décodage DEMANDED-ADDRESS-FAMILLE"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:95
+#, elixir-autogen, elixir-format
+msgid "Failed to decode RESERVATION-TOKEN"
+msgstr "Impossible de décoder RESERVATION-TOKEN"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:131
+#, elixir-autogen, elixir-format
+msgid "Failed to decode XOR-PEER-ADDRESS"
+msgstr "Impossible de décoder XOR-PEER-ADDRESS"
+
+#: lib/retro_hex_chat/p2p/session_server.ex:168
+#, elixir-autogen, elixir-format
+msgid "Invalid transition from %{state_session_status} to %{new_status_str}"
+msgstr "Transition non valide de %{state_session_status} à %{new_status_str}"
+
+#: lib/retro_hex_chat/p2p/session_token.ex:30
+#, elixir-autogen, elixir-format
+msgid "Missing :p2p_token_secret configuration"
+msgstr "Configuration manquante :p2p token secret"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:140
+#, elixir-autogen, elixir-format
+msgid "No CHANNEL-NUMBER attribute"
+msgstr "Pas d'attribut CHANNEL-NUMBER"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:134
+#, elixir-autogen, elixir-format
+msgid "No DATA attribute"
+msgstr "Aucun attribut de données"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:128
+#, elixir-autogen, elixir-format
+msgid "No XOR-PEER-ADDRESS attribute"
+msgstr "Aucun attribut XOR-PEER-ADDRESS"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:104
+#, elixir-autogen, elixir-format
+msgid "No available ports left"
+msgstr "Pas de ports disponibles laissés"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:113
+#, elixir-autogen, elixir-format
+msgid "No message integrity attribute"
+msgstr "Aucun attribut d'intégrité du message"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:78
+#, elixir-autogen, elixir-format
+msgid "No or malformed REQUESTED-TRANSPORT"
+msgstr "Non ou mal formé DEMANDE DE TRANSPORT"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:116
+#, elixir-autogen, elixir-format
+msgid "No username, nonce or realm attribute"
+msgstr "Pas d'attribut nom d'utilisateur, nonce ou royaume"
+
+#: lib/retro_hex_chat/p2p/session_server.ex:150
+#, elixir-autogen, elixir-format
+msgid "Not a participant"
+msgstr "Pas un participant"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:98
+#, elixir-autogen, elixir-format
+msgid "REQUESTED-ADDRESS-FAMILY with IPv6 unsupported"
+msgstr "DEMANDER-ADDRESS-FAMILLE avec IPv6 non pris en charge"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:88
+#, elixir-autogen, elixir-format
+msgid "RESERVATION-TOKEN and (EVEN-PORT|REQUESTED-FAMILY) in the message"
+msgstr "RESERVATION-TOKEN et (EVEN-PORT) REQUESTED-FAMILLE) dans le message"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:92
+#, elixir-autogen, elixir-format
+msgid "RESERVATION-TOKEN unsupported"
+msgstr "RÉSERVATION-TOKEN non soutenue"
+
+#: lib/retro_hex_chat/p2p/policy.ex:101
+#, elixir-autogen, elixir-format
+msgid "Session is no longer active"
+msgstr "La session n'est plus active"
+
+#: lib/retro_hex_chat/p2p/service.ex:176
+#, elixir-autogen, elixir-format
+msgid "Session not found"
+msgstr "Séance non trouvée"
+
+#: lib/retro_hex_chat/p2p/service.ex:104
+#: lib/retro_hex_chat/p2p/session_server.ex:46
+#: lib/retro_hex_chat/p2p/session_server.ex:54
+#: lib/retro_hex_chat/p2p/session_server.ex:70
+#: lib/retro_hex_chat/p2p/session_server.ex:460
+#: lib/retro_hex_chat/p2p/session_server.ex:461
+#: lib/retro_hex_chat/p2p/session_server.ex:462
+#, elixir-autogen, elixir-format
+msgid "Session process not running"
+msgstr "Processus de session non exécuté"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:125
+#, elixir-autogen, elixir-format
+msgid "Stale nonce"
+msgstr "Pasce de balance"
+
+#: lib/retro_hex_chat/p2p/policy.ex:57
+#, elixir-autogen, elixir-format
+msgid "Target user must be registered"
+msgstr "L'utilisateur cible doit être enregistré"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:156
+#, elixir-autogen, elixir-format
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:75
+#, elixir-autogen, elixir-format
+msgid "Unsupported REQUESTED-TRANSPORT: TCP"
+msgstr "Demande de transport sans support: TCP"
+
+#: lib/retro_hex_chat/p2p/policy.ex:85
+#, elixir-autogen, elixir-format
+msgid "User not available"
+msgstr "Utilisateur non disponible"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:122
+#, elixir-autogen, elixir-format
+msgid "Username differs from the one used previously"
+msgstr "Nom d'utilisateur différent de celui utilisé précédemment"
+
+#: lib/retro_hex_chat/p2p/turn/utils.ex:119
+#, elixir-autogen, elixir-format
+msgid "Username timestamp expired"
+msgstr "Nom d'utilisateur timestamp expiré"
+
+#: lib/retro_hex_chat/p2p/policy.ex:95
+#, elixir-autogen, elixir-format
+msgid "You are not a participant in this session"
+msgstr "Vous n'êtes pas un participant à cette session"
+
+#: lib/retro_hex_chat/p2p/policy.ex:56
+#, elixir-autogen, elixir-format
+msgid "You must be registered to use P2P"
+msgstr "Vous devez être enregistré pour utiliser P2P"
+
+#: lib/retro_hex_chat/p2p/p2p.ex:103
+#, elixir-autogen, elixir-format
+msgid "stun:stun.l.google.com:19302"
+msgstr "stun:stun.l.google.com:19302"
+
+#: lib/retro_hex_chat/p2p/p2p.ex:93
+#, elixir-autogen, elixir-format
+msgid "turn:%{relay_ip}:%{listen_port}?transport=udp"
+msgstr "tour:%{relay_ip}:%{listen_port}?transport=udp"

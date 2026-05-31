@@ -5,7 +5,7 @@
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.gettext.extract i18n.gettext.rebuild i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.fix lint.css precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -16,6 +16,7 @@
 
 DOMAIN_APP = apps/retro_hex_chat
 WEB_APP    = apps/retro_hex_chat_web
+I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_Hans,id
 
 # ---------------------------------------------------------------------
 # RetroHexChat -- Development Makefile
@@ -219,12 +220,26 @@ i18n.audit.check: ## Fail when hardcoded user-visible strings are found
 i18n.status: ## Report translated, empty, and fuzzy Gettext catalog entries
 	elixir scripts/i18n_po_status.exs
 
-i18n.catalog.check: ## Fail while pt_BR catalogs have empty/fuzzy entries or oversized files
-	elixir scripts/i18n_po_status.exs --fail-on-untranslated --fail-locale pt_BR
+i18n.catalog.check: ## Fail while required catalogs have empty/fuzzy entries, unsafe placeholders, English fallbacks, or oversized files
+	elixir scripts/i18n_po_status.exs --fail-on-untranslated --fail-locale $(I18N_REQUIRED_LOCALES)
 	elixir scripts/i18n_catalog_size_check.exs --fail-on-exceed --max-lines 12000
+	mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings
+	python3 scripts/i18n_source_fallback_check.py --locales $(I18N_REQUIRED_LOCALES) --fail-on-findings
 
 i18n.catalog.size.check: ## Fail when any Gettext catalog exceeds the readable size limit
 	elixir scripts/i18n_catalog_size_check.exs --fail-on-exceed --max-lines 12000
+
+i18n.placeholder.check: ## Fail when translated strings lose Gettext placeholders
+	mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings
+
+i18n.source-fallback.check: ## Fail when enabled non-English catalogs keep actionable English fallbacks
+	python3 scripts/i18n_source_fallback_check.py --locales $(I18N_REQUIRED_LOCALES) --fail-on-findings
+
+i18n.locales.add: ## Generate Gettext catalogs for LOCALES=es,fr or WAVE=1
+	elixir scripts/i18n_add_locales.exs $$(test -n "$(LOCALES)" && echo --locales $(LOCALES)) $$(test -n "$(WAVE)" && echo --wave $(WAVE))
+
+i18n.wave1.add: ## Generate Gettext catalogs for the first expansion wave
+	elixir scripts/i18n_add_locales.exs --wave 1
 
 i18n.gettext.extract: ## Extract and merge Gettext catalogs for all apps
 	elixir scripts/i18n_rebuild_domain_catalogs.exs

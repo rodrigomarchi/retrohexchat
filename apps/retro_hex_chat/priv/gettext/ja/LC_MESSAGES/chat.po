@@ -1,0 +1,523 @@
+# "msgid"s in this file come from chat.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: ja\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:144
+#, elixir-autogen, elixir-format
+msgid "  %{name} (%{type}, %{interval}s) → %{command}"
+msgstr "%{name} (%{type}、%{interval}) → %{command}"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:41
+#, elixir-autogen, elixir-format
+msgid "1 %{singular}"
+msgstr "の特長\n"
+"1 %{singular}の"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:152
+#, elixir-autogen, elixir-format
+msgid "Active timers:\n"
+""
+msgstr "の特長\n"
+"活動的なタイマー:"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:35
+#, elixir-autogen, elixir-format
+msgid "Alert"
+msgstr "の特長\n"
+"アラート"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:405
+#, elixir-autogen, elixir-format
+msgid "Alt"
+msgstr "の特長\n"
+"ツイート"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:28
+#, elixir-autogen, elixir-format
+msgid "Beep"
+msgstr "の特長\n"
+"ビープ"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:40
+#, elixir-autogen, elixir-format
+msgid "Blip"
+msgstr "の特長\n"
+"バリップ"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:36
+#, elixir-autogen, elixir-format
+msgid "Buzz"
+msgstr "の特長\n"
+"バズ"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:242
+#, elixir-autogen, elixir-format
+msgid "Chat"
+msgstr "の特長\n"
+"チャット"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:33
+#, elixir-autogen, elixir-format
+msgid "Chime High"
+msgstr "の特長\n"
+"チームハイ"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:32
+#, elixir-autogen, elixir-format
+msgid "Chime Long"
+msgstr "の特長\n"
+"チームロング"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:34
+#, elixir-autogen, elixir-format
+msgid "Chime Low"
+msgstr "の特長\n"
+"チーム・ロー"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:31
+#, elixir-autogen, elixir-format
+msgid "Chime Short"
+msgstr "の特長\n"
+"チームショート"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:37
+#, elixir-autogen, elixir-format
+msgid "Click"
+msgstr "の特長\n"
+"クリック"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:329
+#, elixir-autogen, elixir-format
+msgid "Conflict: %{first_action} and %{second_action} both bound to %{combo}"
+msgstr "の特長\n"
+"Conflict: %{first_action} と %{second_action} は両方 %{combo} にバインド"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:406
+#, elixir-autogen, elixir-format
+msgid "Ctrl"
+msgstr "の特長\n"
+"Ctrlキー"
+
+#: lib/retro_hex_chat/chat/policy.ex:84
+#, elixir-autogen, elixir-format
+msgid "Delete window has expired."
+msgstr "の特長\n"
+"削除ウィンドウが期限切れになりました。"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:30
+#, elixir-autogen, elixir-format
+msgid "Ding High"
+msgstr "の特長\n"
+"Ding 高い"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:29
+#, elixir-autogen, elixir-format
+msgid "Ding Low"
+msgstr "の特長\n"
+"低いDing"
+
+#: lib/retro_hex_chat/chat/policy.ex:41
+#: lib/retro_hex_chat/chat/policy.ex:70
+#, elixir-autogen, elixir-format
+msgid "Edit window has expired."
+msgstr "の特長\n"
+"編集ウィンドウが無効になっています。"
+
+#: lib/retro_hex_chat/chat/alias_expander.ex:30
+#, elixir-autogen, elixir-format
+msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
+msgstr "の特長\n"
+"拡張には、コマンドチェーン文字(|、&&、;、または newlines)が含まれていません。"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:243
+#, elixir-autogen, elixir-format
+msgid "Formatting"
+msgstr "の特長\n"
+"フォーマット"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:98
+#, elixir-autogen, elixir-format
+msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
+msgstr "の特長\n"
+"無効なタイマー名。 文字、数字、ハイフン、アンダースコア(最大%{max_name_length}文字)のみを使用してください。"
+
+#: lib/retro_hex_chat/chat/policy.ex:18
+#: lib/retro_hex_chat/chat/policy.ex:24
+#, elixir-autogen, elixir-format
+msgid "Message cannot be empty"
+msgstr "の特長\n"
+"メッセージは空にすることはできません"
+
+#: lib/retro_hex_chat/chat/policy.ex:38
+#: lib/retro_hex_chat/chat/policy.ex:60
+#: lib/retro_hex_chat/chat/policy.ex:81
+#, elixir-autogen, elixir-format
+msgid "Message has already been deleted."
+msgstr "の特長\n"
+"メッセージは既に削除されました。"
+
+#: lib/retro_hex_chat/chat/service.ex:31
+#: lib/retro_hex_chat/chat/service.ex:46
+#: lib/retro_hex_chat/chat/service.ex:67
+#: lib/retro_hex_chat/chat/service.ex:81
+#, elixir-autogen, elixir-format
+msgid "Message not found."
+msgstr "の特長\n"
+"メッセージが見つかりません。"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:241
+#, elixir-autogen, elixir-format
+msgid "Navigation"
+msgstr "の特長\n"
+"ナビゲーション"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:101
+#, elixir-autogen, elixir-format
+msgid "Next Window"
+msgstr "の特長\n"
+"次のウィンドウ"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:136
+#, elixir-autogen, elixir-format
+msgid "No active timers."
+msgstr "の特長\n"
+"アクティブタイマーはありません。"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:27
+#, elixir-autogen, elixir-format
+msgid "None"
+msgstr "の特長\n"
+"なし"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:39
+#, elixir-autogen, elixir-format
+msgid "Notify"
+msgstr "の特長\n"
+"お知らせ"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:58
+#, elixir-autogen, elixir-format
+msgid "Open Address Book"
+msgstr "の特長\n"
+"アドレス帳を開く"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:88
+#, elixir-autogen, elixir-format
+msgid "Open Help"
+msgstr "の特長\n"
+"オープンヘルプ"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:70
+#, elixir-autogen, elixir-format
+msgid "Open Highlight Dialog"
+msgstr "の特長\n"
+"ハイライトダイアログを開く"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:64
+#, elixir-autogen, elixir-format
+msgid "Open Ignore List"
+msgstr "の特長\n"
+"無視リストを開く"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:82
+#, elixir-autogen, elixir-format
+msgid "Open Perform Dialog"
+msgstr "の特長\n"
+"開演ダイアログ"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:76
+#, elixir-autogen, elixir-format
+msgid "Open URL Catcher"
+msgstr "の特長\n"
+"URL Catcherを開く"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:89
+#, elixir-autogen, elixir-format
+msgid "Open the help dialog (menu only)"
+msgstr "の特長\n"
+"ヘルプダイアログを開きます(メニューのみ)"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:83
+#, elixir-autogen, elixir-format
+msgid "Open/close auto-perform settings"
+msgstr "の特長\n"
+"Open/close 自動パーフォーム設定"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:71
+#, elixir-autogen, elixir-format
+msgid "Open/close highlight word settings"
+msgstr "の特長\n"
+"Open/close ハイライト単語の設定"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:53
+#, elixir-autogen, elixir-format
+msgid "Open/close search bar"
+msgstr "の特長\n"
+"Open/close検索バー"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:77
+#, elixir-autogen, elixir-format
+msgid "Open/close the URL catcher"
+msgstr "の特長\n"
+"Open/close URL キャッチャー"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:59
+#, elixir-autogen, elixir-format
+msgid "Open/close the address book"
+msgstr "の特長\n"
+"Open/closeアドレス帳"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:65
+#, elixir-autogen, elixir-format
+msgid "Open/close the ignore list"
+msgstr "の特長\n"
+"Open/close 無視リスト"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:95
+#, elixir-autogen, elixir-format
+msgid "Open/close the keyboard shortcut cheatsheet"
+msgstr "の特長\n"
+"Open/close キーボードショートカットチートシート"
+
+#: lib/retro_hex_chat/chat/service.ex:129
+#: lib/retro_hex_chat/chat/service.ex:146
+#, elixir-autogen, elixir-format
+msgid "Original message not found."
+msgstr "の特長\n"
+"元のメッセージが見つかりませんでした。"
+
+#: lib/retro_hex_chat/chat/policy.ex:44
+#: lib/retro_hex_chat/chat/policy.ex:109
+#, elixir-autogen, elixir-format
+msgid "Please wait a few seconds before editing again."
+msgstr "の特長\n"
+"もう一度編集する前に数秒待ってください。"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:107
+#, elixir-autogen, elixir-format
+msgid "Previous Window"
+msgstr "の特長\n"
+"前のウィンドウ"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:127
+#, elixir-autogen, elixir-format
+msgid "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
+msgstr "の特長\n"
+"最小%{min_repeat_interval}秒にクランプされた間隔を繰り返します。"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:38
+#, elixir-autogen, elixir-format
+msgid "Ring"
+msgstr "リング"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:407
+#, elixir-autogen, elixir-format
+msgid "Shift"
+msgstr "の特長\n"
+"シフト"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:94
+#, elixir-autogen, elixir-format
+msgid "Shortcut Cheatsheet"
+msgstr "の特長\n"
+"ショートカットシート"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:102
+#, elixir-autogen, elixir-format
+msgid "Switch to the next channel or PM"
+msgstr "の特長\n"
+"次のチャンネルまたはPMに切り替える"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:108
+#, elixir-autogen, elixir-format
+msgid "Switch to the previous channel or PM"
+msgstr "の特長\n"
+"前のチャンネルまたはPMに切り替える"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:114
+#, elixir-autogen, elixir-format
+msgid "Switch to window 1"
+msgstr "の特長\n"
+"ウィンドウに切り替える 1"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:120
+#, elixir-autogen, elixir-format
+msgid "Switch to window 2"
+msgstr "の特長\n"
+"ウィンドウに切り替える 2"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:126
+#, elixir-autogen, elixir-format
+msgid "Switch to window 3"
+msgstr "の特長\n"
+"ウィンドウに切り替える 3"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:132
+#, elixir-autogen, elixir-format
+msgid "Switch to window 4"
+msgstr "の特長\n"
+"ウィンドウに切り替える 4"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:138
+#, elixir-autogen, elixir-format
+msgid "Switch to window 5"
+msgstr "の特長\n"
+"ウィンドウに切り替える 5"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:144
+#, elixir-autogen, elixir-format
+msgid "Switch to window 6"
+msgstr "の特長\n"
+"ウィンドウに切り替える 6"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:150
+#, elixir-autogen, elixir-format
+msgid "Switch to window 7"
+msgstr "の特長\n"
+"ウィンドウに切り替える 7"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:156
+#, elixir-autogen, elixir-format
+msgid "Switch to window 8"
+msgstr "の特長\n"
+"ウィンドウへの切り替え 8"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:162
+#, elixir-autogen, elixir-format
+msgid "Switch to window 9"
+msgstr "の特長\n"
+"ウィンドウに切り替える 9"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:244
+#: lib/retro_hex_chat/chat/service.ex:96
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "の特長\n"
+"システム"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:52
+#, elixir-autogen, elixir-format
+msgid "Toggle Search"
+msgstr "の特長\n"
+"トグル検索"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:76
+#: lib/retro_hex_chat/chat/timer_manager.ex:80
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> <seconds> <command>"
+msgstr "の特長\n"
+"使用法: /timer <name> <seconds> <command>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:17
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> [repeat] <seconds> <command>"
+msgstr "の特長\n"
+"使用法: /timer <name> [repeat] <seconds> <command>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:51
+#: lib/retro_hex_chat/chat/timer_manager.ex:55
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> repeat <seconds> <command>"
+msgstr "の特長\n"
+"使用法: /timer <name>は<seconds> <command>を繰り返します"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:25
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer stop <name>"
+msgstr "の特長\n"
+"使用法: /timerは<name>を停止します"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:41
+#, elixir-autogen, elixir-format
+msgid "Whoosh"
+msgstr "の特長\n"
+"ログイン"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:113
+#, elixir-autogen, elixir-format
+msgid "Window 1"
+msgstr "の特長\n"
+"窓 1"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:119
+#, elixir-autogen, elixir-format
+msgid "Window 2"
+msgstr "の特長\n"
+"ウィンドウ2"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:125
+#, elixir-autogen, elixir-format
+msgid "Window 3"
+msgstr "の特長\n"
+"ウィンドウ3"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:131
+#, elixir-autogen, elixir-format
+msgid "Window 4"
+msgstr "の特長\n"
+"ウィンドウ 4"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:137
+#, elixir-autogen, elixir-format
+msgid "Window 5"
+msgstr "の特長\n"
+"ウィンドウ 5"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:143
+#, elixir-autogen, elixir-format
+msgid "Window 6"
+msgstr "の特長\n"
+"ウィンドウ 6"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:149
+#, elixir-autogen, elixir-format
+msgid "Window 7"
+msgstr "の特長\n"
+"ウィンドウ 7"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:155
+#, elixir-autogen, elixir-format
+msgid "Window 8"
+msgstr "の特長\n"
+"ウィンドウ 8"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:161
+#, elixir-autogen, elixir-format
+msgid "Window 9"
+msgstr "の特長\n"
+"ウィンドウ 9"
+
+#: lib/retro_hex_chat/chat/policy.ex:78
+#, elixir-autogen, elixir-format
+msgid "You cannot delete other users' messages."
+msgstr "の特長\n"
+"他のユーザーのメッセージを削除することはできません。"
+
+#: lib/retro_hex_chat/chat/policy.ex:35
+#: lib/retro_hex_chat/chat/policy.ex:57
+#, elixir-autogen, elixir-format
+msgid "You cannot edit other users' messages."
+msgstr "の特長\n"
+"他のユーザーのメッセージを編集することはできません。"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:31
+#, elixir-autogen, elixir-format
+msgid "just now"
+msgstr "の特長\n"
+"ただ今"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:9
+#: lib/retro_hex_chat/chat/time_formatter.ex:21
+#, elixir-autogen, elixir-format
+msgid "less than a minute"
+msgstr "の特長\n"
+"1分未満"

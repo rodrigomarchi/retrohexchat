@@ -49,22 +49,20 @@
         <% end %>
 
         <div
-          class="mt-4 flex items-center justify-center gap-2 text-xs text-muted-foreground"
+          class="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground"
           data-testid="locale-switcher"
         >
           <span>{dgettext("connect", "Language")}</span>
           <.link
-            href={~p"/locale/en?return_to=/connect"}
-            class={if @locale == "en", do: "font-bold text-text", else: "underline"}
+            :for={{code, label} <- RetroHexChatWeb.I18n.supported_locales()}
+            href={~p"/locale/#{code}?return_to=/connect"}
+            class={[
+              "underline",
+              @locale == code && "font-bold text-text no-underline"
+            ]}
+            data-locale={code}
           >
-            {dgettext("connect", "English")}
-          </.link>
-          <span>|</span>
-          <.link
-            href={~p"/locale/pt_BR?return_to=/connect"}
-            class={if @locale == "pt_BR", do: "font-bold text-text", else: "underline"}
-          >
-            {dgettext("connect", "Portuguese")}
+            {label}
           </.link>
         </div>
       </.window_body>

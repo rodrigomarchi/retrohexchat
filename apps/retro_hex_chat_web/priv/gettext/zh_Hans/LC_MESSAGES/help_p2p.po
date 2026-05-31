@@ -1,0 +1,571 @@
+# "msgid"s in this file come from help_p2p.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_Hans; status: enabled; wave: 1.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: zh_Hans\n"
+"Language: zh_Hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "(1.5 Mbps),"
+msgstr "(1.5 Mbps), (中文(简体) )."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "(150 Kbps) buttons to adjust the bitrate manually."
+msgstr "(150 Kbps) 按钮可以手动调整比特率."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "(500 Kbps), or"
+msgstr "(500千位点),或"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
+#, elixir-autogen, elixir-format
+msgid ". The other user must accept the request."
+msgstr "。另一个用户必须接受请求。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:41
+#, elixir-autogen, elixir-format
+msgid ". The peer must accept before the camera is activated."
+msgstr "。在相机启动前,同伴必须接受。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ". The peer must accept."
+msgstr "。同伴必须接受。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "/call <nickname>"
+msgstr "/call <nickname>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "/p2p <nickname>"
+msgstr "/p2p <nickname>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "/sendfile <nickname>"
+msgstr "/sendfile <nickname>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "1 red bar — Poor"
+msgstr "1个红酒吧——贫穷"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "2 yellow bars — Fair"
+msgstr "2个黄条——公平"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "3 green bars — Good"
+msgstr "3个绿条——好"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "4 green bars — Excellent"
+msgstr "4个绿条——优秀"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Accept"
+msgstr "接受"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Add Video"
+msgstr "添加视频"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "After the transfer, the SHA-256 hash is verified automatically. If it fails, you can try again."
+msgstr "转会后,SHA-256散列自动核实. 如果失败 你可以再试一次"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Audio Call"
+msgstr "音频调用"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Automatic Adaptation"
+msgstr "自动调整"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Blocked extensions: .exe, .bat, .cmd, .com, .msi, .scr, .pif, .vbs, .js, among others. Maximum size is configurable by the server (default: 500 MB)."
+msgstr "屏蔽扩展:.exe,.bat,.cmd,.com,.msi,.scr,.pif,.vbs,.js等. 最大大小由服务器配置( 默认: 500 MB) 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Call Quality"
+msgstr "调用质量"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:4
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Click"
+msgstr "单击"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Click a nick (in the user list or chat) and select P2P Session, Audio Call, Video Call, or Send File. P2P items only appear for registered users and are disabled if the target is not registered."
+msgstr "点击昵称(在用户列表或聊天中)并选择P2P会话,音频呼叫,视频呼叫,或发送文件. P2P项目只为注册用户出现,在目标未注册的情况下被禁用."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Click the"
+msgstr "单击"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Context Menus"
+msgstr "背景菜单"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Creating a Session"
+msgstr "创建会话"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Device Disconnection"
+msgstr "设备断开连接"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Device switching happens without interrupting the call."
+msgstr "设备切换时不会中断通话."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Devices"
+msgstr "设备"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "During an audio call, click"
+msgstr "在音频通话时,单击"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "End Call"
+msgstr "结束调用"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "End Session"
+msgstr "结束会话"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "Ending"
+msgstr "结束"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "File Transfer"
+msgstr "文件传输"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "Generic"
+msgstr "常规"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "High"
+msgstr "高级"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "If a device is disconnected during a call, the system automatically falls back to the default device and displays a notification."
+msgstr "如果一个设备在调用时被断开,系统会自动倒回默认设备,并显示一个通知."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "If the connection drops briefly, the transfer pauses automatically and resumes when the connection is re-established."
+msgstr "如果连接短暂下降,传输会自动暂停,并在连接重建时恢复."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "In the P2P session, click"
+msgstr "在P2P会话中,单击"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Indicators"
+msgstr "指标"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Integrity Check"
+msgstr "诚信检查"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Layout"
+msgstr "版式"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Live Switching"
+msgstr "实时切换"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Lobby"
+msgstr "大厅"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Low"
+msgstr "低档"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Manual Quality Adjustment"
+msgstr "手工质量调整"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Media Devices"
+msgstr "媒体设备"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Medium"
+msgstr "中型"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:1
+#, elixir-autogen, elixir-format
+msgid "Monitor and adjust connection quality during calls."
+msgstr "在呼叫时监测和调整连接质量."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Mute"
+msgstr "静音"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Mute/Unmute Microphone"
+msgstr "Mute/Unmute 麦克风"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Or in the P2P session, click"
+msgstr "在P2P会话中,单击"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:88
+#, elixir-autogen, elixir-format
+msgid "P2P Games"
+msgstr "P2P 游戏"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "P2P Sessions"
+msgstr "P2P会议"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "P2P sessions allow direct communication between two registered users for chat, file transfer, and audio/video calls."
+msgstr "P2P会话允许两个注册用户直接通信,用于聊天,文件传输,以及音频/video通话."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Pause and Resume"
+msgstr "暂停和恢复"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Peer-to-peer video calls with full-screen remote video and a local video thumbnail."
+msgstr "端对端视频通话全屏远程视频和本地视频缩略图."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Pending sessions (waiting for the peer) expire in 5 minutes. The lobby expires due to inactivity after 15 minutes. The WebRTC connection has a 30-second timeout."
+msgstr "待定会议(等待同行)在5分钟后结束。 大厅因15分钟后不活动而过期. WebRTC连接有30秒超时."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "PiP"
+msgstr "辅助程序"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Picture-in-Picture"
+msgstr "图片"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:91
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Privacy Settings"
+msgstr "隐私设置"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Progress"
+msgstr "进展"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Quality Indicator"
+msgstr "质量指标"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Receiving"
+msgstr "接收"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Reject"
+msgstr "拒绝"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Restrictions"
+msgstr "限制"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "See Also"
+msgstr "另见"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:1
+#, elixir-autogen, elixir-format
+msgid "Select and switch audio and video devices during a call."
+msgstr "在呼叫时选择和切换音频和视频设备。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Selecting Devices"
+msgstr "选择设备"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Send File"
+msgstr "发送文件"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Send files directly to another user via a peer-to-peer connection (WebRTC DataChannel)."
+msgstr "通过对等连接(WebRTC DataChannel)直接向另一个用户发送文件."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Sending a File"
+msgstr "发送文件"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Session Types"
+msgstr "会话类型"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Start peer-to-peer audio calls with another user in a P2P session."
+msgstr "在 P2P 会话中与另一个用户启动对等音频呼叫."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:4
+#, elixir-autogen, elixir-format
+msgid "Starting a Call"
+msgstr "开始呼叫"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Starting a Video Call"
+msgstr "开始视频呼叫"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Starts a file transfer session."
+msgstr "启动文件传输会话。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Starts a generic session. The target user receives an invite and must accept."
+msgstr "开始一个通用会话。 目标用户收到邀请,必须接受邀请。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Starts an audio call session. Automatically requests permission after entering the lobby."
+msgstr "启动音频呼叫会话 。 进入大厅后自动请求许可."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "The 4 bars indicate connection quality:"
+msgstr "4条表示连接质量:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "The lobby is the session waiting room. Both users can chat and request actions (calls, transfers). All actions require"
+msgstr "大厅是会话候车室. 两个用户都可以聊天并要求行动(呼叫,传输). 所有行动都需要"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "The progress bar shows: percentage, speed, and estimated time. You can cancel at any time."
+msgstr "进度栏显示:百分比、速度和估计时间。 您可随时取消 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "The remote video occupies the main area. Your local video appears in the bottom-right corner."
+msgstr "远程视频占据主要区域. 你的本地视频出现在右下角"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "The timer shows the call duration. The quality indicator shows 4 levels: Excellent, Good, Fair, Poor."
+msgstr "计时器显示呼叫持续时间. 质量指标为4级:优秀,优秀,公平,贫穷."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "Timeouts"
+msgstr "超时"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Turn Camera Off"
+msgstr "关闭相机"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Turn Camera Off/On"
+msgstr "关闭相机/On"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Upgrade from Audio to Video"
+msgstr "从音频升级到视频"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Use the"
+msgstr "使用"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Via commands:"
+msgstr "通过命令 :"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Via context menu:"
+msgstr "通过上下文菜单 :"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:87
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Video Call"
+msgstr "视频呼叫"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "WebRTC automatically adjusts the resolution and framerate based on network conditions."
+msgstr "WebRTC根据网络条件自动调整分辨率和帧率."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "When you receive an offer, you see the file name and size. Click"
+msgstr "当收到报价时,可以看到文件名称和大小. 单击"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "and select the file."
+msgstr "并选择文件。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "bilateral consent"
+msgstr "双边同意"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "button to mute your microphone. The other user will see an indication that you are muted."
+msgstr "按钮可以关闭你的麦克风。 另一个用户会看到显示您已失声 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "or close the tab. The other user will be notified."
+msgstr "或关闭标签。 将通知其他用户。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "to finish. Both users return to the lobby."
+msgstr "结束。 两个用户都回到大厅."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "to pause the video. The peer will see a placeholder."
+msgstr "暂停录像。 同行会看到一个占位符 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "to pop the remote video into a floating window that stays visible while navigating other tabs."
+msgstr "将远程视频弹出到一个浮动窗口中,在浏览其他标签时保持可见。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "to see available devices. Choose a microphone, camera, or audio output from the menus."
+msgstr "以查看可用的设备。 从菜单中选择麦克风、相机或音频输出。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "— auto-requests audio call"
+msgstr "自动要求音频通话"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "— auto-requests file transfer"
+msgstr "自动请求文件传输"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "— auto-requests video call"
+msgstr "——自动要求视频通话."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:44
+#, elixir-autogen, elixir-format
+msgid "— chat with action options"
+msgstr "——与动作选项聊天"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "— the other user must accept before the action starts."
+msgstr "——其他用户必须在动作开始前接受."

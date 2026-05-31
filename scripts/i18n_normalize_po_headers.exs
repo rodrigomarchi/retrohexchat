@@ -3,12 +3,14 @@
 defmodule I18nNormalizePoHeaders do
   @moduledoc false
 
+  Code.require_file("scripts/i18n_locale_helpers.exs")
+
   @po_header ~r/msgid ""\nmsgstr ""\n(?:"(?:\\.|[^"\\])*"\n)*\n/s
 
   def main(args) do
     files =
       case args do
-        [] -> Path.wildcard("apps/*/priv/gettext/{en,pt_BR}/LC_MESSAGES/*.po")
+        [] -> Path.wildcard("apps/*/priv/gettext/*/LC_MESSAGES/*.po")
         paths -> Enum.flat_map(paths, &Path.wildcard/1)
       end
 
@@ -40,24 +42,20 @@ defmodule I18nNormalizePoHeaders do
   end
 
   defp header(locale) do
-    plural_forms =
-      case locale do
-        "pt_BR" -> "nplurals=2; plural=(n>1);"
-        _ -> "nplurals=2; plural=(n != 1);"
-      end
+    locale = I18nLocaleHelpers.locale!(locale)
 
     """
     msgid ""
     msgstr ""
     "Project-Id-Version: RetroHexChat\\n"
-    "PO-Revision-Date: 2026-05-30 00:00+0000\\n"
+    "PO-Revision-Date: 2026-05-31 00:00+0000\\n"
     "Last-Translator: RetroHexChat Team\\n"
-    "Language-Team: #{locale}\\n"
-    "Language: #{locale}\\n"
+    "Language-Team: #{locale.code}\\n"
+    "Language: #{locale.code}\\n"
     "MIME-Version: 1.0\\n"
     "Content-Type: text/plain; charset=UTF-8\\n"
     "Content-Transfer-Encoding: 8bit\\n"
-    "Plural-Forms: #{plural_forms}\\n"
+    "Plural-Forms: #{locale.plural_forms}\\n"
 
     """
   end

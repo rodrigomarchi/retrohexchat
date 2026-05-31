@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang={RetroHexChatWeb.I18n.html_lang()}>
+<html lang={RetroHexChatWeb.I18n.html_lang()} dir={RetroHexChatWeb.I18n.html_dir()}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -38,7 +38,7 @@
     <meta property="og:site_name" content="Retro Hex Chat" />
     <meta
       property="og:locale"
-      content={if RetroHexChatWeb.I18n.current_locale() == "pt_BR", do: "pt_BR", else: "en_US"}
+      content={RetroHexChatWeb.I18n.open_graph_locale()}
     />
 
     <%!-- Twitter Card --%>

@@ -1,0 +1,127 @@
+# "msgid"s in this file come from errors.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: fr; status: enabled; wave: 1.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: fr\n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+## This is a PO Template file.
+##
+## `msgid`s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run `mix gettext.extract` to bring this file up to
+## date. Leave `msgstr`s empty as changing them here has no
+## effect: edit them in PO (`.po`) files instead.
+## From Ecto.Changeset.cast/4
+msgid "can't be blank"
+msgstr "ne peut pas être vide"
+
+## From Ecto.Changeset.unique_constraint/3
+msgid "has already been taken"
+msgstr "a déjà été prise"
+
+## From Ecto.Changeset.put_change/3
+msgid "is invalid"
+msgstr "est invalide"
+
+## From Ecto.Changeset.validate_acceptance/3
+msgid "must be accepted"
+msgstr "doit être accepté"
+
+## From Ecto.Changeset.validate_format/3
+msgid "has invalid format"
+msgstr "a un format non valide"
+
+## From Ecto.Changeset.validate_subset/3
+msgid "has an invalid entry"
+msgstr "a une entrée invalide"
+
+## From Ecto.Changeset.validate_exclusion/3
+msgid "is reserved"
+msgstr "est réservé"
+
+## From Ecto.Changeset.validate_confirmation/3
+msgid "does not match confirmation"
+msgstr "ne correspond pas à la confirmation"
+
+## From Ecto.Changeset.no_assoc_constraint/3
+msgid "is still associated with this entry"
+msgstr "est toujours associé à cette entrée"
+
+msgid "are still associated with this entry"
+msgstr "sont toujours associés à cette entrée"
+
+## From Ecto.Changeset.validate_length/3
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "doit avoir %{count} item(s)"
+msgstr[1] "doit avoir %{count} item(s)"
+
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "doit être %{count} caractère(s)"
+msgstr[1] "doit être %{count} caractère(s)"
+
+msgid "should be %{count} byte(s)"
+msgid_plural "should be %{count} byte(s)"
+msgstr[0] "devrait être %{count} octet(s)"
+msgstr[1] "devrait être %{count} octet(s)"
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "doit avoir au moins %{count} item(s)"
+msgstr[1] "doit avoir au moins %{count} item(s)"
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "doit être au moins un caractère %{count}"
+msgstr[1] "doit être au moins un caractère %{count}"
+
+msgid "should be at least %{count} byte(s)"
+msgid_plural "should be at least %{count} byte(s)"
+msgstr[0] "doit être au moins %{count} octet(s)"
+msgstr[1] "doit être au moins %{count} octet(s)"
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "doit avoir au maximum %{count} item(s)"
+msgstr[1] "doit avoir au maximum %{count} item(s)"
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "devrait être au maximum %{count} caractère(s)"
+msgstr[1] "devrait être au maximum %{count} caractère(s)"
+
+msgid "should be at most %{count} byte(s)"
+msgid_plural "should be at most %{count} byte(s)"
+msgstr[0] "devrait être au maximum %{count} octet(s)"
+msgstr[1] "devrait être au maximum %{count} octet(s)"
+
+## From Ecto.Changeset.validate_number/3
+msgid "must be less than %{number}"
+msgstr "doit être inférieur à %{number}"
+
+msgid "must be greater than %{number}"
+msgstr "doit être supérieure à %{number}"
+
+msgid "must be less than or equal to %{number}"
+msgstr "doit être inférieure ou égale à %{number}"
+
+msgid "must be greater than or equal to %{number}"
+msgstr "doit être supérieure ou égale à %{number}"
+
+msgid "must be equal to %{number}"
+msgstr "doit être égal à %{number}"
+
+#: lib/retro_hex_chat_web/components/ui/helpers.ex:340
+#, elixir-autogen, elixir-format
+msgid "invalid value"
+msgstr "valeur invalide"

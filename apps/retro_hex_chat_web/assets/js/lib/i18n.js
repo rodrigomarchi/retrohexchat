@@ -1,7 +1,13 @@
-import { PT_BR } from "./i18n_catalog.js";
+import { DE, ES, FR, ID, JA, PT_BR, ZH_HANS } from "./i18n_catalog.js";
 
 const CATALOGS = {
+  de: DE,
+  es: ES,
+  fr: FR,
+  id: ID,
+  ja: JA,
   pt_BR: PT_BR,
+  zh_Hans: ZH_HANS,
 };
 
 export function currentLocale() {
@@ -22,6 +28,16 @@ export function normalizeLocale(locale) {
     .toLowerCase();
 
   if (value === "pt" || value === "pt_br") return "pt_BR";
+  if (value === "es" || value.startsWith("es_")) return "es";
+  if (value === "fr" || value.startsWith("fr_")) return "fr";
+  if (value === "de" || value.startsWith("de_")) return "de";
+  if (value === "ja" || value.startsWith("ja_")) return "ja";
+  if (value === "id" || value === "in" || value.startsWith("id_") || value.startsWith("in_")) {
+    return "id";
+  }
+  if (value === "zh" || value === "zh_hans" || value === "zh_cn" || value === "zh_sg") {
+    return "zh_Hans";
+  }
   return "en";
 }
 

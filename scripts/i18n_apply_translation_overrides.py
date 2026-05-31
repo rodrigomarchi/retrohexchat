@@ -1,0 +1,1068 @@
+#!/usr/bin/env python3
+"""Apply curated translations for strings that should not fall back to English."""
+
+from __future__ import annotations
+
+import argparse
+import json
+import re
+import subprocess
+import tempfile
+from pathlib import Path
+
+import polib
+
+
+CATALOG = Path("apps/retro_hex_chat_web/assets/js/lib/i18n_catalog.js")
+PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
+
+LOCALE_EXPORTS = {
+    "de": "DE",
+    "es": "ES",
+    "fr": "FR",
+    "id": "ID",
+    "ja": "JA",
+    "pt_BR": "PT_BR",
+    "zh_Hans": "ZH_HANS",
+}
+
+WAVE1_LOCALES = ("de", "es", "fr", "id", "ja", "zh_Hans")
+
+
+def t(
+    de: str,
+    es: str,
+    fr: str,
+    id: str,
+    ja: str,
+    zh_Hans: str,
+    pt_BR: str | None = None,
+) -> dict[str, str]:
+    translations = {
+        "de": de,
+        "es": es,
+        "fr": fr,
+        "id": id,
+        "ja": ja,
+        "zh_Hans": zh_Hans,
+    }
+
+    if pt_BR is not None:
+        translations["pt_BR"] = pt_BR
+
+    return translations
+
+
+PO_OVERRIDES = {
+    "  Relay ports: %{used_ports}/%{total_ports} in use\n": t(
+        "  Relay-Ports in Verwendung: %{used_ports}/%{total_ports}\n",
+        "  Puertos relay en uso: %{used_ports}/%{total_ports}\n",
+        "  Ports relais utilisés : %{used_ports}/%{total_ports}\n",
+        "  Port relay digunakan: %{used_ports}/%{total_ports}\n",
+        "  リレー ポート使用中: %{used_ports}/%{total_ports}\n",
+        "  中继端口使用中：%{used_ports}/%{total_ports}\n",
+    ),
+    "%{prefix}\nRound over! %{scores}": t(
+        "%{prefix}\nRunde beendet! %{scores}",
+        "%{prefix}\n¡Ronda terminada! %{scores}",
+        "%{prefix}\nManche terminée ! %{scores}",
+        "%{prefix}\nRonde selesai! %{scores}",
+        "%{prefix}\nラウンド終了！ %{scores}",
+        "%{prefix}\n回合结束！%{scores}",
+    ),
+    "Round over! %{scores}": t(
+        "Runde beendet! %{scores}",
+        "¡Ronda terminada! %{scores}",
+        "Manche terminée ! %{scores}",
+        "Ronde selesai! %{scores}",
+        "ラウンド終了！ %{scores}",
+        "回合结束！%{scores}",
+    ),
+    "Trivia started! (%{category}, %{count} questions)\n%{question}": t(
+        "Trivia gestartet! (%{category}, %{count} Fragen)\n%{question}",
+        "¡Trivia iniciada! (%{category}, %{count} preguntas)\n%{question}",
+        "Quiz lancé ! (%{category}, %{count} questions)\n%{question}",
+        "Trivia dimulai! (%{category}, %{count} pertanyaan)\n%{question}",
+        "トリビア開始！（%{category}、%{count}問）\n%{question}",
+        "问答开始！（%{category}，%{count} 个问题）\n%{question}",
+    ),
+    "Trivia stopped! %{scores}": t(
+        "Trivia gestoppt! %{scores}",
+        "¡Trivia detenida! %{scores}",
+        "Quiz arrêté ! %{scores}",
+        "Trivia dihentikan! %{scores}",
+        "トリビアを停止しました！ %{scores}",
+        "问答已停止！%{scores}",
+    ),
+    "Scores (Q%{number}/%{total}): No scores yet.": t(
+        "Punkte (F%{number}/%{total}): noch keine Punkte.",
+        "Puntuaciones (P%{number}/%{total}): aún no hay puntuaciones.",
+        "Scores (Q%{number}/%{total}) : aucun score pour le moment.",
+        "Skor (P%{number}/%{total}): belum ada skor.",
+        "スコア（Q%{number}/%{total}）: まだスコアはありません。",
+        "得分（第 %{number}/%{total} 题）：暂无得分。",
+    ),
+    "Scores (Q%{number}/%{total}): %{ranked}": t(
+        "Punkte (F%{number}/%{total}): %{ranked}",
+        "Puntuaciones (P%{number}/%{total}): %{ranked}",
+        "Scores (Q%{number}/%{total}) : %{ranked}",
+        "Skor (P%{number}/%{total}): %{ranked}",
+        "スコア（Q%{number}/%{total}）: %{ranked}",
+        "得分（第 %{number}/%{total} 题）：%{ranked}",
+    ),
+    "Q%{number}/%{total}: %{question}": t(
+        "F%{number}/%{total}: %{question}",
+        "P%{number}/%{total}: %{question}",
+        "Q%{number}/%{total} : %{question}",
+        "P%{number}/%{total}: %{question}",
+        "問題%{number}/%{total}: %{question}",
+        "第 %{number}/%{total} 题：%{question}",
+        pt_BR="P%{number}/%{total}: %{question}",
+    ),
+    "Correct, %{author}! (+%{points} points)": t(
+        "Richtig, %{author}! (+%{points} Punkte)",
+        "¡Correcto, %{author}! (+%{points} puntos)",
+        "Correct, %{author} ! (+%{points} points)",
+        "Benar, %{author}! (+%{points} poin)",
+        "正解です、%{author}！ (+%{points} ポイント)",
+        "回答正确，%{author}！（+%{points} 分）",
+    ),
+    "%{author}: You must be identified to play. Use /ns identify <password> first.": t(
+        "%{author}: Du musst identifiziert sein, um zu spielen. Verwende zuerst /ns identify <password>.",
+        "%{author}: debes identificarte para jugar. Usa /ns identify <password> primero.",
+        "%{author} : vous devez être identifié pour jouer. Utilisez d'abord /ns identify <password>.",
+        "%{author}: Anda harus teridentifikasi untuk bermain. Gunakan /ns identify <password> terlebih dahulu.",
+        "%{author}: プレイするには本人確認が必要です。先に /ns identify <password> を使用してください。",
+        "%{author}：你必须先完成身份验证才能游戏。请先使用 /ns identify <password>。",
+    ),
+    "%{author}: You must be registered to play. Use /ns register <password> first.": t(
+        "%{author}: Du musst registriert sein, um zu spielen. Verwende zuerst /ns register <password>.",
+        "%{author}: debes registrarte para jugar. Usa /ns register <password> primero.",
+        "%{author} : vous devez être inscrit pour jouer. Utilisez d'abord /ns register <password>.",
+        "%{author}: Anda harus terdaftar untuk bermain. Gunakan /ns register <password> terlebih dahulu.",
+        "%{author}: プレイするには登録が必要です。先に /ns register <password> を使用してください。",
+        "%{author}：你必须先注册才能游戏。请先使用 /ns register <password>。",
+    ),
+    "%{bot}: Arcade session ready!": t(
+        "%{bot}: Arcade-Sitzung bereit!",
+        "%{bot}: ¡sesión arcade lista!",
+        "%{bot} : session arcade prête !",
+        "%{bot}: sesi arcade siap!",
+        "%{bot}: アーケードセッションの準備ができました！",
+        "%{bot}：街机会话已就绪！",
+    ),
+    "[NickServ] %{nickname}: registered %{registered_at}, identified: %{identified}": t(
+        "[NickServ] %{nickname}: registriert %{registered_at}, identifiziert: %{identified}",
+        "[NickServ] %{nickname}: registrado %{registered_at}, identificado: %{identified}",
+        "[NickServ] %{nickname} : inscrit %{registered_at}, identifié : %{identified}",
+        "[NickServ] %{nickname}: terdaftar %{registered_at}, teridentifikasi: %{identified}",
+        "[NickServ] %{nickname}: 登録 %{registered_at}、認証済み: %{identified}",
+        "[NickServ] %{nickname}：注册于 %{registered_at}，已验证：%{identified}",
+    ),
+    "%{target_nick} added to %{level} list of %{channel_name}": t(
+        "%{target_nick} zur Liste %{level} von %{channel_name} hinzugefügt",
+        "%{target_nick} agregado a la lista %{level} de %{channel_name}",
+        "%{target_nick} ajouté à la liste %{level} de %{channel_name}",
+        "%{target_nick} ditambahkan ke daftar %{level} %{channel_name}",
+        "%{target_nick} を %{channel_name} の %{level} リストに追加しました",
+        "%{target_nick} 已添加到 %{channel_name} 的 %{level} 列表",
+    ),
+    "Failed to add %{target_nick} to %{level} list": t(
+        "%{target_nick} konnte nicht zur Liste %{level} hinzugefügt werden",
+        "No se pudo agregar %{target_nick} a la lista %{level}",
+        "Impossible d'ajouter %{target_nick} à la liste %{level}",
+        "Gagal menambahkan %{target_nick} ke daftar %{level}",
+        "%{target_nick} を %{level} リストに追加できませんでした",
+        "无法将 %{target_nick} 添加到 %{level} 列表",
+    ),
+    "Failed to reset password for %{nickname}": t(
+        "Passwort für %{nickname} konnte nicht zurückgesetzt werden",
+        "No se pudo restablecer la contraseña de %{nickname}",
+        "Impossible de réinitialiser le mot de passe de %{nickname}",
+        "Gagal mereset kata sandi untuk %{nickname}",
+        "%{nickname} のパスワードをリセットできませんでした",
+        "无法重置 %{nickname} 的密码",
+    ),
+    "Audio call started. Join the lobby: /p2p/%{token}": t(
+        "Audioanruf gestartet. Lobby beitreten: /p2p/%{token}",
+        "Llamada de audio iniciada. Entra a la sala: /p2p/%{token}",
+        "Appel audio démarré. Rejoindre le salon : /p2p/%{token}",
+        "Panggilan audio dimulai. Masuk ke lobi: /p2p/%{token}",
+        "音声通話を開始しました。ロビーに参加: /p2p/%{token}",
+        "音频通话已开始。加入大厅：/p2p/%{token}",
+    ),
+    "File transfer started. Join the lobby: /p2p/%{token}": t(
+        "Dateiübertragung gestartet. Lobby beitreten: /p2p/%{token}",
+        "Transferencia de archivo iniciada. Entra a la sala: /p2p/%{token}",
+        "Transfert de fichier démarré. Rejoindre le salon : /p2p/%{token}",
+        "Transfer file dimulai. Masuk ke lobi: /p2p/%{token}",
+        "ファイル転送を開始しました。ロビーに参加: /p2p/%{token}",
+        "文件传输已开始。加入大厅：/p2p/%{token}",
+    ),
+    "Game session started! Join the lobby: /game/%{token}": t(
+        "Spielsitzung gestartet! Lobby beitreten: /game/%{token}",
+        "¡Sesión de juego iniciada! Entra a la sala: /game/%{token}",
+        "Session de jeu démarrée ! Rejoindre le salon : /game/%{token}",
+        "Sesi game dimulai! Masuk ke lobi: /game/%{token}",
+        "ゲームセッションを開始しました！ロビーに参加: /game/%{token}",
+        "游戏会话已开始！加入大厅：/game/%{token}",
+    ),
+    "P2P session started. Join the lobby: /p2p/%{token}": t(
+        "P2P-Sitzung gestartet. Lobby beitreten: /p2p/%{token}",
+        "Sesión P2P iniciada. Entra a la sala: /p2p/%{token}",
+        "Session P2P démarrée. Rejoindre le salon : /p2p/%{token}",
+        "Sesi P2P dimulai. Masuk ke lobi: /p2p/%{token}",
+        "P2P セッションを開始しました。ロビーに参加: /p2p/%{token}",
+        "P2P 会话已开始。加入大厅：/p2p/%{token}",
+    ),
+    "Video call started. Join the lobby: /p2p/%{token}": t(
+        "Videoanruf gestartet. Lobby beitreten: /p2p/%{token}",
+        "Videollamada iniciada. Entra a la sala: /p2p/%{token}",
+        "Appel vidéo démarré. Rejoindre le salon : /p2p/%{token}",
+        "Panggilan video dimulai. Masuk ke lobi: /p2p/%{token}",
+        "ビデオ通話を開始しました。ロビーに参加: /p2p/%{token}",
+        "视频通话已开始。加入大厅：/p2p/%{token}",
+    ),
+    "Game invite from %{from} — /game/%{token}": t(
+        "Spieleinladung von %{from} — /game/%{token}",
+        "Invitación de juego de %{from} — /game/%{token}",
+        "Invitation de jeu de %{from} — /game/%{token}",
+        "Undangan game dari %{from} — /game/%{token}",
+        "%{from} からのゲーム招待 — /game/%{token}",
+        "来自 %{from} 的游戏邀请 — /game/%{token}",
+    ),
+    "Alias /%{name} already exists": t(
+        "Alias /%{name} existiert bereits",
+        "El alias /%{name} ya existe",
+        "L'alias /%{name} existe déjà",
+        "Alias /%{name} sudah ada",
+        "エイリアス /%{name} はすでに存在します",
+        "别名 /%{name} 已存在",
+    ),
+    "Alias /%{name} not found": t(
+        "Alias /%{name} nicht gefunden",
+        "Alias /%{name} no encontrado",
+        "Alias /%{name} introuvable",
+        "Alias /%{name} tidak ditemukan",
+        "エイリアス /%{name} が見つかりません",
+        "未找到别名 /%{name}",
+    ),
+    "* Alias /%{name} created%{warning}": t(
+        "* Alias /%{name} erstellt%{warning}",
+        "* Alias /%{name} creado%{warning}",
+        "* Alias /%{name} créé%{warning}",
+        "* Alias /%{name} dibuat%{warning}",
+        "* エイリアス /%{name} を作成しました%{warning}",
+        "* 已创建别名 /%{name}%{warning}",
+    ),
+    "* Alias /%{name} removed": t(
+        "* Alias /%{name} entfernt",
+        "* Alias /%{name} eliminado",
+        "* Alias /%{name} supprimé",
+        "* Alias /%{name} dihapus",
+        "* エイリアス /%{name} を削除しました",
+        "* 已移除别名 /%{name}",
+    ),
+    "shadows built-in /%{name}": t(
+        "verdeckt den eingebauten Befehl /%{name}",
+        "oculta el comando integrado /%{name}",
+        "masque la commande intégrée /%{name}",
+        "menimpa perintah bawaan /%{name}",
+        "組み込みコマンド /%{name} を上書きします",
+        "会覆盖内置命令 /%{name}",
+    ),
+    "User mode +%{flag} enabled.": t(
+        "Benutzermodus +%{flag} aktiviert.",
+        "Modo de usuario +%{flag} activado.",
+        "Mode utilisateur +%{flag} activé.",
+        "Mode pengguna +%{flag} diaktifkan.",
+        "ユーザーモード +%{flag} を有効にしました。",
+        "用户模式 +%{flag} 已启用。",
+    ),
+    "* Accepted invite to %{channel} from %{inviter}": t(
+        "* Einladung zu %{channel} von %{inviter} angenommen",
+        "* Invitación aceptada a %{channel} de %{inviter}",
+        "* Invitation acceptée vers %{channel} de %{inviter}",
+        "* Undangan ke %{channel} dari %{inviter} diterima",
+        "* %{inviter} から %{channel} への招待を承諾しました",
+        "* 已接受 %{inviter} 发往 %{channel} 的邀请",
+    ),
+    "* Inviting %{target} to %{channel}": t(
+        "* Lade %{target} zu %{channel} ein",
+        "* Invitando a %{target} a %{channel}",
+        "* Invitation de %{target} vers %{channel}",
+        "* Mengundang %{target} ke %{channel}",
+        "* %{target} を %{channel} に招待中",
+        "* 正在邀请 %{target} 加入 %{channel}",
+    ),
+    "* Removed %{channel} from auto-join list": t(
+        "* %{channel} aus der Auto-Join-Liste entfernt",
+        "* %{channel} eliminado de la lista de autoentrada",
+        "* %{channel} supprimé de la liste de connexion automatique",
+        "* %{channel} dihapus dari daftar auto-join",
+        "* %{channel} を自動参加リストから削除しました",
+        "* 已从自动加入列表移除 %{channel}",
+    ),
+    "* Timer '%{name}' set: %{type}, %{interval}s → %{command}": t(
+        "* Timer '%{name}' gesetzt: %{type}, %{interval}s → %{command}",
+        "* Temporizador '%{name}' configurado: %{type}, %{interval}s → %{command}",
+        "* Minuteur '%{name}' défini : %{type}, %{interval}s → %{command}",
+        "* Timer '%{name}' diatur: %{type}, %{interval}s → %{command}",
+        "* タイマー '%{name}' を設定しました: %{type}, %{interval}s → %{command}",
+        "* 计时器 '%{name}' 已设置：%{type}, %{interval}s → %{command}",
+    ),
+    "* Performing: %{command}": t(
+        "* Ausführen: %{command}",
+        "* Ejecutando: %{command}",
+        "* Exécution : %{command}",
+        "* Menjalankan: %{command}",
+        "* 実行中: %{command}",
+        "* 正在执行：%{command}",
+    ),
+    "Failed to send game invite to %{target}.": t(
+        "Spieleinladung an %{target} konnte nicht gesendet werden.",
+        "No se pudo enviar la invitación de juego a %{target}.",
+        "Impossible d'envoyer l'invitation de jeu à %{target}.",
+        "Gagal mengirim undangan game ke %{target}.",
+        "%{target} にゲーム招待を送信できませんでした。",
+        "无法向 %{target} 发送游戏邀请。",
+    ),
+    "Failed to add auto-join channel: %{reason}": t(
+        "Auto-Join-Kanal konnte nicht hinzugefügt werden: %{reason}",
+        "No se pudo agregar el canal de autoentrada: %{reason}",
+        "Impossible d'ajouter le canal de connexion automatique : %{reason}",
+        "Gagal menambahkan kanal auto-join: %{reason}",
+        "自動参加チャンネルを追加できませんでした: %{reason}",
+        "无法添加自动加入频道：%{reason}",
+    ),
+    "Failed to add ignore: %{reason}": t(
+        "Ignore konnte nicht hinzugefügt werden: %{reason}",
+        "No se pudo agregar ignore: %{reason}",
+        "Impossible d'ajouter l'ignore : %{reason}",
+        "Gagal menambahkan ignore: %{reason}",
+        "ignore を追加できませんでした: %{reason}",
+        "无法添加忽略项：%{reason}",
+    ),
+    "Failed to add perform command: %{reason}": t(
+        "Perform-Befehl konnte nicht hinzugefügt werden: %{reason}",
+        "No se pudo agregar el comando perform: %{reason}",
+        "Impossible d'ajouter la commande perform : %{reason}",
+        "Gagal menambahkan perintah perform: %{reason}",
+        "perform コマンドを追加できませんでした: %{reason}",
+        "无法添加 perform 命令：%{reason}",
+    ),
+    "Topic error: %{message}": t(
+        "Topic-Fehler: %{message}",
+        "Error de tema: %{message}",
+        "Erreur de sujet : %{message}",
+        "Kesalahan topik: %{message}",
+        "トピックエラー: %{message}",
+        "主题错误：%{message}",
+    ),
+    "Mode error: %{message}": t(
+        "Modusfehler: %{message}",
+        "Error de modo: %{message}",
+        "Erreur de mode : %{message}",
+        "Kesalahan mode: %{message}",
+        "モードエラー: %{message}",
+        "模式错误：%{message}",
+    ),
+    "Quit message: %{message}": t(
+        "Quit-Nachricht: %{message}",
+        "Mensaje de salida: %{message}",
+        "Message de départ : %{message}",
+        "Pesan keluar: %{message}",
+        "終了メッセージ: %{message}",
+        "退出消息：%{message}",
+    ),
+    "Away: %{message}": t(
+        "Abwesend: %{message}",
+        "Ausente: %{message}",
+        "Absent : %{message}",
+        "Tidak hadir: %{message}",
+        "離席中: %{message}",
+        "离开：%{message}",
+        pt_BR="Ausente: %{message}",
+    ),
+    "Bio: %{bio}": t(
+        "Bio: %{bio}",
+        "Biografía: %{bio}",
+        "Bio : %{bio}",
+        "Bio: %{bio}",
+        "プロフィール: %{bio}",
+        "简介：%{bio}",
+    ),
+    "Error: %{message}": t(
+        "Fehler: %{message}",
+        "Error: %{message}",
+        "Erreur : %{message}",
+        "Kesalahan: %{message}",
+        "エラー: %{message}",
+        "错误：%{message}",
+    ),
+    "Hint: %{hint}": t(
+        "Hinweis: %{hint}",
+        "Pista: %{hint}",
+        "Indice : %{hint}",
+        "Petunjuk: %{hint}",
+        "ヒント: %{hint}",
+        "提示：%{hint}",
+    ),
+    "Idle for: %{duration}": t(
+        "Inaktiv seit: %{duration}",
+        "Inactivo durante: %{duration}",
+        "Inactif depuis : %{duration}",
+        "Diam selama: %{duration}",
+        "アイドル時間: %{duration}",
+        "空闲时间：%{duration}",
+    ),
+    "Edited at %{timestamp}": t(
+        "Bearbeitet um %{timestamp}",
+        "Editado a las %{timestamp}",
+        "Modifié à %{timestamp}",
+        "Diedit pada %{timestamp}",
+        "%{timestamp} に編集",
+        "编辑时间：%{timestamp}",
+    ),
+    "Color %{index}: %{name}": t(
+        "Farbe %{index}: %{name}",
+        "Color %{index}: %{name}",
+        "Couleur %{index} : %{name}",
+        "Warna %{index}: %{name}",
+        "色 %{index}: %{name}",
+        "颜色 %{index}：%{name}",
+    ),
+    "Version %{version}": t(
+        "Version %{version}",
+        "Versión %{version}",
+        "Version %{version}",
+        "Versi %{version}",
+        "バージョン %{version}",
+        "版本 %{version}",
+    ),
+    "Client: %{client}": t(
+        "Klient: %{client}",
+        "Cliente: %{client}",
+        "Client : %{client}",
+        "Klien: %{client}",
+        "クライアント: %{client}",
+        "客户端：%{client}",
+        pt_BR="Cliente: %{client}",
+    ),
+    "Nickname: %{nickname}": t(
+        "Nickname: %{nickname}",
+        "Apodo: %{nickname}",
+        "Pseudo : %{nickname}",
+        "Nama panggilan: %{nickname}",
+        "ニックネーム: %{nickname}",
+        "昵称：%{nickname}",
+        pt_BR="Apelido: %{nickname}",
+    ),
+    "  Nickname: %{nickname}": t(
+        "  Spitzname: %{nickname}",
+        "  Apodo: %{nickname}",
+        "  Pseudo : %{nickname}",
+        "  Nama panggilan: %{nickname}",
+        "  ニックネーム: %{nickname}",
+        "  昵称：%{nickname}",
+        pt_BR="  Apelido: %{nickname}",
+    ),
+    "Channel Central: %{channel}": t(
+        "Kanalzentrale: %{channel}",
+        "Central del canal: %{channel}",
+        "Centre du canal : %{channel}",
+        "Pusat Kanal: %{channel}",
+        "チャンネル セントラル: %{channel}",
+        "频道中心：%{channel}",
+    ),
+    "Set by %{nick}": t(
+        "Gesetzt von %{nick}",
+        "Definido por %{nick}",
+        "Défini par %{nick}",
+        "Diatur oleh %{nick}",
+        "%{nick} が設定",
+        "由 %{nick} 设置",
+    ),
+    "on %{date}": t(
+        "am %{date}",
+        "el %{date}",
+        "le %{date}",
+        "pada %{date}",
+        "%{date}",
+        "于 %{date}",
+    ),
+    "Add Command — %{bot}": t(
+        "Befehl hinzufügen — %{bot}",
+        "Agregar comando — %{bot}",
+        "Ajouter une commande — %{bot}",
+        "Tambah Perintah — %{bot}",
+        "コマンドを追加 — %{bot}",
+        "添加命令 — %{bot}",
+    ),
+    "Arcade — %{nickname}": t(
+        "Arcade — %{nickname}",
+        "Arcade — %{nickname}",
+        "Arcade — %{nickname}",
+        "Arcade — %{nickname}",
+        "アーケード — %{nickname}",
+        "街机 — %{nickname}",
+    ),
+    "Game Lobby — %{nickname} vs %{peer}": t(
+        "Spiel-Lobby — %{nickname} gegen %{peer}",
+        "Sala de juego — %{nickname} vs %{peer}",
+        "Salon de jeu — %{nickname} contre %{peer}",
+        "Lobi Game — %{nickname} vs %{peer}",
+        "ゲームロビー — %{nickname} vs %{peer}",
+        "游戏大厅 — %{nickname} 对 %{peer}",
+    ),
+    "%{game} — %{nickname} vs %{peer}": t(
+        "%{game} — %{nickname} gegen %{peer}",
+        "%{game} — %{nickname} vs %{peer}",
+        "%{game} — %{nickname} contre %{peer}",
+        "%{game} — %{nickname} vs %{peer}",
+        "%{game} — %{nickname} vs %{peer}",
+        "%{game} — %{nickname} 对 %{peer}",
+    ),
+    "Reconnecting (%{attempt}/3)": t(
+        "Verbindung wird wiederhergestellt (%{attempt}/3)",
+        "Reconectando (%{attempt}/3)",
+        "Reconnexion (%{attempt}/3)",
+        "Menghubungkan ulang (%{attempt}/3)",
+        "再接続中 (%{attempt}/3)",
+        "正在重新连接（%{attempt}/3）",
+    ),
+    "Max: %{size} MB": t(
+        "Max.: %{size} MB",
+        "Máx.: %{size} MB",
+        "Max. : %{size} MB",
+        "Maks: %{size} MB",
+        "最大: %{size} MB",
+        "最大：%{size} MB",
+    ),
+    "WebRTC: %{state}": t(
+        "WebRTC: %{state}",
+        "WebRTC: %{state}",
+        "WebRTC : %{state}",
+        "WebRTC: %{state}",
+        "WebRTC: %{state}",
+        "WebRTC：%{state}",
+    ),
+    "Rolling %{notation}: %{rolls} %{sign} %{modifier} = %{total}": t(
+        "Würfle %{notation}: %{rolls} %{sign} %{modifier} = %{total}",
+        "Lanzando %{notation}: %{rolls} %{sign} %{modifier} = %{total}",
+        "Lancer %{notation} : %{rolls} %{sign} %{modifier} = %{total}",
+        "Melempar %{notation}: %{rolls} %{sign} %{modifier} = %{total}",
+        "%{notation} をロール: %{rolls} %{sign} %{modifier} = %{total}",
+        "掷骰 %{notation}：%{rolls} %{sign} %{modifier} = %{total}",
+    ),
+    "Rolling %{notation}: %{rolls} = %{sum}": t(
+        "Würfle %{notation}: %{rolls} = %{sum}",
+        "Lanzando %{notation}: %{rolls} = %{sum}",
+        "Lancer %{notation} : %{rolls} = %{sum}",
+        "Melempar %{notation}: %{rolls} = %{sum}",
+        "%{notation} をロール: %{rolls} = %{sum}",
+        "掷骰 %{notation}：%{rolls} = %{sum}",
+    ),
+    "%{count} item": t(
+        "%{count} Element",
+        "%{count} elemento",
+        "%{count} élément",
+        "%{count} item",
+        "%{count} 件",
+        "%{count} 项",
+    ),
+    "%{count} items": t(
+        "%{count} Elemente",
+        "%{count} elementos",
+        "%{count} éléments",
+        "%{count} item",
+        "%{count} 件",
+        "%{count} 项",
+    ),
+    "%{engine} Engine": t(
+        "%{engine}-Engine",
+        "Motor %{engine}",
+        "Moteur %{engine}",
+        "Mesin %{engine}",
+        "%{engine} エンジン",
+        "%{engine} 引擎",
+    ),
+    "%{topic} — RetroHexChat Help": t(
+        "%{topic} — RetroHexChat-Hilfe",
+        "%{topic} — Ayuda de RetroHexChat",
+        "%{topic} — Aide RetroHexChat",
+        "%{topic} — Bantuan RetroHexChat",
+        "%{topic} — RetroHexChat ヘルプ",
+        "%{topic} — RetroHexChat 帮助",
+    ),
+    "Farewell set to '%{farewell}'.": t(
+        "Abschied auf '%{farewell}' gesetzt.",
+        "Despedida definida como '%{farewell}'.",
+        "Message d'adieu défini sur '%{farewell}'.",
+        "Pesan perpisahan diatur ke '%{farewell}'.",
+        "別れのメッセージを '%{farewell}' に設定しました。",
+        "告别消息已设置为 '%{farewell}'。",
+    ),
+    "BEAM uptime: %{uptime_days}d %{remaining_hours}h": t(
+        "BEAM-Laufzeit: %{uptime_days}d %{remaining_hours}h",
+        "Tiempo activo de BEAM: %{uptime_days}d %{remaining_hours}h",
+        "Disponibilité BEAM : %{uptime_days}j %{remaining_hours}h",
+        "Uptime BEAM: %{uptime_days} hari %{remaining_hours} jam",
+        "BEAM 稼働時間: %{uptime_days}日 %{remaining_hours}時間",
+        "BEAM 运行时间：%{uptime_days}天 %{remaining_hours}小时",
+    ),
+    "*** Active Channel Processes (%{channels_count}) ***": t(
+        "*** Aktive Kanalprozesse (%{channels_count}) ***",
+        "*** Procesos de canal activos (%{channels_count}) ***",
+        "*** Processus de canal actifs (%{channels_count}) ***",
+        "*** Proses kanal aktif (%{channels_count}) ***",
+        "*** アクティブなチャンネルプロセス (%{channels_count}) ***",
+        "*** 活跃频道进程（%{channels_count}）***",
+    ),
+    "*** Ban List for %{channel} (%{bans_count}) ***": t(
+        "*** Ban-Liste für %{channel} (%{bans_count}) ***",
+        "*** Lista de baneos de %{channel} (%{bans_count}) ***",
+        "*** Liste des bannissements pour %{channel} (%{bans_count}) ***",
+        "*** Daftar ban untuk %{channel} (%{bans_count}) ***",
+        "*** %{channel} の BAN リスト (%{bans_count}) ***",
+        "*** %{channel} 的封禁列表（%{bans_count}）***",
+    ),
+    "*** NUKE PREVIEW — %{total} records will be destroyed ***": t(
+        "*** NUKE-VORSCHAU — %{total} Datensätze werden zerstört ***",
+        "*** VISTA PREVIA DE NUKE — se destruirán %{total} registros ***",
+        "*** APERÇU NUKE — %{total} enregistrements seront détruits ***",
+        "*** PRATINJAU NUKE — %{total} catatan akan dihancurkan ***",
+        "*** NUKE プレビュー — %{total} 件のレコードが破棄されます ***",
+        "*** NUKE 预览 — 将销毁 %{total} 条记录 ***",
+    ),
+    "*** SYSTEM NUKED — %{total} records destroyed ***": t(
+        "*** SYSTEM GENUKED — %{total} Datensätze zerstört ***",
+        "*** SISTEMA NUKEADO — %{total} registros destruidos ***",
+        "*** SYSTÈME NUKE — %{total} enregistrements détruits ***",
+        "*** SISTEM DI-NUKE — %{total} catatan dihancurkan ***",
+        "*** システムを NUKE しました — %{total} 件のレコードを破棄しました ***",
+        "*** 系统已 NUKE — 已销毁 %{total} 条记录 ***",
+    ),
+    "*** Server Ban List (%{filtered_count}) ***": t(
+        "*** Server-Ban-Liste (%{filtered_count}) ***",
+        "*** Lista de baneos del servidor (%{filtered_count}) ***",
+        "*** Liste des bannissements serveur (%{filtered_count}) ***",
+        "*** Daftar ban server (%{filtered_count}) ***",
+        "*** サーバー BAN リスト (%{filtered_count}) ***",
+        "*** 服务器封禁列表（%{filtered_count}）***",
+    ),
+    "[BotService] Bot Info: %{name}": t(
+        "[BotService] Bot-Info: %{name}",
+        "[BotService] Información del bot: %{name}",
+        "[BotService] Infos du bot : %{name}",
+        "[BotService] Info bot: %{name}",
+        "[BotService] Bot 情報: %{name}",
+        "[BotService] 机器人信息：%{name}",
+        pt_BR="[BotService] Informações do bot: %{name}",
+    ),
+    "[BotService] Failed to add command '%{trigger}': %{message}": t(
+        "[BotService] Befehl '%{trigger}' konnte nicht hinzugefügt werden: %{message}",
+        "[BotService] No se pudo agregar el comando '%{trigger}': %{message}",
+        "[BotService] Impossible d'ajouter la commande '%{trigger}' : %{message}",
+        "[BotService] Gagal menambahkan perintah '%{trigger}': %{message}",
+        "[BotService] コマンド '%{trigger}' を追加できませんでした: %{message}",
+        "[BotService] 无法添加命令 '%{trigger}'：%{message}",
+    ),
+    "[BotService] Failed to create bot '%{name}': %{message}": t(
+        "[BotService] Bot '%{name}' konnte nicht erstellt werden: %{message}",
+        "[BotService] No se pudo crear el bot '%{name}': %{message}",
+        "[BotService] Impossible de créer le bot '%{name}' : %{message}",
+        "[BotService] Gagal membuat bot '%{name}': %{message}",
+        "[BotService] Bot '%{name}' を作成できませんでした: %{message}",
+        "[BotService] 无法创建机器人 '%{name}'：%{message}",
+    ),
+    "[BotService] Failed to create bot: %{message}": t(
+        "[BotService] Bot konnte nicht erstellt werden: %{message}",
+        "[BotService] No se pudo crear el bot: %{message}",
+        "[BotService] Impossible de créer le bot : %{message}",
+        "[BotService] Gagal membuat bot: %{message}",
+        "[BotService] Bot を作成できませんでした: %{message}",
+        "[BotService] 无法创建机器人：%{message}",
+    ),
+    "[BotService] Capability '%{capability}' %{action}.": t(
+        "[BotService] Fähigkeit '%{capability}' %{action}.",
+        "[BotService] Capacidad '%{capability}' %{action}.",
+        "[BotService] Capacité '%{capability}' %{action}.",
+        "[BotService] Kapabilitas '%{capability}' %{action}.",
+        "[BotService] 機能 '%{capability}' %{action}。",
+        "[BotService] 能力 '%{capability}' %{action}。",
+        pt_BR="[BotService] Recurso '%{capability}' %{action}.",
+    ),
+    "  %{nickname} [registered] [%{online}]": t(
+        "  %{nickname} [registriert] [%{online}]",
+        "  %{nickname} [registrado] [%{online}]",
+        "  %{nickname} [inscrit] [%{online}]",
+        "  %{nickname} [terdaftar] [%{online}]",
+        "  %{nickname} [登録済み] [%{online}]",
+        "  %{nickname} [已注册] [%{online}]",
+    ),
+}
+
+JS_OVERRIDES = {
+    "FROSTBITE  %{0}": t(
+        "ERFRIERUNG  %{0}",
+        "CONGELACIÓN  %{0}",
+        "ENGELURE  %{0}",
+        "RADANG DINGIN  %{0}",
+        "凍傷  %{0}",
+        "冻伤  %{0}",
+        pt_BR="CONGELAMENTO  %{0}",
+    ),
+    "%{0} WINS!": t(
+        "%{0} GEWINNT!",
+        "¡%{0} GANA!",
+        "%{0} GAGNE !",
+        "%{0} MENANG!",
+        "%{0} の勝利！",
+        "%{0} 获胜！",
+        pt_BR="%{0} VENCE!",
+    ),
+    "Day %{0}/%{1}": t(
+        "Tag %{0}/%{1}",
+        "Día %{0}/%{1}",
+        "Jour %{0}/%{1}",
+        "Hari %{0}/%{1}",
+        "%{0}/%{1}日目",
+        "第 %{0}/%{1} 天",
+    ),
+    "Day %{0} Complete": t(
+        "Tag %{0} abgeschlossen",
+        "Día %{0} completo",
+        "Jour %{0} terminé",
+        "Hari %{0} selesai",
+        "%{0}日目完了",
+        "第 %{0} 天完成",
+    ),
+    "END OF PERIOD %{0}": t(
+        "ENDE VON PERIODE %{0}",
+        "FIN DEL PERÍODO %{0}",
+        "FIN DE LA PÉRIODE %{0}",
+        "AKHIR PERIODE %{0}",
+        "ピリオド %{0} 終了",
+        "第 %{0} 节结束",
+    ),
+    "ROUND %{0}": t(
+        "RUNDE %{0}",
+        "RONDA %{0}",
+        "MANCHE %{0}",
+        "RONDE %{0}",
+        "ラウンド %{0}",
+        "第 %{0} 回合",
+    ),
+    "ROUND %{0} COMPLETE": t(
+        "RUNDE %{0} ABGESCHLOSSEN",
+        "RONDA %{0} COMPLETA",
+        "MANCHE %{0} TERMINÉE",
+        "RONDE %{0} SELESAI",
+        "ラウンド %{0} 完了",
+        "第 %{0} 回合完成",
+    ),
+    "Round %{0}": t(
+        "Runde %{0}",
+        "Ronda %{0}",
+        "Manche %{0}",
+        "Ronde %{0}",
+        "ラウンド %{0}",
+        "第 %{0} 回合",
+    ),
+    "WAVE %{0}": t(
+        "WELLE %{0}",
+        "OLEADA %{0}",
+        "VAGUE %{0}",
+        "GELOMBANG %{0}",
+        "ウェーブ %{0}",
+        "第 %{0} 波",
+    ),
+    "WAVE %{0} CLEARED": t(
+        "WELLE %{0} GESCHAFFT",
+        "OLEADA %{0} SUPERADA",
+        "VAGUE %{0} TERMINÉE",
+        "GELOMBANG %{0} SELESAI",
+        "ウェーブ %{0} クリア",
+        "第 %{0} 波已清除",
+    ),
+    "P%{0} SCORES!": t(
+        "P%{0} PUNKTET!",
+        "¡P%{0} ANOTA!",
+        "P%{0} MARQUE !",
+        "P%{0} MENCETAK SKOR!",
+        "P%{0} 得点！",
+        "P%{0} 得分！",
+    ),
+    "PLAYER %{0} SCORES!": t(
+        "SPIELER %{0} PUNKTET!",
+        "¡JUGADOR %{0} ANOTA!",
+        "JOUEUR %{0} MARQUE !",
+        "PEMAIN %{0} MENCETAK SKOR!",
+        "プレイヤー %{0} 得点！",
+        "玩家 %{0} 得分！",
+    ),
+    "PLAYER %{0} WINS": t(
+        "SPIELER %{0} GEWINNT",
+        "JUGADOR %{0} GANA",
+        "JOUEUR %{0} GAGNE",
+        "PEMAIN %{0} MENANG",
+        "プレイヤー %{0} の勝利",
+        "玩家 %{0} 获胜",
+    ),
+    "PLAYER %{0} WINS!": t(
+        "SPIELER %{0} GEWINNT!",
+        "¡JUGADOR %{0} GANA!",
+        "JOUEUR %{0} GAGNE !",
+        "PEMAIN %{0} MENANG!",
+        "プレイヤー %{0} の勝利！",
+        "玩家 %{0} 获胜！",
+    ),
+    "PLAYER %{0} WINS THE ROUND!": t(
+        "SPIELER %{0} GEWINNT DIE RUNDE!",
+        "¡JUGADOR %{0} GANA LA RONDA!",
+        "JOUEUR %{0} GAGNE LA MANCHE !",
+        "PEMAIN %{0} MEMENANGI RONDE!",
+        "プレイヤー %{0} がラウンド勝利！",
+        "玩家 %{0} 赢得本回合！",
+    ),
+    "ROUNDS: %{0} - %{1}": t(
+        "RUNDEN: %{0} - %{1}",
+        "RONDAS: %{0} - %{1}",
+        "MANCHES : %{0} - %{1}",
+        "RONDE: %{0} - %{1}",
+        "ラウンド: %{0} - %{1}",
+        "回合：%{0} - %{1}",
+    ),
+    "WAITING FOR OPPONENT%{0}": t(
+        "WARTE AUF GEGNER%{0}",
+        "ESPERANDO AL OPONENTE%{0}",
+        "EN ATTENTE DE L'ADVERSAIRE%{0}",
+        "MENUNGGU LAWAN%{0}",
+        "対戦相手を待機中%{0}",
+        "正在等待对手%{0}",
+    ),
+    "WAITING FOR PARTNER%{0}": t(
+        "WARTE AUF PARTNER%{0}",
+        "ESPERANDO AL COMPAÑERO%{0}",
+        "EN ATTENTE DU PARTENAIRE%{0}",
+        "MENUNGGU PARTNER%{0}",
+        "パートナーを待機中%{0}",
+        "正在等待伙伴%{0}",
+    ),
+    "P1: %{0} pieces": t(
+        "P1: %{0} Teile",
+        "P1: %{0} piezas",
+        "P1 : %{0} pièces",
+        "P1: %{0} bidak",
+        "P1: %{0} 個",
+        "P1：%{0} 个棋子",
+    ),
+    "P2: %{0} pieces": t(
+        "P2: %{0} Teile",
+        "P2: %{0} piezas",
+        "P2 : %{0} pièces",
+        "P2: %{0} bidak",
+        "P2: %{0} 個",
+        "P2：%{0} 个棋子",
+    ),
+}
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--locales",
+        default=",".join(WAVE1_LOCALES),
+        help="Comma-separated locale codes to update",
+    )
+    parser.add_argument("paths", nargs="*", help="Optional PO glob paths")
+    return parser.parse_args()
+
+
+def main() -> int:
+    args = parse_args()
+    locales = tuple(locale.strip() for locale in args.locales.split(",") if locale.strip())
+    po_stats = apply_po_overrides(locales, args.paths)
+    js_stats = apply_js_overrides(locales)
+    print(
+        "po_files={po_files} po_rewritten={po_rewritten} po_entries={po_entries} "
+        "js_catalogs={js_catalogs} js_entries={js_entries}".format(
+            **po_stats,
+            **js_stats,
+        )
+    )
+    return 0
+
+
+def apply_po_overrides(locales: tuple[str, ...], paths: list[str]) -> dict[str, int]:
+    files = po_files(locales, paths)
+    rewritten = 0
+    updated = 0
+
+    for path in files:
+        locale = locale_from_path(path)
+
+        if locale not in locales:
+            continue
+
+        po = polib.pofile(str(path))
+        changed = False
+
+        for entry in po:
+            if entry.obsolete or not entry.msgid:
+                continue
+
+            if entry.msgid_plural:
+                changed_entry = apply_plural_override(entry, locale)
+            else:
+                changed_entry = apply_singular_override(entry, locale)
+
+            if changed_entry and "fuzzy" in entry.flags:
+                entry.flags.remove("fuzzy")
+
+            changed = changed or changed_entry
+            updated += int(changed_entry)
+
+        if changed:
+            po.save(str(path))
+            rewritten += 1
+
+    return {"po_files": len(files), "po_rewritten": rewritten, "po_entries": updated}
+
+
+def po_files(locales: tuple[str, ...], paths: list[str]) -> list[Path]:
+    if paths:
+        files: list[Path] = []
+        for pattern in paths:
+            files.extend(Path(".").glob(pattern))
+        return sorted(files)
+
+    files = []
+    for locale in locales:
+        files.extend(Path(".").glob(f"apps/*/priv/gettext/{locale}/LC_MESSAGES/*.po"))
+    return sorted(files)
+
+
+def locale_from_path(path: Path) -> str:
+    parts = path.parts
+    return parts[parts.index("gettext") + 1]
+
+
+def apply_singular_override(entry, locale: str) -> bool:
+    translated = PO_OVERRIDES.get(entry.msgid, {}).get(locale)
+
+    if translated is None:
+        return False
+
+    ensure_placeholders(entry.msgid, translated)
+
+    if entry.msgstr == translated:
+        return False
+
+    entry.msgstr = translated
+    return True
+
+
+def apply_plural_override(entry, locale: str) -> bool:
+    changed = False
+
+    for index in sorted(entry.msgstr_plural.keys()):
+        source = entry.msgid_plural if len(entry.msgstr_plural) == 1 or index > 0 else entry.msgid
+        translated = PO_OVERRIDES.get(source, {}).get(locale)
+
+        if translated is None:
+            continue
+
+        ensure_placeholders(source, translated)
+
+        if entry.msgstr_plural[index] != translated:
+            entry.msgstr_plural[index] = translated
+            changed = True
+
+    return changed
+
+
+def apply_js_overrides(locales: tuple[str, ...]) -> dict[str, int]:
+    catalogs = read_catalogs()
+    updated = 0
+
+    for locale in locales:
+        export_name = LOCALE_EXPORTS.get(locale)
+
+        if export_name not in catalogs:
+            continue
+
+        catalog = catalogs[export_name]
+
+        for source, translations in JS_OVERRIDES.items():
+            if source not in catalog:
+                continue
+
+            translated = translations.get(locale)
+
+            if translated is None:
+                continue
+
+            ensure_placeholders(source, translated)
+
+            if catalog[source] != translated:
+                catalog[source] = translated
+                updated += 1
+
+    if updated:
+        write_catalogs(catalogs)
+
+    return {"js_catalogs": len(catalogs), "js_entries": updated}
+
+
+def read_catalogs() -> dict[str, dict[str, str]]:
+    script = (
+        "import(process.argv[1]).then((m) => "
+        "console.log(JSON.stringify(m))).catch((error) => { "
+        "console.error(error); process.exit(1); })"
+    )
+
+    with tempfile.NamedTemporaryFile("w", suffix=".mjs", encoding="utf-8") as module:
+        module.write(CATALOG.read_text(encoding="utf-8"))
+        module.flush()
+
+        result = subprocess.run(
+            ["node", "--input-type=module", "-e", script, Path(module.name).resolve().as_uri()],
+            check=True,
+            text=True,
+            capture_output=True,
+        )
+
+    return json.loads(result.stdout)
+
+
+def write_catalogs(catalogs: dict[str, dict[str, str]]) -> None:
+    chunks = []
+
+    for locale, export_name in LOCALE_EXPORTS.items():
+        if export_name not in catalogs:
+            continue
+
+        body = json.dumps(catalogs[export_name], ensure_ascii=False, indent=2, sort_keys=True)
+        chunks.append(f"export const {export_name} = {body};\n")
+
+    CATALOG.write_text("\n".join(chunks), encoding="utf-8")
+
+
+def ensure_placeholders(source: str, translated: str) -> None:
+    expected = placeholders(source)
+    got = placeholders(translated)
+
+    if expected != got:
+        raise ValueError(
+            f"placeholder mismatch for {source!r}: expected={sorted(expected)!r} got={sorted(got)!r}"
+        )
+
+
+def placeholders(value: str) -> set[str]:
+    return set(PLACEHOLDER_RE.findall(value or ""))
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

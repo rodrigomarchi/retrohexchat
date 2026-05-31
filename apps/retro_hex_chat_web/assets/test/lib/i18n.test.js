@@ -1,7 +1,7 @@
 import { describe, expect, it, beforeEach } from "vitest";
 
 import { currentLocale, jt, normalizeLocale, t } from "../../js/lib/i18n.js";
-import { PT_BR } from "../../js/lib/i18n_catalog.js";
+import { DE, ES, FR, ID, JA, PT_BR, ZH_HANS } from "../../js/lib/i18n_catalog.js";
 
 describe("i18n runtime", () => {
   beforeEach(() => {
@@ -15,7 +15,12 @@ describe("i18n runtime", () => {
     expect(normalizeLocale("pt")).toBe("pt_BR");
     expect(normalizeLocale("pt-BR")).toBe("pt_BR");
     expect(normalizeLocale("pt_BR")).toBe("pt_BR");
-    expect(normalizeLocale("es")).toBe("en");
+    expect(normalizeLocale("es-MX")).toBe("es");
+    expect(normalizeLocale("fr-CA")).toBe("fr");
+    expect(normalizeLocale("de-AT")).toBe("de");
+    expect(normalizeLocale("ja-JP")).toBe("ja");
+    expect(normalizeLocale("zh-CN")).toBe("zh_Hans");
+    expect(normalizeLocale("id-ID")).toBe("id");
     expect(normalizeLocale(null)).toBe("en");
   });
 
@@ -65,5 +70,19 @@ describe("pt-BR JS catalog", () => {
       "Peer disconnected": "Par desconectado",
       "GOAL!": "GOL!",
     });
+  });
+});
+
+describe("expanded JS catalogs", () => {
+  it("preserves interpolation placeholders in every locale", () => {
+    const catalogs = [DE, ES, FR, ID, JA, PT_BR, ZH_HANS];
+    const placeholders = (message) => new Set(message.match(/%\{[A-Za-z0-9_]+\}/g) || []);
+
+    for (const catalog of catalogs) {
+      for (const [source, translated] of Object.entries(catalog)) {
+        expect(placeholders(translated), source).toEqual(placeholders(source));
+        expect(translated, source).not.toMatch(/XPH\d+X/i);
+      }
+    }
   });
 });

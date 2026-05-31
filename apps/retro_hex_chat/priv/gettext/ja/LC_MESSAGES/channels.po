@@ -1,0 +1,209 @@
+# "msgid"s in this file come from channels.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ja; status: enabled; wave: 1.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: ja\n"
+"Language: ja\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat/channels/modes.ex:216
+#, elixir-autogen, elixir-format
+msgid "+s and +p are mutually exclusive"
+msgstr "+s と +p は相互に排他的です"
+
+#: lib/retro_hex_chat/channels/server.ex:1030
+#, elixir-autogen, elixir-format
+msgid "Already in channel"
+msgstr "の特長\n"
+"チャンネルで既に"
+
+#: lib/retro_hex_chat/channels/policy.ex:47
+#, elixir-autogen, elixir-format
+msgid "Bad channel key (+k)"
+msgstr "の特長\n"
+"悪いチャンネルキー (+k)"
+
+#: lib/retro_hex_chat/channels/server.ex:440
+#: lib/retro_hex_chat/channels/server.ex:852
+#, elixir-autogen, elixir-format
+msgid "Banned"
+msgstr "の特長\n"
+"禁止事項"
+
+#: lib/retro_hex_chat/channels/policy.ex:153
+#, elixir-autogen, elixir-format
+msgid "Cannot ban a user with equal or higher rank"
+msgstr "の特長\n"
+"同一ランク以上のランクでユーザーを禁止することはできません"
+
+#: lib/retro_hex_chat/channels/policy.ex:126
+#, elixir-autogen, elixir-format
+msgid "Cannot kick a higher-ranked user"
+msgstr "の特長\n"
+"ランク上のユーザーを蹴らない"
+
+#: lib/retro_hex_chat/channels/policy.ex:63
+#, elixir-autogen, elixir-format
+msgid "Cannot send to channel (no external messages)"
+msgstr "の特長\n"
+"チャネルに送信できません(外部メッセージなし)"
+
+#: lib/retro_hex_chat/channels/policy.ex:35
+#, elixir-autogen, elixir-format
+msgid "Channel is full (+l)"
+msgstr "の特長\n"
+"チャネルは完全です(+l)"
+
+#: lib/retro_hex_chat/channels/policy.ex:41
+#, elixir-autogen, elixir-format
+msgid "Channel is invite-only (+i)"
+msgstr "の特長\n"
+"チャンネルは招待のみ(+i)"
+
+#: lib/retro_hex_chat/channels/policy.ex:72
+#, elixir-autogen, elixir-format
+msgid "Channel is moderated (+m). You need voice (+v) to speak."
+msgstr "の特長\n"
+"チャネルは適当な(+m)です。 音声(+v)が必要です。"
+
+#: lib/retro_hex_chat/channels/server.ex:648
+#, elixir-autogen, elixir-format
+msgid "Channel is not invite-only"
+msgstr "の特長\n"
+"チャネルは招待状ではありません"
+
+#: lib/retro_hex_chat/channels/server.ex:1055
+#, elixir-autogen, elixir-format
+msgid "Channel join throttle active, please try again shortly"
+msgstr "の特長\n"
+"チャネルは活動的なスロットルに参加します、すぐに試みて下さい"
+
+#: lib/retro_hex_chat/channels/server.ex:68
+#: lib/retro_hex_chat/channels/server.ex:71
+#: lib/retro_hex_chat/channels/server.ex:222
+#: lib/retro_hex_chat/channels/server.ex:225
+#, elixir-autogen, elixir-format
+msgid "Channel not found"
+msgstr "の特長\n"
+"チャンネルが見つかりません"
+
+#: lib/retro_hex_chat/channels/policy.ex:116
+#: lib/retro_hex_chat/channels/policy.ex:117
+#: lib/retro_hex_chat/channels/policy.ex:142
+#: lib/retro_hex_chat/channels/policy.ex:143
+#: lib/retro_hex_chat/channels/server.ex:691
+#: lib/retro_hex_chat/channels/server.ex:705
+#: lib/retro_hex_chat/channels/server.ex:708
+#, elixir-autogen, elixir-format
+msgid "Insufficient privileges"
+msgstr "の特長\n"
+"十分な権限"
+
+#: lib/retro_hex_chat/channels/policy.ex:169
+#: lib/retro_hex_chat/channels/policy.ex:173
+#, elixir-autogen, elixir-format
+msgid "Insufficient privileges to set channel modes"
+msgstr "の特長\n"
+"チャンネルモードを設定するための十分な権限"
+
+#: lib/retro_hex_chat/channels/modes.ex:123
+#, elixir-autogen, elixir-format
+msgid "Invalid mode string: must start with + or -"
+msgstr "の特長\n"
+"無効モード文字列: + または -"
+
+#: lib/retro_hex_chat/channels/server.ex:651
+#, elixir-autogen, elixir-format
+msgid "Knocking is disabled for this channel"
+msgstr "の特長\n"
+"このチャネルのためにノックは無効です"
+
+#: lib/retro_hex_chat/channels/server.ex:317
+#, elixir-autogen, elixir-format
+msgid "Not in channel"
+msgstr "の特長\n"
+"チャネルではなく"
+
+#: lib/retro_hex_chat/channels/server.ex:758
+#, elixir-autogen, elixir-format
+msgid "Only the channel owner can transfer ownership"
+msgstr "の特長\n"
+"チャネル所有者だけが所有権を譲渡することができます"
+
+#: lib/retro_hex_chat/channels/server.ex:923
+#, elixir-autogen, elixir-format
+msgid "User %{target} is not in channel"
+msgstr "の特長\n"
+"ユーザ %{target} はチャンネルではありません"
+
+#: lib/retro_hex_chat/channels/server.ex:688
+#: lib/retro_hex_chat/channels/server.ex:762
+#, elixir-autogen, elixir-format
+msgid "User is not in channel"
+msgstr "の特長\n"
+"ユーザはチャネルにない"
+
+#: lib/retro_hex_chat/channels/server.ex:658
+#, elixir-autogen, elixir-format
+msgid "You are already in that channel"
+msgstr "の特長\n"
+"あなたは既にそのチャンネルで"
+
+#: lib/retro_hex_chat/channels/server.ex:655
+#, elixir-autogen, elixir-format
+msgid "You are banned from that channel"
+msgstr "の特長\n"
+"そのチャンネルから禁止されています"
+
+#: lib/retro_hex_chat/channels/server.ex:966
+#, elixir-autogen, elixir-format
+msgid "You are muted in this channel"
+msgstr "の特長\n"
+"このチャンネルでミュートされます"
+
+#: lib/retro_hex_chat/channels/policy.ex:75
+#: lib/retro_hex_chat/channels/policy.ex:82
+#: lib/retro_hex_chat/channels/policy.ex:97
+#, elixir-autogen, elixir-format
+msgid "You are not in this channel"
+msgstr "の特長\n"
+"このチャンネルではない場合"
+
+#: lib/retro_hex_chat/channels/policy.ex:136
+#, elixir-autogen, elixir-format
+msgid "You cannot ban yourself"
+msgstr "の特長\n"
+"自分で禁止することはできません"
+
+#: lib/retro_hex_chat/channels/server.ex:501
+#: lib/retro_hex_chat/channels/server.ex:527
+#: lib/retro_hex_chat/channels/server.ex:553
+#: lib/retro_hex_chat/channels/server.ex:579
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator"
+msgstr "の特長\n"
+"チャンネル演算子でなければなりません"
+
+#: lib/retro_hex_chat/channels/policy.ex:91
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to change the topic"
+msgstr "の特長\n"
+"トピックを変更するチャネル演算子でなければなりません"
+
+#: lib/retro_hex_chat/channels/server.ex:597
+#: lib/retro_hex_chat/channels/server.ex:868
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to unban users"
+msgstr "の特長\n"
+"あなたは、ユーザーを禁止するチャネル演算子でなければなりません"
+
+#: lib/retro_hex_chat/channels/policy.ex:53
+#, elixir-autogen, elixir-format
+msgid "You must be registered to join this channel"
+msgstr "の特長\n"
+"このチャンネルに参加するために登録する必要があります"
