@@ -20,13 +20,14 @@ Onda 0 esta em producao desde a primeira fase: `en`, `pt_BR`.
 
 Onda 1 esta habilitada: `es`, `fr`, `de`, `ja`, `zh_Hans`, `id`.
 
+Onda 2 esta habilitada: `ar`, `ru`, `hi`, `ko`, `tr`, `vi`.
+
 Ondas planejadas:
 
-- Onda 2: `ar`, `ru`, `hi`, `ko`, `tr`, `vi`.
 - Onda 3: `bn`, `ur`, `zh_Hant`, `pt_PT`, `it`, `pl`, `nl`.
 
-Idiomas RTL (`ar`, `ur`) devem ser habilitados somente depois de revisao visual,
-pois o layout usa `dir={RetroHexChatWeb.I18n.html_dir()}` no elemento `html`.
+Idiomas RTL (`ar`, `ur`) exigem revisao visual dedicada, pois o layout usa
+`dir={RetroHexChatWeb.I18n.html_dir()}` no elemento `html`.
 
 ## Dominios
 
@@ -103,11 +104,16 @@ PY
 /tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_js.py --locales es,fr,de
 ```
 
+Para lotes grandes, prefira `ARGOS_CHUNK_TYPE=MINISBD` para evitar download de
+modelos extras em tempo de execucao. Os scripts protegem placeholders com tags
+pareadas, por exemplo `<ph0></ph0>`, porque esse formato e preservado melhor
+pelos modelos Argos do que sentinelas soltas.
+
 Depois da traducao automatica:
 
 ```sh
 /tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_repair_placeholder_mismatches.py
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_apply_translation_overrides.py --locales pt_BR,es,fr,de,ja,zh_Hans,id
+/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_apply_translation_overrides.py --locales pt_BR,es,fr,de,ja,zh_Hans,id,ar,ru,hi,ko,tr,vi
 elixir scripts/i18n_normalize_po_headers.exs
 make i18n.placeholder.check
 make i18n.source-fallback.check

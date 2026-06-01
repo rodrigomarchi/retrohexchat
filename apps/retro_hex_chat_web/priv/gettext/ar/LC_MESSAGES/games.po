@@ -1,0 +1,333 @@
+# "msgid"s in this file come from games.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ar; status: enabled; wave: 2.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: ar\n"
+"Language: ar\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:178
+#, elixir-autogen, elixir-format
+msgid "%{engine} Engine"
+msgstr "%{engine} المهندس"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:49
+#, elixir-autogen, elixir-format
+msgid "%{game} — %{nickname} vs %{peer}"
+msgstr "%{game} - %{nickname} vs %{peer}"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:142
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:357
+#, elixir-autogen, elixir-format
+msgid "%{hours}h %{minutes}m %{seconds}s"
+msgstr "%{hours}h %{minutes}m %{seconds}"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:149
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:363
+#, elixir-autogen, elixir-format
+msgid "%{minutes}m %{seconds}s"
+msgstr "%{minutes}m %{seconds}"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:88
+#, elixir-autogen, elixir-format
+msgid "%{score} P2"
+msgstr "%{score} P2"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:155
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:347
+#, elixir-autogen, elixir-format
+msgid "%{seconds}s"
+msgstr "%{seconds}s"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:82
+#, elixir-autogen, elixir-format
+msgid "&times;"
+msgstr "&quot; الوقت؛"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:77
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:85
+#, elixir-autogen, elixir-format
+msgid "(host)"
+msgstr "(الشبح)"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:212
+#, elixir-autogen, elixir-format
+msgid "About"
+msgstr "حول"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:123
+#, elixir-autogen, elixir-format
+msgid "Accept"
+msgstr "قبول"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:236
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "الإجراء"
+
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "Arcade session ended."
+msgstr "انتهت جلسة التعاقب"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:46
+#, elixir-autogen, elixir-format
+msgid "Arcade — %{nickname}"
+msgstr "Arcade — %{nickname}"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:186
+#, elixir-autogen, elixir-format
+msgid "Back"
+msgstr "العودة"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:152
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:126
+#, elixir-autogen, elixir-format
+msgid "Choose a game:"
+msgstr "اختر لعبة"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:119
+#, elixir-autogen, elixir-format
+msgid "Classic games running in your browser via WebAssembly"
+msgstr "ألعاب كلاسيكية تجري في مسبحك عبر الإنترنت"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:336
+#, elixir-autogen, elixir-format
+msgid "Close"
+msgstr "اقترب"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:133
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "Decline"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:107
+#, elixir-autogen, elixir-format
+msgid "Duration: %{duration}"
+msgstr "المدة: %{duration}"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:98
+#, elixir-autogen, elixir-format
+msgid "End Game"
+msgstr "نهاية اللعبة"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:292
+#, elixir-autogen, elixir-format
+msgid "End Session"
+msgstr "الدورة النهائية"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:71
+#, elixir-autogen, elixir-format
+msgid "Final Score"
+msgstr "العدد النهائي"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:68
+#, elixir-autogen, elixir-format
+msgid "Game Lobby — %{nickname} vs %{peer}"
+msgstr "Game Lobby - %{nickname} vs %{peer}"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:53
+#, elixir-autogen, elixir-format
+msgid "Game Session"
+msgstr "جلسة الألعاب"
+
+#: lib/retro_hex_chat_web/components/ui/games/arcade_frame.ex:62
+#, elixir-autogen, elixir-format
+msgid "Game area"
+msgstr "منطقة الألعاب"
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:424
+#, elixir-autogen, elixir-format
+msgid "Game ended."
+msgstr "انتهت اللعبة"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:65
+#, elixir-autogen, elixir-format
+msgid "Game engine initializing... Waiting for WebRTC connection."
+msgstr "محرك اللعبة بدأ... ننتظر اتصال (ويرتك)"
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:450
+#, elixir-autogen, elixir-format
+msgid "Game finished."
+msgstr "انتهت اللعبة"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:279
+#, elixir-autogen, elixir-format
+msgid "Game in progress..."
+msgstr "لعبة جارية..."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:425
+#, elixir-autogen, elixir-format
+msgid "Game invite was rejected."
+msgstr "تم رفض دعوة اللعبة"
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:449
+#, elixir-autogen, elixir-format
+msgid "Game over."
+msgstr "انتهت اللعبة"
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:440
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:354
+#, elixir-autogen, elixir-format
+msgid "Game session ended."
+msgstr "انتهت جلسة الألعاب"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:97
+#, elixir-autogen, elixir-format
+msgid ""
+"Inactivity detected — this lobby will close soon if no game is selected."
+msgstr "كشف عدم النشاط - سيغلق هذا الردهة قريبا إذا لم يتم اختيار أي لعبة."
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:233
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "المفتاح"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:227
+#, elixir-autogen, elixir-format
+msgid "Keyboard Controls"
+msgstr "الضوابط الرئيسية"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:195
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:154
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:200
+#, elixir-autogen, elixir-format
+msgid "Leave"
+msgstr "غادر"
+
+#: lib/retro_hex_chat_web/components/ui/games/arcade_frame.ex:75
+#, elixir-autogen, elixir-format
+msgid "Leave Game"
+msgstr "اترك اللعبة"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:184
+#, elixir-autogen, elixir-format
+msgid "No games available"
+msgstr "لا توجد ألعاب"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:80
+#, elixir-autogen, elixir-format
+msgid "P1 %{score}"
+msgstr "P1 %{score}"
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:452
+#, elixir-autogen, elixir-format
+msgid "Peer disconnected."
+msgstr "تم فصل (بير)"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:325
+#, elixir-autogen, elixir-format
+msgid "Play time:"
+msgstr "وقت اللعب:"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:93
+#, elixir-autogen, elixir-format
+msgid "Player %{winner} wins!"
+msgstr "لاعب %{winner} يفوز!"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:117
+#, elixir-autogen, elixir-format
+msgid "Retro Arcade"
+msgstr "Retro Arcade"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:320
+#, elixir-autogen, elixir-format
+msgid "Session Complete"
+msgstr "الدورة الكاملة"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:102
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Session Ended"
+msgstr "الدورة المنتهية"
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:426
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:429
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:346
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:349
+#, elixir-autogen, elixir-format
+msgid "Session closed (disconnected)."
+msgstr "اختتمت الجلسة (مفصلة)."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:423
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:451
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:345
+#, elixir-autogen, elixir-format
+msgid "Session closed by user."
+msgstr "جلسة مغلقة من قبل المستخدم."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:455
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:458
+#, elixir-autogen, elixir-format
+msgid "Session closed due to inactivity."
+msgstr "انتهت الجلسة بسبب عدم النشاط."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:432
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:438
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:352
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Session expired due to inactivity."
+msgstr "انتهت الجلسة بسبب عدم النشاط."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:435
+#, elixir-autogen, elixir-format
+msgid "Session expired — peer did not join."
+msgstr "انتهت الجلسة - لم ينضم إليها الأقران."
+
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:355
+#, elixir-autogen, elixir-format
+msgid "Session expired."
+msgstr "انتهت الجلسة"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:61
+#, elixir-autogen, elixir-format
+msgid ""
+"Session will be closed due to inactivity soon. Select a game to keep it "
+"active."
+msgstr "ستغلق الجلسة بسبب عدم النشاط قريباً اختيار لعبة للحفاظ على نشاطها."
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:196
+#, elixir-autogen, elixir-format
+msgid "Start Game"
+msgstr "ابدأ اللعبة"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:281
+#, elixir-autogen, elixir-format
+msgid "Started: %{started_at}"
+msgstr "بدأت: %{started_at}"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:256
+#, elixir-autogen, elixir-format
+msgid "Tips"
+msgstr "تيبس"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:145
+#, elixir-autogen, elixir-format
+msgid "Waiting for"
+msgstr "انتظار"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:175
+#, elixir-autogen, elixir-format
+msgid "Waiting for %{peer} to choose a game..."
+msgstr "انتظار %{peer} لاختيار لعبة..."
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:146
+#, elixir-autogen, elixir-format
+msgid "to accept"
+msgstr "قبول"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:80
+#, elixir-autogen, elixir-format
+msgid "vs"
+msgstr "vs"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:111
+#, elixir-autogen, elixir-format
+msgid "wants to play"
+msgstr "يريد اللعب"

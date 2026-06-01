@@ -1,7 +1,21 @@
 import { describe, expect, it, beforeEach } from "vitest";
 
 import { currentLocale, jt, normalizeLocale, t } from "../../js/lib/i18n.js";
-import { DE, ES, FR, ID, JA, PT_BR, ZH_HANS } from "../../js/lib/i18n_catalog.js";
+import {
+  AR,
+  DE,
+  ES,
+  FR,
+  HI,
+  ID,
+  JA,
+  KO,
+  PT_BR,
+  RU,
+  TR,
+  VI,
+  ZH_HANS,
+} from "../../js/lib/i18n_catalog.js";
 
 describe("i18n runtime", () => {
   beforeEach(() => {
@@ -21,6 +35,12 @@ describe("i18n runtime", () => {
     expect(normalizeLocale("ja-JP")).toBe("ja");
     expect(normalizeLocale("zh-CN")).toBe("zh_Hans");
     expect(normalizeLocale("id-ID")).toBe("id");
+    expect(normalizeLocale("ar-SA")).toBe("ar");
+    expect(normalizeLocale("ru-RU")).toBe("ru");
+    expect(normalizeLocale("hi-IN")).toBe("hi");
+    expect(normalizeLocale("ko-KR")).toBe("ko");
+    expect(normalizeLocale("tr-TR")).toBe("tr");
+    expect(normalizeLocale("vi-VN")).toBe("vi");
     expect(normalizeLocale(null)).toBe("en");
   });
 
@@ -75,7 +95,7 @@ describe("pt-BR JS catalog", () => {
 
 describe("expanded JS catalogs", () => {
   it("preserves interpolation placeholders in every locale", () => {
-    const catalogs = [DE, ES, FR, ID, JA, PT_BR, ZH_HANS];
+    const catalogs = [AR, DE, ES, FR, HI, ID, JA, KO, PT_BR, RU, TR, VI, ZH_HANS];
     const placeholders = (message) => new Set(message.match(/%\{[A-Za-z0-9_]+\}/g) || []);
 
     for (const catalog of catalogs) {

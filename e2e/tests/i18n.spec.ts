@@ -61,6 +61,24 @@ test.describe("Internationalization", () => {
     }
   });
 
+  test("switches to Arabic with RTL document direction", async ({ page }) => {
+    await page.goto("/connect");
+
+    await page
+      .getByTestId("locale-switcher")
+      .getByRole("link", { name: "العربية" })
+      .click();
+
+    await expect(page).toHaveURL(/\/connect$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", "ar");
+    await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+
+    await page.reload();
+
+    await expect(page.locator("html")).toHaveAttribute("lang", "ar");
+    await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
+  });
+
   test("keeps pt-BR through registration into the chat shell", async ({
     page,
   }) => {

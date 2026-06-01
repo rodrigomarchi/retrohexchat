@@ -16,7 +16,7 @@
 
 DOMAIN_APP = apps/retro_hex_chat
 WEB_APP    = apps/retro_hex_chat_web
-I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_Hans,id
+I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_Hans,id,ar,ru,hi,ko,tr,vi
 
 # ---------------------------------------------------------------------
 # RetroHexChat -- Development Makefile

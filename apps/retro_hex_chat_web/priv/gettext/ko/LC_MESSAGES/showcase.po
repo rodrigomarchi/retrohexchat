@@ -1,0 +1,5283 @@
+# "msgid"s in this file come from showcase.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: ko\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:61
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:114
+#, elixir-autogen, elixir-format
+msgid "#lobby (4)"
+msgstr "#lobby (4)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:131
+#, elixir-autogen, elixir-format
+msgid "(Nothing rendered below — tooltip is hidden)"
+msgstr "(아래 렌더링되지 않음 - tooltip은 숨겨져 있습니다)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:144
+#, elixir-autogen, elixir-format
+msgid "(Nothing rendered below — tooltip is nil)"
+msgstr "(아래 렌더링되지 않음 — tooltip is nil)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:114
+#, elixir-autogen, elixir-format
+msgid "(autocomplete is hidden — nothing rendered below)"
+msgstr "(autocomplete는 숨겨져있다 — 아래 렌더링되지 않음)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/history_search_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "(empty — history_search renders nothing)"
+msgstr "(empty - history search는 아무것도 렌더링)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/scroll_loader_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "(empty — scroll_loader renders nothing)"
+msgstr "(empty — scroll loader는 아무것도 렌더링)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:61
+#, elixir-autogen, elixir-format
+msgid "*!*@*.bad.isp"
+msgstr "*! *@.bad.isp"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:24
+#, elixir-autogen, elixir-format
+msgid "*!*@bad.host.com"
+msgstr "이메일: support@bad.host.com"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:51
+#, elixir-autogen, elixir-format
+msgid "*!*@troll.host"
+msgstr "*!*@troll.host"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:41
+#, elixir-autogen, elixir-format
+msgid "*adjusts monocle* Reginald here &mdash; your server concierge."
+msgstr "*adjusts monocle* Reginald 여기에 &mdash; 서버 컨시어지."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:32
+#, elixir-autogen, elixir-format
+msgid "*nods silently* Stay out of trouble, Troll."
+msgstr "* 조용히 * 문제 해결, Troll."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "*tips hat* Do return soon, Troll."
+msgstr "*tips 모자 * 곧 반환, Troll."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:76
+#, elixir-autogen, elixir-format
+msgid "+nt"
+msgstr "+nt에"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:77
+#, elixir-autogen, elixir-format
+msgid "+s"
+msgstr "+s"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:59
+#, elixir-autogen, elixir-format
+msgid "/alias"
+msgstr "/alias"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:21
+#, elixir-autogen, elixir-format
+msgid "/away $1-"
+msgstr "/away $1-"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:65
+#, elixir-autogen, elixir-format
+msgid "/command $1"
+msgstr "/command $1"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:145
+#, elixir-autogen, elixir-format
+msgid "/command args"
+msgstr "/command args"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:25
+#, elixir-autogen, elixir-format
+msgid "/join #lobby"
+msgstr "/join #lobby"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "/join #private secretkey"
+msgstr "/join #private secretkey"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "/kick #lobby spammer"
+msgstr "/kick #lobby spammer"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:46
+#, elixir-autogen, elixir-format
+msgid "/kick #lobby troll Violating rules"
+msgstr "/kick #lobby troll Violating rules"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:22
+#, elixir-autogen, elixir-format
+msgid "/mode $chan +o $1"
+msgstr "/mode $chan +o $1"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:62
+#, elixir-autogen, elixir-format
+msgid "/msg #lobby Anyone around?"
+msgstr "/msg #lobby Anyone around?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:20
+#, elixir-autogen, elixir-format
+msgid "/msg $1 goodbye!"
+msgstr "/msg $1 goodbye!"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:19
+#, elixir-autogen, elixir-format
+msgid "/msg $1 hello!"
+msgstr "/msg $1 hello!"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "/msg NickServ IDENTIFY ***"
+msgstr "/msg NickServ IDENTIFY ***"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "/msg NickServ IDENTIFY mySecretPass"
+msgstr "/msg NickServ IDENTIFY mySecretPass"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:61
+#, elixir-autogen, elixir-format
+msgid "/msg alice Hello!"
+msgstr "/msg alice Hello!"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:125
+#, elixir-autogen, elixir-format
+msgid "13:23 UTC-3"
+msgstr "13:23 UTC-3의"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "13:24 UTC-3"
+msgstr "13 : 24의 UTC-3"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:270
+#, elixir-autogen, elixir-format
+msgid "1px dotted outline, -4px offset"
+msgstr "1px 도트 아웃라인, -4px 오프셋"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:79
+#, elixir-autogen, elixir-format
+msgid "2.4 MB"
+msgstr "2.4 마일"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:25
+#, elixir-autogen, elixir-format
+msgid "2h ago"
+msgstr "2시간 전"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:24
+#, elixir-autogen, elixir-format
+msgid "36 levels"
+msgstr "36 수준"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:48
+#, elixir-autogen, elixir-format
+msgid "3d 12h"
+msgstr "3d 12h"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:28
+#, elixir-autogen, elixir-format
+msgid "3d ago"
+msgstr "3 주 전"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "8 categories"
+msgstr "8 범주"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "98 components"
+msgstr "98 부품"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:32
+#, elixir-autogen, elixir-format
+msgid ": Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+msgstr ": Lorem ipsum dolor 앉아 amet, consectetur adipiscing elit."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:80
+#, elixir-autogen, elixir-format
+msgid ""
+": This is a wide line with lots of text to force both vertical and "
+"horizontal scrolling in the container."
+msgstr ": 용기에 수직과 수평 스크롤을 강제하는 텍스트의 많은 라인입니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "A new version is available."
+msgstr "새로운 버전이 있습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:39
+#, elixir-autogen, elixir-format
+msgid "A retro-styled chat application built with Phoenix LiveView."
+msgstr "Phoenix LiveView와 내장 된 복고풍 채팅 응용 프로그램입니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:41
+#, elixir-autogen, elixir-format
+msgid "AFK since Monday"
+msgstr "월요일부터"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "About"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:113
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/about_dialog_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "About Dialog"
+msgstr "Dialog 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:67
+#, elixir-autogen, elixir-format
+msgid ""
+"Absolutely. All components are local source code you can modify freely."
+msgstr "자주 묻는 질문 모든 구성 요소는 로컬 소스 코드는 자유롭게 수정할 수 있습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/checkbox.ex:33
+#, elixir-autogen, elixir-format
+msgid "Accept terms and conditions"
+msgstr "이용 약관"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:24
+#, elixir-autogen, elixir-format
+msgid "Accordion"
+msgstr "채용 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:34
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:44
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "계좌정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/toolbar_app_page.ex:56
+#, elixir-autogen, elixir-format
+msgid "Action Log"
+msgstr "공지사항"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:176
+#, elixir-autogen, elixir-format
+msgid "Action Request (consent)"
+msgstr "활동 요청 (consent)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:68
+#, elixir-autogen, elixir-format
+msgid "Active"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "Active & Disabled States"
+msgstr "활동 및 장애인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:99
+#, elixir-autogen, elixir-format
+msgid "Active + Audio Call"
+msgstr "Active + 오디오 통화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:153
+#, elixir-autogen, elixir-format
+msgid "Active + File Transfer (receiving offer)"
+msgstr "Active + 파일 전송 (제공)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:129
+#, elixir-autogen, elixir-format
+msgid "Active + File Transfer (sending)"
+msgstr "Active + 파일 전송 (오류)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:114
+#, elixir-autogen, elixir-format
+msgid "Active + Video Call"
+msgstr "Active + 비디오 통화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/formatting_toolbar_page.ex:40
+#, elixir-autogen, elixir-format
+msgid "Active Formatting"
+msgstr "활성 Formatting"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "Active Window"
+msgstr "활동 창"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Active vs Inactive"
+msgstr "Active 대 Inactive"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Add to Contacts"
+msgstr "연락처"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:98
+#, elixir-autogen, elixir-format
+msgid "Add users to your address book."
+msgstr "사용자를 주소록에 추가합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:106
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:111
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:116
+#, elixir-autogen, elixir-format
+msgid "Add/Remove buttons"
+msgstr "더 보기/Remove 이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:98
+#, elixir-autogen, elixir-format
+msgid "Adding New Alias"
+msgstr "새로운 별을 추가"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:114
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:67
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:63
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:201
+#, elixir-autogen, elixir-format
+msgid "Address Book"
+msgstr "주소 책"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:52
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:62
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:72
+#, elixir-autogen, elixir-format
+msgid "Admin"
+msgstr "계정 관리"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:115
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:59
+#, elixir-autogen, elixir-format
+msgid "Admin Console"
+msgstr "관리자 콘솔"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:56
+#, elixir-autogen, elixir-format
+msgid "Admin Console Dialog"
+msgstr "관리자 콘솔 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/switch.ex:33
+#, elixir-autogen, elixir-format
+msgid "Airplane mode"
+msgstr "비행기 모드"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:28
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:25
+#, elixir-autogen, elixir-format
+msgid "Alert"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:29
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "Alert Dialog"
+msgstr "경고 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:34
+#, elixir-autogen, elixir-format
+msgid "Alerts"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "Alias Configuration"
+msgstr "Alias 구성"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:117
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:29
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:39
+#, elixir-autogen, elixir-format
+msgid "Alias Dialog"
+msgstr "별명 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:234
+#, elixir-autogen, elixir-format
+msgid "Alias Editor"
+msgstr "Alias 편집기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:50
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:52
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:89
+#, elixir-autogen, elixir-format
+msgid "Aliases"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:85
+#, elixir-autogen, elixir-format
+msgid "Aliases (Editing)"
+msgstr "Aliases (편집)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:39
+#, elixir-autogen, elixir-format
+msgid "Alice"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/formatting_toolbar_page.ex:54
+#, elixir-autogen, elixir-format
+msgid "All Active"
+msgstr "모든 활동"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "All Controls"
+msgstr "모든 통제"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "All Sides"
+msgstr "모든 측"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:180
+#, elixir-autogen, elixir-format
+msgid "Already joined"
+msgstr "Already 가입"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:41
+#, elixir-autogen, elixir-format
+msgid "Also ban the user after kicking"
+msgstr "또한 킥 후 사용자 금지"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:59
+#, elixir-autogen, elixir-format
+msgid ""
+"Another long line: ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+msgstr ""
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ ABCDEFGHIJKLMNOPQRSTUVWXYZ "
+"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "Anyone up for a game?"
+msgstr "게임을 위해 누구나?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:37
+#, elixir-autogen, elixir-format
+msgid "Anything goes"
+msgstr "아무것도 간다"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:101
+#: lib/retro_hex_chat_web/live/showcase_live/shell/app_header_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/shell/app_header_page.ex:25
+#, elixir-autogen, elixir-format
+msgid "App Header"
+msgstr "앱 헤더"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Application"
+msgstr "제품 설명"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:158
+#, elixir-autogen, elixir-format
+msgid "Apply"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:101
+#, elixir-autogen, elixir-format
+msgid "Apply modes button, field editing"
+msgstr "모드 버튼을 적용, 필드 편집"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:163
+#: lib/retro_hex_chat_web/live/showcase_live/games/arcade_frame_page.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/games/arcade_frame_page.ex:24
+#, elixir-autogen, elixir-format
+msgid "Arcade Frame"
+msgstr "아케이드 구조"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Arcade Grid"
+msgstr "아케이드 격자"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:54
+#, elixir-autogen, elixir-format
+msgid "Arcade Logos"
+msgstr "아케이드 로고"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:48
+#, elixir-autogen, elixir-format
+msgid ""
+"Arcade and solo game components — game lobby, game canvas, solo lobby, and "
+"arcade frame."
+msgstr "아케이드와 솔로 게임 구성 요소 - 게임 로비, 게임 캔버스, 솔로 로비, 아케이드 프레임."
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Arcade — Troll"
+msgstr "아케이드 - Troll"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Are you absolutely sure?"
+msgstr "당신은 절대적으로 확실합니까?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:93
+#, elixir-autogen, elixir-format
+msgid "Are you sure?"
+msgstr "견적 요청"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:28
+#, elixir-autogen, elixir-format
+msgid "Arrows"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_canvas_page.ex:50
+#, elixir-autogen, elixir-format
+msgid "As Guest"
+msgstr "게스트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_canvas_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "As Host"
+msgstr "호스트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:29
+#, elixir-autogen, elixir-format
+msgid "Ask your questions here"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:169
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:52
+#, elixir-autogen, elixir-format
+msgid "Assets"
+msgstr "투자정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Attempting to reconnect..."
+msgstr "연결하기 위해 ..."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Attribute"
+msgstr "사이트 맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Audio Call"
+msgstr "오디오 통화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:19
+#, elixir-autogen, elixir-format
+msgid "Audio, video, devices"
+msgstr "오디오, 비디오, 장치"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:118
+#, elixir-autogen, elixir-format
+msgid "Auto Respond"
+msgstr "자동 응답"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:53
+#, elixir-autogen, elixir-format
+msgid "Auto Respond Dialog"
+msgstr "자동 응답 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:242
+#, elixir-autogen, elixir-format
+msgid "Auto-Respond"
+msgstr "자동 응답"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:76
+#, elixir-autogen, elixir-format
+msgid "Auto-Whois Enabled"
+msgstr "Auto-Whois 사용 가능"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:72
+#, elixir-autogen, elixir-format
+msgid "Auto-discovered from submodules. Each diagram gets its own window."
+msgstr "submodules에서 자동 발견. 각 다이어그램은 자신의 창을 가져옵니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:105
+#, elixir-autogen, elixir-format
+msgid "Auto-discovered from submodules. New icons appear here automatically."
+msgstr "submodules에서 자동 발견. 새로운 아이콘이 자동으로 나타납니다."
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:71
+#: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Autocomplete"
+msgstr "자동 완성"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Available commands: kick, ban, mute, stats"
+msgstr "유효한 명령: 킥, 금지, 분, 통계"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:30
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/avatar.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/avatar.ex:23
+#, elixir-autogen, elixir-format
+msgid "Avatar"
+msgstr "아바타"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:45
+#, elixir-autogen, elixir-format
+msgid "Away"
+msgstr "오시는 길"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Background Color"
+msgstr "배경 색깔"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:31
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:23
+#, elixir-autogen, elixir-format
+msgid "Badge"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:133
+#, elixir-autogen, elixir-format
+msgid "Ban"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "Ban Exc."
+msgstr "금지."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:110
+#, elixir-autogen, elixir-format
+msgid "Ban exception masks"
+msgstr "Ban 예외 마스크"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:105
+#, elixir-autogen, elixir-format
+msgid "Ban masks with set_by/set_at"
+msgstr "Ban masks 와 set by/set_at"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Bans"
+msgstr "한국어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:5
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Basic"
+msgstr "기본 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Basic (regular user)"
+msgstr "Basic (일반 사용자)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Basic Breadcrumb"
+msgstr "기본적인 Breadcrumb"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Basic Dialog"
+msgstr "기본 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:32
+#, elixir-autogen, elixir-format
+msgid "Basic Dropdown"
+msgstr "기본 드롭다운"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Basic Fieldset"
+msgstr "기본 Fieldset"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:28
+#, elixir-autogen, elixir-format
+msgid "Basic Input"
+msgstr "기본 입력"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Basic Menu"
+msgstr "기본 메뉴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/nicklist_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "Basic Nicklist"
+msgstr "기본 Nicklist"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/pagination_page.ex:37
+#, elixir-autogen, elixir-format
+msgid "Basic Pagination"
+msgstr "기본 그림"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Basic Status Bar"
+msgstr "기본 상태 바"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "Basic Tree"
+msgstr "기본 트리"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Basic Window"
+msgstr "기본 창"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:31
+#, elixir-autogen, elixir-format
+msgid "Beep"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:89
+#, elixir-autogen, elixir-format
+msgid "Beginner Mode — /join"
+msgstr "초보자 모드 — /join"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:110
+#, elixir-autogen, elixir-format
+msgid "Beginner Mode — /kick (with sub-options)"
+msgstr "초보자 모드 — /kick (소비자 포함)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:44
+#, elixir-autogen, elixir-format
+msgid "Bob"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:46
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "Bold"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:275
+#, elixir-autogen, elixir-format
+msgid "Border Radius"
+msgstr "국경 반경"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:120
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:60
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:84
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:251
+#, elixir-autogen, elixir-format
+msgid "Bot Management"
+msgstr "Bot 관리"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:38
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:57
+#, elixir-autogen, elixir-format
+msgid "Bot Management Dialog"
+msgstr "Bot 관리 대화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:84
+#, elixir-autogen, elixir-format
+msgid "Bot User"
+msgstr "Bot 사용자"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:74
+#, elixir-autogen, elixir-format
+msgid "Both Directions"
+msgstr "두 방향"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:70
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:97
+#, elixir-autogen, elixir-format
+msgid "Bottom"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:102
+#, elixir-autogen, elixir-format
+msgid "Bottom Sheet"
+msgstr "하단 시트"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:32
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:24
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:79
+#, elixir-autogen, elixir-format
+msgid "Breadcrumb"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:65
+#, elixir-autogen, elixir-format
+msgid "Browse Channels"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:60
+#, elixir-autogen, elixir-format
+msgid "Browse available channels and join one to start chatting."
+msgstr "유효한 채널을 찾아서 채팅을 시작하세요."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:125
+#, elixir-autogen, elixir-format
+msgid ""
+"Brutus here &mdash; I keep the peace. Play nice and we'll get along. Type "
+"!rules if you need a reminder."
+msgstr ""
+"Brutus 여기 &mdash; 나는 평화를 유지. 좋은 게임을하고 우리는 함께 얻을 것이다. 타입 !rules 당신은 알림이 "
+"필요합니다."
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:24
+#, elixir-autogen, elixir-format
+msgid "Button"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/avatar.ex:32
+#, elixir-autogen, elixir-format
+msgid "CN"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/media_controls_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Camera Off"
+msgstr "카메라 끄기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:63
+#, elixir-autogen, elixir-format
+msgid "Can I customize it?"
+msgstr "나는 그것을 사용자 정의 할 수 있습니까?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:57
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:107
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:154
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:104
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:48
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:68
+#, elixir-autogen, elixir-format
+msgid "Cannot send to channel: you are banned."
+msgstr "채널로 보낼 수 없습니다: 당신은 금지됩니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:74
+#, elixir-autogen, elixir-format
+msgid "Caption & Footer"
+msgstr "캡션 & 풋어"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:34
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:25
+#, elixir-autogen, elixir-format
+msgid "Card"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:35
+#, elixir-autogen, elixir-format
+msgid "Card Title"
+msgstr "카드 제목"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:37
+#, elixir-autogen, elixir-format
+msgid "Card description goes here."
+msgstr "카드 설명이 여기에 간다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:35
+#, elixir-autogen, elixir-format
+msgid "Center"
+msgstr "- 연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:48
+#, elixir-autogen, elixir-format
+msgid "Cereal box classic"
+msgstr "Cereal 상자 고전적인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:74
+#, elixir-autogen, elixir-format
+msgid "ChanServ has set mode +o Troll."
+msgstr "ChanServ는 모드 +o Troll을 설정했습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_change_dialog_page.ex:77
+#, elixir-autogen, elixir-format
+msgid "Change Nick (with Error)"
+msgstr "변경 닉 (과 오류)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_change_dialog_page.ex:62
+#, elixir-autogen, elixir-format
+msgid "Change to Registered Nick"
+msgstr "등록 된 Nick"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_change_dialog_page.ex:39
+#, elixir-autogen, elixir-format
+msgid "Change to Unregistered Nick"
+msgstr "Unregistered Nick으로 변경"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:49
+#, elixir-autogen, elixir-format
+msgid "Change your password here."
+msgstr "비밀번호 변경"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:226
+#, elixir-autogen, elixir-format
+msgid "Changes have been saved successfully."
+msgstr "변경은 성공적으로 저장되었습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:34
+#, elixir-autogen, elixir-format
+msgid "Channel"
+msgstr "채널 :"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:122
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:217
+#, elixir-autogen, elixir-format
+msgid "Channel Central"
+msgstr "채널 센트럴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:30
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Channel Central Dialog"
+msgstr "채널 중앙 Dialog"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:124
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:34
+#, elixir-autogen, elixir-format
+msgid "Channel Dialog"
+msgstr "채널 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:115
+#, elixir-autogen, elixir-format
+msgid "Channel Filtered"
+msgstr "채널 필터링"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:126
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:46
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:49
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:12
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:46
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:184
+#, elixir-autogen, elixir-format
+msgid "Channel List"
+msgstr "채널 목록"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:89
+#, elixir-autogen, elixir-format
+msgid "Channel List (Loading)"
+msgstr "채널 목록 (로드)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:74
+#, elixir-autogen, elixir-format
+msgid "Channel List (Selected)"
+msgstr "채널 목록 (선택)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:158
+#, elixir-autogen, elixir-format
+msgid "Channel Menu"
+msgstr "채널 메뉴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:71
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Channel Mode"
+msgstr "채널 모드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:37
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:42
+#, elixir-autogen, elixir-format
+msgid "Channel Settings"
+msgstr "채널 설정"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "Channel States"
+msgstr "채널 미국"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:95
+#, elixir-autogen, elixir-format
+msgid "Channel Tab"
+msgstr "채널 탭"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "Channel Tabs"
+msgstr "채널 탭"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/topic_bar_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "Channel Topic"
+msgstr "채널 토닉"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Channel info, topic editing"
+msgstr "채널 정보, 주제 편집"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:23
+#, elixir-autogen, elixir-format
+msgid "Channel names begin with # or &"
+msgstr "채널 이름은 # 또는 &"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:83
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:113
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/select.ex:39
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "채널 :"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Channels Only"
+msgstr "채널 만"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:49
+#, elixir-autogen, elixir-format
+msgid "Charlie"
+msgstr "콜롬비아"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:69
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:45
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:27
+#, elixir-autogen, elixir-format
+msgid "Chat"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:72
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Chat Context Menu"
+msgstr "채팅 Context 메뉴"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:74
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:25
+#, elixir-autogen, elixir-format
+msgid "Chat Input"
+msgstr "채팅 입력"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:75
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:73
+#, elixir-autogen, elixir-format
+msgid "Chat Layout"
+msgstr "채팅 레이아웃"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:76
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:24
+#, elixir-autogen, elixir-format
+msgid "Chat Message"
+msgstr "본문 바로가기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:100
+#, elixir-autogen, elixir-format
+msgid "Chat content area..."
+msgstr "채팅 내용 영역..."
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:17
+#, elixir-autogen, elixir-format
+msgid "Chat, channels, networking"
+msgstr "채팅, 채널, 네트워킹"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Chat-specific components — messages, nicklist, emoji picker, formatting "
+"toolbar, context menus, and more."
+msgstr "Chat-specific Components - 메시지, nicklist, 이모티콘 피커, 포맷 툴바, 컨텍스트 메뉴 등"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:127
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:78
+#, elixir-autogen, elixir-format
+msgid "Cheatsheet"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:90
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:101
+#, elixir-autogen, elixir-format
+msgid "Cheatsheet Dialog"
+msgstr "회사소개"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:35
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/checkbox.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/checkbox.ex:24
+#, elixir-autogen, elixir-format
+msgid "Checkbox"
+msgstr "체크박스"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:31
+#, elixir-autogen, elixir-format
+msgid "Checkmarks, X marks, status"
+msgstr "Checkmarks, X 마크, 상태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:26
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Chime"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Choose a game:"
+msgstr "게임 선택:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:16
+#, elixir-autogen, elixir-format
+msgid "Chrome 145.0"
+msgstr "크롬 145.0"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "Classic games running in your browser via WebAssembly"
+msgstr "WebAssembly를 통해 브라우저에서 실행되는 클래식 게임"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Close Only"
+msgstr "맨 위로"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Close tab"
+msgstr "닫기 탭"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:40
+#, elixir-autogen, elixir-format
+msgid "Close the current tab"
+msgstr "현재 탭 닫기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:24
+#, elixir-autogen, elixir-format
+msgid "Code"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:110
+#, elixir-autogen, elixir-format
+msgid "Collapsed Group"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:101
+#, elixir-autogen, elixir-format
+msgid "Collapsed Groups"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:31
+#, elixir-autogen, elixir-format
+msgid "Colleague"
+msgstr "콜롬비아"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:77
+#: lib/retro_hex_chat_web/live/showcase_live/chat/color_picker_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/color_picker_page.ex:33
+#, elixir-autogen, elixir-format
+msgid "Color Picker"
+msgstr "색깔 피커"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/color_picker_page.ex:69
+#, elixir-autogen, elixir-format
+msgid "Color Reference"
+msgstr "색깔 참고"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/color_picker_page.ex:54
+#, elixir-autogen, elixir-format
+msgid "Color:"
+msgstr "색깔:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Colors"
+msgstr "색상 :"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/radio_group.ex:39
+#, elixir-autogen, elixir-format
+msgid "Comfortable"
+msgstr "제품 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:141
+#, elixir-autogen, elixir-format
+msgid "Command"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Command Mode"
+msgstr "명령 형태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:16
+#, elixir-autogen, elixir-format
+msgid "Communication"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/radio_group.ex:43
+#, elixir-autogen, elixir-format
+msgid "Compact"
+msgstr "기본 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Compact Toolbar"
+msgstr "소형 툴바"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:74
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:38
+#, elixir-autogen, elixir-format
+msgid ""
+"Complex dialog composites — channel settings, perform, address book, sound "
+"settings, and 20+ more."
+msgstr "Complex 대화 형 복합체 - 채널 설정, 수행, 주소록, 사운드 설정 및 20 + 더."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "Component Attributes"
+msgstr "구성 요소 특성"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:203
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:60
+#, elixir-autogen, elixir-format
+msgid "Component Showcase"
+msgstr "구성 요소 쇼케이스"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:75
+#, elixir-autogen, elixir-format
+msgid "Components"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:102
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:23
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:42
+#, elixir-autogen, elixir-format
+msgid "Config Form"
+msgstr "Config 형태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:52
+#, elixir-autogen, elixir-format
+msgid "Configure application settings."
+msgstr "Application 설정 구성."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:145
+#, elixir-autogen, elixir-format
+msgid "Configure event sounds for the application."
+msgstr "이벤트를 구성하십시오."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:42
+#, elixir-autogen, elixir-format
+msgid "Confirm Action"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:129
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Confirm Dialog"
+msgstr "Dialog 확인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:85
+#, elixir-autogen, elixir-format
+msgid "Confirmation Dialog"
+msgstr "확인 대화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Connect"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/connection_status_page.ex:30
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:50
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/toolbar_app_page.ex:46
+#, elixir-autogen, elixir-format
+msgid "Connected State (Admin)"
+msgstr "연결 상태 (Admin)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:86
+#, elixir-autogen, elixir-format
+msgid "Connecting"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:118
+#, elixir-autogen, elixir-format
+msgid "Connection Settings"
+msgstr "연결 설정"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:78
+#: lib/retro_hex_chat_web/live/showcase_live/chat/connection_status_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/connection_status_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Connection Status"
+msgstr "연결 상태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:102
+#, elixir-autogen, elixir-format
+msgid "Connection lost"
+msgstr "연결 손실"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:77
+#, elixir-autogen, elixir-format
+msgid "Connection timed out"
+msgstr "연결 시간"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:110
+#, elixir-autogen, elixir-format
+msgid "Consent State (Guest)"
+msgstr "일관된 국가 (Guest)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:159
+#, elixir-autogen, elixir-format
+msgid "Container Positions"
+msgstr "컨테이너 위치"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/separator.ex:29
+#, elixir-autogen, elixir-format
+msgid "Content above the separator."
+msgstr "분리기 위에 내용."
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Content area"
+msgstr "내용 영역"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/separator.ex:34
+#, elixir-autogen, elixir-format
+msgid "Content below the separator."
+msgstr "분리기의 밑에 내용."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Contents"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:57
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Context Menu"
+msgstr "Context 메뉴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:56
+#, elixir-autogen, elixir-format
+msgid "Continue"
+msgstr "계속하기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Control Buttons"
+msgstr "컨트롤 버튼"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:80
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Conversations"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_context_menu_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_context_menu_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Conversations Context Menu"
+msgstr "Conversations 텍스트 메뉴"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:81
+#, elixir-autogen, elixir-format
+msgid "Conversations Ctx Menu"
+msgstr "Ctx 메뉴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:114
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:22
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:112
+#, elixir-autogen, elixir-format
+msgid "Copy"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:81
+#, elixir-autogen, elixir-format
+msgid "Critical Lag"
+msgstr "중요한 Lag"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:126
+#, elixir-autogen, elixir-format
+msgid "Ctrl+A"
+msgstr "Ctrl + A를"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:115
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:113
+#, elixir-autogen, elixir-format
+msgid "Ctrl+C"
+msgstr "Ctrl + C"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:96
+#, elixir-autogen, elixir-format
+msgid "Ctrl+F"
+msgstr "Ctrl + F"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Ctrl+Q"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:120
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:118
+#, elixir-autogen, elixir-format
+msgid "Ctrl+V"
+msgstr "Ctrl + V"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:90
+#, elixir-autogen, elixir-format
+msgid "Ctrl+W"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:110
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:108
+#, elixir-autogen, elixir-format
+msgid "Ctrl+X"
+msgstr "Ctrl + X"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:102
+#, elixir-autogen, elixir-format
+msgid "Ctrl+Y"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:97
+#, elixir-autogen, elixir-format
+msgid "Ctrl+Z"
+msgstr "Ctrl + Z를"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:37
+#, elixir-autogen, elixir-format
+msgid "Currency, stars, misc"
+msgstr "통화, 별, misc"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/pagination_page.ex:73
+#, elixir-autogen, elixir-format
+msgid "Current page:"
+msgstr "현재 페이지:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "Currently selected:"
+msgstr "현재 선택:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:114
+#, elixir-autogen, elixir-format
+msgid "Custom Columns"
+msgstr "주문 열"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:76
+#, elixir-autogen, elixir-format
+msgid "Custom Max Length"
+msgstr "주문 최대 길이"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:131
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:238
+#, elixir-autogen, elixir-format
+msgid "Custom Menus"
+msgstr "주문 메뉴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:62
+#, elixir-autogen, elixir-format
+msgid "Custom Menus Dialog"
+msgstr "사용자 정의 메뉴 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:68
+#, elixir-autogen, elixir-format
+msgid "Custom Sound Options"
+msgstr "사용자 정의 사운드 옵션"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:42
+#, elixir-autogen, elixir-format
+msgid "Custom Text"
+msgstr "주문 텍스트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:109
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:19
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:107
+#, elixir-autogen, elixir-format
+msgid "Cut"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:120
+#, elixir-autogen, elixir-format
+msgid "DND"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:49
+#, elixir-autogen, elixir-format
+msgid "DOOM Engine"
+msgstr "DOOM 엔진"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:57
+#, elixir-autogen, elixir-format
+msgid "DOOM Engine (PrBoom+)"
+msgstr "DOOM 엔진 (PrBoom+)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/switch.ex:37
+#, elixir-autogen, elixir-format
+msgid "Dark mode"
+msgstr "어두운 모드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/color_picker_page.ex:36
+#: lib/retro_hex_chat_web/live/showcase_live/chat/emoji_picker_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/chat/formatting_toolbar_page.ex:30
+#: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:76
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:24
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:28
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/games/arcade_frame_page.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:29
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:30
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:72
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/radio_group.ex:35
+#: lib/retro_hex_chat_web/live/showcase_live/shell/app_header_page.ex:28
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:32
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:60
+#, elixir-autogen, elixir-format
+msgid "Default"
+msgstr "기본 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/media_controls_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Default (In Call)"
+msgstr "기본 (전화)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:28
+#, elixir-autogen, elixir-format
+msgid "Default (Top)"
+msgstr "기본 (Top)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:34
+#, elixir-autogen, elixir-format
+msgid "Default Alert"
+msgstr "기본 경고"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:33
+#, elixir-autogen, elixir-format
+msgid "Default Confirmation"
+msgstr "기본 확인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/flood_protection_dialog_page.ex:34
+#, elixir-autogen, elixir-format
+msgid "Default Settings"
+msgstr "기본 설정"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:42
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:56
+#, elixir-autogen, elixir-format
+msgid "Default State"
+msgstr "기본 상태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Default Toolbar"
+msgstr "기본 Toolbar"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:111
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:107
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:90
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:88
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:94
+#, elixir-autogen, elixir-format
+msgid "Delete Account"
+msgstr "계정 삭제"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:60
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:64
+#, elixir-autogen, elixir-format
+msgid "Delete Channel"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:133
+#, elixir-autogen, elixir-format
+msgid "Delete Confirm"
+msgstr "삭제 확인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/delete_confirm_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/delete_confirm_dialog_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Delete Confirm Dialog"
+msgstr "Dialog 삭제"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/delete_confirm_dialog_page.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/delete_confirm_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Delete Message"
+msgstr "메시지 삭제"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:77
+#, elixir-autogen, elixir-format
+msgid "Description"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:222
+#, elixir-autogen, elixir-format
+msgid "Design System"
+msgstr "설계시스템"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:81
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:32
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:41
+#, elixir-autogen, elixir-format
+msgid "Destructive"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:55
+#, elixir-autogen, elixir-format
+msgid "Destructive Confirmation"
+msgstr "파기절차"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Development discussion"
+msgstr "개발 토론"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:171
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:70
+#, elixir-autogen, elixir-format
+msgid "Diagrams"
+msgstr "다이어그램"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:58
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Dialog"
+msgstr "채용공고"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:135
+#, elixir-autogen, elixir-format
+msgid "Dialog Style"
+msgstr "Dialog 스타일"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Dialog element ID"
+msgstr "Dialog 요소 ID"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Dialog-style with close button only."
+msgstr "닫기 버튼이있는 Dialog-style."
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:111
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:37
+#, elixir-autogen, elixir-format
+msgid "Dialogs"
+msgstr "채용공고"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "DiceBot joined #general"
+msgstr "DiceBot에 참여 #general"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:46
+#, elixir-autogen, elixir-format
+msgid "DiceBot responded to !roll"
+msgstr "DiceBot에 응답! 롤"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Did you know you can use /help to see all commands?"
+msgstr "당신이 사용할 수있는 것을 알고 /help 모든 명령을 볼 수 있습니까?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/arcade_frame_page.ex:47
+#, elixir-autogen, elixir-format
+msgid "Different Game"
+msgstr "다른 게임"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:41
+#, elixir-autogen, elixir-format
+msgid "Dimensions"
+msgstr "크기 (mm)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:29
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:32
+#, elixir-autogen, elixir-format
+msgid "Ding"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:29
+#, elixir-autogen, elixir-format
+msgid "Directional, navigation"
+msgstr "방향, 항법"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:85
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:96
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/input.ex:33
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:46
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:140
+#, elixir-autogen, elixir-format
+msgid "Disabled Items"
+msgstr "관련 상품"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/disconnect_confirm_dialog_page.ex:38
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "Disconnect"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:135
+#, elixir-autogen, elixir-format
+msgid "Disconnect Confirm"
+msgstr "연결 확인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/disconnect_confirm_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/disconnect_confirm_dialog_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Disconnect Confirm Dialog"
+msgstr "Dialog를 확인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/disconnect_confirm_dialog_page.ex:33
+#, elixir-autogen, elixir-format
+msgid "Disconnect from Server"
+msgstr "서버 차단"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/connection_status_page.ex:47
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/toolbar_app_page.ex:36
+#, elixir-autogen, elixir-format
+msgid "Disconnected State"
+msgstr "연결 상태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "Display:"
+msgstr "전시:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:31
+#, elixir-autogen, elixir-format
+msgid "Documents"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:21
+#, elixir-autogen, elixir-format
+msgid "Documents, folders, clipboard"
+msgstr "문서, 폴더, 클립보드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:52
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:67
+#, elixir-autogen, elixir-format
+msgid "DoeJoe"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:59
+#, elixir-autogen, elixir-format
+msgid "Down Arrow"
+msgstr "다운 화살표"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:36
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:29
+#, elixir-autogen, elixir-format
+msgid "Dropdown Menu"
+msgstr "드롭다운 메뉴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:89
+#, elixir-autogen, elixir-format
+msgid "Edit"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:38
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Edit Profile"
+msgstr "연락처"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:80
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:81
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:110
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:80
+#, elixir-autogen, elixir-format
+msgid "Editing State"
+msgstr "편집 국가"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Elixir"
+msgstr "언어 선택"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:48
+#, elixir-autogen, elixir-format
+msgid "Email"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Email:"
+msgstr "이메일:"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:83
+#: lib/retro_hex_chat_web/live/showcase_live/chat/emoji_picker_page.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/chat/emoji_picker_page.ex:24
+#, elixir-autogen, elixir-format
+msgid "Emoji Picker"
+msgstr "Emoji 피커"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:115
+#, elixir-autogen, elixir-format
+msgid "Empty List"
+msgstr "빈 목록"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:39
+#, elixir-autogen, elixir-format
+msgid "Empty Search"
+msgstr "빈 검색"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:83
+#, elixir-autogen, elixir-format
+msgid "Empty Settings"
+msgstr "빈 설정"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:103
+#: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:103
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:46
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:100
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:125
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:91
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:132
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Empty State"
+msgstr "빈 국가"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:93
+#, elixir-autogen, elixir-format
+msgid "Enable notifications"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:107
+#, elixir-autogen, elixir-format
+msgid "Enable perform on connect"
+msgstr "연결에서 실행"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:44
+#, elixir-autogen, elixir-format
+msgid "Encryption layers and protocol diagrams"
+msgstr "암호화 레이어 및 프로토콜 다이어그램"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/input.ex:30
+#, elixir-autogen, elixir-format
+msgid "Enter text..."
+msgstr "본문 바로가기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:39
+#, elixir-autogen, elixir-format
+msgid "Enter username"
+msgstr "사용자 이름"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/label.ex:32
+#, elixir-autogen, elixir-format
+msgid "Enter username..."
+msgstr "사용자 이름"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:56
+#, elixir-autogen, elixir-format
+msgid "Episode 1 — The Original"
+msgstr "에피소드 1 - 원본"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:24
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:240
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:41
+#, elixir-autogen, elixir-format
+msgid "Error"
+msgstr "오류 수정"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:37
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:131
+#, elixir-autogen, elixir-format
+msgid "Event"
+msgstr "행사일정"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:29
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Event Sounds"
+msgstr "이벤트 사운드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:114
+#, elixir-autogen, elixir-format
+msgid "Event callbacks (tab, select, add, edit, remove, etc.)"
+msgstr "이벤트 콜백 (탭, 선택, 추가, 편집, 제거, 기타)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:164
+#, elixir-autogen, elixir-format
+msgid "Exit"
+msgstr "오시는 길"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:117
+#, elixir-autogen, elixir-format
+msgid "Expert Mode — /msg"
+msgstr "전문가 모드 — /msg"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:83
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:190
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:52
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "실패한"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:242
+#, elixir-autogen, elixir-format
+msgid "Failed to save changes. Try again."
+msgstr "변경 사항을 저장합니다. 다시 시도하십시오."
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:141
+#, elixir-autogen, elixir-format
+msgid "Feedback"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:59
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Fieldset"
+msgstr "회사소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:60
+#, elixir-autogen, elixir-format
+msgid "Fight through hordes of demons from Hell in this classic 1993 game."
+msgstr "이 고전적인 1993 게임에서 지옥에서 악마의 무리를 통해 싸움."
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:156
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "File Transfer"
+msgstr "파일 전송"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:20
+#, elixir-autogen, elixir-format
+msgid "Files"
+msgstr "파일 형식"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:97
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:24
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:58
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:196
+#, elixir-autogen, elixir-format
+msgid "Find"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Finished State"
+msgstr "완료된 국가"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:28
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "Firefox 148.0"
+msgstr "파이어 폭스 148.0"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Flash"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:101
+#, elixir-autogen, elixir-format
+msgid "Flash taskbar"
+msgstr "플래시 작업바"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:137
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:230
+#, elixir-autogen, elixir-format
+msgid "Flood Protection"
+msgstr "홍수 보호"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/flood_protection_dialog_page.ex:39
+#, elixir-autogen, elixir-format
+msgid "Flood Protection (Defaults)"
+msgstr "홍수 보호 (과태)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/flood_protection_dialog_page.ex:76
+#, elixir-autogen, elixir-format
+msgid "Flood Protection (Lenient)"
+msgstr "홍수 보호 (Lenient)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/flood_protection_dialog_page.ex:62
+#, elixir-autogen, elixir-format
+msgid "Flood Protection (Strict)"
+msgstr "홍수 보호 (Strict)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/flood_protection_dialog_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/flood_protection_dialog_page.ex:31
+#, elixir-autogen, elixir-format
+msgid "Flood Protection Dialog"
+msgstr "홍수 보호 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/paste_confirm_dialog_page.ex:58
+#, elixir-autogen, elixir-format
+msgid "Flood Warning"
+msgstr "홍수 경고"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:41
+#, elixir-autogen, elixir-format
+msgid "Flow and architecture diagrams"
+msgstr "흐름과 건축 도표"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:258
+#, elixir-autogen, elixir-format
+msgid "Focus & Border Radius"
+msgstr "초점 & 국경 반경"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:263
+#, elixir-autogen, elixir-format
+msgid "Focus Ring"
+msgstr "초점 반지"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:23
+#, elixir-autogen, elixir-format
+msgid "Focus input"
+msgstr "초점 입력"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:267
+#, elixir-autogen, elixir-format
+msgid "Focused Button"
+msgstr "집중된 단추"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/emoji_picker_page.ex:44
+#, elixir-autogen, elixir-format
+msgid "Food Category"
+msgstr "음식 종류"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:37
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "Form"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:29
+#, elixir-autogen, elixir-format
+msgid "Form Components"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:38
+#, elixir-autogen, elixir-format
+msgid "Formatting"
+msgstr "파일 형식"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:84
+#: lib/retro_hex_chat_web/live/showcase_live/chat/formatting_toolbar_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/formatting_toolbar_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Formatting Toolbar"
+msgstr "Formatting 도구 모음"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "Friend"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:28
+#, elixir-autogen, elixir-format
+msgid "Full Info Card"
+msgstr "전체 정보 카드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:76
+#, elixir-autogen, elixir-format
+msgid "Full MDI Layout"
+msgstr "전체 MDI 레이아웃"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "Full Settings"
+msgstr "전체 설정"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Full Sidebar"
+msgstr "가득 차있는 sidebar"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:164
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_canvas_page.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_canvas_page.ex:24
+#, elixir-autogen, elixir-format
+msgid "Game Canvas"
+msgstr "게임 캔버스"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:165
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Game Cards"
+msgstr "게임 카드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:48
+#, elixir-autogen, elixir-format
+msgid "Game Flows"
+msgstr "게임 흐름"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:166
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:43
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:58
+#, elixir-autogen, elixir-format
+msgid "Game Lobby"
+msgstr "게임 로비"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:162
+#, elixir-autogen, elixir-format
+msgid "Game Over (with score)"
+msgstr "게임 이상 (점수 포함)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:51
+#, elixir-autogen, elixir-format
+msgid "Game Screens"
+msgstr "게임 화면"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:159
+#, elixir-autogen, elixir-format
+msgid "Game Session Ended"
+msgstr "게임 세션 종료"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:36
+#, elixir-autogen, elixir-format
+msgid "Game on!"
+msgstr "게임에!"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:161
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:40
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:47
+#, elixir-autogen, elixir-format
+msgid "Games"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:92
+#, elixir-autogen, elixir-format
+msgid "General"
+msgstr "주요사업"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Get Topic"
+msgstr "Topic에 대해"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:49
+#, elixir-autogen, elixir-format
+msgid "Ghost"
+msgstr "팟캐스트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Got it"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:108
+#, elixir-autogen, elixir-format
+msgid "Greetings, everyone."
+msgstr "안녕하세요."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:111
+#, elixir-autogen, elixir-format
+msgid "Group Labels"
+msgstr "그룹 라벨"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:185
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:65
+#, elixir-autogen, elixir-format
+msgid "Half-Op"
+msgstr "반투명"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:22
+#, elixir-autogen, elixir-format
+msgid "Hardware"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Has minimize, maximize, and close buttons."
+msgstr "최소화, 극대화, 닫기 버튼"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:59
+#, elixir-autogen, elixir-format
+msgid "Hello everyone!"
+msgstr "안녕하세요!"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:112
+#, elixir-autogen, elixir-format
+msgid "Hello, World!"
+msgstr "안녕하세요, 세계!"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:70
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "Help"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "Help & Close"
+msgstr "도움 & 닫기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:24
+#, elixir-autogen, elixir-format
+msgid "Hey everyone!"
+msgstr "안녕하세요!"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:96
+#, elixir-autogen, elixir-format
+msgid "Hey!"
+msgstr "안녕하세요!"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:41
+#, elixir-autogen, elixir-format
+msgid "Hey, ready to connect?"
+msgstr "이봐, 연결할 준비가?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:99
+#, elixir-autogen, elixir-format
+msgid "Hi Alice!"
+msgstr "안녕 앨리스!"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Hi alice! How's it going?"
+msgstr "안녕하세요! 어떻게 될까요?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:110
+#: lib/retro_hex_chat_web/live/showcase_live/chat/history_search_page.ex:40
+#, elixir-autogen, elixir-format
+msgid "Hidden"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:111
+#, elixir-autogen, elixir-format
+msgid "Hidden Item 1"
+msgstr "숨겨진 항목 1"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:112
+#, elixir-autogen, elixir-format
+msgid "Hidden Item 2"
+msgstr "숨겨진 항목 2"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:139
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:36
+#, elixir-autogen, elixir-format
+msgid "Highlight Dialog"
+msgstr "높은 빛 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:39
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:67
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:205
+#, elixir-autogen, elixir-format
+msgid "Highlight Words"
+msgstr "높은 낱말"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/highlight_dialog_page.ex:44
+#, elixir-autogen, elixir-format
+msgid "Highlights"
+msgstr "주요 특징"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:86
+#: lib/retro_hex_chat_web/live/showcase_live/chat/history_search_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/history_search_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "History Search"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:58
+#, elixir-autogen, elixir-format
+msgid "History down"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:53
+#, elixir-autogen, elixir-format
+msgid "History up"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:107
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:67
+#, elixir-autogen, elixir-format
+msgid "Home"
+msgstr "홈 > 제품"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:47
+#, elixir-autogen, elixir-format
+msgid "Horizontal Scrollbar"
+msgstr "수평 스크롤바"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:88
+#: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:25
+#, elixir-autogen, elixir-format
+msgid "Hover Card"
+msgstr "Hover 카드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/tooltip.ex:35
+#, elixir-autogen, elixir-format
+msgid "Hover me"
+msgstr "내 친구"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:173
+#, elixir-autogen, elixir-format
+msgid "IRC Role Badges"
+msgstr "IRC 역할 배지"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:53
+#, elixir-autogen, elixir-format
+msgid "IRC Sidebar"
+msgstr "IRC 측바"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:89
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:23
+#, elixir-autogen, elixir-format
+msgid "IRC Tabs"
+msgstr "IRC 탭"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:230
+#, elixir-autogen, elixir-format
+msgid "Icon Sizes"
+msgstr "Icon 크기"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:172
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:79
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:103
+#, elixir-autogen, elixir-format
+msgid "Icons"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:53
+#, elixir-autogen, elixir-format
+msgid "Icons catalog, SVG diagrams, and design tokens reference."
+msgstr "아이콘 카탈로그, SVG 다이어그램 및 디자인 토큰 참조."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Identified user (P2P actions)"
+msgstr "식별 사용자 (P2P 작업)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:53
+#, elixir-autogen, elixir-format
+msgid "Idle"
+msgstr "아이들"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/scroll_loader_page.ex:40
+#, elixir-autogen, elixir-format
+msgid "Idle State"
+msgstr "Idle 국가"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Ignore"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:71
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:209
+#, elixir-autogen, elixir-format
+msgid "Ignore List"
+msgstr "Ignore 목록"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:104
+#, elixir-autogen, elixir-format
+msgid "Ignored User"
+msgstr "사용자 정의"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "Ignored user"
+msgstr "사용자 ID"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:36
+#, elixir-autogen, elixir-format
+msgid "Images"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:54
+#, elixir-autogen, elixir-format
+msgid "In Call"
+msgstr "전화 번호"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Inactive Window"
+msgstr "Inactive 창"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:127
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Inactivity Warning"
+msgstr "Inactivity 경고"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Info"
+msgstr "- 한국어"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:38
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/input.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/input.ex:23
+#, elixir-autogen, elixir-format
+msgid "Input"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Input:"
+msgstr "입력 :"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:116
+#, elixir-autogen, elixir-format
+msgid "Interactive Demo"
+msgstr "Interactive 데모"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:13
+#, elixir-autogen, elixir-format
+msgid ""
+"Interactive catalog of all UI components used in RetroHexChat. Each "
+"component is a reusable, self-contained building block with generic "
+"callbacks — no hardcoded event names."
+msgstr ""
+"RetroHexChat에서 사용되는 모든 UI 구성품의 상호 카탈로그. 각 구성 요소는 재사용 가능, 일반적인 콜백이있는 자체 유지 건물"
+" 블록 - 하드 코딩 된 이벤트 이름."
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:141
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:31
+#, elixir-autogen, elixir-format
+msgid "Invite Dialog"
+msgstr "Invite 대화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:114
+#, elixir-autogen, elixir-format
+msgid "Invite Exc."
+msgstr "더 알아보기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:115
+#, elixir-autogen, elixir-format
+msgid "Invite exception masks"
+msgstr "Invite 예외 마스크"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:49
+#, elixir-autogen, elixir-format
+msgid "Is it responsive?"
+msgstr "그것은 반응?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:49
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Italic"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:107
+#, elixir-autogen, elixir-format
+msgid "Item 1"
+msgstr "품목 1"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:108
+#, elixir-autogen, elixir-format
+msgid "Item 2"
+msgstr "품목 2"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/avatar.ex:38
+#, elixir-autogen, elixir-format
+msgid "JD"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:21
+#, elixir-autogen, elixir-format
+msgid "Join a channel, optionally with a password key."
+msgstr "암호 키와 함께 채널에 가입하십시오."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:25
+#, elixir-autogen, elixir-format
+msgid "Jump to the chat input field"
+msgstr "채팅 입력 필드에 점프"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:57
+#, elixir-autogen, elixir-format
+msgid "Keyboard Shortcuts"
+msgstr "키보드 단축키"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:129
+#, elixir-autogen, elixir-format
+msgid "Kick"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:142
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Kick Dialog"
+msgstr "Kick 대화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Kick a user from a channel. Requires operator status."
+msgstr "채널에서 사용자를 Kick. 연산자 상태를 요구합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "LF"
+msgstr "모형: LF"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:39
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/label.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/label.ex:24
+#, elixir-autogen, elixir-format
+msgid "Label"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "Lag: --"
+msgstr "라그: --"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "Lag: 8ms"
+msgstr "격자: 8ms"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:76
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:63
+#, elixir-autogen, elixir-format
+msgid "Large"
+msgstr "큰 가슴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/toolbar_app_page.ex:60
+#, elixir-autogen, elixir-format
+msgid "Last action:"
+msgstr "마지막 활동:"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:55
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:22
+#, elixir-autogen, elixir-format
+msgid "Layout"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "Leave"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:49
+#, elixir-autogen, elixir-format
+msgid "Leave Channel"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:82
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:65
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:32
+#, elixir-autogen, elixir-format
+msgid "Left"
+msgstr "왼쪽"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:65
+#, elixir-autogen, elixir-format
+msgid "Left Click"
+msgstr "왼쪽 클릭"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Left Sheet"
+msgstr "왼쪽 시트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/flood_protection_dialog_page.ex:71
+#, elixir-autogen, elixir-format
+msgid "Lenient Settings"
+msgstr "Lenient 설정"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:32
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:80
+#, elixir-autogen, elixir-format
+msgid "Line"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:53
+#, elixir-autogen, elixir-format
+msgid "Link"
+msgstr "링크 메뉴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:29
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Linux Ubuntu"
+msgstr "리눅스 우분투"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:100
+#, elixir-autogen, elixir-format
+msgid "List of %&#123;channel_name, channel_key&#125; maps"
+msgstr "%&의 목록#123;channel name, 채널 key&#125; 지도"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:92
+#, elixir-autogen, elixir-format
+msgid "List of %&#123;position, command&#125; maps"
+msgstr "%&의 목록#123; 위치, command&#125; 지도"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Live examples + code"
+msgstr "라이브 예제 + 코드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:117
+#, elixir-autogen, elixir-format
+msgid "Ln 1, Col 14"
+msgstr "Ln 1, 콜 14"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Ln 42, Col 8"
+msgstr "Ln 42, 콜 8"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:104
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:20
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:29
+#, elixir-autogen, elixir-format
+msgid "Loading Spinner"
+msgstr "관련 제품"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:65
+#: lib/retro_hex_chat_web/live/showcase_live/chat/scroll_loader_page.ex:30
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:84
+#, elixir-autogen, elixir-format
+msgid "Loading State"
+msgstr "선적 국가"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "Loading messages..."
+msgstr "로딩 메시지 ..."
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:72
+#, elixir-autogen, elixir-format
+msgid "Lobby"
+msgstr "(주)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:61
+#, elixir-autogen, elixir-format
+msgid "Lobby State"
+msgstr "로비 주"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Lobby — Game Picker"
+msgstr "로비 - 게임 피커"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Lobby — Game Preview"
+msgstr "로비 - 게임 미리보기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:27
+#, elixir-autogen, elixir-format
+msgid "Locks, shields, bans"
+msgstr "자물쇠, 방패, 금지"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:63
+#, elixir-autogen, elixir-format
+msgid "Log Out"
+msgstr "로그아웃"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/arcade_frame_page.ex:59
+#, elixir-autogen, elixir-format
+msgid "Long Game Name"
+msgstr "긴 게임 이름"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/reply_bar_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Long Message"
+msgstr "긴 메시지"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:114
+#, elixir-autogen, elixir-format
+msgid "Long Messages & Wrapping"
+msgstr "긴 메시지 및 포장"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:64
+#, elixir-autogen, elixir-format
+msgid "Look / Aim"
+msgstr "찾아보기 / Aim"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:70
+#, elixir-autogen, elixir-format
+msgid "Look for secret walls by pressing Use against suspicious textures"
+msgstr "suspicious 짜임새에 대하여 사용을 눌러서 비밀 벽을 찾습니다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Make changes to your profile here. Click save when done."
+msgstr "귀하의 프로필에 변경하십시오. 할 때 저장을 클릭합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Make changes to your profile here. Click save when you're done."
+msgstr "귀하의 프로필에 변경하십시오. 당신이 할 때 저장을 클릭합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:46
+#, elixir-autogen, elixir-format
+msgid "Manage your account settings here."
+msgstr "계정 설정 관리"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/tab_bar_page.ex:56
+#, elixir-autogen, elixir-format
+msgid "Many Channels"
+msgstr "많은 채널"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:30
+#, elixir-autogen, elixir-format
+msgid "Marks"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:18
+#, elixir-autogen, elixir-format
+msgid "Media"
+msgstr "주요 특징"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:157
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/media_controls_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/media_controls_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Media Controls"
+msgstr "미디어 컨트롤"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:60
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:209
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:74
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Menu"
+msgstr "* 이름"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:202
+#, elixir-autogen, elixir-format
+msgid "Message Menu"
+msgstr "공지사항"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:54
+#, elixir-autogen, elixir-format
+msgid "Message Types"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:32
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:44
+#, elixir-autogen, elixir-format
+msgid "Message to #lobby — / for commands"
+msgstr "이름 * #lobby - / 명령"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:72
+#, elixir-autogen, elixir-format
+msgid "Metadata Tags"
+msgstr "Metadata 태그"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:97
+#, elixir-autogen, elixir-format
+msgid "Minimal Card"
+msgstr "Minimal 카드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/tab_bar_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "Mixed Tabs"
+msgstr "혼합 탭"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "Mixed Types"
+msgstr "혼합 유형"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:99
+#, elixir-autogen, elixir-format
+msgid "Moderated, invite-only, topic lock, key, limit"
+msgstr "Moderated, 초대 전용, 주제 잠금, 키, 제한"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:97
+#, elixir-autogen, elixir-format
+msgid "Modes"
+msgstr "모드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:93
+#, elixir-autogen, elixir-format
+msgid "Moon"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:64
+#, elixir-autogen, elixir-format
+msgid "Mouse"
+msgstr "마우스"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:63
+#, elixir-autogen, elixir-format
+msgid "Move"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Multi-Field Status Bar"
+msgstr "멀티 Field 상태 바"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:51
+#, elixir-autogen, elixir-format
+msgid "Multiple"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:59
+#, elixir-autogen, elixir-format
+msgid "Multiple Invites (Stacked)"
+msgstr "다수 Invites (정확한)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/media_controls_page.ex:39
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:109
+#, elixir-autogen, elixir-format
+msgid "Muted"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/media_controls_page.ex:48
+#, elixir-autogen, elixir-format
+msgid "Muted + Camera Off"
+msgstr "진흙 + 카메라 끄기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_context_menu_page.ex:56
+#, elixir-autogen, elixir-format
+msgid "Muted Channel"
+msgstr "Muted 채널"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:58
+#, elixir-autogen, elixir-format
+msgid "My Channels"
+msgstr "내 채널"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "My Computer"
+msgstr "내 컴퓨터"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:57
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:98
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:46
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Name:"
+msgstr "이름:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:20
+#, elixir-autogen, elixir-format
+msgid "Navigation"
+msgstr "- 연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "New"
+msgstr "- 한국어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "New tip available"
+msgstr "새로운 팁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/pagination_page.ex:69
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/pagination_page.ex:123
+#, elixir-autogen, elixir-format
+msgid "Next"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:28
+#, elixir-autogen, elixir-format
+msgid "Next tab"
+msgstr "다음 탭"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:143
+#, elixir-autogen, elixir-format
+msgid "Nick Change"
+msgstr "Nick 변화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_change_dialog_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_change_dialog_page.ex:31
+#, elixir-autogen, elixir-format
+msgid "Nick Change Dialog"
+msgstr "Nick 변화 대화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:91
+#, elixir-autogen, elixir-format
+msgid "Nick Colors"
+msgstr "닉 색상"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Nick Menu"
+msgstr "닉 메뉴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "Nick Menu — Edge Cases"
+msgstr "Nick Menu – 가장자리 케이스"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Nick Mode"
+msgstr "닉 모드"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:90
+#: lib/retro_hex_chat_web/live/showcase_live/chat/nicklist_page.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/chat/nicklist_page.ex:23
+#, elixir-autogen, elixir-format
+msgid "Nicklist"
+msgstr "팟캐스트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:65
+#, elixir-autogen, elixir-format
+msgid "Nicklist Tab"
+msgstr "닉리스트 탭"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:32
+#, elixir-autogen, elixir-format
+msgid "Nickname"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:140
+#, elixir-autogen, elixir-format
+msgid "Nil Tooltip"
+msgstr "Nil 도구 팁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:80
+#, elixir-autogen, elixir-format
+msgid "No Pending Invites"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/topic_bar_page.ex:67
+#, elixir-autogen, elixir-format
+msgid "No Topic"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:58
+#, elixir-autogen, elixir-format
+msgid "No channels joined"
+msgstr "채널 없음"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:97
+#, elixir-autogen, elixir-format
+msgid "No contacts"
+msgstr "연락처"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:36
+#, elixir-autogen, elixir-format
+msgid "No messages yet"
+msgstr "메시지 없음"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:90
+#, elixir-autogen, elixir-format
+msgid "No results"
+msgstr "결과 없음"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:98
+#, elixir-autogen, elixir-format
+msgid "Non-dismissible"
+msgstr "기타 제품"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:67
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:92
+#, elixir-autogen, elixir-format
+msgid "Normal"
+msgstr "일반 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Normal Messages"
+msgstr "일반 메시지"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/media_controls_page.ex:55
+#, elixir-autogen, elixir-format
+msgid "Not In Call"
+msgstr "전화 번호"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:164
+#, elixir-autogen, elixir-format
+msgid "Not joined"
+msgstr "참여하기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:105
+#, elixir-autogen, elixir-format
+msgid "Not much, you?"
+msgstr "아니, 당신은?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:105
+#, elixir-autogen, elixir-format
+msgid "Notepad"
+msgstr "메모장"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:10
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:208
+#, elixir-autogen, elixir-format
+msgid "Notification"
+msgstr "공지사항"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:35
+#, elixir-autogen, elixir-format
+msgid "Notifications, info, warnings"
+msgstr "알림, 정보, 경고"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:145
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:37
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:40
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "Notify List"
+msgstr "공지사항"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:81
+#, elixir-autogen, elixir-format
+msgid "Notify List (Auto-Whois)"
+msgstr "알림 리스트 (Auto-Whois)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:96
+#, elixir-autogen, elixir-format
+msgid "Notify List (Empty)"
+msgstr "알림 목록 (Empty)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:66
+#, elixir-autogen, elixir-format
+msgid "Notify List (Selected)"
+msgstr "(선택)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:150
+#, elixir-autogen, elixir-format
+msgid "OK"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:127
+#, elixir-autogen, elixir-format
+msgid "Off Mode"
+msgstr "떨어져 형태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:50
+#, elixir-autogen, elixir-format
+msgid "Offline"
+msgstr "옵션 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:70
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:118
+#, elixir-autogen, elixir-format
+msgid "On"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:40
+#, elixir-autogen, elixir-format
+msgid "Online"
+msgstr "- 한국어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:156
+#, elixir-autogen, elixir-format
+msgid "Online Status"
+msgstr "온라인 상태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Op viewer (full menu)"
+msgstr "Op viewer (전체 메뉴)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:147
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Open"
+msgstr "기타"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:103
+#, elixir-autogen, elixir-format
+msgid "Open (Adding)"
+msgstr "(추가)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:85
+#, elixir-autogen, elixir-format
+msgid "Open (Editing)"
+msgstr "오픈 (Editing)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:120
+#, elixir-autogen, elixir-format
+msgid "Open (Empty)"
+msgstr "오픈 (Empty)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:70
+#, elixir-autogen, elixir-format
+msgid "Open (Row Selected)"
+msgstr "오픈 (Row selected)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/address_book_page.ex:72
+#, elixir-autogen, elixir-format
+msgid "Open Address Book"
+msgstr "본문 바로가기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:64
+#, elixir-autogen, elixir-format
+msgid "Open Admin Console"
+msgstr "Open Admin 콘솔"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:47
+#, elixir-autogen, elixir-format
+msgid "Open Alias Editor"
+msgstr "Alias 편집기 열기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:61
+#, elixir-autogen, elixir-format
+msgid "Open Auto Respond"
+msgstr "자동 응답 열기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:86
+#, elixir-autogen, elixir-format
+msgid "Open Auto Respond (Editing)"
+msgstr "자동 응답 열기 (Editing)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/auto_respond_dialog_page.ex:105
+#, elixir-autogen, elixir-format
+msgid "Open Auto Respond (Empty)"
+msgstr "자동 응답 열기 (Empty)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:65
+#, elixir-autogen, elixir-format
+msgid "Open Bot Management"
+msgstr "Bot 관리"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:109
+#, elixir-autogen, elixir-format
+msgid "Open Cheatsheet"
+msgstr "열 시트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:100
+#, elixir-autogen, elixir-format
+msgid "Open Custom Menus (Channel)"
+msgstr "사용자 지정 메뉴 열기 (채널)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:115
+#, elixir-autogen, elixir-format
+msgid "Open Custom Menus (Editing)"
+msgstr "주문 메뉴 열기 (Editing)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:70
+#, elixir-autogen, elixir-format
+msgid "Open Custom Menus (Nicklist)"
+msgstr "사용자 지정 메뉴 열기 (Nicklist)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Open Dialog"
+msgstr "열린 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:130
+#, elixir-autogen, elixir-format
+msgid "Open Empty Cheatsheet"
+msgstr "빈 열 시트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:106
+#, elixir-autogen, elixir-format
+msgid "Open Group"
+msgstr "오픈 그룹"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:39
+#, elixir-autogen, elixir-format
+msgid "Open Menu"
+msgstr "메뉴 열기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Open Perform"
+msgstr "공지사항"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:36
+#, elixir-autogen, elixir-format
+msgid "Open Popover"
+msgstr "팝업 열기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "Open Right Sheet"
+msgstr "열린 Right Sheet"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:50
+#, elixir-autogen, elixir-format
+msgid "Open Sound Settings"
+msgstr "사운드 설정 열기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:73
+#, elixir-autogen, elixir-format
+msgid "Open Sound Settings (Custom Sounds)"
+msgstr "사운드 설정 열기 (Custom Sounds)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:88
+#, elixir-autogen, elixir-format
+msgid "Open Sound Settings (Defaults)"
+msgstr "사운드 설정 열기 (기본)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Open as Operator"
+msgstr "운영시간"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Open as User"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:73
+#, elixir-autogen, elixir-format
+msgid "Open help"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:65
+#, elixir-autogen, elixir-format
+msgid "Open message search"
+msgstr "본문 바로가기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:75
+#, elixir-autogen, elixir-format
+msgid "Open the help topics dialog"
+msgstr "도움말 주제 열기 대화 상자"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Open-source Quake"
+msgstr "오픈 소스 Quake"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Operation completed successfully."
+msgstr "가동은 성공적으로 완료했습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:47
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:181
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:126
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:64
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Operator Only"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Operator View"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:227
+#, elixir-autogen, elixir-format
+msgid "Other user's message"
+msgstr "다른 사용자의 메시지"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:33
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:45
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle.ex:31
+#, elixir-autogen, elixir-format
+msgid "Outline"
+msgstr "기타 제품"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:208
+#, elixir-autogen, elixir-format
+msgid "Own message"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:46
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:177
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:63
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:154
+#, elixir-autogen, elixir-format
+msgid "P2P"
+msgstr "P2P"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:159
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:47
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:60
+#, elixir-autogen, elixir-format
+msgid "P2P Lobby"
+msgstr "P2P 로비"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P 세션"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:41
+#, elixir-autogen, elixir-format
+msgid "P2P game icons (32x32)"
+msgstr "P2P 게임 아이콘 (32x32)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:49
+#, elixir-autogen, elixir-format
+msgid "P2P multiplayer and solo arcade flow"
+msgstr "P2P 멀티플레이어 및 솔로 아케이드 흐름"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:54
+#, elixir-autogen, elixir-format
+msgid "PM Mode"
+msgstr "PM 형태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:70
+#, elixir-autogen, elixir-format
+msgid "PM Normal"
+msgstr "PM 정상"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/topic_bar_page.ex:45
+#, elixir-autogen, elixir-format
+msgid "PM Topic"
+msgstr "PM 주제"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:71
+#, elixir-autogen, elixir-format
+msgid "PM Unread"
+msgstr "오후 Unread"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:78
+#, elixir-autogen, elixir-format
+msgid "PNG"
+msgstr "한국어"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:40
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/pagination_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/pagination_page.ex:34
+#, elixir-autogen, elixir-format
+msgid "Pagination"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:38
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:62
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/input.ex:32
+#, elixir-autogen, elixir-format
+msgid "Password"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_change_dialog_page.ex:72
+#, elixir-autogen, elixir-format
+msgid "Password Error State"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Password Masking"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:119
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:25
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:117
+#, elixir-autogen, elixir-format
+msgid "Paste"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/paste_confirm_dialog_page.ex:99
+#, elixir-autogen, elixir-format
+msgid "Paste 1 Line"
+msgstr "풀 1라인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/paste_confirm_dialog_page.ex:63
+#, elixir-autogen, elixir-format
+msgid "Paste 25 Lines (Flood Warning)"
+msgstr "페이스 25 라인 (Flood 경고)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/paste_confirm_dialog_page.ex:39
+#, elixir-autogen, elixir-format
+msgid "Paste 5 Lines"
+msgstr "풀 5 선"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/paste_confirm_dialog_page.ex:81
+#, elixir-autogen, elixir-format
+msgid "Paste Blocked"
+msgstr "페이스 북"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:146
+#, elixir-autogen, elixir-format
+msgid "Paste Confirm"
+msgstr "Paste 확인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/paste_confirm_dialog_page.ex:22
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/paste_confirm_dialog_page.ex:31
+#, elixir-autogen, elixir-format
+msgid "Paste Confirm Dialog"
+msgstr "풀은 Dialog를 확인합니다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:144
+#, elixir-autogen, elixir-format
+msgid "Peer Offline"
+msgstr "Peer 오프라인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Peer-to-peer session components — P2P lobby, file transfer, and media "
+"controls."
+msgstr "Peer-to-peer 세션 구성 요소 - P2P 로비, 파일 전송 및 미디어 제어."
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:62
+#, elixir-autogen, elixir-format
+msgid "Pending"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:62
+#, elixir-autogen, elixir-format
+msgid "Pending (Incoming)"
+msgstr "(입관)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:14
+#, elixir-autogen, elixir-format
+msgid "People"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:221
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:119
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:123
+#, elixir-autogen, elixir-format
+msgid "Perform"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:148
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:2
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Perform Dialog"
+msgstr "Dialog 받기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Personal Information"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Platform IRC Status Bar"
+msgstr "플랫폼 IRC 상태 막대기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:103
+#, elixir-autogen, elixir-format
+msgid "Platform Main Toolbar"
+msgstr "플랫폼 메인 툴바"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:177
+#, elixir-autogen, elixir-format
+msgid "Platform-Style Tools Menu"
+msgstr "플랫폼 스타일 도구 메뉴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "Play"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:97
+#, elixir-autogen, elixir-format
+msgid "Play sounds"
+msgstr "놀이 소리"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "Playing State"
+msgstr "재생 국가"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:42
+#, elixir-autogen, elixir-format
+msgid "Point & Click"
+msgstr "포인트 & 클릭"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:25
+#, elixir-autogen, elixir-format
+msgid "Popover"
+msgstr "팝오버"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:78
+#, elixir-autogen, elixir-format
+msgid "Popular Channels"
+msgstr "인기 채널"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:124
+#, elixir-autogen, elixir-format
+msgid "Port:"
+msgstr "항구:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:42
+#, elixir-autogen, elixir-format
+msgid "Pretty good, working on some code"
+msgstr "꽤 좋은, 일부 코드 작업"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/pagination_page.ex:49
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/pagination_page.ex:94
+#, elixir-autogen, elixir-format
+msgid "Prev"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:33
+#, elixir-autogen, elixir-format
+msgid "Prev tab"
+msgstr "이전 탭"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:17
+#, elixir-autogen, elixir-format
+msgid "Primitives"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:160
+#, elixir-autogen, elixir-format
+msgid "Print"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:37
+#, elixir-autogen, elixir-format
+msgid "Private Message"
+msgstr "개인 메시지"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:64
+#, elixir-autogen, elixir-format
+msgid "Private Messages"
+msgstr "개인 메시지"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:41
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:49
+#, elixir-autogen, elixir-format
+msgid "Profile"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:42
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/progress.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/progress.ex:23
+#, elixir-autogen, elixir-format
+msgid "Progress"
+msgstr "주요사업"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:31
+#, elixir-autogen, elixir-format
+msgid "Quake Engine"
+msgstr "Quake 엔진"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:12
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:86
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:119
+#, elixir-autogen, elixir-format
+msgid "Query (PM)"
+msgstr "질문 (PM)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:40
+#, elixir-autogen, elixir-format
+msgid "Quiet — do not display kick message"
+msgstr "Quiet — 킥 메시지를 표시하지 마십시오"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/avatar.ex:35
+#, elixir-autogen, elixir-format
+msgid "RH"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:43
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/radio_group.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/radio_group.ex:25
+#, elixir-autogen, elixir-format
+msgid "Radio Group"
+msgstr "라디오 그룹"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:60
+#, elixir-autogen, elixir-format
+msgid "Recall next message"
+msgstr "다음 메시지 호출"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:55
+#, elixir-autogen, elixir-format
+msgid "Recall previous message"
+msgstr "이전 메시지"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Receiving"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/connection_status_page.ex:40
+#, elixir-autogen, elixir-format
+msgid "Reconnecting"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:101
+#, elixir-autogen, elixir-format
+msgid "Redo"
+msgstr "레드오"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:53
+#, elixir-autogen, elixir-format
+msgid "Regex Error"
+msgstr "Regex 오류"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:75
+#, elixir-autogen, elixir-format
+msgid "Reginald"
+msgstr "레지덴셜"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_change_dialog_page.ex:57
+#, elixir-autogen, elixir-format
+msgid "Registered Nick"
+msgstr "등록된 Nick"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:193
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:67
+#, elixir-autogen, elixir-format
+msgid "Regular"
+msgstr "(주)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Regular User View"
+msgstr "일반 사용자보기"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:91
+#: lib/retro_hex_chat_web/live/showcase_live/chat/reply_bar_page.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/chat/reply_bar_page.ex:23
+#, elixir-autogen, elixir-format
+msgid "Reply Bar"
+msgstr "대답 바"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Retro Arcade"
+msgstr "레트로 아케이드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "Retro Scrollbar"
+msgstr "레트로 스크롤바"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:92
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat"
+msgstr "RetroHexChat을"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat Component Showcase"
+msgstr "RetroHexChat 구성 요소 쇼케이스"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:80
+#, elixir-autogen, elixir-format
+msgid "Retry"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:94
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:38
+#, elixir-autogen, elixir-format
+msgid "Right"
+msgstr "주요특징"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Right Sheet"
+msgstr "연락처"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/hover_card_page.ex:72
+#, elixir-autogen, elixir-format
+msgid "Role Badge (via role attr)"
+msgstr "역할 배지 ( 역할 attr를 통해)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:59
+#, elixir-autogen, elixir-format
+msgid "Role Labels"
+msgstr "롤 라벨"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/nicklist_page.ex:70
+#, elixir-autogen, elixir-format
+msgid "Roles"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/bot_management_dialog_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Rolls a dice (1-20)"
+msgstr "주사위 (1-20)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/alias_dialog_page.ex:65
+#, elixir-autogen, elixir-format
+msgid "Row Selected"
+msgstr "행 선택"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"SaladUI base widgets — buttons, inputs, badges, toggles, selects, and other "
+"atomic form controls."
+msgstr "SaladUI 기본 위젯 - 버튼, 입력, 배지, 견인, 선택, 기타 원자 양식 컨트롤."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:61
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:151
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:15
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:52
+#, elixir-autogen, elixir-format
+msgid "Save"
+msgstr "제품 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:155
+#, elixir-autogen, elixir-format
+msgid "Save As..."
+msgstr "저장 ..."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Save Changes"
+msgstr "저장 변화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "Save now"
+msgstr "지금 구매"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:71
+#, elixir-autogen, elixir-format
+msgid "Save often - ammo and health can be scarce"
+msgstr "종종 저장 - ammo 및 건강은 scarce 일 수 있습니다"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:61
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:16
+#, elixir-autogen, elixir-format
+msgid "Scroll Area"
+msgstr "채용정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:23
+#, elixir-autogen, elixir-format
+msgid "Scroll Area & Scrollbar"
+msgstr "스크롤 영역 & 스크롤"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:92
+#: lib/retro_hex_chat_web/live/showcase_live/chat/scroll_loader_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/chat/scroll_loader_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Scroll Loader"
+msgstr "스크롤 로더"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:43
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:80
+#, elixir-autogen, elixir-format
+msgid "ScummVM"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:63
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:93
+#: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:24
+#, elixir-autogen, elixir-format
+msgid "Search Bar"
+msgstr "검색 바"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:31
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:37
+#, elixir-autogen, elixir-format
+msgid "Secondary"
+msgstr "한국어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/separator.ex:28
+#, elixir-autogen, elixir-format
+msgid "Section A"
+msgstr "섹션 A"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/separator.ex:33
+#, elixir-autogen, elixir-format
+msgid "Section B"
+msgstr "단면도 B"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:43
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:26
+#, elixir-autogen, elixir-format
+msgid "Security"
+msgstr "보안 보안"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:44
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/select.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/select.ex:23
+#, elixir-autogen, elixir-format
+msgid "Select"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:125
+#, elixir-autogen, elixir-format
+msgid "Select All"
+msgstr "모두 보기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/select.ex:34
+#, elixir-autogen, elixir-format
+msgid "Select a channel..."
+msgstr "채널 선택..."
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_cards_page.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "Selected State"
+msgstr "국가 선택"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/color_picker_page.ex:52
+#, elixir-autogen, elixir-format
+msgid "Selected:"
+msgstr "선택:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "Self target"
+msgstr "자기 표적"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/paste_confirm_dialog_page.ex:76
+#, elixir-autogen, elixir-format
+msgid "Send Disabled"
+msgstr "Disabled를 보내십시오"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Send File"
+msgstr "파일 형식"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:57
+#, elixir-autogen, elixir-format
+msgid "Send a private message to a user or channel."
+msgstr "사용자 또는 채널에 개인 메시지를 보냅니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:48
+#, elixir-autogen, elixir-format
+msgid "Send message"
+msgstr "메시지 보내기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/checkbox.ex:37
+#, elixir-autogen, elixir-format
+msgid "Send notifications"
+msgstr "공지사항"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:50
+#, elixir-autogen, elixir-format
+msgid "Send the composed message"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/file_transfer_page.ex:50
+#, elixir-autogen, elixir-format
+msgid "Sending"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:45
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/separator.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/separator.ex:23
+#, elixir-autogen, elixir-format
+msgid "Separator"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:81
+#, elixir-autogen, elixir-format
+msgid "Server"
+msgstr "계정 관리"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:120
+#, elixir-autogen, elixir-format
+msgid "Server Address:"
+msgstr "서버 주소:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:78
+#, elixir-autogen, elixir-format
+msgid "Server statistics — March 2026"
+msgstr "서버 통계 — March 2026"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:23
+#, elixir-autogen, elixir-format
+msgid "Servers, databases, platforms"
+msgstr "서버, 데이터베이스, 플랫폼"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:178
+#, elixir-autogen, elixir-format
+msgid "Session Closed by User"
+msgstr "세션 닫히는 사용자"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:220
+#, elixir-autogen, elixir-format
+msgid "Session Ended (call ended)"
+msgstr "세션 종료 (변경 종료)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:248
+#, elixir-autogen, elixir-format
+msgid "Session Ended (file transfer)"
+msgstr "세션 종료 (파일 전송)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:192
+#, elixir-autogen, elixir-format
+msgid "Session Ended (no result)"
+msgstr "세션 종료 (결과 없음)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:234
+#, elixir-autogen, elixir-format
+msgid "Session Ended (user closed)"
+msgstr "세션 종료 (사용자 폐쇄)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Set Nick Color"
+msgstr "닉 색상 설정"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "Set the dimensions for the layer."
+msgstr "층의 크기를 설정합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:80
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:247
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:42
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:110
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:37
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:53
+#, elixir-autogen, elixir-format
+msgid "Settings"
+msgstr "계정 설정"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:33
+#, elixir-autogen, elixir-format
+msgid "Settings, editing, search"
+msgstr "설정, 편집, 검색"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "Shadows (3D Borders)"
+msgstr "Shadows (3D 국경)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/skeleton.ex:26
+#, elixir-autogen, elixir-format
+msgid "Shapes"
+msgstr "제품 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:34
+#, elixir-autogen, elixir-format
+msgid "Share your favorite tunes"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:36
+#, elixir-autogen, elixir-format
+msgid "Shareware Classic"
+msgstr "공유하기 Classic"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:46
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Sheet"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Sheet content goes here."
+msgstr "시트 내용이 여기에 간다."
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:99
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:32
+#, elixir-autogen, elixir-format
+msgid "Shell"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:65
+#, elixir-autogen, elixir-format
+msgid "Shoot"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:80
+#, elixir-autogen, elixir-format
+msgid "Short message..."
+msgstr "짧은 메시지 ..."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:55
+#, elixir-autogen, elixir-format
+msgid "Show (no details)"
+msgstr "쇼 (결과 없음)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:36
+#, elixir-autogen, elixir-format
+msgid "Show Alert Dialog"
+msgstr "Alert Dialog보기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/confirm_dialog_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Show Confirm"
+msgstr "공지사항"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:127
+#, elixir-autogen, elixir-format
+msgid "Show Default"
+msgstr "기본 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:85
+#, elixir-autogen, elixir-format
+msgid "Show Empty Invite Dialog"
+msgstr "빈 Invite Dialog보기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:145
+#, elixir-autogen, elixir-format
+msgid "Show Error"
+msgstr "표시 오류"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Show Kick Dialog"
+msgstr "Kick Dialog 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:39
+#, elixir-autogen, elixir-format
+msgid "Show Single Invite"
+msgstr "단일 Invite보기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:64
+#, elixir-autogen, elixir-format
+msgid "Show Stacked Invites"
+msgstr "스택 된 Invites"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:136
+#, elixir-autogen, elixir-format
+msgid "Show Success"
+msgstr "성공 사례"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:80
+#, elixir-autogen, elixir-format
+msgid "Show this keyboard shortcut reference"
+msgstr "이 키보드 단축키 참조"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:62
+#, elixir-autogen, elixir-format
+msgid "Sides"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:27
+#, elixir-autogen, elixir-format
+msgid "Single"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/invite_dialog_page.ex:34
+#, elixir-autogen, elixir-format
+msgid "Single Invite"
+msgstr "단일 Invite"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/paste_confirm_dialog_page.ex:94
+#, elixir-autogen, elixir-format
+msgid "Single Line"
+msgstr "단일 라인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:52
+#, elixir-autogen, elixir-format
+msgid "Sizes"
+msgstr "제품 정보"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:47
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/skeleton.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/skeleton.ex:23
+#, elixir-autogen, elixir-format
+msgid "Skeleton"
+msgstr "스켈레톤"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:31
+#, elixir-autogen, elixir-format
+msgid "Slap"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:48
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/slider.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/slider.ex:23
+#, elixir-autogen, elixir-format
+msgid "Slider"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:68
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:57
+#, elixir-autogen, elixir-format
+msgid "Small"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:55
+#, elixir-autogen, elixir-format
+msgid "Solo Arcade game logos/cover art"
+msgstr "솔로 아케이드 게임 로고/cover ·"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:167
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:80
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Solo Lobby"
+msgstr "솔로 로비"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:26
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:43
+#, elixir-autogen, elixir-format
+msgid "Something went wrong. Please try again."
+msgstr "뭔가 잘못되었습니다. 다시 시도하십시오."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:97
+#, elixir-autogen, elixir-format
+msgid "Sorted by Nick (Ascending)"
+msgstr "정렬 : Nick (승상)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Sound"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:150
+#, elixir-autogen, elixir-format
+msgid "Sound Settings"
+msgstr "사운드 설정"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:21
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/sound_settings_dialog_page.ex:42
+#, elixir-autogen, elixir-format
+msgid "Sound Settings Dialog"
+msgstr "사운드 설정 Dialog"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:226
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:117
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:140
+#, elixir-autogen, elixir-format
+msgid "Sounds"
+msgstr "팟캐스트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "Spaces: 2"
+msgstr "공간: 2"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:111
+#, elixir-autogen, elixir-format
+msgid "Spacing"
+msgstr "사이트 맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:115
+#, elixir-autogen, elixir-format
+msgid "Stacked Layout"
+msgstr "관련 상품"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/paste_confirm_dialog_page.ex:34
+#, elixir-autogen, elixir-format
+msgid "Standard Paste Confirmation"
+msgstr "표준 Paste 확인"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Start a conversation to see messages here."
+msgstr "여기에 메시지를 볼 대화를 시작합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:63
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:88
+#, elixir-autogen, elixir-format
+msgid "States"
+msgstr "한국어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:30
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:49
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:87
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:33
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "주요연혁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:136
+#, elixir-autogen, elixir-format
+msgid "Status & Semantic Colors"
+msgstr "상태 & Semantic 색깔"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:106
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Status Bar"
+msgstr "상태 바"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:107
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Status Bar App"
+msgstr "상태 바 앱"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:46
+#, elixir-autogen, elixir-format
+msgid "Status Indicators"
+msgstr "상태 표시"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/tab_bar_page.ex:47
+#, elixir-autogen, elixir-format
+msgid "Status Only"
+msgstr "상태 만"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/topic_bar_page.ex:56
+#, elixir-autogen, elixir-format
+msgid "Status Window"
+msgstr "상태 창"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/flood_protection_dialog_page.ex:57
+#, elixir-autogen, elixir-format
+msgid "Strict Settings"
+msgstr "Strict 설정"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/formatting_toolbar_page.ex:47
+#, elixir-autogen, elixir-format
+msgid "Strip Active"
+msgstr "스트립 Active"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:23
+#, elixir-autogen, elixir-format
+msgid ""
+"Structural containers — dialogs, tabs, tables, menus, tree views, windows, "
+"and scroll areas."
+msgstr "구조 컨테이너 - 대화 상자, 탭, 테이블, 메뉴, 나무 전망, 창 및 스크롤 영역."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/autocomplete_page.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Subcommand Mode"
+msgstr "Subcommand 형태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:71
+#, elixir-autogen, elixir-format
+msgid "Submit"
+msgstr "제출하기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:17
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:224
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:34
+#, elixir-autogen, elixir-format
+msgid "Success"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:88
+#, elixir-autogen, elixir-format
+msgid "Sun"
+msgstr "(주)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:49
+#, elixir-autogen, elixir-format
+msgid "Sure! What game?"
+msgstr "견적 요청 어떤 게임?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:42
+#, elixir-autogen, elixir-format
+msgid "Sure, let's go!"
+msgstr "물론, 가자!"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:49
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/switch.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/switch.ex:24
+#, elixir-autogen, elixir-format
+msgid "Switch"
+msgstr "기타 제품"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Switch to the next conversation tab"
+msgstr "다음 대화 탭으로 전환"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:35
+#, elixir-autogen, elixir-format
+msgid "Switch to the previous tab"
+msgstr "이전 탭으로 전환"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:67
+#, elixir-autogen, elixir-format
+msgid "Switch weapons"
+msgstr "무기 전환"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:36
+#, elixir-autogen, elixir-format
+msgid "Symbols"
+msgstr "계정 만들기"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:94
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:70
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:86
+#, elixir-autogen, elixir-format
+msgid "Syntax Tooltip"
+msgstr "Syntax 툴팁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "시스템"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "Tab"
+msgstr "탭 탭"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:96
+#: lib/retro_hex_chat_web/live/showcase_live/chat/tab_bar_page.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/chat/tab_bar_page.ex:23
+#, elixir-autogen, elixir-format
+msgid "Tab Bar"
+msgstr "탭 바"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:62
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:23
+#, elixir-autogen, elixir-format
+msgid "Table"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:63
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:24
+#, elixir-autogen, elixir-format
+msgid "Tabs"
+msgstr "탭"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:78
+#, elixir-autogen, elixir-format
+msgid "Tabs Overview"
+msgstr "탭 개요"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:25
+#, elixir-autogen, elixir-format
+msgid "Terminal, scripting, automation"
+msgstr "터미널, 스크립트, 자동화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:56
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Text Color"
+msgstr "텍스트 색상"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:39
+#, elixir-autogen, elixir-format
+msgid "Text formatting (14x14)"
+msgstr "텍스트 포맷 (14x14)"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:50
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/textarea.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/textarea.ex:23
+#, elixir-autogen, elixir-format
+msgid "Textarea"
+msgstr "본문내용"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:72
+#, elixir-autogen, elixir-format
+msgid "The chainsaw is surprisingly effective against Pinkies"
+msgstr "chainsaw는 Pinkies에 대해 놀랍게 효과적입니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:59
+#, elixir-autogen, elixir-format
+msgid "The original first-person shooter that defined the genre."
+msgstr "장르를 정의하는 최초의 사람 슈팅 게임."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "This action cannot be undone."
+msgstr "이 동작은 undone일 수 없습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:46
+#, elixir-autogen, elixir-format
+msgid ""
+"This action cannot be undone. This will permanently delete your account and "
+"remove your data from our servers."
+msgstr "이 동작은 undone일 수 없습니다. 이 계정을 영구적으로 삭제하고 우리의 서버에서 데이터를 제거합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:98
+#, elixir-autogen, elixir-format
+msgid ""
+"This action cannot be undone. This will permanently delete your account."
+msgstr "이 동작은 undone일 수 없습니다. 이것은 영구적으로 계정을 삭제합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:36
+#, elixir-autogen, elixir-format
+msgid "This is a default informational alert."
+msgstr "이것은 기본 정보 경고입니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "This is a default notification."
+msgstr "이것은 기본 알림입니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:210
+#, elixir-autogen, elixir-format
+msgid "This is a default toast notification."
+msgstr "이것은 기본 토스트 알림입니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/tooltip.ex:40
+#, elixir-autogen, elixir-format
+msgid "This is a tooltip"
+msgstr "도구 팁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/scroll_area_page.ex:53
+#, elixir-autogen, elixir-format
+msgid ""
+"This is a very long line that extends beyond the container width to "
+"demonstrate horizontal scrollbar behavior. It keeps going and going and "
+"going until you have to scroll right to read it all."
+msgstr ""
+"이것은 컨테이너 너비를 넘어 수평 스크롤 행동을 입증하는 매우 긴 라인입니다. 그것은 당신이 그것을 읽을 수 있도록 오른쪽 스크롤 할 "
+"때까지 가고 갈."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:42
+#, elixir-autogen, elixir-format
+msgid "This is the card content area. You can put any content here."
+msgstr "이것은 카드 내용 지역입니다. 당신은 여기에 어떤 내용을 넣을 수 있습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "This is your public display name."
+msgstr "이것은 당신의 공개 표시 이름입니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:74
+#, elixir-autogen, elixir-format
+msgid "This popover opens below."
+msgstr "이 팝업은 아래와 같습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:86
+#, elixir-autogen, elixir-format
+msgid "This popover opens to the left."
+msgstr "이 팝업은 왼쪽에 열립니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/popover_page.ex:98
+#, elixir-autogen, elixir-format
+msgid "This popover opens to the right."
+msgstr "이 팝업은 오른쪽에 열립니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:105
+#, elixir-autogen, elixir-format
+msgid "This sheet slides in from the bottom."
+msgstr "이 장은 바닥에서 미끄러지습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "This sheet slides in from the left."
+msgstr "왼쪽에서이 시트 슬라이드."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "This sheet slides in from the top."
+msgstr "상단의 이 시트 슬라이드."
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert_dialog_page.ex:96
+#, elixir-autogen, elixir-format
+msgid ""
+"This will permanently delete your account and all associated data. This "
+"action cannot be reversed."
+msgstr "계정과 관련된 모든 데이터를 영구적으로 삭제합니다. 이 작업은 반전 할 수 없습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "This window is focused."
+msgstr "이 창은 초점을 맞추고 있습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:89
+#, elixir-autogen, elixir-format
+msgid "This window is not focused."
+msgstr "이 창은 집중되지 않습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:95
+#, elixir-autogen, elixir-format
+msgid "Timeout"
+msgstr "시간 아웃"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:64
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Toast"
+msgstr "인기있는"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:51
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle.ex:23
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle.ex:30
+#, elixir-autogen, elixir-format
+msgid "Toggle"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:16
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:50
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:188
+#, elixir-autogen, elixir-format
+msgid "Toggle Conversations"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:52
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:17
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle_group.ex:24
+#, elixir-autogen, elixir-format
+msgid "Toggle Group"
+msgstr "회사소개"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:20
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:54
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:192
+#, elixir-autogen, elixir-format
+msgid "Toggle Nicklist"
+msgstr "닉리스트"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:65
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Toolbar"
+msgstr "도구 모음"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:109
+#: lib/retro_hex_chat_web/live/showcase_live/shell/toolbar_app_page.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/shell/toolbar_app_page.ex:33
+#, elixir-autogen, elixir-format
+msgid "Toolbar App"
+msgstr "툴바 앱"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:32
+#, elixir-autogen, elixir-format
+msgid "Tools"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:53
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/tooltip.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/tooltip.ex:25
+#, elixir-autogen, elixir-format
+msgid "Tooltip"
+msgstr "도구 팁"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "Top"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/sheet_page.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Top Sheet"
+msgstr "탑 시트"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:97
+#: lib/retro_hex_chat_web/live/showcase_live/chat/topic_bar_page.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/chat/topic_bar_page.ex:23
+#, elixir-autogen, elixir-format
+msgid "Topic Bar"
+msgstr "탑스 바"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.html.heex:94
+#, elixir-autogen, elixir-format
+msgid "Topic save button"
+msgstr "Topic 득점방해 단추"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:100
+#, elixir-autogen, elixir-format
+msgid "Total"
+msgstr "전체보기"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:66
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:16
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:23
+#, elixir-autogen, elixir-format
+msgid "Tree View"
+msgstr "트리 뷰"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:57
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:82
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:59
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:107
+#, elixir-autogen, elixir-format
+msgid "Troll"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:65
+#, elixir-autogen, elixir-format
+msgid "Troll has joined the channel."
+msgstr "Troll은 채널에 합류했습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "Troll heading out? Cool cool. The lobby will keep your seat warm."
+msgstr "Troll 헤드 아웃? 차가운 차가운. 로비는 좌석을 따뜻하게 유지합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:119
+#, elixir-autogen, elixir-format
+msgid ""
+"Troll heading out? Cool cool. The lobby will keep your seat warm. We're "
+"always open. Like a 24/7 diner but with better Wi-Fi."
+msgstr ""
+"Troll 헤드 아웃? 차가운 차가운. 로비는 좌석을 따뜻하게 유지합니다. 우리는 항상 열려 있습니다. 24/7 디너처럼 더 나은 Wi-"
+"Fi를 제공합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:91
+#, elixir-autogen, elixir-format
+msgid "Try a different search term."
+msgstr "다른 검색 용어를 사용해보십시오."
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "Type"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/textarea.ex:27
+#, elixir-autogen, elixir-format
+msgid "Type your message here..."
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/input.ex:26
+#, elixir-autogen, elixir-format
+msgid "Types"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "Typography"
+msgstr "자료실"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:152
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:54
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:65
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:68
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:73
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:75
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:213
+#, elixir-autogen, elixir-format
+msgid "URL Catcher"
+msgstr "URL 캐처"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:137
+#, elixir-autogen, elixir-format
+msgid "URL Catcher (Empty)"
+msgstr "URL 캐처 (Empty)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:120
+#, elixir-autogen, elixir-format
+msgid "URL Catcher (Filtered)"
+msgstr "URL Catcher (필터)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/url_catcher_page.ex:102
+#, elixir-autogen, elixir-format
+msgid "URL Catcher (Sorted)"
+msgstr "URL Catcher (분류)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_context_menu_page.html.heex:135
+#, elixir-autogen, elixir-format
+msgid "URL Menu"
+msgstr "URL 메뉴"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:119
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "UTF-8"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:52
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toolbar_page.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Underline"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:96
+#, elixir-autogen, elixir-format
+msgid "Undo"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:37
+#, elixir-autogen, elixir-format
+msgid "Unknown command: invalid"
+msgstr "알려진 명령: invalid"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:69
+#, elixir-autogen, elixir-format
+msgid "Unread"
+msgstr "한국어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/nick_change_dialog_page.ex:34
+#, elixir-autogen, elixir-format
+msgid "Unregistered Nick"
+msgstr "등록된 Nick"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "Unsaved changes"
+msgstr "잘못된 변화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:54
+#, elixir-autogen, elixir-format
+msgid "Up Arrow"
+msgstr "더 보기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:26
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tabs.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/avatar.ex:26
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/card.ex:28
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/checkbox.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/label.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/radio_group.ex:28
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/select.ex:26
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/separator.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/slider.ex:26
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/switch.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/textarea.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/tooltip.ex:28
+#, elixir-autogen, elixir-format
+msgid "Usage"
+msgstr "제품 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:66
+#, elixir-autogen, elixir-format
+msgid "Use / Open doors"
+msgstr "사용 / 문 열기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/avatar.ex:31
+#, elixir-autogen, elixir-format
+msgid "User"
+msgstr "사용자 이름"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:116
+#, elixir-autogen, elixir-format
+msgid "User Actions"
+msgstr "사용자 행동"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/nicklist_page.ex:52
+#, elixir-autogen, elixir-format
+msgid "User Statuses"
+msgstr "사용자 상태"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:34
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/label.ex:31
+#, elixir-autogen, elixir-format
+msgid "Username"
+msgstr "사용자 이름"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/dialog_page.ex:50
+#, elixir-autogen, elixir-format
+msgid "Username:"
+msgstr "사용자 이름:"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/table.ex:82
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:15
+#, elixir-autogen, elixir-format
+msgid "Users, contacts, social"
+msgstr "사용자, 연락처, 소셜"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/admin_console_dialog_page.ex:32
+#, elixir-autogen, elixir-format
+msgid "Users: 42, Channels: 8, Uptime: 3d 12h"
+msgstr "사용자: 42, 채널: 8, 가동 시간: 3d 12h"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:63
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:104
+#, elixir-autogen, elixir-format
+msgid "Value"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/progress.ex:26
+#, elixir-autogen, elixir-format
+msgid "Values"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:5
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/alert.ex:28
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:26
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/button.ex:27
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/toggle.ex:26
+#, elixir-autogen, elixir-format
+msgid "Variants"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:83
+#, elixir-autogen, elixir-format
+msgid "Variations"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Video Call"
+msgstr "영상 통화"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/history_search_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "Visible"
+msgstr "옵션 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:46
+#, elixir-autogen, elixir-format
+msgid "Voice"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:46
+#, elixir-autogen, elixir-format
+msgid "Voice/video call mockups"
+msgstr "이름 */video 연락처"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:189
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:66
+#, elixir-autogen, elixir-format
+msgid "Voiced"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:75
+#, elixir-autogen, elixir-format
+msgid "Vol"
+msgstr "한국어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:63
+#, elixir-autogen, elixir-format
+msgid "WASD"
+msgstr "다운로드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/badge.ex:51
+#, elixir-autogen, elixir-format
+msgid "Waiting"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:94
+#, elixir-autogen, elixir-format
+msgid "Waiting State (Guest)"
+msgstr "대기 상태 (Guest)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:77
+#, elixir-autogen, elixir-format
+msgid "Waiting State (Host)"
+msgstr "대기 상태 (Host)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Warning"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar_app_page.ex:67
+#, elixir-autogen, elixir-format
+msgid "Warning Lag"
+msgstr "공지사항"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:57
+#, elixir-autogen, elixir-format
+msgid "We'll never share your email."
+msgstr "우리는 당신의 이메일을 결코 공유하지 않을 것입니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:36
+#, elixir-autogen, elixir-format
+msgid "Welcome to #lobby!"
+msgstr "제품정보 #lobby!"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:27
+#, elixir-autogen, elixir-format
+msgid "Welcome to RetroHexChat!"
+msgstr "RetroHexChat에 오신 것을 환영합니다!"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:35
+#, elixir-autogen, elixir-format
+msgid "What is RetroHexChat?"
+msgstr "RetroHexChat은 무엇입니까?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:102
+#, elixir-autogen, elixir-format
+msgid "What's up?"
+msgstr "무엇?"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/custom_menus_dialog_page.ex:25
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:16
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:91
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:123
+#, elixir-autogen, elixir-format
+msgid "Whois"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.ex:33
+#, elixir-autogen, elixir-format
+msgid ""
+"Win98 app shell composites — toolbar app, status bar app, app header, config"
+" form, and empty states."
+msgstr "Win98 앱 쉘 컴포지트 — 툴바 앱, 상태 바 앱, 앱 헤더, 설정 양식 및 빈 상태."
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/diagrams.ex:52
+#, elixir-autogen, elixir-format
+msgid "Win98-style game screen illustrations"
+msgstr "Win98 스타일 게임 화면 일러스트"
+
+#: lib/retro_hex_chat_web/components/showcase_helpers.ex:67
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.ex:18
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Window"
+msgstr "창닫기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Window content goes here."
+msgstr "창 내용이 여기에 간다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:121
+#, elixir-autogen, elixir-format
+msgid "Windows (CRLF)"
+msgstr "윈도우 (CRLF)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/empty_state_page.ex:52
+#: lib/retro_hex_chat_web/live/showcase_live/shell/loading_spinner_page.ex:74
+#, elixir-autogen, elixir-format
+msgid "With Action"
+msgstr "활동하기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "With Actions"
+msgstr "활동으로"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:66
+#, elixir-autogen, elixir-format
+msgid "With All Filters"
+msgstr "모든 필터"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_context_menu_page.ex:72
+#, elixir-autogen, elixir-format
+msgid "With Custom Items"
+msgstr "주문품으로"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/breadcrumb_page.ex:61
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/pagination_page.ex:88
+#, elixir-autogen, elixir-format
+msgid "With Ellipsis"
+msgstr "Ellipsis로"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_input_page.ex:41
+#, elixir-autogen, elixir-format
+msgid "With Formatting Toolbar"
+msgstr "Formatting Toolbar로"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "With Kick Info"
+msgstr "Kick 정보"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/app_header_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "With Logo Link"
+msgstr "로고 링크로"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/app_header_page.ex:66
+#, elixir-autogen, elixir-format
+msgid "With Menu Bar (Connected)"
+msgstr "메뉴바(연결)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/app_header_page.ex:48
+#, elixir-autogen, elixir-format
+msgid "With Menu Bar (Disconnected)"
+msgstr "메뉴바(연결)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/reply_bar_page.ex:26
+#, elixir-autogen, elixir-format
+msgid "With Message Preview"
+msgstr "메시지 미리보기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:204
+#, elixir-autogen, elixir-format
+msgid "With Privacy & Inactivity Warning"
+msgstr "개인정보취급방침"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/cheatsheet_dialog_page.ex:104
+#, elixir-autogen, elixir-format
+msgid "With Sample Shortcuts"
+msgstr "샘플 바로가기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/emoji_picker_page.ex:51
+#, elixir-autogen, elixir-format
+msgid "With Search Text"
+msgstr "검색 텍스트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/emoji_picker_page.ex:37
+#, elixir-autogen, elixir-format
+msgid "With Selected Emoji"
+msgstr "선택된 Emoji"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/color_picker_page.ex:46
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_list_page.ex:69
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/notify_list_page.ex:61
+#, elixir-autogen, elixir-format
+msgid "With Selection"
+msgstr "선택 사항"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "With Separators"
+msgstr "Separators로"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/context_menu_page.html.heex:78
+#: lib/retro_hex_chat_web/live/showcase_live/layout/menu_page.html.heex:102
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/dropdown_menu_page.ex:82
+#, elixir-autogen, elixir-format
+msgid "With Shortcuts"
+msgstr "바로가기"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:100
+#, elixir-autogen, elixir-format
+msgid "With Status Bar"
+msgstr "상태 표시"
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/status_bar.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "With Status Indicators"
+msgstr "상태 표시"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/conversations_context_menu_page.ex:30
+#, elixir-autogen, elixir-format
+msgid "With Unread Messages"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/window.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "With help and close buttons."
+msgstr "도움과 가까운 단추로."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/irc_tabs_page.ex:81
+#, elixir-autogen, elixir-format
+msgid "Without Close Button"
+msgstr "닫기 버튼 없음"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/kick_dialog_page.ex:50
+#, elixir-autogen, elixir-format
+msgid "Without Kick Info"
+msgstr "Kick 정보 없이"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/fieldset_page.html.heex:87
+#, elixir-autogen, elixir-format
+msgid "Without Legend"
+msgstr "전설 없음"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/reply_bar_page.ex:36
+#, elixir-autogen, elixir-format
+msgid "Without Message"
+msgstr "메시지 없음"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:37
+#, elixir-autogen, elixir-format
+msgid "Wolf3D Engine"
+msgstr "Wolf3D 엔진"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/accordion.ex:53
+#, elixir-autogen, elixir-format
+msgid ""
+"Yes! These new UI components are built with Tailwind for full "
+"responsiveness."
+msgstr "예! 이 새로운 UI 구성 요소는 풀 응답을 위한 Tailwind로 건설됩니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "You have unsaved changes that will be lost."
+msgstr "당신은 잃어버린 변경이 없습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/syntax_tooltip_page.ex:43
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to use this command."
+msgstr "이 명령을 사용하려면 채널 연산자가 있어야 합니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:202
+#, elixir-autogen, elixir-format
+msgid "Z-Index Scale"
+msgstr "Z-Index 규모"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/search_bar_page.ex:46
+#, elixir-autogen, elixir-format
+msgid "Zero Results"
+msgstr "0 결과"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:71
+#, elixir-autogen, elixir-format
+msgid "[Server] Maintenance in 5 minutes."
+msgstr "[Server] 5 분 동안 유지 보수."
+
+#: lib/retro_hex_chat_web/live/showcase_live/assets/icons.ex:169
+#, elixir-autogen, elixir-format
+msgid "bg-gradient-to-r from-primary to-[#1084d0]"
+msgstr "bg-gradient-to-r from-primary to-[]#1084d0]"
+
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:39
+#, elixir-autogen, elixir-format
+msgid "bob has joined the session"
+msgstr "bob는 세션에 합류했습니다."
+
+#: lib/retro_hex_chat_web/live/showcase_live/shell/config_form_page.ex:135
+#, elixir-autogen, elixir-format
+msgid "connect / #channel"
+msgstr "연결 / #channel"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/input.ex:31
+#, elixir-autogen, elixir-format
+msgid "email@example.com"
+msgstr "이메일@example.com"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_layout_page.ex:55
+#, elixir-autogen, elixir-format
+msgid "eve has joined #lobby"
+msgstr "참여하다 #lobby"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:71
+#, elixir-autogen, elixir-format
+msgid "friend!*@troll.host"
+msgstr "친구!*@troll.host"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:38
+#, elixir-autogen, elixir-format
+msgid "logo.png"
+msgstr "로고.png"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/game_lobby_page.ex:19
+#: lib/retro_hex_chat_web/live/showcase_live/p2p/p2p_lobby_page.ex:17
+#, elixir-autogen, elixir-format
+msgid "macOS 10.15"
+msgstr "맥 OS 10.15"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:33
+#, elixir-autogen, elixir-format
+msgid "notes.md"
+msgstr "노트.md"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/perform_dialog_page.html.heex:110
+#, elixir-autogen, elixir-format
+msgid "on_*"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:37
+#, elixir-autogen, elixir-format
+msgid "photo.jpg"
+msgstr "사진.jpg"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:182
+#, elixir-autogen, elixir-format
+msgid "position=\"bottom-left\""
+msgstr "위치 =\"bottom-left\""
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:176
+#, elixir-autogen, elixir-format
+msgid "position=\"bottom-right\""
+msgstr "위치 =\"bottom-right\""
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:170
+#, elixir-autogen, elixir-format
+msgid "position=\"top-left\""
+msgstr "위치 = top-left"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:164
+#, elixir-autogen, elixir-format
+msgid "position=\"top-right\""
+msgstr "위치 = top-right"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:32
+#, elixir-autogen, elixir-format
+msgid "readme.txt"
+msgstr "다운로드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/tree_view_page.ex:34
+#, elixir-autogen, elixir-format
+msgid "report.pdf"
+msgstr "다운로드"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:56
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_dialog_page.ex:25
+#, elixir-autogen, elixir-format
+msgid "spammer!*@*"
+msgstr "스파머!*@*"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:84
+#, elixir-autogen, elixir-format
+msgid "text-2xl — 26px — Title"
+msgstr "텍스트 -2xl - 26px - 제목"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:81
+#, elixir-autogen, elixir-format
+msgid "text-base — 16px — Body text"
+msgstr "text-base — 16px — 본문"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "text-lg — 18px — Large text"
+msgstr "text-lg — 18px — 큰 텍스트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "text-sm — 14px — Small text"
+msgstr "text-sm — 14px — 작은 텍스트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "text-xl — 22px — Heading"
+msgstr "텍스트 xl — 22px — 제목"
+
+#: lib/retro_hex_chat_web/live/showcase_live/index.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "text-xs — 12px — Caption text"
+msgstr "text-xs — 12px — 캡션 텍스트"
+
+#: lib/retro_hex_chat_web/live/showcase_live/primitives/form_page.ex:53
+#, elixir-autogen, elixir-format
+msgid "user@example.com"
+msgstr "사용자@example.com"
+
+#: lib/retro_hex_chat_web/live/showcase_live/dialogs/channel_central_dialog_page.ex:81
+#, elixir-autogen, elixir-format
+msgid "vip!*@*.good.isp"
+msgstr "사이트 맵"
+
+#: lib/retro_hex_chat_web/live/showcase_live/chat/chat_message_page.ex:62
+#, elixir-autogen, elixir-format
+msgid "waves to the channel"
+msgstr "채널에 파도"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:182
+#, elixir-autogen, elixir-format
+msgid "— Bottom left corner"
+msgstr "— 하단 왼쪽 코너"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:176
+#, elixir-autogen, elixir-format
+msgid "— Bottom right (default)"
+msgstr "— 오른쪽 하단 (기본값)"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:170
+#, elixir-autogen, elixir-format
+msgid "— Top left corner"
+msgstr "- 왼쪽 상단 모서리"
+
+#: lib/retro_hex_chat_web/live/showcase_live/layout/toast_page.html.heex:164
+#, elixir-autogen, elixir-format
+msgid "— Top right corner"
+msgstr "- 오른쪽 상단 모서리"
+
+#: lib/retro_hex_chat_web/live/showcase_live/games/solo_lobby_page.ex:18
+#, elixir-autogen, elixir-format
+msgid "Episode 1"
+msgstr "에피소드 1"

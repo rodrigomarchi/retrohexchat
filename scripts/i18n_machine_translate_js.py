@@ -14,11 +14,17 @@ from i18n_machine_translate_po import LOCALE_TO_ARGOS, load_cache, save_cache, t
 
 
 CONST_NAMES = {
+    "ar": "AR",
     "pt_BR": "PT_BR",
     "es": "ES",
     "fr": "FR",
     "de": "DE",
+    "hi": "HI",
     "ja": "JA",
+    "ko": "KO",
+    "ru": "RU",
+    "tr": "TR",
+    "vi": "VI",
     "zh_Hans": "ZH_HANS",
     "id": "ID",
 }
@@ -47,11 +53,11 @@ def main() -> int:
     if unsupported:
         raise SystemExit(f"Unsupported Argos locales: {', '.join(unsupported)}")
 
-    pt_br = read_existing_pt_br(catalog)
+    translated = read_existing_catalogs(catalog)
+    pt_br = translated.get("pt_BR", {})
     messages = list(pt_br.keys())
     cache_path = Path(args.cache)
     cache = load_cache(cache_path)
-    translated = {"pt_BR": pt_br}
 
     for locale in locales:
         translator = translator_for(LOCALE_TO_ARGOS[locale])
@@ -65,10 +71,10 @@ def main() -> int:
     return 0
 
 
-def read_existing_pt_br(catalog: Path) -> dict[str, str]:
+def read_existing_catalogs(catalog: Path) -> dict[str, dict[str, str]]:
     script = (
         "import(process.argv[1]).then((m) => "
-        "console.log(JSON.stringify(m.PT_BR))).catch((error) => { "
+        "console.log(JSON.stringify(m))).catch((error) => { "
         "console.error(error); process.exit(1); })"
     )
 
@@ -83,11 +89,32 @@ def read_existing_pt_br(catalog: Path) -> dict[str, str]:
             capture_output=True,
         )
 
-    return json.loads(result.stdout)
+    exported = json.loads(result.stdout)
+    const_to_locale = {const_name: locale for locale, const_name in CONST_NAMES.items()}
+
+    return {
+        const_to_locale[const_name]: messages
+        for const_name, messages in exported.items()
+        if const_name in const_to_locale
+    }
 
 
 def write_catalog(catalog: Path, translations: dict[str, dict[str, str]]) -> None:
-    ordered_locales = ["de", "es", "fr", "id", "ja", "pt_BR", "zh_Hans"]
+    ordered_locales = [
+        "ar",
+        "de",
+        "es",
+        "fr",
+        "hi",
+        "id",
+        "ja",
+        "ko",
+        "pt_BR",
+        "ru",
+        "tr",
+        "vi",
+        "zh_Hans",
+    ]
     chunks = []
 
     for locale in ordered_locales:

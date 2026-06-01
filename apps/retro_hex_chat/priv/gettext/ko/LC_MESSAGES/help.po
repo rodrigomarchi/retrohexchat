@@ -1,0 +1,4476 @@
+# "msgid"s in this file come from help.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: ko\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:61
+#, elixir-autogen, elixir-format
+msgid "!prefix"
+msgstr "! 프레픽"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:214
+#, elixir-autogen, elixir-format
+msgid "+K No Knock"
+msgstr "+K 노크"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:205
+#, elixir-autogen, elixir-format
+msgid "+R Registered Only"
+msgstr "+R 등록"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:188
+#, elixir-autogen, elixir-format
+msgid "+c Strip Colors"
+msgstr "+c 스트립 색상"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:138
+#, elixir-autogen, elixir-format
+msgid "+h Half-Operator"
+msgstr "+h 반 가동자"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:75
+#, elixir-autogen, elixir-format
+msgid "+i Invite Only"
+msgstr "+i Invite 전용"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:226
+#, elixir-autogen, elixir-format
+msgid "+j Join Throttle"
+msgstr "+j 가입 스로틀"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:92
+#, elixir-autogen, elixir-format
+msgid "+k Channel Key"
+msgstr "+k 채널 키"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:100
+#, elixir-autogen, elixir-format
+msgid "+l User Limit"
+msgstr "+l 사용자 제한"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:66
+#, elixir-autogen, elixir-format
+msgid "+m Moderated"
+msgstr "+m 형태"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:156
+#, elixir-autogen, elixir-format
+msgid "+n No External Messages"
+msgstr "+n 외부 메시지 없음"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:126
+#, elixir-autogen, elixir-format
+msgid "+o Operator"
+msgstr "+o 연산자"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:176
+#, elixir-autogen, elixir-format
+msgid "+p Private"
+msgstr "+p 개인"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:114
+#, elixir-autogen, elixir-format
+msgid "+q Owner"
+msgstr "+q 소유자"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:168
+#, elixir-autogen, elixir-format
+msgid "+s Secret"
+msgstr "+s 비밀"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:84
+#, elixir-autogen, elixir-format
+msgid "+t Topic Lock"
+msgstr "+t Topic 자물쇠"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:147
+#, elixir-autogen, elixir-format
+msgid "+v Voice"
+msgstr "+v 음성"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:491
+#, elixir-autogen, elixir-format
+msgid "/admin channel"
+msgstr "/admin channel"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:515
+#, elixir-autogen, elixir-format
+msgid "/admin cs"
+msgstr "/admin cs"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:527
+#, elixir-autogen, elixir-format
+msgid "/admin debug"
+msgstr "/admin debug"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:539
+#, elixir-autogen, elixir-format
+msgid "/admin log"
+msgstr "/admin log"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:503
+#, elixir-autogen, elixir-format
+msgid "/admin ns"
+msgstr "/admin ns"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:560
+#, elixir-autogen, elixir-format
+msgid "/admin nuke"
+msgstr "/admin nuke"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:467
+#, elixir-autogen, elixir-format
+msgid "/admin server"
+msgstr "/admin server"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:548
+#, elixir-autogen, elixir-format
+msgid "/admin turn"
+msgstr "/admin turn"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:479
+#, elixir-autogen, elixir-format
+msgid "/admin user"
+msgstr "/admin user"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:32
+#, elixir-autogen, elixir-format
+msgid "/bot Command Reference"
+msgstr "/bot Command Reference"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:243
+#, elixir-autogen, elixir-format
+msgid "/knock Command"
+msgstr "/knock Command"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1945
+#, elixir-autogen, elixir-format
+msgid ""
+"1 long epic round — igloo needs 20 pieces, all enemies from the start, "
+msgstr "1 긴 서사 라운드 - igloo는 20 조각, 시작에서 모든 적,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1355
+#, elixir-autogen, elixir-format
+msgid "10 sections of increasing difficulty. Destroy bridges to advance. "
+msgstr "증가 어려움의 10 단면도. 스트로이 브리지 사전에."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1176
+#, elixir-autogen, elixir-format
+msgid ""
+"2-minute rounds, best of 3. Modes: Classic (open field) and Maze Battle. "
+msgstr "2 분 라운드, 3의 최고 모드: 클래식 (오픈 필드) 및 미즈 전투."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1289
+#, elixir-autogen, elixir-format
+msgid ""
+"3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D "
+"to move."
+msgstr "3 공유 생활, 50 네온 블록 (5 행), 공 속도. 화살표 키 또는 A/D 이동."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1695
+#, elixir-autogen, elixir-format
+msgid "3-minute race in permanent darkness with fog bursts. "
+msgstr "fog 파열을 가진 영원한 어둠 속에서 3 분 경주."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2509
+#, elixir-autogen, elixir-format
+msgid "32 deathmatch-focused arena maps for the DOOM engine. BSD license."
+msgstr "DOOM 엔진을 위한 32개의 죽음 초점이 있는 경기장 맵. BSD 라이센스."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1404
+#, elixir-autogen, elixir-format
+msgid "5 sections of intense River Raid action — river starts narrow, "
+msgstr "강렬한 강 레이드 액션의 5 섹션 - 강은 좁은 시작,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1637
+#, elixir-autogen, elixir-format
+msgid "5 waves of pure chaos from the start. "
+msgstr "시작에서 순수한 chaos의 5 파도."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1034
+#, elixir-autogen, elixir-format
+msgid "7 days"
+msgstr "7 일"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1723
+#, elixir-autogen, elixir-format
+msgid "90 seconds to score maximum overtakes. "
+msgstr "90 초 최대 절전을 점수."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2596
+#, elixir-autogen, elixir-format
+msgid ""
+"A Viking-themed DOOM total conversion with hand-drawn pixel art — axes, "
+"bows, and runic magic. Cacoward 2018 winner."
+msgstr "손으로 그리는 픽셀 아트 - 축, 활 및 런직 마술과 함께 바이킹 테마 DOOM 총 변환. Cacoward 2018 수상자"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2480
+#, elixir-autogen, elixir-format
+msgid ""
+"A complete free replacement for DOOM II — 32 levels with the Super Shotgun. "
+"Compatible with community PWAD mods."
+msgstr "DOOM II의 완전 무료 교체 - 슈퍼 샷건과 32 레벨. 커뮤니티 PWAD mods와 호환."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2651
+#, elixir-autogen, elixir-format
+msgid ""
+"A complete free replacement for Quake — original levels, art, and music "
+"under BSD license."
+msgstr "Quake를위한 완벽한 무료 교체 - BSD 라이센스의 원본 수준, 예술 및 음악."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2450
+#, elixir-autogen, elixir-format
+msgid ""
+"A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels with "
+"original art and music."
+msgstr "Ultimate DOOM을위한 완벽한 무료 교체 - 4 에피소드, 원래 예술과 음악 36 레벨."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2565
+#, elixir-autogen, elixir-format
+msgid ""
+"A cyberpunk DOOM total conversion with new weapons, enemies, and levels. "
+"Standalone v1.2 IWAD."
+msgstr "새로운 무기, 적, 레벨로 사이버펑크 DOOM 총 변환. 독립 v1.2 IWAD."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:121
+#, elixir-autogen, elixir-format
+msgid ""
+"Access all features through the toolbar buttons organized in six groups."
+msgstr "도구 모음 버튼을 통해 모든 기능을 액세스 6 그룹에 조직."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:91
+#, elixir-autogen, elixir-format
+msgid ""
+"Access user actions and channel operations through right-click context "
+"menus."
+msgstr "오른쪽 클릭을 통해 사용자 작업 및 채널 작업을 액세스."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:152
+#, elixir-autogen, elixir-format
+msgid "Add a user to your ignore list to hide their messages and actions."
+msgstr "사용자를 무시 목록에 추가하여 메시지와 행동을 숨깁니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:332
+#, elixir-autogen, elixir-format
+msgid ""
+"Add custom items to right-click context menus for quick access to commands."
+msgstr "명령에 빠른 액세스를 위한 올바른 클릭 컨텍스트 메뉴에 사용자 지정 항목을 추가합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:277
+#, elixir-autogen, elixir-format
+msgid ""
+"Add or remove users from your notify list to track when they connect or "
+"disconnect."
+msgstr "연결하거나 차단할 때 목록을 지정하거나 삭제할 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:30
+#, elixir-autogen, elixir-format
+msgid "Address Book"
+msgstr "주소 책"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:49
+#: lib/retro_hex_chat/chat/help_topics.ex:77
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:456
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:468
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:480
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:492
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:504
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:516
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:528
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:540
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:549
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:561
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1049
+#, elixir-autogen, elixir-format
+msgid "Admin & Server"
+msgstr "관리자 및 서버"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1048
+#, elixir-autogen, elixir-format
+msgid "Admin Console"
+msgstr "관리자 콘솔"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:295
+#, elixir-autogen, elixir-format
+msgid "Aliases"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:422
+#, elixir-autogen, elixir-format
+msgid "Align nicknames in a fixed-width column for improved chat readability."
+msgstr "향상된 채팅 읽을 수 있도록 고정 폭 열의 별명."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:113
+#, elixir-autogen, elixir-format
+msgid "Allow specific users to bypass channel bans using ban exception masks."
+msgstr "특정 사용자가 금지 예외 마스크를 사용하여 채널 금지를 우회 할 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:131
+#, elixir-autogen, elixir-format
+msgid ""
+"Allow specific users to join invite-only channels without an explicit "
+"invitation."
+msgstr "특정 사용자가 명시된 초대없이 초대 전용 채널에 가입할 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:919
+#, elixir-autogen, elixir-format
+msgid ""
+"Animated visual diagram showing the bilateral P2P link with real-time status"
+" and peer info."
+msgstr "실시간 상태 및 동료 정보와 양자 P2P 링크를 보여주는 애니메이션 시각화."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1905
+#, elixir-autogen, elixir-format
+msgid ""
+"Arctic construction race — jump on floating ice blocks to build your igloo "
+"while "
+msgstr "Arctic Construction Race – igloo를 구축하기 위해 뜨 얼음 블록에 점프"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:810
+#, elixir-autogen, elixir-format
+msgid "Audio Call"
+msgstr "오디오 통화"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:76
+#, elixir-autogen, elixir-format
+msgid ""
+"Authenticate with your registered nickname on connect to access your saved "
+"settings and channels."
+msgstr "저장된 설정 및 채널에 액세스하려면 등록 된 별명을 인증합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:986
+#, elixir-autogen, elixir-format
+msgid "Auto-Join Channels"
+msgstr "자동 조인 채널"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:199
+#, elixir-autogen, elixir-format
+msgid "Auto-Reconnect"
+msgstr "자동 연결"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:375
+#, elixir-autogen, elixir-format
+msgid "Auto-Respond"
+msgstr "자동 응답"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:559
+#, elixir-autogen, elixir-format
+msgid ""
+"Auto-expanding input box with multi-line support and contextual "
+"placeholders."
+msgstr "멀티 라인 지원 및 컨텍스트 위너와 자동 확장 입력 박스."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:169
+#, elixir-autogen, elixir-format
+msgid ""
+"Auto-moderation: word filtering, spam/flood detection, caps lock abuse "
+"prevention."
+msgstr "자동 모드: 워드 필터링, 스팸/flood 탐지, 모자 자물쇠 남용 예방."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:510
+#, elixir-autogen, elixir-format
+msgid "Autocomplete"
+msgstr "자동 완성"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:212
+#, elixir-autogen, elixir-format
+msgid ""
+"Automatically reconnect to the server when the connection is lost with "
+"exponential backoff."
+msgstr "연결이 exponential backoff로 잃을 때 서버에 자동 연결."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:489
+#, elixir-autogen, elixir-format
+msgid "Automatically reply to private messages when you are marked as away."
+msgstr "자동으로 개인 메시지에 회신 할 때."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:51
+#: lib/retro_hex_chat/chat/help_topics.ex:79
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:24
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:33
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:51
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:317
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:329
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:384
+#: lib/retro_hex_chat/chat/help_topics/features.ex:179
+#: lib/retro_hex_chat/chat/help_topics/features.ex:296
+#: lib/retro_hex_chat/chat/help_topics/features.ex:308
+#: lib/retro_hex_chat/chat/help_topics/features.ex:320
+#: lib/retro_hex_chat/chat/help_topics/features.ex:376
+#, elixir-autogen, elixir-format
+msgid "Automation"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:484
+#, elixir-autogen, elixir-format
+msgid "Away Auto-Reply"
+msgstr "Away 자동 리플라이"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:101
+#, elixir-autogen, elixir-format
+msgid "Ban Exceptions (+e)"
+msgstr "반 예외 (+e)"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:79
+#, elixir-autogen, elixir-format
+msgid "Ban a user from a channel by nickname or hostmask pattern."
+msgstr "별명 또는 hostmask 패턴으로 채널에서 사용자를 금지합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2749
+#, elixir-autogen, elixir-format
+msgid "Beneath a Steel Sky"
+msgstr "베네스 스틸 스카이"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2134
+#, elixir-autogen, elixir-format
+msgid "Beneath a Steel Sky, Dreamweb, Drascula, Flight of the Amazon Queen, "
+msgstr "Beneath a Steel Sky, Dreamweb, Drascula, 아마존 여왕의 비행,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1832
+#, elixir-autogen, elixir-format
+msgid "Best of 3 runs with rising difficulty. "
+msgstr "3의 베스트는 일어나기 어려움과 함께 작동합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1633
+#, elixir-autogen, elixir-format
+msgid "Blitz Space Invaders — instant alien drops, easier combo thresholds, "
+msgstr "Blitz Space 침입자 - 즉시 외계인 방울, 더 쉬운 combo 문턱,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1270
+#, elixir-autogen, elixir-format
+msgid "Block Breakers"
+msgstr "구획 차단기"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:164
+#, elixir-autogen, elixir-format
+msgid "Block messages from users who are not in the channel."
+msgstr "채널에없는 사용자의 메시지 차단."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:56
+#, elixir-autogen, elixir-format
+msgid "Bot Custom Commands"
+msgstr "Bot 사용자 정의 명령"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:76
+#, elixir-autogen, elixir-format
+msgid "Bot Dice Capability"
+msgstr "Bot 거푸집 기능"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:155
+#, elixir-autogen, elixir-format
+msgid "Bot Moderation Capability"
+msgstr "Bot 형태화 기능"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:137
+#, elixir-autogen, elixir-format
+msgid "Bot RSS Capability"
+msgstr "봇 RSS 기능"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:119
+#, elixir-autogen, elixir-format
+msgid "Bot Scheduler Capability"
+msgstr "Bot Scheduler 기능"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:98
+#, elixir-autogen, elixir-format
+msgid "Bot Trivia Capability"
+msgstr "Bot Trivia 기능"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:11
+#, elixir-autogen, elixir-format
+msgid "BotService Overview"
+msgstr "BotService 개요"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1663
+#, elixir-autogen, elixir-format
+msgid ""
+"Both players race on the same road — overtake AI cars and your opponent for "
+"points. "
+msgstr "동일한 도로에서 두 플레이어 경주 — AI 자동차와 포인트에 대한 상대를 지나."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:48
+#: lib/retro_hex_chat/chat/help_topics.ex:76
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:12
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:33
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:57
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:77
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:99
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:120
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:138
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:156
+#, elixir-autogen, elixir-format
+msgid "Bots"
+msgstr "로그아웃"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:711
+#, elixir-autogen, elixir-format
+msgid ""
+"Bottom bar showing connection status, lag indicator, clock, and channel "
+"information."
+msgstr "연결 상태, 지연 지시자, 시계 및 수로 정보를 보여주는 밑바닥 막대기."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:203
+#, elixir-autogen, elixir-format
+msgid "Browse all available channels with their topics and user counts."
+msgstr "그들의 주제와 사용자 수를 가진 모든 유효한 수로를 찾아보십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:498
+#, elixir-autogen, elixir-format
+msgid "Browse and insert emoji into your messages using the emoji picker."
+msgstr "emoji Picker를 사용하여 메시지에 이모티콘을 삽입하고 삽입합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1487
+#, elixir-autogen, elixir-format
+msgid ""
+"Bullets ricochet once off ceiling/floor. Aim up or down with arrow keys. "
+msgstr "Bullets ricochet 한 번 천장/floor. 화살표 키로 위로 또는 아래로. "
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:865
+#, elixir-autogen, elixir-format
+msgid "Call Quality"
+msgstr "연락처"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:29
+#, elixir-autogen, elixir-format
+msgid "ChanServ Overview"
+msgstr "ChanServ 개요"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:520
+#, elixir-autogen, elixir-format
+msgid ""
+"ChanServ administration: drop registrations, transfer founder, manage access"
+" lists."
+msgstr "ChanServ 관리: 등록을 드롭하고, 창립자, 액세스 목록을 관리합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:244
+#, elixir-autogen, elixir-format
+msgid "Change your current nickname to a new one."
+msgstr "새 이름으로 현재 별명을 변경하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:80
+#, elixir-autogen, elixir-format
+msgid "Channel Central"
+msgstr "채널 센트럴"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:138
+#, elixir-autogen, elixir-format
+msgid "Channel Invites"
+msgstr "채널 Invites"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:46
+#: lib/retro_hex_chat/chat/help_topics.ex:74
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:12
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:38
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:67
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:76
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:85
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:93
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:101
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:115
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:127
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:139
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:148
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:157
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:169
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:177
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:189
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:206
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:215
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:227
+#, elixir-autogen, elixir-format
+msgid "Channel Modes"
+msgstr "채널 모드"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:37
+#, elixir-autogen, elixir-format
+msgid "Channel Modes Overview"
+msgstr "채널 모드 개요"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:11
+#, elixir-autogen, elixir-format
+msgid "Channel Permissions"
+msgstr "채널 권한"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:44
+#: lib/retro_hex_chat/chat/help_topics.ex:72
+#: lib/retro_hex_chat/chat/help_topics/features.ex:81
+#: lib/retro_hex_chat/chat/help_topics/features.ex:102
+#: lib/retro_hex_chat/chat/help_topics/features.ex:121
+#: lib/retro_hex_chat/chat/help_topics/features.ex:139
+#: lib/retro_hex_chat/chat/help_topics/features.ex:158
+#: lib/retro_hex_chat/chat/help_topics/features.ex:987
+#, elixir-autogen, elixir-format
+msgid "Channel Settings"
+msgstr "채널 설정"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:43
+#: lib/retro_hex_chat/chat/help_topics.ex:71
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:244
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:157
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:175
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:199
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:216
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:309
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:393
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:35
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:86
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "채널 :"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:999
+#, elixir-autogen, elixir-format
+msgid "Channels are automatically remembered and rejoined when you reconnect."
+msgstr "채널은 자동으로 기억되고 다시 연결 될 때."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:460
+#, elixir-autogen, elixir-format
+msgid "Character Counter"
+msgstr "캐릭터 카운터"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:40
+#: lib/retro_hex_chat/chat/help_topics.ex:68
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:12
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:105
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:140
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:208
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:229
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:249
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:347
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:355
+#: lib/retro_hex_chat/chat/help_topics/features.ex:282
+#: lib/retro_hex_chat/chat/help_topics/features.ex:759
+#: lib/retro_hex_chat/chat/help_topics/features.ex:778
+#: lib/retro_hex_chat/chat/help_topics/features.ex:794
+#: lib/retro_hex_chat/chat/help_topics/features.ex:966
+#, elixir-autogen, elixir-format
+msgid "Chat & Messaging"
+msgstr "채팅 & 메시징"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:53
+#: lib/retro_hex_chat/chat/help_topics.ex:81
+#: lib/retro_hex_chat/chat/help_topics/features.ex:60
+#: lib/retro_hex_chat/chat/help_topics/features.ex:396
+#: lib/retro_hex_chat/chat/help_topics/features.ex:418
+#: lib/retro_hex_chat/chat/help_topics/features.ex:430
+#: lib/retro_hex_chat/chat/help_topics/features.ex:503
+#: lib/retro_hex_chat/chat/help_topics/features.ex:629
+#: lib/retro_hex_chat/chat/help_topics/features.ex:647
+#: lib/retro_hex_chat/chat/help_topics/features.ex:669
+#: lib/retro_hex_chat/chat/help_topics/features.ex:681
+#, elixir-autogen, elixir-format
+msgid "Chat Display"
+msgstr "채팅 표시"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:52
+#: lib/retro_hex_chat/chat/help_topics.ex:80
+#: lib/retro_hex_chat/chat/help_topics/features.ex:449
+#: lib/retro_hex_chat/chat/help_topics/features.ex:461
+#: lib/retro_hex_chat/chat/help_topics/features.ex:494
+#: lib/retro_hex_chat/chat/help_topics/features.ex:511
+#: lib/retro_hex_chat/chat/help_topics/features.ex:531
+#: lib/retro_hex_chat/chat/help_topics/features.ex:548
+#: lib/retro_hex_chat/chat/help_topics/features.ex:608
+#, elixir-autogen, elixir-format
+msgid "Chat Input"
+msgstr "채팅 입력"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2522
+#, elixir-autogen, elixir-format
+msgid "Chex Quest"
+msgstr "체스 퀘스트"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1606
+#, elixir-autogen, elixir-format
+msgid ""
+"Classic co-op Space Invaders — two cannons fighting the same alien waves on "
+"a shared screen. "
+msgstr "Classic co-op Space Invaders - 두 개의 캐논은 공유 화면에서 동일한 외계인 파도를 싸우고 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:109
+#, elixir-autogen, elixir-format
+msgid "Clear all messages from the current channel or conversation view."
+msgstr "현재 채널 또는 대화보기에서 모든 메시지를 지우십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2146
+#, elixir-autogen, elixir-format
+msgid ""
+"Click any game to see its detailed description, keyboard controls, and "
+msgstr "자세한 설명, 키보드 컨트롤, 그리고"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:410
+#, elixir-autogen, elixir-format
+msgid ""
+"Clickable nicknames, channels, and URLs with hover cards and link previews."
+msgstr "클릭 가능한 별명, 채널 및 URL hover 카드와 링크 미리보기."
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:23
+#, elixir-autogen, elixir-format
+msgid "Colors"
+msgstr "색상 :"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1580
+#, elixir-autogen, elixir-format
+msgid ""
+"Combos send extra drops. UFO kills send armored aliens. 10 waves of "
+"escalating chaos. "
+msgstr "Combos는 여분 방울을 보냅니다. UFO 살인은 외계인을 보냅니다. 에스컬레이터의 10파."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2850
+#, elixir-autogen, elixir-format
+msgid ""
+"Comic Indiana Jones-style adventure in the Amazon (1995) — pilot Joe King "
+"vs. a mad scientist's dinosaur plot."
+msgstr ""
+"아마존의 Comic Indiana Jones-style 모험 (1995) - 조종사 Joe King vs. 광 과학자의 공룡 플로트."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:530
+#, elixir-autogen, elixir-format
+msgid "Command Syntax Tooltip"
+msgstr "명령 구문 Tooltip"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Complete reference of all available IRC slash commands with syntax and "
+"examples."
+msgstr "모든 사용 가능한 IRC 슬래시 명령을 구문 및 예로 작성하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Complete reference of keyboard shortcuts for navigation, messaging, and "
+"interface control."
+msgstr "항법, 메시징 및 공용영역 통제를 위한 키보드 단축키의 완전한 참고."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:388
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure automatic responses triggered by events like user joins or keyword"
+" matches."
+msgstr "사용자 참여 또는 키워드 일치와 같은 이벤트에 의해 트리거 된 자동 응답 구성."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:55
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure automatic responses triggered by events like users joining a "
+"channel."
+msgstr "채널에 가입 같은 이벤트에 의해 트리거 된 자동 응답 구성."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:192
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure commands and channels that execute automatically when you connect."
+msgstr "연결할 때 자동으로 실행되는 명령과 채널을 구성합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:265
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure sound notifications for events like mentions, private messages, "
+"and joins."
+msgstr "언급, 개인 메시지, 참여와 같은 이벤트에 대한 사운드 알림 구성."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:265
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure where incoming notices are displayed — active window, status, or "
+"source channel."
+msgstr "들어오는 통지가 표시된 곳을 구성합니다. — active window, status, or source channel."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:52
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure words that trigger visual and audio alerts when mentioned in chat."
+msgstr "대화에서 언급 할 때 시각적 및 오디오 경고를 트리거하는 단어를 구성합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:71
+#, elixir-autogen, elixir-format
+msgid "Connect Authentication"
+msgstr "연결 인증"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:23
+#, elixir-autogen, elixir-format
+msgid "Connecting"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:58
+#: lib/retro_hex_chat/chat/help_topics.ex:86
+#: lib/retro_hex_chat/chat/help_topics/features.ex:200
+#: lib/retro_hex_chat/chat/help_topics/features.ex:719
+#: lib/retro_hex_chat/chat/help_topics/features.ex:739
+#, elixir-autogen, elixir-format
+msgid "Connection"
+msgstr "관련 링크"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:903
+#, elixir-autogen, elixir-format
+msgid "Connection Diagram"
+msgstr "연결 Diagram"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:738
+#, elixir-autogen, elixir-format
+msgid "Connection States"
+msgstr "연결 국가"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:42
+#: lib/retro_hex_chat/chat/help_topics.ex:70
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:148
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:273
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:414
+#: lib/retro_hex_chat/chat/help_topics/features.ex:12
+#: lib/retro_hex_chat/chat/help_topics/features.ex:31
+#: lib/retro_hex_chat/chat/help_topics/features.ex:48
+#: lib/retro_hex_chat/chat/help_topics/features.ex:69
+#, elixir-autogen, elixir-format
+msgid "Contacts & Notify"
+msgstr "연락처 & 알림"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:81
+#, elixir-autogen, elixir-format
+msgid "Context Menu"
+msgstr "Context 메뉴"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:584
+#, elixir-autogen, elixir-format
+msgid "Context Menus"
+msgstr "Context 메뉴"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:628
+#, elixir-autogen, elixir-format
+msgid "Contextual Tips"
+msgstr "연락처"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1180
+#, elixir-autogen, elixir-format
+msgid ""
+"Controls: Arrow keys (Left/Right rotate, Up forward) or A/D/W, Space or "
+"Shift to fire."
+msgstr "제어: 화살표 키 (왼쪽)/Right 회전, 앞으로) 또는 A/D/W불에 공간 또는 이동."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1322
+#, elixir-autogen, elixir-format
+msgid ""
+"Controls: Arrow keys (Up/Down) to move shield, Space to catch/release "
+"fireball."
+msgstr "컨트롤: 화살표 키(Up/Down) 방패 이동하기 위하여, 붙잡는 공간/release 불꽃놀이"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1671
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1697
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1724
+#, elixir-autogen, elixir-format
+msgid ""
+"Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo."
+msgstr "제어: 화살표 키 (←/→ 차선, ↑ accel, ↓ 브레이크), 터보를 위한 공간 또는 이동."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1833
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1857
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1881
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys (←/→) or A/D to steer."
+msgstr "제어: 화살표 키 (←/→) 또는 A/D 스티어로."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1584
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1611
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1638
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or A/D to move, Space to fire."
+msgstr "제어: 화살표 키 또는 A/D 이동, 화재 공간."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1460
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1520
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1548
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to fire."
+msgstr "제어: 화살표 키 또는 WASD 이동, 공간 또는 화재로 이동."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1434
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to punch."
+msgstr "제어: 화살표 키 또는 WASD 이동, 공간 또는 펀치 이동."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1755
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1778
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1801
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to serve."
+msgstr "제어: 화살표 키 또는 WASD 이동, 공간 또는 이동."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2025
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2054
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2083
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle."
+msgstr "제어: 화살표 키 또는 WASD 이동, 공간 또는 촬영을 이동/tackle."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1953
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1983
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Up/Down to jump between rows."
+msgstr "제어: 화살표 키 또는 WASD 이동, 최대/Down 행 사이 점프."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1492
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move/aim, Space or Shift to fire."
+msgstr "제어: 화살표 키 또는 WASD 이동/aim불에 공간 또는 이동."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1210
+#, elixir-autogen, elixir-format
+msgid ""
+"Controls: Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to "
+"warp."
+msgstr "제어 : 화살표 키 또는 WASD를 돌격/rotate, 불에 공간, 아래로/S 전쟁에."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1356
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1406
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine."
+msgstr "제어: 이동 화살표 키/speed, 불에 공간, 광산을 떨어지는 이동."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1386
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys to move/speed, Space to fire."
+msgstr "제어: 이동 화살표 키/speed, 불에 공간."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:23
+#, elixir-autogen, elixir-format
+msgid "Conversations"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1285
+#, elixir-autogen, elixir-format
+msgid ""
+"Cooperative Breakout with cyberpunk visuals. P1 controls the bottom paddle, "
+"P2 the top. "
+msgstr "사이버펑크 시각을 가진 협력적인 Breakout. P1는 바닥 패들, P2 정상을 통제합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:680
+#, elixir-autogen, elixir-format
+msgid "Copy Feedback"
+msgstr "복사 피드백"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:441
+#, elixir-autogen, elixir-format
+msgid "Copy message text to the clipboard using the right-click context menu."
+msgstr "오른쪽 클릭 컨텍스트 메뉴를 사용하여 클립보드에 메시지를 복사합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:25
+#, elixir-autogen, elixir-format
+msgid ""
+"Create and manage extensible bots with pluggable capabilities for channel "
+"automation."
+msgstr "채널 자동화를 위한 pluggable 기능을 가진 extensible bots를 창조하고 관리하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:28
+#, elixir-autogen, elixir-format
+msgid "Create custom command aliases that expand into one or more commands."
+msgstr "하나 이상의 명령으로 확장되는 사용자 정의 명령 별명을 만듭니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:300
+#, elixir-autogen, elixir-format
+msgid ""
+"Create custom command shortcuts that expand into one or more commands with "
+"variable support."
+msgstr "사용자 지정 명령 단축키를 생성하여 변수 지원으로 하나 이상의 명령을 확장합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:319
+#, elixir-autogen, elixir-format
+msgid "Custom Menus"
+msgstr "주문 메뉴"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:506
+#, elixir-autogen, elixir-format
+msgid "Customize how timestamps are displayed next to messages."
+msgstr "타임 스탬프가 메시지 옆에 표시되는 방법을 사용자 정의합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:371
+#, elixir-autogen, elixir-format
+msgid "Customize keyboard shortcuts by rebinding keys to different actions."
+msgstr "키보드 단축키를 다른 작업으로 재구성합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:477
+#, elixir-autogen, elixir-format
+msgid ""
+"Customize the message displayed to others when you disconnect from the "
+"server."
+msgstr "서버에서 차단할 때 다른 사람에게 표시된 메시지를 사용자 지정합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:352
+#, elixir-autogen, elixir-format
+msgid ""
+"Customize which interface elements are visible and toggle compact display "
+"mode."
+msgstr "인터페이스 요소가 표시되고 toggle 컴팩트 디스플레이 모드를 사용자 정의합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1133
+#, elixir-autogen, elixir-format
+msgid ""
+"Cyberpunk Pong with neon visuals, CRT effects, and synth audio. First to 11 "
+"(win by 2). Use Arrow keys or W/S."
+msgstr ""
+"Cyberpunk Pong with neon 시각적, CRT 효과 및 동기화 오디오. 첫 번째에서 11 (win by 2). 화살표 키 "
+"또는 W 사용/S."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2763
+#, elixir-autogen, elixir-format
+msgid ""
+"Cyberpunk masterpiece by Revolution Software (1994) — escape Union City with"
+" your robot companion Joey."
+msgstr ""
+"Revolution Software (1994)의 Cyberpunk 걸작 - 로봇 동반자 Joey와 함께 Union City를 "
+"탈출하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2170
+#, elixir-autogen, elixir-format
+msgid "DOOM (Arcade)"
+msgstr "DOOM (아케이드)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2409
+#, elixir-autogen, elixir-format
+msgid "DOOM: Knee-Deep in the Dead"
+msgstr "DOOM : 죽음에 무릎 깊은"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2821
+#, elixir-autogen, elixir-format
+msgid ""
+"Dark cyberpunk top-down adventure by Creative Reality (1994) — explore the "
+"Dreamweb to save reality."
+msgstr ""
+"Creative Reality (1994)의 Dark cyberpunk top-down adventure - 현실을 저장하는 "
+"Dreamweb을 탐험하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1722
+#, elixir-autogen, elixir-format
+msgid "Daylight sprint — no weather changes, no fuel drain, just speed. "
+msgstr "Daylight sprint — 날씨 변화 없음, 연료 하수구 없음, 단지 속도."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1244
+#, elixir-autogen, elixir-format
+msgid "Debris Field"
+msgstr "Debris 필드"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1317
+#, elixir-autogen, elixir-format
+msgid ""
+"Deflect or catch the fireball with your shield to smash your opponent's "
+"walls. "
+msgstr "상대방의 벽을 돌보는 데 방패로 불을 붙잡거나 잡아라."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:803
+#, elixir-autogen, elixir-format
+msgid ""
+"Delete your own messages with a soft-delete that shows a removal notice."
+msgstr "제거 통지를 보여주는 soft-delete로 자신의 메시지를 삭제합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:673
+#, elixir-autogen, elixir-format
+msgid ""
+"Dialog notification when you are kicked from a channel with the reason and "
+"rejoin option."
+msgstr "Dialog 알림이 채널에서 발생하면 이유와 rejoin 옵션."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:358
+#, elixir-autogen, elixir-format
+msgid "Disconnect from the server with an optional quit message."
+msgstr "옵션 종료 메시지로 서버에서 분리."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:339
+#, elixir-autogen, elixir-format
+msgid "Display Settings"
+msgstr "표시 설정"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:143
+#, elixir-autogen, elixir-format
+msgid "Display help information for commands and features."
+msgstr "명령 및 기능에 대한 정보를 표시하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1544
+#, elixir-autogen, elixir-format
+msgid ""
+"Dodge freely in your half of the arena. First to 10, best of 3 rounds. "
+msgstr "닷지가 너머의 절반에서 자유롭게. 첫 번째 10, 3 라운드의 최고."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1917
+#, elixir-autogen, elixir-format
+msgid ""
+"Dodge polar bears, crabs, geese, and clams. Best of 5 rounds with "
+"progressive difficulty. "
+msgstr "닷지 폴라 곰, 게, geese, 그리고 clams. 진보적인 어려움을 가진 5개의 둥근의 베스트."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1456
+#, elixir-autogen, elixir-format
+msgid ""
+"Dodge visible bullets and shoot your opponent. First to 10, best of 3 "
+"rounds. "
+msgstr "닷지 눈에 보이는 탄알과 상대를 촬영. 첫 번째 10, 3 라운드의 최고."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2388
+#, elixir-autogen, elixir-format
+msgid "Drascula (1996), Dreamweb (1994), Flight of the Amazon Queen (1995), "
+msgstr "Drascula (1996), Dreamweb (1994), 아마존 퀸의 비행 (1995),"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2778
+#, elixir-autogen, elixir-format
+msgid "Drascula: The Vampire Strikes Back"
+msgstr "Drascula : Vampire 스트라이크 뒤"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2807
+#, elixir-autogen, elixir-format
+msgid "Dreamweb"
+msgstr "드림웹"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:789
+#, elixir-autogen, elixir-format
+msgid "Edit your recently sent messages to fix typos or update content."
+msgstr "오타를 수정하거나 내용 업데이트하기 위해 최근 전송된 메시지를 편집합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:493
+#, elixir-autogen, elixir-format
+msgid "Emoji Picker"
+msgstr "Emoji 피커"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:128
+#, elixir-autogen, elixir-format
+msgid "Empty States"
+msgstr "빈 미국"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:958
+#, elixir-autogen, elixir-format
+msgid ""
+"Enable TURN-only relay mode to hide your IP address during peer-to-peer "
+"connections."
+msgstr "TURN 전용 릴레이 모드를 사용하여 피어 투 피어 연결 중에 IP 주소를 숨길 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:624
+#, elixir-autogen, elixir-format
+msgid "Enable or disable slow mode (join throttle) in the current channel."
+msgstr "현재 채널에서 느린 모드 (join throttle)를 활성화하거나 비활성화합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:607
+#, elixir-autogen, elixir-format
+msgid "Enhanced History"
+msgstr "향상된 역사"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:896
+#, elixir-autogen, elixir-format
+msgid ""
+"Establish peer-to-peer sessions with bilateral consent for calls and file "
+"transfers."
+msgstr "통화 및 파일 전송에 대한 양측 동의와 피어 투 피어 세션 설립."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1799
+#, elixir-autogen, elixir-format
+msgid "Every point wins a game — no 15-30-40, no deuce. "
+msgstr "모든 포인트는 게임을 이깁니다 — 아니 15-30-40, 아니 저어."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1062
+#, elixir-autogen, elixir-format
+msgid ""
+"Execute multiple commands at once by pasting them into the Admin Console "
+"(admin only)."
+msgstr "관리자 콘솔(admin only)로 한 번에 여러 명령을 실행합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:574
+#, elixir-autogen, elixir-format
+msgid ""
+"Factory reset — destroys ALL data (users, channels, messages, preferences, "
+"bots, P2P sessions) "
+msgstr "공장 리셋 - 모든 데이터를 파괴 (사용자, 채널, 메시지, 선호도, 봇, P2P 세션)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1880
+#, elixir-autogen, elixir-format
+msgid "Fastest time down the mountain wins. The purist mode. "
+msgstr "산의 승리 아래로 빠른 시간. 순항 모드."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:926
+#, elixir-autogen, elixir-format
+msgid "File Transfer"
+msgstr "파일 전송"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:171
+#, elixir-autogen, elixir-format
+msgid ""
+"Find text in the current channel using search with regex and case-sensitive "
+"options."
+msgstr "regex 및 case-sensitive 옵션을 사용하여 현재 채널에서 텍스트를 찾습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1491
+#, elixir-autogen, elixir-format
+msgid "First to 10, best of 3 rounds. "
+msgstr "첫 번째 10, 3 라운드의 최고."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1800
+#, elixir-autogen, elixir-format
+msgid "First to 6 games takes the set. Pure pressure. "
+msgstr "먼저 6 게임 세트가 걸립니다. 순수한 압력."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2836
+#, elixir-autogen, elixir-format
+msgid "Flight of the Amazon Queen"
+msgstr "아마존 퀸의 비행"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:231
+#, elixir-autogen, elixir-format
+msgid "Flood Protection"
+msgstr "홍수 보호"
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Format your messages with bold, italic, underline, strikethrough, and color "
+"codes."
+msgstr "대담한, italic, 밑줄, 파업, 색상 코드로 메시지를 포맷합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2496
+#, elixir-autogen, elixir-format
+msgid "FreeDM"
+msgstr "무료DM"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2195
+#, elixir-autogen, elixir-format
+msgid ""
+"FreeDM, Chex Quest, HacX, and REKKR. Powered by Dwasm (PrBoom+ → "
+"WebAssembly)."
+msgstr ""
+"FreeDM, Chex Quest, HacX 및 REKKR. Dwasm에 의해 구동 (PrBoom + → WebAssembly)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2438
+#, elixir-autogen, elixir-format
+msgid "Freedoom: Phase 1"
+msgstr "Freedoom: 단계 1"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2466
+#, elixir-autogen, elixir-format
+msgid "Freedoom: Phase 2"
+msgstr "Freedoom: 단계 2"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1754
+#, elixir-autogen, elixir-format
+msgid "Full set with deuce, advantage, and tiebreak at 6-6. "
+msgstr "6-6에 deuce, 이점 및 묶음을 가진 가득 차있는 세트."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Get started with RetroHexChat, a web-based IRC client with a faithful retro "
+"look and feel."
+msgstr "RetroHexChat과 함께 시작하십시오. 웹 기반 IRC 클라이언트는 충실한 복고풍과 느낌을 제공합니다."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:39
+#: lib/retro_hex_chat/chat/help_topics.ex:67
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:12
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:24
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:36
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:53
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:72
+#, elixir-autogen, elixir-format
+msgid "Getting Started"
+msgstr "시작하기"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:590
+#, elixir-autogen, elixir-format
+msgid "Give operator status to a user in the current channel."
+msgstr "현재 채널의 사용자에 대한 연산자 상태를 제공합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:607
+#, elixir-autogen, elixir-format
+msgid "Give voice status to a user in the current channel."
+msgstr "현재 채널에서 사용자에게 음성 상태를 제공합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:143
+#, elixir-autogen, elixir-format
+msgid "Grant half-operator status with limited moderation privileges."
+msgstr "제한된 모의 권한을 가진 보조 반 운영 상태."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:131
+#, elixir-autogen, elixir-format
+msgid "Grant operator status to a user, allowing them to manage the channel."
+msgstr "사용자의 Grant 연산자 상태, 채널을 관리 할 수 있도록."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:119
+#, elixir-autogen, elixir-format
+msgid ""
+"Grant owner status to a user, giving them full control over the channel."
+msgstr "사용자에게 부여 소유자 상태, 채널에 전체 제어를 제공합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:152
+#, elixir-autogen, elixir-format
+msgid "Grant voice status to allow speaking in moderated channels."
+msgstr "온건한 채널에서 말하기를 허용하는 Grant 음성 상태."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1218
+#, elixir-autogen, elixir-format
+msgid "Gravity Well"
+msgstr "중력 좋은"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2552
+#, elixir-autogen, elixir-format
+msgid "HacX: Twitch 'n Kill"
+msgstr "HacX : Twitch 'n 킬"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2275
+#, elixir-autogen, elixir-format
+msgid "Half-Life (Arcade)"
+msgstr "반감기 (아케이드)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2721
+#, elixir-autogen, elixir-format
+msgid "Half-Life: Uplink"
+msgstr "반감기: 업링크"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1696
+#, elixir-autogen, elixir-format
+msgid "Headlights-only visibility — pure reflexes. Most overtakes wins. "
+msgstr "헤드 라이트 전용 가시성 - 순수한 반사. 대부분의 장애물 승리."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:141
+#, elixir-autogen, elixir-format
+msgid ""
+"Helpful placeholders shown when lists are empty, guiding you on what to do "
+"next."
+msgstr "목록이 비어있을 때 유용한 장소 홀더, 다음 작업을 수행하는 것에 당신을 인도."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:639
+#, elixir-autogen, elixir-format
+msgid ""
+"Helpful tips that appear contextually to guide you through features as you "
+"use them."
+msgstr "당신이 그들을 사용하는 기능으로 당신을 안내하기 위해 상황에 따라 나타나는 유용한 팁."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1414
+#, elixir-autogen, elixir-format
+msgid "Hex Boxing"
+msgstr "육 상자"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1647
+#, elixir-autogen, elixir-format
+msgid "Hex Enduro"
+msgstr "육 Enduro"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1683
+#, elixir-autogen, elixir-format
+msgid "Hex Enduro: Night Race"
+msgstr "Hex Enduro : 나이트 레이스"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1709
+#, elixir-autogen, elixir-format
+msgid "Hex Enduro: Sprint"
+msgstr "Hex Enduro: 스프린트"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1890
+#, elixir-autogen, elixir-format
+msgid "Hex Frost"
+msgstr "육 서리"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1933
+#, elixir-autogen, elixir-format
+msgid "Hex Frost: Blizzard"
+msgstr "육 서리 : Blizzard"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1965
+#, elixir-autogen, elixir-format
+msgid "Hex Frost: Peaceful"
+msgstr "Hex Frost: 평화로운"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1995
+#, elixir-autogen, elixir-format
+msgid "Hex Hockey"
+msgstr "육 하키"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2037
+#, elixir-autogen, elixir-format
+msgid "Hex Hockey: Blitz"
+msgstr "Hex 하키: 블릿츠"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2066
+#, elixir-autogen, elixir-format
+msgid "Hex Hockey: Showdown"
+msgstr "Hex 하키: 쇼 다운"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1558
+#, elixir-autogen, elixir-format
+msgid "Hex Invaders"
+msgstr "Hex 침입자"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1620
+#, elixir-autogen, elixir-format
+msgid "Hex Invaders: Blitz"
+msgstr "Hex 침입자: 블릿츠"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1593
+#, elixir-autogen, elixir-format
+msgid "Hex Invaders: Co-op"
+msgstr "Hex 침입자: Co-op"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1439
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw"
+msgstr "헥토리터"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1530
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw: No Man's Land"
+msgstr "Hex Outlaw: 남자의 땅 없음"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1470
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw: Ricochet"
+msgstr "Hex Outlaw: 리코치트"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1502
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw: Stagecoach"
+msgstr "Hex Outlaw: 단계별"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1128
+#, elixir-autogen, elixir-format
+msgid "Hex Pong"
+msgstr "헥토리터"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1330
+#, elixir-autogen, elixir-format
+msgid "Hex Raid"
+msgstr "헥사 레이드"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1391
+#, elixir-autogen, elixir-format
+msgid "Hex Raid: Blitz"
+msgstr "헥사 레이드: 블릿츠"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1368
+#, elixir-autogen, elixir-format
+msgid "Hex Raid: Pacifist"
+msgstr "육 레이드: Pacifist"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1810
+#, elixir-autogen, elixir-format
+msgid "Hex Skiing"
+msgstr "육 스키"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1866
+#, elixir-autogen, elixir-format
+msgid "Hex Skiing: Clean Run"
+msgstr "육 스키: 깨끗한 실행"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1842
+#, elixir-autogen, elixir-format
+msgid "Hex Skiing: Escape"
+msgstr "육 스키: 탈출"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1736
+#, elixir-autogen, elixir-format
+msgid "Hex Tennis"
+msgstr "육 테니스"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1764
+#, elixir-autogen, elixir-format
+msgid "Hex Tennis: Quick Match"
+msgstr "Hex Tennis: 빠른 경기"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1787
+#, elixir-autogen, elixir-format
+msgid "Hex Tennis: Sudden Death"
+msgstr "육 테니스 : 스도덴 죽음"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1297
+#, elixir-autogen, elixir-format
+msgid "Hex Warlords"
+msgstr "헥 전쟁"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:172
+#, elixir-autogen, elixir-format
+msgid "Hide the channel from the channel list and whois results."
+msgstr "채널 목록과 whois 결과에서 채널을 숨기기."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:181
+#, elixir-autogen, elixir-format
+msgid ""
+"Hide the channel name from whois while still appearing in the channel list."
+msgstr "채널 목록에서 여전히 나타나는 동안 whois에서 채널 이름을 숨기기."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:47
+#, elixir-autogen, elixir-format
+msgid "Highlight Words"
+msgstr "높은 낱말"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2792
+#, elixir-autogen, elixir-format
+msgid ""
+"Hilarious Spanish point & click parody of Dracula (1996) — defeat the "
+"vampire Drascula with absurd humor."
+msgstr ""
+"Hilarious 스페인어 포인트 & Dracula (1996)의 패러디를 클릭 - 부패 유머와 vampire Drascula를 물리 "
+"칩니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1321
+#, elixir-autogen, elixir-format
+msgid "Hold Space to catch, release to aim. Best of 3 lives. "
+msgstr "공간을 잡아, 목표로 출시. 3개의 삶의 베스트."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:69
+#, elixir-autogen, elixir-format
+msgid ""
+"How to create and use custom bot commands (!prefix trigger) for automated "
+"responses."
+msgstr "자동 응답을 위해 사용자 정의 봇 명령 (!prefix 트리거)을 만들고 사용하는 방법."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:11
+#, elixir-autogen, elixir-format
+msgid "IRC Commands Reference"
+msgstr "IRC 명령 참조"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:68
+#, elixir-autogen, elixir-format
+msgid "Ignore List"
+msgstr "Ignore 목록"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1855
+#, elixir-autogen, elixir-format
+msgid "Infinite descent — the avalanche never stops accelerating. "
+msgstr "무한한 백열 - avalanche는 가속을 멈추지 않습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:395
+#, elixir-autogen, elixir-format
+msgid "Interactive Chat Elements"
+msgstr "대화 형 채팅 요소"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:112
+#, elixir-autogen, elixir-format
+msgid ""
+"Interactive trivia quiz with multiple categories, scoring, and configurable "
+"timers."
+msgstr "여러 범주, 득점 및 구성 타이머와 상호 작용하는 trivia 퀴즈."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:120
+#, elixir-autogen, elixir-format
+msgid "Invite Exceptions (+I)"
+msgstr "Invite 예외 (+I)"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:167
+#, elixir-autogen, elixir-format
+msgid ""
+"Invite a user to join a channel, especially useful for invite-only channels."
+msgstr "채널에 가입 할 수있는 사용자를 초대 전용 채널에 특히 유용합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:179
+#, elixir-autogen, elixir-format
+msgid ""
+"Join a chat channel to read and send messages. Creates the channel if it "
+"does not exist."
+msgstr "채팅 채널에 가입하고 메시지를 보내. 존재하지 않는 경우 채널을 만듭니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:359
+#, elixir-autogen, elixir-format
+msgid "Key Bindings"
+msgstr "키 바인딩"
+
+#: lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex:11
+#, elixir-autogen, elixir-format
+msgid "Keyboard Shortcuts"
+msgstr "키보드 단축키"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:668
+#, elixir-autogen, elixir-format
+msgid "Kick Notifications"
+msgstr "Kick 알림"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:718
+#, elixir-autogen, elixir-format
+msgid "Lag Indicator"
+msgstr "Lag 지표"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1856
+#, elixir-autogen, elixir-format
+msgid "Last skier standing wins. Pure survival mode. "
+msgstr "마지막 스키어 서 승리. 순수한 생존 형태."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Learn how to connect to the RetroHexChat server by choosing a nickname and "
+"joining channels."
+msgstr "RetroHexChat 서버에 연결하는 방법을 알아보십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:312
+#, elixir-autogen, elixir-format
+msgid "Leave the current channel with an optional part message."
+msgstr "선택된 부분 메시지를 가진 현재 수로를 남겨두십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2639
+#, elixir-autogen, elixir-format
+msgid "LibreQuake"
+msgstr "리브쿼크"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1141
+#, elixir-autogen, elixir-format
+msgid "Light Trails"
+msgstr "빛 길"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:224
+#, elixir-autogen, elixir-format
+msgid ""
+"Lightweight messages used for server announcements and automated responses."
+msgstr "서버 발표 및 자동화 된 응답에 사용되는 경량 메시지."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:236
+#, elixir-autogen, elixir-format
+msgid "Limit how quickly users can join the channel to prevent join flooding."
+msgstr "빠른 사용자를 제한하면 채널에 참여할 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:435
+#, elixir-autogen, elixir-format
+msgid ""
+"Look up detailed information about a user including channels, idle time, and"
+" bio."
+msgstr "채널, 유휴 시간, 바이오 등 사용자에 대한 자세한 정보를 확인하세요."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:447
+#, elixir-autogen, elixir-format
+msgid ""
+"Look up information about a user who recently disconnected from the server."
+msgstr "서버에서 최근에 차단된 사용자에 대한 정보를 확인하세요."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2865
+#, elixir-autogen, elixir-format
+msgid "Lure of the Temptress"
+msgstr "유혹의 루어"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2392
+#, elixir-autogen, elixir-format
+msgid "Lure of the Temptress (1992), and Soltys (1995). "
+msgstr "유혹 (1992), 솔티 (1995)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2138
+#, elixir-autogen, elixir-format
+msgid ""
+"Lure of the Temptress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM, "
+msgstr "Temptress, Soltys, Half-Life : 업 링크, Wolfenstein 3D, DOOM,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:821
+#, elixir-autogen, elixir-format
+msgid ""
+"Make peer-to-peer audio calls with mute controls and quality indicators."
+msgstr "mute 제어 및 품질 지표와 함께 피어 투 피어 오디오 통화를 만드십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:840
+#, elixir-autogen, elixir-format
+msgid ""
+"Make video calls with camera controls, picture-in-picture, and quality "
+"settings."
+msgstr "카메라 컨트롤, 그림-in-picture 및 품질 설정을 사용하여 비디오 통화를 만드십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:321
+#, elixir-autogen, elixir-format
+msgid "Manage commands that run automatically when you connect to the server."
+msgstr "서버에 연결할 때 자동으로 실행되는 명령을 관리합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage contacts, assign custom nick colors, and organize your notify list."
+msgstr "연락처 관리, 사용자 정의 닉 색상을 할당하고, 알림 목록을 구성합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1667
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage fuel, use turbo boosts, and draft in slipstreams. Best of 3 days. "
+msgstr "연료를 관리, 터보 부스트를 사용, 및 미스트림에서 초안. 3 일의 베스트."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:301
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage peer-to-peer sessions for direct communication, calls, and file "
+"transfers."
+msgstr "직접 통신, 통화 및 파일 전송을 위한 피어 투 피어 세션 관리."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:496
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage server channels: list, info, create, delete, purge messages, view "
+"bans."
+msgstr "서버 채널 관리: 목록, 정보, 생성, 삭제, 메시지, 표시 금지."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:484
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage server users: list, info, ban/unban, kick, mute/unmute, rename, set "
+"role."
+msgstr "서버 사용자 관리: 목록, 정보, 금지/unban, 킥, 분/unmute, 이름, 설정된 역할."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:43
+#, elixir-autogen, elixir-format
+msgid "Manage the list of channels that are automatically joined on connect."
+msgstr "연결에 자동으로 연결되는 채널 목록을 관리합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:73
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage your ignore list to hide messages and actions from specific users."
+msgstr "특정 사용자로부터 메시지 및 작업을 숨기려면 무시 목록을 관리하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:847
+#, elixir-autogen, elixir-format
+msgid "Media Devices"
+msgstr "미디어 장치"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:793
+#, elixir-autogen, elixir-format
+msgid "Message Delete"
+msgstr "메시지 삭제"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:777
+#, elixir-autogen, elixir-format
+msgid "Message Edit"
+msgstr "메시지 편집"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:758
+#, elixir-autogen, elixir-format
+msgid "Message Reply"
+msgstr "메시지 답변"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:45
+#: lib/retro_hex_chat/chat/help_topics.ex:73
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:75
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:187
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:401
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:587
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:595
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:604
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:612
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:620
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:629
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:641
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:653
+#, elixir-autogen, elixir-format
+msgid "Moderation"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:151
+#, elixir-autogen, elixir-format
+msgid "Monitor RSS/Atom feeds and post new items to channels automatically."
+msgstr "모니터 RSS/Atom 새 항목 피드 및 채널에 자동으로 게시."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:876
+#, elixir-autogen, elixir-format
+msgid ""
+"Monitor and adjust call quality with bitrate presets and real-time quality "
+"indicators."
+msgstr "모니터 및 비트레이트 presets 및 실시간 품질 지표와 통화 품질을 조정합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:448
+#, elixir-autogen, elixir-format
+msgid "Multi-Line Paste Dialog"
+msgstr "멀티 라인 페이스트 Dialog"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:272
+#, elixir-autogen, elixir-format
+msgid "Mute"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:633
+#, elixir-autogen, elixir-format
+msgid ""
+"Mute a user in the current channel, preventing them from sending messages."
+msgstr "현재 채널에서 사용자를 삭제, 메시지를 전송에서 그들을 방지."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:277
+#, elixir-autogen, elixir-format
+msgid "Mute all sounds globally or per-channel to silence notifications."
+msgstr "모든 소리를 전 세계적으로 또는 per-channel to silence 알림."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Navigate channels and private conversations using the left-side "
+"conversations panel."
+msgstr "왼쪽 대화 패널을 사용하여 Navigate 채널 및 개인 대화."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:621
+#, elixir-autogen, elixir-format
+msgid ""
+"Navigate command history with Ctrl+Up/Down and search with Ctrl+R. Drafts "
+"persist per channel."
+msgstr "Navigate 명령 기록 Ctrl+ 지원하다/Down Ctrl+R로 검색할 수 있습니다. 수로 당 초안."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1202
+#, elixir-autogen, elixir-format
+msgid ""
+"Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles. "
+msgstr "열린 진공에 있는 Newtonian 공간 전투. 돌격, 회전 및 불 미사일."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:417
+#, elixir-autogen, elixir-format
+msgid "Nick Column Alignment"
+msgstr "Nick 열 정렬"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1027
+#, elixir-autogen, elixir-format
+msgid "Nick Expiration"
+msgstr "닉 Expiration"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:11
+#, elixir-autogen, elixir-format
+msgid "NickServ Overview"
+msgstr "NickServ 개요"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:508
+#, elixir-autogen, elixir-format
+msgid ""
+"NickServ administration: drop nick registrations, view info, reset "
+"passwords."
+msgstr "NickServ 관리: 닉 등록을 드롭, 정보보기, 암호 재설정."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1610
+#, elixir-autogen, elixir-format
+msgid "No alien drop mechanic. Survive together or fall together. "
+msgstr "외계인 하락 기계 없음. 함께 생존하거나 함께 떨어졌다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1879
+#, elixir-autogen, elixir-format
+msgid "No avalanche, no items — just trees, rocks, and slalom gates. "
+msgstr "아니 avalanche, 항목 없음 — 그냥 나무, 바위, 슬로움 문."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2078
+#, elixir-autogen, elixir-format
+msgid ""
+"No timer — first to 5 goals wins. The puck speeds up after every goal "
+"scored, "
+msgstr "타이머 없음 — 처음 5 목표 승리. puck는 각 목표 득점 후 가속화합니다,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:219
+#, elixir-autogen, elixir-format
+msgid "Notices"
+msgstr "공지사항"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:54
+#: lib/retro_hex_chat/chat/help_topics.ex:82
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:261
+#: lib/retro_hex_chat/chat/help_topics/features.ex:220
+#: lib/retro_hex_chat/chat/help_topics/features.ex:232
+#: lib/retro_hex_chat/chat/help_topics/features.ex:252
+#: lib/retro_hex_chat/chat/help_topics/features.ex:273
+#, elixir-autogen, elixir-format
+msgid "Notifications & Sounds"
+msgstr "알림 및 소리"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:11
+#, elixir-autogen, elixir-format
+msgid "Notify List (Buddy List)"
+msgstr "알림 목록 (Buddy List)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2049
+#, elixir-autogen, elixir-format
+msgid ""
+"One intense period of 3 minutes. Puck moves 25% faster, tackles succeed 80% "
+"of the time. "
+msgstr "3 분의 1 강렬한 기간. Puck는 25 % 빠른 이동, 태클은 80 %의 시간을 성공합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1020
+#, elixir-autogen, elixir-format
+msgid "Only one active session per nickname is allowed to prevent conflicts."
+msgstr "별명당 하나의 활성 세션은 충돌을 방지 할 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:350
+#, elixir-autogen, elixir-format
+msgid "Open a private conversation tab with another user."
+msgstr "다른 사용자와 개인 대화 탭을 엽니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:339
+#, elixir-autogen, elixir-format
+msgid ""
+"Open the custom menus editor to add items to right-click context menus."
+msgstr "사용자 지정 메뉴 편집기를 열고 항목을 마우스 오른쪽 버튼으로 클릭."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1231
+#, elixir-autogen, elixir-format
+msgid ""
+"Orbital combat around a central gravity star. Ships are pulled toward the "
+"star — "
+msgstr "중앙 중력 별 주변의 궤도 전투. 배는 별을 향해 당겨진다 —"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:59
+#, elixir-autogen, elixir-format
+msgid ""
+"Overview of all channel modes including moderation, access control, and "
+"privacy settings."
+msgstr "모드레이션, 액세스 제어 및 개인 정보 보호 설정을 포함한 모든 채널 모드 개요."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:107
+#, elixir-autogen, elixir-format
+msgid ""
+"Overview of special message types including MOTD, welcome messages, wallops,"
+" and announcements."
+msgstr "MOTD, 환영 메시지, wallops 및 발표를 포함한 특수 메시지 유형의 개요."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Overview of the RetroHexChat interface layout including panels, toolbar, and"
+" navigation."
+msgstr "RetroHexChat 인터페이스 레이아웃의 개요 패널, 도구 모음 및 탐색."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:59
+#: lib/retro_hex_chat/chat/help_topics.ex:87
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:96
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:128
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:297
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:363
+#: lib/retro_hex_chat/chat/help_topics/features.ex:811
+#: lib/retro_hex_chat/chat/help_topics/features.ex:829
+#: lib/retro_hex_chat/chat/help_topics/features.ex:848
+#: lib/retro_hex_chat/chat/help_topics/features.ex:866
+#: lib/retro_hex_chat/chat/help_topics/features.ex:884
+#: lib/retro_hex_chat/chat/help_topics/features.ex:904
+#: lib/retro_hex_chat/chat/help_topics/features.ex:927
+#, elixir-autogen, elixir-format
+msgid "P2P & Calls"
+msgstr "P2P 및 통화"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1069
+#, elixir-autogen, elixir-format
+msgid "P2P Games"
+msgstr "P2P 게임"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:60
+#: lib/retro_hex_chat/chat/help_topics.ex:88
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1070
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1129
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1142
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1155
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1189
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1219
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1245
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1271
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1298
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1331
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1369
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1392
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1415
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1440
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1471
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1503
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1531
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1559
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1594
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1621
+#, elixir-autogen, elixir-format
+msgid "P2P Games: Action"
+msgstr "P2P 게임: 액션"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:61
+#: lib/retro_hex_chat/chat/help_topics.ex:89
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1648
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1684
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1710
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1737
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1765
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1788
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1811
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1843
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1867
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1891
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1934
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1966
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1996
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2038
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2067
+#, elixir-autogen, elixir-format
+msgid "P2P Games: Sports"
+msgstr "P2P 게임: 스포츠"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:883
+#, elixir-autogen, elixir-format
+msgid "P2P Sessions"
+msgstr "P2P 세션"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:965
+#, elixir-autogen, elixir-format
+msgid "PM Persistence"
+msgstr "PM 지속"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:178
+#, elixir-autogen, elixir-format
+msgid "Perform / Auto-Commands"
+msgstr "수행 / 자동 컴파일"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1154
+#, elixir-autogen, elixir-format
+msgid "Pixel Tanks"
+msgstr "화소 탱크"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2228
+#, elixir-autogen, elixir-format
+msgid ""
+"Play 2 Quake-engine games in your browser — Quake shareware and LibreQuake "
+"(open-source). "
+msgstr ""
+"브라우저에서 2 Quake-engine 게임을 재생 — Quake shareware and LibreQuake (오픈 소스)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2191
+#, elixir-autogen, elixir-format
+msgid ""
+"Play 7 DOOM-engine games in your browser — DOOM shareware, Freedoom Phase 1 "
+"& 2, "
+msgstr "브라우저에서 7 DOOM-engine 게임을 플레이 — DOOM shareware, Freedoom Phase 1 & 2,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2292
+#, elixir-autogen, elixir-format
+msgid ""
+"Play Half-Life: Uplink in your browser — the official 1999 demo with 3 "
+"unique levels "
+msgstr "반감기 : 브라우저에서 업 링크 - 공식 1999 데모 3 독특한 수준"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2259
+#, elixir-autogen, elixir-format
+msgid ""
+"Play Wolfenstein 3D Episode 1 (shareware) in your browser — 10 levels of the"
+" "
+msgstr "브라우저에서 Wolfenstein 3D 에피소드 1 (shareware) 플레이 — 10 레벨의"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2130
+#, elixir-autogen, elixir-format
+msgid ""
+"Play classic games in your browser via WebAssembly — 18 games including "
+msgstr "WebAssembly — 18 게임을 통해 브라우저에서 고전적인 게임을 플레이하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2384
+#, elixir-autogen, elixir-format
+msgid ""
+"Play classic point & click adventures in your browser — Beneath a Steel Sky "
+"(1994), "
+msgstr "브라우저에서 클래식 포인트 앤 클릭 모험을 재생 — Beneath a Steel Sky (1994),"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1084
+#, elixir-autogen, elixir-format
+msgid ""
+"Play retro arcade games directly with other users via peer-to-peer WebRTC "
+"connections."
+msgstr "피어 투 피어 웹RTC 연결을 통해 다른 사용자에게 복고풍 아케이드 게임을 직접 플레이하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2329
+#, elixir-autogen, elixir-format
+msgid ""
+"Play the Quake II demo in your browser — Unit 1 of the singleplayer "
+"campaign. "
+msgstr "브라우저에서 Quake II 데모를 재생 — 단일 플레이어 캠페인의 단위 1."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2264
+#, elixir-autogen, elixir-format
+msgid "Powered by ECWolf-JS (ECWolf → WebAssembly)."
+msgstr "ECWolf-JS (ECWolf → WebAssembly)에 의해 강화하는."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2232
+#, elixir-autogen, elixir-format
+msgid "Powered by Qwasm (QuakeSpasm → WebAssembly)."
+msgstr "Qwasm에 의해 구동 (QuakeSpasm → WebAssembly)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2333
+#, elixir-autogen, elixir-format
+msgid "Powered by Qwasm2 (Yamagi Quake II → WebAssembly)."
+msgstr "Qwasm2에 의해 구동 (야마기 쿼크 II → 웹 조립)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2393
+#, elixir-autogen, elixir-format
+msgid "Powered by ScummVM (official Emscripten backend → WebAssembly)."
+msgstr "ScummVM에 의해 구동 (공식 Emscripten 백엔드 → WebAssembly)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2297
+#, elixir-autogen, elixir-format
+msgid "Powered by Xash3D-FWGS (GoldSource reimplementation → WebAssembly)."
+msgstr "Xash3D-FWGS에 의해 구동 (GoldSource Reimplementation → WebAssembly)."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:222
+#, elixir-autogen, elixir-format
+msgid "Prevent users from sending knock requests to the channel."
+msgstr "채널에 노크 요청을 전송하는 사용자를 방지합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:946
+#, elixir-autogen, elixir-format
+msgid "Privacy Settings"
+msgstr "개인 정보 설정"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:52
+#, elixir-autogen, elixir-format
+msgid "Private Messages"
+msgstr "개인 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:979
+#, elixir-autogen, elixir-format
+msgid ""
+"Private message conversations are restored automatically on reconnect, "
+"ordered by recency."
+msgstr "개인 메시지 대화는 reconnect에 자동으로 복원되어, recency에 의해 명령."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:244
+#, elixir-autogen, elixir-format
+msgid ""
+"Protect against message flooding with rate limiting and automatic ignore "
+"rules."
+msgstr "제한 속도와 자동 무시 규칙을 사용하여 메시지에 대한 보호."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1662
+#, elixir-autogen, elixir-format
+msgid "Pseudo-3D racing duel through day, snow, fog, and night. "
+msgstr "Pseudo-3D 레이싱 duel 하루, 눈, 안개, 밤."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1382
+#, elixir-autogen, elixir-format
+msgid "Pure competition for points, fuel, and survival across 10 sections. "
+msgstr "10개의 단면도의 맞은편에 점, 연료 및 생존을 위한 순수한 경쟁."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1978
+#, elixir-autogen, elixir-format
+msgid ""
+"Pure construction race — no block stealing allowed. Stepping on opponent's "
+"blocks "
+msgstr "Pure Construction Race – 허용되지 않는 블록 없음. 상대의 블록에 대한 단계"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2053
+#, elixir-autogen, elixir-format
+msgid "Pure intensity from start to finish. "
+msgstr "처음부터 끝까지 순수한 강렬."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2214
+#, elixir-autogen, elixir-format
+msgid "Quake (Arcade)"
+msgstr "쿼크 (Arcade)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2311
+#, elixir-autogen, elixir-format
+msgid "Quake II (Arcade)"
+msgstr "Quake II (아케이드)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2665
+#, elixir-autogen, elixir-format
+msgid "Quake II: The Invasion"
+msgstr "Quake II: 침략"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2142
+#, elixir-autogen, elixir-format
+msgid "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. "
+msgstr "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR 및 LibreQuake."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2613
+#, elixir-autogen, elixir-format
+msgid "Quake: Dimension of the Doomed"
+msgstr "Quake: 지배의 차원"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:544
+#, elixir-autogen, elixir-format
+msgid "Query the audit log of admin actions with optional filters."
+msgstr "Query는 선택 필터와 관리자 작업의 감사 로그."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid ""
+"Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+/."
+msgstr "모든 키보드 단축키를 보여주는 빠른 참조 오버레이, Ctrl + /로 열었습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1776
+#, elixir-autogen, elixir-format
+msgid "Quick tennis match — first to 3 games wins. "
+msgstr "빠른 테니스 경기 - 처음 3 게임 승리."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:472
+#, elixir-autogen, elixir-format
+msgid "Quit Messages"
+msgstr "사이트 맵"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2581
+#, elixir-autogen, elixir-format
+msgid "REKKR: Sunken Land"
+msgstr "REKKR: 썬켄 랜드"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:91
+#, elixir-autogen, elixir-format
+msgid ""
+"RPG dice rolling with standard notation (NdS, modifiers, keep "
+"highest/lowest)."
+msgstr "표준 표기법(NdS, modifiers, keephigh/lowest)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1146
+#, elixir-autogen, elixir-format
+msgid ""
+"Race across a grid leaving a glowing trail. Hit a trail or wall and you "
+"lose."
+msgstr "빛의 흔적을 떠난다. 길이나 벽을 보며 잃습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:731
+#, elixir-autogen, elixir-format
+msgid ""
+"Real-time latency indicator in the status bar showing network delay to the "
+"server."
+msgstr "서버에 네트워크 지연을 보여주는 상태 표시 줄의 실시간 대기 시간 표시."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:150
+#, elixir-autogen, elixir-format
+msgid ""
+"Receive and manage channel invitations with optional auto-join on invite."
+msgstr "채널 초대장 수신 및 관리"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:49
+#, elixir-autogen, elixir-format
+msgid ""
+"Reference for all /bot subcommands: create, destroy, join, part, enable, "
+"disable, set, addcmd, delcmd."
+msgstr ""
+"모든 제품 /bot subcommands: 생성, 파괴, 참여, 부분, 활성화, 비활성화, 설정, addcmd, delcmd."
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:41
+#, elixir-autogen, elixir-format
+msgid ""
+"Register and manage channels with ChanServ, including access lists and "
+"channel settings."
+msgstr "ChanServ와 채널 등록 및 관리, 액세스 목록 및 채널 설정을 포함하여."
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"Register and protect your nickname with NickServ to prevent others from "
+"using it."
+msgstr "NickServ와 별명을 등록하고 보호하여 다른 사람을 방지하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1041
+#, elixir-autogen, elixir-format
+msgid ""
+"Registered nicknames expire after 7 days of inactivity and become available "
+"again."
+msgstr "등록 된 별명은 사실의 7 일 후에 만료되고 다시 사용할 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:409
+#, elixir-autogen, elixir-format
+msgid "Remove a ban from a channel to allow the user to rejoin."
+msgstr "채널에서 금지를 제거하여 사용자가 rejoin을 허용하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:645
+#, elixir-autogen, elixir-format
+msgid ""
+"Remove a channel mute from a user, allowing them to send messages again."
+msgstr "사용자로부터의 수로 분을 제거하고 메시지를 다시 보낼 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:191
+#, elixir-autogen, elixir-format
+msgid "Remove a user from a channel. Requires operator or higher privileges."
+msgstr "채널에서 사용자를 제거. 연산자 또는 더 높은 권한이 필요합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:418
+#, elixir-autogen, elixir-format
+msgid "Remove a user from your ignore list to see their messages again."
+msgstr "무시 목록에서 사용자를 제거하여 메시지를 다시 볼 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:599
+#, elixir-autogen, elixir-format
+msgid "Remove operator status from a user in the current channel."
+msgstr "현재 채널에서 사용자의 연산자 상태를 제거."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "Remove the channel welcome message."
+msgstr "채널 환영 메시지를 제거."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:36
+#, elixir-autogen, elixir-format
+msgid "Remove the server's Message of the Day. Requires admin privileges."
+msgstr "일의 서버 메시지 제거. 관리자 권한이 필요합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:615
+#, elixir-autogen, elixir-format
+msgid "Remove voice status from a user in the current channel."
+msgstr "현재 채널에서 사용자의 음성 상태를 제거합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:770
+#, elixir-autogen, elixir-format
+msgid ""
+"Reply to specific messages with quoted context for threaded conversations."
+msgstr "스레드 대화에 대한 인용 된 컨텍스트와 특정 메시지에 응답."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:247
+#, elixir-autogen, elixir-format
+msgid "Request an invitation to join an invite-only channel."
+msgstr "초대 전용 채널에 가입 할 초대를 요청합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:96
+#, elixir-autogen, elixir-format
+msgid "Require a password to join the channel."
+msgstr "채널에 가입하는 암호가 필요합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:80
+#, elixir-autogen, elixir-format
+msgid "Restrict channel access to users who have been explicitly invited."
+msgstr "명시적으로 초대 된 사용자에게 채널 액세스를 제한합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:71
+#, elixir-autogen, elixir-format
+msgid "Restrict speaking to voiced users and above in a moderated channel."
+msgstr "사용자를 목소리로 바꾸고 온건한 채널에서 위."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:210
+#, elixir-autogen, elixir-format
+msgid "Restrict the channel to users who have identified with NickServ."
+msgstr "NickServ로 식별한 사용자에게 채널을 제한합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:88
+#, elixir-autogen, elixir-format
+msgid "Restrict topic changes to half-operators and above."
+msgstr "주제는 반작동자 이상으로 변경됩니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:453
+#, elixir-autogen, elixir-format
+msgid ""
+"Review and confirm multi-line pastes before sending to prevent accidental "
+"flooding."
+msgstr "사고를 방지하기 전에 멀티 라인 페이스트를 검토하고 확인합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2879
+#, elixir-autogen, elixir-format
+msgid ""
+"Revolution Software's 1992 debut — medieval fantasy with the pioneering "
+"Virtual Theatre NPC AI system."
+msgstr "Revolution Software의 1992 데뷔 - 가상 극장 NPC AI 시스템을 개척하는 중세 판타지."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:429
+#, elixir-autogen, elixir-format
+msgid "Right-Click Copy"
+msgstr "오른쪽 클릭 복사"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:600
+#, elixir-autogen, elixir-format
+msgid ""
+"Right-click context menus for nicknames, messages, URLs, channels, and "
+"conversations."
+msgstr "별명, 메시지, URL, 채널 및 대화를 위한 마우스 오른쪽 클릭 컨텍스트 메뉴."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1347
+#, elixir-autogen, elixir-format
+msgid "River Raid reimagined for two — race through a scrolling toxic canal, "
+msgstr "강 Raid는 두 가지를 위해 reimagined - 스크롤 독성 운하를 통해 경주,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1381
+#, elixir-autogen, elixir-format
+msgid "River Raid without sabotage — no mines allowed. "
+msgstr "sabotage없이 강 Raid - 광산이 허용되지 않습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:579
+#, elixir-autogen, elixir-format
+msgid ""
+"Run without --confirm for a preview; with --confirm to execute. "
+"IRREVERSIBLE."
+msgstr "--confirm for preview; --confirm을 실행합니다. IRREVERSIBLE에 대하여"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1777
+#, elixir-autogen, elixir-format
+msgid "Same gameplay, shorter format. No tiebreak needed. "
+msgstr "같은 gameplay, 단축 형식. 필요 없음."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:312
+#, elixir-autogen, elixir-format
+msgid ""
+"Schedule commands to execute after a delay or repeat at regular intervals."
+msgstr "일정 명령은 일정한 간격에서 지연 또는 반복 후에 실행합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:388
+#, elixir-autogen, elixir-format
+msgid "Schedule commands to run after a delay or at regular intervals."
+msgstr "일정 명령은 지연 또는 일반 간격으로 실행합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:133
+#, elixir-autogen, elixir-format
+msgid "Schedule periodic or daily messages to channels automatically."
+msgstr "자동적으로 채널에 일정 기간 또는 매일 메시지."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2345
+#, elixir-autogen, elixir-format
+msgid "ScummVM Adventures (Arcade)"
+msgstr "ScummVM 모험 (아케이드)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:157
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:543
+#, elixir-autogen, elixir-format
+msgid "See command syntax and parameter hints as you type slash commands."
+msgstr "명령 구문 및 매개 변수 hints를 입력 slash 명령."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:465
+#, elixir-autogen, elixir-format
+msgid ""
+"See how many characters remain before reaching the message length limit."
+msgstr "메시지 길이 제한에 도달하기 전에 얼마나 많은 문자가 남아 있는지 확인하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:291
+#, elixir-autogen, elixir-format
+msgid "See when someone is typing a message in a private conversation."
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:858
+#, elixir-autogen, elixir-format
+msgid ""
+"Select and switch between microphones, cameras, and speakers during calls."
+msgstr "마이크, 카메라, 스피커 사이 선택 및 전환"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Send a broadcast message to all users who have wallops mode enabled."
+msgstr "wallops 모드가 활성화된 모든 사용자에게 방송 메시지를 보냅니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:367
+#, elixir-autogen, elixir-format
+msgid "Send a file to another user through a peer-to-peer connection."
+msgstr "피어 투 피어 연결을 통해 다른 사용자에게 파일을 보냅니다."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a global announcement to all connected users. Requires admin "
+"privileges."
+msgstr "모든 연결된 사용자에게 글로벌 발표를 보냅니다. 관리자 권한이 필요합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:253
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a notice message to a user or channel. Notices do not open query "
+"windows."
+msgstr "사용자 또는 채널에 알림 메시지를 보냅니다. 알림은 쿼리 창을 열지 않습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:233
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a private message to another user without opening a conversation tab."
+msgstr "대화 탭을 열지 않고 다른 사용자에게 개인 메시지를 보냅니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:211
+#, elixir-autogen, elixir-format
+msgid "Send an action message that describes what you are doing."
+msgstr "당신이하고있는 것을 설명하는 행동 메시지 보내기."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"Send and receive private messages with other users using the /msg and /query"
+" commands."
+msgstr "다른 사용자와 개인 메시지 보내기 및 수신 /msg · /query 명령."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:123
+#, elixir-autogen, elixir-format
+msgid "Send commands to ChanServ for channel registration and management."
+msgstr "채널 등록 및 관리를위한 ChanServ에 명령을 보냅니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:289
+#, elixir-autogen, elixir-format
+msgid ""
+"Send commands to NickServ for nickname registration and identification."
+msgstr "별명 등록 및 식별을 위해 NickServ에 명령을 보냅니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:939
+#, elixir-autogen, elixir-format
+msgid ""
+"Send files directly to other users via peer-to-peer with drag-and-drop "
+"support."
+msgstr "드래그 앤 드롭 지원으로 피어 투 피어를 통해 다른 사용자에게 파일을 직접 전송합니다."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:50
+#: lib/retro_hex_chat/chat/help_topics.ex:78
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:12
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:20
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:32
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:41
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:53
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:61
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:74
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:95
+#, elixir-autogen, elixir-format
+msgid "Server Messages"
+msgstr "서버 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:460
+#, elixir-autogen, elixir-format
+msgid ""
+"Server administration commands for managing users, channels, services, and "
+"server settings."
+msgstr "Server 관리 명령은 사용자, 채널, 서비스, 서버 설정 관리합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:532
+#, elixir-autogen, elixir-format
+msgid ""
+"Server debug tools: view active connections, channel processes, and BEAM "
+"memory usage."
+msgstr "Server debug 도구 : 활성 연결, 채널 프로세스 및 BEAM 메모리 사용보기."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:47
+#: lib/retro_hex_chat/chat/help_topics.ex:75
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:114
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:285
+#: lib/retro_hex_chat/chat/help_topics/services.ex:12
+#: lib/retro_hex_chat/chat/help_topics/services.ex:30
+#, elixir-autogen, elixir-format
+msgid "Services & Protocols"
+msgstr "서비스 & 의정서"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:110
+#, elixir-autogen, elixir-format
+msgid "Set a maximum number of users that can be in the channel at once."
+msgstr "한 번에 채널에서 할 수있는 사용자의 최대 수를 설정합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "Set a welcome message displayed to users when they join your channel."
+msgstr "채널에 가입 할 때 사용자에게 표시되는 환영 메시지를 설정합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:67
+#, elixir-autogen, elixir-format
+msgid ""
+"Set or clear your away status to let others know you are not available."
+msgstr "다른 사람이 사용할 수없는 것을 알고있는 상태를 설정하거나 삭제하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:24
+#, elixir-autogen, elixir-format
+msgid ""
+"Set or update the server's Message of the Day. Requires admin privileges."
+msgstr "서버의 메시지를 설정하거나 업데이트하십시오. 관리자 권한이 필요합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:88
+#, elixir-autogen, elixir-format
+msgid ""
+"Set or view a personal biography that appears in whois and hover cards."
+msgstr "whois와 hover 카드에 나타나는 개인 전기를 설정하거나 볼 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:55
+#: lib/retro_hex_chat/chat/help_topics.ex:83
+#: lib/retro_hex_chat/chat/help_topics/features.ex:340
+#: lib/retro_hex_chat/chat/help_topics/features.ex:360
+#: lib/retro_hex_chat/chat/help_topics/features.ex:585
+#: lib/retro_hex_chat/chat/help_topics/features.ex:947
+#, elixir-autogen, elixir-format
+msgid "Settings & Preferences"
+msgstr "설정 및 설정"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:566
+#, elixir-autogen, elixir-format
+msgid "Shortcut Cheatsheet"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1006
+#, elixir-autogen, elixir-format
+msgid "Single Session"
+msgstr "단일 세션"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:547
+#, elixir-autogen, elixir-format
+msgid "Smart Input"
+msgstr "스마트 입력"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2096
+#, elixir-autogen, elixir-format
+msgid "Solo Arcade"
+msgstr "솔로 아케이드"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:63
+#: lib/retro_hex_chat/chat/help_topics.ex:91
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2346
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2750
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2779
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2808
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2837
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2866
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2895
+#, elixir-autogen, elixir-format
+msgid "Solo Arcade: Adventures"
+msgstr "솔로 아케이드: 모험"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:62
+#: lib/retro_hex_chat/chat/help_topics.ex:90
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:372
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2097
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2171
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2215
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2244
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2276
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2312
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2410
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2439
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2467
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2497
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2523
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2553
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2582
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2614
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2640
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2666
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2694
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2722
+#, elixir-autogen, elixir-format
+msgid "Solo Arcade: FPS"
+msgstr "솔로 아케이드: FPS"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2894
+#, elixir-autogen, elixir-format
+msgid "Soltys"
+msgstr "뚱 베어"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:251
+#, elixir-autogen, elixir-format
+msgid "Sounds"
+msgstr "팟캐스트"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1257
+#, elixir-autogen, elixir-format
+msgid ""
+"Space combat through floating asteroid obstacles. Asteroids block missiles "
+"and "
+msgstr "부동 asteroid 장애물을 통해 공간 전투. Asteroids 구획 미사일 및"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:94
+#, elixir-autogen, elixir-format
+msgid "Special Messages"
+msgstr "특별 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1576
+#, elixir-autogen, elixir-format
+msgid ""
+"Split-screen Space Invaders — aliens you destroy fall on your opponent as "
+"reinforcements. "
+msgstr "Split-screen Space Invaders - 외계인은 상대를 보강으로 파괴합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1188
+#, elixir-autogen, elixir-format
+msgid "Star Duel"
+msgstr "스타 듀엘"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:100
+#, elixir-autogen, elixir-format
+msgid "Start a peer-to-peer audio or video call with another user."
+msgstr "다른 사용자와 함께 피어 투 피어 오디오 또는 비디오 통화를 시작합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:132
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a peer-to-peer game session with another user for retro arcade games."
+msgstr "retro arcade 게임에 대한 또 다른 사용자와 함께 피어 투 피어 게임 세션을 시작합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:376
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a solo arcade session. This command is reserved for administrators."
+msgstr "솔로 아케이드 세션을 시작합니다. 이 명령은 관리자에게 맡겨집니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:699
+#, elixir-autogen, elixir-format
+msgid "Status Bar"
+msgstr "상태 바"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:98
+#, elixir-autogen, elixir-format
+msgid "Status Tab"
+msgstr "상태 탭"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:198
+#, elixir-autogen, elixir-format
+msgid ""
+"Strip all color and formatting codes from messages sent to the channel."
+msgstr "모든 색상을 스트립하고 채널에 전송 된 메시지에서 코드를 포맷."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2908
+#, elixir-autogen, elixir-format
+msgid ""
+"Surreal Polish puzzle adventure by LK Avalon (1995) — rescue your "
+"grandfather from underground pirates."
+msgstr "LK Avalon (1995)에 의해 Surreal 폴란드어 퍼즐 모험 - 지하 해적에서 할아버지를 구출."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"Switch between channels and conversations using the tab bar at the top of "
+"the chat area."
+msgstr "채팅 영역의 상단에 탭 바를 사용하여 채널과 대화 사이 전환."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:35
+#, elixir-autogen, elixir-format
+msgid "Tab Bar"
+msgstr "탭 바"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:523
+#, elixir-autogen, elixir-format
+msgid ""
+"Tab-complete nicknames, commands, channels, and emoji with fuzzy matching."
+msgstr "Tab-complete 별명, 명령, 채널, 그리고 emoji와 fuzzy 일치."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1921
+#, elixir-autogen, elixir-format
+msgid ""
+"Temperature timer adds urgency. Controls: Arrow keys or WASD to move, "
+"Up/Down to jump between rows."
+msgstr "온도 타이머는 긴급을 추가합니다. 제어: 화살표 키 또는 WASD 이동, 최대/Down 행 사이 점프."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:57
+#: lib/retro_hex_chat/chat/help_topics.ex:85
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:12
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:24
+#, elixir-autogen, elixir-format
+msgid "Text Formatting"
+msgstr "텍스트 포맷"
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:11
+#, elixir-autogen, elixir-format
+msgid "Text Formatting Overview"
+msgstr "텍스트 포맷 개요"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2707
+#, elixir-autogen, elixir-format
+msgid ""
+"The grandfather of FPS games (1992) — 10 levels of castle-storming action in"
+" the shareware episode."
+msgstr "FPS 게임의 할아버지 (1992) - 공유 게임 에피소드의 성 폭풍 액션의 10 수준."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2536
+#, elixir-autogen, elixir-format
+msgid ""
+"The legendary 1996 cereal box promotion — a kid-friendly DOOM total "
+"conversion where you zap Flemoids with the Zorcher."
+msgstr ""
+"전설적인 1996 시리얼 상자 프로모션 - Zorcher와 함께 zap Flemoids의 어린이 친화적 인 DOOM 총 변환."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2679
+#, elixir-autogen, elixir-format
+msgid ""
+"The official 1997 Quake II demo — Unit 1 of the singleplayer campaign "
+"against the Strogg."
+msgstr "공식 1997 Quake II 데모 - Strogg에 대한 단일 플레이어 캠페인의 단위 1."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2735
+#, elixir-autogen, elixir-format
+msgid ""
+"The official 1999 Valve demo — 3 unique levels not found in the full game, "
+"set in Black Mesa."
+msgstr "공식 1999 밸브 데모 - 3 개의 독특한 수준은 Black Mesa에서 설정 된 전체 게임에서 찾을 수 없습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2422
+#, elixir-autogen, elixir-format
+msgid ""
+"The original 1993 shareware episode — 9 levels of demon-infested corridors "
+"on Phobos."
+msgstr "원래 1993 몫ware 에피소드 — 9 의 demon-infested corridors 에 Phobos."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2626
+#, elixir-autogen, elixir-format
+msgid ""
+"The original 1996 shareware episode — full 3D FPS with Lovecraftian horrors "
+"and a Trent Reznor soundtrack."
+msgstr ""
+"원래 1996 몫ware 에피소드 - Lovecraftian 공포와 Trent Reznor 사운드 트랙이있는 전체 3D FPS."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1516
+#, elixir-autogen, elixir-format
+msgid ""
+"Time your shots around the moving obstacle. First to 10, best of 3 rounds. "
+msgstr "움직이는 장애물 주위에 당신의 탄. 첫 번째 10, 3 라운드의 최고."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:307
+#, elixir-autogen, elixir-format
+msgid "Timers"
+msgstr "계정 정보"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:502
+#, elixir-autogen, elixir-format
+msgid "Timestamp Configuration"
+msgstr "Timestamp 구성"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:116
+#, elixir-autogen, elixir-format
+msgid "Toolbar"
+msgstr "도구 모음"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1824
+#, elixir-autogen, elixir-format
+msgid ""
+"Top-down alpine descent through toxic wastelands — dodge mutant trees and "
+"irradiated rocks, "
+msgstr "유독한 폐수를 통해 탑다운 알파인 드래곤 — dodge 돌연변이 나무와 irradiated 바위,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1429
+#, elixir-autogen, elixir-format
+msgid "Top-down boxing in a cyberpunk ring — close punches score 3 points, "
+msgstr "사이버펑크 링의 탑다운 권투 - 펀치 점수 3점,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2013
+#, elixir-autogen, elixir-format
+msgid ""
+"Top-down ice hockey in a cyberpunk neon arena. Control your field player "
+"while "
+msgstr "사이버펑크 neon arena의 상단 다운 아이스 하키. 필드 플레이어를 제어하는 동안"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1168
+#, elixir-autogen, elixir-format
+msgid ""
+"Top-down tank combat in a maze arena. Rotate your tank, drive forward, and "
+"fire "
+msgstr "maze arena의 탑 다운 탱크 전투. 당신의 탱크를 자전하고, 앞으로 몰고, 불"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1750
+#, elixir-autogen, elixir-format
+msgid ""
+"Top-down tennis duel — automatic hitting where shot angle depends on contact"
+" position. "
+msgstr "Top-down Tennis duel - 샷 각도가 접촉 위치에 달려있는 자동 타격."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:65
+#, elixir-autogen, elixir-format
+msgid "Topic Bar"
+msgstr "탑스 바"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:23
+#, elixir-autogen, elixir-format
+msgid "Track when specific users connect or disconnect with the notify list."
+msgstr "특정 사용자가 목록에 연결하거나 차단할 때 추적하십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:656
+#, elixir-autogen, elixir-format
+msgid "Transfer channel ownership to another user."
+msgstr "다른 사용자에게 채널 소유권 전송."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:281
+#, elixir-autogen, elixir-format
+msgid "Typing Indicator"
+msgstr "연락처"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:59
+#, elixir-autogen, elixir-format
+msgid "URL Catcher"
+msgstr "URL 캐처"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:45
+#, elixir-autogen, elixir-format
+msgid ""
+"Understand how chat channels work, including joining, leaving, and "
+"participating in conversations."
+msgstr "채팅 채널 작업을 이해, 가입, 떠나, 그리고 대화에 참여."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:30
+#, elixir-autogen, elixir-format
+msgid ""
+"Understand the channel permission hierarchy from owner to regular user and "
+"what each rank can do."
+msgstr "소유자에서 정기적인 사용자에 이르기까지 채널 권한 계층을 이해하고 각 순위는 할 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:646
+#, elixir-autogen, elixir-format
+msgid "Unread Indicators"
+msgstr "Unread 표시"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:661
+#, elixir-autogen, elixir-format
+msgid ""
+"Unread message badges on tabs and conversations showing message and mention "
+"counts."
+msgstr "메시지와 언급을 보여주는 탭과 대화의 메시지 배지를 읽으십시오."
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the color palette to add foreground and background colors to your chat "
+"messages."
+msgstr "채팅 메시지에 전경과 배경 색상을 추가하는 색상 팔레트를 사용합니다."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:56
+#: lib/retro_hex_chat/chat/help_topics.ex:84
+#: lib/retro_hex_chat/chat/help_topics/features.ex:567
+#: lib/retro_hex_chat/chat/help_topics/features.ex:700
+#: lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex:12
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:12
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:24
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:36
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:48
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:66
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:82
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:99
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:117
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:129
+#, elixir-autogen, elixir-format
+msgid "User Interface"
+msgstr "사용자 인터페이스"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:11
+#, elixir-autogen, elixir-format
+msgid "User Interface Overview"
+msgstr "사용자 인터페이스 개요"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:47
+#, elixir-autogen, elixir-format
+msgid "User List"
+msgstr "사용자 목록"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:41
+#: lib/retro_hex_chat/chat/help_topics.ex:69
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:63
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:84
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:241
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:423
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:443
+#: lib/retro_hex_chat/chat/help_topics/features.ex:473
+#: lib/retro_hex_chat/chat/help_topics/features.ex:485
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1007
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1028
+#, elixir-autogen, elixir-format
+msgid "Users & Identity"
+msgstr "사용자 및 식별"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1313
+#, elixir-autogen, elixir-format
+msgid ""
+"Versus Breakout battle — each player defends a brick castle with a king "
+"inside. "
+msgstr "Versus Breakout 전투 - 각 플레이어는 내부 왕과 벽돌성을 방어합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:828
+#, elixir-autogen, elixir-format
+msgid "Video Call"
+msgstr "영상 통화"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:553
+#, elixir-autogen, elixir-format
+msgid ""
+"View TURN server stats (active allocations, relay ports in use) and list "
+"active allocations."
+msgstr "TURN 서버 통계 보기 (active allocations, Relay port in use) 및 목록 활성 할당."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:58
+#, elixir-autogen, elixir-format
+msgid ""
+"View and interact with users in the current channel through the right-side "
+"user list."
+msgstr "오른쪽 사용자 목록을 통해 현재 채널에서 사용자와 상호 작용합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:64
+#, elixir-autogen, elixir-format
+msgid "View and manage URLs shared across all channels with link previews."
+msgstr "모든 채널에서 URL을 공유하고 관리하기 링크 미리보기."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:94
+#, elixir-autogen, elixir-format
+msgid ""
+"View and manage channel settings, bans, exceptions, and modes in one dialog."
+msgstr "한 대화 상자에서 채널 설정, 금지, 예외 및 모드를 볼 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:224
+#, elixir-autogen, elixir-format
+msgid "View or change channel modes and user privilege modes."
+msgstr "보기 또는 변경 채널 모드 및 사용자 권한 모드."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:90
+#, elixir-autogen, elixir-format
+msgid "View or change your user modes, such as enabling wallops reception."
+msgstr "사용자 모드를 볼 수 있고, wallops 수신을 가능하게 합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:396
+#, elixir-autogen, elixir-format
+msgid "View or set the topic for the current channel."
+msgstr "현재 채널에 대한 주제를 확인하거나 설정합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:472
+#, elixir-autogen, elixir-format
+msgid ""
+"View server information and manage server settings (name, description, "
+"registration, limits)."
+msgstr "서버 정보 보기 및 서버 설정 관리 (이름, 설명, 등록, 제한)."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:109
+#, elixir-autogen, elixir-format
+msgid ""
+"View server messages, connection events, and system notifications in the "
+"Status tab."
+msgstr "상태 탭의 서버 메시지, 연결 이벤트 및 시스템 알림 보기."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:74
+#, elixir-autogen, elixir-format
+msgid "View the channel topic and active modes in the bar below the tab bar."
+msgstr "탭 바 아래 바의 채널 주제와 활성 모드를 볼 수 있습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "View the server's Message of the Day."
+msgstr "오늘의 서버 메시지 보기."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:751
+#, elixir-autogen, elixir-format
+msgid ""
+"Visual indicators for connection status including banners, overlays, and "
+"status bar changes."
+msgstr "배너, 오버레이 및 상태 표시등의 연결 상태에 대한 시각 표시."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:692
+#, elixir-autogen, elixir-format
+msgid ""
+"Visual toast confirmation when text or settings are copied to the clipboard."
+msgstr "텍스트 또는 설정이 클립보드에 복사 될 때 Visual toast 확인."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:11
+#, elixir-autogen, elixir-format
+msgid "Welcome to RetroHexChat"
+msgstr "RetroHexChat에 오신 것을 환영합니다"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1543
+#, elixir-autogen, elixir-format
+msgid "Western duel in open field — no obstacle, full horizontal movement. "
+msgstr "오픈 필드의 서사시 - 장애물 없음, 전체 수평 운동."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1515
+#, elixir-autogen, elixir-format
+msgid "Western duel with a stagecoach rolling across the arena. "
+msgstr "the arena를 통해 stagecoach 압연과 서양 duel."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1483
+#, elixir-autogen, elixir-format
+msgid ""
+"Western duel with bouncing bullets — fire at angles to bypass the wall. "
+msgstr "총알을 끓는 서서 - 벽을 우회하는 각도에서 화재."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1455
+#, elixir-autogen, elixir-format
+msgid "Western duel — two gunslingers face off across a cactus obstacle. "
+msgstr "Western duel - 두 건의 총판은 현명한 장애물을 가로 질러줍니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2243
+#, elixir-autogen, elixir-format
+msgid "Wolfenstein 3D (Arcade)"
+msgstr "Wolfenstein 3D (아케이드)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2693
+#, elixir-autogen, elixir-format
+msgid "Wolfenstein 3D: Escape from Castle"
+msgstr "Wolfenstein 3D : 성에서 탈출"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1206
+#, elixir-autogen, elixir-format
+msgid ""
+"Wraparound edges, hyperspace warp with 20% death chance. First to 7 wins. "
+msgstr "20 %의 죽음 기회를 가진 하이퍼 스페이스 전사. 먼저 7 승리."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:85
+#, elixir-autogen, elixir-format
+msgid "about me"
+msgstr "내 계정"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:24
+#, elixir-autogen, elixir-format
+msgid "access level"
+msgstr "접근 수준"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:35
+#, elixir-autogen, elixir-format
+msgid "access list"
+msgstr "오시는 길"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:33
+#, elixir-autogen, elixir-format
+msgid "address book"
+msgstr "주소 책"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2784
+#, elixir-autogen, elixir-format
+msgid "alcachofa soft"
+msgstr "alcachofa 소프트"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2017
+#, elixir-autogen, elixir-format
+msgid ""
+"an AI goalie defends your net. Capture the puck, shoot with Space, or tackle"
+" "
+msgstr "AI 골키퍼는 그물을 방어합니다. puck을 캡처, 공간과 촬영, 또는 tackle"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1013
+#, elixir-autogen, elixir-format
+msgid "another window"
+msgstr "다른 창"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1239
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1265
+#, elixir-autogen, elixir-format
+msgid "as Star Duel. First to 7 wins."
+msgstr "스타 듀엘 먼저 7 승리."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:183
+#, elixir-autogen, elixir-format
+msgid "auto commands"
+msgstr "자동 명령"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:188
+#, elixir-autogen, elixir-format
+msgid "auto execute"
+msgstr "자동 실행"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:380
+#, elixir-autogen, elixir-format
+msgid "auto greet"
+msgstr "자동차 그리스"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:36
+#, elixir-autogen, elixir-format
+msgid "auto join"
+msgstr "자동차 가입"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:204
+#, elixir-autogen, elixir-format
+msgid "auto reconnect"
+msgstr "자동 reconnect"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:144
+#, elixir-autogen, elixir-format
+msgid "auto-join on invite"
+msgstr "자동 조인"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:104
+#, elixir-autogen, elixir-format
+msgid "ban exception"
+msgstr "금지 예외"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:88
+#, elixir-autogen, elixir-format
+msgid "ban exceptions"
+msgstr "금지 예외"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:105
+#, elixir-autogen, elixir-format
+msgid "ban exempt"
+msgstr "금지사항"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2558
+#, elixir-autogen, elixir-format
+msgid "banjo software"
+msgstr "banjo 소프트웨어"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2121
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2352
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2752
+#, elixir-autogen, elixir-format
+msgid "beneath a steel sky"
+msgstr "강철 하늘 아래"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2286
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2730
+#, elixir-autogen, elixir-format
+msgid "black mesa"
+msgstr "검정 mesa"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1273
+#, elixir-autogen, elixir-format
+msgid "block breakers"
+msgstr "블록 차단기"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:219
+#, elixir-autogen, elixir-format
+msgid "block knock"
+msgstr "블록 노크"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:44
+#, elixir-autogen, elixir-format
+msgid "bot addcmd"
+msgstr "봇 addcmd"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:35
+#, elixir-autogen, elixir-format
+msgid "bot command"
+msgstr "봇 명령"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:59
+#, elixir-autogen, elixir-format
+msgid "bot commands"
+msgstr "봇 명령"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:37
+#, elixir-autogen, elixir-format
+msgid "bot create"
+msgstr "봇 생성"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:45
+#, elixir-autogen, elixir-format
+msgid "bot delcmd"
+msgstr "봇 델cmd"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:38
+#, elixir-autogen, elixir-format
+msgid "bot destroy"
+msgstr "봇 파괴"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:84
+#, elixir-autogen, elixir-format
+msgid "bot dice"
+msgstr "봇 인덱스"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:42
+#, elixir-autogen, elixir-format
+msgid "bot disable"
+msgstr "봇 비활성화"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:41
+#, elixir-autogen, elixir-format
+msgid "bot enable"
+msgstr "봇 활성화"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:39
+#, elixir-autogen, elixir-format
+msgid "bot join"
+msgstr "봇 가입"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:164
+#, elixir-autogen, elixir-format
+msgid "bot moderation"
+msgstr "봇모임"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:40
+#, elixir-autogen, elixir-format
+msgid "bot part"
+msgstr "봇 부품"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:144
+#, elixir-autogen, elixir-format
+msgid "bot rss"
+msgstr "봇 rss"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:127
+#, elixir-autogen, elixir-format
+msgid "bot scheduler"
+msgstr "봇 스케줄러"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:16
+#, elixir-autogen, elixir-format
+msgid "bot service"
+msgstr "봇 서비스"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:43
+#, elixir-autogen, elixir-format
+msgid "bot set"
+msgstr "봇 세트"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:105
+#, elixir-autogen, elixir-format
+msgid "bot trivia"
+msgstr "봇 트라이비아"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2082
+#, elixir-autogen, elixir-format
+msgid "building pressure as the match intensifies. "
+msgstr "일치로 건물 압력."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:108
+#, elixir-autogen, elixir-format
+msgid "bypass ban"
+msgstr "bypass 금지"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:166
+#, elixir-autogen, elixir-format
+msgid "case sensitive"
+msgstr "케이스 민감한"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:242
+#, elixir-autogen, elixir-format
+msgid "change name"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:83
+#, elixir-autogen, elixir-format
+msgid "channel central"
+msgstr "채널 중앙"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:403
+#, elixir-autogen, elixir-format
+msgid "channel click"
+msgstr "채널 클릭"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:519
+#, elixir-autogen, elixir-format
+msgid "channel completion"
+msgstr "채널 완료"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:36
+#, elixir-autogen, elixir-format
+msgid "channel expiration"
+msgstr "채널 expiration"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:37
+#, elixir-autogen, elixir-format
+msgid "channel expiry"
+msgstr "채널 expiry"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:84
+#: lib/retro_hex_chat/chat/help_topics/features.ex:707
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:69
+#, elixir-autogen, elixir-format
+msgid "channel info"
+msgstr "채널 정보"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:161
+#: lib/retro_hex_chat/chat/help_topics/features.ex:142
+#, elixir-autogen, elixir-format
+msgid "channel invite"
+msgstr "채널 초대"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:200
+#, elixir-autogen, elixir-format
+msgid "channel list"
+msgstr "채널 목록"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:327
+#: lib/retro_hex_chat/chat/help_topics/features.ex:593
+#, elixir-autogen, elixir-format
+msgid "channel menu"
+msgstr "채널 메뉴"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:41
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:219
+#, elixir-autogen, elixir-format
+msgid "channel mode"
+msgstr "채널 모드"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:630
+#, elixir-autogen, elixir-format
+msgid "channel mute"
+msgstr "채널 mute"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:128
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:588
+#, elixir-autogen, elixir-format
+msgid "channel operator"
+msgstr "채널 연산자"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:116
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:654
+#, elixir-autogen, elixir-format
+msgid "channel owner"
+msgstr "채널 소유자"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:94
+#, elixir-autogen, elixir-format
+msgid "channel password"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:118
+#: lib/retro_hex_chat/chat/help_topics/services.ex:33
+#, elixir-autogen, elixir-format
+msgid "channel service"
+msgstr "채널 서비스"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:85
+#, elixir-autogen, elixir-format
+msgid "channel settings"
+msgstr "채널 설정"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:394
+#, elixir-autogen, elixir-format
+msgid "channel topic"
+msgstr "채널 주제"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:642
+#, elixir-autogen, elixir-format
+msgid "channel unmute"
+msgstr "채널 unmute"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "channel welcome"
+msgstr "채널 환영"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:328
+#, elixir-autogen, elixir-format
+msgid "chat menu"
+msgstr "채팅 메뉴"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:40
+#, elixir-autogen, elixir-format
+msgid "chat room"
+msgstr "채팅 룸"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:570
+#, elixir-autogen, elixir-format
+msgid "cheat sheet"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2109
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2176
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2526
+#, elixir-autogen, elixir-format
+msgid "chex quest"
+msgstr "크리스마스"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2263
+#, elixir-autogen, elixir-format
+msgid "classic that launched the FPS genre. "
+msgstr "FPS 장르를 출시한 클래식."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "clear message of the day"
+msgstr "오늘의 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1828
+#, elixir-autogen, elixir-format
+msgid ""
+"clear slalom gates for time bonuses, and outrun the radioactive avalanche. "
+msgstr "시간 보너스를 위한 명확한 슬로움 문, and outrun the radioactive avalanche."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "clear welcome"
+msgstr "명확한 환영"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
+#, elixir-autogen, elixir-format
+msgid "close tab"
+msgstr "닫기 탭"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:36
+#, elixir-autogen, elixir-format
+msgid "color override"
+msgstr "색깔 override"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:535
+#, elixir-autogen, elixir-format
+msgid "command help"
+msgstr "명령 도움말"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:516
+#, elixir-autogen, elixir-format
+msgid "command palette"
+msgstr "명령 팔레트"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:347
+#, elixir-autogen, elixir-format
+msgid "compact mode"
+msgstr "컴팩트 모드"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:206
+#, elixir-autogen, elixir-format
+msgid "connection lost"
+msgstr "연결 손실"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:333
+#: lib/retro_hex_chat/chat/help_topics/features.ex:324
+#: lib/retro_hex_chat/chat/help_topics/features.ex:435
+#: lib/retro_hex_chat/chat/help_topics/features.ex:587
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:84
+#, elixir-autogen, elixir-format
+msgid "context menu"
+msgstr "메뉴 닫기"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:595
+#, elixir-autogen, elixir-format
+msgid "conversations menu"
+msgstr "대화 메뉴"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:54
+#, elixir-autogen, elixir-format
+msgid "conversations users"
+msgstr "사용자 대화"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2361
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2811
+#, elixir-autogen, elixir-format
+msgid "creative reality"
+msgstr "창의적인 현실"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:21
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:60
+#, elixir-autogen, elixir-format
+msgid "custom commands"
+msgstr "사용자 정의 명령"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:334
+#: lib/retro_hex_chat/chat/help_topics/features.ex:322
+#, elixir-autogen, elixir-format
+msgid "custom menu"
+msgstr "주문 메뉴"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:365
+#, elixir-autogen, elixir-format
+msgid "customize shortcuts"
+msgstr "바로가기"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2757
+#, elixir-autogen, elixir-format
+msgid "dave gibbons"
+msgstr "카테고리"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1247
+#, elixir-autogen, elixir-format
+msgid "debris field"
+msgstr "debris 분야"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:570
+#, elixir-autogen, elixir-format
+msgid "delete all"
+msgstr "모두 삭제"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1351
+#, elixir-autogen, elixir-format
+msgid "destroy enemies for points, steal fuel, and drop mines on your rival. "
+msgstr "포인트를 파괴, 연료를 훔치고, 라이벌에 광산을 떨어뜨립니다."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:85
+#, elixir-autogen, elixir-format
+msgid "dice notation"
+msgstr "주사위 표기"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2531
+#, elixir-autogen, elixir-format
+msgid "digital cafe"
+msgstr "디지털 카페"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2221
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2622
+#, elixir-autogen, elixir-format
+msgid "dimension of the doomed"
+msgstr "doomed의 차원"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:57
+#, elixir-autogen, elixir-format
+msgid "direct message"
+msgstr "연락처"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:218
+#, elixir-autogen, elixir-format
+msgid "disable knock"
+msgstr "공급 업체"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2474
+#, elixir-autogen, elixir-format
+msgid "doom ii"
+msgstr "도미 ii"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:132
+#, elixir-autogen, elixir-format
+msgid "empty state"
+msgstr "빈 상태"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2415
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2618
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2699
+#, elixir-autogen, elixir-format
+msgid "episode 1"
+msgstr "에피소드 1"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:578
+#, elixir-autogen, elixir-format
+msgid "except admin roles, audit logs, and server bans. "
+msgstr "admin 역할, 감사 로그 및 서버 금지를 제외하고."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:160
+#, elixir-autogen, elixir-format
+msgid "external messages"
+msgstr "외부 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2072
+#, elixir-autogen, elixir-format
+msgid "first to five"
+msgstr "처음 5"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:785
+#, elixir-autogen, elixir-format
+msgid "fix message"
+msgstr "수정 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2363
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2839
+#, elixir-autogen, elixir-format
+msgid "flight of the amazon queen"
+msgstr "amazon 여왕의 비행"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:16
+#, elixir-autogen, elixir-format
+msgid "friend list"
+msgstr "친구 목록"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1405
+#, elixir-autogen, elixir-format
+msgid "fuel is scarce, mines recharge faster. Quick and chaotic. "
+msgstr "연료는 scarce, 광산은 빨리 재충전합니다. 빠르고 혼란스러운."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:517
+#, elixir-autogen, elixir-format
+msgid "fuzzy search"
+msgstr "fuzzy 검색"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2150
+#, elixir-autogen, elixir-format
+msgid "gameplay tips before launching. Join #games and type !play to start."
+msgstr "발사하기 전에 gameplay 끝. 이름 * #games 그리고 유형 ! 시작합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:605
+#, elixir-autogen, elixir-format
+msgid "give voice"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2731
+#, elixir-autogen, elixir-format
+msgid "gordon freeman"
+msgstr "gordon 프리맨"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1221
+#, elixir-autogen, elixir-format
+msgid "gravity well"
+msgstr "중력 잘"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:140
+#, elixir-autogen, elixir-format
+msgid "half op"
+msgstr "반 op"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1982
+#, elixir-autogen, elixir-format
+msgid "has no effect. First to complete the igloo wins. Fair and square. "
+msgstr "아무 효력도 없습니다. igloo 승리를 완료하는 첫 번째. 박람회와 사각."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1417
+#, elixir-autogen, elixir-format
+msgid "hex boxing"
+msgstr "hex 복싱"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1650
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1686
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1712
+#, elixir-autogen, elixir-format
+msgid "hex enduro"
+msgstr "hex 내구시간"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1893
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1936
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1968
+#, elixir-autogen, elixir-format
+msgid "hex frost"
+msgstr "hex 서리"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1561
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1596
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1623
+#, elixir-autogen, elixir-format
+msgid "hex invaders"
+msgstr "hex 침략자"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1442
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1473
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1505
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1533
+#, elixir-autogen, elixir-format
+msgid "hex outlaw"
+msgstr "hex 흠"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1333
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1371
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1394
+#, elixir-autogen, elixir-format
+msgid "hex raid"
+msgstr "hex 레이드"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1813
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1845
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1869
+#, elixir-autogen, elixir-format
+msgid "hex skiing"
+msgstr "hex 스키"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1739
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1767
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1790
+#, elixir-autogen, elixir-format
+msgid "hex tennis"
+msgstr "hex 테니스"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:178
+#, elixir-autogen, elixir-format
+msgid "hidden name"
+msgstr "숨겨진 이름"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:167
+#, elixir-autogen, elixir-format
+msgid "history search"
+msgstr "회사연혁"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:402
+#, elixir-autogen, elixir-format
+msgid "hover card"
+msgstr "hover 카드"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1999
+#, elixir-autogen, elixir-format
+msgid "ice hockey"
+msgstr "아이스 하키"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2187
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2223
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2253
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2322
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2416
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2619
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2674
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2701
+#, elixir-autogen, elixir-format
+msgid "id software"
+msgstr "id 소프트웨어"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2844
+#, elixir-autogen, elixir-format
+msgid "indiana jones"
+msgstr "인도 jones"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:555
+#, elixir-autogen, elixir-format
+msgid "input box"
+msgstr "입력 상자"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:125
+#, elixir-autogen, elixir-format
+msgid "invite bypass"
+msgstr "bypass에 대하여"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:143
+#, elixir-autogen, elixir-format
+msgid "invite dialog"
+msgstr "회사 소개"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:123
+#, elixir-autogen, elixir-format
+msgid "invite exception"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:89
+#, elixir-autogen, elixir-format
+msgid "invite exceptions"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:124
+#, elixir-autogen, elixir-format
+msgid "invite exempt"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:145
+#, elixir-autogen, elixir-format
+msgid "invite expiration"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:77
+#, elixir-autogen, elixir-format
+msgid "invite only"
+msgstr "감사합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:160
+#, elixir-autogen, elixir-format
+msgid "invite user"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:127
+#, elixir-autogen, elixir-format
+msgid "invite-only bypass"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:286
+#, elixir-autogen, elixir-format
+msgid "is typing"
+msgstr "본문 바로가기"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2365
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2841
+#, elixir-autogen, elixir-format
+msgid "joe king"
+msgstr "조이 킹"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:41
+#, elixir-autogen, elixir-format
+msgid "join channel"
+msgstr "채널 가입"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:383
+#, elixir-autogen, elixir-format
+msgid "join greet"
+msgstr "참여하기"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:232
+#, elixir-autogen, elixir-format
+msgid "join limit"
+msgstr "가입 제한"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:245
+#, elixir-autogen, elixir-format
+msgid "join request"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:229
+#, elixir-autogen, elixir-format
+msgid "join throttle"
+msgstr "throttle 가입"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:86
+#, elixir-autogen, elixir-format
+msgid "keep highest"
+msgstr "가장 높은"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:87
+#, elixir-autogen, elixir-format
+msgid "keep lowest"
+msgstr "가장 낮은"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:362
+#, elixir-autogen, elixir-format
+msgid "key bindings"
+msgstr "키 바인딩"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:572
+#, elixir-autogen, elixir-format
+msgid "keyboard reference"
+msgstr "키보드 참고"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:364
+#, elixir-autogen, elixir-format
+msgid "keyboard shortcuts"
+msgstr "키보드 단축키"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2532
+#, elixir-autogen, elixir-format
+msgid "kid friendly"
+msgstr "아이 친절한"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1261
+#, elixir-autogen, elixir-format
+msgid ""
+"kill ships on contact. Use debris for cover or it destroys you. Same "
+"controls "
+msgstr "접촉에 배를 죽이십시오. 덮개를 위한 debris를 사용하거나 당신을 파괴합니다. 동일한 통제"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2184
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2418
+#, elixir-autogen, elixir-format
+msgid "knee deep"
+msgstr "무릎 깊은"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:444
+#, elixir-autogen, elixir-format
+msgid "last seen"
+msgstr "마지막으로 본"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:405
+#, elixir-autogen, elixir-format
+msgid "lift ban"
+msgstr "리프트 금지"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1143
+#, elixir-autogen, elixir-format
+msgid "light trails"
+msgstr "빛의 길"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:221
+#, elixir-autogen, elixir-format
+msgid "lightweight message"
+msgstr "경량 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:348
+#, elixir-autogen, elixir-format
+msgid "line shading"
+msgstr "연락처"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:406
+#, elixir-autogen, elixir-format
+msgid "link preview"
+msgstr "링크 미리보기"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2375
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2898
+#, elixir-autogen, elixir-format
+msgid "lk avalon"
+msgstr "lk 아발론"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2368
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2868
+#, elixir-autogen, elixir-format
+msgid "lure of the temptress"
+msgstr "유혹의 유혹"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:105
+#, elixir-autogen, elixir-format
+msgid "max users"
+msgstr "최대 사용자"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1430
+#, elixir-autogen, elixir-format
+msgid ""
+"medium 2, far 1. First to 100 is KO! Best of 3 rounds, 2 minutes each. "
+msgstr "중간 2, 멀리 1. 첫 번째 100은 KO입니다! 3개의 둥근, 각각 2 분의 베스트."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:161
+#, elixir-autogen, elixir-format
+msgid "members only"
+msgstr "회원 전용"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:13
+#, elixir-autogen, elixir-format
+msgid "message of the day"
+msgstr "오늘의 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:798
+#, elixir-autogen, elixir-format
+msgid "message removed"
+msgstr "메시지 제거"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1172
+#, elixir-autogen, elixir-format
+msgid ""
+"missiles to hit your opponent. One missile at a time — miss and you're "
+"vulnerable. "
+msgstr "상대를 공격하는 미사일. 한 번에 미사일 - 놓고 취약합니다."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:149
+#, elixir-autogen, elixir-format
+msgid "moderated voice"
+msgstr "공급 업체"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:70
+#, elixir-autogen, elixir-format
+msgid "modes display"
+msgstr "모드 표시"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1012
+#, elixir-autogen, elixir-format
+msgid "multiple tabs"
+msgstr "여러 탭"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:596
+#, elixir-autogen, elixir-format
+msgid "mute channel"
+msgstr "mute 채널"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:404
+#, elixir-autogen, elixir-format
+msgid "nick click"
+msgstr "nick 클릭"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:35
+#, elixir-autogen, elixir-format
+msgid "nick colors"
+msgstr "니켈 색깔"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:518
+#, elixir-autogen, elixir-format
+msgid "nick completion"
+msgstr "nick 완료"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1030
+#, elixir-autogen, elixir-format
+msgid "nick expiry"
+msgstr "닉 expiry"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:52
+#, elixir-autogen, elixir-format
+msgid "nick list"
+msgstr "nick 목록"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:591
+#, elixir-autogen, elixir-format
+msgid "nick menu"
+msgstr "닉 메뉴"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:326
+#, elixir-autogen, elixir-format
+msgid "nicklist menu"
+msgstr "nicklist 메뉴"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:18
+#, elixir-autogen, elixir-format
+msgid "nickname protection"
+msgstr "별명 보호"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1873
+#, elixir-autogen, elixir-format
+msgid "no avalanche"
+msgstr "아니 avalanche"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:136
+#, elixir-autogen, elixir-format
+msgid "no channels"
+msgstr "채널 없음"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:192
+#, elixir-autogen, elixir-format
+msgid "no colors"
+msgstr "색상 없음"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:51
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:159
+#, elixir-autogen, elixir-format
+msgid "no external"
+msgstr "외부 없음"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:217
+#, elixir-autogen, elixir-format
+msgid "no knock"
+msgstr "노크"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1534
+#, elixir-autogen, elixir-format
+msgid "no man's land"
+msgstr "남자의 땅"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:134
+#, elixir-autogen, elixir-format
+msgid "no messages"
+msgstr "메시지 없음"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1374
+#, elixir-autogen, elixir-format
+msgid "no mines"
+msgstr "내 계정"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1971
+#, elixir-autogen, elixir-format
+msgid "no steal"
+msgstr "훔치는"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:137
+#, elixir-autogen, elixir-format
+msgid "no urls"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:135
+#, elixir-autogen, elixir-format
+msgid "no users"
+msgstr "사용자 없음"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2296
+#, elixir-autogen, elixir-format
+msgid "not found in the full game. "
+msgstr "전체 게임에서 찾을 수 없습니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:261
+#, elixir-autogen, elixir-format
+msgid "notification sound"
+msgstr "알림 소리"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:39
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:318
+#: lib/retro_hex_chat/chat/help_topics/features.ex:184
+#, elixir-autogen, elixir-format
+msgid "on connect"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1793
+#, elixir-autogen, elixir-format
+msgid "one point"
+msgstr "1개 점"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1016
+#, elixir-autogen, elixir-format
+msgid "one session"
+msgstr "1 세션"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:348
+#, elixir-autogen, elixir-format
+msgid "open conversation"
+msgstr "열린 대화"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2443
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2471
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2502
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2643
+#, elixir-autogen, elixir-format
+msgid "open source"
+msgstr "오픈 소스"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:64
+#, elixir-autogen, elixir-format
+msgid "operator broadcast"
+msgstr "운영자 방송"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1913
+#, elixir-autogen, elixir-format
+msgid ""
+"or opponent's color. Stepping on opponent's block steals it (2-piece "
+"swing!). "
+msgstr "또는 상대의 색상. 상대의 블록에 대한 단계는 (2 조각 스윙!)을 훔칩니다."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:187
+#, elixir-autogen, elixir-format
+msgid "perform list"
+msgstr "수행 목록"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2442
+#, elixir-autogen, elixir-format
+msgid "phase 1"
+msgstr "단계 1"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2470
+#, elixir-autogen, elixir-format
+msgid "phase 2"
+msgstr "단계 2"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2587
+#, elixir-autogen, elixir-format
+msgid "pixel art"
+msgstr "픽셀 아트"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1157
+#, elixir-autogen, elixir-format
+msgid "pixel tanks"
+msgstr "화소 탱크"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:287
+#, elixir-autogen, elixir-format
+msgid "pm typing"
+msgstr "오후 태핑"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2350
+#, elixir-autogen, elixir-format
+msgid "point & click"
+msgstr "포인트 & 클릭"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2119
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2349
+#, elixir-autogen, elixir-format
+msgid "point and click"
+msgstr "지점 및 클릭"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:635
+#, elixir-autogen, elixir-format
+msgid "progressive disclosure"
+msgstr "진보적인 disclosure"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2314
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2668
+#, elixir-autogen, elixir-format
+msgid "quake 2"
+msgstr "쿼드 2"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2315
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2669
+#, elixir-autogen, elixir-format
+msgid "quake ii"
+msgstr "쿼드 ii"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2646
+#, elixir-autogen, elixir-format
+msgid "quake replacement"
+msgstr "quake 교체"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1449
+#, elixir-autogen, elixir-format
+msgid "quick draw"
+msgstr "빠른 draw"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:573
+#, elixir-autogen, elixir-format
+msgid "quick reference"
+msgstr "빠른 참고"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:766
+#, elixir-autogen, elixir-format
+msgid "quote message"
+msgstr "견적 요청"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:621
+#: lib/retro_hex_chat/chat/help_topics/features.ex:240
+#, elixir-autogen, elixir-format
+msgid "rate limit"
+msgstr "비율 제한"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:119
+#: lib/retro_hex_chat/chat/help_topics/services.ex:34
+#, elixir-autogen, elixir-format
+msgid "register channel"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:207
+#, elixir-autogen, elixir-format
+msgid "registered only"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:404
+#, elixir-autogen, elixir-format
+msgid "remove ban"
+msgstr "제거 금지"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:596
+#, elixir-autogen, elixir-format
+msgid "remove operator"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:613
+#, elixir-autogen, elixir-format
+msgid "remove voice"
+msgstr "연락처"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:765
+#, elixir-autogen, elixir-format
+msgid "reply to"
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:245
+#, elixir-autogen, elixir-format
+msgid "request invite"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:86
+#, elixir-autogen, elixir-format
+msgid "restrict topic"
+msgstr "관련 항목"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:614
+#, elixir-autogen, elixir-format
+msgid "reverse search"
+msgstr "역 검색"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2354
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2754
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2870
+#, elixir-autogen, elixir-format
+msgid "revolution software"
+msgstr "혁명 소프트웨어"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:589
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:85
+#, elixir-autogen, elixir-format
+msgid "right click"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1334
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1373
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1396
+#, elixir-autogen, elixir-format
+msgid "river raid"
+msgstr "강 레이디"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:65
+#, elixir-autogen, elixir-format
+msgid "server message"
+msgstr "서버 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:103
+#, elixir-autogen, elixir-format
+msgid "server messages"
+msgstr "서버 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "set message of the day"
+msgstr "오늘의 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:220
+#, elixir-autogen, elixir-format
+msgid "set mode"
+msgstr "설정 모드"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:394
+#, elixir-autogen, elixir-format
+msgid "set topic"
+msgstr "설정 항목"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:571
+#, elixir-autogen, elixir-format
+msgid "shortcut list"
+msgstr "바로가기"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:373
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2101
+#, elixir-autogen, elixir-format
+msgid "single player"
+msgstr "단일 플레이어"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1009
+#, elixir-autogen, elixir-format
+msgid "single session"
+msgstr "단일 세션"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:550
+#, elixir-autogen, elixir-format
+msgid "smart input"
+msgstr "스마트 입력"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:799
+#, elixir-autogen, elixir-format
+msgid "soft delete"
+msgstr "연락처"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:274
+#, elixir-autogen, elixir-format
+msgid "sound off"
+msgstr "사운드 오프"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1562
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1600
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1628
+#, elixir-autogen, elixir-format
+msgid "space invaders"
+msgstr "우주 침입"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:102
+#, elixir-autogen, elixir-format
+msgid "special messages"
+msgstr "특수 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1191
+#, elixir-autogen, elixir-format
+msgid "star duel"
+msgstr "스타 duel"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:346
+#: lib/retro_hex_chat/chat/help_topics/features.ex:702
+#, elixir-autogen, elixir-format
+msgid "status bar"
+msgstr "상태 표시"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:102
+#, elixir-autogen, elixir-format
+msgid "status tab"
+msgstr "상태 탭"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:103
+#, elixir-autogen, elixir-format
+msgid "status window"
+msgstr "상태 창"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1909
+#, elixir-autogen, elixir-format
+msgid ""
+"stealing your opponent's blocks. Blocks have 3 states: white (neutral), your"
+" color, "
+msgstr "상대의 블록을 훔치는. 구획에는 3개의 국가가 있습니다: 백색 ( 중립), 당신의 색깔,"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:52
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:191
+#, elixir-autogen, elixir-format
+msgid "strip colors"
+msgstr "지구 색깔"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1792
+#, elixir-autogen, elixir-format
+msgid "sudden death"
+msgstr "갑상선 사망"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2475
+#, elixir-autogen, elixir-format
+msgid "super shotgun"
+msgstr "슈퍼 샷건"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:104
+#, elixir-autogen, elixir-format
+msgid "system messages"
+msgstr "시스템 메시지"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
+#, elixir-autogen, elixir-format
+msgid "tab bar"
+msgstr "탭 바"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:515
+#, elixir-autogen, elixir-format
+msgid "tab complete"
+msgstr "탭 완료"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1949
+#, elixir-autogen, elixir-format
+msgid "temperature starts at 60° and drops slowly. Arctic endurance mode. "
+msgstr "온도는 60°에 시작하고 천천히 방울. Arctic 지구력 형태."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:163
+#, elixir-autogen, elixir-format
+msgid "text search"
+msgstr "본문 검색"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1874
+#, elixir-autogen, elixir-format
+msgid "time trial"
+msgstr "시간 시험"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2021
+#, elixir-autogen, elixir-format
+msgid ""
+"to steal (60% chance, fail = stun). 3 periods of 2 minutes. Tied? Sudden "
+"death. "
+msgstr "훔치는 (60%, 실패 = stun). 2 분의 3 기간. 묶여? 갑자기 사망."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:68
+#, elixir-autogen, elixir-format
+msgid "topic bar"
+msgstr "주제 바"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:44
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:86
+#, elixir-autogen, elixir-format
+msgid "topic lock"
+msgstr "항목 잠금"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2557
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2588
+#, elixir-autogen, elixir-format
+msgid "total conversion"
+msgstr "총 변환"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2446
+#, elixir-autogen, elixir-format
+msgid "ultimate doom"
+msgstr "최고의 doom"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2759
+#, elixir-autogen, elixir-format
+msgid "union city"
+msgstr "조합 도시"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2675
+#, elixir-autogen, elixir-format
+msgid "unit 1"
+msgstr "단위 1"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:405
+#, elixir-autogen, elixir-format
+msgid "url hover"
+msgstr "URL 호버"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:592
+#, elixir-autogen, elixir-format
+msgid "url menu"
+msgstr "url 메뉴"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1235
+#, elixir-autogen, elixir-format
+msgid ""
+"use gravity slingshots for speed, but fly too close and you die. Same "
+"controls "
+msgstr "속도에 대 한 중력 슬링 샷을 사용 하 여, 하지만 너무 가까이 비행 하 고 죽는다. 동일한 통제"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:427
+#, elixir-autogen, elixir-format
+msgid "user info"
+msgstr "사용자 정보"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:104
+#, elixir-autogen, elixir-format
+msgid "user limit"
+msgstr "사용자 제한"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:51
+#, elixir-autogen, elixir-format
+msgid "user list"
+msgstr "사용자 목록"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:87
+#, elixir-autogen, elixir-format
+msgid "user mode"
+msgstr "사용자 모드"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2372
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2873
+#, elixir-autogen, elixir-format
+msgid "virtual theatre"
+msgstr "가상 극장"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:97
+#, elixir-autogen, elixir-format
+msgid "voice call"
+msgstr "음성 통화"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2248
+#, elixir-autogen, elixir-format
+msgid "wolf 3d"
+msgstr "늑대 3d"

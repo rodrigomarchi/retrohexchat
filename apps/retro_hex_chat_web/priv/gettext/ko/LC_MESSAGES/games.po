@@ -1,0 +1,333 @@
+# "msgid"s in this file come from games.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: ko\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:178
+#, elixir-autogen, elixir-format
+msgid "%{engine} Engine"
+msgstr "%{engine} 제품 정보"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:49
+#, elixir-autogen, elixir-format
+msgid "%{game} — %{nickname} vs %{peer}"
+msgstr "%{game} — %{nickname} 대시보드 %{peer}"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:142
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:357
+#, elixir-autogen, elixir-format
+msgid "%{hours}h %{minutes}m %{seconds}s"
+msgstr "%{hours}h %{minutes}m %{seconds}s"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:149
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:363
+#, elixir-autogen, elixir-format
+msgid "%{minutes}m %{seconds}s"
+msgstr "%{minutes}m %{seconds}s"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:88
+#, elixir-autogen, elixir-format
+msgid "%{score} P2"
+msgstr "%{score} P2"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:155
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:347
+#, elixir-autogen, elixir-format
+msgid "%{seconds}s"
+msgstr "%{seconds}s"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:82
+#, elixir-autogen, elixir-format
+msgid "&times;"
+msgstr "& 시간;"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:77
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:85
+#, elixir-autogen, elixir-format
+msgid "(host)"
+msgstr "(호스트)"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:212
+#, elixir-autogen, elixir-format
+msgid "About"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:123
+#, elixir-autogen, elixir-format
+msgid "Accept"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:236
+#, elixir-autogen, elixir-format
+msgid "Action"
+msgstr "- 연혁"
+
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:360
+#, elixir-autogen, elixir-format
+msgid "Arcade session ended."
+msgstr "아케이드 세션 종료."
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:46
+#, elixir-autogen, elixir-format
+msgid "Arcade — %{nickname}"
+msgstr "아케이드 — %{nickname}"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:186
+#, elixir-autogen, elixir-format
+msgid "Back"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:152
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:126
+#, elixir-autogen, elixir-format
+msgid "Choose a game:"
+msgstr "게임 선택:"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:119
+#, elixir-autogen, elixir-format
+msgid "Classic games running in your browser via WebAssembly"
+msgstr "WebAssembly를 통해 브라우저에서 실행되는 클래식 게임"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:336
+#, elixir-autogen, elixir-format
+msgid "Close"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:133
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "12 월"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:107
+#, elixir-autogen, elixir-format
+msgid "Duration: %{duration}"
+msgstr "기간: %{duration}"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:98
+#, elixir-autogen, elixir-format
+msgid "End Game"
+msgstr "종료 Game"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:292
+#, elixir-autogen, elixir-format
+msgid "End Session"
+msgstr "종료 세션"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:71
+#, elixir-autogen, elixir-format
+msgid "Final Score"
+msgstr "최종 점수"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:68
+#, elixir-autogen, elixir-format
+msgid "Game Lobby — %{nickname} vs %{peer}"
+msgstr "게임 로비 — %{nickname} 대시보드 %{peer}"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:53
+#, elixir-autogen, elixir-format
+msgid "Game Session"
+msgstr "게임 세션"
+
+#: lib/retro_hex_chat_web/components/ui/games/arcade_frame.ex:62
+#, elixir-autogen, elixir-format
+msgid "Game area"
+msgstr "게임 영역"
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:424
+#, elixir-autogen, elixir-format
+msgid "Game ended."
+msgstr "게임 종료."
+
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:65
+#, elixir-autogen, elixir-format
+msgid "Game engine initializing... Waiting for WebRTC connection."
+msgstr "게임 엔진 초기화 ... WebRTC 연결 대기."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:450
+#, elixir-autogen, elixir-format
+msgid "Game finished."
+msgstr "게임 완료."
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:279
+#, elixir-autogen, elixir-format
+msgid "Game in progress..."
+msgstr "진행중인 게임 ..."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:425
+#, elixir-autogen, elixir-format
+msgid "Game invite was rejected."
+msgstr "게임 초대가 거부되었습니다."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:449
+#, elixir-autogen, elixir-format
+msgid "Game over."
+msgstr "게임 오버."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:440
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:354
+#, elixir-autogen, elixir-format
+msgid "Game session ended."
+msgstr "게임 세션 종료."
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:97
+#, elixir-autogen, elixir-format
+msgid ""
+"Inactivity detected — this lobby will close soon if no game is selected."
+msgstr "Inactivity detected -이 로비는 곧 게임을 선택하지 않는 경우 닫습니다."
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:233
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:227
+#, elixir-autogen, elixir-format
+msgid "Keyboard Controls"
+msgstr "키보드 제어"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:195
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:154
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:200
+#, elixir-autogen, elixir-format
+msgid "Leave"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/games/arcade_frame.ex:75
+#, elixir-autogen, elixir-format
+msgid "Leave Game"
+msgstr "다운로드"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:184
+#, elixir-autogen, elixir-format
+msgid "No games available"
+msgstr "게임 없음"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:80
+#, elixir-autogen, elixir-format
+msgid "P1 %{score}"
+msgstr "P1 %{score}"
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:452
+#, elixir-autogen, elixir-format
+msgid "Peer disconnected."
+msgstr "Peer 연결."
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:325
+#, elixir-autogen, elixir-format
+msgid "Play time:"
+msgstr "놀이 시간:"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:93
+#, elixir-autogen, elixir-format
+msgid "Player %{winner} wins!"
+msgstr "이름 * %{winner} 승리!"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:117
+#, elixir-autogen, elixir-format
+msgid "Retro Arcade"
+msgstr "레트로 아케이드"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:320
+#, elixir-autogen, elixir-format
+msgid "Session Complete"
+msgstr "세션 완료"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:102
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Session Ended"
+msgstr "세션 종료"
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:426
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:429
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:346
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:349
+#, elixir-autogen, elixir-format
+msgid "Session closed (disconnected)."
+msgstr "세션 폐쇄 (disconnected)."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:423
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:451
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:345
+#, elixir-autogen, elixir-format
+msgid "Session closed by user."
+msgstr "세션은 사용자에 의해 닫힙니다."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:455
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:458
+#, elixir-autogen, elixir-format
+msgid "Session closed due to inactivity."
+msgstr "세션은 inactivity로 닫힙니다."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:432
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:438
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:352
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:358
+#, elixir-autogen, elixir-format
+msgid "Session expired due to inactivity."
+msgstr "세션은 inactivity로 인해 만료되었습니다."
+
+#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:435
+#, elixir-autogen, elixir-format
+msgid "Session expired — peer did not join."
+msgstr "세션 만료 - 동료가 가입하지 않았다."
+
+#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:355
+#, elixir-autogen, elixir-format
+msgid "Session expired."
+msgstr "세션이 만료되었습니다."
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:61
+#, elixir-autogen, elixir-format
+msgid ""
+"Session will be closed due to inactivity soon. Select a game to keep it "
+"active."
+msgstr "세션은 즉시 inactivity로 마감됩니다. 게임을 선택하여 활성화합니다."
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:196
+#, elixir-autogen, elixir-format
+msgid "Start Game"
+msgstr "게임 시작"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:281
+#, elixir-autogen, elixir-format
+msgid "Started: %{started_at}"
+msgstr "시작 : %{started_at}"
+
+#: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:256
+#, elixir-autogen, elixir-format
+msgid "Tips"
+msgstr "제품 정보"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:145
+#, elixir-autogen, elixir-format
+msgid "Waiting for"
+msgstr "대기 중"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:175
+#, elixir-autogen, elixir-format
+msgid "Waiting for %{peer} to choose a game..."
+msgstr "대기 중 %{peer} 게임 선택하기 ..."
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:146
+#, elixir-autogen, elixir-format
+msgid "to accept"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_canvas.ex:80
+#, elixir-autogen, elixir-format
+msgid "vs"
+msgstr "대시보드"
+
+#: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:111
+#, elixir-autogen, elixir-format
+msgid "wants to play"
+msgstr "게임하기"

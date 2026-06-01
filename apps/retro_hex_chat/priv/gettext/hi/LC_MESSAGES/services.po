@@ -1,0 +1,155 @@
+# "msgid"s in this file come from services.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: hi; status: enabled; wave: 2.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: hi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:355
+#: lib/retro_hex_chat/services/nick_serv.ex:389
+#, elixir-autogen, elixir-format
+msgid "%{field}: %{errors}"
+msgstr "%{field}: %{errors}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:318
+#, elixir-autogen, elixir-format
+msgid "%{target_nick} added to %{level} list of %{channel_name}"
+msgstr "%{target_nick} जोड़ा %{level} सूची %{channel_name}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:344
+#, elixir-autogen, elixir-format
+msgid "%{target_nick} not found in access list"
+msgstr "%{target_nick} प्रवेश सूची में नहीं मिला"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:337
+#, elixir-autogen, elixir-format
+msgid "%{target_nick} removed from access list of %{channel_name}"
+msgstr "%{target_nick} की पहुँच सूची से हटाया %{channel_name}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:121
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} dropped"
+msgstr "चैनल %{channel_name} गिराना"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:178
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} dropped by admin"
+msgstr "चैनल %{channel_name} व्यवस्थापक द्वारा गिरा दिया"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:133
+#: lib/retro_hex_chat/services/chan_serv.ex:246
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} is not registered"
+msgstr "चैनल %{channel_name} पंजीकृत नहीं है"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:104
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} registered by %{founder_nick}"
+msgstr "चैनल %{channel_name} द्वारा पंजीकृत %{founder_nick}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:326
+#, elixir-autogen, elixir-format
+msgid "Failed to add %{target_nick} to %{level} list"
+msgstr "जोड़ने में विफल %{target_nick} to %{level} सूची"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:265
+#, elixir-autogen, elixir-format
+msgid "Failed to reset password for %{nickname}"
+msgstr "पासवर्ड रीसेट करने में विफल %{nickname}"
+
+#: lib/retro_hex_chat/services/motd.ex:32
+#, elixir-autogen, elixir-format
+msgid "Failed to save MOTD."
+msgstr "MOTD को बचाने में विफल रहा।"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:199
+#, elixir-autogen, elixir-format
+msgid "Founder of %{channel_name} transferred to %{new_founder}"
+msgstr "संस्थापक %{channel_name} स्थानांतरित करने के लिए %{new_founder}"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:355
+#, elixir-autogen, elixir-format
+msgid "Ghost command sent for %{target_nick}"
+msgstr "भूत आदेश के लिए भेजा %{target_nick}"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:369
+#, elixir-autogen, elixir-format
+msgid "Ghosted by %{requester_nick}"
+msgstr "द्वारा होस्ट %{requester_nick}"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:302
+#, elixir-autogen, elixir-format
+msgid "Identify timeout (60s)"
+msgstr "टाइमआउट (60s) की पहचान करें"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:150
+#: lib/retro_hex_chat/services/nick_serv.ex:219
+#: lib/retro_hex_chat/services/nick_serv.ex:358
+#, elixir-autogen, elixir-format
+msgid "Invalid password"
+msgstr "Invalid password"
+
+#: lib/retro_hex_chat/services/nick_expiry.ex:106
+#, elixir-autogen, elixir-format
+msgid "NickExpiry"
+msgstr "NickExpiry"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:137
+#: lib/retro_hex_chat/services/nick_serv.ex:168
+#: lib/retro_hex_chat/services/nick_serv.ex:206
+#: lib/retro_hex_chat/services/nick_serv.ex:229
+#: lib/retro_hex_chat/services/nick_serv.ex:249
+#, elixir-autogen, elixir-format
+msgid "Nickname %{nickname} is not registered"
+msgstr "उपनाम %{nickname} पंजीकृत नहीं है"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:121
+#, elixir-autogen, elixir-format
+msgid "Nickname %{nickname} registered successfully"
+msgstr "उपनाम %{nickname} सफलतापूर्वक पंजीकृत"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:188
+#, elixir-autogen, elixir-format
+msgid "Nickname %{target_nick} is not registered"
+msgstr "उपनाम %{target_nick} पंजीकृत नहीं है"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:259
+#, elixir-autogen, elixir-format
+msgid "Only the founder can drop a channel"
+msgstr "केवल संस्थापक एक चैनल छोड़ सकते हैं"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:259
+#, elixir-autogen, elixir-format
+msgid "Password for %{nickname} has been reset"
+msgstr "पासवर्ड %{nickname} रीसेट किया गया है"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:216
+#, elixir-autogen, elixir-format
+msgid "Registration for %{nickname} dropped"
+msgstr "पंजीकरण %{nickname} गिराना"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:238
+#, elixir-autogen, elixir-format
+msgid "Registration for %{nickname} dropped by admin"
+msgstr "पंजीकरण %{nickname} व्यवस्थापक द्वारा गिरा दिया"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:112
+#, elixir-autogen, elixir-format
+msgid "Registration is currently closed by the server administrator"
+msgstr "पंजीकरण वर्तमान में सर्वर प्रशासक द्वारा बंद है"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:147
+#, elixir-autogen, elixir-format
+msgid "You are now identified as %{nickname}"
+msgstr "अब आप के रूप में पहचाने जाते हैं %{nickname}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:227
+#, elixir-autogen, elixir-format
+msgid "You must be identified to use ChanServ"
+msgstr "आपको ChanServ का उपयोग करने की पहचान करनी चाहिए"

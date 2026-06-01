@@ -17,16 +17,22 @@ CATALOG = Path("apps/retro_hex_chat_web/assets/js/lib/i18n_catalog.js")
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
 
 LOCALE_EXPORTS = {
+    "ar": "AR",
     "de": "DE",
     "es": "ES",
     "fr": "FR",
+    "hi": "HI",
     "id": "ID",
     "ja": "JA",
+    "ko": "KO",
     "pt_BR": "PT_BR",
+    "ru": "RU",
+    "tr": "TR",
+    "vi": "VI",
     "zh_Hans": "ZH_HANS",
 }
 
-WAVE1_LOCALES = ("de", "es", "fr", "id", "ja", "zh_Hans")
+DEFAULT_LOCALES = ("de", "es", "fr", "id", "ja", "zh_Hans", "ar", "ru", "hi", "ko", "tr", "vi")
 
 
 def t(
@@ -37,6 +43,12 @@ def t(
     ja: str,
     zh_Hans: str,
     pt_BR: str | None = None,
+    ar: str | None = None,
+    ru: str | None = None,
+    hi: str | None = None,
+    ko: str | None = None,
+    tr: str | None = None,
+    vi: str | None = None,
 ) -> dict[str, str]:
     translations = {
         "de": de,
@@ -49,6 +61,17 @@ def t(
 
     if pt_BR is not None:
         translations["pt_BR"] = pt_BR
+
+    for locale, translated in {
+        "ar": ar,
+        "ru": ru,
+        "hi": hi,
+        "ko": ko,
+        "tr": tr,
+        "vi": vi,
+    }.items():
+        if translated is not None:
+            translations[locale] = translated
 
     return translations
 
@@ -703,6 +726,153 @@ PO_OVERRIDES = {
     ),
 }
 
+PO_WAVE2_OVERRIDES = {
+    "  Admin: %{is_admin}\n": {
+        "ar": "  المشرف: %{is_admin}\n",
+    },
+    "  Binary: %{binary}\n": {
+        "ar": "  البرنامج التنفيذي: %{binary}\n",
+    },
+    "  Modes: %{modes}\n": {
+        "ar": "  الأوضاع: %{modes}\n",
+    },
+    " for %{duration_seconds}": {
+        "ar": " لمدة %{duration_seconds}",
+    },
+    "for %{duration}": {
+        "ar": "لمدة %{duration}",
+    },
+    "  Prefix: %{command_prefix}": {
+        "ar": "  البادئة: %{command_prefix}",
+    },
+    "Hint: %{hint}": {
+        "ar": "تلميح: %{hint}",
+        "hi": "संकेत: %{hint}",
+        "tr": "İpucu: %{hint}",
+    },
+    "Q%{number}/%{total}: %{question}": {
+        "ar": "س%{number}/%{total}: %{question}",
+        "hi": "प्र%{number}/%{total}: %{question}",
+        "ko": "질문 %{number}/%{total}: %{question}",
+        "ru": "В%{number}/%{total}: %{question}",
+        "tr": "S%{number}/%{total}: %{question}",
+        "vi": "C%{number}/%{total}: %{question}",
+    },
+    "%{prefix}\nRound over! %{scores}": {
+        "tr": "%{prefix}\nTur bitti! %{scores}",
+    },
+    "[BotService] Bot Info: %{name}": {
+        "tr": "[BotService] Bot bilgisi: %{name}",
+    },
+    "* No whowas information available for %{target}.": {
+        "ar": "* لا توجد معلومات whowas عن %{target}.",
+    },
+    "* Sent away auto-reply to %{sender}": {
+        "ar": "* تم إرسال رد الغياب التلقائي إلى %{sender}",
+    },
+    "Away: %{message}": {
+        "ar": "غائب: %{message}",
+    },
+    "Edited at %{timestamp}": {
+        "ar": "تم التعديل في %{timestamp}",
+    },
+    "Idle for: %{duration}": {
+        "ar": "خامل لمدة: %{duration}",
+        "hi": "निष्क्रिय अवधि: %{duration}",
+        "tr": "Boşta kalma süresi: %{duration}",
+    },
+    "Invalid ignore type: %{type}": {
+        "ar": "نوع التجاهل غير صالح: %{type}",
+    },
+    "Mode set: %{mode}": {
+        "ar": "تم تعيين الوضع: %{mode}",
+        "tr": "Mod ayarlandı: %{mode}",
+    },
+    "P2P invite from %{from}": {
+        "ar": "دعوة P2P من %{from}",
+    },
+    "Topic for %{channel}: %{topic}": {
+        "ar": "موضوع %{channel}: %{topic}",
+    },
+    "[Welcome] %{message}": {
+        "hi": "[स्वागत] %{message}",
+    },
+    "%{action} request accepted.": {
+        "ru": "Запрос %{action} принят.",
+    },
+    "%{action} request declined.": {
+        "ru": "Запрос %{action} отклонен.",
+    },
+    "%{count} cores": {
+        "ru": "%{count} ядер",
+    },
+    "%{peer} wants to add video": {
+        "ru": "%{peer} хочет добавить видео",
+    },
+    "Action Request: %{action}": {
+        "ru": "Запрос действия: %{action}",
+        "tr": "Eylem isteği: %{action}",
+    },
+    "Call ended: %{reason}": {
+        "ru": "Звонок завершен: %{reason}",
+    },
+    "Cancelled by %{nickname}": {
+        "ru": "Отменено %{nickname}",
+    },
+    "Duration: %{duration}": {
+        "ru": "Длительность: %{duration}",
+    },
+    "Max: %{size} MB": {
+        "ru": "Макс.: %{size} МБ",
+        "tr": "Maks: %{size} MB",
+    },
+    "Permission denied for %{type}. Please try again.": {
+        "ru": "Доступ к %{type} запрещен. Попробуйте снова.",
+    },
+    "Quality: %{quality}": {
+        "ru": "Качество: %{quality}",
+    },
+    "Reconnecting (%{attempt}/3)": {
+        "ru": "Повторное подключение (%{attempt}/3)",
+    },
+    "* Bio set: %{text}": {
+        "tr": "* Biyografi ayarlandı: %{text}",
+    },
+    "* Performing: %{command}": {
+        "tr": "* Çalıştırılıyor: %{command}",
+    },
+    "* Timer '%{name}' set: %{type}, %{interval}s → %{command}": {
+        "tr": "* Zamanlayıcı '%{name}' ayarlandı: %{type}, %{interval}s → %{command}",
+    },
+    "Online for: %{duration}": {
+        "tr": "Çevrimiçi süre: %{duration}",
+    },
+    "Timezone: %{timezone}": {
+        "tr": "Saat dilimi: %{timezone}",
+    },
+    "Topic set: %{topic}": {
+        "tr": "Konu ayarlandı: %{topic}",
+    },
+    "You are now known as %{nickname}": {
+        "tr": "Artık %{nickname} olarak biliniyorsunuz",
+    },
+    "You are setting: %{flag} (%{label})": {
+        "tr": "Ayarlıyorsunuz: %{flag} (%{label})",
+    },
+    "[BotService] Failed to create bot '%{name}': %{message}": {
+        "tr": "[BotService] Bot '%{name}' oluşturulamadı: %{message}",
+    },
+    "%{count} line": {
+        "tr": "%{count} satır",
+    },
+    "[BotService] %{bot} %{action} in %{channel}.": {
+        "vi": "[BotService] %{bot} %{action} trong %{channel}.",
+    },
+}
+
+for source, translations in PO_WAVE2_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
 JS_OVERRIDES = {
     "FROSTBITE  %{0}": t(
         "ERFRIERUNG  %{0}",
@@ -721,6 +891,12 @@ JS_OVERRIDES = {
         "%{0} の勝利！",
         "%{0} 获胜！",
         pt_BR="%{0} VENCE!",
+        ar="%{0} يفوز!",
+        ru="%{0} побеждает!",
+        hi="%{0} जीतता है!",
+        ko="%{0} 승리!",
+        tr="%{0} KAZANDI!",
+        vi="%{0} thắng!",
     ),
     "Day %{0}/%{1}": t(
         "Tag %{0}/%{1}",
@@ -729,6 +905,12 @@ JS_OVERRIDES = {
         "Hari %{0}/%{1}",
         "%{0}/%{1}日目",
         "第 %{0}/%{1} 天",
+        ar="اليوم %{0}/%{1}",
+        ru="День %{0}/%{1}",
+        hi="दिन %{0}/%{1}",
+        ko="%{0}/%{1}일차",
+        tr="Gün %{0}/%{1}",
+        vi="Ngày %{0}/%{1}",
     ),
     "Day %{0} Complete": t(
         "Tag %{0} abgeschlossen",
@@ -737,6 +919,12 @@ JS_OVERRIDES = {
         "Hari %{0} selesai",
         "%{0}日目完了",
         "第 %{0} 天完成",
+        ar="اكتمل اليوم %{0}",
+        ru="День %{0} завершен",
+        hi="दिन %{0} पूरा",
+        ko="%{0}일차 완료",
+        tr="Gün %{0} tamamlandı",
+        vi="Ngày %{0} hoàn tất",
     ),
     "END OF PERIOD %{0}": t(
         "ENDE VON PERIODE %{0}",
@@ -745,6 +933,12 @@ JS_OVERRIDES = {
         "AKHIR PERIODE %{0}",
         "ピリオド %{0} 終了",
         "第 %{0} 节结束",
+        ar="نهاية الفترة %{0}",
+        ru="КОНЕЦ ПЕРИОДА %{0}",
+        hi="अवधि %{0} समाप्त",
+        ko="%{0}피리어드 종료",
+        tr="%{0}. periyot sonu",
+        vi="Kết thúc hiệp %{0}",
     ),
     "ROUND %{0}": t(
         "RUNDE %{0}",
@@ -753,6 +947,12 @@ JS_OVERRIDES = {
         "RONDE %{0}",
         "ラウンド %{0}",
         "第 %{0} 回合",
+        ar="الجولة %{0}",
+        ru="РАУНД %{0}",
+        hi="राउंड %{0}",
+        ko="%{0}라운드",
+        tr="TUR %{0}",
+        vi="VÒNG %{0}",
     ),
     "ROUND %{0} COMPLETE": t(
         "RUNDE %{0} ABGESCHLOSSEN",
@@ -761,6 +961,12 @@ JS_OVERRIDES = {
         "RONDE %{0} SELESAI",
         "ラウンド %{0} 完了",
         "第 %{0} 回合完成",
+        ar="اكتملت الجولة %{0}",
+        ru="РАУНД %{0} ЗАВЕРШЕН",
+        hi="राउंड %{0} पूरा",
+        ko="%{0}라운드 완료",
+        tr="TUR %{0} TAMAMLANDI",
+        vi="VÒNG %{0} HOÀN TẤT",
     ),
     "Round %{0}": t(
         "Runde %{0}",
@@ -769,6 +975,12 @@ JS_OVERRIDES = {
         "Ronde %{0}",
         "ラウンド %{0}",
         "第 %{0} 回合",
+        ar="الجولة %{0}",
+        ru="Раунд %{0}",
+        hi="राउंड %{0}",
+        ko="%{0}라운드",
+        tr="Tur %{0}",
+        vi="Vòng %{0}",
     ),
     "WAVE %{0}": t(
         "WELLE %{0}",
@@ -777,6 +989,12 @@ JS_OVERRIDES = {
         "GELOMBANG %{0}",
         "ウェーブ %{0}",
         "第 %{0} 波",
+        ar="الموجة %{0}",
+        ru="ВОЛНА %{0}",
+        hi="लहर %{0}",
+        ko="%{0}웨이브",
+        tr="DALGA %{0}",
+        vi="ĐỢT %{0}",
     ),
     "WAVE %{0} CLEARED": t(
         "WELLE %{0} GESCHAFFT",
@@ -785,6 +1003,12 @@ JS_OVERRIDES = {
         "GELOMBANG %{0} SELESAI",
         "ウェーブ %{0} クリア",
         "第 %{0} 波已清除",
+        ar="تم اجتياز الموجة %{0}",
+        ru="ВОЛНА %{0} ПРОЙДЕНА",
+        hi="लहर %{0} साफ",
+        ko="%{0}웨이브 클리어",
+        tr="DALGA %{0} TEMIZLENDI",
+        vi="ĐÃ DỌN ĐỢT %{0}",
     ),
     "P%{0} SCORES!": t(
         "P%{0} PUNKTET!",
@@ -793,6 +1017,12 @@ JS_OVERRIDES = {
         "P%{0} MENCETAK SKOR!",
         "P%{0} 得点！",
         "P%{0} 得分！",
+        ar="اللاعب %{0} يسجل!",
+        ru="И%{0} набирает очки!",
+        hi="P%{0} ने स्कोर किया!",
+        ko="P%{0} 득점!",
+        tr="P%{0} SKOR YAPTI!",
+        vi="P%{0} ghi điểm!",
     ),
     "PLAYER %{0} SCORES!": t(
         "SPIELER %{0} PUNKTET!",
@@ -801,6 +1031,12 @@ JS_OVERRIDES = {
         "PEMAIN %{0} MENCETAK SKOR!",
         "プレイヤー %{0} 得点！",
         "玩家 %{0} 得分！",
+        ar="اللاعب %{0} يسجل!",
+        ru="ИГРОК %{0} НАБИРАЕТ ОЧКИ!",
+        hi="खिलाड़ी %{0} ने स्कोर किया!",
+        ko="플레이어 %{0} 득점!",
+        tr="OYUNCU %{0} SKOR YAPTI!",
+        vi="NGƯỜI CHƠI %{0} GHI ĐIỂM!",
     ),
     "PLAYER %{0} WINS": t(
         "SPIELER %{0} GEWINNT",
@@ -809,6 +1045,12 @@ JS_OVERRIDES = {
         "PEMAIN %{0} MENANG",
         "プレイヤー %{0} の勝利",
         "玩家 %{0} 获胜",
+        ar="اللاعب %{0} يفوز",
+        ru="ИГРОК %{0} ПОБЕЖДАЕТ",
+        hi="खिलाड़ी %{0} जीतता है",
+        ko="플레이어 %{0} 승리",
+        tr="OYUNCU %{0} KAZANDI",
+        vi="NGƯỜI CHƠI %{0} THẮNG",
     ),
     "PLAYER %{0} WINS!": t(
         "SPIELER %{0} GEWINNT!",
@@ -817,6 +1059,12 @@ JS_OVERRIDES = {
         "PEMAIN %{0} MENANG!",
         "プレイヤー %{0} の勝利！",
         "玩家 %{0} 获胜！",
+        ar="اللاعب %{0} يفوز!",
+        ru="ИГРОК %{0} ПОБЕЖДАЕТ!",
+        hi="खिलाड़ी %{0} जीतता है!",
+        ko="플레이어 %{0} 승리!",
+        tr="OYUNCU %{0} KAZANDI!",
+        vi="NGƯỜI CHƠI %{0} THẮNG!",
     ),
     "PLAYER %{0} WINS THE ROUND!": t(
         "SPIELER %{0} GEWINNT DIE RUNDE!",
@@ -825,6 +1073,12 @@ JS_OVERRIDES = {
         "PEMAIN %{0} MEMENANGI RONDE!",
         "プレイヤー %{0} がラウンド勝利！",
         "玩家 %{0} 赢得本回合！",
+        ar="اللاعب %{0} يفوز بالجولة!",
+        ru="ИГРОК %{0} ВЫИГРЫВАЕТ РАУНД!",
+        hi="खिलाड़ी %{0} राउंड जीतता है!",
+        ko="플레이어 %{0} 라운드 승리!",
+        tr="OYUNCU %{0} TURU KAZANDI!",
+        vi="NGƯỜI CHƠI %{0} THẮNG VÒNG!",
     ),
     "ROUNDS: %{0} - %{1}": t(
         "RUNDEN: %{0} - %{1}",
@@ -833,6 +1087,12 @@ JS_OVERRIDES = {
         "RONDE: %{0} - %{1}",
         "ラウンド: %{0} - %{1}",
         "回合：%{0} - %{1}",
+        ar="الجولات: %{0} - %{1}",
+        ru="РАУНДЫ: %{0} - %{1}",
+        hi="राउंड: %{0} - %{1}",
+        ko="라운드: %{0} - %{1}",
+        tr="TURLAR: %{0} - %{1}",
+        vi="VÒNG: %{0} - %{1}",
     ),
     "WAITING FOR OPPONENT%{0}": t(
         "WARTE AUF GEGNER%{0}",
@@ -841,6 +1101,12 @@ JS_OVERRIDES = {
         "MENUNGGU LAWAN%{0}",
         "対戦相手を待機中%{0}",
         "正在等待对手%{0}",
+        ar="في انتظار الخصم%{0}",
+        ru="ОЖИДАНИЕ СОПЕРНИКА%{0}",
+        hi="प्रतिद्वंद्वी की प्रतीक्षा%{0}",
+        ko="상대 대기 중%{0}",
+        tr="RAKIP BEKLENIYOR%{0}",
+        vi="ĐANG CHỜ ĐỐI THỦ%{0}",
     ),
     "WAITING FOR PARTNER%{0}": t(
         "WARTE AUF PARTNER%{0}",
@@ -849,7 +1115,69 @@ JS_OVERRIDES = {
         "MENUNGGU PARTNER%{0}",
         "パートナーを待機中%{0}",
         "正在等待伙伴%{0}",
+        ar="في انتظار الشريك%{0}",
+        ru="ОЖИДАНИЕ ПАРТНЕРА%{0}",
+        hi="साथी की प्रतीक्षा%{0}",
+        ko="파트너 대기 중%{0}",
+        tr="PARTNER BEKLENIYOR%{0}",
+        vi="ĐANG CHỜ ĐỒNG ĐỘI%{0}",
     ),
+    "Blocked file type: %{0}": {
+        "ar": "نوع ملف محظور: %{0}",
+        "ru": "Заблокированный тип файла: %{0}",
+        "hi": "अवरुद्ध फ़ाइल प्रकार: %{0}",
+        "ko": "차단된 파일 형식: %{0}",
+        "tr": "Engellenen dosya türü: %{0}",
+        "vi": "Loại tệp bị chặn: %{0}",
+    },
+    "Error accessing media: %{0}": {
+        "ar": "خطأ في الوصول إلى الوسائط: %{0}",
+        "ru": "Ошибка доступа к медиа: %{0}",
+        "hi": "मीडिया तक पहुंचने में त्रुटि: %{0}",
+        "ko": "미디어 접근 오류: %{0}",
+        "tr": "Medyaya erişim hatası: %{0}",
+        "vi": "Lỗi khi truy cập phương tiện: %{0}",
+    },
+    "File exceeds the %{0} MB limit (%{1})": {
+        "ar": "يتجاوز الملف حد %{0} ميغابايت (%{1})",
+        "ru": "Файл превышает лимит %{0} МБ (%{1})",
+        "hi": "फ़ाइल %{0} MB सीमा से अधिक है (%{1})",
+        "ko": "파일이 %{0} MB 제한을 초과합니다(%{1})",
+        "tr": "Dosya %{0} MB sınırını aşıyor (%{1})",
+        "vi": "Tệp vượt quá giới hạn %{0} MB (%{1})",
+    },
+    "First to %{0}": {
+        "ar": "الأول إلى %{0}",
+        "ru": "Первый до %{0}",
+        "hi": "पहले %{0} तक",
+        "ko": "먼저 %{0}점",
+        "tr": "İlk %{0}",
+        "vi": "Đạt %{0} trước",
+    },
+    "Reconnection attempt %{0} of %{1}": {
+        "ar": "محاولة إعادة الاتصال %{0} من %{1}",
+        "ru": "Попытка переподключения %{0} из %{1}",
+        "hi": "पुनः कनेक्शन प्रयास %{0} / %{1}",
+        "ko": "재연결 시도 %{0}/%{1}",
+        "tr": "Yeniden bağlanma denemesi %{0}/%{1}",
+        "vi": "Lần thử kết nối lại %{0}/%{1}",
+    },
+    "Waiting for opponent%{0}": {
+        "ar": "في انتظار الخصم%{0}",
+        "ru": "Ожидание соперника%{0}",
+        "hi": "प्रतिद्वंद्वी की प्रतीक्षा%{0}",
+        "ko": "상대 대기 중%{0}",
+        "tr": "Rakip bekleniyor%{0}",
+        "vi": "Đang chờ đối thủ%{0}",
+    },
+    "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": {
+        "ar": "الجولات: %{0} - %{1}  |  النتيجة: %{2} - %{3}",
+        "ru": "Раунды: %{0} - %{1}  |  Счет: %{2} - %{3}",
+        "hi": "राउंड: %{0} - %{1}  |  स्कोर: %{2} - %{3}",
+        "ko": "라운드: %{0} - %{1}  |  점수: %{2} - %{3}",
+        "tr": "Turlar: %{0} - %{1}  |  Skor: %{2} - %{3}",
+        "vi": "Vòng: %{0} - %{1}  |  Điểm: %{2} - %{3}",
+    },
     "P1: %{0} pieces": t(
         "P1: %{0} Teile",
         "P1: %{0} piezas",
@@ -873,7 +1201,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--locales",
-        default=",".join(WAVE1_LOCALES),
+        default=",".join(DEFAULT_LOCALES),
         help="Comma-separated locale codes to update",
     )
     parser.add_argument("paths", nargs="*", help="Optional PO glob paths")

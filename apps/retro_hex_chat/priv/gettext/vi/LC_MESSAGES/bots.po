@@ -1,0 +1,1787 @@
+# "msgid"s in this file come from bots.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: vi; status: enabled; wave: 2.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: vi\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:169
+#, elixir-autogen, elixir-format
+msgid "  %{id} | %{title} | %{channel} | %{url}"
+msgstr "  %{id} | %{title} | %{channel} | %{url}"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:186
+#, elixir-autogen, elixir-format
+msgid "  %{id} | %{type} | %{channel} | %{message}"
+msgstr "  %{id} | %{type} | %{channel} | %{message}"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:72
+#, elixir-autogen, elixir-format
+msgid "  %{prefix}%{trigger} — %{description}"
+msgstr "  %{prefix}%{trigger} — %{description}"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:79
+#, elixir-autogen, elixir-format
+msgid "  %{prefix}help — Show this help message"
+msgstr "%{prefix}help — Hiển thị thư trợ giúp này"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
+#, elixir-autogen, elixir-format
+msgid ""
+"%{author}: You must be identified to play. Use /ns identify <password> "
+"first."
+msgstr ""
+"%{author}: bạn phải được xác định để chơi. Sử dụng /ns xác định <password> "
+"trước."
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
+#, elixir-autogen, elixir-format
+msgid ""
+"%{author}: You must be registered to play. Use /ns register <password> "
+"first."
+msgstr ""
+"%{author}: bạn phải đăng ký để chơi. Sử dụng /ns bộ <password> đầu tiên."
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:301
+#, elixir-autogen, elixir-format
+msgid "%{base} %{sign} %{modifier} = %{total}"
+msgstr "%{base} %{sign} %{modifier} = %{total}"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:297
+#, elixir-autogen, elixir-format
+msgid "%{base} = %{sum}"
+msgstr "%{base} = %{sum}"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:63
+#, elixir-autogen, elixir-format
+msgid "%{bot_name} — Available Commands:"
+msgstr "%{bot_name} — Lệnh sẵn sàng:"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:219
+#, elixir-autogen, elixir-format
+msgid "%{message} (%{reason})"
+msgstr "%{message} (%{reason})"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
+#, elixir-autogen, elixir-format
+msgid ""
+"%{prefix}\n"
+"Round over! %{scores}"
+msgstr ""
+"%{prefix}\n"
+"Quay vòng! %{scores}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:375
+#, elixir-autogen, elixir-format
+msgid "%{prefix} %{title} — %{link}"
+msgstr "%{prefix} %{title} — %{link}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:349
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:371
+#, elixir-autogen, elixir-format
+msgid "%{rank}. %{name}: %{points}pts"
+msgstr "%{rank}. %{name}: %{points}Pts"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:87
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:105
+#, elixir-autogen, elixir-format
+msgid "(no title)"
+msgstr "(không có tiêu đề)"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:167
+#, elixir-autogen, elixir-format
+msgid "(untitled)"
+msgstr "(không tên)"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:215
+#, elixir-autogen, elixir-format
+msgid "15th century"
+msgstr "Thế kỷ 15"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:51
+#, elixir-autogen, elixir-format
+msgid "4th from sun"
+msgstr "Thứ tư từ mặt trời."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:205
+#, elixir-autogen, elixir-format
+msgid "A flower"
+msgstr "♪ Một bông hoa ♪"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:46
+#, elixir-autogen, elixir-format
+msgid "A gem"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:153
+#, elixir-autogen, elixir-format
+msgid "A single letter"
+msgstr "Một chữ cái"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:185
+#, elixir-autogen, elixir-format
+msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
+msgstr "Một vòng luẩn quẩn đã bắt đầu! Dùng từ \"trivia\" để kết thúc nó."
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:13
+#, elixir-autogen, elixir-format
+msgid "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)"
+msgstr "AI cho trò chơi P2P — cờ vua, tic-tac-toe, tầm phào ( giáng sớm)"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:194
+#, elixir-autogen, elixir-format
+msgid "Active schedules:"
+msgstr "Lịch hoạt động:"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:148
+#, elixir-autogen, elixir-format
+msgid "Add a scheduled message"
+msgstr "Thêm tin nhắn theo lịch"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:130
+#, elixir-autogen, elixir-format
+msgid "Add an RSS feed"
+msgstr "Thêm một nguồn cấp dữ liệu RSS"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:465
+#, elixir-autogen, elixir-format
+msgid "Aladdin"
+msgstr "Aladdin"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:239
+#, elixir-autogen, elixir-format
+msgid "Alexander Fleming"
+msgstr "Alexander Fleming"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:383
+#, elixir-autogen, elixir-format
+msgid "Alexander Graham Bell"
+msgstr "Alexander Graham Bell"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:316
+#, elixir-autogen, elixir-format
+msgid "Algeria"
+msgstr "Nối tiếp"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:82
+#, elixir-autogen, elixir-format
+msgid "Alias for roll"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/server.ex:144
+#, elixir-autogen, elixir-format
+msgid "Already in channel"
+msgstr "Đã vào kênh"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:292
+#, elixir-autogen, elixir-format
+msgid "Also a country"
+msgstr "Cũng là một quốc gia."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:359
+#, elixir-autogen, elixir-format
+msgid "And Paul Allen"
+msgstr "Và Paul Allen"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:220
+#, elixir-autogen, elixir-format
+msgid "Apollo 11"
+msgstr "Apollo 11"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:398
+#, elixir-autogen, elixir-format
+msgid "Application Programming Interface"
+msgstr "Giao diện lập trình ứng dụng"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:60
+#, elixir-autogen, elixir-format
+msgid "Au"
+msgstr "Au"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:291
+#, elixir-autogen, elixir-format
+msgid "Australia"
+msgstr "Úc Châu"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:25
+#, elixir-autogen, elixir-format
+msgid "Auto-moderation — blocked words, spam/flood detection, caps filter"
+msgstr "Chế độ tự động — từ bị chặn, phát hiện thư rác, lọc nắp"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:420
+#, elixir-autogen, elixir-format
+msgid "Avatar"
+msgstr "Avatar!"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:374
+#, elixir-autogen, elixir-format
+msgid "BEAM VM"
+msgstr "BAM VM"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:225
+#, elixir-autogen, elixir-format
+msgid "Bastille"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:384
+#, elixir-autogen, elixir-format
+msgid "Bell Labs"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:306
+#, elixir-autogen, elixir-format
+msgid "Bering Strait"
+msgstr "Dây an toàn"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:358
+#, elixir-autogen, elixir-format
+msgid "Bill Gates"
+msgstr "Bill Gates"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:431
+#, elixir-autogen, elixir-format
+msgid "Black and white"
+msgstr "Đen trắng"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:451
+#, elixir-autogen, elixir-format
+msgid "Blocks"
+msgstr "Khối"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:421
+#, elixir-autogen, elixir-format
+msgid "Blue aliens"
+msgstr "Người ngoài hành tinh"
+
+#: lib/retro_hex_chat/bots/lifecycle.ex:47
+#, elixir-autogen, elixir-format
+msgid "Bot destroyed"
+msgstr "Bot bị phá hủy"
+
+#: lib/retro_hex_chat/bots/server.ex:756
+#, elixir-autogen, elixir-format
+msgid "Bot leaving"
+msgstr "Bot để lại"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:344
+#, elixir-autogen, elixir-format
+msgid "Brain of computer"
+msgstr "Bộ não máy tính"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:426
+#, elixir-autogen, elixir-format
+msgid "British author"
+msgstr "Tác giả Anh"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:15
+#, elixir-autogen, elixir-format
+msgid "Built-in !help command listing available commands"
+msgstr "Xây dựng trong: hỗ trợ liệt kê lệnh sẵn sàng"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:321
+#, elixir-autogen, elixir-format
+msgid "Cairo"
+msgstr "Cairo"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:286
+#, elixir-autogen, elixir-format
+msgid "Canberra"
+msgstr "chơn dung"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:219
+#, elixir-autogen, elixir-format
+msgid "Cannot keep %{keep} dice when only rolling %{count}."
+msgstr "Không thể giữ súc sắc %{keep} khi chỉ cuộn %{count}."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:343
+#, elixir-autogen, elixir-format
+msgid "Central Processing Unit"
+msgstr "Đơn vị xử lý Trung tâm"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:250
+#, elixir-autogen, elixir-format
+msgid "Checked feed '%{id}'. New items found."
+msgstr "Đã kiểm tra dữ liệu '%{id}'. Tìm mục mới."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:21
+#, elixir-autogen, elixir-format
+msgid "City of Light"
+msgstr "Thành phố ánh sáng"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:259
+#, elixir-autogen, elixir-format
+msgid "Correct, %{author}! (+%{points} points)"
+msgstr "Chính xác. %{author}! (+%{points} điểm)"
+
+#: lib/retro_hex_chat/bots/capabilities/custom_commands.ex:18
+#, elixir-autogen, elixir-format
+msgid "Custom bot commands (!prefix trigger)"
+msgstr "Lệnh robot tự chọn ( cú pháp chuẩn)"
+
+#: lib/retro_hex_chat/bots/capabilities/script.ex:12
+#, elixir-autogen, elixir-format
+msgid "Custom script engine (Coming soon)"
+msgstr "Tự chọn"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:312
+#, elixir-autogen, elixir-format
+msgid "Danish territory"
+msgstr "Thuộc địa Đan Mạch"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:379
+#, elixir-autogen, elixir-format
+msgid "Databases"
+msgstr "Cơ sở dữ liệu"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:28
+#, elixir-autogen, elixir-format
+msgid "Dice rolling for RPG games (e.g., 2d6, d20+5, 4d6kh3)"
+msgstr "Dice lăn cho trò chơi RPG (v. d20 + 5, 4d6kh3)"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:180
+#, elixir-autogen, elixir-format
+msgid "Dollar bill"
+msgstr "Hóa đơn Đô la"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:456
+#, elixir-autogen, elixir-format
+msgid "Dutch painter"
+msgstr "Sơn Hà Lan"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:36
+#, elixir-autogen, elixir-format
+msgid "Early 20th century"
+msgstr "Đầu thế kỷ 20"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:461
+#, elixir-autogen, elixir-format
+msgid "Elementary"
+msgstr "Tiểu học"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:373
+#, elixir-autogen, elixir-format
+msgid "Erlang"
+msgstr "Erlang"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:148
+#, elixir-autogen, elixir-format
+msgid "Error: Dice must have at least 2 sides."
+msgstr "Lỗi: Dice phải có ít nhất 2 mặt."
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:142
+#, elixir-autogen, elixir-format
+msgid "Error: Maximum %{max} dice allowed."
+msgstr "Lỗi: được cho phép xúc xắc %{max} tối đa."
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:145
+#, elixir-autogen, elixir-format
+msgid "Error: Maximum %{max} sides allowed."
+msgstr "Lỗi: được phép tối đa bên %{max}."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:103
+#, elixir-autogen, elixir-format
+msgid "Famous for rings"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:220
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' added: %{url} → %{channel}"
+msgstr "Nạp '%{id}' thêm: %{url}  đờn %{channel}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:254
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' checked. No new items."
+msgstr "Nạp '%{id}' đã kiểm tra. Không có đồ mới."
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:236
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:245
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' not found."
+msgstr "Không tìm thấy gói '%{id}' ăn."
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:234
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' removed."
+msgstr "Nạp '%{id}' đã gỡ bỏ."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:375
+#, elixir-autogen, elixir-format
+msgid "Final scores: %{ranked}"
+msgstr "Điểm cuối cùng: %{ranked}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:334
+#, elixir-autogen, elixir-format
+msgid "Finnish"
+msgstr "Phần Lan"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:133
+#, elixir-autogen, elixir-format
+msgid "Force check a feed now"
+msgstr "Bắt buộc kiểm tra nguồn tin ngay."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:416
+#, elixir-autogen, elixir-format
+msgid "Freddie Mercury"
+msgstr "Freddie Mercury"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:224
+#, elixir-autogen, elixir-format
+msgid "French Revolution"
+msgstr "Cách mạng Pháp"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:61
+#, elixir-autogen, elixir-format
+msgid "From Latin aurum"
+msgstr "Từ La - tinh arum"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:435
+#, elixir-autogen, elixir-format
+msgid "Game of Thrones"
+msgstr "Trò chơi ngai vàng"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:179
+#, elixir-autogen, elixir-format
+msgid "George Washington"
+msgstr "George Washington"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:195
+#, elixir-autogen, elixir-format
+msgid "German philosopher"
+msgstr "Triết gia Đức"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:311
+#, elixir-autogen, elixir-format
+msgid "Greenland"
+msgstr "Lục"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:17
+#, elixir-autogen, elixir-format
+msgid "Greet users on join, say goodbye on part"
+msgstr "Hãy chào đón những người tham gia, tạm biệt một phần"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:209
+#, elixir-autogen, elixir-format
+msgid "Gutenberg"
+msgstr "Guaenberg"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:436
+#, elixir-autogen, elixir-format
+msgid "HBO"
+msgstr "HBO"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:321
+#, elixir-autogen, elixir-format
+msgid "HTTP %{status}"
+msgstr "HTTP %{status}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:56
+#, elixir-autogen, elixir-format
+msgid "Hex = six"
+msgstr "Hex = 6"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:85
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:216
+#, elixir-autogen, elixir-format
+msgid "Hey {nickname}, please keep it civil."
+msgstr "Này, xin hãy giữ lịch sự."
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:60
+#, elixir-autogen, elixir-format
+msgid "Hi {nickname}! Try {prefix}help for my commands."
+msgstr "Xin chào! Cố gắng giúp tôi ra lệnh."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:74
+#, elixir-autogen, elixir-format
+msgid "Hint: %{hint}"
+msgstr "Gợi ý: %{hint}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:441
+#, elixir-autogen, elixir-format
+msgid "Hollywood legend"
+msgstr "Huyền thoại Hollywood"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:79
+#, elixir-autogen, elixir-format
+msgid "How many bones in the adult human body?"
+msgstr "Bao nhiêu xương trong cơ thể người trưởng thành?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:39
+#, elixir-autogen, elixir-format
+msgid "How many colors in a rainbow?"
+msgstr "Có bao nhiêu màu trong cầu vồng?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:24
+#, elixir-autogen, elixir-format
+msgid "How many continents are there?"
+msgstr "Có bao nhiêu lục địa?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:131
+#, elixir-autogen, elixir-format
+msgid "How many planets in our solar system?"
+msgstr "Bao nhiêu hành tinh trong hệ mặt trời của chúng ta?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:54
+#, elixir-autogen, elixir-format
+msgid "How many sides does a hexagon have?"
+msgstr "Một hình lục giác có bao nhiêu mặt?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:328
+#, elixir-autogen, elixir-format
+msgid "HyperText Markup Language"
+msgstr "Ngôn ngữ đánh dấu siêu Văn bản"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:353
+#, elixir-autogen, elixir-format
+msgid "HyperText Transfer Protocol"
+msgstr "Giao thức truyền siêu văn bản"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:252
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:267
+#, elixir-autogen, elixir-format
+msgid "In Africa"
+msgstr "Ở Phi Châu"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:200
+#, elixir-autogen, elixir-format
+msgid "In Italy"
+msgstr "Ở Ý"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:257
+#, elixir-autogen, elixir-format
+msgid "In Nepal"
+msgstr "Ở Nepal"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:91
+#, elixir-autogen, elixir-format
+msgid "In Rome"
+msgstr "Tại Rô - ma"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:163
+#, elixir-autogen, elixir-format
+msgid "In the nucleus"
+msgstr "Trong nhân"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:173
+#, elixir-autogen, elixir-format
+msgid "In what year did World War II end?"
+msgstr "Thế Chiến II chấm dứt vào năm nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:244
+#, elixir-autogen, elixir-format
+msgid "Inca"
+msgstr "Inca"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:261
+#, elixir-autogen, elixir-format
+msgid "India"
+msgstr "Ấn Độ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:399
+#, elixir-autogen, elixir-format
+msgid "Integration"
+msgstr "Hợp nhất"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:23
+#, elixir-autogen, elixir-format
+msgid "Interactive quiz and trivia with scoring"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:226
+#, elixir-autogen, elixir-format
+msgid "Invalid URL. Must start with http:// or https://"
+msgstr "URL không hợp lệ. Cần phải bắt đầu với http vội vàng hay https vội"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:179
+#, elixir-autogen, elixir-format
+msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
+msgstr ""
+"Ký hiệu xúc xắc « %{notation} » không hợp lệ. Dùng định dạng: NdS, NdS+M, "
+"NdSkh/klN"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
+#, elixir-autogen, elixir-format
+msgid "Invalid time format. Use HH:MM (24h UTC)."
+msgstr "Định dạng giờ không hợp lệ. Dùng HH:MM (24h UTC)."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:425
+#, elixir-autogen, elixir-format
+msgid "J.K. Rowling"
+msgstr "J.K. Rowling"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:210
+#, elixir-autogen, elixir-format
+msgid "Johannes"
+msgstr "Johannes"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:194
+#, elixir-autogen, elixir-format
+msgid "Karl Marx"
+msgstr "Karl Marx"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:215
+#, elixir-autogen, elixir-format
+msgid "Keep count must be at least 1."
+msgstr "Số lần đếm phải là ít nhất 1."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:476
+#, elixir-autogen, elixir-format
+msgid "King of Pop"
+msgstr "Vua của Pop"
+
+#: lib/retro_hex_chat/bots/capabilities/llm.ex:12
+#, elixir-autogen, elixir-format
+msgid "LLM-powered intelligent responses (Coming soon)"
+msgstr "Câu trả lời thông minh có sức mạnh nhanh chóng"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:190
+#, elixir-autogen, elixir-format
+msgid "Late 1980s"
+msgstr "Cuối những năm 1980"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:394
+#, elixir-autogen, elixir-format
+msgid "Late 1990s"
+msgstr "Cuối những năm 1990"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:339
+#, elixir-autogen, elixir-format
+msgid "Late 2000s"
+msgstr "Cuối 2000s"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:229
+#, elixir-autogen, elixir-format
+msgid "Leonardo da Vinci"
+msgstr "Leonardo da Vinci"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:113
+#, elixir-autogen, elixir-format
+msgid "Lightest"
+msgstr "Nhẹ nhất"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:184
+#, elixir-autogen, elixir-format
+msgid "Lighthouse"
+msgstr "Nhà sáng"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:333
+#, elixir-autogen, elixir-format
+msgid "Linus Torvalds"
+msgstr "Linus Torvads"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:131
+#, elixir-autogen, elixir-format
+msgid "List RSS feeds"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:149
+#, elixir-autogen, elixir-format
+msgid "List active schedules"
+msgstr "Liệt kê các lịch hoạt động"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:66
+#, elixir-autogen, elixir-format
+msgid "Lives in the ocean"
+msgstr "Sống dưới đại dương"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:118
+#, elixir-autogen, elixir-format
+msgid "Look up"
+msgstr "Nhìn lên"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:276
+#, elixir-autogen, elixir-format
+msgid "Mariana Trench"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:50
+#, elixir-autogen, elixir-format
+msgid "Mars"
+msgstr "Sao Hỏa"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:186
+#, elixir-autogen, elixir-format
+msgid "Maximum %{max} feeds reached."
+msgstr "Đã tới nguồn cấp dữ liệu tối đa %{max}."
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:204
+#, elixir-autogen, elixir-format
+msgid "Maximum %{max} schedules reached."
+msgstr "Đã tới lịch trình %{max} tối đa."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:204
+#, elixir-autogen, elixir-format
+msgid "Mayflower"
+msgstr "thái dương"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:296
+#, elixir-autogen, elixir-format
+msgid "Mediterranean"
+msgstr "Địa Trung Hải"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:475
+#, elixir-autogen, elixir-format
+msgid "Michael Jackson"
+msgstr "Michael Jackson"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:297
+#, elixir-autogen, elixir-format
+msgid "Middle earth"
+msgstr "Trung Địa"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:450
+#, elixir-autogen, elixir-format
+msgid "Minecraft"
+msgstr "Minecraft"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:227
+#, elixir-autogen, elixir-format
+msgid "Minimum interval is %{minutes} minutes."
+msgstr "Thời gian tối thiểu là %{minutes} phút."
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#, elixir-autogen, elixir-format
+msgid "Missing channel. Usage: rss add <url> <#channel>"
+msgstr "Mất kênh. Sử dụng: rss thêm <url> <#channel>"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:470
+#, elixir-autogen, elixir-format
+msgid "Monopoly"
+msgstr "Đơn kênh"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:26
+#, elixir-autogen, elixir-format
+msgid "More than 5"
+msgstr "Hơn 5"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:256
+#, elixir-autogen, elixir-format
+msgid "Mount Everest"
+msgstr "Núi Everest"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:168
+#, elixir-autogen, elixir-format
+msgid "Myco-"
+msgstr "Myco-"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:137
+#, elixir-autogen, elixir-format
+msgid "NaCl"
+msgstr "NaCl"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:307
+#, elixir-autogen, elixir-format
+msgid "Named after Vitus"
+msgstr "Đặt tên theo Vitus"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:219
+#, elixir-autogen, elixir-format
+msgid "Neil Armstrong"
+msgstr "Neil Armstrong"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:123
+#, elixir-autogen, elixir-format
+msgid "Neutral"
+msgstr "Trung lập"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:143
+#, elixir-autogen, elixir-format
+msgid "Newton's apple"
+msgstr "Táo Newton"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:251
+#, elixir-autogen, elixir-format
+msgid "Nile"
+msgstr "Ni - lơ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:446
+#, elixir-autogen, elixir-format
+msgid "Nintendo"
+msgstr "Nintendo"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:163
+#, elixir-autogen, elixir-format
+msgid "No RSS feeds configured."
+msgstr "Không có nguồn cấp dữ liệu mật."
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:180
+#, elixir-autogen, elixir-format
+msgid "No active schedules."
+msgstr "Không có lịch hoạt động."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:194
+#, elixir-autogen, elixir-format
+msgid "No questions available for category '%{category}'."
+msgstr "Không có câu hỏi nào cho loại \"%{category}\"."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:362
+#, elixir-autogen, elixir-format
+msgid "No scores recorded."
+msgstr "Không ghi điểm."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:225
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:238
+#, elixir-autogen, elixir-format
+msgid "No trivia round in progress."
+msgstr "Vẫn chưa có tin tức gì."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:317
+#, elixir-autogen, elixir-format
+msgid "North Africa"
+msgstr "Bắc Phi"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:287
+#, elixir-autogen, elixir-format
+msgid "Not Sydney"
+msgstr "Không phải Sydney"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:302
+#, elixir-autogen, elixir-format
+msgid "Not Toronto"
+msgstr "Không phải Toronto"
+
+#: lib/retro_hex_chat/bots/server.ex:163
+#, elixir-autogen, elixir-format
+msgid "Not in channel"
+msgstr "Không phải trong kênh"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:349
+#, elixir-autogen, elixir-format
+msgid "Now Oracle"
+msgstr "Nhà tiên tri hiện nay"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:322
+#, elixir-autogen, elixir-format
+msgid "On the Nile"
+msgstr "Trên sông Nile"
+
+#: lib/retro_hex_chat/bots/policy.ex:25
+#, elixir-autogen, elixir-format
+msgid "Only admins and server operators can manage bots"
+msgstr "Chỉ các quản trị viên và người điều hành máy chủ có thể quản lý robot"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:108
+#, elixir-autogen, elixir-format
+msgid "Organelle"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:301
+#, elixir-autogen, elixir-format
+msgid "Ottawa"
+msgstr "Ostawa"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:158
+#, elixir-autogen, elixir-format
+msgid "Outside"
+msgstr "Bên ngoài"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:81
+#, elixir-autogen, elixir-format
+msgid "Over 200"
+msgstr "Hơn 200"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:30
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:277
+#, elixir-autogen, elixir-format
+msgid "Pacific"
+msgstr "Thái Bình Dương"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:20
+#, elixir-autogen, elixir-format
+msgid "Paris"
+msgstr "Paris"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:471
+#, elixir-autogen, elixir-format
+msgid "Pass Go"
+msgstr "Qua"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:31
+#, elixir-autogen, elixir-format
+msgid "Peaceful"
+msgstr "Hòa bình"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:185
+#, elixir-autogen, elixir-format
+msgid "Pharos"
+msgstr "Pha- ri- si"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:389
+#, elixir-autogen, elixir-format
+msgid "Plug it in"
+msgstr "Cắm vào"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:133
+#, elixir-autogen, elixir-format
+msgid "Pluto was demoted"
+msgstr "Sao Diêm Vương bị giáng chức"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:331
+#, elixir-autogen, elixir-format
+msgid "Q%{number}/%{total}: %{question}"
+msgstr "C%{number}/%{total}: %{question}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:415
+#, elixir-autogen, elixir-format
+msgid "Queen"
+msgstr "Hoàng hậu"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:411
+#, elixir-autogen, elixir-format
+msgid "RDJ"
+msgstr "RDJ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:41
+#, elixir-autogen, elixir-format
+msgid "ROY G BIV"
+msgstr "ROY G BIV"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:177
+#, elixir-autogen, elixir-format
+msgid "RSS Feeds:"
+msgstr "Thông tin mật:"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:26
+#, elixir-autogen, elixir-format
+msgid "RSS feed reader that posts updates to channels"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:368
+#, elixir-autogen, elixir-format
+msgid "Random Access Memory"
+msgstr "Bộ nhớ truy cập ngẫu nhiên"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:406
+#, elixir-autogen, elixir-format
+msgid "Red pill"
+msgstr "Thuốc đỏ"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:150
+#, elixir-autogen, elixir-format
+msgid "Remove a schedule"
+msgstr "Gỡ bỏ lịch"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:132
+#, elixir-autogen, elixir-format
+msgid "Remove an RSS feed"
+msgstr "Bỏ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:230
+#, elixir-autogen, elixir-format
+msgid "Renaissance"
+msgstr "Thời kỳ Phục hưng"
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:17
+#, elixir-autogen, elixir-format
+msgid "Respond when mentioned by name"
+msgstr "Đáp ứng khi được đề cập đến"
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:55
+#, elixir-autogen, elixir-format
+msgid "Response must be a non-empty string"
+msgstr "Đáp ứng phải là một chuỗi không rỗng"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:334
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat-RSS/1.0"
+msgstr "RetroHexChat-RSS/1.0"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:410
+#, elixir-autogen, elixir-format
+msgid "Robert Downey Jr"
+msgstr "Robert Downey Jr."
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:81
+#, elixir-autogen, elixir-format
+msgid "Roll dice (e.g., 2d6, d20+5, 4d6kh3)"
+msgstr "xúc xắc cuộn (e.g., 2d6, d20+5, 4d6kh3)"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:265
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
+msgstr "Cuộn %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:257
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} = %{sum}"
+msgstr "Cuộn %{notation}: %{rolls} = %{sum}"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:290
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} → keeping %{kept}"
+msgstr "Đang cuộn %{notation}: %{rolls} giữ %{kept}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:199
+#, elixir-autogen, elixir-format
+msgid "Roman"
+msgstr "La mã"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:266
+#, elixir-autogen, elixir-format
+msgid "Sahara"
+msgstr "Sahara"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:102
+#, elixir-autogen, elixir-format
+msgid "Saturn"
+msgstr "Sao Thổ"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:269
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' added: daily at %{time} UTC in %{channel}."
+msgstr "Lịch '%{id}' thêm: hàng ngày tại %{time} UTC trong %{channel}."
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:243
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' added: every %{minutes}min in %{channel}."
+msgstr "Lịch '%{id}' thêm: mỗi %{minutes}min in %{channel}."
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:286
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' not found."
+msgstr "Không tìm thấy lịch '%{id}'."
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:284
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' removed."
+msgstr "Lịch '%{id}' đã bị xóa."
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:27
+#, elixir-autogen, elixir-format
+msgid "Scheduled and periodic messages"
+msgstr "Comment"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:353
+#, elixir-autogen, elixir-format
+msgid "Scores (Q%{number}/%{total}): %{ranked}"
+msgstr "Điểm số (Q%{number}/%{total}): %{ranked}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:340
+#, elixir-autogen, elixir-format
+msgid "Scores (Q%{number}/%{total}): No scores yet."
+msgstr "Điểm số (Q%{number}/%{total}: Chưa có điểm."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:240
+#, elixir-autogen, elixir-format
+msgid "Scottish"
+msgstr "Co dãn"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:460
+#, elixir-autogen, elixir-format
+msgid "Sherlock Holmes"
+msgstr "Sherlock Holmes"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:140
+#, elixir-autogen, elixir-format
+msgid "Show current scores"
+msgstr "Hiện điểm hiện tại"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:56
+#, elixir-autogen, elixir-format
+msgid "Show this help message"
+msgstr "Hiển thị thông điệp trợ giúp"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:138
+#, elixir-autogen, elixir-format
+msgid "Sodium..."
+msgstr "Natri..."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:245
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:281
+#, elixir-autogen, elixir-format
+msgid "South America"
+msgstr "Nam Mỹ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:262
+#, elixir-autogen, elixir-format
+msgid "South Asia"
+msgstr "Nam Á"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:282
+#, elixir-autogen, elixir-format
+msgid "Southern hemisphere"
+msgstr "Nam bán cầu"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:53
+#, elixir-autogen, elixir-format
+msgid "Start a solo arcade session"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:138
+#, elixir-autogen, elixir-format
+msgid "Start a trivia round"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:22
+#, elixir-autogen, elixir-format
+msgid "Start solo arcade sessions with !play"
+msgstr "Bắt đầu các phiên làm việc một mình!"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
+#, elixir-autogen, elixir-format
+msgid "Starts with T"
+msgstr "Bắt đầu với T"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:440
+#, elixir-autogen, elixir-format
+msgid "Steven Spielberg"
+msgstr "Steven Spielberg"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:139
+#, elixir-autogen, elixir-format
+msgid "Stop the current round"
+msgstr "Dừng vòng hiện tại"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:378
+#, elixir-autogen, elixir-format
+msgid "Structured Query Language"
+msgstr "Truy vấn ngôn ngữ được cấu trúc"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:141
+#, elixir-autogen, elixir-format
+msgid "Submit a trivia answer"
+msgstr "Trả lời chuyện tầm phào"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:117
+#, elixir-autogen, elixir-format
+msgid "Sun"
+msgstr "Mặt trời"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:348
+#, elixir-autogen, elixir-format
+msgid "Sun Microsystems"
+msgstr "Hệ mặt trời"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:445
+#, elixir-autogen, elixir-format
+msgid "Super Mario Bros"
+msgstr "Super Mario Bros"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:405
+#, elixir-autogen, elixir-format
+msgid "The Matrix"
+msgstr "Ma trận"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:76
+#, elixir-autogen, elixir-format
+msgid "Three digits"
+msgstr "Ba số"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:466
+#, elixir-autogen, elixir-format
+msgid "Three wishes"
+msgstr "Ba điều ước"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:364
+#, elixir-autogen, elixir-format
+msgid "Tim Berners-Lee"
+msgstr "Tim Berners-Lee"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:94
+#, elixir-autogen, elixir-format
+msgid "Time's up! Nobody got it."
+msgstr "Hết giờ! Không ai hiểu cả."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:92
+#, elixir-autogen, elixir-format
+msgid "Time's up! The answer was: %{answer}"
+msgstr "Hết giờ! Câu trả lời là: %{answer}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:271
+#, elixir-autogen, elixir-format
+msgid "Tokyo"
+msgstr "Tokyo"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
+#, elixir-autogen, elixir-format
+msgid ""
+"Trivia started! (%{category}, %{count} questions)\n"
+"%{question}"
+msgstr ""
+"Trivia bắt đầu! (%{category}, %{count} câu hỏi)\n"
+"%{question}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
+#, elixir-autogen, elixir-format
+msgid "Trivia stopped! %{scores}"
+msgstr "Trivia dừng lại! %{scores}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:98
+#, elixir-autogen, elixir-format
+msgid "Two elements"
+msgstr "Hai yếu tố"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:388
+#, elixir-autogen, elixir-format
+msgid "Universal Serial Bus"
+msgstr "Xe buýt nối tiếp phổ biến"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:127
+#, elixir-autogen, elixir-format
+msgid "Unknown category '%{category}'. Available: %{categories}"
+msgstr "Không rõ loại '%{category}'. Có sẵn: %{categories}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unknown feed format (expected RSS 2.0 or Atom)"
+msgstr "Định dạng nguồn dữ liệu không rõ (đã mong đợi RSS 2.0 hoặc Atom)"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:196
+#, elixir-autogen, elixir-format
+msgid "Usage: rss add <url> <#channel>"
+msgstr "Sử dụng: rss thêm <url> <#channel>"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
+#, elixir-autogen, elixir-format
+msgid ""
+"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
+"daily <HH:MM> <#channel> <message>"
+msgstr ""
+"Sử dụng: thời gian biểu thêm khoảng <min> <#channel> <message> lịch phẫu "
+"thuật thêm <HH:MM> <#channel> <message>"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
+#, elixir-autogen, elixir-format
+msgid "Vatican City"
+msgstr "Thành Vatican"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:148
+#, elixir-autogen, elixir-format
+msgid "Very cold"
+msgstr "Rất lạnh"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:455
+#, elixir-autogen, elixir-format
+msgid "Vincent van Gogh"
+msgstr "Vincent van Gogh"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:369
+#, elixir-autogen, elixir-format
+msgid "Volatile"
+msgstr "Name"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:354
+#, elixir-autogen, elixir-format
+msgid "Web"
+msgstr "Web"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:329
+#, elixir-autogen, elixir-format
+msgid "Web pages"
+msgstr "Trang Mạng"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:50
+#, elixir-autogen, elixir-format
+msgid "Welcome, {nickname}!"
+msgstr "Chào mừng!"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:464
+#, elixir-autogen, elixir-format
+msgid "What Disney movie features a genie?"
+msgstr "Phim Disney nào có đặc điểm thần đèn?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:434
+#, elixir-autogen, elixir-format
+msgid "What TV show features dragons and an iron throne?"
+msgstr "Chương trình truyền hình nào cho thấy có rồng và ngai sắt?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:183
+#, elixir-autogen, elixir-format
+msgid "What ancient wonder was in Alexandria?"
+msgstr "Có điều kỳ diệu nào thời xưa ở Alexandria?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:414
+#, elixir-autogen, elixir-format
+msgid "What band wrote 'Bohemian Rhapsody'?"
+msgstr "Ban nhạc nào viết 'Bohemian Rhapsody'?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:469
+#, elixir-autogen, elixir-format
+msgid "What board game has properties like Boardwalk?"
+msgstr "Trò chơi bảng nào có những đặc tính như sàn nhảy?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:243
+#, elixir-autogen, elixir-format
+msgid "What civilization built Machu Picchu?"
+msgstr "Nền văn minh nào đã xây dựng nên Machu Picchu?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:347
+#, elixir-autogen, elixir-format
+msgid "What company created Java?"
+msgstr "Công ty nào tạo ra Java?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:280
+#, elixir-autogen, elixir-format
+msgid "What continent is Brazil in?"
+msgstr "Brazil đang ở lục địa nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:260
+#, elixir-autogen, elixir-format
+msgid "What country has the most people?"
+msgstr "Nước nào có nhiều người nhất?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:315
+#, elixir-autogen, elixir-format
+msgid "What country is the Sahara Desert mostly in?"
+msgstr "Sa mạc Sahara chủ yếu ở nước nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:397
+#, elixir-autogen, elixir-format
+msgid "What does API stand for?"
+msgstr "ARI viết tắt là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:342
+#, elixir-autogen, elixir-format
+msgid "What does CPU stand for?"
+msgstr "CPU là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:327
+#, elixir-autogen, elixir-format
+msgid "What does HTML stand for?"
+msgstr "HTML là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:352
+#, elixir-autogen, elixir-format
+msgid "What does HTTP stand for?"
+msgstr "HTTP đại diện cho cái gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:367
+#, elixir-autogen, elixir-format
+msgid "What does RAM stand for?"
+msgstr "RAM là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:377
+#, elixir-autogen, elixir-format
+msgid "What does SQL stand for?"
+msgstr "Điều này có nghĩa gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:387
+#, elixir-autogen, elixir-format
+msgid "What does USB stand for?"
+msgstr "USB tượng trưng cho cái gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:111
+#, elixir-autogen, elixir-format
+msgid "What element has atomic number 1?"
+msgstr "Nguyên tố nào có nguyên tử số 1?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:198
+#, elixir-autogen, elixir-format
+msgid "What empire built the Colosseum?"
+msgstr "Đế chế nào đã xây dựng đấu trường?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:459
+#, elixir-autogen, elixir-format
+msgid "What fictional detective lived at 221B Baker Street?"
+msgstr "Thanh tra giả tưởng nào đã sống ở 221B phố Baker?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:141
+#, elixir-autogen, elixir-format
+msgid "What force keeps planets in orbit?"
+msgstr "Lực nào giữ cho các hành tinh bay theo quỹ đạo?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:444
+#, elixir-autogen, elixir-format
+msgid "What game features a plumber named Mario?"
+msgstr "Trò chơi nào lại có một thợ ống nước tên Mario?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:69
+#, elixir-autogen, elixir-format
+msgid "What gas do plants absorb?"
+msgstr "Thực vật hấp thụ khí gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:126
+#, elixir-autogen, elixir-format
+msgid "What gas makes up 78% of Earth's atmosphere?"
+msgstr "Khí nào tạo thành 78% khí quyển Trái Đất?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:429
+#, elixir-autogen, elixir-format
+msgid "What instrument has 88 keys?"
+msgstr "Nhạc cụ nào có 88 chìa khóa?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:146
+#, elixir-autogen, elixir-format
+msgid "What is absolute zero in Celsius?"
+msgstr "Số 0 tuyệt đối là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:449
+#, elixir-autogen, elixir-format
+msgid "What is the best-selling video game of all time?"
+msgstr "Trò chơi bán chạy nhất mọi thời đại là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:74
+#, elixir-autogen, elixir-format
+msgid "What is the boiling point of water in Celsius?"
+msgstr "Điểm sôi của nước ở nhiệt độ là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:285
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Australia?"
+msgstr "Thủ đô của Úc là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:300
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Canada?"
+msgstr "Thủ đô của Canada là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:320
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Egypt?"
+msgstr "Thủ đô của Ai Cập là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:19
+#, elixir-autogen, elixir-format
+msgid "What is the capital of France?"
+msgstr "Thủ đô nước Pháp là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:270
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Japan?"
+msgstr "Thủ đô của Nhật Bản là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:136
+#, elixir-autogen, elixir-format
+msgid "What is the chemical formula for table salt?"
+msgstr "Công thức hóa học cho muối bàn là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:59
+#, elixir-autogen, elixir-format
+msgid "What is the chemical symbol for gold?"
+msgstr "Ký hiệu hóa học của vàng là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:96
+#, elixir-autogen, elixir-format
+msgid "What is the chemical symbol for water?"
+msgstr "Biểu tượng hóa học của nước là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:116
+#, elixir-autogen, elixir-format
+msgid "What is the closest star to Earth?"
+msgstr "Ngôi sao gần Trái Đất nhất là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:275
+#, elixir-autogen, elixir-format
+msgid "What is the deepest ocean trench?"
+msgstr "Cái hào sâu nhất của đại dương là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:44
+#, elixir-autogen, elixir-format
+msgid "What is the hardest natural substance?"
+msgstr "Vật chất nào là khó nhất?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:419
+#, elixir-autogen, elixir-format
+msgid "What is the highest-grossing film of all time?"
+msgstr "Bộ phim tán tỉnh nhất mọi thời đại là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:265
+#, elixir-autogen, elixir-format
+msgid "What is the largest desert?"
+msgstr "Sa mạc lớn nhất là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:310
+#, elixir-autogen, elixir-format
+msgid "What is the largest island?"
+msgstr "Hòn đảo lớn nhất là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:64
+#, elixir-autogen, elixir-format
+msgid "What is the largest mammal?"
+msgstr "Động vật có vú lớn nhất là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:29
+#, elixir-autogen, elixir-format
+msgid "What is the largest ocean?"
+msgstr "Đại dương lớn nhất là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:156
+#, elixir-autogen, elixir-format
+msgid "What is the largest organ in the human body?"
+msgstr "Cơ quan nào lớn nhất trong cơ thể con người?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:250
+#, elixir-autogen, elixir-format
+msgid "What is the longest river in the world?"
+msgstr "Dòng sông dài nhất thế giới là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:121
+#, elixir-autogen, elixir-format
+msgid "What is the pH of pure water?"
+msgstr "Lượng nước trong suốt là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:106
+#, elixir-autogen, elixir-format
+msgid "What is the powerhouse of the cell?"
+msgstr "Nhà máy điện của xà lim là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:290
+#, elixir-autogen, elixir-format
+msgid "What is the smallest continent?"
+msgstr "Lục địa nhỏ nhất là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:89
+#, elixir-autogen, elixir-format
+msgid "What is the smallest country by area?"
+msgstr "Đất nước nhỏ nhất từng vùng là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:84
+#, elixir-autogen, elixir-format
+msgid "What is the speed of light (km/s)?"
+msgstr "Tốc độ ánh sáng (kmXP0X) là bao nhiêu?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:166
+#, elixir-autogen, elixir-format
+msgid "What is the study of fungi called?"
+msgstr "Nghiên cứu nấm gọi là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:255
+#, elixir-autogen, elixir-format
+msgid "What is the tallest mountain?"
+msgstr "Ngọn núi cao nhất là gì?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:404
+#, elixir-autogen, elixir-format
+msgid "What movie features a character named Neo?"
+msgstr "Bộ phim nào có đặc điểm là Neo?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:161
+#, elixir-autogen, elixir-format
+msgid "What particle has a positive charge?"
+msgstr "Hạt nào có điện tích dương?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:101
+#, elixir-autogen, elixir-format
+msgid "What planet has the most moons?"
+msgstr "Hành tinh nào có nhiều mặt trăng nhất?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:49
+#, elixir-autogen, elixir-format
+msgid "What planet is known as the Red Planet?"
+msgstr "Hành tinh nào được gọi là Hành Tinh Đỏ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:372
+#, elixir-autogen, elixir-format
+msgid "What programming language is Elixir built on?"
+msgstr "Elixir được xây dựng trên ngôn ngữ lập trình nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:223
+#, elixir-autogen, elixir-format
+msgid "What revolution started in 1789?"
+msgstr "Cuộc cách mạng nào bắt đầu vào năm 1789?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:295
+#, elixir-autogen, elixir-format
+msgid "What sea is between Europe and Africa?"
+msgstr "Giữa Châu Âu và Châu Phi có biển nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:203
+#, elixir-autogen, elixir-format
+msgid "What ship brought Pilgrims to America?"
+msgstr "Tàu nào đưa Pilgrims tới Mỹ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:305
+#, elixir-autogen, elixir-format
+msgid "What strait separates Asia and North America?"
+msgstr "Tình trạng khó khăn nào chia cắt Châu Á và Bắc Mỹ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:151
+#, elixir-autogen, elixir-format
+msgid "What vitamin does the sun provide?"
+msgstr "Mặt trời cung cấp vitamin nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:213
+#, elixir-autogen, elixir-format
+msgid "What year did Columbus reach America?"
+msgstr "Năm nào Columbus đến Mỹ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:188
+#, elixir-autogen, elixir-format
+msgid "What year did the Berlin Wall fall?"
+msgstr "Bức tường Berlin sụp đổ năm nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:34
+#, elixir-autogen, elixir-format
+msgid "What year did the Titanic sink?"
+msgstr "Tàu Titanic chìm năm nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:392
+#, elixir-autogen, elixir-format
+msgid "What year was Google founded?"
+msgstr "Google được thành lập năm nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:233
+#, elixir-autogen, elixir-format
+msgid "What year was the Declaration of Independence signed?"
+msgstr "Bản Tuyên Ngôn Độc Lập được ký năm nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:362
+#, elixir-autogen, elixir-format
+msgid "What year was the World Wide Web invented?"
+msgstr "Năm nào World Wide Web được phát minh?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:337
+#, elixir-autogen, elixir-format
+msgid "What year was the first iPhone released?"
+msgstr "Chiếc iPhone đầu tiên được ra mắt năm nào?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:332
+#, elixir-autogen, elixir-format
+msgid "Who created Linux?"
+msgstr "Ai tạo ra Linux?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:439
+#, elixir-autogen, elixir-format
+msgid "Who directed Jurassic Park?"
+msgstr "Ai chỉ huy công viên Jurassic?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:238
+#, elixir-autogen, elixir-format
+msgid "Who discovered penicillin?"
+msgstr "Ai phát hiện ra penicillin?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:357
+#, elixir-autogen, elixir-format
+msgid "Who founded Microsoft?"
+msgstr "Ai sáng lập Microsoft?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:208
+#, elixir-autogen, elixir-format
+msgid "Who invented the printing press?"
+msgstr "Ai đã phát minh ra máy in?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:382
+#, elixir-autogen, elixir-format
+msgid "Who invented the telephone?"
+msgstr "Ai phát minh ra điện thoại?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:228
+#, elixir-autogen, elixir-format
+msgid "Who painted the Mona Lisa?"
+msgstr "Ai vẽ Mona Lisa?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:454
+#, elixir-autogen, elixir-format
+msgid "Who painted the Starry Night?"
+msgstr "Ai đã vẽ đêm sao?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:409
+#, elixir-autogen, elixir-format
+msgid "Who played Iron Man in the MCU?"
+msgstr "Ai đã đóng vai Người Sắt ở MCU?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:474
+#, elixir-autogen, elixir-format
+msgid "Who sang 'Thriller'?"
+msgstr "Ai hát 'Thriler'?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:218
+#, elixir-autogen, elixir-format
+msgid "Who was the first man on the moon?"
+msgstr "Người đầu tiên trên mặt trăng là ai?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:178
+#, elixir-autogen, elixir-format
+msgid "Who was the first president of the USA?"
+msgstr "Ai là tổng thống đầu tiên của Hoa Kỳ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:424
+#, elixir-autogen, elixir-format
+msgid "Who wrote Harry Potter?"
+msgstr "Ai viết Harry Potter?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:193
+#, elixir-autogen, elixir-format
+msgid "Who wrote the Communist Manifesto?"
+msgstr "Ai viết Tuyên ngôn Cộng sản?"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:33
+#, elixir-autogen, elixir-format
+msgid "XML parse error: %{reason}"
+msgstr "Lỗi phân tích XML: %{reason}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:372
+#, elixir-autogen, elixir-format
+msgid "[%{title}]"
+msgstr "[%{title}]"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:98
+#, elixir-autogen, elixir-format
+msgid "action must be one of: warn, mute, kick"
+msgstr "hành động phải là một trong: cảnh báo, câm, đá"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:65
+#, elixir-autogen, elixir-format
+msgid "blue whale"
+msgstr "Cá voi xanh"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:70
+#, elixir-autogen, elixir-format
+msgid "carbon dioxide"
+msgstr "CO2"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:380
+#, elixir-autogen, elixir-format
+msgid "daily@%{time}"
+msgstr "ngày%{time}"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:179
+#, elixir-autogen, elixir-format
+msgid "excessive caps lock"
+msgstr "khóa nắp quá nhiều"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:161
+#, elixir-autogen, elixir-format
+msgid "flooding (%{count} messages in %{window}s)"
+msgstr "lũ (%{count} thông điệp vào %{window}s)"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:67
+#, elixir-autogen, elixir-format
+msgid "max_dice must be between 1 and 1000"
+msgstr "chất lượng tối đa phải từ 1 đến 1000"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:70
+#, elixir-autogen, elixir-format
+msgid "max_sides must be between 2 and 10_000"
+msgstr "Phần lớn nhất phải nằm giữa 2 và 10- 1000"
+
+#: lib/retro_hex_chat/bots/bot.ex:46
+#, elixir-autogen, elixir-format
+msgid "must start with a letter"
+msgstr "phải bắt đầu bằng chữ cái"
+
+#: lib/retro_hex_chat/bots/bot.ex:43
+#: lib/retro_hex_chat/bots/bot_custom_command.ex:32
+#, elixir-autogen, elixir-format
+msgid "only letters, numbers, _ and -"
+msgstr "Chỉ có chữ cái, con số,  và -"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:377
+#, elixir-autogen, elixir-format
+msgid "q/%{minutes}min"
+msgstr "q/%{minutes}phút"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:145
+#, elixir-autogen, elixir-format
+msgid "spamming (%{count} identical messages)"
+msgstr "Thư rác (%{count} giống hệt)"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:127
+#, elixir-autogen, elixir-format
+msgid "using blocked words"
+msgstr "dùng từ bị chặn"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:218
+#, elixir-autogen, elixir-format
+msgid "{nickname}"
+msgstr "[nickname]"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:86
+#, elixir-autogen, elixir-format
+msgid "~3 x 10^5 km/s"
+msgstr "-3 x 10^5 kmPH0X"

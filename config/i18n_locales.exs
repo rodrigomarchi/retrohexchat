@@ -97,7 +97,7 @@
       "nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);",
     aliases: ~w(ar ar_SA ar_EG),
     wave: 2,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "ru",
@@ -109,7 +109,7 @@
       "nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);",
     aliases: ~w(ru ru_RU),
     wave: 2,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "hi",
@@ -120,7 +120,7 @@
     plural_forms: "nplurals=2; plural=(n != 1);",
     aliases: ~w(hi hi_IN),
     wave: 2,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "ko",
@@ -131,7 +131,7 @@
     plural_forms: "nplurals=1; plural=0;",
     aliases: ~w(ko ko_KR),
     wave: 2,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "tr",
@@ -142,7 +142,7 @@
     plural_forms: "nplurals=2; plural=(n > 1);",
     aliases: ~w(tr tr_TR),
     wave: 2,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "vi",
@@ -153,7 +153,7 @@
     plural_forms: "nplurals=1; plural=0;",
     aliases: ~w(vi vi_VN),
     wave: 2,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "bn",

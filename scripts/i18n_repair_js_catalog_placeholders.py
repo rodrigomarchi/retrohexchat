@@ -14,12 +14,18 @@ CATALOG = Path("apps/retro_hex_chat_web/assets/js/lib/i18n_catalog.js")
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
 TOKEN_RE = re.compile(r"XPH\d+X", re.IGNORECASE)
 ORDERED_EXPORTS = [
+    ("AR", "AR"),
     ("DE", "DE"),
     ("ES", "ES"),
     ("FR", "FR"),
+    ("HI", "HI"),
     ("ID", "ID"),
     ("JA", "JA"),
+    ("KO", "KO"),
     ("PT_BR", "PT_BR"),
+    ("RU", "RU"),
+    ("TR", "TR"),
+    ("VI", "VI"),
     ("ZH_HANS", "ZH_HANS"),
 ]
 

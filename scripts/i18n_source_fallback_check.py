@@ -13,16 +13,22 @@ from dataclasses import dataclass
 from pathlib import Path
 
 CATALOG = Path("apps/retro_hex_chat_web/assets/js/lib/i18n_catalog.js")
-DEFAULT_LOCALES = ("pt_BR", "es", "fr", "de", "ja", "zh_Hans", "id")
+DEFAULT_LOCALES = ("pt_BR", "es", "fr", "de", "ja", "zh_Hans", "id", "ar", "ru", "hi", "ko", "tr", "vi")
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
 WORD_RE = re.compile(r"[A-Za-z]{2,}")
 LOCALE_EXPORTS = {
+    "ar": "AR",
     "de": "DE",
     "es": "ES",
     "fr": "FR",
+    "hi": "HI",
     "id": "ID",
     "ja": "JA",
+    "ko": "KO",
     "pt_BR": "PT_BR",
+    "ru": "RU",
+    "tr": "TR",
+    "vi": "VI",
     "zh_Hans": "ZH_HANS",
 }
 

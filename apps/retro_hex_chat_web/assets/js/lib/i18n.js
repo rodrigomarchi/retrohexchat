@@ -1,12 +1,18 @@
-import { DE, ES, FR, ID, JA, PT_BR, ZH_HANS } from "./i18n_catalog.js";
+import { AR, DE, ES, FR, HI, ID, JA, KO, PT_BR, RU, TR, VI, ZH_HANS } from "./i18n_catalog.js";
 
 const CATALOGS = {
+  ar: AR,
   de: DE,
   es: ES,
   fr: FR,
+  hi: HI,
   id: ID,
   ja: JA,
+  ko: KO,
   pt_BR: PT_BR,
+  ru: RU,
+  tr: TR,
+  vi: VI,
   zh_Hans: ZH_HANS,
 };
 
@@ -28,10 +34,16 @@ export function normalizeLocale(locale) {
     .toLowerCase();
 
   if (value === "pt" || value === "pt_br") return "pt_BR";
+  if (value === "ar" || value.startsWith("ar_")) return "ar";
   if (value === "es" || value.startsWith("es_")) return "es";
   if (value === "fr" || value.startsWith("fr_")) return "fr";
   if (value === "de" || value.startsWith("de_")) return "de";
+  if (value === "hi" || value.startsWith("hi_")) return "hi";
   if (value === "ja" || value.startsWith("ja_")) return "ja";
+  if (value === "ko" || value.startsWith("ko_")) return "ko";
+  if (value === "ru" || value.startsWith("ru_")) return "ru";
+  if (value === "tr" || value.startsWith("tr_")) return "tr";
+  if (value === "vi" || value.startsWith("vi_")) return "vi";
   if (value === "id" || value === "in" || value.startsWith("id_") || value.startsWith("in_")) {
     return "id";
   }

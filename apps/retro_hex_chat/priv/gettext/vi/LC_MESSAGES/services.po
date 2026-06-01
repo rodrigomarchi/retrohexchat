@@ -1,0 +1,155 @@
+# "msgid"s in this file come from services.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: vi; status: enabled; wave: 2.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: vi\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:355
+#: lib/retro_hex_chat/services/nick_serv.ex:389
+#, elixir-autogen, elixir-format
+msgid "%{field}: %{errors}"
+msgstr "%{field}: %{errors}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:318
+#, elixir-autogen, elixir-format
+msgid "%{target_nick} added to %{level} list of %{channel_name}"
+msgstr "%{target_nick} thêm vào %{level} danh sách %{channel_name}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:344
+#, elixir-autogen, elixir-format
+msgid "%{target_nick} not found in access list"
+msgstr "Không tìm thấy %{target_nick} trong danh sách truy cập"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:337
+#, elixir-autogen, elixir-format
+msgid "%{target_nick} removed from access list of %{channel_name}"
+msgstr "%{target_nick} bị gỡ bỏ khỏi danh sách truy cập của %{channel_name}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:121
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} dropped"
+msgstr "Kênh %{channel_name} đã thả"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:178
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} dropped by admin"
+msgstr "Kênh %{channel_name} thả bởi Adam"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:133
+#: lib/retro_hex_chat/services/chan_serv.ex:246
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} is not registered"
+msgstr "Kênh %{channel_name} chưa được đăng ký"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:104
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} registered by %{founder_nick}"
+msgstr "Kênh %{channel_name} được đăng ký bởi %{founder_nick}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:326
+#, elixir-autogen, elixir-format
+msgid "Failed to add %{target_nick} to %{level} list"
+msgstr "Lỗi thêm %{target_nick} vào danh sách %{level}"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:265
+#, elixir-autogen, elixir-format
+msgid "Failed to reset password for %{nickname}"
+msgstr "Lỗi đặt lại mật khẩu cho %{nickname}"
+
+#: lib/retro_hex_chat/services/motd.ex:32
+#, elixir-autogen, elixir-format
+msgid "Failed to save MOTD."
+msgstr "Lỗi lưu MOTD."
+
+#: lib/retro_hex_chat/services/chan_serv.ex:199
+#, elixir-autogen, elixir-format
+msgid "Founder of %{channel_name} transferred to %{new_founder}"
+msgstr "Người sáng lập hệ thống %{channel_name} đã chuyển tới %{new_founder}"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:355
+#, elixir-autogen, elixir-format
+msgid "Ghost command sent for %{target_nick}"
+msgstr "Lệnh ma được gửi cho %{target_nick}"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:369
+#, elixir-autogen, elixir-format
+msgid "Ghosted by %{requester_nick}"
+msgstr "♪ Được cất lên bởi ♪ %{requester_nick}"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:302
+#, elixir-autogen, elixir-format
+msgid "Identify timeout (60s)"
+msgstr "Nhận diện thời hạn (60)"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:150
+#: lib/retro_hex_chat/services/nick_serv.ex:219
+#: lib/retro_hex_chat/services/nick_serv.ex:358
+#, elixir-autogen, elixir-format
+msgid "Invalid password"
+msgstr "Name"
+
+#: lib/retro_hex_chat/services/nick_expiry.ex:106
+#, elixir-autogen, elixir-format
+msgid "NickExpiry"
+msgstr "NickExpiry"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:137
+#: lib/retro_hex_chat/services/nick_serv.ex:168
+#: lib/retro_hex_chat/services/nick_serv.ex:206
+#: lib/retro_hex_chat/services/nick_serv.ex:229
+#: lib/retro_hex_chat/services/nick_serv.ex:249
+#, elixir-autogen, elixir-format
+msgid "Nickname %{nickname} is not registered"
+msgstr "Nickname %{nickname} chưa được đăng ký"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:121
+#, elixir-autogen, elixir-format
+msgid "Nickname %{nickname} registered successfully"
+msgstr "Biệt danh %{nickname} được đăng ký thành công"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:188
+#, elixir-autogen, elixir-format
+msgid "Nickname %{target_nick} is not registered"
+msgstr "Nickname %{target_nick} chưa được đăng ký"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:259
+#, elixir-autogen, elixir-format
+msgid "Only the founder can drop a channel"
+msgstr "Chỉ có người sáng lập mới có thể bỏ kênh"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:259
+#, elixir-autogen, elixir-format
+msgid "Password for %{nickname} has been reset"
+msgstr "Mật khẩu cho %{nickname} đã đặt lại"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:216
+#, elixir-autogen, elixir-format
+msgid "Registration for %{nickname} dropped"
+msgstr "Đăng ký cho %{nickname} bị thả"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:238
+#, elixir-autogen, elixir-format
+msgid "Registration for %{nickname} dropped by admin"
+msgstr "Đăng ký cho %{nickname} thả bởi Adam"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:112
+#, elixir-autogen, elixir-format
+msgid "Registration is currently closed by the server administrator"
+msgstr "Quản trị máy chủ đang đóng tài khoản"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:147
+#, elixir-autogen, elixir-format
+msgid "You are now identified as %{nickname}"
+msgstr "Bây giờ bạn được xác định là %{nickname}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:227
+#, elixir-autogen, elixir-format
+msgid "You must be identified to use ChanServ"
+msgstr "Anh phải được nhận dạng để dùng ChanServ."

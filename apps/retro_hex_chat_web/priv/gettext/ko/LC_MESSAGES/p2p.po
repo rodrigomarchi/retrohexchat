@@ -1,0 +1,482 @@
+# "msgid"s in this file come from p2p.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ko; status: enabled; wave: 2.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: ko\n"
+"Language: ko\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1037
+#, elixir-autogen, elixir-format
+msgid "%{action} request accepted."
+msgstr "%{action} 자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1041
+#, elixir-autogen, elixir-format
+msgid "%{action} request declined."
+msgstr "%{action} 요청 거부."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:128
+#, elixir-autogen, elixir-format
+msgid "%{count} cores"
+msgstr "%{count} 핵심기술"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:304
+#, elixir-autogen, elixir-format
+msgid "%{duration} — %{quality}"
+msgstr "%{duration} — %{quality}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:92
+#, elixir-autogen, elixir-format
+msgid "%{hours}h %{minutes}m %{seconds}s"
+msgstr "%{hours}h %{minutes}m %{seconds}s"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:99
+#, elixir-autogen, elixir-format
+msgid "%{minutes}m %{seconds}s"
+msgstr "%{minutes}m %{seconds}s"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:290
+#, elixir-autogen, elixir-format
+msgid "%{peer} wants to add video"
+msgstr "%{peer} 동영상 추가"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:105
+#, elixir-autogen, elixir-format
+msgid "%{seconds}s"
+msgstr "%{seconds}s"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:276
+#, elixir-autogen, elixir-format
+msgid "%{speed} — %{percent}%"
+msgstr "%{speed} — %{percent}%"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:39
+#, elixir-autogen, elixir-format
+msgid "(you)"
+msgstr "(예)"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:277
+#, elixir-autogen, elixir-format
+msgid "0 B/s"
+msgstr "0 B/s"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:108
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:298
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:479
+#, elixir-autogen, elixir-format
+msgid "Accept"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:472
+#, elixir-autogen, elixir-format
+msgid "Action Request: %{action}"
+msgstr "활동 요구: %{action}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:249
+#, elixir-autogen, elixir-format
+msgid "Add Video"
+msgstr "동영상 추가"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:324
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:423
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:495
+#, elixir-autogen, elixir-format
+msgid "Audio Call"
+msgstr "오디오 통화"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1044
+#, elixir-autogen, elixir-format
+msgid "Audio call"
+msgstr "오디오 호출"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:374
+#, elixir-autogen, elixir-format
+msgid "Browse Files"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1058
+#, elixir-autogen, elixir-format
+msgid "Call ended."
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Call ended: %{reason}"
+msgstr "전화 종료: %{reason}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:50
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:237
+#, elixir-autogen, elixir-format
+msgid "Camera Off"
+msgstr "카메라 끄기"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:50
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:236
+#, elixir-autogen, elixir-format
+msgid "Camera On"
+msgstr "카메라 On"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:200
+#, elixir-autogen, elixir-format
+msgid "Camera off"
+msgstr "카메라 오프"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:118
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:131
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:128
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:131
+#, elixir-autogen, elixir-format
+msgid "Cancelled by %{nickname}"
+msgstr "댓글 남기기 %{nickname}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:136
+#, elixir-autogen, elixir-format
+msgid "Chat"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:405
+#, elixir-autogen, elixir-format
+msgid "Close Session"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:75
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:340
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:343
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:362
+#, elixir-autogen, elixir-format
+msgid "Connecting..."
+msgstr "연결 ..."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:307
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:483
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "12 월"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:264
+#, elixir-autogen, elixir-format
+msgid "Devices"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:366
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:367
+#, elixir-autogen, elixir-format
+msgid "Drag a file here or click to browse"
+msgstr "여기에서 파일을 드래그하거나 찾아보기"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:70
+#, elixir-autogen, elixir-format
+msgid "Duration: %{duration}"
+msgstr "기간: %{duration}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:64
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:272
+#, elixir-autogen, elixir-format
+msgid "End Call"
+msgstr "종료 통화"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:92
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:357
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "실패한"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:273
+#, elixir-autogen, elixir-format
+msgid "File"
+msgstr "파일 형식"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:497
+#, elixir-autogen, elixir-format
+msgid "File Transfer"
+msgstr "파일 전송"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1046
+#, elixir-autogen, elixir-format
+msgid "File transfer"
+msgstr "파일 전송"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1061
+#, elixir-autogen, elixir-format
+msgid "File transfer completed."
+msgstr "파일 전송 완료."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:317
+#, elixir-autogen, elixir-format
+msgid "High"
+msgstr "사이트맵"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:73
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:388
+#, elixir-autogen, elixir-format
+msgid "In Call"
+msgstr "전화 번호"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:333
+#, elixir-autogen, elixir-format
+msgid "Low"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:369
+#, elixir-autogen, elixir-format
+msgid "Max: %{size} MB"
+msgstr "최대: %{size} 사이트맵"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:325
+#, elixir-autogen, elixir-format
+msgid "Medium"
+msgstr "한국어"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:39
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:223
+#, elixir-autogen, elixir-format
+msgid "Mute"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:139
+#, elixir-autogen, elixir-format
+msgid "No messages yet."
+msgstr "아직 메시지가 없습니다."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:101
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:46
+#, elixir-autogen, elixir-format
+msgid "P2P Connection"
+msgstr "P2P 연결"
+
+#: lib/retro_hex_chat_web/live/v2/p2_p_session_live.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "P2P Session Ended"
+msgstr "P2P 세션 종료"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1050
+#, elixir-autogen, elixir-format
+msgid "P2P invite was rejected."
+msgstr "P2P 초대가 거부되었습니다."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1063
+#, elixir-autogen, elixir-format
+msgid "P2P session ended."
+msgstr "P2P 세션 종료"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:218
+#, elixir-autogen, elixir-format
+msgid "Peer muted"
+msgstr "피어 뮤트"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:95
+#, elixir-autogen, elixir-format
+msgid "Pending..."
+msgstr "관련 기사"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:782
+#, elixir-autogen, elixir-format
+msgid "Permission denied for %{type}. Please try again."
+msgstr "제출은 %{type}. 다시 시도하십시오."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:257
+#, elixir-autogen, elixir-format
+msgid "Picture-in-Picture"
+msgstr "그림에서 그림"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:414
+#, elixir-autogen, elixir-format
+msgid "Privacy: OFF"
+msgstr "개인 정보 보호 정책"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:414
+#, elixir-autogen, elixir-format
+msgid "Privacy: ON"
+msgstr "개인 정보 보호 정책"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Private mode requires a TURN server. Using direct connection."
+msgstr "개인 모드는 TURN 서버가 필요합니다. 직접 연결 사용."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:315
+#, elixir-autogen, elixir-format
+msgid "Quality: %{quality}"
+msgstr "품질: %{quality}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:369
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:126
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:379
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:382
+#, elixir-autogen, elixir-format
+msgid "Receiving"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:350
+#, elixir-autogen, elixir-format
+msgid "Reconnecting"
+msgstr "연결하기"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:348
+#, elixir-autogen, elixir-format
+msgid "Reconnecting (%{attempt}/3)"
+msgstr "연결 (%{attempt}/3)"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:85
+#, elixir-autogen, elixir-format
+msgid "Rejected"
+msgstr "관련 상품"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Request expired."
+msgstr "주문 마감"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:161
+#, elixir-autogen, elixir-format
+msgid "Send"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:441
+#, elixir-autogen, elixir-format
+msgid "Send File"
+msgstr "파일 형식"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:125
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:376
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:385
+#, elixir-autogen, elixir-format
+msgid "Sending"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:65
+#, elixir-autogen, elixir-format
+msgid "Session Ended"
+msgstr "세션 종료"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1051
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1052
+#, elixir-autogen, elixir-format
+msgid "Session closed (disconnected)."
+msgstr "세션 폐쇄 (disconnected)."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1049
+#, elixir-autogen, elixir-format
+msgid "Session closed by user."
+msgstr "세션은 사용자에 의해 닫힙니다."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1056
+#, elixir-autogen, elixir-format
+msgid "Session closed due to connection failure."
+msgstr "연결 실패로 인해 세션 폐쇄."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1053
+#, elixir-autogen, elixir-format
+msgid "Session expired due to inactivity."
+msgstr "세션은 inactivity로 인해 만료되었습니다."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:456
+#, elixir-autogen, elixir-format
+msgid "Session will be closed due to inactivity soon."
+msgstr "세션은 즉시 inactivity로 마감됩니다."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:306
+#, elixir-autogen, elixir-format
+msgid "Starting"
+msgstr "시작하다"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:333
+#, elixir-autogen, elixir-format
+msgid "Starting call..."
+msgstr "시작 전화 ..."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:74
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:152
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:179
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:258
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:308
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:683
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:759
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:781
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "시스템"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:135
+#, elixir-autogen, elixir-format
+msgid "Touch"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:155
+#, elixir-autogen, elixir-format
+msgid "Type a message..."
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:39
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:223
+#, elixir-autogen, elixir-format
+msgid "Unmute"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:290
+#, elixir-autogen, elixir-format
+msgid "Verifying..."
+msgstr "인증..."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:313
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:432
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:496
+#, elixir-autogen, elixir-format
+msgid "Video Call"
+msgstr "영상 통화"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1045
+#, elixir-autogen, elixir-format
+msgid "Video call"
+msgstr "비디오 호출"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Video request declined."
+msgstr "비디오 요청 감소."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:372
+#, elixir-autogen, elixir-format
+msgid "Waiting..."
+msgstr "자세히보기"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:447
+#, elixir-autogen, elixir-format
+msgid "WebRTC: %{state}"
+msgstr "웹RTC: %{state}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:381
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:498
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "이름 *"

@@ -21,25 +21,32 @@ from argostranslate import translate
 
 
 LOCALE_TO_ARGOS = {
+    "ar": "ar",
     "es": "es",
     "fr": "fr",
     "de": "de",
+    "hi": "hi",
     "ja": "ja",
+    "ko": "ko",
+    "ru": "ru",
+    "tr": "tr",
+    "vi": "vi",
     "zh_Hans": "zh",
     "id": "id",
 }
 
 ONE_FORM_LOCALES = {"id", "ja", "zh_Hans", "ko", "vi", "zh_Hant"}
 PROTECTED_PATTERNS = [
-    re.compile(r"%\{[A-Za-z0-9_]+\}"),
     re.compile(r"https?://[^\s<>\"]+"),
     re.compile(r"`[^`]+`"),
     re.compile(r"</?[^>]+>"),
     re.compile(r"/[A-Za-z][A-Za-z0-9_-]*"),
     re.compile(r"#[A-Za-z0-9_-]+"),
+    re.compile(r"%\{[A-Za-z0-9_]+\}"),
 ]
 WORD_RE = re.compile(r"[A-Za-z][A-Za-z']+")
 BATCH_SEPARATOR = "ZXQI18NSEPZXQ"
+PROTECTED_MODE = "batch"
 
 
 def parse_args() -> argparse.Namespace:
@@ -57,12 +64,21 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument("--batch-size", type=int, default=48)
     parser.add_argument("--batch-chars", type=int, default=8000)
+    parser.add_argument(
+        "--protected-mode",
+        choices=("batch", "fragment"),
+        default="batch",
+        help="Use batch token protection or slower fragment-by-fragment protection.",
+    )
     parser.add_argument("paths", nargs="*", help="Optional PO glob paths")
     return parser.parse_args()
 
 
 def main() -> int:
+    global PROTECTED_MODE
+
     args = parse_args()
+    PROTECTED_MODE = args.protected_mode
     locales = [locale.strip() for locale in args.locales.split(",") if locale.strip()]
     unsupported = [locale for locale in locales if locale not in LOCALE_TO_ARGOS]
     if unsupported:
@@ -230,9 +246,12 @@ def translate_text(text: str, locale: str, translator, cache: dict) -> str:
     if not should_machine_translate(text):
         translated = text
     else:
-        protected, replacements = protect(text)
-        translated = translator.translate(protected)
-        translated = restore(translated, replacements)
+        if PROTECTED_MODE == "fragment":
+            translated = translate_with_protected_fragments(text, translator)
+        else:
+            protected, replacements = protect(text)
+            translated = translator.translate(protected)
+            translated = restore(translated, replacements)
 
     cache[cache_key] = translated
     return translated
@@ -259,7 +278,24 @@ def translate_texts(
         else:
             cache[f"{locale}\u0000{text}"] = text
 
-    for batch in chunks(machine_texts, max(batch_size, 1), max(batch_chars, 500)):
+    if PROTECTED_MODE == "fragment":
+        protected_texts = []
+        plain_texts = []
+
+        for text in machine_texts:
+            _protected, replacements = protect(text)
+
+            if replacements:
+                protected_texts.append(text)
+            else:
+                plain_texts.append(text)
+
+        for source in protected_texts:
+            cache[f"{locale}\u0000{source}"] = translate_with_protected_fragments(source, translator)
+    else:
+        plain_texts = machine_texts
+
+    for batch in chunks(plain_texts, max(batch_size, 1), max(batch_chars, 500)):
         protected_batch = []
         replacements_batch = []
 
@@ -309,6 +345,41 @@ def should_machine_translate(text: str) -> bool:
     return True
 
 
+def translate_with_protected_fragments(text: str, translator) -> str:
+    protected, replacements = protect(text)
+
+    if not replacements:
+        return translator.translate(text)
+
+    token_re = re.compile("|".join(re.escape(token) for token in replacements))
+    parts = token_re.split(protected)
+    tokens = token_re.findall(protected)
+    translated_parts = [translate_fragment(part, translator) for part in parts]
+    translated = []
+
+    for index, part in enumerate(translated_parts):
+        translated.append(part)
+
+        if index < len(tokens):
+            translated.append(replacements[tokens[index]])
+
+    return "".join(translated)
+
+
+def translate_fragment(fragment: str, translator) -> str:
+    if not WORD_RE.search(fragment):
+        return fragment
+
+    leading = re.match(r"^\s*", fragment).group(0)
+    trailing = re.search(r"\s*$", fragment).group(0)
+    core = fragment[len(leading) : len(fragment) - len(trailing) if trailing else len(fragment)]
+
+    if not core:
+        return fragment
+
+    return f"{leading}{translator.translate(core)}{trailing}"
+
+
 def protect(text: str) -> tuple[str, dict[str, str]]:
     replacements: dict[str, str] = {}
     protected = text
@@ -317,7 +388,7 @@ def protect(text: str) -> tuple[str, dict[str, str]]:
     for pattern in PROTECTED_PATTERNS:
         def replace(match: re.Match[str]) -> str:
             nonlocal counter
-            token = f"XPH{counter}X"
+            token = f"<ph{counter}></ph{counter}>"
             replacements[token] = match.group(0)
             counter += 1
             return token
