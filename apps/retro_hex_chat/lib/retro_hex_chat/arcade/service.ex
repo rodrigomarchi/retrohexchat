@@ -46,7 +46,6 @@ defmodule RetroHexChat.Arcade.Service do
     case SoloSessionServer.close(token, user_id, reason) do
       :ok -> :ok
       {:error, message} -> handle_close_error(session, reason, message)
-      error -> error
     end
   end
 

@@ -52,7 +52,6 @@ defmodule RetroHexChat.Games.Service do
     case SessionServer.close(token, user_id, reason) do
       :ok -> :ok
       {:error, message} -> handle_close_error(session, reason, message)
-      error -> error
     end
   end
 
