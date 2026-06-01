@@ -2,8 +2,8 @@
 
 # RetroHexChat — CI + Deploy Pipeline
 #
-# Runs the full CI validation pipeline, then deploys to both environments
-# in parallel (Sun = production, Moon = staging).
+# Runs the full CI validation pipeline, builds one Linux release artifact on
+# Moon (staging), then promotes that artifact to Sun (production).
 #
 # Usage:
 #   elixir scripts/deploy_all.exs                  # CI + deploy both (REF=main)
@@ -14,6 +14,7 @@
 
 defmodule DeployAll do
   @ssh_port String.to_integer(System.get_env("SSH_PORT", "2222"))
+  @app_name "retro_hex_chat"
   @deploy_user System.get_env("DEPLOY_USER") ||
                  raise("DEPLOY_USER env var is required")
   @targets %{
@@ -50,23 +51,8 @@ defmodule DeployAll do
       System.halt(1)
     end
 
-    # Phase 2: Deploy to targets in parallel
     start_time = System.monotonic_time(:millisecond)
-
-    IO.puts(
-      "  #{c(:cyan)}Deploy#{c(:reset)} (#{length(targets)} targets in parallel, REF=#{ref})\n"
-    )
-
-    results =
-      targets
-      |> Enum.map(fn target ->
-        config = @targets[target]
-        task = Task.async(fn -> deploy_target(target, config, ref, project_root) end)
-        {target, task}
-      end)
-      |> Enum.map(fn {target, task} -> {target, Task.await(task, :infinity)} end)
-      |> Map.new()
-
+    results = deploy_targets(targets, ref, project_root)
     elapsed = System.monotonic_time(:millisecond) - start_time
     deploy_summary(results, elapsed)
 
@@ -103,21 +89,65 @@ defmodule DeployAll do
     IO.write(output)
 
     if exit_code == 0 do
-      IO.puts(
-        "    #{c(:green)}✓#{c(:reset)} CI passed #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}\n"
-      )
+      IO.puts("    #{c(:green)}✓#{c(:reset)} CI passed #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}\n")
 
       true
     else
-      IO.puts(
-        "    #{c(:red)}✗#{c(:reset)} CI failed #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}\n"
-      )
+      IO.puts("    #{c(:red)}✗#{c(:reset)} CI failed #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}\n")
 
       false
     end
   end
 
   # --- Deploy ---
+
+  defp deploy_targets(targets, ref, project_root) do
+    if "sun" in targets do
+      deploy_with_staging_artifact(targets, ref, project_root)
+    else
+      deploy_targets_in_parallel(targets, ref, project_root)
+    end
+  end
+
+  defp deploy_targets_in_parallel(targets, ref, project_root) do
+    IO.puts(
+      "  #{c(:cyan)}Deploy#{c(:reset)} (#{length(targets)} targets in parallel, REF=#{ref})\n"
+    )
+
+    targets
+    |> Enum.map(fn target ->
+      config = @targets[target]
+      task = Task.async(fn -> deploy_target(target, config, ref, project_root) end)
+      {target, task}
+    end)
+    |> Enum.map(fn {target, task} -> {target, Task.await(task, :infinity)} end)
+    |> Map.new()
+  end
+
+  defp deploy_with_staging_artifact(targets, ref, project_root) do
+    IO.puts(
+      "  #{c(:cyan)}Deploy#{c(:reset)} (build once on Staging, promote artifact, REF=#{ref})\n"
+    )
+
+    moon_status = deploy_target("moon", @targets["moon"], ref, project_root)
+
+    results =
+      if "moon" in targets do
+        %{"moon" => moon_status}
+      else
+        %{}
+      end
+
+    sun_status =
+      if moon_status == :ok do
+        promote_artifact_to_target(@targets["sun"], @targets["moon"], project_root)
+      else
+        IO.puts("    #{c(:red)}✗#{c(:reset)} Production skipped because Staging build failed")
+        :fail
+      end
+
+    Map.put(results, "sun", sun_status)
+  end
 
   defp deploy_target(target, config, ref, project_root) do
     %{label: label, ip: ip} = config
@@ -156,15 +186,11 @@ defmodule DeployAll do
       elapsed = System.monotonic_time(:millisecond) - start
 
       if ssh_exit == 0 do
-        IO.puts(
-          "    #{c(:green)}✓#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}"
-        )
+        IO.puts("    #{c(:green)}✓#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}")
 
         :ok
       else
-        IO.puts(
-          "    #{c(:red)}✗#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}"
-        )
+        IO.puts("    #{c(:red)}✗#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}")
 
         print_failure_output(label, ssh_output)
         :fail
@@ -175,6 +201,170 @@ defmodule DeployAll do
       IO.puts("    #{c(:red)}✗#{c(:reset)} #{target}: #{Exception.message(e)}")
       :fail
   end
+
+  defp promote_artifact_to_target(target_config, builder_config, project_root) do
+    %{label: label, ip: ip} = target_config
+    %{label: builder_label} = builder_config
+    IO.puts("    #{c(:dim)}⟳#{c(:reset)} #{label} (#{ip}) from #{builder_label} artifact...")
+    start = System.monotonic_time(:millisecond)
+
+    with {:ok, current_json} <- fetch_builder_current_json(builder_config, project_root),
+         {:ok, version} <- current_json_version(current_json),
+         {:ok, paths} <-
+           fetch_builder_artifact(builder_config, version, current_json, project_root),
+         :ok <- install_artifact(target_config, paths, version, project_root) do
+      elapsed = System.monotonic_time(:millisecond) - start
+
+      IO.puts("    #{c(:green)}✓#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}")
+
+      cleanup_artifact_tmp(paths)
+      :ok
+    else
+      {:error, step, output} ->
+        elapsed = System.monotonic_time(:millisecond) - start
+
+        IO.puts(
+          "    #{c(:red)}✗#{c(:reset)} #{label} (#{step}) #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}"
+        )
+
+        print_failure_output(label, output)
+        :fail
+    end
+  rescue
+    e ->
+      IO.puts("    #{c(:red)}✗#{c(:reset)} #{label}: #{Exception.message(e)}")
+      :fail
+  end
+
+  defp fetch_builder_current_json(builder_config, project_root) do
+    remote_current_json = "~/releases/versions/#{@app_name}/local/current.json"
+
+    {output, exit_code} =
+      run_cmd(
+        "ssh",
+        [
+          "-p",
+          to_string(@ssh_port),
+          remote(builder_config),
+          "cat #{remote_current_json}"
+        ],
+        project_root
+      )
+
+    if exit_code == 0 do
+      {:ok, output}
+    else
+      {:error, "fetch current.json", output}
+    end
+  end
+
+  defp current_json_version(current_json) do
+    case Regex.run(~r/"version"\s*:\s*"([^"]+)"/, current_json) do
+      [_, version] -> {:ok, version}
+      _ -> {:error, "parse current.json", current_json}
+    end
+  end
+
+  defp fetch_builder_artifact(builder_config, version, current_json, project_root) do
+    tmp_dir =
+      Path.join(System.tmp_dir!(), "retro_hex_chat_deploy_#{System.unique_integer([:positive])}")
+
+    File.mkdir_p!(tmp_dir)
+
+    tarball = "#{@app_name}-#{version}.tar.gz"
+    local_tarball = Path.join(tmp_dir, tarball)
+    local_current_json = Path.join(tmp_dir, "current.json")
+    File.write!(local_current_json, current_json)
+
+    remote_tarball = "#{remote(builder_config)}:~/releases/dist/#{@app_name}/#{tarball}"
+
+    {output, exit_code} =
+      run_cmd("scp", ["-P", to_string(@ssh_port), remote_tarball, local_tarball], project_root)
+
+    if exit_code == 0 do
+      {:ok,
+       %{
+         tmp_dir: tmp_dir,
+         tarball: local_tarball,
+         current_json: local_current_json,
+         tarball_name: tarball
+       }}
+    else
+      File.rm_rf(tmp_dir)
+      {:error, "fetch artifact", output}
+    end
+  end
+
+  defp install_artifact(target_config, paths, version, project_root) do
+    remote_dist_dir = "~/releases/dist/#{@app_name}"
+    remote_versions_dir = "~/releases/versions/#{@app_name}/local"
+    remote_tarball = "#{remote_dist_dir}/#{paths.tarball_name}"
+    remote_current_json = "#{remote_versions_dir}/current.json"
+
+    with :ok <-
+           run_install_step(
+             target_config,
+             "mkdir",
+             "mkdir -p #{remote_dist_dir} #{remote_versions_dir}",
+             project_root
+           ),
+         :ok <- scp_to_target(target_config, paths.tarball, remote_tarball, project_root),
+         :ok <-
+           scp_to_target(target_config, paths.current_json, remote_current_json, project_root),
+         :ok <-
+           run_install_step(
+             target_config,
+             "chmod dirs",
+             "chmod o+rx #{remote_dist_dir} #{remote_versions_dir}",
+             project_root
+           ),
+         :ok <-
+           run_install_step(
+             target_config,
+             "chmod files",
+             "chmod o+r #{remote_tarball} #{remote_current_json}",
+             project_root
+           ) do
+      IO.puts("      #{c(:dim)}Artifact version promoted: #{version}#{c(:reset)}")
+      :ok
+    end
+  end
+
+  defp run_install_step(target_config, step, command, project_root) do
+    {output, exit_code} =
+      run_cmd(
+        "ssh",
+        [
+          "-p",
+          to_string(@ssh_port),
+          remote(target_config),
+          command
+        ],
+        project_root
+      )
+
+    if exit_code == 0, do: :ok, else: {:error, step, output}
+  end
+
+  defp scp_to_target(target_config, local_path, remote_path, project_root) do
+    {output, exit_code} =
+      run_cmd(
+        "scp",
+        [
+          "-P",
+          to_string(@ssh_port),
+          local_path,
+          "#{remote(target_config)}:#{remote_path}"
+        ],
+        project_root
+      )
+
+    if exit_code == 0, do: :ok, else: {:error, "copy artifact", output}
+  end
+
+  defp cleanup_artifact_tmp(%{tmp_dir: tmp_dir}), do: File.rm_rf(tmp_dir)
+
+  defp remote(%{ip: ip}), do: "#{@deploy_user}@#{ip}"
 
   defp run_cmd(cmd, args, project_root) do
     port =
