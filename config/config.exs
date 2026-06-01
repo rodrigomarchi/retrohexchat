@@ -37,13 +37,19 @@ config :retro_hex_chat_web,
 
 config :gettext, :default_locale, "en"
 
+gettext_split_module_compilation =
+  case System.get_env("GETTEXT_SPLIT_MODULE_COMPILATION", "parallel") do
+    "serial" -> :serial
+    _ -> :parallel
+  end
+
 config :retro_hex_chat, RetroHexChat.Gettext,
   split_module_by: [:locale, :domain],
-  split_module_compilation: :parallel
+  split_module_compilation: gettext_split_module_compilation
 
 config :retro_hex_chat_web, RetroHexChatWeb.Gettext,
   split_module_by: [:locale, :domain],
-  split_module_compilation: :parallel
+  split_module_compilation: gettext_split_module_compilation
 
 # Configures the endpoint
 config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
