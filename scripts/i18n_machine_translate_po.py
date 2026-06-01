@@ -22,20 +22,27 @@ from argostranslate import translate
 
 LOCALE_TO_ARGOS = {
     "ar": "ar",
+    "bn": "bn",
     "es": "es",
     "fr": "fr",
     "de": "de",
     "hi": "hi",
+    "it": "it",
     "ja": "ja",
     "ko": "ko",
+    "nl": "nl",
+    "pl": "pl",
+    "pt_PT": "pt",
     "ru": "ru",
     "tr": "tr",
+    "ur": "ur",
     "vi": "vi",
     "zh_Hans": "zh",
+    "zh_Hant": "zh",
     "id": "id",
 }
 
-ONE_FORM_LOCALES = {"id", "ja", "zh_Hans", "ko", "vi", "zh_Hant"}
+ONE_FORM_LOCALES = {"id", "ja", "zh_Hans", "zh_Hant", "ko", "vi"}
 PROTECTED_PATTERNS = [
     re.compile(r"https?://[^\s<>\"]+"),
     re.compile(r"`[^`]+`"),
@@ -47,6 +54,7 @@ PROTECTED_PATTERNS = [
 WORD_RE = re.compile(r"[A-Za-z][A-Za-z']+")
 BATCH_SEPARATOR = "ZXQI18NSEPZXQ"
 PROTECTED_MODE = "batch"
+OPENCC_CONVERTER = None
 
 
 def parse_args() -> argparse.Namespace:
@@ -253,6 +261,8 @@ def translate_text(text: str, locale: str, translator, cache: dict) -> str:
             translated = translator.translate(protected)
             translated = restore(translated, replacements)
 
+        translated = postprocess_translation(locale, translated)
+
     cache[cache_key] = translated
     return translated
 
@@ -291,7 +301,8 @@ def translate_texts(
                 plain_texts.append(text)
 
         for source in protected_texts:
-            cache[f"{locale}\u0000{source}"] = translate_with_protected_fragments(source, translator)
+            translated = translate_with_protected_fragments(source, translator)
+            cache[f"{locale}\u0000{source}"] = postprocess_translation(locale, translated)
     else:
         plain_texts = machine_texts
 
@@ -312,6 +323,7 @@ def translate_texts(
 
         for source, translated, replacements in zip(batch, parts, replacements_batch):
             translated = restore(translated.strip(), replacements)
+            translated = postprocess_translation(locale, translated)
             cache[f"{locale}\u0000{source}"] = translated
 
 
@@ -364,6 +376,29 @@ def translate_with_protected_fragments(text: str, translator) -> str:
             translated.append(replacements[tokens[index]])
 
     return "".join(translated)
+
+
+def postprocess_translation(locale: str, translated: str) -> str:
+    if locale != "zh_Hant":
+        return translated
+
+    return opencc_converter().convert(translated)
+
+
+def opencc_converter():
+    global OPENCC_CONVERTER
+
+    if OPENCC_CONVERTER is None:
+        try:
+            from opencc import OpenCC
+        except ImportError as error:
+            raise RuntimeError(
+                "zh_Hant translation requires opencc-python-reimplemented in the translation venv"
+            ) from error
+
+        OPENCC_CONVERTER = OpenCC("s2t")
+
+    return OPENCC_CONVERTER
 
 
 def translate_fragment(fragment: str, translator) -> str:

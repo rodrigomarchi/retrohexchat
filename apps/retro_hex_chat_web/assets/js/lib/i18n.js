@@ -1,19 +1,47 @@
-import { AR, DE, ES, FR, HI, ID, JA, KO, PT_BR, RU, TR, VI, ZH_HANS } from "./i18n_catalog.js";
+import {
+  AR,
+  BN,
+  DE,
+  ES,
+  FR,
+  HI,
+  ID,
+  IT,
+  JA,
+  KO,
+  NL,
+  PL,
+  PT_BR,
+  PT_PT,
+  RU,
+  TR,
+  UR,
+  VI,
+  ZH_HANS,
+  ZH_HANT,
+} from "./i18n_catalog.js";
 
 const CATALOGS = {
   ar: AR,
+  bn: BN,
   de: DE,
   es: ES,
   fr: FR,
   hi: HI,
   id: ID,
+  it: IT,
   ja: JA,
   ko: KO,
+  nl: NL,
+  pl: PL,
   pt_BR: PT_BR,
+  pt_PT: PT_PT,
   ru: RU,
   tr: TR,
+  ur: UR,
   vi: VI,
   zh_Hans: ZH_HANS,
+  zh_Hant: ZH_HANT,
 };
 
 export function currentLocale() {
@@ -33,19 +61,28 @@ export function normalizeLocale(locale) {
     .replace("-", "_")
     .toLowerCase();
 
+  if (value === "pt_pt") return "pt_PT";
   if (value === "pt" || value === "pt_br") return "pt_BR";
   if (value === "ar" || value.startsWith("ar_")) return "ar";
+  if (value === "bn" || value.startsWith("bn_")) return "bn";
   if (value === "es" || value.startsWith("es_")) return "es";
   if (value === "fr" || value.startsWith("fr_")) return "fr";
   if (value === "de" || value.startsWith("de_")) return "de";
   if (value === "hi" || value.startsWith("hi_")) return "hi";
+  if (value === "it" || value.startsWith("it_")) return "it";
   if (value === "ja" || value.startsWith("ja_")) return "ja";
   if (value === "ko" || value.startsWith("ko_")) return "ko";
+  if (value === "nl" || value.startsWith("nl_")) return "nl";
+  if (value === "pl" || value.startsWith("pl_")) return "pl";
   if (value === "ru" || value.startsWith("ru_")) return "ru";
   if (value === "tr" || value.startsWith("tr_")) return "tr";
+  if (value === "ur" || value.startsWith("ur_")) return "ur";
   if (value === "vi" || value.startsWith("vi_")) return "vi";
   if (value === "id" || value === "in" || value.startsWith("id_") || value.startsWith("in_")) {
     return "id";
+  }
+  if (value === "zh_hant" || value === "zh_tw" || value === "zh_hk" || value === "zh_mo") {
+    return "zh_Hant";
   }
   if (value === "zh" || value === "zh_hans" || value === "zh_cn" || value === "zh_sg") {
     return "zh_Hans";

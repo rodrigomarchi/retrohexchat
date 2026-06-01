@@ -1,0 +1,498 @@
+# "msgid"s in this file come from help.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ur; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: ur\n"
+"Language: ur\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:107
+#, elixir-autogen, elixir-format
+msgid "%{topic} — RetroHexChat Help"
+msgstr "%{topic} — ریزرو ہیکس کی مدد"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "/commands"
+msgstr "/commands"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "/help"
+msgstr "/help"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "/msg <nickname> <message>"
+msgstr "/msg <nickname> <message>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "/ns Command"
+msgstr "/ns Command"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "/ns identify"
+msgstr "/ns identify"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "/ns register"
+msgstr "/ns register"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "/query <nickname>"
+msgstr "/query <nickname>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "1. Enter a nickname on the connect screen and click"
+msgstr "1. متصلي پردہ اور کلک کريں"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "1. Enter a nickname that isn't registered yet and click"
+msgstr "1۔ اس وه کلپس داخل کرو جو ابھی رجسٹرڈ نہیں ہوا تھا اور کلک کرو"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "1. Enter your nickname and click"
+msgstr "1۔ اپنے پا س داخل کريں اور کلک کريں"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "1. Enter your registered nickname and click"
+msgstr "1۔ اپنے رجسٹري نام اور کلک کريں"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "1–16 characters long"
+msgstr "1–16 حروف طویل ہیں۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "2. A password prompt appears. Enter your NickServ password."
+msgstr "۲ ۔ آپ کی نکServ پاس ورڈ داخل کریں."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "2. A registration form appears with"
+msgstr "۲ ۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "2. You will automatically join"
+msgstr "2۔ آپ خود بخود شامل ہو جائیں گے۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "2a."
+msgstr "2a."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "2b."
+msgstr "2b."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "3. Choose a password (minimum 5 characters) and click"
+msgstr "3۔ پاس ورڈ (مینئم 5 حروف) اور کلک کریں۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"3. On success, you join the chat already identified — the 60-second identify"
+" timer is skipped."
+msgstr ""
+"3۔ کامیابی پر آپ چیٹ میں پہلے سے ہی شامل ہو جاتے ہیں — 60 سیکنڈ کی شناخت "
+"ٹائمر کی جاتی ہے۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "3. Type messages in the input box and press"
+msgstr "3۔ اندراج باکس اور پریس میں قسم کے پیغامات"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "3. You join the chat already identified and land in"
+msgstr "3۔ آپ چیٹ میں پہلے سے ہی شناخت اور زمین میں شامل ہو جاتے ہیں۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "4. Use"
+msgstr "4۔ استعمال کرنا۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"4. Your nickname is registered and you join the chat already identified."
+msgstr "4۔ آپ کا رجسٹرڈ ہے اور آپ پہلے سے ہی چیٹ میں شامل ہو گئے۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "7 days"
+msgstr "7 دن"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:57
+#, elixir-autogen, elixir-format
+msgid "Breadcrumb"
+msgstr "خمیر"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:89
+#, elixir-autogen, elixir-format
+msgid "Browse by category or open Help Topics from the chat menu."
+msgstr "گفتگو مینو سے حاصل کي جا ئيں یا کھولي مدد کريں"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Cannot contain spaces"
+msgstr "جگہ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Case sensitive"
+msgstr "کیس حساس"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Changing Nickname"
+msgstr "نِکَنَّمَا قَوْمٍ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "چینل"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Click a nickname in the conversations sidebar user list and select"
+msgstr "جانبي بار صارف فہرست میں لاگ ان کلک کريں اور منتخب کريں"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Confirm password"
+msgstr "پاس ورڈ کی تصدیق کریں"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:5
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Connect"
+msgstr "پرنٹ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Connect Authentication"
+msgstr "توثیقی طریقے"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Connecting"
+msgstr "پرنٹ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Connection Flow"
+msgstr "اتصال کا اضافہ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Enter"
+msgstr "داخل کرو"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
+#, elixir-autogen, elixir-format
+msgid ""
+"Every nickname must be registered before entering the chat. When you connect"
+" with a new nickname, you'll be asked to choose a password to register it. "
+"On future visits, you'll enter your password to log in."
+msgstr ""
+"گفتگو میں داخل ہونے سے پہلے ہر پلگ ان کو نامزد کرنا چاہیے۔ جب آپ کسی نئی "
+"فائل سے متصل ہوں گے تو آپ سے کہا جائے گا کہ آپ اسے رجسٹر کرنے کے لیے کوئی "
+"لفظ منتخب کریں گے۔ مستقبل کی ملاقاتوں پر، آپ کو اندر لاگ لا کر اپنے پاس ورڈ "
+"داخل کریں گے."
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:59
+#, elixir-autogen, elixir-format
+msgid "Help"
+msgstr "مدد"
+
+#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:37
+#, elixir-autogen, elixir-format
+msgid "Help Topics"
+msgstr "توپیں"
+
+#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:44
+#, elixir-autogen, elixir-format
+msgid "Help navigation"
+msgstr "مدد"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:106
+#, elixir-autogen, elixir-format
+msgid "Help — RetroHexChat"
+msgstr "مدد — ریزرو ہیکس —"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Keyboard Shortcuts"
+msgstr "جلدازجلد"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Minimum 5 characters, maximum 100 characters"
+msgstr "۵ حروف ، ۱۰۰ سے زیادہ حروف"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Msg Command"
+msgstr "مسج کمانڈ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Must start with a letter (a–z, A–Z) or a special character:"
+msgstr "خط سے شروع کرنا (A–z, A–Z) یا ایک خاص حیثیت سے :"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "New Nicknames"
+msgstr "نیا نام"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "New nickname"
+msgstr "نیا پلگ ان"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Nick Expiration"
+msgstr "نک کی دریافت"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "NickServ Overview"
+msgstr "نکسیر کا نظریہ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Nickname Rules"
+msgstr "نکنام کے اصول"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Nicknames not used for"
+msgstr "نک نام استعمال نہیں کیا جاتا۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Notices"
+msgstr "غور کریں"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Password"
+msgstr "پاس ورڈ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Password Rules"
+msgstr "پاس ورڈ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Query"
+msgstr "جگہ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Query Command"
+msgstr "حفاظتی کمانڈ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Quick Start"
+msgstr "فوری آغاز"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Register & Connect"
+msgstr "رجسٹر & اتصال"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Registered Nicknames"
+msgstr "نام"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Registered nickname"
+msgstr "نام"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Registration Required"
+msgstr "جگہ"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:84
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat Help"
+msgstr "ردرو ہیکس کی مدد کرتا ہے۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"RetroHexChat handles all authentication directly on the connection screen — "
+"no need to run"
+msgstr ""
+"ریترو ہیکسChat تمام توثیق براہ راست اتصال پردے پر ہینڈل کرتا ہے — چلانے کی "
+"ضرورت نہیں ہے۔"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:111
+#, elixir-autogen, elixir-format
+msgid ""
+"RetroHexChat help documentation. Learn about IRC commands, channel modes, "
+"features, and keyboard shortcuts."
+msgstr ""
+"ریترو ہیکسکاٹ دستاویزات کی مدد کرتا ہے۔ IRC کمانڈز، چینل موڈز، خصوصیات اور "
+"کي بورڈ کے متعلق سيکھيں"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"RetroHexChat is a web-based IRC client with an authentic retro look and "
+"feel. It supports channels, private messages, text formatting, nick "
+"services, and much more."
+msgstr ""
+"ریترو ہیکسچیت ایک ویب پر مبنی آئی آر سی کلائنٹ ہے جس میں ایک تصدیقی ری ایکٹر"
+" نظر اور محسوس ہوتا ہے۔ یہ چینلوں ، نجی پیغامات ، متن فارمیٹ ، موبائل سروسز "
+"اور بہت زیادہ سہولیات فراہم کرتا ہے ۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "See Also"
+msgstr "دیکھیں"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:86
+#, elixir-autogen, elixir-format
+msgid "Select a topic from the navigation pane to get started."
+msgstr "شروع کرنے کے لیے ہنگامی صورتحال سے ایک موضوع منتخب کریں ۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Starting a Conversation"
+msgstr "بات شروع کرنا"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Stored securely with bcrypt hashing — never in plain text"
+msgstr "مصیبت‌زدہ لوگوں کے لئے کبھی بھی سادہ متن میں نہیں"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "This opens a PM tab. Alternatively, send a single message:"
+msgstr "یہ ایک پی ایم ٹی وی کھول دیتا ہے۔ متبادل طور پر، ایک پیغام بھیجیں:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"To connect to RetroHexChat, enter a nickname on the connect screen and click"
+msgstr ""
+"ریترو ہیکسChat سے ملانے کے لیے، جوڑنے والی سکرین پر ایک کلپ داخل کریں اور "
+"کلک کریں۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Using the User List"
+msgstr "صارف فہرست استعمال کرتے ہوئے"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"You can send private messages to other users that only the two of you can "
+"see."
+msgstr ""
+"آپ دوسرے صارفین کو نجی پیغامات بھیج سکتے ہیں جو صرف دو کو دیکھ سکتے ہیں۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:50
+#, elixir-autogen, elixir-format
+msgid ""
+"are automatically freed. Connect regularly to keep your registration. See"
+msgstr ""
+"خودبخود آزاد ہو چکے ہیں۔ اپنی رجسٹریشن قائم رکھنے کے لیے باقاعدگی سے پابندی "
+"لگائیں ۔ دیکھیں"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "fields."
+msgstr "میدان۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "for advanced features — type"
+msgstr "ترقی‌پذیر خصوصیات — قسم"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "for details."
+msgstr "تفصیلات کے لئے."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "manually."
+msgstr "دستی طور پر."
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid ""
+"to open a PM tab. You can also double-click a nickname to open a PM "
+"directly."
+msgstr ""
+"ایک پی ایم ٹی کھولنے کے لئے. آپ پی ایم کو براہ راست کھولنے کے لئے ایک دوگنا "
+"کر سکتے ہیں."
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "to see them all."
+msgstr "اور انہیں دیکھتے رہو۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "to send."
+msgstr "بھیجنے کے لئے."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— \"Alice\" and \"alice\" are different nicknames"
+msgstr "— \"السیس\" اور \"علیۃ\" مختلف نام ہیں۔"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "— A password prompt appears. Enter your password and click"
+msgstr "— پاس ورڈ ظاہر ہوتا ہے ۔ اپنا خفیہ لفظ داخل کرو اور کلک کرو"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"— A registration form appears. Choose a password (minimum 5 characters) and "
+"confirm it. Click"
+msgstr ""
+"— رجسٹریشن کی ایک شکل سامنے آتی ہے ۔ پاس ورڈ (منٹ 5 حروف) منتخب کریں اور اس "
+"کی تصدیق کریں۔ کلک کرو"

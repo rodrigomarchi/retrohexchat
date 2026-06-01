@@ -1,0 +1,1793 @@
+# "msgid"s in this file come from bots.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: bn\n"
+"Language: bn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:169
+#, elixir-autogen, elixir-format
+msgid "  %{id} | %{title} | %{channel} | %{url}"
+msgstr "  %{id} | %{title} | %{channel} | %{url}"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:186
+#, elixir-autogen, elixir-format
+msgid "  %{id} | %{type} | %{channel} | %{message}"
+msgstr "  %{id} | %{type} | %{channel} | %{message}"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:72
+#, elixir-autogen, elixir-format
+msgid "  %{prefix}%{trigger} — %{description}"
+msgstr "  %{prefix}%{trigger} — %{description}"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:79
+#, elixir-autogen, elixir-format
+msgid "  %{prefix}help — Show this help message"
+msgstr "  %{prefix}সাহায্য এই সহায়তা বার্তা প্রদর্শন করুন"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
+#, elixir-autogen, elixir-format
+msgid ""
+"%{author}: You must be identified to play. Use /ns identify <password> "
+"first."
+msgstr ""
+"%{author}: আপনাকে অবশ্যই খেলতে হবে । ব্যবহার /ns ফিল্টার লগ "
+"প্রদর্শক/ph0প্রথমে >"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
+#, elixir-autogen, elixir-format
+msgid ""
+"%{author}: You must be registered to play. Use /ns register <password> "
+"first."
+msgstr ""
+"%{author}: আপনাকে অবশ্যই খেলার জন্য নিবন্ধিত হতে হবে । ব্যবহার /ns রেজিস্টার"
+" করা হবে/ph0প্রথমে >"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:301
+#, elixir-autogen, elixir-format
+msgid "%{base} %{sign} %{modifier} = %{total}"
+msgstr "%{base} %{sign} %{modifier} = %{total}"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:297
+#, elixir-autogen, elixir-format
+msgid "%{base} = %{sum}"
+msgstr "%{base} = %{sum}"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:63
+#, elixir-autogen, elixir-format
+msgid "%{bot_name} — Available Commands:"
+msgstr "%{bot_name} উপলব্ধ কমান্ড:"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:219
+#, elixir-autogen, elixir-format
+msgid "%{message} (%{reason})"
+msgstr "%{message} (%{reason})"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
+#, elixir-autogen, elixir-format
+msgid ""
+"%{prefix}\n"
+"Round over! %{scores}"
+msgstr ""
+"%{prefix}\n"
+"রাউন্ড শেষ! %{scores}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:375
+#, elixir-autogen, elixir-format
+msgid "%{prefix} %{title} — %{link}"
+msgstr "%{prefix} %{title} — %{link}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:349
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:371
+#, elixir-autogen, elixir-format
+msgid "%{rank}. %{name}: %{points}pts"
+msgstr "%{rank}. %{name}: %{points}পদার্থ"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:87
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:105
+#, elixir-autogen, elixir-format
+msgid "(no title)"
+msgstr "(ও নয়)"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:167
+#, elixir-autogen, elixir-format
+msgid "(untitled)"
+msgstr "(ডান)"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:215
+#, elixir-autogen, elixir-format
+msgid "15th century"
+msgstr "১৫ শতাব্দীর"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:51
+#, elixir-autogen, elixir-format
+msgid "4th from sun"
+msgstr "সূর্যের ৪তম থেকে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:205
+#, elixir-autogen, elixir-format
+msgid "A flower"
+msgstr "একটি ফুল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:46
+#, elixir-autogen, elixir-format
+msgid "A gem"
+msgstr "একটি হেডার"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:153
+#, elixir-autogen, elixir-format
+msgid "A single letter"
+msgstr "একটি চিঠি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:185
+#, elixir-autogen, elixir-format
+msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
+msgstr ""
+"একটা ট্রিভিয়া রাউন্ড ইতোমধ্যে চলছে! এটা শেষ করতে 'ট্রিভিয়া বন্ধ' ব্যবহার "
+"করুন।"
+
+#: lib/retro_hex_chat/bots/capabilities/game.ex:13
+#, elixir-autogen, elixir-format
+msgid "AI for P2P games — chess, tic-tac-toe, trivia (Coming soon)"
+msgstr "P2P খেলার জন্য AI - দাবা, ac-Te-Te, 5 ( সাহায্যে)"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:194
+#, elixir-autogen, elixir-format
+msgid "Active schedules:"
+msgstr "সক্রিয় শিডিউল:"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:148
+#, elixir-autogen, elixir-format
+msgid "Add a scheduled message"
+msgstr "একটি নির্দিষ্ট বার্তা যোগ করুন"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:130
+#, elixir-autogen, elixir-format
+msgid "Add an RSS feed"
+msgstr "একটি RSS ফিড যোগ করুন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:465
+#, elixir-autogen, elixir-format
+msgid "Aladdin"
+msgstr "আলডিপেন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:239
+#, elixir-autogen, elixir-format
+msgid "Alexander Fleming"
+msgstr "আলেকজান্ডার লেমক"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:383
+#, elixir-autogen, elixir-format
+msgid "Alexander Graham Bell"
+msgstr "আলেক্সান্ডার গ্রাহাম বেল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:316
+#, elixir-autogen, elixir-format
+msgid "Algeria"
+msgstr "আলজেরিয়া"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:82
+#, elixir-autogen, elixir-format
+msgid "Alias for roll"
+msgstr "রোলের জন্য উপনাম"
+
+#: lib/retro_hex_chat/bots/server.ex:144
+#, elixir-autogen, elixir-format
+msgid "Already in channel"
+msgstr "চ্যানেল মধ্যে বর্তমানে উপস্থিত রয়েছে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:292
+#, elixir-autogen, elixir-format
+msgid "Also a country"
+msgstr "এছাড়াও একটি দেশ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:359
+#, elixir-autogen, elixir-format
+msgid "And Paul Allen"
+msgstr "এবং পল অ্যালেন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:220
+#, elixir-autogen, elixir-format
+msgid "Apollo 11"
+msgstr "অ্যাপোলো ১১"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:398
+#, elixir-autogen, elixir-format
+msgid "Application Programming Interface"
+msgstr "অ্যাপ্লিকেশন প্রোগ্রামিং ইন্টারফেস"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:60
+#, elixir-autogen, elixir-format
+msgid "Au"
+msgstr "অবিরাম"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:291
+#, elixir-autogen, elixir-format
+msgid "Australia"
+msgstr "অস্ট্রেলিয়া"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:25
+#, elixir-autogen, elixir-format
+msgid "Auto-moderation — blocked words, spam/flood detection, caps filter"
+msgstr ""
+"স্বয়ংক্রিয়ভাবে পরিবর্তিতকরণ - শব্দ ব্লক করা হয়েছে, স্প্যাম <ftplict/f0>, "
+"ফিল্টার প্রয়োগ করা হবে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:420
+#, elixir-autogen, elixir-format
+msgid "Avatar"
+msgstr "অবতারের ছবি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:374
+#, elixir-autogen, elixir-format
+msgid "BEAM VM"
+msgstr "VM সমাপ্ত"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:225
+#, elixir-autogen, elixir-format
+msgid "Bastille"
+msgstr "ব্যান্টাম পংক্তি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:384
+#, elixir-autogen, elixir-format
+msgid "Bell Labs"
+msgstr "বেল ল্যাবName"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:306
+#, elixir-autogen, elixir-format
+msgid "Bering Strait"
+msgstr "বারলিং"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:358
+#, elixir-autogen, elixir-format
+msgid "Bill Gates"
+msgstr "বিল গেটস"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:431
+#, elixir-autogen, elixir-format
+msgid "Black and white"
+msgstr "কালো এবং সাদা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:451
+#, elixir-autogen, elixir-format
+msgid "Blocks"
+msgstr "ব্লক"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:421
+#, elixir-autogen, elixir-format
+msgid "Blue aliens"
+msgstr "নীল এলিয়েন"
+
+#: lib/retro_hex_chat/bots/lifecycle.ex:47
+#, elixir-autogen, elixir-format
+msgid "Bot destroyed"
+msgstr "বোট নষ্ট হয়েছে"
+
+#: lib/retro_hex_chat/bots/server.ex:756
+#, elixir-autogen, elixir-format
+msgid "Bot leaving"
+msgstr "বোট ত্যাগ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:344
+#, elixir-autogen, elixir-format
+msgid "Brain of computer"
+msgstr "কম্পিউটারের ব্রেইন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:426
+#, elixir-autogen, elixir-format
+msgid "British author"
+msgstr "ব্রিটিশ লেখক"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:15
+#, elixir-autogen, elixir-format
+msgid "Built-in !help command listing available commands"
+msgstr "বিল্ট-ইন কমান্ড লাইন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:321
+#, elixir-autogen, elixir-format
+msgid "Cairo"
+msgstr "কায়রো"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:286
+#, elixir-autogen, elixir-format
+msgid "Canberra"
+msgstr "ক্যানবেরা"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:219
+#, elixir-autogen, elixir-format
+msgid "Cannot keep %{keep} dice when only rolling %{count}."
+msgstr "রাখা যাবে না %{keep} পুনরায় টেপা হলে পাশা বাজানো হবে %{count}."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:343
+#, elixir-autogen, elixir-format
+msgid "Central Processing Unit"
+msgstr "কেন্দ্রীয় পরিচালনা"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:250
+#, elixir-autogen, elixir-format
+msgid "Checked feed '%{id}'. New items found."
+msgstr "ফিড পরীক্ষা করুন%{id}নতুন বস্তু পাওয়া গিয়েছে।"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:21
+#, elixir-autogen, elixir-format
+msgid "City of Light"
+msgstr "সাদা রংয়ের শহর"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:259
+#, elixir-autogen, elixir-format
+msgid "Correct, %{author}! (+%{points} points)"
+msgstr "সঠিক, %{author}! (+%{points} বিন্দু"
+
+#: lib/retro_hex_chat/bots/capabilities/custom_commands.ex:18
+#, elixir-autogen, elixir-format
+msgid "Custom bot commands (!prefix trigger)"
+msgstr "স্বনির্বাচিত বোটের কমান্ড (!prefix ট্রিগার)"
+
+#: lib/retro_hex_chat/bots/capabilities/script.ex:12
+#, elixir-autogen, elixir-format
+msgid "Custom script engine (Coming soon)"
+msgstr "স্বনির্বাচিত স্ক্রিপ্ট ইঞ্জিন (কলিশন)"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:312
+#, elixir-autogen, elixir-format
+msgid "Danish territory"
+msgstr "ড্যানিশ সীমা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:379
+#, elixir-autogen, elixir-format
+msgid "Databases"
+msgstr "ডাটাবেস"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:28
+#, elixir-autogen, elixir-format
+msgid "Dice rolling for RPG games (e.g., 2d6, d20+5, 4d6kh3)"
+msgstr "আরপিজি গেমসের জন্য পাশা তৈরী করা হয় (যেমন ২ডি৬, ২২০+৫, ৪ডি৬)"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:180
+#, elixir-autogen, elixir-format
+msgid "Dollar bill"
+msgstr "ডলার বিল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:456
+#, elixir-autogen, elixir-format
+msgid "Dutch painter"
+msgstr "ডাচ শিল্পী"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:36
+#, elixir-autogen, elixir-format
+msgid "Early 20th century"
+msgstr "বিংশ শতাব্দীর প্রথম দিকে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:461
+#, elixir-autogen, elixir-format
+msgid "Elementary"
+msgstr "মৌল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:373
+#, elixir-autogen, elixir-format
+msgid "Erlang"
+msgstr "এর্যাড"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:148
+#, elixir-autogen, elixir-format
+msgid "Error: Dice must have at least 2 sides."
+msgstr "ত্রুটি: পাশা অন্তত ২টি দিক উল্লেখ করা আবশ্যক ।"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:142
+#, elixir-autogen, elixir-format
+msgid "Error: Maximum %{max} dice allowed."
+msgstr "ত্রুটি: সর্বোচ্চ মান %{max} পাশার অনুমোদন"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:145
+#, elixir-autogen, elixir-format
+msgid "Error: Maximum %{max} sides allowed."
+msgstr "ত্রুটি: সর্বোচ্চ মান %{max} দুই পক্ষের অনুমতি."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:103
+#, elixir-autogen, elixir-format
+msgid "Famous for rings"
+msgstr "রিং- এর জন্য বিখ্যাত"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:220
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' added: %{url} → %{channel}"
+msgstr "ফিড%{id}এর সাথে যোগ করেছে: %{url} → %{channel}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:254
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' checked. No new items."
+msgstr "ফিড%{id}চেক. নতুন বস্তু অনুপস্থিত।"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:236
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:245
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' not found."
+msgstr "ফিড%{id}পাওয়া যায়নি।"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:234
+#, elixir-autogen, elixir-format
+msgid "Feed '%{id}' removed."
+msgstr "ফিড%{id}মুছে ফেলা হয়েছে:"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:375
+#, elixir-autogen, elixir-format
+msgid "Final scores: %{ranked}"
+msgstr "শেষ স্কোর: %{ranked}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:334
+#, elixir-autogen, elixir-format
+msgid "Finnish"
+msgstr "ফিনিশName"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:133
+#, elixir-autogen, elixir-format
+msgid "Force check a feed now"
+msgstr "বলপূর্বক ফিড পরীক্ষা করুন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:416
+#, elixir-autogen, elixir-format
+msgid "Freddie Mercury"
+msgstr "ফ্রেডি মারকারি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:224
+#, elixir-autogen, elixir-format
+msgid "French Revolution"
+msgstr "ফরাসি বিপ্লব"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:61
+#, elixir-autogen, elixir-format
+msgid "From Latin aurum"
+msgstr "ল্যাটিন থেকে তুমুল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:435
+#, elixir-autogen, elixir-format
+msgid "Game of Thrones"
+msgstr "আরশের আকার"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:179
+#, elixir-autogen, elixir-format
+msgid "George Washington"
+msgstr "জর্জ ওয়াশিংটন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:195
+#, elixir-autogen, elixir-format
+msgid "German philosopher"
+msgstr "জার্মান দার্শনিক"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:311
+#, elixir-autogen, elixir-format
+msgid "Greenland"
+msgstr "গ্রিনল্যান্ড"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:17
+#, elixir-autogen, elixir-format
+msgid "Greet users on join, say goodbye on part"
+msgstr "Getant ব্যবহারকারীরা যোগ দিন, বিদায় জানান"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:209
+#, elixir-autogen, elixir-format
+msgid "Gutenberg"
+msgstr "গুটেনবার্গ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:436
+#, elixir-autogen, elixir-format
+msgid "HBO"
+msgstr "হন"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:321
+#, elixir-autogen, elixir-format
+msgid "HTTP %{status}"
+msgstr "HTTP %{status}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:56
+#, elixir-autogen, elixir-format
+msgid "Hex = six"
+msgstr "হেক্স = ৬"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:85
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:216
+#, elixir-autogen, elixir-format
+msgid "Hey {nickname}, please keep it civil."
+msgstr "দয়া করে এটাকে নাগরিক করে রাখবেন।"
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:60
+#, elixir-autogen, elixir-format
+msgid "Hi {nickname}! Try {prefix}help for my commands."
+msgstr "কি অবস্থা? চেষ্টা করো আমার কমান্ডের জন্য."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:74
+#, elixir-autogen, elixir-format
+msgid "Hint: %{hint}"
+msgstr "ইঙ্গিত: %{hint}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:441
+#, elixir-autogen, elixir-format
+msgid "Hollywood legend"
+msgstr "হলিউডের কিংবদন্তী"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:79
+#, elixir-autogen, elixir-format
+msgid "How many bones in the adult human body?"
+msgstr "প্রাপ্তবয়স্ক মানুষের কতগুলো হাড়?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:39
+#, elixir-autogen, elixir-format
+msgid "How many colors in a rainbow?"
+msgstr "রংধনুর কত রঙের?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:24
+#, elixir-autogen, elixir-format
+msgid "How many continents are there?"
+msgstr "এখানে কতগুলো মহাদেশ আছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:131
+#, elixir-autogen, elixir-format
+msgid "How many planets in our solar system?"
+msgstr "সৌরজগতের কত গ্রহ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:54
+#, elixir-autogen, elixir-format
+msgid "How many sides does a hexagon have?"
+msgstr "ষ্টেগনের কতজন লোক আছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:328
+#, elixir-autogen, elixir-format
+msgid "HyperText Markup Language"
+msgstr "হাইপার- টেক্সট মার্কআপ ভাষা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:353
+#, elixir-autogen, elixir-format
+msgid "HyperText Transfer Protocol"
+msgstr "HyTrTP বিনিময় প্রোটোকল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:252
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:267
+#, elixir-autogen, elixir-format
+msgid "In Africa"
+msgstr "আফ্রিকায়"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:200
+#, elixir-autogen, elixir-format
+msgid "In Italy"
+msgstr "ইতালিতে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:257
+#, elixir-autogen, elixir-format
+msgid "In Nepal"
+msgstr "নেপালে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:91
+#, elixir-autogen, elixir-format
+msgid "In Rome"
+msgstr "রোমে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:163
+#, elixir-autogen, elixir-format
+msgid "In the nucleus"
+msgstr "কা."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:173
+#, elixir-autogen, elixir-format
+msgid "In what year did World War II end?"
+msgstr "কোন বছর দ্বিতীয় বিশ্বযুদ্ধ শেষ হয়েছিল?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:244
+#, elixir-autogen, elixir-format
+msgid "Inca"
+msgstr "ইনকা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:261
+#, elixir-autogen, elixir-format
+msgid "India"
+msgstr "ভারত"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:399
+#, elixir-autogen, elixir-format
+msgid "Integration"
+msgstr "অবধি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:23
+#, elixir-autogen, elixir-format
+msgid "Interactive quiz and trivia with scoring"
+msgstr "অনুশীলনের মাধ্যমে ইন্টারঅ্যাকটিভ কুইজ এবং ট্রিভিয়া"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:226
+#, elixir-autogen, elixir-format
+msgid "Invalid URL. Must start with http:// or https://"
+msgstr "অবৈধ ইউ- আর- এল । চালু করা আবশ্যক http://://://s://://s://:///so."
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:179
+#, elixir-autogen, elixir-format
+msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
+msgstr "অবৈধ পাশা\"।%{notation}'. ফর্ম্যাট: NdS, NdS+M, NdSS+M/klN"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
+#, elixir-autogen, elixir-format
+msgid "Invalid time format. Use HH:MM (24h UTC)."
+msgstr ""
+"সময়ের বিন্যাস বৈধ নয়। এইচ. এস. টি.: জি.এম (২৪এইচ. টি. সি.) ব্যবহার করুন।"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:425
+#, elixir-autogen, elixir-format
+msgid "J.K. Rowling"
+msgstr "জে.কে."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:210
+#, elixir-autogen, elixir-format
+msgid "Johannes"
+msgstr "নাহা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:194
+#, elixir-autogen, elixir-format
+msgid "Karl Marx"
+msgstr "কার্ল মার্ক্স"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:215
+#, elixir-autogen, elixir-format
+msgid "Keep count must be at least 1."
+msgstr "অন্তত ১ গুনতে হবে।"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:476
+#, elixir-autogen, elixir-format
+msgid "King of Pop"
+msgstr "পপের সাহেব"
+
+#: lib/retro_hex_chat/bots/capabilities/llm.ex:12
+#, elixir-autogen, elixir-format
+msgid "LLM-powered intelligent responses (Coming soon)"
+msgstr "Lempice-ক্ষমতাসম্পন্ন বুদ্ধিবিশিষ্ট প্রতিক্রিয়া ( তাড়াতাড়ি)"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:190
+#, elixir-autogen, elixir-format
+msgid "Late 1980s"
+msgstr "১৯৮০ সাল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:394
+#, elixir-autogen, elixir-format
+msgid "Late 1990s"
+msgstr "১৯৯০ সাল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:339
+#, elixir-autogen, elixir-format
+msgid "Late 2000s"
+msgstr "সম্প্রতি ২০০০"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:229
+#, elixir-autogen, elixir-format
+msgid "Leonardo da Vinci"
+msgstr "লিওনার্দো দা ভিঞ্চি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:113
+#, elixir-autogen, elixir-format
+msgid "Lightest"
+msgstr "হালকা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:184
+#, elixir-autogen, elixir-format
+msgid "Lighthouse"
+msgstr "হালকাহাউস"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:333
+#, elixir-autogen, elixir-format
+msgid "Linus Torvalds"
+msgstr "লেস টোরভালস"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:131
+#, elixir-autogen, elixir-format
+msgid "List RSS feeds"
+msgstr "RSS ফিডের তালিকা নির্মাণ করুন"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:149
+#, elixir-autogen, elixir-format
+msgid "List active schedules"
+msgstr "সক্রিয় তালিকা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:66
+#, elixir-autogen, elixir-format
+msgid "Lives in the ocean"
+msgstr "সমুদ্রে বাস করা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:118
+#, elixir-autogen, elixir-format
+msgid "Look up"
+msgstr "উপরে যাও"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:276
+#, elixir-autogen, elixir-format
+msgid "Mariana Trench"
+msgstr "মারিয়ানা ট্রেঞ্চ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:50
+#, elixir-autogen, elixir-format
+msgid "Mars"
+msgstr "মার্চApril"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:186
+#, elixir-autogen, elixir-format
+msgid "Maximum %{max} feeds reached."
+msgstr "সর্বোচ্চ %{max} ফিডে।"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:204
+#, elixir-autogen, elixir-format
+msgid "Maximum %{max} schedules reached."
+msgstr "সর্বোচ্চ %{max} সময় এসে গেছে।"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:204
+#, elixir-autogen, elixir-format
+msgid "Mayflower"
+msgstr "মে ফুল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:296
+#, elixir-autogen, elixir-format
+msgid "Mediterranean"
+msgstr "ভূমধ্যসাগর"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:475
+#, elixir-autogen, elixir-format
+msgid "Michael Jackson"
+msgstr "মাইকেল জ্যাকসন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:297
+#, elixir-autogen, elixir-format
+msgid "Middle earth"
+msgstr "মধ্য পৃথিবী"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:450
+#, elixir-autogen, elixir-format
+msgid "Minecraft"
+msgstr "মিরাখট"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:227
+#, elixir-autogen, elixir-format
+msgid "Minimum interval is %{minutes} minutes."
+msgstr "সর্বনিম্ন দৈর্ঘ্য %{minutes} ১ মিনিট।"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:193
+#, elixir-autogen, elixir-format
+msgid "Missing channel. Usage: rss add <url> <#channel>"
+msgstr "অনুপস্থিত চ্যানেল। ব্যবহার প্রণালী: sssp উদ ক্ষেত্রে <<spin\\-cal\\.sink>"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:470
+#, elixir-autogen, elixir-format
+msgid "Monopoly"
+msgstr "মোনোলি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:26
+#, elixir-autogen, elixir-format
+msgid "More than 5"
+msgstr "৫ এর বেশি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:256
+#, elixir-autogen, elixir-format
+msgid "Mount Everest"
+msgstr "মাউন্ট ব্যর্থ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:168
+#, elixir-autogen, elixir-format
+msgid "Myco-"
+msgstr "আমার..."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:137
+#, elixir-autogen, elixir-format
+msgid "NaCl"
+msgstr "নামহীন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:307
+#, elixir-autogen, elixir-format
+msgid "Named after Vitus"
+msgstr "ভিটাসের নামে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:219
+#, elixir-autogen, elixir-format
+msgid "Neil Armstrong"
+msgstr "নীল আর্মস্ট্রং"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:123
+#, elixir-autogen, elixir-format
+msgid "Neutral"
+msgstr "ক্লীব"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:143
+#, elixir-autogen, elixir-format
+msgid "Newton's apple"
+msgstr "নিউটনের আপেল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:251
+#, elixir-autogen, elixir-format
+msgid "Nile"
+msgstr "নীলনদ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:446
+#, elixir-autogen, elixir-format
+msgid "Nintendo"
+msgstr "ক্যানবেরা"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:163
+#, elixir-autogen, elixir-format
+msgid "No RSS feeds configured."
+msgstr "কোনো RSS ফিড কনফিগার করা হয়নি।"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:180
+#, elixir-autogen, elixir-format
+msgid "No active schedules."
+msgstr "কোনো সক্রিয় সময় উপস্থিত নেই।"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:194
+#, elixir-autogen, elixir-format
+msgid "No questions available for category '%{category}'."
+msgstr "বিভাগের জন্য কোনো প্রশ্ন উপস্থিত নেই%{category}'."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:362
+#, elixir-autogen, elixir-format
+msgid "No scores recorded."
+msgstr "কোনো স্কোর রেকর্ড করা হয়নি।"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:225
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:238
+#, elixir-autogen, elixir-format
+msgid "No trivia round in progress."
+msgstr "কোন ট্রিভিয়া নেই."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:317
+#, elixir-autogen, elixir-format
+msgid "North Africa"
+msgstr "উত্তর আফ্রিকা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:287
+#, elixir-autogen, elixir-format
+msgid "Not Sydney"
+msgstr "সিডনি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:302
+#, elixir-autogen, elixir-format
+msgid "Not Toronto"
+msgstr "টরোন্টো নয়"
+
+#: lib/retro_hex_chat/bots/server.ex:163
+#, elixir-autogen, elixir-format
+msgid "Not in channel"
+msgstr "চ্যানেল নয়"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:349
+#, elixir-autogen, elixir-format
+msgid "Now Oracle"
+msgstr "এখন ওর‍্যাকল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:322
+#, elixir-autogen, elixir-format
+msgid "On the Nile"
+msgstr "নীল রঙের মধ্যে"
+
+#: lib/retro_hex_chat/bots/policy.ex:25
+#, elixir-autogen, elixir-format
+msgid "Only admins and server operators can manage bots"
+msgstr "শুধুমাত্র প্রশাসক ও সার্ভার অপারেটরদের তালিকা প্রদর্শন করা হবে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:108
+#, elixir-autogen, elixir-format
+msgid "Organelle"
+msgstr "ওয়র্গেল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:301
+#, elixir-autogen, elixir-format
+msgid "Ottawa"
+msgstr "ওটাওয়া"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:158
+#, elixir-autogen, elixir-format
+msgid "Outside"
+msgstr "বাইরে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:81
+#, elixir-autogen, elixir-format
+msgid "Over 200"
+msgstr "২০০ এর বেশি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:30
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:277
+#, elixir-autogen, elixir-format
+msgid "Pacific"
+msgstr "প্যাসিফিক"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:20
+#, elixir-autogen, elixir-format
+msgid "Paris"
+msgstr "প্যারিস"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:471
+#, elixir-autogen, elixir-format
+msgid "Pass Go"
+msgstr "পাস যান"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:31
+#, elixir-autogen, elixir-format
+msgid "Peaceful"
+msgstr "শান্তি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:185
+#, elixir-autogen, elixir-format
+msgid "Pharos"
+msgstr "ফাইসটো"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:389
+#, elixir-autogen, elixir-format
+msgid "Plug it in"
+msgstr "এটা ভরতে হবে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:133
+#, elixir-autogen, elixir-format
+msgid "Pluto was demoted"
+msgstr "প্লাটুকে ডেমো দেয়া হয়েছিল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:331
+#, elixir-autogen, elixir-format
+msgid "Q%{number}/%{total}: %{question}"
+msgstr "প্রশ্ন %{number}/%{total}: %{question}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:415
+#, elixir-autogen, elixir-format
+msgid "Queen"
+msgstr "বিবি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:411
+#, elixir-autogen, elixir-format
+msgid "RDJ"
+msgstr "RDJ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:41
+#, elixir-autogen, elixir-format
+msgid "ROY G BIV"
+msgstr "ROGIV"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:177
+#, elixir-autogen, elixir-format
+msgid "RSS Feeds:"
+msgstr "RSS ফিড:"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:26
+#, elixir-autogen, elixir-format
+msgid "RSS feed reader that posts updates to channels"
+msgstr "RSS ফিড রিডার যা চ্যানেলের আপডেট করে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:368
+#, elixir-autogen, elixir-format
+msgid "Random Access Memory"
+msgstr "যথেচ্ছ ব্যবহার মেমরি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:406
+#, elixir-autogen, elixir-format
+msgid "Red pill"
+msgstr "রেড পিল"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:150
+#, elixir-autogen, elixir-format
+msgid "Remove a schedule"
+msgstr "একটি তালিকা নির্বাচন করুন"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:132
+#, elixir-autogen, elixir-format
+msgid "Remove an RSS feed"
+msgstr "একটি RSS ফিড মুছে ফেলুন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:230
+#, elixir-autogen, elixir-format
+msgid "Renaissance"
+msgstr "গঠন"
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:17
+#, elixir-autogen, elixir-format
+msgid "Respond when mentioned by name"
+msgstr "নাম অনুযায়ী সাজান"
+
+#: lib/retro_hex_chat/bots/capabilities/mention.ex:55
+#, elixir-autogen, elixir-format
+msgid "Response must be a non-empty string"
+msgstr "প্রাপ্ত উত্তর বৈধ নয়"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:334
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat-RSS/1.0"
+msgstr "রেট্রো HxChat-S/gnome.org"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:410
+#, elixir-autogen, elixir-format
+msgid "Robert Downey Jr"
+msgstr "রবার্ট ডাউনি জুনিয়র"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:81
+#, elixir-autogen, elixir-format
+msgid "Roll dice (e.g., 2d6, d20+5, 4d6kh3)"
+msgstr "পাশা গড়িয়ে দিন (যেমন 2d6, 2.0+5, 463)"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:265
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
+msgstr ""
+"পরিবর্তন বাতিল করা হচ্ছে %{notation}: %{rolls} %{sign} %{modifier} = "
+"%{total}"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:257
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} = %{sum}"
+msgstr "পরিবর্তন বাতিল করা হচ্ছে %{notation}: %{rolls} = %{sum}"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:290
+#, elixir-autogen, elixir-format
+msgid "Rolling %{notation}: %{rolls} → keeping %{kept}"
+msgstr "পরিবর্তন বাতিল করা হচ্ছে %{notation}: %{rolls} থাকেন %{kept}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:199
+#, elixir-autogen, elixir-format
+msgid "Roman"
+msgstr "রোমান"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:266
+#, elixir-autogen, elixir-format
+msgid "Sahara"
+msgstr "সাহারা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:102
+#, elixir-autogen, elixir-format
+msgid "Saturn"
+msgstr "শনিগ্রহ (স্যাটার্ন)"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:269
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' added: daily at %{time} UTC in %{channel}."
+msgstr ""
+"নির্ধারিত সময়%{id}এর সাথে বলা হয়েছে: প্রতিদিন %{time} ইনপুটের পদ্ধতিUTC "
+"%{channel}."
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:243
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' added: every %{minutes}min in %{channel}."
+msgstr "নির্ধারিত সময়%{id}আরো বলেছেন: %{minutes}মিনিট %{channel}."
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:286
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' not found."
+msgstr "নির্ধারিত সময়%{id}পাওয়া যায়নি।"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:284
+#, elixir-autogen, elixir-format
+msgid "Schedule '%{id}' removed."
+msgstr "নির্ধারিত সময়%{id}মুছে ফেলা হয়েছে:"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:27
+#, elixir-autogen, elixir-format
+msgid "Scheduled and periodic messages"
+msgstr "SIMPC এবং অতিক্রমকারী বার্তা নির্ধারিত হয়েছে"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:353
+#, elixir-autogen, elixir-format
+msgid "Scores (Q%{number}/%{total}): %{ranked}"
+msgstr "স্কোর (Q)%{number}/%{total}): %{ranked}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:340
+#, elixir-autogen, elixir-format
+msgid "Scores (Q%{number}/%{total}): No scores yet."
+msgstr "স্কোর (Q)%{number}/%{total}: এখনো কোন স্কোর নেই।"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:240
+#, elixir-autogen, elixir-format
+msgid "Scottish"
+msgstr "স্কটিশ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:460
+#, elixir-autogen, elixir-format
+msgid "Sherlock Holmes"
+msgstr "শার্লক হোমস"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:140
+#, elixir-autogen, elixir-format
+msgid "Show current scores"
+msgstr "বর্তমান স্কোর প্রদর্শন করুন"
+
+#: lib/retro_hex_chat/bots/capabilities/help.ex:56
+#, elixir-autogen, elixir-format
+msgid "Show this help message"
+msgstr "এই সহায়তা বার্তা প্রদর্শন করুন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:138
+#, elixir-autogen, elixir-format
+msgid "Sodium..."
+msgstr "সোডিয়াম..."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:245
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:281
+#, elixir-autogen, elixir-format
+msgid "South America"
+msgstr "দক্ষিণ আমেরিকা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:262
+#, elixir-autogen, elixir-format
+msgid "South Asia"
+msgstr "দক্ষিণ এশিয়া"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:282
+#, elixir-autogen, elixir-format
+msgid "Southern hemisphere"
+msgstr "দক্ষিণ গোলার্ধ"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:53
+#, elixir-autogen, elixir-format
+msgid "Start a solo arcade session"
+msgstr "সোলো আর্কেড সেশন আরম্ভ করুন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:138
+#, elixir-autogen, elixir-format
+msgid "Start a trivia round"
+msgstr "ট্রিভিয়া রাউন্ড শুরু করো"
+
+#: lib/retro_hex_chat/bots/capabilities/arcade.ex:22
+#, elixir-autogen, elixir-format
+msgid "Start solo arcade sessions with !play"
+msgstr "Solo আর্কেড সেশন শুরু করো!"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
+#, elixir-autogen, elixir-format
+msgid "Starts with T"
+msgstr "আরম্ভ হয়"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:440
+#, elixir-autogen, elixir-format
+msgid "Steven Spielberg"
+msgstr "স্টিভেন স্লেলবার্গ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:139
+#, elixir-autogen, elixir-format
+msgid "Stop the current round"
+msgstr "বর্তমান রাউন্ড বন্ধ করুন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:378
+#, elixir-autogen, elixir-format
+msgid "Structured Query Language"
+msgstr "কাঠামোযুক্ত ভাষা যোগ করো"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:141
+#, elixir-autogen, elixir-format
+msgid "Submit a trivia answer"
+msgstr "পূর্বাভাসের মাধ্যমে উত্তর দিন"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:117
+#, elixir-autogen, elixir-format
+msgid "Sun"
+msgstr "রবি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:348
+#, elixir-autogen, elixir-format
+msgid "Sun Microsystems"
+msgstr "Sun মাইক্রো- সিস্টেম"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:445
+#, elixir-autogen, elixir-format
+msgid "Super Mario Bros"
+msgstr "সুপার মারিও ভাই"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:405
+#, elixir-autogen, elixir-format
+msgid "The Matrix"
+msgstr "ম্যাট্রিক্স"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:76
+#, elixir-autogen, elixir-format
+msgid "Three digits"
+msgstr "তিনটি সংখ্যা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:466
+#, elixir-autogen, elixir-format
+msgid "Three wishes"
+msgstr "তিনটি বল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:364
+#, elixir-autogen, elixir-format
+msgid "Tim Berners-Lee"
+msgstr "টিম বার্নার্স-লেভেল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:94
+#, elixir-autogen, elixir-format
+msgid "Time's up! Nobody got it."
+msgstr "সময় শেষ! কেউ এটা পায় নি।"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:92
+#, elixir-autogen, elixir-format
+msgid "Time's up! The answer was: %{answer}"
+msgstr "সময় শেষ! উত্তর ছিল: %{answer}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:271
+#, elixir-autogen, elixir-format
+msgid "Tokyo"
+msgstr "টোকিও"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
+#, elixir-autogen, elixir-format
+msgid ""
+"Trivia started! (%{category}, %{count} questions)\n"
+"%{question}"
+msgstr ""
+"ট্রিভিয়া শুরু করেছে!%{category}, %{count} প্রশ্ন\n"
+"%{question}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
+#, elixir-autogen, elixir-format
+msgid "Trivia stopped! %{scores}"
+msgstr "ট্রিভিয়া বন্ধ! %{scores}"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:98
+#, elixir-autogen, elixir-format
+msgid "Two elements"
+msgstr "দুটি মৌল"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:388
+#, elixir-autogen, elixir-format
+msgid "Universal Serial Bus"
+msgstr "সার্বজনীন সিরিয়াল বাস"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia.ex:127
+#, elixir-autogen, elixir-format
+msgid "Unknown category '%{category}'. Available: %{categories}"
+msgstr "অজানা শ্রেণী%{category}উপলব্ধ: %{categories}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:29
+#, elixir-autogen, elixir-format
+msgid "Unknown feed format (expected RSS 2.0 or Atom)"
+msgstr "অজানা ফিডের বিন্যাস ( RSS ২ অথবা অ্যাটম)"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:196
+#, elixir-autogen, elixir-format
+msgid "Usage: rss add <url> <#channel>"
+msgstr "ব্যবহার প্রণালী: sssp উদ ক্ষেত্রে <<spin\\-cal\\.sink>"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
+#, elixir-autogen, elixir-format
+msgid ""
+"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
+"daily <HH:MM> <#channel> <message>"
+msgstr "ব্যবহারপ্রণালী: Shrphinp/fresphysphysphys <fot; <7\\-2\\phortphorkphy>"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
+#, elixir-autogen, elixir-format
+msgid "Vatican City"
+msgstr "ভ্যাটিকান সিটি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:148
+#, elixir-autogen, elixir-format
+msgid "Very cold"
+msgstr "অত্যন্ত ঠান্ডা"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:455
+#, elixir-autogen, elixir-format
+msgid "Vincent van Gogh"
+msgstr "ভিনসেন্ট ভ্যান গঘ"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:369
+#, elixir-autogen, elixir-format
+msgid "Volatile"
+msgstr "বহুমুখী"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:354
+#, elixir-autogen, elixir-format
+msgid "Web"
+msgstr "ওয়েব"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:329
+#, elixir-autogen, elixir-format
+msgid "Web pages"
+msgstr "ওয়েবপেজ"
+
+#: lib/retro_hex_chat/bots/capabilities/greeter.ex:50
+#, elixir-autogen, elixir-format
+msgid "Welcome, {nickname}!"
+msgstr "স্বাগতম।"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:464
+#, elixir-autogen, elixir-format
+msgid "What Disney movie features a genie?"
+msgstr "মেনিউ সিনেমায় যৌনাঙ্গের কোন চিত্র দেখা যায়?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:434
+#, elixir-autogen, elixir-format
+msgid "What TV show features dragons and an iron throne?"
+msgstr "কোন টিভি শো ড্রাগন আর লোহার সিংহাসনকে দেখায়?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:183
+#, elixir-autogen, elixir-format
+msgid "What ancient wonder was in Alexandria?"
+msgstr "আলেকজান্দ্রিয়ায় প্রাচীন কোন বিস্ময়গুলো ছিল?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:414
+#, elixir-autogen, elixir-format
+msgid "What band wrote 'Bohemian Rhapsody'?"
+msgstr "কি ব্যান্ড 'বুহেমিয়ান রেহপসোডি' লিখেছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:469
+#, elixir-autogen, elixir-format
+msgid "What board game has properties like Boardwalk?"
+msgstr "বোর্ডওয়াকের মত বোর্ড গেমের কোন অংশ আছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:243
+#, elixir-autogen, elixir-format
+msgid "What civilization built Machu Picchu?"
+msgstr "কোন সভ্যতা ম্যাকুচ্চু তৈরি করেছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:347
+#, elixir-autogen, elixir-format
+msgid "What company created Java?"
+msgstr "কোন কোম্পানি জাভা বানিয়েছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:280
+#, elixir-autogen, elixir-format
+msgid "What continent is Brazil in?"
+msgstr "ব্রাজিলের কোন মহাদেশ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:260
+#, elixir-autogen, elixir-format
+msgid "What country has the most people?"
+msgstr "কেন?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:315
+#, elixir-autogen, elixir-format
+msgid "What country is the Sahara Desert mostly in?"
+msgstr "সাহারা মরুভূমি আসলে কোন দেশ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:397
+#, elixir-autogen, elixir-format
+msgid "What does API stand for?"
+msgstr "API কেন দাঁড়িয়ে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:342
+#, elixir-autogen, elixir-format
+msgid "What does CPU stand for?"
+msgstr "CPU কিসের জন্য?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:327
+#, elixir-autogen, elixir-format
+msgid "What does HTML stand for?"
+msgstr "এইচ."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:352
+#, elixir-autogen, elixir-format
+msgid "What does HTTP stand for?"
+msgstr "HTTP কিসের জন্য?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:367
+#, elixir-autogen, elixir-format
+msgid "What does RAM stand for?"
+msgstr "বিদ্রোহ কিসের জন্য?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:377
+#, elixir-autogen, elixir-format
+msgid "What does SQL stand for?"
+msgstr "SQL কোথায়?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:387
+#, elixir-autogen, elixir-format
+msgid "What does USB stand for?"
+msgstr "USB কিসের জন্য?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:111
+#, elixir-autogen, elixir-format
+msgid "What element has atomic number 1?"
+msgstr "আনবিক সংখ্যা ১ আছে কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:198
+#, elixir-autogen, elixir-format
+msgid "What empire built the Colosseum?"
+msgstr "কলোসিয়াম কোন সাম্রাজ্য নির্মাণ করেছিল?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:459
+#, elixir-autogen, elixir-format
+msgid "What fictional detective lived at 221B Baker Street?"
+msgstr "২২১বি বেকার স্ট্রিটে বাস করা কি কাল্পনিক গোয়েন্দা?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:141
+#, elixir-autogen, elixir-format
+msgid "What force keeps planets in orbit?"
+msgstr "কোন শক্তি গ্রহগুলো কক্ষপথে থাকে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:444
+#, elixir-autogen, elixir-format
+msgid "What game features a plumber named Mario?"
+msgstr "মারিওর কী হবে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:69
+#, elixir-autogen, elixir-format
+msgid "What gas do plants absorb?"
+msgstr "গ্যাস কী ছড়িয়ে পড়ে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:126
+#, elixir-autogen, elixir-format
+msgid "What gas makes up 78% of Earth's atmosphere?"
+msgstr "পৃথিবীর বায়ুমণ্ডলের ৭৮% কোথায় গ্যাস তৈরি হয়?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:429
+#, elixir-autogen, elixir-format
+msgid "What instrument has 88 keys?"
+msgstr "কোন উপকরণে ৮৮টা চাবি আছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:146
+#, elixir-autogen, elixir-format
+msgid "What is absolute zero in Celsius?"
+msgstr "সেলসিয়াসের কি হবে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:449
+#, elixir-autogen, elixir-format
+msgid "What is the best-selling video game of all time?"
+msgstr "সব সময়ে সেরা ভিডিও গেম কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:74
+#, elixir-autogen, elixir-format
+msgid "What is the boiling point of water in Celsius?"
+msgstr "সেলসিয়াসে জলের ফুটন্ত বিন্দু কী?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:285
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Australia?"
+msgstr "অস্ট্রেলিয়ার রাজধানী কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:300
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Canada?"
+msgstr "কানাডার রাজধানী কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:320
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Egypt?"
+msgstr "মিশরের রাজধানী কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:19
+#, elixir-autogen, elixir-format
+msgid "What is the capital of France?"
+msgstr "ফ্রান্সের রাজধানী কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:270
+#, elixir-autogen, elixir-format
+msgid "What is the capital of Japan?"
+msgstr "জাপানের রাজধানী কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:136
+#, elixir-autogen, elixir-format
+msgid "What is the chemical formula for table salt?"
+msgstr "টেবিলের লবনের রাসায়নিক সূত্র কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:59
+#, elixir-autogen, elixir-format
+msgid "What is the chemical symbol for gold?"
+msgstr "স্বর্ণের রাসায়নিক প্রতীক কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:96
+#, elixir-autogen, elixir-format
+msgid "What is the chemical symbol for water?"
+msgstr "পানির রাসায়নিক প্রতীক কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:116
+#, elixir-autogen, elixir-format
+msgid "What is the closest star to Earth?"
+msgstr "পৃথিবীর সবচেয়ে কাছের তারা কোনটা?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:275
+#, elixir-autogen, elixir-format
+msgid "What is the deepest ocean trench?"
+msgstr "সমুদ্রের সবচেয়ে গভীর অংশ কী?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:44
+#, elixir-autogen, elixir-format
+msgid "What is the hardest natural substance?"
+msgstr "সবচেয়ে কঠিন প্রাকৃতিক বস্তু কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:419
+#, elixir-autogen, elixir-format
+msgid "What is the highest-grossing film of all time?"
+msgstr "সব সময়ের জন্য সবচেয়ে বেশী ব্যবহৃত চলচ্চিত্র কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:265
+#, elixir-autogen, elixir-format
+msgid "What is the largest desert?"
+msgstr "সবচেয়ে বড় মরুভূমি কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:310
+#, elixir-autogen, elixir-format
+msgid "What is the largest island?"
+msgstr "সবচেয়ে বড় দ্বীপটা কী?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:64
+#, elixir-autogen, elixir-format
+msgid "What is the largest mammal?"
+msgstr "সবচেয়ে বড় প্রাণী কী?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:29
+#, elixir-autogen, elixir-format
+msgid "What is the largest ocean?"
+msgstr "সবচেয়ে বড় সমুদ্র কী?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:156
+#, elixir-autogen, elixir-format
+msgid "What is the largest organ in the human body?"
+msgstr "মানুষের শরীরের সবচেয়ে বড় অঙ্গ কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:250
+#, elixir-autogen, elixir-format
+msgid "What is the longest river in the world?"
+msgstr "পৃথিবীর সবচেয়ে লম্বা নদী কী?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:121
+#, elixir-autogen, elixir-format
+msgid "What is the pH of pure water?"
+msgstr "বিশুদ্ধ জলের পিএইচ কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:106
+#, elixir-autogen, elixir-format
+msgid "What is the powerhouse of the cell?"
+msgstr "সেলের পাওয়ার হাউজ কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:290
+#, elixir-autogen, elixir-format
+msgid "What is the smallest continent?"
+msgstr "ক্ষুদ্র মহাদেশটা কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:89
+#, elixir-autogen, elixir-format
+msgid "What is the smallest country by area?"
+msgstr "সবচেয়ে ছোট দেশ কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:84
+#, elixir-autogen, elixir-format
+msgid "What is the speed of light (km/s)?"
+msgstr "আলোর গতির গতি কী?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:166
+#, elixir-autogen, elixir-format
+msgid "What is the study of fungi called?"
+msgstr "মজা করার বিষয়টা কী?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:255
+#, elixir-autogen, elixir-format
+msgid "What is the tallest mountain?"
+msgstr "সবচেয়ে উঁচু পর্বতটা কী?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:404
+#, elixir-autogen, elixir-format
+msgid "What movie features a character named Neo?"
+msgstr "নিওর কোন চরিত্র আছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:161
+#, elixir-autogen, elixir-format
+msgid "What particle has a positive charge?"
+msgstr "কোন পদার্থের উপর ইতিবাচক প্রভাব রয়েছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:101
+#, elixir-autogen, elixir-format
+msgid "What planet has the most moons?"
+msgstr "পৃথিবীর সবচেয়ে বেশি চাঁদ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:49
+#, elixir-autogen, elixir-format
+msgid "What planet is known as the Red Planet?"
+msgstr "রেড গ্রহ নামে পরিচিত কোন গ্রহ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:372
+#, elixir-autogen, elixir-format
+msgid "What programming language is Elixir built on?"
+msgstr "এতে প্রোগ্রামিং ভাষা কি?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:223
+#, elixir-autogen, elixir-format
+msgid "What revolution started in 1789?"
+msgstr "১ রাজা."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:295
+#, elixir-autogen, elixir-format
+msgid "What sea is between Europe and Africa?"
+msgstr "ইউরোপ এবং আফ্রিকার মধ্যে কোন সমুদ্র আছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:203
+#, elixir-autogen, elixir-format
+msgid "What ship brought Pilgrims to America?"
+msgstr "[ অধ্যয়ন প্রশ্নাবলি]"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:305
+#, elixir-autogen, elixir-format
+msgid "What strait separates Asia and North America?"
+msgstr "কেন?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:151
+#, elixir-autogen, elixir-format
+msgid "What vitamin does the sun provide?"
+msgstr "সূর্যের আলো কী দেখায়?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:213
+#, elixir-autogen, elixir-format
+msgid "What year did Columbus reach America?"
+msgstr "কলম্বাস কোন বছর আমেরিকায় পৌঁছেছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:188
+#, elixir-autogen, elixir-format
+msgid "What year did the Berlin Wall fall?"
+msgstr "বার্লিন প্রাচীর পড়ে কোন বছর?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:34
+#, elixir-autogen, elixir-format
+msgid "What year did the Titanic sink?"
+msgstr "কোন বছর টাইটানিক ডুবে গিয়েছিল ?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:392
+#, elixir-autogen, elixir-format
+msgid "What year was Google founded?"
+msgstr "গুগল কোন বছর চালু হয়েছিল?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:233
+#, elixir-autogen, elixir-format
+msgid "What year was the Declaration of Independence signed?"
+msgstr "[ অধ্যয়ন প্রশ্নাবলি]"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:362
+#, elixir-autogen, elixir-format
+msgid "What year was the World Wide Web invented?"
+msgstr "আপনি কীভাবে উত্তর দেবেন?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:337
+#, elixir-autogen, elixir-format
+msgid "What year was the first iPhone released?"
+msgstr "কোন বছর প্রথম আইফোন মুক্তি পেয়েছিল?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:332
+#, elixir-autogen, elixir-format
+msgid "Who created Linux?"
+msgstr "কে লিনাক্সের মালিক?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:439
+#, elixir-autogen, elixir-format
+msgid "Who directed Jurassic Park?"
+msgstr "জুরাসিক পার্ক কে পরিচালনা করল?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:238
+#, elixir-autogen, elixir-format
+msgid "Who discovered penicillin?"
+msgstr "কে আবিষ্কার করলো?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:357
+#, elixir-autogen, elixir-format
+msgid "Who founded Microsoft?"
+msgstr "কে মাইক্রোসফট প্রতিষ্ঠা করেছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:208
+#, elixir-autogen, elixir-format
+msgid "Who invented the printing press?"
+msgstr "কে ছাপানো প্রেস বানিয়েছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:382
+#, elixir-autogen, elixir-format
+msgid "Who invented the telephone?"
+msgstr "কে ফোন বানিয়েছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:228
+#, elixir-autogen, elixir-format
+msgid "Who painted the Mona Lisa?"
+msgstr "মোনা লিসাকে কে এঁকেছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:454
+#, elixir-autogen, elixir-format
+msgid "Who painted the Starry Night?"
+msgstr "স্টারি নাইট কে এঁকেছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:409
+#, elixir-autogen, elixir-format
+msgid "Who played Iron Man in the MCU?"
+msgstr "এমসিইউ-তে কে আয়রন ম্যান খেলেছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:474
+#, elixir-autogen, elixir-format
+msgid "Who sang 'Thriller'?"
+msgstr "কে 'থির' গান গেয়েছিল?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:218
+#, elixir-autogen, elixir-format
+msgid "Who was the first man on the moon?"
+msgstr "চাঁদের প্রথম পুরুষ কে?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:178
+#, elixir-autogen, elixir-format
+msgid "Who was the first president of the USA?"
+msgstr "আমেরিকার প্রথম প্রেসিডেন্ট কে ছিলেন?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:424
+#, elixir-autogen, elixir-format
+msgid "Who wrote Harry Potter?"
+msgstr "কে হ্যারি পটার লিখেছিলেন?"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:193
+#, elixir-autogen, elixir-format
+msgid "Who wrote the Communist Manifesto?"
+msgstr "কারা কমিউনিস্ট স্ট্রিট লিখেছে?"
+
+#: lib/retro_hex_chat/bots/capabilities/rss/feed_parser.ex:33
+#, elixir-autogen, elixir-format
+msgid "XML parse error: %{reason}"
+msgstr "XML পার্স করতে ত্রুটি: %s %{reason}"
+
+#: lib/retro_hex_chat/bots/capabilities/rss.ex:372
+#, elixir-autogen, elixir-format
+msgid "[%{title}]"
+msgstr "[%{title}]"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:98
+#, elixir-autogen, elixir-format
+msgid "action must be one of: warn, mute, kick"
+msgstr "কর্ম সঞ্চালনের জন্য একটি হওয়া আবশ্যক: নিঃশব্দ, নিঃশব্দ, kick"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:65
+#, elixir-autogen, elixir-format
+msgid "blue whale"
+msgstr "নীল তিমি"
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:70
+#, elixir-autogen, elixir-format
+msgid "carbon dioxide"
+msgstr "পরমাণু"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:380
+#, elixir-autogen, elixir-format
+msgid "daily@%{time}"
+msgstr "প্রতিদিন@ action%{time}"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:179
+#, elixir-autogen, elixir-format
+msgid "excessive caps lock"
+msgstr "অত্যাধিক দীর্ঘ মাউস লক করা হয়েছে"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:161
+#, elixir-autogen, elixir-format
+msgid "flooding (%{count} messages in %{window}s)"
+msgstr "বন্যা%{count} বার্তায় অন্তর্ভুক্ত %{window}s)"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:67
+#, elixir-autogen, elixir-format
+msgid "max_dice must be between 1 and 1000"
+msgstr "সর্বোচ্চ মান ১ থেকে ১০০০-র মধ্যে হওয়া আবশ্যক ( t)"
+
+#: lib/retro_hex_chat/bots/capabilities/dice.ex:70
+#, elixir-autogen, elixir-format
+msgid "max_sides must be between 2 and 10_000"
+msgstr "সর্বোচ্চ মান ২ থেকে ১০  বিফল"
+
+#: lib/retro_hex_chat/bots/bot.ex:46
+#, elixir-autogen, elixir-format
+msgid "must start with a letter"
+msgstr "একটি অক্ষর দিয়ে শুরু হতে হবে"
+
+#: lib/retro_hex_chat/bots/bot.ex:43
+#: lib/retro_hex_chat/bots/bot_custom_command.ex:32
+#, elixir-autogen, elixir-format
+msgid "only letters, numbers, _ and -"
+msgstr "শুধুমাত্র বর্ণ, সংখ্যা এবং  BAR"
+
+#: lib/retro_hex_chat/bots/capabilities/scheduler.ex:377
+#, elixir-autogen, elixir-format
+msgid "q/%{minutes}min"
+msgstr "q/%{minutes}মিনিট"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:145
+#, elixir-autogen, elixir-format
+msgid "spamming (%{count} identical messages)"
+msgstr "স্প্যাম পরীক্ষা%{count} & একই বার্তা"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:127
+#, elixir-autogen, elixir-format
+msgid "using blocked words"
+msgstr "ব্লক করা শব্দ ব্যবহার করে"
+
+#: lib/retro_hex_chat/bots/capabilities/moderation.ex:218
+#, elixir-autogen, elixir-format
+msgid "{nickname}"
+msgstr "ঠিক আছে."
+
+#: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:86
+#, elixir-autogen, elixir-format
+msgid "~3 x 10^5 km/s"
+msgstr "03 x 10^5 কি"

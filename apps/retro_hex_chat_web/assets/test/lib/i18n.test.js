@@ -3,18 +3,25 @@ import { describe, expect, it, beforeEach } from "vitest";
 import { currentLocale, jt, normalizeLocale, t } from "../../js/lib/i18n.js";
 import {
   AR,
+  BN,
   DE,
   ES,
   FR,
   HI,
   ID,
+  IT,
   JA,
   KO,
+  NL,
+  PL,
   PT_BR,
+  PT_PT,
   RU,
   TR,
+  UR,
   VI,
   ZH_HANS,
+  ZH_HANT,
 } from "../../js/lib/i18n_catalog.js";
 
 describe("i18n runtime", () => {
@@ -29,17 +36,27 @@ describe("i18n runtime", () => {
     expect(normalizeLocale("pt")).toBe("pt_BR");
     expect(normalizeLocale("pt-BR")).toBe("pt_BR");
     expect(normalizeLocale("pt_BR")).toBe("pt_BR");
+    expect(normalizeLocale("pt-PT")).toBe("pt_PT");
     expect(normalizeLocale("es-MX")).toBe("es");
     expect(normalizeLocale("fr-CA")).toBe("fr");
     expect(normalizeLocale("de-AT")).toBe("de");
+    expect(normalizeLocale("it-IT")).toBe("it");
     expect(normalizeLocale("ja-JP")).toBe("ja");
+    expect(normalizeLocale("nl-BE")).toBe("nl");
+    expect(normalizeLocale("pl-PL")).toBe("pl");
     expect(normalizeLocale("zh-CN")).toBe("zh_Hans");
+    expect(normalizeLocale("zh-TW")).toBe("zh_Hant");
+    expect(normalizeLocale("zh-HK")).toBe("zh_Hant");
     expect(normalizeLocale("id-ID")).toBe("id");
     expect(normalizeLocale("ar-SA")).toBe("ar");
+    expect(normalizeLocale("bn-BD")).toBe("bn");
+    expect(normalizeLocale("bn-IN")).toBe("bn");
     expect(normalizeLocale("ru-RU")).toBe("ru");
     expect(normalizeLocale("hi-IN")).toBe("hi");
     expect(normalizeLocale("ko-KR")).toBe("ko");
     expect(normalizeLocale("tr-TR")).toBe("tr");
+    expect(normalizeLocale("ur-PK")).toBe("ur");
+    expect(normalizeLocale("ur-IN")).toBe("ur");
     expect(normalizeLocale("vi-VN")).toBe("vi");
     expect(normalizeLocale(null)).toBe("en");
   });
@@ -70,12 +87,72 @@ describe("i18n runtime", () => {
     expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Tipo de arquivo bloqueado: .exe");
   });
 
+  it("translates pt-PT strings and interpolates parameters", () => {
+    document.documentElement.setAttribute("lang", "pt-PT");
+
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
+      "Tipo de ficheiro bloqueado: .exe",
+    );
+    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("JOGADOR 1 VENCE!");
+  });
+
   it("supports tagged template translations", () => {
     document.documentElement.setAttribute("lang", "pt-BR");
 
     expect(jt`File exceeds the ${10} MB limit (${"12 MB"})`).toBe(
       "O arquivo excede o limite de 10 MB (12 MB)",
     );
+  });
+
+  it("translates Bengali strings and interpolates parameters", () => {
+    document.documentElement.setAttribute("lang", "bn-BD");
+
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
+      "অবরুদ্ধ ফাইলের ধরন: .exe",
+    );
+    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("খেলোয়াড় 1 জিতেছে!");
+  });
+
+  it("translates Urdu strings and interpolates parameters", () => {
+    document.documentElement.setAttribute("lang", "ur-PK");
+
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
+      "مسدود فائل کی قسم: .exe",
+    );
+    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("کھلاڑی 1 جیت گیا!");
+  });
+
+  it("translates Traditional Chinese strings and interpolates parameters", () => {
+    document.documentElement.setAttribute("lang", "zh-TW");
+
+    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("玩家 1 獲勝！");
+  });
+
+  it("translates Italian strings and interpolates parameters", () => {
+    document.documentElement.setAttribute("lang", "it-IT");
+
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
+      "Tipo di file bloccato: .exe",
+    );
+    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("GIOCATORE 1 VINCE!");
+  });
+
+  it("translates Polish strings and interpolates parameters", () => {
+    document.documentElement.setAttribute("lang", "pl-PL");
+
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
+      "Zablokowany typ pliku: .exe",
+    );
+    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("GRACZ 1 WYGRYWA!");
+  });
+
+  it("translates Dutch strings and interpolates parameters", () => {
+    document.documentElement.setAttribute("lang", "nl-BE");
+
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
+      "Geblokkeerd bestandstype: .exe",
+    );
+    expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("SPELER 1 WINT!");
   });
 });
 
@@ -95,7 +172,28 @@ describe("pt-BR JS catalog", () => {
 
 describe("expanded JS catalogs", () => {
   it("preserves interpolation placeholders in every locale", () => {
-    const catalogs = [AR, DE, ES, FR, HI, ID, JA, KO, PT_BR, RU, TR, VI, ZH_HANS];
+    const catalogs = [
+      AR,
+      BN,
+      DE,
+      ES,
+      FR,
+      HI,
+      ID,
+      IT,
+      JA,
+      KO,
+      NL,
+      PL,
+      PT_BR,
+      PT_PT,
+      RU,
+      TR,
+      UR,
+      VI,
+      ZH_HANS,
+      ZH_HANT,
+    ];
     const placeholders = (message) => new Set(message.match(/%\{[A-Za-z0-9_]+\}/g) || []);
 
     for (const catalog of catalogs) {

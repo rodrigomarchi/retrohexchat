@@ -1,0 +1,127 @@
+# "msgid"s in this file come from errors.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: bn\n"
+"Language: bn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# This is a PO Template file.
+# 
+# `msgid`s here are often extracted from source code.
+# Add new translations manually only if they're dynamic
+# translations that can't be statically extracted.
+# 
+# Run `mix gettext.extract` to bring this file up to
+# date. Leave `msgstr`s empty as changing them here has no
+# effect: edit them in PO (`.po`) files instead.
+# From Ecto.Changeset.cast/4
+msgid "can't be blank"
+msgstr "ফাঁকা রাখা যাবে না"
+
+# From Ecto.Changeset.unique_constraint/3
+msgid "has already been taken"
+msgstr "পূর্বে গ্রহণ করা হয়েছে"
+
+# From Ecto.Changeset.put_change/3
+msgid "is invalid"
+msgstr "অবৈধ"
+
+# From Ecto.Changeset.validate_acceptance/3
+msgid "must be accepted"
+msgstr "স্বীকার করা উচিত"
+
+# From Ecto.Changeset.validate_format/3
+msgid "has invalid format"
+msgstr "অবৈধ বিন্যাস"
+
+# From Ecto.Changeset.validate_subset/3
+msgid "has an invalid entry"
+msgstr "অকার্যকর এন্ট্রি রয়েছে"
+
+# From Ecto.Changeset.validate_exclusion/3
+msgid "is reserved"
+msgstr "সংরক্ষিত রয়েছে"
+
+# From Ecto.Changeset.validate_confirmation/3
+msgid "does not match confirmation"
+msgstr "মিল পাওয়া যায়নি"
+
+# From Ecto.Changeset.no_assoc_constraint/3
+msgid "is still associated with this entry"
+msgstr "এই এন্ট্রির সাথে এখনো সংযুক্ত"
+
+msgid "are still associated with this entry"
+msgstr "এই এন্ট্রির সাথে এখনো সংযুক্ত"
+
+# From Ecto.Changeset.validate_length/3
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "উচিত ছিল %{count} বস্তু"
+msgstr[1] "উচিত ছিল %{count} বস্তু"
+
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "উচিত %{count} অক্ষর"
+msgstr[1] "উচিত %{count} অক্ষর"
+
+msgid "should be %{count} byte(s)"
+msgid_plural "should be %{count} byte(s)"
+msgstr[0] "উচিত %{count} বাইট"
+msgstr[1] "উচিত %{count} বাইট"
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "অন্তত ব্যবহার করা উচিত %{count} বস্তু"
+msgstr[1] "অন্তত ব্যবহার করা উচিত %{count} বস্তু"
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "অন্তত ব্যবহার করা উচিত %{count} অক্ষর"
+msgstr[1] "অন্তত ব্যবহার করা উচিত %{count} অক্ষর"
+
+msgid "should be at least %{count} byte(s)"
+msgid_plural "should be at least %{count} byte(s)"
+msgstr[0] "অন্তত ব্যবহার করা উচিত %{count} বাইট"
+msgstr[1] "অন্তত ব্যবহার করা উচিত %{count} বাইট"
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "বেশীরভাগ ক্ষেত্রে উচিত ছিল %{count} বস্তু"
+msgstr[1] "বেশীরভাগ ক্ষেত্রে উচিত ছিল %{count} বস্তু"
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "সর্বাধিক মান হওয়া উচিত %{count} অক্ষর"
+msgstr[1] "সর্বাধিক মান হওয়া উচিত %{count} অক্ষর"
+
+msgid "should be at most %{count} byte(s)"
+msgid_plural "should be at most %{count} byte(s)"
+msgstr[0] "সর্বাধিক মান হওয়া উচিত %{count} বাইট"
+msgstr[1] "সর্বাধিক মান হওয়া উচিত %{count} বাইট"
+
+# From Ecto.Changeset.validate_number/3
+msgid "must be less than %{number}"
+msgstr "থেকে কম %{number}"
+
+msgid "must be greater than %{number}"
+msgstr "থেকে বেশি হওয়া আবশ্যক %{number}"
+
+msgid "must be less than or equal to %{number}"
+msgstr "এর সমান অথবা কম %{number}"
+
+msgid "must be greater than or equal to %{number}"
+msgstr "এর সমান অথবা বেশী %{number}"
+
+msgid "must be equal to %{number}"
+msgstr "এর সমান হতে হবে %{number}"
+
+#: lib/retro_hex_chat_web/components/ui/helpers.ex:340
+#, elixir-autogen, elixir-format
+msgid "invalid value"
+msgstr "অবৈধ মান"

@@ -1,0 +1,443 @@
+# "msgid"s in this file come from chat.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: bn\n"
+"Language: bn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:144
+#, elixir-autogen, elixir-format
+msgid "  %{name} (%{type}, %{interval}s) → %{command}"
+msgstr "  %{name} (%{type}, %{interval}s) → %{command}"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:41
+#, elixir-autogen, elixir-format
+msgid "1 %{singular}"
+msgstr "1 %{singular}"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:152
+#, elixir-autogen, elixir-format
+msgid "Active timers:\n"
+msgstr "সক্রিয় টাইমার:"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:35
+#, elixir-autogen, elixir-format
+msgid "Alert"
+msgstr "সতর্কবার্তা"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:405
+#, elixir-autogen, elixir-format
+msgid "Alt"
+msgstr "উন্নতি"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:28
+#, elixir-autogen, elixir-format
+msgid "Beep"
+msgstr "বিপ"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:40
+#, elixir-autogen, elixir-format
+msgid "Blip"
+msgstr "পিপ্লিপ"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:36
+#, elixir-autogen, elixir-format
+msgid "Buzz"
+msgstr "বায"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:242
+#, elixir-autogen, elixir-format
+msgid "Chat"
+msgstr "আলাপন"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:33
+#, elixir-autogen, elixir-format
+msgid "Chime High"
+msgstr "ছিমে উচ্চ"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:32
+#, elixir-autogen, elixir-format
+msgid "Chime Long"
+msgstr "ছিম লং"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:34
+#, elixir-autogen, elixir-format
+msgid "Chime Low"
+msgstr "চিমে নিম্ন"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:31
+#, elixir-autogen, elixir-format
+msgid "Chime Short"
+msgstr "চিত্‍স"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:37
+#, elixir-autogen, elixir-format
+msgid "Click"
+msgstr "ক্লিক করুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:329
+#, elixir-autogen, elixir-format
+msgid "Conflict: %{first_action} and %{second_action} both bound to %{combo}"
+msgstr ""
+"দ্বন্দ্ব: %{first_action} এবং %{second_action} উভয় ক্ষেত্রেই %{combo}"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:406
+#, elixir-autogen, elixir-format
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: lib/retro_hex_chat/chat/policy.ex:84
+#, elixir-autogen, elixir-format
+msgid "Delete window has expired."
+msgstr "মেয়াদ উত্তীর্ণ হয়েছে ।"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:30
+#, elixir-autogen, elixir-format
+msgid "Ding High"
+msgstr "Ding উচ্চ"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:29
+#, elixir-autogen, elixir-format
+msgid "Ding Low"
+msgstr "শো লো"
+
+#: lib/retro_hex_chat/chat/policy.ex:41 lib/retro_hex_chat/chat/policy.ex:70
+#, elixir-autogen, elixir-format
+msgid "Edit window has expired."
+msgstr "উইন্ডো তালিকার মেয়াদ উত্তীর্ণ হয়েছে।"
+
+#: lib/retro_hex_chat/chat/alias_expander.ex:30
+#, elixir-autogen, elixir-format
+msgid ""
+"Expansion must not contain command chaining characters (|, &&, ;, or "
+"newlines)"
+msgstr ""
+"এক্সপন্স- এর মধ্যে কমান্ড- এর সাথে চেইনিং অক্ষরের নামও লেখা যাবে না "
+"(উদাহরণস্বরূপ, এবং, ও নতুন লাইন)"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:243
+#, elixir-autogen, elixir-format
+msgid "Formatting"
+msgstr "বিন্যাস"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:98
+#, elixir-autogen, elixir-format
+msgid ""
+"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
+"%{max_name_length} chars)."
+msgstr ""
+"টাইমার নাম বৈধ নয়। শুধুমাত্র অক্ষর, সংখ্যা, সংখ্যা, হাইফেন, অন্তর্ভুক্ত "
+"%{max_name_length} অক্ষর।"
+
+#: lib/retro_hex_chat/chat/policy.ex:18 lib/retro_hex_chat/chat/policy.ex:24
+#, elixir-autogen, elixir-format
+msgid "Message cannot be empty"
+msgstr "বার্তা ফাঁকা করা যাবে না"
+
+#: lib/retro_hex_chat/chat/policy.ex:38 lib/retro_hex_chat/chat/policy.ex:60
+#: lib/retro_hex_chat/chat/policy.ex:81
+#, elixir-autogen, elixir-format
+msgid "Message has already been deleted."
+msgstr "বার্তা মুছে ফেলা হয়েছে"
+
+#: lib/retro_hex_chat/chat/service.ex:31 lib/retro_hex_chat/chat/service.ex:46
+#: lib/retro_hex_chat/chat/service.ex:67 lib/retro_hex_chat/chat/service.ex:81
+#, elixir-autogen, elixir-format
+msgid "Message not found."
+msgstr "বার্তা পাওয়া যায়নি।"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:241
+#, elixir-autogen, elixir-format
+msgid "Navigation"
+msgstr "পরিদর্শন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:101
+#, elixir-autogen, elixir-format
+msgid "Next Window"
+msgstr "পরবর্তী উইন্ডো"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:136
+#, elixir-autogen, elixir-format
+msgid "No active timers."
+msgstr "কোনো সক্রিয় টাইমার উপস্থিত নেই।"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:27
+#, elixir-autogen, elixir-format
+msgid "None"
+msgstr "শূণ্য"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:39
+#, elixir-autogen, elixir-format
+msgid "Notify"
+msgstr "সূচিত"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:58
+#, elixir-autogen, elixir-format
+msgid "Open Address Book"
+msgstr "ঠিকানা তালিকায় খোলো"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:88
+#, elixir-autogen, elixir-format
+msgid "Open Help"
+msgstr "সহায়িকা খুলুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:70
+#, elixir-autogen, elixir-format
+msgid "Open Highlight Dialog"
+msgstr "সুনির্দিষ্ট ডায়লগ খুলুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:64
+#, elixir-autogen, elixir-format
+msgid "Open Ignore List"
+msgstr "তালিকা খোলো"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:82
+#, elixir-autogen, elixir-format
+msgid "Open Perform Dialog"
+msgstr "ডায়লগ খুলুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:76
+#, elixir-autogen, elixir-format
+msgid "Open URL Catcher"
+msgstr "একটি অ্যানালগ এবং ডিজিটাল ঘড়ি খোলোComment"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:89
+#, elixir-autogen, elixir-format
+msgid "Open the help dialog (menu only)"
+msgstr "সহায়তা সংক্রান্ত ডায়লগ প্রদর্শন করা হবে (শুধুমাত্র টেক্সট)"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:83
+#, elixir-autogen, elixir-format
+msgid "Open/close auto-perform settings"
+msgstr "সমর্থিত সমস্ত ফিল্টার প্রয়োগ করুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:71
+#, elixir-autogen, elixir-format
+msgid "Open/close highlight word settings"
+msgstr "খোলো [/ff]"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:53
+#, elixir-autogen, elixir-format
+msgid "Open/close search bar"
+msgstr "'%s' ফাইলটি খোলা হবে"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:77
+#, elixir-autogen, elixir-format
+msgid "Open/close the URL catcher"
+msgstr "Shp02 <fff0> URL Shory সনাক্ত করুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:59
+#, elixir-autogen, elixir-format
+msgid "Open/close the address book"
+msgstr "ঠিকানা তালিকা"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:65
+#, elixir-autogen, elixir-format
+msgid "Open/close the ignore list"
+msgstr "[ph102/fl0] উপেক্ষা করে উপেক্ষা করা হবে"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:95
+#, elixir-autogen, elixir-format
+msgid "Open/close the keyboard shortcut cheatsheet"
+msgstr "'% 2' নামক কীবোর্ড বিন্যাসের পংক্তি খুলুন"
+
+#: lib/retro_hex_chat/chat/service.ex:129
+#: lib/retro_hex_chat/chat/service.ex:146
+#, elixir-autogen, elixir-format
+msgid "Original message not found."
+msgstr "-------- মূল বার্তা --------"
+
+#: lib/retro_hex_chat/chat/policy.ex:44 lib/retro_hex_chat/chat/policy.ex:109
+#, elixir-autogen, elixir-format
+msgid "Please wait a few seconds before editing again."
+msgstr "অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করুন।"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:107
+#, elixir-autogen, elixir-format
+msgid "Previous Window"
+msgstr "পূর্ববর্তী উইন্ডো"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:127
+#, elixir-autogen, elixir-format
+msgid "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
+msgstr "সর্বনিম্ন বৃদ্ধি করার পূর্বের বিরতি %{min_repeat_interval} সেকেন্ড।"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:38
+#, elixir-autogen, elixir-format
+msgid "Ring"
+msgstr "রিং"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:407
+#, elixir-autogen, elixir-format
+msgid "Shift"
+msgstr "স্থানান্তর"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:94
+#, elixir-autogen, elixir-format
+msgid "Shortcut Cheatsheet"
+msgstr "শর্ট- কাট শিটComment"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:102
+#, elixir-autogen, elixir-format
+msgid "Switch to the next channel or PM"
+msgstr "পরবর্তী চ্যানেলে পরিবর্তন করুন অথবা Phust"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:108
+#, elixir-autogen, elixir-format
+msgid "Switch to the previous channel or PM"
+msgstr "পূর্ববর্তী চ্যানেলে পরিবর্তন করুন বা Phust"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:114
+#, elixir-autogen, elixir-format
+msgid "Switch to window 1"
+msgstr "উইন্ডোর ১-এ পরিবর্তন করুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:120
+#, elixir-autogen, elixir-format
+msgid "Switch to window 2"
+msgstr "উইন্ডোর ২-এ পরিবর্তন করুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:126
+#, elixir-autogen, elixir-format
+msgid "Switch to window 3"
+msgstr "উইন্ডোর ৩-এ পরিবর্তন করুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:132
+#, elixir-autogen, elixir-format
+msgid "Switch to window 4"
+msgstr "৪ নং ডেস্কটপে যাও"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:138
+#, elixir-autogen, elixir-format
+msgid "Switch to window 5"
+msgstr "উইন্ডোর ৫-এ পরিবর্তন করুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:144
+#, elixir-autogen, elixir-format
+msgid "Switch to window 6"
+msgstr "0 নং স্ক্রীণে যাও"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:150
+#, elixir-autogen, elixir-format
+msgid "Switch to window 7"
+msgstr "৭- এ পরিবর্তন করুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:156
+#, elixir-autogen, elixir-format
+msgid "Switch to window 8"
+msgstr "কর্মক্ষেত্র ৮'এ পরিবর্তন করুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:162
+#, elixir-autogen, elixir-format
+msgid "Switch to window 9"
+msgstr "কর্মক্ষেত্র ৯'এ পরিবর্তন করুন"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:244
+#: lib/retro_hex_chat/chat/service.ex:96
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "সিস্টেম"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:52
+#, elixir-autogen, elixir-format
+msgid "Toggle Search"
+msgstr "অনুসন্ধান টগল করুন"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:76
+#: lib/retro_hex_chat/chat/timer_manager.ex:80
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> <seconds> <command>"
+msgstr "ব্যবহারপ্রণালী: <fot3> <fotifname> <f বরং>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:17
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> [repeat] <seconds> <command>"
+msgstr "ব্যবহারপ্রণালী: <fot3> <fotifname> <f বরং>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:51
+#: lib/retro_hex_chat/chat/timer_manager.ex:55
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> repeat <seconds> <command>"
+msgstr "ব্যবহারপ্রণালী: <fot3> <fiff> <f বরং\\.sink>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:25
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer stop <name>"
+msgstr "ব্যবহারপ্রণালী: <fot1> <fiff> বন্ধ করা উচিত"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:41
+#, elixir-autogen, elixir-format
+msgid "Whoosh"
+msgstr "কেশ"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:113
+#, elixir-autogen, elixir-format
+msgid "Window 1"
+msgstr "উইন্ডো ১"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:119
+#, elixir-autogen, elixir-format
+msgid "Window 2"
+msgstr "উইণ্ডো ২"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:125
+#, elixir-autogen, elixir-format
+msgid "Window 3"
+msgstr "উইণ্ডো ৩"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:131
+#, elixir-autogen, elixir-format
+msgid "Window 4"
+msgstr "উইন্ডো ৪"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:137
+#, elixir-autogen, elixir-format
+msgid "Window 5"
+msgstr "উইন্ডো ৫"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:143
+#, elixir-autogen, elixir-format
+msgid "Window 6"
+msgstr "উইণ্ডো ৬"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:149
+#, elixir-autogen, elixir-format
+msgid "Window 7"
+msgstr "উইন্ডো ৭"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:155
+#, elixir-autogen, elixir-format
+msgid "Window 8"
+msgstr "উইণ্ডো ৮"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:161
+#, elixir-autogen, elixir-format
+msgid "Window 9"
+msgstr "উইন্ডো ৯"
+
+#: lib/retro_hex_chat/chat/policy.ex:78
+#, elixir-autogen, elixir-format
+msgid "You cannot delete other users' messages."
+msgstr "অন্যান্য ব্যবহারকারীদের বার্তা মুছে ফেলা যাবে না।"
+
+#: lib/retro_hex_chat/chat/policy.ex:35 lib/retro_hex_chat/chat/policy.ex:57
+#, elixir-autogen, elixir-format
+msgid "You cannot edit other users' messages."
+msgstr "আপনি অন্য ব্যবহারকারীর বার্তা সম্পাদন করতে পারবেন না।"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:31
+#, elixir-autogen, elixir-format
+msgid "just now"
+msgstr "এখন"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:9
+#: lib/retro_hex_chat/chat/time_formatter.ex:21
+#, elixir-autogen, elixir-format
+msgid "less than a minute"
+msgstr "এক মিনিটের মধ্যে"

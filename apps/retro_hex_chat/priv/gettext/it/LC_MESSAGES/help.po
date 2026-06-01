@@ -1,0 +1,4925 @@
+# "msgid"s in this file come from help.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: it; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: it\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:61
+#, elixir-autogen, elixir-format
+msgid "!prefix"
+msgstr "Prefisso!"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:214
+#, elixir-autogen, elixir-format
+msgid "+K No Knock"
+msgstr "+K No Knock"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:205
+#, elixir-autogen, elixir-format
+msgid "+R Registered Only"
+msgstr "+R Solo registrato"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:188
+#, elixir-autogen, elixir-format
+msgid "+c Strip Colors"
+msgstr "+c strisce colori"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:138
+#, elixir-autogen, elixir-format
+msgid "+h Half-Operator"
+msgstr "+h Mezzo Operatore"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:75
+#, elixir-autogen, elixir-format
+msgid "+i Invite Only"
+msgstr "+i Invita solo"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:226
+#, elixir-autogen, elixir-format
+msgid "+j Join Throttle"
+msgstr "+j Unisciti a Throttle"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:92
+#, elixir-autogen, elixir-format
+msgid "+k Channel Key"
+msgstr "+k chiave del canale"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:100
+#, elixir-autogen, elixir-format
+msgid "+l User Limit"
+msgstr "+l Limite utente"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:66
+#, elixir-autogen, elixir-format
+msgid "+m Moderated"
+msgstr "+m Moderatore"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:156
+#, elixir-autogen, elixir-format
+msgid "+n No External Messages"
+msgstr "+n Nessun messaggio esterno"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:126
+#, elixir-autogen, elixir-format
+msgid "+o Operator"
+msgstr "+ Operatore"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:176
+#, elixir-autogen, elixir-format
+msgid "+p Private"
+msgstr "+p Privato"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:114
+#, elixir-autogen, elixir-format
+msgid "+q Owner"
+msgstr "+q proprietario"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:168
+#, elixir-autogen, elixir-format
+msgid "+s Secret"
+msgstr "+s Segreto"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:84
+#, elixir-autogen, elixir-format
+msgid "+t Topic Lock"
+msgstr "+t Topic Lock"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:147
+#, elixir-autogen, elixir-format
+msgid "+v Voice"
+msgstr "+v Voce"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:491
+#, elixir-autogen, elixir-format
+msgid "/admin channel"
+msgstr "/admin channel"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:515
+#, elixir-autogen, elixir-format
+msgid "/admin cs"
+msgstr "/admin cs"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:527
+#, elixir-autogen, elixir-format
+msgid "/admin debug"
+msgstr "/admin debug"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:539
+#, elixir-autogen, elixir-format
+msgid "/admin log"
+msgstr "/admin log"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:503
+#, elixir-autogen, elixir-format
+msgid "/admin ns"
+msgstr "/admin ns"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:560
+#, elixir-autogen, elixir-format
+msgid "/admin nuke"
+msgstr "/admin nuke"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:467
+#, elixir-autogen, elixir-format
+msgid "/admin server"
+msgstr "/admin server"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:548
+#, elixir-autogen, elixir-format
+msgid "/admin turn"
+msgstr "/admin turn"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:479
+#, elixir-autogen, elixir-format
+msgid "/admin user"
+msgstr "/admin user"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:32
+#, elixir-autogen, elixir-format
+msgid "/bot Command Reference"
+msgstr "/bot Command Reference"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:243
+#, elixir-autogen, elixir-format
+msgid "/knock Command"
+msgstr "/knock Command"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1945
+#, elixir-autogen, elixir-format
+msgid ""
+"1 long epic round — igloo needs 20 pieces, all enemies from the start, "
+msgstr ""
+"1 giro epico lungo — igloo ha bisogno di 20 pezzi, tutti i nemici "
+"dall'inizio,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1355
+#, elixir-autogen, elixir-format
+msgid "10 sections of increasing difficulty. Destroy bridges to advance. "
+msgstr "10 sezioni di crescente difficoltà. Distruggi ponti per avanzare."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1176
+#, elixir-autogen, elixir-format
+msgid ""
+"2-minute rounds, best of 3. Modes: Classic (open field) and Maze Battle. "
+msgstr ""
+"2 minuti di giri, meglio di 3. Modalità: Classic (campo aperto) e Maze "
+"Battle."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1289
+#, elixir-autogen, elixir-format
+msgid ""
+"3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D "
+"to move."
+msgstr ""
+"3 vite condivise, 50 blocchi neon (5 file), la palla accelera. Tasti di "
+"freccia o A <ph0> </ph0> per muoversi."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1695
+#, elixir-autogen, elixir-format
+msgid "3-minute race in permanent darkness with fog bursts. "
+msgstr "Gara di 3 minuti nelle tenebre permanenti con esplosioni di nebbia."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2509
+#, elixir-autogen, elixir-format
+msgid "32 deathmatch-focused arena maps for the DOOM engine. BSD license."
+msgstr ""
+"32 mappe dell'arena focalizzate sul deathmatch per il motore DOOM. Patente "
+"BSD."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1404
+#, elixir-autogen, elixir-format
+msgid "5 sections of intense River Raid action — river starts narrow, "
+msgstr "5 sezioni di azione intensa del fiume Raid — il fiume inizia stretto,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1637
+#, elixir-autogen, elixir-format
+msgid "5 waves of pure chaos from the start. "
+msgstr "5 onde di puro caos fin dall'inizio."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1034
+#, elixir-autogen, elixir-format
+msgid "7 days"
+msgstr "7 giorni"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1723
+#, elixir-autogen, elixir-format
+msgid "90 seconds to score maximum overtakes. "
+msgstr "90 secondi per ottenere il massimo superamento."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2596
+#, elixir-autogen, elixir-format
+msgid ""
+"A Viking-themed DOOM total conversion with hand-drawn pixel art — axes, "
+"bows, and runic magic. Cacoward 2018 winner."
+msgstr ""
+"Una conversione totale del DOOM a tema vichingo con pixel art disegnato a "
+"mano — assi, archi e magia runica. Cacoward 2018 vincitore."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2480
+#, elixir-autogen, elixir-format
+msgid ""
+"A complete free replacement for DOOM II — 32 levels with the Super Shotgun. "
+"Compatible with community PWAD mods."
+msgstr ""
+"Una sostituzione gratuita completa per DOOM II — 32 livelli con il Super "
+"Shotgun. Compatibile con le mod PWAD della comunità."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2651
+#, elixir-autogen, elixir-format
+msgid ""
+"A complete free replacement for Quake — original levels, art, and music "
+"under BSD license."
+msgstr ""
+"Una sostituzione gratuita completa per Quake — livelli originali, arte e "
+"musica sotto licenza BSD."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2450
+#, elixir-autogen, elixir-format
+msgid ""
+"A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels with "
+"original art and music."
+msgstr ""
+"Un completo sostituto gratuito per Ultimate DOOM — 4 episodi, 36 livelli con"
+" arte originale e musica."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2565
+#, elixir-autogen, elixir-format
+msgid ""
+"A cyberpunk DOOM total conversion with new weapons, enemies, and levels. "
+"Standalone v1.2 IWAD."
+msgstr ""
+"Una conversione totale di DOOM cyberpunk con nuove armi, nemici e livelli. "
+"Standalone v1.2 IWAD."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:121
+#, elixir-autogen, elixir-format
+msgid ""
+"Access all features through the toolbar buttons organized in six groups."
+msgstr ""
+"Accedi a tutte le funzionalità tramite i pulsanti della barra degli "
+"strumenti organizzati in sei gruppi."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:91
+#, elixir-autogen, elixir-format
+msgid ""
+"Access user actions and channel operations through right-click context "
+"menus."
+msgstr ""
+"Accedere alle azioni degli utenti e alle operazioni dei canali tramite menu "
+"di scelta rapida."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:152
+#, elixir-autogen, elixir-format
+msgid "Add a user to your ignore list to hide their messages and actions."
+msgstr ""
+"Aggiungi un utente alla tua lista ignora per nascondere i loro messaggi e "
+"azioni."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:332
+#, elixir-autogen, elixir-format
+msgid ""
+"Add custom items to right-click context menus for quick access to commands."
+msgstr ""
+"Aggiungi elementi personalizzati per fare clic con il pulsante destro del "
+"mouse sui menu contestuali per accedere rapidamente ai comandi."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:277
+#, elixir-autogen, elixir-format
+msgid ""
+"Add or remove users from your notify list to track when they connect or "
+"disconnect."
+msgstr ""
+"Aggiungi o rimuovi gli utenti dall'elenco delle notifiche per tracciare "
+"quando si collegano o si disconnetteno."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:30
+#, elixir-autogen, elixir-format
+msgid "Address Book"
+msgstr "Indirizzo Prenota"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:49
+#: lib/retro_hex_chat/chat/help_topics.ex:77
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:456
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:468
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:480
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:492
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:504
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:516
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:528
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:540
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:549
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:561
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1049
+#, elixir-autogen, elixir-format
+msgid "Admin & Server"
+msgstr "Admin & Server"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1048
+#, elixir-autogen, elixir-format
+msgid "Admin Console"
+msgstr "Console di amministrazione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:295
+#, elixir-autogen, elixir-format
+msgid "Aliases"
+msgstr "Aliasi"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:422
+#, elixir-autogen, elixir-format
+msgid "Align nicknames in a fixed-width column for improved chat readability."
+msgstr ""
+"Allineare i soprannomi in una colonna di larghezza fissa per una migliore "
+"leggibilità della chat."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:113
+#, elixir-autogen, elixir-format
+msgid "Allow specific users to bypass channel bans using ban exception masks."
+msgstr ""
+"Permettere agli utenti specifici di bypassare i divieti di canale "
+"utilizzando maschere di eccezione di divieto."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:131
+#, elixir-autogen, elixir-format
+msgid ""
+"Allow specific users to join invite-only channels without an explicit "
+"invitation."
+msgstr ""
+"Consenti agli utenti specifici di unirsi a canali di sola invito senza un "
+"invito esplicito."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:919
+#, elixir-autogen, elixir-format
+msgid ""
+"Animated visual diagram showing the bilateral P2P link with real-time status"
+" and peer info."
+msgstr ""
+"Diagramma visivo animato che mostra il collegamento P2P bilaterale con lo "
+"stato in tempo reale e informazioni peer."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1905
+#, elixir-autogen, elixir-format
+msgid ""
+"Arctic construction race — jump on floating ice blocks to build your igloo "
+"while "
+msgstr ""
+"Gara di costruzione artica — saltare su blocchi di ghiaccio galleggianti per"
+" costruire il tuo igloo mentre"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:810
+#, elixir-autogen, elixir-format
+msgid "Audio Call"
+msgstr "Chiamata audio"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:76
+#, elixir-autogen, elixir-format
+msgid ""
+"Authenticate with your registered nickname on connect to access your saved "
+"settings and channels."
+msgstr ""
+"Autentica con il tuo soprannome registrato sulla connessione per accedere "
+"alle impostazioni e ai canali salvati."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:986
+#, elixir-autogen, elixir-format
+msgid "Auto-Join Channels"
+msgstr "Canali di accesso automatico"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:199
+#, elixir-autogen, elixir-format
+msgid "Auto-Reconnect"
+msgstr "Ricollegamento automatico"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:375
+#, elixir-autogen, elixir-format
+msgid "Auto-Respond"
+msgstr "Auto-Risponde"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:559
+#, elixir-autogen, elixir-format
+msgid ""
+"Auto-expanding input box with multi-line support and contextual "
+"placeholders."
+msgstr ""
+"Scatola di ingresso di espansione automatica con supporto multi-linea e "
+"segnaposto contestuale."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:169
+#, elixir-autogen, elixir-format
+msgid ""
+"Auto-moderation: word filtering, spam/flood detection, caps lock abuse "
+"prevention."
+msgstr ""
+"Auto-moderazione: filtraggio delle parole, rilevamento di errori di spam, "
+"caps bloccano la prevenzione degli abusi."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:510
+#, elixir-autogen, elixir-format
+msgid "Autocomplete"
+msgstr "Autocompleto"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:212
+#, elixir-autogen, elixir-format
+msgid ""
+"Automatically reconnect to the server when the connection is lost with "
+"exponential backoff."
+msgstr ""
+"Ricollegare automaticamente al server quando la connessione viene persa con "
+"backoff esponenziale."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:489
+#, elixir-autogen, elixir-format
+msgid "Automatically reply to private messages when you are marked as away."
+msgstr ""
+"Risponde automaticamente ai messaggi privati quando si è contrassegnati come"
+" via."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:51
+#: lib/retro_hex_chat/chat/help_topics.ex:79
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:24
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:33
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:51
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:317
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:329
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:384
+#: lib/retro_hex_chat/chat/help_topics/features.ex:179
+#: lib/retro_hex_chat/chat/help_topics/features.ex:296
+#: lib/retro_hex_chat/chat/help_topics/features.ex:308
+#: lib/retro_hex_chat/chat/help_topics/features.ex:320
+#: lib/retro_hex_chat/chat/help_topics/features.ex:376
+#, elixir-autogen, elixir-format
+msgid "Automation"
+msgstr "Automazione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:484
+#, elixir-autogen, elixir-format
+msgid "Away Auto-Reply"
+msgstr "Away Auto-Reply"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:101
+#, elixir-autogen, elixir-format
+msgid "Ban Exceptions (+e)"
+msgstr "Eccezioni di ban (+e)"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:79
+#, elixir-autogen, elixir-format
+msgid "Ban a user from a channel by nickname or hostmask pattern."
+msgstr "Banare un utente da un canale da soprannome o modello hostmask."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2749
+#, elixir-autogen, elixir-format
+msgid "Beneath a Steel Sky"
+msgstr "Sotto un cielo d'acciaio"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2134
+#, elixir-autogen, elixir-format
+msgid "Beneath a Steel Sky, Dreamweb, Drascula, Flight of the Amazon Queen, "
+msgstr ""
+"Sotto un cielo d'acciaio, Dreamweb, Drascula, Volo della Regina delle "
+"Amazzoni,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1832
+#, elixir-autogen, elixir-format
+msgid "Best of 3 runs with rising difficulty. "
+msgstr "Il migliore di 3 corre con difficoltà crescente."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1633
+#, elixir-autogen, elixir-format
+msgid "Blitz Space Invaders — instant alien drops, easier combo thresholds, "
+msgstr ""
+"Blitz Space Invaders — gocce aliene istantanee, soglie combo più facili,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1270
+#, elixir-autogen, elixir-format
+msgid "Block Breakers"
+msgstr "Interruttori di blocco"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:164
+#, elixir-autogen, elixir-format
+msgid "Block messages from users who are not in the channel."
+msgstr "Blocca messaggi da utenti che non sono nel canale."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:56
+#, elixir-autogen, elixir-format
+msgid "Bot Custom Commands"
+msgstr "Comandi personalizzati Bot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:76
+#, elixir-autogen, elixir-format
+msgid "Bot Dice Capability"
+msgstr "Capacità dei dadi Bot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:155
+#, elixir-autogen, elixir-format
+msgid "Bot Moderation Capability"
+msgstr "Capacità di moderazione Bot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:137
+#, elixir-autogen, elixir-format
+msgid "Bot RSS Capability"
+msgstr "Bot RSS Capability"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:119
+#, elixir-autogen, elixir-format
+msgid "Bot Scheduler Capability"
+msgstr "Capacità di pianificazione Bot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:98
+#, elixir-autogen, elixir-format
+msgid "Bot Trivia Capability"
+msgstr "Capacità di Bot Trivia"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:11
+#, elixir-autogen, elixir-format
+msgid "BotService Overview"
+msgstr "Panoramica di BotService"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1663
+#, elixir-autogen, elixir-format
+msgid ""
+"Both players race on the same road — overtake AI cars and your opponent for "
+"points. "
+msgstr ""
+"Entrambi i giocatori gareggiano sulla stessa strada — superano le auto AI e "
+"il vostro avversario per i punti."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:48
+#: lib/retro_hex_chat/chat/help_topics.ex:76
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:12
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:33
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:57
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:77
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:99
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:120
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:138
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:156
+#, elixir-autogen, elixir-format
+msgid "Bots"
+msgstr "Bots"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:711
+#, elixir-autogen, elixir-format
+msgid ""
+"Bottom bar showing connection status, lag indicator, clock, and channel "
+"information."
+msgstr ""
+"Barra inferiore che mostra lo stato di connessione, indicatore di ritardo, "
+"orologio e informazioni del canale."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:203
+#, elixir-autogen, elixir-format
+msgid "Browse all available channels with their topics and user counts."
+msgstr ""
+"Sfoglia tutti i canali disponibili con i loro argomenti e conteggi degli "
+"utenti."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:498
+#, elixir-autogen, elixir-format
+msgid "Browse and insert emoji into your messages using the emoji picker."
+msgstr ""
+"Sfoglia e inserisci emoji nei tuoi messaggi utilizzando il raccoglitore "
+"emoji."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1487
+#, elixir-autogen, elixir-format
+msgid ""
+"Bullets ricochet once off ceiling/floor. Aim up or down with arrow keys. "
+msgstr ""
+"Proiettili ricochet una volta al di fuori del soffitto Punta su o giù con i "
+"tasti freccia."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:865
+#, elixir-autogen, elixir-format
+msgid "Call Quality"
+msgstr "Qualità delle chiamate"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:29
+#, elixir-autogen, elixir-format
+msgid "ChanServ Overview"
+msgstr "ChanServ Panoramica"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:520
+#, elixir-autogen, elixir-format
+msgid ""
+"ChanServ administration: drop registrations, transfer founder, manage access"
+" lists."
+msgstr ""
+"Amministrazione ChanServ: goccia iscrizioni, fondatore del trasferimento, "
+"gestire liste di accesso."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:244
+#, elixir-autogen, elixir-format
+msgid "Change your current nickname to a new one."
+msgstr "Cambia il tuo attuale soprannome a uno nuovo."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:80
+#, elixir-autogen, elixir-format
+msgid "Channel Central"
+msgstr "Canale centrale"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:138
+#, elixir-autogen, elixir-format
+msgid "Channel Invites"
+msgstr "Invito del canale"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:46
+#: lib/retro_hex_chat/chat/help_topics.ex:74
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:12
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:38
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:67
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:76
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:85
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:93
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:101
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:115
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:127
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:139
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:148
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:157
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:169
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:177
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:189
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:206
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:215
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:227
+#, elixir-autogen, elixir-format
+msgid "Channel Modes"
+msgstr "Modalità del canale"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:37
+#, elixir-autogen, elixir-format
+msgid "Channel Modes Overview"
+msgstr "Panoramica delle modalità del canale"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:11
+#, elixir-autogen, elixir-format
+msgid "Channel Permissions"
+msgstr "Permissioni del canale"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:44
+#: lib/retro_hex_chat/chat/help_topics.ex:72
+#: lib/retro_hex_chat/chat/help_topics/features.ex:81
+#: lib/retro_hex_chat/chat/help_topics/features.ex:102
+#: lib/retro_hex_chat/chat/help_topics/features.ex:121
+#: lib/retro_hex_chat/chat/help_topics/features.ex:139
+#: lib/retro_hex_chat/chat/help_topics/features.ex:158
+#: lib/retro_hex_chat/chat/help_topics/features.ex:987
+#, elixir-autogen, elixir-format
+msgid "Channel Settings"
+msgstr "Impostazioni del canale"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:43
+#: lib/retro_hex_chat/chat/help_topics.ex:71
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:244
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:157
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:175
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:199
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:216
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:309
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:393
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:35
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:86
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "Canali"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:999
+#, elixir-autogen, elixir-format
+msgid "Channels are automatically remembered and rejoined when you reconnect."
+msgstr ""
+"I canali vengono automaticamente ricordati e si uniscono quando si "
+"ricollega."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:460
+#, elixir-autogen, elixir-format
+msgid "Character Counter"
+msgstr "Contenitore di caratteri"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:40
+#: lib/retro_hex_chat/chat/help_topics.ex:68
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:12
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:105
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:140
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:208
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:229
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:249
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:347
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:355
+#: lib/retro_hex_chat/chat/help_topics/features.ex:282
+#: lib/retro_hex_chat/chat/help_topics/features.ex:759
+#: lib/retro_hex_chat/chat/help_topics/features.ex:778
+#: lib/retro_hex_chat/chat/help_topics/features.ex:794
+#: lib/retro_hex_chat/chat/help_topics/features.ex:966
+#, elixir-autogen, elixir-format
+msgid "Chat & Messaging"
+msgstr "Chat &amp; Messaggi"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:53
+#: lib/retro_hex_chat/chat/help_topics.ex:81
+#: lib/retro_hex_chat/chat/help_topics/features.ex:60
+#: lib/retro_hex_chat/chat/help_topics/features.ex:396
+#: lib/retro_hex_chat/chat/help_topics/features.ex:418
+#: lib/retro_hex_chat/chat/help_topics/features.ex:430
+#: lib/retro_hex_chat/chat/help_topics/features.ex:503
+#: lib/retro_hex_chat/chat/help_topics/features.ex:629
+#: lib/retro_hex_chat/chat/help_topics/features.ex:647
+#: lib/retro_hex_chat/chat/help_topics/features.ex:669
+#: lib/retro_hex_chat/chat/help_topics/features.ex:681
+#, elixir-autogen, elixir-format
+msgid "Chat Display"
+msgstr "Visualizzazione chat"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:52
+#: lib/retro_hex_chat/chat/help_topics.ex:80
+#: lib/retro_hex_chat/chat/help_topics/features.ex:449
+#: lib/retro_hex_chat/chat/help_topics/features.ex:461
+#: lib/retro_hex_chat/chat/help_topics/features.ex:494
+#: lib/retro_hex_chat/chat/help_topics/features.ex:511
+#: lib/retro_hex_chat/chat/help_topics/features.ex:531
+#: lib/retro_hex_chat/chat/help_topics/features.ex:548
+#: lib/retro_hex_chat/chat/help_topics/features.ex:608
+#, elixir-autogen, elixir-format
+msgid "Chat Input"
+msgstr "Input di chat"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2522
+#, elixir-autogen, elixir-format
+msgid "Chex Quest"
+msgstr "Chex Quest"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1606
+#, elixir-autogen, elixir-format
+msgid ""
+"Classic co-op Space Invaders — two cannons fighting the same alien waves on "
+"a shared screen. "
+msgstr ""
+"Classic co-op Space Invaders — due cannoni che combattono le stesse onde "
+"aliene su uno schermo condiviso."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:109
+#, elixir-autogen, elixir-format
+msgid "Clear all messages from the current channel or conversation view."
+msgstr ""
+"Cancellare tutti i messaggi dal canale corrente o vista conversazione."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2146
+#, elixir-autogen, elixir-format
+msgid ""
+"Click any game to see its detailed description, keyboard controls, and "
+msgstr ""
+"Fare clic su qualsiasi gioco per vedere la sua descrizione dettagliata, "
+"controlli della tastiera e"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:410
+#, elixir-autogen, elixir-format
+msgid ""
+"Clickable nicknames, channels, and URLs with hover cards and link previews."
+msgstr "Soprannomi, canali e URL cliccabili con carte hover e anteprime link."
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:23
+#, elixir-autogen, elixir-format
+msgid "Colors"
+msgstr "Colori"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1580
+#, elixir-autogen, elixir-format
+msgid ""
+"Combos send extra drops. UFO kills send armored aliens. 10 waves of "
+"escalating chaos. "
+msgstr ""
+"Combos manda gocce extra. UFO uccide inviare alieni blindati. 10 onde di "
+"caos crescente."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2850
+#, elixir-autogen, elixir-format
+msgid ""
+"Comic Indiana Jones-style adventure in the Amazon (1995) — pilot Joe King "
+"vs. a mad scientist's dinosaur plot."
+msgstr ""
+"Comic Indiana Jones avventura in stile in Amazon (1995) — pilota Joe King "
+"vs. trama di dinosauro di uno scienziato pazzo."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:530
+#, elixir-autogen, elixir-format
+msgid "Command Syntax Tooltip"
+msgstr "Comando Syntax Tooltip"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Complete reference of all available IRC slash commands with syntax and "
+"examples."
+msgstr ""
+"Riferimento completo di tutti i comandi IRC slash disponibili con sintassi "
+"ed esempi."
+
+#: lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Complete reference of keyboard shortcuts for navigation, messaging, and "
+"interface control."
+msgstr ""
+"Riferimento completo delle scorciatoie da tastiera per la navigazione, la "
+"messaggistica e il controllo dell'interfaccia."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:388
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure automatic responses triggered by events like user joins or keyword"
+" matches."
+msgstr ""
+"Configurare le risposte automatiche attivate da eventi come unisciti "
+"all'utente o partite di parole chiave."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:55
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure automatic responses triggered by events like users joining a "
+"channel."
+msgstr ""
+"Configurare le risposte automatiche innescate da eventi come gli utenti che "
+"si uniscono a un canale."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:192
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure commands and channels that execute automatically when you connect."
+msgstr ""
+"Configurare comandi e canali che vengono eseguiti automaticamente quando si "
+"collega."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:265
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure sound notifications for events like mentions, private messages, "
+"and joins."
+msgstr ""
+"Configurare le notifiche sonore per eventi come menzioni, messaggi privati, "
+"e si unisce."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:265
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure where incoming notices are displayed — active window, status, or "
+"source channel."
+msgstr ""
+"Configurare dove vengono visualizzati avvisi in arrivo — finestra attiva, "
+"stato o canale sorgente."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:52
+#, elixir-autogen, elixir-format
+msgid ""
+"Configure words that trigger visual and audio alerts when mentioned in chat."
+msgstr ""
+"Configurare le parole che attivano gli avvisi visivi e audio quando "
+"menzionato in chat."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:71
+#, elixir-autogen, elixir-format
+msgid "Connect Authentication"
+msgstr "Collegare l'autenticazione"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:23
+#, elixir-autogen, elixir-format
+msgid "Connecting"
+msgstr "Collegamento"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:58
+#: lib/retro_hex_chat/chat/help_topics.ex:86
+#: lib/retro_hex_chat/chat/help_topics/features.ex:200
+#: lib/retro_hex_chat/chat/help_topics/features.ex:719
+#: lib/retro_hex_chat/chat/help_topics/features.ex:739
+#, elixir-autogen, elixir-format
+msgid "Connection"
+msgstr "Connessione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:903
+#, elixir-autogen, elixir-format
+msgid "Connection Diagram"
+msgstr "Diagramma di connessione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:738
+#, elixir-autogen, elixir-format
+msgid "Connection States"
+msgstr "Stati membri"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:42
+#: lib/retro_hex_chat/chat/help_topics.ex:70
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:148
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:273
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:414
+#: lib/retro_hex_chat/chat/help_topics/features.ex:12
+#: lib/retro_hex_chat/chat/help_topics/features.ex:31
+#: lib/retro_hex_chat/chat/help_topics/features.ex:48
+#: lib/retro_hex_chat/chat/help_topics/features.ex:69
+#, elixir-autogen, elixir-format
+msgid "Contacts & Notify"
+msgstr "Contatti & Notifica"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:81
+#, elixir-autogen, elixir-format
+msgid "Context Menu"
+msgstr "Menu di testo"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:584
+#, elixir-autogen, elixir-format
+msgid "Context Menus"
+msgstr "Menù contestuali"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:628
+#, elixir-autogen, elixir-format
+msgid "Contextual Tips"
+msgstr "Suggerimenti contestuali"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1180
+#, elixir-autogen, elixir-format
+msgid ""
+"Controls: Arrow keys (Left/Right rotate, Up forward) or A/D/W, Space or "
+"Shift to fire."
+msgstr ""
+"Comandi: Tasti di freccia (Left <ph0> < /ph0> ruotare, In avanti) o A <ph1> "
+"< /ph1>"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1322
+#, elixir-autogen, elixir-format
+msgid ""
+"Controls: Arrow keys (Up/Down) to move shield, Space to catch/release "
+"fireball."
+msgstr ""
+"Controlli: Tasti freccia (Up <ph0> </ph0>) per spostare lo schermo, Spazio "
+"per catturare la palla di fuoco di assunzione di <ph1>"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1671
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1697
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1724
+#, elixir-autogen, elixir-format
+msgid ""
+"Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo."
+msgstr ""
+"Controlli: Tasti freccia (←/→ corsia, ↑ accel, ↓ freno), Spazio o "
+"spostamento per turbo."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1833
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1857
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1881
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys (←/→) or A/D to steer."
+msgstr "Comandi: Tasti freccia (←/→) o A <ph0> < /ph0> per guidare."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1584
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1611
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1638
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or A/D to move, Space to fire."
+msgstr ""
+"Controlli: tasti freccia o A <ph0> < / f0> per muoversi, spazio per sparare."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1460
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1520
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1548
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to fire."
+msgstr ""
+"Controlli: tasti freccia o WASD per muoversi, spazio o spostamento al fuoco."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1434
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to punch."
+msgstr ""
+"Controlli: tasti freccia o WASD per muoversi, spazio o spostamento per "
+"pugno."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1755
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1778
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1801
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to serve."
+msgstr ""
+"Controlli: tasti freccia o WASD per muoversi, spazio o spostamento per "
+"servire."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2025
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2054
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2083
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle."
+msgstr ""
+"Controlli: tasti freccia o WASD per muoversi, spazio o spostamento per "
+"sparare a μ0> μ>"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1953
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1983
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Up/Down to jump between rows."
+msgstr ""
+"Comandi: Freccia chiavi o WASD per muoversi, Su <ph0> < /ph0> saltare tra le"
+" righe."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1492
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move/aim, Space or Shift to fire."
+msgstr ""
+"Comandi: Freccia chiavi o WASD per spostare i tasti <ph0> < /ph0>, Spazio o "
+"spostamento al fuoco."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1210
+#, elixir-autogen, elixir-format
+msgid ""
+"Controls: Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to "
+"warp."
+msgstr ""
+"Comandi: Freccia chiavi o WASD per spingere <ph0> < /ph0>, Spazio per il "
+"fuoco, Giù"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1356
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1406
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine."
+msgstr ""
+"Controlli: Tasti freccia per spostare <ph0> </ph0>, Spazio per il fuoco, "
+"spostamento per la mia."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1386
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys to move/speed, Space to fire."
+msgstr ""
+"Controlli: Tasti freccia per spostare <ph0> < /ph0>, Spazio per sparare."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:23
+#, elixir-autogen, elixir-format
+msgid "Conversations"
+msgstr "Conversazioni"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1285
+#, elixir-autogen, elixir-format
+msgid ""
+"Cooperative Breakout with cyberpunk visuals. P1 controls the bottom paddle, "
+"P2 the top. "
+msgstr ""
+"Cooperative Breakout con visuali cyberpunk. P1 controlla la pagaia "
+"inferiore, P2 la parte superiore."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:680
+#, elixir-autogen, elixir-format
+msgid "Copy Feedback"
+msgstr "Copia Feedback"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:441
+#, elixir-autogen, elixir-format
+msgid "Copy message text to the clipboard using the right-click context menu."
+msgstr ""
+"Copiare il testo del messaggio sul clipboard utilizzando il menu di scelta "
+"rapida."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:25
+#, elixir-autogen, elixir-format
+msgid ""
+"Create and manage extensible bots with pluggable capabilities for channel "
+"automation."
+msgstr ""
+"Creare e gestire bot estensibili con capacità pluggable per l'automazione "
+"dei canali."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:28
+#, elixir-autogen, elixir-format
+msgid "Create custom command aliases that expand into one or more commands."
+msgstr ""
+"Crea alias di comando personalizzati che si espandono in uno o più comandi."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:300
+#, elixir-autogen, elixir-format
+msgid ""
+"Create custom command shortcuts that expand into one or more commands with "
+"variable support."
+msgstr ""
+"Crea collegamenti di comando personalizzati che si espandono in uno o più "
+"comandi con supporto variabile."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:319
+#, elixir-autogen, elixir-format
+msgid "Custom Menus"
+msgstr "Menù personalizzati"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:506
+#, elixir-autogen, elixir-format
+msgid "Customize how timestamps are displayed next to messages."
+msgstr ""
+"Personalizza come vengono visualizzati i timestamp accanto ai messaggi."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:371
+#, elixir-autogen, elixir-format
+msgid "Customize keyboard shortcuts by rebinding keys to different actions."
+msgstr ""
+"Personalizza le scorciatoie della tastiera rilegando i tasti a diverse "
+"azioni."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:477
+#, elixir-autogen, elixir-format
+msgid ""
+"Customize the message displayed to others when you disconnect from the "
+"server."
+msgstr ""
+"Personalizzare il messaggio visualizzato agli altri quando si disconnette "
+"dal server."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:352
+#, elixir-autogen, elixir-format
+msgid ""
+"Customize which interface elements are visible and toggle compact display "
+"mode."
+msgstr ""
+"Personalizzare quali elementi di interfaccia sono visibili e attivare "
+"modalità di visualizzazione compatta."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1133
+#, elixir-autogen, elixir-format
+msgid ""
+"Cyberpunk Pong with neon visuals, CRT effects, and synth audio. First to 11 "
+"(win by 2). Use Arrow keys or W/S."
+msgstr ""
+"Cyberpunk Pong con visuali neon, effetti CRT e audio synth. Dapprima a 11 "
+"(win by 2). Utilizzare i tasti freccia o il tasto W"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2763
+#, elixir-autogen, elixir-format
+msgid ""
+"Cyberpunk masterpiece by Revolution Software (1994) — escape Union City with"
+" your robot companion Joey."
+msgstr ""
+"Cyberpunk capolavoro di Revolution Software (1994) — fuga Union City con il "
+"tuo compagno di robot Joey."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2170
+#, elixir-autogen, elixir-format
+msgid "DOOM (Arcade)"
+msgstr "DOOM (Arcade)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2409
+#, elixir-autogen, elixir-format
+msgid "DOOM: Knee-Deep in the Dead"
+msgstr "DOOM: Knee-Deep nei morti"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2821
+#, elixir-autogen, elixir-format
+msgid ""
+"Dark cyberpunk top-down adventure by Creative Reality (1994) — explore the "
+"Dreamweb to save reality."
+msgstr ""
+"Dark cyberpunk avventura top-down di Creative Reality (1994) — esplorare il "
+"Dreamweb per salvare la realtà."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1722
+#, elixir-autogen, elixir-format
+msgid "Daylight sprint — no weather changes, no fuel drain, just speed. "
+msgstr ""
+"Sprint luce diurna — nessun cambiamento climatico, nessun scarico del "
+"carburante, solo velocità."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1244
+#, elixir-autogen, elixir-format
+msgid "Debris Field"
+msgstr "Debris Field"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1317
+#, elixir-autogen, elixir-format
+msgid ""
+"Deflect or catch the fireball with your shield to smash your opponent's "
+"walls. "
+msgstr ""
+"Sconfiggi o cattura la palla di fuoco con lo scudo per distruggere le pareti"
+" dell'avversario."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:803
+#, elixir-autogen, elixir-format
+msgid ""
+"Delete your own messages with a soft-delete that shows a removal notice."
+msgstr ""
+"Elimina i tuoi messaggi con un soft-delete che mostra un avviso di "
+"rimozione."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:673
+#, elixir-autogen, elixir-format
+msgid ""
+"Dialog notification when you are kicked from a channel with the reason and "
+"rejoin option."
+msgstr ""
+"Notifica di dialogo quando si è calciato da un canale con la ragione e "
+"l'opzione di ricongiungimento."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:358
+#, elixir-autogen, elixir-format
+msgid "Disconnect from the server with an optional quit message."
+msgstr "Scollegare dal server con un messaggio di smettere opzionale."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:339
+#, elixir-autogen, elixir-format
+msgid "Display Settings"
+msgstr "Visualizza impostazioni"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:143
+#, elixir-autogen, elixir-format
+msgid "Display help information for commands and features."
+msgstr "Visualizza le informazioni di aiuto per comandi e funzioni."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1544
+#, elixir-autogen, elixir-format
+msgid ""
+"Dodge freely in your half of the arena. First to 10, best of 3 rounds. "
+msgstr ""
+"Dodge liberamente nella vostra metà dell'arena. Prima a 10, meglio di 3 "
+"giri."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1917
+#, elixir-autogen, elixir-format
+msgid ""
+"Dodge polar bears, crabs, geese, and clams. Best of 5 rounds with "
+"progressive difficulty. "
+msgstr ""
+"Dodge orsi polari, granchi, oche e vongole. Meglio di 5 giri con difficoltà "
+"progressiva."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1456
+#, elixir-autogen, elixir-format
+msgid ""
+"Dodge visible bullets and shoot your opponent. First to 10, best of 3 "
+"rounds. "
+msgstr ""
+"Dodge proiettili visibili e sparare al tuo avversario. Prima a 10, meglio di"
+" 3 giri."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2388
+#, elixir-autogen, elixir-format
+msgid "Drascula (1996), Dreamweb (1994), Flight of the Amazon Queen (1995), "
+msgstr ""
+"Drascula (1996), Dreamweb (1994), Volo della Regina delle Amazzoni (1995),"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2778
+#, elixir-autogen, elixir-format
+msgid "Drascula: The Vampire Strikes Back"
+msgstr "Drascula: Il vampiro colpisce indietro"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2807
+#, elixir-autogen, elixir-format
+msgid "Dreamweb"
+msgstr "Dreamweb"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:789
+#, elixir-autogen, elixir-format
+msgid "Edit your recently sent messages to fix typos or update content."
+msgstr ""
+"Modifica i messaggi inviati di recente per correggere gli errori o "
+"aggiornare i contenuti."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:493
+#, elixir-autogen, elixir-format
+msgid "Emoji Picker"
+msgstr "Emoji Picker"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:128
+#, elixir-autogen, elixir-format
+msgid "Empty States"
+msgstr "Stati membri"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:958
+#, elixir-autogen, elixir-format
+msgid ""
+"Enable TURN-only relay mode to hide your IP address during peer-to-peer "
+"connections."
+msgstr ""
+"Attiva la modalità di relè solo TURN per nascondere il tuo indirizzo IP "
+"durante le connessioni peer-to-peer."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:624
+#, elixir-autogen, elixir-format
+msgid "Enable or disable slow mode (join throttle) in the current channel."
+msgstr ""
+"Abilitare o disabilitare la modalità lenta (acceleratore) nel canale "
+"corrente."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:607
+#, elixir-autogen, elixir-format
+msgid "Enhanced History"
+msgstr "Storia migliorata"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:896
+#, elixir-autogen, elixir-format
+msgid ""
+"Establish peer-to-peer sessions with bilateral consent for calls and file "
+"transfers."
+msgstr ""
+"Stabilire sessioni peer-to-peer con il consenso bilaterale per chiamate e "
+"trasferimenti di file."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1799
+#, elixir-autogen, elixir-format
+msgid "Every point wins a game — no 15-30-40, no deuce. "
+msgstr "Ogni punto vince un gioco — no 15-30-40, nessun deuce."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1062
+#, elixir-autogen, elixir-format
+msgid ""
+"Execute multiple commands at once by pasting them into the Admin Console "
+"(admin only)."
+msgstr ""
+"Eseguire più comandi contemporaneamente incollandoli nella console Admin "
+"(solo admin)."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:574
+#, elixir-autogen, elixir-format
+msgid ""
+"Factory reset — destroys ALL data (users, channels, messages, preferences, "
+"bots, P2P sessions) "
+msgstr ""
+"reset di fabbrica — distrugge tutti i dati (utenti, canali, messaggi, "
+"preferenze, bot, sessioni P2P)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1880
+#, elixir-autogen, elixir-format
+msgid "Fastest time down the mountain wins. The purist mode. "
+msgstr "Il tempo più veloce lungo la montagna vince. La modalità purista."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:926
+#, elixir-autogen, elixir-format
+msgid "File Transfer"
+msgstr "Trasferimento file"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:171
+#, elixir-autogen, elixir-format
+msgid ""
+"Find text in the current channel using search with regex and case-sensitive "
+"options."
+msgstr ""
+"Trova il testo nel canale corrente utilizzando la ricerca con le opzioni "
+"regex e caso-sensibili."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1491
+#, elixir-autogen, elixir-format
+msgid "First to 10, best of 3 rounds. "
+msgstr "Prima a 10, meglio di 3 giri."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1800
+#, elixir-autogen, elixir-format
+msgid "First to 6 games takes the set. Pure pressure. "
+msgstr "Prima a 6 giochi prende il set. Pressione pura."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2836
+#, elixir-autogen, elixir-format
+msgid "Flight of the Amazon Queen"
+msgstr "Volo della Regina delle Amazzoni"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:231
+#, elixir-autogen, elixir-format
+msgid "Flood Protection"
+msgstr "Protezione delle inondazioni"
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Format your messages with bold, italic, underline, strikethrough, and color "
+"codes."
+msgstr ""
+"Formatta i tuoi messaggi con codici a colori, audace, italico, sottolinea, "
+"strikethrough."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2496
+#, elixir-autogen, elixir-format
+msgid "FreeDM"
+msgstr "FreeDM"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2195
+#, elixir-autogen, elixir-format
+msgid ""
+"FreeDM, Chex Quest, HacX, and REKKR. Powered by Dwasm (PrBoom+ → "
+"WebAssembly)."
+msgstr ""
+"FreeDM, Chex Quest, HacX e REKKR. Alimentato da Dwasm (PrBoom+ → "
+"WebAssembly)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2438
+#, elixir-autogen, elixir-format
+msgid "Freedoom: Phase 1"
+msgstr "Freedoom: Fase 1"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2466
+#, elixir-autogen, elixir-format
+msgid "Freedoom: Phase 2"
+msgstr "Freedoom: Fase 2"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1754
+#, elixir-autogen, elixir-format
+msgid "Full set with deuce, advantage, and tiebreak at 6-6. "
+msgstr "Set completo con deuce, vantaggio e tiebreak a 6-6."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Get started with RetroHexChat, a web-based IRC client with a faithful retro "
+"look and feel."
+msgstr ""
+"Inizia con RetroHexChat, un client IRC basato sul web con un look e "
+"un'atmosfera retrò fedeli."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:39
+#: lib/retro_hex_chat/chat/help_topics.ex:67
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:12
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:24
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:36
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:53
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:72
+#, elixir-autogen, elixir-format
+msgid "Getting Started"
+msgstr "Iniziare"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:590
+#, elixir-autogen, elixir-format
+msgid "Give operator status to a user in the current channel."
+msgstr "Dare lo stato dell'operatore a un utente nel canale corrente."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:607
+#, elixir-autogen, elixir-format
+msgid "Give voice status to a user in the current channel."
+msgstr "Dare lo stato della voce a un utente nel canale corrente."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:143
+#, elixir-autogen, elixir-format
+msgid "Grant half-operator status with limited moderation privileges."
+msgstr ""
+"Concedere lo status di semioperatore con privilegi di moderazione limitati."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:131
+#, elixir-autogen, elixir-format
+msgid "Grant operator status to a user, allowing them to manage the channel."
+msgstr ""
+"Concedere lo stato dell'operatore a un utente, permettendo loro di gestire "
+"il canale."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:119
+#, elixir-autogen, elixir-format
+msgid ""
+"Grant owner status to a user, giving them full control over the channel."
+msgstr ""
+"Concedi lo stato del proprietario a un utente, dando loro il pieno controllo"
+" sul canale."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:152
+#, elixir-autogen, elixir-format
+msgid "Grant voice status to allow speaking in moderated channels."
+msgstr ""
+"Concedere lo stato vocale per consentire di parlare in canali moderati."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1218
+#, elixir-autogen, elixir-format
+msgid "Gravity Well"
+msgstr "Gravity Well"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2552
+#, elixir-autogen, elixir-format
+msgid "HacX: Twitch 'n Kill"
+msgstr "HacX: Twitch 'n Kill"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2275
+#, elixir-autogen, elixir-format
+msgid "Half-Life (Arcade)"
+msgstr "Mezza vita (Arcade)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2721
+#, elixir-autogen, elixir-format
+msgid "Half-Life: Uplink"
+msgstr "Mezza vita: Uplink"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1696
+#, elixir-autogen, elixir-format
+msgid "Headlights-only visibility — pure reflexes. Most overtakes wins. "
+msgstr ""
+"visibilità solo dei fari — riflessi puri. La maggior parte delle prese "
+"vince."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:141
+#, elixir-autogen, elixir-format
+msgid ""
+"Helpful placeholders shown when lists are empty, guiding you on what to do "
+"next."
+msgstr ""
+"Portaposto utile mostrato quando le liste sono vuote, guidando su cosa fare "
+"dopo."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:639
+#, elixir-autogen, elixir-format
+msgid ""
+"Helpful tips that appear contextually to guide you through features as you "
+"use them."
+msgstr ""
+"Consigli utili che appaiono contestualmente per guidarti attraverso le "
+"caratteristiche come li usi."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1414
+#, elixir-autogen, elixir-format
+msgid "Hex Boxing"
+msgstr "Boxe Hex"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1647
+#, elixir-autogen, elixir-format
+msgid "Hex Enduro"
+msgstr "Hex Enduro"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1683
+#, elixir-autogen, elixir-format
+msgid "Hex Enduro: Night Race"
+msgstr "Hex Enduro: Gara notturna"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1709
+#, elixir-autogen, elixir-format
+msgid "Hex Enduro: Sprint"
+msgstr "Hex Enduro: Sprint"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1890
+#, elixir-autogen, elixir-format
+msgid "Hex Frost"
+msgstr "Frost di Hex"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1933
+#, elixir-autogen, elixir-format
+msgid "Hex Frost: Blizzard"
+msgstr "Frost Hex: Blizzard"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1965
+#, elixir-autogen, elixir-format
+msgid "Hex Frost: Peaceful"
+msgstr "Hex Frost: pacifico"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1995
+#, elixir-autogen, elixir-format
+msgid "Hex Hockey"
+msgstr "Hex Hockey"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2037
+#, elixir-autogen, elixir-format
+msgid "Hex Hockey: Blitz"
+msgstr "Hex Hockey: Blitz"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2066
+#, elixir-autogen, elixir-format
+msgid "Hex Hockey: Showdown"
+msgstr "Hex Hockey: Showdown"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1558
+#, elixir-autogen, elixir-format
+msgid "Hex Invaders"
+msgstr "Invasori di Hex"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1620
+#, elixir-autogen, elixir-format
+msgid "Hex Invaders: Blitz"
+msgstr "Hex Invaders: Blitz"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1593
+#, elixir-autogen, elixir-format
+msgid "Hex Invaders: Co-op"
+msgstr "Hex Invaders: Co-op"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1439
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw"
+msgstr "Hex Outlaw"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1530
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw: No Man's Land"
+msgstr "Hex Outlaw: No Man's Land"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1470
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw: Ricochet"
+msgstr "Hex Outlaw: Ricochet"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1502
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw: Stagecoach"
+msgstr "Hex Outlaw: Stagecoach"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1128
+#, elixir-autogen, elixir-format
+msgid "Hex Pong"
+msgstr "Hex Pong"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1330
+#, elixir-autogen, elixir-format
+msgid "Hex Raid"
+msgstr "Hex Raid"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1391
+#, elixir-autogen, elixir-format
+msgid "Hex Raid: Blitz"
+msgstr "Hex Raid: Blitz"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1368
+#, elixir-autogen, elixir-format
+msgid "Hex Raid: Pacifist"
+msgstr "Hex Raid: Pacifist"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1810
+#, elixir-autogen, elixir-format
+msgid "Hex Skiing"
+msgstr "Sciare l'esa"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1866
+#, elixir-autogen, elixir-format
+msgid "Hex Skiing: Clean Run"
+msgstr "Scioglimento di esagonali: Clean Run"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1842
+#, elixir-autogen, elixir-format
+msgid "Hex Skiing: Escape"
+msgstr "Hex Sci: Fuga"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1736
+#, elixir-autogen, elixir-format
+msgid "Hex Tennis"
+msgstr "Hex Tennis"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1764
+#, elixir-autogen, elixir-format
+msgid "Hex Tennis: Quick Match"
+msgstr "Hex Tennis: partita veloce"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1787
+#, elixir-autogen, elixir-format
+msgid "Hex Tennis: Sudden Death"
+msgstr "Hex Tennis: Morte improvvisa"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1297
+#, elixir-autogen, elixir-format
+msgid "Hex Warlords"
+msgstr "Hex Warlords"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:172
+#, elixir-autogen, elixir-format
+msgid "Hide the channel from the channel list and whois results."
+msgstr "Nascondi il canale dall'elenco dei canali e dai risultati di whois."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:181
+#, elixir-autogen, elixir-format
+msgid ""
+"Hide the channel name from whois while still appearing in the channel list."
+msgstr ""
+"Nascondi il nome del canale da whois mentre appare ancora nell'elenco dei "
+"canali."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:47
+#, elixir-autogen, elixir-format
+msgid "Highlight Words"
+msgstr "Parole in evidenza"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2792
+#, elixir-autogen, elixir-format
+msgid ""
+"Hilarious Spanish point & click parody of Dracula (1996) — defeat the "
+"vampire Drascula with absurd humor."
+msgstr ""
+"Hilarious Spanish point & click parodia di Dracula (1996) — sconfiggere il "
+"vampiro Drascula con umorismo assurdo."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1321
+#, elixir-autogen, elixir-format
+msgid "Hold Space to catch, release to aim. Best of 3 lives. "
+msgstr ""
+"Tenere spazio per catturare, rilasciare per mirare. Il meglio di 3 vite."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:69
+#, elixir-autogen, elixir-format
+msgid ""
+"How to create and use custom bot commands (!prefix trigger) for automated "
+"responses."
+msgstr ""
+"Come creare e utilizzare comandi bot personalizzati (!prefix trigger) per "
+"risposte automatizzate."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:11
+#, elixir-autogen, elixir-format
+msgid "IRC Commands Reference"
+msgstr "IRC Comandi Riferimento"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:68
+#, elixir-autogen, elixir-format
+msgid "Ignore List"
+msgstr "Elenco Ignore"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1855
+#, elixir-autogen, elixir-format
+msgid "Infinite descent — the avalanche never stops accelerating. "
+msgstr "Discesa infinita — la valanga non smette mai di accelerare."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:395
+#, elixir-autogen, elixir-format
+msgid "Interactive Chat Elements"
+msgstr "Elementi di chat interattivi"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:112
+#, elixir-autogen, elixir-format
+msgid ""
+"Interactive trivia quiz with multiple categories, scoring, and configurable "
+"timers."
+msgstr ""
+"Quiz interattivo trivia con più categorie, punteggio e timer configurabili."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:120
+#, elixir-autogen, elixir-format
+msgid "Invite Exceptions (+I)"
+msgstr "Eccezioni invitate (+I)"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:167
+#, elixir-autogen, elixir-format
+msgid ""
+"Invite a user to join a channel, especially useful for invite-only channels."
+msgstr ""
+"Invita un utente a unire un canale, particolarmente utile per i canali di "
+"invito."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:179
+#, elixir-autogen, elixir-format
+msgid ""
+"Join a chat channel to read and send messages. Creates the channel if it "
+"does not exist."
+msgstr ""
+"Unisciti a un canale di chat per leggere e inviare messaggi. Crea il canale "
+"se non esiste."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:359
+#, elixir-autogen, elixir-format
+msgid "Key Bindings"
+msgstr "Cessioni chiave"
+
+#: lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex:11
+#, elixir-autogen, elixir-format
+msgid "Keyboard Shortcuts"
+msgstr "Tastiera Scorciatoie"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:668
+#, elixir-autogen, elixir-format
+msgid "Kick Notifications"
+msgstr "Kick Notifiche"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:718
+#, elixir-autogen, elixir-format
+msgid "Lag Indicator"
+msgstr "Indicatore del ritardo"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1856
+#, elixir-autogen, elixir-format
+msgid "Last skier standing wins. Pure survival mode. "
+msgstr "L'ultimo sciatore vince. Modalità di sopravvivenza pura."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Learn how to connect to the RetroHexChat server by choosing a nickname and "
+"joining channels."
+msgstr ""
+"Scopri come connettersi al server RetroHexChat scegliendo un soprannome e "
+"unendo i canali."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:312
+#, elixir-autogen, elixir-format
+msgid "Leave the current channel with an optional part message."
+msgstr "Lasciare il canale corrente con un messaggio di parte opzionale."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2639
+#, elixir-autogen, elixir-format
+msgid "LibreQuake"
+msgstr "LibreQuake"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1141
+#, elixir-autogen, elixir-format
+msgid "Light Trails"
+msgstr "Sentieri leggeri"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:224
+#, elixir-autogen, elixir-format
+msgid ""
+"Lightweight messages used for server announcements and automated responses."
+msgstr ""
+"Messaggi leggeri utilizzati per annunci server e risposte automatizzate."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:236
+#, elixir-autogen, elixir-format
+msgid "Limit how quickly users can join the channel to prevent join flooding."
+msgstr ""
+"Limitare quanto rapidamente gli utenti possono aderire al canale per evitare"
+" di unire alluvione."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:435
+#, elixir-autogen, elixir-format
+msgid ""
+"Look up detailed information about a user including channels, idle time, and"
+" bio."
+msgstr ""
+"Cerca informazioni dettagliate su un utente compresi i canali, il tempo "
+"minimo e la bio."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:447
+#, elixir-autogen, elixir-format
+msgid ""
+"Look up information about a user who recently disconnected from the server."
+msgstr ""
+"Consulta le informazioni su un utente che ha recentemente staccato dal "
+"server."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2865
+#, elixir-autogen, elixir-format
+msgid "Lure of the Temptress"
+msgstr "Lure della Temptrice"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2392
+#, elixir-autogen, elixir-format
+msgid "Lure of the Temptress (1992), and Soltys (1995). "
+msgstr "Lure of the Temptress (1992) e Soltys (1995)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2138
+#, elixir-autogen, elixir-format
+msgid ""
+"Lure of the Temptress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM, "
+msgstr "Lure del Temptress, Soltys, Mezza Vita: Uplink, Wolfenstein 3D, DOOM,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:821
+#, elixir-autogen, elixir-format
+msgid ""
+"Make peer-to-peer audio calls with mute controls and quality indicators."
+msgstr ""
+"Fare chiamate audio peer-to-peer con controlli mute e indicatori di qualità."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:840
+#, elixir-autogen, elixir-format
+msgid ""
+"Make video calls with camera controls, picture-in-picture, and quality "
+"settings."
+msgstr ""
+"Fai le videochiamate con i controlli della fotocamera, l'immagine e le "
+"impostazioni di qualità."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:321
+#, elixir-autogen, elixir-format
+msgid "Manage commands that run automatically when you connect to the server."
+msgstr ""
+"Gestire i comandi che vengono eseguiti automaticamente quando si collega al "
+"server."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage contacts, assign custom nick colors, and organize your notify list."
+msgstr ""
+"Gestisci i contatti, assegna i colori nick personalizzati e organizza la tua"
+" lista di notifica."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1667
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage fuel, use turbo boosts, and draft in slipstreams. Best of 3 days. "
+msgstr ""
+"Gestire il carburante, utilizzare turbo aumenta, e la bozza in slipstreams. "
+"Il meglio di 3 giorni."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:301
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage peer-to-peer sessions for direct communication, calls, and file "
+"transfers."
+msgstr ""
+"Gestisci sessioni peer-to-peer per comunicazioni dirette, chiamate e "
+"trasferimenti di file."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:496
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage server channels: list, info, create, delete, purge messages, view "
+"bans."
+msgstr ""
+"Gestire i canali del server: elenco, informazioni, creare, eliminare, "
+"cancellare i messaggi, visualizzare i divieti."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:484
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage server users: list, info, ban/unban, kick, mute/unmute, rename, set "
+"role."
+msgstr ""
+"Gestire gli utenti del server: elenco, informazioni, divieto <ph0> < /ph0>, "
+"kick, mute"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:43
+#, elixir-autogen, elixir-format
+msgid "Manage the list of channels that are automatically joined on connect."
+msgstr ""
+"Gestire l'elenco dei canali che vengono collegati automaticamente alla "
+"connessione."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:73
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage your ignore list to hide messages and actions from specific users."
+msgstr ""
+"Gestisci l'elenco ignorato per nascondere messaggi e azioni da utenti "
+"specifici."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:847
+#, elixir-autogen, elixir-format
+msgid "Media Devices"
+msgstr "Dispositivi multimediali"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:793
+#, elixir-autogen, elixir-format
+msgid "Message Delete"
+msgstr "Messaggio Cancella"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:777
+#, elixir-autogen, elixir-format
+msgid "Message Edit"
+msgstr "Messaggio Modifica"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:758
+#, elixir-autogen, elixir-format
+msgid "Message Reply"
+msgstr "Messaggio"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:45
+#: lib/retro_hex_chat/chat/help_topics.ex:73
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:75
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:187
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:401
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:587
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:595
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:604
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:612
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:620
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:629
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:641
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:653
+#, elixir-autogen, elixir-format
+msgid "Moderation"
+msgstr "Moderazione"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:151
+#, elixir-autogen, elixir-format
+msgid "Monitor RSS/Atom feeds and post new items to channels automatically."
+msgstr ""
+"Monitora i feed di RSS e invia automaticamente nuovi elementi ai canali."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:876
+#, elixir-autogen, elixir-format
+msgid ""
+"Monitor and adjust call quality with bitrate presets and real-time quality "
+"indicators."
+msgstr ""
+"Monitorare e regolare la qualità delle chiamate con preset bitrate e "
+"indicatori di qualità in tempo reale."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:448
+#, elixir-autogen, elixir-format
+msgid "Multi-Line Paste Dialog"
+msgstr "Dialogo Multi-Line Paste"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:272
+#, elixir-autogen, elixir-format
+msgid "Mute"
+msgstr "Mute"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:633
+#, elixir-autogen, elixir-format
+msgid ""
+"Mute a user in the current channel, preventing them from sending messages."
+msgstr ""
+"Muta un utente nel canale corrente, impedendo loro di inviare messaggi."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:277
+#, elixir-autogen, elixir-format
+msgid "Mute all sounds globally or per-channel to silence notifications."
+msgstr ""
+"Mute tutti i suoni a livello globale o per canale per le notifiche di "
+"silenzio."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Navigate channels and private conversations using the left-side "
+"conversations panel."
+msgstr ""
+"Navigare canali e conversazioni private utilizzando il pannello di "
+"conversazione lato sinistro."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:621
+#, elixir-autogen, elixir-format
+msgid ""
+"Navigate command history with Ctrl+Up/Down and search with Ctrl+R. Drafts "
+"persist per channel."
+msgstr ""
+"Navigare cronologia dei comandi con Ctrl+Up <ph0> </ph0> e cercare con "
+"Ctrl+R. I progetti persistono per canale."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1202
+#, elixir-autogen, elixir-format
+msgid ""
+"Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles. "
+msgstr ""
+"Combattimento spaziale newtoniano in vuoto aperto. Lanciare, ruotare e "
+"lanciare missili."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:417
+#, elixir-autogen, elixir-format
+msgid "Nick Column Alignment"
+msgstr "Allineamento della colonna di Nick"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1027
+#, elixir-autogen, elixir-format
+msgid "Nick Expiration"
+msgstr "Nick Scadenza"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:11
+#, elixir-autogen, elixir-format
+msgid "NickServ Overview"
+msgstr "NickServ Panoramica"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:508
+#, elixir-autogen, elixir-format
+msgid ""
+"NickServ administration: drop nick registrations, view info, reset "
+"passwords."
+msgstr ""
+"Amministrazione NickServ: drop nick registrazioni, visualizzare "
+"informazioni, reset password."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1610
+#, elixir-autogen, elixir-format
+msgid "No alien drop mechanic. Survive together or fall together. "
+msgstr ""
+"Nessun meccanico a goccia alieno. Sopravvivere insieme o cadere insieme."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1879
+#, elixir-autogen, elixir-format
+msgid "No avalanche, no items — just trees, rocks, and slalom gates. "
+msgstr ""
+"Nessuna valanga, nessun elemento — solo alberi, rocce, e cancelli slalom."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2078
+#, elixir-autogen, elixir-format
+msgid ""
+"No timer — first to 5 goals wins. The puck speeds up after every goal "
+"scored, "
+msgstr ""
+"Nessun timer — prima a 5 gol vince. Il puck accelera dopo ogni gol segnato,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:219
+#, elixir-autogen, elixir-format
+msgid "Notices"
+msgstr "Avviso"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:54
+#: lib/retro_hex_chat/chat/help_topics.ex:82
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:261
+#: lib/retro_hex_chat/chat/help_topics/features.ex:220
+#: lib/retro_hex_chat/chat/help_topics/features.ex:232
+#: lib/retro_hex_chat/chat/help_topics/features.ex:252
+#: lib/retro_hex_chat/chat/help_topics/features.ex:273
+#, elixir-autogen, elixir-format
+msgid "Notifications & Sounds"
+msgstr "Notifiche & suoni"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:11
+#, elixir-autogen, elixir-format
+msgid "Notify List (Buddy List)"
+msgstr "Notifica elenco (Elenco dei pacchetti)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2049
+#, elixir-autogen, elixir-format
+msgid ""
+"One intense period of 3 minutes. Puck moves 25% faster, tackles succeed 80% "
+"of the time. "
+msgstr ""
+"Un periodo intenso di 3 minuti. Puck si muove 25% più veloce, gli tackle "
+"riescono 80% del tempo."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1020
+#, elixir-autogen, elixir-format
+msgid "Only one active session per nickname is allowed to prevent conflicts."
+msgstr ""
+"Solo una sessione attiva per soprannome è permesso di prevenire conflitti."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:350
+#, elixir-autogen, elixir-format
+msgid "Open a private conversation tab with another user."
+msgstr "Aprire una scheda di conversazione privata con un altro utente."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:339
+#, elixir-autogen, elixir-format
+msgid ""
+"Open the custom menus editor to add items to right-click context menus."
+msgstr ""
+"Aprire l'editor menu personalizzato per aggiungere elementi ai menu "
+"contestuali di scelta rapida."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1231
+#, elixir-autogen, elixir-format
+msgid ""
+"Orbital combat around a central gravity star. Ships are pulled toward the "
+"star — "
+msgstr ""
+"Combattimento orbitale intorno a una stella di gravità centrale. Le navi "
+"sono tirate verso la stella —"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:59
+#, elixir-autogen, elixir-format
+msgid ""
+"Overview of all channel modes including moderation, access control, and "
+"privacy settings."
+msgstr ""
+"Panoramica di tutte le modalità dei canali, tra cui moderazione, controllo "
+"degli accessi e impostazioni sulla privacy."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:107
+#, elixir-autogen, elixir-format
+msgid ""
+"Overview of special message types including MOTD, welcome messages, wallops,"
+" and announcements."
+msgstr ""
+"Panoramica dei tipi di messaggi speciali tra cui MOTD, messaggi di "
+"benvenuto, wallops e annunci."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Overview of the RetroHexChat interface layout including panels, toolbar, and"
+" navigation."
+msgstr ""
+"Panoramica del layout dell'interfaccia RetroHexChat tra cui pannelli, barra "
+"degli strumenti e navigazione."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:59
+#: lib/retro_hex_chat/chat/help_topics.ex:87
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:96
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:128
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:297
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:363
+#: lib/retro_hex_chat/chat/help_topics/features.ex:811
+#: lib/retro_hex_chat/chat/help_topics/features.ex:829
+#: lib/retro_hex_chat/chat/help_topics/features.ex:848
+#: lib/retro_hex_chat/chat/help_topics/features.ex:866
+#: lib/retro_hex_chat/chat/help_topics/features.ex:884
+#: lib/retro_hex_chat/chat/help_topics/features.ex:904
+#: lib/retro_hex_chat/chat/help_topics/features.ex:927
+#, elixir-autogen, elixir-format
+msgid "P2P & Calls"
+msgstr "P2P e chiamate"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1069
+#, elixir-autogen, elixir-format
+msgid "P2P Games"
+msgstr "Giochi P2P"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:60
+#: lib/retro_hex_chat/chat/help_topics.ex:88
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1070
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1129
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1142
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1155
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1189
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1219
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1245
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1271
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1298
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1331
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1369
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1392
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1415
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1440
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1471
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1503
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1531
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1559
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1594
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1621
+#, elixir-autogen, elixir-format
+msgid "P2P Games: Action"
+msgstr "Giochi P2P: Azione"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:61
+#: lib/retro_hex_chat/chat/help_topics.ex:89
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1648
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1684
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1710
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1737
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1765
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1788
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1811
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1843
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1867
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1891
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1934
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1966
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1996
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2038
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2067
+#, elixir-autogen, elixir-format
+msgid "P2P Games: Sports"
+msgstr "Giochi P2P: Sport"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:883
+#, elixir-autogen, elixir-format
+msgid "P2P Sessions"
+msgstr "Sessioni P2P"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:965
+#, elixir-autogen, elixir-format
+msgid "PM Persistence"
+msgstr "Persistenza"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:178
+#, elixir-autogen, elixir-format
+msgid "Perform / Auto-Commands"
+msgstr "Esecuzione / Autocomandi"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1154
+#, elixir-autogen, elixir-format
+msgid "Pixel Tanks"
+msgstr "Serbatoi Pixel"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2228
+#, elixir-autogen, elixir-format
+msgid ""
+"Play 2 Quake-engine games in your browser — Quake shareware and LibreQuake "
+"(open-source). "
+msgstr ""
+"Gioca 2 giochi Quake-engine nel tuo browser — Quake shareware e LibreQuake "
+"(open-source)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2191
+#, elixir-autogen, elixir-format
+msgid ""
+"Play 7 DOOM-engine games in your browser — DOOM shareware, Freedoom Phase 1 "
+"& 2, "
+msgstr ""
+"Gioca 7 DOOM-engine giochi nel tuo browser — DOOM shareware, Freedoom Fase 1"
+" & 2,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2292
+#, elixir-autogen, elixir-format
+msgid ""
+"Play Half-Life: Uplink in your browser — the official 1999 demo with 3 "
+"unique levels "
+msgstr ""
+"Play Half-Life: Uplink nel tuo browser — la demo ufficiale del 1999 con 3 "
+"livelli unici"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2259
+#, elixir-autogen, elixir-format
+msgid ""
+"Play Wolfenstein 3D Episode 1 (shareware) in your browser — 10 levels of the"
+" "
+msgstr ""
+"Gioca Wolfenstein 3D Episodio 1 (shareware) nel tuo browser — 10 livelli del"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2130
+#, elixir-autogen, elixir-format
+msgid ""
+"Play classic games in your browser via WebAssembly — 18 games including "
+msgstr ""
+"Gioca giochi classici nel tuo browser tramite WebAssembly — 18 giochi tra "
+"cui"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2384
+#, elixir-autogen, elixir-format
+msgid ""
+"Play classic point & click adventures in your browser — Beneath a Steel Sky "
+"(1994), "
+msgstr ""
+"Gioca classico point & click avventure nel tuo browser — Sotto un cielo "
+"d'acciaio (1994),"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1084
+#, elixir-autogen, elixir-format
+msgid ""
+"Play retro arcade games directly with other users via peer-to-peer WebRTC "
+"connections."
+msgstr ""
+"Gioca giochi arcade retrò direttamente con altri utenti tramite connessioni "
+"WebRTC peer-to-peer."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2329
+#, elixir-autogen, elixir-format
+msgid ""
+"Play the Quake II demo in your browser — Unit 1 of the singleplayer "
+"campaign. "
+msgstr ""
+"Gioca la demo di Quake II nel tuo browser — Unità 1 della campagna "
+"singleplayer."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2264
+#, elixir-autogen, elixir-format
+msgid "Powered by ECWolf-JS (ECWolf → WebAssembly)."
+msgstr "Alimentato da ECWolf-JS (ECWolf → WebAssembly)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2232
+#, elixir-autogen, elixir-format
+msgid "Powered by Qwasm (QuakeSpasm → WebAssembly)."
+msgstr "Alimentato da Qwasm (QuakeSpasm → WebAssembly)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2333
+#, elixir-autogen, elixir-format
+msgid "Powered by Qwasm2 (Yamagi Quake II → WebAssembly)."
+msgstr "Alimentato da Qwasm2 (Yamagi Quake II → WebAssembly)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2393
+#, elixir-autogen, elixir-format
+msgid "Powered by ScummVM (official Emscripten backend → WebAssembly)."
+msgstr "Alimentato da ScummVM (ufficiale Emscripten backend → WebAssembly)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2297
+#, elixir-autogen, elixir-format
+msgid "Powered by Xash3D-FWGS (GoldSource reimplementation → WebAssembly)."
+msgstr "Alimentato da Xash3D-FWGS (GoldSource reimplement → WebAssembly)."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:222
+#, elixir-autogen, elixir-format
+msgid "Prevent users from sending knock requests to the channel."
+msgstr "Evitare agli utenti di inviare le richieste di bussare al canale."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:946
+#, elixir-autogen, elixir-format
+msgid "Privacy Settings"
+msgstr "Impostazioni sulla privacy"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:52
+#, elixir-autogen, elixir-format
+msgid "Private Messages"
+msgstr "Messaggi privati"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:979
+#, elixir-autogen, elixir-format
+msgid ""
+"Private message conversations are restored automatically on reconnect, "
+"ordered by recency."
+msgstr ""
+"Le conversazioni private dei messaggi vengono ripristinate automaticamente "
+"sul ricollegamento, ordinate dalla recency."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:244
+#, elixir-autogen, elixir-format
+msgid ""
+"Protect against message flooding with rate limiting and automatic ignore "
+"rules."
+msgstr ""
+"Proteggere contro le inondazioni dei messaggi con le regole di limitazione "
+"dei tassi e ignorare automaticamente."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1662
+#, elixir-autogen, elixir-format
+msgid "Pseudo-3D racing duel through day, snow, fog, and night. "
+msgstr "Duello da corsa Pseudo-3D attraverso giorno, neve, nebbia e notte."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1382
+#, elixir-autogen, elixir-format
+msgid "Pure competition for points, fuel, and survival across 10 sections. "
+msgstr ""
+"Pura competizione per punti, carburante e sopravvivenza in 10 sezioni."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1978
+#, elixir-autogen, elixir-format
+msgid ""
+"Pure construction race — no block stealing allowed. Stepping on opponent's "
+"blocks "
+msgstr ""
+"Corsa di costruzione pura — nessun blocco rubare consentito. Passo sui "
+"blocchi dell'avversario"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2053
+#, elixir-autogen, elixir-format
+msgid "Pure intensity from start to finish. "
+msgstr "Pura intensità dall'inizio alla fine."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2214
+#, elixir-autogen, elixir-format
+msgid "Quake (Arcade)"
+msgstr "Quake (Arcade)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2311
+#, elixir-autogen, elixir-format
+msgid "Quake II (Arcade)"
+msgstr "Quake II (Arcade)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2665
+#, elixir-autogen, elixir-format
+msgid "Quake II: The Invasion"
+msgstr "Quake II: L'invasione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2142
+#, elixir-autogen, elixir-format
+msgid "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. "
+msgstr "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR e LibreQuake."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2613
+#, elixir-autogen, elixir-format
+msgid "Quake: Dimension of the Doomed"
+msgstr "Quake: Dimensione del condannato"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:544
+#, elixir-autogen, elixir-format
+msgid "Query the audit log of admin actions with optional filters."
+msgstr ""
+"Accosta il registro di audit delle azioni di amministrazione con filtri "
+"opzionali."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid ""
+"Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+/."
+msgstr ""
+"Sovrapposizione rapida di riferimento che mostra tutte le scorciatoie della "
+"tastiera, aperte con Ctrl+/."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1776
+#, elixir-autogen, elixir-format
+msgid "Quick tennis match — first to 3 games wins. "
+msgstr "Rapida partita di tennis — vince prima a 3 partite."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:472
+#, elixir-autogen, elixir-format
+msgid "Quit Messages"
+msgstr "Smettere messaggi"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2581
+#, elixir-autogen, elixir-format
+msgid "REKKR: Sunken Land"
+msgstr "REKKR: Terra di Sunken"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:91
+#, elixir-autogen, elixir-format
+msgid ""
+"RPG dice rolling with standard notation (NdS, modifiers, keep "
+"highest/lowest)."
+msgstr ""
+"Dadi RPG che rotolano con notazione standard (NdS, modificatori, mantenere "
+"il più alto"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1146
+#, elixir-autogen, elixir-format
+msgid ""
+"Race across a grid leaving a glowing trail. Hit a trail or wall and you "
+"lose."
+msgstr ""
+"Gara attraverso una griglia che lascia una scia luminosa. Colpisci un "
+"sentiero o un muro e perdi."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:731
+#, elixir-autogen, elixir-format
+msgid ""
+"Real-time latency indicator in the status bar showing network delay to the "
+"server."
+msgstr ""
+"Indicatore di latenza in tempo reale nella barra di stato che mostra ritardo"
+" di rete al server."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:150
+#, elixir-autogen, elixir-format
+msgid ""
+"Receive and manage channel invitations with optional auto-join on invite."
+msgstr "Ricevere e gestire inviti canale con auto-join opzionale su invito."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:49
+#, elixir-autogen, elixir-format
+msgid ""
+"Reference for all /bot subcommands: create, destroy, join, part, enable, "
+"disable, set, addcmd, delcmd."
+msgstr ""
+"Riferimento per tutti i sottocomandi <ph0> </ph0>: creare, distruggere, "
+"unirsi, parte, abilitare, disabilitare, impostare, addcmd, delcmd."
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:41
+#, elixir-autogen, elixir-format
+msgid ""
+"Register and manage channels with ChanServ, including access lists and "
+"channel settings."
+msgstr ""
+"Registra e gestisci i canali con ChanServ, inclusi gli elenchi di accesso e "
+"le impostazioni dei canali."
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"Register and protect your nickname with NickServ to prevent others from "
+"using it."
+msgstr ""
+"Registra e proteggi il tuo soprannome con NickServ per evitare che gli altri"
+" lo utilizzino."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1041
+#, elixir-autogen, elixir-format
+msgid ""
+"Registered nicknames expire after 7 days of inactivity and become available "
+"again."
+msgstr ""
+"I soprannomi registrati scadono dopo 7 giorni di inattività e diventano "
+"nuovamente disponibili."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:409
+#, elixir-autogen, elixir-format
+msgid "Remove a ban from a channel to allow the user to rejoin."
+msgstr ""
+"Rimuovere un divieto da un canale per consentire all'utente di riunirsi."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:645
+#, elixir-autogen, elixir-format
+msgid ""
+"Remove a channel mute from a user, allowing them to send messages again."
+msgstr ""
+"Rimuovere un canale muto da un utente, permettendo loro di inviare "
+"nuovamente messaggi."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:191
+#, elixir-autogen, elixir-format
+msgid "Remove a user from a channel. Requires operator or higher privileges."
+msgstr ""
+"Rimuovere un utente da un canale. Richiede l'operatore o privilegi più "
+"elevati."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:418
+#, elixir-autogen, elixir-format
+msgid "Remove a user from your ignore list to see their messages again."
+msgstr ""
+"Rimuovere un utente dalla lista ignorare per rivedere i loro messaggi."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:599
+#, elixir-autogen, elixir-format
+msgid "Remove operator status from a user in the current channel."
+msgstr "Rimuovere lo stato dell'operatore da un utente nel canale corrente."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "Remove the channel welcome message."
+msgstr "Rimuovere il messaggio di benvenuto canale."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:36
+#, elixir-autogen, elixir-format
+msgid "Remove the server's Message of the Day. Requires admin privileges."
+msgstr ""
+"Rimuovere il messaggio del server del giorno. Richiede privilegi di "
+"amministrazione."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:615
+#, elixir-autogen, elixir-format
+msgid "Remove voice status from a user in the current channel."
+msgstr "Rimuovere lo stato della voce da un utente nel canale corrente."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:770
+#, elixir-autogen, elixir-format
+msgid ""
+"Reply to specific messages with quoted context for threaded conversations."
+msgstr ""
+"Rispondi a messaggi specifici con contesto citato per conversazioni "
+"filettate."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:247
+#, elixir-autogen, elixir-format
+msgid "Request an invitation to join an invite-only channel."
+msgstr "Richiedete un invito ad aderire ad un canale di invito."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:96
+#, elixir-autogen, elixir-format
+msgid "Require a password to join the channel."
+msgstr "Richiedere una password per aderire al canale."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:80
+#, elixir-autogen, elixir-format
+msgid "Restrict channel access to users who have been explicitly invited."
+msgstr ""
+"Limitare l'accesso al canale agli utenti che sono stati esplicitamente "
+"invitati."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:71
+#, elixir-autogen, elixir-format
+msgid "Restrict speaking to voiced users and above in a moderated channel."
+msgstr "Limitare a parlare con utenti vocali e sopra in un canale moderato."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:210
+#, elixir-autogen, elixir-format
+msgid "Restrict the channel to users who have identified with NickServ."
+msgstr "Limitare il canale agli utenti che hanno identificato con NickServ."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:88
+#, elixir-autogen, elixir-format
+msgid "Restrict topic changes to half-operators and above."
+msgstr "Limitare l'argomento cambia a metà operatori e sopra."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:453
+#, elixir-autogen, elixir-format
+msgid ""
+"Review and confirm multi-line pastes before sending to prevent accidental "
+"flooding."
+msgstr ""
+"Verificare e confermare le paste multilinee prima di inviare per evitare "
+"inondazioni accidentali."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2879
+#, elixir-autogen, elixir-format
+msgid ""
+"Revolution Software's 1992 debut — medieval fantasy with the pioneering "
+"Virtual Theatre NPC AI system."
+msgstr ""
+"Il debutto di Revolution Software nel 1992 — la fantasia medievale con il "
+"pioniere sistema Virtual Theatre NPC AI."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:429
+#, elixir-autogen, elixir-format
+msgid "Right-Click Copy"
+msgstr "Copia a destra"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:600
+#, elixir-autogen, elixir-format
+msgid ""
+"Right-click context menus for nicknames, messages, URLs, channels, and "
+"conversations."
+msgstr ""
+"Fare clic con il pulsante destro del mouse su menu contestuali per "
+"soprannomi, messaggi, URL, canali e conversazioni."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1347
+#, elixir-autogen, elixir-format
+msgid "River Raid reimagined for two — race through a scrolling toxic canal, "
+msgstr ""
+"River Raid riimmaginato per due — gara attraverso un canale tossico rotante,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1381
+#, elixir-autogen, elixir-format
+msgid "River Raid without sabotage — no mines allowed. "
+msgstr "River Raid senza sabotaggio — nessuna miniera consentita."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:579
+#, elixir-autogen, elixir-format
+msgid ""
+"Run without --confirm for a preview; with --confirm to execute. "
+"IRREVERSIBLE."
+msgstr ""
+"Eseguire senza --conferma per un'anteprima; con --conferma da eseguire. "
+"IRREVERSIBLE."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1777
+#, elixir-autogen, elixir-format
+msgid "Same gameplay, shorter format. No tiebreak needed. "
+msgstr "Stesso gameplay, formato più breve. Non serve un tiebreak."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:312
+#, elixir-autogen, elixir-format
+msgid ""
+"Schedule commands to execute after a delay or repeat at regular intervals."
+msgstr ""
+"Pianificare i comandi per eseguire dopo un ritardo o ripetere a intervalli "
+"regolari."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:388
+#, elixir-autogen, elixir-format
+msgid "Schedule commands to run after a delay or at regular intervals."
+msgstr ""
+"Pianificare i comandi per eseguire dopo un ritardo o a intervalli regolari."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:133
+#, elixir-autogen, elixir-format
+msgid "Schedule periodic or daily messages to channels automatically."
+msgstr "Pianifica messaggi periodici o quotidiani a canali automaticamente."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2345
+#, elixir-autogen, elixir-format
+msgid "ScummVM Adventures (Arcade)"
+msgstr "ScummVM Adventures (Arcade)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:157
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "Ricerca"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:543
+#, elixir-autogen, elixir-format
+msgid "See command syntax and parameter hints as you type slash commands."
+msgstr ""
+"Vedere la sintassi dei comandi e gli accenni dei parametri digitando i "
+"comandi slash."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:465
+#, elixir-autogen, elixir-format
+msgid ""
+"See how many characters remain before reaching the message length limit."
+msgstr ""
+"Vedere quanti personaggi rimangono prima di raggiungere il limite di "
+"lunghezza del messaggio."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:291
+#, elixir-autogen, elixir-format
+msgid "See when someone is typing a message in a private conversation."
+msgstr ""
+"Vedi quando qualcuno sta scrivendo un messaggio in una conversazione "
+"privata."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:858
+#, elixir-autogen, elixir-format
+msgid ""
+"Select and switch between microphones, cameras, and speakers during calls."
+msgstr ""
+"Selezionare e passare tra microfoni, telecamere e altoparlanti durante le "
+"chiamate."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Send a broadcast message to all users who have wallops mode enabled."
+msgstr ""
+"Invia un messaggio di trasmissione a tutti gli utenti che hanno la modalità "
+"wallops abilitato."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:367
+#, elixir-autogen, elixir-format
+msgid "Send a file to another user through a peer-to-peer connection."
+msgstr ""
+"Inviare un file a un altro utente tramite una connessione peer-to-peer."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a global announcement to all connected users. Requires admin "
+"privileges."
+msgstr ""
+"Invia un annuncio globale a tutti gli utenti connessi. Richiede privilegi di"
+" amministrazione."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:253
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a notice message to a user or channel. Notices do not open query "
+"windows."
+msgstr ""
+"Invia un messaggio di avviso a un utente o canale. Le comunicazioni non "
+"aprono le finestre di query."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:233
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a private message to another user without opening a conversation tab."
+msgstr ""
+"Invia un messaggio privato a un altro utente senza aprire una scheda di "
+"conversazione."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:211
+#, elixir-autogen, elixir-format
+msgid "Send an action message that describes what you are doing."
+msgstr "Invia un messaggio d'azione che descrive quello che stai facendo."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"Send and receive private messages with other users using the /msg and /query"
+" commands."
+msgstr ""
+"Inviare e ricevere messaggi privati con altri utenti utilizzando i comandi "
+"<ph0> < < /ph0> e <ph1>"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:123
+#, elixir-autogen, elixir-format
+msgid "Send commands to ChanServ for channel registration and management."
+msgstr ""
+"Invia comandi a ChanServ per la registrazione e la gestione dei canali."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:289
+#, elixir-autogen, elixir-format
+msgid ""
+"Send commands to NickServ for nickname registration and identification."
+msgstr ""
+"Invia comandi a NickServ per la registrazione e l'identificazione del "
+"soprannome."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:939
+#, elixir-autogen, elixir-format
+msgid ""
+"Send files directly to other users via peer-to-peer with drag-and-drop "
+"support."
+msgstr ""
+"Invia file direttamente ad altri utenti tramite peer-to-peer con supporto "
+"drag-and-drop."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:50
+#: lib/retro_hex_chat/chat/help_topics.ex:78
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:12
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:20
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:32
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:41
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:53
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:61
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:74
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:95
+#, elixir-autogen, elixir-format
+msgid "Server Messages"
+msgstr "Messaggi server"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:460
+#, elixir-autogen, elixir-format
+msgid ""
+"Server administration commands for managing users, channels, services, and "
+"server settings."
+msgstr ""
+"Comandi di amministrazione del server per la gestione di utenti, canali, "
+"servizi e impostazioni del server."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:532
+#, elixir-autogen, elixir-format
+msgid ""
+"Server debug tools: view active connections, channel processes, and BEAM "
+"memory usage."
+msgstr ""
+"Strumenti di debug del server: visualizzare connessioni attive, processi di "
+"canale e utilizzo della memoria BEAM."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:47
+#: lib/retro_hex_chat/chat/help_topics.ex:75
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:114
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:285
+#: lib/retro_hex_chat/chat/help_topics/services.ex:12
+#: lib/retro_hex_chat/chat/help_topics/services.ex:30
+#, elixir-autogen, elixir-format
+msgid "Services & Protocols"
+msgstr "Servizi e protocolli"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:110
+#, elixir-autogen, elixir-format
+msgid "Set a maximum number of users that can be in the channel at once."
+msgstr ""
+"Impostare un numero massimo di utenti che possono essere nel canale "
+"contemporaneamente."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "Set a welcome message displayed to users when they join your channel."
+msgstr ""
+"Impostare un messaggio di benvenuto visualizzato agli utenti quando si "
+"uniscono al vostro canale."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:67
+#, elixir-autogen, elixir-format
+msgid ""
+"Set or clear your away status to let others know you are not available."
+msgstr ""
+"Impostare o cancellare il tuo stato di distanza per far sapere agli altri "
+"che non sei disponibile."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:24
+#, elixir-autogen, elixir-format
+msgid ""
+"Set or update the server's Message of the Day. Requires admin privileges."
+msgstr ""
+"Impostare o aggiornare il messaggio del server del giorno. Richiede "
+"privilegi di amministrazione."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:88
+#, elixir-autogen, elixir-format
+msgid ""
+"Set or view a personal biography that appears in whois and hover cards."
+msgstr ""
+"Impostare o visualizzare una biografia personale che appare nelle carte "
+"whois e hover."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:55
+#: lib/retro_hex_chat/chat/help_topics.ex:83
+#: lib/retro_hex_chat/chat/help_topics/features.ex:340
+#: lib/retro_hex_chat/chat/help_topics/features.ex:360
+#: lib/retro_hex_chat/chat/help_topics/features.ex:585
+#: lib/retro_hex_chat/chat/help_topics/features.ex:947
+#, elixir-autogen, elixir-format
+msgid "Settings & Preferences"
+msgstr "Impostazioni e preferenze"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:566
+#, elixir-autogen, elixir-format
+msgid "Shortcut Cheatsheet"
+msgstr "Scorciatoia"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1006
+#, elixir-autogen, elixir-format
+msgid "Single Session"
+msgstr "Sessione unica"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:547
+#, elixir-autogen, elixir-format
+msgid "Smart Input"
+msgstr "Smart Input"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2096
+#, elixir-autogen, elixir-format
+msgid "Solo Arcade"
+msgstr "Solo Arcade"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:63
+#: lib/retro_hex_chat/chat/help_topics.ex:91
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2346
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2750
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2779
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2808
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2837
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2866
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2895
+#, elixir-autogen, elixir-format
+msgid "Solo Arcade: Adventures"
+msgstr "Solo Arcade: Avventure"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:62
+#: lib/retro_hex_chat/chat/help_topics.ex:90
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:372
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2097
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2171
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2215
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2244
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2276
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2312
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2410
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2439
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2467
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2497
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2523
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2553
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2582
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2614
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2640
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2666
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2694
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2722
+#, elixir-autogen, elixir-format
+msgid "Solo Arcade: FPS"
+msgstr "Solo Arcade: FPS"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2894
+#, elixir-autogen, elixir-format
+msgid "Soltys"
+msgstr "Risoluzioni"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:251
+#, elixir-autogen, elixir-format
+msgid "Sounds"
+msgstr "Suona."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1257
+#, elixir-autogen, elixir-format
+msgid ""
+"Space combat through floating asteroid obstacles. Asteroids block missiles "
+"and "
+msgstr ""
+"Combattimento spaziale attraverso ostacoli asteroidi galleggianti. Gli "
+"asteroidi bloccano i missili e"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:94
+#, elixir-autogen, elixir-format
+msgid "Special Messages"
+msgstr "Messaggi speciali"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1576
+#, elixir-autogen, elixir-format
+msgid ""
+"Split-screen Space Invaders — aliens you destroy fall on your opponent as "
+"reinforcements. "
+msgstr ""
+"Split-screen Space Invaders — alieni si distrugge cadere sul vostro "
+"avversario come rinforzi."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1188
+#, elixir-autogen, elixir-format
+msgid "Star Duel"
+msgstr "Duello stellare"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:100
+#, elixir-autogen, elixir-format
+msgid "Start a peer-to-peer audio or video call with another user."
+msgstr ""
+"Avviare un audio peer-to-peer o una videochiamata con un altro utente."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:132
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a peer-to-peer game session with another user for retro arcade games."
+msgstr ""
+"Inizia una sessione di gioco peer-to-peer con un altro utente per i giochi "
+"arcade retrò."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:376
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a solo arcade session. This command is reserved for administrators."
+msgstr ""
+"Avviare una sessione arcade solista. Questo comando è riservato agli "
+"amministratori."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:699
+#, elixir-autogen, elixir-format
+msgid "Status Bar"
+msgstr "Barra di stato"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:98
+#, elixir-autogen, elixir-format
+msgid "Status Tab"
+msgstr "Scheda di stato"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:198
+#, elixir-autogen, elixir-format
+msgid ""
+"Strip all color and formatting codes from messages sent to the channel."
+msgstr ""
+"Spoglia tutti i codici di colore e formattazione dai messaggi inviati al "
+"canale."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2908
+#, elixir-autogen, elixir-format
+msgid ""
+"Surreal Polish puzzle adventure by LK Avalon (1995) — rescue your "
+"grandfather from underground pirates."
+msgstr ""
+"Surreal Polish puzzle adventure di LK Avalon (1995) — salvare il nonno dai "
+"pirati sotterranei."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:40
+#, elixir-autogen, elixir-format
+msgid ""
+"Switch between channels and conversations using the tab bar at the top of "
+"the chat area."
+msgstr ""
+"Passare tra canali e conversazioni utilizzando la barra delle schede nella "
+"parte superiore della chat."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:35
+#, elixir-autogen, elixir-format
+msgid "Tab Bar"
+msgstr "Bar della scheda"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:523
+#, elixir-autogen, elixir-format
+msgid ""
+"Tab-complete nicknames, commands, channels, and emoji with fuzzy matching."
+msgstr "Soprannomi, comandi, canali ed emoji con corrispondenza fuzzy."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1921
+#, elixir-autogen, elixir-format
+msgid ""
+"Temperature timer adds urgency. Controls: Arrow keys or WASD to move, "
+"Up/Down to jump between rows."
+msgstr ""
+"Il timer di temperatura aggiunge urgenza. Comandi: Freccia chiavi o WASD per"
+" muoversi, Su <ph0> < /ph0> saltare tra le righe."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:57
+#: lib/retro_hex_chat/chat/help_topics.ex:85
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:12
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:24
+#, elixir-autogen, elixir-format
+msgid "Text Formatting"
+msgstr "Formattazione del testo"
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:11
+#, elixir-autogen, elixir-format
+msgid "Text Formatting Overview"
+msgstr "Panoramica sulla formattazione del testo"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2707
+#, elixir-autogen, elixir-format
+msgid ""
+"The grandfather of FPS games (1992) — 10 levels of castle-storming action in"
+" the shareware episode."
+msgstr ""
+"Il nonno dei giochi FPS (1992) — 10 livelli di azione castello-storming "
+"nell'episodio shareware."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2536
+#, elixir-autogen, elixir-format
+msgid ""
+"The legendary 1996 cereal box promotion — a kid-friendly DOOM total "
+"conversion where you zap Flemoids with the Zorcher."
+msgstr ""
+"La leggendaria promozione della scatola di cereali del 1996 — una "
+"conversione totale del DOOM per bambini in cui si zap Flemoids con lo "
+"Zorcher."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2679
+#, elixir-autogen, elixir-format
+msgid ""
+"The official 1997 Quake II demo — Unit 1 of the singleplayer campaign "
+"against the Strogg."
+msgstr ""
+"La demo ufficiale del 1997 Quake II — Unità 1 della campagna singleplayer "
+"contro Strogg."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2735
+#, elixir-autogen, elixir-format
+msgid ""
+"The official 1999 Valve demo — 3 unique levels not found in the full game, "
+"set in Black Mesa."
+msgstr ""
+"La demo ufficiale del 1999 Valve — 3 livelli unici non trovati nel gioco "
+"completo, ambientato in Black Mesa."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2422
+#, elixir-autogen, elixir-format
+msgid ""
+"The original 1993 shareware episode — 9 levels of demon-infested corridors "
+"on Phobos."
+msgstr ""
+"L'episodio di shareware originale del 1993 — 9 livelli di corridoi infestati"
+" da demoni su Phobos."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2626
+#, elixir-autogen, elixir-format
+msgid ""
+"The original 1996 shareware episode — full 3D FPS with Lovecraftian horrors "
+"and a Trent Reznor soundtrack."
+msgstr ""
+"L'episodio originale di shareware del 1996 — FPS 3D completo con orrori "
+"Lovecraftian e una colonna sonora di Trent Reznor."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1516
+#, elixir-autogen, elixir-format
+msgid ""
+"Time your shots around the moving obstacle. First to 10, best of 3 rounds. "
+msgstr ""
+"E' ora che ti spari intorno all'ostacolo in movimento. Prima a 10, meglio di"
+" 3 giri."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:307
+#, elixir-autogen, elixir-format
+msgid "Timers"
+msgstr "Timer"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:502
+#, elixir-autogen, elixir-format
+msgid "Timestamp Configuration"
+msgstr "Configurazione di timestamp"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:116
+#, elixir-autogen, elixir-format
+msgid "Toolbar"
+msgstr "Barra degli strumenti"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1824
+#, elixir-autogen, elixir-format
+msgid ""
+"Top-down alpine descent through toxic wastelands — dodge mutant trees and "
+"irradiated rocks, "
+msgstr ""
+"Discesa alpina superiore attraverso i rifiuti tossici — dodge alberi mutanti"
+" e rocce irradiate,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1429
+#, elixir-autogen, elixir-format
+msgid "Top-down boxing in a cyberpunk ring — close punches score 3 points, "
+msgstr ""
+"Boxing top-down in un anello cyberpunk — i pugni stretti segnano 3 punti,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2013
+#, elixir-autogen, elixir-format
+msgid ""
+"Top-down ice hockey in a cyberpunk neon arena. Control your field player "
+"while "
+msgstr ""
+"Hockey su ghiaccio in un'arena neon cyberpunk. Controllare il giocatore di "
+"campo mentre"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1168
+#, elixir-autogen, elixir-format
+msgid ""
+"Top-down tank combat in a maze arena. Rotate your tank, drive forward, and "
+"fire "
+msgstr ""
+"Combattere in un'arena di labirinto. Ruotare il serbatoio, guidare in avanti"
+" e fuoco"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1750
+#, elixir-autogen, elixir-format
+msgid ""
+"Top-down tennis duel — automatic hitting where shot angle depends on contact"
+" position. "
+msgstr ""
+"Duello da tennis Top-down — colpo automatico in cui l'angolo di tiro dipende"
+" dalla posizione di contatto."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:65
+#, elixir-autogen, elixir-format
+msgid "Topic Bar"
+msgstr "Bar topico"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:23
+#, elixir-autogen, elixir-format
+msgid "Track when specific users connect or disconnect with the notify list."
+msgstr ""
+"Traccia quando gli utenti specifici si connettono o si disconnettono con "
+"l'elenco delle notifiche."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:656
+#, elixir-autogen, elixir-format
+msgid "Transfer channel ownership to another user."
+msgstr "Trasferire la proprietà del canale a un altro utente."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:281
+#, elixir-autogen, elixir-format
+msgid "Typing Indicator"
+msgstr "Indicatore di digitazione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:59
+#, elixir-autogen, elixir-format
+msgid "URL Catcher"
+msgstr "URL Catcher"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:45
+#, elixir-autogen, elixir-format
+msgid ""
+"Understand how chat channels work, including joining, leaving, and "
+"participating in conversations."
+msgstr ""
+"Capire come funzionano i canali di chat, compreso l'unione, l'uscita e la "
+"partecipazione a conversazioni."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:30
+#, elixir-autogen, elixir-format
+msgid ""
+"Understand the channel permission hierarchy from owner to regular user and "
+"what each rank can do."
+msgstr ""
+"Comprendere la gerarchia delle autorizzazioni del canale dal proprietario "
+"all'utente regolare e ciò che ogni rango può fare."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:646
+#, elixir-autogen, elixir-format
+msgid "Unread Indicators"
+msgstr "Indicatori non letti"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:661
+#, elixir-autogen, elixir-format
+msgid ""
+"Unread message badges on tabs and conversations showing message and mention "
+"counts."
+msgstr ""
+"Segnali distintivi del messaggio su schede e conversazioni che mostrano il "
+"messaggio e menzione conta."
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:28
+#, elixir-autogen, elixir-format
+msgid ""
+"Use the color palette to add foreground and background colors to your chat "
+"messages."
+msgstr ""
+"Utilizzare la tavolozza dei colori per aggiungere colori in primo piano e "
+"sfondo ai messaggi di chat."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:56
+#: lib/retro_hex_chat/chat/help_topics.ex:84
+#: lib/retro_hex_chat/chat/help_topics/features.ex:567
+#: lib/retro_hex_chat/chat/help_topics/features.ex:700
+#: lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex:12
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:12
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:24
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:36
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:48
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:66
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:82
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:99
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:117
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:129
+#, elixir-autogen, elixir-format
+msgid "User Interface"
+msgstr "Interfaccia utente"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:11
+#, elixir-autogen, elixir-format
+msgid "User Interface Overview"
+msgstr "Panoramica dell'interfaccia utente"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:47
+#, elixir-autogen, elixir-format
+msgid "User List"
+msgstr "Elenco utenti"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:41
+#: lib/retro_hex_chat/chat/help_topics.ex:69
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:63
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:84
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:241
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:423
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:443
+#: lib/retro_hex_chat/chat/help_topics/features.ex:473
+#: lib/retro_hex_chat/chat/help_topics/features.ex:485
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1007
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1028
+#, elixir-autogen, elixir-format
+msgid "Users & Identity"
+msgstr "Utenti e identità"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1313
+#, elixir-autogen, elixir-format
+msgid ""
+"Versus Breakout battle — each player defends a brick castle with a king "
+"inside. "
+msgstr ""
+"Versus Breakout battaglia — ogni giocatore difende un castello di mattoni "
+"con un re dentro."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:828
+#, elixir-autogen, elixir-format
+msgid "Video Call"
+msgstr "Videochiamata"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:553
+#, elixir-autogen, elixir-format
+msgid ""
+"View TURN server stats (active allocations, relay ports in use) and list "
+"active allocations."
+msgstr ""
+"Visualizza le statistiche del server TURN (allocazioni attive, porte relè in"
+" uso) e elenca le allocazioni attive."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:58
+#, elixir-autogen, elixir-format
+msgid ""
+"View and interact with users in the current channel through the right-side "
+"user list."
+msgstr ""
+"Visualizzare e interagire con gli utenti nel canale corrente attraverso "
+"l'elenco degli utenti a destra."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:64
+#, elixir-autogen, elixir-format
+msgid "View and manage URLs shared across all channels with link previews."
+msgstr ""
+"Visualizza e gestisci gli URL condivisi in tutti i canali con le anteprime "
+"dei link."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:94
+#, elixir-autogen, elixir-format
+msgid ""
+"View and manage channel settings, bans, exceptions, and modes in one dialog."
+msgstr ""
+"Visualizzare e gestire le impostazioni dei canali, i bandi, le eccezioni e "
+"le modalità in una sola finestra di dialogo."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:224
+#, elixir-autogen, elixir-format
+msgid "View or change channel modes and user privilege modes."
+msgstr ""
+"Visualizzare o modificare le modalità dei canali e le modalità di privilegi "
+"degli utenti."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:90
+#, elixir-autogen, elixir-format
+msgid "View or change your user modes, such as enabling wallops reception."
+msgstr ""
+"Visualizza o modifica le modalità utente, come ad esempio la ricezione di "
+"wallops."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:396
+#, elixir-autogen, elixir-format
+msgid "View or set the topic for the current channel."
+msgstr "Visualizza o imposta l'argomento per il canale corrente."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:472
+#, elixir-autogen, elixir-format
+msgid ""
+"View server information and manage server settings (name, description, "
+"registration, limits)."
+msgstr ""
+"Visualizzare le informazioni del server e gestire le impostazioni del server"
+" (nome, descrizione, registrazione, limiti)."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:109
+#, elixir-autogen, elixir-format
+msgid ""
+"View server messages, connection events, and system notifications in the "
+"Status tab."
+msgstr ""
+"Visualizza i messaggi del server, gli eventi di connessione e le notifiche "
+"di sistema nella scheda Stato."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:74
+#, elixir-autogen, elixir-format
+msgid "View the channel topic and active modes in the bar below the tab bar."
+msgstr ""
+"Visualizza l'argomento del canale e le modalità attive nella barra "
+"sottostante la barra delle schede."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "View the server's Message of the Day."
+msgstr "Visualizza il messaggio del server del giorno."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:751
+#, elixir-autogen, elixir-format
+msgid ""
+"Visual indicators for connection status including banners, overlays, and "
+"status bar changes."
+msgstr ""
+"Indicatori visivi per lo stato di connessione, compresi banner, "
+"sovrapposizioni e cambiamenti della barra di stato."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:692
+#, elixir-autogen, elixir-format
+msgid ""
+"Visual toast confirmation when text or settings are copied to the clipboard."
+msgstr ""
+"La conferma visiva del brindisi quando il testo o le impostazioni vengono "
+"copiate sul clipboard."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:11
+#, elixir-autogen, elixir-format
+msgid "Welcome to RetroHexChat"
+msgstr "Benvenuti a RetroHexChat"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1543
+#, elixir-autogen, elixir-format
+msgid "Western duel in open field — no obstacle, full horizontal movement. "
+msgstr ""
+"Duello occidentale in campo aperto — nessun ostacolo, movimento orizzontale "
+"completo."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1515
+#, elixir-autogen, elixir-format
+msgid "Western duel with a stagecoach rolling across the arena. "
+msgstr "Duello occidentale con uno stagecoach che attraversa l'arena."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1483
+#, elixir-autogen, elixir-format
+msgid ""
+"Western duel with bouncing bullets — fire at angles to bypass the wall. "
+msgstr ""
+"Duello occidentale con pallottole rimbalzante — fuoco ad angolo per "
+"bypassare la parete."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1455
+#, elixir-autogen, elixir-format
+msgid "Western duel — two gunslingers face off across a cactus obstacle. "
+msgstr ""
+"Duello occidentale — due cannoni affrontano attraverso un ostacolo cactus."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2243
+#, elixir-autogen, elixir-format
+msgid "Wolfenstein 3D (Arcade)"
+msgstr "Wolfenstein 3D (Arcade)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2693
+#, elixir-autogen, elixir-format
+msgid "Wolfenstein 3D: Escape from Castle"
+msgstr "Wolfenstein 3D: Fuga dal Castello"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1206
+#, elixir-autogen, elixir-format
+msgid ""
+"Wraparound edges, hyperspace warp with 20% death chance. First to 7 wins. "
+msgstr ""
+"Bordi rotondi, curvatura iperspaziale con possibilità di morte del 20%. "
+"Prima a 7 vittorie."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:85
+#, elixir-autogen, elixir-format
+msgid "about me"
+msgstr "su di me"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:24
+#, elixir-autogen, elixir-format
+msgid "access level"
+msgstr "livello di accesso"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:35
+#, elixir-autogen, elixir-format
+msgid "access list"
+msgstr "elenco di accesso"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:33
+#, elixir-autogen, elixir-format
+msgid "address book"
+msgstr "indirizzo libro"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2784
+#, elixir-autogen, elixir-format
+msgid "alcachofa soft"
+msgstr "alcachofa morbido"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2017
+#, elixir-autogen, elixir-format
+msgid ""
+"an AI goalie defends your net. Capture the puck, shoot with Space, or tackle"
+" "
+msgstr ""
+"un portiere AI difende la tua rete. Catturare il puck, sparare con lo "
+"spazio, o affrontare"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1013
+#, elixir-autogen, elixir-format
+msgid "another window"
+msgstr "un'altra finestra"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1239
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1265
+#, elixir-autogen, elixir-format
+msgid "as Star Duel. First to 7 wins."
+msgstr "come Star Duel. Prima a 7 vittorie."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:183
+#, elixir-autogen, elixir-format
+msgid "auto commands"
+msgstr "comandi automatici"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:188
+#, elixir-autogen, elixir-format
+msgid "auto execute"
+msgstr "auto eseguire"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:380
+#, elixir-autogen, elixir-format
+msgid "auto greet"
+msgstr "saluto auto"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:36
+#, elixir-autogen, elixir-format
+msgid "auto join"
+msgstr "auto si uniscono"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:204
+#, elixir-autogen, elixir-format
+msgid "auto reconnect"
+msgstr "ricollegamento automatico"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:144
+#, elixir-autogen, elixir-format
+msgid "auto-join on invite"
+msgstr "auto-join su invito"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:104
+#, elixir-autogen, elixir-format
+msgid "ban exception"
+msgstr "divieto di eccezione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:88
+#, elixir-autogen, elixir-format
+msgid "ban exceptions"
+msgstr "divieto di eccezioni"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:105
+#, elixir-autogen, elixir-format
+msgid "ban exempt"
+msgstr "divieto"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2558
+#, elixir-autogen, elixir-format
+msgid "banjo software"
+msgstr "software banjo"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2121
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2352
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2752
+#, elixir-autogen, elixir-format
+msgid "beneath a steel sky"
+msgstr "sotto un cielo di acciaio"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2286
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2730
+#, elixir-autogen, elixir-format
+msgid "black mesa"
+msgstr "mesa nera"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1273
+#, elixir-autogen, elixir-format
+msgid "block breakers"
+msgstr "breakers blocco"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:219
+#, elixir-autogen, elixir-format
+msgid "block knock"
+msgstr "blocco colpo"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:44
+#, elixir-autogen, elixir-format
+msgid "bot addcmd"
+msgstr "Aggiungi al carrello"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:35
+#, elixir-autogen, elixir-format
+msgid "bot command"
+msgstr "comando bot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:59
+#, elixir-autogen, elixir-format
+msgid "bot commands"
+msgstr "comandi bot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:37
+#, elixir-autogen, elixir-format
+msgid "bot create"
+msgstr "bot creare"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:45
+#, elixir-autogen, elixir-format
+msgid "bot delcmd"
+msgstr "bot delcmd"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:38
+#, elixir-autogen, elixir-format
+msgid "bot destroy"
+msgstr "bot distruggere"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:84
+#, elixir-autogen, elixir-format
+msgid "bot dice"
+msgstr "Bottone"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:42
+#, elixir-autogen, elixir-format
+msgid "bot disable"
+msgstr "bot disabilita"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:41
+#, elixir-autogen, elixir-format
+msgid "bot enable"
+msgstr "bot abilitare"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:39
+#, elixir-autogen, elixir-format
+msgid "bot join"
+msgstr "Unisciti al bot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:164
+#, elixir-autogen, elixir-format
+msgid "bot moderation"
+msgstr "moderazione del bot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:40
+#, elixir-autogen, elixir-format
+msgid "bot part"
+msgstr "parte del robot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:144
+#, elixir-autogen, elixir-format
+msgid "bot rss"
+msgstr "bot rs"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:127
+#, elixir-autogen, elixir-format
+msgid "bot scheduler"
+msgstr "programmatore del robot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:16
+#, elixir-autogen, elixir-format
+msgid "bot service"
+msgstr "Servizio bot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:43
+#, elixir-autogen, elixir-format
+msgid "bot set"
+msgstr "Set robot"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:105
+#, elixir-autogen, elixir-format
+msgid "bot trivia"
+msgstr "Bottega"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2082
+#, elixir-autogen, elixir-format
+msgid "building pressure as the match intensifies. "
+msgstr "la pressione di costruzione come il match si intensifica."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:108
+#, elixir-autogen, elixir-format
+msgid "bypass ban"
+msgstr "divieto di bypass"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:166
+#, elixir-autogen, elixir-format
+msgid "case sensitive"
+msgstr "caso sensibile"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:242
+#, elixir-autogen, elixir-format
+msgid "change name"
+msgstr "cambia nome"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:83
+#, elixir-autogen, elixir-format
+msgid "channel central"
+msgstr "canale centrale"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:403
+#, elixir-autogen, elixir-format
+msgid "channel click"
+msgstr "canale click"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:519
+#, elixir-autogen, elixir-format
+msgid "channel completion"
+msgstr "completamento del canale"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:36
+#, elixir-autogen, elixir-format
+msgid "channel expiration"
+msgstr "scadenza del canale"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:37
+#, elixir-autogen, elixir-format
+msgid "channel expiry"
+msgstr "canale di scadenza"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:84
+#: lib/retro_hex_chat/chat/help_topics/features.ex:707
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:69
+#, elixir-autogen, elixir-format
+msgid "channel info"
+msgstr "canale info"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:161
+#: lib/retro_hex_chat/chat/help_topics/features.ex:142
+#, elixir-autogen, elixir-format
+msgid "channel invite"
+msgstr "canale invitare"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:200
+#, elixir-autogen, elixir-format
+msgid "channel list"
+msgstr "elenco canali"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:327
+#: lib/retro_hex_chat/chat/help_topics/features.ex:593
+#, elixir-autogen, elixir-format
+msgid "channel menu"
+msgstr "menu canale"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:41
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:219
+#, elixir-autogen, elixir-format
+msgid "channel mode"
+msgstr "modalità canale"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:630
+#, elixir-autogen, elixir-format
+msgid "channel mute"
+msgstr "canale mute"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:128
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:588
+#, elixir-autogen, elixir-format
+msgid "channel operator"
+msgstr "operatore canale"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:116
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:654
+#, elixir-autogen, elixir-format
+msgid "channel owner"
+msgstr "proprietario del canale"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:94
+#, elixir-autogen, elixir-format
+msgid "channel password"
+msgstr "canale password"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:118
+#: lib/retro_hex_chat/chat/help_topics/services.ex:33
+#, elixir-autogen, elixir-format
+msgid "channel service"
+msgstr "servizio canale"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:85
+#, elixir-autogen, elixir-format
+msgid "channel settings"
+msgstr "impostazioni del canale"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:394
+#, elixir-autogen, elixir-format
+msgid "channel topic"
+msgstr "argomento canale"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:642
+#, elixir-autogen, elixir-format
+msgid "channel unmute"
+msgstr "canale incontaminato"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "channel welcome"
+msgstr "canale benvenuto"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:328
+#, elixir-autogen, elixir-format
+msgid "chat menu"
+msgstr "menu chat"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:40
+#, elixir-autogen, elixir-format
+msgid "chat room"
+msgstr "chat room"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:570
+#, elixir-autogen, elixir-format
+msgid "cheat sheet"
+msgstr "foglio di chea"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2109
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2176
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2526
+#, elixir-autogen, elixir-format
+msgid "chex quest"
+msgstr "Chex ricerca"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2263
+#, elixir-autogen, elixir-format
+msgid "classic that launched the FPS genre. "
+msgstr "classico che ha lanciato il genere FPS."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "clear message of the day"
+msgstr "chiaro messaggio del giorno"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1828
+#, elixir-autogen, elixir-format
+msgid ""
+"clear slalom gates for time bonuses, and outrun the radioactive avalanche. "
+msgstr ""
+"chiare cancelli slalom per bonus di tempo, e superare la valanga "
+"radioattiva."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "clear welcome"
+msgstr "chiaro benvenuto"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
+#, elixir-autogen, elixir-format
+msgid "close tab"
+msgstr "chiudere la scheda"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:36
+#, elixir-autogen, elixir-format
+msgid "color override"
+msgstr "colore override"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:535
+#, elixir-autogen, elixir-format
+msgid "command help"
+msgstr "comando help"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:516
+#, elixir-autogen, elixir-format
+msgid "command palette"
+msgstr "tavolozza dei comandi"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:347
+#, elixir-autogen, elixir-format
+msgid "compact mode"
+msgstr "modalità compatta"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:206
+#, elixir-autogen, elixir-format
+msgid "connection lost"
+msgstr "connessione persa"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:333
+#: lib/retro_hex_chat/chat/help_topics/features.ex:324
+#: lib/retro_hex_chat/chat/help_topics/features.ex:435
+#: lib/retro_hex_chat/chat/help_topics/features.ex:587
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:84
+#, elixir-autogen, elixir-format
+msgid "context menu"
+msgstr "menu contestuale"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:595
+#, elixir-autogen, elixir-format
+msgid "conversations menu"
+msgstr "menu conversazioni"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:54
+#, elixir-autogen, elixir-format
+msgid "conversations users"
+msgstr "conversazioni utenti"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2361
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2811
+#, elixir-autogen, elixir-format
+msgid "creative reality"
+msgstr "realtà creativa"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:21
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:60
+#, elixir-autogen, elixir-format
+msgid "custom commands"
+msgstr "comandi personalizzati"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:334
+#: lib/retro_hex_chat/chat/help_topics/features.ex:322
+#, elixir-autogen, elixir-format
+msgid "custom menu"
+msgstr "menu personalizzato"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:365
+#, elixir-autogen, elixir-format
+msgid "customize shortcuts"
+msgstr "personalizzare i collegamenti"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2757
+#, elixir-autogen, elixir-format
+msgid "dave gibbons"
+msgstr "dave gibbons"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1247
+#, elixir-autogen, elixir-format
+msgid "debris field"
+msgstr "campo detriti"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:570
+#, elixir-autogen, elixir-format
+msgid "delete all"
+msgstr "Cancella tutto"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1351
+#, elixir-autogen, elixir-format
+msgid "destroy enemies for points, steal fuel, and drop mines on your rival. "
+msgstr ""
+"distruggere i nemici per i punti, rubare carburante e gettare le mine sul "
+"vostro rivale."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:85
+#, elixir-autogen, elixir-format
+msgid "dice notation"
+msgstr "notazione dei dadi"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2531
+#, elixir-autogen, elixir-format
+msgid "digital cafe"
+msgstr "caffè digitale"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2221
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2622
+#, elixir-autogen, elixir-format
+msgid "dimension of the doomed"
+msgstr "dimensione del destino"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:57
+#, elixir-autogen, elixir-format
+msgid "direct message"
+msgstr "messaggio diretto"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:218
+#, elixir-autogen, elixir-format
+msgid "disable knock"
+msgstr "Impossibile bussare"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2474
+#, elixir-autogen, elixir-format
+msgid "doom ii"
+msgstr "Condividi su Facebook"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:132
+#, elixir-autogen, elixir-format
+msgid "empty state"
+msgstr "stato vuoto"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2415
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2618
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2699
+#, elixir-autogen, elixir-format
+msgid "episode 1"
+msgstr "episodio 1"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:578
+#, elixir-autogen, elixir-format
+msgid "except admin roles, audit logs, and server bans. "
+msgstr ""
+"ad eccezione di ruoli di amministratore, registri di audit e bandi di "
+"server."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:160
+#, elixir-autogen, elixir-format
+msgid "external messages"
+msgstr "messaggi esterni"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2072
+#, elixir-autogen, elixir-format
+msgid "first to five"
+msgstr "da primo a cinque"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:785
+#, elixir-autogen, elixir-format
+msgid "fix message"
+msgstr "correzione del messaggio"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2363
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2839
+#, elixir-autogen, elixir-format
+msgid "flight of the amazon queen"
+msgstr "volo della regina amazzonica"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:16
+#, elixir-autogen, elixir-format
+msgid "friend list"
+msgstr "elenco amici"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1405
+#, elixir-autogen, elixir-format
+msgid "fuel is scarce, mines recharge faster. Quick and chaotic. "
+msgstr ""
+"il carburante è scarso, le miniere ricaricano più velocemente. Veloce e "
+"caotico."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:517
+#, elixir-autogen, elixir-format
+msgid "fuzzy search"
+msgstr "ricerca fuzzy"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2150
+#, elixir-autogen, elixir-format
+msgid "gameplay tips before launching. Join #games and type !play to start."
+msgstr ""
+"consigli di gioco prima di lanciare. Partecipa a <ph0> </ph0> e digita !play"
+" per iniziare."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:605
+#, elixir-autogen, elixir-format
+msgid "give voice"
+msgstr "dare voce"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2731
+#, elixir-autogen, elixir-format
+msgid "gordon freeman"
+msgstr "gordon freeman"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1221
+#, elixir-autogen, elixir-format
+msgid "gravity well"
+msgstr "gravità bene"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:140
+#, elixir-autogen, elixir-format
+msgid "half op"
+msgstr "metà"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1982
+#, elixir-autogen, elixir-format
+msgid "has no effect. First to complete the igloo wins. Fair and square. "
+msgstr "non ha effetto. Prima di completare l'igloo vince. Equo e quadrato."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1417
+#, elixir-autogen, elixir-format
+msgid "hex boxing"
+msgstr "boxe esagonale"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1650
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1686
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1712
+#, elixir-autogen, elixir-format
+msgid "hex enduro"
+msgstr "hex enduro"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1893
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1936
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1968
+#, elixir-autogen, elixir-format
+msgid "hex frost"
+msgstr "gelo di hex"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1561
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1596
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1623
+#, elixir-autogen, elixir-format
+msgid "hex invaders"
+msgstr "invasori hex"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1442
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1473
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1505
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1533
+#, elixir-autogen, elixir-format
+msgid "hex outlaw"
+msgstr "hex outlaw"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1333
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1371
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1394
+#, elixir-autogen, elixir-format
+msgid "hex raid"
+msgstr "hex raid"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1813
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1845
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1869
+#, elixir-autogen, elixir-format
+msgid "hex skiing"
+msgstr "sci di fondo"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1739
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1767
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1790
+#, elixir-autogen, elixir-format
+msgid "hex tennis"
+msgstr "hex tennis"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:178
+#, elixir-autogen, elixir-format
+msgid "hidden name"
+msgstr "nome nascosto"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:167
+#, elixir-autogen, elixir-format
+msgid "history search"
+msgstr "ricerca della storia"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:402
+#, elixir-autogen, elixir-format
+msgid "hover card"
+msgstr "carta hover"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1999
+#, elixir-autogen, elixir-format
+msgid "ice hockey"
+msgstr "hockey su ghiaccio"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2187
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2223
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2253
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2322
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2416
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2619
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2674
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2701
+#, elixir-autogen, elixir-format
+msgid "id software"
+msgstr "software id"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2844
+#, elixir-autogen, elixir-format
+msgid "indiana jones"
+msgstr "Indiano jones"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:555
+#, elixir-autogen, elixir-format
+msgid "input box"
+msgstr "scatola di ingresso"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:125
+#, elixir-autogen, elixir-format
+msgid "invite bypass"
+msgstr "invito bypass"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:143
+#, elixir-autogen, elixir-format
+msgid "invite dialog"
+msgstr "dialogo invitare"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:123
+#, elixir-autogen, elixir-format
+msgid "invite exception"
+msgstr "invito ad eccezione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:89
+#, elixir-autogen, elixir-format
+msgid "invite exceptions"
+msgstr "invitare eccezioni"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:124
+#, elixir-autogen, elixir-format
+msgid "invite exempt"
+msgstr "invito esente da"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:145
+#, elixir-autogen, elixir-format
+msgid "invite expiration"
+msgstr "invitare la scadenza"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:77
+#, elixir-autogen, elixir-format
+msgid "invite only"
+msgstr "invitare solo"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:160
+#, elixir-autogen, elixir-format
+msgid "invite user"
+msgstr "invitare utente"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:127
+#, elixir-autogen, elixir-format
+msgid "invite-only bypass"
+msgstr "bypass solo di invito"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:286
+#, elixir-autogen, elixir-format
+msgid "is typing"
+msgstr "sta digitando"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2365
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2841
+#, elixir-autogen, elixir-format
+msgid "joe king"
+msgstr "joe re"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:41
+#, elixir-autogen, elixir-format
+msgid "join channel"
+msgstr "unisci canale"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:383
+#, elixir-autogen, elixir-format
+msgid "join greet"
+msgstr "Un saluto"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:232
+#, elixir-autogen, elixir-format
+msgid "join limit"
+msgstr "unire limite"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:245
+#, elixir-autogen, elixir-format
+msgid "join request"
+msgstr "a richiesta"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:229
+#, elixir-autogen, elixir-format
+msgid "join throttle"
+msgstr "Unisciti a te"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:86
+#, elixir-autogen, elixir-format
+msgid "keep highest"
+msgstr "mantenere il più alto"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:87
+#, elixir-autogen, elixir-format
+msgid "keep lowest"
+msgstr "mantenere il più basso"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:362
+#, elixir-autogen, elixir-format
+msgid "key bindings"
+msgstr "binding chiave"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:572
+#, elixir-autogen, elixir-format
+msgid "keyboard reference"
+msgstr "riferimento della tastiera"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:364
+#, elixir-autogen, elixir-format
+msgid "keyboard shortcuts"
+msgstr "tasti di scelta rapida"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2532
+#, elixir-autogen, elixir-format
+msgid "kid friendly"
+msgstr "bambino amichevole"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1261
+#, elixir-autogen, elixir-format
+msgid ""
+"kill ships on contact. Use debris for cover or it destroys you. Same "
+"controls "
+msgstr ""
+"uccidere le navi a contatto. Usa i detriti per coprire o ti distrugge. "
+"Stessi controlli"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2184
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2418
+#, elixir-autogen, elixir-format
+msgid "knee deep"
+msgstr "ginocchio profondo"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:444
+#, elixir-autogen, elixir-format
+msgid "last seen"
+msgstr "Ultimo accesso"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:405
+#, elixir-autogen, elixir-format
+msgid "lift ban"
+msgstr "divieto di ascensore"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1143
+#, elixir-autogen, elixir-format
+msgid "light trails"
+msgstr "sentieri leggeri"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:221
+#, elixir-autogen, elixir-format
+msgid "lightweight message"
+msgstr "messaggio leggero"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:348
+#, elixir-autogen, elixir-format
+msgid "line shading"
+msgstr "linea ombreggiatura"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:406
+#, elixir-autogen, elixir-format
+msgid "link preview"
+msgstr "anteprima link"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2375
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2898
+#, elixir-autogen, elixir-format
+msgid "lk avalon"
+msgstr "lk avalon"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2368
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2868
+#, elixir-autogen, elixir-format
+msgid "lure of the temptress"
+msgstr "richiamo della tempra"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:105
+#, elixir-autogen, elixir-format
+msgid "max users"
+msgstr "max utenti"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1430
+#, elixir-autogen, elixir-format
+msgid ""
+"medium 2, far 1. First to 100 is KO! Best of 3 rounds, 2 minutes each. "
+msgstr ""
+"medio 2, lontano 1. Prima a 100 è KO! Meglio di 3 giri, 2 minuti ciascuno."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:161
+#, elixir-autogen, elixir-format
+msgid "members only"
+msgstr "membri solo"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:13
+#, elixir-autogen, elixir-format
+msgid "message of the day"
+msgstr "messaggio del giorno"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:798
+#, elixir-autogen, elixir-format
+msgid "message removed"
+msgstr "messaggio rimosso"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1172
+#, elixir-autogen, elixir-format
+msgid ""
+"missiles to hit your opponent. One missile at a time — miss and you're "
+"vulnerable. "
+msgstr ""
+"missili per colpire il tuo avversario. Un missile alla volta — signorina e "
+"sei vulnerabile."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:149
+#, elixir-autogen, elixir-format
+msgid "moderated voice"
+msgstr "voce moderata"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:70
+#, elixir-autogen, elixir-format
+msgid "modes display"
+msgstr "modalità di visualizzazione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1012
+#, elixir-autogen, elixir-format
+msgid "multiple tabs"
+msgstr "schede multiple"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:596
+#, elixir-autogen, elixir-format
+msgid "mute channel"
+msgstr "canale mute"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:404
+#, elixir-autogen, elixir-format
+msgid "nick click"
+msgstr "nick click"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:35
+#, elixir-autogen, elixir-format
+msgid "nick colors"
+msgstr "nick colori"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:518
+#, elixir-autogen, elixir-format
+msgid "nick completion"
+msgstr "nick completamento"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1030
+#, elixir-autogen, elixir-format
+msgid "nick expiry"
+msgstr "nick scadenza"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:52
+#, elixir-autogen, elixir-format
+msgid "nick list"
+msgstr "nick list"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:591
+#, elixir-autogen, elixir-format
+msgid "nick menu"
+msgstr "menu nick"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:326
+#, elixir-autogen, elixir-format
+msgid "nicklist menu"
+msgstr "Menù nicklist"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:18
+#, elixir-autogen, elixir-format
+msgid "nickname protection"
+msgstr "protezione soprannome"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1873
+#, elixir-autogen, elixir-format
+msgid "no avalanche"
+msgstr "nessuna valanga"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:136
+#, elixir-autogen, elixir-format
+msgid "no channels"
+msgstr "nessun canale"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:192
+#, elixir-autogen, elixir-format
+msgid "no colors"
+msgstr "nessun colore"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:51
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:159
+#, elixir-autogen, elixir-format
+msgid "no external"
+msgstr "nessun esterno"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:217
+#, elixir-autogen, elixir-format
+msgid "no knock"
+msgstr "no bussare"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1534
+#, elixir-autogen, elixir-format
+msgid "no man's land"
+msgstr "terra di nessuno"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:134
+#, elixir-autogen, elixir-format
+msgid "no messages"
+msgstr "nessun messaggio"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1374
+#, elixir-autogen, elixir-format
+msgid "no mines"
+msgstr "nessuna miniera"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1971
+#, elixir-autogen, elixir-format
+msgid "no steal"
+msgstr "no rubare"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:137
+#, elixir-autogen, elixir-format
+msgid "no urls"
+msgstr "No urs"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:135
+#, elixir-autogen, elixir-format
+msgid "no users"
+msgstr "nessun utente"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2296
+#, elixir-autogen, elixir-format
+msgid "not found in the full game. "
+msgstr "non trovato nel gioco completo."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:261
+#, elixir-autogen, elixir-format
+msgid "notification sound"
+msgstr "suono di notifica"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:39
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:318
+#: lib/retro_hex_chat/chat/help_topics/features.ex:184
+#, elixir-autogen, elixir-format
+msgid "on connect"
+msgstr "sulla connessione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1793
+#, elixir-autogen, elixir-format
+msgid "one point"
+msgstr "un punto"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1016
+#, elixir-autogen, elixir-format
+msgid "one session"
+msgstr "una sessione"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:348
+#, elixir-autogen, elixir-format
+msgid "open conversation"
+msgstr "conversazione aperta"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2443
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2471
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2502
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2643
+#, elixir-autogen, elixir-format
+msgid "open source"
+msgstr "open source"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:64
+#, elixir-autogen, elixir-format
+msgid "operator broadcast"
+msgstr "operatore trasmissione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1913
+#, elixir-autogen, elixir-format
+msgid ""
+"or opponent's color. Stepping on opponent's block steals it (2-piece "
+"swing!). "
+msgstr ""
+"o il colore dell'avversario. Passo sul blocco avversario lo ruba (2 pezzi "
+"swing!)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:187
+#, elixir-autogen, elixir-format
+msgid "perform list"
+msgstr "eseguire l'elenco"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2442
+#, elixir-autogen, elixir-format
+msgid "phase 1"
+msgstr "Fase 1"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2470
+#, elixir-autogen, elixir-format
+msgid "phase 2"
+msgstr "Fase 2"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2587
+#, elixir-autogen, elixir-format
+msgid "pixel art"
+msgstr "pixel art"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1157
+#, elixir-autogen, elixir-format
+msgid "pixel tanks"
+msgstr "serbatoi pixel"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:287
+#, elixir-autogen, elixir-format
+msgid "pm typing"
+msgstr "PM digitando"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2350
+#, elixir-autogen, elixir-format
+msgid "point & click"
+msgstr "punto &amp; click"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2119
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2349
+#, elixir-autogen, elixir-format
+msgid "point and click"
+msgstr "punto e click"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:635
+#, elixir-autogen, elixir-format
+msgid "progressive disclosure"
+msgstr "divulgazione progressiva"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2314
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2668
+#, elixir-autogen, elixir-format
+msgid "quake 2"
+msgstr "quake 2"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2315
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2669
+#, elixir-autogen, elixir-format
+msgid "quake ii"
+msgstr "ii)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2646
+#, elixir-autogen, elixir-format
+msgid "quake replacement"
+msgstr "sostituzione di quake"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1449
+#, elixir-autogen, elixir-format
+msgid "quick draw"
+msgstr "Disegno rapido"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:573
+#, elixir-autogen, elixir-format
+msgid "quick reference"
+msgstr "rapido riferimento"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:766
+#, elixir-autogen, elixir-format
+msgid "quote message"
+msgstr "preventivo messaggio"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:621
+#: lib/retro_hex_chat/chat/help_topics/features.ex:240
+#, elixir-autogen, elixir-format
+msgid "rate limit"
+msgstr "limite"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:119
+#: lib/retro_hex_chat/chat/help_topics/services.ex:34
+#, elixir-autogen, elixir-format
+msgid "register channel"
+msgstr "canale di registrazione"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:207
+#, elixir-autogen, elixir-format
+msgid "registered only"
+msgstr "registrato solo"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:404
+#, elixir-autogen, elixir-format
+msgid "remove ban"
+msgstr "rimuovere il divieto"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:596
+#, elixir-autogen, elixir-format
+msgid "remove operator"
+msgstr "rimuovere l'operatore"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:613
+#, elixir-autogen, elixir-format
+msgid "remove voice"
+msgstr "rimuovere la voce"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:765
+#, elixir-autogen, elixir-format
+msgid "reply to"
+msgstr "rispondere"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:245
+#, elixir-autogen, elixir-format
+msgid "request invite"
+msgstr "richiesta invito"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:86
+#, elixir-autogen, elixir-format
+msgid "restrict topic"
+msgstr "limitare l'argomento"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:614
+#, elixir-autogen, elixir-format
+msgid "reverse search"
+msgstr "ricerca inversa"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2354
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2754
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2870
+#, elixir-autogen, elixir-format
+msgid "revolution software"
+msgstr "software di rivoluzione"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:589
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:85
+#, elixir-autogen, elixir-format
+msgid "right click"
+msgstr "click destro"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1334
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1373
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1396
+#, elixir-autogen, elixir-format
+msgid "river raid"
+msgstr "fiume raid"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:65
+#, elixir-autogen, elixir-format
+msgid "server message"
+msgstr "messaggio server"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:103
+#, elixir-autogen, elixir-format
+msgid "server messages"
+msgstr "messaggi server"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "set message of the day"
+msgstr "messaggio impostato del giorno"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:220
+#, elixir-autogen, elixir-format
+msgid "set mode"
+msgstr "modalità impostata"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:394
+#, elixir-autogen, elixir-format
+msgid "set topic"
+msgstr "argomento set"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:571
+#, elixir-autogen, elixir-format
+msgid "shortcut list"
+msgstr "elenco delle abbreviazioni"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:373
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2101
+#, elixir-autogen, elixir-format
+msgid "single player"
+msgstr "giocatore singolo"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1009
+#, elixir-autogen, elixir-format
+msgid "single session"
+msgstr "sessione singola"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:550
+#, elixir-autogen, elixir-format
+msgid "smart input"
+msgstr "input intelligente"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:799
+#, elixir-autogen, elixir-format
+msgid "soft delete"
+msgstr "soft delete"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:274
+#, elixir-autogen, elixir-format
+msgid "sound off"
+msgstr "suono spento"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1562
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1600
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1628
+#, elixir-autogen, elixir-format
+msgid "space invaders"
+msgstr "invasori spaziali"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:102
+#, elixir-autogen, elixir-format
+msgid "special messages"
+msgstr "messaggi speciali"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1191
+#, elixir-autogen, elixir-format
+msgid "star duel"
+msgstr "stella duello"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:346
+#: lib/retro_hex_chat/chat/help_topics/features.ex:702
+#, elixir-autogen, elixir-format
+msgid "status bar"
+msgstr "barra di stato"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:102
+#, elixir-autogen, elixir-format
+msgid "status tab"
+msgstr "scheda stato"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:103
+#, elixir-autogen, elixir-format
+msgid "status window"
+msgstr "finestra di stato"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1909
+#, elixir-autogen, elixir-format
+msgid ""
+"stealing your opponent's blocks. Blocks have 3 states: white (neutral), your"
+" color, "
+msgstr ""
+"rubare i blocchi del tuo avversario. I blocchi hanno 3 stati: bianco "
+"(neutral), il colore,"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:52
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:191
+#, elixir-autogen, elixir-format
+msgid "strip colors"
+msgstr "striscia colori"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1792
+#, elixir-autogen, elixir-format
+msgid "sudden death"
+msgstr "morte improvvisa"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2475
+#, elixir-autogen, elixir-format
+msgid "super shotgun"
+msgstr "Super shotgun"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:104
+#, elixir-autogen, elixir-format
+msgid "system messages"
+msgstr "messaggi di sistema"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
+#, elixir-autogen, elixir-format
+msgid "tab bar"
+msgstr "scheda bar"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:515
+#, elixir-autogen, elixir-format
+msgid "tab complete"
+msgstr "scheda completa"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1949
+#, elixir-autogen, elixir-format
+msgid "temperature starts at 60° and drops slowly. Arctic endurance mode. "
+msgstr ""
+"la temperatura inizia a 60° e scende lentamente. Modalità di resistenza "
+"artica."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:163
+#, elixir-autogen, elixir-format
+msgid "text search"
+msgstr "ricerca del testo"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1874
+#, elixir-autogen, elixir-format
+msgid "time trial"
+msgstr "tempo di prova"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2021
+#, elixir-autogen, elixir-format
+msgid ""
+"to steal (60% chance, fail = stun). 3 periods of 2 minutes. Tied? Sudden "
+"death. "
+msgstr ""
+"per rubare (60% possibilità, fallire = stallone). 3 periodi di 2 minuti. "
+"Legato? Morte improvvisa."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:68
+#, elixir-autogen, elixir-format
+msgid "topic bar"
+msgstr "argomento bar"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:44
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:86
+#, elixir-autogen, elixir-format
+msgid "topic lock"
+msgstr "argomento blocco"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2557
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2588
+#, elixir-autogen, elixir-format
+msgid "total conversion"
+msgstr "conversione totale"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2446
+#, elixir-autogen, elixir-format
+msgid "ultimate doom"
+msgstr "destino finale"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2759
+#, elixir-autogen, elixir-format
+msgid "union city"
+msgstr "Unione città"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2675
+#, elixir-autogen, elixir-format
+msgid "unit 1"
+msgstr "unità 1"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:405
+#, elixir-autogen, elixir-format
+msgid "url hover"
+msgstr "url hover"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:592
+#, elixir-autogen, elixir-format
+msgid "url menu"
+msgstr "menù url"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1235
+#, elixir-autogen, elixir-format
+msgid ""
+"use gravity slingshots for speed, but fly too close and you die. Same "
+"controls "
+msgstr ""
+"usare gli slingshot di gravità per la velocità, ma vola troppo vicino e "
+"muori. Stessi controlli"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:427
+#, elixir-autogen, elixir-format
+msgid "user info"
+msgstr "informazioni utente"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:104
+#, elixir-autogen, elixir-format
+msgid "user limit"
+msgstr "limite utente"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:51
+#, elixir-autogen, elixir-format
+msgid "user list"
+msgstr "elenco utente"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:87
+#, elixir-autogen, elixir-format
+msgid "user mode"
+msgstr "modalità utente"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2372
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2873
+#, elixir-autogen, elixir-format
+msgid "virtual theatre"
+msgstr "teatro virtuale"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:97
+#, elixir-autogen, elixir-format
+msgid "voice call"
+msgstr "voce chiamata"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2248
+#, elixir-autogen, elixir-format
+msgid "wolf 3d"
+msgstr "lupo 3d"

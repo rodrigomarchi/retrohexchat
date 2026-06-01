@@ -14,15 +14,39 @@ TOKEN_RE = re.compile(r"XPH\d+X", re.IGNORECASE)
 def main() -> int:
     catalogs = read_catalogs()
     repaired = 0
+    repaired_locales = []
 
-    for catalog in catalogs.values():
+    for export_name, catalog in catalogs.items():
         for source, translated in list(catalog.items()):
             if unsafe(source, translated):
                 catalog[source] = source
                 repaired += 1
+                repaired_locales.append(export_name)
 
     if repaired:
-        write_catalogs(catalogs)
+        export_to_locale = {
+            "AR": "ar",
+            "BN": "bn",
+            "DE": "de",
+            "ES": "es",
+            "FR": "fr",
+            "HI": "hi",
+            "ID": "id",
+            "IT": "it",
+            "JA": "ja",
+            "KO": "ko",
+            "NL": "nl",
+            "PL": "pl",
+            "PT_BR": "pt_BR",
+            "PT_PT": "pt_PT",
+            "RU": "ru",
+            "TR": "tr",
+            "UR": "ur",
+            "VI": "vi",
+            "ZH_HANS": "zh_Hans",
+            "ZH_HANT": "zh_Hant",
+        }
+        write_catalogs(catalogs, locales=[export_to_locale[export] for export in set(repaired_locales)])
 
     print(f"catalogs={len(catalogs)} repaired_entries={repaired}")
     return 0

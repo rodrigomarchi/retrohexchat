@@ -16,18 +16,25 @@ CATALOG_DIR = Path("apps/retro_hex_chat_web/assets/js/lib/i18n_catalogs")
 LOCALE_EXPORTS = OrderedDict(
     [
         ("ar", "AR"),
+        ("bn", "BN"),
         ("de", "DE"),
         ("es", "ES"),
         ("fr", "FR"),
         ("hi", "HI"),
         ("id", "ID"),
+        ("it", "IT"),
         ("ja", "JA"),
         ("ko", "KO"),
+        ("nl", "NL"),
+        ("pl", "PL"),
         ("pt_BR", "PT_BR"),
+        ("pt_PT", "PT_PT"),
         ("ru", "RU"),
         ("tr", "TR"),
+        ("ur", "UR"),
         ("vi", "VI"),
         ("zh_Hans", "ZH_HANS"),
+        ("zh_Hant", "ZH_HANT"),
     ]
 )
 
@@ -74,18 +81,31 @@ def write_catalogs(
     catalogs: dict[str, dict[str, str]],
     catalog_dir: Path = CATALOG_DIR,
     barrel: Path = CATALOG_BARREL,
+    locales: list[str] | tuple[str, ...] | None = None,
 ) -> None:
     catalog_dir.mkdir(parents=True, exist_ok=True)
-    barrel_exports = []
+    locales_to_write = set(locales) if locales is not None else None
 
     for locale, export_name in LOCALE_EXPORTS.items():
+        if locales_to_write is not None and locale not in locales_to_write:
+            continue
+
         if export_name not in catalogs:
             continue
 
         path = locale_catalog_path(locale, catalog_dir)
         body = json.dumps(catalogs[export_name], ensure_ascii=False, indent=2, sort_keys=True)
         path.write_text(f"export const {export_name} = {body};\n", encoding="utf-8")
-        barrel_exports.append(f'export {{ {export_name} }} from "./i18n_catalogs/{locale}.js";')
+
+    write_barrel(barrel, catalog_dir)
+
+
+def write_barrel(barrel: Path = CATALOG_BARREL, catalog_dir: Path = CATALOG_DIR) -> None:
+    barrel_exports = []
+
+    for locale, export_name in LOCALE_EXPORTS.items():
+        if locale_catalog_path(locale, catalog_dir).exists():
+            barrel_exports.append(f'export {{ {export_name} }} from "./i18n_catalogs/{locale}.js";')
 
     barrel.write_text("\n".join(barrel_exports) + "\n", encoding="utf-8")
 

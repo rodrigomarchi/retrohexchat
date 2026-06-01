@@ -1,0 +1,180 @@
+# "msgid"s in this file come from channels.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: ur; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: ur\n"
+"Language: ur\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat/channels/modes.ex:216
+#, elixir-autogen, elixir-format
+msgid "+s and +p are mutually exclusive"
+msgstr "+s اور +p باہمی طور پر ایک دوسرے سے الگ ہیں۔"
+
+#: lib/retro_hex_chat/channels/server.ex:1030
+#, elixir-autogen, elixir-format
+msgid "Already in channel"
+msgstr "چینل میں پہلے ہی"
+
+#: lib/retro_hex_chat/channels/policy.ex:47
+#, elixir-autogen, elixir-format
+msgid "Bad channel key (+k)"
+msgstr "ضلع چینل کلید (+k)"
+
+#: lib/retro_hex_chat/channels/server.ex:440
+#: lib/retro_hex_chat/channels/server.ex:852
+#, elixir-autogen, elixir-format
+msgid "Banned"
+msgstr "آبادی :"
+
+#: lib/retro_hex_chat/channels/policy.ex:153
+#, elixir-autogen, elixir-format
+msgid "Cannot ban a user with equal or higher rank"
+msgstr "کسی صارف کو مساوی یا اعلی درجے کے ساتھ روک نہیں سکتا۔"
+
+#: lib/retro_hex_chat/channels/policy.ex:126
+#, elixir-autogen, elixir-format
+msgid "Cannot kick a higher-ranked user"
+msgstr "اعلیٰ درجے کے صارف کو معطل نہیں کیا جا سکتا"
+
+#: lib/retro_hex_chat/channels/policy.ex:63
+#, elixir-autogen, elixir-format
+msgid "Cannot send to channel (no external messages)"
+msgstr "چینل تک نہیں بھیجے جاسکتے (کچھ بیرونی پیام نہیں)"
+
+#: lib/retro_hex_chat/channels/policy.ex:35
+#, elixir-autogen, elixir-format
+msgid "Channel is full (+l)"
+msgstr "چینل مکمل (+ل) ہے۔"
+
+#: lib/retro_hex_chat/channels/policy.ex:41
+#, elixir-autogen, elixir-format
+msgid "Channel is invite-only (+i)"
+msgstr "چینل صرف (+) دعوت دیتا ہے۔"
+
+#: lib/retro_hex_chat/channels/policy.ex:72
+#, elixir-autogen, elixir-format
+msgid "Channel is moderated (+m). You need voice (+v) to speak."
+msgstr "چینل اعتدال (+m) ہے۔ بولنے کے لیے آواز (+v) کی ضرورت ہے۔"
+
+#: lib/retro_hex_chat/channels/server.ex:648
+#, elixir-autogen, elixir-format
+msgid "Channel is not invite-only"
+msgstr "چینل صرف دعوت نہیں ہے"
+
+#: lib/retro_hex_chat/channels/server.ex:1055
+#, elixir-autogen, elixir-format
+msgid "Channel join throttle active, please try again shortly"
+msgstr "چینل کے ساتھ مل کر چلنے کی کوشش کریں، براہ مہربانی جلد ہی کوشش کریں"
+
+#: lib/retro_hex_chat/channels/server.ex:68
+#: lib/retro_hex_chat/channels/server.ex:71
+#: lib/retro_hex_chat/channels/server.ex:222
+#: lib/retro_hex_chat/channels/server.ex:225
+#, elixir-autogen, elixir-format
+msgid "Channel not found"
+msgstr "چینل نہیں پائی گئی"
+
+#: lib/retro_hex_chat/channels/policy.ex:116
+#: lib/retro_hex_chat/channels/policy.ex:117
+#: lib/retro_hex_chat/channels/policy.ex:142
+#: lib/retro_hex_chat/channels/policy.ex:143
+#: lib/retro_hex_chat/channels/server.ex:691
+#: lib/retro_hex_chat/channels/server.ex:705
+#: lib/retro_hex_chat/channels/server.ex:708
+#, elixir-autogen, elixir-format
+msgid "Insufficient privileges"
+msgstr "ذمہ‌داریوں میں"
+
+#: lib/retro_hex_chat/channels/policy.ex:169
+#: lib/retro_hex_chat/channels/policy.ex:173
+#, elixir-autogen, elixir-format
+msgid "Insufficient privileges to set channel modes"
+msgstr "چینل موڈ مقرر کرنے کے ناکافی اعزازات میں"
+
+#: lib/retro_hex_chat/channels/modes.ex:123
+#, elixir-autogen, elixir-format
+msgid "Invalid mode string: must start with + or -"
+msgstr "بے قاعدہ موڈ تار میں: + یا -"
+
+#: lib/retro_hex_chat/channels/server.ex:651
+#, elixir-autogen, elixir-format
+msgid "Knocking is disabled for this channel"
+msgstr "اس چینل کے لیے نیٹ ورکنگ معطل ہے"
+
+#: lib/retro_hex_chat/channels/server.ex:317
+#, elixir-autogen, elixir-format
+msgid "Not in channel"
+msgstr "چینل میں نہیں"
+
+#: lib/retro_hex_chat/channels/server.ex:758
+#, elixir-autogen, elixir-format
+msgid "Only the channel owner can transfer ownership"
+msgstr "صرف چینل صاحب ملکیت منتقل کر سکتا ہے۔"
+
+#: lib/retro_hex_chat/channels/server.ex:923
+#, elixir-autogen, elixir-format
+msgid "User %{target} is not in channel"
+msgstr "صا لح %{target} چینل نہیں ہے"
+
+#: lib/retro_hex_chat/channels/server.ex:688
+#: lib/retro_hex_chat/channels/server.ex:762
+#, elixir-autogen, elixir-format
+msgid "User is not in channel"
+msgstr "صارف چینل میں نہیں ہے"
+
+#: lib/retro_hex_chat/channels/server.ex:658
+#, elixir-autogen, elixir-format
+msgid "You are already in that channel"
+msgstr "آپ اس چینل میں پہلے ہی موجود ہیں"
+
+#: lib/retro_hex_chat/channels/server.ex:655
+#, elixir-autogen, elixir-format
+msgid "You are banned from that channel"
+msgstr "آپ اس چینل سے ممنوع ہیں"
+
+#: lib/retro_hex_chat/channels/server.ex:966
+#, elixir-autogen, elixir-format
+msgid "You are muted in this channel"
+msgstr "آپ اس چینل میں نصب ہیں"
+
+#: lib/retro_hex_chat/channels/policy.ex:75
+#: lib/retro_hex_chat/channels/policy.ex:82
+#: lib/retro_hex_chat/channels/policy.ex:97
+#, elixir-autogen, elixir-format
+msgid "You are not in this channel"
+msgstr "آپ اس چینل میں نہیں ہیں"
+
+#: lib/retro_hex_chat/channels/policy.ex:136
+#, elixir-autogen, elixir-format
+msgid "You cannot ban yourself"
+msgstr "آپ خود کو روک نہیں سکتے"
+
+#: lib/retro_hex_chat/channels/server.ex:501
+#: lib/retro_hex_chat/channels/server.ex:527
+#: lib/retro_hex_chat/channels/server.ex:553
+#: lib/retro_hex_chat/channels/server.ex:579
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator"
+msgstr "آپ کو چینل آپریٹنگ ہونا ضروری ہے"
+
+#: lib/retro_hex_chat/channels/policy.ex:91
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to change the topic"
+msgstr "موضوع کو تبدیل کرنے کے لیے آپ کو چینل آپریٹر ہونا ہوگا"
+
+#: lib/retro_hex_chat/channels/server.ex:597
+#: lib/retro_hex_chat/channels/server.ex:868
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to unban users"
+msgstr "آپ کو غیر بانی صارفین کے لئے ایک چینل آپ کو ہونا ہوگا"
+
+#: lib/retro_hex_chat/channels/policy.ex:53
+#, elixir-autogen, elixir-format
+msgid "You must be registered to join this channel"
+msgstr "اس چینل میں شامل ہونے کے لیے آپ کو نامزد کرنا ہوگا"

@@ -1,0 +1,483 @@
+# "msgid"s in this file come from p2p.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: pl; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: pl\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1037
+#, elixir-autogen, elixir-format
+msgid "%{action} request accepted."
+msgstr "%{action} Zatwierdzono wniosek."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1041
+#, elixir-autogen, elixir-format
+msgid "%{action} request declined."
+msgstr "%{action} Wniosek odrzucono."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:128
+#, elixir-autogen, elixir-format
+msgid "%{count} cores"
+msgstr "%{count} rdzenie"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:304
+#, elixir-autogen, elixir-format
+msgid "%{duration} — %{quality}"
+msgstr "%{duration} — %{quality}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:92
+#, elixir-autogen, elixir-format
+msgid "%{hours}h %{minutes}m %{seconds}s"
+msgstr "%{hours}h %{minutes}m %{seconds}s"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:99
+#, elixir-autogen, elixir-format
+msgid "%{minutes}m %{seconds}s"
+msgstr "%{minutes}m %{seconds}s"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:290
+#, elixir-autogen, elixir-format
+msgid "%{peer} wants to add video"
+msgstr "%{peer} chce dodać wideo"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:105
+#, elixir-autogen, elixir-format
+msgid "%{seconds}s"
+msgstr "%{seconds}s"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:276
+#, elixir-autogen, elixir-format
+msgid "%{speed} — %{percent}%"
+msgstr "%{speed} — %{percent}%"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:39
+#, elixir-autogen, elixir-format
+msgid "(you)"
+msgstr "(ty)"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:277
+#, elixir-autogen, elixir-format
+msgid "0 B/s"
+msgstr "0 B/s"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:108
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:298
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:479
+#, elixir-autogen, elixir-format
+msgid "Accept"
+msgstr "Akceptuj"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:472
+#, elixir-autogen, elixir-format
+msgid "Action Request: %{action}"
+msgstr "Wniosek o podjęcie działań: %{action}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:249
+#, elixir-autogen, elixir-format
+msgid "Add Video"
+msgstr "Dodaj wideo"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:324
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:423
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:495
+#, elixir-autogen, elixir-format
+msgid "Audio Call"
+msgstr "Połączenie audio"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1044
+#, elixir-autogen, elixir-format
+msgid "Audio call"
+msgstr "Połączenie audio"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:374
+#, elixir-autogen, elixir-format
+msgid "Browse Files"
+msgstr "Przeglądaj pliki"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1058
+#, elixir-autogen, elixir-format
+msgid "Call ended."
+msgstr "Koniec rozmowy."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:259
+#, elixir-autogen, elixir-format
+msgid "Call ended: %{reason}"
+msgstr "Rozmowa zakończona: %{reason}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:50
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:237
+#, elixir-autogen, elixir-format
+msgid "Camera Off"
+msgstr "Kamera wyłączona"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:50
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:236
+#, elixir-autogen, elixir-format
+msgid "Camera On"
+msgstr "Kamera włączona"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:200
+#, elixir-autogen, elixir-format
+msgid "Camera off"
+msgstr "Kamera wyłączona"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:118
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:131
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:128
+#, elixir-autogen, elixir-format
+msgid "Cancelled"
+msgstr "Anulowane"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:131
+#, elixir-autogen, elixir-format
+msgid "Cancelled by %{nickname}"
+msgstr "Anulowane %{nickname}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:136
+#, elixir-autogen, elixir-format
+msgid "Chat"
+msgstr "Rozmowa"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:405
+#, elixir-autogen, elixir-format
+msgid "Close Session"
+msgstr "Zamknij sesję"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:75
+#, elixir-autogen, elixir-format
+msgid "Complete"
+msgstr "Kompletny"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:340
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "Połączone"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:343
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:362
+#, elixir-autogen, elixir-format
+msgid "Connecting..."
+msgstr "Łączenie..."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:307
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:483
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "Zmniejsz"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:264
+#, elixir-autogen, elixir-format
+msgid "Devices"
+msgstr "Urządzenia"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:366
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "Rozłączone"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:367
+#, elixir-autogen, elixir-format
+msgid "Drag a file here or click to browse"
+msgstr "Przeciągnij plik tutaj lub kliknij, aby przeglądać"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:70
+#, elixir-autogen, elixir-format
+msgid "Duration: %{duration}"
+msgstr "Czas trwania: %{duration}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:64
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:272
+#, elixir-autogen, elixir-format
+msgid "End Call"
+msgstr "Koniec rozmowy"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:92
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:357
+#, elixir-autogen, elixir-format
+msgid "Failed"
+msgstr "Nieudany"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:273
+#, elixir-autogen, elixir-format
+msgid "File"
+msgstr "Plik"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:497
+#, elixir-autogen, elixir-format
+msgid "File Transfer"
+msgstr "Transfer plików"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1046
+#, elixir-autogen, elixir-format
+msgid "File transfer"
+msgstr "Transfer plików"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1061
+#, elixir-autogen, elixir-format
+msgid "File transfer completed."
+msgstr "Przelew zakończony."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:317
+#, elixir-autogen, elixir-format
+msgid "High"
+msgstr "Wysoki"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:73
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:388
+#, elixir-autogen, elixir-format
+msgid "In Call"
+msgstr "W wezwaniu"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:333
+#, elixir-autogen, elixir-format
+msgid "Low"
+msgstr "Niski"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:369
+#, elixir-autogen, elixir-format
+msgid "Max: %{size} MB"
+msgstr "Maks.: %{size} MB"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:325
+#, elixir-autogen, elixir-format
+msgid "Medium"
+msgstr "Średni"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:39
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:223
+#, elixir-autogen, elixir-format
+msgid "Mute"
+msgstr "Mute"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:139
+#, elixir-autogen, elixir-format
+msgid "No messages yet."
+msgstr "Żadnych wiadomości."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:101
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:46
+#, elixir-autogen, elixir-format
+msgid "P2P Connection"
+msgstr "Połączenie P2P"
+
+#: lib/retro_hex_chat_web/live/v2/p2_p_session_live.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "P2P Session Ended"
+msgstr "Sesja P2P zakończona"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1050
+#, elixir-autogen, elixir-format
+msgid "P2P invite was rejected."
+msgstr "Zaproszenie P2P zostało odrzucone."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1063
+#, elixir-autogen, elixir-format
+msgid "P2P session ended."
+msgstr "Sesja P2P zakończona."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:218
+#, elixir-autogen, elixir-format
+msgid "Peer muted"
+msgstr "Peer muted"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:95
+#, elixir-autogen, elixir-format
+msgid "Pending..."
+msgstr "Do czasu..."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:782
+#, elixir-autogen, elixir-format
+msgid "Permission denied for %{type}. Please try again."
+msgstr "Odmowa pozwolenia %{type}Spróbuj jeszcze raz."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:257
+#, elixir-autogen, elixir-format
+msgid "Picture-in-Picture"
+msgstr "Rysunek - w - Zdjęcie"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:414
+#, elixir-autogen, elixir-format
+msgid "Privacy: OFF"
+msgstr "Prywatność: OFF"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:414
+#, elixir-autogen, elixir-format
+msgid "Privacy: ON"
+msgstr "Prywatność: ON"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:76
+#, elixir-autogen, elixir-format
+msgid "Private mode requires a TURN server. Using direct connection."
+msgstr ""
+"Tryb prywatny wymaga serwera TURN. Używając bezpośredniego połączenia."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:315
+#, elixir-autogen, elixir-format
+msgid "Quality: %{quality}"
+msgstr "Jakość: %{quality}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:369
+#, elixir-autogen, elixir-format
+msgid "Ready"
+msgstr "Gotowe"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:126
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:379
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:382
+#, elixir-autogen, elixir-format
+msgid "Receiving"
+msgstr "Odbieranie"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:350
+#, elixir-autogen, elixir-format
+msgid "Reconnecting"
+msgstr "Przygotowanie"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:348
+#, elixir-autogen, elixir-format
+msgid "Reconnecting (%{attempt}/3)"
+msgstr "Odtwarzanie (%{attempt}/3)"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:85
+#, elixir-autogen, elixir-format
+msgid "Rejected"
+msgstr "Odrzucone"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:180
+#, elixir-autogen, elixir-format
+msgid "Request expired."
+msgstr "Wniosek wygasł."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:161
+#, elixir-autogen, elixir-format
+msgid "Send"
+msgstr "Wyślij"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:441
+#, elixir-autogen, elixir-format
+msgid "Send File"
+msgstr "Wyślij plik"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:125
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:376
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:385
+#, elixir-autogen, elixir-format
+msgid "Sending"
+msgstr "Wysyłanie"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_session_ended.ex:65
+#, elixir-autogen, elixir-format
+msgid "Session Ended"
+msgstr "Sesja zakończona"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1051
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1052
+#, elixir-autogen, elixir-format
+msgid "Session closed (disconnected)."
+msgstr "Sesja zamknięta (odłączona)."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1049
+#, elixir-autogen, elixir-format
+msgid "Session closed by user."
+msgstr "Sesja zamknięta przez użytkownika."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1056
+#, elixir-autogen, elixir-format
+msgid "Session closed due to connection failure."
+msgstr "Sesja zamknięta z powodu awarii połączenia."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1053
+#, elixir-autogen, elixir-format
+msgid "Session expired due to inactivity."
+msgstr "Sesja wygasła z powodu braku aktywności."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:456
+#, elixir-autogen, elixir-format
+msgid "Session will be closed due to inactivity soon."
+msgstr "Sesja zostanie zamknięta z powodu nieaktywności."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:306
+#, elixir-autogen, elixir-format
+msgid "Starting"
+msgstr "Początek"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:333
+#, elixir-autogen, elixir-format
+msgid "Starting call..."
+msgstr "Rozpoczynam rozmowę..."
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:74
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:152
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:179
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:258
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:308
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:683
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:759
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:781
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "System"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:135
+#, elixir-autogen, elixir-format
+msgid "Touch"
+msgstr "Dotknij"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:155
+#, elixir-autogen, elixir-format
+msgid "Type a message..."
+msgstr "Wpisz wiadomość..."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/media_controls.ex:39
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:223
+#, elixir-autogen, elixir-format
+msgid "Unmute"
+msgstr "Niewyciszony"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:290
+#, elixir-autogen, elixir-format
+msgid "Verifying..."
+msgstr "Sprawdzam..."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:313
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:432
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:496
+#, elixir-autogen, elixir-format
+msgid "Video Call"
+msgstr "Połączenie wideo"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1045
+#, elixir-autogen, elixir-format
+msgid "Video call"
+msgstr "Połączenie wideo"
+
+#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:309
+#, elixir-autogen, elixir-format
+msgid "Video request declined."
+msgstr "Prośba wideo odrzucona."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:372
+#, elixir-autogen, elixir-format
+msgid "Waiting..."
+msgstr "Czekam..."
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:447
+#, elixir-autogen, elixir-format
+msgid "WebRTC: %{state}"
+msgstr "WebRTC: %{state}"
+
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:381
+#: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:498
+#, elixir-autogen, elixir-format
+msgid "unknown"
+msgstr "nieznany"

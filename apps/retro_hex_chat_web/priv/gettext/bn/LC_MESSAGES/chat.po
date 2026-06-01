@@ -1,0 +1,2890 @@
+# "msgid"s in this file come from chat.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: bn\n"
+"Language: bn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/autojoin.ex:90
+#, elixir-autogen, elixir-format
+msgid "  %{channel}%{key}"
+msgstr "  %{channel}%{key}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:34
+#, elixir-autogen, elixir-format
+msgid "  %{index}: %{command}"
+msgstr "  %{index}: %{command}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:130
+#, elixir-autogen, elixir-format
+msgid "  %{nickname} [%{status}]%{note}"
+msgstr "  %{nickname} [%{status}]%{note}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:107
+#, elixir-autogen, elixir-format
+msgid "  %{nickname} [%{type}] (%{expires})"
+msgstr "  %{nickname} [%{type}] (%{expires})"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:182
+#, elixir-autogen, elixir-format
+msgid "  %{position}: %{status} %{trigger} %{channel} → %{command}"
+msgstr "  %{position}: %{status} %{trigger} %{channel} → %{command}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:92
+#, elixir-autogen, elixir-format
+msgid "  /%{name} → %{expansion}"
+msgstr "  /%{name} → %{expansion}"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1042
+#, elixir-autogen, elixir-format
+msgid "  /cs aop #channel add <nick>    — Add an Auto Operator"
+msgstr "  /cs aop #channel add <nick>    — Add an Auto Operator"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1044
+#, elixir-autogen, elixir-format
+msgid "  /cs info #channel              — View channel registration info"
+msgstr "  /cs info #channel              — View channel registration info"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1040
+#, elixir-autogen, elixir-format
+msgid "  /cs register #channel          — Register a channel you operate"
+msgstr "  /cs register #channel          — Register a channel you operate"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1041
+#, elixir-autogen, elixir-format
+msgid "  /cs sop #channel add <nick>    — Add a Super Operator"
+msgstr "  /cs sop #channel add <nick>    — Add a Super Operator"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1043
+#, elixir-autogen, elixir-format
+msgid "  /cs vop #channel add <nick>    — Add an Auto Voice user"
+msgstr "  /cs vop #channel add <nick>    — Add an Auto Voice user"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1014
+#, elixir-autogen, elixir-format
+msgid "  /help            — View full help"
+msgstr "  /help            — View full help"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1015
+#, elixir-autogen, elixir-format
+msgid "  /help commands   — List all commands"
+msgstr "  /help commands   — List all commands"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1011
+#, elixir-autogen, elixir-format
+msgid "  /join #channel   — Join a channel"
+msgstr "  /join #channel   — Join a channel"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1012
+#, elixir-autogen, elixir-format
+msgid "  /msg nick text   — Send a private message"
+msgstr "  /msg nick text   — Send a private message"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1013
+#, elixir-autogen, elixir-format
+msgid "  /nick new_nick   — Change your nickname"
+msgstr "  /nick new_nick   — Change your nickname"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1074
+#, elixir-autogen, elixir-format
+msgid "  /ns drop <password>       — Permanently unregister your nickname"
+msgstr "  /ns drop <password>       — Permanently unregister your nickname"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1073
+#, elixir-autogen, elixir-format
+msgid "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
+msgstr "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1071
+#, elixir-autogen, elixir-format
+msgid "  /ns identify <password>   — Identify (log in) for this session"
+msgstr "  /ns identify <password>   — Identify (log in) for this session"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1072
+#, elixir-autogen, elixir-format
+msgid "  /ns info [nickname]       — Look up registration info"
+msgstr "  /ns info [nickname]       — Look up registration info"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1070
+#, elixir-autogen, elixir-format
+msgid "  /ns register <password>   — Register your current nickname"
+msgstr "  /ns register <password>   — Register your current nickname"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:221
+#, elixir-autogen, elixir-format
+msgid "  Registered: no"
+msgstr "নিবন্ধিত নয়:"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:219
+#, elixir-autogen, elixir-format
+msgid "  Registered: yes (%{status})"
+msgstr "  নিবন্ধিত: (হ্যাঁ)%{status})"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1049
+#, elixir-autogen, elixir-format
+msgid "  • Channels expire after 7 days of inactivity"
+msgstr "• চ্যানেল ৭ দিন পরে মেয়াদ পূর্ণ হবে"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1050
+#, elixir-autogen, elixir-format
+msgid "  • If a founder's nick expires, the next ranked user is promoted"
+msgstr ""
+"• যদি একজন প্রতিষ্ঠাতার ডাকনামের মেয়াদ শেষ হয়, তাহলে পরবর্তী পদটির "
+"ব্যবহারকারীর নামকরণ করা হবে"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1077
+#, elixir-autogen, elixir-format
+msgid "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"
+msgstr "• নিকস সংবেদনশীল — \"আলিস\" এবং \"প্রতিক্রিয়া\" আলাদা"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1078
+#, elixir-autogen, elixir-format
+msgid "  • Nicks expire after 7 days of inactivity"
+msgstr "• নিষ্ক্রিয় হওয়ার ৭ দিন পরে নিকস"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1079
+#, elixir-autogen, elixir-format
+msgid "  • Switching to a registered nick gives you 60s to identify"
+msgstr "• একটা নিবন্ধিত ডাকনাম বদল করলে আপনাকে ৬০টি অক্ষর শনাক্ত করতে হবে"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/autojoin.ex:89
+#, elixir-autogen, elixir-format
+msgid " (key: ****)"
+msgstr "(key: ****)"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:113
+#, elixir-autogen, elixir-format
+msgid " (warning: %{warnings})"
+msgstr " (সতর্কতা:) %{warnings})"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:128
+#, elixir-autogen, elixir-format
+msgid " - %{note}"
+msgstr " - %{note}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:295
+#, elixir-autogen, elixir-format
+msgid "%{bot}: Arcade session ready!"
+msgstr "%{bot}- আর্কেড সেশন প্রস্তুত!"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:242
+#, elixir-autogen, elixir-format
+msgid "%{browser} — %{os}"
+msgstr "%{browser} — %{os}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/autojoin.ex:72
+#, elixir-autogen, elixir-format
+msgid "%{channel} is not in your auto-join list"
+msgstr "%{channel} আপনার স্থানীয় তালিকায় উপস্থিত নেই"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:124
+#, elixir-autogen, elixir-format
+msgid "%{count} hour"
+msgid_plural "%{count} hours"
+msgstr[0] "%{count} ঘন্টা"
+msgstr[1] "%{count} ঘন্টা"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:129
+#, elixir-autogen, elixir-format
+msgid "%{count} minute"
+msgid_plural "%{count} minutes"
+msgstr[0] "%{count} মিনিট"
+msgstr[1] "%{count} মিনিট"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:133
+#, elixir-autogen, elixir-format
+msgid "%{count} second"
+msgid_plural "%{count} seconds"
+msgstr[0] "%{count} দ্বিতীয়"
+msgstr[1] "%{count} সেকেন্ড"
+
+#: lib/retro_hex_chat_web/components/ui/chat/autocomplete.ex:146
+#, elixir-autogen, elixir-format
+msgid "%{count} user"
+msgid_plural "%{count} users"
+msgstr[0] "%{count} ব্যবহারকারী"
+msgstr[1] "%{count} ব্যবহারকারী"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:616
+#, elixir-autogen, elixir-format
+msgid "%{field}: %{errors}"
+msgstr "%{field}: %{errors}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:316
+#, elixir-autogen, elixir-format
+msgid "%{game} ended — %{reason}"
+msgstr "%{game} সমাপ্তি %{reason}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:313
+#, elixir-autogen, elixir-format
+msgid "%{game} finished"
+msgstr "%{game} সমাপ্ত"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:259
+#, elixir-autogen, elixir-format
+msgid "%{game} with %{peer} ended — %{reason}"
+msgstr "%{game} সহ %{peer} সমাপ্তি %{reason}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:256
+#, elixir-autogen, elixir-format
+msgid "%{game} with %{peer} finished"
+msgstr "%{game} সহ %{peer} সমাপ্ত"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:350
+#, elixir-autogen, elixir-format
+msgid "%{hours}h %{minutes}m"
+msgstr "%{hours}h %{minutes}m"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:233
+#, elixir-autogen, elixir-format
+msgid "%{label} with %{peer} ended (%{duration}) — %{reason}"
+msgstr "%{label} সহ %{peer} সমাপ্তি (শেষ)%{duration}) — %{reason}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:191
+#, elixir-autogen, elixir-format
+msgid "%{label} — /p2p/%{token}"
+msgstr "%{label} — /p2p/%{token}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:324
+#, elixir-autogen, elixir-format
+msgid "%{message} (%{reason})"
+msgstr "%{message} (%{reason})"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:356
+#, elixir-autogen, elixir-format
+msgid "%{minutes}m %{seconds}s"
+msgstr "%{minutes}m %{seconds}s"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:228
+#, elixir-autogen, elixir-format
+msgid "%{nickname} already has a custom color"
+msgstr "%{nickname} স্বনির্ধারিত রং বর্তমানে উপস্থিত রয়েছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:193
+#, elixir-autogen, elixir-format
+msgid "%{nickname} changed the topic to: %{topic}"
+msgstr "%{nickname} বিষয় পরিবর্তন করুন: %{topic}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:40
+#, elixir-autogen, elixir-format
+msgid "%{nickname} has joined the channel"
+msgstr "%{nickname} চ্যানেলে যোগ দিয়েছেন"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:74
+#, elixir-autogen, elixir-format
+msgid "%{nickname} has left"
+msgstr "%{nickname} বাঁদিকে রয়েছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:72
+#, elixir-autogen, elixir-format
+msgid "%{nickname} has left (%{reason})"
+msgstr "%{nickname} বাঁদিকে (বাঁদিকে)%{reason})"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:308
+#, elixir-autogen, elixir-format
+msgid "%{nickname} has no custom color"
+msgstr "%{nickname} কোন স্বনির্ধারিত রং নেই"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:96
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:154
+#, elixir-autogen, elixir-format
+msgid "%{nickname} is already in your contacts"
+msgstr "%{nickname} আপনার পরিচিত ব্যক্তি ইতোমধ্যে বিদ্যমান"
+
+#: lib/retro_hex_chat_web/live/chat_live/notify_events.ex:62
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:52
+#, elixir-autogen, elixir-format
+msgid "%{nickname} is already in your notify list"
+msgstr "%{nickname} আপনার তালিকা"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/messages.ex:383
+#, elixir-autogen, elixir-format
+msgid "%{nickname} is away: %{message}"
+msgstr "%{nickname} দূরে: %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:150
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:180
+#, elixir-autogen, elixir-format
+msgid "%{nickname} is not in your contacts"
+msgstr "%{nickname} আপনার পরিচিতিতে উপস্থিত নয়"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:96
+#, elixir-autogen, elixir-format
+msgid "%{nickname} is not in your ignore list"
+msgstr "%{nickname} উপেক্ষা করার জন্য চিহ্নিত ব্যক্তিদের তালিকা"
+
+#: lib/retro_hex_chat_web/live/chat_live/notify_events.ex:102
+#: lib/retro_hex_chat_web/live/chat_live/notify_events.ex:136
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:83
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:107
+#, elixir-autogen, elixir-format
+msgid "%{nickname} is not in your notify list"
+msgstr "%{nickname} আপনার বিজ্ঞপ্তির মধ্যে উপস্থিত নেই"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:27
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:40
+#, elixir-autogen, elixir-format
+msgid "%{nickname} sets mode %{mode}"
+msgstr "%{nickname} মোড নির্ধারণ করা হয় %{mode}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:116
+#, elixir-autogen, elixir-format
+msgid "%{old_nick} is now known as %{new_nick}"
+msgstr "%{old_nick} এখন এটা পরিচিত %{new_nick}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:125
+#, elixir-autogen, elixir-format
+msgid "%{operator} added ban exception for %{nickname} in %{channel}"
+msgstr ""
+"%{operator} নিষিদ্ধ করার ব্যতিক্রম যোগ করা হয়েছে %{nickname} এর মধ্যে "
+"%{channel}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:161
+#, elixir-autogen, elixir-format
+msgid "%{operator} added invite exception for %{nickname} in %{channel}"
+msgstr ""
+"%{operator} এর ব্যতিক্রম যোগ করা হয়েছে %{nickname} এর মধ্যে %{channel}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:143
+#, elixir-autogen, elixir-format
+msgid "%{operator} removed ban exception for %{nickname} in %{channel}"
+msgstr "%{operator} নিষিদ্ধ করা হয়েছে %{nickname} এর মধ্যে %{channel}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:179
+#, elixir-autogen, elixir-format
+msgid "%{operator} removed invite exception for %{nickname} in %{channel}"
+msgstr ""
+"%{operator} অপসারণ করার জন্য চিহ্নিত আমন্ত্রণ %{nickname} এর মধ্যে "
+"%{channel}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:134
+#, elixir-autogen, elixir-format
+msgid "%{syntax} - %{description}"
+msgstr "%{syntax} - %{description}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:264
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:190
+#, elixir-autogen, elixir-format
+msgid "%{target} has been muted in %{channel}."
+msgstr "%{target} নিঃশব্দ অবস্থায় রয়েছে %{channel}."
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:275
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:206
+#, elixir-autogen, elixir-format
+msgid "%{target} has been unmuted in %{channel}."
+msgstr "%{target} আরম্ভ হয়নি %{channel}."
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:93
+#, elixir-autogen, elixir-format
+msgid "%{target} was banned by %{operator}"
+msgstr "%{target} নিষিদ্ধ করা হয়েছে %{operator}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:57
+#, elixir-autogen, elixir-format
+msgid "%{target} was kicked by %{operator}"
+msgstr "%{target} লাথি মেরেছে %{operator}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:106
+#, elixir-autogen, elixir-format
+msgid "%{target} was unbanned by %{operator}"
+msgstr "%{target} পূ. %{operator}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:270
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:326
+#, elixir-autogen, elixir-format
+msgid "(%{duration})"
+msgstr "(%{duration})"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:180
+#, elixir-autogen, elixir-format
+msgid "(all)"
+msgstr "(সব)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:32
+#, elixir-autogen, elixir-format
+msgid "(edited)"
+msgstr "সম্পাদনা"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:74
+#, elixir-autogen, elixir-format
+msgid "* %{channel} is not invite-only — anyone can join"
+msgstr "* %{channel} শুধু আমন্ত্রণ জানানো নয়- যে কেউ যোগদান করতে পারবে"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:167
+#, elixir-autogen, elixir-format
+msgid "* %{inviter} has invited you to %{channel}"
+msgstr "* %{inviter} আপনাকে আমন্ত্রণ জানানো হয়েছে %{channel}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:66
+#, elixir-autogen, elixir-format
+msgid "* %{nickname} has gone offline"
+msgstr "* %{nickname} %s বর্তমানে অফলাইন রয়েছেন।"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:302
+#, elixir-autogen, elixir-format
+msgid "* %{nickname} has knocked on %{channel}"
+msgstr "* %{nickname} হারিয়ে গেছে %{channel}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:296
+#, elixir-autogen, elixir-format
+msgid "* %{nickname} has knocked on %{channel} (%{message})"
+msgstr "* %{nickname} হারিয়ে গেছে %{channel} (%{message})"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:52
+#, elixir-autogen, elixir-format
+msgid "* %{nickname} ignore updated to: %{type}"
+msgstr "* %{nickname} উপেক্ষা করার জন্য চিহ্নিত আপডেট: %{type}"
+
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:133
+#, elixir-autogen, elixir-format
+msgid "* %{nickname} is no longer auto-ignored"
+msgstr "* %{nickname} এখন পুনরায় আরম্ভ করা হবে না"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:389
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:218
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:633
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:91
+#, elixir-autogen, elixir-format
+msgid "* %{nickname} is no longer ignored"
+msgstr "* %{nickname} এখন আর উপেক্ষা করা হবে না"
+
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:99
+#, elixir-autogen, elixir-format
+msgid "* %{nickname} is no longer ignored (timer expired)"
+msgstr "* %{nickname} এখন আর উপেক্ষা করা হবে না (irmate)"
+
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:191
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:362
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:534
+#, elixir-autogen, elixir-format
+msgid "* %{nickname} is now ignored"
+msgstr "* %{nickname} এখন উপেক্ষা করা হবে"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:357
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:57
+#, elixir-autogen, elixir-format
+msgid "* %{nickname} is now ignored (%{type})"
+msgstr "* %{nickname} এখন উপেক্ষা করা হবে%{type})"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:65
+#, elixir-autogen, elixir-format
+msgid "* %{nickname} is now online"
+msgstr "* %{nickname} অনলাইন করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:126
+#, elixir-autogen, elixir-format
+msgid "* %{notice}"
+msgstr "* %{notice}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:80
+#, elixir-autogen, elixir-format
+msgid "* %{sender} has been auto-ignored for flooding (%{duration})"
+msgstr ""
+"* %{sender} বন্যা সঞ্চালনের উদ্দেশ্যে অটো-ওপেন করা হয়েছে (মুছে ফেলা "
+"হয়েছে)%{duration})"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:82
+#, elixir-autogen, elixir-format
+msgid "* %{target} is already in the channel"
+msgstr "* %{target} চ্যানেলের মধ্যে বর্তমানে উপস্থিত রয়েছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:23
+#, elixir-autogen, elixir-format
+msgid "* %{target} is not online."
+msgstr "* %{target} অনলাইনে নেই।"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:39
+#, elixir-autogen, elixir-format
+msgid "* %{target} is online. Use /whois %{target} for current info."
+msgstr "* %{target} অনলাইন আছে। ব্যবহার /whois %{target} বর্তমান তথ্যের জন্য।"
+
+#: lib/retro_hex_chat_web/live/chat_live/invite_events.ex:34
+#, elixir-autogen, elixir-format
+msgid "* Accepted invite to %{channel} from %{inviter}"
+msgstr "* আমন্ত্রণ গ্রহণ করা হয়েছে %{channel} থেকে %{inviter}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/autojoin.ex:44
+#, elixir-autogen, elixir-format
+msgid "* Added to auto-join list: %{channel}"
+msgstr "*মত স্বয়ংক্রিয়ভাবে যোগ করা হয়েছে: %{channel}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:50
+#, elixir-autogen, elixir-format
+msgid "* Added to perform list: %{command}"
+msgstr "* তালিকায় যোগ করা হয়েছে: %{command}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:36
+#, elixir-autogen, elixir-format
+msgid "* Alias /%{name} created%{warning}"
+msgstr "*নাম / উপনাম%{name} নির্মিত%{warning}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:75
+#, elixir-autogen, elixir-format
+msgid "* Alias /%{name} removed"
+msgstr "*নাম / উপনাম%{name} অপসারণ করা হয়েছে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/arcade_session_link.ex:22
+#, elixir-autogen, elixir-format
+msgid "* Arcade session ready!"
+msgstr "- আর্কেড সেশন রেডি!"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/autojoin.ex:85
+#, elixir-autogen, elixir-format
+msgid "* Auto-join list cleared"
+msgstr "স্বয়ংক্রিয়ভাবে তালিকা ফাঁকা করা হবে"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:56
+#, elixir-autogen, elixir-format
+msgid "* Auto-join on invite: %{status}"
+msgstr "* আমন্ত্রণে স্বয়ংক্রিয়ভাবে যোগ দিন: %{status}"
+
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:185
+#, elixir-autogen, elixir-format
+msgid "* Auto-joining %{channel}..."
+msgstr "* অটো-ওপেনিং %{channel}..."
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/settings.ex:74
+#, elixir-autogen, elixir-format
+msgid "* Bio cleared."
+msgstr "* বায়ো ক্লিয়ার."
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/settings.ex:41
+#, elixir-autogen, elixir-format
+msgid "* Bio set: %{text}"
+msgstr "* বায়ো সেট: %{text}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/settings.ex:40
+#, elixir-autogen, elixir-format
+msgid "* Bio truncated to 200 characters and set."
+msgstr "* বায়োকে ২০০ অক্ষর এবং সেট করা হয়েছে ।"
+
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:234
+#, elixir-autogen, elixir-format
+msgid "* Channel invite to %{channel} expired"
+msgstr "* চ্যানেলের আমন্ত্রণ %{channel} মেয়াদ উত্তীর্ণ"
+
+#: lib/retro_hex_chat_web/live/chat_live/settings_dialogs_events.ex:79
+#, elixir-autogen, elixir-format
+msgid "* Flood protection settings reset to defaults"
+msgstr "* বন্যার সুরক্ষা সংক্রান্ত বৈশিষ্ট্য ডিফল্ট হিসাবে রিসেট করা"
+
+#: lib/retro_hex_chat_web/live/chat_live/settings_dialogs_events.ex:61
+#, elixir-autogen, elixir-format
+msgid "* Flood protection settings saved"
+msgstr "* জলপ্লাবন রক্ষা পায়"
+
+#: lib/retro_hex_chat_web/live/chat_live/invite_events.ex:63
+#, elixir-autogen, elixir-format
+msgid "* Ignored invite to %{channel}"
+msgstr "* উপেক্ষিত আহ্বান %{channel}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:37
+#, elixir-autogen, elixir-format
+msgid "* Inviting %{target} to %{channel}"
+msgstr "* আই আমন্ত্রণ %{target} চিহ্নিত স্থানে চলুন %{channel}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:99
+#, elixir-autogen, elixir-format
+msgid "* Moved command from position %{from} to %{to}"
+msgstr "* অবস্থান থেকে অবৈধ কমান্ড %{from} চিহ্নিত স্থানে চলুন %{to}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:259
+#, elixir-autogen, elixir-format
+msgid "* New activity"
+msgstr "* নতুন কর্ম"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/settings.ex:53
+#, elixir-autogen, elixir-format
+msgid "* No bio set. Use /bio <text> to set one."
+msgstr "* কোনো বায়োসেট নির্ধারিত হয়নি । <f12/f1> <ff21> ব্যবহার করা হবে।"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:62
+#, elixir-autogen, elixir-format
+msgid "* No whowas information available for %{target}."
+msgstr "*কোন তথ্য নেই %{target}."
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/settings.ex:23
+#, elixir-autogen, elixir-format
+msgid "* Notice routing is hardcoded to: active"
+msgstr "* লক্ষ্য করুন যে রুটিং করা কঠিন:"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:118
+#, elixir-autogen, elixir-format
+msgid "* Perform list cleared"
+msgstr "*TimeA তালিকা ফাঁকা"
+
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:158
+#, elixir-autogen, elixir-format
+msgid "* Performing: %{command}"
+msgstr "*: %{command}"
+
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:209
+#, elixir-autogen, elixir-format
+msgid "* Rejoining %{channel}..."
+msgstr "* যোগ দেওয়া %{channel}..."
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/autojoin.ex:66
+#, elixir-autogen, elixir-format
+msgid "* Removed %{channel} from auto-join list"
+msgstr "* অপসারিত %{channel} অটো-ওপেন করার তালিকা থেকে আরম্ভ করা হবে"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:77
+#, elixir-autogen, elixir-format
+msgid "* Removed command at position %{position}"
+msgstr "* অবস্থানে কমান্ড সরিয়ে নেওয়া হয়েছে %{position}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:305
+#, elixir-autogen, elixir-format
+msgid "* Restoring session..."
+msgstr "* সেশান পুনরুদ্ধার করা হচ্ছে..."
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/messages.ex:393
+#, elixir-autogen, elixir-format
+msgid "* Sent away auto-reply to %{sender}"
+msgstr "* স্বয়ংক্রিয়ভাবে বাতিল করা হবে %{sender}"
+
+#: lib/retro_hex_chat_web/live/chat_live/settings_dialogs_events.ex:166
+#, elixir-autogen, elixir-format
+msgid "* Sound settings applied"
+msgstr "* শব্দ সংক্রান্ত বৈশিষ্ট্য"
+
+#: lib/retro_hex_chat_web/live/chat_live/settings_dialogs_events.ex:188
+#, elixir-autogen, elixir-format
+msgid "* Sound settings saved"
+msgstr "* শব্দ সংক্রান্ত বৈশিষ্ট্য"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:136
+#, elixir-autogen, elixir-format
+msgid "* Timer '%{name}' set: %{type}, %{interval}s → %{command}"
+msgstr "* সময়সীমা%{name}':': %{type}, %{interval}s → %{command}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:159
+#, elixir-autogen, elixir-format
+msgid "* Timer '%{name}' stopped"
+msgstr "* সময়সীমা%{name}'বন্ধ করুন'"
+
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:70
+#, elixir-autogen, elixir-format
+msgid "* Timer '%{name}' target window is no longer available"
+msgstr "* সময়সীমা%{name}উদ্দিষ্ট উইন্ডো বর্তমানে উপস্থিত নেই"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:363
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:367
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:96
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:100
+#, elixir-autogen, elixir-format
+msgid "* User '%{target}' not found"
+msgstr "* ব্যবহারকারী%{target}পাওয়া যায়নি"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:65
+#, elixir-autogen, elixir-format
+msgid "* You are not a channel operator"
+msgstr "* আপনি একটি চ্যানেল অপারেটর নন"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/presence.ex:144
+#, elixir-autogen, elixir-format
+msgid "* You have been invited to %{channel} by %{inviter} (auto-joined)"
+msgstr ""
+"* আপনাকে দাওয়াত দেওয়া হয়েছে %{channel} ব্যবহার করা হবে %{inviter} "
+"(auto-যোগ করা হয়েছে)"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/settings.ex:54
+#, elixir-autogen, elixir-format
+msgid "* Your bio: %{bio}"
+msgstr "* আপনার জীবনী: %{bio}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:131
+#, elixir-autogen, elixir-format
+msgid "* Your notify list buddy %{old_nick} is now known as %{new_nick}"
+msgstr "* আপনার বিজ্ঞপ্তি বন্ধু তালিকা %{old_nick} এখন এটা পরিচিত %{new_nick}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:370
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:371
+#, elixir-autogen, elixir-format
+msgid ", draw"
+msgstr "ছবি"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:151
+#, elixir-autogen, elixir-format
+msgid "----- Whois: %{target} -----"
+msgstr "লোবাম্বা পরীক্ষা: %{target} -----"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:69
+#, elixir-autogen, elixir-format
+msgid "----- Whowas: %{nickname} -----"
+msgstr "লোবাম্বা কে? %{nickname} -----"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:96
+#, elixir-autogen, elixir-format
+msgid "/join #channel to get started"
+msgstr "/join #channel to get started"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1008
+#, elixir-autogen, elixir-format
+msgid "A real-time chat platform with a retro look and feel."
+msgstr "রেট্রো চেহারা এবং অনুভূতিসহ বাস্তব সময়ের আড্ডা প্ল্যাটফর্ম।"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1046
+#, elixir-autogen, elixir-format
+msgid "Access hierarchy: Owner > SOP > AOP > VOP"
+msgstr "বস্তুর অনুক্রম:"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:171
+#, elixir-autogen, elixir-format
+msgid "Activities"
+msgstr "কর্ম"
+
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:65
+#, elixir-autogen, elixir-format
+msgid "Add to Contacts"
+msgstr "পরিচিতি যোগ করুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:84
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:145
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:383
+#, elixir-autogen, elixir-format
+msgid "Added %{nickname} to contacts"
+msgstr "যোগ করা হয়েছে %{nickname} পরিচিতি-সমূহ"
+
+#: lib/retro_hex_chat_web/live/chat_live/notify_events.ex:46
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:38
+#, elixir-autogen, elixir-format
+msgid "Added %{nickname} to notify list"
+msgstr "যোগ করা হয়েছে %{nickname} সূচনাপ্রদানের উদ্দেশ্যে চিহ্নিত তালিকা"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:98
+#, elixir-autogen, elixir-format
+msgid "Address Book"
+msgstr "ঠিকানা-বই"
+
+#: lib/retro_hex_chat_web/live/chat_live/admin_console_events.ex:28
+#: lib/retro_hex_chat_web/live/chat_live/admin_console_events.ex:45
+#, elixir-autogen, elixir-format
+msgid "Admin Console is restricted to server administrators."
+msgstr "প্রশাসনিক কনসোল সার্ভার- এর সাথে যোগাযোগ করা হয়েছে।"
+
+#: lib/retro_hex_chat_web/live/chat_live/alias_events.ex:161
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:40
+#, elixir-autogen, elixir-format
+msgid "Alias /%{name} already exists"
+msgstr "উপনাম%{name} চিহ্নিত নাম বর্তমানে উপস্থিত"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:78
+#, elixir-autogen, elixir-format
+msgid "Alias /%{name} not found"
+msgstr "উপনাম%{name} পাওয়া যায়নি"
+
+#: lib/retro_hex_chat_web/live/chat_live/alias_events.ex:174
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:61
+#, elixir-autogen, elixir-format
+msgid "Alias list is full (max 50)"
+msgstr "উপনা তালিকা (mx ৫০)"
+
+#: lib/retro_hex_chat_web/live/chat_live/alias_events.ex:175
+#, elixir-autogen, elixir-format
+msgid "Alias not found"
+msgstr "উপনাম পাওয়া যায়নি"
+
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:213
+#, elixir-autogen, elixir-format
+msgid "Alias recursion limit reached (max 5 levels)"
+msgstr "উপনামের মেয়াদ পূর্ণ হয়েছে (x 5 স্তর)"
+
+#: lib/retro_hex_chat_web/live/chat_live/custom_menus_events.ex:209
+#, elixir-autogen, elixir-format
+msgid "An item with that label already exists"
+msgstr "এই লেবেলের সাথে একটি আইটেম উপস্থিত রয়েছে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:168
+#, elixir-autogen, elixir-format
+msgid "Animals & Nature"
+msgstr "পশু ও প্রকৃতি"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:306
+#, elixir-autogen, elixir-format
+msgid "Arcade game"
+msgstr "আর্কেড খেলা"
+
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:307
+#, elixir-autogen, elixir-format
+msgid "Arcade session ready! Open: %{url}"
+msgstr "আর্কেড সেশন রেডি! খুলুন: %{url}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:90
+#, elixir-autogen, elixir-format
+msgid "Attempt %{attempt} of %{max_attempts}"
+msgstr "প্রচেষ্টা করা হচ্ছে %{attempt} এর %{max_attempts}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:113
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:123
+#, elixir-autogen, elixir-format
+msgid "Audio Call"
+msgstr "অডিও কল"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:226
+#, elixir-autogen, elixir-format
+msgid "Audio call"
+msgstr "অডিও কল"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:182
+#, elixir-autogen, elixir-format
+msgid "Audio call from %{from}"
+msgstr "কলের উৎসস্থল %{from}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/p2p_invite.ex:54
+#, elixir-autogen, elixir-format
+msgid "Audio call started. Join the lobby: /p2p/%{token}"
+msgstr "অডিও কল শুরু হয়েছে। লবিতে যোগ দিন: /p2p/%{token}"
+
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:451
+#, elixir-autogen, elixir-format
+msgid ""
+"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgstr ""
+"অটো-jint তালিকার তালিকা (২০টি চ্যানেল) %{channel} স্বয়ংক্রিয়ভাবে যোগ করা "
+"হয়নি"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:42
+#, elixir-autogen, elixir-format
+msgid "Auto-respond rule added: %{trigger} → %{command}"
+msgstr "স্বয়ংক্রিয় সংবাদদাতা নিয়ম যোগ করেছে: %{trigger} → %{command}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:71
+#, elixir-autogen, elixir-format
+msgid "Auto-respond rule not found."
+msgstr "অটো-ওপেনের নিয়ম পাওয়া যায়নি ।"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:68
+#, elixir-autogen, elixir-format
+msgid "Auto-respond rule removed."
+msgstr "অটো-ওভারের নিয়ম সরিয়ে ফেলা হয়েছে।"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:83
+#, elixir-autogen, elixir-format
+msgid "Auto-respond rules:"
+msgstr "স্বয়ংক্রিয় সংবাদদাতা নিয়ম:"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:116
+#, elixir-autogen, elixir-format
+msgid ""
+"Available commands: %{commands}\n"
+"Type /help <command> for details, or open Help Topics from the menu for the full help system."
+msgstr ""
+"উপলব্ধ কমান্ড: %{commands}\n"
+"ধরন /help <fot>/ph0বিস্তারিত তথ্যের জন্য > শিরোনাম লিখুন, অথবা নীচের মেনু থেকে সহায়িকা দেখুন।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:94
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:147
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:407
+#, elixir-autogen, elixir-format
+msgid "Away"
+msgstr "অনুপস্থিত"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:192
+#, elixir-autogen, elixir-format
+msgid "Away: %{message}"
+msgstr "অনুপস্থিত %{message}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:172
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:171
+#, elixir-autogen, elixir-format
+msgid "Ban"
+msgstr "নিষিদ্ধ"
+
+#: lib/retro_hex_chat_web/live/chat_live/channel_central_events.ex:121
+#, elixir-autogen, elixir-format
+msgid "Ban error: %{message}"
+msgstr "বাতিল করতে ত্রুটি: %s %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/channel_central_events.ex:162
+#, elixir-autogen, elixir-format
+msgid "Ban exception error: %{message}"
+msgstr "বাতিলকরণ ত্রুটি %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:195
+#, elixir-autogen, elixir-format
+msgid "Bio: %{bio}"
+msgstr "বায়ো: %{bio}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:95
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:178
+#, elixir-autogen, elixir-format
+msgid "Black"
+msgstr "কালো"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:189
+#, elixir-autogen, elixir-format
+msgid "Blue"
+msgstr "নীল"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:68
+#, elixir-autogen, elixir-format
+msgid "Bold (Ctrl+Shift+B)"
+msgstr "গাঢ় (Ctrl+Shift+B)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:179
+#, elixir-autogen, elixir-format
+msgid "Bot"
+msgstr "বোট"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:380
+#, elixir-autogen, elixir-format
+msgid "Bot already in %{channel}."
+msgstr "বোট আগে থেকেই আছে %{channel}."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:29
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/bots.ex:27
+#, elixir-autogen, elixir-format
+msgid "Bot management is restricted to server administrators."
+msgstr "বোট ম্যানেজমেন্ট সার্ভার প্রশাসকদের কাছে সীমাবদ্ধ।"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:295
+#, elixir-autogen, elixir-format
+msgid "Bot not found."
+msgstr "বোট পাওয়া যায়নি।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:182
+#, elixir-autogen, elixir-format
+msgid "Brown"
+msgstr "ব্রাউন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:180
+#, elixir-autogen, elixir-format
+msgid "Browse All Channels..."
+msgstr "সকল চ্যানেল ব্রাউজ করুন..."
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:106
+#, elixir-autogen, elixir-format
+msgid "Browse channels"
+msgstr "চ্যানেল ব্রাউজ করুন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:101
+#, elixir-autogen, elixir-format
+msgid "Browser"
+msgstr "ব্রাউজার"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.html.heex:172
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "বাতিল"
+
+#: lib/retro_hex_chat_web/live/chat_live/highlight_events.ex:96
+#, elixir-autogen, elixir-format
+msgid "Cannot add highlight: %{reason}"
+msgstr "উজ্জ্বল করতে ব্যর্থ: %{reason}"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:90
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:162
+#, elixir-autogen, elixir-format
+msgid "Cannot add yourself to contacts"
+msgstr "পরিচিতি যোগ করা যাচ্ছে না"
+
+#: lib/retro_hex_chat_web/live/chat_live/notify_events.ex:54
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:45
+#, elixir-autogen, elixir-format
+msgid "Cannot add yourself to the notify list"
+msgstr "সূচনাপ্রদানের উদ্দেশ্যে পরিচিত ব্যক্তিদের তালিকা যোগ করা যায়নি"
+
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:101
+#: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:118
+#, elixir-autogen, elixir-format
+msgid "Cannot send text to status window. Use /commands."
+msgstr "স্ট্যাটাস বারের মধ্যে লেখা সম্ভব হয়নি। <f0\\-2/fix> ব্যবহার করুন।"
+
+#: lib/retro_hex_chat_web/live/chat_live/highlight_events.ex:137
+#, elixir-autogen, elixir-format
+msgid "Cannot update highlight: %{reason}"
+msgstr "উপস্থিতি পরিবর্তন করা যাচ্ছে না: %s %{reason}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/search_bar.ex:117
+#, elixir-autogen, elixir-format
+msgid "Case sensitive"
+msgstr "বড় বা ছোট হাতের অক্ষর পৃথকভাবে বিবেচনা করে"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1036
+#, elixir-autogen, elixir-format
+msgid "ChanServ manages channel registration and access control."
+msgstr "চ্যানফরেস্ট চ্যানেল নিবন্ধন এবং নিয়ন্ত্রণ পরিচালনা করে।"
+
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:759
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:782
+#, elixir-autogen, elixir-format
+msgid "Changing nickname"
+msgstr "ডাকনাম পরিবর্তন করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:217
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:227
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel} has been deleted by %{admin}."
+msgstr "চ্যানেল %{channel} মুছে ফেলা হয়েছে: %{admin}."
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:240
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel} history from %{from} was purged by %{admin}."
+msgstr "চ্যানেল %{channel} ব্রাউজ-ইতিহাস %{from} মুছে ফেলা হয়েছে %{admin}."
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/channel_state.ex:246
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel} history was purged by %{admin}."
+msgstr "চ্যানেল %{channel} ইতিহাস মুছে গেল %{admin}."
+
+#: lib/retro_hex_chat_web/live/chat_live/channel_central_events.ex:281
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel} not found"
+msgstr "চ্যানেল %{channel} পাওয়া যায়নি"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:250
+#, elixir-autogen, elixir-format
+msgid "Channel Info"
+msgstr "চ্যানেল সংক্রান্ত তথ্য"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:112
+#, elixir-autogen, elixir-format
+msgid "Channel Settings"
+msgstr "চ্যানেল সেটিংস"
+
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:174
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:195
+#, elixir-autogen, elixir-format
+msgid "Channel filter must start with #"
+msgstr "চ্যানেলের ফিল্টার দ্বারা আরম্ভ করা আবশ্যক # #"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:224
+#, elixir-autogen, elixir-format
+msgid "Channel ownership transferred to %{target}."
+msgstr "চ্যানেল মালিকানা স্থানান্তর %{target}."
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:121
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "চ্যানেল"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:73
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:157
+#, elixir-autogen, elixir-format
+msgid "Channels: %{channels}"
+msgstr "চ্যানেল: %{channels}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:100
+#, elixir-autogen, elixir-format
+msgid "Client"
+msgstr "ক্লায়েন্ট:"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:210
+#, elixir-autogen, elixir-format
+msgid "Client: %{client}"
+msgstr "ক্লায়েন্ট: %{client}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/irc_tabs.ex:83
+#, elixir-autogen, elixir-format
+msgid "Close tab"
+msgstr "ট্যাব বন্ধ করুন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:76
+#, elixir-autogen, elixir-format
+msgid "Color %{index}: %{name}"
+msgstr "রঙ %{index}: %{name}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:103
+#, elixir-autogen, elixir-format
+msgid "Color (Ctrl+Shift+D)"
+msgstr "রঙ (Ctrl+Shift+D)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:110
+#, elixir-autogen, elixir-format
+msgid "Colors"
+msgstr "রং"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:241
+#, elixir-autogen, elixir-format
+msgid "Command '%{trigger}' already exists."
+msgstr "কমান্ড%{trigger}আগে থেকেই আছে ।"
+
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:176
+#: lib/retro_hex_chat_web/live/chat_live/custom_menus_events.ex:214
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:197
+#, elixir-autogen, elixir-format
+msgid "Command is required"
+msgstr "কমান্ড আবশ্যক"
+
+#: lib/retro_hex_chat_web/live/chat_live/custom_menus_events.ex:220
+#, elixir-autogen, elixir-format
+msgid "Command must not contain chaining"
+msgstr "কমান্ড দ্বারা চেইন সংযুক্ত করা সম্ভব নয়"
+
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:182
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:203
+#, elixir-autogen, elixir-format
+msgid "Command must not contain chaining (|, &&, ;)"
+msgstr "কমান্ডের মধ্যে চেইন স্থাপন করা যাবে না (উদাহরণস্বরূপ, এবং,)"
+
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:179
+#: lib/retro_hex_chat_web/live/chat_live/custom_menus_events.ex:217
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:59
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:200
+#, elixir-autogen, elixir-format
+msgid "Command too long (max 500 characters)"
+msgstr "কমান্ড অত্যাধিক লম্বা (mx 5 অক্ষর)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:56
+#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:76
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "সংযোগ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:70
+#, elixir-autogen, elixir-format
+msgid "Connected to %{server}"
+msgstr "পরিচিতির সাথে সংযুক্ত %{server}"
+
+#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:75
+#, elixir-autogen, elixir-format
+msgid "Connecting..."
+msgstr "সংযোগ স্থাপন করা হচ্ছে..."
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.html.heex:165
+#, elixir-autogen, elixir-format
+msgid "Connection Lost"
+msgstr "সংযোগ বিচ্ছিন্নComment"
+
+#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:78
+#, elixir-autogen, elixir-format
+msgid "Connection failed"
+msgstr "সংযোগ বিফল"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:339
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:433
+#, elixir-autogen, elixir-format
+msgid "Connection lost"
+msgstr "সংযোগ বিচ্ছিন্ন হয়েছে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:112
+#, elixir-autogen, elixir-format
+msgid "Connection lost."
+msgstr "সংযোগ বিচ্ছিন্ন হয়েছে ।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:130
+#, elixir-autogen, elixir-format
+msgid "Contact"
+msgstr "পরিচিতি"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:104
+#, elixir-autogen, elixir-format
+msgid "Contact list is full (max 100 entries)"
+msgstr "পরিচিতি তালিকা সম্পূর্ণ হয়েছে (অধিক ১০০ এন্ট্রির তালিকা)"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:201
+#, elixir-autogen, elixir-format
+msgid "Contact note: %{note}"
+msgstr "নোট লিখুন: %{note}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:74
+#, elixir-autogen, elixir-format
+msgid "Conversations"
+msgstr "আলাপন"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:489
+#, elixir-autogen, elixir-format
+msgid "Cooldown must be a number."
+msgstr "চমৎকার না!"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:486
+#, elixir-autogen, elixir-format
+msgid "Cooldown must be at least 500ms."
+msgstr "কুলডাউন হবে কমপক্ষে ৫০০ মিটার।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:242
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:152
+#, elixir-autogen, elixir-format
+msgid "Copy Channel Name"
+msgstr "চ্যানেলের নাম কপি করুন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:273
+#, elixir-autogen, elixir-format
+msgid "Copy Message"
+msgstr "বার্তা অনুলিপি করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:77
+#, elixir-autogen, elixir-format
+msgid "Copy Nick"
+msgstr "ডাকনাম কপি করুন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:151
+#, elixir-autogen, elixir-format
+msgid "Copy Nickname"
+msgstr "ডাকনাম কপি করুন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:216
+#, elixir-autogen, elixir-format
+msgid "Copy URL"
+msgstr "URL কপি করুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:169
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:392
+#, elixir-autogen, elixir-format
+msgid "Could not add %{nickname} to contacts"
+msgstr "যোগ করা যায়নি %{nickname} পরিচিতি-সমূহ"
+
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:261
+#, elixir-autogen, elixir-format
+msgid "Could not set color for %{nickname}"
+msgstr "রং নির্ধারণ করতে ব্যর্থ %{nickname}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:105
+#, elixir-autogen, elixir-format
+msgid "Cyan"
+msgstr "আকাশী"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:287
+#, elixir-autogen, elixir-format
+msgid "Delete"
+msgstr "মুছে ফেলুন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:108
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:226
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "বিচ্ছিন্ন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:64
+#, elixir-autogen, elixir-format
+msgid "Dismiss"
+msgstr "বাতিল"
+
+#: lib/retro_hex_chat_web/live/chat_live/admin_console_events.ex:184
+#: lib/retro_hex_chat_web/live/chat_live/admin_console_events.ex:189
+#: lib/retro_hex_chat_web/live/chat_live/admin_console_events.ex:193
+#, elixir-autogen, elixir-format
+msgid "Done"
+msgstr "সম্পন্ন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:28
+#, elixir-autogen, elixir-format
+msgid "Edited at %{timestamp}"
+msgstr "সম্পাদনা করা হয়েছে %{timestamp}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:72
+#, elixir-autogen, elixir-format
+msgid "Emoji"
+msgstr "ইমোজি"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:165
+#, elixir-autogen, elixir-format
+msgid "Emoji Picker"
+msgstr "ইমোজি নির্বাচক"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:51
+#, elixir-autogen, elixir-format
+msgid "Error adding auto-respond rule: %{message}"
+msgstr "অটো-ওপেনে ত্রুটি: %s %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/server_messages.ex:34
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/server_messages.ex:49
+#, elixir-autogen, elixir-format
+msgid "Error: %{message}"
+msgstr "ত্রুটি: %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/alias_events.ex:166
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:49
+#, elixir-autogen, elixir-format
+msgid "Expansion is required"
+msgstr "উন্নতির প্রয়োজন"
+
+#: lib/retro_hex_chat_web/live/chat_live/alias_events.ex:172
+#, elixir-autogen, elixir-format
+msgid "Expansion must not contain chaining (|, &&, ;, newlines)"
+msgstr "এক্সপন্স- এর মধ্যে চেইন বেঁধে রাখা উচিত নয় ( , এবং, এবং, নতুন করে)"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:57
+#, elixir-autogen, elixir-format
+msgid "Expansion must not contain command chaining (|, &&, ;, newlines)"
+msgstr "এক্সপন্স- এর মধ্যে কমান্ড চেইনিং ( নাকি, এবং, নতুন লাইন) থাকতে হবে না"
+
+#: lib/retro_hex_chat_web/live/chat_live/alias_events.ex:169
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:52
+#, elixir-autogen, elixir-format
+msgid "Expansion too long (max 500 characters)"
+msgstr "এক্সপেনশন অনেক লম্বা (মাক্স ৫০০ অক্ষর)"
+
+#: lib/retro_hex_chat_web/live/chat_live/perform_autojoin_events.ex:213
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/autojoin.ex:50
+#, elixir-autogen, elixir-format
+msgid "Failed to add auto-join channel: %{reason}"
+msgstr "অটো-যোগ কর্ম যোগ করতে ব্যর্থ %{reason}"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:367
+#, elixir-autogen, elixir-format
+msgid "Failed to add ignore: %{reason}"
+msgstr "উপেক্ষা করতে ব্যর্থ: %s %{reason}"
+
+#: lib/retro_hex_chat_web/live/chat_live/perform_autojoin_events.ex:65
+#, elixir-autogen, elixir-format
+msgid "Failed to add perform command: %{reason}"
+msgstr "কমান্ড যোগ করতে ব্যর্থ: %{reason}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/game_invite.ex:51
+#, elixir-autogen, elixir-format
+msgid "Failed to send game invite to %{target}."
+msgstr "খেলা সংরক্ষণ করতে ব্যর্থ %{target}."
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:71
+#, elixir-autogen, elixir-format
+msgid "Failed to send. Click to retry"
+msgstr "পাঠাতে ব্যর্থ। পুনরায় আরম্ভ করতে ক্লিক করুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:525
+#, elixir-autogen, elixir-format
+msgid "Failed to update capability."
+msgstr "বিশেষ ক্ষমতা প্রয়োগ করতে ব্যর্থ।"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:342
+#, elixir-autogen, elixir-format
+msgid "Failed to update config."
+msgstr "কনফিগারেশন আপডেট করতে ব্যর্থ।"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:482
+#, elixir-autogen, elixir-format
+msgid "Failed to update cooldown."
+msgstr "আপডেট করতে ব্যর্থ।"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:442
+#, elixir-autogen, elixir-format
+msgid "Failed to update description."
+msgstr "আপডেট করতে ব্যর্থ।"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:462
+#, elixir-autogen, elixir-format
+msgid "Failed to update prefix."
+msgstr "উপপদ আপডেট করতে ব্যর্থ।"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:228
+#, elixir-autogen, elixir-format
+msgid "File transfer"
+msgstr "ফাইল বিনিময়"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:184
+#, elixir-autogen, elixir-format
+msgid "File transfer from %{from}"
+msgstr "ফাইল বিনিময় %{from}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/p2p_invite.ex:60
+#, elixir-autogen, elixir-format
+msgid "File transfer started. Join the lobby: /p2p/%{token}"
+msgstr "ফাইল বিনিময় সম্পন্ন। লবিতে যোগ দিন: /p2p/%{token}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/search_bar.ex:54
+#, elixir-autogen, elixir-format
+msgid "Find"
+msgstr "অনুসন্ধান"
+
+#: lib/retro_hex_chat_web/components/ui/chat/search_bar.ex:65
+#, elixir-autogen, elixir-format
+msgid "Find text..."
+msgstr "টেক্সট অনুসন্ধান..."
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:165
+#, elixir-autogen, elixir-format
+msgid "Food"
+msgstr "খাদ্য"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:169
+#, elixir-autogen, elixir-format
+msgid "Food & Drink"
+msgstr "খাদ্য ও পানীয়"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:98
+#, elixir-autogen, elixir-format
+msgid "For"
+msgstr "উল্লিখিত সময় অবধি"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:248
+#, elixir-autogen, elixir-format
+msgid "Game"
+msgstr "খেলা"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:210
+#, elixir-autogen, elixir-format
+msgid "Game invite from %{from} — /game/%{token}"
+msgstr "খেলা থেকে প্রাপ্ত আমন্ত্রণ %{from} — /game/%{token}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/game_invite.ex:43
+#, elixir-autogen, elixir-format
+msgid "Game invite sent to %{target}. Waiting for response..."
+msgstr "খেলার আমন্ত্রণ জানাও %{target}অপেক্ষা করা হচ্ছে ..."
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/game_invite.ex:22
+#, elixir-autogen, elixir-format
+msgid "Game session started! Join the lobby: /game/%{token}"
+msgstr "খেল খতম! লবিতে যোগ দিন: /game/%{token}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:190
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:189
+#, elixir-autogen, elixir-format
+msgid "Give Op (+o)"
+msgstr "Ops (+)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:181
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:180
+#, elixir-autogen, elixir-format
+msgid "Give Voice (+v)"
+msgstr "Voice অধিকার প্রদান করুন (+v)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:108
+#, elixir-autogen, elixir-format
+msgid "Gray"
+msgstr "ধূসর"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:97
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:180
+#, elixir-autogen, elixir-format
+msgid "Green"
+msgstr "সবুজ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:191
+#, elixir-autogen, elixir-format
+msgid "Grey"
+msgstr "ধূসর"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:171
+#, elixir-autogen, elixir-format
+msgid "Half-Op"
+msgstr "অর্ধ-Opera"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:118
+#, elixir-autogen, elixir-format
+msgid "Help"
+msgstr "সাহায্য"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:132
+#, elixir-autogen, elixir-format
+msgid "Help: %{topic}"
+msgstr "সাহায্য: %{topic}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:82
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:83
+#, elixir-autogen, elixir-format
+msgid "Hide channel list"
+msgstr "চ্যানেলের তালিকা আড়াল করা হবে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:95
+#, elixir-autogen, elixir-format
+msgid "Host"
+msgstr "হোস্ট"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:99
+#, elixir-autogen, elixir-format
+msgid "Idle"
+msgstr "নিষ্ক্রিয়"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:180
+#, elixir-autogen, elixir-format
+msgid "Idle for: %{duration}"
+msgstr "কর্মবিহীন অবস্থার জন্য: %{duration}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:86
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:90
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:102
+#, elixir-autogen, elixir-format
+msgid "Ignore"
+msgstr "উপেক্ষা করা হবে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:296
+#, elixir-autogen, elixir-format
+msgid "Ignore Sender"
+msgstr "প্রেরক"
+
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:197
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:72
+#, elixir-autogen, elixir-format
+msgid "Ignore list is full (max 100 entries)"
+msgstr ""
+"উপেক্ষা করা হবে (অন্তর্ভুক্ত তালিকা ১০০% এন্ট্রির মধ্যে উপস্থিত রয়েছে)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:131
+#, elixir-autogen, elixir-format
+msgid "Ignored"
+msgstr "উপেক্ষা করা হবে"
+
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:770
+#, elixir-autogen, elixir-format
+msgid "Incorrect password"
+msgstr "ভুল পাসওয়ার্ড"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:45
+#, elixir-autogen, elixir-format
+msgid "Invalid alias name. Use only letters, numbers, hyphens, underscores."
+msgstr "অ্যালায়েসের অবৈধ নাম। শুধু অক্ষর, সংখ্যা, হাইফেন, নির্ভর করে।"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:240
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:281
+#, elixir-autogen, elixir-format
+msgid "Invalid color"
+msgstr "অবৈধ রং"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:53
+#, elixir-autogen, elixir-format
+msgid "Invalid command. Commands must start with /"
+msgstr "অবৈধ কমান্ড। কমান্ড সহযোগে আরম্ভ করা আবশ্যক"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:341
+#, elixir-autogen, elixir-format
+msgid "Invalid duration format. Use: 5m, 2h, or 1d"
+msgstr "অবৈধ অবকাল। ব্যবহার করুন: 5m, 2h অথবা 1d"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:75
+#, elixir-autogen, elixir-format
+msgid "Invalid ignore type: %{type}"
+msgstr "অবৈধ প্রকৃতির ধরন: %{type}"
+
+#: lib/retro_hex_chat_web/live/chat_live/custom_menus_events.ex:212
+#, elixir-autogen, elixir-format
+msgid "Invalid label (1-50 characters)"
+msgstr "অবৈধ অক্ষর (১-৫০ অক্ষর)"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/server_messages.ex:89
+#, elixir-autogen, elixir-format
+msgid "Invalid mode string."
+msgstr "অবৈধ মোড ।"
+
+#: lib/retro_hex_chat_web/live/chat_live/alias_events.ex:164
+#, elixir-autogen, elixir-format
+msgid "Invalid name. Use letters, numbers, hyphens, underscores."
+msgstr "অবৈধ নাম। অক্ষর, সংখ্যা, হাইফেন, নির্ভর করে।"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:109
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:237
+#, elixir-autogen, elixir-format
+msgid "Invalid nickname"
+msgstr "অবৈধ উপনাম"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:106
+#, elixir-autogen, elixir-format
+msgid "Invalid position"
+msgstr "অবৈধ অবস্থান"
+
+#: lib/retro_hex_chat_web/live/chat_live/search_events.ex:252
+#, elixir-autogen, elixir-format
+msgid "Invalid regex"
+msgstr "অবৈধ রেগুলার এক্সপ্রেশন"
+
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:171
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:192
+#, elixir-autogen, elixir-format
+msgid "Invalid trigger event"
+msgstr "অবৈধ কর্ম"
+
+#: lib/retro_hex_chat_web/live/chat_live/channel_central_events.ex:207
+#, elixir-autogen, elixir-format
+msgid "Invite exception error: %{message}"
+msgstr "উৎপন্ন ত্রুটির ফলে উৎপন্ন হয়েছে: %{message}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:78
+#, elixir-autogen, elixir-format
+msgid "Italic (Ctrl+Shift+Y)"
+msgstr "তেরছা (Shift+X)"
+
+#: lib/retro_hex_chat_web/live/chat_live/custom_menus_events.ex:225
+#, elixir-autogen, elixir-format
+msgid "Item not found"
+msgstr "বস্তু পাওয়া যায়নি"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:322
+#, elixir-autogen, elixir-format
+msgid "Join %{channel}"
+msgstr "যোগ দিন %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:234
+#, elixir-autogen, elixir-format
+msgid "Join Channel"
+msgstr "চ্যানেলে যোগ দিন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/p2p_invite_card.ex:31
+#, elixir-autogen, elixir-format
+msgid "Join lobby"
+msgstr "লবিতে যোগ দিন"
+
+#: lib/retro_hex_chat_web/live/chat_live/admin_console_events.ex:173
+#: lib/retro_hex_chat_web/live/chat_live/admin_console_events.ex:176
+#, elixir-autogen, elixir-format
+msgid "Joined %{channel}"
+msgstr "যোগ দিন %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:163
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:162
+#, elixir-autogen, elixir-format
+msgid "Kick"
+msgstr "বিতাড়ন করুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:651
+#, elixir-autogen, elixir-format
+msgid "Kicked"
+msgstr "বিতাড়ন করুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:249
+#, elixir-autogen, elixir-format
+msgid "Knock sent to %{channel}"
+msgstr "কলব্যাক %{channel}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:108
+#, elixir-autogen, elixir-format
+msgid "Lang"
+msgstr "লাং"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:224
+#, elixir-autogen, elixir-format
+msgid "Language: %{language}"
+msgstr "ভাষা: %{language}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:70
+#, elixir-autogen, elixir-format
+msgid "Last seen: %{time}"
+msgstr "পদবি: ( L) %{time}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:126
+#, elixir-autogen, elixir-format
+msgid "Leave Channel"
+msgstr "চ্যানেল থেকে প্রস্থান করুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:361
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:421
+#: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:34
+#: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:336
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:242
+#, elixir-autogen, elixir-format
+msgid "Leaving"
+msgstr "প্রস্থান করুন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:188
+#, elixir-autogen, elixir-format
+msgid "Light Cyan"
+msgstr "হালকা আকাশী"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:186
+#, elixir-autogen, elixir-format
+msgid "Light Green"
+msgstr "হালকা সবুজ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:192
+#, elixir-autogen, elixir-format
+msgid "Light Grey"
+msgstr "হালকা ধূসর"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:103
+#, elixir-autogen, elixir-format
+msgid "Lime"
+msgstr "লিমিং বার"
+
+#: lib/retro_hex_chat_web/components/ui/chat/scroll_loader.ex:33
+#, elixir-autogen, elixir-format
+msgid "Loading messages"
+msgstr "বার্তা লোড করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/scroll_loader.ex:41
+#, elixir-autogen, elixir-format
+msgid "Loading messages..."
+msgstr "বার্তা লোড করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:80
+#, elixir-autogen, elixir-format
+msgid "Looking up %{nick}..."
+msgstr "অনুসন্ধান চলছে %{nick}..."
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:113
+#, elixir-autogen, elixir-format
+msgid "MY CHANNELS"
+msgstr "আমার ঘর"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:107
+#, elixir-autogen, elixir-format
+msgid "Magenta"
+msgstr "ম্যাজেন্টা"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:69
+#, elixir-autogen, elixir-format
+msgid "Mark as Read"
+msgstr "পড়া হয়েছে হিসাবে চিহ্নিত করুন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:99
+#, elixir-autogen, elixir-format
+msgid "Maroon"
+msgstr "মার্সুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:170
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:191
+#, elixir-autogen, elixir-format
+msgid "Maximum 10 auto-respond rules"
+msgstr "সর্বাধিক ১০-র বিপর্যয় সংক্রান্ত নিয়মাবলী"
+
+#: lib/retro_hex_chat_web/live/chat_live/custom_menus_events.ex:223
+#, elixir-autogen, elixir-format
+msgid "Menu is full (max 10 items per type)"
+msgstr "মেনুর মধ্যে উপস্থিত সকল (ড-লাইন অনুযায়ী)"
+
+#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:113
+#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:118
+#, elixir-autogen, elixir-format
+msgid "Message to %{target} — / for commands"
+msgstr "বার্তা %{target} - কম্যান্ডের জন্য"
+
+#: lib/retro_hex_chat_web/live/chat_live/channel_central_events.ex:332
+#, elixir-autogen, elixir-format
+msgid "Mode error: %{message}"
+msgstr "মোড সংক্রান্ত ত্রুটি: %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/admin_console_events.ex:182
+#, elixir-autogen, elixir-format
+msgid "Mode set: %{mode}"
+msgstr "মোড নির্ধারণ করুন %{mode}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:149
+#, elixir-autogen, elixir-format
+msgid "Mute Channel"
+msgstr "নিঃশব্দ চ্যানেল"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:147
+#, elixir-autogen, elixir-format
+msgid "Mute PM"
+msgstr "নিঃশব্দ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/search_bar.ex:135
+#, elixir-autogen, elixir-format
+msgid "My mentions"
+msgstr "আমার উল্লেখ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:93
+#, elixir-autogen, elixir-format
+msgid "Name"
+msgstr "নাম"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:164
+#, elixir-autogen, elixir-format
+msgid "Nature"
+msgstr "প্রকৃতি"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:96
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:179
+#, elixir-autogen, elixir-format
+msgid "Navy"
+msgstr "নৌবাহিনী"
+
+#: lib/retro_hex_chat_web/components/ui/chat/search_bar.ex:104
+#, elixir-autogen, elixir-format
+msgid "Next"
+msgstr "পরবর্তী"
+
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:720
+#, elixir-autogen, elixir-format
+msgid "Next: %{parameter}"
+msgstr "পরের বল: %{parameter}"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:278
+#, elixir-autogen, elixir-format
+msgid "Nick color entry not found"
+msgstr "ডাকনাম পাওয়া যায়নি"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:234
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:254
+#, elixir-autogen, elixir-format
+msgid "Nick color list is full (max 50)"
+msgstr "ডাকনামের রং- তালিকার সম্পূর্ণ (mx25)"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1064
+#, elixir-autogen, elixir-format
+msgid ""
+"NickServ protects your nickname with a password so nobody else can use it."
+msgstr "ডাকনাম:"
+
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:261
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:746
+#, elixir-autogen, elixir-format
+msgid "Nickname %{nickname} is already in use"
+msgstr "ডাকনাম %{nickname} এই বর্তমানে ব্যবহৃত হচ্ছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:185
+#, elixir-autogen, elixir-format
+msgid "No"
+msgstr "না"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:80
+#, elixir-autogen, elixir-format
+msgid "No auto-respond rules configured."
+msgstr "কোন auto- Partsing নিয়ম কনফিগার করা হয়নি ।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:95
+#, elixir-autogen, elixir-format
+msgid "No channels"
+msgstr "কোনো চ্যানেল নেই"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:83
+#, elixir-autogen, elixir-format
+msgid "No command at position %{position}"
+msgstr "কোনো কমান্ড অবস্থান চিহ্নিত হয়নি %{position}"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:155
+#, elixir-autogen, elixir-format
+msgid "No contact selected"
+msgstr "কোনো পরিচিতি নেই"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:447
+#, elixir-autogen, elixir-format
+msgid "No nickname in session"
+msgstr "সেশানের মধ্যে কোনো উপনাম উল্লিখিত হয়নি"
+
+#: lib/retro_hex_chat_web/components/ui/chat/autocomplete.ex:54
+#: lib/retro_hex_chat_web/components/ui/chat/history_search.ex:50
+#, elixir-autogen, elixir-format
+msgid "No results"
+msgstr "কোনো ফলাফল প্রাপ্ত হয়নি"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:97
+#, elixir-autogen, elixir-format
+msgid "No topic set"
+msgstr "বিষয় নির্ধারিত হয়নি"
+
+#: lib/retro_hex_chat_web/live/chat_live/admin_console_events.ex:105
+#, elixir-autogen, elixir-format
+msgid "Not a command (must start with /)"
+msgstr "কমান্ড (আরম্ভ করে আরম্ভ হওয়া আবশ্যক)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:111
+#, elixir-autogen, elixir-format
+msgid "Note"
+msgstr "নোট"
+
+#: lib/retro_hex_chat_web/live/chat_live/notify_events.ex:70
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:59
+#, elixir-autogen, elixir-format
+msgid "Notify list is full (max 50 entries)"
+msgstr "বিজ্ঞপ্তি সম্পূর্ণ তালিকা (mx ৫০ এন্ট্রি)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:102
+#, elixir-autogen, elixir-format
+msgid "OS"
+msgstr "OS"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:172
+#, elixir-autogen, elixir-format
+msgid "Objects"
+msgstr "অবজেক্ট"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:97
+#, elixir-autogen, elixir-format
+msgid "Online"
+msgstr "অন-লাইন"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:172
+#, elixir-autogen, elixir-format
+msgid "Online for: %{duration}"
+msgstr "অন-লাইন এর জন্য: %{duration}"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1018
+#, elixir-autogen, elixir-format
+msgid "Open /chat/help in a new tab."
+msgstr "/ফাইল প্রদর্শন করুন <fot > [file21] একটি নতুন ট্যাবে খুলুন।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/arcade_session_link.ex:24
+#, elixir-autogen, elixir-format
+msgid "Open Arcade"
+msgstr "ওপেন আর্কেডName"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:212
+#, elixir-autogen, elixir-format
+msgid "Open Link"
+msgstr "লিঙ্ক খুলুন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/inline_help_card.ex:42
+#, elixir-autogen, elixir-format
+msgid "Open in Help Topics"
+msgstr "সহায়িকার সূচিপত্র প্রদর্শন করুন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:167
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "অপারেটর"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:101
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:184
+#, elixir-autogen, elixir-format
+msgid "Orange"
+msgstr "কমলা"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:163
+#, elixir-autogen, elixir-format
+msgid "Owner"
+msgstr "মালিক"
+
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:114
+#, elixir-autogen, elixir-format
+msgid "P2P Session"
+msgstr "P2P সেশন"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:185
+#, elixir-autogen, elixir-format
+msgid "P2P invite from %{from}"
+msgstr "P2P থেকে আমন্ত্রণ %{from}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/p2p_invite.ex:45
+#, elixir-autogen, elixir-format
+msgid "P2P invite sent to %{target}. Waiting for response..."
+msgstr "P2P পাঠানো হয়েছে %{target}অপেক্ষা করা হচ্ছে ..."
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:229
+#, elixir-autogen, elixir-format
+msgid "P2P session"
+msgstr "P2P সেশন"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/p2p_invite.ex:63
+#, elixir-autogen, elixir-format
+msgid "P2P session started. Join the lobby: /p2p/%{token}"
+msgstr "P2P সেশান আরম্ভ করা হয়েছে। লবিতে যোগ দিন: /p2p/%{token}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:159
+#, elixir-autogen, elixir-format
+msgid "POPULAR CHANNELS"
+msgstr "POPPRENECBAN সাব"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations.ex:138
+#, elixir-autogen, elixir-format
+msgid "PRIVATE MESSAGES"
+msgstr "( ১ করি."
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:163
+#, elixir-autogen, elixir-format
+msgid "People"
+msgstr "জনগণ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:167
+#, elixir-autogen, elixir-format
+msgid "People & Body"
+msgstr "জনগণ এবং মূল অংশ"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:62
+#, elixir-autogen, elixir-format
+msgid "Perform list is full (max 50 commands)"
+msgstr ""
+"জিনোমের মধ্যে সম্পূর্ণ তালিকা উপস্থিত রয়েছে (mx ৫০ কমান্ড প্রয়োগ করুন)"
+
+#: lib/retro_hex_chat_web/live/chat_live/timer_handlers.ex:316
+#, elixir-autogen, elixir-format
+msgid "Perform: invalid command format: %{command}"
+msgstr "অবৈধ কমান্ড: %{command}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:190
+#, elixir-autogen, elixir-format
+msgid "Pink"
+msgstr "গোলাপি"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:152
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:150
+#, elixir-autogen, elixir-format
+msgid "Play Game"
+msgstr "খেলায় যোগ দিন"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:240
+#, elixir-autogen, elixir-format
+msgid "Please wait before knocking on %{channel} again"
+msgstr "ধাক্কা মারার আগে অনুগ্রহ করে অপেক্ষা করুন %{channel} আবার"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:448
+#, elixir-autogen, elixir-format
+msgid "Prefix cannot be empty."
+msgstr "প্রেফিক্স ফাঁকা থাকতে পারবে না ।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/search_bar.ex:94
+#, elixir-autogen, elixir-format
+msgid "Prev"
+msgstr "পূর্ববর্তী"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:64
+#, elixir-autogen, elixir-format
+msgid "Private Message"
+msgstr "ব্যক্তিগত বার্তা"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:100
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:183
+#, elixir-autogen, elixir-format
+msgid "Purple"
+msgstr "রক্তবর্ণ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:50
+#, elixir-autogen, elixir-format
+msgid "Query (PM)"
+msgstr "অনুসন্ধান করুন (পিএম)"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1039
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1069
+#, elixir-autogen, elixir-format
+msgid "Quick start:"
+msgstr "দ্রুত আরম্ভ:"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:77
+#, elixir-autogen, elixir-format
+msgid "Quit message: %{message}"
+msgstr "প্রস্থানকালে প্রদর্শিত বার্তা: %{message}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:120
+#, elixir-autogen, elixir-format
+msgid "Reconnect"
+msgstr "বিচ্ছিন্ন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:87
+#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:77
+#, elixir-autogen, elixir-format
+msgid "Reconnecting..."
+msgstr "পুনরায় সংযোগ স্থাপন করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:98
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:181
+#, elixir-autogen, elixir-format
+msgid "Red"
+msgstr "লাল"
+
+#: lib/retro_hex_chat_web/components/ui/chat/search_bar.ex:126
+#, elixir-autogen, elixir-format
+msgid "Regex"
+msgstr "হেক্স"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1037
+#, elixir-autogen, elixir-format
+msgid "Register your channel to protect it when no operators are online."
+msgstr ""
+"যখন কোন অপারেটর অনলাইন থাকে না, তখন আপনার চ্যানেল এটা রক্ষা করার জন্য "
+"নিবন্ধন করুন।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:116
+#, elixir-autogen, elixir-format
+msgid "Registered"
+msgstr "নিবন্ধিত"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:186
+#, elixir-autogen, elixir-format
+msgid "Registered: %{status}"
+msgstr "নিবন্ধিত: %{status}"
+
+#: lib/retro_hex_chat_web/live/chat_live/channel_central_events.ex:184
+#: lib/retro_hex_chat_web/live/chat_live/channel_central_events.ex:229
+#, elixir-autogen, elixir-format
+msgid "Remove exception error: %{message}"
+msgstr "ব্যতিক্রম সংক্রান্ত ত্রুটি: %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:172
+#, elixir-autogen, elixir-format
+msgid "Removed %{nickname} from contacts"
+msgstr "অপসারণ করা হয়েছে %{nickname} পরিচিতি"
+
+#: lib/retro_hex_chat_web/live/chat_live/notify_events.ex:94
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:76
+#, elixir-autogen, elixir-format
+msgid "Removed %{nickname} from notify list"
+msgstr "অপসারণ করা হয়েছে %{nickname} তালিকা থেকে ঘোষনা"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:300
+#, elixir-autogen, elixir-format
+msgid "Removed custom color for %{nickname}"
+msgstr "একই রঙের জন্য ব্যবহৃত স্বনির্বাচিত রং %{nickname}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:277
+#, elixir-autogen, elixir-format
+msgid "Reply"
+msgstr "প্রত্যুত্তর"
+
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:419
+#, elixir-autogen, elixir-format
+msgid ""
+"Reply parent message is not currently loaded. Scroll up to load older "
+"history, then try again."
+msgstr ""
+"চিহ্নিত উত্তর বর্তমানে লোড করা হয়নি। ব্যাক-আপটি পূর্ববর্তী তথ্যের সাহায্যে "
+"লোড করা হবে, পরে পুনরায় প্রচেষ্টা করুন।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/reply_bar.ex:42
+#, elixir-autogen, elixir-format
+msgid "Replying to"
+msgstr "উত্তর দেওয়া হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_reply_block.ex:44
+#, elixir-autogen, elixir-format
+msgid "Replying to %{author}"
+msgstr "উত্তর দেওয়া হচ্ছে %{author}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:138
+#, elixir-autogen, elixir-format
+msgid "Reset (Ctrl+Shift+X)"
+msgstr "(Ctrl+Shift+X)"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:657
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1004
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat"
+msgstr "পুরোনো হেক্স আলাপন"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:129
+#, elixir-autogen, elixir-format
+msgid "Reverse (Ctrl+Shift+V)"
+msgstr "বিপরীত (Ctrl+Shift+V)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:106
+#, elixir-autogen, elixir-format
+msgid "Royal Blue"
+msgstr "রাজকীয় নীল"
+
+#: lib/retro_hex_chat_web/live/chat_live/autorespond_events.ex:184
+#, elixir-autogen, elixir-format
+msgid "Rule not found"
+msgstr "নিয়ম পাওয়া যায়নি"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1048
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1076
+#, elixir-autogen, elixir-format
+msgid "Rules:"
+msgstr "নিয়মাবলী:"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:220
+#, elixir-autogen, elixir-format
+msgid "Save to URL List"
+msgstr "যে ইউ- আর- এলতে সংরক্ষণ করা হবে"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:105
+#, elixir-autogen, elixir-format
+msgid "Screen"
+msgstr "পর্দা"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:217
+#, elixir-autogen, elixir-format
+msgid "Screen: %{screen}"
+msgstr "পর্দা: %{screen}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:174
+#, elixir-autogen, elixir-format
+msgid "Search Results"
+msgstr "অনুসন্ধানের ফলাফল"
+
+#: lib/retro_hex_chat_web/components/ui/chat/history_search.ex:43
+#, elixir-autogen, elixir-format
+msgid "Search chat history"
+msgstr "কল সংক্রান্ত পূর্ববর্তী তথ্য অনুসন্ধান"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:102
+#, elixir-autogen, elixir-format
+msgid "Search emoji..."
+msgstr "ইমোজিকে সার্চ করো..."
+
+#: lib/retro_hex_chat_web/components/ui/chat/search_bar.ex:144
+#, elixir-autogen, elixir-format
+msgid "Search history"
+msgstr "পূর্বের ওয়েবপেজ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/history_search.ex:41
+#, elixir-autogen, elixir-format
+msgid "Search history..."
+msgstr "ব্রাউজ-ইতিহাস মুছে ফেলুন..."
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:109
+#, elixir-autogen, elixir-format
+msgid "Send"
+msgstr "প্রেরণ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:139
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:141
+#, elixir-autogen, elixir-format
+msgid "Send File"
+msgstr "ফাইল পাঠান"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:96
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:22
+#, elixir-autogen, elixir-format
+msgid "Server"
+msgstr "সার্ভার"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:117
+#, elixir-autogen, elixir-format
+msgid "Server setting '%{key}' changed to '%{value}'."
+msgstr "সার্ভারের বৈশিষ্ট্য নির্ধারণ করুন%{key}পরিবর্তন%{value}'."
+
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:422
+#, elixir-autogen, elixir-format
+msgid "Service"
+msgstr "পরিসেবা"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:150
+#, elixir-autogen, elixir-format
+msgid "Session ended — logged in from another window"
+msgstr "সেশানের সমাপ্তি। অন্য কোনো উইন্ডো থেকে লগ-আউট করা হয়েছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:243
+#, elixir-autogen, elixir-format
+msgid "Set %{nickname}'s color to %{color}"
+msgstr "সংকলন %{nickname}রং %{color}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:73
+#, elixir-autogen, elixir-format
+msgid "Set Nick Color"
+msgstr "ডাকনাম নির্ধারণ করো"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:164
+#, elixir-autogen, elixir-format
+msgid "Shared channels: %{channels}"
+msgstr "যৌথরূপে ব্যবহৃত চ্যানেল: %{channels}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:109
+#, elixir-autogen, elixir-format
+msgid "Silver"
+msgstr "রূপালী"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:162
+#, elixir-autogen, elixir-format
+msgid "Smileys"
+msgstr "স্মাইলি"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:166
+#, elixir-autogen, elixir-format
+msgid "Smileys & Emotion"
+msgstr "স্মাইলি ও আবেগ প্রদর্শন"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:103
+#, elixir-autogen, elixir-format
+msgid "Source and destination are the same"
+msgstr "সোর্স ও গন্তব্য একই"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_layout.ex:38
+#: lib/retro_hex_chat_web/live/v2/chat_live.html.heex:107
+#, elixir-autogen, elixir-format
+msgid "Status"
+msgstr "অবস্থা"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:151
+#, elixir-autogen, elixir-format
+msgid "Strip Colors"
+msgstr "রং"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:173
+#, elixir-autogen, elixir-format
+msgid "Symbols"
+msgstr "চিহ্ন"
+
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:298
+#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:31
+#: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:42
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:285
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "সিস্টেম"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:122
+#, elixir-autogen, elixir-format
+msgid "System reset initiated by an administrator."
+msgstr "সিস্টেম অ্যাডমিনিস্ট্রেটর দ্বারা রি-সেট করা হয়েছে ।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:109
+#, elixir-autogen, elixir-format
+msgid "TZ"
+msgstr "তাজি"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:104
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:187
+#, elixir-autogen, elixir-format
+msgid "Teal"
+msgstr "তেভেত"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:56
+#, elixir-autogen, elixir-format
+msgid "That command cannot be added to the perform list"
+msgstr "কমান্ডের তালিকায় যোগ করা সম্ভব নয়"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:50
+#, elixir-autogen, elixir-format
+msgid "The server Message of the Day has been updated. Type /motd to view."
+msgstr "সার্ভারের বার্তা আপডেট করা হয়েছে। প্রদর্শন করার জন্য উপলব্ধ ধরন।"
+
+#: lib/retro_hex_chat_web/live/chat_live/invite_events.ex:23
+#, elixir-autogen, elixir-format
+msgid "This invitation has expired"
+msgstr "এই আমন্ত্রণের মেয়াদ উত্তীর্ণ হয়েছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:162
+#, elixir-autogen, elixir-format
+msgid "Timer '%{name}' not found"
+msgstr "টাইমার%{name}পাওয়া যায়নি"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:231
+#, elixir-autogen, elixir-format
+msgid "Timezone: %{timezone}"
+msgstr "সময়-অঞ্চল: %{timezone}"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1017
+#, elixir-autogen, elixir-format
+msgid "Tip: Go to Help > Help Topics for the full documentation."
+msgstr "পরামর্শ: সম্পূর্ণ ডকুমেন্টেশন প্রদর্শনের জন্য সহায়িকা দেখুন।"
+
+#: lib/retro_hex_chat_web/live/chat_live/channel_central_events.ex:94
+#, elixir-autogen, elixir-format
+msgid "Topic error: %{message}"
+msgstr "বিষয়: %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:101
+#, elixir-autogen, elixir-format
+msgid "Topic for %{channel}: %{topic}"
+msgstr "বিষয় %{channel}: %{topic}"
+
+#: lib/retro_hex_chat_web/live/chat_live/admin_console_events.ex:179
+#, elixir-autogen, elixir-format
+msgid "Topic set: %{topic}"
+msgstr "নির্ধারিত বিষয়: %{topic}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:170
+#, elixir-autogen, elixir-format
+msgid "Travel & Places"
+msgstr "ভ্রমণ এবং অবস্থান"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1052
+#, elixir-autogen, elixir-format
+msgid "Type /help chanserv or /help channel-permissions for full details."
+msgstr ""
+"ধরন <f0\\-2\\sv. বা <f1> তথ্যের জন্য চ্যানেলের সম্পূর্ণ তথ্য প্রদর্শন করা "
+"হবে।"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1081
+#, elixir-autogen, elixir-format
+msgid "Type /help nickserv for full details."
+msgstr "সম্পূর্ণ বিবরণের জন্য <f00> <ff00> <freserv."
+
+#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:110
+#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:123
+#, elixir-autogen, elixir-format
+msgid "Type a command — / for list"
+msgstr "টাইপ তালিকা - তালিকা"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_input.ex:64
+#, elixir-autogen, elixir-format
+msgid "Type a message..."
+msgstr "বার্তা লিখুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:484
+#, elixir-autogen, elixir-format
+msgid "URL saved to URL Catcher"
+msgstr "URL Syler'এ সংরক্ষণ করা হয়েছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/channel_central_events.ex:140
+#, elixir-autogen, elixir-format
+msgid "Unban error: %{message}"
+msgstr "ban সংক্রান্ত ত্রুটি: %{message}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:88
+#, elixir-autogen, elixir-format
+msgid "Underline (Ctrl+Shift+U)"
+msgstr "নিম্নরেখাঙ্কিত করা (Ctrl+Shift+F)"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:86
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:102
+#, elixir-autogen, elixir-format
+msgid "Unignore"
+msgstr "নিষ্ক্রিয় করা হবে"
+
+#: lib/retro_hex_chat_web/live/chat_live/context_menu_events.ex:466
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:179
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:188
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:193
+#: lib/retro_hex_chat_web/live/chat_live/hover_events.ex:198
+#, elixir-autogen, elixir-format
+msgid "Unknown"
+msgstr "অজানা"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:494
+#, elixir-autogen, elixir-format
+msgid "Unknown field."
+msgstr "অজানা ক্ষেত্র।"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/server_messages.ex:74
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/server_messages.ex:85
+#, elixir-autogen, elixir-format
+msgid "Unknown user mode: %{flag}"
+msgstr "অজানা ব্যবহারকারী মোড: %{flag}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:148
+#, elixir-autogen, elixir-format
+msgid "Unmute Channel"
+msgstr "আনার্ন চ্যানেল"
+
+#: lib/retro_hex_chat_web/components/ui/chat/conversations_context_menu.ex:146
+#, elixir-autogen, elixir-format
+msgid "Unmute PM"
+msgstr "অধিক বিবরণ"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:142
+#: lib/retro_hex_chat_web/live/chat_live/notify_events.ex:128
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:100
+#, elixir-autogen, elixir-format
+msgid "Updated note for %{nickname}"
+msgstr "আপডেট করা নোট %{nickname}"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1010
+#, elixir-autogen, elixir-format
+msgid "Useful commands:"
+msgstr "বিভিন্ন কমান্ড:"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/server_messages.ex:72
+#, elixir-autogen, elixir-format
+msgid "User mode +%{flag} enabled."
+msgstr "ব্যবহারকারী মোড%{flag} সক্রিয়।"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/server_messages.ex:83
+#, elixir-autogen, elixir-format
+msgid "User mode -%{flag} disabled."
+msgstr "ব্যবহারকারীর মোড%{flag} নিষ্ক্রিয় ।"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:108
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:121
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:134
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:147
+#, elixir-autogen, elixir-format
+msgid "User not registered"
+msgstr "ব্যবহারকারী নিবন্ধিত নয়"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:126
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:132
+#, elixir-autogen, elixir-format
+msgid "Video Call"
+msgstr "ভিডিও কল ( V)"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:227
+#, elixir-autogen, elixir-format
+msgid "Video call"
+msgstr "ভিডিও কল ( V)"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:183
+#, elixir-autogen, elixir-format
+msgid "Video call from %{from}"
+msgstr "ভিডিও কল ( V) %{from}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/p2p_invite.ex:57
+#, elixir-autogen, elixir-format
+msgid "Video call started. Join the lobby: /p2p/%{token}"
+msgstr "ভিডিও কল শুরু হয়েছে। লবিতে যোগ দিন: /p2p/%{token}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:175
+#, elixir-autogen, elixir-format
+msgid "Voiced"
+msgstr "কন্ঠস্বর"
+
+#: lib/retro_hex_chat_web/live/chat_live/alias_events.ex:189
+#, elixir-autogen, elixir-format
+msgid "Warning: %{warnings}"
+msgstr "সতর্কবার্তা: %{warnings}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/server_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "Welcome message for %{channel} has been cleared."
+msgstr "%2$s-র জন্য স্বাগতম %{channel} সব ঠিক হয়ে গেছে।"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/server_messages.ex:30
+#, elixir-autogen, elixir-format
+msgid "Welcome message for %{channel} has been set."
+msgstr "%2$s-র জন্য স্বাগতম %{channel} সেট করা হয়েছে।"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:59
+#, elixir-autogen, elixir-format
+msgid "Welcome message updated."
+msgstr "স্বাগতম বার্তা"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1007
+#, elixir-autogen, elixir-format
+msgid "Welcome to %{server_name}!"
+msgstr "স্বাগতম %{server_name}!"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:94
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:177
+#, elixir-autogen, elixir-format
+msgid "White"
+msgstr "সাদা"
+
+#: lib/retro_hex_chat_web/components/ui/chat/chat_context_menu.ex:68
+#: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:54
+#, elixir-autogen, elixir-format
+msgid "Whois"
+msgstr "কে-is"
+
+#: lib/retro_hex_chat_web/live/chat_live/highlight_events.ex:116
+#, elixir-autogen, elixir-format
+msgid "Word not in highlight list"
+msgstr "পংক্তি সংখ্যা উপস্থিত নেই"
+
+#: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:102
+#: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:185
+#, elixir-autogen, elixir-format
+msgid "Yellow"
+msgstr "হলুদ"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/whois.ex:185
+#, elixir-autogen, elixir-format
+msgid "Yes"
+msgstr "হ্যাঁ"
+
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:120
+#: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:148
+#, elixir-autogen, elixir-format
+msgid "You are muted by an administrator"
+msgstr "আপনি একজন প্রশাসকর সাথে নিঃশব্দ"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:83
+#, elixir-autogen, elixir-format
+msgid "You are no longer away"
+msgstr "তুমি আর দূরে নও"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:439
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:68
+#, elixir-autogen, elixir-format
+msgid "You are now away: %{message}"
+msgstr "আপনি এখন দূরে: %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:464
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:259
+#, elixir-autogen, elixir-format
+msgid "You are now identified as %{nickname}"
+msgstr "এখন আপনি সনাক্ত করা হয় %{nickname}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:413
+#, elixir-autogen, elixir-format
+msgid "You are now known as %{nickname}"
+msgstr "আপনি এখন পরিচিত %{nickname}"
+
+#: lib/retro_hex_chat_web/live/chat_live/core_events.ex:733
+#, elixir-autogen, elixir-format
+msgid "You are setting: %{flag} (%{label})"
+msgstr "আপনি নির্ধারিত: %{flag} (%{label})"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:336
+#, elixir-autogen, elixir-format
+msgid "You cannot ignore yourself"
+msgstr "নিজেকে উপেক্ষা করা যাবে না"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:103
+#, elixir-autogen, elixir-format
+msgid "You have been muted by an administrator."
+msgstr "আপনি একজন প্রশাসকর দ্বারা নিরব হয়ে গেছেন।"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:101
+#, elixir-autogen, elixir-format
+msgid "You have been muted by an administrator: %{reason}"
+msgstr "আপনি একজন প্রশাসকর দ্বারা নিরব হয়ে গেছেন: %{reason}"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:110
+#, elixir-autogen, elixir-format
+msgid "You have been unmuted by an administrator."
+msgstr "তুমি একজন প্রশাসকর দ্বারা অবিবেচনার ভান করোনি।"
+
+#: lib/retro_hex_chat_web/live/chat_live/channel_central_events.ex:273
+#, elixir-autogen, elixir-format
+msgid "You must be a member of %{channel} to open Channel Central"
+msgstr "তুমি অবশ্যই একজন সদস্য %{channel} চ্যানেল মধ্যকে খোলা হবে"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/pm.ex:150
+#, elixir-autogen, elixir-format
+msgid "You must be a member of %{channel} to send notices there"
+msgstr "তুমি অবশ্যই একজন সদস্য %{channel} সূচনা প্রদানের জন্য প্রেরিত"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:87
+#, elixir-autogen, elixir-format
+msgid "Your alias list is empty"
+msgstr "আপনার উপনাম ফাঁকা"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/autojoin.ex:24
+#, elixir-autogen, elixir-format
+msgid "Your auto-join list is empty"
+msgstr "আপনার স্বয়ংক্রিয়ভাবে তালিকা ফাঁকা"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:32
+#, elixir-autogen, elixir-format
+msgid "Your ignore list is empty"
+msgstr "উপেক্ষা করার জন্য চিহ্নিত ব্যক্তিদের তালিকা ফাঁকা"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:75
+#, elixir-autogen, elixir-format
+msgid "Your nickname was changed to %{nickname} by an administrator."
+msgstr "আপনার ডাকনাম পরিবর্তিত হয়েছে %{nickname} একজন প্রশাসক।"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:118
+#, elixir-autogen, elixir-format
+msgid "Your notify list is empty"
+msgstr "তোমাদের তালিকা ফাঁকা"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/perform.ex:29
+#, elixir-autogen, elixir-format
+msgid "Your perform list is empty"
+msgstr "আপনার তালিকা ফাঁকা"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:91
+#, elixir-autogen, elixir-format
+msgid "Your server role has been changed to: %{role}"
+msgstr "আপনার সার্ভার ভূমিকা পরিবর্তিত হয়েছে: %{role}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:209
+#, elixir-autogen, elixir-format
+msgid "[Auto-Whois] %{nickname}:"
+msgstr "[প্রতিধ্বনি] %{nickname}:"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:549
+#, elixir-autogen, elixir-format
+msgid "[BotService] %{bot} %{action} in %{channel}."
+msgstr "না! %{bot} %{action} এর মধ্যে %{channel}."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:338
+#, elixir-autogen, elixir-format
+msgid "[BotService] %{capability} config updated."
+msgstr "না! %{capability} কনফিগ আপডেট করা হয়েছে।"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:81
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' %{action}."
+msgstr "[বোট সার্ভিস] বোট%{name}' %{action}."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:160
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' created."
+msgstr "[বোট সার্ভিস] বোট%{name}তৈরি."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:103
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' destroyed."
+msgstr "[বোট সার্ভিস] বোট%{name}ধ্বংস."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:372
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' joined %{channel}."
+msgstr "[বোট সার্ভিস] বোট%{name}যোগ দিন %{channel}."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:200
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' left %{channel}."
+msgstr "[বোট সার্ভিস] বোট%{name}বাঁদিকে %{channel}."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:518
+#, elixir-autogen, elixir-format
+msgid "[BotService] Capability '%{capability}' %{action}."
+msgstr "[বটভিক্ষার শব্দ ] ক্যাপেন্স%{capability}' %{action}."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:234
+#, elixir-autogen, elixir-format
+msgid "[BotService] Command '%{trigger}' added."
+msgstr "[Bant সার্ভিস] কমান্ড%{trigger}'যোগ করুন।"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:261
+#, elixir-autogen, elixir-format
+msgid "[BotService] Command '%{trigger}' removed."
+msgstr "[Bant সার্ভিস] কমান্ড%{trigger}মুছে ফেলা হয়েছে:"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:478
+#, elixir-autogen, elixir-format
+msgid "[BotService] Cooldown updated to %{cooldown}ms."
+msgstr "[Baht] কুলডাউন আপডেট %{cooldown}এম.এস."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:439
+#, elixir-autogen, elixir-format
+msgid "[BotService] Description updated."
+msgstr "বর্ণনা আপডেট."
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:168
+#, elixir-autogen, elixir-format
+msgid "[BotService] Failed to create bot '%{name}': %{message}"
+msgstr "না! নতুন ‘%s’ তৈরি করতে ব্যর্থ%{name}': %{message}"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:458
+#, elixir-autogen, elixir-format
+msgid "[BotService] Prefix updated to '%{prefix}'."
+msgstr "[Baht সার্ভিস] উপসর্গটি আপডেট করেছিল%{prefix}'."
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1035
+#, elixir-autogen, elixir-format
+msgid "[ChanServ] Channel Services Online"
+msgstr "[Charact] চ্যানেল সার্ভিস অনলাইন"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/membership.ex:232
+#, elixir-autogen, elixir-format
+msgid "[NickServ] %{reason}. You are now %{nickname}"
+msgstr "[নিক] %{reason}এখন আপনি %{nickname}"
+
+#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1063
+#, elixir-autogen, elixir-format
+msgid "[NickServ] Nickname Services Online"
+msgstr "[নিকমিউজ] ডাকনাম সার্ভিস অনলাইন"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:471
+#, elixir-autogen, elixir-format
+msgid ""
+"[NickServ] This nickname is registered. You have 60 seconds to identify via "
+"/ns identify <password> or you will be renamed."
+msgstr ""
+"[নিক] এই ডাকনামটি নিবন্ধিত হয়েছে। < ministerf21/f1> সহযোগে সনাক্ত করার জন্য"
+" আপনার ৬০ সেকেন্ড উপস্থিত রয়েছে। <ffatch> <ff222> অথবা নাম পরিবর্তন করা "
+"যাবে।"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:38
+#, elixir-autogen, elixir-format
+msgid "[Wallops] %{sender}: %{content}"
+msgstr "[বামন] %{sender}: %{content}"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/channel.ex:282
+#, elixir-autogen, elixir-format
+msgid "[Welcome] %{message}"
+msgstr "[বার্তা] %{message}"
+
+#: lib/retro_hex_chat_web/components/ui/chat/message_indicators.ex:49
+#: lib/retro_hex_chat_web/components/ui/chat/message_reply_block.ex:51
+#, elixir-autogen, elixir-format
+msgid "[message deleted]"
+msgstr "মুছে ফেলা"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:412
+#, elixir-autogen, elixir-format
+msgid "all"
+msgstr "সকল"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:136
+#, elixir-autogen, elixir-format
+msgid "click to insert"
+msgstr "ক্লিক করে যোগ করুন"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:374
+#, elixir-autogen, elixir-format
+msgid "closed by user"
+msgstr "ব্যবহারকারী দ্বারা বন্ধ"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:378
+#, elixir-autogen, elixir-format
+msgid "connection failed"
+msgstr "সংযোগ বিফল"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:75
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:512
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:544
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:52
+#, elixir-autogen, elixir-format
+msgid "disabled"
+msgstr "নিষ্ক্রিয়"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:375
+#, elixir-autogen, elixir-format
+msgid "disconnected"
+msgstr "বিচ্ছিন্ন"
+
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:75
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:513
+#: lib/retro_hex_chat_web/live/chat_live/bot_events.ex:544
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:51
+#, elixir-autogen, elixir-format
+msgid "enabled"
+msgstr "সক্রিয়"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:380
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:383
+#, elixir-autogen, elixir-format
+msgid "ended"
+msgstr "সমাপ্ত"
+
+#: lib/retro_hex_chat_web/live/chat_live/alias_events.ex:183
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:107
+#, elixir-autogen, elixir-format
+msgid "expands to itself and will hit the recursion limit"
+msgstr "পুনরাবৃত্তির সীমা অতিক্রম করে এবং সীমা অতিক্রান্ত করা হবে"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:376
+#, elixir-autogen, elixir-format
+msgid "expired"
+msgstr "মেয়াদ উত্তীর্ণ"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:381
+#, elixir-autogen, elixir-format
+msgid "game over"
+msgstr "খেলা সংক্রান্ত ত্রুটি"
+
+#: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:137
+#, elixir-autogen, elixir-format
+msgid "hover to preview"
+msgstr "প্রাকদর্শন"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:215
+#, elixir-autogen, elixir-format
+msgid "identified"
+msgstr "সনাক্ত করা হয়েছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:379
+#, elixir-autogen, elixir-format
+msgid "inactivity timeout"
+msgstr "সময়সীমা পার হয়ে গেলে"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:377
+#, elixir-autogen, elixir-format
+msgid "invite expired"
+msgstr "আমন্ত্রণ বাতিল করা হয়েছে"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:415
+#, elixir-autogen, elixir-format
+msgid "invites"
+msgstr "আমন্ত্রণ"
+
+#: lib/retro_hex_chat_web/components/ui/chat/typing_indicator.ex:28
+#, elixir-autogen, elixir-format
+msgid "is typing..."
+msgstr "টাইপিং বিরতি"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:413
+#, elixir-autogen, elixir-format
+msgid "messages"
+msgstr "বার্তা"
+
+#: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:216
+#, elixir-autogen, elixir-format
+msgid "not identified"
+msgstr "সনাক্ত করা যায়নি"
+
+#: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:414
+#, elixir-autogen, elixir-format
+msgid "notices"
+msgstr "সূচনা"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:127
+#, elixir-autogen, elixir-format
+msgid "offline"
+msgstr "অফ-লাইন"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:132
+#, elixir-autogen, elixir-format
+msgid "one-shot"
+msgstr "এক বুলেট"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:127
+#, elixir-autogen, elixir-format
+msgid "online"
+msgstr "অনলাইন"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:104
+#, elixir-autogen, elixir-format
+msgid "permanent"
+msgstr "স্থায়ী"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:132
+#, elixir-autogen, elixir-format
+msgid "repeat"
+msgstr "পুনরাবৃত্তি"
+
+#: lib/retro_hex_chat_web/live/chat_live/alias_events.ex:180
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:104
+#, elixir-autogen, elixir-format
+msgid "shadows built-in /%{name}"
+msgstr "ছায়াযুক্ত /%{name}"
+
+#: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:105
+#, elixir-autogen, elixir-format
+msgid "timed"
+msgstr "সময়সীমা"
+
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:363
+#: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:366
+#, elixir-autogen, elixir-format
+msgid "— %{p1} × %{p2}%{winner}"
+msgstr "— %{p1} × %{p2}%{winner}"

@@ -63,7 +63,7 @@ def main() -> int:
         }
 
     save_cache(cache_path, cache)
-    write_catalogs(catalogs, catalog_dir, catalog)
+    write_catalogs(catalogs, catalog_dir, catalog, locales=locales)
     print(f"{catalog_dir}: locales={','.join(catalogs.keys())} messages={len(messages)}")
     return 0
 

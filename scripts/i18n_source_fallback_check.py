@@ -17,7 +17,28 @@ from i18n_js_catalogs import (
     read_catalogs,
 )
 
-DEFAULT_LOCALES = ("pt_BR", "es", "fr", "de", "ja", "zh_Hans", "id", "ar", "ru", "hi", "ko", "tr", "vi")
+DEFAULT_LOCALES = (
+    "pt_BR",
+    "es",
+    "fr",
+    "de",
+    "ja",
+    "zh_Hans",
+    "id",
+    "ar",
+    "ru",
+    "hi",
+    "ko",
+    "tr",
+    "vi",
+    "bn",
+    "ur",
+    "zh_Hant",
+    "pt_PT",
+    "it",
+    "pl",
+    "nl",
+)
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
 WORD_RE = re.compile(r"[A-Za-z]{2,}")
 

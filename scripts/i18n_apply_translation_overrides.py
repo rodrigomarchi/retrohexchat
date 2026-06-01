@@ -13,7 +13,27 @@ from i18n_js_catalogs import LOCALE_EXPORTS, read_catalogs, write_catalogs
 
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
 
-DEFAULT_LOCALES = ("de", "es", "fr", "id", "ja", "zh_Hans", "ar", "ru", "hi", "ko", "tr", "vi")
+DEFAULT_LOCALES = (
+    "de",
+    "es",
+    "fr",
+    "id",
+    "ja",
+    "zh_Hans",
+    "ar",
+    "ru",
+    "hi",
+    "ko",
+    "tr",
+    "vi",
+    "bn",
+    "ur",
+    "zh_Hant",
+    "pt_PT",
+    "it",
+    "pl",
+    "nl",
+)
 
 
 def t(
@@ -24,12 +44,19 @@ def t(
     ja: str,
     zh_Hans: str,
     pt_BR: str | None = None,
+    pt_PT: str | None = None,
+    it: str | None = None,
+    pl: str | None = None,
+    nl: str | None = None,
     ar: str | None = None,
     ru: str | None = None,
     hi: str | None = None,
     ko: str | None = None,
     tr: str | None = None,
     vi: str | None = None,
+    bn: str | None = None,
+    ur: str | None = None,
+    zh_Hant: str | None = None,
 ) -> dict[str, str]:
     translations = {
         "de": de,
@@ -43,6 +70,18 @@ def t(
     if pt_BR is not None:
         translations["pt_BR"] = pt_BR
 
+    if pt_PT is not None:
+        translations["pt_PT"] = pt_PT
+
+    if it is not None:
+        translations["it"] = it
+
+    if pl is not None:
+        translations["pl"] = pl
+
+    if nl is not None:
+        translations["nl"] = nl
+
     for locale, translated in {
         "ar": ar,
         "ru": ru,
@@ -50,6 +89,9 @@ def t(
         "ko": ko,
         "tr": tr,
         "vi": vi,
+        "bn": bn,
+        "ur": ur,
+        "zh_Hant": zh_Hant,
     }.items():
         if translated is not None:
             translations[locale] = translated
@@ -73,6 +115,7 @@ PO_OVERRIDES = {
         "%{prefix}\nRonde selesai! %{scores}",
         "%{prefix}\nラウンド終了！ %{scores}",
         "%{prefix}\n回合结束！%{scores}",
+        pt_PT="%{prefix}\nRonda terminada! %{scores}",
     ),
     "Round over! %{scores}": t(
         "Runde beendet! %{scores}",
@@ -81,6 +124,7 @@ PO_OVERRIDES = {
         "Ronde selesai! %{scores}",
         "ラウンド終了！ %{scores}",
         "回合结束！%{scores}",
+        pt_PT="%{prefix}\nRonda terminada! %{scores}",
     ),
     "Trivia started! (%{category}, %{count} questions)\n%{question}": t(
         "Trivia gestartet! (%{category}, %{count} Fragen)\n%{question}",
@@ -122,6 +166,10 @@ PO_OVERRIDES = {
         "問題%{number}/%{total}: %{question}",
         "第 %{number}/%{total} 题：%{question}",
         pt_BR="P%{number}/%{total}: %{question}",
+        pt_PT="P%{number}/%{total}: %{question}",
+        bn="প্রশ্ন %{number}/%{total}: %{question}",
+        ur="سوال %{number}/%{total}: %{question}",
+        zh_Hant="第 %{number}/%{total} 題：%{question}",
     ),
     "Correct, %{author}! (+%{points} points)": t(
         "Richtig, %{author}! (+%{points} Punkte)",
@@ -663,6 +711,7 @@ PO_OVERRIDES = {
         "[BotService] Bot 情報: %{name}",
         "[BotService] 机器人信息：%{name}",
         pt_BR="[BotService] Informações do bot: %{name}",
+        pt_PT="[BotService] Informação do bot: %{name}",
     ),
     "[BotService] Failed to add command '%{trigger}': %{message}": t(
         "[BotService] Befehl '%{trigger}' konnte nicht hinzugefügt werden: %{message}",
@@ -744,6 +793,15 @@ PO_WAVE2_OVERRIDES = {
     },
     "[BotService] Bot Info: %{name}": {
         "tr": "[BotService] Bot bilgisi: %{name}",
+    },
+    "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}": {
+        "pt_PT": "[ChanServ] %{name}: fundador=%{founder}, registado=%{registered_at}",
+    },
+    "* Rejoining %{channel}...": {
+        "pt_PT": "* A voltar a entrar em %{channel}...",
+    },
+    "[BotService] %{capability} config updated.": {
+        "pt_PT": "[BotService] Configuração de %{capability} atualizada.",
     },
     "* No whowas information available for %{target}.": {
         "ar": "* لا توجد معلومات whowas عن %{target}.",
@@ -830,6 +888,7 @@ PO_WAVE2_OVERRIDES = {
     },
     "Timezone: %{timezone}": {
         "tr": "Saat dilimi: %{timezone}",
+        "ur": "ٹائم زون: %{timezone}",
     },
     "Topic set: %{topic}": {
         "tr": "Konu ayarlandı: %{topic}",
@@ -854,7 +913,146 @@ PO_WAVE2_OVERRIDES = {
 for source, translations in PO_WAVE2_OVERRIDES.items():
     PO_OVERRIDES.setdefault(source, {}).update(translations)
 
+PO_WAVE3_OVERRIDES = {
+    "  Admin: %{is_admin}\n": {
+        "it": "  Amministratore: %{is_admin}\n",
+        "pl": "  Administrator: %{is_admin}\n",
+    },
+    "  Bans: %{state_bans_count}\n": {
+        "it": "  Ban: %{state_bans_count}\n",
+    },
+    "  Binary: %{binary}\n": {
+        "it": "  Binario: %{binary}\n",
+        "pl": "  Plik binarny: %{binary}\n",
+    },
+    "Q%{number}/%{total}: %{question}": {
+        "it": "D%{number}/%{total}: %{question}",
+        "pl": "P%{number}/%{total}: %{question}",
+        "nl": "V%{number}/%{total}: %{question}",
+    },
+    "Rolling %{notation}: %{rolls} %{sign} %{modifier} = %{total}": {
+        "it": "Lancio %{notation}: %{rolls} %{sign} %{modifier} = %{total}",
+    },
+    "Rolling %{notation}: %{rolls} = %{sum}": {
+        "it": "Lancio %{notation}: %{rolls} = %{sum}",
+    },
+    "  Nickname: %{nickname}": {
+        "it": "  Soprannome: %{nickname}",
+        "pl": "  Pseudonim: %{nickname}",
+    },
+    "%{cap_name}.%{field} set to %{display}.": {
+        "it": "%{cap_name}.%{field} impostato su %{display}.",
+    },
+    "[BotService] Bot Info: %{name}": {
+        "it": "[BotService] Info bot: %{name}",
+        "pl": "[BotService] Informacje o bocie: %{name}",
+    },
+    "Timezone: %{timezone}": {
+        "it": "Fuso orario: %{timezone}",
+    },
+    "[BotService] %{bot} %{action} in %{channel}.": {
+        "it": "[BotService] %{bot} %{action} su %{channel}.",
+        "nl": "[BotService] %{bot} %{action} op %{channel}.",
+    },
+    "Set by %{nick}": {
+        "it": "Impostato da %{nick}",
+    },
+    "Max: %{size} MB": {
+        "it": "Massimo: %{size} MB",
+        "pl": "Maks.: %{size} MB",
+        "nl": "Max.: %{size} MB",
+    },
+    "Hint: %{hint}": {
+        "nl": "Tip: %{hint}",
+    },
+    "Scores (Q%{number}/%{total}): %{ranked}": {
+        "nl": "Puntenstand (V%{number}/%{total}): %{ranked}",
+    },
+    "Client: %{client}": {
+        "nl": "Client-app: %{client}",
+    },
+    "— Bot requests the user be kicked (requires channel operator)": {
+        "nl": "— Bot vraagt om de gebruiker te kicken (vereist kanaaloperator)",
+    },
+    "— Bot requests the user be muted (requires channel operator)": {
+        "nl": "— Bot vraagt om de gebruiker te dempen (vereist kanaaloperator)",
+    },
+    "— Detects messages that are mostly uppercase (potential shouting).": {
+        "nl": "— Detecteert berichten die grotendeels uit hoofdletters bestaan (mogelijk schreeuwen).",
+    },
+    "— Maximum items posted per poll (default: 3)": {
+        "nl": "— Maximaal aantal items per poll (standaard: 3)",
+    },
+    "— Seconds per question (default: 30)": {
+        "nl": "— Seconden per vraag (standaard: 30)",
+    },
+    "— add modifier (e.g.,": {
+        "nl": "— modifier toevoegen (bijv.,",
+    },
+    "— subtract modifier (e.g.,": {
+        "nl": "— modifier aftrekken (bijv.,",
+    },
+    "— welcomes users when they join a channel, optionally says goodbye on part": {
+        "nl": "— verwelkomt gebruikers wanneer ze een kanaal betreden en zegt optioneel gedag bij vertrek",
+    },
+    "— Display name of the server (shown in welcome message and server info)": {
+        "nl": "— Weergavenaam van de server (getoond in welkomstbericht en serverinformatie)",
+    },
+    "— Force-drop a channel registration (bypasses founder check)": {
+        "nl": "— Forceer het verwijderen van een kanaalregistratie (omzeilt de oprichtercontrole)",
+    },
+    "— Manage Auto Voice (get voice on join).": {
+        "nl": "— Auto Voice beheren (voice bij binnenkomst).",
+    },
+    "— Show notices in the sender's PM window (opens one if needed).": {
+        "nl": "— Toon notices in het PM-venster van de afzender (opent er een indien nodig).",
+    },
+    "— View registration info about a nickname (defaults to your own).": {
+        "nl": "— Bekijk registratie-info over een nickname (standaard die van jezelf).",
+    },
+    "— Positional arguments (words typed after the alias).": {
+        "nl": "— Positionele argumenten (woorden getypt na de alias).",
+    },
+    "— Show next entry, or restore your draft when past the newest entry.": {
+        "nl": "— Toon het volgende item of herstel je concept na het nieuwste item.",
+    },
+    "— Activate turbo boost": {
+        "nl": "— Activeer turboboost",
+    },
+    "— Configure anti-flood and auto-ignore settings.": {
+        "nl": "— Configureer anti-flood- en auto-ignore-instellingen.",
+    },
+    "— Configure words that trigger message highlighting.": {
+        "nl": "— Configureer woorden die berichtmarkering activeren.",
+    },
+    "  Status: %{status}": {
+        "pl": "  Stan: %{status}",
+    },
+    "* Alias /%{name} created%{warning}": {
+        "pl": "* Alias /%{name} utworzony%{warning}",
+    },
+    "* Bio set: %{text}": {
+        "pl": "* Bio ustawione: %{text}",
+    },
+    "* Your bio: %{bio}": {
+        "pl": "* Twoje bio: %{bio}",
+    },
+    "Edited at %{timestamp}": {
+        "pl": "Edytowano o %{timestamp}",
+    },
+    "Idle for: %{duration}": {
+        "pl": "Bezczynny przez: %{duration}",
+    },
+}
+
+for source, translations in PO_WAVE3_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
 JS_OVERRIDES = {
+    "%{0}  Wv:%{1}": {
+        "bn": "%{0}  ওয়েভ:%{1}",
+        "ur": "%{0}  ویو:%{1}",
+    },
     "FROSTBITE  %{0}": t(
         "ERFRIERUNG  %{0}",
         "CONGELACIÓN  %{0}",
@@ -863,6 +1061,8 @@ JS_OVERRIDES = {
         "凍傷  %{0}",
         "冻伤  %{0}",
         pt_BR="CONGELAMENTO  %{0}",
+        bn="ফ্রস্টবাইট  %{0}",
+        ur="فراسٹ بائٹ  %{0}",
     ),
     "%{0} WINS!": t(
         "%{0} GEWINNT!",
@@ -872,12 +1072,16 @@ JS_OVERRIDES = {
         "%{0} の勝利！",
         "%{0} 获胜！",
         pt_BR="%{0} VENCE!",
+        pt_PT="%{0} VENCE!",
         ar="%{0} يفوز!",
         ru="%{0} побеждает!",
         hi="%{0} जीतता है!",
         ko="%{0} 승리!",
         tr="%{0} KAZANDI!",
         vi="%{0} thắng!",
+        bn="%{0} জিতেছে!",
+        ur="%{0} جیت گیا!",
+        zh_Hant="%{0} 獲勝！",
     ),
     "Day %{0}/%{1}": t(
         "Tag %{0}/%{1}",
@@ -892,6 +1096,8 @@ JS_OVERRIDES = {
         ko="%{0}/%{1}일차",
         tr="Gün %{0}/%{1}",
         vi="Ngày %{0}/%{1}",
+        bn="দিন %{0}/%{1}",
+        ur="دن %{0}/%{1}",
     ),
     "Day %{0} Complete": t(
         "Tag %{0} abgeschlossen",
@@ -906,6 +1112,8 @@ JS_OVERRIDES = {
         ko="%{0}일차 완료",
         tr="Gün %{0} tamamlandı",
         vi="Ngày %{0} hoàn tất",
+        bn="দিন %{0} সম্পূর্ণ",
+        ur="دن %{0} مکمل",
     ),
     "END OF PERIOD %{0}": t(
         "ENDE VON PERIODE %{0}",
@@ -920,7 +1128,25 @@ JS_OVERRIDES = {
         ko="%{0}피리어드 종료",
         tr="%{0}. periyot sonu",
         vi="Kết thúc hiệp %{0}",
+        bn="পর্ব %{0} শেষ",
+        ur="پیریڈ %{0} ختم",
     ),
+    "FIRST TO %{0}": {
+        "bn": "প্রথমে %{0} পেলে",
+        "ur": "پہلے %{0} تک",
+    },
+    "P1 WINS ROUND": {
+        "pt_PT": "P1 VENCE A RONDA",
+    },
+    "P1 WINS!": {
+        "pt_PT": "P1 VENCE!",
+    },
+    "P2 WINS ROUND": {
+        "pt_PT": "P2 VENCE A RONDA",
+    },
+    "P2 WINS!": {
+        "pt_PT": "P2 VENCE!",
+    },
     "ROUND %{0}": t(
         "RUNDE %{0}",
         "RONDA %{0}",
@@ -934,6 +1160,10 @@ JS_OVERRIDES = {
         ko="%{0}라운드",
         tr="TUR %{0}",
         vi="VÒNG %{0}",
+        pt_PT="RONDA %{0}",
+        bn="রাউন্ড %{0}",
+        ur="راؤنڈ %{0}",
+        zh_Hant="第 %{0} 回合",
     ),
     "ROUND %{0} COMPLETE": t(
         "RUNDE %{0} ABGESCHLOSSEN",
@@ -948,6 +1178,9 @@ JS_OVERRIDES = {
         ko="%{0}라운드 완료",
         tr="TUR %{0} TAMAMLANDI",
         vi="VÒNG %{0} HOÀN TẤT",
+        pt_PT="RONDA %{0} CONCLUÍDA",
+        bn="রাউন্ড %{0} সম্পূর্ণ",
+        ur="راؤنڈ %{0} مکمل",
     ),
     "Round %{0}": t(
         "Runde %{0}",
@@ -962,6 +1195,9 @@ JS_OVERRIDES = {
         ko="%{0}라운드",
         tr="Tur %{0}",
         vi="Vòng %{0}",
+        bn="রাউন্ড %{0}",
+        ur="راؤنڈ %{0}",
+        zh_Hant="第 %{0} 回合",
     ),
     "WAVE %{0}": t(
         "WELLE %{0}",
@@ -976,6 +1212,10 @@ JS_OVERRIDES = {
         ko="%{0}웨이브",
         tr="DALGA %{0}",
         vi="ĐỢT %{0}",
+        pt_PT="ONDA %{0}",
+        bn="ওয়েভ %{0}",
+        ur="ویو %{0}",
+        zh_Hant="第 %{0} 波",
     ),
     "WAVE %{0} CLEARED": t(
         "WELLE %{0} GESCHAFFT",
@@ -990,6 +1230,9 @@ JS_OVERRIDES = {
         ko="%{0}웨이브 클리어",
         tr="DALGA %{0} TEMIZLENDI",
         vi="ĐÃ DỌN ĐỢT %{0}",
+        bn="ওয়েভ %{0} পরিষ্কার",
+        ur="ویو %{0} کلیئر",
+        zh_Hant="第 %{0} 波已清除",
     ),
     "P%{0} SCORES!": t(
         "P%{0} PUNKTET!",
@@ -1004,6 +1247,9 @@ JS_OVERRIDES = {
         ko="P%{0} 득점!",
         tr="P%{0} SKOR YAPTI!",
         vi="P%{0} ghi điểm!",
+        pt_PT="P%{0} MARCA!",
+        bn="P%{0} স্কোর করেছে!",
+        ur="P%{0} نے اسکور کیا!",
     ),
     "PLAYER %{0} SCORES!": t(
         "SPIELER %{0} PUNKTET!",
@@ -1018,6 +1264,10 @@ JS_OVERRIDES = {
         ko="플레이어 %{0} 득점!",
         tr="OYUNCU %{0} SKOR YAPTI!",
         vi="NGƯỜI CHƠI %{0} GHI ĐIỂM!",
+        pt_PT="JOGADOR %{0} MARCA!",
+        bn="খেলোয়াড় %{0} স্কোর করেছে!",
+        ur="کھلاڑی %{0} نے اسکور کیا!",
+        zh_Hant="玩家 %{0} 得分！",
     ),
     "PLAYER %{0} WINS": t(
         "SPIELER %{0} GEWINNT",
@@ -1032,6 +1282,9 @@ JS_OVERRIDES = {
         ko="플레이어 %{0} 승리",
         tr="OYUNCU %{0} KAZANDI",
         vi="NGƯỜI CHƠI %{0} THẮNG",
+        pt_PT="JOGADOR %{0} VENCE",
+        bn="খেলোয়াড় %{0} জিতেছে",
+        ur="کھلاڑی %{0} جیت گیا",
     ),
     "PLAYER %{0} WINS!": t(
         "SPIELER %{0} GEWINNT!",
@@ -1046,6 +1299,10 @@ JS_OVERRIDES = {
         ko="플레이어 %{0} 승리!",
         tr="OYUNCU %{0} KAZANDI!",
         vi="NGƯỜI CHƠI %{0} THẮNG!",
+        pt_PT="JOGADOR %{0} VENCE!",
+        bn="খেলোয়াড় %{0} জিতেছে!",
+        ur="کھلاڑی %{0} جیت گیا!",
+        zh_Hant="玩家 %{0} 獲勝！",
     ),
     "PLAYER %{0} WINS THE ROUND!": t(
         "SPIELER %{0} GEWINNT DIE RUNDE!",
@@ -1060,6 +1317,9 @@ JS_OVERRIDES = {
         ko="플레이어 %{0} 라운드 승리!",
         tr="OYUNCU %{0} TURU KAZANDI!",
         vi="NGƯỜI CHƠI %{0} THẮNG VÒNG!",
+        pt_PT="JOGADOR %{0} VENCE A RONDA!",
+        bn="খেলোয়াড় %{0} রাউন্ড জিতেছে!",
+        ur="کھلاڑی %{0} نے راؤنڈ جیت لیا!",
     ),
     "ROUNDS: %{0} - %{1}": t(
         "RUNDEN: %{0} - %{1}",
@@ -1074,6 +1334,10 @@ JS_OVERRIDES = {
         ko="라운드: %{0} - %{1}",
         tr="TURLAR: %{0} - %{1}",
         vi="VÒNG: %{0} - %{1}",
+        pt_PT="RONDAS: %{0} - %{1}",
+        bn="রাউন্ড: %{0} - %{1}",
+        ur="راؤنڈز: %{0} - %{1}",
+        zh_Hant="回合：%{0} - %{1}",
     ),
     "WAITING FOR OPPONENT%{0}": t(
         "WARTE AUF GEGNER%{0}",
@@ -1088,6 +1352,8 @@ JS_OVERRIDES = {
         ko="상대 대기 중%{0}",
         tr="RAKIP BEKLENIYOR%{0}",
         vi="ĐANG CHỜ ĐỐI THỦ%{0}",
+        bn="প্রতিপক্ষের জন্য অপেক্ষা%{0}",
+        ur="حریف کا انتظار%{0}",
     ),
     "WAITING FOR PARTNER%{0}": t(
         "WARTE AUF PARTNER%{0}",
@@ -1102,6 +1368,8 @@ JS_OVERRIDES = {
         ko="파트너 대기 중%{0}",
         tr="PARTNER BEKLENIYOR%{0}",
         vi="ĐANG CHỜ ĐỒNG ĐỘI%{0}",
+        bn="সঙ্গীর জন্য অপেক্ষা%{0}",
+        ur="ساتھی کا انتظار%{0}",
     ),
     "Blocked file type: %{0}": {
         "ar": "نوع ملف محظور: %{0}",
@@ -1110,6 +1378,8 @@ JS_OVERRIDES = {
         "ko": "차단된 파일 형식: %{0}",
         "tr": "Engellenen dosya türü: %{0}",
         "vi": "Loại tệp bị chặn: %{0}",
+        "bn": "অবরুদ্ধ ফাইলের ধরন: %{0}",
+        "ur": "مسدود فائل کی قسم: %{0}",
     },
     "Error accessing media: %{0}": {
         "ar": "خطأ في الوصول إلى الوسائط: %{0}",
@@ -1118,6 +1388,8 @@ JS_OVERRIDES = {
         "ko": "미디어 접근 오류: %{0}",
         "tr": "Medyaya erişim hatası: %{0}",
         "vi": "Lỗi khi truy cập phương tiện: %{0}",
+        "bn": "মিডিয়া অ্যাক্সেসে ত্রুটি: %{0}",
+        "ur": "میڈیا تک رسائی میں خرابی: %{0}",
     },
     "File exceeds the %{0} MB limit (%{1})": {
         "ar": "يتجاوز الملف حد %{0} ميغابايت (%{1})",
@@ -1126,6 +1398,8 @@ JS_OVERRIDES = {
         "ko": "파일이 %{0} MB 제한을 초과합니다(%{1})",
         "tr": "Dosya %{0} MB sınırını aşıyor (%{1})",
         "vi": "Tệp vượt quá giới hạn %{0} MB (%{1})",
+        "bn": "ফাইলটি %{0} MB সীমা ছাড়িয়েছে (%{1})",
+        "ur": "فائل %{0} MB کی حد سے بڑھ گئی ہے (%{1})",
     },
     "First to %{0}": {
         "ar": "الأول إلى %{0}",
@@ -1134,6 +1408,14 @@ JS_OVERRIDES = {
         "ko": "먼저 %{0}점",
         "tr": "İlk %{0}",
         "vi": "Đạt %{0} trước",
+        "bn": "প্রথমে %{0} পেলে",
+        "ur": "پہلے %{0} تک",
+    },
+    "Reconnecting in %{0}s...": {
+        "pt_PT": "A religar em %{0}s...",
+        "bn": "%{0}s পরে পুনঃসংযোগ হচ্ছে...",
+        "ur": "%{0}s میں دوبارہ جڑ رہا ہے...",
+        "zh_Hant": "%{0}s 後重新連線...",
     },
     "Reconnection attempt %{0} of %{1}": {
         "ar": "محاولة إعادة الاتصال %{0} من %{1}",
@@ -1142,6 +1424,16 @@ JS_OVERRIDES = {
         "ko": "재연결 시도 %{0}/%{1}",
         "tr": "Yeniden bağlanma denemesi %{0}/%{1}",
         "vi": "Lần thử kết nối lại %{0}/%{1}",
+        "bn": "পুনঃসংযোগের চেষ্টা %{0}/%{1}",
+        "ur": "دوبارہ کنکشن کی کوشش %{0}/%{1}",
+    },
+    "Role: %{0}": {
+        "bn": "ভূমিকা: %{0}",
+        "ur": "کردار: %{0}",
+    },
+    "Score: %{0} - %{1}": {
+        "bn": "স্কোর: %{0} - %{1}",
+        "ur": "اسکور: %{0} - %{1}",
     },
     "Waiting for opponent%{0}": {
         "ar": "في انتظار الخصم%{0}",
@@ -1150,6 +1442,39 @@ JS_OVERRIDES = {
         "ko": "상대 대기 중%{0}",
         "tr": "Rakip bekleniyor%{0}",
         "vi": "Đang chờ đối thủ%{0}",
+        "bn": "প্রতিপক্ষের জন্য অপেক্ষা%{0}",
+        "ur": "حریف کا انتظار%{0}",
+        "zh_Hant": "正在等待對手%{0}",
+    },
+    "PLAYER 1 WINS!": {
+        "pt_PT": "JOGADOR 1 VENCE!",
+    },
+    "PLAYER 2 WINS!": {
+        "pt_PT": "JOGADOR 2 VENCE!",
+    },
+    "ROUND DRAW!": {
+        "pt_PT": "RONDA EMPATADA!",
+    },
+    "ROUND OVER": {
+        "pt_PT": "RONDA TERMINADA",
+    },
+    "WAITING FOR OPPONENT": {
+        "pt_PT": "À ESPERA DO OPONENTE",
+    },
+    "WAITING FOR OPPONENT%{0}": {
+        "pt_PT": "À ESPERA DO OPONENTE%{0}",
+    },
+    "WAITING FOR OPPONENT...": {
+        "pt_PT": "À espera do oponente...",
+    },
+    "WAITING FOR PARTNER%{0}": {
+        "pt_PT": "À ESPERA DO PARCEIRO%{0}",
+    },
+    "WAVE %{0} CLEARED": {
+        "pt_PT": "ONDA %{0} CONCLUÍDA",
+    },
+    "⚠️ Disconnected — Reconnecting...": {
+        "pt_PT": "⚠️ Desligado — A religar...",
     },
     "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": {
         "ar": "الجولات: %{0} - %{1}  |  النتيجة: %{2} - %{3}",
@@ -1158,6 +1483,9 @@ JS_OVERRIDES = {
         "ko": "라운드: %{0} - %{1}  |  점수: %{2} - %{3}",
         "tr": "Turlar: %{0} - %{1}  |  Skor: %{2} - %{3}",
         "vi": "Vòng: %{0} - %{1}  |  Điểm: %{2} - %{3}",
+        "pt_PT": "Rondas: %{0} - %{1}  |  Pontuação: %{2} - %{3}",
+        "bn": "রাউন্ড: %{0} - %{1}  |  স্কোর: %{2} - %{3}",
+        "ur": "راؤنڈز: %{0} - %{1}  |  اسکور: %{2} - %{3}",
     },
     "P1: %{0} pieces": t(
         "P1: %{0} Teile",
@@ -1176,6 +1504,140 @@ JS_OVERRIDES = {
         "P2：%{0} 个棋子",
     ),
 }
+
+JS_WAVE3_OVERRIDES = {
+    "%{0}  Wv:%{1}": {
+        "it": "%{0}  Ond:%{1}",
+        "pl": "%{0}  Fala:%{1}",
+    },
+    "%{0} WINS!": {
+        "it": "%{0} VINCE!",
+        "pl": "%{0} WYGRYWA!",
+        "nl": "%{0} WINT!",
+    },
+    "Blocked file type: %{0}": {
+        "it": "Tipo di file bloccato: %{0}",
+        "pl": "Zablokowany typ pliku: %{0}",
+    },
+    "Day %{0} Complete": {
+        "it": "Giorno %{0} completato",
+        "pl": "Dzień %{0} ukończony",
+    },
+    "Day %{0}/%{1}": {
+        "it": "Giorno %{0}/%{1}",
+        "pl": "Dzień %{0}/%{1}",
+    },
+    "END OF PERIOD %{0}": {
+        "it": "FINE PERIODO %{0}",
+        "pl": "KONIEC OKRESU %{0}",
+    },
+    "Error accessing media: %{0}": {
+        "it": "Errore di accesso ai media: %{0}",
+        "pl": "Błąd dostępu do mediów: %{0}",
+    },
+    "FIRST TO %{0}": {
+        "it": "PRIMO A %{0}",
+        "pl": "PIERWSZY DO %{0}",
+    },
+    "FROSTBITE  %{0}": {
+        "it": "ASSIDERAMENTO  %{0}",
+        "pl": "ODMROŻENIE  %{0}",
+    },
+    "File exceeds the %{0} MB limit (%{1})": {
+        "it": "Il file supera il limite di %{0} MB (%{1})",
+        "pl": "Plik przekracza limit %{0} MB (%{1})",
+    },
+    "First to %{0}": {
+        "it": "Primo a %{0}",
+        "pl": "Pierwszy do %{0}",
+    },
+    "P%{0} SCORES!": {
+        "it": "P%{0} SEGNA!",
+        "pl": "P%{0} ZDOBYWA PUNKT!",
+        "nl": "P%{0} SCOORT!",
+    },
+    "PLAYER %{0} SCORES!": {
+        "it": "GIOCATORE %{0} SEGNA!",
+        "pl": "GRACZ %{0} ZDOBYWA PUNKT!",
+        "nl": "SPELER %{0} SCOORT!",
+    },
+    "PLAYER %{0} WINS": {
+        "it": "GIOCATORE %{0} VINCE",
+        "pl": "GRACZ %{0} WYGRYWA",
+        "nl": "SPELER %{0} WINT",
+    },
+    "PLAYER %{0} WINS THE ROUND!": {
+        "it": "GIOCATORE %{0} VINCE IL TURNO!",
+        "pl": "GRACZ %{0} WYGRYWA RUNDĘ!",
+    },
+    "PLAYER %{0} WINS!": {
+        "it": "GIOCATORE %{0} VINCE!",
+        "pl": "GRACZ %{0} WYGRYWA!",
+        "nl": "SPELER %{0} WINT!",
+    },
+    "ROUND %{0}": {
+        "it": "TURNO %{0}",
+        "pl": "RUNDA %{0}",
+    },
+    "ROUND %{0} COMPLETE": {
+        "it": "TURNO %{0} COMPLETATO",
+        "pl": "RUNDA %{0} UKOŃCZONA",
+    },
+    "ROUNDS: %{0} - %{1}": {
+        "it": "TURNI: %{0} - %{1}",
+        "pl": "RUNDY: %{0} - %{1}",
+        "nl": "RONDEN: %{0} - %{1}",
+    },
+    "Reconnecting in %{0}s...": {
+        "it": "Riconnessione tra %{0}s...",
+        "pl": "Ponowne połączenie za %{0}s...",
+    },
+    "Reconnection attempt %{0} of %{1}": {
+        "it": "Tentativo di riconnessione %{0} di %{1}",
+        "pl": "Próba ponownego połączenia %{0} z %{1}",
+    },
+    "Role: %{0}": {
+        "it": "Ruolo: %{0}",
+        "pl": "Rola: %{0}",
+    },
+    "Round %{0}": {
+        "it": "Turno %{0}",
+        "pl": "Runda %{0}",
+    },
+    "Rounds: %{0} - %{1}  |  Score: %{2} - %{3}": {
+        "it": "Turni: %{0} - %{1}  |  Punteggio: %{2} - %{3}",
+        "pl": "Rundy: %{0} - %{1}  |  Wynik: %{2} - %{3}",
+    },
+    "Score: %{0} - %{1}": {
+        "it": "Punteggio: %{0} - %{1}",
+        "pl": "Wynik: %{0} - %{1}",
+        "nl": "Stand: %{0} - %{1}",
+    },
+    "WAITING FOR OPPONENT%{0}": {
+        "it": "IN ATTESA DELL'AVVERSARIO%{0}",
+        "pl": "OCZEKIWANIE NA PRZECIWNIKA%{0}",
+    },
+    "WAITING FOR PARTNER%{0}": {
+        "it": "IN ATTESA DEL PARTNER%{0}",
+        "pl": "OCZEKIWANIE NA PARTNERA%{0}",
+    },
+    "WAVE %{0}": {
+        "it": "ONDATA %{0}",
+        "pl": "FALA %{0}",
+        "nl": "GOLF %{0}",
+    },
+    "WAVE %{0} CLEARED": {
+        "it": "ONDATA %{0} COMPLETATA",
+        "pl": "FALA %{0} UKOŃCZONA",
+    },
+    "Waiting for opponent%{0}": {
+        "it": "In attesa dell'avversario%{0}",
+        "pl": "Oczekiwanie na przeciwnika%{0}",
+    },
+}
+
+for source, translations in JS_WAVE3_OVERRIDES.items():
+    JS_OVERRIDES.setdefault(source, {}).update(translations)
 
 
 def parse_args() -> argparse.Namespace:
@@ -1295,6 +1757,7 @@ def apply_plural_override(entry, locale: str) -> bool:
 def apply_js_overrides(locales: tuple[str, ...]) -> dict[str, int]:
     catalogs = read_catalogs()
     updated = 0
+    updated_locales = []
 
     for locale in locales:
         export_name = LOCALE_EXPORTS.get(locale)
@@ -1318,9 +1781,11 @@ def apply_js_overrides(locales: tuple[str, ...]) -> dict[str, int]:
             if catalog[source] != translated:
                 catalog[source] = translated
                 updated += 1
+                if locale not in updated_locales:
+                    updated_locales.append(locale)
 
     if updated:
-        write_catalogs(catalogs)
+        write_catalogs(catalogs, locales=updated_locales)
 
     return {"js_catalogs": len(catalogs), "js_entries": updated}
 

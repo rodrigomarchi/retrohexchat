@@ -1,0 +1,48 @@
+# "msgid"s in this file come from default.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: pl; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: pl\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+#: lib/retro_hex_chat_web/components/layouts.ex:47
+#: lib/retro_hex_chat_web/components/layouts.ex:63
+#, elixir-autogen, elixir-format
+msgid "Attempting to reconnect"
+msgstr "Próba ponownego połączenia"
+
+#: lib/retro_hex_chat_web/components/layouts.ex:53
+#, elixir-autogen, elixir-format
+msgid "Something went wrong!"
+msgstr "Coś poszło nie tak!"
+
+#: lib/retro_hex_chat_web/components/layouts.ex:37
+#, elixir-autogen, elixir-format
+msgid "We can't find the internet"
+msgstr "Nie możemy znaleźć internetu."
+
+#: lib/retro_hex_chat_web/components/core_components.ex:42
+#, elixir-autogen, elixir-format
+msgid "close"
+msgstr "Zamknij"
+
+#: lib/retro_hex_chat_web/endpoint.ex:12
+#, elixir-autogen, elixir-format
+msgid "Lax"
+msgstr "Lax"
+
+#: lib/retro_hex_chat_web/timezone.ex:64
+#, elixir-autogen, elixir-format
+msgid "UTC%{sign}%{hours}"
+msgstr "UTC%{sign}%{hours}"
+
+#: lib/retro_hex_chat_web/timezone.ex:66
+#, elixir-autogen, elixir-format
+msgid "UTC%{sign}%{hours}:%{minutes}"
+msgstr "UTC%{sign}%{hours}:%{minutes}"

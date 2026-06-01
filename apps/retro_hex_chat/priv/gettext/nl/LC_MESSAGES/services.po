@@ -1,0 +1,155 @@
+# "msgid"s in this file come from services.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: nl; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: nl\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:355
+#: lib/retro_hex_chat/services/nick_serv.ex:389
+#, elixir-autogen, elixir-format
+msgid "%{field}: %{errors}"
+msgstr "%{field}: %{errors}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:318
+#, elixir-autogen, elixir-format
+msgid "%{target_nick} added to %{level} list of %{channel_name}"
+msgstr "%{target_nick} toegevoegd aan %{level} lijst van %{channel_name}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:344
+#, elixir-autogen, elixir-format
+msgid "%{target_nick} not found in access list"
+msgstr "%{target_nick} niet gevonden in toegangslijst"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:337
+#, elixir-autogen, elixir-format
+msgid "%{target_nick} removed from access list of %{channel_name}"
+msgstr "%{target_nick} verwijderd uit de toegangslijst van %{channel_name}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:121
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} dropped"
+msgstr "Kanaal %{channel_name} vallen"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:178
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} dropped by admin"
+msgstr "Kanaal %{channel_name} verlaagd door admin"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:133
+#: lib/retro_hex_chat/services/chan_serv.ex:246
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} is not registered"
+msgstr "Kanaal %{channel_name} is niet geregistreerd"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:104
+#, elixir-autogen, elixir-format
+msgid "Channel %{channel_name} registered by %{founder_nick}"
+msgstr "Kanaal %{channel_name} geregistreerd door %{founder_nick}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:326
+#, elixir-autogen, elixir-format
+msgid "Failed to add %{target_nick} to %{level} list"
+msgstr "Kon %{target_nick} niet toevoegen aan %{level} lijst"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:265
+#, elixir-autogen, elixir-format
+msgid "Failed to reset password for %{nickname}"
+msgstr "Kon wachtwoord voor niet resetten %{nickname}"
+
+#: lib/retro_hex_chat/services/motd.ex:32
+#, elixir-autogen, elixir-format
+msgid "Failed to save MOTD."
+msgstr "Kon MOTD niet opslaan."
+
+#: lib/retro_hex_chat/services/chan_serv.ex:199
+#, elixir-autogen, elixir-format
+msgid "Founder of %{channel_name} transferred to %{new_founder}"
+msgstr "Oprichter van %{channel_name} overgebracht naar %{new_founder}"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:355
+#, elixir-autogen, elixir-format
+msgid "Ghost command sent for %{target_nick}"
+msgstr "Ghost-opdracht verzonden voor %{target_nick}"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:369
+#, elixir-autogen, elixir-format
+msgid "Ghosted by %{requester_nick}"
+msgstr "Gehost door %{requester_nick}"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:302
+#, elixir-autogen, elixir-format
+msgid "Identify timeout (60s)"
+msgstr "Identificeer timeout (60s)"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:150
+#: lib/retro_hex_chat/services/nick_serv.ex:219
+#: lib/retro_hex_chat/services/nick_serv.ex:358
+#, elixir-autogen, elixir-format
+msgid "Invalid password"
+msgstr "Ongeldig wachtwoord"
+
+#: lib/retro_hex_chat/services/nick_expiry.ex:106
+#, elixir-autogen, elixir-format
+msgid "NickExpiry"
+msgstr "NickExpiry"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:137
+#: lib/retro_hex_chat/services/nick_serv.ex:168
+#: lib/retro_hex_chat/services/nick_serv.ex:206
+#: lib/retro_hex_chat/services/nick_serv.ex:229
+#: lib/retro_hex_chat/services/nick_serv.ex:249
+#, elixir-autogen, elixir-format
+msgid "Nickname %{nickname} is not registered"
+msgstr "Bijnaam %{nickname} is niet geregistreerd"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:121
+#, elixir-autogen, elixir-format
+msgid "Nickname %{nickname} registered successfully"
+msgstr "Bijnaam %{nickname} succesvol geregistreerd"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:188
+#, elixir-autogen, elixir-format
+msgid "Nickname %{target_nick} is not registered"
+msgstr "Bijnaam %{target_nick} is niet geregistreerd"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:259
+#, elixir-autogen, elixir-format
+msgid "Only the founder can drop a channel"
+msgstr "Alleen de oprichter kan een kanaal laten vallen"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:259
+#, elixir-autogen, elixir-format
+msgid "Password for %{nickname} has been reset"
+msgstr "Wachtwoord voor %{nickname} is opnieuw ingesteld"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:216
+#, elixir-autogen, elixir-format
+msgid "Registration for %{nickname} dropped"
+msgstr "Registratie voor %{nickname} is gevallen"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:238
+#, elixir-autogen, elixir-format
+msgid "Registration for %{nickname} dropped by admin"
+msgstr "Registratie voor %{nickname} gedaald door admin"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:112
+#, elixir-autogen, elixir-format
+msgid "Registration is currently closed by the server administrator"
+msgstr "Registratie is momenteel gesloten door de serverbeheerder"
+
+#: lib/retro_hex_chat/services/nick_serv.ex:147
+#, elixir-autogen, elixir-format
+msgid "You are now identified as %{nickname}"
+msgstr "U bent nu geïdentificeerd als %{nickname}"
+
+#: lib/retro_hex_chat/services/chan_serv.ex:227
+#, elixir-autogen, elixir-format
+msgid "You must be identified to use ChanServ"
+msgstr "U moet geïdentificeerd worden om ChanServ te gebruiken"

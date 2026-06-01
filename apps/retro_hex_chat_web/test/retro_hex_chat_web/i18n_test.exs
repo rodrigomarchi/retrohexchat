@@ -10,22 +10,31 @@ defmodule RetroHexChatWeb.I18nTest do
       assert I18n.normalize_locale("pt") == "pt_BR"
       assert I18n.normalize_locale("pt-BR") == "pt_BR"
       assert I18n.normalize_locale("pt_BR") == "pt_BR"
+      assert I18n.normalize_locale("pt-PT") == "pt_PT"
       assert I18n.normalize_locale("es-MX") == "es"
       assert I18n.normalize_locale("fr-CA") == "fr"
       assert I18n.normalize_locale("de-AT") == "de"
+      assert I18n.normalize_locale("it-IT") == "it"
       assert I18n.normalize_locale("ja-JP") == "ja"
+      assert I18n.normalize_locale("nl-BE") == "nl"
+      assert I18n.normalize_locale("pl-PL") == "pl"
       assert I18n.normalize_locale("zh-CN") == "zh_Hans"
+      assert I18n.normalize_locale("zh-TW") == "zh_Hant"
+      assert I18n.normalize_locale("zh-HK") == "zh_Hant"
       assert I18n.normalize_locale("id-ID") == "id"
       assert I18n.normalize_locale("ar-SA") == "ar"
+      assert I18n.normalize_locale("bn-BD") == "bn"
+      assert I18n.normalize_locale("bn-IN") == "bn"
       assert I18n.normalize_locale("ru-RU") == "ru"
       assert I18n.normalize_locale("hi-IN") == "hi"
       assert I18n.normalize_locale("ko-KR") == "ko"
       assert I18n.normalize_locale("tr-TR") == "tr"
+      assert I18n.normalize_locale("ur-PK") == "ur"
+      assert I18n.normalize_locale("ur-IN") == "ur"
       assert I18n.normalize_locale("vi-VN") == "vi"
     end
 
     test "rejects unsupported locales" do
-      assert I18n.normalize_locale("zh-TW") == nil
       assert I18n.normalize_locale("../pt_BR") == nil
       assert I18n.normalize_locale(nil) == nil
     end
@@ -62,13 +71,20 @@ defmodule RetroHexChatWeb.I18nTest do
       I18n.put_locale("en")
       assert {"en", "English"} in I18n.supported_locales()
       assert {"pt_BR", "Português (Brasil)"} in I18n.supported_locales()
+      assert {"pt_PT", "Português (Portugal)"} in I18n.supported_locales()
       assert {"es", "Español"} in I18n.supported_locales()
+      assert {"it", "Italiano"} in I18n.supported_locales()
+      assert {"nl", "Nederlands"} in I18n.supported_locales()
+      assert {"pl", "Polski"} in I18n.supported_locales()
       assert {"zh_Hans", "简体中文"} in I18n.supported_locales()
+      assert {"zh_Hant", "繁體中文"} in I18n.supported_locales()
       assert {"ar", "العربية"} in I18n.supported_locales()
+      assert {"bn", "বাংলা"} in I18n.supported_locales()
       assert {"ru", "Русский"} in I18n.supported_locales()
       assert {"hi", "हिन्दी"} in I18n.supported_locales()
       assert {"ko", "한국어"} in I18n.supported_locales()
       assert {"tr", "Türkçe"} in I18n.supported_locales()
+      assert {"ur", "اردو"} in I18n.supported_locales()
       assert {"vi", "Tiếng Việt"} in I18n.supported_locales()
     end
   end
@@ -85,6 +101,10 @@ defmodule RetroHexChatWeb.I18nTest do
     on_exit(fn -> I18n.put_locale("en") end)
 
     I18n.put_locale("ar")
+
+    assert I18n.html_dir() == "rtl"
+
+    I18n.put_locale("ur")
 
     assert I18n.html_dir() == "rtl"
   end

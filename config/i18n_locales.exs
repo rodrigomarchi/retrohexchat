@@ -164,7 +164,7 @@
     plural_forms: "nplurals=2; plural=(n != 1);",
     aliases: ~w(bn bn_BD bn_IN),
     wave: 3,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "ur",
@@ -175,7 +175,7 @@
     plural_forms: "nplurals=2; plural=(n != 1);",
     aliases: ~w(ur ur_PK ur_IN),
     wave: 3,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "zh_Hant",
@@ -186,7 +186,7 @@
     plural_forms: "nplurals=1; plural=0;",
     aliases: ~w(zh_Hant zh_TW zh_HK zh_MO),
     wave: 3,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "pt_PT",
@@ -197,7 +197,7 @@
     plural_forms: "nplurals=2; plural=(n>1);",
     aliases: ~w(pt_PT),
     wave: 3,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "it",
@@ -208,7 +208,7 @@
     plural_forms: "nplurals=2; plural=(n != 1);",
     aliases: ~w(it it_IT),
     wave: 3,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "pl",
@@ -220,7 +220,7 @@
       "nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);",
     aliases: ~w(pl pl_PL),
     wave: 3,
-    status: :planned
+    status: :enabled
   },
   %{
     code: "nl",
@@ -231,6 +231,6 @@
     plural_forms: "nplurals=2; plural=(n != 1);",
     aliases: ~w(nl nl_NL nl_BE),
     wave: 3,
-    status: :planned
+    status: :enabled
   }
 ]

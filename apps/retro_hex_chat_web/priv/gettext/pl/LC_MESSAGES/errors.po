@@ -1,0 +1,136 @@
+# "msgid"s in this file come from errors.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: pl; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: pl\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
+
+# This is a PO Template file.
+# 
+# `msgid`s here are often extracted from source code.
+# Add new translations manually only if they're dynamic
+# translations that can't be statically extracted.
+# 
+# Run `mix gettext.extract` to bring this file up to
+# date. Leave `msgstr`s empty as changing them here has no
+# effect: edit them in PO (`.po`) files instead.
+# From Ecto.Changeset.cast/4
+msgid "can't be blank"
+msgstr "nie może być puste"
+
+# From Ecto.Changeset.unique_constraint/3
+msgid "has already been taken"
+msgstr "zostało już pobrane"
+
+# From Ecto.Changeset.put_change/3
+msgid "is invalid"
+msgstr "jest nieprawidłowy"
+
+# From Ecto.Changeset.validate_acceptance/3
+msgid "must be accepted"
+msgstr "muszą zostać przyjęte"
+
+# From Ecto.Changeset.validate_format/3
+msgid "has invalid format"
+msgstr "ma nieprawidłowy format"
+
+# From Ecto.Changeset.validate_subset/3
+msgid "has an invalid entry"
+msgstr "posiada nieprawidłowy wpis"
+
+# From Ecto.Changeset.validate_exclusion/3
+msgid "is reserved"
+msgstr "jest zastrzeżone"
+
+# From Ecto.Changeset.validate_confirmation/3
+msgid "does not match confirmation"
+msgstr "nie pasuje do potwierdzenia"
+
+# From Ecto.Changeset.no_assoc_constraint/3
+msgid "is still associated with this entry"
+msgstr "jest nadal powiązany z tym wpisem"
+
+msgid "are still associated with this entry"
+msgstr "są nadal związane z tym wpisem"
+
+# From Ecto.Changeset.validate_length/3
+msgid "should have %{count} item(s)"
+msgid_plural "should have %{count} item(s)"
+msgstr[0] "W przypadku %{count} pozycja (-y)"
+msgstr[1] "W przypadku %{count} pozycja (-y)"
+msgstr[2] "W przypadku %{count} pozycja (-y)"
+
+msgid "should be %{count} character(s)"
+msgid_plural "should be %{count} character(s)"
+msgstr[0] "powinno być %{count} znak (-y)"
+msgstr[1] "powinno być %{count} znak (-y)"
+msgstr[2] "powinno być %{count} znak (-y)"
+
+msgid "should be %{count} byte(s)"
+msgid_plural "should be %{count} byte(s)"
+msgstr[0] "powinno być %{count} bajt (-y)"
+msgstr[1] "powinno być %{count} bajt (-y)"
+msgstr[2] "powinno być %{count} bajt (-y)"
+
+msgid "should have at least %{count} item(s)"
+msgid_plural "should have at least %{count} item(s)"
+msgstr[0] "co najmniej %{count} pozycja (-y)"
+msgstr[1] "co najmniej %{count} pozycja (-y)"
+msgstr[2] "co najmniej %{count} pozycja (-y)"
+
+msgid "should be at least %{count} character(s)"
+msgid_plural "should be at least %{count} character(s)"
+msgstr[0] "powinno być co najmniej %{count} znak (-y)"
+msgstr[1] "powinno być co najmniej %{count} znak (-y)"
+msgstr[2] "powinno być co najmniej %{count} znak (-y)"
+
+msgid "should be at least %{count} byte(s)"
+msgid_plural "should be at least %{count} byte(s)"
+msgstr[0] "powinno być co najmniej %{count} bajt (-y)"
+msgstr[1] "powinno być co najmniej %{count} bajt (-y)"
+msgstr[2] "powinno być co najmniej %{count} bajt (-y)"
+
+msgid "should have at most %{count} item(s)"
+msgid_plural "should have at most %{count} item(s)"
+msgstr[0] "co najwyżej %{count} pozycja (-y)"
+msgstr[1] "co najwyżej %{count} pozycja (-y)"
+msgstr[2] "co najwyżej %{count} pozycja (-y)"
+
+msgid "should be at most %{count} character(s)"
+msgid_plural "should be at most %{count} character(s)"
+msgstr[0] "powinno być co najwyżej %{count} znak (-y)"
+msgstr[1] "powinno być co najwyżej %{count} znak (-y)"
+msgstr[2] "powinno być co najwyżej %{count} znak (-y)"
+
+msgid "should be at most %{count} byte(s)"
+msgid_plural "should be at most %{count} byte(s)"
+msgstr[0] "powinno być co najwyżej %{count} bajt (-y)"
+msgstr[1] "powinno być co najwyżej %{count} bajt (-y)"
+msgstr[2] "powinno być co najwyżej %{count} bajt (-y)"
+
+# From Ecto.Changeset.validate_number/3
+msgid "must be less than %{number}"
+msgstr "musi być mniejsza niż %{number}"
+
+msgid "must be greater than %{number}"
+msgstr "musi być większa niż %{number}"
+
+msgid "must be less than or equal to %{number}"
+msgstr "musi być mniejsza lub równa %{number}"
+
+msgid "must be greater than or equal to %{number}"
+msgstr "musi być większa lub równa %{number}"
+
+msgid "must be equal to %{number}"
+msgstr "musi być równa %{number}"
+
+#: lib/retro_hex_chat_web/components/ui/helpers.ex:340
+#, elixir-autogen, elixir-format
+msgid "invalid value"
+msgstr "wartość niepoprawna"
