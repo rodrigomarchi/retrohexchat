@@ -127,13 +127,8 @@ defmodule RetroHexChat.Commands.Registry do
   @spec get_syntax(String.t()) :: RetroHexChat.Commands.CommandSyntax.t() | nil
   def get_syntax(name) do
     case Map.fetch(@commands, name) do
-      {:ok, module} ->
-        if function_exported?(module, :syntax_definition, 0) do
-          module.syntax_definition()
-        end
-
-      :error ->
-        nil
+      {:ok, module} -> syntax_definition(module)
+      :error -> nil
     end
   end
 
@@ -144,15 +139,16 @@ defmodule RetroHexChat.Commands.Registry do
   def all_syntax_definitions do
     @commands
     |> Enum.map(fn {name, module} ->
-      syntax =
-        if function_exported?(module, :syntax_definition, 0) do
-          module.syntax_definition()
-        end
-
-      {name, syntax}
+      {name, syntax_definition(module)}
     end)
     |> Enum.reject(fn {_name, syntax} -> is_nil(syntax) end)
     |> Map.new()
+  end
+
+  defp syntax_definition(module) do
+    if Code.ensure_loaded?(module) and function_exported?(module, :syntax_definition, 0) do
+      module.syntax_definition()
+    end
   end
 
   @doc """
