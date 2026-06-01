@@ -232,7 +232,8 @@ defmodule DeployAll do
     end
   rescue
     e ->
-      IO.puts("    #{c(:red)}✗#{c(:reset)} #{label}: #{Exception.message(e)}")
+      fallback_label = Map.get(target_config, :label, "target")
+      IO.puts("    #{c(:red)}✗#{c(:reset)} #{fallback_label}: #{Exception.message(e)}")
       :fail
   end
 
