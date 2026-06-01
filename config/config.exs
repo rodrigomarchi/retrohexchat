@@ -37,6 +37,14 @@ config :retro_hex_chat_web,
 
 config :gettext, :default_locale, "en"
 
+config :retro_hex_chat, RetroHexChat.Gettext,
+  split_module_by: [:locale, :domain],
+  split_module_compilation: :parallel
+
+config :retro_hex_chat_web, RetroHexChatWeb.Gettext,
+  split_module_by: [:locale, :domain],
+  split_module_compilation: :parallel
+
 # Configures the endpoint
 config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   url: [host: "localhost"],

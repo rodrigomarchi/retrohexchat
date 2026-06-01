@@ -81,48 +81,38 @@ defmodule RetroHexChatWeb.HelpLive.HelpHelpers do
   # ── Content helpers ─────────────────────────────────────────
   # Same API as the old HelpHTML helpers so 213 templates need zero changes.
 
-  @doc "Section heading with icon, used inside help content templates."
-  attr :icon, :atom, required: true
-  slot :inner_block, required: true
-
-  @spec help_h4(map()) :: Phoenix.LiveView.Rendered.t()
-  def help_h4(assigns) do
-    ~H"""
-    <h4 class="flex items-center gap-1.5 text-sm font-bold mt-4 mb-1.5 text-text">
-      <.help_icon name={@icon} class="w-3.5 h-3.5 flex-shrink-0" />
-      {render_slot(@inner_block)}
-    </h4>
-    """
-  end
-
-  @doc "Cross-reference link to another help topic."
-  attr :topic, :string, required: true
-  slot :inner_block, required: true
-
-  @spec help_link(map()) :: Phoenix.LiveView.Rendered.t()
-  def help_link(assigns) do
-    ~H"""
-    <.link navigate={~p"/chat/help/#{@topic}"} class="text-link hover:underline">
-      {render_slot(@inner_block)}
-    </.link>
-    """
-  end
-
-  @doc "Render an icon by name. Dispatches to the Icons facade at runtime."
-  attr :name, :atom, required: true
-  attr :class, :string, default: "w-3.5 h-3.5"
-
-  @spec help_icon(map()) :: Phoenix.LiveView.Rendered.t()
-  def help_icon(assigns) do
-    apply(Icons, assigns.name, [%{class: assigns.class}])
-  end
+  defdelegate help_h4(assigns), to: RetroHexChatWeb.HelpContent.Helpers
+  defdelegate help_link(assigns), to: RetroHexChatWeb.HelpContent.Helpers
+  defdelegate help_icon(assigns), to: RetroHexChatWeb.HelpContent.Helpers
 
   @doc "Dynamically render a help topic's content by dispatching to HelpContent."
   attr :id, :string, required: true
 
+  @help_content_modules [
+    RetroHexChatWeb.HelpContent.CommandsAdmin,
+    RetroHexChatWeb.HelpContent.CommandsAtoM,
+    RetroHexChatWeb.HelpContent.CommandsNtoZ,
+    RetroHexChatWeb.HelpContent.Bots,
+    RetroHexChatWeb.HelpContent.Channels,
+    RetroHexChatWeb.HelpContent.Arcade,
+    RetroHexChatWeb.HelpContent.Games,
+    RetroHexChatWeb.HelpContent.P2P,
+    RetroHexChatWeb.HelpContent.UI,
+    RetroHexChatWeb.HelpContent.ChatFeatures,
+    RetroHexChatWeb.HelpContent.ChatStatusFeatures
+  ]
+
   @spec render_topic_content(map()) :: Phoenix.LiveView.Rendered.t()
   def render_topic_content(assigns) do
     func = assigns.id |> String.replace("-", "_") |> String.to_existing_atom()
-    apply(RetroHexChatWeb.HelpContent, func, [assigns])
+
+    @help_content_modules
+    |> Enum.find(fn module ->
+      Code.ensure_loaded?(module) and function_exported?(module, func, 1)
+    end)
+    |> case do
+      nil -> raise ArgumentError, "missing help content template for #{assigns.id}"
+      module -> apply(module, func, [assigns])
+    end
   end
 end

@@ -1,5 +1,14 @@
 import Config
 
+dev_gettext_locales =
+  System.get_env("GETTEXT_ALLOWED_LOCALES", "en,pt_BR")
+  |> String.split(",", trim: true)
+  |> Enum.map(&String.trim/1)
+  |> Enum.reject(&(&1 == ""))
+
+config :retro_hex_chat, RetroHexChat.Gettext, allowed_locales: dev_gettext_locales
+config :retro_hex_chat_web, RetroHexChatWeb.Gettext, allowed_locales: dev_gettext_locales
+
 # Configure your database
 config :retro_hex_chat, RetroHexChat.Repo,
   username: System.get_env("PGUSER", "postgres"),
