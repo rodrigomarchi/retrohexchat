@@ -82,6 +82,19 @@ max-w-lg
 mx-auto
 my-4
 w-full
+# Help content helper components — Tailwind utility classes used by split HelpContent modules
+flex
+flex-shrink-0
+font-bold
+gap-1.5
+h-3.5
+hover:underline
+items-center
+mb-1.5
+mt-4
+text-link
+text-sm
+w-3.5
 # JS hooks — classes used by JS hooks for DOM manipulation and querySelector targeting.
 # These were previously defined in V1 retro CSS; now styled via Tailwind or used as selectors only.
 chat-action
