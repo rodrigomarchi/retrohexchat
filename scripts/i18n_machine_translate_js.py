@@ -4,30 +4,20 @@
 from __future__ import annotations
 
 import argparse
-import json
-import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
+from i18n_js_catalogs import (
+    CATALOG_BARREL,
+    CATALOG_DIR,
+    LOCALE_EXPORTS,
+    read_catalogs,
+    write_catalogs,
+)
 from i18n_machine_translate_po import LOCALE_TO_ARGOS, load_cache, save_cache, translate_text, translator_for
 
 
-CONST_NAMES = {
-    "ar": "AR",
-    "pt_BR": "PT_BR",
-    "es": "ES",
-    "fr": "FR",
-    "de": "DE",
-    "hi": "HI",
-    "ja": "JA",
-    "ko": "KO",
-    "ru": "RU",
-    "tr": "TR",
-    "vi": "VI",
-    "zh_Hans": "ZH_HANS",
-    "id": "ID",
-}
+CONST_NAMES = dict(LOCALE_EXPORTS)
 
 
 def parse_args() -> argparse.Namespace:
@@ -40,7 +30,13 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--catalog",
-        default="apps/retro_hex_chat_web/assets/js/lib/i18n_catalog.js",
+        default=str(CATALOG_BARREL),
+        help="Legacy catalog/barrel path",
+    )
+    parser.add_argument(
+        "--catalog-dir",
+        default=str(CATALOG_DIR),
+        help="Directory containing one browser catalog file per locale",
     )
     return parser.parse_args()
 
@@ -48,84 +44,28 @@ def parse_args() -> argparse.Namespace:
 def main() -> int:
     args = parse_args()
     catalog = Path(args.catalog)
+    catalog_dir = Path(args.catalog_dir)
     locales = [locale.strip() for locale in args.locales.split(",") if locale.strip()]
     unsupported = [locale for locale in locales if locale not in LOCALE_TO_ARGOS]
     if unsupported:
         raise SystemExit(f"Unsupported Argos locales: {', '.join(unsupported)}")
 
-    translated = read_existing_catalogs(catalog)
-    pt_br = translated.get("pt_BR", {})
+    catalogs = read_catalogs(catalog_dir, catalog)
+    pt_br = catalogs.get("PT_BR", {})
     messages = list(pt_br.keys())
     cache_path = Path(args.cache)
     cache = load_cache(cache_path)
 
     for locale in locales:
         translator = translator_for(LOCALE_TO_ARGOS[locale])
-        translated[locale] = {
+        catalogs[CONST_NAMES[locale]] = {
             message: translate_text(message, locale, translator, cache) for message in messages
         }
 
     save_cache(cache_path, cache)
-    write_catalog(catalog, translated)
-    print(f"{catalog}: locales={','.join(translated.keys())} messages={len(messages)}")
+    write_catalogs(catalogs, catalog_dir, catalog)
+    print(f"{catalog_dir}: locales={','.join(catalogs.keys())} messages={len(messages)}")
     return 0
-
-
-def read_existing_catalogs(catalog: Path) -> dict[str, dict[str, str]]:
-    script = (
-        "import(process.argv[1]).then((m) => "
-        "console.log(JSON.stringify(m))).catch((error) => { "
-        "console.error(error); process.exit(1); })"
-    )
-
-    with tempfile.NamedTemporaryFile("w", suffix=".mjs", encoding="utf-8") as module:
-        module.write(catalog.read_text(encoding="utf-8"))
-        module.flush()
-
-        result = subprocess.run(
-            ["node", "--input-type=module", "-e", script, Path(module.name).resolve().as_uri()],
-            check=True,
-            text=True,
-            capture_output=True,
-        )
-
-    exported = json.loads(result.stdout)
-    const_to_locale = {const_name: locale for locale, const_name in CONST_NAMES.items()}
-
-    return {
-        const_to_locale[const_name]: messages
-        for const_name, messages in exported.items()
-        if const_name in const_to_locale
-    }
-
-
-def write_catalog(catalog: Path, translations: dict[str, dict[str, str]]) -> None:
-    ordered_locales = [
-        "ar",
-        "de",
-        "es",
-        "fr",
-        "hi",
-        "id",
-        "ja",
-        "ko",
-        "pt_BR",
-        "ru",
-        "tr",
-        "vi",
-        "zh_Hans",
-    ]
-    chunks = []
-
-    for locale in ordered_locales:
-        if locale not in translations:
-            continue
-
-        const_name = CONST_NAMES[locale]
-        body = json.dumps(translations[locale], ensure_ascii=False, indent=2, sort_keys=True)
-        chunks.append(f"export const {const_name} = {body};\n")
-
-    catalog.write_text("\n".join(chunks), encoding="utf-8")
 
 
 if __name__ == "__main__":

@@ -5,32 +5,21 @@ from __future__ import annotations
 
 import argparse
 import ast
-import json
 import re
-import subprocess
-import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
-CATALOG = Path("apps/retro_hex_chat_web/assets/js/lib/i18n_catalog.js")
+from i18n_js_catalogs import (
+    CATALOG_BARREL,
+    CATALOG_DIR,
+    LOCALE_EXPORTS,
+    locale_catalog_path,
+    read_catalogs,
+)
+
 DEFAULT_LOCALES = ("pt_BR", "es", "fr", "de", "ja", "zh_Hans", "id", "ar", "ru", "hi", "ko", "tr", "vi")
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
 WORD_RE = re.compile(r"[A-Za-z]{2,}")
-LOCALE_EXPORTS = {
-    "ar": "AR",
-    "de": "DE",
-    "es": "ES",
-    "fr": "FR",
-    "hi": "HI",
-    "id": "ID",
-    "ja": "JA",
-    "ko": "KO",
-    "pt_BR": "PT_BR",
-    "ru": "RU",
-    "tr": "TR",
-    "vi": "VI",
-    "zh_Hans": "ZH_HANS",
-}
 
 TECHNICAL_SOURCE_ALLOWLIST = [
     r"^\s*/%\{name\} → %\{expansion\}$",
@@ -267,10 +256,10 @@ def plural_findings(path: Path, locale: str, entry: dict) -> list[Finding]:
 
 
 def js_findings(locales: tuple[str, ...]) -> list[Finding]:
-    if not CATALOG.exists():
+    catalogs = read_catalogs()
+    if not catalogs:
         return []
 
-    catalogs = read_catalogs()
     findings: list[Finding] = []
 
     for locale in locales:
@@ -279,9 +268,12 @@ def js_findings(locales: tuple[str, ...]) -> list[Finding]:
         if export_name not in catalogs:
             continue
 
+        path = locale_catalog_path(locale, CATALOG_DIR)
+        path_label = str(path if path.exists() else CATALOG_BARREL)
+
         for source, translated in catalogs[export_name].items():
             if source_fallback(source, translated):
-                findings.append(Finding("js", str(CATALOG), locale, source))
+                findings.append(Finding("js", path_label, locale, source))
 
     return findings
 
@@ -308,27 +300,6 @@ def likely_translatable(source: str) -> bool:
 def allowlisted(source: str) -> bool:
     value = source.strip()
     return any(pattern.match(value) for pattern in ALLOWLIST)
-
-
-def read_catalogs() -> dict[str, dict[str, str]]:
-    script = (
-        "import(process.argv[1]).then((m) => "
-        "console.log(JSON.stringify(m))).catch((error) => { "
-        "console.error(error); process.exit(1); })"
-    )
-
-    with tempfile.NamedTemporaryFile("w", suffix=".mjs", encoding="utf-8") as module:
-        module.write(CATALOG.read_text(encoding="utf-8"))
-        module.flush()
-
-        result = subprocess.run(
-            ["node", "--input-type=module", "-e", script, Path(module.name).resolve().as_uri()],
-            check=True,
-            text=True,
-            capture_output=True,
-        )
-
-    return json.loads(result.stdout)
 
 
 if __name__ == "__main__":

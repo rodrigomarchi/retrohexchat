@@ -45,6 +45,10 @@ Idiomas RTL (`ar`, `ur`) exigem revisao visual dedicada, pois o layout usa
   `help_channels`, `help_commands`, `help_features`, `help_games`,
   `help_p2p` e `help_ui`.
 
+Catalogos JavaScript ficam em `apps/retro_hex_chat_web/assets/js/lib/i18n_catalogs`,
+um arquivo por locale. `i18n_catalog.js` e apenas o barrel de compatibilidade
+que reexporta esses arquivos para o runtime e para os testes.
+
 ## Regras
 
 - Codigo novo deve usar `dgettext/2`, `dngettext/4` ou `dpgettext/3` com o
@@ -103,6 +107,11 @@ PY
 /tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_po.py --locales es,fr,de
 /tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_js.py --locales es,fr,de
 ```
+
+`scripts/i18n_machine_translate_js.py`, `scripts/i18n_apply_translation_overrides.py`,
+`scripts/i18n_repair_js_catalog_placeholders.py` e
+`scripts/i18n_source_fallback_check.py` usam `scripts/i18n_js_catalogs.py` para
+preservar esse layout splitado.
 
 Para lotes grandes, prefira `ARGOS_CHUNK_TYPE=MINISBD` para evitar download de
 modelos extras em tempo de execucao. Os scripts protegem placeholders com tags

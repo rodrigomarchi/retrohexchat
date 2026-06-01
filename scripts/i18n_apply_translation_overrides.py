@@ -4,33 +4,14 @@
 from __future__ import annotations
 
 import argparse
-import json
 import re
-import subprocess
-import tempfile
 from pathlib import Path
 
 import polib
 
+from i18n_js_catalogs import LOCALE_EXPORTS, read_catalogs, write_catalogs
 
-CATALOG = Path("apps/retro_hex_chat_web/assets/js/lib/i18n_catalog.js")
 PLACEHOLDER_RE = re.compile(r"%\{[A-Za-z0-9_]+\}")
-
-LOCALE_EXPORTS = {
-    "ar": "AR",
-    "de": "DE",
-    "es": "ES",
-    "fr": "FR",
-    "hi": "HI",
-    "id": "ID",
-    "ja": "JA",
-    "ko": "KO",
-    "pt_BR": "PT_BR",
-    "ru": "RU",
-    "tr": "TR",
-    "vi": "VI",
-    "zh_Hans": "ZH_HANS",
-}
 
 DEFAULT_LOCALES = ("de", "es", "fr", "id", "ja", "zh_Hans", "ar", "ru", "hi", "ko", "tr", "vi")
 
@@ -1342,40 +1323,6 @@ def apply_js_overrides(locales: tuple[str, ...]) -> dict[str, int]:
         write_catalogs(catalogs)
 
     return {"js_catalogs": len(catalogs), "js_entries": updated}
-
-
-def read_catalogs() -> dict[str, dict[str, str]]:
-    script = (
-        "import(process.argv[1]).then((m) => "
-        "console.log(JSON.stringify(m))).catch((error) => { "
-        "console.error(error); process.exit(1); })"
-    )
-
-    with tempfile.NamedTemporaryFile("w", suffix=".mjs", encoding="utf-8") as module:
-        module.write(CATALOG.read_text(encoding="utf-8"))
-        module.flush()
-
-        result = subprocess.run(
-            ["node", "--input-type=module", "-e", script, Path(module.name).resolve().as_uri()],
-            check=True,
-            text=True,
-            capture_output=True,
-        )
-
-    return json.loads(result.stdout)
-
-
-def write_catalogs(catalogs: dict[str, dict[str, str]]) -> None:
-    chunks = []
-
-    for locale, export_name in LOCALE_EXPORTS.items():
-        if export_name not in catalogs:
-            continue
-
-        body = json.dumps(catalogs[export_name], ensure_ascii=False, indent=2, sort_keys=True)
-        chunks.append(f"export const {export_name} = {body};\n")
-
-    CATALOG.write_text("\n".join(chunks), encoding="utf-8")
 
 
 def ensure_placeholders(source: str, translated: str) -> None:
