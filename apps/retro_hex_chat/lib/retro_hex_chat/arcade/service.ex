@@ -38,28 +38,34 @@ defmodule RetroHexChat.Arcade.Service do
   def close_session(token, user_id, reason) do
     with {:ok, session} <- fetch_session(token),
          :ok <- Policy.can_close?(user_id, session) do
-      case SoloSessionServer.close(token, user_id, reason) do
-        :ok ->
-          :ok
-
-        {:error, message} ->
-          if session_process_not_running?(message) do
-            now = DateTime.utc_now()
-
-            Queries.update_status(session, "closed", %{
-              closed_at: now,
-              closed_reason: reason
-            })
-
-            :ok
-          else
-            {:error, message}
-          end
-
-        error ->
-          error
-      end
+      close_session_server(session, token, user_id, reason)
     end
+  end
+
+  defp close_session_server(session, token, user_id, reason) do
+    case SoloSessionServer.close(token, user_id, reason) do
+      :ok -> :ok
+      {:error, message} -> handle_close_error(session, reason, message)
+      error -> error
+    end
+  end
+
+  defp handle_close_error(session, reason, message) do
+    if session_process_not_running?(message) do
+      mark_session_closed(session, reason)
+      :ok
+    else
+      {:error, message}
+    end
+  end
+
+  defp mark_session_closed(session, reason) do
+    now = DateTime.utc_now()
+
+    Queries.update_status(session, "closed", %{
+      closed_at: now,
+      closed_reason: reason
+    })
   end
 
   defp session_process_not_running?(message) do

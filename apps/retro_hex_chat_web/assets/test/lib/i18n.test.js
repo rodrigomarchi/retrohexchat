@@ -90,9 +90,7 @@ describe("i18n runtime", () => {
   it("translates pt-PT strings and interpolates parameters", () => {
     document.documentElement.setAttribute("lang", "pt-PT");
 
-    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
-      "Tipo de ficheiro bloqueado: .exe",
-    );
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Tipo de ficheiro bloqueado: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("JOGADOR 1 VENCE!");
   });
 
@@ -107,18 +105,14 @@ describe("i18n runtime", () => {
   it("translates Bengali strings and interpolates parameters", () => {
     document.documentElement.setAttribute("lang", "bn-BD");
 
-    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
-      "অবরুদ্ধ ফাইলের ধরন: .exe",
-    );
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("অবরুদ্ধ ফাইলের ধরন: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("খেলোয়াড় 1 জিতেছে!");
   });
 
   it("translates Urdu strings and interpolates parameters", () => {
     document.documentElement.setAttribute("lang", "ur-PK");
 
-    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
-      "مسدود فائل کی قسم: .exe",
-    );
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("مسدود فائل کی قسم: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("کھلاڑی 1 جیت گیا!");
   });
 
@@ -131,27 +125,21 @@ describe("i18n runtime", () => {
   it("translates Italian strings and interpolates parameters", () => {
     document.documentElement.setAttribute("lang", "it-IT");
 
-    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
-      "Tipo di file bloccato: .exe",
-    );
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Tipo di file bloccato: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("GIOCATORE 1 VINCE!");
   });
 
   it("translates Polish strings and interpolates parameters", () => {
     document.documentElement.setAttribute("lang", "pl-PL");
 
-    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
-      "Zablokowany typ pliku: .exe",
-    );
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Zablokowany typ pliku: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("GRACZ 1 WYGRYWA!");
   });
 
   it("translates Dutch strings and interpolates parameters", () => {
     document.documentElement.setAttribute("lang", "nl-BE");
 
-    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe(
-      "Geblokkeerd bestandstype: .exe",
-    );
+    expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Geblokkeerd bestandstype: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("SPELER 1 WINT!");
   });
 });

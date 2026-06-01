@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.Live.I18nLiveTest do
 
       {:ok, _view, html} = live(conn, "/connect")
 
-      assert html =~ ~s(<html lang="pt-BR">)
+      assert html =~ ~s(<html lang="pt-BR" dir="ltr">)
       assert html =~ "Conectar ao RetroHexChat"
       assert html =~ "Informações do usuário"
       assert html =~ "Digite seu apelido..."
@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.Live.I18nLiveTest do
 
       {:ok, _view, html} = live(conn, "/connect")
 
-      assert html =~ ~s(<html lang="pt-BR">)
+      assert html =~ ~s(<html lang="pt-BR" dir="ltr">)
       assert html =~ "Conectar ao RetroHexChat"
       assert html =~ "Apelido"
     end
