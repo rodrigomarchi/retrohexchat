@@ -80,10 +80,6 @@ echo "==> Loading asdf environment..."
 source "$HOME/.asdf/asdf.sh" 2>/dev/null || source /opt/asdf-vm/asdf.sh 2>/dev/null || true
 
 export MIX_ENV=prod
-DEPLOY_ERL_SCHEDULERS="${DEPLOY_ERL_SCHEDULERS:-2}"
-export ELIXIR_ERL_OPTIONS="${ELIXIR_ERL_OPTIONS:-+S ${DEPLOY_ERL_SCHEDULERS}:${DEPLOY_ERL_SCHEDULERS} +sbwt none +sbwtdcpu none +sbwtdio none}"
-
-echo "==> Erlang runtime options: ${ELIXIR_ERL_OPTIONS}"
 
 echo "==> Installing Elixir deps..."
 mix local.hex --force --if-missing
