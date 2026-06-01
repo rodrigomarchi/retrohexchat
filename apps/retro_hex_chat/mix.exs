@@ -11,6 +11,7 @@ defmodule RetroHexChat.MixProject do
       lockfile: "../../mix.lock",
       elixir: "~> 1.17",
       elixirc_paths: elixirc_paths(Mix.env()),
+      elixirc_options: elixirc_options(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: deps(),
@@ -45,6 +46,9 @@ defmodule RetroHexChat.MixProject do
   # Specifies which paths to compile per environment.
   defp elixirc_paths(:test), do: ["lib", "test/support"]
   defp elixirc_paths(_), do: ["lib"]
+
+  defp elixirc_options(:prod), do: [debug_info: false, docs: false]
+  defp elixirc_options(_), do: []
 
   # Specifies your project dependencies.
   #
