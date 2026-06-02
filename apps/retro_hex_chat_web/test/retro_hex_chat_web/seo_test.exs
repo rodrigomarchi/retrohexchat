@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.SEOTest do
     test "prefixes non-default locales with BCP 47 path segments" do
       assert SEO.localized_path("/", "pt_BR") == "/pt-BR"
       assert SEO.localized_path("/features", "pt_BR") == "/pt-BR/features"
-      assert SEO.localized_path("/features", "zh_Hans") == "/zh-Hans/features"
+      assert SEO.localized_path("/features", "zh_hans") == "/zh-Hans/features"
       assert SEO.localized_path("/features", "pt_PT") == "/pt-PT/features"
     end
 
@@ -65,12 +65,12 @@ defmodule RetroHexChatWeb.SEOTest do
     test "maps enabled locales to public URL segments" do
       assert SEO.locale_segment("en") == nil
       assert SEO.locale_segment("pt_BR") == "pt-BR"
-      assert SEO.locale_segment("zh_Hans") == "zh-Hans"
+      assert SEO.locale_segment("zh_hans") == "zh-Hans"
     end
 
     test "normalizes public URL segments back to locale codes" do
       assert SEO.locale_from_segment("pt-BR") == "pt_BR"
-      assert SEO.locale_from_segment("zh-Hans") == "zh_Hans"
+      assert SEO.locale_from_segment("zh-Hans") == "zh_hans"
       assert SEO.locale_from_segment("connect") == nil
     end
   end

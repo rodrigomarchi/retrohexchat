@@ -39,7 +39,7 @@ defmodule RetroHexChatWeb.LocaleControllerTest do
         |> get("/locale/zh-TW?return_to=/connect")
 
       assert redirected_to(conn) == "/connect"
-      assert get_session(conn, :locale) == "zh_Hant"
+      assert get_session(conn, :locale) == "zh_hant"
     end
 
     test "stores Portugal Portuguese locale aliases", %{conn: conn} do

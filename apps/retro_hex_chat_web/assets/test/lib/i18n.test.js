@@ -44,9 +44,9 @@ describe("i18n runtime", () => {
     expect(normalizeLocale("ja-JP")).toBe("ja");
     expect(normalizeLocale("nl-BE")).toBe("nl");
     expect(normalizeLocale("pl-PL")).toBe("pl");
-    expect(normalizeLocale("zh-CN")).toBe("zh_Hans");
-    expect(normalizeLocale("zh-TW")).toBe("zh_Hant");
-    expect(normalizeLocale("zh-HK")).toBe("zh_Hant");
+    expect(normalizeLocale("zh-CN")).toBe("zh_hans");
+    expect(normalizeLocale("zh-TW")).toBe("zh_hant");
+    expect(normalizeLocale("zh-HK")).toBe("zh_hant");
     expect(normalizeLocale("id-ID")).toBe("id");
     expect(normalizeLocale("ar-SA")).toBe("ar");
     expect(normalizeLocale("bn-BD")).toBe("bn");

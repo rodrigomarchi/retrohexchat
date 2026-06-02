@@ -67,7 +67,6 @@ defmodule RetroHexChatWeb.AddressBookTest do
       assert html =~ "address-book-dialog"
 
       render_click(view, "toggle_address_book")
-      html = render(view)
       refute has_element?(view, "#address-book-dialog-show-trigger")
     end
   end

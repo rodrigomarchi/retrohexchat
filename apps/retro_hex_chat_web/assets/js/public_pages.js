@@ -10,13 +10,13 @@ function targetElement(selector) {
 
 function showElement(element) {
   if (!element) return;
-  element.classList.remove("hidden");
+  element.hidden = false;
   element.setAttribute("aria-hidden", "false");
 }
 
 function hideElement(element) {
   if (!element) return;
-  element.classList.add("hidden");
+  element.hidden = true;
   element.setAttribute("aria-hidden", "true");
 }
 
@@ -29,8 +29,8 @@ document.addEventListener("click", (event) => {
     const target = targetElement(toggleButton.dataset.toggleTarget);
     if (!target) return;
 
-    const isHidden = target.classList.toggle("hidden");
-    toggleButton.setAttribute("aria-expanded", String(!isHidden));
+    target.hidden = !target.hidden;
+    toggleButton.setAttribute("aria-expanded", String(!target.hidden));
     return;
   }
 
@@ -56,7 +56,7 @@ document.addEventListener("click", (event) => {
 document.addEventListener("keydown", (event) => {
   if (event.key !== "Escape") return;
 
-  document.querySelectorAll("[data-modal]:not(.hidden)").forEach((modal) => {
+  document.querySelectorAll("[data-modal]:not([hidden])").forEach((modal) => {
     hideElement(modal);
   });
 });

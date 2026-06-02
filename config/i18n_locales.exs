@@ -66,13 +66,13 @@
     status: :enabled
   },
   %{
-    code: "zh_Hans",
+    code: "zh_hans",
     bcp47: "zh-Hans",
     open_graph: "zh_CN",
     label: "简体中文",
     direction: "ltr",
     plural_forms: "nplurals=1; plural=0;",
-    aliases: ~w(zh zh_Hans zh_CN zh_SG),
+    aliases: ~w(zh zh_hans zh_CN zh_SG),
     wave: 1,
     status: :enabled
   },
@@ -178,13 +178,13 @@
     status: :enabled
   },
   %{
-    code: "zh_Hant",
+    code: "zh_hant",
     bcp47: "zh-Hant",
     open_graph: "zh_TW",
     label: "繁體中文",
     direction: "ltr",
     plural_forms: "nplurals=1; plural=0;",
-    aliases: ~w(zh_Hant zh_TW zh_HK zh_MO),
+    aliases: ~w(zh_hant zh_TW zh_HK zh_MO),
     wave: 3,
     status: :enabled
   },

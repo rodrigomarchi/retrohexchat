@@ -16,5 +16,5 @@ export { RU } from "./i18n_catalogs/ru.js";
 export { TR } from "./i18n_catalogs/tr.js";
 export { UR } from "./i18n_catalogs/ur.js";
 export { VI } from "./i18n_catalogs/vi.js";
-export { ZH_HANS } from "./i18n_catalogs/zh_Hans.js";
-export { ZH_HANT } from "./i18n_catalogs/zh_Hant.js";
+export { ZH_HANS } from "./i18n_catalogs/zh_hans.js";
+export { ZH_HANT } from "./i18n_catalogs/zh_hant.js";

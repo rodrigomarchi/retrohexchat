@@ -5,21 +5,80 @@
  * Listens for the game_channel_ready event from GameWebRTCHook.
  */
 import { GameEngine } from "../../lib/game_engine.js";
-import { PongEngine } from "../../lib/games/pong/engine.js";
-import { BreakoutEngine } from "../../lib/games/breakout/engine.js";
-import { SurroundEngine } from "../../lib/games/surround/engine.js";
-import { StarDuelEngine } from "../../lib/games/star_duel/engine.js";
-import { WarlordEngine } from "../../lib/games/warlords/engine.js";
-import { PixelTanksEngine } from "../../lib/games/pixel_tanks/engine.js";
-import { HexRaidEngine } from "../../lib/games/hex_raid/engine.js";
-import { BoxingEngine } from "../../lib/games/hex_boxing/engine.js";
-import { OutlawEngine } from "../../lib/games/hex_outlaw/engine.js";
-import { HexInvadersEngine } from "../../lib/games/hex_invaders/engine.js";
-import { HexEnduroEngine } from "../../lib/games/hex_enduro/engine.js";
-import { TennisEngine } from "../../lib/games/hex_tennis/engine.js";
-import { HexSkiingEngine } from "../../lib/games/hex_skiing/engine.js";
-import { HexFrostEngine } from "../../lib/games/hex_frost/engine.js";
-import { HexHockeyEngine } from "../../lib/games/hex_hockey/engine.js";
+
+/**
+ * Load the appropriate engine class for the given game ID.
+ * Game engines are intentionally imported lazily so the chat shell does not
+ * download every arcade implementation before a game starts.
+ *
+ * @param {string} gameId
+ * @returns {Promise<typeof GameEngine>}
+ */
+async function loadEngineClass(gameId) {
+  switch (gameId) {
+    case "hex_pong":
+      return import("../../lib/games/pong/engine.js").then((module) => module.PongEngine);
+    case "block_breakers":
+      return import("../../lib/games/breakout/engine.js").then((module) => module.BreakoutEngine);
+    case "light_trails":
+      return import("../../lib/games/surround/engine.js").then((module) => module.SurroundEngine);
+    case "star_duel":
+    case "gravity_well":
+    case "debris_field":
+      return import("../../lib/games/star_duel/engine.js").then((module) => module.StarDuelEngine);
+    case "hex_warlords":
+      return import("../../lib/games/warlords/engine.js").then((module) => module.WarlordEngine);
+    case "pixel_tanks":
+      return import("../../lib/games/pixel_tanks/engine.js").then(
+        (module) => module.PixelTanksEngine,
+      );
+    case "hex_raid":
+    case "hex_raid_pacifist":
+    case "hex_raid_blitz":
+      return import("../../lib/games/hex_raid/engine.js").then((module) => module.HexRaidEngine);
+    case "hex_boxing":
+      return import("../../lib/games/hex_boxing/engine.js").then((module) => module.BoxingEngine);
+    case "hex_outlaw":
+    case "hex_outlaw_ricochet":
+    case "hex_outlaw_stagecoach":
+    case "hex_outlaw_nml":
+      return import("../../lib/games/hex_outlaw/engine.js").then((module) => module.OutlawEngine);
+    case "hex_invaders":
+    case "hex_invaders_coop":
+    case "hex_invaders_blitz":
+      return import("../../lib/games/hex_invaders/engine.js").then(
+        (module) => module.HexInvadersEngine,
+      );
+    case "hex_enduro":
+    case "hex_enduro_night":
+    case "hex_enduro_sprint":
+      return import("../../lib/games/hex_enduro/engine.js").then(
+        (module) => module.HexEnduroEngine,
+      );
+    case "hex_tennis":
+    case "hex_tennis_quick":
+    case "hex_tennis_sudden":
+      return import("../../lib/games/hex_tennis/engine.js").then((module) => module.TennisEngine);
+    case "hex_skiing":
+    case "hex_skiing_escape":
+    case "hex_skiing_clean":
+      return import("../../lib/games/hex_skiing/engine.js").then(
+        (module) => module.HexSkiingEngine,
+      );
+    case "hex_frost":
+    case "hex_frost_blizzard":
+    case "hex_frost_peaceful":
+      return import("../../lib/games/hex_frost/engine.js").then((module) => module.HexFrostEngine);
+    case "hex_hockey":
+    case "hex_hockey_blitz":
+    case "hex_hockey_showdown":
+      return import("../../lib/games/hex_hockey/engine.js").then(
+        (module) => module.HexHockeyEngine,
+      );
+    default:
+      return GameEngine;
+  }
+}
 
 /**
  * Create the appropriate engine for the given game ID.
@@ -28,68 +87,19 @@ import { HexHockeyEngine } from "../../lib/games/hex_hockey/engine.js";
  * @param {string} gameId
  * @param {boolean} isHost
  * @param {function|null} onGameEnd
- * @returns {GameEngine}
+ * @returns {Promise<GameEngine>}
  */
-function createEngine(canvas, channel, gameId, isHost, onGameEnd) {
-  switch (gameId) {
-    case "hex_pong":
-      return new PongEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "block_breakers":
-      return new BreakoutEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "light_trails":
-      return new SurroundEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "star_duel":
-    case "gravity_well":
-    case "debris_field":
-      return new StarDuelEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "hex_warlords":
-      return new WarlordEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "pixel_tanks":
-      return new PixelTanksEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "hex_raid":
-    case "hex_raid_pacifist":
-    case "hex_raid_blitz":
-      return new HexRaidEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "hex_boxing":
-      return new BoxingEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "hex_outlaw":
-    case "hex_outlaw_ricochet":
-    case "hex_outlaw_stagecoach":
-    case "hex_outlaw_nml":
-      return new OutlawEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "hex_invaders":
-    case "hex_invaders_coop":
-    case "hex_invaders_blitz":
-      return new HexInvadersEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "hex_enduro":
-    case "hex_enduro_night":
-    case "hex_enduro_sprint":
-      return new HexEnduroEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "hex_tennis":
-    case "hex_tennis_quick":
-    case "hex_tennis_sudden":
-      return new TennisEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "hex_skiing":
-    case "hex_skiing_escape":
-    case "hex_skiing_clean":
-      return new HexSkiingEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "hex_frost":
-    case "hex_frost_blizzard":
-    case "hex_frost_peaceful":
-      return new HexFrostEngine(canvas, channel, gameId, isHost, onGameEnd);
-    case "hex_hockey":
-    case "hex_hockey_blitz":
-    case "hex_hockey_showdown":
-      return new HexHockeyEngine(canvas, channel, gameId, isHost, onGameEnd);
-    default:
-      return new GameEngine(canvas, channel, gameId, isHost);
-  }
+async function createEngine(canvas, channel, gameId, isHost, onGameEnd) {
+  const EngineClass = await loadEngineClass(gameId);
+  return new EngineClass(canvas, channel, gameId, isHost, onGameEnd);
 }
 
 const GameCanvasHook = {
   mounted() {
     this.engine = null;
     this.channel = null;
+    this._engineLoadToken = null;
+    this._engineLoading = false;
 
     const webrtcEl = document.getElementById("game-webrtc");
     if (webrtcEl) {
@@ -116,8 +126,8 @@ const GameCanvasHook = {
     });
   },
 
-  _maybeInitGame() {
-    if (!this._gameId || !this.channel || this.engine) return;
+  async _maybeInitGame() {
+    if (!this._gameId || !this.channel || this.engine || this._engineLoading) return;
 
     const canvas = this.el.querySelector("canvas");
     if (!canvas) return;
@@ -126,7 +136,29 @@ const GameCanvasHook = {
     const onGameEnd = (result) => {
       this.pushEvent("game_result", result);
     };
-    this.engine = createEngine(canvas, this.channel, this._gameId, isHost, onGameEnd);
+    const loadToken = {};
+    this._engineLoadToken = loadToken;
+    this._engineLoading = true;
+
+    let engine;
+
+    try {
+      engine = await createEngine(canvas, this.channel, this._gameId, isHost, onGameEnd);
+    } catch (error) {
+      this._engineLoadError = error;
+      return;
+    } finally {
+      if (this._engineLoadToken === loadToken) {
+        this._engineLoading = false;
+      }
+    }
+
+    if (this._engineLoadToken !== loadToken || this.engine) {
+      engine.stop();
+      return;
+    }
+
+    this.engine = engine;
     this.engine.start();
 
     // Hide the initialization stub text
@@ -135,6 +167,9 @@ const GameCanvasHook = {
   },
 
   _cleanup() {
+    this._engineLoadToken = null;
+    this._engineLoading = false;
+
     if (this.engine) {
       this.engine.stop();
       this.engine = null;

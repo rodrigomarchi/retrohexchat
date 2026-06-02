@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
         "altKey" => false
       })
 
-      html = render_click(view, "window_keydown", %{"key" => "Escape"})
+      render_click(view, "window_keydown", %{"key" => "Escape"})
       refute has_element?(view, "#cheatsheet-dialog-show-trigger")
     end
 
@@ -46,7 +46,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
       }
 
       render_click(view, "window_keydown", params)
-      html = render_click(view, "window_keydown", params)
+      render_click(view, "window_keydown", params)
       refute has_element?(view, "#cheatsheet-dialog-show-trigger")
     end
 
@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
         "altKey" => false
       })
 
-      html = render_click(view, "close_dialog", %{"dialog" => "cheatsheet"})
+      render_click(view, "close_dialog", %{"dialog" => "cheatsheet"})
       refute has_element?(view, "#cheatsheet-dialog-show-trigger")
     end
   end

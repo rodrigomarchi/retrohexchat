@@ -1,0 +1,477 @@
+# "msgid"s in this file come from help.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_hant; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: zh_hant\n"
+"Language: zh_hant\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:107
+#, elixir-autogen, elixir-format
+msgid "%{topic} — RetroHexChat Help"
+msgstr "%{topic} – retroHexChat 幫助"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "/commands"
+msgstr "/commands"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "/help"
+msgstr "/help"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "/msg <nickname> <message>"
+msgstr "/msg <nickname> <message>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "/ns Command"
+msgstr "/ns Command"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "/ns identify"
+msgstr "/ns identify"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "/ns register"
+msgstr "/ns register"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "/query <nickname>"
+msgstr "/query <nickname>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "1. Enter a nickname on the connect screen and click"
+msgstr "1. 在連接屏幕上輸入暱稱並單擊"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "1. Enter a nickname that isn't registered yet and click"
+msgstr "1. 輸入尚未註冊的暱稱並單擊"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "1. Enter your nickname and click"
+msgstr "1. 輸入暱稱並單擊"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "1. Enter your registered nickname and click"
+msgstr "1. 輸入您的註冊暱稱並單擊"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "1–16 characters long"
+msgstr "1至16個字符長"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "2. A password prompt appears. Enter your NickServ password."
+msgstr "2. 出現了密碼提示。 輸入您的 NickServ 密碼 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "2. A registration form appears with"
+msgstr "2. 登記表有:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "2. You will automatically join"
+msgstr "2. 您將自動加入"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "2a."
+msgstr "2a."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "2b."
+msgstr "2b."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "3. Choose a password (minimum 5 characters) and click"
+msgstr "3. 選擇密碼(最少5個字符)並單擊"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"3. On success, you join the chat already identified — the 60-second identify"
+" timer is skipped."
+msgstr "3. 一旦成功,您將加入已經確認的聊天——60秒識別計時器被跳過。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "3. Type messages in the input box and press"
+msgstr "3. 輸入框中的信息類型和按鍵"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "3. You join the chat already identified and land in"
+msgstr "3. 加入已經確認的聊天並登陸"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "4. Use"
+msgstr "4. 用途"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"4. Your nickname is registered and you join the chat already identified."
+msgstr "4. 您的暱稱已註冊, 您加入已確認的聊天 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "7 days"
+msgstr "7天時間"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:57
+#, elixir-autogen, elixir-format
+msgid "Breadcrumb"
+msgstr "麪包屑"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:89
+#, elixir-autogen, elixir-format
+msgid "Browse by category or open Help Topics from the chat menu."
+msgstr "從聊天菜單中按類別瀏覽或打開幫助主題 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Cannot contain spaces"
+msgstr "無法包含空格"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Case sensitive"
+msgstr "區分大小寫"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Changing Nickname"
+msgstr "更改暱稱"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "頻道"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Click a nickname in the conversations sidebar user list and select"
+msgstr "在對話邊欄用戶列表中單擊暱稱並選擇"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Confirm password"
+msgstr "確認密碼"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:5
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Connect"
+msgstr "連接"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "Connect Authentication"
+msgstr "連接認證"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Connecting"
+msgstr "連接中"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Connection Flow"
+msgstr "連接流程"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Enter"
+msgstr "輸入"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
+#, elixir-autogen, elixir-format
+msgid ""
+"Every nickname must be registered before entering the chat. When you connect"
+" with a new nickname, you'll be asked to choose a password to register it. "
+"On future visits, you'll enter your password to log in."
+msgstr "每個暱稱在進入聊天前都必須註冊. 與新暱稱連接時,會要求您選擇一個密碼來註冊. 以後訪問時,會輸入密碼登錄."
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:59
+#, elixir-autogen, elixir-format
+msgid "Help"
+msgstr "幫助"
+
+#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:37
+#, elixir-autogen, elixir-format
+msgid "Help Topics"
+msgstr "幫助主題"
+
+#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:44
+#, elixir-autogen, elixir-format
+msgid "Help navigation"
+msgstr "幫助導航"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:106
+#, elixir-autogen, elixir-format
+msgid "Help — RetroHexChat"
+msgstr "幫助 — retroHexChat"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Keyboard Shortcuts"
+msgstr "鍵盤快捷鍵"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "Minimum 5 characters, maximum 100 characters"
+msgstr "最小5個字符,最多100個字符"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Msg Command"
+msgstr "Msg 命令"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Must start with a letter (a–z, A–Z) or a special character:"
+msgstr "必須以字母(a-z, A-Z)或特殊字符開頭 :"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "New Nicknames"
+msgstr "新建暱稱"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "New nickname"
+msgstr "新暱稱"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:61
+#, elixir-autogen, elixir-format
+msgid "Nick Expiration"
+msgstr "暱稱過期"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:60
+#, elixir-autogen, elixir-format
+msgid "NickServ Overview"
+msgstr "NickServ 概覽"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Nickname Rules"
+msgstr "暱稱規則"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Nicknames not used for"
+msgstr "未使用的暱稱"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Notices"
+msgstr "通知"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "Password"
+msgstr "密碼"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Password Rules"
+msgstr "密碼規則"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Query"
+msgstr "查詢"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Query Command"
+msgstr "查詢命令"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Quick Start"
+msgstr "快速啓動"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:38
+#, elixir-autogen, elixir-format
+msgid "Register & Connect"
+msgstr "註冊和連接"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Registered Nicknames"
+msgstr "已註冊的暱稱"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Registered nickname"
+msgstr "註冊的暱稱"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Registration Required"
+msgstr "需要登記"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:84
+#, elixir-autogen, elixir-format
+msgid "RetroHexChat Help"
+msgstr "retroHexChat 幫助"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"RetroHexChat handles all authentication directly on the connection screen — "
+"no need to run"
+msgstr "RetroHexChat 直接處理連接屏幕上的所有認證——不需要運行"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:111
+#, elixir-autogen, elixir-format
+msgid ""
+"RetroHexChat help documentation. Learn about IRC commands, channel modes, "
+"features, and keyboard shortcuts."
+msgstr "RetroHexChat 幫助文檔. 學習 IRC 命令,頻道模式,特性,以及鍵盤快捷鍵."
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"RetroHexChat is a web-based IRC client with an authentic retro look and "
+"feel. It supports channels, private messages, text formatting, nick "
+"services, and much more."
+msgstr ""
+"RetroHexChat是一個基於網絡的IRC客戶端,具有真實的retro外觀和感覺. 它支持頻道,私人信息,文本格式化,暱稱服務,以及更多."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "See Also"
+msgstr "另見"
+
+#: lib/retro_hex_chat_web/live/help_live/index.ex:86
+#, elixir-autogen, elixir-format
+msgid "Select a topic from the navigation pane to get started."
+msgstr "從導航窗格中選擇要啓動的話題 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Starting a Conversation"
+msgstr "開始對話"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Stored securely with bcrypt hashing — never in plain text"
+msgstr "以 bcrypt 散列方式安全存儲——從未用純文本存儲"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "This opens a PM tab. Alternatively, send a single message:"
+msgstr "這打開了一個PM標籤。 或者,發送一個單一信息:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"To connect to RetroHexChat, enter a nickname on the connect screen and click"
+msgstr "要連接到 RetroHexChat,請在連接屏幕上輸入暱稱並單擊"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Using the User List"
+msgstr "使用用戶列表"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"You can send private messages to other users that only the two of you can "
+"see."
+msgstr "您可以向其他用戶發送只有你們兩個能看見的私人消息."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:50
+#, elixir-autogen, elixir-format
+msgid ""
+"are automatically freed. Connect regularly to keep your registration. See"
+msgstr "自動釋放。 定期連接以保留您的註冊 。 見"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "fields."
+msgstr "字段。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "for advanced features — type"
+msgstr "高級特性——類型"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "for details."
+msgstr "詳細情況。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "manually."
+msgstr "手動的"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:15
+#, elixir-autogen, elixir-format
+msgid ""
+"to open a PM tab. You can also double-click a nickname to open a PM "
+"directly."
+msgstr "打開 PM 標籤。 您也可以雙擊暱稱直接打開 PM 。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "to see them all."
+msgstr "來見他們所有人"
+
+#: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "to send."
+msgstr "發送。"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "— \"Alice\" and \"alice\" are different nicknames"
+msgstr "——\"愛麗絲\"和\"愛麗絲\"是不同的暱稱."
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "— A password prompt appears. Enter your password and click"
+msgstr "- 出現了密碼提示 。 輸入密碼並單擊"
+
+#: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"— A registration form appears. Choose a password (minimum 5 characters) and "
+"confirm it. Click"
+msgstr "- 出現了登記表。 選擇密碼( 最少 5 個字符) 並確認它 。 單擊"

@@ -43,8 +43,8 @@ def main() -> int:
             "TR": "tr",
             "UR": "ur",
             "VI": "vi",
-            "ZH_HANS": "zh_Hans",
-            "ZH_HANT": "zh_Hant",
+            "ZH_HANS": "zh_hans",
+            "ZH_HANT": "zh_hant",
         }
         write_catalogs(catalogs, locales=[export_to_locale[export] for export in set(repaired_locales)])
 

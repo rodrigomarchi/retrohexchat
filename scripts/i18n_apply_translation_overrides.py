@@ -19,7 +19,7 @@ DEFAULT_LOCALES = (
     "fr",
     "id",
     "ja",
-    "zh_Hans",
+    "zh_hans",
     "ar",
     "ru",
     "hi",
@@ -28,7 +28,7 @@ DEFAULT_LOCALES = (
     "vi",
     "bn",
     "ur",
-    "zh_Hant",
+    "zh_hant",
     "pt_PT",
     "it",
     "pl",
@@ -42,7 +42,7 @@ def t(
     fr: str,
     id: str,
     ja: str,
-    zh_Hans: str,
+    zh_hans: str,
     pt_BR: str | None = None,
     pt_PT: str | None = None,
     it: str | None = None,
@@ -56,7 +56,7 @@ def t(
     vi: str | None = None,
     bn: str | None = None,
     ur: str | None = None,
-    zh_Hant: str | None = None,
+    zh_hant: str | None = None,
 ) -> dict[str, str]:
     translations = {
         "de": de,
@@ -64,7 +64,7 @@ def t(
         "fr": fr,
         "id": id,
         "ja": ja,
-        "zh_Hans": zh_Hans,
+        "zh_hans": zh_hans,
     }
 
     if pt_BR is not None:
@@ -91,7 +91,7 @@ def t(
         "vi": vi,
         "bn": bn,
         "ur": ur,
-        "zh_Hant": zh_Hant,
+        "zh_hant": zh_hant,
     }.items():
         if translated is not None:
             translations[locale] = translated
@@ -169,7 +169,7 @@ PO_OVERRIDES = {
         pt_PT="P%{number}/%{total}: %{question}",
         bn="প্রশ্ন %{number}/%{total}: %{question}",
         ur="سوال %{number}/%{total}: %{question}",
-        zh_Hant="第 %{number}/%{total} 題：%{question}",
+        zh_hant="第 %{number}/%{total} 題：%{question}",
     ),
     "Correct, %{author}! (+%{points} points)": t(
         "Richtig, %{author}! (+%{points} Punkte)",
@@ -1081,7 +1081,7 @@ JS_OVERRIDES = {
         vi="%{0} thắng!",
         bn="%{0} জিতেছে!",
         ur="%{0} جیت گیا!",
-        zh_Hant="%{0} 獲勝！",
+        zh_hant="%{0} 獲勝！",
     ),
     "Day %{0}/%{1}": t(
         "Tag %{0}/%{1}",
@@ -1163,7 +1163,7 @@ JS_OVERRIDES = {
         pt_PT="RONDA %{0}",
         bn="রাউন্ড %{0}",
         ur="راؤنڈ %{0}",
-        zh_Hant="第 %{0} 回合",
+        zh_hant="第 %{0} 回合",
     ),
     "ROUND %{0} COMPLETE": t(
         "RUNDE %{0} ABGESCHLOSSEN",
@@ -1197,7 +1197,7 @@ JS_OVERRIDES = {
         vi="Vòng %{0}",
         bn="রাউন্ড %{0}",
         ur="راؤنڈ %{0}",
-        zh_Hant="第 %{0} 回合",
+        zh_hant="第 %{0} 回合",
     ),
     "WAVE %{0}": t(
         "WELLE %{0}",
@@ -1215,7 +1215,7 @@ JS_OVERRIDES = {
         pt_PT="ONDA %{0}",
         bn="ওয়েভ %{0}",
         ur="ویو %{0}",
-        zh_Hant="第 %{0} 波",
+        zh_hant="第 %{0} 波",
     ),
     "WAVE %{0} CLEARED": t(
         "WELLE %{0} GESCHAFFT",
@@ -1232,7 +1232,7 @@ JS_OVERRIDES = {
         vi="ĐÃ DỌN ĐỢT %{0}",
         bn="ওয়েভ %{0} পরিষ্কার",
         ur="ویو %{0} کلیئر",
-        zh_Hant="第 %{0} 波已清除",
+        zh_hant="第 %{0} 波已清除",
     ),
     "P%{0} SCORES!": t(
         "P%{0} PUNKTET!",
@@ -1267,7 +1267,7 @@ JS_OVERRIDES = {
         pt_PT="JOGADOR %{0} MARCA!",
         bn="খেলোয়াড় %{0} স্কোর করেছে!",
         ur="کھلاڑی %{0} نے اسکور کیا!",
-        zh_Hant="玩家 %{0} 得分！",
+        zh_hant="玩家 %{0} 得分！",
     ),
     "PLAYER %{0} WINS": t(
         "SPIELER %{0} GEWINNT",
@@ -1302,7 +1302,7 @@ JS_OVERRIDES = {
         pt_PT="JOGADOR %{0} VENCE!",
         bn="খেলোয়াড় %{0} জিতেছে!",
         ur="کھلاڑی %{0} جیت گیا!",
-        zh_Hant="玩家 %{0} 獲勝！",
+        zh_hant="玩家 %{0} 獲勝！",
     ),
     "PLAYER %{0} WINS THE ROUND!": t(
         "SPIELER %{0} GEWINNT DIE RUNDE!",
@@ -1337,7 +1337,7 @@ JS_OVERRIDES = {
         pt_PT="RONDAS: %{0} - %{1}",
         bn="রাউন্ড: %{0} - %{1}",
         ur="راؤنڈز: %{0} - %{1}",
-        zh_Hant="回合：%{0} - %{1}",
+        zh_hant="回合：%{0} - %{1}",
     ),
     "WAITING FOR OPPONENT%{0}": t(
         "WARTE AUF GEGNER%{0}",
@@ -1415,7 +1415,7 @@ JS_OVERRIDES = {
         "pt_PT": "A religar em %{0}s...",
         "bn": "%{0}s পরে পুনঃসংযোগ হচ্ছে...",
         "ur": "%{0}s میں دوبارہ جڑ رہا ہے...",
-        "zh_Hant": "%{0}s 後重新連線...",
+        "zh_hant": "%{0}s 後重新連線...",
     },
     "Reconnection attempt %{0} of %{1}": {
         "ar": "محاولة إعادة الاتصال %{0} من %{1}",
@@ -1444,7 +1444,7 @@ JS_OVERRIDES = {
         "vi": "Đang chờ đối thủ%{0}",
         "bn": "প্রতিপক্ষের জন্য অপেক্ষা%{0}",
         "ur": "حریف کا انتظار%{0}",
-        "zh_Hant": "正在等待對手%{0}",
+        "zh_hant": "正在等待對手%{0}",
     },
     "PLAYER 1 WINS!": {
         "pt_PT": "JOGADOR 1 VENCE!",

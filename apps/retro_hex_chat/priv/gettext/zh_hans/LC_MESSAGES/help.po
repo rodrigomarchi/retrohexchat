@@ -1,0 +1,4151 @@
+# "msgid"s in this file come from help.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_hans; status: enabled; wave: 1.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: zh_hans\n"
+"Language: zh_hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:61
+#, elixir-autogen, elixir-format
+msgid "!prefix"
+msgstr "前缀 !"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:214
+#, elixir-autogen, elixir-format
+msgid "+K No Knock"
+msgstr "+K 不敲门"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:205
+#, elixir-autogen, elixir-format
+msgid "+R Registered Only"
+msgstr "+R 仅登记"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:188
+#, elixir-autogen, elixir-format
+msgid "+c Strip Colors"
+msgstr "+c 剥离颜色"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:138
+#, elixir-autogen, elixir-format
+msgid "+h Half-Operator"
+msgstr "+h 半操作器"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:75
+#, elixir-autogen, elixir-format
+msgid "+i Invite Only"
+msgstr "+i 只邀请"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:226
+#, elixir-autogen, elixir-format
+msgid "+j Join Throttle"
+msgstr "+j 加入旋律"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:92
+#, elixir-autogen, elixir-format
+msgid "+k Channel Key"
+msgstr "+k 通道密钥"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:100
+#, elixir-autogen, elixir-format
+msgid "+l User Limit"
+msgstr "+l 用户限制"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:66
+#, elixir-autogen, elixir-format
+msgid "+m Moderated"
+msgstr "+m 调制"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:156
+#, elixir-autogen, elixir-format
+msgid "+n No External Messages"
+msgstr "+n 无外部信件"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:126
+#, elixir-autogen, elixir-format
+msgid "+o Operator"
+msgstr "+o 运算符"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:176
+#, elixir-autogen, elixir-format
+msgid "+p Private"
+msgstr "+p 隐私"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:114
+#, elixir-autogen, elixir-format
+msgid "+q Owner"
+msgstr "+q 拥有者"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:168
+#, elixir-autogen, elixir-format
+msgid "+s Secret"
+msgstr "+s 密语"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:84
+#, elixir-autogen, elixir-format
+msgid "+t Topic Lock"
+msgstr "+t 主题锁定"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:147
+#, elixir-autogen, elixir-format
+msgid "+v Voice"
+msgstr "+v 语音"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:491
+#, elixir-autogen, elixir-format
+msgid "/admin channel"
+msgstr "/admin channel"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:515
+#, elixir-autogen, elixir-format
+msgid "/admin cs"
+msgstr "/admin cs"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:527
+#, elixir-autogen, elixir-format
+msgid "/admin debug"
+msgstr "/admin debug"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:539
+#, elixir-autogen, elixir-format
+msgid "/admin log"
+msgstr "/admin log"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:503
+#, elixir-autogen, elixir-format
+msgid "/admin ns"
+msgstr "/admin ns"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:560
+#, elixir-autogen, elixir-format
+msgid "/admin nuke"
+msgstr "/admin nuke"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:467
+#, elixir-autogen, elixir-format
+msgid "/admin server"
+msgstr "/admin server"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:548
+#, elixir-autogen, elixir-format
+msgid "/admin turn"
+msgstr "/admin turn"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:479
+#, elixir-autogen, elixir-format
+msgid "/admin user"
+msgstr "/admin user"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:32
+#, elixir-autogen, elixir-format
+msgid "/bot Command Reference"
+msgstr "/bot Command Reference"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:243
+#, elixir-autogen, elixir-format
+msgid "/knock Command"
+msgstr "/knock Command"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1945
+#, elixir-autogen, elixir-format
+msgid "1 long epic round — igloo needs 20 pieces, all enemies from the start, "
+msgstr "1长篇史诗回合——伊格卢需要20块,所有敌人从一开始,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1355
+#, elixir-autogen, elixir-format
+msgid "10 sections of increasing difficulty. Destroy bridges to advance. "
+msgstr "10节越来越困难。 摧毁桥梁推进。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1176
+#, elixir-autogen, elixir-format
+msgid "2-minute rounds, best of 3. Modes: Classic (open field) and Maze Battle. "
+msgstr "2分钟的回合,最好3次. 模式:经典(开放场)和Maze Battle."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1289
+#, elixir-autogen, elixir-format
+msgid "3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D to move."
+msgstr "3条共享生命,50条霓虹板(5行),球速度加快. 箭键或 A/D 移动."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1695
+#, elixir-autogen, elixir-format
+msgid "3-minute race in permanent darkness with fog bursts. "
+msgstr "3分钟的比赛 在永久的黑暗中 雾暴。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2509
+#, elixir-autogen, elixir-format
+msgid "32 deathmatch-focused arena maps for the DOOM engine. BSD license."
+msgstr "为DOOM引擎绘制的32个死赛焦点竞技场图. BSD许可证."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1404
+#, elixir-autogen, elixir-format
+msgid "5 sections of intense River Raid action — river starts narrow, "
+msgstr "5段猛烈的河袭行动——河流开始狭窄,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1637
+#, elixir-autogen, elixir-format
+msgid "5 waves of pure chaos from the start. "
+msgstr "五波清净乱从始."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1034
+#, elixir-autogen, elixir-format
+msgid "7 days"
+msgstr "7天时间"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1723
+#, elixir-autogen, elixir-format
+msgid "90 seconds to score maximum overtakes. "
+msgstr "90秒得分最高超标."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2596
+#, elixir-autogen, elixir-format
+msgid "A Viking-themed DOOM total conversion with hand-drawn pixel art — axes, bows, and runic magic. Cacoward 2018 winner."
+msgstr "一个维京主题的DOOM 完全转换 手绘像素艺术——斧头,弓,和狂野的魔法. 卡科沃德2018年获奖者."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2480
+#, elixir-autogen, elixir-format
+msgid "A complete free replacement for DOOM II — 32 levels with the Super Shotgun. Compatible with community PWAD mods."
+msgstr "完全免费替换DOOM II——32级与超级猎枪. 与社区PWAD Mods兼容."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2651
+#, elixir-autogen, elixir-format
+msgid "A complete free replacement for Quake — original levels, art, and music under BSD license."
+msgstr "在BSD许可下完全免费替换Quake——原始关卡,艺术,和音乐."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2450
+#, elixir-autogen, elixir-format
+msgid "A complete free replacement for Ultimate DOOM — 4 episodes, 36 levels with original art and music."
+msgstr "完全免费替换Ultimate DOOM——4集,36级配原创艺术和音乐."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2565
+#, elixir-autogen, elixir-format
+msgid "A cyberpunk DOOM total conversion with new weapons, enemies, and levels. Standalone v1.2 IWAD."
+msgstr "网络PUNK DOOM完全转换 与新武器,敌人,和水平。 独立 v1.2 IWAD."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:121
+#, elixir-autogen, elixir-format
+msgid "Access all features through the toolbar buttons organized in six groups."
+msgstr "通过六组排列的工具栏按钮访问所有特性。"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:91
+#, elixir-autogen, elixir-format
+msgid "Access user actions and channel operations through right-click context menus."
+msgstr "通过右键点击上下文菜单访问用户动作和频道操作."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:152
+#, elixir-autogen, elixir-format
+msgid "Add a user to your ignore list to hide their messages and actions."
+msgstr "在您的忽略列表中添加一个用户以隐藏其消息和行动 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:332
+#, elixir-autogen, elixir-format
+msgid "Add custom items to right-click context menus for quick access to commands."
+msgstr "在右键单击上下文菜单中添加自定义项目,以便快速访问命令。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:277
+#, elixir-autogen, elixir-format
+msgid "Add or remove users from your notify list to track when they connect or disconnect."
+msgstr "从您的通知列表中添加或删除用户, 以追踪其连接或断开时的情况 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:30
+#, elixir-autogen, elixir-format
+msgid "Address Book"
+msgstr "地址簿"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:49
+#: lib/retro_hex_chat/chat/help_topics.ex:77
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:456
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:468
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:480
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:492
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:504
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:516
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:528
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:540
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:549
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:561
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1049
+#, elixir-autogen, elixir-format
+msgid "Admin & Server"
+msgstr "管理员和服务器"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1048
+#, elixir-autogen, elixir-format
+msgid "Admin Console"
+msgstr "管理控制台"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:295
+#, elixir-autogen, elixir-format
+msgid "Aliases"
+msgstr "别名"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:422
+#, elixir-autogen, elixir-format
+msgid "Align nicknames in a fixed-width column for improved chat readability."
+msgstr "在固定宽的列中对昵称进行对齐,以提高聊天的可读性."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:113
+#, elixir-autogen, elixir-format
+msgid "Allow specific users to bypass channel bans using ban exception masks."
+msgstr "允许特定用户使用禁止例外口罩绕过频道禁令."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:131
+#, elixir-autogen, elixir-format
+msgid "Allow specific users to join invite-only channels without an explicit invitation."
+msgstr "允许特定用户在没有明确邀请的情况下加入只邀请频道."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:919
+#, elixir-autogen, elixir-format
+msgid "Animated visual diagram showing the bilateral P2P link with real-time status and peer info."
+msgstr "动画视觉图显示双边P2P链接与实时状态和对等信息."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1905
+#, elixir-autogen, elixir-format
+msgid "Arctic construction race — jump on floating ice blocks to build your igloo while "
+msgstr "北极建筑竞赛——跳上漂浮的冰块来建造你的冰卢"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:810
+#, elixir-autogen, elixir-format
+msgid "Audio Call"
+msgstr "音频调用"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:76
+#, elixir-autogen, elixir-format
+msgid "Authenticate with your registered nickname on connect to access your saved settings and channels."
+msgstr "访问您保存的设置和频道时使用您的注册昵称认证 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:986
+#, elixir-autogen, elixir-format
+msgid "Auto-Join Channels"
+msgstr "自动连接通道"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:199
+#, elixir-autogen, elixir-format
+msgid "Auto-Reconnect"
+msgstr "自动重联"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:375
+#, elixir-autogen, elixir-format
+msgid "Auto-Respond"
+msgstr "自动响应"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:559
+#, elixir-autogen, elixir-format
+msgid "Auto-expanding input box with multi-line support and contextual placeholders."
+msgstr "具有多行支持和上下文占位符的自动扩展输入框."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:169
+#, elixir-autogen, elixir-format
+msgid "Auto-moderation: word filtering, spam/flood detection, caps lock abuse prevention."
+msgstr "自动修改:字过滤,垃圾邮件/flood检测,盖锁滥用预防."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:510
+#, elixir-autogen, elixir-format
+msgid "Autocomplete"
+msgstr "自动完成"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:212
+#, elixir-autogen, elixir-format
+msgid "Automatically reconnect to the server when the connection is lost with exponential backoff."
+msgstr "用指数备份连接丢失时, 自动重新连接到服务器 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:489
+#, elixir-autogen, elixir-format
+msgid "Automatically reply to private messages when you are marked as away."
+msgstr "当您被标记为离开时自动回复私人信件 。"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:51
+#: lib/retro_hex_chat/chat/help_topics.ex:79
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:24
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:33
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:51
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:317
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:329
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:384
+#: lib/retro_hex_chat/chat/help_topics/features.ex:179
+#: lib/retro_hex_chat/chat/help_topics/features.ex:296
+#: lib/retro_hex_chat/chat/help_topics/features.ex:308
+#: lib/retro_hex_chat/chat/help_topics/features.ex:320
+#: lib/retro_hex_chat/chat/help_topics/features.ex:376
+#, elixir-autogen, elixir-format
+msgid "Automation"
+msgstr "自动化"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:484
+#, elixir-autogen, elixir-format
+msgid "Away Auto-Reply"
+msgstr "自动返回"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:101
+#, elixir-autogen, elixir-format
+msgid "Ban Exceptions (+e)"
+msgstr "禁止例外(+e)"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:79
+#, elixir-autogen, elixir-format
+msgid "Ban a user from a channel by nickname or hostmask pattern."
+msgstr "以昵称或主机掩码模式禁用频道中的用户 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2749
+#, elixir-autogen, elixir-format
+msgid "Beneath a Steel Sky"
+msgstr "在钢铁天空下"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2134
+#, elixir-autogen, elixir-format
+msgid "Beneath a Steel Sky, Dreamweb, Drascula, Flight of the Amazon Queen, "
+msgstr "亚马逊女王号的飞船"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1832
+#, elixir-autogen, elixir-format
+msgid "Best of 3 runs with rising difficulty. "
+msgstr "3次的最好成绩 难度上升"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1633
+#, elixir-autogen, elixir-format
+msgid "Blitz Space Invaders — instant alien drops, easier combo thresholds, "
+msgstr "Blitz Space 入侵者——即时外星坠落,更容易的组合阈值,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1270
+#, elixir-autogen, elixir-format
+msgid "Block Breakers"
+msgstr "断块器"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:164
+#, elixir-autogen, elixir-format
+msgid "Block messages from users who are not in the channel."
+msgstr "不在频道的用户发送的屏蔽消息."
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:56
+#, elixir-autogen, elixir-format
+msgid "Bot Custom Commands"
+msgstr "装瓶自定义命令"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:76
+#, elixir-autogen, elixir-format
+msgid "Bot Dice Capability"
+msgstr "瓶齿能力"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:155
+#, elixir-autogen, elixir-format
+msgid "Bot Moderation Capability"
+msgstr "瓶调能力"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:137
+#, elixir-autogen, elixir-format
+msgid "Bot RSS Capability"
+msgstr "Bot RSS 能力"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:119
+#, elixir-autogen, elixir-format
+msgid "Bot Scheduler Capability"
+msgstr "瓶式调度器"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:98
+#, elixir-autogen, elixir-format
+msgid "Bot Trivia Capability"
+msgstr "Bot Trivia 能力"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:11
+#, elixir-autogen, elixir-format
+msgid "BotService Overview"
+msgstr "BotService 概览"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1663
+#, elixir-autogen, elixir-format
+msgid "Both players race on the same road — overtake AI cars and your opponent for points. "
+msgstr "两名球员都在同一条路上进行比赛——超越AI汽车和你的对手获得积分."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:48
+#: lib/retro_hex_chat/chat/help_topics.ex:76
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:12
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:33
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:57
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:77
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:99
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:120
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:138
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:156
+#, elixir-autogen, elixir-format
+msgid "Bots"
+msgstr "瓶装"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:711
+#, elixir-autogen, elixir-format
+msgid "Bottom bar showing connection status, lag indicator, clock, and channel information."
+msgstr "显示连接状态、 滞后指示器、 时钟和频道信息的底层栏 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:203
+#, elixir-autogen, elixir-format
+msgid "Browse all available channels with their topics and user counts."
+msgstr "浏览所有可用的频道及其主题和用户数 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:498
+#, elixir-autogen, elixir-format
+msgid "Browse and insert emoji into your messages using the emoji picker."
+msgstr "使用 emoji 拾取器浏览并插入到您的信件中 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1487
+#, elixir-autogen, elixir-format
+msgid "Bullets ricochet once off ceiling/floor. Aim up or down with arrow keys. "
+msgstr "子弹从天花板上弹出一次/floor 用箭键瞄准上下."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:865
+#, elixir-autogen, elixir-format
+msgid "Call Quality"
+msgstr "调用质量"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:29
+#, elixir-autogen, elixir-format
+msgid "ChanServ Overview"
+msgstr "ChanServ 概览"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:520
+#, elixir-autogen, elixir-format
+msgid "ChanServ administration: drop registrations, transfer founder, manage access lists."
+msgstr "ChanServ管理:撤销注册,转让创建者,管理访问列表."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:244
+#, elixir-autogen, elixir-format
+msgid "Change your current nickname to a new one."
+msgstr "将当前昵称更改为新昵称 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:80
+#, elixir-autogen, elixir-format
+msgid "Channel Central"
+msgstr "中央频道"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:138
+#, elixir-autogen, elixir-format
+msgid "Channel Invites"
+msgstr "频道邀请"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:46
+#: lib/retro_hex_chat/chat/help_topics.ex:74
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:12
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:38
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:67
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:76
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:85
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:93
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:101
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:115
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:127
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:139
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:148
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:157
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:169
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:177
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:189
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:206
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:215
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:227
+#, elixir-autogen, elixir-format
+msgid "Channel Modes"
+msgstr "频道模式"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:37
+#, elixir-autogen, elixir-format
+msgid "Channel Modes Overview"
+msgstr "频道模式概览"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:11
+#, elixir-autogen, elixir-format
+msgid "Channel Permissions"
+msgstr "频道权限"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:44
+#: lib/retro_hex_chat/chat/help_topics.ex:72
+#: lib/retro_hex_chat/chat/help_topics/features.ex:81
+#: lib/retro_hex_chat/chat/help_topics/features.ex:102
+#: lib/retro_hex_chat/chat/help_topics/features.ex:121
+#: lib/retro_hex_chat/chat/help_topics/features.ex:139
+#: lib/retro_hex_chat/chat/help_topics/features.ex:158
+#: lib/retro_hex_chat/chat/help_topics/features.ex:987
+#, elixir-autogen, elixir-format
+msgid "Channel Settings"
+msgstr "频道设置"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:43
+#: lib/retro_hex_chat/chat/help_topics.ex:71
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:244
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:157
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:175
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:199
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:216
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:309
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:393
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:35
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:86
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "频道"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:999
+#, elixir-autogen, elixir-format
+msgid "Channels are automatically remembered and rejoined when you reconnect."
+msgstr "频道在重新连接时会自动记住并重新加入."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:460
+#, elixir-autogen, elixir-format
+msgid "Character Counter"
+msgstr "字符计数器"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:40
+#: lib/retro_hex_chat/chat/help_topics.ex:68
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:12
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:105
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:140
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:208
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:229
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:249
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:347
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:355
+#: lib/retro_hex_chat/chat/help_topics/features.ex:282
+#: lib/retro_hex_chat/chat/help_topics/features.ex:759
+#: lib/retro_hex_chat/chat/help_topics/features.ex:778
+#: lib/retro_hex_chat/chat/help_topics/features.ex:794
+#: lib/retro_hex_chat/chat/help_topics/features.ex:966
+#, elixir-autogen, elixir-format
+msgid "Chat & Messaging"
+msgstr "聊天通讯( M)"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:53
+#: lib/retro_hex_chat/chat/help_topics.ex:81
+#: lib/retro_hex_chat/chat/help_topics/features.ex:60
+#: lib/retro_hex_chat/chat/help_topics/features.ex:396
+#: lib/retro_hex_chat/chat/help_topics/features.ex:418
+#: lib/retro_hex_chat/chat/help_topics/features.ex:430
+#: lib/retro_hex_chat/chat/help_topics/features.ex:503
+#: lib/retro_hex_chat/chat/help_topics/features.ex:629
+#: lib/retro_hex_chat/chat/help_topics/features.ex:647
+#: lib/retro_hex_chat/chat/help_topics/features.ex:669
+#: lib/retro_hex_chat/chat/help_topics/features.ex:681
+#, elixir-autogen, elixir-format
+msgid "Chat Display"
+msgstr "聊天显示"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:52
+#: lib/retro_hex_chat/chat/help_topics.ex:80
+#: lib/retro_hex_chat/chat/help_topics/features.ex:449
+#: lib/retro_hex_chat/chat/help_topics/features.ex:461
+#: lib/retro_hex_chat/chat/help_topics/features.ex:494
+#: lib/retro_hex_chat/chat/help_topics/features.ex:511
+#: lib/retro_hex_chat/chat/help_topics/features.ex:531
+#: lib/retro_hex_chat/chat/help_topics/features.ex:548
+#: lib/retro_hex_chat/chat/help_topics/features.ex:608
+#, elixir-autogen, elixir-format
+msgid "Chat Input"
+msgstr "聊天输入"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2522
+#, elixir-autogen, elixir-format
+msgid "Chex Quest"
+msgstr "切克斯查询"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1606
+#, elixir-autogen, elixir-format
+msgid "Classic co-op Space Invaders — two cannons fighting the same alien waves on a shared screen. "
+msgstr "经典合作空间入侵者——两门大炮在共享屏幕上对抗相同的异形波."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:109
+#, elixir-autogen, elixir-format
+msgid "Clear all messages from the current channel or conversation view."
+msgstr "清除当前频道或对话视图中的所有信件 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2146
+#, elixir-autogen, elixir-format
+msgid "Click any game to see its detailed description, keyboard controls, and "
+msgstr "单击任意游戏查看其详细描述、键盘控制,以及"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:410
+#, elixir-autogen, elixir-format
+msgid "Clickable nicknames, channels, and URLs with hover cards and link previews."
+msgstr "可点击的昵称,频道,以及带有悬浮牌和链接预览的URL."
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:23
+#, elixir-autogen, elixir-format
+msgid "Colors"
+msgstr "颜色"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1580
+#, elixir-autogen, elixir-format
+msgid "Combos send extra drops. UFO kills send armored aliens. 10 waves of escalating chaos. "
+msgstr "Combos发送额外的滴。 不明飞行物杀死了武装外星人 10波不断升级的混乱."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2850
+#, elixir-autogen, elixir-format
+msgid "Comic Indiana Jones-style adventure in the Amazon (1995) — pilot Joe King vs. a mad scientist's dinosaur plot."
+msgstr "漫画印第安纳·琼斯风格的亚马逊探险(1995年)——飞行员乔·金对一位疯狂科学家的恐龙阴谋."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:530
+#, elixir-autogen, elixir-format
+msgid "Command Syntax Tooltip"
+msgstr "命令语法工具提示"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:16
+#, elixir-autogen, elixir-format
+msgid "Complete reference of all available IRC slash commands with syntax and examples."
+msgstr "完整引用 IRC 所有可用的带有语法和示例的斜线命令 。"
+
+#: lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex:16
+#, elixir-autogen, elixir-format
+msgid "Complete reference of keyboard shortcuts for navigation, messaging, and interface control."
+msgstr "完整引用导航,消息,和界面控制的键盘快捷键."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:388
+#, elixir-autogen, elixir-format
+msgid "Configure automatic responses triggered by events like user joins or keyword matches."
+msgstr "配置用户加入或关键词匹配等事件引发的自动响应."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:55
+#, elixir-autogen, elixir-format
+msgid "Configure automatic responses triggered by events like users joining a channel."
+msgstr "配置用户加入频道等事件引发的自动响应."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:192
+#, elixir-autogen, elixir-format
+msgid "Configure commands and channels that execute automatically when you connect."
+msgstr "配置连接时自动执行的命令和频道 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:265
+#, elixir-autogen, elixir-format
+msgid "Configure sound notifications for events like mentions, private messages, and joins."
+msgstr "为提及、私人信件和加入等事件配置声音通知。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:265
+#, elixir-autogen, elixir-format
+msgid "Configure where incoming notices are displayed — active window, status, or source channel."
+msgstr "配置显示来信通知的地方——活动窗口,状态,或源频道."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:52
+#, elixir-autogen, elixir-format
+msgid "Configure words that trigger visual and audio alerts when mentioned in chat."
+msgstr "配置在聊天中提及时触发视觉和音频提示的单词 。"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:71
+#, elixir-autogen, elixir-format
+msgid "Connect Authentication"
+msgstr "连接认证"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:23
+#, elixir-autogen, elixir-format
+msgid "Connecting"
+msgstr "连接中"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:58
+#: lib/retro_hex_chat/chat/help_topics.ex:86
+#: lib/retro_hex_chat/chat/help_topics/features.ex:200
+#: lib/retro_hex_chat/chat/help_topics/features.ex:719
+#: lib/retro_hex_chat/chat/help_topics/features.ex:739
+#, elixir-autogen, elixir-format
+msgid "Connection"
+msgstr "连接"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:903
+#, elixir-autogen, elixir-format
+msgid "Connection Diagram"
+msgstr "连接图"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:738
+#, elixir-autogen, elixir-format
+msgid "Connection States"
+msgstr "连接国"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:42
+#: lib/retro_hex_chat/chat/help_topics.ex:70
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:148
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:273
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:414
+#: lib/retro_hex_chat/chat/help_topics/features.ex:12
+#: lib/retro_hex_chat/chat/help_topics/features.ex:31
+#: lib/retro_hex_chat/chat/help_topics/features.ex:48
+#: lib/retro_hex_chat/chat/help_topics/features.ex:69
+#, elixir-autogen, elixir-format
+msgid "Contacts & Notify"
+msgstr "联系人通知( N)"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:81
+#, elixir-autogen, elixir-format
+msgid "Context Menu"
+msgstr "上下文菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:584
+#, elixir-autogen, elixir-format
+msgid "Context Menus"
+msgstr "背景菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:628
+#, elixir-autogen, elixir-format
+msgid "Contextual Tips"
+msgstr "背景提示"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1180
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys (Left/Right rotate, Up forward) or A/D/W, Space or Shift to fire."
+msgstr "控件:箭键(Left/Right旋转,向上旋转)或A/D/W,Space或Shift to fire."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1322
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys (Up/Down) to move shield, Space to catch/release fireball."
+msgstr "控制器:用于移动盾牌的箭键(Up/Down),用于捕捉/release火球的空间."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1671
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1697
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1724
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys (←/→ lane, ↑ accel, ↓ brake), Space or Shift for turbo."
+msgstr "控制器:箭键(QQ/→),Accel,QQ制动,用于涡轮的空间或Shift."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1833
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1857
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1881
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys (←/→) or A/D to steer."
+msgstr "控件:箭键(QQ/ )或 A/D 用于引导."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1584
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1611
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1638
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or A/D to move, Space to fire."
+msgstr "控制器:箭键或 A/D 移动,空格射击."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1460
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1520
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1548
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to fire."
+msgstr "控件:要移动的箭头键或WASD,要开火的空格或Shift."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1434
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to punch."
+msgstr "控件:要移动的箭头键或WASD,要跳动的空格或Shift."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1755
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1778
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1801
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to serve."
+msgstr "控件:要移动的箭头键或WASD,要服务到空格或Shift."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2025
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2054
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2083
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Space or Shift to shoot/tackle."
+msgstr "控件:要移动的箭头键或WASD,要射击的空间或Shift /tackle."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1953
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1983
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move, Up/Down to jump between rows."
+msgstr "控件:要移动的箭键或WASD,在行间跳动的Up/Down."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1492
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to move/aim, Space or Shift to fire."
+msgstr "控件:箭键或WASD可以移动/aim,空間或移動到火上."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1210
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp."
+msgstr "控件:箭键或WASD推/rotate,空格射,Down/S转曲."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1356
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1406
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine."
+msgstr "控件:箭键可以移动/speed,空格可以开火,动格可以放下我的."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1386
+#, elixir-autogen, elixir-format
+msgid "Controls: Arrow keys to move/speed, Space to fire."
+msgstr "控制器:箭键可以移动/speed,空间可以开火."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:23
+#, elixir-autogen, elixir-format
+msgid "Conversations"
+msgstr "谈话"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1285
+#, elixir-autogen, elixir-format
+msgid "Cooperative Breakout with cyberpunk visuals. P1 controls the bottom paddle, P2 the top. "
+msgstr "合作突破网络朋克视觉. P1控制底桨,P2控制顶板."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:680
+#, elixir-autogen, elixir-format
+msgid "Copy Feedback"
+msgstr "复制反馈"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:441
+#, elixir-autogen, elixir-format
+msgid "Copy message text to the clipboard using the right-click context menu."
+msgstr "使用右键单击上下文菜单将信件文本复制到剪贴板。"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:25
+#, elixir-autogen, elixir-format
+msgid "Create and manage extensible bots with pluggable capabilities for channel automation."
+msgstr "创建并管理可扩展的bots,具有通道自动化的插件能力."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:28
+#, elixir-autogen, elixir-format
+msgid "Create custom command aliases that expand into one or more commands."
+msgstr "创建可扩展为一个或多个命令的自定义命令别名。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:300
+#, elixir-autogen, elixir-format
+msgid "Create custom command shortcuts that expand into one or more commands with variable support."
+msgstr "创建自定义命令快捷键,以可变支持扩展为一个或多个命令。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:319
+#, elixir-autogen, elixir-format
+msgid "Custom Menus"
+msgstr "自定义菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:506
+#, elixir-autogen, elixir-format
+msgid "Customize how timestamps are displayed next to messages."
+msgstr "自定义信件旁边显示的时间戳 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:371
+#, elixir-autogen, elixir-format
+msgid "Customize keyboard shortcuts by rebinding keys to different actions."
+msgstr "自定义键盘快捷键,将键重新绑定为不同的动作."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:477
+#, elixir-autogen, elixir-format
+msgid "Customize the message displayed to others when you disconnect from the server."
+msgstr "自定义从服务器断开时显示给其他人的信件 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:352
+#, elixir-autogen, elixir-format
+msgid "Customize which interface elements are visible and toggle compact display mode."
+msgstr "自定义哪些界面元素可见并切换紧凑的显示模式 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1133
+#, elixir-autogen, elixir-format
+msgid "Cyberpunk Pong with neon visuals, CRT effects, and synth audio. First to 11 (win by 2). Use Arrow keys or W/S."
+msgstr "Cyberpunk Pong具有霓虹影视,CRT效果,以及合成音频. 第一胜11负(胜2负). 使用箭头键或W/S."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2763
+#, elixir-autogen, elixir-format
+msgid "Cyberpunk masterpiece by Revolution Software (1994) — escape Union City with your robot companion Joey."
+msgstr "Cyberpunk杰作\"革命软件\"(1994年)——与你的机器人同伴乔伊一起逃离联合城."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2170
+#, elixir-autogen, elixir-format
+msgid "DOOM (Arcade)"
+msgstr "DOOM (街机)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2409
+#, elixir-autogen, elixir-format
+msgid "DOOM: Knee-Deep in the Dead"
+msgstr "膝盖深处死者"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2821
+#, elixir-autogen, elixir-format
+msgid "Dark cyberpunk top-down adventure by Creative Reality (1994) — explore the Dreamweb to save reality."
+msgstr "黑暗的网络朋克自上而下的冒险,由Creative Reality (1994)——探索Dreamweb拯救现实."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1722
+#, elixir-autogen, elixir-format
+msgid "Daylight sprint — no weather changes, no fuel drain, just speed. "
+msgstr "日光短跑——没有天气变化,没有燃料排水,只有速度."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1244
+#, elixir-autogen, elixir-format
+msgid "Debris Field"
+msgstr "碎片场"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1317
+#, elixir-autogen, elixir-format
+msgid "Deflect or catch the fireball with your shield to smash your opponent's walls. "
+msgstr "防弹或用盾牌抓住火球 击破对手的墙壁"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:803
+#, elixir-autogen, elixir-format
+msgid "Delete your own messages with a soft-delete that shows a removal notice."
+msgstr "使用显示删除通知的软删除方式删除您自己的信件 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:673
+#, elixir-autogen, elixir-format
+msgid "Dialog notification when you are kicked from a channel with the reason and rejoin option."
+msgstr "当您从频道被踢出原因并重新加入时, 对话框通知 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:358
+#, elixir-autogen, elixir-format
+msgid "Disconnect from the server with an optional quit message."
+msgstr "从服务器上断开可选的退出消息 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:339
+#, elixir-autogen, elixir-format
+msgid "Display Settings"
+msgstr "显示设置"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:143
+#, elixir-autogen, elixir-format
+msgid "Display help information for commands and features."
+msgstr "显示命令和特性的帮助信息。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1544
+#, elixir-autogen, elixir-format
+msgid "Dodge freely in your half of the arena. First to 10, best of 3 rounds. "
+msgstr "在你一半的竞技场里自由跳过 首发至10发,最好3发."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1917
+#, elixir-autogen, elixir-format
+msgid "Dodge polar bears, crabs, geese, and clams. Best of 5 rounds with progressive difficulty. "
+msgstr "道奇北极熊,蟹,雁,蛤. 最好的5轮 渐进难度。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1456
+#, elixir-autogen, elixir-format
+msgid "Dodge visible bullets and shoot your opponent. First to 10, best of 3 rounds. "
+msgstr "躲开可见的子弹,射杀对手 首发至10发,最好3发."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2388
+#, elixir-autogen, elixir-format
+msgid "Drascula (1996), Dreamweb (1994), Flight of the Amazon Queen (1995), "
+msgstr "Drascula(1996年)、Dreamweb(1994年)、Amazon Queen飞行(1995年)、"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2778
+#, elixir-autogen, elixir-format
+msgid "Drascula: The Vampire Strikes Back"
+msgstr "德拉斯库拉:吸血鬼反击"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2807
+#, elixir-autogen, elixir-format
+msgid "Dreamweb"
+msgstr "梦幻网"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:789
+#, elixir-autogen, elixir-format
+msgid "Edit your recently sent messages to fix typos or update content."
+msgstr "编辑您最近发送的信件以修正字典或更新内容 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:493
+#, elixir-autogen, elixir-format
+msgid "Emoji Picker"
+msgstr "爱莫吉·皮克"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:128
+#, elixir-autogen, elixir-format
+msgid "Empty States"
+msgstr "空国家"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:958
+#, elixir-autogen, elixir-format
+msgid "Enable TURN-only relay mode to hide your IP address during peer-to-peer connections."
+msgstr "启用 TURN 唯一的中继模式, 在对等连接时隐藏您的 IP 地址 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:624
+#, elixir-autogen, elixir-format
+msgid "Enable or disable slow mode (join throttle) in the current channel."
+msgstr "启用或禁用当前信道中的慢模式( join prottle) 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:607
+#, elixir-autogen, elixir-format
+msgid "Enhanced History"
+msgstr "增强历史"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:896
+#, elixir-autogen, elixir-format
+msgid "Establish peer-to-peer sessions with bilateral consent for calls and file transfers."
+msgstr "建立对等会议,在双边同意下进行电话和备案转让。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1799
+#, elixir-autogen, elixir-format
+msgid "Every point wins a game — no 15-30-40, no deuce. "
+msgstr "每分赢一场比赛——没有15-30-40,没有德甲."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1062
+#, elixir-autogen, elixir-format
+msgid "Execute multiple commands at once by pasting them into the Admin Console (admin only)."
+msgstr "一次执行多个命令,将其粘贴到行政控制台(只有管理)中."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:574
+#, elixir-autogen, elixir-format
+msgid "Factory reset — destroys ALL data (users, channels, messages, preferences, bots, P2P sessions) "
+msgstr "工厂重置——销毁所有数据(用户、频道、消息、偏好、bots、P2P会话)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1880
+#, elixir-autogen, elixir-format
+msgid "Fastest time down the mountain wins. The purist mode. "
+msgstr "最快的时间下山获胜。 清净者模式."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:926
+#, elixir-autogen, elixir-format
+msgid "File Transfer"
+msgstr "文件传输"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:171
+#, elixir-autogen, elixir-format
+msgid "Find text in the current channel using search with regex and case-sensitive options."
+msgstr "在当前频道中使用 regex 和大小写敏感选项查找文本 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1491
+#, elixir-autogen, elixir-format
+msgid "First to 10, best of 3 rounds. "
+msgstr "首发至10发,最好3发."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1800
+#, elixir-autogen, elixir-format
+msgid "First to 6 games takes the set. Pure pressure. "
+msgstr "先到六场比赛 纯压力."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2836
+#, elixir-autogen, elixir-format
+msgid "Flight of the Amazon Queen"
+msgstr "亚马逊女王的飞行"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:231
+#, elixir-autogen, elixir-format
+msgid "Flood Protection"
+msgstr "防洪"
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:16
+#, elixir-autogen, elixir-format
+msgid "Format your messages with bold, italic, underline, strikethrough, and color codes."
+msgstr "用粗体、斜体、下划线、切换和颜色代码格式您的信息。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2496
+#, elixir-autogen, elixir-format
+msgid "FreeDM"
+msgstr "免费DM"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2195
+#, elixir-autogen, elixir-format
+msgid "FreeDM, Chex Quest, HacX, and REKKR. Powered by Dwasm (PrBoom+ → WebAssembly)."
+msgstr "FreeDM, Chex Quest, HacX, 以及 REKKR. 互联网档案馆的存檔,存档日期2013-12-21. 由Dwasm(PrBoom+ WebAssembly)提供动力."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2438
+#, elixir-autogen, elixir-format
+msgid "Freedoom: Phase 1"
+msgstr "Freedoom: 第一阶段"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2466
+#, elixir-autogen, elixir-format
+msgid "Freedoom: Phase 2"
+msgstr "Freedoom: 第二阶段"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1754
+#, elixir-autogen, elixir-format
+msgid "Full set with deuce, advantage, and tiebreak at 6-6. "
+msgstr "6点到6点整整齐,有优势"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:16
+#, elixir-autogen, elixir-format
+msgid "Get started with RetroHexChat, a web-based IRC client with a faithful retro look and feel."
+msgstr "以RetroHexChat开始,这个基于网络的IRC客户端具有忠实的回顾外观和感觉."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:39
+#: lib/retro_hex_chat/chat/help_topics.ex:67
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:12
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:24
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:36
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:53
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:72
+#, elixir-autogen, elixir-format
+msgid "Getting Started"
+msgstr "开始"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:590
+#, elixir-autogen, elixir-format
+msgid "Give operator status to a user in the current channel."
+msgstr "在当前频道中给予用户操作员状态 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:607
+#, elixir-autogen, elixir-format
+msgid "Give voice status to a user in the current channel."
+msgstr "在当前频道中给予用户语音状态 。"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:143
+#, elixir-autogen, elixir-format
+msgid "Grant half-operator status with limited moderation privileges."
+msgstr "给予半运营者地位,并给予有限的节制特权."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:131
+#, elixir-autogen, elixir-format
+msgid "Grant operator status to a user, allowing them to manage the channel."
+msgstr "授予用户操作员身份,让他们管理频道."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:119
+#, elixir-autogen, elixir-format
+msgid "Grant owner status to a user, giving them full control over the channel."
+msgstr "授予用户所有者身份,让他们完全控制频道."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:152
+#, elixir-autogen, elixir-format
+msgid "Grant voice status to allow speaking in moderated channels."
+msgstr "给予发言权,允许在主持频道发言。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1218
+#, elixir-autogen, elixir-format
+msgid "Gravity Well"
+msgstr "重力井( 重力井)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2552
+#, elixir-autogen, elixir-format
+msgid "HacX: Twitch 'n Kill"
+msgstr "HacX: Twitch 'n Kill (杀)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2275
+#, elixir-autogen, elixir-format
+msgid "Half-Life (Arcade)"
+msgstr "半条命(拱廊)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2721
+#, elixir-autogen, elixir-format
+msgid "Half-Life: Uplink"
+msgstr "半条命:上行链路"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1696
+#, elixir-autogen, elixir-format
+msgid "Headlights-only visibility — pure reflexes. Most overtakes wins. "
+msgstr "只有头灯的能见度——纯粹的反射. 多数胜者胜出."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:141
+#, elixir-autogen, elixir-format
+msgid "Helpful placeholders shown when lists are empty, guiding you on what to do next."
+msgstr "当列表为空时显示有帮助的占位符, 指导您下一步要做什么 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:639
+#, elixir-autogen, elixir-format
+msgid "Helpful tips that appear contextually to guide you through features as you use them."
+msgstr "方便的提示,这些提示在上下文中显示出来,在您使用时引导您通过特性。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1414
+#, elixir-autogen, elixir-format
+msgid "Hex Boxing"
+msgstr "拳击"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1647
+#, elixir-autogen, elixir-format
+msgid "Hex Enduro"
+msgstr "十六进制"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1683
+#, elixir-autogen, elixir-format
+msgid "Hex Enduro: Night Race"
+msgstr "Hex Enduro: 夜间赛车"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1709
+#, elixir-autogen, elixir-format
+msgid "Hex Enduro: Sprint"
+msgstr "Hex Enduro: 冲刺"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1890
+#, elixir-autogen, elixir-format
+msgid "Hex Frost"
+msgstr "螺旋冻"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1933
+#, elixir-autogen, elixir-format
+msgid "Hex Frost: Blizzard"
+msgstr "海克斯霜:布莱扎德"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1965
+#, elixir-autogen, elixir-format
+msgid "Hex Frost: Peaceful"
+msgstr "海克斯·弗罗斯特:和平"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1995
+#, elixir-autogen, elixir-format
+msgid "Hex Hockey"
+msgstr "Hex 冰球游戏"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2037
+#, elixir-autogen, elixir-format
+msgid "Hex Hockey: Blitz"
+msgstr "Hex 冰球: 闪光弹"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2066
+#, elixir-autogen, elixir-format
+msgid "Hex Hockey: Showdown"
+msgstr "Hex 冰球: 显示"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1558
+#, elixir-autogen, elixir-format
+msgid "Hex Invaders"
+msgstr "黑客入侵者"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1620
+#, elixir-autogen, elixir-format
+msgid "Hex Invaders: Blitz"
+msgstr "黑客入侵者:闪电侠"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1593
+#, elixir-autogen, elixir-format
+msgid "Hex Invaders: Co-op"
+msgstr "黑客入侵者:联合作战"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1439
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw"
+msgstr "黑帮外围组织"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1530
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw: No Man's Land"
+msgstr "Hex Outlaw: 无人区"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1470
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw: Ricochet"
+msgstr "Hex Outlaw: 里科切特语"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1502
+#, elixir-autogen, elixir-format
+msgid "Hex Outlaw: Stagecoach"
+msgstr "Hex Outlaw: 斯大林库"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1128
+#, elixir-autogen, elixir-format
+msgid "Hex Pong"
+msgstr "He"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1330
+#, elixir-autogen, elixir-format
+msgid "Hex Raid"
+msgstr "螺旋突袭"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1391
+#, elixir-autogen, elixir-format
+msgid "Hex Raid: Blitz"
+msgstr "海克斯突击:闪电"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1368
+#, elixir-autogen, elixir-format
+msgid "Hex Raid: Pacifist"
+msgstr "海克斯突击队:和平派"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1810
+#, elixir-autogen, elixir-format
+msgid "Hex Skiing"
+msgstr "海克斯滑雪"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1866
+#, elixir-autogen, elixir-format
+msgid "Hex Skiing: Clean Run"
+msgstr "海克斯滑雪:干净的跑步"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1842
+#, elixir-autogen, elixir-format
+msgid "Hex Skiing: Escape"
+msgstr "黑克斯滑雪:逃跑"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1736
+#, elixir-autogen, elixir-format
+msgid "Hex Tennis"
+msgstr "Hex 网球赛"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1764
+#, elixir-autogen, elixir-format
+msgid "Hex Tennis: Quick Match"
+msgstr "Hex 网球: 快速匹配"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1787
+#, elixir-autogen, elixir-format
+msgid "Hex Tennis: Sudden Death"
+msgstr "黑斯网球:突发死亡"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1297
+#, elixir-autogen, elixir-format
+msgid "Hex Warlords"
+msgstr "赫克斯军阀"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:172
+#, elixir-autogen, elixir-format
+msgid "Hide the channel from the channel list and whois results."
+msgstr "隐藏频道列表中的频道和结果 。"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:181
+#, elixir-autogen, elixir-format
+msgid "Hide the channel name from whois while still appearing in the channel list."
+msgstr "在频道列表中仍然出现时隐藏频道名称 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:47
+#, elixir-autogen, elixir-format
+msgid "Highlight Words"
+msgstr "突出显示单词"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2792
+#, elixir-autogen, elixir-format
+msgid "Hilarious Spanish point & click parody of Dracula (1996) — defeat the vampire Drascula with absurd humor."
+msgstr "幽默的西班牙语点和点击dracula (1996年)——以荒谬的幽默击败吸血鬼Drascula."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1321
+#, elixir-autogen, elixir-format
+msgid "Hold Space to catch, release to aim. Best of 3 lives. "
+msgstr "保持空间捕捉,释放瞄准。 最好的3条命。"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:69
+#, elixir-autogen, elixir-format
+msgid "How to create and use custom bot commands (!prefix trigger) for automated responses."
+msgstr "如何创建和使用自定义的bot命令(!prefix触发)进行自动响应."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:11
+#, elixir-autogen, elixir-format
+msgid "IRC Commands Reference"
+msgstr "IRC 命令参考"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:68
+#, elixir-autogen, elixir-format
+msgid "Ignore List"
+msgstr "忽略列表"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1855
+#, elixir-autogen, elixir-format
+msgid "Infinite descent — the avalanche never stops accelerating. "
+msgstr "无限的下降——雪崩从未停止加速."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:395
+#, elixir-autogen, elixir-format
+msgid "Interactive Chat Elements"
+msgstr "交互式聊天元素"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:112
+#, elixir-autogen, elixir-format
+msgid "Interactive trivia quiz with multiple categories, scoring, and configurable timers."
+msgstr "与多个类别,评分,和可配置的计时器进行交互三维亚测试."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:120
+#, elixir-autogen, elixir-format
+msgid "Invite Exceptions (+I)"
+msgstr "邀请例外(+I)"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:167
+#, elixir-autogen, elixir-format
+msgid "Invite a user to join a channel, especially useful for invite-only channels."
+msgstr "请用户加入一个频道, 尤其对只邀请频道有用 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:179
+#, elixir-autogen, elixir-format
+msgid "Join a chat channel to read and send messages. Creates the channel if it does not exist."
+msgstr "加入聊天频道读取并发送消息. 如果频道不存在,则创建频道。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:359
+#, elixir-autogen, elixir-format
+msgid "Key Bindings"
+msgstr "密钥绑定"
+
+#: lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex:11
+#, elixir-autogen, elixir-format
+msgid "Keyboard Shortcuts"
+msgstr "键盘快捷键"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:668
+#, elixir-autogen, elixir-format
+msgid "Kick Notifications"
+msgstr "踢出通知"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:718
+#, elixir-autogen, elixir-format
+msgid "Lag Indicator"
+msgstr "标签指标"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1856
+#, elixir-autogen, elixir-format
+msgid "Last skier standing wins. Pure survival mode. "
+msgstr "最后一个滑雪选手站着获胜。 纯生存模式."
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:28
+#, elixir-autogen, elixir-format
+msgid "Learn how to connect to the RetroHexChat server by choosing a nickname and joining channels."
+msgstr "通过选择昵称和加入频道来学习如何连接RetroHexChat服务器."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:312
+#, elixir-autogen, elixir-format
+msgid "Leave the current channel with an optional part message."
+msgstr "保留当前频道的可选部分消息 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2639
+#, elixir-autogen, elixir-format
+msgid "LibreQuake"
+msgstr "自由夸克"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1141
+#, elixir-autogen, elixir-format
+msgid "Light Trails"
+msgstr "轻轨"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:224
+#, elixir-autogen, elixir-format
+msgid "Lightweight messages used for server announcements and automated responses."
+msgstr "用于服务器通知和自动响应的轻量级消息."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:236
+#, elixir-autogen, elixir-format
+msgid "Limit how quickly users can join the channel to prevent join flooding."
+msgstr "限制用户能多快地加入频道以防止加入洪水."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:435
+#, elixir-autogen, elixir-format
+msgid "Look up detailed information about a user including channels, idle time, and bio."
+msgstr "查找用户的详细信息,包括频道、闲暇时间和生物信息。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:447
+#, elixir-autogen, elixir-format
+msgid "Look up information about a user who recently disconnected from the server."
+msgstr "查找最近断开服务器的用户信息 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2865
+#, elixir-autogen, elixir-format
+msgid "Lure of the Temptress"
+msgstr "诱惑者的光芒"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2392
+#, elixir-autogen, elixir-format
+msgid "Lure of the Temptress (1992), and Soltys (1995). "
+msgstr "诱惑者的卢尔(1992年)和索尔蒂斯(1995年)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2138
+#, elixir-autogen, elixir-format
+msgid "Lure of the Temptress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM, "
+msgstr "(原始内容存档于2018-09-29). Lure of the Tempress, Soltys, Half-Life: Uplink, Wolfenstein 3D, DOOM,,,."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:821
+#, elixir-autogen, elixir-format
+msgid "Make peer-to-peer audio calls with mute controls and quality indicators."
+msgstr "以哑弹控制和质量指标制作对等音频呼叫."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:840
+#, elixir-autogen, elixir-format
+msgid "Make video calls with camera controls, picture-in-picture, and quality settings."
+msgstr "以相机控制、图片画面、质量设置制作视频。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:321
+#, elixir-autogen, elixir-format
+msgid "Manage commands that run automatically when you connect to the server."
+msgstr "管理连接到服务器时自动运行的命令 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:40
+#, elixir-autogen, elixir-format
+msgid "Manage contacts, assign custom nick colors, and organize your notify list."
+msgstr "管理联系人, 指定自定义昵称颜色, 并组织您的通知列表 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1667
+#, elixir-autogen, elixir-format
+msgid "Manage fuel, use turbo boosts, and draft in slipstreams. Best of 3 days. "
+msgstr "管理燃料,使用涡轮增压,在滑流中进行调试. 最好的三天时间。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:301
+#, elixir-autogen, elixir-format
+msgid "Manage peer-to-peer sessions for direct communication, calls, and file transfers."
+msgstr "管理对等会话,以进行直接沟通、呼叫和文件传输。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:496
+#, elixir-autogen, elixir-format
+msgid "Manage server channels: list, info, create, delete, purge messages, view bans."
+msgstr "管理服务器频道:列表,信息,创建,删除,清除消息,视图禁止."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:484
+#, elixir-autogen, elixir-format
+msgid "Manage server users: list, info, ban/unban, kick, mute/unmute, rename, set role."
+msgstr "管理服务器用户:列表,信息,ban/unban, kick, mute/unmute,重命名,设置角色."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:43
+#, elixir-autogen, elixir-format
+msgid "Manage the list of channels that are automatically joined on connect."
+msgstr "管理连接时自动加入的频道列表 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:73
+#, elixir-autogen, elixir-format
+msgid "Manage your ignore list to hide messages and actions from specific users."
+msgstr "管理您的忽略列表以隐藏来自特定用户的信件和行动 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:847
+#, elixir-autogen, elixir-format
+msgid "Media Devices"
+msgstr "媒体设备"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:793
+#, elixir-autogen, elixir-format
+msgid "Message Delete"
+msgstr "删除信件"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:777
+#, elixir-autogen, elixir-format
+msgid "Message Edit"
+msgstr "信件编辑"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:758
+#, elixir-autogen, elixir-format
+msgid "Message Reply"
+msgstr "信件回复"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:45
+#: lib/retro_hex_chat/chat/help_topics.ex:73
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:75
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:187
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:401
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:587
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:595
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:604
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:612
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:620
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:629
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:641
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:653
+#, elixir-autogen, elixir-format
+msgid "Moderation"
+msgstr "调和"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:151
+#, elixir-autogen, elixir-format
+msgid "Monitor RSS/Atom feeds and post new items to channels automatically."
+msgstr "监视 RSS/Atom 种子,并将新项目自动发送到频道."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:876
+#, elixir-autogen, elixir-format
+msgid "Monitor and adjust call quality with bitrate presets and real-time quality indicators."
+msgstr "用比特率预设和实时质量指标来监测和调整呼叫质量."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:448
+#, elixir-autogen, elixir-format
+msgid "Multi-Line Paste Dialog"
+msgstr "多行粘贴对话框"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:272
+#, elixir-autogen, elixir-format
+msgid "Mute"
+msgstr "静音"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:633
+#, elixir-autogen, elixir-format
+msgid "Mute a user in the current channel, preventing them from sending messages."
+msgstr "在当前频道中关闭一个用户,使其无法发送消息."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:277
+#, elixir-autogen, elixir-format
+msgid "Mute all sounds globally or per-channel to silence notifications."
+msgstr "将所有声音从全球或每个频道都发出静音通知。"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:28
+#, elixir-autogen, elixir-format
+msgid "Navigate channels and private conversations using the left-side conversations panel."
+msgstr "使用左侧对话面板导航频道和私人对话."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:621
+#, elixir-autogen, elixir-format
+msgid "Navigate command history with Ctrl+Up/Down and search with Ctrl+R. Drafts persist per channel."
+msgstr "用 Ctrl+Up/Down 导航命令历史,用 Ctrl+R 搜索。每个信道都坚持草稿 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1202
+#, elixir-autogen, elixir-format
+msgid "Newtonian space combat in open vacuum. Thrust, rotate, and fire missiles. "
+msgstr "牛顿太空在开放真空中作战. 推力、旋转和发射导弹。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:417
+#, elixir-autogen, elixir-format
+msgid "Nick Column Alignment"
+msgstr "昵称列对齐"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1027
+#, elixir-autogen, elixir-format
+msgid "Nick Expiration"
+msgstr "昵称过期"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:11
+#, elixir-autogen, elixir-format
+msgid "NickServ Overview"
+msgstr "NickServ 概览"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:508
+#, elixir-autogen, elixir-format
+msgid "NickServ administration: drop nick registrations, view info, reset passwords."
+msgstr "NickServ管理:放下昵称注册,查看信息,重置密码."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1610
+#, elixir-autogen, elixir-format
+msgid "No alien drop mechanic. Survive together or fall together. "
+msgstr "没有外星空投机械师。 生存在一起或坠落在一起。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1879
+#, elixir-autogen, elixir-format
+msgid "No avalanche, no items — just trees, rocks, and slalom gates. "
+msgstr "没有雪崩,没有物品——只有树木,岩石,和石板门."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2078
+#, elixir-autogen, elixir-format
+msgid "No timer — first to 5 goals wins. The puck speeds up after every goal scored, "
+msgstr "没有计时器——先进5球. 每进一球,球都加速了"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:219
+#, elixir-autogen, elixir-format
+msgid "Notices"
+msgstr "通知"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:54
+#: lib/retro_hex_chat/chat/help_topics.ex:82
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:261
+#: lib/retro_hex_chat/chat/help_topics/features.ex:220
+#: lib/retro_hex_chat/chat/help_topics/features.ex:232
+#: lib/retro_hex_chat/chat/help_topics/features.ex:252
+#: lib/retro_hex_chat/chat/help_topics/features.ex:273
+#, elixir-autogen, elixir-format
+msgid "Notifications & Sounds"
+msgstr "通知声音( Sounds)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:11
+#, elixir-autogen, elixir-format
+msgid "Notify List (Buddy List)"
+msgstr "通知名单(Buddy名单)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2049
+#, elixir-autogen, elixir-format
+msgid "One intense period of 3 minutes. Puck moves 25% faster, tackles succeed 80% of the time. "
+msgstr "一次3分钟的激烈时间 帕克移动速度快25%,处理成功80%的时间."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1020
+#, elixir-autogen, elixir-format
+msgid "Only one active session per nickname is allowed to prevent conflicts."
+msgstr "每个昵称只允许一个活动会话来预防冲突."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:350
+#, elixir-autogen, elixir-format
+msgid "Open a private conversation tab with another user."
+msgstr "打开与另一个用户的私人对话标签 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:339
+#, elixir-autogen, elixir-format
+msgid "Open the custom menus editor to add items to right-click context menus."
+msgstr "打开自定义菜单编辑器,将项目添加到右键上下文菜单中。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1231
+#, elixir-autogen, elixir-format
+msgid "Orbital combat around a central gravity star. Ships are pulled toward the star — "
+msgstr "围绕中心重力星展开轨道战斗. 船舶被拖向恒星"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:59
+#, elixir-autogen, elixir-format
+msgid "Overview of all channel modes including moderation, access control, and privacy settings."
+msgstr "所有频道模式概述,包括节制、访问控制和隐私设置。"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:107
+#, elixir-autogen, elixir-format
+msgid "Overview of special message types including MOTD, welcome messages, wallops, and announcements."
+msgstr "特殊信息类型概述,包括MOTD,欢迎信息,wallops,和公告."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:16
+#, elixir-autogen, elixir-format
+msgid "Overview of the RetroHexChat interface layout including panels, toolbar, and navigation."
+msgstr "RetroHexChat接口布局概述,包括面板,工具栏和导航."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:59
+#: lib/retro_hex_chat/chat/help_topics.ex:87
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:96
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:128
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:297
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:363
+#: lib/retro_hex_chat/chat/help_topics/features.ex:811
+#: lib/retro_hex_chat/chat/help_topics/features.ex:829
+#: lib/retro_hex_chat/chat/help_topics/features.ex:848
+#: lib/retro_hex_chat/chat/help_topics/features.ex:866
+#: lib/retro_hex_chat/chat/help_topics/features.ex:884
+#: lib/retro_hex_chat/chat/help_topics/features.ex:904
+#: lib/retro_hex_chat/chat/help_topics/features.ex:927
+#, elixir-autogen, elixir-format
+msgid "P2P & Calls"
+msgstr "P2P 调用( C)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1069
+#, elixir-autogen, elixir-format
+msgid "P2P Games"
+msgstr "P2P 游戏"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:60
+#: lib/retro_hex_chat/chat/help_topics.ex:88
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1070
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1129
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1142
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1155
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1189
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1219
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1245
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1271
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1298
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1331
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1369
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1392
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1415
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1440
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1471
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1503
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1531
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1559
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1594
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1621
+#, elixir-autogen, elixir-format
+msgid "P2P Games: Action"
+msgstr "P2P 游戏: 动作"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:61
+#: lib/retro_hex_chat/chat/help_topics.ex:89
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1648
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1684
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1710
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1737
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1765
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1788
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1811
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1843
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1867
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1891
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1934
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1966
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1996
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2038
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2067
+#, elixir-autogen, elixir-format
+msgid "P2P Games: Sports"
+msgstr "P2P 运动会:体育"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:883
+#, elixir-autogen, elixir-format
+msgid "P2P Sessions"
+msgstr "P2P会议"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:965
+#, elixir-autogen, elixir-format
+msgid "PM Persistence"
+msgstr "PM 持久性"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:178
+#, elixir-autogen, elixir-format
+msgid "Perform / Auto-Commands"
+msgstr "执行/ 自动命令"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1154
+#, elixir-autogen, elixir-format
+msgid "Pixel Tanks"
+msgstr "像素罐头"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2228
+#, elixir-autogen, elixir-format
+msgid "Play 2 Quake-engine games in your browser — Quake shareware and LibreQuake (open-source). "
+msgstr "在您的浏览器中玩 2 个Quake- engine 游戏—— Quake 共享软件和 LibreQuake (开源)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2191
+#, elixir-autogen, elixir-format
+msgid "Play 7 DOOM-engine games in your browser — DOOM shareware, Freedoom Phase 1 & 2, "
+msgstr "在您的浏览器中玩 7 DOOM- 引擎游戏 — DOOM 共享软件, Freedoom Phase 1 & 2"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2292
+#, elixir-autogen, elixir-format
+msgid "Play Half-Life: Uplink in your browser — the official 1999 demo with 3 unique levels "
+msgstr "在您的浏览器中播放“ 半条命: 向上链接 ” — 1999 年官方演示, 3 个独特的关卡"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2259
+#, elixir-autogen, elixir-format
+msgid "Play Wolfenstein 3D Episode 1 (shareware) in your browser — 10 levels of the "
+msgstr "在您的浏览器中播放 Wolfenstein 3D 第1集( 共享软件) — 10 关"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2130
+#, elixir-autogen, elixir-format
+msgid "Play classic games in your browser via WebAssembly — 18 games including "
+msgstr "通过 WebAssembly 在浏览器中玩经典游戏——包括18个游戏"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2384
+#, elixir-autogen, elixir-format
+msgid "Play classic point & click adventures in your browser — Beneath a Steel Sky (1994), "
+msgstr "在您的浏览器中玩经典点和点击冒险——在钢铁天空下(1994),"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1084
+#, elixir-autogen, elixir-format
+msgid "Play retro arcade games directly with other users via peer-to-peer WebRTC connections."
+msgstr "通过对等的WebRTC连接,直接与其他用户播放复古街机游戏."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2329
+#, elixir-autogen, elixir-format
+msgid "Play the Quake II demo in your browser — Unit 1 of the singleplayer campaign. "
+msgstr "在您的浏览器中播放Quake II演示——单人游戏活动的第1单元."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2264
+#, elixir-autogen, elixir-format
+msgid "Powered by ECWolf-JS (ECWolf → WebAssembly)."
+msgstr "由ECWolf-JS(ECWolf – WebAssembly)提供动力."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2232
+#, elixir-autogen, elixir-format
+msgid "Powered by Qwasm (QuakeSpasm → WebAssembly)."
+msgstr "由Quasm(QuakeSpasm – Web Assembly)提供电力."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2333
+#, elixir-autogen, elixir-format
+msgid "Powered by Qwasm2 (Yamagi Quake II → WebAssembly)."
+msgstr "由Qwasm2(Yamagi Quake II – Web Assembly)提供电力."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2393
+#, elixir-autogen, elixir-format
+msgid "Powered by ScummVM (official Emscripten backend → WebAssembly)."
+msgstr "由渣滓VM(官方Emscripten后端~WebAssembly)提供动力."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2297
+#, elixir-autogen, elixir-format
+msgid "Powered by Xash3D-FWGS (GoldSource reimplementation → WebAssembly)."
+msgstr "由Xash3D-FWGS(Gold Source restruction → Web Assembly)提供动力."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:222
+#, elixir-autogen, elixir-format
+msgid "Prevent users from sending knock requests to the channel."
+msgstr "防止用户向频道发送敲门请求."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:946
+#, elixir-autogen, elixir-format
+msgid "Privacy Settings"
+msgstr "隐私设置"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:52
+#, elixir-autogen, elixir-format
+msgid "Private Messages"
+msgstr "私人信件"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:979
+#, elixir-autogen, elixir-format
+msgid "Private message conversations are restored automatically on reconnect, ordered by recency."
+msgstr "私人信件对话在重新连接时会自动恢复,由复用命令."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:244
+#, elixir-autogen, elixir-format
+msgid "Protect against message flooding with rate limiting and automatic ignore rules."
+msgstr "防止信息淹没,同时限制费率,自动无视规则。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1662
+#, elixir-autogen, elixir-format
+msgid "Pseudo-3D racing duel through day, snow, fog, and night. "
+msgstr "Pseudo-3D赛车比赛通过日,雪,雾,夜."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1382
+#, elixir-autogen, elixir-format
+msgid "Pure competition for points, fuel, and survival across 10 sections. "
+msgstr "纯粹竞争点数,燃料,和生存 跨越10个区。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1978
+#, elixir-autogen, elixir-format
+msgid "Pure construction race — no block stealing allowed. Stepping on opponent's blocks "
+msgstr "纯粹的建筑竞赛——禁止偷街区. 踩着对手的挡板"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2053
+#, elixir-autogen, elixir-format
+msgid "Pure intensity from start to finish. "
+msgstr "纯强度从头到尾."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2214
+#, elixir-autogen, elixir-format
+msgid "Quake (Arcade)"
+msgstr "夸克( 拱门)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2311
+#, elixir-autogen, elixir-format
+msgid "Quake II (Arcade)"
+msgstr "夸克二号(拱廊)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2665
+#, elixir-autogen, elixir-format
+msgid "Quake II: The Invasion"
+msgstr "夸克二:入侵"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2142
+#, elixir-autogen, elixir-format
+msgid "Quake, Quake II, Freedoom, Chex Quest, HacX, REKKR, and LibreQuake. "
+msgstr "夸克,夸克二世,弗里多姆,切克斯奎斯特,哈克X,REKKR,和利布尔奎克."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2613
+#, elixir-autogen, elixir-format
+msgid "Quake: Dimension of the Doomed"
+msgstr "夸克:毁灭的尺寸"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:544
+#, elixir-autogen, elixir-format
+msgid "Query the audit log of admin actions with optional filters."
+msgstr "使用可选过滤器查询管理动作的审计日志。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:577
+#, elixir-autogen, elixir-format
+msgid "Quick reference overlay showing all keyboard shortcuts, opened with Ctrl+/."
+msgstr "快速引用覆盖显示所有键盘快捷键,以 Ctrl+/ 打开."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1776
+#, elixir-autogen, elixir-format
+msgid "Quick tennis match — first to 3 games wins. "
+msgstr "快速网球比赛——首胜3局."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:472
+#, elixir-autogen, elixir-format
+msgid "Quit Messages"
+msgstr "退出信件"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2581
+#, elixir-autogen, elixir-format
+msgid "REKKR: Sunken Land"
+msgstr "沉没的土地"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:91
+#, elixir-autogen, elixir-format
+msgid "RPG dice rolling with standard notation (NdS, modifiers, keep highest/lowest)."
+msgstr "RPG 骰子滚动带有标准标记(NdS,调制器,保持最高/lowest)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1146
+#, elixir-autogen, elixir-format
+msgid "Race across a grid leaving a glowing trail. Hit a trail or wall and you lose."
+msgstr "穿越一个网格 留下一条闪闪发光的线索。 撞上小径或墙,你就输了"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:731
+#, elixir-autogen, elixir-format
+msgid "Real-time latency indicator in the status bar showing network delay to the server."
+msgstr "状态栏中的实时延迟指标显示网络延迟到服务器."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:150
+#, elixir-autogen, elixir-format
+msgid "Receive and manage channel invitations with optional auto-join on invite."
+msgstr "接收和管理频道邀请, 在邀请时可选择自动连接 。"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:49
+#, elixir-autogen, elixir-format
+msgid "Reference for all /bot subcommands: create, destroy, join, part, enable, disable, set, addcmd, delcmd."
+msgstr "所有 /bot 子命令的引用: 创建、 销毁、 加入、 部分、 启用、 禁用、 设置、 添加、 delcmd 。"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:41
+#, elixir-autogen, elixir-format
+msgid "Register and manage channels with ChanServ, including access lists and channel settings."
+msgstr "与 ChanServ 注册和管理频道,包括访问列表和频道设置."
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:22
+#, elixir-autogen, elixir-format
+msgid "Register and protect your nickname with NickServ to prevent others from using it."
+msgstr "与NickServ注册并保护您的昵称,以防止他人使用."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1041
+#, elixir-autogen, elixir-format
+msgid "Registered nicknames expire after 7 days of inactivity and become available again."
+msgstr "已注册的昵称在7天无活动后到期,再次可用."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:409
+#, elixir-autogen, elixir-format
+msgid "Remove a ban from a channel to allow the user to rejoin."
+msgstr "从频道中删除禁止, 允许用户重新加入 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:645
+#, elixir-autogen, elixir-format
+msgid "Remove a channel mute from a user, allowing them to send messages again."
+msgstr "从用户中删除一个频道哑音, 允许他们再次发送消息 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:191
+#, elixir-autogen, elixir-format
+msgid "Remove a user from a channel. Requires operator or higher privileges."
+msgstr "从频道中删除用户 。 需要操作员或更高的权限 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:418
+#, elixir-autogen, elixir-format
+msgid "Remove a user from your ignore list to see their messages again."
+msgstr "从您的忽略列表中删除一个用户以再次查看其信件 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:599
+#, elixir-autogen, elixir-format
+msgid "Remove operator status from a user in the current channel."
+msgstr "从当前频道的用户中删除操作员状态 。"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:56
+#, elixir-autogen, elixir-format
+msgid "Remove the channel welcome message."
+msgstr "删除频道欢迎消息 。"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:36
+#, elixir-autogen, elixir-format
+msgid "Remove the server's Message of the Day. Requires admin privileges."
+msgstr "删除服务器的每日信件 。 需要管理员权限 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:615
+#, elixir-autogen, elixir-format
+msgid "Remove voice status from a user in the current channel."
+msgstr "从当前频道的用户中删除语音状态 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:770
+#, elixir-autogen, elixir-format
+msgid "Reply to specific messages with quoted context for threaded conversations."
+msgstr "对带引用语句用于线性对话的特定信息的答复 。"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:247
+#, elixir-autogen, elixir-format
+msgid "Request an invitation to join an invite-only channel."
+msgstr "请求邀请加入只邀请的频道。"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:96
+#, elixir-autogen, elixir-format
+msgid "Require a password to join the channel."
+msgstr "需要密码才能加入频道 。"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:80
+#, elixir-autogen, elixir-format
+msgid "Restrict channel access to users who have been explicitly invited."
+msgstr "限制被明确邀请的用户进入频道."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:71
+#, elixir-autogen, elixir-format
+msgid "Restrict speaking to voiced users and above in a moderated channel."
+msgstr "限制在节奏频道中向用户及以上表示。"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:210
+#, elixir-autogen, elixir-format
+msgid "Restrict the channel to users who have identified with NickServ."
+msgstr "将频道限制在已与NickServ识别的用户."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:88
+#, elixir-autogen, elixir-format
+msgid "Restrict topic changes to half-operators and above."
+msgstr "限制主题更改为半操作器及以上."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:453
+#, elixir-autogen, elixir-format
+msgid "Review and confirm multi-line pastes before sending to prevent accidental flooding."
+msgstr "在发送前审查并确认多线粘贴,以防止意外洪灾."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2879
+#, elixir-autogen, elixir-format
+msgid "Revolution Software's 1992 debut — medieval fantasy with the pioneering Virtual Theatre NPC AI system."
+msgstr "革命软件1992年首播——中世纪幻想与开拓性的虚拟剧NPCAI系统."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:429
+#, elixir-autogen, elixir-format
+msgid "Right-Click Copy"
+msgstr "右键复制"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:600
+#, elixir-autogen, elixir-format
+msgid "Right-click context menus for nicknames, messages, URLs, channels, and conversations."
+msgstr "右键单击昵称,消息,URL,频道,和对话的上下文菜单."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1347
+#, elixir-autogen, elixir-format
+msgid "River Raid reimagined for two — race through a scrolling toxic canal, "
+msgstr "暴风雨重现了两场比赛 通过一条滚滚的有毒运河"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1381
+#, elixir-autogen, elixir-format
+msgid "River Raid without sabotage — no mines allowed. "
+msgstr "不加破坏的河袭——不允许布雷."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:579
+#, elixir-autogen, elixir-format
+msgid "Run without --confirm for a preview; with --confirm to execute. IRREVERSIBLE."
+msgstr "未确认预览运行; 未确认执行 。 永远不可能。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1777
+#, elixir-autogen, elixir-format
+msgid "Same gameplay, shorter format. No tiebreak needed. "
+msgstr "相同的游戏玩法,更短的格式. 不需要打结"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:312
+#, elixir-autogen, elixir-format
+msgid "Schedule commands to execute after a delay or repeat at regular intervals."
+msgstr "计划命令在延迟或定期重复后执行。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:388
+#, elixir-autogen, elixir-format
+msgid "Schedule commands to run after a delay or at regular intervals."
+msgstr "排程命令在延迟后或定期运行 。"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:133
+#, elixir-autogen, elixir-format
+msgid "Schedule periodic or daily messages to channels automatically."
+msgstr "将定期或每日消息自动排入频道."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2345
+#, elixir-autogen, elixir-format
+msgid "ScummVM Adventures (Arcade)"
+msgstr "ScumVM 冒险(街机)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:157
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "搜索"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:543
+#, elixir-autogen, elixir-format
+msgid "See command syntax and parameter hints as you type slash commands."
+msgstr "输入斜线命令时,请查看命令语法和参数提示。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:465
+#, elixir-autogen, elixir-format
+msgid "See how many characters remain before reaching the message length limit."
+msgstr "查看在达到信件长度限制之前还剩下多少字符 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:291
+#, elixir-autogen, elixir-format
+msgid "See when someone is typing a message in a private conversation."
+msgstr "看看有人在私下谈话中打字"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:858
+#, elixir-autogen, elixir-format
+msgid "Select and switch between microphones, cameras, and speakers during calls."
+msgstr "在通话时选择麦克风、摄像机和扬声器并进行切换。"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:69
+#, elixir-autogen, elixir-format
+msgid "Send a broadcast message to all users who have wallops mode enabled."
+msgstr "向所有已启用Wallops模式的用户发送广播消息."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:367
+#, elixir-autogen, elixir-format
+msgid "Send a file to another user through a peer-to-peer connection."
+msgstr "通过对等连接向另一个用户发送文件 。"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:78
+#, elixir-autogen, elixir-format
+msgid "Send a global announcement to all connected users. Requires admin privileges."
+msgstr "向所有连接的用户发送全局公告. 需要管理员权限 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:253
+#, elixir-autogen, elixir-format
+msgid "Send a notice message to a user or channel. Notices do not open query windows."
+msgstr "向用户或频道发送通知信息。 通知不打开查询窗口 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:233
+#, elixir-autogen, elixir-format
+msgid "Send a private message to another user without opening a conversation tab."
+msgstr "在不打开对话标签的情况下向另一个用户发送私人消息."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:211
+#, elixir-autogen, elixir-format
+msgid "Send an action message that describes what you are doing."
+msgstr "发送一个动作信息 描述你在做什么。"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:64
+#, elixir-autogen, elixir-format
+msgid "Send and receive private messages with other users using the /msg and /query commands."
+msgstr "与其他用户使用/msg和/query命令发送和接收私人消息."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:123
+#, elixir-autogen, elixir-format
+msgid "Send commands to ChanServ for channel registration and management."
+msgstr "将命令发送给 ChanServ 进行频道注册和管理."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:289
+#, elixir-autogen, elixir-format
+msgid "Send commands to NickServ for nickname registration and identification."
+msgstr "向NickServe发送命令以获取昵称注册和身份识别."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:939
+#, elixir-autogen, elixir-format
+msgid "Send files directly to other users via peer-to-peer with drag-and-drop support."
+msgstr "在拖放支持下,通过对等程序直接向其他用户发送文件."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:50
+#: lib/retro_hex_chat/chat/help_topics.ex:78
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:12
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:20
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:32
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:41
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:53
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:61
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:74
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:95
+#, elixir-autogen, elixir-format
+msgid "Server Messages"
+msgstr "服务器消息"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:460
+#, elixir-autogen, elixir-format
+msgid "Server administration commands for managing users, channels, services, and server settings."
+msgstr "用于管理用户,频道,服务和服务器设置的服务器管理命令."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:532
+#, elixir-autogen, elixir-format
+msgid "Server debug tools: view active connections, channel processes, and BEAM memory usage."
+msgstr "服务器调试工具:查看活动连接,通道进程,以及BEAM内存使用."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:47
+#: lib/retro_hex_chat/chat/help_topics.ex:75
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:114
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:285
+#: lib/retro_hex_chat/chat/help_topics/services.ex:12
+#: lib/retro_hex_chat/chat/help_topics/services.ex:30
+#, elixir-autogen, elixir-format
+msgid "Services & Protocols"
+msgstr "服务和协议"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:110
+#, elixir-autogen, elixir-format
+msgid "Set a maximum number of users that can be in the channel at once."
+msgstr "设置可以同时进入频道的最大用户数量."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:45
+#, elixir-autogen, elixir-format
+msgid "Set a welcome message displayed to users when they join your channel."
+msgstr "设置用户加入您的频道时显示的欢迎消息 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:67
+#, elixir-autogen, elixir-format
+msgid "Set or clear your away status to let others know you are not available."
+msgstr "设置或清除您的离开状态, 让其他人知道您没有空位 。"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:24
+#, elixir-autogen, elixir-format
+msgid "Set or update the server's Message of the Day. Requires admin privileges."
+msgstr "设置或更新服务器的每日信件 。 需要管理员权限 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:88
+#, elixir-autogen, elixir-format
+msgid "Set or view a personal biography that appears in whois and hover cards."
+msgstr "设置或查看个人传记,该传记出现在whois和悬浮卡片中."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:55
+#: lib/retro_hex_chat/chat/help_topics.ex:83
+#: lib/retro_hex_chat/chat/help_topics/features.ex:340
+#: lib/retro_hex_chat/chat/help_topics/features.ex:360
+#: lib/retro_hex_chat/chat/help_topics/features.ex:585
+#: lib/retro_hex_chat/chat/help_topics/features.ex:947
+#, elixir-autogen, elixir-format
+msgid "Settings & Preferences"
+msgstr "设置首选项( P)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:566
+#, elixir-autogen, elixir-format
+msgid "Shortcut Cheatsheet"
+msgstr "快捷键计费表"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1006
+#, elixir-autogen, elixir-format
+msgid "Single Session"
+msgstr "单会"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:547
+#, elixir-autogen, elixir-format
+msgid "Smart Input"
+msgstr "智能输入"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2096
+#, elixir-autogen, elixir-format
+msgid "Solo Arcade"
+msgstr "独角街"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:63
+#: lib/retro_hex_chat/chat/help_topics.ex:91
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2346
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2750
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2779
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2808
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2837
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2866
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2895
+#, elixir-autogen, elixir-format
+msgid "Solo Arcade: Adventures"
+msgstr "独角戏院:冒险"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:62
+#: lib/retro_hex_chat/chat/help_topics.ex:90
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:372
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2097
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2171
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2215
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2244
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2276
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2312
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2410
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2439
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2467
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2497
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2523
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2553
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2582
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2614
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2640
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2666
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2694
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2722
+#, elixir-autogen, elixir-format
+msgid "Solo Arcade: FPS"
+msgstr "独角街:FPS"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2894
+#, elixir-autogen, elixir-format
+msgid "Soltys"
+msgstr "溶液"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:251
+#, elixir-autogen, elixir-format
+msgid "Sounds"
+msgstr "声音"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1257
+#, elixir-autogen, elixir-format
+msgid "Space combat through floating asteroid obstacles. Asteroids block missiles and "
+msgstr "通过漂浮的小行星障碍进行太空战斗. 小行星阻断导弹和"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:94
+#, elixir-autogen, elixir-format
+msgid "Special Messages"
+msgstr "特殊信件"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1576
+#, elixir-autogen, elixir-format
+msgid "Split-screen Space Invaders — aliens you destroy fall on your opponent as reinforcements. "
+msgstr "分屏太空入侵者——你摧毁的外星人作为增援落在对手身上."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1188
+#, elixir-autogen, elixir-format
+msgid "Star Duel"
+msgstr "星际决斗"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:100
+#, elixir-autogen, elixir-format
+msgid "Start a peer-to-peer audio or video call with another user."
+msgstr "与另一个用户启动对等音频或视频通话."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:132
+#, elixir-autogen, elixir-format
+msgid "Start a peer-to-peer game session with another user for retro arcade games."
+msgstr "与另一个用户一起启动对等游戏会话,用于复古街机游戏."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:376
+#, elixir-autogen, elixir-format
+msgid "Start a solo arcade session. This command is reserved for administrators."
+msgstr "开始独行会话 此命令保留给管理员 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:699
+#, elixir-autogen, elixir-format
+msgid "Status Bar"
+msgstr "状态栏"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:98
+#, elixir-autogen, elixir-format
+msgid "Status Tab"
+msgstr "状态标签"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:198
+#, elixir-autogen, elixir-format
+msgid "Strip all color and formatting codes from messages sent to the channel."
+msgstr "从发送到频道的信件中删除所有颜色和格式代码 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2908
+#, elixir-autogen, elixir-format
+msgid "Surreal Polish puzzle adventure by LK Avalon (1995) — rescue your grandfather from underground pirates."
+msgstr "LK Avalon(1995年)的超现实波兰谜题冒险——从地下海盗手中救你的祖父."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:40
+#, elixir-autogen, elixir-format
+msgid "Switch between channels and conversations using the tab bar at the top of the chat area."
+msgstr "使用聊天区顶端的标签栏在频道和对话之间切换."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:35
+#, elixir-autogen, elixir-format
+msgid "Tab Bar"
+msgstr "标签栏"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:523
+#, elixir-autogen, elixir-format
+msgid "Tab-complete nicknames, commands, channels, and emoji with fuzzy matching."
+msgstr "Tab-complete昵称,命令,频道,和模糊匹配的emoji."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1921
+#, elixir-autogen, elixir-format
+msgid "Temperature timer adds urgency. Controls: Arrow keys or WASD to move, Up/Down to jump between rows."
+msgstr "温度计时器增加了紧迫性. 控件:要移动的箭键或WASD,在行间跳动的Up/Down."
+
+#: lib/retro_hex_chat/chat/help_topics.ex:57
+#: lib/retro_hex_chat/chat/help_topics.ex:85
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:12
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:24
+#, elixir-autogen, elixir-format
+msgid "Text Formatting"
+msgstr "文本格式"
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:11
+#, elixir-autogen, elixir-format
+msgid "Text Formatting Overview"
+msgstr "文本格式概览"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2707
+#, elixir-autogen, elixir-format
+msgid "The grandfather of FPS games (1992) — 10 levels of castle-storming action in the shareware episode."
+msgstr "FPS游戏的祖父(1992年)——分享器集中10级的城堡风暴动作."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2536
+#, elixir-autogen, elixir-format
+msgid "The legendary 1996 cereal box promotion — a kid-friendly DOOM total conversion where you zap Flemoids with the Zorcher."
+msgstr "传奇的1996年谷物盒推广——一个对孩子友好的DOOM完全转换 在那里你与佐尔切人(Zap Flemoids)."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2679
+#, elixir-autogen, elixir-format
+msgid "The official 1997 Quake II demo — Unit 1 of the singleplayer campaign against the Strogg."
+msgstr "1997年官方Quake II 演示——单打对阵施特罗格的单打运动第1单元."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2735
+#, elixir-autogen, elixir-format
+msgid "The official 1999 Valve demo — 3 unique levels not found in the full game, set in Black Mesa."
+msgstr "1999年Valve官方演示——在全游戏中找不到的3个独特的关卡,设置在Black Mesa."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2422
+#, elixir-autogen, elixir-format
+msgid "The original 1993 shareware episode — 9 levels of demon-infested corridors on Phobos."
+msgstr "1993年最初的共享软件插曲——在Phobos上的9级恶魔入侵走廊."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2626
+#, elixir-autogen, elixir-format
+msgid "The original 1996 shareware episode — full 3D FPS with Lovecraftian horrors and a Trent Reznor soundtrack."
+msgstr "最初的1996年共享软件插曲——全3D FPS配Lovecraftian恐怖和一款特伦特·雷兹诺尔音轨."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1516
+#, elixir-autogen, elixir-format
+msgid "Time your shots around the moving obstacle. First to 10, best of 3 rounds. "
+msgstr "时间在移动障碍物周围拍摄。 首发至10发,最好3发."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:307
+#, elixir-autogen, elixir-format
+msgid "Timers"
+msgstr "计时器"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:502
+#, elixir-autogen, elixir-format
+msgid "Timestamp Configuration"
+msgstr "时间戳配置"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:116
+#, elixir-autogen, elixir-format
+msgid "Toolbar"
+msgstr "工具栏"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1824
+#, elixir-autogen, elixir-format
+msgid "Top-down alpine descent through toxic wastelands — dodge mutant trees and irradiated rocks, "
+msgstr "通过有毒的荒地——躲避变种树木和辐照岩石,从上而下的高山下降,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1429
+#, elixir-autogen, elixir-format
+msgid "Top-down boxing in a cyberpunk ring — close punches score 3 points, "
+msgstr "网球圈中自上而下的拳击——近打得分3分,"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2013
+#, elixir-autogen, elixir-format
+msgid "Top-down ice hockey in a cyberpunk neon arena. Control your field player while "
+msgstr "在网球网球网球场上下冰球. 控制您的战地玩家"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1168
+#, elixir-autogen, elixir-format
+msgid "Top-down tank combat in a maze arena. Rotate your tank, drive forward, and fire "
+msgstr "在迷宫竞技场进行自上而下的坦克战斗. 转动你的坦克,前进,开火"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1750
+#, elixir-autogen, elixir-format
+msgid "Top-down tennis duel — automatic hitting where shot angle depends on contact position. "
+msgstr "自上而下网球决斗——自动击打射角位置取决于接触位置."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:65
+#, elixir-autogen, elixir-format
+msgid "Topic Bar"
+msgstr "主题栏"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:23
+#, elixir-autogen, elixir-format
+msgid "Track when specific users connect or disconnect with the notify list."
+msgstr "当特定用户与通知列表连接或断开时跟踪 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:656
+#, elixir-autogen, elixir-format
+msgid "Transfer channel ownership to another user."
+msgstr "将频道所有权转移给另一个用户 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:281
+#, elixir-autogen, elixir-format
+msgid "Typing Indicator"
+msgstr "打字指标"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:59
+#, elixir-autogen, elixir-format
+msgid "URL Catcher"
+msgstr "URL 抓取器"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:45
+#, elixir-autogen, elixir-format
+msgid "Understand how chat channels work, including joining, leaving, and participating in conversations."
+msgstr "了解聊天频道如何运作,包括加入,离开,以及参与对话."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:30
+#, elixir-autogen, elixir-format
+msgid "Understand the channel permission hierarchy from owner to regular user and what each rank can do."
+msgstr "了解频道许可等级从所有者到常规用户,以及每个级别可以做什么."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:646
+#, elixir-autogen, elixir-format
+msgid "Unread Indicators"
+msgstr "未读指标"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:661
+#, elixir-autogen, elixir-format
+msgid "Unread message badges on tabs and conversations showing message and mention counts."
+msgstr "标签上的未读信件徽章和对话显示信件和提及计数 。"
+
+#: lib/retro_hex_chat/chat/help_topics/text_formatting.ex:28
+#, elixir-autogen, elixir-format
+msgid "Use the color palette to add foreground and background colors to your chat messages."
+msgstr "使用调色板为聊天信息添加前景和背景颜色。"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:56
+#: lib/retro_hex_chat/chat/help_topics.ex:84
+#: lib/retro_hex_chat/chat/help_topics/features.ex:567
+#: lib/retro_hex_chat/chat/help_topics/features.ex:700
+#: lib/retro_hex_chat/chat/help_topics/keyboard_shortcuts.ex:12
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:12
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:24
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:36
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:48
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:66
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:82
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:99
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:117
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:129
+#, elixir-autogen, elixir-format
+msgid "User Interface"
+msgstr "用户界面"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:11
+#, elixir-autogen, elixir-format
+msgid "User Interface Overview"
+msgstr "用户界面概览"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:47
+#, elixir-autogen, elixir-format
+msgid "User List"
+msgstr "用户列表"
+
+#: lib/retro_hex_chat/chat/help_topics.ex:41
+#: lib/retro_hex_chat/chat/help_topics.ex:69
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:63
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:84
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:241
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:423
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:443
+#: lib/retro_hex_chat/chat/help_topics/features.ex:473
+#: lib/retro_hex_chat/chat/help_topics/features.ex:485
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1007
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1028
+#, elixir-autogen, elixir-format
+msgid "Users & Identity"
+msgstr "用户身份( I)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1313
+#, elixir-autogen, elixir-format
+msgid "Versus Breakout battle — each player defends a brick castle with a king inside. "
+msgstr "Versus Breakout battle——每位玩家在砖城堡内设一个国王防御."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:828
+#, elixir-autogen, elixir-format
+msgid "Video Call"
+msgstr "视频呼叫"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:553
+#, elixir-autogen, elixir-format
+msgid "View TURN server stats (active allocations, relay ports in use) and list active allocations."
+msgstr "查看 TURN 服务器统计(活动分配,使用中的中继端口),并列出活动分配."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:58
+#, elixir-autogen, elixir-format
+msgid "View and interact with users in the current channel through the right-side user list."
+msgstr "通过右侧用户列表查看和与当前频道的用户互动."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:64
+#, elixir-autogen, elixir-format
+msgid "View and manage URLs shared across all channels with link previews."
+msgstr "查看和管理所有频道共享的带有链接预览的 URL 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:94
+#, elixir-autogen, elixir-format
+msgid "View and manage channel settings, bans, exceptions, and modes in one dialog."
+msgstr "在一个对话框中查看和管理频道设置、禁止、例外和模式。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:224
+#, elixir-autogen, elixir-format
+msgid "View or change channel modes and user privilege modes."
+msgstr "查看或更改频道模式和用户特权模式。"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:90
+#, elixir-autogen, elixir-format
+msgid "View or change your user modes, such as enabling wallops reception."
+msgstr "查看或更改您的用户模式, 如允许 wallops 接收 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:396
+#, elixir-autogen, elixir-format
+msgid "View or set the topic for the current channel."
+msgstr "查看或设置当前频道的主题 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:472
+#, elixir-autogen, elixir-format
+msgid "View server information and manage server settings (name, description, registration, limits)."
+msgstr "查看服务器信息并管理服务器设置(名称,描述,注册,限制)."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:109
+#, elixir-autogen, elixir-format
+msgid "View server messages, connection events, and system notifications in the Status tab."
+msgstr "在状态标签中查看服务器消息、连接事件和系统通知。"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:74
+#, elixir-autogen, elixir-format
+msgid "View the channel topic and active modes in the bar below the tab bar."
+msgstr "查看标签栏下方栏的频道主题和活动模式。"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:15
+#, elixir-autogen, elixir-format
+msgid "View the server's Message of the Day."
+msgstr "查看服务器的每日信件 。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:751
+#, elixir-autogen, elixir-format
+msgid "Visual indicators for connection status including banners, overlays, and status bar changes."
+msgstr "连接状态的视觉指标,包括横幅,覆盖,和状态栏变化."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:692
+#, elixir-autogen, elixir-format
+msgid "Visual toast confirmation when text or settings are copied to the clipboard."
+msgstr "当文本或设置被复制到剪贴板时可视化土司确认 。"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:11
+#, elixir-autogen, elixir-format
+msgid "Welcome to RetroHexChat"
+msgstr "欢迎来到RetroHexChat"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1543
+#, elixir-autogen, elixir-format
+msgid "Western duel in open field — no obstacle, full horizontal movement. "
+msgstr "开放场的西方决战——没有障碍,完全横向运动."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1515
+#, elixir-autogen, elixir-format
+msgid "Western duel with a stagecoach rolling across the arena. "
+msgstr "西部的决斗 与马戏团 滚过竞技场。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1483
+#, elixir-autogen, elixir-format
+msgid "Western duel with bouncing bullets — fire at angles to bypass the wall. "
+msgstr "西部决战中弹弹出——射角度绕墙."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1455
+#, elixir-autogen, elixir-format
+msgid "Western duel — two gunslingers face off across a cactus obstacle. "
+msgstr "西方的决斗——两个枪手面对一个仙人掌障碍."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2243
+#, elixir-autogen, elixir-format
+msgid "Wolfenstein 3D (Arcade)"
+msgstr "沃尔芬施泰因3D(拱廊)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2693
+#, elixir-autogen, elixir-format
+msgid "Wolfenstein 3D: Escape from Castle"
+msgstr "沃尔芬斯坦3D:逃离城堡"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1206
+#, elixir-autogen, elixir-format
+msgid "Wraparound edges, hyperspace warp with 20% death chance. First to 7 wins. "
+msgstr "包围边缘,超空间曲速 20%的死亡概率。 初至七胜处."
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:85
+#, elixir-autogen, elixir-format
+msgid "about me"
+msgstr "关于我"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:24
+#, elixir-autogen, elixir-format
+msgid "access level"
+msgstr "访问级别"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:35
+#, elixir-autogen, elixir-format
+msgid "access list"
+msgstr "访问列表"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:33
+#, elixir-autogen, elixir-format
+msgid "address book"
+msgstr "地址簿"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2784
+#, elixir-autogen, elixir-format
+msgid "alcachofa soft"
+msgstr "柔软的 alcachofa"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2017
+#, elixir-autogen, elixir-format
+msgid "an AI goalie defends your net. Capture the puck, shoot with Space, or tackle "
+msgstr "一个AI守门员保护你的网。 抓住球杆,用空间射击,或者瞄准"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1013
+#, elixir-autogen, elixir-format
+msgid "another window"
+msgstr "另一个窗口"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1239
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1265
+#, elixir-autogen, elixir-format
+msgid "as Star Duel. First to 7 wins."
+msgstr "作为星际决斗。 初至七胜处."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:183
+#, elixir-autogen, elixir-format
+msgid "auto commands"
+msgstr "自动命令"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:188
+#, elixir-autogen, elixir-format
+msgid "auto execute"
+msgstr "自动执行"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:380
+#, elixir-autogen, elixir-format
+msgid "auto greet"
+msgstr "自动问候"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:36
+#, elixir-autogen, elixir-format
+msgid "auto join"
+msgstr "自动加入"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:204
+#, elixir-autogen, elixir-format
+msgid "auto reconnect"
+msgstr "自动重联"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:144
+#, elixir-autogen, elixir-format
+msgid "auto-join on invite"
+msgstr "在邀请时自动连接"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:104
+#, elixir-autogen, elixir-format
+msgid "ban exception"
+msgstr "禁止例外"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:88
+#, elixir-autogen, elixir-format
+msgid "ban exceptions"
+msgstr "禁止例外"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:105
+#, elixir-autogen, elixir-format
+msgid "ban exempt"
+msgstr "禁止豁免"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2558
+#, elixir-autogen, elixir-format
+msgid "banjo software"
+msgstr "Banjo软件"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2121
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2352
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2752
+#, elixir-autogen, elixir-format
+msgid "beneath a steel sky"
+msgstr "在钢铁天空下"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2286
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2730
+#, elixir-autogen, elixir-format
+msgid "black mesa"
+msgstr "黑色中间"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1273
+#, elixir-autogen, elixir-format
+msgid "block breakers"
+msgstr "断块器"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:219
+#, elixir-autogen, elixir-format
+msgid "block knock"
+msgstr "块敲门"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:44
+#, elixir-autogen, elixir-format
+msgid "bot addcmd"
+msgstr "bot 添加cmd 函数"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:35
+#, elixir-autogen, elixir-format
+msgid "bot command"
+msgstr "机器人命令"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:59
+#, elixir-autogen, elixir-format
+msgid "bot commands"
+msgstr "机器人命令"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:37
+#, elixir-autogen, elixir-format
+msgid "bot create"
+msgstr "创建机器人"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:45
+#, elixir-autogen, elixir-format
+msgid "bot delcmd"
+msgstr "机器人三角形"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:38
+#, elixir-autogen, elixir-format
+msgid "bot destroy"
+msgstr "机器人毁灭"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:84
+#, elixir-autogen, elixir-format
+msgid "bot dice"
+msgstr "机器人骰子"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:42
+#, elixir-autogen, elixir-format
+msgid "bot disable"
+msgstr "禁用机器人"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:41
+#, elixir-autogen, elixir-format
+msgid "bot enable"
+msgstr "启动"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:39
+#, elixir-autogen, elixir-format
+msgid "bot join"
+msgstr "装瓶加入"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:164
+#, elixir-autogen, elixir-format
+msgid "bot moderation"
+msgstr "机器人节制"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:40
+#, elixir-autogen, elixir-format
+msgid "bot part"
+msgstr "机器人部件"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:144
+#, elixir-autogen, elixir-format
+msgid "bot rss"
+msgstr "瓶装 rs"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:127
+#, elixir-autogen, elixir-format
+msgid "bot scheduler"
+msgstr "机器人调度器"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:16
+#, elixir-autogen, elixir-format
+msgid "bot service"
+msgstr "机器人服务"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:43
+#, elixir-autogen, elixir-format
+msgid "bot set"
+msgstr "瓶装"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:105
+#, elixir-autogen, elixir-format
+msgid "bot trivia"
+msgstr "机器人三角形"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2082
+#, elixir-autogen, elixir-format
+msgid "building pressure as the match intensifies. "
+msgstr "随着火柴的增强 建筑压力。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:108
+#, elixir-autogen, elixir-format
+msgid "bypass ban"
+msgstr "绕行封禁"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:166
+#, elixir-autogen, elixir-format
+msgid "case sensitive"
+msgstr "区分大小写"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:242
+#, elixir-autogen, elixir-format
+msgid "change name"
+msgstr "更改名称"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:83
+#, elixir-autogen, elixir-format
+msgid "channel central"
+msgstr "频道中心"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:403
+#, elixir-autogen, elixir-format
+msgid "channel click"
+msgstr "频道点击"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:519
+#, elixir-autogen, elixir-format
+msgid "channel completion"
+msgstr "频道补全"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:36
+#, elixir-autogen, elixir-format
+msgid "channel expiration"
+msgstr "频道过期"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:37
+#, elixir-autogen, elixir-format
+msgid "channel expiry"
+msgstr "频道过期"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:84
+#: lib/retro_hex_chat/chat/help_topics/features.ex:707
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:69
+#, elixir-autogen, elixir-format
+msgid "channel info"
+msgstr "频道信息"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:161
+#: lib/retro_hex_chat/chat/help_topics/features.ex:142
+#, elixir-autogen, elixir-format
+msgid "channel invite"
+msgstr "频道邀请"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:200
+#, elixir-autogen, elixir-format
+msgid "channel list"
+msgstr "频道列表"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:327
+#: lib/retro_hex_chat/chat/help_topics/features.ex:593
+#, elixir-autogen, elixir-format
+msgid "channel menu"
+msgstr "频道菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:41
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:219
+#, elixir-autogen, elixir-format
+msgid "channel mode"
+msgstr "频道模式"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:630
+#, elixir-autogen, elixir-format
+msgid "channel mute"
+msgstr "频道哑声"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:128
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:588
+#, elixir-autogen, elixir-format
+msgid "channel operator"
+msgstr "频道操作员"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:116
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:654
+#, elixir-autogen, elixir-format
+msgid "channel owner"
+msgstr "频道所有者"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:94
+#, elixir-autogen, elixir-format
+msgid "channel password"
+msgstr "频道密码"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:118
+#: lib/retro_hex_chat/chat/help_topics/services.ex:33
+#, elixir-autogen, elixir-format
+msgid "channel service"
+msgstr "频道服务"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:85
+#, elixir-autogen, elixir-format
+msgid "channel settings"
+msgstr "频道设置"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:394
+#, elixir-autogen, elixir-format
+msgid "channel topic"
+msgstr "频道主题"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:642
+#, elixir-autogen, elixir-format
+msgid "channel unmute"
+msgstr "频道解密"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:42
+#, elixir-autogen, elixir-format
+msgid "channel welcome"
+msgstr "欢迎频道"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:328
+#, elixir-autogen, elixir-format
+msgid "chat menu"
+msgstr "聊天菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:40
+#, elixir-autogen, elixir-format
+msgid "chat room"
+msgstr "聊天室"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:570
+#, elixir-autogen, elixir-format
+msgid "cheat sheet"
+msgstr "欺骗表"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2109
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2176
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2526
+#, elixir-autogen, elixir-format
+msgid "chex quest"
+msgstr "Chex 寻觅"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2263
+#, elixir-autogen, elixir-format
+msgid "classic that launched the FPS genre. "
+msgstr "经典推出FPS流派."
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:33
+#, elixir-autogen, elixir-format
+msgid "clear message of the day"
+msgstr "当天的清晰信息"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1828
+#, elixir-autogen, elixir-format
+msgid "clear slalom gates for time bonuses, and outrun the radioactive avalanche. "
+msgstr "清扫板门 时间奖金, 并跑过放射性雪崩。"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:54
+#, elixir-autogen, elixir-format
+msgid "clear welcome"
+msgstr "明确欢迎"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
+#, elixir-autogen, elixir-format
+msgid "close tab"
+msgstr "关闭标签"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:36
+#, elixir-autogen, elixir-format
+msgid "color override"
+msgstr "颜色覆盖"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:535
+#, elixir-autogen, elixir-format
+msgid "command help"
+msgstr "命令帮助"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:516
+#, elixir-autogen, elixir-format
+msgid "command palette"
+msgstr "命令调色板"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:347
+#, elixir-autogen, elixir-format
+msgid "compact mode"
+msgstr "紧凑模式"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:206
+#, elixir-autogen, elixir-format
+msgid "connection lost"
+msgstr "连接丢失"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:333
+#: lib/retro_hex_chat/chat/help_topics/features.ex:324
+#: lib/retro_hex_chat/chat/help_topics/features.ex:435
+#: lib/retro_hex_chat/chat/help_topics/features.ex:587
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:84
+#, elixir-autogen, elixir-format
+msgid "context menu"
+msgstr "上下文菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:595
+#, elixir-autogen, elixir-format
+msgid "conversations menu"
+msgstr "对话框菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:54
+#, elixir-autogen, elixir-format
+msgid "conversations users"
+msgstr "对话用户"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2361
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2811
+#, elixir-autogen, elixir-format
+msgid "creative reality"
+msgstr "创造现实"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:21
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:60
+#, elixir-autogen, elixir-format
+msgid "custom commands"
+msgstr "自定义命令"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:334
+#: lib/retro_hex_chat/chat/help_topics/features.ex:322
+#, elixir-autogen, elixir-format
+msgid "custom menu"
+msgstr "自定义菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:365
+#, elixir-autogen, elixir-format
+msgid "customize shortcuts"
+msgstr "自定义快捷键"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2757
+#, elixir-autogen, elixir-format
+msgid "dave gibbons"
+msgstr "dave  gi"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1247
+#, elixir-autogen, elixir-format
+msgid "debris field"
+msgstr "碎片字段"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:570
+#, elixir-autogen, elixir-format
+msgid "delete all"
+msgstr "删除全部"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1351
+#, elixir-autogen, elixir-format
+msgid "destroy enemies for points, steal fuel, and drop mines on your rival. "
+msgstr "摧毁敌人的点数, 偷燃料, 并投地雷给你的对手。"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:85
+#, elixir-autogen, elixir-format
+msgid "dice notation"
+msgstr "骰子标记"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2531
+#, elixir-autogen, elixir-format
+msgid "digital cafe"
+msgstr "数码咖啡馆"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2221
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2622
+#, elixir-autogen, elixir-format
+msgid "dimension of the doomed"
+msgstr "毁灭的维度"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:57
+#, elixir-autogen, elixir-format
+msgid "direct message"
+msgstr "直接消息"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:218
+#, elixir-autogen, elixir-format
+msgid "disable knock"
+msgstr "禁用敲门"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2474
+#, elixir-autogen, elixir-format
+msgid "doom ii"
+msgstr "末日二"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:132
+#, elixir-autogen, elixir-format
+msgid "empty state"
+msgstr "空状态"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2415
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2618
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2699
+#, elixir-autogen, elixir-format
+msgid "episode 1"
+msgstr "第1集 语句"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:578
+#, elixir-autogen, elixir-format
+msgid "except admin roles, audit logs, and server bans. "
+msgstr "除了管理员角色,审计日志,和服务器禁令."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:160
+#, elixir-autogen, elixir-format
+msgid "external messages"
+msgstr "外部消息"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2072
+#, elixir-autogen, elixir-format
+msgid "first to five"
+msgstr "第一至五个"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:785
+#, elixir-autogen, elixir-format
+msgid "fix message"
+msgstr "修复消息"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2363
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2839
+#, elixir-autogen, elixir-format
+msgid "flight of the amazon queen"
+msgstr "亚马逊女王的飞行"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:16
+#, elixir-autogen, elixir-format
+msgid "friend list"
+msgstr "朋友列表"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1405
+#, elixir-autogen, elixir-format
+msgid "fuel is scarce, mines recharge faster. Quick and chaotic. "
+msgstr "燃料短缺,地雷补给更快。 快速和混乱。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:517
+#, elixir-autogen, elixir-format
+msgid "fuzzy search"
+msgstr "模糊的搜索"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2150
+#, elixir-autogen, elixir-format
+msgid "gameplay tips before launching. Join #games and type !play to start."
+msgstr "发射前的游戏播放提示 。 加入 #games 并输入! 游戏开始 。"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:605
+#, elixir-autogen, elixir-format
+msgid "give voice"
+msgstr "发声"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2731
+#, elixir-autogen, elixir-format
+msgid "gordon freeman"
+msgstr "哥顿自由人"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1221
+#, elixir-autogen, elixir-format
+msgid "gravity well"
+msgstr "引力不错"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:140
+#, elixir-autogen, elixir-format
+msgid "half op"
+msgstr "半个业务"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1982
+#, elixir-autogen, elixir-format
+msgid "has no effect. First to complete the igloo wins. Fair and square. "
+msgstr "没有效果。 首先完成伊格卢胜利. 公平正观."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1417
+#, elixir-autogen, elixir-format
+msgid "hex boxing"
+msgstr "六拳击"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1650
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1686
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1712
+#, elixir-autogen, elixir-format
+msgid "hex enduro"
+msgstr "十六进制"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1893
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1936
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1968
+#, elixir-autogen, elixir-format
+msgid "hex frost"
+msgstr "冰冻"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1561
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1596
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1623
+#, elixir-autogen, elixir-format
+msgid "hex invaders"
+msgstr "六分卫入侵者"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1442
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1473
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1505
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1533
+#, elixir-autogen, elixir-format
+msgid "hex outlaw"
+msgstr "六分法则"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1333
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1371
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1394
+#, elixir-autogen, elixir-format
+msgid "hex raid"
+msgstr "螺旋突袭"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1813
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1845
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1869
+#, elixir-autogen, elixir-format
+msgid "hex skiing"
+msgstr "螺旋滑雪"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1739
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1767
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1790
+#, elixir-autogen, elixir-format
+msgid "hex tennis"
+msgstr "十六岁网球"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:178
+#, elixir-autogen, elixir-format
+msgid "hidden name"
+msgstr "隐藏名称"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:167
+#, elixir-autogen, elixir-format
+msgid "history search"
+msgstr "历史搜索"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:402
+#, elixir-autogen, elixir-format
+msgid "hover card"
+msgstr "悬牌"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1999
+#, elixir-autogen, elixir-format
+msgid "ice hockey"
+msgstr "冰球赛"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2187
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2223
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2253
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2322
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2416
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2619
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2674
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2701
+#, elixir-autogen, elixir-format
+msgid "id software"
+msgstr "id 软件"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2844
+#, elixir-autogen, elixir-format
+msgid "indiana jones"
+msgstr "(印度语)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:555
+#, elixir-autogen, elixir-format
+msgid "input box"
+msgstr "输入框"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:125
+#, elixir-autogen, elixir-format
+msgid "invite bypass"
+msgstr "请绕行"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:143
+#, elixir-autogen, elixir-format
+msgid "invite dialog"
+msgstr "邀请对话框"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:123
+#, elixir-autogen, elixir-format
+msgid "invite exception"
+msgstr "邀请例外"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:89
+#, elixir-autogen, elixir-format
+msgid "invite exceptions"
+msgstr "邀请例外"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:124
+#, elixir-autogen, elixir-format
+msgid "invite exempt"
+msgstr "邀请豁免"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:145
+#, elixir-autogen, elixir-format
+msgid "invite expiration"
+msgstr "邀请过期"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:77
+#, elixir-autogen, elixir-format
+msgid "invite only"
+msgstr "只邀请"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:160
+#, elixir-autogen, elixir-format
+msgid "invite user"
+msgstr "请用户"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:127
+#, elixir-autogen, elixir-format
+msgid "invite-only bypass"
+msgstr "只邀请绕行"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:286
+#, elixir-autogen, elixir-format
+msgid "is typing"
+msgstr "正在输入"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2365
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2841
+#, elixir-autogen, elixir-format
+msgid "joe king"
+msgstr "乔·王"
+
+#: lib/retro_hex_chat/chat/help_topics/getting_started.ex:41
+#, elixir-autogen, elixir-format
+msgid "join channel"
+msgstr "加入频道"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:383
+#, elixir-autogen, elixir-format
+msgid "join greet"
+msgstr "加入欢迎"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:232
+#, elixir-autogen, elixir-format
+msgid "join limit"
+msgstr "加入限制"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:245
+#, elixir-autogen, elixir-format
+msgid "join request"
+msgstr "加入请求"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:229
+#, elixir-autogen, elixir-format
+msgid "join throttle"
+msgstr "加入油门"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:86
+#, elixir-autogen, elixir-format
+msgid "keep highest"
+msgstr "保持最高点"
+
+#: lib/retro_hex_chat/chat/help_topics/bots.ex:87
+#, elixir-autogen, elixir-format
+msgid "keep lowest"
+msgstr "保持最低点"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:362
+#, elixir-autogen, elixir-format
+msgid "key bindings"
+msgstr "密钥绑定"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:572
+#, elixir-autogen, elixir-format
+msgid "keyboard reference"
+msgstr "键盘引用"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:364
+#, elixir-autogen, elixir-format
+msgid "keyboard shortcuts"
+msgstr "键盘快捷键"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2532
+#, elixir-autogen, elixir-format
+msgid "kid friendly"
+msgstr "爱孩子"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1261
+#, elixir-autogen, elixir-format
+msgid "kill ships on contact. Use debris for cover or it destroys you. Same controls "
+msgstr "杀死接触船只。 用碎片来遮掩 否则会毁了你 相同的控件"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2184
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2418
+#, elixir-autogen, elixir-format
+msgid "knee deep"
+msgstr "膝盖深处"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:444
+#, elixir-autogen, elixir-format
+msgid "last seen"
+msgstr "最后一次见到"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:405
+#, elixir-autogen, elixir-format
+msgid "lift ban"
+msgstr "取消禁令"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1143
+#, elixir-autogen, elixir-format
+msgid "light trails"
+msgstr "轻轨"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:221
+#, elixir-autogen, elixir-format
+msgid "lightweight message"
+msgstr "轻量级消息"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:348
+#, elixir-autogen, elixir-format
+msgid "line shading"
+msgstr "线条阴影"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:406
+#, elixir-autogen, elixir-format
+msgid "link preview"
+msgstr "链接预览"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2375
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2898
+#, elixir-autogen, elixir-format
+msgid "lk avalon"
+msgstr "lk 雪崩"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2368
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2868
+#, elixir-autogen, elixir-format
+msgid "lure of the temptress"
+msgstr "引诱诱惑者"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:105
+#, elixir-autogen, elixir-format
+msgid "max users"
+msgstr "最大用户"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1430
+#, elixir-autogen, elixir-format
+msgid "medium 2, far 1. First to 100 is KO! Best of 3 rounds, 2 minutes each. "
+msgstr "中二,远一. 第一对100是KO! 最佳3轮,每轮2分钟."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:161
+#, elixir-autogen, elixir-format
+msgid "members only"
+msgstr "仅成员"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:13
+#, elixir-autogen, elixir-format
+msgid "message of the day"
+msgstr "当天的讯息"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:798
+#, elixir-autogen, elixir-format
+msgid "message removed"
+msgstr "信件已删除"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1172
+#, elixir-autogen, elixir-format
+msgid "missiles to hit your opponent. One missile at a time — miss and you're vulnerable. "
+msgstr "导弹可以击中你的对手 一发一发导弹——失事而你很脆弱."
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:149
+#, elixir-autogen, elixir-format
+msgid "moderated voice"
+msgstr "编辑的声音"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:70
+#, elixir-autogen, elixir-format
+msgid "modes display"
+msgstr "模式显示"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1012
+#, elixir-autogen, elixir-format
+msgid "multiple tabs"
+msgstr "多个标签"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:596
+#, elixir-autogen, elixir-format
+msgid "mute channel"
+msgstr "哑声频道"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:404
+#, elixir-autogen, elixir-format
+msgid "nick click"
+msgstr "点击昵称"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:35
+#, elixir-autogen, elixir-format
+msgid "nick colors"
+msgstr "昵称颜色"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:518
+#, elixir-autogen, elixir-format
+msgid "nick completion"
+msgstr "昵称补全"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1030
+#, elixir-autogen, elixir-format
+msgid "nick expiry"
+msgstr "昵称过期"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:52
+#, elixir-autogen, elixir-format
+msgid "nick list"
+msgstr "昵称列表"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:591
+#, elixir-autogen, elixir-format
+msgid "nick menu"
+msgstr "昵称菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:326
+#, elixir-autogen, elixir-format
+msgid "nicklist menu"
+msgstr "昵称列表菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/services.ex:18
+#, elixir-autogen, elixir-format
+msgid "nickname protection"
+msgstr "昵称保护"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1873
+#, elixir-autogen, elixir-format
+msgid "no avalanche"
+msgstr "没有雪崩"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:136
+#, elixir-autogen, elixir-format
+msgid "no channels"
+msgstr "无频道"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:192
+#, elixir-autogen, elixir-format
+msgid "no colors"
+msgstr "无颜色"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:51
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:159
+#, elixir-autogen, elixir-format
+msgid "no external"
+msgstr "无外部"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:217
+#, elixir-autogen, elixir-format
+msgid "no knock"
+msgstr "不敲门"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1534
+#, elixir-autogen, elixir-format
+msgid "no man's land"
+msgstr "没有土地"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:134
+#, elixir-autogen, elixir-format
+msgid "no messages"
+msgstr "无消息"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1374
+#, elixir-autogen, elixir-format
+msgid "no mines"
+msgstr "无地雷"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1971
+#, elixir-autogen, elixir-format
+msgid "no steal"
+msgstr "不偷东西"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:137
+#, elixir-autogen, elixir-format
+msgid "no urls"
+msgstr "无urls"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:135
+#, elixir-autogen, elixir-format
+msgid "no users"
+msgstr "无用户"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2296
+#, elixir-autogen, elixir-format
+msgid "not found in the full game. "
+msgstr "整个游戏中找不到。"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:261
+#, elixir-autogen, elixir-format
+msgid "notification sound"
+msgstr "通知声音"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:39
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:318
+#: lib/retro_hex_chat/chat/help_topics/features.ex:184
+#, elixir-autogen, elixir-format
+msgid "on connect"
+msgstr "连接"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1793
+#, elixir-autogen, elixir-format
+msgid "one point"
+msgstr "一点"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1016
+#, elixir-autogen, elixir-format
+msgid "one session"
+msgstr "一届会议"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:348
+#, elixir-autogen, elixir-format
+msgid "open conversation"
+msgstr "打开对话"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2443
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2471
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2502
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2643
+#, elixir-autogen, elixir-format
+msgid "open source"
+msgstr "打开源"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:64
+#, elixir-autogen, elixir-format
+msgid "operator broadcast"
+msgstr "运营商广播"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1913
+#, elixir-autogen, elixir-format
+msgid "or opponent's color. Stepping on opponent's block steals it (2-piece swing!). "
+msgstr "或者对手的颜色 踩到对手的挡板会偷到它(2块)!"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:187
+#, elixir-autogen, elixir-format
+msgid "perform list"
+msgstr "执行列表"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2442
+#, elixir-autogen, elixir-format
+msgid "phase 1"
+msgstr "第1阶段"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2470
+#, elixir-autogen, elixir-format
+msgid "phase 2"
+msgstr "第2阶段"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2587
+#, elixir-autogen, elixir-format
+msgid "pixel art"
+msgstr "像素艺术"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1157
+#, elixir-autogen, elixir-format
+msgid "pixel tanks"
+msgstr "像素罐头"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:287
+#, elixir-autogen, elixir-format
+msgid "pm typing"
+msgstr "pm 输入"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2350
+#, elixir-autogen, elixir-format
+msgid "point & click"
+msgstr "点击( C)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2119
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2349
+#, elixir-autogen, elixir-format
+msgid "point and click"
+msgstr "点击"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:635
+#, elixir-autogen, elixir-format
+msgid "progressive disclosure"
+msgstr "逐步披露"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2314
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2668
+#, elixir-autogen, elixir-format
+msgid "quake 2"
+msgstr "2号地震"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2315
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2669
+#, elixir-autogen, elixir-format
+msgid "quake ii"
+msgstr "地震 (二)"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2646
+#, elixir-autogen, elixir-format
+msgid "quake replacement"
+msgstr "地震替换"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1449
+#, elixir-autogen, elixir-format
+msgid "quick draw"
+msgstr "快速绘图"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:573
+#, elixir-autogen, elixir-format
+msgid "quick reference"
+msgstr "快速引用"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:766
+#, elixir-autogen, elixir-format
+msgid "quote message"
+msgstr "引用消息"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:230
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:621
+#: lib/retro_hex_chat/chat/help_topics/features.ex:240
+#, elixir-autogen, elixir-format
+msgid "rate limit"
+msgstr "费率限制"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:119
+#: lib/retro_hex_chat/chat/help_topics/services.ex:34
+#, elixir-autogen, elixir-format
+msgid "register channel"
+msgstr "注册通道"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:207
+#, elixir-autogen, elixir-format
+msgid "registered only"
+msgstr "仅登记"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:404
+#, elixir-autogen, elixir-format
+msgid "remove ban"
+msgstr "删除禁止"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:596
+#, elixir-autogen, elixir-format
+msgid "remove operator"
+msgstr "删除运算符"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:613
+#, elixir-autogen, elixir-format
+msgid "remove voice"
+msgstr "删除语音"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:765
+#, elixir-autogen, elixir-format
+msgid "reply to"
+msgstr "答复"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:245
+#, elixir-autogen, elixir-format
+msgid "request invite"
+msgstr "请求邀请"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:86
+#, elixir-autogen, elixir-format
+msgid "restrict topic"
+msgstr "限制主题"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:614
+#, elixir-autogen, elixir-format
+msgid "reverse search"
+msgstr "反向搜索"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2354
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2754
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2870
+#, elixir-autogen, elixir-format
+msgid "revolution software"
+msgstr "革命软件"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:589
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:85
+#, elixir-autogen, elixir-format
+msgid "right click"
+msgstr "右键"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1334
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1373
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1396
+#, elixir-autogen, elixir-format
+msgid "river raid"
+msgstr "河上突袭"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:65
+#, elixir-autogen, elixir-format
+msgid "server message"
+msgstr "服务器消息"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:103
+#, elixir-autogen, elixir-format
+msgid "server messages"
+msgstr "服务器消息"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:21
+#, elixir-autogen, elixir-format
+msgid "set message of the day"
+msgstr "设置当天的消息"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:220
+#, elixir-autogen, elixir-format
+msgid "set mode"
+msgstr "设置模式"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:394
+#, elixir-autogen, elixir-format
+msgid "set topic"
+msgstr "设定主题"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:571
+#, elixir-autogen, elixir-format
+msgid "shortcut list"
+msgstr "快捷键列表"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:373
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2101
+#, elixir-autogen, elixir-format
+msgid "single player"
+msgstr "单人玩家"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1009
+#, elixir-autogen, elixir-format
+msgid "single session"
+msgstr "单会话"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:550
+#, elixir-autogen, elixir-format
+msgid "smart input"
+msgstr "智能输入"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:799
+#, elixir-autogen, elixir-format
+msgid "soft delete"
+msgstr "软删除"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:274
+#, elixir-autogen, elixir-format
+msgid "sound off"
+msgstr "声音关闭"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1562
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1600
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1628
+#, elixir-autogen, elixir-format
+msgid "space invaders"
+msgstr "空间入侵者"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:102
+#, elixir-autogen, elixir-format
+msgid "special messages"
+msgstr "特别信件"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1191
+#, elixir-autogen, elixir-format
+msgid "star duel"
+msgstr "明星决斗"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:346
+#: lib/retro_hex_chat/chat/help_topics/features.ex:702
+#, elixir-autogen, elixir-format
+msgid "status bar"
+msgstr "状态栏"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:102
+#, elixir-autogen, elixir-format
+msgid "status tab"
+msgstr "状态标签"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:103
+#, elixir-autogen, elixir-format
+msgid "status window"
+msgstr "状态窗口"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1909
+#, elixir-autogen, elixir-format
+msgid "stealing your opponent's blocks. Blocks have 3 states: white (neutral), your color, "
+msgstr "偷你的对手的块。 块有3个状态: 白色(中性),你的颜色,"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:52
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:191
+#, elixir-autogen, elixir-format
+msgid "strip colors"
+msgstr "条形颜色"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1792
+#, elixir-autogen, elixir-format
+msgid "sudden death"
+msgstr "突发死亡"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2475
+#, elixir-autogen, elixir-format
+msgid "super shotgun"
+msgstr "超级猎枪"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:104
+#, elixir-autogen, elixir-format
+msgid "system messages"
+msgstr "系统消息"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:37
+#, elixir-autogen, elixir-format
+msgid "tab bar"
+msgstr "选项卡栏"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:515
+#, elixir-autogen, elixir-format
+msgid "tab complete"
+msgstr "选项卡完成"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1949
+#, elixir-autogen, elixir-format
+msgid "temperature starts at 60° and drops slowly. Arctic endurance mode. "
+msgstr "温度从60°开始缓慢下降。 北极耐力模式."
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:163
+#, elixir-autogen, elixir-format
+msgid "text search"
+msgstr "文本搜索"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1874
+#, elixir-autogen, elixir-format
+msgid "time trial"
+msgstr "审判时间"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2021
+#, elixir-autogen, elixir-format
+msgid "to steal (60% chance, fail = stun). 3 periods of 2 minutes. Tied? Sudden death. "
+msgstr "窃取(60%的机会,失败=眩晕)。 3期2分钟. 绑? 忽然丧命."
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:68
+#, elixir-autogen, elixir-format
+msgid "topic bar"
+msgstr "主题栏"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:44
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:86
+#, elixir-autogen, elixir-format
+msgid "topic lock"
+msgstr "主题锁定"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2557
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2588
+#, elixir-autogen, elixir-format
+msgid "total conversion"
+msgstr "改划共计"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2446
+#, elixir-autogen, elixir-format
+msgid "ultimate doom"
+msgstr "终极末日"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2759
+#, elixir-autogen, elixir-format
+msgid "union city"
+msgstr "联合城市"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2675
+#, elixir-autogen, elixir-format
+msgid "unit 1"
+msgstr "1个单元"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:405
+#, elixir-autogen, elixir-format
+msgid "url hover"
+msgstr "url 盘旋"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:592
+#, elixir-autogen, elixir-format
+msgid "url menu"
+msgstr "url 菜单"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:1235
+#, elixir-autogen, elixir-format
+msgid "use gravity slingshots for speed, but fly too close and you die. Same controls "
+msgstr "用重力弹弓来加速 但飞得太近就死了 相同的控件"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:427
+#, elixir-autogen, elixir-format
+msgid "user info"
+msgstr "用户信息"
+
+#: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:104
+#, elixir-autogen, elixir-format
+msgid "user limit"
+msgstr "用户限制"
+
+#: lib/retro_hex_chat/chat/help_topics/user_interface.ex:51
+#, elixir-autogen, elixir-format
+msgid "user list"
+msgstr "用户列表"
+
+#: lib/retro_hex_chat/chat/help_topics/special_messages.ex:87
+#, elixir-autogen, elixir-format
+msgid "user mode"
+msgstr "用户模式"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2372
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2873
+#, elixir-autogen, elixir-format
+msgid "virtual theatre"
+msgstr "虚拟剧场"
+
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:97
+#, elixir-autogen, elixir-format
+msgid "voice call"
+msgstr "语音呼叫"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:2248
+#, elixir-autogen, elixir-format
+msgid "wolf 3d"
+msgstr "野狼 3d (英语)."

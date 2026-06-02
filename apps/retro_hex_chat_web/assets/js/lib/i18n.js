@@ -40,8 +40,8 @@ const CATALOGS = {
   tr: TR,
   ur: UR,
   vi: VI,
-  zh_Hans: ZH_HANS,
-  zh_Hant: ZH_HANT,
+  zh_hans: ZH_HANS,
+  zh_hant: ZH_HANT,
 };
 
 export function currentLocale() {
@@ -82,10 +82,10 @@ export function normalizeLocale(locale) {
     return "id";
   }
   if (value === "zh_hant" || value === "zh_tw" || value === "zh_hk" || value === "zh_mo") {
-    return "zh_Hant";
+    return "zh_hant";
   }
   if (value === "zh" || value === "zh_hans" || value === "zh_cn" || value === "zh_sg") {
-    return "zh_Hans";
+    return "zh_hans";
   }
   return "en";
 }

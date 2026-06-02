@@ -18,9 +18,9 @@ defmodule RetroHexChatWeb.I18nTest do
       assert I18n.normalize_locale("ja-JP") == "ja"
       assert I18n.normalize_locale("nl-BE") == "nl"
       assert I18n.normalize_locale("pl-PL") == "pl"
-      assert I18n.normalize_locale("zh-CN") == "zh_Hans"
-      assert I18n.normalize_locale("zh-TW") == "zh_Hant"
-      assert I18n.normalize_locale("zh-HK") == "zh_Hant"
+      assert I18n.normalize_locale("zh-CN") == "zh_hans"
+      assert I18n.normalize_locale("zh-TW") == "zh_hant"
+      assert I18n.normalize_locale("zh-HK") == "zh_hant"
       assert I18n.normalize_locale("id-ID") == "id"
       assert I18n.normalize_locale("ar-SA") == "ar"
       assert I18n.normalize_locale("bn-BD") == "bn"
@@ -76,8 +76,8 @@ defmodule RetroHexChatWeb.I18nTest do
       assert {"it", "Italiano"} in I18n.supported_locales()
       assert {"nl", "Nederlands"} in I18n.supported_locales()
       assert {"pl", "Polski"} in I18n.supported_locales()
-      assert {"zh_Hans", "简体中文"} in I18n.supported_locales()
-      assert {"zh_Hant", "繁體中文"} in I18n.supported_locales()
+      assert {"zh_hans", "简体中文"} in I18n.supported_locales()
+      assert {"zh_hant", "繁體中文"} in I18n.supported_locales()
       assert {"ar", "العربية"} in I18n.supported_locales()
       assert {"bn", "বাংলা"} in I18n.supported_locales()
       assert {"ru", "Русский"} in I18n.supported_locales()

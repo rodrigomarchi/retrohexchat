@@ -1,0 +1,439 @@
+# "msgid"s in this file come from chat.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_hant; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: zh_hant\n"
+"Language: zh_hant\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:144
+#, elixir-autogen, elixir-format
+msgid "  %{name} (%{type}, %{interval}s) → %{command}"
+msgstr "%{name}(%{type},%{interval}s)→%{command}"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:41
+#, elixir-autogen, elixir-format
+msgid "1 %{singular}"
+msgstr "1 %{singular}"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:152
+#, elixir-autogen, elixir-format
+msgid "Active timers:\n"
+msgstr "活動計時器 :"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:35
+#, elixir-autogen, elixir-format
+msgid "Alert"
+msgstr "警報"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:405
+#, elixir-autogen, elixir-format
+msgid "Alt"
+msgstr "備選案文"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:28
+#, elixir-autogen, elixir-format
+msgid "Beep"
+msgstr "嗶"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:40
+#, elixir-autogen, elixir-format
+msgid "Blip"
+msgstr "線條"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:36
+#, elixir-autogen, elixir-format
+msgid "Buzz"
+msgstr "巴茲"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:242
+#, elixir-autogen, elixir-format
+msgid "Chat"
+msgstr "聊天"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:33
+#, elixir-autogen, elixir-format
+msgid "Chime High"
+msgstr "奇美高樓"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:32
+#, elixir-autogen, elixir-format
+msgid "Chime Long"
+msgstr "千梅龍"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:34
+#, elixir-autogen, elixir-format
+msgid "Chime Low"
+msgstr "低頭"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:31
+#, elixir-autogen, elixir-format
+msgid "Chime Short"
+msgstr "奇姆短線"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:37
+#, elixir-autogen, elixir-format
+msgid "Click"
+msgstr "單擊"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:329
+#, elixir-autogen, elixir-format
+msgid "Conflict: %{first_action} and %{second_action} both bound to %{combo}"
+msgstr "衝突:%{first_action}和%{second_action} 兩者都約束在%{combo}"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:406
+#, elixir-autogen, elixir-format
+msgid "Ctrl"
+msgstr "代碼"
+
+#: lib/retro_hex_chat/chat/policy.ex:84
+#, elixir-autogen, elixir-format
+msgid "Delete window has expired."
+msgstr "刪除窗口已過期 。"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:30
+#, elixir-autogen, elixir-format
+msgid "Ding High"
+msgstr "叮噹高"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:29
+#, elixir-autogen, elixir-format
+msgid "Ding Low"
+msgstr "小叮噹"
+
+#: lib/retro_hex_chat/chat/policy.ex:41 lib/retro_hex_chat/chat/policy.ex:70
+#, elixir-autogen, elixir-format
+msgid "Edit window has expired."
+msgstr "編輯窗口已過期 。"
+
+#: lib/retro_hex_chat/chat/alias_expander.ex:30
+#, elixir-autogen, elixir-format
+msgid ""
+"Expansion must not contain command chaining characters (|, &&, ;, or "
+"newlines)"
+msgstr "擴展不得包含命令鏈字符(QQ, QQ, 或新行)"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:243
+#, elixir-autogen, elixir-format
+msgid "Formatting"
+msgstr "格式化"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:98
+#, elixir-autogen, elixir-format
+msgid ""
+"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
+"%{max_name_length} chars)."
+msgstr "無效的計時器名稱 。 只使用字母,數字,連字符,下劃線(最大 %{max_name_length}字符)."
+
+#: lib/retro_hex_chat/chat/policy.ex:18 lib/retro_hex_chat/chat/policy.ex:24
+#, elixir-autogen, elixir-format
+msgid "Message cannot be empty"
+msgstr "信件不能爲空"
+
+#: lib/retro_hex_chat/chat/policy.ex:38 lib/retro_hex_chat/chat/policy.ex:60
+#: lib/retro_hex_chat/chat/policy.ex:81
+#, elixir-autogen, elixir-format
+msgid "Message has already been deleted."
+msgstr "信件已被刪除 。"
+
+#: lib/retro_hex_chat/chat/service.ex:31 lib/retro_hex_chat/chat/service.ex:46
+#: lib/retro_hex_chat/chat/service.ex:67 lib/retro_hex_chat/chat/service.ex:81
+#, elixir-autogen, elixir-format
+msgid "Message not found."
+msgstr "找不到信件 。"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:241
+#, elixir-autogen, elixir-format
+msgid "Navigation"
+msgstr "導航"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:101
+#, elixir-autogen, elixir-format
+msgid "Next Window"
+msgstr "下一個窗口"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:136
+#, elixir-autogen, elixir-format
+msgid "No active timers."
+msgstr "沒有活動定時器 。"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:27
+#, elixir-autogen, elixir-format
+msgid "None"
+msgstr "無"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:39
+#, elixir-autogen, elixir-format
+msgid "Notify"
+msgstr "通知"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:58
+#, elixir-autogen, elixir-format
+msgid "Open Address Book"
+msgstr "打開地址簿"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:88
+#, elixir-autogen, elixir-format
+msgid "Open Help"
+msgstr "打開幫助"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:70
+#, elixir-autogen, elixir-format
+msgid "Open Highlight Dialog"
+msgstr "打開高亮對話框"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:64
+#, elixir-autogen, elixir-format
+msgid "Open Ignore List"
+msgstr "打開忽略列表"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:82
+#, elixir-autogen, elixir-format
+msgid "Open Perform Dialog"
+msgstr "打開表演對話框"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:76
+#, elixir-autogen, elixir-format
+msgid "Open URL Catcher"
+msgstr "打開 URL 抓取器"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:89
+#, elixir-autogen, elixir-format
+msgid "Open the help dialog (menu only)"
+msgstr "打開幫助對話框( 只有菜單)"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:83
+#, elixir-autogen, elixir-format
+msgid "Open/close auto-perform settings"
+msgstr "打開/close 自動操作設置"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:71
+#, elixir-autogen, elixir-format
+msgid "Open/close highlight word settings"
+msgstr "打開/close 突出顯示單詞設置"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:53
+#, elixir-autogen, elixir-format
+msgid "Open/close search bar"
+msgstr "打開<ph0>/ph0> 搜索欄"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:77
+#, elixir-autogen, elixir-format
+msgid "Open/close the URL catcher"
+msgstr "打開 /close URL 捕捉器"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:59
+#, elixir-autogen, elixir-format
+msgid "Open/close the address book"
+msgstr "打開地址簿<ph0>/ph0>"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:65
+#, elixir-autogen, elixir-format
+msgid "Open/close the ignore list"
+msgstr "打開忽略列表<ph0>/ph0>"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:95
+#, elixir-autogen, elixir-format
+msgid "Open/close the keyboard shortcut cheatsheet"
+msgstr "打開<ph0>/ph0> 鍵盤快捷鍵"
+
+#: lib/retro_hex_chat/chat/service.ex:129
+#: lib/retro_hex_chat/chat/service.ex:146
+#, elixir-autogen, elixir-format
+msgid "Original message not found."
+msgstr "找不到原始信件 。"
+
+#: lib/retro_hex_chat/chat/policy.ex:44 lib/retro_hex_chat/chat/policy.ex:109
+#, elixir-autogen, elixir-format
+msgid "Please wait a few seconds before editing again."
+msgstr "請稍候幾秒鐘再編輯."
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:107
+#, elixir-autogen, elixir-format
+msgid "Previous Window"
+msgstr "上一個窗口"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:127
+#, elixir-autogen, elixir-format
+msgid "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
+msgstr "重複間隔被夾到最小 %{min_repeat_interval} 秒 。"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:38
+#, elixir-autogen, elixir-format
+msgid "Ring"
+msgstr "環"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:407
+#, elixir-autogen, elixir-format
+msgid "Shift"
+msgstr "移動"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:94
+#, elixir-autogen, elixir-format
+msgid "Shortcut Cheatsheet"
+msgstr "快捷鍵計費表"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:102
+#, elixir-autogen, elixir-format
+msgid "Switch to the next channel or PM"
+msgstr "切換到下一個頻道或 PM"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:108
+#, elixir-autogen, elixir-format
+msgid "Switch to the previous channel or PM"
+msgstr "切換到上一個頻道或 PM"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:114
+#, elixir-autogen, elixir-format
+msgid "Switch to window 1"
+msgstr "切換到窗口 1"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:120
+#, elixir-autogen, elixir-format
+msgid "Switch to window 2"
+msgstr "切換到窗口 2"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:126
+#, elixir-autogen, elixir-format
+msgid "Switch to window 3"
+msgstr "切換到窗口 3"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:132
+#, elixir-autogen, elixir-format
+msgid "Switch to window 4"
+msgstr "切換到窗口 4"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:138
+#, elixir-autogen, elixir-format
+msgid "Switch to window 5"
+msgstr "切換到窗口 5"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:144
+#, elixir-autogen, elixir-format
+msgid "Switch to window 6"
+msgstr "切換到窗口 6"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:150
+#, elixir-autogen, elixir-format
+msgid "Switch to window 7"
+msgstr "切換到窗口 7"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:156
+#, elixir-autogen, elixir-format
+msgid "Switch to window 8"
+msgstr "切換到窗口 8"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:162
+#, elixir-autogen, elixir-format
+msgid "Switch to window 9"
+msgstr "切換到窗口 9"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:244
+#: lib/retro_hex_chat/chat/service.ex:96
+#, elixir-autogen, elixir-format
+msgid "System"
+msgstr "系統"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:52
+#, elixir-autogen, elixir-format
+msgid "Toggle Search"
+msgstr "切換搜索"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:76
+#: lib/retro_hex_chat/chat/timer_manager.ex:80
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> <seconds> <command>"
+msgstr "用法:/timer<ph0><</ph4>>/p4>>><ph1><</p5>>/p5>>><ph2><</p6>>/p6>>>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:17
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> [repeat] <seconds> <command>"
+msgstr ""
+"用法:/timer<ph0><</ph4>>/ph4>>/>>>[重複]<ph1><</ph5></ph><ph2><</ph6>>/>>>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:51
+#: lib/retro_hex_chat/chat/timer_manager.ex:55
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> repeat <seconds> <command>"
+msgstr "用法:/timer<ph0><</ph4>>/ph/重複<ph1><</ph/ph/<><ph2><</></ph/>>>"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:25
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer stop <name>"
+msgstr "用法:/timer 停<ph0><</ph2></ph2>>>"
+
+#: lib/retro_hex_chat/chat/sound_settings.ex:41
+#, elixir-autogen, elixir-format
+msgid "Whoosh"
+msgstr "嗚呼"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:113
+#, elixir-autogen, elixir-format
+msgid "Window 1"
+msgstr "窗口 1"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:119
+#, elixir-autogen, elixir-format
+msgid "Window 2"
+msgstr "窗口 2"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:125
+#, elixir-autogen, elixir-format
+msgid "Window 3"
+msgstr "窗口 3"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:131
+#, elixir-autogen, elixir-format
+msgid "Window 4"
+msgstr "窗口 4"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:137
+#, elixir-autogen, elixir-format
+msgid "Window 5"
+msgstr "窗口 5"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:143
+#, elixir-autogen, elixir-format
+msgid "Window 6"
+msgstr "窗口 6"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:149
+#, elixir-autogen, elixir-format
+msgid "Window 7"
+msgstr "窗口 7"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:155
+#, elixir-autogen, elixir-format
+msgid "Window 8"
+msgstr "窗口 8"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:161
+#, elixir-autogen, elixir-format
+msgid "Window 9"
+msgstr "窗口 9"
+
+#: lib/retro_hex_chat/chat/policy.ex:78
+#, elixir-autogen, elixir-format
+msgid "You cannot delete other users' messages."
+msgstr "您不能刪除其他用戶的消息 。"
+
+#: lib/retro_hex_chat/chat/policy.ex:35 lib/retro_hex_chat/chat/policy.ex:57
+#, elixir-autogen, elixir-format
+msgid "You cannot edit other users' messages."
+msgstr "您不能編輯其他用戶的消息 。"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:31
+#, elixir-autogen, elixir-format
+msgid "just now"
+msgstr "剛纔"
+
+#: lib/retro_hex_chat/chat/time_formatter.ex:9
+#: lib/retro_hex_chat/chat/time_formatter.ex:21
+#, elixir-autogen, elixir-format
+msgid "less than a minute"
+msgstr "不到一分鐘"

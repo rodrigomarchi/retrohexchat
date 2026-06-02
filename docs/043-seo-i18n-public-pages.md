@@ -35,8 +35,8 @@ Use BCP 47 locale segments in public URLs:
 | `en` | none | `/features` |
 | `pt_BR` | `pt-BR` | `/pt-BR/features` |
 | `pt_PT` | `pt-PT` | `/pt-PT/features` |
-| `zh_Hans` | `zh-Hans` | `/zh-Hans/features` |
-| `zh_Hant` | `zh-Hant` | `/zh-Hant/features` |
+| `zh_hans` | `zh-Hans` | `/zh-Hans/features` |
+| `zh_hant` | `zh-Hant` | `/zh-Hant/features` |
 | `es` | `es` | `/es/features` |
 
 Default English remains unprefixed to avoid moving the main URL set.

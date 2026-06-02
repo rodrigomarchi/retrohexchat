@@ -33,10 +33,8 @@ defmodule RetroHexChat.Services.DisconnectCleanupTest do
   describe "full disconnect cleanup sequence" do
     test "cancels NickServ timer, parts all channels, stops empty unregistered channels",
          %{nick_server: nick_server} do
-      nickname = "CleanupUser#{System.unique_integer([:positive])}"
-
       # Step 1: Register a nickname via factory (for identify timer) and NickServ
-      insert(:registered_nick, nickname: nickname)
+      nickname = insert(:registered_nick).nickname
       NickServ.start_identify_timer(nickname, nick_server)
 
       # Allow the cast to be processed
@@ -88,7 +86,7 @@ defmodule RetroHexChat.Services.DisconnectCleanupTest do
     end
 
     test "registered channel survives after last user leaves", %{nick_server: _nick_server} do
-      nickname = "CleanupReg#{System.unique_integer([:positive])}"
+      nickname = build(:registered_nick).nickname
       channel = unique_channel()
 
       # Insert a registered channel so it persists
@@ -116,8 +114,8 @@ defmodule RetroHexChat.Services.DisconnectCleanupTest do
     end
 
     test "user is removed from channels after cleanup", %{nick_server: _nick_server} do
-      nickname = "CleanupMem#{System.unique_integer([:positive])}"
-      other_user = "StayUser#{System.unique_integer([:positive])}"
+      nickname = build(:registered_nick).nickname
+      other_user = build(:registered_nick).nickname
       channel = unique_channel()
 
       {:ok, pid} = Supervisor.start_child(channel)

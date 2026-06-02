@@ -127,7 +127,8 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
       <%!-- Mobile dropdown nav --%>
       <nav
         id="mobile-nav"
-        class="hidden lg:hidden bg-surface shadow-retro-window border-t border-gray-400 p-2"
+        hidden
+        class="lg:hidden bg-surface shadow-retro-window border-t border-gray-400 p-2"
       >
         <div class="flex flex-col gap-1">
           <.mobile_nav_link

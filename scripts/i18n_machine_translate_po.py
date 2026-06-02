@@ -37,12 +37,12 @@ LOCALE_TO_ARGOS = {
     "tr": "tr",
     "ur": "ur",
     "vi": "vi",
-    "zh_Hans": "zh",
-    "zh_Hant": "zh",
+    "zh_hans": "zh",
+    "zh_hant": "zh",
     "id": "id",
 }
 
-ONE_FORM_LOCALES = {"id", "ja", "zh_Hans", "zh_Hant", "ko", "vi"}
+ONE_FORM_LOCALES = {"id", "ja", "zh_hans", "zh_hant", "ko", "vi"}
 PROTECTED_PATTERNS = [
     re.compile(r"https?://[^\s<>\"]+"),
     re.compile(r"`[^`]+`"),
@@ -379,7 +379,7 @@ def translate_with_protected_fragments(text: str, translator) -> str:
 
 
 def postprocess_translation(locale: str, translated: str) -> str:
-    if locale != "zh_Hant":
+    if locale != "zh_hant":
         return translated
 
     return opencc_converter().convert(translated)
@@ -393,7 +393,7 @@ def opencc_converter():
             from opencc import OpenCC
         except ImportError as error:
             raise RuntimeError(
-                "zh_Hant translation requires opencc-python-reimplemented in the translation venv"
+                "zh_hant translation requires opencc-python-reimplemented in the translation venv"
             ) from error
 
         OPENCC_CONVERTER = OpenCC("s2t")

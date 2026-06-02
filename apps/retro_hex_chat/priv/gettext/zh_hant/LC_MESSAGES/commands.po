@@ -1,0 +1,3414 @@
+# "msgid"s in this file come from commands.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_hant; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: zh_hant\n"
+"Language: zh_hant\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:20
+#, elixir-autogen, elixir-format
+msgid "       /timer <name> repeat <seconds> <command> — repeating timer\n"
+msgstr "       /timer <name> repeat <seconds> <command> — repeating timer\n"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:24
+#, elixir-autogen, elixir-format
+msgid "       /timer list — show active timers\n"
+msgstr "       /timer list — show active timers\n"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:25
+#, elixir-autogen, elixir-format
+msgid "       /timer stop <name> — cancel a timer"
+msgstr "       /timer stop <name> — cancel a timer"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:594
+#, elixir-autogen, elixir-format
+msgid ""
+"  %{command_prefix}%{bot_name} %{trigger} — "
+"%{cmd_description_cmd_response}%{status}"
+msgstr ""
+"  %{command_prefix}%{bot_name} %{trigger} — "
+"%{cmd_description_cmd_response}%{status}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:717
+#, elixir-autogen, elixir-format
+msgid "  %{name} [%{status}] — %{description}"
+msgstr "  %{name} [%{status}] — %{description}"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:179
+#, elixir-autogen, elixir-format
+msgid "  %{nickname} [%{level}] (added by %{added_by})"
+msgstr "  %{nickname} [%{level}(由 %{added_by})"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:175
+#, elixir-autogen, elixir-format
+msgid "  (empty)"
+msgstr "(空着)"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:234
+#, elixir-autogen, elixir-format
+msgid "  Channels: %{channels_count}"
+msgstr "頻道: %{channels_count}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:237
+#, elixir-autogen, elixir-format
+msgid "  Commands: %{commands_count}"
+msgstr "命令: %{commands_count}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:232
+#, elixir-autogen, elixir-format
+msgid "  Cooldown: %{cooldown_ms}ms"
+msgstr "冷卻: %{cooldown_ms}ms"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:233
+#, elixir-autogen, elixir-format
+msgid "  Created by: %{created_by}"
+msgstr "創建者: %{created_by}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:745
+#, elixir-autogen, elixir-format
+msgid "  Description: %{desc}"
+msgstr "說明: %{desc}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:227
+#, elixir-autogen, elixir-format
+msgid "  Nickname: %{nickname}"
+msgstr "暱稱: %{nickname}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:229
+#, elixir-autogen, elixir-format
+msgid "  Prefix: %{command_prefix}"
+msgstr "前綴: %{command_prefix}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:228
+#, elixir-autogen, elixir-format
+msgid "  Status: %{status}"
+msgstr "狀態: %{status}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:541
+#, elixir-autogen, elixir-format
+msgid "%{cap_name}.%{field} set to %{display}."
+msgstr "%{cap_name}.%{field}設置爲%{display}."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:732
+#, elixir-autogen, elixir-format
+msgid "%{field}: %{errors}"
+msgstr "%{field}: %{errors}"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:54
+#: lib/retro_hex_chat/commands/handlers/admin.ex:89
+#, elixir-autogen, elixir-format
+msgid "/admin <subcommand> [args]"
+msgstr "/admin <subcommand> [args]"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:66
+#, elixir-autogen, elixir-format
+msgid "/admin channel delete #canal"
+msgstr "/admin channel delete #canal"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:68
+#, elixir-autogen, elixir-format
+msgid "/admin cs transfer #canal @nick"
+msgstr "/admin cs transfer #canal @nick"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:69
+#, elixir-autogen, elixir-format
+msgid "/admin debug memory"
+msgstr "/admin debug memory"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:114
+#, elixir-autogen, elixir-format
+msgid "/admin log"
+msgstr "/admin log"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:70
+#, elixir-autogen, elixir-format
+msgid "/admin log --last 20"
+msgstr "/admin log --last 20"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:67
+#, elixir-autogen, elixir-format
+msgid "/admin ns drop @nick"
+msgstr "/admin ns drop @nick"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:72
+#, elixir-autogen, elixir-format
+msgid "/admin nuke"
+msgstr "/admin nuke"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:73
+#: lib/retro_hex_chat/commands/handlers/admin.ex:116
+#, elixir-autogen, elixir-format
+msgid "/admin nuke --confirm"
+msgstr "/admin nuke --confirm"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:63
+#: lib/retro_hex_chat/commands/handlers/admin.ex:111
+#, elixir-autogen, elixir-format
+msgid "/admin server info"
+msgstr "/admin server info"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:71
+#: lib/retro_hex_chat/commands/handlers/admin.ex:115
+#, elixir-autogen, elixir-format
+msgid "/admin turn stats"
+msgstr "/admin turn stats"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:113
+#, elixir-autogen, elixir-format
+msgid "/admin user ban @nick"
+msgstr "/admin user ban @nick"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:65
+#, elixir-autogen, elixir-format
+msgid "/admin user ban @nick --reason Spam"
+msgstr "/admin user ban @nick --reason Spam"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:64
+#: lib/retro_hex_chat/commands/handlers/admin.ex:112
+#, elixir-autogen, elixir-format
+msgid "/admin user list"
+msgstr "/admin user list"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:66
+#: lib/retro_hex_chat/commands/handlers/alias.ex:93
+#, elixir-autogen, elixir-format
+msgid "/alias [list|add|remove]"
+msgstr "/alias [list|add|remove]"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:76
+#: lib/retro_hex_chat/commands/handlers/alias.ex:117
+#, elixir-autogen, elixir-format
+msgid "/alias add greet /me waves at $1"
+msgstr "/alias add greet /me waves at $1"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:75
+#: lib/retro_hex_chat/commands/handlers/alias.ex:116
+#, elixir-autogen, elixir-format
+msgid "/alias add hi /me says hello everyone!"
+msgstr "/alias add hi /me says hello everyone!"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:74
+#: lib/retro_hex_chat/commands/handlers/alias.ex:115
+#, elixir-autogen, elixir-format
+msgid "/alias list"
+msgstr "/alias list"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:77
+#: lib/retro_hex_chat/commands/handlers/alias.ex:118
+#, elixir-autogen, elixir-format
+msgid "/alias remove hi"
+msgstr "/alias remove hi"
+
+#: lib/retro_hex_chat/commands/handlers/announce.ex:52
+#: lib/retro_hex_chat/commands/handlers/announce.ex:73
+#, elixir-autogen, elixir-format
+msgid "/announce <message>"
+msgstr "/announce <message>"
+
+#: lib/retro_hex_chat/commands/handlers/announce.ex:58
+#: lib/retro_hex_chat/commands/handlers/announce.ex:89
+#, elixir-autogen, elixir-format
+msgid "/announce Server will restart at midnight"
+msgstr "/announce Server will restart at midnight"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:78
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:115
+#, elixir-autogen, elixir-format
+msgid "/autojoin [list|add|remove|clear]"
+msgstr "/autojoin [list|add|remove|clear]"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:87
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:138
+#, elixir-autogen, elixir-format
+msgid "/autojoin add #elixir"
+msgstr "/autojoin add #elixir"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:88
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:139
+#, elixir-autogen, elixir-format
+msgid "/autojoin add #secret mykey"
+msgstr "/autojoin add #secret mykey"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:90
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:141
+#, elixir-autogen, elixir-format
+msgid "/autojoin clear"
+msgstr "/autojoin clear"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:86
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:137
+#, elixir-autogen, elixir-format
+msgid "/autojoin list"
+msgstr "/autojoin list"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:89
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:140
+#, elixir-autogen, elixir-format
+msgid "/autojoin remove #elixir"
+msgstr "/autojoin remove #elixir"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:103
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:159
+#, elixir-autogen, elixir-format
+msgid "/autorespond [list|add|remove]"
+msgstr "/autorespond [list|add|remove]"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:112
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:185
+#, elixir-autogen, elixir-format
+msgid "/autorespond add on_join #welcome /notice $nick Welcome!"
+msgstr "/autorespond add on_join #welcome /notice $nick Welcome!"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:113
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:186
+#, elixir-autogen, elixir-format
+msgid "/autorespond add on_part /say $nick left"
+msgstr "/autorespond add on_part /say $nick left"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:111
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:184
+#, elixir-autogen, elixir-format
+msgid "/autorespond list"
+msgstr "/autorespond list"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:114
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:187
+#, elixir-autogen, elixir-format
+msgid "/autorespond remove 0"
+msgstr "/autorespond remove 0"
+
+#: lib/retro_hex_chat/commands/handlers/away.ex:39
+#: lib/retro_hex_chat/commands/handlers/away.ex:70
+#, elixir-autogen, elixir-format
+msgid "/away Gone to lunch"
+msgstr "/away Gone to lunch"
+
+#: lib/retro_hex_chat/commands/handlers/away.ex:33
+#: lib/retro_hex_chat/commands/handlers/away.ex:54
+#, elixir-autogen, elixir-format
+msgid "/away [message]"
+msgstr "/away [message]"
+
+#: lib/retro_hex_chat/commands/handlers/ban.ex:37
+#: lib/retro_hex_chat/commands/handlers/ban.ex:74
+#, elixir-autogen, elixir-format
+msgid "/ban <nickname> [reason]"
+msgstr "/ban <nickname> [reason]"
+
+#: lib/retro_hex_chat/commands/handlers/ban.ex:44
+#: lib/retro_hex_chat/commands/handlers/ban.ex:98
+#, elixir-autogen, elixir-format
+msgid "/ban troll"
+msgstr "/ban troll"
+
+#: lib/retro_hex_chat/commands/handlers/ban.ex:45
+#: lib/retro_hex_chat/commands/handlers/ban.ex:99
+#, elixir-autogen, elixir-format
+msgid "/ban troll Repeated violations"
+msgstr "/ban troll Repeated violations"
+
+#: lib/retro_hex_chat/commands/handlers/bio.ex:53
+#: lib/retro_hex_chat/commands/handlers/bio.ex:88
+#, elixir-autogen, elixir-format
+msgid "/bio Elixir enthusiast from Brazil"
+msgstr "/bio Elixir enthusiast from Brazil"
+
+#: lib/retro_hex_chat/commands/handlers/bio.ex:46
+#: lib/retro_hex_chat/commands/handlers/bio.ex:71
+#, elixir-autogen, elixir-format
+msgid "/bio [<text>|clear]"
+msgstr "/bio [<text>|clear]"
+
+#: lib/retro_hex_chat/commands/handlers/bio.ex:55
+#: lib/retro_hex_chat/commands/handlers/bio.ex:90
+#, elixir-autogen, elixir-format
+msgid "/bio clear"
+msgstr "/bio clear"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:106
+#, elixir-autogen, elixir-format
+msgid "/bot <subcommand> [args]"
+msgstr "/bot <subcommand> [args]"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:121
+#, elixir-autogen, elixir-format
+msgid "/bot addcmd GreeterBot rules Read the #rules channel"
+msgstr "/bot addcmd GreeterBot rules Read the #rules channel"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:119
+#, elixir-autogen, elixir-format
+msgid "/bot create GreeterBot Welcomes new users"
+msgstr "/bot create GreeterBot Welcomes new users"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:125
+#, elixir-autogen, elixir-format
+msgid "/bot disable GreeterBot"
+msgstr "/bot disable GreeterBot"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:123
+#, elixir-autogen, elixir-format
+msgid "/bot info GreeterBot"
+msgstr "/bot info GreeterBot"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:120
+#, elixir-autogen, elixir-format
+msgid "/bot join GreeterBot #general"
+msgstr "/bot join GreeterBot #general"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:124
+#, elixir-autogen, elixir-format
+msgid "/bot list"
+msgstr "/bot list"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:122
+#, elixir-autogen, elixir-format
+msgid "/bot set GreeterBot greeting Welcome, {nickname}!"
+msgstr "/bot set GreeterBot greeting Welcome, {nickname}!"
+
+#: lib/retro_hex_chat/commands/handlers/call.ex:32
+#: lib/retro_hex_chat/commands/handlers/call.ex:53
+#, elixir-autogen, elixir-format
+msgid "/call <nickname>"
+msgstr "/call <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/call.ex:38
+#: lib/retro_hex_chat/commands/handlers/call.ex:69
+#, elixir-autogen, elixir-format
+msgid "/call mario"
+msgstr "/call mario"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:78
+#: lib/retro_hex_chat/commands/handlers/cs.ex:198
+#, elixir-autogen, elixir-format
+msgid "/cs <subcommand> [args]"
+msgstr "/cs <subcommand> [args]"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:89
+#: lib/retro_hex_chat/commands/handlers/cs.ex:223
+#, elixir-autogen, elixir-format
+msgid "/cs aop del nick"
+msgstr "/cs aop del nick"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:86
+#: lib/retro_hex_chat/commands/handlers/cs.ex:220
+#, elixir-autogen, elixir-format
+msgid "/cs drop"
+msgstr "/cs drop"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:87
+#: lib/retro_hex_chat/commands/handlers/cs.ex:221
+#, elixir-autogen, elixir-format
+msgid "/cs info"
+msgstr "/cs info"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:85
+#: lib/retro_hex_chat/commands/handlers/cs.ex:219
+#, elixir-autogen, elixir-format
+msgid "/cs register"
+msgstr "/cs register"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:88
+#: lib/retro_hex_chat/commands/handlers/cs.ex:222
+#, elixir-autogen, elixir-format
+msgid "/cs sop add nick"
+msgstr "/cs sop add nick"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:90
+#: lib/retro_hex_chat/commands/handlers/cs.ex:224
+#, elixir-autogen, elixir-format
+msgid "/cs vop list"
+msgstr "/cs vop list"
+
+#: lib/retro_hex_chat/commands/handlers/deop.ex:27
+#: lib/retro_hex_chat/commands/handlers/deop.ex:48
+#, elixir-autogen, elixir-format
+msgid "/deop <nickname>"
+msgstr "/deop <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/deop.ex:33
+#: lib/retro_hex_chat/commands/handlers/deop.ex:60
+#, elixir-autogen, elixir-format
+msgid "/deop alice"
+msgstr "/deop alice"
+
+#: lib/retro_hex_chat/commands/handlers/devoice.ex:27
+#: lib/retro_hex_chat/commands/handlers/devoice.ex:48
+#, elixir-autogen, elixir-format
+msgid "/devoice <nickname>"
+msgstr "/devoice <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/devoice.ex:33
+#: lib/retro_hex_chat/commands/handlers/devoice.ex:60
+#, elixir-autogen, elixir-format
+msgid "/devoice alice"
+msgstr "/devoice alice"
+
+#: lib/retro_hex_chat/commands/handlers/game.ex:41
+#: lib/retro_hex_chat/commands/handlers/game.ex:62
+#, elixir-autogen, elixir-format
+msgid "/game <nickname>"
+msgstr "/game <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/game.ex:47
+#: lib/retro_hex_chat/commands/handlers/game.ex:78
+#, elixir-autogen, elixir-format
+msgid "/game mario"
+msgstr "/game mario"
+
+#: lib/retro_hex_chat/commands/handlers/help.ex:40
+#: lib/retro_hex_chat/commands/handlers/help.ex:61
+#, elixir-autogen, elixir-format
+msgid "/help [command]"
+msgstr "/help [command]"
+
+#: lib/retro_hex_chat/commands/handlers/help.ex:46
+#: lib/retro_hex_chat/commands/handlers/help.ex:77
+#, elixir-autogen, elixir-format
+msgid "/help join"
+msgstr "/help join"
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:46
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:151
+#, elixir-autogen, elixir-format
+msgid "/ignore AnnoyingGuy pms"
+msgstr "/ignore AnnoyingGuy pms"
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:47
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:152
+#, elixir-autogen, elixir-format
+msgid "/ignore LoudPerson all 5m"
+msgstr "/ignore LoudPerson all 5m"
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:45
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:150
+#, elixir-autogen, elixir-format
+msgid "/ignore SpamBot"
+msgstr "/ignore SpamBot"
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:38
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:119
+#, elixir-autogen, elixir-format
+msgid "/ignore [nickname] [type] [duration]"
+msgstr "/ignore [nickname] [type] [duration]"
+
+#: lib/retro_hex_chat/commands/handlers/invite.ex:42
+#: lib/retro_hex_chat/commands/handlers/invite.ex:73
+#, elixir-autogen, elixir-format
+msgid "/invite <nickname> [#channel]"
+msgstr "/invite <nickname> [#channel]"
+
+#: lib/retro_hex_chat/commands/handlers/invite.ex:49
+#: lib/retro_hex_chat/commands/handlers/invite.ex:97
+#, elixir-autogen, elixir-format
+msgid "/invite Alice"
+msgstr "/invite Alice"
+
+#: lib/retro_hex_chat/commands/handlers/invite.ex:50
+#: lib/retro_hex_chat/commands/handlers/invite.ex:98
+#, elixir-autogen, elixir-format
+msgid "/invite Alice #private"
+msgstr "/invite Alice #private"
+
+#: lib/retro_hex_chat/commands/handlers/invite.ex:51
+#: lib/retro_hex_chat/commands/handlers/invite.ex:99
+#, elixir-autogen, elixir-format
+msgid "/invite auto"
+msgstr "/invite auto"
+
+#: lib/retro_hex_chat/commands/handlers/join.ex:55
+#: lib/retro_hex_chat/commands/handlers/join.ex:79
+#, elixir-autogen, elixir-format
+msgid "/join #channel [password]"
+msgstr "/join #channel [password]"
+
+#: lib/retro_hex_chat/commands/handlers/join.ex:62
+#: lib/retro_hex_chat/commands/handlers/join.ex:103
+#, elixir-autogen, elixir-format
+msgid "/join #elixir"
+msgstr "/join #elixir"
+
+#: lib/retro_hex_chat/commands/handlers/join.ex:63
+#: lib/retro_hex_chat/commands/handlers/join.ex:104
+#, elixir-autogen, elixir-format
+msgid "/join #secret mypassword"
+msgstr "/join #secret mypassword"
+
+#: lib/retro_hex_chat/commands/handlers/kick.ex:37
+#: lib/retro_hex_chat/commands/handlers/kick.ex:77
+#, elixir-autogen, elixir-format
+msgid "/kick <nickname> [reason]"
+msgstr "/kick <nickname> [reason]"
+
+#: lib/retro_hex_chat/commands/handlers/kick.ex:44
+#: lib/retro_hex_chat/commands/handlers/kick.ex:101
+#, elixir-autogen, elixir-format
+msgid "/kick troll"
+msgstr "/kick troll"
+
+#: lib/retro_hex_chat/commands/handlers/kick.ex:45
+#: lib/retro_hex_chat/commands/handlers/kick.ex:102
+#, elixir-autogen, elixir-format
+msgid "/kick troll Spamming the channel"
+msgstr "/kick troll Spamming the channel"
+
+#: lib/retro_hex_chat/commands/handlers/knock.ex:37
+#: lib/retro_hex_chat/commands/handlers/knock.ex:61
+#, elixir-autogen, elixir-format
+msgid "/knock #channel [message]"
+msgstr "/knock #channel [message]"
+
+#: lib/retro_hex_chat/commands/handlers/knock.ex:44
+#: lib/retro_hex_chat/commands/handlers/knock.ex:85
+#, elixir-autogen, elixir-format
+msgid "/knock #private"
+msgstr "/knock #private"
+
+#: lib/retro_hex_chat/commands/handlers/knock.ex:45
+#: lib/retro_hex_chat/commands/handlers/knock.ex:86
+#, elixir-autogen, elixir-format
+msgid "/knock #private Hey, can I join?"
+msgstr "/knock #private Hey, can I join?"
+
+#: lib/retro_hex_chat/commands/handlers/me.ex:36
+#: lib/retro_hex_chat/commands/handlers/me.ex:57
+#, elixir-autogen, elixir-format
+msgid "/me <action>"
+msgstr "/me <action>"
+
+#: lib/retro_hex_chat/commands/handlers/me.ex:42
+#: lib/retro_hex_chat/commands/handlers/me.ex:73
+#, elixir-autogen, elixir-format
+msgid "/me is away"
+msgstr "/me is away"
+
+#: lib/retro_hex_chat/commands/handlers/me.ex:42
+#: lib/retro_hex_chat/commands/handlers/me.ex:73
+#, elixir-autogen, elixir-format
+msgid "/me waves hello"
+msgstr "/me waves hello"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:43
+#: lib/retro_hex_chat/commands/handlers/mode.ex:122
+#, elixir-autogen, elixir-format
+msgid "/mode +k secret"
+msgstr "/mode +k secret"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:42
+#: lib/retro_hex_chat/commands/handlers/mode.ex:121
+#, elixir-autogen, elixir-format
+msgid "/mode +m"
+msgstr "/mode +m"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:45
+#: lib/retro_hex_chat/commands/handlers/mode.ex:124
+#, elixir-autogen, elixir-format
+msgid "/mode +o nickname"
+msgstr "/mode +o nickname"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:44
+#: lib/retro_hex_chat/commands/handlers/mode.ex:123
+#, elixir-autogen, elixir-format
+msgid "/mode -t"
+msgstr "/mode -t"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:35
+#: lib/retro_hex_chat/commands/handlers/mode.ex:97
+#, elixir-autogen, elixir-format
+msgid "/mode <+/-flags> [params]"
+msgstr "/mode <+/-flags> [params]"
+
+#: lib/retro_hex_chat/commands/handlers/msg.ex:36
+#: lib/retro_hex_chat/commands/handlers/msg.ex:60
+#, elixir-autogen, elixir-format
+msgid "/msg <nickname> <message>"
+msgstr "/msg <nickname> <message>"
+
+#: lib/retro_hex_chat/commands/handlers/msg.ex:43
+#: lib/retro_hex_chat/commands/handlers/msg.ex:84
+#, elixir-autogen, elixir-format
+msgid "/msg Nick Hello there!"
+msgstr "/msg Nick Hello there!"
+
+#: lib/retro_hex_chat/commands/handlers/msg.ex:44
+#: lib/retro_hex_chat/commands/handlers/msg.ex:85
+#, elixir-autogen, elixir-format
+msgid "/msg Nick How are you?"
+msgstr "/msg Nick How are you?"
+
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:30
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:51
+#, elixir-autogen, elixir-format
+msgid "/mute <nickname> [duration]"
+msgstr "/mute <nickname> [duration]"
+
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:36
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:70
+#, elixir-autogen, elixir-format
+msgid "/mute troll"
+msgstr "/mute troll"
+
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:36
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:70
+#, elixir-autogen, elixir-format
+msgid "/mute troll 30m"
+msgstr "/mute troll 30m"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:59
+#: lib/retro_hex_chat/commands/handlers/nick.ex:80
+#, elixir-autogen, elixir-format
+msgid "/nick <newnick>"
+msgstr "/nick <newnick>"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:65
+#: lib/retro_hex_chat/commands/handlers/nick.ex:96
+#, elixir-autogen, elixir-format
+msgid "/nick NewNick"
+msgstr "/nick NewNick"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:65
+#: lib/retro_hex_chat/commands/handlers/nick.ex:96
+#, elixir-autogen, elixir-format
+msgid "/nick [Bot]"
+msgstr "/nick [Bot]"
+
+#: lib/retro_hex_chat/commands/handlers/notice.ex:47
+#: lib/retro_hex_chat/commands/handlers/notice.ex:88
+#, elixir-autogen, elixir-format
+msgid "/notice #elixir Server maintenance in 30 minutes"
+msgstr "/notice #elixir Server maintenance in 30 minutes"
+
+#: lib/retro_hex_chat/commands/handlers/notice.ex:39
+#: lib/retro_hex_chat/commands/handlers/notice.ex:63
+#, elixir-autogen, elixir-format
+msgid "/notice <target> <message>"
+msgstr "/notice <target> <message>"
+
+#: lib/retro_hex_chat/commands/handlers/notice.ex:46
+#: lib/retro_hex_chat/commands/handlers/notice.ex:87
+#, elixir-autogen, elixir-format
+msgid "/notice Alice Check out #project"
+msgstr "/notice Alice Check out #project"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:75
+#: lib/retro_hex_chat/commands/handlers/notify.ex:102
+#, elixir-autogen, elixir-format
+msgid "/notify [add|remove|edit|list] [args]"
+msgstr "/notify [add|remove|edit|list] [args]"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:82
+#: lib/retro_hex_chat/commands/handlers/notify.ex:126
+#, elixir-autogen, elixir-format
+msgid "/notify add Alice Works on Elixir"
+msgstr "/notify add Alice Works on Elixir"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:84
+#: lib/retro_hex_chat/commands/handlers/notify.ex:128
+#, elixir-autogen, elixir-format
+msgid "/notify edit Alice New note"
+msgstr "/notify edit Alice New note"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:85
+#: lib/retro_hex_chat/commands/handlers/notify.ex:129
+#, elixir-autogen, elixir-format
+msgid "/notify list"
+msgstr "/notify list"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:83
+#: lib/retro_hex_chat/commands/handlers/notify.ex:127
+#, elixir-autogen, elixir-format
+msgid "/notify remove Alice"
+msgstr "/notify remove Alice"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:83
+#: lib/retro_hex_chat/commands/handlers/ns.ex:171
+#, elixir-autogen, elixir-format
+msgid "/ns <subcommand> [args]"
+msgstr "/ns <subcommand> [args]"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:94
+#: lib/retro_hex_chat/commands/handlers/ns.ex:199
+#, elixir-autogen, elixir-format
+msgid "/ns drop mypassword"
+msgstr "/ns drop mypassword"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:92
+#: lib/retro_hex_chat/commands/handlers/ns.ex:197
+#, elixir-autogen, elixir-format
+msgid "/ns ghost othernick mypassword"
+msgstr "/ns ghost othernick mypassword"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:91
+#: lib/retro_hex_chat/commands/handlers/ns.ex:196
+#, elixir-autogen, elixir-format
+msgid "/ns identify mypassword"
+msgstr "/ns identify mypassword"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:93
+#: lib/retro_hex_chat/commands/handlers/ns.ex:198
+#, elixir-autogen, elixir-format
+msgid "/ns info"
+msgstr "/ns info"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:90
+#: lib/retro_hex_chat/commands/handlers/ns.ex:195
+#, elixir-autogen, elixir-format
+msgid "/ns register mypassword"
+msgstr "/ns register mypassword"
+
+#: lib/retro_hex_chat/commands/handlers/op.ex:27
+#: lib/retro_hex_chat/commands/handlers/op.ex:48
+#, elixir-autogen, elixir-format
+msgid "/op <nickname>"
+msgstr "/op <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/op.ex:33
+#: lib/retro_hex_chat/commands/handlers/op.ex:60
+#, elixir-autogen, elixir-format
+msgid "/op alice"
+msgstr "/op alice"
+
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:33
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:54
+#, elixir-autogen, elixir-format
+msgid "/p2p <nickname>"
+msgstr "/p2p <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:39
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:70
+#, elixir-autogen, elixir-format
+msgid "/p2p mario"
+msgstr "/p2p mario"
+
+#: lib/retro_hex_chat/commands/handlers/part.ex:57
+#: lib/retro_hex_chat/commands/handlers/part.ex:99
+#, elixir-autogen, elixir-format
+msgid "/part #elixir"
+msgstr "/part #elixir"
+
+#: lib/retro_hex_chat/commands/handlers/part.ex:58
+#: lib/retro_hex_chat/commands/handlers/part.ex:100
+#, elixir-autogen, elixir-format
+msgid "/part #elixir Goodbye!"
+msgstr "/part #elixir Goodbye!"
+
+#: lib/retro_hex_chat/commands/handlers/part.ex:49
+#: lib/retro_hex_chat/commands/handlers/part.ex:74
+#, elixir-autogen, elixir-format
+msgid "/part [#channel] [message]"
+msgstr "/part [#channel] [message]"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:90
+#: lib/retro_hex_chat/commands/handlers/perform.ex:135
+#, elixir-autogen, elixir-format
+msgid "/perform [list|add|remove|move|clear]"
+msgstr "/perform [list|add|remove|move|clear]"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:99
+#: lib/retro_hex_chat/commands/handlers/perform.ex:161
+#, elixir-autogen, elixir-format
+msgid "/perform add /join #elixir"
+msgstr "/perform add /join #elixir"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:100
+#: lib/retro_hex_chat/commands/handlers/perform.ex:162
+#, elixir-autogen, elixir-format
+msgid "/perform add /ns identify mypassword"
+msgstr "/perform add /ns identify mypassword"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:103
+#: lib/retro_hex_chat/commands/handlers/perform.ex:165
+#, elixir-autogen, elixir-format
+msgid "/perform clear"
+msgstr "/perform clear"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:98
+#: lib/retro_hex_chat/commands/handlers/perform.ex:160
+#, elixir-autogen, elixir-format
+msgid "/perform list"
+msgstr "/perform list"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:102
+#: lib/retro_hex_chat/commands/handlers/perform.ex:164
+#, elixir-autogen, elixir-format
+msgid "/perform move 0 2"
+msgstr "/perform move 0 2"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:101
+#: lib/retro_hex_chat/commands/handlers/perform.ex:163
+#, elixir-autogen, elixir-format
+msgid "/perform remove 0"
+msgstr "/perform remove 0"
+
+#: lib/retro_hex_chat/commands/handlers/query.ex:31
+#: lib/retro_hex_chat/commands/handlers/query.ex:52
+#, elixir-autogen, elixir-format
+msgid "/query <nickname>"
+msgstr "/query <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/query.ex:37
+#: lib/retro_hex_chat/commands/handlers/query.ex:68
+#, elixir-autogen, elixir-format
+msgid "/query Nick"
+msgstr "/query Nick"
+
+#: lib/retro_hex_chat/commands/handlers/quit.ex:39
+#: lib/retro_hex_chat/commands/handlers/quit.ex:70
+#, elixir-autogen, elixir-format
+msgid "/quit Goodbye!"
+msgstr "/quit Goodbye!"
+
+#: lib/retro_hex_chat/commands/handlers/quit.ex:33
+#: lib/retro_hex_chat/commands/handlers/quit.ex:54
+#, elixir-autogen, elixir-format
+msgid "/quit [message]"
+msgstr "/quit [message]"
+
+#: lib/retro_hex_chat/commands/handlers/send_file.ex:32
+#: lib/retro_hex_chat/commands/handlers/send_file.ex:53
+#, elixir-autogen, elixir-format
+msgid "/sendfile <nickname>"
+msgstr "/sendfile <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/send_file.ex:38
+#: lib/retro_hex_chat/commands/handlers/send_file.ex:69
+#, elixir-autogen, elixir-format
+msgid "/sendfile mario"
+msgstr "/sendfile mario"
+
+#: lib/retro_hex_chat/commands/handlers/set_motd.ex:42
+#: lib/retro_hex_chat/commands/handlers/set_motd.ex:63
+#, elixir-autogen, elixir-format
+msgid "/setmotd <text>"
+msgstr "/setmotd <text>"
+
+#: lib/retro_hex_chat/commands/handlers/set_motd.ex:48
+#: lib/retro_hex_chat/commands/handlers/set_motd.ex:79
+#, elixir-autogen, elixir-format
+msgid "/setmotd Welcome to RetroHexChat!"
+msgstr "/setmotd Welcome to RetroHexChat!"
+
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:45
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:70
+#, elixir-autogen, elixir-format
+msgid "/setwelcome <message>"
+msgstr "/setwelcome <message>"
+
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:51
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:86
+#, elixir-autogen, elixir-format
+msgid "/setwelcome Welcome to our channel!"
+msgstr "/setwelcome Welcome to our channel!"
+
+#: lib/retro_hex_chat/commands/handlers/slow.ex:51
+#: lib/retro_hex_chat/commands/handlers/slow.ex:78
+#, elixir-autogen, elixir-format
+msgid "/slow 0"
+msgstr "/slow 0"
+
+#: lib/retro_hex_chat/commands/handlers/slow.ex:51
+#: lib/retro_hex_chat/commands/handlers/slow.ex:78
+#, elixir-autogen, elixir-format
+msgid "/slow 30"
+msgstr "/slow 30"
+
+#: lib/retro_hex_chat/commands/handlers/slow.ex:45
+#: lib/retro_hex_chat/commands/handlers/slow.ex:66
+#, elixir-autogen, elixir-format
+msgid "/slow <seconds>"
+msgstr "/slow <seconds>"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:61
+#: lib/retro_hex_chat/commands/handlers/timer.ex:87
+#, elixir-autogen, elixir-format
+msgid "/timer <name> [repeat] <seconds> <command>"
+msgstr "/timer <name> [repeat] <seconds> <command>"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:69
+#: lib/retro_hex_chat/commands/handlers/timer.ex:112
+#, elixir-autogen, elixir-format
+msgid "/timer heartbeat repeat 600 /me is still here"
+msgstr "/timer heartbeat repeat 600 /me is still here"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:70
+#: lib/retro_hex_chat/commands/handlers/timer.ex:113
+#, elixir-autogen, elixir-format
+msgid "/timer list"
+msgstr "/timer list"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:68
+#: lib/retro_hex_chat/commands/handlers/timer.ex:111
+#, elixir-autogen, elixir-format
+msgid "/timer remind 1800 /me reminds everyone: standup in 30 minutes"
+msgstr "/timer remind 1800 /me reminds everyone: standup in 30 minutes"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:71
+#: lib/retro_hex_chat/commands/handlers/timer.ex:114
+#, elixir-autogen, elixir-format
+msgid "/timer stop heartbeat"
+msgstr "/timer stop heartbeat"
+
+#: lib/retro_hex_chat/commands/handlers/topic.ex:48
+#: lib/retro_hex_chat/commands/handlers/topic.ex:79
+#, elixir-autogen, elixir-format
+msgid "/topic Welcome to #elixir!"
+msgstr "/topic Welcome to #elixir!"
+
+#: lib/retro_hex_chat/commands/handlers/topic.ex:42
+#: lib/retro_hex_chat/commands/handlers/topic.ex:63
+#, elixir-autogen, elixir-format
+msgid "/topic [new topic]"
+msgstr "/topic [new topic]"
+
+#: lib/retro_hex_chat/commands/handlers/transfer.ex:27
+#: lib/retro_hex_chat/commands/handlers/transfer.ex:48
+#, elixir-autogen, elixir-format
+msgid "/transfer <nickname>"
+msgstr "/transfer <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/transfer.ex:33
+#: lib/retro_hex_chat/commands/handlers/transfer.ex:60
+#, elixir-autogen, elixir-format
+msgid "/transfer alice"
+msgstr "/transfer alice"
+
+#: lib/retro_hex_chat/commands/handlers/umode.ex:46
+#: lib/retro_hex_chat/commands/handlers/umode.ex:87
+#, elixir-autogen, elixir-format
+msgid "/umode +w"
+msgstr "/umode +w"
+
+#: lib/retro_hex_chat/commands/handlers/umode.ex:46
+#: lib/retro_hex_chat/commands/handlers/umode.ex:87
+#, elixir-autogen, elixir-format
+msgid "/umode -w"
+msgstr "/umode -w"
+
+#: lib/retro_hex_chat/commands/handlers/umode.ex:40
+#: lib/retro_hex_chat/commands/handlers/umode.ex:74
+#, elixir-autogen, elixir-format
+msgid "/umode <+/-mode>"
+msgstr "/umode <+/-mode>"
+
+#: lib/retro_hex_chat/commands/handlers/unban.ex:35
+#: lib/retro_hex_chat/commands/handlers/unban.ex:69
+#, elixir-autogen, elixir-format
+msgid "/unban <nickname>"
+msgstr "/unban <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/unban.ex:41
+#: lib/retro_hex_chat/commands/handlers/unban.ex:82
+#, elixir-autogen, elixir-format
+msgid "/unban user123"
+msgstr "/unban user123"
+
+#: lib/retro_hex_chat/commands/handlers/unignore.ex:29
+#: lib/retro_hex_chat/commands/handlers/unignore.ex:52
+#, elixir-autogen, elixir-format
+msgid "/unignore <nickname>"
+msgstr "/unignore <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/unignore.ex:36
+#: lib/retro_hex_chat/commands/handlers/unignore.ex:69
+#, elixir-autogen, elixir-format
+msgid "/unignore SpamBot"
+msgstr "/unignore SpamBot"
+
+#: lib/retro_hex_chat/commands/handlers/unmute.ex:27
+#: lib/retro_hex_chat/commands/handlers/unmute.ex:48
+#, elixir-autogen, elixir-format
+msgid "/unmute <nickname>"
+msgstr "/unmute <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/unmute.ex:33
+#: lib/retro_hex_chat/commands/handlers/unmute.ex:60
+#, elixir-autogen, elixir-format
+msgid "/unmute alice"
+msgstr "/unmute alice"
+
+#: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:27
+#: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:48
+#, elixir-autogen, elixir-format
+msgid "/voice <nickname>"
+msgstr "/voice <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:33
+#: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:60
+#, elixir-autogen, elixir-format
+msgid "/voice alice"
+msgstr "/voice alice"
+
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:52
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:73
+#, elixir-autogen, elixir-format
+msgid "/wallops <message>"
+msgstr "/wallops <message>"
+
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:58
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:89
+#, elixir-autogen, elixir-format
+msgid "/wallops Server maintenance in 10 minutes"
+msgstr "/wallops Server maintenance in 10 minutes"
+
+#: lib/retro_hex_chat/commands/handlers/whois.ex:31
+#: lib/retro_hex_chat/commands/handlers/whois.ex:52
+#, elixir-autogen, elixir-format
+msgid "/whois <nickname>"
+msgstr "/whois <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/whois.ex:37
+#: lib/retro_hex_chat/commands/handlers/whois.ex:64
+#, elixir-autogen, elixir-format
+msgid "/whois SomeUser"
+msgstr "/whois SomeUser"
+
+#: lib/retro_hex_chat/commands/handlers/whowas.ex:31
+#: lib/retro_hex_chat/commands/handlers/whowas.ex:52
+#, elixir-autogen, elixir-format
+msgid "/whowas <nickname>"
+msgstr "/whowas <nickname>"
+
+#: lib/retro_hex_chat/commands/handlers/whowas.ex:37
+#: lib/retro_hex_chat/commands/handlers/whowas.ex:65
+#, elixir-autogen, elixir-format
+msgid "/whowas SomeUser"
+msgstr "/whowas SomeUser"
+
+#: lib/retro_hex_chat/commands/handlers/slow.ex:29
+#, elixir-autogen, elixir-format
+msgid "5:%{seconds}"
+msgstr "5: %{seconds}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:446
+#, elixir-autogen, elixir-format
+msgid "Action must be: warn, mute, or kick."
+msgstr "行動必須是:警告、啞巴或踢球。"
+
+#: lib/retro_hex_chat/commands/handlers/me.ex:70
+#, elixir-autogen, elixir-format
+msgid "Action text"
+msgstr "行動文本"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:145
+#, elixir-autogen, elixir-format
+msgid "Add a channel to autojoin"
+msgstr "添加頻道到自動連接"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:169
+#, elixir-autogen, elixir-format
+msgid "Add a command to perform on connect"
+msgstr "在連接時添加要執行的命令"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:133
+#, elixir-autogen, elixir-format
+msgid "Add a user to your notify list"
+msgstr "在通知列表中添加一個用戶"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:191
+#, elixir-autogen, elixir-format
+msgid "Add an auto-respond rule"
+msgstr "添加自動對應的規則"
+
+#: lib/retro_hex_chat/commands/registry.ex:76
+#, elixir-autogen, elixir-format
+msgid "Advanced"
+msgstr "高級"
+
+#: lib/retro_hex_chat/commands/handlers/announce.ex:39
+#, elixir-autogen, elixir-format
+msgid "Announcement sent to all users."
+msgstr "向所有用戶發送通知。"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:515
+#, elixir-autogen, elixir-format
+msgid "Arcade capability disabled."
+msgstr "街機能力失效。"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:208
+#, elixir-autogen, elixir-format
+msgid "Authenticate with your registered password"
+msgstr "使用您的註冊密碼認證"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:161
+#, elixir-autogen, elixir-format
+msgid ""
+"Automatically run a command when someone joins, leaves, or changes their "
+"nickname."
+msgstr "當有人加入,離開,或更改他們的暱稱時,自動運行一個命令."
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:105
+#, elixir-autogen, elixir-format
+msgid ""
+"Automatically run a command when someone joins, leaves, or changes their nickname.\n"
+"Subcommands: list, add <trigger> [#channel] <command>, remove <position>. No args opens the dialog.\n"
+"Valid triggers: on_join, on_part, on_nick_change.\n"
+"Use $nick in your command to reference the triggering user. The remove subcommand takes a 0-based index number."
+msgstr ""
+"當有人加入,離開,或更改他們的暱稱時,自動運行一個命令.\n"
+"子命令:列表,增加<ph0><</ph3></ph3>>/[#channel]<ph1><</ph4>>/ph4>>,刪除<ph2><</ph5>>/ph5>>/]. 沒有參數打開對話框 。\n"
+"有效觸發器:在 join,在 part,在 nick change上.\n"
+"在命令中使用$nick來引用觸發用戶 。 刪除子命令需要基於 0 的索引編號 。"
+
+#: lib/retro_hex_chat/commands/handlers/away.ex:67
+#, elixir-autogen, elixir-format
+msgid "Away message (empty to return)"
+msgstr "離開消息( 空回)"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:141
+#, elixir-autogen, elixir-format
+msgid "Ban"
+msgstr "禁止"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:142
+#, elixir-autogen, elixir-format
+msgid "Ban user from channel"
+msgstr "從頻道禁止用戶"
+
+#: lib/retro_hex_chat/commands/registry.ex:72
+#, elixir-autogen, elixir-format
+msgid "Basics"
+msgstr "基本情況"
+
+#: lib/retro_hex_chat/commands/handlers/bio.ex:84
+#, elixir-autogen, elixir-format
+msgid "Bio text (or 'clear' to remove)"
+msgstr "Bio 文本( 或“ 清除” 要刪除)"
+
+#: lib/retro_hex_chat/commands/handlers/list.ex:30
+#: lib/retro_hex_chat/commands/handlers/list.ex:50
+#, elixir-autogen, elixir-format
+msgid ""
+"Browse all public channels on the server in a sortable, filterable dialog."
+msgstr "在可排序的可過濾對話框中瀏覽服務器上的所有公共頻道 。"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:134
+#, elixir-autogen, elixir-format
+msgid "ChanServ admin (drop, info, transfer, access)"
+msgstr "ChanServ 管理員( 投放、 信息、 傳輸、 訪問)"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:37
+#: lib/retro_hex_chat/commands/handlers/mode.ex:99
+#, elixir-autogen, elixir-format
+msgid ""
+"Change channel settings and user privileges using mode flags.\n"
+"Flags: +o (operator), +v (voice), +b (ban), +h (half-op), +m (moderated), +i (invite-only), +t (topic protected), +k (key/password), +l (user limit), +n (no external messages), +j (join throttle), +K (no knock).\n"
+"Requires: channel operator. Half-operators can only set +v/-v. Must be in a channel."
+msgstr ""
+"使用模式旗更改頻道設置和用戶權限 。\n"
+"旗幟:+o(操作者),+v(聲音),+b(ban),+h(半音),+m(調製),+i(只邀請),+t(專題保護),+k(鍵<ph0>/ph0>),+l(用戶限制),+n(沒有外部消息),+j(聯合節流),+K(沒有敲門).\n"
+"要求:頻道操作員. 半操作員只能設置+v/-v. 必須是在通道中."
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:82
+#, elixir-autogen, elixir-format
+msgid ""
+"Change your display name in the chat. A confirmation dialog appears before "
+"the change takes effect."
+msgstr "更改聊天中的顯示名稱 。 更改生效前會出現確認對話框 。"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:61
+#, elixir-autogen, elixir-format
+msgid ""
+"Change your display name. A confirmation dialog appears before the change takes effect.\n"
+"Rules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\n"
+"Allowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\n"
+"Cannot change to your current nickname or one already in use."
+msgstr ""
+"更改您的顯示名稱 。 更改生效前會出現確認對話框 。\n"
+"規則:1~16個字符,沒有空格. 必須從字母或 [ ]\\\\\\\\\\\\\\\\\\\\\\}開始。\n"
+"允許的字符:字母,數字,[ ]\\\\   {{}和連字符.\n"
+"無法更改您的當前暱稱 。"
+
+#: lib/retro_hex_chat/commands/registry.ex:73
+#, elixir-autogen, elixir-format
+msgid "Channel"
+msgstr "頻道"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:148
+#, elixir-autogen, elixir-format
+msgid "Channel accessible only by invitation"
+msgstr "頻道只能通過邀請訪問"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:126
+#, elixir-autogen, elixir-format
+msgid "Channel management (create, delete, purge)"
+msgstr "頻道管理( 創建、 刪除、 清理)"
+
+#: lib/retro_hex_chat/commands/handlers/join.ex:92
+#, elixir-autogen, elixir-format
+msgid "Channel name"
+msgstr "頻道名稱"
+
+#: lib/retro_hex_chat/commands/handlers/join.ex:32
+#, elixir-autogen, elixir-format
+msgid "Channel name cannot contain spaces"
+msgstr "頻道名稱不能包含空格"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:100
+#, elixir-autogen, elixir-format
+msgid "Channel name must start with #"
+msgstr "頻道名稱必須始於 #"
+
+#: lib/retro_hex_chat/commands/handlers/join.ex:29
+#, elixir-autogen, elixir-format
+msgid "Channel name too long (max 50 characters)"
+msgstr "頻道名稱太長( 最多 50 個字符)"
+
+#: lib/retro_hex_chat/commands/handlers/join.ex:99
+#, elixir-autogen, elixir-format
+msgid "Channel password (if key-protected)"
+msgstr "頻道密碼( 如果密鑰保護)"
+
+#: lib/retro_hex_chat/commands/handlers/part.ex:87
+#, elixir-autogen, elixir-format
+msgid "Channel to leave (defaults to current)"
+msgstr "要離開的通道( 默認爲當前)"
+
+#: lib/retro_hex_chat/commands/handlers/knock.ex:74
+#, elixir-autogen, elixir-format
+msgid "Channel to request access to"
+msgstr "請求訪問的頻道"
+
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:83
+#, elixir-autogen, elixir-format
+msgid "Channel welcome message"
+msgstr "頻道歡迎消息"
+
+#: lib/retro_hex_chat/commands/handlers/clear.ex:30
+#: lib/retro_hex_chat/commands/handlers/clear.ex:50
+#, elixir-autogen, elixir-format
+msgid ""
+"Clear all messages from the current chat window, giving you a fresh screen. "
+"Cannot be undone."
+msgstr "從當前聊天窗口清除所有消息, 並給您一個新屏幕 。 無法撤銷 。"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:172
+#, elixir-autogen, elixir-format
+msgid "Clear all perform commands"
+msgstr "清除全部執行命令"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:147
+#, elixir-autogen, elixir-format
+msgid "Clear your entire autojoin list"
+msgstr "清除全部自動連接列表"
+
+#: lib/retro_hex_chat/commands/handlers/help.ex:74
+#, elixir-autogen, elixir-format
+msgid "Command name to view detailed help"
+msgstr "查看詳細幫助的命令名稱"
+
+#: lib/retro_hex_chat/commands/registry.ex:75
+#, elixir-autogen, elixir-format
+msgid "Configuration"
+msgstr "配置"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:107
+#, elixir-autogen, elixir-format
+msgid "Configuration: [repeat] <seconds> <command>"
+msgstr "配置: [重複] <ph0><</ph2></ph2>>/ph1><</ph3>>/ph3>>]"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:373
+#, elixir-autogen, elixir-format
+msgid "Cooldown must be a number."
+msgstr "冷靜一定是一個數字。"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:366
+#, elixir-autogen, elixir-format
+msgid "Cooldown set to %{ms}ms."
+msgstr "冷卻設置爲%{ms}ms."
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:121
+#, elixir-autogen, elixir-format
+msgid "Create a new command alias"
+msgstr "創建新命令的別名"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:95
+#, elixir-autogen, elixir-format
+msgid "Create short command shortcuts that expand into longer commands."
+msgstr "創建擴展爲更長命令的短命令快捷鍵 。"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:68
+#, elixir-autogen, elixir-format
+msgid ""
+"Create short command shortcuts that expand into longer commands.\n"
+"Subcommands: list, add <name> <expansion>, remove <name>. No args opens the dialog.\n"
+"Supports $1-$9 for positional arguments, $nick for your nickname, $chan for current channel.\n"
+"Max 50 aliases. Registered users: persisted. Guests: session-only."
+msgstr ""
+"創建擴展爲更長命令的短命令快捷鍵 。\n"
+"子命令 : 列表, 添加 <ph0><</ ph3></ ph3>> > <ph1><</ ph4>>/ ph4>>, 刪除 <ph2><</ ph5></ ph5>>。 沒有參數打開對話框 。\n"
+"支持$1 - 9 用於位置參數,$nick用於您的暱稱,$chan用於當前頻道.\n"
+"Max 50別名. 註冊用戶:持續。 嘉賓:只開會."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:108
+#, elixir-autogen, elixir-format
+msgid "Create, manage, and configure bots for your channels.\n"
+msgstr "爲您的頻道創建、管理和配置 bots 。"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:138
+#, elixir-autogen, elixir-format
+msgid "Debug info (connections, processes, memory)"
+msgstr "調試信息( 連接、 進程、 內存)"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:218
+#, elixir-autogen, elixir-format
+msgid "Delete your nickname registration"
+msgstr "刪除您的暱稱註冊"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:379
+#, elixir-autogen, elixir-format
+msgid "Description updated."
+msgstr "說明更新。"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:211
+#, elixir-autogen, elixir-format
+msgid "Disabled"
+msgstr "已禁用"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:212
+#, elixir-autogen, elixir-format
+msgid "Disconnect a stale session using its password"
+msgstr "使用其密碼斷開一個 stale 會話"
+
+#: lib/retro_hex_chat/commands/handlers/quit.ex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"Disconnect from the server and return to the connect screen.\n"
+"Other users see your optional quit message. All channels are left and your session ends."
+msgstr ""
+"從服務器上斷開連接並返回連接屏幕.\n"
+"其他用戶查看您的可選退出消息 。 所有頻道都是左側的,你的會話結束。"
+
+#: lib/retro_hex_chat/commands/handlers/quit.ex:56
+#, elixir-autogen, elixir-format
+msgid ""
+"Disconnect from the server and return to the connect screen. Other users see"
+" your optional quit message."
+msgstr "從服務器上斷開連接並返回連接屏幕. 其他用戶查看您的可選退出消息 。"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:228
+#, elixir-autogen, elixir-format
+msgid "Drop channel registration"
+msgstr "丟棄頻道註冊"
+
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:67
+#, elixir-autogen, elixir-format
+msgid "Duration (e.g. 30s, 5m, 1h)"
+msgstr "期限(如30s、5m、1h)"
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:93
+#, elixir-autogen, elixir-format
+msgid "Duration must be positive"
+msgstr "期限必須是正數"
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:146
+#, elixir-autogen, elixir-format
+msgid "Duration: 5m, 1h, 2d"
+msgstr "會期:5米、1小時、2天"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:138
+#, elixir-autogen, elixir-format
+msgid "Edit a user's note"
+msgstr "編輯用戶的便條"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:210
+#, elixir-autogen, elixir-format
+msgid "Enabled"
+msgstr "已啓用"
+
+#: lib/retro_hex_chat/commands/handlers/join.ex:57
+#: lib/retro_hex_chat/commands/handlers/join.ex:81
+#, elixir-autogen, elixir-format
+msgid ""
+"Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\n"
+"Channel name must start with #, max 50 characters, no spaces.\n"
+"Max 10 channels at once. Password required if channel has +k mode set."
+msgstr ""
+"輸入要讀取和發送消息的聊天頻道 。 如果頻道不存在,則創建頻道。\n"
+"頻道名稱必須從 # 開始, 最多50個字符, 沒有空格 。\n"
+"最大10頻道一時. 如果頻道有+k模式設置,則需要密碼."
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:145
+#, elixir-autogen, elixir-format
+msgid "Factory reset — destroy all data except admin infrastructure"
+msgstr "工廠重新設置——銷燬除行政管理基礎設施以外的所有數據"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:408
+#, elixir-autogen, elixir-format
+msgid "Farewell disabled."
+msgstr "再見,殘疾人。"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:406
+#, elixir-autogen, elixir-format
+msgid "Farewell set to '%{farewell}'."
+msgstr "再見%{farewell}'."
+
+#: lib/retro_hex_chat/commands/handlers/send_file.ex:66
+#, elixir-autogen, elixir-format
+msgid "File recipient"
+msgstr "文件收件人"
+
+#: lib/retro_hex_chat/commands/handlers/op.ex:49
+#, elixir-autogen, elixir-format
+msgid "Give channel operator status to a user."
+msgstr "向用戶提供頻道操作員狀態."
+
+#: lib/retro_hex_chat/commands/handlers/op.ex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Give channel operator status to a user. Shortcut for /mode +o <nickname>.\n"
+"Requires: channel operator or owner."
+msgstr ""
+"向用戶提供頻道操作員狀態. /mode+o <ph0><</ph2></ph2>>>的快捷鍵.\n"
+"要求:頻道操作員或所有者."
+
+#: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:49
+#, elixir-autogen, elixir-format
+msgid "Give voice status to a user."
+msgstr "給予用戶語音狀態."
+
+#: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Give voice status to a user. Shortcut for /mode +v <nickname>.\n"
+"Requires: half-operator, operator, or owner."
+msgstr ""
+"給予用戶語音狀態. /mode+v <ph0><</ph2></ph2>>>的快捷鍵.\n"
+"要求:半操作員、操作員或所有者。"
+
+#: lib/retro_hex_chat/commands/handlers/announce.ex:86
+#, elixir-autogen, elixir-format
+msgid "Global announcement message"
+msgstr "全球公告信息"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:130
+#, elixir-autogen, elixir-format
+msgid "Grant operator status"
+msgstr "贈款運營商地位"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:136
+#, elixir-autogen, elixir-format
+msgid "Grant voice to speak in +m"
+msgstr "以 +m 表示聲音"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:392
+#, elixir-autogen, elixir-format
+msgid "Greeting disabled."
+msgstr "問候殘疾者."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:390
+#, elixir-autogen, elixir-format
+msgid "Greeting set to '%{greeting}'."
+msgstr "問候設置爲“%{greeting}'."
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:40
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:121
+#, elixir-autogen, elixir-format
+msgid ""
+"Hide messages from a specific user.\n"
+"Types: all (default), messages, pms, actions, notices, invites.\n"
+"Duration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\n"
+"No args: show your ignore list. You cannot ignore yourself."
+msgstr ""
+"隱藏特定用戶的消息 。\n"
+"類型:所有(默認),消息,pms,動作,通知,邀請.\n"
+"期限:Nm(分鐘)、Nh(小時)、Nd(天數)。 持續時間=永久至/unignore。\n"
+"無參數: 顯示您的忽略列表 。 你不能無視自己。"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:70
+#, elixir-autogen, elixir-format
+msgid "Insufficient privileges to set channel modes"
+msgstr "設置頻道模式的權限不足"
+
+#: lib/retro_hex_chat/commands/handlers/join.ex:26
+#, elixir-autogen, elixir-format
+msgid "Invalid channel name. Channel names must start with #"
+msgstr "無效的頻道名稱 。 頻道名稱必須始於 #"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:369
+#, elixir-autogen, elixir-format
+msgid "Invalid cooldown value."
+msgstr "無效的冷卻值 。"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:31
+#, elixir-autogen, elixir-format
+msgid "Invalid position: %{string_trim_rest}. Must be a number."
+msgstr "無效位置: %{string_trim_rest}. 一定是個號碼"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:116
+#, elixir-autogen, elixir-format
+msgid "Invalid positions. Must be numbers."
+msgstr "無效的位置 。 一定是數字"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:356
+#, elixir-autogen, elixir-format
+msgid "Invalid prefix."
+msgstr "無效的前綴 。"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:71
+#, elixir-autogen, elixir-format
+msgid ""
+"Invalid trigger '%{trigger_str}'. Valid triggers: on_join, on_part, "
+"on_nick_change"
+msgstr "無效的觸發%{trigger_str}'. 有效觸發器: 在 join、 part、 nick change上"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:147
+#, elixir-autogen, elixir-format
+msgid "Invite only"
+msgstr "只邀請"
+
+#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:18
+#, elixir-autogen, elixir-format
+msgid "Join #games and type !play to start an arcade session."
+msgstr "加入 #games 並輸入 ! play 啓動街機會話 。"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:165
+#, elixir-autogen, elixir-format
+msgid "Key"
+msgstr "密鑰"
+
+#: lib/retro_hex_chat/commands/handlers/part.ex:76
+#, elixir-autogen, elixir-format
+msgid ""
+"Leave the current channel or a specified channel, with an optional parting "
+"message shown to others."
+msgstr "離開當前頻道或指定頻道,向他人顯示可選的分頁消息."
+
+#: lib/retro_hex_chat/commands/handlers/part.ex:51
+#, elixir-autogen, elixir-format
+msgid ""
+"Leave the current channel or a specified channel, with an optional parting message.\n"
+"Defaults to current channel. If the first word doesn't start with #, it's treated as the part message.\n"
+"You must be in the channel to leave it."
+msgstr ""
+"保留當前頻道或指定頻道,並帶有可選的分頁消息.\n"
+"當前頻道的默認值 。 如果第一個詞不以#開頭,則作爲部分信息處理.\n"
+"你必須在頻道里離開它。"
+
+#: lib/retro_hex_chat/commands/handlers/whois.ex:53
+#, elixir-autogen, elixir-format
+msgid "Look up detailed information about an online user."
+msgstr "查詢一個在線用戶的詳細信息 。"
+
+#: lib/retro_hex_chat/commands/handlers/whois.ex:33
+#, elixir-autogen, elixir-format
+msgid ""
+"Look up detailed information about an online user.\n"
+"Shows: nickname, channels (shared channels highlighted), idle time, away status, bio, and registration status.\n"
+"User must be online. For offline users, use /whowas."
+msgstr ""
+"查詢一個在線用戶的詳細信息 。\n"
+"顯示:暱稱,頻道(共享頻道突出顯示),閒暇時間,離開狀態,生物狀態,以及註冊狀態.\n"
+"用戶必須在線. 對於離線用戶,請使用/whowas."
+
+#: lib/retro_hex_chat/commands/handlers/whowas.ex:54
+#, elixir-autogen, elixir-format
+msgid "Look up information about a user who recently disconnected."
+msgstr "查找最近斷開連接的用戶信息 。"
+
+#: lib/retro_hex_chat/commands/handlers/whowas.ex:33
+#, elixir-autogen, elixir-format
+msgid ""
+"Look up information about a user who recently disconnected.\n"
+"Shows last seen time, channels, and quit message. Data cached for up to 1 hour.\n"
+"For online users, use /whois instead."
+msgstr ""
+"查找最近斷開連接的用戶信息 。\n"
+"顯示上次看到的時間、 頻道和退出消息 。 數據緩存最多1小時.\n"
+"對於在線用戶,則使用/whois。"
+
+#: lib/retro_hex_chat/commands/handlers/clear_motd.ex:21
+#, elixir-autogen, elixir-format
+msgid "MOTD has been cleared."
+msgstr "MOTD已經清除。"
+
+#: lib/retro_hex_chat/commands/handlers/set_motd.ex:27
+#, elixir-autogen, elixir-format
+msgid "MOTD has been updated."
+msgstr "MOTD已經更新."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:231
+#, elixir-autogen, elixir-format
+msgid "Manage auto-operator access list"
+msgstr "管理自動操作訪問列表"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:232
+#, elixir-autogen, elixir-format
+msgid "Manage auto-voice access list"
+msgstr "管理自動語音訪問列表"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:200
+#, elixir-autogen, elixir-format
+msgid "Manage channel registration and access lists through ChanServ."
+msgstr "通過ChanServ管理頻道註冊和訪問列表."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:80
+#, elixir-autogen, elixir-format
+msgid ""
+"Manage channel registration and access lists through ChanServ.\n"
+"Subcommands: register, drop, info, sop/aop/vop add|del|list, help. Must be in a channel.\n"
+"Access hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\n"
+"Register requires channel operator. Drop requires being the channel founder."
+msgstr ""
+"通過ChanServ管理頻道註冊和訪問列表.\n"
+"子命令: 註冊、 放下、 信息、 op<ph0}\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\ 一定是在頻道里\n"
+"訪問等級:SOP(超級操作員) > AOP(自動操作員) > VOP(自動語音).\n"
+"註冊需要頻道操作員. Drop需要成爲頻道創建者."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:230
+#, elixir-autogen, elixir-format
+msgid "Manage super-operator access list"
+msgstr "管理超級操作訪問列表"
+
+#: lib/retro_hex_chat/commands/handlers/away.ex:56
+#, elixir-autogen, elixir-format
+msgid ""
+"Mark yourself as temporarily unavailable, with an optional message shown in "
+"/whois."
+msgstr "將自己標爲暫時無法使用, 可選信件顯示在 /whois 中 。"
+
+#: lib/retro_hex_chat/commands/handlers/away.ex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"Mark yourself as temporarily unavailable, with an optional message shown in /whois.\n"
+"With a message: sets you as away. Without arguments: clears your away status and marks you as back."
+msgstr ""
+"將自己標爲暫時無法使用, 可選信件顯示在 /whois 中 。\n"
+"帶個口信 讓你離開 沒有爭論: 清除你離家的狀態 並標記你回來。"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:418
+#, elixir-autogen, elixir-format
+msgid "Mention response updated."
+msgstr "已更新提及的答覆。"
+
+#: lib/retro_hex_chat/commands/handlers/msg.ex:80
+#, elixir-autogen, elixir-format
+msgid "Message content"
+msgstr "信件內容"
+
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:86
+#, elixir-autogen, elixir-format
+msgid "Message for all users with +w mode"
+msgstr "面向所有使用 +w 模式的用戶的信件"
+
+#: lib/retro_hex_chat/commands/handlers/knock.ex:81
+#, elixir-autogen, elixir-format
+msgid "Message for the channel operators"
+msgstr "給頻道操作員的信件"
+
+#: lib/retro_hex_chat/commands/handlers/set_motd.ex:76
+#, elixir-autogen, elixir-format
+msgid "Message of the Day text"
+msgstr "每日文本的訊息"
+
+#: lib/retro_hex_chat/commands/handlers/msg.ex:73
+#, elixir-autogen, elixir-format
+msgid "Message recipient"
+msgstr "信件收件人"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:110
+#, elixir-autogen, elixir-format
+msgid "Mode flags to set or unset"
+msgstr "要設置或未設置的模式旗"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:153
+#, elixir-autogen, elixir-format
+msgid "Moderated"
+msgstr "調製"
+
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:52
+#, elixir-autogen, elixir-format
+msgid "Mute a user in the current channel."
+msgstr "在當前頻道中關閉一個用戶 。"
+
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:32
+#, elixir-autogen, elixir-format
+msgid ""
+"Mute a user in the current channel. They cannot send messages.\n"
+"Duration: 30s, 5m, 1h, 1d. Omit for permanent.\n"
+"Requires: channel operator or owner."
+msgstr ""
+"在當前頻道中關閉一個用戶 。 他們不能發送消息。\n"
+"持續時間:30s,5m,1h,1d. 承認永久。\n"
+"要求:頻道操作員或所有者."
+
+#: lib/retro_hex_chat/commands/handlers/topic.ex:76
+#, elixir-autogen, elixir-format
+msgid "New channel topic"
+msgstr "新建頻道主題"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:93
+#, elixir-autogen, elixir-format
+msgid "New nickname (max 16 characters)"
+msgstr "新建暱稱( 最多 16 個字符)"
+
+#: lib/retro_hex_chat/commands/handlers/transfer.ex:57
+#, elixir-autogen, elixir-format
+msgid "New owner"
+msgstr "新擁有者"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:130
+#, elixir-autogen, elixir-format
+msgid "NickServ admin (drop, info, resetpass)"
+msgstr "NickServ 管理員( 投放、 信息、 重置通道)"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:23
+#, elixir-autogen, elixir-format
+msgid "Nickname cannot contain spaces"
+msgstr "暱稱不能包含空格"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:42
+#, elixir-autogen, elixir-format
+msgid "Nickname contains invalid characters"
+msgstr "暱稱包含無效字符"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:36
+#, elixir-autogen, elixir-format
+msgid "Nickname must start with a letter or special character ([\\]^_{|})"
+msgstr "暱稱必須從字母或特殊字符開頭 ([\\] QQ)"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:32
+#, elixir-autogen, elixir-format
+msgid "Nickname too long (max 16 characters)"
+msgstr "暱稱太長( 最多 16 個字符)"
+
+#: lib/retro_hex_chat/commands/handlers/motd.ex:17
+#, elixir-autogen, elixir-format
+msgid "No MOTD has been set."
+msgstr "沒有設定 MOTD 。"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:715
+#, elixir-autogen, elixir-format
+msgid "No description"
+msgstr "無說明"
+
+#: lib/retro_hex_chat/commands/handlers/msg.ex:19
+#, elixir-autogen, elixir-format
+msgid "No message specified. Usage: /msg <nickname> <message>"
+msgstr "未指定信件 。 用法:/msg<ph0><</ph3>>/ph3>>><ph1><</ph4></ph4>>>"
+
+#: lib/retro_hex_chat/commands/handlers/notice.ex:22
+#, elixir-autogen, elixir-format
+msgid "No message specified. Usage: /notice <target> <message>"
+msgstr "未指定信件 。 用法:/notice<ph0><</ph3>>/ph3>>><ph1><</ph4></ph4>>>"
+
+#: lib/retro_hex_chat/commands/handlers/notice.ex:83
+#, elixir-autogen, elixir-format
+msgid "Notice content"
+msgstr "通知內容"
+
+#: lib/retro_hex_chat/commands/handlers/notice_routing.ex:31
+#: lib/retro_hex_chat/commands/handlers/notice_routing.ex:47
+#, elixir-autogen, elixir-format
+msgid "Notices are always routed to the active window."
+msgstr "通知總是被引導到活動窗口。"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:714
+#, elixir-autogen, elixir-format
+msgid "OFF"
+msgstr "關閉"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:714
+#, elixir-autogen, elixir-format
+msgid "ON"
+msgstr "關閉"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:154
+#, elixir-autogen, elixir-format
+msgid "Only +v and +o can speak"
+msgstr "只有+v和+o才能發言"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:160
+#, elixir-autogen, elixir-format
+msgid "Only operators can change the topic"
+msgstr "只有運算符可以更改話題"
+
+#: lib/retro_hex_chat/commands/handlers/query.ex:65
+#, elixir-autogen, elixir-format
+msgid "Open a PM tab with this user"
+msgstr "用此用戶打開 PM 標籤"
+
+#: lib/retro_hex_chat/commands/handlers/query.ex:54
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a private message tab with a user without sending any message, unlike "
+"/msg."
+msgstr "與<ph0>/ph0>不同的是,在不發送任何消息的情況下,用用戶打開私人信件標籤。"
+
+#: lib/retro_hex_chat/commands/handlers/query.ex:33
+#, elixir-autogen, elixir-format
+msgid ""
+"Open a private message tab with a user without sending any message, unlike /msg.\n"
+"Nickname is required. If the PM tab already exists, switches to it."
+msgstr ""
+"與<ph0>/ph0>不同的是,在不發送任何消息的情況下,用用戶打開私人信件標籤。\n"
+"需要暱稱 。 如果 PM 標籤已經存在, 請切換到它 。"
+
+#: lib/retro_hex_chat/commands/handlers/popups.ex:34
+#: lib/retro_hex_chat/commands/handlers/popups.ex:56
+#, elixir-autogen, elixir-format
+msgid ""
+"Open the Custom Menus dialog to add, edit, or remove custom right-click menu"
+" items for the nick list and channels."
+msgstr "打開自定義菜單對話框添加、編輯或刪除自定義右鍵單擊暱稱列表和頻道的菜單項。"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:129
+#, elixir-autogen, elixir-format
+msgid "Operator"
+msgstr "運算符"
+
+#: lib/retro_hex_chat/commands/handlers/part.ex:94
+#, elixir-autogen, elixir-format
+msgid "Part message"
+msgstr "內容"
+
+#: lib/retro_hex_chat/commands/handlers/ban.ex:76
+#, elixir-autogen, elixir-format
+msgid ""
+"Permanently block a user from the channel. The ban persists until removed "
+"with /mode -b."
+msgstr "永久封鎖頻道的用戶 。 禁令一直持續到以 /mode -b刪除爲止。"
+
+#: lib/retro_hex_chat/commands/handlers/ban.ex:39
+#, elixir-autogen, elixir-format
+msgid ""
+"Permanently block a user from the channel. The ban persists until removed with /mode -b.\n"
+"Requires: channel operator. Must be in a channel."
+msgstr ""
+"永久封鎖頻道的用戶 。 禁令一直持續到以 /mode -b刪除爲止。\n"
+"要求:頻道操作員. 一定是在頻道里"
+
+#: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:22
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:22
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:31
+#, elixir-autogen, elixir-format
+msgid "Permission denied: you must be a channel operator."
+msgstr "權限被拒絕: 您必須是頻道操作員 。"
+
+#: lib/retro_hex_chat/commands/handlers/announce.ex:18
+#: lib/retro_hex_chat/commands/handlers/clear_motd.ex:16
+#: lib/retro_hex_chat/commands/handlers/set_motd.ex:16
+#, elixir-autogen, elixir-format
+msgid "Permission denied: you must be a server administrator."
+msgstr "權限被拒絕: 您必須是服務器管理員 。"
+
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:18
+#, elixir-autogen, elixir-format
+msgid "Permission denied: you must be a server operator."
+msgstr "權限被拒絕: 您必須是服務器操作員 。"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:353
+#, elixir-autogen, elixir-format
+msgid "Prefix set to '%{value}'."
+msgstr "前綴設置爲“%{value}'."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:221
+#, elixir-autogen, elixir-format
+msgid "Process: Not running"
+msgstr "進程:未運行"
+
+#: lib/retro_hex_chat/commands/handlers/quit.ex:67
+#, elixir-autogen, elixir-format
+msgid "Quit message"
+msgstr "退出消息"
+
+#: lib/retro_hex_chat/commands/handlers/ban.ex:94
+#, elixir-autogen, elixir-format
+msgid "Reason for the ban"
+msgstr "禁止的理由"
+
+#: lib/retro_hex_chat/commands/handlers/kick.ex:97
+#, elixir-autogen, elixir-format
+msgid "Reason for the kick"
+msgstr "踢門的原因"
+
+#: lib/retro_hex_chat/commands/autocomplete.ex:134
+#, elixir-autogen, elixir-format
+msgid "Recent"
+msgstr "近期"
+
+#: lib/retro_hex_chat/commands/handlers/whowas.ex:62
+#, elixir-autogen, elixir-format
+msgid "Recently disconnected user"
+msgstr "最近斷開的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/notice.ex:76
+#, elixir-autogen, elixir-format
+msgid "Recipient (nickname or channel)"
+msgstr "收件人(暱稱或頻道)"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:173
+#, elixir-autogen, elixir-format
+msgid ""
+"Register and protect your nickname with a password through NickServ, the "
+"nickname services bot."
+msgstr "通過暱稱服務機器人NickServe的密碼註冊並保護您的暱稱."
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:85
+#, elixir-autogen, elixir-format
+msgid ""
+"Register and protect your nickname with a password through NickServ.\n"
+"Subcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, help.\n"
+"Register: claims current nickname. Identify: authenticates each session.\n"
+"Ghost: disconnects a stale session using the registered nickname's password."
+msgstr ""
+"通過 NickServer 用密碼註冊並保護您的暱稱 。\n"
+"子命令: 註冊 <ph0></ph0>, 識別 <ph1></ph1>, 鬼魂 <ph2></ph2>> <ph3></ph3>, 信息[nick], 放下 <ph4></ph4>, 幫助.\n"
+"註冊:聲稱目前暱稱。 識別:認證每個會話。\n"
+"Ghost:使用註冊暱稱的密碼斷開僵硬會話."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:227
+#, elixir-autogen, elixir-format
+msgid "Register the current channel"
+msgstr "註冊當前頻道"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:204
+#, elixir-autogen, elixir-format
+msgid "Register your nickname with a password"
+msgstr "用密碼註冊您的暱稱"
+
+#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:42
+#, elixir-autogen, elixir-format
+msgid "Regular users should type !play in #games instead.\n"
+msgstr "普通用戶應該輸入 ! 在 #games 中播放 。"
+
+#: lib/retro_hex_chat/commands/handlers/unban.ex:71
+#, elixir-autogen, elixir-format
+msgid "Remove a ban from a user, allowing them to rejoin the channel."
+msgstr "從用戶中刪除一個禁止,讓他們重新加入頻道."
+
+#: lib/retro_hex_chat/commands/handlers/unban.ex:37
+#, elixir-autogen, elixir-format
+msgid ""
+"Remove a ban from a user, allowing them to rejoin the channel.\n"
+"Requires: channel operator. Must be in a channel."
+msgstr ""
+"從用戶中刪除一個禁止,讓他們重新加入頻道.\n"
+"要求:頻道操作員. 一定是在頻道里"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:146
+#, elixir-autogen, elixir-format
+msgid "Remove a channel from autojoin"
+msgstr "從自動連接中刪除頻道"
+
+#: lib/retro_hex_chat/commands/handlers/unmute.ex:49
+#, elixir-autogen, elixir-format
+msgid "Remove a channel-level mute from a user."
+msgstr "從用戶中刪除頻道級別啞彈 。"
+
+#: lib/retro_hex_chat/commands/handlers/unmute.ex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Remove a channel-level mute from a user.\n"
+"Requires: channel operator or owner."
+msgstr ""
+"從用戶中刪除頻道級別啞彈 。\n"
+"要求:頻道操作員或所有者."
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:170
+#, elixir-autogen, elixir-format
+msgid "Remove a perform command"
+msgstr "刪除一個執行命令"
+
+#: lib/retro_hex_chat/commands/handlers/kick.ex:39
+#: lib/retro_hex_chat/commands/handlers/kick.ex:79
+#, elixir-autogen, elixir-format
+msgid ""
+"Remove a user from the channel with an optional reason. They can rejoin unless also banned.\n"
+"Requires: channel operator or half-operator. Must be in a channel."
+msgstr ""
+"用可選的理由從頻道中刪除一個用戶 。 除非也被禁止,否則他們可以重新加入。\n"
+"要求:頻道操作員或半操作員. 一定是在頻道里"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:136
+#, elixir-autogen, elixir-format
+msgid "Remove a user from your notify list"
+msgstr "從通知列表中刪除一個用戶"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:192
+#, elixir-autogen, elixir-format
+msgid "Remove an auto-respond rule"
+msgstr "刪除自動對應的規則"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:122
+#, elixir-autogen, elixir-format
+msgid "Remove an existing alias"
+msgstr "刪除已有的別名"
+
+#: lib/retro_hex_chat/commands/handlers/deop.ex:49
+#, elixir-autogen, elixir-format
+msgid "Remove channel operator status from a user."
+msgstr "從用戶中刪除頻道操作員狀態 。"
+
+#: lib/retro_hex_chat/commands/handlers/deop.ex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Remove channel operator status from a user. Shortcut for /mode -o <nickname>.\n"
+"Requires: channel operator or owner."
+msgstr ""
+"從用戶中刪除頻道操作員狀態 。 /mode -o <ph0><</ph2></ph2>>>的快捷鍵.\n"
+"要求:頻道操作員或所有者."
+
+#: lib/retro_hex_chat/commands/handlers/clear_motd.ex:36
+#: lib/retro_hex_chat/commands/handlers/clear_motd.ex:56
+#, elixir-autogen, elixir-format
+msgid ""
+"Remove the server's Message of the Day so new users won't see any MOTD. "
+"Admin only."
+msgstr "刪除服務器的每日消息, 這樣新用戶就不會看到任何 MOTD 。 僅管管理."
+
+#: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:58
+#, elixir-autogen, elixir-format
+msgid ""
+"Remove the welcome message from the current channel so new joiners won't see"
+" one."
+msgstr "從當前頻道刪除歡迎消息, 這樣新加入者不會看到 。"
+
+#: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:38
+#, elixir-autogen, elixir-format
+msgid ""
+"Remove the welcome message from the current channel so new joiners won't see one.\n"
+"Requires: channel operator. Must be in a channel."
+msgstr ""
+"從當前頻道刪除歡迎消息, 這樣新加入者不會看到 。\n"
+"要求:頻道操作員. 一定是在頻道里"
+
+#: lib/retro_hex_chat/commands/handlers/unignore.ex:65
+#, elixir-autogen, elixir-format
+msgid "Remove user from ignore list"
+msgstr "從忽略列表中刪除用戶"
+
+#: lib/retro_hex_chat/commands/handlers/devoice.ex:49
+#, elixir-autogen, elixir-format
+msgid "Remove voice status from a user."
+msgstr "從用戶中刪除語音狀態 。"
+
+#: lib/retro_hex_chat/commands/handlers/devoice.ex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Remove voice status from a user. Shortcut for /mode -v <nickname>.\n"
+"Requires: half-operator, operator, or owner."
+msgstr ""
+"從用戶中刪除語音狀態 。 /mode -v <ph0><</ph2></ph2>>>的快捷鍵.\n"
+"要求:半操作員、操作員或所有者。"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:171
+#, elixir-autogen, elixir-format
+msgid "Reorder a perform command"
+msgstr "重排一個執行命令"
+
+#: lib/retro_hex_chat/commands/handlers/knock.ex:39
+#: lib/retro_hex_chat/commands/handlers/knock.ex:63
+#, elixir-autogen, elixir-format
+msgid ""
+"Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\n"
+"Channel name must start with #."
+msgstr ""
+"請求被允許進入只邀請的(+i)頻道. 接線員看到你的敲門,可以邀請你。\n"
+"頻道名稱必須始於 #."
+
+#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:43
+#, elixir-autogen, elixir-format
+msgid "Requires: server administrator, registered and identified."
+msgstr "要求:服務器管理員,註冊和識別."
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:63
+#, elixir-autogen, elixir-format
+msgid ""
+"Schedule a command to run after a delay or on a repeating interval.\n"
+"Create: /timer <name> <seconds> <command>. Repeat: /timer <name> repeat <seconds> <command>.\n"
+"Timers run in the window that was active when they were created and do not switch your current window when they fire.\n"
+"Manage: /timer list, /timer stop <name>.\n"
+"Max 5 timers. One-shot: 1-86400s. Repeat minimum: 10s. Session-only (lost on disconnect)."
+msgstr ""
+"將命令安排在延遲或重複間隔後運行 。\n"
+"創建:/timer<ph0><</ph8>>/ph9>>/ph9>>/ph2><</ph10></ph10>>/ 重複:/timer><ph3><</ph12>>/ph12>>/ 重複:<ph4><</ph13></ph13>>/ph5><</ph14>>/ph14>>/ph14>>.\n"
+"計時器在創建時活動的窗口中運行, 並且不會在開火時切換當前窗口 。\n"
+"管理:/timer列表,/timer站<ph6><</ph17></ph17>>.\n"
+"最大5計時器。 一發:1-86400s. 重複最小值: 10s. 只有會話( 斷開時丟失) 。"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:89
+#, elixir-autogen, elixir-format
+msgid ""
+"Schedule a command to run after a delay or on a repeating interval. The "
+"command runs in the window that was active when the timer was created."
+msgstr "將命令安排在延遲或重複間隔後運行 。 命令運行在創建計時器時活動的窗口中."
+
+#: lib/retro_hex_chat/commands/handlers/invite.ex:44
+#: lib/retro_hex_chat/commands/handlers/invite.ex:75
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a channel invitation to another user. Required for invite-only (+i) channels.\n"
+"Defaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n"
+"/invite auto — toggles whether you automatically join channels when invited."
+msgstr ""
+"向另一個用戶發送頻道邀請 。 僅限邀請(+i)頻道使用。\n"
+"如果沒有指定<ph1>/ph1>,則默認爲當前頻道。 沒有給出頻道參數時, 必須是在頻道中 。\n"
+"/invite 自動—— 切換您在被邀請時是否自動加入頻道 。"
+
+#: lib/retro_hex_chat/commands/handlers/send_file.ex:55
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a file to another user through a direct peer-to-peer connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"通過直接對等連接向另一個用戶發送文件.\n"
+"要求:兩個用戶都必須註冊和識別(/ns識別)."
+
+#: lib/retro_hex_chat/commands/handlers/send_file.ex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a file to another user through a direct peer-to-peer connection.\n"
+"Requires: both you and the target must be registered and identified (/ns identify).\n"
+"You cannot send files to yourself. Creates a P2P session — the peer must accept."
+msgstr ""
+"通過直接對等連接向另一個用戶發送文件.\n"
+"要求:您和目標都必須註冊和識別(/ns標識)。\n"
+"您不能將文件發送給自己 。 創建 P2P 會話——對等方必須接受."
+
+#: lib/retro_hex_chat/commands/handlers/notice.ex:65
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a lightweight notice to a user or channel that doesn't open a PM window"
+" on their side."
+msgstr "向用戶或頻道發送輕量級通知,不會打開他們一側的PM窗口."
+
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:75
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a message to all users who opted in to operator announcements via "
+"/umode +w."
+msgstr "通過/umode +w向所有選擇使用操作員通知的用戶發送消息。"
+
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:54
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a message to all users who opted in to operator announcements via /umode +w.\n"
+"Requires: server operator or server administrator. Message text is required."
+msgstr ""
+"通過/umode +w向所有選擇使用操作員通知的用戶發送消息。\n"
+"要求:服務器操作員或服務器管理員. 需要信件文本 。"
+
+#: lib/retro_hex_chat/commands/handlers/notice.ex:41
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a notice to a user or channel without opening a PM window on their side.\n"
+"Both target and message are required. Target can be a nickname or a #channel."
+msgstr ""
+"向用戶或頻道發送通知,而不在他們的側面打開PM窗口.\n"
+"既需要目標,也需要信息。 目標可以是暱稱或#channel."
+
+#: lib/retro_hex_chat/commands/handlers/msg.ex:38
+#: lib/retro_hex_chat/commands/handlers/msg.ex:62
+#, elixir-autogen, elixir-format
+msgid ""
+"Send a private message to another user, opening a PM conversation tab.\n"
+"Both nickname and message text are required."
+msgstr ""
+"向另一個用戶發送私人信息,打開PM對話標籤.\n"
+"需要暱稱和消息文本."
+
+#: lib/retro_hex_chat/commands/handlers/me.ex:38
+#: lib/retro_hex_chat/commands/handlers/me.ex:59
+#, elixir-autogen, elixir-format
+msgid ""
+"Send an action message that appears as '* YourNick does something' to everyone in the channel.\n"
+"Must be in a channel. Action text is required."
+msgstr ""
+"發送一個顯示爲“ * YourNick 做點什麼”的動作信息給頻道中的每個人 。\n"
+"一定是在頻道里 需要行動案文。"
+
+#: lib/retro_hex_chat/commands/handlers/announce.ex:75
+#, elixir-autogen, elixir-format
+msgid ""
+"Send an urgent broadcast message to every connected user. Bypasses all "
+"ignore filters."
+msgstr "向每個連接的用戶發送緊急廣播信息. 繞道都忽略了過濾器."
+
+#: lib/retro_hex_chat/commands/handlers/announce.ex:54
+#, elixir-autogen, elixir-format
+msgid ""
+"Send an urgent broadcast message to every connected user. Bypasses all ignore filters.\n"
+"Requires: server administrator."
+msgstr ""
+"向每個連接的用戶發送緊急廣播信息. 繞道都忽略了過濾器.\n"
+"要求:服務器管理員."
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:91
+#, elixir-autogen, elixir-format
+msgid "Server administration commands. Requires admin privilege."
+msgstr "服務器管理命令. 需要管理員特權。"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:56
+#, elixir-autogen, elixir-format
+msgid "Server administration commands. Requires admin privilege.\n"
+msgstr "服務器管理命令. 需要管理員特權。"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:119
+#, elixir-autogen, elixir-format
+msgid "Server info and settings"
+msgstr "服務器信息和設置"
+
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:72
+#, elixir-autogen, elixir-format
+msgid ""
+"Set a message shown once to each user when they join the current channel."
+msgstr "設定每個用戶加入當前頻道時顯示一次的消息 。"
+
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:47
+#, elixir-autogen, elixir-format
+msgid ""
+"Set a message shown once to each user when they join the current channel.\n"
+"Requires: channel operator. Must be in a channel.\n"
+"With no args: clears the welcome message (same as /clearwelcome)."
+msgstr ""
+"設定每個用戶加入當前頻道時顯示一次的消息 。\n"
+"要求:頻道操作員. 一定是在頻道里\n"
+"沒有參數:清除歡迎信息(與<ph0>/ph0>相同)。"
+
+#: lib/retro_hex_chat/commands/handlers/bio.ex:73
+#, elixir-autogen, elixir-format
+msgid ""
+"Set a short 'about me' text visible when others look you up with /whois."
+msgstr "當其他人用 <ph0>/ph0> 查找您時, 設置一個“ 關於我的” 短文本可見 。"
+
+#: lib/retro_hex_chat/commands/handlers/bio.ex:48
+#, elixir-autogen, elixir-format
+msgid ""
+"Set a short 'about me' text visible when others look you up with /whois.\n"
+"Max 200 characters (text beyond this limit is silently truncated). Use /bio to view, /bio clear to remove."
+msgstr ""
+"當其他人用 <ph0>/ph0> 查找您時, 設置一個“ 關於我的” 短文本可見 。\n"
+"最大200個字符(超過此限制的文本是靜默的切換). 使用/bio查看,/bio清除."
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:166
+#, elixir-autogen, elixir-format
+msgid "Set channel password"
+msgstr "設置頻道密碼"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:117
+#, elixir-autogen, elixir-format
+msgid "Set channels to join automatically every time you connect."
+msgstr "設定每次連接時自動加入的頻道 。"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:80
+#, elixir-autogen, elixir-format
+msgid ""
+"Set channels to join automatically every time you connect.\n"
+"Subcommands: list, add <#channel> [key], remove <#channel>, clear. No args opens the Perform dialog.\n"
+"Channel names must start with #. Registered users only."
+msgstr ""
+"設定每次連接時自動加入的頻道 。\n"
+"子命令 : 列表, 添加 <ph0><</ph2></ph2>>/[鍵], 刪除 <ph1><</ph3></ph3>>, 清除 。 沒有參數打開“ 執行” 對話框 。\n"
+"頻道名稱必須始於 #. 只註冊用戶."
+
+#: lib/retro_hex_chat/commands/handlers/slow.ex:47
+#, elixir-autogen, elixir-format
+msgid ""
+"Set join throttle on the channel (5 joins per N seconds). Use /slow 0 to disable.\n"
+"Requires: channel operator or owner."
+msgstr ""
+"在頻道上設定加盟節流閥( 每N秒5個加盟). 使用 /slow 0禁用。\n"
+"要求:頻道操作員或所有者."
+
+#: lib/retro_hex_chat/commands/handlers/slow.ex:67
+#, elixir-autogen, elixir-format
+msgid "Set join throttle. 0 to disable."
+msgstr "準備加入油門 0爲禁用."
+
+#: lib/retro_hex_chat/commands/handlers/set_motd.ex:65
+#, elixir-autogen, elixir-format
+msgid ""
+"Set the server's Message of the Day shown to all users when they connect."
+msgstr "設置服務器連接時向所有用戶顯示的當日信件 。"
+
+#: lib/retro_hex_chat/commands/handlers/set_motd.ex:44
+#, elixir-autogen, elixir-format
+msgid ""
+"Set the server's Message of the Day shown to all users when they connect.\n"
+"Requires: server administrator. Message text is required."
+msgstr ""
+"設置服務器連接時向所有用戶顯示的當日信件 。\n"
+"要求:服務器管理員. 需要信件文本 。"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:137
+#, elixir-autogen, elixir-format
+msgid ""
+"Set up commands that automatically run every time you connect, like "
+"identifying with NickServ."
+msgstr "設定每次連接時自動運行的命令,比如識別NickServ."
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:92
+#, elixir-autogen, elixir-format
+msgid ""
+"Set up commands that automatically run every time you connect.\n"
+"Subcommands: list, add <command>, remove <index>, move <from> <to>, clear. No args opens the dialog.\n"
+"Common use: /perform add /ns identify mypassword\n"
+"Positions are 0-based index numbers. Passwords are masked in the list display."
+msgstr ""
+"設置每次連接時自動運行的命令 。\n"
+"子命令 : 列表, 添加 <ph0></ph0>/ph4>>, 刪除 <ph1></ph1>, 移動 <ph2></ph2>> <ph3></ph3>, 清除. 沒有參數打開對話框 。\n"
+"常用:/perform 添加/ns 表示我的密碼詞\n"
+"位置爲基於0的索引編號. 密碼在列表顯示中蒙上面具."
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:233
+#, elixir-autogen, elixir-format
+msgid "Show ChanServ help"
+msgstr "顯示 ChanServ 幫助"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:219
+#, elixir-autogen, elixir-format
+msgid "Show NickServ help"
+msgstr "顯示 NickServ 幫助"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:117
+#, elixir-autogen, elixir-format
+msgid "Show active timers"
+msgstr "顯示活動定時器"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:123
+#, elixir-autogen, elixir-format
+msgid "Show all defined aliases"
+msgstr "顯示所有定義的別名"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:190
+#, elixir-autogen, elixir-format
+msgid "Show auto-respond rules"
+msgstr "顯示自動對應的規則"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:168
+#, elixir-autogen, elixir-format
+msgid "Show perform commands"
+msgstr "顯示執行命令"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:144
+#, elixir-autogen, elixir-format
+msgid "Show your autojoin list"
+msgstr "顯示您的自動連接列表"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:139
+#, elixir-autogen, elixir-format
+msgid "Show your notify list"
+msgstr "顯示您的通知列表"
+
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:56
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a direct peer-to-peer session with another user for file transfers, audio calls, or video calls.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"與另一個用戶開始直接對等會話,用於文件傳輸,音頻通話或視頻通話.\n"
+"要求:兩個用戶都必須註冊和識別(/ns識別)."
+
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:35
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a direct peer-to-peer session with another user for file transfers, audio calls, or video calls.\n"
+"Requires: both you and the target must be registered and identified (/ns identify).\n"
+"You cannot start a session with yourself."
+msgstr ""
+"與另一個用戶開始直接對等會話,用於文件傳輸,音頻通話或視頻通話.\n"
+"要求:您和目標都必須註冊和識別(/ns標識)。\n"
+"你不能用自己開始一個會議。"
+
+#: lib/retro_hex_chat/commands/handlers/call.ex:55
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a peer-to-peer audio call with another user.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"與另一個用戶啓動對等音頻呼叫 。\n"
+"要求:兩個用戶都必須註冊和識別(/ns識別)."
+
+#: lib/retro_hex_chat/commands/handlers/call.ex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a peer-to-peer audio call with another user.\n"
+"Requires: both you and the target must be registered and identified (/ns identify).\n"
+"You cannot call yourself. Creates a P2P session — the peer must accept in their lobby."
+msgstr ""
+"與另一個用戶啓動對等音頻呼叫 。\n"
+"要求:您和目標都必須註冊和識別(/ns標識)。\n"
+"你不能自稱 創建一個P2P會話——同伴必須在他們的大廳接受."
+
+#: lib/retro_hex_chat/commands/handlers/game.ex:64
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a peer-to-peer game session with another user.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"與另一個用戶啓動對等遊戲會話.\n"
+"要求:兩個用戶都必須註冊和識別(/ns識別)."
+
+#: lib/retro_hex_chat/commands/handlers/game.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a peer-to-peer game session with another user.\n"
+"Requires: both you and the target must be registered and identified (/ns identify).\n"
+"You pick a game in the lobby after both players join."
+msgstr ""
+"與另一個用戶啓動對等遊戲會話.\n"
+"要求:您和目標都必須註冊和識別(/ns標識)。\n"
+"在兩個玩家加入後,你在大廳裏選一個遊戲."
+
+#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:41
+#, elixir-autogen, elixir-format
+msgid "Start a solo arcade session (admin-only debug command).\n"
+msgstr "啓動獨行街機會話(僅限admin調試命令)."
+
+#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:60
+#, elixir-autogen, elixir-format
+msgid ""
+"Start a solo arcade session (admin-only). Regular users: type !play in "
+"#games."
+msgstr "開始獨行街機會話(僅限admin). 普通用戶: type! play in #games."
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:118
+#, elixir-autogen, elixir-format
+msgid "Stop a running timer"
+msgstr "停止運行的計時器"
+
+#: lib/retro_hex_chat/commands/handlers/unignore.ex:54
+#, elixir-autogen, elixir-format
+msgid ""
+"Stop ignoring a user you previously blocked, making their messages visible "
+"again."
+msgstr "停止忽略您先前屏蔽的用戶, 使其消息再次可見 。"
+
+#: lib/retro_hex_chat/commands/handlers/unignore.ex:31
+#, elixir-autogen, elixir-format
+msgid ""
+"Stop ignoring a user you previously blocked, making their messages visible again.\n"
+"Nickname is required. Use /ignore with no args to see your ignore list first."
+msgstr ""
+"停止忽略您先前屏蔽的用戶, 使其消息再次可見 。\n"
+"需要暱稱 。 使用 /ignore 沒有參數可先查看您的忽略列表 。"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:107
+#: lib/retro_hex_chat/commands/handlers/alias.ex:110
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:179
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:132
+#: lib/retro_hex_chat/commands/handlers/cs.ex:215
+#: lib/retro_hex_chat/commands/handlers/notify.ex:122
+#: lib/retro_hex_chat/commands/handlers/ns.ex:191
+#: lib/retro_hex_chat/commands/handlers/perform.ex:155
+#, elixir-autogen, elixir-format
+msgid "Subcommand arguments"
+msgstr "子命令參數"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:115
+#, elixir-autogen, elixir-format
+msgid "Subcommand: add, remove, edit, list"
+msgstr "子命令: 添加、 刪除、 編輯、 列表"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:103
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:172
+#, elixir-autogen, elixir-format
+msgid "Subcommand: list, add, remove"
+msgstr "子命令: 列表、 添加、 刪除"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:125
+#, elixir-autogen, elixir-format
+msgid "Subcommand: list, add, remove, clear"
+msgstr "子命令: 列表、 添加、 刪除、 清除"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:148
+#, elixir-autogen, elixir-format
+msgid "Subcommand: list, add, remove, move, clear"
+msgstr "子命令: 列表、 添加、 刪除、 移動、 清除"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:208
+#, elixir-autogen, elixir-format
+msgid "Subcommand: register, drop, info, sop, aop, vop"
+msgstr "子命令: 寄存器、 寄存器、 信息、 母狗、 aop、 vop"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:184
+#, elixir-autogen, elixir-format
+msgid "Subcommand: register, identify, ghost, info, drop"
+msgstr "子命令: 註冊、 識別、 幽靈、 信息、 放下"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:109
+#, elixir-autogen, elixir-format
+msgid ""
+"Subcommands: create, destroy, list, info, join, part, enable, disable, "
+msgstr "子命令:創建、銷燬、列表、信息、加入、部分、啓用、禁用、"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:57
+#, elixir-autogen, elixir-format
+msgid "Subcommands: server, user, channel, ns, cs, debug, log, turn, nuke.\n"
+msgstr "子命令:服務器,用戶,頻道,ns,cs,調試,日誌,轉彎,核彈."
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:141
+#, elixir-autogen, elixir-format
+msgid "TURN server status and allocations"
+msgstr "TURN 服務器狀態和分配"
+
+#: lib/retro_hex_chat/commands/handlers/invite.ex:93
+#, elixir-autogen, elixir-format
+msgid "Target channel (defaults to current channel)"
+msgstr "目標頻道( 默認爲當前頻道)"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:117
+#, elixir-autogen, elixir-format
+msgid "Target nickname (for +o, +v, +b)"
+msgstr "目標暱稱(用於+o,+v,+b)"
+
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:67
+#, elixir-autogen, elixir-format
+msgid "Target user"
+msgstr "目標用戶"
+
+#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:17
+#, elixir-autogen, elixir-format
+msgid "This command is reserved for administrators. "
+msgstr "此命令保留給管理員 。"
+
+#: lib/retro_hex_chat/commands/handlers/slow.ex:75
+#, elixir-autogen, elixir-format
+msgid "Throttle interval in seconds (0 to disable)"
+msgstr "旋轉間隔數秒( 0 到禁用)"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:100
+#, elixir-autogen, elixir-format
+msgid "Timer name"
+msgstr "計時器名稱"
+
+#: lib/retro_hex_chat/commands/handlers/umode.ex:76
+#, elixir-autogen, elixir-format
+msgid "Toggle personal user modes that affect what messages you receive."
+msgstr "切換影響您收到消息的個人用戶模式 。"
+
+#: lib/retro_hex_chat/commands/handlers/umode.ex:42
+#, elixir-autogen, elixir-format
+msgid ""
+"Toggle personal user modes that affect what messages you receive.\n"
+"Available modes: +w (wallops — receive operator broadcast messages), -w (stop receiving).\n"
+"Must start with + or -. Currently only the w (wallops) mode is supported."
+msgstr ""
+"切換影響您收到消息的個人用戶模式 。\n"
+"可用模式: +w( wallops ——接收操作員廣播消息),-w(停止接收).\n"
+"必須從 + 或 - 開始。 目前只支持w( wallops) 模式."
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:159
+#, elixir-autogen, elixir-format
+msgid "Topic protected"
+msgstr "保護主題"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:104
+#, elixir-autogen, elixir-format
+msgid ""
+"Track when specific users come online or go offline with your buddy list."
+msgstr "追蹤特定用戶上線或隨好友名單下線時."
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:77
+#, elixir-autogen, elixir-format
+msgid ""
+"Track when specific users come online or go offline with your buddy list.\n"
+"Subcommands: add <nick> [note], remove <nick>, edit <nick> <note>, list. No args opens the dialog.\n"
+"Registered users: persisted. Guests: session-only."
+msgstr ""
+"追蹤特定用戶上線或隨好友名單下線時.\n"
+"子命令: 添加<ph0><</ph/ph/ph/[注],刪除<ph1><</></ph/ph/,編輯<ph2><</></ph/>>/<ph3><</></ph/ph,列表. 沒有參數打開對話框 。\n"
+"註冊用戶:持續。 嘉賓:只開會."
+
+#: lib/retro_hex_chat/commands/handlers/transfer.ex:49
+#, elixir-autogen, elixir-format
+msgid "Transfer channel ownership to another user."
+msgstr "將頻道所有權轉移給另一個用戶 。"
+
+#: lib/retro_hex_chat/commands/handlers/transfer.ex:29
+#, elixir-autogen, elixir-format
+msgid ""
+"Transfer channel ownership to another user.\n"
+"The new owner gets +q (owner) and you are demoted to operator.\n"
+"Requires: channel owner."
+msgstr ""
+"將頻道所有權轉移給另一個用戶 。\n"
+"新所有者得到+q(所有者),您將被降級爲操作員 。\n"
+"要求:頻道所有者."
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:61
+#, elixir-autogen, elixir-format
+msgid "Type /admin <subcommand> for usage details."
+msgstr "類型/admin<ph0><</ph2></ph2>>>,詳細使用."
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:139
+#, elixir-autogen, elixir-format
+msgid "Type: all, messages, pms, actions, notices, invites"
+msgstr "類型:全部、信件、pms、動作、通知、邀請"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:37
+#, elixir-autogen, elixir-format
+msgid "Unknown /notify subcommand. Use: add, remove, edit, list"
+msgstr "未知的<ph0>/ph0> 子命令 。 使用: 添加、 刪除、 編輯、 列表"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:43
+#, elixir-autogen, elixir-format
+msgid ""
+"Unknown admin subcommand: %{subcmd}. Try: server, user, channel, ns, cs, "
+"debug, log, turn, nuke"
+msgstr "未知的管理員子命令: %{subcmd}. 嘗試:服務器、用戶、頻道、ns、cs、調試、日誌、轉彎、核子"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:524
+#, elixir-autogen, elixir-format
+msgid ""
+"Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, "
+"farewell, "
+msgstr "未知的設置%{key}',有效:前綴,冷卻,描述,問候,告別, "
+
+#: lib/retro_hex_chat/commands/handlers/umode.ex:59
+#, elixir-autogen, elixir-format
+msgid "Unknown user mode: %{flag}"
+msgstr "未知用戶模式: %{flag}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:216
+#, elixir-autogen, elixir-format
+msgid "Uptime stats: %{state_stats_messages_handled} msgs handled"
+msgstr "處理的超時數據: %{state_stats_messages_handled} msgs"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:17
+#, elixir-autogen, elixir-format
+msgid ""
+"Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> "
+"[args]"
+msgstr "用法:/admin<ph0><</ph3>>/ph3>>><ph1><</ph4></ph4>>>[args]"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:18
+#: lib/retro_hex_chat/commands/handlers/alias.ex:19
+#: lib/retro_hex_chat/commands/handlers/alias.ex:23
+#, elixir-autogen, elixir-format
+msgid "Usage: /alias add <name> <expansion>"
+msgstr "用法:/alias 加上<ph0><</ph3>>/ph3>>><ph1><</ph4></ph4>>>"
+
+#: lib/retro_hex_chat/commands/handlers/alias.ex:27
+#: lib/retro_hex_chat/commands/handlers/alias.ex:33
+#, elixir-autogen, elixir-format
+msgid "Usage: /alias remove <name>"
+msgstr "用法:/alias刪除<ph0><</ph2></ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/announce.ex:22
+#, elixir-autogen, elixir-format
+msgid "Usage: /announce <message>"
+msgstr "用法:/announce<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:17
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:25
+#, elixir-autogen, elixir-format
+msgid "Usage: /autojoin add #channel [key]"
+msgstr "用法:/autojoin 加上#channel[鍵]"
+
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:29
+#: lib/retro_hex_chat/commands/handlers/autojoin.ex:34
+#, elixir-autogen, elixir-format
+msgid "Usage: /autojoin remove #channel"
+msgstr "用法:/autojoin去掉#channel"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:27
+#, elixir-autogen, elixir-format
+msgid ""
+"Usage: /autorespond add <on_join|on_part|on_nick_change> [#channel] "
+"<command>"
+msgstr "用法:/autorespond 加上<ph0><</ph3>>/ph3>>][#channel]<ph1><</ph4></ph4>>>"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:23
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:35
+#, elixir-autogen, elixir-format
+msgid "Usage: /autorespond add <trigger> [#channel] <command>"
+msgstr "用法:/autorespond 加上<ph0><</ph3>>/ph3>>][#channel]<ph1><</ph4></ph4>>>"
+
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:39
+#: lib/retro_hex_chat/commands/handlers/auto_respond.ex:46
+#, elixir-autogen, elixir-format
+msgid "Usage: /autorespond remove <position>"
+msgstr "用法:/autorespond刪除<ph0><</ph2></ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/ban.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /ban <nickname> [reason]"
+msgstr "用法:/ban<ph0><</ph2>>/ph2>>>[理由]"
+
+#: lib/retro_hex_chat/commands/handlers/call.ex:11
+#: lib/retro_hex_chat/commands/handlers/call.ex:16
+#, elixir-autogen, elixir-format
+msgid "Usage: /call <nickname>"
+msgstr "用法:/call<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:19
+#, elixir-autogen, elixir-format
+msgid "Usage: /cs <register|drop|info|sop|aop|vop|help> [args]"
+msgstr "用法:/cs<ph0><</ph2>>/ph2>>>[args]"
+
+#: lib/retro_hex_chat/commands/handlers/deop.ex:14
+#, elixir-autogen, elixir-format
+msgid "Usage: /deop <nickname>"
+msgstr "用法:/deop<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/devoice.ex:14
+#, elixir-autogen, elixir-format
+msgid "Usage: /devoice <nickname>"
+msgstr "用法:/devoice<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/game.ex:12
+#: lib/retro_hex_chat/commands/handlers/game.ex:17
+#, elixir-autogen, elixir-format
+msgid "Usage: /game <nickname>"
+msgstr "用法:/game<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:83
+#, elixir-autogen, elixir-format
+msgid "Usage: /ignore <nickname> [type] [duration]"
+msgstr "用法:/ignore<ph0><</ph2></ph2>>][型 [期]"
+
+#: lib/retro_hex_chat/commands/handlers/invite.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /invite <nickname> [#channel]"
+msgstr "用法:/invite<ph0><</ph2></ph2>>][#channel]"
+
+#: lib/retro_hex_chat/commands/handlers/join.ex:13
+#: lib/retro_hex_chat/commands/handlers/join.ex:19
+#, elixir-autogen, elixir-format
+msgid "Usage: /join #channel [password]"
+msgstr "用法:/join#channel[口"
+
+#: lib/retro_hex_chat/commands/handlers/kick.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /kick <nickname> [reason]"
+msgstr "用法:/kick<ph0><</ph2>>/ph2>>>[理由]"
+
+#: lib/retro_hex_chat/commands/handlers/knock.ex:15
+#: lib/retro_hex_chat/commands/handlers/knock.ex:23
+#, elixir-autogen, elixir-format
+msgid "Usage: /knock #channel [message]"
+msgstr "用法:/knock#channel[簡訊]"
+
+#: lib/retro_hex_chat/commands/handlers/me.ex:10
+#: lib/retro_hex_chat/commands/handlers/me.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /me <action>"
+msgstr "用法:/me<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /mode <+/-flags> [params]"
+msgstr "用法:/mode<ph0><</ph2></ph2>>>[段]"
+
+#: lib/retro_hex_chat/commands/handlers/msg.ex:10
+#: lib/retro_hex_chat/commands/handlers/msg.ex:16
+#, elixir-autogen, elixir-format
+msgid "Usage: /msg <nickname> <message>"
+msgstr "用法:/msg<ph0><</ph3>>/ph3>>><ph1><</ph4></ph4>>>"
+
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /mute <nickname> [duration]"
+msgstr "用法:/mute<ph0><</ph/ph2>>][期]"
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:15
+#: lib/retro_hex_chat/commands/handlers/nick.ex:20
+#, elixir-autogen, elixir-format
+msgid "Usage: /nick <newnick>"
+msgstr "用法:/nick<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/notice.ex:12
+#: lib/retro_hex_chat/commands/handlers/notice.ex:19
+#, elixir-autogen, elixir-format
+msgid "Usage: /notice <target> <message>"
+msgstr "用法:/notice<ph0><</ph3>>/ph3>>><ph1><</ph4></ph4>>>"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:14
+#, elixir-autogen, elixir-format
+msgid "Usage: /notify add <nickname> [note]"
+msgstr "用法:/notify 加上<ph0><</ph2></ph2>>>[注]"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:26
+#: lib/retro_hex_chat/commands/handlers/notify.ex:31
+#, elixir-autogen, elixir-format
+msgid "Usage: /notify edit <nickname> <note>"
+msgstr "用法:/notify編輯<ph0><</ph3>>/ph3>>><ph1><</ph4></ph4>>>"
+
+#: lib/retro_hex_chat/commands/handlers/notify.ex:20
+#, elixir-autogen, elixir-format
+msgid "Usage: /notify remove <nickname>"
+msgstr "用法:/notify刪除<ph0><</ph2></ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:16
+#, elixir-autogen, elixir-format
+msgid "Usage: /ns <register|identify|ghost|info|drop|help> [args]"
+msgstr "用法:/ns<ph0><</ph2>>/ph2>>>[args]"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:63
+#, elixir-autogen, elixir-format
+msgid "Usage: /ns drop <password>"
+msgstr "用法:/ns 降<ph0><</ph2></ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:45
+#, elixir-autogen, elixir-format
+msgid "Usage: /ns ghost <nickname> <password>"
+msgstr "用法:/ns 鬼魂<ph0><</ph3>>/ph3>>> <ph1><</ph4></ph4>>>"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:33
+#, elixir-autogen, elixir-format
+msgid "Usage: /ns identify <password>"
+msgstr "用法:/ns 識別<ph0><</ph2></ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:23
+#, elixir-autogen, elixir-format
+msgid "Usage: /ns register <password>"
+msgstr "用法:/ns登記<ph0><</ph2></ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/op.ex:14
+#, elixir-autogen, elixir-format
+msgid "Usage: /op <nickname>"
+msgstr "用法:/op<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:12
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:17
+#, elixir-autogen, elixir-format
+msgid "Usage: /p2p <nickname>"
+msgstr "用法:/p2p<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:16
+#: lib/retro_hex_chat/commands/handlers/perform.ex:22
+#, elixir-autogen, elixir-format
+msgid "Usage: /perform add <command>"
+msgstr "用法:/perform 加上<ph0><</ph2></ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:43
+#: lib/retro_hex_chat/commands/handlers/perform.ex:120
+#, elixir-autogen, elixir-format
+msgid "Usage: /perform move <from> <to>"
+msgstr "用法:/perform 移動<ph0><</ph3></ph3>>> <ph1><</ph4></ph4>>>"
+
+#: lib/retro_hex_chat/commands/handlers/perform.ex:37
+#, elixir-autogen, elixir-format
+msgid "Usage: /perform remove <number>"
+msgstr "用法:/perform刪除<ph0><</ph2></ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/query.ex:10
+#: lib/retro_hex_chat/commands/handlers/query.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /query <nickname>"
+msgstr "用法:/query<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/send_file.ex:11
+#: lib/retro_hex_chat/commands/handlers/send_file.ex:16
+#, elixir-autogen, elixir-format
+msgid "Usage: /sendfile <nickname>"
+msgstr "用法:/sendfile<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/set_motd.ex:20
+#, elixir-autogen, elixir-format
+msgid "Usage: /setmotd <text>"
+msgstr "用法:/setmotd<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/slow.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /slow <seconds> (0 to disable)"
+msgstr "用法:/slow <ph0><</ph2></ph2>>(0到禁用)>"
+
+#: lib/retro_hex_chat/commands/handlers/slow.ex:37
+#, elixir-autogen, elixir-format
+msgid "Usage: /slow <seconds> — must be a positive number (0 to disable)"
+msgstr "用法:/slow<ph0><</ph2></ph2>>>-必須是正數(0爲禁用)"
+
+#: lib/retro_hex_chat/commands/handlers/timer.ex:19
+#, elixir-autogen, elixir-format
+msgid "Usage: /timer <name> <seconds> <command> — one-shot timer\n"
+msgstr ""
+"用法:/timer<ph0><</ph4>>/ph4>>><ph1><</p5>>/p5>>><ph2><</p6>>/p6>>> —一發計時器"
+
+#: lib/retro_hex_chat/commands/handlers/transfer.ex:14
+#, elixir-autogen, elixir-format
+msgid "Usage: /transfer <nickname>"
+msgstr "用法:/transfer<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/umode.ex:17
+#: lib/retro_hex_chat/commands/handlers/umode.ex:52
+#: lib/retro_hex_chat/commands/handlers/umode.ex:54
+#, elixir-autogen, elixir-format
+msgid "Usage: /umode <+/-mode>"
+msgstr "用法:/umode<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/unban.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /unban <nickname>"
+msgstr "用法:/unban<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/unignore.ex:10
+#, elixir-autogen, elixir-format
+msgid "Usage: /unignore <nickname>"
+msgstr "用法:/unignore<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/unmute.ex:14
+#, elixir-autogen, elixir-format
+msgid "Usage: /unmute <nickname>"
+msgstr "用法:/unmute<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:14
+#, elixir-autogen, elixir-format
+msgid "Usage: /voice <nickname>"
+msgstr "用法:/voice<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:22
+#, elixir-autogen, elixir-format
+msgid "Usage: /wallops <message>"
+msgstr "用法:/wallops<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/whois.ex:10
+#: lib/retro_hex_chat/commands/handlers/whois.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /whois <nickname>"
+msgstr "用法:/whois<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/handlers/whowas.ex:10
+#: lib/retro_hex_chat/commands/handlers/whowas.ex:15
+#, elixir-autogen, elixir-format
+msgid "Usage: /whowas <nickname>"
+msgstr "用法:/whowas<ph0><</ph2>>/ph2>>>"
+
+#: lib/retro_hex_chat/commands/registry.ex:74
+#, elixir-autogen, elixir-format
+msgid "User"
+msgstr "用戶"
+
+#: lib/retro_hex_chat/commands/handlers/game.ex:99
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:106
+#, elixir-autogen, elixir-format
+msgid "User '%{nickname}' is not registered."
+msgstr "用戶%{nickname}`未登記。"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:122
+#, elixir-autogen, elixir-format
+msgid "User management (ban, kick, mute, rename, role)"
+msgstr "用戶管理( 禁止、 踢、 啞音、 重命名、 角色)"
+
+#: lib/retro_hex_chat/commands/handlers/umode.ex:84
+#, elixir-autogen, elixir-format
+msgid "User mode: +w (wallops), -w"
+msgstr "用戶模式: +w( wallops), -w"
+
+#: lib/retro_hex_chat/commands/handlers/ban.ex:87
+#, elixir-autogen, elixir-format
+msgid "User to ban"
+msgstr "要禁止的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/call.ex:66
+#, elixir-autogen, elixir-format
+msgid "User to call"
+msgstr "要呼叫的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/op.ex:57
+#, elixir-autogen, elixir-format
+msgid "User to give operator status"
+msgstr "給予操作員身份的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:57
+#, elixir-autogen, elixir-format
+msgid "User to give voice"
+msgstr "提供語音的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:132
+#, elixir-autogen, elixir-format
+msgid "User to ignore"
+msgstr "要忽略的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/invite.ex:86
+#, elixir-autogen, elixir-format
+msgid "User to invite"
+msgstr "請用戶"
+
+#: lib/retro_hex_chat/commands/handlers/kick.ex:90
+#, elixir-autogen, elixir-format
+msgid "User to kick"
+msgstr "要踢的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/whois.ex:61
+#, elixir-autogen, elixir-format
+msgid "User to look up"
+msgstr "要查詢的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:60
+#, elixir-autogen, elixir-format
+msgid "User to mute"
+msgstr "要啞音的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/game.ex:75
+#, elixir-autogen, elixir-format
+msgid "User to play with"
+msgstr "要玩的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/deop.ex:57
+#, elixir-autogen, elixir-format
+msgid "User to remove operator status from"
+msgstr "刪除操作員狀態的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/devoice.ex:57
+#, elixir-autogen, elixir-format
+msgid "User to remove voice from"
+msgstr "從中刪除語音的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/unban.ex:79
+#, elixir-autogen, elixir-format
+msgid "User to unban"
+msgstr "取消封禁的用戶"
+
+#: lib/retro_hex_chat/commands/handlers/unmute.ex:57
+#, elixir-autogen, elixir-format
+msgid "User to unmute"
+msgstr "解密用戶"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:140
+#, elixir-autogen, elixir-format
+msgid "View audit log"
+msgstr "查看審計日誌"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:229
+#, elixir-autogen, elixir-format
+msgid "View channel registration info"
+msgstr "查看頻道註冊信息"
+
+#: lib/retro_hex_chat/commands/handlers/help.ex:42
+#: lib/retro_hex_chat/commands/handlers/help.ex:63
+#, elixir-autogen, elixir-format
+msgid ""
+"View help for any command, or browse all available commands.\n"
+"With no args: lists all commands. With a command name: shows detailed help.\n"
+"Also accessible via Help Topics in the toolbar."
+msgstr ""
+"查看任何命令的幫助, 或瀏覽所有可用的命令 。\n"
+"沒有參數:列出所有命令。 使用命令名: 顯示詳細的幫助 。\n"
+"也可以通過工具欄中的“幫助主題”訪問。"
+
+#: lib/retro_hex_chat/commands/handlers/topic.ex:65
+#, elixir-autogen, elixir-format
+msgid ""
+"View or change the channel topic displayed in the topic bar at the top of "
+"the channel."
+msgstr "查看或更改頻道頂端主題欄顯示的頻道主題."
+
+#: lib/retro_hex_chat/commands/handlers/topic.ex:44
+#, elixir-autogen, elixir-format
+msgid ""
+"View or change the channel topic displayed in the topic bar at the top of the channel.\n"
+"No args: shows current topic. With text: sets a new topic.\n"
+"Must be in a channel. If channel has +t mode, only operators can change the topic."
+msgstr ""
+"查看或更改頻道頂端主題欄顯示的頻道主題.\n"
+"無參數: 顯示當前話題 。 帶文字:設置新話題.\n"
+"一定是在頻道里 如果頻道有+t模式,只有操作員可以更改話題."
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:216
+#, elixir-autogen, elixir-format
+msgid "View registration info for a nickname"
+msgstr "查看暱稱的註冊信息"
+
+#: lib/retro_hex_chat/commands/handlers/motd.ex:34
+#: lib/retro_hex_chat/commands/handlers/motd.ex:54
+#, elixir-autogen, elixir-format
+msgid ""
+"View the server's Message of the Day, which is also shown automatically when"
+" you connect."
+msgstr "查看服務器的每日信件, 連接時也會自動顯示 。"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:135
+#, elixir-autogen, elixir-format
+msgid "Voice"
+msgstr "語音"
+
+#: lib/retro_hex_chat/commands/handlers/wallops.ex:39
+#, elixir-autogen, elixir-format
+msgid "Wallops sent."
+msgstr "瓦洛普斯派來了"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:114
+#, elixir-autogen, elixir-format
+msgid ""
+"Without arguments, opens the Bot Management dialog (admins) or shows bot "
+"list."
+msgstr "沒有參數,請打開Bot管理對話框(admins)或顯示bot列表."
+
+#: lib/retro_hex_chat/commands/handlers/nick.ex:29
+#, elixir-autogen, elixir-format
+msgid "You are already using that nickname"
+msgstr "你已經在用這個綽號了"
+
+#: lib/retro_hex_chat/commands/handlers/ban.ex:51
+#: lib/retro_hex_chat/commands/handlers/deop.ex:65
+#: lib/retro_hex_chat/commands/handlers/devoice.ex:65
+#: lib/retro_hex_chat/commands/handlers/invite.ex:58
+#: lib/retro_hex_chat/commands/handlers/kick.ex:51
+#: lib/retro_hex_chat/commands/handlers/me.ex:19
+#: lib/retro_hex_chat/commands/handlers/mode.ex:51
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:75
+#: lib/retro_hex_chat/commands/handlers/op.ex:65
+#: lib/retro_hex_chat/commands/handlers/part.ex:16
+#: lib/retro_hex_chat/commands/handlers/part.ex:33
+#: lib/retro_hex_chat/commands/handlers/slow.ex:83
+#: lib/retro_hex_chat/commands/handlers/topic.ex:16
+#: lib/retro_hex_chat/commands/handlers/topic.ex:24
+#: lib/retro_hex_chat/commands/handlers/transfer.ex:65
+#: lib/retro_hex_chat/commands/handlers/unban.ex:46
+#: lib/retro_hex_chat/commands/handlers/unmute.ex:65
+#: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:65
+#, elixir-autogen, elixir-format
+msgid "You are not in any channel"
+msgstr "你沒有在任何頻道"
+
+#: lib/retro_hex_chat/commands/handlers/ignore.ex:22
+#, elixir-autogen, elixir-format
+msgid "You cannot ignore yourself"
+msgstr "你不能無視自己"
+
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:96
+#, elixir-autogen, elixir-format
+msgid "You cannot start a P2P session with yourself."
+msgstr "您無法啓動 P2P 會話 。"
+
+#: lib/retro_hex_chat/commands/handlers/game.ex:89
+#, elixir-autogen, elixir-format
+msgid "You cannot start a game session with yourself."
+msgstr "您無法啓動遊戲會話 。"
+
+#: lib/retro_hex_chat/commands/handlers/ban.ex:59
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to ban users"
+msgstr "您必須是禁止用戶的頻道操作員"
+
+#: lib/retro_hex_chat/commands/handlers/mode.ex:74
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to change modes"
+msgstr "您必須是改變模式的頻道操作員"
+
+#: lib/retro_hex_chat/commands/handlers/kick.ex:62
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to kick users"
+msgstr "您必須是頻道操作員來踢踢用戶"
+
+#: lib/retro_hex_chat/commands/handlers/unban.ex:54
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to unban users"
+msgstr "您必須是取消禁用用戶的頻道操作員"
+
+#: lib/retro_hex_chat/commands/handlers/deop.ex:73
+#: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:83
+#: lib/retro_hex_chat/commands/handlers/op.ex:73
+#: lib/retro_hex_chat/commands/handlers/slow.ex:91
+#: lib/retro_hex_chat/commands/handlers/unmute.ex:73
+#: lib/retro_hex_chat/commands/policy.ex:34
+#, elixir-autogen, elixir-format
+msgid "You must be a channel operator to use this command"
+msgstr "您必須是頻道操作員才能使用此命令"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:27
+#: lib/retro_hex_chat/commands/policy.ex:42
+#, elixir-autogen, elixir-format
+msgid "You must be a server administrator to use this command"
+msgstr "您必須是服務器管理員才能使用此命令"
+
+#: lib/retro_hex_chat/commands/handlers/devoice.ex:76
+#: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:76
+#, elixir-autogen, elixir-format
+msgid "You must be at least a half-operator to use this command"
+msgstr "您必須至少是半操作員才能使用此命令"
+
+#: lib/retro_hex_chat/commands/handlers/game.ex:85
+#, elixir-autogen, elixir-format
+msgid "You must be identified to use /game."
+msgstr "您必須確定使用 <ph0>/ph0> 。"
+
+#: lib/retro_hex_chat/commands/handlers/p2p.ex:92
+#, elixir-autogen, elixir-format
+msgid "You must be identified to use /p2p."
+msgstr "您必須確定使用 <ph0>/ph0> 。"
+
+#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:73
+#, elixir-autogen, elixir-format
+msgid "You must be identified to use /singleplayer."
+msgstr "您必須確定使用 <ph0>/ph0> 。"
+
+#: lib/retro_hex_chat/commands/policy.ex:27
+#, elixir-autogen, elixir-format
+msgid "You must be identified with NickServ to use this command"
+msgstr "要使用此命令, 您必須和 NickServe 確定身份"
+
+#: lib/retro_hex_chat/commands/policy.ex:18
+#, elixir-autogen, elixir-format
+msgid "You must be in a channel to use this command"
+msgstr "您必須在頻道中使用此命令"
+
+#: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:15
+#: lib/retro_hex_chat/commands/handlers/set_welcome.ex:15
+#, elixir-autogen, elixir-format
+msgid "You must be in a channel to use this command."
+msgstr "您必須在頻道中使用此命令 。"
+
+#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:77
+#, elixir-autogen, elixir-format
+msgid "You must be registered to play arcade games."
+msgstr "你必須註冊去玩街機遊戲"
+
+#: lib/retro_hex_chat/commands/handlers/transfer.ex:75
+#: lib/retro_hex_chat/commands/policy.ex:51
+#, elixir-autogen, elixir-format
+msgid "You must be the channel owner to use this command"
+msgstr "您必須是頻道擁有者使用此命令"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:340
+#: lib/retro_hex_chat/commands/handlers/bot.ex:343
+#, elixir-autogen, elixir-format
+msgid "[BotService] %{message}"
+msgstr "[企業服務] %{message}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:579
+#, elixir-autogen, elixir-format
+msgid "[BotService] %{name} has no custom commands."
+msgstr "[BotService]%{name}沒有自定義命令."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:322
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' %{action}."
+msgstr "[BotService] Bot '%{name}>%{action}."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:173
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' created successfully."
+msgstr "[BotService] Bot'%{name} 創建成功."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:194
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' destroyed."
+msgstr "[BotService] 瓶子'%{name}'銷燬."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:277
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' is already in %{channel}."
+msgstr "[BotService] Bot '%{name} 已經寫在%{channel}中."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:269
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' joined %{channel}."
+msgstr "[BotService] bot '%{name} 加入%{channel}."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:299
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' left %{channel}."
+msgstr "[BotService] 瓶子 '%{name} 左%{channel}."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:188
+#: lib/retro_hex_chat/commands/handlers/bot.ex:202
+#: lib/retro_hex_chat/commands/handlers/bot.ex:254
+#: lib/retro_hex_chat/commands/handlers/bot.ex:290
+#: lib/retro_hex_chat/commands/handlers/bot.ex:311
+#: lib/retro_hex_chat/commands/handlers/bot.ex:334
+#: lib/retro_hex_chat/commands/handlers/bot.ex:567
+#: lib/retro_hex_chat/commands/handlers/bot.ex:609
+#: lib/retro_hex_chat/commands/handlers/bot.ex:643
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot '%{name}' not found."
+msgstr "[BotService] 瓶\"%{name}\"未找到."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:226
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bot Info: %{name}"
+msgstr "[BotService] 瓶裝信息: %{name}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:707
+#, elixir-autogen, elixir-format
+msgid "[BotService] Bots:"
+msgstr "[企業服務] 波茲:"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:652
+#, elixir-autogen, elixir-format
+msgid "[BotService] Command '%{trigger}' removed from %{name}."
+msgstr "[BotService]命令從%{name}中刪除%{trigger}."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:621
+#, elixir-autogen, elixir-format
+msgid "[BotService] Command '%{trigger}' set for %{name}."
+msgstr "[BotService] 命令 '%{trigger} 設置爲%{name}."
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:585
+#, elixir-autogen, elixir-format
+msgid "[BotService] Commands for %{bot_name}:"
+msgstr "[BotService] %{bot_name}的命令:"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:631
+#, elixir-autogen, elixir-format
+msgid "[BotService] Failed to add command '%{trigger}': %{message}"
+msgstr "[BotService] 添加命令 '%{trigger} 失敗 :%{message}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:180
+#, elixir-autogen, elixir-format
+msgid "[BotService] Failed to create bot: %{message}"
+msgstr "[BotService] 創建 bot 失敗: %{message}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:703
+#, elixir-autogen, elixir-format
+msgid "[BotService] No bots configured."
+msgstr "[企業服務] 沒有配置 bots 。"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:103
+#: lib/retro_hex_chat/commands/handlers/cs.ex:106
+#: lib/retro_hex_chat/commands/handlers/cs.ex:113
+#: lib/retro_hex_chat/commands/handlers/cs.ex:116
+#: lib/retro_hex_chat/commands/handlers/cs.ex:135
+#: lib/retro_hex_chat/commands/handlers/cs.ex:142
+#: lib/retro_hex_chat/commands/handlers/cs.ex:145
+#: lib/retro_hex_chat/commands/handlers/cs.ex:155
+#, elixir-autogen, elixir-format
+msgid "[ChanServ] %{message}"
+msgstr "[ChanServ]%{message}"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:124
+#, elixir-autogen, elixir-format
+msgid "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}"
+msgstr "[查爾 %{name}: 創建者=%{founder}登記=%{registered_at}"
+
+#: lib/retro_hex_chat/commands/handlers/cs.ex:166
+#, elixir-autogen, elixir-format
+msgid "[ChanServ] Access list for %{channel} (%{level})"
+msgstr "[ChanServ]%{channel}(%{level})的訪問列表"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:104
+#: lib/retro_hex_chat/commands/handlers/ns.ex:107
+#: lib/retro_hex_chat/commands/handlers/ns.ex:114
+#: lib/retro_hex_chat/commands/handlers/ns.ex:117
+#: lib/retro_hex_chat/commands/handlers/ns.ex:124
+#: lib/retro_hex_chat/commands/handlers/ns.ex:127
+#: lib/retro_hex_chat/commands/handlers/ns.ex:146
+#: lib/retro_hex_chat/commands/handlers/ns.ex:153
+#: lib/retro_hex_chat/commands/handlers/ns.ex:156
+#, elixir-autogen, elixir-format
+msgid "[NickServ] %{message}"
+msgstr "[尼克塞 %{message}"
+
+#: lib/retro_hex_chat/commands/handlers/ns.ex:135
+#, elixir-autogen, elixir-format
+msgid ""
+"[NickServ] %{nickname}: registered %{registered_at}, identified: "
+"%{identified}"
+msgstr "[NickServ]%{nickname}:註冊號%{registered_at},識別號:%{identified}"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:518
+#, elixir-autogen, elixir-format
+msgid "arcade_enabled must be: true or false."
+msgstr "街機必須:真假。"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:529
+#, elixir-autogen, elixir-format
+msgid "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*"
+msgstr "提及  response, dice , mod *, trivia *, sched *, rss, arcade *"
+
+#: lib/retro_hex_chat/commands/handlers/admin.ex:100
+#, elixir-autogen, elixir-format
+msgid "server, user, channel, ns, cs, debug, log, turn, or nuke"
+msgstr "服務器、用戶、頻道、ns、cs、調試、日誌、轉彎或核武器"
+
+#: lib/retro_hex_chat/commands/handlers/bot.ex:113
+#, elixir-autogen, elixir-format
+msgid "set, commands, addcmd, delcmd, help.\n"
+msgstr "設置、命令、添加、調試、幫助。"

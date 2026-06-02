@@ -8,7 +8,7 @@ vez de concentrar tudo em `default.po`.
 
 Locales ficam registrados em `config/i18n_locales.exs`, com:
 
-- codigo do diretorio Gettext, por exemplo `pt_BR` ou `zh_Hans`;
+- codigo do diretorio Gettext, por exemplo `pt_BR` ou `zh_hans`;
 - tag BCP 47 para HTML, por exemplo `pt-BR` ou `zh-Hans`;
 - locale Open Graph;
 - nome nativo para o seletor de idioma;
@@ -18,13 +18,13 @@ Locales ficam registrados em `config/i18n_locales.exs`, com:
 
 Onda 0 esta em producao desde a primeira fase: `en`, `pt_BR`.
 
-Onda 1 esta habilitada: `es`, `fr`, `de`, `ja`, `zh_Hans`, `id`.
+Onda 1 esta habilitada: `es`, `fr`, `de`, `ja`, `zh_hans`, `id`.
 
 Onda 2 esta habilitada: `ar`, `ru`, `hi`, `ko`, `tr`, `vi`.
 
 Ondas planejadas:
 
-- Onda 3: `bn`, `ur`, `zh_Hant`, `pt_PT`, `it`, `pl`, `nl`.
+- Onda 3: `bn`, `ur`, `zh_hant`, `pt_PT`, `it`, `pl`, `nl`.
 
 Idiomas RTL (`ar`, `ur`) exigem revisao visual dedicada, pois o layout usa
 `dir={RetroHexChatWeb.I18n.html_dir()}` no elemento `html`.
@@ -122,7 +122,7 @@ Depois da traducao automatica:
 
 ```sh
 /tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_repair_placeholder_mismatches.py
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_apply_translation_overrides.py --locales pt_BR,es,fr,de,ja,zh_Hans,id,ar,ru,hi,ko,tr,vi
+/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_apply_translation_overrides.py --locales pt_BR,es,fr,de,ja,zh_hans,id,ar,ru,hi,ko,tr,vi
 elixir scripts/i18n_normalize_po_headers.exs
 make i18n.placeholder.check
 make i18n.source-fallback.check

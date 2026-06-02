@@ -13,7 +13,8 @@ defmodule RetroHexChat.Umbrella.MixProject do
       dialyzer: [
         plt_local_path: "priv/plts",
         plt_core_path: "priv/plts",
-        plt_add_apps: [:ex_unit, :ex_stun]
+        plt_add_apps: [:ex_unit, :ex_stun],
+        flags: [:no_opaque]
       ]
     ]
   end
