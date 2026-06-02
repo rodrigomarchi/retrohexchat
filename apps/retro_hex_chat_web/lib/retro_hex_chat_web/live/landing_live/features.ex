@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.LandingLive.Features do
     {:ok,
      assign(socket,
        active_page: :features,
+       canonical_path: "/features",
        page_title: dgettext("landing", "Features — Retro Hex Chat"),
        page_description:
          dgettext(

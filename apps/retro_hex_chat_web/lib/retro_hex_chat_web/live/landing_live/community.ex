@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.LandingLive.Community do
     {:ok,
      assign(socket,
        active_page: :community,
+       canonical_path: "/community",
        page_title: dgettext("landing", "Open Source & Community — Retro Hex Chat"),
        page_description:
          dgettext(

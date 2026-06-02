@@ -1,6 +1,18 @@
 <.landing_layout active_page={@active_page}>
   <section class="m-4" aria-labelledby="privacy-heading">
-    <h2 id="privacy-heading" class="sr-only">{dgettext("landing", "Privacy")}</h2>
+    <.landing_page_intro
+      heading_id="privacy-heading"
+      title={dgettext("landing", "Privacy Comparison")}
+      description={
+        dgettext(
+          "landing",
+          "Compare Retro Hex Chat with corporate chat platforms across server ownership, message storage, call routing, AI training, source code access, and community control."
+        )
+      }
+      status={dgettext("landing", "Privacy overview")}
+    >
+      <:icon><Icons.icon_lock class="w-4 h-4" /></:icon>
+    </.landing_page_intro>
 
     <div class="grid md:grid-cols-2 gap-4 mb-4">
       <%!-- ══════════════ BIG TECH ══════════════ --%>
@@ -9,9 +21,9 @@
           <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "What they do with your data.")}
-          </h3>
+          </h2>
           <ul class="space-y-2 text-sm">
             <li class="flex items-start gap-2">
               <Icons.icon_ban class="w-4 h-4 shrink-0 mt-0.5" />
@@ -55,9 +67,9 @@
           <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Your data stays with you. Period.")}
-          </h3>
+          </h2>
           <ul class="space-y-2 text-sm">
             <li class="flex items-start gap-2">
               <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />

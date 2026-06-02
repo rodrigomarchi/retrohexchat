@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.LandingLive.Faq do
     {:ok,
      assign(socket,
        active_page: :faq,
+       canonical_path: "/faq",
        page_title: dgettext("landing", "FAQ — Retro Hex Chat"),
        page_description:
          dgettext(

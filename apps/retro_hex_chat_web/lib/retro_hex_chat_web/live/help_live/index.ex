@@ -33,7 +33,7 @@ defmodule RetroHexChatWeb.HelpLive.Index do
   def handle_params(params, _uri, socket) do
     selected_topic = resolve_topic(params)
 
-    canonical_url =
+    canonical_path =
       if selected_topic, do: "/chat/help/#{selected_topic.id}", else: "/chat/help"
 
     {:noreply,
@@ -41,7 +41,7 @@ defmodule RetroHexChatWeb.HelpLive.Index do
      |> assign(:selected_topic, selected_topic)
      |> assign(:page_title, page_title(selected_topic))
      |> assign(:page_description, page_description(selected_topic))
-     |> assign(:canonical_url, canonical_url)}
+     |> assign(:canonical_path, canonical_path)}
   end
 
   @impl true
@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.HelpLive.Index do
 
       <div :if={!@selected_topic} class="text-center py-12 text-muted-foreground">
         <Icons.icon_notepad class="w-8 h-8 mx-auto mb-3 opacity-50" />
-        <h1 class="text-base font-bold mb-2 text-text">{dgettext("help", "RetroHexChat Help")}</h1>
+        <h2 class="text-base font-bold mb-2 text-text">{dgettext("help", "RetroHexChat Help")}</h2>
         <p class="text-sm">
           {dgettext("help", "Select a topic from the navigation pane to get started.")}
         </p>

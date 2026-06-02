@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang={RetroHexChatWeb.I18n.html_lang()} dir={RetroHexChatWeb.I18n.html_dir()}>
   <head>
+    <% canonical_path = assigns[:canonical_path] || "/" %>
+    <% canonical_url = RetroHexChatWeb.SEO.canonical_url(canonical_path) %>
+    <% page_title = assigns[:page_title] || "Retro Hex Chat — Self-hosted chat with P2P calls" %>
+    <% page_description =
+      assigns[:page_description] ||
+        "Run your own chat server. Your data stays with you. Voice and video calls go directly between users via P2P. Open source, self-hosted, and free as in freedom." %>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
@@ -13,69 +20,47 @@
     <.live_title default="Retro Hex Chat — Your server. Your conversations. Nobody in between.">
       {assigns[:page_title]}
     </.live_title>
-    <meta
-      name="description"
-      content={
-        assigns[:page_description] ||
-          "Run your own chat server. Your data stays with you. Voice and video calls go directly between users via P2P. Open source, self-hosted, and free as in freedom."
-      }
-    />
+    <meta name="description" content={page_description} />
     <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical_url} />
+    <link
+      :for={alternate <- RetroHexChatWeb.SEO.alternate_links(canonical_path)}
+      rel="alternate"
+      hreflang={alternate.hreflang}
+      href={alternate.href}
+    />
 
     <%!-- Open Graph --%>
     <meta property="og:type" content="website" />
-    <meta
-      property="og:title"
-      content={assigns[:page_title] || "Retro Hex Chat — Self-hosted chat with P2P calls"}
-    />
-    <meta
-      property="og:description"
-      content={
-        assigns[:page_description] ||
-          "Your data. Your rules. Your community. Real-time chat on your own server with direct P2P voice and video calls."
-      }
-    />
+    <meta property="og:title" content={page_title} />
+    <meta property="og:description" content={page_description} />
+    <meta property="og:url" content={canonical_url} />
     <meta property="og:site_name" content="Retro Hex Chat" />
+    <meta property="og:image" content={RetroHexChatWeb.SEO.social_image_url()} />
+    <meta property="og:image:width" content={RetroHexChatWeb.SEO.social_image_width()} />
+    <meta property="og:image:height" content={RetroHexChatWeb.SEO.social_image_height()} />
+    <meta property="og:image:type" content={RetroHexChatWeb.SEO.social_image_type()} />
+    <meta property="og:image:alt" content="Retro Hex Chat peer-to-peer chat preview" />
     <meta
       property="og:locale"
       content={RetroHexChatWeb.I18n.open_graph_locale()}
     />
+    <meta
+      :for={locale <- RetroHexChatWeb.SEO.open_graph_alternate_locales()}
+      property="og:locale:alternate"
+      content={locale}
+    />
 
     <%!-- Twitter Card --%>
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content={assigns[:page_title] || "Retro Hex Chat — Self-hosted P2P chat"}
-    />
-    <meta
-      name="twitter:description"
-      content={
-        assigns[:page_description] ||
-          "Run your own server. Talk directly with your friends. Open source and self-hosted."
-      }
-    />
+    <meta name="twitter:title" content={page_title} />
+    <meta name="twitter:description" content={page_description} />
+    <meta name="twitter:image" content={RetroHexChatWeb.SEO.social_image_url()} />
+    <meta name="twitter:image:alt" content="Retro Hex Chat peer-to-peer chat preview" />
 
     <%!-- JSON-LD Structured Data --%>
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
-        "name": "Retro Hex Chat",
-        "applicationCategory": "CommunicationApplication",
-        "operatingSystem": "Web",
-        "description": "Self-hosted chat software with P2P voice and video calls, inspired by the IRC of the 2000s. Open source, licensed under MIT.",
-        "license": "https://opensource.org/licenses/MIT",
-        "url": "https://retrohexchat.com",
-        "author": {
-          "@type": "Person",
-          "name": "Rodrigo Marchi"
-        },
-        "offers": {
-          "@type": "Offer",
-          "price": "0",
-          "priceCurrency": "USD"
-        }
-      }
+      {Phoenix.HTML.raw(RetroHexChatWeb.SEO.software_application_json_ld(page_description))}
     </script>
 
     <%!-- Fonts --%>
@@ -90,9 +75,9 @@
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
-    <%!-- RetroHex CSS (Tailwind) + RetroHex Content JS (LiveSocket) --%>
+    <%!-- RetroHex CSS (Tailwind) + static public-page JS --%>
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/retrohex.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/retrohex_content.js"}>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/public_pages.js"}>
     </script>
   </head>
   <body class="bg-desktop font-system text-text">

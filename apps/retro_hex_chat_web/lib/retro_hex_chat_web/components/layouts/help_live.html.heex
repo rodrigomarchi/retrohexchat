@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang={RetroHexChatWeb.I18n.html_lang()} dir={RetroHexChatWeb.I18n.html_dir()}>
   <head>
+    <% canonical_path = assigns[:canonical_path] || assigns[:canonical_url] || "/chat/help" %>
+    <% canonical_url = RetroHexChatWeb.SEO.canonical_url(canonical_path) %>
+    <% page_title = assigns[:page_title] || "Help — RetroHexChat" %>
+    <% page_description =
+      assigns[:page_description] ||
+        "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts." %>
+
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="csrf-token" content={get_csrf_token()} />
@@ -13,37 +20,40 @@
     <.live_title default="Help — RetroHexChat">
       {assigns[:page_title]}
     </.live_title>
-    <meta
-      name="description"
-      content={
-        assigns[:page_description] ||
-          "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts."
-      }
-    />
+    <meta name="description" content={page_description} />
     <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={canonical_url} />
     <link
-      rel="canonical"
-      href={"https://retrohexchat.com#{assigns[:canonical_url] || "/chat/help"}"}
+      :for={alternate <- RetroHexChatWeb.SEO.alternate_links(canonical_path)}
+      rel="alternate"
+      hreflang={alternate.hreflang}
+      href={alternate.href}
     />
 
     <%!-- Open Graph --%>
     <meta property="og:type" content="article" />
-    <meta
-      property="og:title"
-      content={assigns[:page_title] || "Help — RetroHexChat"}
-    />
-    <meta
-      property="og:description"
-      content={
-        assigns[:page_description] ||
-          "RetroHexChat help documentation."
-      }
-    />
-    <meta
-      property="og:url"
-      content={"https://retrohexchat.com#{assigns[:canonical_url] || "/chat/help"}"}
-    />
+    <meta property="og:title" content={page_title} />
+    <meta property="og:description" content={page_description} />
+    <meta property="og:url" content={canonical_url} />
     <meta property="og:site_name" content="RetroHexChat" />
+    <meta property="og:image" content={RetroHexChatWeb.SEO.social_image_url()} />
+    <meta property="og:image:width" content={RetroHexChatWeb.SEO.social_image_width()} />
+    <meta property="og:image:height" content={RetroHexChatWeb.SEO.social_image_height()} />
+    <meta property="og:image:type" content={RetroHexChatWeb.SEO.social_image_type()} />
+    <meta property="og:image:alt" content="Retro Hex Chat peer-to-peer chat preview" />
+    <meta property="og:locale" content={RetroHexChatWeb.I18n.open_graph_locale()} />
+    <meta
+      :for={locale <- RetroHexChatWeb.SEO.open_graph_alternate_locales()}
+      property="og:locale:alternate"
+      content={locale}
+    />
+
+    <%!-- Twitter Card --%>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={page_title} />
+    <meta name="twitter:description" content={page_description} />
+    <meta name="twitter:image" content={RetroHexChatWeb.SEO.social_image_url()} />
+    <meta name="twitter:image:alt" content="Retro Hex Chat peer-to-peer chat preview" />
 
     <%!-- JSON-LD Structured Data --%>
     <script type="application/ld+json">
@@ -79,9 +89,9 @@
     <link rel="icon" type="image/svg+xml" href="/images/favicon.svg" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
 
-    <%!-- RetroHex CSS (Tailwind) + RetroHex Content JS (LiveSocket) --%>
+    <%!-- RetroHex CSS (Tailwind) + help-only LiveSocket bundle --%>
     <link phx-track-static rel="stylesheet" href={~p"/assets/css/retrohex.css"} />
-    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/retrohex_content.js"}>
+    <script defer phx-track-static type="text/javascript" src={~p"/assets/js/help_live.js"}>
     </script>
   </head>
   <body class="bg-desktop font-system text-text">

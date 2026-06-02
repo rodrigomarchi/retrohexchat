@@ -1,6 +1,8 @@
 defmodule RetroHexChatWeb.Router do
   use RetroHexChatWeb, :router
 
+  @localized_locale_segments RetroHexChatWeb.SEO.localized_locale_segments()
+
   pipeline :api do
     plug :accepts, ["json"]
   end
@@ -8,7 +10,7 @@ defmodule RetroHexChatWeb.Router do
   pipeline :landing_live do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug RetroHexChatWeb.Plugs.PutLocale
+    plug RetroHexChatWeb.Plugs.PutLocale, :public
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :landing_live}
     plug :protect_from_forgery
@@ -35,10 +37,28 @@ defmodule RetroHexChatWeb.Router do
     end
   end
 
+  for locale_segment <- @localized_locale_segments do
+    live_session_name = :"landing_locale_#{String.replace(locale_segment, "-", "_")}"
+
+    scope "/#{locale_segment}", RetroHexChatWeb do
+      pipe_through :landing_live
+
+      live_session live_session_name, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+        live "/", LandingLive.Index
+        live "/how-it-works", LandingLive.HowItWorks
+        live "/features", LandingLive.Features
+        live "/privacy", LandingLive.Privacy
+        live "/install", LandingLive.Install
+        live "/community", LandingLive.Community
+        live "/faq", LandingLive.Faq
+      end
+    end
+  end
+
   pipeline :help_live do
     plug :accepts, ["html"]
     plug :fetch_session
-    plug RetroHexChatWeb.Plugs.PutLocale
+    plug RetroHexChatWeb.Plugs.PutLocale, :public
     plug :fetch_live_flash
     plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :help_live}
     plug :protect_from_forgery
@@ -54,6 +74,19 @@ defmodule RetroHexChatWeb.Router do
     end
 
     get "/sitemap.xml", SitemapController, :index
+  end
+
+  for locale_segment <- @localized_locale_segments do
+    live_session_name = :"help_locale_#{String.replace(locale_segment, "-", "_")}"
+
+    scope "/#{locale_segment}", RetroHexChatWeb do
+      pipe_through :help_live
+
+      live_session live_session_name, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+        live "/chat/help", HelpLive.Index, :index
+        live "/chat/help/:topic", HelpLive.Index, :show
+      end
+    end
   end
 
   pipeline :chat_session do

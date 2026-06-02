@@ -6,6 +6,7 @@ defmodule RetroHexChatWeb.Plugs.PutLocale do
   import Plug.Conn
 
   alias RetroHexChatWeb.I18n
+  alias RetroHexChatWeb.SEO
 
   @behaviour Plug
 
@@ -13,6 +14,16 @@ defmodule RetroHexChatWeb.Plugs.PutLocale do
   def init(opts), do: opts
 
   @impl Plug
+  def call(conn, :public) do
+    locale = path_locale(conn) || I18n.default_locale()
+
+    I18n.put_locale(locale)
+
+    conn
+    |> put_session(:locale, locale)
+    |> assign(:locale, locale)
+  end
+
   def call(conn, _opts) do
     param_locale = conn.params["locale"]
     session_locale = get_session(conn, :locale)
@@ -25,4 +36,10 @@ defmodule RetroHexChatWeb.Plugs.PutLocale do
     |> put_session(:locale, locale)
     |> assign(:locale, locale)
   end
+
+  defp path_locale(%{path_info: [segment | _rest]}) do
+    SEO.locale_from_segment(segment)
+  end
+
+  defp path_locale(_conn), do: nil
 end

@@ -1,6 +1,18 @@
 <.landing_layout active_page={@active_page}>
   <section class="m-4" aria-labelledby="how-it-works-heading">
-    <h2 id="how-it-works-heading" class="sr-only">{dgettext("landing", "How It Works")}</h2>
+    <.landing_page_intro
+      heading_id="how-it-works-heading"
+      title={dgettext("landing", "How Retro Hex Chat Works")}
+      description={
+        dgettext(
+          "landing",
+          "Retro Hex Chat combines a self-hosted Phoenix server with WebRTC peer-to-peer connections, so your community keeps its data while calls, files, and games can flow directly between browsers."
+        )
+      }
+      status={dgettext("landing", "Architecture overview")}
+    >
+      <:icon><Icons.icon_server class="w-4 h-4" /></:icon>
+    </.landing_page_intro>
 
     <div class="grid md:grid-cols-2 gap-4 mb-4">
       <%!-- ══════════════ YOUR SERVER ══════════════ --%>
@@ -9,9 +21,9 @@
           <:icon><Icons.icon_server class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "One server. Fully yours.")}
-          </h3>
+          </h2>
           <div class="space-y-2 mb-3">
             <div class="shadow-retro-field bg-white p-2 text-xs">
               <strong>
@@ -74,9 +86,9 @@
           <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Direct connections via WebRTC.")}
-          </h3>
+          </h2>
           <div
             class="shadow-retro-field bg-white p-3 mb-2"
             aria-label={dgettext("landing", "WebRTC signaling and data flow diagram")}
@@ -114,9 +126,9 @@
           <:icon><Icons.icon_shield class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Big Tech vs. Retro Hex Chat.")}
-          </h3>
+          </h2>
           <div class="shadow-retro-field bg-white p-2 mb-2 overflow-x-auto">
             <table class="w-full text-xs border-collapse">
               <thead>
@@ -205,9 +217,9 @@
           <:icon><Icons.icon_security class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Security at every layer.")}
-          </h3>
+          </h2>
           <div
             class="shadow-retro-field bg-white p-3 mb-2"
             aria-label={dgettext("landing", "Security layers diagram")}

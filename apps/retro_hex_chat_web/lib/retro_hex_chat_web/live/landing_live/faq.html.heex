@@ -1,6 +1,18 @@
 <.landing_layout active_page={@active_page}>
   <section class="m-4" aria-labelledby="faq-heading">
-    <h2 id="faq-heading" class="sr-only">{dgettext("landing", "Frequently Asked Questions")}</h2>
+    <.landing_page_intro
+      heading_id="faq-heading"
+      title={dgettext("landing", "Retro Hex Chat FAQ")}
+      description={
+        dgettext(
+          "landing",
+          "Answers to common questions about peer-to-peer calls, self-hosting, server requirements, security, mobile support, contributing, and project sponsorship."
+        )
+      }
+      status={dgettext("landing", "Frequently asked questions")}
+    >
+      <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+    </.landing_page_intro>
 
     <div class="grid md:grid-cols-2 gap-4">
       <%!-- ══════════════ GETTING STARTED ══════════════ --%>

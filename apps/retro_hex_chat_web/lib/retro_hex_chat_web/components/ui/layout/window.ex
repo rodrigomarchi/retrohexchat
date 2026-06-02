@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   attr :inactive, :boolean, default: false
   attr :controls, :list, default: [:minimize, :maximize, :close]
   attr :on_close, :any, default: nil, doc: "Close button callback (wired to :close control)"
+  attr :close_target, :string, default: nil, doc: "CSS selector for static close behavior"
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -64,6 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
             control == :close && "ml-[2px]"
           ]}
           phx-click={control == :close && @on_close}
+          data-hide-target={control == :close && @close_target}
         >
           <.control_icon control={control} />
         </button>

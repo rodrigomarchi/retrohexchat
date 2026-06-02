@@ -1,6 +1,18 @@
 <.landing_layout active_page={@active_page}>
   <section class="m-4" aria-labelledby="community-heading">
-    <h2 id="community-heading" class="sr-only">{dgettext("landing", "Community")}</h2>
+    <.landing_page_intro
+      heading_id="community-heading"
+      title={dgettext("landing", "Open Source and Community")}
+      description={
+        dgettext(
+          "landing",
+          "Retro Hex Chat is MIT-licensed open source software. Follow the repository, contribute code or translations, report issues, or sponsor continued development."
+        )
+      }
+      status={dgettext("landing", "Community overview")}
+    >
+      <:icon><Icons.icon_code class="w-4 h-4" /></:icon>
+    </.landing_page_intro>
 
     <div class="grid md:grid-cols-2 gap-4 mb-4">
       <%!-- ══════════════ OPEN SOURCE ══════════════ --%>
@@ -9,9 +21,9 @@
           <:icon><Icons.icon_code class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-lg font-bold mb-2">
+          <h2 class="text-lg font-bold mb-2">
             {dgettext("landing", "Open code. Open community.")}
-          </h3>
+          </h2>
 
           <div class="shadow-retro-field bg-white p-3 mb-3 text-sm">
             <p class="mb-1">
@@ -51,9 +63,9 @@
           <:icon><Icons.icon_heart class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-lg font-bold mb-2">
+          <h2 class="text-lg font-bold mb-2">
             {dgettext("landing", "Help keep Retro Hex Chat alive.")}
-          </h3>
+          </h2>
 
           <p class="text-sm mb-3">
             {dgettext(

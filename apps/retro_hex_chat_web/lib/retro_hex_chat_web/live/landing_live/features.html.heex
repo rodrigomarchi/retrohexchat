@@ -1,6 +1,18 @@
 <.landing_layout active_page={@active_page}>
   <section class="m-4" aria-labelledby="features-heading">
-    <h2 id="features-heading" class="sr-only">{dgettext("landing", "Features")}</h2>
+    <.landing_page_intro
+      heading_id="features-heading"
+      title={dgettext("landing", "Retro Hex Chat Features")}
+      description={
+        dgettext(
+          "landing",
+          "Explore the public chat features: real-time channels, direct P2P voice and video calls, file transfer, games, bots, IRC-style commands, and built-in help."
+        )
+      }
+      status={dgettext("landing", "Feature overview")}
+    >
+      <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
+    </.landing_page_intro>
 
     <div class="grid md:grid-cols-2 gap-4 mb-4">
       <%!-- ══════════════ CHAT ══════════════ --%>
@@ -9,9 +21,9 @@
           <:icon><Icons.icon_chat class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Real-time chat. Zero refresh. Zero loading.")}
-          </h3>
+          </h2>
           <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mb-2">
             <.chat_mockup />
           </div>
@@ -50,9 +62,9 @@
           <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Channels are chat rooms.")}
-          </h3>
+          </h2>
           <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mb-2">
             <.channel_list_mockup />
           </div>
@@ -103,9 +115,9 @@
           <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Direct connection between people. Peer-to-peer.")}
-          </h3>
+          </h2>
           <div
             class="shadow-retro-field bg-white p-3 mb-2"
             aria-label={dgettext("landing", "Voice call mockup")}
@@ -146,9 +158,9 @@
           <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "28 multiplayer games via WebRTC.")}
-          </h3>
+          </h2>
           <div class="shadow-retro-field bg-white p-3 mb-2">
             <div class="grid grid-cols-4 gap-2 justify-items-center">
               <div class="flex flex-col items-center gap-0.5">
@@ -216,9 +228,9 @@
           <:icon><Icons.icon_game_arcade class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "18 classic games via WebAssembly.")}
-          </h3>
+          </h2>
           <div class="shadow-retro-field bg-white p-3 mb-2">
             <div class="grid grid-cols-4 gap-2 justify-items-center">
               <div class="flex flex-col items-center gap-0.5">
@@ -298,9 +310,9 @@
           <:icon><Icons.icon_robot class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Programmable bots with pluggable capabilities.")}
-          </h3>
+          </h2>
           <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mb-2">
             <.bot_mockup />
           </div>
@@ -365,9 +377,9 @@
           <:icon><Icons.icon_rules class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Your server, your rules.")}
-          </h3>
+          </h2>
           <div class="space-y-2 mb-2">
             <div class="shadow-retro-field bg-white p-2 text-xs">
               <strong>
@@ -417,9 +429,9 @@
           <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
         </.window_title_bar>
         <.window_body>
-          <h3 class="text-sm font-bold mb-2">
+          <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "CHM-style help system built in.")}
-          </h3>
+          </h2>
           <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mb-2">
             <.help_mockup />
           </div>
@@ -458,9 +470,9 @@
         <:icon><Icons.icon_terminal class="w-4 h-4" /></:icon>
       </.window_title_bar>
       <.window_body>
-        <h3 class="text-sm font-bold mb-2">
+        <h2 class="text-sm font-bold mb-2">
           {dgettext("landing", "Powerful IRC-style commands.")}
-        </h3>
+        </h2>
         <div class="shadow-retro-field bg-canvas-bg text-canvas-fg p-3 mb-2">
           <.commands_mockup />
         </div>

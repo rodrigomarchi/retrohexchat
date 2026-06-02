@@ -6,6 +6,9 @@ import Config
 # can serve both staging and production.
 config :retro_hex_chat_web, :plausible_env, System.get_env("APP_ENV", "prod")
 
+config :retro_hex_chat_web,
+  public_origin: System.get_env("PUBLIC_ORIGIN") || "https://retrohexchat.com"
+
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
 # system starts, so it is typically used to load production configuration

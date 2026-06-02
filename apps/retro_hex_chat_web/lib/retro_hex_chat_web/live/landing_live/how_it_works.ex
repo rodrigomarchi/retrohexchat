@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.LandingLive.HowItWorks do
     {:ok,
      assign(socket,
        active_page: :how_it_works,
+       canonical_path: "/how-it-works",
        page_title:
          dgettext("landing", "How Retro Hex Chat Works — Server, P2P, Privacy & Security"),
        page_description:

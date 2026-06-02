@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.LandingLive.Install do
     {:ok,
      assign(socket,
        active_page: :install,
+       canonical_path: "/install",
        page_title: dgettext("landing", "Install Retro Hex Chat — Three steps to your own server"),
        page_description:
          dgettext(
@@ -28,7 +29,19 @@ defmodule RetroHexChatWeb.LandingLive.Install do
     ~H"""
     <.landing_layout active_page={@active_page}>
       <section class="m-4" aria-labelledby="install-heading">
-        <h2 id="install-heading" class="sr-only">{dgettext("landing", "Installation")}</h2>
+        <.landing_page_intro
+          heading_id="install-heading"
+          title={dgettext("landing", "Install Retro Hex Chat")}
+          description={
+            dgettext(
+              "landing",
+              "Set up your own Retro Hex Chat server from source. Clone the repository, run the setup task, start Phoenix, and keep control of your community data."
+            )
+          }
+          status={dgettext("landing", "Installation guide")}
+        >
+          <:icon><Icons.icon_terminal class="w-4 h-4" /></:icon>
+        </.landing_page_intro>
 
         <div class="grid md:grid-cols-2 gap-4">
           <%!-- ══════════════ STEPS ══════════════ --%>
@@ -40,9 +53,9 @@ defmodule RetroHexChatWeb.LandingLive.Install do
               <:icon><Icons.icon_terminal class="w-4 h-4" /></:icon>
             </.window_title_bar>
             <.window_body>
-              <h3 class="text-sm font-bold mb-3">
+              <h2 class="text-sm font-bold mb-3">
                 {dgettext("landing", "Want your own server? Three steps.")}
-              </h3>
+              </h2>
 
               <div class="space-y-3">
                 <fieldset class="border-2 border-gray-400 p-3">

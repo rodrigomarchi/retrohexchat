@@ -78,6 +78,42 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       assert html =~ ~s(<link rel="canonical")
     end
 
+    test "static render includes exactly one h1", %{conn: conn} do
+      conn = get(conn, "/chat/help/commands-overview")
+      document = html_response(conn, 200) |> Floki.parse_document!()
+      h1s = Floki.find(document, "h1")
+
+      assert length(h1s) == 1
+      assert h1s |> Floki.text() |> String.trim() == "IRC Commands Reference"
+    end
+
+    test "uses the help-only LiveView JavaScript bundle", %{conn: conn} do
+      conn = get(conn, "/chat/help/commands-overview")
+      html = html_response(conn, 200)
+
+      assert html =~ "/assets/js/help_live.js"
+      refute html =~ "/assets/js/retrohex_content.js"
+      refute html =~ "/assets/js/v2_app.js"
+    end
+
+    test "localized help paths have clean self-referencing canonicals", %{conn: conn} do
+      conn = get(conn, "/pt-BR/chat/help/commands-overview")
+      html = html_response(conn, 200)
+
+      assert html =~ ~s(lang="pt-BR")
+
+      assert html =~
+               ~s(<link rel="canonical" href="https://retrohexchat.com/pt-BR/chat/help/commands-overview")
+
+      assert html =~
+               ~s(<meta property="og:url" content="https://retrohexchat.com/pt-BR/chat/help/commands-overview")
+
+      assert html =~
+               ~s(rel="alternate" hreflang="x-default" href="https://retrohexchat.com/chat/help/commands-overview")
+
+      refute html =~ "?locale="
+    end
+
     test "shows content header with icon and title", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/chat/help/cmd-join")
 

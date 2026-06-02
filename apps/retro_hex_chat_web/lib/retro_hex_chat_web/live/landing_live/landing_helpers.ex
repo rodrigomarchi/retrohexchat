@@ -6,7 +6,6 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.Window
 
-  alias Phoenix.LiveView.JS
   alias RetroHexChatWeb.Icons
 
   attr :active_page, :atom, required: true
@@ -20,8 +19,34 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
       <main class="flex-1">
         {render_slot(@inner_block)}
       </main>
-      <.landing_footer />
+      <.landing_footer active_page={@active_page} />
     </div>
+    """
+  end
+
+  attr :heading_id, :string, required: true
+  attr :title, :string, required: true
+  attr :description, :string, required: true
+  attr :status, :string, default: nil
+  slot :icon, required: true
+
+  @spec landing_page_intro(map()) :: Phoenix.LiveView.Rendered.t()
+  def landing_page_intro(assigns) do
+    ~H"""
+    <.window class="mb-4">
+      <.window_title_bar title={@title} controls={[:close]}>
+        <:icon>{render_slot(@icon)}</:icon>
+      </.window_title_bar>
+      <.window_body>
+        <h1 id={@heading_id} class="text-lg font-bold mb-2 text-text">{@title}</h1>
+        <p class="text-sm max-w-3xl">
+          {@description}
+        </p>
+      </.window_body>
+      <.window_status_bar :if={@status}>
+        <.window_status_bar_field grow>{@status}</.window_status_bar_field>
+      </.window_status_bar>
+    </.window>
     """
   end
 
@@ -89,7 +114,9 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
             <button
               type="button"
               class="lg:hidden ml-auto inline-flex items-center h-7 px-2 text-xs shadow-retro-raised bg-surface active:shadow-retro-sunken"
-              phx-click={JS.toggle(to: "#mobile-nav")}
+              data-toggle-target="#mobile-nav"
+              aria-controls="mobile-nav"
+              aria-expanded="false"
               aria-label={dgettext("landing", "Menu")}
             >
               <Icons.icon_btn_menu class="w-4 h-4" />
@@ -192,8 +219,13 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
     """
   end
 
+  attr :active_page, :atom, required: true
+
   defp landing_footer(assigns) do
-    assigns = Map.put_new(assigns, :dummy, nil)
+    assigns =
+      assigns
+      |> assign(:current_path, active_page_path(assigns.active_page))
+      |> assign(:supported_locales, RetroHexChatWeb.I18n.supported_locales())
 
     ~H"""
     <footer class="m-4 mt-8">
@@ -293,6 +325,21 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
             </div>
           </div>
 
+          <div class="border-t border-gray-400 pt-3 mb-3">
+            <h3 class="font-bold text-xs mb-2">
+              <Icons.icon_link class="w-3 h-3 inline" /> {dgettext("landing", "Languages")}
+            </h3>
+            <div class="flex flex-wrap gap-x-3 gap-y-1 text-xs">
+              <a
+                :for={{code, label} <- @supported_locales}
+                href={RetroHexChatWeb.SEO.localized_path(@current_path, code)}
+                hreflang={RetroHexChatWeb.I18n.Locales.bcp47(code)}
+              >
+                {label}
+              </a>
+            </div>
+          </div>
+
           <p class="text-sm text-center italic mb-2">
             {dgettext("landing", "&ldquo;Your data. Your rules. Nobody in between.&rdquo;")}
           </p>
@@ -313,4 +360,13 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
     </footer>
     """
   end
+
+  defp active_page_path(:home), do: "/"
+  defp active_page_path(:how_it_works), do: "/how-it-works"
+  defp active_page_path(:features), do: "/features"
+  defp active_page_path(:privacy), do: "/privacy"
+  defp active_page_path(:install), do: "/install"
+  defp active_page_path(:community), do: "/community"
+  defp active_page_path(:faq), do: "/faq"
+  defp active_page_path(_active_page), do: "/"
 end
