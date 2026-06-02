@@ -1,6 +1,6 @@
 import { Page, Locator, expect } from '@playwright/test';
 
-// Page Object for the v2 ConnectLive flow at /connect.
+// Page Object for the app ConnectLive flow at /connect.
 // Mirrors the three steps in the LiveView state machine: :nickname, :register,
 // :password (only one is visible at a time).
 export class ConnectPage {

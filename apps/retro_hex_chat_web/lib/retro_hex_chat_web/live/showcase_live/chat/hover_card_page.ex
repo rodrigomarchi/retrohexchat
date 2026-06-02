@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.HoverCardPage do
           online_since="3h 42m"
           online_for="2d 14h"
           idle="5m"
-          client="RetroHexChat v2.1"
+          client="RetroHexChat 2.1"
           registered={true}
           channels={["#lobby", "#dev", "#music"]}
           is_contact={true}

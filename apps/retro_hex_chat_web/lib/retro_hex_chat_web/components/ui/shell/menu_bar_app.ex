@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   @moduledoc """
-  macOS-style textual menu bar for the V2 interface.
+  macOS-style textual menu bar for the App interface.
 
   Renders a compact, single-line menu bar with File, View, Tools, and Help
   dropdown menus. When `connected=false`, only Help is enabled — the other

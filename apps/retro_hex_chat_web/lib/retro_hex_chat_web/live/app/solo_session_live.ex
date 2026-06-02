@@ -1,6 +1,6 @@
-defmodule RetroHexChatWeb.V2.SoloSessionLive do
+defmodule RetroHexChatWeb.App.SoloSessionLive do
   @moduledoc """
-  v2 solo arcade session — uses new UI components.
+  Solo arcade session using app UI components.
   Provides game selection from Arcade.Catalog and an iframe-based WASM game player.
   No WebRTC, no peer — isolated from the P2P game system.
   """
@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.V2.SoloSessionLive do
 
   alias RetroHexChat.Arcade
   alias RetroHexChat.Arcade.Schema.SoloSession
-  alias RetroHexChatWeb.V2.SessionHelpers
+  alias RetroHexChatWeb.App.SessionHelpers
 
   @pubsub RetroHexChat.PubSub
 

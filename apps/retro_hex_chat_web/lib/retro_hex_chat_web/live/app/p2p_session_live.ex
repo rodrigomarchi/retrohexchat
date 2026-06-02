@@ -1,6 +1,6 @@
-defmodule RetroHexChatWeb.V2.P2PSessionLive do
+defmodule RetroHexChatWeb.App.P2PSessionLive do
   @moduledoc """
-  v2 P2P session — uses new UI components.
+  P2P session using app UI components.
   Provides ephemeral chat, peer presence, bilateral consent for actions,
   WebRTC signaling, file transfer, and audio/video calls.
   """
@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.V2.P2PSessionLive do
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.Schema.Session
   alias RetroHexChat.P2P.SignalingRateLimit
-  alias RetroHexChatWeb.V2.SessionHelpers
+  alias RetroHexChatWeb.App.SessionHelpers
 
   @pubsub RetroHexChat.PubSub
 

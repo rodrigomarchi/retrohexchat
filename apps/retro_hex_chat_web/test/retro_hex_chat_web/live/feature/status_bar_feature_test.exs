@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
       nick = "SB2#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
-      # V2 status bar shows the nickname and channel
+      # App status bar shows the nickname and channel
       assert html =~ nick
     end
 

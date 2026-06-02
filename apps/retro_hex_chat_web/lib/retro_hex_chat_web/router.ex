@@ -93,26 +93,26 @@ defmodule RetroHexChatWeb.Router do
     plug RetroHexChatWeb.Plugs.CheckServerBan
   end
 
-  pipeline :v2_app do
+  pipeline :app do
     plug :accepts, ["html"]
     plug :fetch_session
     plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
-    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :v2}
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :chat}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
 
   scope "/", RetroHexChatWeb do
-    pipe_through :v2_app
+    pipe_through :app
 
     get "/locale/:locale", LocaleController, :update
   end
 
-  scope "/", RetroHexChatWeb.V2 do
-    pipe_through :v2_app
+  scope "/", RetroHexChatWeb.App do
+    pipe_through :app
 
-    live_session :v2_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
+    live_session :app_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
       live "/connect", ConnectLive
       live "/chat", ChatLive
       live "/p2p/:token", P2PSessionLive
@@ -122,8 +122,8 @@ defmodule RetroHexChatWeb.Router do
     end
   end
 
-  scope "/", RetroHexChatWeb.V2 do
-    pipe_through [:v2_app, :chat_session]
+  scope "/", RetroHexChatWeb.App do
+    pipe_through [:app, :chat_session]
 
     post "/chat/session", SessionController, :create
     get "/chat/session/clear", SessionController, :delete
@@ -272,7 +272,7 @@ defmodule RetroHexChatWeb.Router do
     plug :fetch_session
     plug RetroHexChatWeb.Plugs.PutLocale
     plug :fetch_live_flash
-    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :v2}
+    plug :put_root_layout, html: {RetroHexChatWeb.Layouts, :chat}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
     plug :admin_basic_auth

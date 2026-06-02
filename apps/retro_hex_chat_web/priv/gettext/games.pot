@@ -70,7 +70,7 @@ msgstr ""
 msgid "Action"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:360
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:360
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr ""
@@ -141,7 +141,7 @@ msgstr ""
 msgid "Game area"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:424
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:424
 #, elixir-autogen, elixir-format
 msgid "Game ended."
 msgstr ""
@@ -151,7 +151,7 @@ msgstr ""
 msgid "Game engine initializing... Waiting for WebRTC connection."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:450
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "Game finished."
 msgstr ""
@@ -161,18 +161,18 @@ msgstr ""
 msgid "Game in progress..."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:425
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:425
 #, elixir-autogen, elixir-format
 msgid "Game invite was rejected."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:449
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:449
 #, elixir-autogen, elixir-format
 msgid "Game over."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:440
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:354
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:440
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:354
 #, elixir-autogen, elixir-format
 msgid "Game session ended."
 msgstr ""
@@ -214,7 +214,7 @@ msgstr ""
 msgid "P1 %{score}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:452
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Peer disconnected."
 msgstr ""
@@ -240,46 +240,46 @@ msgid "Session Complete"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:102
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.html.heex:10
+#: lib/retro_hex_chat_web/live/app/solo_session_live.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Session Ended"
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:426
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:429
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:346
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:349
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:426
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:429
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:346
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "Session closed (disconnected)."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:423
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:451
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:345
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:423
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:451
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:345
 #, elixir-autogen, elixir-format
 msgid "Session closed by user."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:455
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:458
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:455
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "Session closed due to inactivity."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:432
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:438
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:352
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:358
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:432
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:438
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:352
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:358
 #, elixir-autogen, elixir-format
 msgid "Session expired due to inactivity."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:435
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:435
 #, elixir-autogen, elixir-format
 msgid "Session expired — peer did not join."
 msgstr ""
 
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:355
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:355
 #, elixir-autogen, elixir-format
 msgid "Session expired."
 msgstr ""

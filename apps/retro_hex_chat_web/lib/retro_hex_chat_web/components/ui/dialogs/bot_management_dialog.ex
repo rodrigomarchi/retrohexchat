@@ -1,8 +1,8 @@
 defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   @moduledoc """
-  v2 Bot Management dialog with split-view layout.
+  Bot Management dialog with split-view layout.
 
-  Lists bots on the left, details/tabs on the right. Uses v2 design system
+  Lists bots on the left, details/tabs on the right. Uses app design system
   primitives (Dialog, Tabs, Button).
   """
   use RetroHexChatWeb.Component

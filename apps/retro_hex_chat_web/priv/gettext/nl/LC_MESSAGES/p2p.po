@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1037
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1037
 #, elixir-autogen, elixir-format
 msgid "%{action} request accepted."
 msgstr "%{action} verzoek aanvaard."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1041
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "%{action} request declined."
 msgstr "%{action} Verzoek afgewezen."
@@ -90,7 +90,7 @@ msgstr "Video toevoegen"
 msgid "Audio Call"
 msgstr "Audiogesprek"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1044
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1044
 #, elixir-autogen, elixir-format
 msgid "Audio call"
 msgstr "Geluidsoproep"
@@ -100,12 +100,12 @@ msgstr "Geluidsoproep"
 msgid "Browse Files"
 msgstr "Bladeren door bestanden"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1058
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1058
 #, elixir-autogen, elixir-format
 msgid "Call ended."
 msgstr "Het gesprek is afgelopen."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:259
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Call ended: %{reason}"
 msgstr "Oproep beëindigd: %{reason}"
@@ -217,12 +217,12 @@ msgstr "Bestand"
 msgid "File Transfer"
 msgstr "Bestandsoverdracht"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1046
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1046
 #, elixir-autogen, elixir-format
 msgid "File transfer"
 msgstr "Bestandsoverdracht"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1061
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1061
 #, elixir-autogen, elixir-format
 msgid "File transfer completed."
 msgstr "Bestandsoverdracht voltooid."
@@ -270,17 +270,17 @@ msgstr "Nog geen berichten."
 msgid "P2P Connection"
 msgstr "P2P-verbinding"
 
-#: lib/retro_hex_chat_web/live/v2/p2_p_session_live.html.heex:10
+#: lib/retro_hex_chat_web/live/app/p2_p_session_live.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "P2P Session Ended"
 msgstr "P2P-sessie beëindigd"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1050
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1050
 #, elixir-autogen, elixir-format
 msgid "P2P invite was rejected."
 msgstr "P2P-uitnodiging werd afgewezen."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1063
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "P2P session ended."
 msgstr "P2P sessie beëindigd."
@@ -295,7 +295,7 @@ msgstr "Peer gedempt"
 msgid "Pending..."
 msgstr "In afwachting van..."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:782
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:782
 #, elixir-autogen, elixir-format
 msgid "Permission denied for %{type}. Please try again."
 msgstr "Toestemming geweigerd voor %{type}. Probeer het nog eens."
@@ -315,7 +315,7 @@ msgstr "Privacy: UIT"
 msgid "Privacy: ON"
 msgstr "Privacy: AAN"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:76
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:76
 #, elixir-autogen, elixir-format
 msgid "Private mode requires a TURN server. Using direct connection."
 msgstr "Privé-modus vereist een TURN-server. Met directe verbinding."
@@ -352,7 +352,7 @@ msgstr "Opnieuw verbinden (%{attempt}/3)"
 msgid "Rejected"
 msgstr "Afgewezen"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:180
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:180
 #, elixir-autogen, elixir-format
 msgid "Request expired."
 msgstr "Verzoek verlopen."
@@ -379,23 +379,23 @@ msgstr "Verzenden"
 msgid "Session Ended"
 msgstr "Sessie beëindigd"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1051
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1052
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1051
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1052
 #, elixir-autogen, elixir-format
 msgid "Session closed (disconnected)."
 msgstr "Sessie afgesloten (verbinding verbroken)."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1049
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1049
 #, elixir-autogen, elixir-format
 msgid "Session closed by user."
 msgstr "Sessie afgesloten door gebruiker."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1056
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1056
 #, elixir-autogen, elixir-format
 msgid "Session closed due to connection failure."
 msgstr "Sessie afgesloten wegens verbindingsfout."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1053
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1053
 #, elixir-autogen, elixir-format
 msgid "Session expired due to inactivity."
 msgstr "Sessie verlopen vanwege inactiviteit."
@@ -415,14 +415,14 @@ msgstr "Starten"
 msgid "Starting call..."
 msgstr "Begin met bellen..."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:74
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:152
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:179
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:258
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:308
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:683
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:759
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:781
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:74
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:152
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:179
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:258
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:308
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:683
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:759
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Systeem"
@@ -455,12 +455,12 @@ msgstr "Controleren..."
 msgid "Video Call"
 msgstr "Videogesprek"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1045
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1045
 #, elixir-autogen, elixir-format
 msgid "Video call"
 msgstr "Videogesprek"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:309
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Video request declined."
 msgstr "Videoverzoek afgewezen."

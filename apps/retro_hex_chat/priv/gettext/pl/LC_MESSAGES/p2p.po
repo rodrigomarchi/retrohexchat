@@ -71,7 +71,7 @@ msgstr "Numer kanału jest poza dozwolonym zakresem"
 msgid "EVEN-PORT unsupported"
 msgstr "EVEN- PORT bez wsparcia"
 
-#: lib/retro_hex_chat/p2p/service.ex:163
+#: lib/retro_hex_chat/p2p/service.ex:151
 #, elixir-autogen, elixir-format
 msgid "Failed to create session"
 msgstr "Nie udało się utworzyć sesji"
@@ -114,8 +114,7 @@ msgstr "Nie udało się odkodować XOR- PEER-"
 #: lib/retro_hex_chat/p2p/session_server.ex:168
 #, elixir-autogen, elixir-format
 msgid "Invalid transition from %{state_session_status} to %{new_status_str}"
-msgstr ""
-"Nieprawidłowe przejście od %{state_session_status} do %{new_status_str}"
+msgstr "Nieprawidłowe przejście od %{state_session_status} do %{new_status_str}"
 
 #: lib/retro_hex_chat/p2p/session_token.ex:30
 #, elixir-autogen, elixir-format
@@ -170,8 +169,7 @@ msgstr "REQUESTED- ADRESS- FAMILY z IPv6 bez wsparcia"
 #: lib/retro_hex_chat/p2p/turn/utils.ex:88
 #, elixir-autogen, elixir-format
 msgid "RESERVATION-TOKEN and (EVEN-PORT|REQUESTED-FAMILY) in the message"
-msgstr ""
-"REZERWY - TOKEN i (EVEN- PORT VIS 124; REQUESTED - FAMILY) w komunikacie"
+msgstr "REZERWY - TOKEN i (EVEN- PORT VIS 124; REQUESTED - FAMILY) w komunikacie"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:92
 #, elixir-autogen, elixir-format
@@ -183,12 +181,12 @@ msgstr "REZERWY - TOKEN nieobsługiwane"
 msgid "Session is no longer active"
 msgstr "Sesja nie jest już aktywna"
 
-#: lib/retro_hex_chat/p2p/service.ex:176
+#: lib/retro_hex_chat/p2p/service.ex:164
 #, elixir-autogen, elixir-format
 msgid "Session not found"
 msgstr "Nie znaleziono sesji"
 
-#: lib/retro_hex_chat/p2p/service.ex:104
+#: lib/retro_hex_chat/p2p/service.ex:92
 #: lib/retro_hex_chat/p2p/session_server.ex:46
 #: lib/retro_hex_chat/p2p/session_server.ex:54
 #: lib/retro_hex_chat/p2p/session_server.ex:70

@@ -1,8 +1,8 @@
 defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   @moduledoc """
-  v2 Admin Console dialog — a command-line style admin interface.
+  Admin Console dialog — a command-line style admin interface.
 
-  Uses v2 design system primitives (Dialog, Button, Input).
+  Uses app design system primitives (Dialog, Button, Input).
   """
   use RetroHexChatWeb.Component
 

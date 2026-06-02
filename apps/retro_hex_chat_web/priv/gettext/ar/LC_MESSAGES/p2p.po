@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=(n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5);\n"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1037
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1037
 #, elixir-autogen, elixir-format
 msgid "%{action} request accepted."
 msgstr "قُبل طلب %{action}."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1041
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "%{action} request declined."
 msgstr "رفض طلب %{action}."
@@ -90,7 +90,7 @@ msgstr "يضاف فيديو"
 msgid "Audio Call"
 msgstr "Audio Call"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1044
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1044
 #, elixir-autogen, elixir-format
 msgid "Audio call"
 msgstr "نداء الصوت"
@@ -100,12 +100,12 @@ msgstr "نداء الصوت"
 msgid "Browse Files"
 msgstr "Browse Files"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1058
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1058
 #, elixir-autogen, elixir-format
 msgid "Call ended."
 msgstr "انتهى الإتصال"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:259
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Call ended: %{reason}"
 msgstr "انتهت المكالمة: %{reason}"
@@ -217,12 +217,12 @@ msgstr "File"
 msgid "File Transfer"
 msgstr "تحويل الملفات"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1046
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1046
 #, elixir-autogen, elixir-format
 msgid "File transfer"
 msgstr "نقل الملفات"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1061
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1061
 #, elixir-autogen, elixir-format
 msgid "File transfer completed."
 msgstr "تم نقل الملفات"
@@ -270,17 +270,17 @@ msgstr "لا رسائل بعد"
 msgid "P2P Connection"
 msgstr "P2P Connection"
 
-#: lib/retro_hex_chat_web/live/v2/p2_p_session_live.html.heex:10
+#: lib/retro_hex_chat_web/live/app/p2_p_session_live.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "P2P Session Ended"
 msgstr "انتهاء دورة البرنامج"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1050
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1050
 #, elixir-autogen, elixir-format
 msgid "P2P invite was rejected."
 msgstr "رُفضت دعوة P2P."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1063
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "P2P session ended."
 msgstr "انتهت جلسة البرنامج."
@@ -295,7 +295,7 @@ msgstr "الطين الطين"
 msgid "Pending..."
 msgstr "تنتظر..."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:782
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:782
 #, elixir-autogen, elixir-format
 msgid "Permission denied for %{type}. Please try again."
 msgstr "الإذن الممنوح %{type}حاول مرة أخرى"
@@ -315,7 +315,7 @@ msgstr "الخصوصية:"
 msgid "Privacy: ON"
 msgstr "الخصوصية:"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:76
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:76
 #, elixir-autogen, elixir-format
 msgid "Private mode requires a TURN server. Using direct connection."
 msgstr "النظام الخاص يتطلب خادماً من طراز TURN. استخدام الاتصال المباشر."
@@ -352,7 +352,7 @@ msgstr "إعادة الاتصال%{attempt}/3)"
 msgid "Rejected"
 msgstr "Rejected"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:180
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:180
 #, elixir-autogen, elixir-format
 msgid "Request expired."
 msgstr "انتهى الطلب"
@@ -379,23 +379,23 @@ msgstr "إرسال"
 msgid "Session Ended"
 msgstr "الدورة المنتهية"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1051
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1052
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1051
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1052
 #, elixir-autogen, elixir-format
 msgid "Session closed (disconnected)."
 msgstr "اختتمت الجلسة (مفصلة)."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1049
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1049
 #, elixir-autogen, elixir-format
 msgid "Session closed by user."
 msgstr "جلسة مغلقة من قبل المستخدم."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1056
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1056
 #, elixir-autogen, elixir-format
 msgid "Session closed due to connection failure."
 msgstr "انتهت الجلسة بسبب فشل الاتصال."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1053
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1053
 #, elixir-autogen, elixir-format
 msgid "Session expired due to inactivity."
 msgstr "انتهت الجلسة بسبب عدم النشاط."
@@ -415,14 +415,14 @@ msgstr "البداية"
 msgid "Starting call..."
 msgstr "بدء الإتصال..."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:74
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:152
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:179
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:258
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:308
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:683
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:759
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:781
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:74
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:152
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:179
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:258
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:308
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:683
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:759
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "النظام"
@@ -455,12 +455,12 @@ msgstr "التحقق..."
 msgid "Video Call"
 msgstr "نداء الفيديو"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1045
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1045
 #, elixir-autogen, elixir-format
 msgid "Video call"
 msgstr "دعوة فيديو"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:309
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Video request declined."
 msgstr "رفض طلب الفيديو"

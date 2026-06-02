@@ -1,6 +1,6 @@
-defmodule RetroHexChatWeb.V2.GameSessionLive do
+defmodule RetroHexChatWeb.App.GameSessionLive do
   @moduledoc """
-  v2 multiplayer game session — uses new UI components.
+  Multiplayer game session using app UI components.
   Provides game selection, bilateral consent, WebRTC signaling for DataChannel,
   and the game canvas container.
   """
@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.V2.GameSessionLive do
   alias RetroHexChat.Games
   alias RetroHexChat.Games.Schema.GameSession
   alias RetroHexChat.P2P.SignalingRateLimit
-  alias RetroHexChatWeb.V2.SessionHelpers
+  alias RetroHexChatWeb.App.SessionHelpers
 
   @pubsub RetroHexChat.PubSub
 

@@ -1,5 +1,5 @@
-// v2 App LiveView — full LiveSocket with all hooks for /v2/ routes.
-// Uses retrohex.css (Tailwind) via the v2 root layout instead of app.css.
+// App LiveView entrypoint with LiveSocket and chat/P2P/game hooks.
+// Uses retrohex.css (Tailwind) via the app root layout.
 
 import "phoenix_html";
 import { Socket } from "phoenix";

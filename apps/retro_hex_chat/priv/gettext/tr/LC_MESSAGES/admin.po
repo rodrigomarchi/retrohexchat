@@ -54,12 +54,12 @@ msgstr "  %{nickname} — %{reason} (by) %{banned_by}, %{expires})"
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:59
 #, elixir-autogen, elixir-format
 msgid "  %{table}: %{count} deleted"
-msgstr ""
-"  %{table}: %{count} silinmiş silinmiş silinmiş silinmiş silinmiş silinmiş"
+msgstr "  %{table}: %{count} silinmiş silinmiş silinmiş silinmiş silinmiş silinmiş"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:30
 #, elixir-autogen, elixir-format
 msgid "  Access list:\n"
+""
 msgstr "Access list:"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:27
@@ -70,27 +70,36 @@ msgstr "Access list: (empty)"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:62
 #, elixir-autogen, elixir-format
 msgid "  Active allocations: %{active}\n"
+""
 msgstr "  Aktif tahsisler: %{active}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Admin: %{is_admin}\n"
+""
 msgstr "Admin: %{is_admin}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Atoms: %{atom}\n"
+""
 msgstr "  Atomlar: %{atom}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:78
 #, elixir-autogen, elixir-format
 msgid "  Bans: %{state_bans_count}\n"
+""
 msgstr "  Ban: %{state_bans_count}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:60
 #, elixir-autogen, elixir-format
 msgid "  Binary: %{binary}\n"
+""
 msgstr "  İkili: %{binary}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:61
 #, elixir-autogen, elixir-format
@@ -100,12 +109,15 @@ msgstr "  Kod: %{code}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:58
 #, elixir-autogen, elixir-format
 msgid "  ETS: %{ets}\n"
+""
 msgstr "ETS: %{ets}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:35
 #, elixir-autogen, elixir-format
 msgid "  Founder: %{founder}\n"
+""
 msgstr "  Kurucu: Kurucu: %{founder}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:32
 #, elixir-autogen, elixir-format
@@ -115,33 +127,44 @@ msgstr "  Idenized: %{identified}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:71
 #, elixir-autogen, elixir-format
 msgid "  Identified: %{identified}\n"
+""
 msgstr "  Idenized: %{identified}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:31
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
 #, elixir-autogen, elixir-format
 msgid "  Last seen: %{last_seen_at}\n"
+""
 msgstr "  Son görüldü: %{last_seen_at}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:58
 #, elixir-autogen, elixir-format
 msgid "  Listen port: %{listen_port}\n"
+""
 msgstr "  Dinle port: %{listen_port}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Listeners: %{listener_count}\n"
+""
 msgstr "  Diners: %{listener_count}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:73
 #, elixir-autogen, elixir-format
 msgid "  Members (%{member_count}): %{members}\n"
+""
 msgstr "  Üyeler ( Üyeler)%{member_count}): %{members}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:40
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:77
 #, elixir-autogen, elixir-format
 msgid "  Modes: %{modes}\n"
+""
 msgstr "Modes: %{modes}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:54
@@ -152,6 +175,7 @@ msgstr "Online: %{online}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}\n"
+""
 msgstr "Online: %{online}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:67
@@ -162,14 +186,18 @@ msgstr "  Port aralığı: %{port_min}-%{port_max}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Processes: %{processes}\n"
+""
 msgstr "  Süreçler: %{processes}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:36
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:28
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:66
 #, elixir-autogen, elixir-format
 msgid "  Registered: %{registered_at}\n"
+""
 msgstr "  Kayıt: %{registered_at}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
 #, elixir-autogen, elixir-format
@@ -179,6 +207,7 @@ msgstr "Kayıt: hayır"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:53
 #, elixir-autogen, elixir-format
 msgid "  Registered: no\n"
+""
 msgstr "Kayıt: hayır"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:61
@@ -189,11 +218,13 @@ msgstr "  Kayıt: evet ( kurucu: %{founder_nickname})"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Relay IP: %{relay_ip}\n"
+""
 msgstr "Relay IP: %{relay_ip}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:63
 #, elixir-autogen, elixir-format
 msgid "  Relay ports: %{used_ports}/%{total_ports} in use\n"
+""
 msgstr "Relay portları: %{used_ports}/%{total_ports}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:73
@@ -204,18 +235,22 @@ msgstr "  Server operatörü: %{is_oper}"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Status: running\n"
+""
 msgstr "Durum: koşmak"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:39
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Topic: %{topic}\n"
+""
 msgstr "Topic: %{topic}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Total: %{total}\n"
+""
 msgstr "  Toplam: %{total}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/log.ex:48
 #, elixir-autogen, elixir-format
@@ -235,32 +270,7 @@ msgstr " Çünkü %{duration_seconds}"
 #: lib/retro_hex_chat/admin.ex:53
 #, elixir-autogen, elixir-format
 msgid " permanently"
-msgstr ""
-"Sürekli kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı"
+msgstr "Sürekli kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
 
 #: lib/retro_hex_chat/commands/handlers/admin/log.ex:39
 #, elixir-autogen, elixir-format
@@ -351,6 +361,7 @@ msgstr "%{message}"
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:36
 #, elixir-autogen, elixir-format
 msgid "*** %{server_name} ***%{desc_line}\n"
+""
 msgstr "%{server_name}%{desc_line}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:67
@@ -381,6 +392,7 @@ msgstr "- Denetim Log ()%{entries_count} Girişler)"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** BEAM Memory ***\n"
+""
 msgstr "BEAM Memory -"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:120
@@ -396,7 +408,9 @@ msgstr "Kanal Listesi (İngilizce)%{filtered_count}) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
 #, elixir-autogen, elixir-format
 msgid "*** Channel: %{channel}\n"
+""
 msgstr "Kanal: %{channel}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:14
 #, elixir-autogen, elixir-format
@@ -486,6 +500,7 @@ msgstr "Server Ayarları -"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** TURN Server Stats ***\n"
+""
 msgstr "TURN Server Stats -"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:9
@@ -502,22 +517,30 @@ msgstr "Kullanıcı Listesi (İngilizce)%{entries_count} Sonuçlar)"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** User: %{nick}\n"
+""
 msgstr "Kullanıcı: %{nick}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:34
 #, elixir-autogen, elixir-format
 msgid "*** [ChanServ] %{name}\n"
+""
 msgstr "[ChanServ] %{name}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:27
 #, elixir-autogen, elixir-format
 msgid "*** [NickServ] %{nick}\n"
+""
 msgstr "[NickServ] %{nick}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
 #, elixir-autogen, elixir-format
 msgid "Active channels: %{channel_count}\n"
+""
 msgstr "Aktif kanallar: %{channel_count}\n"
+""
 
 #: lib/retro_hex_chat/admin.ex:502
 #, elixir-autogen, elixir-format
@@ -577,25 +600,20 @@ msgstr "P çağırdı %{count} mesajlardan mesajlar %{channel_name}."
 #: lib/retro_hex_chat/admin.ex:320
 #, elixir-autogen, elixir-format
 msgid "Purged %{count} messages from %{from_nick} in %{channel_name}."
-msgstr ""
-"P çağırdı %{count} mesajlardan mesajlar %{from_nick} İçinde in in in in in "
-"in in in in in in in in in in in in in in in in in in in in in in in in in "
-"in in in in in in in in in in in in in in in in in in in in in in in in in "
-"in in in in in in in in in in in in in in in in in in in in in in in in in "
-"in in in in in in in in in in in in in in in in in in in in in in in in in "
-"in in in in in in in in in in in in in in in in in in in in in in in in in "
-"in in in in in in in in in in in in in in in in in in in in in in in in in "
-"in in in in in in in in in in in in in in in in in in %{channel_name}."
+msgstr "P çağırdı %{count} mesajlardan mesajlar %{from_nick} İçinde in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in in %{channel_name}."
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
 #, elixir-autogen, elixir-format
 msgid "Registered nicks: %{nick_count}\n"
+""
 msgstr "Kayıt edilen nicks: %{nick_count}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
 #, elixir-autogen, elixir-format
 msgid "Registration: %{registration}\n"
+""
 msgstr "Kayıt: Kayıt: %{registration}\n"
+""
 
 #: lib/retro_hex_chat/admin.ex:44
 #, elixir-autogen, elixir-format
@@ -610,8 +628,7 @@ msgstr "Server ayar \"%{key}'\" set to '%{value}'."
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:34
 #, elixir-autogen, elixir-format
 msgid "Unknown turn subcommand: %{subcmd}. Try: stats, allocations"
-msgstr ""
-"Bilinmeyen dönüş subcommand: %{subcmd}Deneyin: istatistikler, tahsisler"
+msgstr "Bilinmeyen dönüş subcommand: %{subcmd}Deneyin: istatistikler, tahsisler"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:137
 #, elixir-autogen, elixir-format
@@ -650,17 +667,15 @@ msgstr "Kullanım: /admin dönüş <stats|allocations>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:181
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: /admin user "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
-msgstr ""
-"Kullanım: /admin kullanıcı kullanıcısı "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgid "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgstr "Kullanım: /admin kullanıcı kullanıcısı <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:40
 #, elixir-autogen, elixir-format
 msgid "Users online: %{online_count}\n"
+""
 msgstr "Kullanıcılar online: %{online_count}\n"
+""
 
 #: lib/retro_hex_chat/admin.ex:181
 #, elixir-autogen, elixir-format
@@ -814,7 +829,8 @@ msgstr "kullanıcı.mute"
 msgid "user.rename"
 msgstr "kullanıcı.renamename"
 
-#: lib/retro_hex_chat/admin.ex:479 lib/retro_hex_chat/admin.ex:500
+#: lib/retro_hex_chat/admin.ex:479
+#: lib/retro_hex_chat/admin.ex:500
 #, elixir-autogen, elixir-format
 msgid "user.role"
 msgstr "kullanıcı.role"
@@ -832,5 +848,4 @@ msgstr "kullanıcı.unmute"
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:140
 #, elixir-autogen, elixir-format
 msgid "whowas_retention_seconds must be an integer from 1 to 86400"
-msgstr ""
-"Whowas retention saniyeler 1 ila 86400 arasında tam bir sayı olmalıdır"
+msgstr "Whowas retention saniyeler 1 ila 86400 arasında tam bir sayı olmalıdır"

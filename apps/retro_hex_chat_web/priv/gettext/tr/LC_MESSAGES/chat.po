@@ -41,77 +41,77 @@ msgstr "  %{position}: %{status} %{trigger} %{channel} → %{command}"
 msgid "  /%{name} → %{expansion}"
 msgstr "  /%{name} → %{expansion}"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1042
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1040
 #, elixir-autogen, elixir-format
 msgid "  /cs aop #channel add <nick>    — Add an Auto Operator"
 msgstr "  /cs aop #channel add <nick>    — Add an Auto Operator"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1044
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1042
 #, elixir-autogen, elixir-format
 msgid "  /cs info #channel              — View channel registration info"
 msgstr "  /cs info #channel              — View channel registration info"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1040
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1038
 #, elixir-autogen, elixir-format
 msgid "  /cs register #channel          — Register a channel you operate"
 msgstr "  /cs register #channel          — Register a channel you operate"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1041
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1039
 #, elixir-autogen, elixir-format
 msgid "  /cs sop #channel add <nick>    — Add a Super Operator"
 msgstr "  /cs sop #channel add <nick>    — Add a Super Operator"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1043
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "  /cs vop #channel add <nick>    — Add an Auto Voice user"
 msgstr "  /cs vop #channel add <nick>    — Add an Auto Voice user"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1014
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1012
 #, elixir-autogen, elixir-format
 msgid "  /help            — View full help"
 msgstr "  /help            — View full help"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1015
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1013
 #, elixir-autogen, elixir-format
 msgid "  /help commands   — List all commands"
 msgstr "  /help commands   — List all commands"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1011
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1009
 #, elixir-autogen, elixir-format
 msgid "  /join #channel   — Join a channel"
 msgstr "  /join #channel   — Join a channel"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1012
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1010
 #, elixir-autogen, elixir-format
 msgid "  /msg nick text   — Send a private message"
 msgstr "  /msg nick text   — Send a private message"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1013
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1011
 #, elixir-autogen, elixir-format
 msgid "  /nick new_nick   — Change your nickname"
 msgstr "  /nick new_nick   — Change your nickname"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1074
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1072
 #, elixir-autogen, elixir-format
 msgid "  /ns drop <password>       — Permanently unregister your nickname"
 msgstr "  /ns drop <password>       — Permanently unregister your nickname"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1073
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1071
 #, elixir-autogen, elixir-format
 msgid "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 msgstr "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1071
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1069
 #, elixir-autogen, elixir-format
 msgid "  /ns identify <password>   — Identify (log in) for this session"
 msgstr "  /ns identify <password>   — Identify (log in) for this session"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1072
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1070
 #, elixir-autogen, elixir-format
 msgid "  /ns info [nickname]       — Look up registration info"
 msgstr "  /ns info [nickname]       — Look up registration info"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1070
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1068
 #, elixir-autogen, elixir-format
 msgid "  /ns register <password>   — Register your current nickname"
 msgstr "  /ns register <password>   — Register your current nickname"
@@ -126,29 +126,27 @@ msgstr "Kayıt: hayır"
 msgid "  Registered: yes (%{status})"
 msgstr "Kayıt: Evet (%{status})"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1049
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1047
 #, elixir-autogen, elixir-format
 msgid "  • Channels expire after 7 days of inactivity"
 msgstr "• Kanallar 7 gün süren inaktiviteden sonra sona erer"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1050
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1048
 #, elixir-autogen, elixir-format
 msgid "  • If a founder's nick expires, the next ranked user is promoted"
-msgstr ""
-"• Bir kurucunun nick süresi sona ererse, bir sonraki sıralanan kullanıcı "
-"terfi edilir"
+msgstr "• Bir kurucunun nick süresi sona ererse, bir sonraki sıralanan kullanıcı terfi edilir"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1077
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1075
 #, elixir-autogen, elixir-format
 msgid "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"
 msgstr "• Nicks hassas durumda - \"Alice\" ve \"alice\" farklı"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1078
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1076
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after 7 days of inactivity"
 msgstr "• Nicks, 7 gün süren inaktiviteden sonra sona erer"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1079
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1077
 #, elixir-autogen, elixir-format
 msgid "  • Switching to a registered nick gives you 60s to identify"
 msgstr "• kayıtlı bir nick'e geçiş, sizi tanımlamak için 60'lara verir"
@@ -480,8 +478,7 @@ msgstr "* %{notice}"
 #: lib/retro_hex_chat_web/live/chat_live/helpers/flood.ex:80
 #, elixir-autogen, elixir-format
 msgid "* %{sender} has been auto-ignored for flooding (%{duration})"
-msgstr ""
-"* %{sender} seling için otomatik olarak yönlendirilmiştir (%{duration})"
+msgstr "* %{sender} seling için otomatik olarak yönlendirilmiştir (%{duration})"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:82
 #, elixir-autogen, elixir-format
@@ -717,12 +714,12 @@ msgstr "► Whowas: %{nickname}"
 msgid "/join #channel to get started"
 msgstr "/join #channel to get started"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1008
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1006
 #, elixir-autogen, elixir-format
 msgid "A real-time chat platform with a retro look and feel."
 msgstr "Gerçek zamanlı bir sohbet platformu retro bir görünüm ve his ile."
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1046
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1044
 #, elixir-autogen, elixir-format
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "Access hierarchy: Owner > SOP > AOP > VOP >"
@@ -730,12 +727,7 @@ msgstr "Access hierarchy: Owner > SOP > AOP > VOP >"
 #: lib/retro_hex_chat_web/components/ui/chat/emoji_picker.ex:171
 #, elixir-autogen, elixir-format
 msgid "Activities"
-msgstr ""
-"Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler "
-"Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler "
-"Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler "
-"Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler "
-"Faaliyetler Faaliyetler"
+msgstr "Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler Faaliyetler"
 
 #: lib/retro_hex_chat_web/components/ui/chat/nicklist_context_menu.ex:65
 #, elixir-autogen, elixir-format
@@ -841,8 +833,7 @@ msgstr "Ses çağrısı başladı. Lobiye katılın: /p2p/%{token}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:451
 #, elixir-autogen, elixir-format
-msgid ""
-"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr "Auto-join listesi tam (20 kanal). %{channel} oto-join eklendi."
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:42
@@ -867,11 +858,9 @@ msgstr "Auto-respond kuralları:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:116
 #, elixir-autogen, elixir-format
-msgid ""
-"Available commands: %{commands}\n"
+msgid "Available commands: %{commands}\n"
 "Type /help <command> for details, or open Help Topics from the menu for the full help system."
-msgstr ""
-"Mevcut komutlar: %{commands}\n"
+msgstr "Mevcut komutlar: %{commands}\n"
 "/help <ph0></ph0> ayrıntıları için veya tam yardım sistemi için menüden Topics açın."
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:94
@@ -964,7 +953,7 @@ msgstr "Ağ kanalları"
 msgid "Browser"
 msgstr "Browser Browser"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.html.heex:172
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:172
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "Cancel Cancel Cancel Cancel"
@@ -1002,7 +991,7 @@ msgstr "Güncellenme: %{reason}"
 msgid "Case sensitive"
 msgstr "Vaka hassas"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1036
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1034
 #, elixir-autogen, elixir-format
 msgid "ChanServ manages channel registration and access control."
 msgstr "ChanServ kanal kayıtlarını ve erişim kontrolünü yönetir."
@@ -1128,7 +1117,7 @@ msgid "Command too long (max 500 characters)"
 msgstr "Komut çok uzun (max 500 karakter)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:56
-#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:76
+#: lib/retro_hex_chat_web/live/app/session_helpers.ex:76
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "Connected"
@@ -1138,17 +1127,17 @@ msgstr "Connected"
 msgid "Connected to %{server}"
 msgstr "%{server}"
 
-#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:75
+#: lib/retro_hex_chat_web/live/app/session_helpers.ex:75
 #, elixir-autogen, elixir-format
 msgid "Connecting..."
 msgstr "Connecting..."
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.html.heex:165
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:165
 #, elixir-autogen, elixir-format
 msgid "Connection Lost"
 msgstr "Bağlantı Kayıp Bağlantı"
 
-#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:78
+#: lib/retro_hex_chat_web/live/app/session_helpers.ex:78
 #, elixir-autogen, elixir-format
 msgid "Connection failed"
 msgstr "Bağlantı başarısız oldu"
@@ -1376,16 +1365,7 @@ msgstr "Dosya transferi başladı. Lobiye katılın: /p2p/%{token}"
 #: lib/retro_hex_chat_web/components/ui/chat/search_bar.ex:54
 #, elixir-autogen, elixir-format
 msgid "Find"
-msgstr ""
-"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
-"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
-"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
-"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
-"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
-"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
-"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
-"Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find "
-"Find Find Find Find Find Find Find Find"
+msgstr "Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find Find"
 
 #: lib/retro_hex_chat_web/components/ui/chat/search_bar.ex:65
 #, elixir-autogen, elixir-format
@@ -1405,21 +1385,7 @@ msgstr "Yiyecek & İçme"
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:98
 #, elixir-autogen, elixir-format
 msgid "For"
-msgstr ""
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For For For For For For For For For For For "
-"For For For For For For For For For"
+msgstr "For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For For"
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:248
 #, elixir-autogen, elixir-format
@@ -1477,11 +1443,7 @@ msgstr "Half-Op"
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:118
 #, elixir-autogen, elixir-format
 msgid "Help"
-msgstr ""
-"Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım"
-" Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım "
-"Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım"
-" Yardım Yardım Yardım"
+msgstr "Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım Yardım"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/messages.ex:132
 #, elixir-autogen, elixir-format
@@ -1540,9 +1502,7 @@ msgstr "Yanlış parola"
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/aliases.ex:45
 #, elixir-autogen, elixir-format
 msgid "Invalid alias name. Use only letters, numbers, hyphens, underscores."
-msgstr ""
-"Invalid alias adı. Sadece mektuplar kullanın, sayılar, hipnozlar, alt "
-"işaretler."
+msgstr "Invalid alias adı. Sadece mektuplar kullanın, sayılar, hipnozlar, alt işaretler."
 
 #: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:240
 #: lib/retro_hex_chat_web/live/chat_live/address_book_events.ex:281
@@ -1674,11 +1634,11 @@ msgstr "Son görüldü: %{time}"
 msgid "Leave Channel"
 msgstr "Leave Channel"
 
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:240
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:361
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:421
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:34
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:336
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "Ayrılmak"
@@ -1749,8 +1709,8 @@ msgstr "En fazla 10 oto-respond kuralı"
 msgid "Menu is full (max 10 items per type)"
 msgstr "Menu tam (ortada 10 öğe)"
 
-#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:113
-#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:118
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:113
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:118
 #, elixir-autogen, elixir-format
 msgid "Message to %{target} — / for commands"
 msgstr "%{target} - / komutlar için"
@@ -1817,12 +1777,10 @@ msgstr "Nick renk girişi bulunamadı"
 msgid "Nick color list is full (max 50)"
 msgstr "Nick color listesi tam (max 50)"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1064
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1062
 #, elixir-autogen, elixir-format
-msgid ""
-"NickServ protects your nickname with a password so nobody else can use it."
-msgstr ""
-"NickServ takma adınızı bir şifre ile korur, böylece kimse onu kullanamaz."
+msgid "NickServ protects your nickname with a password so nobody else can use it."
+msgstr "NickServ takma adınızı bir şifre ile korur, böylece kimse onu kullanamaz."
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:261
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:746
@@ -1855,7 +1813,7 @@ msgstr "%{position}"
 msgid "No contact selected"
 msgstr "Seçilmedi"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:447
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "No nickname in session"
 msgstr "Oturumda takma"
@@ -1879,14 +1837,7 @@ msgstr "Bir komut değil ( / ile başlayın)"
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:111
 #, elixir-autogen, elixir-format
 msgid "Note"
-msgstr ""
-"Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not "
-"Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not "
-"Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not "
-"Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not "
-"Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not "
-"Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not "
-"Not Not Not Not Not Not Not Not NotNote"
+msgstr "Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not Not NotNote"
 
 #: lib/retro_hex_chat_web/live/chat_live/notify_events.ex:70
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/notify.ex:59
@@ -1914,7 +1865,7 @@ msgstr "Online Online Online Online"
 msgid "Online for: %{duration}"
 msgstr "Çevrimiçi süre: %{duration}"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1018
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1016
 #, elixir-autogen, elixir-format
 msgid "Open /chat/help in a new tab."
 msgstr "Open /chat/help yeni bir sekmede."
@@ -1937,16 +1888,7 @@ msgstr "Open in help Topics"
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:167
 #, elixir-autogen, elixir-format
 msgid "Operator"
-msgstr ""
-"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
-"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
-"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
-"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
-"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
-"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
-"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
-"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera "
-"Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera"
+msgstr "Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera Opera"
 
 #: lib/retro_hex_chat_web/components/ui/chat/color_picker.ex:101
 #: lib/retro_hex_chat_web/components/ui/chat/formatting_toolbar.ex:184
@@ -2056,8 +1998,8 @@ msgstr "mor"
 msgid "Query (PM)"
 msgstr "(PM)"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1039
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1069
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1037
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1067
 #, elixir-autogen, elixir-format
 msgid "Quick start:"
 msgstr "Hızlı başlangıç:"
@@ -2073,7 +2015,7 @@ msgid "Reconnect"
 msgstr "Yeniden bağlantı"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:87
-#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:77
+#: lib/retro_hex_chat_web/live/app/session_helpers.ex:77
 #, elixir-autogen, elixir-format
 msgid "Reconnecting..."
 msgstr "Yeniden bağlantı kurmak..."
@@ -2089,11 +2031,10 @@ msgstr "Red Red Red"
 msgid "Regex"
 msgstr "Regex"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1037
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1035
 #, elixir-autogen, elixir-format
 msgid "Register your channel to protect it when no operators are online."
-msgstr ""
-"Hiçbir operatör online olduğunda onu korumak için kanalınızı kayıt edin."
+msgstr "Hiçbir operatör online olduğunda onu korumak için kanalınızı kayıt edin."
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:116
 #, elixir-autogen, elixir-format
@@ -2134,12 +2075,8 @@ msgstr "Reply Reply"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:419
 #, elixir-autogen, elixir-format
-msgid ""
-"Reply parent message is not currently loaded. Scroll up to load older "
-"history, then try again."
-msgstr ""
-"Ebeveynlerin mesajı şu anda yüklenemez. Daha sonra eski tarihi yüklemek için"
-" ayağa kalkın."
+msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
+msgstr "Ebeveynlerin mesajı şu anda yüklenemez. Daha sonra eski tarihi yüklemek için ayağa kalkın."
 
 #: lib/retro_hex_chat_web/components/ui/chat/reply_bar.ex:42
 #, elixir-autogen, elixir-format
@@ -2156,8 +2093,8 @@ msgstr "%{author}"
 msgid "Reset (Ctrl+Shift+X)"
 msgstr "Tamam (Ctrl+Shift+X)"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:657
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1004
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:655
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1002
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat"
 msgstr "RetroHexChat"
@@ -2177,8 +2114,8 @@ msgstr "Royal Blue Blue"
 msgid "Rule not found"
 msgstr "Kural bulunamadı"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1048
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1076
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1046
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1074
 #, elixir-autogen, elixir-format
 msgid "Rules:"
 msgstr "Kurallar:"
@@ -2250,7 +2187,7 @@ msgstr "Server ayarı \"%{key}\" '%{value}"
 msgid "Service"
 msgstr "Servis Servisi"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:150
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Session ended — logged in from another window"
 msgstr "Oturum sona erdi - başka bir pencereden giriş"
@@ -2291,7 +2228,7 @@ msgid "Source and destination are the same"
 msgstr "Kaynak ve hedef aynı"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_layout.ex:38
-#: lib/retro_hex_chat_web/live/v2/chat_live.html.heex:107
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:107
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "Durum durumu"
@@ -2355,7 +2292,7 @@ msgstr "Timer '%{name} bulunamadı"
 msgid "Timezone: %{timezone}"
 msgstr "Saat dilimi: %{timezone}"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1017
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1015
 #, elixir-autogen, elixir-format
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr "İpucu: Yardım etmeye git > Tam belge için Topics yardım edin."
@@ -2380,18 +2317,18 @@ msgstr "Konu ayarlandı: %{topic}"
 msgid "Travel & Places"
 msgstr "Seyahat ve Yerler"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1052
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1050
 #, elixir-autogen, elixir-format
 msgid "Type /help chanserv or /help channel-permissions for full details."
 msgstr "/help chanserv veya /help tam ayrıntılar için kanal-permissions."
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1081
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1079
 #, elixir-autogen, elixir-format
 msgid "Type /help nickserv for full details."
 msgstr "Tip /help nickserv for full details."
 
-#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:110
-#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:123
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:110
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:123
 #, elixir-autogen, elixir-format
 msgid "Type a command — / for list"
 msgstr "Bir komut türü - / liste için"
@@ -2459,7 +2396,7 @@ msgstr "Unmute PM"
 msgid "Updated note for %{nickname}"
 msgstr "%{nickname}"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1010
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1008
 #, elixir-autogen, elixir-format
 msgid "Useful commands:"
 msgstr "Faydalı komutlar:"
@@ -2528,7 +2465,7 @@ msgstr "%{channel} için hoş geldiniz mesajı belirlendi."
 msgid "Welcome message updated."
 msgstr "Hoşgeldiniz mesaj güncellendi."
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1007
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1005
 #, elixir-autogen, elixir-format
 msgid "Welcome to %{server_name}!"
 msgstr "%{server_name} hoş geldiniz!"
@@ -2734,7 +2671,7 @@ msgstr "[BotService] Bot '%{name}' oluşturulamadı: %{message}"
 msgid "[BotService] Prefix updated to '%{prefix}'."
 msgstr "[BotService] Prefix \"%{prefix}\" olarak güncellendi."
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1035
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1033
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Channel Services Online"
 msgstr "[ChanServ] Kanal Hizmetleri Online"
@@ -2744,19 +2681,15 @@ msgstr "[ChanServ] Kanal Hizmetleri Online"
 msgid "[NickServ] %{reason}. You are now %{nickname}"
 msgstr "[NickServ] %{reason} Artık %{nickname}"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1063
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1061
 #, elixir-autogen, elixir-format
 msgid "[NickServ] Nickname Services Online"
 msgstr "[NickServ] Nickname Services Online"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:471
 #, elixir-autogen, elixir-format
-msgid ""
-"[NickServ] This nickname is registered. You have 60 seconds to identify via "
-"/ns identify <password> or you will be renamed."
-msgstr ""
-"[NickServ] Bu takma adı kayıtlıdır. /ns <ph0></ph0> veya yeniden "
-"adlandırılacaktır."
+msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+msgstr "[NickServ] Bu takma adı kayıtlıdır. /ns <ph0></ph0> veya yeniden adlandırılacaktır."
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:38
 #, elixir-autogen, elixir-format
@@ -2813,14 +2746,7 @@ msgstr "Kesirli"
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/invite.ex:51
 #, elixir-autogen, elixir-format
 msgid "enabled"
-msgstr ""
-"etkinleştiren etkinleştiren etkinleştiren etkinleştirilmiş etkinleştirilmiş "
-"etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştiren "
-"etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş "
-"etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş "
-"etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş "
-"etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş "
-"etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş"
+msgstr "etkinleştiren etkinleştiren etkinleştiren etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştiren etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş etkinleştirilmiş"
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:380
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:383
@@ -2852,19 +2778,7 @@ msgstr "önizlemek için"
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:215
 #, elixir-autogen, elixir-format
 msgid "identified"
-msgstr ""
-"Belirlendi tespit edilen tespit edilen tespit edilen tespit edilen tespit "
-"edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen"
-" tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen "
-"tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit"
-" edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit "
-"edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen"
-" tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen "
-"tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit"
-" edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit "
-"edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen"
-" tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen "
-"tespit"
+msgstr "Belirlendi tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit edilen tespit"
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers.ex:379
 #, elixir-autogen, elixir-format
@@ -2919,32 +2833,7 @@ msgstr "Online online online online online"
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/ignore.ex:104
 #, elixir-autogen, elixir-format
 msgid "permanent"
-msgstr ""
-"Kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
-" kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı "
-"kalıcı kalıcı kalıcı kalıcı"
+msgstr "Kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı kalıcı"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:132
 #, elixir-autogen, elixir-format

@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.Autocomplete do
   @moduledoc """
-  Autocomplete dropdown component for the v2 design system.
+  Autocomplete dropdown component for the app design system.
 
   Accepts native data from `Commands.Autocomplete` directly — no translation layer.
 

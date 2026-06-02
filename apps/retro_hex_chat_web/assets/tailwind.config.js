@@ -23,11 +23,11 @@ module.exports = {
       "../lib/retro_hex_chat_web/components/layouts/showcase.html.heex",
       // Landing layout
       "../lib/retro_hex_chat_web/components/layouts/landing_live.html.heex",
-      // V2 LiveViews
-      "../lib/retro_hex_chat_web/live/v2/**/*.ex",
-      "../lib/retro_hex_chat_web/live/v2/**/*.heex",
-      // V2 layout
-      "../lib/retro_hex_chat_web/components/layouts/v2.html.heex",
+      // App LiveViews
+      "../lib/retro_hex_chat_web/live/app/**/*.ex",
+      "../lib/retro_hex_chat_web/live/app/**/*.heex",
+      // Chat app layout
+      "../lib/retro_hex_chat_web/components/layouts/chat.html.heex",
       // Help LiveViews
       "../lib/retro_hex_chat_web/live/help_live/**/*.ex",
       // Help layout

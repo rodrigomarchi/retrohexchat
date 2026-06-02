@@ -41,77 +41,77 @@ msgstr "%{position}: %{status} %{trigger} %{channel} → %{command}"
 msgid "  /%{name} → %{expansion}"
 msgstr "  /%{name} → %{expansion}"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1042
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1040
 #, elixir-autogen, elixir-format
 msgid "  /cs aop #channel add <nick>    — Add an Auto Operator"
 msgstr "  /cs aop #channel add <nick>    — Add an Auto Operator"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1044
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1042
 #, elixir-autogen, elixir-format
 msgid "  /cs info #channel              — View channel registration info"
 msgstr "  /cs info #channel              — View channel registration info"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1040
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1038
 #, elixir-autogen, elixir-format
 msgid "  /cs register #channel          — Register a channel you operate"
 msgstr "  /cs register #channel          — Register a channel you operate"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1041
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1039
 #, elixir-autogen, elixir-format
 msgid "  /cs sop #channel add <nick>    — Add a Super Operator"
 msgstr "  /cs sop #channel add <nick>    — Add a Super Operator"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1043
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "  /cs vop #channel add <nick>    — Add an Auto Voice user"
 msgstr "  /cs vop #channel add <nick>    — Add an Auto Voice user"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1014
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1012
 #, elixir-autogen, elixir-format
 msgid "  /help            — View full help"
 msgstr "  /help            — View full help"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1015
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1013
 #, elixir-autogen, elixir-format
 msgid "  /help commands   — List all commands"
 msgstr "  /help commands   — List all commands"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1011
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1009
 #, elixir-autogen, elixir-format
 msgid "  /join #channel   — Join a channel"
 msgstr "  /join #channel   — Join a channel"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1012
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1010
 #, elixir-autogen, elixir-format
 msgid "  /msg nick text   — Send a private message"
 msgstr "  /msg nick text   — Send a private message"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1013
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1011
 #, elixir-autogen, elixir-format
 msgid "  /nick new_nick   — Change your nickname"
 msgstr "  /nick new_nick   — Change your nickname"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1074
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1072
 #, elixir-autogen, elixir-format
 msgid "  /ns drop <password>       — Permanently unregister your nickname"
 msgstr "  /ns drop <password>       — Permanently unregister your nickname"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1073
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1071
 #, elixir-autogen, elixir-format
 msgid "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 msgstr "  /ns ghost <nick> <pass>   — Disconnect a ghost session"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1071
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1069
 #, elixir-autogen, elixir-format
 msgid "  /ns identify <password>   — Identify (log in) for this session"
 msgstr "  /ns identify <password>   — Identify (log in) for this session"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1072
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1070
 #, elixir-autogen, elixir-format
 msgid "  /ns info [nickname]       — Look up registration info"
 msgstr "  /ns info [nickname]       — Look up registration info"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1070
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1068
 #, elixir-autogen, elixir-format
 msgid "  /ns register <password>   — Register your current nickname"
 msgstr "  /ns register <password>   — Register your current nickname"
@@ -126,27 +126,27 @@ msgstr "등록: 없음"
 msgid "  Registered: yes (%{status})"
 msgstr "  등록 : 예 (%{status})"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1049
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1047
 #, elixir-autogen, elixir-format
 msgid "  • Channels expire after 7 days of inactivity"
 msgstr "• 채널은 유효성 7 일 후에 만료됩니다"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1050
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1048
 #, elixir-autogen, elixir-format
 msgid "  • If a founder's nick expires, the next ranked user is promoted"
 msgstr "• 설립자의 니켈이 만료되면 다음 등급의 사용자는 승진됩니다."
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1077
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1075
 #, elixir-autogen, elixir-format
 msgid "  • Nicks are case sensitive — \"Alice\" and \"alice\" are different"
 msgstr "• Nicks는 민감합니다 - \"Alice\"와 \"alice\"는 다릅니다"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1078
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1076
 #, elixir-autogen, elixir-format
 msgid "  • Nicks expire after 7 days of inactivity"
 msgstr "• Nicks는 사실의 7 일 후에 만료됩니다"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1079
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1077
 #, elixir-autogen, elixir-format
 msgid "  • Switching to a registered nick gives you 60s to identify"
 msgstr "• 등록 된 니켈로 전환하면 60을 식별 할 수 있습니다."
@@ -710,12 +710,12 @@ msgstr "----- 누가: %{nickname} -----"
 msgid "/join #channel to get started"
 msgstr "/join #channel to get started"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1008
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1006
 #, elixir-autogen, elixir-format
 msgid "A real-time chat platform with a retro look and feel."
 msgstr "복고풍과 느낌을 가진 실시간 채팅 플랫폼."
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1046
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1044
 #, elixir-autogen, elixir-format
 msgid "Access hierarchy: Owner > SOP > AOP > VOP"
 msgstr "액세스 계층: 소유자 > SOP > AOP > VOP"
@@ -829,8 +829,7 @@ msgstr "오디오 호출 시작. 로비에 가입: /p2p/%{token}"
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:451
 #, elixir-autogen, elixir-format
-msgid ""
-"Auto-join list is full (20 channels). %{channel} was not added to auto-join."
+msgid "Auto-join list is full (20 channels). %{channel} was not added to auto-join."
 msgstr "Auto-join 목록은 가득 차있는 (20의 수로)입니다. %{channel} 자동 조인에 추가되지 않았습니다."
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/scripting.ex:42
@@ -855,11 +854,9 @@ msgstr "자동 응답 규칙:"
 
 #: lib/retro_hex_chat_web/live/chat_live/ui_actions/core.ex:116
 #, elixir-autogen, elixir-format
-msgid ""
-"Available commands: %{commands}\n"
+msgid "Available commands: %{commands}\n"
 "Type /help <command> for details, or open Help Topics from the menu for the full help system."
-msgstr ""
-"유효한 명령: %{commands}\n"
+msgstr "유효한 명령: %{commands}\n"
 "제품정보 /help <command> 자세한 내용은, 또는 전체 도움말 시스템에 대한 메뉴에서 도움말 주제를 엽니 다."
 
 #: lib/retro_hex_chat_web/components/ui/chat/hover_card.ex:94
@@ -952,7 +949,7 @@ msgstr "비밀번호"
 msgid "Browser"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.html.heex:172
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:172
 #, elixir-autogen, elixir-format
 msgid "Cancel"
 msgstr "이름 *"
@@ -990,7 +987,7 @@ msgstr "강조 표시 할 수 없습니다: %{reason}"
 msgid "Case sensitive"
 msgstr "케이스 민감한"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1036
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1034
 #, elixir-autogen, elixir-format
 msgid "ChanServ manages channel registration and access control."
 msgstr "ChanServ는 채널 등록 및 액세스 제어를 관리합니다."
@@ -1116,7 +1113,7 @@ msgid "Command too long (max 500 characters)"
 msgstr "명령 너무 긴 (최대 500 문자)"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:56
-#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:76
+#: lib/retro_hex_chat_web/live/app/session_helpers.ex:76
 #, elixir-autogen, elixir-format
 msgid "Connected"
 msgstr "연결하기"
@@ -1126,17 +1123,17 @@ msgstr "연결하기"
 msgid "Connected to %{server}"
 msgstr "연결하기 %{server}"
 
-#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:75
+#: lib/retro_hex_chat_web/live/app/session_helpers.ex:75
 #, elixir-autogen, elixir-format
 msgid "Connecting..."
 msgstr "연결 ..."
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.html.heex:165
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:165
 #, elixir-autogen, elixir-format
 msgid "Connection Lost"
 msgstr "연결 분실"
 
-#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:78
+#: lib/retro_hex_chat_web/live/app/session_helpers.ex:78
 #, elixir-autogen, elixir-format
 msgid "Connection failed"
 msgstr "연결 실패"
@@ -1633,11 +1630,11 @@ msgstr "마지막으로 본: %{time}"
 msgid "Leave Channel"
 msgstr "비밀번호"
 
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:240
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:361
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:421
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:34
 #: lib/retro_hex_chat_web/live/chat_live/menu_toolbar_events.ex:336
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "Leaving"
 msgstr "뚱 베어"
@@ -1708,8 +1705,8 @@ msgstr "최대 10개의 자동 응답 규칙"
 msgid "Menu is full (max 10 items per type)"
 msgstr "메뉴는 가득합니다 (유형 당 최대 10 품목)"
 
-#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:113
-#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:118
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:113
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:118
 #, elixir-autogen, elixir-format
 msgid "Message to %{target} — / for commands"
 msgstr "이름 * %{target} - / 명령"
@@ -1776,10 +1773,9 @@ msgstr "Nick 색상 항목 찾을 수 없습니다"
 msgid "Nick color list is full (max 50)"
 msgstr "닉 컬러 목록은 가득 (최대 50)"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1064
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1062
 #, elixir-autogen, elixir-format
-msgid ""
-"NickServ protects your nickname with a password so nobody else can use it."
+msgid "NickServ protects your nickname with a password so nobody else can use it."
 msgstr "NickServ는 암호로 별명을 보호하므로 다른 사람이 사용할 수 없습니다."
 
 #: lib/retro_hex_chat_web/live/chat_live/command_dispatch.ex:261
@@ -1813,7 +1809,7 @@ msgstr "위치에 명령 없음 %{position}"
 msgid "No contact selected"
 msgstr "선택 없음"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:447
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:445
 #, elixir-autogen, elixir-format
 msgid "No nickname in session"
 msgstr "세션 별명"
@@ -1865,7 +1861,7 @@ msgstr "- 한국어"
 msgid "Online for: %{duration}"
 msgstr "온라인 : %{duration}"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1018
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1016
 #, elixir-autogen, elixir-format
 msgid "Open /chat/help in a new tab."
 msgstr "기타 /chat/help 새 탭에서."
@@ -1998,8 +1994,8 @@ msgstr "뚱 베어"
 msgid "Query (PM)"
 msgstr "질문 (PM)"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1039
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1069
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1037
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1067
 #, elixir-autogen, elixir-format
 msgid "Quick start:"
 msgstr "빠른 시작:"
@@ -2015,7 +2011,7 @@ msgid "Reconnect"
 msgstr "연결하기"
 
 #: lib/retro_hex_chat_web/components/ui/chat/connection_status.ex:87
-#: lib/retro_hex_chat_web/live/v2/session_helpers.ex:77
+#: lib/retro_hex_chat_web/live/app/session_helpers.ex:77
 #, elixir-autogen, elixir-format
 msgid "Reconnecting..."
 msgstr "연결 ..."
@@ -2031,7 +2027,7 @@ msgstr "이름 *"
 msgid "Regex"
 msgstr "레덱스"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1037
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1035
 #, elixir-autogen, elixir-format
 msgid "Register your channel to protect it when no operators are online."
 msgstr "채널을 등록하면 운영자가 온라인 때 보호 할 수 있습니다."
@@ -2075,9 +2071,7 @@ msgstr "이름 *"
 
 #: lib/retro_hex_chat_web/live/chat_live/core_events.ex:419
 #, elixir-autogen, elixir-format
-msgid ""
-"Reply parent message is not currently loaded. Scroll up to load older "
-"history, then try again."
+msgid "Reply parent message is not currently loaded. Scroll up to load older history, then try again."
 msgstr "응답 부모 메시지는 현재 로드되지 않습니다. 오래 된 역사를로드하려면 다시 시도하십시오."
 
 #: lib/retro_hex_chat_web/components/ui/chat/reply_bar.ex:42
@@ -2095,8 +2089,8 @@ msgstr "관련 기사 %{author}"
 msgid "Reset (Ctrl+Shift+X)"
 msgstr "리셋 (Ctrl+Shift+X)"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:657
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1004
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:655
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1002
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat"
 msgstr "RetroHexChat을"
@@ -2116,8 +2110,8 @@ msgstr "로얄 블루"
 msgid "Rule not found"
 msgstr "찾을 수 없음"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1048
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1076
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1046
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1074
 #, elixir-autogen, elixir-format
 msgid "Rules:"
 msgstr "규칙:"
@@ -2189,7 +2183,7 @@ msgstr "Server 설정%{key}'로 변경됨'%{value}'."
 msgid "Service"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:150
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:150
 #, elixir-autogen, elixir-format
 msgid "Session ended — logged in from another window"
 msgstr "세션 종료 — 다른 창에서 로그인"
@@ -2230,7 +2224,7 @@ msgid "Source and destination are the same"
 msgstr "근원과 목적지는 동일합니다"
 
 #: lib/retro_hex_chat_web/components/ui/chat/chat_layout.ex:38
-#: lib/retro_hex_chat_web/live/v2/chat_live.html.heex:107
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:107
 #, elixir-autogen, elixir-format
 msgid "Status"
 msgstr "주요연혁"
@@ -2294,7 +2288,7 @@ msgstr "타이머 '%{name}찾을 수 없음"
 msgid "Timezone: %{timezone}"
 msgstr "시간대: %{timezone}"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1017
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1015
 #, elixir-autogen, elixir-format
 msgid "Tip: Go to Help > Help Topics for the full documentation."
 msgstr "팁: 도움으로 이동 > 전체 문서를 위한 도움말 주제."
@@ -2319,18 +2313,18 @@ msgstr "주제 세트: %{topic}"
 msgid "Travel & Places"
 msgstr "여행 & 장소"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1052
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1050
 #, elixir-autogen, elixir-format
 msgid "Type /help chanserv or /help channel-permissions for full details."
 msgstr "제품정보 /help chanserv 또는 /help 가득 차있는 세부사항을 위한 수로 방출."
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1081
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1079
 #, elixir-autogen, elixir-format
 msgid "Type /help nickserv for full details."
 msgstr "제품정보 /help 전체 세부사항을 위한 nickserv."
 
-#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:110
-#: lib/retro_hex_chat_web/live/v2/v2_helpers.ex:123
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:110
+#: lib/retro_hex_chat_web/live/app/chat_helpers.ex:123
 #, elixir-autogen, elixir-format
 msgid "Type a command — / for list"
 msgstr "명령을 입력 — / 목록"
@@ -2398,7 +2392,7 @@ msgstr "오후 5시"
 msgid "Updated note for %{nickname}"
 msgstr "자주 묻는 질문 %{nickname}"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1010
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1008
 #, elixir-autogen, elixir-format
 msgid "Useful commands:"
 msgstr "유용한 명령:"
@@ -2467,7 +2461,7 @@ msgstr "감사합니다. %{channel} 설정되었습니다."
 msgid "Welcome message updated."
 msgstr "공지사항"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1007
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1005
 #, elixir-autogen, elixir-format
 msgid "Welcome to %{server_name}!"
 msgstr "제품정보 %{server_name}!"
@@ -2673,7 +2667,7 @@ msgstr "[봇서비스] 봇 만들기 실패 '%{name}': %{message}"
 msgid "[BotService] Prefix updated to '%{prefix}'."
 msgstr "[BotService] Prefix 업데이트%{prefix}'."
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1035
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1033
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] Channel Services Online"
 msgstr "[ChanServ] 온라인 채널 서비스"
@@ -2683,19 +2677,15 @@ msgstr "[ChanServ] 온라인 채널 서비스"
 msgid "[NickServ] %{reason}. You are now %{nickname}"
 msgstr "[NickServ]에 대하여 %{reason}. 현재 %{nickname}"
 
-#: lib/retro_hex_chat_web/live/v2/chat_live.ex:1063
+#: lib/retro_hex_chat_web/live/app/chat_live.ex:1061
 #, elixir-autogen, elixir-format
 msgid "[NickServ] Nickname Services Online"
 msgstr "[NickServ] Nickname 서비스 온라인"
 
 #: lib/retro_hex_chat_web/live/chat_live/helpers/session.ex:471
 #, elixir-autogen, elixir-format
-msgid ""
-"[NickServ] This nickname is registered. You have 60 seconds to identify via "
-"/ns identify <password> or you will be renamed."
-msgstr ""
-"[NickServ]에 대하여 이 별명이 등록되어 있습니다. 당신은 60 초를 통해 식별 /ns 제품정보 <password> 또는 이름을 "
-"변경할 수 있습니다."
+msgid "[NickServ] This nickname is registered. You have 60 seconds to identify via /ns identify <password> or you will be renamed."
+msgstr "[NickServ]에 대하여 이 별명이 등록되어 있습니다. 당신은 60 초를 통해 식별 /ns 제품정보 <password> 또는 이름을 변경할 수 있습니다."
 
 #: lib/retro_hex_chat_web/live/chat_live/pubsub_handlers/server_messages.ex:38
 #, elixir-autogen, elixir-format

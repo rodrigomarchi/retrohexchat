@@ -1,6 +1,6 @@
-defmodule RetroHexChatWeb.V2.ArcadeGameLive do
+defmodule RetroHexChatWeb.App.ArcadeGameLive do
   @moduledoc """
-  v2 arcade game window — renders a fullscreen iframe with the WASM game.
+  Arcade game window that renders a fullscreen iframe with the WASM game.
   Opened in a separate browser window from the solo lobby.
   On disconnect/close, signals the session server that the game finished.
   """
@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.V2.ArcadeGameLive do
   require Logger
 
   alias RetroHexChat.Arcade
-  alias RetroHexChatWeb.V2.SessionHelpers
+  alias RetroHexChatWeb.App.SessionHelpers
 
   @pubsub RetroHexChat.PubSub
 

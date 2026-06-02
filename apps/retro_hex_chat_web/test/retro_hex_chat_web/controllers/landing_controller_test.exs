@@ -35,7 +35,7 @@ defmodule RetroHexChatWeb.LandingLiveTest do
 
         assert body =~ "/assets/js/public_pages.js"
         refute body =~ "/assets/js/retrohex_content.js"
-        refute body =~ "/assets/js/v2_app.js"
+        refute body =~ "/assets/js/app.js"
       end
 
       test "GET #{path} renders exactly one page-level h1", %{conn: conn} do

@@ -70,7 +70,7 @@ msgstr "принимать"
 msgid "Action"
 msgstr "Меры"
 
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:360
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:360
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr "Завершилась аркадная сессия."
@@ -141,7 +141,7 @@ msgstr "Игровая сессия"
 msgid "Game area"
 msgstr "Игровая зона"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:424
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:424
 #, elixir-autogen, elixir-format
 msgid "Game ended."
 msgstr "Игра закончилась."
@@ -151,7 +151,7 @@ msgstr "Игра закончилась."
 msgid "Game engine initializing... Waiting for WebRTC connection."
 msgstr "Игровой движок инициализации... В ожидании подключения к WebRTC."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:450
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "Game finished."
 msgstr "Игра закончена."
@@ -161,29 +161,26 @@ msgstr "Игра закончена."
 msgid "Game in progress..."
 msgstr "Игра продолжается..."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:425
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:425
 #, elixir-autogen, elixir-format
 msgid "Game invite was rejected."
 msgstr "Приглашение на игру было отклонено."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:449
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:449
 #, elixir-autogen, elixir-format
 msgid "Game over."
 msgstr "Игра закончена."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:440
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:354
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:440
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:354
 #, elixir-autogen, elixir-format
 msgid "Game session ended."
 msgstr "Сеанс игры закончился."
 
 #: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:97
 #, elixir-autogen, elixir-format
-msgid ""
-"Inactivity detected — this lobby will close soon if no game is selected."
-msgstr ""
-"Неактивность обнаружена — это лобби скоро закроется, если не будет выбрана "
-"игра."
+msgid "Inactivity detected — this lobby will close soon if no game is selected."
+msgstr "Неактивность обнаружена — это лобби скоро закроется, если не будет выбрана игра."
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:233
 #, elixir-autogen, elixir-format
@@ -217,7 +214,7 @@ msgstr "Нет доступных игр"
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:452
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Peer disconnected."
 msgstr "Пиер отключился."
@@ -243,58 +240,54 @@ msgid "Session Complete"
 msgstr "Заседание завершено"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:102
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.html.heex:10
+#: lib/retro_hex_chat_web/live/app/solo_session_live.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Session Ended"
 msgstr "Заседание завершилось"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:426
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:429
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:346
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:349
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:426
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:429
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:346
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "Session closed (disconnected)."
 msgstr "Сеанс закрыт (отключен)."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:423
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:451
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:345
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:423
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:451
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:345
 #, elixir-autogen, elixir-format
 msgid "Session closed by user."
 msgstr "Сеанс закрыт пользователем."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:455
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:458
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:455
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "Session closed due to inactivity."
 msgstr "Заседание закрыто из-за бездействия."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:432
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:438
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:352
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:358
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:432
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:438
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:352
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:358
 #, elixir-autogen, elixir-format
 msgid "Session expired due to inactivity."
 msgstr "Сеанс истек из-за бездействия."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:435
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:435
 #, elixir-autogen, elixir-format
 msgid "Session expired — peer did not join."
 msgstr "Сеанс закончился — пэр не присоединился."
 
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:355
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:355
 #, elixir-autogen, elixir-format
 msgid "Session expired."
 msgstr "Сессия закончилась."
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:61
 #, elixir-autogen, elixir-format
-msgid ""
-"Session will be closed due to inactivity soon. Select a game to keep it "
-"active."
-msgstr ""
-"Сеанс будет закрыт из-за бездействия в ближайшее время. Выберите игру, чтобы"
-" она была активной."
+msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
+msgstr "Сеанс будет закрыт из-за бездействия в ближайшее время. Выберите игру, чтобы она была активной."
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:196
 #, elixir-autogen, elixir-format

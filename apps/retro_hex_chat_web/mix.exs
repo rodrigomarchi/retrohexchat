@@ -92,7 +92,7 @@ defmodule RetroHexChatWeb.MixProject do
         "esbuild retro_hex_chat_web_help_live_js",
         "esbuild retro_hex_chat_web_retrohex_content_js",
         "cmd rm -rf priv/static/assets/js/chunks",
-        "esbuild retro_hex_chat_web_v2_app_js",
+        "esbuild retro_hex_chat_web_app_js",
         "cmd env BROWSERSLIST_IGNORE_OLD_DATA=1 assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/retrohex.css -o priv/static/assets/css/retrohex.css"
       ],
       "assets.deploy": [
@@ -100,7 +100,7 @@ defmodule RetroHexChatWeb.MixProject do
         "esbuild retro_hex_chat_web_help_live_js --minify",
         "esbuild retro_hex_chat_web_retrohex_content_js --minify",
         "cmd rm -rf priv/static/assets/js/chunks",
-        "esbuild retro_hex_chat_web_v2_app_js --minify",
+        "esbuild retro_hex_chat_web_app_js --minify",
         "cmd env BROWSERSLIST_IGNORE_OLD_DATA=1 assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/retrohex.css -o priv/static/assets/css/retrohex.css --minify",
         "phx.digest"
       ]

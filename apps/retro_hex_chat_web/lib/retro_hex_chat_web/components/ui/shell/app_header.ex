@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.AppHeader do
   @moduledoc """
-  Compact application header bar for the V2 interface.
+  Compact application header bar for the App interface.
 
   Renders a single-line header (28px) with a small hex stone logo (16px)
   and slots for panels (menu bar, status bar) and mobile action buttons.

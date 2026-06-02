@@ -58,29 +58,7 @@ msgstr "(host)"
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:212
 #, elixir-autogen, elixir-format
 msgid "About"
-msgstr ""
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About About About About About About About About About "
-"About About About About"
+msgstr "About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About About"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:123
 #, elixir-autogen, elixir-format
@@ -92,7 +70,7 @@ msgstr "Kabul Kabul Kabul Kabul"
 msgid "Action"
 msgstr "Eylem"
 
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:360
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:360
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr "Arcade seansı sona erdi."
@@ -163,7 +141,7 @@ msgstr "Game Session"
 msgid "Game area"
 msgstr "Oyun alanı"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:424
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:424
 #, elixir-autogen, elixir-format
 msgid "Game ended."
 msgstr "Oyun sona erdi."
@@ -173,7 +151,7 @@ msgstr "Oyun sona erdi."
 msgid "Game engine initializing... Waiting for WebRTC connection."
 msgstr "Oyun motoru ilk başlar... WebRTC bağlantısı için bekleyin."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:450
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "Game finished."
 msgstr "Oyun bitti."
@@ -183,28 +161,26 @@ msgstr "Oyun bitti."
 msgid "Game in progress..."
 msgstr "İlerlemedeki Oyun..."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:425
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:425
 #, elixir-autogen, elixir-format
 msgid "Game invite was rejected."
 msgstr "Oyun daveti reddedildi."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:449
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:449
 #, elixir-autogen, elixir-format
 msgid "Game over."
 msgstr "Oyun bitti."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:440
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:354
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:440
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:354
 #, elixir-autogen, elixir-format
 msgid "Game session ended."
 msgstr "Oyun seansı sona erdi."
 
 #: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:97
 #, elixir-autogen, elixir-format
-msgid ""
-"Inactivity detected — this lobby will close soon if no game is selected."
-msgstr ""
-"İnaktivite tespit edildi - bu lobi kısa sürede oyun seçilmezse kapanacaktır."
+msgid "Inactivity detected — this lobby will close soon if no game is selected."
+msgstr "İnaktivite tespit edildi - bu lobi kısa sürede oyun seçilmezse kapanacaktır."
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:233
 #, elixir-autogen, elixir-format
@@ -238,7 +214,7 @@ msgstr "Mevcut oyunlar mevcut değil"
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:452
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Peer disconnected."
 msgstr "Peer kesildi."
@@ -264,58 +240,54 @@ msgid "Session Complete"
 msgstr "Oturum Tamamlandı"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:102
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.html.heex:10
+#: lib/retro_hex_chat_web/live/app/solo_session_live.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Session Ended"
 msgstr "Sean Ended"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:426
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:429
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:346
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:349
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:426
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:429
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:346
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "Session closed (disconnected)."
 msgstr "Oturum kapalı (bağlantılı)."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:423
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:451
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:345
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:423
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:451
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:345
 #, elixir-autogen, elixir-format
 msgid "Session closed by user."
 msgstr "Oturum kullanıcı tarafından kapalı."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:455
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:458
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:455
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "Session closed due to inactivity."
 msgstr "Oturum inaktivite nedeniyle kapalı."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:432
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:438
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:352
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:358
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:432
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:438
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:352
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:358
 #, elixir-autogen, elixir-format
 msgid "Session expired due to inactivity."
 msgstr "Oturum, inaktivite nedeniyle sona erdi."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:435
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:435
 #, elixir-autogen, elixir-format
 msgid "Session expired — peer did not join."
 msgstr "Oturum sona erdi - akran katılmadı."
 
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:355
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:355
 #, elixir-autogen, elixir-format
 msgid "Session expired."
 msgstr "Oturum sona erdi."
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:61
 #, elixir-autogen, elixir-format
-msgid ""
-"Session will be closed due to inactivity soon. Select a game to keep it "
-"active."
-msgstr ""
-"Oturum yakında inaktivite nedeniyle kapatılacaktır. Aktif tutmak için bir "
-"oyun seçin."
+msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
+msgstr "Oturum yakında inaktivite nedeniyle kapatılacaktır. Aktif tutmak için bir oyun seçin."
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:196
 #, elixir-autogen, elixir-format

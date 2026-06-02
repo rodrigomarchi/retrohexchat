@@ -331,7 +331,7 @@ retro_hex_chat/
 │   │
 │   └── retro_hex_chat_web/          # Web (Phoenix + LiveView)
 │       ├── lib/retro_hex_chat_web/
-│       │   ├── live/v2/             # ConnectLive, ChatLive, P2PSessionLive
+│       │   ├── live/app/             # ConnectLive, ChatLive, P2PSessionLive
 │       │   └── components/          # 57 function components, icons, dialogs
 │       └── assets/
 │           ├── css/                 # retrohex.css + component styles

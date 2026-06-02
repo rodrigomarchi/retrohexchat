@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
   @moduledoc """
-  v2 context menu for right-clicking a nickname in the nicklist sidebar.
+  Context menu for right-clicking a nickname in the nicklist sidebar.
 
   Composed from ContextMenu primitives. Supports:
   - PM, Whois, Add to Contacts, Set Nick Color, Ignore/Unignore

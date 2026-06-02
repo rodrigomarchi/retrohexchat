@@ -1,8 +1,8 @@
 defmodule RetroHexChatWeb.Components.UI.BotFormDialog do
   @moduledoc """
-  v2 Bot form dialogs: New Bot and Add Command.
+  Bot form dialogs: New Bot and Add Command.
 
-  Uses v2 design system primitives (Dialog, Button, Input, Label, Checkbox).
+  Uses app design system primitives (Dialog, Button, Input, Label, Checkbox).
   """
   use RetroHexChatWeb.Component
 

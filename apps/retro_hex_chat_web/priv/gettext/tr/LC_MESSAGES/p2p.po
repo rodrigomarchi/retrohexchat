@@ -11,12 +11,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1037
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1037
 #, elixir-autogen, elixir-format
 msgid "%{action} request accepted."
 msgstr "%{action} istek kabul edildi."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1041
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1041
 #, elixir-autogen, elixir-format
 msgid "%{action} request declined."
 msgstr "%{action} istek reddetti."
@@ -90,7 +90,7 @@ msgstr "Add Video ekle"
 msgid "Audio Call"
 msgstr "Ses Çağrısı"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1044
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1044
 #, elixir-autogen, elixir-format
 msgid "Audio call"
 msgstr "Audio call"
@@ -100,12 +100,12 @@ msgstr "Audio call"
 msgid "Browse Files"
 msgstr "Fotoğraflar"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1058
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1058
 #, elixir-autogen, elixir-format
 msgid "Call ended."
 msgstr "Çağrı sona erdi."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:259
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:259
 #, elixir-autogen, elixir-format
 msgid "Call ended: %{reason}"
 msgstr "Çağrı sona erdi: %{reason}"
@@ -156,21 +156,7 @@ msgstr "Close Session"
 #: lib/retro_hex_chat_web/components/ui/p2p/file_transfer.ex:75
 #, elixir-autogen, elixir-format
 msgid "Complete"
-msgstr ""
-"Tamam Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete "
-"Complete Complete Complete Complete Complete Complete Complete Complete"
+msgstr "Tamam Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete Complete"
 
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex:340
 #, elixir-autogen, elixir-format
@@ -231,12 +217,12 @@ msgstr "Dosya"
 msgid "File Transfer"
 msgstr "Dosya Transferi"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1046
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1046
 #, elixir-autogen, elixir-format
 msgid "File transfer"
 msgstr "Dosya transferi"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1061
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1061
 #, elixir-autogen, elixir-format
 msgid "File transfer completed."
 msgstr "Dosya transferi tamamlandı."
@@ -284,17 +270,17 @@ msgstr "Henüz mesajlar yok."
 msgid "P2P Connection"
 msgstr "P2P Connection"
 
-#: lib/retro_hex_chat_web/live/v2/p2_p_session_live.html.heex:10
+#: lib/retro_hex_chat_web/live/app/p2_p_session_live.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "P2P Session Ended"
 msgstr "P2P Oturumu Sonlandırdı"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1050
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1050
 #, elixir-autogen, elixir-format
 msgid "P2P invite was rejected."
 msgstr "P2P daveti reddedildi."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1063
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1063
 #, elixir-autogen, elixir-format
 msgid "P2P session ended."
 msgstr "P2P seansı sona erdi."
@@ -309,7 +295,7 @@ msgstr "Peer muted"
 msgid "Pending..."
 msgstr "Pending..."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:782
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:782
 #, elixir-autogen, elixir-format
 msgid "Permission denied for %{type}. Please try again."
 msgstr "%{type} Lütfen tekrar deneyin."
@@ -329,7 +315,7 @@ msgstr "Gizlilik: OFF"
 msgid "Privacy: ON"
 msgstr "Gizlilik:"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:76
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:76
 #, elixir-autogen, elixir-format
 msgid "Private mode requires a TURN server. Using direct connection."
 msgstr "Özel mod bir TURN sunucusu gerektirir. Doğrudan bağlantı kullanmak."
@@ -366,7 +352,7 @@ msgstr "Yeniden bağlantı kurmak (%{attempt}/3)"
 msgid "Rejected"
 msgstr "Rejected"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:180
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:180
 #, elixir-autogen, elixir-format
 msgid "Request expired."
 msgstr "İstek süresiz."
@@ -393,23 +379,23 @@ msgstr "Sending"
 msgid "Session Ended"
 msgstr "Sean Ended"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1051
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1052
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1051
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1052
 #, elixir-autogen, elixir-format
 msgid "Session closed (disconnected)."
 msgstr "Oturum kapalı (bağlantılı)."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1049
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1049
 #, elixir-autogen, elixir-format
 msgid "Session closed by user."
 msgstr "Oturum kullanıcı tarafından kapalı."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1056
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1056
 #, elixir-autogen, elixir-format
 msgid "Session closed due to connection failure."
 msgstr "Oturum başarısızlık nedeniyle kapatıldı."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1053
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1053
 #, elixir-autogen, elixir-format
 msgid "Session expired due to inactivity."
 msgstr "Oturum, inaktivite nedeniyle sona erdi."
@@ -429,14 +415,14 @@ msgstr "Başlangıç"
 msgid "Starting call..."
 msgstr "Starting call..."
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:74
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:152
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:179
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:258
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:308
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:683
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:759
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:781
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:74
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:152
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:179
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:258
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:308
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:683
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:759
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:781
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Sistem Sistemi"
@@ -469,12 +455,12 @@ msgstr "Verating..."
 msgid "Video Call"
 msgstr "Video Çağrı"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:1045
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:1045
 #, elixir-autogen, elixir-format
 msgid "Video call"
 msgstr "Video arama"
 
-#: lib/retro_hex_chat_web/live/v2/p2p_session_live.ex:309
+#: lib/retro_hex_chat_web/live/app/p2p_session_live.ex:309
 #, elixir-autogen, elixir-format
 msgid "Video request declined."
 msgstr "Video isteği reddetti."
@@ -493,6 +479,4 @@ msgstr "WebRTC: %{state}"
 #: lib/retro_hex_chat_web/components/ui/p2p/p2p_lobby.ex:498
 #, elixir-autogen, elixir-format
 msgid "unknown"
-msgstr ""
-"Bilinmeyen Bilinmeyen Bilinmeyen Bilinmeyen Bilinmeyen Bilinmeyen Bilinmeyen"
-" Bilinmeyen Bilinmeyen"
+msgstr "Bilinmeyen Bilinmeyen Bilinmeyen Bilinmeyen Bilinmeyen Bilinmeyen Bilinmeyen Bilinmeyen Bilinmeyen"

@@ -59,6 +59,7 @@ msgstr "  %{table}: %{count} 이름 *"
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:30
 #, elixir-autogen, elixir-format
 msgid "  Access list:\n"
+""
 msgstr "액세스 목록:"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:27
@@ -69,27 +70,37 @@ msgstr "액세스 목록: (empty)"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:62
 #, elixir-autogen, elixir-format
 msgid "  Active allocations: %{active}\n"
+""
 msgstr "  활동 할당: %{active}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Admin: %{is_admin}\n"
+""
 msgstr "  관리자: %{is_admin}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Atoms: %{atom}\n"
+""
 msgstr "  원자: %{atom}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:78
 #, elixir-autogen, elixir-format
 msgid "  Bans: %{state_bans_count}\n"
+""
 msgstr "  지불 조건: %{state_bans_count}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:60
 #, elixir-autogen, elixir-format
 msgid "  Binary: %{binary}\n"
+""
 msgstr "  바이너리: %{binary}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:61
 #, elixir-autogen, elixir-format
@@ -99,12 +110,16 @@ msgstr "  이름: %{code}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:58
 #, elixir-autogen, elixir-format
 msgid "  ETS: %{ets}\n"
+""
 msgstr "  전자: %{ets}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:35
 #, elixir-autogen, elixir-format
 msgid "  Founder: %{founder}\n"
+""
 msgstr "  설립자: %{founder}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:32
 #, elixir-autogen, elixir-format
@@ -114,34 +129,46 @@ msgstr "  식별 : %{identified}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:71
 #, elixir-autogen, elixir-format
 msgid "  Identified: %{identified}\n"
+""
 msgstr "  식별 : %{identified}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:31
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
 #, elixir-autogen, elixir-format
 msgid "  Last seen: %{last_seen_at}\n"
+""
 msgstr "  마지막으로 본: %{last_seen_at}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:58
 #, elixir-autogen, elixir-format
 msgid "  Listen port: %{listen_port}\n"
+""
 msgstr "  항구를 듣기: %{listen_port}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Listeners: %{listener_count}\n"
+""
 msgstr "  듣기: %{listener_count}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:73
 #, elixir-autogen, elixir-format
 msgid "  Members (%{member_count}): %{members}\n"
+""
 msgstr "  회원 (%{member_count}): %{members}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:40
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:77
 #, elixir-autogen, elixir-format
 msgid "  Modes: %{modes}\n"
+""
 msgstr "  형태: %{modes}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:54
 #, elixir-autogen, elixir-format
@@ -151,7 +178,9 @@ msgstr "  이메일: %{online}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}\n"
+""
 msgstr "  이메일: %{online}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:67
 #, elixir-autogen, elixir-format
@@ -161,14 +190,18 @@ msgstr "  항구 범위: %{port_min}-%{port_max}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Processes: %{processes}\n"
+""
 msgstr "  프로세스: %{processes}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:36
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:28
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:66
 #, elixir-autogen, elixir-format
 msgid "  Registered: %{registered_at}\n"
+""
 msgstr "  등록 : %{registered_at}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
 #, elixir-autogen, elixir-format
@@ -178,6 +211,7 @@ msgstr "등록: 없음"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:53
 #, elixir-autogen, elixir-format
 msgid "  Registered: no\n"
+""
 msgstr "등록: 없음"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:61
@@ -188,11 +222,14 @@ msgstr "  등록: 예 (founder: %{founder_nickname})"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Relay IP: %{relay_ip}\n"
+""
 msgstr "  릴레이 IP: %{relay_ip}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:63
 #, elixir-autogen, elixir-format
 msgid "  Relay ports: %{used_ports}/%{total_ports} in use\n"
+""
 msgstr "릴레이 포트: %{used_ports}/%{total_ports} 사용"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:73
@@ -203,18 +240,23 @@ msgstr "  서버 연산자: %{is_oper}"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Status: running\n"
+""
 msgstr "상태: 실행"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:39
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Topic: %{topic}\n"
+""
 msgstr "  주제: %{topic}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Total: %{total}\n"
+""
 msgstr "  총 : %{total}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/log.ex:48
 #, elixir-autogen, elixir-format
@@ -325,6 +367,7 @@ msgstr "*** %{message}"
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:36
 #, elixir-autogen, elixir-format
 msgid "*** %{server_name} ***%{desc_line}\n"
+""
 msgstr "*** %{server_name} ***%{desc_line}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:67
@@ -355,6 +398,7 @@ msgstr "*** 감사 로그인 (%{entries_count} 항목) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** BEAM Memory ***\n"
+""
 msgstr "*** BEAM 메모리 ***"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:120
@@ -370,7 +414,9 @@ msgstr "*** 채널 목록 (%{filtered_count}) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
 #, elixir-autogen, elixir-format
 msgid "*** Channel: %{channel}\n"
+""
 msgstr "*** 채널: %{channel}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:14
 #, elixir-autogen, elixir-format
@@ -460,6 +506,7 @@ msgstr "*** 서버 설정 ***"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** TURN Server Stats ***\n"
+""
 msgstr "*** TURN 서버 통계 ***"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:9
@@ -476,22 +523,29 @@ msgstr "*** 사용자 목록 (%{entries_count} 결과)"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** User: %{nick}\n"
+""
 msgstr "*** 사용자: %{nick}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:34
 #, elixir-autogen, elixir-format
 msgid "*** [ChanServ] %{name}\n"
+""
 msgstr "*** [콘서트] %{name}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:27
 #, elixir-autogen, elixir-format
 msgid "*** [NickServ] %{nick}\n"
+""
 msgstr "*** [NickServ] %{nick}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
 #, elixir-autogen, elixir-format
 msgid "Active channels: %{channel_count}\n"
+""
 msgstr "활동 채널: %{channel_count}\n"
+""
 
 #: lib/retro_hex_chat/admin.ex:502
 #, elixir-autogen, elixir-format
@@ -556,12 +610,16 @@ msgstr "구매하기 %{count} 메시지에서 %{from_nick} 내 계정 %{channel_
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
 #, elixir-autogen, elixir-format
 msgid "Registered nicks: %{nick_count}\n"
+""
 msgstr "등록된 니켈: %{nick_count}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
 #, elixir-autogen, elixir-format
 msgid "Registration: %{registration}\n"
+""
 msgstr "등록 : %{registration}\n"
+""
 
 #: lib/retro_hex_chat/admin.ex:44
 #, elixir-autogen, elixir-format
@@ -615,17 +673,15 @@ msgstr "사용법: /admin 제품정보 <stats|allocations>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:181
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: /admin user "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
-msgstr ""
-"사용법: /admin 사용자 이름 "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgid "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgstr "사용법: /admin 사용자 이름 <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:40
 #, elixir-autogen, elixir-format
 msgid "Users online: %{online_count}\n"
+""
 msgstr "사용자 온라인: %{online_count}\n"
+""
 
 #: lib/retro_hex_chat/admin.ex:181
 #, elixir-autogen, elixir-format
@@ -779,7 +835,8 @@ msgstr "사용자.mute"
 msgid "user.rename"
 msgstr "사용자 이름"
 
-#: lib/retro_hex_chat/admin.ex:479 lib/retro_hex_chat/admin.ex:500
+#: lib/retro_hex_chat/admin.ex:479
+#: lib/retro_hex_chat/admin.ex:500
 #, elixir-autogen, elixir-format
 msgid "user.role"
 msgstr "사용자.role"

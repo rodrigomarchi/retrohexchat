@@ -71,7 +71,7 @@ msgstr "চ্যানেলের সংখ্যা"
 msgid "EVEN-PORT unsupported"
 msgstr "সিক (seek) মোড সমর্থিত নয়"
 
-#: lib/retro_hex_chat/p2p/service.ex:163
+#: lib/retro_hex_chat/p2p/service.ex:151
 #, elixir-autogen, elixir-format
 msgid "Failed to create session"
 msgstr "সেশান নির্মাণ করতে ব্যর্থ"
@@ -114,9 +114,7 @@ msgstr "X-IRIVE-র সাথে সংযোগ করতে ব্যর্থ
 #: lib/retro_hex_chat/p2p/session_server.ex:168
 #, elixir-autogen, elixir-format
 msgid "Invalid transition from %{state_session_status} to %{new_status_str}"
-msgstr ""
-"অবৈধ থেকে রূপান্তর %{state_session_status} চিহ্নিত স্থানে চলুন "
-"%{new_status_str}"
+msgstr "অবৈধ থেকে রূপান্তর %{state_session_status} চিহ্নিত স্থানে চলুন %{new_status_str}"
 
 #: lib/retro_hex_chat/p2p/session_token.ex:30
 #, elixir-autogen, elixir-format
@@ -183,12 +181,12 @@ msgstr "RECVECT-থ্রি অসমর্থিত"
 msgid "Session is no longer active"
 msgstr "সেশান বর্তমানে সক্রিয় নয়"
 
-#: lib/retro_hex_chat/p2p/service.ex:176
+#: lib/retro_hex_chat/p2p/service.ex:164
 #, elixir-autogen, elixir-format
 msgid "Session not found"
 msgstr "সেশন পাওয়া যায়নি"
 
-#: lib/retro_hex_chat/p2p/service.ex:104
+#: lib/retro_hex_chat/p2p/service.ex:92
 #: lib/retro_hex_chat/p2p/session_server.ex:46
 #: lib/retro_hex_chat/p2p/session_server.ex:54
 #: lib/retro_hex_chat/p2p/session_server.ex:70

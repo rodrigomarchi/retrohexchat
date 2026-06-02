@@ -20,7 +20,7 @@ type ChannelCentralModeLabel =
   | 'Invite Only (+i)'
   | 'Topic Lock (+t)';
 
-// Page Object for the v2 ChatLive at /chat. Covers high-level shell
+// Page Object for the app ChatLive at /chat. Covers high-level shell
 // concerns shared by specs (waiting for connect, opening the File menu,
 // disconnecting). Channel/PM/IRC interactions will live on dedicated POMs
 // once we have specs that need them.

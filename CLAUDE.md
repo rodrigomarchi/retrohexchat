@@ -21,7 +21,7 @@ apps/
 │   └── test/
 └── retro_hex_chat_web/       # Web layer (Phoenix + LiveView)
     ├── lib/retro_hex_chat_web/
-    │   ├── live/v2/          # ConnectLive, ChatLive, P2PSessionLive, etc.
+    │   ├── live/app/          # ConnectLive, ChatLive, P2PSessionLive, etc.
     │   ├── live/chat_live/   # Shared event handlers, helpers, hooks
     │   └── components/       # UI components (ui/), icons, layouts
     ├── assets/               # CSS, JS hooks, static

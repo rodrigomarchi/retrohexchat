@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.AboutDialog do
   @moduledoc """
-  About dialog component for the V2 interface.
+  About dialog component for the App interface.
 
   Shows the platform logo, version, description, and credits in a
   Win98-style dialog. Designed to be visually striking with the

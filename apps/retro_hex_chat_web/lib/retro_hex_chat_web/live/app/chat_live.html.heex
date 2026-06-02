@@ -264,7 +264,7 @@
           >
             <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
               <.chat_message
-                timestamp={V2Helpers.format_time(msg.timestamp, @timestamp_format, @timezone)}
+                timestamp={ChatHelpers.format_time(msg.timestamp, @timestamp_format, @timezone)}
                 type={to_string(msg.type)}
               >
                 {msg.content}
@@ -361,7 +361,7 @@
           input_id="chat-input"
           value={@input}
           name="input"
-          placeholder={V2Helpers.input_placeholder(assigns)}
+          placeholder={ChatHelpers.input_placeholder(assigns)}
           on_submit="send_input"
           on_change="input_changed"
           hook="AutocompleteHook"

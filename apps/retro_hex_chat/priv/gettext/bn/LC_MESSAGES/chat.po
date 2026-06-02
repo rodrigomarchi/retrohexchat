@@ -24,6 +24,7 @@ msgstr "1 %{singular}"
 #: lib/retro_hex_chat/chat/timer_manager.ex:152
 #, elixir-autogen, elixir-format
 msgid "Active timers:\n"
+""
 msgstr "সক্রিয় টাইমার:"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:35
@@ -84,8 +85,7 @@ msgstr "ক্লিক করুন"
 #: lib/retro_hex_chat/chat/key_bindings.ex:329
 #, elixir-autogen, elixir-format
 msgid "Conflict: %{first_action} and %{second_action} both bound to %{combo}"
-msgstr ""
-"দ্বন্দ্ব: %{first_action} এবং %{second_action} উভয় ক্ষেত্রেই %{combo}"
+msgstr "দ্বন্দ্ব: %{first_action} এবং %{second_action} উভয় ক্ষেত্রেই %{combo}"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:406
 #, elixir-autogen, elixir-format
@@ -107,19 +107,16 @@ msgstr "Ding উচ্চ"
 msgid "Ding Low"
 msgstr "শো লো"
 
-#: lib/retro_hex_chat/chat/policy.ex:41 lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:41
+#: lib/retro_hex_chat/chat/policy.ex:70
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "উইন্ডো তালিকার মেয়াদ উত্তীর্ণ হয়েছে।"
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid ""
-"Expansion must not contain command chaining characters (|, &&, ;, or "
-"newlines)"
-msgstr ""
-"এক্সপন্স- এর মধ্যে কমান্ড- এর সাথে চেইনিং অক্ষরের নামও লেখা যাবে না "
-"(উদাহরণস্বরূপ, এবং, ও নতুন লাইন)"
+msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
+msgstr "এক্সপন্স- এর মধ্যে কমান্ড- এর সাথে চেইনিং অক্ষরের নামও লেখা যাবে না (উদাহরণস্বরূপ, এবং, ও নতুন লাইন)"
 
 #: lib/retro_hex_chat/chat/key_bindings.ex:243
 #, elixir-autogen, elixir-format
@@ -128,26 +125,26 @@ msgstr "বিন্যাস"
 
 #: lib/retro_hex_chat/chat/timer_manager.ex:98
 #, elixir-autogen, elixir-format
-msgid ""
-"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
-"%{max_name_length} chars)."
-msgstr ""
-"টাইমার নাম বৈধ নয়। শুধুমাত্র অক্ষর, সংখ্যা, সংখ্যা, হাইফেন, অন্তর্ভুক্ত "
-"%{max_name_length} অক্ষর।"
+msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
+msgstr "টাইমার নাম বৈধ নয়। শুধুমাত্র অক্ষর, সংখ্যা, সংখ্যা, হাইফেন, অন্তর্ভুক্ত %{max_name_length} অক্ষর।"
 
-#: lib/retro_hex_chat/chat/policy.ex:18 lib/retro_hex_chat/chat/policy.ex:24
+#: lib/retro_hex_chat/chat/policy.ex:18
+#: lib/retro_hex_chat/chat/policy.ex:24
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "বার্তা ফাঁকা করা যাবে না"
 
-#: lib/retro_hex_chat/chat/policy.ex:38 lib/retro_hex_chat/chat/policy.ex:60
+#: lib/retro_hex_chat/chat/policy.ex:38
+#: lib/retro_hex_chat/chat/policy.ex:60
 #: lib/retro_hex_chat/chat/policy.ex:81
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
 msgstr "বার্তা মুছে ফেলা হয়েছে"
 
-#: lib/retro_hex_chat/chat/service.ex:31 lib/retro_hex_chat/chat/service.ex:46
-#: lib/retro_hex_chat/chat/service.ex:67 lib/retro_hex_chat/chat/service.ex:81
+#: lib/retro_hex_chat/chat/service.ex:31
+#: lib/retro_hex_chat/chat/service.ex:46
+#: lib/retro_hex_chat/chat/service.ex:67
+#: lib/retro_hex_chat/chat/service.ex:81
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "বার্তা পাওয়া যায়নি।"
@@ -253,7 +250,8 @@ msgstr "'% 2' নামক কীবোর্ড বিন্যাসের প
 msgid "Original message not found."
 msgstr "-------- মূল বার্তা --------"
 
-#: lib/retro_hex_chat/chat/policy.ex:44 lib/retro_hex_chat/chat/policy.ex:109
+#: lib/retro_hex_chat/chat/policy.ex:44
+#: lib/retro_hex_chat/chat/policy.ex:109
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "অনুগ্রহ করে কিছুক্ষণ অপেক্ষা করুন।"
@@ -426,7 +424,8 @@ msgstr "উইন্ডো ৯"
 msgid "You cannot delete other users' messages."
 msgstr "অন্যান্য ব্যবহারকারীদের বার্তা মুছে ফেলা যাবে না।"
 
-#: lib/retro_hex_chat/chat/policy.ex:35 lib/retro_hex_chat/chat/policy.ex:57
+#: lib/retro_hex_chat/chat/policy.ex:35
+#: lib/retro_hex_chat/chat/policy.ex:57
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "আপনি অন্য ব্যবহারকারীর বার্তা সম্পাদন করতে পারবেন না।"

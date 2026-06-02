@@ -33,21 +33,13 @@ msgstr "%{prefix}help"
 
 #: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
 #, elixir-autogen, elixir-format
-msgid ""
-"%{author}: You must be identified to play. Use /ns identify <password> "
-"first."
-msgstr ""
-"%{author}: Je moet geïdentificeerd worden om te spelen. Gebruik eerst /ns "
-"identificeer <ph0></ph0."
+msgid "%{author}: You must be identified to play. Use /ns identify <password> first."
+msgstr "%{author}: Je moet geïdentificeerd worden om te spelen. Gebruik eerst /ns identificeer <ph0></ph0."
 
 #: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
 #, elixir-autogen, elixir-format
-msgid ""
-"%{author}: You must be registered to play. Use /ns register <password> "
-"first."
-msgstr ""
-"%{author}: Je moet geregistreerd zijn om te spelen. Gebruik eerst /ns "
-"register <ph0></ph0>."
+msgid "%{author}: You must be registered to play. Use /ns register <password> first."
+msgstr "%{author}: Je moet geregistreerd zijn om te spelen. Gebruik eerst /ns register <ph0></ph0>."
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:301
 #, elixir-autogen, elixir-format
@@ -71,11 +63,9 @@ msgstr "%{message} (%{reason})"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
 #, elixir-autogen, elixir-format
-msgid ""
-"%{prefix}\n"
+msgid "%{prefix}\n"
 "Round over! %{scores}"
-msgstr ""
-"%{prefix}\n"
+msgstr "%{prefix}\n"
 "Afronden! %{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:375
@@ -128,9 +118,7 @@ msgstr "Een enkele letter"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:185
 #, elixir-autogen, elixir-format
 msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
-msgstr ""
-"Er is al een triviaronde aan de gang! Gebruik 'trivia stop' om het te "
-"beëindigen."
+msgstr "Er is al een triviaronde aan de gang! Gebruik 'trivia stop' om het te beëindigen."
 
 #: lib/retro_hex_chat/bots/capabilities/game.ex:13
 #, elixir-autogen, elixir-format
@@ -603,9 +591,7 @@ msgstr "Ongeldige URL. Moet beginnen met http:// of https://"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:179
 #, elixir-autogen, elixir-format
 msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
-msgstr ""
-"Ongeldige dobbelstenennotatie '%{notation}'. Opmaak gebruiken: NdS, NdS+M, "
-"NdSkh/klN"
+msgstr "Ongeldige dobbelstenennotatie '%{notation}'. Opmaak gebruiken: NdS, NdS+M, NdSkh/klN"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
 #, elixir-autogen, elixir-format
@@ -1202,11 +1188,9 @@ msgstr "Tokio"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
 #, elixir-autogen, elixir-format
-msgid ""
-"Trivia started! (%{category}, %{count} questions)\n"
+msgid "Trivia started! (%{category}, %{count} questions)\n"
 "%{question}"
-msgstr ""
-"Trivia gestart! (%{category}, %{count} vragen)\n"
+msgstr "Trivia gestart! (%{category}, %{count} vragen)\n"
 "%{question}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
@@ -1241,12 +1225,8 @@ msgstr "Gebruik: rss voeg <ph0> </ph0> <ph1> </ph1>"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
-"daily <HH:MM> <#channel> <message>"
-msgstr ""
-"Gebruik: schedule add interval <ph0></ph0 <ph1><<<ph7><ph2><<</ph2 OF schema"
-" add daily <ph3><<</ph3> <ph4><</ph4> <ph5><</ph5>"
+msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
+msgstr "Gebruik: schedule add interval <ph0></ph0 <ph1><<<ph7><ph2><<</ph2 OF schema add daily <ph3><<</ph3> <ph4><</ph4> <ph5><</ph5>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
 #, elixir-autogen, elixir-format

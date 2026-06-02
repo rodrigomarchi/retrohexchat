@@ -87,7 +87,7 @@ test.describe('Conversations sidebar', () => {
     }
   });
 
-  test('popular channel item joins and switches channel through the sidebar (V2)', async ({
+  test('popular channel item joins and switches channel through the sidebar', async ({
     browser,
   }) => {
     const popularChannel = uniqueChannel('popular');

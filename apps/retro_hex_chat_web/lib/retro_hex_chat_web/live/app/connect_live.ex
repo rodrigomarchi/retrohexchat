@@ -1,6 +1,6 @@
-defmodule RetroHexChatWeb.V2.ConnectLive do
+defmodule RetroHexChatWeb.App.ConnectLive do
   @moduledoc """
-  v2 connection dialog using new UI components.
+  Connection dialog using app UI components.
   Users enter nickname and connect. If registered, a password step is shown.
   On success, a hidden form POSTs to `/chat/session`.
   """

@@ -12,7 +12,7 @@ irc-bg-*
 u-*
 # Password masking — applied via class="input-masked" in connect_live.ex
 input-masked
-# Highlight — generated dynamically by V2Helpers.highlight_bg_class/1
+# Highlight — generated dynamically by ChatHelpers.highlight_bg_class/1
 highlight-bg-default
 # JS-hook only — classes added dynamically via classList in JS hooks
 attempt-info
@@ -38,7 +38,7 @@ licon-32
 hljs*
 # P2P connection diagram — BEM classes used by p2p_connection_diagram.ex (skipped by template scanner)
 p2p-diagram*
-# retrohex.css components — used by V2 templates in Tailwind paths (skipped by template scanner)
+# retrohex.css components — used by App templates in Tailwind paths (skipped by template scanner)
 retro-fieldset
 toolbar-group
 tree-view-marker-closed

@@ -1,7 +1,7 @@
-defmodule RetroHexChatWeb.V2.V2Helpers do
+defmodule RetroHexChatWeb.App.ChatHelpers do
   @moduledoc """
-  Shared helper functions for v2 LiveViews.
-  Extracted from ChatLive private functions to enable reuse across v2 modules.
+  Shared helper functions for app LiveViews.
+  Extracted from ChatLive private functions to enable reuse across app modules.
   """
 
   use Gettext, backend: RetroHexChatWeb.Gettext

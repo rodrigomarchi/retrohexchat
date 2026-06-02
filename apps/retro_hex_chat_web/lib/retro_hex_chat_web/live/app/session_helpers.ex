@@ -1,6 +1,6 @@
-defmodule RetroHexChatWeb.V2.SessionHelpers do
+defmodule RetroHexChatWeb.App.SessionHelpers do
   @moduledoc """
-  Shared session helper functions for v2 session LiveViews.
+  Shared session helper functions for app session LiveViews.
   Extracted from duplicated private helpers across ArcadeGameLive,
   SoloSessionLive, GameSessionLive, and P2PSessionLive.
   """

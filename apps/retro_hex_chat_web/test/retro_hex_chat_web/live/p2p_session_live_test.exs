@@ -1,4 +1,4 @@
-defmodule RetroHexChatWeb.V2.P2PSessionLiveTest do
+defmodule RetroHexChatWeb.App.P2PSessionLiveTest do
   use RetroHexChatWeb.LiveViewCase, async: false
 
   alias RetroHexChat.P2P.{Queries, Registry, SessionServer, Supervisor}

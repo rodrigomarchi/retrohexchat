@@ -1,4 +1,4 @@
-defmodule RetroHexChatWeb.V2.SessionController do
+defmodule RetroHexChatWeb.App.SessionController do
   @moduledoc """
   Session controller — handles login/logout and redirects to chat routes.
   """

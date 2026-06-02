@@ -59,6 +59,7 @@ msgstr "%{table}:%{count}刪除"
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:30
 #, elixir-autogen, elixir-format
 msgid "  Access list:\n"
+""
 msgstr "訪問列表 :"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:27
@@ -69,26 +70,31 @@ msgstr "訪問列表 : (空)"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:62
 #, elixir-autogen, elixir-format
 msgid "  Active allocations: %{active}\n"
+""
 msgstr "活動分配: %{active}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Admin: %{is_admin}\n"
+""
 msgstr "管理員:%{is_admin}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Atoms: %{atom}\n"
+""
 msgstr "原子: %{atom}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:78
 #, elixir-autogen, elixir-format
 msgid "  Bans: %{state_bans_count}\n"
+""
 msgstr "禁令: %{state_bans_count}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:60
 #, elixir-autogen, elixir-format
 msgid "  Binary: %{binary}\n"
+""
 msgstr "二進制: %{binary}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:61
@@ -99,11 +105,13 @@ msgstr "代碼:%{code}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:58
 #, elixir-autogen, elixir-format
 msgid "  ETS: %{ets}\n"
+""
 msgstr "ETS: %{ets}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:35
 #, elixir-autogen, elixir-format
 msgid "  Founder: %{founder}\n"
+""
 msgstr "創建者: %{founder}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:32
@@ -114,33 +122,39 @@ msgstr "識別日期: %{identified}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:71
 #, elixir-autogen, elixir-format
 msgid "  Identified: %{identified}\n"
+""
 msgstr "識別日期: %{identified}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:31
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
 #, elixir-autogen, elixir-format
 msgid "  Last seen: %{last_seen_at}\n"
+""
 msgstr "最後出現:%{last_seen_at}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:58
 #, elixir-autogen, elixir-format
 msgid "  Listen port: %{listen_port}\n"
+""
 msgstr "聽文端口: %{listen_port}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Listeners: %{listener_count}\n"
+""
 msgstr "聽衆:%{listener_count}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:73
 #, elixir-autogen, elixir-format
 msgid "  Members (%{member_count}): %{members}\n"
+""
 msgstr "成員(%{member_count}):%{members}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:40
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:77
 #, elixir-autogen, elixir-format
 msgid "  Modes: %{modes}\n"
+""
 msgstr "模式: %{modes}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:54
@@ -151,6 +165,7 @@ msgstr "在線: %{online}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}\n"
+""
 msgstr "在線: %{online}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:67
@@ -161,6 +176,7 @@ msgstr "端口範圍:%{port_min}-%{port_max}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Processes: %{processes}\n"
+""
 msgstr "過程: %{processes}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:36
@@ -168,6 +184,7 @@ msgstr "過程: %{processes}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:66
 #, elixir-autogen, elixir-format
 msgid "  Registered: %{registered_at}\n"
+""
 msgstr "登記時間: %{registered_at}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
@@ -178,6 +195,7 @@ msgstr "已登記:無"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:53
 #, elixir-autogen, elixir-format
 msgid "  Registered: no\n"
+""
 msgstr "已登記:無"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:61
@@ -188,11 +206,13 @@ msgstr "註冊人數:是(創始人:%{founder_nickname})"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Relay IP: %{relay_ip}\n"
+""
 msgstr "中繼IP: %{relay_ip}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:63
 #, elixir-autogen, elixir-format
 msgid "  Relay ports: %{used_ports}/%{total_ports} in use\n"
+""
 msgstr "中繼端口:%{used_ports}/%{total_ports}在使用中"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:73
@@ -203,17 +223,20 @@ msgstr "服務器操作員: %{is_oper}"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Status: running\n"
+""
 msgstr "狀態: 運行"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:39
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Topic: %{topic}\n"
+""
 msgstr "題目:%{topic}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Total: %{total}\n"
+""
 msgstr "共計: %{total}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/log.ex:48
@@ -325,7 +348,9 @@ msgstr "*** %{message}"
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:36
 #, elixir-autogen, elixir-format
 msgid "*** %{server_name} ***%{desc_line}\n"
+""
 msgstr "*** %{server_name} ***%{desc_line}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:67
 #, elixir-autogen, elixir-format
@@ -355,6 +380,7 @@ msgstr "*** 審計日誌(%{entries_count}條目) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** BEAM Memory ***\n"
+""
 msgstr "*** BEAM 記憶 ***"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:120
@@ -370,6 +396,7 @@ msgstr "*** 頻道列表( X)%{filtered_count}) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
 #, elixir-autogen, elixir-format
 msgid "*** Channel: %{channel}\n"
+""
 msgstr "*** 頻道: %{channel}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:14
@@ -460,6 +487,7 @@ msgstr "*** 服務器設置 ***"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** TURN Server Stats ***\n"
+""
 msgstr "*** TURN服務器Stats ***"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:9
@@ -476,21 +504,26 @@ msgstr "*** 用戶列表(%{entries_count} 結果) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** User: %{nick}\n"
+""
 msgstr "*** 用戶:%{nick}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:34
 #, elixir-autogen, elixir-format
 msgid "*** [ChanServ] %{name}\n"
+""
 msgstr "*** [漢語服務] %{name}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:27
 #, elixir-autogen, elixir-format
 msgid "*** [NickServ] %{nick}\n"
+""
 msgstr "*** [尼克塞 %{nick}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
 #, elixir-autogen, elixir-format
 msgid "Active channels: %{channel_count}\n"
+""
 msgstr "活動頻道: %{channel_count}"
 
 #: lib/retro_hex_chat/admin.ex:502
@@ -556,11 +589,13 @@ msgstr "purged %{count} messages from %{from_nick} in %{channel_name}."
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
 #, elixir-autogen, elixir-format
 msgid "Registered nicks: %{nick_count}\n"
+""
 msgstr "已註冊暱稱: %{nick_count}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
 #, elixir-autogen, elixir-format
 msgid "Registration: %{registration}\n"
+""
 msgstr "登記:%{registration}"
 
 #: lib/retro_hex_chat/admin.ex:44
@@ -615,14 +650,13 @@ msgstr "用法:/admin 轉動<ph0><</ph2></ph2>>>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:181
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: /admin user "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgid "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 msgstr "用法:/admin用戶<ph0><</ph2></ph2>>>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:40
 #, elixir-autogen, elixir-format
 msgid "Users online: %{online_count}\n"
+""
 msgstr "在線用戶: %{online_count}"
 
 #: lib/retro_hex_chat/admin.ex:181
@@ -777,7 +811,8 @@ msgstr "用戶.mute"
 msgid "user.rename"
 msgstr "用戶. rename"
 
-#: lib/retro_hex_chat/admin.ex:479 lib/retro_hex_chat/admin.ex:500
+#: lib/retro_hex_chat/admin.ex:479
+#: lib/retro_hex_chat/admin.ex:500
 #, elixir-autogen, elixir-format
 msgid "user.role"
 msgstr "用戶.作用"

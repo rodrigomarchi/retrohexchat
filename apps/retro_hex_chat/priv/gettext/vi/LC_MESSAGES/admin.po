@@ -59,6 +59,7 @@ msgstr "%{table}: %{count} đã xoá"
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:30
 #, elixir-autogen, elixir-format
 msgid "  Access list:\n"
+""
 msgstr "Danh sách truy cập:"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:27
@@ -69,26 +70,31 @@ msgstr "Danh sách truy cập:"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:62
 #, elixir-autogen, elixir-format
 msgid "  Active allocations: %{active}\n"
+""
 msgstr "Định vị hoạt động: %{active}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Admin: %{is_admin}\n"
+""
 msgstr "Quản trị: %{is_admin}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Atoms: %{atom}\n"
+""
 msgstr "Nguyên tử: %{atom}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:78
 #, elixir-autogen, elixir-format
 msgid "  Bans: %{state_bans_count}\n"
+""
 msgstr "Bans: %{state_bans_count}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:60
 #, elixir-autogen, elixir-format
 msgid "  Binary: %{binary}\n"
+""
 msgstr "nhị phân: %{binary}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:61
@@ -99,11 +105,13 @@ msgstr "Mã: %{code}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:58
 #, elixir-autogen, elixir-format
 msgid "  ETS: %{ets}\n"
+""
 msgstr "ETS: %{ets}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:35
 #, elixir-autogen, elixir-format
 msgid "  Founder: %{founder}\n"
+""
 msgstr "Người sáng lập: %{founder}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:32
@@ -114,33 +122,39 @@ msgstr "Nhận diện: %{identified}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:71
 #, elixir-autogen, elixir-format
 msgid "  Identified: %{identified}\n"
+""
 msgstr "Nhận diện: %{identified}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:31
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
 #, elixir-autogen, elixir-format
 msgid "  Last seen: %{last_seen_at}\n"
+""
 msgstr "Lần cuối thấy: %{last_seen_at}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:58
 #, elixir-autogen, elixir-format
 msgid "  Listen port: %{listen_port}\n"
+""
 msgstr "Cổng lắng nghe: %{listen_port}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Listeners: %{listener_count}\n"
+""
 msgstr "Người nghe: %{listener_count}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:73
 #, elixir-autogen, elixir-format
 msgid "  Members (%{member_count}): %{members}\n"
+""
 msgstr "Thành viên (%{member_count}): %{members}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:40
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:77
 #, elixir-autogen, elixir-format
 msgid "  Modes: %{modes}\n"
+""
 msgstr "Chế độ: %{modes}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:54
@@ -151,6 +165,7 @@ msgstr "Trực tuyến: %{online}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}\n"
+""
 msgstr "Trực tuyến: %{online}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:67
@@ -161,6 +176,7 @@ msgstr "  Phạm vi cổng: %{port_min}-%{port_max}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Processes: %{processes}\n"
+""
 msgstr "Tiến trình: %{processes}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:36
@@ -168,6 +184,7 @@ msgstr "Tiến trình: %{processes}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:66
 #, elixir-autogen, elixir-format
 msgid "  Registered: %{registered_at}\n"
+""
 msgstr "Đăng ký: %{registered_at}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
@@ -178,6 +195,7 @@ msgstr "Đăng ký:"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:53
 #, elixir-autogen, elixir-format
 msgid "  Registered: no\n"
+""
 msgstr "Đăng ký:"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:61
@@ -188,12 +206,15 @@ msgstr "Đăng ký: có (người sáng lập: %{founder_nickname})"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Relay IP: %{relay_ip}\n"
+""
 msgstr "Relay IP: %{relay_ip}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:63
 #, elixir-autogen, elixir-format
 msgid "  Relay ports: %{used_ports}/%{total_ports} in use\n"
+""
 msgstr "  Cổng lại: %{used_ports}/%{total_ports} Đang dùng\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:73
 #, elixir-autogen, elixir-format
@@ -203,17 +224,20 @@ msgstr "Điều khiển máy phục vụ: %{is_oper}"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Status: running\n"
+""
 msgstr "Trạng thái: đang chạy"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:39
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Topic: %{topic}\n"
+""
 msgstr "Mục lục: %{topic}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Total: %{total}\n"
+""
 msgstr "Tổng: %{total}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/log.ex:48
@@ -325,6 +349,7 @@ msgstr "*** %{message}"
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:36
 #, elixir-autogen, elixir-format
 msgid "*** %{server_name} ***%{desc_line}\n"
+""
 msgstr "*** %{server_name} ***%{desc_line}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:67
@@ -355,6 +380,7 @@ msgstr "Bản ghi Audi (%{entries_count}) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** BEAM Memory ***\n"
+""
 msgstr "*** Bộ nhớ BAM ***"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:120
@@ -370,6 +396,7 @@ msgstr "Danh sách kênh *** (%{filtered_count}) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
 #, elixir-autogen, elixir-format
 msgid "*** Channel: %{channel}\n"
+""
 msgstr "Kênh ***: %{channel}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:14
@@ -460,6 +487,7 @@ msgstr "Thiết lập máy phục vụ ***"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** TURN Server Stats ***\n"
+""
 msgstr "*** Máy phục vụ biến ***"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:9
@@ -476,21 +504,25 @@ msgstr "Danh sách người dùng *** (kết quả %{entries_count}) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** User: %{nick}\n"
+""
 msgstr "*** Người dùng: %{nick}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:34
 #, elixir-autogen, elixir-format
 msgid "*** [ChanServ] %{name}\n"
+""
 msgstr "*** [ChanServ] %{name}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:27
 #, elixir-autogen, elixir-format
 msgid "*** [NickServ] %{nick}\n"
+""
 msgstr "*** [NickServ] %{nick}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
 #, elixir-autogen, elixir-format
 msgid "Active channels: %{channel_count}\n"
+""
 msgstr "Kênh hoạt động: %{channel_count}"
 
 #: lib/retro_hex_chat/admin.ex:502
@@ -556,11 +588,13 @@ msgstr "Làm sạch các tin nhắn %{count} từ %{from_nick} trong %{channel_n
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
 #, elixir-autogen, elixir-format
 msgid "Registered nicks: %{nick_count}\n"
+""
 msgstr "Vết cắt đăng ký: %{nick_count}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
 #, elixir-autogen, elixir-format
 msgid "Registration: %{registration}\n"
+""
 msgstr "Đăng ký: %{registration}"
 
 #: lib/retro_hex_chat/admin.ex:44
@@ -615,16 +649,13 @@ msgstr "Sử dụng: /admin chuyển <stats|allocations>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:181
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: /admin user "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
-msgstr ""
-"Sử dụng: /admin sử dụng "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgid "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgstr "Sử dụng: /admin sử dụng <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:40
 #, elixir-autogen, elixir-format
 msgid "Users online: %{online_count}\n"
+""
 msgstr "Người dùng trực tuyến: %{online_count}"
 
 #: lib/retro_hex_chat/admin.ex:181
@@ -779,7 +810,8 @@ msgstr "người dùng.mute"
 msgid "user.rename"
 msgstr "người dùng.re name"
 
-#: lib/retro_hex_chat/admin.ex:479 lib/retro_hex_chat/admin.ex:500
+#: lib/retro_hex_chat/admin.ex:479
+#: lib/retro_hex_chat/admin.ex:500
 #, elixir-autogen, elixir-format
 msgid "user.role"
 msgstr "người dùng.role"

@@ -70,7 +70,7 @@ msgstr "قبول کرو"
 msgid "Action"
 msgstr "جگہ"
 
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:360
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:360
 #, elixir-autogen, elixir-format
 msgid "Arcade session ended."
 msgstr "عرفیت سیشن ختم ہوا."
@@ -141,7 +141,7 @@ msgstr "کھیل کا موضوع"
 msgid "Game area"
 msgstr "کھیل کا علاقہ"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:424
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:424
 #, elixir-autogen, elixir-format
 msgid "Game ended."
 msgstr "گیم ختم ہو گیا."
@@ -151,7 +151,7 @@ msgstr "گیم ختم ہو گیا."
 msgid "Game engine initializing... Waiting for WebRTC connection."
 msgstr "کھیل کا انجن تنصیب... ویب آر ٹی سی اتصال کے لئے انتظار کریں."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:450
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:450
 #, elixir-autogen, elixir-format
 msgid "Game finished."
 msgstr "گیم ختم ہو گیا."
@@ -161,26 +161,25 @@ msgstr "گیم ختم ہو گیا."
 msgid "Game in progress..."
 msgstr "ترقی میں کھیل..."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:425
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:425
 #, elixir-autogen, elixir-format
 msgid "Game invite was rejected."
 msgstr "گیم دعوت کو رد کر دیا گیا۔"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:449
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:449
 #, elixir-autogen, elixir-format
 msgid "Game over."
 msgstr "کھیل ختم."
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:440
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:354
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:440
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:354
 #, elixir-autogen, elixir-format
 msgid "Game session ended."
 msgstr "گیم سیشن ختم ہو گیا۔"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_lobby.ex:97
 #, elixir-autogen, elixir-format
-msgid ""
-"Inactivity detected — this lobby will close soon if no game is selected."
+msgid "Inactivity detected — this lobby will close soon if no game is selected."
 msgstr "اگر کھیل کا انتخاب نہ کِیا جائے تو یہ بہت جلد بند ہو جائے گا ۔"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:233
@@ -215,7 +214,7 @@ msgstr "کوئی کھیل دستیاب نہیں"
 msgid "P1 %{score}"
 msgstr "P1 %{score}"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:452
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:452
 #, elixir-autogen, elixir-format
 msgid "Peer disconnected."
 msgstr "جی ہاں."
@@ -241,59 +240,54 @@ msgid "Session Complete"
 msgstr "مکمل"
 
 #: lib/retro_hex_chat_web/components/ui/games/game_session_ended.ex:102
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.html.heex:10
+#: lib/retro_hex_chat_web/live/app/solo_session_live.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Session Ended"
 msgstr "خاتمہ"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:426
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:429
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:346
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:349
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:426
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:429
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:346
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:349
 #, elixir-autogen, elixir-format
 msgid "Session closed (disconnected)."
 msgstr "بند بند"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:423
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:451
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:345
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:423
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:451
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:345
 #, elixir-autogen, elixir-format
 msgid "Session closed by user."
 msgstr "صارف کی طرف سے بند"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:455
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:458
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:455
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:458
 #, elixir-autogen, elixir-format
 msgid "Session closed due to inactivity."
-msgstr ""
-"اُس نے کہا : ” مَیں نے اِس بات کو تسلیم کِیا ہے کہ مَیں اِس کام میں حصہ لے "
-"رہا ہوں ۔"
+msgstr "اُس نے کہا : ” مَیں نے اِس بات کو تسلیم کِیا ہے کہ مَیں اِس کام میں حصہ لے رہا ہوں ۔"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:432
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:438
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:352
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:358
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:432
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:438
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:352
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:358
 #, elixir-autogen, elixir-format
 msgid "Session expired due to inactivity."
 msgstr "حادثات کی وجہ سے ختم ہو گئے ۔"
 
-#: lib/retro_hex_chat_web/live/v2/game_session_live.ex:435
+#: lib/retro_hex_chat_web/live/app/game_session_live.ex:435
 #, elixir-autogen, elixir-format
 msgid "Session expired — peer did not join."
 msgstr "اِس کی ایک وجہ یہ تھی کہ اُنہوں نے اپنے ہم‌عمروں کی مدد کی ۔"
 
-#: lib/retro_hex_chat_web/live/v2/solo_session_live.ex:355
+#: lib/retro_hex_chat_web/live/app/solo_session_live.ex:355
 #, elixir-autogen, elixir-format
 msgid "Session expired."
 msgstr "اِس کی کیا وجہ تھی ؟"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:61
 #, elixir-autogen, elixir-format
-msgid ""
-"Session will be closed due to inactivity soon. Select a game to keep it "
-"active."
-msgstr ""
-"جلد ہی اُس کی موت واقع ہو جائے گی ۔ فعال رکھنے کے ليے اپنا کھيل منتخب کريں"
+msgid "Session will be closed due to inactivity soon. Select a game to keep it active."
+msgstr "جلد ہی اُس کی موت واقع ہو جائے گی ۔ فعال رکھنے کے ليے اپنا کھيل منتخب کريں"
 
 #: lib/retro_hex_chat_web/components/ui/games/solo_lobby.ex:196
 #, elixir-autogen, elixir-format

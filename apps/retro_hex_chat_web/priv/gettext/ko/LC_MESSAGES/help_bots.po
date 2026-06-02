@@ -115,34 +115,18 @@ msgstr "!FAQ 규칙"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:78
 #, elixir-autogen, elixir-format
-msgid ""
-"!MyBot roll 2d6+3 → [4, 2] + 3 = 9 !MyBot roll 4d6kh3 → [6, 4, 3, 1] keep "
-"[6, 4, 3] = 13 !MyBot roll d20 → [17] = 17 !MyBot roll → (uses default "
-"notation)"
-msgstr ""
-"!MyBot 롤 2d6+3 → [4, 2] + 3 = 9 !MyBot 롤 4d6kh3 → [6, 4, 3, 1] 유지 [6, 4, 3] "
-"= 13 !MyBot 롤 d20 → [17] = 17 !MyBot 롤 → (기본 표기 사용)"
+msgid "!MyBot roll 2d6+3 → [4, 2] + 3 = 9 !MyBot roll 4d6kh3 → [6, 4, 3, 1] keep [6, 4, 3] = 13 !MyBot roll d20 → [17] = 17 !MyBot roll → (uses default notation)"
+msgstr "!MyBot 롤 2d6+3 → [4, 2] + 3 = 9 !MyBot 롤 4d6kh3 → [6, 4, 3, 1] 유지 [6, 4, 3] = 13 !MyBot 롤 d20 → [17] = 17 !MyBot 롤 → (기본 표기 사용)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:75
 #, elixir-autogen, elixir-format
-msgid ""
-"!MyBot rss add https://blog.example.com/feed.xml #news !MyBot rss add "
-"https://example.com/rss news !MyBot rss list !MyBot rss check f1a2b3 !MyBot "
-"rss remove f1a2b3"
-msgstr ""
-"!MyBot rs add <ph2></ph2><ph3></ph3> #news !MyBot rss add "
-"<ph4></ph4><ph5></ph5> 뉴스 !MyBot rss list !MyBot rs check f1a2b3 !MyBot rss "
-"remove f1a2b3"
+msgid "!MyBot rss add https://blog.example.com/feed.xml #news !MyBot rss add https://example.com/rss news !MyBot rss list !MyBot rss check f1a2b3 !MyBot rss remove f1a2b3"
+msgstr "!MyBot rs add <ph2></ph2><ph3></ph3> #news !MyBot rss add <ph4></ph4><ph5></ph5> 뉴스 !MyBot rss list !MyBot rs check f1a2b3 !MyBot rss remove f1a2b3"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:77
 #, elixir-autogen, elixir-format
-msgid ""
-"!MyBot schedule add interval 60 #general Take a break! !MyBot schedule add "
-"daily 09:00 #general Good morning, team! !MyBot schedule list !MyBot "
-"schedule remove s1a2b3"
-msgstr ""
-"!MyBot 일정 추가 간격 60 #general 휴식! !MyBot 일정 추가 매일 09:00 #general 좋은 아침, 팀! "
-"!MyBot 일정 목록!MyBot 일정 제거 s1a2b3"
+msgid "!MyBot schedule add interval 60 #general Take a break! !MyBot schedule add daily 09:00 #general Good morning, team! !MyBot schedule list !MyBot schedule remove s1a2b3"
+msgstr "!MyBot 일정 추가 간격 60 #general 휴식! !MyBot 일정 추가 매일 09:00 #general 좋은 아침, 팀! !MyBot 일정 목록!MyBot 일정 제거 s1a2b3"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:54
 #, elixir-autogen, elixir-format
@@ -183,18 +167,8 @@ msgstr "/bot"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:10
 #, elixir-autogen, elixir-format
-msgid ""
-"/bot /bot create <name> [description] /bot destroy <name> /bot list /bot "
-"info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable "
-"<bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> "
-"/bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot>"
-" <trigger>"
-msgstr ""
-"/bot /bot create <name> [description] /bot destroy <name> /bot list /bot "
-"info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable "
-"<bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> "
-"/bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot>"
-" <trigger>"
+msgid "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
+msgstr "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:83
@@ -214,12 +188,8 @@ msgstr "/bot addcmd"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:26
 #, elixir-autogen, elixir-format
-msgid ""
-"/bot addcmd FAQ rules Please read the #rules channel /bot addcmd FAQ hours "
-"We're available 9am-5pm EST"
-msgstr ""
-"/bot addcmd FAQ rules Please read the #rules channel /bot addcmd FAQ hours "
-"We're available 9am-5pm EST"
+msgid "/bot addcmd FAQ rules Please read the #rules channel /bot addcmd FAQ hours We're available 9am-5pm EST"
+msgstr "/bot addcmd FAQ rules Please read the #rules channel /bot addcmd FAQ hours We're available 9am-5pm EST"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:47
 #, elixir-autogen, elixir-format
@@ -228,10 +198,8 @@ msgstr "/bot addcmd FAQ welcome Hello"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:80
 #, elixir-autogen, elixir-format
-msgid ""
-"/bot addcmd GreeterBot rules Please read #rules /bot delcmd GreeterBot rules"
-msgstr ""
-"/bot addcmd GreeterBot rules Please read #rules /bot delcmd GreeterBot rules"
+msgid "/bot addcmd GreeterBot rules Please read #rules /bot delcmd GreeterBot rules"
+msgstr "/bot addcmd GreeterBot rules Please read #rules /bot delcmd GreeterBot rules"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:72
 #, elixir-autogen, elixir-format
@@ -270,14 +238,8 @@ msgstr "/bot list"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:83
 #, elixir-autogen, elixir-format
-msgid ""
-"/bot list /bot info GreeterBot /bot create GreeterBot Welcomes new users "
-"/bot join GreeterBot #general /bot addcmd GreeterBot rules Please read "
-"#rules"
-msgstr ""
-"/bot list /bot info GreeterBot /bot create GreeterBot Welcomes new users "
-"/bot join GreeterBot #general /bot addcmd GreeterBot rules Please read "
-"#rules"
+msgid "/bot list /bot info GreeterBot /bot create GreeterBot Welcomes new users /bot join GreeterBot #general /bot addcmd GreeterBot rules Please read #rules"
+msgstr "/bot list /bot info GreeterBot /bot create GreeterBot Welcomes new users /bot join GreeterBot #general /bot addcmd GreeterBot rules Please read #rules"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:38
@@ -300,12 +262,8 @@ msgstr "/bot set MyBot dice_max_dice 20 /bot set MyBot dice_max_sides 100"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:63
 #, elixir-autogen, elixir-format
-msgid ""
-"/bot set MyBot mod_words spam,offensive,banned /bot set MyBot mod_action "
-"warn /bot set MyBot mod_spam 3 /bot set MyBot mod_flood 5"
-msgstr ""
-"/bot set MyBot mod_words spam,offensive,banned /bot set MyBot mod_action "
-"warn /bot set MyBot mod_spam 3 /bot set MyBot mod_flood 5"
+msgid "/bot set MyBot mod_words spam,offensive,banned /bot set MyBot mod_action warn /bot set MyBot mod_spam 3 /bot set MyBot mod_flood 5"
+msgstr "/bot set MyBot mod_words spam,offensive,banned /bot set MyBot mod_action warn /bot set MyBot mod_spam 3 /bot set MyBot mod_flood 5"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:85
 #, elixir-autogen, elixir-format
@@ -419,13 +377,8 @@ msgstr "BotService 개요"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"Bots can have custom commands that respond to specific triggers. When a user"
-" types the bot's command prefix followed by the bot name and a trigger word,"
-" the bot replies with the configured response."
-msgstr ""
-"Bots는 특정 트리거에 응답하는 사용자 정의 명령을 가질 수 있습니다. 사용자 유형의 봇의 명령 접두사가 봇 이름과 트리거 단어에 "
-"따라, 봇은 구성 된 응답으로 응답합니다."
+msgid "Bots can have custom commands that respond to specific triggers. When a user types the bot's command prefix followed by the bot name and a trigger word, the bot replies with the configured response."
+msgstr "Bots는 특정 트리거에 응답하는 사용자 정의 명령을 가질 수 있습니다. 사용자 유형의 봇의 명령 접두사가 봇 이름과 트리거 단어에 따라, 봇은 구성 된 응답으로 응답합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:49
 #, elixir-autogen, elixir-format
@@ -559,8 +512,7 @@ msgstr "피드 제목은 피드 메타 데이터에서 자동 감지"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:39
 #, elixir-autogen, elixir-format
-msgid ""
-"Feeds are polled at a configurable interval (default: every 30 minutes)"
+msgid "Feeds are polled at a configurable interval (default: every 30 minutes)"
 msgstr "피드는 구성 간격 (과태: 매 30 분)에 polled"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:92
@@ -864,42 +816,27 @@ msgstr "사용자 정의 명령 기능은 봇에서 활성화해야합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"The Dice capability adds RPG-style dice rolling to your bot. Users can roll "
-"dice using standard tabletop notation with modifiers and keep-highest/keep-"
-"lowest options."
-msgstr ""
-"Dice 기능은 RPG 스타일 인덱스를 봇으로 추가합니다. 사용자는 modifier와 keep-highest/keep-lowest 옵션을"
-" 사용하여 표준 탁상 표기를 사용하여 인덱스를 롤 할 수 있습니다."
+msgid "The Dice capability adds RPG-style dice rolling to your bot. Users can roll dice using standard tabletop notation with modifiers and keep-highest/keep-lowest options."
+msgstr "Dice 기능은 RPG 스타일 인덱스를 봇으로 추가합니다. 사용자는 modifier와 keep-highest/keep-lowest 옵션을 사용하여 표준 탁상 표기를 사용하여 인덱스를 롤 할 수 있습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"The Moderation capability provides automatic chat moderation. It runs as a "
-"passive capability, processing every message without blocking other bot "
-"features."
-msgstr ""
-"Moderation 기능은 자동 채팅 모드를 제공합니다. 다른 봇 기능을 차단하지 않고 모든 메시지를 처리하는 수동 기능으로 실행됩니다."
+msgid "The Moderation capability provides automatic chat moderation. It runs as a passive capability, processing every message without blocking other bot features."
+msgstr "Moderation 기능은 자동 채팅 모드를 제공합니다. 다른 봇 기능을 차단하지 않고 모든 메시지를 처리하는 수동 기능으로 실행됩니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"The RSS capability monitors RSS and Atom feeds and automatically posts new "
-"items to designated channels."
+msgid "The RSS capability monitors RSS and Atom feeds and automatically posts new items to designated channels."
 msgstr "RSS 기능 모니터 RSS 및 원자 피드 및 자동으로 지정된 채널에 새 항목을 게시."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"The Scheduler capability lets bots send messages on a schedule. Supports "
-"both recurring interval schedules and daily schedules at specific times."
+msgid "The Scheduler capability lets bots send messages on a schedule. Supports both recurring interval schedules and daily schedules at specific times."
 msgstr "Scheduler 기능은 봇이 일정에 메시지를 보냅니다. 특정 시간에 반복 간격 일정 및 일일 일정을 모두 지원합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"The Trivia capability adds interactive quiz games to your bot. Start a "
-"round, answer questions, and compete for the highest score."
+msgid "The Trivia capability adds interactive quiz games to your bot. Start a round, answer questions, and compete for the highest score."
 msgstr "Trivia 기능은 봇에 대화 형 퀴즈 게임을 추가합니다. 라운드를 시작, 질문에 대답, 그리고 가장 높은 점수에 경쟁."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:82
@@ -971,25 +908,18 @@ msgstr "배드워드1,badword2"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:11
 #, elixir-autogen, elixir-format
-msgid ""
-"by default) and bot name are required before the trigger word. For example, "
-"if a bot named \"FAQ\" has a command \"rules\":"
+msgid "by default) and bot name are required before the trigger word. For example, if a bot named \"FAQ\" has a command \"rules\":"
 msgstr "기본적으로)와 봇 이름은 트리거 단어 전에 필요합니다. 예를 들어, \"FAQ\"라는 봇이 \"rules\": 명령을 가지고 있다면"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:68
 #, elixir-autogen, elixir-format
-msgid ""
-"capability — it processes every message before active capabilities (like "
-"dice or trivia). This means:"
+msgid "capability — it processes every message before active capabilities (like dice or trivia). This means:"
 msgstr "기능 — 그것은 활성 기능 (예: 주사위 또는 trivia)의 앞에 각 메시지를 처리한다. 이 수단:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:3
 #, elixir-autogen, elixir-format
-msgid ""
-"command lets admins and server operators create, configure, and manage bots."
-" Regular users can view bot info and list available commands."
-msgstr ""
-"명령은 관리자와 서버 연산자를 만들고 구성하고 봇을 관리합니다. 일반 사용자는 봇 정보 및 목록 사용 가능한 명령을 볼 수 있습니다."
+msgid "command lets admins and server operators create, configure, and manage bots. Regular users can view bot info and list available commands."
+msgstr "명령은 관리자와 서버 연산자를 만들고 구성하고 봇을 관리합니다. 일반 사용자는 봇 정보 및 목록 사용 가능한 명령을 볼 수 있습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:21
 #, elixir-autogen, elixir-format
@@ -1036,9 +966,7 @@ msgstr "이름 *"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:52
 #, elixir-autogen, elixir-format
-msgid ""
-"lists all available commands with their descriptions. This is automatic — no"
-" setup required."
+msgid "lists all available commands with their descriptions. This is automatic — no setup required."
 msgstr "모든 사용 가능한 명령을 설명합니다. 이것은 자동 — 설치가 필요하지 않습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:86
@@ -1063,9 +991,7 @@ msgstr "기존의 것을 삭제합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:97
 #, elixir-autogen, elixir-format
-msgid ""
-"with no arguments opens the Bot Management dialog (admin only) or shows the "
-"bot list (regular users)"
+msgid "with no arguments opens the Bot Management dialog (admin only) or shows the bot list (regular users)"
 msgstr "봇 관리 대화 상자를 열지 않음(admin only) 또는 봇 목록(regular user)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:49
@@ -1115,9 +1041,7 @@ msgstr "— 국가, 자본 및 랜드마크"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:16
 #, elixir-autogen, elixir-format
-msgid ""
-"— Create a new bot. The name must be 2–16 characters. An optional "
-"description follows the name."
+msgid "— Create a new bot. The name must be 2–16 characters. An optional description follows the name."
 msgstr "— 새로운 봇 만들기. 이름은 2–16자이어야 합니다. 옵션 설명은 이름을 따릅니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:61
@@ -1132,9 +1056,7 @@ msgstr "- (기본값: d20)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:11
 #, elixir-autogen, elixir-format
-msgid ""
-"— Detects messages containing blocked words or phrases. Matches are case-"
-"insensitive."
+msgid "— Detects messages containing blocked words or phrases. Matches are case-insensitive."
 msgstr "— 차단된 단어나 구문을 포함하는 메시지들을 검색합니다. 일치는 case-insensitive입니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:29
@@ -1144,30 +1066,22 @@ msgstr "- 주로 위문인 메시지 감지 (주얼음)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:17
 #, elixir-autogen, elixir-format
-msgid ""
-"— Detects repeated identical messages from the same user. Configurable "
-"threshold (default: 3 messages)."
+msgid "— Detects repeated identical messages from the same user. Configurable threshold (default: 3 messages)."
 msgstr "— 같은 사용자에서 동일한 메시지를 반복합니다. 구성가능한 임계값 (과태: 3 메시지)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:23
 #, elixir-autogen, elixir-format
-msgid ""
-"— Detects too many messages in a short time from one user. Configurable "
-"threshold (default: 5 messages)."
+msgid "— Detects too many messages in a short time from one user. Configurable threshold (default: 5 messages)."
 msgstr "— 하나의 사용자에서 짧은 시간에 너무 많은 메시지를 감지합니다. 구성가능한 임계값 (과태: 5 메시지)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:47
 #, elixir-autogen, elixir-format
-msgid ""
-"— Fires every N minutes (e.g., every 30 minutes). The minimum interval is "
-"configurable (default: 5 minutes)."
+msgid "— Fires every N minutes (e.g., every 30 minutes). The minimum interval is configurable (default: 5 minutes)."
 msgstr "- 모든 N 분마다 화재 (예 : 30 분마다). 최소 간격은 구성 (과태: 5 분)입니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:53
 #, elixir-autogen, elixir-format
-msgid ""
-"— Fires once per day at a specific time in UTC (e.g., 09:00). Uses 24-hour "
-"format."
+msgid "— Fires once per day at a specific time in UTC (e.g., 09:00). Uses 24-hour format."
 msgstr "- UTC (예 : 09:00)의 특정 시간에 하루에 한 번 불. 24 시간 형식을 사용합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:60
@@ -1322,15 +1236,12 @@ msgstr "). 제품 정보"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:78
 #, elixir-autogen, elixir-format
-msgid ""
-"Additional capabilities (LLM, Script, Game) are planned for future releases."
+msgid "Additional capabilities (LLM, Script, Game) are planned for future releases."
 msgstr "추가 기능(LLM, Script, Game)은 향후 출시 예정입니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:149
 #, elixir-autogen, elixir-format
-msgid ""
-"Available trivia categories: general, science, history, geography, "
-"technology, entertainment."
+msgid "Available trivia categories: general, science, history, geography, technology, entertainment."
 msgstr "유효한 trivia 종류: 일반, 과학, 역사, 지리, 기술, 오락."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:160
@@ -1340,14 +1251,8 @@ msgstr "Bot 응답은 이러한 placeholders를 지원합니다:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ""
-"BotService lets you create and manage extensible bots that live in channels,"
-" respond to messages, greet users, and execute custom commands. Bots are "
-"built on a pluggable capability system — each bot can be configured with "
-"different behaviors."
-msgstr ""
-"BotService는 채널에 살고있는 extensible bot을 만들고 관리하며 메시지를 응답하며 사용자 정의 명령을 실행합니다. "
-"Bots는 플러그 가능 기능 시스템에 내장되어 있습니다. - 각 봇은 다른 행동으로 구성 할 수 있습니다."
+msgid "BotService lets you create and manage extensible bots that live in channels, respond to messages, greet users, and execute custom commands. Bots are built on a pluggable capability system — each bot can be configured with different behaviors."
+msgstr "BotService는 채널에 살고있는 extensible bot을 만들고 관리하며 메시지를 응답하며 사용자 정의 명령을 실행합니다. Bots는 플러그 가능 기능 시스템에 내장되어 있습니다. - 각 봇은 다른 행동으로 구성 할 수 있습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:92
 #, elixir-autogen, elixir-format
@@ -1376,16 +1281,8 @@ msgstr "각 봇은 하나 이상의 기능을 사용할 수 있습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:86
 #, elixir-autogen, elixir-format
-msgid ""
-"Each bot runs as its own process on the server. When a message arrives in a "
-"channel the bot has joined, the bot checks each capability in order. Passive"
-" capabilities (like Moderation) run on every message, while active "
-"capabilities use first-match-wins. A cooldown timer prevents the bot from "
-"responding too frequently."
-msgstr ""
-"각 봇은 서버에서 자체 프로세스로 실행됩니다. 메시지가 채널에 도착하면 봇이 합류했습니다. 봇은 각 기능을 순서대로 확인합니다. "
-"Passive 기능 (모더레이션과 같은)는 각 메시지에서 실행되며, 활성 기능에는 first-match-wins를 사용합니다. "
-"Cooldown 타이머는 봇이 자주 반응하는 것을 방지합니다."
+msgid "Each bot runs as its own process on the server. When a message arrives in a channel the bot has joined, the bot checks each capability in order. Passive capabilities (like Moderation) run on every message, while active capabilities use first-match-wins. A cooldown timer prevents the bot from responding too frequently."
+msgstr "각 봇은 서버에서 자체 프로세스로 실행됩니다. 메시지가 채널에 도착하면 봇이 합류했습니다. 봇은 각 기능을 순서대로 확인합니다. Passive 기능 (모더레이션과 같은)는 각 메시지에서 실행되며, 활성 기능에는 first-match-wins를 사용합니다. Cooldown 타이머는 봇이 자주 반응하는 것을 방지합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:18
 #, elixir-autogen, elixir-format
@@ -1444,9 +1341,7 @@ msgstr "Trivia 카테고리"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:103
 #, elixir-autogen, elixir-format
-msgid ""
-"can create, modify, or delete bots. All users can view bot info and use bot "
-"commands."
+msgid "can create, modify, or delete bots. All users can view bot info and use bot commands."
 msgstr "봇을 만들거나 수정하거나 삭제할 수 있습니다. 모든 사용자는 봇 정보를 볼 수 있으며 봇 명령을 사용합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:33
@@ -1466,9 +1361,7 @@ msgstr "메뉴 또는 입력"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:93
 #, elixir-autogen, elixir-format
-msgid ""
-"prefix and are grouped below regular users. They can be kicked or banned "
-"from channels like normal users."
+msgid "prefix and are grouped below regular users. They can be kicked or banned from channels like normal users."
 msgstr "prefix는 일반 사용자의 밑에 그룹화됩니다. 그들은 정상적인 사용자와 같은 채널에서 또는 금지 될 수 있습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:102
@@ -1493,13 +1386,8 @@ msgstr "롤 주사위"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:178
 #, elixir-autogen, elixir-format
-msgid ""
-"with no arguments (admin only). The dialog shows all bots with a split-view:"
-" select a bot on the left to see its details, channels, commands, and event "
-"hooks on the right."
-msgstr ""
-"인수 없음 (admin 만). 대화 상자는 분할보기로 모든 봇을 보여줍니다 : 오른쪽에 세부 정보, 채널, 명령 및 이벤트 후크를 볼 "
-"왼쪽에 봇을 선택합니다."
+msgid "with no arguments (admin only). The dialog shows all bots with a split-view: select a bot on the left to see its details, channels, commands, and event hooks on the right."
+msgstr "인수 없음 (admin 만). 대화 상자는 분할보기로 모든 봇을 보여줍니다 : 오른쪽에 세부 정보, 채널, 명령 및 이벤트 후크를 볼 왼쪽에 봇을 선택합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:37
 #, elixir-autogen, elixir-format
@@ -1513,11 +1401,8 @@ msgstr "- modifier 추가 (예:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:45
 #, elixir-autogen, elixir-format
-msgid ""
-"— auto-moderation that monitors all messages for blocked words, spam, flood,"
-" and caps lock abuse. Configurable actions: warn, mute, or kick"
-msgstr ""
-"- 차단 된 단어, 스팸, 홍수 및 캡 잠금 남용을위한 모든 메시지를 모니터링하는 자동 모드. 구성 작업: warn, mute, 또는 킥"
+msgid "— auto-moderation that monitors all messages for blocked words, spam, flood, and caps lock abuse. Configurable actions: warn, mute, or kick"
+msgstr "- 차단 된 단어, 스팸, 홍수 및 캡 잠금 남용을위한 모든 메시지를 모니터링하는 자동 모드. 구성 작업: warn, mute, 또는 킥"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:32
 #, elixir-autogen, elixir-format
@@ -1546,9 +1431,7 @@ msgstr "— 모니터 RSS/Atom 새 항목 및 채널에 게시. 제품 정보"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:61
 #, elixir-autogen, elixir-format
-msgid ""
-"— posts scheduled/periodic messages to channels. Supports interval (every N "
-"minutes) and daily (at HH:MM UTC) schedules"
+msgid "— posts scheduled/periodic messages to channels. Supports interval (every N minutes) and daily (at HH:MM UTC) schedules"
 msgstr "— 게시물 예정/periodic 채널에 메시지. 지원 간격 (모든 N 분) 및 일일 (HH:MM UTC) 일정"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:12
@@ -1603,6 +1486,5 @@ msgstr "- 사용자 정의"
 
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:19
 #, elixir-autogen, elixir-format
-msgid ""
-"— welcomes users when they join a channel, optionally says goodbye on part"
+msgid "— welcomes users when they join a channel, optionally says goodbye on part"
 msgstr "- 채널에 가입 할 때 사용자를 환영, 선택적으로 부분에서 Goodbye 말한다"

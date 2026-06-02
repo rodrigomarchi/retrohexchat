@@ -638,7 +638,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view |> render_click("context_set_nick_color", %{"nick" => "ColorTarget"})
 
       html = render(view)
-      # V2 shows inline color picker with nick-color-N swatches
+      # App chat shows inline color picker with nick-color-N swatches
       assert html =~ "nick-color-0"
       assert html =~ "context_pick_color"
     end

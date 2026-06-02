@@ -74,7 +74,7 @@ describe("createPlausibleTracker", () => {
   });
 
   it("posts a pageview via sendBeacon with the configured domain", () => {
-    const { win } = makeWin("https://moon.retrohexchat.app/v2/lobby");
+    const { win } = makeWin("https://moon.retrohexchat.app/chat");
     const { doc } = makeDoc("https://t.co/abc");
     const sendBeacon = vi.fn().mockReturnValue(true);
 
@@ -184,12 +184,12 @@ describe("createPlausibleTracker", () => {
     expect(sendBeacon).toHaveBeenCalledTimes(1);
 
     // Different URL → pageview.
-    win._setHref("https://moon.retrohexchat.app/v2/lobby");
+    win._setHref("https://moon.retrohexchat.app/chat");
     dispatch("phx:page-loading-stop", { kind: "redirect" });
     expect(sendBeacon).toHaveBeenCalledTimes(2);
 
     // Non-tracked kind (initial mount) → ignored.
-    win._setHref("https://moon.retrohexchat.app/v2/other");
+    win._setHref("https://moon.retrohexchat.app/connect");
     dispatch("phx:page-loading-stop", { kind: "initial" });
     expect(sendBeacon).toHaveBeenCalledTimes(2);
 

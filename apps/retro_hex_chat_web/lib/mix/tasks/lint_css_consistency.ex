@@ -180,9 +180,9 @@ defmodule Mix.Tasks.Lint.CssConsistency do
     "layouts/landing_live.html.heex",
     "live/help_live/",
     "layouts/help_live.html.heex",
-    "live/v2/",
-    "controllers/v2/",
-    "layouts/v2.html.heex"
+    "live/app/",
+    "controllers/app/",
+    "layouts/chat.html.heex"
   ]
 
   @doc false
@@ -565,7 +565,9 @@ defmodule Mix.Tasks.Lint.CssConsistency do
         Enum.reduce(refs, acc, fn class, map -> Map.update(map, class, [short], &[short | &1]) end)
       end)
 
-    Map.merge(template_sources, js_sources, fn _k, v1, v2 -> v1 ++ v2 end)
+    Map.merge(template_sources, js_sources, fn _k, template_refs, js_refs ->
+      template_refs ++ js_refs
+    end)
   end
 
   defp print_report(defined, referenced, vendor, unused_allow, missing_allow, unused, missing) do

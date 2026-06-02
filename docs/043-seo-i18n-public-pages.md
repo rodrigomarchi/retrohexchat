@@ -134,13 +134,13 @@ Key files:
 - [x] Prefer server-rendered static behavior where possible.
 - [x] Create a small public bundle only if necessary, for example `public_pages.js`.
 - [x] Use CSS/HTML-first interactions where feasible.
-- [x] Keep full `v2_app.js` only for the actual app pages.
+- [x] Keep full `app.js` only for the actual app pages.
 - [x] Measure final JS payload for public routes.
 
 Key files:
 
 - `apps/retro_hex_chat_web/assets/js/retrohex_content.js`
-- `apps/retro_hex_chat_web/assets/js/v2_app.js`
+- `apps/retro_hex_chat_web/assets/js/app.js`
 - `apps/retro_hex_chat_web/assets/package.json`
 - `apps/retro_hex_chat_web/mix.exs`
 - `config/config.exs`

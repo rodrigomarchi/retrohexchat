@@ -93,7 +93,7 @@ defmodule RetroHexChatWeb.HelpLiveTest do
 
       assert html =~ "/assets/js/help_live.js"
       refute html =~ "/assets/js/retrohex_content.js"
-      refute html =~ "/assets/js/v2_app.js"
+      refute html =~ "/assets/js/app.js"
     end
 
     test "localized help paths have clean self-referencing canonicals", %{conn: conn} do

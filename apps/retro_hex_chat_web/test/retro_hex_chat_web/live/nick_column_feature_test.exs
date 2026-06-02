@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.NickColumnFeatureTest do
       view |> render_submit("send_input", %{"input" => "Hello from grid test"})
       html = render(view)
 
-      # V2 uses Tailwind grid layout
+      # App chat uses Tailwind grid layout
       assert html =~ "grid grid-cols-"
       assert html =~ "data-nick="
     end

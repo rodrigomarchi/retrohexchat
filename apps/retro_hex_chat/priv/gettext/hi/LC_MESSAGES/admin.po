@@ -59,6 +59,7 @@ msgstr "  %{table}: %{count} हटाना"
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:30
 #, elixir-autogen, elixir-format
 msgid "  Access list:\n"
+""
 msgstr "प्रवेश सूची:"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:27
@@ -69,27 +70,37 @@ msgstr "प्रवेश सूची: (empty)"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:62
 #, elixir-autogen, elixir-format
 msgid "  Active allocations: %{active}\n"
+""
 msgstr "  सक्रिय आवंटन: %{active}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Admin: %{is_admin}\n"
+""
 msgstr "  व्यवस्थापक: %{is_admin}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Atoms: %{atom}\n"
+""
 msgstr "  Atom: %{atom}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:78
 #, elixir-autogen, elixir-format
 msgid "  Bans: %{state_bans_count}\n"
+""
 msgstr "  बन्स: %{state_bans_count}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:60
 #, elixir-autogen, elixir-format
 msgid "  Binary: %{binary}\n"
+""
 msgstr "  बाइनरी: %{binary}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:61
 #, elixir-autogen, elixir-format
@@ -99,12 +110,15 @@ msgstr "  कोड: %{code}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:58
 #, elixir-autogen, elixir-format
 msgid "  ETS: %{ets}\n"
+""
 msgstr "ETS: %{ets}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:35
 #, elixir-autogen, elixir-format
 msgid "  Founder: %{founder}\n"
+""
 msgstr "  संस्थापक: %{founder}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:32
 #, elixir-autogen, elixir-format
@@ -114,34 +128,46 @@ msgstr "  पहचान: %{identified}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:71
 #, elixir-autogen, elixir-format
 msgid "  Identified: %{identified}\n"
+""
 msgstr "  पहचान: %{identified}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:31
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
 #, elixir-autogen, elixir-format
 msgid "  Last seen: %{last_seen_at}\n"
+""
 msgstr "  पिछले देखा गया: %{last_seen_at}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:58
 #, elixir-autogen, elixir-format
 msgid "  Listen port: %{listen_port}\n"
+""
 msgstr "  पोर्ट सुनो: %{listen_port}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Listeners: %{listener_count}\n"
+""
 msgstr "  श्रोता: %{listener_count}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:73
 #, elixir-autogen, elixir-format
 msgid "  Members (%{member_count}): %{members}\n"
+""
 msgstr "  सदस्य%{member_count}): %{members}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:40
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:77
 #, elixir-autogen, elixir-format
 msgid "  Modes: %{modes}\n"
+""
 msgstr "  मोड: %{modes}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:54
 #, elixir-autogen, elixir-format
@@ -151,7 +177,9 @@ msgstr "  ऑनलाइन: %{online}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}\n"
+""
 msgstr "  ऑनलाइन: %{online}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:67
 #, elixir-autogen, elixir-format
@@ -161,14 +189,18 @@ msgstr "  पोर्ट रेंज: %{port_min}-%{port_max}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Processes: %{processes}\n"
+""
 msgstr "  प्रक्रियाएं: %{processes}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:36
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:28
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:66
 #, elixir-autogen, elixir-format
 msgid "  Registered: %{registered_at}\n"
+""
 msgstr "  पंजीकृत: %{registered_at}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
 #, elixir-autogen, elixir-format
@@ -178,6 +210,7 @@ msgstr "पंजीकृत: नहीं"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:53
 #, elixir-autogen, elixir-format
 msgid "  Registered: no\n"
+""
 msgstr "पंजीकृत: नहीं"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:61
@@ -188,11 +221,14 @@ msgstr "  पंजीकृत: हाँ (फाउंडर: %{founder_nickna
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Relay IP: %{relay_ip}\n"
+""
 msgstr "  रिले IP: %{relay_ip}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:63
 #, elixir-autogen, elixir-format
 msgid "  Relay ports: %{used_ports}/%{total_ports} in use\n"
+""
 msgstr "रिले बंदरगाह: %{used_ports}/%{total_ports}"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:73
@@ -203,18 +239,23 @@ msgstr "  सर्वर ऑपरेटर: %{is_oper}"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Status: running\n"
+""
 msgstr "स्थिति: चल रहा"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:39
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Topic: %{topic}\n"
+""
 msgstr "  विषय: %{topic}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Total: %{total}\n"
+""
 msgstr "  कुल: %{total}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/log.ex:48
 #, elixir-autogen, elixir-format
@@ -325,7 +366,9 @@ msgstr "%{message}"
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:36
 #, elixir-autogen, elixir-format
 msgid "*** %{server_name} ***%{desc_line}\n"
+""
 msgstr "*** %{server_name} ***%{desc_line}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:67
 #, elixir-autogen, elixir-format
@@ -355,6 +398,7 @@ msgstr "*** ऑडिट लॉग%{entries_count} प्रवेश"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** BEAM Memory ***\n"
+""
 msgstr "*** BEAM मेमोरी ***"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:120
@@ -370,7 +414,9 @@ msgstr "*** चैनल सूची%{filtered_count}) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
 #, elixir-autogen, elixir-format
 msgid "*** Channel: %{channel}\n"
+""
 msgstr "*** चैनल: %{channel}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:14
 #, elixir-autogen, elixir-format
@@ -385,8 +431,7 @@ msgstr "*** NUKE PREVIEW — %{total} रिकॉर्ड नष्ट हो 
 #: lib/retro_hex_chat/commands/handlers/admin/nuke.ex:46
 #, elixir-autogen, elixir-format
 msgid "*** NUKE PREVIEW — Nothing to delete. System is already clean."
-msgstr ""
-"*** NUKE PREVIEW - नष्ट करने के लिए कुछ नहीं। सिस्टम पहले से ही साफ है।"
+msgstr "*** NUKE PREVIEW - नष्ट करने के लिए कुछ नहीं। सिस्टम पहले से ही साफ है।"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:80
 #, elixir-autogen, elixir-format
@@ -461,6 +506,7 @@ msgstr "*** सर्वर सेटिंग्स"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** TURN Server Stats ***\n"
+""
 msgstr "*** turn सर्वर आँकड़े ***"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:9
@@ -477,22 +523,30 @@ msgstr "उपयोगकर्ता सूची%{entries_count} परिण
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** User: %{nick}\n"
+""
 msgstr "उपयोगकर्ता: %{nick}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:34
 #, elixir-autogen, elixir-format
 msgid "*** [ChanServ] %{name}\n"
+""
 msgstr "[ChanServ] %{name}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:27
 #, elixir-autogen, elixir-format
 msgid "*** [NickServ] %{nick}\n"
+""
 msgstr "[NickServ] %{nick}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
 #, elixir-autogen, elixir-format
 msgid "Active channels: %{channel_count}\n"
+""
 msgstr "सक्रिय चैनल: %{channel_count}\n"
+""
 
 #: lib/retro_hex_chat/admin.ex:502
 #, elixir-autogen, elixir-format
@@ -557,12 +611,16 @@ msgstr "शुद्ध %{count} संदेश %{from_nick} में %{channe
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
 #, elixir-autogen, elixir-format
 msgid "Registered nicks: %{nick_count}\n"
+""
 msgstr "पंजीकृत नॉक: %{nick_count}\n"
+""
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
 #, elixir-autogen, elixir-format
 msgid "Registration: %{registration}\n"
+""
 msgstr "पंजीकरण: %{registration}\n"
+""
 
 #: lib/retro_hex_chat/admin.ex:44
 #, elixir-autogen, elixir-format
@@ -616,17 +674,15 @@ msgstr "उपयोग: /admin बारी <stats|allocations>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:181
 #, elixir-autogen, elixir-format
-msgid ""
-"Usage: /admin user "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
-msgstr ""
-"उपयोग: /admin उपयोगकर्ता "
-"<list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgid "Usage: /admin user <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
+msgstr "उपयोग: /admin उपयोगकर्ता <list|info|ban|unban|kick|mute|unmute|rename|role|banlist>"
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:40
 #, elixir-autogen, elixir-format
 msgid "Users online: %{online_count}\n"
+""
 msgstr "उपयोगकर्ता ऑनलाइन: %{online_count}\n"
+""
 
 #: lib/retro_hex_chat/admin.ex:181
 #, elixir-autogen, elixir-format
@@ -780,7 +836,8 @@ msgstr "उपयोगकर्ता.mute"
 msgid "user.rename"
 msgstr "उपयोगकर्ता नाम"
 
-#: lib/retro_hex_chat/admin.ex:479 lib/retro_hex_chat/admin.ex:500
+#: lib/retro_hex_chat/admin.ex:479
+#: lib/retro_hex_chat/admin.ex:500
 #, elixir-autogen, elixir-format
 msgid "user.role"
 msgstr "उपयोगकर्ता.role"

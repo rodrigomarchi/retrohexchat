@@ -11,55 +11,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-# This is a PO Template file.
-# 
-# `msgid`s here are often extracted from source code.
-# Add new translations manually only if they're dynamic
-# translations that can't be statically extracted.
-# 
-# Run `mix gettext.extract` to bring this file up to
-# date. Leave `msgstr`s empty as changing them here has no
-# effect: edit them in PO (`.po`) files instead.
-# From Ecto.Changeset.cast/4
+## This is a PO Template file.
+##
+## `msgid`s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run `mix gettext.extract` to bring this file up to
+## date. Leave `msgstr`s empty as changing them here has no
+## effect: edit them in PO (`.po`) files instead.
+## From Ecto.Changeset.cast/4
 msgid "can't be blank"
 msgstr "nie może być puste"
 
-# From Ecto.Changeset.unique_constraint/3
+## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
 msgstr "zostało już pobrane"
 
-# From Ecto.Changeset.put_change/3
+## From Ecto.Changeset.put_change/3
 msgid "is invalid"
 msgstr "jest nieprawidłowy"
 
-# From Ecto.Changeset.validate_acceptance/3
+## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
 msgstr "muszą zostać przyjęte"
 
-# From Ecto.Changeset.validate_format/3
+## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
 msgstr "ma nieprawidłowy format"
 
-# From Ecto.Changeset.validate_subset/3
+## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
 msgstr "posiada nieprawidłowy wpis"
 
-# From Ecto.Changeset.validate_exclusion/3
+## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
 msgstr "jest zastrzeżone"
 
-# From Ecto.Changeset.validate_confirmation/3
+## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
 msgstr "nie pasuje do potwierdzenia"
 
-# From Ecto.Changeset.no_assoc_constraint/3
+## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
 msgstr "jest nadal powiązany z tym wpisem"
 
 msgid "are still associated with this entry"
 msgstr "są nadal związane z tym wpisem"
 
-# From Ecto.Changeset.validate_length/3
+## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
 msgstr[0] "W przypadku %{count} pozycja (-y)"
@@ -114,7 +114,7 @@ msgstr[0] "powinno być co najwyżej %{count} bajt (-y)"
 msgstr[1] "powinno być co najwyżej %{count} bajt (-y)"
 msgstr[2] "powinno być co najwyżej %{count} bajt (-y)"
 
-# From Ecto.Changeset.validate_number/3
+## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
 msgstr "musi być mniejsza niż %{number}"
 

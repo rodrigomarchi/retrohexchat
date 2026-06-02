@@ -11,55 +11,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-# This is a PO Template file.
-# 
-# `msgid`s here are often extracted from source code.
-# Add new translations manually only if they're dynamic
-# translations that can't be statically extracted.
-# 
-# Run `mix gettext.extract` to bring this file up to
-# date. Leave `msgstr`s empty as changing them here has no
-# effect: edit them in PO (`.po`) files instead.
-# From Ecto.Changeset.cast/4
+## This is a PO Template file.
+##
+## `msgid`s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run `mix gettext.extract` to bring this file up to
+## date. Leave `msgstr`s empty as changing them here has no
+## effect: edit them in PO (`.po`) files instead.
+## From Ecto.Changeset.cast/4
 msgid "can't be blank"
 msgstr "할 수 없습니다"
 
-# From Ecto.Changeset.unique_constraint/3
+## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
 msgstr "이미 촬영"
 
-# From Ecto.Changeset.put_change/3
+## From Ecto.Changeset.put_change/3
 msgid "is invalid"
 msgstr "유효하다"
 
-# From Ecto.Changeset.validate_acceptance/3
+## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
 msgstr "자주 묻는 질문"
 
-# From Ecto.Changeset.validate_format/3
+## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
 msgstr "잘못된 형식"
 
-# From Ecto.Changeset.validate_subset/3
+## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
 msgstr "잘못된 항목"
 
-# From Ecto.Changeset.validate_exclusion/3
+## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
 msgstr "공지사항"
 
-# From Ecto.Changeset.validate_confirmation/3
+## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
 msgstr "자주 묻는 질문"
 
-# From Ecto.Changeset.no_assoc_constraint/3
+## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
 msgstr "아직도 이 항목과 관련"
 
 msgid "are still associated with this entry"
 msgstr "아직도 이 항목과 관련"
 
-# From Ecto.Changeset.validate_length/3
+## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
 msgstr[0] "지원하다 %{count} 품목 (s)"
@@ -96,7 +96,7 @@ msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
 msgstr[0] "가장 많이 %{count} 바이트(s)"
 
-# From Ecto.Changeset.validate_number/3
+## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
 msgstr "더 적은 %{number}"
 

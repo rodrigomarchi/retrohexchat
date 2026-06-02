@@ -11,55 +11,55 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-# This is a PO Template file.
-# 
-# `msgid`s here are often extracted from source code.
-# Add new translations manually only if they're dynamic
-# translations that can't be statically extracted.
-# 
-# Run `mix gettext.extract` to bring this file up to
-# date. Leave `msgstr`s empty as changing them here has no
-# effect: edit them in PO (`.po`) files instead.
-# From Ecto.Changeset.cast/4
+## This is a PO Template file.
+##
+## `msgid`s here are often extracted from source code.
+## Add new translations manually only if they're dynamic
+## translations that can't be statically extracted.
+##
+## Run `mix gettext.extract` to bring this file up to
+## date. Leave `msgstr`s empty as changing them here has no
+## effect: edit them in PO (`.po`) files instead.
+## From Ecto.Changeset.cast/4
 msgid "can't be blank"
 msgstr "không thể trống"
 
-# From Ecto.Changeset.unique_constraint/3
+## From Ecto.Changeset.unique_constraint/3
 msgid "has already been taken"
 msgstr "đã bị bắt"
 
-# From Ecto.Changeset.put_change/3
+## From Ecto.Changeset.put_change/3
 msgid "is invalid"
 msgstr "không hợp lệ"
 
-# From Ecto.Changeset.validate_acceptance/3
+## From Ecto.Changeset.validate_acceptance/3
 msgid "must be accepted"
 msgstr "Phải chấp nhận"
 
-# From Ecto.Changeset.validate_format/3
+## From Ecto.Changeset.validate_format/3
 msgid "has invalid format"
 msgstr "định dạng không hợp lệ"
 
-# From Ecto.Changeset.validate_subset/3
+## From Ecto.Changeset.validate_subset/3
 msgid "has an invalid entry"
 msgstr "có mục nhập không hợp lệ"
 
-# From Ecto.Changeset.validate_exclusion/3
+## From Ecto.Changeset.validate_exclusion/3
 msgid "is reserved"
 msgstr "được dành riêng"
 
-# From Ecto.Changeset.validate_confirmation/3
+## From Ecto.Changeset.validate_confirmation/3
 msgid "does not match confirmation"
 msgstr "không khớp với xác nhận"
 
-# From Ecto.Changeset.no_assoc_constraint/3
+## From Ecto.Changeset.no_assoc_constraint/3
 msgid "is still associated with this entry"
 msgstr "vẫn còn liên quan đến mục này"
 
 msgid "are still associated with this entry"
 msgstr "vẫn còn liên quan đến mục này"
 
-# From Ecto.Changeset.validate_length/3
+## From Ecto.Changeset.validate_length/3
 msgid "should have %{count} item(s)"
 msgid_plural "should have %{count} item(s)"
 msgstr[0] "nên có %{count} Mục"
@@ -96,7 +96,7 @@ msgid "should be at most %{count} byte(s)"
 msgid_plural "should be at most %{count} byte(s)"
 msgstr[0] "Nên ở mức cao nhất %{count} byte"
 
-# From Ecto.Changeset.validate_number/3
+## From Ecto.Changeset.validate_number/3
 msgid "must be less than %{number}"
 msgstr "Chắc là ít hơn %{number}"
 

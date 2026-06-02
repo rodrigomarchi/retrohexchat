@@ -83,9 +83,9 @@ config :esbuild,
     cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ],
-  retro_hex_chat_web_v2_app_js: [
+  retro_hex_chat_web_app_js: [
     args:
-      ~w(js/v2_app.js --bundle --target=es2022 --format=esm --splitting --chunk-names=chunks/v2-[name]-[hash] --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
+      ~w(js/app.js --bundle --target=es2022 --format=esm --splitting --chunk-names=chunks/app-[name]-[hash] --outdir=../priv/static/assets/js --external:/fonts/* --external:/images/*),
     cd: Path.expand("../apps/retro_hex_chat_web/assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]

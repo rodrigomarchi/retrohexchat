@@ -1,6 +1,6 @@
-defmodule RetroHexChatWeb.V2.ChatLive do
+defmodule RetroHexChatWeb.App.ChatLive do
   @moduledoc """
-  v2 main chat interface using new UI components.
+  Main chat interface using the app UI components.
 
   This is a full rewrite — no v1 code reuse. The UI is composed entirely from
   the new component library in `components/ui/`. Backend domain contexts and
@@ -103,9 +103,9 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   }
 
   alias RetroHexChat.Presence.{NotifyList, Tracker, WhowasCache}
+  alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.Timezone
-  alias RetroHexChatWeb.V2.V2Helpers
 
   # ── Mount ─────────────────────────────────────────────────────
 
@@ -175,7 +175,6 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     ChatLive.Helpers.safe_track_user("presence:global", nickname)
 
     socket
-    |> assign(v2: true)
     |> attach_all_hooks()
     |> assign_defaults(session)
     |> assign(timezone: timezone, client_info: client_info)
@@ -224,7 +223,6 @@ defmodule RetroHexChatWeb.V2.ChatLive do
 
   defp mount_disconnected_chat(http_session, socket, session) do
     socket
-    |> assign(v2: true)
     |> assign_defaults(session)
     |> assign(
       timezone: Timezone.validate(http_session["chat_timezone"]),
@@ -261,7 +259,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   end
 
   # ── Event dispatchers ─────────────────────────────────────────
-  # v2 components use compound action events (on_action="toolbar_action" with
+  # App components use compound action events (on_action="toolbar_action" with
   # phx-value-action), but the shared v1 event handlers expect individual events.
   # These dispatchers translate between the two patterns.
   #
@@ -338,35 +336,35 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     <%= case Map.get(@msg, :type, :normal) do %>
       <% :action -> %>
         <.chat_message
-          timestamp={V2Helpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
           type="action"
         >
-          * {@msg.author} {raw(V2Helpers.format_content(@msg.content, @strip_formatting))}
+          * {@msg.author} {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
         </.chat_message>
       <% :system -> %>
         <.chat_message
-          timestamp={V2Helpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
           type="system"
         >
           * {@msg.content}
         </.chat_message>
       <% :service -> %>
         <.chat_message
-          timestamp={V2Helpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
           type="service"
         >
           {@msg.content}
         </.chat_message>
       <% :error -> %>
         <.chat_message
-          timestamp={V2Helpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
           type="error"
         >
           {@msg.content}
         </.chat_message>
       <% :notice -> %>
         <.chat_message
-          timestamp={V2Helpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
           type="notice"
           nick={@msg.author}
           nick_color={@nick_color_fn.(@msg.author)}
@@ -375,7 +373,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
         </.chat_message>
       <% :inline_help -> %>
         <.chat_message
-          timestamp={V2Helpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
           type="system"
         >
           <.inline_help_card
@@ -386,20 +384,20 @@ defmodule RetroHexChatWeb.V2.ChatLive do
         </.chat_message>
       <% :arcade_link -> %>
         <.chat_message
-          timestamp={V2Helpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
           type="system"
         >
           <.arcade_session_link href={@msg.content} />
         </.chat_message>
       <% :p2p_invite -> %>
         <.chat_message
-          timestamp={V2Helpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
           nick={@msg.author}
           nick_color={@nick_color_fn.(@msg.author)}
         >
           <.p2p_invite_card
-            label={V2Helpers.extract_p2p_label(@msg.content)}
-            link={V2Helpers.extract_p2p_link(@msg.content)}
+            label={ChatHelpers.extract_p2p_label(@msg.content)}
+            link={ChatHelpers.extract_p2p_link(@msg.content)}
           />
         </.chat_message>
       <% _ -> %>
@@ -413,20 +411,20 @@ defmodule RetroHexChatWeb.V2.ChatLive do
         />
         <%= if Map.get(@msg, :deleted_at) do %>
           <.chat_message timestamp={
-            V2Helpers.format_time(@msg.timestamp, @timestamp_format, @timezone)
+            ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)
           }>
             <.deleted_placeholder />
           </.chat_message>
         <% else %>
           <.chat_message
-            timestamp={V2Helpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
             nick={@msg.author}
             nick_color={@nick_color_fn.(@msg.author)}
           >
-            {raw(V2Helpers.format_content(@msg.content, @strip_formatting))}
+            {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
             <.edited_tag
               :if={Map.get(@msg, :edited_at)}
-              timestamp={V2Helpers.format_edit_timestamp(@msg.edited_at, @timezone)}
+              timestamp={ChatHelpers.format_edit_timestamp(@msg.edited_at, @timezone)}
             />
             <.retry_button
               :if={Map.get(@msg, :status) == :failed}
@@ -641,7 +639,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
         target_nick: nil,
         is_target_registered: false
       },
-      nick_color_fn: V2Helpers.build_nick_color_fn(session),
+      nick_color_fn: ChatHelpers.build_nick_color_fn(session),
       nick_colors_selected: nil,
       has_more: true,
       history_index: -1,
@@ -881,7 +879,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
     highlighted =
       if Map.get(msg, :highlighted), do: " chat-message--highlighted", else: ""
 
-    highlight_bg = V2Helpers.highlight_bg_class(msg)
+    highlight_bg = ChatHelpers.highlight_bg_class(msg)
 
     pending =
       if Map.get(msg, :status) == :pending, do: " chat-message--pending", else: ""
@@ -954,7 +952,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   defp channel_central_topic_set_at(state, timezone) do
     case Map.get(state, :topic_set_at) do
       nil -> nil
-      dt -> V2Helpers.format_datetime(dt, timezone)
+      dt -> ChatHelpers.format_datetime(dt, timezone)
     end
   end
 
@@ -963,7 +961,7 @@ defmodule RetroHexChatWeb.V2.ChatLive do
   defp channel_central_created_at(state, timezone) do
     case Map.get(state, :created_at) do
       nil -> nil
-      dt -> V2Helpers.format_datetime(dt, timezone)
+      dt -> ChatHelpers.format_datetime(dt, timezone)
     end
   end
 
