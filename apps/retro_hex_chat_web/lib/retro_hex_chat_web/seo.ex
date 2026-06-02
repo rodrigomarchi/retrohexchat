@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.SEO do
   alias RetroHexChatWeb.I18n
   alias RetroHexChatWeb.I18n.Locales
 
-  @default_origin "https://retrohexchat.com"
+  @default_origin "https://retrohexchat.app"
   @social_image_path "/images/social/retrohexchat_og.png"
   @social_image_width 1200
   @social_image_height 630
@@ -146,6 +146,26 @@ defmodule RetroHexChatWeb.SEO do
         "price" => "0",
         "priceCurrency" => "USD"
       }
+    }
+    |> Jason.encode!()
+  end
+
+  @spec breadcrumb_json_ld([{String.t(), String.t()}]) :: String.t()
+  def breadcrumb_json_ld(items) do
+    %{
+      "@context" => "https://schema.org",
+      "@type" => "BreadcrumbList",
+      "itemListElement" =>
+        items
+        |> Enum.with_index(1)
+        |> Enum.map(fn {{name, path}, position} ->
+          %{
+            "@type" => "ListItem",
+            "position" => position,
+            "name" => name,
+            "item" => site_url(path)
+          }
+        end)
     }
     |> Jason.encode!()
   end

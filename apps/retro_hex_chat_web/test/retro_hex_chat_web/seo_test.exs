@@ -30,14 +30,14 @@ defmodule RetroHexChatWeb.SEOTest do
     test "falls back to the production origin when the configured origin is blank" do
       Application.put_env(:retro_hex_chat_web, :public_origin, "   ")
 
-      assert SEO.origin() == "https://retrohexchat.com"
+      assert SEO.origin() == "https://retrohexchat.app"
     end
 
     test "canonical_url normalizes paths and strips queries from absolute URLs" do
-      assert SEO.canonical_url("features", "en") == "https://retrohexchat.com/features"
+      assert SEO.canonical_url("features", "en") == "https://retrohexchat.app/features"
 
       assert SEO.canonical_url("https://other.example/pt-BR/features?locale=pt_BR", "pt_BR") ==
-               "https://retrohexchat.com/pt-BR/features"
+               "https://retrohexchat.app/pt-BR/features"
     end
   end
 
@@ -88,7 +88,7 @@ defmodule RetroHexChatWeb.SEOTest do
       end
 
       assert Enum.find(links, &(&1.hreflang == "x-default")).href ==
-               "https://retrohexchat.com/features"
+               "https://retrohexchat.app/features"
 
       refute Enum.any?(links, &String.contains?(&1.href, "?locale="))
     end
@@ -99,10 +99,10 @@ defmodule RetroHexChatWeb.SEOTest do
       assert length(urls) == length(Locales.enabled())
 
       assert Enum.find(urls, &(&1.locale == I18n.default_locale())).href ==
-               "https://retrohexchat.com/chat/help/cmd-join"
+               "https://retrohexchat.app/chat/help/cmd-join"
 
       assert Enum.find(urls, &(&1.locale == "pt_BR")).href ==
-               "https://retrohexchat.com/pt-BR/chat/help/cmd-join"
+               "https://retrohexchat.app/pt-BR/chat/help/cmd-join"
 
       refute Enum.any?(urls, &String.contains?(&1.href, "?locale="))
     end
@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.SEOTest do
   describe "metadata helpers" do
     test "social image metadata is stable" do
       assert SEO.social_image_url() ==
-               "https://retrohexchat.com/images/social/retrohexchat_og.png"
+               "https://retrohexchat.app/images/social/retrohexchat_og.png"
 
       assert SEO.social_image_width() == 1200
       assert SEO.social_image_height() == 630
@@ -130,11 +130,26 @@ defmodule RetroHexChatWeb.SEOTest do
       assert json_ld["@type"] == "SoftwareApplication"
       assert json_ld["name"] == "Retro Hex Chat"
       assert json_ld["description"] == description
-      assert json_ld["url"] == "https://retrohexchat.com/"
+      assert json_ld["url"] == "https://retrohexchat.app/"
       assert json_ld["image"] == SEO.social_image_url()
       assert json_ld["license"] == "https://opensource.org/licenses/MIT"
       assert json_ld["offers"]["price"] == "0"
       assert json_ld["offers"]["priceCurrency"] == "USD"
+    end
+
+    test "breadcrumb JSON-LD uses the configured canonical origin" do
+      json_ld = SEO.breadcrumb_json_ld([{"Home", "/"}, {"Help", "/chat/help"}]) |> Jason.decode!()
+
+      assert json_ld["@context"] == "https://schema.org"
+      assert json_ld["@type"] == "BreadcrumbList"
+
+      assert [
+               %{"name" => "Home", "item" => "https://retrohexchat.app/"},
+               %{"name" => "Help", "item" => "https://retrohexchat.app/chat/help"}
+             ] =
+               Enum.map(json_ld["itemListElement"], fn item ->
+                 Map.take(item, ["name", "item"])
+               end)
     end
   end
 end

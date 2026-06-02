@@ -6,7 +6,7 @@ import Config
 # which you should run after static files are built and
 # before starting your production server.
 config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
-  url: [host: "example.com", port: 80],
+  url: [host: "retrohexchat.app", port: 80],
   cache_static_manifest: "priv/static/cache_manifest.json"
 
 # Force using SSL in production. This also sets the "strict-security-transport" header,

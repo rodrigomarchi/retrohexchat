@@ -103,13 +103,13 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       assert html =~ ~s(lang="pt-BR")
 
       assert html =~
-               ~s(<link rel="canonical" href="https://retrohexchat.com/pt-BR/chat/help/commands-overview")
+               ~s(<link rel="canonical" href="https://retrohexchat.app/pt-BR/chat/help/commands-overview")
 
       assert html =~
-               ~s(<meta property="og:url" content="https://retrohexchat.com/pt-BR/chat/help/commands-overview")
+               ~s(<meta property="og:url" content="https://retrohexchat.app/pt-BR/chat/help/commands-overview")
 
       assert html =~
-               ~s(rel="alternate" hreflang="x-default" href="https://retrohexchat.com/chat/help/commands-overview")
+               ~s(rel="alternate" hreflang="x-default" href="https://retrohexchat.app/chat/help/commands-overview")
 
       refute html =~ "?locale="
     end

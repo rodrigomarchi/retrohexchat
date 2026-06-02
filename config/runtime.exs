@@ -7,7 +7,7 @@ import Config
 config :retro_hex_chat_web, :plausible_env, System.get_env("APP_ENV", "prod")
 
 config :retro_hex_chat_web,
-  public_origin: System.get_env("PUBLIC_ORIGIN") || "https://retrohexchat.com"
+  public_origin: System.get_env("PUBLIC_ORIGIN") || "https://retrohexchat.app"
 
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
@@ -104,7 +104,7 @@ if config_env() == :prod do
       You can generate one by calling: mix phx.gen.secret
       """
 
-  host = System.get_env("PHX_HOST") || "example.com"
+  host = System.get_env("PHX_HOST") || "retrohexchat.app"
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,

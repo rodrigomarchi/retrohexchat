@@ -79,21 +79,21 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       assert body =~ ~s(name="description")
       assert body =~ ~s(property="og:title")
       assert body =~ ~s(property="og:description")
-      assert body =~ ~s(property="og:url" content="https://retrohexchat.com/")
+      assert body =~ ~s(property="og:url" content="https://retrohexchat.app/")
 
       assert body =~
-               ~s(property="og:image" content="https://retrohexchat.com/images/social/retrohexchat_og.png")
+               ~s(property="og:image" content="https://retrohexchat.app/images/social/retrohexchat_og.png")
 
       assert body =~ ~s(property="og:image:width" content="1200")
       assert body =~ ~s(property="og:image:height" content="630")
       assert body =~ ~s(name="twitter:card")
       assert body =~ ~s(application/ld+json)
-      assert body =~ ~s(rel="canonical" href="https://retrohexchat.com/")
+      assert body =~ ~s(rel="canonical" href="https://retrohexchat.app/")
 
       assert body =~
-               ~s(rel="alternate" hreflang="pt-BR" href="https://retrohexchat.com/pt-BR")
+               ~s(rel="alternate" hreflang="pt-BR" href="https://retrohexchat.app/pt-BR")
 
-      assert body =~ ~s(rel="alternate" hreflang="x-default" href="https://retrohexchat.com/")
+      assert body =~ ~s(rel="alternate" hreflang="x-default" href="https://retrohexchat.app/")
     end
 
     test "uses English lang attribute", %{conn: conn} do
@@ -131,7 +131,7 @@ defmodule RetroHexChatWeb.LandingLiveTest do
         conn = get(conn, path)
         body = html_response(conn, 200)
 
-        assert body =~ ~s(rel="canonical" href="https://retrohexchat.com#{path}")
+        assert body =~ ~s(rel="canonical" href="https://retrohexchat.app#{path}")
       end
     end
 
@@ -202,10 +202,10 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       body = html_response(conn, 200)
 
       assert body =~ ~s(lang="pt-BR")
-      assert body =~ ~s(rel="canonical" href="https://retrohexchat.com/pt-BR/features")
+      assert body =~ ~s(rel="canonical" href="https://retrohexchat.app/pt-BR/features")
 
       assert body =~
-               ~s(property="og:url" content="https://retrohexchat.com/pt-BR/features")
+               ~s(property="og:url" content="https://retrohexchat.app/pt-BR/features")
     end
 
     test "query locale is not a public canonical URL shape", %{conn: conn} do
@@ -213,7 +213,7 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       body = html_response(conn, 200)
 
       assert body =~ ~s(lang="en")
-      assert body =~ ~s(rel="canonical" href="https://retrohexchat.com/features")
+      assert body =~ ~s(rel="canonical" href="https://retrohexchat.app/features")
       refute body =~ "features?locale=pt_BR"
     end
   end
@@ -243,7 +243,7 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       conn = get(conn, "/robots.txt")
       body = response(conn, 200)
 
-      assert body =~ "Sitemap: https://retrohexchat.com/sitemap.xml"
+      assert body =~ "Sitemap: https://retrohexchat.app/sitemap.xml"
       assert body =~ "Allow: /chat/help"
       assert body =~ "Disallow: /showcase"
       assert body =~ "Disallow: /p2p/"
@@ -255,19 +255,19 @@ defmodule RetroHexChatWeb.LandingLiveTest do
 
       assert String.starts_with?(body, ~s(<?xml version="1.0" encoding="UTF-8"?>))
       assert body =~ ~s(xmlns:xhtml="http://www.w3.org/1999/xhtml")
-      assert body =~ "<loc>https://retrohexchat.com/</loc>"
-      assert body =~ "<loc>https://retrohexchat.com/pt-BR</loc>"
-      assert body =~ "<loc>https://retrohexchat.com/features</loc>"
-      assert body =~ "<loc>https://retrohexchat.com/pt-BR/features</loc>"
-      assert body =~ "<loc>https://retrohexchat.com/chat/help</loc>"
+      assert body =~ "<loc>https://retrohexchat.app/</loc>"
+      assert body =~ "<loc>https://retrohexchat.app/pt-BR</loc>"
+      assert body =~ "<loc>https://retrohexchat.app/features</loc>"
+      assert body =~ "<loc>https://retrohexchat.app/pt-BR/features</loc>"
+      assert body =~ "<loc>https://retrohexchat.app/chat/help</loc>"
 
       assert body =~
-               ~s(<xhtml:link rel="alternate" hreflang="pt-BR" href="https://retrohexchat.com/pt-BR/features" />)
+               ~s(<xhtml:link rel="alternate" hreflang="pt-BR" href="https://retrohexchat.app/pt-BR/features" />)
 
       assert body =~
-               ~s(<xhtml:link rel="alternate" hreflang="x-default" href="https://retrohexchat.com/features" />)
+               ~s(<xhtml:link rel="alternate" hreflang="x-default" href="https://retrohexchat.app/features" />)
 
-      refute body =~ "<loc>https://retrohexchat.com/about</loc>"
+      refute body =~ "<loc>https://retrohexchat.app/about</loc>"
       refute body =~ "?locale="
       refute body =~ "<lastmod>"
       refute body =~ "<changefreq>"

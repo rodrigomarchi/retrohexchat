@@ -117,7 +117,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 
 /bot addcmd Reginald rules *clears throat* The rules are posted in #rules, naturally. One does not simply skip the rules, {nickname}.
 /bot addcmd Reginald channels Allow me to present the estate: #general #help #random #music #movies #gaming #tech #creative #feedback — each room has its own charm.
-/bot addcmd Reginald website Do visit us at https://retrohexchat.com — I personally oversaw the pixel placement.
+/bot addcmd Reginald website Do visit us at https://retrohexchat.app/ — I personally oversaw the pixel placement.
 /bot addcmd Reginald about RetroHexChat: a retro-styled community chat built with Elixir & Phoenix LiveView. Think Windows 98 met a chat room and they fell in love.
 /bot addcmd Reginald commands My repertoire: !rules !channels !website !about !tea !compliment — I aim to please, {nickname}.
 /bot addcmd Reginald tea *pours a virtual cup of Earl Grey* Here you are, {nickname}. One lump or two?
