@@ -31,21 +31,17 @@ import ContextualTipsHook from "./hooks/ui/contextual_tips_hook";
 import MessageInteractionsHook from "./hooks/chat/message_interactions_hook";
 import NickChangeFormHook from "./hooks/chat/nick_change_form_hook";
 import P2PCapabilityHook from "./hooks/p2p/p2p_capability_hook";
-import P2PDiagramHook from "./hooks/p2p/p2p_diagram_hook";
 import P2PSessionHook from "./hooks/p2p/p2p_session_hook";
 import URLCatcherHook from "./hooks/ui/url_catcher_hook";
-import FileTransferHook from "./hooks/p2p/file_transfer_hook";
 import ArcadeIframeHook, { ArcadeSessionHook } from "./hooks/games/arcade_iframe_hook";
 import ArcadeGameHook from "./hooks/games/arcade_game_hook";
 import ArcadeTimerHook from "./hooks/games/arcade_timer_hook";
-import GameCanvasHook from "./hooks/games/game_canvas_hook";
 import GameSessionHook from "./hooks/games/game_session_hook";
-import GameWebRTCHook from "./hooks/games/game_webrtc_hook";
-import WebRTCHook from "./hooks/p2p/webrtc_hook";
-import MediaHook from "./hooks/p2p/media_hook";
 import ViewportDetectHook from "./hooks/ui/viewport_detect_hook";
+import { lazyHook } from "./hooks/lazy_hook";
 import { createPlausibleTracker } from "./lib/analytics/plausible";
 import { getClientInfo } from "./lib/connection/client_info";
+import { loadCurrentLocaleCatalog } from "./lib/i18n";
 
 const AutoFocusHook = {
   mounted() {
@@ -65,6 +61,13 @@ const FocusChatInputOnClickHook = {
     this.el.removeEventListener("click", this._onClick);
   },
 };
+
+const FileTransferHook = lazyHook(() => import("./hooks/p2p/file_transfer_hook"));
+const GameCanvasHook = lazyHook(() => import("./hooks/games/game_canvas_hook"));
+const GameWebRTCHook = lazyHook(() => import("./hooks/games/game_webrtc_hook"));
+const MediaHook = lazyHook(() => import("./hooks/p2p/media_hook"));
+const P2PDiagramHook = lazyHook(() => import("./hooks/p2p/p2p_diagram_hook"));
+const WebRTCHook = lazyHook(() => import("./hooks/p2p/webrtc_hook"));
 
 const Hooks = {
   AutoFocusHook: AutoFocusHook,
@@ -133,6 +136,8 @@ const plausible = createPlausibleTracker({
 });
 plausible.attachAutoTracking();
 window.plausible = plausible;
+
+await loadCurrentLocaleCatalog();
 
 // connect if there are any LiveViews on the page
 liveSocket.connect();

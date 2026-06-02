@@ -1,48 +1,31 @@
-import {
-  AR,
-  BN,
-  DE,
-  ES,
-  FR,
-  HI,
-  ID,
-  IT,
-  JA,
-  KO,
-  NL,
-  PL,
-  PT_BR,
-  PT_PT,
-  RU,
-  TR,
-  UR,
-  VI,
-  ZH_HANS,
-  ZH_HANT,
-} from "./i18n_catalog.js";
-
 const CATALOGS = {
-  ar: AR,
-  bn: BN,
-  de: DE,
-  es: ES,
-  fr: FR,
-  hi: HI,
-  id: ID,
-  it: IT,
-  ja: JA,
-  ko: KO,
-  nl: NL,
-  pl: PL,
-  pt_BR: PT_BR,
-  pt_PT: PT_PT,
-  ru: RU,
-  tr: TR,
-  ur: UR,
-  vi: VI,
-  zh_hans: ZH_HANS,
-  zh_hant: ZH_HANT,
+  en: {},
 };
+
+const CATALOG_LOADERS = {
+  ar: () => import("./i18n_catalogs/ar.js").then((module) => module.AR),
+  bn: () => import("./i18n_catalogs/bn.js").then((module) => module.BN),
+  de: () => import("./i18n_catalogs/de.js").then((module) => module.DE),
+  es: () => import("./i18n_catalogs/es.js").then((module) => module.ES),
+  fr: () => import("./i18n_catalogs/fr.js").then((module) => module.FR),
+  hi: () => import("./i18n_catalogs/hi.js").then((module) => module.HI),
+  id: () => import("./i18n_catalogs/id.js").then((module) => module.ID),
+  it: () => import("./i18n_catalogs/it.js").then((module) => module.IT),
+  ja: () => import("./i18n_catalogs/ja.js").then((module) => module.JA),
+  ko: () => import("./i18n_catalogs/ko.js").then((module) => module.KO),
+  nl: () => import("./i18n_catalogs/nl.js").then((module) => module.NL),
+  pl: () => import("./i18n_catalogs/pl.js").then((module) => module.PL),
+  pt_BR: () => import("./i18n_catalogs/pt_BR.js").then((module) => module.PT_BR),
+  pt_PT: () => import("./i18n_catalogs/pt_PT.js").then((module) => module.PT_PT),
+  ru: () => import("./i18n_catalogs/ru.js").then((module) => module.RU),
+  tr: () => import("./i18n_catalogs/tr.js").then((module) => module.TR),
+  ur: () => import("./i18n_catalogs/ur.js").then((module) => module.UR),
+  vi: () => import("./i18n_catalogs/vi.js").then((module) => module.VI),
+  zh_hans: () => import("./i18n_catalogs/zh_hans.js").then((module) => module.ZH_HANS),
+  zh_hant: () => import("./i18n_catalogs/zh_hant.js").then((module) => module.ZH_HANT),
+};
+
+const CATALOG_PROMISES = {};
 
 export function currentLocale() {
   if (typeof document === "undefined") return "en";
@@ -88,6 +71,32 @@ export function normalizeLocale(locale) {
     return "zh_hans";
   }
   return "en";
+}
+
+export async function loadCatalog(locale = currentLocale()) {
+  const normalized = normalizeLocale(locale);
+  const loader = CATALOG_LOADERS[normalized];
+
+  if (CATALOGS[normalized]) return CATALOGS[normalized];
+  if (!loader) return CATALOGS.en;
+
+  if (!CATALOG_PROMISES[normalized]) {
+    CATALOG_PROMISES[normalized] = loader()
+      .then((catalog) => {
+        CATALOGS[normalized] = catalog || {};
+        return CATALOGS[normalized];
+      })
+      .catch(() => {
+        CATALOGS[normalized] = {};
+        return CATALOGS[normalized];
+      });
+  }
+
+  return CATALOG_PROMISES[normalized];
+}
+
+export function loadCurrentLocaleCatalog() {
+  return loadCatalog(currentLocale());
 }
 
 export function t(message, params = {}) {

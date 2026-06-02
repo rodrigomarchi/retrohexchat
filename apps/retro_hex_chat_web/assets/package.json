@@ -6,10 +6,11 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint": "eslint js/ test/",
-    "lint:fix": "eslint js/ test/ --fix",
-    "format": "prettier --write js/ test/ eslint.config.mjs vitest.config.js",
-    "format:check": "prettier --check js/ test/ eslint.config.mjs vitest.config.js"
+    "lint": "eslint js/ test/ scripts/",
+    "lint:fix": "eslint js/ test/ scripts/ --fix",
+    "format": "prettier --write js/ test/ scripts/ eslint.config.mjs vitest.config.js",
+    "format:check": "prettier --check js/ test/ scripts/ eslint.config.mjs vitest.config.js",
+    "bundle:budget": "node scripts/bundle_budget.cjs"
   },
   "keywords": [],
   "author": "",

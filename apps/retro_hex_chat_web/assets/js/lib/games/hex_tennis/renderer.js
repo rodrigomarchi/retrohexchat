@@ -26,10 +26,10 @@ import { t, jt } from "../../i18n.js";
 const POINT_DISPLAY = ["LOVE", "15", "30", "40"];
 
 // Announcement text
-const ANN_TEXT = ["", "DEUCE", t("ADVANTAGE P1"), t("ADVANTAGE P2"), t("GAME!"), t("TIEBREAK!")];
+const ANN_MESSAGES = ["", "DEUCE", "ADVANTAGE P1", "ADVANTAGE P2", "GAME!", "TIEBREAK!"];
 
 // Out type text
-const OUT_TEXT = ["", t("OUT!"), t("LONG!"), t("ACE!"), t("DEAD BALL")];
+const OUT_MESSAGES = ["", "OUT!", "LONG!", "ACE!", "DEAD BALL"];
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -120,11 +120,11 @@ export function render(ctx, state, colors, time) {
   if (state.phase === PHASE.POINT || state.phase === PHASE.CHANGEOVER) {
     let annY = 0;
     if (state.announcement > 0) {
-      drawAnnouncement(ctx, ANN_TEXT[state.announcement], colors.warning, time, annY);
+      drawAnnouncement(ctx, t(ANN_MESSAGES[state.announcement]), colors.warning, time, annY);
       annY += 36;
     }
     if (state.outOfBounds && state.outType > 0) {
-      drawAnnouncement(ctx, OUT_TEXT[state.outType], colors.accent, time, annY);
+      drawAnnouncement(ctx, t(OUT_MESSAGES[state.outType]), colors.accent, time, annY);
       annY += 36;
     }
     if (state.netFault) {

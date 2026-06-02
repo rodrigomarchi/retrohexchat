@@ -1,6 +1,6 @@
 import { describe, expect, it, beforeEach } from "vitest";
 
-import { currentLocale, jt, normalizeLocale, t } from "../../js/lib/i18n.js";
+import { currentLocale, jt, loadCatalog, normalizeLocale, t } from "../../js/lib/i18n.js";
 import {
   AR,
   BN,
@@ -80,64 +80,73 @@ describe("i18n runtime", () => {
     expect(t("Unknown %{name}", { name: "token" })).toBe("Unknown token");
   });
 
-  it("translates pt-BR strings and interpolates parameters", () => {
+  it("translates pt-BR strings and interpolates parameters", async () => {
     document.documentElement.setAttribute("lang", "pt-BR");
+    await loadCatalog("pt-BR");
 
     expect(t("⚠️ Disconnected — Reconnecting...")).toBe("⚠️ Desconectado — Reconectando...");
     expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Tipo de arquivo bloqueado: .exe");
   });
 
-  it("translates pt-PT strings and interpolates parameters", () => {
+  it("translates pt-PT strings and interpolates parameters", async () => {
     document.documentElement.setAttribute("lang", "pt-PT");
+    await loadCatalog("pt-PT");
 
     expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Tipo de ficheiro bloqueado: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("JOGADOR 1 VENCE!");
   });
 
-  it("supports tagged template translations", () => {
+  it("supports tagged template translations", async () => {
     document.documentElement.setAttribute("lang", "pt-BR");
+    await loadCatalog("pt-BR");
 
     expect(jt`File exceeds the ${10} MB limit (${"12 MB"})`).toBe(
       "O arquivo excede o limite de 10 MB (12 MB)",
     );
   });
 
-  it("translates Bengali strings and interpolates parameters", () => {
+  it("translates Bengali strings and interpolates parameters", async () => {
     document.documentElement.setAttribute("lang", "bn-BD");
+    await loadCatalog("bn-BD");
 
     expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("অবরুদ্ধ ফাইলের ধরন: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("খেলোয়াড় 1 জিতেছে!");
   });
 
-  it("translates Urdu strings and interpolates parameters", () => {
+  it("translates Urdu strings and interpolates parameters", async () => {
     document.documentElement.setAttribute("lang", "ur-PK");
+    await loadCatalog("ur-PK");
 
     expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("مسدود فائل کی قسم: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("کھلاڑی 1 جیت گیا!");
   });
 
-  it("translates Traditional Chinese strings and interpolates parameters", () => {
+  it("translates Traditional Chinese strings and interpolates parameters", async () => {
     document.documentElement.setAttribute("lang", "zh-TW");
+    await loadCatalog("zh-TW");
 
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("玩家 1 獲勝！");
   });
 
-  it("translates Italian strings and interpolates parameters", () => {
+  it("translates Italian strings and interpolates parameters", async () => {
     document.documentElement.setAttribute("lang", "it-IT");
+    await loadCatalog("it-IT");
 
     expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Tipo di file bloccato: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("GIOCATORE 1 VINCE!");
   });
 
-  it("translates Polish strings and interpolates parameters", () => {
+  it("translates Polish strings and interpolates parameters", async () => {
     document.documentElement.setAttribute("lang", "pl-PL");
+    await loadCatalog("pl-PL");
 
     expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Zablokowany typ pliku: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("GRACZ 1 WYGRYWA!");
   });
 
-  it("translates Dutch strings and interpolates parameters", () => {
+  it("translates Dutch strings and interpolates parameters", async () => {
     document.documentElement.setAttribute("lang", "nl-BE");
+    await loadCatalog("nl-BE");
 
     expect(t("Blocked file type: %{0}", { 0: ".exe" })).toBe("Geblokkeerd bestandstype: .exe");
     expect(t("PLAYER %{0} WINS!", { 0: "1" })).toBe("SPELER 1 WINT!");

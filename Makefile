@@ -6,7 +6,7 @@
        test.js test.js.watch \
        ci ci.quick \
        i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.rebuild i18n.gettext.check \
-       lint format format.check credo dialyzer lint.js lint.js.fix lint.css precommit compile \
+       lint format format.check credo dialyzer lint.js lint.js.fix lint.css lint.bundle precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
        deps.tree deps.update deps.unlock app.tree \
@@ -178,7 +178,7 @@ e2e.db.setup: ## First-time: create + migrate the retro_hex_chat_e2e database
 # Static Analysis (Constitution Principle VI)
 # ---------------------------------------------------------------------
 
-lint: format.check credo dialyzer lint.js lint.css ## Run all static analysis checks
+lint: format.check credo dialyzer lint.js lint.css lint.bundle ## Run all static analysis checks
 
 format: ## Auto-format all source files
 	mix format
@@ -204,6 +204,9 @@ dialyzer: ## Run Dialyzer type checker
 lint.css: ## Audit inline styles and CSS class consistency
 	@mix lint.inline_styles
 	@mix lint.css_consistency
+
+lint.bundle: ## Enforce frontend bundle budgets
+	npm run bundle:budget --prefix $(WEB_APP)/assets
 
 ci: ## Run all CI checks locally with maximum parallelism
 	elixir scripts/ci.exs
