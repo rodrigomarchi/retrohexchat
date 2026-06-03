@@ -126,6 +126,8 @@ const GameCanvasHook = {
     this.handleEvent("game_end", () => {
       this._cleanup();
     });
+
+    this.pushEvent("game_canvas_ready", {});
   },
 
   async _maybeInitGame() {

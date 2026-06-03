@@ -117,6 +117,8 @@ const FileTransferHook = {
         this._setupChannel(webrtcEl._fileTransferChannel);
       }
     }
+
+    this.pushEvent("file_transfer_ready", {});
   },
 
   destroyed() {

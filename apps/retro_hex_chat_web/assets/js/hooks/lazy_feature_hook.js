@@ -8,8 +8,6 @@ export function lazyFeatureHook(options) {
       serverEvents: config.serverEvents,
       readyEvent: config.readyEvent,
       reason: config.reason,
-      safeWithoutReady: config.safeWithoutReady,
-      safeWithoutReadyReason: config.safeWithoutReadyReason,
     },
 
     mounted() {
@@ -45,15 +43,7 @@ function validateConfig(options) {
     throw new Error("lazyFeatureHook requires a configuration object.");
   }
 
-  const {
-    name,
-    loader,
-    serverEvents = [],
-    readyEvent = null,
-    reason,
-    safeWithoutReady = false,
-    safeWithoutReadyReason = null,
-  } = options;
+  const { name, loader, serverEvents = [], readyEvent = null, reason } = options;
 
   if (!isNonEmptyString(name)) {
     throw new Error("lazyFeatureHook requires a non-empty name.");
@@ -75,18 +65,14 @@ function validateConfig(options) {
     throw new Error(`lazyFeatureHook(${name}) readyEvent must be a non-empty string when set.`);
   }
 
-  if (readyEvent && safeWithoutReady) {
-    throw new Error(`lazyFeatureHook(${name}) cannot set both readyEvent and safeWithoutReady.`);
-  }
-
-  if (serverEvents.length > 0 && !readyEvent && !safeWithoutReady) {
+  if ("safeWithoutReady" in options || "safeWithoutReadyReason" in options) {
     throw new Error(
-      `lazyFeatureHook(${name}) handles serverEvents and must declare readyEvent or safeWithoutReady.`,
+      `lazyFeatureHook(${name}) does not support safeWithoutReady; declare readyEvent for server events.`,
     );
   }
 
-  if (safeWithoutReady && !isNonEmptyString(safeWithoutReadyReason)) {
-    throw new Error(`lazyFeatureHook(${name}) safeWithoutReady requires a rationale.`);
+  if (serverEvents.length > 0 && !readyEvent) {
+    throw new Error(`lazyFeatureHook(${name}) handles serverEvents and must declare readyEvent.`);
   }
 
   return {
@@ -95,8 +81,6 @@ function validateConfig(options) {
     serverEvents,
     readyEvent,
     reason,
-    safeWithoutReady,
-    safeWithoutReadyReason,
   };
 }
 

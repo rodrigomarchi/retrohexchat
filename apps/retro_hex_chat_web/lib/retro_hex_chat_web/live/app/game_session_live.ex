@@ -107,9 +107,14 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
       |> assign(
         session_status: "playing",
         game_id: game_id,
-        game_name: game_name
+        game_name: game_name,
+        game_webrtc_ready: false,
+        game_webrtc_started: false,
+        game_canvas_ready: false,
+        game_canvas_started: false,
+        game_rtc_connected: false
       )
-      |> start_webrtc()
+      |> maybe_start_webrtc()
 
     {:noreply, socket}
   end
@@ -255,12 +260,20 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
   def handle_event(
         "game_webrtc_ready",
         _params,
-        %{assigns: %{session_status: "playing"}} = socket
+        socket
       ) do
-    {:noreply, start_webrtc(socket)}
+    {:noreply,
+     socket
+     |> assign(game_webrtc_ready: true)
+     |> maybe_start_webrtc()}
   end
 
-  def handle_event("game_webrtc_ready", _params, socket), do: {:noreply, socket}
+  def handle_event("game_canvas_ready", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(game_canvas_ready: true)
+     |> maybe_start_game_canvas()}
+  end
 
   def handle_event("game_result", %{"score" => score, "winner" => winner}, socket) do
     result = %{"score" => score, "winner" => winner}
@@ -273,11 +286,8 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
 
     socket =
       socket
-      |> assign(webrtc_state: "Connected")
-      |> push_event("game_start", %{
-        game_id: socket.assigns.game_id,
-        is_host: socket.assigns.role == :creator
-      })
+      |> assign(webrtc_state: "Connected", game_rtc_connected: true)
+      |> maybe_start_game_canvas()
 
     {:noreply, socket}
   end
@@ -364,6 +374,11 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
         webrtc_state: nil,
         game_id: game_id,
         game_name: game_name,
+        game_webrtc_ready: false,
+        game_webrtc_started: false,
+        game_canvas_ready: false,
+        game_canvas_started: false,
+        game_rtc_connected: false,
         session_closed: false,
         session_ended_reason: nil,
         session_duration: nil
@@ -409,6 +424,22 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
 
   defp resolve_game_info(_session), do: {nil, nil}
 
+  defp maybe_start_webrtc(
+         %{
+           assigns: %{
+             session_status: "playing",
+             game_webrtc_ready: true,
+             game_webrtc_started: false
+           }
+         } = socket
+       ) do
+    socket
+    |> assign(game_webrtc_started: true)
+    |> start_webrtc()
+  end
+
+  defp maybe_start_webrtc(socket), do: socket
+
   defp start_webrtc(socket) do
     user_id = socket.assigns.user_id
     role = socket.assigns.role
@@ -429,6 +460,28 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
         })
     end
   end
+
+  defp maybe_start_game_canvas(
+         %{
+           assigns: %{
+             session_status: "playing",
+             game_canvas_ready: true,
+             game_canvas_started: false,
+             game_rtc_connected: true,
+             game_id: game_id
+           }
+         } = socket
+       )
+       when is_binary(game_id) do
+    socket
+    |> assign(game_canvas_started: true)
+    |> push_event("game_start", %{
+      game_id: game_id,
+      is_host: socket.assigns.role == :creator
+    })
+  end
+
+  defp maybe_start_game_canvas(socket), do: socket
 
   defp expired_reason_label("user_closed"), do: dgettext("games", "Session closed by user.")
   defp expired_reason_label("game_ended"), do: dgettext("games", "Game ended.")

@@ -400,6 +400,13 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
      |> maybe_start_media_if_call()}
   end
 
+  def handle_event("file_transfer_ready", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(file_transfer_ready: true)
+     |> maybe_push_ft_config()}
+  end
+
   def handle_event("p2p_connected", _params, socket) do
     Logger.info("P2P connected: token=#{socket.assigns.token}")
 
@@ -602,7 +609,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
     socket =
       socket
       |> assign(file_transfer: %{status: "ready"})
-      |> push_ft_config()
+      |> maybe_push_ft_config()
 
     {:noreply, socket}
   end
@@ -846,6 +853,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
         webrtc_started: false,
         media_ready: false,
         media_started: false,
+        file_transfer_ready: false,
         turn_warning_shown: false,
         file_transfer: init_file_transfer_on_mount(accepted_action_type, db_session.status),
         accepted_action_type: accepted_action_type,
@@ -860,13 +868,6 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
         session_ended_reason: nil,
         session_duration: nil
       )
-
-    socket =
-      if connected?(socket) && socket.assigns.file_transfer do
-        push_ft_config(socket)
-      else
-        socket
-      end
 
     {:ok, socket}
   end
@@ -1015,11 +1016,19 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
     if action_type == "file_transfer" && socket.assigns.file_transfer == nil do
       socket
       |> assign(file_transfer: %{status: "ready"})
-      |> push_ft_config()
+      |> maybe_push_ft_config()
     else
       socket
     end
   end
+
+  defp maybe_push_ft_config(%{assigns: %{file_transfer: nil}} = socket), do: socket
+
+  defp maybe_push_ft_config(%{assigns: %{file_transfer_ready: true}} = socket) do
+    push_ft_config(socket)
+  end
+
+  defp maybe_push_ft_config(socket), do: socket
 
   defp push_ft_config(socket) do
     config = %{

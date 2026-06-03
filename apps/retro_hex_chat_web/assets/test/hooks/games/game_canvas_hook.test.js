@@ -36,6 +36,16 @@ describe("GameCanvasHook", () => {
       expect(ctx.handleEvent).toHaveBeenCalledWith("game_end", expect.any(Function));
     });
 
+    it("pushes game_canvas_ready after mounting", () => {
+      const ctx = createHookContext();
+      const hook = Object.create(GameCanvasHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+
+      expect(ctx.pushEvent).toHaveBeenCalledWith("game_canvas_ready", {});
+    });
+
     it("initializes engine and channel as null", () => {
       const ctx = createHookContext();
       const hook = Object.create(GameCanvasHook);

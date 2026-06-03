@@ -1,4 +1,4 @@
-import { Page, test } from '@playwright/test';
+import { expect, Page, test } from '@playwright/test';
 import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
 import { ChatPage } from '../pages/ChatPage';
 
@@ -19,6 +19,13 @@ async function signedInUser(page: Page, prefix = 'tm') {
   return { chat };
 }
 
+async function expectNoActiveTimers(chat: ChatPage) {
+  await expect(async () => {
+    await chat.sendMessage('/timer list');
+    await chat.expectMessageVisible('No active timers.', 1_000);
+  }).toPass({ timeout: 7_000 });
+}
+
 test.describe('Timer commands', () => {
   test('/timer one-shot fires once, then disappears from list (L15)', async ({
     page,
@@ -35,8 +42,7 @@ test.describe('Timer commands', () => {
     await chat.sendMessage('/clear');
     await chat.expectMessageVisible(timerText, 5_000);
 
-    await chat.sendMessage('/timer list');
-    await chat.expectMessageVisible('No active timers.');
+    await expectNoActiveTimers(chat);
   });
 
   test('/timer stop cancels before firing; missing timer shows error (L16)', async ({
@@ -79,7 +85,6 @@ test.describe('Timer commands', () => {
     await chat.expectMessageVisible(`* Timer '${timerName}' stopped`);
 
     await chat.sendMessage('/clear');
-    await chat.sendMessage('/timer list');
-    await chat.expectMessageVisible('No active timers.');
+    await expectNoActiveTimers(chat);
   });
 });

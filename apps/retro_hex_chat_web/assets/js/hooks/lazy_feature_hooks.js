@@ -4,26 +4,15 @@ export const lazyFeatureHooks = {
   FileTransferHook: lazyFeatureHook({
     name: "FileTransferHook",
     loader: () => import("./p2p/file_transfer_hook"),
-    serverEvents: [
-      "ft_channel_ready",
-      "ft_config",
-      "ft_accept",
-      "ft_reject",
-      "ft_cancel",
-      "ft_retry",
-    ],
-    safeWithoutReady: true,
-    safeWithoutReadyReason:
-      "FileTransferHook reads config and existing DataChannel state from DOM/peer element on mount.",
+    serverEvents: ["ft_config", "ft_accept", "ft_reject", "ft_cancel", "ft_retry"],
+    readyEvent: "file_transfer_ready",
     reason: "P2P file transfer is a heavy feature not needed for the initial chat shell.",
   }),
   GameCanvasHook: lazyFeatureHook({
     name: "GameCanvasHook",
     loader: () => import("./games/game_canvas_hook"),
     serverEvents: ["game_start", "game_end"],
-    safeWithoutReady: true,
-    safeWithoutReadyReason:
-      "GameCanvasHook reads game_id/is_host from dataset and handles game_end as a terminal cleanup event.",
+    readyEvent: "game_canvas_ready",
     reason: "Game canvas and engine loading are heavy game-session features.",
   }),
   GameWebRTCHook: lazyFeatureHook({

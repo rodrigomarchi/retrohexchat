@@ -82,7 +82,7 @@ describe("lazyFeatureHook", () => {
     ).toThrow("requires a reason");
   });
 
-  it("requires readyEvent or safeWithoutReady when server events are declared", () => {
+  it("requires readyEvent when server events are declared", () => {
     expect(() =>
       lazyFeatureHook({
         name: "ServerEventHook",
@@ -90,10 +90,10 @@ describe("lazyFeatureHook", () => {
         reason: "Server-pushed lazy feature.",
         serverEvents: ["feature_start"],
       }),
-    ).toThrow("must declare readyEvent or safeWithoutReady");
+    ).toThrow("must declare readyEvent");
   });
 
-  it("requires rationale for safeWithoutReady exceptions", () => {
+  it("rejects safeWithoutReady exceptions", () => {
     expect(() =>
       lazyFeatureHook({
         name: "SafeWithoutReadyHook",
@@ -102,7 +102,7 @@ describe("lazyFeatureHook", () => {
         serverEvents: ["feature_start"],
         safeWithoutReady: true,
       }),
-    ).toThrow("requires a rationale");
+    ).toThrow("does not support safeWithoutReady");
   });
 
   it("exposes metadata for contract tooling", () => {
@@ -119,8 +119,6 @@ describe("lazyFeatureHook", () => {
       serverEvents: ["feature_start"],
       readyEvent: "feature_ready",
       reason: "Server-pushed lazy feature.",
-      safeWithoutReady: false,
-      safeWithoutReadyReason: null,
     });
   });
 });

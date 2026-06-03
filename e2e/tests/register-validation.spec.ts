@@ -10,6 +10,7 @@ test.describe('Register step validation', () => {
 
     await connect.registerPasswordInput.fill('correct-pass');
     await connect.registerPasswordConfirmInput.fill('different-pass');
+    await expect(connect.registerButton).toBeEnabled();
     await connect.registerButton.click();
 
     await expect(connect.registerError).toContainText('Passwords do not match');
@@ -22,6 +23,7 @@ test.describe('Register step validation', () => {
 
     await connect.registerPasswordInput.fill('abc');
     await connect.registerPasswordConfirmInput.fill('abc');
+    await expect(connect.registerButton).toBeEnabled();
     await connect.registerButton.click();
 
     await expect(connect.registerError).toContainText(

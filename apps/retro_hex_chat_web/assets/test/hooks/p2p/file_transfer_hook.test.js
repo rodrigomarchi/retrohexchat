@@ -48,6 +48,10 @@ describe("FileTransferHook", () => {
       expect(hook.handleEvent).toHaveBeenCalledWith("ft_config", expect.any(Function));
     });
 
+    it("pushes file_transfer_ready after mounting", () => {
+      expect(hook.pushEvent).toHaveBeenCalledWith("file_transfer_ready", {});
+    });
+
     it("sets up drag-and-drop listeners on the element", () => {
       const dragEvent = new Event("dragover");
       hook.el.dispatchEvent(dragEvent);

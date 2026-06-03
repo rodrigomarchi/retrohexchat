@@ -169,19 +169,25 @@ function parseLazyFeatureHooks(source, failures) {
     }
 
     const serverEvents = arrayPropertyValues(body, "serverEvents");
-    const hasReadyEvent = Boolean(stringPropertyValue(body, "readyEvent"));
+    const readyEvent = stringPropertyValue(body, "readyEvent");
+    const hasReadyEvent = Boolean(readyEvent);
     const safeWithoutReady = /safeWithoutReady\s*:\s*true\b/.test(body);
+    const hasSafeWithoutReadyReason = /safeWithoutReadyReason\s*:/.test(body);
 
-    if (serverEvents.length > 0 && !hasReadyEvent && !safeWithoutReady) {
+    if (safeWithoutReady || hasSafeWithoutReadyReason) {
       failures.push(
-        `lazyFeatureHooks.${hookName} handles serverEvents and must declare readyEvent or safeWithoutReady.`,
+        `lazyFeatureHooks.${hookName} uses safeWithoutReady; server-pushed lazy hooks must use readyEvent.`,
       );
     }
 
-    if (safeWithoutReady && !stringPropertyValue(body, "safeWithoutReadyReason")) {
+    if (serverEvents.length > 0 && !hasReadyEvent) {
       failures.push(
-        `lazyFeatureHooks.${hookName} sets safeWithoutReady without safeWithoutReadyReason.`,
+        `lazyFeatureHooks.${hookName} handles serverEvents and must declare readyEvent.`,
       );
+    }
+
+    if (hasReadyEvent) {
+      checkReadyEventContract(hookName, readyEvent, failures);
     }
   }
 
@@ -199,6 +205,30 @@ function checkHookSets(criticalHooks, lazyHooks, failures) {
     if (lazyHooks.has(hookName)) {
       failures.push(`${hookName} is declared as both critical and lazyFeature.`);
     }
+  }
+}
+
+function checkReadyEventContract(hookName, readyEvent, failures) {
+  const escapedEvent = escapeRegExp(readyEvent);
+  const pushPattern = new RegExp(`pushEvent\\(\\s*["']${escapedEvent}["']`);
+  const handlePattern = new RegExp(`handle_event\\(\\s*["']${escapedEvent}["']`);
+
+  if (!treeContains(JS_ROOT, (filename) => filename.endsWith(".js"), pushPattern)) {
+    failures.push(
+      `lazyFeatureHooks.${hookName} declares readyEvent "${readyEvent}" but no asset hook pushes it.`,
+    );
+  }
+
+  if (
+    !treeContains(
+      WEB_LIB_ROOT,
+      (filename) => filename.endsWith(".ex") || filename.endsWith(".heex"),
+      handlePattern,
+    )
+  ) {
+    failures.push(
+      `lazyFeatureHooks.${hookName} declares readyEvent "${readyEvent}" but no LiveView handles it.`,
+    );
   }
 }
 
@@ -239,6 +269,19 @@ function arrayPropertyValues(source, property) {
   if (!body) return [];
 
   return [...body.matchAll(/"([^"]+)"/g)].map((match) => match[1]);
+}
+
+function treeContains(dir, predicate, pattern) {
+  for (const file of listFiles(dir, predicate)) {
+    const source = fs.readFileSync(file, "utf8");
+    if (pattern.test(source)) return true;
+  }
+
+  return false;
+}
+
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
 
 function readAsset(relPath) {
