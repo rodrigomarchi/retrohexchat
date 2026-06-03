@@ -178,7 +178,7 @@ e2e.db.setup: ## First-time: create + migrate the retro_hex_chat_e2e database
 # Static Analysis (Constitution Principle VI)
 # ---------------------------------------------------------------------
 
-lint: format.check credo dialyzer lint.js lint.css lint.bundle ## Run all static analysis checks
+lint: format.check credo dialyzer lint.js lint.hooks lint.css lint.bundle ## Run all static analysis checks
 
 format: ## Auto-format all source files
 	mix format
@@ -197,6 +197,9 @@ lint.js: ## Run ESLint + Prettier check on JS
 lint.js.fix: ## Auto-fix ESLint + Prettier issues
 	npm run lint:fix --prefix $(WEB_APP)/assets
 	npm run format --prefix $(WEB_APP)/assets
+
+lint.hooks: ## Enforce LiveView hook loading contract
+	npm run lint:hooks --prefix $(WEB_APP)/assets
 
 dialyzer: ## Run Dialyzer type checker
 	mix dialyzer

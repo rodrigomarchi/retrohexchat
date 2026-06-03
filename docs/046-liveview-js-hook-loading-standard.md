@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress. Phases 1-4 are complete; Phase 5 CI enforcement is next.
+In progress. Phases 1-5 are complete; Phase 6 bundle budget verification is next.
 
 ## Goal
 
@@ -336,9 +336,9 @@ Completion criteria:
 
 Completion criteria:
 
-- CI fails on unauthorized lazy hook usage.
-- CI fails on unclassified new hooks.
-- CI fails on direct hook imports from `app.js`.
+- [x] CI fails on unauthorized lazy hook usage.
+- [x] CI fails on unclassified new hooks.
+- [x] CI fails on direct hook imports from `app.js`.
 
 ### Phase 6: Bundle Budget Verification
 
@@ -465,3 +465,4 @@ Unauthorized future dynamic imports must fail the hooks contract script unless t
 - 2026-06-03: Completed Phase 2 central registry. Added `hooks/registry.js`, `hooks/critical_hooks.js`, and `hooks/lazy_feature_hooks.js`; `app.js` now imports only `buildHooks()` for hook registration. Validation passed: `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm test --prefix apps/retro_hex_chat_web/assets` (`3656` tests), and `mix assets.build`. Dev build `app.js` size after the registry move: `380.7kb`.
 - 2026-06-03: Completed Phase 3 lazy facade API. Replaced the generic lazy hook helper with `lazyFeatureHook`, added metadata validation for feature name, reason, server events, ready events, and safe-without-ready exceptions, and ported all lazy feature hooks to the allowlist. Validation passed: `npm exec -- vitest run test/hooks/lazy_feature_hook.test.js` (`8` tests), `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm test --prefix apps/retro_hex_chat_web/assets` (`3662` tests), and `mix assets.build`. Dev build `app.js` size after the facade change: `384.8kb`.
 - 2026-06-03: Completed Phase 4 readiness protocol audit. Added `p2p_webrtc_ready` for `WebRTCHook` and `media_hook_ready` for `MediaHook`; P2P WebRTC and initial media startup are now gated by server-side ready/started flags. Kept explicit `safeWithoutReady` exceptions for `FileTransferHook` and `GameCanvasHook` because both recover initial state from rendered data/DOM fallbacks. Validation passed: targeted Vitest for lazy/P2P/media hooks (`46` tests), P2P LiveView test file (`20` tests), `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm test --prefix apps/retro_hex_chat_web/assets` (`3662` tests), `mix test` (`2790` core tests and `452` web tests), `mix assets.build`, `MIX_ENV=e2e mix assets.build`, and targeted Playwright P2P/game specs (`9` tests, `44.2s`). Dev/e2e build `app.js` size after readiness changes: `384.6kb`.
+- 2026-06-03: Completed Phase 5 CI enforcement. Added `scripts/enforce_hooks_contract.cjs`, `npm run lint:hooks`, and `make lint.hooks`; `make lint` now includes the hooks contract. The guard fails on direct hook imports from `app.js`, unauthorized `lazyFeatureHook` use, unauthorized dynamic imports, duplicate critical/lazy declarations, lazy server events without `readyEvent` or explicit `safeWithoutReady`, and literal `phx-hook` usage without a registry entry or entrypoint exception. Validation passed: `npm run lint:hooks --prefix apps/retro_hex_chat_web/assets`, `make lint.hooks`, `npm run lint --prefix apps/retro_hex_chat_web/assets`, and `npm run format:check --prefix apps/retro_hex_chat_web/assets`.

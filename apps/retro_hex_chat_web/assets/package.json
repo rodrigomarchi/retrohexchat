@@ -7,6 +7,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "lint": "eslint js/ test/ scripts/",
+    "lint:hooks": "node scripts/enforce_hooks_contract.cjs",
     "lint:fix": "eslint js/ test/ scripts/ --fix",
     "format": "prettier --write js/ test/ scripts/ eslint.config.mjs vitest.config.js",
     "format:check": "prettier --check js/ test/ scripts/ eslint.config.mjs vitest.config.js",
