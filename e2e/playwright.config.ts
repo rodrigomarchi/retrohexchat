@@ -4,6 +4,7 @@ import { defineConfig, devices } from '@playwright/test';
 // a dedicated retro_hex_chat_e2e database (see config/e2e.exs).
 export default defineConfig({
   testDir: './tests',
+  globalSetup: './global-setup.ts',
   // Start simple: serial runs share one server. We can flip to parallel once
   // specs prove they tolerate it (will likely need /test/reset by then).
   fullyParallel: false,

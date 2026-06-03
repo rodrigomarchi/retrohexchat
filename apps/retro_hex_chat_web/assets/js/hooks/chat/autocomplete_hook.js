@@ -35,6 +35,13 @@ const AutocompleteHook = {
     // Auto-resize: compute max height for 5 lines
     this.maxLines = 5;
     this.maxHeight = computeMaxHeight(this.inputEl, this.maxLines);
+    this.formEl = this.inputEl.closest("form");
+
+    if (this.formEl) {
+      this.formEl.addEventListener("submit", () => {
+        this.rememberSubmittedInput();
+      });
+    }
 
     // PM typing indicator — debounce input events + auto-resize
     this.inputEl.addEventListener("input", () => {
@@ -81,21 +88,25 @@ const AutocompleteHook = {
       if (e.key === "Escape") {
         if (this.historySearchActive) {
           e.preventDefault();
+          e.stopPropagation();
           this.closeHistorySearch(true);
           return;
         }
         if (this.editMode) {
           e.preventDefault();
+          e.stopPropagation();
           this.editMode = false;
           this.pushEvent("cancel_edit", {});
           return;
         }
         if (this.isDropdownVisible()) {
           e.preventDefault();
+          e.stopPropagation();
           this.pushEvent("autocomplete_close", {});
           this.hasNavigated = false;
         } else if (this.tooltipVisible) {
           e.preventDefault();
+          e.stopPropagation();
           this.pushEvent("syntax_tooltip_dismiss", {});
           this.tooltipVisible = false;
         }
@@ -128,24 +139,9 @@ const AutocompleteHook = {
           this.tooltipVisible = false;
         }
 
-        const value = this.inputEl.value;
-        if (value.trim()) {
-          this.historyManager.save(value);
-          this.persistedHistory = this.historyManager.getHistory();
-        }
-        if (value.startsWith("/") && !isSensitiveCommand(value)) {
-          const cmdName = value.slice(1).split(/\s+/)[0].toLowerCase();
-          if (cmdName) {
-            this.historyManager.saveRecentCommand(cmdName);
-            this.pushEvent("recent_commands_loaded", {
-              commands: this.historyManager.getRecentCommands(),
-            });
-          }
-        }
+        this.rememberSubmittedInput();
 
-        this.historyManager.resetBrowsing();
-
-        const form = this.inputEl.closest("form");
+        const form = this.formEl || this.inputEl.closest("form");
         if (form) {
           form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
         }
@@ -384,6 +380,25 @@ const AutocompleteHook = {
 
   // ── History (delegated) ────────────────────────────────
 
+  rememberSubmittedInput() {
+    const value = this.inputEl.value.trimEnd();
+    if (value.trim()) {
+      this.historyManager.save(value);
+      this.persistedHistory = this.historyManager.getHistory();
+    }
+    if (value.startsWith("/") && !isSensitiveCommand(value)) {
+      const cmdName = value.slice(1).split(/\s+/)[0].toLowerCase();
+      if (cmdName) {
+        this.historyManager.saveRecentCommand(cmdName);
+        this.pushEvent("recent_commands_loaded", {
+          commands: this.historyManager.getRecentCommands(),
+        });
+      }
+    }
+
+    this.historyManager.resetBrowsing();
+  },
+
   historyUp() {
     const result = this.historyManager.up(this.inputEl.value, this.inputEl.selectionStart);
     if (result) {
@@ -448,9 +463,11 @@ const AutocompleteHook = {
       this._histSearchKeydownHandler = (e) => {
         if (e.key === "Enter") {
           e.preventDefault();
+          e.stopPropagation();
           this.closeHistorySearch(false);
         } else if (e.key === "Escape") {
           e.preventDefault();
+          e.stopPropagation();
           this.closeHistorySearch(true);
         }
       };
@@ -471,7 +488,9 @@ const AutocompleteHook = {
 
     if (cancel && this.historySearchOriginal !== undefined) {
       this.inputEl.value = this.historySearchOriginal;
-      this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
+      this.pushEvent("input_changed", { input: this.historySearchOriginal });
+    } else if (!cancel) {
+      this.pushEvent("input_changed", { input: this.inputEl.value });
     }
     this.historySearchOriginal = undefined;
     this.inputEl.focus();
@@ -494,7 +513,6 @@ const AutocompleteHook = {
 
     if (match) {
       this.inputEl.value = match;
-      this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
       autoResize(this.inputEl, this.maxHeight);
       if (noMatch) {
         noMatch.classList.remove("history-no-match--visible");

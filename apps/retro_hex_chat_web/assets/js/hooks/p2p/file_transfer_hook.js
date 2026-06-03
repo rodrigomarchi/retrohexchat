@@ -39,7 +39,7 @@ const FileTransferHook = {
   mounted() {
     this._channel = null;
     this._session = null;
-    this._config = null;
+    this._config = configFromDataset(this.el);
     this._queue = [];
     this._sending = false;
     this._progressTimer = null;
@@ -603,6 +603,22 @@ function readFileAsArrayBuffer(file) {
     reader.onerror = () => reject(reader.error);
     reader.readAsArrayBuffer(file);
   });
+}
+
+function configFromDataset(el) {
+  const maxSizeMb = Number(el.dataset.maxSizeMb);
+
+  if (!Number.isFinite(maxSizeMb) || maxSizeMb <= 0) {
+    return null;
+  }
+
+  return {
+    maxSizeBytes: maxSizeMb * 1024 * 1024,
+    blockedExtensions: (el.dataset.blockedExtensions || "")
+      .split(",")
+      .map((extension) => extension.trim())
+      .filter(Boolean),
+  };
 }
 
 export default FileTransferHook;

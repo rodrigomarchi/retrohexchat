@@ -86,7 +86,13 @@ defmodule RetroHexChatWeb.MixProject do
       setup: ["deps.get", "assets.setup", "assets.build"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
       "assets.setup": ["esbuild.install --if-missing"],
+      "assets.clean": [
+        "cmd rm -rf priv/static/assets/js",
+        "cmd rm -f priv/static/assets/css/retrohex.css.gz",
+        "cmd rm -f priv/static/cache_manifest.json"
+      ],
       "assets.build": [
+        "assets.clean",
         "compile",
         "esbuild retro_hex_chat_web_public_pages_js",
         "esbuild retro_hex_chat_web_help_live_js",
@@ -96,6 +102,7 @@ defmodule RetroHexChatWeb.MixProject do
         "cmd env BROWSERSLIST_IGNORE_OLD_DATA=1 assets/node_modules/.bin/tailwindcss -c assets/tailwind.config.js -i assets/css/retrohex.css -o priv/static/assets/css/retrohex.css"
       ],
       "assets.deploy": [
+        "assets.clean",
         "esbuild retro_hex_chat_web_public_pages_js --minify",
         "esbuild retro_hex_chat_web_help_live_js --minify",
         "esbuild retro_hex_chat_web_retrohex_content_js --minify",

@@ -31,6 +31,7 @@ import ContextualTipsHook from "./hooks/ui/contextual_tips_hook";
 import MessageInteractionsHook from "./hooks/chat/message_interactions_hook";
 import NickChangeFormHook from "./hooks/chat/nick_change_form_hook";
 import P2PCapabilityHook from "./hooks/p2p/p2p_capability_hook";
+import P2PChatFormHook from "./hooks/p2p/p2p_chat_form_hook";
 import P2PSessionHook from "./hooks/p2p/p2p_session_hook";
 import URLCatcherHook from "./hooks/ui/url_catcher_hook";
 import ArcadeIframeHook, { ArcadeSessionHook } from "./hooks/games/arcade_iframe_hook";
@@ -95,6 +96,7 @@ const Hooks = {
   MessageInteractionsHook: MessageInteractionsHook,
   NickChangeFormHook: NickChangeFormHook,
   P2PCapabilityHook: P2PCapabilityHook,
+  P2PChatFormHook: P2PChatFormHook,
   P2PDiagramHook: P2PDiagramHook,
   P2PSessionHook: P2PSessionHook,
   NotifyListHook: NotifyListHook,

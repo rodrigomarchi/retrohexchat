@@ -645,6 +645,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       history_index: -1,
       hover_card: ChatLive.HoverEvents.default_hover_card(),
       input: "",
+      chat_clear_token: 0,
+      cleared_channel_cutoffs: %{},
       link_previews: %{},
       loading_more: false,
       messages: %{},

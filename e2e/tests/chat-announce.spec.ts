@@ -11,10 +11,6 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'ann'): string {
-  return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
-}
-
 async function newSignedInUser(
   browser: Browser,
   prefix = 'ann',
@@ -60,18 +56,12 @@ test.describe('Announcements', () => {
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
     const alice = await newSignedInUser(browser, 'anna');
-    const channel = uniqueChannel('ann');
     const hiddenText = `ignored-admin-message-${Date.now()}`;
     const announcement = `global-announcement-${Date.now()}`;
 
     try {
-      await admin.chat.sendMessage(`/join ${channel}`);
-      await admin.chat.expectTabVisible(channel);
-      await admin.chat.switchToTab(channel);
-
-      await alice.chat.sendMessage(`/join ${channel}`);
-      await alice.chat.expectTabVisible(channel);
-      await alice.chat.switchToTab(channel);
+      await admin.chat.switchToTab('#lobby');
+      await alice.chat.switchToTab('#lobby');
       await alice.chat.expectNickInList(ADMIN_NICK);
 
       await alice.chat.sendMessage(`/ignore ${ADMIN_NICK} all`);

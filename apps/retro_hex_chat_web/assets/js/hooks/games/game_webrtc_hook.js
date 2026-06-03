@@ -28,10 +28,14 @@ const GameWebRTCHook = {
     this.disconnectedTimer = null;
     this.role = null;
     this.dataChannel = null;
+    this.pendingIceCandidates = [];
+    this._negotiating = false;
 
     this.handleEvent("game_start_offer", (data) => this._handleStartOffer(data));
     this.handleEvent("game_start_answer", (data) => this._handleStartAnswer(data));
     this.handleEvent("game_signal", (data) => this._handleSignal(data));
+
+    this.pushEvent("game_webrtc_ready", {});
   },
 
   destroyed() {
@@ -39,9 +43,12 @@ const GameWebRTCHook = {
   },
 
   async _handleStartOffer({ ice_servers, turn_only }) {
+    if (this.role === "initiator" && this.pc) return;
+
     this.iceServers = ice_servers;
     this.turnOnly = !!turn_only;
     this.role = "initiator";
+    this.pendingIceCandidates = [];
     await this._createConnection();
 
     const offer = await createOffer(this.pc);
@@ -49,9 +56,12 @@ const GameWebRTCHook = {
   },
 
   _handleStartAnswer({ ice_servers, turn_only }) {
+    if (this.role === "answerer") return;
+
     this.iceServers = ice_servers;
     this.turnOnly = !!turn_only;
     this.role = "answerer";
+    this.pendingIceCandidates = [];
   },
 
   async _handleSignal(data) {
@@ -76,18 +86,36 @@ const GameWebRTCHook = {
       type: "offer",
       sdp: data.sdp,
     });
+    await this._flushPendingIceCandidates();
     this.pushEvent("game_signal", { type: "answer", sdp: answer.sdp });
   },
 
   async _handleRemoteAnswer(data) {
     if (this.pc) {
       await handleAnswer(this.pc, { type: "answer", sdp: data.sdp });
+      await this._flushPendingIceCandidates();
     }
   },
 
   async _handleRemoteCandidate(data) {
-    if (this.pc && data.candidate) {
-      await addIceCandidate(this.pc, data.candidate);
+    if (!data.candidate) return;
+
+    if (!this.pc || !this.pc.remoteDescription) {
+      this.pendingIceCandidates.push(data.candidate);
+      return;
+    }
+
+    await addIceCandidate(this.pc, data.candidate);
+  },
+
+  async _flushPendingIceCandidates() {
+    if (!this.pc || !this.pc.remoteDescription || this.pendingIceCandidates.length === 0) {
+      return;
+    }
+
+    const candidates = this.pendingIceCandidates.splice(0);
+    for (const candidate of candidates) {
+      await addIceCandidate(this.pc, candidate);
     }
   },
 
@@ -115,6 +143,19 @@ const GameWebRTCHook = {
     onConnectionStateChange(this.pc, (state) => {
       this._handleConnectionStateChange(state);
     });
+
+    this._negotiating = false;
+    this.pc.onnegotiationneeded = async () => {
+      if (this.role === "initiator" && !this._negotiating) {
+        this._negotiating = true;
+        try {
+          const offer = await createOffer(this.pc);
+          this.pushEvent("game_signal", { type: "offer", sdp: offer.sdp });
+        } finally {
+          this._negotiating = false;
+        }
+      }
+    };
 
     if (this.role === "initiator") {
       this.dataChannel = createDataChannel(this.pc, "gamedata", {

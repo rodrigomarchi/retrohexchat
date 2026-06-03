@@ -121,8 +121,8 @@ test.describe('P2P action response idempotency', () => {
 
       await bobLobby.doubleAcceptAction('audio_call');
 
-      await expectSingleFeedback(aliceLobby, 'audio_call request accepted.');
-      await expectSingleFeedback(bobLobby, 'audio_call request accepted.');
+      await expectSingleFeedback(aliceLobby, 'Audio call request accepted.');
+      await expectSingleFeedback(bobLobby, 'Audio call request accepted.');
       await expect(aliceLobby.mediaCall).toBeVisible({ timeout: 20_000 });
       await expect(bobLobby.mediaCall).toBeVisible({ timeout: 20_000 });
       await expect(aliceLobby.actionRequest('audio_call')).toHaveCount(0);
@@ -147,8 +147,8 @@ test.describe('P2P action response idempotency', () => {
 
       await bobLobby.doubleDeclineAction('audio_call');
 
-      await expectSingleFeedback(aliceLobby, 'audio_call request declined.');
-      await expectSingleFeedback(bobLobby, 'audio_call request declined.');
+      await expectSingleFeedback(aliceLobby, 'Audio call request declined.');
+      await expectSingleFeedback(bobLobby, 'Audio call request declined.');
       await expect(aliceLobby.mediaCall).toHaveCount(0);
       await expect(bobLobby.mediaCall).toHaveCount(0);
       await expect(aliceLobby.actionRequest('audio_call')).toHaveCount(0);

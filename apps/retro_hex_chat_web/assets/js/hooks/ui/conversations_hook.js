@@ -7,10 +7,48 @@ import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
 
 const ConversationsHook = {
   mounted() {
+    this.suppressContextClick = false;
+
+    this.el.addEventListener(
+      "mousedown",
+      (e) => {
+        if (e.button !== 2) return;
+
+        const channel = findClosestWithData(e.target, "[data-channel]", "channel");
+        const nick = findClosestWithData(e.target, "[data-nick]", "nick");
+        if (channel || nick) {
+          this.suppressContextClick = true;
+          clearTimeout(this._suppressContextClickTimer);
+          this._suppressContextClickTimer = setTimeout(() => {
+            this.suppressContextClick = false;
+          }, 500);
+          e.stopPropagation();
+        }
+      },
+      true,
+    );
+
+    this.el.addEventListener(
+      "click",
+      (e) => {
+        if (!this.suppressContextClick) return;
+
+        const channel = findClosestWithData(e.target, "[data-channel]", "channel");
+        const nick = findClosestWithData(e.target, "[data-nick]", "nick");
+        if (channel || nick) {
+          e.preventDefault();
+          e.stopPropagation();
+          this.suppressContextClick = false;
+        }
+      },
+      true,
+    );
+
     this.el.addEventListener("contextmenu", (e) => {
       const channel = findClosestWithData(e.target, "[data-channel]", "channel");
       if (channel) {
         e.preventDefault();
+        e.stopPropagation();
         this.pushEvent("channel_right_click", {
           channel,
           x: e.clientX,
@@ -22,6 +60,7 @@ const ConversationsHook = {
       const nick = findClosestWithData(e.target, "[data-nick]", "nick");
       if (nick) {
         e.preventDefault();
+        e.stopPropagation();
         this.pushEvent("pm_right_click", {
           nick,
           x: e.clientX,

@@ -86,11 +86,9 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
       end
 
     assigns =
-      assign(
-        assigns,
-        :max_file_size_mb,
-        Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500)
-      )
+      assigns
+      |> assign(:max_file_size_mb, file_transfer_max_size_mb())
+      |> assign(:blocked_file_extensions, file_transfer_blocked_extensions())
 
     ~H"""
     <.window
@@ -146,7 +144,8 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
           </.scroll_area>
           <form
             id="p2p-chat-form"
-            phx-submit={JS.push("send_lobby_message") |> JS.dispatch("reset", to: "#p2p-chat-form")}
+            phx-hook="P2PChatFormHook"
+            phx-submit="send_lobby_message"
             class="flex gap-2 mt-1"
           >
             <.input
@@ -346,6 +345,8 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
           id="p2p-file-transfer"
           phx-hook="FileTransferHook"
           data-testid="file-transfer-hook"
+          data-max-size-mb={@max_file_size_mb}
+          data-blocked-extensions={Enum.join(@blocked_file_extensions, ",")}
         >
           <input type="file" id="p2p-file-input" class="file-transfer-input hidden" />
           <%!-- File selection (ready state) --%>
@@ -496,4 +497,16 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
   defp action_request_label("video_call"), do: dgettext("p2p", "Video Call")
   defp action_request_label("file_transfer"), do: dgettext("p2p", "File Transfer")
   defp action_request_label(_), do: dgettext("p2p", "unknown")
+
+  defp file_transfer_max_size_mb do
+    Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500)
+  end
+
+  defp file_transfer_blocked_extensions do
+    Application.get_env(
+      :retro_hex_chat,
+      :file_transfer_blocked_extensions,
+      ~w(.exe .bat .cmd .com .msi .scr .pif .vbs .vbe .js .jse .wsf .wsh .ps1 .reg)
+    )
+  end
 end

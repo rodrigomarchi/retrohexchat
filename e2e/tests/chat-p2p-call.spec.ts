@@ -112,7 +112,7 @@ test.describe('P2P audio calls', () => {
       aliceLobby = await openLobbyFromInvite(alice.page, aliceLink);
       bobLobby = await openLobbyFromInvite(bob.page, bobLink);
 
-      await expect(bobLobby.getByText('Action Request: audio_call')).toBeVisible({
+      await expect(bobLobby.getByText('Action Request: Audio Call')).toBeVisible({
         timeout: 10_000,
       });
       await bobLobby.getByRole('button', { name: 'Accept' }).click();

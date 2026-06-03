@@ -15,6 +15,10 @@ body {
   color: #222222;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 /* highlight.js — VS2015-inspired theme adapted for retro terminal */
 pre code.hljs { display: block; overflow-x: auto; }
 code.hljs { padding: 0; }

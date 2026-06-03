@@ -247,11 +247,21 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       opts
       |> Keyword.put(:oldest_message_id, oldest_id)
       |> Keyword.put(:loaded_message_count, length(raw_messages))
+      |> maybe_put_clear_token(stream_items)
 
     socket
+    |> maybe_clear_empty_stream(stream_items)
     |> assign(assigns)
     |> stream(:chat_messages, stream_items, reset: true)
   end
+
+  defp maybe_clear_empty_stream(socket, []), do: push_event(socket, "clear_chat_messages", %{})
+  defp maybe_clear_empty_stream(socket, _stream_items), do: socket
+
+  defp maybe_put_clear_token(assigns, []),
+    do: Keyword.put(assigns, :chat_clear_token, System.unique_integer([:positive]))
+
+  defp maybe_put_clear_token(assigns, _stream_items), do: assigns
 
   defp pm_to_stream_item(pm) do
     base = %{

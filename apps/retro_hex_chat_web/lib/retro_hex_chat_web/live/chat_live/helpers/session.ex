@@ -333,7 +333,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     assign(socket,
       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil},
       show_context_color_picker: false,
-      conversations_context_menu: %{visible: false, x: 0, y: 0, channel: nil}
+      conversations_context_menu: %{
+        visible: false,
+        x: 0,
+        y: 0,
+        type: nil,
+        channel: nil,
+        nick: nil
+      }
     )
   end
 
@@ -366,7 +373,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
           Phoenix.LiveView.Socket.t()
   def handle_nick_change(socket, new_nick) do
     old_nick = socket.assigns.session.nickname
-    session = Session.update_nickname(socket.assigns.session, new_nick)
+
+    session =
+      socket.assigns.session
+      |> Session.update_nickname(new_nick)
+      |> Session.set_identified(false)
 
     Enum.each(session.channels, fn channel ->
       try do

@@ -70,8 +70,24 @@ export class ConnectPage {
 
   async registerWithPassword(password: string) {
     await expect(this.registerPasswordInput).toBeVisible();
-    await this.registerPasswordInput.fill(password);
-    await this.registerPasswordConfirmInput.fill(password);
+
+    for (let attempt = 0; attempt < 3; attempt++) {
+      await this.registerPasswordInput.fill('');
+      await this.registerPasswordConfirmInput.fill('');
+      await this.registerPasswordInput.fill(password);
+      await this.registerPasswordConfirmInput.fill(password);
+      await this.page.waitForTimeout(100);
+
+      if (
+        (await this.registerPasswordInput.inputValue()) === password &&
+        (await this.registerPasswordConfirmInput.inputValue()) === password
+      ) {
+        break;
+      }
+    }
+
+    await expect(this.registerPasswordInput).toHaveValue(password);
+    await expect(this.registerPasswordConfirmInput).toHaveValue(password);
     await expect(this.registerButton).toBeEnabled();
     await this.registerButton.click();
   }
@@ -88,10 +104,10 @@ export class ConnectPage {
   // to auth if the nick already exists in the e2e database.
   async signIn(nick: string, password: string) {
     await this.enterNickname(nick);
-    const isRegister = await this.registerPasswordInput
-      .isVisible({ timeout: 2_000 })
-      .catch(() => false);
-    if (isRegister) {
+    const stepInput = this.page.locator('#reg-password, #password').first();
+    await expect(stepInput).toBeVisible();
+
+    if ((await stepInput.getAttribute('id')) === 'reg-password') {
       await this.registerWithPassword(password);
     } else {
       await this.authenticateWithPassword(password);

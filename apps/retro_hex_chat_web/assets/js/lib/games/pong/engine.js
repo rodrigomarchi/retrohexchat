@@ -57,6 +57,7 @@ export class PongEngine extends GameEngine {
     this.audio = new PongAudio();
     this.colors = null;
     this.peerReady = false;
+    this.readyTimer = null;
     this._boundGameLoop = this._gameLoop.bind(this);
     this._boundBlur = this._handleBlur.bind(this);
     this._boundChannelClose = this._handleChannelClose.bind(this);
@@ -73,8 +74,10 @@ export class PongEngine extends GameEngine {
       // Host waits for peer GAME_READY, then starts countdown
       this._renderState();
     } else {
-      // Peer sends ready signal
-      this._safeSend(encodeGameReady());
+      // The host engine may still be loading lazily, so keep advertising readiness
+      // until the first authoritative state arrives.
+      this._sendReady();
+      this.readyTimer = setInterval(() => this._sendReady(), 250);
       this._renderState();
     }
   }
@@ -86,6 +89,7 @@ export class PongEngine extends GameEngine {
       clearTimeout(this.phaseTimer);
       this.phaseTimer = null;
     }
+    this._clearReadyTimer();
     super.stop();
   }
 
@@ -100,6 +104,7 @@ export class PongEngine extends GameEngine {
         if (!this.isHost) {
           const decoded = decodeGameState(buf);
           if (decoded) {
+            this._clearReadyTimer();
             const prevPhase = this.gameState.phase;
             const prevScore1 = this.gameState.score1;
             const prevScore2 = this.gameState.score2;
@@ -184,6 +189,17 @@ export class PongEngine extends GameEngine {
     if (!this.isHost) {
       this._safeSend(encodePlayerInput(INPUT_KEY.UP, false));
       this._safeSend(encodePlayerInput(INPUT_KEY.DOWN, false));
+    }
+  }
+
+  _sendReady() {
+    this._safeSend(encodeGameReady());
+  }
+
+  _clearReadyTimer() {
+    if (this.readyTimer) {
+      clearInterval(this.readyTimer);
+      this.readyTimer = null;
     }
   }
 

@@ -56,7 +56,16 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
          is_target_registered: false
        }
      )
-     |> assign(conversations_context_menu: %{visible: false, x: 0, y: 0, channel: nil})}
+     |> assign(
+       conversations_context_menu: %{
+         visible: false,
+         x: 0,
+         y: 0,
+         type: nil,
+         channel: nil,
+         nick: nil
+       }
+     )}
   end
 
   # ── Dialog events ──────────────────────────────────────────

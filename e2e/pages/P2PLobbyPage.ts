@@ -1,5 +1,16 @@
 import { Locator, Page, expect } from '@playwright/test';
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function actionLabel(actionType: string): string {
+  return actionType
+    .split('_')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
+
 export class P2PLobbyPage {
   readonly page: Page;
   readonly root: Locator;
@@ -39,7 +50,10 @@ export class P2PLobbyPage {
     );
     this.mediaCall = page.getByTestId('media-call');
     this.lobbyChatInput = this.root.getByPlaceholder('Type a message...');
-    this.lobbyChatSendButton = this.root.getByRole('button', { name: 'Send' });
+    this.lobbyChatSendButton = this.root.getByRole('button', {
+      name: 'Send',
+      exact: true,
+    });
     this.audioCallButton = page.getByRole('button', { name: 'Audio Call' });
     this.videoCallButton = page.getByRole('button', { name: 'Video Call' });
     this.sendFileButton = page.getByRole('button', { name: 'Send File' });
@@ -96,7 +110,9 @@ export class P2PLobbyPage {
   async sendLobbyMessage(text: string) {
     await expect(this.lobbyChatInput).toBeEnabled();
     await this.lobbyChatInput.fill(text);
+    await expect(this.lobbyChatSendButton).toBeEnabled();
     await this.lobbyChatInput.press('Enter');
+    await expect(this.lobbyChatInput).toHaveValue('');
   }
 
   async expectLobbyMessage(text: string) {
@@ -106,7 +122,9 @@ export class P2PLobbyPage {
   }
 
   actionRequest(actionType: string): Locator {
-    return this.page.getByText(`Action Request: ${actionType}`);
+    return this.page.getByText(
+      new RegExp(`Action Request:\\s*${escapeRegExp(actionLabel(actionType))}`),
+    );
   }
 
   async acceptAction(actionType: string) {

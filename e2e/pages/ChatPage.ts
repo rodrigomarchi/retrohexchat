@@ -20,6 +20,10 @@ type ChannelCentralModeLabel =
   | 'Invite Only (+i)'
   | 'Topic Lock (+t)';
 
+function escapeRegExp(value: string): string {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 // Page Object for the app ChatLive at /chat. Covers high-level shell
 // concerns shared by specs (waiting for connect, opening the File menu,
 // disconnecting). Channel/PM/IRC interactions will live on dedicated POMs
@@ -511,7 +515,11 @@ export class ChatPage {
   // Switches to the Status tab (server-level messages like welcome, MOTD,
   // NickServ acks). Channel tabs live alongside Status in the same tablist.
   async switchToStatusTab() {
-    await this.page.getByRole('tab', { name: 'Status' }).click();
+    const statusTab = this.page.getByRole('tab', { name: 'Status' });
+    await statusTab.click();
+    await expect(statusTab).toHaveAttribute('aria-selected', 'true');
+    await expect(this.statusMessageList).toBeVisible();
+    await expect(this.messageList).toBeHidden();
   }
 
   // Returns the tab element with the given visible label (e.g. "#lobby").
@@ -522,7 +530,13 @@ export class ChatPage {
   }
 
   async switchToTab(name: string) {
-    await this.tab(name).click();
+    const targetTab = this.tab(name);
+    await targetTab.click();
+    await expect(targetTab).toHaveAttribute('aria-selected', 'true');
+    await expect(this.chatInput).toHaveAttribute(
+      'placeholder',
+      new RegExp(`Message to ${escapeRegExp(name)}`),
+    );
   }
 
   // Each tab contains a nested "Close tab" button.
@@ -569,7 +583,12 @@ export class ChatPage {
   async sendMessage(text: string) {
     await expect(this.chatInput).toBeEnabled();
     await this.chatInput.fill(text);
+    await expect(this.chatSendButton).toBeEnabled();
     await this.chatInput.press('Enter');
+
+    if (!text.startsWith('/')) {
+      await expect(this.chatInput).toHaveValue('');
+    }
   }
 
   async pasteText(text: string) {
@@ -633,7 +652,9 @@ export class ChatPage {
   }
 
   async expectActiveMessageCount(count: number) {
-    await expect(this.messageRows).toHaveCount(count);
+    await expect(this.messageList.locator('[data-message-id]:visible')).toHaveCount(
+      count,
+    );
   }
 
   async scrollMessagesToTop() {
@@ -1657,6 +1678,25 @@ export class ChatPage {
     }
 
     await this.nickChangeConfirmButton.click();
+
+    if (password === undefined) {
+      await expect(this.nickChangeDialog).toBeHidden();
+      await this.waitUntilConnected();
+      return;
+    }
+
+    const outcome = await Promise.race([
+      this.nickChangeDialog
+        .waitFor({ state: 'hidden', timeout: 5_000 })
+        .then(() => 'success' as const),
+      this.nickChangeError
+        .waitFor({ state: 'visible', timeout: 5_000 })
+        .then(() => 'error' as const),
+    ]).catch(() => 'unknown' as const);
+
+    if (outcome === 'success') {
+      await this.waitUntilConnected();
+    }
   }
 
   async disconnect() {

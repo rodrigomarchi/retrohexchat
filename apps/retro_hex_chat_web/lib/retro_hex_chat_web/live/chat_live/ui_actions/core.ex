@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream: 4]
+  import Phoenix.LiveView, only: [push_event: 3, stream: 4]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -45,14 +45,26 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   end
 
   def handle_ui_action(socket, :clear_chat, _) do
+    channel = socket.assigns.session.active_channel
+
+    cleared_channel_cutoffs =
+      if channel do
+        Map.put(socket.assigns.cleared_channel_cutoffs || %{}, channel, DateTime.utc_now())
+      else
+        socket.assigns.cleared_channel_cutoffs || %{}
+      end
+
     socket
     |> assign(
-      oldest_message_id: nil,
-      has_more: false,
+        cleared_channel_cutoffs: cleared_channel_cutoffs,
+        chat_clear_token: System.unique_integer([:positive]),
+        oldest_message_id: nil,
+        has_more: false,
       loading_more: false,
       loaded_message_count: 0
     )
     |> stream(:chat_messages, [], reset: true)
+    |> push_event("clear_chat_messages", %{})
   end
 
   def handle_ui_action(socket, :set_away, %{message: message}) do

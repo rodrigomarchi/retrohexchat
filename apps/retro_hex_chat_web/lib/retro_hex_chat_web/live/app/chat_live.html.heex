@@ -11,6 +11,7 @@
     value={@nick_change_token}
   />
   <input type="hidden" name="timezone" value={@timezone} />
+  <input type="hidden" name="join_channel" value={@session.active_channel || ""} />
 </form>
 <div id="search-highlight-hook" phx-hook="SearchHighlightHook" class="hidden"></div>
 <div id="viewport-detect" phx-hook="ViewportDetectHook" class="hidden"></div>
@@ -215,6 +216,7 @@
             id="chat-messages"
             phx-update="stream"
             phx-hook="ScrollHook"
+            data-clear-token={@chat_clear_token}
             data-interactions-hook="MessageInteractionsHook"
           >
             <div

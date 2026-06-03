@@ -137,10 +137,10 @@ test.describe('P2P invite flow', () => {
 
       await expect(aliceLobby.actionRequest('audio_call')).toHaveCount(0);
       await expect(bobLobby.actionRequest('audio_call')).toHaveCount(0);
-      await expect(aliceLobby.page.getByText('audio_call request declined.')).toBeVisible({
+      await expect(aliceLobby.page.getByText('Audio call request declined.')).toBeVisible({
         timeout: 10_000,
       });
-      await expect(bobLobby.page.getByText('audio_call request declined.')).toBeVisible({
+      await expect(bobLobby.page.getByText('Audio call request declined.')).toBeVisible({
         timeout: 10_000,
       });
       await expect(aliceLobby.mediaCall).toHaveCount(0);

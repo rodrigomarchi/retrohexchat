@@ -80,11 +80,11 @@ test.describe('Custom menus', () => {
       await peer.chat.expectMessageVisible(`${nickText} ${peer.nick}`, 15_000);
 
       await owner.chat.switchToTab(channel);
-      await owner.chat
-        .channelConversationItem(channel)
-        .click({ button: 'right' });
-      await expect(owner.chat.customContextMenuItem(channelLabel)).toBeVisible();
-      await owner.chat.customContextMenuItem(channelLabel).click();
+      await owner.chat.openConversationContextMenu(channel);
+      await expect(
+        owner.chat.customConversationContextMenuItem(channelLabel),
+      ).toBeVisible();
+      await owner.chat.customConversationContextMenuItem(channelLabel).click();
       await owner.chat.expectMessageVisible(`${channelText} ${channel}`);
       await peer.chat.switchToTab(channel);
       await peer.chat.expectMessageVisible(`${channelText} ${channel}`, 15_000);

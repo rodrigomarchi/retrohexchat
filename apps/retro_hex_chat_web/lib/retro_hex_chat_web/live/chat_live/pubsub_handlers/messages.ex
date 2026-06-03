@@ -252,20 +252,51 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp apply_new_message(socket, decorated, channel, session) do
     if channel == session.active_channel do
-      case socket.assigns[:pending_channel_msg_id] do
-        pending_id when is_binary(pending_id) and decorated.author == session.nickname ->
-          socket
-          |> stream_delete(:chat_messages, %{id: pending_id})
-          |> stream_insert(:chat_messages, decorated)
-          |> assign(pending_channel_msg_id: nil)
+      if cleared_channel_message?(socket, channel, decorated) do
+        socket
+      else
+        case socket.assigns[:pending_channel_msg_id] do
+          pending_id when is_binary(pending_id) and decorated.author == session.nickname ->
+            socket
+            |> stream_delete(:chat_messages, %{id: pending_id})
+            |> stream_insert(:chat_messages, decorated)
+            |> assign(pending_channel_msg_id: nil)
 
-        _ ->
-          stream_insert(socket, :chat_messages, decorated)
+          _ ->
+            stream_insert(socket, :chat_messages, decorated)
+        end
       end
     else
       apply_background_message(socket, decorated, channel, session)
     end
   end
+
+  defp cleared_channel_message?(socket, channel, %{timestamp: timestamp}) do
+    case Map.get(socket.assigns[:cleared_channel_cutoffs] || %{}, channel) do
+      nil -> false
+      cutoff -> compare_message_time(timestamp, cutoff) != :gt
+    end
+  end
+
+  defp cleared_channel_message?(_socket, _channel, _message), do: false
+
+  defp compare_message_time(%DateTime{} = timestamp, %DateTime{} = cutoff) do
+    DateTime.compare(timestamp, cutoff)
+  end
+
+  defp compare_message_time(%NaiveDateTime{} = timestamp, %DateTime{} = cutoff) do
+    NaiveDateTime.compare(timestamp, DateTime.to_naive(cutoff))
+  end
+
+  defp compare_message_time(%DateTime{} = timestamp, %NaiveDateTime{} = cutoff) do
+    NaiveDateTime.compare(DateTime.to_naive(timestamp), cutoff)
+  end
+
+  defp compare_message_time(%NaiveDateTime{} = timestamp, %NaiveDateTime{} = cutoff) do
+    NaiveDateTime.compare(timestamp, cutoff)
+  end
+
+  defp compare_message_time(_timestamp, _cutoff), do: :gt
 
   defp apply_background_message(socket, decorated, channel, session) do
     unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, channel)

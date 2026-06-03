@@ -357,8 +357,13 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
 
   @impl true
   def handle_event("send_lobby_message", %{"content" => content}, socket) do
-    P2P.send_lobby_message(socket.assigns.token, socket.assigns.user_id, content)
-    {:noreply, socket}
+    case P2P.send_lobby_message(socket.assigns.token, socket.assigns.user_id, content) do
+      :ok ->
+        {:noreply, push_event(socket, "p2p_lobby_message_sent", %{form_id: "p2p-chat-form"})}
+
+      {:error, _reason} ->
+        {:noreply, socket}
+    end
   end
 
   def handle_event("request_action", %{"action_type" => type}, socket) do

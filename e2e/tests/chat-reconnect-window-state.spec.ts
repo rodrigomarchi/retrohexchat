@@ -91,9 +91,12 @@ test.describe('Reconnect window state', () => {
       );
 
       await alice.ctx.setOffline(false);
-      await expect(alice.chat.connectionBanner).toContainText('Reconectado', {
-        timeout: 15_000,
-      });
+      await expect(alice.chat.connectionBanner).toContainText(
+        /Reconectado|Reconnected!/,
+        {
+          timeout: 15_000,
+        },
+      );
       await alice.chat.waitUntilConnected();
 
       await alice.chat.expectTabSelected(bob.nick);

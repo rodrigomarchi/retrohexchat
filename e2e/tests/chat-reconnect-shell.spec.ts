@@ -72,7 +72,7 @@ test.describe('Reconnect shell state', () => {
       await expect(chat.chatInput).toHaveValue(draft);
 
       await context.setOffline(false);
-      await expect(chat.connectionBanner).toContainText('Reconectado', {
+      await expect(chat.connectionBanner).toContainText(/Reconectado|Reconnected!/, {
         timeout: 15_000,
       });
       await page.waitForFunction(

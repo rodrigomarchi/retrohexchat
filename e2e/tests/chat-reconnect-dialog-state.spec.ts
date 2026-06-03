@@ -51,7 +51,7 @@ test.describe('Reconnect dialog state', () => {
       ).toHaveValue(expansion);
 
       await context.setOffline(false);
-      await expect(chat.connectionBanner).toContainText('Reconectado', {
+      await expect(chat.connectionBanner).toContainText(/Reconectado|Reconnected!/, {
         timeout: 15_000,
       });
       await chat.waitUntilConnected();

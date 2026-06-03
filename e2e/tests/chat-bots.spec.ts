@@ -187,11 +187,15 @@ test.describe.serial('Bot commands', () => {
       await admin.chat.sendMessage(`/bot disable ${botName}`);
       await admin.chat.expectMessageVisible(`[BotService] Bot '${botName}' disabled.`);
 
-      await admin.chat.sendMessage('/clear');
+      const mentionResponses = admin.chat.messageList.getByText(mentionResponse, {
+        exact: false,
+      });
+      const responseCountBeforeDisabledMention = await mentionResponses.count();
+
       await admin.chat.sendMessage(`still there ${botName}`);
-      await expect(
-        admin.chat.messageList.getByText(mentionResponse, { exact: false }),
-      ).toHaveCount(0, { timeout: 1_000 });
+      await expect(mentionResponses).toHaveCount(responseCountBeforeDisabledMention, {
+        timeout: 1_000,
+      });
 
       await admin.chat.sendMessage(`/bot enable ${botName}`);
       await admin.chat.expectMessageVisible(`[BotService] Bot '${botName}' enabled.`);

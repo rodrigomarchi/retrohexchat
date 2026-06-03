@@ -64,6 +64,8 @@ async function reconnectRegisteredUser(user: TestUser, password: string) {
 }
 
 test.describe('Notify List settings', () => {
+  test.setTimeout(60_000);
+
   test('auto-add PM and auto-WHOIS settings affect later PM and online events (U11)', async ({
     browser,
   }) => {

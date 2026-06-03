@@ -54,6 +54,12 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
+async function expectStatusResponse(chat: ChatPage, text: string) {
+  await chat.switchToStatusTab();
+  await chat.expectStatusMessageVisible(text);
+  await chat.switchToTab('#lobby');
+}
+
 test.describe('NickServ commands', () => {
   test('/nick then /ns register, identify, info, and drop cover nickname lifecycle (K1-K3)', async ({
     browser,
@@ -69,32 +75,38 @@ test.describe('NickServ commands', () => {
       await alice.chat.expectNickNotInList(alice.nick);
 
       await alice.chat.sendMessage(`/ns register ${password}`);
-      await alice.chat.expectMessageVisible(
+      await expectStatusResponse(
+        alice.chat,
         `[NickServ] Nickname ${registeredNick} registered successfully`,
       );
 
       await alice.chat.sendMessage('/ns info');
-      await alice.chat.expectMessageVisible(`[NickServ] ${registeredNick}:`);
-      await alice.chat.expectMessageVisible('identified: true');
+      await alice.chat.switchToStatusTab();
+      await alice.chat.expectStatusMessageVisible(`[NickServ] ${registeredNick}:`);
+      await alice.chat.expectStatusMessageVisible('identified: true');
+      await alice.chat.switchToTab('#lobby');
 
       await alice.chat.sendMessage('/ns identify wrong-password');
-      await alice.chat.expectMessageVisible('[NickServ] Invalid password');
+      await expectStatusResponse(alice.chat, '[NickServ] Invalid password');
 
       await alice.chat.sendMessage(`/ns identify ${password}`);
-      await alice.chat.expectMessageVisible(
+      await expectStatusResponse(
+        alice.chat,
         `[NickServ] You are now identified as ${registeredNick}`,
       );
 
       await alice.chat.sendMessage('/ns drop wrong-password');
-      await alice.chat.expectMessageVisible('[NickServ] Invalid password');
+      await expectStatusResponse(alice.chat, '[NickServ] Invalid password');
 
       await alice.chat.sendMessage(`/ns drop ${password}`);
-      await alice.chat.expectMessageVisible(
+      await expectStatusResponse(
+        alice.chat,
         `[NickServ] Registration for ${registeredNick} dropped`,
       );
 
       await alice.chat.sendMessage('/ns info');
-      await alice.chat.expectMessageVisible(
+      await expectStatusResponse(
+        alice.chat,
         `[NickServ] Nickname ${registeredNick} is not registered`,
       );
     } finally {

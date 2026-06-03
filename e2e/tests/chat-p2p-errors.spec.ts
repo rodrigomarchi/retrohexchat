@@ -30,6 +30,13 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
+async function expectStatusCommand(chat: ChatPage, command: string, expected: string) {
+  await chat.switchToTab('#lobby');
+  await chat.sendMessage(command);
+  await chat.switchToStatusTab();
+  await chat.expectStatusMessageVisible(expected);
+}
+
 test.describe('P2P command errors', () => {
   test('unidentified user cannot start P2P, call, file, or game sessions (N1)', async ({
     browser,
@@ -43,17 +50,26 @@ test.describe('P2P command errors', () => {
       await alice.chat.confirmNickChange();
       await alice.chat.expectNickInList(guestNick);
 
-      await alice.chat.sendMessage(`/p2p ${bob.nick}`);
-      await alice.chat.expectMessageVisible('You must be identified to use /p2p.');
-
-      await alice.chat.sendMessage(`/call ${bob.nick}`);
-      await alice.chat.expectMessageVisible('You must be identified to use /p2p.');
-
-      await alice.chat.sendMessage(`/sendfile ${bob.nick}`);
-      await alice.chat.expectMessageVisible('You must be identified to use /p2p.');
-
-      await alice.chat.sendMessage(`/game ${bob.nick}`);
-      await alice.chat.expectMessageVisible('You must be identified to use /game.');
+      await expectStatusCommand(
+        alice.chat,
+        `/p2p ${bob.nick}`,
+        'You must be identified to use /p2p.',
+      );
+      await expectStatusCommand(
+        alice.chat,
+        `/call ${bob.nick}`,
+        'You must be identified to use /p2p.',
+      );
+      await expectStatusCommand(
+        alice.chat,
+        `/sendfile ${bob.nick}`,
+        'You must be identified to use /p2p.',
+      );
+      await expectStatusCommand(
+        alice.chat,
+        `/game ${bob.nick}`,
+        'You must be identified to use /game.',
+      );
     } finally {
       await closeUsers([alice, bob]);
     }

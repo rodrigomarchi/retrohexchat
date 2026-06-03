@@ -1,6 +1,7 @@
 import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
 import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
 import { ChatPage } from '../pages/ChatPage';
+import { resetRegistrationOpen } from '../helpers/e2eState';
 
 const ADMIN_NICK = 'TestAdmin';
 const ADMIN_PW = 'adminpass1';
@@ -62,18 +63,25 @@ async function setRegistration(admin: TestUser, value: 'open' | 'closed') {
 }
 
 test.describe.serial('Registration closed edges', () => {
+  test.afterAll(() => {
+    resetRegistrationOpen();
+  });
+
   test('closed registration blocks new users but existing registered users can authenticate (AA6)', async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const existing = await newSignedInUser(browser, 'aa6ex', 'existpass123');
-    const blockedCtx = await browser.newContext();
-    const blockedPage = await blockedCtx.newPage();
-    const blockedConnect = new ConnectPage(blockedPage);
+    let existing: TestUser | undefined;
+    let blockedCtx: BrowserContext | undefined;
+    let blockedConnect: ConnectPage | undefined;
     const blockedNick = uniqueNickname('aa6new');
 
     try {
       await setRegistration(admin, 'open');
+      existing = await newSignedInUser(browser, 'aa6ex', 'existpass123');
+      blockedCtx = await browser.newContext();
+      const blockedPage = await blockedCtx.newPage();
+      blockedConnect = new ConnectPage(blockedPage);
       await existing.chat.disconnect();
 
       await setRegistration(admin, 'closed');
@@ -92,8 +100,8 @@ test.describe.serial('Registration closed edges', () => {
       await existing.chat.waitUntilConnected();
     } finally {
       await setRegistration(admin, 'open').catch(() => {});
-      await blockedCtx.close();
-      await closeUsers([admin, existing]);
+      await blockedCtx?.close();
+      await closeUsers([admin, existing].filter(Boolean) as TestUser[]);
     }
   });
 
@@ -101,15 +109,19 @@ test.describe.serial('Registration closed edges', () => {
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const source = await newSignedInUser(browser, 'aa7own', 'ownerpass123');
-    const challengerCtx = await browser.newContext();
-    const challengerPage = await challengerCtx.newPage();
-    const challengerConnect = new ConnectPage(challengerPage);
-    const challengerChat = new ChatPage(challengerPage);
+    let source: TestUser | undefined;
+    let challengerCtx: BrowserContext | undefined;
+    let challengerConnect: ConnectPage | undefined;
+    let challengerChat: ChatPage | undefined;
     const sourceMarker = `aa7 source alive ${Date.now()}`;
 
     try {
       await setRegistration(admin, 'open');
+      source = await newSignedInUser(browser, 'aa7own', 'ownerpass123');
+      challengerCtx = await browser.newContext();
+      const challengerPage = await challengerCtx.newPage();
+      challengerConnect = new ConnectPage(challengerPage);
+      challengerChat = new ChatPage(challengerPage);
       await setRegistration(admin, 'closed');
 
       await challengerConnect.open();
@@ -136,8 +148,8 @@ test.describe.serial('Registration closed edges', () => {
       );
     } finally {
       await setRegistration(admin, 'open').catch(() => {});
-      await challengerCtx.close();
-      await closeUsers([admin, source]);
+      await challengerCtx?.close();
+      await closeUsers([admin, source].filter(Boolean) as TestUser[]);
     }
   });
 });

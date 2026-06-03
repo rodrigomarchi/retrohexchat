@@ -245,28 +245,59 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   def load_channel_messages_with_pagination(socket, channel_name, limit \\ 50) do
     raw_messages = Queries.list_messages(channel_name, limit: limit)
 
+    visible_messages =
+      raw_messages
+      |> Enum.reject(&cleared_channel_message?(socket, channel_name, &1))
+      |> Messages.visible_channel_messages(socket.assigns.session.ignore_list)
+
     oldest_id =
-      case List.last(raw_messages) do
+      case List.last(visible_messages) do
         nil -> nil
         msg -> msg.id
       end
 
     stream_items =
-      raw_messages
-      |> Messages.visible_channel_messages(socket.assigns.session.ignore_list)
+      visible_messages
       |> Enum.reverse()
       |> Enum.map(&message_to_stream_item/1)
 
     socket
     |> assign(
       oldest_message_id: oldest_id,
-      has_more: length(raw_messages) == limit,
-      loaded_message_count: length(raw_messages),
+      has_more: length(visible_messages) == limit,
+      loaded_message_count: length(visible_messages),
       loading_more: false,
       new_messages_indicator: false
     )
     |> stream(:chat_messages, stream_items, reset: true)
   end
+
+  defp cleared_channel_message?(socket, channel_name, %{inserted_at: timestamp}) do
+    case Map.get(socket.assigns[:cleared_channel_cutoffs] || %{}, channel_name) do
+      nil -> false
+      cutoff -> compare_message_time(timestamp, cutoff) != :gt
+    end
+  end
+
+  defp cleared_channel_message?(_socket, _channel_name, _message), do: false
+
+  defp compare_message_time(%DateTime{} = timestamp, %DateTime{} = cutoff) do
+    DateTime.compare(timestamp, cutoff)
+  end
+
+  defp compare_message_time(%NaiveDateTime{} = timestamp, %DateTime{} = cutoff) do
+    NaiveDateTime.compare(timestamp, DateTime.to_naive(cutoff))
+  end
+
+  defp compare_message_time(%DateTime{} = timestamp, %NaiveDateTime{} = cutoff) do
+    NaiveDateTime.compare(DateTime.to_naive(timestamp), cutoff)
+  end
+
+  defp compare_message_time(%NaiveDateTime{} = timestamp, %NaiveDateTime{} = cutoff) do
+    NaiveDateTime.compare(timestamp, cutoff)
+  end
+
+  defp compare_message_time(_timestamp, _cutoff), do: :gt
 
   defp maybe_show_welcome(socket, channel_name, session) do
     case Server.get_welcome(channel_name) do

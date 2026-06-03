@@ -9,6 +9,7 @@ export function lazyHook(loader) {
 
         const implementation = module.default;
         this.__lazyHookImplementation = implementation;
+        attachImplementationMethods(this, implementation);
         implementation?.mounted?.call(this);
         return implementation;
       });
@@ -26,4 +27,14 @@ export function lazyHook(loader) {
   }
 
   return hook;
+}
+
+function attachImplementationMethods(hook, implementation) {
+  for (const [key, value] of Object.entries(implementation || {})) {
+    if (key === "mounted" || key in hook || typeof value !== "function") {
+      continue;
+    }
+
+    hook[key] = value;
+  }
 }

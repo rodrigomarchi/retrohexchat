@@ -1,11 +1,16 @@
 import { test, expect } from '@playwright/test';
 import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
 import { ChatPage } from '../pages/ChatPage';
+import { resetRegistrationOpen } from '../helpers/e2eState';
 
 const ADMIN_NICK = 'TestAdmin';
 const ADMIN_PW = 'adminpass1';
 
 test.describe('Admin closes registration', () => {
+  test.afterAll(() => {
+    resetRegistrationOpen();
+  });
+
   test('/admin server set registration closed blocks new registrations (N)', async ({
     browser,
   }) => {
@@ -49,6 +54,9 @@ test.describe('Admin closes registration', () => {
         // ALWAYS re-open registration so this destructive test doesn't
         // leak state into subsequent runs/specs.
         await adminChat.sendMessage('/admin server set registration open');
+        await adminChat.expectMessageVisible(
+          "Server setting 'registration' set to 'open'.",
+        );
       }
     } finally {
       await ctxAdmin.close();

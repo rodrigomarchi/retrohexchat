@@ -41,6 +41,7 @@ const ScrollHook = {
     this.pendingPrepend = false;
     this.prevScrollHeight = this.chatEl.scrollHeight;
     this.mouseDownPos = null;
+    this.lastClearToken = this.el.dataset.clearToken || "";
 
     // Scroll to bottom on mount
     this.scrollToBottom();
@@ -54,6 +55,10 @@ const ScrollHook = {
     this.handleEvent("scroll_to_bottom", () => {
       this.scrollToBottom();
       this.hideNewMessagesButton();
+    });
+
+    this.handleEvent("clear_chat_messages", () => {
+      this.clearMessages();
     });
 
     this.handleEvent("scroll_to_message", ({ message_id }) => {
@@ -353,7 +358,21 @@ const ScrollHook = {
     this.observer.observe(this.chatEl, { childList: true, subtree: true });
   },
 
+  clearMessages() {
+    this.chatEl.replaceChildren();
+    this.isAtBottom = true;
+    this.pendingPrepend = false;
+    this.prevScrollHeight = this.chatEl.scrollHeight;
+    this.hideNewMessagesButton();
+  },
+
   updated() {
+    const clearToken = this.el.dataset.clearToken || "";
+    if (clearToken !== this.lastClearToken) {
+      this.lastClearToken = clearToken;
+      this.clearMessages();
+    }
+
     if (this.isAtBottom) {
       this.scrollToBottom();
     }

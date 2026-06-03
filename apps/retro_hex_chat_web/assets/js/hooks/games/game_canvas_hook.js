@@ -100,6 +100,8 @@ const GameCanvasHook = {
     this.channel = null;
     this._engineLoadToken = null;
     this._engineLoading = false;
+    this._gameId = this.el.dataset.gameId || null;
+    this._isHost = this.el.dataset.isHost === "true";
 
     const webrtcEl = document.getElementById("game-webrtc");
     if (webrtcEl) {

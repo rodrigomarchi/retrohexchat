@@ -90,7 +90,9 @@ test.describe('P2P file transfer limits', () => {
         buffer: Buffer.from('not an executable'),
       });
 
-      await aliceLobby.expectFileValidationError(/bloqueado: \.exe/i);
+      await aliceLobby.expectFileValidationError(
+        /(Blocked file type|Tipo de arquivo bloqueado): \.exe/i,
+      );
       await expect(bobLobby.fileTransfer).toHaveCount(0);
       await expect(bobLobby.fileTransferAcceptButton).toHaveCount(0);
 
@@ -131,7 +133,7 @@ test.describe('P2P file transfer limits', () => {
 
       await aliceLobby.fileInput.setInputFiles(oversizedPath);
 
-      await aliceLobby.expectFileValidationError(/limite de 500 MB/i);
+      await aliceLobby.expectFileValidationError(/(500 MB limit|limite de 500 MB)/i);
       await expect(bobLobby.fileTransfer).toHaveCount(0);
       await expect(bobLobby.fileTransferAcceptButton).toHaveCount(0);
     } finally {

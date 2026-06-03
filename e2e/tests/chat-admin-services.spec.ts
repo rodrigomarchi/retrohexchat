@@ -1,4 +1,4 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
+import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
 import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
 import { ChatPage } from '../pages/ChatPage';
 
@@ -147,7 +147,6 @@ test.describe('Admin service commands', () => {
         `*** Founder of ${channel} transferred to ${newFounder.nick}`,
       );
 
-      await admin.chat.sendMessage('/clear');
       await admin.chat.sendMessage(`/admin cs info ${channel}`);
       await admin.chat.expectMessageVisible(`Founder: ${newFounder.nick}`);
 
@@ -158,10 +157,14 @@ test.describe('Admin service commands', () => {
         `*** ${accessUser.nick} removed from access list of ${channel}`,
       );
 
-      await admin.chat.sendMessage('/clear');
       await admin.chat.sendMessage(`/admin cs access ${channel}`);
-      await admin.chat.expectMessageVisible(`*** Access List for ${channel} ***`);
-      await admin.chat.expectMessageHidden(`${accessUser.nick} [aop]`);
+      const latestAccessList = admin.chat.messageRows
+        .filter({ hasText: `*** Access List for ${channel} ***` })
+        .last();
+      await expect(latestAccessList).toBeVisible();
+      await expect(latestAccessList).not.toContainText(
+        `${accessUser.nick} [aop]`,
+      );
 
       await admin.chat.sendMessage(`/admin cs drop ${channel}`);
       await admin.chat.expectMessageVisible(

@@ -252,6 +252,16 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
     end
   end
 
+  def handle_event(
+        "game_webrtc_ready",
+        _params,
+        %{assigns: %{session_status: "playing"}} = socket
+      ) do
+    {:noreply, start_webrtc(socket)}
+  end
+
+  def handle_event("game_webrtc_ready", _params, socket), do: {:noreply, socket}
+
   def handle_event("game_result", %{"score" => score, "winner" => winner}, socket) do
     result = %{"score" => score, "winner" => winner}
     Games.finish_game(socket.assigns.token, socket.assigns.user_id, result)

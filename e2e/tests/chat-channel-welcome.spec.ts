@@ -57,17 +57,16 @@ test.describe('Channel welcome messages', () => {
       await joinerChat.sendMessage(`/join ${channel}`);
       await joinerChat.expectTabVisible(channel);
       await joinerChat.expectMessageVisible(`[Welcome] ${welcome}`);
-      await expect(
-        joinerChat.messageList
-          .locator('[data-message-id]')
-          .filter({ hasText: `[Welcome] ${welcome}` }),
-      ).toHaveCount(1);
+      const welcomeMessages = joinerChat.messageList
+        .locator('[data-message-id]')
+        .filter({ hasText: `[Welcome] ${welcome}` });
+      await expect(welcomeMessages).toHaveCount(1);
 
       await joinerChat.sendMessage(`/part ${channel}`);
       await joinerChat.expectTabHidden(channel);
       await joinerChat.sendMessage(`/join ${channel}`);
       await joinerChat.expectTabVisible(channel);
-      await joinerChat.expectMessageHidden(`[Welcome] ${welcome}`);
+      await expect(welcomeMessages).toHaveCount(1);
     } finally {
       await ownerContext.close();
       await joinerContext.close();

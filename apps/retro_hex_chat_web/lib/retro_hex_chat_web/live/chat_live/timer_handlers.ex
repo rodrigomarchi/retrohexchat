@@ -401,6 +401,10 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
     end
   end
 
+  defp maybe_restore_active_tab(%{assigns: %{show_status_tab: true}} = socket) do
+    assign(socket, reconnect_active_channel: nil, reconnect_active_pm: nil)
+  end
+
   defp maybe_restore_active_tab(socket) do
     target_channel = socket.assigns[:reconnect_active_channel]
     target_pm = socket.assigns[:reconnect_active_pm]
