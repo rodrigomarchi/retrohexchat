@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress. Phase 1 inventory is complete; Phase 2 central registry is next.
+In progress. Phase 1 inventory and Phase 2 central registry are complete; Phase 3 lazy facade API is next.
 
 ## Goal
 
@@ -291,9 +291,10 @@ Completion criteria:
 
 Completion criteria:
 
-- App boots.
-- `app.js` no longer imports hook implementations directly.
-- E2E chat shell smoke tests pass.
+- [x] App assets build.
+- [x] `app.js` no longer imports hook implementations directly.
+- [x] Existing JS lint passes.
+- [x] Existing JS unit tests pass.
 
 ### Phase 3: Lazy Facade API
 
@@ -455,3 +456,4 @@ Unauthorized future dynamic imports must fail the hooks contract script unless t
 - 2026-06-03: Created tracking plan after lazy loading regressions were fixed and full e2e passed with `PASS (331) FAIL (0)`. Next step is Phase 1 inventory.
 - 2026-06-03: Committed all pending lazy-loading/e2e/landing fixes in `fcda6c8` before starting the standardization work.
 - 2026-06-03: Completed Phase 1 inventory. Recorded all main `app.js` hooks, current lazy feature hooks, server event exposure, separate LiveSocket entrypoint exceptions, and dynamic import categories. Next step is Phase 2 central registry.
+- 2026-06-03: Completed Phase 2 central registry. Added `hooks/registry.js`, `hooks/critical_hooks.js`, and `hooks/lazy_feature_hooks.js`; `app.js` now imports only `buildHooks()` for hook registration. Validation passed: `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm test --prefix apps/retro_hex_chat_web/assets` (`3656` tests), and `mix assets.build`. Dev build `app.js` size after the registry move: `380.7kb`.

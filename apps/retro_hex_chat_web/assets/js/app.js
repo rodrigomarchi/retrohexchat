@@ -5,116 +5,12 @@ import "phoenix_html";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
-import CharCounterHook from "./hooks/ui/char_counter_hook";
-import ClockHook from "./hooks/connection/clock_hook";
-import ConnectFormHook from "./hooks/connection/connect_form_hook";
-import ConnectionStatusHook from "./hooks/connection/connection_status_hook";
-import ContextMenuHook from "./hooks/ui/context_menu_hook";
-import AutocompleteHook from "./hooks/chat/autocomplete_hook";
-import EmojiPickerHook from "./hooks/chat/emoji_picker_hook";
-import FormatToolbarHook from "./hooks/chat/format_toolbar_hook";
-import KeyboardHook from "./hooks/input/keyboard_hook";
-import LagHook from "./hooks/connection/lag_hook";
-import NotifyListHook from "./hooks/notifications/notify_list_hook";
-import PasteHook from "./hooks/chat/paste_hook";
-
-import ScrollHook from "./hooks/chat/scroll_hook";
-import SearchHighlightHook from "./hooks/chat/search_highlight_hook";
-import ShortcutDispatcherHook from "./hooks/input/shortcut_dispatcher_hook";
-import SoundHook from "./hooks/input/sound_hook";
-import TitleFlashHook from "./hooks/notifications/title_flash_hook";
-import MenuBarHook from "./hooks/ui/menu_bar_hook";
-import ToolbarGroupHook from "./hooks/ui/toolbar_group_hook";
-import ConversationsHook from "./hooks/ui/conversations_hook";
-import NicklistHook from "./hooks/ui/nicklist_hook";
-import ContextualTipsHook from "./hooks/ui/contextual_tips_hook";
-import MessageInteractionsHook from "./hooks/chat/message_interactions_hook";
-import NickChangeFormHook from "./hooks/chat/nick_change_form_hook";
-import P2PCapabilityHook from "./hooks/p2p/p2p_capability_hook";
-import P2PChatFormHook from "./hooks/p2p/p2p_chat_form_hook";
-import P2PSessionHook from "./hooks/p2p/p2p_session_hook";
-import URLCatcherHook from "./hooks/ui/url_catcher_hook";
-import ArcadeIframeHook, { ArcadeSessionHook } from "./hooks/games/arcade_iframe_hook";
-import ArcadeGameHook from "./hooks/games/arcade_game_hook";
-import ArcadeTimerHook from "./hooks/games/arcade_timer_hook";
-import GameSessionHook from "./hooks/games/game_session_hook";
-import ViewportDetectHook from "./hooks/ui/viewport_detect_hook";
-import { lazyHook } from "./hooks/lazy_hook";
+import { buildHooks } from "./hooks/registry";
 import { createPlausibleTracker } from "./lib/analytics/plausible";
 import { getClientInfo } from "./lib/connection/client_info";
 import { loadCurrentLocaleCatalog } from "./lib/i18n";
 
-const AutoFocusHook = {
-  mounted() {
-    requestAnimationFrame(() => this.el.focus());
-  },
-};
-
-const FocusChatInputOnClickHook = {
-  mounted() {
-    this._onClick = () => {
-      setTimeout(() => document.getElementById("chat-input")?.focus(), 150);
-    };
-    this.el.addEventListener("click", this._onClick);
-  },
-
-  destroyed() {
-    this.el.removeEventListener("click", this._onClick);
-  },
-};
-
-const FileTransferHook = lazyHook(() => import("./hooks/p2p/file_transfer_hook"));
-const GameCanvasHook = lazyHook(() => import("./hooks/games/game_canvas_hook"));
-const GameWebRTCHook = lazyHook(() => import("./hooks/games/game_webrtc_hook"));
-const MediaHook = lazyHook(() => import("./hooks/p2p/media_hook"));
-const P2PDiagramHook = lazyHook(() => import("./hooks/p2p/p2p_diagram_hook"));
-const WebRTCHook = lazyHook(() => import("./hooks/p2p/webrtc_hook"));
-
-const Hooks = {
-  AutoFocusHook: AutoFocusHook,
-  CharCounterHook: CharCounterHook,
-  ClockHook: ClockHook,
-  ConnectFormHook: ConnectFormHook,
-  ConnectionStatusHook: ConnectionStatusHook,
-  ContextMenuHook: ContextMenuHook,
-  ContextualTipsHook: ContextualTipsHook,
-  AutocompleteHook: AutocompleteHook,
-  EmojiPickerHook: EmojiPickerHook,
-  FileTransferHook: FileTransferHook,
-  FocusChatInputOnClickHook: FocusChatInputOnClickHook,
-  ArcadeIframe: ArcadeIframeHook,
-  ArcadeSession: ArcadeSessionHook,
-  ArcadeGame: ArcadeGameHook,
-  ArcadeTimer: ArcadeTimerHook,
-  GameCanvasHook: GameCanvasHook,
-  GameSessionHook: GameSessionHook,
-  GameWebRTCHook: GameWebRTCHook,
-  FormatToolbarHook: FormatToolbarHook,
-  KeyboardHook: KeyboardHook,
-  LagHook: LagHook,
-  MediaHook: MediaHook,
-  MessageInteractionsHook: MessageInteractionsHook,
-  NickChangeFormHook: NickChangeFormHook,
-  P2PCapabilityHook: P2PCapabilityHook,
-  P2PChatFormHook: P2PChatFormHook,
-  P2PDiagramHook: P2PDiagramHook,
-  P2PSessionHook: P2PSessionHook,
-  NotifyListHook: NotifyListHook,
-  PasteHook: PasteHook,
-
-  ScrollHook: ScrollHook,
-  SearchHighlightHook: SearchHighlightHook,
-  ShortcutDispatcherHook: ShortcutDispatcherHook,
-  SoundHook: SoundHook,
-  TitleFlashHook: TitleFlashHook,
-  MenuBarHook: MenuBarHook,
-  ToolbarGroupHook: ToolbarGroupHook,
-  ConversationsHook: ConversationsHook,
-  NicklistHook: NicklistHook,
-  URLCatcherHook: URLCatcherHook,
-  ViewportDetectHook: ViewportDetectHook,
-  WebRTCHook: WebRTCHook,
-};
+const Hooks = buildHooks();
 
 const liveSocket = new LiveSocket("/live", Socket, {
   longPollFallbackMs: 2500,
