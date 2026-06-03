@@ -18,10 +18,36 @@ const ALLOWED_LAZY_FACADE_FILES = new Set([
   "js/hooks/lazy_feature_hooks.js",
 ]);
 
-const ENTRYPOINT_SCOPED_HOOKS = new Set([
-  // Showcase route uses a separate LiveSocket in retrohex_content.js.
-  "Highlight",
+const HOOK_BUILDER_FILES = [
+  "js/hooks/critical_hooks.js",
+  "js/hooks/lazy_feature_hooks.js",
+  "js/hooks/help_hooks.js",
+  "js/hooks/showcase_hooks.js",
+];
+
+const NON_IMPLEMENTATION_HOOK_FILES = new Set([
+  "js/hooks/registry.js",
+  "js/hooks/critical_hooks.js",
+  "js/hooks/lazy_feature_hooks.js",
+  "js/hooks/lazy_feature_hook.js",
+  "js/hooks/help_hooks.js",
+  "js/hooks/showcase_hooks.js",
 ]);
+
+const LIVESOCKET_ENTRYPOINTS = {
+  "js/app.js": {
+    registryImport: "./hooks/registry",
+    hookBuilder: "buildHooks",
+  },
+  "js/help_live.js": {
+    registryImport: "./hooks/help_hooks",
+    hookBuilder: "buildHelpHooks",
+  },
+  "js/retrohex_content.js": {
+    registryImport: "./hooks/showcase_hooks",
+    hookBuilder: "buildShowcaseHooks",
+  },
+};
 
 function main() {
   const failures = [];
@@ -33,13 +59,24 @@ function main() {
 
   checkAppEntrypoint(appJs, failures);
   checkRegistry(registryJs, failures);
+  checkLiveSocketEntrypoints(failures);
+  checkHookFileClassification(failures);
   checkLazyFacadeUsage(failures);
   checkDynamicImports(failures);
 
   const criticalHooks = parseHookObjectKeys(criticalJs, "criticalHooks", failures);
+  const helpHooks = parseHookObjectKeys(readAsset("js/hooks/help_hooks.js"), "helpHooks", failures);
+  const showcaseHooks = parseHookObjectKeys(
+    readAsset("js/hooks/showcase_hooks.js"),
+    "showcaseHooks",
+    failures,
+  );
   const lazyHooks = parseLazyFeatureHooks(lazyJs, failures);
   checkHookSets(criticalHooks, lazyHooks, failures);
-  checkPhxHookUsage(new Set([...criticalHooks, ...lazyHooks]), failures);
+  checkPhxHookUsage(
+    new Set([...criticalHooks, ...helpHooks, ...showcaseHooks, ...lazyHooks]),
+    failures,
+  );
 
   if (failures.length > 0) {
     process.stderr.write(`LiveView hooks contract failed. See ${CONTRACT_DOC}.\n`);
@@ -70,6 +107,52 @@ function checkAppEntrypoint(source, failures) {
 
   if (!source.includes("hooks: Hooks")) {
     failures.push("js/app.js must pass the buildHooks result to LiveSocket as hooks: Hooks.");
+  }
+}
+
+function checkLiveSocketEntrypoints(failures) {
+  for (const [rel, config] of Object.entries(LIVESOCKET_ENTRYPOINTS)) {
+    const source = readAsset(rel);
+    const imports = [...source.matchAll(/import\s+(?:[^"']+\s+from\s+)?["']([^"']+)["']/g)].map(
+      (match) => match[1],
+    );
+
+    if (!imports.includes(config.registryImport)) {
+      failures.push(`${rel} must import ${config.hookBuilder} from ${config.registryImport}.`);
+    }
+
+    for (const importPath of imports) {
+      if (importPath.startsWith("./hooks/") && importPath !== config.registryImport) {
+        failures.push(
+          `${rel} imports ${importPath}; LiveSocket entrypoints must import only their hook registry builder.`,
+        );
+      }
+    }
+
+    if (!source.includes(`${config.hookBuilder}()`)) {
+      failures.push(`${rel} must build its hooks with ${config.hookBuilder}().`);
+    }
+
+    if (/hooks\s*:\s*\{/.test(source)) {
+      failures.push(`${rel} must not inline a hooks object in LiveSocket options.`);
+    }
+  }
+}
+
+function checkHookFileClassification(failures) {
+  const builderSource = HOOK_BUILDER_FILES.map(readAsset).join("\n");
+  const hooksRoot = path.join(JS_ROOT, "hooks");
+
+  for (const file of listFiles(hooksRoot, (filename) => filename.endsWith(".js"))) {
+    const rel = assetRel(file);
+    if (NON_IMPLEMENTATION_HOOK_FILES.has(rel)) continue;
+
+    const importPath = `./${rel.replace(/^js\/hooks\//, "").replace(/\.js$/, "")}`;
+    if (!builderSource.includes(`"${importPath}"`) && !builderSource.includes(`'${importPath}'`)) {
+      failures.push(
+        `${rel} is not referenced by a hook builder; classify it in a hooks/*_hooks.js builder.`,
+      );
+    }
   }
 }
 
@@ -243,7 +326,7 @@ function checkPhxHookUsage(registryHooks, failures) {
     const source = fs.readFileSync(file, "utf8");
     for (const match of source.matchAll(hookPattern)) {
       const hookName = match[1];
-      if (registryHooks.has(hookName) || ENTRYPOINT_SCOPED_HOOKS.has(hookName)) continue;
+      if (registryHooks.has(hookName)) continue;
 
       failures.push(
         `${repoRel(file)}:${lineNumber(source, match.index)} uses phx-hook="${hookName}" without a main registry entry or entrypoint exception.`,

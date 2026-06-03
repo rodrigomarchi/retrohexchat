@@ -47,17 +47,21 @@ References:
 
 ## Target Architecture
 
-There must be exactly one hook registration path:
+There must be exactly one hook registration pattern:
 
 ```txt
-assets/js/app.js
-  -> imports buildHooks()
-  -> hooks/registry.js
-  -> critical_hooks.js + lazy_feature_hooks.js
-  -> LiveSocket(..., { hooks: buildHooks() })
+LiveSocket entrypoint
+  -> imports one build*Hooks() function from assets/js/hooks/*_hooks.js
+  -> passes the returned hook map to LiveSocket(..., { hooks: Hooks })
 ```
 
-`app.js` must not import individual hook implementations.
+No LiveSocket entrypoint may import individual hook implementations or define an inline hooks object.
+
+Current entrypoint builders:
+
+- `app.js` imports `buildHooks()` from `hooks/registry.js`.
+- `help_live.js` imports `buildHelpHooks()` from `hooks/help_hooks.js`.
+- `retrohex_content.js` imports `buildShowcaseHooks()` from `hooks/showcase_hooks.js`.
 
 ### Critical Hooks
 
@@ -104,6 +108,8 @@ apps/retro_hex_chat_web/assets/js/hooks/
   critical_hooks.js
   lazy_feature_hooks.js
   lazy_feature_hook.js
+  help_hooks.js
+  showcase_hooks.js
 ```
 
 ### `registry.js`
@@ -112,7 +118,15 @@ Responsibilities:
 
 - export `buildHooks()`;
 - merge critical hooks and lazy feature hooks;
-- be the only module imported by `app.js` for hook registration.
+- be the only hook module imported by `app.js` for hook registration.
+
+### `help_hooks.js` and `showcase_hooks.js`
+
+Responsibilities:
+
+- export route-entrypoint-specific hook builders;
+- keep secondary LiveSocket entrypoints on the same hook-map builder pattern as `app.js`;
+- prevent `help_live.js` and `retrohex_content.js` from importing hook implementations directly.
 
 ### `critical_hooks.js`
 
@@ -213,13 +227,14 @@ The script must fail if:
 
 - `lazyFeatureHook(` appears outside the allowed registry/facade files;
 - `import(` appears outside approved dynamic import locations;
-- `app.js` imports hook implementations directly;
+- a LiveSocket entrypoint imports hook implementations directly;
+- a LiveSocket entrypoint defines an inline hooks object;
 - a `phx-hook="Name"` in HEEx has no matching registry entry;
 - a critical hook appears in `lazyFeatureHooks`;
 - a lazy hook with `serverEvents` lacks `readyEvent`;
 - a lazy hook declares `safeWithoutReady` or `safeWithoutReadyReason`;
 - a new hook file exists but is not classified as critical or lazy feature;
-- colocated hooks are introduced without an explicit approved exception.
+- colocated or inline hooks are introduced outside hook builder modules.
 
 ### Guard 2: Bundle Budget
 
@@ -279,7 +294,7 @@ Completion criteria:
 
 - [x] Inventory table added to this document.
 - [x] Every current main-app hook has exactly one classification.
-- [x] Entrypoint-scoped hook exceptions are recorded.
+- [x] Secondary LiveSocket entrypoints use hook-map builders instead of direct hook imports.
 - [x] Dynamic import categories are recorded.
 
 ### Phase 2: Central Registry
@@ -288,12 +303,12 @@ Completion criteria:
 - Create `critical_hooks.js`.
 - Create `lazy_feature_hooks.js`.
 - Move current hook registration out of `app.js`.
-- Make `app.js` import only `buildHooks`.
+- Make every LiveSocket entrypoint import only its hook-map builder.
 
 Completion criteria:
 
 - [x] App assets build.
-- [x] `app.js` no longer imports hook implementations directly.
+- [x] No LiveSocket entrypoint imports hook implementations directly.
 - [x] Existing JS lint passes.
 - [x] Existing JS unit tests pass.
 
@@ -339,7 +354,7 @@ Completion criteria:
 
 - [x] CI fails on unauthorized lazy hook usage.
 - [x] CI fails on unclassified new hooks.
-- [x] CI fails on direct hook imports from `app.js`.
+- [x] CI fails on direct hook imports from any LiveSocket entrypoint.
 
 ### Phase 6: Bundle Budget Verification
 
@@ -382,7 +397,7 @@ These hooks are currently registered in `assets/js/app.js`.
 
 | Hook | Current Source | Classification | Server Events | Ready Event | Notes |
 | --- | --- | --- | --- | --- | --- |
-| AutoFocusHook | inline in `app.js` | critical | none found | none | Small utility hook. |
+| AutoFocusHook | `hooks/critical_hooks.js` | critical | none found | none | Small utility hook. |
 | CharCounterHook | `hooks/ui/char_counter_hook` | critical | none found | none | Chat input shell behavior. |
 | ClockHook | `hooks/connection/clock_hook` | critical | none found | none | Status bar shell behavior. |
 | ConnectFormHook | `hooks/connection/connect_form_hook` | critical | `submit_connect` | none | Connect-route shell hook; not lazy. |
@@ -392,7 +407,7 @@ These hooks are currently registered in `assets/js/app.js`.
 | AutocompleteHook | `hooks/chat/autocomplete_hook` | critical | `autocomplete_closed`, `set_input`, `tab_matches` | none | Critical input behavior. |
 | EmojiPickerHook | `hooks/chat/emoji_picker_hook` | critical | `insert_emoji` | none | Chat input behavior. |
 | FileTransferHook | `lazyFeatureHook({ loader: () => import("./p2p/file_transfer_hook"), ... })` | lazyFeature | `ft_config`, `ft_accept`, `ft_reject`, `ft_cancel`, `ft_retry` | `file_transfer_ready` | Initial file-transfer config is sent after `file_transfer_ready`; later accept/reject/cancel/retry events are user-driven from the rendered file-transfer UI. `ft_channel_ready` is a DOM event from `WebRTCHook`, not a LiveView server push. |
-| FocusChatInputOnClickHook | inline in `app.js` | critical | none found | none | Small shell utility. |
+| FocusChatInputOnClickHook | `hooks/critical_hooks.js` | critical | none found | none | Small shell utility. |
 | ArcadeIframe | `hooks/games/arcade_iframe_hook` | critical | `arcade_close_tab`, `open_game_window` | none | Route-specific but currently eager and small. |
 | ArcadeSession | `hooks/games/arcade_iframe_hook` | critical | `arcade_close_tab` | none | Route-specific but currently eager and small. |
 | ArcadeGame | `hooks/games/arcade_game_hook` | critical | `arcade_close_tab` | none | Route-specific but currently eager and small. |
@@ -427,12 +442,12 @@ These hooks are currently registered in `assets/js/app.js`.
 
 ### Other LiveSocket Entrypoints
 
-These hooks are not part of the main chat `app.js` hook registry and must be handled as entrypoint-scoped exceptions by the future contract script.
+These hooks are not part of the main chat `app.js` hook map, but they still use the same project pattern: a LiveSocket entrypoint imports a hook-map builder from `assets/js/hooks/` and passes the returned map to `LiveSocket`.
 
 | Entrypoint | Hook | Source | Notes |
 | --- | --- | --- | --- |
-| `assets/js/help_live.js` | `MenuBarHook` | help LiveSocket hooks namespace | Help route has a minimal LiveSocket separate from `app.js`. |
-| `assets/js/retrohex_content.js` | `Highlight` | showcase LiveSocket hooks namespace | Showcase syntax/content highlighting hook, separate from `app.js`. |
+| `assets/js/help_live.js` | `MenuBarHook` | `hooks/help_hooks.js` | Help route uses `buildHelpHooks()`. |
+| `assets/js/retrohex_content.js` | `MenuBarHook`, `Highlight` | `hooks/showcase_hooks.js` | Showcase route uses `buildShowcaseHooks()`; syntax highlighting lives in `hooks/showcase/highlight_hook.js`. |
 
 ### Dynamic Import Inventory
 
@@ -453,7 +468,7 @@ Unauthorized future dynamic imports must fail the hooks contract script unless t
 - Every hook is classified as critical or lazyFeature.
 - Lazy hooks exist only in the allowlist.
 - Critical hooks cannot be lazy.
-- `app.js` imports no hook implementation directly.
+- No LiveSocket entrypoint imports hook implementations directly or defines an inline hook map.
 - Every lazy hook with server events has a readiness protocol.
 - CI enforces the registry contract.
 - Bundle budget enforces feature chunks.
@@ -464,11 +479,12 @@ Unauthorized future dynamic imports must fail the hooks contract script unless t
 
 - 2026-06-03: Created tracking plan after lazy loading regressions were fixed and full e2e passed with `PASS (331) FAIL (0)`. Next step is Phase 1 inventory.
 - 2026-06-03: Committed all pending lazy-loading/e2e/landing fixes in `fcda6c8` before starting the standardization work.
-- 2026-06-03: Completed Phase 1 inventory. Recorded all main `app.js` hooks, current lazy feature hooks, server event exposure, separate LiveSocket entrypoint exceptions, and dynamic import categories. Next step is Phase 2 central registry.
+- 2026-06-03: Completed Phase 1 inventory. Recorded all main `app.js` hooks, current lazy feature hooks, server event exposure, secondary LiveSocket entrypoints, and dynamic import categories. Next step is Phase 2 central registry.
 - 2026-06-03: Completed Phase 2 central registry. Added `hooks/registry.js`, `hooks/critical_hooks.js`, and `hooks/lazy_feature_hooks.js`; `app.js` now imports only `buildHooks()` for hook registration. Validation passed: `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm test --prefix apps/retro_hex_chat_web/assets` (`3656` tests), and `mix assets.build`. Dev build `app.js` size after the registry move: `380.7kb`.
 - 2026-06-03: Completed Phase 3 lazy facade API. Replaced the generic lazy hook helper with `lazyFeatureHook`, added metadata validation for feature name, reason, server events, and ready events, and ported all lazy feature hooks to the allowlist. Validation passed: `npm exec -- vitest run test/hooks/lazy_feature_hook.test.js` (`8` tests), `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm test --prefix apps/retro_hex_chat_web/assets` (`3662` tests), and `mix assets.build`. Dev build `app.js` size after the facade change: `384.8kb`.
 - 2026-06-03: Completed Phase 4 readiness protocol audit. Added `p2p_webrtc_ready` for `WebRTCHook` and `media_hook_ready` for `MediaHook`; P2P WebRTC and initial media startup are now gated by server-side ready/started flags. Validation passed: targeted Vitest for lazy/P2P/media hooks (`46` tests), P2P LiveView test file (`20` tests), `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm test --prefix apps/retro_hex_chat_web/assets` (`3662` tests), `mix test` (`2790` core tests and `452` web tests), `mix assets.build`, `MIX_ENV=e2e mix assets.build`, and targeted Playwright P2P/game specs (`9` tests, `44.2s`). Dev/e2e build `app.js` size after readiness changes: `384.6kb`.
-- 2026-06-03: Completed Phase 5 CI enforcement. Added `scripts/enforce_hooks_contract.cjs`, `npm run lint:hooks`, and `make lint.hooks`; `make lint` now includes the hooks contract. The guard fails on direct hook imports from `app.js`, unauthorized `lazyFeatureHook` use, unauthorized dynamic imports, duplicate critical/lazy declarations, lazy server events without `readyEvent`, `safeWithoutReady` usage, and literal `phx-hook` usage without a registry entry or entrypoint exception. Validation passed: `npm run lint:hooks --prefix apps/retro_hex_chat_web/assets`, `make lint.hooks`, `npm run lint --prefix apps/retro_hex_chat_web/assets`, and `npm run format:check --prefix apps/retro_hex_chat_web/assets`.
+- 2026-06-03: Completed Phase 5 CI enforcement. Added `scripts/enforce_hooks_contract.cjs`, `npm run lint:hooks`, and `make lint.hooks`; `make lint` now includes the hooks contract. The guard fails on direct hook imports from LiveSocket entrypoints, inline entrypoint hook maps, unauthorized `lazyFeatureHook` use, unauthorized dynamic imports, duplicate critical/lazy declarations, lazy server events without `readyEvent`, `safeWithoutReady` usage, and literal `phx-hook` usage without a registry entry. Validation passed: `npm run lint:hooks --prefix apps/retro_hex_chat_web/assets`, `make lint.hooks`, `npm run lint --prefix apps/retro_hex_chat_web/assets`, and `npm run format:check --prefix apps/retro_hex_chat_web/assets`.
 - 2026-06-03: Completed Phase 6 bundle budget verification. Validation passed: `npm run bundle:budget --prefix apps/retro_hex_chat_web/assets`. Report: `app.js` `384.6kb` raw / `86.8kb` gzip; largest async chunks remained game-engine chunks from `74.7kb` down to `45.8kb` in the top-12 report; bundle budget passed.
 - 2026-06-03: Phase 7 targeted validation started. Full Playwright chromium runs were used only while diagnosing inherited flakes: first run took `28.9m` and failed `register-validation.spec.ts`; the register tests now wait for the LiveView-enabled submit button. Second run took `28.9m` and failed `chat-timer.spec.ts`; timer list assertions now retry the post-fire cleanup state. Third run took `29.3m` and failed `chat-p2p-game-state.spec.ts` with an unpainted peer canvas; isolated game-state e2e passed (`1` test, `8.9s`) and the broader P2P/game/file block passed before the no-exception readiness tightening (`28` tests, `2.0m`). Tightened the project standard further: removed `safeWithoutReady` support, added `file_transfer_ready` and `game_canvas_ready`, gated initial file-transfer config and game canvas startup on explicit readiness, and strengthened `lint:hooks` to fail `safeWithoutReady` plus missing ready-event push/handler pairs. Validation passed after this tightening: targeted hook Vitest (`67` tests), `npm run lint:hooks --prefix apps/retro_hex_chat_web/assets`, `mix format --check-formatted` for changed LiveView files, `mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/live/p2p_session_live_test.exs` (`20` tests), `MIX_ENV=e2e mix compile`, `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm run format:check --prefix apps/retro_hex_chat_web/assets`, and `npm run bundle:budget --prefix apps/retro_hex_chat_web/assets` (`app.js` `384.0kb` raw / `86.6kb` gzip).
 - 2026-06-03: Completed targeted e2e validation for modified feature areas; no full e2e rerun by request. Results: register/timer specs (`5` tests, `16.1s`), file-transfer specs after fixing the readiness regression (`5` tests, `34.1s`), and P2P game/canvas specs (`4` tests, `21.6s`) all passed. Full asset Vitest also passed after the latest hook changes (`126` files, `3664` tests, `5.57s`), along with `npm run lint --prefix apps/retro_hex_chat_web/assets` and `npm run format:check --prefix apps/retro_hex_chat_web/assets`.
+- 2026-06-03: Completed post-commit ambiguity audit. Removed direct hook implementation imports and inline hook maps from secondary LiveSocket entrypoints: `help_live.js` now uses `buildHelpHooks()`, `retrohex_content.js` now uses `buildShowcaseHooks()`, and the showcase `Highlight` hook lives in `hooks/showcase/highlight_hook.js`. Strengthened `lint:hooks` so every LiveSocket entrypoint must import only its hook-map builder, must not define inline hooks, and every hook implementation file must be referenced by an approved builder. Validation passed: `npm run lint:hooks --prefix apps/retro_hex_chat_web/assets`, `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm run format:check --prefix apps/retro_hex_chat_web/assets`, `mix assets.build`, `npm run bundle:budget --prefix apps/retro_hex_chat_web/assets` (`app.js` `383.9kb` raw / `86.6kb` gzip), and `npm test --prefix apps/retro_hex_chat_web/assets` (`126` files, `3664` tests).
