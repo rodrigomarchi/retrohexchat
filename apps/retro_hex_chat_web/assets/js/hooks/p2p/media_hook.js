@@ -68,6 +68,8 @@ const MediaHook = {
 
     // DOM event wiring
     this._wireControls();
+
+    this.pushEvent("media_hook_ready", {});
   },
 
   destroyed() {

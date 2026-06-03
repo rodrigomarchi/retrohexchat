@@ -32,6 +32,8 @@ const WebRTCHook = {
     this.handleEvent("p2p_start_offer", (data) => this._handleStartOffer(data));
     this.handleEvent("p2p_start_answer", (data) => this._handleStartAnswer(data));
     this.handleEvent("p2p_signal", (data) => this._handleSignal(data));
+
+    this.pushEvent("p2p_webrtc_ready", {});
   },
 
   destroyed() {

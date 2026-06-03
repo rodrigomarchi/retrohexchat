@@ -46,9 +46,7 @@ export const lazyFeatureHooks = {
       "media_upgrade_rejected",
       "media_set_preset",
     ],
-    safeWithoutReady: true,
-    safeWithoutReadyReason:
-      "MediaHook is mounted inside the media controls UI and reads the active PeerConnection from WebRTCHook.",
+    readyEvent: "media_hook_ready",
     reason:
       "Media capture and controls are heavy P2P features not needed for the initial chat shell.",
   }),
@@ -61,9 +59,7 @@ export const lazyFeatureHooks = {
     name: "WebRTCHook",
     loader: () => import("./p2p/webrtc_hook"),
     serverEvents: ["p2p_start_offer", "p2p_start_answer", "p2p_signal"],
-    safeWithoutReady: true,
-    safeWithoutReadyReason:
-      "Existing P2P WebRTC flow predates the ready protocol; Phase 4 must decide whether to add p2p_webrtc_ready.",
+    readyEvent: "p2p_webrtc_ready",
     reason:
       "P2P WebRTC signaling is a heavy session feature not needed for the initial chat shell.",
   }),

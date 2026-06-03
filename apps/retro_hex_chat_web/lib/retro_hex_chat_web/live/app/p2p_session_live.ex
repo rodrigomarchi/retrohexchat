@@ -61,47 +61,10 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
       ) do
     Logger.info("P2P connecting: token=#{socket.assigns.token}, role=#{socket.assigns.role}")
 
-    user_id = socket.assigns.user_id
-    role = socket.assigns.role
-    turn_only = socket.assigns.turn_only
-
-    ice_servers = P2P.ice_servers(to_string(user_id))
-
-    {effective_turn_only, socket} =
-      if turn_only and not P2P.turn_configured?() do
-        warn_msg = %{
-          id: System.unique_integer([:positive]),
-          sender_nick: dgettext("p2p", "System"),
-          content:
-            dgettext("p2p", "Private mode requires a TURN server. Using direct connection."),
-          type: "system",
-          timestamp: DateTime.utc_now()
-        }
-
-        socket = assign(socket, messages: socket.assigns.messages ++ [warn_msg])
-        {false, socket}
-      else
-        {turn_only, socket}
-      end
-
     socket =
-      assign(socket, session_status: "connecting", action_request: nil)
-
-    socket =
-      case role do
-        :creator ->
-          push_event(socket, "p2p_start_offer", %{
-            ice_servers: ice_servers,
-            role: "initiator",
-            turn_only: effective_turn_only
-          })
-
-        :peer ->
-          push_event(socket, "p2p_start_answer", %{
-            ice_servers: ice_servers,
-            turn_only: effective_turn_only
-          })
-      end
+      socket
+      |> assign(session_status: "connecting", action_request: nil)
+      |> maybe_start_webrtc()
 
     {:noreply, socket}
   end
@@ -120,7 +83,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
           socket
           |> assign(webrtc_state: "Connected")
           |> maybe_init_file_transfer()
-          |> start_media_if_call()
+          |> maybe_start_media_if_call()
         else
           socket
         end
@@ -423,6 +386,20 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
     end
   end
 
+  def handle_event("p2p_webrtc_ready", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(webrtc_ready: true)
+     |> maybe_start_webrtc()}
+  end
+
+  def handle_event("media_hook_ready", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(media_ready: true)
+     |> maybe_start_media_if_call()}
+  end
+
   def handle_event("p2p_connected", _params, socket) do
     Logger.info("P2P connected: token=#{socket.assigns.token}")
 
@@ -432,7 +409,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
           socket
           |> assign(session_status: "active", webrtc_state: "Connected")
           |> maybe_init_file_transfer()
-          |> start_media_if_call()
+          |> maybe_start_media_if_call()
 
         {:noreply, socket}
 
@@ -865,6 +842,11 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
         permission_granted: %{},
         webrtc_state: nil,
         retry_attempt: nil,
+        webrtc_ready: false,
+        webrtc_started: false,
+        media_ready: false,
+        media_started: false,
+        turn_warning_shown: false,
         file_transfer: init_file_transfer_on_mount(accepted_action_type, db_session.status),
         accepted_action_type: accepted_action_type,
         call: init_call_on_mount(accepted_action_type, db_session.status),
@@ -967,12 +949,63 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
         socket
         |> assign(session_status: "active", webrtc_state: "Connected")
         |> maybe_init_file_transfer()
-        |> start_media_if_call()
+        |> maybe_start_media_if_call()
 
       _ ->
         socket
     end
   end
+
+  defp maybe_start_webrtc(
+         %{assigns: %{session_status: "connecting", webrtc_ready: true, webrtc_started: false}} =
+           socket
+       ) do
+    socket
+    |> assign(webrtc_started: true)
+    |> start_webrtc()
+  end
+
+  defp maybe_start_webrtc(socket), do: socket
+
+  defp start_webrtc(socket) do
+    socket = maybe_warn_turn_unavailable(socket)
+    ice_servers = P2P.ice_servers(to_string(socket.assigns.user_id))
+    turn_only = socket.assigns.turn_only && socket.assigns.turn_configured
+
+    case socket.assigns.role do
+      :creator ->
+        push_event(socket, "p2p_start_offer", %{
+          ice_servers: ice_servers,
+          role: "initiator",
+          turn_only: turn_only
+        })
+
+      :peer ->
+        push_event(socket, "p2p_start_answer", %{
+          ice_servers: ice_servers,
+          turn_only: turn_only
+        })
+    end
+  end
+
+  defp maybe_warn_turn_unavailable(
+         %{assigns: %{turn_only: true, turn_configured: false, turn_warning_shown: false}} =
+           socket
+       ) do
+    warn_msg = %{
+      id: System.unique_integer([:positive]),
+      sender_nick: dgettext("p2p", "System"),
+      content: dgettext("p2p", "Private mode requires a TURN server. Using direct connection."),
+      type: "system",
+      timestamp: DateTime.utc_now()
+    }
+
+    socket
+    |> assign(messages: socket.assigns.messages ++ [warn_msg])
+    |> assign(turn_warning_shown: true)
+  end
+
+  defp maybe_warn_turn_unavailable(socket), do: socket
 
   defp maybe_init_file_transfer(socket) do
     action_type =
@@ -1026,17 +1059,31 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
     end
   end
 
-  defp start_media_if_call(socket) do
+  defp maybe_start_media_if_call(
+         %{assigns: %{session_status: "active", media_ready: true, media_started: false}} =
+           socket
+       ) do
     action_type =
       socket.assigns[:accepted_action_type] ||
         get_in(socket.assigns, [:action_request, :action_type])
 
     case action_type do
-      "audio_call" -> push_event(socket, "media_start_audio", %{})
-      "video_call" -> push_event(socket, "media_start_video", %{})
-      _ -> socket
+      "audio_call" ->
+        socket
+        |> assign(media_started: true)
+        |> push_event("media_start_audio", %{})
+
+      "video_call" ->
+        socket
+        |> assign(media_started: true)
+        |> push_event("media_start_video", %{})
+
+      _ ->
+        socket
     end
   end
+
+  defp maybe_start_media_if_call(socket), do: socket
 
   defp action_response_message(action_type, true) do
     dgettext("p2p", "%{action} request accepted.", action: action_label(action_type))

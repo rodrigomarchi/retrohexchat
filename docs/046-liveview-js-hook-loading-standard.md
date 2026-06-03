@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress. Phase 1 inventory, Phase 2 central registry, and Phase 3 lazy facade API are complete; Phase 4 readiness protocol audit is next.
+In progress. Phases 1-4 are complete; Phase 5 CI enforcement is next.
 
 ## Goal
 
@@ -164,6 +164,8 @@ lazyFeatureHook({
   loader,
   serverEvents = [],
   readyEvent = null,
+  safeWithoutReady = false,
+  safeWithoutReadyReason = null,
   reason,
 })
 ```
@@ -321,9 +323,9 @@ Completion criteria:
 
 Completion criteria:
 
-- Each lazy hook with server events has a readiness entry in the inventory.
-- P2P and game e2e pass under normal timing.
-- No startup flow relies on import timing.
+- [x] Each lazy hook with server events has a readiness entry in the inventory.
+- [x] P2P and game e2e pass under normal timing.
+- [x] No startup flow relies on import timing.
 
 ### Phase 5: CI Enforcement
 
@@ -386,25 +388,26 @@ These hooks are currently registered in `assets/js/app.js`.
 | ContextualTipsHook | `hooks/ui/contextual_tips_hook` | critical | `tip_trigger` | none | Small chat shell helper. |
 | AutocompleteHook | `hooks/chat/autocomplete_hook` | critical | `autocomplete_closed`, `set_input`, `tab_matches` | none | Critical input behavior. |
 | EmojiPickerHook | `hooks/chat/emoji_picker_hook` | critical | `insert_emoji` | none | Chat input behavior. |
-| FileTransferHook | `lazyFeatureHook({ loader: () => import("./p2p/file_transfer_hook"), ... })` | lazyFeature | `ft_channel_ready`, `ft_config`, `ft_accept`, `ft_reject`, `ft_cancel`, `ft_retry` | none | Existing lazy feature. Must keep dataset fallback or add ready protocol for server config. |
+| FileTransferHook | `lazyFeatureHook({ loader: () => import("./p2p/file_transfer_hook"), ... })` | lazyFeature | `ft_channel_ready`, `ft_config`, `ft_accept`, `ft_reject`, `ft_cancel`, `ft_retry` | `safeWithoutReady` | Reads transfer config from rendered dataset and checks `#p2p-webrtc._fileTransferChannel` on mount, so missed initial `ft_config`/channel events are recoverable. |
 | FocusChatInputOnClickHook | inline in `app.js` | critical | none found | none | Small shell utility. |
 | ArcadeIframe | `hooks/games/arcade_iframe_hook` | critical | `arcade_close_tab`, `open_game_window` | none | Route-specific but currently eager and small. |
 | ArcadeSession | `hooks/games/arcade_iframe_hook` | critical | `arcade_close_tab` | none | Route-specific but currently eager and small. |
 | ArcadeGame | `hooks/games/arcade_game_hook` | critical | `arcade_close_tab` | none | Route-specific but currently eager and small. |
 | ArcadeTimer | `hooks/games/arcade_timer_hook` | critical | none found | none | Route-specific but currently eager and small. |
-| GameCanvasHook | `lazyFeatureHook({ loader: () => import("./games/game_canvas_hook"), ... })` | lazyFeature | `game_start`, `game_end` | none | Existing lazy feature. Reads initial state from dataset to tolerate missed `game_start`. |
+| GameCanvasHook | `lazyFeatureHook({ loader: () => import("./games/game_canvas_hook"), ... })` | lazyFeature | `game_start`, `game_end` | `safeWithoutReady` | Reads `data-game-id` and `data-is-host` from the rendered canvas and checks `#game-webrtc._gameDataChannel` on mount, so missed initial `game_start`/channel events are recoverable. |
 | GameSessionHook | `hooks/games/game_session_hook` | critical | `game_close_tab` | none | Game session shell/navigation hook. |
 | GameWebRTCHook | `lazyFeatureHook({ loader: () => import("./games/game_webrtc_hook"), ... })` | lazyFeature | `game_start_offer`, `game_start_answer`, `game_signal` | `game_webrtc_ready` | Existing lazy feature with ready protocol. |
 | FormatToolbarHook | `hooks/chat/format_toolbar_hook` | critical | none found | none | Chat input shell behavior. |
 | KeyboardHook | `hooks/input/keyboard_hook` | critical | `focus_input`, `clear_input`, `set_input`, `update_bindings` | none | Critical input behavior. |
 | LagHook | `hooks/connection/lag_hook` | critical | `pong` | none | Status bar shell behavior. |
-| MediaHook | `lazyFeatureHook({ loader: () => import("./p2p/media_hook"), ... })` | lazyFeature | `media_start_audio`, `media_start_video`, `media_end_call`, `media_peer_muted`, `media_peer_camera`, `media_upgrade_accepted`, `media_upgrade_rejected`, `media_set_preset` | none | Existing lazy feature. Needs explicit readiness assessment before stricter guard. |
+| MediaHook | `lazyFeatureHook({ loader: () => import("./p2p/media_hook"), ... })` | lazyFeature | `media_start_audio`, `media_start_video`, `media_end_call`, `media_peer_muted`, `media_peer_camera`, `media_upgrade_accepted`, `media_upgrade_rejected`, `media_set_preset` | `media_hook_ready` | Initial `media_start_audio`/`media_start_video` is gated by server-side `media_ready`/`media_started`; later media events are user/session driven after controls render. |
 | MessageInteractionsHook | `hooks/chat/message_interactions_hook` | critical | `enter_edit_mode`, `exit_edit_mode` | none | Chat message interaction behavior. |
 | NickChangeFormHook | `hooks/chat/nick_change_form_hook` | critical | `submit_nick_change` | none | Nick change dialog behavior. |
 | P2PCapabilityHook | `hooks/p2p/p2p_capability_hook` | critical | `p2p_request_permission` | none | P2P route setup; currently eager and small. |
 | P2PChatFormHook | `hooks/p2p/p2p_chat_form_hook` | critical | `p2p_lobby_message_sent` | none | Small form reset hook. |
 | P2PDiagramHook | `lazyFeatureHook({ loader: () => import("./p2p/p2p_diagram_hook"), ... })` | lazyFeature | none found | none | Existing lazy visual-only feature. |
 | P2PSessionHook | `hooks/p2p/p2p_session_hook` | critical | `p2p_close_tab` | none | P2P session shell/navigation hook. |
+| WebRTCHook | `lazyFeatureHook({ loader: () => import("./p2p/webrtc_hook"), ... })` | lazyFeature | `p2p_start_offer`, `p2p_start_answer`, `p2p_signal` | `p2p_webrtc_ready` | Initial P2P WebRTC start is gated by server-side `webrtc_ready`/`webrtc_started`, so `p2p_start_offer`/`p2p_start_answer` are not pushed before the lazy hook registers handlers. |
 | NotifyListHook | `hooks/notifications/notify_list_hook` | critical | none found | none | Dialog/helper hook, currently eager and small. |
 | PasteHook | `hooks/chat/paste_hook` | critical | none found | none | Critical input behavior. |
 | ScrollHook | `hooks/chat/scroll_hook` | critical | `scroll_to_bottom`, `clear_chat_messages`, `scroll_to_message`, `enter_edit_mode`, `exit_edit_mode`, `link_preview`, `dismiss_hover_card`, `clipboard_copy`, `clipboard_copy_selection`, `open_url`, `message_confirmed`, `message_failed`, `prepend_start` | none | Critical chat shell behavior. |
@@ -461,3 +464,4 @@ Unauthorized future dynamic imports must fail the hooks contract script unless t
 - 2026-06-03: Completed Phase 1 inventory. Recorded all main `app.js` hooks, current lazy feature hooks, server event exposure, separate LiveSocket entrypoint exceptions, and dynamic import categories. Next step is Phase 2 central registry.
 - 2026-06-03: Completed Phase 2 central registry. Added `hooks/registry.js`, `hooks/critical_hooks.js`, and `hooks/lazy_feature_hooks.js`; `app.js` now imports only `buildHooks()` for hook registration. Validation passed: `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm test --prefix apps/retro_hex_chat_web/assets` (`3656` tests), and `mix assets.build`. Dev build `app.js` size after the registry move: `380.7kb`.
 - 2026-06-03: Completed Phase 3 lazy facade API. Replaced the generic lazy hook helper with `lazyFeatureHook`, added metadata validation for feature name, reason, server events, ready events, and safe-without-ready exceptions, and ported all lazy feature hooks to the allowlist. Validation passed: `npm exec -- vitest run test/hooks/lazy_feature_hook.test.js` (`8` tests), `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm test --prefix apps/retro_hex_chat_web/assets` (`3662` tests), and `mix assets.build`. Dev build `app.js` size after the facade change: `384.8kb`.
+- 2026-06-03: Completed Phase 4 readiness protocol audit. Added `p2p_webrtc_ready` for `WebRTCHook` and `media_hook_ready` for `MediaHook`; P2P WebRTC and initial media startup are now gated by server-side ready/started flags. Kept explicit `safeWithoutReady` exceptions for `FileTransferHook` and `GameCanvasHook` because both recover initial state from rendered data/DOM fallbacks. Validation passed: targeted Vitest for lazy/P2P/media hooks (`46` tests), P2P LiveView test file (`20` tests), `npm run lint --prefix apps/retro_hex_chat_web/assets`, `npm test --prefix apps/retro_hex_chat_web/assets` (`3662` tests), `mix test` (`2790` core tests and `452` web tests), `mix assets.build`, `MIX_ENV=e2e mix assets.build`, and targeted Playwright P2P/game specs (`9` tests, `44.2s`). Dev/e2e build `app.js` size after readiness changes: `384.6kb`.

@@ -84,10 +84,43 @@ defmodule RetroHexChatWeb.App.P2PSessionLiveTest do
       html = render(peer_view)
       assert html =~ "audio_call"
 
-      # Peer accepts → triggers connecting → WebRTC starts
+      # Peer accepts -> triggers connecting, but WebRTC starts only after the lazy hook is ready.
       render_click(peer_view, "respond_action", %{"accepted" => "true"})
 
+      refute_push_event(creator_view, "p2p_start_offer", %{})
+
+      render_hook(creator_view, "p2p_webrtc_ready", %{})
+
       assert_push_event(creator_view, "p2p_start_offer", %{role: "initiator"})
+    end
+
+    test "ready WebRTC hook starts when session later enters connecting",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      render_hook(view, "p2p_webrtc_ready", %{})
+      refute_push_event(view, "p2p_start_offer", %{})
+
+      send(view.pid, %{
+        event: "p2p_status_changed",
+        payload: %{status: "connecting"}
+      })
+
+      assert_push_event(view, "p2p_start_offer", %{role: "initiator"})
+    end
+
+    test "ready peer WebRTC hook starts answer flow when session enters connecting",
+         %{conn: conn, token: token, peer: peer} do
+      {:ok, view, _html} = live(chat_conn(conn, peer.nickname), "/p2p/#{token}")
+
+      render_hook(view, "p2p_webrtc_ready", %{})
+
+      send(view.pid, %{
+        event: "p2p_status_changed",
+        payload: %{status: "connecting"}
+      })
+
+      assert_push_event(view, "p2p_start_answer", %{turn_only: false})
     end
   end
 
@@ -150,6 +183,32 @@ defmodule RetroHexChatWeb.App.P2PSessionLiveTest do
   end
 
   describe "media call area" do
+    test "media start waits for MediaHook readiness",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      send(view.pid, %{
+        event: "p2p_action_response",
+        payload: %{
+          accepted: true,
+          responder_id: 0,
+          responder_nick: "peer",
+          action_type: "audio_call"
+        }
+      })
+
+      send(view.pid, %{
+        event: "p2p_status_changed",
+        payload: %{status: "active"}
+      })
+
+      refute_push_event(view, "media_start_audio", %{})
+
+      render_hook(view, "media_hook_ready", %{})
+
+      assert_push_event(view, "media_start_audio", %{})
+    end
+
     test "MediaHook renders with video/audio elements when call is active",
          %{conn: conn, token: token, creator: creator} do
       {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")

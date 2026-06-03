@@ -89,6 +89,7 @@ describe("MediaHook — Audio Call", () => {
     expect(hook.handleEvent).toHaveBeenCalledWith("media_upgrade_accepted", expect.any(Function));
     expect(hook.handleEvent).toHaveBeenCalledWith("media_upgrade_rejected", expect.any(Function));
     expect(hook.handleEvent).toHaveBeenCalledWith("media_set_preset", expect.any(Function));
+    expect(hook.pushEvent).toHaveBeenCalledWith("media_hook_ready", {});
   });
 
   it("listens for media_pc_ready and media_pc_closed on #p2p-webrtc element", () => {

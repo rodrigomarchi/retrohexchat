@@ -83,6 +83,7 @@ describe("WebRTCHook", () => {
       expect(ctx.handleEvent).toHaveBeenCalledWith("p2p_start_offer", expect.any(Function));
       expect(ctx.handleEvent).toHaveBeenCalledWith("p2p_start_answer", expect.any(Function));
       expect(ctx.handleEvent).toHaveBeenCalledWith("p2p_signal", expect.any(Function));
+      expect(ctx.pushEvent).toHaveBeenCalledWith("p2p_webrtc_ready", {});
     });
   });
 
