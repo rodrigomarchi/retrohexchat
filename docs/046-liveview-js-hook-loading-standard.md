@@ -2,7 +2,7 @@
 
 ## Status
 
-In progress. Phases 1-7 targeted validation are complete after tightening the readiness standard to remove `safeWithoutReady` exceptions. Pending: commit.
+Complete. Phases 1-7 targeted validation are complete after tightening the readiness standard to remove `safeWithoutReady` exceptions.
 
 ## Goal
 
