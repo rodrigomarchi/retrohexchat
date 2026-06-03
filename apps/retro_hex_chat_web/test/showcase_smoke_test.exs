@@ -65,6 +65,7 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     "/showcase/channel-list",
     "/showcase/highlight-dialog",
     "/showcase/config-form",
+    "/showcase/p2p-connection-diagram",
     "/showcase/p2p-lobby",
     "/showcase/media-controls",
     "/showcase/file-transfer",

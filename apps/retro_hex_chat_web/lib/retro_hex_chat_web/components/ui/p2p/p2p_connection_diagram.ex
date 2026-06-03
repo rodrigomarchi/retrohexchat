@@ -67,6 +67,120 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
     """
   end
 
+  attr :nickname, :string, required: true
+  attr :peer_nick, :string, required: true
+  attr :peer_online, :boolean, required: true
+  attr :session_status, :string, required: true
+  attr :webrtc_state, :string, default: nil
+  attr :retry_attempt, :integer, default: nil
+  attr :file_transfer, :map, default: nil
+  attr :call, :map, default: nil
+  attr :local_info, :map, default: %{}
+  attr :peer_info, :map, default: %{}
+
+  @spec p2p_connection_strip(map()) :: Phoenix.LiveView.Rendered.t()
+  def p2p_connection_strip(assigns) do
+    state = derive_diagram_state(assigns)
+
+    assigns =
+      assigns
+      |> assign(:diagram_state, state)
+      |> assign(:local_browser_name, extract_browser_name(assigns.local_info[:browser]))
+      |> assign(:peer_browser_name, extract_browser_name(assigns.peer_info[:browser]))
+
+    ~H"""
+    <div
+      id="p2p-diagram-compact"
+      class={"p2p-diagram-strip p2p-diagram-strip--#{@diagram_state.id}"}
+      data-testid="p2p-diagram-compact"
+      data-state={@diagram_state.id}
+    >
+      <.strip_peer
+        nick={@nickname}
+        label={dgettext("p2p", "you")}
+        online={true}
+        browser_name={@local_browser_name}
+        status_label={peer_status_label(@diagram_state, :local)}
+      />
+
+      <div class="p2p-diagram-strip__route">
+        <svg
+          viewBox="0 0 240 28"
+          preserveAspectRatio="none"
+          shape-rendering="crispEdges"
+          class="p2p-diagram-strip__svg"
+          aria-hidden="true"
+        >
+          <line x1="8" y1="14" x2="232" y2="14" class="p2p-diagram-strip__track" />
+          <rect
+            x="38"
+            y="11"
+            width="8"
+            height="6"
+            class="p2p-diagram-strip__packet p2p-diagram-strip__packet--one"
+          />
+          <rect
+            x="116"
+            y="11"
+            width="8"
+            height="6"
+            class="p2p-diagram-strip__packet p2p-diagram-strip__packet--two"
+          />
+          <rect
+            x="194"
+            y="11"
+            width="8"
+            height="6"
+            class="p2p-diagram-strip__packet p2p-diagram-strip__packet--three"
+          />
+        </svg>
+        <div class="p2p-diagram-strip__badge">
+          <span class="p2p-diagram-strip__label">{@diagram_state.label}</span>
+          <span :if={@diagram_state[:sub_label]} class="p2p-diagram-strip__sub">
+            {@diagram_state.sub_label}
+          </span>
+        </div>
+      </div>
+
+      <.strip_peer
+        nick={@peer_nick}
+        online={@peer_online}
+        browser_name={@peer_browser_name}
+        status_label={peer_status_label(@diagram_state, :remote)}
+      />
+    </div>
+    """
+  end
+
+  attr :nick, :string, required: true
+  attr :label, :string, default: nil
+  attr :online, :boolean, required: true
+  attr :browser_name, :string, required: true
+  attr :status_label, :string, default: nil
+
+  defp strip_peer(assigns) do
+    ~H"""
+    <div class="p2p-diagram-strip__peer">
+      <span class={[
+        "p2p-diagram__status-dot",
+        @online && "p2p-diagram__status-dot--online",
+        !@online && "p2p-diagram__status-dot--offline"
+      ]}>
+      </span>
+      <svg
+        viewBox="0 0 24 24"
+        class={"p2p-diagram-strip__browser p2p-diagram__browser-svg--#{@browser_name}"}
+        aria-hidden="true"
+      >
+        <path d={browser_icon_path(@browser_name)} fill="currentColor" />
+      </svg>
+      <span class="p2p-diagram-strip__nick">{@nick}</span>
+      <span :if={@label} class="p2p-diagram-strip__you">({@label})</span>
+      <span :if={@status_label} class="p2p-diagram-strip__peer-status">{@status_label}</span>
+    </div>
+    """
+  end
+
   # --- Peer Panel ---
 
   attr :nick, :string, required: true

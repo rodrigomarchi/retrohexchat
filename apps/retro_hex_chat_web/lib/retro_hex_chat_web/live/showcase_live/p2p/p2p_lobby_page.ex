@@ -111,8 +111,8 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
       </.showcase_card>
 
       <.showcase_card
-        title={dgettext("showcase", "Active + Video Call")}
-        description="Active session with a video call. Shows video area, camera toggle, quality presets."
+        title={dgettext("showcase", "Active + Video Call — Focus")}
+        description="Default focused video layout with local preview over the remote video."
       >
         <.p2p_lobby
           peer="dave"
@@ -120,6 +120,41 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
           nickname="you"
           webrtc_state="Connected"
           call={%{type: "video", duration: "05:12", quality_label: "720p"}}
+          call_layout="focus"
+          messages={@sample_messages}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title={dgettext("showcase", "Active + Video Call — Side by Side")}
+        description="Professional comparison layout with local and remote video panels side by side."
+      >
+        <.p2p_lobby
+          peer="dave"
+          state="active"
+          nickname="you"
+          webrtc_state="Connected"
+          call={%{type: "video", duration: "05:12", quality_label: "720p"}}
+          call_layout="side_by_side"
+          messages={@sample_messages}
+          local_info={@local_info}
+          peer_info={@peer_info}
+        />
+      </.showcase_card>
+
+      <.showcase_card
+        title={dgettext("showcase", "Active + Video Call — Maximized")}
+        description="Large video layout for presenting or focusing on the remote stream."
+      >
+        <.p2p_lobby
+          peer="dave"
+          state="active"
+          nickname="you"
+          webrtc_state="Connected"
+          call={%{type: "video", duration: "05:12", quality_label: "720p"}}
+          call_layout="maximized"
           local_info={@local_info}
           peer_info={@peer_info}
         />
@@ -146,6 +181,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
           }
           local_info={@local_info}
           peer_info={@peer_info}
+          messages={@sample_messages}
         />
       </.showcase_card>
 
@@ -169,6 +205,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.P2P.P2PLobbyPage do
           }
           local_info={@local_info}
           peer_info={@peer_info}
+          messages={@sample_messages}
         />
       </.showcase_card>
 

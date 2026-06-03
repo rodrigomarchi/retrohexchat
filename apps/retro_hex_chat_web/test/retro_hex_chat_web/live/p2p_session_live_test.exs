@@ -139,11 +139,12 @@ defmodule RetroHexChatWeb.App.P2PSessionLiveTest do
       assert has_element?(view, ~s(#p2p-capabilities[phx-hook="P2PCapabilityHook"]))
     end
 
-    test "P2PDiagramHook element is present on mount",
+    test "compact diagram is present on mount",
          %{conn: conn, token: token, creator: creator} do
       {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
 
-      assert has_element?(view, ~s(#p2p-diagram[phx-hook="P2PDiagramHook"]))
+      assert has_element?(view, ~s([data-testid="p2p-diagram-compact"]))
+      refute has_element?(view, ~s(#p2p-diagram[phx-hook="P2PDiagramHook"]))
     end
   end
 
@@ -179,6 +180,23 @@ defmodule RetroHexChatWeb.App.P2PSessionLiveTest do
 
       html = render(view)
       assert html =~ "Connecting..."
+    end
+
+    test "diagram can expand from compact mode and collapse again",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      assert has_element?(view, ~s([data-testid="p2p-diagram-compact"]))
+      refute has_element?(view, ~s(#p2p-diagram[phx-hook="P2PDiagramHook"]))
+
+      render_click(view, "toggle_diagram", %{})
+
+      assert has_element?(view, ~s(#p2p-diagram[phx-hook="P2PDiagramHook"]))
+      refute has_element?(view, ~s([data-testid="p2p-diagram-compact"]))
+
+      render_click(view, "toggle_diagram", %{})
+
+      assert has_element?(view, ~s([data-testid="p2p-diagram-compact"]))
     end
   end
 
@@ -264,6 +282,34 @@ defmodule RetroHexChatWeb.App.P2PSessionLiveTest do
       assert html =~ ~s(id="remote-video")
       assert html =~ ~s(id="local-video")
       assert html =~ ~s(data-media-action="camera")
+      assert has_element?(view, ~s([data-testid="media-layout-focus"]))
+      assert has_element?(view, ~s([data-testid="media-layout-side-by-side"]))
+      assert has_element?(view, ~s([data-testid="media-layout-maximized"]))
+    end
+
+    test "video call layout can switch between focus, side by side, and maximized",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      send(view.pid, %{
+        event: "p2p_status_changed",
+        payload: %{status: "active"}
+      })
+
+      render_click(view, "media_call_started", %{"type" => "video"})
+
+      assert render(view) =~ "p2p-media-call--focus"
+
+      html = render_click(view, "set_call_layout", %{"layout" => "side_by_side"})
+      assert html =~ "p2p-media-call--side_by_side"
+      assert html =~ "p2p-lobby__activity--side_by_side"
+
+      html = render_click(view, "set_call_layout", %{"layout" => "maximized"})
+      assert html =~ "p2p-media-call--maximized"
+      assert html =~ "p2p-lobby__activity--maximized"
+
+      html = render_click(view, "set_call_layout", %{"layout" => "invalid"})
+      assert html =~ "p2p-media-call--maximized"
     end
 
     test "no media area when no call is active",

@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
   alias RetroHexChatWeb.App.SessionHelpers
 
   @pubsub RetroHexChat.PubSub
+  @call_layouts ~w(focus side_by_side maximized)
 
   @impl true
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -230,7 +231,8 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
          call: nil,
          webrtc_state: "Connected",
          local_muted: false,
-         local_camera_off: false
+         local_camera_off: false,
+         call_layout: "focus"
        )
        |> assign(messages: socket.assigns.messages ++ [msg])
        |> push_event("media_end_call", %{})}
@@ -476,7 +478,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
       sender_nick: socket.assigns.nickname
     }
 
-    {:noreply, assign(socket, file_transfer: ft)}
+    {:noreply, assign(socket, file_transfer: ft, diagram_collapsed: true)}
   end
 
   def handle_event("ft_offer_received", params, socket) do
@@ -488,7 +490,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
       sender_nick: socket.assigns.peer_nick
     }
 
-    {:noreply, assign(socket, file_transfer: ft)}
+    {:noreply, assign(socket, file_transfer: ft, diagram_collapsed: true)}
   end
 
   def handle_event("ft_accept_offer", _params, socket) do
@@ -512,7 +514,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
         eta: "--"
       })
 
-    {:noreply, assign(socket, file_transfer: ft)}
+    {:noreply, assign(socket, file_transfer: ft, diagram_collapsed: true)}
   end
 
   def handle_event("ft_rejected", _params, socket) do
@@ -639,7 +641,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
       upgrade_pending: false
     }
 
-    {:noreply, assign(socket, call: call)}
+    {:noreply, assign(socket, call: call, diagram_collapsed: true, call_layout: "focus")}
   end
 
   def handle_event("media_call_ended", %{"reason" => reason}, socket) do
@@ -758,6 +760,17 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
     {:noreply, socket}
   end
 
+  def handle_event("toggle_diagram", _params, socket) do
+    {:noreply, assign(socket, diagram_collapsed: !socket.assigns.diagram_collapsed)}
+  end
+
+  def handle_event("set_call_layout", %{"layout" => layout}, socket)
+      when layout in @call_layouts do
+    {:noreply, assign(socket, call_layout: layout)}
+  end
+
+  def handle_event("set_call_layout", _params, socket), do: {:noreply, socket}
+
   def handle_event("permission_result", %{"granted" => granted, "type" => type}, socket) do
     if granted do
       {:noreply,
@@ -858,6 +871,8 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
         file_transfer: init_file_transfer_on_mount(accepted_action_type, db_session.status),
         accepted_action_type: accepted_action_type,
         call: init_call_on_mount(accepted_action_type, db_session.status),
+        diagram_collapsed: true,
+        call_layout: "focus",
         turn_only: turn_only,
         turn_configured: turn_configured,
         local_info: local_info,
@@ -1016,6 +1031,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
     if action_type == "file_transfer" && socket.assigns.file_transfer == nil do
       socket
       |> assign(file_transfer: %{status: "ready"})
+      |> assign(diagram_collapsed: true)
       |> maybe_push_ft_config()
     else
       socket
@@ -1061,7 +1077,9 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
           peer_muted: false,
           peer_camera_off: false,
           upgrade_pending: false
-        }
+        },
+        diagram_collapsed: true,
+        call_layout: "focus"
       )
     else
       socket

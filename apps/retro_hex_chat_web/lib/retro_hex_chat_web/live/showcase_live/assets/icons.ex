@@ -50,7 +50,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Assets.Icons do
 
                    sizes =
                      Regex.scan(
-                       ~r/def (icon_\w+)\(.*?viewBox=dgettext("showcase", "0 0 (\d+) \d+")/s,
+                       ~r/def (icon_\w+)\(.*?~H""".*?<svg\b[^>]*viewBox="0 0 (\d+) \d+"/s,
                        source
                      )
                      |> Enum.reduce(%{}, fn [_, name, size_str], inner ->

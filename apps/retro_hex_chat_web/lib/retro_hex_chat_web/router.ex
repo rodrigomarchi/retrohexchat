@@ -248,6 +248,7 @@ defmodule RetroHexChatWeb.Router do
       live "/bot-management-dialog", Dialogs.BotManagementDialogPage
 
       # P2P
+      live "/p2p-connection-diagram", P2P.P2PConnectionDiagramPage
       live "/p2p-lobby", P2P.P2PLobbyPage
       live "/media-controls", P2P.MediaControlsPage
       live "/file-transfer", P2P.FileTransferPage

@@ -644,6 +644,341 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   .p2p-diagram__status-dot--offline { animation: none; }
 }
 
+/* ══════════════════════════════════════════════════════
+   P2P Lobby — active session surfaces
+   ══════════════════════════════════════════════════════ */
+
+.p2p-lobby-window {
+  max-width: 600px;
+}
+
+.p2p-lobby-window--active {
+  max-width: min(1120px, calc(100vw - 32px));
+}
+
+.p2p-lobby-window--call-maximized {
+  max-width: min(1240px, calc(100vw - 16px));
+}
+
+.p2p-lobby__diagram-panel {
+  min-width: 0;
+}
+
+.p2p-lobby__diagram-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.p2p-lobby__diagram-title {
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: var(--color-muted);
+}
+
+.p2p-lobby__activity {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
+  gap: 8px;
+  align-items: start;
+}
+
+.p2p-lobby__activity--maximized {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.p2p-lobby__activity--maximized .p2p-lobby__activity-side {
+  display: none;
+}
+
+.p2p-lobby__activity-side {
+  min-width: 0;
+}
+
+.p2p-lobby__chat-log {
+  max-height: 160px;
+  min-height: 60px;
+}
+
+.p2p-lobby__activity-side .p2p-lobby__chat-log {
+  max-height: 320px;
+  min-height: 168px;
+}
+
+.p2p-lobby__file-panel {
+  min-width: 0;
+}
+
+.p2p-lobby__file-drop {
+  min-height: 148px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* ── Compact connection strip ── */
+
+.p2p-diagram-strip {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) minmax(180px, 2fr) minmax(100px, 1fr);
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  box-shadow:
+    inset 1px 1px #fff,
+    inset -1px -1px #808080;
+}
+
+.p2p-diagram-strip__peer {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.p2p-diagram-strip__peer:last-child {
+  justify-content: flex-end;
+}
+
+.p2p-diagram-strip__browser {
+  width: 16px;
+  height: 16px;
+  flex: 0 0 auto;
+}
+
+.p2p-diagram-strip__nick {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+}
+
+.p2p-diagram-strip__you,
+.p2p-diagram-strip__peer-status {
+  color: var(--color-muted);
+}
+
+.p2p-diagram-strip__route {
+  position: relative;
+  min-width: 0;
+  height: 34px;
+}
+
+.p2p-diagram-strip__svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.p2p-diagram-strip__track {
+  stroke: #606060;
+  stroke-width: 3;
+  stroke-dasharray: 8 6;
+}
+
+.p2p-diagram-strip__packet {
+  fill: var(--color-online);
+  opacity: 0;
+}
+
+.p2p-diagram-strip__badge {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  max-width: min(260px, 100%);
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 2px 6px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  box-shadow:
+    inset 1px 1px #fff,
+    inset -1px -1px #808080;
+}
+
+.p2p-diagram-strip__label {
+  font-weight: bold;
+}
+
+.p2p-diagram-strip__sub {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--color-muted);
+}
+
+.p2p-diagram-strip--connected .p2p-diagram-strip__track,
+.p2p-diagram-strip--audio-call .p2p-diagram-strip__track,
+.p2p-diagram-strip--video-call .p2p-diagram-strip__track,
+.p2p-diagram-strip--transferring .p2p-diagram-strip__track,
+.p2p-diagram-strip--verifying .p2p-diagram-strip__track {
+  stroke: var(--color-online);
+  stroke-dasharray: none;
+}
+
+.p2p-diagram-strip--connecting .p2p-diagram-strip__track,
+.p2p-diagram-strip--reconnecting .p2p-diagram-strip__track,
+.p2p-diagram-strip--call-init .p2p-diagram-strip__track {
+  stroke: var(--color-warning-alt);
+}
+
+.p2p-diagram-strip--failed .p2p-diagram-strip__track {
+  stroke: var(--color-error);
+}
+
+.p2p-diagram-strip--audio-call .p2p-diagram-strip__packet,
+.p2p-diagram-strip--video-call .p2p-diagram-strip__packet,
+.p2p-diagram-strip--transferring .p2p-diagram-strip__packet {
+  animation: diagram-strip-packet 1.4s linear infinite;
+}
+
+.p2p-diagram-strip__packet--two {
+  animation-delay: 0.2s;
+}
+
+.p2p-diagram-strip__packet--three {
+  animation-delay: 0.4s;
+}
+
+@keyframes diagram-strip-packet {
+  0%, 20% { opacity: 0; }
+  35%, 75% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── Media call layouts ── */
+
+.p2p-media-call {
+  min-width: 0;
+  overflow: hidden;
+}
+
+.p2p-media-call__video-stage {
+  position: relative;
+  min-width: 0;
+  background: #000;
+}
+
+.p2p-media-call__remote-panel,
+.p2p-media-call__local-panel {
+  position: relative;
+  min-width: 0;
+  background: #000;
+  border: 1px solid var(--color-border);
+}
+
+.p2p-media-call__remote-video,
+.p2p-media-call__local-video,
+.p2p-media-call__camera-off {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+}
+
+.p2p-media-call__remote-video,
+.p2p-media-call__local-video {
+  object-fit: cover;
+}
+
+.p2p-media-call__camera-off {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.75rem;
+}
+
+.p2p-media-call__nameplate {
+  position: absolute;
+  z-index: 2;
+  left: 6px;
+  top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: calc(100% - 12px);
+  padding: 2px 5px;
+  border: 1px solid #fff;
+  background: #000080;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: bold;
+  box-shadow: 1px 1px #000;
+}
+
+.p2p-media-call__nameplate span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.p2p-media-call--focus .p2p-media-call__local-panel,
+.p2p-media-call--maximized .p2p-media-call__local-panel {
+  position: absolute;
+  z-index: 3;
+  right: 8px;
+  bottom: 8px;
+  width: clamp(96px, 24%, 190px);
+  box-shadow: 2px 2px #000;
+}
+
+.p2p-media-call--side_by_side .p2p-media-call__video-stage {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  padding: 6px;
+}
+
+.p2p-media-call--maximized .p2p-media-call__remote-video,
+.p2p-media-call--maximized .p2p-media-call__camera-off {
+  min-height: min(68vh, 620px);
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+
+@media (max-width: 860px) {
+  .p2p-lobby-window--active {
+    max-width: calc(100vw - 16px);
+  }
+
+  .p2p-lobby__activity {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .p2p-diagram-strip {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .p2p-diagram-strip__peer:last-child {
+    justify-content: flex-start;
+  }
+
+  .p2p-diagram-strip__route {
+    order: 3;
+  }
+
+  .p2p-media-call--side_by_side .p2p-media-call__video-stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p2p-diagram-strip__packet {
+    animation: none !important;
+    opacity: 0;
+  }
+}
+
 /* --- File Transfer Drop Zone --- */
 .file-transfer-drop-zone--active {
   outline: 2px dashed var(--color-selection-bg);

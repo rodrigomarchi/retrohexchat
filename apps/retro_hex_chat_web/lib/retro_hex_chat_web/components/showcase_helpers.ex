@@ -153,6 +153,8 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
      ]},
     {dgettext_noop("showcase", "P2P"), :icon_p2p,
      [
+       {dgettext_noop("showcase", "Connection Diagram"), "p2p-connection-diagram",
+        "/showcase/p2p-connection-diagram"},
        {dgettext_noop("showcase", "File Transfer"), "file-transfer", "/showcase/file-transfer"},
        {dgettext_noop("showcase", "Media Controls"), "media-controls",
         "/showcase/media-controls"},

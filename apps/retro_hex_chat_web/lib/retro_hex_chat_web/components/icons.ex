@@ -146,6 +146,9 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_camera_off(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_mute(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_phone_end(assigns), to: RetroHexChatWeb.Icons.Media
+  defdelegate icon_layout_focus(assigns), to: RetroHexChatWeb.Icons.Media
+  defdelegate icon_layout_side_by_side(assigns), to: RetroHexChatWeb.Icons.Media
+  defdelegate icon_layout_maximize(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_pip(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_upgrade_video(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_devices(assigns), to: RetroHexChatWeb.Icons.Media
