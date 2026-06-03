@@ -56,10 +56,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
 
     socket
     |> assign(
-        cleared_channel_cutoffs: cleared_channel_cutoffs,
-        chat_clear_token: System.unique_integer([:positive]),
-        oldest_message_id: nil,
-        has_more: false,
+      cleared_channel_cutoffs: cleared_channel_cutoffs,
+      chat_clear_token: System.unique_integer([:positive]),
+      oldest_message_id: nil,
+      has_more: false,
       loading_more: false,
       loaded_message_count: 0
     )
