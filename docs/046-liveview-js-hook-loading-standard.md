@@ -2,7 +2,7 @@
 
 ## Status
 
-Planned.
+In progress. Phase 1 inventory is complete; Phase 2 central registry is next.
 
 ## Goal
 
@@ -276,8 +276,10 @@ Any hook loading change must answer:
 
 Completion criteria:
 
-- Inventory table added to this document.
-- Every current hook has exactly one classification.
+- [x] Inventory table added to this document.
+- [x] Every current main-app hook has exactly one classification.
+- [x] Entrypoint-scoped hook exceptions are recorded.
+- [x] Dynamic import categories are recorded.
 
 ### Phase 2: Central Registry
 
@@ -363,16 +365,76 @@ Completion criteria:
 
 ## Hook Inventory
 
-To be filled in Phase 1.
+Phase 1 inventory completed on 2026-06-03.
 
-| Hook | Current Location | Classification | Server Events | Ready Event | Notes |
+### Main App Hook Registry
+
+These hooks are currently registered in `assets/js/app.js`.
+
+| Hook | Current Source | Classification | Server Events | Ready Event | Notes |
 | --- | --- | --- | --- | --- | --- |
-| FileTransferHook | `app.js` lazy facade | lazyFeature | TBD | TBD | Existing lazy hook |
-| GameCanvasHook | `app.js` lazy facade | lazyFeature | TBD | TBD | Existing lazy hook |
-| GameWebRTCHook | `app.js` lazy facade | lazyFeature | `game_start_offer`, `game_start_answer`, `game_signal` | `game_webrtc_ready` | Existing lazy hook |
-| MediaHook | `app.js` lazy facade | lazyFeature | TBD | TBD | Existing lazy hook |
-| P2PDiagramHook | `app.js` lazy facade | lazyFeature | TBD | TBD | Existing lazy hook |
-| WebRTCHook | `app.js` lazy facade | lazyFeature | TBD | TBD | Existing lazy hook |
+| AutoFocusHook | inline in `app.js` | critical | none found | none | Small utility hook. |
+| CharCounterHook | `hooks/ui/char_counter_hook` | critical | none found | none | Chat input shell behavior. |
+| ClockHook | `hooks/connection/clock_hook` | critical | none found | none | Status bar shell behavior. |
+| ConnectFormHook | `hooks/connection/connect_form_hook` | critical | `submit_connect` | none | Connect-route shell hook; not lazy. |
+| ConnectionStatusHook | `hooks/connection/connection_status_hook` | critical | none found | none | Chat shell connectivity UI. |
+| ContextMenuHook | `hooks/ui/context_menu_hook` | critical | none found | none | Base UI behavior. |
+| ContextualTipsHook | `hooks/ui/contextual_tips_hook` | critical | `tip_trigger` | none | Small chat shell helper. |
+| AutocompleteHook | `hooks/chat/autocomplete_hook` | critical | `autocomplete_closed`, `set_input`, `tab_matches` | none | Critical input behavior. |
+| EmojiPickerHook | `hooks/chat/emoji_picker_hook` | critical | `insert_emoji` | none | Chat input behavior. |
+| FileTransferHook | `lazyHook(() => import("./hooks/p2p/file_transfer_hook"))` | lazyFeature | `ft_channel_ready`, `ft_config`, `ft_accept`, `ft_reject`, `ft_cancel`, `ft_retry` | none | Existing lazy feature. Must keep dataset fallback or add ready protocol for server config. |
+| FocusChatInputOnClickHook | inline in `app.js` | critical | none found | none | Small shell utility. |
+| ArcadeIframe | `hooks/games/arcade_iframe_hook` | critical | `arcade_close_tab`, `open_game_window` | none | Route-specific but currently eager and small. |
+| ArcadeSession | `hooks/games/arcade_iframe_hook` | critical | `arcade_close_tab` | none | Route-specific but currently eager and small. |
+| ArcadeGame | `hooks/games/arcade_game_hook` | critical | `arcade_close_tab` | none | Route-specific but currently eager and small. |
+| ArcadeTimer | `hooks/games/arcade_timer_hook` | critical | none found | none | Route-specific but currently eager and small. |
+| GameCanvasHook | `lazyHook(() => import("./hooks/games/game_canvas_hook"))` | lazyFeature | `game_start`, `game_end` | none | Existing lazy feature. Reads initial state from dataset to tolerate missed `game_start`. |
+| GameSessionHook | `hooks/games/game_session_hook` | critical | `game_close_tab` | none | Game session shell/navigation hook. |
+| GameWebRTCHook | `lazyHook(() => import("./hooks/games/game_webrtc_hook"))` | lazyFeature | `game_start_offer`, `game_start_answer`, `game_signal` | `game_webrtc_ready` | Existing lazy feature with ready protocol. |
+| FormatToolbarHook | `hooks/chat/format_toolbar_hook` | critical | none found | none | Chat input shell behavior. |
+| KeyboardHook | `hooks/input/keyboard_hook` | critical | `focus_input`, `clear_input`, `set_input`, `update_bindings` | none | Critical input behavior. |
+| LagHook | `hooks/connection/lag_hook` | critical | `pong` | none | Status bar shell behavior. |
+| MediaHook | `lazyHook(() => import("./hooks/p2p/media_hook"))` | lazyFeature | `media_start_audio`, `media_start_video`, `media_end_call`, `media_peer_muted`, `media_peer_camera`, `media_upgrade_accepted`, `media_upgrade_rejected`, `media_set_preset` | none | Existing lazy feature. Needs explicit readiness assessment before stricter guard. |
+| MessageInteractionsHook | `hooks/chat/message_interactions_hook` | critical | `enter_edit_mode`, `exit_edit_mode` | none | Chat message interaction behavior. |
+| NickChangeFormHook | `hooks/chat/nick_change_form_hook` | critical | `submit_nick_change` | none | Nick change dialog behavior. |
+| P2PCapabilityHook | `hooks/p2p/p2p_capability_hook` | critical | `p2p_request_permission` | none | P2P route setup; currently eager and small. |
+| P2PChatFormHook | `hooks/p2p/p2p_chat_form_hook` | critical | `p2p_lobby_message_sent` | none | Small form reset hook. |
+| P2PDiagramHook | `lazyHook(() => import("./hooks/p2p/p2p_diagram_hook"))` | lazyFeature | none found | none | Existing lazy visual-only feature. |
+| P2PSessionHook | `hooks/p2p/p2p_session_hook` | critical | `p2p_close_tab` | none | P2P session shell/navigation hook. |
+| NotifyListHook | `hooks/notifications/notify_list_hook` | critical | none found | none | Dialog/helper hook, currently eager and small. |
+| PasteHook | `hooks/chat/paste_hook` | critical | none found | none | Critical input behavior. |
+| ScrollHook | `hooks/chat/scroll_hook` | critical | `scroll_to_bottom`, `clear_chat_messages`, `scroll_to_message`, `enter_edit_mode`, `exit_edit_mode`, `link_preview`, `dismiss_hover_card`, `clipboard_copy`, `clipboard_copy_selection`, `open_url`, `message_confirmed`, `message_failed`, `prepend_start` | none | Critical chat shell behavior. |
+| SearchHighlightHook | `hooks/chat/search_highlight_hook` | critical | `search_clear_highlights`, `search_highlight`, `search_scroll_to` | none | Chat search behavior. |
+| ShortcutDispatcherHook | `hooks/input/shortcut_dispatcher_hook` | critical | none found | none | Critical keyboard behavior. |
+| SoundHook | `hooks/input/sound_hook` | critical | `play_sound`, `toggle_mute` | none | Notification shell behavior. |
+| TitleFlashHook | `hooks/notifications/title_flash_hook` | critical | `title_flash_start`, `title_flash_stop` | none | Notification shell behavior. |
+| MenuBarHook | `hooks/ui/menu_bar_hook` | critical | none found | none | Navigation shell behavior. |
+| ToolbarGroupHook | `hooks/ui/toolbar_group_hook` | critical | none found | none | Shell UI behavior. |
+| ConversationsHook | `hooks/ui/conversations_hook` | critical | `channel_joined_flash` | none | Critical navigation/sidebar behavior. |
+| NicklistHook | `hooks/ui/nicklist_hook` | critical | none found | none | Chat shell behavior. |
+| URLCatcherHook | `hooks/ui/url_catcher_hook` | critical | none found | none | Dialog/helper hook, currently eager and small. |
+| ViewportDetectHook | `hooks/ui/viewport_detect_hook` | critical | none found | none | Shell responsive behavior. |
+
+### Other LiveSocket Entrypoints
+
+These hooks are not part of the main chat `app.js` hook registry and must be handled as entrypoint-scoped exceptions by the future contract script.
+
+| Entrypoint | Hook | Source | Notes |
+| --- | --- | --- | --- |
+| `assets/js/help_live.js` | `MenuBarHook` | help LiveSocket hooks namespace | Help route has a minimal LiveSocket separate from `app.js`. |
+| `assets/js/retrohex_content.js` | `Highlight` | showcase LiveSocket hooks namespace | Showcase syntax/content highlighting hook, separate from `app.js`. |
+
+### Dynamic Import Inventory
+
+Allowed existing dynamic import categories:
+
+| Category | Location | Current Status | Future Guard |
+| --- | --- | --- | --- |
+| Lazy feature hooks | `assets/js/app.js` lines declaring `lazyHook(() => import(...))` | Allowed temporarily | Must move to `lazy_feature_hooks.js`; direct use in `app.js` must become forbidden. |
+| JavaScript i18n catalogs | `assets/js/lib/i18n.js` | Allowed | Guard as approved locale-catalog boundary. |
+| Game engines | `assets/js/hooks/games/game_canvas_hook.js` | Allowed | Guard as approved game-engine boundary. |
+
+Unauthorized future dynamic imports must fail the hooks contract script unless the import is added to an explicit allowlist with rationale.
 
 ## Definition Of Done
 
@@ -391,3 +453,5 @@ To be filled in Phase 1.
 ## Progress Log
 
 - 2026-06-03: Created tracking plan after lazy loading regressions were fixed and full e2e passed with `PASS (331) FAIL (0)`. Next step is Phase 1 inventory.
+- 2026-06-03: Committed all pending lazy-loading/e2e/landing fixes in `fcda6c8` before starting the standardization work.
+- 2026-06-03: Completed Phase 1 inventory. Recorded all main `app.js` hooks, current lazy feature hooks, server event exposure, separate LiveSocket entrypoint exceptions, and dynamic import categories. Next step is Phase 2 central registry.
