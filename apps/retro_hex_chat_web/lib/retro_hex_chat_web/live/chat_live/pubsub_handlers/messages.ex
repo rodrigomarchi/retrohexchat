@@ -252,22 +252,30 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp apply_new_message(socket, decorated, channel, session) do
     if channel == session.active_channel do
-      if cleared_channel_message?(socket, channel, decorated) do
-        socket
-      else
-        case socket.assigns[:pending_channel_msg_id] do
-          pending_id when is_binary(pending_id) and decorated.author == session.nickname ->
-            socket
-            |> stream_delete(:chat_messages, %{id: pending_id})
-            |> stream_insert(:chat_messages, decorated)
-            |> assign(pending_channel_msg_id: nil)
-
-          _ ->
-            stream_insert(socket, :chat_messages, decorated)
-        end
-      end
+      apply_active_channel_message(socket, decorated, channel, session)
     else
       apply_background_message(socket, decorated, channel, session)
+    end
+  end
+
+  defp apply_active_channel_message(socket, decorated, channel, session) do
+    if cleared_channel_message?(socket, channel, decorated) do
+      socket
+    else
+      apply_visible_channel_message(socket, decorated, session)
+    end
+  end
+
+  defp apply_visible_channel_message(socket, decorated, session) do
+    case socket.assigns[:pending_channel_msg_id] do
+      pending_id when is_binary(pending_id) and decorated.author == session.nickname ->
+        socket
+        |> stream_delete(:chat_messages, %{id: pending_id})
+        |> stream_insert(:chat_messages, decorated)
+        |> assign(pending_channel_msg_id: nil)
+
+      _ ->
+        stream_insert(socket, :chat_messages, decorated)
     end
   end
 
