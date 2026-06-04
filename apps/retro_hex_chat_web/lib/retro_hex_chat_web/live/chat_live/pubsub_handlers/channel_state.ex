@@ -259,8 +259,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
   def handle_info({:user_channel_muted, %{target: target, channel: channel}}, socket) do
     {:halt,
-     system_event(
-       socket,
+     socket
+     |> assign(
+       channel_users: update_channel_user_muted(socket.assigns.channel_users, target, true)
+     )
+     |> system_event(
        dgettext("chat", "%{target} has been muted in %{channel}.",
          target: target,
          channel: channel
@@ -270,8 +273,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
   def handle_info({:user_channel_unmuted, %{target: target, channel: channel}}, socket) do
     {:halt,
-     system_event(
-       socket,
+     socket
+     |> assign(
+       channel_users: update_channel_user_muted(socket.assigns.channel_users, target, false)
+     )
+     |> system_event(
        dgettext("chat", "%{target} has been unmuted in %{channel}.",
          target: target,
          channel: channel
@@ -372,6 +378,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   defp apply_mode_to_users(users, _mode, _params), do: users
+
+  defp update_channel_user_muted(users, target, muted) do
+    Enum.map(users, fn user ->
+      if user.nickname == target, do: Map.put(user, :muted, muted), else: user
+    end)
+  end
 
   defp maybe_update_current_modes(socket, payload) do
     channel = Map.get(payload, :channel)

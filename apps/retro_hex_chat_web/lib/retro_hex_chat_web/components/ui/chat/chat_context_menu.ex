@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
 
   Composed from ContextMenu primitives. Supports 4 menu types based on the
   `type` attribute:
-  - `:nick` — PM, Whois, Copy Nick, Ignore, Address Book, P2P actions, Op actions
+  - `:nick` — PM, Whois, Copy Nick, Ignore, Address Book, P2P actions, Op/Voice/Mute actions
   - `:url` — Open Link, Copy URL, Save to URL List
   - `:channel` — Join Channel, Copy Channel Name, Channel Info
   - `:message` — Copy Message, Reply, Delete, Ignore Sender
@@ -32,6 +32,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
   attr :is_target_ignored, :boolean, default: false
   attr :is_target_self, :boolean, default: false
   attr :is_target_registered, :boolean, default: false
+  attr :is_target_op, :boolean, default: false
+  attr :is_target_voiced, :boolean, default: false
+  attr :is_target_muted, :boolean, default: false
   attr :is_already_joined, :boolean, default: false
   attr :key_bindings, :map, default: %{}
   attr :custom_items, :list, default: []
@@ -174,20 +177,35 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     <.context_menu_item
       :if={@viewer_is_op && !@is_target_self}
       on_click={@on_action}
-      action="ctx_chat_voice"
+      action={if @is_target_voiced, do: "ctx_chat_devoice", else: "ctx_chat_voice"}
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_role_voiced class="w-[14px] h-[14px]" /></:icon>
-      {dgettext("chat", "Give Voice (+v)")}
+      {if @is_target_voiced,
+        do: dgettext("chat", "Remove Voice (-v)"),
+        else: dgettext("chat", "Give Voice (+v)")}
     </.context_menu_item>
     <.context_menu_item
       :if={@viewer_is_op && !@is_target_self}
       on_click={@on_action}
-      action="ctx_chat_op"
+      action={if @is_target_op, do: "ctx_chat_deop", else: "ctx_chat_op"}
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_role_operator class="w-[14px] h-[14px]" /></:icon>
-      {dgettext("chat", "Give Op (+o)")}
+      {if @is_target_op,
+        do: dgettext("chat", "Remove Op (-o)"),
+        else: dgettext("chat", "Give Op (+o)")}
+    </.context_menu_item>
+    <.context_menu_item
+      :if={@viewer_is_op && !@is_target_self}
+      on_click={@on_action}
+      action={if @is_target_muted, do: "ctx_chat_unmute", else: "ctx_chat_mute"}
+      phx-value-nick={@target_nick}
+    >
+      <:icon><Icons.icon_mute class="w-[14px] h-[14px]" /></:icon>
+      {if @is_target_muted,
+        do: dgettext("chat", "Unmute (channel)"),
+        else: dgettext("chat", "Mute (channel)")}
     </.context_menu_item>
     <%!-- Custom menu items --%>
     <.context_menu_separator :if={@custom_items != []} />

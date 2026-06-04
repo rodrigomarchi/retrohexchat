@@ -622,7 +622,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "channel menu"),
           "message menu",
           dgettext("help", "conversations menu"),
-          dgettext("help", "mute channel")
+          dgettext("help", "mute channel"),
+          "deop",
+          "devoice",
+          dgettext("help", "channel mute"),
+          dgettext("help", "moderation")
         ],
         icon: :icon_dialog_custom_menus,
         description:

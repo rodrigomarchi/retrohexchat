@@ -1008,6 +1008,7 @@ defmodule RetroHexChat.Channels.Server do
         join_throttle: state.modes.join_throttle
       },
       bans: MapSet.to_list(state.bans),
+      channel_mutes: MapSet.to_list(state.channel_mutes),
       ban_exceptions: MapSet.to_list(state.ban_exceptions),
       invite_exceptions: MapSet.to_list(state.invite_exceptions),
       created_at: state.created_at

@@ -17,7 +17,7 @@
   <code>nickname</code> {dgettext("help_commands", "— The user to mute.")}<br />
   <code>duration</code> {dgettext(
     "help_commands",
-    "— Optional duration in seconds. Omit for permanent mute."
+    "— Optional duration token such as 30s, 5m, 1h, or 1d. Omit for permanent mute."
   )}
 </p>
 
@@ -31,17 +31,21 @@
 
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{dgettext("help_commands", "Requires half-operator (%) status or higher")}</li>
+  <li>{dgettext("help_commands", "Requires channel operator or owner status")}</li>
   <li>{dgettext("help_commands", "Cannot mute users with equal or higher rank")}</li>
   <li>{dgettext("help_commands", "The target must be in the channel")}</li>
 </ul>
 
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
-<pre>{dgettext("help_commands", "/mute Spammer /mute Spammer 300")}</pre>
+<pre>{dgettext("help_commands", "/mute Spammer /mute Spammer 30m")}</pre>
 
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-unmute">{dgettext("help_commands", "/unmute")}</.help_link>
+  ·
+  <.help_link topic="ui-context-menu">
+    {dgettext("help_commands", "Context Menu")}
+  </.help_link>
   · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
   · <.help_link topic="cmd-ban">{dgettext("help_commands", "/ban")}</.help_link>
   ·

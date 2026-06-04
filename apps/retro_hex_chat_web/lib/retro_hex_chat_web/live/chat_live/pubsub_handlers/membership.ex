@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     msg = dgettext("chat", "%{nickname} has joined the channel", nickname: nick)
     role = Map.get(payload, :role, :regular)
     channel = Map.get(payload, :channel)
-    user = %{nickname: nick, role: role, away: false}
+    user = %{nickname: nick, role: role, away: false, muted: false}
 
     socket =
       socket

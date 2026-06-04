@@ -1,4 +1,9 @@
-<p>{dgettext("help_ui", "Click a nickname in the user list to open the context menu.")}</p>
+<p>
+  {dgettext(
+    "help_ui",
+    "Right-click a nickname in the user list or chat area to open the context menu."
+  )}
+</p>
 <.help_h4 icon={:icon_dialog_options}>{dgettext("help_ui", "Options")}</.help_h4>
 <p>
   <strong>{dgettext("help_ui", "Query:")}</strong>
@@ -45,12 +50,26 @@
   <strong>{dgettext("help_ui", "Kick / Ban:")}</strong>
   {dgettext("help_ui", "Moderation (operators only).")}<br />
   <strong>
-    {dgettext("help_ui", "Give Op (+o) / Give Voice (+v):")}
+    {dgettext("help_ui", "Give or Remove Op / Voice:")}
   </strong>
-  {dgettext("help_ui", "Mode changes (operators only).")}
+  {dgettext(
+    "help_ui",
+    "These items change labels based on the target's current role, for example Give Op (+o) or Remove Op (-o)."
+  )}<br />
+  <strong>{dgettext("help_ui", "Mute / Unmute (channel):")}</strong>
+  {dgettext(
+    "help_ui",
+    "Mute opens a duration prompt. Leave it blank for a permanent channel mute, or enter 30s, 5m, 1h, or 1d."
+  )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-context-menus">{dgettext("help_ui", "Context Menus")}</.help_link>
+  · <.help_link topic="cmd-op">{dgettext("help_ui", "/op")}</.help_link>
+  · <.help_link topic="cmd-deop">{dgettext("help_ui", "/deop")}</.help_link>
+  · <.help_link topic="cmd-voice">{dgettext("help_ui", "/voice")}</.help_link>
+  · <.help_link topic="cmd-devoice">{dgettext("help_ui", "/devoice")}</.help_link>
+  · <.help_link topic="cmd-mute">{dgettext("help_ui", "/mute")}</.help_link>
+  · <.help_link topic="cmd-unmute">{dgettext("help_ui", "/unmute")}</.help_link>
   · <.help_link topic="feature-p2p-sessions">{dgettext("help_ui", "P2P Sessions")}</.help_link>
 </p>

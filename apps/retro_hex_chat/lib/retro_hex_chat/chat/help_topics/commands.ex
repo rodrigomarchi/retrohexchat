@@ -73,7 +73,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-ban",
         title: "/ban",
         category: dgettext("help", "Moderation"),
-        keywords: ["ban", "block", "prohibit"],
+        keywords: ["ban", "block", "prohibit", dgettext("help", "context menu")],
         icon: :icon_ban,
         description:
           dgettext("help", "Ban a user from a channel by nickname or hostmask pattern.")
@@ -185,7 +185,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-kick",
         title: "/kick",
         category: dgettext("help", "Moderation"),
-        keywords: ["kick", "remove", "eject"],
+        keywords: ["kick", "remove", "eject", dgettext("help", "context menu")],
         icon: :icon_dialog_kick,
         description:
           dgettext(
@@ -412,7 +412,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "unban",
           dgettext("help", "remove ban"),
           dgettext("help", "lift ban"),
-          "pardon"
+          "pardon",
+          dgettext("help", "channel central")
         ],
         icon: :icon_accept,
         description: dgettext("help", "Remove a ban from a channel to allow the user to rejoin.")
@@ -594,7 +595,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-op",
         title: "/op",
         category: dgettext("help", "Moderation"),
-        keywords: ["op", "operator", "promote", dgettext("help", "channel operator")],
+        keywords: [
+          "op",
+          "operator",
+          "promote",
+          dgettext("help", "channel operator"),
+          dgettext("help", "give op"),
+          dgettext("help", "context menu")
+        ],
         icon: :icon_tab_modes,
         description: dgettext("help", "Give operator status to a user in the current channel.")
       },
@@ -602,7 +610,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-deop",
         title: "/deop",
         category: dgettext("help", "Moderation"),
-        keywords: ["deop", dgettext("help", "remove operator"), "demote"],
+        keywords: [
+          "deop",
+          dgettext("help", "remove operator"),
+          "demote",
+          dgettext("help", "remove op"),
+          dgettext("help", "context menu")
+        ],
         icon: :icon_tab_modes,
         description:
           dgettext("help", "Remove operator status from a user in the current channel.")
@@ -611,7 +625,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-voice",
         title: "/voice",
         category: dgettext("help", "Moderation"),
-        keywords: ["voice", dgettext("help", "give voice"), "speak", "promote"],
+        keywords: [
+          "voice",
+          dgettext("help", "give voice"),
+          "speak",
+          "promote",
+          dgettext("help", "context menu")
+        ],
         icon: :icon_tab_modes,
         description: dgettext("help", "Give voice status to a user in the current channel.")
       },
@@ -619,7 +639,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-devoice",
         title: "/devoice",
         category: dgettext("help", "Moderation"),
-        keywords: ["devoice", dgettext("help", "remove voice"), "silence"],
+        keywords: [
+          "devoice",
+          dgettext("help", "remove voice"),
+          "silence",
+          dgettext("help", "context menu")
+        ],
         icon: :icon_tab_modes,
         description: dgettext("help", "Remove voice status from a user in the current channel.")
       },
@@ -636,7 +661,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-mute",
         title: "/mute",
         category: dgettext("help", "Moderation"),
-        keywords: ["mute", "silence", dgettext("help", "channel mute"), "quiet"],
+        keywords: [
+          "mute",
+          "silence",
+          dgettext("help", "channel mute"),
+          "quiet",
+          dgettext("help", "mute channel"),
+          dgettext("help", "duration"),
+          dgettext("help", "context menu")
+        ],
         icon: :icon_mute,
         description:
           dgettext(
@@ -648,7 +681,13 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-unmute",
         title: "/unmute",
         category: dgettext("help", "Moderation"),
-        keywords: ["unmute", "unsilence", dgettext("help", "channel unmute")],
+        keywords: [
+          "unmute",
+          "unsilence",
+          dgettext("help", "channel unmute"),
+          dgettext("help", "unmute channel"),
+          dgettext("help", "context menu")
+        ],
         icon: :icon_mute,
         description:
           dgettext(

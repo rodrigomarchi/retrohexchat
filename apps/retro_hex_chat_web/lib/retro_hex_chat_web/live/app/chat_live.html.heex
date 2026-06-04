@@ -429,6 +429,9 @@
   is_target_ignored={chat_context_target_ignored?(@session, @chat_context_menu)}
   is_target_self={@chat_context_menu.target_nick == @session.nickname}
   is_target_registered={@chat_context_menu[:is_target_registered] || false}
+  is_target_op={channel_user_op?(@channel_users, @chat_context_menu.target_nick)}
+  is_target_voiced={channel_user_voiced?(@channel_users, @chat_context_menu.target_nick)}
+  is_target_muted={channel_user_muted?(@channel_users, @chat_context_menu.target_nick)}
   is_already_joined={@chat_context_menu.target_channel in (@session.channels || [])}
   custom_items={CustomMenus.entries_for(@session.custom_menus, :chat)}
   key_bindings={RetroHexChat.Chat.KeyBindings.defaults()}
@@ -463,6 +466,9 @@
   viewer_is_identified={@session.identified}
   is_target_ignored={context_target_ignored?(@session, @context_menu.target_nick)}
   is_target_self={@context_menu.target_nick == @session.nickname}
+  is_target_op={channel_user_op?(@channel_users, @context_menu.target_nick)}
+  is_target_voiced={channel_user_voiced?(@channel_users, @context_menu.target_nick)}
+  is_target_muted={channel_user_muted?(@channel_users, @context_menu.target_nick)}
   show_color_picker={@show_context_color_picker}
   nick_color_fn={@nick_color_fn}
   custom_items={CustomMenus.entries_for(@session.custom_menus, :nicklist)}
@@ -471,6 +477,14 @@
 />
 
 <%!-- Dialogs --%>
+<.mute_duration_dialog
+  id="mute-duration-dialog"
+  show={@mute_duration_dialog.show}
+  target_nick={@mute_duration_dialog.target_nick}
+  on_submit="mute_duration_submit"
+  on_cancel="mute_duration_cancel"
+/>
+
 <.about_dialog id="about-dialog" show={@show_about} />
 
 <.account_dialog

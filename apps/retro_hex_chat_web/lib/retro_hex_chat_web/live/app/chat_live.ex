@@ -67,6 +67,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   import RetroHexChatWeb.Components.UI.InviteDialog
   import RetroHexChatWeb.Components.UI.KickDialog
+  import RetroHexChatWeb.Components.UI.MuteDurationDialog
   import RetroHexChatWeb.Components.UI.NickChangeDialog
   import RetroHexChatWeb.Components.UI.NotifyList
 
@@ -635,6 +636,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
         has_selection: false,
         is_target_registered: false
       },
+      mute_duration_dialog: %{show: false, target_nick: nil},
       context_menu: %{
         visible: false,
         x: 0,
@@ -875,6 +877,29 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   defp chat_context_target_ignored?(session, %{target_nick: nick}) do
     IgnoreList.get_entry(session.ignore_list, nick) != nil
+  end
+
+  defp channel_user_op?(users, nick), do: channel_user_role?(users, nick, [:operator])
+  defp channel_user_voiced?(users, nick), do: channel_user_role?(users, nick, [:voiced])
+
+  defp channel_user_muted?(users, nick) do
+    case find_channel_user(users, nick) do
+      nil -> false
+      user -> Map.get(user, :muted, false)
+    end
+  end
+
+  defp channel_user_role?(users, nick, roles) do
+    case find_channel_user(users, nick) do
+      nil -> false
+      user -> Map.get(user, :role) in roles
+    end
+  end
+
+  defp find_channel_user(_users, nil), do: nil
+
+  defp find_channel_user(users, nick) do
+    Enum.find(users, &(Map.get(&1, :nickname) == nick))
   end
 
   defp conversation_context_key(%{type: :pm, nick: nick}) when is_binary(nick), do: "pm:#{nick}"

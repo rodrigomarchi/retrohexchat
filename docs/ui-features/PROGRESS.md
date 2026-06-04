@@ -19,7 +19,7 @@ iterations — read it before starting, write to it before stopping.
 | 02 | Buddy List (Notify) | P0 | ✅ | — | 2026-06-04 | View/toolbar entry points + status-bar badge wired |
 | 03 | Bots | P0 | ✅ | — | 2026-06-04 | Tools/Options entry points + General tab toggle |
 | 04 | Window & Display (Edit menu) | P1 | ✅ | — | 2026-06-04 | Complete: Edit menu Clear/Copy/Find; Find relocated from View |
-| 05 | Channel Moderation | P1 | ⬜ | — | — | Status-aware context items (deop/devoice/mute) |
+| 05 | Channel Moderation | P1 | ✅ | — | 2026-06-04 | Complete: status-aware context items, channel mute/unmute, duration prompt |
 | 06 | Channel Membership | P1 | ⬜ | — | — | Send-invite UI + knock |
 | 07 | Messaging | P2 | ⬜ | — | — | /me action toggle + send-notice |
 | 08 | Scripting & Customization | P2 | ⬜ | — | — | New Timers dialog |
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-04 — Feature 05: `Channel Moderation`
+- **Did:** made nicklist and chat nickname context menus status-aware for Give/Remove Voice and Give/Remove Op; added Mute/Unmute (channel) actions with a Win98-style duration prompt; exposed `channel_mutes` through channel state and projected muted flags into `channel_users`; wired `context_deop`, `context_devoice`, `context_mute`, `context_unmute`, and chat-prefixed equivalents.
+- **Tests:** added `ChannelModerationContextMenuFeatureTest` covering component menu actions/labels, LiveView-derived role/mute labels, and real channel-state updates for devoice/deop/mute/unmute. Red phase: `make ci.quick` failed on missing `context_devoice` and formatting; after implementation, `make ci.quick` passed. Final `make ci` green (9/9, including dialyzer). `mix audit.styles` exited 0 with 0 LOW/MEDIUM/HIGH findings.
+- **Help docs:** updated moderation command metadata and command pages for `/kick`, `/ban`, `/op`, `/deop`, `/voice`, `/devoice`, `/mute`, and `/unmute`; updated `ui-context-menu` and `feature-context-menus` with status-aware moderation and channel-mute duration behavior.
+- **Follow-ups:** half-op-specific menu visibility remains deferred per spec; context-menu Unban was not added because Channel Central remains the managed ban/unban surface.
 
 ### 2026-06-04 — Feature 04: `Window & Display (Edit menu)`
 - **Did:** added the top-level Edit menu between File and View; moved Find out of View; wired Clear Window through `/clear`; added client-side Copy selection enablement/copying in `MenuBarHook`; fixed menu trigger `data-disabled` values so disabled menu triggers match the hook/CSS contract.
@@ -91,6 +97,9 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 > - **[Feature NN] <lesson>** — why it matters / how to apply next time.
 
 - **[Feature 04] Specs can lag key-binding reality** — Feature 04 requested `Ctrl+F`, but `KeyBindings.defaults/0`, existing tests, and help content use `Ctrl+Shift+F`; trust code and record the discrepancy.
+- **[Feature 05] Channel mutes must be part of channel state projection** — `Server.get_state/1` did not expose `channel_mutes`, so status-aware UI needed the hot-state projection updated before the menu could render Mute vs Unmute.
+- **[Feature 05] UI event permissions must match command handlers** — `Server.channel_mute/4` allows half-operators, while `/mute` and `/unmute` handlers require operators; context-menu events add an operator/owner guard to avoid bypassing command semantics.
+- **[Feature 05] Channel user roles are single-valued** — op and voice are represented as one current role in membership state, so tests should exercise op and voice transitions separately rather than assuming independent role flags.
 - **[Feature 04] Menu trigger `data-disabled` must be a string** — `data-disabled={true}` renders as a boolean-style attribute, while `MenuBarHook` and CSS compare against `"true"`; emit `"true"`/`"false"` explicitly.
 - **[Feature 04] JS-toggled visual states need CSS-owned classes** — CSS consistency lint scans `classList.*` strings in JS, so toggle a defined project class such as `menubar-copy-disabled` instead of raw Tailwind utilities.
 - **[Feature 02] `toolbar_action` dispatches through `dispatch_to_hooks/3`** — menu/toolbar items can use existing v1 event names such as `toggle_notify_list` when a hook module already handles that event.

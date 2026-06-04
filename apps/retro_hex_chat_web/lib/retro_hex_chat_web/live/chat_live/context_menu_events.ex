@@ -4,15 +4,17 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
   Covers nicklist: nick_right_click, nicklist_dblclick, close_context_menu,
   context_query, context_whois, context_kick, context_ban, context_op,
-  context_voice, context_add_contact, context_set_nick_color, context_ignore,
-  context_unignore, context_pick_color, context_p2p, context_call,
-  context_video_call, context_sendfile, context_game.
+  context_deop, context_voice, context_devoice, context_mute, context_unmute,
+  context_add_contact, context_set_nick_color, context_ignore, context_unignore,
+  context_pick_color, context_p2p, context_call, context_video_call,
+  context_sendfile, context_game.
 
   Covers chat area: chat_context_menu, close_chat_context_menu, ctx_chat_pm,
   ctx_chat_whois, ctx_chat_copy_nick, ctx_chat_ignore, ctx_chat_add_contact,
-  ctx_chat_set_color, ctx_chat_kick, ctx_chat_ban, ctx_chat_voice, ctx_chat_op,
-  ctx_chat_open_url, ctx_chat_copy_url, ctx_chat_save_url, ctx_chat_join,
-  ctx_chat_copy_channel, ctx_chat_channel_info,
+  ctx_chat_set_color, ctx_chat_kick, ctx_chat_ban, ctx_chat_voice, ctx_chat_devoice,
+  ctx_chat_op, ctx_chat_deop, ctx_chat_mute, ctx_chat_unmute, ctx_chat_open_url,
+  ctx_chat_copy_url, ctx_chat_save_url, ctx_chat_join, ctx_chat_copy_channel,
+  ctx_chat_channel_info,
   ctx_chat_copy_message, ctx_chat_copy_selection, ctx_chat_ignore_sender,
   ctx_chat_p2p, ctx_chat_call, ctx_chat_video_call, ctx_chat_sendfile, ctx_chat_game.
 
@@ -42,6 +44,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChat.Accounts.{ContactList, NickColors, ServerRoles, Session}
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
+  alias RetroHexChat.Commands.Duration
   alias RetroHexChat.Commands.Handlers.{Game, P2p}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.CoreEvents
@@ -120,6 +123,15 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      |> context_set_mode(channel, "+o", [nick])}
   end
 
+  def handle_event("context_deop", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> context_set_mode(channel, "-o", [nick])}
+  end
+
   def handle_event("context_voice", %{"nick" => nick}, socket) do
     channel = socket.assigns.session.active_channel
 
@@ -127,6 +139,31 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      socket
      |> close_context_menu()
      |> context_set_mode(channel, "+v", [nick])}
+  end
+
+  def handle_event("context_devoice", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> context_set_mode(channel, "-v", [nick])}
+  end
+
+  def handle_event("context_mute", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> open_mute_duration_dialog(nick)}
+  end
+
+  def handle_event("context_unmute", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> context_channel_unmute(channel, nick)}
   end
 
   def handle_event("context_add_contact", %{"nick" => nick}, socket) do
@@ -448,6 +485,40 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      |> context_set_mode(channel, "+o", [nick])}
   end
 
+  def handle_event("ctx_chat_deop", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> context_set_mode(channel, "-o", [nick])}
+  end
+
+  def handle_event("ctx_chat_devoice", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> context_set_mode(channel, "-v", [nick])}
+  end
+
+  def handle_event("ctx_chat_mute", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> open_mute_duration_dialog(nick)}
+  end
+
+  def handle_event("ctx_chat_unmute", %{"nick" => nick}, socket) do
+    channel = socket.assigns.session.active_channel
+
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> context_channel_unmute(channel, nick)}
+  end
+
   def handle_event("ctx_chat_open_url", %{"url" => url}, socket) do
     {:halt,
      socket
@@ -557,6 +628,20 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   def handle_event("ctx_chat_game", %{"nick" => nick}, socket),
     do: {:halt, handle_game_action(socket, nick, :chat)}
 
+  def handle_event("mute_duration_submit", %{"nick" => nick} = params, socket) do
+    channel = socket.assigns.session.active_channel
+    duration = Duration.parse(Map.get(params, "duration"))
+
+    {:halt,
+     socket
+     |> close_mute_duration_dialog()
+     |> context_channel_mute(channel, nick, duration)}
+  end
+
+  def handle_event("mute_duration_cancel", _params, socket) do
+    {:halt, close_mute_duration_dialog(socket)}
+  end
+
   # Catch-all: not our event, pass it along
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
@@ -665,6 +750,54 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   defp context_set_mode(socket, channel, mode, params) do
     Server.set_mode(channel, socket.assigns.session.nickname, mode, params)
     socket
+  end
+
+  defp open_mute_duration_dialog(socket, nick) do
+    assign(socket, mute_duration_dialog: %{show: true, target_nick: nick})
+  end
+
+  defp close_mute_duration_dialog(socket) do
+    assign(socket, mute_duration_dialog: %{show: false, target_nick: nil})
+  end
+
+  defp context_channel_mute(socket, nil, _nick, _duration), do: socket
+  defp context_channel_mute(socket, _channel, "", _duration), do: socket
+
+  defp context_channel_mute(socket, channel, nick, duration) do
+    with :ok <- require_context_operator(socket, channel),
+         :ok <- Server.channel_mute(channel, socket.assigns.session.nickname, nick, duration) do
+      socket
+    else
+      {:error, message} -> error_event(socket, message)
+    end
+  end
+
+  defp context_channel_unmute(socket, nil, _nick), do: socket
+  defp context_channel_unmute(socket, _channel, ""), do: socket
+
+  defp context_channel_unmute(socket, channel, nick) do
+    with :ok <- require_context_operator(socket, channel),
+         :ok <- Server.channel_unmute(channel, socket.assigns.session.nickname, nick) do
+      socket
+    else
+      {:error, message} -> error_event(socket, message)
+    end
+  end
+
+  defp require_context_operator(socket, channel) do
+    nickname = socket.assigns.session.nickname
+
+    case Server.get_state(channel) do
+      {:ok, state} ->
+        if nickname in state.operators or nickname in Map.get(state, :owners, []) do
+          :ok
+        else
+          {:error, dgettext("chat", "You must be a channel operator to use this command")}
+        end
+
+      {:error, _reason} ->
+        {:error, dgettext("chat", "You are not in any channel")}
+    end
   end
 
   defp handle_p2p_action(socket, nick, session_type, source) do

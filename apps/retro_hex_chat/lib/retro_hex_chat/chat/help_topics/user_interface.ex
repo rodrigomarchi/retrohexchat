@@ -84,7 +84,14 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           dgettext("help", "context menu"),
           dgettext("help", "right click"),
           "right-click",
-          "popup"
+          "popup",
+          "op",
+          "deop",
+          "voice",
+          "devoice",
+          dgettext("help", "channel mute"),
+          dgettext("help", "unmute channel"),
+          dgettext("help", "moderation")
         ],
         icon: :icon_dialog_custom_menus,
         description:

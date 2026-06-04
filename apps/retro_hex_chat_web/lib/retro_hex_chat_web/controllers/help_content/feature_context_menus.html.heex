@@ -10,7 +10,16 @@
 <p>
   {dgettext(
     "help_features",
-    "Right-click a nickname in a chat message to see: Private Message, Whois, Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Kick, Ban, Give Voice (+v), Give Op (+o)."
+    "Right-click a nickname in a chat message to see: Private Message, Whois, Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Kick, Ban, status-aware Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
+  )}
+</p>
+<.help_h4 icon={:icon_role_operator}>
+  {dgettext("help_features", "Moderation Actions")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Operator and voice entries toggle based on the target's current role: Give Op (+o) becomes Remove Op (-o), and Give Voice (+v) becomes Remove Voice (-v). Mute (channel) opens a duration prompt; leave it blank for a permanent mute, or enter 30s, 5m, 1h, or 1d. Unmute (channel) removes the channel-level mute immediately."
   )}
 </p>
 <.help_h4 icon={:icon_dialog_custom_menus}>{dgettext("help_features", "URL Menu")}</.help_h4>
@@ -40,7 +49,7 @@
 <p>
   {dgettext(
     "help_features",
-    "Right-click a channel in the conversations sidebar to see: Mark as Read, Mute/Unmute Channel, Copy Name, Leave Channel, Channel Settings."
+    "Right-click a channel in the conversations sidebar to see: Mark as Read, Mute/Unmute Channel, Copy Name, Leave Channel, Channel Settings. This mute controls notifications for the conversation; it is different from the channel-level user mute in nickname menus."
   )}
 </p>
 <.help_h4 icon={:icon_dialog_cheatsheet}>
@@ -66,6 +75,12 @@
   <.help_link topic="feature-custom-menus">
     {dgettext("help_features", "Custom Menus")}
   </.help_link>
+  ·
+  <.help_link topic="ui-context-menu">
+    {dgettext("help_features", "Context Menu UI")}
+  </.help_link>
+  · <.help_link topic="cmd-mute">{dgettext("help_features", "/mute")}</.help_link>
+  · <.help_link topic="cmd-unmute">{dgettext("help_features", "/unmute")}</.help_link>
   ·
   <.help_link topic="feature-interactive-elements">
     {dgettext("help_features", "Interactive Chat Elements")}

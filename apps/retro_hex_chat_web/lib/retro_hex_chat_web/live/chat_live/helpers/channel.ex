@@ -175,6 +175,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     case Server.get_state(channel_name) do
       {:ok, state} ->
         presence_by_nick = channel_presence_by_nick(channel_name)
+        muted_nicks = MapSet.new(Map.get(state, :channel_mutes, []))
 
         users =
           Enum.map(state.members, fn {nick, role} ->
@@ -184,7 +185,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
               nickname: nick,
               role: role,
               away: Map.get(presence, :away, false),
-              away_message: Map.get(presence, :away_message)
+              away_message: Map.get(presence, :away_message),
+              muted: MapSet.member?(muted_nicks, nick)
             }
           end)
 

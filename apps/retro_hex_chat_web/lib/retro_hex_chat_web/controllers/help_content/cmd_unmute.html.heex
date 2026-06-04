@@ -15,7 +15,7 @@
 
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
-  <li>{dgettext("help_commands", "Requires half-operator (%) status or higher")}</li>
+  <li>{dgettext("help_commands", "Requires channel operator or owner status")}</li>
 </ul>
 
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
@@ -24,6 +24,10 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-mute">{dgettext("help_commands", "/mute")}</.help_link>
+  ·
+  <.help_link topic="ui-context-menu">
+    {dgettext("help_commands", "Context Menu")}
+  </.help_link>
   · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
   ·
   <.help_link topic="channel-permissions">
