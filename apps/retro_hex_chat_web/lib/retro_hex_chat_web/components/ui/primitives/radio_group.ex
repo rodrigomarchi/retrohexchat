@@ -44,9 +44,8 @@ defmodule RetroHexChatWeb.Components.UI.RadioGroup do
       role="radiogroup"
       aria-required="false"
       dir="ltr"
-      class={classes(["grid gap-2", @class])}
+      class={classes(["grid gap-2 outline-none", @class])}
       tabindex="0"
-      style="outline: none;"
     >
       {render_slot(@inner_block, @builder)}
     </div>

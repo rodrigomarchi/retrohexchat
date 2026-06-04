@@ -43,11 +43,11 @@ defmodule RetroHexChatWeb.Components.UI.Badge do
 
   @variants %{
     variant: %{
-      "default" => "bg-white text-[#000080]",
-      "secondary" => "bg-white text-[#000]",
-      "destructive" => "bg-white text-[#FF0000]",
+      "default" => "bg-white text-primary",
+      "secondary" => "bg-white text-black",
+      "destructive" => "bg-white text-destructive",
       "outline" => "bg-transparent text-foreground",
-      "success" => "bg-white text-[#008000]"
+      "success" => "bg-white text-success-dark"
     }
   }
 

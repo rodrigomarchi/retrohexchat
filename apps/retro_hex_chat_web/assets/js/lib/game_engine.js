@@ -1,4 +1,5 @@
 import { t, jt } from "./i18n.js";
+import { gameColor } from "./game_colors.js";
 /**
  * Game engine base — pure scaffolding for lifecycle, event wiring, and canvas setup.
  * Each concrete game provides its own binary DataView protocol via protocol.js.
@@ -84,9 +85,9 @@ export class GameEngine {
 
     // Use CSS custom properties via getComputedStyle for colors
     const styles = getComputedStyle(this.canvas);
-    const bgColor = styles.getPropertyValue("--game-bg-color").trim() || "#000033";
-    const fgColor = styles.getPropertyValue("--game-fg-color").trim() || "#00ff00";
-    const mutedColor = styles.getPropertyValue("--game-muted-color").trim() || "#006600";
+    const bgColor = styles.getPropertyValue("--game-bg-color").trim() || gameColor("000033");
+    const fgColor = styles.getPropertyValue("--game-fg-color").trim() || gameColor("00ff00");
+    const mutedColor = styles.getPropertyValue("--game-muted-color").trim() || gameColor("006600");
 
     ctx.fillStyle = bgColor;
     ctx.fillRect(0, 0, w, h);

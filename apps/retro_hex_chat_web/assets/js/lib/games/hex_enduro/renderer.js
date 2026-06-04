@@ -21,22 +21,23 @@ import {
   LANE_COUNT,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 // ── Road colors (per weather) ──
 const SKY_COLORS = {
-  [WEATHER.DAY]: ["#0a0520", "#1a0a40"],
-  [WEATHER.SNOW]: ["#1a1a2a", "#2a2a3a"],
-  [WEATHER.FOG]: ["#252530", "#353540"],
-  [WEATHER.NIGHT]: ["#000003", "#020208"],
-  [WEATHER.DAWN]: ["#150825", "#2a1040"],
+  [WEATHER.DAY]: [gameColor("0a0520"), gameColor("1a0a40")],
+  [WEATHER.SNOW]: [gameColor("1a1a2a"), gameColor("2a2a3a")],
+  [WEATHER.FOG]: [gameColor("252530"), gameColor("353540")],
+  [WEATHER.NIGHT]: [gameColor("000003"), gameColor("020208")],
+  [WEATHER.DAWN]: [gameColor("150825"), gameColor("2a1040")],
 };
 
 const MOUNTAIN_COLORS = {
-  [WEATHER.DAY]: "#0f0f2a",
-  [WEATHER.SNOW]: "#1a1a30",
-  [WEATHER.FOG]: "#202030",
-  [WEATHER.NIGHT]: "#040410",
-  [WEATHER.DAWN]: "#150a25",
+  [WEATHER.DAY]: gameColor("0f0f2a"),
+  [WEATHER.SNOW]: gameColor("1a1a30"),
+  [WEATHER.FOG]: gameColor("202030"),
+  [WEATHER.NIGHT]: gameColor("040410"),
+  [WEATHER.DAWN]: gameColor("150a25"),
 };
 
 const WEATHER_LABELS = {
@@ -55,18 +56,18 @@ const WEATHER_LABELS = {
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#0a0a1a",
-    p1: s.getPropertyValue("--game-fg-color").trim() || "#39ff14",
-    p2: s.getPropertyValue("--game-accent-color").trim() || "#00e5ff",
-    muted: s.getPropertyValue("--game-muted-color").trim() || "#1a1a2a",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0a1a"),
+    p1: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
+    p2: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
+    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a1a2a"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ff4444",
-    road1: s.getPropertyValue("--game-road-color-1").trim() || "#2a2a3a",
-    road2: s.getPropertyValue("--game-road-color-2").trim() || "#1a1a2a",
-    lane: s.getPropertyValue("--game-lane-color").trim() || "#555566",
-    mountain: s.getPropertyValue("--game-mountain-color").trim() || "#151525",
-    carAi: s.getPropertyValue("--game-car-ai").trim() || "#ff8c00",
-    fuel: s.getPropertyValue("--game-fuel-color").trim() || "#ffee00",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff4444"),
+    road1: s.getPropertyValue("--game-road-color-1").trim() || gameColor("2a2a3a"),
+    road2: s.getPropertyValue("--game-road-color-2").trim() || gameColor("1a1a2a"),
+    lane: s.getPropertyValue("--game-lane-color").trim() || gameColor("555566"),
+    mountain: s.getPropertyValue("--game-mountain-color").trim() || gameColor("151525"),
+    carAi: s.getPropertyValue("--game-car-ai").trim() || gameColor("ff8c00"),
+    fuel: s.getPropertyValue("--game-fuel-color").trim() || gameColor("ffee00"),
   };
 }
 
@@ -243,7 +244,7 @@ function drawCarShape(ctx, x, y, scale, color, isNight) {
   ctx.fillRect(x - w * 0.35, y - h * 0.75, w * 0.7, h * 0.2);
 
   // Rear lights
-  ctx.fillStyle = "#ff2222";
+  ctx.fillStyle = gameColor("ff2222");
   ctx.fillRect(x - w * 0.4, y - h * 0.05, w * 0.2, Math.max(1, h * 0.08));
   ctx.fillRect(x + w * 0.2, y - h * 0.05, w * 0.2, Math.max(1, h * 0.08));
 }
@@ -251,7 +252,7 @@ function drawCarShape(ctx, x, y, scale, color, isNight) {
 function drawAICars(ctx, state, colors, _player, _time) {
   const isNight = state.weather === WEATHER.NIGHT;
   const cx = CANVAS_W / 2;
-  const AI_COLORS = [colors.carAi, "#cc4444", "#dddd44", "#cccccc"];
+  const AI_COLORS = [colors.carAi, gameColor("cc4444"), gameColor("dddd44"), gameColor("cccccc")];
 
   for (const car of state.aiCars || []) {
     if (car.zPos < 0 || car.zPos > MAX_Z) continue;
@@ -263,7 +264,7 @@ function drawAICars(ctx, state, colors, _player, _time) {
     const laneWidth = roadWidth / LANE_COUNT;
     const laneX = cx + (car.lane - 1) * laneWidth;
 
-    const carColor = isNight ? "#ff3333" : AI_COLORS[car.type % AI_COLORS.length];
+    const carColor = isNight ? gameColor("ff3333") : AI_COLORS[car.type % AI_COLORS.length];
     drawCarShape(ctx, laneX, y, scale, carColor, isNight);
   }
 }
@@ -313,7 +314,7 @@ function drawPlayerCar(ctx, colors, player, pColor, time) {
 
   // Boost flame effect
   if (player.boost > 0) {
-    ctx.fillStyle = time % 100 < 50 ? "#ff6600" : "#ffaa00";
+    ctx.fillStyle = time % 100 < 50 ? gameColor("ff6600") : gameColor("ffaa00");
     ctx.fillRect(laneX - 3, y, 6, 6);
   }
 }
@@ -445,7 +446,7 @@ function drawHUD(ctx, state, colors, player, opponent, pColor, oppColor, isHost,
   ctx.fillText(oppText, CANVAS_W - ctx.measureText(oppText).width - 6, 16);
 
   // Center: game info
-  ctx.fillStyle = "#aaaacc";
+  ctx.fillStyle = gameColor("aaaacc");
   const modeLabel =
     state.mode === GAME_MODE.CLASSIC_DUEL
       ? jt`Day ${Math.min(state.dayNumber, MAX_DAYS)}/${MAX_DAYS}`
@@ -462,22 +463,22 @@ function drawHUD(ctx, state, colors, player, opponent, pColor, oppColor, isHost,
   ctx.fillRect(0, CANVAS_H - 28, CANVAS_W, 28);
 
   // Speed gauge (left)
-  ctx.fillStyle = "#888";
+  ctx.fillStyle = gameColor("888");
   ctx.fillText("SPD", 6, CANVAS_H - 10);
   drawBar(ctx, 36, CANVAS_H - 20, 80, 10, player.speed / SPEED_MAX, pColor);
 
   // Fuel gauge (center-left)
   if (state.mode !== GAME_MODE.SPRINT) {
-    ctx.fillStyle = "#888";
+    ctx.fillStyle = gameColor("888");
     ctx.fillText("FUEL", 130, CANVAS_H - 10);
     const fuelRatio = player.fuel / FUEL_MAX;
     const fuelColor =
-      fuelRatio < 0.2 ? (time % 400 < 200 ? colors.warning : "#660000") : colors.fuel;
+      fuelRatio < 0.2 ? (time % 400 < 200 ? colors.warning : gameColor("660000")) : colors.fuel;
     drawBar(ctx, 168, CANVAS_H - 20, 80, 10, fuelRatio, fuelColor);
   }
 
   // Overtakes (center-right)
-  ctx.fillStyle = "#888";
+  ctx.fillStyle = gameColor("888");
   const overtakeText =
     state.mode === GAME_MODE.CLASSIC_DUEL
       ? `${player.overtakes}/${state.dayOvertakeTarget}`
@@ -489,14 +490,14 @@ function drawHUD(ctx, state, colors, player, opponent, pColor, oppColor, isHost,
     const secs = Math.ceil(state.gameTimer / 60);
     const min = Math.floor(secs / 60);
     const sec = secs % 60;
-    ctx.fillStyle = secs < 10 ? colors.warning : "#aaaacc";
+    ctx.fillStyle = secs < 10 ? colors.warning : gameColor("aaaacc");
     const timerText = `${min}:${sec.toString().padStart(2, "0")}`;
     ctx.fillText(timerText, CANVAS_W - ctx.measureText(timerText).width - 6, CANVAS_H - 10);
   }
 
   // Boost indicator (after overtakes, before timer)
   if (player.boost > 0) {
-    ctx.fillStyle = "#ff8800";
+    ctx.fillStyle = gameColor("ff8800");
     ctx.fillText(t("TURBO!"), 350, CANVAS_H - 10);
   }
 
@@ -553,7 +554,7 @@ function drawDayEnd(ctx, state, colors) {
   ctx.textBaseline = "middle";
 
   ctx.font = "bold 28px monospace";
-  ctx.fillStyle = "#aaaacc";
+  ctx.fillStyle = gameColor("aaaacc");
   ctx.fillText(jt`Day ${state.dayNumber - 1} Complete`, CANVAS_W / 2, CANVAS_H / 2 - 30);
 
   ctx.font = "bold 16px monospace";
@@ -573,7 +574,7 @@ function drawFinished(ctx, state, colors, time) {
   ctx.textBaseline = "middle";
 
   ctx.font = "bold 36px monospace";
-  ctx.fillStyle = "#aaaacc";
+  ctx.fillStyle = gameColor("aaaacc");
   ctx.fillText(t("RACE OVER"), CANVAS_W / 2, CANVAS_H / 2 - 60);
 
   ctx.font = "bold 20px monospace";
@@ -596,12 +597,12 @@ function drawFinished(ctx, state, colors, time) {
   ctx.font = "bold 28px monospace";
 
   if (draw) {
-    ctx.fillStyle = "#aaaacc";
+    ctx.fillStyle = gameColor("aaaacc");
     ctx.fillText(t("DRAW!"), CANVAS_W / 2, CANVAS_H / 2 + 55);
   } else {
     const winnerColor = p1Wins ? colors.p1 : colors.p2;
     const winnerLabel = p1Wins ? t("P1 WINS!") : t("P2 WINS!");
-    ctx.fillStyle = time % 500 < 250 ? winnerColor : "#ffffff";
+    ctx.fillStyle = time % 500 < 250 ? winnerColor : gameColor("ffffff");
     ctx.fillText(winnerLabel, CANVAS_W / 2, CANVAS_H / 2 + 55);
   }
 

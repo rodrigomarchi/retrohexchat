@@ -29,6 +29,7 @@ import {
 } from "./physics.js";
 import { render as renderFrame, getColors } from "./renderer.js";
 import { SurroundAudio } from "./audio.js";
+import { gameColor } from "../../game_colors.js";
 
 const TICK_INTERVAL = 100; // 10Hz — discrete grid movement
 const ROUND_OVER_DELAY = 3000; // ms before next round
@@ -312,13 +313,13 @@ export class SurroundEngine extends GameEngine {
     if (p1Dead) {
       this.gameState.particles = [
         ...this.gameState.particles,
-        ...createCrashParticles(this.gameState.p1.x, this.gameState.p1.y, "#00ff41"),
+        ...createCrashParticles(this.gameState.p1.x, this.gameState.p1.y, gameColor("00ff41")),
       ];
     }
     if (p2Dead) {
       this.gameState.particles = [
         ...this.gameState.particles,
-        ...createCrashParticles(this.gameState.p2.x, this.gameState.p2.y, "#00d4ff"),
+        ...createCrashParticles(this.gameState.p2.x, this.gameState.p2.y, gameColor("00d4ff")),
       ];
     }
 

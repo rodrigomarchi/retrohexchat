@@ -55,8 +55,8 @@ defmodule RetroHexChatWeb.Components.UI.InviteDialog do
             <div class="space-y-retro-4">
               <div
                 :for={{invite, index} <- Enum.with_index(@invites)}
-                class="shadow-retro-window bg-surface p-[2px]"
-                style={"position: relative; z-index: #{10 + index}; margin-top: #{index * 4}px;"}
+                class="relative z-[var(--invite-card-z)] mt-[var(--invite-card-offset)] shadow-retro-window bg-surface p-[2px]"
+                style={"--invite-card-z: #{10 + index}; --invite-card-offset: #{index * 4}px;"}
                 data-testid={"invite-card-#{invite.channel}"}
               >
                 <div class="bg-gradient-to-r from-primary to-highlight-light px-retro-4 py-[2px]">

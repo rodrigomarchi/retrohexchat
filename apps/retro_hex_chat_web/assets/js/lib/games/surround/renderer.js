@@ -7,6 +7,7 @@
 import { PHASE, GRID_W, GRID_H } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, CELL_SIZE, GRID_OFFSET_X, GRID_OFFSET_Y, CELL } from "./physics.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 // Bitmap digits 5x7 for retro score display (each row is a 5-bit mask)
 const DIGITS = [
@@ -30,12 +31,12 @@ const DIGITS = [
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#050510",
-    fg: s.getPropertyValue("--game-fg-color").trim() || "#00ff41",
-    accent: s.getPropertyValue("--game-accent-color").trim() || "#00d4ff",
-    muted: s.getPropertyValue("--game-muted-color").trim() || "#0a1628",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("050510"),
+    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("00ff41"),
+    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00d4ff"),
+    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("0a1628"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(0,255,65,0.2)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ffaa00",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ffaa00"),
   };
 }
 
@@ -190,7 +191,7 @@ function drawHead(ctx, gx, gy, dir, color, pulse) {
 
   // White bright core
   ctx.shadowBlur = 0;
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = gameColor("ffffff");
   ctx.fillRect(px + 2, py + 2, CELL_SIZE - 4, CELL_SIZE - 4);
 
   // Direction chevron
@@ -232,7 +233,7 @@ function drawHead(ctx, gx, gy, dir, color, pulse) {
 export function drawParticles(ctx, particles) {
   for (const p of particles) {
     ctx.globalAlpha = p.life;
-    ctx.fillStyle = p.color || "#ffaa00";
+    ctx.fillStyle = p.color || gameColor("ffaa00");
     ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
   }
   ctx.globalAlpha = 1.0;
@@ -333,11 +334,11 @@ export function drawRoundOver(ctx, state, colors, _time) {
 
   // Red channel offset
   ctx.globalAlpha = 0.5;
-  ctx.fillStyle = "#ff0000";
+  ctx.fillStyle = gameColor("ff0000");
   ctx.fillText(text, CANVAS_W / 2 + glitchX - 2, CANVAS_H / 2 + glitchY);
 
   // Blue channel offset
-  ctx.fillStyle = "#0000ff";
+  ctx.fillStyle = gameColor("0000ff");
   ctx.fillText(text, CANVAS_W / 2 + glitchX + 2, CANVAS_H / 2 + glitchY);
 
   // Main text
@@ -369,11 +370,11 @@ export function drawMatchOver(ctx, state, colors, time) {
 
   // Red channel offset
   ctx.globalAlpha = 0.5;
-  ctx.fillStyle = "#ff0000";
+  ctx.fillStyle = gameColor("ff0000");
   ctx.fillText(text, CANVAS_W / 2 + glitchX - 2, CANVAS_H / 2 + glitchY);
 
   // Blue channel offset
-  ctx.fillStyle = "#0000ff";
+  ctx.fillStyle = gameColor("0000ff");
   ctx.fillText(text, CANVAS_W / 2 + glitchX + 2, CANVAS_H / 2 + glitchY);
 
   // Main text

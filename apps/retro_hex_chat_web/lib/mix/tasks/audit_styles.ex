@@ -4,9 +4,9 @@ defmodule Mix.Tasks.Audit.Styles do
   Scans Elixir, HEEx, and JavaScript files for hardcoded styles that should be
   controlled via CSS. Reports findings organized by risk level (LOW, MEDIUM, HIGH, INFO).
 
-  This is a diagnostic tool — it does NOT block CI. Its purpose is to guide the
-  migration of all inline styles to CSS classes and custom properties. When the
-  report shows 0 findings, the migration is complete.
+  By default this task prints a diagnostic report and exits zero. With `--strict`,
+  it fails when LOW, MEDIUM, or HIGH findings are present. INFO findings remain
+  advisory.
 
   ## Categories
 
@@ -21,8 +21,9 @@ defmodule Mix.Tasks.Audit.Styles do
   ## Usage
 
       mix audit.styles
+      mix audit.styles --strict
 
-  Always exits zero. Use the output to track migration progress.
+  `make ci` runs this task in strict mode through `make lint.css`.
   """
 
   use Mix.Task
@@ -40,7 +41,9 @@ defmodule Mix.Tasks.Audit.Styles do
 
   @impl Mix.Task
   @spec run(list()) :: :ok
-  def run(_args) do
+  def run(args) do
+    {opts, _rest, _invalid} = OptionParser.parse(args, strict: [strict: :boolean])
+
     elixir_files =
       list_files(@web_lib, "**/*.ex") ++ list_files(@domain_lib, "**/*.ex")
 
@@ -57,7 +60,14 @@ defmodule Mix.Tasks.Audit.Styles do
       js_color: scan_js_colors(js_files)
     }
 
-    print_report(findings)
+    groups = build_risk_groups(findings)
+    counts = risk_counts(groups)
+
+    print_report(findings, groups, counts)
+
+    if opts[:strict] && blocking_count(counts) > 0 do
+      raise RuntimeError, message: strict_error_message(counts)
+    end
 
     :ok
   end
@@ -227,10 +237,8 @@ defmodule Mix.Tasks.Audit.Styles do
 
   # ── Report printing ───────────────────────────────────────────────────
 
-  defp print_report(findings) do
+  defp print_report(findings, groups, counts) do
     IO.puts("\n#{cyan()}=== Style Audit Report ===#{reset()}\n")
-
-    groups = build_risk_groups(findings)
 
     Enum.each([:low, :medium, :high, :info], fn risk ->
       entries = Map.get(groups, risk, [])
@@ -242,23 +250,11 @@ defmodule Mix.Tasks.Audit.Styles do
 
     total = Enum.sum(Enum.map(Map.values(findings), &length/1))
 
-    counts =
-      Enum.reduce(Map.values(groups), %{}, fn entries, acc ->
-        Enum.reduce(entries, acc, fn {risk, _cat, _f, _l, _c}, inner ->
-          Map.update(inner, risk, 1, &(&1 + 1))
-        end)
-      end)
-
-    low = Map.get(counts, :low, 0)
-    med = Map.get(counts, :medium, 0)
-    high = Map.get(counts, :high, 0)
-    info = Map.get(counts, :info, 0)
-
     IO.puts("#{cyan()}Summary:#{reset()}")
     IO.puts("  Total findings: #{total}")
 
     IO.puts(
-      "  #{green()}LOW:#{reset()} #{low}  #{yellow()}MEDIUM:#{reset()} #{med}  #{red()}HIGH:#{reset()} #{high}  INFO: #{info}"
+      "  #{green()}LOW:#{reset()} #{counts.low}  #{yellow()}MEDIUM:#{reset()} #{counts.medium}  #{red()}HIGH:#{reset()} #{counts.high}  INFO: #{counts.info}"
     )
 
     if total == 0 do
@@ -277,6 +273,21 @@ defmodule Mix.Tasks.Audit.Styles do
         classify_category(:js_color, findings.js_color, &classify_js_color/1)
 
     Enum.group_by(all_entries, fn {risk, _cat, _f, _l, _c} -> risk end)
+  end
+
+  defp risk_counts(groups) do
+    Enum.reduce(Map.values(groups), %{low: 0, medium: 0, high: 0, info: 0}, fn entries, acc ->
+      Enum.reduce(entries, acc, fn {risk, _cat, _f, _l, _c}, inner ->
+        Map.update!(inner, risk, &(&1 + 1))
+      end)
+    end)
+  end
+
+  defp blocking_count(counts), do: counts.low + counts.medium + counts.high
+
+  defp strict_error_message(counts) do
+    "style audit failed with #{blocking_count(counts)} blocking finding(s): " <>
+      "#{counts.low} LOW, #{counts.medium} MEDIUM, #{counts.high} HIGH"
   end
 
   defp classify_category(:color_attr, items, _classifier) do

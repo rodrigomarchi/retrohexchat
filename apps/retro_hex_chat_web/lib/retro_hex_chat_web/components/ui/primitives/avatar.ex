@@ -23,11 +23,10 @@ defmodule RetroHexChatWeb.Components.UI.Avatar do
   def avatar_image(assigns) do
     ~H"""
     <img
-      class={classes(["aspect-square h-full w-full", @class])}
+      class={classes(["hidden aspect-square h-full w-full", @class])}
       {@rest}
       phx-update="ignore"
-      style="display:none"
-      onload="this.style.display=''"
+      onload="this.classList.remove('hidden')"
     />
     """
   end

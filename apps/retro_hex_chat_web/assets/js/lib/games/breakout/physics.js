@@ -5,6 +5,7 @@
  */
 
 import { PHASE, BLOCK_ROWS, BLOCK_COLS, TOTAL_BLOCKS } from "./protocol.js";
+import { gameColor } from "../../game_colors.js";
 
 // --- Constants ---
 
@@ -29,7 +30,13 @@ export const BLOCK_OFFSET_X = (CANVAS_W - BLOCK_COLS * (BLOCK_W + BLOCK_GAP) + B
 export const BLOCK_OFFSET_Y = 140;
 
 // Row colors and points (top row = hardest to reach = most points)
-export const ROW_COLORS = ["#ff0066", "#ff6600", "#ffcc00", "#00ff66", "#00ccff"];
+export const ROW_COLORS = [
+  gameColor("ff0066"),
+  gameColor("ff6600"),
+  gameColor("ffcc00"),
+  gameColor("00ff66"),
+  gameColor("00ccff"),
+];
 export const ROW_POINTS = [50, 40, 30, 20, 10];
 
 // Speed increases every N blocks destroyed
@@ -368,7 +375,7 @@ export function createBlockParticles(x, y, color) {
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       life: 1.0,
-      color: color || "#ffaa00",
+      color: color || gameColor("ffaa00"),
     });
   }
   return particles;

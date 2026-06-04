@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ScrollAreaPage do
         description="Horizontal scrollbar with left/right arrow buttons."
       >
         <div class="shadow-retro-field bg-white h-[100px] overflow-x-auto retro-scrollbar p-2">
-          <div class="text-xs whitespace-nowrap" style="width: 1200px;">
+          <div class="text-xs whitespace-nowrap w-[1200px]">
             <p>
               {dgettext(
                 "showcase",
@@ -75,7 +75,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Layout.ScrollAreaPage do
         description="Container with both vertical and horizontal scrollbars."
       >
         <div class="shadow-retro-field bg-white h-[200px] overflow-auto retro-scrollbar p-2">
-          <div class="text-xs" style="width: 800px;">
+          <div class="text-xs w-[800px]">
             <p :for={i <- 1..25} class="text-foreground whitespace-nowrap">
               {dgettext("showcase", "Line")} {i}{dgettext(
                 "showcase",

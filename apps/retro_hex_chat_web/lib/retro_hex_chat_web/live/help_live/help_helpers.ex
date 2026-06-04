@@ -39,8 +39,7 @@ defmodule RetroHexChatWeb.HelpLive.HelpHelpers do
 
           <div class="flex p-1">
             <nav
-              class="shadow-retro-sunken bg-white w-56 mr-2 shrink-0 overflow-y-auto p-1"
-              style="max-height: calc(100vh - 120px)"
+              class="shadow-retro-sunken bg-white w-56 mr-2 shrink-0 overflow-y-auto p-1 max-h-[calc(100vh-120px)]"
               aria-label={dgettext("help", "Help navigation")}
             >
               <.tree_view class="!shadow-none !p-0 !bg-transparent">
@@ -65,8 +64,7 @@ defmodule RetroHexChatWeb.HelpLive.HelpHelpers do
             </nav>
 
             <main
-              class="shadow-retro-sunken bg-white flex-1 p-6 overflow-y-auto"
-              style="max-height: calc(100vh - 120px)"
+              class="shadow-retro-sunken bg-white flex-1 p-6 overflow-y-auto max-h-[calc(100vh-120px)]"
               data-testid="help-content-pane"
             >
               {render_slot(@inner_block)}

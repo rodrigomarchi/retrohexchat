@@ -20,7 +20,8 @@ The project already documents, in detail, how increments must be built. Treat th
          individually. A task is NOT complete if any check fails. `make ci.quick` skips
          dialyzer for fast iteration; final pass must be full `make ci`.
        • CSS Architecture: NO hardcoded hex colors or CSS values in Elixir/JS — use Tailwind
-         classes / CSS custom properties. Verify with `mix audit.styles` (must be 0 findings).
+         classes / CSS custom properties. `make ci` enforces `mix audit.styles --strict`
+         via CSS lint (must show 0 LOW/MEDIUM/HIGH findings).
        • SVG Architecture: NEVER write inline <svg>. All icons live in `Icons.*` submodules
          (facade at components/icons.ex); diagrams in components/diagrams.ex. Pick the icon
          submodule by what the icon DEPICTS. Browse existing icons at /showcase/icons (dev).
@@ -70,7 +71,8 @@ IMPLEMENT (follow the platform's Feature Delivery Workflow)
 VALIDATE (mandatory before claiming done)
   • Run `make ci`. Fix everything it reports — in THIS project, all warnings/test failures
     are your responsibility, never "pre-existing". Re-run until fully green.
-  • Run `mix audit.styles` if you touched styling (expect 0 LOW/MEDIUM/HIGH).
+  • Run `mix audit.styles` if you touched styling (expect 0 LOW/MEDIUM/HIGH);
+    final `make ci` enforces the same rule in strict mode.
 
 RECORD (always, before you stop)
   • Update /docs/ui-features/PROGRESS.md:

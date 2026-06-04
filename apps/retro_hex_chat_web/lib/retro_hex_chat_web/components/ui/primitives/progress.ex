@@ -21,13 +21,10 @@ defmodule RetroHexChatWeb.Components.UI.Progress do
     ~H"""
     <div
       class={classes(["relative h-4 w-full overflow-hidden shadow-retro-sunken bg-surface", @class])}
+      style={"--retro-progress-value: #{@value || 0}%;"}
       {@rest}
     >
-      <div
-        class="h-full w-full flex-1 bg-primary transition-all"
-        style={"transform: translateX(-#{100 - (@value || 0)}%)"}
-      >
-      </div>
+      <div class="h-full bg-primary transition-all w-[var(--retro-progress-value)]"></div>
     </div>
     """
   end

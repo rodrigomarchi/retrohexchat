@@ -38,8 +38,8 @@ defmodule RetroHexChatWeb.Components.UI.Slider do
 
     ~H"""
     <div
-      class={classes(["relative w-full", @class])}
-      style={"--#{@id}-val: #{(@value - @min)/(@max - @min) * 100}"}
+      class={classes(["retro-slider relative w-full", @class])}
+      style={"--retro-slider-val: #{(@value - @min)/(@max - @min) * 100}"}
     >
       <span class={["relative flex w-full touch-none select-none items-center"]}>
         <span
@@ -48,12 +48,11 @@ defmodule RetroHexChatWeb.Components.UI.Slider do
         >
           <span
             data-orientation="horizontal"
-            class="absolute h-full bg-primary"
-            style={"left: 0%; right: calc(100% - var(--#{@id}-val)*1%)"}
+            class="absolute left-0 h-full bg-primary w-[calc(var(--retro-slider-val)*1%)]"
           >
           </span>
         </span>
-        <span style={"transform: translateX(-50%); position: absolute; left: calc(var(--#{@id}-val)*1%);"}>
+        <span class="absolute left-[calc(var(--retro-slider-val)*1%)] -translate-x-1/2">
           <span
             role="slider"
             aria-valuemin={@min}
@@ -68,10 +67,9 @@ defmodule RetroHexChatWeb.Components.UI.Slider do
       </span>
       <input
         type="range"
-        class="absolute top-0 -left-2 z-1 w-full appearance-none cursor-pointer opacity-0"
+        class="absolute top-0 -left-2 z-1 w-[calc(100%+20px)] appearance-none cursor-pointer opacity-0"
         phx-update="ignore"
-        style="width: calc(100% + 20px)"
-        oninput={"this.parentNode.style='--#{@id}-val:' + (this.value - #{@min})/#{@max - @min}*100; return true;"}
+        oninput={"this.parentNode.style.setProperty('--retro-slider-val', (this.value - #{@min})/#{@max - @min}*100); return true;"}
         {%{min: @min, max: @max, value: @value, step: @step, id: @id, name: @name}}
         {@rest}
       />

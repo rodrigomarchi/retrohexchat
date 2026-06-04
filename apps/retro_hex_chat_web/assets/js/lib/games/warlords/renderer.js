@@ -20,6 +20,7 @@ import {
   P2_KING_Y,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -29,12 +30,12 @@ import { t, jt } from "../../i18n.js";
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#0a0a1a",
-    fg: s.getPropertyValue("--game-fg-color").trim() || "#00ff66",
-    accent: s.getPropertyValue("--game-accent-color").trim() || "#00ccff",
-    muted: s.getPropertyValue("--game-muted-color").trim() || "#1a3a4a",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0a1a"),
+    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("00ff66"),
+    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00ccff"),
+    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a3a4a"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(0,255,102,0.2)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ffaa00",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ffaa00"),
   };
 }
 
@@ -148,7 +149,7 @@ export function drawBricks(ctx, bricks, time) {
     // Inner highlight
     ctx.shadowBlur = 0;
     ctx.globalAlpha = 0.25;
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = gameColor("ffffff");
     ctx.fillRect(brick.x + 2, brick.y + 2, brick.w - 4, brick.h - 4);
 
     // Border
@@ -171,7 +172,7 @@ export function drawKing(ctx, x, y, alive, color, time) {
   if (!alive) {
     // Dead king — faded outline
     ctx.globalAlpha = 0.2;
-    ctx.strokeStyle = "#666666";
+    ctx.strokeStyle = gameColor("666666");
     ctx.lineWidth = 1;
     ctx.strokeRect(x - halfKing, y - halfKing, KING_SIZE, KING_SIZE);
     ctx.globalAlpha = 1.0;
@@ -205,7 +206,7 @@ export function drawKing(ctx, x, y, alive, color, time) {
   // Bright core
   ctx.shadowBlur = 0;
   ctx.globalAlpha = 0.5;
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = gameColor("ffffff");
   ctx.fillRect(x - halfKing + 3, y - halfKing + 6, KING_SIZE - 6, KING_SIZE - 8);
 
   ctx.globalAlpha = 1.0;
@@ -256,9 +257,9 @@ export function drawFireball(ctx, state, colors, time) {
   }
 
   // Main fireball with glow
-  ctx.shadowColor = "#ffffff";
+  ctx.shadowColor = gameColor("ffffff");
   ctx.shadowBlur = 12 + 4 * Math.sin(time * 0.01);
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = gameColor("ffffff");
   ctx.fillRect(fireballX - halfBall, fireballY - halfBall, FIREBALL_SIZE, FIREBALL_SIZE);
 
   // Orange core
@@ -397,9 +398,9 @@ export function drawKingHitOverlay(ctx, state, colors, time) {
   const glitchX = Math.random() > 0.85 ? (Math.random() - 0.5) * 4 : 0;
 
   ctx.globalAlpha = 0.5;
-  ctx.fillStyle = "#ff0000";
+  ctx.fillStyle = gameColor("ff0000");
   ctx.fillText(text, CANVAS_W / 2 + glitchX - 2, CANVAS_H / 2);
-  ctx.fillStyle = "#0000ff";
+  ctx.fillStyle = gameColor("0000ff");
   ctx.fillText(text, CANVAS_W / 2 + glitchX + 2, CANVAS_H / 2);
 
   ctx.globalAlpha = pulse;
@@ -429,9 +430,9 @@ export function drawFinished(ctx, state, colors, time) {
   const glitchY = Math.random() > 0.9 ? (Math.random() - 0.5) * 2 : 0;
 
   ctx.globalAlpha = 0.5;
-  ctx.fillStyle = "#ff0000";
+  ctx.fillStyle = gameColor("ff0000");
   ctx.fillText(text, CANVAS_W / 2 + glitchX - 2, CANVAS_H / 2 + glitchY);
-  ctx.fillStyle = "#0000ff";
+  ctx.fillStyle = gameColor("0000ff");
   ctx.fillText(text, CANVAS_W / 2 + glitchX + 2, CANVAS_H / 2 + glitchY);
 
   ctx.globalAlpha = 1.0;
@@ -457,7 +458,7 @@ export function drawFinished(ctx, state, colors, time) {
 export function drawParticles(ctx, particles) {
   for (const p of particles) {
     ctx.globalAlpha = p.life;
-    ctx.fillStyle = p.color || "#ffaa00";
+    ctx.fillStyle = p.color || gameColor("ffaa00");
     ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
   }
   ctx.globalAlpha = 1.0;

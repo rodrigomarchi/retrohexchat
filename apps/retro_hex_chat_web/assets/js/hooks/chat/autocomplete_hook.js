@@ -442,7 +442,6 @@ const AutocompleteHook = {
 
     bar.classList.remove("u-hidden");
     bar.classList.add("hist-search-panel--open");
-    bar.style.display = "flex";
 
     const noMatch = bar.querySelector(".history-no-match");
     if (noMatch) noMatch.classList.add("u-hidden");
@@ -483,7 +482,6 @@ const AutocompleteHook = {
     if (bar) {
       bar.classList.remove("hist-search-panel--open");
       bar.classList.add("u-hidden");
-      bar.style.display = "none";
     }
 
     if (cancel && this.historySearchOriginal !== undefined) {

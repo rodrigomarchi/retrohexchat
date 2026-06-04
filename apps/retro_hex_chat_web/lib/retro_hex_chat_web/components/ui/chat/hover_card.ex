@@ -63,11 +63,23 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
 
   @spec hover_card(map()) :: Phoenix.LiveView.Rendered.t()
   def hover_card(assigns) do
+    assigns =
+      assigns
+      |> assign(:positioned?, not is_nil(assigns.x) and not is_nil(assigns.y))
+      |> assign(:card_x, assigns.x || 0)
+      |> assign(:card_y, assigns.y || 0)
+
     ~H"""
     <.window
       :if={@visible}
-      class={classes(["w-[260px] max-w-[calc(100vw-1rem)]", @class])}
-      style={position_style(@x, @y)}
+      class={
+        classes([
+          "w-[260px] max-w-[calc(100vw-1rem)]",
+          @positioned? && "absolute left-[var(--hover-card-x)] top-[var(--hover-card-y)] z-50",
+          @class
+        ])
+      }
+      style={"--hover-card-x: #{@card_x}px; --hover-card-y: #{@card_y}px;"}
       data-testid={"hover-card-#{@nick}"}
       {@rest}
     >
@@ -150,11 +162,6 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
     </div>
     """
   end
-
-  @spec position_style(integer() | nil, integer() | nil) :: String.t() | nil
-  defp position_style(nil, _), do: nil
-  defp position_style(_, nil), do: nil
-  defp position_style(x, y), do: "position: absolute; left: #{x}px; top: #{y}px; z-index: 50;"
 
   attr :role, :atom, required: true
 

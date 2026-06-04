@@ -21,6 +21,7 @@ import {
   BALL_RADIUS,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 // Point display names
 const POINT_DISPLAY = ["LOVE", "15", "30", "40"];
@@ -39,16 +40,16 @@ const OUT_MESSAGES = ["", "OUT!", "LONG!", "ACE!", "DEAD BALL"];
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#0a0a14",
-    fg: s.getPropertyValue("--game-fg-color").trim() || "#39ff14",
-    accent: s.getPropertyValue("--game-accent-color").trim() || "#00e5ff",
-    muted: s.getPropertyValue("--game-muted-color").trim() || "#1a1a2a",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0a14"),
+    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
+    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
+    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a1a2a"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ffaa00",
-    courtColor: s.getPropertyValue("--game-court-color").trim() || "#0e1a0e",
-    lineColor: s.getPropertyValue("--game-line-color").trim() || "#39ff1480",
-    netColor: s.getPropertyValue("--game-net-color").trim() || "#ff006688",
-    ballColor: s.getPropertyValue("--game-ball-color").trim() || "#ffee00",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ffaa00"),
+    courtColor: s.getPropertyValue("--game-court-color").trim() || gameColor("0e1a0e"),
+    lineColor: s.getPropertyValue("--game-line-color").trim() || gameColor("39ff1480"),
+    netColor: s.getPropertyValue("--game-net-color").trim() || gameColor("ff006688"),
+    ballColor: s.getPropertyValue("--game-ball-color").trim() || gameColor("ffee00"),
   };
 }
 
@@ -263,7 +264,7 @@ function drawBall(ctx, ball, colors, time) {
   const shadowAlpha = 0.3 * (1 - height);
   const shadowOffset = height * 8;
   ctx.globalAlpha = shadowAlpha;
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   ctx.beginPath();
   ctx.ellipse(x, y + shadowOffset, BALL_RADIUS + 1, BALL_RADIUS * 0.6, 0, 0, Math.PI * 2);
   ctx.fill();
@@ -294,7 +295,7 @@ function drawBall(ctx, ball, colors, time) {
 
   // White core
   ctx.shadowBlur = 0;
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = gameColor("ffffff");
   ctx.beginPath();
   ctx.arc(x, y, (BALL_RADIUS + sizeBonus) * 0.5, 0, Math.PI * 2);
   ctx.fill();
@@ -362,9 +363,9 @@ function drawAnnouncement(ctx, text, color, time, yOffset) {
 
   // RGB glitch offset
   ctx.globalAlpha = 0.4;
-  ctx.fillStyle = "#ff0000";
+  ctx.fillStyle = gameColor("ff0000");
   ctx.fillText(text, CANVAS_W / 2 - 1, y);
-  ctx.fillStyle = "#0000ff";
+  ctx.fillStyle = gameColor("0000ff");
   ctx.fillText(text, CANVAS_W / 2 + 1, y);
 
   // Main text
@@ -435,9 +436,9 @@ function drawWinner(ctx, state, colors, time) {
   // RGB glitch
   ctx.globalAlpha = 0.4;
   ctx.font = `bold ${size}px monospace`;
-  ctx.fillStyle = "#ff0000";
+  ctx.fillStyle = gameColor("ff0000");
   ctx.fillText(jt`PLAYER ${state.winner} WINS!`, CANVAS_W / 2 - 1, CANVAS_H / 2 - 20);
-  ctx.fillStyle = "#0000ff";
+  ctx.fillStyle = gameColor("0000ff");
   ctx.fillText(jt`PLAYER ${state.winner} WINS!`, CANVAS_W / 2 + 1, CANVAS_H / 2 - 20);
 
   // Main text

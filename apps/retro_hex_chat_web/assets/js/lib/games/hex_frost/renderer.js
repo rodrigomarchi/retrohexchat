@@ -34,6 +34,7 @@ import {
 } from "./physics.js";
 import { PHASE, GAME_MODE, BAILEY_STATE, ENEMY_TYPE, BLOCK_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 // ── Color reading ──────────────────────────────────────────────
 
@@ -44,22 +45,22 @@ export function readColors(canvas) {
   const s = getComputedStyle(canvas);
   const get = (name) => s.getPropertyValue(name).trim() || null;
   return {
-    bg: get("--game-bg-color") || "#060818",
-    fg: get("--game-fg-color") || "#39ff14",
-    accent: get("--game-accent-color") || "#00e5ff",
-    muted: get("--game-muted-color") || "#0e1a2e",
+    bg: get("--game-bg-color") || gameColor("060818"),
+    fg: get("--game-fg-color") || gameColor("39ff14"),
+    accent: get("--game-accent-color") || gameColor("00e5ff"),
+    muted: get("--game-muted-color") || gameColor("0e1a2e"),
     glow: get("--game-glow-color") || "rgba(57,255,20,0.15)",
-    warning: get("--game-warning-color") || "#ff4444",
-    shore: get("--game-shore-color") || "#2a3040",
-    water: get("--game-water-color") || "#0a1020",
-    blockWhite: get("--game-block-white") || "#c0d8e8",
-    blockP1: get("--game-block-p1") || "#40ff80",
-    blockP2: get("--game-block-p2") || "#40d0ff",
-    iglooP1: get("--game-igloo-p1") || "#30cc60",
-    iglooP2: get("--game-igloo-p2") || "#30a0cc",
-    bear: get("--game-bear-color") || "#e0e0e0",
-    crab: get("--game-crab-color") || "#ff4040",
-    fish: get("--game-fish-color") || "#ff8800",
+    warning: get("--game-warning-color") || gameColor("ff4444"),
+    shore: get("--game-shore-color") || gameColor("2a3040"),
+    water: get("--game-water-color") || gameColor("0a1020"),
+    blockWhite: get("--game-block-white") || gameColor("c0d8e8"),
+    blockP1: get("--game-block-p1") || gameColor("40ff80"),
+    blockP2: get("--game-block-p2") || gameColor("40d0ff"),
+    iglooP1: get("--game-igloo-p1") || gameColor("30cc60"),
+    iglooP2: get("--game-igloo-p2") || gameColor("30a0cc"),
+    bear: get("--game-bear-color") || gameColor("e0e0e0"),
+    crab: get("--game-crab-color") || gameColor("ff4040"),
+    fish: get("--game-fish-color") || gameColor("ff8800"),
   };
 }
 
@@ -152,14 +153,14 @@ function drawWaitingScreen(ctx, colors, frameCount) {
 function drawBackground(ctx, colors, frameCount) {
   // Dark arctic sky gradient
   const gradient = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
-  gradient.addColorStop(0, "#020410");
+  gradient.addColorStop(0, gameColor("020410"));
   gradient.addColorStop(0.3, colors.bg);
   gradient.addColorStop(1, colors.muted);
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
 
   // Distant stars
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = gameColor("ffffff");
   for (let i = 0; i < 30; i++) {
     const sx = (i * 73 + 17) % CANVAS_W;
     const sy = (i * 43 + 7) % 40;
@@ -174,7 +175,7 @@ function drawAuroraBorealis(ctx, colors, frameCount) {
   // Subtle aurora waves in the sky
   ctx.globalAlpha = 0.08;
   for (let wave = 0; wave < 3; wave++) {
-    const hue = wave === 0 ? colors.fg : wave === 1 ? colors.accent : "#8040ff";
+    const hue = wave === 0 ? colors.fg : wave === 1 ? colors.accent : gameColor("8040ff");
     ctx.strokeStyle = hue;
     ctx.lineWidth = 3;
     ctx.beginPath();
@@ -299,7 +300,7 @@ function drawBlockRows(ctx, state, colors, frameCount) {
       ctx.fillRect(x, ROW_Y[r] - BLOCK_H / 2, BLOCK_W, BLOCK_H);
 
       // Ice crystal texture
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = gameColor("ffffff");
       ctx.globalAlpha = 0.2;
       ctx.fillRect(x + 4, ROW_Y[r] - BLOCK_H / 2 + 2, 2, 2);
       ctx.fillRect(x + BLOCK_W - 8, ROW_Y[r] - BLOCK_H / 2 + 4, 2, 2);
@@ -307,13 +308,13 @@ function drawBlockRows(ctx, state, colors, frameCount) {
       ctx.globalAlpha = 1;
 
       // Top highlight
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = gameColor("ffffff");
       ctx.globalAlpha = 0.3;
       ctx.fillRect(x, ROW_Y[r] - BLOCK_H / 2, BLOCK_W, 1);
       ctx.globalAlpha = 1;
 
       // Bottom shadow
-      ctx.fillStyle = "#000000";
+      ctx.fillStyle = gameColor("000000");
       ctx.globalAlpha = 0.2;
       ctx.fillRect(x, ROW_Y[r] + BLOCK_H / 2 - 1, BLOCK_W, 1);
       ctx.globalAlpha = 1;
@@ -380,7 +381,7 @@ function drawIgloo(ctx, player, x, color, glowColor, flash, piecesNeeded, frameC
 
   // Door when complete
   if (player.iglooComplete) {
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = gameColor("000000");
     ctx.fillRect(x + IGLOO_W / 2 - 4, iglooY + IGLOO_H - 12, 8, 12);
 
     // Glow around igloo
@@ -394,7 +395,7 @@ function drawIgloo(ctx, player, x, color, glowColor, flash, piecesNeeded, frameC
 
   // Flash animation (gain)
   if (flash > 0) {
-    ctx.fillStyle = "#ffdd00";
+    ctx.fillStyle = gameColor("ffdd00");
     ctx.globalAlpha = (flash / 15) * 0.4;
     ctx.fillRect(x - 3, iglooY - 3, IGLOO_W + 6, IGLOO_H + 6);
     ctx.globalAlpha = 1;
@@ -435,7 +436,7 @@ function drawBailey(ctx, player, color, frameCount) {
   ctx.fillRect(x + 2, y + 5, BAILEY_W - 4, 7);
 
   // Head
-  ctx.fillStyle = "#ffe0b0";
+  ctx.fillStyle = gameColor("ffe0b0");
   ctx.fillRect(x + 3, y + 1, BAILEY_W - 6, 4);
 
   // Hat/gorro
@@ -443,7 +444,7 @@ function drawBailey(ctx, player, color, frameCount) {
   ctx.fillRect(x + 2, y, BAILEY_W - 4, 2);
 
   // Eyes
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   if (player.facing === 1) {
     ctx.fillRect(x + 6, y + 2, 1, 1);
   } else {
@@ -473,7 +474,7 @@ function drawBailey(ctx, player, color, frameCount) {
 
   // Splash effect
   if (player.state === BAILEY_STATE.FALLING) {
-    ctx.fillStyle = "#40b0ff";
+    ctx.fillStyle = gameColor("40b0ff");
     ctx.globalAlpha = 0.6;
     for (let i = 0; i < 4; i++) {
       const sx = x + BAILEY_W / 2 + (i - 2) * 5;
@@ -528,7 +529,7 @@ function drawBear(ctx, enemy, colors, frameCount) {
   ctx.fillRect(x + BEAR_W - 6, y - 1, 3, 3);
 
   // Eyes
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   ctx.fillRect(x + 7, y + 2, 2, 2);
   ctx.fillRect(x + 12, y + 2, 2, 2);
 
@@ -562,10 +563,10 @@ function drawCrab(ctx, enemy, colors, frameCount) {
   ctx.fillRect(x + CRAB_W - 3, y + 2 - clawOffset, 3, 3);
 
   // Eyes
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = gameColor("ffffff");
   ctx.fillRect(x + 4, y + 1, 2, 2);
   ctx.fillRect(x + 8, y + 1, 2, 2);
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   ctx.fillRect(x + 5, y + 1, 1, 1);
   ctx.fillRect(x + 9, y + 1, 1, 1);
 
@@ -581,7 +582,7 @@ function drawGoose(ctx, enemy, colors, frameCount) {
   const y = ROW_Y[enemy.row] + ROW_SPACING / 2 - GOOSE_H / 2;
 
   // Body
-  ctx.fillStyle = "#e0e0e0";
+  ctx.fillStyle = gameColor("e0e0e0");
   ctx.fillRect(x + 4, y + 3, GOOSE_W - 8, GOOSE_H - 4);
 
   // Wings (animated)
@@ -595,17 +596,17 @@ function drawGoose(ctx, enemy, colors, frameCount) {
   if (dir > 0) {
     ctx.fillRect(x + GOOSE_W - 4, y, 4, 4);
     // Beak
-    ctx.fillStyle = "#ffaa00";
+    ctx.fillStyle = gameColor("ffaa00");
     ctx.fillRect(x + GOOSE_W, y + 1, 2, 2);
     // Eye
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = gameColor("000000");
     ctx.fillRect(x + GOOSE_W - 2, y + 1, 1, 1);
   } else {
-    ctx.fillStyle = "#e0e0e0";
+    ctx.fillStyle = gameColor("e0e0e0");
     ctx.fillRect(x, y, 4, 4);
-    ctx.fillStyle = "#ffaa00";
+    ctx.fillStyle = gameColor("ffaa00");
     ctx.fillRect(x - 2, y + 1, 2, 2);
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = gameColor("000000");
     ctx.fillRect(x + 1, y + 1, 1, 1);
   }
 }
@@ -617,26 +618,26 @@ function drawClam(ctx, enemy, colors, frameCount) {
 
   if (isOpen) {
     // Open clam — dangerous
-    ctx.fillStyle = "#9040c0";
+    ctx.fillStyle = gameColor("9040c0");
     ctx.fillRect(x, y, CLAM_W, CLAM_H);
     // Shell halves
-    ctx.fillStyle = "#7030a0";
+    ctx.fillStyle = gameColor("7030a0");
     ctx.fillRect(x, y, CLAM_W, 3);
     ctx.fillRect(x, y + CLAM_H - 3, CLAM_W, 3);
     // Inner pearl/danger
-    ctx.fillStyle = "#ff60ff";
+    ctx.fillStyle = gameColor("ff60ff");
     ctx.fillRect(x + 4, y + 4, 4, 3);
     // Warning glow
-    ctx.fillStyle = "#ff60ff";
+    ctx.fillStyle = gameColor("ff60ff");
     ctx.globalAlpha = 0.2 + Math.sin(frameCount * 0.15) * 0.1;
     ctx.fillRect(x - 1, y - 1, CLAM_W + 2, CLAM_H + 2);
     ctx.globalAlpha = 1;
   } else {
     // Closed clam — safe
-    ctx.fillStyle = "#7030a0";
+    ctx.fillStyle = gameColor("7030a0");
     ctx.fillRect(x + 2, y + 2, CLAM_W - 4, CLAM_H - 4);
     // Shell line
-    ctx.fillStyle = "#502080";
+    ctx.fillStyle = gameColor("502080");
     ctx.fillRect(x + 2, y + CLAM_H / 2, CLAM_W - 4, 1);
   }
 }
@@ -657,11 +658,11 @@ function drawFish(ctx, state, colors, frameCount) {
     ctx.fillRect(x, y - 2, 3, 4);
 
     // Eye
-    ctx.fillStyle = "#000000";
+    ctx.fillStyle = gameColor("000000");
     ctx.fillRect(x + FISH_W - 4, y - 1, 1, 1);
 
     // Sparkle
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = gameColor("ffffff");
     ctx.globalAlpha = 0.5 + Math.sin(frameCount * 0.2 + fish.x) * 0.3;
     ctx.fillRect(x + FISH_W - 2, y - 3, 1, 1);
     ctx.globalAlpha = 1;
@@ -687,10 +688,10 @@ function drawTemperature(ctx, state, colors) {
   const fillH = Math.round(th * ratio);
   let fillColor;
   if (ratio > 0.5) fillColor = colors.fg;
-  else if (ratio > 0.2) fillColor = "#ffaa00";
+  else if (ratio > 0.2) fillColor = gameColor("ffaa00");
   else fillColor = colors.warning;
 
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   ctx.fillRect(tx, ty, 10, th);
   ctx.fillStyle = fillColor;
   ctx.fillRect(tx, ty + th - fillH, 10, fillH);
@@ -713,7 +714,7 @@ function drawHUD(ctx, state, colors) {
   const p2 = state.p2;
 
   // Top bar background
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   ctx.globalAlpha = 0.6;
   ctx.fillRect(0, 0, CANVAS_W, SHORE_Y);
   ctx.globalAlpha = 1;
@@ -780,7 +781,7 @@ function drawHUD(ctx, state, colors) {
 // ── Countdown overlay ──────────────────────────────────────────
 
 function drawCountdown(ctx, state, colors, frameCount) {
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   ctx.globalAlpha = 0.4;
   ctx.fillRect(0, CANVAS_H / 2 - 40, CANVAS_W, 80);
   ctx.globalAlpha = 1;
@@ -802,7 +803,7 @@ function drawCountdown(ctx, state, colors, frameCount) {
 // ── Round end overlay ──────────────────────────────────────────
 
 function drawRoundEnd(ctx, state, colors, _frameCount) {
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   ctx.globalAlpha = 0.5;
   ctx.fillRect(0, CANVAS_H / 2 - 60, CANVAS_W, 120);
   ctx.globalAlpha = 1;
@@ -837,7 +838,14 @@ function drawFinished(ctx, state, colors, frameCount) {
   // Enhanced aurora borealis celebration
   ctx.globalAlpha = 0.15;
   for (let wave = 0; wave < 6; wave++) {
-    const hues = [colors.fg, colors.accent, "#ff40ff", "#ffdd00", "#40ff80", "#4080ff"];
+    const hues = [
+      colors.fg,
+      colors.accent,
+      gameColor("ff40ff"),
+      gameColor("ffdd00"),
+      gameColor("40ff80"),
+      gameColor("4080ff"),
+    ];
     ctx.strokeStyle = hues[wave];
     ctx.lineWidth = 4;
     ctx.beginPath();
@@ -854,7 +862,7 @@ function drawFinished(ctx, state, colors, frameCount) {
   ctx.globalAlpha = 1;
 
   // Overlay
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   ctx.globalAlpha = 0.6;
   ctx.fillRect(CANVAS_W / 2 - 150, CANVAS_H / 2 - 60, 300, 120);
   ctx.globalAlpha = 1;

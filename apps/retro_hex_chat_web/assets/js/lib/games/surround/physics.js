@@ -5,6 +5,7 @@
  */
 
 import { PHASE, DIR, GRID_W, GRID_H } from "./protocol.js";
+import { gameColor } from "../../game_colors.js";
 
 // Canvas dimensions
 export const CANVAS_W = 640;
@@ -187,7 +188,7 @@ export function createCrashParticles(gridX, gridY, color) {
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       life: 1.0,
-      color: color || "#ffaa00",
+      color: color || gameColor("ffaa00"),
     });
   }
   return particles;

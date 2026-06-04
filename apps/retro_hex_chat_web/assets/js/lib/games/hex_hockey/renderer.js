@@ -33,6 +33,7 @@ import {
 } from "./physics.js";
 import { PHASE, GAME_MODE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 // ── Direction vectors for stick drawing ────────────────────────
 const SQRT2 = Math.SQRT1_2;
@@ -48,19 +49,19 @@ export function readColors(canvas) {
   const s = getComputedStyle(canvas);
   const get = (name) => s.getPropertyValue(name).trim() || null;
   return {
-    bg: get("--game-bg-color") || "#060812",
-    fg: get("--game-fg-color") || "#39ff14",
-    accent: get("--game-accent-color") || "#00e5ff",
-    muted: get("--game-muted-color") || "#0e1420",
+    bg: get("--game-bg-color") || gameColor("060812"),
+    fg: get("--game-fg-color") || gameColor("39ff14"),
+    accent: get("--game-accent-color") || gameColor("00e5ff"),
+    muted: get("--game-muted-color") || gameColor("0e1420"),
     glow: get("--game-glow-color") || "rgba(57,255,20,0.15)",
-    warning: get("--game-warning-color") || "#ff4444",
-    rinkLine: get("--game-rink-line") || "#39ff1460",
-    goalColor: get("--game-goal-color") || "#ff2222",
-    goalieP1: get("--game-goalie-p1") || "#20aa0a",
-    goalieP2: get("--game-goalie-p2") || "#0090aa",
-    puck: get("--game-puck-color") || "#ffffff",
+    warning: get("--game-warning-color") || gameColor("ff4444"),
+    rinkLine: get("--game-rink-line") || gameColor("39ff1460"),
+    goalColor: get("--game-goal-color") || gameColor("ff2222"),
+    goalieP1: get("--game-goalie-p1") || gameColor("20aa0a"),
+    goalieP2: get("--game-goalie-p2") || gameColor("0090aa"),
+    puck: get("--game-puck-color") || gameColor("ffffff"),
     puckTrail: get("--game-puck-trail") || "rgba(255,255,255,0.3)",
-    iceScratch: get("--game-ice-scratch") || "#ffffff08",
+    iceScratch: get("--game-ice-scratch") || gameColor("ffffff08"),
   };
 }
 
@@ -203,7 +204,7 @@ function drawGoals(ctx, state, colors, frameCount, goalFlash) {
 
 function drawGoalPocket(ctx, x, y, w, h, colors, isRight) {
   // Dark pocket
-  ctx.fillStyle = "#0a0000";
+  ctx.fillStyle = gameColor("0a0000");
   ctx.fillRect(x, y, w, h);
 
   // Neon red border on goal opening
@@ -342,7 +343,7 @@ function drawGoalie(ctx, x, y, color, _frameCount) {
   ctx.fillRect(x - hw, y - hh, GOALIE_W, GOALIE_H);
 
   // Border highlight
-  ctx.strokeStyle = "#ffffff";
+  ctx.strokeStyle = gameColor("ffffff");
   ctx.globalAlpha = 0.3;
   ctx.lineWidth = 1;
   ctx.strokeRect(x - hw, y - hh, GOALIE_W, GOALIE_H);
@@ -408,7 +409,7 @@ function drawHUD(ctx, state, colors) {
   ctx.fillText(jt`P2: ${state.scoreP2}`, CANVAS_W - 30, y);
 
   // Game title
-  ctx.fillStyle = colors.puck || "#ffffff";
+  ctx.fillStyle = colors.puck || gameColor("ffffff");
   ctx.globalAlpha = 0.5;
   ctx.textAlign = "center";
   ctx.font = "bold 10px monospace";
@@ -487,7 +488,7 @@ function drawGoalCelebration(ctx, state, colors, frameCount) {
 
   // Score display
   ctx.font = "bold 24px monospace";
-  ctx.fillStyle = colors.puck || "#ffffff";
+  ctx.fillStyle = colors.puck || gameColor("ffffff");
   ctx.globalAlpha = 0.9;
   ctx.fillText(`${state.scoreP1} — ${state.scoreP2}`, RINK_CX, RINK_CY + 20);
 
@@ -514,7 +515,7 @@ function drawGoalCelebration(ctx, state, colors, frameCount) {
 
 function drawPeriodBreak(ctx, state, colors, _frameCount) {
   // Dim overlay
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   ctx.globalAlpha = 0.6;
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
   ctx.globalAlpha = 1.0;
@@ -528,7 +529,7 @@ function drawPeriodBreak(ctx, state, colors, _frameCount) {
   ctx.fillText(jt`END OF PERIOD ${prevPeriod}`, RINK_CX, RINK_CY - 30);
 
   ctx.font = "bold 32px monospace";
-  ctx.fillStyle = colors.puck || "#ffffff";
+  ctx.fillStyle = colors.puck || gameColor("ffffff");
   ctx.fillText(`${state.scoreP1} — ${state.scoreP2}`, RINK_CX, RINK_CY + 10);
 
   ctx.font = "14px monospace";
@@ -564,7 +565,7 @@ function drawSuddenDeathOverlay(ctx, colors, frameCount) {
 
 function drawGameOver(ctx, state, colors, _frameCount) {
   // Dim overlay
-  ctx.fillStyle = "#000000";
+  ctx.fillStyle = gameColor("000000");
   ctx.globalAlpha = 0.7;
   ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
   ctx.globalAlpha = 1.0;
@@ -581,13 +582,13 @@ function drawGameOver(ctx, state, colors, _frameCount) {
     ctx.fillStyle = colors.accent;
     ctx.fillText(t("PLAYER 2 WINS!"), RINK_CX, RINK_CY - 40);
   } else {
-    ctx.fillStyle = colors.puck || "#ffffff";
+    ctx.fillStyle = colors.puck || gameColor("ffffff");
     ctx.fillText(t("DRAW!"), RINK_CX, RINK_CY - 40);
   }
 
   // Final score
   ctx.font = "bold 40px monospace";
-  ctx.fillStyle = colors.puck || "#ffffff";
+  ctx.fillStyle = colors.puck || gameColor("ffffff");
   ctx.fillText(`${state.scoreP1} — ${state.scoreP2}`, RINK_CX, RINK_CY + 10);
 
   // Period info

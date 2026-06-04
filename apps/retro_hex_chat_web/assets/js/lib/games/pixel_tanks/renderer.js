@@ -17,6 +17,7 @@ import {
   formatTimer,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -26,16 +27,16 @@ import { t, jt } from "../../i18n.js";
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#0a0e0a",
-    fg: s.getPropertyValue("--game-fg-color").trim() || "#39ff14",
-    accent: s.getPropertyValue("--game-accent-color").trim() || "#00e5ff",
-    muted: s.getPropertyValue("--game-muted-color").trim() || "#1a2a1a",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0e0a"),
+    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
+    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
+    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a2a1a"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ff8c00",
-    wall: s.getPropertyValue("--game-wall-color").trim() || "#2a2a2a",
-    wallHi: s.getPropertyValue("--game-wall-highlight").trim() || "#3a3a3a",
-    missile: s.getPropertyValue("--game-missile-color").trim() || "#ffee00",
-    explosion: s.getPropertyValue("--game-explosion-color").trim() || "#ff4444",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff8c00"),
+    wall: s.getPropertyValue("--game-wall-color").trim() || gameColor("2a2a2a"),
+    wallHi: s.getPropertyValue("--game-wall-highlight").trim() || gameColor("3a3a3a"),
+    missile: s.getPropertyValue("--game-missile-color").trim() || gameColor("ffee00"),
+    explosion: s.getPropertyValue("--game-explosion-color").trim() || gameColor("ff4444"),
   };
 }
 
@@ -209,7 +210,7 @@ function drawMissile(ctx, x, y, vx, vy, color, _time) {
   ctx.fill();
 
   // Bright core
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = gameColor("ffffff");
   ctx.beginPath();
   ctx.arc(x, y, MISSILE_RADIUS * 0.5, 0, Math.PI * 2);
   ctx.fill();

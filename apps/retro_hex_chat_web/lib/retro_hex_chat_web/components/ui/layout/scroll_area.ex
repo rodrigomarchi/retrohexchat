@@ -29,7 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.ScrollArea do
     ~H"""
     <div class={classes(["relative overflow-hidden", @class])} {@rest}>
       <div class="salad-scroll-area rounded-[inherit] h-full w-full overflow-y-auto overflow-x-hidden">
-        <div class="-mr-3" style="min-width: 100%;">
+        <div class="-mr-3 min-w-full">
           {render_slot(@inner_block)}
         </div>
       </div>

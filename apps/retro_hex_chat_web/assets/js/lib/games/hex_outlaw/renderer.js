@@ -19,6 +19,7 @@ import {
 } from "./physics.js";
 import { PHASE, GAME_MODE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -28,15 +29,15 @@ import { t, jt } from "../../i18n.js";
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#1a0a1e",
-    fg: s.getPropertyValue("--game-fg-color").trim() || "#39ff14",
-    accent: s.getPropertyValue("--game-accent-color").trim() || "#00e5ff",
-    muted: s.getPropertyValue("--game-muted-color").trim() || "#3d1f0a",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("1a0a1e"),
+    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
+    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
+    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("3d1f0a"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(255, 140, 0, 0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ff4444",
-    rope: s.getPropertyValue("--game-rope-color").trim() || "#c4956a",
-    ring: s.getPropertyValue("--game-ring-color").trim() || "#2a1508",
-    hit: s.getPropertyValue("--game-hit-color").trim() || "#ffffff",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff4444"),
+    rope: s.getPropertyValue("--game-rope-color").trim() || gameColor("c4956a"),
+    ring: s.getPropertyValue("--game-ring-color").trim() || gameColor("2a1508"),
+    hit: s.getPropertyValue("--game-hit-color").trim() || gameColor("ffffff"),
   };
 }
 
@@ -67,8 +68,8 @@ function drawBackground(ctx, colors) {
   // Desert sky gradient: deep purple at top → burnt orange at horizon
   const grad = ctx.createLinearGradient(0, 0, 0, CANVAS_H);
   grad.addColorStop(0, colors.bg);
-  grad.addColorStop(0.45, "#2a0f2e");
-  grad.addColorStop(0.65, "#3d1a0a");
+  grad.addColorStop(0.45, gameColor("2a0f2e"));
+  grad.addColorStop(0.65, gameColor("3d1a0a"));
   grad.addColorStop(0.75, colors.muted);
   grad.addColorStop(1, colors.ring);
   ctx.fillStyle = grad;
@@ -128,7 +129,7 @@ function drawCactus(ctx, rect, colors) {
   const top = rect.y;
 
   // Main trunk
-  ctx.fillStyle = "#1a6b1a";
+  ctx.fillStyle = gameColor("1a6b1a");
   ctx.fillRect(cx - 3, top, 6, rect.h);
 
   // Left arm
@@ -153,11 +154,11 @@ function drawCactus(ctx, rect, colors) {
 
 function drawWall(ctx, rect, _colors) {
   // Adobe wall with brick pattern
-  ctx.fillStyle = "#4a2a0a";
+  ctx.fillStyle = gameColor("4a2a0a");
   ctx.fillRect(rect.x, rect.y, rect.w, rect.h);
 
   // Brick lines
-  ctx.strokeStyle = "#5a3a1a";
+  ctx.strokeStyle = gameColor("5a3a1a");
   ctx.lineWidth = 1;
   const brickH = 8;
   for (let row = 0; row < rect.h / brickH; row++) {
@@ -189,15 +190,15 @@ function drawStagecoach(ctx, rect, colors, frameCount) {
   const bottom = rect.y + rect.h;
 
   // Coach body
-  ctx.fillStyle = "#5a3010";
+  ctx.fillStyle = gameColor("5a3010");
   ctx.fillRect(rect.x + 4, top + 8, rect.w - 8, rect.h - 24);
 
   // Roof
-  ctx.fillStyle = "#3a2008";
+  ctx.fillStyle = gameColor("3a2008");
   ctx.fillRect(rect.x + 2, top + 4, rect.w - 4, 8);
 
   // Window
-  ctx.fillStyle = "#c4956a";
+  ctx.fillStyle = gameColor("c4956a");
   ctx.fillRect(cx - 4, top + 14, 8, 6);
 
   // Wheels (animated rotation)
@@ -207,13 +208,13 @@ function drawStagecoach(ctx, rect, colors, frameCount) {
   drawWheel(ctx, rect.x + rect.w - 8, wheelY, 6, spokeAngle);
 
   // Horse outline (front)
-  ctx.fillStyle = "#4a2a0a";
+  ctx.fillStyle = gameColor("4a2a0a");
   ctx.fillRect(rect.x - 6, top + rect.h * 0.3, 6, 10);
   ctx.fillRect(rect.x - 8, top + rect.h * 0.2, 4, 8);
 }
 
 function drawWheel(ctx, x, y, r, angle) {
-  ctx.strokeStyle = "#8a6a3a";
+  ctx.strokeStyle = gameColor("8a6a3a");
   ctx.lineWidth = 2;
   ctx.beginPath();
   ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -274,12 +275,12 @@ function drawGunslinger(ctx, state, player, color, colors, frameCount) {
 
   // Gun
   const gunX = armBaseX + dir * armLen;
-  ctx.fillStyle = "#888888";
+  ctx.fillStyle = gameColor("888888");
   ctx.fillRect(gunX, armY - 1, dir * 4, 2);
 
   // Muzzle flash when shooting
   if (shooting) {
-    ctx.fillStyle = "#ffff44";
+    ctx.fillStyle = gameColor("ffff44");
     ctx.beginPath();
     ctx.arc(gunX + dir * 5, armY, 3, 0, Math.PI * 2);
     ctx.fill();

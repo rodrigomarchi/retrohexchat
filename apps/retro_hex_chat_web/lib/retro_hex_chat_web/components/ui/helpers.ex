@@ -105,13 +105,14 @@ defmodule RetroHexChatWeb.ComponentHelpers do
   @variants %{
     variant: %{
       "default" =>
-        "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken ring-1 ring-[#000]",
-      "destructive" => "bg-surface text-[#FF0000] shadow-retro-raised active:shadow-retro-sunken",
+        "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken ring-1 ring-black",
+      "destructive" =>
+        "bg-surface text-destructive shadow-retro-raised active:shadow-retro-sunken",
       "outline" => "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken",
       "secondary" => "bg-surface text-foreground shadow-retro-raised active:shadow-retro-sunken",
       "ghost" =>
         "bg-transparent text-foreground shadow-none hover:shadow-retro-raised hover:bg-surface active:shadow-retro-sunken",
-      "link" => "text-[#000080] underline-offset-4 hover:underline"
+      "link" => "text-primary underline-offset-4 hover:underline"
     },
     size: %{
       "default" => "h-9 px-4 py-2",
@@ -228,8 +229,8 @@ defmodule RetroHexChatWeb.ComponentHelpers do
         end
       end)
 
-    style = Enum.map_join(acc_map, "; ", fn {k, v} -> "#{k}: #{v}" end) <> ";"
-    Enum.join([style | acc_list], "; ")
+    style_text = Enum.map_join(acc_map, "; ", fn {k, v} -> "#{k}: #{v}" end) <> ";"
+    Enum.join([style_text | acc_list], "; ")
   end
 
   @doc """

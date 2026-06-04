@@ -270,7 +270,7 @@ make precommit      # compile + format + test
 Stage 1 (parallel):       Stage 2 (parallel, after compile):
   ├── compile               ├── format check
   ├── JS lint               ├── credo --strict
-  └── JS tests              ├── CSS lint
+  └── JS tests              ├── CSS lint + strict style audit
                             ├── mix test (unit + integration + liveview)
                             ├── mix test --only e2e
                             └── dialyzer

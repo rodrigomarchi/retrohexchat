@@ -111,7 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
             <button
               :for={{name, i} <- Enum.with_index(@color_names)}
               type="button"
-              class={"w-4 h-4 border border-[#0a0a0a] shadow-retro-field cursor-pointer irc-bg-#{i}"}
+              class={"w-4 h-4 border border-gray-900 shadow-retro-field cursor-pointer irc-bg-#{i}"}
               data-color-code={to_string(i)}
               data-format-color-swatch
               data-testid={"format-color-swatch-#{i}"}

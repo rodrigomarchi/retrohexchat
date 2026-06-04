@@ -61,16 +61,16 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
     >
       <div class="grid grid-cols-4 gap-[2px]">
         <button
-          :for={{{color, hex}, idx} <- @colors}
+          :for={{{color, _hex}, idx} <- @colors}
           type="button"
           class={[
             "w-[18px] h-[18px] border cursor-pointer",
+            "irc-bg-#{idx}",
             if(@selected == idx,
               do: "border-black border-2",
               else: "border-gray-500"
             )
           ]}
-          style={"background-color: #{hex};"}
           title={color_name(color)}
           aria-label={
             dgettext("chat", "Color %{index}: %{name}", index: idx, name: color_name(color))

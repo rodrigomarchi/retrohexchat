@@ -7,6 +7,7 @@
 import { PHASE, GAME_MODE, ALIEN_TYPE } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, INITIAL_LIVES, SHIELD_SEGMENTS } from "./physics.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 const DIVIDER_X = 320;
 const CANNON_Y = 450;
@@ -18,7 +19,14 @@ const UFO_Y = 18;
 const UFO_W = 24;
 const SHIELD_W = 30;
 const SHIELD_H = 12;
-const UFO_TRAIL_COLORS = ["#ff0000", "#ff8800", "#ffff00", "#00ff00", "#0088ff", "#ff00ff"];
+const UFO_TRAIL_COLORS = [
+  gameColor("ff0000"),
+  gameColor("ff8800"),
+  gameColor("ffff00"),
+  gameColor("00ff00"),
+  gameColor("0088ff"),
+  gameColor("ff00ff"),
+];
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -28,15 +36,15 @@ const UFO_TRAIL_COLORS = ["#ff0000", "#ff8800", "#ffff00", "#00ff00", "#0088ff",
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#000008",
-    p1: s.getPropertyValue("--game-fg-color").trim() || "#39ff14",
-    p2: s.getPropertyValue("--game-accent-color").trim() || "#00e5ff",
-    muted: s.getPropertyValue("--game-muted-color").trim() || "#0a1a0a",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("000008"),
+    p1: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
+    p2: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
+    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("0a1a0a"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.2)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ff4444",
-    shield: s.getPropertyValue("--game-shield-color").trim() || "#39ff14",
-    ufo: s.getPropertyValue("--game-ufo-color").trim() || "#ff00ff",
-    drop: s.getPropertyValue("--game-drop-color").trim() || "#ff3333",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff4444"),
+    shield: s.getPropertyValue("--game-shield-color").trim() || gameColor("39ff14"),
+    ufo: s.getPropertyValue("--game-ufo-color").trim() || gameColor("ff00ff"),
+    drop: s.getPropertyValue("--game-drop-color").trim() || gameColor("ff3333"),
   };
 }
 
@@ -146,13 +154,13 @@ function drawAlienSprite(ctx, alien, colors, frame, time, _side) {
 
   // Armored: silver outline
   if (alien.type === ALIEN_TYPE.ARMORED) {
-    ctx.fillStyle = "#c0c0c0";
+    ctx.fillStyle = gameColor("c0c0c0");
     ctx.fillRect(x - hw - 2, y - hh - 2, ALIEN_W + 4, ALIEN_H + 4);
-    ctx.fillStyle = "#808080";
+    ctx.fillStyle = gameColor("808080");
     ctx.fillRect(x - hw - 1, y - hh - 1, ALIEN_W + 2, ALIEN_H + 2);
     // HP indicator
     if (alien.hp === 2) {
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = gameColor("ffffff");
       ctx.fillRect(x - 1, y - hh - 4, 2, 2);
     }
   }
@@ -161,22 +169,22 @@ function drawAlienSprite(ctx, alien, colors, frame, time, _side) {
   let color;
   switch (alien.type) {
     case ALIEN_TYPE.TOP:
-      color = "#ffffff";
+      color = gameColor("ffffff");
       break;
     case ALIEN_TYPE.MID:
-      color = "#aaffaa";
+      color = gameColor("aaffaa");
       break;
     case ALIEN_TYPE.BASE:
-      color = "#66ff66";
+      color = gameColor("66ff66");
       break;
     case ALIEN_TYPE.REINFORCEMENT:
       color = colors.drop;
       break;
     case ALIEN_TYPE.ARMORED:
-      color = "#e0e0e0";
+      color = gameColor("e0e0e0");
       break;
     default:
-      color = "#39ff14";
+      color = gameColor("39ff14");
   }
 
   ctx.fillStyle = color;
@@ -208,7 +216,7 @@ function drawAlienSprite(ctx, alien, colors, frame, time, _side) {
     // Metallic block
     ctx.fillRect(x - hw, y - hh, ALIEN_W, ALIEN_H);
     // Eyes
-    ctx.fillStyle = "#ff0000";
+    ctx.fillStyle = gameColor("ff0000");
     ctx.fillRect(x - 3, y - 1, 2, 2);
     ctx.fillRect(x + 1, y - 1, 2, 2);
   } else {
@@ -309,7 +317,7 @@ function drawMissiles(ctx, state, _colors) {
   const drawMissile = (x, y, active) => {
     if (!active) return;
     // Bright dot + trail
-    ctx.fillStyle = "#ffffff";
+    ctx.fillStyle = gameColor("ffffff");
     ctx.fillRect(x - 1, y - 3, 2, 6);
     ctx.fillStyle = "rgba(255,255,255,0.4)";
     ctx.fillRect(x - 1, y + 3, 2, 8);
@@ -371,7 +379,7 @@ function drawUFO(ctx, state, colors, time) {
   // Lights
   const lightPhase = Math.floor(time / 100) % 3;
   const lightPositions = [x - 6, x, x + 6];
-  const lightColors = ["#ff0000", "#00ff00", "#0000ff"];
+  const lightColors = [gameColor("ff0000"), gameColor("00ff00"), gameColor("0000ff")];
   for (let i = 0; i < 3; i++) {
     ctx.fillStyle = lightColors[(i + lightPhase) % 3];
     ctx.fillRect(lightPositions[i] - 1, y, 2, 2);
@@ -396,7 +404,7 @@ function drawHUD(ctx, state, colors, time) {
   ctx.fillText(jt`P1: ${state.score1}`, 8, 11);
 
   // Center: wave + mode
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = gameColor("ffffff");
   ctx.textAlign = "center";
   const modeLabel =
     state.mode === GAME_MODE.BLITZ ? "BLITZ" : state.mode === GAME_MODE.COOP ? "CO-OP" : "WAR";
@@ -421,7 +429,7 @@ function drawHUD(ctx, state, colors, time) {
   if (!isCoop && state.combo1Count >= 2) {
     const blink = Math.floor(time / 200) % 2 === 0;
     if (blink) {
-      ctx.fillStyle = "#ffff00";
+      ctx.fillStyle = gameColor("ffff00");
       ctx.fillText(`x${state.combo1Count}`, 60, CANVAS_H - 11);
     }
   }
@@ -435,7 +443,7 @@ function drawHUD(ctx, state, colors, time) {
   if (!isCoop && state.combo2Count >= 2) {
     const blink = Math.floor(time / 200) % 2 === 0;
     if (blink) {
-      ctx.fillStyle = "#ffff00";
+      ctx.fillStyle = gameColor("ffff00");
       ctx.textAlign = "right";
       ctx.fillText(`x${state.combo2Count}`, CANVAS_W - 60, CANVAS_H - 11);
     }
@@ -499,7 +507,7 @@ function drawGameOver(ctx, state, colors) {
   ctx.fillText(jt`P2: ${state.score2}`, CANVAS_W / 2 + 80, CANVAS_H / 2 + 10);
 
   ctx.font = "12px monospace";
-  ctx.fillStyle = "#888888";
+  ctx.fillStyle = gameColor("888888");
   ctx.fillText(t("Game Over"), CANVAS_W / 2, CANVAS_H / 2 + 40);
 
   ctx.restore();

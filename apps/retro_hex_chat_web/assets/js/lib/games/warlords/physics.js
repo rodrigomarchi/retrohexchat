@@ -5,6 +5,7 @@
  */
 
 import { PHASE, BRICKS_ROWS, BRICKS_COLS, INITIAL_LIVES } from "./protocol.js";
+import { gameColor } from "../../game_colors.js";
 
 // --- Canvas ---
 export const CANVAS_W = 640;
@@ -55,7 +56,12 @@ export const KING_SIZE = 14;
 // Brick color tiers by column distance from the outside edge
 // P1: col 3 is outermost (right), col 0 is innermost (left, near king)
 // P2: col 0 is outermost (left), col 3 is innermost (right, near king)
-const BRICK_COLORS_OUTER_TO_INNER = ["#00ff66", "#00ccff", "#ffcc00", "#ff3366"];
+const BRICK_COLORS_OUTER_TO_INNER = [
+  gameColor("00ff66"),
+  gameColor("00ccff"),
+  gameColor("ffcc00"),
+  gameColor("ff3366"),
+];
 
 /**
  * Create the initial game state.
@@ -523,7 +529,7 @@ export function createBrickParticles(x, y, color) {
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       life: 1.0,
-      color: color || "#ffaa00",
+      color: color || gameColor("ffaa00"),
     });
   }
   return particles;
@@ -546,7 +552,7 @@ export function createKingParticles(x, y) {
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       life: 1.0,
-      color: i % 2 === 0 ? "#ff3366" : "#ffcc00",
+      color: i % 2 === 0 ? gameColor("ff3366") : gameColor("ffcc00"),
     });
   }
   return particles;

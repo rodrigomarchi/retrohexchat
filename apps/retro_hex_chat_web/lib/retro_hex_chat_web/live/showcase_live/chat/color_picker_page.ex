@@ -52,10 +52,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ColorPickerPage do
             <p>{dgettext("showcase", "Selected:")} <span class="font-bold">{@selected}</span></p>
             <p>
               {dgettext("showcase", "Color:")}
-              <span
-                class="inline-block w-[14px] h-[14px] border border-gray-500 align-middle"
-                style={"background-color: #{elem(Enum.at(irc_colors(), @selected), 1)};"}
-              />
+              <span class={"inline-block w-[14px] h-[14px] border border-gray-500 align-middle irc-bg-#{@selected}"} />
               <span class="font-bold">{elem(Enum.at(irc_colors(), @selected), 0)}</span>
             </p>
           </div>
@@ -71,13 +68,10 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ColorPickerPage do
       >
         <div class="grid grid-cols-4 gap-2">
           <div
-            :for={{{name, hex}, idx} <- Enum.with_index(irc_colors())}
+            :for={{{name, _hex}, idx} <- Enum.with_index(irc_colors())}
             class="flex items-center gap-retro-4 text-xs"
           >
-            <span
-              class="w-[18px] h-[18px] border border-gray-500 shrink-0"
-              style={"background-color: #{hex};"}
-            />
+            <span class={"w-[18px] h-[18px] border border-gray-500 shrink-0 irc-bg-#{idx}"} />
             <span class="text-muted-foreground">{idx}:</span>
             <span>{name}</span>
           </div>

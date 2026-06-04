@@ -18,6 +18,7 @@ import {
   WARP_COOLDOWN,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 // --- Deterministic starfield (golden ratio distribution, no flickering) ---
 
@@ -42,16 +43,16 @@ for (let i = 0; i < STAR_COUNT; i++) {
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#0a0a1a",
-    p1: s.getPropertyValue("--game-fg-color").trim() || "#39ff14", // toxic green
-    p2: s.getPropertyValue("--game-accent-color").trim() || "#00e5ff", // electric cyan
-    muted: s.getPropertyValue("--game-muted-color").trim() || "#1a3a4a",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0a1a"),
+    p1: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"), // toxic green
+    p2: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"), // electric cyan
+    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a3a4a"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.2)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ffaa00",
-    star: s.getPropertyValue("--game-star-color").trim() || "#ff8c00",
-    asteroid: s.getPropertyValue("--game-asteroid-color").trim() || "#8b4513",
-    missile: s.getPropertyValue("--game-missile-color").trim() || "#ffffff",
-    explosion: s.getPropertyValue("--game-explosion-color").trim() || "#ff4444",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ffaa00"),
+    star: s.getPropertyValue("--game-star-color").trim() || gameColor("ff8c00"),
+    asteroid: s.getPropertyValue("--game-asteroid-color").trim() || gameColor("8b4513"),
+    missile: s.getPropertyValue("--game-missile-color").trim() || gameColor("ffffff"),
+    explosion: s.getPropertyValue("--game-explosion-color").trim() || gameColor("ff4444"),
   };
 }
 
@@ -141,9 +142,9 @@ export function drawStarfield(ctx, colors, time) {
     ctx.globalAlpha = alpha;
     // Color tint: every 5th star has a slight blue tint
     if (i % 5 === 0) {
-      ctx.fillStyle = "#aaccff";
+      ctx.fillStyle = gameColor("aaccff");
     } else {
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = gameColor("ffffff");
     }
     ctx.fillRect(s.x, s.y, s.size, s.size);
   }
@@ -381,7 +382,7 @@ export function drawWarpEffect(ctx, ship, color, time) {
 
   // Central flash
   ctx.globalAlpha = fade * 0.4;
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = gameColor("ffffff");
   ctx.fillRect(ship.x - halfSize, ship.y - halfSize, size, size);
 
   ctx.restore();
@@ -595,11 +596,11 @@ export function drawWinner(ctx, state, colors, time) {
 
   // Red channel offset
   ctx.globalAlpha = 0.5;
-  ctx.fillStyle = "#ff0000";
+  ctx.fillStyle = gameColor("ff0000");
   ctx.fillText(text, CANVAS_W / 2 + glitchX - 2, CANVAS_H / 2 + glitchY);
 
   // Blue channel offset
-  ctx.fillStyle = "#0000ff";
+  ctx.fillStyle = gameColor("0000ff");
   ctx.fillText(text, CANVAS_W / 2 + glitchX + 2, CANVAS_H / 2 + glitchY);
 
   // Main text

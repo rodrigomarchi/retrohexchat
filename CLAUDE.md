@@ -118,7 +118,7 @@ UI components live in `components/ui/` and use Tailwind utility classes.
 - **NEVER** put hex colors (`#fff`, `#3a3500`) in Elixir code — colors live in CSS only
 - Use Tailwind classes or CSS custom properties for dynamic values
 - Inline `style=` is acceptable ONLY for dynamic `left`/`top` positioning and CSS custom properties
-- Run `mix audit.styles` to verify — must show 0 LOW, 0 MEDIUM, 0 HIGH findings
+- `make ci` enforces `mix audit.styles --strict` through CSS lint — it must show 0 LOW, 0 MEDIUM, 0 HIGH findings
 - Exception: `log_exporter.ex` embeds CSS for standalone HTML exports (must stay self-contained)
 
 ## SVG Architecture (mandatory — NO inline SVGs)

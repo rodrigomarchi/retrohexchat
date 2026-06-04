@@ -23,6 +23,7 @@ import {
 } from "./physics.js";
 import { PHASE, GAME_MODE, SKIER_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -31,20 +32,20 @@ export function readColors(canvas) {
   const s = getComputedStyle(canvas);
   const get = (name) => s.getPropertyValue(name).trim() || null;
   return {
-    bg: get("--game-bg-color") || "#0a0a14",
-    fg: get("--game-fg-color") || "#39ff14",
-    accent: get("--game-accent-color") || "#00e5ff",
-    muted: get("--game-muted-color") || "#1a1a2a",
+    bg: get("--game-bg-color") || gameColor("0a0a14"),
+    fg: get("--game-fg-color") || gameColor("39ff14"),
+    accent: get("--game-accent-color") || gameColor("00e5ff"),
+    muted: get("--game-muted-color") || gameColor("1a1a2a"),
     glow: get("--game-glow-color") || "rgba(57,255,20,0.15)",
-    warning: get("--game-warning-color") || "#ff4444",
-    snow: get("--game-snow-color") || "#1a1a2e",
-    tree: get("--game-tree-color") || "#1a3a1a",
-    rock: get("--game-rock-color") || "#555566",
-    avalanche: get("--game-avalanche-color") || "#2a2a3a",
-    gateLeft: get("--game-gate-left") || "#4488ff",
-    gateRight: get("--game-gate-right") || "#ff4444",
-    boost: get("--game-boost-color") || "#ffee00",
-    ice: get("--game-ice-color") || "#00ccff",
+    warning: get("--game-warning-color") || gameColor("ff4444"),
+    snow: get("--game-snow-color") || gameColor("1a1a2e"),
+    tree: get("--game-tree-color") || gameColor("1a3a1a"),
+    rock: get("--game-rock-color") || gameColor("555566"),
+    avalanche: get("--game-avalanche-color") || gameColor("2a2a3a"),
+    gateLeft: get("--game-gate-left") || gameColor("4488ff"),
+    gateRight: get("--game-gate-right") || gameColor("ff4444"),
+    boost: get("--game-boost-color") || gameColor("ffee00"),
+    ice: get("--game-ice-color") || gameColor("00ccff"),
     trail: get("--game-trail-color") || "rgba(57,255,20,0.3)",
   };
 }
@@ -179,7 +180,7 @@ function drawTree(ctx, x, y, colors) {
   const hw = TREE_W / 2;
 
   // Trunk
-  ctx.fillStyle = "#2a1a0a";
+  ctx.fillStyle = gameColor("2a1a0a");
   ctx.fillRect(x - 1, y + 2, 3, TREE_H - 4);
 
   // Canopy layers (triangle)
@@ -193,7 +194,7 @@ function drawTree(ctx, x, y, colors) {
   ctx.fillRect(x - 1, y - 6, 2, 2);
 
   // Toxic glow tip
-  ctx.fillStyle = "#39ff14";
+  ctx.fillStyle = gameColor("39ff14");
   ctx.fillRect(x, y - 6, 1, 1);
 }
 
@@ -207,7 +208,7 @@ function drawRock(ctx, x, y, colors) {
   ctx.fillRect(x - hw + 1, y - hh, ROCK_W - 2, ROCK_H);
 
   // Highlight
-  ctx.fillStyle = "#777788";
+  ctx.fillStyle = gameColor("777788");
   ctx.fillRect(x - hw + 1, y - hh + 1, 2, 2);
 }
 
@@ -495,7 +496,7 @@ function drawHUD(ctx, state, colors) {
   ctx.fillText(jt`P1 ${formatTime(state.p1.timer)}`, 8, 12);
 
   // Game title + round (center)
-  ctx.fillStyle = "#aaaaaa";
+  ctx.fillStyle = gameColor("aaaaaa");
   ctx.textAlign = "center";
   const modeLabel = getModeLabel(state.mode);
   if (state.mode === GAME_MODE.ALPINE_RACE) {
@@ -529,7 +530,7 @@ function drawHUD(ctx, state, colors) {
     ctx.fillStyle = colors.fg;
     ctx.fillRect(CANVAS_W - 109, CANVAS_H - 15, Math.round(progress * 100), 8);
     ctx.font = "8px monospace";
-    ctx.fillStyle = "#aaaaaa";
+    ctx.fillStyle = gameColor("aaaaaa");
     ctx.textAlign = "right";
     ctx.fillText(`${Math.round(progress * 100)}%`, CANVAS_W - 4, CANVAS_H - 6);
   }
@@ -570,7 +571,7 @@ function drawAvalancheBar(ctx, state, colors) {
   ctx.fillRect(5, CANVAS_H - 15, Math.round(proximity * 100), 8);
 
   ctx.font = "8px monospace";
-  ctx.fillStyle = "#aaaaaa";
+  ctx.fillStyle = gameColor("aaaaaa");
   ctx.textAlign = "left";
   ctx.fillText("AVL", 6, CANVAS_H - 6);
 }
@@ -600,7 +601,7 @@ function drawWaitingScreen(ctx, colors, frameCount) {
   ctx.fillText(jt`Waiting for opponent${dots}`, CANVAS_W / 2, CANVAS_H / 2 + 30);
 
   // Decorative mountains
-  ctx.fillStyle = "#151525";
+  ctx.fillStyle = gameColor("151525");
   ctx.beginPath();
   ctx.moveTo(0, CANVAS_H);
   ctx.lineTo(80, CANVAS_H - 100);
@@ -657,7 +658,7 @@ function drawRoundEnd(ctx, state, colors, frameCount) {
   ctx.fillText(jt`P2: ${formatTime(state.p2.timer)}`, CANVAS_W / 2, CANVAS_H / 2 + 10);
 
   // Score
-  ctx.fillStyle = "#aaaaaa";
+  ctx.fillStyle = gameColor("aaaaaa");
   ctx.font = "12px monospace";
   ctx.fillText(
     jt`Score: ${state.p1RoundWins} - ${state.p2RoundWins}`,
@@ -692,13 +693,13 @@ function drawFinished(ctx, state, colors, frameCount) {
     ctx.fillStyle = colors.accent;
     ctx.fillText(t("PLAYER 2 WINS!"), CANVAS_W / 2, CANVAS_H / 2 - 40);
   } else {
-    ctx.fillStyle = "#aaaaaa";
+    ctx.fillStyle = gameColor("aaaaaa");
     ctx.fillText(t("DRAW!"), CANVAS_W / 2, CANVAS_H / 2 - 40);
   }
 
   // Final score
   ctx.font = "16px monospace";
-  ctx.fillStyle = "#aaaaaa";
+  ctx.fillStyle = gameColor("aaaaaa");
   ctx.fillText(`${state.p1RoundWins} - ${state.p2RoundWins}`, CANVAS_W / 2, CANVAS_H / 2);
 
   // Celebration particles

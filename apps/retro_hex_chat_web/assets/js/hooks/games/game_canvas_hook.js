@@ -167,7 +167,7 @@ const GameCanvasHook = {
 
     // Hide the initialization stub text
     const stub = this.el.querySelector(".game-canvas__stub");
-    if (stub) stub.style.display = "none";
+    if (stub) stub.classList.add("u-hidden");
   },
 
   _cleanup() {

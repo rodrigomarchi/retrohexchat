@@ -207,6 +207,7 @@ dialyzer: ## Run Dialyzer type checker
 lint.css: ## Audit inline styles and CSS class consistency
 	@mix lint.inline_styles
 	@mix lint.css_consistency
+	@mix audit.styles --strict
 
 lint.bundle: ## Enforce frontend bundle budgets
 	npm run bundle:budget --prefix $(WEB_APP)/assets

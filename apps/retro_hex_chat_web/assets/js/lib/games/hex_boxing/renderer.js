@@ -22,6 +22,7 @@ import {
 } from "./physics.js";
 import { PHASE, PUNCH_STATE } from "./protocol.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 /**
  * Read CSS custom properties from the canvas element.
@@ -31,15 +32,15 @@ import { t, jt } from "../../i18n.js";
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#0a0808",
-    fg: s.getPropertyValue("--game-fg-color").trim() || "#39ff14",
-    accent: s.getPropertyValue("--game-accent-color").trim() || "#00e5ff",
-    muted: s.getPropertyValue("--game-muted-color").trim() || "#2a1a1a",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0808"),
+    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
+    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
+    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("2a1a1a"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57, 255, 20, 0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ff4444",
-    rope: s.getPropertyValue("--game-rope-color").trim() || "#aaaaaa",
-    ring: s.getPropertyValue("--game-ring-color").trim() || "#1a1208",
-    hit: s.getPropertyValue("--game-hit-color").trim() || "#ffffff",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff4444"),
+    rope: s.getPropertyValue("--game-rope-color").trim() || gameColor("aaaaaa"),
+    ring: s.getPropertyValue("--game-ring-color").trim() || gameColor("1a1208"),
+    hit: s.getPropertyValue("--game-hit-color").trim() || gameColor("ffffff"),
   };
 }
 
@@ -129,7 +130,7 @@ function drawBoxer(ctx, state, player, color, colors) {
   const dotY = by + DIR_DY[dir] * (BOXER_BODY_RADIUS - 2);
   ctx.beginPath();
   ctx.arc(dotX, dotY, 2, 0, Math.PI * 2);
-  ctx.fillStyle = wasHit ? colors.hit : "#ffffff";
+  ctx.fillStyle = wasHit ? colors.hit : gameColor("ffffff");
   ctx.fill();
 }
 

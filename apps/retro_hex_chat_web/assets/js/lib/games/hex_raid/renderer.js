@@ -16,6 +16,7 @@ import {
   formatFuel,
 } from "./physics.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 /**
  * Read CSS custom properties from canvas computed style.
@@ -25,16 +26,16 @@ import { t, jt } from "../../i18n.js";
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#0a0e14",
-    p1: s.getPropertyValue("--game-fg-color").trim() || "#39ff14",
-    p2: s.getPropertyValue("--game-accent-color").trim() || "#00e5ff",
-    water: s.getPropertyValue("--game-muted-color").trim() || "#0a1a2a",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0e14"),
+    p1: s.getPropertyValue("--game-fg-color").trim() || gameColor("39ff14"),
+    p2: s.getPropertyValue("--game-accent-color").trim() || gameColor("00e5ff"),
+    water: s.getPropertyValue("--game-muted-color").trim() || gameColor("0a1a2a"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(57,255,20,0.15)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ff8c00",
-    bank: s.getPropertyValue("--game-wall-color").trim() || "#1a2a1a",
-    bankHi: s.getPropertyValue("--game-wall-highlight").trim() || "#2a4a2a",
-    missile: s.getPropertyValue("--game-missile-color").trim() || "#ffee00",
-    explosion: s.getPropertyValue("--game-explosion-color").trim() || "#ff4444",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ff8c00"),
+    bank: s.getPropertyValue("--game-wall-color").trim() || gameColor("1a2a1a"),
+    bankHi: s.getPropertyValue("--game-wall-highlight").trim() || gameColor("2a4a2a"),
+    missile: s.getPropertyValue("--game-missile-color").trim() || gameColor("ffee00"),
+    explosion: s.getPropertyValue("--game-explosion-color").trim() || gameColor("ff4444"),
   };
 }
 
@@ -273,7 +274,7 @@ function drawJet(ctx, x, y, color, invuln, time, colors) {
   // --- Wingtip neon dots (blinking) ---
   const tipPulse = 0.4 + Math.sin(time * 0.01) * 0.6;
   ctx.globalAlpha = tipPulse;
-  ctx.fillStyle = "#fff";
+  ctx.fillStyle = gameColor("fff");
   ctx.shadowColor = color;
   ctx.shadowBlur = 4;
   ctx.beginPath();

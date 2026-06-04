@@ -7,6 +7,7 @@
 import { PHASE } from "./protocol.js";
 import { CANVAS_W, CANVAS_H, PADDLE_W, PADDLE_H, PADDLE_MARGIN, BALL_SIZE } from "./physics.js";
 import { t, jt } from "../../i18n.js";
+import { gameColor } from "../../game_colors.js";
 
 // Bitmap digits 5x7 for retro score display (each row is a 5-bit mask)
 const DIGITS = [
@@ -30,12 +31,12 @@ const DIGITS = [
 export function getColors(canvas) {
   const s = getComputedStyle(canvas);
   return {
-    bg: s.getPropertyValue("--game-bg-color").trim() || "#0a0a1a",
-    fg: s.getPropertyValue("--game-fg-color").trim() || "#00ffcc",
-    accent: s.getPropertyValue("--game-accent-color").trim() || "#ff0066",
-    muted: s.getPropertyValue("--game-muted-color").trim() || "#1a3a4a",
+    bg: s.getPropertyValue("--game-bg-color").trim() || gameColor("0a0a1a"),
+    fg: s.getPropertyValue("--game-fg-color").trim() || gameColor("00ffcc"),
+    accent: s.getPropertyValue("--game-accent-color").trim() || gameColor("ff0066"),
+    muted: s.getPropertyValue("--game-muted-color").trim() || gameColor("1a3a4a"),
     glow: s.getPropertyValue("--game-glow-color").trim() || "rgba(0,255,204,0.2)",
-    warning: s.getPropertyValue("--game-warning-color").trim() || "#ffaa00",
+    warning: s.getPropertyValue("--game-warning-color").trim() || gameColor("ffaa00"),
   };
 }
 
@@ -184,7 +185,7 @@ export function drawBall(ctx, state, colors, time) {
 
   // Bright core
   ctx.shadowBlur = 0;
-  ctx.fillStyle = "#ffffff";
+  ctx.fillStyle = gameColor("ffffff");
   ctx.fillRect(ballX - halfBall + 2, ballY - halfBall + 2, BALL_SIZE - 4, BALL_SIZE - 4);
 
   ctx.shadowColor = "transparent";
@@ -324,11 +325,11 @@ export function drawWinner(ctx, winner, colors, time) {
 
   // Red channel offset
   ctx.globalAlpha = 0.5;
-  ctx.fillStyle = "#ff0000";
+  ctx.fillStyle = gameColor("ff0000");
   ctx.fillText(text, CANVAS_W / 2 + glitchX - 2, CANVAS_H / 2 + glitchY);
 
   // Blue channel offset
-  ctx.fillStyle = "#0000ff";
+  ctx.fillStyle = gameColor("0000ff");
   ctx.fillText(text, CANVAS_W / 2 + glitchX + 2, CANVAS_H / 2 + glitchY);
 
   // Main text
