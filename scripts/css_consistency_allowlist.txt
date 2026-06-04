@@ -43,6 +43,11 @@ retro-fieldset
 toolbar-group
 tree-view-marker-closed
 tree-view-marker-open
+# P2P/game media components — used by components/ui/* files (skipped by template scanner)
+game-media*
+p2p-lobby__*
+p2p-lobby-window*
+p2p-media-call*
 
 [missing]
 # False positive — "system" is a comparison value inside class={...} expression
