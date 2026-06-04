@@ -21,6 +21,8 @@ class MockRTCPeerConnection {
     this.onconnectionstatechange = null;
     this.onicecandidate = null;
     this.ondatachannel = null;
+    this.signalingState = "stable";
+    this.transceivers = [];
   }
 
   createDataChannel(label, options) {
@@ -44,6 +46,20 @@ class MockRTCPeerConnection {
   }
 
   async addIceCandidate() {}
+
+  addTransceiver(kind, options) {
+    const transceiver = {
+      direction: options?.direction,
+      receiver: { track: { kind } },
+      sender: { track: null },
+    };
+    this.transceivers.push(transceiver);
+    return transceiver;
+  }
+
+  getTransceivers() {
+    return this.transceivers;
+  }
 
   close() {
     this.connectionState = "closed";
@@ -83,6 +99,7 @@ describe("GameWebRTCHook", () => {
       expect(ctx.handleEvent).toHaveBeenCalledWith("game_start_offer", expect.any(Function));
       expect(ctx.handleEvent).toHaveBeenCalledWith("game_start_answer", expect.any(Function));
       expect(ctx.handleEvent).toHaveBeenCalledWith("game_signal", expect.any(Function));
+      expect(ctx.handleEvent).toHaveBeenCalledWith("game_renegotiate", expect.any(Function));
     });
 
     it("initializes state to null/0", () => {
@@ -204,6 +221,22 @@ describe("GameWebRTCHook", () => {
       expect(hook.retryCount).toBe(0);
     });
 
+    it("exposes PeerConnection for GameMediaHook on connected", () => {
+      const ctx = createHookContext();
+      const hook = Object.create(GameWebRTCHook);
+      Object.assign(hook, ctx);
+      const events = [];
+      hook.el.addEventListener("game_media_pc_ready", (event) => events.push(event));
+
+      hook.mounted();
+      hook.pc = new MockRTCPeerConnection();
+      hook._handleConnectionStateChange("connected");
+
+      expect(hook.el._peerConnection).toBe(hook.pc);
+      expect(events).toHaveLength(1);
+      expect(events[0].detail.pc).toBe(hook.pc);
+    });
+
     it("starts disconnected grace period on disconnected state", () => {
       vi.useFakeTimers();
       const ctx = createHookContext();
@@ -309,6 +342,81 @@ describe("GameWebRTCHook", () => {
     });
   });
 
+  describe("media renegotiation", () => {
+    it("creator renegotiates by pushing a fresh offer", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(GameWebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+      hook.role = "initiator";
+      hook.pc = new MockRTCPeerConnection();
+
+      const renegotiateCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "game_renegotiate");
+      await renegotiateCall[1]({});
+
+      expect(ctx.pushEvent).toHaveBeenCalledWith(
+        "game_signal",
+        expect.objectContaining({ type: "offer" }),
+      );
+    });
+
+    it("answerer ignores explicit renegotiation requests", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(GameWebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+      hook.role = "answerer";
+      hook.pc = new MockRTCPeerConnection();
+
+      const renegotiateCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "game_renegotiate");
+      await renegotiateCall[1]({});
+
+      expect(ctx.pushEvent).not.toHaveBeenCalledWith(
+        "game_signal",
+        expect.objectContaining({ type: "offer" }),
+      );
+    });
+
+    it("creator prepares receiving transceivers for peer-started video before offer", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(GameWebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+      hook.role = "initiator";
+      hook.pc = new MockRTCPeerConnection();
+
+      const renegotiateCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "game_renegotiate");
+      await renegotiateCall[1]({ type: "video" });
+
+      expect(
+        hook.pc.getTransceivers().map((transceiver) => transceiver.receiver.track.kind),
+      ).toEqual(["audio", "video"]);
+      expect(hook.pc.getTransceivers().map((transceiver) => transceiver.direction)).toEqual([
+        "recvonly",
+        "recvonly",
+      ]);
+    });
+
+    it("creator does not duplicate media transceivers on repeated renegotiation", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(GameWebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+      hook.role = "initiator";
+      hook.pc = new MockRTCPeerConnection();
+
+      const renegotiateCall = ctx.handleEvent.mock.calls.find((c) => c[0] === "game_renegotiate");
+      await renegotiateCall[1]({ type: "video" });
+      await renegotiateCall[1]({ type: "video" });
+
+      expect(hook.pc.getTransceivers()).toHaveLength(2);
+    });
+  });
+
   describe("destroyed", () => {
     it("closes peer connection and clears DataChannel", async () => {
       const ctx = createHookContext();
@@ -327,6 +435,21 @@ describe("GameWebRTCHook", () => {
 
       expect(hook.dataChannel).toBeNull();
       expect(hook.pc).toBeNull();
+      expect(hook.el._peerConnection).toBeNull();
+    });
+
+    it("dispatches game_media_pc_closed during cleanup", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(GameWebRTCHook);
+      Object.assign(hook, ctx);
+      const events = [];
+      hook.el.addEventListener("game_media_pc_closed", (event) => events.push(event));
+
+      hook.mounted();
+      hook.pc = new MockRTCPeerConnection();
+      hook.destroyed();
+
+      expect(events).toHaveLength(1);
     });
 
     it("handles destroy without peer connection", () => {

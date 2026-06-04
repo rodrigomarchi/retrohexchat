@@ -294,9 +294,15 @@ function checkHookSets(criticalHooks, lazyHooks, failures) {
 function checkReadyEventContract(hookName, readyEvent, failures) {
   const escapedEvent = escapeRegExp(readyEvent);
   const pushPattern = new RegExp(`pushEvent\\(\\s*["']${escapedEvent}["']`);
+  const configuredMediaReadyPattern = new RegExp(
+    `createRtcMediaHook\\(\\{[\\s\\S]*?clientEvents\\s*:\\s*\\{[\\s\\S]*?ready\\s*:\\s*["']${escapedEvent}["']`,
+  );
   const handlePattern = new RegExp(`handle_event\\(\\s*["']${escapedEvent}["']`);
 
-  if (!treeContains(JS_ROOT, (filename) => filename.endsWith(".js"), pushPattern)) {
+  if (
+    !treeContains(JS_ROOT, (filename) => filename.endsWith(".js"), pushPattern) &&
+    !treeContains(JS_ROOT, (filename) => filename.endsWith(".js"), configuredMediaReadyPattern)
+  ) {
     failures.push(
       `lazyFeatureHooks.${hookName} declares readyEvent "${readyEvent}" but no asset hook pushes it.`,
     );

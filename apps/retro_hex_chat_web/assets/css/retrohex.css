@@ -946,6 +946,83 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   object-fit: contain;
 }
 
+/* ── Game media dock ── */
+
+.game-media {
+  min-width: 0;
+  padding: 6px;
+  overflow: hidden;
+}
+
+.game-media__idle,
+.game-media__actions,
+.game-media__status,
+.game-media__peer-state {
+  display: flex;
+  align-items: center;
+}
+
+.game-media__idle {
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.game-media__actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.game-media__status,
+.game-media__peer-state {
+  min-width: 0;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.game-media__call {
+  min-width: 0;
+}
+
+.game-media__toolbar {
+  justify-content: center;
+  gap: 2px;
+  padding-top: 6px;
+}
+
+.game-media__peer-state {
+  justify-content: center;
+  padding-top: 6px;
+}
+
+.game-media__duration {
+  margin-left: 6px;
+  font-size: 0.75rem;
+  color: var(--color-muted-foreground);
+}
+
+.game-media__error {
+  margin-top: 6px;
+  font-size: 0.75rem;
+  color: var(--color-error);
+}
+
+@media (max-width: 640px) {
+  .game-media__idle {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .game-media__actions {
+    justify-content: stretch;
+  }
+
+  .game-media__actions > button {
+    flex: 1 1 140px;
+  }
+}
+
 @media (max-width: 860px) {
   .p2p-lobby-window--active {
     max-width: calc(100vw - 16px);

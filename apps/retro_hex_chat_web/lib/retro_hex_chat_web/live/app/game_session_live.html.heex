@@ -64,6 +64,13 @@
       peer_nick={@peer_nick}
       role={@role}
       on_end_game="end_game"
+      on_start_media="start_game_media"
+      on_set_media_layout="set_game_media_layout"
+      game_call={@game_call}
+      game_call_layout={@game_call_layout}
+      local_muted={@local_muted}
+      local_camera_off={@local_camera_off}
+      media_error={@game_media_error}
     />
   </div>
   <.about_dialog id="about-dialog" />

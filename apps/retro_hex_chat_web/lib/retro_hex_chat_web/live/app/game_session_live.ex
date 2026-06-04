@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
   alias RetroHexChatWeb.App.SessionHelpers
 
   @pubsub RetroHexChat.PubSub
+  @game_call_layouts ~w(focus side_by_side maximized)
 
   @impl true
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
@@ -112,7 +113,15 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
         game_webrtc_started: false,
         game_canvas_ready: false,
         game_canvas_started: false,
-        game_rtc_connected: false
+        game_rtc_connected: false,
+        game_media_ready: false,
+        game_media_started: false,
+        pending_game_media_type: nil,
+        game_call: nil,
+        game_call_layout: "focus",
+        local_muted: false,
+        local_camera_off: false,
+        game_media_error: nil
       )
       |> maybe_start_webrtc()
 
@@ -203,6 +212,81 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
     end
   end
 
+  def handle_info(
+        %{event: "game_media_call_started", payload: %{from: from_id, type: type}},
+        socket
+      )
+      when type in ["audio", "video"] do
+    if from_id != socket.assigns.user_id do
+      {:noreply,
+       socket
+       |> assign_remote_game_call(type)
+       |> maybe_start_game_media()}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(
+        %{event: "game_media_mute", payload: %{from: from_id, muted: muted}},
+        socket
+      ) do
+    if from_id != socket.assigns.user_id do
+      call = Map.merge(socket.assigns.game_call || %{}, %{peer_muted: muted})
+
+      {:noreply,
+       socket
+       |> assign(game_call: call)
+       |> push_event("game_media_peer_muted", %{muted: muted})}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(
+        %{event: "game_media_camera", payload: %{from: from_id, off: off}},
+        socket
+      ) do
+    if from_id != socket.assigns.user_id do
+      call = Map.merge(socket.assigns.game_call || %{}, %{peer_camera_off: off})
+
+      {:noreply,
+       socket
+       |> assign(game_call: call)
+       |> push_event("game_media_peer_camera", %{off: off})}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(
+        %{event: "game_media_call_ended", payload: %{from: from_id, reason: reason}},
+        socket
+      ) do
+    if from_id != socket.assigns.user_id && socket.assigns.game_call do
+      Logger.info("Remote game media call ended: reason=#{reason}, token=#{socket.assigns.token}")
+
+      {:noreply,
+       socket
+       |> clear_game_media_call()
+       |> push_event("game_media_end_call", %{reason: reason})}
+    else
+      {:noreply, socket}
+    end
+  end
+
+  def handle_info(
+        %{event: "game_media_renegotiate", payload: %{from: from_id, type: type}},
+        %{assigns: %{role: :creator}} = socket
+      )
+      when type in ["audio", "video"] do
+    if from_id != socket.assigns.user_id do
+      {:noreply, push_event(socket, "game_renegotiate", %{type: type})}
+    else
+      {:noreply, socket}
+    end
+  end
+
   def handle_info(_msg, socket), do: {:noreply, socket}
 
   # --- Client Event Handlers ---
@@ -288,6 +372,7 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
       socket
       |> assign(webrtc_state: "Connected", game_rtc_connected: true)
       |> maybe_start_game_canvas()
+      |> maybe_start_game_media()
 
     {:noreply, socket}
   end
@@ -300,6 +385,115 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
   def handle_event("game_rtc_state", %{"state" => state}, socket) do
     {:noreply, assign(socket, webrtc_state: SessionHelpers.webrtc_state_label(state, nil))}
   end
+
+  def handle_event("game_media_hook_ready", _params, socket) do
+    {:noreply,
+     socket
+     |> assign(game_media_ready: true)
+     |> maybe_start_game_media()}
+  end
+
+  def handle_event("start_game_media", %{"type" => type}, socket)
+      when type in ["audio", "video"] do
+    {:noreply,
+     socket
+     |> assign(pending_game_media_type: type, game_media_error: nil)
+     |> maybe_start_game_media()}
+  end
+
+  def handle_event("start_game_media", _params, socket), do: {:noreply, socket}
+
+  def handle_event("game_media_call_started", %{"type" => type}, socket)
+      when type in ["audio", "video"] do
+    Logger.info("Game media call started: type=#{type}, token=#{socket.assigns.token}")
+
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "game:#{socket.assigns.token}",
+      %{
+        event: "game_media_call_started",
+        payload: %{from: socket.assigns.user_id, type: type}
+      }
+    )
+
+    if socket.assigns.role == :peer do
+      Phoenix.PubSub.broadcast(
+        @pubsub,
+        "game:#{socket.assigns.token}",
+        %{
+          event: "game_media_renegotiate",
+          payload: %{from: socket.assigns.user_id, type: type}
+        }
+      )
+    end
+
+    {:noreply, assign_local_game_call(socket, type)}
+  end
+
+  def handle_event("game_media_call_ended", %{"reason" => reason}, socket) do
+    Logger.info("Game media call ended: reason=#{reason}, token=#{socket.assigns.token}")
+
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "game:#{socket.assigns.token}",
+      %{
+        event: "game_media_call_ended",
+        payload: %{from: socket.assigns.user_id, reason: reason}
+      }
+    )
+
+    {:noreply, clear_game_media_call(socket)}
+  end
+
+  def handle_event("game_media_error", %{"message" => message}, socket) do
+    Logger.warning("Game media error: #{message}, token=#{socket.assigns.token}")
+
+    {:noreply,
+     assign(socket,
+       game_media_error: message,
+       pending_game_media_type: nil,
+       game_media_started: false
+     )}
+  end
+
+  def handle_event("game_media_mute_changed", %{"muted" => muted}, socket) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "game:#{socket.assigns.token}",
+      %{event: "game_media_mute", payload: %{from: socket.assigns.user_id, muted: muted}}
+    )
+
+    {:noreply, assign(socket, local_muted: muted)}
+  end
+
+  def handle_event("game_media_camera_changed", %{"off" => off}, socket) do
+    Phoenix.PubSub.broadcast(
+      @pubsub,
+      "game:#{socket.assigns.token}",
+      %{event: "game_media_camera", payload: %{from: socket.assigns.user_id, off: off}}
+    )
+
+    {:noreply, assign(socket, local_camera_off: off)}
+  end
+
+  def handle_event("game_media_quality_update", %{"level" => level, "label" => label}, socket) do
+    call =
+      Map.merge(socket.assigns.game_call || %{}, %{quality_level: level, quality_label: label})
+
+    {:noreply, assign(socket, game_call: call)}
+  end
+
+  def handle_event("game_media_duration_tick", %{"formatted" => formatted}, socket) do
+    call = Map.merge(socket.assigns.game_call || %{}, %{duration: formatted})
+    {:noreply, assign(socket, game_call: call)}
+  end
+
+  def handle_event("set_game_media_layout", %{"layout" => layout}, socket)
+      when layout in @game_call_layouts do
+    {:noreply, assign(socket, game_call_layout: layout)}
+  end
+
+  def handle_event("set_game_media_layout", _params, socket), do: {:noreply, socket}
 
   def handle_event("game_leave", _params, socket) do
     unless socket.assigns[:session_closed] do
@@ -379,6 +573,14 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
         game_canvas_ready: false,
         game_canvas_started: false,
         game_rtc_connected: false,
+        game_media_ready: false,
+        game_media_started: false,
+        pending_game_media_type: nil,
+        game_call: nil,
+        game_call_layout: "focus",
+        local_muted: false,
+        local_camera_off: false,
+        game_media_error: nil,
         session_closed: false,
         session_ended_reason: nil,
         session_duration: nil
@@ -482,6 +684,70 @@ defmodule RetroHexChatWeb.App.GameSessionLive do
   end
 
   defp maybe_start_game_canvas(socket), do: socket
+
+  defp maybe_start_game_media(
+         %{
+           assigns: %{
+             session_status: "playing",
+             game_media_ready: true,
+             game_media_started: false,
+             game_rtc_connected: true,
+             pending_game_media_type: type
+           }
+         } = socket
+       )
+       when type in ["audio", "video"] do
+    socket
+    |> assign(game_media_started: true)
+    |> push_event("game_media_start_#{type}", %{})
+  end
+
+  defp maybe_start_game_media(socket), do: socket
+
+  defp assign_local_game_call(socket, type) do
+    assign(socket,
+      game_call: game_call_assigns(socket.assigns.game_call, type, true),
+      game_call_layout: if(type == "video", do: socket.assigns.game_call_layout, else: "focus"),
+      game_media_started: true,
+      pending_game_media_type: nil,
+      game_media_error: nil
+    )
+  end
+
+  defp assign_remote_game_call(socket, type) do
+    assign(socket,
+      game_call: game_call_assigns(socket.assigns.game_call, type, false),
+      game_call_layout: if(type == "video", do: socket.assigns.game_call_layout, else: "focus"),
+      game_media_error: nil
+    )
+  end
+
+  defp game_call_assigns(existing, type, local_joined) do
+    existing = existing || %{}
+
+    %{
+      status: "#{type}_active",
+      type: type,
+      duration: existing[:duration] || "00:00:00",
+      quality_level: existing[:quality_level],
+      quality_label: existing[:quality_label],
+      peer_muted: existing[:peer_muted] || false,
+      peer_camera_off: existing[:peer_camera_off] || false,
+      local_joined: local_joined || existing[:local_joined] || false
+    }
+  end
+
+  defp clear_game_media_call(socket) do
+    assign(socket,
+      game_call: nil,
+      game_media_started: false,
+      pending_game_media_type: nil,
+      game_call_layout: "focus",
+      local_muted: false,
+      local_camera_off: false,
+      game_media_error: nil
+    )
+  end
 
   defp expired_reason_label("user_closed"), do: dgettext("games", "Session closed by user.")
   defp expired_reason_label("game_ended"), do: dgettext("games", "Game ended.")

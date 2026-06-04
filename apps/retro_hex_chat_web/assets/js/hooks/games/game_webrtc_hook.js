@@ -34,6 +34,7 @@ const GameWebRTCHook = {
     this.handleEvent("game_start_offer", (data) => this._handleStartOffer(data));
     this.handleEvent("game_start_answer", (data) => this._handleStartAnswer(data));
     this.handleEvent("game_signal", (data) => this._handleSignal(data));
+    this.handleEvent("game_renegotiate", (data = {}) => this._renegotiate(data));
 
     this.pushEvent("game_webrtc_ready", {});
   },
@@ -119,6 +120,43 @@ const GameWebRTCHook = {
     }
   },
 
+  async _renegotiate({ type } = {}) {
+    if (!this.pc || this.role !== "initiator" || this._negotiating) return;
+    if (this.pc.signalingState && this.pc.signalingState !== "stable") return;
+
+    this._negotiating = true;
+    try {
+      this._prepareMediaReceivers(type);
+      const offer = await createOffer(this.pc);
+      this.pushEvent("game_signal", { type: "offer", sdp: offer.sdp });
+    } finally {
+      this._negotiating = false;
+    }
+  },
+
+  _prepareMediaReceivers(type) {
+    if (!this.pc?.addTransceiver) return;
+
+    if (type === "audio" || type === "video") {
+      this._ensureReceivingTransceiver("audio");
+    }
+
+    if (type === "video") {
+      this._ensureReceivingTransceiver("video");
+    }
+  },
+
+  _ensureReceivingTransceiver(kind) {
+    const transceivers = this.pc.getTransceivers ? this.pc.getTransceivers() : [];
+    const existing = transceivers.some((transceiver) => {
+      return transceiver.receiver?.track?.kind === kind || transceiver.sender?.track?.kind === kind;
+    });
+
+    if (!existing) {
+      this.pc.addTransceiver(kind, { direction: "recvonly" });
+    }
+  },
+
   async _createConnection() {
     if (this.pc) {
       close(this.pc);
@@ -194,7 +232,9 @@ const GameWebRTCHook = {
       case "connected":
         this._clearDisconnectedTimer();
         this.retryCount = 0;
+        this.el._peerConnection = this.pc;
         this.pushEvent("game_connected", {});
+        this._dispatchEvent("game_media_pc_ready", { pc: this.pc });
         break;
 
       case "disconnected":
@@ -253,6 +293,8 @@ const GameWebRTCHook = {
 
   _cleanup() {
     this._clearDisconnectedTimer();
+    this.el._peerConnection = null;
+    this._dispatchEvent("game_media_pc_closed", {});
     if (this.dataChannel) {
       this.dataChannel.onopen = null;
       this.dataChannel.onclose = null;

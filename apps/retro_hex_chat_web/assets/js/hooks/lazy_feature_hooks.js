@@ -18,9 +18,23 @@ export const lazyFeatureHooks = {
   GameWebRTCHook: lazyFeatureHook({
     name: "GameWebRTCHook",
     loader: () => import("./games/game_webrtc_hook"),
-    serverEvents: ["game_start_offer", "game_start_answer", "game_signal"],
+    serverEvents: ["game_start_offer", "game_start_answer", "game_signal", "game_renegotiate"],
     readyEvent: "game_webrtc_ready",
     reason: "Game WebRTC signaling is a heavy game-session feature.",
+  }),
+  GameMediaHook: lazyFeatureHook({
+    name: "GameMediaHook",
+    loader: () => import("./games/game_media_hook"),
+    serverEvents: [
+      "game_media_start_audio",
+      "game_media_start_video",
+      "game_media_end_call",
+      "game_media_peer_muted",
+      "game_media_peer_camera",
+      "game_media_set_preset",
+    ],
+    readyEvent: "game_media_hook_ready",
+    reason: "Game media capture is only needed during active game sessions.",
   }),
   MediaHook: lazyFeatureHook({
     name: "MediaHook",
