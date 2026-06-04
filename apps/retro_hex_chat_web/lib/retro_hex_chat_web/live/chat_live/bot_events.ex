@@ -63,25 +63,9 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   end
 
   def handle_event("bot_toggle_enabled", %{"name" => name}, socket) do
-    bot = Queries.get_bot_by_name(name)
-
-    if bot do
-      new_enabled = !bot.enabled
-      Queries.update_bot(bot, %{enabled: new_enabled})
-
-      notify_bot_if_running(bot.nickname, &Server.set_enabled(&1, new_enabled))
-
-      bots = Queries.list_bots()
-      action = if new_enabled, do: dgettext("chat", "enabled"), else: dgettext("chat", "disabled")
-
-      {:halt,
-       socket
-       |> assign(bot_dialog_bots: bots)
-       |> system_event(
-         dgettext("chat", "[BotService] Bot '%{name}' %{action}.", name: name, action: action)
-       )}
-    else
-      {:halt, socket}
+    case Queries.get_bot_by_name(name) do
+      nil -> {:halt, socket}
+      bot -> {:halt, toggle_bot_enabled(bot, socket)}
     end
   end
 
@@ -577,6 +561,32 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
       {:error, :not_found} ->
         :ok
+    end
+  end
+
+  @spec toggle_bot_enabled(RetroHexChat.Bots.Bot.t(), Phoenix.LiveView.Socket.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp toggle_bot_enabled(bot, socket) do
+    new_enabled = !bot.enabled
+
+    case Queries.update_bot(bot, %{enabled: new_enabled}) do
+      {:ok, updated_bot} ->
+        notify_bot_if_running(bot.nickname, &Server.set_enabled(&1, new_enabled))
+
+        action =
+          if new_enabled, do: dgettext("chat", "enabled"), else: dgettext("chat", "disabled")
+
+        socket
+        |> assign(bot_dialog_bots: Queries.list_bots(), bot_dialog_selected: updated_bot)
+        |> system_event(
+          dgettext("chat", "[BotService] Bot '%{name}' %{action}.",
+            name: bot.name,
+            action: action
+          )
+        )
+
+      {:error, _changeset} ->
+        error_event(socket, dgettext("chat", "Failed to update bot status."))
     end
   end
 

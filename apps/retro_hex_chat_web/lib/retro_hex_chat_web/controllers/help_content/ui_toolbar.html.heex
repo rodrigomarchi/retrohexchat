@@ -125,6 +125,12 @@
       "— Configure automatic response rules."
     )}
   </li>
+  <li>
+    <strong>{dgettext("help_ui", "Bot Management")}</strong> {dgettext(
+      "help_ui",
+      "— Open the admin-only dialog for creating bots, toggling bot status, assigning channels, and managing custom commands."
+    )}
+  </li>
 </ul>
 
 <.help_h4 icon={:icon_group_notifications}>{dgettext("help_ui", "Notifications")}</.help_h4>
@@ -167,5 +173,10 @@
   </li>
   <li>
     <.help_link topic="feature-notify-list">{dgettext("help_ui", "Notify List")}</.help_link>
+  </li>
+  <li>
+    <.help_link topic="ui-bot-management">
+      {dgettext("help_ui", "Bot Management Dialog")}
+    </.help_link>
   </li>
 </ul>

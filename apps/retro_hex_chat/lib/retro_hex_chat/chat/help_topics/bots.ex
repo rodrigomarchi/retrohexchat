@@ -18,13 +18,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           "capabilities",
           "automation",
           "greeter",
+          "bot management",
+          "management dialog",
           dgettext("help", "custom commands")
         ],
         icon: :icon_wrench,
         description:
           dgettext(
             "help",
-            "Create and manage extensible bots with pluggable capabilities for channel automation."
+            "Create and manage extensible bots with pluggable capabilities for channel automation, including the admin Bot Management dialog."
           )
       },
       %{
@@ -42,13 +44,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Bots do
           dgettext("help", "bot disable"),
           dgettext("help", "bot set"),
           dgettext("help", "bot addcmd"),
-          dgettext("help", "bot delcmd")
+          dgettext("help", "bot delcmd"),
+          "bot management"
         ],
         icon: :icon_terminal,
         description:
           dgettext(
             "help",
-            "Reference for all /bot subcommands: create, destroy, join, part, enable, disable, set, addcmd, delcmd."
+            "Reference for all /bot subcommands and the admin dialog opened by /bot with no arguments."
           )
       },
       %{

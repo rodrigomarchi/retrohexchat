@@ -1,0 +1,67 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "Bot Management is the admin dialog for creating, inspecting, enabling, and maintaining server-side bots. Open it from Tools > Bot Management, from the toolbar Options dropdown, or by typing /bot with no arguments as an admin or server operator."
+  )}
+</p>
+
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_ui", "General Tab")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The General tab shows the selected bot's name, nickname, command prefix, enabled state, configured capabilities, and runtime statistics when the bot process is running. Admins can use the Enable or Disable button to toggle the bot globally."
+  )}
+</p>
+
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_ui", "Capabilities Tab")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The Capabilities tab lists each enabled capability and its configuration values. Admins can turn individual capabilities on or off; changes are reloaded into the bot process."
+  )}
+</p>
+
+<.help_h4 icon={:icon_tab_channel}>{dgettext("help_ui", "Channels Tab")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The Channels tab shows where the bot is configured to join. Admins can add a channel or remove an existing channel assignment."
+  )}
+</p>
+
+<.help_h4 icon={:icon_tab_commands}>{dgettext("help_ui", "Commands Tab")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The Commands tab shows custom command triggers and responses. Admins can add a new custom command or remove an existing trigger."
+  )}
+</p>
+
+<.help_h4 icon={:icon_clock}>{dgettext("help_ui", "Events Tab")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The Events tab displays the most recent bot event log entries loaded when a bot is selected."
+  )}
+</p>
+
+<.help_h4 icon={:icon_shield}>{dgettext("help_ui", "Permissions")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Bot Management is visible only to identified server admins and server operators. Regular users can still list bots, inspect bot info, and view custom commands with /bot list, /bot info, and /bot commands."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<ul>
+  <li>
+    <.help_link topic="botservice">{dgettext("help_ui", "BotService Overview")}</.help_link>
+  </li>
+  <li>
+    <.help_link topic="bot-command">{dgettext("help_ui", "/bot Command Reference")}</.help_link>
+  </li>
+  <li>
+    <.help_link topic="ui-toolbar">{dgettext("help_ui", "Toolbar")}</.help_link>
+  </li>
+</ul>

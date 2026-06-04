@@ -174,7 +174,8 @@
 <p>
   {dgettext("help_bots", "Open the Bot Management dialog from the")}
   <strong>{dgettext("help_bots", "Tools")}</strong>
-  {dgettext("help_bots", "menu or by typing")} <code>{dgettext("help_bots", "/bot")}</code>
+  {dgettext("help_bots", "menu, the toolbar Options dropdown, or by typing")}
+  <code>{dgettext("help_bots", "/bot")}</code>
   {dgettext(
     "help_bots",
     "with no arguments (admin only). The dialog shows all bots with a split-view: select a bot on the left to see its details, channels, commands, and event hooks on the right."
@@ -183,7 +184,10 @@
 
 <.help_h4 icon={:icon_link}>{dgettext("help_bots", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="bot-command">{dgettext("help_bots", "/bot Command Reference")}</.help_link>
+  <.help_link topic="ui-bot-management">
+    {dgettext("help_bots", "Bot Management Dialog")}
+  </.help_link>
+  · <.help_link topic="bot-command">{dgettext("help_bots", "/bot Command Reference")}</.help_link>
   ·
   <.help_link topic="bot-custom-commands">
     {dgettext("help_bots", "Bot Custom Commands")}

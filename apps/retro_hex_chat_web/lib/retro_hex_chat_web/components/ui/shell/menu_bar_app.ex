@@ -168,6 +168,13 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
             action="open_autorespond_dialog"
             on_action={@on_action}
           />
+          <.menu_item
+            :if={@is_admin}
+            icon_fn={:icon_btn_bot_management}
+            label={dgettext("ui", "Bot Management")}
+            action="open_bot_dialog"
+            on_action={@on_action}
+          />
         </.menu_dropdown>
       </div>
 

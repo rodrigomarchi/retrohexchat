@@ -2,12 +2,12 @@
   {dgettext("help_bots", "The")} <code>{dgettext("help_bots", "/bot")}</code>
   {dgettext(
     "help_bots",
-    "command lets admins and server operators create, configure, and manage bots. Regular users can view bot info and list available commands."
+    "command lets admins and server operators create, configure, and manage bots. Running /bot with no arguments opens Bot Management for admins, while regular users see the bot list."
   )}
 </p>
 
 <.help_h4 icon={:icon_code}>{dgettext("help_bots", "Syntax")}</.help_h4>
-<pre>{dgettext("help_bots", "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>")}</pre>
+<pre>{dgettext("help_bots", "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> /bot disable <bot> /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>")}</pre>
 
 <.help_h4 icon={:icon_tag}>{dgettext("help_bots", "Subcommands")}</.help_h4>
 
@@ -52,10 +52,10 @@
 <p>
   <strong>{dgettext("help_bots", "enable / disable")}</strong> {dgettext(
     "help_bots",
-    "— Toggle a bot globally, or just for a specific channel."
+    "— Toggle a bot globally."
   )}
 </p>
-<pre>{dgettext("help_bots", "/bot enable GreeterBot /bot disable GreeterBot #random")}</pre>
+<pre>{dgettext("help_bots", "/bot enable GreeterBot /bot disable GreeterBot")}</pre>
 
 <p>
   <strong>set</strong>
@@ -103,7 +103,10 @@
 
 <.help_h4 icon={:icon_link}>{dgettext("help_bots", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="botservice">{dgettext("help_bots", "BotService Overview")}</.help_link>
+  <.help_link topic="ui-bot-management">
+    {dgettext("help_bots", "Bot Management Dialog")}
+  </.help_link>
+  · <.help_link topic="botservice">{dgettext("help_bots", "BotService Overview")}</.help_link>
   ·
   <.help_link topic="bot-custom-commands">
     {dgettext("help_bots", "Bot Custom Commands")}

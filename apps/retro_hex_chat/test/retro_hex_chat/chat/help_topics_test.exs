@@ -264,6 +264,17 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
+  describe "bot management UI help topic" do
+    test "topic exists with bot dialog discovery keywords" do
+      topic = HelpTopics.get_topic("ui-bot-management")
+      assert topic != nil
+      assert topic.title == "Bot Management Dialog"
+      assert topic.category == "User Interface"
+      assert "bot management" in topic.keywords
+      assert "open_bot_dialog" in topic.keywords
+    end
+  end
+
   describe "lag indicator help topic" do
     test "topic exists" do
       topic = HelpTopics.get_topic("feature-lag-indicator")

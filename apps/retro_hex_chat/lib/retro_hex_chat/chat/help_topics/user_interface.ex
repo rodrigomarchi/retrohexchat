@@ -115,12 +115,32 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         id: "ui-toolbar",
         title: dgettext("help", "Toolbar"),
         category: dgettext("help", "User Interface"),
-        keywords: ["toolbar", "buttons", "icons", "tools", "menu", "notify"],
+        keywords: ["toolbar", "buttons", "icons", "tools", "menu", "notify", "bots"],
         icon: :icon_group_tools,
         description:
           dgettext(
             "help",
             "Access common features through the menu bar and toolbar options."
+          )
+      },
+      %{
+        id: "ui-bot-management",
+        title: dgettext("help", "Bot Management Dialog"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "bot management",
+          "open_bot_dialog",
+          "bots",
+          "bot dialog",
+          "/bot",
+          "automation",
+          dgettext("help", "Tools menu")
+        ],
+        icon: :icon_btn_bot_management,
+        description:
+          dgettext(
+            "help",
+            "Manage server bots from Tools > Bot Management, including status, capabilities, channels, custom commands, and events."
           )
       },
       %{

@@ -155,15 +155,22 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
                     </div>
                     <div class="flex items-center gap-retro-8">
                       <span class="font-bold w-[80px]">{dgettext("dialogs", "Status")}:</span>
-                      <span class={
-                        if Map.get(@selected, :enabled, true),
-                          do: "text-green-700",
-                          else: "text-red-700"
-                      }>
-                        {if Map.get(@selected, :enabled, true),
-                          do: dgettext("dialogs", "Enabled"),
-                          else: dgettext("dialogs", "Disabled")}
+                      <span class={bot_status_class(@selected)}>
+                        {bot_status_label(@selected)}
                       </span>
+                      <.button
+                        :if={@is_admin}
+                        type="button"
+                        size="sm"
+                        phx-click="bot_toggle_enabled"
+                        phx-value-name={@selected.name}
+                        data-testid={"bot-toggle-enabled-#{@selected.name}"}
+                      >
+                        <:icon>
+                          <.bot_status_toggle_icon selected={@selected} />
+                        </:icon>
+                        {bot_status_toggle_label(@selected)}
+                      </.button>
                     </div>
                     <.separator />
                     <div class="font-bold text-xs">{dgettext("dialogs", "Capabilities")}</div>
@@ -459,6 +466,41 @@ defmodule RetroHexChatWeb.Components.UI.BotManagementDialog do
   defp cap_display_name("greeter"), do: dgettext("dialogs", "Greeter")
   defp cap_display_name("mention"), do: dgettext("dialogs", "Mention")
   defp cap_display_name(other), do: String.capitalize(other)
+
+  @spec bot_enabled?(map()) :: boolean()
+  defp bot_enabled?(selected), do: Map.get(selected, :enabled, true)
+
+  @spec bot_status_class(map()) :: String.t()
+  defp bot_status_class(selected) do
+    if bot_enabled?(selected), do: "text-green-700", else: "text-red-700"
+  end
+
+  @spec bot_status_label(map()) :: String.t()
+  defp bot_status_label(selected) do
+    if bot_enabled?(selected),
+      do: dgettext("dialogs", "Enabled"),
+      else: dgettext("dialogs", "Disabled")
+  end
+
+  @spec bot_status_toggle_label(map()) :: String.t()
+  defp bot_status_toggle_label(selected) do
+    if bot_enabled?(selected),
+      do: dgettext("dialogs", "Disable"),
+      else: dgettext("dialogs", "Enable")
+  end
+
+  attr :selected, :map, required: true
+
+  @spec bot_status_toggle_icon(map()) :: Phoenix.LiveView.Rendered.t()
+  defp bot_status_toggle_icon(assigns) do
+    ~H"""
+    <%= if bot_enabled?(@selected) do %>
+      <Icons.icon_cancel class="w-[14px] h-[14px]" />
+    <% else %>
+      <Icons.icon_checkmark class="w-[14px] h-[14px]" />
+    <% end %>
+    """
+  end
 
   defp capability_names(selected) do
     case Map.get(selected, :capabilities, %{}) do
