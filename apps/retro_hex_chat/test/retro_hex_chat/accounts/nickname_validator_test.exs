@@ -31,10 +31,14 @@ defmodule RetroHexChat.Accounts.NicknameValidatorTest do
     end
 
     test "accepts nicknames starting with each IRC special char" do
-      for char <- ~w([ ] \\ ^ _ ` { | }) do
+      for char <- ~w([ ] \\ ^ _ { | }) do
         nick = char <> "nick"
         assert NicknameValidator.valid?(nick), "Expected #{inspect(nick)} to be valid"
       end
+    end
+
+    test "accepts backtick after the first character" do
+      assert NicknameValidator.valid?("nick`")
     end
 
     test "rejects an empty string" do
@@ -63,6 +67,14 @@ defmodule RetroHexChat.Accounts.NicknameValidatorTest do
 
     test "rejects a nickname starting with -" do
       refute NicknameValidator.valid?("-bad")
+    end
+
+    test "rejects a nickname starting with backtick" do
+      refute NicknameValidator.valid?("`bad")
+    end
+
+    test "rejects a nickname containing invalid characters" do
+      refute NicknameValidator.valid?("bad!")
     end
 
     test "rejects non-binary input" do
@@ -94,6 +106,11 @@ defmodule RetroHexChat.Accounts.NicknameValidatorTest do
     test "returns error for nickname containing spaces" do
       assert {:error, "Nickname cannot contain spaces"} =
                NicknameValidator.validate("nick name")
+    end
+
+    test "returns error for nickname containing invalid characters" do
+      assert {:error, "Nickname contains invalid characters"} =
+               NicknameValidator.validate("nick!")
     end
 
     test "returns error for non-string input" do

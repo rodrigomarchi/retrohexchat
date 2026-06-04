@@ -21,7 +21,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "bio",
           "umode",
           "wallops",
-          "profile"
+          "profile",
+          "drop",
+          "unregister",
+          "ghost"
         ],
         icon: :icon_status_user,
         description:

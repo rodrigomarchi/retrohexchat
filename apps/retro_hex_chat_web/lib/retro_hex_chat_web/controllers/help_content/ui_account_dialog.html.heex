@@ -17,7 +17,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "Register claims your current nickname with NickServ. Identify logs this session into an already registered nickname."
+    "Register claims your current nickname with NickServ. Identify logs this session into an already registered nickname. The dialog adapts to the nickname state: unregistered nicknames show Register, registered nicknames show Identify and Drop registration, and NickServ password errors stay inline. Advanced Ghost session disconnects a stale session after you enter that nickname and its password."
   )}
 </p>
 
@@ -25,7 +25,7 @@
 <p>
   {dgettext(
     "help_ui",
-    "Use Profile to change your nickname or edit your bio. The bio is shown in /whois and is limited to 200 characters."
+    "Use Profile to change your nickname or edit your bio. Nickname changes are validated before the confirmation dialog opens. The bio is shown in /whois and is limited to 200 characters with a live counter."
   )}
 </p>
 
@@ -47,7 +47,10 @@
 
 <.help_h4 icon={:icon_terminal}>{dgettext("help_ui", "Command Mapping")}</.help_h4>
 <ul>
-  <li><code>/ns register</code> {dgettext("help_ui", "and")} <code>/ns identify</code></li>
+  <li>
+    <code>/ns register</code>, <code>/ns identify</code>, <code>/ns drop</code>
+    {dgettext("help_ui", "and")} <code>/ns ghost</code>
+  </li>
   <li><code>/nick</code> {dgettext("help_ui", "for nickname changes")}</li>
   <li><code>/bio</code> {dgettext("help_ui", "for profile text")}</li>
   <li><code>/away</code> {dgettext("help_ui", "for presence")}</li>

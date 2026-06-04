@@ -482,11 +482,15 @@
   identified={@session.identified}
   active_tab={@account_dialog_tab}
   auth_mode={@account_auth_mode}
-  bio={Session.get_bio(@session) || ""}
+  auth_valid={@account_auth_valid}
+  bio={@account_bio_draft || Session.get_bio(@session) || ""}
+  bio_warning={@account_bio_warning}
+  nick_error={@account_nick_error}
   away={@session.away}
   away_message={@session.away_message || @account_last_away_message || ""}
   wallops_enabled={Session.has_mode?(@session, :wallops)}
   error_message={@account_error}
+  ghost_error={@account_ghost_error}
   on_close="close_account_dialog"
 />
 

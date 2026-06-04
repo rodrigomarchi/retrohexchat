@@ -116,6 +116,118 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
       assert render(view) =~ "[NickServ] Nickname #{nick} registered successfully"
     end
 
+    test "registered nick shows identify-only auth and keeps bad password errors inline", %{
+      conn: conn
+    } do
+      nick = "Ident#{uid()}"
+      assert {:ok, _message} = NickServ.register(nick, "correct123")
+      NickServ.remove_identified(nick)
+      refute NickServ.identified?(nick)
+
+      view = connect_user(conn, nick)
+
+      render_click(view, "toolbar_action", %{"action" => "open_account_identify"})
+      html = render(view)
+
+      assert html =~ ~s(data-testid="account-identify-only")
+      assert html =~ ~s(data-testid="account-drop-registration")
+      refute html =~ "Register this nickname"
+
+      render_submit(view, "account_register_submit", %{
+        "mode" => "identify",
+        "password" => "wrong-password"
+      })
+
+      html = render(view)
+      assert html =~ ~s(data-testid="account-error")
+      assert html =~ "[NickServ] Invalid password"
+    end
+
+    test "drop registration form runs NickServ drop for the current nick", %{conn: conn} do
+      nick = "Drop#{uid()}"
+      assert {:ok, _message} = NickServ.register(nick, "drop123")
+      assert NickServ.registered?(nick)
+
+      view = connect_user(conn, nick)
+
+      render_click(view, "toolbar_action", %{"action" => "open_account_dialog"})
+
+      render_submit(view, "account_drop_submit", %{
+        "password" => "drop123"
+      })
+
+      refute NickServ.registered?(nick)
+      html = render(view)
+      assert html =~ "[NickServ] Registration for #{nick} dropped"
+      assert html =~ ~s(data-testid="account-register-only")
+      refute html =~ ~s(data-testid="account-drop-registration")
+    end
+
+    test "advanced ghost form keeps errors inline and runs NickServ ghost", %{conn: conn} do
+      target = "Ghost#{uid()}"
+      assert {:ok, _message} = NickServ.register(target, "ghost123")
+      NickServ.remove_identified(target)
+
+      view = connect_user(conn, "Req#{uid()}")
+
+      render_click(view, "toolbar_action", %{"action" => "open_account_dialog"})
+      assert render(view) =~ ~s(data-testid="account-ghost-session")
+
+      render_submit(view, "account_ghost_submit", %{
+        "nickname" => target,
+        "password" => "wrong"
+      })
+
+      html = render(view)
+      assert html =~ ~s(data-testid="account-ghost-error")
+      assert html =~ "[NickServ] Invalid password"
+
+      render_submit(view, "account_ghost_submit", %{
+        "nickname" => target,
+        "password" => "ghost123"
+      })
+
+      assert render(view) =~ "[NickServ] Ghost command sent for #{target}"
+    end
+
+    test "profile tab validates nickname inline before opening nick change flow", %{conn: conn} do
+      view = connect_user(conn, "Nick#{uid()}")
+
+      render_click(view, "toolbar_action", %{"action" => "open_account_profile"})
+
+      render_submit(view, "account_change_nick_submit", %{"nickname" => "bad nick"})
+      html = render(view)
+
+      assert html =~ ~s(data-testid="account-nick-error")
+      assert html =~ "Nickname cannot contain spaces"
+      refute html =~ "bad nick"
+
+      new_nick = "New#{uid()}"
+      render_submit(view, "account_change_nick_submit", %{"nickname" => new_nick})
+      html = render(view)
+
+      assert html =~ ~s(data-testid="nick-change-dialog")
+      assert html =~ new_nick
+    end
+
+    test "profile tab views bio and updates draft counter with a 200 character cap", %{
+      conn: conn
+    } do
+      view = connect_user(conn, "Bio#{uid()}")
+
+      render_click(view, "toolbar_action", %{"action" => "open_account_profile"})
+      assert render(view) =~ "* No bio set. Use /bio &lt;text&gt; to set one."
+
+      render_change(view, "account_profile_change", %{"bio" => "abc"})
+      assert render(view) =~ "3 / 200"
+
+      render_change(view, "account_profile_change", %{"bio" => String.duplicate("x", 205)})
+      html = render(view)
+
+      assert html =~ "200 / 200"
+      assert html =~ ~s(data-testid="account-bio-warning")
+    end
+
     test "profile, presence, and user mode forms dispatch their commands", %{conn: conn} do
       view = connect_user(conn, "Prof#{uid()}")
 

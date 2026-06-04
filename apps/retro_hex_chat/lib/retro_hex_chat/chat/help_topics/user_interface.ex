@@ -137,6 +137,10 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "nickserv",
           "login",
           "identify",
+          "drop",
+          "unregister",
+          "ghost",
+          "nickname validation",
           dgettext("help", "status bar")
         ],
         icon: :icon_status_user,

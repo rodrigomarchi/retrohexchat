@@ -15,7 +15,7 @@ iterations — read it before starting, write to it before stopping.
 
 | # | Feature | Priority | Status | Branch / PR | Last touched | Notes |
 |---|---------|----------|--------|-------------|--------------|-------|
-| 01 | Identity, Account & Presence | P0 | 🟦 | — | 2026-06-04 | First slice complete: account status widget, Account dialog, entry points, command wiring |
+| 01 | Identity, Account & Presence | P0 | ✅ | — | 2026-06-04 | Complete: Account dialog, status widget, NickServ auth/drop/ghost, nick/profile/presence/modes |
 | 02 | Buddy List (Notify) | P0 | ✅ | — | 2026-06-04 | View/toolbar entry points + status-bar badge wired |
 | 03 | Bots | P0 | ✅ | — | 2026-06-04 | Tools/Options entry points + General tab toggle |
 | 04 | Window & Display (Edit menu) | P1 | ⬜ | — | — | New Edit menu; Clear/Copy/Find |
@@ -42,6 +42,18 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-04 — Feature 01: `Identity, Account & Presence` complete
+- **Did:** completed the remaining Account dialog behavior: advanced Ghost session form mapped to `/ns ghost`, inline nickname validation before `/nick`, live bio draft counter with 200-character cap, Profile tab `/bio` view behavior, Register/Login password-change validation, and away-message reuse/clear semantics. Aligned `NicknameValidator` with the `/nick` handler rules.
+- **Tests:** expanded LiveView feature coverage for Ghost errors/success, inline nickname validation, Profile-tab bio view/counter, and kept prior Account entry/auth/drop coverage. Updated unit tests for nickname validator edge cases. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated Account Dialog, Identity & Presence, and HelpTopics keywords for Ghost, unregister/drop, nickname validation, and bio counter discovery.
+- **Follow-ups:** none for Feature 01.
+
+### 2026-06-04 — Feature 01: `Identity, Account & Presence` adaptive NickServ auth
+- **Did:** made the Account dialog Register/Login tab adapt to real NickServ state, hiding invalid Register/Identify choices; added a Drop registration password form wired to `/ns drop`; exposed command-dispatch results so Account events can keep NickServ errors inline while preserving existing status output.
+- **Tests:** added LiveView feature coverage for registered-nick identify-only rendering, inline bad-password feedback, and Drop registration command mapping. `make ci.quick` first failed on the new tests, then passed after implementation; final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated Account Dialog and Identity & Presence help content plus help-topic keywords for Drop/unregister discovery.
+- **Follow-ups:** Feature 01 remains in progress for advanced Ghost-session UI, richer nickname validation before `/nick`, and any remaining account-dialog refinements from the spec.
 
 ### 2026-06-04 — Feature 01: `Identity, Account & Presence` first slice
 - **Did:** added reusable Account status-bar and Account dialog UI components, wired File-menu/status-bar entry points, and added thin `ChatLive.AccountEvents` command dispatch for register/identify, nick, bio, away, `/umode +w/-w`, and NickServ info.
@@ -79,6 +91,10 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 - **[Feature 03] `ToolbarApp` should mirror menu discoverability even when the compact app header is primary** — feature tests can still cover reusable toolbar Options entries with `render_component/2`.
 - **[Feature 01] UI is component composition, not feature-specific markup** — build reusable `components/ui/**` components and compose them in screens/dialogs; LiveViews/templates should only pass assigns and event names.
 - **[Feature 01] New menu/toolbar actions need both hook lists** — `attach_all_hooks/1` handles client events, while `@event_hook_fns` powers internal `toolbar_action` dispatch through `dispatch_to_hooks/3`.
+- **[Feature 01] Account auth UI must normalize against NickServ state** — menu intent is only an entry point; the dialog should derive Register/Identify/Drop availability from the current nickname registration state.
+- **[Feature 01] Inline command errors can reuse command dispatch results** — returning `{socket, result}` from command dispatch lets UI flows surface service errors inline without duplicating command handlers.
+- **[Feature 01] Hidden dialogs remain in rendered LiveView HTML** — tests for "not opened" dialog flows should assert missing target state/content, not absence of the dialog component's static `data-testid`.
+- **[Feature 01] Domain nickname validation should match command handlers** — account/UI validation should use the same allowed first/rest character rules as `/nick`, including backtick allowed only after the first character.
 
 ---
 

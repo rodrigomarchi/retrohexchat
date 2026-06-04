@@ -283,7 +283,16 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-ns",
         title: "/ns",
         category: dgettext("help", "Services & Protocols"),
-        keywords: ["ns", "nickserv", "register", "identify", "account", "login"],
+        keywords: [
+          "ns",
+          "nickserv",
+          "register",
+          "identify",
+          "ghost",
+          "drop",
+          "account",
+          "login"
+        ],
         icon: :icon_lock,
         description:
           dgettext(

@@ -60,34 +60,31 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
           non_neg_integer()
         ) :: Phoenix.LiveView.Socket.t()
   def dispatch_command(socket, session, name, args, alias_depth \\ 0) do
-    context = %{
-      nickname: session.nickname,
-      active_channel: session.active_channel,
-      channels: session.channels,
-      identified: session.identified,
-      owner_in: channels_where_owner(session),
-      operator_in: channels_where_operator(session),
-      half_operator_in: channels_where_half_operator(session),
-      is_admin: ServerRoles.admin?(session.nickname, session.identified),
-      is_server_operator: ServerRoles.server_operator?(session.nickname, session.identified)
-    }
+    {socket, _result} = dispatch_command_with_result(socket, session, name, args, alias_depth)
+    socket
+  end
+
+  @spec dispatch_command_with_result(
+          Phoenix.LiveView.Socket.t(),
+          Session.t(),
+          String.t(),
+          [String.t()],
+          non_neg_integer()
+        ) :: {Phoenix.LiveView.Socket.t(), term()}
+  def dispatch_command_with_result(socket, session, name, args, alias_depth \\ 0) do
+    context = build_context(session)
 
     case try_alias_expansion(session, name, args, context, alias_depth) do
       {:expanded, expanded_input} ->
-        case Parser.parse(expanded_input) do
-          {:command, new_name, new_args} ->
-            dispatch_command(socket, session, new_name, new_args, alias_depth + 1)
-
-          {:message, text} ->
-            send_plain_message(socket, session, text)
-        end
+        dispatch_expanded_command(socket, session, expanded_input, alias_depth)
 
       :not_alias ->
         result = Dispatcher.dispatch(name, args, context)
-        handle_dispatch_result(socket, session, result)
+        {handle_dispatch_result(socket, session, result), result}
 
       {:error, msg} ->
-        error_event(socket, msg)
+        result = {:error, msg}
+        {error_event(socket, msg), result}
     end
   end
 
@@ -110,6 +107,30 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
       true ->
         socket
+    end
+  end
+
+  defp build_context(session) do
+    %{
+      nickname: session.nickname,
+      active_channel: session.active_channel,
+      channels: session.channels,
+      identified: session.identified,
+      owner_in: channels_where_owner(session),
+      operator_in: channels_where_operator(session),
+      half_operator_in: channels_where_half_operator(session),
+      is_admin: ServerRoles.admin?(session.nickname, session.identified),
+      is_server_operator: ServerRoles.server_operator?(session.nickname, session.identified)
+    }
+  end
+
+  defp dispatch_expanded_command(socket, session, expanded_input, alias_depth) do
+    case Parser.parse(expanded_input) do
+      {:command, new_name, new_args} ->
+        dispatch_command_with_result(socket, session, new_name, new_args, alias_depth + 1)
+
+      {:message, text} ->
+        {send_plain_message(socket, session, text), {:ok, :message_sent}}
     end
   end
 
