@@ -17,7 +17,9 @@ defmodule RetroHexChatWeb.Components.UI.Textarea do
   attr :name, :string, default: nil
   attr :value, :string
   attr :class, :any, default: nil
-  attr :rest, :global, include: ~w(disabled form)
+
+  attr :rest, :global,
+    include: ~w(autocomplete disabled form maxlength minlength placeholder readonly required rows)
 
   def textarea(assigns) do
     ~H"""

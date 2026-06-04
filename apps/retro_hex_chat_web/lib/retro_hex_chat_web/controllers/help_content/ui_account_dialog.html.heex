@@ -1,0 +1,68 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "The Account dialog brings nickname identity, profile, presence, and personal user modes into one place. Open it from the status-bar account widget or the File > Account menu."
+  )}
+</p>
+
+<.help_h4 icon={:icon_status_user}>{dgettext("help_ui", "Status-Bar Account Widget")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The widget shows your current nickname and state: Guest, Identified, or Away. Click it to open the Account dialog. The adjacent away button quickly toggles between away and back."
+  )}
+</p>
+
+<.help_h4 icon={:icon_lock}>{dgettext("help_ui", "Register/Login")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Register claims your current nickname with NickServ. Identify logs this session into an already registered nickname."
+  )}
+</p>
+
+<.help_h4 icon={:icon_status_user}>{dgettext("help_ui", "Profile")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Use Profile to change your nickname or edit your bio. The bio is shown in /whois and is limited to 200 characters."
+  )}
+</p>
+
+<.help_h4 icon={:icon_btn_dnd}>{dgettext("help_ui", "Presence")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Use Presence to set a custom away message or clear away status. Away state is visible in user lists and whois output."
+  )}
+</p>
+
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_ui", "User Modes")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "User Modes currently exposes the wallops (+w) setting, which opts you in to operator broadcast messages."
+  )}
+</p>
+
+<.help_h4 icon={:icon_terminal}>{dgettext("help_ui", "Command Mapping")}</.help_h4>
+<ul>
+  <li><code>/ns register</code> {dgettext("help_ui", "and")} <code>/ns identify</code></li>
+  <li><code>/nick</code> {dgettext("help_ui", "for nickname changes")}</li>
+  <li><code>/bio</code> {dgettext("help_ui", "for profile text")}</li>
+  <li><code>/away</code> {dgettext("help_ui", "for presence")}</li>
+  <li><code>/umode +w</code> {dgettext("help_ui", "or")} <code>/umode -w</code></li>
+</ul>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-identity-presence">
+    {dgettext("help_ui", "Identity & Presence")}
+  </.help_link>
+  · <.help_link topic="nickserv">{dgettext("help_ui", "NickServ Overview")}</.help_link>
+  · <.help_link topic="cmd-ns">{dgettext("help_ui", "/ns")}</.help_link>
+  · <.help_link topic="cmd-nick">{dgettext("help_ui", "/nick")}</.help_link>
+  · <.help_link topic="cmd-away">{dgettext("help_ui", "/away")}</.help_link>
+  · <.help_link topic="cmd-bio">{dgettext("help_ui", "/bio")}</.help_link>
+  · <.help_link topic="cmd-umode">{dgettext("help_ui", "/umode")}</.help_link>
+</p>

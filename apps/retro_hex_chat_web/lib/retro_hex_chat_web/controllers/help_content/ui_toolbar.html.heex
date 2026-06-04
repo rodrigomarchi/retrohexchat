@@ -7,6 +7,29 @@
 
 <h3>{dgettext("help_ui", "Button Groups")}</h3>
 
+<.help_h4 icon={:icon_status_user}>{dgettext("help_ui", "File > Account")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_ui", "Register / Identify")}</strong> {dgettext(
+      "help_ui",
+      "— Open the Account dialog for NickServ registration or login."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "Change Nickname / Edit Profile / Set Away")}</strong>
+    {dgettext(
+      "help_ui",
+      "— Open the Account dialog tabs for nickname, bio, and presence controls."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "Account Info")}</strong> {dgettext(
+      "help_ui",
+      "— Runs /ns info for your current nickname."
+    )}
+  </li>
+</ul>
+
 <.help_h4 icon={:icon_connect}>{dgettext("help_ui", "Connection")}</.help_h4>
 <ul>
   <li>
@@ -173,6 +196,16 @@
   </li>
   <li>
     <.help_link topic="feature-notify-list">{dgettext("help_ui", "Notify List")}</.help_link>
+  </li>
+  <li>
+    <.help_link topic="ui-account-dialog">
+      {dgettext("help_ui", "Account Dialog")}
+    </.help_link>
+  </li>
+  <li>
+    <.help_link topic="feature-identity-presence">
+      {dgettext("help_ui", "Identity & Presence")}
+    </.help_link>
   </li>
   <li>
     <.help_link topic="ui-bot-management">

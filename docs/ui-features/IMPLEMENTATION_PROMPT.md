@@ -57,6 +57,10 @@ IMPLEMENT (follow the platform's Feature Delivery Workflow)
   3. Implement to the spec:
        • Keep the LiveView thin — put logic in the domain context under
          apps/retro_hex_chat/lib/retro_hex_chat/**. Web layer only wires events/render.
+       • Do NOT create dedicated one-off interface code in LiveViews/templates for a feature.
+         UI must be built as reusable components under components/ui/** and feature screens,
+         dialogs, menus, and widgets must be composed from those components. The app screen
+         should only pass assigns and event names to components.
        • ENHANCE existing components; never create a parallel dialog/menu. Specs 02/03 are
          "add a menu entry to an existing dialog"; 09/11 extend Channel Central.
        • Reuse existing UI primitives (components/ui/**), context-menu and dialog patterns.

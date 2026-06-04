@@ -21,12 +21,17 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.AccountStatus
   import RetroHexChatWeb.Components.UI.Window
 
   alias RetroHexChatWeb.Icons
 
   @doc "Renders the application status bar."
   attr :nickname, :string, required: true
+  attr :account_state, :atom, default: :guest, values: [:guest, :identified, :away]
+  attr :away, :boolean, default: false
+  attr :on_account_click, :any, default: nil
+  attr :on_away_toggle, :any, default: nil
   attr :channel, :string, default: nil
   attr :user_count, :integer, default: 0
   attr :tab_type, :atom, default: :channel, values: [:channel, :pm]
@@ -48,10 +53,15 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
       data-testid="status-bar-app"
       {@rest}
     >
-      <%!-- Zone 1: Nick --%>
-      <.window_status_bar_field class="flex items-center gap-retro-2 min-w-0 md:min-w-[80px]">
-        <Icons.icon_status_user class="w-3 h-3 shrink-0" />
-        <span class="truncate text-xs">{@nickname}</span>
+      <%!-- Zone 1: Account / presence --%>
+      <.window_status_bar_field class="flex items-center gap-retro-2 min-w-0 md:min-w-[128px]">
+        <.account_status
+          nickname={@nickname}
+          account_state={@account_state}
+          away={@away}
+          on_click={@on_account_click}
+          on_away_toggle={@on_away_toggle}
+        />
       </.window_status_bar_field>
 
       <%!-- Zone 2: Channel / PM info with user count --%>

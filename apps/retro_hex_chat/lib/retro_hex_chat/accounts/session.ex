@@ -130,6 +130,11 @@ defmodule RetroHexChat.Accounts.Session do
     %{session | identified: identified}
   end
 
+  @spec identity_state(t()) :: :away | :identified | :guest
+  def identity_state(%__MODULE__{away: true}), do: :away
+  def identity_state(%__MODULE__{identified: true}), do: :identified
+  def identity_state(%__MODULE__{}), do: :guest
+
   @spec set_active_channel(t(), String.t() | nil) :: t()
   def set_active_channel(%__MODULE__{} = session, channel_name) do
     %{session | active_channel: channel_name, active_pm: nil}

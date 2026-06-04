@@ -14,6 +14,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Services do
           "nickserv",
           "register",
           "identify",
+          "account",
+          "login",
+          "away",
+          "bio",
           "password",
           dgettext("help", "nickname protection")
         ],

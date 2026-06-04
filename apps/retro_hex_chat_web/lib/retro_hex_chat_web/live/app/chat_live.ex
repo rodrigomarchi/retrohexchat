@@ -52,6 +52,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.AboutDialog
+  import RetroHexChatWeb.Components.UI.AccountDialog
   import RetroHexChatWeb.Components.UI.AddressBook
   import RetroHexChatWeb.Components.UI.AliasDialog
   import RetroHexChatWeb.Components.UI.AutoRespondDialog
@@ -517,6 +518,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.AutorespondEvents.handle_event/3,
     &ChatLive.HighlightEvents.handle_event/3,
     &ChatLive.SettingsDialogsEvents.handle_event/3,
+    &ChatLive.AccountEvents.handle_event/3,
     &ChatLive.NotifyEvents.handle_event/3,
     &ChatLive.AddressBookEvents.handle_event/3,
     &ChatLive.ConversationsEvents.handle_event/3,
@@ -568,6 +570,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:autorespond_events, &ChatLive.AutorespondEvents.handle_event/3},
       {:highlight_events, &ChatLive.HighlightEvents.handle_event/3},
       {:settings_dialogs_events, &ChatLive.SettingsDialogsEvents.handle_event/3},
+      {:account_events, &ChatLive.AccountEvents.handle_event/3},
       {:notify_events, &ChatLive.NotifyEvents.handle_event/3},
       {:address_book_events, &ChatLive.AddressBookEvents.handle_event/3},
       {:conversations_events, &ChatLive.ConversationsEvents.handle_event/3},
@@ -672,6 +675,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
       cheatsheet_visible: false,
       show_about: false,
       show_address_book: false,
+      show_account_dialog: false,
+      account_dialog_tab: "register",
+      account_auth_mode: "register",
+      account_registered: false,
+      account_error: nil,
+      account_last_away_message: nil,
       show_context_color_picker: false,
       show_contact_add_dialog: false,
       show_contact_edit_dialog: false,

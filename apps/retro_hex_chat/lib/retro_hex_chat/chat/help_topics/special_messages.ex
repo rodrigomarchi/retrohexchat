@@ -84,7 +84,7 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
         id: "cmd-umode",
         title: "/umode",
         category: dgettext("help", "Channels"),
-        keywords: ["umode", dgettext("help", "user mode"), "wallops", "mode"],
+        keywords: ["umode", dgettext("help", "user mode"), "wallops", "mode", "account"],
         icon: :icon_tab_modes,
         description:
           dgettext("help", "View or change your user modes, such as enabling wallops reception.")

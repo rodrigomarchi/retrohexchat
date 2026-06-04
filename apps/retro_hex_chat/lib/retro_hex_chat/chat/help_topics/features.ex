@@ -7,6 +7,30 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
   def topics do
     [
       %{
+        id: "feature-identity-presence",
+        title: dgettext("help", "Identity & Presence"),
+        category: dgettext("help", "Users & Identity"),
+        keywords: [
+          "identity",
+          "account",
+          "presence",
+          "nick",
+          "nickname",
+          "nickserv",
+          "away",
+          "bio",
+          "umode",
+          "wallops",
+          "profile"
+        ],
+        icon: :icon_status_user,
+        description:
+          dgettext(
+            "help",
+            "Register or identify your nickname, change your nick, set a bio, toggle away status, and manage personal user modes."
+          )
+      },
+      %{
         id: "feature-notify-list",
         title: dgettext("help", "Notify List (Buddy List)"),
         category: dgettext("help", "Contacts & Notify"),

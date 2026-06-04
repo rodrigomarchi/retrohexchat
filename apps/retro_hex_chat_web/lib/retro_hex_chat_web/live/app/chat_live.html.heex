@@ -42,6 +42,10 @@
       <.status_bar_app
         class="ml-auto"
         nickname={@session.nickname}
+        account_state={Session.identity_state(@session)}
+        away={@session.away}
+        on_account_click="open_account_dialog"
+        on_away_toggle="toggle_account_away"
         channel={@session.active_pm || @session.active_channel}
         user_count={length(@channel_users)}
         tab_type={if @session.active_pm, do: :pm, else: :channel}
@@ -468,6 +472,23 @@
 
 <%!-- Dialogs --%>
 <.about_dialog id="about-dialog" show={@show_about} />
+
+<.account_dialog
+  id="account-dialog"
+  show={@show_account_dialog}
+  nickname={@session.nickname}
+  account_state={Session.identity_state(@session)}
+  registered={@account_registered}
+  identified={@session.identified}
+  active_tab={@account_dialog_tab}
+  auth_mode={@account_auth_mode}
+  bio={Session.get_bio(@session) || ""}
+  away={@session.away}
+  away_message={@session.away_message || @account_last_away_message || ""}
+  wallops_enabled={Session.has_mode?(@session, :wallops)}
+  error_message={@account_error}
+  on_close="close_account_dialog"
+/>
 
 <.disconnect_confirm_dialog
   id="disconnect-confirm-dialog"

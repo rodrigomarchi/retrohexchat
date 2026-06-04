@@ -61,7 +61,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-away",
         title: "/away",
         category: dgettext("help", "Users & Identity"),
-        keywords: ["away", "afk", "absent", "back"],
+        keywords: ["away", "afk", "absent", "back", "presence", "account"],
         icon: :icon_clock,
         description:
           dgettext(
@@ -82,7 +82,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-bio",
         title: "/bio",
         category: dgettext("help", "Users & Identity"),
-        keywords: ["bio", "profile", dgettext("help", "about me"), "description"],
+        keywords: ["bio", "profile", dgettext("help", "about me"), "description", "account"],
         icon: :icon_status_user,
         description:
           dgettext(
@@ -239,7 +239,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-nick",
         title: "/nick",
         category: dgettext("help", "Users & Identity"),
-        keywords: ["nick", "nickname", "rename", dgettext("help", "change name")],
+        keywords: ["nick", "nickname", "rename", dgettext("help", "change name"), "account"],
         icon: :icon_dialog_nick,
         description: dgettext("help", "Change your current nickname to a new one.")
       },
@@ -283,7 +283,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-ns",
         title: "/ns",
         category: dgettext("help", "Services & Protocols"),
-        keywords: ["ns", "nickserv", "register", "identify"],
+        keywords: ["ns", "nickserv", "register", "identify", "account", "login"],
         icon: :icon_lock,
         description:
           dgettext(

@@ -124,6 +124,29 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           )
       },
       %{
+        id: "ui-account-dialog",
+        title: dgettext("help", "Account Dialog"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "account",
+          "identity",
+          "profile",
+          "presence",
+          "away",
+          "bio",
+          "nickserv",
+          "login",
+          "identify",
+          dgettext("help", "status bar")
+        ],
+        icon: :icon_status_user,
+        description:
+          dgettext(
+            "help",
+            "Manage nickname registration, profile bio, away status, and user modes from the Account dialog."
+          )
+      },
+      %{
         id: "ui-bot-management",
         title: dgettext("help", "Bot Management Dialog"),
         category: dgettext("help", "User Interface"),

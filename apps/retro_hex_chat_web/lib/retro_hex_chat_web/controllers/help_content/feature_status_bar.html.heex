@@ -1,19 +1,19 @@
 <p>
   {dgettext(
     "help_features",
-    "The status bar at the bottom of the screen provides real-time information about your connection and current channel."
+    "The status bar at the bottom of the screen provides real-time information about your account, connection, and current channel."
   )}
 </p>
 <.help_h4 icon={:icon_tab_status}>{dgettext("help_features", "Three Sections")}</.help_h4>
 <p>
   <strong>{dgettext("help_features", "Left:")}</strong>
-  {dgettext("help_features", "Current channel name and user count.")}<br />
+  {dgettext("help_features", "Account widget with nickname and identity or away state.")}<br />
   <strong>
     {dgettext("help_features", "Center:")}
   </strong>
   {dgettext(
     "help_features",
-    "Online buddy badge appears when tracked users are online; click it to open the Notify List."
+    "Current channel or private message name, user count, and online buddy badge."
   )}<br />
   <strong>
     {dgettext("help_features", "Right:")}
@@ -35,5 +35,13 @@
   ·
   <.help_link topic="feature-notify-list">
     {dgettext("help_features", "Notify List")}
+  </.help_link>
+  ·
+  <.help_link topic="ui-account-dialog">
+    {dgettext("help_features", "Account Dialog")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-identity-presence">
+    {dgettext("help_features", "Identity & Presence")}
   </.help_link>
 </p>

@@ -1,0 +1,59 @@
+<p>
+  {dgettext(
+    "help_features",
+    "Identity and presence cover how you appear to other users: your nickname, NickServ login state, profile bio, away status, and personal user modes."
+  )}
+</p>
+
+<.help_h4 icon={:icon_lock}>{dgettext("help_features", "Nickname Ownership")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Use NickServ to register your current nickname and identify when you reconnect. Registration protects the name and lets identified users keep saved preferences."
+  )}
+</p>
+
+<.help_h4 icon={:icon_dialog_nick}>{dgettext("help_features", "Changing Nicknames")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The Account dialog profile tab can start a nickname change. Registered target nicknames still require the NickServ password in the confirmation flow."
+  )}
+</p>
+
+<.help_h4 icon={:icon_status_user}>{dgettext("help_features", "Profile Bio")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Your bio is a short profile line shown in whois output. Registered users keep it across sessions; guests keep it for the current session."
+  )}
+</p>
+
+<.help_h4 icon={:icon_btn_dnd}>{dgettext("help_features", "Away Status")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Set away when you are unavailable. The status-bar quick action can mark you away or back, and the Presence tab lets you set a custom message."
+  )}
+</p>
+
+<.help_h4 icon={:icon_tab_modes}>{dgettext("help_features", "Personal User Modes")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The current user mode is wallops (+w), which controls whether operator broadcast messages are delivered to your Status tab."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="ui-account-dialog">
+    {dgettext("help_features", "Account Dialog")}
+  </.help_link>
+  · <.help_link topic="nickserv">{dgettext("help_features", "NickServ Overview")}</.help_link>
+  · <.help_link topic="cmd-ns">{dgettext("help_features", "/ns")}</.help_link>
+  · <.help_link topic="cmd-nick">{dgettext("help_features", "/nick")}</.help_link>
+  · <.help_link topic="cmd-away">{dgettext("help_features", "/away")}</.help_link>
+  · <.help_link topic="cmd-bio">{dgettext("help_features", "/bio")}</.help_link>
+  · <.help_link topic="cmd-umode">{dgettext("help_features", "/umode")}</.help_link>
+</p>

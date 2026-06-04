@@ -50,6 +50,44 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       <div class="relative inline-flex">
         <.menu_trigger label={dgettext("ui", "File")} disabled={!@connected} />
         <.menu_dropdown :if={@connected}>
+          <.context_menu_label>{dgettext("ui", "Account")}</.context_menu_label>
+          <.menu_item
+            icon_fn={:icon_lock}
+            label={dgettext("ui", "Register Nickname...")}
+            action="open_account_register"
+            on_action={@on_action}
+          />
+          <.menu_item
+            icon_fn={:icon_status_user}
+            label={dgettext("ui", "Identify...")}
+            action="open_account_identify"
+            on_action={@on_action}
+          />
+          <.menu_item
+            icon_fn={:icon_dialog_nick}
+            label={dgettext("ui", "Change Nickname...")}
+            action="open_account_profile"
+            on_action={@on_action}
+          />
+          <.menu_item
+            icon_fn={:icon_status_user}
+            label={dgettext("ui", "Edit Profile...")}
+            action="open_account_profile"
+            on_action={@on_action}
+          />
+          <.menu_item
+            icon_fn={:icon_btn_dnd}
+            label={dgettext("ui", "Set Away...")}
+            action="open_account_presence"
+            on_action={@on_action}
+          />
+          <.menu_item
+            icon_fn={:icon_tab_status}
+            label={dgettext("ui", "Account Info")}
+            action="account_info"
+            on_action={@on_action}
+          />
+          <.context_menu_separator />
           <.menu_item
             icon_fn={:icon_btn_disconnect}
             label={dgettext("ui", "Disconnect")}

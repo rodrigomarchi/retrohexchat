@@ -15,7 +15,7 @@ iterations — read it before starting, write to it before stopping.
 
 | # | Feature | Priority | Status | Branch / PR | Last touched | Notes |
 |---|---------|----------|--------|-------------|--------------|-------|
-| 01 | Identity, Account & Presence | P0 | ⬜ | — | — | Biggest gap; status-bar widget + Account dialog |
+| 01 | Identity, Account & Presence | P0 | 🟦 | — | 2026-06-04 | First slice complete: account status widget, Account dialog, entry points, command wiring |
 | 02 | Buddy List (Notify) | P0 | ✅ | — | 2026-06-04 | View/toolbar entry points + status-bar badge wired |
 | 03 | Bots | P0 | ✅ | — | 2026-06-04 | Tools/Options entry points + General tab toggle |
 | 04 | Window & Display (Edit menu) | P1 | ⬜ | — | — | New Edit menu; Clear/Copy/Find |
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-04 — Feature 01: `Identity, Account & Presence` first slice
+- **Did:** added reusable Account status-bar and Account dialog UI components, wired File-menu/status-bar entry points, and added thin `ChatLive.AccountEvents` command dispatch for register/identify, nick, bio, away, `/umode +w/-w`, and NickServ info.
+- **Tests:** added `AccountEntryPointsFeatureTest` covering menu/status-bar exposure, dialog launch paths, quick away toggle, registration, and profile/presence/user-mode command mapping. `make ci.quick` green; final `make ci` green (9/9, including dialyzer).
+- **Help docs:** added Account dialog and identity/presence topics; updated NickServ, `/ns`, `/nick`, `/bio`, `/away`, `/umode`, UI overview, toolbar, and status-bar cross-references.
+- **Follow-ups:** Feature 01 remains in progress for the remaining spec depth beyond this slice, including any richer NickServ recovery flows, inline service-error handling, and account-dialog state refinements called out by the feature spec.
 
 ### 2026-06-04 — Feature 03: `Bots`
 - **Did:** added admin-only "Bot Management" launchers to the Tools menu and toolbar Options dropdown; added the General-tab Enable/Disable button using the existing `bot_toggle_enabled` event; refreshed the selected bot assign after toggling so dialog state updates immediately.
@@ -71,6 +77,8 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 - **[Feature 03] `mix audit.styles --strict` is now part of CSS lint** — `make ci` blocks LOW/MEDIUM/HIGH style audit findings; INFO findings remain diagnostic.
 - **[Feature 03] Dialog mutations should refresh selected assigns** — when an event updates the selected row in the database, assign the updated struct back to the dialog so status labels/buttons do not stay stale.
 - **[Feature 03] `ToolbarApp` should mirror menu discoverability even when the compact app header is primary** — feature tests can still cover reusable toolbar Options entries with `render_component/2`.
+- **[Feature 01] UI is component composition, not feature-specific markup** — build reusable `components/ui/**` components and compose them in screens/dialogs; LiveViews/templates should only pass assigns and event names.
+- **[Feature 01] New menu/toolbar actions need both hook lists** — `attach_all_hooks/1` handles client events, while `@event_hook_fns` powers internal `toolbar_action` dispatch through `dispatch_to_hooks/3`.
 
 ---
 
@@ -82,6 +90,8 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
   `Chat.HelpTopics` + cross-references before it counts as done.
 - **Enhance existing components, never create parallel ones** — e.g. specs 09 & 11 extend
   Channel Central; specs 02 & 03 wire existing dialogs into menus.
+- **No dedicated one-off UI code in feature screens** — create or extend reusable UI
+  components first, then compose them from LiveView/templates with thin wiring only.
 - **No inline SVGs, no hardcoded colors** — icons go in `Icons.*` submodules; see
   `docs/svg-catalog.md` and `/showcase/icons`.
 - **Thin LiveViews** (Principle VII) — logic lives in domain contexts, not in the LiveView.
