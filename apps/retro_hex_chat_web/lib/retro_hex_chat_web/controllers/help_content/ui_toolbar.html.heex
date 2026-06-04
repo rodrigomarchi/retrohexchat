@@ -40,6 +40,28 @@
   </li>
 </ul>
 
+<.help_h4 icon={:icon_btn_edit}>{dgettext("help_ui", "Edit")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_ui", "Clear Window")}</strong> {dgettext(
+      "help_ui",
+      "— Clear messages from the active chat window. This cannot be undone."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "Copy")}</strong> {dgettext(
+      "help_ui",
+      "— Copy selected chat-log text when a selection exists."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_ui", "Find")}</strong> {dgettext(
+      "help_ui",
+      "— Open the search bar from Edit > Find or Ctrl+Shift+F."
+    )}
+  </li>
+</ul>
+
 <.help_h4 icon={:icon_group_view}>{dgettext("help_ui", "View")}</.help_h4>
 <ul>
   <li>
@@ -64,12 +86,6 @@
     <strong>{dgettext("help_ui", "Notify List")}</strong> {dgettext(
       "help_ui",
       "— Open the buddy list used to track when selected nicknames come online."
-    )}
-  </li>
-  <li>
-    <strong>{dgettext("help_ui", "Find")}</strong> {dgettext(
-      "help_ui",
-      "— Open the search bar to find text in the current channel."
     )}
   </li>
 </ul>
@@ -192,6 +208,11 @@
   <li>
     <.help_link topic="keyboard-shortcuts">
       {dgettext("help_ui", "Keyboard Shortcuts")}
+    </.help_link>
+  </li>
+  <li>
+    <.help_link topic="ui-edit-menu">
+      {dgettext("help_ui", "Edit Menu")}
     </.help_link>
   </li>
   <li>

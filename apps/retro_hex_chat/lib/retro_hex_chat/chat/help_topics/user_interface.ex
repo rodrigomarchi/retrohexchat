@@ -10,7 +10,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         id: "ui-overview",
         title: dgettext("help", "User Interface Overview"),
         category: dgettext("help", "User Interface"),
-        keywords: ["ui", "interface", "layout", "window", "mdi"],
+        keywords: ["ui", "interface", "layout", "window", "mdi", "edit menu"],
         icon: :icon_laptop,
         description:
           dgettext(
@@ -115,12 +115,33 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         id: "ui-toolbar",
         title: dgettext("help", "Toolbar"),
         category: dgettext("help", "User Interface"),
-        keywords: ["toolbar", "buttons", "icons", "tools", "menu", "notify", "bots"],
+        keywords: ["toolbar", "buttons", "icons", "tools", "menu", "edit", "notify", "bots"],
         icon: :icon_group_tools,
         description:
           dgettext(
             "help",
             "Access common features through the menu bar and toolbar options."
+          )
+      },
+      %{
+        id: "ui-edit-menu",
+        title: dgettext("help", "Edit Menu"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "edit",
+          dgettext("help", "edit menu"),
+          "clear",
+          dgettext("help", "clear window"),
+          "copy",
+          "clipboard",
+          "find",
+          "search"
+        ],
+        icon: :icon_btn_edit,
+        description:
+          dgettext(
+            "help",
+            "Clear the current chat window, copy selected chat text, and open Find from the Edit menu."
           )
       },
       %{

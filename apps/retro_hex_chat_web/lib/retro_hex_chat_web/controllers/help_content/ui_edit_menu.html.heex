@@ -1,0 +1,39 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "The Edit menu groups message-window actions that work on the current chat view."
+  )}
+</p>
+
+<.help_h4 icon={:icon_btn_remove}>{dgettext("help_ui", "Clear Window")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Clears all messages from the active channel or private conversation window. This runs the same action as /clear and cannot be undone."
+  )}
+</p>
+
+<.help_h4 icon={:icon_copy}>{dgettext("help_ui", "Copy")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Copies the current text selection from the chat log to the clipboard. The item is enabled only when selected text is inside the message log."
+  )}
+</p>
+
+<.help_h4 icon={:icon_btn_find}>{dgettext("help_ui", "Find")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Opens or closes the in-window Find bar for searching messages. You can also press Ctrl+Shift+F."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-clear">{dgettext("help_ui", "/clear")}</.help_link>
+  · <.help_link topic="feature-search">{dgettext("help_ui", "Search")}</.help_link>
+  ·
+  <.help_link topic="keyboard-shortcuts">{dgettext("help_ui", "Keyboard Shortcuts")}</.help_link>
+  · <.help_link topic="ui-toolbar">{dgettext("help_ui", "Toolbar")}</.help_link>
+</p>

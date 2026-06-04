@@ -103,7 +103,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-clear",
         title: "/clear",
         category: dgettext("help", "Chat & Messaging"),
-        keywords: ["clear", "clean", "wipe", "reset"],
+        keywords: ["clear", "clean", "wipe", "reset", dgettext("help", "clear window")],
         icon: :icon_trash,
         description:
           dgettext("help", "Clear all messages from the current channel or conversation view.")

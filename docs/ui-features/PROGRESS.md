@@ -18,7 +18,7 @@ iterations — read it before starting, write to it before stopping.
 | 01 | Identity, Account & Presence | P0 | ✅ | — | 2026-06-04 | Complete: Account dialog, status widget, NickServ auth/drop/ghost, nick/profile/presence/modes |
 | 02 | Buddy List (Notify) | P0 | ✅ | — | 2026-06-04 | View/toolbar entry points + status-bar badge wired |
 | 03 | Bots | P0 | ✅ | — | 2026-06-04 | Tools/Options entry points + General tab toggle |
-| 04 | Window & Display (Edit menu) | P1 | ⬜ | — | — | New Edit menu; Clear/Copy/Find |
+| 04 | Window & Display (Edit menu) | P1 | ✅ | — | 2026-06-04 | Complete: Edit menu Clear/Copy/Find; Find relocated from View |
 | 05 | Channel Moderation | P1 | ⬜ | — | — | Status-aware context items (deop/devoice/mute) |
 | 06 | Channel Membership | P1 | ⬜ | — | — | Send-invite UI + knock |
 | 07 | Messaging | P2 | ⬜ | — | — | /me action toggle + send-notice |
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-04 — Feature 04: `Window & Display (Edit menu)`
+- **Did:** added the top-level Edit menu between File and View; moved Find out of View; wired Clear Window through `/clear`; added client-side Copy selection enablement/copying in `MenuBarHook`; fixed menu trigger `data-disabled` values so disabled menu triggers match the hook/CSS contract.
+- **Tests:** added `WindowDisplayEditMenuFeatureTest` for menu ordering/actions, disconnected disabled state, `clear_window`, and relocated Find behavior; expanded `MenuBarHook` JS tests for Copy enablement, Clipboard API copy, and `execCommand` fallback. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** added `ui-edit-menu`; updated `/clear`, Search, UI overview, Toolbar, Keyboard Shortcuts, and HelpTopics metadata/cross-references.
+- **Follow-ups:** none. Shortcut note: the spec says `Ctrl+F`, but the actual key-binding code and existing docs/tests use `Ctrl+Shift+F`, so the UI/help kept `Ctrl+Shift+F`.
 
 ### 2026-06-04 — Feature 01: `Identity, Account & Presence` complete
 - **Did:** completed the remaining Account dialog behavior: advanced Ghost session form mapped to `/ns ghost`, inline nickname validation before `/nick`, live bio draft counter with 200-character cap, Profile tab `/bio` view behavior, Register/Login password-change validation, and away-message reuse/clear semantics. Aligned `NicknameValidator` with the `/nick` handler rules.
@@ -84,6 +90,9 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 > _(template)_
 > - **[Feature NN] <lesson>** — why it matters / how to apply next time.
 
+- **[Feature 04] Specs can lag key-binding reality** — Feature 04 requested `Ctrl+F`, but `KeyBindings.defaults/0`, existing tests, and help content use `Ctrl+Shift+F`; trust code and record the discrepancy.
+- **[Feature 04] Menu trigger `data-disabled` must be a string** — `data-disabled={true}` renders as a boolean-style attribute, while `MenuBarHook` and CSS compare against `"true"`; emit `"true"`/`"false"` explicitly.
+- **[Feature 04] JS-toggled visual states need CSS-owned classes** — CSS consistency lint scans `classList.*` strings in JS, so toggle a defined project class such as `menubar-copy-disabled` instead of raw Tailwind utilities.
 - **[Feature 02] `toolbar_action` dispatches through `dispatch_to_hooks/3`** — menu/toolbar items can use existing v1 event names such as `toggle_notify_list` when a hook module already handles that event.
 - **[Feature 02] Hidden dialogs keep their title text in initial HTML** — LiveView tests for dark-dialog launchers should assert action/test IDs or show-trigger presence rather than only label text.
 - **[Feature 03] `mix audit.styles --strict` is now part of CSS lint** — `make ci` blocks LOW/MEDIUM/HIGH style audit findings; INFO findings remain diagnostic.

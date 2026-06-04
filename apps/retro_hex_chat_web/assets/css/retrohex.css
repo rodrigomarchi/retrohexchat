@@ -99,6 +99,14 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   color: #808080;
   background: transparent;
 }
+.menubar-copy-disabled {
+  color: var(--color-muted);
+  cursor: default;
+}
+.menubar-copy-disabled:hover {
+  color: var(--color-muted);
+  background: transparent;
+}
 .format-color-dropdown {
   display: none;
   position: absolute;

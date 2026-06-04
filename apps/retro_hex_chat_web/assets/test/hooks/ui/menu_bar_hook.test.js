@@ -3,6 +3,8 @@ import MenuBarHook from "../../../js/hooks/ui/menu_bar_hook.js";
 
 describe("MenuBarHook", () => {
   let hook;
+  let originalClipboard;
+  let originalExecCommand;
 
   function createMenuBar() {
     return mountHook(MenuBarHook, {
@@ -13,6 +15,14 @@ describe("MenuBarHook", () => {
           <button data-menubar-trigger>File</button>
           <div data-menubar-dropdown class="u-hidden">
             <ul><li>Disconnect</li><li>Settings</li></ul>
+          </div>
+        </div>
+        <div class="relative inline-flex">
+          <button data-menubar-trigger>Edit</button>
+          <div data-menubar-dropdown class="u-hidden">
+            <ul>
+              <li data-menubar-copy-selection data-testid="context-menu-item-copy_selection" class="hover:bg-selection-bg hover:text-selection-fg">Copy</li>
+            </ul>
           </div>
         </div>
         <div class="relative inline-flex">
@@ -38,11 +48,19 @@ describe("MenuBarHook", () => {
   }
 
   beforeEach(() => {
+    originalClipboard = navigator.clipboard;
+    originalExecCommand = document.execCommand;
     hook = createMenuBar();
   });
 
   afterEach(() => {
     if (hook.destroyed) hook.destroyed();
+    vi.restoreAllMocks();
+    Object.defineProperty(navigator, "clipboard", {
+      configurable: true,
+      value: originalClipboard,
+    });
+    document.execCommand = originalExecCommand;
     cleanupDOM();
   });
 
@@ -57,6 +75,19 @@ describe("MenuBarHook", () => {
   function clickTrigger(index) {
     const trigger = triggers()[index];
     trigger.dispatchEvent(new MouseEvent("mousedown", { bubbles: true }));
+  }
+
+  function copyItem() {
+    return hook.el.querySelector("[data-menubar-copy-selection]");
+  }
+
+  function stubSelection(text, container) {
+    const textNode = container.firstChild || container;
+    vi.spyOn(window, "getSelection").mockReturnValue({
+      rangeCount: text ? 1 : 0,
+      toString: () => text,
+      getRangeAt: () => ({ commonAncestorContainer: textNode }),
+    });
   }
 
   // ── open / close ────────────────────────────────────
@@ -99,18 +130,18 @@ describe("MenuBarHook", () => {
     it("switches to another menu on hover when one is open", () => {
       clickTrigger(0); // Open File
       // Hover over View trigger
-      const viewTrigger = triggers()[1];
+      const viewTrigger = triggers()[2];
       viewTrigger.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
 
       expect(dropdowns()[0].classList.contains("u-hidden")).toBe(true);
-      expect(dropdowns()[1].classList.contains("u-hidden")).toBe(false);
+      expect(dropdowns()[2].classList.contains("u-hidden")).toBe(false);
     });
 
     it("does not open on hover when no menu is active", () => {
-      const viewTrigger = triggers()[1];
+      const viewTrigger = triggers()[2];
       viewTrigger.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
 
-      expect(dropdowns()[1].classList.contains("u-hidden")).toBe(true);
+      expect(dropdowns()[2].classList.contains("u-hidden")).toBe(true);
     });
   });
 
@@ -118,18 +149,87 @@ describe("MenuBarHook", () => {
 
   describe("disabled triggers", () => {
     it("does not open dropdown for disabled trigger", () => {
-      clickTrigger(2); // Tools (disabled)
-      expect(dropdowns()[2].classList.contains("u-hidden")).toBe(true);
+      clickTrigger(3); // Tools (disabled)
+      expect(dropdowns()[3].classList.contains("u-hidden")).toBe(true);
     });
 
     it("does not switch to disabled trigger on hover", () => {
       clickTrigger(0); // Open File
-      const toolsTrigger = triggers()[2];
+      const toolsTrigger = triggers()[3];
       toolsTrigger.dispatchEvent(new MouseEvent("mouseenter", { bubbles: true }));
 
       // File should still be open, Tools should not
       expect(dropdowns()[0].classList.contains("u-hidden")).toBe(false);
-      expect(dropdowns()[2].classList.contains("u-hidden")).toBe(true);
+      expect(dropdowns()[3].classList.contains("u-hidden")).toBe(true);
+    });
+  });
+
+  // ── copy selection ──────────────────────────────────
+
+  describe("copy selection", () => {
+    it("disables Copy when no chat-log selection exists at menu-open time", () => {
+      stubSelection("", document.body);
+
+      clickTrigger(1); // Edit
+
+      expect(copyItem().dataset.copyDisabled).toBe("true");
+      expect(copyItem().getAttribute("aria-disabled")).toBe("true");
+      expect(copyItem().classList.contains("menubar-copy-disabled")).toBe(true);
+    });
+
+    it("enables Copy when selected text is inside the chat log", () => {
+      const chatLog = document.createElement("div");
+      chatLog.id = "chat-messages";
+      chatLog.textContent = "selected chat text";
+      document.body.appendChild(chatLog);
+      stubSelection("selected chat text", chatLog);
+
+      clickTrigger(1); // Edit
+
+      expect(copyItem().dataset.copyDisabled).toBe("false");
+      expect(copyItem().getAttribute("aria-disabled")).toBe("false");
+      expect(copyItem().classList.contains("menubar-copy-disabled")).toBe(false);
+    });
+
+    it("copies selected chat-log text through the Clipboard API without a server event", () => {
+      const chatLog = document.createElement("div");
+      chatLog.id = "chat-messages";
+      chatLog.textContent = "copy me";
+      document.body.appendChild(chatLog);
+      stubSelection("copy me", chatLog);
+
+      const writeText = vi.fn().mockResolvedValue(undefined);
+      Object.defineProperty(navigator, "clipboard", {
+        configurable: true,
+        value: { writeText },
+      });
+
+      clickTrigger(1); // Edit
+      copyItem().dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+      expect(writeText).toHaveBeenCalledWith("copy me");
+      expect(hook.pushEvent).not.toHaveBeenCalled();
+      expect(dropdowns()[1].classList.contains("u-hidden")).toBe(true);
+    });
+
+    it("falls back to execCommand when the Clipboard API is unavailable", () => {
+      const chatLog = document.createElement("div");
+      chatLog.id = "chat-messages";
+      chatLog.textContent = "fallback copy";
+      document.body.appendChild(chatLog);
+      stubSelection("fallback copy", chatLog);
+
+      Object.defineProperty(navigator, "clipboard", {
+        configurable: true,
+        value: undefined,
+      });
+      document.execCommand = vi.fn();
+
+      clickTrigger(1); // Edit
+      copyItem().dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+      expect(document.execCommand).toHaveBeenCalledWith("copy");
+      expect(hook.pushEvent).not.toHaveBeenCalled();
     });
   });
 

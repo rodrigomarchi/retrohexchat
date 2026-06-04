@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   @moduledoc """
   macOS-style textual menu bar for the App interface.
 
-  Renders a compact, single-line menu bar with File, View, Tools, and Help
+  Renders a compact, single-line menu bar with File, Edit, View, Tools, and Help
   dropdown menus. When `connected=false`, only Help is enabled — the other
   menus are grayed out and non-interactive.
 
@@ -104,6 +104,36 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         </.menu_dropdown>
       </div>
 
+      <%!-- Edit menu --%>
+      <div class="relative inline-flex">
+        <.menu_trigger label={dgettext("ui", "Edit")} disabled={!@connected} />
+        <.menu_dropdown :if={@connected}>
+          <.menu_item
+            icon_fn={:icon_btn_remove}
+            label={dgettext("ui", "Clear Window")}
+            action="clear_window"
+            on_action={@on_action}
+          />
+          <.context_menu_separator />
+          <.menu_item
+            icon_fn={:icon_copy}
+            label={dgettext("ui", "Copy")}
+            action="copy_selection"
+            data-menubar-copy-selection="true"
+            data-copy-disabled="true"
+            aria-disabled="true"
+          />
+          <.context_menu_separator />
+          <.menu_item
+            icon_fn={:icon_btn_find}
+            label={dgettext("ui", "Find")}
+            action="toggle_search"
+            on_action={@on_action}
+            shortcut={dgettext("ui", "Ctrl+Shift+F")}
+          />
+        </.menu_dropdown>
+      </div>
+
       <%!-- View menu --%>
       <div class="relative inline-flex">
         <.menu_trigger label={dgettext("ui", "View")} disabled={!@connected} />
@@ -130,12 +160,6 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
             icon_fn={:icon_tab_notify}
             label={dgettext("ui", "Notify List")}
             action="toggle_notify_list"
-            on_action={@on_action}
-          />
-          <.menu_item
-            icon_fn={:icon_btn_find}
-            label={dgettext("ui", "Find")}
-            action="toggle_search"
             on_action={@on_action}
           />
         </.menu_dropdown>
@@ -260,7 +284,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         )
       ]}
       data-menubar-trigger
-      data-disabled={@disabled}
+      data-disabled={if(@disabled, do: "true", else: "false")}
       aria-haspopup="true"
     >
       {@label}
@@ -287,11 +311,14 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   attr :label, :string, required: true
   attr :action, :string, required: true
   attr :on_action, :any, default: nil
+  attr :shortcut, :string, default: nil
+  attr :rest, :global
 
   defp menu_item(assigns) do
     ~H"""
-    <.context_menu_item on_click={@on_action} action={@action}>
+    <.context_menu_item on_click={@on_action} action={@action} {@rest}>
       <:icon>{apply(Icons, @icon_fn, [%{class: "w-[14px] h-[14px]"}])}</:icon>
+      <:shortcut :if={@shortcut}>{@shortcut}</:shortcut>
       {@label}
     </.context_menu_item>
     """

@@ -187,7 +187,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         keywords: [
           "search",
           "find",
-          "ctrl+f",
+          "ctrl+shift+f",
+          dgettext("help", "Edit menu"),
           dgettext("help", "text search"),
           "highlight",
           "regex",

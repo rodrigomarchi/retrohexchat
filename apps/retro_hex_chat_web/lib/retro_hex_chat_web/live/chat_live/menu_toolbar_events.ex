@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Commands.Autocomplete
+  alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
 
   use Phoenix.VerifiedRoutes, endpoint: RetroHexChatWeb.Endpoint, router: RetroHexChatWeb.Router
@@ -45,6 +46,10 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   def handle_event("open_search", _params, socket) do
     {:halt, assign(socket, search_visible: true)}
+  end
+
+  def handle_event("clear_window", _params, socket) do
+    {:halt, CommandDispatch.dispatch_command(socket, socket.assigns.session, "clear", [])}
   end
 
   def handle_event("toggle_conversations", _params, socket) do
