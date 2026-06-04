@@ -970,6 +970,13 @@ defmodule RetroHexChatWeb.App.ChatLive do
   defp channel_central_member_count(nil), do: 0
   defp channel_central_member_count(state), do: Map.get(state, :member_count, 0)
 
+  @spec online_buddy_count(%{entries: list()} | nil) :: non_neg_integer()
+  defp online_buddy_count(%{entries: entries}) when is_list(entries) do
+    Enum.count(entries, &(&1.online == true))
+  end
+
+  defp online_buddy_count(_notify_list), do: 0
+
   defp context_target_ignored?(_session, nil), do: false
 
   defp context_target_ignored?(session, nick) do

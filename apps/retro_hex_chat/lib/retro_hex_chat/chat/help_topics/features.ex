@@ -16,7 +16,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "friend list"),
           "online",
           "offline",
-          "track"
+          "track",
+          dgettext("help", "status bar")
         ],
         icon: :icon_tab_notify,
         description:
@@ -704,13 +705,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "clock",
           "connection",
           "mute",
+          "notify",
+          "buddy",
           dgettext("help", "channel info")
         ],
         icon: :icon_tab_status,
         description:
           dgettext(
             "help",
-            "Bottom bar showing connection status, lag indicator, clock, and channel information."
+            "Bottom bar showing channel information, online buddies, lag indicator, clock, and mute state."
           )
       },
       %{

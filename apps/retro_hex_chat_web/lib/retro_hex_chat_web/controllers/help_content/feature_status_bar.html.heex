@@ -13,12 +13,15 @@
   </strong>
   {dgettext(
     "help_features",
-    "Connection state with colored indicator (green = connected, red = disconnected)."
+    "Online buddy badge appears when tracked users are online; click it to open the Notify List."
   )}<br />
   <strong>
     {dgettext("help_features", "Right:")}
   </strong>
-  {dgettext("help_features", "Lag indicator, local clock, and mute toggle.")}
+  {dgettext(
+    "help_features",
+    "Lag indicator, local clock, and mute toggle."
+  )}<br />
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
@@ -28,5 +31,9 @@
   ·
   <.help_link topic="feature-connection-states">
     {dgettext("help_features", "Connection States")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-notify-list">
+    {dgettext("help_features", "Notify List")}
   </.help_link>
 </p>

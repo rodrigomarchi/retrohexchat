@@ -37,6 +37,40 @@ async function closeUsers(users: TestUser[]) {
 }
 
 test.describe('Notify list commands', () => {
+  test('UI entry points open Notify List and status bar buddy badge (J19)', async ({
+    browser,
+  }) => {
+    const alice = await newSignedInUser(browser, 'ntfuia');
+    const bob = await newSignedInUser(browser, 'ntfuib');
+
+    try {
+      await expect(alice.chat.statusBarNotifyBadge).toHaveCount(0);
+
+      await alice.chat.openNotifyListFromViewMenu();
+      await expect(alice.chat.notifyListDialog).toBeVisible();
+      await alice.chat.closeNotifyList();
+
+      await alice.chat.switchToStatusTab();
+      await alice.chat.sendMessage(`/notify add ${bob.nick}`);
+      await alice.chat.expectStatusMessageVisible(
+        `Added ${bob.nick} to notify list`,
+      );
+
+      await expect(alice.chat.statusBarNotifyBadge).toBeVisible();
+      await expect(alice.chat.statusBarNotifyBadge).toHaveAttribute(
+        'title',
+        '1 buddy online',
+      );
+      await expect(alice.chat.statusBarNotifyBadge).toContainText('1');
+
+      await alice.chat.statusBarNotifyBadge.click();
+      await expect(alice.chat.notifyListDialog).toBeVisible();
+      await expect(alice.chat.notifyListRow(bob.nick)).toContainText('Online');
+    } finally {
+      await closeUsers([alice, bob]);
+    }
+  });
+
   test('/notify add tracks online and offline buddy status changes (J15)', async ({
     browser,
   }) => {

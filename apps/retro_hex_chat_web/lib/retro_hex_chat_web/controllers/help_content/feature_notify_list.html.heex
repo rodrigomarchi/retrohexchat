@@ -8,8 +8,14 @@
   {dgettext("help_features", "Opening the Notify List")}
 </.help_h4>
 <p>
-  {dgettext("help_features", "Use the conversations sidebar (click \"Notify List\") or the")}
-  <code>{dgettext("help_features", "/notify")}</code> {dgettext("help_features", "command.")}
+  {dgettext(
+    "help_features",
+    "Open it from View > Notify List, the Options dropdown, or by typing"
+  )}
+  <code>{dgettext("help_features", "/notify")}</code>. {dgettext(
+    "help_features",
+    "When one or more tracked buddies are online, a bell badge appears in the status bar; click it to open the same window."
+  )}
 </p>
 <.help_h4 icon={:icon_btn_add}>{dgettext("help_features", "Adding Users")}</.help_h4>
 <pre>{dgettext("help_features", "/notify add <nickname> [note]")}</pre>
@@ -47,5 +53,9 @@
   ·
   <.help_link topic="feature-address-book">
     {dgettext("help_features", "Address Book")}
+  </.help_link>
+  ·
+  <.help_link topic="feature-status-bar">
+    {dgettext("help_features", "Status Bar")}
   </.help_link>
 </p>

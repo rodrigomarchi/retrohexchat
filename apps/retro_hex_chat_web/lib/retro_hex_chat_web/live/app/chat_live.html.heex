@@ -47,6 +47,8 @@
         tab_type={if @session.active_pm, do: :pm, else: :channel}
         lag_ms={@lag_ms}
         lag_status={@lag_status}
+        online_buddy_count={online_buddy_count(@session.notify_list)}
+        on_notify_toggle="toggle_notify_list"
         muted={@muted}
         timezone={@timezone}
         on_mute_toggle="toggle_mute"

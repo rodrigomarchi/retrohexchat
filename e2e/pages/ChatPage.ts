@@ -40,6 +40,7 @@ export class ChatPage {
   readonly channelListMenuItem: Locator;
   readonly toggleConversationsMenuItem: Locator;
   readonly toggleNicklistMenuItem: Locator;
+  readonly notifyListMenuItem: Locator;
   readonly findMenuItem: Locator;
   readonly helpTopicsMenuItem: Locator;
   readonly cheatsheetMenuItem: Locator;
@@ -63,6 +64,7 @@ export class ChatPage {
   readonly appLogo: Locator;
   readonly statusBarApp: Locator;
   readonly statusBarMuteToggle: Locator;
+  readonly statusBarNotifyBadge: Locator;
   readonly connectionStatusHook: Locator;
   readonly connectionBanner: Locator;
   readonly reconnectOverlay: Locator;
@@ -196,6 +198,7 @@ export class ChatPage {
     this.appLogo = page.getByTestId('app-logo');
     this.statusBarApp = page.getByTestId('status-bar-app');
     this.statusBarMuteToggle = page.getByTestId('status-bar-mute-toggle');
+    this.statusBarNotifyBadge = page.getByTestId('status-bar-notify-badge');
     this.connectionStatusHook = page.getByTestId('connection-status-hook');
     this.connectionBanner = this.connectionStatusHook.locator(
       '[data-role="banner"]',
@@ -250,6 +253,9 @@ export class ChatPage {
     );
     this.toggleNicklistMenuItem = page.getByTestId(
       'context-menu-item-toggle_nicklist',
+    );
+    this.notifyListMenuItem = page.getByTestId(
+      'context-menu-item-toggle_notify_list',
     );
     this.findMenuItem = page.getByTestId('context-menu-item-toggle_search');
     this.helpTopicsMenuItem = page.getByTestId(
@@ -549,6 +555,13 @@ export class ChatPage {
     await expect(this.findMenuItem).toBeVisible();
     await this.findMenuItem.click();
     await expect(this.searchBar).toBeVisible();
+  }
+
+  async openNotifyListFromViewMenu() {
+    await this.viewMenuTrigger.click();
+    await expect(this.notifyListMenuItem).toBeVisible();
+    await this.notifyListMenuItem.click();
+    await expect(this.notifyListDialog).toBeVisible();
   }
 
   async openFloodProtectionFromToolsMenu() {

@@ -38,6 +38,12 @@
     )}
   </li>
   <li>
+    <strong>{dgettext("help_ui", "Notify List")}</strong> {dgettext(
+      "help_ui",
+      "— Open the buddy list used to track when selected nicknames come online."
+    )}
+  </li>
+  <li>
     <strong>{dgettext("help_ui", "Find")}</strong> {dgettext(
       "help_ui",
       "— Open the search bar to find text in the current channel."
@@ -158,5 +164,8 @@
     <.help_link topic="keyboard-shortcuts">
       {dgettext("help_ui", "Keyboard Shortcuts")}
     </.help_link>
+  </li>
+  <li>
+    <.help_link topic="feature-notify-list">{dgettext("help_ui", "Notify List")}</.help_link>
   </li>
 </ul>

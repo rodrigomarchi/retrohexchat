@@ -14,6 +14,8 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         tab_type={:channel}
         lag_ms={120}
         lag_status={:normal}
+        online_buddy_count={2}
+        on_notify_toggle="toggle_notify_list"
       />
   """
   use RetroHexChatWeb.Component
@@ -30,6 +32,8 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   attr :tab_type, :atom, default: :channel, values: [:channel, :pm]
   attr :lag_ms, :any, default: nil, doc: "Lag in milliseconds, or nil when unknown/timed out"
   attr :lag_status, :atom, default: :normal, values: [:normal, :warning, :critical, :timeout]
+  attr :online_buddy_count, :integer, default: 0
+  attr :on_notify_toggle, :any, default: nil
   attr :muted, :boolean, default: false
   attr :timezone, :string, default: "Etc/UTC"
   attr :on_mute_toggle, :any, default: nil
@@ -63,7 +67,25 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         </span>
       </.window_status_bar_field>
 
-      <%!-- Zone 3: Lag display (hidden on mobile) --%>
+      <%!-- Zone 3: Online buddy count (hidden on mobile) --%>
+      <.window_status_bar_field
+        :if={@online_buddy_count > 0 and @on_notify_toggle}
+        class="hidden md:flex items-center justify-center min-w-[34px] px-[2px]"
+      >
+        <button
+          type="button"
+          class="inline-flex items-center justify-center gap-retro-2 w-full h-full min-h-0 bg-transparent"
+          phx-click={@on_notify_toggle}
+          title={buddy_count_label(@online_buddy_count)}
+          aria-label={buddy_count_label(@online_buddy_count)}
+          data-testid="status-bar-notify-badge"
+        >
+          <Icons.icon_btn_bell class="w-3 h-3 shrink-0" />
+          <span class="text-xs font-mono leading-none">{@online_buddy_count}</span>
+        </button>
+      </.window_status_bar_field>
+
+      <%!-- Zone 4: Lag display (hidden on mobile) --%>
       <.window_status_bar_field class={[
         "hidden md:flex items-center gap-retro-2 min-w-[64px]",
         lag_class(@lag_status)
@@ -74,13 +96,13 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         </span>
       </.window_status_bar_field>
 
-      <%!-- Zone 4: Clock (hidden on mobile) --%>
+      <%!-- Zone 5: Clock (hidden on mobile) --%>
       <.window_status_bar_field class="hidden md:flex items-center gap-retro-2 min-w-[64px]">
         <Icons.icon_clock class="w-3 h-3 shrink-0" />
         <span id="clock-display" phx-hook="ClockHook" class="text-xs font-mono">--:--</span>
       </.window_status_bar_field>
 
-      <%!-- Zone 5: Mute toggle --%>
+      <%!-- Zone 6: Mute toggle --%>
       <.window_status_bar_field class="flex items-center justify-center w-[28px] shrink-0">
         <.button
           :if={@on_mute_toggle}
@@ -108,6 +130,10 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   end
 
   # ── Private helpers ───────────────────────────────────
+
+  @spec buddy_count_label(non_neg_integer()) :: String.t()
+  defp buddy_count_label(count),
+    do: dngettext("ui", "%{count} buddy online", "%{count} buddies online", count)
 
   @spec lag_text(integer() | nil, atom()) :: String.t()
   defp lag_text(nil, :timeout), do: "?"

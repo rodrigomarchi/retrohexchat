@@ -172,6 +172,7 @@ make ci
 | J16 | `/notify edit/list/remove` updates output and Address Book state | `tests/chat-notify.spec.ts` | P1 | done |
 | J17 | `/umode +w` opts in to wallops; `-w` opts out | `tests/chat-wallops.spec.ts` | P1 | done |
 | J18 | `/wallops msg` reaches opted-in users and enforces privileges | `tests/chat-wallops.spec.ts` | P1 | done |
+| J19 | Notify List opens from the View menu and status-bar online buddy badge | `tests/chat-notify.spec.ts` | P0 | done |
 
 ## K - NickServ And ChanServ
 

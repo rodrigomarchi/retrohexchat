@@ -115,12 +115,12 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         id: "ui-toolbar",
         title: dgettext("help", "Toolbar"),
         category: dgettext("help", "User Interface"),
-        keywords: ["toolbar", "buttons", "icons", "tools", "menu"],
+        keywords: ["toolbar", "buttons", "icons", "tools", "menu", "notify"],
         icon: :icon_group_tools,
         description:
           dgettext(
             "help",
-            "Access all features through the toolbar buttons organized in six groups."
+            "Access common features through the menu bar and toolbar options."
           )
       },
       %{

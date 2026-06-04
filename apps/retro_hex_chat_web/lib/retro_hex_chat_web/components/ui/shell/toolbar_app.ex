@@ -74,6 +74,12 @@ defmodule RetroHexChatWeb.Components.UI.ToolbarApp do
             on_action={@on_action}
           />
           <.dropdown_item
+            icon_fn={:icon_tab_notify}
+            label={dgettext("ui", "Notify List")}
+            action="toggle_notify_list"
+            on_action={@on_action}
+          />
+          <.dropdown_item
             icon_fn={:icon_btn_find}
             label={dgettext("ui", "Find")}
             action="toggle_search"
