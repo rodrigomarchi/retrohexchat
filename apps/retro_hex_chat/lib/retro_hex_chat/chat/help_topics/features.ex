@@ -1177,6 +1177,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "broadcast",
           "audit log",
           "turn",
+          "turn tab",
           "danger zone",
           "console tab",
           "batch",

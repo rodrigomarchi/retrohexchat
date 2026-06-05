@@ -22,11 +22,16 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :broadcast_result, :any, default: nil
   attr :broadcast_can_wallops, :boolean, default: false
   attr :broadcast_can_announce, :boolean, default: false
+  attr :turn_stats, :string, default: nil
+  attr :turn_allocations, :string, default: nil
+  attr :turn_result, :any, default: nil
+  attr :turn_can_refresh, :boolean, default: false
   attr :on_tab, :any, default: nil
   attr :on_motd_set, :any, default: nil
   attr :on_motd_clear, :any, default: nil
   attr :on_motd_refresh, :any, default: nil
   attr :on_broadcast_send, :any, default: nil
+  attr :on_turn_refresh, :any, default: nil
   attr :on_close, :any, default: nil
 
   @spec admin_console_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -138,6 +143,16 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 can_wallops={@broadcast_can_wallops}
                 can_announce={@broadcast_can_announce}
                 on_send={@on_broadcast_send}
+              />
+            </.tabs_content>
+
+            <.tabs_content value="turn" builder={builder}>
+              <.turn_tab
+                stats={@turn_stats}
+                allocations={@turn_allocations}
+                result={@turn_result}
+                can_refresh={@turn_can_refresh}
+                on_refresh={@on_turn_refresh}
               />
             </.tabs_content>
 
@@ -372,6 +387,50 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
     """
   end
 
+  attr :stats, :string, default: nil
+  attr :allocations, :string, default: nil
+  attr :result, :any, default: nil
+  attr :can_refresh, :boolean, default: false
+  attr :on_refresh, :any, default: nil
+
+  defp turn_tab(assigns) do
+    ~H"""
+    <div class="space-y-retro-8" data-testid="admin-console-tab-turn">
+      <div class="flex justify-end">
+        <.button
+          type="button"
+          size="sm"
+          variant="outline"
+          phx-click={@on_refresh}
+          disabled={not @can_refresh}
+        >
+          <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
+          {dgettext("dialogs", "Refresh")}
+        </.button>
+      </div>
+
+      <div class="grid gap-retro-8 md:grid-cols-2">
+        <div>
+          <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Stats")}</div>
+          <pre
+            id="admin-console-turn-stats"
+            class="shadow-retro-sunken bg-white min-h-[168px] max-h-[220px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
+          ><%= @stats || "" %></pre>
+        </div>
+        <div>
+          <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Allocations")}</div>
+          <pre
+            id="admin-console-turn-allocations"
+            class="shadow-retro-sunken bg-white min-h-[168px] max-h-[220px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
+          ><%= @allocations || "" %></pre>
+        </div>
+      </div>
+
+      <.admin_inline_result result={@result} />
+    </div>
+    """
+  end
+
   attr :result, :any, default: nil
 
   defp admin_inline_result(assigns) do
@@ -393,6 +452,6 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
   @spec admin_shell_tabs() :: [String.t()]
   defp admin_shell_tabs do
-    ~w(server_settings users channels audit_log turn danger_zone)
+    ~w(server_settings users channels audit_log danger_zone)
   end
 end

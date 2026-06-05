@@ -27,7 +27,8 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
          admin_console_results: [],
          admin_console_tab: "console",
          admin_console_motd_result: nil,
-         admin_console_broadcast_result: nil
+         admin_console_broadcast_result: nil,
+         admin_console_turn_result: nil
        )}
     else
       {:halt,
@@ -46,11 +47,14 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     tab = normalize_tab(tab)
     socket = assign(socket, admin_console_tab: tab)
 
-    if tab == "motd" do
-      {:halt, assign_motd_snapshot(socket, nil)}
-    else
-      {:halt, socket}
-    end
+    socket =
+      case tab do
+        "motd" -> assign_motd_snapshot(socket, nil)
+        "turn" -> assign_turn_snapshot(socket)
+        _ -> socket
+      end
+
+    {:halt, socket}
   end
 
   def handle_event("admin_console_refresh_motd", _params, socket) do
@@ -112,6 +116,18 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
 
       result = Dispatcher.dispatch(command, args, user_context(socket))
       {:halt, assign(socket, admin_console_broadcast_result: result_entry(result))}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_refresh_turn", _params, socket) do
+    if admin?(socket) do
+      {:halt, assign_turn_snapshot(socket)}
     else
       {:halt,
        error_event(
@@ -190,6 +206,28 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     )
   end
 
+  defp assign_turn_snapshot(socket) do
+    %{stats: stats, allocations: allocations, result: result} = turn_snapshot(socket)
+
+    assign(socket,
+      admin_console_turn_stats: stats,
+      admin_console_turn_allocations: allocations,
+      admin_console_turn_result: result
+    )
+  end
+
+  defp turn_snapshot(socket) do
+    context = user_context(socket)
+    stats_result = Dispatcher.dispatch("admin", ["turn", "stats"], context)
+    allocations_result = Dispatcher.dispatch("admin", ["turn", "allocations"], context)
+
+    %{
+      stats: result_message(stats_result),
+      allocations: result_message(allocations_result),
+      result: first_error_entry([stats_result, allocations_result])
+    }
+  end
+
   defp command_args(""), do: []
   defp command_args(content), do: [content]
 
@@ -200,6 +238,15 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
 
   defp result_entry(result) do
     %{status: result_status(result), message: result_message(result)}
+  end
+
+  defp first_error_entry(results) do
+    results
+    |> Enum.find(&(result_status(&1) == :error))
+    |> case do
+      nil -> nil
+      result -> result_entry(result)
+    end
   end
 
   defp user_context(socket) do

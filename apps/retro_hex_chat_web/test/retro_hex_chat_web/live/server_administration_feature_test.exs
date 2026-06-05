@@ -62,6 +62,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert "ui-message-of-the-day" in special_messages.see_also
       assert "server settings" in admin_console.keywords
       assert "motd tab" in admin_console.keywords
+      assert "turn tab" in admin_console.keywords
       assert "danger zone" in admin_console.keywords
       assert "cmd-setmotd" in admin_console.see_also
       assert "cmd-clearmotd" in admin_console.see_also
@@ -244,6 +245,49 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
     end
   end
 
+  describe "Admin Console TURN tab" do
+    test "component renders read-only stats, allocations, and refresh control" do
+      document =
+        render_component(&AdminConsoleDialog.admin_console_dialog/1,
+          id: "admin-console-dialog",
+          show: true,
+          active_tab: "turn",
+          results: [],
+          turn_stats: "*** TURN Server Stats ***",
+          turn_allocations: "*** No active TURN allocations.",
+          turn_result: nil,
+          turn_can_refresh: true,
+          on_tab: "admin_console_tab",
+          on_turn_refresh: "admin_console_refresh_turn",
+          on_close: "close_admin_console"
+        )
+        |> Floki.parse_document!()
+
+      html = Floki.raw_html(document)
+
+      assert html =~ ~s(data-testid="admin-console-tab-turn")
+      assert html =~ ~s(id="admin-console-turn-stats")
+      assert html =~ "*** TURN Server Stats ***"
+      assert html =~ ~s(id="admin-console-turn-allocations")
+      assert html =~ "*** No active TURN allocations."
+      assert html =~ ~s(phx-click="admin_console_refresh_turn")
+      assert html =~ "Refresh"
+    end
+
+    test "admin can refresh TURN snapshots from the structured tab", %{conn: conn} do
+      view = connect_admin(conn)
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      html = render_click(view, "admin_console_tab", %{"tab" => "turn"})
+
+      assert_turn_snapshot(html)
+
+      html = render_click(view, "admin_console_refresh_turn")
+
+      assert_turn_snapshot(html)
+    end
+  end
+
   defp connect_user(conn, nick) do
     {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
@@ -258,6 +302,13 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
     document
     |> Floki.find("[data-testid^=\"admin-console-tab-label-\"]")
     |> Enum.map(fn label -> label |> Floki.text() |> String.trim() end)
+  end
+
+  defp assert_turn_snapshot(html) do
+    not_configured? = html =~ "TURN server is not configured" and html =~ "listener_count = 0"
+    running? = html =~ "TURN Server Stats" and html =~ "Active allocations"
+
+    assert not_configured? or running?
   end
 
   defp menu_actions(section) do

@@ -622,7 +622,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           dgettext(
             "help",
             "View TURN server stats (active allocations, relay ports in use) and list active allocations."
-          )
+          ),
+        see_also: ["feature-admin-console", "feature-privacy-mode"]
       },
       %{
         id: "cmd-admin-nuke",
