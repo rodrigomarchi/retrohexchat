@@ -69,9 +69,15 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert "audit log tab" in admin_console.keywords
       assert "danger zone" in admin_console.keywords
       assert "danger zone tab" in admin_console.keywords
+      assert "users tab" in admin_console.keywords
       assert "cmd-setmotd" in admin_console.see_also
       assert "cmd-clearmotd" in admin_console.see_also
       assert "cmd-admin-nuke" in admin_console.see_also
+
+      admin_user = HelpTopics.get_topic("cmd-admin-user")
+
+      assert "users tab" in admin_user.keywords
+      assert "feature-admin-console" in admin_user.see_also
 
       broadcasts = HelpTopics.get_topic("feature-server-broadcasts")
 
@@ -207,6 +213,73 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ "Server setting &#39;server_description&#39; set to"
       assert html =~ new_description
       assert Queries.get_setting("server_description") == new_description
+    end
+  end
+
+  describe "Admin Console Users tab" do
+    test "component renders user filters, snapshots, ban list, and info command controls" do
+      document =
+        render_component(&AdminConsoleDialog.admin_console_dialog/1,
+          id: "admin-console-dialog",
+          show: true,
+          active_tab: "users",
+          results: [],
+          users_text: "*** User List (1 results) ***\n  AdminUser [registered] [offline]",
+          users_banlist_text: "*** No active server bans.",
+          users_result: nil,
+          users_search: "Admin",
+          users_online_only: true,
+          users_info_nick: "AdminUser",
+          users_can_refresh: true,
+          on_tab: "admin_console_tab",
+          on_users_refresh: "admin_console_refresh_users",
+          on_users_info: "admin_console_user_info",
+          on_close: "close_admin_console"
+        )
+        |> Floki.parse_document!()
+
+      html = Floki.raw_html(document)
+
+      assert html =~ ~s(data-testid="admin-console-tab-users")
+      assert html =~ ~s(id="admin-console-users-form")
+      assert html =~ ~s(phx-submit="admin_console_refresh_users")
+      assert html =~ ~s(name="search")
+      assert html =~ ~s(name="online_only")
+      assert html =~ ~s(id="admin-console-users-output")
+      assert html =~ "AdminUser"
+      assert html =~ ~s(id="admin-console-users-banlist")
+      assert html =~ "No active server bans"
+      assert html =~ ~s(id="admin-console-user-info-form")
+      assert html =~ ~s(phx-submit="admin_console_user_info")
+      assert html =~ ~s(name="nick")
+      assert html =~ "Refresh"
+      assert html =~ "Info"
+    end
+
+    test "admin can refresh users and inspect a nick through the structured tab", %{conn: conn} do
+      nick =
+        "AU#{uid()}"
+        |> String.slice(0, 16)
+
+      assert {:ok, _registered} = Queries.insert_registered_nick(nick, "password123")
+
+      view = connect_admin(conn)
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      html = render_click(view, "admin_console_tab", %{"tab" => "users"})
+
+      assert html =~ "*** User List"
+      assert html =~ nick
+      assert html =~ "No active server bans"
+
+      html =
+        view
+        |> form("#admin-console-user-info-form", %{"nick" => nick})
+        |> render_submit()
+
+      assert html =~ "*** User: #{nick}"
+      assert html =~ "Registered:"
+      assert html =~ "Server operator:"
     end
   end
 

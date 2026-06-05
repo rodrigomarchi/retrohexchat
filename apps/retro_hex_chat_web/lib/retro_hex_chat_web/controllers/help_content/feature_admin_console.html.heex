@@ -12,7 +12,10 @@
     "- server information, editable settings, and the solo arcade debug launcher."
   )}<br />
   <strong>{dgettext("help_features", "Users")}</strong>
-  {dgettext("help_features", "- registered users, roles, bans, and moderation actions.")}<br />
+  {dgettext(
+    "help_features",
+    "- registered-user snapshots, search, online-only filtering, banlist output, and Info lookups."
+  )}<br />
   <strong>{dgettext("help_features", "Channels")}</strong>
   {dgettext("help_features", "- channel inspection and channel administration.")}<br />
   <strong>{dgettext("help_features", "MOTD")}</strong>
@@ -39,6 +42,13 @@
   {dgettext("help_features", "- guarded factory-reset controls.")}<br />
   <strong>{dgettext("help_features", "Console")}</strong>
   {dgettext("help_features", "- raw batch command execution.")}
+</p>
+<.help_h4 icon={:icon_tab_nicklist}>{dgettext("help_features", "Users Tab")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The Users tab reads /admin user list and /admin user banlist as point-in-time snapshots. Use Search and Online only before Refresh, then enter a nick and choose Info to run /admin user info for that user."
+  )}
 </p>
 <.help_h4 icon={:icon_code}>{dgettext("help_features", "Input Format")}</.help_h4>
 <p>
@@ -83,6 +93,7 @@
 <p>
   <.help_link topic="cmd-admin">{dgettext("help_features", "/admin Command")}</.help_link>
   · <.help_link topic="cmd-admin-server">{dgettext("help_features", "/admin server")}</.help_link>
+  · <.help_link topic="cmd-admin-user">{dgettext("help_features", "/admin user")}</.help_link>
   · <.help_link topic="cmd-motd">{dgettext("help_features", "/motd")}</.help_link>
   · <.help_link topic="cmd-setmotd">{dgettext("help_features", "/setmotd")}</.help_link>
   · <.help_link topic="cmd-clearmotd">{dgettext("help_features", "/clearmotd")}</.help_link>

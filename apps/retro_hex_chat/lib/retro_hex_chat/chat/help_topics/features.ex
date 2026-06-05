@@ -1170,6 +1170,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "server settings",
           "server settings tab",
           "users",
+          "users tab",
           "channels",
           "motd",
           "motd tab",

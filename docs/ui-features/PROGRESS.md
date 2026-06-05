@@ -26,7 +26,7 @@ iterations — read it before starting, write to it before stopping.
 | 09 | Channel Configuration | P2 | ✅ | — | 2026-06-05 | Complete: Channel Central welcome/throttle/ownership transfer |
 | 10 | User Lookups | P3 | ✅ | — | 2026-06-05 | Complete: User Lookup dialog, context Last Seen, and Whois/Whowas result cards |
 | 11 | ChanServ | P3 | ✅ | — | 2026-06-05 | Complete: Channel Central registration/access tab |
-| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | MOTD menu, Admin Console shell, Server Settings/MOTD/Broadcast/Audit Log/TURN/Danger Zone tabs complete; Users/Channels remain |
+| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | MOTD menu, Admin Console shell, Server Settings/MOTD/Broadcast/Audit Log/TURN/Danger Zone tabs complete; Users snapshot/Info complete; Users moderation/Channels remain |
 
 **Suggested order:** 02 → 03 (cheap wiring wins) → 01 (highest impact) → 04 → 05 → 06 → 08 → 09 → 07 → 10 → 11 → 12.
 
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-05 — Feature 12: `Server Administration` Admin Console Users snapshot tab
+- **Did:** implemented the structured Users tab snapshot flow with `/admin user list` search/online filters, `/admin user banlist` output, and `/admin user info <nick>` lookup surfaced through reusable Admin Console components.
+- **Tests:** expanded `ServerAdministrationFeatureTest` with component coverage for Users filters/output/banlist/Info controls and LiveView coverage using a real registered nick. Red phase: `make ci.quick` failed on the missing tab/events/docs, then passed after implementation. `mix audit.styles` reported 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated Admin Console and `/admin user` help metadata/content with Users tab discovery and cross-references.
+- **Follow-ups:** Feature 12 remains in progress for user moderation actions (ban/unban, kick, mute/unmute, rename, role, NickServ admin actions) and Channels structured controls.
 
 ### 2026-06-05 — Feature 12: `Server Administration` Admin Console Danger Zone tab
 - **Did:** implemented the guarded Danger Zone tab with `/admin nuke` preview, preserved-table copy, server-name confirmation, and protected `/admin nuke --confirm` execution path.
@@ -188,6 +194,7 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 - **[Feature 12] Audit Log UI tests can seed through the domain context** — inserting via `AuditLogs.log/4` gives the LiveView a real `/admin log` result without parsing command text or bypassing database behavior.
 - **[Feature 12] Server settings forms should diff against a domain snapshot** — keep defaults/current values in `RetroHexChat.Admin`, then dispatch `/admin server set` only for submitted fields that changed.
 - **[Feature 12] Do not execute nuke in feature UI tests** — the command also shuts down shared channel/bot processes; cover preview and invalid confirmation in LiveView tests, leaving destructive execution to isolated command tests.
+- **[Feature 12] Users tab can start as command-backed snapshots** — `/admin user list`, `/admin user banlist`, and `/admin user info` already format admin-ready text; reuse those outputs for read-only slices before adding destructive confirmation flows.
 - **[Feature 12] Admin Console should default to the raw Console tab** — structured tabs can be introduced incrementally while preserving the existing batch-command surface as the safe fallback and default.
 - **[Feature 12] Icon text can leak into label assertions** — Floki text extraction may include icon text such as `#`; wrap visible labels in explicit `data-testid` spans when tests need exact tab/menu labels.
 - **[Feature 11] ChanServ UI should project service state through a domain snapshot** — Channel Central needs founder, viewer role, and grouped access lists together; keep that aggregation in `Services.ChanServ` so event handlers only refresh assigns.

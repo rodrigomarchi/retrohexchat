@@ -36,6 +36,13 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :server_settings_values, :map, default: %{}
   attr :server_settings_result, :any, default: nil
   attr :server_settings_can_edit, :boolean, default: false
+  attr :users_text, :string, default: nil
+  attr :users_banlist_text, :string, default: nil
+  attr :users_result, :any, default: nil
+  attr :users_search, :string, default: ""
+  attr :users_online_only, :boolean, default: false
+  attr :users_info_nick, :string, default: ""
+  attr :users_can_refresh, :boolean, default: false
   attr :danger_zone_preview, :string, default: nil
   attr :danger_zone_result, :any, default: nil
   attr :danger_zone_confirm, :string, default: ""
@@ -51,6 +58,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_server_settings_save, :any, default: nil
   attr :on_server_settings_refresh, :any, default: nil
   attr :on_singleplayer, :any, default: nil
+  attr :on_users_refresh, :any, default: nil
+  attr :on_users_info, :any, default: nil
   attr :on_danger_zone_preview, :any, default: nil
   attr :on_danger_zone_change, :any, default: nil
   attr :on_danger_zone_execute, :any, default: nil
@@ -199,6 +208,20 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_save={@on_server_settings_save}
                 on_refresh={@on_server_settings_refresh}
                 on_singleplayer={@on_singleplayer}
+              />
+            </.tabs_content>
+
+            <.tabs_content value="users" builder={builder}>
+              <.users_tab
+                text={@users_text}
+                banlist_text={@users_banlist_text}
+                result={@users_result}
+                search={@users_search}
+                online_only={@users_online_only}
+                info_nick={@users_info_nick}
+                can_refresh={@users_can_refresh}
+                on_refresh={@on_users_refresh}
+                on_info={@on_users_info}
               />
             </.tabs_content>
 
@@ -699,6 +722,93 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
     """
   end
 
+  attr :text, :string, default: nil
+  attr :banlist_text, :string, default: nil
+  attr :result, :any, default: nil
+  attr :search, :string, default: ""
+  attr :online_only, :boolean, default: false
+  attr :info_nick, :string, default: ""
+  attr :can_refresh, :boolean, default: false
+  attr :on_refresh, :any, default: nil
+  attr :on_info, :any, default: nil
+
+  defp users_tab(assigns) do
+    ~H"""
+    <div class="space-y-retro-8" data-testid="admin-console-tab-users">
+      <form id="admin-console-users-form" phx-submit={@on_refresh}>
+        <div class="flex flex-wrap items-end gap-retro-6">
+          <div class="flex-1 min-w-[160px]">
+            <label for="admin-console-users-search" class="block text-xs font-bold mb-retro-2">
+              {dgettext("dialogs", "Search")}
+            </label>
+            <input
+              id="admin-console-users-search"
+              name="search"
+              type="text"
+              class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+              value={@search}
+              autocomplete="off"
+              disabled={not @can_refresh}
+            />
+          </div>
+          <label class="inline-flex items-center gap-retro-4 text-sm min-h-[28px]">
+            <input
+              type="checkbox"
+              name="online_only"
+              value="true"
+              checked={@online_only}
+              disabled={not @can_refresh}
+            />
+            <span>{dgettext("dialogs", "Online only")}</span>
+          </label>
+          <.button type="submit" size="sm" variant="outline" disabled={not @can_refresh}>
+            <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Refresh")}
+          </.button>
+        </div>
+      </form>
+
+      <pre
+        id="admin-console-users-output"
+        class="shadow-retro-sunken bg-white min-h-[140px] max-h-[210px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
+      ><%= @text || "" %></pre>
+
+      <form id="admin-console-user-info-form" phx-submit={@on_info}>
+        <div class="flex flex-wrap items-end gap-retro-6">
+          <div class="flex-1 min-w-[160px]">
+            <label for="admin-console-user-info-nick" class="block text-xs font-bold mb-retro-2">
+              {dgettext("dialogs", "Nick")}
+            </label>
+            <input
+              id="admin-console-user-info-nick"
+              name="nick"
+              type="text"
+              class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+              value={@info_nick}
+              autocomplete="off"
+              disabled={not @can_refresh}
+            />
+          </div>
+          <.button type="submit" size="sm" disabled={not @can_refresh}>
+            <:icon><Icons.icon_btn_info class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Info")}
+          </.button>
+        </div>
+      </form>
+
+      <div>
+        <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Ban list")}</div>
+        <pre
+          id="admin-console-users-banlist"
+          class="shadow-retro-sunken bg-white min-h-[84px] max-h-[150px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
+        ><%= @banlist_text || "" %></pre>
+      </div>
+
+      <.admin_inline_result result={@result} />
+    </div>
+    """
+  end
+
   attr :preview, :string, default: nil
   attr :result, :any, default: nil
   attr :confirm, :string, default: ""
@@ -803,6 +913,6 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
   @spec admin_shell_tabs() :: [String.t()]
   defp admin_shell_tabs do
-    ~w(users channels)
+    ~w(channels)
   end
 end

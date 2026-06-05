@@ -548,13 +548,24 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-admin-user",
         title: dgettext("help", "/admin user"),
         category: dgettext("help", "Admin & Server"),
-        keywords: ["admin", "user", "ban", "kick", "mute", "rename", "role", "banlist"],
+        keywords: [
+          "admin",
+          "user",
+          "users tab",
+          "ban",
+          "kick",
+          "mute",
+          "rename",
+          "role",
+          "banlist"
+        ],
         icon: :icon_shield,
         description:
           dgettext(
             "help",
             "Manage server users: list, info, ban/unban, kick, mute/unmute, rename, set role."
-          )
+          ),
+        see_also: ["feature-admin-console", "cmd-admin-log"]
       },
       %{
         id: "cmd-admin-channel",

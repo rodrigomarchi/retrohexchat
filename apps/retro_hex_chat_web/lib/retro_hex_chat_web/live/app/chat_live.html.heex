@@ -982,6 +982,13 @@
   server_settings_values={@admin_console_server_settings_values}
   server_settings_result={@admin_console_server_settings_result}
   server_settings_can_edit={admin_only?(@session)}
+  users_text={@admin_console_users_text}
+  users_banlist_text={@admin_console_users_banlist_text}
+  users_result={@admin_console_users_result}
+  users_search={@admin_console_users_search}
+  users_online_only={@admin_console_users_online_only}
+  users_info_nick={@admin_console_users_info_nick}
+  users_can_refresh={admin_only?(@session)}
   danger_zone_preview={@admin_console_danger_zone_preview}
   danger_zone_result={@admin_console_danger_zone_result}
   danger_zone_confirm={@admin_console_danger_zone_confirm}
@@ -997,6 +1004,8 @@
   on_server_settings_save="admin_console_save_server_settings"
   on_server_settings_refresh="admin_console_refresh_server_settings"
   on_singleplayer="admin_console_start_singleplayer"
+  on_users_refresh="admin_console_refresh_users"
+  on_users_info="admin_console_user_info"
   on_danger_zone_preview="admin_console_preview_nuke"
   on_danger_zone_change="admin_console_change_nuke_confirm"
   on_danger_zone_execute="admin_console_execute_nuke"

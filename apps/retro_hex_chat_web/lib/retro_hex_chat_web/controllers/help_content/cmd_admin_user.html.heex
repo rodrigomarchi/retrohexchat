@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_commands",
-    "Manage server users: list, view details, ban, kick, mute, rename, and assign roles. Requires server administrator role."
+    "Manage server users: list, view details, ban, kick, mute, rename, and assign roles. The Admin Console Users tab provides command-backed list, search, banlist, and Info controls. Requires server administrator role."
   )}
 </p>
 
@@ -50,6 +50,16 @@
   <li><code>banlist</code> {dgettext("help_commands", "— List active server bans")}</li>
 </ul>
 
+<.help_h4 icon={:icon_tab_nicklist}>
+  {dgettext("help_commands", "Admin Console Users Tab")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Open File → Admin Console, then choose Users to refresh /admin user list snapshots, apply search and online-only filters, inspect a nick with /admin user info, and review /admin user banlist output without typing the commands."
+  )}
+</p>
+
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Only root admins (env var) can promote users to admin")}</li>
@@ -67,6 +77,10 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  ·
+  <.help_link topic="feature-admin-console">
+    {dgettext("help_commands", "Admin Console")}
+  </.help_link>
   · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
   · <.help_link topic="cmd-ban">{dgettext("help_commands", "/ban")}</.help_link>
   · <.help_link topic="cmd-mute">{dgettext("help_commands", "/mute")}</.help_link>
