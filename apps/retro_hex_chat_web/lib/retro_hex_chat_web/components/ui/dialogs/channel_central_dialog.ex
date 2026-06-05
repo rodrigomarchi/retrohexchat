@@ -53,6 +53,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :throttle_seconds, :integer, default: 0
   attr :notice, :string, default: nil
   attr :transfer_error, :string, default: nil
+  attr :registration, :map, default: nil
+  attr :access_tab, :string, default: "sop"
+  attr :access_selected, :string, default: nil
+  attr :access_nick, :string, default: ""
+  attr :cs_error, :string, default: nil
+  attr :cs_confirm_drop, :boolean, default: false
+  attr :identified, :boolean, default: false
   attr :modes, :map, default: %{}
   attr :bans, :list, default: []
   attr :ban_exceptions, :list, default: []
@@ -78,6 +85,15 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_invite_ex_add, :any, default: nil
   attr :on_invite_ex_remove, :any, default: nil
   attr :on_invite_ex_select, :any, default: nil, doc: "Invite exception row select event"
+  attr :on_cs_register, :any, default: nil
+  attr :on_cs_drop_request, :any, default: nil
+  attr :on_cs_drop, :any, default: nil
+  attr :on_cs_drop_cancel, :any, default: nil
+  attr :on_cs_access_tab, :any, default: nil
+  attr :on_cs_access_change, :any, default: nil
+  attr :on_cs_access_add, :any, default: nil
+  attr :on_cs_access_select, :any, default: nil
+  attr :on_cs_access_remove, :any, default: nil
   attr :show_add_ban_dialog, :boolean, default: false
   attr :show_add_ban_ex_dialog, :boolean, default: false
   attr :show_add_invite_ex_dialog, :boolean, default: false
@@ -157,6 +173,15 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "Invite Exc.")}
             </.tabs_trigger>
+            <.tabs_trigger
+              builder={builder}
+              value="registration"
+              phx-click={@on_tab}
+              phx-value-tab="registration"
+            >
+              <:icon><Icons.icon_tab_registration class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Registration")}
+            </.tabs_trigger>
           </.tabs_list>
 
           <.tabs_content value="general" builder={builder}>
@@ -223,6 +248,29 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               empty_label={dgettext("dialogs", "No invite exceptions set.")}
             />
           </.tabs_content>
+
+          <.tabs_content value="registration" builder={builder}>
+            <.registration_tab
+              channel_name={@channel_name}
+              operator={@operator}
+              identified={@identified}
+              registration={@registration}
+              access_tab={@access_tab}
+              access_selected={@access_selected}
+              access_nick={@access_nick}
+              error_message={@cs_error}
+              confirm_drop={@cs_confirm_drop}
+              on_register={@on_cs_register}
+              on_drop_request={@on_cs_drop_request}
+              on_drop={@on_cs_drop}
+              on_drop_cancel={@on_cs_drop_cancel}
+              on_access_tab={@on_cs_access_tab}
+              on_access_change={@on_cs_access_change}
+              on_access_add={@on_cs_access_add}
+              on_access_select={@on_cs_access_select}
+              on_access_remove={@on_cs_access_remove}
+            />
+          </.tabs_content>
         </.tabs>
       </.dialog_body>
       <.dialog_footer>
@@ -247,6 +295,255 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       on_close={@on_transfer_close}
       on_submit={@on_transfer_submit}
     />
+    """
+  end
+
+  # ── Registration Tab ───────────────────────────────────
+
+  attr :channel_name, :string, default: nil
+  attr :operator, :boolean, default: false
+  attr :identified, :boolean, default: false
+  attr :registration, :map, default: nil
+  attr :access_tab, :string, default: "sop"
+  attr :access_selected, :string, default: nil
+  attr :access_nick, :string, default: ""
+  attr :error_message, :string, default: nil
+  attr :confirm_drop, :boolean, default: false
+  attr :on_register, :any, default: nil
+  attr :on_drop_request, :any, default: nil
+  attr :on_drop, :any, default: nil
+  attr :on_drop_cancel, :any, default: nil
+  attr :on_access_tab, :any, default: nil
+  attr :on_access_change, :any, default: nil
+  attr :on_access_add, :any, default: nil
+  attr :on_access_select, :any, default: nil
+  attr :on_access_remove, :any, default: nil
+
+  defp registration_tab(assigns) do
+    registration = assigns.registration || default_registration(assigns.channel_name)
+    active_level = normalize_access_level(assigns.access_tab)
+    role = Map.get(registration, :viewer_role)
+
+    assigns =
+      assigns
+      |> assign(:registration, registration)
+      |> assign(:active_level, active_level)
+      |> assign(:viewer_role, role)
+      |> assign(:registered?, Map.get(registration, :registered?, false))
+      |> assign(:access_entries, active_access_entries(registration, active_level))
+      |> assign(:can_manage_active?, can_manage_access?(role, active_level, assigns.identified))
+      |> assign(:can_remove?, removable?(assigns.access_selected, assigns.access_nick))
+
+    ~H"""
+    <div class="space-y-2">
+      <div class="shadow-retro-field bg-white p-2" data-testid="cc-cs-status">
+        <div class="flex items-center gap-2 mb-2">
+          <Icons.icon_shield class="w-[16px] h-[16px]" />
+          <span class="text-sm font-bold">{display_channel(@channel_name)}</span>
+        </div>
+
+        <div class="grid grid-cols-[86px_1fr] gap-1 text-xs">
+          <span class="text-muted-foreground">{dgettext("dialogs", "Status")}:</span>
+          <span>
+            {if @registered?,
+              do: dgettext("dialogs", "Registered"),
+              else: dgettext("dialogs", "Not registered")}
+          </span>
+          <%= if @registered? do %>
+            <span class="text-muted-foreground">{dgettext("dialogs", "Founder")}:</span>
+            <span>{Map.get(@registration, :founder)}</span>
+            <span class="text-muted-foreground">{dgettext("dialogs", "Since")}:</span>
+            <span>{format_registered_at(Map.get(@registration, :registered_at))}</span>
+          <% end %>
+        </div>
+
+        <p :if={!@identified} class="text-[10px] text-muted-foreground italic mt-2">
+          {dgettext("dialogs", "You must be identified with NickServ to use ChanServ.")}
+        </p>
+        <p :if={!@registered? && !@operator} class="text-[10px] text-muted-foreground italic mt-2">
+          {dgettext("dialogs", "Only channel operators can register this channel.")}
+        </p>
+
+        <div :if={!@registered? && @operator} class="mt-2">
+          <.button
+            :if={@identified}
+            type="button"
+            size="sm"
+            phx-click={@on_register}
+            phx-value-channel={@channel_name}
+            phx-disable-with={dgettext("dialogs", "Registering...")}
+            data-testid="cc-cs-register"
+          >
+            <:icon><Icons.icon_shield /></:icon>
+            {dgettext("dialogs", "Register Channel")}
+          </.button>
+          <.button
+            :if={!@identified}
+            type="button"
+            size="sm"
+            disabled
+            data-testid="cc-cs-register-disabled"
+          >
+            <:icon><Icons.icon_shield /></:icon>
+            {dgettext("dialogs", "Register Channel")}
+          </.button>
+        </div>
+
+        <div :if={@registered? && @viewer_role == "founder"} class="mt-2 space-y-2">
+          <.button
+            :if={!@confirm_drop}
+            type="button"
+            size="sm"
+            variant="destructive"
+            phx-click={@on_drop_request}
+            phx-value-channel={@channel_name}
+            disabled={!@identified}
+            data-testid="cc-cs-drop-request"
+          >
+            <:icon><Icons.icon_trash /></:icon>
+            {dgettext("dialogs", "Drop Registration")}
+          </.button>
+
+          <div :if={@confirm_drop} class="shadow-retro-field bg-surface p-2 space-y-2">
+            <p class="text-xs text-destructive">
+              {dgettext("dialogs", "Are you sure you want to drop %{channel}? This cannot be undone.",
+                channel: display_channel(@channel_name)
+              )}
+            </p>
+            <div class="flex gap-1">
+              <.button
+                type="button"
+                size="sm"
+                variant="destructive"
+                phx-click={@on_drop}
+                phx-value-channel={@channel_name}
+                phx-disable-with={dgettext("dialogs", "Dropping...")}
+                data-testid="cc-cs-drop-confirm"
+              >
+                <:icon><Icons.icon_trash /></:icon>
+                {dgettext("dialogs", "Confirm Drop")}
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click={@on_drop_cancel}>
+                <:icon><Icons.icon_close /></:icon>
+                {dgettext("dialogs", "Cancel")}
+              </.button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p :if={@error_message} class="text-xs text-destructive shadow-retro-field bg-white p-2">
+        {@error_message}
+      </p>
+
+      <div :if={@registered?} class="space-y-2" data-testid="cc-cs-access-section">
+        <div class="inline-flex shadow-retro-field bg-surface p-[2px] gap-[2px]">
+          <button
+            :for={level <- access_levels()}
+            type="button"
+            class={[
+              "px-2 py-1 text-xs shadow-retro-raised active:shadow-retro-sunken",
+              @active_level == level && "bg-selection-bg text-selection-fg"
+            ]}
+            phx-click={@on_access_tab}
+            phx-value-level={level}
+            data-testid={"cc-cs-access-tab-#{level}"}
+          >
+            {String.upcase(level)}
+          </button>
+        </div>
+
+        <div class="overflow-y-auto max-h-[160px] shadow-retro-field bg-white">
+          <.table>
+            <.table_header>
+              <.table_row>
+                <.table_head class="text-xs px-2 py-1">
+                  {dgettext("dialogs", "Nickname")}
+                </.table_head>
+                <.table_head class="text-xs px-2 py-1">
+                  {dgettext("dialogs", "Added By")}
+                </.table_head>
+              </.table_row>
+            </.table_header>
+            <.table_body>
+              <.table_row
+                :for={entry <- @access_entries}
+                class={
+                  classes([
+                    "cursor-pointer text-xs",
+                    @access_selected == entry.nickname && "bg-selection-bg text-selection-fg"
+                  ])
+                }
+                phx-click={@on_access_select}
+                phx-value-nick={entry.nickname}
+                data-testid={"cc-cs-access-row-#{entry.nickname}"}
+              >
+                <.table_cell class="px-2 py-1 text-xs font-mono">{entry.nickname}</.table_cell>
+                <.table_cell class="px-2 py-1 text-xs">{entry.added_by}</.table_cell>
+              </.table_row>
+              <tr :if={@access_entries == []}>
+                <td colspan="2" class="px-2 py-4 text-xs text-center text-muted-foreground">
+                  {dgettext("dialogs", "No %{level} entries", level: String.upcase(@active_level))}
+                </td>
+              </tr>
+            </.table_body>
+          </.table>
+        </div>
+
+        <form
+          :if={@can_manage_active?}
+          phx-submit={@on_access_add}
+          phx-change={@on_access_change}
+          data-testid="cc-cs-access-form"
+          class="flex flex-wrap items-end gap-1"
+        >
+          <input type="hidden" name="level" value={@active_level} />
+          <div class="flex flex-col gap-1">
+            <label class="text-xs font-bold" for="cc-cs-access-nick">
+              {dgettext("dialogs", "Nick")}:
+            </label>
+            <.input
+              type="text"
+              id="cc-cs-access-nick"
+              name="nickname"
+              value={@access_nick}
+              class="text-xs h-7 w-32"
+              data-testid="cc-cs-access-nick"
+            />
+          </div>
+          <.button
+            type="submit"
+            size="sm"
+            phx-disable-with={dgettext("dialogs", "Adding...")}
+            data-testid="cc-cs-access-add"
+          >
+            <:icon><Icons.icon_btn_add /></:icon>
+            {dgettext("dialogs", "Add")}
+          </.button>
+          <.button
+            type="button"
+            size="sm"
+            variant="destructive"
+            phx-click={@on_access_remove}
+            phx-value-level={@active_level}
+            disabled={!@can_remove?}
+            phx-disable-with={dgettext("dialogs", "Removing...")}
+            data-testid="cc-cs-access-remove"
+          >
+            <:icon><Icons.icon_btn_remove /></:icon>
+            {dgettext("dialogs", "Remove")}
+          </.button>
+        </form>
+
+        <p :if={!@can_manage_active?} class="text-[10px] text-muted-foreground italic">
+          <%= if @identified do %>
+            {dgettext("dialogs", "You do not have permission to manage this list.")}
+          <% else %>
+            {dgettext("dialogs", "You must be identified with NickServ to use ChanServ.")}
+          <% end %>
+        </p>
+      </div>
+    </div>
     """
   end
 
@@ -865,6 +1162,48 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   defp default_modes do
     %{moderated: false, invite_only: false, topic_lock: false, key: nil, limit: nil}
   end
+
+  @spec default_registration(String.t() | nil) :: map()
+  defp default_registration(channel_name) do
+    %{
+      registered?: false,
+      channel_name: channel_name,
+      founder: nil,
+      registered_at: nil,
+      viewer_role: nil,
+      access: Map.new(access_levels(), &{&1, []})
+    }
+  end
+
+  @spec access_levels() :: [String.t()]
+  defp access_levels, do: ~w(sop aop vop)
+
+  @spec normalize_access_level(String.t() | nil) :: String.t()
+  defp normalize_access_level(level) when level in ~w(sop aop vop), do: level
+  defp normalize_access_level(_level), do: "sop"
+
+  @spec active_access_entries(map(), String.t()) :: [map()]
+  defp active_access_entries(registration, level) do
+    registration
+    |> Map.get(:access, %{})
+    |> Map.get(level, [])
+  end
+
+  @spec can_manage_access?(String.t() | nil, String.t(), boolean()) :: boolean()
+  defp can_manage_access?("founder", _level, true), do: true
+  defp can_manage_access?("sop", level, true), do: level in ~w(aop vop)
+  defp can_manage_access?("aop", "vop", true), do: true
+  defp can_manage_access?(_role, _level, _identified), do: false
+
+  @spec removable?(String.t() | nil, String.t() | nil) :: boolean()
+  defp removable?(selected, nickname) do
+    selected not in [nil, ""] or String.trim(to_string(nickname)) != ""
+  end
+
+  @spec format_registered_at(DateTime.t() | String.t() | nil) :: String.t()
+  defp format_registered_at(nil), do: dgettext("dialogs", "Unknown")
+  defp format_registered_at(%DateTime{} = date_time), do: DateTime.to_string(date_time)
+  defp format_registered_at(value), do: to_string(value)
 
   @spec display_channel(String.t() | nil) :: String.t()
   defp display_channel(nil), do: "#unknown"

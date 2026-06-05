@@ -1,0 +1,60 @@
+<p>
+  {dgettext(
+    "help_channels",
+    "Channel Central includes a Registration tab that maps ChanServ registration and access-list commands to dialog controls."
+  )}
+</p>
+
+<.help_h4 icon={:icon_dialog_channel_central}>
+  {dgettext("help_channels", "Opening the Tab")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Open Channel Central for a channel you have joined, then choose Registration after Invite Exceptions. The status area shows whether the channel is registered and who the founder is."
+  )}
+</p>
+
+<.help_h4 icon={:icon_btn_apply}>{dgettext("help_channels", "Controls")}</.help_h4>
+<ul>
+  <li>{dgettext("help_channels", "Register Channel runs the same action as /cs register.")}</li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Drop Registration confirms before running the same action as /cs drop."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "SOP, AOP, and VOP sub-tabs show the same lists as /cs <level> list."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "Add and Remove run the same actions as /cs <level> add <nick> and /cs <level> del <nick>."
+    )}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Disabled Controls")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "The dialog disables or hides write controls when you are not identified with NickServ or your ChanServ role cannot manage the selected list."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-channel-central">
+    {dgettext("help_channels", "Channel Central")}
+  </.help_link>
+  · <.help_link topic="chanserv">{dgettext("help_channels", "ChanServ Overview")}</.help_link>
+  ·
+  <.help_link topic="chanserv-register">
+    {dgettext("help_channels", "Channel Registration")}
+  </.help_link>
+  · <.help_link topic="chanserv-access">{dgettext("help_channels", "Access Lists")}</.help_link>
+</p>

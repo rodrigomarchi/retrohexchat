@@ -9,6 +9,7 @@ defmodule RetroHexChat.Services.ChanServ do
   alias RetroHexChat.Services.Queries
 
   @level_hierarchy %{"founder" => 4, "sop" => 3, "aop" => 2, "vop" => 1}
+  @access_levels ~w(sop aop vop)
 
   # ── Public API ──────────────────────────────────────────────
 
@@ -39,6 +40,48 @@ defmodule RetroHexChat.Services.ChanServ do
   @spec check_access(String.t(), String.t(), GenServer.server()) :: {:ok, String.t() | nil}
   def check_access(channel_name, nickname, server \\ __MODULE__) do
     GenServer.call(server, {:check_access, channel_name, nickname})
+  end
+
+  @spec viewer_role(String.t(), String.t(), GenServer.server()) :: String.t() | nil
+  def viewer_role(channel_name, nickname, server \\ __MODULE__) do
+    case info(channel_name, server) do
+      {:ok, %{founder: ^nickname}} ->
+        "founder"
+
+      {:ok, _info} ->
+        case Queries.find_access(channel_name, nickname) do
+          nil -> nil
+          entry -> entry.level
+        end
+
+      {:error, _msg} ->
+        nil
+    end
+  end
+
+  @spec registration_snapshot(String.t(), String.t(), GenServer.server()) :: map()
+  def registration_snapshot(channel_name, viewer_nick, server \\ __MODULE__) do
+    case info(channel_name, server) do
+      {:ok, info} ->
+        %{
+          registered?: true,
+          channel_name: info.name,
+          founder: info.founder,
+          registered_at: info.registered_at,
+          viewer_role: viewer_role(channel_name, viewer_nick, server),
+          access: access_by_level(channel_name)
+        }
+
+      {:error, _msg} ->
+        %{
+          registered?: false,
+          channel_name: channel_name,
+          founder: nil,
+          registered_at: nil,
+          viewer_role: nil,
+          access: empty_access()
+        }
+    end
   end
 
   @spec manage_access(
@@ -310,6 +353,22 @@ defmodule RetroHexChat.Services.ChanServ do
       {:error, "Insufficient permission to manage #{target_level} access"}
     end
   end
+
+  defp access_by_level(channel_name) do
+    entries =
+      channel_name
+      |> Queries.list_access()
+      |> Enum.reject(&(&1.level == "founder"))
+      |> Enum.map(fn entry ->
+        %{nickname: entry.nickname, level: entry.level, added_by: entry.added_by}
+      end)
+
+    Map.new(@access_levels, fn level ->
+      {level, Enum.filter(entries, &(&1.level == level))}
+    end)
+  end
+
+  defp empty_access, do: Map.new(@access_levels, &{&1, []})
 
   defp do_manage_access(channel_name, :add, level, target_nick, requester_nick) do
     case Queries.add_access(channel_name, target_nick, level, requester_nick) do

@@ -206,6 +206,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_tab_modes(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_tab_bans(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_tab_exceptions(assigns), to: RetroHexChatWeb.Icons.Security
+  defdelegate icon_tab_registration(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_privacy(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_btn_ignore_list(assigns), to: RetroHexChatWeb.Icons.Security
   defdelegate icon_btn_flood_protection(assigns), to: RetroHexChatWeb.Icons.Security

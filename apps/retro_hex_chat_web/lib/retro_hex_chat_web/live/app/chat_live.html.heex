@@ -789,6 +789,13 @@
   throttle_seconds={channel_central_throttle_seconds(@channel_central_state)}
   notice={@channel_central_notice}
   transfer_error={@channel_central_transfer_error}
+  registration={@channel_central_registration}
+  access_tab={@channel_central_access_tab}
+  access_selected={@channel_central_access_selected}
+  access_nick={@channel_central_access_nick}
+  cs_error={@channel_central_cs_error}
+  cs_confirm_drop={@channel_central_cs_confirm_drop}
+  identified={@session.identified}
   modes={channel_central_modes(@channel_central_state)}
   bans={channel_central_bans(@channel_central_state)}
   ban_exceptions={channel_central_ban_exceptions(@channel_central_state)}
@@ -818,6 +825,15 @@
   on_invite_ex_add="cc_open_add_invite_ex"
   on_invite_ex_remove="cc_remove_invite_exception"
   on_invite_ex_select="cc_invite_ex_select"
+  on_cs_register="cc_cs_register"
+  on_cs_drop_request="cc_cs_drop_request"
+  on_cs_drop="cc_cs_drop"
+  on_cs_drop_cancel="cc_cs_drop_cancel"
+  on_cs_access_tab="cc_cs_access_tab"
+  on_cs_access_change="cc_cs_access_change"
+  on_cs_access_add="cc_cs_access_add"
+  on_cs_access_select="cc_cs_access_select"
+  on_cs_access_remove="cc_cs_access_remove"
   on_close="close_channel_central"
 />
 

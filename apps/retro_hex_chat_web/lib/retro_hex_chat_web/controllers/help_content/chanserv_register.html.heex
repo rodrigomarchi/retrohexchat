@@ -1,0 +1,53 @@
+<p>
+  {dgettext(
+    "help_channels",
+    "ChanServ registration assigns a founder to the current channel and keeps channel ownership, access lists, bans, and settings available after the channel empties or restarts."
+  )}
+</p>
+
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Commands")}</.help_h4>
+<pre>{dgettext("help_channels", "/cs register /cs info /cs drop")}</pre>
+
+<.help_h4 icon={:icon_checkmark}>{dgettext("help_channels", "Requirements")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_channels", "Use the commands while the channel is the active conversation.")}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "You must be identified with NickServ before ChanServ accepts changes."
+    )}
+  </li>
+  <li>
+    {dgettext(
+      "help_channels",
+      "The Registration tab only enables Register Channel for channel operators."
+    )}
+  </li>
+  <li>{dgettext("help_channels", "Only the founder can drop channel registration.")}</li>
+</ul>
+
+<.help_h4 icon={:icon_dialog_channel_central}>
+  {dgettext("help_channels", "Channel Central")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Open Channel Central and select Registration to see whether the channel is registered, who founded it, and when it was registered. The same tab provides Register Channel and Drop Registration controls when your permissions allow them."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="chanserv">{dgettext("help_channels", "ChanServ Overview")}</.help_link>
+  ·
+  <.help_link topic="chanserv-access">
+    {dgettext("help_channels", "ChanServ Access Lists")}
+  </.help_link>
+  ·
+  <.help_link topic="chanserv-ui">
+    {dgettext("help_channels", "Channel Central Registration Tab")}
+  </.help_link>
+  · <.help_link topic="cmd-cs">{dgettext("help_channels", "/cs Command")}</.help_link>
+</p>

@@ -1,0 +1,57 @@
+<p>
+  {dgettext(
+    "help_channels",
+    "ChanServ access lists grant persistent channel privileges to identified users when they join a registered channel."
+  )}
+</p>
+
+<.help_h4 icon={:icon_shield}>{dgettext("help_channels", "Access Levels")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_channels", "SOP")}</strong>
+    {dgettext("help_channels", "- Super Operator. Can manage AOP and VOP entries.")}
+  </li>
+  <li>
+    <strong>{dgettext("help_channels", "AOP")}</strong>
+    {dgettext("help_channels", "- Auto Operator. Receives operator status on join.")}
+  </li>
+  <li>
+    <strong>{dgettext("help_channels", "VOP")}</strong>
+    {dgettext("help_channels", "- Auto Voice. Receives voice status on join.")}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Commands")}</.help_h4>
+<pre>{dgettext("help_channels", "/cs sop add <nick> /cs sop del <nick> /cs sop list /cs aop add <nick> /cs aop del <nick> /cs aop list /cs vop add <nick> /cs vop del <nick> /cs vop list")}</pre>
+
+<.help_h4 icon={:icon_tab_registration}>
+  {dgettext("help_channels", "Registration Tab")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "The Registration tab shows SOP, AOP, and VOP lists as selectable sub-tabs. Users with enough access can type a nickname to add it, select an existing row, and remove it inline."
+  )}
+</p>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Permissions")}</.help_h4>
+<ul>
+  <li>{dgettext("help_channels", "Founders can manage SOP, AOP, and VOP lists.")}</li>
+  <li>{dgettext("help_channels", "SOP users can manage AOP and VOP lists.")}</li>
+  <li>{dgettext("help_channels", "AOP users can manage VOP lists.")}</li>
+  <li>{dgettext("help_channels", "All write actions require NickServ identification.")}</li>
+</ul>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="chanserv">{dgettext("help_channels", "ChanServ Overview")}</.help_link>
+  ·
+  <.help_link topic="chanserv-register">
+    {dgettext("help_channels", "Channel Registration")}
+  </.help_link>
+  ·
+  <.help_link topic="chanserv-ui">
+    {dgettext("help_channels", "Channel Central Registration Tab")}
+  </.help_link>
+  · <.help_link topic="cmd-cs">{dgettext("help_channels", "/cs Command")}</.help_link>
+</p>

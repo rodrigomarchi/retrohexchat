@@ -24,7 +24,7 @@
 </ul>
 
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Common Commands")}</.help_h4>
-<pre>{dgettext("help_channels", "/cs register #channel — Register a channel (must be op) /cs info #channel — View registration details /cs sop #channel add <nick> — Add Super Operator /cs aop #channel add <nick> — Add Auto Operator /cs vop #channel add <nick> — Add Auto Voice /cs sop #channel del <nick> — Remove Super Operator /cs sop #channel list — List Super Operators /cs drop #channel — Unregister a channel (founder only)")}</pre>
+<pre>{dgettext("help_channels", "/cs register - Register the current channel (must be op) /cs info - View current-channel registration details /cs sop add <nick> - Add Super Operator /cs aop add <nick> - Add Auto Operator /cs vop add <nick> - Add Auto Voice /cs sop del <nick> - Remove Super Operator /cs sop list - List Super Operators /cs drop - Unregister the current channel (founder only)")}</pre>
 
 <.help_h4 icon={:icon_shield}>{dgettext("help_channels", "Access Levels")}</.help_h4>
 <p>
@@ -92,6 +92,16 @@
   </li>
 </ul>
 
+<.help_h4 icon={:icon_dialog_channel_central}>
+  {dgettext("help_channels", "Channel Central")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Open Channel Central and select the Registration tab to see registration status, register an unregistered channel, drop a channel as founder, and manage SOP, AOP, and VOP access lists."
+  )}
+</p>
+
 <.help_h4 icon={:icon_clock}>{dgettext("help_channels", "Channel Expiration")}</.help_h4>
 <ul>
   <li>
@@ -117,7 +127,18 @@
 
 <.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-cs">{dgettext("help_channels", "/cs Command")}</.help_link>
+  <.help_link topic="chanserv-register">
+    {dgettext("help_channels", "Channel Registration")}
+  </.help_link>
+  ·
+  <.help_link topic="chanserv-access">
+    {dgettext("help_channels", "Access Lists")}
+  </.help_link>
+  ·
+  <.help_link topic="chanserv-ui">
+    {dgettext("help_channels", "Channel Central Registration Tab")}
+  </.help_link>
+  · <.help_link topic="cmd-cs">{dgettext("help_channels", "/cs Command")}</.help_link>
   ·
   <.help_link topic="channel-permissions">
     {dgettext("help_channels", "Channel Permissions")}

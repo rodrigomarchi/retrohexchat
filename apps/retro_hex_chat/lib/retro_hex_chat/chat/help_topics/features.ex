@@ -136,6 +136,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "bans",
           dgettext("help", "ban exceptions"),
           dgettext("help", "invite exceptions"),
+          "chanserv",
+          "registration tab",
+          "access lists",
           "tabs"
         ],
         icon: :icon_dialog_channel_central,
@@ -143,7 +146,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "View and manage channel settings, bans, exceptions, and modes in one dialog."
-          )
+          ),
+        see_also: ["chanserv-ui", "chanserv", "chanserv-register", "chanserv-access"]
       },
       %{
         id: "feature-ban-exceptions",

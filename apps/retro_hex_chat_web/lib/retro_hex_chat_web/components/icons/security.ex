@@ -107,6 +107,11 @@ defmodule RetroHexChatWeb.Icons.Security do
 
   attr :class, :string, default: nil
 
+  @spec icon_tab_registration(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_tab_registration(assigns), do: icon_shield(assigns)
+
+  attr :class, :string, default: nil
+
   @spec icon_security(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_security(assigns) do
     ~H"""

@@ -8,7 +8,9 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
   cc_open_add_invite_ex, cc_close_add_invite_ex,
   cc_set_topic, cc_apply_modes,
   cc_add_ban, cc_remove_ban, cc_add_ban_exception, cc_remove_ban_exception,
-  cc_add_invite_exception, cc_remove_invite_exception.
+  cc_add_invite_exception, cc_remove_invite_exception,
+  cc_cs_register, cc_cs_drop, cc_cs_access_tab, cc_cs_access_add,
+  cc_cs_access_remove.
 
   Attached as `attach_hook(:channel_central_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -19,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Services.ChanServ
 
   # ── Open / Close / Tab ─────────────────────────────────────
 
@@ -37,7 +40,169 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
   end
 
   def handle_event("channel_central_tab", %{"tab" => tab}, socket) do
-    {:halt, assign(socket, channel_central_tab: tab)}
+    socket = assign(socket, channel_central_tab: tab)
+
+    if tab == "registration" do
+      {:halt, refresh_channel_central_registration(socket)}
+    else
+      {:halt, socket}
+    end
+  end
+
+  # ── ChanServ Registration / Access ─────────────────────────
+
+  def handle_event("cc_cs_register", _params, socket) do
+    cond do
+      !socket.assigns.session.identified ->
+        {:halt, chanserv_error(socket, identified_required_message())}
+
+      !socket.assigns.channel_central_operator ->
+        {:halt, chanserv_error(socket, operator_required_register_message())}
+
+      true ->
+        channel = socket.assigns.channel_central_channel
+        nickname = socket.assigns.session.nickname
+
+        case ChanServ.register(channel, nickname) do
+          {:ok, _message} ->
+            _ = Server.mark_registered(channel)
+
+            {:halt,
+             socket
+             |> assign(
+               channel_central_cs_error: nil,
+               channel_central_cs_confirm_drop: false,
+               channel_central_access_tab: "sop",
+               channel_central_access_selected: nil,
+               channel_central_access_nick: ""
+             )
+             |> refresh_channel_central()}
+
+          {:error, message} ->
+            {:halt, chanserv_error(socket, message)}
+        end
+    end
+  end
+
+  def handle_event("cc_cs_drop_request", _params, socket) do
+    {:halt, assign(socket, channel_central_cs_confirm_drop: true, channel_central_cs_error: nil)}
+  end
+
+  def handle_event("cc_cs_drop_cancel", _params, socket) do
+    {:halt, assign(socket, channel_central_cs_confirm_drop: false)}
+  end
+
+  def handle_event("cc_cs_drop", _params, socket) do
+    cond do
+      !socket.assigns.session.identified ->
+        {:halt, chanserv_error(socket, identified_required_message())}
+
+      viewer_role(socket) != "founder" ->
+        {:halt, chanserv_error(socket, dgettext("chat", "Only the founder can drop a channel."))}
+
+      true ->
+        channel = socket.assigns.channel_central_channel
+        nickname = socket.assigns.session.nickname
+
+        case ChanServ.drop(channel, nickname) do
+          {:ok, _message} ->
+            {:halt,
+             socket
+             |> assign(
+               channel_central_cs_error: nil,
+               channel_central_cs_confirm_drop: false,
+               channel_central_access_tab: "sop",
+               channel_central_access_selected: nil,
+               channel_central_access_nick: ""
+             )
+             |> refresh_channel_central()}
+
+          {:error, message} ->
+            {:halt, chanserv_error(socket, message)}
+        end
+    end
+  end
+
+  def handle_event("cc_cs_access_tab", %{"level" => level}, socket) do
+    {:halt,
+     socket
+     |> assign(
+       channel_central_access_tab: normalize_access_level(level),
+       channel_central_access_selected: nil,
+       channel_central_access_nick: "",
+       channel_central_cs_error: nil
+     )
+     |> refresh_channel_central_registration()}
+  end
+
+  def handle_event("cc_cs_access_change", params, socket) do
+    {:halt,
+     assign(socket,
+       channel_central_access_tab:
+         normalize_access_level(params["level"] || socket.assigns.channel_central_access_tab),
+       channel_central_access_nick: String.trim(to_string(params["nickname"] || "")),
+       channel_central_cs_error: nil
+     )}
+  end
+
+  def handle_event("cc_cs_access_select", %{"nick" => nickname}, socket) do
+    {:halt,
+     assign(socket,
+       channel_central_access_selected: nickname,
+       channel_central_access_nick: nickname,
+       channel_central_cs_error: nil
+     )}
+  end
+
+  def handle_event("cc_cs_access_add", params, socket) do
+    level = normalize_access_level(params["level"] || socket.assigns.channel_central_access_tab)
+    nickname = String.trim(to_string(params["nickname"] || ""))
+
+    cond do
+      !socket.assigns.session.identified ->
+        {:halt, chanserv_error(socket, identified_required_message())}
+
+      nickname == "" ->
+        {:halt, chanserv_error(socket, dgettext("chat", "Nickname is required."))}
+
+      !can_manage_access?(socket, level) ->
+        {:halt, chanserv_error(socket, manage_access_denied_message())}
+
+      true ->
+        channel = socket.assigns.channel_central_channel
+        requester = socket.assigns.session.nickname
+
+        case ChanServ.manage_access(channel, :add, level, nickname, requester) do
+          {:ok, _message} ->
+            {:halt,
+             socket
+             |> assign(
+               channel_central_access_tab: level,
+               channel_central_access_selected: nil,
+               channel_central_access_nick: "",
+               channel_central_cs_error: nil
+             )
+             |> refresh_channel_central_registration()}
+
+          {:error, message} ->
+            {:halt, chanserv_error(socket, message)}
+        end
+    end
+  end
+
+  def handle_event("cc_cs_access_remove", params, socket) do
+    level = normalize_access_level(params["level"] || socket.assigns.channel_central_access_tab)
+
+    target =
+      socket.assigns.channel_central_access_selected ||
+        String.trim(
+          to_string(params["nickname"] || socket.assigns.channel_central_access_nick || "")
+        )
+
+    case validate_access_remove(socket, level, target) do
+      :ok -> remove_chanserv_access(socket, level, target)
+      {:error, message} -> {:halt, chanserv_error(socket, message)}
+    end
   end
 
   # ── Selection ──────────────────────────────────────────────
@@ -346,6 +511,12 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
              channel_central_modes_form: %{},
              channel_central_notice: nil,
              channel_central_transfer_error: nil,
+             channel_central_registration: ChanServ.registration_snapshot(channel, nickname),
+             channel_central_access_tab: "sop",
+             channel_central_access_selected: nil,
+             channel_central_access_nick: "",
+             channel_central_cs_error: nil,
+             channel_central_cs_confirm_drop: false,
              show_cc_add_ban_dialog: false,
              show_cc_add_ban_ex_dialog: false,
              show_cc_add_invite_ex_dialog: false,
@@ -381,6 +552,12 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
       channel_central_modes_form: %{},
       channel_central_notice: nil,
       channel_central_transfer_error: nil,
+      channel_central_registration: nil,
+      channel_central_access_tab: "sop",
+      channel_central_access_selected: nil,
+      channel_central_access_nick: "",
+      channel_central_cs_error: nil,
+      channel_central_cs_confirm_drop: false,
       show_cc_add_ban_dialog: false,
       show_cc_add_ban_ex_dialog: false,
       show_cc_add_invite_ex_dialog: false,
@@ -404,7 +581,8 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
           assign(socket,
             channel_central_state: state,
             channel_central_operator: operator,
-            channel_central_owner: owner
+            channel_central_owner: owner,
+            channel_central_registration: ChanServ.registration_snapshot(channel, nickname)
           )
 
         {:error, _} ->
@@ -413,6 +591,98 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
     else
       socket
     end
+  end
+
+  defp refresh_channel_central_registration(socket) do
+    channel = socket.assigns.channel_central_channel
+
+    if channel do
+      assign(socket,
+        channel_central_registration:
+          ChanServ.registration_snapshot(channel, socket.assigns.session.nickname)
+      )
+    else
+      assign(socket, channel_central_registration: nil)
+    end
+  end
+
+  defp normalize_access_level(level) when level in ~w(sop aop vop), do: level
+  defp normalize_access_level(_level), do: "sop"
+
+  defp viewer_role(socket) do
+    case socket.assigns.channel_central_registration do
+      nil -> nil
+      registration -> Map.get(registration, :viewer_role)
+    end
+  end
+
+  defp can_manage_access?(socket, level) do
+    case {socket.assigns.session.identified, viewer_role(socket), level} do
+      {true, "founder", _level} -> true
+      {true, "sop", level} when level in ~w(aop vop) -> true
+      {true, "aop", "vop"} -> true
+      _ -> false
+    end
+  end
+
+  defp access_entry_in_level?(socket, level, nickname) do
+    case socket.assigns.channel_central_registration do
+      nil ->
+        false
+
+      registration ->
+        registration
+        |> Map.get(:access, %{})
+        |> Map.get(level, [])
+        |> Enum.any?(&(&1.nickname == nickname))
+    end
+  end
+
+  defp validate_access_remove(socket, level, target) do
+    cond do
+      !socket.assigns.session.identified ->
+        {:error, identified_required_message()}
+
+      target in [nil, ""] ->
+        {:error, dgettext("chat", "Select a nickname to remove.")}
+
+      !can_manage_access?(socket, level) ->
+        {:error, manage_access_denied_message()}
+
+      !access_entry_in_level?(socket, level, target) ->
+        {:error, dgettext("chat", "Select a nickname from this list.")}
+
+      true ->
+        :ok
+    end
+  end
+
+  defp remove_chanserv_access(socket, level, target) do
+    channel = socket.assigns.channel_central_channel
+    requester = socket.assigns.session.nickname
+
+    case ChanServ.manage_access(channel, :remove, level, target, requester) do
+      {:ok, _message} ->
+        {:halt,
+         socket
+         |> assign(
+           channel_central_access_tab: level,
+           channel_central_access_selected: nil,
+           channel_central_access_nick: "",
+           channel_central_cs_error: nil
+         )
+         |> refresh_channel_central_registration()}
+
+      {:error, message} ->
+        {:halt, chanserv_error(socket, message)}
+    end
+  end
+
+  defp chanserv_error(socket, message) do
+    assign(socket,
+      channel_central_cs_error: message,
+      channel_central_cs_confirm_drop: false
+    )
   end
 
   defp apply_mode_changes(socket, channel, nickname, current, params) do
@@ -554,5 +824,17 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
 
   defp operator_required_message do
     dgettext("chat", "You must be a channel operator to change this setting.")
+  end
+
+  defp operator_required_register_message do
+    dgettext("chat", "Only channel operators can register this channel.")
+  end
+
+  defp identified_required_message do
+    dgettext("chat", "You must be identified with NickServ to use ChanServ.")
+  end
+
+  defp manage_access_denied_message do
+    dgettext("chat", "You do not have permission to manage this list.")
   end
 end

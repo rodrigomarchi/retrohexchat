@@ -122,12 +122,20 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         keywords: [
           "cs",
           "chanserv",
+          "cs register",
+          "cs drop",
+          "cs info",
+          "sop",
+          "aop",
+          "vop",
+          "registration tab",
           dgettext("help", "channel service"),
           dgettext("help", "register channel")
         ],
         icon: :icon_shield,
         description:
-          dgettext("help", "Send commands to ChanServ for channel registration and management.")
+          dgettext("help", "Send commands to ChanServ for channel registration and management."),
+        see_also: ["chanserv", "chanserv-register", "chanserv-access", "chanserv-ui"]
       },
       %{
         id: "cmd-game",

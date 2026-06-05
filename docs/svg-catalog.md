@@ -80,6 +80,7 @@ All SVGs extracted and organized in the SVG consolidation effort.
 |----------|-------------|
 | `icon_btn_ignore_list` | Person with ban circle **[DONE]** |
 | `icon_btn_flood_protection` | Shield with lock **[DONE]** |
+| `icon_tab_registration` | Shield tab icon for Channel Central registration **[DONE]** |
 
 ### Alerts
 
