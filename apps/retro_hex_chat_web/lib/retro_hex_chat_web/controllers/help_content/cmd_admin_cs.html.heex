@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_commands",
-    "ChanServ administration: drop channel registrations, transfer founders, and manage access lists. Requires server administrator role."
+    "ChanServ administration: drop channel registrations, transfer founders, and manage access lists. The Admin Console Channels tab provides command-backed ChanServ info, drop, transfer, access list, add, and remove controls. Requires server administrator role."
   )}
 </p>
 
@@ -43,6 +43,16 @@
   </li>
 </ul>
 
+<.help_h4 icon={:icon_channels}>
+  {dgettext("help_commands", "Admin Console Channels Tab")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Open File → Admin Console, then choose Channels to run /admin cs info, drop, transfer, access, access add, and access del without typing the commands. Drop registration requires typing the channel name to confirm."
+  )}
+</p>
+
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Admin bypasses normal founder/rank checks")}</li>
@@ -61,6 +71,10 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  ·
+  <.help_link topic="feature-admin-console">
+    {dgettext("help_commands", "Admin Console")}
+  </.help_link>
   · <.help_link topic="cmd-cs">{dgettext("help_commands", "/cs")}</.help_link>
   · <.help_link topic="chanserv">{dgettext("help_commands", "ChanServ")}</.help_link>
 </p>

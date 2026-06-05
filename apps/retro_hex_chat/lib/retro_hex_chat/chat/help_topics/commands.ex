@@ -604,13 +604,23 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-admin-cs",
         title: dgettext("help", "/admin cs"),
         category: dgettext("help", "Admin & Server"),
-        keywords: ["admin", "chanserv", "drop", "transfer", "access", "founder"],
+        keywords: [
+          "admin",
+          "chanserv",
+          "chanserv admin",
+          "channels tab",
+          "drop",
+          "transfer",
+          "access",
+          "founder"
+        ],
         icon: :icon_shield,
         description:
           dgettext(
             "help",
             "ChanServ administration: drop registrations, transfer founder, manage access lists."
-          )
+          ),
+        see_also: ["feature-admin-console", "cmd-admin-channel", "cmd-cs"]
       },
       %{
         id: "cmd-admin-debug",

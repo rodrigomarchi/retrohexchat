@@ -72,6 +72,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert "danger zone tab" in admin_console.keywords
       assert "users tab" in admin_console.keywords
       assert "channels tab" in admin_console.keywords
+      assert "chanserv admin" in admin_console.keywords
       assert "cmd-setmotd" in admin_console.see_also
       assert "cmd-clearmotd" in admin_console.see_also
       assert "cmd-admin-nuke" in admin_console.see_also
@@ -85,6 +86,11 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       assert "channels tab" in admin_channel.keywords
       assert "feature-admin-console" in admin_channel.see_also
+
+      admin_cs = HelpTopics.get_topic("cmd-admin-cs")
+
+      assert "chanserv admin" in admin_cs.keywords
+      assert "feature-admin-console" in admin_cs.see_also
 
       broadcasts = HelpTopics.get_topic("feature-server-broadcasts")
 
@@ -482,6 +488,12 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
           on_channels_create: "admin_console_channel_create",
           on_channels_delete: "admin_console_channel_delete",
           on_channels_purge: "admin_console_channel_purge",
+          on_channels_cs_info: "admin_console_channel_cs_info",
+          on_channels_cs_drop: "admin_console_channel_cs_drop",
+          on_channels_cs_transfer: "admin_console_channel_cs_transfer",
+          on_channels_cs_access_list: "admin_console_channel_cs_access_list",
+          on_channels_cs_access_add: "admin_console_channel_cs_access_add",
+          on_channels_cs_access_del: "admin_console_channel_cs_access_del",
           on_close: "close_admin_console"
         )
         |> Floki.parse_document!()
@@ -503,6 +515,19 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ ~s(phx-submit="admin_console_channel_delete")
       assert html =~ ~s(id="admin-console-channel-purge-form")
       assert html =~ ~s(phx-submit="admin_console_channel_purge")
+      assert html =~ ~s(id="admin-console-channel-cs-info-form")
+      assert html =~ ~s(phx-submit="admin_console_channel_cs_info")
+      assert html =~ ~s(id="admin-console-channel-cs-drop-form")
+      assert html =~ ~s(phx-submit="admin_console_channel_cs_drop")
+      assert html =~ ~s(id="admin-console-channel-cs-transfer-form")
+      assert html =~ ~s(phx-submit="admin_console_channel_cs_transfer")
+      assert html =~ ~s(id="admin-console-channel-cs-access-list-form")
+      assert html =~ ~s(phx-submit="admin_console_channel_cs_access_list")
+      assert html =~ ~s(id="admin-console-channel-cs-access-add-form")
+      assert html =~ ~s(phx-submit="admin_console_channel_cs_access_add")
+      assert html =~ ~s(id="admin-console-channel-cs-access-del-form")
+      assert html =~ ~s(phx-submit="admin_console_channel_cs_access_del")
+      assert html =~ ~s(name="level")
       assert html =~ ~s(name="confirm")
       assert html =~ ~s(name="from")
       assert html =~ ~s(id="admin-console-channels-banlist")
@@ -512,6 +537,12 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ "Create"
       assert html =~ "Confirm delete"
       assert html =~ "Confirm purge"
+      assert html =~ "ChanServ info"
+      assert html =~ "Transfer founder"
+      assert html =~ "Access list"
+      assert html =~ "Add access"
+      assert html =~ "Remove access"
+      assert html =~ "Drop registration"
     end
 
     test "admin can refresh channels, inspect a channel, and create a channel", %{conn: conn} do
@@ -579,6 +610,79 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       assert html =~ "Channel #{channel} has been deleted."
       assert Registry.lookup(channel) == {:error, :not_found}
+    end
+
+    test "admin can run ChanServ actions through the Channels tab", %{conn: conn} do
+      channel = "#cs#{uid()}"
+      founder = "CSF#{uid()}" |> String.slice(0, 16)
+      target = "CSA#{uid()}" |> String.slice(0, 16)
+      new_founder = "CSN#{uid()}" |> String.slice(0, 16)
+
+      assert {:ok, _channel} = Queries.insert_registered_channel(channel, founder)
+
+      view = connect_admin(conn)
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      render_click(view, "admin_console_tab", %{"tab" => "channels"})
+
+      html =
+        view
+        |> form("#admin-console-channel-cs-info-form", %{"channel" => channel})
+        |> render_submit()
+
+      assert html =~ "[ChanServ] #{channel}"
+      assert html =~ "Founder: #{founder}"
+
+      html =
+        view
+        |> form("#admin-console-channel-cs-access-add-form", %{
+          "channel" => channel,
+          "level" => "aop",
+          "nick" => target
+        })
+        |> render_submit()
+
+      assert html =~ "#{target} added to aop list of #{channel}"
+
+      html =
+        view
+        |> form("#admin-console-channel-cs-access-list-form", %{"channel" => channel})
+        |> render_submit()
+
+      assert html =~ "Access List for #{channel}"
+      assert html =~ target
+
+      html =
+        view
+        |> form("#admin-console-channel-cs-access-del-form", %{
+          "channel" => channel,
+          "level" => "aop",
+          "nick" => target
+        })
+        |> render_submit()
+
+      assert html =~ "#{target} removed from access list of #{channel}"
+
+      html =
+        view
+        |> form("#admin-console-channel-cs-transfer-form", %{
+          "channel" => channel,
+          "nick" => new_founder
+        })
+        |> render_submit()
+
+      assert html =~ "Founder of #{channel} transferred to #{new_founder}"
+
+      html =
+        view
+        |> form("#admin-console-channel-cs-drop-form", %{
+          "channel" => channel,
+          "confirm" => channel
+        })
+        |> render_submit()
+
+      assert html =~ "Channel #{channel} dropped by admin"
+      assert Queries.find_registered_channel(channel) == nil
     end
   end
 

@@ -1178,6 +1178,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "channels tab",
           "channel delete",
           "channel purge",
+          "chanserv admin",
           "motd",
           "motd tab",
           "setmotd",

@@ -26,7 +26,7 @@ iterations — read it before starting, write to it before stopping.
 | 09 | Channel Configuration | P2 | ✅ | — | 2026-06-05 | Complete: Channel Central welcome/throttle/ownership transfer |
 | 10 | User Lookups | P3 | ✅ | — | 2026-06-05 | Complete: User Lookup dialog, context Last Seen, and Whois/Whowas result cards |
 | 11 | ChanServ | P3 | ✅ | — | 2026-06-05 | Complete: Channel Central registration/access tab |
-| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | MOTD menu, Admin Console shell, Server Settings/MOTD/Broadcast/Audit Log/TURN/Danger Zone tabs complete; Users command surface complete; Channels snapshot/Info/Create/Delete/Purge complete; ChanServ actions remain |
+| 12 | Server Administration | P3 | ✅ | — | 2026-06-05 | Complete: MOTD menu + full tabbed Admin Console (Server Settings, Users, Channels/ChanServ, MOTD, Broadcast, Audit Log, TURN, Danger Zone, Console) |
 
 **Suggested order:** 02 → 03 (cheap wiring wins) → 01 (highest impact) → 04 → 05 → 06 → 08 → 09 → 07 → 10 → 11 → 12.
 
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-05 — Feature 12: `Server Administration` Admin Console ChanServ actions complete
+- **Did:** added Channels tab ChanServ admin forms for `/admin cs info`, `drop`, `transfer`, `access`, `access add`, and `access del`; drop registration requires typing the channel name to confirm, and all actions dispatch through the real admin command handlers.
+- **Tests:** expanded `ServerAdministrationFeatureTest` with component coverage for ChanServ controls and LiveView coverage for info, access add/list/del, founder transfer, and confirmed registration drop using a real registered channel. Red phase: `make ci.quick` failed on the missing ChanServ forms/events, then passed after implementation. `mix audit.styles` reported 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated Admin Console and `/admin cs` help metadata/content with Channels tab ChanServ discovery and confirmation behavior.
+- **Follow-ups:** none for Feature 12.
 
 ### 2026-06-05 — Feature 12: `Server Administration` Admin Console Channels delete and purge actions
 - **Did:** added typed-confirmation Channels tab forms for `/admin channel delete` and `/admin channel purge [--from nick]`; both actions dispatch through the real handlers and refresh channel snapshots afterward.
@@ -223,6 +229,7 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 - **[Feature 12] Role UI should mirror root-admin handler limits** — non-root admins can grant `server_operator` or remove roles, but the `admin` option must be disabled unless the viewer is a configured root admin.
 - **[Feature 12] Channels tab should keep destructive actions separate** — `/admin channel list`, `info`, `banlist`, and `create` are safe enough for one slice; delete/purge need explicit confirmation UI and isolated tests.
 - **[Feature 12] Destructive channel forms should validate confirmation in events** — require the submitted confirmation string to match the channel name before dispatching delete/purge, then refresh the channel snapshot from command output.
+- **[Feature 12] ChanServ admin UI can stay command-backed** — registration info, founder transfer, and access-list actions already return admin-ready text; forms only need to validate required fields and route `/admin cs ...` exactly.
 - **[Feature 12] Admin Console should default to the raw Console tab** — structured tabs can be introduced incrementally while preserving the existing batch-command surface as the safe fallback and default.
 - **[Feature 12] Icon text can leak into label assertions** — Floki text extraction may include icon text such as `#`; wrap visible labels in explicit `data-testid` spans when tests need exact tab/menu labels.
 - **[Feature 11] ChanServ UI should project service state through a domain snapshot** — Channel Central needs founder, viewer role, and grouped access lists together; keep that aggregation in `Services.ChanServ` so event handlers only refresh assigns.

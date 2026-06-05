@@ -216,6 +216,52 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     handle_channel_destructive_action(socket, "purge", params)
   end
 
+  def handle_event("admin_console_channel_cs_info", params, socket) do
+    handle_channel_chanserv_action(
+      socket,
+      fn -> channel_cs_result(socket, "info", params) end,
+      params
+    )
+  end
+
+  def handle_event("admin_console_channel_cs_drop", params, socket) do
+    handle_channel_chanserv_action(socket, fn -> channel_cs_drop_result(socket, params) end, %{
+      "info_channel" => ""
+    })
+  end
+
+  def handle_event("admin_console_channel_cs_transfer", params, socket) do
+    handle_channel_chanserv_action(
+      socket,
+      fn -> channel_cs_transfer_result(socket, params) end,
+      params
+    )
+  end
+
+  def handle_event("admin_console_channel_cs_access_list", params, socket) do
+    handle_channel_chanserv_action(
+      socket,
+      fn -> channel_cs_access_list_result(socket, params) end,
+      params
+    )
+  end
+
+  def handle_event("admin_console_channel_cs_access_add", params, socket) do
+    handle_channel_chanserv_action(
+      socket,
+      fn -> channel_cs_access_result(socket, "add", params) end,
+      params
+    )
+  end
+
+  def handle_event("admin_console_channel_cs_access_del", params, socket) do
+    handle_channel_chanserv_action(
+      socket,
+      fn -> channel_cs_access_result(socket, "del", params) end,
+      params
+    )
+  end
+
   def handle_event("admin_console_refresh_motd", _params, socket) do
     if admin?(socket) do
       result = Dispatcher.dispatch("motd", [], user_context(socket))
@@ -791,6 +837,102 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       |> Kernel.++(channel_purge_from_args(params))
 
     dispatch_admin_user(socket, args)
+  end
+
+  defp handle_channel_chanserv_action(socket, result_fun, params) do
+    if admin?(socket) do
+      result = result_fun.()
+      {:halt, assign_channels_snapshot(socket, channel_cs_snapshot_params(params), result)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  defp channel_cs_snapshot_params(%{"info_channel" => _channel} = params), do: params
+
+  defp channel_cs_snapshot_params(params) do
+    %{"info_channel" => Map.get(params, "channel", "")}
+  end
+
+  defp channel_cs_result(socket, action, params) do
+    with {:ok, channel} <- require_channel(params) do
+      dispatch_admin_user(socket, ["cs", action, channel])
+    end
+  end
+
+  defp channel_cs_drop_result(socket, params) do
+    with {:ok, channel} <- require_channel(params),
+         :ok <- require_channel_confirmation(channel, params) do
+      dispatch_admin_user(socket, ["cs", "drop", channel])
+    end
+  end
+
+  defp channel_cs_transfer_result(socket, params) do
+    with {:ok, channel} <- require_channel(params),
+         {:ok, nick} <- require_chanserv_nick(params) do
+      dispatch_admin_user(socket, ["cs", "transfer", channel, nick])
+    end
+  end
+
+  defp channel_cs_access_list_result(socket, params) do
+    with {:ok, channel} <- require_channel(params) do
+      dispatch_admin_user(socket, ["cs", "access", channel])
+    end
+  end
+
+  defp channel_cs_access_result(socket, action, params) do
+    with {:ok, channel} <- require_channel(params),
+         {:ok, nick} <- require_chanserv_nick(params),
+         {:ok, level} <- require_access_level(params) do
+      dispatch_admin_user(socket, ["cs", "access", channel, action, level, nick])
+    end
+  end
+
+  defp require_channel(params) do
+    params
+    |> Map.get("channel", "")
+    |> normalize_channels_value()
+    |> case do
+      "" -> %{status: :error, message: dgettext("chat", "Enter a channel for this action.")}
+      channel -> {:ok, channel}
+    end
+  end
+
+  defp require_chanserv_nick(params) do
+    params
+    |> Map.get("nick", "")
+    |> normalize_channels_value()
+    |> case do
+      "" -> %{status: :error, message: dgettext("chat", "Enter a nick for this action.")}
+      nick -> {:ok, nick}
+    end
+  end
+
+  defp require_access_level(params) do
+    params
+    |> Map.get("level", "")
+    |> normalize_channels_value()
+    |> case do
+      "" -> %{status: :error, message: dgettext("chat", "Choose an access level.")}
+      level -> {:ok, level}
+    end
+  end
+
+  defp require_channel_confirmation(channel, params) do
+    confirm =
+      params
+      |> Map.get("confirm", "")
+      |> normalize_channels_value()
+
+    if confirm == channel do
+      :ok
+    else
+      %{status: :error, message: dgettext("chat", "Type the channel name to confirm.")}
+    end
   end
 
   defp normalize_audit_last(value) do

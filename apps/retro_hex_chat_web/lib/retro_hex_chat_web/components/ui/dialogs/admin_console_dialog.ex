@@ -83,6 +83,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_channels_create, :any, default: nil
   attr :on_channels_delete, :any, default: nil
   attr :on_channels_purge, :any, default: nil
+  attr :on_channels_cs_info, :any, default: nil
+  attr :on_channels_cs_drop, :any, default: nil
+  attr :on_channels_cs_transfer, :any, default: nil
+  attr :on_channels_cs_access_list, :any, default: nil
+  attr :on_channels_cs_access_add, :any, default: nil
+  attr :on_channels_cs_access_del, :any, default: nil
   attr :on_danger_zone_preview, :any, default: nil
   attr :on_danger_zone_change, :any, default: nil
   attr :on_danger_zone_execute, :any, default: nil
@@ -273,6 +279,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_create={@on_channels_create}
                 on_delete={@on_channels_delete}
                 on_purge={@on_channels_purge}
+                on_cs_info={@on_channels_cs_info}
+                on_cs_drop={@on_channels_cs_drop}
+                on_cs_transfer={@on_channels_cs_transfer}
+                on_cs_access_list={@on_channels_cs_access_list}
+                on_cs_access_add={@on_channels_cs_access_add}
+                on_cs_access_del={@on_channels_cs_access_del}
               />
             </.tabs_content>
 
@@ -1120,6 +1132,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_create, :any, default: nil
   attr :on_delete, :any, default: nil
   attr :on_purge, :any, default: nil
+  attr :on_cs_info, :any, default: nil
+  attr :on_cs_drop, :any, default: nil
+  attr :on_cs_transfer, :any, default: nil
+  attr :on_cs_access_list, :any, default: nil
+  attr :on_cs_access_add, :any, default: nil
+  attr :on_cs_access_del, :any, default: nil
 
   defp channels_tab(assigns) do
     ~H"""
@@ -1227,6 +1245,67 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
       </div>
 
       <div>
+        <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "ChanServ admin")}</div>
+        <div class="grid gap-retro-6 md:grid-cols-3">
+          <.channel_chanserv_form
+            id="admin-console-channel-cs-info-form"
+            event={@on_cs_info}
+            title={dgettext("dialogs", "ChanServ info")}
+            button_label={dgettext("dialogs", "ChanServ info")}
+            icon_fn={:icon_btn_info}
+            disabled={not @can_refresh}
+          />
+          <.channel_chanserv_form
+            id="admin-console-channel-cs-access-list-form"
+            event={@on_cs_access_list}
+            title={dgettext("dialogs", "Access list")}
+            button_label={dgettext("dialogs", "Access list")}
+            icon_fn={:icon_tab_registration}
+            disabled={not @can_refresh}
+          />
+          <.channel_chanserv_form
+            id="admin-console-channel-cs-transfer-form"
+            event={@on_cs_transfer}
+            title={dgettext("dialogs", "Transfer founder")}
+            button_label={dgettext("dialogs", "Transfer founder")}
+            icon_fn={:icon_shield}
+            include_nick
+            disabled={not @can_refresh}
+          />
+          <.channel_chanserv_form
+            id="admin-console-channel-cs-access-add-form"
+            event={@on_cs_access_add}
+            title={dgettext("dialogs", "Add access")}
+            button_label={dgettext("dialogs", "Add access")}
+            icon_fn={:icon_btn_add}
+            include_nick
+            include_level
+            disabled={not @can_refresh}
+          />
+          <.channel_chanserv_form
+            id="admin-console-channel-cs-access-del-form"
+            event={@on_cs_access_del}
+            title={dgettext("dialogs", "Remove access")}
+            button_label={dgettext("dialogs", "Remove access")}
+            icon_fn={:icon_checkmark}
+            include_nick
+            include_level
+            disabled={not @can_refresh}
+          />
+          <.channel_chanserv_form
+            id="admin-console-channel-cs-drop-form"
+            event={@on_cs_drop}
+            title={dgettext("dialogs", "Drop registration")}
+            button_label={dgettext("dialogs", "Drop registration")}
+            icon_fn={:icon_trash}
+            include_confirm
+            destructive
+            disabled={not @can_refresh}
+          />
+        </div>
+      </div>
+
+      <div>
         <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Ban list")}</div>
         <pre
           id="admin-console-channels-banlist"
@@ -1236,6 +1315,74 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
       <.admin_inline_result result={@result} />
     </div>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :event, :any, default: nil
+  attr :title, :string, required: true
+  attr :button_label, :string, required: true
+  attr :icon_fn, :atom, required: true
+  attr :include_nick, :boolean, default: false
+  attr :include_level, :boolean, default: false
+  attr :include_confirm, :boolean, default: false
+  attr :destructive, :boolean, default: false
+  attr :disabled, :boolean, default: false
+
+  defp channel_chanserv_form(assigns) do
+    ~H"""
+    <form id={@id} phx-submit={@event} class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4">
+      <div class={["text-xs font-bold", if(@destructive, do: "text-destructive")]}>
+        {@title}
+      </div>
+      <input
+        name="channel"
+        type="text"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "Channel")}
+        autocomplete="off"
+        disabled={@disabled}
+      />
+      <input
+        :if={@include_nick}
+        name="nick"
+        type="text"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "Nick")}
+        autocomplete="off"
+        disabled={@disabled}
+      />
+      <select
+        :if={@include_level}
+        name="level"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        disabled={@disabled}
+      >
+        <option value="sop">{dgettext("dialogs", "sop")}</option>
+        <option value="aop">{dgettext("dialogs", "aop")}</option>
+        <option value="vop">{dgettext("dialogs", "vop")}</option>
+      </select>
+      <input
+        :if={@include_confirm}
+        name="confirm"
+        type="text"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "Type channel name to confirm")}
+        autocomplete="off"
+        disabled={@disabled}
+      />
+      <div class="flex justify-end">
+        <.button
+          type="submit"
+          size="sm"
+          variant={if(@destructive, do: "destructive", else: "default")}
+          disabled={@disabled}
+        >
+          <:icon>{apply(Icons, @icon_fn, [%{class: "w-[14px] h-[14px]"}])}</:icon>
+          {@button_label}
+        </.button>
+      </div>
+    </form>
     """
   end
 
