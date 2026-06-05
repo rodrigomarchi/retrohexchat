@@ -836,6 +836,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       admin_console_tab: "console",
       admin_console_motd: nil,
       admin_console_motd_result: nil,
+      admin_console_broadcast_result: nil,
       show_bot_dialog: false,
       bot_dialog_bots: [],
       bot_dialog_selected: nil,

@@ -74,7 +74,11 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
         ],
         icon: :icon_megaphone,
         description:
-          dgettext("help", "Send a broadcast message to all users who have wallops mode enabled.")
+          dgettext(
+            "help",
+            "Send a broadcast message to all users who have wallops mode enabled."
+          ),
+        see_also: ["feature-server-broadcasts", "cmd-announce", "cmd-umode"]
       },
       %{
         id: "cmd-announce",
@@ -86,7 +90,8 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
           dgettext(
             "help",
             "Send a global announcement to all connected users. Requires admin privileges."
-          )
+          ),
+        see_also: ["feature-server-broadcasts", "cmd-wallops", "cmd-umode"]
       },
       %{
         id: "cmd-umode",
@@ -116,7 +121,13 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
             "help",
             "Overview of special message types including MOTD, welcome messages, wallops, and announcements."
           ),
-        see_also: ["ui-message-of-the-day", "cmd-motd", "cmd-wallops", "cmd-announce"]
+        see_also: [
+          "ui-message-of-the-day",
+          "feature-server-broadcasts",
+          "cmd-motd",
+          "cmd-wallops",
+          "cmd-announce"
+        ]
       }
     ]
   end

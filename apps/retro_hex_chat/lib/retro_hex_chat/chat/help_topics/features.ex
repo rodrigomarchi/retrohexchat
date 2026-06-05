@@ -55,6 +55,29 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: ["cmd-whois", "cmd-whowas", "feature-context-menus", "keyboard-shortcuts"]
       },
       %{
+        id: "feature-server-broadcasts",
+        title: dgettext("help", "Server Broadcasts"),
+        category: dgettext("help", "Admin & Server"),
+        keywords: [
+          "server broadcasts",
+          "broadcast",
+          "wallops",
+          "announce",
+          "announcement",
+          "admin console",
+          "broadcast tab",
+          "+w",
+          "umode"
+        ],
+        icon: :icon_megaphone,
+        description:
+          dgettext(
+            "help",
+            "Send wallops messages to users with +w enabled or urgent announcements to every connected user."
+          ),
+        see_also: ["feature-admin-console", "cmd-wallops", "cmd-announce", "cmd-umode"]
+      },
+      %{
         id: "feature-notify-list",
         title: dgettext("help", "Notify List (Buddy List)"),
         category: dgettext("help", "Contacts & Notify"),
@@ -1179,6 +1202,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "cmd-admin-nuke",
           "cmd-setmotd",
           "cmd-clearmotd",
+          "feature-server-broadcasts",
           "ui-message-of-the-day"
         ]
       },

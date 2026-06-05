@@ -66,6 +66,15 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert "cmd-setmotd" in admin_console.see_also
       assert "cmd-clearmotd" in admin_console.see_also
       assert "cmd-admin-nuke" in admin_console.see_also
+
+      broadcasts = HelpTopics.get_topic("feature-server-broadcasts")
+
+      assert broadcasts != nil
+      assert "wallops" in broadcasts.keywords
+      assert "announce" in broadcasts.keywords
+      assert "cmd-wallops" in broadcasts.see_also
+      assert "cmd-announce" in broadcasts.see_also
+      assert "feature-server-broadcasts" in admin_console.see_also
     end
   end
 
@@ -167,6 +176,71 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ "MOTD has been cleared."
       assert html =~ "No MOTD has been set."
       assert Application.get_env(:retro_hex_chat, :motd_cache) == :unset
+    end
+  end
+
+  describe "Admin Console Broadcast tab" do
+    test "component renders wallops and announce controls" do
+      document =
+        render_component(&AdminConsoleDialog.admin_console_dialog/1,
+          id: "admin-console-dialog",
+          show: true,
+          active_tab: "broadcast",
+          results: [],
+          broadcast_result: nil,
+          broadcast_can_wallops: true,
+          broadcast_can_announce: true,
+          on_tab: "admin_console_tab",
+          on_broadcast_send: "admin_console_send_broadcast",
+          on_close: "close_admin_console"
+        )
+        |> Floki.parse_document!()
+
+      html = Floki.raw_html(document)
+
+      assert html =~ ~s(id="admin-console-broadcast-form")
+      assert html =~ ~s(phx-submit="admin_console_send_broadcast")
+      assert html =~ ~s(name="broadcast_type")
+      assert html =~ ~s(value="wallops")
+      assert html =~ ~s(value="announce")
+      assert html =~ ~s(name="message")
+      assert html =~ "Wallops"
+      assert html =~ "Announce"
+      assert html =~ "Send broadcast"
+    end
+
+    test "admin can send wallops and announcements from the structured tab", %{conn: conn} do
+      view = connect_admin(conn)
+      wallops = "wallops-admin-tab-#{uid()}"
+      announcement = "announce-admin-tab-#{uid()}"
+
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      render_click(view, "admin_console_tab", %{"tab" => "broadcast"})
+
+      html =
+        view
+        |> form("#admin-console-broadcast-form", %{
+          "broadcast_type" => "wallops",
+          "message" => wallops
+        })
+        |> render_submit()
+
+      assert html =~ "Wallops sent."
+      assert_receive {:wallops, %{sender: "TestAdmin", content: ^wallops}}
+
+      html =
+        view
+        |> form("#admin-console-broadcast-form", %{
+          "broadcast_type" => "announce",
+          "message" => announcement
+        })
+        |> render_submit()
+
+      assert html =~ "Announcement sent to all users."
+      assert_receive {:announcement, %{sender: "TestAdmin", content: ^announcement}}
     end
   end
 

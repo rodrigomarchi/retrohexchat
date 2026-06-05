@@ -1,0 +1,40 @@
+<p>
+  {dgettext(
+    "help_features",
+    "Server Broadcasts covers operator wallops and administrator announcements sent from the Admin Console Broadcast tab or slash commands."
+  )}
+</p>
+
+<.help_h4 icon={:icon_megaphone}>{dgettext("help_features", "Broadcast Tab")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "In Admin Console > Broadcast, choose Wallops or Announce, enter a message, and send it through the same command handlers as /wallops and /announce."
+  )}
+</p>
+
+<.help_h4 icon={:icon_status_user}>{dgettext("help_features", "Wallops")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Wallops messages go only to users who enabled +w with /umode +w. Server operators and administrators can send them."
+  )}
+</p>
+
+<.help_h4 icon={:icon_warning}>{dgettext("help_features", "Announcements")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "Announcements go to every connected user and bypass ignore filters. Only server administrators can send them."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-admin-console">
+    {dgettext("help_features", "Admin Console")}
+  </.help_link>
+  · <.help_link topic="cmd-wallops">{dgettext("help_features", "/wallops")}</.help_link>
+  · <.help_link topic="cmd-announce">{dgettext("help_features", "/announce")}</.help_link>
+  · <.help_link topic="cmd-umode">{dgettext("help_features", "/umode +w")}</.help_link>
+</p>

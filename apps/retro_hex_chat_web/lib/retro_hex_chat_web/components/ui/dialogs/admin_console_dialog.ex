@@ -19,10 +19,14 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :motd_content, :string, default: nil
   attr :motd_result, :any, default: nil
   attr :motd_editable, :boolean, default: false
+  attr :broadcast_result, :any, default: nil
+  attr :broadcast_can_wallops, :boolean, default: false
+  attr :broadcast_can_announce, :boolean, default: false
   attr :on_tab, :any, default: nil
   attr :on_motd_set, :any, default: nil
   attr :on_motd_clear, :any, default: nil
   attr :on_motd_refresh, :any, default: nil
+  attr :on_broadcast_send, :any, default: nil
   attr :on_close, :any, default: nil
 
   @spec admin_console_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -125,6 +129,15 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_set={@on_motd_set}
                 on_clear={@on_motd_clear}
                 on_refresh={@on_motd_refresh}
+              />
+            </.tabs_content>
+
+            <.tabs_content value="broadcast" builder={builder}>
+              <.broadcast_tab
+                result={@broadcast_result}
+                can_wallops={@broadcast_can_wallops}
+                can_announce={@broadcast_can_announce}
+                on_send={@on_broadcast_send}
               />
             </.tabs_content>
 
@@ -299,10 +312,87 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
     """
   end
 
+  attr :result, :any, default: nil
+  attr :can_wallops, :boolean, default: false
+  attr :can_announce, :boolean, default: false
+  attr :on_send, :any, default: nil
+
+  defp broadcast_tab(assigns) do
+    ~H"""
+    <div class="space-y-retro-8" data-testid="admin-console-tab-broadcast">
+      <form id="admin-console-broadcast-form" phx-submit={@on_send} class="space-y-retro-8">
+        <fieldset class="flex flex-wrap gap-retro-6">
+          <label class="inline-flex items-center gap-retro-4 text-sm">
+            <input
+              type="radio"
+              name="broadcast_type"
+              value="wallops"
+              checked
+              disabled={not @can_wallops}
+            />
+            <span class="font-bold">{dgettext("dialogs", "Wallops")}</span>
+          </label>
+          <label class="inline-flex items-center gap-retro-4 text-sm">
+            <input
+              type="radio"
+              name="broadcast_type"
+              value="announce"
+              disabled={not @can_announce}
+            />
+            <span class="font-bold">{dgettext("dialogs", "Announce")}</span>
+          </label>
+        </fieldset>
+
+        <div>
+          <label for="admin-console-broadcast-message" class="block text-xs font-bold mb-retro-4">
+            {dgettext("dialogs", "Message")}
+          </label>
+          <textarea
+            id="admin-console-broadcast-message"
+            name="message"
+            class="w-full shadow-retro-sunken bg-white px-retro-6 py-retro-4 text-sm resize-y min-h-[116px]"
+            autocomplete="off"
+          ></textarea>
+        </div>
+
+        <div class="flex justify-end">
+          <.button
+            type="submit"
+            size="sm"
+            disabled={not (@can_wallops or @can_announce)}
+          >
+            <:icon><Icons.icon_megaphone class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Send broadcast")}
+          </.button>
+        </div>
+      </form>
+
+      <.admin_inline_result result={@result} />
+    </div>
+    """
+  end
+
+  attr :result, :any, default: nil
+
+  defp admin_inline_result(assigns) do
+    ~H"""
+    <div
+      :if={@result}
+      class={[
+        "shadow-retro-sunken bg-black font-mono text-xs p-retro-6",
+        if(Map.get(@result, :status) == :error, do: "text-red-400", else: "text-green-400")
+      ]}
+      data-testid="admin-console-inline-result"
+    >
+      {Map.get(@result, :message, "")}
+    </div>
+    """
+  end
+
   defp present?(value), do: is_binary(value) and String.trim(value) != ""
 
   @spec admin_shell_tabs() :: [String.t()]
   defp admin_shell_tabs do
-    ~w(server_settings users channels broadcast audit_log turn danger_zone)
+    ~w(server_settings users channels audit_log turn danger_zone)
   end
 end

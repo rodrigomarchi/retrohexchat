@@ -18,7 +18,10 @@
     "- view the current Message of the Day, edit it with /setmotd, or clear it with /clearmotd."
   )}<br />
   <strong>{dgettext("help_features", "Broadcast")}</strong>
-  {dgettext("help_features", "- wallops and announcements.")}<br />
+  {dgettext(
+    "help_features",
+    "- send wallops to +w users or announcements to every connected user."
+  )}<br />
   <strong>{dgettext("help_features", "Audit Log")}</strong>
   {dgettext("help_features", "- recent administrative actions.")}<br />
   <strong>{dgettext("help_features", "TURN")}</strong>
@@ -59,6 +62,10 @@
   · <.help_link topic="cmd-motd">{dgettext("help_features", "/motd")}</.help_link>
   · <.help_link topic="cmd-setmotd">{dgettext("help_features", "/setmotd")}</.help_link>
   · <.help_link topic="cmd-clearmotd">{dgettext("help_features", "/clearmotd")}</.help_link>
+  ·
+  <.help_link topic="feature-server-broadcasts">
+    {dgettext("help_features", "Server Broadcasts")}
+  </.help_link>
   · <.help_link topic="cmd-admin-nuke">{dgettext("help_features", "/admin nuke")}</.help_link>
   ·
   <.help_link topic="ui-message-of-the-day">

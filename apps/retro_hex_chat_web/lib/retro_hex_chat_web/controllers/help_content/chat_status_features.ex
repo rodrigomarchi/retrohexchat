@@ -26,5 +26,5 @@ defmodule RetroHexChatWeb.HelpContent.ChatStatusFeatures do
 
   def help_icon(assigns), do: apply(Icons, assigns.name, [%{class: assigns.class}])
 
-  embed_templates "feature_{identity_presence*,nick_alignment*,nick_expiry*,notices*,notify_list*,paste_dialog*,perform*,pm_persistence*,quit_message*,search*,smart_input*,sounds*,special_messages*,status_bar*,timers*,timestamp_format*,typing_indicator*,unread_indicators*,url_catcher*,user_lookup*}"
+  embed_templates "feature_{identity_presence*,nick_alignment*,nick_expiry*,notices*,notify_list*,paste_dialog*,perform*,pm_persistence*,quit_message*,search*,server_broadcasts*,smart_input*,sounds*,special_messages*,status_bar*,timers*,timestamp_format*,typing_indicator*,unread_indicators*,url_catcher*,user_lookup*}"
 end
