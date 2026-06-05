@@ -14,6 +14,12 @@
     "There is no dedicated keyboard shortcut for the /me action toggle. Type /me directly, or click the * button in a channel input."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_ui",
+    "There is no dedicated keyboard shortcut for User Lookup. Open it from Tools > User Lookup, a nickname context menu, /whois, or /whowas."
+  )}
+</p>
 <.help_h4 icon={:icon_dialog_custom_menus}>{dgettext("help_ui", "Context Menus")}</.help_h4>
 <pre>{dgettext("help_ui", "Arrow Down — Next menu item Arrow Up — Previous menu item Enter — Select focused menu item Escape — Close context menu")}</pre>
 <.help_h4 icon={:icon_btn_search}>{dgettext("help_ui", "Search Navigation")}</.help_h4>
@@ -33,5 +39,6 @@
     {dgettext("help_ui", "Enhanced History")}
   </.help_link>
   · <.help_link topic="feature-search">{dgettext("help_ui", "Search")}</.help_link>
+  · <.help_link topic="feature-user-lookup">{dgettext("help_ui", "User Lookup")}</.help_link>
   · <.help_link topic="ui-edit-menu">{dgettext("help_ui", "Edit Menu")}</.help_link>
 </p>

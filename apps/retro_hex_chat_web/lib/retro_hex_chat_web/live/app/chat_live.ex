@@ -78,6 +78,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.SoundSettingsDialog
   import RetroHexChatWeb.Components.UI.TimersDialog
   import RetroHexChatWeb.Components.UI.UrlCatcher
+  import RetroHexChatWeb.Components.UI.UserLookupDialog
   import RetroHexChatWeb.Components.UI.BotManagementDialog
   import RetroHexChatWeb.Components.UI.BotFormDialog
   import RetroHexChatWeb.Components.UI.AdminConsoleDialog
@@ -534,6 +535,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.PerformAutojoinEvents.handle_event/3,
     &ChatLive.ChannelListEvents.handle_event/3,
     &ChatLive.MenuToolbarEvents.handle_event/3,
+    &ChatLive.UserLookupEvents.handle_event/3,
     &ChatLive.HoverEvents.handle_event/3,
     &ChatLive.ContextMenuEvents.handle_event/3,
     &ChatLive.TipEvents.handle_event/3,
@@ -588,6 +590,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:perform_autojoin_events, &ChatLive.PerformAutojoinEvents.handle_event/3},
       {:channel_list_events, &ChatLive.ChannelListEvents.handle_event/3},
       {:menu_toolbar_events, &ChatLive.MenuToolbarEvents.handle_event/3},
+      {:user_lookup_events, &ChatLive.UserLookupEvents.handle_event/3},
       {:hover_events, &ChatLive.HoverEvents.handle_event/3},
       {:context_menu_events, &ChatLive.ContextMenuEvents.handle_event/3},
       {:tip_events, &ChatLive.TipEvents.handle_event/3},
@@ -725,6 +728,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
       conversations_sections: %{channels: true, pms: true, popular: false},
       show_url_catcher: false,
       show_whois: false,
+      show_user_lookup_dialog: false,
+      user_lookup_nick: "",
+      user_lookup_error: nil,
+      lookup_result: nil,
+      whois_output_mode: :card,
       unread_counts: %{},
       kick_queue: [],
       url_catcher_entries: [],

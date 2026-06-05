@@ -479,7 +479,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "lookup",
           "profile",
           "idle",
-          "bio"
+          "bio",
+          dgettext("help", "user lookup"),
+          dgettext("help", "result card")
         ],
         icon: :icon_status_user,
         description:
@@ -492,7 +494,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-whowas",
         title: "/whowas",
         category: dgettext("help", "Users & Identity"),
-        keywords: ["whowas", "recently", "disconnected", dgettext("help", "last seen"), "offline"],
+        keywords: [
+          "whowas",
+          "recently",
+          "disconnected",
+          dgettext("help", "last seen"),
+          "offline",
+          dgettext("help", "user lookup"),
+          dgettext("help", "result card")
+        ],
         icon: :icon_clock,
         description:
           dgettext(

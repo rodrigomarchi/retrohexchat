@@ -34,6 +34,27 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-user-lookup",
+        title: dgettext("help", "User Lookup"),
+        category: dgettext("help", "Users & Identity"),
+        keywords: [
+          dgettext("help", "user lookup"),
+          "whois",
+          "whowas",
+          dgettext("help", "last seen"),
+          dgettext("help", "result card"),
+          dgettext("help", "context menu"),
+          dgettext("help", "Tools menu")
+        ],
+        icon: :icon_btn_search,
+        description:
+          dgettext(
+            "help",
+            "Look up current or recent user information from a dialog, nickname context menus, or slash commands."
+          ),
+        see_also: ["cmd-whois", "cmd-whowas", "feature-context-menus", "keyboard-shortcuts"]
+      },
+      %{
         id: "feature-notify-list",
         title: dgettext("help", "Notify List (Buddy List)"),
         category: dgettext("help", "Contacts & Notify"),
@@ -654,6 +675,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "message menu",
           dgettext("help", "conversations menu"),
           dgettext("help", "mute channel"),
+          dgettext("help", "last seen"),
+          "whowas",
+          dgettext("help", "user lookup"),
           "deop",
           "devoice",
           dgettext("help", "channel mute"),

@@ -64,6 +64,14 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
         {dgettext("chat", "Whois")}
       </.context_menu_item>
+      <.context_menu_item
+        on_click={@on_action}
+        action="context_whowas"
+        phx-value-nick={@target_nick}
+      >
+        <:icon><Icons.icon_clock class="w-[14px] h-[14px]" /></:icon>
+        {dgettext("chat", "Last Seen (Whowas)")}
+      </.context_menu_item>
 
       <.context_menu_separator />
 

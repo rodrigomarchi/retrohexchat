@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.WhoisTest do
   end
 
   describe "/whois command output" do
-    test "shows whois header and footer lines", %{conn: conn} do
+    test "shows whois result card", %{conn: conn} do
       nick = "WhoQ#{uid()}"
       target = "WhoT#{uid()}"
 
@@ -33,7 +33,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       html = render(view)
 
       assert html =~ "Whois: #{target}"
-      assert html =~ "-----------------------------"
+      assert html =~ ~s(data-testid="lookup-result-card")
+      refute html =~ "-----------------------------"
     end
 
     test "shows online time in whois", %{conn: conn} do
@@ -84,7 +85,8 @@ defmodule RetroHexChatWeb.WhoisTest do
       Process.sleep(50)
       html = render(view)
 
-      assert html =~ "Registered: No"
+      assert html =~ "Registered"
+      assert html =~ "No"
     end
 
     test "shows shared channels in whois", %{conn: conn} do

@@ -38,7 +38,8 @@ defmodule RetroHexChatWeb.WhowasTest do
       Process.sleep(50)
       html = render(view)
 
-      assert html =~ "Whowas: #{target}"
+      assert html =~ "Last Seen: #{target}"
+      assert html =~ ~s(data-testid="lookup-result-card")
       assert html =~ "Last seen:"
       assert html =~ "#lobby"
     end
@@ -93,7 +94,8 @@ defmodule RetroHexChatWeb.WhowasTest do
       Process.sleep(50)
       html = render(view)
 
-      assert html =~ "Quit message: See you tomorrow!"
+      assert html =~ "Quit message"
+      assert html =~ "See you tomorrow!"
     end
 
     test "disconnect records whowas entry automatically", %{conn: conn} do

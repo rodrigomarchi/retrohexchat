@@ -187,6 +187,8 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       {:show_alias_dialog, &close_alias_dialog/1},
       {:show_custom_menus_dialog, &close_custom_menus_dialog/1},
       {:show_url_catcher, &close_url_catcher/1},
+      {:show_user_lookup_dialog, &close_user_lookup_dialog/1},
+      {:lookup_result, &close_lookup_result/1},
       {:show_autorespond_dialog, &close_autorespond_dialog/1},
       {:notice_target, &cancel_notice_mode/1}
     ]
@@ -224,6 +226,8 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     do: assign(socket, show_flood_protection_dialog: false)
 
   defp close_url_catcher(socket), do: assign(socket, show_url_catcher: false)
+  defp close_user_lookup_dialog(socket), do: assign(socket, show_user_lookup_dialog: false)
+  defp close_lookup_result(socket), do: assign(socket, lookup_result: nil)
 
   # ---------------------------------------------------------------------------
   # Private helpers

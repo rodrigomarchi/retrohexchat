@@ -10,7 +10,7 @@
 <p>
   {dgettext(
     "help_features",
-    "Right-click a nickname in a chat message to see: Private Message, Whois, Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Invite to Channel..., Kick, Ban, status-aware Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
+    "Right-click a nickname in a chat message to see: Private Message, Whois, Last Seen (Whowas), Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Invite to Channel..., Kick, Ban, status-aware Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
   )}
 </p>
 <.help_h4 icon={:icon_role_operator}>
@@ -81,6 +81,9 @@
   </.help_link>
   · <.help_link topic="cmd-mute">{dgettext("help_features", "/mute")}</.help_link>
   · <.help_link topic="cmd-unmute">{dgettext("help_features", "/unmute")}</.help_link>
+  ·
+  <.help_link topic="feature-user-lookup">{dgettext("help_features", "User Lookup")}</.help_link>
+  · <.help_link topic="cmd-whowas">{dgettext("help_features", "/whowas")}</.help_link>
   ·
   <.help_link topic="feature-interactive-elements">
     {dgettext("help_features", "Interactive Chat Elements")}

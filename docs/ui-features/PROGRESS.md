@@ -24,7 +24,7 @@ iterations — read it before starting, write to it before stopping.
 | 07 | Messaging | P2 | ✅ | — | 2026-06-05 | Complete: /me action toggle + Send Notice composer |
 | 08 | Scripting & Customization | P2 | ✅ | — | 2026-06-05 | Complete: Timers dialog, entry points, and bare /timer launcher |
 | 09 | Channel Configuration | P2 | ✅ | — | 2026-06-05 | Complete: Channel Central welcome/throttle/ownership transfer |
-| 10 | User Lookups | P3 | ⬜ | — | — | Whowas lookup + whois result card |
+| 10 | User Lookups | P3 | ✅ | — | 2026-06-05 | Complete: User Lookup dialog, context Last Seen, and Whois/Whowas result cards |
 | 11 | ChanServ | P3 | ⬜ | — | — | Channel Central registration/access tab |
 | 12 | Server Administration | P3 | ⬜ | — | — | Structured Admin Console + MOTD/broadcast |
 
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-05 — Feature 10: `User Lookups`
+- **Did:** added reusable User Lookup dialog and structured lookup result card; wired Tools > User Lookup, nicklist/chat Last Seen (Whowas) context actions, card footer actions, Escape dismissal, and default card output for typed `/whois` and `/whowas` with `whois_output_mode: :text` fallback.
+- **Tests:** added `UserLookupFeatureTest` coverage for menu/context entry points, dialog command mapping, result-card defaults, context whowas, and HelpTopics discovery; updated existing Whois/Whowas tests for card output. Red phase: `make ci.quick` failed on the new expectations, then passed after implementation. `mix audit.styles` exited 0 with 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** added `feature-user-lookup`; updated `/whois`, `/whowas`, Context Menus, Keyboard Shortcuts, and HelpTopics metadata/cross-references.
+- **Follow-ups:** spec requested User menu, but the current menu bar has File/Edit/View/Tools/Help only; User Lookup was placed under Tools and the discrepancy is recorded here. No shortcut was assigned because the spec notes the candidate conflicts.
 
 ### 2026-06-05 — Feature 07: `Messaging`
 - **Did:** extended the reusable ChatInput with a channel-only `*` action toggle, one-shot `/me` dispatch, inline action/notice validation, notice composer state, Escape/X cancellation, and "Send Notice..." entries in nicklist and chat nick context menus backed by `/notice`.
@@ -120,6 +126,8 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 > _(template)_
 > - **[Feature NN] <lesson>** — why it matters / how to apply next time.
 
+- **[Feature 10] Lookup UI should dispatch through `/whois` and `/whowas`** — context menus, dialog buttons, and result-card buttons can share command handlers by routing through `CommandDispatch`, while UI actions choose card vs text output.
+- **[Feature 10] Specs may name a menu that does not exist in the current shell** — Feature 10 requested a User menu, but `MenuBarApp` currently exposes File/Edit/View/Tools/Help; place utility launchers under Tools and record the discrepancy instead of inventing a parallel menu.
 - **[Feature 07] Input modes should dispatch through existing commands** — action and notice UI can synthesize `/me ...` and `/notice nick ...`, preserving handler validation and command-result routing instead of adding parallel send paths.
 - **[Feature 07] `/notice_routing` docs must follow handler reality** — the handler ignores args and reports fixed active-window routing; update help content rather than documenting obsolete configurable modes.
 - **[Feature 09] Channel Central configuration can reuse command-backed server APIs** — welcome messages, join throttle, and ownership transfer already live in `Channels.Server`; UI events should stay thin and call those APIs instead of duplicating command handlers.

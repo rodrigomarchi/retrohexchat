@@ -1,7 +1,9 @@
 defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   @moduledoc """
-  Whois and Whowas text output helpers.
+  Whois and Whowas lookup output helpers.
   """
+
+  import Phoenix.Component, only: [assign: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -12,22 +14,96 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
+  @type lookup_row :: %{label: String.t(), value: String.t()}
+  @type lookup_result :: %{
+          kind: :whois | :whowas,
+          nickname: String.t(),
+          title: String.t(),
+          rows: [lookup_row()],
+          online: boolean()
+        }
+
+  @spec show_whois_result(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def show_whois_result(socket, target) do
+    if socket.assigns[:whois_output_mode] == :text do
+      show_whois_text(socket, target)
+    else
+      show_whois_card(socket, target)
+    end
+  end
+
+  @spec show_whowas_result(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def show_whowas_result(socket, target) do
+    if socket.assigns[:whois_output_mode] == :text do
+      show_whowas_text(socket, target)
+    else
+      show_whowas_card(socket, target)
+    end
+  end
+
+  @spec show_whois_card(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def show_whois_card(socket, target) do
+    case whois_result(socket, target) do
+      {:ok, result} -> assign(socket, lookup_result: result)
+      {:error, message} -> Messages.system_event(socket, message)
+    end
+  end
+
+  @spec show_whowas_card(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def show_whowas_card(socket, target) do
+    case whowas_result(target) do
+      {:ok, result} -> assign(socket, lookup_result: result)
+      {:error, message} -> Messages.system_event(socket, message)
+    end
+  end
+
+  @spec whois_result(Phoenix.LiveView.Socket.t(), String.t()) ::
+          {:ok, lookup_result()} | {:error, String.t()}
+  def whois_result(socket, target) do
+    case lookup_whois_data(socket, target) do
+      {:ok, session, normalized_target, data} ->
+        {:ok, format_whois_result(data, normalized_target, session.nickname)}
+
+      {:error, message} ->
+        {:error, message}
+    end
+  end
+
+  @spec whowas_result(String.t()) :: {:ok, lookup_result()} | {:error, String.t()}
+  def whowas_result(target) do
+    normalized_target = String.trim(target || "")
+
+    case WhowasCache.lookup(normalized_target) do
+      {:ok, entry} ->
+        {:ok, format_whowas_result(entry, Tracker.online?("presence:global", entry.nickname))}
+
+      {:error, :not_found} ->
+        if Tracker.online?("presence:global", normalized_target) do
+          {:error,
+           dgettext("chat", "* %{target} is online. Use /whois %{target} for current info.",
+             target: normalized_target
+           )}
+        else
+          {:error,
+           dgettext("chat", "* No whowas information available for %{target}.",
+             target: normalized_target
+           )}
+        end
+    end
+  end
+
   @spec show_whois_text(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def show_whois_text(socket, target) do
-    session = socket.assigns.session
-    target_meta = find_user_presence(target, session.channels)
+    case lookup_whois_data(socket, target) do
+      {:ok, session, normalized_target, data} ->
+        data
+        |> format_whois_lines(normalized_target, session.nickname)
+        |> Enum.reduce(socket, fn line, acc ->
+          Messages.system_event(acc, line)
+        end)
 
-    if target_meta == nil and target != session.nickname do
-      Messages.system_event(
-        socket,
-        dgettext("chat", "* %{target} is not online.", target: target)
-      )
-    else
-      lines = build_whois_lines(socket, session, target, target_meta)
-
-      Enum.reduce(lines, socket, fn line, acc ->
-        Messages.system_event(acc, line)
-      end)
+      {:error, message} ->
+        Messages.system_event(socket, message)
     end
   end
 
@@ -79,9 +155,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
     |> Kernel.++(["-----------------------------"])
   end
 
-  defp build_whois_lines(socket, session, target, target_meta) do
-    data = gather_whois_data(socket, session, target, target_meta)
-    format_whois_lines(data, target, session.nickname)
+  defp lookup_whois_data(socket, target) do
+    normalized_target = String.trim(target || "")
+    session = socket.assigns.session
+    target_meta = find_user_presence(normalized_target, session.channels)
+
+    if target_meta == nil and normalized_target != session.nickname do
+      {:error, dgettext("chat", "* %{target} is not online.", target: normalized_target)}
+    else
+      data = gather_whois_data(socket, session, normalized_target, target_meta)
+      {:ok, session, normalized_target, data}
+    end
   end
 
   defp gather_whois_data(socket, session, target, target_meta) do
@@ -103,6 +187,89 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
       language: client_field(is_self, socket, target_meta, :language),
       screen: client_field(is_self, socket, target_meta, :screen),
       client_timezone: client_field(is_self, socket, target_meta, :timezone)
+    }
+  end
+
+  defp format_whois_result(data, target, my_nick) do
+    rows =
+      []
+      |> append_row(dgettext("chat", "Nickname"), target)
+      |> maybe_append_row(
+        data.target_channels != [],
+        dgettext("chat", "Channels"),
+        Enum.join(data.target_channels, ", ")
+      )
+      |> maybe_append_row(
+        data.shared_channels != [] and target != my_nick,
+        dgettext("chat", "Shared channels"),
+        Enum.join(data.shared_channels, ", ")
+      )
+      |> append_row(
+        dgettext("chat", "Online for"),
+        TimeFormatter.format_duration(data.online_seconds)
+      )
+      |> append_row(
+        dgettext("chat", "Idle for"),
+        TimeFormatter.format_duration(data.idle_seconds)
+      )
+      |> append_row(
+        dgettext("chat", "Registered"),
+        if(data.registered, do: dgettext("chat", "Yes"), else: dgettext("chat", "No"))
+      )
+      |> maybe_append_row(
+        data.away,
+        dgettext("chat", "Away"),
+        data.away_message || ""
+      )
+      |> maybe_append_row(data.bio != nil, dgettext("chat", "Bio"), data.bio)
+      |> maybe_append_row(
+        data.contact_note != nil,
+        dgettext("chat", "Contact note"),
+        data.contact_note
+      )
+      |> maybe_append_row(
+        client_display(data.browser, data.os) != nil,
+        dgettext("chat", "Client"),
+        client_display(data.browser, data.os)
+      )
+      |> maybe_append_row(data.screen != nil, dgettext("chat", "Screen"), data.screen)
+      |> maybe_append_row(data.language != nil, dgettext("chat", "Language"), data.language)
+      |> maybe_append_row(
+        data.client_timezone != nil,
+        dgettext("chat", "Timezone"),
+        data.client_timezone
+      )
+
+    %{
+      kind: :whois,
+      nickname: target,
+      title: dgettext("chat", "Whois: %{target}", target: target),
+      rows: rows,
+      online: true
+    }
+  end
+
+  defp format_whowas_result(entry, online) do
+    rows =
+      []
+      |> append_row(dgettext("chat", "Nickname"), entry.nickname)
+      |> append_row(
+        dgettext("chat", "Last seen"),
+        TimeFormatter.format_relative(entry.disconnected_at)
+      )
+      |> append_row(dgettext("chat", "Channels"), Enum.join(entry.channels, ", "))
+      |> maybe_append_row(
+        entry.quit_message != nil,
+        dgettext("chat", "Quit message"),
+        entry.quit_message
+      )
+
+    %{
+      kind: :whowas,
+      nickname: entry.nickname,
+      title: dgettext("chat", "Last Seen: %{target}", target: entry.nickname),
+      rows: rows,
+      online: online
     }
   end
 
@@ -243,6 +410,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
 
   defp maybe_append(lines, true, line), do: lines ++ [line]
   defp maybe_append(lines, _, _line), do: lines
+
+  defp append_row(rows, label, value), do: rows ++ [%{label: label, value: value}]
+  defp maybe_append_row(rows, true, label, value), do: append_row(rows, label, value)
+  defp maybe_append_row(rows, _condition, _label, _value), do: rows
 
   defp find_user_presence(target, channels) do
     Enum.find_value(channels, fn channel ->

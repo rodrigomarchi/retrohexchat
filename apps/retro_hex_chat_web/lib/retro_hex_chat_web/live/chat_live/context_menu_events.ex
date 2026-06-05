@@ -3,14 +3,14 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   Handle context menu events for nicklist and chat area.
 
   Covers nicklist: nick_right_click, nicklist_dblclick, close_context_menu,
-  context_query, context_whois, context_kick, context_ban, context_op,
+  context_query, context_whois, context_whowas, context_kick, context_ban, context_op,
   context_deop, context_voice, context_devoice, context_mute, context_unmute,
   context_invite_to_channel, context_add_contact, context_set_nick_color, context_ignore,
   context_unignore, context_notice, context_pick_color, context_p2p, context_call,
   context_video_call, context_sendfile, context_game.
 
   Covers chat area: chat_context_menu, close_chat_context_menu, ctx_chat_pm, ctx_chat_notice,
-  ctx_chat_whois, ctx_chat_copy_nick, ctx_chat_ignore, ctx_chat_add_contact,
+  ctx_chat_whois, ctx_chat_whowas, ctx_chat_copy_nick, ctx_chat_ignore, ctx_chat_add_contact,
   ctx_chat_set_color, ctx_chat_kick, ctx_chat_ban, ctx_chat_voice, ctx_chat_devoice,
   ctx_chat_op, ctx_chat_deop, ctx_chat_mute, ctx_chat_unmute, ctx_chat_open_url,
   ctx_chat_copy_url, ctx_chat_save_url, ctx_chat_join, ctx_chat_copy_channel,
@@ -28,7 +28,6 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [
-      show_whois_text: 2,
       open_pm_conversation: 2,
       maybe_persist_contacts: 2,
       push_status_message: 3,
@@ -47,6 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChat.Commands.Duration
   alias RetroHexChat.Commands.Handlers.{Game, P2p}
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.CoreEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
   alias RetroHexChatWeb.ChatLive.Helpers.{GameInvite, P2pInvite}
@@ -101,7 +101,14 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     {:halt,
      socket
      |> close_context_menu()
-     |> show_whois_text(nick)}
+     |> CommandDispatch.dispatch_command(socket.assigns.session, "whois", [nick])}
+  end
+
+  def handle_event("context_whowas", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> CommandDispatch.dispatch_command(socket.assigns.session, "whowas", [nick])}
   end
 
   def handle_event("context_kick", %{"nick" => nick}, socket) do
@@ -412,7 +419,14 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     {:halt,
      socket
      |> close_chat_context_menu()
-     |> show_whois_text(nick)}
+     |> CommandDispatch.dispatch_command(socket.assigns.session, "whois", [nick])}
+  end
+
+  def handle_event("ctx_chat_whowas", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> CommandDispatch.dispatch_command(socket.assigns.session, "whowas", [nick])}
   end
 
   def handle_event("ctx_chat_copy_nick", %{"nick" => nick}, socket) do

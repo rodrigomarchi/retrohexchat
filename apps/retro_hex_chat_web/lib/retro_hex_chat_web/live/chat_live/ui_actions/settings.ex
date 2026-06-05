@@ -8,7 +8,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.ChatLive.Helpers,
-    only: [system_event: 2, show_whowas_text: 2, safe_update_bio: 3]
+    only: [system_event: 2, show_whowas_result: 2, safe_update_bio: 3]
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.UserBio
@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Settings do
           Phoenix.LiveView.Socket.t()
 
   def handle_ui_action(socket, :show_whowas_info, %{nickname: target}),
-    do: show_whowas_text(socket, target)
+    do: show_whowas_result(socket, target)
 
   def handle_ui_action(socket, :notice_routing_show, _payload) do
     system_event(socket, dgettext("chat", "* Notice routing is hardcoded to: active"))

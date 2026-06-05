@@ -12,7 +12,7 @@
 <p>
   {dgettext(
     "help_commands",
-    "Shows information about a user who has disconnected within the configured retention period: their last seen time, which channels they were in, and their quit message (if they provided one). This is useful when you notice someone has left and want to know when and why. Lookups are case-insensitive. If no record exists, a \"no whowas information available\" message is shown."
+    "Shows information about a user who has disconnected within the configured retention period in a Last Seen result card: their last seen time, which channels they were in, and their quit message (if they provided one). This is useful when you notice someone has left and want to know when and why. Lookups are case-insensitive. If no record exists, a \"no whowas information available\" message is shown."
   )}
 </p>
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
@@ -30,6 +30,10 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-whois">{dgettext("help_commands", "/whois")}</.help_link>
+  ·
+  <.help_link topic="feature-user-lookup">
+    {dgettext("help_commands", "User Lookup")}
+  </.help_link>
   ·
   <.help_link topic="feature-notify-list">{dgettext("help_commands", "Notify List")}</.help_link>
 </p>

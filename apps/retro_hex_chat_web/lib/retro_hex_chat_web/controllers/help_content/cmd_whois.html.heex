@@ -12,12 +12,12 @@
 <p>
   {dgettext(
     "help_commands",
-    "Displays comprehensive information about the user in the Status tab. You can see: their channels (with shared channels highlighted), how long they've been online, how long they've been idle, their away message (if set), their bio (if set), whether they're registered with NickServ, and client details (browser, OS, screen resolution, language, and timezone) when available. You can also trigger"
+    "Displays comprehensive information about the user in a result card. You can see: their channels, shared channels, how long they've been online, how long they've been idle, their away message (if set), their bio (if set), whether they're registered with NickServ, and client details (browser, OS, screen resolution, language, and timezone) when available. You can also trigger"
   )}
   <code>{dgettext("help_commands", "/whois")}</code>
   {dgettext(
     "help_commands",
-    "by double-clicking a nickname in the nick list. You can look up yourself too."
+    "from the User Lookup dialog or by right-clicking a nickname in the nick list or chat area. You can look up yourself too."
   )}
 </p>
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
@@ -33,6 +33,10 @@
 <p>
   <.help_link topic="cmd-whowas">{dgettext("help_commands", "/whowas")}</.help_link>
   · <.help_link topic="cmd-bio">{dgettext("help_commands", "/bio")}</.help_link>
+  ·
+  <.help_link topic="feature-user-lookup">
+    {dgettext("help_commands", "User Lookup")}
+  </.help_link>
   ·
   <.help_link topic="feature-notify-list">{dgettext("help_commands", "Notify List")}</.help_link>
 </p>

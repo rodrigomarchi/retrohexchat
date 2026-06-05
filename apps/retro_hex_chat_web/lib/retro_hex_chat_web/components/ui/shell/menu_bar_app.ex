@@ -194,6 +194,12 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
             on_action={@on_action}
           />
           <.menu_item
+            icon_fn={:icon_btn_search}
+            label={dgettext("ui", "User Lookup")}
+            action="open_user_lookup"
+            on_action={@on_action}
+          />
+          <.menu_item
             icon_fn={:icon_btn_perform}
             label={dgettext("ui", "Perform")}
             action="open_perform_dialog"

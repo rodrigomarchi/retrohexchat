@@ -863,6 +863,27 @@
   on_close="toggle_cheatsheet"
 />
 
+<.user_lookup_dialog
+  id="user-lookup-dialog"
+  show={@show_user_lookup_dialog}
+  nickname={@user_lookup_nick}
+  error_message={@user_lookup_error}
+  on_change="user_lookup_change"
+  on_whois="user_lookup_whois"
+  on_whowas="user_lookup_whowas"
+  on_close="close_user_lookup"
+/>
+
+<.lookup_result_card
+  id="lookup-result-dialog"
+  show={@lookup_result != nil}
+  result={@lookup_result}
+  on_close="close_lookup_result"
+  on_whois="lookup_result_whois"
+  on_whowas="lookup_result_whowas"
+  on_query="lookup_result_query"
+/>
+
 <.paste_confirm_dialog
   id="paste-confirm-dialog"
   show={@paste_lines != nil}

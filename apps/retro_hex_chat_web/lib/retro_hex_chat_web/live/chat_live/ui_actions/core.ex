@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       error_event: 2,
       inline_help_event: 3,
       open_pm_conversation: 2,
-      show_whois_text: 2,
+      show_whois_result: 2,
       safe_update_away: 4
     ]
 
@@ -119,7 +119,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   end
 
   def handle_ui_action(socket, :show_whois_info, %{nickname: target}),
-    do: show_whois_text(socket, target)
+    do: show_whois_result(socket, target)
 
   def handle_ui_action(socket, :show_help, %{commands: commands}) do
     command_list = Enum.join(Enum.map(commands, &"/#{&1}"), ", ")
