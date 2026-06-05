@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   @moduletag :liveview_feature
 
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
+  alias RetroHexChat.Chat.HelpTopics
 
   setup do
     ensure_channel("#lobby")
@@ -239,6 +240,137 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   end
 
   # ══════════════════════════════════════════════════════════════
+  # US3b — Feature 09 Channel Configuration Gaps
+  # ══════════════════════════════════════════════════════════════
+
+  describe "US3b: Welcome, throttle, and ownership transfer" do
+    test "operator saves and clears welcome message from General tab", %{conn: conn} do
+      channel = "#e2ewl-#{uid()}"
+      nick = "E2EWl#{uid()}"
+      view = connect_user(conn, nick)
+      submit_command(view, "/join #{channel}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+      html = render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      assert html =~ "Welcome Message:"
+      assert html =~ "Save Welcome"
+      assert html =~ "Clear Welcome"
+
+      html =
+        view
+        |> element("form[phx-submit=cc_save_welcome]")
+        |> render_submit(%{"message" => "Read the topic before chatting"})
+
+      assert html =~ "Welcome message saved."
+      assert html =~ "Read the topic before chatting"
+
+      assert {:ok, %{message: "Read the topic before chatting", set_by: ^nick}} =
+               Server.get_welcome(channel)
+
+      html = render_click(view, "cc_clear_welcome")
+
+      assert html =~ "Welcome message cleared."
+      assert html =~ "No welcome message set."
+      assert {:ok, nil} = Server.get_welcome(channel)
+    end
+
+    test "join throttle applies +j and -j from General tab", %{conn: conn} do
+      channel = "#e2esl-#{uid()}"
+      nick = "E2ESl#{uid()}"
+      view = connect_user(conn, nick)
+      submit_command(view, "/join #{channel}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+      html = render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      assert html =~ "Join throttle (seconds):"
+      assert html =~ "Apply Throttle"
+
+      html =
+        view
+        |> element("form[phx-submit=cc_apply_throttle]")
+        |> render_submit(%{"seconds" => "30"})
+
+      assert html =~ "Join throttle set to 30 seconds."
+      {:ok, state} = Server.get_state(channel)
+      assert state.modes_detail.join_throttle == {5, 30}
+
+      html =
+        view
+        |> element("form[phx-submit=cc_apply_throttle]")
+        |> render_submit(%{"seconds" => "0"})
+
+      assert html =~ "Join throttle disabled."
+      {:ok, state} = Server.get_state(channel)
+      assert state.modes_detail.join_throttle == nil
+    end
+
+    test "non-operators see welcome and throttle read-only", %{conn: conn} do
+      channel = "#e2ero-cfg-#{uid()}"
+      owner = "CfgOwner#{uid()}"
+      guest = "CfgGuest#{uid()}"
+
+      owner_view = connect_user(conn, owner)
+      submit_command(owner_view, "/join #{channel}")
+      :ok = Server.set_welcome(channel, "Owner managed welcome", owner)
+      :ok = Server.set_mode(channel, owner, "+j", ["5:45"])
+
+      view = connect_user(conn, guest)
+      submit_command(view, "/join #{channel}")
+      render_click(view, "switch_channel", %{"channel" => channel})
+      html = render_click(view, "open_channel_central", %{"cc_channel" => channel})
+
+      assert html =~ "Welcome Message:"
+      assert html =~ "Owner managed welcome"
+      assert html =~ "You must be a channel operator to edit the welcome message."
+      assert html =~ "You must be a channel operator to change the join throttle."
+      assert html =~ ~s(data-testid="cc-welcome-message-input")
+      assert html =~ ~s(data-testid="cc-throttle-seconds-input")
+      refute html =~ "Save Welcome"
+      refute html =~ "Apply Throttle"
+      refute html =~ "Transfer Ownership"
+    end
+
+    test "owner transfers ownership through confirm sub-form", %{conn: conn} do
+      channel = "#e2etr-#{uid()}"
+      owner = "E2EOwner#{uid()}"
+      target = "E2ENew#{uid()}"
+
+      owner_view = connect_user(conn, owner)
+      submit_command(owner_view, "/join #{channel}")
+      target_view = connect_user(conn, target)
+      submit_command(target_view, "/join #{channel}")
+
+      render_click(owner_view, "switch_channel", %{"channel" => channel})
+      html = render_click(owner_view, "open_channel_central", %{"cc_channel" => channel})
+
+      assert html =~ "Transfer Ownership"
+
+      html = render_click(owner_view, "cc_open_transfer")
+      assert html =~ "Transfer Ownership"
+      assert html =~ "This cannot be undone"
+
+      html =
+        owner_view
+        |> element("form[phx-submit=cc_transfer_ownership]")
+        |> render_submit(%{"nickname" => ""})
+
+      assert html =~ "Nickname is required."
+
+      html =
+        owner_view
+        |> element("form[phx-submit=cc_transfer_ownership]")
+        |> render_submit(%{"nickname" => target})
+
+      assert html =~ "Channel ownership transferred"
+      refute html =~ "cc-transfer-dialog"
+
+      {:ok, state} = Server.get_state(channel)
+      assert target in state.owners
+      assert owner in state.operators
+    end
+  end
+
+  # ══════════════════════════════════════════════════════════════
   # US4 — Ban Management
   # ══════════════════════════════════════════════════════════════
 
@@ -457,6 +589,29 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "channel_central_tab", %{"tab" => "bans"})
       html = render(view)
       assert html =~ "RtBanned"
+    end
+  end
+
+  describe "Feature 09 help documentation" do
+    test "channel configuration topics include UI discovery and cross references" do
+      welcome = HelpTopics.get_topic("channel-welcome-message")
+      transfer = HelpTopics.get_topic("channel-transfer-ownership")
+      mode_j = HelpTopics.get_topic("mode-j")
+      permissions = HelpTopics.get_topic("channel-permissions")
+
+      assert welcome != nil
+      assert welcome.title == "Channel Welcome Message"
+      assert "setwelcome" in welcome.keywords
+      assert "channel central" in welcome.keywords
+
+      assert transfer != nil
+      assert transfer.title == "Transfer Channel Ownership"
+      assert "transfer ownership" in transfer.keywords
+      assert "channel central" in transfer.keywords
+
+      assert "slow" in mode_j.keywords
+      assert "channel central" in mode_j.keywords
+      assert "transfer ownership" in permissions.keywords
     end
   end
 

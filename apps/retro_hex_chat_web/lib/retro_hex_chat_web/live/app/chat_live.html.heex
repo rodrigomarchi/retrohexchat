@@ -778,6 +778,11 @@
   created_at={channel_central_created_at(@channel_central_state, @timezone)}
   member_count={channel_central_member_count(@channel_central_state)}
   operator={@channel_central_operator}
+  owner={@channel_central_owner}
+  welcome_message={channel_central_welcome_message(@channel_central_state)}
+  throttle_seconds={channel_central_throttle_seconds(@channel_central_state)}
+  notice={@channel_central_notice}
+  transfer_error={@channel_central_transfer_error}
   modes={channel_central_modes(@channel_central_state)}
   bans={channel_central_bans(@channel_central_state)}
   ban_exceptions={channel_central_ban_exceptions(@channel_central_state)}
@@ -788,8 +793,15 @@
   show_add_ban_dialog={@show_cc_add_ban_dialog}
   show_add_ban_ex_dialog={@show_cc_add_ban_ex_dialog}
   show_add_invite_ex_dialog={@show_cc_add_invite_ex_dialog}
+  show_transfer_dialog={@show_cc_transfer_dialog}
   on_tab="channel_central_tab"
   on_topic_save="cc_set_topic"
+  on_welcome_save="cc_save_welcome"
+  on_welcome_clear="cc_clear_welcome"
+  on_throttle_apply="cc_apply_throttle"
+  on_transfer_open="cc_open_transfer"
+  on_transfer_close="cc_close_transfer"
+  on_transfer_submit="cc_transfer_ownership"
   on_mode_apply="cc_apply_modes"
   on_ban_add="cc_open_add_ban"
   on_ban_remove="cc_remove_ban"

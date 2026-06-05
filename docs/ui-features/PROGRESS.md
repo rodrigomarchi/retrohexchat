@@ -23,7 +23,7 @@ iterations — read it before starting, write to it before stopping.
 | 06 | Channel Membership | P1 | ✅ | — | 2026-06-04 | Complete: nicklist send-invite picker + Channel List knock request UI |
 | 07 | Messaging | P2 | ⬜ | — | — | /me action toggle + send-notice |
 | 08 | Scripting & Customization | P2 | ✅ | — | 2026-06-05 | Complete: Timers dialog, entry points, and bare /timer launcher |
-| 09 | Channel Configuration | P2 | ⬜ | — | — | Extend Channel Central (slow/transfer/welcome) |
+| 09 | Channel Configuration | P2 | ✅ | — | 2026-06-05 | Complete: Channel Central welcome/throttle/ownership transfer |
 | 10 | User Lookups | P3 | ⬜ | — | — | Whowas lookup + whois result card |
 | 11 | ChanServ | P3 | ⬜ | — | — | Channel Central registration/access tab |
 | 12 | Server Administration | P3 | ⬜ | — | — | Structured Admin Console + MOTD/broadcast |
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-05 — Feature 09: `Channel Configuration`
+- **Did:** extended the existing Channel Central General tab with operator-only welcome message editing, operator-only join throttle controls backed by mode `+j/-j`, owner-only ownership transfer with confirmation/error handling, and refreshed owner/operator state after mutations; exposed channel welcome data through channel state projection.
+- **Tests:** added `ChannelCentralFeatureTest` coverage for welcome save/clear, throttle apply/remove, non-operator read-only controls, owner transfer confirmation/validation, and HelpTopics discovery. Red phase: `make ci.quick` failed on the new expectations; after implementation, `make ci.quick` passed. `mix audit.styles` exited 0 with 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** added `channel-welcome-message` and `channel-transfer-ownership`; updated `/setwelcome`, `/clearwelcome`, `/slow`, `/transfer`, `mode-j`, `channel-permissions`, and HelpTopics metadata/cross-references.
+- **Follow-ups:** none.
 
 ### 2026-06-05 — Feature 08: `Scripting & Customization`
 - **Did:** added the Timers dialog with active-timer table, Add/Edit/Stop controls, repeat-min validation, max-5 state, session-only note, and static Next Fire display; wired Tools menu and toolbar Options entry points with `icon_btn_timers`; changed bare `/timer` to open the dialog; reused result-returning timer helpers for typed commands and dialog events.
@@ -108,6 +114,8 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 > _(template)_
 > - **[Feature NN] <lesson>** — why it matters / how to apply next time.
 
+- **[Feature 09] Channel Central configuration can reuse command-backed server APIs** — welcome messages, join throttle, and ownership transfer already live in `Channels.Server`; UI events should stay thin and call those APIs instead of duplicating command handlers.
+- **[Feature 09] `/slow` is a user-friendly wrapper around `+j`** — the Channel Central throttle field should map seconds to `+j 5:<seconds>` and `0` to `-j`, matching the handler's count/window model.
 - **[Feature 08] Timer dialogs should reuse scheduling helpers** — typed `/timer` commands and dialog saves both need to cancel old refs, clamp intervals, assign target windows, and emit system messages; keep that lifecycle in shared helpers and let events only manage dialog assigns.
 - **[Feature 08] Existing timer help IDs already cover command and feature docs** — the spec asked for a Timers command topic, but this help system already has `cmd-timer` and `feature-timers`; add the new UI-specific `ui-timers-dialog` topic and update cross-references rather than duplicating command metadata.
 - **[Feature 06] Channel List needs mode metadata, not just display fields** — `Autocomplete.list_visible_channels/1` originally returned only name/topic/user count; UI affordances for restricted channels need `joined?`, `invite_only?`, and modes preserved through filtering.

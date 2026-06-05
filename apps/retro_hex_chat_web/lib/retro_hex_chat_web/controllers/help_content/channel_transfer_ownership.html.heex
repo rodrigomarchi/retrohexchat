@@ -1,0 +1,42 @@
+<p>
+  {dgettext(
+    "help_channels",
+    "Channel ownership can be transferred to another member. The current owner becomes an operator and the target receives owner status."
+  )}
+</p>
+
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_channels", "Channel Central")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Owners can open Channel Central's General tab, choose Transfer Ownership, enter the target nickname, and confirm the transfer."
+  )}
+</p>
+
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Command")}</.help_h4>
+<pre>{dgettext("help_channels", "/transfer <nickname>")}</pre>
+
+<.help_h4 icon={:icon_warning}>{dgettext("help_channels", "Rules")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_channels", "Only the current channel owner (~) can transfer ownership")}
+  </li>
+  <li>{dgettext("help_channels", "The target nickname must be present in the channel")}</li>
+  <li>
+    {dgettext("help_channels", "This cannot be undone without the new owner's cooperation")}
+  </li>
+</ul>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-transfer">{dgettext("help_channels", "/transfer")}</.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_channels", "Channel Permissions")}
+  </.help_link>
+  · <.help_link topic="mode-q">{dgettext("help_channels", "+q Owner")}</.help_link>
+  ·
+  <.help_link topic="feature-channel-central">
+    {dgettext("help_channels", "Channel Central")}
+  </.help_link>
+</p>

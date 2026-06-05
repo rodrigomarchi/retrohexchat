@@ -1,0 +1,38 @@
+<p>
+  {dgettext(
+    "help_channels",
+    "Channel welcome messages are shown once to each user when they join a channel. Operators can set or clear the message from Channel Central's General tab or with commands."
+  )}
+</p>
+
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_channels", "Channel Central")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Open Channel Central for the channel, stay on the General tab, edit the Welcome Message field, then choose Save Welcome. Use Clear Welcome to remove it."
+  )}
+</p>
+
+<.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Commands")}</.help_h4>
+<pre>{dgettext("help_channels", "/setwelcome <message> /clearwelcome")}</pre>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_channels", "Rules")}</.help_h4>
+<ul>
+  <li>{dgettext("help_channels", "Requires channel operator (@) or owner (~) status")}</li>
+  <li>{dgettext("help_channels", "Applies only to the current channel")}</li>
+  <li>{dgettext("help_channels", "The user who set the message does not see it immediately")}</li>
+</ul>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-setwelcome">{dgettext("help_channels", "/setwelcome")}</.help_link>
+  · <.help_link topic="cmd-clearwelcome">{dgettext("help_channels", "/clearwelcome")}</.help_link>
+  ·
+  <.help_link topic="feature-channel-central">
+    {dgettext("help_channels", "Channel Central")}
+  </.help_link>
+  ·
+  <.help_link topic="channel-permissions">
+    {dgettext("help_channels", "Channel Permissions")}
+  </.help_link>
+</p>

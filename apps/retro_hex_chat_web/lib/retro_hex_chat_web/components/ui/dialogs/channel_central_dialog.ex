@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Separator
+  import RetroHexChatWeb.Components.UI.Textarea
 
   alias RetroHexChatWeb.Icons
 
@@ -47,6 +48,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :created_at, :string, default: nil
   attr :member_count, :integer, default: 0
   attr :operator, :boolean, default: false
+  attr :owner, :boolean, default: false
+  attr :welcome_message, :string, default: ""
+  attr :throttle_seconds, :integer, default: 0
+  attr :notice, :string, default: nil
+  attr :transfer_error, :string, default: nil
   attr :modes, :map, default: %{}
   attr :bans, :list, default: []
   attr :ban_exceptions, :list, default: []
@@ -56,6 +62,12 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :invite_ex_selected, :string, default: nil
   attr :on_tab, :any, default: nil, doc: "Tab switch event (phx-value-tab=value)"
   attr :on_topic_save, :any, default: nil
+  attr :on_welcome_save, :any, default: nil
+  attr :on_welcome_clear, :any, default: nil
+  attr :on_throttle_apply, :any, default: nil
+  attr :on_transfer_open, :any, default: nil
+  attr :on_transfer_close, :any, default: nil
+  attr :on_transfer_submit, :any, default: nil
   attr :on_mode_apply, :any, default: nil
   attr :on_ban_add, :any, default: nil
   attr :on_ban_remove, :any, default: nil
@@ -69,6 +81,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :show_add_ban_dialog, :boolean, default: false
   attr :show_add_ban_ex_dialog, :boolean, default: false
   attr :show_add_invite_ex_dialog, :boolean, default: false
+  attr :show_transfer_dialog, :boolean, default: false
   attr :on_close, :any, default: nil
 
   @spec channel_central_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -81,7 +94,10 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       id={@id}
       show={@show}
       class="max-w-xl"
-      lock={@show_add_ban_dialog || @show_add_ban_ex_dialog || @show_add_invite_ex_dialog}
+      lock={
+        @show_add_ban_dialog || @show_add_ban_ex_dialog || @show_add_invite_ex_dialog ||
+          @show_transfer_dialog
+      }
       on_cancel={@on_close}
     >
       <.dialog_header
@@ -152,7 +168,15 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               created_at={@created_at}
               member_count={@member_count}
               operator={@operator}
+              owner={@owner}
+              welcome_message={@welcome_message}
+              throttle_seconds={@throttle_seconds}
+              notice={@notice}
               on_topic_save={@on_topic_save}
+              on_welcome_save={@on_welcome_save}
+              on_welcome_clear={@on_welcome_clear}
+              on_throttle_apply={@on_throttle_apply}
+              on_transfer_open={@on_transfer_open}
             />
           </.tabs_content>
 
@@ -215,6 +239,14 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     <.ban_ex_add_sub_form :if={@show_add_ban_ex_dialog} />
     <%!-- Invite Exception Add Sub-Dialog --%>
     <.invite_ex_add_sub_form :if={@show_add_invite_ex_dialog} />
+    <%!-- Ownership Transfer Sub-Dialog --%>
+    <.transfer_confirm_sub_form
+      :if={@show_transfer_dialog}
+      channel_name={@channel_name}
+      error_message={@transfer_error}
+      on_close={@on_transfer_close}
+      on_submit={@on_transfer_submit}
+    />
     """
   end
 
@@ -378,6 +410,71 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     """
   end
 
+  attr :channel_name, :string, default: nil
+  attr :error_message, :string, default: nil
+  attr :on_close, :any, default: nil
+  attr :on_submit, :any, default: nil
+
+  defp transfer_confirm_sub_form(assigns) do
+    ~H"""
+    <div
+      class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center"
+      data-testid="cc-transfer-dialog"
+    >
+      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
+        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
+          <Icons.icon_role_owner class="w-4 h-4 text-white" />
+          <span class="text-xs font-bold text-white truncate select-none">
+            {dgettext("dialogs", "Transfer Ownership")}
+          </span>
+          <div class="ml-auto">
+            <button
+              type="button"
+              aria-label={dgettext("dialogs", "Close")}
+              phx-click={@on_close}
+            />
+          </div>
+        </div>
+        <div class="p-2">
+          <form phx-submit={@on_submit}>
+            <div class="flex flex-col gap-1.5">
+              <label class="text-xs font-bold" for="cc-transfer-nick">
+                {dgettext("dialogs", "Transfer ownership of %{channel} to:",
+                  channel: display_channel(@channel_name)
+                )}
+              </label>
+              <.input
+                type="text"
+                id="cc-transfer-nick"
+                name="nickname"
+                autofocus
+                class="w-full"
+                data-testid="cc-transfer-nick-input"
+              />
+            </div>
+            <p class="text-xs text-destructive mt-2">
+              {dgettext("dialogs", "This cannot be undone without the new owner's cooperation.")}
+            </p>
+            <p :if={@error_message} class="text-xs text-destructive mt-1">
+              {@error_message}
+            </p>
+            <div class="flex justify-end gap-1 mt-2">
+              <.button type="submit" size="sm" variant="destructive">
+                <:icon><Icons.icon_role_owner /></:icon>
+                {dgettext("dialogs", "Transfer")}
+              </.button>
+              <.button type="button" size="sm" variant="outline" phx-click={@on_close}>
+                <:icon><Icons.icon_close /></:icon>
+                {dgettext("dialogs", "Cancel")}
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
   # ── General Tab ───────────────────────────────────────
 
   attr :channel_name, :string, default: nil
@@ -387,7 +484,15 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :created_at, :string, default: nil
   attr :member_count, :integer, default: 0
   attr :operator, :boolean, default: false
+  attr :owner, :boolean, default: false
+  attr :welcome_message, :string, default: ""
+  attr :throttle_seconds, :integer, default: 0
+  attr :notice, :string, default: nil
   attr :on_topic_save, :any, default: nil
+  attr :on_welcome_save, :any, default: nil
+  attr :on_welcome_clear, :any, default: nil
+  attr :on_throttle_apply, :any, default: nil
+  attr :on_transfer_open, :any, default: nil
 
   defp general_tab(assigns) do
     ~H"""
@@ -444,6 +549,112 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
           {dgettext("dialogs", "You must be a channel operator to edit the topic.")}
         </p>
       </div>
+
+      <.separator />
+
+      <section class="space-y-2">
+        <form :if={@operator} phx-submit={@on_welcome_save}>
+          <label class="text-xs font-bold block mb-1">
+            {dgettext("dialogs", "Welcome Message")}:
+          </label>
+          <.textarea
+            id="cc-welcome-message"
+            name="message"
+            value={@welcome_message}
+            rows="3"
+            placeholder={dgettext("dialogs", "No welcome message set.")}
+            class="text-xs"
+            data-testid="cc-welcome-message-input"
+          />
+          <div class="flex gap-1 mt-2">
+            <.button type="submit" size="sm">
+              <:icon><Icons.icon_checkmark /></:icon>
+              {dgettext("dialogs", "Save Welcome")}
+            </.button>
+            <.button type="button" size="sm" variant="outline" phx-click={@on_welcome_clear}>
+              <:icon><Icons.icon_close /></:icon>
+              {dgettext("dialogs", "Clear Welcome")}
+            </.button>
+          </div>
+        </form>
+
+        <div :if={!@operator}>
+          <label class="text-xs font-bold block mb-1">
+            {dgettext("dialogs", "Welcome Message")}:
+          </label>
+          <.textarea
+            id="cc-welcome-message"
+            name="message"
+            value={@welcome_message}
+            rows="3"
+            placeholder={dgettext("dialogs", "No welcome message set.")}
+            class="text-xs"
+            disabled
+            data-testid="cc-welcome-message-input"
+          />
+          <p class="text-[10px] text-muted-foreground italic mt-2">
+            {dgettext("dialogs", "You must be a channel operator to edit the welcome message.")}
+          </p>
+        </div>
+      </section>
+
+      <section class="space-y-2">
+        <form :if={@operator} phx-submit={@on_throttle_apply}>
+          <label class="text-xs font-bold block mb-1" for="cc-throttle-seconds">
+            {dgettext("dialogs", "Join throttle (seconds)")}:
+          </label>
+          <div class="flex items-center gap-2">
+            <.input
+              type="number"
+              id="cc-throttle-seconds"
+              name="seconds"
+              min="0"
+              value={@throttle_seconds}
+              class="text-xs h-7 w-20"
+              data-testid="cc-throttle-seconds-input"
+            />
+            <.button type="submit" size="sm">
+              <:icon><Icons.icon_btn_apply /></:icon>
+              {dgettext("dialogs", "Apply Throttle")}
+            </.button>
+          </div>
+        </form>
+
+        <div :if={!@operator}>
+          <label class="text-xs font-bold block mb-1" for="cc-throttle-seconds">
+            {dgettext("dialogs", "Join throttle (seconds)")}:
+          </label>
+          <.input
+            type="number"
+            id="cc-throttle-seconds"
+            name="seconds"
+            min="0"
+            value={@throttle_seconds}
+            class="text-xs h-7 w-20"
+            disabled
+            data-testid="cc-throttle-seconds-input"
+          />
+          <p class="text-[10px] text-muted-foreground italic mt-2">
+            {dgettext("dialogs", "You must be a channel operator to change the join throttle.")}
+          </p>
+        </div>
+      </section>
+
+      <p :if={@notice} class="text-xs text-accent-foreground bg-accent px-2 py-1">
+        {@notice}
+      </p>
+
+      <.button
+        :if={@owner}
+        type="button"
+        size="sm"
+        variant="destructive"
+        phx-click={@on_transfer_open}
+        data-testid="cc-transfer-open"
+      >
+        <:icon><Icons.icon_role_owner /></:icon>
+        {dgettext("dialogs", "Transfer Ownership")}
+      </.button>
     </div>
     """
   end

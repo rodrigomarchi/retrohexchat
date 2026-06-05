@@ -738,13 +738,17 @@ defmodule RetroHexChatWeb.App.ChatLive do
       channel_central_state: nil,
       channel_central_channel: nil,
       channel_central_operator: false,
+      channel_central_owner: false,
       channel_central_ban_selected: nil,
       channel_central_ban_ex_selected: nil,
       channel_central_invite_ex_selected: nil,
       channel_central_modes_form: %{},
+      channel_central_notice: nil,
+      channel_central_transfer_error: nil,
       show_cc_add_ban_dialog: false,
       show_cc_add_ban_ex_dialog: false,
       show_cc_add_invite_ex_dialog: false,
+      show_cc_transfer_dialog: false,
       show_perform_dialog: false,
       perform_dialog_tab: "commands",
       perform_selected: nil,
@@ -992,6 +996,29 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   defp channel_central_modes(nil), do: %{}
   defp channel_central_modes(state), do: Map.get(state, :modes_detail, %{})
+
+  defp channel_central_welcome_message(nil), do: ""
+
+  defp channel_central_welcome_message(state) do
+    state
+    |> Map.get(:welcome_message)
+    |> case do
+      %{message: message} when is_binary(message) -> message
+      _ -> ""
+    end
+  end
+
+  defp channel_central_throttle_seconds(nil), do: 0
+
+  defp channel_central_throttle_seconds(state) do
+    state
+    |> Map.get(:modes_detail, %{})
+    |> Map.get(:join_throttle)
+    |> case do
+      {_count, seconds} when is_integer(seconds) -> seconds
+      _ -> 0
+    end
+  end
 
   defp topic_bar_modes(_modes, true, _active_pm), do: []
   defp topic_bar_modes(_modes, _show_status_tab, active_pm) when is_binary(active_pm), do: []

@@ -104,6 +104,85 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
     {:halt, refresh_channel_central(socket)}
   end
 
+  def handle_event("cc_save_welcome", %{"message" => message}, socket) do
+    save_welcome(socket, String.trim(message))
+  end
+
+  def handle_event("cc_clear_welcome", _params, socket) do
+    if socket.assigns.channel_central_operator do
+      clear_welcome(socket)
+    else
+      {:halt, assign(socket, channel_central_notice: operator_required_message())}
+    end
+  end
+
+  def handle_event("cc_apply_throttle", %{"seconds" => seconds}, socket) do
+    if socket.assigns.channel_central_operator do
+      case parse_throttle_seconds(seconds) do
+        {:ok, 0} ->
+          apply_throttle(socket, "-j", [], dgettext("chat", "Join throttle disabled."))
+
+        {:ok, value} ->
+          apply_throttle(
+            socket,
+            "+j",
+            ["5:#{value}"],
+            dgettext("chat", "Join throttle set to %{seconds} seconds.", seconds: value)
+          )
+
+        {:error, message} ->
+          {:halt, assign(socket, channel_central_notice: message)}
+      end
+    else
+      {:halt, assign(socket, channel_central_notice: operator_required_message())}
+    end
+  end
+
+  def handle_event("cc_open_transfer", _params, socket) do
+    if socket.assigns.channel_central_owner do
+      {:halt, assign(socket, show_cc_transfer_dialog: true, channel_central_transfer_error: nil)}
+    else
+      {:halt, socket}
+    end
+  end
+
+  def handle_event("cc_close_transfer", _params, socket) do
+    {:halt, assign(socket, show_cc_transfer_dialog: false, channel_central_transfer_error: nil)}
+  end
+
+  def handle_event("cc_transfer_ownership", %{"nickname" => nickname}, socket) do
+    nickname = String.trim(nickname)
+
+    cond do
+      !socket.assigns.channel_central_owner ->
+        {:halt, socket}
+
+      nickname == "" ->
+        {:halt,
+         assign(socket, channel_central_transfer_error: dgettext("chat", "Nickname is required."))}
+
+      true ->
+        channel = socket.assigns.channel_central_channel
+        current_owner = socket.assigns.session.nickname
+
+        case Server.transfer_ownership(channel, current_owner, nickname) do
+          :ok ->
+            {:halt,
+             socket
+             |> assign(
+               show_cc_transfer_dialog: false,
+               channel_central_transfer_error: nil,
+               channel_central_notice:
+                 dgettext("chat", "Channel ownership transferred to %{target}.", target: nickname)
+             )
+             |> refresh_channel_central()}
+
+          {:error, msg} ->
+            {:halt, assign(socket, channel_central_transfer_error: msg)}
+        end
+    end
+  end
+
   # ── Bans ───────────────────────────────────────────────────
 
   def handle_event("cc_add_ban", %{"nickname" => nick}, socket) do
@@ -251,6 +330,8 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
           operator =
             nickname in state.operators or nickname in Map.get(state, :owners, [])
 
+          owner = nickname in Map.get(state, :owners, [])
+
           {:halt,
            assign(socket,
              show_channel_central: true,
@@ -258,13 +339,17 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
              channel_central_channel: channel,
              channel_central_state: state,
              channel_central_operator: operator,
+             channel_central_owner: owner,
              channel_central_ban_selected: nil,
              channel_central_ban_ex_selected: nil,
              channel_central_invite_ex_selected: nil,
              channel_central_modes_form: %{},
+             channel_central_notice: nil,
+             channel_central_transfer_error: nil,
              show_cc_add_ban_dialog: false,
              show_cc_add_ban_ex_dialog: false,
-             show_cc_add_invite_ex_dialog: false
+             show_cc_add_invite_ex_dialog: false,
+             show_cc_transfer_dialog: false
            )}
         else
           {:halt,
@@ -289,13 +374,17 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
       channel_central_channel: nil,
       channel_central_state: nil,
       channel_central_operator: false,
+      channel_central_owner: false,
       channel_central_ban_selected: nil,
       channel_central_ban_ex_selected: nil,
       channel_central_invite_ex_selected: nil,
       channel_central_modes_form: %{},
+      channel_central_notice: nil,
+      channel_central_transfer_error: nil,
       show_cc_add_ban_dialog: false,
       show_cc_add_ban_ex_dialog: false,
-      show_cc_add_invite_ex_dialog: false
+      show_cc_add_invite_ex_dialog: false,
+      show_cc_transfer_dialog: false
     )
   end
 
@@ -310,7 +399,13 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
           operator =
             nickname in state.operators or nickname in Map.get(state, :owners, [])
 
-          assign(socket, channel_central_state: state, channel_central_operator: operator)
+          owner = nickname in Map.get(state, :owners, [])
+
+          assign(socket,
+            channel_central_state: state,
+            channel_central_operator: operator,
+            channel_central_owner: owner
+          )
 
         {:error, _} ->
           close_channel_central(socket)
@@ -377,4 +472,87 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
   end
 
   defp build_limit_op(ops, _, _, _), do: ops
+
+  defp save_welcome(%{assigns: %{channel_central_operator: false}} = socket, _message) do
+    {:halt, assign(socket, channel_central_notice: operator_required_message())}
+  end
+
+  defp save_welcome(socket, ""), do: clear_welcome(socket)
+
+  defp save_welcome(socket, message) do
+    channel = socket.assigns.channel_central_channel
+    nickname = socket.assigns.session.nickname
+
+    case Server.set_welcome(channel, message, nickname) do
+      :ok ->
+        {:halt,
+         socket
+         |> assign(channel_central_notice: dgettext("chat", "Welcome message saved."))
+         |> refresh_channel_central()}
+
+      {:error, msg} ->
+        {:halt,
+         socket
+         |> assign(
+           channel_central_notice: dgettext("chat", "Welcome error: %{message}", message: msg)
+         )
+         |> error_event(dgettext("chat", "Welcome error: %{message}", message: msg))}
+    end
+  end
+
+  defp clear_welcome(socket) do
+    channel = socket.assigns.channel_central_channel
+    nickname = socket.assigns.session.nickname
+
+    case Server.clear_welcome(channel, nickname) do
+      :ok ->
+        {:halt,
+         socket
+         |> assign(channel_central_notice: dgettext("chat", "Welcome message cleared."))
+         |> refresh_channel_central()}
+
+      {:error, msg} ->
+        {:halt,
+         socket
+         |> assign(
+           channel_central_notice: dgettext("chat", "Welcome error: %{message}", message: msg)
+         )
+         |> error_event(dgettext("chat", "Welcome error: %{message}", message: msg))}
+    end
+  end
+
+  defp parse_throttle_seconds(seconds) do
+    case Integer.parse(String.trim(to_string(seconds))) do
+      {value, ""} when value >= 0 ->
+        {:ok, value}
+
+      _ ->
+        {:error, dgettext("chat", "Join throttle must be a non-negative integer.")}
+    end
+  end
+
+  defp apply_throttle(socket, mode_string, params, notice) do
+    channel = socket.assigns.channel_central_channel
+    nickname = socket.assigns.session.nickname
+
+    case Server.set_mode(channel, nickname, mode_string, params) do
+      :ok ->
+        {:halt,
+         socket
+         |> assign(channel_central_notice: notice)
+         |> refresh_channel_central()}
+
+      {:error, msg} ->
+        {:halt,
+         socket
+         |> assign(
+           channel_central_notice: dgettext("chat", "Throttle error: %{message}", message: msg)
+         )
+         |> error_event(dgettext("chat", "Throttle error: %{message}", message: msg))}
+    end
+  end
+
+  defp operator_required_message do
+    dgettext("chat", "You must be a channel operator to change this setting.")
+  end
 end

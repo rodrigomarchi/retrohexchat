@@ -21,6 +21,7 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
           "kick",
           "ban",
           "privileges",
+          "transfer ownership",
           dgettext("help", "access level"),
           "chanserv",
           "auto-grant"
@@ -59,6 +60,44 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
           dgettext(
             "help",
             "Overview of all channel modes including moderation, access control, and privacy settings."
+          )
+      },
+      %{
+        id: "channel-welcome-message",
+        title: dgettext("help", "Channel Welcome Message"),
+        category: dgettext("help", "Channels"),
+        keywords: [
+          "welcome",
+          "setwelcome",
+          "clearwelcome",
+          "channel central",
+          dgettext("help", "welcome message"),
+          dgettext("help", "join message")
+        ],
+        icon: :icon_megaphone,
+        description:
+          dgettext(
+            "help",
+            "Set or clear the message shown to users when they join a channel."
+          )
+      },
+      %{
+        id: "channel-transfer-ownership",
+        title: dgettext("help", "Transfer Channel Ownership"),
+        category: dgettext("help", "Channels"),
+        keywords: [
+          "transfer ownership",
+          "transfer",
+          "owner",
+          "channel central",
+          dgettext("help", "channel owner"),
+          "founder"
+        ],
+        icon: :icon_role_owner,
+        description:
+          dgettext(
+            "help",
+            "Transfer channel ownership to another member from Channel Central or /transfer."
           )
       },
       %{
@@ -238,6 +277,9 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
         keywords: [
           dgettext("help", "join throttle"),
           dgettext("help", "rate limit"),
+          "slow",
+          "channel central",
+          dgettext("help", "slow mode"),
           "flood",
           dgettext("help", "join limit")
         ],

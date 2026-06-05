@@ -987,6 +987,7 @@ defmodule RetroHexChat.Channels.Server do
       topic: state.topic,
       topic_set_by: state.topic_set_by,
       topic_set_at: state.topic_set_at,
+      welcome_message: state.welcome_message,
       members: Membership.to_list(state.membership),
       member_count: Membership.count(state.membership),
       owners: Membership.owners(state.membership),

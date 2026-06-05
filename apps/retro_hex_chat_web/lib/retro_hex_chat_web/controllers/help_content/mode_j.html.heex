@@ -6,3 +6,21 @@
 </p>
 <.help_h4 icon={:icon_terminal}>{dgettext("help_channels", "Usage")}</.help_h4>
 <pre>{dgettext("help_channels", "/mode +j 5:10 — Allow 5 joins per 10 seconds /mode +j 3:60 — Allow 3 joins per minute /mode -j — Remove join throttle")}</pre>
+
+<.help_h4 icon={:icon_tab_general}>{dgettext("help_channels", "Channel Central")}</.help_h4>
+<p>
+  {dgettext(
+    "help_channels",
+    "Operators can also set the join throttle from Channel Central's General tab. Enter 0 seconds to remove the throttle."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_channels", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-slow">{dgettext("help_channels", "/slow")}</.help_link>
+  · <.help_link topic="cmd-mode">{dgettext("help_channels", "/mode")}</.help_link>
+  ·
+  <.help_link topic="feature-channel-central">
+    {dgettext("help_channels", "Channel Central")}
+  </.help_link>
+</p>
