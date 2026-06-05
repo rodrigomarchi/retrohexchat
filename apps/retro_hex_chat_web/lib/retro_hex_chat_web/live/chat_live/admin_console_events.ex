@@ -208,6 +208,14 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     end
   end
 
+  def handle_event("admin_console_channel_delete", params, socket) do
+    handle_channel_destructive_action(socket, "delete", params)
+  end
+
+  def handle_event("admin_console_channel_purge", params, socket) do
+    handle_channel_destructive_action(socket, "purge", params)
+  end
+
   def handle_event("admin_console_refresh_motd", _params, socket) do
     if admin?(socket) do
       result = Dispatcher.dispatch("motd", [], user_context(socket))
@@ -746,6 +754,45 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     |> normalize_channels_value()
   end
 
+  defp handle_channel_destructive_action(socket, action, params) do
+    if admin?(socket) do
+      channel = params |> Map.get("channel", "") |> normalize_channels_value()
+      result = channel_destructive_result(socket, action, channel, params)
+
+      snapshot_params =
+        if action == "delete", do: %{"info_channel" => ""}, else: %{"info_channel" => channel}
+
+      {:halt, assign_channels_snapshot(socket, snapshot_params, result)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  defp channel_destructive_result(_socket, _action, "", _params) do
+    %{status: :error, message: dgettext("chat", "Enter a channel for this action.")}
+  end
+
+  defp channel_destructive_result(_socket, _action, channel, %{"confirm" => confirm})
+       when confirm != channel do
+    %{status: :error, message: dgettext("chat", "Type the channel name to confirm.")}
+  end
+
+  defp channel_destructive_result(socket, "delete", channel, _params) do
+    dispatch_admin_user(socket, ["channel", "delete", channel])
+  end
+
+  defp channel_destructive_result(socket, "purge", channel, params) do
+    args =
+      ["channel", "purge", channel]
+      |> Kernel.++(channel_purge_from_args(params))
+
+    dispatch_admin_user(socket, args)
+  end
+
   defp normalize_audit_last(value) do
     case value |> to_string() |> String.trim() do
       "" -> "20"
@@ -796,6 +843,16 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     |> case do
       "" -> []
       duration -> ["--duration", duration]
+    end
+  end
+
+  defp channel_purge_from_args(params) do
+    params
+    |> Map.get("from", "")
+    |> normalize_channels_value()
+    |> case do
+      "" -> []
+      nick -> ["--from", nick]
     end
   end
 

@@ -26,7 +26,7 @@ iterations — read it before starting, write to it before stopping.
 | 09 | Channel Configuration | P2 | ✅ | — | 2026-06-05 | Complete: Channel Central welcome/throttle/ownership transfer |
 | 10 | User Lookups | P3 | ✅ | — | 2026-06-05 | Complete: User Lookup dialog, context Last Seen, and Whois/Whowas result cards |
 | 11 | ChanServ | P3 | ✅ | — | 2026-06-05 | Complete: Channel Central registration/access tab |
-| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | MOTD menu, Admin Console shell, Server Settings/MOTD/Broadcast/Audit Log/TURN/Danger Zone tabs complete; Users command surface complete; Channels snapshot/Info/Create complete; destructive channel/ChanServ actions remain |
+| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | MOTD menu, Admin Console shell, Server Settings/MOTD/Broadcast/Audit Log/TURN/Danger Zone tabs complete; Users command surface complete; Channels snapshot/Info/Create/Delete/Purge complete; ChanServ actions remain |
 
 **Suggested order:** 02 → 03 (cheap wiring wins) → 01 (highest impact) → 04 → 05 → 06 → 08 → 09 → 07 → 10 → 11 → 12.
 
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-05 — Feature 12: `Server Administration` Admin Console Channels delete and purge actions
+- **Did:** added typed-confirmation Channels tab forms for `/admin channel delete` and `/admin channel purge [--from nick]`; both actions dispatch through the real handlers and refresh channel snapshots afterward.
+- **Tests:** expanded `ServerAdministrationFeatureTest` with component coverage for delete/purge forms and LiveView coverage for confirmed purge plus delete against a real channel process. Red phase: `make ci.quick` failed on missing forms/events while also hitting a transient unrelated sandbox ownership failure, then passed after implementation. `mix audit.styles` reported 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated Admin Console and `/admin channel` help content/metadata with Delete/Purge confirmation behavior.
+- **Follow-ups:** Feature 12 remains in progress for ChanServ admin actions (`/admin cs ...`) in the Channels tab.
 
 ### 2026-06-05 — Feature 12: `Server Administration` Admin Console Users account, role, and NickServ actions
 - **Did:** added Users tab forms for `/admin user rename`, `/admin user role`, and `/admin ns info/drop/resetpass`; the role form disables the `admin` option unless the viewer is a configured root admin, and all actions dispatch through the real admin command handlers.
@@ -216,6 +222,7 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 - **[Feature 12] Server moderation UI should refresh snapshots after writes** — ban/unban changes the server banlist and mute/unmute changes ephemeral ETS state, so command-backed forms should rerun the Users snapshot after every action.
 - **[Feature 12] Role UI should mirror root-admin handler limits** — non-root admins can grant `server_operator` or remove roles, but the `admin` option must be disabled unless the viewer is a configured root admin.
 - **[Feature 12] Channels tab should keep destructive actions separate** — `/admin channel list`, `info`, `banlist`, and `create` are safe enough for one slice; delete/purge need explicit confirmation UI and isolated tests.
+- **[Feature 12] Destructive channel forms should validate confirmation in events** — require the submitted confirmation string to match the channel name before dispatching delete/purge, then refresh the channel snapshot from command output.
 - **[Feature 12] Admin Console should default to the raw Console tab** — structured tabs can be introduced incrementally while preserving the existing batch-command surface as the safe fallback and default.
 - **[Feature 12] Icon text can leak into label assertions** — Floki text extraction may include icon text such as `#`; wrap visible labels in explicit `data-testid` spans when tests need exact tab/menu labels.
 - **[Feature 11] ChanServ UI should project service state through a domain snapshot** — Channel Central needs founder, viewer role, and grouped access lists together; keep that aggregation in `Services.ChanServ` so event handlers only refresh assigns.

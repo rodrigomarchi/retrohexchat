@@ -81,6 +81,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_channels_refresh, :any, default: nil
   attr :on_channels_info, :any, default: nil
   attr :on_channels_create, :any, default: nil
+  attr :on_channels_delete, :any, default: nil
+  attr :on_channels_purge, :any, default: nil
   attr :on_danger_zone_preview, :any, default: nil
   attr :on_danger_zone_change, :any, default: nil
   attr :on_danger_zone_execute, :any, default: nil
@@ -269,6 +271,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_refresh={@on_channels_refresh}
                 on_info={@on_channels_info}
                 on_create={@on_channels_create}
+                on_delete={@on_channels_delete}
+                on_purge={@on_channels_purge}
               />
             </.tabs_content>
 
@@ -1114,6 +1118,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_refresh, :any, default: nil
   attr :on_info, :any, default: nil
   attr :on_create, :any, default: nil
+  attr :on_delete, :any, default: nil
+  attr :on_purge, :any, default: nil
 
   defp channels_tab(assigns) do
     ~H"""
@@ -1198,6 +1204,29 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
       </div>
 
       <div>
+        <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Destructive actions")}</div>
+        <div class="grid gap-retro-6 md:grid-cols-2">
+          <.channel_destructive_form
+            id="admin-console-channel-delete-form"
+            event={@on_delete}
+            title={dgettext("dialogs", "Delete channel")}
+            button_label={dgettext("dialogs", "Confirm delete")}
+            icon_fn={:icon_trash}
+            disabled={not @can_refresh}
+          />
+          <.channel_destructive_form
+            id="admin-console-channel-purge-form"
+            event={@on_purge}
+            title={dgettext("dialogs", "Purge messages")}
+            button_label={dgettext("dialogs", "Confirm purge")}
+            icon_fn={:icon_warning}
+            include_from
+            disabled={not @can_refresh}
+          />
+        </div>
+      </div>
+
+      <div>
         <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Ban list")}</div>
         <pre
           id="admin-console-channels-banlist"
@@ -1207,6 +1236,53 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
       <.admin_inline_result result={@result} />
     </div>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :event, :any, default: nil
+  attr :title, :string, required: true
+  attr :button_label, :string, required: true
+  attr :icon_fn, :atom, required: true
+  attr :include_from, :boolean, default: false
+  attr :disabled, :boolean, default: false
+
+  defp channel_destructive_form(assigns) do
+    ~H"""
+    <form id={@id} phx-submit={@event} class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4">
+      <div class="text-xs font-bold text-destructive">{@title}</div>
+      <input
+        name="channel"
+        type="text"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "Channel")}
+        autocomplete="off"
+        disabled={@disabled}
+      />
+      <input
+        :if={@include_from}
+        name="from"
+        type="text"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "From nick")}
+        autocomplete="off"
+        disabled={@disabled}
+      />
+      <input
+        name="confirm"
+        type="text"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "Type channel name to confirm")}
+        autocomplete="off"
+        disabled={@disabled}
+      />
+      <div class="flex justify-end">
+        <.button type="submit" size="sm" variant="destructive" disabled={@disabled}>
+          <:icon>{apply(Icons, @icon_fn, [%{class: "w-[14px] h-[14px]"}])}</:icon>
+          {@button_label}
+        </.button>
+      </div>
+    </form>
     """
   end
 

@@ -1176,6 +1176,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "nickserv admin",
           "channels",
           "channels tab",
+          "channel delete",
+          "channel purge",
           "motd",
           "motd tab",
           "setmotd",

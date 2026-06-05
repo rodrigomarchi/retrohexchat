@@ -480,6 +480,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
           on_channels_refresh: "admin_console_refresh_channels",
           on_channels_info: "admin_console_channel_info",
           on_channels_create: "admin_console_channel_create",
+          on_channels_delete: "admin_console_channel_delete",
+          on_channels_purge: "admin_console_channel_purge",
           on_close: "close_admin_console"
         )
         |> Floki.parse_document!()
@@ -497,11 +499,19 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ ~s(name="channel")
       assert html =~ ~s(id="admin-console-channel-create-form")
       assert html =~ ~s(phx-submit="admin_console_channel_create")
+      assert html =~ ~s(id="admin-console-channel-delete-form")
+      assert html =~ ~s(phx-submit="admin_console_channel_delete")
+      assert html =~ ~s(id="admin-console-channel-purge-form")
+      assert html =~ ~s(phx-submit="admin_console_channel_purge")
+      assert html =~ ~s(name="confirm")
+      assert html =~ ~s(name="from")
       assert html =~ ~s(id="admin-console-channels-banlist")
       assert html =~ "No bans in #admin"
       assert html =~ "Refresh"
       assert html =~ "Info"
       assert html =~ "Create"
+      assert html =~ "Confirm delete"
+      assert html =~ "Confirm purge"
     end
 
     test "admin can refresh channels, inspect a channel, and create a channel", %{conn: conn} do
@@ -536,6 +546,39 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       assert html =~ "Channel #{new_channel} created and registered."
       assert html =~ new_channel
+    end
+
+    test "admin can purge and delete channels with typed confirmation", %{conn: conn} do
+      channel = "#dc#{uid()}"
+
+      ensure_channel(channel)
+
+      view = connect_admin(conn)
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      render_click(view, "admin_console_tab", %{"tab" => "channels"})
+
+      html =
+        view
+        |> form("#admin-console-channel-purge-form", %{
+          "channel" => channel,
+          "from" => "",
+          "confirm" => channel
+        })
+        |> render_submit()
+
+      assert html =~ "Purged 0 messages from #{channel}."
+
+      html =
+        view
+        |> form("#admin-console-channel-delete-form", %{
+          "channel" => channel,
+          "confirm" => channel
+        })
+        |> render_submit()
+
+      assert html =~ "Channel #{channel} has been deleted."
+      assert Registry.lookup(channel) == {:error, :not_found}
     end
   end
 
