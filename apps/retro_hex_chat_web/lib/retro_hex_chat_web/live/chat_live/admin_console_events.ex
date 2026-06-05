@@ -20,7 +20,12 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
 
   def handle_event("open_admin_console", _params, socket) do
     if admin?(socket) do
-      {:halt, assign(socket, show_admin_console: true, admin_console_results: [])}
+      {:halt,
+       assign(socket,
+         show_admin_console: true,
+         admin_console_results: [],
+         admin_console_tab: "console"
+       )}
     else
       {:halt,
        error_event(
@@ -32,6 +37,10 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
 
   def handle_event("close_admin_console", _params, socket) do
     {:halt, assign(socket, show_admin_console: false)}
+  end
+
+  def handle_event("admin_console_tab", %{"tab" => tab}, socket) do
+    {:halt, assign(socket, admin_console_tab: normalize_tab(tab))}
   end
 
   def handle_event("execute_admin_console", %{"input" => input}, socket) do
@@ -54,6 +63,12 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   # ── Private ──────────────────────────────────────────────
+
+  defp normalize_tab(tab)
+       when tab in ~w(server_settings users channels motd broadcast audit_log turn danger_zone console),
+       do: tab
+
+  defp normalize_tab(_tab), do: "console"
 
   defp execute_batch(input, socket) do
     session = socket.assigns.session

@@ -26,7 +26,7 @@ iterations — read it before starting, write to it before stopping.
 | 09 | Channel Configuration | P2 | ✅ | — | 2026-06-05 | Complete: Channel Central welcome/throttle/ownership transfer |
 | 10 | User Lookups | P3 | ✅ | — | 2026-06-05 | Complete: User Lookup dialog, context Last Seen, and Whois/Whowas result cards |
 | 11 | ChanServ | P3 | ✅ | — | 2026-06-05 | Complete: Channel Central registration/access tab |
-| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | First slice complete: Help → Message of the Day; structured Admin Console remains |
+| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | MOTD menu + Admin Console tab shell complete; structured tab contents remain |
 
 **Suggested order:** 02 → 03 (cheap wiring wins) → 01 (highest impact) → 04 → 05 → 06 → 08 → 09 → 07 → 10 → 11 → 12.
 
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-05 — Feature 12: `Server Administration` Admin Console tab shell
+- **Did:** converted the existing Admin Console dialog to a tabbed shell with Server Settings, Users, Channels, MOTD, Broadcast, Audit Log, TURN, Danger Zone, and Console tabs while preserving the raw batch-command runner in the default Console tab; wired tab selection through thin LiveView events.
+- **Tests:** added component and LiveView coverage for the tab labels, default Console runner preservation, admin toolbar launch path, and HelpTopics discovery/cross-references. Red phase: `make ci.quick` failed on missing tabs/docs, then passed after implementation. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated `feature-admin-console` metadata/content with the tabbed workflow, exact tab names, raw Console fallback, and cross-references to admin commands, MOTD, and destructive-operation docs.
+- **Follow-ups:** Feature 12 remains in progress for implementing the structured controls inside the tabs.
 
 ### 2026-06-05 — Feature 12: `Server Administration` MOTD menu slice
 - **Did:** added the always-available Help → Message of the Day entry and wired `show_motd` through the existing `/motd` command dispatch path so the Status-tab output stays identical to typed commands.
@@ -140,6 +146,8 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 
 - **[Feature 12] MOTD tests must not delete the global cache during parallel CI** — feature tests and regular tests run concurrently in `make ci.quick`; deleting `:motd_cache` can force unrelated LiveView mounts to query Ecto outside their sandbox owner. Set cache to `:unset` instead.
 - **[Feature 12] Menu affordances should dispatch through the command pipeline** — Help → Message of the Day uses `CommandDispatch.dispatch_command(..., "motd", [])`, preserving `/motd` behavior and Status-tab rendering.
+- **[Feature 12] Admin Console should default to the raw Console tab** — structured tabs can be introduced incrementally while preserving the existing batch-command surface as the safe fallback and default.
+- **[Feature 12] Icon text can leak into label assertions** — Floki text extraction may include icon text such as `#`; wrap visible labels in explicit `data-testid` spans when tests need exact tab/menu labels.
 - **[Feature 11] ChanServ UI should project service state through a domain snapshot** — Channel Central needs founder, viewer role, and grouped access lists together; keep that aggregation in `Services.ChanServ` so event handlers only refresh assigns.
 - **[Feature 11] UI may need stricter gates than legacy command handlers** — `/cs register` help/spec says channel operator required, while the handler currently enforces identification only; apply the UI permission gate and record the handler discrepancy instead of changing command semantics opportunistically.
 - **[Feature 10] Lookup UI should dispatch through `/whois` and `/whowas`** — context menus, dialog buttons, and result-card buttons can share command handlers by routing through `CommandDispatch`, while UI actions choose card vs text output.

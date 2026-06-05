@@ -833,6 +833,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       timers_dialog_error: nil,
       show_admin_console: false,
       admin_console_results: [],
+      admin_console_tab: "console",
       show_bot_dialog: false,
       bot_dialog_bots: [],
       bot_dialog_selected: nil,

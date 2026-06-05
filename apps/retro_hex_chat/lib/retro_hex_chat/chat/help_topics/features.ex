@@ -1144,6 +1144,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         keywords: [
           "admin",
           "console",
+          "server settings",
+          "users",
+          "channels",
+          "motd",
+          "broadcast",
+          "audit log",
+          "turn",
+          "danger zone",
+          "console tab",
           "batch",
           "script",
           "commands",
@@ -1155,8 +1164,18 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Execute multiple commands at once by pasting them into the Admin Console (admin only)."
-          )
+            "Use the tabbed Admin Console for server administration, with the raw batch command console preserved for power users."
+          ),
+        see_also: [
+          "cmd-admin",
+          "cmd-admin-server",
+          "cmd-admin-user",
+          "cmd-admin-channel",
+          "cmd-admin-log",
+          "cmd-admin-turn",
+          "cmd-admin-nuke",
+          "ui-message-of-the-day"
+        ]
       },
       %{
         id: "feature-p2p-games",
