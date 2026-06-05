@@ -28,7 +28,8 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
          admin_console_tab: "console",
          admin_console_motd_result: nil,
          admin_console_broadcast_result: nil,
-         admin_console_turn_result: nil
+         admin_console_turn_result: nil,
+         admin_console_audit_log_result: nil
        )}
     else
       {:halt,
@@ -51,6 +52,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       case tab do
         "motd" -> assign_motd_snapshot(socket, nil)
         "turn" -> assign_turn_snapshot(socket)
+        "audit_log" -> assign_audit_log_snapshot(socket, %{})
         _ -> socket
       end
 
@@ -128,6 +130,18 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   def handle_event("admin_console_refresh_turn", _params, socket) do
     if admin?(socket) do
       {:halt, assign_turn_snapshot(socket)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_refresh_audit_log", params, socket) do
+    if admin?(socket) do
+      {:halt, assign_audit_log_snapshot(socket, params)}
     else
       {:halt,
        error_event(
@@ -216,6 +230,23 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     )
   end
 
+  defp assign_audit_log_snapshot(socket, params) do
+    last =
+      normalize_audit_last(Map.get(params, "last", socket.assigns.admin_console_audit_log_last))
+
+    user =
+      normalize_audit_user(Map.get(params, "user", socket.assigns.admin_console_audit_log_user))
+
+    result = Dispatcher.dispatch("admin", audit_log_args(last, user), user_context(socket))
+
+    assign(socket,
+      admin_console_audit_log_text: result_message(result),
+      admin_console_audit_log_last: last,
+      admin_console_audit_log_user: user,
+      admin_console_audit_log_result: audit_log_result_entry(result)
+    )
+  end
+
   defp turn_snapshot(socket) do
     context = user_context(socket)
     stats_result = Dispatcher.dispatch("admin", ["turn", "stats"], context)
@@ -226,6 +257,26 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       allocations: result_message(allocations_result),
       result: first_error_entry([stats_result, allocations_result])
     }
+  end
+
+  defp audit_log_args(last, ""), do: ["log", "--last", last]
+  defp audit_log_args(last, user), do: ["log", "--last", last, "--user", user]
+
+  defp normalize_audit_last(value) do
+    case value |> to_string() |> String.trim() do
+      "" -> "20"
+      last -> last
+    end
+  end
+
+  defp normalize_audit_user(value) do
+    value
+    |> to_string()
+    |> String.trim()
+  end
+
+  defp audit_log_result_entry(result) do
+    if result_status(result) == :error, do: result_entry(result), else: nil
   end
 
   defp command_args(""), do: []

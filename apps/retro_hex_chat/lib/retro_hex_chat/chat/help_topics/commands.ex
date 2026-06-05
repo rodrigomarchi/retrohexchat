@@ -610,7 +610,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         keywords: ["admin", "audit", "log", "history", "actions"],
         icon: :icon_shield,
         description:
-          dgettext("help", "Query the audit log of admin actions with optional filters.")
+          dgettext("help", "Query the audit log of admin actions with optional filters."),
+        see_also: ["feature-admin-console"]
       },
       %{
         id: "cmd-admin-turn",

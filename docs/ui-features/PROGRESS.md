@@ -26,7 +26,7 @@ iterations — read it before starting, write to it before stopping.
 | 09 | Channel Configuration | P2 | ✅ | — | 2026-06-05 | Complete: Channel Central welcome/throttle/ownership transfer |
 | 10 | User Lookups | P3 | ✅ | — | 2026-06-05 | Complete: User Lookup dialog, context Last Seen, and Whois/Whowas result cards |
 | 11 | ChanServ | P3 | ✅ | — | 2026-06-05 | Complete: Channel Central registration/access tab |
-| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | MOTD menu, Admin Console shell, MOTD/Broadcast/TURN tabs complete; remaining structured tabs still pending |
+| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | MOTD menu, Admin Console shell, MOTD/Broadcast/Audit Log/TURN tabs complete; remaining structured tabs still pending |
 
 **Suggested order:** 02 → 03 (cheap wiring wins) → 01 (highest impact) → 04 → 05 → 06 → 08 → 09 → 07 → 10 → 11 → 12.
 
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-05 — Feature 12: `Server Administration` Admin Console Audit Log tab
+- **Did:** implemented the read-only Admin Console Audit Log tab with Last/User filters, Refresh, and audit-log output backed by `/admin log [--last n] [--user nick]`.
+- **Tests:** expanded `ServerAdministrationFeatureTest` with component coverage for filters/output and LiveView coverage using a real inserted audit-log entry. Red phase: `make ci.quick` failed on the missing tab/events/docs, then passed after implementation. `mix audit.styles` reported 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated Admin Console and `/admin log` help metadata/content with Audit Log tab discovery and cross-references.
+- **Follow-ups:** Feature 12 remains in progress for Server Settings, Users, Channels, and Danger Zone structured controls.
 
 ### 2026-06-05 — Feature 12: `Server Administration` Admin Console TURN tab
 - **Did:** implemented the read-only Admin Console TURN tab with Refresh, stats output, and active-allocation output backed by `/admin turn stats` and `/admin turn allocations`.
@@ -167,6 +173,7 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 - **[Feature 12] Structured Admin Console actions need real viewer context** — the raw batch runner intentionally uses elevated provisioning context, but structured controls should dispatch with `ServerRoles.admin?/server_operator?` from the session so operator-only access does not bypass admin-only handlers.
 - **[Feature 12] Broadcast UI tests can verify real dispatch through PubSub** — subscribe the test process to `server:wallops` / `server:announcements` before submitting, use unique message text, and assert both inline handler output and broadcast payload.
 - **[Feature 12] TURN config is mutable in parallel tests** — regular tests can temporarily change `:turn_listener_count` while feature tests run, so UI tests should accept both valid TURN snapshots instead of asserting one global configuration.
+- **[Feature 12] Audit Log UI tests can seed through the domain context** — inserting via `AuditLogs.log/4` gives the LiveView a real `/admin log` result without parsing command text or bypassing database behavior.
 - **[Feature 12] Admin Console should default to the raw Console tab** — structured tabs can be introduced incrementally while preserving the existing batch-command surface as the safe fallback and default.
 - **[Feature 12] Icon text can leak into label assertions** — Floki text extraction may include icon text such as `#`; wrap visible labels in explicit `data-testid` spans when tests need exact tab/menu labels.
 - **[Feature 11] ChanServ UI should project service state through a domain snapshot** — Channel Central needs founder, viewer role, and grouped access lists together; keep that aggregation in `Services.ChanServ` so event handlers only refresh assigns.

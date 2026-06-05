@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
   @moduletag :liveview_feature
 
+  alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChatWeb.Components.UI.{AdminConsoleDialog, MenuBarApp}
 
@@ -63,6 +64,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert "server settings" in admin_console.keywords
       assert "motd tab" in admin_console.keywords
       assert "turn tab" in admin_console.keywords
+      assert "audit log tab" in admin_console.keywords
       assert "danger zone" in admin_console.keywords
       assert "cmd-setmotd" in admin_console.see_also
       assert "cmd-clearmotd" in admin_console.see_also
@@ -285,6 +287,61 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       html = render_click(view, "admin_console_refresh_turn")
 
       assert_turn_snapshot(html)
+    end
+  end
+
+  describe "Admin Console Audit Log tab" do
+    test "component renders filters, audit output, and refresh control" do
+      document =
+        render_component(&AdminConsoleDialog.admin_console_dialog/1,
+          id: "admin-console-dialog",
+          show: true,
+          active_tab: "audit_log",
+          results: [],
+          audit_log_text: "*** Audit Log (1 entries) ***",
+          audit_log_last: "20",
+          audit_log_user: "",
+          audit_log_result: nil,
+          audit_log_can_refresh: true,
+          on_tab: "admin_console_tab",
+          on_audit_log_refresh: "admin_console_refresh_audit_log",
+          on_close: "close_admin_console"
+        )
+        |> Floki.parse_document!()
+
+      html = Floki.raw_html(document)
+
+      assert html =~ ~s(data-testid="admin-console-tab-audit-log")
+      assert html =~ ~s(id="admin-console-audit-log-form")
+      assert html =~ ~s(phx-submit="admin_console_refresh_audit_log")
+      assert html =~ ~s(name="last")
+      assert html =~ ~s(name="user")
+      assert html =~ ~s(id="admin-console-audit-log-output")
+      assert html =~ "*** Audit Log (1 entries) ***"
+      assert html =~ "Refresh"
+    end
+
+    test "admin can refresh audit log snapshots with filters", %{conn: conn} do
+      action = "audit.tab.#{uid()}"
+      AuditLogs.log("TestAdmin", action, {"server", "settings"}, %{source: "feature-test"})
+
+      view = connect_admin(conn)
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      html = render_click(view, "admin_console_tab", %{"tab" => "audit_log"})
+
+      assert html =~ action
+
+      html =
+        view
+        |> form("#admin-console-audit-log-form", %{
+          "last" => "5",
+          "user" => "TestAdmin"
+        })
+        |> render_submit()
+
+      assert html =~ action
+      assert html =~ "Audit Log"
     end
   end
 

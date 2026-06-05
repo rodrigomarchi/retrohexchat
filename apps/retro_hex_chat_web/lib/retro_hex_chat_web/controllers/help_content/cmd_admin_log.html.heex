@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_commands",
-    "Query the audit log of all admin actions. Every state-changing admin command is automatically recorded with timestamp, actor, action, and target."
+    "Query the audit log of all admin actions from /admin log or the Admin Console Audit Log tab. Every state-changing admin command is automatically recorded with timestamp, actor, action, and target."
   )}
 </p>
 
@@ -63,5 +63,9 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  ·
+  <.help_link topic="feature-admin-console">
+    {dgettext("help_commands", "Admin Console")}
+  </.help_link>
   · <.help_link topic="cmd-admin-server">{dgettext("help_commands", "/admin server")}</.help_link>
 </p>

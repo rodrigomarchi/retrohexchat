@@ -26,12 +26,18 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :turn_allocations, :string, default: nil
   attr :turn_result, :any, default: nil
   attr :turn_can_refresh, :boolean, default: false
+  attr :audit_log_text, :string, default: nil
+  attr :audit_log_last, :string, default: "20"
+  attr :audit_log_user, :string, default: ""
+  attr :audit_log_result, :any, default: nil
+  attr :audit_log_can_refresh, :boolean, default: false
   attr :on_tab, :any, default: nil
   attr :on_motd_set, :any, default: nil
   attr :on_motd_clear, :any, default: nil
   attr :on_motd_refresh, :any, default: nil
   attr :on_broadcast_send, :any, default: nil
   attr :on_turn_refresh, :any, default: nil
+  attr :on_audit_log_refresh, :any, default: nil
   attr :on_close, :any, default: nil
 
   @spec admin_console_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -153,6 +159,17 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 result={@turn_result}
                 can_refresh={@turn_can_refresh}
                 on_refresh={@on_turn_refresh}
+              />
+            </.tabs_content>
+
+            <.tabs_content value="audit_log" builder={builder}>
+              <.audit_log_tab
+                text={@audit_log_text}
+                last={@audit_log_last}
+                user={@audit_log_user}
+                result={@audit_log_result}
+                can_refresh={@audit_log_can_refresh}
+                on_refresh={@on_audit_log_refresh}
               />
             </.tabs_content>
 
@@ -431,6 +448,63 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
     """
   end
 
+  attr :text, :string, default: nil
+  attr :last, :string, default: "20"
+  attr :user, :string, default: ""
+  attr :result, :any, default: nil
+  attr :can_refresh, :boolean, default: false
+  attr :on_refresh, :any, default: nil
+
+  defp audit_log_tab(assigns) do
+    ~H"""
+    <div class="space-y-retro-8" data-testid="admin-console-tab-audit-log">
+      <form id="admin-console-audit-log-form" phx-submit={@on_refresh}>
+        <div class="flex flex-wrap items-end gap-retro-6">
+          <div class="w-[88px]">
+            <label for="admin-console-audit-log-last" class="block text-xs font-bold mb-retro-2">
+              {dgettext("dialogs", "Last")}
+            </label>
+            <input
+              id="admin-console-audit-log-last"
+              name="last"
+              type="number"
+              min="1"
+              class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+              value={@last}
+              disabled={not @can_refresh}
+            />
+          </div>
+          <div class="flex-1 min-w-[160px]">
+            <label for="admin-console-audit-log-user" class="block text-xs font-bold mb-retro-2">
+              {dgettext("dialogs", "User")}
+            </label>
+            <input
+              id="admin-console-audit-log-user"
+              name="user"
+              type="text"
+              class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+              value={@user}
+              autocomplete="off"
+              disabled={not @can_refresh}
+            />
+          </div>
+          <.button type="submit" size="sm" variant="outline" disabled={not @can_refresh}>
+            <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Refresh")}
+          </.button>
+        </div>
+      </form>
+
+      <pre
+        id="admin-console-audit-log-output"
+        class="shadow-retro-sunken bg-white min-h-[190px] max-h-[260px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
+      ><%= @text || "" %></pre>
+
+      <.admin_inline_result result={@result} />
+    </div>
+    """
+  end
+
   attr :result, :any, default: nil
 
   defp admin_inline_result(assigns) do
@@ -452,6 +526,6 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
   @spec admin_shell_tabs() :: [String.t()]
   defp admin_shell_tabs do
-    ~w(server_settings users channels audit_log danger_zone)
+    ~w(server_settings users channels danger_zone)
   end
 end
