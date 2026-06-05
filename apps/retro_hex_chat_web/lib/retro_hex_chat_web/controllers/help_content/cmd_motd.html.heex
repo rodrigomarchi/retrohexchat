@@ -10,7 +10,7 @@
 <p>
   {dgettext(
     "help_commands",
-    "Displays the current server MOTD in the Status tab. The MOTD is shown automatically when you connect, but you can use this command to view it again at any time. If no MOTD has been set by the administrators, you'll see a \"No MOTD has been set\" message."
+    "Displays the current server MOTD in the Status tab. The MOTD is shown automatically when you connect, and you can re-view it at any time with /motd or Help > Message of the Day. If no MOTD has been set by the administrators, you'll see a \"No MOTD has been set\" message."
   )}
 </p>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
@@ -19,6 +19,10 @@
 <p>
   <.help_link topic="cmd-setmotd">{dgettext("help_commands", "/setmotd")}</.help_link>
   · <.help_link topic="cmd-clearmotd">{dgettext("help_commands", "/clearmotd")}</.help_link>
+  ·
+  <.help_link topic="ui-message-of-the-day">
+    {dgettext("help_commands", "Message of the Day Menu")}
+  </.help_link>
   ·
   <.help_link topic="feature-special-messages">
     {dgettext("help_commands", "Special Messages")}

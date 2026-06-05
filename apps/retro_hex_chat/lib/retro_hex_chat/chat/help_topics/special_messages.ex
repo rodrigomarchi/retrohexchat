@@ -10,9 +10,10 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
         id: "cmd-motd",
         title: "/motd",
         category: dgettext("help", "Server Messages"),
-        keywords: ["motd", dgettext("help", "message of the day")],
+        keywords: ["motd", "Help menu", "show_motd", dgettext("help", "message of the day")],
         icon: :icon_notepad,
-        description: dgettext("help", "View the server's Message of the Day.")
+        description: dgettext("help", "View the server's Message of the Day."),
+        see_also: ["ui-message-of-the-day", "feature-special-messages", "cmd-setmotd"]
       },
       %{
         id: "cmd-setmotd",
@@ -24,7 +25,8 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
           dgettext(
             "help",
             "Set or update the server's Message of the Day. Requires admin privileges."
-          )
+          ),
+        see_also: ["cmd-motd", "cmd-clearmotd", "ui-message-of-the-day"]
       },
       %{
         id: "cmd-clearmotd",
@@ -33,7 +35,8 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
         keywords: ["clearmotd", "motd", dgettext("help", "clear message of the day"), "admin"],
         icon: :icon_trash,
         description:
-          dgettext("help", "Remove the server's Message of the Day. Requires admin privileges.")
+          dgettext("help", "Remove the server's Message of the Day. Requires admin privileges."),
+        see_also: ["cmd-motd", "cmd-setmotd", "ui-message-of-the-day"]
       },
       %{
         id: "cmd-setwelcome",
@@ -107,7 +110,8 @@ defmodule RetroHexChat.Chat.HelpTopics.SpecialMessages do
           dgettext(
             "help",
             "Overview of special message types including MOTD, welcome messages, wallops, and announcements."
-          )
+          ),
+        see_also: ["ui-message-of-the-day", "cmd-motd", "cmd-wallops", "cmd-announce"]
       }
     ]
   end

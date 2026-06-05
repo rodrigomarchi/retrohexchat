@@ -119,6 +119,26 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           )
       },
       %{
+        id: "ui-message-of-the-day",
+        title: dgettext("help", "Message of the Day"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "motd",
+          "message of the day",
+          "show_motd",
+          "Help menu",
+          dgettext("help", "server message"),
+          dgettext("help", "status tab")
+        ],
+        icon: :icon_notepad,
+        description:
+          dgettext(
+            "help",
+            "Open the current server Message of the Day from Help > Message of the Day."
+          ),
+        see_also: ["cmd-motd", "cmd-setmotd", "cmd-clearmotd", "feature-special-messages"]
+      },
+      %{
         id: "ui-toolbar",
         title: dgettext("help", "Toolbar"),
         category: dgettext("help", "User Interface"),

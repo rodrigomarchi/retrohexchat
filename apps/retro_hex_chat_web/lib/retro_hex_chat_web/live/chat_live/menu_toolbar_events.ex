@@ -52,6 +52,10 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     {:halt, CommandDispatch.dispatch_command(socket, socket.assigns.session, "clear", [])}
   end
 
+  def handle_event("show_motd", _params, socket) do
+    {:halt, CommandDispatch.dispatch_command(socket, socket.assigns.session, "motd", [])}
+  end
+
   def handle_event("toggle_conversations", _params, socket) do
     {:halt, assign(socket, show_conversations: !socket.assigns.show_conversations)}
   end

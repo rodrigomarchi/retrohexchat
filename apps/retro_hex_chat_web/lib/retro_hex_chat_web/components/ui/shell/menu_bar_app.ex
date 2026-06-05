@@ -263,6 +263,12 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
             on_action={@on_action}
           />
           <.menu_item
+            icon_fn={:icon_notepad}
+            label={dgettext("ui", "Message of the Day")}
+            action="show_motd"
+            on_action={@on_action}
+          />
+          <.menu_item
             icon_fn={:icon_dialog_cheatsheet}
             label={dgettext("ui", "Shortcut Cheatsheet")}
             action="toggle_cheatsheet"

@@ -11,7 +11,10 @@
     "Server administrators can set a MOTD that all users see when they connect. Use"
   )}
   <code>{dgettext("help_features", "/motd")}</code>
-  {dgettext("help_features", "to re-read it at any time.")}
+  {dgettext(
+    "help_features",
+    "or Help > Message of the Day to re-read it at any time."
+  )}
 </p>
 <.help_h4 icon={:icon_megaphone}>
   {dgettext("help_features", "Channel Welcome Messages")}
@@ -75,6 +78,10 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-motd">{dgettext("help_features", "/motd")}</.help_link>
+  ·
+  <.help_link topic="ui-message-of-the-day">
+    {dgettext("help_features", "Message of the Day Menu")}
+  </.help_link>
   · <.help_link topic="cmd-wallops">{dgettext("help_features", "/wallops")}</.help_link>
   · <.help_link topic="cmd-announce">{dgettext("help_features", "/announce")}</.help_link>
   · <.help_link topic="cmd-umode">{dgettext("help_features", "/umode")}</.help_link>

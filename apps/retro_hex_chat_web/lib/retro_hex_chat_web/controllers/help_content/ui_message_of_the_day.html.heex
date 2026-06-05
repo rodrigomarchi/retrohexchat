@@ -1,0 +1,41 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "Message of the Day opens the current server MOTD from the Help menu and displays it in the Status tab."
+  )}
+</p>
+
+<.help_h4 icon={:icon_folder}>{dgettext("help_ui", "Opening")}</.help_h4>
+<p>
+  {dgettext("help_ui", "Choose")}
+  <strong>{dgettext("help_ui", "Help > Message of the Day")}</strong>
+  {dgettext(
+    "help_ui",
+    "to re-view the same MOTD that is shown automatically when you connect."
+  )}
+</p>
+
+<.help_h4 icon={:icon_terminal}>{dgettext("help_ui", "Command Equivalent")}</.help_h4>
+<p>
+  {dgettext("help_ui", "The menu item runs")} <code>{dgettext("help_ui", "/motd")}</code>
+  {dgettext("help_ui", "and uses the same Status-tab output.")}
+</p>
+
+<.help_h4 icon={:icon_rules}>{dgettext("help_ui", "Permissions")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Every connected user can view the MOTD. Only server administrators can set or clear it."
+  )}
+</p>
+
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-motd">{dgettext("help_ui", "/motd")}</.help_link>
+  · <.help_link topic="cmd-setmotd">{dgettext("help_ui", "/setmotd")}</.help_link>
+  · <.help_link topic="cmd-clearmotd">{dgettext("help_ui", "/clearmotd")}</.help_link>
+  ·
+  <.help_link topic="feature-special-messages">
+    {dgettext("help_ui", "Special Messages")}
+  </.help_link>
+</p>
