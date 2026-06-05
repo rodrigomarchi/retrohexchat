@@ -238,6 +238,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
           users_online_only: true,
           users_info_nick: "AdminUser",
           users_can_refresh: true,
+          users_can_set_admin_role: false,
           on_tab: "admin_console_tab",
           on_users_refresh: "admin_console_refresh_users",
           on_users_info: "admin_console_user_info",
@@ -246,6 +247,11 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
           on_users_kick: "admin_console_user_kick",
           on_users_mute: "admin_console_user_mute",
           on_users_unmute: "admin_console_user_unmute",
+          on_users_rename: "admin_console_user_rename",
+          on_users_role: "admin_console_user_role",
+          on_users_ns_info: "admin_console_user_ns_info",
+          on_users_ns_drop: "admin_console_user_ns_drop",
+          on_users_ns_resetpass: "admin_console_user_ns_resetpass",
           on_close: "close_admin_console"
         )
         |> Floki.parse_document!()
@@ -276,11 +282,31 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ ~s(phx-submit="admin_console_user_unmute")
       assert html =~ ~s(name="reason")
       assert html =~ ~s(name="duration")
+      assert html =~ ~s(id="admin-console-user-rename-form")
+      assert html =~ ~s(phx-submit="admin_console_user_rename")
+      assert html =~ ~s(name="old_nick")
+      assert html =~ ~s(name="new_nick")
+      assert html =~ ~s(id="admin-console-user-role-form")
+      assert html =~ ~s(phx-submit="admin_console_user_role")
+      assert html =~ ~s(name="role")
+      assert html =~ ~s(value="admin" disabled)
+      assert html =~ ~s(id="admin-console-user-ns-info-form")
+      assert html =~ ~s(phx-submit="admin_console_user_ns_info")
+      assert html =~ ~s(id="admin-console-user-ns-resetpass-form")
+      assert html =~ ~s(phx-submit="admin_console_user_ns_resetpass")
+      assert html =~ ~s(name="new_password")
+      assert html =~ ~s(id="admin-console-user-ns-drop-form")
+      assert html =~ ~s(phx-submit="admin_console_user_ns_drop")
       assert html =~ "Refresh"
       assert html =~ "Info"
       assert html =~ "Confirm ban"
       assert html =~ "Confirm kick"
       assert html =~ "Confirm mute"
+      assert html =~ "Rename"
+      assert html =~ "Set role"
+      assert html =~ "NickServ info"
+      assert html =~ "Reset password"
+      assert html =~ "Drop registration"
     end
 
     test "admin can refresh users and inspect a nick through the structured tab", %{conn: conn} do
@@ -363,6 +389,75 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
         |> render_submit()
 
       assert html =~ "#{nick} has been kicked from the server."
+    end
+
+    test "admin can rename, assign roles, and run NickServ admin actions from Users tab", %{
+      conn: conn
+    } do
+      nick =
+        "UA#{uid()}"
+        |> String.slice(0, 16)
+
+      new_nick =
+        "UB#{uid()}"
+        |> String.slice(0, 16)
+
+      assert {:ok, _registered} = Queries.insert_registered_nick(nick, "password123")
+
+      view = connect_admin(conn)
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      render_click(view, "admin_console_tab", %{"tab" => "users"})
+
+      html =
+        view
+        |> form("#admin-console-user-rename-form", %{
+          "old_nick" => nick,
+          "new_nick" => new_nick
+        })
+        |> render_submit()
+
+      assert html =~ "#{nick} has been renamed to #{new_nick}."
+
+      html =
+        view
+        |> form("#admin-console-user-role-form", %{"nick" => nick, "role" => "server_operator"})
+        |> render_submit()
+
+      assert html =~ "#{nick} has been set as server_operator."
+
+      html =
+        view
+        |> form("#admin-console-user-role-form", %{"nick" => nick, "role" => "user"})
+        |> render_submit()
+
+      assert html =~ "Admin roles removed from #{nick}."
+
+      html =
+        view
+        |> form("#admin-console-user-ns-info-form", %{"nick" => nick})
+        |> render_submit()
+
+      assert html =~ "[NickServ] #{nick}"
+      assert html =~ "Registered:"
+
+      html =
+        view
+        |> form("#admin-console-user-ns-resetpass-form", %{
+          "nick" => nick,
+          "new_password" => "newpass123"
+        })
+        |> render_submit()
+
+      assert html =~ "Password for #{nick} has been reset"
+
+      html =
+        view
+        |> form("#admin-console-user-ns-drop-form", %{"nick" => nick})
+        |> render_submit()
+
+      assert html =~ "Registration for #{nick} dropped by admin"
+      assert Queries.find_by_nickname(nick) == nil
     end
   end
 

@@ -43,6 +43,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :users_online_only, :boolean, default: false
   attr :users_info_nick, :string, default: ""
   attr :users_can_refresh, :boolean, default: false
+  attr :users_can_set_admin_role, :boolean, default: false
   attr :channels_text, :string, default: nil
   attr :channels_banlist_text, :string, default: nil
   attr :channels_result, :any, default: nil
@@ -72,6 +73,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_users_kick, :any, default: nil
   attr :on_users_mute, :any, default: nil
   attr :on_users_unmute, :any, default: nil
+  attr :on_users_rename, :any, default: nil
+  attr :on_users_role, :any, default: nil
+  attr :on_users_ns_info, :any, default: nil
+  attr :on_users_ns_drop, :any, default: nil
+  attr :on_users_ns_resetpass, :any, default: nil
   attr :on_channels_refresh, :any, default: nil
   attr :on_channels_info, :any, default: nil
   attr :on_channels_create, :any, default: nil
@@ -235,6 +241,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 online_only={@users_online_only}
                 info_nick={@users_info_nick}
                 can_refresh={@users_can_refresh}
+                can_set_admin_role={@users_can_set_admin_role}
                 on_refresh={@on_users_refresh}
                 on_info={@on_users_info}
                 on_ban={@on_users_ban}
@@ -242,6 +249,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_kick={@on_users_kick}
                 on_mute={@on_users_mute}
                 on_unmute={@on_users_unmute}
+                on_rename={@on_users_rename}
+                on_role={@on_users_role}
+                on_ns_info={@on_users_ns_info}
+                on_ns_drop={@on_users_ns_drop}
+                on_ns_resetpass={@on_users_ns_resetpass}
               />
             </.tabs_content>
 
@@ -764,6 +776,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :online_only, :boolean, default: false
   attr :info_nick, :string, default: ""
   attr :can_refresh, :boolean, default: false
+  attr :can_set_admin_role, :boolean, default: false
   attr :on_refresh, :any, default: nil
   attr :on_info, :any, default: nil
   attr :on_ban, :any, default: nil
@@ -771,6 +784,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_kick, :any, default: nil
   attr :on_mute, :any, default: nil
   attr :on_unmute, :any, default: nil
+  attr :on_rename, :any, default: nil
+  attr :on_role, :any, default: nil
+  attr :on_ns_info, :any, default: nil
+  attr :on_ns_drop, :any, default: nil
+  attr :on_ns_resetpass, :any, default: nil
 
   defp users_tab(assigns) do
     ~H"""
@@ -887,6 +905,105 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
       </div>
 
       <div>
+        <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Account & Roles")}</div>
+        <div class="grid gap-retro-6 md:grid-cols-2">
+          <form
+            id="admin-console-user-rename-form"
+            phx-submit={@on_rename}
+            class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4"
+          >
+            <div class="text-xs font-bold">{dgettext("dialogs", "Rename user")}</div>
+            <input
+              name="old_nick"
+              type="text"
+              class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+              placeholder={dgettext("dialogs", "Current nick")}
+              autocomplete="off"
+              disabled={not @can_refresh}
+            />
+            <input
+              name="new_nick"
+              type="text"
+              class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+              placeholder={dgettext("dialogs", "New nick")}
+              autocomplete="off"
+              disabled={not @can_refresh}
+            />
+            <div class="flex justify-end">
+              <.button type="submit" size="sm" disabled={not @can_refresh}>
+                <:icon><Icons.icon_tab_nicklist class="w-[14px] h-[14px]" /></:icon>
+                {dgettext("dialogs", "Rename")}
+              </.button>
+            </div>
+          </form>
+
+          <form
+            id="admin-console-user-role-form"
+            phx-submit={@on_role}
+            class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4"
+          >
+            <div class="text-xs font-bold">{dgettext("dialogs", "Set role")}</div>
+            <input
+              name="nick"
+              type="text"
+              class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+              placeholder={dgettext("dialogs", "Nick")}
+              autocomplete="off"
+              disabled={not @can_refresh}
+            />
+            <select
+              name="role"
+              class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+              disabled={not @can_refresh}
+            >
+              <option value="server_operator">{dgettext("dialogs", "server_operator")}</option>
+              <option value="user">{dgettext("dialogs", "user")}</option>
+              <option value="admin" disabled={not @can_set_admin_role}>
+                {dgettext("dialogs", "admin")}
+              </option>
+            </select>
+            <div class="flex justify-end">
+              <.button type="submit" size="sm" disabled={not @can_refresh}>
+                <:icon><Icons.icon_shield class="w-[14px] h-[14px]" /></:icon>
+                {dgettext("dialogs", "Set role")}
+              </.button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div>
+        <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "NickServ admin")}</div>
+        <div class="grid gap-retro-6 md:grid-cols-3">
+          <.user_nickserv_form
+            id="admin-console-user-ns-info-form"
+            event={@on_ns_info}
+            title={dgettext("dialogs", "NickServ info")}
+            button_label={dgettext("dialogs", "NickServ info")}
+            icon_fn={:icon_btn_info}
+            disabled={not @can_refresh}
+          />
+          <.user_nickserv_form
+            id="admin-console-user-ns-resetpass-form"
+            event={@on_ns_resetpass}
+            title={dgettext("dialogs", "Reset password")}
+            button_label={dgettext("dialogs", "Reset password")}
+            icon_fn={:icon_btn_save}
+            include_password
+            disabled={not @can_refresh}
+          />
+          <.user_nickserv_form
+            id="admin-console-user-ns-drop-form"
+            event={@on_ns_drop}
+            title={dgettext("dialogs", "Drop registration")}
+            button_label={dgettext("dialogs", "Drop registration")}
+            icon_fn={:icon_trash}
+            disabled={not @can_refresh}
+          />
+        </div>
+      </div>
+
+      <div>
         <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Ban list")}</div>
         <pre
           id="admin-console-users-banlist"
@@ -896,6 +1013,45 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
       <.admin_inline_result result={@result} />
     </div>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :event, :any, default: nil
+  attr :title, :string, required: true
+  attr :button_label, :string, required: true
+  attr :icon_fn, :atom, required: true
+  attr :include_password, :boolean, default: false
+  attr :disabled, :boolean, default: false
+
+  defp user_nickserv_form(assigns) do
+    ~H"""
+    <form id={@id} phx-submit={@event} class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4">
+      <div class="text-xs font-bold">{@title}</div>
+      <input
+        name="nick"
+        type="text"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "Nick")}
+        autocomplete="off"
+        disabled={@disabled}
+      />
+      <input
+        :if={@include_password}
+        name="new_password"
+        type="password"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "New password")}
+        autocomplete="new-password"
+        disabled={@disabled}
+      />
+      <div class="flex justify-end">
+        <.button type="submit" size="sm" disabled={@disabled}>
+          <:icon>{apply(Icons, @icon_fn, [%{class: "w-[14px] h-[14px]"}])}</:icon>
+          {@button_label}
+        </.button>
+      </div>
+    </form>
     """
   end
 

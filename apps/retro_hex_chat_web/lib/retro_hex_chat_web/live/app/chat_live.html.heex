@@ -989,6 +989,7 @@
   users_online_only={@admin_console_users_online_only}
   users_info_nick={@admin_console_users_info_nick}
   users_can_refresh={admin_only?(@session)}
+  users_can_set_admin_role={root_admin?(@session)}
   channels_text={@admin_console_channels_text}
   channels_banlist_text={@admin_console_channels_banlist_text}
   channels_result={@admin_console_channels_result}
@@ -1018,6 +1019,11 @@
   on_users_kick="admin_console_user_kick"
   on_users_mute="admin_console_user_mute"
   on_users_unmute="admin_console_user_unmute"
+  on_users_rename="admin_console_user_rename"
+  on_users_role="admin_console_user_role"
+  on_users_ns_info="admin_console_user_ns_info"
+  on_users_ns_drop="admin_console_user_ns_drop"
+  on_users_ns_resetpass="admin_console_user_ns_resetpass"
   on_channels_refresh="admin_console_refresh_channels"
   on_channels_info="admin_console_channel_info"
   on_channels_create="admin_console_channel_create"

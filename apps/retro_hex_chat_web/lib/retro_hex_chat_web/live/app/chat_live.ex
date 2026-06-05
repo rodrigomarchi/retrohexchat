@@ -929,6 +929,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
     ServerRoles.admin?(session.nickname, session.identified)
   end
 
+  defp root_admin?(session) do
+    session.identified and
+      session.nickname in Application.get_env(:retro_hex_chat, :root_admins, [])
+  end
+
   defp viewer_is_op?(session) do
     case session.active_channel do
       nil ->

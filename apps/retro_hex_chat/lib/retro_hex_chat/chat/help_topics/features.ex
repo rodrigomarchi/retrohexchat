@@ -1172,6 +1172,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "users",
           "users tab",
           "user moderation",
+          "user roles",
+          "nickserv admin",
           "channels",
           "channels tab",
           "motd",

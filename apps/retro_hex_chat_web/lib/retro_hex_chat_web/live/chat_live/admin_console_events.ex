@@ -130,6 +130,26 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     handle_user_moderation(socket, "unmute", params)
   end
 
+  def handle_event("admin_console_user_rename", params, socket) do
+    handle_user_account_action(socket, fn -> user_rename_result(socket, params) end)
+  end
+
+  def handle_event("admin_console_user_role", params, socket) do
+    handle_user_account_action(socket, fn -> user_role_result(socket, params) end)
+  end
+
+  def handle_event("admin_console_user_ns_info", params, socket) do
+    handle_user_account_action(socket, fn -> nickserv_result(socket, "info", params) end)
+  end
+
+  def handle_event("admin_console_user_ns_drop", params, socket) do
+    handle_user_account_action(socket, fn -> nickserv_result(socket, "drop", params) end)
+  end
+
+  def handle_event("admin_console_user_ns_resetpass", params, socket) do
+    handle_user_account_action(socket, fn -> nickserv_resetpass_result(socket, params) end)
+  end
+
   def handle_event("admin_console_refresh_channels", params, socket) do
     if admin?(socket) do
       {:halt, assign_channels_snapshot(socket, params, nil)}
@@ -564,6 +584,62 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     end
   end
 
+  defp handle_user_account_action(socket, result_fun) do
+    if admin?(socket) do
+      result = result_fun.()
+      {:halt, assign_users_snapshot(socket, %{}, result)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  defp user_rename_result(socket, params) do
+    old_nick = params |> Map.get("old_nick", "") |> normalize_user_moderation_value()
+    new_nick = params |> Map.get("new_nick", "") |> normalize_user_moderation_value()
+
+    cond do
+      old_nick == "" -> %{status: :error, message: dgettext("chat", "Enter the current nick.")}
+      new_nick == "" -> %{status: :error, message: dgettext("chat", "Enter the new nick.")}
+      true -> dispatch_admin_user(socket, ["user", "rename", old_nick, new_nick])
+    end
+  end
+
+  defp user_role_result(socket, params) do
+    nick = params |> Map.get("nick", "") |> normalize_user_moderation_value()
+    role = params |> Map.get("role", "") |> normalize_user_moderation_value()
+
+    cond do
+      nick == "" -> %{status: :error, message: dgettext("chat", "Enter a nick for this action.")}
+      role == "" -> %{status: :error, message: dgettext("chat", "Choose a role.")}
+      true -> dispatch_admin_user(socket, ["user", "role", nick, role])
+    end
+  end
+
+  defp nickserv_result(socket, action, params) do
+    nick = params |> Map.get("nick", "") |> normalize_user_moderation_value()
+
+    if nick == "" do
+      %{status: :error, message: dgettext("chat", "Enter a nick for this action.")}
+    else
+      dispatch_admin_user(socket, ["ns", action, nick])
+    end
+  end
+
+  defp nickserv_resetpass_result(socket, params) do
+    nick = params |> Map.get("nick", "") |> normalize_user_moderation_value()
+    password = params |> Map.get("new_password", "") |> normalize_user_moderation_value()
+
+    cond do
+      nick == "" -> %{status: :error, message: dgettext("chat", "Enter a nick for this action.")}
+      password == "" -> %{status: :error, message: dgettext("chat", "Enter a new password.")}
+      true -> dispatch_admin_user(socket, ["ns", "resetpass", nick, password])
+    end
+  end
+
   defp user_moderation_result(socket, action, params) do
     nick = params |> Map.get("nick", "") |> normalize_user_moderation_value()
 
@@ -574,6 +650,12 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       |> Dispatcher.dispatch(user_moderation_args(action, nick, params), user_context(socket))
       |> result_entry()
     end
+  end
+
+  defp dispatch_admin_user(socket, args) do
+    "admin"
+    |> Dispatcher.dispatch(args, user_context(socket))
+    |> result_entry()
   end
 
   defp user_moderation_args("ban", nick, params) do

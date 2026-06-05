@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_commands",
-    "Manage server users: list, view details, ban, kick, mute, rename, and assign roles. The Admin Console Users tab provides command-backed list, search, banlist, Info, and moderation controls. Requires server administrator role."
+    "Manage server users: list, view details, ban, kick, mute, rename, assign roles, and run NickServ admin actions. The Admin Console Users tab provides command-backed list, search, banlist, Info, moderation, account, role, and NickServ controls. Requires server administrator role."
   )}
 </p>
 
@@ -56,13 +56,19 @@
 <p>
   {dgettext(
     "help_commands",
-    "Open File → Admin Console, then choose Users to refresh /admin user list snapshots, apply search and online-only filters, inspect a nick with /admin user info, review /admin user banlist output, and confirm ban/unban, kick, mute, or unmute actions without typing the commands."
+    "Open File → Admin Console, then choose Users to refresh /admin user list snapshots, apply search and online-only filters, inspect a nick with /admin user info, review /admin user banlist output, confirm ban/unban, kick, mute, or unmute actions, rename users, set server roles, and run /admin ns info/drop/resetpass without typing the commands."
   )}
 </p>
 
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>{dgettext("help_commands", "Only root admins (env var) can promote users to admin")}</li>
+  <li>
+    {dgettext(
+      "help_commands",
+      "The Users tab disables the admin role choice unless the viewer is a configured root admin"
+    )}
+  </li>
   <li>{dgettext("help_commands", "Root admins cannot be demoted via commands")}</li>
   <li>{dgettext("help_commands", "All actions are recorded in the audit log")}</li>
   <li>
