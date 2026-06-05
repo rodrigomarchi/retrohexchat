@@ -989,6 +989,13 @@
   users_online_only={@admin_console_users_online_only}
   users_info_nick={@admin_console_users_info_nick}
   users_can_refresh={admin_only?(@session)}
+  channels_text={@admin_console_channels_text}
+  channels_banlist_text={@admin_console_channels_banlist_text}
+  channels_result={@admin_console_channels_result}
+  channels_search={@admin_console_channels_search}
+  channels_info_channel={@admin_console_channels_info_channel}
+  channels_create_name={@admin_console_channels_create_name}
+  channels_can_refresh={admin_only?(@session)}
   danger_zone_preview={@admin_console_danger_zone_preview}
   danger_zone_result={@admin_console_danger_zone_result}
   danger_zone_confirm={@admin_console_danger_zone_confirm}
@@ -1006,6 +1013,9 @@
   on_singleplayer="admin_console_start_singleplayer"
   on_users_refresh="admin_console_refresh_users"
   on_users_info="admin_console_user_info"
+  on_channels_refresh="admin_console_refresh_channels"
+  on_channels_info="admin_console_channel_info"
+  on_channels_create="admin_console_channel_create"
   on_danger_zone_preview="admin_console_preview_nuke"
   on_danger_zone_change="admin_console_change_nuke_confirm"
   on_danger_zone_execute="admin_console_execute_nuke"

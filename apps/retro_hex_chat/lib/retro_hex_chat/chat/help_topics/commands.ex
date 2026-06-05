@@ -571,13 +571,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-admin-channel",
         title: dgettext("help", "/admin channel"),
         category: dgettext("help", "Admin & Server"),
-        keywords: ["admin", "channel", "create", "delete", "purge", "banlist"],
+        keywords: [
+          "admin",
+          "channel",
+          "channels tab",
+          "create",
+          "delete",
+          "purge",
+          "banlist"
+        ],
         icon: :icon_shield,
         description:
           dgettext(
             "help",
             "Manage server channels: list, info, create, delete, purge messages, view bans."
-          )
+          ),
+        see_also: ["feature-admin-console", "cmd-admin-cs"]
       },
       %{
         id: "cmd-admin-ns",

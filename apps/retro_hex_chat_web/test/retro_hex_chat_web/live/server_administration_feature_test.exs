@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
   @moduletag :liveview_feature
 
   alias RetroHexChat.Admin.AuditLogs
+  alias RetroHexChat.Channels.{Registry, Server, Supervisor}
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChat.Services.Queries
   alias RetroHexChatWeb.Components.UI.{AdminConsoleDialog, MenuBarApp}
@@ -70,6 +71,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert "danger zone" in admin_console.keywords
       assert "danger zone tab" in admin_console.keywords
       assert "users tab" in admin_console.keywords
+      assert "channels tab" in admin_console.keywords
       assert "cmd-setmotd" in admin_console.see_also
       assert "cmd-clearmotd" in admin_console.see_also
       assert "cmd-admin-nuke" in admin_console.see_also
@@ -78,6 +80,11 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       assert "users tab" in admin_user.keywords
       assert "feature-admin-console" in admin_user.see_also
+
+      admin_channel = HelpTopics.get_topic("cmd-admin-channel")
+
+      assert "channels tab" in admin_channel.keywords
+      assert "feature-admin-console" in admin_channel.see_also
 
       broadcasts = HelpTopics.get_topic("feature-server-broadcasts")
 
@@ -280,6 +287,84 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ "*** User: #{nick}"
       assert html =~ "Registered:"
       assert html =~ "Server operator:"
+    end
+  end
+
+  describe "Admin Console Channels tab" do
+    test "component renders channel filters, snapshots, info, create, and banlist controls" do
+      document =
+        render_component(&AdminConsoleDialog.admin_console_dialog/1,
+          id: "admin-console-dialog",
+          show: true,
+          active_tab: "channels",
+          results: [],
+          channels_text: "*** Channel List (1) ***\n  #admin (1 members)",
+          channels_banlist_text: "*** No bans in #admin.",
+          channels_result: nil,
+          channels_search: "#adm",
+          channels_info_channel: "#admin",
+          channels_create_name: "#new-admin",
+          channels_can_refresh: true,
+          on_tab: "admin_console_tab",
+          on_channels_refresh: "admin_console_refresh_channels",
+          on_channels_info: "admin_console_channel_info",
+          on_channels_create: "admin_console_channel_create",
+          on_close: "close_admin_console"
+        )
+        |> Floki.parse_document!()
+
+      html = Floki.raw_html(document)
+
+      assert html =~ ~s(data-testid="admin-console-tab-channels")
+      assert html =~ ~s(id="admin-console-channels-form")
+      assert html =~ ~s(phx-submit="admin_console_refresh_channels")
+      assert html =~ ~s(name="search")
+      assert html =~ ~s(id="admin-console-channels-output")
+      assert html =~ "#admin"
+      assert html =~ ~s(id="admin-console-channel-info-form")
+      assert html =~ ~s(phx-submit="admin_console_channel_info")
+      assert html =~ ~s(name="channel")
+      assert html =~ ~s(id="admin-console-channel-create-form")
+      assert html =~ ~s(phx-submit="admin_console_channel_create")
+      assert html =~ ~s(id="admin-console-channels-banlist")
+      assert html =~ "No bans in #admin"
+      assert html =~ "Refresh"
+      assert html =~ "Info"
+      assert html =~ "Create"
+    end
+
+    test "admin can refresh channels, inspect a channel, and create a channel", %{conn: conn} do
+      channel = "#ac#{uid()}"
+      member = "ACM#{uid()}"
+      new_channel = "#anc#{uid()}"
+
+      ensure_channel(channel)
+      assert {:ok, _state} = Server.join(channel, member)
+
+      view = connect_admin(conn)
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      html = render_click(view, "admin_console_tab", %{"tab" => "channels"})
+
+      assert html =~ "*** Channel List"
+      assert html =~ channel
+
+      html =
+        view
+        |> form("#admin-console-channel-info-form", %{"channel" => channel})
+        |> render_submit()
+
+      assert html =~ "*** Channel: #{channel}"
+      assert html =~ "Members"
+      assert html =~ "No bans in #{channel}"
+
+      html =
+        view
+        |> form("#admin-console-channel-create-form", %{"channel" => new_channel})
+        |> render_submit()
+
+      assert html =~ "Channel #{new_channel} created and registered."
+      assert html =~ new_channel
     end
   end
 
@@ -567,6 +652,19 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
   defp connect_admin(conn) do
     {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/chat")
     view
+  end
+
+  defp ensure_channel(name) do
+    case Registry.lookup(name) do
+      {:ok, _pid} ->
+        :ok
+
+      {:error, :not_found} ->
+        case Supervisor.start_child(name) do
+          {:ok, _pid} -> :ok
+          {:error, {:already_started, _pid}} -> :ok
+        end
+    end
   end
 
   defp tab_labels(document) do

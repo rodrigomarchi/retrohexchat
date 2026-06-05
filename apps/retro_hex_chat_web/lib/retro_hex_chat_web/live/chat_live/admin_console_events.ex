@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
          admin_console_audit_log_result: nil,
          admin_console_server_settings_result: nil,
          admin_console_users_result: nil,
+         admin_console_channels_result: nil,
          admin_console_danger_zone_result: nil,
          admin_console_danger_zone_confirm: ""
        )}
@@ -58,6 +59,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       case tab do
         "server_settings" -> assign_server_settings_snapshot(socket, nil)
         "users" -> assign_users_snapshot(socket, %{}, nil)
+        "channels" -> assign_channels_snapshot(socket, %{}, nil)
         "motd" -> assign_motd_snapshot(socket, nil)
         "turn" -> assign_turn_snapshot(socket)
         "audit_log" -> assign_audit_log_snapshot(socket, %{})
@@ -99,6 +101,64 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
         |> assign(admin_console_users_info_nick: nick)
 
       {:halt, socket}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_refresh_channels", params, socket) do
+    if admin?(socket) do
+      {:halt, assign_channels_snapshot(socket, params, nil)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_channel_info", %{"channel" => channel}, socket) do
+    if admin?(socket) do
+      channel = String.trim(channel)
+
+      result =
+        if channel == "" do
+          %{status: :error, message: dgettext("chat", "Enter a channel to inspect.")}
+        else
+          "admin"
+          |> Dispatcher.dispatch(["channel", "info", channel], user_context(socket))
+          |> result_entry()
+        end
+
+      {:halt, assign_channels_snapshot(socket, %{"info_channel" => channel}, result)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_channel_create", %{"channel" => channel}, socket) do
+    if admin?(socket) do
+      channel = String.trim(channel)
+
+      result =
+        if channel == "" do
+          %{status: :error, message: dgettext("chat", "Enter a channel to create.")}
+        else
+          "admin"
+          |> Dispatcher.dispatch(["channel", "create", channel], user_context(socket))
+          |> result_entry()
+        end
+
+      {:halt, assign_channels_snapshot(socket, %{"create_channel" => channel}, result)}
     else
       {:halt,
        error_event(
@@ -426,6 +486,25 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     )
   end
 
+  defp assign_channels_snapshot(socket, params, result) do
+    search = channels_search(socket, params)
+    info_channel = channels_info_channel(socket, params)
+    create_name = channels_create_name(socket, params)
+    context = user_context(socket)
+
+    list_result = Dispatcher.dispatch("admin", channels_list_args(search), context)
+    banlist_result = channels_banlist_result(info_channel, context)
+
+    assign(socket,
+      admin_console_channels_text: result_message(list_result),
+      admin_console_channels_banlist_text: channels_banlist_text(banlist_result),
+      admin_console_channels_search: search,
+      admin_console_channels_info_channel: info_channel,
+      admin_console_channels_create_name: create_name,
+      admin_console_channels_result: result || first_error_entry([list_result, banlist_result])
+    )
+  end
+
   defp assign_nuke_preview(socket, result) do
     preview_result = Dispatcher.dispatch("admin", ["nuke"], user_context(socket))
 
@@ -482,6 +561,46 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     Map.get(socket.assigns, :admin_console_users_online_only, false)
   end
 
+  defp channels_list_args(search), do: ["channel", "list"] ++ channels_search_args(search)
+
+  defp channels_search_args(""), do: []
+  defp channels_search_args(search), do: ["--search", search]
+
+  defp channels_banlist_result("", _context), do: nil
+
+  defp channels_banlist_result(channel, context) do
+    Dispatcher.dispatch("admin", ["channel", "banlist", channel], context)
+  end
+
+  defp channels_banlist_text(nil), do: ""
+  defp channels_banlist_text(result), do: result_message(result)
+
+  defp channels_search(_socket, %{"search" => search}), do: normalize_channels_value(search)
+
+  defp channels_search(socket, _params) do
+    socket.assigns
+    |> Map.get(:admin_console_channels_search, "")
+    |> normalize_channels_value()
+  end
+
+  defp channels_info_channel(_socket, %{"info_channel" => channel}),
+    do: normalize_channels_value(channel)
+
+  defp channels_info_channel(socket, _params) do
+    socket.assigns
+    |> Map.get(:admin_console_channels_info_channel, "")
+    |> normalize_channels_value()
+  end
+
+  defp channels_create_name(_socket, %{"create_channel" => channel}),
+    do: normalize_channels_value(channel)
+
+  defp channels_create_name(socket, _params) do
+    socket.assigns
+    |> Map.get(:admin_console_channels_create_name, "")
+    |> normalize_channels_value()
+  end
+
   defp normalize_audit_last(value) do
     case value |> to_string() |> String.trim() do
       "" -> "20"
@@ -496,6 +615,12 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   end
 
   defp normalize_users_search(value) do
+    value
+    |> to_string()
+    |> String.trim()
+  end
+
+  defp normalize_channels_value(value) do
     value
     |> to_string()
     |> String.trim()

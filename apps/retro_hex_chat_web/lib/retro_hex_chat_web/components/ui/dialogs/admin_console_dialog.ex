@@ -43,6 +43,13 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :users_online_only, :boolean, default: false
   attr :users_info_nick, :string, default: ""
   attr :users_can_refresh, :boolean, default: false
+  attr :channels_text, :string, default: nil
+  attr :channels_banlist_text, :string, default: nil
+  attr :channels_result, :any, default: nil
+  attr :channels_search, :string, default: ""
+  attr :channels_info_channel, :string, default: ""
+  attr :channels_create_name, :string, default: ""
+  attr :channels_can_refresh, :boolean, default: false
   attr :danger_zone_preview, :string, default: nil
   attr :danger_zone_result, :any, default: nil
   attr :danger_zone_confirm, :string, default: ""
@@ -60,6 +67,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_singleplayer, :any, default: nil
   attr :on_users_refresh, :any, default: nil
   attr :on_users_info, :any, default: nil
+  attr :on_channels_refresh, :any, default: nil
+  attr :on_channels_info, :any, default: nil
+  attr :on_channels_create, :any, default: nil
   attr :on_danger_zone_preview, :any, default: nil
   attr :on_danger_zone_change, :any, default: nil
   attr :on_danger_zone_execute, :any, default: nil
@@ -222,6 +232,21 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 can_refresh={@users_can_refresh}
                 on_refresh={@on_users_refresh}
                 on_info={@on_users_info}
+              />
+            </.tabs_content>
+
+            <.tabs_content value="channels" builder={builder}>
+              <.channels_tab
+                text={@channels_text}
+                banlist_text={@channels_banlist_text}
+                result={@channels_result}
+                search={@channels_search}
+                info_channel={@channels_info_channel}
+                create_name={@channels_create_name}
+                can_refresh={@channels_can_refresh}
+                on_refresh={@on_channels_refresh}
+                on_info={@on_channels_info}
+                on_create={@on_channels_create}
               />
             </.tabs_content>
 
@@ -809,6 +834,112 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
     """
   end
 
+  attr :text, :string, default: nil
+  attr :banlist_text, :string, default: nil
+  attr :result, :any, default: nil
+  attr :search, :string, default: ""
+  attr :info_channel, :string, default: ""
+  attr :create_name, :string, default: ""
+  attr :can_refresh, :boolean, default: false
+  attr :on_refresh, :any, default: nil
+  attr :on_info, :any, default: nil
+  attr :on_create, :any, default: nil
+
+  defp channels_tab(assigns) do
+    ~H"""
+    <div class="space-y-retro-8" data-testid="admin-console-tab-channels">
+      <form id="admin-console-channels-form" phx-submit={@on_refresh}>
+        <div class="flex flex-wrap items-end gap-retro-6">
+          <div class="flex-1 min-w-[160px]">
+            <label for="admin-console-channels-search" class="block text-xs font-bold mb-retro-2">
+              {dgettext("dialogs", "Search")}
+            </label>
+            <input
+              id="admin-console-channels-search"
+              name="search"
+              type="text"
+              class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+              value={@search}
+              autocomplete="off"
+              disabled={not @can_refresh}
+            />
+          </div>
+          <.button type="submit" size="sm" variant="outline" disabled={not @can_refresh}>
+            <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Refresh")}
+          </.button>
+        </div>
+      </form>
+
+      <pre
+        id="admin-console-channels-output"
+        class="shadow-retro-sunken bg-white min-h-[120px] max-h-[190px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
+      ><%= @text || "" %></pre>
+
+      <div class="grid gap-retro-8 md:grid-cols-2">
+        <form id="admin-console-channel-info-form" phx-submit={@on_info}>
+          <div class="flex flex-wrap items-end gap-retro-6">
+            <div class="flex-1 min-w-[140px]">
+              <label for="admin-console-channel-info-name" class="block text-xs font-bold mb-retro-2">
+                {dgettext("dialogs", "Channel")}
+              </label>
+              <input
+                id="admin-console-channel-info-name"
+                name="channel"
+                type="text"
+                class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+                value={@info_channel}
+                autocomplete="off"
+                disabled={not @can_refresh}
+              />
+            </div>
+            <.button type="submit" size="sm" disabled={not @can_refresh}>
+              <:icon><Icons.icon_btn_info class="w-[14px] h-[14px]" /></:icon>
+              {dgettext("dialogs", "Info")}
+            </.button>
+          </div>
+        </form>
+
+        <form id="admin-console-channel-create-form" phx-submit={@on_create}>
+          <div class="flex flex-wrap items-end gap-retro-6">
+            <div class="flex-1 min-w-[140px]">
+              <label
+                for="admin-console-channel-create-name"
+                class="block text-xs font-bold mb-retro-2"
+              >
+                {dgettext("dialogs", "New channel")}
+              </label>
+              <input
+                id="admin-console-channel-create-name"
+                name="channel"
+                type="text"
+                class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+                value={@create_name}
+                autocomplete="off"
+                disabled={not @can_refresh}
+              />
+            </div>
+            <.button type="submit" size="sm" disabled={not @can_refresh}>
+              <:icon><Icons.icon_btn_add class="w-[14px] h-[14px]" /></:icon>
+              {dgettext("dialogs", "Create")}
+            </.button>
+          </div>
+        </form>
+      </div>
+
+      <div>
+        <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Ban list")}</div>
+        <pre
+          id="admin-console-channels-banlist"
+          class="shadow-retro-sunken bg-white min-h-[84px] max-h-[150px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
+        ><%= @banlist_text || "" %></pre>
+      </div>
+
+      <.admin_inline_result result={@result} />
+    </div>
+    """
+  end
+
   attr :preview, :string, default: nil
   attr :result, :any, default: nil
   attr :confirm, :string, default: ""
@@ -913,6 +1044,6 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
   @spec admin_shell_tabs() :: [String.t()]
   defp admin_shell_tabs do
-    ~w(channels)
+    ~w()
   end
 end

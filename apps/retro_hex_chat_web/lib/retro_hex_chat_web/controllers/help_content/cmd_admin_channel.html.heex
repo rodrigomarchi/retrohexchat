@@ -1,7 +1,7 @@
 <p>
   {dgettext(
     "help_commands",
-    "Manage server channels: list, view details, create, delete, purge messages, and view bans. Requires server administrator role."
+    "Manage server channels: list, view details, create, delete, purge messages, and view bans. The Admin Console Channels tab provides command-backed list, search, Info, Create, and banlist controls. Requires server administrator role."
   )}
 </p>
 
@@ -43,6 +43,16 @@
   <li><code>banlist</code> {dgettext("help_commands", "— List banned users in a channel")}</li>
 </ul>
 
+<.help_h4 icon={:icon_channels}>
+  {dgettext("help_commands", "Admin Console Channels Tab")}
+</.help_h4>
+<p>
+  {dgettext(
+    "help_commands",
+    "Open File → Admin Console, then choose Channels to refresh /admin channel list snapshots, filter by search text, inspect a channel with /admin channel info, create a channel with /admin channel create, and review /admin channel banlist output for the selected channel."
+  )}
+</p>
+
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
   <li>
@@ -63,6 +73,10 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  ·
+  <.help_link topic="feature-admin-console">
+    {dgettext("help_commands", "Admin Console")}
+  </.help_link>
   · <.help_link topic="cmd-admin-cs">{dgettext("help_commands", "/admin cs")}</.help_link>
   · <.help_link topic="cmd-kick">{dgettext("help_commands", "/kick")}</.help_link>
 </p>
