@@ -982,6 +982,11 @@
   server_settings_values={@admin_console_server_settings_values}
   server_settings_result={@admin_console_server_settings_result}
   server_settings_can_edit={admin_only?(@session)}
+  danger_zone_preview={@admin_console_danger_zone_preview}
+  danger_zone_result={@admin_console_danger_zone_result}
+  danger_zone_confirm={@admin_console_danger_zone_confirm}
+  danger_zone_server_name={@admin_console_danger_zone_server_name}
+  danger_zone_can_execute={admin_only?(@session)}
   on_tab="admin_console_tab"
   on_motd_set="admin_console_set_motd"
   on_motd_clear="admin_console_clear_motd"
@@ -992,5 +997,8 @@
   on_server_settings_save="admin_console_save_server_settings"
   on_server_settings_refresh="admin_console_refresh_server_settings"
   on_singleplayer="admin_console_start_singleplayer"
+  on_danger_zone_preview="admin_console_preview_nuke"
+  on_danger_zone_change="admin_console_change_nuke_confirm"
+  on_danger_zone_execute="admin_console_execute_nuke"
   on_close="close_admin_console"
 />

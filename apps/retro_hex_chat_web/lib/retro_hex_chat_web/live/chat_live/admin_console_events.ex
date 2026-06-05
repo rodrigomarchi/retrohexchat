@@ -32,7 +32,9 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
          admin_console_broadcast_result: nil,
          admin_console_turn_result: nil,
          admin_console_audit_log_result: nil,
-         admin_console_server_settings_result: nil
+         admin_console_server_settings_result: nil,
+         admin_console_danger_zone_result: nil,
+         admin_console_danger_zone_confirm: ""
        )}
     else
       {:halt,
@@ -57,6 +59,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
         "motd" -> assign_motd_snapshot(socket, nil)
         "turn" -> assign_turn_snapshot(socket)
         "audit_log" -> assign_audit_log_snapshot(socket, %{})
+        "danger_zone" -> assign_nuke_preview(socket, nil)
         _ -> socket
       end
 
@@ -208,6 +211,52 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     end
   end
 
+  def handle_event("admin_console_preview_nuke", _params, socket) do
+    if admin?(socket) do
+      {:halt, assign_nuke_preview(socket, nil)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_change_nuke_confirm", %{"confirm" => confirm}, socket) do
+    {:halt, assign(socket, admin_console_danger_zone_confirm: confirm)}
+  end
+
+  def handle_event("admin_console_execute_nuke", %{"confirm" => confirm}, socket) do
+    if admin?(socket) do
+      if confirm == nuke_server_name(socket) do
+        result = Dispatcher.dispatch("admin", ["nuke", "--confirm"], user_context(socket))
+
+        {:halt,
+         assign(socket,
+           admin_console_danger_zone_preview: result_message(result),
+           admin_console_danger_zone_result: result_entry(result),
+           admin_console_danger_zone_confirm: ""
+         )}
+      else
+        {:halt,
+         assign(socket,
+           admin_console_danger_zone_confirm: confirm,
+           admin_console_danger_zone_result: %{
+             status: :error,
+             message: dgettext("chat", "Type the server name to confirm.")
+           }
+         )}
+      end
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
   def handle_event("execute_admin_console", %{"input" => input}, socket) do
     if admin?(socket) do
       results = execute_batch(input, socket)
@@ -318,6 +367,17 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     )
   end
 
+  defp assign_nuke_preview(socket, result) do
+    preview_result = Dispatcher.dispatch("admin", ["nuke"], user_context(socket))
+
+    assign(socket,
+      admin_console_danger_zone_preview: result_message(preview_result),
+      admin_console_danger_zone_result: result || first_error_entry([preview_result]),
+      admin_console_danger_zone_confirm: "",
+      admin_console_danger_zone_server_name: nuke_server_name(socket)
+    )
+  end
+
   defp turn_snapshot(socket) do
     context = user_context(socket)
     stats_result = Dispatcher.dispatch("admin", ["turn", "stats"], context)
@@ -370,6 +430,11 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       status: if(Enum.any?(results, &(result_status(&1) == :error)), do: :error, else: :ok),
       message: Enum.map_join(results, "\n", &result_message/1)
     }
+  end
+
+  defp nuke_server_name(_socket) do
+    Admin.server_settings_values()
+    |> Map.get("server_name", "RetroHexChat")
   end
 
   defp command_args(""), do: []

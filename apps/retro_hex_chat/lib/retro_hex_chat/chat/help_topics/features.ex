@@ -1181,6 +1181,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "turn",
           "turn tab",
           "danger zone",
+          "danger zone tab",
           "console tab",
           "batch",
           "script",

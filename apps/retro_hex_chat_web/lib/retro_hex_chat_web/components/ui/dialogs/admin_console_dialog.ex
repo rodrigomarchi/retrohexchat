@@ -36,6 +36,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :server_settings_values, :map, default: %{}
   attr :server_settings_result, :any, default: nil
   attr :server_settings_can_edit, :boolean, default: false
+  attr :danger_zone_preview, :string, default: nil
+  attr :danger_zone_result, :any, default: nil
+  attr :danger_zone_confirm, :string, default: ""
+  attr :danger_zone_server_name, :string, default: "RetroHexChat"
+  attr :danger_zone_can_execute, :boolean, default: false
   attr :on_tab, :any, default: nil
   attr :on_motd_set, :any, default: nil
   attr :on_motd_clear, :any, default: nil
@@ -46,6 +51,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_server_settings_save, :any, default: nil
   attr :on_server_settings_refresh, :any, default: nil
   attr :on_singleplayer, :any, default: nil
+  attr :on_danger_zone_preview, :any, default: nil
+  attr :on_danger_zone_change, :any, default: nil
+  attr :on_danger_zone_execute, :any, default: nil
   attr :on_close, :any, default: nil
 
   @spec admin_console_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -191,6 +199,19 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_save={@on_server_settings_save}
                 on_refresh={@on_server_settings_refresh}
                 on_singleplayer={@on_singleplayer}
+              />
+            </.tabs_content>
+
+            <.tabs_content value="danger_zone" builder={builder}>
+              <.danger_zone_tab
+                preview={@danger_zone_preview}
+                result={@danger_zone_result}
+                confirm={@danger_zone_confirm}
+                server_name={@danger_zone_server_name}
+                can_execute={@danger_zone_can_execute}
+                on_preview={@on_danger_zone_preview}
+                on_change={@on_danger_zone_change}
+                on_execute={@on_danger_zone_execute}
               />
             </.tabs_content>
 
@@ -678,6 +699,87 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
     """
   end
 
+  attr :preview, :string, default: nil
+  attr :result, :any, default: nil
+  attr :confirm, :string, default: ""
+  attr :server_name, :string, default: "RetroHexChat"
+  attr :can_execute, :boolean, default: false
+  attr :on_preview, :any, default: nil
+  attr :on_change, :any, default: nil
+  attr :on_execute, :any, default: nil
+
+  defp danger_zone_tab(assigns) do
+    assigns =
+      assign(assigns,
+        confirmation_matches?: assigns.can_execute and assigns.confirm == assigns.server_name
+      )
+
+    ~H"""
+    <div class="space-y-retro-8" data-testid="admin-console-tab-danger-zone">
+      <div class="shadow-retro-sunken bg-white p-retro-8 text-sm">
+        <div class="font-bold text-destructive">{dgettext("dialogs", "THIS CANNOT BE UNDONE")}</div>
+        <div class="mt-retro-4">
+          {dgettext(
+            "dialogs",
+            "Preserved: admin_roles, audit_logs, server_bans, server_settings"
+          )}
+        </div>
+      </div>
+
+      <pre
+        id="admin-console-danger-preview"
+        class="shadow-retro-sunken bg-white min-h-[136px] max-h-[220px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
+      ><%= @preview || "" %></pre>
+
+      <form
+        id="admin-console-danger-zone-form"
+        phx-change={@on_change}
+        phx-submit={@on_execute}
+        class="space-y-retro-6"
+      >
+        <label for="admin-console-danger-confirm" class="block text-xs font-bold">
+          {dgettext("dialogs", "Type the server name to confirm: %{server_name}",
+            server_name: @server_name
+          )}
+        </label>
+        <input
+          id="admin-console-danger-confirm"
+          name="confirm"
+          type="text"
+          value={@confirm}
+          class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+          autocomplete="off"
+          disabled={not @can_execute}
+        />
+
+        <div class="flex flex-wrap justify-end gap-retro-4">
+          <.button
+            type="button"
+            size="sm"
+            variant="outline"
+            phx-click={@on_preview}
+            disabled={not @can_execute}
+          >
+            <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Refresh preview")}
+          </.button>
+          <.button
+            type="submit"
+            size="sm"
+            variant="destructive"
+            disabled={not @confirmation_matches?}
+          >
+            <:icon><Icons.icon_warning class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "NUKE EVERYTHING")}
+          </.button>
+        </div>
+      </form>
+
+      <.admin_inline_result result={@result} />
+    </div>
+    """
+  end
+
   attr :result, :any, default: nil
 
   defp admin_inline_result(assigns) do
@@ -701,6 +803,6 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
   @spec admin_shell_tabs() :: [String.t()]
   defp admin_shell_tabs do
-    ~w(users channels danger_zone)
+    ~w(users channels)
   end
 end

@@ -68,6 +68,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert "turn tab" in admin_console.keywords
       assert "audit log tab" in admin_console.keywords
       assert "danger zone" in admin_console.keywords
+      assert "danger zone tab" in admin_console.keywords
       assert "cmd-setmotd" in admin_console.see_also
       assert "cmd-clearmotd" in admin_console.see_also
       assert "cmd-admin-nuke" in admin_console.see_also
@@ -427,6 +428,61 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       assert html =~ action
       assert html =~ "Audit Log"
+    end
+  end
+
+  describe "Admin Console Danger Zone tab" do
+    test "component renders nuke preview, server-name confirmation, and guarded execute button" do
+      document =
+        render_component(&AdminConsoleDialog.admin_console_dialog/1,
+          id: "admin-console-dialog",
+          show: true,
+          active_tab: "danger_zone",
+          results: [],
+          danger_zone_preview: "*** NUKE PREVIEW — 3 records will be destroyed ***",
+          danger_zone_result: nil,
+          danger_zone_confirm: "",
+          danger_zone_server_name: "RetroHexChat",
+          danger_zone_can_execute: true,
+          on_tab: "admin_console_tab",
+          on_danger_zone_preview: "admin_console_preview_nuke",
+          on_danger_zone_change: "admin_console_change_nuke_confirm",
+          on_danger_zone_execute: "admin_console_execute_nuke",
+          on_close: "close_admin_console"
+        )
+        |> Floki.parse_document!()
+
+      html = Floki.raw_html(document)
+
+      assert html =~ ~s(data-testid="admin-console-tab-danger-zone")
+      assert html =~ ~s(id="admin-console-danger-preview")
+      assert html =~ "NUKE PREVIEW"
+      assert html =~ "Preserved"
+      assert html =~ ~s(id="admin-console-danger-zone-form")
+      assert html =~ ~s(phx-change="admin_console_change_nuke_confirm")
+      assert html =~ ~s(phx-submit="admin_console_execute_nuke")
+      assert html =~ ~s(name="confirm")
+      assert html =~ "THIS CANNOT BE UNDONE"
+      assert html =~ "NUKE EVERYTHING"
+      assert html =~ "disabled"
+    end
+
+    test "admin can preview nuke and invalid confirmation is blocked", %{conn: conn} do
+      view = connect_admin(conn)
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      html = render_click(view, "admin_console_tab", %{"tab" => "danger_zone"})
+
+      assert html =~ "NUKE PREVIEW"
+      assert html =~ "Preserved"
+
+      html =
+        view
+        |> form("#admin-console-danger-zone-form", %{"confirm" => "wrong-server"})
+        |> render_submit()
+
+      assert html =~ "Type the server name to confirm."
+      assert html =~ "NUKE PREVIEW"
     end
   end
 

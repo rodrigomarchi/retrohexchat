@@ -651,7 +651,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
             dgettext(
               "help",
               "Run without --confirm for a preview; with --confirm to execute. IRREVERSIBLE."
-            )
+            ),
+        see_also: ["feature-admin-console", "cmd-admin-log"]
       },
       %{
         id: "cmd-op",

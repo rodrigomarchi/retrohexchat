@@ -1,7 +1,7 @@
 <p>
   <strong>{dgettext("help_commands", "DESTRUCTIVE")}</strong> {dgettext(
     "help_commands",
-    "— Factory reset the entire system. Destroys all data (users, channels, messages, preferences, bots, P2P sessions) except admin roles, audit logs, and server bans. Requires server administrator role."
+    "— Factory reset the entire system. Destroys all data (users, channels, messages, preferences, bots, P2P sessions) except admin roles, audit logs, server bans, and server settings. Requires server administrator role. The Admin Console Danger Zone tab requires typing the server name before execution."
   )}
 </p>
 
@@ -45,6 +45,10 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-admin">{dgettext("help_commands", "/admin")}</.help_link>
+  ·
+  <.help_link topic="feature-admin-console">
+    {dgettext("help_commands", "Admin Console")}
+  </.help_link>
   ·
   <.help_link topic="cmd-admin-channel">{dgettext("help_commands", "/admin channel")}</.help_link>
   · <.help_link topic="cmd-admin-log">{dgettext("help_commands", "/admin log")}</.help_link>
