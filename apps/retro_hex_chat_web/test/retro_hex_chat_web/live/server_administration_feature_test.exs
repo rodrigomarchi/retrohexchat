@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
   @moduletag :liveview_feature
 
-  alias RetroHexChat.Admin.AuditLogs
+  alias RetroHexChat.Admin.{AuditLogs, GlobalMutes, ServerBans}
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChat.Services.Queries
@@ -241,6 +241,11 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
           on_tab: "admin_console_tab",
           on_users_refresh: "admin_console_refresh_users",
           on_users_info: "admin_console_user_info",
+          on_users_ban: "admin_console_user_ban",
+          on_users_unban: "admin_console_user_unban",
+          on_users_kick: "admin_console_user_kick",
+          on_users_mute: "admin_console_user_mute",
+          on_users_unmute: "admin_console_user_unmute",
           on_close: "close_admin_console"
         )
         |> Floki.parse_document!()
@@ -259,8 +264,23 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ ~s(id="admin-console-user-info-form")
       assert html =~ ~s(phx-submit="admin_console_user_info")
       assert html =~ ~s(name="nick")
+      assert html =~ ~s(id="admin-console-user-ban-form")
+      assert html =~ ~s(phx-submit="admin_console_user_ban")
+      assert html =~ ~s(id="admin-console-user-unban-form")
+      assert html =~ ~s(phx-submit="admin_console_user_unban")
+      assert html =~ ~s(id="admin-console-user-kick-form")
+      assert html =~ ~s(phx-submit="admin_console_user_kick")
+      assert html =~ ~s(id="admin-console-user-mute-form")
+      assert html =~ ~s(phx-submit="admin_console_user_mute")
+      assert html =~ ~s(id="admin-console-user-unmute-form")
+      assert html =~ ~s(phx-submit="admin_console_user_unmute")
+      assert html =~ ~s(name="reason")
+      assert html =~ ~s(name="duration")
       assert html =~ "Refresh"
       assert html =~ "Info"
+      assert html =~ "Confirm ban"
+      assert html =~ "Confirm kick"
+      assert html =~ "Confirm mute"
     end
 
     test "admin can refresh users and inspect a nick through the structured tab", %{conn: conn} do
@@ -287,6 +307,62 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ "*** User: #{nick}"
       assert html =~ "Registered:"
       assert html =~ "Server operator:"
+    end
+
+    test "admin can apply user moderation actions through the structured tab", %{conn: conn} do
+      nick =
+        "UM#{uid()}"
+        |> String.slice(0, 16)
+
+      assert {:ok, _registered} = Queries.insert_registered_nick(nick, "password123")
+
+      view = connect_admin(conn)
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      render_click(view, "admin_console_tab", %{"tab" => "users"})
+
+      html =
+        view
+        |> form("#admin-console-user-ban-form", %{
+          "nick" => nick,
+          "reason" => "flooding",
+          "duration" => "30m"
+        })
+        |> render_submit()
+
+      assert html =~ "#{nick} has been server-banned"
+      assert Enum.any?(ServerBans.list_active_bans(), &(&1.nickname == nick))
+
+      html =
+        view
+        |> form("#admin-console-user-unban-form", %{"nick" => nick})
+        |> render_submit()
+
+      assert html =~ "#{nick} has been unbanned from the server."
+      refute Enum.any?(ServerBans.list_active_bans(), &(&1.nickname == nick))
+
+      html =
+        view
+        |> form("#admin-console-user-mute-form", %{"nick" => nick, "duration" => "15m"})
+        |> render_submit()
+
+      assert html =~ "#{nick} has been muted"
+      assert GlobalMutes.muted?(nick)
+
+      html =
+        view
+        |> form("#admin-console-user-unmute-form", %{"nick" => nick})
+        |> render_submit()
+
+      assert html =~ "#{nick} has been unmuted."
+      refute GlobalMutes.muted?(nick)
+
+      html =
+        view
+        |> form("#admin-console-user-kick-form", %{"nick" => nick, "reason" => "cleanup"})
+        |> render_submit()
+
+      assert html =~ "#{nick} has been kicked from the server."
     end
   end
 

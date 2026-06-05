@@ -67,6 +67,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_singleplayer, :any, default: nil
   attr :on_users_refresh, :any, default: nil
   attr :on_users_info, :any, default: nil
+  attr :on_users_ban, :any, default: nil
+  attr :on_users_unban, :any, default: nil
+  attr :on_users_kick, :any, default: nil
+  attr :on_users_mute, :any, default: nil
+  attr :on_users_unmute, :any, default: nil
   attr :on_channels_refresh, :any, default: nil
   attr :on_channels_info, :any, default: nil
   attr :on_channels_create, :any, default: nil
@@ -232,6 +237,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 can_refresh={@users_can_refresh}
                 on_refresh={@on_users_refresh}
                 on_info={@on_users_info}
+                on_ban={@on_users_ban}
+                on_unban={@on_users_unban}
+                on_kick={@on_users_kick}
+                on_mute={@on_users_mute}
+                on_unmute={@on_users_unmute}
               />
             </.tabs_content>
 
@@ -756,6 +766,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :can_refresh, :boolean, default: false
   attr :on_refresh, :any, default: nil
   attr :on_info, :any, default: nil
+  attr :on_ban, :any, default: nil
+  attr :on_unban, :any, default: nil
+  attr :on_kick, :any, default: nil
+  attr :on_mute, :any, default: nil
+  attr :on_unmute, :any, default: nil
 
   defp users_tab(assigns) do
     ~H"""
@@ -822,6 +837,56 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
       </form>
 
       <div>
+        <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Moderation")}</div>
+        <div class="grid gap-retro-6 md:grid-cols-2">
+          <.user_moderation_form
+            id="admin-console-user-ban-form"
+            event={@on_ban}
+            title={dgettext("dialogs", "Ban user")}
+            button_label={dgettext("dialogs", "Confirm ban")}
+            icon_fn={:icon_ban}
+            show_reason
+            show_duration
+            disabled={not @can_refresh}
+          />
+          <.user_moderation_form
+            id="admin-console-user-unban-form"
+            event={@on_unban}
+            title={dgettext("dialogs", "Unban user")}
+            button_label={dgettext("dialogs", "Confirm unban")}
+            icon_fn={:icon_checkmark}
+            disabled={not @can_refresh}
+          />
+          <.user_moderation_form
+            id="admin-console-user-kick-form"
+            event={@on_kick}
+            title={dgettext("dialogs", "Kick user")}
+            button_label={dgettext("dialogs", "Confirm kick")}
+            icon_fn={:icon_dialog_kick}
+            show_reason
+            disabled={not @can_refresh}
+          />
+          <.user_moderation_form
+            id="admin-console-user-mute-form"
+            event={@on_mute}
+            title={dgettext("dialogs", "Mute user")}
+            button_label={dgettext("dialogs", "Confirm mute")}
+            icon_fn={:icon_mute}
+            show_duration
+            disabled={not @can_refresh}
+          />
+          <.user_moderation_form
+            id="admin-console-user-unmute-form"
+            event={@on_unmute}
+            title={dgettext("dialogs", "Unmute user")}
+            button_label={dgettext("dialogs", "Confirm unmute")}
+            icon_fn={:icon_checkmark}
+            disabled={not @can_refresh}
+          />
+        </div>
+      </div>
+
+      <div>
         <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Ban list")}</div>
         <pre
           id="admin-console-users-banlist"
@@ -831,6 +896,55 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
       <.admin_inline_result result={@result} />
     </div>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :event, :any, default: nil
+  attr :title, :string, required: true
+  attr :button_label, :string, required: true
+  attr :icon_fn, :atom, required: true
+  attr :show_reason, :boolean, default: false
+  attr :show_duration, :boolean, default: false
+  attr :disabled, :boolean, default: false
+
+  defp user_moderation_form(assigns) do
+    ~H"""
+    <form id={@id} phx-submit={@event} class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4">
+      <div class="text-xs font-bold">{@title}</div>
+      <input
+        name="nick"
+        type="text"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "Nick")}
+        autocomplete="off"
+        disabled={@disabled}
+      />
+      <input
+        :if={@show_reason}
+        name="reason"
+        type="text"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "Reason")}
+        autocomplete="off"
+        disabled={@disabled}
+      />
+      <input
+        :if={@show_duration}
+        name="duration"
+        type="text"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+        placeholder={dgettext("dialogs", "Duration")}
+        autocomplete="off"
+        disabled={@disabled}
+      />
+      <div class="flex justify-end">
+        <.button type="submit" size="sm" disabled={@disabled}>
+          <:icon>{apply(Icons, @icon_fn, [%{class: "w-[14px] h-[14px]"}])}</:icon>
+          {@button_label}
+        </.button>
+      </div>
+    </form>
     """
   end
 

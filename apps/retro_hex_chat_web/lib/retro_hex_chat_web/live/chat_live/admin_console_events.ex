@@ -110,6 +110,26 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     end
   end
 
+  def handle_event("admin_console_user_ban", params, socket) do
+    handle_user_moderation(socket, "ban", params)
+  end
+
+  def handle_event("admin_console_user_unban", params, socket) do
+    handle_user_moderation(socket, "unban", params)
+  end
+
+  def handle_event("admin_console_user_kick", params, socket) do
+    handle_user_moderation(socket, "kick", params)
+  end
+
+  def handle_event("admin_console_user_mute", params, socket) do
+    handle_user_moderation(socket, "mute", params)
+  end
+
+  def handle_event("admin_console_user_unmute", params, socket) do
+    handle_user_moderation(socket, "unmute", params)
+  end
+
   def handle_event("admin_console_refresh_channels", params, socket) do
     if admin?(socket) do
       {:halt, assign_channels_snapshot(socket, params, nil)}
@@ -531,6 +551,49 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   defp audit_log_args(last, ""), do: ["log", "--last", last]
   defp audit_log_args(last, user), do: ["log", "--last", last, "--user", user]
 
+  defp handle_user_moderation(socket, action, params) do
+    if admin?(socket) do
+      result = user_moderation_result(socket, action, params)
+      {:halt, assign_users_snapshot(socket, %{}, result)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  defp user_moderation_result(socket, action, params) do
+    nick = params |> Map.get("nick", "") |> normalize_user_moderation_value()
+
+    if nick == "" do
+      %{status: :error, message: dgettext("chat", "Enter a nick for this action.")}
+    else
+      "admin"
+      |> Dispatcher.dispatch(user_moderation_args(action, nick, params), user_context(socket))
+      |> result_entry()
+    end
+  end
+
+  defp user_moderation_args("ban", nick, params) do
+    ["user", "ban", nick]
+    |> Kernel.++(user_reason_args(params))
+    |> Kernel.++(user_duration_args(params))
+  end
+
+  defp user_moderation_args("kick", nick, params) do
+    ["user", "kick", nick] ++ user_reason_args(params)
+  end
+
+  defp user_moderation_args("mute", nick, params) do
+    ["user", "mute", nick] ++ user_duration_args(params)
+  end
+
+  defp user_moderation_args(action, nick, _params) when action in ~w(unban unmute) do
+    ["user", action, nick]
+  end
+
   defp users_list_args(search, online_only) do
     ["user", "list"]
     |> Kernel.++(users_search_args(search))
@@ -620,6 +683,12 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     |> String.trim()
   end
 
+  defp normalize_user_moderation_value(value) do
+    value
+    |> to_string()
+    |> String.trim()
+  end
+
   defp normalize_channels_value(value) do
     value
     |> to_string()
@@ -627,6 +696,26 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   end
 
   defp truthy_param?(value), do: value in [true, "true", "on", "1", 1]
+
+  defp user_reason_args(params) do
+    params
+    |> Map.get("reason", "")
+    |> normalize_user_moderation_value()
+    |> case do
+      "" -> []
+      reason -> ["--reason", reason]
+    end
+  end
+
+  defp user_duration_args(params) do
+    params
+    |> Map.get("duration", "")
+    |> normalize_user_moderation_value()
+    |> case do
+      "" -> []
+      duration -> ["--duration", duration]
+    end
+  end
 
   defp audit_log_result_entry(result) do
     if result_status(result) == :error, do: result_entry(result), else: nil
