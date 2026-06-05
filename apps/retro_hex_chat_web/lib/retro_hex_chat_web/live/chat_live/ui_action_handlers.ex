@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActionHandlers do
   )a
 
   @scripting_actions ~w(
-    open_custom_menus_dialog open_autorespond_dialog
+    open_custom_menus_dialog open_autorespond_dialog open_timers_dialog
     autorespond_added autorespond_removed autorespond_list_display
     timer_create timer_stop timer_list
   )a

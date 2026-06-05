@@ -746,6 +746,27 @@
   on_close="close_autorespond_dialog"
 />
 
+<.timers_dialog
+  id="timers-dialog"
+  show={@show_timers_dialog}
+  timers={@user_timers}
+  selected_timer={@timers_dialog_selected}
+  editing={@timers_dialog_editing}
+  draft_name={@timers_dialog_draft_name}
+  draft_repeat={@timers_dialog_draft_repeat}
+  draft_seconds={@timers_dialog_draft_seconds}
+  draft_command={@timers_dialog_draft_command}
+  error_message={@timers_dialog_error}
+  on_select="timers_select"
+  on_add="timers_dialog_add"
+  on_edit="timers_dialog_edit"
+  on_stop="timers_dialog_stop"
+  on_change="timers_dialog_change"
+  on_save="timers_dialog_save"
+  on_cancel_edit="timers_dialog_cancel_edit"
+  on_close="close_timers_dialog"
+/>
+
 <.channel_central_dialog
   id="channel-central-dialog"
   show={@show_channel_central}

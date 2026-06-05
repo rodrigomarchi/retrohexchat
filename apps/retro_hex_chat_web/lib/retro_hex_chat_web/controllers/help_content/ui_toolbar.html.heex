@@ -165,6 +165,12 @@
     )}
   </li>
   <li>
+    <strong>{dgettext("help_ui", "Timers")}</strong> {dgettext(
+      "help_ui",
+      "— Add, edit, and stop session-only scheduled commands."
+    )}
+  </li>
+  <li>
     <strong>{dgettext("help_ui", "Bot Management")}</strong> {dgettext(
       "help_ui",
       "— Open the admin-only dialog for creating bots, toggling bot status, assigning channels, and managing custom commands."
@@ -227,6 +233,9 @@
     <.help_link topic="feature-identity-presence">
       {dgettext("help_ui", "Identity & Presence")}
     </.help_link>
+  </li>
+  <li>
+    <.help_link topic="ui-timers-dialog">{dgettext("help_ui", "Timers Dialog")}</.help_link>
   </li>
   <li>
     <.help_link topic="ui-bot-management">

@@ -326,7 +326,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         id: "feature-aliases",
         title: dgettext("help", "Aliases"),
         category: dgettext("help", "Automation"),
-        keywords: ["alias", "aliases", "shortcut", "macro", "expansion", "scripting"],
+        keywords: [
+          "alias",
+          "aliases",
+          "shortcut",
+          "macro",
+          "expansion",
+          "scripting",
+          dgettext("help", "timers dialog")
+        ],
         icon: :icon_dialog_alias,
         description:
           dgettext(
@@ -338,8 +346,20 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         id: "feature-timers",
         title: dgettext("help", "Timers"),
         category: dgettext("help", "Automation"),
-        keywords: ["timer", "timers", "schedule", "delay", "repeat", "interval"],
-        icon: :icon_clock,
+        keywords: [
+          "timer",
+          "timers",
+          "schedule",
+          "delay",
+          "repeat",
+          "interval",
+          dgettext("help", "timers dialog"),
+          "open_timers_dialog",
+          dgettext("help", "tools menu"),
+          dgettext("help", "toolbar options"),
+          dgettext("help", "session-only")
+        ],
+        icon: :icon_btn_timers,
         description:
           dgettext(
             "help",
@@ -412,6 +432,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext("help", "auto greet"),
           "trigger",
           "event",
+          "timers",
           dgettext("help", "join greet"),
           "welcome"
         ],

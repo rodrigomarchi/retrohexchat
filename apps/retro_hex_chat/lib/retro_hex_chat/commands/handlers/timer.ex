@@ -13,17 +13,7 @@ defmodule RetroHexChat.Commands.Handlers.Timer do
   @impl true
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute([], _context) do
-    {:ok, :system,
-     %{
-       content:
-         dgettext("commands", "Usage: /timer <name> <seconds> <command> — one-shot timer\n") <>
-           dgettext(
-             "commands",
-             "       /timer <name> repeat <seconds> <command> — repeating timer\n"
-           ) <>
-           dgettext("commands", "       /timer list — show active timers\n") <>
-           dgettext("commands", "       /timer stop <name> — cancel a timer")
-     }}
+    {:ok, :ui_action, :open_timers_dialog, %{}}
   end
 
   def execute(args, _context) do

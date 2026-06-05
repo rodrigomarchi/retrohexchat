@@ -231,6 +231,12 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
             on_action={@on_action}
           />
           <.menu_item
+            icon_fn={:icon_btn_timers}
+            label={dgettext("ui", "Timers")}
+            action="open_timers_dialog"
+            on_action={@on_action}
+          />
+          <.menu_item
             :if={@is_admin}
             icon_fn={:icon_btn_bot_management}
             label={dgettext("ui", "Bot Management")}

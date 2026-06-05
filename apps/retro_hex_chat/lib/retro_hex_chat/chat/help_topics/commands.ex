@@ -22,7 +22,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-alias",
         title: "/alias",
         category: dgettext("help", "Automation"),
-        keywords: ["alias", "shortcut", "macro", "expansion", "abbreviation"],
+        keywords: [
+          "alias",
+          "shortcut",
+          "macro",
+          "expansion",
+          "abbreviation",
+          dgettext("help", "timers dialog")
+        ],
         icon: :icon_dialog_alias,
         description:
           dgettext("help", "Create custom command aliases that expand into one or more commands.")
@@ -49,7 +56,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-autorespond",
         title: "/autorespond",
         category: dgettext("help", "Automation"),
-        keywords: ["autorespond", "auto", "respond", "trigger", "event", "greet"],
+        keywords: ["autorespond", "auto", "respond", "trigger", "event", "greet", "timers"],
         icon: :icon_dialog_auto_respond,
         description:
           dgettext(
@@ -413,8 +420,20 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-timer",
         title: "/timer",
         category: dgettext("help", "Automation"),
-        keywords: ["timer", "schedule", "delay", "repeat", "interval", "cron"],
-        icon: :icon_clock,
+        keywords: [
+          "timer",
+          "timers",
+          "schedule",
+          "delay",
+          "repeat",
+          "interval",
+          "cron",
+          dgettext("help", "timers dialog"),
+          "open_timers_dialog",
+          dgettext("help", "tools menu"),
+          dgettext("help", "toolbar options")
+        ],
+        icon: :icon_btn_timers,
         description:
           dgettext("help", "Schedule commands to run after a delay or at regular intervals.")
       },

@@ -36,9 +36,8 @@ defmodule RetroHexChat.Commands.Handlers.TimerTest do
   end
 
   describe "execute/2" do
-    test "bare /timer shows help" do
-      assert {:ok, :system, %{content: content}} = Timer.execute([], @context)
-      assert content =~ "/timer"
+    test "bare /timer opens timers dialog" do
+      assert {:ok, :ui_action, :open_timers_dialog, %{}} = Timer.execute([], @context)
     end
 
     test "list returns timer_list ui_action" do

@@ -4,6 +4,13 @@
     "Schedule a command to run after a delay, optionally repeating at a regular interval. Useful for reminders, periodic announcements, and automated tasks."
   )}
 </p>
+<p>
+  {dgettext("help_commands", "Run")} <code>{dgettext("help_commands", "/timer")}</code>
+  {dgettext(
+    "help_commands",
+    "with no arguments to open the Timers dialog. You can also open it from Tools > Timers or toolbar Options > Timers."
+  )}
+</p>
 <.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
 <pre>{dgettext("help_commands", "/timer <name> <seconds> <command> /timer <name> repeat <seconds> <command> /timer list /timer stop <name>")}</pre>
 <.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
@@ -55,5 +62,9 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
 <p>
   <.help_link topic="feature-timers">{dgettext("help_commands", "Timers Feature")}</.help_link>
+  · <.help_link topic="ui-timers-dialog">{dgettext("help_commands", "Timers Dialog")}</.help_link>
+  · <.help_link topic="feature-aliases">{dgettext("help_commands", "Alias Editor")}</.help_link>
+  ·
+  <.help_link topic="feature-autorespond">{dgettext("help_commands", "Auto Respond")}</.help_link>
   · <.help_link topic="cmd-alias">{dgettext("help_commands", "/alias")}</.help_link>
 </p>

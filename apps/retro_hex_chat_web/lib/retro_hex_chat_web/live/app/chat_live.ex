@@ -76,6 +76,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.PasteConfirmDialog
   import RetroHexChatWeb.Components.UI.PerformDialog
   import RetroHexChatWeb.Components.UI.SoundSettingsDialog
+  import RetroHexChatWeb.Components.UI.TimersDialog
   import RetroHexChatWeb.Components.UI.UrlCatcher
   import RetroHexChatWeb.Components.UI.BotManagementDialog
   import RetroHexChatWeb.Components.UI.BotFormDialog
@@ -519,6 +520,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.AliasEvents.handle_event/3,
     &ChatLive.CustomMenusEvents.handle_event/3,
     &ChatLive.AutorespondEvents.handle_event/3,
+    &ChatLive.TimerEvents.handle_event/3,
     &ChatLive.HighlightEvents.handle_event/3,
     &ChatLive.SettingsDialogsEvents.handle_event/3,
     &ChatLive.AccountEvents.handle_event/3,
@@ -571,6 +573,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:alias_events, &ChatLive.AliasEvents.handle_event/3},
       {:custom_menus_events, &ChatLive.CustomMenusEvents.handle_event/3},
       {:autorespond_events, &ChatLive.AutorespondEvents.handle_event/3},
+      {:timer_events, &ChatLive.TimerEvents.handle_event/3},
       {:highlight_events, &ChatLive.HighlightEvents.handle_event/3},
       {:settings_dialogs_events, &ChatLive.SettingsDialogsEvents.handle_event/3},
       {:account_events, &ChatLive.AccountEvents.handle_event/3},
@@ -799,6 +802,14 @@ defmodule RetroHexChatWeb.App.ChatLive do
       autorespond_dialog_draft_channel: "",
       autorespond_dialog_draft_command: "",
       autorespond_dialog_error: nil,
+      show_timers_dialog: false,
+      timers_dialog_selected: nil,
+      timers_dialog_editing: false,
+      timers_dialog_draft_name: "",
+      timers_dialog_draft_repeat: false,
+      timers_dialog_draft_seconds: "",
+      timers_dialog_draft_command: "",
+      timers_dialog_error: nil,
       show_admin_console: false,
       admin_console_results: [],
       show_bot_dialog: false,

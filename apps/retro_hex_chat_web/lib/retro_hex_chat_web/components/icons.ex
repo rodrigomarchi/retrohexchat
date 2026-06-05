@@ -266,6 +266,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_btn_address_book(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_btn_alias_editor(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_btn_custom_menus(assigns), to: RetroHexChatWeb.Icons.Tools
+  defdelegate icon_btn_timers(assigns), to: RetroHexChatWeb.Icons.Tools
   defdelegate icon_btn_highlight_words(assigns), to: RetroHexChatWeb.Icons.Tools
 
   # ── Alerts ──────────────────────────────────────────────

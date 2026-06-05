@@ -12,6 +12,18 @@ defmodule RetroHexChat.Chat.TimerManager do
   @max_interval 86_400
   @name_pattern ~r/^[a-zA-Z0-9_-]+$/
 
+  @spec max_timers() :: pos_integer()
+  def max_timers, do: @max_timers
+
+  @spec min_once_interval() :: pos_integer()
+  def min_once_interval, do: @min_once_interval
+
+  @spec min_repeat_interval() :: pos_integer()
+  def min_repeat_interval, do: @min_repeat_interval
+
+  @spec max_interval() :: pos_integer()
+  def max_interval, do: @max_interval
+
   @spec parse_timer_args([String.t()]) :: {:ok, map()} | {:error, String.t()}
   def parse_timer_args([]) do
     {:error, dgettext("chat", "Usage: /timer <name> [repeat] <seconds> <command>")}
@@ -82,10 +94,11 @@ defmodule RetroHexChat.Chat.TimerManager do
 
   @spec validate_create(map(), String.t(), :once | :repeat, integer(), String.t()) ::
           :ok | {:error, String.t()}
-  def validate_create(timers, name, type, interval, _command) do
+  def validate_create(timers, name, type, interval, command) do
     with :ok <- validate_timer_name(name),
          :ok <- validate_timer_limit(timers, name),
-         :ok <- validate_timer_interval(type, interval) do
+         :ok <- validate_timer_interval(type, interval),
+         :ok <- validate_timer_command(command) do
       :ok
     end
   end
@@ -120,6 +133,14 @@ defmodule RetroHexChat.Chat.TimerManager do
   end
 
   defp validate_timer_interval(_type, _interval), do: :ok
+
+  defp validate_timer_command(command) do
+    if String.trim(command) == "" do
+      {:error, dgettext("chat", "Command is required")}
+    else
+      :ok
+    end
+  end
 
   @spec clamp_interval(:once | :repeat, integer()) :: {integer(), String.t() | nil}
   def clamp_interval(:repeat, interval) when interval < @min_repeat_interval do

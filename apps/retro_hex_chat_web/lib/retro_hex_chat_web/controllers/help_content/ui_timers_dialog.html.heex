@@ -1,0 +1,34 @@
+<p>
+  {dgettext(
+    "help_ui",
+    "The Timers dialog manages session-only scheduled commands. Open it from Tools > Timers, toolbar Options > Timers, or by typing /timer with no arguments."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_timers}>{dgettext("help_ui", "Timer List")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "The table shows each active timer name, interval, repeat mode, next fire estimate, and command. Select a row to edit or stop that timer."
+  )}
+</p>
+<.help_h4 icon={:icon_btn_add}>{dgettext("help_ui", "Adding and Editing")}</.help_h4>
+<p>
+  {dgettext(
+    "help_ui",
+    "Add creates a one-shot or repeating timer. Edit keeps the timer name fixed and recreates the same timer with the new seconds or command. Repeating timers require at least 10 seconds."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_ui", "Limits")}</.help_h4>
+<ul>
+  <li>{dgettext("help_ui", "Maximum 5 active timers per session")}</li>
+  <li>{dgettext("help_ui", "One-shot timers: 1 to 86,400 seconds")}</li>
+  <li>{dgettext("help_ui", "Repeating timers: 10 to 86,400 seconds")}</li>
+  <li>{dgettext("help_ui", "Timers are lost on disconnect or page reload")}</li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-timer">{dgettext("help_ui", "/timer Command")}</.help_link>
+  · <.help_link topic="feature-timers">{dgettext("help_ui", "Timers")}</.help_link>
+  · <.help_link topic="feature-aliases">{dgettext("help_ui", "Alias Editor")}</.help_link>
+  · <.help_link topic="feature-autorespond">{dgettext("help_ui", "Auto Respond")}</.help_link>
+</p>

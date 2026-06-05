@@ -22,7 +22,7 @@ iterations — read it before starting, write to it before stopping.
 | 05 | Channel Moderation | P1 | ✅ | — | 2026-06-04 | Complete: status-aware context items, channel mute/unmute, duration prompt |
 | 06 | Channel Membership | P1 | ✅ | — | 2026-06-04 | Complete: nicklist send-invite picker + Channel List knock request UI |
 | 07 | Messaging | P2 | ⬜ | — | — | /me action toggle + send-notice |
-| 08 | Scripting & Customization | P2 | ⬜ | — | — | New Timers dialog |
+| 08 | Scripting & Customization | P2 | ✅ | — | 2026-06-05 | Complete: Timers dialog, entry points, and bare /timer launcher |
 | 09 | Channel Configuration | P2 | ⬜ | — | — | Extend Channel Central (slow/transfer/welcome) |
 | 10 | User Lookups | P3 | ⬜ | — | — | Whowas lookup + whois result card |
 | 11 | ChanServ | P3 | ⬜ | — | — | Channel Central registration/access tab |
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-05 — Feature 08: `Scripting & Customization`
+- **Did:** added the Timers dialog with active-timer table, Add/Edit/Stop controls, repeat-min validation, max-5 state, session-only note, and static Next Fire display; wired Tools menu and toolbar Options entry points with `icon_btn_timers`; changed bare `/timer` to open the dialog; reused result-returning timer helpers for typed commands and dialog events.
+- **Tests:** added `TimersDialogFeatureTest` covering menu/toolbar order, bare `/timer` launcher, component empty/row/max/repeat-warning states, Add/Edit/Stop LiveView flow, and help topic discovery; updated `TimerTest` for bare `/timer`. Red phase: `make ci.quick` failed on the new expectations, then passed after implementation. `mix audit.styles` exited 0 with 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated `/timer`, Timers, Auto Respond, Toolbar, UI overview, and HelpTopics metadata/cross-references; added `ui-timers-dialog`. Existing `cmd-timer` and `feature-timers` topic IDs were updated instead of creating duplicate timer topics.
+- **Follow-ups:** none.
 
 ### 2026-06-04 — Feature 06: `Channel Membership`
 - **Did:** added op-only `Invite to Channel...` to the nicklist context menu; added reusable Invite Channel Picker and Knock Request dialogs; extended Channel List rows with `+i` badges and Request Access behavior; carried `joined?`, `invite_only?`, and mode data through visible channel discovery; added result-returning invite/knock helpers so dialogs close on success and keep errors inline on failure.
@@ -102,6 +108,8 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 > _(template)_
 > - **[Feature NN] <lesson>** — why it matters / how to apply next time.
 
+- **[Feature 08] Timer dialogs should reuse scheduling helpers** — typed `/timer` commands and dialog saves both need to cancel old refs, clamp intervals, assign target windows, and emit system messages; keep that lifecycle in shared helpers and let events only manage dialog assigns.
+- **[Feature 08] Existing timer help IDs already cover command and feature docs** — the spec asked for a Timers command topic, but this help system already has `cmd-timer` and `feature-timers`; add the new UI-specific `ui-timers-dialog` topic and update cross-references rather than duplicating command metadata.
 - **[Feature 06] Channel List needs mode metadata, not just display fields** — `Autocomplete.list_visible_channels/1` originally returned only name/topic/user count; UI affordances for restricted channels need `joined?`, `invite_only?`, and modes preserved through filtering.
 - **[Feature 06] Dialog-backed UI actions need result-returning helpers** — socket-only `handle_ui_action/3` is fine for typed commands, but dialogs need `{:ok, socket}` / `{:error, socket, message}` to close on success and render inline errors without duplicating server validation.
 - **[Feature 06] Help spec topic keys can map to existing IDs** — Feature 06 requested `invite_send`, `invite_receive`, and `channel_list`, while this help system already models them as `cmd-invite`, `feature-channel-invites`, and `cmd-list`; update the existing topics and record the mapping.

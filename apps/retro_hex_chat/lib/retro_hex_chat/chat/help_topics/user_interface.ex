@@ -122,7 +122,18 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
         id: "ui-toolbar",
         title: dgettext("help", "Toolbar"),
         category: dgettext("help", "User Interface"),
-        keywords: ["toolbar", "buttons", "icons", "tools", "menu", "edit", "notify", "bots"],
+        keywords: [
+          "toolbar",
+          "buttons",
+          "icons",
+          "tools",
+          "menu",
+          "edit",
+          "notify",
+          "bots",
+          "timers",
+          dgettext("help", "toolbar options")
+        ],
         icon: :icon_group_tools,
         description:
           dgettext(
@@ -176,6 +187,26 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           dgettext(
             "help",
             "Manage nickname registration, profile bio, away status, and user modes from the Account dialog."
+          )
+      },
+      %{
+        id: "ui-timers-dialog",
+        title: dgettext("help", "Timers Dialog"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "timers",
+          dgettext("help", "timers dialog"),
+          "open_timers_dialog",
+          dgettext("help", "Tools menu"),
+          dgettext("help", "toolbar options"),
+          "/timer",
+          dgettext("help", "session-only")
+        ],
+        icon: :icon_btn_timers,
+        description:
+          dgettext(
+            "help",
+            "Add, edit, and stop session-only scheduled commands from Tools > Timers."
           )
       },
       %{

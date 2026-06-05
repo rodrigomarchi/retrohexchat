@@ -24,6 +24,10 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
     assign(socket, show_autorespond_dialog: true)
   end
 
+  def handle_ui_action(socket, :open_timers_dialog, _payload) do
+    assign(socket, show_timers_dialog: true)
+  end
+
   def handle_ui_action(socket, :autorespond_added, %{
         trigger_event: trigger,
         channel_filter: channel,
@@ -91,6 +95,38 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
         interval: interval,
         command: command
       }) do
+    case create_timer(socket, name, type, interval, command) do
+      {:ok, socket} -> socket
+      {:error, socket, message} -> error_event(socket, message)
+    end
+  end
+
+  def handle_ui_action(socket, :timer_stop, %{name: name}) do
+    case stop_timer(socket, name) do
+      {:ok, socket} -> socket
+      {:error, socket, message} -> error_event(socket, message)
+    end
+  end
+
+  def handle_ui_action(socket, :timer_list, _payload) do
+    text = TimerManager.format_timer_list(socket.assigns.user_timers)
+
+    text
+    |> String.split("\n")
+    |> Enum.reduce(socket, fn line, acc ->
+      system_event(acc, line)
+    end)
+  end
+
+  @spec create_timer(
+          Phoenix.LiveView.Socket.t(),
+          String.t(),
+          :once | :repeat,
+          integer(),
+          String.t()
+        ) ::
+          {:ok, Phoenix.LiveView.Socket.t()} | {:error, Phoenix.LiveView.Socket.t(), String.t()}
+  def create_timer(socket, name, type, interval, command) do
     timers = socket.assigns.user_timers
     session = socket.assigns.session
 
@@ -140,13 +176,16 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
             command: command
           )
         )
+        |> then(&{:ok, &1})
 
       {:error, msg} ->
-        error_event(socket, msg)
+        {:error, socket, msg}
     end
   end
 
-  def handle_ui_action(socket, :timer_stop, %{name: name}) do
+  @spec stop_timer(Phoenix.LiveView.Socket.t(), String.t()) ::
+          {:ok, Phoenix.LiveView.Socket.t()} | {:error, Phoenix.LiveView.Socket.t(), String.t()}
+  def stop_timer(socket, name) do
     timers = socket.assigns.user_timers
 
     case Map.get(timers, name) do
@@ -157,20 +196,11 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
         socket
         |> assign(user_timers: new_timers)
         |> system_event(dgettext("chat", "* Timer '%{name}' stopped", name: name))
+        |> then(&{:ok, &1})
 
       nil ->
-        error_event(socket, dgettext("chat", "Timer '%{name}' not found", name: name))
+        {:error, socket, dgettext("chat", "Timer '%{name}' not found", name: name)}
     end
-  end
-
-  def handle_ui_action(socket, :timer_list, _payload) do
-    text = TimerManager.format_timer_list(socket.assigns.user_timers)
-
-    text
-    |> String.split("\n")
-    |> Enum.reduce(socket, fn line, acc ->
-      system_event(acc, line)
-    end)
   end
 
   # Private helpers

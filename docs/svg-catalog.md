@@ -69,6 +69,7 @@ All SVGs extracted and organized in the SVG consolidation effort.
 | `icon_btn_address_book` | Notebook with lines **[DONE]** |
 | `icon_btn_alias_editor` | A= with pencil **[DONE]** |
 | `icon_btn_custom_menus` | Lines + arrow **[DONE]** |
+| `icon_btn_timers` | Stopwatch/clock hands **[DONE]** |
 | `icon_btn_highlight_words` | Marker/highlighter **[DONE]** |
 
 ### Security

@@ -466,6 +466,29 @@ defmodule RetroHexChatWeb.Icons.Tools do
     """
   end
 
+  # -- Toolbar: Timers --
+
+  attr :class, :string, default: nil
+
+  @spec icon_btn_timers(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_btn_timers(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="6" y="1" width="4" height="2" fill="#000080" />
+      <rect x="7" y="3" width="2" height="1" fill="#000080" />
+      <rect x="4" y="4" width="8" height="1" fill="#000" />
+      <rect x="3" y="5" width="10" height="1" fill="#000" />
+      <rect x="2" y="6" width="12" height="6" fill="#fff" />
+      <rect x="3" y="7" width="10" height="4" fill="#fff" />
+      <rect x="4" y="12" width="8" height="1" fill="#000" />
+      <rect x="5" y="13" width="6" height="1" fill="#000080" />
+      <rect x="7" y="6" width="2" height="4" fill="#000080" />
+      <rect x="8" y="9" width="4" height="2" fill="#000080" />
+      <rect x="8" y="8" width="1" height="1" fill="#FFD700" />
+    </svg>
+    """
+  end
+
   # -- Toolbar: Highlight Words --
 
   attr :class, :string, default: nil
