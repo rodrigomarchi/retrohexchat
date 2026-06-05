@@ -1168,6 +1168,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "admin",
           "console",
           "server settings",
+          "server settings tab",
           "users",
           "channels",
           "motd",

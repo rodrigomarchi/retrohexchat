@@ -12,9 +12,11 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.ServerRoles
+  alias RetroHexChat.Admin
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChat.Services.Motd
+  alias RetroHexChatWeb.ChatLive.CommandDispatch
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:cont | :halt, Phoenix.LiveView.Socket.t()}
@@ -29,7 +31,8 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
          admin_console_motd_result: nil,
          admin_console_broadcast_result: nil,
          admin_console_turn_result: nil,
-         admin_console_audit_log_result: nil
+         admin_console_audit_log_result: nil,
+         admin_console_server_settings_result: nil
        )}
     else
       {:halt,
@@ -50,6 +53,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
 
     socket =
       case tab do
+        "server_settings" -> assign_server_settings_snapshot(socket, nil)
         "motd" -> assign_motd_snapshot(socket, nil)
         "turn" -> assign_turn_snapshot(socket)
         "audit_log" -> assign_audit_log_snapshot(socket, %{})
@@ -142,6 +146,59 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   def handle_event("admin_console_refresh_audit_log", params, socket) do
     if admin?(socket) do
       {:halt, assign_audit_log_snapshot(socket, params)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_refresh_server_settings", _params, socket) do
+    if admin?(socket) do
+      {:halt, assign_server_settings_snapshot(socket, nil)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_save_server_settings", params, socket) do
+    if admin?(socket) do
+      current =
+        Map.get(
+          socket.assigns,
+          :admin_console_server_settings_values,
+          Admin.server_settings_values()
+        )
+
+      changes = Admin.server_setting_changes(current, server_settings_params(params))
+      result = save_server_settings(changes, socket)
+      {:halt, assign_server_settings_snapshot(socket, result)}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_start_singleplayer", _params, socket) do
+    if admin?(socket) do
+      {socket, result} =
+        CommandDispatch.dispatch_command_with_result(
+          socket,
+          socket.assigns.session,
+          "singleplayer",
+          []
+        )
+
+      {:halt, assign(socket, admin_console_server_settings_result: result_entry(result))}
     else
       {:halt,
        error_event(
@@ -247,6 +304,20 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     )
   end
 
+  defp assign_server_settings_snapshot(socket, result) do
+    context = user_context(socket)
+    info_result = Dispatcher.dispatch("admin", ["server", "info"], context)
+    settings_result = Dispatcher.dispatch("admin", ["server", "settings"], context)
+
+    assign(socket,
+      admin_console_server_settings_info: result_message(info_result),
+      admin_console_server_settings_text: result_message(settings_result),
+      admin_console_server_settings_values: Admin.server_settings_values(),
+      admin_console_server_settings_result:
+        result || first_error_entry([info_result, settings_result])
+    )
+  end
+
   defp turn_snapshot(socket) do
     context = user_context(socket)
     stats_result = Dispatcher.dispatch("admin", ["turn", "stats"], context)
@@ -277,6 +348,28 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
 
   defp audit_log_result_entry(result) do
     if result_status(result) == :error, do: result_entry(result), else: nil
+  end
+
+  defp server_settings_params(params) do
+    params
+    |> Map.take(Admin.server_setting_keys())
+    |> Map.new(fn {key, value} -> {key, to_string(value)} end)
+  end
+
+  defp save_server_settings([], _socket) do
+    %{status: :ok, message: dgettext("chat", "No server settings changed.")}
+  end
+
+  defp save_server_settings(changes, socket) do
+    results =
+      Enum.map(changes, fn {key, value} ->
+        Dispatcher.dispatch("admin", ["server", "set", key, value], user_context(socket))
+      end)
+
+    %{
+      status: if(Enum.any?(results, &(result_status(&1) == :error)), do: :error, else: :ok),
+      message: Enum.map_join(results, "\n", &result_message/1)
+    }
   end
 
   defp command_args(""), do: []

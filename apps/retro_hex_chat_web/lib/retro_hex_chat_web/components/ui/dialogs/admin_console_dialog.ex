@@ -31,6 +31,11 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :audit_log_user, :string, default: ""
   attr :audit_log_result, :any, default: nil
   attr :audit_log_can_refresh, :boolean, default: false
+  attr :server_settings_info, :string, default: nil
+  attr :server_settings_text, :string, default: nil
+  attr :server_settings_values, :map, default: %{}
+  attr :server_settings_result, :any, default: nil
+  attr :server_settings_can_edit, :boolean, default: false
   attr :on_tab, :any, default: nil
   attr :on_motd_set, :any, default: nil
   attr :on_motd_clear, :any, default: nil
@@ -38,6 +43,9 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_broadcast_send, :any, default: nil
   attr :on_turn_refresh, :any, default: nil
   attr :on_audit_log_refresh, :any, default: nil
+  attr :on_server_settings_save, :any, default: nil
+  attr :on_server_settings_refresh, :any, default: nil
+  attr :on_singleplayer, :any, default: nil
   attr :on_close, :any, default: nil
 
   @spec admin_console_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -170,6 +178,19 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 result={@audit_log_result}
                 can_refresh={@audit_log_can_refresh}
                 on_refresh={@on_audit_log_refresh}
+              />
+            </.tabs_content>
+
+            <.tabs_content value="server_settings" builder={builder}>
+              <.server_settings_tab
+                info={@server_settings_info}
+                settings_text={@server_settings_text}
+                values={@server_settings_values}
+                result={@server_settings_result}
+                can_edit={@server_settings_can_edit}
+                on_save={@on_server_settings_save}
+                on_refresh={@on_server_settings_refresh}
+                on_singleplayer={@on_singleplayer}
               />
             </.tabs_content>
 
@@ -505,6 +526,158 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
     """
   end
 
+  attr :info, :string, default: nil
+  attr :settings_text, :string, default: nil
+  attr :values, :map, default: %{}
+  attr :result, :any, default: nil
+  attr :can_edit, :boolean, default: false
+  attr :on_save, :any, default: nil
+  attr :on_refresh, :any, default: nil
+  attr :on_singleplayer, :any, default: nil
+
+  defp server_settings_tab(assigns) do
+    ~H"""
+    <div class="space-y-retro-8" data-testid="admin-console-tab-server-settings">
+      <form id="admin-console-server-settings-form" phx-submit={@on_save} class="space-y-retro-8">
+        <div class="grid gap-retro-6 md:grid-cols-2">
+          <.settings_input
+            id="admin-console-server-name"
+            name="server_name"
+            label={dgettext("dialogs", "Server name")}
+            value={setting_value(@values, "server_name")}
+            disabled={not @can_edit}
+          />
+          <.settings_input
+            id="admin-console-max-channels"
+            name="max_channels"
+            label={dgettext("dialogs", "Max channels")}
+            value={setting_value(@values, "max_channels")}
+            disabled={not @can_edit}
+            type="number"
+            min="1"
+          />
+          <.settings_input
+            id="admin-console-server-description"
+            name="server_description"
+            label={dgettext("dialogs", "Description")}
+            value={setting_value(@values, "server_description")}
+            disabled={not @can_edit}
+          />
+          <.settings_input
+            id="admin-console-welcome-message"
+            name="welcome_message"
+            label={dgettext("dialogs", "Welcome message")}
+            value={setting_value(@values, "welcome_message")}
+            disabled={not @can_edit}
+          />
+          <div>
+            <label for="admin-console-registration" class="block text-xs font-bold mb-retro-2">
+              {dgettext("dialogs", "Registration")}
+            </label>
+            <select
+              id="admin-console-registration"
+              name="registration"
+              class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+              disabled={not @can_edit}
+            >
+              <option value="open" selected={setting_value(@values, "registration") == "open"}>
+                {dgettext("dialogs", "open")}
+              </option>
+              <option value="closed" selected={setting_value(@values, "registration") == "closed"}>
+                {dgettext("dialogs", "closed")}
+              </option>
+            </select>
+          </div>
+          <.settings_input
+            id="admin-console-whowas-retention"
+            name="whowas_retention_seconds"
+            label={dgettext("dialogs", "Whowas retention")}
+            value={setting_value(@values, "whowas_retention_seconds")}
+            disabled={not @can_edit}
+            type="number"
+            min="1"
+            max="86400"
+          />
+        </div>
+
+        <div class="flex flex-wrap justify-end gap-retro-4">
+          <.button
+            type="button"
+            size="sm"
+            variant="outline"
+            phx-click={@on_singleplayer}
+            disabled={not @can_edit}
+          >
+            <:icon><Icons.icon_game_generic class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Start solo arcade (debug)")}
+          </.button>
+          <.button
+            type="button"
+            size="sm"
+            variant="outline"
+            phx-click={@on_refresh}
+            disabled={not @can_edit}
+          >
+            <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Refresh")}
+          </.button>
+          <.button type="submit" size="sm" disabled={not @can_edit}>
+            <:icon><Icons.icon_btn_save class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Save settings")}
+          </.button>
+        </div>
+      </form>
+
+      <div class="grid gap-retro-8 md:grid-cols-2">
+        <div>
+          <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Info")}</div>
+          <pre
+            id="admin-console-server-info"
+            class="shadow-retro-sunken bg-white min-h-[120px] max-h-[180px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
+          ><%= @info || "" %></pre>
+        </div>
+        <div>
+          <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Settings")}</div>
+          <pre
+            id="admin-console-server-settings-output"
+            class="shadow-retro-sunken bg-white min-h-[120px] max-h-[180px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
+          ><%= @settings_text || "" %></pre>
+        </div>
+      </div>
+
+      <.admin_inline_result result={@result} />
+    </div>
+    """
+  end
+
+  attr :id, :string, required: true
+  attr :name, :string, required: true
+  attr :label, :string, required: true
+  attr :value, :string, default: ""
+  attr :disabled, :boolean, default: false
+  attr :type, :string, default: "text"
+  attr :min, :string, default: nil
+  attr :max, :string, default: nil
+
+  defp settings_input(assigns) do
+    ~H"""
+    <div>
+      <label for={@id} class="block text-xs font-bold mb-retro-2">{@label}</label>
+      <input
+        id={@id}
+        name={@name}
+        type={@type}
+        min={@min}
+        max={@max}
+        value={@value}
+        disabled={@disabled}
+        autocomplete="off"
+        class="w-full shadow-retro-sunken bg-white px-retro-4 py-retro-2 text-sm"
+      />
+    </div>
+    """
+  end
+
   attr :result, :any, default: nil
 
   defp admin_inline_result(assigns) do
@@ -524,8 +697,10 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
   defp present?(value), do: is_binary(value) and String.trim(value) != ""
 
+  defp setting_value(values, key), do: values |> Map.get(key, "") |> to_string()
+
   @spec admin_shell_tabs() :: [String.t()]
   defp admin_shell_tabs do
-    ~w(server_settings users channels danger_zone)
+    ~w(users channels danger_zone)
   end
 end

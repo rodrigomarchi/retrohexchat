@@ -541,7 +541,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           dgettext(
             "help",
             "View server information and manage server settings (name, description, registration, limits)."
-          )
+          ),
+        see_also: ["feature-admin-console", "cmd-singleplayer"]
       },
       %{
         id: "cmd-admin-user",

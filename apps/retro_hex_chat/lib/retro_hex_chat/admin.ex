@@ -333,6 +333,35 @@ defmodule RetroHexChat.Admin do
 
   # ── Server Settings ─────────────────────────────────────────
 
+  @server_setting_defaults %{
+    "server_name" => "RetroHexChat",
+    "server_description" => "",
+    "welcome_message" => "",
+    "max_channels" => "10",
+    "registration" => "open",
+    "whowas_retention_seconds" => "3600"
+  }
+
+  @server_setting_keys ~w(server_name server_description welcome_message max_channels registration whowas_retention_seconds)
+
+  @spec server_setting_keys() :: [String.t()]
+  def server_setting_keys, do: @server_setting_keys
+
+  @spec server_settings_values() :: %{String.t() => String.t()}
+  def server_settings_values do
+    Map.new(@server_setting_keys, fn key ->
+      {key, Queries.get_setting(key) || Map.fetch!(@server_setting_defaults, key)}
+    end)
+  end
+
+  @spec server_setting_changes(map(), map()) :: [{String.t(), String.t()}]
+  def server_setting_changes(current, submitted) do
+    @server_setting_keys
+    |> Enum.filter(&Map.has_key?(submitted, &1))
+    |> Enum.map(fn key -> {key, submitted |> Map.get(key, "") |> to_string()} end)
+    |> Enum.reject(fn {key, value} -> value == Map.get(current, key, "") end)
+  end
+
   @spec set_setting(String.t(), String.t(), String.t()) ::
           {:ok, String.t()} | {:error, String.t()}
   def set_setting(key, value, admin) do

@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
   alias RetroHexChat.Admin.AuditLogs
   alias RetroHexChat.Chat.HelpTopics
+  alias RetroHexChat.Services.Queries
   alias RetroHexChatWeb.Components.UI.{AdminConsoleDialog, MenuBarApp}
 
   setup do
@@ -62,6 +63,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert "ui-message-of-the-day" in cmd_motd.see_also
       assert "ui-message-of-the-day" in special_messages.see_also
       assert "server settings" in admin_console.keywords
+      assert "server settings tab" in admin_console.keywords
       assert "motd tab" in admin_console.keywords
       assert "turn tab" in admin_console.keywords
       assert "audit log tab" in admin_console.keywords
@@ -121,6 +123,89 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ "Danger Zone"
       assert html =~ "Console"
       assert html =~ ~s(id="admin-console-input")
+    end
+  end
+
+  describe "Admin Console Server Settings tab" do
+    test "component renders editable settings, info/settings output, and command controls" do
+      document =
+        render_component(&AdminConsoleDialog.admin_console_dialog/1,
+          id: "admin-console-dialog",
+          show: true,
+          active_tab: "server_settings",
+          results: [],
+          server_settings_info: "*** RetroHexChat ***",
+          server_settings_text: "*** Server Settings ***",
+          server_settings_values: %{
+            "server_name" => "RetroHexChat",
+            "server_description" => "A test server",
+            "welcome_message" => "Welcome",
+            "max_channels" => "10",
+            "registration" => "open",
+            "whowas_retention_seconds" => "3600"
+          },
+          server_settings_result: nil,
+          server_settings_can_edit: true,
+          on_tab: "admin_console_tab",
+          on_server_settings_save: "admin_console_save_server_settings",
+          on_server_settings_refresh: "admin_console_refresh_server_settings",
+          on_singleplayer: "admin_console_start_singleplayer",
+          on_close: "close_admin_console"
+        )
+        |> Floki.parse_document!()
+
+      html = Floki.raw_html(document)
+
+      assert html =~ ~s(data-testid="admin-console-tab-server-settings")
+      assert html =~ ~s(id="admin-console-server-settings-form")
+      assert html =~ ~s(phx-submit="admin_console_save_server_settings")
+      assert html =~ ~s(name="server_name")
+      assert html =~ ~s(name="server_description")
+      assert html =~ ~s(name="welcome_message")
+      assert html =~ ~s(name="max_channels")
+      assert html =~ ~s(name="registration")
+      assert html =~ ~s(name="whowas_retention_seconds")
+      assert html =~ ~s(id="admin-console-server-info")
+      assert html =~ "*** RetroHexChat ***"
+      assert html =~ ~s(id="admin-console-server-settings-output")
+      assert html =~ "*** Server Settings ***"
+      assert html =~ "Save settings"
+      assert html =~ "Start solo arcade"
+      assert html =~ "Refresh"
+    end
+
+    test "admin can save server settings through the structured tab", %{conn: conn} do
+      original_description = Queries.get_setting("server_description")
+      initial_description = "server-settings-initial-#{uid()}"
+      new_description = "server-settings-updated-#{uid()}"
+
+      Queries.upsert_setting("server_description", initial_description, "TestSeed")
+
+      on_exit(fn ->
+        if original_description do
+          Queries.upsert_setting("server_description", original_description, "TestSeed")
+        else
+          Queries.delete_setting("server_description")
+        end
+      end)
+
+      view = connect_admin(conn)
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      html = render_click(view, "admin_console_tab", %{"tab" => "server_settings"})
+
+      assert html =~ initial_description
+
+      html =
+        view
+        |> form("#admin-console-server-settings-form", %{
+          "server_description" => new_description
+        })
+        |> render_submit()
+
+      assert html =~ "Server setting &#39;server_description&#39; set to"
+      assert html =~ new_description
+      assert Queries.get_setting("server_description") == new_description
     end
   end
 
