@@ -43,6 +43,12 @@ Newest first. One entry per completed unit of work.
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
 
+### 2026-06-05 — UI Features: `Browser E2E regression coverage`
+- **Did:** added shared E2E user helpers, expanded the ChatPage page object for the new dialogs/menu entries, and added three browser specs covering the implemented UI surfaces for Features 01-12: shell/account/tools flows, channel/moderation/configuration flows, and Admin Console safe-path flows.
+- **Tests:** `MIX_ENV=e2e mix assets.build` passed; `cd e2e && npx tsc --noEmit` passed; `cd e2e && npx playwright test tests/chat-ui-features-shell.spec.ts tests/chat-ui-features-channel.spec.ts tests/chat-ui-features-admin.spec.ts` passed (11/11). Full `make ci` was not run because this unit only changes E2E coverage/page objects/docs.
+- **Help docs:** no help-topic changes; this was regression coverage for already implemented UI features.
+- **Follow-ups:** none.
+
 ### 2026-06-05 — Feature 12: `Server Administration` Admin Console ChanServ actions complete
 - **Did:** added Channels tab ChanServ admin forms for `/admin cs info`, `drop`, `transfer`, `access`, `access add`, and `access del`; drop registration requires typing the channel name to confirm, and all actions dispatch through the real admin command handlers.
 - **Tests:** expanded `ServerAdministrationFeatureTest` with component coverage for ChanServ controls and LiveView coverage for info, access add/list/del, founder transfer, and confirmed registration drop using a real registered channel. Red phase: `make ci.quick` failed on the missing ChanServ forms/events, then passed after implementation. `mix audit.styles` reported 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).

@@ -13,7 +13,8 @@ type ChannelCentralTab =
   | 'modes'
   | 'bans'
   | 'ban_exceptions'
-  | 'invite_exceptions';
+  | 'invite_exceptions'
+  | 'registration';
 
 type ChannelCentralModeLabel =
   | 'Moderated (+m)'
@@ -32,11 +33,19 @@ export class ChatPage {
   readonly page: Page;
   readonly menuBar: Locator;
   readonly fileMenuTrigger: Locator;
+  readonly editMenuTrigger: Locator;
   readonly viewMenuTrigger: Locator;
   readonly helpMenuTrigger: Locator;
   readonly toolsMenuTrigger: Locator;
   readonly disconnectMenuItem: Locator;
   readonly adminConsoleMenuItem: Locator;
+  readonly accountRegisterMenuItem: Locator;
+  readonly accountIdentifyMenuItem: Locator;
+  readonly accountProfileMenuItem: Locator;
+  readonly accountPresenceMenuItem: Locator;
+  readonly accountInfoMenuItem: Locator;
+  readonly clearWindowMenuItem: Locator;
+  readonly copySelectionMenuItem: Locator;
   readonly channelListMenuItem: Locator;
   readonly toggleConversationsMenuItem: Locator;
   readonly toggleNicklistMenuItem: Locator;
@@ -54,7 +63,11 @@ export class ChatPage {
   readonly floodProtectionMenuItem: Locator;
   readonly customMenusMenuItem: Locator;
   readonly autorespondMenuItem: Locator;
+  readonly timersMenuItem: Locator;
   readonly urlCatcherMenuItem: Locator;
+  readonly userLookupMenuItem: Locator;
+  readonly botManagementMenuItem: Locator;
+  readonly messageOfTheDayMenuItem: Locator;
   readonly disconnectConfirmDialog: Locator;
   readonly disconnectConfirmButton: Locator;
   readonly kickDialogOkButton: Locator;
@@ -63,6 +76,8 @@ export class ChatPage {
   readonly charCounter: Locator;
   readonly appLogo: Locator;
   readonly statusBarApp: Locator;
+  readonly statusBarAccountWidget: Locator;
+  readonly statusBarAwayToggle: Locator;
   readonly statusBarMuteToggle: Locator;
   readonly statusBarNotifyBadge: Locator;
   readonly connectionStatusHook: Locator;
@@ -166,6 +181,23 @@ export class ChatPage {
   readonly soundSettingsDialog: Locator;
   readonly autorespondDialog: Locator;
   readonly autorespondEditForm: Locator;
+  readonly accountDialog: Locator;
+  readonly accountPasswordInput: Locator;
+  readonly accountConfirmInput: Locator;
+  readonly accountDropPasswordInput: Locator;
+  readonly accountNewNickInput: Locator;
+  readonly accountBioInput: Locator;
+  readonly accountAwayMessageInput: Locator;
+  readonly accountGhostNicknameInput: Locator;
+  readonly accountGhostPasswordInput: Locator;
+  readonly timersDialog: Locator;
+  readonly timersEditForm: Locator;
+  readonly userLookupDialog: Locator;
+  readonly lookupResultDialog: Locator;
+  readonly lookupResultCard: Locator;
+  readonly inviteChannelPickerDialog: Locator;
+  readonly knockRequestDialog: Locator;
+  readonly muteDurationDialog: Locator;
   readonly botManagementDialog: Locator;
   readonly adminConsoleDialog: Locator;
   readonly adminConsoleInput: Locator;
@@ -197,6 +229,8 @@ export class ChatPage {
     this.charCounter = page.getByTestId('char-counter');
     this.appLogo = page.getByTestId('app-logo');
     this.statusBarApp = page.getByTestId('status-bar-app');
+    this.statusBarAccountWidget = page.getByTestId('status-bar-account-widget');
+    this.statusBarAwayToggle = page.getByTestId('status-bar-away-toggle');
     this.statusBarMuteToggle = page.getByTestId('status-bar-mute-toggle');
     this.statusBarNotifyBadge = page.getByTestId('status-bar-notify-badge');
     this.connectionStatusHook = page.getByTestId('connection-status-hook');
@@ -231,6 +265,9 @@ export class ChatPage {
     this.fileMenuTrigger = page
       .locator('button[data-menubar-trigger]')
       .filter({ hasText: 'File' });
+    this.editMenuTrigger = page
+      .locator('button[data-menubar-trigger]')
+      .filter({ hasText: 'Edit' });
     this.viewMenuTrigger = page
       .locator('button[data-menubar-trigger]')
       .filter({ hasText: 'View' });
@@ -244,6 +281,25 @@ export class ChatPage {
     this.disconnectMenuItem = page.getByTestId('context-menu-item-disconnect');
     this.adminConsoleMenuItem = page.getByTestId(
       'context-menu-item-open_admin_console',
+    );
+    this.accountRegisterMenuItem = page.getByTestId(
+      'context-menu-item-open_account_register',
+    );
+    this.accountIdentifyMenuItem = page.getByTestId(
+      'context-menu-item-open_account_identify',
+    );
+    this.accountProfileMenuItem = page.getByTestId(
+      'context-menu-item-open_account_profile',
+    );
+    this.accountPresenceMenuItem = page.getByTestId(
+      'context-menu-item-open_account_presence',
+    );
+    this.accountInfoMenuItem = page.getByTestId('context-menu-item-account_info');
+    this.clearWindowMenuItem = page.getByTestId(
+      'context-menu-item-clear_window',
+    );
+    this.copySelectionMenuItem = page.getByTestId(
+      'context-menu-item-copy_selection',
     );
     this.channelListMenuItem = page.getByTestId(
       'context-menu-item-toggle_channel_list',
@@ -292,8 +348,20 @@ export class ChatPage {
     this.autorespondMenuItem = page.getByTestId(
       'context-menu-item-open_autorespond_dialog',
     );
+    this.timersMenuItem = page.getByTestId(
+      'context-menu-item-open_timers_dialog',
+    );
     this.urlCatcherMenuItem = page.getByTestId(
       'context-menu-item-toggle_url_catcher',
+    );
+    this.userLookupMenuItem = page.getByTestId(
+      'context-menu-item-open_user_lookup',
+    );
+    this.botManagementMenuItem = page.getByTestId(
+      'context-menu-item-open_bot_dialog',
+    );
+    this.messageOfTheDayMenuItem = page.getByTestId(
+      'context-menu-item-show_motd',
     );
     this.inlineHelp = page.getByTestId('inline-help');
     this.syntaxTooltip = page.getByTestId('syntax-tooltip');
@@ -450,6 +518,31 @@ export class ChatPage {
       '#autorespond-dialog [role="dialog"]',
     );
     this.autorespondEditForm = this.autorespondDialog.locator('form');
+    this.accountDialog = page.locator('#account-dialog [role="dialog"]');
+    this.accountPasswordInput = page.getByTestId('account-password');
+    this.accountConfirmInput = page.getByTestId('account-confirm');
+    this.accountDropPasswordInput = page.getByTestId('account-drop-password');
+    this.accountNewNickInput = page.getByTestId('account-new-nick');
+    this.accountBioInput = page.getByTestId('account-bio');
+    this.accountAwayMessageInput = page.getByTestId('account-away-message');
+    this.accountGhostNicknameInput = page.getByTestId('account-ghost-nickname');
+    this.accountGhostPasswordInput = page.getByTestId('account-ghost-password');
+    this.timersDialog = page.locator('#timers-dialog [role="dialog"]');
+    this.timersEditForm = page.getByTestId('timers-edit-form');
+    this.userLookupDialog = page.locator('#user-lookup-dialog [role="dialog"]');
+    this.lookupResultDialog = page.locator(
+      '#lookup-result-dialog [role="dialog"]',
+    );
+    this.lookupResultCard = page.getByTestId('lookup-result-card');
+    this.inviteChannelPickerDialog = page.locator(
+      '#invite-channel-picker-dialog [role="dialog"]',
+    );
+    this.knockRequestDialog = page.locator(
+      '#knock-request-dialog [role="dialog"]',
+    );
+    this.muteDurationDialog = page.locator(
+      '#mute-duration-dialog [role="dialog"]',
+    );
     this.botManagementDialog = page.locator(
       '#bot-management-dialog [role="dialog"]',
     );
@@ -552,6 +645,13 @@ export class ChatPage {
 
   async openSearchFromViewMenu() {
     await this.viewMenuTrigger.click();
+    await expect(this.findMenuItem).toBeVisible();
+    await this.findMenuItem.click();
+    await expect(this.searchBar).toBeVisible();
+  }
+
+  async openSearchFromEditMenu() {
+    await this.editMenuTrigger.click();
     await expect(this.findMenuItem).toBeVisible();
     await this.findMenuItem.click();
     await expect(this.searchBar).toBeVisible();
@@ -1010,6 +1110,20 @@ export class ChatPage {
     await expect(this.adminConsoleDialog).toBeVisible();
   }
 
+  async openAccountRegisterFromMenu() {
+    await this.openFileMenu();
+    await expect(this.accountRegisterMenuItem).toBeVisible();
+    await this.accountRegisterMenuItem.click();
+    await expect(this.accountDialog).toBeVisible();
+  }
+
+  async openAccountProfileFromMenu() {
+    await this.openFileMenu();
+    await expect(this.accountProfileMenuItem).toBeVisible();
+    await this.accountProfileMenuItem.click();
+    await expect(this.accountDialog).toBeVisible();
+  }
+
   async openNewBotDialog() {
     await expect(this.botManagementDialog).toBeVisible();
     await this.newBotButton.click();
@@ -1033,6 +1147,12 @@ export class ChatPage {
     await expect(this.helpContentPane).toBeVisible();
   }
 
+  async openMessageOfTheDayFromHelpMenu() {
+    await this.helpMenuTrigger.click();
+    await expect(this.messageOfTheDayMenuItem).toBeVisible();
+    await this.messageOfTheDayMenuItem.click();
+  }
+
   async openChannelCentralFromMenu() {
     await this.toolsMenuTrigger.click();
     await expect(this.channelCentralMenuItem).toBeVisible();
@@ -1041,8 +1161,48 @@ export class ChatPage {
   }
 
   async switchChannelCentralToTab(tab: ChannelCentralTab) {
-    await this.channelCentralDialog.locator(`button[data-target="${tab}"]`).click();
+    await this.channelCentralDialog
+      .locator(`button[data-target="${tab}"], button[phx-value-tab="${tab}"]`)
+      .click();
     await expect(this.channelCentralPanel(tab)).toBeVisible();
+  }
+
+  async openUserLookupFromToolsMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.userLookupMenuItem).toBeVisible();
+    await this.userLookupMenuItem.click();
+    await expect(this.userLookupDialog).toBeVisible();
+  }
+
+  async openTimersFromToolsMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.timersMenuItem).toBeVisible();
+    await this.timersMenuItem.click();
+    await expect(this.timersDialog).toBeVisible();
+  }
+
+  async openBotManagementFromToolsMenu() {
+    await this.toolsMenuTrigger.click();
+    await expect(this.botManagementMenuItem).toBeVisible();
+    await this.botManagementMenuItem.click();
+    await expect(this.botManagementDialog).toBeVisible();
+  }
+
+  async switchAdminConsoleToTab(tab: string) {
+    await this.adminConsoleDialog.evaluate((dialog) => {
+      dialog.scrollTop = 0;
+    });
+    const trigger = this.adminConsoleDialog.locator(
+      `button.tabs-trigger[phx-value-tab="${tab}"]`,
+    );
+    await trigger.scrollIntoViewIfNeeded();
+    await trigger.dispatchEvent('click');
+    if (tab === 'console') {
+      await expect(this.adminConsoleOutput).toBeVisible();
+      return;
+    }
+    const contentTestId = `admin-console-tab-${tab.replaceAll('_', '-')}`;
+    await expect(this.page.getByTestId(contentTestId)).toBeVisible();
   }
 
   async setChannelCentralInviteOnly(enabled: boolean) {

@@ -2,17 +2,33 @@
 
 Single source of truth for the browser-level Playwright suite.
 
-**Last reviewed:** 2026-05-30
+**Last reviewed:** 2026-06-05
 
 ## Current Coverage
 
-- **195 spec files** under `e2e/tests/`.
-- **325 Playwright `test()` cases**.
+- **201 spec files** under `e2e/tests/`.
+- **345 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 277 mapped flows, 276 done, 1 intentionally blocked.
+- **Chat extended coverage:** 303 mapped flows, 302 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
+
+## UI Features Browser Regression
+
+| # | Flow | Spec file | Features | Status |
+|---|------|-----------|----------|--------|
+| UI1 | Account dialog covers drop/re-register, profile bio, presence away state, wallops user mode, and Whois bio output | `tests/chat-ui-features-shell.spec.ts` | 01, 10 | done |
+| UI2 | Notify List opens from View; Bot Management is hidden from regular users and opens for admin users | `tests/chat-ui-features-shell.spec.ts` | 02, 03 | done |
+| UI3 | Edit menu preserves Clear/Copy/Find behavior through menu entry points | `tests/chat-ui-features-shell.spec.ts` | 04 | done |
+| UI4 | Action toggle and Send Notice composer send through the real chat input | `tests/chat-ui-features-shell.spec.ts` | 07 | done |
+| UI5 | Timers dialog opens from Tools and bare `/timer`, validates repeat intervals, saves once timers, and stops timers | `tests/chat-ui-features-shell.spec.ts` | 08 | done |
+| UI6 | User Lookup dialog and result cards cover Whois, Query, and Whowas flows | `tests/chat-ui-features-shell.spec.ts` | 10 | done |
+| UI7 | Channel nick context menu performs voice/devoice/op/deop/mute/unmute and blocks/restores target sends | `tests/chat-ui-features-channel.spec.ts` | 05 | done |
+| UI8 | Invite picker invites from a joined channel; Channel List knock request sends real knock flow | `tests/chat-ui-features-channel.spec.ts` | 06 | done |
+| UI9 | Channel Central applies welcome message, join throttle, and ownership transfer | `tests/chat-ui-features-channel.spec.ts` | 09 | done |
+| UI10 | Channel Central registration tab performs ChanServ register and AOP add/remove | `tests/chat-ui-features-channel.spec.ts` | 11 | done |
+| UI11 | Admin Console tabs cover safe server settings, users, channels, MOTD, broadcast, audit log, TURN, danger preview, and raw console paths | `tests/chat-ui-features-admin.spec.ts` | 12 | done |
 
 ## Operating Rules
 
