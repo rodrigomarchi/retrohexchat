@@ -655,6 +655,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       history_index: -1,
       hover_card: ChatLive.HoverEvents.default_hover_card(),
       input: "",
+      action_mode: false,
+      notice_target: nil,
+      input_error: nil,
       chat_clear_token: 0,
       cleared_channel_cutoffs: %{},
       link_previews: %{},
@@ -1018,6 +1021,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {_count, seconds} when is_integer(seconds) -> seconds
       _ -> 0
     end
+  end
+
+  defp chat_action_enabled?(session, show_status_tab) do
+    !show_status_tab and session.active_pm == nil and session.active_channel != nil
   end
 
   defp topic_bar_modes(_modes, true, _active_pm), do: []

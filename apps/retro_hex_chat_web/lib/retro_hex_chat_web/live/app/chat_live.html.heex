@@ -370,8 +370,14 @@
           value={@input}
           name="input"
           placeholder={ChatHelpers.input_placeholder(assigns)}
+          action_enabled={chat_action_enabled?(@session, @show_status_tab)}
+          action_active={@action_mode}
+          notice_target={@notice_target}
+          input_error={@input_error}
           on_submit="send_input"
           on_change="input_changed"
+          on_action_toggle="toggle_action_mode"
+          on_notice_cancel="cancel_notice_mode"
           hook="AutocompleteHook"
           wrapper_hook="CharCounterHook"
           autofocus

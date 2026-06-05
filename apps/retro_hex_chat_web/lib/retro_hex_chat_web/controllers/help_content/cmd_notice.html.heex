@@ -24,7 +24,13 @@
     "). They are designed for automated messages and informational announcements that shouldn't interrupt the recipient. Channel notices always appear in the channel window. User notices appear according to the recipient's"
   )}
   <code>{dgettext("help_commands", "/notice_routing")}</code>
-  {dgettext("help_commands", "preference.")}
+  {dgettext("help_commands", "policy. User notices are routed to the active window.")}
+</p>
+<p>
+  {dgettext(
+    "help_commands",
+    "To send a user notice from the UI, right-click a nickname in the nicklist or in chat and choose Send Notice. The main input switches to a one-shot notice composer."
+  )}
 </p>
 <.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
 <ul>
@@ -33,6 +39,10 @@
     {dgettext("help_commands", "Does not create PM windows or conversations sidebar entries")}
   </li>
   <li>{dgettext("help_commands", "Does not trigger notification sounds or highlights")}</li>
+  <li>
+    <code>{dgettext("help_commands", "/notice_routing")}</code>
+    {dgettext("help_commands", "shows the fixed active-window routing policy")}
+  </li>
 </ul>
 <.help_h4 icon={:icon_lightbulb}>{dgettext("help_commands", "Examples")}</.help_h4>
 <pre>{dgettext("help_commands", "/notice Alice Check out #project /notice #elixir Server maintenance in 30 minutes")}</pre>
@@ -42,5 +52,6 @@
     {dgettext("help_commands", "/notice_routing")}
   </.help_link>
   · <.help_link topic="cmd-msg">{dgettext("help_commands", "/msg")}</.help_link>
+  · <.help_link topic="cmd-me">{dgettext("help_commands", "/me")}</.help_link>
   · <.help_link topic="feature-notices">{dgettext("help_commands", "Notices")}</.help_link>
 </p>

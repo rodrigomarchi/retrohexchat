@@ -21,7 +21,7 @@ iterations — read it before starting, write to it before stopping.
 | 04 | Window & Display (Edit menu) | P1 | ✅ | — | 2026-06-04 | Complete: Edit menu Clear/Copy/Find; Find relocated from View |
 | 05 | Channel Moderation | P1 | ✅ | — | 2026-06-04 | Complete: status-aware context items, channel mute/unmute, duration prompt |
 | 06 | Channel Membership | P1 | ✅ | — | 2026-06-04 | Complete: nicklist send-invite picker + Channel List knock request UI |
-| 07 | Messaging | P2 | ⬜ | — | — | /me action toggle + send-notice |
+| 07 | Messaging | P2 | ✅ | — | 2026-06-05 | Complete: /me action toggle + Send Notice composer |
 | 08 | Scripting & Customization | P2 | ✅ | — | 2026-06-05 | Complete: Timers dialog, entry points, and bare /timer launcher |
 | 09 | Channel Configuration | P2 | ✅ | — | 2026-06-05 | Complete: Channel Central welcome/throttle/ownership transfer |
 | 10 | User Lookups | P3 | ⬜ | — | — | Whowas lookup + whois result card |
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-05 — Feature 07: `Messaging`
+- **Did:** extended the reusable ChatInput with a channel-only `*` action toggle, one-shot `/me` dispatch, inline action/notice validation, notice composer state, Escape/X cancellation, and "Send Notice..." entries in nicklist and chat nick context menus backed by `/notice`.
+- **Tests:** added `MessagingUIFeatureTest` coverage for ChatInput action state, `/me` dispatch/reset, empty action errors, context-menu notice ordering, notice composer send/cancel/error behavior, and HelpTopics discovery. Red phase: `make ci.quick` failed on missing UI/docs, then passed after implementation. `mix audit.styles` exited 0 with 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated `/me`, `/notice`, `/notice_routing`, Notices, Private Messages, Keyboard Shortcuts, and HelpTopics metadata/cross-references. Existing topic IDs were updated rather than adding duplicates.
+- **Follow-ups:** none.
 
 ### 2026-06-05 — Feature 09: `Channel Configuration`
 - **Did:** extended the existing Channel Central General tab with operator-only welcome message editing, operator-only join throttle controls backed by mode `+j/-j`, owner-only ownership transfer with confirmation/error handling, and refreshed owner/operator state after mutations; exposed channel welcome data through channel state projection.
@@ -114,6 +120,8 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 > _(template)_
 > - **[Feature NN] <lesson>** — why it matters / how to apply next time.
 
+- **[Feature 07] Input modes should dispatch through existing commands** — action and notice UI can synthesize `/me ...` and `/notice nick ...`, preserving handler validation and command-result routing instead of adding parallel send paths.
+- **[Feature 07] `/notice_routing` docs must follow handler reality** — the handler ignores args and reports fixed active-window routing; update help content rather than documenting obsolete configurable modes.
 - **[Feature 09] Channel Central configuration can reuse command-backed server APIs** — welcome messages, join throttle, and ownership transfer already live in `Channels.Server`; UI events should stay thin and call those APIs instead of duplicating command handlers.
 - **[Feature 09] `/slow` is a user-friendly wrapper around `+j`** — the Channel Central throttle field should map seconds to `+j 5:<seconds>` and `0` to `-j`, matching the handler's count/window model.
 - **[Feature 08] Timer dialogs should reuse scheduling helpers** — typed `/timer` commands and dialog saves both need to cancel old refs, clamp intervals, assign target windows, and emit system messages; keep that lifecycle in shared helpers and let events only manage dialog assigns.

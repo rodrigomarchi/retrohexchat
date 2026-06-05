@@ -187,7 +187,8 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       {:show_alias_dialog, &close_alias_dialog/1},
       {:show_custom_menus_dialog, &close_custom_menus_dialog/1},
       {:show_url_catcher, &close_url_catcher/1},
-      {:show_autorespond_dialog, &close_autorespond_dialog/1}
+      {:show_autorespond_dialog, &close_autorespond_dialog/1},
+      {:notice_target, &cancel_notice_mode/1}
     ]
   end
 
@@ -208,6 +209,12 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   defp close_perform_edit_dialog(socket), do: assign(socket, show_perform_edit_dialog: false)
   defp close_autojoin_add_dialog(socket), do: assign(socket, show_autojoin_add_dialog: false)
   defp close_autojoin_edit_dialog(socket), do: assign(socket, show_autojoin_edit_dialog: false)
+
+  defp cancel_notice_mode(socket) do
+    socket
+    |> assign(notice_target: nil, input: "", input_error: nil)
+    |> push_event("clear_input", %{})
+  end
 
   defp close_sound_settings_dialog(socket) do
     assign(socket, show_sound_settings_dialog: false, sound_settings_draft: nil)

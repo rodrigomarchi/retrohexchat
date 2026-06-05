@@ -235,7 +235,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-me",
         title: "/me",
         category: dgettext("help", "Chat & Messaging"),
-        keywords: ["me", "action", "emote", "roleplay"],
+        keywords: ["me", "action", "action toggle", "emote", "roleplay"],
         icon: :icon_chat,
         description: dgettext("help", "Send an action message that describes what you are doing.")
       },
@@ -276,7 +276,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-notice",
         title: "/notice",
         category: dgettext("help", "Chat & Messaging"),
-        keywords: ["notice", "notification", "announce"],
+        keywords: ["notice", "send notice", "context menu", "notification", "announce"],
         icon: :icon_megaphone,
         description:
           dgettext(
@@ -288,12 +288,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-notice-routing",
         title: "/notice_routing",
         category: dgettext("help", "Notifications & Sounds"),
-        keywords: ["notice", "routing", "preference", "setting"],
+        keywords: ["notice", "routing", "active window"],
         icon: :icon_dialog_notifications,
         description:
           dgettext(
             "help",
-            "Configure where incoming notices are displayed — active window, status, or source channel."
+            "Show the current notice routing policy. Notices are always routed to the active window."
           )
       },
       %{

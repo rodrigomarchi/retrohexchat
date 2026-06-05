@@ -23,14 +23,20 @@
 </p>
 <.help_h4 icon={:icon_megaphone}>{dgettext("help_features", "Sending Notices")}</.help_h4>
 <pre>{dgettext("help_features", "/notice <nickname> <message> /notice <#channel> <message>")}</pre>
+<p>
+  {dgettext(
+    "help_features",
+    "From the UI, right-click a nickname in the nicklist or chat and choose Send Notice. The main input becomes a notice composer for that target."
+  )}
+</p>
 <.help_h4 icon={:icon_dialog_notifications}>
-  {dgettext("help_features", "Routing Preferences")}
+  {dgettext("help_features", "Routing Policy")}
 </.help_h4>
 <p>
   {dgettext("help_features", "Use")} <code>{dgettext("help_features", "/notice_routing")}</code>
   {dgettext(
     "help_features",
-    "to configure where user-targeted notices appear. Channel notices always appear in the channel window regardless of routing settings."
+    "to display the current routing policy. User notices are routed to the active window, and channel notices appear in the channel window."
   )}
 </p>
 <.help_h4 icon={:icon_dialog_ignore}>{dgettext("help_features", "Ignore Integration")}</.help_h4>

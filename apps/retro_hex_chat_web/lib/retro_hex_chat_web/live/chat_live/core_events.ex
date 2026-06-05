@@ -40,75 +40,35 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- send_input --
 
   def handle_event("input_changed", %{"input" => input}, socket) do
-    {:halt, assign(socket, input: input)}
+    {:halt, assign(socket, input: input, input_error: nil)}
   end
 
-  def handle_event("send_input", %{"input" => ""}, socket) do
-    if socket.assigns.edit_mode_message_id do
-      # Empty edit = treat as delete (show confirmation dialog)
-      msg_id = socket.assigns.edit_mode_message_id
-
-      socket
-      |> exit_edit_mode()
-      |> assign(delete_confirm: %{message_id: msg_id})
-      |> then(&{:halt, &1})
+  def handle_event("toggle_action_mode", _params, socket) do
+    if action_mode_available?(socket) do
+      {:halt,
+       assign(socket,
+         action_mode: !socket.assigns.action_mode,
+         notice_target: nil,
+         input_error: nil
+       )}
     else
       {:halt, socket}
     end
+  end
+
+  def handle_event("cancel_notice_mode", _params, socket) do
+    {:halt, cancel_notice_mode(socket)}
+  end
+
+  def handle_event("send_input", %{"input" => ""}, socket) do
+    handle_empty_input(socket)
   end
 
   def handle_event("send_input", %{"input" => input}, socket) do
     if socket.assigns.edit_mode_message_id do
       {:halt, submit_edit(socket, input)}
     else
-      session = socket.assigns.session
-      history = [input | socket.assigns.command_history] |> Enum.take(50)
-
-      case Parser.parse(input) do
-        {:message, text} ->
-          new_session = Session.set_last_message_at(session, DateTime.utc_now())
-
-          socket =
-            socket
-            |> assign(session: new_session)
-            |> ChatLive.CommandDispatch.send_plain_message(new_session, text)
-            |> push_event("tip_trigger", %{tip: "first_message"})
-            |> reset_activity()
-
-          {:halt,
-           socket
-           |> assign(
-             input: "",
-             command_history: history,
-             history_index: -1,
-             autocomplete_visible: false,
-             autocomplete_results: [],
-             autocomplete_filter: "",
-             autocomplete_selected: 0,
-             syntax_tooltip: nil
-           )
-           |> push_event("clear_input", %{})}
-
-        {:command, name, args} ->
-          socket =
-            socket
-            |> ChatLive.CommandDispatch.dispatch_command(session, name, args)
-            |> reset_activity()
-
-          {:halt,
-           socket
-           |> assign(
-             input: "",
-             command_history: history,
-             history_index: -1,
-             autocomplete_visible: false,
-             autocomplete_results: [],
-             autocomplete_filter: "",
-             autocomplete_selected: 0,
-             syntax_tooltip: nil
-           )
-           |> push_event("clear_input", %{})}
-      end
+      {:halt, dispatch_chat_input(socket, input)}
     end
   end
 
@@ -146,6 +106,9 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      socket
      |> assign(
        session: session,
+       action_mode: false,
+       notice_target: nil,
+       input_error: nil,
        unread_counts: unread_counts,
        highlight_channels: highlight,
        flash_channels: flash,
@@ -192,6 +155,9 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      socket
      |> assign(
        session: session,
+       action_mode: false,
+       notice_target: nil,
+       input_error: nil,
        unread_counts: unread_counts,
        flash_channels: flash,
        current_topic: nil,
@@ -210,7 +176,13 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   def handle_event("switch_to_status", _params, socket) do
     {:halt,
      socket
-     |> assign(show_status_tab: true, status_unread: false)
+     |> assign(
+       show_status_tab: true,
+       status_unread: false,
+       action_mode: false,
+       notice_target: nil,
+       input_error: nil
+     )
      |> clear_search_on_switch()}
   end
 
@@ -547,6 +519,92 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # ---------------------------------------------------------------------------
   # Private helpers
   # ---------------------------------------------------------------------------
+
+  defp handle_empty_input(socket) do
+    cond do
+      socket.assigns.edit_mode_message_id ->
+        msg_id = socket.assigns.edit_mode_message_id
+
+        socket
+        |> exit_edit_mode()
+        |> assign(delete_confirm: %{message_id: msg_id})
+        |> then(&{:halt, &1})
+
+      notice_mode?(socket) ->
+        {:halt, assign(socket, input_error: dgettext("chat", "Notice message cannot be empty"))}
+
+      socket.assigns.action_mode ->
+        {:halt, assign(socket, input_error: dgettext("chat", "Action message cannot be empty"))}
+
+      true ->
+        {:halt, socket}
+    end
+  end
+
+  defp dispatch_chat_input(socket, input) do
+    session = socket.assigns.session
+    submitted_input = input_for_mode(socket, input)
+    history = [submitted_input | socket.assigns.command_history] |> Enum.take(50)
+
+    socket
+    |> dispatch_parsed_input(session, Parser.parse(submitted_input))
+    |> reset_activity()
+    |> clear_sent_input(history)
+  end
+
+  defp dispatch_parsed_input(socket, session, {:message, text}) do
+    new_session = Session.set_last_message_at(session, DateTime.utc_now())
+
+    socket
+    |> assign(session: new_session)
+    |> ChatLive.CommandDispatch.send_plain_message(new_session, text)
+    |> push_event("tip_trigger", %{tip: "first_message"})
+  end
+
+  defp dispatch_parsed_input(socket, session, {:command, name, args}) do
+    ChatLive.CommandDispatch.dispatch_command(socket, session, name, args)
+  end
+
+  defp clear_sent_input(socket, history) do
+    socket
+    |> assign(
+      input: "",
+      action_mode: false,
+      notice_target: nil,
+      input_error: nil,
+      command_history: history,
+      history_index: -1,
+      autocomplete_visible: false,
+      autocomplete_results: [],
+      autocomplete_filter: "",
+      autocomplete_selected: 0,
+      syntax_tooltip: nil
+    )
+    |> push_event("clear_input", %{})
+  end
+
+  defp cancel_notice_mode(socket) do
+    socket
+    |> assign(notice_target: nil, input: "", input_error: nil)
+    |> push_event("clear_input", %{})
+  end
+
+  defp input_for_mode(socket, input) do
+    cond do
+      notice_mode?(socket) -> "/notice #{socket.assigns.notice_target} #{input}"
+      socket.assigns.action_mode -> "/me #{input}"
+      true -> input
+    end
+  end
+
+  defp notice_mode?(socket) do
+    is_binary(socket.assigns.notice_target) and socket.assigns.notice_target != ""
+  end
+
+  defp action_mode_available?(socket) do
+    session = socket.assigns.session
+    !socket.assigns.show_status_tab and session.active_pm == nil and session.active_channel != nil
+  end
 
   defp parse_message_id(id) when is_integer(id), do: {:ok, id}
 

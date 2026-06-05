@@ -52,6 +52,14 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         <:icon><Icons.icon_tab_pm class="w-[14px] h-[14px]" /></:icon>
         {dgettext("chat", "Query (PM)")}
       </.context_menu_item>
+      <.context_menu_item
+        on_click={@on_action}
+        action="context_notice"
+        phx-value-nick={@target_nick}
+      >
+        <:icon><Icons.icon_megaphone class="w-[14px] h-[14px]" /></:icon>
+        {dgettext("chat", "Send Notice...")}
+      </.context_menu_item>
       <.context_menu_item on_click={@on_action} action="context_whois" phx-value-nick={@target_nick}>
         <:icon><Icons.icon_btn_search class="w-[14px] h-[14px]" /></:icon>
         {dgettext("chat", "Whois")}

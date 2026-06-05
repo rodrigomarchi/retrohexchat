@@ -250,7 +250,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         id: "feature-notices",
         title: dgettext("help", "Notices"),
         category: dgettext("help", "Notifications & Sounds"),
-        keywords: ["notice", "notification", "announce", dgettext("help", "lightweight message")],
+        keywords: [
+          "notice",
+          "send notice",
+          "context menu",
+          "notification",
+          "announce",
+          dgettext("help", "lightweight message")
+        ],
         icon: :icon_megaphone,
         description:
           dgettext(

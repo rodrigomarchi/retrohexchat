@@ -17,9 +17,17 @@
     "to open a PM tab. You can also double-click a nickname to open a PM directly."
   )}
 </p>
+<p>
+  {dgettext(
+    "help",
+    "For a lightweight message that does not open a PM tab on the recipient's side, choose Send Notice from a nickname context menu or use"
+  )}
+  <code>{dgettext("help", "/notice")}</code>.
+</p>
 <.help_h4 icon={:icon_link}>{dgettext("help", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-msg">{dgettext("help", "Msg Command")}</.help_link>
   · <.help_link topic="cmd-query">{dgettext("help", "Query Command")}</.help_link>
+  · <.help_link topic="cmd-notice">{dgettext("help", "Notice Command")}</.help_link>
   · <.help_link topic="feature-notices">{dgettext("help", "Notices")}</.help_link>
 </p>

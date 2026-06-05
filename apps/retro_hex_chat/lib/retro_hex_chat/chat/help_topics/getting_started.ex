@@ -57,7 +57,8 @@ defmodule RetroHexChat.Chat.HelpTopics.GettingStarted do
           dgettext("help", "direct message"),
           "dm",
           "whisper",
-          "query"
+          "query",
+          "notice"
         ],
         icon: :icon_p2p,
         description:

@@ -6,10 +6,10 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   context_query, context_whois, context_kick, context_ban, context_op,
   context_deop, context_voice, context_devoice, context_mute, context_unmute,
   context_invite_to_channel, context_add_contact, context_set_nick_color, context_ignore,
-  context_unignore, context_pick_color, context_p2p, context_call, context_video_call,
-  context_sendfile, context_game.
+  context_unignore, context_notice, context_pick_color, context_p2p, context_call,
+  context_video_call, context_sendfile, context_game.
 
-  Covers chat area: chat_context_menu, close_chat_context_menu, ctx_chat_pm,
+  Covers chat area: chat_context_menu, close_chat_context_menu, ctx_chat_pm, ctx_chat_notice,
   ctx_chat_whois, ctx_chat_copy_nick, ctx_chat_ignore, ctx_chat_add_contact,
   ctx_chat_set_color, ctx_chat_kick, ctx_chat_ban, ctx_chat_voice, ctx_chat_devoice,
   ctx_chat_op, ctx_chat_deop, ctx_chat_mute, ctx_chat_unmute, ctx_chat_open_url,
@@ -88,6 +88,13 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      socket
      |> close_context_menu()
      |> open_pm_conversation(nick)}
+  end
+
+  def handle_event("context_notice", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> start_notice_mode(nick)}
   end
 
   def handle_event("context_whois", %{"nick" => nick}, socket) do
@@ -392,6 +399,13 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      socket
      |> close_chat_context_menu()
      |> open_pm_conversation(nick)}
+  end
+
+  def handle_event("ctx_chat_notice", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_chat_context_menu()
+     |> start_notice_mode(nick)}
   end
 
   def handle_event("ctx_chat_whois", %{"nick" => nick}, socket) do
@@ -758,6 +772,12 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil, is_target_registered: false},
       show_context_color_picker: false
     )
+  end
+
+  defp start_notice_mode(socket, nick) do
+    socket
+    |> assign(notice_target: nick, action_mode: false, input: "", input_error: nil)
+    |> push_event("clear_input", %{})
   end
 
   defp open_invite_channel_picker(socket, nick) do
