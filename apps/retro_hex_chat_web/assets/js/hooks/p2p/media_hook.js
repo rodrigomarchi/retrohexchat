@@ -19,6 +19,7 @@ const MediaHook = createRtcMediaHook({
     peerCamera: "media_peer_camera",
     upgradeAccepted: "media_upgrade_accepted",
     upgradeRejected: "media_upgrade_rejected",
+    upgradeFailed: "media_upgrade_failed",
     setPreset: "media_set_preset",
   },
   clientEvents: {

@@ -29,6 +29,14 @@ export class P2PLobbyPage {
   readonly sendFileButton: Locator;
   readonly muteButton: Locator;
   readonly cameraButton: Locator;
+  readonly audioUpgradeButton: Locator;
+  readonly endCallButton: Locator;
+  readonly layoutFocusButton: Locator;
+  readonly layoutSideBySideButton: Locator;
+  readonly layoutMaximizedButton: Locator;
+  readonly remoteVideo: Locator;
+  readonly localVideo: Locator;
+  readonly remoteAudio: Locator;
   readonly peerMutedIndicator: Locator;
   readonly peerCameraOffIndicator: Locator;
   readonly acceptActionButton: Locator;
@@ -59,6 +67,14 @@ export class P2PLobbyPage {
     this.sendFileButton = page.getByRole('button', { name: 'Send File' });
     this.muteButton = page.getByTestId('media-controls-mute');
     this.cameraButton = page.getByTestId('media-controls-camera');
+    this.audioUpgradeButton = page.locator('[data-media-action="upgrade"]');
+    this.endCallButton = page.getByTestId('media-controls-end-call');
+    this.layoutFocusButton = page.getByTestId('media-layout-focus');
+    this.layoutSideBySideButton = page.getByTestId('media-layout-side-by-side');
+    this.layoutMaximizedButton = page.getByTestId('media-layout-maximized');
+    this.remoteVideo = page.locator('#remote-video');
+    this.localVideo = page.locator('#local-video');
+    this.remoteAudio = page.locator('#remote-audio');
     this.peerMutedIndicator = page.getByTestId('media-peer-muted-indicator');
     this.peerCameraOffIndicator = page.getByTestId(
       'media-peer-camera-off-indicator',
@@ -176,6 +192,70 @@ export class P2PLobbyPage {
     });
     await expect(this.fileTransferValidationError).toContainText(pattern);
     await expect(this.fileInput).toBeAttached();
+  }
+
+  async expectFileTransferReady() {
+    await expect(this.fileTransferHook).toBeVisible({ timeout: 20_000 });
+    await expect(this.fileInput).toBeAttached();
+  }
+
+  async expectAudioCallActive() {
+    await expect(this.mediaCall).toBeVisible({ timeout: 20_000 });
+    await expect(this.remoteAudio).toBeAttached();
+    await expect(this.muteButton).toBeVisible();
+    await expect(this.audioUpgradeButton).toBeVisible();
+  }
+
+  async expectVideoCallActive() {
+    await expect(this.mediaCall).toBeVisible({ timeout: 20_000 });
+    await expect(this.remoteVideo).toBeVisible();
+    await expect(this.localVideo).toBeVisible();
+    await expect(this.remoteAudio).toBeAttached();
+    await expect(this.muteButton).toBeVisible();
+    await expect(this.cameraButton).toBeVisible();
+    await expect(this.layoutFocusButton).toBeVisible();
+    await expect(this.layoutSideBySideButton).toBeVisible();
+    await expect(this.layoutMaximizedButton).toBeVisible();
+  }
+
+  async expectRemoteAudioTrack() {
+    await expect
+      .poll(async () => (await this.mediaTrackCounts(this.remoteAudio)).audio, {
+        timeout: 20_000,
+      })
+      .toBeGreaterThan(0);
+  }
+
+  async expectRemoteVideoTrack() {
+    await expect
+      .poll(async () => (await this.mediaTrackCounts(this.remoteVideo)).video, {
+        timeout: 20_000,
+      })
+      .toBeGreaterThan(0);
+  }
+
+  async expectLocalVideoStreamTracks() {
+    await expect
+      .poll(() => this.mediaTrackCounts(this.localVideo), { timeout: 20_000 })
+      .toEqual({ audio: 1, video: 1 });
+  }
+
+  private async mediaTrackCounts(locator: Locator) {
+    return locator.evaluate((node) => {
+      const media = node as HTMLMediaElement;
+      const stream = media.srcObject as MediaStream | null;
+
+      return {
+        audio:
+          stream
+            ?.getAudioTracks()
+            .filter((track) => track.readyState === 'live').length || 0,
+        video:
+          stream
+            ?.getVideoTracks()
+            .filter((track) => track.readyState === 'live').length || 0,
+      };
+    });
   }
 }
 

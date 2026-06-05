@@ -51,6 +51,7 @@ function normalizeConfig(config) {
       peerCamera: config.serverEvents?.peerCamera,
       upgradeAccepted: config.serverEvents?.upgradeAccepted,
       upgradeRejected: config.serverEvents?.upgradeRejected,
+      upgradeFailed: config.serverEvents?.upgradeFailed,
       setPreset: config.serverEvents?.setPreset,
     },
     clientEvents: {
@@ -90,6 +91,8 @@ export function createRtcMediaHook(configInput) {
       this.qualityInterval = null;
       this.muted = false;
       this.cameraOff = false;
+      this.upgradeInProgress = false;
+      this.upgradeCancelled = false;
 
       this._onPcReady = (event) => this._handlePcReady(event.detail.pc);
       this._onPcClosed = () => this._handlePcClosed();
@@ -121,6 +124,7 @@ export function createRtcMediaHook(configInput) {
       this._handleServerEvent(config.serverEvents.upgradeRejected, () =>
         this._handleUpgradeRejected(),
       );
+      this._handleServerEvent(config.serverEvents.upgradeFailed, () => this._handleUpgradeFailed());
       this._handleServerEvent(config.serverEvents.setPreset, ({ preset }) =>
         this._handleSetPreset(preset),
       );
@@ -360,13 +364,24 @@ export function createRtcMediaHook(configInput) {
     // --- Audio-to-video upgrade ---
 
     async _handleUpgradeAccepted() {
-      if (!this.pc || !this.localStream || this.callType === "video") return;
+      if (!this.pc || !this.localStream || this.callType === "video" || this.upgradeInProgress) {
+        return;
+      }
+
+      this.upgradeInProgress = true;
+      this.upgradeCancelled = false;
 
       try {
         const videoStream = await acquireMedia({
           video: getVideoConstraints(),
           audio: false,
         });
+
+        if (this.upgradeCancelled) {
+          stopAllTracks(videoStream);
+          return;
+        }
+
         const videoTrack = videoStream.getVideoTracks()[0];
         this.localStream.addTrack(videoTrack);
         const sender = this.pc.addTrack(videoTrack, this.localStream);
@@ -378,12 +393,43 @@ export function createRtcMediaHook(configInput) {
 
         this._push(config.clientEvents.callStarted, { type: "video" });
       } catch (error) {
-        this._push(config.clientEvents.error, error);
+        this._push(config.clientEvents.error, { ...error, phase: "upgrade" });
+      } finally {
+        this.upgradeInProgress = false;
       }
     },
 
     _handleUpgradeRejected() {
       // LiveView owns any rejection message.
+    },
+
+    _handleUpgradeFailed() {
+      this.upgradeCancelled = true;
+      this._removeLocalVideoTracks();
+      this.callType = this.localStream ? "audio" : null;
+      this.cameraOff = false;
+      this.remoteHasVideo = false;
+
+      const remoteVideo = this._query(config.elementIds.remoteVideo);
+      const localVideo = this._query(config.elementIds.localVideo);
+      if (remoteVideo) remoteVideo.srcObject = null;
+      if (localVideo) localVideo.srcObject = null;
+    },
+
+    _removeLocalVideoTracks() {
+      if (!this.localStream) return;
+
+      const videoTracks = this.localStream.getVideoTracks();
+      videoTracks.forEach((track) => {
+        const sender = this.senders.find((candidate) => candidate.track === track);
+        if (this.pc && sender) {
+          this.pc.removeTrack(sender);
+        }
+        track.stop();
+        this.localStream.removeTrack(track);
+      });
+
+      this.senders = this.senders.filter((sender) => sender.track?.kind !== "video");
     },
 
     // --- Peer state ---
@@ -554,6 +600,8 @@ export function createRtcMediaHook(configInput) {
       this.pc = null;
       this.callType = null;
       this.startTime = null;
+      this.upgradeInProgress = false;
+      this.upgradeCancelled = false;
     },
   };
 }

@@ -88,6 +88,7 @@ describe("MediaHook — Audio Call", () => {
     expect(hook.handleEvent).toHaveBeenCalledWith("media_peer_camera", expect.any(Function));
     expect(hook.handleEvent).toHaveBeenCalledWith("media_upgrade_accepted", expect.any(Function));
     expect(hook.handleEvent).toHaveBeenCalledWith("media_upgrade_rejected", expect.any(Function));
+    expect(hook.handleEvent).toHaveBeenCalledWith("media_upgrade_failed", expect.any(Function));
     expect(hook.handleEvent).toHaveBeenCalledWith("media_set_preset", expect.any(Function));
     expect(hook.pushEvent).toHaveBeenCalledWith("media_hook_ready", {});
   });
@@ -327,10 +328,42 @@ describe("MediaHook — Upgrade Flow", () => {
 
     expect(hook.pushEvent).toHaveBeenCalledWith(
       "media_error",
-      expect.objectContaining({ code: "permission_denied" }),
+      expect.objectContaining({ code: "permission_denied", phase: "upgrade" }),
     );
     // callType stays audio since upgrade failed — actually it stays at "audio"
     // because the error happens before callType is changed
+  });
+
+  it("_handleUpgradeFailed removes local video and returns to audio", () => {
+    const audioTrack = { kind: "audio", enabled: true, stop: vi.fn() };
+    const videoTrack = { kind: "video", enabled: true, stop: vi.fn() };
+    const existingStream = createMockStream([audioTrack, videoTrack]);
+    const pc = createMockPC();
+    const audioSender = { track: audioTrack };
+    const videoSender = { track: videoTrack };
+
+    hook._handlePcReady(pc);
+    hook.localStream = existingStream;
+    hook.callType = "video";
+    hook.senders = [audioSender, videoSender];
+
+    const localVideo = { srcObject: existingStream };
+    const remoteVideo = { srcObject: { id: "remote-stream" } };
+    el.querySelector.mockImplementation((sel) => {
+      if (sel === "#local-video") return localVideo;
+      if (sel === "#remote-video") return remoteVideo;
+      return null;
+    });
+
+    hook._handleUpgradeFailed();
+
+    expect(pc.removeTrack).toHaveBeenCalledWith(videoSender);
+    expect(videoTrack.stop).toHaveBeenCalled();
+    expect(existingStream.removeTrack).toHaveBeenCalledWith(videoTrack);
+    expect(hook.senders).toEqual([audioSender]);
+    expect(hook.callType).toBe("audio");
+    expect(localVideo.srcObject).toBeNull();
+    expect(remoteVideo.srcObject).toBeNull();
   });
 });
 

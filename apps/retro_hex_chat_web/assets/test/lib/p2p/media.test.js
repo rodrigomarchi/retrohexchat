@@ -53,6 +53,13 @@ describe("Media Acquisition", () => {
       expect(result.message).toContain("Microphone permission denied");
     });
 
+    it("maps video NotAllowedError to camera permission guidance", () => {
+      const error = new DOMException("Permission denied", "NotAllowedError");
+      const result = categorizeMediaError(error, { audio: true, video: true });
+      expect(result.code).toBe("permission_denied");
+      expect(result.message).toContain("Camera permission denied");
+    });
+
     it("maps NotReadableError to not_readable", () => {
       const error = new DOMException("Device in use", "NotReadableError");
       const result = categorizeMediaError(error);
@@ -60,11 +67,25 @@ describe("Media Acquisition", () => {
       expect(result.message).toContain("Camera in use");
     });
 
+    it("maps audio NotReadableError to microphone guidance", () => {
+      const error = new DOMException("Device in use", "NotReadableError");
+      const result = categorizeMediaError(error, { audio: true });
+      expect(result.code).toBe("not_readable");
+      expect(result.message).toContain("Microphone in use");
+    });
+
     it("maps NotFoundError to not_found", () => {
       const error = new DOMException("No device", "NotFoundError");
       const result = categorizeMediaError(error);
       expect(result.code).toBe("not_found");
       expect(result.message).toContain("No camera found");
+    });
+
+    it("maps audio NotFoundError to missing microphone guidance", () => {
+      const error = new DOMException("No device", "NotFoundError");
+      const result = categorizeMediaError(error, { audio: true });
+      expect(result.code).toBe("not_found");
+      expect(result.message).toContain("No microphone found");
     });
 
     it("maps unknown errors with original message", () => {
@@ -97,6 +118,28 @@ describe("Media Acquisition", () => {
       await expect(acquireMedia({ audio: true })).rejects.toEqual({
         code: "permission_denied",
         message: expect.stringContaining("Microphone permission denied"),
+      });
+    });
+
+    it("throws camera guidance when video acquisition is denied", async () => {
+      navigator.mediaDevices = {
+        getUserMedia: vi.fn().mockRejectedValue(new DOMException("Denied", "NotAllowedError")),
+      };
+
+      await expect(acquireMedia({ audio: true, video: true })).rejects.toEqual({
+        code: "permission_denied",
+        message: expect.stringContaining("Camera permission denied"),
+      });
+    });
+
+    it("throws microphone missing guidance for audio-only NotFoundError", async () => {
+      navigator.mediaDevices = {
+        getUserMedia: vi.fn().mockRejectedValue(new DOMException("Missing", "NotFoundError")),
+      };
+
+      await expect(acquireMedia({ audio: true })).rejects.toEqual({
+        code: "not_found",
+        message: expect.stringContaining("No microphone found"),
       });
     });
   });

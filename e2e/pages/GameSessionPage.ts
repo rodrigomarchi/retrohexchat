@@ -13,6 +13,7 @@ export class GameSessionPage {
   readonly mediaDock: Locator;
   readonly startVoiceButton: Locator;
   readonly startVideoButton: Locator;
+  readonly audioUpgradeButton: Locator;
   readonly mediaCall: Locator;
   readonly remoteVideo: Locator;
   readonly localVideo: Locator;
@@ -38,6 +39,7 @@ export class GameSessionPage {
     this.mediaDock = page.getByTestId("game-media");
     this.startVoiceButton = page.getByTestId("game-media-start-audio");
     this.startVideoButton = page.getByTestId("game-media-start-video");
+    this.audioUpgradeButton = page.getByTestId("game-media-add-video");
     this.mediaCall = page.getByTestId("game-media-call");
     this.remoteVideo = page.locator("#game-remote-video");
     this.localVideo = page.locator("#game-local-video");
@@ -106,6 +108,12 @@ export class GameSessionPage {
     await expect(this.localVideo).toBeVisible();
     await expect(this.muteButton).toBeVisible();
     await expect(this.cameraButton).toBeVisible();
+  }
+
+  async expectAudioCallActive() {
+    await expect(this.mediaCall).toBeVisible({ timeout: 15_000 });
+    await expect(this.muteButton).toBeVisible();
+    await expect(this.audioUpgradeButton).toBeVisible();
   }
 
   async expectIncomingVideoCall() {

@@ -199,6 +199,33 @@ green catalog in `TEST_CATALOG.md`.
 | Z10 | Game invite decline and game selection cancellation return both users to chat/lobby state cleanly | `tests/chat-p2p-game-lifecycle.spec.ts` | P2 | done |
 | Z11 | Shared game shell exchanges at least one state update between peers, beyond simply opening the lobby | `tests/chat-p2p-game-state.spec.ts` | P2 | done |
 | Z12 | Solo arcade link opens playable session; canvas/frame is nonblank and can return to chat | `tests/chat-singleplayer-arcade.spec.ts` | P2 | done |
+| Z13 | Nicklist-started P2P session exercises lobby chat, declined action retry, and reverse-direction file transfer | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
+| Z14 | Audio call exercises video-upgrade decline, retry, accepted media tracks, layout, and peer indicators | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
+| Z15 | Game lobby declines a selection, retries, and still reaches shared playable canvas state | `tests/chat-p2p-complete-flows.spec.ts` | P2 | done |
+| Z16 | Pending P2P action blocks competing requests and requester self-accept | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
+| Z17 | Cancelled incoming file offer can be retried through a new clean file-transfer session | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
+| Z18 | Chat-message nickname context menu can start P2P send-file invite and consent decline path | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
+| Z19 | P2P lobby messages and filenames with HTML-like content remain inert escaped text | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
+| Z20 | Adding invites ignore during an open P2P lobby closes both peers and records ended-session status | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
+| Z21 | Direct video call with denied camera shows camera-specific guidance and leaves lobby usable | `tests/chat-p2p-call-media-edges.spec.ts` | P1 | done |
+| Z22 | Audio-to-video upgrade camera denial rolls both peers back to a live audio call | `tests/chat-p2p-call-media-edges.spec.ts` | P1 | done |
+| Z23 | Ending an active audio call closes local popup and ends peer session with call-ended status | `tests/chat-p2p-call-media-edges.spec.ts` | P1 | done |
+| Z24 | Closing popup during active audio call disconnects peer coherently | `tests/chat-p2p-call-media-edges.spec.ts` | P1 | done |
+| Z25 | Nicklist-started video call reaches full video media with local and remote tracks | `tests/chat-p2p-call-media-edges.spec.ts` | P1 | done |
+| Z26 | Browser offline/online during an active audio call restores coherent media controls | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
+| Z27 | Browser offline/online during an active video call restores video tracks and controls | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
+| Z28 | Closing peer popup while video upgrade is pending ends the requester coherently | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
+| Z29 | Adding invites ignore during an active video call closes both peers and clears media state | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
+| Z30 | Same users can start a fresh audio call after ending the previous call | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
+| Z31 | Double-clicking video-upgrade accept settles once and reaches a single video call | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
+| Z32 | Audio call with missing microphone shows microphone-specific missing-device guidance | `tests/chat-p2p-call-device-errors.spec.ts` | P1 | done |
+| Z33 | Video call with missing camera shows missing-camera guidance | `tests/chat-p2p-call-device-errors.spec.ts` | P1 | done |
+| Z34 | Video call with busy camera shows not-readable camera guidance | `tests/chat-p2p-call-device-errors.spec.ts` | P1 | done |
+| Z35 | Chat-message nickname context menu starts a full video call with media tracks | `tests/chat-p2p-call-device-errors.spec.ts` | P1 | done |
+| Z36 | Active game voice call upgrades to video and delivers local and remote media tracks | `tests/chat-p2p-game-media-edges.spec.ts` | P1 | done |
+| Z37 | Camera denial inside active game media leaves the canvas playable and media idle | `tests/chat-p2p-game-media-edges.spec.ts` | P1 | done |
+| Z38 | Ending an active game while video media is running closes the peer coherently | `tests/chat-p2p-game-media-edges.spec.ts` | P1 | done |
+| Z39 | Closing popup during active game video media disconnects the peer coherently | `tests/chat-p2p-game-media-edges.spec.ts` | P1 | done |
 
 ## AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
 

@@ -125,11 +125,20 @@ export class ChatPage {
   readonly contextCopyMessageMenuItem: Locator;
   readonly contextReplyMenuItem: Locator;
   readonly contextDeleteMenuItem: Locator;
+  readonly chatContextCallMenuItem: Locator;
+  readonly chatContextVideoCallMenuItem: Locator;
+  readonly chatContextSendFileMenuItem: Locator;
+  readonly chatContextGameMenuItem: Locator;
   readonly nicklistContextMenu: Locator;
   readonly nicklistContextQueryMenuItem: Locator;
   readonly nicklistContextWhoisMenuItem: Locator;
   readonly nicklistContextIgnoreMenuItem: Locator;
   readonly nicklistContextUnignoreMenuItem: Locator;
+  readonly nicklistContextP2PMenuItem: Locator;
+  readonly nicklistContextCallMenuItem: Locator;
+  readonly nicklistContextVideoCallMenuItem: Locator;
+  readonly nicklistContextSendFileMenuItem: Locator;
+  readonly nicklistContextGameMenuItem: Locator;
   readonly nicklistContextVoiceMenuItem: Locator;
   readonly nicklistContextOpMenuItem: Locator;
   readonly conversationsContextMenu: Locator;
@@ -395,6 +404,18 @@ export class ChatPage {
     this.contextDeleteMenuItem = page.getByTestId(
       'context-menu-item-ctx_chat_delete',
     );
+    this.chatContextCallMenuItem = page.getByTestId(
+      'context-menu-item-ctx_chat_call',
+    );
+    this.chatContextVideoCallMenuItem = page.getByTestId(
+      'context-menu-item-ctx_chat_video_call',
+    );
+    this.chatContextSendFileMenuItem = page.getByTestId(
+      'context-menu-item-ctx_chat_sendfile',
+    );
+    this.chatContextGameMenuItem = page.getByTestId(
+      'context-menu-item-ctx_chat_game',
+    );
     this.nicklistContextMenu = page.getByTestId(
       'context-menu-nicklist-context-menu',
     );
@@ -409,6 +430,21 @@ export class ChatPage {
     );
     this.nicklistContextUnignoreMenuItem = page.getByTestId(
       'context-menu-item-context_unignore',
+    );
+    this.nicklistContextP2PMenuItem = page.getByTestId(
+      'context-menu-item-context_p2p',
+    );
+    this.nicklistContextCallMenuItem = page.getByTestId(
+      'context-menu-item-context_call',
+    );
+    this.nicklistContextVideoCallMenuItem = page.getByTestId(
+      'context-menu-item-context_video_call',
+    );
+    this.nicklistContextSendFileMenuItem = page.getByTestId(
+      'context-menu-item-context_sendfile',
+    );
+    this.nicklistContextGameMenuItem = page.getByTestId(
+      'context-menu-item-context_game',
     );
     this.nicklistContextVoiceMenuItem = page.getByTestId(
       'context-menu-item-context_voice',
@@ -934,7 +970,7 @@ export class ChatPage {
   }
 
   p2pInviteCard(): Locator {
-    return this.messageList.getByTestId('p2p-invite-card').first();
+    return this.messageList.getByTestId('p2p-invite-card').last();
   }
 
   emojiButton(char: string): Locator {

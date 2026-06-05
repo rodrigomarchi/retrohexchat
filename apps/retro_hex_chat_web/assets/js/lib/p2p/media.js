@@ -44,28 +44,39 @@ export function getVideoConstraints() {
 /**
  * Categorize a getUserMedia error into a user-friendly message.
  * @param {Error} error
+ * @param {MediaStreamConstraints} constraints
  * @returns {{ code: string, message: string }}
  */
-export function categorizeMediaError(error) {
+export function categorizeMediaError(error, constraints = {}) {
+  const needsVideo = Boolean(constraints.video);
+  const needsAudio = Boolean(constraints.audio);
+
   switch (error.name) {
     case "NotAllowedError":
       return {
         code: "permission_denied",
-        message: t(
-          "Microphone permission denied. Enable microphone permission in your browser and try again.",
-        ),
+        message: needsVideo
+          ? t("Camera permission denied. Enable camera permission in your browser and try again.")
+          : t(
+              "Microphone permission denied. Enable microphone permission in your browser and try again.",
+            ),
       };
     case "NotReadableError":
       return {
         code: "not_readable",
-        message: t(
-          "Camera in use by another application. Try closing other programs using the camera.",
-        ),
+        message:
+          needsAudio && !needsVideo
+            ? t(
+                "Microphone in use by another application. Try closing other programs using the microphone.",
+              )
+            : t(
+                "Camera in use by another application. Try closing other programs using the camera.",
+              ),
       };
     case "NotFoundError":
       return {
         code: "not_found",
-        message: t("No camera found."),
+        message: needsAudio && !needsVideo ? t("No microphone found.") : t("No camera found."),
       };
     default:
       return {
@@ -84,7 +95,7 @@ export async function acquireMedia(constraints) {
   try {
     return await navigator.mediaDevices.getUserMedia(constraints);
   } catch (error) {
-    throw categorizeMediaError(error);
+    throw categorizeMediaError(error, constraints);
   }
 }
 
