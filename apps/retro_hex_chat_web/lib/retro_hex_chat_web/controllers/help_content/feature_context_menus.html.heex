@@ -10,7 +10,7 @@
 <p>
   {dgettext(
     "help_features",
-    "Right-click a nickname in a chat message to see: Private Message, Whois, Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Kick, Ban, status-aware Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
+    "Right-click a nickname in a chat message to see: Private Message, Whois, Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Invite to Channel..., Kick, Ban, status-aware Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
   )}
 </p>
 <.help_h4 icon={:icon_role_operator}>
@@ -85,6 +85,7 @@
   <.help_link topic="feature-interactive-elements">
     {dgettext("help_features", "Interactive Chat Elements")}
   </.help_link>
+  · <.help_link topic="cmd-invite">{dgettext("help_features", "/invite")}</.help_link>
   ·
   <.help_link topic="feature-p2p-sessions">
     {dgettext("help_features", "P2P Sessions")}

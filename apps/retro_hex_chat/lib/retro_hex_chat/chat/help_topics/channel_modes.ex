@@ -74,10 +74,20 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
         id: "mode-i",
         title: dgettext("help", "+i Invite Only"),
         category: dgettext("help", "Channel Modes"),
-        keywords: ["invite", dgettext("help", "invite only"), "restricted"],
+        keywords: [
+          "invite",
+          dgettext("help", "invite only"),
+          "restricted",
+          "knock",
+          dgettext("help", "request access"),
+          dgettext("help", "channel list")
+        ],
         icon: :icon_dialog_invite,
         description:
-          dgettext("help", "Restrict channel access to users who have been explicitly invited.")
+          dgettext(
+            "help",
+            "Restrict channel access to invited users; non-members can request access from Channel List."
+          )
       },
       %{
         id: "mode-t",
@@ -242,7 +252,15 @@ defmodule RetroHexChat.Chat.HelpTopics.ChannelModes do
         id: "cmd-knock",
         title: dgettext("help", "/knock Command"),
         category: dgettext("help", "Channels"),
-        keywords: ["knock", dgettext("help", "request invite"), dgettext("help", "join request")],
+        keywords: [
+          "knock",
+          dgettext("help", "request invite"),
+          dgettext("help", "join request"),
+          dgettext("help", "request access"),
+          dgettext("help", "channel list"),
+          "invite-only",
+          "+i"
+        ],
         icon: :icon_megaphone,
         description: dgettext("help", "Request an invitation to join an invite-only channel.")
       }

@@ -20,7 +20,7 @@ iterations — read it before starting, write to it before stopping.
 | 03 | Bots | P0 | ✅ | — | 2026-06-04 | Tools/Options entry points + General tab toggle |
 | 04 | Window & Display (Edit menu) | P1 | ✅ | — | 2026-06-04 | Complete: Edit menu Clear/Copy/Find; Find relocated from View |
 | 05 | Channel Moderation | P1 | ✅ | — | 2026-06-04 | Complete: status-aware context items, channel mute/unmute, duration prompt |
-| 06 | Channel Membership | P1 | ⬜ | — | — | Send-invite UI + knock |
+| 06 | Channel Membership | P1 | ✅ | — | 2026-06-04 | Complete: nicklist send-invite picker + Channel List knock request UI |
 | 07 | Messaging | P2 | ⬜ | — | — | /me action toggle + send-notice |
 | 08 | Scripting & Customization | P2 | ⬜ | — | — | New Timers dialog |
 | 09 | Channel Configuration | P2 | ⬜ | — | — | Extend Channel Central (slow/transfer/welcome) |
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-04 — Feature 06: `Channel Membership`
+- **Did:** added op-only `Invite to Channel...` to the nicklist context menu; added reusable Invite Channel Picker and Knock Request dialogs; extended Channel List rows with `+i` badges and Request Access behavior; carried `joined?`, `invite_only?`, and mode data through visible channel discovery; added result-returning invite/knock helpers so dialogs close on success and keep errors inline on failure.
+- **Tests:** added `ChannelMembershipFeatureTest` covering nicklist invite visibility/order, invite picker command mapping, Channel List `+i` badge/button swap, knock dialog submit/length validation, and HelpTopics discoverability keywords. Red phase: `make ci.quick` failed on missing menu/list/dialog behavior, then passed after implementation. `mix audit.styles` exited 0 with 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated `/invite`, `/knock`, `/join`, `/list`, Channel Invites, Invite Only mode, Channels overview, Context Menus, Toolbar, and HelpTopics metadata/cross-references. The spec names `invite_send`, `invite_receive`, and `channel_list`, but the existing help system uses `cmd-invite`, `feature-channel-invites`, and `cmd-list`; those existing topics were updated instead of creating duplicate topic IDs.
+- **Follow-ups:** none.
 
 ### 2026-06-04 — Feature 05: `Channel Moderation`
 - **Did:** made nicklist and chat nickname context menus status-aware for Give/Remove Voice and Give/Remove Op; added Mute/Unmute (channel) actions with a Win98-style duration prompt; exposed `channel_mutes` through channel state and projected muted flags into `channel_users`; wired `context_deop`, `context_devoice`, `context_mute`, `context_unmute`, and chat-prefixed equivalents.
@@ -96,6 +102,9 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 > _(template)_
 > - **[Feature NN] <lesson>** — why it matters / how to apply next time.
 
+- **[Feature 06] Channel List needs mode metadata, not just display fields** — `Autocomplete.list_visible_channels/1` originally returned only name/topic/user count; UI affordances for restricted channels need `joined?`, `invite_only?`, and modes preserved through filtering.
+- **[Feature 06] Dialog-backed UI actions need result-returning helpers** — socket-only `handle_ui_action/3` is fine for typed commands, but dialogs need `{:ok, socket}` / `{:error, socket, message}` to close on success and render inline errors without duplicating server validation.
+- **[Feature 06] Help spec topic keys can map to existing IDs** — Feature 06 requested `invite_send`, `invite_receive`, and `channel_list`, while this help system already models them as `cmd-invite`, `feature-channel-invites`, and `cmd-list`; update the existing topics and record the mapping.
 - **[Feature 04] Specs can lag key-binding reality** — Feature 04 requested `Ctrl+F`, but `KeyBindings.defaults/0`, existing tests, and help content use `Ctrl+Shift+F`; trust code and record the discrepancy.
 - **[Feature 05] Channel mutes must be part of channel state projection** — `Server.get_state/1` did not expose `channel_mutes`, so status-aware UI needed the hot-state projection updated before the menu could render Mute vs Unmute.
 - **[Feature 05] UI event permissions must match command handlers** — `Server.channel_mute/4` allows half-operators, while `/mute` and `/unmute` handlers require operators; context-menu events add an operator/owner guard to avoid bypassing command semantics.

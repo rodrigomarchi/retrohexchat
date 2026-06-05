@@ -5,8 +5,8 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   Covers nicklist: nick_right_click, nicklist_dblclick, close_context_menu,
   context_query, context_whois, context_kick, context_ban, context_op,
   context_deop, context_voice, context_devoice, context_mute, context_unmute,
-  context_add_contact, context_set_nick_color, context_ignore, context_unignore,
-  context_pick_color, context_p2p, context_call, context_video_call,
+  context_invite_to_channel, context_add_contact, context_set_nick_color, context_ignore,
+  context_unignore, context_pick_color, context_p2p, context_call, context_video_call,
   context_sendfile, context_game.
 
   Covers chat area: chat_context_menu, close_chat_context_menu, ctx_chat_pm,
@@ -50,6 +50,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChatWeb.ChatLive.CoreEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
   alias RetroHexChatWeb.ChatLive.Helpers.{GameInvite, P2pInvite}
+  alias RetroHexChatWeb.ChatLive.UiActions.Invite
 
   def handle_event("nick_right_click", %{"nick" => nick} = params, socket) do
     if nick == socket.assigns.session.nickname do
@@ -164,6 +165,36 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      socket
      |> close_context_menu()
      |> context_channel_unmute(channel, nick)}
+  end
+
+  def handle_event("context_invite_to_channel", %{"nick" => nick}, socket) do
+    {:halt,
+     socket
+     |> close_context_menu()
+     |> open_invite_channel_picker(nick)}
+  end
+
+  def handle_event("invite_channel_picker_submit", params, socket) do
+    target = Map.get(params, "target", "")
+    channel = Map.get(params, "channel", "")
+
+    case Invite.send_invite(socket, target, channel) do
+      {:ok, socket} ->
+        {:halt, close_invite_channel_picker(socket)}
+
+      {:error, socket, message} ->
+        {:halt,
+         assign(socket,
+           show_invite_channel_picker: true,
+           invite_channel_picker_target: target,
+           invite_channel_picker_selected: channel,
+           invite_channel_picker_error: message
+         )}
+    end
+  end
+
+  def handle_event("invite_channel_picker_cancel", _params, socket) do
+    {:halt, close_invite_channel_picker(socket)}
   end
 
   def handle_event("context_add_contact", %{"nick" => nick}, socket) do
@@ -726,6 +757,34 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     assign(socket,
       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil, is_target_registered: false},
       show_context_color_picker: false
+    )
+  end
+
+  defp open_invite_channel_picker(socket, nick) do
+    channels = socket.assigns.session.channels || []
+    active_channel = socket.assigns.session.active_channel
+
+    selected_channel =
+      cond do
+        active_channel in channels -> active_channel
+        channels != [] -> hd(channels)
+        true -> nil
+      end
+
+    assign(socket,
+      show_invite_channel_picker: true,
+      invite_channel_picker_target: nick,
+      invite_channel_picker_selected: selected_channel,
+      invite_channel_picker_error: nil
+    )
+  end
+
+  defp close_invite_channel_picker(socket) do
+    assign(socket,
+      show_invite_channel_picker: false,
+      invite_channel_picker_target: nil,
+      invite_channel_picker_selected: nil,
+      invite_channel_picker_error: nil
     )
   end
 

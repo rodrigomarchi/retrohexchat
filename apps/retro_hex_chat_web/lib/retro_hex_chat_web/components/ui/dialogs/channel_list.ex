@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.LoadingSpinner
 
   alias RetroHexChatWeb.Icons
@@ -29,10 +30,18 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   attr :on_search, :any, default: nil, doc: "Search input change callback"
   attr :on_select, :any, default: nil, doc: "Row click callback"
   attr :on_join, :any, default: nil, doc: "Join button callback"
+  attr :on_knock, :any, default: nil, doc: "Request-access button callback"
   attr :on_close, :any, default: nil, doc: "Close button callback"
 
   @spec channel_list(map()) :: Phoenix.LiveView.Rendered.t()
   def channel_list(assigns) do
+    assigns =
+      assign(
+        assigns,
+        :request_access?,
+        request_access?(assigns.channels, assigns.selected_channel)
+      )
+
     ~H"""
     <.dialog id={@id} show={@show} on_cancel={@on_close}>
       <.dialog_header id={@id} title={dgettext("dialogs", "Channel List")} on_close={@on_close}>
@@ -91,7 +100,18 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
                   phx-value-channel={ch.name}
                   data-testid={"channel-list-row-#{ch.name}"}
                 >
-                  <.table_cell class="font-bold">{ch.name}</.table_cell>
+                  <.table_cell class="font-bold">
+                    <span class="inline-flex items-center gap-retro-4">
+                      <span>{ch.name}</span>
+                      <.badge
+                        :if={invite_only?(ch)}
+                        variant="secondary"
+                        data-testid={"channel-list-invite-only-#{ch.name}"}
+                      >
+                        +i
+                      </.badge>
+                    </span>
+                  </.table_cell>
                   <.table_cell>{ch.user_count}</.table_cell>
                   <.table_cell class="truncate max-w-[200px]">{ch.topic}</.table_cell>
                 </.table_row>
@@ -104,13 +124,21 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
       <.dialog_footer>
         <.button
           variant="default"
-          phx-click={@on_join}
+          phx-click={if @request_access?, do: @on_knock, else: @on_join}
           phx-value-channel={@selected_channel}
           disabled={@selected_channel == nil}
-          data-testid="channel-list-join"
+          data-testid={if @request_access?, do: "channel-list-knock", else: "channel-list-join"}
         >
-          <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Join")}
+          <:icon>
+            <%= if @request_access? do %>
+              <Icons.icon_dialog_invite class="w-4 h-4" />
+            <% else %>
+              <Icons.icon_btn_add class="w-4 h-4" />
+            <% end %>
+          </:icon>
+          {if @request_access?,
+            do: dgettext("dialogs", "Request Access..."),
+            else: dgettext("dialogs", "Join")}
         </.button>
         <.button
           variant="outline"
@@ -124,4 +152,18 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
     </.dialog>
     """
   end
+
+  defp selected_entry(channels, selected_channel) do
+    Enum.find(channels, &(Map.get(&1, :name) == selected_channel))
+  end
+
+  defp request_access?(channels, selected_channel) do
+    case selected_entry(channels, selected_channel) do
+      nil -> false
+      channel -> invite_only?(channel) and not joined?(channel)
+    end
+  end
+
+  defp invite_only?(channel), do: Map.get(channel, :invite_only?, false)
+  defp joined?(channel), do: Map.get(channel, :joined?, false)
 end

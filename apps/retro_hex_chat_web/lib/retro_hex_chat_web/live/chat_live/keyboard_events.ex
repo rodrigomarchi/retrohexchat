@@ -176,6 +176,8 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   defp secondary_dismissals do
     [
       {:show_channel_list, &close_channel_list/1},
+      {:show_invite_channel_picker, &close_invite_channel_picker/1},
+      {:show_knock_request_dialog, &close_knock_request_dialog/1},
       {:show_channel_central, &close_channel_central/1},
       {:search_visible, &clear_search_state/1},
       {:show_address_book, &close_address_book/1},
@@ -255,6 +257,24 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       show_channel_list: false,
       channel_list_selected: nil,
       channel_list_loading: false
+    )
+  end
+
+  defp close_invite_channel_picker(socket) do
+    assign(socket,
+      show_invite_channel_picker: false,
+      invite_channel_picker_target: nil,
+      invite_channel_picker_selected: nil,
+      invite_channel_picker_error: nil
+    )
+  end
+
+  defp close_knock_request_dialog(socket) do
+    assign(socket,
+      show_knock_request_dialog: false,
+      knock_request_channel: nil,
+      knock_request_message: "",
+      knock_request_error: nil
     )
   end
 

@@ -23,7 +23,7 @@
 <p>
   {dgettext(
     "help_commands",
-    "The invited user receives a popup dialog with options to Join or Decline the invitation. The invitation expires after 5 minutes if not acted upon. For invite-only (+i) channels, only channel operators can send invites. Using"
+    "The invited user receives a popup dialog with options to Join or Decline the invitation. The invitation expires after 5 minutes if not acted upon. For invite-only (+i) channels, only channel operators can send invites. Operators can also right-click a nick in the nicklist and choose Invite to Channel... to open a channel picker without typing the command. Using"
   )}
   <code>{dgettext("help_commands", "/invite auto")}</code>
   {dgettext(
@@ -44,4 +44,8 @@
   <.help_link topic="cmd-join">{dgettext("help_commands", "/join")}</.help_link>
   · <.help_link topic="cmd-knock">{dgettext("help_commands", "/knock")}</.help_link>
   · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
+  ·
+  <.help_link topic="feature-channel-invites">
+    {dgettext("help_commands", "Channel Invites")}
+  </.help_link>
 </p>

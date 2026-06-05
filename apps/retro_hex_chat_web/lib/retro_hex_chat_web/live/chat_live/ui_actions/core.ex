@@ -243,28 +243,66 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
 
   def handle_ui_action(socket, :knock_channel, %{channel: channel} = payload) do
     message = Map.get(payload, :message)
-    knock_timestamps = Map.get(socket.assigns, :knock_timestamps, %{})
-    now = System.monotonic_time(:millisecond)
 
-    if throttled_knock?(knock_timestamps, channel, now) do
-      error_event(
-        socket,
-        dgettext("chat", "Please wait before knocking on %{channel} again", channel: channel)
-      )
-    else
-      case Server.knock(channel, socket.assigns.session.nickname, message) do
-        :ok ->
-          updated_timestamps = Map.put(knock_timestamps, channel, now)
-
-          socket
-          |> assign(knock_timestamps: updated_timestamps)
-          |> system_event(dgettext("chat", "Knock sent to %{channel}", channel: channel))
-
-        {:error, msg} ->
-          error_event(socket, msg)
-      end
+    case knock_channel(socket, channel, message) do
+      {:ok, socket} -> socket
+      {:error, socket, _message} -> socket
     end
   end
+
+  @spec knock_channel(Phoenix.LiveView.Socket.t(), String.t(), String.t() | nil) ::
+          {:ok, Phoenix.LiveView.Socket.t()} | {:error, Phoenix.LiveView.Socket.t(), String.t()}
+  def knock_channel(socket, channel, message \\ nil) do
+    knock_timestamps = Map.get(socket.assigns, :knock_timestamps, %{})
+    now = System.monotonic_time(:millisecond)
+    message = normalize_knock_message(message)
+
+    cond do
+      not valid_knock_channel?(channel) ->
+        message = dgettext("chat", "Channel not found")
+        {:error, error_event(socket, message), message}
+
+      not channel_exists?(channel) ->
+        message = dgettext("chat", "Channel not found")
+        {:error, error_event(socket, message), message}
+
+      throttled_knock?(knock_timestamps, channel, now) ->
+        message =
+          dgettext("chat", "Please wait before knocking on %{channel} again", channel: channel)
+
+        {:error, error_event(socket, message), message}
+
+      true ->
+        case Server.knock(channel, socket.assigns.session.nickname, message) do
+          :ok ->
+            updated_timestamps = Map.put(knock_timestamps, channel, now)
+
+            {:ok,
+             socket
+             |> assign(knock_timestamps: updated_timestamps)
+             |> system_event(dgettext("chat", "Knock sent to %{channel}", channel: channel))}
+
+          {:error, msg} ->
+            {:error, error_event(socket, msg), msg}
+        end
+    end
+  end
+
+  defp valid_knock_channel?(channel) when is_binary(channel), do: String.trim(channel) != ""
+  defp valid_knock_channel?(_channel), do: false
+
+  defp channel_exists?(channel) do
+    match?({:ok, _state}, Server.get_state(channel))
+  end
+
+  defp normalize_knock_message(message) when is_binary(message) do
+    case String.trim(message) do
+      "" -> nil
+      trimmed -> trimmed
+    end
+  end
+
+  defp normalize_knock_message(_message), do: nil
 
   defp command_topic_id("bot"), do: "bot-command"
   defp command_topic_id(command_name), do: "cmd-#{String.replace(command_name, "_", "-")}"

@@ -159,6 +159,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           "invite",
           dgettext("help", "invite user"),
           dgettext("help", "channel invite"),
+          dgettext("help", "invite to channel"),
+          dgettext("help", "nicklist menu"),
+          dgettext("help", "context menu"),
           "invite-only",
           "auto-join"
         ],
@@ -173,7 +176,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-join",
         title: "/join",
         category: dgettext("help", "Channels"),
-        keywords: ["join", "enter", "channel"],
+        keywords: [
+          "join",
+          "enter",
+          "channel",
+          "invite",
+          "knock",
+          dgettext("help", "request access")
+        ],
         icon: :icon_btn_join,
         description:
           dgettext(
@@ -197,10 +207,22 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         id: "cmd-list",
         title: "/list",
         category: dgettext("help", "Channels"),
-        keywords: ["list", "channels", dgettext("help", "channel list"), "browse"],
+        keywords: [
+          "list",
+          "channels",
+          dgettext("help", "channel list"),
+          "browse",
+          "knock",
+          dgettext("help", "request access"),
+          "invite-only",
+          "+i"
+        ],
         icon: :icon_dialog_channel_list,
         description:
-          dgettext("help", "Browse all available channels with their topics and user counts.")
+          dgettext(
+            "help",
+            "Browse available channels, join open rooms, or request access to invite-only channels."
+          )
       },
       %{
         id: "cmd-me",

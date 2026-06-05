@@ -10,8 +10,13 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
 
   import Phoenix.Component, only: [assign: 2]
 
+  use Gettext, backend: RetroHexChatWeb.Gettext
+
   alias RetroHexChat.Commands.Autocomplete
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
+  alias RetroHexChatWeb.ChatLive.UiActions.Core
+
+  @max_knock_message_length 200
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt, Phoenix.LiveView.Socket.t()} | {:cont, Phoenix.LiveView.Socket.t()}
@@ -90,6 +95,58 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
     {:halt, socket}
   end
 
+  def handle_event("channel_list_knock", params, socket) do
+    channel_name = Map.get(params, "channel") || socket.assigns.channel_list_selected
+
+    {:halt,
+     socket
+     |> close_channel_list()
+     |> open_knock_request_dialog(channel_name)}
+  end
+
+  def handle_event("knock_request_change", params, socket) do
+    {:halt,
+     assign(socket,
+       show_knock_request_dialog: true,
+       knock_request_channel: Map.get(params, "channel") || socket.assigns.knock_request_channel,
+       knock_request_message: Map.get(params, "message", ""),
+       knock_request_error: nil
+     )}
+  end
+
+  def handle_event("knock_request_submit", params, socket) do
+    channel = Map.get(params, "channel") || socket.assigns.knock_request_channel
+    message = Map.get(params, "message", "")
+
+    if String.length(message) > @max_knock_message_length do
+      {:halt,
+       assign(socket,
+         show_knock_request_dialog: true,
+         knock_request_channel: channel,
+         knock_request_message: message,
+         knock_request_error: dgettext("chat", "Message must be 200 characters or less")
+       )}
+    else
+      case Core.knock_channel(socket, channel, message) do
+        {:ok, socket} ->
+          {:halt, close_knock_request_dialog(socket)}
+
+        {:error, socket, error} ->
+          {:halt,
+           assign(socket,
+             show_knock_request_dialog: true,
+             knock_request_channel: channel,
+             knock_request_message: message,
+             knock_request_error: error
+           )}
+      end
+    end
+  end
+
+  def handle_event("knock_request_cancel", _params, socket) do
+    {:halt, close_knock_request_dialog(socket)}
+  end
+
   # Catch-all — pass through all non-channel-list events
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
@@ -98,6 +155,24 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
       show_channel_list: false,
       channel_list_selected: nil,
       channel_list_loading: false
+    )
+  end
+
+  defp open_knock_request_dialog(socket, channel_name) do
+    assign(socket,
+      show_knock_request_dialog: true,
+      knock_request_channel: channel_name,
+      knock_request_message: "",
+      knock_request_error: nil
+    )
+  end
+
+  defp close_knock_request_dialog(socket) do
+    assign(socket,
+      show_knock_request_dialog: false,
+      knock_request_channel: nil,
+      knock_request_message: "",
+      knock_request_error: nil
     )
   end
 end

@@ -22,7 +22,7 @@
 <p>
   {dgettext(
     "help_commands",
-    "When you knock on a channel, all operators and owners in that channel receive a notification showing your nickname and optional message. They can then decide whether to invite you using"
+    "When you knock on a channel, all operators and owners in that channel receive a notification showing your nickname and optional message. The Channel List marks invite-only channels with a +i badge and changes Join to Request Access..., which opens the same knock request flow with an optional 200-character message. Operators can then decide whether to invite you using"
   )} <code>{dgettext("help_commands", "/invite")}</code>{dgettext(
     "help_commands",
     ". Think of it as ringing the doorbell of a private room."
@@ -42,5 +42,6 @@
 <p>
   <.help_link topic="cmd-invite">{dgettext("help_commands", "/invite")}</.help_link>
   · <.help_link topic="cmd-join">{dgettext("help_commands", "/join")}</.help_link>
+  · <.help_link topic="cmd-list">{dgettext("help_commands", "/list")}</.help_link>
   · <.help_link topic="cmd-mode">{dgettext("help_commands", "/mode")}</.help_link>
 </p>

@@ -169,15 +169,18 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "invite",
           dgettext("help", "channel invite"),
           dgettext("help", "invite dialog"),
+          dgettext("help", "invite to channel"),
+          dgettext("help", "send invite"),
           dgettext("help", "auto-join on invite"),
           dgettext("help", "invite expiration"),
-          "invite-only"
+          "invite-only",
+          "knock"
         ],
         icon: :icon_dialog_invite,
         description:
           dgettext(
             "help",
-            "Receive and manage channel invitations with optional auto-join on invite."
+            "Send, receive, and manage channel invitations with optional auto-join on invite."
           )
       },
       %{

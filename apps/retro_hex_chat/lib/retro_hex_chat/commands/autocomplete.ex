@@ -41,6 +41,8 @@ defmodule RetroHexChat.Commands.Autocomplete do
           user_count: non_neg_integer(),
           topic: String.t() | nil,
           joined?: boolean(),
+          invite_only?: boolean(),
+          modes: String.t(),
           score: non_neg_integer(),
           matched_chars: [non_neg_integer()]
         }
@@ -280,6 +282,8 @@ defmodule RetroHexChat.Commands.Autocomplete do
           user_count: channel.user_count,
           topic: Map.get(channel, :topic),
           joined?: channel.name in user_channels,
+          invite_only?: Map.get(channel, :invite_only?, false),
+          modes: Map.get(channel, :modes, ""),
           score: score,
           matched_chars: matched_chars
         }
@@ -399,15 +403,35 @@ defmodule RetroHexChat.Commands.Autocomplete do
         nil
 
       Map.get(state.modes_detail, :private, false) ->
-        %{name: "Prv", topic: nil, user_count: state.member_count}
+        %{
+          name: "Prv",
+          topic: nil,
+          user_count: state.member_count,
+          joined?: false,
+          invite_only?: false,
+          modes: ""
+        }
 
       true ->
-        %{name: state.name, topic: state.topic, user_count: state.member_count}
+        channel_result(state, false)
     end
   end
 
   defp apply_channel_visibility(channel_name, state, true = _is_member) do
-    %{name: channel_name, topic: state.topic, user_count: state.member_count}
+    state
+    |> channel_result(true)
+    |> Map.put(:name, channel_name)
+  end
+
+  defp channel_result(state, joined?) do
+    %{
+      name: state.name,
+      topic: state.topic,
+      user_count: state.member_count,
+      joined?: joined?,
+      invite_only?: Map.get(state.modes_detail, :invite_only, false),
+      modes: Map.get(state, :modes, "")
+    }
   end
 
   # --- Private Helpers ---

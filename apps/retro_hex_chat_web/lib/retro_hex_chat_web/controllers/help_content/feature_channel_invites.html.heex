@@ -1,14 +1,14 @@
 <p>
   {dgettext(
     "help_features",
-    "The channel invite system allows operators of invite-only (+i) channels to invite specific users to join. Invited users receive a retro-style dialog with Join and Ignore options."
+    "The channel invite system allows operators of invite-only (+i) channels to invite specific users to join. Operators can type /invite or right-click a nick in the nicklist and choose Invite to Channel... to select one of their joined channels. Invited users receive a retro-style dialog with Join and Ignore options."
   )}
 </p>
 <.help_h4 icon={:icon_tab_control}>{dgettext("help_features", "How It Works")}</.help_h4>
 <p>
   {dgettext("help_features", "1. An operator uses")}
   <code>{dgettext("help_features", "/invite <nickname>")}</code>
-  {dgettext("help_features", "to invite a user.")}<br />{dgettext(
+  {dgettext("help_features", "or the Invite to Channel... nicklist menu item to invite a user.")}<br />{dgettext(
     "help_features",
     "2. The invited user sees a popup dialog with the inviter's name and channel."
   )}<br />{dgettext("help_features", "3. Clicking")}
@@ -37,6 +37,7 @@
 <.help_h4 icon={:icon_link}>{dgettext("help_features", "See Also")}</.help_h4>
 <p>
   <.help_link topic="cmd-invite">{dgettext("help_features", "/invite Command")}</.help_link>
+  · <.help_link topic="cmd-knock">{dgettext("help_features", "/knock Command")}</.help_link>
   · <.help_link topic="mode-i">{dgettext("help_features", "+i Invite Only")}</.help_link>
   ·
   <.help_link topic="feature-invite-exceptions">

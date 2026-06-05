@@ -17,28 +17,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
           Phoenix.LiveView.Socket.t()
 
   def handle_ui_action(socket, :send_invite, %{target: target, channel: channel}) do
-    nickname = socket.assigns.session.nickname
-
-    with {:ok, state} <- Server.get_state(channel),
-         :ok <- validate_operator(nickname, state),
-         :ok <- validate_invite_only(channel, state),
-         :ok <- validate_target_not_in_channel(target, state),
-         :ok <- validate_target_online(target) do
-      Server.add_invite_exception(channel, nickname, target)
-
-      Phoenix.PubSub.broadcast(
-        RetroHexChat.PubSub,
-        "user:#{target}",
-        {:channel_invite, %{channel: channel, inviter: nickname}}
-      )
-
-      system_event(
-        socket,
-        dgettext("chat", "* Inviting %{target} to %{channel}", target: target, channel: channel)
-      )
-    else
-      {:error, msg} ->
-        error_event(socket, msg)
+    case send_invite(socket, target, channel) do
+      {:ok, socket} -> socket
+      {:error, socket, _message} -> socket
     end
   end
 
@@ -56,7 +37,50 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Invite do
     |> system_event(dgettext("chat", "* Auto-join on invite: %{status}", status: status))
   end
 
+  @spec send_invite(Phoenix.LiveView.Socket.t(), String.t(), String.t()) ::
+          {:ok, Phoenix.LiveView.Socket.t()} | {:error, Phoenix.LiveView.Socket.t(), String.t()}
+  def send_invite(socket, target, channel) do
+    nickname = socket.assigns.session.nickname
+
+    with :ok <- validate_present(target, dgettext("chat", "* Missing invite target")),
+         :ok <- validate_present(channel, dgettext("chat", "* Missing invite channel")),
+         {:ok, state} <- get_channel_state(channel),
+         :ok <- validate_operator(nickname, state),
+         :ok <- validate_invite_only(channel, state),
+         :ok <- validate_target_not_in_channel(target, state),
+         :ok <- validate_target_online(target),
+         :ok <- Server.add_invite_exception(channel, nickname, target) do
+      Phoenix.PubSub.broadcast(
+        RetroHexChat.PubSub,
+        "user:#{target}",
+        {:channel_invite, %{channel: channel, inviter: nickname}}
+      )
+
+      {:ok,
+       system_event(
+         socket,
+         dgettext("chat", "* Inviting %{target} to %{channel}", target: target, channel: channel)
+       )}
+    else
+      {:error, msg} ->
+        {:error, error_event(socket, msg), msg}
+    end
+  end
+
   # Private helpers
+
+  defp validate_present(value, message) when is_binary(value) do
+    if String.trim(value) == "", do: {:error, message}, else: :ok
+  end
+
+  defp validate_present(_value, message), do: {:error, message}
+
+  defp get_channel_state(channel) do
+    case Server.get_state(channel) do
+      {:ok, state} -> {:ok, state}
+      {:error, _reason} -> {:error, dgettext("chat", "* Channel not found")}
+    end
+  end
 
   defp validate_operator(nickname, state) do
     if nickname in state.operators or nickname in Map.get(state, :owners, []) do

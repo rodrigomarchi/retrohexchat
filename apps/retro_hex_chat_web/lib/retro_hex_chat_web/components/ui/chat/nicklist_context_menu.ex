@@ -158,6 +158,15 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_op && !@is_target_self}
         on_click={@on_action}
+        action="context_invite_to_channel"
+        phx-value-nick={@target_nick}
+      >
+        <:icon><Icons.icon_dialog_invite class="w-[14px] h-[14px]" /></:icon>
+        {dgettext("chat", "Invite to Channel...")}
+      </.context_menu_item>
+      <.context_menu_item
+        :if={@viewer_is_op && !@is_target_self}
+        on_click={@on_action}
         action="context_kick"
         phx-value-nick={@target_nick}
       >

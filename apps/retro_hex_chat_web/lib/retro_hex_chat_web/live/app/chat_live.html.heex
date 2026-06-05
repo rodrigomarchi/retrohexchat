@@ -485,6 +485,28 @@
   on_cancel="mute_duration_cancel"
 />
 
+<.invite_channel_picker_dialog
+  id="invite-channel-picker-dialog"
+  show={@show_invite_channel_picker}
+  target_nick={@invite_channel_picker_target}
+  channels={@session.channels}
+  selected_channel={@invite_channel_picker_selected}
+  error={@invite_channel_picker_error}
+  on_submit="invite_channel_picker_submit"
+  on_cancel="invite_channel_picker_cancel"
+/>
+
+<.knock_request_dialog
+  id="knock-request-dialog"
+  show={@show_knock_request_dialog}
+  channel={@knock_request_channel}
+  message={@knock_request_message}
+  error={@knock_request_error}
+  on_change="knock_request_change"
+  on_submit="knock_request_submit"
+  on_cancel="knock_request_cancel"
+/>
+
 <.about_dialog id="about-dialog" show={@show_about} />
 
 <.account_dialog
@@ -610,6 +632,7 @@
   on_search="channel_list_filter"
   on_select="channel_list_select"
   on_join="channel_list_join"
+  on_knock="channel_list_knock"
   on_close="close_channel_list"
 />
 

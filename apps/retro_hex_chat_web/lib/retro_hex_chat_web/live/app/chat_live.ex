@@ -66,7 +66,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.HighlightDialog
 
   import RetroHexChatWeb.Components.UI.InviteDialog
+  import RetroHexChatWeb.Components.UI.InviteChannelPickerDialog
   import RetroHexChatWeb.Components.UI.KickDialog
+  import RetroHexChatWeb.Components.UI.KnockRequestDialog
   import RetroHexChatWeb.Components.UI.MuteDurationDialog
   import RetroHexChatWeb.Components.UI.NickChangeDialog
   import RetroHexChatWeb.Components.UI.NotifyList
@@ -833,6 +835,14 @@ defmodule RetroHexChatWeb.App.ChatLive do
       nick_change_dialog: nil,
       nick_change_target: nil,
       nick_change_token: nil,
+      show_invite_channel_picker: false,
+      invite_channel_picker_target: nil,
+      invite_channel_picker_selected: nil,
+      invite_channel_picker_error: nil,
+      show_knock_request_dialog: false,
+      knock_request_channel: nil,
+      knock_request_message: "",
+      knock_request_error: nil,
       show_channel_list: false,
       channel_list_channels: [],
       channel_list_filtered: [],
