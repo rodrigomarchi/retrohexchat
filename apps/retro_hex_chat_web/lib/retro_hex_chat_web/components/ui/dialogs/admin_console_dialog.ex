@@ -16,7 +16,13 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :show, :boolean, default: false
   attr :active_tab, :string, default: "console"
   attr :results, :list, default: []
+  attr :motd_content, :string, default: nil
+  attr :motd_result, :any, default: nil
+  attr :motd_editable, :boolean, default: false
   attr :on_tab, :any, default: nil
+  attr :on_motd_set, :any, default: nil
+  attr :on_motd_clear, :any, default: nil
+  attr :on_motd_refresh, :any, default: nil
   attr :on_close, :any, default: nil
 
   @spec admin_console_dialog(map()) :: Phoenix.LiveView.Rendered.t()
@@ -111,6 +117,17 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
               />
             </.tabs_content>
 
+            <.tabs_content value="motd" builder={builder}>
+              <.motd_tab
+                content={@motd_content}
+                result={@motd_result}
+                editable={@motd_editable}
+                on_set={@on_motd_set}
+                on_clear={@on_motd_clear}
+                on_refresh={@on_motd_refresh}
+              />
+            </.tabs_content>
+
             <.tabs_content value="console" builder={builder}>
               <.console_tab results={@results} />
             </.tabs_content>
@@ -202,8 +219,90 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
     """
   end
 
+  attr :content, :string, default: nil
+  attr :result, :any, default: nil
+  attr :editable, :boolean, default: false
+  attr :on_set, :any, default: nil
+  attr :on_clear, :any, default: nil
+  attr :on_refresh, :any, default: nil
+
+  defp motd_tab(assigns) do
+    ~H"""
+    <div class="space-y-retro-8" data-testid="admin-console-tab-motd">
+      <div>
+        <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Current MOTD")}</div>
+        <div
+          id="admin-console-motd-current"
+          class="shadow-retro-sunken bg-white min-h-[82px] max-h-[120px] overflow-y-auto p-retro-8 text-sm whitespace-pre-wrap"
+        >
+          <%= if present?(@content) do %>
+            {@content}
+          <% else %>
+            <span class="text-muted-foreground">{dgettext("dialogs", "No MOTD has been set.")}</span>
+          <% end %>
+        </div>
+      </div>
+
+      <form id="admin-console-motd-form" phx-submit={@on_set} class="space-y-retro-4">
+        <label for="admin-console-motd-input" class="block text-xs font-bold">
+          {dgettext("dialogs", "New MOTD")}
+        </label>
+        <textarea
+          id="admin-console-motd-input"
+          name="motd"
+          class="w-full shadow-retro-sunken bg-white px-retro-6 py-retro-4 text-sm resize-y min-h-[70px]"
+          disabled={not @editable}
+          autocomplete="off"
+        >{@content || ""}</textarea>
+
+        <div class="flex flex-wrap justify-end gap-retro-4">
+          <.button type="button" size="sm" variant="outline" phx-click={@on_refresh}>
+            <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Refresh")}
+          </.button>
+          <.button
+            type="button"
+            size="sm"
+            variant="outline"
+            phx-click={@on_clear}
+            disabled={not @editable}
+          >
+            <:icon><Icons.icon_trash class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Clear MOTD")}
+          </.button>
+          <.button type="submit" size="sm" disabled={not @editable}>
+            <:icon><Icons.icon_btn_save class="w-[14px] h-[14px]" /></:icon>
+            {dgettext("dialogs", "Set MOTD")}
+          </.button>
+        </div>
+      </form>
+
+      <.motd_result_strip result={@result} />
+    </div>
+    """
+  end
+
+  attr :result, :map, default: nil
+
+  defp motd_result_strip(assigns) do
+    ~H"""
+    <div
+      :if={@result}
+      class={[
+        "shadow-retro-sunken bg-black font-mono text-xs p-retro-6",
+        if(Map.get(@result, :status) == :error, do: "text-red-400", else: "text-green-400")
+      ]}
+      data-testid="admin-console-motd-result"
+    >
+      {Map.get(@result, :message, "")}
+    </div>
+    """
+  end
+
+  defp present?(value), do: is_binary(value) and String.trim(value) != ""
+
   @spec admin_shell_tabs() :: [String.t()]
   defp admin_shell_tabs do
-    ~w(server_settings users channels motd broadcast audit_log turn danger_zone)
+    ~w(server_settings users channels broadcast audit_log turn danger_zone)
   end
 end

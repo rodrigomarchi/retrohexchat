@@ -26,7 +26,7 @@ iterations — read it before starting, write to it before stopping.
 | 09 | Channel Configuration | P2 | ✅ | — | 2026-06-05 | Complete: Channel Central welcome/throttle/ownership transfer |
 | 10 | User Lookups | P3 | ✅ | — | 2026-06-05 | Complete: User Lookup dialog, context Last Seen, and Whois/Whowas result cards |
 | 11 | ChanServ | P3 | ✅ | — | 2026-06-05 | Complete: Channel Central registration/access tab |
-| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | MOTD menu + Admin Console tab shell complete; structured tab contents remain |
+| 12 | Server Administration | P3 | 🟦 | — | 2026-06-05 | MOTD menu, Admin Console tab shell, and MOTD tab complete; remaining structured tabs still pending |
 
 **Suggested order:** 02 → 03 (cheap wiring wins) → 01 (highest impact) → 04 → 05 → 06 → 08 → 09 → 07 → 10 → 11 → 12.
 
@@ -42,6 +42,12 @@ Newest first. One entry per completed unit of work.
 > - **Tests:** what was added; `make ci` result
 > - **Help docs:** topics added/updated
 > - **Follow-ups:** anything deferred
+
+### 2026-06-05 — Feature 12: `Server Administration` Admin Console MOTD tab
+- **Did:** implemented the structured Admin Console MOTD tab with current-MOTD display, Refresh, Set MOTD, and Clear MOTD controls. The write actions dispatch through the real `/setmotd` and `/clearmotd` handlers with the viewer's actual admin context, while the raw Console tab remains unchanged.
+- **Tests:** expanded `ServerAdministrationFeatureTest` with component coverage for the MOTD tab controls and LiveView coverage for set/clear command mapping and cache updates. Red phase: `make ci.quick` failed on the missing tab content/events, then passed after implementation. `mix audit.styles` reported 0 LOW/MEDIUM/HIGH findings. Final `make ci` green (9/9, including dialyzer).
+- **Help docs:** updated Admin Console and Message of the Day help content plus HelpTopics metadata/cross-references for `feature-admin-console`, `/motd`, `/setmotd`, and `/clearmotd`.
+- **Follow-ups:** Feature 12 remains in progress for Server Settings, Users, Channels, Broadcast, Audit Log, TURN, and Danger Zone structured controls.
 
 ### 2026-06-05 — Feature 12: `Server Administration` Admin Console tab shell
 - **Did:** converted the existing Admin Console dialog to a tabbed shell with Server Settings, Users, Channels, MOTD, Broadcast, Audit Log, TURN, Danger Zone, and Console tabs while preserving the raw batch-command runner in the default Console tab; wired tab selection through thin LiveView events.
@@ -146,6 +152,7 @@ surprises). Keep each entry one or two lines. Promote the durable ones to the pr
 
 - **[Feature 12] MOTD tests must not delete the global cache during parallel CI** — feature tests and regular tests run concurrently in `make ci.quick`; deleting `:motd_cache` can force unrelated LiveView mounts to query Ecto outside their sandbox owner. Set cache to `:unset` instead.
 - **[Feature 12] Menu affordances should dispatch through the command pipeline** — Help → Message of the Day uses `CommandDispatch.dispatch_command(..., "motd", [])`, preserving `/motd` behavior and Status-tab rendering.
+- **[Feature 12] Structured Admin Console actions need real viewer context** — the raw batch runner intentionally uses elevated provisioning context, but structured controls should dispatch with `ServerRoles.admin?/server_operator?` from the session so operator-only access does not bypass admin-only handlers.
 - **[Feature 12] Admin Console should default to the raw Console tab** — structured tabs can be introduced incrementally while preserving the existing batch-command surface as the safe fallback and default.
 - **[Feature 12] Icon text can leak into label assertions** — Floki text extraction may include icon text such as `#`; wrap visible labels in explicit `data-testid` spans when tests need exact tab/menu labels.
 - **[Feature 11] ChanServ UI should project service state through a domain snapshot** — Channel Central needs founder, viewer role, and grouped access lists together; keep that aggregation in `Services.ChanServ` so event handlers only refresh assigns.

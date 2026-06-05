@@ -61,7 +61,10 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert "ui-message-of-the-day" in cmd_motd.see_also
       assert "ui-message-of-the-day" in special_messages.see_also
       assert "server settings" in admin_console.keywords
+      assert "motd tab" in admin_console.keywords
       assert "danger zone" in admin_console.keywords
+      assert "cmd-setmotd" in admin_console.see_also
+      assert "cmd-clearmotd" in admin_console.see_also
       assert "cmd-admin-nuke" in admin_console.see_also
     end
   end
@@ -106,6 +109,64 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ "Danger Zone"
       assert html =~ "Console"
       assert html =~ ~s(id="admin-console-input")
+    end
+  end
+
+  describe "Admin Console MOTD tab" do
+    test "component renders current MOTD, editor, and command-backed controls" do
+      document =
+        render_component(&AdminConsoleDialog.admin_console_dialog/1,
+          id: "admin-console-dialog",
+          show: true,
+          active_tab: "motd",
+          results: [],
+          motd_content: "Current admin console MOTD",
+          motd_result: nil,
+          on_tab: "admin_console_tab",
+          on_motd_set: "admin_console_set_motd",
+          on_motd_clear: "admin_console_clear_motd",
+          on_motd_refresh: "admin_console_refresh_motd",
+          on_close: "close_admin_console"
+        )
+        |> Floki.parse_document!()
+
+      html = Floki.raw_html(document)
+
+      assert html =~ ~s(id="admin-console-motd-current")
+      assert html =~ "Current admin console MOTD"
+      assert html =~ ~s(id="admin-console-motd-form")
+      assert html =~ ~s(phx-submit="admin_console_set_motd")
+      assert html =~ ~s(name="motd")
+      assert html =~ "Set MOTD"
+      assert html =~ "Clear MOTD"
+      assert html =~ "Refresh"
+    end
+
+    test "admin can set and clear MOTD from the structured tab", %{conn: conn} do
+      view = connect_admin(conn)
+      new_motd = "motd-admin-tab-#{uid()}"
+
+      Application.put_env(:retro_hex_chat, :motd_cache, "Existing MOTD")
+
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      html = render_click(view, "admin_console_tab", %{"tab" => "motd"})
+
+      assert html =~ "Existing MOTD"
+
+      html =
+        view
+        |> form("#admin-console-motd-form", %{motd: new_motd})
+        |> render_submit()
+
+      assert html =~ "MOTD has been updated."
+      assert html =~ new_motd
+      assert Application.get_env(:retro_hex_chat, :motd_cache) == new_motd
+
+      html = render_click(view, "admin_console_clear_motd")
+
+      assert html =~ "MOTD has been cleared."
+      assert html =~ "No MOTD has been set."
+      assert Application.get_env(:retro_hex_chat, :motd_cache) == :unset
     end
   end
 

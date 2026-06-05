@@ -1148,6 +1148,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "users",
           "channels",
           "motd",
+          "motd tab",
+          "setmotd",
+          "clearmotd",
           "broadcast",
           "audit log",
           "turn",
@@ -1174,6 +1177,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "cmd-admin-log",
           "cmd-admin-turn",
           "cmd-admin-nuke",
+          "cmd-setmotd",
+          "cmd-clearmotd",
           "ui-message-of-the-day"
         ]
       },

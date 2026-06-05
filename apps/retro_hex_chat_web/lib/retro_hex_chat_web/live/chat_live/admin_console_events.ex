@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Channels.{Registry, Server, Supervisor}
   alias RetroHexChat.Commands.{Dispatcher, Parser}
+  alias RetroHexChat.Services.Motd
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:cont | :halt, Phoenix.LiveView.Socket.t()}
@@ -24,7 +25,8 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
        assign(socket,
          show_admin_console: true,
          admin_console_results: [],
-         admin_console_tab: "console"
+         admin_console_tab: "console",
+         admin_console_motd_result: nil
        )}
     else
       {:halt,
@@ -40,7 +42,58 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   end
 
   def handle_event("admin_console_tab", %{"tab" => tab}, socket) do
-    {:halt, assign(socket, admin_console_tab: normalize_tab(tab))}
+    tab = normalize_tab(tab)
+    socket = assign(socket, admin_console_tab: tab)
+
+    if tab == "motd" do
+      {:halt, assign_motd_snapshot(socket, nil)}
+    else
+      {:halt, socket}
+    end
+  end
+
+  def handle_event("admin_console_refresh_motd", _params, socket) do
+    if admin?(socket) do
+      result = Dispatcher.dispatch("motd", [], user_context(socket))
+      {:halt, assign_motd_snapshot(socket, result_entry(result))}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_set_motd", %{"motd" => motd}, socket) do
+    if admin?(socket) do
+      args =
+        motd
+        |> String.trim()
+        |> motd_args()
+
+      result = Dispatcher.dispatch("setmotd", args, user_context(socket))
+      {:halt, assign_motd_snapshot(socket, result_entry(result))}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
+  end
+
+  def handle_event("admin_console_clear_motd", _params, socket) do
+    if admin?(socket) do
+      result = Dispatcher.dispatch("clearmotd", [], user_context(socket))
+      {:halt, assign_motd_snapshot(socket, result_entry(result))}
+    else
+      {:halt,
+       error_event(
+         socket,
+         dgettext("chat", "Admin Console is restricted to server administrators.")
+       )}
+    end
   end
 
   def handle_event("execute_admin_console", %{"input" => input}, socket) do
@@ -103,6 +156,36 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       end)
 
     results
+  end
+
+  defp assign_motd_snapshot(socket, result) do
+    assign(socket,
+      admin_console_motd: Motd.get(),
+      admin_console_motd_result: result
+    )
+  end
+
+  defp motd_args(""), do: []
+  defp motd_args(content), do: [content]
+
+  defp result_entry(result) do
+    %{status: result_status(result), message: result_message(result)}
+  end
+
+  defp user_context(socket) do
+    session = socket.assigns.session
+
+    %{
+      nickname: session.nickname,
+      active_channel: session.active_channel,
+      channels: session.channels,
+      identified: session.identified,
+      owner_in: [],
+      operator_in: [],
+      half_operator_in: [],
+      is_admin: ServerRoles.admin?(session.nickname, session.identified),
+      is_server_operator: ServerRoles.server_operator?(session.nickname, session.identified)
+    }
   end
 
   defp execute_line(line, context) do
@@ -195,6 +278,8 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
 
   defp result_message({:ok, :ui_action, :set_mode, %{mode_string: m}}),
     do: dgettext("chat", "Mode set: %{mode}", mode: m)
+
+  defp result_message({:ok, :ui_action, :show_motd, %{content: text}}), do: text
 
   defp result_message({:ok, :ui_action, :view_topic, _}), do: dgettext("chat", "Done")
   defp result_message({:error, msg}), do: msg

@@ -834,6 +834,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       show_admin_console: false,
       admin_console_results: [],
       admin_console_tab: "console",
+      admin_console_motd: nil,
+      admin_console_motd_result: nil,
       show_bot_dialog: false,
       bot_dialog_bots: [],
       bot_dialog_selected: nil,
@@ -893,6 +895,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
   defp admin?(session) do
     ServerRoles.admin?(session.nickname, session.identified) or
       ServerRoles.server_operator?(session.nickname, session.identified)
+  end
+
+  defp admin_only?(session) do
+    ServerRoles.admin?(session.nickname, session.identified)
   end
 
   defp viewer_is_op?(session) do

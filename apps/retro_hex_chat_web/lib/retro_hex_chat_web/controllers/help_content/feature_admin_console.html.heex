@@ -13,7 +13,10 @@
   <strong>{dgettext("help_features", "Channels")}</strong>
   {dgettext("help_features", "- channel inspection and channel administration.")}<br />
   <strong>{dgettext("help_features", "MOTD")}</strong>
-  {dgettext("help_features", "- view, set, or clear the Message of the Day.")}<br />
+  {dgettext(
+    "help_features",
+    "- view the current Message of the Day, edit it with /setmotd, or clear it with /clearmotd."
+  )}<br />
   <strong>{dgettext("help_features", "Broadcast")}</strong>
   {dgettext("help_features", "- wallops and announcements.")}<br />
   <strong>{dgettext("help_features", "Audit Log")}</strong>
@@ -34,6 +37,13 @@
   <code>#</code>
   {dgettext("help_features", "are treated as comments and skipped. Empty lines are also ignored.")}
 </p>
+<.help_h4 icon={:icon_notepad}>{dgettext("help_features", "MOTD Tab")}</.help_h4>
+<p>
+  {dgettext(
+    "help_features",
+    "The MOTD tab shows the current Message of the Day and gives administrators Set MOTD, Clear MOTD, and Refresh controls. Server operators can view the tab, but editing still requires administrator privileges."
+  )}
+</p>
 <.help_h4 icon={:icon_checkmark}>{dgettext("help_features", "Example Script")}</.help_h4>
 <pre><code>{dgettext("help_features", "# Inspect server state /admin server info /admin channel list /admin cs info #general /setmotd Welcome to RetroHexChat!")}</code></pre>
 <.help_h4 icon={:icon_lock}>{dgettext("help_features", "Access")}</.help_h4>
@@ -47,6 +57,8 @@
 <p>
   <.help_link topic="cmd-admin">{dgettext("help_features", "/admin Command")}</.help_link>
   · <.help_link topic="cmd-motd">{dgettext("help_features", "/motd")}</.help_link>
+  · <.help_link topic="cmd-setmotd">{dgettext("help_features", "/setmotd")}</.help_link>
+  · <.help_link topic="cmd-clearmotd">{dgettext("help_features", "/clearmotd")}</.help_link>
   · <.help_link topic="cmd-admin-nuke">{dgettext("help_features", "/admin nuke")}</.help_link>
   ·
   <.help_link topic="ui-message-of-the-day">
