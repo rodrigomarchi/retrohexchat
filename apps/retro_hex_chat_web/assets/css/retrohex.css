@@ -930,6 +930,15 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   white-space: nowrap;
 }
 
+/* The colorful retro camera icon is designed for light surfaces; give it a
+   white chip so it stays legible on the navy nameplate. */
+.p2p-media-call__nameplate svg {
+  background: #fff;
+  border-radius: 2px;
+  padding: 1px;
+  box-sizing: content-box;
+}
+
 .p2p-media-call--focus .p2p-media-call__local-panel,
 .p2p-media-call--maximized .p2p-media-call__local-panel {
   position: absolute;
