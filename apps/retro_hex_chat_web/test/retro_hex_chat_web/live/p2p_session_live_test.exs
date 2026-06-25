@@ -80,9 +80,16 @@ defmodule RetroHexChatWeb.App.P2PSessionLiveTest do
       render_click(creator_view, "request_action", %{"action_type" => "audio_call"})
       Process.sleep(50)
 
-      # Peer sees consent banner
-      html = render(peer_view)
-      assert html =~ "audio_call"
+      # Peer (recipient) sees the consent banner with accept/decline actions
+      peer_html = render(peer_view)
+      assert peer_html =~ "audio_call"
+      assert peer_html =~ "p2p-consent-actions"
+      refute peer_html =~ "p2p-consent-waiting"
+
+      # Creator (requester) sees a waiting indicator, NOT the accept/decline buttons
+      creator_html = render(creator_view)
+      assert creator_html =~ "p2p-consent-waiting"
+      refute creator_html =~ "p2p-consent-actions"
 
       # Peer accepts -> triggers connecting, but WebRTC starts only after the lazy hook is ready.
       render_click(peer_view, "respond_action", %{"accepted" => "true"})

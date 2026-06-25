@@ -69,6 +69,10 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
   attr :messages, :list, default: [], doc: "Lobby chat messages"
   attr :action_request, :map, default: nil, doc: "Pending action request for consent"
 
+  attr :user_id, :any,
+    default: nil,
+    doc: "Current user id, to distinguish requester from recipient"
+
   # Session controls
   attr :turn_configured, :boolean, default: false, doc: "Whether TURN server is configured"
   attr :turn_only, :boolean, default: false, doc: "Privacy mode (TURN-only relay)"
@@ -191,6 +195,8 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
               @action_request[:status] != "rejected"
           }
           action_request={@action_request}
+          peer={@peer}
+          is_requester={@user_id != nil && @action_request[:requester_id] == @user_id}
         />
 
         <%!-- Media call area (MediaHook handles audio/video streams and controls) --%>
@@ -592,6 +598,11 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
 
   @doc false
   attr :action_request, :map, required: true
+  attr :peer, :string, default: nil, doc: "Peer nickname, shown while waiting for a response"
+
+  attr :is_requester, :boolean,
+    default: false,
+    doc: "Whether the current user sent the request (waits) vs received it (responds)"
 
   @spec p2p_consent_banner(map()) :: Phoenix.LiveView.Rendered.t()
   defp p2p_consent_banner(assigns) do
@@ -602,7 +613,14 @@ defmodule RetroHexChatWeb.Components.UI.P2PLobby do
           action: action_request_label(Map.get(@action_request, :action_type, "unknown"))
         )}
       </p>
-      <div class="flex gap-2 justify-end">
+      <p
+        :if={@is_requester}
+        class="text-xs text-muted-foreground italic"
+        data-testid="p2p-consent-waiting"
+      >
+        {dgettext("p2p", "Waiting for %{peer} to respond...", peer: @peer)}
+      </p>
+      <div :if={!@is_requester} class="flex gap-2 justify-end" data-testid="p2p-consent-actions">
         <.button size="sm" phx-click="respond_action" phx-value-accepted="true">
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
           {dgettext("p2p", "Accept")}
