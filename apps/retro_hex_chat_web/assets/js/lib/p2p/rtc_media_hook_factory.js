@@ -256,9 +256,7 @@ export function createRtcMediaHook(configInput) {
     _attachMediaElements() {
       if (this.localStream) {
         const localVideo = this._query(config.elementIds.localVideo);
-        if (localVideo) {
-          localVideo.srcObject = this.localStream;
-        }
+        this._setSrcObject(localVideo, this.localStream);
       }
 
       if (this.remoteStream) {
@@ -269,12 +267,20 @@ export function createRtcMediaHook(configInput) {
           remoteVideo &&
           (this.remoteHasVideo || this.remoteStream.getVideoTracks?.().length > 0)
         ) {
-          remoteVideo.srcObject = this.remoteStream;
+          this._setSrcObject(remoteVideo, this.remoteStream);
         }
 
-        if (remoteAudio) {
-          remoteAudio.srcObject = this.remoteStream;
-        }
+        this._setSrcObject(remoteAudio, this.remoteStream);
+      }
+    },
+
+    // Assign a stream only when it actually changed. updated() runs on every
+    // LiveView patch to #media-call (e.g. the 1s duration tick), and reassigning
+    // the same MediaStream tears down and rebuilds the media pipeline, which the
+    // user sees as a constant video flicker.
+    _setSrcObject(el, stream) {
+      if (el && el.srcObject !== stream) {
+        el.srcObject = stream;
       }
     },
 

@@ -251,6 +251,54 @@ describe("MediaHook — Video Call", () => {
 
     expect(remoteVideo.srcObject).toBe(remoteStream);
   });
+
+  it("does not reassign srcObject on updated() when stream is unchanged (no flicker)", () => {
+    const localStream = createMockStream([{ kind: "video", enabled: true }]);
+    const remoteStream = { id: "remote-1", getVideoTracks: () => [{ kind: "video" }] };
+    hook.localStream = localStream;
+    hook.remoteStream = remoteStream;
+    hook.remoteHasVideo = true;
+
+    // A setter that throws if the same stream is assigned twice — mirrors the
+    // browser tearing down the media pipeline (the visible flicker).
+    const makeVideoEl = (stream) => {
+      let current = stream;
+      let assignments = 0;
+      return {
+        get srcObject() {
+          return current;
+        },
+        set srcObject(v) {
+          assignments += 1;
+          current = v;
+        },
+        get assignments() {
+          return assignments;
+        },
+      };
+    };
+
+    const localVideo = makeVideoEl(localStream);
+    const remoteVideo = makeVideoEl(remoteStream);
+    const remoteAudio = makeVideoEl(remoteStream);
+    el.querySelector.mockImplementation((sel) => {
+      if (sel === "#local-video") return localVideo;
+      if (sel === "#remote-video") return remoteVideo;
+      if (sel === "#remote-audio") return remoteAudio;
+      return null;
+    });
+
+    // Simulate repeated LiveView patches (e.g. the 1s duration tick).
+    hook.updated();
+    hook.updated();
+    hook.updated();
+
+    expect(localVideo.assignments).toBe(0);
+    expect(remoteVideo.assignments).toBe(0);
+    expect(remoteAudio.assignments).toBe(0);
+    expect(localVideo.srcObject).toBe(localStream);
+    expect(remoteVideo.srcObject).toBe(remoteStream);
+  });
 });
 
 // --- US4: Audio-to-Video Upgrade (T037) ---
