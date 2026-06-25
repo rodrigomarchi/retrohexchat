@@ -111,6 +111,68 @@ describe("WebRTCHook", () => {
     });
   });
 
+  describe("connection failure surfacing", () => {
+    it("pushes p2p_failed when offer creation throws", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(WebRTCHook);
+      Object.assign(hook, ctx);
+
+      globalThis.RTCPeerConnection = class extends MockRTCPeerConnection {
+        async createOffer() {
+          throw new Error("boom");
+        }
+      };
+
+      hook.mounted();
+      const handler = ctx.handleEvent.mock.calls.find((c) => c[0] === "p2p_start_offer")[1];
+      await handler({ ice_servers: [] });
+
+      await vi.waitFor(() => {
+        expect(ctx.pushEvent).toHaveBeenCalledWith("p2p_failed", { reason: "offer_failed" });
+      });
+    });
+
+    it("pushes p2p_failed when answering a remote offer throws", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(WebRTCHook);
+      Object.assign(hook, ctx);
+
+      globalThis.RTCPeerConnection = class extends MockRTCPeerConnection {
+        async createAnswer() {
+          throw new Error("boom");
+        }
+      };
+
+      hook.mounted();
+      const signalHandler = ctx.handleEvent.mock.calls.find((c) => c[0] === "p2p_signal")[1];
+      await signalHandler({ type: "offer", sdp: "remote-sdp" });
+
+      await vi.waitFor(() => {
+        expect(ctx.pushEvent).toHaveBeenCalledWith("p2p_failed", { reason: "answer_failed" });
+      });
+    });
+
+    it("does not fail the connection on a bad ICE candidate", async () => {
+      const ctx = createHookContext();
+      const hook = Object.create(WebRTCHook);
+      Object.assign(hook, ctx);
+
+      hook.mounted();
+      await hook._createConnection();
+      // Force addIceCandidate to throw on the live connection.
+      hook.pc.addIceCandidate = async () => {
+        throw new Error("bad candidate");
+      };
+
+      await hook._handleRemoteCandidate({ candidate: { candidate: "x" } });
+
+      expect(ctx.pushEvent).not.toHaveBeenCalledWith(
+        "p2p_failed",
+        expect.objectContaining({ reason: expect.any(String) }),
+      );
+    });
+  });
+
   describe("p2p_start_answer flow", () => {
     it("stores ICE servers and waits for offer", () => {
       const ctx = createHookContext();

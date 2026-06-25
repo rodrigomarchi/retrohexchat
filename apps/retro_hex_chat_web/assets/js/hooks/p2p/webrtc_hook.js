@@ -46,10 +46,14 @@ const WebRTCHook = {
     this.iceServers = ice_servers;
     this.turnOnly = !!turn_only;
     this.role = "initiator";
-    await this._createConnection();
 
-    const offer = await createOffer(this.pc);
-    this.pushEvent("p2p_signal", { type: "offer", sdp: offer.sdp });
+    try {
+      await this._createConnection();
+      const offer = await createOffer(this.pc);
+      this.pushEvent("p2p_signal", { type: "offer", sdp: offer.sdp });
+    } catch (error) {
+      this._failConnection("offer", error);
+    }
   },
 
   _handleStartAnswer({ ice_servers, turn_only }) {
@@ -77,26 +81,40 @@ const WebRTCHook = {
 
   async _handleRemoteOffer(data) {
     // Answerer receives offer — create PC, set offer, create answer
-    if (!this.pc) {
-      await this._createConnection();
-    }
+    try {
+      if (!this.pc) {
+        await this._createConnection();
+      }
 
-    const answer = await createAnswer(this.pc, {
-      type: "offer",
-      sdp: data.sdp,
-    });
-    this.pushEvent("p2p_signal", { type: "answer", sdp: answer.sdp });
+      const answer = await createAnswer(this.pc, {
+        type: "offer",
+        sdp: data.sdp,
+      });
+      this.pushEvent("p2p_signal", { type: "answer", sdp: answer.sdp });
+    } catch (error) {
+      this._failConnection("answer", error);
+    }
   },
 
   async _handleRemoteAnswer(data) {
-    if (this.pc) {
+    if (!this.pc) return;
+
+    try {
       await handleAnswer(this.pc, { type: "answer", sdp: data.sdp });
+    } catch (error) {
+      this._failConnection("answer", error);
     }
   },
 
   async _handleRemoteCandidate(data) {
-    if (this.pc && data.candidate) {
+    if (!this.pc || !data.candidate) return;
+
+    try {
       await addIceCandidate(this.pc, data.candidate);
+    } catch (error) {
+      // A single late/duplicate ICE candidate is not fatal — the connection
+      // state machine surfaces a real failure if negotiation truly breaks.
+      console.warn("[P2P] Failed to add ICE candidate", error);
     }
   },
 
@@ -129,6 +147,12 @@ const WebRTCHook = {
       this._handleConnectionStateChange(state);
     });
 
+    this.pc.onicecandidateerror = (event) => {
+      // STUN/TURN candidate errors are frequently benign (e.g. one server of
+      // several is unreachable); log for diagnostics, do not fail the call.
+      console.warn("[P2P] ICE candidate error", event.errorCode, event.errorText);
+    };
+
     this._negotiating = false;
     this.pc.onnegotiationneeded = async () => {
       if (this.role === "initiator" && !this._negotiating) {
@@ -136,6 +160,10 @@ const WebRTCHook = {
         try {
           const offer = await createOffer(this.pc);
           this.pushEvent("p2p_signal", { type: "offer", sdp: offer.sdp });
+        } catch (error) {
+          // Renegotiation (e.g. audio→video upgrade) failed; keep the existing
+          // connection alive rather than tearing the whole session down.
+          console.warn("[P2P] Renegotiation failed", error);
         } finally {
           this._negotiating = false;
         }
@@ -225,18 +253,27 @@ const WebRTCHook = {
       this.pushEvent("p2p_retry", { attempt });
 
       setTimeout(async () => {
-        if (this.role === "initiator") {
-          await this._createConnection();
-          const offer = await createOffer(this.pc);
-          this.pushEvent("p2p_signal", { type: "offer", sdp: offer.sdp });
-        } else {
-          // Answerer waits for new offer from initiator
-          await this._createConnection();
+        try {
+          if (this.role === "initiator") {
+            await this._createConnection();
+            const offer = await createOffer(this.pc);
+            this.pushEvent("p2p_signal", { type: "offer", sdp: offer.sdp });
+          } else {
+            // Answerer waits for new offer from initiator
+            await this._createConnection();
+          }
+        } catch (error) {
+          this._failConnection("retry", error);
         }
       }, delay);
     } else {
       this.pushEvent("p2p_failed", { reason: "max_retries_exhausted" });
     }
+  },
+
+  _failConnection(phase, error) {
+    console.error(`[P2P] connection ${phase} failed`, error);
+    this.pushEvent("p2p_failed", { reason: `${phase}_failed` });
   },
 
   _clearDisconnectedTimer() {

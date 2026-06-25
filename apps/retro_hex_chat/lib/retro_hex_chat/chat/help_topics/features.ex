@@ -992,7 +992,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Monitor and adjust call quality with bitrate presets and real-time quality indicators."
+            "Monitor and adjust call quality with bitrate presets and real-time quality indicators. See also: Network Statistics."
           )
       },
       %{
@@ -1036,6 +1036,34 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Animated visual diagram showing the bilateral P2P link with real-time status and peer info."
+          )
+      },
+      %{
+        id: "feature-network-stats",
+        title: dgettext("help", "Network Statistics"),
+        category: dgettext("help", "P2P & Calls"),
+        keywords: [
+          "network",
+          "stats",
+          "statistics",
+          "telemetry",
+          "latency",
+          "rtt",
+          "ping",
+          "jitter",
+          "packet loss",
+          "bitrate",
+          "bandwidth",
+          "fps",
+          "mos",
+          "health",
+          "webrtc"
+        ],
+        icon: :icon_status_signal,
+        description:
+          dgettext(
+            "help",
+            "The Network panel during a call shows live connection health (a MOS score), latency, jitter, packet loss, up/download bitrate, video resolution and frame rate, and whether quality is limited by CPU or bandwidth. Collapse it with the toolbar button. See also: Call Quality, Connection Diagram."
           )
       },
       %{

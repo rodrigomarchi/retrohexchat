@@ -1,0 +1,63 @@
+<p>
+  {dgettext(
+    "help_p2p",
+    "During a call the Network panel shows live statistics about your peer-to-peer connection. Click the ? button in the panel to see a short explanation of each metric inline, or hover any row for a tooltip."
+  )}
+</p>
+<.help_h4 icon={:icon_status_signal}>{dgettext("help_p2p", "Health & MOS")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "The header shows an overall health rating (Excellent / Good / Fair / Poor) and a MOS score. MOS (Mean Opinion Score) is a 1–5 estimate of call quality derived from latency, jitter and packet loss: 5 is excellent, and anything below 3.5 usually feels uncomfortable."
+  )}
+</p>
+<.help_h4 icon={:icon_webrtc}>{dgettext("help_p2p", "Metrics")}</.help_h4>
+<ul>
+  <li>
+    <strong>{dgettext("help_p2p", "Latency")}</strong>
+    {dgettext(
+      "help_p2p",
+      "— round-trip time for data to reach the peer and return. Lower is better; under ~150 ms feels instant."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_p2p", "Jitter")}</strong>
+    {dgettext(
+      "help_p2p",
+      "— variation in packet arrival timing. High jitter causes choppy audio and video."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_p2p", "Packet loss")}</strong>
+    {dgettext(
+      "help_p2p",
+      "— percentage of packets that never arrived. Above ~3% noticeably degrades quality."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_p2p", "Download / Upload")}</strong>
+    {dgettext(
+      "help_p2p",
+      "— how much media you are currently receiving and sending, in kilobits per second."
+    )}
+  </li>
+  <li>
+    <strong>{dgettext("help_p2p", "Video")}</strong>
+    {dgettext("help_p2p", "— resolution and frame rate of the received video.")}
+  </li>
+  <li>
+    <strong>{dgettext("help_p2p", "Limited by")}</strong>
+    {dgettext(
+      "help_p2p",
+      "— why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."
+    )}
+  </li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-call-quality">{dgettext("help_p2p", "Call Quality")}</.help_link>
+  ·
+  <.help_link topic="feature-connection-diagram">
+    {dgettext("help_p2p", "Connection Diagram")}
+  </.help_link>
+</p>

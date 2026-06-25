@@ -9,6 +9,10 @@ import {
   stopAllTracks,
   formatDuration,
   mapQualityLevel,
+  getStatsSnapshot,
+  computeMos,
+  mosToLevel,
+  deriveStats,
   BITRATE_PRESETS,
   QUALITY_LABELS,
   applyBitratePreset,
@@ -244,6 +248,156 @@ describe("Quality Monitoring", () => {
 
     it("returns poor for worst conditions", () => {
       expect(mapQualityLevel({ packetLoss: 15, roundTripTime: 0.5 })).toBe("poor");
+    });
+  });
+
+  describe("getStatsSnapshot", () => {
+    function mockPc(reports) {
+      return { getStats: async () => ({ forEach: (cb) => reports.forEach(cb) }) };
+    }
+
+    it("aggregates candidate-pair, inbound and outbound reports", async () => {
+      const pc = mockPc([
+        {
+          type: "candidate-pair",
+          state: "succeeded",
+          currentRoundTripTime: 0.05,
+          availableOutgoingBitrate: 2_000_000,
+        },
+        {
+          type: "inbound-rtp",
+          kind: "audio",
+          packetsLost: 2,
+          packetsReceived: 98,
+          bytesReceived: 5000,
+          jitter: 0.01,
+        },
+        {
+          type: "inbound-rtp",
+          kind: "video",
+          packetsLost: 1,
+          packetsReceived: 199,
+          bytesReceived: 120000,
+          jitter: 0.02,
+          framesPerSecond: 30,
+          frameWidth: 640,
+          frameHeight: 480,
+          freezeCount: 1,
+        },
+        {
+          type: "outbound-rtp",
+          kind: "video",
+          bytesSent: 60000,
+          qualityLimitationReason: "bandwidth",
+        },
+      ]);
+
+      const snap = await getStatsSnapshot(pc);
+      expect(snap.roundTripTime).toBe(0.05);
+      expect(snap.availableOutgoingBitrate).toBe(2_000_000);
+      expect(snap.packetsLost).toBe(3); // 2 audio + 1 video
+      expect(snap.packetsReceived).toBe(297);
+      expect(snap.bytesReceived).toBe(125000);
+      expect(snap.bytesSent).toBe(60000);
+      expect(snap.jitter).toBe(0.02); // worst inbound stream
+      expect(snap.framesPerSecond).toBe(30);
+      expect(snap.frameWidth).toBe(640);
+      expect(snap.frameHeight).toBe(480);
+      expect(snap.freezeCount).toBe(1);
+      expect(snap.qualityLimitationReason).toBe("bandwidth");
+      expect(snap.hasVideo).toBe(true);
+    });
+
+    it("ignores non-succeeded candidate pairs and missing fields", async () => {
+      const pc = mockPc([
+        { type: "candidate-pair", state: "in-progress", currentRoundTripTime: 9 },
+        { type: "inbound-rtp", kind: "audio", packetsReceived: 10 },
+      ]);
+
+      const snap = await getStatsSnapshot(pc);
+      expect(snap.roundTripTime).toBe(0);
+      expect(snap.hasVideo).toBe(false);
+      expect(snap.qualityLimitationReason).toBe("none");
+    });
+  });
+
+  describe("computeMos", () => {
+    it("returns a high MOS for great conditions", () => {
+      const mos = computeMos({ rttMs: 20, jitterMs: 5, lossPct: 0 });
+      expect(mos).toBeGreaterThanOrEqual(4.2);
+      expect(mos).toBeLessThanOrEqual(5);
+    });
+
+    it("returns a low MOS for poor conditions", () => {
+      const mos = computeMos({ rttMs: 600, jitterMs: 80, lossPct: 12 });
+      expect(mos).toBeLessThan(3.5);
+      expect(mos).toBeGreaterThanOrEqual(1);
+    });
+
+    it("clamps to the [1, 5] range", () => {
+      const worst = computeMos({ rttMs: 5000, jitterMs: 1000, lossPct: 100 });
+      expect(worst).toBe(1);
+    });
+  });
+
+  describe("mosToLevel", () => {
+    it("maps MOS to quality levels", () => {
+      expect(mosToLevel(4.5)).toBe("excellent");
+      expect(mosToLevel(4.1)).toBe("good");
+      expect(mosToLevel(3.7)).toBe("fair");
+      expect(mosToLevel(2.0)).toBe("poor");
+    });
+  });
+
+  describe("deriveStats", () => {
+    const curr = {
+      timestamp: 2000,
+      roundTripTime: 0.05,
+      jitter: 0.01,
+      availableOutgoingBitrate: 2_000_000,
+      packetsLost: 1,
+      packetsReceived: 199,
+      bytesReceived: 125_000,
+      bytesSent: 62_500,
+      framesPerSecond: 30,
+      frameWidth: 640,
+      frameHeight: 480,
+      freezeCount: 0,
+      qualityLimitationReason: "bandwidth",
+      hasVideo: true,
+    };
+
+    it("computes rates from the delta between two snapshots", () => {
+      const prev = {
+        timestamp: 1000,
+        bytesReceived: 0,
+        bytesSent: 0,
+        packetsLost: 0,
+        packetsReceived: 0,
+      };
+
+      const d = deriveStats(prev, curr);
+      expect(d.inbound_kbps).toBe(1000); // 125000 bytes * 8 / 1s / 1000
+      expect(d.outbound_kbps).toBe(500);
+      expect(d.loss_pct).toBe(0.5); // 1 / (1 + 199) * 100
+      expect(d.rtt_ms).toBe(50);
+      expect(d.jitter_ms).toBe(10);
+      expect(d.available_kbps).toBe(2000);
+      expect(d.fps).toBe(30);
+      expect(d.frame_width).toBe(640);
+      expect(d.has_video).toBe(true);
+      expect(d.limitation).toBe("bandwidth");
+      expect(d.level).toBeDefined();
+      expect(d.label).toBeDefined();
+      expect(d.mos).toBeGreaterThanOrEqual(1);
+    });
+
+    it("yields zeroed rates on the first sample (no previous snapshot)", () => {
+      const d = deriveStats(null, curr);
+      expect(d.inbound_kbps).toBe(0);
+      expect(d.outbound_kbps).toBe(0);
+      expect(d.loss_pct).toBe(0);
+      expect(d.rtt_ms).toBe(50); // gauges are still valid
     });
   });
 

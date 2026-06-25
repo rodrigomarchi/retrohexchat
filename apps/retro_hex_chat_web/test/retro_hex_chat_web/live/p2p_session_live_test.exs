@@ -101,6 +101,15 @@ defmodule RetroHexChatWeb.App.P2PSessionLiveTest do
       assert_push_event(creator_view, "p2p_start_offer", %{role: "initiator"})
     end
 
+    test "p2p_failed surfaces a clear system message to the user",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      html = render_hook(view, "p2p_failed", %{"reason" => "max_retries_exhausted"})
+
+      assert html =~ "Could not establish the P2P connection"
+    end
+
     test "ready WebRTC hook starts when session later enters connecting",
          %{conn: conn, token: token, creator: creator} do
       {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
@@ -292,6 +301,52 @@ defmodule RetroHexChatWeb.App.P2PSessionLiveTest do
       assert has_element?(view, ~s([data-testid="media-layout-focus"]))
       assert has_element?(view, ~s([data-testid="media-layout-side-by-side"]))
       assert has_element?(view, ~s([data-testid="media-layout-maximized"]))
+    end
+
+    test "media_stats event renders the live network panel during a call",
+         %{conn: conn, token: token, creator: creator} do
+      {:ok, view, _html} = live(chat_conn(conn, creator.nickname), "/p2p/#{token}")
+
+      send(view.pid, %{event: "p2p_status_changed", payload: %{status: "active"}})
+      render_click(view, "media_call_started", %{"type" => "video"})
+
+      # No panel until the first stats sample arrives.
+      refute has_element?(view, ~s([data-testid="p2p-network-panel"]))
+
+      html =
+        render_hook(view, "media_stats", %{
+          "level" => "good",
+          "label" => "Good",
+          "mos" => 4.1,
+          "rtt_ms" => 42,
+          "jitter_ms" => 8,
+          "loss_pct" => 0.5,
+          "inbound_kbps" => 900,
+          "outbound_kbps" => 450,
+          "available_kbps" => 1800,
+          "fps" => 30,
+          "frame_width" => 640,
+          "frame_height" => 480,
+          "freeze_count" => 0,
+          "limitation" => "bandwidth",
+          "has_video" => true
+        })
+
+      assert html =~ ~s(data-testid="p2p-network-panel")
+      assert html =~ "42 ms"
+      assert html =~ "MOS 4.1"
+      assert html =~ "640×480"
+
+      # The info button reveals per-metric descriptions inline.
+      refute has_element?(view, ~s([data-testid="p2p-network-mos-desc"]))
+      with_info = render_click(view, "toggle_network_info")
+      assert with_info =~ "Round-trip time"
+      assert has_element?(view, ~s([data-testid="p2p-network-mos-desc"]))
+
+      # Collapsing hides the metric grid but keeps the panel header.
+      collapsed = render_click(view, "toggle_network_panel")
+      assert collapsed =~ ~s(data-testid="p2p-network-panel")
+      refute collapsed =~ "42 ms"
     end
 
     test "video call layout can switch between focus, side by side, and maximized",

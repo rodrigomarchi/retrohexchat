@@ -30,6 +30,7 @@ const MediaHook = createRtcMediaHook({
     muteChanged: "media_mute_changed",
     cameraChanged: "media_camera_changed",
     qualityUpdate: "media_quality_update",
+    statsUpdate: "media_stats",
     durationTick: "media_duration_tick",
     requestUpgrade: "media_request_upgrade",
     devicesListed: "media_devices_listed",

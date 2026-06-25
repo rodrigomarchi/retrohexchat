@@ -200,8 +200,17 @@ const FileTransferHook = {
     }
 
     // Compute hash before offering
-    const buffer = await readFileAsArrayBuffer(file);
-    const sha256 = await computeHash(buffer);
+    let sha256;
+    try {
+      const buffer = await readFileAsArrayBuffer(file);
+      sha256 = await computeHash(buffer);
+    } catch (error) {
+      console.error("[P2P] file read/hash failed", error);
+      this.pushEvent("ft_validation_error", {
+        error: t("Could not read the selected file. Please try another file."),
+      });
+      return;
+    }
 
     this._session = createSenderSession(file, sha256);
 
@@ -235,8 +244,19 @@ const FileTransferHook = {
 
   // --- DataChannel Message Handling ---
 
+  _failTransfer(reason, error) {
+    if (error) console.error("[P2P] file transfer error", error);
+    this.pushEvent("ft_failed", { reason });
+  },
+
   _handleChannelMessage(data) {
-    const msg = decodeMessage(data);
+    let msg;
+    try {
+      msg = decodeMessage(data);
+    } catch (error) {
+      this._failTransfer(t("Received malformed data from the peer."), error);
+      return;
+    }
 
     switch (msg.type) {
       case MSG.FILE_OFFER:
@@ -329,30 +349,36 @@ const FileTransferHook = {
     if (!this._session || !this._channel) return;
     this._sending = true;
 
-    while (this._session && this._session.state === STATE.TRANSFERRING) {
-      // Backpressure check
-      if (this._channel.bufferedAmount >= HIGH_WATER_MARK) {
-        this._sending = false;
-        return; // Will be resumed by onbufferedamountlow
+    try {
+      while (this._session && this._session.state === STATE.TRANSFERRING) {
+        // Backpressure check
+        if (this._channel.bufferedAmount >= HIGH_WATER_MARK) {
+          this._sending = false;
+          return; // Will be resumed by onbufferedamountlow
+        }
+
+        const chunk = await getNextChunk(this._session);
+        if (!chunk) {
+          // All chunks sent
+          this._channel.send(
+            encodeControlMessage(MSG.TRANSFER_DONE, {
+              transferId: this._session.transferId,
+            }),
+          );
+          this._session.state = STATE.VERIFYING;
+          this._sending = false;
+          return;
+        }
+
+        const encoded = encodeChunk(chunk.index, chunk.data);
+        this._channel.send(encoded);
+
+        recordSpeedSample(this._session, this._session.bytesSent, Date.now());
       }
-
-      const chunk = await getNextChunk(this._session);
-      if (!chunk) {
-        // All chunks sent
-        this._channel.send(
-          encodeControlMessage(MSG.TRANSFER_DONE, {
-            transferId: this._session.transferId,
-          }),
-        );
-        this._session.state = STATE.VERIFYING;
-        this._sending = false;
-        return;
-      }
-
-      const encoded = encodeChunk(chunk.index, chunk.data);
-      this._channel.send(encoded);
-
-      recordSpeedSample(this._session, this._session.bytesSent, Date.now());
+    } catch (error) {
+      this._sending = false;
+      this._failTransfer(t("Error reading the file while sending."), error);
+      return;
     }
 
     this._sending = false;
@@ -380,9 +406,16 @@ const FileTransferHook = {
     this._stopProgressUpdates();
     this.pushEvent("ft_progress", { percent: 100, speed: "0 B/s", eta: "0s" });
 
-    const blob = assembleFile(this._session);
-    const buffer = await blob.arrayBuffer();
-    const hash = await computeHash(buffer);
+    let blob;
+    let hash;
+    try {
+      blob = assembleFile(this._session);
+      const buffer = await blob.arrayBuffer();
+      hash = await computeHash(buffer);
+    } catch (error) {
+      this._failTransfer(t("Could not verify the received file."), error);
+      return;
+    }
     const match = hash === this._session.expectedHash;
 
     // Send hash result to sender

@@ -293,6 +293,155 @@ export function mapQualityLevel(snapshot) {
 }
 
 /**
+ * Collect a detailed connection stats snapshot from getStats().
+ *
+ * Most fields are cumulative counters (bytes, packets) and must be turned into
+ * rates via deriveStats() using a previous snapshot. RTT, jitter and the video
+ * dimensions are instantaneous gauges.
+ * @param {RTCPeerConnection} pc
+ * @returns {Promise<object>} raw snapshot
+ */
+export async function getStatsSnapshot(pc) {
+  const stats = await pc.getStats();
+  const snap = {
+    timestamp: Date.now(),
+    roundTripTime: 0, // seconds (candidate-pair)
+    jitter: 0, // seconds (worst inbound stream)
+    availableOutgoingBitrate: 0, // bps
+    packetsLost: 0, // cumulative
+    packetsReceived: 0, // cumulative
+    bytesReceived: 0, // cumulative
+    bytesSent: 0, // cumulative
+    framesPerSecond: 0, // inbound video gauge
+    frameWidth: 0,
+    frameHeight: 0,
+    freezeCount: 0, // cumulative
+    qualityLimitationReason: "none", // outbound video: cpu | bandwidth | none | other
+    hasVideo: false,
+  };
+
+  stats.forEach((report) => {
+    if (report.type === "candidate-pair" && report.state === "succeeded") {
+      snap.roundTripTime = report.currentRoundTripTime || snap.roundTripTime;
+      snap.availableOutgoingBitrate =
+        report.availableOutgoingBitrate || snap.availableOutgoingBitrate;
+    }
+
+    if (report.type === "inbound-rtp") {
+      snap.packetsLost += report.packetsLost || 0;
+      snap.packetsReceived += report.packetsReceived || 0;
+      snap.bytesReceived += report.bytesReceived || 0;
+      if (typeof report.jitter === "number") {
+        snap.jitter = Math.max(snap.jitter, report.jitter);
+      }
+      if (report.kind === "video") {
+        snap.hasVideo = true;
+        snap.framesPerSecond = report.framesPerSecond || snap.framesPerSecond;
+        snap.frameWidth = report.frameWidth || snap.frameWidth;
+        snap.frameHeight = report.frameHeight || snap.frameHeight;
+        snap.freezeCount = report.freezeCount || snap.freezeCount;
+      }
+    }
+
+    if (report.type === "outbound-rtp") {
+      snap.bytesSent += report.bytesSent || 0;
+      if (report.kind === "video" && report.qualityLimitationReason) {
+        snap.qualityLimitationReason = report.qualityLimitationReason;
+      }
+    }
+  });
+
+  return snap;
+}
+
+/**
+ * Estimate a MOS (Mean Opinion Score, 1-5) from latency, jitter and packet loss
+ * using the ITU-T E-model R-factor approximation. Higher is better.
+ * @param {{rttMs: number, jitterMs: number, lossPct: number}} m
+ * @returns {number} MOS clamped to [1, 5], one decimal
+ */
+export function computeMos({ rttMs, jitterMs, lossPct }) {
+  // Effective latency folds in jitter (counted twice) and a fixed delay budget.
+  const effectiveLatency = rttMs + jitterMs * 2 + 10;
+
+  let r =
+    effectiveLatency < 160 ? 93.2 - effectiveLatency / 40 : 93.2 - effectiveLatency / 120 - 10;
+
+  // Each 1% of packet loss costs ~2.5 R-factor points.
+  r -= lossPct * 2.5;
+  r = Math.max(0, Math.min(100, r));
+
+  const mos = 1 + 0.035 * r + r * (r - 60) * (100 - r) * 0.000007;
+  return Math.max(1, Math.min(5, Math.round(mos * 10) / 10));
+}
+
+/**
+ * Map a MOS value to a quality level.
+ * @param {number} mos
+ * @returns {"excellent"|"good"|"fair"|"poor"}
+ */
+export function mosToLevel(mos) {
+  if (mos >= 4.2) return "excellent";
+  if (mos >= 4.0) return "good";
+  if (mos >= 3.5) return "fair";
+  return "poor";
+}
+
+/**
+ * Turn two raw snapshots into human-facing metrics for the network panel.
+ * Counters become rates over the elapsed interval; the first sample (no prev)
+ * yields zeroed rates but valid gauges.
+ * @param {object|null} prev
+ * @param {object} curr
+ * @returns {object} derived, display-ready metrics
+ */
+export function deriveStats(prev, curr) {
+  const rttMs = Math.round((curr.roundTripTime || 0) * 1000);
+  const jitterMs = Math.round((curr.jitter || 0) * 1000);
+
+  let inboundKbps = 0;
+  let outboundKbps = 0;
+  let lossPct = 0;
+
+  if (prev) {
+    const intervalSec = Math.max((curr.timestamp - prev.timestamp) / 1000, 0.001);
+    inboundKbps = Math.max(
+      0,
+      Math.round(((curr.bytesReceived - prev.bytesReceived) * 8) / intervalSec / 1000),
+    );
+    outboundKbps = Math.max(
+      0,
+      Math.round(((curr.bytesSent - prev.bytesSent) * 8) / intervalSec / 1000),
+    );
+    const lostDelta = Math.max(0, curr.packetsLost - prev.packetsLost);
+    const recvDelta = Math.max(0, curr.packetsReceived - prev.packetsReceived);
+    const totalDelta = lostDelta + recvDelta;
+    lossPct = totalDelta > 0 ? Math.round((lostDelta / totalDelta) * 1000) / 10 : 0;
+  }
+
+  const mos = computeMos({ rttMs, jitterMs, lossPct });
+  const level = mosToLevel(mos);
+
+  return {
+    level,
+    label: QUALITY_LABELS[level],
+    mos,
+    rtt_ms: rttMs,
+    jitter_ms: jitterMs,
+    loss_pct: lossPct,
+    inbound_kbps: inboundKbps,
+    outbound_kbps: outboundKbps,
+    available_kbps: Math.round((curr.availableOutgoingBitrate || 0) / 1000),
+    fps: Math.round(curr.framesPerSecond || 0),
+    frame_width: curr.frameWidth || 0,
+    frame_height: curr.frameHeight || 0,
+    freeze_count: curr.freezeCount || 0,
+    limitation: curr.qualityLimitationReason || "none",
+    has_video: Boolean(curr.hasVideo),
+  };
+}
+
+/**
  * Apply a bitrate preset to all senders on the peer connection.
  * @param {RTCPeerConnection} pc
  * @param {"high"|"medium"|"low"} preset

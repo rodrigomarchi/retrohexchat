@@ -13,8 +13,8 @@ import {
   toggleTrack,
   stopAllTracks,
   formatDuration,
-  getQualitySnapshot,
-  mapQualityLevel,
+  getStatsSnapshot,
+  deriveStats,
   applyBitratePreset,
   setCodecPreferences,
   enumerateDevices,
@@ -24,7 +24,6 @@ import {
   supportsSetSinkId,
   supportsPiP,
   togglePiP,
-  QUALITY_LABELS,
 } from "./media.js";
 import { t } from "../i18n.js";
 
@@ -62,6 +61,7 @@ function normalizeConfig(config) {
       muteChanged: config.clientEvents?.muteChanged,
       cameraChanged: config.clientEvents?.cameraChanged,
       qualityUpdate: config.clientEvents?.qualityUpdate,
+      statsUpdate: config.clientEvents?.statsUpdate,
       durationTick: config.clientEvents?.durationTick,
       requestUpgrade: config.clientEvents?.requestUpgrade,
       devicesListed: config.clientEvents?.devicesListed,
@@ -469,7 +469,9 @@ export function createRtcMediaHook(configInput) {
           supports_sink_id: supportsSetSinkId(),
         });
       } catch {
-        // Device enumeration can fail before permissions are granted.
+        this._push(config.clientEvents.deviceFallback, {
+          message: t("Could not list media devices. Check your browser permissions."),
+        });
       }
     },
 
@@ -502,16 +504,25 @@ export function createRtcMediaHook(configInput) {
     // --- Quality monitoring ---
 
     _startQualityPolling() {
+      this._prevStats = null;
       this.qualityInterval = setInterval(async () => {
         if (!this.pc) return;
 
         try {
-          const snapshot = await getQualitySnapshot(this.pc);
-          const level = mapQualityLevel(snapshot);
+          const snapshot = await getStatsSnapshot(this.pc);
+          const derived = deriveStats(this._prevStats, snapshot);
+          this._prevStats = snapshot;
+
+          // Compact level/label drives the connection diagram (both hooks).
           this._push(config.clientEvents.qualityUpdate, {
-            level,
-            label: QUALITY_LABELS[level],
+            level: derived.level,
+            label: derived.label,
           });
+
+          // Full numeric telemetry feeds the network panel (P2P hook only).
+          if (config.clientEvents.statsUpdate) {
+            this._push(config.clientEvents.statsUpdate, derived);
+          }
         } catch {
           // Stats can be unavailable until RTP starts flowing.
         }

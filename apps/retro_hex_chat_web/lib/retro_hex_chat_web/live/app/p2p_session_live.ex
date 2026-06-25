@@ -229,6 +229,7 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
        socket
        |> assign(
          call: nil,
+         stats: nil,
          webrtc_state: "Connected",
          local_muted: false,
          local_camera_off: false,
@@ -398,8 +399,12 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
 
       {:noreply, socket}
     else
-      {:error, :rate_limited} -> {:noreply, socket}
-      {:error, :invalid_signal} -> {:noreply, socket}
+      {:error, :rate_limited} ->
+        {:noreply, maybe_warn_signal_rate_limited(socket)}
+
+      {:error, :invalid_signal} ->
+        Logger.warning("P2P invalid signal dropped: token=#{socket.assigns.token}")
+        {:noreply, socket}
     end
   end
 
@@ -446,12 +451,16 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
   def handle_event("p2p_failed", %{"reason" => reason}, socket) do
     Logger.warning("P2P connection failed: #{reason}, token=#{socket.assigns.token}")
 
+    msg = system_message(connection_failure_message(reason))
+    messages = socket.assigns.messages ++ [msg]
+
     case P2P.transition_status(socket.assigns.token, :failed) do
       :ok ->
-        {:noreply, assign(socket, session_status: "failed", webrtc_state: "failed")}
+        {:noreply,
+         assign(socket, session_status: "failed", webrtc_state: "failed", messages: messages)}
 
       {:error, _reason} ->
-        {:noreply, socket}
+        {:noreply, assign(socket, webrtc_state: "failed", messages: messages)}
     end
   end
 
@@ -714,6 +723,18 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
     {:noreply, assign(socket, call: call)}
   end
 
+  def handle_event("media_stats", payload, socket) do
+    {:noreply, assign(socket, stats: normalize_stats(payload))}
+  end
+
+  def handle_event("toggle_network_panel", _params, socket) do
+    {:noreply, assign(socket, network_panel_collapsed: !socket.assigns.network_panel_collapsed)}
+  end
+
+  def handle_event("toggle_network_info", _params, socket) do
+    {:noreply, assign(socket, network_info_open: !socket.assigns.network_info_open)}
+  end
+
   def handle_event("media_duration_tick", %{"formatted" => formatted}, socket) do
     call = Map.merge(socket.assigns.call || %{}, %{duration: formatted})
     {:noreply, assign(socket, call: call)}
@@ -876,6 +897,10 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
         file_transfer: init_file_transfer_on_mount(accepted_action_type, db_session.status),
         accepted_action_type: accepted_action_type,
         call: init_call_on_mount(accepted_action_type, db_session.status),
+        stats: nil,
+        network_panel_collapsed: false,
+        network_info_open: false,
+        signal_warning_shown: false,
         diagram_collapsed: true,
         call_layout: "focus",
         turn_only: turn_only,
@@ -1211,6 +1236,72 @@ defmodule RetroHexChatWeb.App.P2PSessionLive do
     |> assign(call: call)
     |> assign(messages: socket.assigns.messages ++ [msg])
     |> push_event("media_upgrade_rejected", %{})
+  end
+
+  @spec system_message(String.t()) :: map()
+  defp system_message(content) do
+    %{
+      id: System.unique_integer([:positive]),
+      sender_nick: dgettext("p2p", "System"),
+      content: content,
+      type: "system",
+      timestamp: DateTime.utc_now()
+    }
+  end
+
+  @spec connection_failure_message(String.t()) :: String.t()
+  defp connection_failure_message("max_retries_exhausted") do
+    dgettext(
+      "p2p",
+      "Could not establish the P2P connection after several attempts. Check your network and try again."
+    )
+  end
+
+  defp connection_failure_message(reason)
+       when reason in ["offer_failed", "answer_failed", "retry_failed"] do
+    dgettext("p2p", "Failed to negotiate the P2P connection. The call could not be established.")
+  end
+
+  defp connection_failure_message(_reason) do
+    dgettext("p2p", "The P2P connection failed.")
+  end
+
+  @spec maybe_warn_signal_rate_limited(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  defp maybe_warn_signal_rate_limited(%{assigns: %{signal_warning_shown: true}} = socket),
+    do: socket
+
+  defp maybe_warn_signal_rate_limited(socket) do
+    msg =
+      system_message(
+        dgettext(
+          "p2p",
+          "Connection setup is being throttled (too many signaling messages). Connecting may take longer."
+        )
+      )
+
+    socket
+    |> assign(signal_warning_shown: true)
+    |> assign(messages: socket.assigns.messages ++ [msg])
+  end
+
+  @spec normalize_stats(map()) :: map()
+  defp normalize_stats(payload) do
+    %{
+      level: payload["level"],
+      mos: payload["mos"],
+      rtt_ms: payload["rtt_ms"],
+      jitter_ms: payload["jitter_ms"],
+      loss_pct: payload["loss_pct"],
+      inbound_kbps: payload["inbound_kbps"],
+      outbound_kbps: payload["outbound_kbps"],
+      available_kbps: payload["available_kbps"],
+      fps: payload["fps"],
+      frame_width: payload["frame_width"],
+      frame_height: payload["frame_height"],
+      freeze_count: payload["freeze_count"],
+      limitation: payload["limitation"],
+      has_video: payload["has_video"]
+    }
   end
 
   defp action_response_message(action_type, true) do
