@@ -62,6 +62,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   attr :local_muted, :boolean, default: false
   attr :local_camera_off, :boolean, default: false
   attr :peer_media, :map, default: %{audio: false, video: false}
+  attr :peer_camera_off, :boolean, default: false
+  attr :peer_muted, :boolean, default: false
   attr :devices, :map, default: nil
   attr :stats, :map, default: nil
   attr :network_info_open, :boolean, default: false
@@ -190,6 +192,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
               local_muted={@local_muted}
               local_camera_off={@local_camera_off}
               peer_media={@peer_media}
+              peer_camera_off={@peer_camera_off}
+              peer_muted={@peer_muted}
               devices={@devices}
             />
           </.desktop_window>

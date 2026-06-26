@@ -171,6 +171,46 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       assert_push_event(view, "window_command", %{action: "close", id: "call"})
       refute render(view) =~ "End call"
     end
+
+    test "the peer sharing media opens our Call window and renders the remote stream surface",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+
+      # We have NOT started our own call. Before the peer shares, there is no remote
+      # video element to attach an incoming stream to.
+      refute render(view) =~ ~s(id="lobby-remote-video")
+
+      # The peer (not us) turns on their camera. This must surface on our side:
+      # the Call window opens (like file offers / game requests) and the remote
+      # video/audio elements render so the media hook can attach the peer's stream.
+      SessionServer.set_media(token, peer.id, true, true)
+
+      assert_push_event(view, "window_command", %{action: "open", id: "call"})
+
+      html = render(view)
+      assert html =~ ~s(id="lobby-remote-video")
+      assert html =~ ~s(id="lobby-remote-audio")
+      # We are only receiving — no sending controls for a call we are not in.
+      assert html =~ ~s(data-testid="lobby-media-join-hint")
+      refute html =~ "End call"
+    end
+
+    test "a peer mute/camera update does not fabricate a local call",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+
+      # Peer toggles their camera while we are not in a call. This used to merge a
+      # fake `call` map (making @call_active true and showing sending controls).
+      send(
+        view.pid,
+        %{event: "lobby_peer_camera", payload: %{off: true, from: peer.id}}
+      )
+
+      html = render(view)
+      # No call surface, no sending controls, no End call — we are not in a call.
+      refute html =~ "End call"
+      refute html =~ ~s(data-testid="lobby-media-panel" data-window-pinned)
+    end
   end
 
   defp create_registered_nick(nickname) do

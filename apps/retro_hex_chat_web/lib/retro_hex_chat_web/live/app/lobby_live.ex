@@ -115,10 +115,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     else
       {:noreply,
        socket
-       |> assign(
-         peer_muted: muted,
-         call: Map.merge(socket.assigns.call || %{}, %{peer_muted: muted})
-       )
+       |> assign(peer_muted: muted)
        |> push_event("lobby_media_peer_muted", %{muted: muted})}
     end
   end
@@ -129,10 +126,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     else
       {:noreply,
        socket
-       |> assign(
-         peer_camera_off: off,
-         call: Map.merge(socket.assigns.call || %{}, %{peer_camera_off: off})
-       )
+       |> assign(peer_camera_off: off)
        |> push_event("lobby_media_peer_camera", %{off: off})}
     end
   end
@@ -147,11 +141,13 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     else
       socket = assign(socket, peer_media: %{audio: payload.audio, video: payload.video})
 
-      # The peer turned media on: their stream renders into our (possibly hidden)
-      # Call window, so flash its taskbar button to surface the incoming call —
-      # mirroring how file offers and game requests surface their windows.
+      # The peer turned media on: open our Call window so their incoming stream is
+      # actually visible — mirroring how file offers and game requests open their
+      # windows on the receiver (a flash alone left the stream stuck in a hidden
+      # window). When the peer turns everything off again, leave the window as the
+      # user left it.
       if payload.audio or payload.video do
-        {:noreply, push_event(socket, "window_command", %{action: "flash", id: "call"})}
+        {:noreply, push_event(socket, "window_command", %{action: "open", id: "call"})}
       else
         {:noreply, socket}
       end

@@ -43,6 +43,7 @@ const LobbyWebRTCHook = {
     this.role = null;
     this.negotiating = false;
     this.renegotiationQueued = false;
+    this.queuedKinds = [];
     this.fileChannel = null;
     this.gameChannel = null;
     this.pendingIceCandidates = [];
@@ -173,13 +174,17 @@ const LobbyWebRTCHook = {
     if (this.role !== "initiator" || !this.pc) return;
 
     if (this.negotiating || this.pc.signalingState !== "stable") {
+      // Defer, but remember the kinds: the drained re-offer must still create the
+      // receiving transceivers for tracks the answerer added during this window.
       this.renegotiationQueued = true;
+      this.queuedKinds.push(...ensureKinds);
       return;
     }
 
     this.negotiating = true;
+    const kinds = this.queuedKinds.splice(0).concat(ensureKinds);
     try {
-      for (const kind of ensureKinds) {
+      for (const kind of kinds) {
         this._ensureReceivingTransceiver(kind);
       }
       await this.pc.setLocalDescription();
@@ -252,6 +257,7 @@ const LobbyWebRTCHook = {
     this.pc = createPeerConnection(servers, { turnOnly: this.turnOnly });
     this.negotiating = false;
     this.renegotiationQueued = false;
+    this.queuedKinds = [];
 
     onIceCandidate(this.pc, (candidate) => {
       if (candidate) {

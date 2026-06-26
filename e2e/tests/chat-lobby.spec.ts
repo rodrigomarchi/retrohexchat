@@ -29,6 +29,40 @@ test.describe("Universal lobby", () => {
     }
   });
 
+  test("a peer who only receives sees the sharer's camera without starting their own call", async ({
+    browser,
+  }) => {
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
+
+    try {
+      const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
+        alice,
+        bob,
+      );
+      await initiatorLobby.waitUntilConnected();
+      await receiverLobby.waitUntilConnected();
+
+      // Only the initiator opens their camera. The receiver never starts a call.
+      await initiatorLobby.clickStartVideo();
+
+      // Regression: the receiver's Call window must open on its own and the
+      // sharer's stream must actually flow into the receiver's remote video —
+      // previously the remote <video> only existed during the receiver's OWN call,
+      // so a one-way share showed nothing.
+      await expect(receiverLobby.remoteVideo).toBeVisible();
+      await receiverLobby.expectRemoteVideoFlowing();
+
+      // The receiver is only watching: it sees the join-in hint and has no
+      // sending controls (no End call) for a call it is not part of.
+      await expect(
+        receiverLobby.page.getByTestId("lobby-media-join-hint"),
+      ).toBeVisible();
+    } finally {
+      await closeP2PUsers([alice, bob]);
+    }
+  });
+
   test("runs a video call, a game, and chat all at the same time", async ({
     browser,
   }) => {
