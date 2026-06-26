@@ -956,7 +956,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Make video calls with camera controls, picture-in-picture, and quality settings."
+            "Make video calls with camera controls, picture-in-picture, and quality settings. " <>
+              "See also: Universal Lobby."
           )
       },
       %{
@@ -1012,7 +1013,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Establish peer-to-peer sessions with bilateral consent for calls and file transfers."
+            "Establish peer-to-peer sessions with bilateral consent for calls and file transfers. " <>
+              "See also: Universal Lobby."
           )
       },
       %{
@@ -1028,18 +1030,25 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "call",
           "file",
           "game",
-          "dock"
+          "desktop",
+          "window",
+          "taskbar",
+          "start menu"
         ],
         icon: :icon_p2p,
         description:
           dgettext(
             "help",
-            "Open one persistent P2P connection that hosts every feature at once. " <>
-              "Inside the universal lobby you can run an audio or video call, transfer files, " <>
-              "and play a game simultaneously — pick features from the dock. Each peer controls " <>
-              "their own microphone and camera; file transfers and games still ask the other side " <>
-              "to accept. Ending any one activity keeps the connection open; the lobby only closes " <>
-              "when someone leaves or it goes idle. See also: P2P Sessions, Video Call, File Transfer."
+            "Open one persistent P2P connection that hosts every feature at once, on a " <>
+              "Windows-style desktop. Each feature lives in its own window you can drag, resize, " <>
+              "minimize, maximize and close: an audio or video call, file transfer, a game, plus " <>
+              "chat and the pinned Connection telemetry window. Launch features from the taskbar " <>
+              "Start menu (the [Lobby] button); every open window gets a taskbar button. Closing a " <>
+              "feature window only hides it — the call, transfer or game keeps running; end it from " <>
+              "inside the window or choose Leave lobby from the Start menu. Each peer controls their " <>
+              "own microphone and camera; file transfers and games still ask the other side to " <>
+              "accept. Your window layout is remembered between visits. The lobby only closes when " <>
+              "someone leaves or it goes idle. See also: P2P Sessions, Video Call, File Transfer."
           )
       },
       %{
@@ -1110,7 +1119,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Send files directly to other users via peer-to-peer with drag-and-drop support."
+            "Send files directly to other users via peer-to-peer with drag-and-drop support. " <>
+              "See also: Universal Lobby."
           )
       },
       %{

@@ -1,0 +1,106 @@
+<.showcase_layout active_page={@active_page}>
+  <h2 class="text-lg font-bold mb-3">{dgettext("showcase", "Desktop")}</h2>
+
+  <.showcase_card
+    title={dgettext("showcase", "Window manager")}
+    description="A live desktop: drag the title bars, resize from the corner, use the title-bar controls, and launch windows from the Start menu. Layout persists in localStorage (WindowManagerHook)."
+  >
+    <div class="h-[440px] shadow-retro-field overflow-hidden">
+      <.desktop id="showcase-desktop" persist_key="showcase" class="bg-desktop">
+        <.desktop_window
+          id="readme"
+          title={dgettext("showcase", "Readme")}
+          default_x={24}
+          default_y={24}
+          width={300}
+        >
+          <:icon><Icons.icon_notepad class="w-4 h-4" /></:icon>
+          <p class="text-xs">
+            {dgettext("showcase", "Drag my title bar. Resize me from the bottom-right grip.")}
+          </p>
+        </.desktop_window>
+
+        <.desktop_window
+          id="files"
+          title={dgettext("showcase", "Files")}
+          open={false}
+          default_x={360}
+          default_y={64}
+          width={280}
+        >
+          <:icon><Icons.icon_folder class="w-4 h-4" /></:icon>
+          <p class="text-xs">{dgettext("showcase", "Opened from the Start menu.")}</p>
+        </.desktop_window>
+
+        <.desktop_window
+          id="stats"
+          title={dgettext("showcase", "Stats")}
+          pinned
+          default_x={360}
+          default_y={24}
+          width={220}
+        >
+          <:icon><Icons.icon_status_signal class="w-4 h-4" /></:icon>
+          <p class="text-xs">{dgettext("showcase", "Pinned — minimize only, no close.")}</p>
+        </.desktop_window>
+
+        <:taskbar>
+          <.taskbar>
+            <:start>
+              <div class="relative">
+                <.start_button label={dgettext("showcase", "Start")}>
+                  <:icon><Icons.icon_group_view class="w-4 h-4" /></:icon>
+                </.start_button>
+                <.start_menu id="showcase-start-menu">
+                  <.start_menu_item
+                    data-window-open="readme"
+                    label={dgettext("showcase", "Readme")}
+                  >
+                    <:icon><Icons.icon_notepad class="w-4 h-4" /></:icon>
+                  </.start_menu_item>
+                  <.start_menu_item data-window-open="files" label={dgettext("showcase", "Files")}>
+                    <:icon><Icons.icon_folder class="w-4 h-4" /></:icon>
+                  </.start_menu_item>
+                  <.start_menu_separator />
+                  <.start_menu_item data-window-open="stats" label={dgettext("showcase", "Stats")}>
+                    <:icon><Icons.icon_status_signal class="w-4 h-4" /></:icon>
+                  </.start_menu_item>
+                </.start_menu>
+              </div>
+            </:start>
+
+            <.taskbar_button window="readme" label={dgettext("showcase", "Readme")}>
+              <:icon><Icons.icon_notepad class="w-4 h-4" /></:icon>
+            </.taskbar_button>
+            <.taskbar_button window="files" label={dgettext("showcase", "Files")}>
+              <:icon><Icons.icon_folder class="w-4 h-4" /></:icon>
+            </.taskbar_button>
+            <.taskbar_button window="stats" label={dgettext("showcase", "Stats")}>
+              <:icon><Icons.icon_status_signal class="w-4 h-4" /></:icon>
+            </.taskbar_button>
+
+            <:tray>
+              <.desktop_tray>
+                <span id="showcase-clock" phx-hook="ClockHook" class="tabular-nums"></span>
+              </.desktop_tray>
+            </:tray>
+          </.taskbar>
+        </:taskbar>
+      </.desktop>
+    </div>
+
+    <.code_example>
+      &lt;.desktop id="my-desktop" persist_key="my-feature"&gt;
+      &lt;.desktop_window id="readme" title="Readme" width=&#123;300&#125;&gt;...&lt;/.desktop_window&gt;
+      &lt;.desktop_window id="stats" title="Stats" pinned&gt;...&lt;/.desktop_window&gt;
+      &lt;:taskbar&gt;
+      &lt;.taskbar&gt;
+      &lt;:start&gt;&lt;.start_button label="Start" /&gt; &lt;.start_menu&gt;...&lt;/.start_menu&gt;&lt;/:start&gt;
+      &lt;.taskbar_button window="readme" label="Readme" /&gt;
+      &lt;:tray&gt;&lt;.desktop_tray&gt;...&lt;/.desktop_tray&gt;&lt;/:tray&gt;
+      &lt;/.taskbar&gt;
+      &lt;/:taskbar&gt;
+      &lt;/.desktop&gt;
+    </.code_example>
+  </.showcase_card>
+</.showcase_layout>

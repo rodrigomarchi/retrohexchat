@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     "/showcase/icons",
     "/showcase/diagrams",
     "/showcase/window",
+    "/showcase/desktop",
     "/showcase/menu",
     "/showcase/toolbar",
     "/showcase/status-bar",

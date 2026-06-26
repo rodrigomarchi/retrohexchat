@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
   end
 
   describe "mount" do
-    test "renders the lobby shell with the feature dock", %{
+    test "renders the lobby shell as a desktop with a taskbar", %{
       conn: conn,
       token: token,
       creator: creator
@@ -51,15 +51,15 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       {:ok, _view, html} = live(chat_conn(conn, creator.nickname), "/lobby/#{token}")
 
       assert html =~ "Universal Lobby"
-      assert html =~ ~s(data-testid="lobby-dock")
+      assert html =~ ~s(data-testid="lobby-desktop")
     end
 
-    test "dock features are disabled until the connection is established",
+    test "call features in the Start menu are disabled until the connection is established",
          %{conn: conn, token: token, creator: creator} do
       {:ok, _view, html} = live(chat_conn(conn, creator.nickname), "/lobby/#{token}")
 
-      assert html =~ ~s(data-testid="lobby-dock-game")
-      # Buttons carry the disabled attribute before "connected".
+      assert html =~ ~s(data-testid="lobby-menu-video")
+      # Start-call items carry the disabled attribute before "connected".
       assert html =~ "disabled"
     end
   end
@@ -73,7 +73,8 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
     } do
       view = connect_both(conn, token, creator, peer)
 
-      render_click(view, "toggle_game_panel", %{})
+      # The game window content renders as soon as the lobby is connected — no
+      # panel toggle needed; the window manager owns visibility on the client.
       html = render(view)
 
       assert html =~ ~s(data-testid="lobby-game-panel")
@@ -151,9 +152,9 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       render_hook(view, "lobby_media_call_ended", %{})
       html = render(view)
 
-      # Dock is usable again — the connection did not close.
+      # Features are usable again — the connection did not close.
       refute html =~ ~s(data-testid="lobby-ended")
-      assert html =~ ~s(data-testid="lobby-dock-video")
+      assert html =~ ~s(data-testid="lobby-menu-video")
     end
   end
 

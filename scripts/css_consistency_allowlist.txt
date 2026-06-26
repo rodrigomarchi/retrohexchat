@@ -48,6 +48,9 @@ game-media*
 p2p-lobby__*
 p2p-lobby-window*
 p2p-media-call*
+# Desktop window manager — BEM classes applied via classes([...]) in components/ui/layout/desktop.ex
+# and toggled by WindowManagerHook (both skipped by the template scanner)
+desktop*
 
 [missing]
 # False positive — "system" is a comparison value inside class={...} expression

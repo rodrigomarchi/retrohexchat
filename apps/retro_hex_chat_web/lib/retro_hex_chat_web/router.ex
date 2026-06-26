@@ -179,6 +179,7 @@ defmodule RetroHexChatWeb.Router do
       live "/tabs", Layout.Tabs
       live "/table", Layout.Table
       live "/window", Layout.Window
+      live "/desktop", Layout.Desktop
       live "/dialog", Layout.DialogPage
       live "/menu", Layout.MenuPage
       live "/toolbar", Layout.ToolbarPage

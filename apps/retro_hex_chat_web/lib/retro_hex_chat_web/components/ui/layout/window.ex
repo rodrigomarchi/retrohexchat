@@ -24,6 +24,11 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   attr :controls, :list, default: [:minimize, :maximize, :close]
   attr :on_close, :any, default: nil, doc: "Close button callback (wired to :close control)"
   attr :close_target, :string, default: nil, doc: "CSS selector for static close behavior"
+
+  attr :force_close, :boolean,
+    default: true,
+    doc: "When true, always append a :close control. Set false for pinned/non-closable windows."
+
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -31,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
 
   @spec window_title_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def window_title_bar(assigns) do
-    assigns = assign(assigns, :controls, ensure_close(assigns.controls))
+    assigns = assign(assigns, :controls, ensure_close(assigns.controls, assigns.force_close))
 
     ~H"""
     <div
@@ -59,6 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.Window do
           type="button"
           disabled={@inactive && is_nil(@on_close)}
           aria-label={control_label(control)}
+          data-window-control={control}
           class={[
             "inline-flex items-center justify-center w-[16px] h-[14px] p-0 shadow-retro-raised bg-surface",
             "active:shadow-retro-sunken focus:outline-none",
@@ -170,7 +176,9 @@ defmodule RetroHexChatWeb.Components.UI.Window do
     """
   end
 
-  defp ensure_close(controls) do
+  defp ensure_close(controls, false), do: controls
+
+  defp ensure_close(controls, true) do
     if :close in controls, do: controls, else: controls ++ [:close]
   end
 end

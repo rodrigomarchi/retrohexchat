@@ -55,6 +55,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     {dgettext_noop("showcase", "Layout"), :icon_group_view,
      [
        {dgettext_noop("showcase", "Context Menu"), "context-menu", "/showcase/context-menu"},
+       {dgettext_noop("showcase", "Desktop"), "desktop", "/showcase/desktop"},
        {dgettext_noop("showcase", "Dialog"), "dialog", "/showcase/dialog"},
        {dgettext_noop("showcase", "Fieldset"), "fieldset", "/showcase/fieldset"},
        {dgettext_noop("showcase", "Menu"), "menu", "/showcase/menu"},
@@ -345,6 +346,7 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     "diagrams" => :icon_code,
     "toast" => :icon_btn_bell,
     "context-menu" => :icon_dialog_custom_menus,
+    "desktop" => :icon_group_view,
     "loading-spinner" => :icon_clock,
     "empty-state" => :icon_group_view,
     "color-picker" => :icon_tab_colors,

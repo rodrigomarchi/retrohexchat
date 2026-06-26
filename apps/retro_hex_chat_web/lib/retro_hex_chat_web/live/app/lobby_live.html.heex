@@ -1,8 +1,10 @@
 <.universal_lobby
+  token={@token}
   nickname={@nickname}
   peer_nick={@peer_nick}
   peer_online={@peer_online}
   session_status={@session_status}
+  ever_connected={@ever_connected}
   connection_label={@connection_label}
   local_info={@local_info}
   peer_info={@peer_info}
@@ -12,7 +14,6 @@
   turn_configured={@turn_configured}
   turn_only={@turn_only}
   inactivity_warning={@inactivity_warning}
-  diagram_collapsed={@diagram_collapsed}
   call={@call}
   call_layout={@call_layout}
   local_muted={@local_muted}
@@ -22,12 +23,10 @@
   stats={@stats}
   network_collapsed={@network_collapsed}
   network_info_open={@network_info_open}
-  file_panel_open={@file_panel_open}
   file_transfer={@file_transfer}
   game={@game}
   game_request={@game_request}
   game_outgoing={@game_outgoing}
-  game_panel_open={@game_panel_open}
   games={@games}
   messages={@messages}
 />

@@ -71,7 +71,12 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   def handle_info(%{event: "lobby_status_changed", payload: %{status: "connected"}}, socket) do
-    {:noreply, assign(socket, session_status: "connected", connection_label: connected_label())}
+    {:noreply,
+     assign(socket,
+       session_status: "connected",
+       connection_label: connected_label(),
+       ever_connected: true
+     )}
   end
 
   def handle_info(%{event: "lobby_status_changed", payload: %{status: status}}, socket) do
@@ -140,7 +145,16 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     if payload.user_id == socket.assigns.user_id do
       {:noreply, socket}
     else
-      {:noreply, assign(socket, peer_media: %{audio: payload.audio, video: payload.video})}
+      socket = assign(socket, peer_media: %{audio: payload.audio, video: payload.video})
+
+      # The peer turned media on: their stream renders into our (possibly hidden)
+      # Call window, so flash its taskbar button to surface the incoming call —
+      # mirroring how file offers and game requests surface their windows.
+      if payload.audio or payload.video do
+        {:noreply, push_event(socket, "window_command", %{action: "flash", id: "call"})}
+      else
+        {:noreply, socket}
+      end
     end
   end
 
@@ -148,7 +162,9 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     outgoing = request.proposer_id == socket.assigns.user_id
 
     {:noreply,
-     assign(socket, game_request: request, game_outgoing: outgoing, game_panel_open: true)}
+     socket
+     |> assign(game_request: request, game_outgoing: outgoing)
+     |> push_event("window_command", %{action: "open", id: "game"})}
   end
 
   def handle_info(%{event: "lobby_game_response", payload: %{accepted: false}}, socket) do
@@ -175,10 +191,10 @@ defmodule RetroHexChatWeb.App.LobbyLive do
      |> assign(
        game: %{status: "playing", game_id: p.game_id, is_host: is_host},
        game_request: nil,
-       game_outgoing: false,
-       game_panel_open: true
+       game_outgoing: false
      )
-     |> push_event("lobby_game_start", %{game_id: p.game_id, is_host: is_host})}
+     |> push_event("lobby_game_start", %{game_id: p.game_id, is_host: is_host})
+     |> push_event("window_command", %{action: "open", id: "game"})}
   end
 
   def handle_info(%{event: "lobby_game_status_changed", payload: %{status: "idle"}}, socket) do
@@ -244,10 +260,9 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   def handle_event("lobby_connected", _params, socket) do
-    case Lobby.transition_status(socket.assigns.token, :connected) do
-      :ok -> {:noreply, assign(socket, connection_label: connected_label())}
-      {:error, _reason} -> {:noreply, assign(socket, connection_label: connected_label())}
-    end
+    socket = assign(socket, connection_label: connected_label(), ever_connected: true)
+    _ = Lobby.transition_status(socket.assigns.token, :connected)
+    {:noreply, socket}
   end
 
   # The answerer asks the initiator to re-offer after it added local media tracks
@@ -301,12 +316,20 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   def handle_event("start_call", %{"type" => "video"}, socket) do
     Lobby.set_media(socket.assigns.token, socket.assigns.user_id, true, true)
-    {:noreply, push_event(socket, "lobby_media_start_video", %{})}
+
+    {:noreply,
+     socket
+     |> push_event("lobby_media_start_video", %{})
+     |> push_event("window_command", %{action: "open", id: "call"})}
   end
 
   def handle_event("start_call", %{"type" => "audio"}, socket) do
     Lobby.set_media(socket.assigns.token, socket.assigns.user_id, true, false)
-    {:noreply, push_event(socket, "lobby_media_start_audio", %{})}
+
+    {:noreply,
+     socket
+     |> push_event("lobby_media_start_audio", %{})
+     |> push_event("window_command", %{action: "open", id: "call"})}
   end
 
   def handle_event("lobby_media_call_started", %{"type" => type}, socket) do
@@ -399,10 +422,6 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     {:noreply, assign(socket, network_info_open: !socket.assigns.network_info_open)}
   end
 
-  def handle_event("toggle_diagram", _params, socket) do
-    {:noreply, assign(socket, diagram_collapsed: !socket.assigns.diagram_collapsed)}
-  end
-
   def handle_event("lobby_media_devices_listed", payload, socket) do
     {:noreply, assign(socket, devices: payload)}
   end
@@ -425,16 +444,11 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   # --- File transfer (reuses FileTransferHook) ---
 
   def handle_event("file_transfer_ready", _params, socket) do
-    {:noreply, socket |> assign(file_transfer_ready: true) |> maybe_push_ft_config()}
-  end
-
-  def handle_event("toggle_file_panel", _params, socket) do
-    socket =
-      socket
-      |> assign(file_panel_open: !socket.assigns.file_panel_open)
-      |> ensure_file_transfer()
-
-    {:noreply, socket}
+    {:noreply,
+     socket
+     |> assign(file_transfer_ready: true)
+     |> ensure_file_transfer()
+     |> maybe_push_ft_config()}
   end
 
   def handle_event("ft_offer_sent", params, socket) do
@@ -445,8 +459,8 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   def handle_event("ft_offer_received", params, socket) do
     {:noreply,
      socket
-     |> assign(file_panel_open: true)
-     |> assign(file_transfer: ft_meta(params, "offer_received", socket.assigns.peer_nick))}
+     |> assign(file_transfer: ft_meta(params, "offer_received", socket.assigns.peer_nick))
+     |> push_event("window_command", %{action: "open", id: "file"})}
   end
 
   def handle_event("ft_respond", %{"accepted" => "true"}, socket) do
@@ -555,10 +569,6 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     end
   end
 
-  def handle_event("toggle_game_panel", _params, socket) do
-    {:noreply, assign(socket, game_panel_open: !socket.assigns.game_panel_open)}
-  end
-
   def handle_event("propose_game", %{"game_id" => game_id}, socket) do
     case Lobby.propose_game(socket.assigns.token, socket.assigns.user_id, game_id) do
       :ok -> {:noreply, socket}
@@ -623,6 +633,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
        peer_nick: SessionHelpers.resolve_peer_nick(user_id, db_session),
        peer_online: false,
        session_status: db_session.status,
+       ever_connected: false,
        connection_label: dgettext("lobby", "Waiting for peer..."),
        inactivity_warning: false,
        webrtc_ready: false,
@@ -640,18 +651,15 @@ defmodule RetroHexChatWeb.App.LobbyLive do
        network_collapsed: false,
        network_info_open: false,
        devices: nil,
-       diagram_collapsed: true,
        local_info: local_info,
        peer_info: %{},
        turn_only: load_turn_only_preference(nickname),
        turn_configured: P2P.turn_configured?(),
-       file_panel_open: false,
        file_transfer: nil,
        file_transfer_ready: false,
        game: %{status: "idle", game_id: nil, is_host: false},
        game_request: nil,
        game_outgoing: false,
-       game_panel_open: false,
        games: Catalog.list_games(),
        expired: false,
        session_closed: false,

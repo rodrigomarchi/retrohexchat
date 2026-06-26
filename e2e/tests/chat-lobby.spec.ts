@@ -1,16 +1,16 @@
-import { test, expect } from '@playwright/test';
-import { newP2PUser, closeP2PUsers } from '../helpers/p2pFlows';
+import { test, expect } from "@playwright/test";
+import { newP2PUser, closeP2PUsers } from "../helpers/p2pFlows";
 import {
   openLobbiesFromCommand,
   openLobbiesFromContextMenu,
-} from '../helpers/lobbyFlows';
+} from "../helpers/lobbyFlows";
 
-test.describe('Universal lobby', () => {
-  test('/lobby command opens a connected lobby for both peers', async ({
+test.describe("Universal lobby", () => {
+  test("/lobby command opens a connected lobby for both peers", async ({
     browser,
   }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -29,11 +29,11 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('runs a video call, a game, and chat all at the same time', async ({
+  test("runs a video call, a game, and chat all at the same time", async ({
     browser,
   }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -51,14 +51,14 @@ test.describe('Universal lobby', () => {
       await expect(receiverLobby.remoteVideo).toBeVisible();
 
       // 2) Start a game WHILE the call is running.
-      await initiatorLobby.proposeGame('Hex Pong');
+      await initiatorLobby.proposeGame("Hex Pong");
       await receiverLobby.acceptGame();
       await expect(initiatorLobby.gameCanvas).toBeVisible();
       await expect(receiverLobby.gameCanvas).toBeVisible();
 
       // 3) Chat at the same time.
-      await initiatorLobby.sendChat('all at once');
-      await receiverLobby.expectChatMessage('all at once');
+      await initiatorLobby.sendChat("all at once");
+      await receiverLobby.expectChatMessage("all at once");
 
       // The thesis: media + game + chat coexist on one connection.
       await expect(initiatorLobby.mediaPanel).toBeVisible();
@@ -69,11 +69,11 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('ending a game keeps the lobby connected for more features', async ({
+  test("ending a game keeps the lobby connected for more features", async ({
     browser,
   }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -84,13 +84,13 @@ test.describe('Universal lobby', () => {
       await initiatorLobby.waitUntilConnected();
       await receiverLobby.waitUntilConnected();
 
-      await initiatorLobby.proposeGame('Hex Pong');
+      await initiatorLobby.proposeGame("Hex Pong");
       await receiverLobby.acceptGame();
       await expect(initiatorLobby.gameCanvas).toBeVisible();
 
       // End the game — the connection must stay alive.
       await initiatorLobby.gamePanel
-        .getByRole('button', { name: 'End game' })
+        .getByRole("button", { name: "End game" })
         .click();
 
       await expect(initiatorLobby.ended).toHaveCount(0);
@@ -101,9 +101,11 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('an audio call can be upgraded to video in place', async ({ browser }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+  test("an audio call can be upgraded to video in place", async ({
+    browser,
+  }) => {
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -131,14 +133,14 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('sends a file during a video call without dropping the call', async ({
+  test("sends a file during a video call without dropping the call", async ({
     browser,
   }) => {
-    const alice = await newP2PUser(browser, 'loba', {
+    const alice = await newP2PUser(browser, "loba", {
       media: true,
       acceptDownloads: true,
     });
-    const bob = await newP2PUser(browser, 'lobb', {
+    const bob = await newP2PUser(browser, "lobb", {
       media: true,
       acceptDownloads: true,
     });
@@ -156,8 +158,8 @@ test.describe('Universal lobby', () => {
       await receiverLobby.startVideoCall();
 
       await initiatorLobby.openFilePanel();
-      const fileName = 'lobby-during-call.txt';
-      await initiatorLobby.sendFile(fileName, 'concurrent call + file payload');
+      const fileName = "lobby-during-call.txt";
+      await initiatorLobby.sendFile(fileName, "concurrent call + file payload");
 
       // The receiver's panel auto-opens and offers the file.
       await expect(receiverLobby.filePanel).toBeVisible({ timeout: 15_000 });
@@ -168,7 +170,7 @@ test.describe('Universal lobby', () => {
         timeout: 15_000,
       });
 
-      const downloadPromise = receiverLobby.page.waitForEvent('download', {
+      const downloadPromise = receiverLobby.page.waitForEvent("download", {
         timeout: 20_000,
       });
       await receiverLobby.fileTransferAccept.click();
@@ -184,12 +186,12 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('transfers a file while a game is running', async ({ browser }) => {
-    const alice = await newP2PUser(browser, 'loba', {
+  test("transfers a file while a game is running", async ({ browser }) => {
+    const alice = await newP2PUser(browser, "loba", {
       media: true,
       acceptDownloads: true,
     });
-    const bob = await newP2PUser(browser, 'lobb', {
+    const bob = await newP2PUser(browser, "lobb", {
       media: true,
       acceptDownloads: true,
     });
@@ -203,19 +205,19 @@ test.describe('Universal lobby', () => {
       await receiverLobby.waitUntilConnected();
 
       // Start a game first (uses the "gamedata" channel)...
-      await initiatorLobby.proposeGame('Hex Pong');
+      await initiatorLobby.proposeGame("Hex Pong");
       await receiverLobby.acceptGame();
       await expect(initiatorLobby.gameCanvas).toBeVisible();
 
       // ...then send a file over the independent "filetransfer" channel.
       await initiatorLobby.openFilePanel();
-      const fileName = 'lobby-during-game.txt';
-      await initiatorLobby.sendFile(fileName, 'file payload alongside a game');
+      const fileName = "lobby-during-game.txt";
+      await initiatorLobby.sendFile(fileName, "file payload alongside a game");
 
       await expect(receiverLobby.fileTransferAccept).toBeVisible({
         timeout: 15_000,
       });
-      const downloadPromise = receiverLobby.page.waitForEvent('download', {
+      const downloadPromise = receiverLobby.page.waitForEvent("download", {
         timeout: 20_000,
       });
       await receiverLobby.fileTransferAccept.click();
@@ -230,11 +232,11 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('declining a game proposal keeps the lobby connected', async ({
+  test("declining a game proposal keeps the lobby connected", async ({
     browser,
   }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -244,7 +246,7 @@ test.describe('Universal lobby', () => {
       await initiatorLobby.waitUntilConnected();
       await receiverLobby.waitUntilConnected();
 
-      await initiatorLobby.proposeGame('Hex Pong');
+      await initiatorLobby.proposeGame("Hex Pong");
       await receiverLobby.declineGame();
 
       // No game canvas appears and both peers stay connected for other features.
@@ -256,11 +258,11 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('media controls mute, toggle camera, and end the call back to the dock', async ({
+  test("media controls mute, toggle camera, and end the call back to the dock", async ({
     browser,
   }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -276,18 +278,21 @@ test.describe('Universal lobby', () => {
       // Mute → the peer sees the muted indicator; unmute clears it. The compact
       // media buttons are icon-only, so the label lives on the `title` attribute.
       await initiatorLobby.muteButton.click();
-      await expect(initiatorLobby.muteButton).toHaveAttribute('title', 'Unmute');
+      await expect(initiatorLobby.muteButton).toHaveAttribute(
+        "title",
+        "Unmute",
+      );
       await expect(receiverLobby.peerMutedIndicator).toBeVisible({
         timeout: 10_000,
       });
       await initiatorLobby.muteButton.click();
-      await expect(initiatorLobby.muteButton).toHaveAttribute('title', 'Mute');
+      await expect(initiatorLobby.muteButton).toHaveAttribute("title", "Mute");
 
       // Camera off → the peer sees the camera-off placeholder.
       await initiatorLobby.cameraButton.click();
       await expect(initiatorLobby.cameraButton).toHaveAttribute(
-        'title',
-        'Camera On',
+        "title",
+        "Camera On",
       );
       await expect(receiverLobby.peerCameraOffIndicator).toBeVisible({
         timeout: 10_000,
@@ -302,9 +307,9 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('leaving the lobby ends it for both peers', async ({ browser }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+  test("leaving the lobby ends it for both peers", async ({ browser }) => {
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -314,7 +319,7 @@ test.describe('Universal lobby', () => {
       await initiatorLobby.waitUntilConnected();
       await receiverLobby.waitUntilConnected();
 
-      await initiatorLobby.leaveButtonHeader.click();
+      await initiatorLobby.leave();
 
       // The peer is told the lobby ended.
       await expect(receiverLobby.ended).toBeVisible({ timeout: 15_000 });
@@ -323,11 +328,11 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('opens a connected lobby from the nicklist context menu', async ({
+  test("opens a connected lobby from the nicklist context menu", async ({
     browser,
   }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
     const channel = `#lob${Math.random().toString(36).slice(2, 8)}`;
 
     try {
@@ -339,10 +344,8 @@ test.describe('Universal lobby', () => {
       await alice.chat.switchToTab(channel);
       await alice.chat.expectNickInList(bob.nick);
 
-      const { initiatorLobby, receiverLobby } = await openLobbiesFromContextMenu(
-        alice,
-        bob,
-      );
+      const { initiatorLobby, receiverLobby } =
+        await openLobbiesFromContextMenu(alice, bob);
 
       await initiatorLobby.waitUntilConnected();
       await receiverLobby.waitUntilConnected();
@@ -351,11 +354,11 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('delivers video both ways when both peers enable it at once', async ({
+  test("delivers video both ways when both peers enable it at once", async ({
     browser,
   }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -368,8 +371,8 @@ test.describe('Universal lobby', () => {
       // Both turn on video at the same instant → renegotiation glare. With the
       // single-offerer model, neither side ends up with a muted (frozen) remote.
       await Promise.all([
-        initiatorLobby.videoButton.click(),
-        receiverLobby.videoButton.click(),
+        initiatorLobby.clickStartVideo(),
+        receiverLobby.clickStartVideo(),
       ]);
 
       await initiatorLobby.expectRemoteVideoFlowing();
@@ -379,14 +382,14 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('runs video, file, game, and chat all on one connection', async ({
+  test("runs video, file, game, and chat all on one connection", async ({
     browser,
   }) => {
-    const alice = await newP2PUser(browser, 'loba', {
+    const alice = await newP2PUser(browser, "loba", {
       media: true,
       acceptDownloads: true,
     });
-    const bob = await newP2PUser(browser, 'lobb', {
+    const bob = await newP2PUser(browser, "lobb", {
       media: true,
       acceptDownloads: true,
     });
@@ -404,18 +407,18 @@ test.describe('Universal lobby', () => {
       await receiverLobby.startVideoCall();
 
       // 2) A game over the gamedata channel, concurrently.
-      await initiatorLobby.proposeGame('Hex Pong');
+      await initiatorLobby.proposeGame("Hex Pong");
       await receiverLobby.acceptGame();
       await expect(initiatorLobby.gameCanvas).toBeVisible();
 
       // 3) A file over the filetransfer channel, concurrently.
       await initiatorLobby.openFilePanel();
-      const fileName = 'all-at-once.txt';
-      await initiatorLobby.sendFile(fileName, 'video + game + file + chat');
+      const fileName = "all-at-once.txt";
+      await initiatorLobby.sendFile(fileName, "video + game + file + chat");
       await expect(receiverLobby.fileTransferAccept).toBeVisible({
         timeout: 15_000,
       });
-      const downloadPromise = receiverLobby.page.waitForEvent('download', {
+      const downloadPromise = receiverLobby.page.waitForEvent("download", {
         timeout: 20_000,
       });
       await receiverLobby.fileTransferAccept.click();
@@ -423,8 +426,8 @@ test.describe('Universal lobby', () => {
       expect(download.suggestedFilename()).toBe(fileName);
 
       // 4) Chat, still concurrent.
-      await initiatorLobby.sendChat('everything together');
-      await receiverLobby.expectChatMessage('everything together');
+      await initiatorLobby.sendChat("everything together");
+      await receiverLobby.expectChatMessage("everything together");
 
       // All four modalities coexist on the single persistent connection.
       await expect(initiatorLobby.remoteVideo).toBeVisible();
@@ -435,9 +438,9 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('shows live network telemetry during a call', async ({ browser }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+  test("shows live network telemetry during a call", async ({ browser }) => {
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -451,16 +454,18 @@ test.describe('Universal lobby', () => {
       await receiverLobby.startVideoCall();
 
       // The factory polls getStats every ~3s; the panel renders once stats land.
-      await expect(initiatorLobby.networkPanel).toBeVisible({ timeout: 15_000 });
+      await expect(initiatorLobby.networkPanel).toBeVisible({
+        timeout: 15_000,
+      });
       await expect(initiatorLobby.networkHealth).not.toBeEmpty();
     } finally {
       await closeP2PUsers([alice, bob]);
     }
   });
 
-  test('switches video call layouts', async ({ browser }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+  test("switches video call layouts", async ({ browser }) => {
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -477,11 +482,11 @@ test.describe('Universal lobby', () => {
       await expect(initiatorLobby.mediaContainer).toHaveClass(
         /lobby-media--focus/,
       );
-      await initiatorLobby.setLayout('Side by side');
+      await initiatorLobby.setLayout("Side by side");
       await expect(initiatorLobby.mediaContainer).toHaveClass(
         /lobby-media--side_by_side/,
       );
-      await initiatorLobby.setLayout('Maximize');
+      await initiatorLobby.setLayout("Maximize");
       await expect(initiatorLobby.mediaContainer).toHaveClass(
         /lobby-media--maximized/,
       );
@@ -490,9 +495,9 @@ test.describe('Universal lobby', () => {
     }
   });
 
-  test('lists media devices on demand during a call', async ({ browser }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+  test("lists media devices on demand during a call", async ({ browser }) => {
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -505,20 +510,22 @@ test.describe('Universal lobby', () => {
       await initiatorLobby.startVideoCall();
       await initiatorLobby.devicesButton.click();
 
-      await expect(initiatorLobby.devicesPanel).toBeVisible({ timeout: 10_000 });
+      await expect(initiatorLobby.devicesPanel).toBeVisible({
+        timeout: 10_000,
+      });
       await expect(
-        initiatorLobby.devicesPanel.locator('select'),
+        initiatorLobby.devicesPanel.locator("select"),
       ).not.toHaveCount(0);
     } finally {
       await closeP2PUsers([alice, bob]);
     }
   });
 
-  test('rejects a blocked file extension with a validation error', async ({
+  test("rejects a blocked file extension with a validation error", async ({
     browser,
   }) => {
-    const alice = await newP2PUser(browser, 'loba', { media: true });
-    const bob = await newP2PUser(browser, 'lobb', { media: true });
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
 
     try {
       const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
@@ -530,7 +537,7 @@ test.describe('Universal lobby', () => {
 
       await initiatorLobby.openFilePanel();
       // `.exe` is in the lobby's blocked-extensions list.
-      await initiatorLobby.sendFile('danger.exe', 'should be rejected');
+      await initiatorLobby.sendFile("danger.exe", "should be rejected");
 
       await expect(initiatorLobby.fileValidationError).toBeVisible({
         timeout: 10_000,
