@@ -37,6 +37,11 @@ function normalizeConfig(config) {
     actionAttribute: config.actionAttribute || "data-media-action",
     deviceKindAttribute: config.deviceKindAttribute || "data-device-kind",
     upgradeMode: config.upgradeMode || "request",
+    // When true, this hook can be placed "in a call" by the server without
+    // acquiring any media (recvonly auto-join) and runs a watchdog that recovers
+    // a remote video track that negotiated but never started flowing. Lobby-only;
+    // the /p2p flow leaves it off so its bilateral-consent path is untouched.
+    autoJoin: config.autoJoin === true,
     elementIds: {
       remoteVideo: config.elementIds?.remoteVideo,
       localVideo: config.elementIds?.localVideo,
@@ -52,6 +57,7 @@ function normalizeConfig(config) {
       upgradeRejected: config.serverEvents?.upgradeRejected,
       upgradeFailed: config.serverEvents?.upgradeFailed,
       setPreset: config.serverEvents?.setPreset,
+      joinCall: config.serverEvents?.joinCall,
     },
     clientEvents: {
       ready: config.clientEvents?.ready,
@@ -93,6 +99,13 @@ export function createRtcMediaHook(configInput) {
       this.cameraOff = false;
       this.upgradeInProgress = false;
       this.upgradeCancelled = false;
+      // Self-controlled send state, tracked independently of the call presence so
+      // a peer can be "in the call" (auto-joined, recvonly) while sending nothing.
+      this.inCall = false;
+      this.audioOn = false;
+      this.videoOn = false;
+      this.watchdogInterval = null;
+      this._stalledSince = null;
 
       this._onPcReady = (event) => this._handlePcReady(event.detail.pc);
       this._onPcClosed = () => this._handlePcClosed();
@@ -128,6 +141,7 @@ export function createRtcMediaHook(configInput) {
       this._handleServerEvent(config.serverEvents.setPreset, ({ preset }) =>
         this._handleSetPreset(preset),
       );
+      this._handleServerEvent(config.serverEvents.joinCall, () => this._joinCall());
 
       this._wireControls();
       this._push(config.clientEvents.ready, {});
@@ -200,23 +214,118 @@ export function createRtcMediaHook(configInput) {
       setCodecPreferences(this.pc);
 
       this.callType = type;
-      this.startTime = Date.now();
+      this.inCall = true;
+      this.audioOn = true;
+      this.videoOn = type === "video";
+      this.startTime = this.startTime || Date.now();
       this.muted = false;
       this.cameraOff = false;
 
       this._attachMediaElements();
       this._startDurationTimer();
       this._startQualityPolling();
+      this._startMediaWatchdog();
       this._setupDeviceChangeListener();
 
-      this._push(config.clientEvents.callStarted, { type });
+      this._reportSendState();
       this.startingCall = false;
+    },
+
+    // Enter the call as a pure receiver (auto-join), without acquiring any media.
+    // The server has already marked us a participant; we just light up the call
+    // surface, timers and watchdog so the incoming stream renders and recovers.
+    _joinCall() {
+      if (this.inCall) return;
+      this.inCall = true;
+      this.callType = "receiving";
+      this.audioOn = false;
+      this.videoOn = false;
+      this.muted = false;
+      this.cameraOff = false;
+      this.startTime = this.startTime || Date.now();
+
+      this._attachMediaElements();
+      this._startDurationTimer();
+      this._startQualityPolling();
+      this._startMediaWatchdog();
+    },
+
+    // Acquire and send the microphone on demand (the auto-joined peer choosing to
+    // speak). Adding the track triggers renegotiation on the shared connection.
+    async _enableAudio() {
+      if (!this.pc || this.audioOn || this.upgradeInProgress) return;
+
+      try {
+        const stream = await acquireMedia({ audio: getAudioConstraints() });
+        const track = stream.getAudioTracks()[0];
+        if (!this.localStream) this.localStream = new MediaStream();
+        this.localStream.addTrack(track);
+        const sender = this.pc.addTrack(track, this.localStream);
+        this.senders.push(sender);
+
+        this.audioOn = true;
+        this.muted = false;
+        this._setupDeviceChangeListener();
+        this._attachMediaElements();
+        this._reportSendState();
+      } catch (error) {
+        this._push(config.clientEvents.error, error);
+      }
+    },
+
+    // Push the current self-controlled send state. Reuses the callStarted event so
+    // the server keeps one entry point for "this peer's media changed".
+    _reportSendState() {
+      const type = this.videoOn ? "video" : "audio";
+      // Only the auto-join (lobby) flow carries the granular send flags; the /p2p
+      // and /game flows keep their original `{type}`-only payload untouched.
+      const payload = config.autoJoin
+        ? { type, audio_on: this.audioOn, video_on: this.videoOn }
+        : { type };
+      this._push(config.clientEvents.callStarted, payload);
+    },
+
+    // Acquire and send the camera on demand. Works whether or not we already have
+    // a local stream (an auto-joined receiver has none yet), so it covers both the
+    // "turn my camera on" and the classic audio→video upgrade.
+    async _enableVideo() {
+      if (!this.pc || this.videoOn || this.upgradeInProgress) return;
+
+      this.upgradeInProgress = true;
+      this.upgradeCancelled = false;
+
+      try {
+        const stream = await acquireMedia({ video: getVideoConstraints(), audio: false });
+
+        if (this.upgradeCancelled) {
+          stopAllTracks(stream);
+          return;
+        }
+
+        const track = stream.getVideoTracks()[0];
+        if (!this.localStream) this.localStream = new MediaStream();
+        this.localStream.addTrack(track);
+        const sender = this.pc.addTrack(track, this.localStream);
+        this.senders.push(sender);
+
+        this.videoOn = true;
+        this.cameraOff = false;
+        this.callType = "video";
+        this._setupDeviceChangeListener();
+        this._attachMediaElements();
+        this._reportSendState();
+      } catch (error) {
+        this._push(config.clientEvents.error, { ...error, phase: "enable-video" });
+      } finally {
+        this.upgradeInProgress = false;
+      }
     },
 
     _endCall(reason, opts = {}) {
       const notify = opts.notify !== false;
 
       this._stopTimers();
+      this._stopMediaWatchdog();
 
       if (this.localStream) {
         stopAllTracks(this.localStream);
@@ -236,10 +345,52 @@ export function createRtcMediaHook(configInput) {
       }
 
       this.callType = null;
+      this.inCall = false;
+      this.audioOn = false;
+      this.videoOn = false;
       this.startTime = null;
 
       if (notify) {
         this._push(config.clientEvents.callEnded, { reason });
+      }
+    },
+
+    // --- Stalled-media watchdog (autoJoin only) ---
+
+    // A remote video track that negotiates but never starts flowing stays
+    // `muted` (no RTP). When that persists past the grace window, ask the WebRTC
+    // hook to recover (ICE restart / re-offer) instead of leaving a black frame.
+    _startMediaWatchdog() {
+      if (!config.autoJoin || this.watchdogInterval) return;
+
+      this._stalledSince = null;
+      this.watchdogInterval = setInterval(() => {
+        const track = this.remoteStream && this.remoteStream.getVideoTracks?.()[0];
+        if (!track || track.readyState !== "live" || track.muted !== true) {
+          this._stalledSince = null;
+          return;
+        }
+
+        if (!this._stalledSince) {
+          this._stalledSince = Date.now();
+        } else if (Date.now() - this._stalledSince > 3000) {
+          this._stalledSince = null;
+          this._requestMediaRecovery();
+        }
+      }, 1000);
+    },
+
+    _stopMediaWatchdog() {
+      if (this.watchdogInterval) {
+        clearInterval(this.watchdogInterval);
+        this.watchdogInterval = null;
+      }
+      this._stalledSince = null;
+    },
+
+    _requestMediaRecovery() {
+      if (this._webrtcEl) {
+        this._webrtcEl.dispatchEvent(new CustomEvent("lobby_media_recover"));
       }
     },
 
@@ -312,6 +463,12 @@ export function createRtcMediaHook(configInput) {
             break;
           case "camera":
             this._toggleCamera();
+            break;
+          case "enable-audio":
+            this._enableAudio();
+            break;
+          case "enable-video":
+            this._enableVideo();
             break;
           case "end-call":
             this._endCall("ended");
@@ -394,10 +551,11 @@ export function createRtcMediaHook(configInput) {
         this.senders.push(sender);
 
         this.callType = "video";
+        this.videoOn = true;
         this.cameraOff = false;
         this._attachMediaElements();
 
-        this._push(config.clientEvents.callStarted, { type: "video" });
+        this._reportSendState();
       } catch (error) {
         this._push(config.clientEvents.error, { ...error, phase: "upgrade" });
       } finally {
@@ -600,6 +758,7 @@ export function createRtcMediaHook(configInput) {
 
     _cleanup() {
       this._stopTimers();
+      this._stopMediaWatchdog();
 
       if (this._onDeviceChange && navigator.mediaDevices?.removeEventListener) {
         navigator.mediaDevices.removeEventListener("devicechange", this._onDeviceChange);
@@ -616,6 +775,9 @@ export function createRtcMediaHook(configInput) {
       this.senders = [];
       this.pc = null;
       this.callType = null;
+      this.inCall = false;
+      this.audioOn = false;
+      this.videoOn = false;
       this.startTime = null;
       this.upgradeInProgress = false;
       this.upgradeCancelled = false;

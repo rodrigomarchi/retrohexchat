@@ -29,7 +29,7 @@ test.describe("Universal lobby", () => {
     }
   });
 
-  test("a peer who only receives sees the sharer's camera without starting their own call", async ({
+  test("a peer who only receives auto-joins the call and can turn on their own camera", async ({
     browser,
   }) => {
     const alice = await newP2PUser(browser, "loba", { media: true });
@@ -43,21 +43,24 @@ test.describe("Universal lobby", () => {
       await initiatorLobby.waitUntilConnected();
       await receiverLobby.waitUntilConnected();
 
-      // Only the initiator opens their camera. The receiver never starts a call.
+      // Only the initiator opens their camera.
       await initiatorLobby.clickStartVideo();
 
-      // Regression: the receiver's Call window must open on its own and the
-      // sharer's stream must actually flow into the receiver's remote video —
-      // previously the remote <video> only existed during the receiver's OWN call,
-      // so a one-way share showed nothing.
+      // The receiver AUTO-JOINS: its Call window opens on its own and the sharer's
+      // stream flows in — without the receiver ever touching the Start menu.
       await expect(receiverLobby.remoteVideo).toBeVisible();
       await receiverLobby.expectRemoteVideoFlowing();
 
-      // The receiver is only watching: it sees the join-in hint and has no
-      // sending controls (no End call) for a call it is not part of.
-      await expect(
-        receiverLobby.page.getByTestId("lobby-media-join-hint"),
-      ).toBeVisible();
+      // The receiver is in the call but sending nothing yet, so it offers to turn
+      // the camera on rather than forcing a Start-menu round trip.
+      const enableCamera = receiverLobby.page.locator(
+        '[data-lobby-media-action="enable-video"]',
+      );
+      await expect(enableCamera).toBeVisible();
+      await enableCamera.click();
+
+      // Once the receiver enables its camera, the initiator sees it flow back.
+      await initiatorLobby.expectRemoteVideoFlowing();
     } finally {
       await closeP2PUsers([alice, bob]);
     }
@@ -402,12 +405,11 @@ test.describe("Universal lobby", () => {
       await initiatorLobby.waitUntilConnected();
       await receiverLobby.waitUntilConnected();
 
-      // Both turn on video at the same instant → renegotiation glare. With the
-      // single-offerer model, neither side ends up with a muted (frozen) remote.
-      await Promise.all([
-        initiatorLobby.clickStartVideo(),
-        receiverLobby.clickStartVideo(),
-      ]);
+      // Both turn on video at the same instant → renegotiation glare. Whichever
+      // side's auto-join lands first sends via the in-call control, the other from
+      // the Start menu; either way, with the single-offerer model plus the stalled
+      // -media watchdog, neither side ends up with a muted (frozen) remote.
+      await Promise.all([initiatorLobby.sendVideo(), receiverLobby.sendVideo()]);
 
       await initiatorLobby.expectRemoteVideoFlowing();
       await receiverLobby.expectRemoteVideoFlowing();

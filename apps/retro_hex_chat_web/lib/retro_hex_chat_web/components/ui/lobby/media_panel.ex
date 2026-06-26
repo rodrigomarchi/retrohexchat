@@ -100,24 +100,21 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
           {dgettext("lobby", "%{peer} is muted", peer: @peer_nick)}
         </p>
 
-        <%!-- Receiver-only: the peer is sharing but we haven't joined yet. --%>
-        <p
-          :if={@peer_sharing and !@in_call}
-          data-testid="lobby-media-join-hint"
-          class="text-muted-foreground mt-2 flex items-center gap-2 text-xs"
-        >
-          <Icons.icon_camera class="h-4 w-4 shrink-0" />
-          {dgettext(
-            "lobby",
-            "%{peer} is sharing. Start audio or video from the Lobby menu to join in.",
-            peer: @peer_nick
-          )}
-        </p>
-
-        <%!-- Sending controls: only meaningful while we are in the call. --%>
+        <%!-- Sending controls. We are a participant the moment the call opens
+             (auto-join), but start recvonly: the mic and camera are enabled on
+             demand, then become mute / on-off toggles. --%>
         <div :if={@in_call}>
           <.toolbar class="mt-2 flex-wrap items-center gap-1">
             <.toolbar_button
+              :if={!@call[:audio_on]}
+              label={dgettext("lobby", "Turn on microphone")}
+              variant="compact"
+              data-lobby-media-action="enable-audio"
+            >
+              <Icons.icon_microphone class="h-4 w-4" />
+            </.toolbar_button>
+            <.toolbar_button
+              :if={@call[:audio_on]}
               label={
                 if @local_muted, do: dgettext("lobby", "Unmute"), else: dgettext("lobby", "Mute")
               }
@@ -129,7 +126,15 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
               <Icons.icon_microphone :if={!@local_muted} class="h-4 w-4" />
             </.toolbar_button>
             <.toolbar_button
-              :if={@call[:type] == "video"}
+              :if={!@call[:video_on]}
+              label={dgettext("lobby", "Turn on camera")}
+              variant="compact"
+              data-lobby-media-action="enable-video"
+            >
+              <Icons.icon_camera class="h-4 w-4" />
+            </.toolbar_button>
+            <.toolbar_button
+              :if={@call[:video_on]}
               label={
                 if @local_camera_off,
                   do: dgettext("lobby", "Camera On"),
@@ -143,15 +148,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
               <Icons.icon_camera :if={!@local_camera_off} class="h-4 w-4" />
             </.toolbar_button>
             <.toolbar_button
-              :if={@call[:type] == "audio"}
-              label={dgettext("lobby", "Add Video")}
-              variant="compact"
-              data-lobby-media-action="upgrade"
-            >
-              <Icons.icon_upgrade_video class="h-4 w-4" />
-            </.toolbar_button>
-            <.toolbar_button
-              :if={@call[:type] == "video"}
+              :if={@peer_media.video}
               label={dgettext("lobby", "Picture-in-Picture")}
               variant="compact"
               data-lobby-media-action="pip"
@@ -177,8 +174,12 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
             <span class="text-muted-foreground ml-auto text-xs">{@call[:duration]}</span>
           </.toolbar>
 
-          <%!-- Layout switch (video only) --%>
-          <.toolbar :if={@call[:type] == "video"} variant="compact" class="mt-1 gap-1">
+          <%!-- Layout switch (whenever there is any video to arrange) --%>
+          <.toolbar
+            :if={@call[:video_on] or @peer_media.video}
+            variant="compact"
+            class="mt-1 gap-1"
+          >
             <.toolbar_button
               label={dgettext("lobby", "Focus")}
               active={@call_layout == "focus"}

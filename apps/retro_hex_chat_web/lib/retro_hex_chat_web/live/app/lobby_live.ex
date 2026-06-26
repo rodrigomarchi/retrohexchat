@@ -139,18 +139,9 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     if payload.user_id == socket.assigns.user_id do
       {:noreply, socket}
     else
-      socket = assign(socket, peer_media: %{audio: payload.audio, video: payload.video})
-
-      # The peer turned media on: open our Call window so their incoming stream is
-      # actually visible — mirroring how file offers and game requests open their
-      # windows on the receiver (a flash alone left the stream stuck in a hidden
-      # window). When the peer turns everything off again, leave the window as the
-      # user left it.
-      if payload.audio or payload.video do
-        {:noreply, push_event(socket, "window_command", %{action: "open", id: "call"})}
-      else
-        {:noreply, socket}
-      end
+      socket
+      |> assign(peer_media: %{audio: payload.audio, video: payload.video})
+      |> surface_peer_media(payload.audio or payload.video)
     end
   end
 
@@ -226,7 +217,11 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     if from_id == socket.assigns.user_id do
       {:noreply, socket}
     else
-      {:noreply, push_event(socket, "lobby_renegotiate", %{kinds: payload[:kinds] || []})}
+      {:noreply,
+       push_event(socket, "lobby_renegotiate", %{
+         kinds: payload[:kinds] || [],
+         recover: payload[:recover] || false
+       })}
     end
   end
 
@@ -265,11 +260,10 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   # The answerer asks the initiator to re-offer after it added local media tracks
   # (single-offerer model — only the initiator emits offers).
   def handle_event("lobby_renegotiate", params, socket) do
-    kinds = Map.get(params, "kinds", [])
-
     broadcast("lobby_renegotiate", socket.assigns.token, %{
       from: socket.assigns.user_id,
-      kinds: kinds
+      kinds: Map.get(params, "kinds", []),
+      recover: Map.get(params, "recover", false)
     })
 
     {:noreply, socket}
@@ -329,15 +323,20 @@ defmodule RetroHexChatWeb.App.LobbyLive do
      |> push_event("window_command", %{action: "open", id: "call"})}
   end
 
-  def handle_event("lobby_media_call_started", %{"type" => type}, socket) do
-    # The media factory may report "video" after a local audio→video upgrade.
-    audio_on = true
-    video_on = type == "video"
+  # The media hook reports its self-controlled send state here for every change:
+  # starting a call, or an auto-joined receiver later enabling mic/camera. The
+  # `audio_on`/`video_on` flags describe what THIS peer is sending now.
+  def handle_event("lobby_media_call_started", params, socket) do
+    type = params["type"] || "audio"
+    audio_on = Map.get(params, "audio_on", true)
+    video_on = Map.get(params, "video_on", type == "video")
     Lobby.set_media(socket.assigns.token, socket.assigns.user_id, audio_on, video_on)
 
     call =
       Map.merge(socket.assigns.call || %{}, %{
         type: type,
+        audio_on: audio_on,
+        video_on: video_on,
         duration: socket.assigns.call[:duration] || "00:00:00",
         muted: socket.assigns.local_muted,
         camera_off: socket.assigns.local_camera_off
@@ -738,6 +737,44 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   defp broadcast(event, token, payload) do
     Phoenix.PubSub.broadcast(@pubsub, "lobby:#{token}", %{event: event, payload: payload})
+  end
+
+  # The peer's media turned on. If we are not in the call yet, auto-join as a pure
+  # receiver: become a participant (window opens, surface renders) with our own mic
+  # and camera off — the user then chooses to enable them, no permission prompt. If
+  # we are already in, just keep the window surfaced.
+  defp surface_peer_media(socket, true) do
+    if is_nil(socket.assigns.call) do
+      call = %{
+        type: "receiving",
+        audio_on: false,
+        video_on: false,
+        duration: "00:00:00",
+        muted: true,
+        camera_off: true
+      }
+
+      {:noreply,
+       socket
+       |> assign(call: call, local_muted: true, local_camera_off: true)
+       |> push_event("lobby_media_join", %{})
+       |> push_event("window_command", %{action: "open", id: "call"})}
+    else
+      {:noreply, push_event(socket, "window_command", %{action: "open", id: "call"})}
+    end
+  end
+
+  # The peer turned everything off. If we were only receiving (sending nothing),
+  # there is no media left for us, so leave the call; otherwise stay as we are.
+  defp surface_peer_media(socket, false) do
+    call = socket.assigns.call
+    sending? = call != nil and (call[:audio_on] or call[:video_on])
+
+    if call != nil and not sending? do
+      {:noreply, push_event(socket, "lobby_media_end_call", %{notify: true})}
+    else
+      {:noreply, socket}
+    end
   end
 
   defp system_message(content) do

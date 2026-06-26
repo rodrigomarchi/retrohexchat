@@ -1043,12 +1043,15 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "Windows-style desktop. Each feature lives in its own window you can drag, resize, " <>
               "minimize, maximize and close: an audio or video call, file transfer, a game, plus " <>
               "chat and the pinned Connection telemetry window. Launch features from the taskbar " <>
-              "Start menu (the [Lobby] button); every open window gets a taskbar button. Closing a " <>
-              "feature window only hides it — the call, transfer or game keeps running; end it from " <>
-              "inside the window or choose Leave lobby from the Start menu. Each peer controls their " <>
-              "own microphone and camera; file transfers and games still ask the other side to " <>
-              "accept. Your window layout is remembered between visits. The lobby only closes when " <>
-              "someone leaves or it goes idle. See also: P2P Sessions, Video Call, File Transfer."
+              "Start menu (the [Lobby] button); every open window gets a taskbar button. A window's " <>
+              "X ends that feature (hangs up the call, cancels the transfer, quits the game), while " <>
+              "minimize keeps it running in the taskbar; choose Leave lobby from the Start menu to " <>
+              "leave entirely. When someone starts an audio or video call, the other person joins it " <>
+              "automatically — the call window opens and they see and hear the caller right away, " <>
+              "with their own microphone and camera off until they choose to turn each one on. File " <>
+              "transfers and games still ask the other side to accept. Your window layout is " <>
+              "remembered between visits. The lobby only closes when someone leaves or it goes idle. " <>
+              "See also: P2P Sessions, Video Call, File Transfer."
           )
       },
       %{

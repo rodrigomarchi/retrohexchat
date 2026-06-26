@@ -172,44 +172,70 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       refute render(view) =~ "End call"
     end
 
-    test "the peer sharing media opens our Call window and renders the remote stream surface",
+    test "the peer starting a call auto-joins us recvonly: window opens, surface renders, media off",
          %{conn: conn, token: token, creator: creator, peer: peer} do
       view = connect_both(conn, token, creator, peer)
 
-      # We have NOT started our own call. Before the peer shares, there is no remote
-      # video element to attach an incoming stream to.
+      # Before the peer shares, there is no remote video element to attach to.
       refute render(view) =~ ~s(id="lobby-remote-video")
 
-      # The peer (not us) turns on their camera. This must surface on our side:
-      # the Call window opens (like file offers / game requests) and the remote
-      # video/audio elements render so the media hook can attach the peer's stream.
+      # The peer starts a video call. We auto-join as a pure receiver: the hook is
+      # told to enter recvonly mode, the window opens, and the surface renders.
       SessionServer.set_media(token, peer.id, true, true)
 
+      assert_push_event(view, "lobby_media_join", %{})
       assert_push_event(view, "window_command", %{action: "open", id: "call"})
 
       html = render(view)
       assert html =~ ~s(id="lobby-remote-video")
       assert html =~ ~s(id="lobby-remote-audio")
-      # We are only receiving — no sending controls for a call we are not in.
-      assert html =~ ~s(data-testid="lobby-media-join-hint")
-      refute html =~ "End call"
+      # We are in the call but sending nothing: controls offer to enable mic/camera,
+      # and we can leave the call we were placed into.
+      assert html =~ ~s(data-lobby-media-action="enable-audio")
+      assert html =~ ~s(data-lobby-media-action="enable-video")
+      assert html =~ "End call"
+      # No mute/camera toggles yet — we are not sending.
+      refute html =~ ~s(data-lobby-media-action="mute")
+      refute html =~ ~s(data-lobby-media-action="camera")
     end
 
-    test "a peer mute/camera update does not fabricate a local call",
+    test "an auto-joined receiver enabling the camera flips it to an on/off toggle",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+      SessionServer.set_media(token, peer.id, true, true)
+      assert_push_event(view, "lobby_media_join", %{})
+
+      # The media hook reports we turned our camera on (no mic).
+      render_hook(view, "lobby_media_call_started", %{"audio_on" => false, "video_on" => true})
+      html = render(view)
+
+      # Camera is now an on/off toggle; the mic is still enable-on-demand.
+      assert html =~ ~s(data-lobby-media-action="camera")
+      assert html =~ ~s(data-lobby-media-action="enable-audio")
+      refute html =~ ~s(data-lobby-media-action="enable-video")
+    end
+
+    test "the peer ending the call leaves an auto-joined receiver",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+      SessionServer.set_media(token, peer.id, true, true)
+      assert_push_event(view, "lobby_media_join", %{})
+
+      # The peer stops all media. We were only receiving, so we leave the call.
+      SessionServer.set_media(token, peer.id, false, false)
+      assert_push_event(view, "lobby_media_end_call", %{notify: true})
+    end
+
+    test "a peer camera update alone does not fabricate a local call",
          %{conn: conn, token: token, creator: creator, peer: peer} do
       view = connect_both(conn, token, creator, peer)
 
-      # Peer toggles their camera while we are not in a call. This used to merge a
-      # fake `call` map (making @call_active true and showing sending controls).
-      send(
-        view.pid,
-        %{event: "lobby_peer_camera", payload: %{off: true, from: peer.id}}
-      )
+      # A bare peer-camera event (no media-changed) must not put us in a call.
+      send(view.pid, %{event: "lobby_peer_camera", payload: %{off: true, from: peer.id}})
 
       html = render(view)
-      # No call surface, no sending controls, no End call — we are not in a call.
       refute html =~ "End call"
-      refute html =~ ~s(data-testid="lobby-media-panel" data-window-pinned)
+      refute html =~ ~s(data-lobby-media-action="enable-audio")
     end
   end
 

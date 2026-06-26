@@ -41,6 +41,8 @@ export class LobbyPage {
   readonly muteButton: Locator;
   readonly cameraButton: Locator;
   readonly addVideoButton: Locator;
+  readonly enableAudioButton: Locator;
+  readonly enableVideoButton: Locator;
   readonly peerMutedIndicator: Locator;
   readonly peerCameraOffIndicator: Locator;
   readonly networkHealth: Locator;
@@ -87,7 +89,15 @@ export class LobbyPage {
     );
     this.muteButton = page.locator('[data-lobby-media-action="mute"]');
     this.cameraButton = page.locator('[data-lobby-media-action="camera"]');
-    this.addVideoButton = page.locator('[data-lobby-media-action="upgrade"]');
+    this.enableAudioButton = page.locator(
+      '[data-lobby-media-action="enable-audio"]',
+    );
+    this.enableVideoButton = page.locator(
+      '[data-lobby-media-action="enable-video"]',
+    );
+    // In the universal lobby, "add video" to an ongoing call is the same in-call
+    // "turn on camera" control an auto-joined receiver uses.
+    this.addVideoButton = this.enableVideoButton;
     this.peerMutedIndicator = page.getByTestId("lobby-peer-muted");
     this.peerCameraOffIndicator = page.getByTestId("lobby-peer-camera-off");
     this.networkHealth = page.getByTestId("lobby-network-health");
@@ -148,19 +158,54 @@ export class LobbyPage {
   }
 
   async startVideoCall() {
-    await this.clickStartVideo();
+    await this.sendVideo();
     await expect(this.remoteVideo).toBeVisible();
   }
 
-  /** Start video without waiting for the remote — for the simultaneous-glare test. */
+  /**
+   * Turn our camera on, whether we are the first mover (start from the Start menu)
+   * or an auto-joined receiver (use the in-call "Turn on camera" control). Waits
+   * for whichever path the universal lobby offers.
+   */
+  async sendVideo() {
+    await expect
+      .poll(
+        async () =>
+          (await this.enableVideoButton.isVisible()) ||
+          (await this.videoButton.isEnabled()),
+        { timeout: 15_000 },
+      )
+      .toBe(true);
+
+    if (await this.enableVideoButton.isVisible()) {
+      await this.enableVideoButton.click();
+    } else {
+      await this.clickStartVideo();
+    }
+  }
+
+  /** Start video from the Start menu (first mover) without waiting for the remote. */
   async clickStartVideo() {
     await this.openStartMenu();
     await this.videoButton.click();
   }
 
   async startAudioCall() {
-    await this.openStartMenu();
-    await this.audioButton.click();
+    await expect
+      .poll(
+        async () =>
+          (await this.enableAudioButton.isVisible()) ||
+          (await this.audioButton.isEnabled()),
+        { timeout: 15_000 },
+      )
+      .toBe(true);
+
+    if (await this.enableAudioButton.isVisible()) {
+      await this.enableAudioButton.click();
+    } else {
+      await this.openStartMenu();
+      await this.audioButton.click();
+    }
   }
 
   async openGamePanel() {

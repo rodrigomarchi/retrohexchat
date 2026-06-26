@@ -55,10 +55,16 @@ const LobbyWebRTCHook = {
     // Answerer → initiator request to (re)offer after the answerer added tracks.
     this.handleEvent("lobby_renegotiate", (data = {}) => this._handleRenegotiate(data));
 
+    // The media hook's stalled-stream watchdog asks us to recover a remote track
+    // that negotiated but never started flowing (black frame, no RTP).
+    this._onMediaRecover = () => this._recoverMedia();
+    this.el.addEventListener("lobby_media_recover", this._onMediaRecover);
+
     this.pushEvent("lobby_webrtc_ready", {});
   },
 
   destroyed() {
+    this.el.removeEventListener("lobby_media_recover", this._onMediaRecover);
     this._cleanup();
   },
 
@@ -156,17 +162,30 @@ const LobbyWebRTCHook = {
   // Answerer asks the initiator to (re)offer after it added local tracks. The
   // request carries the track kinds so the initiator can pre-create matching
   // recvonly transceivers, keeping the m-line layout aligned on both sides.
-  _requestRenegotiation() {
+  _requestRenegotiation(recover = false) {
     const kinds = this.pc
       .getTransceivers()
       .map((t) => t.sender && t.sender.track && t.sender.track.kind)
       .filter(Boolean);
-    this.pushEvent("lobby_renegotiate", { kinds });
+    this.pushEvent("lobby_renegotiate", { kinds, recover });
   },
 
-  _handleRenegotiate({ kinds = [] }) {
+  _handleRenegotiate({ kinds = [], recover = false }) {
     if (this.role !== "initiator" || !this.pc) return;
+    if (recover && this.pc.restartIce) this.pc.restartIce();
     this._maybeOffer(kinds);
+  },
+
+  // Recover a stalled media stream. Only the initiator can restart ICE, so the
+  // answerer routes the request through the initiator (single-offerer model).
+  _recoverMedia() {
+    if (!this.pc) return;
+    if (this.role === "initiator") {
+      if (this.pc.restartIce) this.pc.restartIce();
+      this._maybeOffer();
+    } else {
+      this._requestRenegotiation(true);
+    }
   },
 
   // Initiator-only. Serialized so two changes can't race into two offers.

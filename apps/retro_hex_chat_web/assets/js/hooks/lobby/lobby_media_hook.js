@@ -14,6 +14,7 @@ const LobbyMediaHook = createRtcMediaHook({
   pcClosedEvent: "lobby_media_pc_closed",
   actionAttribute: "data-lobby-media-action",
   upgradeMode: "local",
+  autoJoin: true,
   elementIds: {
     remoteVideo: "lobby-remote-video",
     localVideo: "lobby-local-video",
@@ -26,6 +27,7 @@ const LobbyMediaHook = createRtcMediaHook({
     peerMuted: "lobby_media_peer_muted",
     peerCamera: "lobby_media_peer_camera",
     setPreset: "lobby_media_set_preset",
+    joinCall: "lobby_media_join",
   },
   clientEvents: {
     ready: "lobby_media_hook_ready",
