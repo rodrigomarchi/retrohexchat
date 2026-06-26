@@ -134,6 +134,19 @@ describe("WindowManagerHook", () => {
     expect(hook.windows.call.state.maximized).toBe(false);
   });
 
+  it("does not client-close a window whose X is wired to a server event", () => {
+    command({ action: "open", id: "call" });
+    const closeBtn = win("call").querySelector('[data-window-control="close"]');
+    closeBtn.setAttribute("phx-click", "end_call");
+
+    closeBtn.click();
+
+    // The hook must defer to LiveView (which ends the feature, then closes the
+    // window via a window_command) rather than hiding it client-side.
+    expect(hook.windows.call.state.open).toBe(true);
+    expect(win("call").classList.contains("u-hidden")).toBe(false);
+  });
+
   it("toggles the Start menu when the Start button is clicked", () => {
     const menu = el.querySelector("[data-window-start-menu]");
     expect(menu.classList.contains("u-hidden")).toBe(true);

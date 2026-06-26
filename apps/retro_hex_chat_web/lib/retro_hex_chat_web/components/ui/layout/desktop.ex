@@ -71,6 +71,13 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :min_width, :integer, default: 220
   attr :min_height, :integer, default: 120
   attr :resizable, :boolean, default: true
+
+  attr :on_close, :any,
+    default: nil,
+    doc:
+      "server event for the close button; when set, closing is server-driven (e.g. ends an " <>
+        "active feature) instead of a client-side hide"
+
   attr :class, :any, default: nil
   attr :body_class, :any, default: nil
   attr :rest, :global, doc: "extra attrs on the window root, e.g. data-testid"
@@ -100,6 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
           title={@title}
           controls={window_controls(@pinned)}
           force_close={!@pinned}
+          on_close={@on_close}
           data-window-titlebar
         >
           <:icon>{render_slot(@icon)}</:icon>
@@ -168,6 +176,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   """
   attr :window, :string, required: true, doc: "target window id"
   attr :label, :string, required: true
+  attr :badge, :string, default: nil, doc: "live indicator (call duration, transfer %, ...)"
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -192,6 +201,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         {render_slot(@icon)}
       </span>
       <span class="max-w-[12ch] truncate">{@label}</span>
+      <span :if={@badge} class="text-primary shrink-0 font-bold tabular-nums">{@badge}</span>
     </button>
     """
   end

@@ -156,6 +156,21 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       refute html =~ ~s(data-testid="lobby-ended")
       assert html =~ ~s(data-testid="lobby-menu-video")
     end
+
+    test "closing the Call window (X) ends the call and closes the window",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+      render_hook(view, "lobby_media_call_started", %{"type" => "video"})
+
+      # X on an active Call window is server-driven: it tears the call down.
+      render_click(view, "end_call", %{})
+      assert_push_event(view, "lobby_media_end_call", %{})
+
+      # The media hook then reports the call ended → window closes, call clears.
+      render_hook(view, "lobby_media_call_ended", %{})
+      assert_push_event(view, "window_command", %{action: "close", id: "call"})
+      refute render(view) =~ "End call"
+    end
   end
 
   defp create_registered_nick(nickname) do

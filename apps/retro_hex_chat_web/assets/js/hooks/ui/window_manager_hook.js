@@ -225,6 +225,10 @@ const WindowManagerHook = {
   onClick(e) {
     const ctrl = e.target.closest("[data-window-control]");
     if (ctrl) {
+      // A close button wired to a server event (phx-click) ends an active feature
+      // (hang up / cancel / quit). Let LiveView handle it; the server closes the
+      // window afterwards via a window_command. Otherwise close it client-side.
+      if (ctrl.dataset.windowControl === "close" && ctrl.getAttribute("phx-click")) return;
       this.onControl(ctrl.dataset.windowControl, this.windowIdOf(ctrl));
       return;
     }

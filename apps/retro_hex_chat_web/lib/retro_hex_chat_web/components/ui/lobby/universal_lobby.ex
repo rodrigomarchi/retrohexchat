@@ -64,7 +64,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   attr :peer_media, :map, default: %{audio: false, video: false}
   attr :devices, :map, default: nil
   attr :stats, :map, default: nil
-  attr :network_collapsed, :boolean, default: false
   attr :network_info_open, :boolean, default: false
 
   # File transfer
@@ -88,6 +87,11 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
       |> assign(:connected, assigns.session_status == "connected")
       |> assign(:mounted, assigns.ever_connected or assigns.session_status == "connected")
       |> assign(:call_active, assigns.call != nil)
+      |> assign(:game_active, Map.get(assigns.game || %{}, :status) == "playing")
+      |> assign(
+        :file_active,
+        Map.get(assigns.file_transfer || %{}, :status) in ~w(offering offer_received transferring paused)
+      )
       |> assign(:max_file_size_mb, file_transfer_max_size_mb())
       |> assign(:blocked_file_extensions, file_transfer_blocked_extensions())
 
@@ -145,7 +149,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             <.lobby_network_panel
               :if={@call && @stats}
               stats={@stats}
-              collapsed={@network_collapsed}
               info_open={@network_info_open}
             />
           </.desktop_window>
@@ -170,6 +173,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             id="call"
             title={dgettext("lobby", "Call")}
             open={false}
+            on_close={if @call_active, do: "end_call"}
             default_x={16}
             default_y={16}
             width={460}
@@ -195,6 +199,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             id="file"
             title={dgettext("lobby", "Files")}
             open={false}
+            on_close={if @file_active, do: "ft_cancel"}
             default_x={360}
             default_y={300}
             width={320}
@@ -216,6 +221,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             id="game"
             title={dgettext("lobby", "Games")}
             open={false}
+            on_close={if @game_active, do: "end_game"}
             default_x={120}
             default_y={48}
             width={680}
@@ -238,7 +244,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
               <:start>
                 <div class="relative">
                   <.start_button label={dgettext("lobby", "Lobby")}>
-                    <:icon><Icons.icon_p2p class="h-4 w-4" /></:icon>
+                    <:icon><Icons.icon_hex_stone class="h-4 w-4" /></:icon>
                   </.start_button>
                   <.start_menu id="lobby-start-menu">
                     <.start_menu_item
@@ -312,13 +318,25 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
               <.taskbar_button window="chat" label={dgettext("lobby", "Chat")}>
                 <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
               </.taskbar_button>
-              <.taskbar_button window="call" label={dgettext("lobby", "Call")}>
+              <.taskbar_button
+                window="call"
+                label={dgettext("lobby", "Call")}
+                badge={if @call_active, do: @call[:duration]}
+              >
                 <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
               </.taskbar_button>
-              <.taskbar_button window="file" label={dgettext("lobby", "Files")}>
+              <.taskbar_button
+                window="file"
+                label={dgettext("lobby", "Files")}
+                badge={if @file_active, do: "#{@file_transfer[:percent] || 0}%"}
+              >
                 <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
               </.taskbar_button>
-              <.taskbar_button window="game" label={dgettext("lobby", "Games")}>
+              <.taskbar_button
+                window="game"
+                label={dgettext("lobby", "Games")}
+                badge={if @game_active, do: "●"}
+              >
                 <:icon><Icons.icon_joystick class="h-4 w-4" /></:icon>
               </.taskbar_button>
 

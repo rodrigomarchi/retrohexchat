@@ -16,7 +16,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   alias RetroHexChatWeb.Icons
 
   attr :stats, :map, required: true
-  attr :collapsed, :boolean, default: false
   attr :info_open, :boolean, default: false
 
   @spec lobby_network_panel(map()) :: Phoenix.LiveView.Rendered.t()
@@ -50,22 +49,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           >
             <Icons.icon_question class="w-4 h-4" />
           </.toolbar_button>
-          <.toolbar_button
-            label={
-              if @collapsed,
-                do: dgettext("p2p", "Expand network panel"),
-                else: dgettext("p2p", "Collapse network panel")
-            }
-            variant="compact"
-            phx-click="toggle_network_panel"
-            data-testid="lobby-network-toggle"
-          >
-            <Icons.icon_win_restore :if={@collapsed} class="w-4 h-4" />
-            <Icons.icon_win_minimize :if={!@collapsed} class="w-4 h-4" />
-          </.toolbar_button>
         </.toolbar>
       </div>
-      <dl :if={!@collapsed} class="grid grid-cols-2 gap-x-3 gap-y-[2px] text-xs">
+      <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px] text-xs">
         <.net_row
           label={dgettext("p2p", "Latency")}
           value={dgettext("p2p", "%{n} ms", n: @stats[:rtt_ms])}

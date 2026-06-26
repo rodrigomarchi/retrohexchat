@@ -201,7 +201,8 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     {:noreply,
      socket
      |> assign(game: %{status: "idle", game_id: nil, is_host: false})
-     |> push_event("lobby_game_end", %{})}
+     |> push_event("lobby_game_end", %{})
+     |> push_event("window_command", %{action: "close", id: "game"})}
   end
 
   def handle_info(%{event: "lobby_inactivity_warning"}, socket) do
@@ -349,11 +350,18 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     {:noreply, assign(socket, call: call)}
   end
 
+  # The user ended the call from the window's close (X) button. Tell the media hook
+  # to tear the call down; `lobby_media_call_ended` then closes the window.
+  def handle_event("end_call", _params, socket) do
+    {:noreply, push_event(socket, "lobby_media_end_call", %{})}
+  end
+
   def handle_event("lobby_media_call_ended", _params, socket) do
     Lobby.set_media(socket.assigns.token, socket.assigns.user_id, false, false)
 
     {:noreply,
-     assign(socket,
+     socket
+     |> assign(
        call: nil,
        stats: nil,
        call_layout: "focus",
@@ -361,7 +369,8 @@ defmodule RetroHexChatWeb.App.LobbyLive do
        local_camera_off: false,
        peer_muted: false,
        peer_camera_off: false
-     )}
+     )
+     |> push_event("window_command", %{action: "close", id: "call"})}
   end
 
   def handle_event("lobby_media_mute_changed", %{"muted" => muted}, socket) do
@@ -413,10 +422,6 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   def handle_event("set_call_layout", _params, socket), do: {:noreply, socket}
-
-  def handle_event("toggle_network_panel", _params, socket) do
-    {:noreply, assign(socket, network_collapsed: !socket.assigns.network_collapsed)}
-  end
 
   def handle_event("toggle_network_info", _params, socket) do
     {:noreply, assign(socket, network_info_open: !socket.assigns.network_info_open)}
@@ -511,7 +516,11 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   def handle_event("ft_cancelled", _params, socket) do
-    {:noreply, socket |> assign(file_transfer: %{status: "ready"}) |> maybe_push_ft_config()}
+    {:noreply,
+     socket
+     |> assign(file_transfer: %{status: "ready"})
+     |> maybe_push_ft_config()
+     |> push_event("window_command", %{action: "close", id: "file"})}
   end
 
   def handle_event("ft_reset", _params, socket) do
@@ -648,7 +657,6 @@ defmodule RetroHexChatWeb.App.LobbyLive do
        peer_camera_off: false,
        peer_media: %{audio: false, video: false},
        stats: nil,
-       network_collapsed: false,
        network_info_open: false,
        devices: nil,
        local_info: local_info,
