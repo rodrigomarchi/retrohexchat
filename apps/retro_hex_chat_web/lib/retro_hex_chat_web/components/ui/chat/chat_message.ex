@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
 
   attr :type, :string,
     values:
-      ~w(normal action system service error notice notify_online notify_offline motd wallops),
+      ~w(normal action system service error notice notify_online notify_offline notify_rename motd wallops),
     default: "normal"
 
   attr :class, :any, default: nil
@@ -123,6 +123,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   defp type_class("wallops"), do: "text-gray-500 italic"
   defp type_class("notify_online"), do: "text-success"
   defp type_class("notify_offline"), do: "text-gray-500 italic"
+  defp type_class("notify_rename"), do: "text-notice"
+  # Defensive catch-all: an unknown message type must never crash the chat
+  # LiveView (which would reload every connected client). Render it plainly.
+  defp type_class(_type), do: ""
 
   defp message_body_class("action"), do: "chat-action"
   defp message_body_class(_type), do: "chat-content"
