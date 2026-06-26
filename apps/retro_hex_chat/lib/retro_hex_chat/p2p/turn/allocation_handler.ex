@@ -77,7 +77,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
       )
 
     Logger.metadata(alloc: alloc_id)
-    Logger.info("Starting new allocation handler")
+    Logger.debug("Starting new allocation handler")
 
     Process.send_after(self(), :check_expiration, time_to_expiry * 1000)
 
@@ -168,7 +168,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
   @impl true
   def handle_info(:check_expiration, state) do
     if System.os_time(:second) >= state.expiry_timestamp do
-      Logger.info("Allocation expired, shutting down allocation handler")
+      Logger.debug("Allocation expired, shutting down allocation handler")
       {:stop, {:shutdown, :allocation_expired}, state}
     else
       {:noreply, state}
@@ -178,7 +178,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
   @impl true
   def handle_info({:check_permission, addr}, state) do
     if System.os_time(:second) >= state.permissions[addr] do
-      Logger.info("Permission for #{:inet.ntoa(addr)} expired")
+      Logger.debug("Permission for #{:inet.ntoa(addr)} expired")
       {_val, state} = pop_in(state.permissions[addr])
       {:noreply, state}
     else
@@ -190,7 +190,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
   def handle_info({:check_channel, number}, state) do
     if System.os_time(:second) >= state.chann_to_time[number] do
       {ip_addr, port} = addr = state.chann_to_addr[number]
-      Logger.info("Channel binding #{number} <-> #{:inet.ntoa(ip_addr)}:#{port} expired")
+      Logger.debug("Channel binding #{number} <-> #{:inet.ntoa(ip_addr)}:#{port} expired")
       {_val, state} = pop_in(state.chann_to_addr[number])
       {_val, state} = pop_in(state.addr_to_chann[addr])
       {_val, state} = pop_in(state.chann_to_time[number])
@@ -209,11 +209,11 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
 
   @impl true
   def terminate(reason, _state) do
-    Logger.info("Allocation handler stopped with reason: #{inspect(reason)}")
+    Logger.debug("Allocation handler stopped with reason: #{inspect(reason)}")
   end
 
   defp handle_message(%Message{type: %Type{class: :request, method: :refresh}} = msg, state) do
-    Logger.info("Received 'refresh' request")
+    Logger.debug("Received 'refresh' request")
     {c_ip, c_port, _, _, _} = state.five_tuple
 
     with {:ok, key} <- Auth.authenticate(msg, username: state.username, config: state.config),
@@ -230,13 +230,13 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
         :socket.sendto(state.turn_socket, response, %{family: :inet, addr: c_ip, port: c_port})
 
       if time_to_expiry == 0 do
-        Logger.info("Allocation deleted with LIFETIME=0 refresh request")
+        Logger.debug("Allocation deleted with LIFETIME=0 refresh request")
         {:allocation_expired, state}
       else
         state = %{state | expiry_timestamp: System.os_time(:second) + time_to_expiry}
         Process.send_after(self(), :check_expiration, time_to_expiry * 1000)
 
-        Logger.info("Successfully refreshed allocation, new 'time-to-expiry': #{time_to_expiry}")
+        Logger.debug("Successfully refreshed allocation, new 'time-to-expiry': #{time_to_expiry}")
 
         {:ok, state}
       end
@@ -262,7 +262,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
          %Message{type: %Type{class: :request, method: :create_permission}} = msg,
          state
        ) do
-    Logger.info("Received 'create_permission' request")
+    Logger.debug("Received 'create_permission' request")
     {c_ip, c_port, _, _, _} = state.five_tuple
 
     with {:ok, key} <- Auth.authenticate(msg, username: state.username, config: state.config),
@@ -323,7 +323,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
   end
 
   defp handle_message(%Message{type: %Type{class: :request, method: :channel_bind}} = msg, state) do
-    Logger.info("Received 'channel_bind' request")
+    Logger.debug("Received 'channel_bind' request")
     {c_ip, c_port, _, _, _} = state.five_tuple
 
     with {:ok, key} <- Auth.authenticate(msg, username: state.username, config: state.config),
@@ -343,7 +343,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
       :ok =
         :socket.sendto(state.turn_socket, response, %{family: :inet, addr: c_ip, port: c_port})
 
-      Logger.info(
+      Logger.debug(
         "Successfully bound channel #{number} to address #{:inet.ntoa(ip_addr)}:#{port}"
       )
 
@@ -391,7 +391,7 @@ defmodule RetroHexChat.P2P.Turn.AllocationHandler do
               state.config.permission_lifetime * 1000
             )
 
-            Logger.info("Successfully created or refreshed permission for #{:inet.ntoa(addr)}")
+            Logger.debug("Successfully created or refreshed permission for #{:inet.ntoa(addr)}")
             {addr, System.os_time(:second) + state.config.permission_lifetime}
           end)
 

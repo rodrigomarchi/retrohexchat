@@ -93,7 +93,9 @@ defmodule RetroHexChat.P2P.Turn.Listener do
          %Message{type: %Type{class: :request, method: :binding}} = msg,
          _config
        ) do
-    Logger.info("Received 'binding' request")
+    # Consent-freshness keepalives fire every few seconds per candidate pair;
+    # logging them at :info floods the Logger and OOMs the node. Keep at :debug.
+    Logger.debug("Received 'binding' request")
     {c_ip, c_port, _, _, _} = five_tuple
 
     type = %Type{class: :success_response, method: :binding}
@@ -114,7 +116,7 @@ defmodule RetroHexChat.P2P.Turn.Listener do
          %Message{type: %Type{class: :request, method: :allocate}} = msg,
          config
        ) do
-    Logger.info("Received new allocation request")
+    Logger.debug("Received new allocation request")
     {c_ip, c_port, _, _, _} = five_tuple
 
     handle_error = fn reason, socket, c_ip, c_port, msg ->
@@ -184,7 +186,7 @@ defmodule RetroHexChat.P2P.Turn.Listener do
     else
       {:error, :allocation_exists, %{t_id: origin_t_id, response: origin_response}}
       when origin_t_id == msg.transaction_id ->
-        Logger.info("Allocation request retransmission")
+        Logger.debug("Allocation request retransmission")
         :ok = :socket.sendto(socket, origin_response, %{family: :inet, addr: c_ip, port: c_port})
 
       {:error, :allocation_exists, _alloc_origin_state} ->
