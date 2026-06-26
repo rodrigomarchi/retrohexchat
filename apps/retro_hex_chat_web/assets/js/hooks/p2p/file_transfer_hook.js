@@ -102,8 +102,11 @@ const FileTransferHook = {
       });
     }
 
-    // Listen for DataChannel events from WebRTCHook (via CustomEvent)
-    const webrtcEl = document.getElementById("p2p-webrtc");
+    // Listen for DataChannel events from the WebRTC hook (via CustomEvent).
+    // Defaults to the dedicated P2P session element, but the universal lobby
+    // points this at its own shared connection via `data-webrtc-id`.
+    const webrtcId = this.el.dataset.webrtcId || "p2p-webrtc";
+    const webrtcEl = document.getElementById(webrtcId);
     if (webrtcEl) {
       webrtcEl.addEventListener("ft_channel_ready", (e) => {
         this._setupChannel(e.detail.channel);

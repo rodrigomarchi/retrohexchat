@@ -1,0 +1,41 @@
+<p>
+  {dgettext(
+    "help_commands",
+    "Open a universal lobby with another user: a single persistent peer-to-peer connection that hosts every feature at once — an audio or video call, file transfers, and games — all running at the same time."
+  )}
+</p>
+<.help_h4 icon={:icon_code}>{dgettext("help_commands", "Syntax")}</.help_h4>
+<pre>{dgettext("help_commands", "/lobby <nickname>")}</pre>
+<.help_h4 icon={:icon_tag}>{dgettext("help_commands", "Parameters")}</.help_h4>
+<p>
+  <code>nickname</code> {dgettext("help_commands", "— The user to open a universal lobby with.")}
+</p>
+<.help_h4 icon={:icon_tab_control}>{dgettext("help_commands", "How It Works")}</.help_h4>
+<p>
+  {dgettext("help_commands", "Running")} <code>{dgettext("help_commands", "/lobby")}</code>
+  {dgettext(
+    "help_commands",
+    "creates a lobby and sends the other user a join invitation. Once both of you join, one WebRTC connection is established and stays open. A dock lets either side start audio/video, send files, or propose a game at any time — and several can run together. Ending one activity keeps the connection alive; the lobby only closes when someone leaves or it goes idle. Unlike"
+  )}
+  <code>{dgettext("help_commands", "/p2p")}</code>, {dgettext(
+    "help_commands",
+    "which runs one feature at a time, the universal lobby runs them all concurrently."
+  )}
+</p>
+<.help_h4 icon={:icon_rules}>{dgettext("help_commands", "Rules & Limits")}</.help_h4>
+<ul>
+  <li>
+    {dgettext("help_commands", "Both you and the target must be registered and identified (via")} <code>{dgettext("help_commands", "/ns identify")}</code>).
+  </li>
+  <li>{dgettext("help_commands", "The target must be online.")}</li>
+  <li>{dgettext("help_commands", "You cannot open a lobby with yourself.")}</li>
+</ul>
+<.help_h4 icon={:icon_link}>{dgettext("help_commands", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="feature-universal-lobby">
+    {dgettext("help_commands", "Universal Lobby")}
+  </.help_link>
+  · <.help_link topic="cmd-p2p">{dgettext("help_commands", "/p2p")}</.help_link>
+  · <.help_link topic="cmd-call">{dgettext("help_commands", "/call")}</.help_link>
+  · <.help_link topic="cmd-game">{dgettext("help_commands", "/game")}</.help_link>
+</p>

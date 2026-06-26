@@ -194,6 +194,28 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     end
   end
 
+  # ── Universal lobby: invite notification ─────────────────
+
+  def handle_info(%{event: "lobby_invite"} = msg, socket) do
+    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
+
+    %{payload: %{token: token, from: from}} = msg
+
+    if ignored_invite?(socket, from) do
+      {:halt, socket}
+    else
+      {:halt,
+       push_status_message(
+         socket,
+         dgettext("chat", "Universal lobby invite from %{from} — /lobby/%{token}",
+           from: from,
+           token: token
+         ),
+         :system
+       )}
+    end
+  end
+
   # ── Games: invite notification ────────────────────────────
 
   def handle_info(%{event: "game_invite"} = msg, socket) do

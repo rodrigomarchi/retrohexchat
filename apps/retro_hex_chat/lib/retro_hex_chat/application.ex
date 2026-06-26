@@ -18,6 +18,8 @@ defmodule RetroHexChat.Application do
       RetroHexChat.P2P.Supervisor,
       RetroHexChat.P2P.CleanupTask,
       RetroHexChat.P2P.Turn.Supervisor,
+      {Registry, keys: :unique, name: RetroHexChat.Lobby.SessionRegistry},
+      RetroHexChat.Lobby.Supervisor,
       {Registry, keys: :unique, name: RetroHexChat.Games.SessionRegistry},
       RetroHexChat.Games.RateLimitTable,
       RetroHexChat.Games.Supervisor,

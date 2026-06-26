@@ -126,6 +126,15 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
         on_click={@on_action}
+        action="context_lobby"
+        phx-value-nick={@target_nick}
+      >
+        <:icon><Icons.icon_p2p class="w-[14px] h-[14px]" /></:icon>
+        {dgettext("chat", "Universal Lobby")}
+      </.context_menu_item>
+      <.context_menu_item
+        :if={@viewer_is_identified && !@is_target_self}
+        on_click={@on_action}
         action="context_p2p"
         phx-value-nick={@target_nick}
       >

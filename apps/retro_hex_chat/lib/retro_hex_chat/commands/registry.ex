@@ -43,6 +43,7 @@ defmodule RetroHexChat.Commands.Registry do
     "op" => RetroHexChat.Commands.Handlers.Op,
     "call" => RetroHexChat.Commands.Handlers.Call,
     "game" => RetroHexChat.Commands.Handlers.Game,
+    "lobby" => RetroHexChat.Commands.Handlers.Lobby,
     "p2p" => RetroHexChat.Commands.Handlers.P2p,
     "part" => RetroHexChat.Commands.Handlers.Part,
     "popups" => RetroHexChat.Commands.Handlers.Popups,

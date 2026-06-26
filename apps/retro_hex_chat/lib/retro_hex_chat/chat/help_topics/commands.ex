@@ -338,6 +338,18 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           )
       },
       %{
+        id: "cmd-lobby",
+        title: "/lobby",
+        category: dgettext("help", "P2P & Calls"),
+        keywords: ["lobby", "universal", "p2p", "everything", "concurrent", "all"],
+        icon: :icon_p2p,
+        description:
+          dgettext(
+            "help",
+            "Open a universal lobby that runs a call, file transfers, and games together over one connection."
+          )
+      },
+      %{
         id: "cmd-p2p",
         title: "/p2p",
         category: dgettext("help", "P2P & Calls"),

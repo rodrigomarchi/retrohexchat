@@ -10,6 +10,7 @@ const CONTRACT_DOC = "docs/046-liveview-js-hook-loading-standard.md";
 const ALLOWED_DYNAMIC_IMPORT_FILES = new Set([
   "js/hooks/lazy_feature_hooks.js",
   "js/hooks/games/game_canvas_hook.js",
+  "js/hooks/lobby/lobby_game_canvas_hook.js",
   "js/lib/i18n.js",
 ]);
 

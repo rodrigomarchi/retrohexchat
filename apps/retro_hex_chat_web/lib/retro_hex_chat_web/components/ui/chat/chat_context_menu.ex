@@ -121,6 +121,19 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
     <.context_menu_item
       :if={@viewer_is_identified}
       on_click={if @is_target_registered && !@is_target_self, do: @on_action}
+      action="ctx_chat_lobby"
+      disabled={!@is_target_registered || @is_target_self}
+      title={
+        if !@is_target_registered && !@is_target_self, do: dgettext("chat", "User not registered")
+      }
+      phx-value-nick={@target_nick}
+    >
+      <:icon><Icons.icon_p2p class="w-[14px] h-[14px]" /></:icon>
+      {dgettext("chat", "Universal Lobby")}
+    </.context_menu_item>
+    <.context_menu_item
+      :if={@viewer_is_identified}
+      on_click={if @is_target_registered && !@is_target_self, do: @on_action}
       action="ctx_chat_call"
       disabled={!@is_target_registered || @is_target_self}
       title={

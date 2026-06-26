@@ -1016,6 +1016,33 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-universal-lobby",
+        title: dgettext("help", "Universal Lobby"),
+        category: dgettext("help", "P2P & Calls"),
+        keywords: [
+          "lobby",
+          "universal",
+          "p2p",
+          "everything",
+          "concurrent",
+          "call",
+          "file",
+          "game",
+          "dock"
+        ],
+        icon: :icon_p2p,
+        description:
+          dgettext(
+            "help",
+            "Open one persistent P2P connection that hosts every feature at once. " <>
+              "Inside the universal lobby you can run an audio or video call, transfer files, " <>
+              "and play a game simultaneously — pick features from the dock. Each peer controls " <>
+              "their own microphone and camera; file transfers and games still ask the other side " <>
+              "to accept. Ending any one activity keeps the connection open; the lobby only closes " <>
+              "when someone leaves or it goes idle. See also: P2P Sessions, Video Call, File Transfer."
+          )
+      },
+      %{
         id: "feature-connection-diagram",
         title: dgettext("help", "Connection Diagram"),
         category: dgettext("help", "P2P & Calls"),

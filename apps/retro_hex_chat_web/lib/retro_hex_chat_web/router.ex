@@ -116,6 +116,7 @@ defmodule RetroHexChatWeb.Router do
       live "/connect", ConnectLive
       live "/chat", ChatLive
       live "/p2p/:token", P2PSessionLive
+      live "/lobby/:token", LobbyLive
       live "/game/:token", GameSessionLive
       live "/solo/:token", SoloSessionLive
       live "/arcade/:token/:game_id", ArcadeGameLive

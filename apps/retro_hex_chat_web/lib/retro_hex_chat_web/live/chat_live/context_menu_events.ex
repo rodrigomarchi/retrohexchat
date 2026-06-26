@@ -44,12 +44,12 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{CapturedURL, IgnoreList}
   alias RetroHexChat.Commands.Duration
-  alias RetroHexChat.Commands.Handlers.{Game, P2p}
+  alias RetroHexChat.Commands.Handlers.{Game, Lobby, P2p}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.CoreEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
-  alias RetroHexChatWeb.ChatLive.Helpers.{GameInvite, P2pInvite}
+  alias RetroHexChatWeb.ChatLive.Helpers.{GameInvite, LobbyInvite, P2pInvite}
   alias RetroHexChatWeb.ChatLive.UiActions.Invite
 
   def handle_event("nick_right_click", %{"nick" => nick} = params, socket) do
@@ -349,6 +349,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   # ---------------------------------------------------------------------------
   # Nicklist P2P Context Menu Events
   # ---------------------------------------------------------------------------
+
+  def handle_event("context_lobby", %{"nick" => nick}, socket),
+    do: {:halt, handle_lobby_action(socket, nick, :nicklist)}
 
   def handle_event("context_p2p", %{"nick" => nick}, socket),
     do: {:halt, handle_p2p_action(socket, nick, "generic", :nicklist)}
@@ -672,6 +675,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   # Chat Area P2P Context Menu Events
   # ---------------------------------------------------------------------------
 
+  def handle_event("ctx_chat_lobby", %{"nick" => nick}, socket),
+    do: {:halt, handle_lobby_action(socket, nick, :chat)}
+
   def handle_event("ctx_chat_p2p", %{"nick" => nick}, socket),
     do: {:halt, handle_p2p_action(socket, nick, "generic", :chat)}
 
@@ -917,6 +923,36 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     case P2p.do_execute(nick, session_type, context) do
       {:ok, :ui_action, :p2p_invite, payload} ->
         P2pInvite.handle_p2p_invite(socket, session, payload)
+
+      {:error, message} ->
+        error_event(socket, message)
+    end
+  end
+
+  defp handle_lobby_action(socket, nick, source) do
+    session = socket.assigns.session
+
+    socket =
+      case source do
+        :nicklist -> close_context_menu(socket)
+        :chat -> close_chat_context_menu(socket)
+      end
+
+    context = %{
+      nickname: session.nickname,
+      identified: session.identified,
+      active_channel: session.active_channel,
+      channels: session.channels,
+      owner_in: channels_where_owner(session),
+      operator_in: channels_where_operator(session),
+      half_operator_in: channels_where_half_operator(session),
+      is_admin: ServerRoles.admin?(session.nickname, session.identified),
+      is_server_operator: ServerRoles.server_operator?(session.nickname, session.identified)
+    }
+
+    case Lobby.execute([nick], context) do
+      {:ok, :ui_action, :lobby_invite, payload} ->
+        LobbyInvite.handle_lobby_invite(socket, session, payload)
 
       {:error, message} ->
         error_event(socket, message)

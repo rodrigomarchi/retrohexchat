@@ -92,7 +92,7 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
 
   @spec extract_p2p_link(String.t()) :: String.t()
   def extract_p2p_link(content) when is_binary(content) do
-    case Regex.run(~r{(/(?:p2p|game)/[^\s]+)}, content) do
+    case Regex.run(~r{(/(?:p2p|game|lobby)/[^\s]+)}, content) do
       [_, path] -> path
       _ -> "#"
     end

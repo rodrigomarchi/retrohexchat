@@ -46,6 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.GameInvite
+  alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
   alias RetroHexChatWeb.ChatLive.Helpers.P2pInvite
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.UiActionHandlers
@@ -307,6 +308,9 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp handle_dispatch_result(socket, session, {:ok, :ui_action, :p2p_invite, payload}),
     do: P2pInvite.handle_p2p_invite(socket, session, payload)
+
+  defp handle_dispatch_result(socket, session, {:ok, :ui_action, :lobby_invite, payload}),
+    do: LobbyInvite.handle_lobby_invite(socket, session, payload)
 
   defp handle_dispatch_result(socket, session, {:ok, :ui_action, :game_invite, payload}),
     do: GameInvite.handle_game_invite(socket, session, payload)
