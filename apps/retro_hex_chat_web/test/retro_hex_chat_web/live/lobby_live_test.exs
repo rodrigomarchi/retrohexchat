@@ -56,6 +56,22 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       assert html =~ ~s(data-testid="lobby-window-conn")
     end
 
+    test "the desktop carries a Win98 shortcut for each feature", %{
+      conn: conn,
+      token: token,
+      creator: creator
+    } do
+      {:ok, _view, html} = live(chat_conn(conn, creator.nickname), "/lobby/#{token}")
+
+      # The desktop opts out of layout persistence (clean slate each open)...
+      assert html =~ ~s(data-persist="false")
+      # ...and offers a double-clickable shortcut per feature.
+      for feature <- ~w(call file game chat conn) do
+        assert html =~ ~s(data-testid="lobby-shortcut-#{feature}")
+        assert html =~ ~s(data-window-shortcut="#{feature}")
+      end
+    end
+
     test "call features in the Start menu are disabled until the connection is established",
          %{conn: conn, token: token, creator: creator} do
       {:ok, _view, html} = live(chat_conn(conn, creator.nickname), "/lobby/#{token}")
@@ -134,6 +150,20 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       html = render(view)
       assert html =~ "End call"
       assert html =~ ~s(data-testid="lobby-media-panel")
+    end
+
+    test "the idle Call window offers start buttons (so the Call shortcut is actionable)",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+      html = render(view)
+
+      # No call yet: the Call window body offers Start audio / Start video directly.
+      assert html =~ ~s(data-testid="lobby-call-start-audio")
+      assert html =~ ~s(data-testid="lobby-call-start-video")
+
+      # Clicking Start audio begins a call (media controls appear).
+      render_hook(view, "lobby_media_call_started", %{"type" => "audio"})
+      assert render(view) =~ "End call"
     end
 
     test "the statistics window is always complete and updates per feature from lobby_stats",

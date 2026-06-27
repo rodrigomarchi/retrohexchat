@@ -255,13 +255,35 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
         </div>
       </div>
 
-      <p :if={!@show_surface} class="text-muted-foreground flex items-center gap-2 text-xs">
-        <Icons.icon_camera class="h-4 w-4 shrink-0" />
-        {dgettext(
-          "lobby",
-          "Start audio or video from the Lobby menu. The peer can do the same independently."
-        )}
-      </p>
+      <div :if={!@show_surface} class="flex flex-col gap-2">
+        <.toolbar class="flex-wrap items-center gap-1">
+          <.toolbar_button
+            label={dgettext("lobby", "Start audio")}
+            variant="compact"
+            phx-click="start_call"
+            phx-value-type="audio"
+            data-testid="lobby-call-start-audio"
+          >
+            <Icons.icon_microphone class="h-4 w-4" />
+          </.toolbar_button>
+          <.toolbar_button
+            label={dgettext("lobby", "Start video")}
+            variant="compact"
+            phx-click="start_call"
+            phx-value-type="video"
+            data-testid="lobby-call-start-video"
+          >
+            <Icons.icon_camera class="h-4 w-4" />
+          </.toolbar_button>
+        </.toolbar>
+        <p class="text-muted-foreground flex items-center gap-2 text-xs">
+          <Icons.icon_camera class="h-4 w-4 shrink-0" />
+          {dgettext(
+            "lobby",
+            "Start audio or video — or the peer can, independently. You'll join automatically."
+          )}
+        </p>
+      </div>
     </section>
     """
   end

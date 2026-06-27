@@ -28,12 +28,24 @@ const WindowManagerHook = {
   mounted() {
     this.workspace = this.el.querySelector(".desktop__workspace");
     this.persistKey = this.el.dataset.persistKey || null;
+    this.persistEnabled = this.el.dataset.persist !== "false";
     this.zCounter = Z_BASE;
     this.focusedId = null;
     this.stacked = false;
     this.drag = null;
     this.resize = null;
     this.windows = {};
+
+    // Persistence disabled: wipe any stale saved layout so we always open from the
+    // default layout (and a layout saved by an older version can't corrupt the
+    // current desktop). In-session window state still lives in memory.
+    if (this.persistKey && !this.persistEnabled) {
+      try {
+        localStorage.removeItem(STORAGE_PREFIX + this.persistKey);
+      } catch {
+        // best-effort
+      }
+    }
 
     this.collectWindows();
     this.restore();
@@ -113,6 +125,7 @@ const WindowManagerHook = {
   bindEvents() {
     this._onPointerDown = (e) => this.onPointerDown(e);
     this._onClick = (e) => this.onClick(e);
+    this._onDblClick = (e) => this.onDblClick(e);
     this._onPointerMove = (e) => this.onPointerMove(e);
     this._onPointerUp = (e) => this.onPointerUp(e);
     this._onDocPointerDown = (e) => this.onDocPointerDown(e);
@@ -120,6 +133,7 @@ const WindowManagerHook = {
 
     this.el.addEventListener("pointerdown", this._onPointerDown);
     this.el.addEventListener("click", this._onClick);
+    this.el.addEventListener("dblclick", this._onDblClick);
     document.addEventListener("pointermove", this._onPointerMove);
     document.addEventListener("pointerup", this._onPointerUp);
     document.addEventListener("pointerdown", this._onDocPointerDown, true);
@@ -137,6 +151,7 @@ const WindowManagerHook = {
   unbindEvents() {
     this.el.removeEventListener("pointerdown", this._onPointerDown);
     this.el.removeEventListener("click", this._onClick);
+    this.el.removeEventListener("dblclick", this._onDblClick);
     document.removeEventListener("pointermove", this._onPointerMove);
     document.removeEventListener("pointerup", this._onPointerUp);
     document.removeEventListener("pointerdown", this._onDocPointerDown, true);
@@ -223,6 +238,15 @@ const WindowManagerHook = {
   // ── Click interactions (controls / taskbar / start menu) ───
 
   onClick(e) {
+    // A single click selects a desktop shortcut (it opens on double-click); any
+    // other click clears the selection, mirroring a real desktop.
+    const shortcut = e.target.closest("[data-window-shortcut]");
+    if (shortcut) {
+      this.selectShortcut(shortcut);
+      return;
+    }
+    this.clearShortcutSelection();
+
     const ctrl = e.target.closest("[data-window-control]");
     if (ctrl) {
       // A close button wired to a server event (phx-click) ends an active feature
@@ -253,6 +277,22 @@ const WindowManagerHook = {
 
     // Any other click inside the start menu (e.g. a server-action item) closes it.
     if (e.target.closest("[data-window-start-menu]")) this.closeStartMenu();
+  },
+
+  onDblClick(e) {
+    const shortcut = e.target.closest("[data-window-shortcut]");
+    if (!shortcut) return;
+    this.command("open", shortcut.dataset.windowShortcut);
+  },
+
+  selectShortcut(el) {
+    this.clearShortcutSelection();
+    el.classList.add("is-selected");
+  },
+
+  clearShortcutSelection() {
+    const selected = this.el.querySelectorAll("[data-window-shortcut].is-selected");
+    for (const node of selected) node.classList.remove("is-selected");
   },
 
   onControl(action, id) {
@@ -491,7 +531,7 @@ const WindowManagerHook = {
   },
 
   readStorage() {
-    if (!this.persistKey) return null;
+    if (!this.persistKey || !this.persistEnabled) return null;
     try {
       const raw = localStorage.getItem(STORAGE_PREFIX + this.persistKey);
       return raw ? JSON.parse(raw) : null;
@@ -501,7 +541,7 @@ const WindowManagerHook = {
   },
 
   persist() {
-    if (!this.persistKey) return;
+    if (!this.persistKey || !this.persistEnabled) return;
     const data = {};
     for (const id in this.windows) {
       const s = this.windows[id].state;

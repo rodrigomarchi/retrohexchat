@@ -1046,15 +1046,18 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "Start menu (the [Lobby] button); every open window gets a taskbar button. A window's " <>
               "X ends that feature (hangs up the call, cancels the transfer, quits the game), while " <>
               "minimize keeps it running in the taskbar; choose Leave lobby from the Start menu to " <>
-              "leave entirely. The desktop itself stays clear; the Statistics window is the status " <>
-              "home — it shows who you are connected to, the live connection state, the privacy lock " <>
-              "and a clock, plus always-complete telemetry broken down per feature (connection, " <>
-              "audio, video, games and files), with every metric shown even when a feature is idle. " <>
+              "leave entirely. The desktop carries a Win98-style shortcut icon for each feature — " <>
+              "double-click one to open its window (a single click just selects it). The desktop " <>
+              "itself stays clear; the Statistics window is the status home — it shows who you are " <>
+              "connected to, the live connection state, the privacy lock and a clock, plus " <>
+              "always-complete telemetry broken down per feature (connection, audio, video, games " <>
+              "and files), with every metric shown even when a feature is idle. " <>
               "When someone starts an audio or video call, the other person joins it " <>
               "automatically — the call window opens and they see and hear the caller right away, " <>
               "with their own microphone and camera off until they choose to turn each one on. File " <>
-              "transfers and games still ask the other side to accept. Your window layout is " <>
-              "remembered between visits. The lobby only closes when someone leaves or it goes idle. " <>
+              "transfers and games still ask the other side to accept. The lobby always opens with a " <>
+              "fresh default layout (your window arrangement is not kept between visits). It only " <>
+              "closes when someone leaves or it goes idle. " <>
               "See also: P2P Sessions, Video Call, File Transfer, Network Statistics."
           )
       },

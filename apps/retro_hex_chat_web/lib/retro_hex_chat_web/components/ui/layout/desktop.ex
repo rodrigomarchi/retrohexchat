@@ -28,9 +28,17 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   """
   attr :id, :string, required: true
   attr :persist_key, :string, default: nil, doc: "localStorage suffix for layout persistence"
+
+  attr :persist, :boolean,
+    default: true,
+    doc:
+      "when false, the hook starts from the default layout every time and clears any " <>
+        "previously saved state for persist_key — a clean slate each open, no cross-visit memory"
+
   attr :class, :any, default: nil
   attr :rest, :global
 
+  slot :shortcuts, doc: "desktop_shortcut/1 icons pinned to the workspace (behind windows)"
   slot :inner_block, required: true, doc: "desktop_window/1 children"
   slot :taskbar, doc: "a taskbar/1"
 
@@ -41,14 +49,51 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       id={@id}
       phx-hook="WindowManagerHook"
       data-persist-key={@persist_key}
+      data-persist={to_string(@persist)}
       class={classes(["desktop flex flex-1 flex-col overflow-hidden", @class])}
       {@rest}
     >
       <div class="desktop__workspace relative isolate flex-1 overflow-hidden">
+        <div
+          :if={@shortcuts != []}
+          class="desktop__shortcuts absolute left-0 top-0 z-0 flex flex-col flex-wrap content-start gap-1 p-2"
+        >
+          {render_slot(@shortcuts)}
+        </div>
         {render_slot(@inner_block)}
       </div>
       {render_slot(@taskbar)}
     </div>
+    """
+  end
+
+  @doc """
+  Renders a Win98-style desktop shortcut: an icon above a label, pinned to the
+  workspace. Double-click opens (and focuses) the target window; a single click
+  just selects it (classic desktop behaviour). Wired to the `WindowManagerHook`
+  via `data-window-shortcut`.
+  """
+  attr :window, :string, required: true, doc: "target window id to open on double-click"
+  attr :label, :string, required: true
+  attr :class, :any, default: nil
+  attr :rest, :global
+
+  slot :icon, required: true, doc: "32×32 icon"
+
+  @spec desktop_shortcut(map()) :: Phoenix.LiveView.Rendered.t()
+  def desktop_shortcut(assigns) do
+    ~H"""
+    <button
+      type="button"
+      data-window-shortcut={@window}
+      class={classes(["desktop-shortcut", @class])}
+      {@rest}
+    >
+      <span class="desktop-shortcut__icon inline-flex h-8 w-8 items-center justify-center">
+        {render_slot(@icon)}
+      </span>
+      <span class="desktop-shortcut__label">{@label}</span>
+    </button>
     """
   end
 

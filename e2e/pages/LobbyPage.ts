@@ -169,6 +169,21 @@ export class LobbyPage {
       .click();
   }
 
+  /** The window root element (carries u-hidden while closed/minimized). */
+  windowEl(id: string) {
+    return this.page.locator(`[data-window-id="${id}"]`);
+  }
+
+  /** A Win98 desktop shortcut icon. */
+  shortcut(id: string) {
+    return this.page.getByTestId(`lobby-shortcut-${id}`);
+  }
+
+  /** Open a feature window the Win98 way: double-click its desktop shortcut. */
+  async openViaShortcut(id: string) {
+    await this.shortcut(id).dblclick();
+  }
+
   /**
    * Turn our camera on, whether we are the first mover (start from the Start menu)
    * or an auto-joined receiver (use the in-call "Turn on camera" control). Waits

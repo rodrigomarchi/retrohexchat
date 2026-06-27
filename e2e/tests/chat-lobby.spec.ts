@@ -527,6 +527,30 @@ test.describe("Universal lobby", () => {
     }
   });
 
+  test("double-clicking a desktop shortcut opens its feature window", async ({
+    browser,
+  }) => {
+    const alice = await newP2PUser(browser, "loba");
+    const bob = await newP2PUser(browser, "lobb");
+
+    try {
+      const { initiatorLobby } = await openLobbiesFromCommand(alice, bob);
+      await initiatorLobby.waitUntilConnected();
+
+      // The Files window starts closed; double-clicking its shortcut opens it.
+      await expect(initiatorLobby.windowEl("file")).toBeHidden();
+      await initiatorLobby.openViaShortcut("file");
+      await expect(initiatorLobby.windowEl("file")).toBeVisible();
+
+      // A single click only selects (does not open) — the Game window stays closed.
+      await expect(initiatorLobby.windowEl("game")).toBeHidden();
+      await initiatorLobby.shortcut("game").click();
+      await expect(initiatorLobby.windowEl("game")).toBeHidden();
+    } finally {
+      await closeP2PUsers([alice, bob]);
+    }
+  });
+
   test("the Statistics window is always complete, even with no call", async ({
     browser,
   }) => {

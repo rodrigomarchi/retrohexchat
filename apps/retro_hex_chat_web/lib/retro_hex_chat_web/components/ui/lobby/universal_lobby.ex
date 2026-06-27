@@ -114,7 +114,49 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
           </.alert_description>
         </.alert>
 
-        <.desktop id="lobby-desktop" persist_key="lobby" data-testid="lobby-desktop">
+        <.desktop
+          id="lobby-desktop"
+          persist_key="lobby"
+          persist={false}
+          data-testid="lobby-desktop"
+        >
+          <:shortcuts>
+            <.desktop_shortcut
+              window="call"
+              label={dgettext("lobby", "Call")}
+              data-testid="lobby-shortcut-call"
+            >
+              <:icon><Icons.icon_camera class="h-8 w-8" /></:icon>
+            </.desktop_shortcut>
+            <.desktop_shortcut
+              window="file"
+              label={dgettext("lobby", "Files")}
+              data-testid="lobby-shortcut-file"
+            >
+              <:icon><Icons.icon_file_send class="h-8 w-8" /></:icon>
+            </.desktop_shortcut>
+            <.desktop_shortcut
+              window="game"
+              label={dgettext("lobby", "Games")}
+              data-testid="lobby-shortcut-game"
+            >
+              <:icon><Icons.icon_joystick class="h-8 w-8" /></:icon>
+            </.desktop_shortcut>
+            <.desktop_shortcut
+              window="chat"
+              label={dgettext("lobby", "Chat")}
+              data-testid="lobby-shortcut-chat"
+            >
+              <:icon><Icons.icon_chat class="h-8 w-8" /></:icon>
+            </.desktop_shortcut>
+            <.desktop_shortcut
+              window="conn"
+              label={dgettext("lobby", "Statistics")}
+              data-testid="lobby-shortcut-conn"
+            >
+              <:icon><Icons.icon_status_signal class="h-8 w-8" /></:icon>
+            </.desktop_shortcut>
+          </:shortcuts>
           <%!-- Statistics — identity, live connection state and always-complete
                 per-feature telemetry. Pinned: it is the lobby's status home and
                 cannot be closed. --%>

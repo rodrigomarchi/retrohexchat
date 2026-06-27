@@ -184,3 +184,101 @@ describe("WindowManagerHook", () => {
     fresh.destroyed();
   });
 });
+
+describe("WindowManagerHook — persistence opt-out", () => {
+  let store;
+
+  beforeEach(() => {
+    store = new Map();
+    vi.stubGlobal("localStorage", {
+      getItem: (k) => (store.has(k) ? store.get(k) : null),
+      setItem: (k, v) => store.set(k, String(v)),
+      removeItem: (k) => store.delete(k),
+      clear: () => store.clear(),
+    });
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it("clears stale saved state on mount and never writes when persistence is off", () => {
+    store.set("rhc:desktop:test", JSON.stringify({ call: { open: true } }));
+
+    const el = buildDesktop();
+    el.dataset.persist = "false";
+    const hook = { ...WindowManagerHook, el, handleEvent: vi.fn() };
+    hook.mounted();
+
+    // The old layout was wiped on open...
+    expect(store.has("rhc:desktop:test")).toBe(false);
+    // ...the saved "call open" was ignored (default layout: call starts closed)...
+    expect(hook.windows.call.state.open).toBe(false);
+
+    // ...and opening a window does not write anything back.
+    hook.openWindow("call");
+    expect(store.has("rhc:desktop:test")).toBe(false);
+
+    hook.destroyed();
+    el.remove();
+  });
+});
+
+describe("WindowManagerHook — desktop shortcuts", () => {
+  let el;
+  let hook;
+
+  beforeEach(() => {
+    vi.stubGlobal("localStorage", {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {},
+      clear: () => {},
+    });
+
+    el = buildDesktop();
+    el.dataset.persist = "false";
+    const workspace = el.querySelector(".desktop__workspace");
+    workspace.insertAdjacentHTML(
+      "afterbegin",
+      `<div class="desktop__shortcuts">
+         <button data-window-shortcut="call">call</button>
+         <button data-window-shortcut="chat">chat</button>
+       </div>`,
+    );
+
+    hook = { ...WindowManagerHook, el, handleEvent: vi.fn() };
+    hook.mounted();
+  });
+
+  afterEach(() => {
+    hook.destroyed();
+    el.remove();
+    vi.unstubAllGlobals();
+  });
+
+  const shortcut = (id) => el.querySelector(`[data-window-shortcut="${id}"]`);
+
+  it("selects a shortcut on single click, exclusively", () => {
+    shortcut("call").click();
+    expect(shortcut("call").classList.contains("is-selected")).toBe(true);
+
+    shortcut("chat").click();
+    expect(shortcut("chat").classList.contains("is-selected")).toBe(true);
+    expect(shortcut("call").classList.contains("is-selected")).toBe(false);
+  });
+
+  it("opens the target window on double click", () => {
+    expect(hook.windows.call.state.open).toBe(false);
+    shortcut("call").dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+    expect(hook.windows.call.state.open).toBe(true);
+  });
+
+  it("clears the selection when clicking elsewhere", () => {
+    shortcut("call").click();
+    expect(shortcut("call").classList.contains("is-selected")).toBe(true);
+
+    el.querySelector("[data-window-start]").click();
+    expect(shortcut("call").classList.contains("is-selected")).toBe(false);
+  });
+});

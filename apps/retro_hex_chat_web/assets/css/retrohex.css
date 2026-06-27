@@ -1115,9 +1115,32 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
 .desktop-taskbar__button.is-flashing {
   @apply animate-pulse;
 }
+/* Win98 desktop shortcuts: icon over a label, click to select, double-click opens. */
+.desktop__shortcuts {
+  max-height: 100%;
+}
+.desktop-shortcut {
+  @apply flex w-20 flex-col items-center gap-[2px] p-1 text-center;
+  cursor: default;
+}
+.desktop-shortcut__label {
+  @apply px-[2px] text-xs leading-tight text-white;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.8);
+}
+.desktop-shortcut.is-selected .desktop-shortcut__icon {
+  @apply bg-primary/40;
+}
+.desktop-shortcut.is-selected .desktop-shortcut__label {
+  @apply bg-primary text-white;
+  text-shadow: none;
+}
 /* Narrow viewports drop window management: windows stack and flow vertically. */
 .desktop--stacked .desktop__workspace {
   overflow-y: auto;
+}
+/* Shortcuts are window-management chrome — hidden in the stacked mobile layout. */
+.desktop--stacked .desktop__shortcuts {
+  display: none;
 }
 .desktop--stacked .desktop-window {
   position: static !important;
