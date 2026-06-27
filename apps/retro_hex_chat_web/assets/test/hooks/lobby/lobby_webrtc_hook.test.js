@@ -37,6 +37,10 @@ class MockRTCPeerConnection {
     this.localDescription = desc;
   }
 
+  async getStats() {
+    return new Map();
+  }
+
   close() {
     this.connectionState = "closed";
   }
@@ -102,5 +106,35 @@ describe("LobbyWebRTCHook", () => {
 
     expect(ftReady).toBe(channel);
     expect(hook.el._fileTransferChannel).toBe(channel);
+  });
+
+  it("samples and pushes an always-complete per-feature lobby_stats payload", async () => {
+    const hook = buildHook();
+    hook.role = "initiator";
+    hook.iceServers = [];
+    await hook._createConnection();
+    hook.pc.connectionState = "connected";
+
+    await hook._sampleStats();
+
+    expect(hook.pushEvent).toHaveBeenCalledWith(
+      "lobby_stats",
+      expect.objectContaining({
+        connection: expect.any(Object),
+        audio: expect.any(Object),
+        video: expect.any(Object),
+        game: expect.any(Object),
+        file: expect.any(Object),
+      }),
+    );
+  });
+
+  it("stops the stats poller on cleanup", () => {
+    const hook = buildHook();
+    hook.statsTimer = setInterval(() => {}, 1000);
+
+    hook._stopStatsPolling();
+
+    expect(hook.statsTimer).toBeNull();
   });
 });

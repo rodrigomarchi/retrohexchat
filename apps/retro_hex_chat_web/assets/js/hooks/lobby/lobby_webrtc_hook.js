@@ -25,6 +25,10 @@ import {
   createDataChannel,
   RETRY_CONFIG,
 } from "../../lib/p2p/webrtc.js";
+import { collectFeatureSnapshot, deriveFeatureStats } from "../../lib/p2p/media.js";
+
+// How often the always-on statistics window refreshes its per-feature metrics.
+const STATS_INTERVAL_MS = 2500;
 
 // Negotiation model: the INITIATOR is the single offerer. Both peers can still
 // add media at any time (self-controlled audio/video), but only the initiator
@@ -48,6 +52,8 @@ const LobbyWebRTCHook = {
     this.gameChannel = null;
     this.pendingIceCandidates = [];
     this._pendingDescription = null;
+    this.statsTimer = null;
+    this._statsPrev = null;
 
     this.handleEvent("lobby_start_offer", (data) => this._handleStartOffer(data));
     this.handleEvent("lobby_start_answer", (data) => this._handleStartAnswer(data));
@@ -373,6 +379,7 @@ const LobbyWebRTCHook = {
         this.el._peerConnection = this.pc;
         this.pushEvent("lobby_connected", {});
         this._dispatch("lobby_media_pc_ready", { pc: this.pc });
+        this._startStatsPolling();
         break;
 
       case "disconnected":
@@ -381,11 +388,13 @@ const LobbyWebRTCHook = {
 
       case "failed":
         this._clearDisconnectedTimer();
+        this._stopStatsPolling();
         this._handleFailure();
         break;
 
       case "closed":
         this._clearDisconnectedTimer();
+        this._stopStatsPolling();
         break;
     }
   },
@@ -434,8 +443,44 @@ const LobbyWebRTCHook = {
     }
   },
 
+  // --- Always-on statistics ---
+
+  // From the moment the connection is established until it closes, sample
+  // getStats() on a fixed cadence and push an always-complete per-feature payload
+  // to the statistics window. This runs independently of whether a call is active
+  // — idle features simply report zeros.
+  _startStatsPolling() {
+    if (this.statsTimer) return;
+    this._statsPrev = null;
+    this.statsTimer = setInterval(() => this._sampleStats(), STATS_INTERVAL_MS);
+    // Emit a first sample promptly so the window is populated without waiting a
+    // full interval.
+    this._sampleStats();
+  },
+
+  async _sampleStats() {
+    if (!this.pc || this.pc.connectionState !== "connected") return;
+    try {
+      const snapshot = await collectFeatureSnapshot(this.pc);
+      const stats = deriveFeatureStats(this._statsPrev, snapshot);
+      this._statsPrev = snapshot;
+      this.pushEvent("lobby_stats", stats);
+    } catch (error) {
+      console.warn("[Lobby] Failed to sample stats", error);
+    }
+  },
+
+  _stopStatsPolling() {
+    if (this.statsTimer) {
+      clearInterval(this.statsTimer);
+      this.statsTimer = null;
+    }
+    this._statsPrev = null;
+  },
+
   _cleanup() {
     this._clearDisconnectedTimer();
+    this._stopStatsPolling();
     this.el._peerConnection = null;
     this.el._fileTransferChannel = null;
     this.el._gameDataChannel = null;

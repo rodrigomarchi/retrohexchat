@@ -441,6 +441,167 @@ export function deriveStats(prev, curr) {
   };
 }
 
+// --- Per-feature stats (always-on lobby telemetry) ---
+
+/**
+ * Collect a raw stats snapshot broken down per feature: the transport, audio and
+ * video RTP streams (each by kind), and every data channel by label (gamedata,
+ * filetransfer). Unlike getStatsSnapshot() this never aggregates streams together
+ * so the statistics window can show isolated metrics for each feature.
+ * @param {RTCPeerConnection} pc
+ * @returns {Promise<object>} raw per-feature snapshot
+ */
+export async function collectFeatureSnapshot(pc) {
+  const stats = await pc.getStats();
+  const snap = {
+    timestamp: Date.now(),
+    connection: { rtt: 0, availableOutgoing: 0 },
+    audio: {
+      active: false,
+      inBytes: 0,
+      outBytes: 0,
+      packetsLost: 0,
+      packetsReceived: 0,
+      jitter: 0,
+    },
+    video: {
+      active: false,
+      inBytes: 0,
+      outBytes: 0,
+      packetsLost: 0,
+      packetsReceived: 0,
+      jitter: 0,
+      fps: 0,
+      width: 0,
+      height: 0,
+      freezeCount: 0,
+      limitation: "none",
+    },
+    channels: {}, // keyed by label
+  };
+
+  stats.forEach((report) => {
+    if (report.type === "candidate-pair" && report.state === "succeeded") {
+      snap.connection.rtt = report.currentRoundTripTime || snap.connection.rtt;
+      snap.connection.availableOutgoing =
+        report.availableOutgoingBitrate || snap.connection.availableOutgoing;
+    }
+
+    if (report.type === "inbound-rtp" && (report.kind === "audio" || report.kind === "video")) {
+      const k = snap[report.kind];
+      k.active = true;
+      k.inBytes += report.bytesReceived || 0;
+      k.packetsLost += report.packetsLost || 0;
+      k.packetsReceived += report.packetsReceived || 0;
+      if (typeof report.jitter === "number") k.jitter = Math.max(k.jitter, report.jitter);
+      if (report.kind === "video") {
+        k.fps = report.framesPerSecond || k.fps;
+        k.width = report.frameWidth || k.width;
+        k.height = report.frameHeight || k.height;
+        k.freezeCount = report.freezeCount || k.freezeCount;
+      }
+    }
+
+    if (report.type === "outbound-rtp" && (report.kind === "audio" || report.kind === "video")) {
+      const k = snap[report.kind];
+      k.active = true;
+      k.outBytes += report.bytesSent || 0;
+      if (report.kind === "video" && report.qualityLimitationReason) {
+        k.limitation = report.qualityLimitationReason;
+      }
+    }
+
+    if (report.type === "data-channel") {
+      snap.channels[report.label] = {
+        state: report.state || "",
+        bytesSent: report.bytesSent || 0,
+        bytesReceived: report.bytesReceived || 0,
+        messagesSent: report.messagesSent || 0,
+        messagesReceived: report.messagesReceived || 0,
+      };
+    }
+  });
+
+  return snap;
+}
+
+/**
+ * Turn two per-feature snapshots into the always-complete statistics payload.
+ * Every section is always present; counters become rates over the interval and a
+ * missing stream simply reads zero (idle), never absent.
+ * @param {object|null} prev
+ * @param {object} curr
+ * @returns {object} statistics payload for the lobby_stats event
+ */
+export function deriveFeatureStats(prev, curr) {
+  const intervalSec = prev ? Math.max((curr.timestamp - prev.timestamp) / 1000, 0.001) : 1;
+  const kbps = (cur, pre) =>
+    prev ? Math.max(0, Math.round(((cur - pre) * 8) / intervalSec / 1000)) : 0;
+  const lossPct = (lost, recv) => {
+    const total = Math.max(0, lost) + Math.max(0, recv);
+    return total > 0 ? Math.round((Math.max(0, lost) / total) * 1000) / 10 : 0;
+  };
+
+  const rtp = (kind) => {
+    const c = curr[kind];
+    const p = prev ? prev[kind] : null;
+    return {
+      active: c.active,
+      in_kbps: kbps(c.inBytes, p ? p.inBytes : 0),
+      out_kbps: kbps(c.outBytes, p ? p.outBytes : 0),
+      loss_pct: p
+        ? lossPct(c.packetsLost - p.packetsLost, c.packetsReceived - p.packetsReceived)
+        : 0,
+      jitter_ms: Math.round((c.jitter || 0) * 1000),
+    };
+  };
+
+  const channel = (label) => {
+    const c = curr.channels[label];
+    const p = prev && prev.channels ? prev.channels[label] : null;
+    if (!c) return { active: false, state: "closed", sent_kbps: 0, recv_kbps: 0, messages: 0 };
+    return {
+      active: c.state === "open" && c.bytesSent + c.bytesReceived > 0,
+      state: c.state || "closed",
+      sent_kbps: kbps(c.bytesSent, p ? p.bytesSent : 0),
+      recv_kbps: kbps(c.bytesReceived, p ? p.bytesReceived : 0),
+      messages: (c.messagesSent || 0) + (c.messagesReceived || 0),
+    };
+  };
+
+  const audio = rtp("audio");
+  const video = rtp("video");
+  const rttMs = Math.round((curr.connection.rtt || 0) * 1000);
+  // Connection health folds the worst of the active media streams.
+  const jitterMs = Math.max(audio.jitter_ms, video.jitter_ms);
+  const lossOverall = Math.max(audio.loss_pct, video.loss_pct);
+  const mos = computeMos({ rttMs, jitterMs, lossPct: lossOverall });
+  const level = mosToLevel(mos);
+
+  return {
+    connection: {
+      rtt_ms: rttMs,
+      jitter_ms: jitterMs,
+      loss_pct: lossOverall,
+      available_kbps: Math.round((curr.connection.availableOutgoing || 0) / 1000),
+      mos,
+      level,
+      label: QUALITY_LABELS[level],
+    },
+    audio,
+    video: {
+      ...video,
+      fps: Math.round(curr.video.fps || 0),
+      width: curr.video.width || 0,
+      height: curr.video.height || 0,
+      freeze_count: curr.video.freezeCount || 0,
+      limitation: curr.video.limitation || "none",
+    },
+    game: channel("gamedata"),
+    file: channel("filetransfer"),
+  };
+}
+
 /**
  * Apply a bitrate preset to all senders on the peer connection.
  * @param {RTCPeerConnection} pc

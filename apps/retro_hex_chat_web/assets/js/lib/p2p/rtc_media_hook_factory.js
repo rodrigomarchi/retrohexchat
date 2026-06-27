@@ -268,6 +268,9 @@ export function createRtcMediaHook(configInput) {
         this._setupDeviceChangeListener();
         this._attachMediaElements();
         this._reportSendState();
+        // Sync the (un)muted state so the control reflects reality and the peer's
+        // indicator clears.
+        this._push(config.clientEvents.muteChanged, { muted: false });
       } catch (error) {
         this._push(config.clientEvents.error, error);
       }
@@ -314,6 +317,9 @@ export function createRtcMediaHook(configInput) {
         this._setupDeviceChangeListener();
         this._attachMediaElements();
         this._reportSendState();
+        // Sync the camera-on state so the control reflects reality and the peer's
+        // camera-off placeholder clears.
+        this._push(config.clientEvents.cameraChanged, { off: false });
       } catch (error) {
         this._push(config.clientEvents.error, { ...error, phase: "enable-video" });
       } finally {

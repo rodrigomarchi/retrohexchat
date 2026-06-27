@@ -50,8 +50,10 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
     } do
       {:ok, _view, html} = live(chat_conn(conn, creator.nickname), "/lobby/#{token}")
 
-      assert html =~ "Universal Lobby"
       assert html =~ ~s(data-testid="lobby-desktop")
+      # The status home is the pinned Statistics window (no top status bar).
+      assert html =~ "Statistics"
+      assert html =~ ~s(data-testid="lobby-window-conn")
     end
 
     test "call features in the Start menu are disabled until the connection is established",
@@ -124,7 +126,7 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       assert render(peer_view) =~ "hi there"
     end
 
-    test "starting a call shows media controls and the live network panel on stats",
+    test "starting a call shows media controls",
          %{conn: conn, token: token, creator: creator, peer: peer} do
       view = connect_both(conn, token, creator, peer)
 
@@ -132,16 +134,70 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       html = render(view)
       assert html =~ "End call"
       assert html =~ ~s(data-testid="lobby-media-panel")
+    end
 
-      render_hook(view, "lobby_media_stats", %{
-        "level" => "good",
-        "mos" => 4.2,
-        "rtt_ms" => 30,
-        "jitter_ms" => 2,
-        "loss_pct" => 0
+    test "the statistics window is always complete and updates per feature from lobby_stats",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+
+      # Every feature section renders from the start — zeroed, no call needed.
+      html = render(view)
+      assert html =~ ~s(data-testid="lobby-network-panel")
+      assert html =~ "Connection"
+      assert html =~ "Audio"
+      assert html =~ "Video"
+      assert html =~ "Games"
+      assert html =~ "Files"
+
+      # An always-on per-feature sample populates the isolated metrics.
+      render_hook(view, "lobby_stats", %{
+        "connection" => %{
+          "level" => "good",
+          "label" => "Good",
+          "mos" => 4.2,
+          "rtt_ms" => 30,
+          "jitter_ms" => 2,
+          "loss_pct" => 0,
+          "available_kbps" => 1200
+        },
+        "audio" => %{
+          "active" => true,
+          "in_kbps" => 40,
+          "out_kbps" => 38,
+          "loss_pct" => 0,
+          "jitter_ms" => 3
+        },
+        "video" => %{
+          "active" => true,
+          "in_kbps" => 800,
+          "out_kbps" => 700,
+          "loss_pct" => 1,
+          "jitter_ms" => 5,
+          "fps" => 30,
+          "width" => 1280,
+          "height" => 720,
+          "freeze_count" => 0,
+          "limitation" => "none"
+        },
+        "game" => %{
+          "active" => false,
+          "state" => "open",
+          "sent_kbps" => 0,
+          "recv_kbps" => 0,
+          "messages" => 0
+        },
+        "file" => %{
+          "active" => false,
+          "state" => "closed",
+          "sent_kbps" => 0,
+          "recv_kbps" => 0,
+          "messages" => 0
+        }
       })
 
-      assert render(view) =~ ~s(data-testid="lobby-network-panel")
+      html = render(view)
+      assert html =~ "1280×720"
+      assert html =~ "30 ms"
     end
 
     test "ending a call keeps the lobby connected for more features",
@@ -162,9 +218,10 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       view = connect_both(conn, token, creator, peer)
       render_hook(view, "lobby_media_call_started", %{"type" => "video"})
 
-      # X on an active Call window is server-driven: it tears the call down.
+      # X on an active Call window is server-driven: it tears the call down and
+      # asks the hook to echo back so our state clears (notify: true).
       render_click(view, "end_call", %{})
-      assert_push_event(view, "lobby_media_end_call", %{})
+      assert_push_event(view, "lobby_media_end_call", %{notify: true})
 
       # The media hook then reports the call ended → window closes, call clears.
       render_hook(view, "lobby_media_call_ended", %{})
@@ -236,6 +293,38 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       html = render(view)
       refute html =~ "End call"
       refute html =~ ~s(data-lobby-media-action="enable-audio")
+    end
+
+    test "an auto-joined receiver's camera control reflects the real state, not inverted",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+      SessionServer.set_media(token, peer.id, true, true)
+      assert_push_event(view, "lobby_media_join", %{})
+
+      # We turn our own camera on. The control must read "Camera Off" (the action to
+      # turn it off) — it used to start inverted because auto-join pre-set camera-off.
+      render_hook(view, "lobby_media_call_started", %{"audio_on" => false, "video_on" => true})
+      html = render(view)
+
+      assert html =~ ~s(data-lobby-media-action="camera")
+      assert html =~ ~s(title="Camera Off")
+      refute html =~ ~s(title="Camera On")
+    end
+
+    test "the X on the Game window quits and closes it",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+
+      render_click(view, "end_game", %{})
+      assert_push_event(view, "window_command", %{action: "close", id: "game"})
+    end
+
+    test "the X on the Files window cancels and closes it",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+
+      render_click(view, "ft_cancel", %{})
+      assert_push_event(view, "window_command", %{action: "close", id: "file"})
     end
   end
 

@@ -66,6 +66,34 @@ test.describe("Universal lobby", () => {
     }
   });
 
+  test("closing the Call window with its X ends the call", async ({
+    browser,
+  }) => {
+    const alice = await newP2PUser(browser, "loba", { media: true });
+    const bob = await newP2PUser(browser, "lobb", { media: true });
+
+    try {
+      const { initiatorLobby, receiverLobby } = await openLobbiesFromCommand(
+        alice,
+        bob,
+      );
+      await initiatorLobby.waitUntilConnected();
+      await receiverLobby.waitUntilConnected();
+
+      await initiatorLobby.startVideoCall();
+      await expect(initiatorLobby.localVideo).toBeVisible();
+
+      // Close via the window's X (close control), not the in-panel End call button.
+      await initiatorLobby.closeWindow("call");
+
+      // The call ends — local video tears down — and the lobby stays connected.
+      await expect(initiatorLobby.localVideo).toHaveCount(0);
+      await initiatorLobby.expectStillConnected();
+    } finally {
+      await closeP2PUsers([alice, bob]);
+    }
+  });
+
   test("runs a video call, a game, and chat all at the same time", async ({
     browser,
   }) => {
@@ -493,6 +521,31 @@ test.describe("Universal lobby", () => {
       await expect(initiatorLobby.networkPanel).toBeVisible({
         timeout: 15_000,
       });
+      await expect(initiatorLobby.networkHealth).not.toBeEmpty();
+    } finally {
+      await closeP2PUsers([alice, bob]);
+    }
+  });
+
+  test("the Statistics window is always complete, even with no call", async ({
+    browser,
+  }) => {
+    const alice = await newP2PUser(browser, "loba");
+    const bob = await newP2PUser(browser, "lobb");
+
+    try {
+      const { initiatorLobby } = await openLobbiesFromCommand(alice, bob);
+      await initiatorLobby.waitUntilConnected();
+
+      // No call, no game, no file — yet every per-feature section is present and
+      // the always-on poller fills in the connection health.
+      const panel = initiatorLobby.networkPanel;
+      await expect(panel).toBeVisible({ timeout: 15_000 });
+      for (const section of ["Connection", "Audio", "Video", "Games", "Files"]) {
+        await expect(
+          panel.getByText(section, { exact: true }).first(),
+        ).toBeVisible();
+      }
       await expect(initiatorLobby.networkHealth).not.toBeEmpty();
     } finally {
       await closeP2PUsers([alice, bob]);

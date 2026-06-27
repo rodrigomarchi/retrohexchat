@@ -37,7 +37,8 @@ const LobbyMediaHook = createRtcMediaHook({
     muteChanged: "lobby_media_mute_changed",
     cameraChanged: "lobby_media_camera_changed",
     qualityUpdate: "lobby_media_quality_update",
-    statsUpdate: "lobby_media_stats",
+    // No statsUpdate: the always-on LobbyWebRTCHook owns the statistics window
+    // (per-feature, connection-to-close) so the panel has a single source.
     durationTick: "lobby_media_duration_tick",
     devicesListed: "lobby_media_devices_listed",
     deviceFallback: "lobby_media_device_fallback",

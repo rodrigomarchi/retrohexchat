@@ -1042,16 +1042,20 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Open one persistent P2P connection that hosts every feature at once, on a " <>
               "Windows-style desktop. Each feature lives in its own window you can drag, resize, " <>
               "minimize, maximize and close: an audio or video call, file transfer, a game, plus " <>
-              "chat and the pinned Connection telemetry window. Launch features from the taskbar " <>
+              "chat and the pinned Statistics window. Launch features from the taskbar " <>
               "Start menu (the [Lobby] button); every open window gets a taskbar button. A window's " <>
               "X ends that feature (hangs up the call, cancels the transfer, quits the game), while " <>
               "minimize keeps it running in the taskbar; choose Leave lobby from the Start menu to " <>
-              "leave entirely. When someone starts an audio or video call, the other person joins it " <>
+              "leave entirely. The desktop itself stays clear; the Statistics window is the status " <>
+              "home — it shows who you are connected to, the live connection state, the privacy lock " <>
+              "and a clock, plus always-complete telemetry broken down per feature (connection, " <>
+              "audio, video, games and files), with every metric shown even when a feature is idle. " <>
+              "When someone starts an audio or video call, the other person joins it " <>
               "automatically — the call window opens and they see and hear the caller right away, " <>
               "with their own microphone and camera off until they choose to turn each one on. File " <>
               "transfers and games still ask the other side to accept. Your window layout is " <>
               "remembered between visits. The lobby only closes when someone leaves or it goes idle. " <>
-              "See also: P2P Sessions, Video Call, File Transfer."
+              "See also: P2P Sessions, Video Call, File Transfer, Network Statistics."
           )
       },
       %{

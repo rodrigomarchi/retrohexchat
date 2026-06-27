@@ -346,9 +346,11 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   # The user ended the call from the window's close (X) button. Tell the media hook
-  # to tear the call down; `lobby_media_call_ended` then closes the window.
+  # to tear the call down AND echo back (`notify: true`) so `lobby_media_call_ended`
+  # clears our state and closes the window — without the echo the call would stop
+  # locally but the window state would linger.
   def handle_event("end_call", _params, socket) do
-    {:noreply, push_event(socket, "lobby_media_end_call", %{})}
+    {:noreply, push_event(socket, "lobby_media_end_call", %{notify: true})}
   end
 
   def handle_event("lobby_media_call_ended", _params, socket) do
@@ -358,7 +360,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
      socket
      |> assign(
        call: nil,
-       stats: nil,
+       stats: empty_stats(),
        call_layout: "focus",
        local_muted: false,
        local_camera_off: false,
@@ -403,7 +405,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     {:noreply, assign(socket, call: call)}
   end
 
-  def handle_event("lobby_media_stats", payload, socket) do
+  def handle_event("lobby_stats", payload, socket) do
     {:noreply, assign(socket, stats: normalize_stats(payload))}
   end
 
@@ -533,8 +535,13 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     {:noreply, push_event(socket, "ft_accept", %{})}
   end
 
+  # The X on the Files window cancels an in-flight transfer (the hook tears it down)
+  # and closes the window in every state, including an idle picker.
   def handle_event("ft_cancel", _params, socket) do
-    {:noreply, push_event(socket, "ft_cancel", %{nickname: socket.assigns.nickname})}
+    {:noreply,
+     socket
+     |> push_event("ft_cancel", %{nickname: socket.assigns.nickname})
+     |> push_event("window_command", %{action: "close", id: "file"})}
   end
 
   def handle_event("ft_retry", _params, socket) do
@@ -586,9 +593,15 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     {:noreply, socket}
   end
 
+  # The X on the Game window quits/cancels whatever is there and closes it — a
+  # playing game ends for both peers; an open picker or pending proposal just closes.
   def handle_event("end_game", _params, socket) do
     Lobby.end_game(socket.assigns.token, socket.assigns.user_id)
-    {:noreply, socket}
+
+    {:noreply,
+     socket
+     |> assign(game_request: nil, game_outgoing: false)
+     |> push_event("window_command", %{action: "close", id: "game"})}
   end
 
   def handle_event("lobby_game_result", _result, socket) do
@@ -651,7 +664,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
        peer_muted: false,
        peer_camera_off: false,
        peer_media: %{audio: false, video: false},
-       stats: nil,
+       stats: empty_stats(),
        network_info_open: false,
        devices: nil,
        local_info: local_info,
@@ -745,18 +758,21 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   # we are already in, just keep the window surfaced.
   defp surface_peer_media(socket, true) do
     if is_nil(socket.assigns.call) do
+      # We are sending nothing yet, so mic/camera are simply "not on" — NOT muted
+      # or camera-off. Keeping these false means that when the user later enables a
+      # device the toggle reflects its real state instead of starting inverted.
       call = %{
         type: "receiving",
         audio_on: false,
         video_on: false,
         duration: "00:00:00",
-        muted: true,
-        camera_off: true
+        muted: false,
+        camera_off: false
       }
 
       {:noreply,
        socket
-       |> assign(call: call, local_muted: true, local_camera_off: true)
+       |> assign(call: call, local_muted: false, local_camera_off: false)
        |> push_event("lobby_media_join", %{})
        |> push_event("window_command", %{action: "open", id: "call"})}
     else
@@ -789,23 +805,92 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   defp connected_label, do: dgettext("lobby", "Connected")
 
+  # The statistics window is ALWAYS complete: every section and metric is present
+  # even with no activity (idle features simply read zero). This normalizes the
+  # per-feature payload from LobbyWebRTCHook into a fully-populated struct so the
+  # panel never has to guard against missing keys.
   @spec normalize_stats(map()) :: map()
   defp normalize_stats(payload) do
+    conn = Map.get(payload, "connection", %{})
+    audio = Map.get(payload, "audio", %{})
+    video = Map.get(payload, "video", %{})
+    game = Map.get(payload, "game", %{})
+    file = Map.get(payload, "file", %{})
+
     %{
-      level: payload["level"],
-      mos: payload["mos"],
-      rtt_ms: payload["rtt_ms"],
-      jitter_ms: payload["jitter_ms"],
-      loss_pct: payload["loss_pct"],
-      inbound_kbps: payload["inbound_kbps"],
-      outbound_kbps: payload["outbound_kbps"],
-      available_kbps: payload["available_kbps"],
-      fps: payload["fps"],
-      frame_width: payload["frame_width"],
-      frame_height: payload["frame_height"],
-      freeze_count: payload["freeze_count"],
-      limitation: payload["limitation"],
-      has_video: payload["has_video"]
+      connection: %{
+        level: Map.get(conn, "level", "excellent"),
+        label: Map.get(conn, "label", ""),
+        mos: Map.get(conn, "mos", 0),
+        rtt_ms: Map.get(conn, "rtt_ms", 0),
+        jitter_ms: Map.get(conn, "jitter_ms", 0),
+        loss_pct: Map.get(conn, "loss_pct", 0),
+        available_kbps: Map.get(conn, "available_kbps", 0)
+      },
+      audio: %{
+        active: Map.get(audio, "active", false),
+        in_kbps: Map.get(audio, "in_kbps", 0),
+        out_kbps: Map.get(audio, "out_kbps", 0),
+        loss_pct: Map.get(audio, "loss_pct", 0),
+        jitter_ms: Map.get(audio, "jitter_ms", 0)
+      },
+      video: %{
+        active: Map.get(video, "active", false),
+        in_kbps: Map.get(video, "in_kbps", 0),
+        out_kbps: Map.get(video, "out_kbps", 0),
+        loss_pct: Map.get(video, "loss_pct", 0),
+        jitter_ms: Map.get(video, "jitter_ms", 0),
+        fps: Map.get(video, "fps", 0),
+        width: Map.get(video, "width", 0),
+        height: Map.get(video, "height", 0),
+        freeze_count: Map.get(video, "freeze_count", 0),
+        limitation: Map.get(video, "limitation", "none")
+      },
+      game: normalize_channel_stats(game),
+      file: normalize_channel_stats(file)
+    }
+  end
+
+  @spec normalize_channel_stats(map()) :: map()
+  defp normalize_channel_stats(channel) do
+    %{
+      active: Map.get(channel, "active", false),
+      state: Map.get(channel, "state", "closed"),
+      sent_kbps: Map.get(channel, "sent_kbps", 0),
+      recv_kbps: Map.get(channel, "recv_kbps", 0),
+      messages: Map.get(channel, "messages", 0)
+    }
+  end
+
+  # A zeroed statistics struct so the window renders complete before the first
+  # sample (and whenever there is no connection yet).
+  @spec empty_stats() :: map()
+  defp empty_stats do
+    %{
+      connection: %{
+        level: "excellent",
+        label: "",
+        mos: 0,
+        rtt_ms: 0,
+        jitter_ms: 0,
+        loss_pct: 0,
+        available_kbps: 0
+      },
+      audio: %{active: false, in_kbps: 0, out_kbps: 0, loss_pct: 0, jitter_ms: 0},
+      video: %{
+        active: false,
+        in_kbps: 0,
+        out_kbps: 0,
+        loss_pct: 0,
+        jitter_ms: 0,
+        fps: 0,
+        width: 0,
+        height: 0,
+        freeze_count: 0,
+        limitation: "none"
+      },
+      game: %{active: false, state: "closed", sent_kbps: 0, recv_kbps: 0, messages: 0},
+      file: %{active: false, state: "closed", sent_kbps: 0, recv_kbps: 0, messages: 0}
     }
   end
 

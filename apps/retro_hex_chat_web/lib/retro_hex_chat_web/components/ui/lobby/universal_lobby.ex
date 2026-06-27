@@ -18,7 +18,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Toolbar
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Alert
   import RetroHexChatWeb.Components.UI.Desktop
@@ -105,19 +104,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
         <%!-- Persistent connection hook (always mounted once joined) --%>
         <div id="lobby-webrtc" phx-hook="LobbyWebRTCHook" phx-update="ignore" class="u-hidden"></div>
 
-        <%!-- Slim status bar: identity + peer + live connection state --%>
-        <.toolbar class="items-center gap-2 p-2">
-          <Icons.icon_p2p class="h-4 w-4" />
-          <span class="text-xs font-bold">{dgettext("lobby", "Universal Lobby")}</span>
-          <span class="text-muted-foreground flex items-center gap-1 text-xs">
-            <Icons.icon_status_user class="h-3 w-3" />
-            {dgettext("lobby", "with %{peer}", peer: @peer_nick)}
-          </span>
-          <.badge variant="outline">
-            <Icons.icon_webrtc class="mr-1 h-3 w-3" />{@connection_label}
-          </.badge>
-        </.toolbar>
-
+        <%!-- The desktop is intentionally chrome-free (future home for shortcuts):
+              identity, connection state, privacy and the clock all live inside the
+              Statistics window. Only a transient inactivity warning may appear. --%>
         <.alert :if={@inactivity_warning} variant="destructive" class="rounded-none">
           <:icon><Icons.icon_warning class="h-4 w-4" /></:icon>
           <.alert_description>
@@ -126,17 +115,38 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
         </.alert>
 
         <.desktop id="lobby-desktop" persist_key="lobby" data-testid="lobby-desktop">
-          <%!-- Connection telemetry & diagram — always present, cannot be closed --%>
+          <%!-- Statistics — identity, live connection state and always-complete
+                per-feature telemetry. Pinned: it is the lobby's status home and
+                cannot be closed. --%>
           <.desktop_window
             id="conn"
-            title={dgettext("lobby", "Connection")}
+            title={dgettext("lobby", "Statistics")}
             pinned
             default_x={560}
             default_y={16}
-            width={320}
+            width={330}
+            height={460}
             data-testid="lobby-window-conn"
           >
-            <:icon><Icons.icon_webrtc class="h-4 w-4" /></:icon>
+            <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>
+            <%!-- Status header (moved off the desktop): peer, connection state,
+                  privacy and the clock. --%>
+            <div class="mb-2 flex items-center gap-2 text-xs">
+              <.badge variant="outline">
+                <Icons.icon_webrtc class="mr-1 h-3 w-3" />{@connection_label}
+              </.badge>
+              <Icons.icon_privacy
+                :if={@turn_only}
+                class="text-muted-foreground h-3 w-3"
+                data-testid="lobby-tray-privacy"
+              />
+              <span
+                id="lobby-clock"
+                phx-hook="ClockHook"
+                class="text-muted-foreground ml-auto tabular-nums"
+              >
+              </span>
+            </div>
             <.p2p_connection_strip
               nickname={@nickname}
               peer_nick={@peer_nick}
@@ -148,11 +158,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
               local_info={@local_info}
               peer_info={@peer_info}
             />
-            <.lobby_network_panel
-              :if={@call && @stats}
-              stats={@stats}
-              info_open={@network_info_open}
-            />
+            <.lobby_network_panel stats={@stats} info_open={@network_info_open} />
           </.desktop_window>
 
           <%!-- Chat — open by default --%>
@@ -175,7 +181,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             id="call"
             title={dgettext("lobby", "Call")}
             open={false}
-            on_close={if @call_active, do: "end_call"}
+            on_close="end_call"
             default_x={16}
             default_y={16}
             width={460}
@@ -203,7 +209,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             id="file"
             title={dgettext("lobby", "Files")}
             open={false}
-            on_close={if @file_active, do: "ft_cancel"}
+            on_close="ft_cancel"
             default_x={360}
             default_y={300}
             width={320}
@@ -225,7 +231,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             id="game"
             title={dgettext("lobby", "Games")}
             open={false}
-            on_close={if @game_active, do: "end_game"}
+            on_close="end_game"
             default_x={120}
             default_y={48}
             width={680}
@@ -289,8 +295,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
                     <.start_menu_item data-window-open="chat" label={dgettext("lobby", "Chat")}>
                       <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
                     </.start_menu_item>
-                    <.start_menu_item data-window-open="conn" label={dgettext("lobby", "Connection")}>
-                      <:icon><Icons.icon_webrtc class="h-4 w-4" /></:icon>
+                    <.start_menu_item data-window-open="conn" label={dgettext("lobby", "Statistics")}>
+                      <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>
                     </.start_menu_item>
                     <.start_menu_separator />
                     <.start_menu_item
@@ -316,8 +322,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
                 </div>
               </:start>
 
-              <.taskbar_button window="conn" label={dgettext("lobby", "Connection")}>
-                <:icon><Icons.icon_webrtc class="h-4 w-4" /></:icon>
+              <.taskbar_button window="conn" label={dgettext("lobby", "Statistics")}>
+                <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>
               </.taskbar_button>
               <.taskbar_button window="chat" label={dgettext("lobby", "Chat")}>
                 <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
@@ -343,17 +349,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
               >
                 <:icon><Icons.icon_joystick class="h-4 w-4" /></:icon>
               </.taskbar_button>
-
-              <:tray>
-                <.desktop_tray>
-                  <Icons.icon_privacy
-                    :if={@turn_only}
-                    class="h-3 w-3"
-                    data-testid="lobby-tray-privacy"
-                  />
-                  <span id="lobby-clock" phx-hook="ClockHook" class="tabular-nums"></span>
-                </.desktop_tray>
-              </:tray>
             </.taskbar>
           </:taskbar>
         </.desktop>

@@ -162,6 +162,13 @@ export class LobbyPage {
     await expect(this.remoteVideo).toBeVisible();
   }
 
+  /** Click a window's title-bar X (close control). */
+  async closeWindow(id: string) {
+    await this.page
+      .locator(`[data-window-id="${id}"] [data-window-control="close"]`)
+      .click();
+  }
+
   /**
    * Turn our camera on, whether we are the first mover (start from the Start menu)
    * or an auto-joined receiver (use the in-call "Turn on camera" control). Waits
