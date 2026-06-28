@@ -87,7 +87,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import Phoenix.HTML, only: [raw: 1]
 
   # ── Domain aliases ────────────────────────────────────────────
-  alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, ServerRoles, Session}
+  alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
   alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.{Motd, Queries}
@@ -111,6 +111,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Presence.{NotifyList, Tracker, WhowasCache}
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive
+  alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.Timezone
 
   # ── Mount ─────────────────────────────────────────────────────
@@ -559,8 +560,16 @@ defmodule RetroHexChatWeb.App.ChatLive do
       end)
 
     case result do
-      {:halted, socket} -> {:noreply, socket}
-      socket -> {:noreply, socket}
+      {:halted, socket} ->
+        {:noreply, socket}
+
+      socket ->
+        # No hook in @event_hook_fns claimed this event. Historically this was
+        # swallowed silently; surface it in dev/test logs so unrouted events are
+        # discoverable during the orchestrator/event-routing migration. Never
+        # crashes the user session — the original socket is returned untouched.
+        Logger.debug("ChatLive: unrouted event #{inspect(event)} (no hook claimed it)")
+        {:noreply, socket}
     end
   end
 
@@ -920,19 +929,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── View helpers ──────────────────────────────────────────────
 
-  defp admin?(session) do
-    ServerRoles.admin?(session.nickname, session.identified) or
-      ServerRoles.server_operator?(session.nickname, session.identified)
-  end
+  defp admin?(session), do: ChatContext.admin?(session)
 
-  defp admin_only?(session) do
-    ServerRoles.admin?(session.nickname, session.identified)
-  end
+  defp admin_only?(session), do: ChatContext.admin_only?(session)
 
-  defp root_admin?(session) do
-    session.identified and
-      session.nickname in Application.get_env(:retro_hex_chat, :root_admins, [])
-  end
+  defp root_admin?(session), do: ChatContext.root_admin?(session)
 
   defp viewer_is_op?(session) do
     case session.active_channel do
