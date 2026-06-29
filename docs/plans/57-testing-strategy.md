@@ -163,15 +163,16 @@ regressoes** introduzidas — todas as falhas abaixo reproduzem identicas em
 | chat-channel-list | 1/1 | — | verde |
 | chat-reconnect | 2/2 | — | verde |
 | chat-multiuser | 4/4 | — | verde |
-| chat-context-menus | 1f/1p | 1f (O12) | **pre-existente** |
-| chat-sound-settings | 1f/1p | 1f (U3) | **pre-existente** |
-| chat-search | 2f | 2f (O6,O7) | **pre-existente** |
-| chat-search-history | 1f (S7) | 1f (S7) | **pre-existente** (auditado 2026-06-28) |
-| chat-search-navigation | 1f (S8) | 1f (S8) | **pre-existente** (auditado 2026-06-28) |
-| chat-search-window-state | 1f (S9) | 1f (S9) | **pre-existente** (auditado 2026-06-28) |
-| chat-perform-dialog | 1f/1p | 1f (U6) | **pre-existente** |
-| chat-conversations-sidebar | 6/7 (1f V3) | 1f (V3) | **pre-existente** (auditado 2026-06-29, plano 05) |
-| chat-nickserv-whois-realtime | 1f (W4) | 1f (W4) | **pre-existente** (auditado 2026-06-29, plano 11) |
+| chat-context-menus | ~~1f (O12)~~ | — | ✅ **CORRIGIDO** 2026-06-29 (whois card) |
+| chat-sound-settings | ~~1f (U3)~~ | — | ✅ corrigido (migração do dialog) |
+| chat-search | ~~2f (O6,O7)~~ | — | ✅ **CORRIGIDO** 2026-06-29 (menu Edit) |
+| chat-search-history | ~~1f (S7)~~ | — | ✅ **CORRIGIDO** 2026-06-29 (menu Edit) |
+| chat-search-navigation | ~~1f (S8)~~ | — | ✅ **CORRIGIDO** 2026-06-29 (menu Edit) |
+| chat-search-window-state | ~~1f (S9)~~ | — | ✅ **CORRIGIDO** 2026-06-29 (restore on visible) |
+| chat-perform-dialog | ~~1f (U6)~~ | — | ✅ corrigido (migração do dialog) |
+| chat-conversations-sidebar | ~~1f (V3)~~ | — | ✅ **CORRIGIDO** 2026-06-29 (filtro do form) |
+| chat-nickserv-whois-realtime | ~~1f (W4)~~ | — | ✅ **CORRIGIDO** 2026-06-29 (whois card) |
+| chat-whois | ~~2f (J10,J11)~~ | — | ✅ **CORRIGIDO** 2026-06-29 (whois card) |
 | chat-send | flaky (1f depois 4/4) | — | flaky (timing) |
 
 > 2026-06-29 (plano 05): a extracao da `Conversations` para LiveComponent passthrough
@@ -196,6 +197,42 @@ regressoes** introduzidas — todas as falhas abaixo reproduzem identicas em
 > (S8) e `chat-search-window-state` (S9) falham **identicos em `main` limpo** (provado
 > via `git stash` dos arquivos `.ex` + `MIX_ENV=e2e mix compile`). Eles nao estavam na
 > tabela original porque a auditoria de 2026-06-27 so cobriu `chat-search.spec.ts`.
+
+### 2026-06-29 — TODAS as falhas pre-existentes corrigidas (4 causas-raiz)
+
+Quatro causas independentes. **Duas eram bugs de produto reais** (não só specs):
+
+1. **Filtro da Channel List nunca funcionou (V3).** O input de busca tinha
+   `phx-change` num `<input>` solto — `phx-change` é binding de FORM, não dispara em
+   input cru. Digitar não filtrava nada (o teste passava por acidente porque a lista
+   não-filtrada já continha o canal). Fix: envolver num `<form phx-change=...>` como
+   a search bar do chat. **Lição: `phx-change` precisa de um `<form>` ao redor; num
+   input solto use `phx-keyup`/`phx-keydown` ou um form.**
+2. **Search bar perdia a query ao reabrir (S9).** O componente restaurava a
+   `last_query` numa ação `:open` ASSÍNCRONA que rodava DEPOIS do input montar e
+   receber foco (`phx-mounted` focus). O LiveView NÃO faz patch do `value` de um input
+   focado → a restauração nunca chegava ao DOM. Fix: restaurar a query no MESMO render
+   em que a barra fica visível (transição hidden→visible em `assign_context`), antes do
+   input montar. **Lição: estado que precisa aparecer num input value-bound + focado
+   tem que ser setado ANTES do mount do input, não numa ação async posterior.**
+3. **Channel List `:open` resetava o filtro.** Passou a preservar a busca anterior
+   (pre-state) e só limpar a seleção. (V3)
+
+**Duas eram specs E2E desatualizados** vs. o comportamento canônico (que o `make ci`
+já garante via LiveViewTest):
+
+4. **"Find" mora no menu Edit, não no View (O6/O7/S7/S8/S9).** O
+   `window_display_edit_menu_feature_test` (autoritativo, passa no `make ci`) fixa Find
+   só no Edit. 5 specs abriam pelo View. Repontados para `openSearchFromEditMenu`.
+5. **`/whois` digitado renderiza um CARD por padrão (W4/J10/J11/O12).** O
+   `user_lookup_feature_test` ("typed /whois opens a structured result card") fixa esse
+   comportamento no `make ci`. 4 specs ainda esperavam o texto antigo
+   (`----- Whois: nick -----`); reescritos para asseverar o `lookup-result-card`
+   (helpers novos `expectWhoisCard` / `expectLookupCardField` no Page Object).
+
+**Lição transversal (reforça a do menu, 2026-06-27): quando um spec E2E e um
+LiveViewTest do `make ci` discordam, o `make ci` é autoritativo — o spec é que está
+stale.** Validado: `make ci` 9/9; 16 specs afetados verdes.
 
 ### Investigacao da menubar (2026-06-27) — CORRECAO de diagnostico
 
