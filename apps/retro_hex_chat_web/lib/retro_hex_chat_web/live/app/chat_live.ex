@@ -22,7 +22,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.StatusBarApp
 
   # ── Chat components ──────────────────────────────────────────
-  import RetroHexChatWeb.Components.UI.Conversations
   import RetroHexChatWeb.Components.UI.IrcTabs
   import RetroHexChatWeb.Components.UI.TopicBar
   import RetroHexChatWeb.Components.UI.ChatMessage

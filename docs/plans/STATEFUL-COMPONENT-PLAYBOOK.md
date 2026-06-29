@@ -334,6 +334,19 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
   function component em `components/ui/` (ex.: `nicklist_sidebar/1`) e encaminhe
   globais (`id`/`phx-hook`/`phx-update`) via `attr :rest, :global`. NÃO enfraqueça o
   linter.
+- **⚠️ Stream NÃO é sempre a ferramenta certa — às vezes é passthrough puro.** Se a
+  lista é PEQUENA **e** o estilo por-linha muda com frequência (badge unread, flash,
+  highlight), um stream OBRIGA re-push da linha a cada mudança de estilo (streams não
+  re-estilizam num re-render comum). Aí o melhor é: componente recebe os MAPAS CRUS
+  como assigns (passthrough), deriva as listas/classes DENTRO do `render/1`, e renderiza
+  via `:for` normal. O ganho de isolação (não re-renderizar no hot-path do parent) vem
+  de graça via change-tracking — desde que você passe REFERÊNCIAS ESTÁVEIS (o mapa cru,
+  não uma comprehension nova a cada render do parent: uma `for ...` inline no template do
+  parent cria lista nova toda vez → change-tracking vê "mudou" sempre → re-render sempre.
+  Mova a comprehension pra dentro do componente). Validado no plano 05 (conversations):
+  zero stream, zero delta, eventos seguem adapters — só extração + derive-inside.
+  **Regra:** stream p/ lista grande/append-heavy (viewport, nicklist); passthrough p/
+  lista pequena com estilo churny (conversations).
 - **Teste de componente com stream:** `render_component(Comp, id:, action: {:reset, items})`
   popula o stream e renderiza as linhas (mount → update(action) → render num só passo);
   asserte os `id={dom_id}` e `data-*`. Feature tests existentes que disparam um evento

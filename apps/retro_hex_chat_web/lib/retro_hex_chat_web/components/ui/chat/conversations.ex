@@ -28,6 +28,31 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   alias RetroHexChatWeb.Icons
 
+  @doc """
+  Renders the conversations sidebar chrome (responsive layout + mobile backdrop)
+  and yields its inner block for the sidebar content. `visible` toggles the
+  `hidden` class without unmounting.
+  """
+  attr :visible, :boolean, default: true
+  attr :on_backdrop, :string, required: true
+  slot :inner_block, required: true
+
+  @spec conversations_sidebar(map()) :: Phoenix.LiveView.Rendered.t()
+  def conversations_sidebar(assigns) do
+    ~H"""
+    <div class={[
+      "fixed inset-0 z-40 md:relative md:inset-auto md:z-auto",
+      "flex md:shrink-0 md:w-[220px] md:min-w-[180px]",
+      !@visible && "hidden"
+    ]}>
+      <div class="absolute inset-0 bg-black/30 md:hidden" phx-click={@on_backdrop} />
+      <div class="relative z-10 w-[280px] md:w-full h-full bg-surface shadow-retro-window md:shadow-none">
+        {render_slot(@inner_block)}
+      </div>
+    </div>
+    """
+  end
+
   # ── Main Component ─────────────────────────────────────
 
   @doc "Renders the conversations sidebar with channel/PM/popular sections."

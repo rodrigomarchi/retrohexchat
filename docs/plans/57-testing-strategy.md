@@ -170,7 +170,14 @@ regressoes** introduzidas — todas as falhas abaixo reproduzem identicas em
 | chat-search-navigation | 1f (S8) | 1f (S8) | **pre-existente** (auditado 2026-06-28) |
 | chat-search-window-state | 1f (S9) | 1f (S9) | **pre-existente** (auditado 2026-06-28) |
 | chat-perform-dialog | 1f/1p | 1f (U6) | **pre-existente** |
+| chat-conversations-sidebar | 6/7 (1f V3) | 1f (V3) | **pre-existente** (auditado 2026-06-29, plano 05) |
 | chat-send | flaky (1f depois 4/4) | — | flaky (timing) |
+
+> 2026-06-29 (plano 05): a extracao da `Conversations` para LiveComponent passthrough
+> nao introduziu regressao. **V3** (`chat-conversations-sidebar` — "browse all preserves
+> channel list search pre-state") falha IDENTICO no baseline limpo (`git stash` do
+> heex/chat_live.ex → spec). E um problema pre-existente do `ChannelListDialog` (o
+> `{:open}` reseta `search`), nao da sidebar. Os outros 6 specs de conversas verdes.
 
 > 2026-06-28 (plano 09): a extracao do `SearchBar` para LiveComponent stateful nao
 > introduziu regressao. Os specs `chat-search-history` (S7), `chat-search-navigation`
