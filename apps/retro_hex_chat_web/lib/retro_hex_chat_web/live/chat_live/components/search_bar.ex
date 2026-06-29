@@ -10,12 +10,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
   is always mounted; only its rendered body is gated by `@visible`), which is
   what lets `last_query` persist across reopen.
 
+  It also hosts the `SearchHighlightHook` (an always-mounted hidden element in its
+  root): this component emits the `search_highlight` / `search_scroll_to` /
+  `search_clear_highlights` push events, and the hook applies them to the
+  `#chat-messages` DOM and reports the live match count back.
+
   `SearchEvents` forwards the search events to this component via `send_update/2`
   with an `:action`. See `dispatch/2` for the action protocol.
   """
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.SearchBar
+  import RetroHexChatWeb.Components.UI.SearchHighlightAnchor
 
   alias RetroHexChat.Chat.Search
 
@@ -62,6 +68,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
   def render(assigns) do
     ~H"""
     <div id={@id}>
+      <%!-- Always mounted, even while the bar is hidden: the JS hook owns the DOM
+           highlighting/scroll over `#chat-messages` and reports match counts back. --%>
+      <.search_highlight_anchor />
       <.search_bar
         :if={@visible}
         query={@query}

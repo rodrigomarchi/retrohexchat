@@ -6,7 +6,11 @@ defmodule RetroHexChatWeb.ChatLive.SearchEvents do
   which holds the search bar's content state (query, filters, results).
 
   The parent keeps `search_visible` because the Escape-dismissal map and overlay
-  stacking in `KeyboardEvents` coordinate over parent assigns.
+  stacking in `KeyboardEvents` coordinate over parent assigns. This adapter is the
+  intended end-state, not a temporary shim: `toggle_search`/`close_search` must set
+  that parent flag, and `search_highlight_count` arrives from the `SearchHighlightHook`
+  as a root `pushEvent`, so both genuinely belong on the LiveView and fan out to the
+  component via `send_update`.
 
   Attached as `attach_hook(:search_events, :handle_event, ...)` in ChatLive.mount/3.
   """

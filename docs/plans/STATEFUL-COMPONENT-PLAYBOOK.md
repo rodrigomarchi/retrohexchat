@@ -645,3 +645,42 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
   passa). Também: ao remover o último uso de `<.chat_message>` do parent, o `-W0`
   pegou o import órfão `ChatMessage`. E2E whois-realtime W4 é pré-existente
   (default `:card` vs teste que espera texto — classe J10/J11).
+- **2026-06-29 (plano 12 — MessageRow, function component puro):** o renderer de
+  linha que o plano 10 moveu verbatim p/ DENTRO do `MessageViewport` saiu p/ um
+  function component PURO `Components.MessageRow` (o prompt do plano proíbe um
+  LiveComponent por linha — p/ milhares de msgs, function component + stream é bem
+  mais barato). `message_row/1` renderiza a LINHA inteira: `<div id={@dom_id}>` +
+  classes + `data-*` + o `case` por tipo. **`use RetroHexChatWeb, :html` p/ um módulo
+  de HEEx puro** — dá `raw/1` (Phoenix.HTML) + `~p` (verified routes), que
+  `RetroHexChatWeb.Component` (o que `components/ui/*` usam) NÃO dá. Um renderer que
+  chama `raw(...)`/`~p"..."` precisa de `:html`. **A raiz de um function component
+  carrega o `dom_id` do stream**: `<MessageRow.message_row :for={{dom_id, msg} <-
+  @streams.x} dom_id={dom_id} .../>` funciona porque o `<div id={@dom_id}>` raiz vira
+  o filho direto do `phx-update="stream"` — sem wrapper. Teste com
+  `render_component(&MessageRow.message_row/1, assigns)`.
+- **2026-06-29 (plano 56 — loading/scroll indicators):** o pedido literal ("mover
+  `loading_more` p/ o MessageViewport") colidiria com o shared-read-model do plano 10:
+  `loading_more` é lido SÍNCRONO pela paginação (`core_events.ex` debounce) e
+  `loading_channel` é escrito pelo channel-switch → ambos read-model, **ficam no
+  parent**. Só os 2 VISUAIS (`loading_spinner`, `scroll_loader`) migraram p/ dentro do
+  `MessageViewport` como passthrough. **`class="contents"` no root do mount do island
+  é transparente no layout** → ao relocar irmãos posicionados (spinner/loader) p/
+  dentro dele, eles continuam filhos diretos da coluna, mesma ordem → zero layout
+  shift. O DOM-window limit (`limit: -N`) continua deferido (exigiria migrar o
+  read-model de scroll, que o padrão evita).
+- **2026-06-29 (plano 09 tail — hook anchor + adapter por design):**
+  - **Re-verifique uma alegação de "blocked" contra o código antes de herdá-la.** O
+    tail do 09 estava "bloqueado no viewport", mas metade já estava feita (o componente
+    já emitia os `push_event` de highlight) e a outra metade não estava bloqueada (o
+    `SearchHighlightHook` nunca esteve na message list — era um `<div>` solto no shell).
+  - **⚠️ Generaliza §1d p/ hook anchors:** um `<div phx-hook=... class="hidden">` cru
+    num LiveComponent de `chat_live/components/` quebra o `lint.css_consistency`
+    ("Missing CSS classes: .hidden") — esse linter varre `chat_live/components/` mas
+    PULA `components/ui/`. Fix: embrulhe o markup cru num function component pequeno em
+    `components/ui/` (ex. `SearchHighlightAnchor`), igual ao `nicklist_sidebar`.
+  - **`push_event` de um JS hook vai p/ o root LV**, não p/ o LiveComponent em que o
+    elemento está aninhado (sem `pushEventTo`). Logo um hook que reporta de volta
+    (`search_highlight_count`) justifica MANTER um adapter no parent que faz
+    `send_update` ao componente — o adapter é o end-state correto, não um shim. Junto
+    com eventos que coordenam visibilidade do parent (`search_visible` lido pelo Escape),
+    isso é a regra, não exceção.
