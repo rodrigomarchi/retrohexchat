@@ -63,7 +63,7 @@ test.describe('Search history pagination', () => {
     await chat.switchToTab('#lobby');
     await chat.switchToTab(channel);
 
-    await chat.openSearchFromViewMenu();
+    await chat.openSearchFromEditMenu();
     await chat.searchBarInput.fill(oldMatch);
     await expectSearchCount(chat, 0, 0);
     await expect(chat.searchHighlights).toHaveCount(0);

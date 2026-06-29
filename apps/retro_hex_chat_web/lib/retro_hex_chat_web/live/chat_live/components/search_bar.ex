@@ -87,12 +87,26 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
 
   @spec assign_context(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   defp assign_context(socket, assigns) do
-    assign(socket,
-      id: Map.get(assigns, :id, socket.assigns[:id] || @id),
-      visible: Map.get(assigns, :visible, socket.assigns.visible),
-      nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
-      active_channel: Map.get(assigns, :active_channel, socket.assigns.active_channel)
-    )
+    was_visible = socket.assigns.visible
+    now_visible = Map.get(assigns, :visible, was_visible)
+
+    socket =
+      assign(socket,
+        id: Map.get(assigns, :id, socket.assigns[:id] || @id),
+        visible: now_visible,
+        nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
+        active_channel: Map.get(assigns, :active_channel, socket.assigns.active_channel)
+      )
+
+    # Restore the last query in the SAME render the bar becomes visible. The input
+    # is value-bound and `phx-mounted`-focused, so restoring it in a later async
+    # `:open` action would not patch the (now focused) input — it must be set
+    # before the input is first mounted.
+    if now_visible and not was_visible do
+      assign(socket, query: socket.assigns.last_query)
+    else
+      socket
+    end
   end
 
   # -- Action protocol (driven by parent `send_update`) ----------------------

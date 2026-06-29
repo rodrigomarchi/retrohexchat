@@ -679,13 +679,6 @@ export class ChatPage {
     await this.tab(name).getByRole('button', { name: 'Close tab' }).click();
   }
 
-  async openSearchFromViewMenu() {
-    await this.viewMenuTrigger.click();
-    await expect(this.findMenuItem).toBeVisible();
-    await this.findMenuItem.click();
-    await expect(this.searchBar).toBeVisible();
-  }
-
   async openSearchFromEditMenu() {
     await this.editMenuTrigger.click();
     await expect(this.findMenuItem).toBeVisible();
@@ -1226,6 +1219,33 @@ export class ChatPage {
     await expect(this.userLookupMenuItem).toBeVisible();
     await this.userLookupMenuItem.click();
     await expect(this.userLookupDialog).toBeVisible();
+  }
+
+  // A typed /whois (and the nicklist/chat "Whois" context-menu item) renders a
+  // structured result card titled "Whois: <nick>".
+  async expectWhoisCard(nick: string) {
+    await expect(this.lookupResultCard).toBeVisible();
+    await expect(this.lookupResultDialog).toContainText(`Whois: ${nick}`);
+  }
+
+  // Asserts a "<label>: <value>" row inside the visible lookup result card.
+  // The label is matched exactly so "Channels" does not also match "Shared channels".
+  async expectLookupCardField(label: string, value: string) {
+    const row = this.lookupResultCard.locator('div', {
+      has: this.page.locator('dt', { hasText: new RegExp(`^${label}:$`) }),
+    });
+    await expect(row).toContainText(value);
+  }
+
+  async expectLookupCardMissingField(label: string) {
+    await expect(
+      this.lookupResultCard.locator('dt', { hasText: new RegExp(`^${label}:$`) }),
+    ).toHaveCount(0);
+  }
+
+  async closeLookupResult() {
+    await this.page.getByTestId('lookup-result-close').click();
+    await expect(this.lookupResultCard).toBeHidden();
   }
 
   async openTimersFromToolsMenu() {

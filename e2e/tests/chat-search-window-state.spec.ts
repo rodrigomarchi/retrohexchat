@@ -66,7 +66,7 @@ test.describe('Search window state across tabs', () => {
       await alice.chat.sendMessage(channelNeedle);
       await alice.chat.expectMessageVisible(channelNeedle);
 
-      await alice.chat.openSearchFromViewMenu();
+      await alice.chat.openSearchFromEditMenu();
       await alice.chat.searchBarInput.fill(channelNeedle);
       await expectSearchCount(alice.chat, 1, 1);
 
@@ -75,7 +75,7 @@ test.describe('Search window state across tabs', () => {
       await expect(alice.chat.searchHighlights).toHaveCount(0);
 
       await alice.chat.switchToTab(channel);
-      await alice.chat.openSearchFromViewMenu();
+      await alice.chat.openSearchFromEditMenu();
       await expect(alice.chat.searchBarInput).toHaveValue(channelNeedle);
       await expectSearchCount(alice.chat, 1, 1);
 
@@ -83,7 +83,7 @@ test.describe('Search window state across tabs', () => {
       await expect(alice.chat.searchBar).toBeHidden();
       await expect(alice.chat.searchHighlights).toHaveCount(0);
 
-      await alice.chat.openSearchFromViewMenu();
+      await alice.chat.openSearchFromEditMenu();
       await alice.chat.searchBarInput.fill(pmNeedle);
       await expectSearchCount(alice.chat, 0, 0);
 

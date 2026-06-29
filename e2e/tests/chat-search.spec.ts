@@ -63,7 +63,7 @@ async function expectSearchCount(chat: ChatPage, current: number, total: number)
 }
 
 test.describe('Chat search bar', () => {
-  test('opens from View > Find, highlights matches, navigates, and reports invalid regex (O6)', async ({
+  test('opens from Edit > Find, highlights matches, navigates, and reports invalid regex (O6)', async ({
     page,
   }) => {
     const { chat } = await signedInUser(page);
@@ -76,7 +76,7 @@ test.describe('Chat search bar', () => {
     await chat.expectMessageVisible(first);
     await chat.expectMessageVisible(second);
 
-    await chat.openSearchFromViewMenu();
+    await chat.openSearchFromEditMenu();
     await chat.searchBarInput.fill(marker);
 
     await expect(chat.searchHighlights).toHaveCount(2);
@@ -115,7 +115,7 @@ test.describe('Chat search bar', () => {
       await alice.chat.expectMessageVisible(lowerNeedle);
       await alice.chat.expectMessageVisible(upperNeedle);
 
-      await alice.chat.openSearchFromViewMenu();
+      await alice.chat.openSearchFromEditMenu();
       await alice.chat.searchBarInput.fill(lowerNeedle);
       await expectSearchCount(alice.chat, 1, 2);
 

@@ -53,8 +53,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
+  # Reopening keeps the previous search filter (pre-state) but drops the selection
+  # so Join/Request-Access starts disabled until the user picks a row again.
   def update(%{action: :open}, socket) do
-    {:ok, assign(socket, search: "", selected: nil)}
+    {:ok, assign(socket, selected: nil)}
   end
 
   def update(%{action: {:filter, search}}, socket) do

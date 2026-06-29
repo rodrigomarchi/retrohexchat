@@ -128,6 +128,9 @@ test.describe('Conversations sidebar', () => {
       await expect(alice.chat.channelListJoinButton).toBeDisabled();
       await alice.chat.channelListSearch.fill(searchTerm);
       await expect(alice.chat.channelListRow(targetChannel)).toBeVisible();
+      // Wait for the (debounced) filter to actually register server-side before
+      // closing — the non-matching home channel must drop out of the list.
+      await expect(alice.chat.channelListRow(homeChannel)).toBeHidden();
 
       await alice.chat.closeChannelList();
       await alice.chat.expectTabSelected(homeChannel);

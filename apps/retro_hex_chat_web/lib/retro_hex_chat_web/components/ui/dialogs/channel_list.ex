@@ -50,22 +50,25 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
 
       <.dialog_body class="space-y-retro-8">
         <%!-- Search --%>
-        <div class="flex items-center gap-retro-4">
+        <form
+          class="flex items-center gap-retro-4"
+          phx-change={@on_search}
+          phx-submit={@on_search}
+        >
           <.input
             type="text"
             value={@search}
             placeholder={dgettext("dialogs", "Filter channels...")}
             class="flex-1"
-            phx-change={@on_search}
             phx-debounce="300"
             name="search"
             data-testid="channel-list-search"
           />
-          <.button size="sm" variant="outline" phx-click={@on_search}>
+          <.button size="sm" variant="outline" type="submit">
             <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
             {dgettext("dialogs", "Search")}
           </.button>
-        </div>
+        </form>
 
         <%!-- Channel table --%>
         <div class="max-h-[300px] overflow-y-auto retro-scrollbar">

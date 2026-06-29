@@ -81,7 +81,7 @@ test.describe('Search result navigation', () => {
     await chat.sendMessage(second);
     await chat.expectMessageVisible(second);
 
-    await chat.openSearchFromViewMenu();
+    await chat.openSearchFromEditMenu();
     await chat.searchBarInput.fill(needle);
 
     await expect(chat.searchHighlights).toHaveCount(2);

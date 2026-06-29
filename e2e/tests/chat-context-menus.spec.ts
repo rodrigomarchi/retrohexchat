@@ -82,8 +82,9 @@ test.describe('Chat context menus', () => {
       await alice.chat.switchToTab(channel);
       await alice.chat.openNicklistContextMenu(bob.nick);
       await alice.chat.nicklistContextWhoisMenuItem.click();
-      await alice.chat.expectMessageVisible(`----- Whois: ${bob.nick} -----`);
-      await alice.chat.expectMessageVisible(`Shared channels: ${channel}`);
+      await alice.chat.expectWhoisCard(bob.nick);
+      await alice.chat.expectLookupCardField('Shared channels', channel);
+      await alice.chat.closeLookupResult();
 
       await alice.chat.openNicklistContextMenu(bob.nick);
       await alice.chat.nicklistContextIgnoreMenuItem.click();

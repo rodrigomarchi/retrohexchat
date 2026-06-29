@@ -69,28 +69,16 @@ test.describe('Whois and bio commands', () => {
       await bob.chat.expectMessageVisible(`Bio set: ${bio}`);
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await alice.chat.expectMessageVisible(`Bio: ${bio}`);
+      await alice.chat.expectWhoisCard(bob.nick);
+      await alice.chat.expectLookupCardField('Bio', bio);
+      await alice.chat.closeLookupResult();
 
       await bob.chat.sendMessage('/bio clear');
       await bob.chat.expectMessageVisible('Bio cleared.');
 
-      const beforeWhoisCount = await alice.chat.messageRows.count();
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expect
-        .poll(async () => alice.chat.messageRows.count())
-        .toBeGreaterThan(beforeWhoisCount);
-
-      const latestWhoisText = await alice.chat.messageRows.evaluateAll(
-        (rows, start) =>
-          rows
-            .slice(start)
-            .map((row) => row.textContent || '')
-            .join('\n'),
-        beforeWhoisCount,
-      );
-
-      expect(latestWhoisText).toContain(`----- Whois: ${bob.nick} -----`);
-      expect(latestWhoisText).not.toContain(`Bio: ${bio}`);
+      await alice.chat.expectWhoisCard(bob.nick);
+      await alice.chat.expectLookupCardMissingField('Bio');
     } finally {
       await closeUsers([alice, bob]);
     }
@@ -112,15 +100,14 @@ test.describe('Whois and bio commands', () => {
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
 
-      await alice.chat.expectMessageVisible(`----- Whois: ${bob.nick} -----`);
-      await alice.chat.expectMessageVisible('Channels:');
-      await alice.chat.expectMessageVisible(channel);
-      await alice.chat.expectMessageVisible('Shared channels:');
-      await alice.chat.expectMessageVisible('Online for:');
-      await alice.chat.expectMessageVisible('Idle for:');
-      await alice.chat.expectMessageVisible('Registered: Yes');
-      await alice.chat.expectMessageVisible(`Away: ${away}`);
-      await alice.chat.expectMessageVisible(`Bio: ${bio}`);
+      await alice.chat.expectWhoisCard(bob.nick);
+      await expect(alice.chat.lookupResultCard).toContainText('Online for');
+      await expect(alice.chat.lookupResultCard).toContainText('Idle for');
+      await alice.chat.expectLookupCardField('Channels', channel);
+      await alice.chat.expectLookupCardField('Shared channels', channel);
+      await alice.chat.expectLookupCardField('Registered', 'Yes');
+      await alice.chat.expectLookupCardField('Away', away);
+      await alice.chat.expectLookupCardField('Bio', bio);
     } finally {
       await closeUsers([alice, bob]);
     }

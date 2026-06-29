@@ -123,7 +123,7 @@ test.describe('Unicode message lifecycle', () => {
     ]);
     await expect(chat.messageRowByText(original)).toHaveCount(0);
 
-    await chat.openSearchFromViewMenu();
+    await chat.openSearchFromEditMenu();
     await chat.searchBarInput.fill('漢字');
     await expect(chat.searchHighlights).toHaveCount(1);
     await expect(activeHighlightRow(chat)).toContainText(`${marker}-edited`);

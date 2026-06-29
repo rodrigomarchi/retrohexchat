@@ -40,20 +40,6 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-async function whoisTextSince(chat: ChatPage, start: number): Promise<string> {
-  await expect
-    .poll(async () => chat.messageRows.count())
-    .toBeGreaterThan(start);
-
-  return chat.messageRows.evaluateAll(
-    (rows, firstNewRow) =>
-      rows
-        .slice(firstNewRow)
-        .map((row) => row.textContent || '')
-        .join('\n'),
-    start,
-  );
-}
 
 test.describe('NickServ whois realtime state', () => {
   test('registering and dropping NickServ state updates another user whois without reconnect (W4)', async ({
@@ -78,33 +64,30 @@ test.describe('NickServ whois realtime state', () => {
       await bob.chat.expectTabVisible(channel);
       await bob.chat.expectNickInList(nick);
 
-      let beforeWhois = await bob.chat.messageRows.count();
       await bob.chat.sendMessage(`/whois ${nick}`);
-      let whoisText = await whoisTextSince(bob.chat, beforeWhois);
-      expect(whoisText).toContain(`----- Whois: ${nick} -----`);
-      expect(whoisText).toContain('Registered: No');
+      await bob.chat.expectWhoisCard(nick);
+      await bob.chat.expectLookupCardField('Registered', 'No');
+      await bob.chat.closeLookupResult();
 
       await alice.chat.sendMessage(`/ns register ${password}`);
       await alice.chat.expectMessageVisible(
         `[NickServ] Nickname ${nick} registered successfully`,
       );
 
-      beforeWhois = await bob.chat.messageRows.count();
       await bob.chat.sendMessage(`/whois ${nick}`);
-      whoisText = await whoisTextSince(bob.chat, beforeWhois);
-      expect(whoisText).toContain(`----- Whois: ${nick} -----`);
-      expect(whoisText).toContain('Registered: Yes');
+      await bob.chat.expectWhoisCard(nick);
+      await bob.chat.expectLookupCardField('Registered', 'Yes');
+      await bob.chat.closeLookupResult();
 
       await alice.chat.sendMessage(`/ns drop ${password}`);
       await alice.chat.expectMessageVisible(
         `[NickServ] Registration for ${nick} dropped`,
       );
 
-      beforeWhois = await bob.chat.messageRows.count();
       await bob.chat.sendMessage(`/whois ${nick}`);
-      whoisText = await whoisTextSince(bob.chat, beforeWhois);
-      expect(whoisText).toContain(`----- Whois: ${nick} -----`);
-      expect(whoisText).toContain('Registered: No');
+      await bob.chat.expectWhoisCard(nick);
+      await bob.chat.expectLookupCardField('Registered', 'No');
+      await bob.chat.closeLookupResult();
     } finally {
       await closeUsers([alice, bob]);
     }
