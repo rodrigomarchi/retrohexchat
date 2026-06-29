@@ -6,12 +6,14 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.{NicknameValidator, Session}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.CommandDispatch
+  alias RetroHexChatWeb.ChatLive.Components.AccountDialog
   alias RetroHexChatWeb.ChatLive.Helpers
 
   @max_bio_graphemes 200
@@ -47,14 +49,8 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   end
 
   def handle_event("close_account_dialog", _params, socket) do
-    {:halt,
-     assign(socket,
-       show_account_dialog: false,
-       account_error: nil,
-       account_nick_error: nil,
-       account_bio_warning: nil,
-       account_ghost_error: nil
-     )}
+    send_update(AccountDialog, id: AccountDialog.id(), action: :reset)
+    {:halt, assign(socket, show_account_dialog: false)}
   end
 
   def handle_event("account_info", _params, socket) do
@@ -86,20 +82,10 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
 
     cond do
       mode == "register" and password != confirm ->
-        {:halt,
-         assign(socket,
-           account_auth_mode: "register",
-           account_error: dgettext("chat", "Passwords do not match"),
-           account_auth_valid: false
-         )}
+        {:halt, auth_error(socket, "register", dgettext("chat", "Passwords do not match"))}
 
       password == "" ->
-        {:halt,
-         assign(socket,
-           account_auth_mode: mode,
-           account_error: dgettext("chat", "Password is required"),
-           account_auth_valid: false
-         )}
+        {:halt, auth_error(socket, mode, dgettext("chat", "Password is required"))}
 
       mode == "identify" ->
         {:halt, submit_nickserv(socket, "identify", [password], "identify")}
@@ -114,11 +100,7 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
 
     if password == "" do
       {:halt,
-       assign(socket,
-         account_auth_mode: default_auth_mode(socket),
-         account_error: dgettext("chat", "Password is required"),
-         account_auth_valid: false
-       )}
+       auth_error(socket, default_auth_mode(socket), dgettext("chat", "Password is required"))}
     else
       {:halt, submit_nickserv(socket, "drop", [password], default_auth_mode(socket))}
     end
@@ -141,12 +123,8 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
           {true, nil}
       end
 
-    {:halt,
-     assign(socket,
-       account_auth_mode: mode,
-       account_error: error,
-       account_auth_valid: valid?
-     )}
+    send_update(AccountDialog, id: AccountDialog.id(), action: {:auth, mode, valid?, error})
+    {:halt, socket}
   end
 
   def handle_event("account_ghost_submit", params, socket) do
@@ -155,10 +133,10 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
 
     cond do
       nickname == "" ->
-        {:halt, assign(socket, account_ghost_error: dgettext("chat", "Nickname is required"))}
+        {:halt, ghost_error(socket, dgettext("chat", "Nickname is required"))}
 
       password == "" ->
-        {:halt, assign(socket, account_ghost_error: dgettext("chat", "Password is required"))}
+        {:halt, ghost_error(socket, dgettext("chat", "Password is required"))}
 
       true ->
         {:halt, submit_nickserv(socket, "ghost", [nickname, password], default_auth_mode(socket))}
@@ -179,40 +157,31 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
           )
 
         case result do
-          {:error, message} -> {:halt, assign(socket, account_nick_error: message)}
-          _result -> {:halt, assign(socket, account_nick_error: nil)}
+          {:error, message} -> {:halt, nick_error(socket, message)}
+          _result -> {:halt, nick_error(socket, nil)}
         end
 
       {:error, message} ->
-        {:halt, assign(socket, account_nick_error: message)}
+        {:halt, nick_error(socket, message)}
     end
   end
 
   def handle_event("account_profile_change", %{"bio" => bio}, socket) do
     {draft, warning} = normalize_bio_draft(bio)
-
-    {:halt,
-     assign(socket,
-       account_bio_draft: draft,
-       account_bio_warning: warning
-     )}
+    send_update(AccountDialog, id: AccountDialog.id(), action: {:bio, draft, warning})
+    {:halt, socket}
   end
 
   def handle_event("account_profile_submit", %{"bio" => bio}, socket) do
     {bio, warning} = normalize_bio_draft(bio)
     args = if String.trim(bio) == "", do: ["clear"], else: [bio]
-
-    {:halt,
-     socket
-     |> assign(account_bio_draft: bio, account_bio_warning: warning)
-     |> dispatch("bio", args)}
+    send_update(AccountDialog, id: AccountDialog.id(), action: {:bio, bio, warning})
+    {:halt, dispatch(socket, "bio", args)}
   end
 
   def handle_event("account_clear_bio", _params, socket) do
-    {:halt,
-     socket
-     |> assign(account_bio_draft: "", account_bio_warning: nil)
-     |> dispatch("bio", ["clear"])}
+    send_update(AccountDialog, id: AccountDialog.id(), action: {:bio, "", nil})
+    {:halt, dispatch(socket, "bio", ["clear"])}
   end
 
   def handle_event("account_presence_submit", params, socket) do
@@ -253,24 +222,16 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   defp open_account(socket, tab, auth_mode) do
-    socket =
-      socket
-      |> assign(
-        show_account_dialog: true,
-        account_dialog_tab: tab,
-        account_auth_mode: auth_mode,
-        account_error: nil,
-        account_auth_valid: false,
-        account_nick_error: nil,
-        account_bio_warning: nil,
-        account_ghost_error: nil
-      )
-      |> sync_identity()
+    socket = assign(sync_identity(socket), show_account_dialog: true)
+    normalized = normalize_auth_mode(socket, auth_mode)
+    bio = Session.get_bio(socket.assigns.session) || ""
 
-    assign(socket,
-      account_auth_mode: normalize_auth_mode(socket, auth_mode),
-      account_bio_draft: Session.get_bio(socket.assigns.session) || ""
+    send_update(AccountDialog,
+      id: AccountDialog.id(),
+      action: {:open, tab, normalized, bio}
     )
+
+    socket
   end
 
   defp submit_nickserv(socket, subcommand, args, auth_mode) do
@@ -284,26 +245,44 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
 
     case result do
       {:error, message} ->
+        socket = sync_identity(socket)
+        reflect_nickserv_error(socket, subcommand, message, auth_mode)
         socket
-        |> sync_identity()
-        |> assign_nickserv_error(subcommand, message, auth_mode)
 
       _result ->
-        socket =
-          socket
-          |> assign(account_error: nil, account_ghost_error: nil, account_auth_valid: false)
-          |> sync_identity()
+        socket = sync_identity(socket)
 
-        assign(socket, account_auth_mode: default_auth_mode(socket))
+        send_update(AccountDialog,
+          id: AccountDialog.id(),
+          action: {:auth_reset, default_auth_mode(socket)}
+        )
+
+        socket
     end
   end
 
-  defp assign_nickserv_error(socket, "ghost", message, _auth_mode) do
-    assign(socket, account_ghost_error: message)
+  defp reflect_nickserv_error(socket, "ghost", message, _auth_mode) do
+    send_update(AccountDialog, id: AccountDialog.id(), action: {:ghost_error, message})
+    socket
   end
 
-  defp assign_nickserv_error(socket, _subcommand, message, auth_mode) do
-    assign_normalized_auth_error(socket, message, auth_mode)
+  defp reflect_nickserv_error(socket, _subcommand, message, auth_mode) do
+    auth_error(socket, normalize_auth_mode(socket, auth_mode), message)
+  end
+
+  defp auth_error(socket, mode, message) do
+    send_update(AccountDialog, id: AccountDialog.id(), action: {:auth_error, mode, message})
+    socket
+  end
+
+  defp ghost_error(socket, message) do
+    send_update(AccountDialog, id: AccountDialog.id(), action: {:ghost_error, message})
+    socket
+  end
+
+  defp nick_error(socket, message) do
+    send_update(AccountDialog, id: AccountDialog.id(), action: {:nick_error, message})
+    socket
   end
 
   defp normalize_auth_mode(socket, requested_mode) do
@@ -316,14 +295,6 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
       requested_mode == "register" -> "register"
       true -> "register"
     end
-  end
-
-  defp assign_normalized_auth_error(socket, message, auth_mode) do
-    assign(socket,
-      account_error: message,
-      account_auth_mode: normalize_auth_mode(socket, auth_mode),
-      account_auth_valid: false
-    )
   end
 
   defp validate_nickname_change(current_nickname, new_nickname) do

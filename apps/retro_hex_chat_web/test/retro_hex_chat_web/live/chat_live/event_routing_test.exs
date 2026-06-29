@@ -3,8 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.EventRoutingTest do
 
   @moduletag :liveview_feature
 
-  # Guards the dispatch fall-through contract during the event-routing
-  # migration (docs/plans/02-chat-event-routing.md): an event that no hook in
+  # Guards the dispatch fall-through contract: an event that no hook in
   # @event_hook_fns claims must NOT crash the user's session — the socket is
   # returned untouched and the LiveView keeps rendering.
   describe "unrouted events" do

@@ -4,6 +4,15 @@
 
 Migrar Bot Management para LiveComponent stateful com lista de bots, selecao, tabs, comandos/eventos/stats e operacoes admin async.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo (gigante)
+- **Dependências:** Bloqueia: 50, 51 (subdialogs New Bot / Add Command).
+- **Componente de referência:** Mini-app administrativo.
+- **Abordagem:** Lista de bots (stream), tabs, comandos/eventos/stats, ops admin async; subdialogs como filhos/estado interno.
+- **Gotchas:** Sair inteiro do parent; remover bot_events da pipeline global depois.
+- **Validação:** `make ci` 9/9 + E2E bot.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:929`

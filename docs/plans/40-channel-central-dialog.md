@@ -4,6 +4,15 @@
 
 Migrar Channel Central para LiveComponent stateful com tabs internas, formularios, listas de bans/exceptions e operacoes ChanServ isoladas.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo (o MAIOR — lote dedicado)
+- **Dependências:** Independente, mas gigante: 34 assigns, 4 subdialogs, ChanServ.
+- **Componente de referência:** Mini-app administrativo do canal.
+- **Abordagem:** Sair INTEIRO do parent; tabs/seleções/drafts/subdialogs no componente; operações ChanServ retornam por update.
+- **Gotchas:** Não migrar tab por tab mantendo `channel_central_*` no ChatLive.
+- **Validação:** `make ci` 9/9 + E2E channel-central.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:776`

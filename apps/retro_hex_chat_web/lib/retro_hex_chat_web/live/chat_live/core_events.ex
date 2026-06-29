@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, stream: 4, stream_delete: 3]
+  import Phoenix.LiveView, only: [push_event: 3, stream: 4, stream_delete: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -33,6 +33,13 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive
+
+  alias RetroHexChatWeb.ChatLive.Components.{
+    DeleteConfirmDialog,
+    NickChangeDialog,
+    PasteConfirmDialog
+  }
+
   alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.Endpoint
@@ -227,13 +234,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- close_dialog --
 
   def handle_event("close_dialog", _params, socket) do
-    {:halt,
-     assign(socket,
-       show_about: false,
-       show_whois: false,
-       whois_target: nil,
-       cheatsheet_visible: false
-     )}
+    {:halt, assign(socket, cheatsheet_visible: false)}
   end
 
   # -- load_more --
@@ -307,31 +308,19 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     handle_event("tab_complete", %{"partial" => partial, "is_start" => true}, socket)
   end
 
-  # -- paste_lines / paste_cancel / paste_send --
-
+  # The clipboard JS hook pushes the pasted lines to the parent; we filter out
+  # blank lines and forward the rest to the `PasteConfirmDialog` LiveComponent,
+  # which owns the queue and the Send/Cancel buttons.
   def handle_event("paste_lines", %{"lines" => lines}, socket) do
     filtered = Enum.filter(lines, &(String.trim(&1) != ""))
     count = length(filtered)
 
-    {:halt,
-     assign(socket,
-       paste_lines: filtered,
-       paste_flood_warning: count > 50,
-       paste_send_disabled: count > 100
-     )}
-  end
+    send_update(PasteConfirmDialog,
+      id: PasteConfirmDialog.id(),
+      action: {:set, filtered, count > 50, count > 100}
+    )
 
-  def handle_event("paste_cancel", _params, socket) do
-    {:halt,
-     socket
-     |> assign(paste_lines: nil)
-     |> push_event("focus_input", %{})}
-  end
-
-  def handle_event("paste_send", _params, socket) do
-    lines = socket.assigns.paste_lines || []
-    Process.send_after(self(), {:paste_next, lines}, 0)
-    {:halt, assign(socket, paste_lines: nil)}
+    {:halt, socket}
   end
 
   # -- syntax_tooltip_query --
@@ -435,7 +424,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   def handle_event("ctx_chat_delete", %{"message_id" => msg_id_str}, socket) do
     case parse_message_id(msg_id_str) do
       {:ok, msg_id} ->
-        {:halt, assign(socket, delete_confirm: %{message_id: msg_id})}
+        {:halt, open_delete_confirm(socket, msg_id)}
 
       :error ->
         case parse_pending_message_id(msg_id_str) do
@@ -447,69 +436,40 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   # -- confirm_delete --
 
-  def handle_event("confirm_delete", _params, socket) do
-    case socket.assigns.delete_confirm do
-      %{message_id: msg_id} ->
-        session = socket.assigns.session
+  def handle_event("confirm_delete", %{"message_id" => msg_id}, socket) do
+    session = socket.assigns.session
 
-        result =
-          if session.active_pm do
-            Service.delete_private_message(msg_id, session.nickname)
-          else
-            Service.delete_message(msg_id, session.nickname)
-          end
+    result =
+      if session.active_pm do
+        Service.delete_private_message(msg_id, session.nickname)
+      else
+        Service.delete_message(msg_id, session.nickname)
+      end
 
-        socket = assign(socket, delete_confirm: nil)
+    socket = close_delete_confirm(socket)
 
-        case result do
-          {:ok, _} ->
-            {:halt, socket}
-
-          {:error, reason} ->
-            {:halt,
-             socket
-             |> error_event(reason)}
-        end
-
-      nil ->
-        {:halt, socket}
+    case result do
+      {:ok, _} -> {:halt, socket}
+      {:error, reason} -> {:halt, error_event(socket, reason)}
     end
   end
+
+  def handle_event("confirm_delete", _params, socket), do: {:halt, socket}
 
   # -- cancel_delete --
 
   def handle_event("cancel_delete", _params, socket) do
-    {:halt, assign(socket, delete_confirm: nil)}
+    {:halt, close_delete_confirm(socket)}
   end
 
   # -- confirm_nick_change --
-
+  #
+  # The nick-change dialog is a stateful LiveComponent (NickChangeDialog); it owns
+  # its draft and handles password keyup + cancel locally. Confirm bubbles here
+  # carrying `target`/`registered` (via JS.push) and `password` (phx-value),
+  # because the NickServ identify + token redirect must run on this LiveView.
   def handle_event("confirm_nick_change", params, socket) do
-    dialog = socket.assigns.nick_change_dialog
-
-    if dialog do
-      {:halt, handle_nick_change_confirm(socket, dialog, params)}
-    else
-      {:halt, socket}
-    end
-  end
-
-  # -- cancel_nick_change --
-
-  def handle_event("cancel_nick_change", _params, socket) do
-    {:halt, assign(socket, nick_change_dialog: nil)}
-  end
-
-  # -- update_nick_change_password --
-
-  def handle_event("update_nick_change_password", %{"value" => value}, socket) do
-    case socket.assigns.nick_change_dialog do
-      %{} = dialog ->
-        {:halt, assign(socket, nick_change_dialog: %{dialog | password: value})}
-
-      nil ->
-        {:halt, socket}
-    end
+    {:halt, handle_nick_change_confirm(socket, params)}
   end
 
   # -- Catch-all: pass unhandled events to the next hook --
@@ -527,7 +487,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
         socket
         |> exit_edit_mode()
-        |> assign(delete_confirm: %{message_id: msg_id})
+        |> open_delete_confirm(msg_id)
         |> then(&{:halt, &1})
 
       notice_mode?(socket) ->
@@ -792,58 +752,58 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     end
   end
 
-  defp handle_nick_change_confirm(socket, dialog, params) do
-    target = dialog.target_nick
+  defp handle_nick_change_confirm(socket, params) do
+    target = params["target"] || ""
+    registered = params["registered"] in [true, "true"]
     password = params["password"] || ""
 
     cond do
       nick_in_use?(target, socket.assigns.session.nickname) ->
-        socket
-        |> assign(nick_change_dialog: nil)
-        |> error_event(
+        close_nick_change_dialog()
+
+        error_event(
+          socket,
           dgettext("chat", "Nickname %{nickname} is already in use", nickname: target)
         )
 
-      dialog.registered ->
+      registered ->
         case NickServ.identify(target, password) do
           {:ok, _} ->
-            token = Phoenix.Token.sign(Endpoint, "nickserv_identify", target)
-
-            socket
-            |> assign(
-              nick_change_dialog: nil,
-              nick_change_target: target,
-              nick_change_token: token,
-              quit_reason: dgettext("chat", "Changing nickname")
+            nick_change_redirect(socket, target,
+              token: Phoenix.Token.sign(Endpoint, "nickserv_identify", target)
             )
-            |> push_event("submit_nick_change", %{
-              nickname: target,
-              previous_nickname: socket.assigns.session.nickname
-            })
 
           {:error, _} ->
-            assign(socket,
-              nick_change_dialog: %{
-                dialog
-                | password_error: dgettext("chat", "Incorrect password"),
-                  password: ""
-              }
+            send_update(NickChangeDialog,
+              id: NickChangeDialog.id(),
+              action: {:password_error, dgettext("chat", "Incorrect password")}
             )
+
+            socket
         end
 
       true ->
-        socket
-        |> assign(
-          nick_change_dialog: nil,
-          nick_change_target: target,
-          nick_change_token: nil,
-          quit_reason: dgettext("chat", "Changing nickname")
-        )
-        |> push_event("submit_nick_change", %{
-          nickname: target,
-          previous_nickname: socket.assigns.session.nickname
-        })
+        nick_change_redirect(socket, target, token: nil)
     end
+  end
+
+  defp nick_change_redirect(socket, target, token: token) do
+    close_nick_change_dialog()
+
+    socket
+    |> assign(
+      nick_change_target: target,
+      nick_change_token: token,
+      quit_reason: dgettext("chat", "Changing nickname")
+    )
+    |> push_event("submit_nick_change", %{
+      nickname: target,
+      previous_nickname: socket.assigns.session.nickname
+    })
+  end
+
+  defp close_nick_change_dialog do
+    send_update(NickChangeDialog, id: NickChangeDialog.id(), action: :close)
   end
 
   defp nick_in_use?(nickname, current_nickname) do
@@ -851,20 +811,19 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       Tracker.online?("presence:global", nickname)
   end
 
+  defp open_delete_confirm(socket, message_id) do
+    send_update(DeleteConfirmDialog, id: DeleteConfirmDialog.id(), action: {:open, message_id})
+    socket
+  end
+
+  defp close_delete_confirm(socket) do
+    send_update(DeleteConfirmDialog, id: DeleteConfirmDialog.id(), action: :close)
+    socket
+  end
+
   defp clear_search_on_switch(socket) do
     if socket.assigns.search_visible do
-      socket
-      |> assign(
-        search_visible: false,
-        search_last_query: socket.assigns.search_query,
-        search_query: "",
-        search_results: [],
-        search_result_count: 0,
-        search_history_count: 0,
-        search_current_index: 0,
-        search_error: nil
-      )
-      |> push_event("search_clear_highlights", %{})
+      ChatLive.SearchEvents.close(socket)
     else
       socket
     end

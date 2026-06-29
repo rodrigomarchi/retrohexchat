@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -17,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     ]
 
   alias RetroHexChat.Channels.Server
+  alias RetroHexChatWeb.ChatLive.Components.KickQueueDialog
 
   # ── Mode changes ──────────────────────────────────────────
 
@@ -67,9 +69,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
         reason: reason
       }
 
+      send_update(KickQueueDialog, id: KickQueueDialog.id(), action: {:enqueue, kick_event})
+
       socket =
         socket
-        |> assign(channel_users: users, kick_queue: socket.assigns.kick_queue ++ [kick_event])
+        |> assign(channel_users: users)
         |> play_event_sound(:kick, socket.assigns.session)
         |> part_channel_after_kick(socket.assigns.session.active_channel)
         |> system_event(msg)

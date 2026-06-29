@@ -4,6 +4,15 @@
 
 Agrupar elementos abaixo do viewport que pertencem ao fluxo de composicao, mas manter cada subcomponente puro quando nao ha estado proprio.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo
+- **Dependências:** Depende de: 14 (vivem dentro do Composer).
+- **Componente de referência:** Function components dentro do ComposerComponent.
+- **Abordagem:** Markup em function components; estado e eventos no composer.
+- **Gotchas:** —
+- **Validação:** `make ci` 9/9 + E2E formatting/typing.
+
 ## Codigo atual
 
 - Formatting toolbar: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:327`

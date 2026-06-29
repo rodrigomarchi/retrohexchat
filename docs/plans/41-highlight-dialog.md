@@ -4,6 +4,15 @@
 
 Migrar Highlight dialog para componente stateful com selecao, add/edit subdialogs e color picker local.
 
+## Classificação para execução (agentes)
+
+- **Tier:** ⛔ BLOQUEADO
+- **Dependências:** Independente, mas com bloqueio técnico real.
+- **Componente de referência:** Nenhuma — wrapper NÃO resolve.
+- **Abordagem:** BLOQUEIO: sub-forms Add/Edit (modal-in-modal) submetem ao PARENT mas vivem no DOM do componente → mismatch de cid quebra a preservação de valor de input do LiveView; a palavra digitada some no re-render do color-pick. Provado 3x (E2E) mesmo com passthrough puro.
+- **Gotchas:** FIX: sub-forms OWNED pelo componente (`@myself` + child→parent p/ escrita na session) OU input controlado/`phx-update="ignore"`. Mantido INLINE (function component) até o refator.
+- **Validação:** `make ci` 9/9 + E2E chat-highlights TEM que passar.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:840`

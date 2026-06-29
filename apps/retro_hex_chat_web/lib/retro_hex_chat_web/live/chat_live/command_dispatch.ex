@@ -7,7 +7,9 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2, stream_insert: 3]
+
+  import Phoenix.LiveView,
+    only: [push_event: 3, push_navigate: 2, send_update: 2, stream_insert: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -45,6 +47,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.ChatLive.Components.NickChangeDialog
   alias RetroHexChatWeb.ChatLive.Helpers.GameInvite
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
   alias RetroHexChatWeb.ChatLive.Helpers.P2pInvite
@@ -285,14 +288,12 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     else
       registered = NickServ.registered?(new_nick)
 
-      assign(socket,
-        nick_change_dialog: %{
-          target_nick: new_nick,
-          registered: registered,
-          password: "",
-          password_error: nil
-        }
+      send_update(NickChangeDialog,
+        id: NickChangeDialog.id(),
+        action: {:open, %{target_nick: new_nick, registered: registered}}
       )
+
+      socket
     end
   end
 

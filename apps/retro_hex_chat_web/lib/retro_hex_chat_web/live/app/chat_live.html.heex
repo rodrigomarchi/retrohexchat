@@ -149,7 +149,7 @@
             true -> "channel"
           end
         }
-        modes={topic_bar_modes(@current_modes, @show_status_tab, @session.active_pm)}
+        modes={@current_modes}
       />
 
       <%!-- Connection status banner --%>
@@ -184,23 +184,13 @@
         </div>
       </div>
 
-      <%!-- Search bar --%>
-      <.search_bar
-        :if={@search_visible}
-        query={@search_query}
-        result_count={@search_result_count}
-        current_result={@search_current_index}
-        error={@search_error}
-        case_sensitive={@search_case_sensitive}
-        regex={@search_regex}
-        mentions_only={@search_my_mentions}
-        search_history={@search_history}
-        on_search="search_input"
-        on_next="search_next"
-        on_prev="search_prev"
-        on_navigate="search_navigate"
-        on_close="close_search"
-        on_toggle_filter="search_toggle_filter"
+      <%!-- Search bar (stateful island — owns its content state) --%>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.SearchBar}
+        id={RetroHexChatWeb.ChatLive.Components.SearchBar.id()}
+        visible={@search_visible}
+        nickname={@session.nickname}
+        active_channel={@session.active_channel}
       />
 
       <%!-- Messages + Nicklist row (fills remaining space) --%>
@@ -322,23 +312,10 @@
       <%!-- Bottom panel: formatting toolbar + reply bar + typing + input (fixed at bottom) --%>
       <div class="shrink-0">
         <%!-- Emoji picker (positioned above input) --%>
-        <.emoji_picker
-          :if={@show_emoji_picker}
-          id="emoji-picker"
-          search={@emoji_search}
-          active_category={if @emoji_search == "", do: @emoji_category, else: "search_results"}
-          categories={
-            if @emoji_search == "" do
-              EmojiData.categories()
-              |> Enum.map(fn cat -> {cat, EmojiData.by_category(cat)} end)
-            else
-              [{"search_results", @emoji_emojis}]
-            end
-          }
-          on_select="emoji_select"
-          on_category="emoji_category"
-          on_search="emoji_search"
-          on_close="toggle_emoji_picker"
+        <.live_component
+          module={RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog}
+          id={RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog.id()}
+          visible={@show_emoji_picker}
         />
 
         <%!-- Formatting toolbar --%>
@@ -483,84 +460,53 @@
 />
 
 <%!-- Dialogs --%>
-<.mute_duration_dialog
-  id="mute-duration-dialog"
-  show={@mute_duration_dialog.show}
-  target_nick={@mute_duration_dialog.target_nick}
-  on_submit="mute_duration_submit"
-  on_cancel="mute_duration_cancel"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.MuteDurationDialog}
+  id={RetroHexChatWeb.ChatLive.Components.MuteDurationDialog.id()}
 />
 
-<.invite_channel_picker_dialog
-  id="invite-channel-picker-dialog"
-  show={@show_invite_channel_picker}
-  target_nick={@invite_channel_picker_target}
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.InviteChannelPickerDialog}
+  id={RetroHexChatWeb.ChatLive.Components.InviteChannelPickerDialog.id()}
+  visible={@show_invite_channel_picker}
   channels={@session.channels}
-  selected_channel={@invite_channel_picker_selected}
-  error={@invite_channel_picker_error}
-  on_submit="invite_channel_picker_submit"
-  on_cancel="invite_channel_picker_cancel"
 />
 
-<.knock_request_dialog
-  id="knock-request-dialog"
-  show={@show_knock_request_dialog}
-  channel={@knock_request_channel}
-  message={@knock_request_message}
-  error={@knock_request_error}
-  on_change="knock_request_change"
-  on_submit="knock_request_submit"
-  on_cancel="knock_request_cancel"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.KnockRequestDialog}
+  id={RetroHexChatWeb.ChatLive.Components.KnockRequestDialog.id()}
+  visible={@show_knock_request_dialog}
 />
 
-<.about_dialog id="about-dialog" show={@show_about} />
+<%!-- About: stateless, opened client-side via show_modal (logo + Help menu) --%>
+<.about_dialog id="about-dialog" show={false} />
 
-<.account_dialog
-  id="account-dialog"
-  show={@show_account_dialog}
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.AccountDialog}
+  id={RetroHexChatWeb.ChatLive.Components.AccountDialog.id()}
+  visible={@show_account_dialog}
   nickname={@session.nickname}
   account_state={Session.identity_state(@session)}
   registered={@account_registered}
   identified={@session.identified}
-  active_tab={@account_dialog_tab}
-  auth_mode={@account_auth_mode}
-  auth_valid={@account_auth_valid}
-  bio={@account_bio_draft || Session.get_bio(@session) || ""}
-  bio_warning={@account_bio_warning}
-  nick_error={@account_nick_error}
   away={@session.away}
   away_message={@session.away_message || @account_last_away_message || ""}
   wallops_enabled={Session.has_mode?(@session, :wallops)}
-  error_message={@account_error}
-  ghost_error={@account_ghost_error}
-  on_close="close_account_dialog"
 />
 
-<.disconnect_confirm_dialog
-  id="disconnect-confirm-dialog"
-  show={@show_disconnect_confirm}
-  on_confirm="confirm_disconnect"
-  on_cancel="cancel_disconnect"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog}
+  id={RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog.id()}
 />
 
-<.delete_confirm_dialog
-  id="delete-confirm-dialog"
-  show={@delete_confirm != nil}
-  message_id={@delete_confirm && @delete_confirm.message_id}
-  on_confirm="confirm_delete"
-  on_cancel="cancel_delete"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.DeleteConfirmDialog}
+  id={RetroHexChatWeb.ChatLive.Components.DeleteConfirmDialog.id()}
 />
 
-<.nick_change_dialog
-  id="nick-change-dialog"
-  show={@nick_change_dialog != nil}
-  target_nick={(@nick_change_dialog && @nick_change_dialog.target_nick) || ""}
-  registered={(@nick_change_dialog && @nick_change_dialog.registered) || false}
-  password={(@nick_change_dialog && @nick_change_dialog.password) || ""}
-  password_error={@nick_change_dialog && @nick_change_dialog.password_error}
-  on_confirm="confirm_nick_change"
-  on_cancel="cancel_nick_change"
-  on_password_change="update_nick_change_password"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.NickChangeDialog}
+  id={RetroHexChatWeb.ChatLive.Components.NickChangeDialog.id()}
 />
 
 <.notify_list
@@ -628,40 +574,25 @@
   on_close="close_address_book"
 />
 
-<.channel_list
-  id="channel-list-dialog"
-  show={@show_channel_list}
-  channels={@channel_list_filtered}
-  search={@channel_list_search}
-  selected_channel={@channel_list_selected}
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.ChannelListDialog}
+  id={RetroHexChatWeb.ChatLive.Components.ChannelListDialog.id()}
+  visible={@show_channel_list}
+  channels={@channel_list_channels}
   loading={@channel_list_loading}
-  on_search="channel_list_filter"
-  on_select="channel_list_select"
-  on_join="channel_list_join"
-  on_knock="channel_list_knock"
-  on_close="close_channel_list"
 />
 
-<.flood_protection_dialog
-  :if={@show_flood_protection_dialog}
-  id="flood-protection-dialog"
-  show={@show_flood_protection_dialog}
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog}
+  id={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog.id()}
+  visible={@show_flood_protection_dialog}
   settings={@session.flood_protection}
-  on_save="flood_save_settings"
-  on_reset="flood_reset_defaults"
-  on_cancel="close_flood_protection_dialog"
 />
 
-<.sound_settings_dialog
-  id="sound-settings-dialog"
-  show={@show_sound_settings_dialog}
-  settings={@sound_settings_draft || %{}}
-  on_ok="sound_settings_ok"
-  on_cancel="close_sound_settings_dialog"
-  on_apply="sound_settings_apply"
-  on_sound_change="sound_settings_change"
-  on_flash_toggle="sound_flash_toggle"
-  on_preview="sound_preview"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog}
+  id={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog.id()}
+  visible={@show_sound_settings_dialog}
 />
 
 <.perform_dialog
@@ -693,84 +624,31 @@
   on_cancel="close_perform_dialog"
 />
 
-<.alias_dialog
-  id="alias-dialog"
-  show={@show_alias_dialog}
-  aliases={AliasList.entries(@session.aliases)}
-  selected_alias={@alias_dialog_selected}
-  editing={@alias_dialog_editing}
-  draft_name={@alias_dialog_draft_name}
-  draft_expansion={@alias_dialog_draft_expansion}
-  warning_message={@alias_dialog_warning}
-  error_message={@alias_dialog_error}
-  on_select="alias_select"
-  on_add="alias_dialog_add"
-  on_edit="alias_dialog_edit"
-  on_delete="alias_dialog_delete"
-  on_save="alias_dialog_save"
-  on_cancel_edit="alias_dialog_cancel_edit"
-  on_close="close_alias_dialog"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.AliasDialog}
+  id={RetroHexChatWeb.ChatLive.Components.AliasDialog.id()}
+  visible={@show_alias_dialog}
+  aliases={@session.aliases}
 />
 
-<.custom_menus_dialog
-  id="custom-menus-dialog"
-  show={@show_custom_menus_dialog}
-  active_tab={@custom_menus_dialog_tab}
-  entries={CustomMenus.entries_for(@session.custom_menus, @custom_menus_dialog_tab)}
-  selected_item={@custom_menus_dialog_selected}
-  editing={@custom_menus_dialog_editing}
-  draft_label={@custom_menus_dialog_draft_label}
-  draft_command={@custom_menus_dialog_draft_command}
-  error_message={@custom_menus_dialog_error}
-  on_tab="custom_menus_tab"
-  on_select="custom_menu_select"
-  on_add="custom_menu_dialog_add"
-  on_edit="custom_menu_dialog_edit"
-  on_delete="custom_menu_dialog_delete"
-  on_save="custom_menu_dialog_save"
-  on_cancel_edit="custom_menu_dialog_cancel_edit"
-  on_close="close_custom_menus_dialog"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.CustomMenusDialog}
+  id={RetroHexChatWeb.ChatLive.Components.CustomMenusDialog.id()}
+  visible={@show_custom_menus_dialog}
+  custom_menus={@session.custom_menus}
 />
 
-<.auto_respond_dialog
-  id="autorespond-dialog"
-  show={@show_autorespond_dialog}
-  rules={AutoRespondRules.entries(@session.autorespond_rules)}
-  selected_position={@autorespond_dialog_selected}
-  editing={@autorespond_dialog_editing}
-  draft_trigger={@autorespond_dialog_draft_trigger}
-  draft_channel={@autorespond_dialog_draft_channel}
-  draft_command={@autorespond_dialog_draft_command}
-  error_message={@autorespond_dialog_error}
-  on_select="autorespond_select"
-  on_toggle="autorespond_toggle"
-  on_add="autorespond_dialog_add"
-  on_edit="autorespond_dialog_edit"
-  on_delete="autorespond_dialog_delete"
-  on_save="autorespond_dialog_save"
-  on_cancel_edit="autorespond_dialog_cancel_edit"
-  on_close="close_autorespond_dialog"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog}
+  id={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog.id()}
+  visible={@show_autorespond_dialog}
+  rules={@session.autorespond_rules}
 />
 
-<.timers_dialog
-  id="timers-dialog"
-  show={@show_timers_dialog}
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.TimersDialog}
+  id={RetroHexChatWeb.ChatLive.Components.TimersDialog.id()}
   timers={@user_timers}
-  selected_timer={@timers_dialog_selected}
-  editing={@timers_dialog_editing}
-  draft_name={@timers_dialog_draft_name}
-  draft_repeat={@timers_dialog_draft_repeat}
-  draft_seconds={@timers_dialog_draft_seconds}
-  draft_command={@timers_dialog_draft_command}
-  error_message={@timers_dialog_error}
-  on_select="timers_select"
-  on_add="timers_dialog_add"
-  on_edit="timers_dialog_edit"
-  on_stop="timers_dialog_stop"
-  on_change="timers_dialog_change"
-  on_save="timers_dialog_save"
-  on_cancel_edit="timers_dialog_cancel_edit"
-  on_close="close_timers_dialog"
 />
 
 <.channel_central_dialog
@@ -855,59 +733,30 @@
   on_cancel="close_highlight_dialog"
 />
 
-<.url_catcher
-  id="url-catcher-dialog"
-  show={@show_url_catcher}
-  entries={filtered_url_catcher_entries(assigns)}
-  sort_column={@url_catcher_sort_column}
-  sort_direction={@url_catcher_sort_direction}
-  filter_channel={@url_catcher_filter_channel}
-  search_query={@url_catcher_search_query}
-  channels={url_catcher_channels(assigns)}
-  entry_count={length(@url_catcher_entries)}
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog}
+  id={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog.id()}
+  visible={@show_url_catcher}
+  entries={@url_catcher_entries}
   timezone={@timezone}
-  on_sort="url_catcher_sort"
-  on_filter="url_catcher_filter"
-  on_search="url_catcher_search"
-  on_close="close_url_catcher"
 />
 
-<.cheatsheet_dialog
-  id="cheatsheet-dialog"
-  show={@cheatsheet_visible}
-  bindings={cheatsheet_bindings()}
-  on_close="toggle_cheatsheet"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.CheatsheetDialog}
+  id={RetroHexChatWeb.ChatLive.Components.CheatsheetDialog.id()}
+  visible={@cheatsheet_visible}
 />
 
-<.user_lookup_dialog
-  id="user-lookup-dialog"
-  show={@show_user_lookup_dialog}
-  nickname={@user_lookup_nick}
-  error_message={@user_lookup_error}
-  on_change="user_lookup_change"
-  on_whois="user_lookup_whois"
-  on_whowas="user_lookup_whowas"
-  on_close="close_user_lookup"
-/>
-
-<.lookup_result_card
-  id="lookup-result-dialog"
-  show={@lookup_result != nil}
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.UserLookupDialog}
+  id={RetroHexChatWeb.ChatLive.Components.UserLookupDialog.id()}
+  visible={@show_user_lookup_dialog}
   result={@lookup_result}
-  on_close="close_lookup_result"
-  on_whois="lookup_result_whois"
-  on_whowas="lookup_result_whowas"
-  on_query="lookup_result_query"
 />
 
-<.paste_confirm_dialog
-  id="paste-confirm-dialog"
-  show={@paste_lines != nil}
-  line_count={if @paste_lines, do: length(@paste_lines), else: 0}
-  flood_warning={@paste_flood_warning}
-  send_disabled={@paste_send_disabled}
-  on_send="paste_send"
-  on_cancel="paste_cancel"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.PasteConfirmDialog}
+  id={RetroHexChatWeb.ChatLive.Components.PasteConfirmDialog.id()}
 />
 
 <.invite_dialog
@@ -918,11 +767,9 @@
   on_ignore="invite_ignore"
 />
 
-<.kick_dialog
-  id="kick-dialog"
-  show={length(@kick_queue) > 0}
-  kick_info={List.first(@kick_queue)}
-  on_dismiss="kick_dialog_dismiss"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.KickQueueDialog}
+  id={RetroHexChatWeb.ChatLive.Components.KickQueueDialog.id()}
 />
 
 <%!-- Bot Management dialog --%>

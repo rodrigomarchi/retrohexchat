@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   Handle toolbar events.
 
   Covers: quit_chat, restore_session, open_search,
-  toggle_conversations, toggle_strip_formatting, show_about,
+  toggle_conversations, toggle_strip_formatting,
   autocomplete_query, autocomplete_close,
   autocomplete_select, autocomplete_navigate, autocomplete_select_current,
   recent_commands_loaded, disconnect.
@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2]
+  import Phoenix.LiveView, only: [push_event: 3, push_navigate: 2, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -26,7 +26,9 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Commands.Autocomplete
   alias RetroHexChatWeb.ChatLive.CommandDispatch
+  alias RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
+  alias RetroHexChatWeb.ChatLive.SearchEvents
 
   use Phoenix.VerifiedRoutes, endpoint: RetroHexChatWeb.Endpoint, router: RetroHexChatWeb.Router
 
@@ -45,7 +47,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event("open_search", _params, socket) do
-    {:halt, assign(socket, search_visible: true)}
+    {:halt, SearchEvents.open(socket)}
   end
 
   def handle_event("clear_window", _params, socket) do
@@ -72,10 +74,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
       end
 
     {:halt, socket}
-  end
-
-  def handle_event("show_about", _params, socket) do
-    {:halt, assign(socket, show_about: true)}
   end
 
   def handle_event("autocomplete_query", %{"type" => "command", "partial" => partial}, socket) do
@@ -337,7 +335,8 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event("disconnect", _params, socket) do
-    {:halt, assign(socket, show_disconnect_confirm: true)}
+    send_update(DisconnectConfirmDialog, id: DisconnectConfirmDialog.id(), action: :open)
+    {:halt, socket}
   end
 
   def handle_event("confirm_disconnect", _params, socket) do
@@ -351,7 +350,8 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event("cancel_disconnect", _params, socket) do
-    {:halt, assign(socket, show_disconnect_confirm: false)}
+    send_update(DisconnectConfirmDialog, id: DisconnectConfirmDialog.id(), action: :close)
+    {:halt, socket}
   end
 
   def handle_event("toggle_cheatsheet", _params, socket) do

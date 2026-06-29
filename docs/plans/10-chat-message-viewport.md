@@ -4,6 +4,15 @@
 
 Extrair a lista principal de mensagens para componente stateful dono absoluto do stream `:chat_messages`, paginacao, scroll, prepend e limite de DOM.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo (CORE big-bang)
+- **Dependências:** Bloqueia: 11, 12, 56 e o tail de 09. Gargalo central da migração.
+- **Componente de referência:** Streams nativos do LiveView.
+- **Abordagem:** LiveComponent `stream/4` + `phx-update="stream"`; novas msgs `stream_insert(limit: -N)`; histórico `stream(at: 0)`; reset só ao trocar contexto.
+- **Gotchas:** ~35 sites no hot-path realtime; PubSub inserts, load-more, troca de canal. Refator atômico — não fatiar pela metade.
+- **Validação:** `make ci` 9/9 + E2E chat-send/scroll/history (suíte ampla).
+
 ## Codigo atual
 
 - Render stream: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:220`

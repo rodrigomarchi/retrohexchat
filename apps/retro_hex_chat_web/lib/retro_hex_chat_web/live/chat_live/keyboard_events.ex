@@ -10,11 +10,24 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3]
+  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.KeyBindings
+
+  alias RetroHexChatWeb.ChatLive.Components.{
+    AliasDialog,
+    AutoRespondDialog,
+    CustomMenusDialog,
+    InviteChannelPickerDialog,
+    KnockRequestDialog,
+    SoundSettingsDialog
+  }
+
+  alias RetroHexChatWeb.ChatLive.ChannelListEvents
   alias RetroHexChatWeb.ChatLive.NavigationEvents
+  alias RetroHexChatWeb.ChatLive.SearchEvents
+  alias RetroHexChatWeb.ChatLive.UserLookupEvents
 
   # Escape — always hardcoded to dismiss topmost dialog/overlay
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
@@ -50,7 +63,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   # ---------------------------------------------------------------------------
 
   defp dispatch_action(:toggle_search, socket) do
-    assign(socket, search_visible: true)
+    SearchEvents.open(socket)
   end
 
   defp dispatch_action(:toggle_address_book, socket) do
@@ -219,14 +232,15 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp close_sound_settings_dialog(socket) do
-    assign(socket, show_sound_settings_dialog: false, sound_settings_draft: nil)
+    send_update(SoundSettingsDialog, id: SoundSettingsDialog.id(), action: :close)
+    assign(socket, show_sound_settings_dialog: false)
   end
 
   defp close_flood_protection_dialog(socket),
     do: assign(socket, show_flood_protection_dialog: false)
 
   defp close_url_catcher(socket), do: assign(socket, show_url_catcher: false)
-  defp close_user_lookup_dialog(socket), do: assign(socket, show_user_lookup_dialog: false)
+  defp close_user_lookup_dialog(socket), do: UserLookupEvents.close(socket)
   defp close_lookup_result(socket), do: assign(socket, lookup_result: nil)
 
   # ---------------------------------------------------------------------------
@@ -263,30 +277,16 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     )
   end
 
-  defp close_channel_list(socket) do
-    assign(socket,
-      show_channel_list: false,
-      channel_list_selected: nil,
-      channel_list_loading: false
-    )
-  end
+  defp close_channel_list(socket), do: ChannelListEvents.close(socket)
 
   defp close_invite_channel_picker(socket) do
-    assign(socket,
-      show_invite_channel_picker: false,
-      invite_channel_picker_target: nil,
-      invite_channel_picker_selected: nil,
-      invite_channel_picker_error: nil
-    )
+    send_update(InviteChannelPickerDialog, id: InviteChannelPickerDialog.id(), action: :close)
+    assign(socket, show_invite_channel_picker: false)
   end
 
   defp close_knock_request_dialog(socket) do
-    assign(socket,
-      show_knock_request_dialog: false,
-      knock_request_channel: nil,
-      knock_request_message: "",
-      knock_request_error: nil
-    )
+    send_update(KnockRequestDialog, id: KnockRequestDialog.id(), action: :close)
+    assign(socket, show_knock_request_dialog: false)
   end
 
   defp close_address_book(socket) do
@@ -314,53 +314,22 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp close_alias_dialog(socket) do
-    assign(socket,
-      show_alias_dialog: false,
-      alias_dialog_selected: nil,
-      alias_dialog_editing: false,
-      alias_dialog_draft_name: "",
-      alias_dialog_draft_expansion: "",
-      alias_dialog_error: nil,
-      alias_dialog_warning: nil
-    )
+    send_update(AliasDialog, id: AliasDialog.id(), action: :reset)
+    assign(socket, show_alias_dialog: false)
   end
 
   defp close_custom_menus_dialog(socket) do
-    assign(socket,
-      show_custom_menus_dialog: false,
-      custom_menus_dialog_selected: nil,
-      custom_menus_dialog_editing: false,
-      custom_menus_dialog_draft_label: "",
-      custom_menus_dialog_draft_command: "",
-      custom_menus_dialog_error: nil
-    )
+    send_update(CustomMenusDialog, id: CustomMenusDialog.id(), action: :reset)
+    assign(socket, show_custom_menus_dialog: false)
   end
 
   defp close_autorespond_dialog(socket) do
-    assign(socket,
-      show_autorespond_dialog: false,
-      autorespond_dialog_selected: nil,
-      autorespond_dialog_editing: false,
-      autorespond_dialog_draft_trigger: "on_join",
-      autorespond_dialog_draft_channel: "",
-      autorespond_dialog_draft_command: "",
-      autorespond_dialog_error: nil
-    )
+    send_update(AutoRespondDialog, id: AutoRespondDialog.id(), action: :reset)
+    assign(socket, show_autorespond_dialog: false)
   end
 
   defp clear_search_state(socket) do
-    socket
-    |> assign(
-      search_visible: false,
-      search_last_query: socket.assigns.search_query,
-      search_query: "",
-      search_results: [],
-      search_result_count: 0,
-      search_history_count: 0,
-      search_current_index: 0,
-      search_error: nil
-    )
-    |> push_event("search_clear_highlights", %{})
+    SearchEvents.close(socket)
   end
 
   defp safe_to_action(action_string) do

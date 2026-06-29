@@ -4,6 +4,15 @@
 
 Revisar hooks ocultos no topo do template e separar hooks globais indispensaveis de hooks que pertencem a componentes especificos.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo
+- **Dependências:** Depende de: 09, 10/11, 14 e dialogs (cada hook segue o componente dono). NÃO independente.
+- **Componente de referência:** —
+- **Abordagem:** Mover cada hook global para o componente dono; `phx-update="ignore"` para DOM controlado pelo hook.
+- **Gotchas:** Não migrar hooks em bloco — um por vez, junto do componente dono.
+- **Validação:** `make ci` 9/9 + E2E do componente dono.
+
 ## Codigo atual
 
 - Hidden hooks no template: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:1`

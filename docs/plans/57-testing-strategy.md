@@ -166,8 +166,17 @@ regressoes** introduzidas — todas as falhas abaixo reproduzem identicas em
 | chat-context-menus | 1f/1p | 1f (O12) | **pre-existente** |
 | chat-sound-settings | 1f/1p | 1f (U3) | **pre-existente** |
 | chat-search | 2f | 2f (O6,O7) | **pre-existente** |
+| chat-search-history | 1f (S7) | 1f (S7) | **pre-existente** (auditado 2026-06-28) |
+| chat-search-navigation | 1f (S8) | 1f (S8) | **pre-existente** (auditado 2026-06-28) |
+| chat-search-window-state | 1f (S9) | 1f (S9) | **pre-existente** (auditado 2026-06-28) |
 | chat-perform-dialog | 1f/1p | 1f (U6) | **pre-existente** |
 | chat-send | flaky (1f depois 4/4) | — | flaky (timing) |
+
+> 2026-06-28 (plano 09): a extracao do `SearchBar` para LiveComponent stateful nao
+> introduziu regressao. Os specs `chat-search-history` (S7), `chat-search-navigation`
+> (S8) e `chat-search-window-state` (S9) falham **identicos em `main` limpo** (provado
+> via `git stash` dos arquivos `.ex` + `MIX_ENV=e2e mix compile`). Eles nao estavam na
+> tabela original porque a auditoria de 2026-06-27 so cobriu `chat-search.spec.ts`.
 
 ### Investigacao da menubar (2026-06-27) — CORRECAO de diagnostico
 
@@ -290,3 +299,4 @@ Antes de migrar qualquer plano de componente, abra este arquivo e identifique os
 ## Progress Log
 
 - 2026-06-27: Estrategia criada e corrigida para tratar Playwright como gate obrigatorio quando a migracao tocar UI, hooks, lifecycle, selectors ou Page Objects.
+- 2026-06-29 (plano 17 emoji): `chat-emoji.spec.ts` O1 falhava **identico no HEAD limpo** (baseline via `git stash -u`) — **first-click-after-connect race**: `waitUntilConnected()` so espera `liveSocket.isConnected()` (handshake WS), que resolve antes do join-render assentar; o primeiro `toggle_emoji_picker` e engolido pelo burst de render do connect. **Corrigido** com helper robusto `ChatPage.openEmojiPicker()` (re-clica se o picker nao aparecer em 2s). Mesma familia de causa do U3 (menubar first-click). Padrao reutilizavel para qualquer spec que interage logo apos connect.

@@ -4,6 +4,15 @@
 
 Migrar a tab bar de status, canais e PMs para componente dedicado, reduzindo dependencia direta de `@session.channels`, `@session.pm_conversations` e `@unread_counts` no template principal.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🟡 Com ressalva
+- **Dependências:** Independente (pequeno).
+- **Componente de referência:** Function-component wrapper; stateful só se drag/reorder/overflow/pin.
+- **Abordagem:** switch_tab/close_tab continuam adapters no parent (navigation_events).
+- **Gotchas:** navigation_events faz re-dispatch — manter contrato.
+- **Validação:** `make ci` 9/9 + E2E tabs.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:113`

@@ -4,6 +4,15 @@
 
 Migrar Perform/Autojoin para componente stateful com tabs, selecao e subdialogs internos.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo
+- **Dependências:** Duas features (Perform + AutoJoin) num dialog + 4 subdialogs modal (Escape-managed).
+- **Componente de referência:** Inline-edit-list + threading de seleção.
+- **Abordagem:** Componente owns tab+seleções; seleção vai pro parent via `phx-value`/hidden input; subforms hardcoded sobem pro parent (adapter).
+- **Gotchas:** ⚠️ `render_submit` NÃO despacha `JS.push(value:)` (finding lote 4) — use hidden input + `phx-value`.
+- **Validação:** `make ci` 9/9 + E2E perform/autojoin.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:667`

@@ -39,6 +39,7 @@ Referencias:
 
 - `00-loop-execution-prompt.md`
 - `PROGRESS.md`
+- `STATEFUL-COMPONENT-PLAYBOOK.md` (receita reutilizavel de extracao — ler antes de cada island)
 - `01-chat-live-orchestrator.md`
 - `02-chat-event-routing.md`
 - `03-hidden-hooks.md`

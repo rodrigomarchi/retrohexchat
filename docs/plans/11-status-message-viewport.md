@@ -4,6 +4,15 @@
 
 Extrair a lista de mensagens de status para componente stateful separado, com stream proprio e limite independente.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo
+- **Dependências:** Depende de: 10 (mesmo padrão de stream).
+- **Componente de referência:** `stream(:status_messages, limit: -N)`.
+- **Abordagem:** Parent envia eventos de status sem manter a lista.
+- **Gotchas:** Bounded log; igual ao viewport principal.
+- **Validação:** `make ci` 9/9 + E2E status.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:266`

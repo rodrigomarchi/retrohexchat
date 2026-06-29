@@ -44,7 +44,9 @@ defmodule RetroHexChatWeb.ChannelListDialogTest do
       {:ok, view, _html} = live(chat_conn(conn, "CldFilter"), "/chat")
       render_click(view, "channel_list")
 
-      html = render_click(view, "channel_list_filter", %{"search" => "cld_filter_yes"})
+      # Filter lives in the LiveComponent — send_update is async; flush with render.
+      render_click(view, "channel_list_filter", %{"search" => "cld_filter_yes"})
+      html = render(view)
 
       assert html =~ "#cld_filter_yes"
       refute html =~ "#cld_test"
@@ -54,7 +56,8 @@ defmodule RetroHexChatWeb.ChannelListDialogTest do
       {:ok, view, _html} = live(chat_conn(conn, "CldEmpty"), "/chat")
       render_click(view, "channel_list")
 
-      html = render_click(view, "channel_list_filter", %{"search" => ""})
+      render_click(view, "channel_list_filter", %{"search" => ""})
+      html = render(view)
 
       assert html =~ "#cld_test"
     end
@@ -63,7 +66,8 @@ defmodule RetroHexChatWeb.ChannelListDialogTest do
       {:ok, view, _html} = live(chat_conn(conn, "CldNone"), "/chat")
       render_click(view, "channel_list")
 
-      html = render_click(view, "channel_list_filter", %{"search" => "zzz_never_exists"})
+      render_click(view, "channel_list_filter", %{"search" => "zzz_never_exists"})
+      html = render(view)
 
       assert html =~ "No channels found"
     end
@@ -72,7 +76,8 @@ defmodule RetroHexChatWeb.ChannelListDialogTest do
       {:ok, view, _html} = live(chat_conn(conn, "CldRegex"), "/chat")
       render_click(view, "channel_list")
 
-      html = render_click(view, "channel_list_filter", %{"search" => "[test(.*"})
+      render_click(view, "channel_list_filter", %{"search" => "[test(.*"})
+      html = render(view)
 
       assert html =~ "Channel List"
     end

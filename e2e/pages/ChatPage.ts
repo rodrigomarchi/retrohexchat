@@ -977,6 +977,24 @@ export class ChatPage {
     return this.emojiPicker.getByRole('button', { name: char });
   }
 
+  /**
+   * Opens the emoji picker via the formatting-toolbar toggle.
+   *
+   * `waitUntilConnected()` only waits for the WebSocket handshake
+   * (`liveSocket.isConnected()`), which resolves before the initial join-render
+   * has fully settled. A toggle click in that window can be swallowed by the
+   * connect render burst, so we retry once if the picker doesn't appear.
+   */
+  async openEmojiPicker() {
+    await this.emojiPickerToggle.click();
+    try {
+      await expect(this.emojiPicker).toBeVisible({ timeout: 2_000 });
+    } catch {
+      await this.emojiPickerToggle.click();
+      await expect(this.emojiPicker).toBeVisible({ timeout: 5_000 });
+    }
+  }
+
   formatColorSwatch(index: number): Locator {
     return this.page.getByTestId(`format-color-swatch-${index}`);
   }

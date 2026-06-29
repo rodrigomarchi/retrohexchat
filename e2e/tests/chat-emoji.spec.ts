@@ -34,8 +34,7 @@ test.describe('Emoji picker', () => {
     const user = await newSignedInUser(browser, 'emoji');
 
     try {
-      await user.chat.emojiPickerToggle.click();
-      await expect(user.chat.emojiPicker).toBeVisible();
+      await user.chat.openEmojiPicker();
 
       await user.chat.emojiPickerSearch.fill('dog');
       await expect(user.chat.emojiButton('🐶')).toBeVisible({
@@ -48,8 +47,7 @@ test.describe('Emoji picker', () => {
       await expect(user.chat.emojiPicker).toHaveCount(0);
       await expect(user.chat.chatInput).toHaveValue('🐶');
 
-      await user.chat.emojiPickerToggle.click();
-      await expect(user.chat.emojiPicker).toBeVisible();
+      await user.chat.openEmojiPicker();
       await user.page.keyboard.press('Escape');
       await expect(user.chat.emojiPicker).toHaveCount(0);
     } finally {

@@ -4,6 +4,15 @@
 
 Migrar input, historico, envio, modo action/notice, reply/edit e paste para um componente stateful dono do fluxo de composicao.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo (central)
+- **Dependências:** Bloqueia: 15, 16. Paste (46) já feito (paste_* parcialmente no PasteConfirmDialog).
+- **Componente de referência:** LiveComponent `@myself`.
+- **Abordagem:** input_changed/send_input/history/toggles no componente; sobe só comandos semânticos (send msg/PM, slash, edit, paste).
+- **Gotchas:** Muitos estados (reply/edit/action_mode/notice_target); command_dispatch no parent.
+- **Validação:** `make ci` 9/9 + E2E send/edit/reply/paste.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:354`

@@ -28,9 +28,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.ChatMessage
   import RetroHexChatWeb.Components.UI.ChatInput
   import RetroHexChatWeb.Components.UI.Nicklist
-  import RetroHexChatWeb.Components.UI.SearchBar
   import RetroHexChatWeb.Components.UI.FormattingToolbar
-  import RetroHexChatWeb.Components.UI.EmojiPicker
   import RetroHexChatWeb.Components.UI.Autocomplete
   import RetroHexChatWeb.Components.UI.ReplyBar
   import RetroHexChatWeb.Components.UI.ConnectionStatus
@@ -52,33 +50,14 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.AboutDialog
-  import RetroHexChatWeb.Components.UI.AccountDialog
   import RetroHexChatWeb.Components.UI.AddressBook
-  import RetroHexChatWeb.Components.UI.AliasDialog
-  import RetroHexChatWeb.Components.UI.AutoRespondDialog
   import RetroHexChatWeb.Components.UI.ChannelCentralDialog
-  import RetroHexChatWeb.Components.UI.ChannelList
-  import RetroHexChatWeb.Components.UI.CheatsheetDialog
-  import RetroHexChatWeb.Components.UI.CustomMenusDialog
-  import RetroHexChatWeb.Components.UI.DeleteConfirmDialog
-  import RetroHexChatWeb.Components.UI.DisconnectConfirmDialog
-  import RetroHexChatWeb.Components.UI.FloodProtectionDialog
   import RetroHexChatWeb.Components.UI.HighlightDialog
 
   import RetroHexChatWeb.Components.UI.InviteDialog
-  import RetroHexChatWeb.Components.UI.InviteChannelPickerDialog
-  import RetroHexChatWeb.Components.UI.KickDialog
-  import RetroHexChatWeb.Components.UI.KnockRequestDialog
-  import RetroHexChatWeb.Components.UI.MuteDurationDialog
-  import RetroHexChatWeb.Components.UI.NickChangeDialog
   import RetroHexChatWeb.Components.UI.NotifyList
 
-  import RetroHexChatWeb.Components.UI.PasteConfirmDialog
   import RetroHexChatWeb.Components.UI.PerformDialog
-  import RetroHexChatWeb.Components.UI.SoundSettingsDialog
-  import RetroHexChatWeb.Components.UI.TimersDialog
-  import RetroHexChatWeb.Components.UI.UrlCatcher
-  import RetroHexChatWeb.Components.UI.UserLookupDialog
   import RetroHexChatWeb.Components.UI.BotManagementDialog
   import RetroHexChatWeb.Components.UI.BotFormDialog
   import RetroHexChatWeb.Components.UI.AdminConsoleDialog
@@ -93,13 +72,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Services.{Motd, Queries}
 
   alias RetroHexChat.Chat.{
-    AliasList,
     AutoJoinList,
-    AutoRespondRules,
-    CapturedURL,
     CustomMenus,
     DuplicateTracker,
-    EmojiData,
     FloodTracker,
     HighlightWords,
     IgnoreList,
@@ -542,7 +517,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.TipEvents.handle_event/3,
     &ChatLive.AdminConsoleEvents.handle_event/3,
     &ChatLive.BotEvents.handle_event/3,
-    &ChatLive.KickEvents.handle_event/3,
     &ChatLive.KeyboardEvents.handle_event/3,
     &ChatLive.ConnectionEvents.handle_event/3,
     &ChatLive.CoreEvents.handle_event/3
@@ -564,10 +538,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
         {:noreply, socket}
 
       socket ->
-        # No hook in @event_hook_fns claimed this event. Historically this was
-        # swallowed silently; surface it in dev/test logs so unrouted events are
-        # discoverable during the orchestrator/event-routing migration. Never
-        # crashes the user session — the original socket is returned untouched.
+        # No hook in @event_hook_fns claimed this event. Log it in dev/test so
+        # unrouted events are discoverable, and return the socket untouched so the
+        # user session never crashes.
         Logger.debug("ChatLive: unrouted event #{inspect(event)} (no hook claimed it)")
         {:noreply, socket}
     end
@@ -605,13 +578,13 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:tip_events, &ChatLive.TipEvents.handle_event/3},
       {:admin_console_events, &ChatLive.AdminConsoleEvents.handle_event/3},
       {:bot_events, &ChatLive.BotEvents.handle_event/3},
-      {:kick_events, &ChatLive.KickEvents.handle_event/3},
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
       {:connection_events, &ChatLive.ConnectionEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
     ]
 
     info_hooks = [
+      {:settings_dialogs_info, &ChatLive.SettingsDialogsEvents.handle_info/2},
       {:timer_handlers, &ChatLive.TimerHandlers.handle_info/2},
       {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2}
     ]
@@ -653,7 +626,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
         has_selection: false,
         is_target_registered: false
       },
-      mute_duration_dialog: %{show: false, target_nick: nil},
       context_menu: %{
         visible: false,
         x: 0,
@@ -680,33 +652,15 @@ defmodule RetroHexChatWeb.App.ChatLive do
       notify_selected: nil,
       oldest_message_id: nil,
       page_title: dgettext("chat", "RetroHexChat"),
-      search_case_sensitive: false,
-      search_current_index: 0,
-      search_error: nil,
-      search_history: false,
-      search_history_count: 0,
-      search_last_query: "",
-      search_my_mentions: false,
-      search_query: "",
-      search_regex: false,
-      search_result_count: 0,
-      search_results: [],
+      # Search content state (query/results/filters/index/error) is owned by
+      # ChatLive.Components.SearchBar. The parent keeps only `search_visible`
+      # for Escape-dismissal/overlay coordination (see SearchEvents).
       search_visible: false,
       session: session,
-      tips_suppressed: false,
       cheatsheet_visible: false,
-      show_about: false,
       show_address_book: false,
       show_account_dialog: false,
-      account_dialog_tab: "register",
-      account_auth_mode: "register",
       account_registered: false,
-      account_error: nil,
-      account_auth_valid: false,
-      account_nick_error: nil,
-      account_bio_draft: nil,
-      account_bio_warning: nil,
-      account_ghost_error: nil,
       account_last_away_message: nil,
       show_context_color_picker: false,
       show_contact_add_dialog: false,
@@ -736,20 +690,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
       popular_channels_loaded: false,
       conversations_sections: %{channels: true, pms: true, popular: false},
       show_url_catcher: false,
-      show_whois: false,
       show_user_lookup_dialog: false,
-      user_lookup_nick: "",
-      user_lookup_error: nil,
       lookup_result: nil,
       whois_output_mode: :card,
       unread_counts: %{},
-      kick_queue: [],
       url_catcher_entries: [],
-      url_catcher_filter_channel: nil,
-      url_catcher_search_query: "",
-      url_catcher_sort_column: :timestamp,
-      url_catcher_sort_direction: :desc,
-      whois_target: nil,
       ignore_timers: %{},
       control_selected: nil,
       show_control_add_dialog: false,
@@ -792,7 +737,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       auto_ignore_state: %{active: %{}, cooldowns: %{}},
       show_flood_protection_dialog: false,
       show_sound_settings_dialog: false,
-      sound_settings_draft: nil,
       show_nicklist: true,
       nick_palette_editing_index: nil,
       muted: false,
@@ -810,36 +754,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       },
       last_activity_at: DateTime.utc_now(),
       show_alias_dialog: false,
-      alias_dialog_selected: nil,
-      alias_dialog_editing: false,
-      alias_dialog_draft_name: "",
-      alias_dialog_draft_expansion: "",
-      alias_dialog_warning: nil,
-      alias_dialog_error: nil,
       user_timers: %{},
       autorespond_cooldowns: %{},
       show_custom_menus_dialog: false,
-      custom_menus_dialog_tab: :nicklist,
-      custom_menus_dialog_selected: nil,
-      custom_menus_dialog_editing: false,
-      custom_menus_dialog_draft_label: "",
-      custom_menus_dialog_draft_command: "",
-      custom_menus_dialog_error: nil,
       show_autorespond_dialog: false,
-      autorespond_dialog_selected: nil,
-      autorespond_dialog_editing: false,
-      autorespond_dialog_draft_trigger: "on_join",
-      autorespond_dialog_draft_channel: "",
-      autorespond_dialog_draft_command: "",
-      autorespond_dialog_error: nil,
-      show_timers_dialog: false,
-      timers_dialog_selected: nil,
-      timers_dialog_editing: false,
-      timers_dialog_draft_name: "",
-      timers_dialog_draft_repeat: false,
-      timers_dialog_draft_seconds: "",
-      timers_dialog_draft_command: "",
-      timers_dialog_error: nil,
       show_admin_console: false,
       admin_console_results: [],
       admin_console_tab: "console",
@@ -885,14 +803,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       show_new_bot_dialog: false,
       show_add_command_dialog: false,
       away_replied_to: MapSet.new(),
-      paste_lines: nil,
-      paste_flood_warning: false,
-      paste_send_disabled: false,
       quit_reason: nil,
       show_emoji_picker: false,
-      emoji_search: "",
-      emoji_category: "Smileys & Emotion",
-      emoji_emojis: EmojiData.by_category("Smileys & Emotion"),
       syntax_tooltip: nil,
       command_help_level: :beginner,
       timestamp_format: :dd_mm_hh_mm,
@@ -902,26 +814,13 @@ defmodule RetroHexChatWeb.App.ChatLive do
       reply_to: nil,
       edit_mode_message_id: nil,
       edit_original_input: nil,
-      show_disconnect_confirm: false,
-      delete_confirm: nil,
-      nick_change_dialog: nil,
       nick_change_target: nil,
       nick_change_token: nil,
       show_invite_channel_picker: false,
-      invite_channel_picker_target: nil,
-      invite_channel_picker_selected: nil,
-      invite_channel_picker_error: nil,
       show_knock_request_dialog: false,
-      knock_request_channel: nil,
-      knock_request_message: "",
-      knock_request_error: nil,
       show_channel_list: false,
       channel_list_channels: [],
-      channel_list_filtered: [],
-      channel_list_selected: nil,
-      channel_list_search: "",
-      channel_list_loading: false,
-      channel_list_count: 0
+      channel_list_loading: false
     )
     |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
@@ -1020,20 +919,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
     base <> highlighted <> highlight_bg <> pending <> failed <> deleted <> editing
   end
 
-  defp filtered_url_catcher_entries(assigns) do
-    assigns.url_catcher_entries
-    |> CapturedURL.filter_by_source(assigns.url_catcher_filter_channel)
-    |> CapturedURL.filter_by_url(assigns.url_catcher_search_query)
-    |> CapturedURL.sort_by(assigns.url_catcher_sort_column, assigns.url_catcher_sort_direction)
-  end
-
-  defp url_catcher_channels(assigns) do
-    assigns.url_catcher_entries
-    |> Enum.map(& &1.source)
-    |> Enum.uniq()
-    |> Enum.sort()
-  end
-
   defp channel_central_bans(nil), do: []
 
   defp channel_central_bans(state) do
@@ -1081,12 +966,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   defp chat_action_enabled?(session, show_status_tab) do
     !show_status_tab and session.active_pm == nil and session.active_channel != nil
   end
-
-  defp topic_bar_modes(_modes, true, _active_pm), do: []
-  defp topic_bar_modes(_modes, _show_status_tab, active_pm) when is_binary(active_pm), do: []
-  defp topic_bar_modes(nil, _show_status_tab, _active_pm), do: []
-  defp topic_bar_modes("", _show_status_tab, _active_pm), do: []
-  defp topic_bar_modes(modes, _show_status_tab, _active_pm), do: [modes]
 
   @spec to_list_entry(map() | String.t()) :: map()
   defp to_list_entry(%{mask: _} = map), do: map
@@ -1241,29 +1120,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       ChatLive.Helpers.push_status_message(acc, line, :service)
     end)
   end
-
-  @spec cheatsheet_bindings() :: [map()]
-  defp cheatsheet_bindings do
-    KeyBindings.defaults()
-    |> KeyBindings.categories()
-    |> Enum.map(fn {category, entries} ->
-      %{
-        category: KeyBindings.category_label(category),
-        items:
-          Enum.map(entries, fn entry ->
-            %{
-              action: entry.label,
-              keys: format_binding(entry.binding),
-              description: entry.description
-            }
-          end)
-      }
-    end)
-  end
-
-  @spec format_binding(map() | nil) :: String.t()
-  defp format_binding(nil), do: "—"
-  defp format_binding(binding), do: KeyBindings.to_display_string(binding)
 
   defp push_initial_preferences(socket) do
     socket

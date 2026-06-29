@@ -4,6 +4,15 @@
 
 Migrar nicklist para componente stateful com stream de usuarios, updates incrementais e context menu local.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo
+- **Dependências:** Bloqueia: 21 (nicklist-context-menu vive dentro). Streams + PubSub.
+- **Componente de referência:** LiveComponent com `stream(:users, reset: true)`.
+- **Abordagem:** `stream_insert/delete` em join/part/nick/mode/away; reset só ao trocar canal.
+- **Gotchas:** Presence PubSub churn — não reatribuir a lista inteira por evento.
+- **Validação:** `make ci` 9/9 + E2E nicklist (O12 é pre-existente).
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:288`

@@ -19,9 +19,15 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
 
   alias RetroHexChatWeb.Icons
 
-  @doc "Renders the topic bar."
+  @doc """
+  Renders the topic bar.
+
+  `modes` accepts either a pre-built list of badge strings or the raw active-modes
+  string; the visible badge list is derived here from `variant` + `modes`
+  (status/PM windows never show modes).
+  """
   attr :topic, :string, default: ""
-  attr :modes, :list, default: []
+  attr :modes, :any, default: []
   attr :variant, :string, default: "channel", values: ~w(channel pm status)
   attr :channel_name, :string, default: nil
   attr :class, :string, default: nil
@@ -29,6 +35,8 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
 
   @spec topic_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def topic_bar(assigns) do
+    assigns = assign(assigns, :mode_badges, mode_badges(assigns.modes, assigns.variant))
+
     ~H"""
     <div
       class={
@@ -49,7 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
         {if @topic == "", do: "No topic set", else: @topic}
       </span>
 
-      <.badge :for={mode <- @modes} variant="outline" class="text-[10px] px-1 py-0 shrink-0">
+      <.badge :for={mode <- @mode_badges} variant="outline" class="text-[10px] px-1 py-0 shrink-0">
         {mode}
       </.badge>
     </div>
@@ -57,6 +65,14 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
   end
 
   # ── Private helpers ───────────────────────────────────
+
+  # Status/PM windows never show channel modes. Otherwise: a non-empty raw mode
+  # string becomes a single badge; a pre-built list (showcase) passes through.
+  @spec mode_badges(term(), String.t()) :: [String.t()]
+  defp mode_badges(_modes, variant) when variant in ~w(status pm), do: []
+  defp mode_badges(modes, _variant) when is_list(modes), do: modes
+  defp mode_badges(modes, _variant) when modes in [nil, ""], do: []
+  defp mode_badges(modes, _variant) when is_binary(modes), do: [modes]
 
   attr :variant, :string, required: true
 

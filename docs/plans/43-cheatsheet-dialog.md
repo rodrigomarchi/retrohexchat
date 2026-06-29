@@ -37,3 +37,12 @@ Trate como About: estatico fica client-side; dinamico fica componente dedicado.
 ## Progress Log
 
 - 2026-06-27: Planejado. Nenhuma implementacao iniciada ainda.
+
+- 2026-06-29: COMPLETE. `Components.CheatsheetDialog` (16th stateful; conteudo estatico).
+  Bindings (`KeyBindings.defaults`) computados UMA vez no `mount/1` — antes o parent
+  recomputava a tabela inteira a cada render (cada mensagem). Visibilidade Escape-managed
+  → parent mantem `cheatsheet_visible`, passa como `visible`; close sobe pro
+  `toggle_cheatsheet`. Removidos `cheatsheet_bindings`/`format_binding` + import
+  `CheatsheetDialog` do parent. `make ci` 9/9; 3 testes de componente; 9 testes de
+  integracao keyboard_shortcuts verdes; falha E2E cheatsheet e pre-existente (flake de
+  abertura do menu Help no main limpo, provado via stash baseline).

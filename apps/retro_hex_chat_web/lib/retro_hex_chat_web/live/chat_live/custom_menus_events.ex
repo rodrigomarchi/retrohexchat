@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [maybe_persist_custom_menus: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -20,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
   alias RetroHexChat.Chat.{AliasExpander, CustomMenus}
   alias RetroHexChat.Commands.Parser
   alias RetroHexChatWeb.ChatLive
+  alias RetroHexChatWeb.ChatLive.Components.CustomMenusDialog
 
   # ── Execute custom menu command ────────────────────────────
 
@@ -75,73 +77,18 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
   end
 
   def handle_event("close_custom_menus_dialog", _params, socket) do
-    {:halt,
-     assign(socket,
-       show_custom_menus_dialog: false,
-       custom_menus_dialog_selected: nil,
-       custom_menus_dialog_editing: false,
-       custom_menus_dialog_draft_label: "",
-       custom_menus_dialog_draft_command: "",
-       custom_menus_dialog_error: nil
-     )}
+    send_update(CustomMenusDialog, id: CustomMenusDialog.id(), action: :reset)
+    {:halt, assign(socket, show_custom_menus_dialog: false)}
   end
 
-  def handle_event("custom_menus_tab", %{"tab" => tab}, socket) do
-    {:halt,
-     assign(socket,
-       custom_menus_dialog_tab: String.to_existing_atom(tab),
-       custom_menus_dialog_selected: nil,
-       custom_menus_dialog_editing: false
-     )}
-  end
-
-  def handle_event("custom_menu_select", %{"label" => label}, socket) do
-    {:halt,
-     assign(socket, custom_menus_dialog_selected: label, custom_menus_dialog_editing: false)}
-  end
-
-  def handle_event("custom_menu_dialog_add", _params, socket) do
-    {:halt,
-     assign(socket,
-       custom_menus_dialog_editing: true,
-       custom_menus_dialog_selected: nil,
-       custom_menus_dialog_draft_label: "",
-       custom_menus_dialog_draft_command: "",
-       custom_menus_dialog_error: nil
-     )}
-  end
-
-  def handle_event("custom_menu_dialog_edit", _params, socket) do
-    selected = socket.assigns.custom_menus_dialog_selected
-    tab = socket.assigns.custom_menus_dialog_tab
-
-    if selected do
-      session = socket.assigns.session
-
-      entry =
-        CustomMenus.entries_for(session.custom_menus, tab)
-        |> Enum.find(&(&1.label == selected))
-
-      if entry do
-        {:halt,
-         assign(socket,
-           custom_menus_dialog_editing: true,
-           custom_menus_dialog_draft_label: entry.label,
-           custom_menus_dialog_draft_command: entry.command,
-           custom_menus_dialog_error: nil
-         )}
-      else
-        {:halt, socket}
-      end
-    else
-      {:halt, socket}
-    end
-  end
-
-  def handle_event("custom_menu_dialog_save", %{"label" => label, "command" => command}, socket) do
+  def handle_event(
+        "custom_menu_dialog_save",
+        %{"label" => label, "command" => command} = params,
+        socket
+      ) do
     session = socket.assigns.session
-    tab = socket.assigns.custom_menus_dialog_tab
-    selected = socket.assigns.custom_menus_dialog_selected
+    tab = String.to_existing_atom(params["tab"])
+    selected = params["selected"]
 
     result =
       if selected do
@@ -153,25 +100,26 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
     case result do
       {:ok, updated} ->
         new_session = Session.set_custom_menus(session, updated)
+        send_update(CustomMenusDialog, id: CustomMenusDialog.id(), action: {:saved, label})
 
         {:halt,
          socket
-         |> assign(
-           session: new_session,
-           custom_menus_dialog_editing: false,
-           custom_menus_dialog_selected: label,
-           custom_menus_dialog_error: nil
-         )
+         |> assign(session: new_session)
          |> maybe_persist_custom_menus(new_session)}
 
       {:error, reason} ->
-        {:halt, assign(socket, custom_menus_dialog_error: custom_menu_error_msg(reason))}
+        send_update(CustomMenusDialog,
+          id: CustomMenusDialog.id(),
+          action: {:error, custom_menu_error_msg(reason)}
+        )
+
+        {:halt, socket}
     end
   end
 
-  def handle_event("custom_menu_dialog_delete", _params, socket) do
-    selected = socket.assigns.custom_menus_dialog_selected
-    tab = socket.assigns.custom_menus_dialog_tab
+  def handle_event("custom_menu_dialog_delete", params, socket) do
+    selected = params["selected"]
+    tab = String.to_existing_atom(params["tab"])
 
     if selected do
       session = socket.assigns.session
@@ -179,15 +127,11 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
       case CustomMenus.remove_entry(session.custom_menus, tab, selected) do
         {:ok, updated} ->
           new_session = Session.set_custom_menus(session, updated)
+          send_update(CustomMenusDialog, id: CustomMenusDialog.id(), action: :deleted)
 
           {:halt,
            socket
-           |> assign(
-             session: new_session,
-             custom_menus_dialog_selected: nil,
-             custom_menus_dialog_editing: false,
-             custom_menus_dialog_error: nil
-           )
+           |> assign(session: new_session)
            |> maybe_persist_custom_menus(new_session)}
 
         {:error, _} ->
@@ -196,16 +140,6 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
     else
       {:halt, socket}
     end
-  end
-
-  def handle_event("custom_menu_dialog_cancel_edit", _params, socket) do
-    {:halt,
-     assign(socket,
-       custom_menus_dialog_editing: false,
-       custom_menus_dialog_draft_label: "",
-       custom_menus_dialog_draft_command: "",
-       custom_menus_dialog_error: nil
-     )}
   end
 
   # ── Catch-all: pass unhandled events to next hook ──────────

@@ -2,18 +2,13 @@ defmodule RetroHexChatWeb.ChatLive.ChatContext do
   @moduledoc """
   Minimal, stable global context for the chat UI.
 
-  As the monolithic `RetroHexChatWeb.App.ChatLive` is decomposed into stateful
-  component islands, those islands should depend on a small, explicit context
-  struct instead of reaching into the full `Session` or recomputing
-  authorization checks. This struct carries exactly the identity and
-  authorization facts a child island needs to render and authorize, derived
-  once by the orchestrator from the `Session`.
+  Carries exactly the identity and authorization facts a child component island
+  needs to render and authorize, so islands depend on this small struct instead
+  of reaching into the full `Session` or recomputing authorization checks. It is
+  built once per render from the `Session` via `from_session/2`.
 
-  Authorization booleans (`admin?`, `admin_only?`, `root_admin?`) mirror the
-  semantics historically implemented as private helpers in the orchestrator and
-  are the single source of truth for those checks.
-
-  See `docs/plans/01-chat-live-orchestrator.md`.
+  The authorization booleans (`admin?`, `admin_only?`, `root_admin?`) are the
+  single source of truth for those checks across the chat UI.
   """
 
   alias RetroHexChat.Accounts.{ServerRoles, Session}

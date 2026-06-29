@@ -4,6 +4,15 @@
 
 Migrar Admin Console para LiveComponent stateful pesado com tabs lazy/async, outputs limitados e permissoes centralizadas.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo (gigante)
+- **Dependências:** Independente, mas mini-app admin grande.
+- **Componente de referência:** Mini-app administrativo (muitos admin_console_* + permissões).
+- **Abordagem:** Sair inteiro do parent; permissões via ChatContext (admin?/admin_only?/root_admin?).
+- **Gotchas:** Lote dedicado, sozinho.
+- **Validação:** `make ci` 9/9 + E2E admin.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:960`

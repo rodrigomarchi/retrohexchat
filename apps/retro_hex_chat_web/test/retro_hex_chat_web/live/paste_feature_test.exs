@@ -37,7 +37,8 @@ defmodule RetroHexChatWeb.PasteFeatureTest do
       render_hook(view, "paste_lines", %{"lines" => ["a", "b"]})
       assert has_element?(view, "#paste-confirm-dialog-show-trigger")
 
-      render_click(view, "paste_cancel")
+      # paste_cancel is now component-local (phx-target); click the real element.
+      view |> element(~s([data-testid="paste-confirm-cancel"])) |> render_click()
 
       refute has_element?(view, "#paste-confirm-dialog-show-trigger")
     end
@@ -50,7 +51,8 @@ defmodule RetroHexChatWeb.PasteFeatureTest do
       render_hook(view, "paste_lines", %{"lines" => ["hello world", "second line"]})
       assert has_element?(view, "#paste-confirm-dialog-show-trigger")
 
-      render_click(view, "paste_send")
+      # paste_send is now component-local (phx-target); click the real element.
+      view |> element(~s([data-testid="paste-confirm-send"])) |> render_click()
 
       refute has_element?(view, "#paste-confirm-dialog-show-trigger")
     end

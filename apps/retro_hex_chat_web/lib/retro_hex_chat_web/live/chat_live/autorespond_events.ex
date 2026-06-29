@@ -10,33 +10,22 @@ defmodule RetroHexChatWeb.ChatLive.AutorespondEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [maybe_persist_autorespond_rules: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AutoRespondRules
+  alias RetroHexChatWeb.ChatLive.Components.AutoRespondDialog
 
   def handle_event("open_autorespond_dialog", _params, socket) do
     {:halt, assign(socket, show_autorespond_dialog: true)}
   end
 
   def handle_event("close_autorespond_dialog", _params, socket) do
-    {:halt,
-     assign(socket,
-       show_autorespond_dialog: false,
-       autorespond_dialog_selected: nil,
-       autorespond_dialog_editing: false,
-       autorespond_dialog_draft_trigger: "on_join",
-       autorespond_dialog_draft_channel: "",
-       autorespond_dialog_draft_command: "",
-       autorespond_dialog_error: nil
-     )}
-  end
-
-  def handle_event("autorespond_select", %{"position" => pos_str}, socket) do
-    {pos, _} = Integer.parse(pos_str)
-    {:halt, assign(socket, autorespond_dialog_selected: pos)}
+    send_update(AutoRespondDialog, id: AutoRespondDialog.id(), action: :reset)
+    {:halt, assign(socket, show_autorespond_dialog: false)}
   end
 
   def handle_event("autorespond_toggle", %{"position" => pos_str}, socket) do
@@ -57,44 +46,9 @@ defmodule RetroHexChatWeb.ChatLive.AutorespondEvents do
     end
   end
 
-  def handle_event("autorespond_dialog_add", _params, socket) do
-    {:halt,
-     assign(socket,
-       autorespond_dialog_editing: true,
-       autorespond_dialog_selected: nil,
-       autorespond_dialog_draft_trigger: "on_join",
-       autorespond_dialog_draft_channel: "",
-       autorespond_dialog_draft_command: "",
-       autorespond_dialog_error: nil
-     )}
-  end
-
-  def handle_event("autorespond_dialog_edit", _params, socket) do
-    selected = socket.assigns.autorespond_dialog_selected
-    session = socket.assigns.session
-
-    case Enum.find(
-           AutoRespondRules.entries(session.autorespond_rules),
-           &(&1.position == selected)
-         ) do
-      nil ->
-        {:halt, socket}
-
-      entry ->
-        {:halt,
-         assign(socket,
-           autorespond_dialog_editing: true,
-           autorespond_dialog_draft_trigger: Atom.to_string(entry.trigger_event),
-           autorespond_dialog_draft_channel: entry.channel_filter || "",
-           autorespond_dialog_draft_command: entry.command,
-           autorespond_dialog_error: nil
-         )}
-    end
-  end
-
   def handle_event("autorespond_dialog_save", params, socket) do
     session = socket.assigns.session
-    selected = socket.assigns.autorespond_dialog_selected
+    selected = params["selected"]
     trigger = String.to_existing_atom(params["trigger"])
     channel = params["channel"]
     channel = if channel == "", do: nil, else: channel
@@ -114,51 +68,40 @@ defmodule RetroHexChatWeb.ChatLive.AutorespondEvents do
     case result do
       {:ok, updated} ->
         new_session = Session.set_autorespond_rules(session, updated)
+        send_update(AutoRespondDialog, id: AutoRespondDialog.id(), action: {:saved})
 
         {:halt,
          socket
-         |> assign(
-           session: new_session,
-           autorespond_dialog_editing: false,
-           autorespond_dialog_selected: nil,
-           autorespond_dialog_error: nil
-         )
+         |> assign(session: new_session)
          |> maybe_persist_autorespond_rules(new_session)}
 
       {:error, reason} ->
-        msg = autorespond_error_msg(reason)
-        {:halt, assign(socket, autorespond_dialog_error: msg)}
+        send_update(AutoRespondDialog,
+          id: AutoRespondDialog.id(),
+          action: {:error, autorespond_error_msg(reason)}
+        )
+
+        {:halt, socket}
     end
   end
 
-  def handle_event("autorespond_dialog_delete", _params, socket) do
-    selected = socket.assigns.autorespond_dialog_selected
+  def handle_event("autorespond_dialog_delete", params, socket) do
+    selected = params["selected"]
     session = socket.assigns.session
 
     case AutoRespondRules.remove_entry(session.autorespond_rules, selected) do
       {:ok, updated} ->
         new_session = Session.set_autorespond_rules(session, updated)
+        send_update(AutoRespondDialog, id: AutoRespondDialog.id(), action: :deleted)
 
         {:halt,
          socket
-         |> assign(
-           session: new_session,
-           autorespond_dialog_selected: nil,
-           autorespond_dialog_editing: false
-         )
+         |> assign(session: new_session)
          |> maybe_persist_autorespond_rules(new_session)}
 
       {:error, _} ->
         {:halt, socket}
     end
-  end
-
-  def handle_event("autorespond_dialog_cancel_edit", _params, socket) do
-    {:halt,
-     assign(socket,
-       autorespond_dialog_editing: false,
-       autorespond_dialog_error: nil
-     )}
   end
 
   # ── Catch-all ──────────────────────────────────────────────

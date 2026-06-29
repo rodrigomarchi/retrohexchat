@@ -39,3 +39,11 @@ Paste e parte do input. Nao mantenha fila de texto colado no `ChatLive` parent.
 ## Progress Log
 
 - 2026-06-27: Planejado. Nenhuma implementacao iniciada ainda.
+
+- 2026-06-29: COMPLETE. `Components.PasteConfirmDialog` (15th stateful; content
+  dialog, NOT Escape-managed). Componente dono de `lines`/`flood_warning`/`send_disabled`;
+  `show = lines != nil`. Parent `paste_lines` (evento de `phx-hook`) vira
+  `send_update {:set, lines, count>50, count>100}`; send/cancel component-local (send
+  agenda `{:paste_next, lines}` via `Process.send_after` e limpa; cancel limpa +
+  `push_event("focus_input")`). `make ci` 9/9; 3 testes de componente; 4 paste feature
+  tests (cancel/send por element-click); E2E chat-paste verde.

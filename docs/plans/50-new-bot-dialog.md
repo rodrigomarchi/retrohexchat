@@ -4,6 +4,15 @@
 
 Migrar New Bot form para subcomponente stateful do BotManagementDialog.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo
+- **Dependências:** Depende de: 49 (subdialog).
+- **Componente de referência:** Sub-componente/estado interno de 49.
+- **Abordagem:** Integrar como filho do BotManagement.
+- **Gotchas:** —
+- **Validação:** Junto com 49.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:945`

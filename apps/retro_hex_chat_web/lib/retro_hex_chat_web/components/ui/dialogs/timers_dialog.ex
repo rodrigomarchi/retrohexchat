@@ -128,6 +128,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
             size="sm"
             variant="outline"
             phx-click={@on_stop}
+            phx-value-selected={@selected_timer}
             disabled={!@selected_active}
             data-testid="timers-dialog-stop"
           >
@@ -143,6 +144,7 @@ defmodule RetroHexChatWeb.Components.UI.TimersDialog do
           data-testid="timers-edit-form"
           class="shadow-retro-field bg-white p-retro-8 space-y-retro-4"
         >
+          <input :if={@selected_timer} type="hidden" name="selected" value={@selected_timer} />
           <h3 class="font-bold text-xs mb-retro-4">
             {if @selected_active,
               do: dgettext("dialogs", "Edit Timer"),

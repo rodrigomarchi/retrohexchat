@@ -4,6 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -12,6 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{AutoRespondRules, TimerManager}
+  alias RetroHexChatWeb.ChatLive.Components.TimersDialog
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -25,7 +27,8 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
   end
 
   def handle_ui_action(socket, :open_timers_dialog, _payload) do
-    assign(socket, show_timers_dialog: true)
+    send_update(TimersDialog, id: TimersDialog.id(), action: {:open})
+    socket
   end
 
   def handle_ui_action(socket, :autorespond_added, %{

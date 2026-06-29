@@ -1,16 +1,13 @@
 defmodule RetroHexChatWeb.ChatLive.Components do
   @moduledoc """
-  Namespace for the stateful `Phoenix.LiveComponent` islands that the ChatLive
-  migration extracts out of the monolithic `RetroHexChatWeb.App.ChatLive`.
+  Namespace for the stateful `Phoenix.LiveComponent` islands of the chat screen.
 
   Each island owns its own state, events and (where relevant) streams. The
-  parent orchestrator passes minimal identity/context — see
+  parent `RetroHexChatWeb.App.ChatLive` passes minimal identity/context — see
   `RetroHexChatWeb.ChatLive.ChatContext` — plus callbacks, and routes PubSub
   updates to the islands via `send_update/3` or standardized messages.
 
-  This module is intentionally a documentation anchor. The components live in
-  `RetroHexChatWeb.ChatLive.Components.*` submodules as they are migrated.
-
-  See `docs/plans/01-chat-live-orchestrator.md`.
+  The components themselves live in `RetroHexChatWeb.ChatLive.Components.*`
+  submodules; this module exists only to anchor the namespace.
   """
 end

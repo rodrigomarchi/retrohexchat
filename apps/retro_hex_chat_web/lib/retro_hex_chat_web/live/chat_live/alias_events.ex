@@ -2,21 +2,25 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
   @moduledoc """
   Handle events for the Alias dialog (Scripting > Aliases).
 
-  Covers: open_alias_dialog, close_alias_dialog, alias_select,
-  alias_dialog_add, alias_dialog_edit, alias_dialog_save,
-  alias_dialog_delete, alias_dialog_cancel_edit.
+  The dialog's UI/draft state (select/add/edit/cancel) lives in the
+  `Components.AliasDialog` LiveComponent. This module handles the events that need
+  the session: open/close, and the mutating save/delete (which carry the selected
+  entry via `JS.push` and reflect results back to the component via
+  `send_update/2`). The parent keeps `show_alias_dialog` for the Escape map.
 
   Attached as an `attach_hook(:alias_events, :handle_event, ...)` in ChatLive.mount/3.
   Returns `{:halt, socket}` when the event is handled, `{:cont, socket}` otherwise.
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [maybe_persist_aliases: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AliasList
+  alias RetroHexChatWeb.ChatLive.Components.AliasDialog
 
   # ── Handled events ─────────────────────────────────────────
 
@@ -25,60 +29,13 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
   end
 
   def handle_event("close_alias_dialog", _params, socket) do
-    {:halt,
-     assign(socket,
-       show_alias_dialog: false,
-       alias_dialog_selected: nil,
-       alias_dialog_editing: false,
-       alias_dialog_draft_name: "",
-       alias_dialog_draft_expansion: "",
-       alias_dialog_warning: nil,
-       alias_dialog_error: nil
-     )}
-  end
-
-  def handle_event("alias_select", %{"name" => name}, socket) do
-    {:halt, assign(socket, alias_dialog_selected: name, alias_dialog_editing: false)}
-  end
-
-  def handle_event("alias_dialog_add", _params, socket) do
-    {:halt,
-     assign(socket,
-       alias_dialog_editing: true,
-       alias_dialog_selected: nil,
-       alias_dialog_draft_name: "",
-       alias_dialog_draft_expansion: "",
-       alias_dialog_warning: nil,
-       alias_dialog_error: nil
-     )}
-  end
-
-  def handle_event("alias_dialog_edit", _params, socket) do
-    selected = socket.assigns.alias_dialog_selected
-
-    if selected do
-      session = socket.assigns.session
-      entry = AliasList.find_entry(session.aliases, selected)
-
-      if entry do
-        {:halt,
-         assign(socket,
-           alias_dialog_editing: true,
-           alias_dialog_draft_name: entry.name,
-           alias_dialog_draft_expansion: entry.expansion,
-           alias_dialog_error: nil
-         )}
-      else
-        {:halt, socket}
-      end
-    else
-      {:halt, socket}
-    end
+    send_update(AliasDialog, id: AliasDialog.id(), action: :reset)
+    {:halt, assign(socket, show_alias_dialog: false)}
   end
 
   def handle_event("alias_dialog_save", params, socket) do
     session = socket.assigns.session
-    selected = socket.assigns.alias_dialog_selected
+    selected = params["selected"]
     name = selected || Map.get(params, "name", "")
     expansion = Map.get(params, "expansion", "")
 
@@ -93,27 +50,25 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
       {:ok, updated_list} ->
         new_session = Session.set_aliases(session, updated_list)
         warning = alias_warning(name, expansion)
+        send_update(AliasDialog, id: AliasDialog.id(), action: {:saved, name, warning})
 
         {:halt,
          socket
-         |> assign(
-           session: new_session,
-           alias_dialog_editing: false,
-           alias_dialog_selected: name,
-           alias_dialog_draft_name: "",
-           alias_dialog_draft_expansion: "",
-           alias_dialog_warning: warning,
-           alias_dialog_error: nil
-         )
+         |> assign(session: new_session)
          |> maybe_persist_aliases(new_session)}
 
       {:error, reason} ->
-        {:halt, assign(socket, alias_dialog_error: alias_error_msg(reason, name))}
+        send_update(AliasDialog,
+          id: AliasDialog.id(),
+          action: {:error, alias_error_msg(reason, name)}
+        )
+
+        {:halt, socket}
     end
   end
 
-  def handle_event("alias_dialog_delete", _params, socket) do
-    selected = socket.assigns.alias_dialog_selected
+  def handle_event("alias_dialog_delete", params, socket) do
+    selected = params["selected"]
 
     if selected do
       session = socket.assigns.session
@@ -121,16 +76,11 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
       case AliasList.remove_entry(session.aliases, selected) do
         {:ok, updated_list} ->
           new_session = Session.set_aliases(session, updated_list)
+          send_update(AliasDialog, id: AliasDialog.id(), action: :deleted)
 
           {:halt,
            socket
-           |> assign(
-             session: new_session,
-             alias_dialog_selected: nil,
-             alias_dialog_editing: false,
-             alias_dialog_warning: nil,
-             alias_dialog_error: nil
-           )
+           |> assign(session: new_session)
            |> maybe_persist_aliases(new_session)}
 
         {:error, _} ->
@@ -139,16 +89,6 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
     else
       {:halt, socket}
     end
-  end
-
-  def handle_event("alias_dialog_cancel_edit", _params, socket) do
-    {:halt,
-     assign(socket,
-       alias_dialog_editing: false,
-       alias_dialog_draft_name: "",
-       alias_dialog_draft_expansion: "",
-       alias_dialog_error: nil
-     )}
   end
 
   # ── Catch-all: pass unhandled events to next hook ──────────

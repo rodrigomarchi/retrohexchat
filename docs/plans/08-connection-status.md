@@ -4,6 +4,15 @@
 
 Migrar banner/overlay de conexao para componente ou hook isolado com DOM ignorado pelo LiveView quando a logica for totalmente client-side.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🟡 Com ressalva
+- **Dependências:** Independente. JS-driven (`phx-update="ignore"`).
+- **Componente de referência:** `ConnectionStatusComponent` mantendo `phx-update="ignore"`.
+- **Abordagem:** Mover o bloco do hook para o componente; estado server mínimo.
+- **Gotchas:** NÃO deixe o LiveView repatch o DOM controlado pelo hook.
+- **Validação:** `make ci` 9/9 + E2E reconnect (se houver).
+
 ## Codigo atual
 
 - Function component: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/chat/connection_status.ex`

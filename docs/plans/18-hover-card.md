@@ -4,6 +4,15 @@
 
 Migrar hover card para componente stateful ou hook-driven, evitando que hover de nick altere o socket inteiro do chat.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🟡 Com ressalva
+- **Dependências:** Independente (pequeno), mas lookup async.
+- **Componente de referência:** LiveComponent; resultado async = passthrough.
+- **Abordagem:** Estado `hover_card`; lookup pesado via async/PubSub → passthrough do resultado; posicionamento via hook client-side; parent recebe no máx 'lookup nick'.
+- **Gotchas:** Não mover a busca async — passar o resultado por passthrough.
+- **Validação:** `make ci` 9/9 + E2E hover.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:376`

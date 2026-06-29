@@ -79,7 +79,9 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
 
       assert has_element?(view, "#sound-settings-dialog-show-trigger")
 
-      render_click(view, "sound_settings_ok")
+      # OK is owned by the SoundSettingsDialog LiveComponent; click the element so
+      # the event routes to the component (which commits the draft via the parent).
+      view |> element(~s([data-testid="sound-settings-ok"])) |> render_click()
 
       html = render(view)
       refute has_element?(view, "#sound-settings-dialog-show-trigger")
@@ -92,7 +94,7 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
 
       render_click(view, "open_sound_settings_dialog", %{})
 
-      render_click(view, "sound_settings_apply")
+      view |> element(~s([data-testid="sound-settings-apply"])) |> render_click()
 
       html = render(view)
       # Dialog stays open
@@ -145,8 +147,9 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
 
       render_click(view, "open_sound_settings_dialog", %{})
 
-      # Toggle join flash via event
-      render_click(view, "sound_flash_toggle", %{"event" => "join"})
+      # Flash toggle is owned by the LiveComponent — click the element so the event
+      # routes there (carrying phx-value-event).
+      view |> element(~s([data-testid="flash-toggle-join"])) |> render_click()
 
       # After toggle, the checkbox state should be updated
       html = render(view)

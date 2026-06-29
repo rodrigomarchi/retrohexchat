@@ -4,6 +4,15 @@
 
 Migrar lista de convites pendentes para componente stateful ou notification queue dedicada.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo (orquestrador)
+- **Dependências:** Atravessa ~5 arquivos.
+- **Componente de referência:** Fila com timer + prioridade de Escape — NÃO é dialog simples.
+- **Abordagem:** `pending_invites` dirige a prioridade do Escape + timers de expiração por convite (timer_ref cancelado no Escape).
+- **Gotchas:** Estado de orquestração genuíno — deixar para depois dos mecânicos.
+- **Validação:** `make ci` 9/9 + E2E invite.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:913`

@@ -110,7 +110,10 @@ defmodule RetroHexChatWeb.ChannelModerationContextMenuFeatureTest do
       render_click(view, "ctx_chat_deop", %{"nick" => target})
       assert role_for(channel, target) == :regular
 
-      html = render_click(view, "context_mute", %{"nick" => target})
+      # The dialog is now a stateful LiveComponent opened via send_update, which
+      # is applied asynchronously; flush with a follow-up render to read it.
+      render_click(view, "context_mute", %{"nick" => target})
+      html = render(view)
       assert html =~ "Mute user: #{target}"
       assert html =~ "blank = permanent"
 

@@ -8,43 +8,45 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.ChatLive.Helpers, only: [open_pm_conversation: 2]
 
   alias RetroHexChatWeb.ChatLive.CommandDispatch
+  alias RetroHexChatWeb.ChatLive.Components.UserLookupDialog
+
+  @doc "Opens the User Lookup dialog (parent keeps `show_user_lookup_dialog` for Escape)."
+  @spec open(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def open(socket) do
+    send_update(UserLookupDialog, id: UserLookupDialog.id(), action: :open)
+    assign(socket, show_user_lookup_dialog: true)
+  end
+
+  @doc "Closes the User Lookup dialog and resets the component draft."
+  @spec close(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def close(socket) do
+    send_update(UserLookupDialog, id: UserLookupDialog.id(), action: :open)
+    assign(socket, show_user_lookup_dialog: false)
+  end
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt | :cont, Phoenix.LiveView.Socket.t()}
   def handle_event("open_user_lookup", _params, socket) do
-    {:halt,
-     assign(socket,
-       show_user_lookup_dialog: true,
-       user_lookup_nick: "",
-       user_lookup_error: nil
-     )}
+    {:halt, open(socket)}
   end
 
   def handle_event("close_user_lookup", _params, socket) do
-    {:halt,
-     assign(socket,
-       show_user_lookup_dialog: false,
-       user_lookup_nick: "",
-       user_lookup_error: nil
-     )}
-  end
-
-  def handle_event("user_lookup_change", %{"nickname" => nickname}, socket) do
-    {:halt, assign(socket, user_lookup_nick: nickname, user_lookup_error: nil)}
+    {:halt, close(socket)}
   end
 
   def handle_event("user_lookup_whois", params, socket) do
-    {:halt, submit_lookup(socket, "whois", lookup_nick(params, socket))}
+    {:halt, submit_lookup(socket, "whois", lookup_nick(params))}
   end
 
   def handle_event("user_lookup_whowas", params, socket) do
-    {:halt, submit_lookup(socket, "whowas", lookup_nick(params, socket))}
+    {:halt, submit_lookup(socket, "whowas", lookup_nick(params))}
   end
 
   def handle_event("close_lookup_result", _params, socket) do
@@ -72,14 +74,15 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
     nickname = String.trim(nickname || "")
 
     if nickname == "" do
-      assign(socket, user_lookup_error: dgettext("chat", "Nickname is required."))
+      send_update(UserLookupDialog,
+        id: UserLookupDialog.id(),
+        action: {:error, dgettext("chat", "Nickname is required.")}
+      )
+
+      socket
     else
       socket
-      |> assign(
-        show_user_lookup_dialog: false,
-        user_lookup_nick: "",
-        user_lookup_error: nil
-      )
+      |> close()
       |> dispatch_lookup(command, nickname)
     end
   end
@@ -88,7 +91,7 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
     CommandDispatch.dispatch_command(socket, socket.assigns.session, command, [nickname])
   end
 
-  defp lookup_nick(params, socket) do
-    Map.get(params, "nickname") || socket.assigns[:user_lookup_nick] || ""
+  defp lookup_nick(params) do
+    Map.get(params, "nickname") || ""
   end
 end

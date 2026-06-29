@@ -4,6 +4,15 @@
 
 Migrar Address Book para LiveComponent stateful com tabs internas, selecoes e subdialogs proprios.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo (gigante + entrelaçado)
+- **Dependências:** Compartilha notify com 30.
+- **Componente de referência:** Mini-app com 3 tabs (contacts/nick-colors/control) + múltiplos sub-dialogs.
+- **Abordagem:** Vários sub-dialogs modal + nick_palette_editing_index; estado compartilhado com 30.
+- **Gotchas:** ⚠️ modal-in-modal (mesmo risco de 41) + estado compartilhado.
+- **Validação:** `make ci` 9/9 + E2E address-book.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:585`

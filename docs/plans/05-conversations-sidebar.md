@@ -4,6 +4,15 @@
 
 Migrar a sidebar de conversas para componente stateful dono de sections, unread/highlight/flash/mute state e listas de canais/PMs/populares.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo
+- **Dependências:** Bloqueia: 20 (conv-context-menu vive dentro). Streams.
+- **Componente de referência:** LiveComponent com `stream` (canais/PMs/populares).
+- **Abordagem:** Derivar unread_channels/unread_pms DENTRO do componente; muitos mapas passthrough (unread/highlight/flash/muted).
+- **Gotchas:** Não reatribuir a lista inteira; usar stream_insert/delete.
+- **Validação:** `make ci` 9/9 + E2E conversations.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:65`

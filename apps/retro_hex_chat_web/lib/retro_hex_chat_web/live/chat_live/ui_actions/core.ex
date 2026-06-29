@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.HelpTopics
-  alias RetroHexChat.Commands.Autocomplete
+  alias RetroHexChatWeb.ChatLive.ChannelListEvents
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -31,17 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
     do: open_pm_conversation(socket, target)
 
   def handle_ui_action(socket, :open_channel_list, _) do
-    channels = Autocomplete.list_visible_channels(socket.assigns.session.channels)
-
-    assign(socket,
-      show_channel_list: true,
-      channel_list_channels: channels,
-      channel_list_filtered: channels,
-      channel_list_selected: nil,
-      channel_list_search: "",
-      channel_list_loading: false,
-      channel_list_count: length(channels)
-    )
+    ChannelListEvents.open(socket)
   end
 
   def handle_ui_action(socket, :clear_chat, _) do

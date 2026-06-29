@@ -4,6 +4,15 @@
 
 Extrair header, menu bar e status bar para um componente stateful leve que consome apenas dados globais e emite acoes de alto nivel.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🟡 Com ressalva
+- **Dependências:** Independente, mas toca o dispatcher `toolbar_action`.
+- **Componente de referência:** Wrapper function-component (`ChatShell`); stateful só se guardar menu/hover/lag local.
+- **Abordagem:** Começar como wrapper que reduz assigns no template; só virar stateful se necessário.
+- **Gotchas:** `toolbar_action` é re-dispatchado via `@event_hook_fns` — preserve o contrato.
+- **Validação:** `make ci` 9/9 + E2E chat-menu-* / chat-tools-menu.
+
 ## Codigo atual
 
 - Imports: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.ex:20`

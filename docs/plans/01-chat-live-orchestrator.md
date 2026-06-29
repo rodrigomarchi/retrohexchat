@@ -91,6 +91,29 @@ status), seguindo a ordem do README, ou avancar para o plano 02
 (event-routing) que mapeia ownership de eventos.
 
 
+### 2026-06-28 — Primeiro LiveComponent stateful (marco)
+
+A fronteira passou de teoria a pratica: o **primeiro `Phoenix.LiveComponent`
+stateful do app** foi criado (`ChatLive.Components.SearchBar`, via plano 09).
+Isto valida o padrao central deste plano:
+
+- estado de UI auto-contido sai do parent (10 assigns `search_*` removidos do
+  `assign_defaults`);
+- o parent retem apenas o estado de **coordenacao** legitimamente global
+  (`search_visible`, lido pelo mapa de Escape-dismissal/overlay);
+- contrato parent->filho via `send_update/2` com protocolo de acao;
+- adaptador temporario (`SearchEvents`) preserva eventos legados ate a fase de
+  remocao de legado.
+
+Padrao de teste descoberto e reutilizavel para os proximos islands: `send_update`
+e assincrono sob `LiveViewTest`; assercoes de estado do filho leem via
+`render(view)` apos o evento.
+
+Task deste plano destravada: a tarefa "Criar componentes stateful em vez de
+function components com muitos assigns" agora tem precedente concreto. Proximos
+candidatos seguindo o README: message viewport (10), nicklist (13), composer
+(14). Medicao de tamanho de assigns do parent ainda pendente.
+
 ## Progress Log
 
 - 2026-06-27: Planejado. Nenhuma implementacao iniciada ainda.

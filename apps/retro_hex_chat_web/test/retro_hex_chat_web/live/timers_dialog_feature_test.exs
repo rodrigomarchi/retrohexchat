@@ -49,8 +49,10 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/timer"})
 
+      # Dialog opens via an async send_update to the TimersDialog component; flush.
+      html = render(view)
       assert has_element?(view, "#timers-dialog-show-trigger")
-      assert render(view) =~ "No active timers. Click Add to schedule one."
+      assert html =~ "No active timers. Click Add to schedule one."
     end
   end
 
@@ -111,55 +113,60 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
     test "Add, edit, repeat validation, and Stop map to live timer actions", %{conn: conn} do
       view = connect_user(conn, "TimerCrud#{uid()}")
 
+      # Timers dialog is a LiveComponent (TimersDialog): the UI/draft events are
+      # component-local, so click the real elements (which carry phx-target) rather
+      # than firing events by name on the parent view. Save/stop are handled on the
+      # parent (UiActions.Scripting) and reflect back via send_update.
       render_click(view, "toolbar_action", %{"action" => "open_timers_dialog"})
-      render_click(view, "timers_dialog_add")
+      view |> element(~s([data-testid="timers-dialog-add"])) |> render_click()
 
-      invalid_html =
-        view
-        |> element("form[phx-submit=timers_dialog_save]")
-        |> render_submit(%{
-          "name" => "too_fast",
-          "repeat" => "true",
-          "seconds" => "5",
-          "command" => "/me too fast"
-        })
+      view
+      |> element(~s([data-testid="timers-edit-form"]))
+      |> render_submit(%{
+        "name" => "too_fast",
+        "repeat" => "true",
+        "seconds" => "5",
+        "command" => "/me too fast"
+      })
 
+      invalid_html = render(view)
       assert invalid_html =~ "min 10s for repeating timers"
       refute invalid_html =~ ~s(data-testid="timer-row-too_fast")
 
-      html =
-        view
-        |> element("form[phx-submit=timers_dialog_save]")
-        |> render_submit(%{
-          "name" => "remind",
-          "seconds" => "15",
-          "command" => "/me standup in 15 seconds"
-        })
+      view
+      |> element(~s([data-testid="timers-edit-form"]))
+      |> render_submit(%{
+        "name" => "remind",
+        "seconds" => "15",
+        "command" => "/me standup in 15 seconds"
+      })
 
+      html = render(view)
       assert html =~ ~s(data-testid="timer-row-remind")
       assert html =~ "15s"
       assert html =~ "no"
       assert html =~ "/me standup in 15 seconds"
 
-      render_click(view, "timers_select", %{"name" => "remind"})
-      render_click(view, "timers_dialog_edit")
+      view |> element(~s([data-testid="timer-row-remind"])) |> render_click()
+      view |> element(~s([data-testid="timers-dialog-edit"])) |> render_click()
 
-      html =
-        view
-        |> element("form[phx-submit=timers_dialog_save]")
-        |> render_submit(%{
-          "name" => "remind",
-          "seconds" => "20",
-          "command" => "/me updated"
-        })
+      view
+      |> element(~s([data-testid="timers-edit-form"]))
+      |> render_submit(%{
+        "name" => "remind",
+        "seconds" => "20",
+        "command" => "/me updated"
+      })
 
+      html = render(view)
       assert html =~ ~s(data-testid="timer-row-remind")
       assert html =~ "20s"
       assert html =~ "/me updated"
 
-      render_click(view, "timers_select", %{"name" => "remind"})
-      html = render_click(view, "timers_dialog_stop")
+      view |> element(~s([data-testid="timer-row-remind"])) |> render_click()
+      view |> element(~s([data-testid="timers-dialog-stop"])) |> render_click()
 
+      html = render(view)
       refute html =~ ~s(data-testid="timer-row-remind")
       assert html =~ "No active timers. Click Add to schedule one."
     end

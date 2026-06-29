@@ -4,6 +4,15 @@
 
 Migrar context menu de conversas para dentro do `ConversationsComponent`.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo
+- **Dependências:** Depende de: 05 (vive dentro de Conversations).
+- **Componente de referência:** Estado local no componente de conversas.
+- **Abordagem:** Ações sobem como comandos: mute/unmute, close, clear unread, join, part, query.
+- **Gotchas:** —
+- **Validação:** `make ci` 9/9 + E2E conversations-context-menu.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:435`

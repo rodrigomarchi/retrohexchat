@@ -4,6 +4,15 @@
 
 Migrar autocomplete e syntax tooltip para uma ilha de composer, removendo estado de autocomplete do parent.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo
+- **Dependências:** Depende de: 14 (estado no composer/sub-componente).
+- **Componente de referência:** Estado local no composer; cache em módulo/ETS.
+- **Abordagem:** Recalcular resultados em evento local com debounce mínimo.
+- **Gotchas:** Lógica grande; muitos feature tests de autocomplete.
+- **Validação:** `make ci` 9/9 + E2E autocomplete.
+
 ## Codigo atual
 
 - Render autocomplete: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:309`

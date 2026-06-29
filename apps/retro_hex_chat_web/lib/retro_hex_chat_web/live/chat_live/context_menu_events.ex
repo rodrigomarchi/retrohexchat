@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3]
+  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -47,6 +47,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChat.Commands.Handlers.{Game, Lobby, P2p}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.CommandDispatch
+  alias RetroHexChatWeb.ChatLive.Components.{InviteChannelPickerDialog, MuteDurationDialog}
   alias RetroHexChatWeb.ChatLive.CoreEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
   alias RetroHexChatWeb.ChatLive.Helpers.{GameInvite, LobbyInvite, P2pInvite}
@@ -197,13 +198,12 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         {:halt, close_invite_channel_picker(socket)}
 
       {:error, socket, message} ->
-        {:halt,
-         assign(socket,
-           show_invite_channel_picker: true,
-           invite_channel_picker_target: target,
-           invite_channel_picker_selected: channel,
-           invite_channel_picker_error: message
-         )}
+        send_update(InviteChannelPickerDialog,
+          id: InviteChannelPickerDialog.id(),
+          action: {:error, target, channel, message}
+        )
+
+        {:halt, assign(socket, show_invite_channel_picker: true)}
     end
   end
 
@@ -811,21 +811,17 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         true -> nil
       end
 
-    assign(socket,
-      show_invite_channel_picker: true,
-      invite_channel_picker_target: nick,
-      invite_channel_picker_selected: selected_channel,
-      invite_channel_picker_error: nil
+    send_update(InviteChannelPickerDialog,
+      id: InviteChannelPickerDialog.id(),
+      action: {:open, nick, selected_channel}
     )
+
+    assign(socket, show_invite_channel_picker: true)
   end
 
   defp close_invite_channel_picker(socket) do
-    assign(socket,
-      show_invite_channel_picker: false,
-      invite_channel_picker_target: nil,
-      invite_channel_picker_selected: nil,
-      invite_channel_picker_error: nil
-    )
+    send_update(InviteChannelPickerDialog, id: InviteChannelPickerDialog.id(), action: :close)
+    assign(socket, show_invite_channel_picker: false)
   end
 
   defp context_kick(socket, nil, _nick), do: socket
@@ -852,11 +848,13 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   defp open_mute_duration_dialog(socket, nick) do
-    assign(socket, mute_duration_dialog: %{show: true, target_nick: nick})
+    send_update(MuteDurationDialog, id: MuteDurationDialog.id(), action: {:open, nick})
+    socket
   end
 
   defp close_mute_duration_dialog(socket) do
-    assign(socket, mute_duration_dialog: %{show: false, target_nick: nil})
+    send_update(MuteDurationDialog, id: MuteDurationDialog.id(), action: :close)
+    socket
   end
 
   defp context_channel_mute(socket, nil, _nick, _duration), do: socket

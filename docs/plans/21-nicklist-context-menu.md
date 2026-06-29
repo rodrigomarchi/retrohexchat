@@ -4,6 +4,15 @@
 
 Migrar context menu da nicklist para dentro do `NicklistComponent`, junto com color picker e permissoes por usuario.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴 Complexo
+- **Dependências:** Depende de: 13 (vive dentro de Nicklist).
+- **Componente de referência:** Estado local no NicklistComponent.
+- **Abordagem:** Resolver status do target via stream/cache local de usuários.
+- **Gotchas:** NÃO pedir `channel_user_op?(@channel_users, ...)` ao parent — usar cache local.
+- **Validação:** `make ci` 9/9 + E2E nicklist-context-menu.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:452`

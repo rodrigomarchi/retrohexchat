@@ -70,7 +70,10 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       op_view
       |> render_click("nick_right_click", %{"nick" => target, "x" => 100, "y" => 200})
 
-      html = render_click(op_view, "context_invite_to_channel", %{"nick" => target})
+      render_click(op_view, "context_invite_to_channel", %{"nick" => target})
+      # The picker is a stateful LiveComponent driven via send_update (async under
+      # LiveViewTest), so flush with a follow-up render before asserting its draft.
+      html = render(op_view)
 
       assert html =~ "Invite to Channel"
       assert html =~ "Inviting: #{target}"
@@ -161,12 +164,16 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       guest_view = connect_user(conn, guest)
 
       render_click(guest_view, "channel_list")
-      html = render_click(guest_view, "channel_list_select", %{"channel" => channel})
+      # Selection lives in the LiveComponent — forwarded via send_update; flush with render.
+      render_click(guest_view, "channel_list_select", %{"channel" => channel})
+      html = render(guest_view)
 
       assert html =~ "channel-list-invite-only-#{channel}"
       assert html =~ "Request Access..."
 
-      html = render_click(guest_view, "channel_list_knock", %{"channel" => channel})
+      render_click(guest_view, "channel_list_knock", %{"channel" => channel})
+      # Knock dialog draft (channel) arrives via async send_update — flush first.
+      html = render(guest_view)
 
       assert html =~ "Request Channel Access"
       assert html =~ "Channel: #{channel}"
@@ -196,11 +203,13 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       render_click(guest_view, "channel_list")
       render_click(guest_view, "channel_list_knock", %{"channel" => channel})
 
-      html =
-        render_change(guest_view, "knock_request_change", %{
-          "channel" => channel,
-          "message" => String.duplicate("x", 201)
-        })
+      render_change(guest_view, "knock_request_change", %{
+        "channel" => channel,
+        "message" => String.duplicate("x", 201)
+      })
+
+      # Message draft is tracked in the LiveComponent via async send_update.
+      html = render(guest_view)
 
       assert html =~ "201 / 200"
 

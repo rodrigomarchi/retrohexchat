@@ -4,6 +4,15 @@
 
 Extrair `render_message/1` do `ChatLive` para componente dedicado de mensagens, com assigns minimos e sem capturar helpers globais desnecessarios.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴→🟡
+- **Dependências:** Depende de: 10 (que decide o stream).
+- **Componente de referência:** Function component puro por linha.
+- **Abordagem:** Precompute campos caros no item do stream (timestamp, nick color, html seguro, flags). Determinístico, sem efeitos.
+- **Gotchas:** Não fazer I/O nem assigns no renderer.
+- **Validação:** `make ci` 9/9.
+
 ## Codigo atual
 
 - Render private function: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.ex:335`

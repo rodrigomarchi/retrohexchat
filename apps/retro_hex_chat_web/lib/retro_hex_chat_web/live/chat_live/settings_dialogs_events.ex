@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3, push_event: 3]
+  import Phoenix.LiveView, only: [stream_insert: 3, push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{FloodProtection, SoundSettings}
+  alias RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog
 
   # ── Flood Protection ────────────────────────────────────────
 
@@ -83,110 +84,25 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   # ── Sound Settings ──────────────────────────────────────────
 
   def handle_event("open_sound_settings_dialog", _params, socket) do
-    draft = socket.assigns.session.sound_settings
+    send_update(SoundSettingsDialog,
+      id: SoundSettingsDialog.id(),
+      action: {:open, socket.assigns.session.sound_settings}
+    )
 
-    {:halt,
-     assign(socket,
-       show_sound_settings_dialog: true,
-       sound_settings_draft: draft
-     )}
+    {:halt, assign(socket, show_sound_settings_dialog: true)}
   end
 
   def handle_event("close_sound_settings_dialog", _params, socket) do
-    {:halt,
-     assign(socket,
-       show_sound_settings_dialog: false,
-       sound_settings_draft: nil
-     )}
+    send_update(SoundSettingsDialog, id: SoundSettingsDialog.id(), action: :close)
+    {:halt, assign(socket, show_sound_settings_dialog: false)}
   end
 
-  def handle_event(
-        "sound_settings_change",
-        %{"event" => event_str, "sound" => sound_name},
-        socket
-      ) do
-    event = String.to_existing_atom(event_str)
-    draft = socket.assigns.sound_settings_draft || socket.assigns.session.sound_settings
-    updated_draft = SoundSettings.set_sound(draft, event, sound_name)
-
-    {:halt, assign(socket, sound_settings_draft: updated_draft)}
-  end
-
+  # Sound-dropdown change must be a string event (the design-system `select_item`
+  # does `JS.push(on_sound_change, value:)`), so it bubbles here and we forward the
+  # raw params to the component, which applies them to its own draft.
   def handle_event("sound_settings_change", params, socket) do
-    draft = socket.assigns.sound_settings_draft
-
-    updated_draft =
-      Enum.reduce(SoundSettings.event_types(), draft, fn event, acc ->
-        key = "event_#{event}"
-
-        case Map.get(params, key) do
-          nil -> acc
-          sound_name -> SoundSettings.set_sound(acc, event, sound_name)
-        end
-      end)
-
-    {:halt, assign(socket, sound_settings_draft: updated_draft)}
-  end
-
-  def handle_event("sound_flash_toggle", %{"event" => event_str}, socket) do
-    event = String.to_existing_atom(event_str)
-    draft = socket.assigns.sound_settings_draft
-    current = SoundSettings.get_flash(draft, event)
-    updated_draft = SoundSettings.set_flash(draft, event, not current)
-
-    {:halt, assign(socket, sound_settings_draft: updated_draft)}
-  end
-
-  def handle_event("sound_preview", %{"event" => event_str}, socket) do
-    event = String.to_existing_atom(event_str)
-    draft = socket.assigns.sound_settings_draft
-    sound = SoundSettings.get_sound(draft, event)
-
-    if sound == "none" do
-      {:halt, socket}
-    else
-      {:halt, push_event(socket, "play_sound", %{type: sound})}
-    end
-  end
-
-  def handle_event("sound_settings_apply", _params, socket) do
-    draft = socket.assigns.sound_settings_draft
-    session = socket.assigns.session
-    new_session = Session.set_sound_settings(session, draft)
-
-    if new_session.identified do
-      Task.start(fn -> SoundSettings.save(new_session.nickname, draft) end)
-    end
-
-    {:halt,
-     socket
-     |> assign(session: new_session)
-     |> stream_insert(
-       :chat_messages,
-       system_message(dgettext("chat", "* Sound settings applied"))
-     )}
-  end
-
-  def handle_event("sound_settings_ok", _params, socket) do
-    draft = socket.assigns.sound_settings_draft
-    session = socket.assigns.session
-    new_session = Session.set_sound_settings(session, draft)
-
-    if new_session.identified do
-      Task.start(fn -> SoundSettings.save(new_session.nickname, draft) end)
-    end
-
-    {:halt,
-     socket
-     |> assign(
-       session: new_session,
-       show_sound_settings_dialog: false,
-       sound_settings_draft: nil
-     )
-     |> stream_insert(
-       :chat_messages,
-       system_message(dgettext("chat", "* Sound settings saved"))
-     )}
+    send_update(SoundSettingsDialog, id: SoundSettingsDialog.id(), action: {:change, params})
+    {:halt, socket}
   end
 
   # ── Mute Toggle ─────────────────────────────────────────────
@@ -204,7 +120,46 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
+  # ── handle_info: commit the sound draft from the LiveComponent ───
+  #
+  # `SoundSettingsDialog` owns the draft (a struct) and hands it up here on
+  # Apply/OK via `send(self(), ...)`; this handler commits it to the session and
+  # persists it. `:apply` keeps the dialog open; `:ok` also closes it (and resets
+  # the component's draft).
+  @spec handle_info(term(), Phoenix.LiveView.Socket.t()) ::
+          {:halt | :cont, Phoenix.LiveView.Socket.t()}
+  def handle_info({:commit_sound_settings, draft, mode}, socket) do
+    session = socket.assigns.session
+    new_session = Session.set_sound_settings(session, draft)
+
+    if new_session.identified do
+      Task.start(fn -> SoundSettings.save(new_session.nickname, draft) end)
+    end
+
+    socket =
+      socket
+      |> assign(session: new_session)
+      |> stream_insert(:chat_messages, system_message(commit_message(mode)))
+
+    {:halt, maybe_close_sound_dialog(socket, mode)}
+  end
+
+  def handle_info(_msg, socket), do: {:cont, socket}
+
   # ── Private helpers ─────────────────────────────────────────
+
+  @spec commit_message(:apply | :ok) :: String.t()
+  defp commit_message(:apply), do: dgettext("chat", "* Sound settings applied")
+  defp commit_message(:ok), do: dgettext("chat", "* Sound settings saved")
+
+  @spec maybe_close_sound_dialog(Phoenix.LiveView.Socket.t(), :apply | :ok) ::
+          Phoenix.LiveView.Socket.t()
+  defp maybe_close_sound_dialog(socket, :apply), do: socket
+
+  defp maybe_close_sound_dialog(socket, :ok) do
+    send_update(SoundSettingsDialog, id: SoundSettingsDialog.id(), action: :close)
+    assign(socket, show_sound_settings_dialog: false)
+  end
 
   @spec try_set(map(), (map(), integer() -> map() | {:error, atom()}), String.t() | nil) ::
           map()

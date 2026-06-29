@@ -9,18 +9,24 @@ Seu objetivo de longo prazo e concluir a migracao planejada em `docs/plans/`, de
 
 Regras operacionais obrigatorias:
 
-1. Siga as instrucoes locais do repo, incluindo `AGENTS.md` e `/Users/rodrigo/.codex/RTK.md`. Prefixe comandos shell com `rtk`.
+1. Siga as instrucoes locais do repo, incluindo `AGENTS.md`
 2. Antes de implementar, leia:
    - `docs/plans/README.md`
-   - `docs/plans/PROGRESS.md`
+   - `docs/plans/PROGRESS.md` — em especial o **"Mapa de Classificação & Dependências"** (tiers, ordem mecânica, cadeias de dependência, anti-padrões).
+   - `docs/plans/STATEFUL-COMPONENT-PLAYBOOK.md` (receita reutilizavel + armadilhas ja resolvidas — leia SEMPRE antes de extrair um island; comece pelos §0a-pre/§0a-anti). Registre aprendizados novos nele ao final do loop.
    - `docs/plans/57-testing-strategy.md`
-   - o plano individual escolhido em `docs/plans/*.md`
-3. Escolha a proxima tarefa pelo `PROGRESS.md`, salvo se o usuario indicar outro plano.
+   - o plano individual escolhido — leia o bloco `## Classificação para execução (agentes)` no topo dele (tier, dependências, componente de referência, gotchas, validação).
+3. Escolha a proxima tarefa pelo **Mapa de Classificação & Dependências** do `PROGRESS.md` (salvo se o usuario indicar outro plano): pegue um plano **✅ Mecânico** e **independente** primeiro; **respeite as dependências** (não pegue 11/12/56 antes de 10; 15/16 antes de 14; 20 antes de 05; 21 antes de 13). Não pegue 🔴/⛔ sem necessidade explícita.
 4. Nunca trate um plano como completo sem:
    - checklist do plano atualizado;
    - validacao executada ou justificativa clara de por que nao foi executada;
    - progresso central atualizado em `docs/plans/PROGRESS.md`;
-   - nota de progresso no proprio arquivo do plano.
+   - nota de progresso no proprio arquivo do plano;
+   - **convenções do projeto cumpridas** (ver §7b do playbook): teste com `@moduletag :unit`
+     + `async: true`; `@moduledoc` (explicando ownership) + `@spec` em toda função pública;
+     ZERO `<svg>` inline (usar facade `Icons.*`); ZERO cor hardcoded/`style=` estático
+     (`mix audit.styles --strict` = 0); tópicos PubSub na convenção (`channel:`/`p2p:`/`game:`);
+     help topic só se a migração mudar UI/atalho user-facing (migração que preserva = pula).
 5. Preserve contratos publicos usados por LiveViewTest e Playwright:
    - `data-testid`
    - ids estaveis
@@ -34,18 +40,13 @@ Regras operacionais obrigatorias:
    - nota explicita no plano e no progresso central.
 7. Nao faca refactors cosmeticos fora do escopo do plano escolhido.
 8. Nao remova comportamento antigo ate que testes equivalentes cubram o comportamento novo.
+9. **NUNCA use `git checkout <arquivo>` para desfazer edicoes** — TODO o trabalho dos lotes esta NAO-commitado e `git checkout` reverte para HEAD, apagando trabalho de lotes anteriores. Desfaça com Edit ou `git stash push -- <arquivo>` (recuperavel). Para baseline E2E, use `git stash`, nunca `checkout`.
+10. **Antes de envolver um dialog num LiveComponent, cheque o anti-padrao modal-in-modal** (`grep -c "fixed inset-0"` no UI): se houver sub-form overlay com `<input>` digitado que submete ao parent, é o clobber do plano 41 — use input controlado / `phx-update="ignore"` / sub-forms `@myself`, ou mantenha inline. Wrapper NAO resolve.
 
 Ritual de cada loop:
 
 1. Inspecione `docs/plans/PROGRESS.md`.
-2. Se nao houver plano indicado pelo usuario, escolha o primeiro plano com status `pending` ou `in_progress` que desbloqueie a arquitetura. Prefira esta ordem:
-   - `01-chat-live-orchestrator.md`
-   - `02-chat-event-routing.md`
-   - `57-testing-strategy.md`
-   - `10-chat-message-viewport.md`
-   - `14-composer-input.md`
-   - `13-nicklist.md`
-   - depois siga dependencias naturais do README.
+2. Se nao houver plano indicado pelo usuario, escolha pelo **Mapa de Classificação & Dependências** do `PROGRESS.md`. Ordem mecânica atual (independentes, baixo risco): `32 → 17 → 44+45 → 26 → 07 → 55`, depois audits `53/54`. Os gargalos arquiteturais (`10` viewport, `14` composer) destravam o resto, mas são 🔴 — só pegue quando o set mecânico acabar ou se o usuario pedir.
 3. Marque o plano como `in_progress` em `docs/plans/PROGRESS.md` antes de editar codigo.
 4. No arquivo do plano individual, adicione ou atualize uma secao `## Progress Log` com:
    - data;
@@ -105,3 +106,4 @@ Comece agora executando o ritual do loop.
 ## Progress Log
 
 - 2026-06-27: Criado prompt de execucao em loop, com regras de comportamento do agente, ritual de implementacao, criterios de status, obrigacao de atualizar o plano individual e `PROGRESS.md`, e contrato de validacao com testes Elixir e Playwright.
+- 2026-06-29: Reorientado a escolha de tarefas para o **Mapa de Classificação & Dependências** do `PROGRESS.md` (mecânico-primeiro, respeitar dependências); apontado para os blocos `## Classificação para execução` dos planos e §0a-pre/§0a-anti do playbook; adicionadas regras 9 (nunca `git checkout` para desfazer) e 10 (checar anti-padrão modal-in-modal antes de envolver dialog).

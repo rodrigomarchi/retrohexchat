@@ -41,3 +41,12 @@ Dialog configura timers; runtime executa timers. Nao misture os dois estados.
 ## Progress Log
 
 - 2026-06-27: Planejado. Nenhuma implementacao iniciada ainda.
+
+- 2026-06-29: COMPLETE. `Components.TimersDialog` (14th stateful; inline-edit-list,
+  NOT Escape-managed → componente dono do `show`). `user_timers` passthrough;
+  draft/select/add/edit/change/cancel/close component-local; save/stop = adapters
+  STRING no parent (`timer_events.ex`). `selected` carregado via hidden input
+  (`:if={@selected_timer}`) + `phx-value-selected` no botao Stop — NAO `JS.push(value:)`
+  (que nao despacha sob `render_submit`). `/timer` e o menu abrem via `send_update {:open}`
+  (path do comando estava em `UiActions.Scripting`). `make ci` 9/9; 4 testes de
+  componente; 5 feature tests (CRUD por element-click); E2E chat-timer verde.

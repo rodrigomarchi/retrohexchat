@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsEvents do
   import Phoenix.Component, only: [assign: 2]
 
   alias RetroHexChat.Commands.Autocomplete
+  alias RetroHexChatWeb.ChatLive.ChannelListEvents
   alias RetroHexChatWeb.ChatLive.Helpers
 
   # ── Section toggle ─────────────────────────────────────────
@@ -49,20 +50,7 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsEvents do
   # ── Browse all channels ────────────────────────────────────
 
   def handle_event("conversations_browse_all", _params, socket) do
-    channels = Autocomplete.list_visible_channels(socket.assigns.session.channels)
-    search = socket.assigns[:channel_list_search] || ""
-    filtered = filter_channels(channels, search)
-
-    {:halt,
-     assign(socket,
-       show_channel_list: true,
-       channel_list_channels: channels,
-       channel_list_filtered: filtered,
-       channel_list_selected: nil,
-       channel_list_search: search,
-       channel_list_loading: false,
-       channel_list_count: length(channels)
-     )}
+    {:halt, ChannelListEvents.open(socket)}
   end
 
   # ── Catch-all ──────────────────────────────────────────────
@@ -82,16 +70,5 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsEvents do
       |> Enum.take(10)
 
     assign(socket, popular_channels: popular, popular_channels_loaded: true)
-  end
-
-  defp filter_channels(channels, ""), do: channels
-
-  defp filter_channels(channels, search) do
-    term = String.downcase(search)
-
-    Enum.filter(channels, fn ch ->
-      String.contains?(String.downcase(ch.name), term) or
-        String.contains?(String.downcase(ch.topic || ""), term)
-    end)
   end
 end

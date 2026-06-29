@@ -4,6 +4,15 @@
 
 Migrar context menu da area de mensagens para componente stateful local ao viewport de mensagens.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🟡/🔴
+- **Dependências:** Independente-ish, mas usa helpers de permissão (ChatContext).
+- **Componente de referência:** LiveComponent (cluster de context-menus 19/20/21).
+- **Abordagem:** Owns visible/posição/target; ações sobem como comandos semânticos; resolve permissão via `ChatContext` (admin?/op?).
+- **Gotchas:** Padrões compartilhados com 20/21.
+- **Validação:** `make ci` 9/9 + E2E context-menus.
+
 ## Codigo atual
 
 - Render: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:407`

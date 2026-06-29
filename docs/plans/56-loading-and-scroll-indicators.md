@@ -4,6 +4,15 @@
 
 Migrar loading de canal e scroll loader para os componentes donos do carregamento: MessageViewport, StatusViewport ou dialogs com async.
 
+## Classificação para execução (agentes)
+
+- **Tier:** 🔴→🟡
+- **Dependências:** Depende de: 10 (loading_more pertence ao MessageViewport).
+- **Componente de referência:** Function components puros para o visual.
+- **Abordagem:** Estado loading_* fica no componente que faz a operação async/paginação.
+- **Gotchas:** loading_channel pode ser transient do viewport/shell.
+- **Validação:** `make ci` 9/9.
+
 ## Codigo atual
 
 - Loading spinner no template: `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/chat_live.html.heex:211`

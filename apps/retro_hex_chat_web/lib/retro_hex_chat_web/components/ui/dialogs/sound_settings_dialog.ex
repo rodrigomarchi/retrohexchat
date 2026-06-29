@@ -154,15 +154,23 @@ defmodule RetroHexChatWeb.Components.UI.SoundSettingsDialog do
       </.dialog_body>
 
       <.dialog_footer>
-        <.button variant="default" phx-click={@on_ok || hide_modal(@id)}>
+        <.button
+          variant="default"
+          phx-click={@on_ok || hide_modal(@id)}
+          data-testid="sound-settings-ok"
+        >
           <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
           {dgettext("dialogs", "OK")}
         </.button>
-        <.button variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
+        <.button
+          variant="outline"
+          phx-click={@on_cancel || hide_modal(@id)}
+          data-testid="sound-settings-cancel"
+        >
           <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
           {dgettext("dialogs", "Cancel")}
         </.button>
-        <.button variant="outline" phx-click={@on_apply}>
+        <.button variant="outline" phx-click={@on_apply} data-testid="sound-settings-apply">
           <:icon><Icons.icon_btn_sounds class="w-4 h-4" /></:icon>
           {dgettext("dialogs", "Apply")}
         </.button>
