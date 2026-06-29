@@ -174,16 +174,8 @@
       <div class="flex flex-1 min-h-0">
         <%!-- Messages column --%>
         <div class="flex flex-col flex-1 min-w-0 min-h-0 relative">
-          <%!-- Loading spinner --%>
-          <.loading_spinner
-            :if={@loading_channel != nil}
-            text={"Loading #{@loading_channel || "messages"}..."}
-          />
-
-          <%!-- Scroll loader --%>
-          <.scroll_loader loading={@loading_more} />
-
-          <%!-- Chat messages stream (stateful island — owns the :chat_messages stream) --%>
+          <%!-- Chat messages stream (stateful island — owns the :chat_messages stream
+               + the channel-load spinner and load-older indicator) --%>
           <.live_component
             module={RetroHexChatWeb.ChatLive.Components.MessageViewport}
             id={RetroHexChatWeb.ChatLive.Components.MessageViewport.id()}
@@ -194,6 +186,8 @@
             strip_formatting={@session.strip_formatting}
             edit_mode_message_id={@edit_mode_message_id}
             show_status_tab={@show_status_tab}
+            loading_more={@loading_more}
+            loading_channel={@loading_channel}
           />
 
           <%!-- Status messages stream (stateful island — owns the :status_messages stream) --%>

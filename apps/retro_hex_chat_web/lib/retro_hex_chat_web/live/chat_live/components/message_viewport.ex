@@ -22,10 +22,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   parent each render. The `ScrollHook` and `MessageInteractionsHook` live on the
   list container and push to the parent LiveView, which holds the scroll/pagination
   state they drive.
+
+  The channel-load spinner (`loading_channel`) and the load-older indicator
+  (`loading_more`) render here too, co-located with the messages they describe. Both
+  flags stay parent-owned (the load-more handler reads `loading_more` to debounce
+  pagination; the channel switch sets/clears `loading_channel`) and are passed
+  through each render — only their visuals live in this component.
   """
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.ChatMessage
+  import RetroHexChatWeb.Components.UI.LoadingSpinner
+  import RetroHexChatWeb.Components.UI.ScrollLoader
 
   alias RetroHexChatWeb.ChatLive.Components.MessageRow
 
@@ -69,7 +77,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
        timezone: "Etc/UTC",
        strip_formatting: false,
        edit_mode_message_id: nil,
-       show_status_tab: false
+       show_status_tab: false,
+       loading_more: false,
+       loading_channel: nil
      )
      |> stream(:chat_messages, [])}
   end
@@ -96,7 +106,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       :timezone,
       :strip_formatting,
       :edit_mode_message_id,
-      :show_status_tab
+      :show_status_tab,
+      :loading_more,
+      :loading_channel
     ]
 
     merged =
@@ -112,6 +124,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
+      <.loading_spinner
+        :if={@loading_channel != nil}
+        text={"Loading #{@loading_channel || "messages"}..."}
+      />
+
+      <.scroll_loader loading={@loading_more} />
+
       <.chat_message_list
         id="chat-messages"
         fill

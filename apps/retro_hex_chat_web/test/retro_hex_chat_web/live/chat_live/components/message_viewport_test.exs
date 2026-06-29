@@ -65,4 +65,22 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewportTest do
     hidden = render_component(MessageViewport, id: MessageViewport.id(), show_status_tab: true)
     assert hidden =~ "hidden"
   end
+
+  test "shows the channel-load spinner only when loading_channel is set" do
+    idle = render_component(MessageViewport, id: MessageViewport.id())
+    refute idle =~ "Loading #general"
+
+    loading =
+      render_component(MessageViewport, id: MessageViewport.id(), loading_channel: "#general")
+
+    assert loading =~ "Loading #general"
+  end
+
+  test "shows the load-older indicator only when loading_more is true" do
+    idle = render_component(MessageViewport, id: MessageViewport.id())
+    refute idle =~ ~s(data-testid="scroll-loader")
+
+    loading = render_component(MessageViewport, id: MessageViewport.id(), loading_more: true)
+    assert loading =~ ~s(data-testid="scroll-loader")
+  end
 end

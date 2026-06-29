@@ -30,11 +30,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.ReplyBar
   import RetroHexChatWeb.Components.UI.ConnectionStatus
   import RetroHexChatWeb.Components.UI.HoverCard
-  import RetroHexChatWeb.Components.UI.ScrollLoader
   import RetroHexChatWeb.Components.UI.SyntaxTooltip
   import RetroHexChatWeb.Components.UI.ChatContextMenu
   import RetroHexChatWeb.Components.UI.ConversationsContextMenu
-  import RetroHexChatWeb.Components.UI.LoadingSpinner
   import RetroHexChatWeb.Components.UI.HistorySearch
   import RetroHexChatWeb.Components.UI.TypingIndicator
   import RetroHexChatWeb.Components.UI.NicklistContextMenu
