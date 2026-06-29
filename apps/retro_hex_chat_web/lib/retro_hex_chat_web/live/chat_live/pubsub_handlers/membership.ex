@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3]
+  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -30,8 +30,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   alias RetroHexChat.Chat.IgnoreList
   alias RetroHexChat.Presence.{NotifyList, Tracker}
   alias RetroHexChat.Services.NickServ
-  alias RetroHexChatWeb.ChatLive.{CommandDispatch, HoverEvents}
-  alias RetroHexChatWeb.ChatLive.Components.Nicklist
+  alias RetroHexChatWeb.ChatLive.CommandDispatch
+  alias RetroHexChatWeb.ChatLive.Components.{HoverCard, Nicklist}
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
 
@@ -153,15 +153,9 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
     socket = rename_pm_state(socket, old_nick, new_nick)
 
-    # Dismiss nick hover card if it's showing the old nick (T023)
-    socket =
-      if socket.assigns.hover_card.nick == old_nick do
-        socket
-        |> assign(hover_card: HoverEvents.default_hover_card())
-        |> push_event("dismiss_hover_card", %{})
-      else
-        socket
-      end
+    # Dismiss nick hover card if it's showing the old nick (T023). The component
+    # owns the card and clears + pushes `dismiss_hover_card` itself when its nick matches.
+    send_update(HoverCard, id: HoverCard.id(), action: {:dismiss_if_nick, old_nick})
 
     if active_channel?(socket, channel) do
       users =
@@ -400,26 +394,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   defp rename_optional_value(value, old_nick, new_nick) when value == old_nick, do: new_nick
   defp rename_optional_value(value, _old_nick, _new_nick), do: value
 
+  # If the hover card is showing this nick, update its away state in place. The
+  # component owns the card and applies the change only when its nick matches.
   defp maybe_update_hover_away(socket, nick, away, message) do
-    case socket.assigns.hover_card do
-      %{visible: true, nick: hover_nick} = card ->
-        if String.downcase(hover_nick) == String.downcase(nick) do
-          data = Map.get(card, :data) || %{}
-
-          assign(socket,
-            hover_card:
-              Map.merge(card, %{
-                away: if(away, do: message || dgettext("chat", "Away")),
-                data: Map.merge(data, %{away: away, away_message: message})
-              })
-          )
-        else
-          socket
-        end
-
-      _ ->
-        socket
-    end
+    send_update(HoverCard, id: HoverCard.id(), action: {:update_away, nick, away, message})
+    socket
   end
 
   defp maybe_ack_force_disconnect(%{takeover_ack: {pid, ref}}) when is_pid(pid) do

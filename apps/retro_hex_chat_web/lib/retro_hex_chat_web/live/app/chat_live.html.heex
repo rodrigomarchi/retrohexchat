@@ -279,34 +279,10 @@
   </div>
 </div>
 
-<%!-- Hover card --%>
-<.hover_card
-  :if={@hover_card.visible}
-  nick={@hover_card.nick || ""}
-  visible={@hover_card.visible}
-  loading={@hover_card[:loading] || false}
-  x={@hover_card[:x]}
-  y={@hover_card[:y]}
-  away={@hover_card[:away]}
-  host={@hover_card[:host]}
-  real_name={@hover_card[:real_name]}
-  registered={@hover_card[:registered] || false}
-  online_since={@hover_card[:online_since]}
-  online_for={@hover_card[:online_for]}
-  idle={@hover_card[:idle]}
-  client={@hover_card[:client]}
-  server={@hover_card[:server]}
-  channels={@hover_card[:channels] || []}
-  browser={@hover_card[:browser]}
-  os={@hover_card[:os]}
-  screen_resolution={@hover_card[:screen_resolution]}
-  language={@hover_card[:language]}
-  timezone_info={@hover_card[:timezone_info]}
-  role={@hover_card[:role]}
-  is_contact={@hover_card[:is_contact] || false}
-  contact_note={@hover_card[:contact_note]}
-  is_ignored={@hover_card[:is_ignored] || false}
-  on_close="nick_hover_dismiss"
+<%!-- Hover card (stateful island — owns the nick hover-card state) --%>
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.HoverCard}
+  id={RetroHexChatWeb.ChatLive.Components.HoverCard.id()}
 />
 
 <%!-- Context menus --%>

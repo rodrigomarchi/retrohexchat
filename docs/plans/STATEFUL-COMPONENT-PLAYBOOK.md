@@ -684,3 +684,25 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
     `send_update` ao componente — o adapter é o end-state correto, não um shim. Junto
     com eventos que coordenam visibilidade do parent (`search_visible` lido pelo Escape),
     isso é a regra, não exceção.
+- **2026-06-29 (plano 18 — HoverCard, a primeira extração TOTAL sem read-model no parent):**
+  - **Um read de coordenação PubSub vira uma AÇÃO condicional que a ilha decide.** Ao
+    contrário de viewport/nicklist/conversations (que mantiveram read-model no parent
+    porque subsistemas SÍNCRONOS leem a lista), os únicos leitores do `hover_card` eram o
+    template + 2 handlers PubSub em `membership.ex` (rename→dismiss-se-nick; away→merge).
+    PubSub handlers podem ser reescritos p/ DIRIGIR o componente em vez de LER: viraram
+    `send_update {:dismiss_if_nick, nick}` / `{:update_away, ...}`, com a lógica de
+    match/merge movida VERBATIM p/ o componente (que decide pelo próprio `card.nick`).
+    Resultado: zero read-model no parent — o assign saiu inteiro. **Regra: se TODOS os
+    leitores de um estado são template + handlers (event/PubSub), a extração é total;
+    read-model só fica quando um subsistema SÍNCRONO (tab-complete, paginação, context
+    menu) lê o estado no meio de outro fluxo.**
+  - **Cuidado com rótulo "async" na classificação — confirme no código.** O plano 18 dizia
+    "lookup async, passthrough do resultado", mas `populate_hover_card` era SÍNCRONO
+    (Tracker/Registry/NickServ). Sem `start_async`: o adapter (que tem `session`) computa
+    o mapa via função pura e manda por `{:set, card}`. Mesma forma passthrough-result, só
+    que síncrona. (Releia o código antes de assumir o gotcha do plano.)
+  - **`this.handleEvent` de um JS hook é GLOBAL por LiveSocket, não escopado ao elemento.**
+    `dismiss_hover_card`/`channel_tooltip` são tratados pelo `ScrollHook` (em
+    `#chat-messages`, dentro do MessageViewport) — um `push_event` de QUALQUER
+    componente/handler chega lá. Então mover quem-emite não quebra o cliente; um
+    LiveComponent pode emitir um push que outro hook (de outra ilha) consome.

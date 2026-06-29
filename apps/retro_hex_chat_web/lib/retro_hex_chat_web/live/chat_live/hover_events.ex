@@ -2,11 +2,15 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   @moduledoc """
   Handle interactive element events: channel hover/click, nick hover/dismiss/dblclick.
 
+  The nick hover card's state lives in `Components.HoverCard`; this module gathers
+  the presence/registration/contact data (it has the `session`) and pushes the
+  finished map to that component via `send_update/2`.
+
   Attached as `attach_hook(:hover_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3]
+  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -15,13 +19,9 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   alias RetroHexChat.Chat.{IgnoreList, TimeFormatter}
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.ChatLive.Components.HoverCard
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
   alias RetroHexChatWeb.ChatLive.Helpers.PM
-
-  @default_hover_card %{visible: false, nick: nil, x: 0, y: 0, loading: false, data: nil}
-
-  @spec default_hover_card() :: map()
-  def default_hover_card, do: @default_hover_card
 
   # -- channel_hover --
 
@@ -62,20 +62,10 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
     if nick == session.nickname do
       {:halt, socket}
     else
-      # Show loading state immediately, then populate with data
-      socket =
-        socket
-        |> assign(
-          hover_card: %{
-            @default_hover_card
-            | visible: true,
-              nick: nick,
-              x: x,
-              y: y,
-              loading: true
-          }
-        )
-        |> populate_hover_card(nick)
+      send_update(HoverCard,
+        id: HoverCard.id(),
+        action: {:set, build_hover_card(session, nick, x, y)}
+      )
 
       {:halt, socket}
     end
@@ -84,16 +74,15 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
   # -- nick_hover_dismiss --
 
   def handle_event("nick_hover_dismiss", _params, socket) do
-    {:halt, assign(socket, hover_card: @default_hover_card)}
+    send_update(HoverCard, id: HoverCard.id(), action: :dismiss)
+    {:halt, socket}
   end
 
   # -- nick_dblclick --
 
   def handle_event("nick_dblclick", %{"nick" => nick}, socket) do
-    {:halt,
-     socket
-     |> assign(hover_card: @default_hover_card)
-     |> PM.open_pm_conversation(nick)}
+    send_update(HoverCard, id: HoverCard.id(), action: :dismiss)
+    {:halt, PM.open_pm_conversation(socket, nick)}
   end
 
   # Unmatched events — pass through
@@ -113,10 +102,10 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
     {count, joined}
   end
 
-  @spec populate_hover_card(Phoenix.LiveView.Socket.t(), String.t()) ::
-          Phoenix.LiveView.Socket.t()
-  defp populate_hover_card(socket, nick) do
-    session = socket.assigns.session
+  # Resolves all presence/registration/contact fields for `nick` and returns the
+  # full hover-card map the component renders (no socket — pure, sent via :set).
+  @spec build_hover_card(Session.t(), String.t(), integer(), integer()) :: map()
+  defp build_hover_card(session, nick, x, y) do
     target_meta = find_user_presence(nick, session.channels)
 
     data =
@@ -136,8 +125,8 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
       }
       |> Map.merge(extract_client_fields(target_meta))
 
-    hover_card = socket.assigns.hover_card
-    assign(socket, hover_card: Map.merge(hover_card, hover_card_fields(data)))
+    base = %{HoverCard.default() | visible: true, nick: nick, x: x, y: y, loading: true}
+    Map.merge(base, hover_card_fields(data))
   end
 
   defp hover_card_fields(data) do

@@ -29,7 +29,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.Autocomplete
   import RetroHexChatWeb.Components.UI.ReplyBar
   import RetroHexChatWeb.Components.UI.ConnectionStatus
-  import RetroHexChatWeb.Components.UI.HoverCard
   import RetroHexChatWeb.Components.UI.SyntaxTooltip
   import RetroHexChatWeb.Components.UI.ChatContextMenu
   import RetroHexChatWeb.Components.UI.ConversationsContextMenu
@@ -507,7 +506,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       nick_colors_selected: nil,
       has_more: true,
       history_index: -1,
-      hover_card: ChatLive.HoverEvents.default_hover_card(),
       input: "",
       action_mode: false,
       notice_target: nil,
