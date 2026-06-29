@@ -27,7 +27,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.TopicBar
   import RetroHexChatWeb.Components.UI.ChatMessage
   import RetroHexChatWeb.Components.UI.ChatInput
-  import RetroHexChatWeb.Components.UI.Nicklist
   import RetroHexChatWeb.Components.UI.FormattingToolbar
   import RetroHexChatWeb.Components.UI.Autocomplete
   import RetroHexChatWeb.Components.UI.ReplyBar

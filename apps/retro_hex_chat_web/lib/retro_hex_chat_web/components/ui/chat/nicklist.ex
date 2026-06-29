@@ -4,6 +4,36 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
 
   alias RetroHexChatWeb.Icons
 
+  @doc """
+  Renders the nicklist sidebar: responsive layout + mobile backdrop wrapping a
+  full-height user-list container. `visible` toggles the `hidden` class without
+  unmounting, so a streamed list inside is never torn down. Globals (e.g. `id`,
+  `phx-hook`, `phx-update`) are forwarded to the list container, and the inner
+  block holds the user rows.
+  """
+  attr :visible, :boolean, default: true
+  attr :on_backdrop, :string, required: true
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  @spec nicklist_sidebar(map()) :: Phoenix.LiveView.Rendered.t()
+  def nicklist_sidebar(assigns) do
+    ~H"""
+    <div class={[
+      "fixed inset-0 z-40 md:relative md:inset-auto md:z-auto",
+      "flex justify-end md:justify-stretch md:w-[140px] md:shrink-0",
+      !@visible && "hidden"
+    ]}>
+      <div class="absolute inset-0 bg-black/30 md:hidden" phx-click={@on_backdrop} />
+      <div class="relative z-10 w-[200px] md:w-full h-full bg-surface shadow-retro-window md:shadow-none">
+        <.nicklist class="h-full" {@rest}>
+          {render_slot(@inner_block)}
+        </.nicklist>
+      </div>
+    </div>
+    """
+  end
+
   @doc "Renders a Win98-style user list container."
   attr :class, :any, default: nil
   attr :rest, :global

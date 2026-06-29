@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
   alias RetroHexChat.Channels.Server
   alias RetroHexChatWeb.ChatLive.Components.KickQueueDialog
+  alias RetroHexChatWeb.ChatLive.Components.Nicklist
 
   # ── Mode changes ──────────────────────────────────────────
 
@@ -32,6 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     socket =
       socket
       |> assign(channel_users: users)
+      |> Nicklist.reset(users)
       |> maybe_update_current_modes(payload)
       |> system_event(msg)
 
@@ -83,6 +85,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
       {:halt,
        socket
        |> assign(channel_users: users)
+       |> Nicklist.remove(target)
        |> play_event_sound(:kick, socket.assigns.session)
        |> system_event(msg)}
     end
@@ -262,11 +265,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   def handle_info({:user_channel_muted, %{target: target, channel: channel}}, socket) do
+    users = update_channel_user_muted(socket.assigns.channel_users, target, true)
+
     {:halt,
      socket
-     |> assign(
-       channel_users: update_channel_user_muted(socket.assigns.channel_users, target, true)
-     )
+     |> assign(channel_users: users)
+     |> Nicklist.reset(users)
      |> system_event(
        dgettext("chat", "%{target} has been muted in %{channel}.",
          target: target,
@@ -276,11 +280,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   end
 
   def handle_info({:user_channel_unmuted, %{target: target, channel: channel}}, socket) do
+    users = update_channel_user_muted(socket.assigns.channel_users, target, false)
+
     {:halt,
      socket
-     |> assign(
-       channel_users: update_channel_user_muted(socket.assigns.channel_users, target, false)
-     )
+     |> assign(channel_users: users)
+     |> Nicklist.reset(users)
      |> system_event(
        dgettext("chat", "%{target} has been unmuted in %{channel}.",
          target: target,

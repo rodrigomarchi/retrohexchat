@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
+  alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
 
@@ -144,6 +145,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
           current_modes: nil
         )
         |> stream(:chat_messages, [], reset: true)
+        |> Nicklist.reset([])
       end
 
     SessionHelpers.push_reconnect_state(socket)
@@ -190,14 +192,18 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
             }
           end)
 
-        assign(socket,
+        socket
+        |> assign(
           channel_users: users,
           current_topic: state.topic,
           current_modes: state.modes
         )
+        |> Nicklist.reset(users)
 
       {:error, _} ->
-        assign(socket, channel_users: [], current_topic: nil, current_modes: nil)
+        socket
+        |> assign(channel_users: [], current_topic: nil, current_modes: nil)
+        |> Nicklist.reset([])
     end
   end
 

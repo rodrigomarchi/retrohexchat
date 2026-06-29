@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   }
 
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
@@ -47,7 +48,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   @spec rebuild_nick_color_fn(Phoenix.LiveView.Socket.t(), Session.t()) ::
           Phoenix.LiveView.Socket.t()
   def rebuild_nick_color_fn(socket, session) do
-    assign(socket, nick_color_fn: build_nick_color_fn(session))
+    # Re-stream the nicklist rows so their per-nick colors restyle: stream items
+    # are not re-pushed by a plain re-render when only `nick_color_fn` changes.
+    socket
+    |> assign(nick_color_fn: build_nick_color_fn(session))
+    |> Nicklist.reset(Map.get(socket.assigns, :channel_users, []))
   end
 
   @spec refresh_active_message_stream(Phoenix.LiveView.Socket.t(), Session.t()) ::
@@ -424,6 +429,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       dgettext("chat", "You are now known as %{nickname}", nickname: new_nick)
     )
     |> assign(session: session, channel_users: users)
+    |> Nicklist.reset(users)
   end
 
   @spec handle_quit(Phoenix.LiveView.Socket.t(), String.t() | nil) :: Phoenix.LiveView.Socket.t()

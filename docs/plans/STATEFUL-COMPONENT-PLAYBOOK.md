@@ -295,6 +295,52 @@ migrado já cumpre**, mas que um agente seguindo só o plano pode esquecer e só
 8. Atualizar checklists do plano, `PROGRESS.md`, **e este playbook** se aprendeu
    algo novo.
 
+## 1d. Componente dono de STREAM (lista com `stream/4`)
+
+Quando o island renderiza uma LISTA grande/quente (nicklist, viewport, sidebar) e
+o objetivo é parar de reatribuir/re-renderizar a lista inteira, o componente vira
+dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
+
+- **O parent pode CONTINUAR dono da lista materializada** se outros subsistemas a
+  leem de forma síncrona (no plano 13, `channel_users` é lido pelo tab-complete em
+  `MenuToolbarEvents`, pelo context menu via `channel_user_op?/voiced?/muted?`, e
+  por core/session). NÃO refatore os leitores. O componente é dono só do `stream`
+  de RENDER; o parent empurra deltas. Isso NÃO é "duas formas de fazer a mesma
+  coisa": é read-model (lista p/ lógica) + render-model (stream p/ DOM).
+- **O ganho dominante é a ISOLAÇÃO por change-tracking, não o delta.** Hoje o `:for`
+  da lista mora no template do PARENT → re-renderiza a cada re-render do parent
+  (cada msg de chat, digitação, lag). Ao mover o `:for` p/ um LiveComponent, ele só
+  re-renderiza quando UMA assign dele muda. Esse é o maior ganho — vem de graça com
+  a extração, mesmo que todo delta seja `{:reset, list}`.
+- **Protocolo de delta** (helpers no componente que recebem socket e retornam socket,
+  chamando `send_update`): `{:reset, items}` (troca de contexto / mudança em massa),
+  `{:upsert, item}` (1 item entrou/mudou → `stream_insert`), `{:remove, key}`
+  (1 item saiu → `stream_delete_by_dom_id`). Use per-row nos eventos FREQUENTES
+  (join/part/kick) e `:reset` nos raros/em-massa (mode/away/rename/mute) — sem
+  regressão (reset = o comportamento de hoje) e com ganho onde importa.
+- **`dom_id` estável**: passe `dom_id: &row_dom_id/1` no `stream/4` do `mount` E em
+  todo `:reset`; `stream_delete_by_dom_id(socket, :items, dom_id(key))` p/ remover.
+- **Mantenha o container montado quando "escondido"** (classe CSS `hidden`, NÃO
+  `:if`) p/ o stream nunca ser destruído/reconstruído no toggle. Visibilidade que
+  outro subsistema lê (`show_nicklist`) fica no parent e chega como `visible`.
+- **⚠️ Stream não re-estiliza linhas existentes num re-render comum.** Se uma assign
+  de estilo por-item muda (ex.: `nick_color_fn` numa edição de paleta), as linhas já
+  no DOM NÃO mudam só porque o componente re-renderizou — você precisa re-`stream`
+  (mande `{:reset, items}` de onde a função/paleta é reconstruída).
+- **⚠️ Raw Tailwind em LiveComponent fora de `@tailwind_paths`.** O
+  `lint.css_consistency` PULA `components/ui/`, `live/app/`, etc., mas NÃO pula
+  `live/chat_live/components/`. Markup com classes Tailwind cruas (chrome do sidebar)
+  no LiveComponent → "Missing CSS classes". Fix component-first: mova o chrome p/ um
+  function component em `components/ui/` (ex.: `nicklist_sidebar/1`) e encaminhe
+  globais (`id`/`phx-hook`/`phx-update`) via `attr :rest, :global`. NÃO enfraqueça o
+  linter.
+- **Teste de componente com stream:** `render_component(Comp, id:, action: {:reset, items})`
+  popula o stream e renderiza as linhas (mount → update(action) → render num só passo);
+  asserte os `id={dom_id}` e `data-*`. Feature tests existentes que disparam um evento
+  de membership e leem a nicklist passam sem flush porque o join ocorre no mount
+  conectado (o `send_update` já foi processado quando o assert roda) — mas mantenha o
+  §2 em mente se um teste falhar.
+
 ## Historico de aprendizados
 
 - **2026-06-28 (plano 09):** padrao adapter + `send_update` async + flush via

@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   alias RetroHexChat.Presence.{NotifyList, Tracker}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.{CommandDispatch, HoverEvents}
+  alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
 
@@ -53,6 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       {:halt,
        socket
        |> assign(channel_users: users)
+       |> Nicklist.upsert(user)
        |> play_event_sound(:join, socket.assigns.session)
        |> system_event(msg)
        |> maybe_fire_autorespond(
@@ -87,6 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       socket =
         socket
         |> assign(channel_users: users)
+        |> Nicklist.remove(nick)
         |> play_event_sound(:part, socket.assigns.session)
         |> system_event(msg)
 
@@ -169,6 +172,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       {:halt,
        socket
        |> assign(channel_users: users)
+       |> Nicklist.reset(users)
        |> system_event(msg)
        |> maybe_fire_autorespond(
          :on_nick_change,
@@ -196,6 +200,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       {:halt,
        socket
        |> assign(channel_users: users)
+       |> Nicklist.reset(users)
        |> maybe_update_hover_away(nick, away, message)}
     else
       {:halt, socket}
