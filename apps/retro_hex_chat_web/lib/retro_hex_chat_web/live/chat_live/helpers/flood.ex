@@ -4,12 +4,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Flood do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{FloodProtection, FloodTracker, IgnoreList}
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Helpers.Persistence
 
@@ -74,8 +74,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Flood do
             auto_ignore_state: new_auto_state
           )
           |> Persistence.maybe_persist_ignore_list(new_session)
-          |> stream_insert(
-            :chat_messages,
+          |> MessageViewport.insert(
             Messages.system_message(
               dgettext("chat", "* %{sender} has been auto-ignored for flooding (%{duration})",
                 sender: sender,

@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Chat.IgnoreList
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
 
   @spec visible_channel_messages([map()], map()) :: [map()]
   def visible_channel_messages(messages, ignore_list) do
@@ -92,14 +93,14 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   @spec system_event(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def system_event(socket, content) do
     socket
-    |> stream_insert(:chat_messages, system_message(content))
+    |> MessageViewport.insert(system_message(content))
     |> push_status_message(content, :system)
   end
 
   @spec error_event(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def error_event(socket, content) do
     socket
-    |> stream_insert(:chat_messages, error_message(content))
+    |> MessageViewport.insert(error_message(content))
     |> push_status_message(content, :error)
   end
 
@@ -107,7 +108,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
           Phoenix.LiveView.Socket.t()
   def service_event(socket, author, content) do
     socket
-    |> stream_insert(:chat_messages, service_message(author, content))
+    |> MessageViewport.insert(service_message(author, content))
     |> push_status_message(content, :system)
   end
 
@@ -128,7 +129,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
           Phoenix.LiveView.Socket.t()
   def inline_help_event(socket, topic_id, topic_title) do
     socket
-    |> stream_insert(:chat_messages, inline_help_message(topic_id, topic_title))
+    |> MessageViewport.insert(inline_help_message(topic_id, topic_title))
     |> push_status_message(dgettext("chat", "Help: %{topic}", topic: topic_title), :system)
   end
 

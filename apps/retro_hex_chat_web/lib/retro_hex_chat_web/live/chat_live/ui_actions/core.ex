@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, stream: 4]
+  import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -23,6 +23,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.HelpTopics
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -53,7 +54,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
       loading_more: false,
       loaded_message_count: 0
     )
-    |> stream(:chat_messages, [], reset: true)
+    |> MessageViewport.reset([])
     |> push_event("clear_chat_messages", %{})
   end
 

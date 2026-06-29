@@ -19,6 +19,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   @doc "Renders a scrollable chat message list container."
   attr :class, :any, default: nil
   attr :testid, :string, default: "chat-message-list"
+  attr :fill, :boolean, default: false, doc: "Shrink to fill remaining flex space (adds min-h-0)"
+  attr :hidden, :boolean, default: false, doc: "Hide the container without unmounting it"
   attr :rest, :global
   slot :inner_block, required: true
 
@@ -29,6 +31,8 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       class={
         classes([
           "flex-1 overflow-y-auto px-2 py-1 bg-white shadow-retro-field font-mono text-sm",
+          @fill && "min-h-0",
+          @hidden && "hidden",
           @class
         ])
       }

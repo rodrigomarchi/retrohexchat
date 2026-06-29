@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, stream: 4]
+  import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
@@ -144,7 +145,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
           current_topic: nil,
           current_modes: nil
         )
-        |> stream(:chat_messages, [], reset: true)
+        |> MessageViewport.reset([])
         |> Nicklist.reset([])
       end
 
@@ -167,7 +168,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     else
       socket
       |> assign(oldest_message_id: nil, has_more: false, current_topic: nil, current_modes: nil)
-      |> stream(:chat_messages, [], reset: true)
+      |> MessageViewport.reset([])
     end
   end
 
@@ -277,7 +278,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       loading_more: false,
       new_messages_indicator: false
     )
-    |> stream(:chat_messages, stream_items, reset: true)
+    |> MessageViewport.reset(stream_items)
   end
 
   defp cleared_channel_message?(socket, channel_name, %{inserted_at: timestamp}) do

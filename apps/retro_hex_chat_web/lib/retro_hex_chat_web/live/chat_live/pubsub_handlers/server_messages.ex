@@ -4,14 +4,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
   welcome message changes, and admin events (rename, role, mute/unmute).
   """
 
-  import Phoenix.LiveView, only: [stream_insert: 3]
-
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [system_event: 2, push_status_message: 3]
 
   alias RetroHexChat.Accounts.Session
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelper
 
   @spec handle_info(tuple(), Phoenix.LiveView.Socket.t()) :: {:halt, Phoenix.LiveView.Socket.t()}
@@ -25,7 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ServerMessages do
       timestamp: DateTime.utc_now()
     }
 
-    {:halt, stream_insert(socket, :chat_messages, msg)}
+    {:halt, MessageViewport.insert(socket, msg)}
   end
 
   def handle_info({:wallops, %{sender: sender, content: content}}, socket) do

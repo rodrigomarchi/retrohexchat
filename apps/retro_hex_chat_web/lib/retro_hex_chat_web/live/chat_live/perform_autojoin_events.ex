@@ -10,7 +10,6 @@ defmodule RetroHexChatWeb.ChatLive.PerformAutojoinEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -19,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.PerformAutojoinEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.{AutoJoinList, PerformList}
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
 
   def handle_event("open_perform_dialog", _params, socket) do
     {:halt, assign(socket, show_perform_dialog: true)}
@@ -58,9 +58,8 @@ defmodule RetroHexChatWeb.ChatLive.PerformAutojoinEvents do
 
       {:error, reason} ->
         {:halt,
-         stream_insert(
+         MessageViewport.insert(
            socket,
-           :chat_messages,
            error_message(
              dgettext("chat", "Failed to add perform command: %{reason}", reason: reason)
            )
@@ -206,9 +205,8 @@ defmodule RetroHexChatWeb.ChatLive.PerformAutojoinEvents do
 
       {:error, reason} ->
         {:halt,
-         stream_insert(
+         MessageViewport.insert(
            socket,
-           :chat_messages,
            error_message(
              dgettext("chat", "Failed to add auto-join channel: %{reason}", reason: reason)
            )

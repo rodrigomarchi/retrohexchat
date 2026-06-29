@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, stream: 4]
+  import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{Queries, Service}
   alias RetroHexChat.Presence.NotifyList
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
   @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
@@ -252,7 +253,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     socket
     |> maybe_clear_empty_stream(stream_items)
     |> assign(assigns)
-    |> stream(:chat_messages, stream_items, reset: true)
+    |> MessageViewport.reset(stream_items)
   end
 
   defp maybe_clear_empty_stream(socket, []), do: push_event(socket, "clear_chat_messages", %{})

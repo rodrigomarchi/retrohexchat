@@ -85,6 +85,9 @@ app-header-panels
 bg-desktop
 font-system
 text-text
+# MessageViewport — transparent mount wrapper so the stateful component's static
+# root does not create a layout box (chat list stays a flex-fill child of the column)
+contents
 # Diagram layout — Tailwind utility classes passed to SVG diagram components in help templates
 max-w-lg
 mx-auto

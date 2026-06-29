@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, stream_delete: 3, stream_insert: 3]
+  import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     UnreadTracker
   }
 
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.{Channel, PM}
 
   # ── Channel messages ──────────────────────────────────────
@@ -143,7 +144,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if is_active do
       case stream_item_for_message_event(payload, session) do
         nil -> {:halt, socket}
-        updated_item -> {:halt, stream_insert(socket, :chat_messages, updated_item)}
+        updated_item -> {:halt, MessageViewport.insert(socket, updated_item)}
       end
     else
       {:halt, socket}
@@ -159,7 +160,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     if is_active do
       case stream_item_for_message_event(payload, session) do
         nil -> {:halt, socket}
-        deleted_item -> {:halt, stream_insert(socket, :chat_messages, deleted_item)}
+        deleted_item -> {:halt, MessageViewport.insert(socket, deleted_item)}
       end
     else
       {:halt, socket}
@@ -175,7 +176,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     Enum.reduce(reply_ids, socket, fn reply_id, acc ->
       case stream_item_for_reply_quote(reply_id, acc.assigns.session) do
         nil -> acc
-        item -> stream_insert(acc, :chat_messages, item)
+        item -> MessageViewport.insert(acc, item)
       end
     end)
     |> then(&{:halt, &1})
@@ -203,7 +204,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
       {:halt, socket}
     else
       if channel == session.active_channel do
-        {:halt, stream_insert(socket, :chat_messages, notice_message(author, content))}
+        {:halt, MessageViewport.insert(socket, notice_message(author, content))}
       else
         {:halt, socket}
       end
@@ -237,7 +238,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
 
   defp route_notice(socket, _session, sender, content) do
     notice = notice_message(sender, content)
-    stream_insert(socket, :chat_messages, notice)
+    MessageViewport.insert(socket, notice)
   end
 
   defp private_ignore_type(:p2p_invite), do: :invite
@@ -270,12 +271,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     case socket.assigns[:pending_channel_msg_id] do
       pending_id when is_binary(pending_id) and decorated.author == session.nickname ->
         socket
-        |> stream_delete(:chat_messages, %{id: pending_id})
-        |> stream_insert(:chat_messages, decorated)
+        |> MessageViewport.delete(pending_id)
+        |> MessageViewport.insert(decorated)
         |> assign(pending_channel_msg_id: nil)
 
       _ ->
-        stream_insert(socket, :chat_messages, decorated)
+        MessageViewport.insert(socket, decorated)
     end
   end
 
@@ -366,7 +367,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     session = socket.assigns.session
 
     if session.active_pm == other_nick do
-      stream_insert(socket, :chat_messages, pm_to_stream_item(payload))
+      MessageViewport.insert(socket, pm_to_stream_item(payload))
     else
       pm_key = "pm:#{other_nick}"
       unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, pm_key)

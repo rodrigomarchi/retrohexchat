@@ -9,7 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   import Phoenix.Component, only: [assign: 2]
 
   import Phoenix.LiveView,
-    only: [push_event: 3, push_navigate: 2, send_update: 2, stream_insert: 3]
+    only: [push_event: 3, push_navigate: 2, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -47,6 +47,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.NickChangeDialog
   alias RetroHexChatWeb.ChatLive.Helpers.GameInvite
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
@@ -183,7 +184,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     pending_msg =
       build_pending_msg(temp_id, session.nickname, text, session.active_channel, reply_to)
 
-    socket = stream_insert(socket, :chat_messages, pending_msg)
+    socket = MessageViewport.insert(socket, pending_msg)
     opts = if reply_to, do: [reply_to_id: reply_to.id], else: []
 
     case Server.send_message(session.active_channel, session.nickname, text, opts) do
@@ -197,7 +198,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         failed_msg = %{pending_msg | status: :failed}
 
         socket
-        |> stream_insert(:chat_messages, failed_msg)
+        |> MessageViewport.insert(failed_msg)
         |> assign(pending_channel_msg_id: nil)
         |> push_event("message_failed", %{temp_id: temp_id, reason: reason})
         |> error_event(reason)
@@ -328,7 +329,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     }
 
     socket
-    |> stream_insert(:chat_messages, msg)
+    |> MessageViewport.insert(msg)
     |> push_status_message(
       dgettext("chat", "Arcade session ready! Open: %{url}", url: url),
       :system

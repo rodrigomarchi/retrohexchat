@@ -183,56 +183,23 @@
           <%!-- Scroll loader --%>
           <.scroll_loader loading={@loading_more} />
 
-          <%!-- Chat messages stream --%>
-          <.chat_message_list
-            class={["flex-1 min-h-0", @show_status_tab && "hidden"]}
-            id="chat-messages"
-            phx-update="stream"
-            phx-hook="ScrollHook"
-            data-clear-token={@chat_clear_token}
-            data-interactions-hook="MessageInteractionsHook"
-          >
-            <div
-              :for={{dom_id, msg} <- @streams.chat_messages}
-              id={dom_id}
-              class={message_classes(msg, @edit_mode_message_id)}
-              data-testid={if(Map.get(msg, :highlighted), do: "highlighted-message", else: nil)}
-              data-author={Map.get(msg, :author)}
-              data-message-id={dom_id}
-              data-temp-id={
-                if(Map.get(msg, :status) in [:pending, :failed], do: msg.id, else: nil)
-              }
-              data-msg-status={
-                if(Map.get(msg, :status), do: Atom.to_string(msg.status), else: nil)
-              }
-              data-system-message={
-                if(
-                  Map.get(msg, :type, :normal) in [
-                    :system,
-                    :service,
-                    :inline_help,
-                    :arcade_link
-                  ],
-                  do: "true",
-                  else: nil
-                )
-              }
-              data-real-id={Map.get(msg, :id)}
-            >
-              <.render_message
-                msg={msg}
-                nick_color_fn={@nick_color_fn}
-                timestamp_format={@timestamp_format}
-                timezone={@timezone}
-                strip_formatting={@session.strip_formatting}
-                edit_mode_message_id={@edit_mode_message_id}
-              />
-            </div>
-          </.chat_message_list>
+          <%!-- Chat messages stream (stateful island — owns the :chat_messages stream) --%>
+          <.live_component
+            module={RetroHexChatWeb.ChatLive.Components.MessageViewport}
+            id={RetroHexChatWeb.ChatLive.Components.MessageViewport.id()}
+            chat_clear_token={@chat_clear_token}
+            nick_color_fn={@nick_color_fn}
+            timestamp_format={@timestamp_format}
+            timezone={@timezone}
+            strip_formatting={@session.strip_formatting}
+            edit_mode_message_id={@edit_mode_message_id}
+            show_status_tab={@show_status_tab}
+          />
 
           <%!-- Status messages stream --%>
           <.chat_message_list
-            class={["flex-1 min-h-0", !@show_status_tab && "hidden"]}
+            fill
+            hidden={!@show_status_tab}
             id="status-messages"
             phx-update="stream"
             testid="status-messages"

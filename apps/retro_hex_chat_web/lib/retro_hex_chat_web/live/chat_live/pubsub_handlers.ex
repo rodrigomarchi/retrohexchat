@@ -300,7 +300,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
   def handle_info(%{event: "bot_notice", payload: payload}, socket) do
     import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
-    import Phoenix.LiveView, only: [stream_insert: 3]
+    alias RetroHexChatWeb.ChatLive.Components.MessageViewport
 
     msg = %{
       id: "system-#{System.unique_integer([:positive])}",
@@ -312,7 +312,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
     socket =
       socket
-      |> stream_insert(:chat_messages, msg)
+      |> MessageViewport.insert(msg)
       |> push_status_message(
         dgettext("chat", "%{bot}: Arcade session ready!", bot: payload.bot),
         :system

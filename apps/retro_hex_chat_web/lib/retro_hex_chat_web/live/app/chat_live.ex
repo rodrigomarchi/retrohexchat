@@ -38,11 +38,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.LoadingSpinner
   import RetroHexChatWeb.Components.UI.HistorySearch
   import RetroHexChatWeb.Components.UI.TypingIndicator
-  import RetroHexChatWeb.Components.UI.MessageReplyBlock
-  import RetroHexChatWeb.Components.UI.InlineHelpCard
-  import RetroHexChatWeb.Components.UI.P2PInviteCard
-  import RetroHexChatWeb.Components.UI.ArcadeSessionLink
-  import RetroHexChatWeb.Components.UI.MessageIndicators
   import RetroHexChatWeb.Components.UI.NicklistContextMenu
 
   # ── Dialog components ────────────────────────────────────────
@@ -59,9 +54,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.BotManagementDialog
   import RetroHexChatWeb.Components.UI.BotFormDialog
   import RetroHexChatWeb.Components.UI.AdminConsoleDialog
-
-  # ── HTML helpers ─────────────────────────────────────────────
-  import Phoenix.HTML, only: [raw: 1]
 
   # ── Domain aliases ────────────────────────────────────────────
   alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
@@ -301,123 +293,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── Render ────────────────────────────────────────────────────
   # Template is in chat_live.html.heex (auto-detected by Phoenix)
-
-  # ── Private helper: render individual message ─────────────────
-
-  attr :msg, :map, required: true
-  attr :nick_color_fn, :any, required: true
-  attr :timestamp_format, :atom, required: true
-  attr :timezone, :string, required: true
-  attr :strip_formatting, :boolean, required: true
-  attr :edit_mode_message_id, :any, required: true
-
-  defp render_message(assigns) do
-    ~H"""
-    <%= case Map.get(@msg, :type, :normal) do %>
-      <% :action -> %>
-        <.chat_message
-          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-          type="action"
-        >
-          * {@msg.author} {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
-        </.chat_message>
-      <% :system -> %>
-        <.chat_message
-          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-          type="system"
-        >
-          * {@msg.content}
-        </.chat_message>
-      <% :service -> %>
-        <.chat_message
-          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-          type="service"
-        >
-          {@msg.content}
-        </.chat_message>
-      <% :error -> %>
-        <.chat_message
-          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-          type="error"
-        >
-          {@msg.content}
-        </.chat_message>
-      <% :notice -> %>
-        <.chat_message
-          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-          type="notice"
-          nick={@msg.author}
-          nick_color={@nick_color_fn.(@msg.author)}
-        >
-          {@msg.content}
-        </.chat_message>
-      <% :inline_help -> %>
-        <.chat_message
-          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-          type="system"
-        >
-          <.inline_help_card
-            topic_id={@msg.topic_id}
-            topic_title={@msg.topic_title}
-            help_url={~p"/chat/help/#{@msg.topic_id}"}
-          />
-        </.chat_message>
-      <% :arcade_link -> %>
-        <.chat_message
-          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-          type="system"
-        >
-          <.arcade_session_link href={@msg.content} />
-        </.chat_message>
-      <% :p2p_invite -> %>
-        <.chat_message
-          timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-          nick={@msg.author}
-          nick_color={@nick_color_fn.(@msg.author)}
-        >
-          <.p2p_invite_card
-            label={ChatHelpers.extract_p2p_label(@msg.content)}
-            link={ChatHelpers.extract_p2p_link(@msg.content)}
-          />
-        </.chat_message>
-      <% _ -> %>
-        <.message_reply_block
-          :if={Map.get(@msg, :reply_to_id)}
-          parent_id={@msg.reply_to_id}
-          author={Map.get(@msg, :reply_to_author, "?")}
-          preview={Map.get(@msg, :reply_to_preview)}
-          nick_color={@nick_color_fn.(Map.get(@msg, :reply_to_author, ""))}
-          on_click="scroll_to_reply_parent"
-        />
-        <%= if Map.get(@msg, :deleted_at) do %>
-          <.chat_message timestamp={
-            ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)
-          }>
-            <.deleted_placeholder />
-          </.chat_message>
-        <% else %>
-          <.chat_message
-            timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-            nick={@msg.author}
-            nick_color={@nick_color_fn.(@msg.author)}
-          >
-            {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
-            <.edited_tag
-              :if={Map.get(@msg, :edited_at)}
-              timestamp={ChatHelpers.format_edit_timestamp(@msg.edited_at, @timezone)}
-            />
-            <.retry_button
-              :if={Map.get(@msg, :status) == :failed}
-              temp_id={@msg.id}
-              content={@msg.content}
-              target={Map.get(@msg, :target, "")}
-              on_retry="retry_message"
-            />
-          </.chat_message>
-        <% end %>
-    <% end %>
-    """
-  end
 
   # ── Private helpers ───────────────────────────────────────────
 
@@ -820,7 +695,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       channel_list_channels: [],
       channel_list_loading: false
     )
-    |> stream(:chat_messages, [])
     |> stream(:status_messages, [])
   end
 
@@ -892,29 +766,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   defp conversation_context_custom_items(session, _context) do
     CustomMenus.entries_for(session.custom_menus, :channel)
-  end
-
-  defp message_classes(msg, edit_mode_message_id) do
-    base = "chat-message chat-message--#{Map.get(msg, :type, :normal)}"
-
-    highlighted =
-      if Map.get(msg, :highlighted), do: " chat-message--highlighted", else: ""
-
-    highlight_bg = ChatHelpers.highlight_bg_class(msg)
-
-    pending =
-      if Map.get(msg, :status) == :pending, do: " chat-message--pending", else: ""
-
-    failed =
-      if Map.get(msg, :status) == :failed, do: " chat-message--failed", else: ""
-
-    deleted =
-      if Map.get(msg, :deleted_at), do: " chat-message--deleted", else: ""
-
-    editing =
-      if Map.get(msg, :id) == edit_mode_message_id, do: " chat-message--editing", else: ""
-
-    base <> highlighted <> highlight_bg <> pending <> failed <> deleted <> editing
   end
 
   defp channel_central_bans(nil), do: []

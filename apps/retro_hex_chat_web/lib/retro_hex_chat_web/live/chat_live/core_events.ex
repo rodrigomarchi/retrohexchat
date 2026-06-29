@@ -11,7 +11,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3, stream: 4, stream_delete: 3, send_update: 2]
+  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
   alias RetroHexChatWeb.ChatLive.Components.{
     DeleteConfirmDialog,
+    MessageViewport,
     NickChangeDialog,
     PasteConfirmDialog
   }
@@ -92,7 +93,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       :ok ->
         {:halt,
          socket
-         |> stream_delete(:chat_messages, %{id: temp_id})
+         |> MessageViewport.delete(temp_id)
          |> push_event("message_confirmed", %{temp_id: temp_id})}
 
       {:error, reason} ->
@@ -224,7 +225,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
         else
           socket
           |> assign(current_topic: nil, current_modes: nil)
-          |> stream(:chat_messages, [], reset: true)
+          |> MessageViewport.reset([])
         end
       end
 
@@ -428,7 +429,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
 
       :error ->
         case parse_pending_message_id(msg_id_str) do
-          {:ok, temp_id} -> {:halt, stream_delete(socket, :chat_messages, %{id: temp_id})}
+          {:ok, temp_id} -> {:halt, MessageViewport.delete(socket, temp_id)}
           :error -> {:halt, socket}
         end
     end
@@ -697,7 +698,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       loaded_message_count: length(raw_messages)
     )
     |> push_event("prepend_start", %{})
-    |> stream(:chat_messages, stream_items, reset: true)
+    |> MessageViewport.reset(stream_items)
   end
 
   defp message_to_stream_item(msg) do

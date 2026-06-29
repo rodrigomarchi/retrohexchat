@@ -347,6 +347,28 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
   zero stream, zero delta, eventos seguem adapters — só extração + derive-inside.
   **Regra:** stream p/ lista grande/append-heavy (viewport, nicklist); passthrough p/
   lista pequena com estilo churny (conversations).
+- **⚠️ Read-model NA PRÁTICA quase nunca migra — só o render-model (validado no pior
+  caso, plano 10/viewport).** Mesmo no hot-path de mensagens (~30 callsites de stream),
+  o parent continuou dono de TODA a paginação/scroll/reconciliação
+  (`oldest_message_id`/`has_more`/`pending_channel_msg_id`/`cleared_channel_cutoffs` +
+  o swap pending→real e os cutoffs por canal) e o componente ficou dono só do
+  `stream(:chat_messages)`. Tentar mover a paginação p/ dentro do componente (o que o
+  plano pedia ao pé da letra) significaria reescrever lógica intrincada sem ganho — o
+  ganho de isolação já vem de tirar o `:for` do template do parent. **Default: mova o
+  render-model, deixe o read-model onde está.**
+- **⚠️ Callsite de stream PERDIDO não falha no compile — falha em runtime.**
+  `stream_insert(socket, :chat_messages, …)` continua compilando se aquele módulo ainda
+  importar `stream_insert/3` (ou for outro stream). Logo um site esquecido vira um erro
+  de runtime "stream :chat_messages not found", não um erro de compile. Em refactor de
+  muitos sites, o gate de completude é `grep -rn ":chat_messages"` (não o compile).
+  Depois remova `import Phoenix.LiveView, only: [stream*]` de cada módulo e deixe o
+  `-W0` apontar imports órfãos remanescentes (inclusive `Phoenix.HTML` `raw/1` se você
+  moveu o `render_message/1` que o usava).
+- **load-more com reconciliação usa `{:reset, items}`, não `at: 0`.** Se a paginação
+  atual já reconstrói a janela inteira no load-more (reordena/reconcilia), o delta
+  correto é `reset(stream_items)` — idêntico ao comportamento de hoje. `limit: -N` /
+  janela de DOM ficam p/ quando a ownership de scroll migrar de fato (no nosso caso,
+  plano 56).
 - **Teste de componente com stream:** `render_component(Comp, id:, action: {:reset, items})`
   popula o stream e renderiza as linhas (mount → update(action) → render num só passo);
   asserte os `id={dom_id}` e `data-*`. Feature tests existentes que disparam um evento
@@ -579,3 +601,21 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
     `## Classificação para execução (agentes)` (tier/deps/referência/abordagem/gotchas/
     validação) e o `PROGRESS.md` ganhou o "Mapa de Classificação & Dependências". Set
     mecânico restante: 32, 17, 44+45, 26, 07, 55 (+ audits 53/54).
+- **2026-06-29 (plano 10 — viewport, o CORE big-bang):** primeiro stream-owner no
+  hot-path de MENSAGENS (nicklist/conversations eram sidebars). Feito como UM refactor
+  atômico (~30 callsites em 10 módulos). Confirmou o padrão shared-read-model no pior
+  caso: o parent continuou dono de TODA a paginação/scroll/reconciliação e o componente
+  ficou só com `stream(:chat_messages)` + `render_message/1`/`message_classes/2`
+  (movidos verbatim, com os imports de cards/indicadores). Findings (todos no §1d):
+  - **Default: mova só o render-model.** Migrar a paginação pro componente (o pedido
+    literal do plano) reescreveria lógica intrincada (swap pending→real, cutoffs por
+    canal) SEM ganho — a isolação já vem de tirar o `:for` do template do parent.
+  - **Callsite perdido = erro de RUNTIME, não de compile** (`stream_insert` compila se o
+    módulo ainda importa). Gate de completude = `grep -rn ":chat_messages"`, não o compile.
+  - **load-more usa `{:reset, items}`** (a paginação atual já reconstrói a janela);
+    `limit: -N`/janela de DOM ficam pro plano 56.
+  - Validação: `make ci` 9/9 (a suíte de 212 feature tests exercita send/edit/delete/
+    notice/pm pelo caminho async `send_update` sem falha → LiveViewTest faz flush do
+    update do filho dentro do render do feature test). E2E focado 23/23 verde (chat-send,
+    -message-rendering, -history-pagination P10 canal+PM sem-dup, -message-actions
+    O8–O11, -message-edit-delete-edges R10, -message-retry S10/S11, -notice, -pm).
