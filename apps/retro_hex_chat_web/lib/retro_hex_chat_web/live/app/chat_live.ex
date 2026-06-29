@@ -24,7 +24,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── Chat components ──────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.IrcTabs
   import RetroHexChatWeb.Components.UI.TopicBar
-  import RetroHexChatWeb.Components.UI.ChatMessage
   import RetroHexChatWeb.Components.UI.ChatInput
   import RetroHexChatWeb.Components.UI.FormattingToolbar
   import RetroHexChatWeb.Components.UI.Autocomplete
@@ -695,7 +694,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       channel_list_channels: [],
       channel_list_loading: false
     )
-    |> stream(:status_messages, [])
   end
 
   # ── View helpers ──────────────────────────────────────────────

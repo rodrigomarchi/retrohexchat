@@ -79,11 +79,13 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       assert html =~ "Inviting: #{target}"
       assert html =~ channel
 
-      html =
-        op_view
-        |> element("form[phx-submit=invite_channel_picker_submit]")
-        |> render_submit(%{"target" => target, "channel" => channel})
+      op_view
+      |> element("form[phx-submit=invite_channel_picker_submit]")
+      |> render_submit(%{"target" => target, "channel" => channel})
 
+      # The status line is appended via the StatusViewport island's async
+      # send_update — flush with a render before asserting it.
+      html = render(op_view)
       assert html =~ "* Inviting #{target} to #{channel}"
       refute has_element?(op_view, "#invite-channel-picker-dialog-show-trigger")
 
@@ -179,11 +181,13 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       assert html =~ "Channel: #{channel}"
       refute has_element?(guest_view, "#channel-list-dialog-show-trigger")
 
-      html =
-        guest_view
-        |> element("form[phx-submit=knock_request_submit]")
-        |> render_submit(%{"channel" => channel, "message" => "Please let me in"})
+      guest_view
+      |> element("form[phx-submit=knock_request_submit]")
+      |> render_submit(%{"channel" => channel, "message" => "Please let me in"})
 
+      # The status line is appended via the StatusViewport island's async
+      # send_update — flush with a render before asserting it.
+      html = render(guest_view)
       assert html =~ "Knock sent to #{channel}"
       refute has_element?(guest_view, "#knock-request-dialog-show-trigger")
     end

@@ -22,6 +22,9 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
 
     send(view.pid, msg)
     :timer.sleep(5)
+    # Flush the async send_update from the message/membership stream islands so
+    # any push_event from this handler is delivered before the caller asserts.
+    render(view)
   end
 
   defp send_new_pm(view, sender, recipient, content) do
@@ -39,21 +42,33 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
 
     send(view.pid, msg)
     :timer.sleep(5)
+    # Flush the async send_update from the message/membership stream islands so
+    # any push_event from this handler is delivered before the caller asserts.
+    render(view)
   end
 
   defp send_user_joined(view, nick, channel) do
     send(view.pid, {:user_joined, %{nickname: nick, role: :regular, channel: channel}})
     :timer.sleep(5)
+    # Flush the async send_update from the message/membership stream islands so
+    # any push_event from this handler is delivered before the caller asserts.
+    render(view)
   end
 
   defp send_user_left(view, nick, channel) do
     send(view.pid, {:user_left, %{nickname: nick, reason: nil, channel: channel}})
     :timer.sleep(5)
+    # Flush the async send_update from the message/membership stream islands so
+    # any push_event from this handler is delivered before the caller asserts.
+    render(view)
   end
 
   defp send_user_kicked(view, operator, target) do
     send(view.pid, {:user_kicked, %{operator: operator, target: target, reason: "bye"}})
     :timer.sleep(5)
+    # Flush the async send_update from the message/membership stream islands so
+    # any push_event from this handler is delivered before the caller asserts.
+    render(view)
   end
 
   defp ensure_channel(name) do

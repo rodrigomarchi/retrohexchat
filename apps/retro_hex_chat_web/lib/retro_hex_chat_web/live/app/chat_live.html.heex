@@ -196,23 +196,14 @@
             show_status_tab={@show_status_tab}
           />
 
-          <%!-- Status messages stream --%>
-          <.chat_message_list
-            fill
-            hidden={!@show_status_tab}
-            id="status-messages"
-            phx-update="stream"
-            testid="status-messages"
-          >
-            <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
-              <.chat_message
-                timestamp={ChatHelpers.format_time(msg.timestamp, @timestamp_format, @timezone)}
-                type={to_string(msg.type)}
-              >
-                {msg.content}
-              </.chat_message>
-            </div>
-          </.chat_message_list>
+          <%!-- Status messages stream (stateful island — owns the :status_messages stream) --%>
+          <.live_component
+            module={RetroHexChatWeb.ChatLive.Components.StatusViewport}
+            id={RetroHexChatWeb.ChatLive.Components.StatusViewport.id()}
+            timestamp_format={@timestamp_format}
+            timezone={@timezone}
+            show_status_tab={@show_status_tab}
+          />
         </div>
 
         <%!-- Nicklist sidebar --%>

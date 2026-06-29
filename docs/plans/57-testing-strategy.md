@@ -171,6 +171,7 @@ regressoes** introduzidas — todas as falhas abaixo reproduzem identicas em
 | chat-search-window-state | 1f (S9) | 1f (S9) | **pre-existente** (auditado 2026-06-28) |
 | chat-perform-dialog | 1f/1p | 1f (U6) | **pre-existente** |
 | chat-conversations-sidebar | 6/7 (1f V3) | 1f (V3) | **pre-existente** (auditado 2026-06-29, plano 05) |
+| chat-nickserv-whois-realtime | 1f (W4) | 1f (W4) | **pre-existente** (auditado 2026-06-29, plano 11) |
 | chat-send | flaky (1f depois 4/4) | — | flaky (timing) |
 
 > 2026-06-29 (plano 05): a extracao da `Conversations` para LiveComponent passthrough
@@ -178,6 +179,17 @@ regressoes** introduzidas — todas as falhas abaixo reproduzem identicas em
 > channel list search pre-state") falha IDENTICO no baseline limpo (`git stash` do
 > heex/chat_live.ex → spec). E um problema pre-existente do `ChannelListDialog` (o
 > `{:open}` reseta `search`), nao da sidebar. Os outros 6 specs de conversas verdes.
+
+> 2026-06-29 (plano 11): a extracao do `StatusViewport` (e o `MessageViewport` do plano
+> 10) nao introduziu regressao. **W4** (`chat-nickserv-whois-realtime` — "registering and
+> dropping NickServ state updates another user whois without reconnect") falha porque
+> espera saida de whois em **modo texto** (`----- Whois: nick -----`) no chat, mas o
+> default e `whois_output_mode: :card` (chat_live.ex:567, NAO tocado por 10/11) → whois
+> renderiza um card, `messageRows` nao cresce, o poll estoura. Mesma classe das falhas
+> J10/J11 do plano 44 ("text-vs-card-mode, fail on clean HEAD"). Confirmado falhando
+> IDENTICO no baseline plano-10 (`git stash` + rebuild assets) — o default predates ambos
+> os planos. Os 11 specs focados de status (server-messages, notice, welcome, wallops,
+> statusbar, nickserv) ficam verdes.
 
 > 2026-06-28 (plano 09): a extracao do `SearchBar` para LiveComponent stateful nao
 > introduziu regressao. Os specs `chat-search-history` (S7), `chat-search-navigation`

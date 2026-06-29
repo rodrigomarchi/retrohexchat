@@ -44,8 +44,11 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       Application.put_env(:retro_hex_chat, :motd_cache, motd)
 
-      html = render_click(view, "toolbar_action", %{"action" => "show_motd"})
+      render_click(view, "toolbar_action", %{"action" => "show_motd"})
 
+      # The MOTD line is appended via the StatusViewport island's async
+      # send_update — flush with a render before asserting it.
+      html = render(view)
       assert html =~ motd
       assert html =~ ~s(id="status-messages")
     end

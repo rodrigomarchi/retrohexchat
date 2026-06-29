@@ -133,6 +133,20 @@ assert render(view) =~ "2/3"      # NAO: assert render_click(...) =~ "2/3"
 E2E (Playwright) **nao** e afetado — o cliente real aplica os diffs do
 `send_update` normalmente.
 
+**⚠️ Generalização (plano 11) — isto também engole `assert_push_event`.** Quando a
+lista/stream sai do template do parent (foi pra um island), o render do parent
+*depois* do handler vira um **diff vazio** (a mudança foi pro filho via
+`send_update`). O LiveViewTest só entrega `push_event`s bufferizados quando um diff
+é de fato enviado — então um `push_event` que o handler empurrou (som, title-flash)
+NÃO chega ao mailbox do teste sem um `render(view)`. O `push_event` É gerado (dá pra
+provar com um `IO.inspect` temporário no ponto do push) — é só entrega. Portanto:
+**qualquer assert logo após um `send(view.pid, …)`/evento que agora roteia por um
+island precisa de `render(view)` — vale tanto pra assert de DOM/texto quanto pra
+`assert_push_event`.** Fix central: se os testes usam helpers tipo `send_new_message`/
+`send_user_joined`, ponha o `render(view)` no fim do helper (um render extra é no-op
+nos testes que já passam). Sintoma: `assert_receive {^ref, {:push_event, "play_sound",
+…}}, ... no matching message after 100ms`, com o evento ausente do mailbox.
+
 ## 3. Montagem e contexto do componente
 
 - **Sempre** monte o `<.live_component ...>` no template (NUNCA dentro de
@@ -619,3 +633,15 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
     update do filho dentro do render do feature test). E2E focado 23/23 verde (chat-send,
     -message-rendering, -history-pagination P10 canal+PM sem-dup, -message-actions
     O8–O11, -message-edit-delete-edges R10, -message-retry S10/S11, -notice, -pm).
+- **2026-06-29 (plano 11 — status-viewport, o gêmeo):** `StatusViewport` (dono do
+  `stream(:status_messages)`, bounded a 500). Trivial porque a inserção tem UM funil
+  (`push_status_message/3`) — rerotear 1 chamada migrou ~40 callers. Parent mantém
+  `status_unread`/`show_status_tab` (read-model). **Gotcha que custou a depuração
+  (agora no §2):** tirar a lista do parent fez o diff do parent pós-handler virar
+  vazio → LiveViewTest parou de entregar `push_event`s (som/title-flash) sem
+  `render(view)`. 10 testes quebraram afirmando `assert_push_event`/texto logo após um
+  `send` cru. O `push_event` É gerado (provado com IO.inspect) — só não é entregue.
+  Fix central nos helpers `send_*` + flushes pontuais. NÃO é regressão de produto (E2E
+  passa). Também: ao remover o último uso de `<.chat_message>` do parent, o `-W0`
+  pegou o import órfão `ChatMessage`. E2E whois-realtime W4 é pré-existente
+  (default `:card` vs teste que espera texto — classe J10/J11).

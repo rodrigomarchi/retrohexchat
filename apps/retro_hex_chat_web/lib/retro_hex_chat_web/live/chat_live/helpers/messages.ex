@@ -4,12 +4,11 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
   """
 
   import Phoenix.Component, only: [assign: 3]
-  import Phoenix.LiveView, only: [stream_insert: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Chat.IgnoreList
-  alias RetroHexChatWeb.ChatLive.Components.MessageViewport
+  alias RetroHexChatWeb.ChatLive.Components.{MessageViewport, StatusViewport}
 
   @spec visible_channel_messages([map()], map()) :: [map()]
   def visible_channel_messages(messages, ignore_list) do
@@ -79,7 +78,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
       timestamp: DateTime.utc_now()
     }
 
-    socket = stream_insert(socket, :status_messages, msg)
+    socket = StatusViewport.insert(socket, msg)
 
     if socket.assigns.show_status_tab do
       socket
