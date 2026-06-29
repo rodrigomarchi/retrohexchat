@@ -8,6 +8,7 @@
 - Req 0.5+ (HTTP client for link previews)
 - In-memory: GenServer/ETS for runtime, Session structs for guests, localStorage for client state
 - ExSTUN ~> 0.1 (WebRTC signaling)
+- PromEx exports Prometheus metrics at `/metrics`; Grafana dashboards are provisioned from the infra repo
 
 ## Project Structure
 
@@ -21,6 +22,7 @@ apps/
 │   └── test/
 └── retro_hex_chat_web/       # Web layer (Phoenix + LiveView)
     ├── lib/retro_hex_chat_web/
+    │   ├── prom_ex.ex       # PromEx plugins/dashboards for Prometheus/Grafana
     │   ├── live/app/          # ConnectLive, ChatLive, P2PSessionLive, etc.
     │   ├── live/chat_live/   # Shared event handlers, helpers, hooks
     │   └── components/       # UI components (ui/), icons, layouts

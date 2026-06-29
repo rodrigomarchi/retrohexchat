@@ -8,6 +8,7 @@ defmodule RetroHexChatWeb.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      RetroHexChatWeb.PromEx,
       RetroHexChatWeb.Telemetry,
       # Tailwind class merging cache (used by UI primitive components)
       TwMerge.Cache,

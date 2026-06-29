@@ -62,6 +62,12 @@ config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   pubsub_server: RetroHexChat.PubSub,
   live_view: [signing_salt: "tFc/qS/G"]
 
+config :retro_hex_chat_web, RetroHexChatWeb.PromEx,
+  grafana: :disabled,
+  metrics_server: :disabled,
+  manual_metrics_start_delay: :no_delay,
+  drop_metrics_groups: []
+
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.25.4",

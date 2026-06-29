@@ -69,6 +69,7 @@ defmodule RetroHexChatWeb.MixProject do
       {:retro_hex_chat, in_umbrella: true},
       {:jason, "~> 1.2"},
       {:bandit, "~> 1.5"},
+      {:prom_ex, "~> 1.11"},
       {:live_dashboard_history, "~> 0.1"},
       {:salad_ui, "~> 0.14"},
 
