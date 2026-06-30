@@ -288,6 +288,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
     {:noreply, ChatLive.Helpers.error_event(socket, message)}
   end
 
+  # Admin Console bubbles the same way.
+  def handle_info({:admin_system_error, message}, socket) do
+    {:noreply, ChatLive.Helpers.error_event(socket, message)}
+  end
+
   # ── Catch-all handle_info ─────────────────────────────────────
 
   def handle_info({_ref, _result}, socket), do: {:noreply, socket}
@@ -570,16 +575,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       autorespond_cooldowns: %{},
       show_custom_menus_dialog: false,
       show_autorespond_dialog: false,
-      # Admin Console: only the filter/draft read-model stays here (sibling
-      # adapters read these back to preserve filters across actions); the ~26
-      # display assigns live in ChatLive.Components.AdminConsoleDialog.
-      admin_console_audit_log_last: "20",
-      admin_console_audit_log_user: "",
-      admin_console_users_search: "",
-      admin_console_users_online_only: false,
-      admin_console_channels_search: "",
-      admin_console_channels_info_channel: "",
-      admin_console_channels_create_name: "",
       away_replied_to: MapSet.new(),
       quit_reason: nil,
       show_emoji_picker: false,
@@ -601,10 +596,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── View helpers ──────────────────────────────────────────────
 
   defp admin?(session), do: ChatContext.admin?(session)
-
-  defp admin_only?(session), do: ChatContext.admin_only?(session)
-
-  defp root_admin?(session), do: ChatContext.root_admin?(session)
 
   # ── Startup messages ──────────────────────────────────────────
 

@@ -140,7 +140,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
     test "toolbar action opens the tabbed Admin Console for an identified admin", %{conn: conn} do
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      open_admin(view)
       html = render(view)
 
       assert html =~ "Server Settings"
@@ -215,8 +215,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "server_settings"})
+      open_admin(view)
+      admin_tab(view, "server_settings")
       html = render(view)
 
       assert html =~ initial_description
@@ -330,8 +330,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "users"})
+      open_admin(view)
+      admin_tab(view, "users")
       html = render(view)
 
       assert html =~ "*** User List"
@@ -358,8 +358,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "users"})
+      open_admin(view)
+      admin_tab(view, "users")
 
       view
       |> form("#admin-console-user-ban-form", %{
@@ -425,8 +425,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "users"})
+      open_admin(view)
+      admin_tab(view, "users")
 
       view
       |> form("#admin-console-user-rename-form", %{
@@ -574,8 +574,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "channels"})
+      open_admin(view)
+      admin_tab(view, "channels")
       html = render(view)
 
       assert html =~ "*** Channel List"
@@ -608,8 +608,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "channels"})
+      open_admin(view)
+      admin_tab(view, "channels")
 
       view
       |> form("#admin-console-channel-purge-form", %{
@@ -646,8 +646,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "channels"})
+      open_admin(view)
+      admin_tab(view, "channels")
 
       view
       |> form("#admin-console-channel-cs-info-form", %{"channel" => channel})
@@ -752,8 +752,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       Application.put_env(:retro_hex_chat, :motd_cache, "Existing MOTD")
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "motd"})
+      open_admin(view)
+      admin_tab(view, "motd")
       html = render(view)
 
       assert html =~ "Existing MOTD"
@@ -768,7 +768,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ new_motd
       assert Application.get_env(:retro_hex_chat, :motd_cache) == new_motd
 
-      render_click(view, "admin_console_clear_motd")
+      adm(view, "admin_console_clear_motd")
       html = render(view)
 
       assert html =~ "MOTD has been cleared."
@@ -815,8 +815,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:wallops")
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "server:announcements")
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "broadcast"})
+      open_admin(view)
+      admin_tab(view, "broadcast")
 
       view
       |> form("#admin-console-broadcast-form", %{
@@ -876,13 +876,13 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
     test "admin can refresh TURN snapshots from the structured tab", %{conn: conn} do
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "turn"})
+      open_admin(view)
+      admin_tab(view, "turn")
       html = render(view)
 
       assert_turn_snapshot(html)
 
-      render_click(view, "admin_console_refresh_turn")
+      adm(view, "admin_console_refresh_turn")
       html = render(view)
 
       assert_turn_snapshot(html)
@@ -926,8 +926,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
 
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "audit_log"})
+      open_admin(view)
+      admin_tab(view, "audit_log")
       html = render(view)
 
       assert html =~ action
@@ -985,8 +985,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
     test "admin can preview nuke and invalid confirmation is blocked", %{conn: conn} do
       view = connect_admin(conn)
 
-      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      render_click(view, "admin_console_tab", %{"tab" => "danger_zone"})
+      open_admin(view)
+      admin_tab(view, "danger_zone")
       html = render(view)
 
       assert html =~ "NUKE PREVIEW"
@@ -1048,5 +1048,20 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       |> List.first()
       |> String.replace_prefix("context-menu-item-", "")
     end)
+  end
+
+  defp open_admin(view) do
+    render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+    render(view)
+  end
+
+  defp admin_tab(view, tab) do
+    view
+    |> element("#admin-console-dialog-tabs .tabs-trigger[data-target='#{tab}']")
+    |> render_click()
+  end
+
+  defp adm(view, event) do
+    view |> element("[phx-click='#{event}']") |> render_click()
   end
 end

@@ -3,13 +3,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialogTest do
 
   import Phoenix.LiveViewTest
 
+  alias RetroHexChat.Accounts.Session
   alias RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog
 
   @moduletag :unit
 
+  # "TestAdmin" is in config/test.exs `admins:` → admin? + admin_only? true,
+  # root_admin? false (not in root_admins). The component derives the per-control
+  # permission flags from this session in render/1.
+  defp admin_session, do: "TestAdmin" |> Session.new() |> Session.set_identified(true)
+
   defp dialog(overrides) do
-    assigns = Map.merge(%{id: AdminConsoleDialog.id()}, overrides)
-    render_component(AdminConsoleDialog, assigns)
+    base = %{id: AdminConsoleDialog.id(), session: admin_session()}
+    render_component(AdminConsoleDialog, Map.merge(base, overrides))
   end
 
   test "exposes a stable id" do
@@ -37,9 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialogTest do
         show: true,
         active_tab: "users",
         users_text: "*** User List (1 results) ***\n  AdminUser",
-        users_search: "Admin",
-        is_admin: true,
-        admin_only: true
+        users_search: "Admin"
       })
 
     assert html =~ ~s(data-testid="admin-console-tab-users")
@@ -47,23 +51,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialogTest do
     assert html =~ ~s(phx-submit="admin_console_refresh_users")
   end
 
-  test "derives the per-control permission flags from the three permission booleans" do
-    # admin_only grants the role form but only root_admin may set the admin role
-    html =
-      dialog(%{
-        show: true,
-        active_tab: "users",
-        is_admin: true,
-        admin_only: true,
-        root_admin: false
-      })
+  test "derives the per-control permission flags from the session" do
+    # admin_only (TestAdmin) grants the role form, but only root_admin may set
+    # the admin role — TestAdmin is not a root admin, so the option is disabled.
+    html = dialog(%{show: true, active_tab: "users"})
 
     assert html =~ ~s(phx-submit="admin_console_user_role")
-    # admin role option is disabled when the viewer is not a root admin
     assert html =~ ~s(value="admin" disabled)
   end
 
-  test "passes through the read-model filter drafts" do
+  test "owns and renders the filter/draft read-model" do
     html = dialog(%{show: true, active_tab: "channels", channels_search: "#lobby-search"})
 
     assert html =~ "#lobby-search"

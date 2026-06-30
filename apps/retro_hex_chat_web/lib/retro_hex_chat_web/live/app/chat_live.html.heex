@@ -444,14 +444,5 @@
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog}
   id={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog.id()}
-  is_admin={admin?(@session)}
-  admin_only={admin_only?(@session)}
-  root_admin={root_admin?(@session)}
-  users_search={@admin_console_users_search}
-  users_online_only={@admin_console_users_online_only}
-  channels_search={@admin_console_channels_search}
-  channels_info_channel={@admin_console_channels_info_channel}
-  channels_create_name={@admin_console_channels_create_name}
-  audit_log_last={@admin_console_audit_log_last}
-  audit_log_user={@admin_console_audit_log_user}
+  session={@session}
 />

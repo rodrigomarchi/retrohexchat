@@ -1,5 +1,14 @@
 # Admin Console Dialog Migration
 
+> **STATUS: COMPLETE (2026-06-30) — full ownership (redone from the initial adapter cut).**
+> `RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog` owns the ENTIRE console: all display/result
+> state, the 7 filter/draft read-model strings, every event (`@myself`, `target` threaded through the UI),
+> and the privileged `Admin`/`Dispatcher`/`Server` work. `admin_console_events.ex` gutted 1208→48 lines
+> (open admin-gate + close routing). `put_console`→`assign`, `error_event`→bubble (`{:admin_system_error}`),
+> permissions derived from passthrough `session` via `ChatContext`. JS tabs use
+> `on_tab={JS.push("admin_console_tab", target: @myself)}`. `make ci` 9/9; unit test (6) +
+> `server_administration_feature_test` 25/25 (element-based). See PROGRESS.md log (2026-06-30).
+
 ## Objetivo
 
 Migrar Admin Console para LiveComponent stateful pesado com tabs lazy/async, outputs limitados e permissoes centralizadas.

@@ -95,6 +95,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_close, :any, default: nil
 
   @spec admin_console_dialog(map()) :: Phoenix.LiveView.Rendered.t()
+  attr :target, :any, default: nil
+
   def admin_console_dialog(assigns) do
     ~H"""
     <div
@@ -110,6 +112,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
           <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
             <.tabs_list class="flex flex-wrap">
               <.admin_tab
+                target={@target}
                 builder={builder}
                 value="server_settings"
                 label={dgettext("dialogs", "Server Settings")}
@@ -117,6 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_tab={@on_tab}
               />
               <.admin_tab
+                target={@target}
                 builder={builder}
                 value="users"
                 label={dgettext("dialogs", "Users")}
@@ -124,6 +128,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_tab={@on_tab}
               />
               <.admin_tab
+                target={@target}
                 builder={builder}
                 value="channels"
                 label={dgettext("dialogs", "Channels")}
@@ -131,6 +136,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_tab={@on_tab}
               />
               <.admin_tab
+                target={@target}
                 builder={builder}
                 value="motd"
                 label={dgettext("dialogs", "MOTD")}
@@ -138,6 +144,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_tab={@on_tab}
               />
               <.admin_tab
+                target={@target}
                 builder={builder}
                 value="broadcast"
                 label={dgettext("dialogs", "Broadcast")}
@@ -145,6 +152,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_tab={@on_tab}
               />
               <.admin_tab
+                target={@target}
                 builder={builder}
                 value="audit_log"
                 label={dgettext("dialogs", "Audit Log")}
@@ -152,6 +160,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_tab={@on_tab}
               />
               <.admin_tab
+                target={@target}
                 builder={builder}
                 value="turn"
                 label={dgettext("dialogs", "TURN")}
@@ -159,6 +168,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_tab={@on_tab}
               />
               <.admin_tab
+                target={@target}
                 builder={builder}
                 value="danger_zone"
                 label={dgettext("dialogs", "Danger Zone")}
@@ -166,6 +176,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
                 on_tab={@on_tab}
               />
               <.admin_tab
+                target={@target}
                 builder={builder}
                 value="console"
                 label={dgettext("dialogs", "Console")}
@@ -188,6 +199,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
             <.tabs_content value="motd" builder={builder}>
               <.motd_tab
+                target={@target}
                 content={@motd_content}
                 result={@motd_result}
                 editable={@motd_editable}
@@ -199,6 +211,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
             <.tabs_content value="broadcast" builder={builder}>
               <.broadcast_tab
+                target={@target}
                 result={@broadcast_result}
                 can_wallops={@broadcast_can_wallops}
                 can_announce={@broadcast_can_announce}
@@ -208,6 +221,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
             <.tabs_content value="turn" builder={builder}>
               <.turn_tab
+                target={@target}
                 stats={@turn_stats}
                 allocations={@turn_allocations}
                 result={@turn_result}
@@ -218,6 +232,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
             <.tabs_content value="audit_log" builder={builder}>
               <.audit_log_tab
+                target={@target}
                 text={@audit_log_text}
                 last={@audit_log_last}
                 user={@audit_log_user}
@@ -229,6 +244,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
             <.tabs_content value="server_settings" builder={builder}>
               <.server_settings_tab
+                target={@target}
                 info={@server_settings_info}
                 settings_text={@server_settings_text}
                 values={@server_settings_values}
@@ -242,6 +258,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
             <.tabs_content value="users" builder={builder}>
               <.users_tab
+                target={@target}
                 text={@users_text}
                 banlist_text={@users_banlist_text}
                 result={@users_result}
@@ -267,6 +284,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
             <.tabs_content value="channels" builder={builder}>
               <.channels_tab
+                target={@target}
                 text={@channels_text}
                 banlist_text={@channels_banlist_text}
                 result={@channels_result}
@@ -290,6 +308,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
             <.tabs_content value="danger_zone" builder={builder}>
               <.danger_zone_tab
+                target={@target}
                 preview={@danger_zone_preview}
                 result={@danger_zone_result}
                 confirm={@danger_zone_confirm}
@@ -302,16 +321,21 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             </.tabs_content>
 
             <.tabs_content value="console" builder={builder}>
-              <.console_tab results={@results} />
+              <.console_tab results={@results} target={@target} />
             </.tabs_content>
           </.tabs>
         </.dialog_body>
         <.dialog_footer>
-          <.button type="button" variant="outline" phx-click="clear_admin_console">
+          <.button
+            type="button"
+            variant="outline"
+            phx-click="clear_admin_console"
+            phx-target={@target}
+          >
             <:icon><Icons.icon_trash class="w-[14px] h-[14px]" /></:icon>
             {dgettext("dialogs", "Clear")}
           </.button>
-          <.button type="button" phx-click={@on_close}>
+          <.button type="button" phx-click={@on_close} phx-target={@target}>
             <:icon><Icons.icon_close class="w-[14px] h-[14px]" /></:icon>
             {dgettext("dialogs", "Close")}
           </.button>
@@ -327,12 +351,15 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :icon_fn, :atom, required: true
   attr :on_tab, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp admin_tab(assigns) do
     ~H"""
     <.tabs_trigger
       builder={@builder}
       value={@value}
       phx-click={@on_tab}
+      phx-target={@target}
       phx-value-tab={@value}
     >
       <:icon>{apply(Icons, @icon_fn, [%{class: "w-4 h-4"}])}</:icon>
@@ -342,6 +369,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   end
 
   attr :results, :list, default: []
+
+  attr :target, :any, default: nil
 
   defp console_tab(assigns) do
     ~H"""
@@ -374,7 +403,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
     </div>
 
     <%!-- Input --%>
-    <form phx-submit="execute_admin_console" class="flex gap-retro-4">
+    <form phx-submit="execute_admin_console" phx-target={@target} class="flex gap-retro-4">
       <span class="text-sm font-mono font-bold shrink-0 self-start mt-retro-4">&gt;</span>
       <textarea
         id="admin-console-input"
@@ -399,6 +428,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_clear, :any, default: nil
   attr :on_refresh, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp motd_tab(assigns) do
     ~H"""
     <div class="space-y-retro-8" data-testid="admin-console-tab-motd">
@@ -416,7 +447,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         </div>
       </div>
 
-      <form id="admin-console-motd-form" phx-submit={@on_set} class="space-y-retro-4">
+      <form
+        id="admin-console-motd-form"
+        phx-submit={@on_set}
+        phx-target={@target}
+        class="space-y-retro-4"
+      >
         <label for="admin-console-motd-input" class="block text-xs font-bold">
           {dgettext("dialogs", "New MOTD")}
         </label>
@@ -429,7 +465,13 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         >{@content || ""}</textarea>
 
         <div class="flex flex-wrap justify-end gap-retro-4">
-          <.button type="button" size="sm" variant="outline" phx-click={@on_refresh}>
+          <.button
+            type="button"
+            size="sm"
+            variant="outline"
+            phx-click={@on_refresh}
+            phx-target={@target}
+          >
             <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
             {dgettext("dialogs", "Refresh")}
           </.button>
@@ -438,6 +480,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             size="sm"
             variant="outline"
             phx-click={@on_clear}
+            phx-target={@target}
             disabled={not @editable}
           >
             <:icon><Icons.icon_trash class="w-[14px] h-[14px]" /></:icon>
@@ -450,12 +493,14 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         </div>
       </form>
 
-      <.motd_result_strip result={@result} />
+      <.motd_result_strip result={@result} target={@target} />
     </div>
     """
   end
 
   attr :result, :map, default: nil
+
+  attr :target, :any, default: nil
 
   defp motd_result_strip(assigns) do
     ~H"""
@@ -477,10 +522,17 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :can_announce, :boolean, default: false
   attr :on_send, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp broadcast_tab(assigns) do
     ~H"""
     <div class="space-y-retro-8" data-testid="admin-console-tab-broadcast">
-      <form id="admin-console-broadcast-form" phx-submit={@on_send} class="space-y-retro-8">
+      <form
+        id="admin-console-broadcast-form"
+        phx-submit={@on_send}
+        phx-target={@target}
+        class="space-y-retro-8"
+      >
         <fieldset class="flex flex-wrap gap-retro-6">
           <label class="inline-flex items-center gap-retro-4 text-sm">
             <input
@@ -527,7 +579,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         </div>
       </form>
 
-      <.admin_inline_result result={@result} />
+      <.admin_inline_result result={@result} target={@target} />
     </div>
     """
   end
@@ -538,6 +590,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :can_refresh, :boolean, default: false
   attr :on_refresh, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp turn_tab(assigns) do
     ~H"""
     <div class="space-y-retro-8" data-testid="admin-console-tab-turn">
@@ -547,6 +601,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
           size="sm"
           variant="outline"
           phx-click={@on_refresh}
+          phx-target={@target}
           disabled={not @can_refresh}
         >
           <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
@@ -571,7 +626,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         </div>
       </div>
 
-      <.admin_inline_result result={@result} />
+      <.admin_inline_result result={@result} target={@target} />
     </div>
     """
   end
@@ -583,10 +638,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :can_refresh, :boolean, default: false
   attr :on_refresh, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp audit_log_tab(assigns) do
     ~H"""
     <div class="space-y-retro-8" data-testid="admin-console-tab-audit-log">
-      <form id="admin-console-audit-log-form" phx-submit={@on_refresh}>
+      <form id="admin-console-audit-log-form" phx-submit={@on_refresh} phx-target={@target}>
         <div class="flex flex-wrap items-end gap-retro-6">
           <div class="w-[88px]">
             <label for="admin-console-audit-log-last" class="block text-xs font-bold mb-retro-2">
@@ -628,7 +685,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         class="shadow-retro-sunken bg-white min-h-[190px] max-h-[260px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
       ><%= @text || "" %></pre>
 
-      <.admin_inline_result result={@result} />
+      <.admin_inline_result result={@result} target={@target} />
     </div>
     """
   end
@@ -642,12 +699,20 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_refresh, :any, default: nil
   attr :on_singleplayer, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp server_settings_tab(assigns) do
     ~H"""
     <div class="space-y-retro-8" data-testid="admin-console-tab-server-settings">
-      <form id="admin-console-server-settings-form" phx-submit={@on_save} class="space-y-retro-8">
+      <form
+        id="admin-console-server-settings-form"
+        phx-submit={@on_save}
+        phx-target={@target}
+        class="space-y-retro-8"
+      >
         <div class="grid gap-retro-6 md:grid-cols-2">
           <.settings_input
+            target={@target}
             id="admin-console-server-name"
             name="server_name"
             label={dgettext("dialogs", "Server name")}
@@ -655,6 +720,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_edit}
           />
           <.settings_input
+            target={@target}
             id="admin-console-max-channels"
             name="max_channels"
             label={dgettext("dialogs", "Max channels")}
@@ -664,6 +730,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             min="1"
           />
           <.settings_input
+            target={@target}
             id="admin-console-server-description"
             name="server_description"
             label={dgettext("dialogs", "Description")}
@@ -671,6 +738,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_edit}
           />
           <.settings_input
+            target={@target}
             id="admin-console-welcome-message"
             name="welcome_message"
             label={dgettext("dialogs", "Welcome message")}
@@ -696,6 +764,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             </select>
           </div>
           <.settings_input
+            target={@target}
             id="admin-console-whowas-retention"
             name="whowas_retention_seconds"
             label={dgettext("dialogs", "Whowas retention")}
@@ -713,6 +782,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             size="sm"
             variant="outline"
             phx-click={@on_singleplayer}
+            phx-target={@target}
             disabled={not @can_edit}
           >
             <:icon><Icons.icon_game_generic class="w-[14px] h-[14px]" /></:icon>
@@ -723,6 +793,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             size="sm"
             variant="outline"
             phx-click={@on_refresh}
+            phx-target={@target}
             disabled={not @can_edit}
           >
             <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
@@ -752,7 +823,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         </div>
       </div>
 
-      <.admin_inline_result result={@result} />
+      <.admin_inline_result result={@result} target={@target} />
     </div>
     """
   end
@@ -765,6 +836,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :type, :string, default: "text"
   attr :min, :string, default: nil
   attr :max, :string, default: nil
+
+  attr :target, :any, default: nil
 
   defp settings_input(assigns) do
     ~H"""
@@ -806,10 +879,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_ns_drop, :any, default: nil
   attr :on_ns_resetpass, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp users_tab(assigns) do
     ~H"""
     <div class="space-y-retro-8" data-testid="admin-console-tab-users">
-      <form id="admin-console-users-form" phx-submit={@on_refresh}>
+      <form id="admin-console-users-form" phx-submit={@on_refresh} phx-target={@target}>
         <div class="flex flex-wrap items-end gap-retro-6">
           <div class="flex-1 min-w-[160px]">
             <label for="admin-console-users-search" class="block text-xs font-bold mb-retro-2">
@@ -847,7 +922,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         class="shadow-retro-sunken bg-white min-h-[140px] max-h-[210px] overflow-y-auto p-retro-8 text-xs whitespace-pre-wrap"
       ><%= @text || "" %></pre>
 
-      <form id="admin-console-user-info-form" phx-submit={@on_info}>
+      <form id="admin-console-user-info-form" phx-submit={@on_info} phx-target={@target}>
         <div class="flex flex-wrap items-end gap-retro-6">
           <div class="flex-1 min-w-[160px]">
             <label for="admin-console-user-info-nick" class="block text-xs font-bold mb-retro-2">
@@ -874,6 +949,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Moderation")}</div>
         <div class="grid gap-retro-6 md:grid-cols-2">
           <.user_moderation_form
+            target={@target}
             id="admin-console-user-ban-form"
             event={@on_ban}
             title={dgettext("dialogs", "Ban user")}
@@ -884,6 +960,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.user_moderation_form
+            target={@target}
             id="admin-console-user-unban-form"
             event={@on_unban}
             title={dgettext("dialogs", "Unban user")}
@@ -892,6 +969,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.user_moderation_form
+            target={@target}
             id="admin-console-user-kick-form"
             event={@on_kick}
             title={dgettext("dialogs", "Kick user")}
@@ -901,6 +979,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.user_moderation_form
+            target={@target}
             id="admin-console-user-mute-form"
             event={@on_mute}
             title={dgettext("dialogs", "Mute user")}
@@ -910,6 +989,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.user_moderation_form
+            target={@target}
             id="admin-console-user-unmute-form"
             event={@on_unmute}
             title={dgettext("dialogs", "Unmute user")}
@@ -926,6 +1006,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
           <form
             id="admin-console-user-rename-form"
             phx-submit={@on_rename}
+            phx-target={@target}
             class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4"
           >
             <div class="text-xs font-bold">{dgettext("dialogs", "Rename user")}</div>
@@ -956,6 +1037,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
           <form
             id="admin-console-user-role-form"
             phx-submit={@on_role}
+            phx-target={@target}
             class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4"
           >
             <div class="text-xs font-bold">{dgettext("dialogs", "Set role")}</div>
@@ -992,6 +1074,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "NickServ admin")}</div>
         <div class="grid gap-retro-6 md:grid-cols-3">
           <.user_nickserv_form
+            target={@target}
             id="admin-console-user-ns-info-form"
             event={@on_ns_info}
             title={dgettext("dialogs", "NickServ info")}
@@ -1000,6 +1083,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.user_nickserv_form
+            target={@target}
             id="admin-console-user-ns-resetpass-form"
             event={@on_ns_resetpass}
             title={dgettext("dialogs", "Reset password")}
@@ -1009,6 +1093,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.user_nickserv_form
+            target={@target}
             id="admin-console-user-ns-drop-form"
             event={@on_ns_drop}
             title={dgettext("dialogs", "Drop registration")}
@@ -1027,7 +1112,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         ><%= @banlist_text || "" %></pre>
       </div>
 
-      <.admin_inline_result result={@result} />
+      <.admin_inline_result result={@result} target={@target} />
     </div>
     """
   end
@@ -1040,9 +1125,16 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :include_password, :boolean, default: false
   attr :disabled, :boolean, default: false
 
+  attr :target, :any, default: nil
+
   defp user_nickserv_form(assigns) do
     ~H"""
-    <form id={@id} phx-submit={@event} class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4">
+    <form
+      id={@id}
+      phx-submit={@event}
+      phx-target={@target}
+      class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4"
+    >
       <div class="text-xs font-bold">{@title}</div>
       <input
         name="nick"
@@ -1080,9 +1172,16 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :show_duration, :boolean, default: false
   attr :disabled, :boolean, default: false
 
+  attr :target, :any, default: nil
+
   defp user_moderation_form(assigns) do
     ~H"""
-    <form id={@id} phx-submit={@event} class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4">
+    <form
+      id={@id}
+      phx-submit={@event}
+      phx-target={@target}
+      class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4"
+    >
       <div class="text-xs font-bold">{@title}</div>
       <input
         name="nick"
@@ -1139,10 +1238,12 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_cs_access_add, :any, default: nil
   attr :on_cs_access_del, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp channels_tab(assigns) do
     ~H"""
     <div class="space-y-retro-8" data-testid="admin-console-tab-channels">
-      <form id="admin-console-channels-form" phx-submit={@on_refresh}>
+      <form id="admin-console-channels-form" phx-submit={@on_refresh} phx-target={@target}>
         <div class="flex flex-wrap items-end gap-retro-6">
           <div class="flex-1 min-w-[160px]">
             <label for="admin-console-channels-search" class="block text-xs font-bold mb-retro-2">
@@ -1171,7 +1272,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
       ><%= @text || "" %></pre>
 
       <div class="grid gap-retro-8 md:grid-cols-2">
-        <form id="admin-console-channel-info-form" phx-submit={@on_info}>
+        <form id="admin-console-channel-info-form" phx-submit={@on_info} phx-target={@target}>
           <div class="flex flex-wrap items-end gap-retro-6">
             <div class="flex-1 min-w-[140px]">
               <label for="admin-console-channel-info-name" class="block text-xs font-bold mb-retro-2">
@@ -1194,7 +1295,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
           </div>
         </form>
 
-        <form id="admin-console-channel-create-form" phx-submit={@on_create}>
+        <form id="admin-console-channel-create-form" phx-submit={@on_create} phx-target={@target}>
           <div class="flex flex-wrap items-end gap-retro-6">
             <div class="flex-1 min-w-[140px]">
               <label
@@ -1225,6 +1326,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "Destructive actions")}</div>
         <div class="grid gap-retro-6 md:grid-cols-2">
           <.channel_destructive_form
+            target={@target}
             id="admin-console-channel-delete-form"
             event={@on_delete}
             title={dgettext("dialogs", "Delete channel")}
@@ -1233,6 +1335,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.channel_destructive_form
+            target={@target}
             id="admin-console-channel-purge-form"
             event={@on_purge}
             title={dgettext("dialogs", "Purge messages")}
@@ -1248,6 +1351,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         <div class="text-xs font-bold mb-retro-4">{dgettext("dialogs", "ChanServ admin")}</div>
         <div class="grid gap-retro-6 md:grid-cols-3">
           <.channel_chanserv_form
+            target={@target}
             id="admin-console-channel-cs-info-form"
             event={@on_cs_info}
             title={dgettext("dialogs", "ChanServ info")}
@@ -1256,6 +1360,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.channel_chanserv_form
+            target={@target}
             id="admin-console-channel-cs-access-list-form"
             event={@on_cs_access_list}
             title={dgettext("dialogs", "Access list")}
@@ -1264,6 +1369,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.channel_chanserv_form
+            target={@target}
             id="admin-console-channel-cs-transfer-form"
             event={@on_cs_transfer}
             title={dgettext("dialogs", "Transfer founder")}
@@ -1273,6 +1379,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.channel_chanserv_form
+            target={@target}
             id="admin-console-channel-cs-access-add-form"
             event={@on_cs_access_add}
             title={dgettext("dialogs", "Add access")}
@@ -1283,6 +1390,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.channel_chanserv_form
+            target={@target}
             id="admin-console-channel-cs-access-del-form"
             event={@on_cs_access_del}
             title={dgettext("dialogs", "Remove access")}
@@ -1293,6 +1401,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             disabled={not @can_refresh}
           />
           <.channel_chanserv_form
+            target={@target}
             id="admin-console-channel-cs-drop-form"
             event={@on_cs_drop}
             title={dgettext("dialogs", "Drop registration")}
@@ -1313,7 +1422,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         ><%= @banlist_text || "" %></pre>
       </div>
 
-      <.admin_inline_result result={@result} />
+      <.admin_inline_result result={@result} target={@target} />
     </div>
     """
   end
@@ -1329,9 +1438,16 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :destructive, :boolean, default: false
   attr :disabled, :boolean, default: false
 
+  attr :target, :any, default: nil
+
   defp channel_chanserv_form(assigns) do
     ~H"""
-    <form id={@id} phx-submit={@event} class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4">
+    <form
+      id={@id}
+      phx-submit={@event}
+      phx-target={@target}
+      class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4"
+    >
       <div class={["text-xs font-bold", if(@destructive, do: "text-destructive")]}>
         {@title}
       </div>
@@ -1394,9 +1510,16 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :include_from, :boolean, default: false
   attr :disabled, :boolean, default: false
 
+  attr :target, :any, default: nil
+
   defp channel_destructive_form(assigns) do
     ~H"""
-    <form id={@id} phx-submit={@event} class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4">
+    <form
+      id={@id}
+      phx-submit={@event}
+      phx-target={@target}
+      class="shadow-retro-sunken bg-white p-retro-6 space-y-retro-4"
+    >
       <div class="text-xs font-bold text-destructive">{@title}</div>
       <input
         name="channel"
@@ -1442,6 +1565,8 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_change, :any, default: nil
   attr :on_execute, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp danger_zone_tab(assigns) do
     assigns =
       assign(assigns,
@@ -1469,6 +1594,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         id="admin-console-danger-zone-form"
         phx-change={@on_change}
         phx-submit={@on_execute}
+        phx-target={@target}
         class="space-y-retro-6"
       >
         <label for="admin-console-danger-confirm" class="block text-xs font-bold">
@@ -1492,6 +1618,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
             size="sm"
             variant="outline"
             phx-click={@on_preview}
+            phx-target={@target}
             disabled={not @can_execute}
           >
             <:icon><Icons.icon_btn_refresh class="w-[14px] h-[14px]" /></:icon>
@@ -1509,12 +1636,14 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         </div>
       </form>
 
-      <.admin_inline_result result={@result} />
+      <.admin_inline_result result={@result} target={@target} />
     </div>
     """
   end
 
   attr :result, :any, default: nil
+
+  attr :target, :any, default: nil
 
   defp admin_inline_result(assigns) do
     ~H"""
