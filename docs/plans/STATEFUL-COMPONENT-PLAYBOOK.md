@@ -416,6 +416,50 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
   conectado (o `send_update` já foi processado quando o assert roda) — mas mantenha o
   §2 em mente se um teste falhar.
 
+## 9. Ilha que vive numa janela (lobby / desktop Win98)
+
+Aplicável quando o LiveView é um **desktop de janelas** (`Desktop`/`desktop_window` +
+`WindowManagerHook`), como o `LobbyLive`. Ver a série `docs/plans/lobby/`.
+
+- **A janela é chrome client-side.** O `WindowManagerHook` é dono de posição/tamanho/
+  z-order/min-max/open via localStorage. O `desktop_window` é estático e embrulha o
+  conteúdo da feature. A ilha é só o **corpo** da janela — montar o `live_component`
+  dentro do slot do `desktop_window`. Change-tracking atualiza só o corpo; o chrome
+  não re-renderiza.
+- **A ilha dirige a PRÓPRIA janela (regra C3).** `push_event("window_command",
+  %{action: "open"|"close"|"flash", id: "<janela>"})` **funciona de dentro de um
+  LiveComponent** — o `this.handleEvent("window_command", ...)` do hook
+  (`window_manager_hook.js`) não é escopado a um elemento, então capta o push de
+  qualquer LiveComponent. Logo a ilha abre/fecha/pisca a própria janela sem rotear
+  pelo pai.
+- **Eventos `on_close` da janela viram adapter (regra §1).** Um `on_close="end_call"`
+  no `desktop_window` dispara no pai por padrão; mantenha-o como adapter fino →
+  `send_update(Ilha, ...)` para preservar `data-testid`/contrato Playwright (ou use
+  `phx-target` direto na ilha se o testid for preservado).
+- **Taskbar + janela agregadora ficam no pai (read-model, regra C2).** Badges da
+  taskbar e qualquer "janela de status" que lê várias features são **leitores
+  cross-cutting** → ficam no template do pai. A ilha espelha um **resumo mínimo** via
+  `send(self(), {:feature_summary, key, summary})` (em LiveComponent `self()` é o pid
+  do pai); o pai guarda só o resumo. Zero refactor dos leitores. NÃO extraia a janela
+  agregadora para uma ilha.
+  - ⚠️ **O bubble por TUPLA é silenciosamente engolido pelo catch-all do pai** se este
+    tiver `handle_info(_msg, socket)` e as demais cláusulas casarem outro shape (ex.:
+    `%{event:...}` de PubSub). É a classe do bug do plano 41. **Adicione a cláusula
+    `handle_info({:feature_summary, ...})` explícita ACIMA do catch-all** e teste que o
+    resumo chega (badge/strip muda). Vale para QUALQUER `send(self(), tupla)` ilha→pai.
+- **Sink compartilhado (mensagens de sistema, regra C1):** se uma lista (ex.: chat) é
+  alimentada por várias features, a ilha dona da lista expõe um `update/2` que aceita
+  `{:system_message, txt}`; as outras ilhas/pai fazem `send_update(... system_message:)`.
+  Mesmo shape do "PubSub notification queue (kick, plano 48)".
+- **Hook persistente ⇒ ilha sempre montada.** Se a feature tem um hook que precisa
+  ficar vivo a conexão inteira (WebRTC/file/game data channel), a ilha é **sempre**
+  montada (nunca dentro de `:if` da janela); visibilidade da janela é client-side. O
+  latch tipo `ever_connected`→`mounted` continua no pai e chega como assign
+  passthrough. Fechar a janela (X) só esconde — não desmonta a ilha nem mata a feature.
+- **PubSub fica no host.** Mantenha a assinatura do tópico (`lobby:#{token}`) no pai;
+  os `handle_info` de feature viram adapters finos → `send_update(Ilha, ...)`. Uma
+  assinatura, estado na ilha.
+
 ## Historico de aprendizados
 
 - **2026-06-28 (plano 09):** padrao adapter + `send_update` async + flush via
