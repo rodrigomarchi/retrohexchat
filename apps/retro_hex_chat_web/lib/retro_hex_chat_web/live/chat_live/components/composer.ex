@@ -270,6 +270,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
           autofocus
           show_toolbar={false}
         />
+        <%!-- Composer-owned hook: intercepts multi-line paste on #chat-input and
+              pushes `paste_lines` to the root LiveView (handled by core_events,
+              which forwards to the PasteConfirmDialog island). --%>
+        <div id="paste-hook" phx-hook="PasteHook" class="u-hidden"></div>
         <.history_search visible={true} class="u-hidden" />
       </div>
     </div>

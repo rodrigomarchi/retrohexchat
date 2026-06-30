@@ -735,16 +735,28 @@ export class ChatPage {
   async pasteText(text: string) {
     await expect(this.chatInput).toBeEnabled();
     await this.chatInput.focus();
-    await this.chatInput.evaluate((el, pasted) => {
-      const clipboard = new DataTransfer();
-      clipboard.setData('text/plain', pasted);
-      const event = new ClipboardEvent('paste', {
-        bubbles: true,
-        cancelable: true,
-        clipboardData: clipboard,
-      });
-      el.dispatchEvent(event);
-    }, text);
+
+    const dispatch = () =>
+      this.chatInput.evaluate((el, pasted) => {
+        const clipboard = new DataTransfer();
+        clipboard.setData('text/plain', pasted);
+        const event = new ClipboardEvent('paste', {
+          bubbles: true,
+          cancelable: true,
+          clipboardData: clipboard,
+        });
+        el.dispatchEvent(event);
+      }, text);
+
+    // The first paste right after connect can be swallowed by the LiveView
+    // join-render burst (the documented connect-burst race) — the PasteHook
+    // listener / pushEvent is lost and the confirm dialog never opens. Re-dispatch
+    // until the confirm dialog appears. All callers paste 2+ lines, which always
+    // opens the dialog, so waiting for it here is safe.
+    await expect(async () => {
+      await dispatch();
+      await expect(this.pasteConfirmSendButton).toBeVisible({ timeout: 1_000 });
+    }).toPass({ timeout: 10_000 });
   }
 
   // Asserts that a message with the given visible text is present in the
