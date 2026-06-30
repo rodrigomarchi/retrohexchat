@@ -29,7 +29,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.AddressBook
 
   import RetroHexChatWeb.Components.UI.InviteDialog
-  import RetroHexChatWeb.Components.UI.NotifyList
 
   # ── Domain aliases ────────────────────────────────────────────
   alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
@@ -321,6 +320,23 @@ defmodule RetroHexChatWeb.App.ChatLive do
     {:noreply, ChatLive.Helpers.push_status_message(socket, message, :error)}
   end
 
+  # Notify List dialog: the island owns the work; the parent owns the session
+  # read-model + persistence, the status bar, and the notify debounce timers.
+  def handle_info({:notify_dialog_session, session}, socket) do
+    {:noreply,
+     socket
+     |> assign(session: session)
+     |> ChatLive.Helpers.maybe_persist_notify_list(session)}
+  end
+
+  def handle_info({:notify_dialog_status, message}, socket) do
+    {:noreply, ChatLive.Helpers.push_status_message(socket, message, :system)}
+  end
+
+  def handle_info({:notify_dialog_cancel_timer, nick}, socket) do
+    {:noreply, ChatLive.Helpers.cancel_notify_timer(socket, nick)}
+  end
+
   # ── Catch-all handle_info ─────────────────────────────────────
 
   def handle_info({_ref, _result}, socket), do: {:noreply, socket}
@@ -547,9 +563,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       status_unread: false,
       show_notify_add_dialog: false,
       show_notify_edit_dialog: false,
-      show_notify_list: false,
       highlight_channels: MapSet.new(),
-      selected_note: "",
       selected_contact_note: "",
       selected_notify_note: "",
       current_topic: nil,

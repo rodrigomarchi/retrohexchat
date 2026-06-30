@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -23,9 +24,14 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Presence.{NotifyList, Tracker}
+  alias RetroHexChatWeb.ChatLive.Components.NotifyListDialog
 
+  # The standalone Notify List dialog is a stateful island; this routes its open
+  # trigger (menu/toolbar/status-bar/`/notify`) there. The Address Book's Notify
+  # tab still fires the mutation events below until plan 31 migrates it.
   def handle_event("toggle_notify_list", _params, socket) do
-    {:halt, assign(socket, show_notify_list: !socket.assigns.show_notify_list)}
+    send_update(NotifyListDialog, id: NotifyListDialog.id(), toggle: true)
+    {:halt, socket}
   end
 
   def handle_event("notify_add", %{"nickname" => nick} = params, socket) do
@@ -178,37 +184,16 @@ defmodule RetroHexChatWeb.ChatLive.NotifyEvents do
     end
   end
 
-  def handle_event("toggle_auto_whois", _params, socket) do
-    session = socket.assigns.session
-    current = session.notify_list.settings.auto_whois
-    updated_list = NotifyList.set_auto_whois(session.notify_list, !current)
-    new_session = Session.set_notify_list(session, updated_list)
-
-    socket =
-      socket
-      |> assign(session: new_session)
-      |> maybe_persist_notify_list(new_session)
-
-    {:halt, socket}
-  end
-
-  def handle_event("toggle_auto_add_pm", _params, socket) do
-    session = socket.assigns.session
-    current = NotifyList.auto_add_pm?(session.notify_list)
-    updated_list = NotifyList.set_auto_add_pm(session.notify_list, !current)
-    new_session = Session.set_notify_list(session, updated_list)
-
-    socket =
-      socket
-      |> assign(session: new_session)
-      |> maybe_persist_notify_list(new_session)
-
-    {:halt, socket}
-  end
-
   # ── Catch-all ──────────────────────────────────────────────
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
+
+  @doc "Opens the standalone Notify List island (used by the `/notify` command)."
+  @spec open(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def open(socket) do
+    send_update(NotifyListDialog, id: NotifyListDialog.id(), open: true)
+    socket
+  end
 
   # ── Private helpers ──────────────────────────────────────
 

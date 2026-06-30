@@ -423,8 +423,8 @@ defmodule RetroHexChatWeb.AddressBookTest do
       html = render(view)
       assert html =~ "auto_whois" || html =~ "auto-whois"
 
-      # Toggle auto-whois
-      view |> render_click("toggle_auto_whois")
+      # Toggle auto-whois (checkbox owned by the NotifyListDialog island)
+      view |> element("#notify-list-dialog-auto-whois") |> render_click()
 
       # Still open
       html = render(view)
@@ -870,10 +870,9 @@ defmodule RetroHexChatWeb.AddressBookTest do
       Process.sleep(100)
       sender = connect_user(conn, "PmTogOff")
 
-      # Disable auto-add via the standalone notify list dialog
-      render_click(sender, "toggle_notify_list")
-      render_click(sender, "toggle_auto_add_pm")
-      render_click(sender, "toggle_notify_list")
+      # Disable auto-add via the standalone notify list dialog (the checkbox is
+      # owned by the NotifyListDialog island, so fire it element-based).
+      sender |> element("#notify-list-dialog-auto-add-pm") |> render_click()
 
       # Send PM
       sender

@@ -897,3 +897,26 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
     O "rebuild matcher" do plano não existe no código.
   - `make ci` 9/9; `highlight_dialog_test` (5) + `chat-highlights.spec.ts` E2E verde (o que estava ⛔). O
     `chat-highlights-persistence` U2 já falha no main (overlay de "Tip" pós-reconnect) — não relacionado.
+- **2026-06-30 (30 notify-list — "estado compartilhado" entre dois dialogs era FALSO problema):**
+  - **Dois dialogs que leem o MESMO dado não são "estado entrelaçado" se nunca abrem juntos.** O Notify
+    standalone e a aba Notify do Address Book compartilhavam `notify_selected`/`show_notify_*_dialog`/
+    `selected_notify_note` no parent → o plano marcou como "entangled, coordenar dono único". Mas são CASOS
+    DE USO SEPARADOS (nunca abertos ao mesmo tempo). Isolação correta: **cada ilha é dona da SUA seleção/
+    draft/sub-dialog (estado de UI); o DADO (`session.notify_list`) e a LÓGICA de mutação são compartilhados.**
+    Sem coordenação de "dono único" — só não duplicar o estado de UI. (A regra: pergunte "esses dois podem
+    estar abertos juntos?" Se não, não há entanglement — é só estado de UI que precisa virar local em cada um.)
+  - **Lógica de mutação compartilhada por 2 ilhas → módulo PURO, não duplicação nem adapter no parent.**
+    `NotifyOps` (session in → `{:ok, session, status} | {:error, status}`, sem socket) centraliza
+    add/remove/update/toggles. Cada ilha chama e faz seu próprio bubble + efeitos de socket que ELA não pode
+    fazer (timer de debounce, abrir PM, persistência ficam no parent via bubble). Evita os dois extremos:
+    duplicar ~150 linhas em cada componente, OU manter os handlers no parent (adapter, que o user rejeitou).
+  - **Migração ENCADEADA quando um hook serve dois consumidores.** `notify_events.ex` serve o standalone E a
+    aba do Address Book (ainda não migrada). Não dá pra deletá-lo no plano 30 → o standalone vira ilha
+    (`@myself`), mas `notify_events` continua vivo p/ o Address Book até o plano 31 (aí é removido). Cada
+    commit fica verde. Só removi do parent o que é exclusivo do standalone (`show_notify_list`,
+    `selected_note`); as chaves compartilhadas saem no 31.
+  - **Teste:** o `is_reference/1` fix do plano 41 já estava no lugar, então os bubbles 2-tuple
+    (`{:notify_dialog_session, session}`) chegam ao parent. Convertidos 2 testes que disparavam
+    `toggle_auto_whois`/`toggle_auto_add_pm` by-name (agora `@myself` na ilha) p/ click element-based no
+    checkbox `#notify-list-dialog-auto-*`. `make ci` 9/9; `chat-notify`+`chat-notify-settings` E2E 6/6. O
+    `chat-address-book` O16 falha no main (mesmo overlay de "Tip") — não relacionado.

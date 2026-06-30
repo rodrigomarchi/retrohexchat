@@ -227,23 +227,10 @@
   id={RetroHexChatWeb.ChatLive.Components.NickChangeDialog.id()}
 />
 
-<.notify_list
-  id="notify-list-dialog"
-  show={@show_notify_list}
-  entries={NotifyList.sorted_entries(@session.notify_list)}
-  selected_entry={@notify_selected}
-  selected_note={@selected_note}
-  auto_whois={@session.notify_list.settings.auto_whois}
-  auto_add_pm={NotifyList.auto_add_pm?(@session.notify_list)}
-  show_add_dialog={@show_notify_add_dialog}
-  show_edit_dialog={@show_notify_edit_dialog}
-  on_select="notify_select"
-  on_add="notify_add_dialog"
-  on_edit="notify_edit_dialog"
-  on_remove="notify_remove"
-  on_toggle_auto_whois="toggle_auto_whois"
-  on_toggle_auto_add_pm="toggle_auto_add_pm"
-  on_close="toggle_notify_list"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.NotifyListDialog}
+  id={RetroHexChatWeb.ChatLive.Components.NotifyListDialog.id()}
+  session={@session}
 />
 
 <.address_book

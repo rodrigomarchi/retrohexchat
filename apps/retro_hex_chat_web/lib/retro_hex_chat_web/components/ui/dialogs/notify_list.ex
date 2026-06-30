@@ -22,6 +22,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
 
   @doc "Renders the notify list dialog."
   attr :id, :string, required: true
+  attr :target, :any, default: nil
   attr :show, :boolean, default: false
 
   attr :entries, :list,
@@ -59,6 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 name="auto_add_pm"
                 value={@auto_add_pm}
                 phx-click={@on_toggle_auto_add_pm}
+                phx-target={@target}
                 id={"#{@id}-auto-add-pm"}
               />
               <label for={"#{@id}-auto-add-pm"} class="text-xs cursor-pointer select-none">
@@ -70,6 +72,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 name="auto_whois"
                 value={@auto_whois}
                 phx-click={@on_toggle_auto_whois}
+                phx-target={@target}
                 id={"#{@id}-auto-whois"}
               />
               <label for={"#{@id}-auto-whois"} class="text-xs cursor-pointer select-none">
@@ -98,6 +101,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                     )
                   }
                   phx-click={@on_select}
+                  phx-target={@target}
                   phx-value-nickname={entry.tracked_nickname}
                   data-testid={"notify-list-row-#{entry.tracked_nickname}"}
                 >
@@ -113,7 +117,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
 
           <%!-- CRUD buttons --%>
           <div class="flex gap-retro-4">
-            <.button size="sm" variant="outline" phx-click={@on_add}>
+            <.button size="sm" variant="outline" phx-click={@on_add} phx-target={@target}>
               <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
               {dgettext("dialogs", "Add")}
             </.button>
@@ -121,6 +125,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               size="sm"
               variant="outline"
               phx-click={@on_edit}
+              phx-target={@target}
               disabled={@selected_entry == nil}
             >
               <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
@@ -130,6 +135,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               size="sm"
               variant="outline"
               phx-click={@on_remove}
+              phx-target={@target}
               phx-value-nickname={@selected_entry}
               disabled={@selected_entry == nil}
             >
@@ -149,10 +155,11 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     </.dialog>
 
     <%!-- Notify Add Sub-Dialog --%>
-    <.notify_add_sub_form :if={@show_add_dialog} />
+    <.notify_add_sub_form :if={@show_add_dialog} target={@target} />
     <%!-- Notify Edit Sub-Dialog --%>
     <.notify_edit_sub_form
       :if={@show_edit_dialog}
+      target={@target}
       selected_entry={@selected_entry}
       selected_note={@selected_note}
     />
@@ -160,6 +167,8 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   end
 
   # ── Sub-Forms ────────────────────────────────────────
+
+  attr :target, :any, default: nil
 
   defp notify_add_sub_form(assigns) do
     ~H"""
@@ -174,11 +183,12 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="notify_add_cancel"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="notify_add" data-testid="notify-add-form">
+          <form phx-submit="notify_add" phx-target={@target} data-testid="notify-add-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="notify-add-nickname">
                 {dgettext("dialogs", "Nickname:")}
@@ -211,7 +221,13 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "OK")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click="notify_add_cancel">
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="notify_add_cancel"
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>
@@ -223,6 +239,7 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
     """
   end
 
+  attr :target, :any, default: nil
   attr :selected_entry, :string, default: nil
   attr :selected_note, :string, default: ""
 
@@ -239,11 +256,12 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="notify_edit_cancel"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="notify_edit" data-testid="notify-edit-form">
+          <form phx-submit="notify_edit" phx-target={@target} data-testid="notify-edit-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="notify-edit-nickname">
                 {dgettext("dialogs", "Nickname:")}
@@ -276,7 +294,13 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "OK")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click="notify_edit_cancel">
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="notify_edit_cancel"
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>
