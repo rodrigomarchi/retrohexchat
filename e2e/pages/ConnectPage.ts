@@ -56,6 +56,17 @@ export class ConnectPage {
   }
 
   async open() {
+    // Suppress contextual-tip toasts in E2E. They are non-deterministic
+    // onboarding UI (e.g. the "first_join" tip fires on the #lobby auto-join)
+    // that overlays the menu bar and flakes menu-driven specs. The hook reads
+    // this localStorage flag (STORAGE_KEYS.SUPPRESSED) on mount.
+    await this.page.addInitScript(() => {
+      try {
+        window.localStorage.setItem('retro_hex_chat_tips_suppressed', 'true');
+      } catch {
+        /* localStorage unavailable — ignore */
+      }
+    });
     await this.page.goto('/connect');
     await expect(this.nicknameInput).toBeVisible();
   }

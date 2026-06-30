@@ -694,8 +694,7 @@ export class ChatPage {
   }
 
   async openFloodProtectionFromToolsMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.floodProtectionMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.floodProtectionMenuItem);
     await this.floodProtectionMenuItem.click();
     await expect(this.floodThresholdInput).toBeVisible();
   }
@@ -1201,8 +1200,7 @@ export class ChatPage {
   }
 
   async openChannelCentralFromMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.channelCentralMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.channelCentralMenuItem);
     await this.channelCentralMenuItem.click();
     await expect(this.channelCentralDialog).toBeVisible();
   }
@@ -1215,8 +1213,7 @@ export class ChatPage {
   }
 
   async openUserLookupFromToolsMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.userLookupMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.userLookupMenuItem);
     await this.userLookupMenuItem.click();
     await expect(this.userLookupDialog).toBeVisible();
   }
@@ -1249,15 +1246,13 @@ export class ChatPage {
   }
 
   async openTimersFromToolsMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.timersMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.timersMenuItem);
     await this.timersMenuItem.click();
     await expect(this.timersDialog).toBeVisible();
   }
 
   async openBotManagementFromToolsMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.botManagementMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.botManagementMenuItem);
     await this.botManagementMenuItem.click();
     await expect(this.botManagementDialog).toBeVisible();
   }
@@ -1400,51 +1395,56 @@ export class ChatPage {
     await expect(this.channelCentralEntry(tab, nick)).toHaveCount(0);
   }
 
+  // Opens the Tools menu and waits for `item` to be visible, retrying the
+  // trigger click. The MenuBarHook toggles a `u-hidden` class on mousedown, but
+  // a LiveView re-render right after connect (join/presence) can re-apply the
+  // server-rendered `u-hidden` and close the just-opened dropdown — the known
+  // first-menu-open flake. Retrying the whole open absorbs that race.
+  async openToolsMenuItem(item: Locator) {
+    await expect(async () => {
+      await this.toolsMenuTrigger.click();
+      await expect(item).toBeVisible({ timeout: 1000 });
+    }).toPass({ timeout: 10_000 });
+  }
+
   async openAddressBookFromMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.addressBookMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.addressBookMenuItem);
     await this.addressBookMenuItem.click();
     await expect(this.addressBookDialog).toBeVisible();
   }
 
   async openAliasEditorFromMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.aliasEditorMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.aliasEditorMenuItem);
     await this.aliasEditorMenuItem.click();
     await expect(this.aliasDialog).toBeVisible();
   }
 
   async openHighlightDialogFromMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.highlightWordsMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.highlightWordsMenuItem);
     await this.highlightWordsMenuItem.click();
     await expect(this.highlightDialog).toBeVisible();
   }
 
   async openPerformDialogFromMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.performMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.performMenuItem);
     await this.performMenuItem.click();
     await expect(this.performDialog).toBeVisible();
   }
 
   async openSoundSettingsFromMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.soundSettingsMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.soundSettingsMenuItem);
     await this.soundSettingsMenuItem.click();
     await expect(this.soundSettingsDialog).toBeVisible();
   }
 
   async openUrlCatcherFromMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.urlCatcherMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.urlCatcherMenuItem);
     await this.urlCatcherMenuItem.click();
     await expect(this.urlCatcherDialog).toBeVisible();
   }
 
   async openAutorespondDialogFromMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.autorespondMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.autorespondMenuItem);
     await this.autorespondMenuItem.click();
     await expect(this.autorespondDialog).toBeVisible();
   }
@@ -1455,8 +1455,7 @@ export class ChatPage {
   }
 
   async openCustomMenusDialogFromMenu() {
-    await this.toolsMenuTrigger.click();
-    await expect(this.customMenusMenuItem).toBeVisible();
+    await this.openToolsMenuItem(this.customMenusMenuItem);
     await this.customMenusMenuItem.click();
     await expect(this.customMenusDialog).toBeVisible();
   }
