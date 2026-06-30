@@ -71,7 +71,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
           <%!-- Window frame (Win98 3D border) --%>
           <div
             id={"#{@id}-surface"}
-            class="bg-surface shadow-retro-window p-[3px] min-h-[100dvh] md:min-h-0"
+            class="flex flex-col bg-surface shadow-retro-window p-[3px] min-h-[100dvh] max-h-[100dvh] md:min-h-0 md:max-h-[90dvh]"
           >
             {render_slot(@inner_block)}
           </div>
@@ -99,7 +99,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
 
   def dialog_header(assigns) do
     ~H"""
-    <div class={classes(["bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2", @class])}>
+    <div class={classes(["shrink-0 bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2", @class])}>
       <.dialog_icon>{render_slot(@icon)}</.dialog_icon>
       <.dialog_title>{@title}</.dialog_title>
       <.dialog_close id={@id} on_close={@on_close} />
@@ -190,7 +190,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
 
   def dialog_body(assigns) do
     ~H"""
-    <div class={classes(["p-retro-12 overflow-y-auto", @class])}>
+    <div class={classes(["flex-1 min-h-0 p-retro-12 overflow-y-auto", @class])}>
       {render_slot(@inner_block)}
     </div>
     """
@@ -204,7 +204,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
 
   def dialog_footer(assigns) do
     ~H"""
-    <div class={classes(["flex justify-end gap-retro-4 px-retro-12 pb-retro-12", @class])}>
+    <div class={classes(["shrink-0 flex justify-end gap-retro-4 px-retro-12 pb-retro-12", @class])}>
       {render_slot(@inner_block)}
     </div>
     """

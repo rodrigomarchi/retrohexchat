@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
     ~H"""
     <div class={[
       "fixed inset-0 z-40 md:relative md:inset-auto md:z-auto",
-      "flex md:shrink-0 md:w-[220px] md:min-w-[180px]",
+      "flex md:h-full md:shrink-0 md:w-[220px] md:min-w-[180px]",
       !@visible && "hidden"
     ]}>
       <div class="absolute inset-0 bg-black/30 md:hidden" phx-click={@on_backdrop} />

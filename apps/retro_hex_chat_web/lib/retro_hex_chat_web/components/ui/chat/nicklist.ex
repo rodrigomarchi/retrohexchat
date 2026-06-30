@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.Components.UI.Nicklist do
     ~H"""
     <div class={[
       "fixed inset-0 z-40 md:relative md:inset-auto md:z-auto",
-      "flex justify-end md:justify-stretch md:w-[140px] md:shrink-0",
+      "flex justify-end md:h-full md:justify-stretch md:w-[140px] md:shrink-0",
       !@visible && "hidden"
     ]}>
       <div class="absolute inset-0 bg-black/30 md:hidden" phx-click={@on_backdrop} />
