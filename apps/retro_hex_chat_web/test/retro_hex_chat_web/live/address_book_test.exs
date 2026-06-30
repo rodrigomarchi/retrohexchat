@@ -403,7 +403,9 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view = connect_user(conn, "SyncNotify")
 
       # Add via /notify command (standalone mechanism)
-      view |> render_submit("send_input", %{"input" => "/notify add SyncBud"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/notify add SyncBud"})
 
       # Open address book and check notify tab
       view |> render_click("toggle_address_book")
@@ -710,7 +712,10 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
       # Observer adds via command
       view = connect_user(conn, "CmdObs")
-      view |> render_submit("send_input", %{"input" => "/notify add CmdBud"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/notify add CmdBud"})
 
       # Check in address book
       view |> render_click("toggle_address_book")
@@ -801,7 +806,10 @@ defmodule RetroHexChatWeb.AddressBookTest do
       sender = connect_user(conn, "PmSender1")
 
       # Sender sends PM to target via /msg command
-      render_submit(sender, "send_input", %{"input" => "/msg PmTarget1 hello there"})
+      sender
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/msg PmTarget1 hello there"})
+
       Process.sleep(50)
 
       # Check that PmTarget1 was auto-added to sender's notify list
@@ -817,7 +825,10 @@ defmodule RetroHexChatWeb.AddressBookTest do
       sender = connect_user(conn, "PmSend2")
 
       # Sender sends PM — receiver gets it via PubSub
-      render_submit(sender, "send_input", %{"input" => "/msg PmRecv1 hey"})
+      sender
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/msg PmRecv1 hey"})
+
       Process.sleep(100)
 
       # Check that PmSend2 was auto-added to receiver's notify list
@@ -833,9 +844,16 @@ defmodule RetroHexChatWeb.AddressBookTest do
       sender = connect_user(conn, "PmDupSnd")
 
       # Send two PMs
-      render_submit(sender, "send_input", %{"input" => "/msg PmDupTgt first"})
+      sender
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/msg PmDupTgt first"})
+
       Process.sleep(50)
-      render_submit(sender, "send_input", %{"input" => "/msg PmDupTgt second"})
+
+      sender
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/msg PmDupTgt second"})
+
       Process.sleep(50)
 
       # Should have exactly one entry
@@ -858,7 +876,10 @@ defmodule RetroHexChatWeb.AddressBookTest do
       render_click(sender, "toggle_notify_list")
 
       # Send PM
-      render_submit(sender, "send_input", %{"input" => "/msg PmNoAdd hi"})
+      sender
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/msg PmNoAdd hi"})
+
       Process.sleep(50)
 
       # Should NOT have an entry

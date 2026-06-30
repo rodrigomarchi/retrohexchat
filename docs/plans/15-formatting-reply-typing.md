@@ -1,5 +1,10 @@
 # Formatting Toolbar, Reply Bar And Typing Migration
 
+> **STATUS: COMPLETE (2026-06-30) — folded into plan 14.** These controls were already interleaved with
+> the input in one flex panel, so `Components.Composer` renders them in its bottom region. `reply_to` is
+> composer-owned; formatting toolbar + typing indicator read passthrough (`session`/`show_status_tab`/
+> `pm_typing_from`) and their events (`toggle_strip_formatting`/`toggle_emoji_picker`) stay parent. See 14.
+
 ## Objetivo
 
 Agrupar elementos abaixo do viewport que pertencem ao fluxo de composicao, mas manter cada subcomponente puro quando nao ha estado proprio.

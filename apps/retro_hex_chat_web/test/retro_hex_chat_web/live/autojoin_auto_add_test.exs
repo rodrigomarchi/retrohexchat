@@ -23,7 +23,9 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
       # Join a channel
-      view |> render_submit("send_input", %{"input" => "/join #test-aj-#{uid()}"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #test-aj-#{uid()}"})
 
       # Give async persistence time to complete
       Process.sleep(100)
@@ -43,7 +45,10 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       channel = "#guest-aj-#{uid()}"
-      view |> render_submit("send_input", %{"input" => "/join #{channel}"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #{channel}"})
 
       Process.sleep(100)
 
@@ -79,13 +84,24 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
       channel = "#dup-aj-#{uid()}"
-      view |> render_submit("send_input", %{"input" => "/join #{channel}"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #{channel}"})
+
       Process.sleep(50)
 
       # Part and rejoin
-      view |> render_submit("send_input", %{"input" => "/part #{channel}"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/part #{channel}"})
+
       Process.sleep(50)
-      view |> render_submit("send_input", %{"input" => "/join #{channel}"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #{channel}"})
+
       Process.sleep(100)
 
       {:ok, autojoin} = AutoJoinList.load(nick)
@@ -106,7 +122,11 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       {:ok, view, _html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
       channel = "#part-aj-#{uid()}"
-      view |> render_submit("send_input", %{"input" => "/join #{channel}"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #{channel}"})
+
       Process.sleep(100)
 
       # Verify it was added
@@ -115,7 +135,10 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
       assert Enum.any?(entries, &(&1.channel_name == channel))
 
       # Part the channel
-      view |> render_submit("send_input", %{"input" => "/part #{channel}"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/part #{channel}"})
+
       Process.sleep(100)
 
       # Verify it was removed
@@ -136,9 +159,17 @@ defmodule RetroHexChatWeb.AutojoinAutoAddTest do
 
       # Guest joins and parts — no persistence at all
       channel = "#guest-pt-#{uid()}"
-      view |> render_submit("send_input", %{"input" => "/join #{channel}"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #{channel}"})
+
       Process.sleep(50)
-      view |> render_submit("send_input", %{"input" => "/part #{channel}"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/part #{channel}"})
+
       Process.sleep(50)
 
       # No auto-join list should exist for guest

@@ -52,6 +52,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
   attr :on_keydown, :any, default: nil, doc: "Keydown callback (for autocomplete, history, etc.)"
   attr :on_action_toggle, :any, default: nil, doc: "Toggle action-message mode"
   attr :on_notice_cancel, :any, default: nil, doc: "Cancel notice composer mode"
+
+  attr :target, :any,
+    default: nil,
+    doc: "phx-target for form/button events (e.g. a LiveComponent)"
+
   attr :hook, :string, default: nil, doc: "Phoenix hook for the textarea (e.g. AutocompleteHook)"
 
   attr :wrapper_hook, :string,
@@ -102,6 +107,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
           size="icon"
           variant="outline"
           phx-click={@on_notice_cancel}
+          phx-target={@target}
           data-testid="chat-notice-cancel"
           class="ml-auto h-6 w-6"
         >
@@ -111,6 +117,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
       </div>
       <form
         phx-submit={@on_submit}
+        phx-target={@target}
         class="flex items-center gap-1 p-[2px] bg-surface"
         data-testid="chat-input-form"
       >
@@ -120,6 +127,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
           size="icon"
           variant="outline"
           phx-click={@on_action_toggle}
+          phx-target={@target}
           disabled={@disabled}
           aria-pressed={to_string(@action_active)}
           title={dgettext("chat", "Send action message (/me)")}
@@ -139,6 +147,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
           autocomplete="off"
           autofocus={@autofocus}
           phx-change={@on_change}
+          phx-target={@target}
           phx-keydown={@on_keydown}
           phx-hook={@hook}
           data-testid="chat-input-field"

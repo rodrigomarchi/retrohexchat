@@ -15,11 +15,12 @@ defmodule RetroHexChatWeb.AutocompleteFeatureTest do
       {:ok, view, _html} = live(chat_conn(conn, "E2EAuto1"), "/chat")
 
       # Step 1: Open command autocomplete with fuzzy filter
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "command",
-          "partial" => "jo"
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "command",
+        "partial" => "jo"
+      })
+
+      html = render(view)
 
       assert html =~ "autocomplete-dropdown"
       assert html =~ "join"
@@ -28,31 +29,34 @@ defmodule RetroHexChatWeb.AutocompleteFeatureTest do
       render_click(view, "autocomplete_navigate", %{"direction" => "down"})
 
       # Step 3: Select join command
-      html =
-        render_click(view, "autocomplete_select", %{
-          "type" => "command",
-          "value" => "join"
-        })
+      render_click(view, "autocomplete_select", %{
+        "type" => "command",
+        "value" => "join"
+      })
+
+      html = render(view)
 
       # Dropdown should close
       refute html =~ "autocomplete-dropdown"
 
       # Step 4: Simulate argument context for channel
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "arg_channel",
-          "partial" => "lob"
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "arg_channel",
+        "partial" => "lob"
+      })
+
+      html = render(view)
 
       assert html =~ "autocomplete-dropdown"
       assert html =~ "#lobby"
 
       # Step 5: Select channel
-      html =
-        render_click(view, "autocomplete_select", %{
-          "type" => "channel",
-          "value" => "#lobby"
-        })
+      render_click(view, "autocomplete_select", %{
+        "type" => "channel",
+        "value" => "#lobby"
+      })
+
+      html = render(view)
 
       refute html =~ "autocomplete-dropdown"
     end
@@ -67,21 +71,23 @@ defmodule RetroHexChatWeb.AutocompleteFeatureTest do
       render_click(view1, "switch_channel", %{"channel" => "#lobby"})
 
       # Step 1: Open nick autocomplete
-      html =
-        render_click(view1, "autocomplete_query", %{
-          "type" => "nick",
-          "partial" => "E2E"
-        })
+      render_click(view1, "autocomplete_query", %{
+        "type" => "nick",
+        "partial" => "E2E"
+      })
+
+      html = render(view1)
 
       assert html =~ "autocomplete-dropdown"
       assert html =~ "E2ENick2"
 
       # Step 2: Select nick
-      html =
-        render_click(view1, "autocomplete_select", %{
-          "type" => "nick",
-          "value" => "E2ENick2"
-        })
+      render_click(view1, "autocomplete_select", %{
+        "type" => "nick",
+        "value" => "E2ENick2"
+      })
+
+      html = render(view1)
 
       refute html =~ "autocomplete-dropdown"
     end
@@ -100,7 +106,8 @@ defmodule RetroHexChatWeb.AutocompleteFeatureTest do
       render_click(view, "autocomplete_navigate", %{"direction" => "up"})
 
       # Close
-      html = render_click(view, "autocomplete_close", %{})
+      render_click(view, "autocomplete_close", %{})
+      html = render(view)
       refute html =~ "autocomplete-dropdown"
     end
   end

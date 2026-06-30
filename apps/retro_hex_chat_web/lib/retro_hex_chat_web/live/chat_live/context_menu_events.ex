@@ -49,6 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChatWeb.ChatLive.CommandDispatch
 
   alias RetroHexChatWeb.ChatLive.Components.{
+    Composer,
     InviteChannelPickerDialog,
     MuteDurationDialog,
     UserContextMenus
@@ -780,9 +781,8 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   defp start_notice_mode(socket, nick) do
-    socket
-    |> assign(notice_target: nick, action_mode: false, input: "", input_error: nil)
-    |> push_event("clear_input", %{})
+    send_update(Composer, id: Composer.id(), start_notice: nick)
+    assign(socket, notice_active: true)
   end
 
   defp open_invite_channel_picker(socket, nick) do

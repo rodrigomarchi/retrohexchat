@@ -16,11 +16,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     test "autocomplete_query with command type shows results", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "AutoUser1"), "/chat")
 
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "command",
-          "partial" => ""
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "command",
+        "partial" => ""
+      })
+
+      html = render(view)
 
       assert html =~ "autocomplete-dropdown"
     end
@@ -28,11 +29,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     test "fuzzy filtering narrows command results", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "AutoUser2"), "/chat")
 
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "command",
-          "partial" => "jo"
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "command",
+        "partial" => "jo"
+      })
+
+      html = render(view)
 
       assert html =~ "join"
       assert html =~ "autojoin"
@@ -48,11 +50,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       })
 
       # Select a command
-      html =
-        render_click(view, "autocomplete_select", %{
-          "type" => "command",
-          "value" => "join"
-        })
+      render_click(view, "autocomplete_select", %{
+        "type" => "command",
+        "value" => "join"
+      })
+
+      html = render(view)
 
       # Dropdown should be closed
       refute html =~ "autocomplete-dropdown"
@@ -66,7 +69,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
         "partial" => "jo"
       })
 
-      html = render_click(view, "autocomplete_close", %{})
+      render_click(view, "autocomplete_close", %{})
+      html = render(view)
       refute html =~ "autocomplete-dropdown"
     end
 
@@ -92,7 +96,8 @@ defmodule RetroHexChatWeb.AutocompleteTest do
         "partial" => "join"
       })
 
-      html = render_click(view, "autocomplete_select_current", %{})
+      render_click(view, "autocomplete_select_current", %{})
+      html = render(view)
       refute html =~ "autocomplete-dropdown"
     end
 
@@ -103,11 +108,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
         "commands" => ["join", "msg"]
       })
 
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "command",
-          "partial" => "jo"
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "command",
+        "partial" => "jo"
+      })
+
+      html = render(view)
 
       # join should appear (marked as recent internally)
       assert html =~ "join"
@@ -126,12 +132,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       # Switch from status tab to #lobby channel for nick context
       render_click(view1, "switch_channel", %{"channel" => "#lobby"})
 
-      html =
-        render_click(view1, "autocomplete_query", %{
-          "type" => "nick",
-          "partial" => "Nick"
-        })
+      render_click(view1, "autocomplete_query", %{
+        "type" => "nick",
+        "partial" => "Nick"
+      })
 
+      html = render(view1)
       assert html =~ "autocomplete-dropdown"
       assert html =~ "NickAuto2"
     end
@@ -142,11 +148,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
 
       Process.sleep(50)
 
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "nick",
-          "partial" => "NickOwn"
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "nick",
+        "partial" => "NickOwn"
+      })
+
+      html = render(view)
 
       assert html =~ "NickOwn1"
       assert html =~ "NickOwn2"
@@ -158,11 +165,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       # Switch to status tab (no active channel context for nick query)
       render_click(view, "switch_to_status", %{})
 
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "nick",
-          "partial" => "Nick"
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "nick",
+        "partial" => "Nick"
+      })
+
+      html = render(view)
 
       # Should not show nick dropdown when not in a channel
       refute html =~ "autocomplete-dropdown"
@@ -176,11 +184,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
         "partial" => "Nick"
       })
 
-      html =
-        render_click(view, "autocomplete_select", %{
-          "type" => "nick",
-          "value" => "SomeUser"
-        })
+      render_click(view, "autocomplete_select", %{
+        "type" => "nick",
+        "value" => "SomeUser"
+      })
+
+      html = render(view)
 
       refute html =~ "autocomplete-dropdown"
     end
@@ -195,12 +204,13 @@ defmodule RetroHexChatWeb.AutocompleteTest do
 
       Process.sleep(50)
 
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "arg_nick",
-          "partial" => "Arg",
-          "command" => "msg"
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "arg_nick",
+        "partial" => "Arg",
+        "command" => "msg"
+      })
+
+      html = render(view)
 
       assert html =~ "autocomplete-dropdown"
     end
@@ -208,11 +218,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
     test "arg_channel type triggers channel suggestions", %{conn: conn} do
       {:ok, view, _} = live(chat_conn(conn, "ArgCh1"), "/chat")
 
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "arg_channel",
-          "partial" => "lob"
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "arg_channel",
+        "partial" => "lob"
+      })
+
+      html = render(view)
 
       # Channel search may return empty since search_channels is still stub
       # but mode should switch correctly
@@ -225,12 +236,13 @@ defmodule RetroHexChatWeb.AutocompleteTest do
 
       Process.sleep(50)
 
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "arg_nick",
-          "partial" => "Kick",
-          "command" => "kick"
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "arg_nick",
+        "partial" => "Kick",
+        "command" => "kick"
+      })
+
+      html = render(view)
 
       assert html =~ "autocomplete-dropdown"
       assert html =~ "KickArg2"
@@ -244,11 +256,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
       ensure_channel("#chtest1")
       {:ok, view, _} = live(chat_conn(conn, "ChAuto1"), "/chat")
 
-      html =
-        render_click(view, "autocomplete_query", %{
-          "type" => "channel",
-          "partial" => "lob"
-        })
+      render_click(view, "autocomplete_query", %{
+        "type" => "channel",
+        "partial" => "lob"
+      })
+
+      html = render(view)
 
       assert html =~ "autocomplete-dropdown"
       assert html =~ "#lobby"
@@ -262,11 +275,12 @@ defmodule RetroHexChatWeb.AutocompleteTest do
         "partial" => "lob"
       })
 
-      html =
-        render_click(view, "autocomplete_select", %{
-          "type" => "channel",
-          "value" => "#lobby"
-        })
+      render_click(view, "autocomplete_select", %{
+        "type" => "channel",
+        "value" => "#lobby"
+      })
+
+      html = render(view)
 
       refute html =~ "autocomplete-dropdown"
     end

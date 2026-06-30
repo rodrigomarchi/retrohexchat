@@ -10,7 +10,10 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
       {:ok, view, _html} = live(chat_conn(conn, "WinNext1"), "/chat")
 
       # Join a second channel so there's something to switch to
-      render_submit(view, "send_input", %{"input" => "/join #wn_test1"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #wn_test1"})
+
       Process.sleep(50)
 
       # Should be on #wn_test1 now; switch back to #lobby
@@ -22,7 +25,10 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
     test "window_prev switches to previous channel", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "WinPrev1"), "/chat")
 
-      render_submit(view, "send_input", %{"input" => "/join #wp_test1"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #wp_test1"})
+
       Process.sleep(50)
 
       html = render_click(view, "window_prev")
@@ -34,7 +40,10 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
     test "window_select switches to specific window", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "WinSel1"), "/chat")
 
-      render_submit(view, "send_input", %{"input" => "/join #ws_test1"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #ws_test1"})
+
       Process.sleep(50)
 
       # Select window 1 (first in sorted list)

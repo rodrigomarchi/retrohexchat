@@ -22,14 +22,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── Chat components ──────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.TopicBar
-  import RetroHexChatWeb.Components.UI.ChatInput
-  import RetroHexChatWeb.Components.UI.FormattingToolbar
-  import RetroHexChatWeb.Components.UI.Autocomplete
-  import RetroHexChatWeb.Components.UI.ReplyBar
   import RetroHexChatWeb.Components.UI.ConnectionStatus
-  import RetroHexChatWeb.Components.UI.SyntaxTooltip
-  import RetroHexChatWeb.Components.UI.HistorySearch
-  import RetroHexChatWeb.Components.UI.TypingIndicator
 
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AboutDialog
@@ -269,9 +262,30 @@ defmodule RetroHexChatWeb.App.ChatLive do
     dispatch_to_hooks(event, params, socket)
   end
 
-  # ── Catch-all handle_info ─────────────────────────────────────
+  # ── Composer bubbles ──────────────────────────────────────────
+  # The Composer LiveComponent owns the input flow and bubbles semantic
+  # commands here so the privileged Parser/CommandDispatch/Service work runs
+  # on this LiveView.
 
   @impl true
+  def handle_info({:composer_dispatch, text, reply_to}, socket) do
+    {:noreply, ChatLive.CoreEvents.dispatch_composer_input(socket, text, reply_to)}
+  end
+
+  def handle_info({:composer_submit_edit, content}, socket) do
+    {:noreply, ChatLive.CoreEvents.submit_composer_edit(socket, content)}
+  end
+
+  def handle_info(:composer_empty_edit, socket) do
+    {:noreply, ChatLive.CoreEvents.empty_composer_edit(socket)}
+  end
+
+  def handle_info({:composer_notice_active, active}, socket) do
+    {:noreply, assign(socket, notice_active: active)}
+  end
+
+  # ── Catch-all handle_info ─────────────────────────────────────
+
   def handle_info({_ref, _result}, socket), do: {:noreply, socket}
   def handle_info({:DOWN, _ref, :process, _pid, _reason}, socket), do: {:noreply, socket}
   def handle_info(_, socket), do: {:noreply, socket}
@@ -463,22 +477,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
     socket
     |> assign(
       channel_users: [],
-      command_history: [],
-      autocomplete_command: nil,
-      autocomplete_mode: nil,
-      autocomplete_results: [],
-      autocomplete_selected: 0,
-      autocomplete_visible: false,
-      recent_commands: [],
       contacts_selected: nil,
       nick_color_fn: ChatHelpers.build_nick_color_fn(session),
       nick_colors_selected: nil,
       has_more: true,
-      history_index: -1,
-      input: "",
-      action_mode: false,
-      notice_target: nil,
-      input_error: nil,
+      notice_active: false,
       chat_clear_token: 0,
       cleared_channel_cutoffs: %{},
       link_previews: %{},
@@ -597,15 +600,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
       away_replied_to: MapSet.new(),
       quit_reason: nil,
       show_emoji_picker: false,
-      syntax_tooltip: nil,
-      command_help_level: :beginner,
       timestamp_format: :dd_mm_hh_mm,
       lag_ms: nil,
       lag_status: :normal,
       loading_channel: nil,
-      reply_to: nil,
       edit_mode_message_id: nil,
-      edit_original_input: nil,
       nick_change_target: nil,
       nick_change_token: nil,
       show_invite_channel_picker: false,
@@ -666,10 +665,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {_count, seconds} when is_integer(seconds) -> seconds
       _ -> 0
     end
-  end
-
-  defp chat_action_enabled?(session, show_status_tab) do
-    !show_status_tab and session.active_pm == nil and session.active_channel != nil
   end
 
   @spec to_list_entry(map() | String.t()) :: map()

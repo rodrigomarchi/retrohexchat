@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   alias RetroHexChatWeb.ChatLive.Components.{
     AliasDialog,
     AutoRespondDialog,
+    Composer,
     CustomMenusDialog,
     InviteChannelPickerDialog,
     KnockRequestDialog,
@@ -203,7 +204,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       {:show_user_lookup_dialog, &close_user_lookup_dialog/1},
       {:lookup_result, &close_lookup_result/1},
       {:show_autorespond_dialog, &close_autorespond_dialog/1},
-      {:notice_target, &cancel_notice_mode/1}
+      {:notice_active, &cancel_notice_mode/1}
     ]
   end
 
@@ -226,9 +227,8 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   defp close_autojoin_edit_dialog(socket), do: assign(socket, show_autojoin_edit_dialog: false)
 
   defp cancel_notice_mode(socket) do
-    socket
-    |> assign(notice_target: nil, input: "", input_error: nil)
-    |> push_event("clear_input", %{})
+    send_update(Composer, id: Composer.id(), cancel_notice: true)
+    assign(socket, notice_active: false)
   end
 
   defp close_sound_settings_dialog(socket) do

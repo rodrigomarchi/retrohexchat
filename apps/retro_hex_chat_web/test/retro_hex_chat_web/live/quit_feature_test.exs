@@ -29,7 +29,9 @@ defmodule RetroHexChatWeb.QuitFeatureTest do
       :timer.sleep(50)
       _ = render(view2)
 
-      view1 |> render_submit("send_input", %{"input" => "/quit See you later!"})
+      view1
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/quit See you later!"})
 
       :timer.sleep(50)
       _ = render(view2)
@@ -51,7 +53,9 @@ defmodule RetroHexChatWeb.QuitFeatureTest do
       :timer.sleep(50)
       _ = render(view2)
 
-      view1 |> render_submit("send_input", %{"input" => "/quit"})
+      view1
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/quit"})
 
       :timer.sleep(50)
       _ = render(view2)
@@ -62,7 +66,9 @@ defmodule RetroHexChatWeb.QuitFeatureTest do
   end
 
   defp join_channel(view, channel) do
-    view |> render_submit("send_input", %{"input" => "/join #{channel}"})
+    view
+    |> element(~s([data-testid="chat-input-form"]))
+    |> render_submit(%{"input" => "/join #{channel}"})
   end
 
   defp ensure_channel(name) do

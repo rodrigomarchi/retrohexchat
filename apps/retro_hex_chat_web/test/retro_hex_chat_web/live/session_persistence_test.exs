@@ -119,8 +119,13 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open two PM conversations via /query
-      view |> render_submit("send_input", %{"input" => "/query Alice"})
-      view |> render_submit("send_input", %{"input" => "/query Bob"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Alice"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Bob"})
 
       # Alice should be before Bob (Alice added first, then Bob prepended)
       # Actually with prepend: Bob is at head, Alice is second
@@ -150,7 +155,9 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Ignore the user
-      view |> render_submit("send_input", %{"input" => "/ignore IgnoredUser"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/ignore IgnoredUser"})
 
       # Simulate PM from ignored user
       pm_payload = %{
@@ -191,7 +198,9 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Ignore the user first
-      view |> render_submit("send_input", %{"input" => "/ignore BadGuy"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/ignore BadGuy"})
 
       send(view.pid, {:incoming_pm_notify, %{sender: "BadGuy"}})
       html = render(view)
@@ -204,7 +213,9 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open conversation first
-      view |> render_submit("send_input", %{"input" => "/query Dave"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Dave"})
 
       # Now get a notify — should NOT create a second entry
       send(view.pid, {:incoming_pm_notify, %{sender: "Dave"}})
@@ -224,9 +235,17 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open three PM conversations
-      view |> render_submit("send_input", %{"input" => "/query Charlie"})
-      view |> render_submit("send_input", %{"input" => "/query Bob"})
-      view |> render_submit("send_input", %{"input" => "/query Alice"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Charlie"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Bob"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Alice"})
 
       # Current order: Alice, Bob, Charlie (most recently added first)
       # Now Charlie sends a PM — should move to top
@@ -259,7 +278,10 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open PM with Eve
-      view |> render_submit("send_input", %{"input" => "/query Eve"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Eve"})
+
       assert render(view) =~ ~s(data-testid="pm-Eve")
 
       # Close PM tab
@@ -296,7 +318,10 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
       # Open PM with Frank, then switch back to channel
-      view |> render_submit("send_input", %{"input" => "/query Frank"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Frank"})
+
       view |> render_click("switch_channel", %{"channel" => "#lobby"})
 
       # Simulate PM edit event arriving (from pm:frank:nick topic)

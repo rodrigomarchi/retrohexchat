@@ -1,5 +1,11 @@
 # Autocomplete And Syntax Tooltip Migration
 
+> **STATUS: COMPLETE (2026-06-30) — folded into plan 14.** Inseparable from the input (autocomplete writes
+> `input`; one JS hook drives both). `Components.Composer` owns `autocomplete_visible/mode/command/results/
+> selected`, `syntax_tooltip`, `command_help_level` and computes them in `update/2` from passthrough
+> `session`/`channel_users` + owned `recent_commands`; the `menu_toolbar_events`/`core_events` handlers are
+> thin `send_update` adapters. `autocomplete_filter` (in the playbook owned-set) was a phantom key. See 14.
+
 ## Objetivo
 
 Migrar autocomplete e syntax tooltip para uma ilha de composer, removendo estado de autocomplete do parent.

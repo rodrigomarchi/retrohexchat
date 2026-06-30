@@ -785,3 +785,34 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
     read-model (igual 05/13/20) é a certa: `channel_users` canônico passa e `is_target_op/voiced/muted`
     derivam no `render/1`. Um gotcha de plano é a intenção; o padrão estabelecido do projeto vence quando
     diverge.
+- **2026-06-30 (14+15+16 composer — o HOT-PATH do input; ilha com bubble + form phx-target):**
+  - **Adapter pattern vence até num hot path dirigido por JS hook — ZERO mudança de JS.** O
+    `AutocompleteHook` continua dando `pushEvent` ao parent; os handlers viram adapters finos
+    (`send_update` com os params crus) e o componente recomputa do próprio estado + passthrough. Evitou
+    retargetar ~13 sites do hook p/ `pushEventTo` (e o churn dos testes JS). O mapa SUGERIA pushEventTo; o
+    adapter (default) foi mais barato e suficiente.
+  - **Só os eventos DOM do próprio form precisam de `phx-target={@myself}`.** `input_changed`/`send_input`/
+    toggles são `phx-change`/`phx-submit`/`phx-click` em elementos que o componente renderiza → target no
+    `@myself` (adicionei attr `target` ao design-system `chat_input`). Os pushEvents do hook IGNORAM
+    phx-target (são globais) → ainda chegam aos adapters do parent. Split limpo: form→componente,
+    hook→parent.
+  - **Trabalho privilegiado fica no parent via BUBBLE.** `send_input` não roda no parent (precisa dos
+    modes/reply_to do componente) nem 100% no componente (CommandDispatch/Service mutam o socket do
+    PARENT). Solução: o componente aplica o prefixo de modo + atualiza a própria history + se reseta, e
+    `send(self(), {:composer_dispatch, text, reply_to})`; o `handle_info` do parent faz Parser/dispatch.
+    **Um componente NÃO muta o parent — quando o trabalho privilegiado mora no parent, faça bubble de uma
+    mensagem semântica, não tente fazer no componente.** (`reply_to`, antes lido de `socket.assigns` dentro
+    do `command_dispatch`, virou param de `send_plain_message/4`.)
+  - **Chave "split-brain" fica onde está seu leitor SÍNCRONO.** `edit_mode_message_id` é lido pelo
+    MessageViewport (classe `--editing`) → fica no parent; o componente é dono do ESPELHO do input
+    (`edit_original_input`) e restaura via diretivo `exit_edit: :restore|:clear`. Parent dono do id,
+    componente dono do texto; `enter/exit_edit_mode`/`set_input` continuam pushes globais do hook.
+  - **Coordenação de Escape → um booleano-espelho mínimo no parent (`notice_active`), igual `search_visible`
+    (09).** O mapa de dismissal do `keyboard_events` não lê o `notice_target` (agora do componente); o
+    componente avisa o parent ao entrar/sair de notice e o parent guarda só o booleano p/ a ordem do Escape.
+  - **Custo de teste (§2 em escala, previsto):** 39 firings by-name de `send_input` → submits de form
+    element-based (`element([data-testid=chat-input-form]) |> render_submit`), que roteiam ao componente e
+    LIQUIDAM o bubble dentro do ciclo de render do LiveViewTest (sem flush extra). Os firings by-name de
+    autocomplete (adapters → `send_update` async) PRECISARAM do `html = render(view)`. Cuidado com a forma
+    PIPED `view |> render_submit("send_input", …)` e nomes de var fora de `view` (`sender`, `view1`) — um
+    regex ingênuo `render_submit(view, …)` perde esses.

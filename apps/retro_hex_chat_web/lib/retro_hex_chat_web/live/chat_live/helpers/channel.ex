@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3]
+  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
+  alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
@@ -74,10 +75,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     socket
     |> assign(
       session: new_session,
-      input: "",
       loading_channel: channel_name,
       show_status_tab: false
     )
+    |> tap(fn _ -> send_update(Composer, id: Composer.id(), reset_input: true) end)
     |> load_channel_users(channel_name)
     |> load_channel_user_count(channel_name)
     |> load_channel_messages_with_pagination(channel_name)

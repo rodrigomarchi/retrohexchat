@@ -29,12 +29,13 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{Policy, Queries, Service, UnreadTracker}
-  alias RetroHexChat.Commands.{Autocomplete, CommandSyntax, Parser, Registry}
+  alias RetroHexChat.Commands.Parser
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive
 
   alias RetroHexChatWeb.ChatLive.Components.{
+    Composer,
     DeleteConfirmDialog,
     MessageViewport,
     NickChangeDialog,
@@ -45,40 +46,11 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   alias RetroHexChatWeb.ChatLive.Helpers.PM
   alias RetroHexChatWeb.Endpoint
 
-  # -- send_input --
-
-  def handle_event("input_changed", %{"input" => input}, socket) do
-    {:halt, assign(socket, input: input, input_error: nil)}
-  end
-
-  def handle_event("toggle_action_mode", _params, socket) do
-    if action_mode_available?(socket) do
-      {:halt,
-       assign(socket,
-         action_mode: !socket.assigns.action_mode,
-         notice_target: nil,
-         input_error: nil
-       )}
-    else
-      {:halt, socket}
-    end
-  end
-
-  def handle_event("cancel_notice_mode", _params, socket) do
-    {:halt, cancel_notice_mode(socket)}
-  end
-
-  def handle_event("send_input", %{"input" => ""}, socket) do
-    handle_empty_input(socket)
-  end
-
-  def handle_event("send_input", %{"input" => input}, socket) do
-    if socket.assigns.edit_mode_message_id do
-      {:halt, submit_edit(socket, input)}
-    else
-      {:halt, dispatch_chat_input(socket, input)}
-    end
-  end
+  # The composer input form (input_changed / send_input / toggle_action_mode /
+  # cancel_notice_mode) is owned by the Composer LiveComponent (phx-target).
+  # On submit it bubbles a semantic command back here via the public
+  # dispatch_composer_input/3, submit_composer_edit/2, empty_composer_edit/1
+  # below, which run the privileged Parser/CommandDispatch/Service work.
 
   # -- retry_message --
 
@@ -114,9 +86,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      socket
      |> assign(
        session: session,
-       action_mode: false,
-       notice_target: nil,
-       input_error: nil,
+       notice_active: false,
        unread_counts: unread_counts,
        highlight_channels: highlight,
        flash_channels: flash,
@@ -124,6 +94,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
        pm_typing_from: nil,
        pm_typing_timer: nil
      )
+     |> reset_composer_modes()
      |> clear_search_on_switch()
      |> load_channel_users(channel)
      |> load_channel_messages_with_pagination(channel)
@@ -163,9 +134,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
      socket
      |> assign(
        session: session,
-       action_mode: false,
-       notice_target: nil,
-       input_error: nil,
+       notice_active: false,
        unread_counts: unread_counts,
        flash_channels: flash,
        current_topic: nil,
@@ -174,6 +143,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
        pm_typing_from: nil,
        pm_typing_timer: nil
      )
+     |> reset_composer_modes()
      |> clear_search_on_switch()
      |> PM.load_pm_messages_with_pagination(nickname)
      |> push_reconnect_state()}
@@ -184,13 +154,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   def handle_event("switch_to_status", _params, socket) do
     {:halt,
      socket
-     |> assign(
-       show_status_tab: true,
-       status_unread: false,
-       action_mode: false,
-       notice_target: nil,
-       input_error: nil
-     )
+     |> assign(show_status_tab: true, status_unread: false, notice_active: false)
+     |> reset_composer_modes()
      |> clear_search_on_switch()}
   end
 
@@ -260,53 +225,13 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- history_navigate --
 
   def handle_event("history_navigate", %{"direction" => direction}, socket) do
-    history = socket.assigns.command_history
-    index = socket.assigns[:history_index] || -1
-
-    case direction do
-      "up" ->
-        new_index = min(index + 1, length(history) - 1)
-
-        if new_index >= 0 and new_index < length(history) do
-          {:halt, assign(socket, input: Enum.at(history, new_index), history_index: new_index)}
-        else
-          {:halt, socket}
-        end
-
-      "down" ->
-        new_index = max(index - 1, -1)
-
-        if new_index >= 0 do
-          {:halt, assign(socket, input: Enum.at(history, new_index), history_index: new_index)}
-        else
-          {:halt, assign(socket, input: "", history_index: -1)}
-        end
-
-      _ ->
-        {:halt, socket}
-    end
+    {:halt, put_composer(socket, history_navigate: direction)}
   end
 
   # -- tab_complete --
 
-  def handle_event("tab_complete", %{"partial" => partial, "is_start" => is_start}, socket) do
-    users = socket.assigns.channel_users
-    own_nick = socket.assigns.session.nickname
-
-    matches =
-      Autocomplete.tab_complete_matches(partial, users, own_nick)
-
-    case matches do
-      [] ->
-        {:halt, socket}
-
-      _ ->
-        {:halt, push_event(socket, "tab_matches", %{matches: matches, is_start: is_start})}
-    end
-  end
-
-  def handle_event("tab_complete", %{"partial" => partial}, socket) do
-    handle_event("tab_complete", %{"partial" => partial, "is_start" => true}, socket)
+  def handle_event("tab_complete", params, socket) do
+    {:halt, put_composer(socket, tab_complete: params)}
   end
 
   # The clipboard JS hook pushes the pasted lines to the parent; we filter out
@@ -327,28 +252,13 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- syntax_tooltip_query --
 
   def handle_event("syntax_tooltip_query", %{"command" => command, "args" => args}, socket) do
-    case Registry.get_syntax(command) do
-      nil ->
-        {:halt, assign(socket, syntax_tooltip: nil)}
-
-      %CommandSyntax{} = syntax ->
-        current_index = CommandSyntax.compute_current_param_index(syntax.parameters, args)
-        payload = CommandSyntax.to_client_payload(syntax)
-
-        tooltip_data =
-          Map.merge(payload, %{
-            current_param_index: current_index,
-            context_message: build_context_message(syntax, args, current_index)
-          })
-
-        {:halt, assign(socket, syntax_tooltip: tooltip_data)}
-    end
+    {:halt, put_composer(socket, syntax_query: %{command: command, args: args})}
   end
 
   # -- syntax_tooltip_dismiss --
 
   def handle_event("syntax_tooltip_dismiss", _params, socket) do
-    {:halt, assign(socket, syntax_tooltip: nil)}
+    {:halt, put_composer(socket, syntax_dismiss: true)}
   end
 
   # -- reply_to_message --
@@ -356,7 +266,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   def handle_event("reply_to_message", %{"message_id" => msg_id_str}, socket) do
     with {:ok, msg_id} <- parse_message_id(msg_id_str),
          %{} = message <- get_reply_parent(socket.assigns.session, msg_id) do
-      {:halt, assign(socket, reply_to: build_reply_to(message))}
+      {:halt, put_composer(socket, set_reply_to: build_reply_to(message))}
     else
       _ -> {:halt, socket}
     end
@@ -365,7 +275,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- cancel_reply --
 
   def handle_event("cancel_reply", _params, socket) do
-    {:halt, assign(socket, reply_to: nil)}
+    {:halt, put_composer(socket, cancel_reply: true)}
   end
 
   # -- scroll_to_reply_parent --
@@ -401,13 +311,11 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     if last_message && editable_message?(last_message, session, nickname) do
       msg_id = last_message.id
 
+      socket = put_composer(socket, enter_edit: last_message.content)
+
       {:halt,
        socket
-       |> assign(
-         edit_mode_message_id: msg_id,
-         edit_original_input: socket.assigns.input,
-         input: last_message.content
-       )
+       |> assign(edit_mode_message_id: msg_id)
        |> push_event("enter_edit_mode", %{message_id: msg_id, content: last_message.content})}
     else
       {:halt, socket}
@@ -417,7 +325,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- cancel_edit --
 
   def handle_event("cancel_edit", _params, socket) do
-    {:halt, exit_edit_mode(socket)}
+    {:halt, exit_edit_mode(socket, :restore)}
   end
 
   # -- ctx_chat_delete --
@@ -481,90 +389,67 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # Private helpers
   # ---------------------------------------------------------------------------
 
-  defp handle_empty_input(socket) do
-    cond do
-      socket.assigns.edit_mode_message_id ->
-        msg_id = socket.assigns.edit_mode_message_id
-
-        socket
-        |> exit_edit_mode()
-        |> open_delete_confirm(msg_id)
-        |> then(&{:halt, &1})
-
-      notice_mode?(socket) ->
-        {:halt, assign(socket, input_error: dgettext("chat", "Notice message cannot be empty"))}
-
-      socket.assigns.action_mode ->
-        {:halt, assign(socket, input_error: dgettext("chat", "Action message cannot be empty"))}
-
-      true ->
-        {:halt, socket}
-    end
-  end
-
-  defp dispatch_chat_input(socket, input) do
+  # Bubbled from the Composer LiveComponent on submit: the component has already
+  # applied the action/notice prefix, updated its own history and reset itself;
+  # here we run the privileged Parser/CommandDispatch work. `reply_to` is carried
+  # in the message because it is now composer-owned.
+  @spec dispatch_composer_input(Phoenix.LiveView.Socket.t(), String.t(), map() | nil) ::
+          Phoenix.LiveView.Socket.t()
+  def dispatch_composer_input(socket, text, reply_to) do
     session = socket.assigns.session
-    submitted_input = input_for_mode(socket, input)
-    history = [submitted_input | socket.assigns.command_history] |> Enum.take(50)
 
     socket
-    |> dispatch_parsed_input(session, Parser.parse(submitted_input))
+    |> dispatch_parsed_input(session, Parser.parse(text), reply_to)
     |> reset_activity()
-    |> clear_sent_input(history)
   end
 
-  defp dispatch_parsed_input(socket, session, {:message, text}) do
+  defp dispatch_parsed_input(socket, session, {:message, text}, reply_to) do
     new_session = Session.set_last_message_at(session, DateTime.utc_now())
 
     socket
     |> assign(session: new_session)
-    |> ChatLive.CommandDispatch.send_plain_message(new_session, text)
+    |> ChatLive.CommandDispatch.send_plain_message(new_session, text, reply_to)
     |> push_event("tip_trigger", %{tip: "first_message"})
   end
 
-  defp dispatch_parsed_input(socket, session, {:command, name, args}) do
+  defp dispatch_parsed_input(socket, session, {:command, name, args}, _reply_to) do
     ChatLive.CommandDispatch.dispatch_command(socket, session, name, args)
   end
 
-  defp clear_sent_input(socket, history) do
-    socket
-    |> assign(
-      input: "",
-      action_mode: false,
-      notice_target: nil,
-      input_error: nil,
-      command_history: history,
-      history_index: -1,
-      autocomplete_visible: false,
-      autocomplete_results: [],
-      autocomplete_selected: 0,
-      syntax_tooltip: nil
-    )
-    |> push_event("clear_input", %{})
-  end
+  @spec submit_composer_edit(Phoenix.LiveView.Socket.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def submit_composer_edit(socket, new_content) do
+    msg_id = socket.assigns.edit_mode_message_id
+    session = socket.assigns.session
 
-  defp cancel_notice_mode(socket) do
-    socket
-    |> assign(notice_target: nil, input: "", input_error: nil)
-    |> push_event("clear_input", %{})
-  end
+    result =
+      if session.active_pm do
+        Service.edit_private_message(msg_id, session.nickname, new_content)
+      else
+        Service.edit_message(msg_id, session.nickname, new_content)
+      end
 
-  defp input_for_mode(socket, input) do
-    cond do
-      notice_mode?(socket) -> "/notice #{socket.assigns.notice_target} #{input}"
-      socket.assigns.action_mode -> "/me #{input}"
-      true -> input
+    case result do
+      {:ok, _} -> exit_edit_mode(socket, :clear)
+      {:error, reason} -> socket |> exit_edit_mode(:restore) |> error_event(reason)
     end
   end
 
-  defp notice_mode?(socket) do
-    is_binary(socket.assigns.notice_target) and socket.assigns.notice_target != ""
+  @spec empty_composer_edit(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
+  def empty_composer_edit(socket) do
+    msg_id = socket.assigns.edit_mode_message_id
+
+    socket
+    |> exit_edit_mode(:restore)
+    |> open_delete_confirm(msg_id)
   end
 
-  defp action_mode_available?(socket) do
-    session = socket.assigns.session
-    !socket.assigns.show_status_tab and session.active_pm == nil and session.active_channel != nil
+  defp put_composer(socket, attrs) do
+    send_update(Composer, [id: Composer.id()] ++ attrs)
+    socket
   end
+
+  defp reset_composer_modes(socket), do: put_composer(socket, reset_modes: true)
 
   defp parse_message_id(id) when is_integer(id), do: {:ok, id}
 
@@ -612,41 +497,17 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     Policy.can_edit?(message, nickname) == :ok
   end
 
-  defp exit_edit_mode(socket) do
+  # Clears the parent-owned edit_mode_message_id and drives the Composer to
+  # restore (cancel/error) or clear (successful save) its own input mirror. The
+  # `set_input`/`exit_edit_mode` client pushes are global hook handlers, so the
+  # component emits `set_input` from its own owned value.
+  defp exit_edit_mode(socket, mode) do
     msg_id = socket.assigns.edit_mode_message_id
-    original = socket.assigns.edit_original_input || ""
 
     socket
-    |> assign(
-      edit_mode_message_id: nil,
-      edit_original_input: nil,
-      input: original
-    )
+    |> assign(edit_mode_message_id: nil)
+    |> tap(fn _ -> send_update(Composer, id: Composer.id(), exit_edit: mode) end)
     |> push_event("exit_edit_mode", %{message_id: msg_id})
-    |> push_event("set_input", %{value: original})
-  end
-
-  defp submit_edit(socket, new_content) do
-    msg_id = socket.assigns.edit_mode_message_id
-    session = socket.assigns.session
-
-    result =
-      if session.active_pm do
-        Service.edit_private_message(msg_id, session.nickname, new_content)
-      else
-        Service.edit_message(msg_id, session.nickname, new_content)
-      end
-
-    socket = exit_edit_mode(socket)
-
-    case result do
-      {:ok, _} ->
-        assign(socket, input: "")
-        |> push_event("set_input", %{value: ""})
-
-      {:error, reason} ->
-        error_event(socket, reason)
-    end
   end
 
   defp do_load_more(socket, oldest_id) do
@@ -719,36 +580,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     case Map.get(source, key) do
       nil -> map
       value -> Map.put(map, key, value)
-    end
-  end
-
-  defp build_context_message(%CommandSyntax{} = syntax, args, current_index) do
-    trimmed = String.trim(args)
-
-    cond do
-      trimmed == "" or current_index == nil ->
-        nil
-
-      syntax.sub_options not in [nil, []] ->
-        build_sub_option_context(syntax.sub_options, trimmed)
-
-      true ->
-        case Enum.at(syntax.parameters, current_index) do
-          nil -> nil
-          param -> dgettext("chat", "Next: %{parameter}", parameter: param.name)
-        end
-    end
-  end
-
-  defp build_sub_option_context(sub_options, trimmed) do
-    first_arg = trimmed |> String.split(~r/\s+/) |> hd()
-
-    case Enum.find(sub_options, &String.starts_with?(first_arg, &1.flag)) do
-      nil ->
-        nil
-
-      opt ->
-        dgettext("chat", "You are setting: %{flag} (%{label})", flag: opt.flag, label: opt.label)
     end
   end
 

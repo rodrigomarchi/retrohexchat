@@ -57,7 +57,10 @@ defmodule RetroHexChatWeb.DblclickFeatureTest do
       join_channel(view, channel)
 
       # Send message containing a channel name
-      view |> render_submit("send_input", %{"input" => "Check out #general for info"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "Check out #general for info"})
+
       html = render(view)
 
       assert html =~ "chat-channel-link"
@@ -75,7 +78,9 @@ defmodule RetroHexChatWeb.DblclickFeatureTest do
   end
 
   defp join_channel(view, channel) do
-    view |> render_submit("send_input", %{"input" => "/join #{channel}"})
+    view
+    |> element(~s([data-testid="chat-input-form"]))
+    |> render_submit(%{"input" => "/join #{channel}"})
   end
 
   defp ensure_channel(name) do

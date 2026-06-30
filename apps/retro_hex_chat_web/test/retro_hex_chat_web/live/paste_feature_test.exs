@@ -72,7 +72,9 @@ defmodule RetroHexChatWeb.PasteFeatureTest do
   end
 
   defp join_channel(view, channel) do
-    view |> render_submit("send_input", %{"input" => "/join #{channel}"})
+    view
+    |> element(~s([data-testid="chat-input-form"]))
+    |> render_submit(%{"input" => "/join #{channel}"})
   end
 
   defp ensure_channel(name) do

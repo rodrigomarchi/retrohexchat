@@ -93,9 +93,9 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     end
   end
 
-  @spec send_plain_message(Phoenix.LiveView.Socket.t(), Session.t(), String.t()) ::
+  @spec send_plain_message(Phoenix.LiveView.Socket.t(), Session.t(), String.t(), map() | nil) ::
           Phoenix.LiveView.Socket.t()
-  def send_plain_message(socket, session, text) do
+  def send_plain_message(socket, session, text, reply_to \\ nil) do
     cond do
       socket.assigns.show_status_tab ->
         push_status_message(
@@ -105,10 +105,10 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         )
 
       session.active_pm ->
-        send_pm_message(socket, session, text)
+        send_pm_message(socket, session, text, reply_to)
 
       session.active_channel ->
-        send_channel_message(socket, session, text)
+        send_channel_message(socket, session, text, reply_to)
 
       true ->
         socket
@@ -141,16 +141,15 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   # ── Private: message sending ─────────────────────────────
 
-  defp send_pm_message(socket, session, text) do
+  defp send_pm_message(socket, session, text, reply_to) do
     if GlobalMutes.muted?(session.nickname) do
       error_event(socket, dgettext("chat", "You are muted by an administrator"))
     else
-      do_send_pm_message(socket, session, text)
+      do_send_pm_message(socket, session, text, reply_to)
     end
   end
 
-  defp do_send_pm_message(socket, session, text) do
-    reply_to = socket.assigns[:reply_to]
+  defp do_send_pm_message(socket, session, text, reply_to) do
     opts = if reply_to, do: [reply_to_id: reply_to.id], else: []
     target = session.active_pm
 
@@ -162,23 +161,22 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
           {:incoming_pm_notify, %{sender: session.nickname}}
         )
 
-        assign(socket, reply_to: nil)
+        socket
 
       {:error, reason} ->
         error_event(socket, reason)
     end
   end
 
-  defp send_channel_message(socket, session, text) do
+  defp send_channel_message(socket, session, text, reply_to) do
     if GlobalMutes.muted?(session.nickname) do
       error_event(socket, dgettext("chat", "You are muted by an administrator"))
     else
-      do_send_channel_message(socket, session, text)
+      do_send_channel_message(socket, session, text, reply_to)
     end
   end
 
-  defp do_send_channel_message(socket, session, text) do
-    reply_to = socket.assigns[:reply_to]
+  defp do_send_channel_message(socket, session, text, reply_to) do
     temp_id = "pending_#{System.unique_integer([:positive])}"
 
     pending_msg =
@@ -192,7 +190,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
         socket
         |> assign(pending_channel_msg_id: temp_id)
         |> push_event("message_confirmed", %{temp_id: temp_id})
-        |> assign(reply_to: nil)
 
       {:error, reason} ->
         failed_msg = %{pending_msg | status: :failed}

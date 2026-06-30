@@ -139,73 +139,17 @@
         />
       </div>
 
-      <%!-- Popups (autocomplete dropdown + syntax tooltip) --%>
-      <.autocomplete
-        visible={@autocomplete_visible}
-        items={@autocomplete_results}
-        selected_index={@autocomplete_selected}
-        mode={@autocomplete_mode || :command}
-        command={@autocomplete_command}
-        on_select="autocomplete_select"
+      <%!-- Composer island: autocomplete + syntax tooltip + bottom input panel --%>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.Composer}
+        id={RetroHexChatWeb.ChatLive.Components.Composer.id()}
+        session={@session}
+        channel_users={@channel_users}
+        show_status_tab={@show_status_tab}
+        show_emoji_picker={@show_emoji_picker}
+        pm_typing_from={@pm_typing_from}
+        edit_mode_message_id={@edit_mode_message_id}
       />
-      <.syntax_tooltip
-        tooltip={@syntax_tooltip}
-        detail_level={@command_help_level}
-      />
-
-      <%!-- Bottom panel: formatting toolbar + reply bar + typing + input (fixed at bottom) --%>
-      <div class="shrink-0">
-        <%!-- Emoji picker (positioned above input) --%>
-        <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog}
-          id={RetroHexChatWeb.ChatLive.Components.EmojiPickerDialog.id()}
-          visible={@show_emoji_picker}
-        />
-
-        <%!-- Formatting toolbar --%>
-        <.formatting_toolbar
-          :if={!@show_status_tab}
-          strip_active={@session.strip_formatting}
-          on_format="toggle_strip_formatting"
-          on_toggle_emoji="toggle_emoji_picker"
-        />
-
-        <%!-- Reply bar --%>
-        <.reply_bar
-          :if={@reply_to}
-          author={@reply_to.author}
-          message={@reply_to.preview}
-          on_dismiss="cancel_reply"
-        />
-
-        <%!-- Typing indicator --%>
-        <.typing_indicator
-          :if={@session.active_pm}
-          nick={@pm_typing_from}
-        />
-
-        <%!-- Chat input --%>
-        <.chat_input
-          id="chat-input-area"
-          input_id="chat-input"
-          value={@input}
-          name="input"
-          placeholder={ChatHelpers.input_placeholder(assigns)}
-          action_enabled={chat_action_enabled?(@session, @show_status_tab)}
-          action_active={@action_mode}
-          notice_target={@notice_target}
-          input_error={@input_error}
-          on_submit="send_input"
-          on_change="input_changed"
-          on_action_toggle="toggle_action_mode"
-          on_notice_cancel="cancel_notice_mode"
-          hook="AutocompleteHook"
-          wrapper_hook="CharCounterHook"
-          autofocus
-          show_toolbar={false}
-        />
-        <.history_search visible={true} class="u-hidden" />
-      </div>
     </div>
   </div>
 </div>

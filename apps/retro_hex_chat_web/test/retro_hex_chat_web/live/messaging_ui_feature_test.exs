@@ -33,7 +33,11 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
       html = render(view)
       assert html =~ ~s(data-testid="chat-action-toggle")
 
-      html = render_click(view, "toggle_action_mode")
+      html =
+        view
+        |> element(~s([data-testid="chat-action-toggle"]))
+        |> render_click()
+
       assert html =~ "What are you doing? (/me mode)"
       assert html =~ ~s(aria-pressed="true")
 
@@ -52,7 +56,10 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
       channel = "#msg-empty-action-#{uid()}"
       view = connect_user(conn, "MsgEmpty#{uid()}")
       join_channel(view, channel)
-      render_click(view, "toggle_action_mode")
+
+      view
+      |> element(~s([data-testid="chat-action-toggle"]))
+      |> render_click()
 
       html =
         view
@@ -111,7 +118,8 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
       sender_view
       |> render_click("nick_right_click", %{"nick" => target, "x" => 100, "y" => 200})
 
-      html = render_click(sender_view, "context_notice", %{"nick" => target})
+      render_click(sender_view, "context_notice", %{"nick" => target})
+      html = render(sender_view)
       assert html =~ "Notice to #{target}:"
       assert html =~ "Send Notice"
 
@@ -132,8 +140,8 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
       sender_view = connect_user(conn, "NoticeErr#{uid()}")
       _target_view = connect_user(conn, target)
 
-      html = render_click(sender_view, "context_notice", %{"nick" => target})
-      assert html =~ "Notice to #{target}:"
+      render_click(sender_view, "context_notice", %{"nick" => target})
+      assert render(sender_view) =~ "Notice to #{target}:"
 
       html =
         sender_view
@@ -142,7 +150,11 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
 
       assert html =~ "Notice message cannot be empty"
 
-      html = render_click(sender_view, "cancel_notice_mode")
+      html =
+        sender_view
+        |> element(~s([data-testid="chat-notice-cancel"]))
+        |> render_click()
+
       refute html =~ "Notice to #{target}:"
       refute html =~ "Notice message cannot be empty"
     end

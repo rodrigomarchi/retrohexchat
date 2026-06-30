@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3]
+  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Chat.{Queries, Service}
   alias RetroHexChat.Presence.NotifyList
+  alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
 
@@ -65,7 +66,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       |> Session.set_active_pm(target)
 
     socket
-    |> assign(session: new_session, input: "", show_status_tab: false)
+    |> assign(session: new_session, show_status_tab: false)
+    |> tap(fn _ -> send_update(Composer, id: Composer.id(), reset_input: true) end)
     |> load_pm_messages_with_pagination(target)
   end
 

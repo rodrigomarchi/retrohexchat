@@ -16,14 +16,21 @@ defmodule RetroHexChatWeb.AwayReplyFeatureTest do
       {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
 
       # Nick1 sets away
-      view1 |> render_submit("send_input", %{"input" => "/away Gone for lunch"})
+      view1
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/away Gone for lunch"})
 
       # Nick2 opens PM to nick1
-      view2 |> render_submit("send_input", %{"input" => "/query #{nick1}"})
+      view2
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query #{nick1}"})
+
       render_click(view2, "switch_pm", %{"nickname" => nick1})
 
       # Nick2 sends a PM
-      view2 |> render_submit("send_input", %{"input" => "Hello?"})
+      view2
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "Hello?"})
 
       # Force view1 to process {:incoming_pm_notify} and send auto-reply
       _ = render(view1)
@@ -43,20 +50,31 @@ defmodule RetroHexChatWeb.AwayReplyFeatureTest do
       {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
 
       # Nick1 sets away
-      view1 |> render_submit("send_input", %{"input" => "/away Busy"})
+      view1
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/away Busy"})
 
       # Nick2 opens PM and sends two messages
-      view2 |> render_submit("send_input", %{"input" => "/query #{nick1}"})
+      view2
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query #{nick1}"})
+
       render_click(view2, "switch_pm", %{"nickname" => nick1})
 
-      view2 |> render_submit("send_input", %{"input" => "First message"})
+      view2
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "First message"})
+
       _ = render(view1)
       :timer.sleep(50)
       _ = render(view2)
       html_after_first = render(view2)
       first_count = count_occurrences(html_after_first, "is away")
 
-      view2 |> render_submit("send_input", %{"input" => "Second message"})
+      view2
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "Second message"})
+
       _ = render(view1)
       :timer.sleep(50)
       _ = render(view2)

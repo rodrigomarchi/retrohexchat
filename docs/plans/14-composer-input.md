@@ -1,5 +1,16 @@
 # Composer And Chat Input Migration
 
+> **STATUS: COMPLETE (2026-06-30) — done together with 15 + 16 as one island.**
+> `RetroHexChatWeb.ChatLive.Components.Composer` owns the whole bottom region (autocomplete dropdown,
+> syntax tooltip, formatting toolbar, reply bar, typing indicator, chat input) and ALL composer state
+> (~15 keys out of `assign_defaults`). Form DOM events use `phx-target={@myself}`; the AutocompleteHook
+> keeps pushing to the parent, which forwards via `send_update` adapters (zero JS changes). On submit the
+> component bubbles `{:composer_dispatch, text, reply_to}` / `{:composer_submit_edit, content}` /
+> `:composer_empty_edit` to the parent `handle_info` (Parser/CommandDispatch/Service stay on the LiveView).
+> `edit_mode_message_id` stays parent (MessageViewport reads it); `reply_to` is a `send_plain_message/4`
+> param; Escape/notice uses a parent `notice_active` boolean mirror. `make ci` 9/9. See PROGRESS.md log
+> (2026-06-30) for the full findings.
+
 ## Objetivo
 
 Migrar input, historico, envio, modo action/notice, reply/edit e paste para um componente stateful dono do fluxo de composicao.

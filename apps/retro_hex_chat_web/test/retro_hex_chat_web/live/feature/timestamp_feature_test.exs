@@ -13,9 +13,17 @@ defmodule RetroHexChatWeb.TimestampFeatureTest do
       channel = "#tse-#{uid()}"
 
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
-      view |> render_submit("send_input", %{"input" => "/join #{channel}"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/join #{channel}"})
+
       :timer.sleep(50)
-      view |> render_submit("send_input", %{"input" => "timestamp test"})
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "timestamp test"})
+
       :timer.sleep(100)
       _ = render(view)
       html = render(view)

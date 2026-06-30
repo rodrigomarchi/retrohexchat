@@ -21,7 +21,10 @@ defmodule RetroHexChatWeb.NickColumnFeatureTest do
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
-      view |> render_submit("send_input", %{"input" => "Hello from grid test"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "Hello from grid test"})
+
       html = render(view)
 
       # App chat uses Tailwind grid layout
@@ -34,7 +37,10 @@ defmodule RetroHexChatWeb.NickColumnFeatureTest do
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
       join_channel(view, channel)
 
-      view |> render_submit("send_input", %{"input" => "/me waves hello"})
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/me waves hello"})
+
       html = render(view)
 
       assert html =~ "text-action"
@@ -60,7 +66,9 @@ defmodule RetroHexChatWeb.NickColumnFeatureTest do
   end
 
   defp join_channel(view, channel) do
-    view |> render_submit("send_input", %{"input" => "/join #{channel}"})
+    view
+    |> element(~s([data-testid="chat-input-form"]))
+    |> render_submit(%{"input" => "/join #{channel}"})
   end
 
   defp ensure_channel(name) do

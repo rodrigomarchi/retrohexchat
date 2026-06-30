@@ -85,9 +85,11 @@ app-header-panels
 bg-desktop
 font-system
 text-text
-# MessageViewport — transparent mount wrapper so the stateful component's static
-# root does not create a layout box (chat list stays a flex-fill child of the column)
+# MessageViewport / Composer — transparent mount wrapper so the stateful component's
+# static root does not create a layout box (chat list stays a flex-fill child of the column)
 contents
+# Composer island — the bottom input panel keeps its flex-column slot fixed-height
+shrink-0
 # Diagram layout — Tailwind utility classes passed to SVG diagram components in help templates
 max-w-lg
 mx-auto

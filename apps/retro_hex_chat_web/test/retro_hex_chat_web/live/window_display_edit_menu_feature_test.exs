@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
       join_channel(view, channel)
 
       message = "clear-window-marker-#{uid()}"
-      render_submit(view, "send_input", %{"input" => message})
+      view |> element(~s([data-testid="chat-input-form"])) |> render_submit(%{"input" => message})
       assert render(view) =~ message
 
       render_click(view, "toolbar_action", %{"action" => "clear_window"})
@@ -106,7 +106,9 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
   end
 
   defp join_channel(view, channel) do
-    render_submit(view, "send_input", %{"input" => "/join #{channel}"})
+    view
+    |> element(~s([data-testid="chat-input-form"]))
+    |> render_submit(%{"input" => "/join #{channel}"})
   end
 
   defp ensure_channel(name) do
