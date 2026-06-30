@@ -21,7 +21,9 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
   alias RetroHexChat.Chat.{AliasExpander, CustomMenus}
   alias RetroHexChat.Commands.Parser
   alias RetroHexChatWeb.ChatLive
+  alias RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu
   alias RetroHexChatWeb.ChatLive.Components.CustomMenusDialog
+  alias RetroHexChatWeb.ChatLive.Components.UserContextMenus
 
   # ── Execute custom menu command ────────────────────────────
 
@@ -39,35 +41,27 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
           ChatLive.CommandDispatch.send_plain_message(socket, session, text)
       end
 
-    {:halt,
-     socket
-     |> assign(
-       context_menu: %{visible: false, x: 0, y: 0, target_nick: nil, is_target_registered: false}
-     )
-     |> assign(
-       chat_context_menu: %{
-         visible: false,
-         type: nil,
-         x: 0,
-         y: 0,
-         target_nick: nil,
-         target_url: nil,
-         target_channel: nil,
-         target_message: nil,
-         has_selection: false,
-         is_target_registered: false
-       }
-     )
-     |> assign(
-       conversations_context_menu: %{
-         visible: false,
-         x: 0,
-         y: 0,
-         type: nil,
-         channel: nil,
-         nick: nil
-       }
-     )}
+    # The custom-menu item can be clicked from either the user (nick/chat) context
+    # menu or the conversations context menu, so close whichever is open. Both menus
+    # are their own islands now (`UserContextMenus`/`ConversationsContextMenu`), so
+    # the dismissal is a `send_update` to each component, not a parent assign.
+    send_update(UserContextMenus,
+      id: UserContextMenus.id(),
+      context_menu: UserContextMenus.nick_closed(),
+      chat_context_menu: UserContextMenus.chat_closed()
+    )
+
+    send_update(ConversationsContextMenu,
+      id: ConversationsContextMenu.id(),
+      visible: false,
+      x: 0,
+      y: 0,
+      type: :channel,
+      channel: nil,
+      nick: nil
+    )
+
+    {:halt, socket}
   end
 
   # ── Dialog events ──────────────────────────────────────────

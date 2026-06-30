@@ -98,10 +98,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Presence do
 
     socket =
       socket
-      |> assign(
-        link_previews: Map.put(socket.assigns.link_previews, url, title),
-        url_catcher_entries: updated_entries
-      )
+      |> assign(url_catcher_entries: updated_entries)
       |> push_event("link_preview", %{url: url, title: title})
 
     {:halt, socket}
