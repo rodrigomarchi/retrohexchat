@@ -1,10 +1,16 @@
 defmodule RetroHexChatWeb.ChatLive.InviteEvents do
   @moduledoc """
-  Handle events for channel invite accept/ignore dialogs.
+  Resolve channel invite accept/ignore actions for the InviteQueueDialog island.
 
-  Covers: invite_accept, invite_ignore.
+  The dialog (`Components.InviteQueueDialog`) renders the pending-invite queue and
+  routes the Join/Ignore button clicks to itself (`@myself`); it bubbles the channel
+  up to the parent LiveView, whose `handle_info` calls `accept/2` / `ignore/2` here.
 
-  Attached as `attach_hook(:invite_events, :handle_event, ...)` in ChatLive.mount/3.
+  `pending_invites` stays parent-owned: it is the Escape-priority read-model
+  (`keyboard_events` dismisses the topmost invite first) and the per-invite
+  expiration timers fire into this LiveView process's `handle_info`. So the resolve
+  logic — cancel the timer, drop the invite, remove the server invite-exception, and
+  (on accept) join the channel + post the status line — lives here on the parent.
   """
 
   import Phoenix.Component, only: [assign: 2]
@@ -14,63 +20,55 @@ defmodule RetroHexChatWeb.ChatLive.InviteEvents do
 
   alias RetroHexChat.Channels.Server
 
-  def handle_event("invite_accept", %{"channel" => channel}, socket) do
+  @spec accept(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def accept(socket, channel) do
     pending = socket.assigns.pending_invites
     session = socket.assigns.session
 
     case find_invite(pending, channel) do
       nil ->
-        {:halt, error_event(socket, dgettext("chat", "This invitation has expired"))}
+        error_event(socket, dgettext("chat", "This invitation has expired"))
 
       invite ->
         Process.cancel_timer(invite.timer_ref)
         remaining = Enum.reject(pending, &(&1.channel == channel))
         try_remove_invite_exception(channel, session.nickname)
 
-        socket =
-          socket
-          |> assign(pending_invites: remaining)
-          |> push_status_message(
-            dgettext("chat", "* Accepted invite to %{channel} from %{inviter}",
-              channel: channel,
-              inviter: invite.inviter
-            ),
-            :system
-          )
-          |> join_channel(channel, session)
-
-        {:halt, socket}
+        socket
+        |> assign(pending_invites: remaining)
+        |> push_status_message(
+          dgettext("chat", "* Accepted invite to %{channel} from %{inviter}",
+            channel: channel,
+            inviter: invite.inviter
+          ),
+          :system
+        )
+        |> join_channel(channel, session)
     end
   end
 
-  def handle_event("invite_ignore", %{"channel" => channel}, socket) do
+  @spec ignore(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def ignore(socket, channel) do
     pending = socket.assigns.pending_invites
     session = socket.assigns.session
 
     case find_invite(pending, channel) do
       nil ->
-        {:halt, assign(socket, pending_invites: pending)}
+        socket
 
       invite ->
         Process.cancel_timer(invite.timer_ref)
         remaining = Enum.reject(pending, &(&1.channel == channel))
         try_remove_invite_exception(channel, session.nickname)
 
-        socket =
-          socket
-          |> assign(pending_invites: remaining)
-          |> push_status_message(
-            dgettext("chat", "* Ignored invite to %{channel}", channel: channel),
-            :system
-          )
-
-        {:halt, socket}
+        socket
+        |> assign(pending_invites: remaining)
+        |> push_status_message(
+          dgettext("chat", "* Ignored invite to %{channel}", channel: channel),
+          :system
+        )
     end
   end
-
-  # ── Catch-all ──────────────────────────────────────────────
-
-  def handle_event(_event, _params, socket), do: {:cont, socket}
 
   # ── Private ────────────────────────────────────────────────
 

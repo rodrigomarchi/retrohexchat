@@ -334,12 +334,10 @@
   id={RetroHexChatWeb.ChatLive.Components.PasteConfirmDialog.id()}
 />
 
-<.invite_dialog
-  id="invite-dialog"
-  show={length(@pending_invites) > 0}
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.InviteQueueDialog}
+  id={RetroHexChatWeb.ChatLive.Components.InviteQueueDialog.id()}
   invites={@pending_invites}
-  on_accept="invite_accept"
-  on_ignore="invite_ignore"
 />
 
 <.live_component

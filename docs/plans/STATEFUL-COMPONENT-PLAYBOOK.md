@@ -948,3 +948,29 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
   - `make ci` 9/9; `address_book_test` 49 + `address_book_feature_test` 21 + component 6; `chat-notify`/
     `chat-ignore-notifications` E2E verdes. `chat-address-book` O16 falha no main (overlay "Tip") — vou
     consertar esse flake pré-existente a seguir.
+- **2026-06-30 (47 invite — o ORQUESTRADOR, último plano; migração completa):**
+  - **Read-model NÃO migra quando há (a) leitor síncrono em outro subsistema E (b) timers que disparam
+    no `handle_info` do pai.** `pending_invites` é lido sincronamente pelo `keyboard_events` (prioridade de
+    Escape: dispensa o invite topo ANTES de qualquer dialog) e cada invite tem um timer de expiração
+    (`Process.send_after(self(), {:invite_expired, channel}, 300_000)`) que dispara no `handle_info` do
+    PROCESSO PAI — e um `LiveComponent NÃO tem handle_info`. Logo a fila fica no pai; só o **render-model**
+    (o stack de cards) + os 2 cliques (Join/Ignore) migram. É o **inverso da kick queue (48)**: kick não
+    tinha timer/Escape → a fila inteira virou da ilha; invite tem os dois → a orquestração (enqueue +
+    timers + Escape) fica no pai. Tentar mover a fila exigiria um ESPELHO de Escape no pai (tipo o
+    `notice_active` do composer) + um round-trip de timer (ilha cria timer → pai recebe `{:invite_expired}`
+    → pai reenvia `send_update`) = MAIS maquinaria, não menos. O split correto é o de perform/highlight/
+    notify: **pai dono da fila + efeitos (session/stream/timers); ilha dona do render + dos cliques.**
+  - **Eventos `@myself` que sobem channel cru → `send(self(), {tag, channel})` → parent `handle_info`.**
+    Como TUDO de accept/ignore toca estado parent-owned (a lista + session + stream), a ilha não computa
+    nada — só bubbla o channel. O ganho não é encolher `assign_defaults` (a fila fica no pai), é (1)
+    isolar o render do hot-path e (2) **tirar `invite_events.ex` da cadeia de hooks de TODO evento**
+    (removido de `@event_hook_fns` E `attach_all_hooks`). O módulo deixou de ser hook (`handle_event/3`) e
+    virou helpers puros `accept/2`/`ignore/2` que o `handle_info` do pai chama.
+  - **`JS.push(target: @myself)` é OK quando o dialog NÃO tem seletor Elixir `[phx-click='…']`.** O blob
+    opaco do JS.push só quebra testes que selecionam por phx-click (ver 31). Invite é E2E-only e o E2E
+    seleciona por `data-testid` (`invite-join-${channel}`) + `phx-value-channel` (que o `JS.push` mescla no
+    payload automaticamente) → `on_accept={JS.push("invite_accept", target: @myself)}` preserva tudo, sem
+    threadar `attr :target` pelo design-system. Use a forma mais barata (JS.push) quando não há seletor
+    phx-click; só thread `attr :target`+string quando os testes disparam por nome (31/40).
+  - **Migração COMPLETA.** Todo dialog/queue do ChatLive é uma ilha LiveComponent. Restam só caudas
+    não-ilha: 03 hidden-hooks (segue os componentes donos) e os docs de tracking (01/02/57).

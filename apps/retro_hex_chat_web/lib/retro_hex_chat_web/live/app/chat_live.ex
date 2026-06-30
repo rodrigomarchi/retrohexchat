@@ -27,8 +27,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AboutDialog
 
-  import RetroHexChatWeb.Components.UI.InviteDialog
-
   # ── Domain aliases ────────────────────────────────────────────
   alias RetroHexChat.Accounts.{NicknameValidator, Session}
   alias RetroHexChat.Admin.ServerBans
@@ -305,6 +303,17 @@ defmodule RetroHexChatWeb.App.ChatLive do
      |> ChatLive.Helpers.maybe_persist_autojoin_list(session)}
   end
 
+  # Invite queue dialog: the island renders the queue + routes the Join/Ignore
+  # clicks here; the parent owns `pending_invites` (the Escape-priority read-model
+  # + the per-invite expiration timers fire into this process's handle_info).
+  def handle_info({:invite_accept, channel}, socket) do
+    {:noreply, ChatLive.InviteEvents.accept(socket, channel)}
+  end
+
+  def handle_info({:invite_ignore, channel}, socket) do
+    {:noreply, ChatLive.InviteEvents.ignore(socket, channel)}
+  end
+
   # Highlight dialog: the dialog owns the work; the parent owns the session
   # read-model + persistence and the status-bar surface.
   def handle_info({:highlight_dialog_session, session}, socket) do
@@ -478,7 +487,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   @event_hook_fns [
     &ChatLive.EmojiEvents.handle_event/3,
     &ChatLive.UrlCatcherEvents.handle_event/3,
-    &ChatLive.InviteEvents.handle_event/3,
     &ChatLive.PmTypingEvents.handle_event/3,
     &ChatLive.AliasEvents.handle_event/3,
     &ChatLive.CustomMenusEvents.handle_event/3,
@@ -538,7 +546,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
     event_hooks = [
       {:emoji_events, &ChatLive.EmojiEvents.handle_event/3},
       {:url_catcher_events, &ChatLive.UrlCatcherEvents.handle_event/3},
-      {:invite_events, &ChatLive.InviteEvents.handle_event/3},
       {:pm_typing_events, &ChatLive.PmTypingEvents.handle_event/3},
       {:alias_events, &ChatLive.AliasEvents.handle_event/3},
       {:custom_menus_events, &ChatLive.CustomMenusEvents.handle_event/3},
