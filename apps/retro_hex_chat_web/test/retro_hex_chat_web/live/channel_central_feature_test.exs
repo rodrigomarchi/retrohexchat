@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   describe "US1: Open and View Channel Central" do
     test "1.1 open via menu bar shows dialog", %{conn: conn} do
       view = connect_user(conn, "E2ECc#{uid()}")
-      html = render_click(view, "open_channel_central", %{"cc_channel" => "#lobby"})
+      html = open_cc(view, "#lobby")
 
       assert html =~ "Channel Central"
       assert html =~ "#lobby"
@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
     test "1.2 close via X button hides dialog", %{conn: conn} do
       view = connect_user(conn, "E2ECcCl#{uid()}")
-      render_click(view, "open_channel_central", %{"cc_channel" => "#lobby"})
+      open_cc(view, "#lobby")
       render_click(view, "close_channel_central")
 
       refute has_element?(view, "#channel-central-dialog-show-trigger")
@@ -38,15 +38,20 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
     test "1.3 close via Escape key hides dialog", %{conn: conn} do
       view = connect_user(conn, "E2ECcEs#{uid()}")
-      render_click(view, "open_channel_central", %{"cc_channel" => "#lobby"})
-      render_click(view, "window_keydown", %{"key" => "Escape"})
+      open_cc(view, "#lobby")
+
+      # The dialog owns its Escape (phx-window-keydown on the focus-wrap), like the
+      # other migrated dialogs — it JS.push-es close_channel_central to the island.
+      view
+      |> element("#channel-central-dialog-wrap")
+      |> render_keydown(%{"key" => "Escape"})
 
       refute has_element?(view, "#channel-central-dialog-show-trigger")
     end
 
     test "1.4 General tab shows channel info", %{conn: conn} do
       view = connect_user(conn, "E2ECcGn#{uid()}")
-      html = render_click(view, "open_channel_central", %{"cc_channel" => "#lobby"})
+      html = open_cc(view, "#lobby")
 
       assert html =~ "#lobby"
       assert html =~ "Members:"
@@ -54,26 +59,26 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
     test "1.5 all 5 tabs are visible and switchable", %{conn: conn} do
       view = connect_user(conn, "E2ECcTb#{uid()}")
-      render_click(view, "open_channel_central", %{"cc_channel" => "#lobby"})
+      open_cc(view, "#lobby")
 
       # Tab General is default
       html = render(view)
       assert html =~ "Members:"
 
       # Switch to Modes
-      html = render_click(view, "channel_central_tab", %{"tab" => "modes"})
+      html = cc(view, "channel_central_tab", %{"tab" => "modes"})
       assert html =~ "Moderated (+m)"
 
       # Switch to Bans
-      html = render_click(view, "channel_central_tab", %{"tab" => "bans"})
+      html = cc(view, "channel_central_tab", %{"tab" => "bans"})
       assert html =~ "No bans"
 
       # Switch to Ban Exceptions
-      html = render_click(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
+      html = cc(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
       assert html =~ "No ban exceptions"
 
       # Switch to Invite Exceptions
-      html = render_click(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
+      html = cc(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
       assert html =~ "No invite exceptions"
     end
 
@@ -85,27 +90,27 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2ECcRo#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      html = render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      html = open_cc(view, channel)
 
       # No Save Topic button
       refute html =~ "Save Topic"
 
       # Modes tab — disabled checkboxes, no Apply Modes
-      html = render_click(view, "channel_central_tab", %{"tab" => "modes"})
+      html = cc(view, "channel_central_tab", %{"tab" => "modes"})
       assert html =~ "disabled"
       refute html =~ "Apply Modes"
 
       # Bans tab — no Add/Remove buttons
-      html = render_click(view, "channel_central_tab", %{"tab" => "bans"})
+      html = cc(view, "channel_central_tab", %{"tab" => "bans"})
       refute html =~ "cc_open_add_ban"
       assert html =~ "channel operator to manage"
 
       # Ban Exceptions tab — no buttons
-      html = render_click(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
+      html = cc(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
       assert html =~ "channel operator to manage"
 
       # Invite Exceptions tab — no buttons
-      html = render_click(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
+      html = cc(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
       assert html =~ "channel operator to manage"
     end
 
@@ -114,17 +119,17 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2ECcOp#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      html = render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      html = open_cc(view, channel)
 
       # Save Topic button visible
       assert html =~ "Save Topic"
 
       # Modes tab — Apply Modes button visible
-      html = render_click(view, "channel_central_tab", %{"tab" => "modes"})
+      html = cc(view, "channel_central_tab", %{"tab" => "modes"})
       assert html =~ "Apply Modes"
 
       # Bans tab — Add/Remove buttons visible
-      html = render_click(view, "channel_central_tab", %{"tab" => "bans"})
+      html = cc(view, "channel_central_tab", %{"tab" => "bans"})
       assert html =~ "cc_open_add_ban"
       assert html =~ "cc_remove_ban"
     end
@@ -134,9 +139,9 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2ECcEb#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      html = render_click(view, "channel_central_tab", %{"tab" => "bans"})
+      html = cc(view, "channel_central_tab", %{"tab" => "bans"})
       assert html =~ "No bans"
     end
   end
@@ -151,7 +156,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2ETpOp#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
       view
       |> element("form[phx-submit=cc_set_topic]")
@@ -173,7 +178,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
 
       Server.set_topic(channel, nick, "Temp topic")
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
       view |> element("form[phx-submit=cc_set_topic]") |> render_submit(%{"topic" => ""})
 
@@ -192,9 +197,9 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2EMd#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "modes"})
+      cc(view, "channel_central_tab", %{"tab" => "modes"})
 
       view
       |> element("form[phx-submit=cc_apply_modes]")
@@ -209,9 +214,9 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2EKy#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "modes"})
+      cc(view, "channel_central_tab", %{"tab" => "modes"})
 
       view
       |> element("form[phx-submit=cc_apply_modes]")
@@ -226,9 +231,9 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2ELm#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "modes"})
+      cc(view, "channel_central_tab", %{"tab" => "modes"})
 
       view
       |> element("form[phx-submit=cc_apply_modes]")
@@ -250,7 +255,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, nick)
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      html = render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      html = open_cc(view, channel)
 
       assert html =~ "Welcome Message:"
       assert html =~ "Save Welcome"
@@ -267,7 +272,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       assert {:ok, %{message: "Read the topic before chatting", set_by: ^nick}} =
                Server.get_welcome(channel)
 
-      html = render_click(view, "cc_clear_welcome")
+      html = cc(view, "cc_clear_welcome")
 
       assert html =~ "Welcome message cleared."
       assert html =~ "No welcome message set."
@@ -280,7 +285,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, nick)
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      html = render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      html = open_cc(view, channel)
 
       assert html =~ "Join throttle (seconds):"
       assert html =~ "Apply Throttle"
@@ -317,7 +322,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, guest)
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      html = render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      html = open_cc(view, channel)
 
       assert html =~ "Welcome Message:"
       assert html =~ "Owner managed welcome"
@@ -341,11 +346,11 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       submit_command(target_view, "/join #{channel}")
 
       render_click(owner_view, "switch_channel", %{"channel" => channel})
-      html = render_click(owner_view, "open_channel_central", %{"cc_channel" => channel})
+      html = open_cc(owner_view, channel)
 
       assert html =~ "Transfer Ownership"
 
-      html = render_click(owner_view, "cc_open_transfer")
+      html = cc(owner_view, "cc_open_transfer")
       assert html =~ "Transfer Ownership"
       assert html =~ "This cannot be undone"
 
@@ -380,10 +385,10 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2EBn#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "bans"})
-      render_click(view, "cc_open_add_ban")
+      cc(view, "channel_central_tab", %{"tab" => "bans"})
+      cc(view, "cc_open_add_ban")
 
       html = render(view)
       assert html =~ "cc-add-ban-dialog"
@@ -402,15 +407,15 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
 
       Server.ban(channel, nick, "TempBan")
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "bans"})
+      cc(view, "channel_central_tab", %{"tab" => "bans"})
 
       html = render(view)
       assert html =~ "TempBan"
 
-      render_click(view, "cc_ban_select", %{"nickname" => "TempBan"})
-      render_click(view, "cc_remove_ban")
+      cc(view, "cc_ban_select", %{"nickname" => "TempBan"})
+      cc(view, "cc_remove_ban")
 
       html = render(view)
       # After removing, the ban table should show the empty placeholder
@@ -428,10 +433,10 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2EBe#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
-      render_click(view, "cc_open_add_ban_ex")
+      cc(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
+      cc(view, "cc_open_add_ban_ex")
 
       html = render(view)
       assert html =~ "cc-add-ban-ex-dialog"
@@ -452,14 +457,14 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
 
       Server.add_ban_exception(channel, nick, "ExUser")
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
+      cc(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
       html = render(view)
       assert html =~ "ExUser"
 
-      render_click(view, "cc_ban_ex_select", %{"nickname" => "ExUser"})
-      render_click(view, "cc_remove_ban_exception")
+      cc(view, "cc_ban_ex_select", %{"nickname" => "ExUser"})
+      cc(view, "cc_remove_ban_exception")
 
       html = render(view)
       # After removing, the ban exceptions table should show the empty placeholder
@@ -471,9 +476,9 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2EEbx#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
+      cc(view, "channel_central_tab", %{"tab" => "ban_exceptions"})
       html = render(view)
       assert html =~ "No ban exceptions"
     end
@@ -489,10 +494,10 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2EIe#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
-      render_click(view, "cc_open_add_invite_ex")
+      cc(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
+      cc(view, "cc_open_add_invite_ex")
 
       html = render(view)
       assert html =~ "cc-add-invite-ex-dialog"
@@ -513,14 +518,14 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       render_click(view, "switch_channel", %{"channel" => channel})
 
       Server.add_invite_exception(channel, nick, "InvEx1")
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
+      cc(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
       html = render(view)
       assert html =~ "InvEx1"
 
-      render_click(view, "cc_invite_ex_select", %{"nickname" => "InvEx1"})
-      render_click(view, "cc_remove_invite_exception")
+      cc(view, "cc_invite_ex_select", %{"nickname" => "InvEx1"})
+      cc(view, "cc_remove_invite_exception")
 
       html = render(view)
       # After removing, the invite exceptions table should show the empty placeholder
@@ -532,9 +537,9 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, "E2EEix#{uid()}")
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      render_click(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
+      cc(view, "channel_central_tab", %{"tab" => "invite_exceptions"})
       html = render(view)
       assert html =~ "No invite exceptions"
     end
@@ -551,7 +556,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, nick)
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
       Server.set_topic(channel, nick, "Real-time topic")
       html = render(view)
@@ -564,14 +569,14 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, nick)
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
       Server.set_mode(channel, nick, "+m", [])
 
       # Flush PubSub + re-render to pick up the mode_changed broadcast
       render(view)
       render(view)
-      render_click(view, "channel_central_tab", %{"tab" => "modes"})
+      cc(view, "channel_central_tab", %{"tab" => "modes"})
       html = render(view)
       assert html =~ "Moderated (+m)"
     end
@@ -582,11 +587,11 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       view = connect_user(conn, nick)
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
       Server.ban(channel, nick, "RtBanned")
       render(view)
-      render_click(view, "channel_central_tab", %{"tab" => "bans"})
+      cc(view, "channel_central_tab", %{"tab" => "bans"})
       html = render(view)
       assert html =~ "RtBanned"
     end
@@ -633,5 +638,26 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       {:ok, _pid} -> :ok
       {:error, :not_found} -> Supervisor.start_child(name)
     end
+  end
+
+  defp cc(view, event, params \\ %{})
+
+  defp cc(view, "channel_central_tab", %{"tab" => tab}) do
+    view
+    |> element("#channel-central-dialog-tabs .tabs-trigger[data-target='#{tab}']")
+    |> render_click()
+  end
+
+  defp cc(view, event, params) do
+    selector =
+      "[phx-click='#{event}']" <>
+        Enum.map_join(params, "", fn {k, v} -> "[phx-value-#{k}='#{v}']" end)
+
+    view |> element(selector) |> render_click()
+  end
+
+  defp open_cc(view, channel) do
+    render_click(view, "open_channel_central", %{"cc_channel" => channel})
+    render(view)
   end
 end

@@ -46,6 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChat.Commands.Duration
   alias RetroHexChat.Commands.Handlers.{Game, Lobby, P2p}
   alias RetroHexChat.Services.NickServ
+  alias RetroHexChatWeb.ChatLive.ChannelCentralEvents
   alias RetroHexChatWeb.ChatLive.CommandDispatch
 
   alias RetroHexChatWeb.ChatLive.Components.{
@@ -625,11 +626,11 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
      |> push_event("clipboard_copy", %{text: channel})}
   end
 
-  def handle_event("ctx_chat_channel_info", %{"channel" => _channel}, socket) do
+  def handle_event("ctx_chat_channel_info", %{"channel" => channel}, socket) do
     {:halt,
      socket
      |> close_chat_context_menu()
-     |> assign(show_channel_central: true)}
+     |> ChannelCentralEvents.open(channel)}
   end
 
   def handle_event("ctx_chat_copy_message", %{"text" => text}, socket) do

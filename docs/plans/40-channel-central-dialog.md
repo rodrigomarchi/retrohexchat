@@ -1,5 +1,17 @@
 # Channel Central Dialog Migration
 
+> **STATUS: COMPLETE (2026-06-30) — full ownership; THE modal-in-modal reference.**
+> `RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog` owns the entire dialog: all 21
+> `channel_central_*`/`show_cc_*` assigns, every event (`@myself`), the privileged `Server`/`ChanServ`
+> calls, and all derive helpers. `channel_central_events.ex` gutted to open/close routing (~45 lines). The
+> 4 `fixed inset-0` sub-forms are fixed at the root via a `target` attr threaded through the design-system
+> `channel_central_dialog/1` (`phx-target={@target}` on every event) — the sub-form `<form>` submits to the
+> component that owns its DOM, so the uncontrolled input survives PubSub re-renders. System errors bubble
+> (`{:cc_system_error, msg}` → parent `error_event`); the 2 PubSub refresh clones → `send_update(refresh:)`;
+> JS tabs use `on_tab={JS.push(..., target: @myself)}`; Escape handled by `<.dialog>` itself. `make ci`
+> 9/9; both feature tests (35) converted to element-based firing. **See PROGRESS.md log + playbook §0a-anti
+> for the canonical pattern that 30/31/35/41 follow.**
+
 ## Objetivo
 
 Migrar Channel Central para LiveComponent stateful com tabs internas, formularios, listas de bans/exceptions e operacoes ChanServ isoladas.

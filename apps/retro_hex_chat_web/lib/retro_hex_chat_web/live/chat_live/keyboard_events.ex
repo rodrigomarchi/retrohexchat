@@ -192,7 +192,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       {:show_channel_list, &close_channel_list/1},
       {:show_invite_channel_picker, &close_invite_channel_picker/1},
       {:show_knock_request_dialog, &close_knock_request_dialog/1},
-      {:show_channel_central, &close_channel_central/1},
       {:search_visible, &clear_search_state/1},
       {:show_address_book, &close_address_book/1},
       {:show_highlight_dialog, &close_highlight_dialog/1},
@@ -257,22 +256,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       autojoin_selected: nil,
       show_autojoin_add_dialog: false,
       show_autojoin_edit_dialog: false
-    )
-  end
-
-  defp close_channel_central(socket) do
-    assign(socket,
-      show_channel_central: false,
-      channel_central_tab: "general",
-      channel_central_channel: nil,
-      channel_central_state: nil,
-      channel_central_operator: false,
-      channel_central_ban_selected: nil,
-      channel_central_ban_ex_selected: nil,
-      channel_central_invite_ex_selected: nil,
-      show_cc_add_ban_dialog: false,
-      show_cc_add_ban_ex_dialog: false,
-      show_cc_add_invite_ex_dialog: false
     )
   end
 

@@ -27,7 +27,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.AddressBook
-  import RetroHexChatWeb.Components.UI.ChannelCentralDialog
   import RetroHexChatWeb.Components.UI.HighlightDialog
 
   import RetroHexChatWeb.Components.UI.InviteDialog
@@ -284,6 +283,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
     {:noreply, assign(socket, notice_active: active)}
   end
 
+  # Channel Central bubbles errors that belong to the chat surface (system lines).
+  def handle_info({:cc_system_error, message}, socket) do
+    {:noreply, ChatLive.Helpers.error_event(socket, message)}
+  end
+
   # ── Catch-all handle_info ─────────────────────────────────────
 
   def handle_info({_ref, _result}, socket), do: {:noreply, socket}
@@ -536,27 +540,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       ignore_timers: %{},
       control_selected: nil,
       show_control_add_dialog: false,
-      show_channel_central: false,
-      channel_central_tab: "general",
-      channel_central_state: nil,
-      channel_central_channel: nil,
-      channel_central_operator: false,
-      channel_central_owner: false,
-      channel_central_ban_selected: nil,
-      channel_central_ban_ex_selected: nil,
-      channel_central_invite_ex_selected: nil,
-      channel_central_notice: nil,
-      channel_central_transfer_error: nil,
-      channel_central_registration: nil,
-      channel_central_access_tab: "sop",
-      channel_central_access_selected: nil,
-      channel_central_access_nick: "",
-      channel_central_cs_error: nil,
-      channel_central_cs_confirm_drop: false,
-      show_cc_add_ban_dialog: false,
-      show_cc_add_ban_ex_dialog: false,
-      show_cc_add_invite_ex_dialog: false,
-      show_cc_transfer_dialog: false,
       show_perform_dialog: false,
       perform_dialog_tab: "commands",
       perform_selected: nil,
@@ -622,81 +605,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   defp admin_only?(session), do: ChatContext.admin_only?(session)
 
   defp root_admin?(session), do: ChatContext.root_admin?(session)
-
-  defp channel_central_bans(nil), do: []
-
-  defp channel_central_bans(state) do
-    state |> Map.get(:bans, []) |> Enum.map(&to_list_entry/1)
-  end
-
-  defp channel_central_ban_exceptions(nil), do: []
-
-  defp channel_central_ban_exceptions(state) do
-    state |> Map.get(:ban_exceptions, []) |> Enum.map(&to_list_entry/1)
-  end
-
-  defp channel_central_invite_exceptions(nil), do: []
-
-  defp channel_central_invite_exceptions(state) do
-    state |> Map.get(:invite_exceptions, []) |> Enum.map(&to_list_entry/1)
-  end
-
-  defp channel_central_modes(nil), do: %{}
-  defp channel_central_modes(state), do: Map.get(state, :modes_detail, %{})
-
-  defp channel_central_welcome_message(nil), do: ""
-
-  defp channel_central_welcome_message(state) do
-    state
-    |> Map.get(:welcome_message)
-    |> case do
-      %{message: message} when is_binary(message) -> message
-      _ -> ""
-    end
-  end
-
-  defp channel_central_throttle_seconds(nil), do: 0
-
-  defp channel_central_throttle_seconds(state) do
-    state
-    |> Map.get(:modes_detail, %{})
-    |> Map.get(:join_throttle)
-    |> case do
-      {_count, seconds} when is_integer(seconds) -> seconds
-      _ -> 0
-    end
-  end
-
-  @spec to_list_entry(map() | String.t()) :: map()
-  defp to_list_entry(%{mask: _} = map), do: map
-  defp to_list_entry(nick) when is_binary(nick), do: %{mask: nick, set_by: "—", set_at: "—"}
-
-  defp channel_central_topic(nil), do: ""
-  defp channel_central_topic(state), do: Map.get(state, :topic, "")
-
-  defp channel_central_topic_set_by(nil), do: nil
-  defp channel_central_topic_set_by(state), do: Map.get(state, :topic_set_by)
-
-  defp channel_central_topic_set_at(nil, _tz), do: nil
-
-  defp channel_central_topic_set_at(state, timezone) do
-    case Map.get(state, :topic_set_at) do
-      nil -> nil
-      dt -> ChatHelpers.format_datetime(dt, timezone)
-    end
-  end
-
-  defp channel_central_created_at(nil, _tz), do: nil
-
-  defp channel_central_created_at(state, timezone) do
-    case Map.get(state, :created_at) do
-      nil -> nil
-      dt -> ChatHelpers.format_datetime(dt, timezone)
-    end
-  end
-
-  defp channel_central_member_count(nil), do: 0
-  defp channel_central_member_count(state), do: Map.get(state, :member_count, 0)
 
   # ── Startup messages ──────────────────────────────────────────
 

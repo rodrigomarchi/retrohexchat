@@ -369,68 +369,11 @@
   timers={@user_timers}
 />
 
-<.channel_central_dialog
-  id="channel-central-dialog"
-  show={@show_channel_central}
-  active_tab={@channel_central_tab}
-  channel_name={@channel_central_channel}
-  topic={channel_central_topic(@channel_central_state)}
-  topic_set_by={channel_central_topic_set_by(@channel_central_state)}
-  topic_set_at={channel_central_topic_set_at(@channel_central_state, @timezone)}
-  created_at={channel_central_created_at(@channel_central_state, @timezone)}
-  member_count={channel_central_member_count(@channel_central_state)}
-  operator={@channel_central_operator}
-  owner={@channel_central_owner}
-  welcome_message={channel_central_welcome_message(@channel_central_state)}
-  throttle_seconds={channel_central_throttle_seconds(@channel_central_state)}
-  notice={@channel_central_notice}
-  transfer_error={@channel_central_transfer_error}
-  registration={@channel_central_registration}
-  access_tab={@channel_central_access_tab}
-  access_selected={@channel_central_access_selected}
-  access_nick={@channel_central_access_nick}
-  cs_error={@channel_central_cs_error}
-  cs_confirm_drop={@channel_central_cs_confirm_drop}
-  identified={@session.identified}
-  modes={channel_central_modes(@channel_central_state)}
-  bans={channel_central_bans(@channel_central_state)}
-  ban_exceptions={channel_central_ban_exceptions(@channel_central_state)}
-  invite_exceptions={channel_central_invite_exceptions(@channel_central_state)}
-  ban_selected={@channel_central_ban_selected}
-  ban_ex_selected={@channel_central_ban_ex_selected}
-  invite_ex_selected={@channel_central_invite_ex_selected}
-  show_add_ban_dialog={@show_cc_add_ban_dialog}
-  show_add_ban_ex_dialog={@show_cc_add_ban_ex_dialog}
-  show_add_invite_ex_dialog={@show_cc_add_invite_ex_dialog}
-  show_transfer_dialog={@show_cc_transfer_dialog}
-  on_tab="channel_central_tab"
-  on_topic_save="cc_set_topic"
-  on_welcome_save="cc_save_welcome"
-  on_welcome_clear="cc_clear_welcome"
-  on_throttle_apply="cc_apply_throttle"
-  on_transfer_open="cc_open_transfer"
-  on_transfer_close="cc_close_transfer"
-  on_transfer_submit="cc_transfer_ownership"
-  on_mode_apply="cc_apply_modes"
-  on_ban_add="cc_open_add_ban"
-  on_ban_remove="cc_remove_ban"
-  on_ban_select="cc_ban_select"
-  on_ban_ex_add="cc_open_add_ban_ex"
-  on_ban_ex_remove="cc_remove_ban_exception"
-  on_ban_ex_select="cc_ban_ex_select"
-  on_invite_ex_add="cc_open_add_invite_ex"
-  on_invite_ex_remove="cc_remove_invite_exception"
-  on_invite_ex_select="cc_invite_ex_select"
-  on_cs_register="cc_cs_register"
-  on_cs_drop_request="cc_cs_drop_request"
-  on_cs_drop="cc_cs_drop"
-  on_cs_drop_cancel="cc_cs_drop_cancel"
-  on_cs_access_tab="cc_cs_access_tab"
-  on_cs_access_change="cc_cs_access_change"
-  on_cs_access_add="cc_cs_access_add"
-  on_cs_access_select="cc_cs_access_select"
-  on_cs_access_remove="cc_cs_access_remove"
-  on_close="close_channel_central"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog}
+  id={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog.id()}
+  session={@session}
+  timezone={@timezone}
 />
 
 <.highlight_dialog

@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
   alias RetroHexChat.Presence.{NotifyList, Tracker}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.CommandDispatch
-  alias RetroHexChatWeb.ChatLive.Components.{HoverCard, Nicklist}
+  alias RetroHexChatWeb.ChatLive.Components.{ChannelCentralDialog, HoverCard, Nicklist}
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.PM
 
@@ -269,35 +269,11 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
   # ── Private helpers ───────────────────────────────────────
 
+  # Member-count change while Channel Central is open → drive the island's refresh.
+  # The component self-guards on the open channel and no-ops otherwise.
   defp maybe_refresh_cc(socket, channel) do
-    if socket.assigns.show_channel_central and socket.assigns.channel_central_channel == channel do
-      case Server.get_state(channel) do
-        {:ok, state} ->
-          nickname = socket.assigns.session.nickname
-
-          operator =
-            nickname in state.operators or nickname in Map.get(state, :owners, [])
-
-          assign(socket, channel_central_state: state, channel_central_operator: operator)
-
-        {:error, _} ->
-          assign(socket,
-            show_channel_central: false,
-            channel_central_tab: "general",
-            channel_central_channel: nil,
-            channel_central_state: nil,
-            channel_central_operator: false,
-            channel_central_ban_selected: nil,
-            channel_central_ban_ex_selected: nil,
-            channel_central_invite_ex_selected: nil,
-            show_cc_add_ban_dialog: false,
-            show_cc_add_ban_ex_dialog: false,
-            show_cc_add_invite_ex_dialog: false
-          )
-      end
-    else
-      socket
-    end
+    send_update(ChannelCentralDialog, id: ChannelCentralDialog.id(), refresh: channel)
+    socket
   end
 
   defp increment_channel_user_count(socket, nil), do: socket

@@ -37,13 +37,13 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       view = connect_identified_user(conn, nick)
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      html = render_click(view, "channel_central_tab", %{"tab" => "registration"})
+      html = cc(view, "channel_central_tab", %{"tab" => "registration"})
       assert html =~ "Not registered"
       assert html =~ "Register Channel"
 
-      html = render_click(view, "cc_cs_register", %{"channel" => channel})
+      html = cc(view, "cc_cs_register", %{"channel" => channel})
       assert html =~ "Registered"
       assert html =~ "Founder"
       assert html =~ nick
@@ -51,10 +51,10 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       assert {:ok, info} = ChanServ.info(channel)
       assert info.founder == nick
 
-      html = render_click(view, "cc_cs_drop_request", %{"channel" => channel})
+      html = cc(view, "cc_cs_drop_request", %{"channel" => channel})
       assert html =~ "Are you sure you want to drop #{channel}?"
 
-      html = render_click(view, "cc_cs_drop", %{"channel" => channel})
+      html = cc(view, "cc_cs_drop", %{"channel" => channel})
       assert html =~ "Not registered"
       assert {:error, _msg} = ChanServ.info(channel)
     end
@@ -65,9 +65,9 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       view = connect_user(conn, nick)
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      html = render_click(view, "channel_central_tab", %{"tab" => "registration"})
+      html = cc(view, "channel_central_tab", %{"tab" => "registration"})
 
       assert html =~ "Not registered"
       assert html =~ "You must be identified with NickServ to use ChanServ."
@@ -85,11 +85,11 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
 
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
-      render_click(view, "channel_central_tab", %{"tab" => "registration"})
-      render_click(view, "cc_cs_register", %{"channel" => channel})
+      open_cc(view, channel)
+      cc(view, "channel_central_tab", %{"tab" => "registration"})
+      cc(view, "cc_cs_register", %{"channel" => channel})
 
-      html = render_click(view, "cc_cs_access_tab", %{"level" => "aop"})
+      html = cc(view, "cc_cs_access_tab", %{"level" => "aop"})
       assert html =~ "AOP"
       assert html =~ "No AOP entries"
 
@@ -102,8 +102,8 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       assert html =~ founder
       assert Queries.find_access(channel, target).level == "aop"
 
-      render_click(view, "cc_cs_access_select", %{"nick" => target})
-      html = render_click(view, "cc_cs_access_remove", %{"level" => "aop"})
+      cc(view, "cc_cs_access_select", %{"nick" => target})
+      html = cc(view, "cc_cs_access_remove", %{"level" => "aop"})
 
       refute html =~ ~s(data-testid="cc-cs-access-row-#{target}")
       refute Queries.find_access(channel, target)
@@ -126,13 +126,13 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       view = connect_identified_user(conn, sop)
       submit_command(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
-      render_click(view, "open_channel_central", %{"cc_channel" => channel})
+      open_cc(view, channel)
 
-      html = render_click(view, "channel_central_tab", %{"tab" => "registration"})
+      html = cc(view, "channel_central_tab", %{"tab" => "registration"})
       assert html =~ "SOP"
       assert html =~ "You do not have permission to manage this list."
 
-      html = render_click(view, "cc_cs_access_tab", %{"level" => "aop"})
+      html = cc(view, "cc_cs_access_tab", %{"level" => "aop"})
       assert html =~ ~s(data-testid="cc-cs-access-form")
 
       html =
@@ -193,5 +193,26 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
       {:ok, _pid} -> :ok
       {:error, :not_found} -> Supervisor.start_child(name)
     end
+  end
+
+  defp cc(view, event, params \\ %{})
+
+  defp cc(view, "channel_central_tab", %{"tab" => tab}) do
+    view
+    |> element("#channel-central-dialog-tabs .tabs-trigger[data-target='#{tab}']")
+    |> render_click()
+  end
+
+  defp cc(view, event, params) do
+    selector =
+      "[phx-click='#{event}']" <>
+        Enum.map_join(params, "", fn {k, v} -> "[phx-value-#{k}='#{v}']" end)
+
+    view |> element(selector) |> render_click()
+  end
+
+  defp open_cc(view, channel) do
+    render_click(view, "open_channel_central", %{"cc_channel" => channel})
+    render(view)
   end
 end

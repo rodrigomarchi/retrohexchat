@@ -38,15 +38,41 @@ de valor de input do LiveView.
 **Detecção:** `grep "fixed inset-0"` no UI + inputs `<.input>` sem `value=` dentro
 do form. Afeta **41 (bloqueado), 30 notify, 31 address-book, 35 perform**.
 
-**Como resolver (NÃO é wrapper):**
-- input **controlado** (`value={@draft}` + `phx-change` no componente, `@myself`), OU
-- `phx-update="ignore"` no container do input, OU
-- sub-forms **OWNED pelo componente**: eventos do sub-form com `target: @myself`,
-  e o commit na session sobe via `send(self(), msg)` + hook `handle_info` (padrão
-  sound-settings, plano 34). Isso evita o mismatch de cid.
+**Como resolver — REFERÊNCIA: plano 40 channel-central (2026-06-30).** O padrão
+canônico (todos os outros — 30/31/35/41 — nascem assim):
+1. **Ilha de posse TOTAL:** TODO o dialog vira `@myself`. Em vez de threadar
+   `phx-target` elemento-a-elemento, adicione UM `attr :target` ao function-component
+   de design-system e aplique `phx-target={@target}` em CADA `phx-click`/`phx-submit`
+   (script: `re.sub(r'(phx-(?:click|submit)=(?:\{[^}]*\}|"[^"]*"))', r'\1 phx-target={@target}')`),
+   threadando `target` por todos os sub-componentes (tabs/sub-forms). O LiveComponent
+   passa `target={@myself}`. Assim os 4 sub-forms `fixed inset-0` submetem ao componente
+   que possui o DOM deles → cid casa → o input não-controlado NÃO é clobberado no
+   re-render de PubSub. **Não precisa de input controlado nem `phx-update=ignore`** —
+   o `target` correto resolve a causa-raiz.
+2. **Trabalho privilegiado roda NO componente** (`Server.*`/`ChanServ.*` são context
+   calls — um LiveComponent pode chamá-los). Só efeitos da SUPERFÍCIE do chat (linha de
+   sistema via `error_event`, que muta o stream do parent) sobem por `send(self(),
+   {:cc_system_error, msg})` → `handle_info` no parent. Erros do PRÓPRIO dialog ficam
+   inline (`cs_error`/`transfer_error`/`notice`).
+3. **Abertura** = adapter mínimo no parent (`send_update(Comp, open: channel)`) — o menu/
+   toolbar emite um evento global; o componente carrega o snapshot + gate no `update/2`.
+   **Fechar** = adapter `send_update(Comp, close: true)` (o `<.dialog on_cancel>` faz
+   `JS.push("close_x")` SEM target → cai no parent; a Close button e o X idem). Tira a
+   entrada do `keyboard_events` dismissal — o `<.dialog>` já trata o próprio Escape
+   (igual admin/bot).
+4. **PubSub** que atualizava o dialog (`maybe_refresh_cc` em 2 handlers) vira
+   `send_update(Comp, refresh: channel)`; o componente **self-guarda** (`show and channel
+   == aberto`) e no-opa fechado.
+5. **Tabs JS-driven** (`tabs_trigger`) embrulham o evento em `JS.push` SEM target → passe
+   `on_tab={JS.push("...", target: @myself)}` (não a string). Nos testes, selecione a tab
+   por `#dialog-tabs .tabs-trigger[data-target='X']` (escopado — outro dialog pode ter a
+   mesma tab) e dispare component-events por `[phx-click='evento'][phx-value-k='v']`;
+   `open`/`close` (adapters async) precisam de `render(view)` flush.
 
-Se nenhum couber no tempo, **mantenha o dialog inline** (function component) e
-marque `blocked` no board com o motivo — é mais barato que um wrapper quebrado.
+Alternativas mais baratas, se a posse total não couber: input **controlado**
+(`value={@draft}` + `phx-change` `@myself`) OU `phx-update="ignore"` no container.
+Se nada couber no tempo, **mantenha o dialog inline** (function component) e marque
+`blocked` no board — é mais barato que um wrapper quebrado.
 
 ## 0a. TRIAGE: este dialog precisa de LiveComponent?
 

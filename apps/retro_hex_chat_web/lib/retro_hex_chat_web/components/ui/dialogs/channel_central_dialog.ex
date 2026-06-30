@@ -101,6 +101,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_close, :any, default: nil
 
   @spec channel_central_dialog(map()) :: Phoenix.LiveView.Rendered.t()
+  attr :target, :any, default: nil
+
   def channel_central_dialog(assigns) do
     modes = Map.merge(default_modes(), assigns.modes)
     assigns = assign(assigns, :modes, modes)
@@ -132,6 +134,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               builder={builder}
               value="general"
               phx-click={@on_tab}
+              phx-target={@target}
               phx-value-tab="general"
             >
               <:icon><Icons.icon_tab_general class="w-4 h-4" /></:icon>
@@ -141,6 +144,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               builder={builder}
               value="modes"
               phx-click={@on_tab}
+              phx-target={@target}
               phx-value-tab="modes"
             >
               <:icon><Icons.icon_tab_modes class="w-4 h-4" /></:icon>
@@ -150,6 +154,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               builder={builder}
               value="bans"
               phx-click={@on_tab}
+              phx-target={@target}
               phx-value-tab="bans"
             >
               <:icon><Icons.icon_tab_bans class="w-4 h-4" /></:icon>
@@ -159,6 +164,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               builder={builder}
               value="ban_exceptions"
               phx-click={@on_tab}
+              phx-target={@target}
               phx-value-tab="ban_exceptions"
             >
               <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
@@ -168,6 +174,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               builder={builder}
               value="invite_exceptions"
               phx-click={@on_tab}
+              phx-target={@target}
               phx-value-tab="invite_exceptions"
             >
               <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
@@ -177,6 +184,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               builder={builder}
               value="registration"
               phx-click={@on_tab}
+              phx-target={@target}
               phx-value-tab="registration"
             >
               <:icon><Icons.icon_tab_registration class="w-4 h-4" /></:icon>
@@ -186,6 +194,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
           <.tabs_content value="general" builder={builder}>
             <.general_tab
+              target={@target}
               channel_name={@channel_name}
               topic={@topic}
               topic_set_by={@topic_set_by}
@@ -207,6 +216,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
           <.tabs_content value="modes" builder={builder}>
             <.modes_tab
+              target={@target}
               modes={@modes}
               operator={@operator}
               on_mode_apply={@on_mode_apply}
@@ -215,6 +225,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
           <.tabs_content value="bans" builder={builder}>
             <.list_tab
+              target={@target}
               entries={@bans}
               selected={@ban_selected}
               operator={@operator}
@@ -227,6 +238,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
           <.tabs_content value="ban_exceptions" builder={builder}>
             <.list_tab
+              target={@target}
               entries={@ban_exceptions}
               selected={@ban_ex_selected}
               operator={@operator}
@@ -239,6 +251,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
           <.tabs_content value="invite_exceptions" builder={builder}>
             <.list_tab
+              target={@target}
               entries={@invite_exceptions}
               selected={@invite_ex_selected}
               operator={@operator}
@@ -251,6 +264,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
           <.tabs_content value="registration" builder={builder}>
             <.registration_tab
+              target={@target}
               channel_name={@channel_name}
               operator={@operator}
               identified={@identified}
@@ -282,14 +296,15 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     </.dialog>
 
     <%!-- Ban Add Sub-Dialog --%>
-    <.ban_add_sub_form :if={@show_add_ban_dialog} />
+    <.ban_add_sub_form :if={@show_add_ban_dialog} target={@target} />
     <%!-- Ban Exception Add Sub-Dialog --%>
-    <.ban_ex_add_sub_form :if={@show_add_ban_ex_dialog} />
+    <.ban_ex_add_sub_form :if={@show_add_ban_ex_dialog} target={@target} />
     <%!-- Invite Exception Add Sub-Dialog --%>
-    <.invite_ex_add_sub_form :if={@show_add_invite_ex_dialog} />
+    <.invite_ex_add_sub_form :if={@show_add_invite_ex_dialog} target={@target} />
     <%!-- Ownership Transfer Sub-Dialog --%>
     <.transfer_confirm_sub_form
       :if={@show_transfer_dialog}
+      target={@target}
       channel_name={@channel_name}
       error_message={@transfer_error}
       on_close={@on_transfer_close}
@@ -318,6 +333,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_access_add, :any, default: nil
   attr :on_access_select, :any, default: nil
   attr :on_access_remove, :any, default: nil
+
+  attr :target, :any, default: nil
 
   defp registration_tab(assigns) do
     registration = assigns.registration || default_registration(assigns.channel_name)
@@ -370,6 +387,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             type="button"
             size="sm"
             phx-click={@on_register}
+            phx-target={@target}
             phx-value-channel={@channel_name}
             phx-disable-with={dgettext("dialogs", "Registering...")}
             data-testid="cc-cs-register"
@@ -396,6 +414,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             size="sm"
             variant="destructive"
             phx-click={@on_drop_request}
+            phx-target={@target}
             phx-value-channel={@channel_name}
             disabled={!@identified}
             data-testid="cc-cs-drop-request"
@@ -416,6 +435,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 size="sm"
                 variant="destructive"
                 phx-click={@on_drop}
+                phx-target={@target}
                 phx-value-channel={@channel_name}
                 phx-disable-with={dgettext("dialogs", "Dropping...")}
                 data-testid="cc-cs-drop-confirm"
@@ -423,7 +443,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 <:icon><Icons.icon_trash /></:icon>
                 {dgettext("dialogs", "Confirm Drop")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click={@on_drop_cancel}>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click={@on_drop_cancel}
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>
@@ -446,6 +472,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               @active_level == level && "bg-selection-bg text-selection-fg"
             ]}
             phx-click={@on_access_tab}
+            phx-target={@target}
             phx-value-level={level}
             data-testid={"cc-cs-access-tab-#{level}"}
           >
@@ -475,6 +502,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                   ])
                 }
                 phx-click={@on_access_select}
+                phx-target={@target}
                 phx-value-nick={entry.nickname}
                 data-testid={"cc-cs-access-row-#{entry.nickname}"}
               >
@@ -493,6 +521,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         <form
           :if={@can_manage_active?}
           phx-submit={@on_access_add}
+          phx-target={@target}
           phx-change={@on_access_change}
           data-testid="cc-cs-access-form"
           class="flex flex-wrap items-end gap-1"
@@ -525,6 +554,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
             size="sm"
             variant="destructive"
             phx-click={@on_access_remove}
+            phx-target={@target}
             phx-value-level={@active_level}
             disabled={!@can_remove?}
             phx-disable-with={dgettext("dialogs", "Removing...")}
@@ -549,6 +579,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
   # ── Sub-Forms ─────────────────────────────────────────
 
+  attr :target, :any, default: nil
+
   defp ban_add_sub_form(assigns) do
     ~H"""
     <div
@@ -565,11 +597,12 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="cc_close_add_ban"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="cc_add_ban">
+          <form phx-submit="cc_add_ban" phx-target={@target}>
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold" for="cc-ban-nick">
                 {dgettext("dialogs", "Hostmask")}:
@@ -588,7 +621,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 <:icon><Icons.icon_checkmark /></:icon>
                 {dgettext("dialogs", "OK")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click="cc_close_add_ban">
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="cc_close_add_ban"
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>
@@ -599,6 +638,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     </div>
     """
   end
+
+  attr :target, :any, default: nil
 
   defp ban_ex_add_sub_form(assigns) do
     ~H"""
@@ -616,11 +657,12 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="cc_close_add_ban_ex"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="cc_add_ban_exception">
+          <form phx-submit="cc_add_ban_exception" phx-target={@target}>
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold" for="cc-ban-ex-nick">
                 {dgettext("dialogs", "Hostmask")}:
@@ -639,7 +681,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 <:icon><Icons.icon_checkmark /></:icon>
                 {dgettext("dialogs", "OK")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click="cc_close_add_ban_ex">
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="cc_close_add_ban_ex"
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>
@@ -650,6 +698,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     </div>
     """
   end
+
+  attr :target, :any, default: nil
 
   defp invite_ex_add_sub_form(assigns) do
     ~H"""
@@ -667,11 +717,12 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="cc_close_add_invite_ex"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="cc_add_invite_exception">
+          <form phx-submit="cc_add_invite_exception" phx-target={@target}>
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold" for="cc-invite-ex-nick">
                 {dgettext("dialogs", "Hostmask")}:
@@ -695,6 +746,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 size="sm"
                 variant="outline"
                 phx-click="cc_close_add_invite_ex"
+                phx-target={@target}
               >
                 <:icon><Icons.icon_close /></:icon>
                 {dgettext("dialogs", "Cancel")}
@@ -711,6 +763,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :error_message, :string, default: nil
   attr :on_close, :any, default: nil
   attr :on_submit, :any, default: nil
+
+  attr :target, :any, default: nil
 
   defp transfer_confirm_sub_form(assigns) do
     ~H"""
@@ -729,11 +783,12 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click={@on_close}
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit={@on_submit}>
+          <form phx-submit={@on_submit} phx-target={@target}>
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold" for="cc-transfer-nick">
                 {dgettext("dialogs", "Transfer ownership of %{channel} to:",
@@ -760,7 +815,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
                 <:icon><Icons.icon_role_owner /></:icon>
                 {dgettext("dialogs", "Transfer")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click={@on_close}>
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click={@on_close}
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>
@@ -791,6 +852,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_throttle_apply, :any, default: nil
   attr :on_transfer_open, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp general_tab(assigns) do
     ~H"""
     <div class="space-y-2">
@@ -809,7 +872,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
 
       <.separator />
 
-      <form :if={@operator} phx-submit={@on_topic_save}>
+      <form :if={@operator} phx-submit={@on_topic_save} phx-target={@target}>
         <label class="text-xs font-bold block mb-1">{dgettext("dialogs", "Topic")}:</label>
         <.input
           type="text"
@@ -850,7 +913,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       <.separator />
 
       <section class="space-y-2">
-        <form :if={@operator} phx-submit={@on_welcome_save}>
+        <form :if={@operator} phx-submit={@on_welcome_save} phx-target={@target}>
           <label class="text-xs font-bold block mb-1">
             {dgettext("dialogs", "Welcome Message")}:
           </label>
@@ -868,7 +931,13 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               <:icon><Icons.icon_checkmark /></:icon>
               {dgettext("dialogs", "Save Welcome")}
             </.button>
-            <.button type="button" size="sm" variant="outline" phx-click={@on_welcome_clear}>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click={@on_welcome_clear}
+              phx-target={@target}
+            >
               <:icon><Icons.icon_close /></:icon>
               {dgettext("dialogs", "Clear Welcome")}
             </.button>
@@ -896,7 +965,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       </section>
 
       <section class="space-y-2">
-        <form :if={@operator} phx-submit={@on_throttle_apply}>
+        <form :if={@operator} phx-submit={@on_throttle_apply} phx-target={@target}>
           <label class="text-xs font-bold block mb-1" for="cc-throttle-seconds">
             {dgettext("dialogs", "Join throttle (seconds)")}:
           </label>
@@ -947,6 +1016,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
         size="sm"
         variant="destructive"
         phx-click={@on_transfer_open}
+        phx-target={@target}
         data-testid="cc-transfer-open"
       >
         <:icon><Icons.icon_role_owner /></:icon>
@@ -962,10 +1032,12 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :operator, :boolean, default: false
   attr :on_mode_apply, :any, default: nil
 
+  attr :target, :any, default: nil
+
   defp modes_tab(assigns) do
     ~H"""
     <div class="space-y-2">
-      <form :if={@operator} phx-submit={@on_mode_apply}>
+      <form :if={@operator} phx-submit={@on_mode_apply} phx-target={@target}>
         <div class="shadow-retro-field bg-white p-2">
           <p class="text-xs font-bold mb-2">{dgettext("dialogs", "Channel Modes")}:</p>
 
@@ -1095,6 +1167,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :on_select, :any, default: nil, doc: "Row select event (phx-value-nickname)"
   attr :empty_label, :string, default: nil
 
+  attr :target, :any, default: nil
+
   defp list_tab(assigns) do
     has_selection = assigns.selected != nil
 
@@ -1124,6 +1198,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
               classes(["cursor-pointer text-xs", @selected == entry.mask && "bg-primary text-white"])
             }
             phx-click={@on_select}
+            phx-target={@target}
             phx-value-nickname={entry.mask}
           >
             <.table_cell class="px-2 py-1 text-xs font-mono">{entry.mask}</.table_cell>
@@ -1140,11 +1215,17 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
     </div>
 
     <div :if={@operator} class="flex gap-1">
-      <.button size="sm" phx-click={@on_add}>
+      <.button size="sm" phx-click={@on_add} phx-target={@target}>
         <:icon><Icons.icon_btn_add /></:icon>
         {dgettext("dialogs", "Add")}
       </.button>
-      <.button size="sm" variant="destructive" phx-click={@on_remove} disabled={!@has_selection}>
+      <.button
+        size="sm"
+        variant="destructive"
+        phx-click={@on_remove}
+        phx-target={@target}
+        disabled={!@has_selection}
+      >
         <:icon><Icons.icon_btn_remove /></:icon>
         {dgettext("dialogs", "Remove")}
       </.button>
