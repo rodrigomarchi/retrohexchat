@@ -7,6 +7,8 @@ defmodule RetroHexChatWeb.Application do
 
   @impl true
   def start(_type, _args) do
+    RetroHexChatWeb.OpenTelemetry.setup()
+
     children = [
       RetroHexChatWeb.PromEx,
       RetroHexChatWeb.Telemetry,

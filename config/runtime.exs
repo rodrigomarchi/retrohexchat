@@ -74,6 +74,28 @@ config :retro_hex_chat,
   file_transfer_chunk_size_kb:
     String.to_integer(System.get_env("FILE_TRANSFER_CHUNK_SIZE_KB") || "64")
 
+otel_traces_exporter =
+  System.get_env("OTEL_TRACES_EXPORTER", if(config_env() == :prod, do: "otlp", else: "none"))
+
+if otel_traces_exporter != "none" do
+  otel_environment =
+    System.get_env("OTEL_DEPLOYMENT_ENVIRONMENT", System.get_env("APP_ENV", "prod"))
+
+  config :opentelemetry,
+    span_processor: :batch,
+    traces_exporter: :otlp,
+    resource: %{
+      "service.name" => System.get_env("OTEL_SERVICE_NAME", "retro_hex_chat"),
+      "service.namespace" => System.get_env("OTEL_SERVICE_NAMESPACE", "retrohexchat"),
+      "deployment.environment" => otel_environment,
+      "deployment.environment.name" => otel_environment
+    }
+
+  config :opentelemetry_exporter,
+    otlp_protocol: :http_protobuf,
+    otlp_endpoint: System.get_env("OTEL_EXPORTER_OTLP_ENDPOINT", "http://127.0.0.1:4318")
+end
+
 if config_env() == :prod do
   database_url =
     System.get_env("DATABASE_URL") ||

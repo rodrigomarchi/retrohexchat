@@ -95,6 +95,8 @@ config :logger, :default_formatter, format: "[$level] $message\n"
 # Initialize plugs at runtime for faster development compilation
 config :phoenix, :plug_init_mode, :runtime
 
+config :opentelemetry, traces_exporter: :none
+
 config :phoenix_live_view,
   # Include debug annotations and locations in rendered markup.
   # Changing this configuration will require mix clean and a full recompile.

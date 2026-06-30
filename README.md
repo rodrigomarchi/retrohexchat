@@ -217,7 +217,7 @@ RetroHexChat.Supervisor (:one_for_one)
 | WebRTC | ExSTUN ~> 0.1 (embedded TURN/STUN server) |
 | HTTP Client | Req 0.5+ (async link previews via Task.Supervisor) |
 | Auth | bcrypt\_elixir (passwords), Plug.Crypto (favorites encryption) |
-| Observability | PromEx `/metrics` for Prometheus + provisioned Grafana dashboards |
+| Observability | PromEx `/metrics` for Prometheus + OpenTelemetry OTLP traces for Tempo |
 | Assets | esbuild + Tailwind CSS |
 | JS Testing | Vitest + jsdom (706 tests, 62 files) |
 | Static Analysis | Credo (strict), Dialyxir, mix format, ESLint + Prettier |
@@ -333,6 +333,7 @@ retro_hex_chat/
 │   └── retro_hex_chat_web/          # Web (Phoenix + LiveView)
 │       ├── lib/retro_hex_chat_web/
 │       │   ├── prom_ex.ex           # Prometheus metrics + Grafana dashboards
+│       │   ├── open_telemetry.ex    # Phoenix/Bandit/Ecto tracing setup
 │       │   ├── live/app/             # ConnectLive, ChatLive, P2PSessionLive
 │       │   └── components/          # 57 function components, icons, dialogs
 │       └── assets/
