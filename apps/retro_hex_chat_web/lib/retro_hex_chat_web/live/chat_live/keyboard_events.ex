@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     SoundSettingsDialog
   }
 
+  alias RetroHexChatWeb.ChatLive.AddressBookEvents
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
   alias RetroHexChatWeb.ChatLive.HighlightEvents
   alias RetroHexChatWeb.ChatLive.NavigationEvents
@@ -70,21 +71,11 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_address_book, socket) do
-    if socket.assigns.show_address_book do
-      assign(socket,
-        show_address_book: false,
-        address_book_tab: "contacts",
-        contacts_selected: nil,
-        show_contact_add_dialog: false,
-        show_contact_edit_dialog: false
-      )
-    else
-      assign(socket, show_address_book: true)
-    end
+    AddressBookEvents.toggle(socket)
   end
 
   defp dispatch_action(:toggle_ignore_dialog, socket) do
-    assign(socket, show_address_book: true, address_book_tab: "control")
+    AddressBookEvents.open(socket, "control")
   end
 
   defp dispatch_action(:toggle_highlight_dialog, socket) do
@@ -163,9 +154,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
 
   defp topmost_dismissals do
     [
-      {:cheatsheet_visible, &close_cheatsheet/1},
-      {:show_contact_add_dialog, &close_contact_add_dialog/1},
-      {:show_contact_edit_dialog, &close_contact_edit_dialog/1}
+      {:cheatsheet_visible, &close_cheatsheet/1}
     ]
   end
 
@@ -175,7 +164,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       {:show_invite_channel_picker, &close_invite_channel_picker/1},
       {:show_knock_request_dialog, &close_knock_request_dialog/1},
       {:search_visible, &clear_search_state/1},
-      {:show_address_book, &close_address_book/1},
       {:show_sound_settings_dialog, &close_sound_settings_dialog/1},
       {:show_flood_protection_dialog, &close_flood_protection_dialog/1},
       {:show_alias_dialog, &close_alias_dialog/1},
@@ -197,8 +185,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp close_cheatsheet(socket), do: assign(socket, cheatsheet_visible: false)
-  defp close_contact_add_dialog(socket), do: assign(socket, show_contact_add_dialog: false)
-  defp close_contact_edit_dialog(socket), do: assign(socket, show_contact_edit_dialog: false)
 
   defp cancel_notice_mode(socket) do
     send_update(Composer, id: Composer.id(), cancel_notice: true)
@@ -231,21 +217,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   defp close_knock_request_dialog(socket) do
     send_update(KnockRequestDialog, id: KnockRequestDialog.id(), action: :close)
     assign(socket, show_knock_request_dialog: false)
-  end
-
-  defp close_address_book(socket) do
-    assign(socket,
-      show_address_book: false,
-      address_book_tab: "contacts",
-      contacts_selected: nil,
-      show_contact_add_dialog: false,
-      show_contact_edit_dialog: false,
-      nick_colors_selected: nil,
-      show_nick_color_add_dialog: false,
-      show_nick_color_edit_dialog: false,
-      control_selected: nil,
-      show_control_add_dialog: false
-    )
   end
 
   defp close_alias_dialog(socket) do

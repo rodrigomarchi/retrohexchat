@@ -233,50 +233,12 @@
   session={@session}
 />
 
-<.address_book
-  id="address-book-dialog"
-  show={@show_address_book}
-  selected_tab={@address_book_tab}
-  contacts={ContactList.sorted_entries(@session.contacts)}
-  selected_index={@contacts_selected}
-  notify_list={NotifyList.sorted_entries(@session.notify_list)}
-  nick_colors={NickColors.sorted_entries(@session.nick_colors)}
-  control_list={IgnoreList.sorted_entries(@session.ignore_list)}
-  control_selected={@control_selected}
-  show_contact_add_dialog={@show_contact_add_dialog}
-  show_contact_edit_dialog={@show_contact_edit_dialog}
-  show_notify_add_dialog={@show_notify_add_dialog}
-  show_notify_edit_dialog={@show_notify_edit_dialog}
-  show_nick_color_add_dialog={@show_nick_color_add_dialog}
-  show_nick_color_edit_dialog={@show_nick_color_edit_dialog}
-  show_control_add_dialog={@show_control_add_dialog}
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.AddressBookDialog}
+  id={RetroHexChatWeb.ChatLive.Components.AddressBookDialog.id()}
+  session={@session}
   nick_color_fn={@nick_color_fn}
   timezone={@timezone}
-  contacts_selected={@contacts_selected}
-  nick_colors_selected={@nick_colors_selected}
-  notify_selected={@notify_selected}
-  selected_contact_note={@selected_contact_note}
-  selected_notify_note={@selected_notify_note}
-  nick_palette_editing_index={@nick_palette_editing_index}
-  on_select="contact_select"
-  on_add="contact_add_dialog"
-  on_edit="contact_edit_dialog"
-  on_remove="contact_remove"
-  on_notify_select="notify_select"
-  on_notify_add="notify_add_dialog"
-  on_notify_edit="notify_edit_dialog"
-  on_notify_remove="notify_remove"
-  on_nick_color_select="nick_color_select"
-  on_nick_color_add="nick_color_add_dialog"
-  on_nick_color_edit="nick_color_edit_dialog"
-  on_nick_color_remove="nick_color_remove"
-  on_control_select="control_select"
-  on_control_add="control_add_dialog"
-  on_control_remove="control_remove"
-  on_tab="address_book_tab"
-  on_ok="close_address_book"
-  on_cancel="close_address_book"
-  on_close="close_address_book"
 />
 
 <.live_component

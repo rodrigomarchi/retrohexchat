@@ -920,3 +920,31 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
     `toggle_auto_whois`/`toggle_auto_add_pm` by-name (agora `@myself` na ilha) p/ click element-based no
     checkbox `#notify-list-dialog-auto-*`. `make ci` 9/9; `chat-notify`+`chat-notify-settings` E2E 6/6. O
     `chat-address-book` O16 falha no main (mesmo overlay de "Tip") — não relacionado.
+- **2026-06-30 (31 address-book — o ÚLTIMO gigante; `assign_defaults` 87→71, 210→71 no total):**
+  - **Padrão "bubble session + kind" pra dialogs muito parent-coupled.** As mutações (contacts/nick-colors/
+    ignore/notify) produzem session nova MAS os efeitos colaterais são do parent: rebuild do `nick_color_fn`
+    (lido por viewport/nicklist/sidebar), refresh do message stream, timers de ignore, status bar. Solução:
+    a ilha roda o op de domínio e bubbla `{:ab_session, session, kind}` — o parent faz assign+persist e os
+    efeitos POR KIND (`:nick_colors` → rebuild fn + refresh stream). `{:ab_status, level, msg}` p/ a
+    superfície de chat, `{:ab_ignore_timer, op, ...}` p/ os timers. A ilha é dona de TODO o estado de UI;
+    só os efeitos parent-owned sobem. (Não é adapter — a lógica de domínio roda na ilha.)
+  - **⚠️ Eventos passados: STRING + `phx-target` ganha de `JS.push(target:)` QUANDO há testes.** Tentei
+    `JS.push("evento", target: @myself)` pra evitar threadar target nas tabelas/botões — funciona em runtime,
+    mas o `phx-click` no DOM vira um BLOB JSON opaco, então `element("[phx-click='evento']")` nos testes
+    quebra. Voltei pra eventos string + threadar `phx-target` pelas tabelas/crud_buttons (o seletor
+    `[phx-click='evento']` volta a funcionar). EXCEÇÃO: tabs PRECISAM de `JS.push(target:)` (string perde o
+    target no `tab_click`), e o teste de tab seleciona por `.tabs-trigger[data-target='X']` (não por
+    phx-click), então tabs com JS.push estão OK. Regra: **string+phx-target pros eventos que os testes
+    disparam por nome; JS.push só onde o componente de design exige (tabs).**
+  - **Dois bugs de seletor no §2 em escala (ilhas que coexistem):** (1) `notify_*` da aba do address-book
+    COLIDE com o dialog standalone (mesmo `phx-click`, cid diferente) → escopar o seletor a
+    `#address-book-dialog`. (2) Os botões Edit/Remove por-aba ficam `disabled` até `@selected_tab == "aba"`,
+    então o teste tem que TROCAR a aba de verdade (clicar o tab trigger, que faz o `JS.push` rotear o
+    `address_book_tab` pro componente) — não basta o conteúdo estar sempre no DOM. Helpers:
+    `ab_click`/`ab_select` (escopados), `ab_form` (por data-testid), `ab_tab` (por data-target).
+  - **Encadeamento concluído:** com o address-book migrado, `notify_events.ex` foi de volta a 31 linhas (só
+    o open do standalone) e `address_book_events.ex` 446→44. Padrão da migração encadeada (plano 30→31):
+    deixe o hook compartilhado vivo até o ÚLTIMO consumidor migrar, aí aposente.
+  - `make ci` 9/9; `address_book_test` 49 + `address_book_feature_test` 21 + component 6; `chat-notify`/
+    `chat-ignore-notifications` E2E verdes. `chat-address-book` O16 falha no main (overlay "Tip") — vou
+    consertar esse flake pré-existente a seguir.

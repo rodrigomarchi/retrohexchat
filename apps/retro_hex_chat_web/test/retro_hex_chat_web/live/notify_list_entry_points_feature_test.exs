@@ -79,8 +79,12 @@ defmodule RetroHexChatWeb.NotifyListEntryPointsFeatureTest do
       refute has_element?(view, ~s([data-testid="status-bar-notify-badge"]))
 
       render_click(view, "toggle_notify_list")
-      render_click(view, "notify_add_dialog")
-      render_submit(view, "notify_add", %{"nickname" => buddy, "note" => ""})
+      # The Notify List dialog is a stateful island; fire its events element-based.
+      view |> element("#notify-list-dialog [phx-click='notify_add_dialog']") |> render_click()
+
+      view
+      |> element(~s([data-testid="notify-add-form"]))
+      |> render_submit(%{"nickname" => buddy, "note" => ""})
 
       assert has_element?(view, ~s([data-testid="status-bar-notify-badge"]))
       assert render(view) =~ ~s(title="1 buddy online")

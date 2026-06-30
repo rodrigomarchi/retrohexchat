@@ -29,6 +29,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   @doc "Renders the address book dialog with 4 tabs."
   attr :id, :string, required: true
+  attr :target, :any, default: nil
   attr :show, :boolean, default: false
   attr :contacts, :list, default: [], doc: "List of %{nick, notes, color} maps"
   attr :notify_list, :list, default: [], doc: "List of %{nick, notify_on, notify_off} maps"
@@ -128,6 +129,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           <%!-- Contacts Tab --%>
           <.tabs_content value="contacts" builder={builder}>
             <.contacts_table
+              target={@target}
               contacts={@contacts}
               selected={if(@selected_tab == "contacts", do: @selected_index)}
               on_select={@on_select}
@@ -135,6 +137,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               timezone={@timezone}
             />
             <.crud_buttons
+              target={@target}
               on_add={@on_add}
               on_edit={@on_edit}
               on_remove={@on_remove}
@@ -146,12 +149,14 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           <%!-- Notify Tab --%>
           <.tabs_content value="notify" builder={builder}>
             <.notify_table
+              target={@target}
               notify_list={@notify_list}
               selected={if(@selected_tab == "notify", do: @notify_selected)}
               on_select={@on_notify_select}
               timezone={@timezone}
             />
             <.crud_buttons
+              target={@target}
               on_add={@on_notify_add}
               on_edit={@on_notify_edit}
               on_remove={@on_notify_remove}
@@ -163,11 +168,13 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           <%!-- Nick Colors Tab --%>
           <.tabs_content value="colors" builder={builder}>
             <.nick_colors_table
+              target={@target}
               nick_colors={@nick_colors}
               selected={if(@selected_tab == "colors", do: @nick_colors_selected)}
               on_select={@on_nick_color_select}
             />
             <.crud_buttons
+              target={@target}
               on_add={@on_nick_color_add}
               on_edit={@on_nick_color_edit}
               on_remove={@on_nick_color_remove}
@@ -179,6 +186,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
           <%!-- Control Tab --%>
           <.tabs_content value="control" builder={builder}>
             <.control_table
+              target={@target}
               control_list={@control_list}
               selected={if(@selected_tab == "control", do: @control_selected)}
               on_select={@on_control_select}
@@ -188,6 +196,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 size="sm"
                 variant="outline"
                 phx-click={@on_control_add}
+                phx-target={@target}
                 data-testid="control-add"
               >
                 <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
@@ -197,6 +206,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 size="sm"
                 variant="outline"
                 phx-click={@on_control_remove}
+                phx-target={@target}
                 disabled={@control_selected == nil}
                 data-testid="control-remove"
               >
@@ -221,38 +231,44 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
     </.dialog>
 
     <%!-- Contact Add Sub-Dialog --%>
-    <.contact_add_form :if={@show_contact_add_dialog} />
+    <.contact_add_form :if={@show_contact_add_dialog} target={@target} />
     <%!-- Contact Edit Sub-Dialog --%>
     <.contact_edit_form
       :if={@show_contact_edit_dialog}
+      target={@target}
       contacts_selected={@contacts_selected}
       selected_contact_note={@selected_contact_note}
     />
     <%!-- Notify Add Sub-Dialog --%>
-    <.ab_notify_add_form :if={@show_notify_add_dialog} />
+    <.ab_notify_add_form :if={@show_notify_add_dialog} target={@target} />
     <%!-- Notify Edit Sub-Dialog --%>
     <.ab_notify_edit_form
       :if={@show_notify_edit_dialog}
+      target={@target}
       notify_selected={@notify_selected}
       selected_notify_note={@selected_notify_note}
     />
     <%!-- Nick Color Add Sub-Dialog --%>
     <.nick_color_add_form
       :if={@show_nick_color_add_dialog}
+      target={@target}
       nick_palette_editing_index={@nick_palette_editing_index}
     />
     <%!-- Nick Color Edit Sub-Dialog --%>
     <.nick_color_edit_form
       :if={@show_nick_color_edit_dialog}
+      target={@target}
       nick_colors_selected={@nick_colors_selected}
       nick_palette_editing_index={@nick_palette_editing_index}
     />
     <%!-- Control Add Sub-Dialog --%>
-    <.control_add_form :if={@show_control_add_dialog} />
+    <.control_add_form :if={@show_control_add_dialog} target={@target} />
     """
   end
 
   # ── Sub-Forms ──────────────────────────────────────────
+
+  attr :target, :any, default: nil
 
   defp contact_add_form(assigns) do
     ~H"""
@@ -267,11 +283,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="contact_add_cancel"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="contact_add" data-testid="contact-add-form">
+          <form phx-submit="contact_add" phx-target={@target} data-testid="contact-add-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="contact-add-nick">
                 {dgettext("dialogs", "Nickname")}:
@@ -303,7 +320,13 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "OK")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click="contact_add_cancel">
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="contact_add_cancel"
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>
@@ -315,6 +338,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
     """
   end
 
+  attr :target, :any, default: nil
   attr :contacts_selected, :string, default: nil
   attr :selected_contact_note, :string, default: ""
 
@@ -331,11 +355,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="contact_edit_cancel"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="contact_edit" data-testid="contact-edit-form">
+          <form phx-submit="contact_edit" phx-target={@target} data-testid="contact-edit-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="contact-edit-nick">
                 {dgettext("dialogs", "Nickname")}:
@@ -367,7 +392,13 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "OK")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click="contact_edit_cancel">
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="contact_edit_cancel"
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>
@@ -378,6 +409,8 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
     </div>
     """
   end
+
+  attr :target, :any, default: nil
 
   defp ab_notify_add_form(assigns) do
     ~H"""
@@ -392,11 +425,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="notify_add_cancel"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="notify_add" data-testid="ab-notify-add-form">
+          <form phx-submit="notify_add" phx-target={@target} data-testid="ab-notify-add-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="ab-notify-add-nick">
                 {dgettext("dialogs", "Nickname")}:
@@ -427,7 +461,13 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "OK")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click="notify_add_cancel">
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="notify_add_cancel"
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>
@@ -439,6 +479,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
     """
   end
 
+  attr :target, :any, default: nil
   attr :notify_selected, :string, default: nil
   attr :selected_notify_note, :string, default: ""
 
@@ -455,11 +496,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="notify_edit_cancel"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="notify_edit" data-testid="ab-notify-edit-form">
+          <form phx-submit="notify_edit" phx-target={@target} data-testid="ab-notify-edit-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="ab-notify-edit-nick">
                 {dgettext("dialogs", "Nickname")}:
@@ -491,7 +533,13 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "OK")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click="notify_edit_cancel">
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="notify_edit_cancel"
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>
@@ -503,6 +551,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
     """
   end
 
+  attr :target, :any, default: nil
   attr :nick_palette_editing_index, :integer, default: nil
 
   defp nick_color_add_form(assigns) do
@@ -518,11 +567,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="nick_color_add_cancel"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="nick_color_add" data-testid="nick-color-add-form">
+          <form phx-submit="nick_color_add" phx-target={@target} data-testid="nick-color-add-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="nick-color-add-nick">
                 {dgettext("dialogs", "Nickname")}:
@@ -533,6 +583,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 name="nickname"
                 maxlength="16"
                 required
+                phx-update="ignore"
                 class="w-full"
               />
             </div>
@@ -547,6 +598,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 id="nick-color-add-picker"
                 selected={@nick_palette_editing_index}
                 on_select="nick_palette_pick"
+                target={@target}
               />
             </div>
             <div class="flex justify-end gap-2">
@@ -559,6 +611,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 size="sm"
                 variant="outline"
                 phx-click="nick_color_add_cancel"
+                phx-target={@target}
               >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}
@@ -571,6 +624,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
     """
   end
 
+  attr :target, :any, default: nil
   attr :nick_colors_selected, :string, default: nil
   attr :nick_palette_editing_index, :integer, default: nil
 
@@ -587,11 +641,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="nick_color_edit_cancel"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="nick_color_edit" data-testid="nick-color-edit-form">
+          <form phx-submit="nick_color_edit" phx-target={@target} data-testid="nick-color-edit-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="nick-color-edit-nick">
                 {dgettext("dialogs", "Nickname")}:
@@ -616,6 +671,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 id="nick-color-edit-picker"
                 selected={@nick_palette_editing_index}
                 on_select="nick_palette_pick"
+                target={@target}
               />
             </div>
             <div class="flex justify-end gap-2">
@@ -628,6 +684,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 size="sm"
                 variant="outline"
                 phx-click="nick_color_edit_cancel"
+                phx-target={@target}
               >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}
@@ -642,6 +699,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   # ── Contacts Table ──────────────────────────────────
 
+  attr :target, :any, default: nil
   attr :contacts, :list, required: true
   attr :selected, :any, default: nil
   attr :on_select, :any, default: nil
@@ -674,6 +732,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
             )
           }
           phx-click={@on_select}
+          phx-target={@target}
           phx-value-nickname={contact.contact_nickname}
         >
           <.table_cell>
@@ -693,6 +752,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   # ── Notify Table ────────────────────────────────────
 
+  attr :target, :any, default: nil
   attr :notify_list, :list, required: true
   attr :selected, :any, default: nil
   attr :on_select, :any, default: nil
@@ -722,6 +782,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
             if(@selected == entry.tracked_nickname, do: "bg-selection-bg text-selection-fg", else: "")
           }
           phx-click={@on_select}
+          phx-target={@target}
           phx-value-nickname={entry.tracked_nickname}
         >
           <.table_cell>{entry.tracked_nickname}</.table_cell>
@@ -744,6 +805,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   # ── Nick Colors Table ───────────────────────────────
 
+  attr :target, :any, default: nil
   attr :nick_colors, :list, required: true
   attr :selected, :any, default: nil
   attr :on_select, :any, default: nil
@@ -771,6 +833,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
             if(@selected == entry.target_nickname, do: "bg-selection-bg text-selection-fg", else: "")
           }
           phx-click={@on_select}
+          phx-target={@target}
           phx-value-nickname={entry.target_nickname}
         >
           <.table_cell>{entry.target_nickname}</.table_cell>
@@ -788,6 +851,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   # ── Control Table ───────────────────────────────────
 
+  attr :target, :any, default: nil
   attr :control_list, :list, required: true
   attr :selected, :any, default: nil
   attr :on_select, :any, default: nil
@@ -815,6 +879,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
             if(@selected == control_nick(entry), do: "bg-selection-bg text-selection-fg", else: "")
           }
           phx-click={@on_select}
+          phx-target={@target}
           phx-value-nickname={control_nick(entry)}
         >
           <.table_cell class="font-bold text-xs">{control_nick(entry)}</.table_cell>
@@ -832,6 +897,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
 
   # ── CRUD Buttons ────────────────────────────────────
 
+  attr :target, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
   attr :on_remove, :any, default: nil
@@ -845,6 +911,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         size="sm"
         variant="outline"
         phx-click={@on_add}
+        phx-target={@target}
         data-testid={@testid_prefix && "#{@testid_prefix}-add"}
       >
         <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
@@ -854,6 +921,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         size="sm"
         variant="outline"
         phx-click={@on_edit}
+        phx-target={@target}
         disabled={!@selected}
         data-testid={@testid_prefix && "#{@testid_prefix}-edit"}
       >
@@ -864,6 +932,7 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
         size="sm"
         variant="outline"
         phx-click={@on_remove}
+        phx-target={@target}
         disabled={!@selected}
         data-testid={@testid_prefix && "#{@testid_prefix}-remove"}
       >
@@ -875,6 +944,8 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
   end
 
   # ── Control Add Sub-Form ────────────────────────────
+
+  attr :target, :any, default: nil
 
   defp control_add_form(assigns) do
     ~H"""
@@ -889,11 +960,12 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="control_add_cancel"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="control_add_confirm" data-testid="control-add-form">
+          <form phx-submit="control_add_confirm" phx-target={@target} data-testid="control-add-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="control-add-nick">
                 {dgettext("dialogs", "Nickname")}:
@@ -939,7 +1011,13 @@ defmodule RetroHexChatWeb.Components.UI.AddressBook do
                 <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "OK")}
               </.button>
-              <.button type="button" size="sm" variant="outline" phx-click="control_add_cancel">
+              <.button
+                type="button"
+                size="sm"
+                variant="outline"
+                phx-click="control_add_cancel"
+                phx-target={@target}
+              >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}
               </.button>

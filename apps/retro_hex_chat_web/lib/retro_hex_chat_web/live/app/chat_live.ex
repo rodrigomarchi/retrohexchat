@@ -26,12 +26,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AboutDialog
-  import RetroHexChatWeb.Components.UI.AddressBook
 
   import RetroHexChatWeb.Components.UI.InviteDialog
 
   # ── Domain aliases ────────────────────────────────────────────
-  alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
+  alias RetroHexChat.Accounts.{NicknameValidator, Session}
   alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.{Motd, Queries}
@@ -39,11 +38,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Chat.{
     DuplicateTracker,
     FloodTracker,
-    IgnoreList,
     KeyBindings
   }
 
-  alias RetroHexChat.Presence.{NotifyList, Tracker, WhowasCache}
+  alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
@@ -337,6 +335,69 @@ defmodule RetroHexChatWeb.App.ChatLive do
     {:noreply, ChatLive.Helpers.cancel_notify_timer(socket, nick)}
   end
 
+  # Address Book dialog: the island owns the UI + runs the domain mutations; the
+  # parent owns the session read-model, persistence, the nick-color render fn, the
+  # status surface and the ignore debounce timers.
+  def handle_info({:ab_session, session, :contacts}, socket) do
+    {:noreply,
+     socket
+     |> assign(session: session)
+     |> ChatLive.Helpers.maybe_persist_contacts(session)}
+  end
+
+  def handle_info({:ab_session, session, :nick_colors}, socket) do
+    {:noreply,
+     socket
+     |> assign(session: session)
+     |> ChatLive.Helpers.rebuild_nick_color_fn(session)
+     |> ChatLive.Helpers.refresh_active_message_stream(session)
+     |> ChatLive.Helpers.maybe_persist_nick_colors(session)}
+  end
+
+  def handle_info({:ab_session, session, :ignore}, socket) do
+    {:noreply,
+     socket
+     |> assign(session: session)
+     |> ChatLive.Helpers.maybe_persist_ignore_list(session)}
+  end
+
+  def handle_info({:ab_session, session, :notify}, socket) do
+    {:noreply,
+     socket
+     |> assign(session: session)
+     |> ChatLive.Helpers.maybe_persist_notify_list(session)}
+  end
+
+  def handle_info({:ab_status, :system, msg}, socket) do
+    {:noreply, ChatLive.Helpers.push_status_message(socket, msg, :system)}
+  end
+
+  def handle_info({:ab_status, :error, msg}, socket) do
+    {:noreply, ChatLive.Helpers.push_status_message(socket, msg, :error)}
+  end
+
+  def handle_info({:ab_status, :system_event, msg}, socket) do
+    {:noreply, ChatLive.Helpers.system_event(socket, msg)}
+  end
+
+  def handle_info({:ab_status, :error_event, msg}, socket) do
+    {:noreply, ChatLive.Helpers.error_event(socket, msg)}
+  end
+
+  def handle_info({:ab_ignore_timer, :restart, nick, duration}, socket) do
+    {:noreply,
+     socket
+     |> ChatLive.Helpers.cancel_ignore_timer(nick)
+     |> ChatLive.Helpers.maybe_start_ignore_timer(nick, duration)}
+  end
+
+  def handle_info({:ab_ignore_timer, :remove, nick}, socket) do
+    {:noreply,
+     socket
+     |> ChatLive.Helpers.cancel_ignore_timer(nick)
+     |> ChatLive.Helpers.cancel_auto_ignore_with_cooldown(nick)}
+  end
+
   # ── Catch-all handle_info ─────────────────────────────────────
 
   def handle_info({_ref, _result}, socket), do: {:noreply, socket}
@@ -530,9 +591,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     socket
     |> assign(
       channel_users: [],
-      contacts_selected: nil,
       nick_color_fn: ChatHelpers.build_nick_color_fn(session),
-      nick_colors_selected: nil,
       has_more: true,
       notice_active: false,
       chat_clear_token: 0,
@@ -541,7 +600,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       loading_more: false,
       messages: %{},
       notify_debounce_timers: %{},
-      notify_selected: nil,
       oldest_message_id: nil,
       page_title: dgettext("chat", "RetroHexChat"),
       # Search content state (query/results/filters/index/error) is owned by
@@ -550,22 +608,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
       search_visible: false,
       session: session,
       cheatsheet_visible: false,
-      show_address_book: false,
       show_account_dialog: false,
       account_registered: false,
       account_last_away_message: nil,
-      show_contact_add_dialog: false,
-      show_contact_edit_dialog: false,
-      address_book_tab: "contacts",
-      show_nick_color_add_dialog: false,
-      show_nick_color_edit_dialog: false,
       show_status_tab: false,
       status_unread: false,
-      show_notify_add_dialog: false,
-      show_notify_edit_dialog: false,
       highlight_channels: MapSet.new(),
-      selected_contact_note: "",
-      selected_notify_note: "",
       current_topic: nil,
       current_modes: nil,
       show_conversations: true,
@@ -580,8 +628,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       unread_counts: %{},
       url_catcher_entries: [],
       ignore_timers: %{},
-      control_selected: nil,
-      show_control_add_dialog: false,
       pending_invites: [],
       reconnect_active_channel: nil,
       reconnect_active_pm: nil,
@@ -592,7 +638,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       show_flood_protection_dialog: false,
       show_sound_settings_dialog: false,
       show_nicklist: true,
-      nick_palette_editing_index: nil,
       muted: false,
       muted_channels: MapSet.new(),
       flash_channels: MapSet.new(),
