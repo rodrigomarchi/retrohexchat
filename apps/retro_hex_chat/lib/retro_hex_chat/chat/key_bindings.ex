@@ -258,6 +258,10 @@ defmodule RetroHexChat.Chat.KeyBindings do
     end)
   end
 
+  # Keydown events without a key (e.g. modifier-only events fired while
+  # switching browser tabs) map to no action.
+  def find_action(_bindings, _params), do: nil
+
   @spec conflict?(bindings_map(), atom(), binding()) :: atom() | nil
   def conflict?(bindings, action, %{key: key, modifiers: modifiers}) do
     target_mods = MapSet.new(modifiers)

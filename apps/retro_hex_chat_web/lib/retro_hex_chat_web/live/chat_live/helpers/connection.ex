@@ -31,6 +31,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Connection do
     push_event(socket, "pong", %{client_time: client_time})
   end
 
+  def handle_ping(socket, _params), do: socket
+
   @doc """
   Handle lag_update event from client. Updates lag_ms and lag_status assigns.
   """
@@ -40,4 +42,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Connection do
     |> assign(:lag_ms, lag_ms)
     |> assign(:lag_status, lag_status(lag_ms))
   end
+
+  def handle_lag_update(socket, _params), do: socket
 end
