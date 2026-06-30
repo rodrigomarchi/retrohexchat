@@ -8,7 +8,7 @@ set -euo pipefail
 #         bash deploy.sh main
 #         bash deploy.sh sun-2026-02-18.01
 #
-# This script runs ON the server (Sun or Moon). It:
+# This script runs ON the server (Sun / production). It:
 #   1. Checks out the requested git ref
 #   2. Builds a release tarball
 #   3. Copies it to the DeployEx dist directory

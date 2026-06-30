@@ -2,15 +2,12 @@
 
 # RetroHexChat — CI + Deploy Pipeline
 #
-# Runs the full CI validation pipeline, then deploys to both environments
-# in parallel (Sun = production, Moon = staging).
+# Runs the full CI validation pipeline, then deploys to production (Sun).
 #
 # Usage:
-#   elixir scripts/deploy_all.exs                  # CI + deploy both (REF=main)
+#   elixir scripts/deploy_all.exs                  # CI + deploy Sun (REF=main)
 #   elixir scripts/deploy_all.exs --ref sun-tag     # deploy specific ref
 #   elixir scripts/deploy_all.exs --skip-ci         # skip CI (already validated)
-#   elixir scripts/deploy_all.exs --only sun        # deploy only to production
-#   elixir scripts/deploy_all.exs --only moon       # deploy only to staging
 
 defmodule DeployAll do
   @ssh_port String.to_integer(System.get_env("SSH_PORT", "2222"))
@@ -20,10 +17,6 @@ defmodule DeployAll do
     "sun" => %{
       label: "Production",
       ip: System.get_env("SUN_IP") || raise("SUN_IP env var is required")
-    },
-    "moon" => %{
-      label: "Staging",
-      ip: System.get_env("MOON_IP") || raise("MOON_IP env var is required")
     }
   }
 
@@ -53,9 +46,7 @@ defmodule DeployAll do
     # Phase 2: Deploy to targets in parallel
     start_time = System.monotonic_time(:millisecond)
 
-    IO.puts(
-      "  #{c(:cyan)}Deploy#{c(:reset)} (#{length(targets)} targets in parallel, REF=#{ref})\n"
-    )
+    IO.puts("  #{c(:cyan)}Deploy#{c(:reset)} (REF=#{ref})\n")
 
     results =
       targets
@@ -211,20 +202,14 @@ defmodule DeployAll do
   defp parse_args(args) do
     {opts, rest, _} =
       OptionParser.parse(args,
-        strict: [ref: :string, skip_ci: :boolean, only: :string],
+        strict: [ref: :string, skip_ci: :boolean],
         aliases: [r: :ref, s: :skip_ci]
       )
 
     {opts, rest}
   end
 
-  defp resolve_targets(opts) do
-    case opts[:only] do
-      nil -> ["sun", "moon"]
-      target when target in ["sun", "moon"] -> [target]
-      _ -> ["sun", "moon"]
-    end
-  end
+  defp resolve_targets(_opts), do: ["sun"]
 
   # --- Output ---
 

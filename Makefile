@@ -11,8 +11,7 @@
        clean clean.deps clean.build clean.all \
        deps.tree deps.update deps.unlock app.tree \
        docker.up docker.down docker.ps docker.logs docker.reset docker.stop \
-       deploy deploy deploy.sun deploy.moon deploy.skip-ci \
-       deploy-sun deploy-moon
+       deploy deploy.skip-ci deploy-sun
 
 DOMAIN_APP = apps/retro_hex_chat
 WEB_APP    = apps/retro_hex_chat_web
@@ -319,21 +318,14 @@ app.tree: ## Show OTP application supervision tree
 REF ?= main
 
 # Deploy env vars (all required, set via environment or make args):
-#   DEPLOY_USER  — SSH username on the target servers
+#   DEPLOY_USER  — SSH username on the target server
 #   SUN_IP       — Production server IP address
-#   MOON_IP      — Staging server IP address
 #   SSH_PORT     — SSH port (default: 2222)
 
-deploy: ## CI + deploy to both environments in parallel — usage: make deploy REF=main
+deploy: ## CI + deploy to production (Sun) — usage: make deploy REF=main
 	elixir scripts/deploy_all.exs --ref $(REF)
 
-deploy.sun: ## CI + deploy to production only — usage: make deploy.sun REF=main
-	elixir scripts/deploy_all.exs --ref $(REF) --only sun
-
-deploy.moon: ## CI + deploy to staging only — usage: make deploy.moon REF=main
-	elixir scripts/deploy_all.exs --ref $(REF) --only moon
-
-deploy.skip-ci: ## Deploy both without CI (already validated) — usage: make deploy.skip-ci REF=main
+deploy.skip-ci: ## Deploy Sun without CI (already validated) — usage: make deploy.skip-ci REF=main
 	elixir scripts/deploy_all.exs --ref $(REF) --skip-ci
 
 deploy-sun: ## Deploy to production (no CI) — usage: make deploy-sun REF=main
@@ -341,9 +333,3 @@ deploy-sun: ## Deploy to production (no CI) — usage: make deploy-sun REF=main
 	@test -n "$(SUN_IP)" || (echo "Error: SUN_IP is required" && exit 1)
 	scp -P $${SSH_PORT:-2222} scripts/deploy.sh $(DEPLOY_USER)@$(SUN_IP):~/deploy.sh
 	ssh -p $${SSH_PORT:-2222} $(DEPLOY_USER)@$(SUN_IP) "bash ~/deploy.sh $(REF)"
-
-deploy-moon: ## Deploy to staging (no CI) — usage: make deploy-moon REF=main
-	@test -n "$(DEPLOY_USER)" || (echo "Error: DEPLOY_USER is required" && exit 1)
-	@test -n "$(MOON_IP)" || (echo "Error: MOON_IP is required" && exit 1)
-	scp -P $${SSH_PORT:-2222} scripts/deploy.sh $(DEPLOY_USER)@$(MOON_IP):~/deploy.sh
-	ssh -p $${SSH_PORT:-2222} $(DEPLOY_USER)@$(MOON_IP) "bash ~/deploy.sh $(REF)"

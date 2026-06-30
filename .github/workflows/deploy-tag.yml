@@ -22,8 +22,6 @@ jobs:
           TAG="${GITHUB_REF_NAME}"
           if [[ "$TAG" == sun-* ]]; then
             echo "ip_secret=SUN_IP" >> "$GITHUB_OUTPUT"
-          elif [[ "$TAG" == moon-* ]]; then
-            echo "ip_secret=MOON_IP" >> "$GITHUB_OUTPUT"
           else
             echo "::error::Unknown tag prefix: ${TAG}"
             exit 1

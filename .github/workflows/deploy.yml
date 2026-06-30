@@ -18,14 +18,12 @@ jobs:
     steps:
       - name: Validate secrets
         env:
-          MOON_IP: ${{ secrets.MOON_IP }}
           SUN_IP: ${{ secrets.SUN_IP }}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
           missing=()
-          [ -z "$MOON_IP" ] && missing+=("MOON_IP")
           [ -z "$SUN_IP" ] && missing+=("SUN_IP")
           [ -z "$DEPLOY_USER" ] && missing+=("DEPLOY_USER")
           [ -z "$DEPLOY_SSH_KEY" ] && missing+=("DEPLOY_SSH_KEY")
@@ -34,24 +32,7 @@ jobs:
             echo "::error::Missing secrets: ${missing[*]}"
             exit 1
           fi
-          echo "Deploying ${GITHUB_SHA::7} to moon + sun"
-
-  moon:
-    name: Deploy (moon)
-    needs: [prepare]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.MOON_IP }}
-          username: ${{ secrets.DEPLOY_USER }}
-          key: ${{ secrets.DEPLOY_SSH_KEY }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            cd ~/retro_hex_chat
-            git fetch --all --prune
-            bash ~/retro_hex_chat/scripts/deploy.sh main
+          echo "Deploying ${GITHUB_SHA::7} to sun"
 
   sun:
     name: Deploy (sun)
