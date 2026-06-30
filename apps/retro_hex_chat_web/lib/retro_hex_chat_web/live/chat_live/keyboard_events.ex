@@ -27,6 +27,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
 
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
   alias RetroHexChatWeb.ChatLive.NavigationEvents
+  alias RetroHexChatWeb.ChatLive.PerformAutojoinEvents
   alias RetroHexChatWeb.ChatLive.SearchEvents
   alias RetroHexChatWeb.ChatLive.UserLookupEvents
 
@@ -103,11 +104,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_perform_dialog, socket) do
-    if socket.assigns.show_perform_dialog do
-      close_perform_dialog(socket)
-    else
-      assign(socket, show_perform_dialog: true)
-    end
+    PerformAutojoinEvents.toggle(socket)
   end
 
   defp dispatch_action(:toggle_cheatsheet, socket) do
@@ -178,12 +175,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       {:show_contact_add_dialog, &close_contact_add_dialog/1},
       {:show_contact_edit_dialog, &close_contact_edit_dialog/1},
       {:show_highlight_add_dialog, &close_highlight_add_dialog/1},
-      {:show_highlight_edit_dialog, &close_highlight_edit_dialog/1},
-      {:show_perform_add_dialog, &close_perform_add_dialog/1},
-      {:show_perform_edit_dialog, &close_perform_edit_dialog/1},
-      {:show_autojoin_add_dialog, &close_autojoin_add_dialog/1},
-      {:show_autojoin_edit_dialog, &close_autojoin_edit_dialog/1},
-      {:show_perform_dialog, &close_perform_dialog/1}
+      {:show_highlight_edit_dialog, &close_highlight_edit_dialog/1}
     ]
   end
 
@@ -220,10 +212,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   defp close_contact_edit_dialog(socket), do: assign(socket, show_contact_edit_dialog: false)
   defp close_highlight_add_dialog(socket), do: assign(socket, show_highlight_add_dialog: false)
   defp close_highlight_edit_dialog(socket), do: assign(socket, show_highlight_edit_dialog: false)
-  defp close_perform_add_dialog(socket), do: assign(socket, show_perform_add_dialog: false)
-  defp close_perform_edit_dialog(socket), do: assign(socket, show_perform_edit_dialog: false)
-  defp close_autojoin_add_dialog(socket), do: assign(socket, show_autojoin_add_dialog: false)
-  defp close_autojoin_edit_dialog(socket), do: assign(socket, show_autojoin_edit_dialog: false)
 
   defp cancel_notice_mode(socket) do
     send_update(Composer, id: Composer.id(), cancel_notice: true)
@@ -245,19 +233,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   # ---------------------------------------------------------------------------
   # Private helpers
   # ---------------------------------------------------------------------------
-
-  defp close_perform_dialog(socket) do
-    assign(socket,
-      show_perform_dialog: false,
-      perform_dialog_tab: "commands",
-      perform_selected: nil,
-      show_perform_add_dialog: false,
-      show_perform_edit_dialog: false,
-      autojoin_selected: nil,
-      show_autojoin_add_dialog: false,
-      show_autojoin_edit_dialog: false
-    )
-  end
 
   defp close_channel_list(socket), do: ChannelListEvents.close(socket)
 

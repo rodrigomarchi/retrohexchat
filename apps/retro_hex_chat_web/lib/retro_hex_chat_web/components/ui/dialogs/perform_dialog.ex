@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
       />
   """
   attr :id, :string, required: true
+  attr :target, :any, default: nil
   attr :show, :boolean, default: false
   attr :active_tab, :string, default: "commands"
   attr :perform_entries, :list, default: []
@@ -38,7 +39,6 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   attr :perform_enabled, :boolean, default: true
   attr :autojoin_entries, :list, default: []
   attr :autojoin_selected, :string, default: nil
-  attr :on_tab, :any, default: nil
   attr :on_select, :any, default: nil
   attr :on_add, :any, default: nil
   attr :on_edit, :any, default: nil
@@ -87,6 +87,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
           <.tabs_content value="commands">
             <.commands_tab
+              target={@target}
               entries={@perform_entries}
               selected={@perform_selected}
               enabled={@perform_enabled}
@@ -102,6 +103,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
           <.tabs_content value="autojoin">
             <.autojoin_tab
+              target={@target}
               entries={@autojoin_entries}
               selected={@autojoin_selected}
               on_select={@on_autojoin_select}
@@ -125,18 +127,20 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     </.dialog>
 
     <%!-- Perform Add Sub-Dialog --%>
-    <.perform_add_sub_form :if={@show_perform_add_dialog} />
+    <.perform_add_sub_form :if={@show_perform_add_dialog} target={@target} />
     <%!-- Perform Edit Sub-Dialog --%>
     <.perform_edit_sub_form
       :if={@show_perform_edit_dialog}
+      target={@target}
       entries={@perform_entries}
       selected={@perform_selected}
     />
     <%!-- Autojoin Add Sub-Dialog --%>
-    <.autojoin_add_sub_form :if={@show_autojoin_add_dialog} />
+    <.autojoin_add_sub_form :if={@show_autojoin_add_dialog} target={@target} />
     <%!-- Autojoin Edit Sub-Dialog --%>
     <.autojoin_edit_sub_form
       :if={@show_autojoin_edit_dialog}
+      target={@target}
       entries={@autojoin_entries}
       selected={@autojoin_selected}
     />
@@ -144,6 +148,8 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   end
 
   # ── Sub-Forms ─────────────────────────────────────────
+
+  attr :target, :any, default: nil
 
   defp perform_add_sub_form(assigns) do
     ~H"""
@@ -158,11 +164,16 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="close_perform_add_dialog"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="perform_dialog_add_confirm" data-testid="perform-add-dialog">
+          <form
+            phx-submit="perform_dialog_add_confirm"
+            phx-target={@target}
+            data-testid="perform-add-dialog"
+          >
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="perform-command-input">
                 {dgettext("dialogs", "Command")}:
@@ -188,6 +199,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 size="sm"
                 variant="outline"
                 phx-click="close_perform_add_dialog"
+                phx-target={@target}
               >
                 <:icon><Icons.icon_close /></:icon>
                 {dgettext("dialogs", "Cancel")}
@@ -200,6 +212,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     """
   end
 
+  attr :target, :any, default: nil
   attr :entries, :list, required: true
   attr :selected, :integer, default: nil
 
@@ -219,11 +232,16 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="close_perform_edit_dialog"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="perform_dialog_edit_confirm" data-testid="perform-edit-dialog">
+          <form
+            phx-submit="perform_dialog_edit_confirm"
+            phx-target={@target}
+            data-testid="perform-edit-dialog"
+          >
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="perform-edit-input">
                 {dgettext("dialogs", "Command")}:
@@ -249,6 +267,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 size="sm"
                 variant="outline"
                 phx-click="close_perform_edit_dialog"
+                phx-target={@target}
               >
                 <:icon><Icons.icon_close /></:icon>
                 {dgettext("dialogs", "Cancel")}
@@ -260,6 +279,8 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     </div>
     """
   end
+
+  attr :target, :any, default: nil
 
   defp autojoin_add_sub_form(assigns) do
     ~H"""
@@ -274,11 +295,16 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="close_autojoin_add_dialog"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="autojoin_dialog_add_confirm" data-testid="autojoin-add-dialog">
+          <form
+            phx-submit="autojoin_dialog_add_confirm"
+            phx-target={@target}
+            data-testid="autojoin-add-dialog"
+          >
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="autojoin-channel-input">
                 {dgettext("dialogs", "Channel")}:
@@ -317,6 +343,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 size="sm"
                 variant="outline"
                 phx-click="close_autojoin_add_dialog"
+                phx-target={@target}
               >
                 <:icon><Icons.icon_close /></:icon>
                 {dgettext("dialogs", "Cancel")}
@@ -329,6 +356,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     """
   end
 
+  attr :target, :any, default: nil
   attr :entries, :list, required: true
   attr :selected, :string, default: nil
 
@@ -353,11 +381,16 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="close_autojoin_edit_dialog"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="autojoin_dialog_edit_confirm" data-testid="autojoin-edit-dialog">
+          <form
+            phx-submit="autojoin_dialog_edit_confirm"
+            phx-target={@target}
+            data-testid="autojoin-edit-dialog"
+          >
             <input type="hidden" name="channel" value={@edit_channel} />
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="autojoin-edit-channel">
@@ -396,6 +429,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
                 size="sm"
                 variant="outline"
                 phx-click="close_autojoin_edit_dialog"
+                phx-target={@target}
               >
                 <:icon><Icons.icon_close /></:icon>
                 {dgettext("dialogs", "Cancel")}
@@ -410,6 +444,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
   # ── Commands Tab ──────────────────────────────────────
 
+  attr :target, :any, default: nil
   attr :entries, :list, required: true
   attr :selected, :integer, default: nil
   attr :enabled, :boolean, default: true
@@ -452,6 +487,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               ])
             }
             phx-click={@on_select}
+            phx-target={@target}
             phx-value-position={entry.position}
           >
             <.table_cell class="px-2 py-1 text-xs">{entry.position}</.table_cell>
@@ -469,15 +505,21 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     </div>
 
     <div class="flex gap-1 mb-2">
-      <.button size="sm" phx-click={@on_add}>
+      <.button size="sm" phx-click={@on_add} phx-target={@target}>
         <:icon><Icons.icon_btn_add /></:icon>
         {dgettext("dialogs", "Add")}
       </.button>
-      <.button size="sm" phx-click={@on_edit} disabled={!@has_selection}>
+      <.button size="sm" phx-click={@on_edit} phx-target={@target} disabled={!@has_selection}>
         <:icon><Icons.icon_btn_edit /></:icon>
         {dgettext("dialogs", "Edit")}
       </.button>
-      <.button size="sm" variant="destructive" phx-click={@on_remove} disabled={!@has_selection}>
+      <.button
+        size="sm"
+        variant="destructive"
+        phx-click={@on_remove}
+        phx-target={@target}
+        disabled={!@has_selection}
+      >
         <:icon><Icons.icon_btn_remove /></:icon>
         {dgettext("dialogs", "Remove")}
       </.button>
@@ -485,6 +527,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         size="sm"
         variant="outline"
         phx-click={@on_move_up}
+        phx-target={@target}
         disabled={!@has_selection || @selected == @first_pos}
       >
         <:icon><Icons.icon_btn_up /></:icon>
@@ -494,6 +537,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         size="sm"
         variant="outline"
         phx-click={@on_move_down}
+        phx-target={@target}
         disabled={!@has_selection || @selected == @last_pos}
       >
         <:icon><Icons.icon_btn_down /></:icon>
@@ -508,6 +552,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         name="perform_enabled"
         value={@enabled}
         phx-click={@on_toggle_enabled}
+        phx-target={@target}
       /> {dgettext("dialogs", "Enable perform on connect")}
     </label>
     """
@@ -515,6 +560,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
   # ── Auto-Join Tab ─────────────────────────────────────
 
+  attr :target, :any, default: nil
   attr :entries, :list, required: true
   attr :selected, :string, default: nil
   attr :on_select, :any, default: nil
@@ -545,6 +591,7 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
               ])
             }
             phx-click={@on_select}
+            phx-target={@target}
             phx-value-channel={entry.channel_name}
           >
             <.table_cell class="px-2 py-1 text-xs">{entry.channel_name}</.table_cell>
@@ -562,15 +609,21 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
     </div>
 
     <div class="flex gap-1">
-      <.button size="sm" phx-click={@on_add}>
+      <.button size="sm" phx-click={@on_add} phx-target={@target}>
         <:icon><Icons.icon_btn_add /></:icon>
         {dgettext("dialogs", "Add")}
       </.button>
-      <.button size="sm" phx-click={@on_edit} disabled={!@has_selection}>
+      <.button size="sm" phx-click={@on_edit} phx-target={@target} disabled={!@has_selection}>
         <:icon><Icons.icon_btn_edit /></:icon>
         {dgettext("dialogs", "Edit")}
       </.button>
-      <.button size="sm" variant="destructive" phx-click={@on_remove} disabled={!@has_selection}>
+      <.button
+        size="sm"
+        variant="destructive"
+        phx-click={@on_remove}
+        phx-target={@target}
+        disabled={!@has_selection}
+      >
         <:icon><Icons.icon_btn_remove /></:icon>
         {dgettext("dialogs", "Remove")}
       </.button>

@@ -32,8 +32,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.InviteDialog
   import RetroHexChatWeb.Components.UI.NotifyList
 
-  import RetroHexChatWeb.Components.UI.PerformDialog
-
   # ── Domain aliases ────────────────────────────────────────────
   alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
   alias RetroHexChat.Admin.ServerBans
@@ -41,13 +39,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Services.{Motd, Queries}
 
   alias RetroHexChat.Chat.{
-    AutoJoinList,
     DuplicateTracker,
     FloodTracker,
     HighlightWords,
     IgnoreList,
-    KeyBindings,
-    PerformList
+    KeyBindings
   }
 
   alias RetroHexChat.Presence.{NotifyList, Tracker, WhowasCache}
@@ -291,6 +287,27 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # Admin Console bubbles the same way.
   def handle_info({:admin_system_error, message}, socket) do
     {:noreply, ChatLive.Helpers.error_event(socket, message)}
+  end
+
+  # Perform dialog bubbles validation errors to the chat surface.
+  def handle_info({:perform_system_error, message}, socket) do
+    {:noreply, ChatLive.Helpers.error_event(socket, message)}
+  end
+
+  # Perform/AutoJoin list mutations: the dialog owns the work; the parent owns the
+  # session read-model and the fire-and-forget persistence.
+  def handle_info({:perform_dialog_session, session, :perform}, socket) do
+    {:noreply,
+     socket
+     |> assign(session: session)
+     |> ChatLive.Helpers.maybe_persist_perform_list(session)}
+  end
+
+  def handle_info({:perform_dialog_session, session, :autojoin}, socket) do
+    {:noreply,
+     socket
+     |> assign(session: session)
+     |> ChatLive.Helpers.maybe_persist_autojoin_list(session)}
   end
 
   # ── Catch-all handle_info ─────────────────────────────────────
@@ -545,14 +562,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       ignore_timers: %{},
       control_selected: nil,
       show_control_add_dialog: false,
-      show_perform_dialog: false,
-      perform_dialog_tab: "commands",
-      perform_selected: nil,
-      show_perform_add_dialog: false,
-      show_perform_edit_dialog: false,
-      autojoin_selected: nil,
-      show_autojoin_add_dialog: false,
-      show_autojoin_edit_dialog: false,
       pending_invites: [],
       reconnect_active_channel: nil,
       reconnect_active_pm: nil,

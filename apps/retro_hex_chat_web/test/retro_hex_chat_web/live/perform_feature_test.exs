@@ -130,16 +130,16 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
     test "menu bar opens dialog", %{conn: conn} do
       view = connect_user(conn, "E2EMnu#{uid()}")
 
-      render_click(view, "open_perform_dialog")
+      open_perform(view)
       assert has_element?(view, "#perform-dialog-show-trigger")
     end
 
     test "add command via dialog", %{conn: conn} do
       view = connect_user(conn, "E2EDlA#{uid()}")
 
-      render_click(view, "open_perform_dialog")
-      render_click(view, "perform_dialog_add")
-      render_submit(view, "perform_dialog_add_confirm", %{"command" => "/join #dlgtest"})
+      open_perform(view)
+      click(view, "perform_dialog_add")
+      submit_form(view, "perform-add-dialog", %{"command" => "/join #dlgtest"})
 
       html = render(view)
       assert html =~ "/join #dlgtest"
@@ -148,12 +148,12 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
     test "remove command via dialog", %{conn: conn} do
       view = connect_user(conn, "E2EDlR#{uid()}")
 
-      render_click(view, "open_perform_dialog")
-      render_click(view, "perform_dialog_add")
-      render_submit(view, "perform_dialog_add_confirm", %{"command" => "/join #dlgrem"})
+      open_perform(view)
+      click(view, "perform_dialog_add")
+      submit_form(view, "perform-add-dialog", %{"command" => "/join #dlgrem"})
 
-      render_click(view, "perform_select", %{"position" => "0"})
-      render_click(view, "perform_dialog_remove")
+      select_perform(view, 0)
+      click(view, "perform_dialog_remove")
 
       html = render(view)
       refute html =~ "/join #dlgrem"
@@ -162,24 +162,20 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
     test "tab switching between commands and autojoin", %{conn: conn} do
       view = connect_user(conn, "E2ETab#{uid()}")
 
-      render_click(view, "open_perform_dialog")
+      open_perform(view)
 
-      # Switch to autojoin tab
-      render_click(view, "perform_dialog_tab", %{"tab" => "autojoin"})
-      html = render(view)
-      assert html =~ "No auto-join channels"
-
-      # Switch back to commands tab
-      render_click(view, "perform_dialog_tab", %{"tab" => "commands"})
+      # Both tab panels render when the dialog is open (switching is client-side
+      # CSS); their empty-state copy is present regardless of the active tab.
       html = render(view)
       assert html =~ "No commands configured"
+      assert html =~ "No auto-join channels"
     end
 
     test "enable/disable toggle", %{conn: conn} do
       view = connect_user(conn, "E2ETgl#{uid()}")
 
-      render_click(view, "open_perform_dialog")
-      render_click(view, "perform_toggle_enabled")
+      open_perform(view)
+      click(view, "perform_toggle_enabled")
 
       html = render(view)
       # After toggling, checkbox state changes
@@ -189,9 +185,9 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
     test "password masking in dialog", %{conn: conn} do
       view = connect_user(conn, "E2EPwd#{uid()}")
 
-      render_click(view, "open_perform_dialog")
-      render_click(view, "perform_dialog_add")
-      render_submit(view, "perform_dialog_add_confirm", %{"command" => "/ns identify mysecret"})
+      open_perform(view)
+      click(view, "perform_dialog_add")
+      submit_form(view, "perform-add-dialog", %{"command" => "/ns identify mysecret"})
 
       html = render(view)
       assert html =~ "***"
@@ -201,10 +197,10 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
     test "Escape closes dialog", %{conn: conn} do
       view = connect_user(conn, "E2EEsc#{uid()}")
 
-      render_click(view, "open_perform_dialog")
+      open_perform(view)
       assert has_element?(view, "#perform-dialog-show-trigger")
 
-      render_click(view, "window_keydown", %{"key" => "Escape"})
+      view |> element("#perform-dialog-wrap") |> render_keydown(%{"key" => "Escape"})
       refute has_element?(view, "#perform-dialog-show-trigger")
     end
   end
@@ -336,6 +332,27 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
   defp connect_user(conn, nick) do
     {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
+  end
+
+  # The Perform dialog is a stateful island; its events target the component, so
+  # tests fire them element-based. Opening is async (send_update), so flush.
+  defp open_perform(view) do
+    render_click(view, "open_perform_dialog")
+    render(view)
+  end
+
+  defp click(view, event) do
+    view |> element("[phx-click='#{event}']") |> render_click()
+  end
+
+  defp select_perform(view, position) do
+    view
+    |> element("[phx-click='perform_select'][phx-value-position='#{position}']")
+    |> render_click()
+  end
+
+  defp submit_form(view, testid, params) do
+    view |> element(~s([data-testid="#{testid}"])) |> render_submit(params)
   end
 
   defp submit_command(view, command) do

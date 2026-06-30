@@ -842,3 +842,30 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
     autocomplete (adapters → `send_update` async) PRECISARAM do `html = render(view)`. Cuidado com a forma
     PIPED `view |> render_submit("send_input", …)` e nomes de var fora de `view` (`sender`, `view1`) — um
     regex ingênuo `render_submit(view, …)` perde esses.
+- **2026-06-30 (35 perform — clone limpo do plano 40 + o §1d GENUÍNO vs o falso-positivo do admin):**
+  - **Full ownership, −8 chaves.** `Components.PerformDialog` é dono do dialog inteiro (`show`/`active_tab`,
+    2 seleções, 4 flags de sub-form, todos os eventos `@myself`, lógica `PerformList`/`AutoJoinList`);
+    `perform_autojoin_events.ex` 289→~55 linhas (open/close/toggle). Mesmo `target` threading dos 4 sub-forms
+    `fixed inset-0` (§0a-anti). Mecânica idêntica a 40/52 — nada novo aí.
+  - **⚠️ CORRIGE o §1d do admin (2026-06-29, "as 7 chaves de filtro FICAM no parent"): aquela regra estava
+    PELA METADE.** O teste certo do §1d NÃO é "algum handler lê de volta" — é "existe um leitor SÍNCRONO em
+    OUTRO subsistema?". No admin os "leitores" eram os handlers IRMÃOS do próprio dialog → mova os eventos
+    p/ `@myself` e o read-model vai junto (foi o que o redo fez). No perform é o OPOSTO e LEGÍTIMO: a lista
+    perform/autojoin mora no `session`, lido síncrono pelo connect-flow (auto-perform), pelo composer e por
+    todo dialog → `session` fica no parent DE VERDADE. **Heurística final:** o leitor é de OUTRO subsistema?
+    fica no parent. É só o próprio dialog se relendo? não é §1d — é evento não-convertido.
+  - **Mas a MUTAÇÃO roda no componente, mesmo com o estado no parent.** O componente chama
+    `PerformList.add_entry/...`, faz `Session.set_perform_list`, e bubbla `{:perform_dialog_session, session,
+    kind}` → o parent faz `assign(session:) |> maybe_persist_*`. O componente também assign-a a nova session
+    LOCALMENTE (otimista) p/ as entries (derivadas no `render/1`) atualizarem no mesmo ciclo, sem lag. Persist
+    é fire-and-forget (Task.start, só-session) → pertence a quem é dono da session = parent.
+  - **Matei código morto em vez de "manter por simetria".** O design-system `perform_dialog/1` tinha um attr
+    `on_tab` nunca usado no template (tabs trocam por CSS client-side). Em vez de plugar um
+    `JS.push(target: @myself)` em coisa nenhuma, removi o attr + o handler `perform_dialog_tab` inalcançável;
+    o server só seta o `active_tab` inicial no open. **"Backward compatible" / "por simetria" é cheiro de
+    gambiarra — só pode existir UMA forma, a correta.**
+  - **Teste:** `perform_dialog_test` (6, `render_component` com `Session` real) + `perform_feature_test`
+    27/27. Os testes US2 do dialog viraram element-based; o de "tab switching" agora afirma que AMBOS os
+    painéis estão no DOM (troca é client-side, não observável no server); Escape dispara o keydown do próprio
+    `<.dialog>` em `#perform-dialog-wrap`. As paths de comando `/perform`+`/autojoin` (US1/US3) ficaram
+    intactas (vivem em `ui_actions/perform.ex`, não no dialog).

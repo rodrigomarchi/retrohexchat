@@ -313,33 +313,10 @@
   visible={@show_sound_settings_dialog}
 />
 
-<.perform_dialog
-  id="perform-dialog"
-  show={@show_perform_dialog}
-  active_tab={@perform_dialog_tab}
-  perform_entries={PerformList.entries(@session.perform_list)}
-  perform_selected={@perform_selected}
-  perform_enabled={PerformList.enabled?(@session.perform_list)}
-  autojoin_entries={AutoJoinList.entries(@session.autojoin_list)}
-  autojoin_selected={@autojoin_selected}
-  show_perform_add_dialog={@show_perform_add_dialog}
-  show_perform_edit_dialog={@show_perform_edit_dialog}
-  show_autojoin_add_dialog={@show_autojoin_add_dialog}
-  show_autojoin_edit_dialog={@show_autojoin_edit_dialog}
-  on_tab="perform_dialog_tab"
-  on_select="perform_select"
-  on_add="perform_dialog_add"
-  on_edit="perform_dialog_edit"
-  on_remove="perform_dialog_remove"
-  on_move_up="perform_dialog_move_up"
-  on_move_down="perform_dialog_move_down"
-  on_toggle_enabled="perform_toggle_enabled"
-  on_autojoin_select="autojoin_select"
-  on_autojoin_add="autojoin_dialog_add"
-  on_autojoin_edit="autojoin_dialog_edit"
-  on_autojoin_remove="autojoin_dialog_remove"
-  on_ok="close_perform_dialog"
-  on_cancel="close_perform_dialog"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.PerformDialog}
+  id={RetroHexChatWeb.ChatLive.Components.PerformDialog.id()}
+  session={@session}
 />
 
 <.live_component
