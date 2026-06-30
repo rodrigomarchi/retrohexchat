@@ -99,7 +99,9 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
 
   def dialog_header(assigns) do
     ~H"""
-    <div class={classes(["shrink-0 bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2", @class])}>
+    <div class={
+      classes(["shrink-0 bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2", @class])
+    }>
       <.dialog_icon>{render_slot(@icon)}</.dialog_icon>
       <.dialog_title>{@title}</.dialog_title>
       <.dialog_close id={@id} on_close={@on_close} />
