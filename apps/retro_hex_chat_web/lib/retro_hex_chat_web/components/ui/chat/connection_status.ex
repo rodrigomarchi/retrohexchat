@@ -43,6 +43,48 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
     """
   end
 
+  @doc """
+  Renders the live connection panel: the (server-side hidden) status banner plus
+  the JS-driven banner/overlay DOM owned by `ConnectionStatusHook`.
+
+  The hook block uses `phx-update="ignore"` because the connection banner and
+  reconnect overlay are mutated entirely client-side by the hook — the LiveView
+  must never repatch this DOM. Static infrastructure with no server state, so it
+  lives here as a plain function component and takes no `Session`.
+  """
+  @spec connection_status_panel(map()) :: Phoenix.LiveView.Rendered.t()
+  def connection_status_panel(assigns) do
+    ~H"""
+    <.connection_status state="connected" visible={false} />
+    <div
+      id="connection-status-hook"
+      phx-hook="ConnectionStatusHook"
+      phx-update="ignore"
+      data-testid="connection-status-hook"
+    >
+      <div class="connection-banner" data-role="banner" role="status" aria-live="polite">
+        <span data-role="banner-text"></span>
+      </div>
+      <div class="reconnect-overlay" data-role="overlay" role="dialog" aria-modal="true">
+        <div class="window reconnect-overlay__window">
+          <div class="title-bar">
+            <div class="title-bar-text">{dgettext("chat", "Connection Lost")}</div>
+          </div>
+          <div class="window-body">
+            <p data-role="overlay-info" class="text-xs"></p>
+            <p data-role="overlay-countdown" class="text-xs"></p>
+            <div class="mt-3 text-right">
+              <button type="button" data-role="overlay-action">
+                {dgettext("chat", "Cancel")}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
   # ── Connected ─────────────────────────────────────────
 
   attr :server, :string, default: nil

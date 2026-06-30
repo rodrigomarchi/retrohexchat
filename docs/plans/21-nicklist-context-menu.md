@@ -1,5 +1,16 @@
 # Nicklist Context Menu Migration
 
+> **STATUS: COMPLETE (2026-06-29) — migrated as a cluster with plan 19.**
+> `RetroHexChatWeb.ChatLive.Components.UserContextMenus` (one stateful island) owns the nicklist menu
+> (`context_menu`) + `show_context_color_picker` alongside the chat menu — three keys out of
+> `assign_defaults`. The color swatch already carried `phx-value-nick`, so `context_pick_color` reads
+> `params["nick"]` (zero parent read in the apply path). `nick_right_click`/`context_set_nick_color`/close
+> are STRING adapters via `put_menu/2` (`send_update`); the ~25 `context_*` actions keep their privileged
+> session/server work on the parent. Pragmatic relaxation of the "resolve target from a local user stream"
+> gotcha: the canonical `channel_users` passes through and `is_target_op/voiced/muted` derive in `render/1`
+> (same as plans 05/13/20). Also removed the dead `Helpers.Session.close_context_menu/1` (stale after
+> plan 20). `make ci` 9/9; shared component test `user_context_menus_test.exs` (7).
+
 ## Objetivo
 
 Migrar context menu da nicklist para dentro do `NicklistComponent`, junto com color picker e permissoes por usuario.

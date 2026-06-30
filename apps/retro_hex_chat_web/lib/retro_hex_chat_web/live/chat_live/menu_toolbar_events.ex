@@ -88,7 +88,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
        autocomplete_visible: true,
        autocomplete_mode: :command,
        autocomplete_results: results,
-       autocomplete_filter: partial,
        autocomplete_selected: 0
      )}
   end
@@ -107,7 +106,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
          autocomplete_visible: true,
          autocomplete_mode: :nick,
          autocomplete_results: results,
-         autocomplete_filter: partial,
          autocomplete_selected: 0
        )}
     else
@@ -126,7 +124,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
        autocomplete_visible: true,
        autocomplete_mode: :channel,
        autocomplete_results: results,
-       autocomplete_filter: partial,
        autocomplete_selected: 0
      )}
   end
@@ -148,7 +145,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
            autocomplete_visible: true,
            autocomplete_mode: :nick,
            autocomplete_results: results,
-           autocomplete_filter: partial,
            autocomplete_selected: 0
          )}
 
@@ -161,7 +157,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
            autocomplete_visible: true,
            autocomplete_mode: :nick,
            autocomplete_results: results,
-           autocomplete_filter: partial,
            autocomplete_selected: 0
          )}
 
@@ -183,7 +178,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
        autocomplete_visible: true,
        autocomplete_mode: :channel,
        autocomplete_results: results,
-       autocomplete_filter: partial,
        autocomplete_selected: 0
      )}
   end
@@ -201,7 +195,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
        autocomplete_mode: :subcommand,
        autocomplete_command: command,
        autocomplete_results: results,
-       autocomplete_filter: partial,
        autocomplete_selected: 0
      )}
   end
@@ -218,7 +211,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
        autocomplete_mode: nil,
        autocomplete_command: nil,
        autocomplete_results: [],
-       autocomplete_filter: "",
        autocomplete_selected: 0
      )
      |> push_event("autocomplete_closed", %{})}
@@ -232,7 +224,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
        autocomplete_visible: false,
        autocomplete_mode: nil,
        autocomplete_results: [],
-       autocomplete_filter: "",
        autocomplete_selected: 0
      )
      |> push_event("set_input", %{value: "/#{command} "})}
@@ -245,7 +236,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
        autocomplete_visible: false,
        autocomplete_mode: nil,
        autocomplete_results: [],
-       autocomplete_filter: "",
        autocomplete_selected: 0
      )
      |> push_event("set_input", %{value: "@#{nickname} "})}
@@ -258,7 +248,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
        autocomplete_visible: false,
        autocomplete_mode: nil,
        autocomplete_results: [],
-       autocomplete_filter: "",
        autocomplete_selected: 0
      )
      |> push_event("set_input", %{value: channel_name <> " "})}
@@ -279,7 +268,6 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
        autocomplete_mode: nil,
        autocomplete_command: nil,
        autocomplete_results: [],
-       autocomplete_filter: "",
        autocomplete_selected: 0
      )
      |> push_event("set_input", %{value: value})}

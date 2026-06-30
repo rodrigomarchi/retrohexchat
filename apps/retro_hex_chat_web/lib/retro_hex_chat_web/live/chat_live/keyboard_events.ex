@@ -270,7 +270,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       channel_central_ban_selected: nil,
       channel_central_ban_ex_selected: nil,
       channel_central_invite_ex_selected: nil,
-      channel_central_modes_form: %{},
       show_cc_add_ban_dialog: false,
       show_cc_add_ban_ex_dialog: false,
       show_cc_add_invite_ex_dialog: false

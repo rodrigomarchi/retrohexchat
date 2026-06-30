@@ -140,7 +140,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
 
   defdelegate push_reconnect_state(socket), to: __MODULE__.Session
   defdelegate restore_session(socket, params), to: __MODULE__.Session
-  defdelegate close_context_menu(socket), to: __MODULE__.Session
   defdelegate maybe_highlight(payload, session), to: __MODULE__.Session
   defdelegate handle_nick_change(socket, new_nick), to: __MODULE__.Session
   defdelegate handle_quit(socket, reason), to: __MODULE__.Session

@@ -254,7 +254,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- scroll_to_bottom --
 
   def handle_event("scroll_to_bottom", _params, socket) do
-    {:halt, assign(socket, new_messages_indicator: false)}
+    {:halt, socket}
   end
 
   # -- history_navigate --
@@ -537,7 +537,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       history_index: -1,
       autocomplete_visible: false,
       autocomplete_results: [],
-      autocomplete_filter: "",
       autocomplete_selected: 0,
       syntax_tooltip: nil
     )

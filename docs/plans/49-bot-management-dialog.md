@@ -51,3 +51,5 @@ Bot Management e mini-app administrativo. Mova inteiro para componente stateful 
 ## Progress Log
 
 - 2026-06-27: Planejado. Nenhuma implementacao iniciada ainda.
+
+- 2026-06-29: **COMPLETE.** Consolidado em `Components.BotManagementDialog` (LiveComponent único p/ 49+50+51). Extração total (0 read-model): handlers leem de params, `assign`→`put_bot/2` (`send_update`), eventos = adapters string. 11 chaves fora do `assign_defaults`. Filhos = `<.dialog>` normais (sem clobber modal-in-modal). `make ci` 9/9; component test (4) + feature test 5/5.

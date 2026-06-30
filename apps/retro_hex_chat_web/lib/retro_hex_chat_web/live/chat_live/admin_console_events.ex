@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [error_event: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -17,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChat.Services.Motd
   alias RetroHexChatWeb.ChatLive.CommandDispatch
+  alias RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:cont | :halt, Phoenix.LiveView.Socket.t()}
@@ -24,19 +26,19 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   def handle_event("open_admin_console", _params, socket) do
     if admin?(socket) do
       {:halt,
-       assign(socket,
-         show_admin_console: true,
-         admin_console_results: [],
-         admin_console_tab: "console",
-         admin_console_motd_result: nil,
-         admin_console_broadcast_result: nil,
-         admin_console_turn_result: nil,
-         admin_console_audit_log_result: nil,
-         admin_console_server_settings_result: nil,
-         admin_console_users_result: nil,
-         admin_console_channels_result: nil,
-         admin_console_danger_zone_result: nil,
-         admin_console_danger_zone_confirm: ""
+       put_console(socket,
+         show: true,
+         results: [],
+         active_tab: "console",
+         motd_result: nil,
+         broadcast_result: nil,
+         turn_result: nil,
+         audit_log_result: nil,
+         server_settings_result: nil,
+         users_result: nil,
+         channels_result: nil,
+         danger_zone_result: nil,
+         danger_zone_confirm: ""
        )}
     else
       {:halt,
@@ -48,12 +50,12 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   end
 
   def handle_event("close_admin_console", _params, socket) do
-    {:halt, assign(socket, show_admin_console: false)}
+    {:halt, put_console(socket, show: false)}
   end
 
   def handle_event("admin_console_tab", %{"tab" => tab}, socket) do
     tab = normalize_tab(tab)
-    socket = assign(socket, admin_console_tab: tab)
+    socket = put_console(socket, active_tab: tab)
 
     socket =
       case tab do
@@ -98,7 +100,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
       socket =
         socket
         |> assign_users_snapshot(%{}, result)
-        |> assign(admin_console_users_info_nick: nick)
+        |> put_console(users_info_nick: nick)
 
       {:halt, socket}
     else
@@ -320,7 +322,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
         |> command_args()
 
       result = Dispatcher.dispatch(command, args, user_context(socket))
-      {:halt, assign(socket, admin_console_broadcast_result: result_entry(result))}
+      {:halt, put_console(socket, broadcast_result: result_entry(result))}
     else
       {:halt,
        error_event(
@@ -397,7 +399,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
           []
         )
 
-      {:halt, assign(socket, admin_console_server_settings_result: result_entry(result))}
+      {:halt, put_console(socket, server_settings_result: result_entry(result))}
     else
       {:halt,
        error_event(
@@ -420,7 +422,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   end
 
   def handle_event("admin_console_change_nuke_confirm", %{"confirm" => confirm}, socket) do
-    {:halt, assign(socket, admin_console_danger_zone_confirm: confirm)}
+    {:halt, put_console(socket, danger_zone_confirm: confirm)}
   end
 
   def handle_event("admin_console_execute_nuke", %{"confirm" => confirm}, socket) do
@@ -429,16 +431,16 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
         result = Dispatcher.dispatch("admin", ["nuke", "--confirm"], user_context(socket))
 
         {:halt,
-         assign(socket,
-           admin_console_danger_zone_preview: result_message(result),
-           admin_console_danger_zone_result: result_entry(result),
-           admin_console_danger_zone_confirm: ""
+         put_console(socket,
+           danger_zone_preview: result_message(result),
+           danger_zone_result: result_entry(result),
+           danger_zone_confirm: ""
          )}
       else
         {:halt,
-         assign(socket,
-           admin_console_danger_zone_confirm: confirm,
-           admin_console_danger_zone_result: %{
+         put_console(socket,
+           danger_zone_confirm: confirm,
+           danger_zone_result: %{
              status: :error,
              message: dgettext("chat", "Type the server name to confirm.")
            }
@@ -456,7 +458,7 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   def handle_event("execute_admin_console", %{"input" => input}, socket) do
     if admin?(socket) do
       results = execute_batch(input, socket)
-      {:halt, assign(socket, admin_console_results: results)}
+      {:halt, put_console(socket, results: results)}
     else
       {:halt,
        error_event(
@@ -467,12 +469,22 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   end
 
   def handle_event("clear_admin_console", _params, socket) do
-    {:halt, assign(socket, admin_console_results: [])}
+    {:halt, put_console(socket, results: [])}
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   # ── Private ──────────────────────────────────────────────
+
+  # Reflect display/result state to the AdminConsoleDialog island. `attrs` is a
+  # keyword list of the component's owned assigns; returns the socket unchanged so
+  # callers keep the `{:halt, socket}` flow (and may still `assign/2` the parent's
+  # read-model drafts before/after).
+  @spec put_console(Phoenix.LiveView.Socket.t(), keyword()) :: Phoenix.LiveView.Socket.t()
+  defp put_console(socket, attrs) do
+    send_update(AdminConsoleDialog, [id: AdminConsoleDialog.id()] ++ attrs)
+    socket
+  end
 
   defp normalize_tab(tab)
        when tab in ~w(server_settings users channels motd broadcast audit_log turn danger_zone console),
@@ -516,19 +528,19 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
   end
 
   defp assign_motd_snapshot(socket, result) do
-    assign(socket,
-      admin_console_motd: Motd.get(),
-      admin_console_motd_result: result
+    put_console(socket,
+      motd_content: Motd.get(),
+      motd_result: result
     )
   end
 
   defp assign_turn_snapshot(socket) do
     %{stats: stats, allocations: allocations, result: result} = turn_snapshot(socket)
 
-    assign(socket,
-      admin_console_turn_stats: stats,
-      admin_console_turn_allocations: allocations,
-      admin_console_turn_result: result
+    put_console(socket,
+      turn_stats: stats,
+      turn_allocations: allocations,
+      turn_result: result
     )
   end
 
@@ -541,11 +553,15 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
 
     result = Dispatcher.dispatch("admin", audit_log_args(last, user), user_context(socket))
 
-    assign(socket,
-      admin_console_audit_log_text: result_message(result),
-      admin_console_audit_log_last: last,
-      admin_console_audit_log_user: user,
-      admin_console_audit_log_result: audit_log_result_entry(result)
+    # `last`/`user` are the parent read-model (sibling adapters read them back to
+    # preserve the filter across an action); display rides to the component.
+    socket
+    |> assign(admin_console_audit_log_last: last, admin_console_audit_log_user: user)
+    |> put_console(
+      audit_log_text: result_message(result),
+      audit_log_last: last,
+      audit_log_user: user,
+      audit_log_result: audit_log_result_entry(result)
     )
   end
 
@@ -554,12 +570,11 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     info_result = Dispatcher.dispatch("admin", ["server", "info"], context)
     settings_result = Dispatcher.dispatch("admin", ["server", "settings"], context)
 
-    assign(socket,
-      admin_console_server_settings_info: result_message(info_result),
-      admin_console_server_settings_text: result_message(settings_result),
-      admin_console_server_settings_values: Admin.server_settings_values(),
-      admin_console_server_settings_result:
-        result || first_error_entry([info_result, settings_result])
+    put_console(socket,
+      server_settings_info: result_message(info_result),
+      server_settings_text: result_message(settings_result),
+      server_settings_values: Admin.server_settings_values(),
+      server_settings_result: result || first_error_entry([info_result, settings_result])
     )
   end
 
@@ -571,12 +586,14 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     list_result = Dispatcher.dispatch("admin", users_list_args(search, online_only), context)
     banlist_result = Dispatcher.dispatch("admin", users_banlist_args(search), context)
 
-    assign(socket,
-      admin_console_users_text: result_message(list_result),
-      admin_console_users_banlist_text: result_message(banlist_result),
-      admin_console_users_search: search,
-      admin_console_users_online_only: online_only,
-      admin_console_users_result: result || first_error_entry([list_result, banlist_result])
+    socket
+    |> assign(admin_console_users_search: search, admin_console_users_online_only: online_only)
+    |> put_console(
+      users_text: result_message(list_result),
+      users_banlist_text: result_message(banlist_result),
+      users_search: search,
+      users_online_only: online_only,
+      users_result: result || first_error_entry([list_result, banlist_result])
     )
   end
 
@@ -589,24 +606,30 @@ defmodule RetroHexChatWeb.ChatLive.AdminConsoleEvents do
     list_result = Dispatcher.dispatch("admin", channels_list_args(search), context)
     banlist_result = channels_banlist_result(info_channel, context)
 
-    assign(socket,
-      admin_console_channels_text: result_message(list_result),
-      admin_console_channels_banlist_text: channels_banlist_text(banlist_result),
+    socket
+    |> assign(
       admin_console_channels_search: search,
       admin_console_channels_info_channel: info_channel,
-      admin_console_channels_create_name: create_name,
-      admin_console_channels_result: result || first_error_entry([list_result, banlist_result])
+      admin_console_channels_create_name: create_name
+    )
+    |> put_console(
+      channels_text: result_message(list_result),
+      channels_banlist_text: channels_banlist_text(banlist_result),
+      channels_search: search,
+      channels_info_channel: info_channel,
+      channels_create_name: create_name,
+      channels_result: result || first_error_entry([list_result, banlist_result])
     )
   end
 
   defp assign_nuke_preview(socket, result) do
     preview_result = Dispatcher.dispatch("admin", ["nuke"], user_context(socket))
 
-    assign(socket,
-      admin_console_danger_zone_preview: result_message(preview_result),
-      admin_console_danger_zone_result: result || first_error_entry([preview_result]),
-      admin_console_danger_zone_confirm: "",
-      admin_console_danger_zone_server_name: nuke_server_name(socket)
+    put_console(socket,
+      danger_zone_preview: result_message(preview_result),
+      danger_zone_result: result || first_error_entry([preview_result]),
+      danger_zone_confirm: "",
+      danger_zone_server_name: nuke_server_name(socket)
     )
   end
 

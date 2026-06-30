@@ -275,8 +275,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       oldest_message_id: oldest_id,
       has_more: length(visible_messages) == limit,
       loaded_message_count: length(visible_messages),
-      loading_more: false,
-      new_messages_indicator: false
+      loading_more: false
     )
     |> MessageViewport.reset(stream_items)
   end

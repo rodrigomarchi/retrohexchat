@@ -1,5 +1,16 @@
 # Chat Context Menu Migration
 
+> **STATUS: COMPLETE (2026-06-29) — migrated as a cluster with plan 21.**
+> `RetroHexChatWeb.ChatLive.Components.UserContextMenus` (one stateful island) owns BOTH the chat
+> message menu (`chat_context_menu`) and the nicklist menu (`context_menu`) plus the shared inline
+> nick-color picker (`show_context_color_picker`) — three keys out of `assign_defaults`. The chat
+> menu's "Set Color" coupling (it reused the nicklist menu's x/y) is now internal to the component
+> (`set_color_from_chat` update directive). Open/close are STRING adapters in `ChatLive.ContextMenuEvents`
+> driving the component via `put_menu/2` (`send_update`); `ctx_chat_*` actions read targets from
+> `phx-value` params and do the privileged work on the parent. `session`/`channel_users`/`nick_color_fn`
+> stay parent-owned (passthrough); permissions derive in `render/1`. `make ci` 9/9; shared component
+> test `user_context_menus_test.exs` (7).
+
 ## Objetivo
 
 Migrar context menu da area de mensagens para componente stateful local ao viewport de mensagens.

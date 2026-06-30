@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
 
   The parent stays the canonical owner of all pagination/scroll/pending state
   (`oldest_message_id`, `has_more`, `loaded_message_count`, `loading_more`,
-  `new_messages_indicator`, `chat_clear_token`, `pending_channel_msg_id`,
+  `chat_clear_token`, `pending_channel_msg_id`,
   `cleared_channel_cutoffs`) and of the message-production logic (commands, PubSub
   inserts, edits/deletes, load-more pagination, pending reconciliation, cleared-
   channel checks). Wherever that logic would mutate the stream it instead pushes a

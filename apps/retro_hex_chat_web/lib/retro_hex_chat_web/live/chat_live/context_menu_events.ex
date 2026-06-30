@@ -47,7 +47,13 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChat.Commands.Handlers.{Game, Lobby, P2p}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.CommandDispatch
-  alias RetroHexChatWeb.ChatLive.Components.{InviteChannelPickerDialog, MuteDurationDialog}
+
+  alias RetroHexChatWeb.ChatLive.Components.{
+    InviteChannelPickerDialog,
+    MuteDurationDialog,
+    UserContextMenus
+  }
+
   alias RetroHexChatWeb.ChatLive.CoreEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelper
   alias RetroHexChatWeb.ChatLive.Helpers.{GameInvite, LobbyInvite, P2pInvite}
@@ -57,15 +63,12 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     if nick == socket.assigns.session.nickname do
       {:halt, socket}
     else
-      x = params["x"] || 0
-      y = params["y"] || 0
-
       {:halt,
-       assign(socket,
+       put_menu(socket,
          context_menu: %{
            visible: true,
-           x: x,
-           y: y,
+           x: params["x"] || 0,
+           y: params["y"] || 0,
            target_nick: nick,
            is_target_registered: NickServ.registered?(nick)
          }
@@ -255,7 +258,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   def handle_event("context_set_nick_color", _params, socket) do
-    {:halt, assign(socket, show_context_color_picker: true)}
+    {:halt, put_menu(socket, show_context_color_picker: true)}
   end
 
   def handle_event("context_ignore", %{"nick" => nick}, socket) do
@@ -304,9 +307,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
     end
   end
 
-  def handle_event("context_pick_color", %{"color_index" => color_str}, socket) do
+  def handle_event("context_pick_color", %{"color_index" => color_str} = params, socket) do
     session = socket.assigns.session
-    target = socket.assigns.context_menu.target_nick
+    target = params["nick"]
     color_index = String.to_integer(color_str)
 
     case NickColors.add_or_update(session.nick_colors, target, color_index) do
@@ -495,20 +498,10 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   def handle_event("ctx_chat_set_color", %{"nick" => nick}, socket) do
-    # Reuse the nicklist color picker by opening it with the target nick
-    {:halt,
-     socket
-     |> close_chat_context_menu()
-     |> assign(
-       context_menu: %{
-         visible: true,
-         x: socket.assigns.chat_context_menu.x,
-         y: socket.assigns.chat_context_menu.y,
-         target_nick: nick,
-         is_target_registered: false
-       },
-       show_context_color_picker: true
-     )}
+    # Reuse the nicklist color picker by opening it with the target nick. The
+    # chat menu's x/y now live in the component, so it copies them internally.
+    send_update(UserContextMenus, id: UserContextMenus.id(), set_color_from_chat: nick)
+    {:halt, socket}
   end
 
   def handle_event("ctx_chat_kick", %{"nick" => nick}, socket) do
@@ -736,7 +729,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         do: NickServ.registered?(target_nick),
         else: false
 
-    assign(socket,
+    put_menu(socket,
       chat_context_menu: %{
         visible: true,
         type: type,
@@ -753,20 +746,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   defp close_chat_context_menu(socket) do
-    assign(socket,
-      chat_context_menu: %{
-        visible: false,
-        type: nil,
-        x: 0,
-        y: 0,
-        target_nick: nil,
-        target_url: nil,
-        target_channel: nil,
-        target_message: nil,
-        has_selection: false,
-        is_target_registered: false
-      }
-    )
+    put_menu(socket, chat_context_menu: UserContextMenus.chat_closed())
   end
 
   defp ctx_chat_unignore(socket, nick) do
@@ -788,10 +768,15 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   end
 
   defp close_context_menu(socket) do
-    assign(socket,
-      context_menu: %{visible: false, x: 0, y: 0, target_nick: nil, is_target_registered: false},
+    put_menu(socket,
+      context_menu: UserContextMenus.nick_closed(),
       show_context_color_picker: false
     )
+  end
+
+  defp put_menu(socket, attrs) do
+    send_update(UserContextMenus, [id: UserContextMenus.id()] ++ attrs)
+    socket
   end
 
   defp start_notice_mode(socket, nick) do

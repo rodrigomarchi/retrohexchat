@@ -28,8 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
     stream_pm_page(socket, raw_messages,
       has_more: length(raw_messages) == limit,
-      loading_more: false,
-      new_messages_indicator: false
+      loading_more: false
     )
   end
 

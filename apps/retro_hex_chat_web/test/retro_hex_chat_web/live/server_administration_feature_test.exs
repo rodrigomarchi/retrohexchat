@@ -140,7 +140,8 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
     test "toolbar action opens the tabbed Admin Console for an identified admin", %{conn: conn} do
       view = connect_admin(conn)
 
-      html = render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
+      html = render(view)
 
       assert html =~ "Server Settings"
       assert html =~ "Danger Zone"
@@ -215,16 +216,18 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       view = connect_admin(conn)
 
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      html = render_click(view, "admin_console_tab", %{"tab" => "server_settings"})
+      render_click(view, "admin_console_tab", %{"tab" => "server_settings"})
+      html = render(view)
 
       assert html =~ initial_description
 
-      html =
-        view
-        |> form("#admin-console-server-settings-form", %{
-          "server_description" => new_description
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-server-settings-form", %{
+        "server_description" => new_description
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Server setting &#39;server_description&#39; set to"
       assert html =~ new_description
@@ -328,16 +331,18 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       view = connect_admin(conn)
 
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      html = render_click(view, "admin_console_tab", %{"tab" => "users"})
+      render_click(view, "admin_console_tab", %{"tab" => "users"})
+      html = render(view)
 
       assert html =~ "*** User List"
       assert html =~ nick
       assert html =~ "No active server bans"
 
-      html =
-        view
-        |> form("#admin-console-user-info-form", %{"nick" => nick})
-        |> render_submit()
+      view
+      |> form("#admin-console-user-info-form", %{"nick" => nick})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "*** User: #{nick}"
       assert html =~ "Registered:"
@@ -356,46 +361,51 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
       render_click(view, "admin_console_tab", %{"tab" => "users"})
 
-      html =
-        view
-        |> form("#admin-console-user-ban-form", %{
-          "nick" => nick,
-          "reason" => "flooding",
-          "duration" => "30m"
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-user-ban-form", %{
+        "nick" => nick,
+        "reason" => "flooding",
+        "duration" => "30m"
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "#{nick} has been server-banned"
       assert Enum.any?(ServerBans.list_active_bans(), &(&1.nickname == nick))
 
-      html =
-        view
-        |> form("#admin-console-user-unban-form", %{"nick" => nick})
-        |> render_submit()
+      view
+      |> form("#admin-console-user-unban-form", %{"nick" => nick})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "#{nick} has been unbanned from the server."
       refute Enum.any?(ServerBans.list_active_bans(), &(&1.nickname == nick))
 
-      html =
-        view
-        |> form("#admin-console-user-mute-form", %{"nick" => nick, "duration" => "15m"})
-        |> render_submit()
+      view
+      |> form("#admin-console-user-mute-form", %{"nick" => nick, "duration" => "15m"})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "#{nick} has been muted"
       assert GlobalMutes.muted?(nick)
 
-      html =
-        view
-        |> form("#admin-console-user-unmute-form", %{"nick" => nick})
-        |> render_submit()
+      view
+      |> form("#admin-console-user-unmute-form", %{"nick" => nick})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "#{nick} has been unmuted."
       refute GlobalMutes.muted?(nick)
 
-      html =
-        view
-        |> form("#admin-console-user-kick-form", %{"nick" => nick, "reason" => "cleanup"})
-        |> render_submit()
+      view
+      |> form("#admin-console-user-kick-form", %{"nick" => nick, "reason" => "cleanup"})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "#{nick} has been kicked from the server."
     end
@@ -418,52 +428,58 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
       render_click(view, "admin_console_tab", %{"tab" => "users"})
 
-      html =
-        view
-        |> form("#admin-console-user-rename-form", %{
-          "old_nick" => nick,
-          "new_nick" => new_nick
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-user-rename-form", %{
+        "old_nick" => nick,
+        "new_nick" => new_nick
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "#{nick} has been renamed to #{new_nick}."
 
-      html =
-        view
-        |> form("#admin-console-user-role-form", %{"nick" => nick, "role" => "server_operator"})
-        |> render_submit()
+      view
+      |> form("#admin-console-user-role-form", %{"nick" => nick, "role" => "server_operator"})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "#{nick} has been set as server_operator."
 
-      html =
-        view
-        |> form("#admin-console-user-role-form", %{"nick" => nick, "role" => "user"})
-        |> render_submit()
+      view
+      |> form("#admin-console-user-role-form", %{"nick" => nick, "role" => "user"})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Admin roles removed from #{nick}."
 
-      html =
-        view
-        |> form("#admin-console-user-ns-info-form", %{"nick" => nick})
-        |> render_submit()
+      view
+      |> form("#admin-console-user-ns-info-form", %{"nick" => nick})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "[NickServ] #{nick}"
       assert html =~ "Registered:"
 
-      html =
-        view
-        |> form("#admin-console-user-ns-resetpass-form", %{
-          "nick" => nick,
-          "new_password" => "newpass123"
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-user-ns-resetpass-form", %{
+        "nick" => nick,
+        "new_password" => "newpass123"
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Password for #{nick} has been reset"
 
-      html =
-        view
-        |> form("#admin-console-user-ns-drop-form", %{"nick" => nick})
-        |> render_submit()
+      view
+      |> form("#admin-console-user-ns-drop-form", %{"nick" => nick})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Registration for #{nick} dropped by admin"
       assert Queries.find_by_nickname(nick) == nil
@@ -559,24 +575,27 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       view = connect_admin(conn)
 
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      html = render_click(view, "admin_console_tab", %{"tab" => "channels"})
+      render_click(view, "admin_console_tab", %{"tab" => "channels"})
+      html = render(view)
 
       assert html =~ "*** Channel List"
       assert html =~ channel
 
-      html =
-        view
-        |> form("#admin-console-channel-info-form", %{"channel" => channel})
-        |> render_submit()
+      view
+      |> form("#admin-console-channel-info-form", %{"channel" => channel})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "*** Channel: #{channel}"
       assert html =~ "Members"
       assert html =~ "No bans in #{channel}"
 
-      html =
-        view
-        |> form("#admin-console-channel-create-form", %{"channel" => new_channel})
-        |> render_submit()
+      view
+      |> form("#admin-console-channel-create-form", %{"channel" => new_channel})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Channel #{new_channel} created and registered."
       assert html =~ new_channel
@@ -592,24 +611,26 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
       render_click(view, "admin_console_tab", %{"tab" => "channels"})
 
-      html =
-        view
-        |> form("#admin-console-channel-purge-form", %{
-          "channel" => channel,
-          "from" => "",
-          "confirm" => channel
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-channel-purge-form", %{
+        "channel" => channel,
+        "from" => "",
+        "confirm" => channel
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Purged 0 messages from #{channel}."
 
-      html =
-        view
-        |> form("#admin-console-channel-delete-form", %{
-          "channel" => channel,
-          "confirm" => channel
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-channel-delete-form", %{
+        "channel" => channel,
+        "confirm" => channel
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Channel #{channel} has been deleted."
       assert Registry.lookup(channel) == {:error, :not_found}
@@ -628,61 +649,67 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
       render_click(view, "admin_console_tab", %{"tab" => "channels"})
 
-      html =
-        view
-        |> form("#admin-console-channel-cs-info-form", %{"channel" => channel})
-        |> render_submit()
+      view
+      |> form("#admin-console-channel-cs-info-form", %{"channel" => channel})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "[ChanServ] #{channel}"
       assert html =~ "Founder: #{founder}"
 
-      html =
-        view
-        |> form("#admin-console-channel-cs-access-add-form", %{
-          "channel" => channel,
-          "level" => "aop",
-          "nick" => target
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-channel-cs-access-add-form", %{
+        "channel" => channel,
+        "level" => "aop",
+        "nick" => target
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "#{target} added to aop list of #{channel}"
 
-      html =
-        view
-        |> form("#admin-console-channel-cs-access-list-form", %{"channel" => channel})
-        |> render_submit()
+      view
+      |> form("#admin-console-channel-cs-access-list-form", %{"channel" => channel})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Access List for #{channel}"
       assert html =~ target
 
-      html =
-        view
-        |> form("#admin-console-channel-cs-access-del-form", %{
-          "channel" => channel,
-          "level" => "aop",
-          "nick" => target
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-channel-cs-access-del-form", %{
+        "channel" => channel,
+        "level" => "aop",
+        "nick" => target
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "#{target} removed from access list of #{channel}"
 
-      html =
-        view
-        |> form("#admin-console-channel-cs-transfer-form", %{
-          "channel" => channel,
-          "nick" => new_founder
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-channel-cs-transfer-form", %{
+        "channel" => channel,
+        "nick" => new_founder
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Founder of #{channel} transferred to #{new_founder}"
 
-      html =
-        view
-        |> form("#admin-console-channel-cs-drop-form", %{
-          "channel" => channel,
-          "confirm" => channel
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-channel-cs-drop-form", %{
+        "channel" => channel,
+        "confirm" => channel
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Channel #{channel} dropped by admin"
       assert Queries.find_registered_channel(channel) == nil
@@ -726,20 +753,23 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       Application.put_env(:retro_hex_chat, :motd_cache, "Existing MOTD")
 
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      html = render_click(view, "admin_console_tab", %{"tab" => "motd"})
+      render_click(view, "admin_console_tab", %{"tab" => "motd"})
+      html = render(view)
 
       assert html =~ "Existing MOTD"
 
-      html =
-        view
-        |> form("#admin-console-motd-form", %{motd: new_motd})
-        |> render_submit()
+      view
+      |> form("#admin-console-motd-form", %{motd: new_motd})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "MOTD has been updated."
       assert html =~ new_motd
       assert Application.get_env(:retro_hex_chat, :motd_cache) == new_motd
 
-      html = render_click(view, "admin_console_clear_motd")
+      render_click(view, "admin_console_clear_motd")
+      html = render(view)
 
       assert html =~ "MOTD has been cleared."
       assert html =~ "No MOTD has been set."
@@ -788,24 +818,26 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
       render_click(view, "admin_console_tab", %{"tab" => "broadcast"})
 
-      html =
-        view
-        |> form("#admin-console-broadcast-form", %{
-          "broadcast_type" => "wallops",
-          "message" => wallops
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-broadcast-form", %{
+        "broadcast_type" => "wallops",
+        "message" => wallops
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Wallops sent."
       assert_receive {:wallops, %{sender: "TestAdmin", content: ^wallops}}
 
-      html =
-        view
-        |> form("#admin-console-broadcast-form", %{
-          "broadcast_type" => "announce",
-          "message" => announcement
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-broadcast-form", %{
+        "broadcast_type" => "announce",
+        "message" => announcement
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Announcement sent to all users."
       assert_receive {:announcement, %{sender: "TestAdmin", content: ^announcement}}
@@ -845,11 +877,13 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       view = connect_admin(conn)
 
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      html = render_click(view, "admin_console_tab", %{"tab" => "turn"})
+      render_click(view, "admin_console_tab", %{"tab" => "turn"})
+      html = render(view)
 
       assert_turn_snapshot(html)
 
-      html = render_click(view, "admin_console_refresh_turn")
+      render_click(view, "admin_console_refresh_turn")
+      html = render(view)
 
       assert_turn_snapshot(html)
     end
@@ -893,17 +927,19 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       view = connect_admin(conn)
 
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      html = render_click(view, "admin_console_tab", %{"tab" => "audit_log"})
+      render_click(view, "admin_console_tab", %{"tab" => "audit_log"})
+      html = render(view)
 
       assert html =~ action
 
-      html =
-        view
-        |> form("#admin-console-audit-log-form", %{
-          "last" => "5",
-          "user" => "TestAdmin"
-        })
-        |> render_submit()
+      view
+      |> form("#admin-console-audit-log-form", %{
+        "last" => "5",
+        "user" => "TestAdmin"
+      })
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ action
       assert html =~ "Audit Log"
@@ -950,15 +986,17 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       view = connect_admin(conn)
 
       render_click(view, "toolbar_action", %{"action" => "open_admin_console"})
-      html = render_click(view, "admin_console_tab", %{"tab" => "danger_zone"})
+      render_click(view, "admin_console_tab", %{"tab" => "danger_zone"})
+      html = render(view)
 
       assert html =~ "NUKE PREVIEW"
       assert html =~ "Preserved"
 
-      html =
-        view
-        |> form("#admin-console-danger-zone-form", %{"confirm" => "wrong-server"})
-        |> render_submit()
+      view
+      |> form("#admin-console-danger-zone-form", %{"confirm" => "wrong-server"})
+      |> render_submit()
+
+      html = render(view)
 
       assert html =~ "Type the server name to confirm."
       assert html =~ "NUKE PREVIEW"

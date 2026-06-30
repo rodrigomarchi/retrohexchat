@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   Handle bot management dialog events.
   """
 
-  import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [send_update: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [system_event: 2, error_event: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -12,6 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChat.Bots.Capabilities.{CustomCommands, Dice, Greeter, Help, Mention, Moderation}
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
   alias RetroHexChat.Bots.{Lifecycle, Queries, Server, Supervisor}
+  alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:cont | :halt, Phoenix.LiveView.Socket.t()}
@@ -21,7 +22,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
     if admin?(session) do
       bots = Queries.list_bots()
-      {:halt, assign(socket, show_bot_dialog: true, bot_dialog_bots: bots)}
+      {:halt, put_bot(socket, show_bot: true, bots: bots)}
     else
       {:halt,
        error_event(
@@ -32,7 +33,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   end
 
   def handle_event("close_bot_dialog", _params, socket) do
-    {:halt, assign(socket, show_bot_dialog: false)}
+    {:halt, put_bot(socket, show_bot: false)}
   end
 
   def handle_event("bot_select", %{"name" => name}, socket) do
@@ -45,13 +46,13 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       stats = fetch_runtime_stats(bot.nickname)
 
       {:halt,
-       assign(socket,
-         bot_dialog_selected: bot,
-         bot_dialog_channels: channels,
-         bot_dialog_commands: commands,
-         bot_dialog_events: events,
-         bot_dialog_stats: stats,
-         bot_dialog_tab: :general
+       put_bot(socket,
+         selected: bot,
+         channels: channels,
+         commands: commands,
+         events: events,
+         stats: stats,
+         tab: :general
        )}
     else
       {:halt, socket}
@@ -59,7 +60,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   end
 
   def handle_event("bot_dialog_tab", %{"tab" => tab}, socket) do
-    {:halt, assign(socket, bot_dialog_tab: String.to_existing_atom(tab))}
+    {:halt, put_bot(socket, tab: String.to_existing_atom(tab))}
   end
 
   def handle_event("bot_toggle_enabled", %{"name" => name}, socket) do
@@ -78,11 +79,11 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
       {:halt,
        socket
-       |> assign(
-         bot_dialog_bots: bots,
-         bot_dialog_selected: nil,
-         bot_dialog_channels: [],
-         bot_dialog_commands: []
+       |> put_bot(
+         bots: bots,
+         selected: nil,
+         channels: [],
+         commands: []
        )
        |> system_event(dgettext("chat", "[BotService] Bot '%{name}' destroyed.", name: name))}
     else
@@ -91,11 +92,11 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   end
 
   def handle_event("open_new_bot_dialog", _params, socket) do
-    {:halt, assign(socket, show_new_bot_dialog: true)}
+    {:halt, put_bot(socket, show_new_bot: true)}
   end
 
   def handle_event("close_new_bot_dialog", _params, socket) do
-    {:halt, assign(socket, show_new_bot_dialog: false)}
+    {:halt, put_bot(socket, show_new_bot: false)}
   end
 
   def handle_event("create_bot", params, socket) do
@@ -140,7 +141,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
         {:halt,
          socket
-         |> assign(show_new_bot_dialog: false, bot_dialog_bots: bots)
+         |> put_bot(show_new_bot: false, bots: bots)
          |> system_event(dgettext("chat", "[BotService] Bot '%{name}' created.", name: name))}
 
       {:error, changeset} ->
@@ -179,7 +180,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
       {:halt,
        socket
-       |> assign(bot_dialog_channels: channels)
+       |> put_bot(channels: channels)
        |> system_event(
          dgettext("chat", "[BotService] Bot '%{name}' left %{channel}.",
            name: bot_name,
@@ -213,7 +214,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
           {:halt,
            socket
-           |> assign(bot_dialog_commands: commands, show_add_command_dialog: false)
+           |> put_bot(commands: commands, show_add_command: false)
            |> system_event(
              dgettext("chat", "[BotService] Command '%{trigger}' added.", trigger: trigger)
            )}
@@ -240,7 +241,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
       {:halt,
        socket
-       |> assign(bot_dialog_commands: commands)
+       |> put_bot(commands: commands)
        |> system_event(
          dgettext("chat", "[BotService] Command '%{trigger}' removed.", trigger: trigger)
        )}
@@ -250,21 +251,21 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   end
 
   def handle_event("open_add_command_dialog", _params, socket) do
-    {:halt, assign(socket, show_add_command_dialog: true)}
+    {:halt, put_bot(socket, show_add_command: true)}
   end
 
   def handle_event("close_add_command_dialog", _params, socket) do
-    {:halt, assign(socket, show_add_command_dialog: false)}
+    {:halt, put_bot(socket, show_add_command: false)}
   end
 
   # ── Inline Editing ──
 
   def handle_event("bot_edit_field", %{"field" => field}, socket) do
-    {:halt, assign(socket, bot_dialog_editing_field: String.to_existing_atom(field))}
+    {:halt, put_bot(socket, editing_field: String.to_existing_atom(field))}
   end
 
   def handle_event("bot_cancel_edit", _params, socket) do
-    {:halt, assign(socket, bot_dialog_editing_field: nil)}
+    {:halt, put_bot(socket, editing_field: nil)}
   end
 
   def handle_event("bot_update_field", params, socket) do
@@ -317,7 +318,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
           {:halt,
            socket
-           |> assign(bot_dialog_selected: updated_bot)
+           |> put_bot(selected: updated_bot)
            |> system_event(
              dgettext("chat", "[BotService] %{capability} config updated.", capability: cap_name)
            )}
@@ -343,6 +344,15 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
   # ── Helpers ──
 
+  # Reflect bot-dialog state to the BotManagementDialog island. `attrs` is a
+  # keyword list of the component's owned assigns; returns the socket unchanged so
+  # callers keep the `{:halt, socket}` flow and pipe chains.
+  @spec put_bot(Phoenix.LiveView.Socket.t(), keyword()) :: Phoenix.LiveView.Socket.t()
+  defp put_bot(socket, attrs) do
+    send_update(BotManagementDialog, [id: BotManagementDialog.id()] ++ attrs)
+    socket
+  end
+
   defp handle_add_channel_result(bot, channel, bot_name, socket) do
     case Queries.add_channel_config(bot.id, channel) do
       {:ok, _} ->
@@ -351,7 +361,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
         {:halt,
          socket
-         |> assign(bot_dialog_channels: channels)
+         |> put_bot(channels: channels)
          |> system_event(
            dgettext("chat", "[BotService] Bot '%{name}' joined %{channel}.",
              name: bot_name,
@@ -419,7 +429,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
       {:ok, updated_bot} ->
         {:halt,
          socket
-         |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
+         |> put_bot(selected: updated_bot, editing_field: nil)
          |> system_event(dgettext("chat", "[BotService] Description updated."))}
 
       {:error, _} ->
@@ -437,7 +447,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
           {:halt,
            socket
-           |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
+           |> put_bot(selected: updated_bot, editing_field: nil)
            |> system_event(
              dgettext("chat", "[BotService] Prefix updated to '%{prefix}'.", prefix: value)
            )}
@@ -457,7 +467,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
 
             {:halt,
              socket
-             |> assign(bot_dialog_selected: updated_bot, bot_dialog_editing_field: nil)
+             |> put_bot(selected: updated_bot, editing_field: nil)
              |> system_event(
                dgettext("chat", "[BotService] Cooldown updated to %{cooldown}ms.", cooldown: n)
              )}
@@ -497,7 +507,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
             else: dgettext("chat", "enabled")
 
         socket
-        |> assign(bot_dialog_selected: updated_bot)
+        |> put_bot(selected: updated_bot)
         |> system_event(
           dgettext("chat", "[BotService] Capability '%{capability}' %{action}.",
             capability: cap_name,
@@ -528,7 +538,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
           if new_enabled, do: dgettext("chat", "enabled"), else: dgettext("chat", "disabled")
 
         socket
-        |> assign(bot_dialog_channels: channels)
+        |> put_bot(channels: channels)
         |> system_event(
           dgettext("chat", "[BotService] %{bot} %{action} in %{channel}.",
             bot: bot_name,
@@ -577,7 +587,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
           if new_enabled, do: dgettext("chat", "enabled"), else: dgettext("chat", "disabled")
 
         socket
-        |> assign(bot_dialog_bots: Queries.list_bots(), bot_dialog_selected: updated_bot)
+        |> put_bot(bots: Queries.list_bots(), selected: updated_bot)
         |> system_event(
           dgettext("chat", "[BotService] Bot '%{name}' %{action}.",
             name: bot.name,

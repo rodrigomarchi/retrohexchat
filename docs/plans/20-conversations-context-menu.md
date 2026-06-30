@@ -1,5 +1,15 @@
 # Conversations Context Menu Migration
 
+> **STATUS: COMPLETE (2026-06-29).** `RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu`
+> (stateful LiveComponent) owns `visible/x/y/type/channel/nick` — one map (6 fields) out of
+> `assign_defaults`, zero parent read-model. `context_key/1` + `custom_items/2` moved into the
+> component; `is_muted`/`has_unread`/`custom_items` derive in `render/1`. `muted_channels`/
+> `unread_counts`/`session` stay parent-owned (passthrough, §1d). Open (`channel_right_click`/
+> `pm_right_click`) + close are STRING adapters driving the component via `put_conv_menu/2`
+> (`send_update`); the `ctx_conversations_*` action handlers read their target from `phx-value`
+> params and keep `assign`-ing the parent read-model → no reader refactor. `make ci` 9/9; component
+> test `conversations_context_menu_test.exs` (5). Page Object untouched.
+
 ## Objetivo
 
 Migrar context menu de conversas para dentro do `ConversationsComponent`.

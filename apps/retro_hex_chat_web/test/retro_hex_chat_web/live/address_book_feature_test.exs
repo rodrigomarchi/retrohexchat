@@ -359,10 +359,12 @@ defmodule RetroHexChatWeb.AddressBookFeatureTest do
       html = render(view)
       assert html =~ "color-swatch-"
 
-      # Pick a color (Red = 4) via nicklist context menu action dispatcher
+      # Pick a color (Red = 4) via nicklist context menu action dispatcher.
+      # The color swatch carries the target nick as phx-value-nick.
       render_click(view, "nicklist_context_action", %{
         "action" => "context_pick_color",
-        "color_index" => "4"
+        "color_index" => "4",
+        "nick" => "ClrTarget"
       })
 
       # Verify in nick colors tab

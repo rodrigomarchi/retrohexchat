@@ -26,12 +26,12 @@ Use function component wrapper se tabs forem pequenas. Use LiveComponent statefu
 
 ## Tasks
 
-- [ ] Criar `TabsComponent` ou `ChatTabs`.
-- [ ] Passar uma lista normalizada de tabs `%{type, label, active?, unread?, color}`.
-- [ ] Mover `Map.get(@unread_counts, ...)` para preparacao de dados fora do HEEx principal.
-- [ ] Emitir `{:switch_tab, type, label}` e `{:close_tab, type, label}`.
-- [ ] Preservar status tab fixa.
-- [ ] Considerar overflow/scroll de tabs se muitas PMs/canais.
+- [x] Criar `Components.ChatTabs` (function component em `chat_live/components/`).
+- [x] Construir uma lista normalizada `%{type, label, active, unread, closeable, nick_color}` em `build_tabs/1`.
+- [x] Mover `Map.get(@unread_counts, ...)` para `build_tabs/1`, fora do HEEx principal.
+- [x] `switch_tab`/`close_tab` continuam adapters no parent (attr defaults `on_switch`/`on_close`), preservando o contrato de `phx-value-type`/`phx-value-label`.
+- [x] Status tab fixa preservada (primeiro item, `closeable: false`).
+- [ ] Overflow/scroll de tabs — deferido (o `irc_tab_bar` já tem `overflow-x-auto`; sem drag/reorder/pin por enquanto, segue function component).
 
 ## Validacao
 
@@ -48,3 +48,10 @@ Normalize dados antes de renderizar. Evite passar a struct `Session` inteira par
 ## Progress Log
 
 - 2026-06-27: Planejado. Nenhuma implementacao iniciada ainda.
+- 2026-06-29: **COMPLETE (batch 04+06+08).** `Components.ChatTabs.chat_tabs/1` (function component)
+  normaliza status + canais + PMs numa lista única em `build_tabs/1` (tira as 3 comprehensions
+  inline + os `Map.get(@unread_counts, …)` do template) e renderiza via `irc_tab_bar`/`irc_tab_item`.
+  `switch_tab`/`close_tab` seguem adapters no parent (defaults de attr); contratos `role="tab"`/
+  `phx-value-*` preservados → Page Object intacto. Sem stream (lista pequena, sem append-heavy) e
+  sem estado local (não há drag/reorder/pin). Validação: `make ci` **9/9**; `chat_tabs_test.exs`
+  (4, `@moduletag :unit`).

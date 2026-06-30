@@ -654,7 +654,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
       })
 
       view |> render_click("context_set_nick_color", %{"nick" => "PickTarget"})
-      view |> render_click("context_pick_color", %{"color_index" => "4"})
+      view |> render_click("context_pick_color", %{"color_index" => "4", "nick" => "PickTarget"})
 
       # Verify in nick colors tab
       view |> render_click("toggle_address_book")

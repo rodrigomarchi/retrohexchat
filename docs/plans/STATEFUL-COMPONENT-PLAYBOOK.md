@@ -684,6 +684,60 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
     `send_update` ao componente — o adapter é o end-state correto, não um shim. Junto
     com eventos que coordenam visibilidade do parent (`search_visible` lido pelo Escape),
     isso é a regra, não exceção.
+- **2026-06-29 (plano 52 admin-console — o PRIMEIRO GIANT; lições de "como atacar um gigante"):**
+  - **⚠️ NÃO confunda "baixo risco" com "alto valor".** O alvo da decomposição é encolher o
+    `assign_defaults` do parent. Wrappers presentacionais (07/55/04/06/08) são baixo risco mas removem
+    ~0 assigns; o estado real mora nos GIANTS (admin-console 32, channel-central 17, bot 8), no composer
+    (14/15/16) e nos dialogs entangled (30/31). Quando o set mecânico acabar, vá pros giants — não
+    invente mais wrappers. **Meça antes de escolher:** `grep -cE "^\s+[a-z_]+:" assign_defaults` +
+    contagem por cluster aponta o maior sumidouro.
+  - **Funnel-first: um "giant" costuma ser pequeno por dentro.** admin-console = 1185 linhas, ~40
+    handlers — MAS os assigns eram funneled por ~8 helpers `assign_*_snapshot`. Converter os HELPERS
+    (+ poucos sites diretos = 16 no total) p/ um único `put_console/2` (`send_update`) migrou tudo.
+    **Antes de assumir big-bang, `grep` os SITES de `assign(` (não os handlers):** se um punhado de
+    helpers concentra os assigns, o trabalho colapsa. Padrão do helper:
+    `defp put_console(socket, attrs), do: (send_update(Comp, [id: Comp.id()] ++ attrs); socket)` —
+    retorna o socket inalterado, então o fluxo `{:halt, socket}` e o encadeamento `|>` seguem iguais.
+  - **Shared read-model detecta-se também por `Map.get(socket.assigns, :key, default)`** (não só por
+    acesso `.key`). Getters de filtro (`users_search(socket, params)` que cai no assign anterior quando
+    o params não traz o campo) são handlers IRMÃOS lendo o estado de volta p/ preservar filtro entre
+    ações → essas chaves (7 no admin-console) FICAM no parent (read-model, passthrough), só o display
+    migra. **Generaliza §1d:** um `Map.get(socket.assigns, …)` num handler irmão é o mesmo sinal de
+    "leitor síncrono" que tab-complete/paginação — mantém a chave no parent. (O `grep` de read-deps
+    precisa cobrir AMBOS `socket.assigns.key` E `Map.get(socket.assigns, :key`.)
+  - **Permissões: passe os booleanos crus, derive os `*_can_*` no `render/1`.** Os 10 flags por-controle
+    eram `admin_only?(@session)`/`root_admin?(@session)` inline no template; o componente recebe os 3
+    booleanos do `ChatContext` e deriva — tira a computação do template do parent.
+  - **§2 em escala:** 13/25 feature tests capturavam `html = render_click/submit` e afirmavam sobre
+    conteúdo do dialog que agora vive no componente (async `send_update`) → todos precisaram do flush
+    `html = render(view)`. Um transform mecânico (evento; depois `html = render(view)`) resolveu em
+    bloco; testes `render_component` não são afetados.
+- **2026-06-29 (BATCH 04 shell-header + 06 irc-tabs + 08 connection — o set 🟡 wrapper):**
+  - **Wrappers presentacionais (sem estado) — o valor é tirar cálculo/import/DOM do parent + memoização
+    por change-tracking, NÃO isolação de re-render como LiveComponent.** Function components
+    participam do change-tracking: se as assigns passadas não mudam, o render é memoizado (diff vazio).
+    Daí passar PRIMITIVOS escopados (não a struct inteira quando dá) é o que destrava o ganho.
+  - **⚠️ NOVO (custou 1 ciclo de `make ci`) — utilitário de layout cru (`ml-auto`/`flex-1`) num glue de
+    `chat_live/components/` quebra o `lint.css_consistency`.** O linter varre `chat_live/components/`
+    e só aceita classes "definidas" (custom + allowlist) — Tailwind cru solto vira "Missing CSS
+    classes". (No batch, `class="ml-auto"` no `ChatShell` falhou; antes ele morava no
+    `live/app/*.heex`, que o linter PULA.) **Fix = mesmo split do `nicklist_sidebar`/
+    `conversations_sidebar`:** mova o CHROME (markup + a classe de layout) p/ um function component em
+    `components/ui/` (recebe primitivos + nomes de evento, ZERO domínio) e deixe no glue scanned só a
+    DERIVAÇÃO de domínio (`Session.identity_state`, `ChatContext.admin?`, …) + a delegação `<.chrome …/>`
+    (sem markup cru). Ex.: `Components.UI.ChatAppHeader` (chrome, dono do `ml-auto`) ⟵
+    `Components.ChatShell` (glue, deriva do `Session`). **Regra:** `components/ui/` = apresentação pura
+    (sem `RetroHexChat.*`/`live/`); domínio + glue = `chat_live/components/` (sem Tailwind cru).
+  - **Triage de wrapper (3 desfechos, todos vistos no batch):** (a) toca domínio → glue em
+    `chat_live/components/` + chrome em `components/ui/` (04 shell, 06 tabs); (b) JS-driven sem estado
+    server → function component PURO em `components/ui/` com `phx-update="ignore"` (08 connection — NÃO
+    LiveComponent); (c) normalizar dados de lista antes do render → `build_tabs/1` no próprio
+    component, tirando as comprehensions + `Map.get` do HEEx (06). Eventos legados (`switch_tab`/
+    `toolbar_action`/…) seguem adapters via **attr defaults** → contrato + Page Object intactos.
+  - **Flake reconfirmado:** `channel_list_dialog_test` deu Ecto Sandbox ownership error (async DB race
+    em `load_channel_messages_with_pagination`) no 1º `make ci`, passou 8/8 isolado, sumiu no re-run.
+    Não é regressão de render — provado por isolamento, não por baseline-stash (mais barato quando o
+    stack do erro é DB puro, sem relação com a mudança).
 - **2026-06-29 (plano 18 — HoverCard, a primeira extração TOTAL sem read-model no parent):**
   - **Um read de coordenação PubSub vira uma AÇÃO condicional que a ilha decide.** Ao
     contrário de viewport/nicklist/conversations (que mantiveram read-model no parent
@@ -706,3 +760,28 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
     `#chat-messages`, dentro do MessageViewport) — um `push_event` de QUALQUER
     componente/handler chega lá. Então mover quem-emite não quebra o cliente; um
     LiveComponent pode emitir um push que outro hook (de outra ilha) consome.
+- **2026-06-29 (19 + 21 — migre estados ENTRELAÇADOS como UM cluster, não dois):**
+  - **Dois subsistemas que leem o view-state UM DO OUTRO → uma ilha só, não `send_update` ping-pong.**
+    Os menus de chat (19) e nicklist (21) compartilhavam o color picker: o "Set Color" do chat reusava o
+    `context_menu` (x/y) do nicklist (`socket.assigns.chat_context_menu.x` no site `ctx_chat_set_color`).
+    Com os DOIS na mesma `Components.UserContextMenus`, o adapter manda um diretivo `set_color_from_chat`
+    e o `update/2` copia o PRÓPRIO `chat_context_menu.x/y` — o parent não lê nenhum dos mapas. **Regra:
+    quando A lê o estado de B no meio de um fluxo, co-localizar A+B numa ilha transforma o acoplamento em
+    estado local.** (Mesma lógica do bot 49/50/51: um events module + estado partilhado = um componente.)
+  - **`update/2` com cláusula de diretivo p/ o acoplamento, default `assign(socket, assigns)` p/ o resto.**
+    `def update(%{set_color_from_chat: nick}, socket)` faz a cópia interna; a cláusula final repassa as
+    chaves cruas dos adapters (mapas dos menus + passthrough `session`/`channel_users`/`nick_color_fn`).
+  - **Antes de threadar o target de uma ação, cheque o `phx-value-*` que o controle JÁ tem.**
+    `context_pick_color` lia `context_menu.target_nick` do assign, mas o swatch já renderizava
+    `phx-value-nick={@target_nick}` → o handler passou a ler `params["nick"]`, zero leitura de assign. Dois
+    testes que disparavam o evento SEM o nick (apoiados no estado escondido do parent) tiveram que mandar o
+    nick, igual ao que a UI real manda. **O param do alvo costuma já estar no `phx-value`.**
+  - **Limpeza pega leftover de migração ANTERIOR:** `Helpers.Session.close_context_menu/1` ainda resetava
+    o `conversations_context_menu` (migrado no plano 20!) + o do nicklist, mas tinha ZERO callers vivos (o
+    *evento* `close_context_menu` é do events module). O §5 (limpe estado morto) vale retroativo: ao migrar
+    um cluster, `grep` os reset-helpers órfãos deixados pelos planos vizinhos.
+  - **Gotcha do plano relaxado conscientemente:** o 21 pedia "resolva o target via stream local de
+    usuários, NÃO peça `channel_user_op?` ao parent". Sem stream local nesta ilha, a escolha passthrough-
+    read-model (igual 05/13/20) é a certa: `channel_users` canônico passa e `is_target_op/voiced/muted`
+    derivam no `render/1`. Um gotcha de plano é a intenção; o padrão estabelecido do projeto vence quando
+    diverge.

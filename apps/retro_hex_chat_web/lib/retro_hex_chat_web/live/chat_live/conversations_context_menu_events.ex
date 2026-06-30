@@ -11,52 +11,43 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [push_event: 3]
+  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   import RetroHexChatWeb.ChatLive.Helpers,
     only: [part_channel: 2]
 
   alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChatWeb.ChatLive.ChannelCentralEvents
+  alias RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu
 
   # ── Context menu ─────────────────────────────────────────
 
   def handle_event("channel_right_click", %{"channel" => channel} = params, socket) do
-    x = params["x"] || 0
-    y = params["y"] || 0
-
     {:halt,
-     assign(socket,
-       conversations_context_menu: %{
-         visible: true,
-         x: x,
-         y: y,
-         type: :channel,
-         channel: channel,
-         nick: nil
-       }
+     put_conv_menu(socket,
+       visible: true,
+       x: params["x"] || 0,
+       y: params["y"] || 0,
+       type: :channel,
+       channel: channel,
+       nick: nil
      )}
   end
 
   def handle_event("pm_right_click", %{"nick" => nick} = params, socket) do
-    x = params["x"] || 0
-    y = params["y"] || 0
-
     {:halt,
-     assign(socket,
-       conversations_context_menu: %{
-         visible: true,
-         x: x,
-         y: y,
-         type: :pm,
-         channel: nil,
-         nick: nick
-       }
+     put_conv_menu(socket,
+       visible: true,
+       x: params["x"] || 0,
+       y: params["y"] || 0,
+       type: :pm,
+       channel: nil,
+       nick: nick
      )}
   end
 
   def handle_event("close_conversations_context_menu", _params, socket) do
-    {:halt, assign(socket, conversations_context_menu: closed_menu())}
+    {:halt, close_conversations_menu(socket)}
   end
 
   # ── Extended conversations context menu actions ────────────────
@@ -113,12 +104,13 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
 
   # ── Private helpers ──────────────────────────────────────
 
-  defp close_conversations_menu(socket) do
-    assign(socket, conversations_context_menu: closed_menu())
+  defp put_conv_menu(socket, attrs) do
+    send_update(ConversationsContextMenu, [id: ConversationsContextMenu.id()] ++ attrs)
+    socket
   end
 
-  defp closed_menu do
-    %{visible: false, x: 0, y: 0, type: :channel, channel: nil, nick: nil}
+  defp close_conversations_menu(socket) do
+    put_conv_menu(socket, visible: false, x: 0, y: 0, type: :channel, channel: nil, nick: nil)
   end
 
   defp conversation_key(%{"type" => "pm", "nick" => nick}) when is_binary(nick), do: "pm:#{nick}"

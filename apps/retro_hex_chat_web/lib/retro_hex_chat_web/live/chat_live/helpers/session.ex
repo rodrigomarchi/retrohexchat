@@ -331,24 +331,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   defp restore_welcomed_channels(socket, _channels), do: socket
 
-  # ── Context menu ───────────────────────────────────────────
-
-  @spec close_context_menu(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
-  def close_context_menu(socket) do
-    assign(socket,
-      context_menu: %{visible: false, x: 0, y: 0, target_nick: nil},
-      show_context_color_picker: false,
-      conversations_context_menu: %{
-        visible: false,
-        x: 0,
-        y: 0,
-        type: nil,
-        channel: nil,
-        nick: nil
-      }
-    )
-  end
-
   # ── Highlight ──────────────────────────────────────────────
 
   @spec maybe_highlight(map(), Session.t()) :: map()

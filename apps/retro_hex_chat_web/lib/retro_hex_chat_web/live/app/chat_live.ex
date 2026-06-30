@@ -16,13 +16,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   require Logger
 
-  # ── Shell components ──────────────────────────────────────────
-  import RetroHexChatWeb.Components.UI.AppHeader
-  import RetroHexChatWeb.Components.UI.MenuBarApp
-  import RetroHexChatWeb.Components.UI.StatusBarApp
+  # ── Shell + tab glue (compose the design-system shell/tab components) ─────────
+  import RetroHexChatWeb.ChatLive.Components.ChatShell
+  import RetroHexChatWeb.ChatLive.Components.ChatTabs
 
   # ── Chat components ──────────────────────────────────────────
-  import RetroHexChatWeb.Components.UI.IrcTabs
   import RetroHexChatWeb.Components.UI.TopicBar
   import RetroHexChatWeb.Components.UI.ChatInput
   import RetroHexChatWeb.Components.UI.FormattingToolbar
@@ -30,14 +28,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.ReplyBar
   import RetroHexChatWeb.Components.UI.ConnectionStatus
   import RetroHexChatWeb.Components.UI.SyntaxTooltip
-  import RetroHexChatWeb.Components.UI.ChatContextMenu
-  import RetroHexChatWeb.Components.UI.ConversationsContextMenu
   import RetroHexChatWeb.Components.UI.HistorySearch
   import RetroHexChatWeb.Components.UI.TypingIndicator
-  import RetroHexChatWeb.Components.UI.NicklistContextMenu
 
   # ── Dialog components ────────────────────────────────────────
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.AddressBook
   import RetroHexChatWeb.Components.UI.ChannelCentralDialog
@@ -47,9 +41,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.NotifyList
 
   import RetroHexChatWeb.Components.UI.PerformDialog
-  import RetroHexChatWeb.Components.UI.BotManagementDialog
-  import RetroHexChatWeb.Components.UI.BotFormDialog
-  import RetroHexChatWeb.Components.UI.AdminConsoleDialog
 
   # ── Domain aliases ────────────────────────────────────────────
   alias RetroHexChat.Accounts.{ContactList, NickColors, NicknameValidator, Session}
@@ -59,14 +50,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   alias RetroHexChat.Chat.{
     AutoJoinList,
-    CustomMenus,
     DuplicateTracker,
     FloodTracker,
     HighlightWords,
     IgnoreList,
     KeyBindings,
-    PerformList,
-    UnreadTracker
+    PerformList
   }
 
   alias RetroHexChat.Presence.{NotifyList, Tracker, WhowasCache}
@@ -476,32 +465,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
       channel_users: [],
       command_history: [],
       autocomplete_command: nil,
-      autocomplete_filter: "",
       autocomplete_mode: nil,
       autocomplete_results: [],
       autocomplete_selected: 0,
       autocomplete_visible: false,
       recent_commands: [],
       contacts_selected: nil,
-      chat_context_menu: %{
-        visible: false,
-        type: nil,
-        x: 0,
-        y: 0,
-        target_nick: nil,
-        target_url: nil,
-        target_channel: nil,
-        target_message: nil,
-        has_selection: false,
-        is_target_registered: false
-      },
-      context_menu: %{
-        visible: false,
-        x: 0,
-        y: 0,
-        target_nick: nil,
-        is_target_registered: false
-      },
       nick_color_fn: ChatHelpers.build_nick_color_fn(session),
       nick_colors_selected: nil,
       has_more: true,
@@ -515,7 +484,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       link_previews: %{},
       loading_more: false,
       messages: %{},
-      new_messages_indicator: false,
       notify_debounce_timers: %{},
       notify_selected: nil,
       oldest_message_id: nil,
@@ -530,7 +498,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       show_account_dialog: false,
       account_registered: false,
       account_last_away_message: nil,
-      show_context_color_picker: false,
       show_contact_add_dialog: false,
       show_contact_edit_dialog: false,
       address_book_tab: "contacts",
@@ -575,7 +542,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       channel_central_ban_selected: nil,
       channel_central_ban_ex_selected: nil,
       channel_central_invite_ex_selected: nil,
-      channel_central_modes_form: %{},
       channel_central_notice: nil,
       channel_central_transfer_error: nil,
       channel_central_registration: nil,
@@ -612,64 +578,22 @@ defmodule RetroHexChatWeb.App.ChatLive do
       flash_channels: MapSet.new(),
       pm_typing_from: nil,
       pm_typing_timer: nil,
-      conversations_context_menu: %{
-        visible: false,
-        x: 0,
-        y: 0,
-        type: :channel,
-        channel: nil,
-        nick: nil
-      },
       last_activity_at: DateTime.utc_now(),
       show_alias_dialog: false,
       user_timers: %{},
       autorespond_cooldowns: %{},
       show_custom_menus_dialog: false,
       show_autorespond_dialog: false,
-      show_admin_console: false,
-      admin_console_results: [],
-      admin_console_tab: "console",
-      admin_console_motd: nil,
-      admin_console_motd_result: nil,
-      admin_console_broadcast_result: nil,
-      admin_console_turn_stats: nil,
-      admin_console_turn_allocations: nil,
-      admin_console_turn_result: nil,
-      admin_console_audit_log_text: nil,
+      # Admin Console: only the filter/draft read-model stays here (sibling
+      # adapters read these back to preserve filters across actions); the ~26
+      # display assigns live in ChatLive.Components.AdminConsoleDialog.
       admin_console_audit_log_last: "20",
       admin_console_audit_log_user: "",
-      admin_console_audit_log_result: nil,
-      admin_console_server_settings_info: nil,
-      admin_console_server_settings_text: nil,
-      admin_console_server_settings_values: %{},
-      admin_console_server_settings_result: nil,
-      admin_console_users_text: nil,
-      admin_console_users_banlist_text: nil,
-      admin_console_users_result: nil,
       admin_console_users_search: "",
       admin_console_users_online_only: false,
-      admin_console_users_info_nick: "",
-      admin_console_channels_text: nil,
-      admin_console_channels_banlist_text: nil,
-      admin_console_channels_result: nil,
       admin_console_channels_search: "",
       admin_console_channels_info_channel: "",
       admin_console_channels_create_name: "",
-      admin_console_danger_zone_preview: nil,
-      admin_console_danger_zone_result: nil,
-      admin_console_danger_zone_confirm: "",
-      admin_console_danger_zone_server_name: "RetroHexChat",
-      show_bot_dialog: false,
-      bot_dialog_bots: [],
-      bot_dialog_selected: nil,
-      bot_dialog_channels: [],
-      bot_dialog_commands: [],
-      bot_dialog_tab: :general,
-      bot_dialog_events: [],
-      bot_dialog_stats: nil,
-      bot_dialog_editing_field: nil,
-      show_new_bot_dialog: false,
-      show_add_command_dialog: false,
       away_replied_to: MapSet.new(),
       quit_reason: nil,
       show_emoji_picker: false,
@@ -699,68 +623,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   defp admin_only?(session), do: ChatContext.admin_only?(session)
 
   defp root_admin?(session), do: ChatContext.root_admin?(session)
-
-  defp viewer_is_op?(session) do
-    case session.active_channel do
-      nil ->
-        false
-
-      channel ->
-        case Server.get_state(channel) do
-          {:ok, state} ->
-            session.nickname in state.operators or
-              session.nickname in Map.get(state, :owners, [])
-
-          {:error, _} ->
-            false
-        end
-    end
-  rescue
-    e ->
-      Logger.warning("Failed to check operator status: #{inspect(e)}")
-      false
-  end
-
-  defp chat_context_target_ignored?(_session, %{target_nick: nil}), do: false
-
-  defp chat_context_target_ignored?(session, %{target_nick: nick}) do
-    IgnoreList.get_entry(session.ignore_list, nick) != nil
-  end
-
-  defp channel_user_op?(users, nick), do: channel_user_role?(users, nick, [:operator])
-  defp channel_user_voiced?(users, nick), do: channel_user_role?(users, nick, [:voiced])
-
-  defp channel_user_muted?(users, nick) do
-    case find_channel_user(users, nick) do
-      nil -> false
-      user -> Map.get(user, :muted, false)
-    end
-  end
-
-  defp channel_user_role?(users, nick, roles) do
-    case find_channel_user(users, nick) do
-      nil -> false
-      user -> Map.get(user, :role) in roles
-    end
-  end
-
-  defp find_channel_user(_users, nil), do: nil
-
-  defp find_channel_user(users, nick) do
-    Enum.find(users, &(Map.get(&1, :nickname) == nick))
-  end
-
-  defp conversation_context_key(%{type: :pm, nick: nick}) when is_binary(nick), do: "pm:#{nick}"
-  defp conversation_context_key(%{type: "pm", nick: nick}) when is_binary(nick), do: "pm:#{nick}"
-  defp conversation_context_key(%{channel: channel}) when is_binary(channel), do: channel
-  defp conversation_context_key(_context), do: nil
-
-  defp conversation_context_custom_items(_session, %{type: :pm}), do: []
-  defp conversation_context_custom_items(_session, %{type: "pm"}), do: []
-
-  defp conversation_context_custom_items(session, _context) do
-    CustomMenus.entries_for(session.custom_menus, :channel)
-  end
 
   defp channel_central_bans(nil), do: []
 
@@ -840,19 +702,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   defp channel_central_member_count(nil), do: 0
   defp channel_central_member_count(state), do: Map.get(state, :member_count, 0)
-
-  @spec online_buddy_count(%{entries: list()} | nil) :: non_neg_integer()
-  defp online_buddy_count(%{entries: entries}) when is_list(entries) do
-    Enum.count(entries, &(&1.online == true))
-  end
-
-  defp online_buddy_count(_notify_list), do: 0
-
-  defp context_target_ignored?(_session, nil), do: false
-
-  defp context_target_ignored?(session, nick) do
-    IgnoreList.get_entry(session.ignore_list, nick) != nil
-  end
 
   # ── Startup messages ──────────────────────────────────────────
 
