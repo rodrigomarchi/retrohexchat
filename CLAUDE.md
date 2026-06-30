@@ -52,7 +52,6 @@ make deploy.skip-ci           # Deploy Sun without CI (already validated)
 
 **ALWAYS use `make deploy`** (or `elixir scripts/deploy_all.exs`) to deploy.
 This runs the full CI pipeline first, then deploys to production (Sun).
-Deploy targets only Sun — the Moon (staging) server was retired.
 NEVER use `make deploy-sun` directly — it skips CI validation.
 
 ```
