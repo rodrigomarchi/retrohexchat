@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
 
   @doc "Renders the highlight dialog."
   attr :id, :string, required: true
+  attr :target, :any, default: nil
   attr :show, :boolean, default: false
   attr :words, :list, default: [], doc: "List of HighlightWord.t() structs"
 
@@ -63,7 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
       <.dialog_body class="space-y-retro-8">
         <%!-- Add word button --%>
         <div class="flex items-center gap-retro-4">
-          <.button size="sm" variant="outline" phx-click={@on_add}>
+          <.button size="sm" variant="outline" phx-click={@on_add} phx-target={@target}>
             <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
             {dgettext("dialogs", "Add")}
           </.button>
@@ -99,6 +100,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 if(@selected_word == word.word, do: "bg-selection-bg text-selection-fg", else: "")
               }
               phx-click={@on_select}
+              phx-target={@target}
               phx-value-word={word.word}
               data-testid={"highlight-word-row-#{word.word}"}
             >
@@ -115,7 +117,13 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
         </.table>
 
         <div class="flex gap-retro-4">
-          <.button size="sm" variant="outline" phx-click={@on_edit} disabled={@selected_word == nil}>
+          <.button
+            size="sm"
+            variant="outline"
+            phx-click={@on_edit}
+            phx-target={@target}
+            disabled={@selected_word == nil}
+          >
             <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
             {dgettext("dialogs", "Edit")}
           </.button>
@@ -123,6 +131,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
             size="sm"
             variant="outline"
             phx-click={@on_remove}
+            phx-target={@target}
             phx-value-word={@selected_word || ""}
             disabled={@selected_word == nil}
           >
@@ -134,6 +143,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
         <%!-- Color picker for assignment --%>
         <.color_picker
           id={"#{@id}-color-picker"}
+          target={@target}
           selected={@selected_color}
           on_select={@on_color_select}
         />
@@ -152,10 +162,15 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
     </.dialog>
 
     <%!-- Highlight Add Sub-Dialog --%>
-    <.highlight_add_sub_form :if={@show_highlight_add_dialog} selected_color={@selected_color} />
+    <.highlight_add_sub_form
+      :if={@show_highlight_add_dialog}
+      target={@target}
+      selected_color={@selected_color}
+    />
     <%!-- Highlight Edit Sub-Dialog --%>
     <.highlight_edit_sub_form
       :if={@show_highlight_edit_dialog}
+      target={@target}
       selected_word={@selected_word}
       selected_color={@selected_color}
     />
@@ -164,6 +179,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
 
   # ── Sub-Forms ────────────────────────────────────────
 
+  attr :target, :any, default: nil
   attr :selected_color, :integer, default: nil
 
   defp highlight_add_sub_form(assigns) do
@@ -179,15 +195,23 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="close_highlight_add_dialog"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="highlight_add" data-testid="highlight-add-form">
+          <form phx-submit="highlight_add" phx-target={@target} data-testid="highlight-add-form">
             <div class="flex flex-col gap-1.5 mb-2">
               <label class="text-xs font-bold" for="highlight-word-input">
                 {dgettext("dialogs", "Word:")}
               </label>
+              <%!--
+                phx-update="ignore" keeps the typed word across the in-form
+                color-pick re-render: the input is uncontrolled, so when picking
+                a swatch re-renders this component, LiveView would otherwise reset
+                it. (Routing alone — phx-target — only fixes cross-component
+                clobber; the color pick re-renders THIS component.)
+              --%>
               <.input
                 type="text"
                 id="highlight-word-input"
@@ -195,6 +219,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 maxlength="50"
                 required
                 autofocus
+                phx-update="ignore"
                 class="w-full"
               />
             </div>
@@ -205,6 +230,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               </label>
               <.color_picker
                 id="highlight-add-color"
+                target={@target}
                 selected={@selected_color}
                 on_select="highlight_color_pick"
               />
@@ -219,6 +245,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 size="sm"
                 variant="outline"
                 phx-click="close_highlight_add_dialog"
+                phx-target={@target}
               >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}
@@ -231,6 +258,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
     """
   end
 
+  attr :target, :any, default: nil
   attr :selected_word, :string, default: nil
   attr :selected_color, :integer, default: nil
 
@@ -247,17 +275,19 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
               type="button"
               aria-label={dgettext("dialogs", "Close")}
               phx-click="close_highlight_edit_dialog"
+              phx-target={@target}
             />
           </div>
         </div>
         <div class="p-2">
-          <form phx-submit="highlight_edit" data-testid="highlight-edit-form">
+          <form phx-submit="highlight_edit" phx-target={@target} data-testid="highlight-edit-form">
             <input type="hidden" name="word" value={@selected_word || ""} />
             <input type="hidden" name="bg_color" value={to_string(@selected_color || "")} />
             <div class="flex flex-col gap-1.5">
               <label class="text-xs font-bold">{dgettext("dialogs", "Background Color:")}</label>
               <.color_picker
                 id="highlight-edit-color"
+                target={@target}
                 selected={@selected_color}
                 on_select="highlight_color_pick"
               />
@@ -272,6 +302,7 @@ defmodule RetroHexChatWeb.Components.UI.HighlightDialog do
                 size="sm"
                 variant="outline"
                 phx-click="close_highlight_edit_dialog"
+                phx-target={@target}
               >
                 <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
                 {dgettext("dialogs", "Cancel")}

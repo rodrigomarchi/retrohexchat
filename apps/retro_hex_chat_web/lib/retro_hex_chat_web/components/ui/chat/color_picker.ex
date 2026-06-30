@@ -35,6 +35,7 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
   """
   attr :id, :string, required: true
   attr :selected, :integer, default: nil
+  attr :target, :any, default: nil, doc: "phx-target for on_select (LiveComponent island)"
 
   attr :on_select, :any,
     default: nil,
@@ -76,6 +77,7 @@ defmodule RetroHexChatWeb.Components.UI.ColorPicker do
             dgettext("chat", "Color %{index}: %{name}", index: idx, name: color_name(color))
           }
           phx-click={@on_select}
+          phx-target={@target}
           phx-value-index={idx}
           phx-value-picker={@id}
         />

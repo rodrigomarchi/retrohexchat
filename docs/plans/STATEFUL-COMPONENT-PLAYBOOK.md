@@ -869,3 +869,31 @@ dono de um `stream(:items)`. Receita (validada no plano 13, nicklist):
     painéis estão no DOM (troca é client-side, não observável no server); Escape dispara o keydown do próprio
     `<.dialog>` em `#perform-dialog-wrap`. As paths de comando `/perform`+`/autojoin` (US1/US3) ficaram
     intactas (vivem em `ui_actions/perform.ex`, não no dialog).
+- **2026-06-30 (41 highlight — DESBLOQUEADO + dois bugs de raiz que afetam TODA ilha que faz bubble):**
+  - **⚠️⚠️ O BUG MAIS IMPORTANTE deste playbook: `send(self(), {atom, payload})` 2-tuple é ENGOLIDO.** Os
+    hooks `:handle_info` `pubsub_handlers.ex` e `presence.ex` tinham `handle_info({_ref, _result}, socket),
+    do: {:halt, socket}` p/ engolir resultados órfãos de `Task`. Mas isso casa com QUALQUER 2-tuple → o bubble
+    `{:highlight_dialog_session, session}` era halted ANTES de chegar no `handle_info` do LiveView. Sintoma
+    traiçoeiro: a UI fica certa (o componente assign-a a session localmente, otimista) mas o **parent nunca
+    atualiza** — persistência não roda, e qualquer outro subsistema que lê a session (aqui: o pipeline de
+    highlight) não vê a mudança. **Diagnóstico:** instrumentei `put_session` (rodou) e o `handle_info` do
+    parent (NÃO rodou) → a mensagem sumia no meio = um hook engoliu. **Fix correto (na raiz):** guard
+    `when is_reference(ref)` nos dois clauses — só resultados reais de `Task` são `{ref, result}` com ref
+    `reference()`. Isso DESTRAVOU o highlight E consertou os bubbles de erro 2-tuple `{:cc_system_error}`/
+    `{:admin_system_error}`/`{:perform_system_error}` que estavam quebrados em SILÊNCIO (o perform-session
+    sobreviveu só por acaso: é 3-tuple `{:perform_dialog_session, session, kind}`). **Regra nova:** todo
+    bubble ilha→parent deve ser 3-tuple OU passar pelo guard; e SEMPRE verifique o parent (não só a UI) num
+    teste — `:sys.get_state(view.pid).socket.assigns` — quando a session/estado tem leitor noutro subsistema.
+  - **Modal-in-modal com RE-RENDER intra-componente precisa de `phx-update="ignore"`, não só `phx-target`.**
+    O §0a-anti (phx-target) conserta o clobber quando o re-render vem de OUTRO componente (cid mismatch). Mas
+    o highlight-add tem um `color_picker` DENTRO do sub-form: clicar um swatch faz `highlight_color_pick` →
+    `@myself` → re-render DESTE mesmo componente → o `<input>` não-controlado da palavra é resetado mesmo com
+    cid certo. Fix: `phx-update="ignore"` no input (sobrevive a re-renders do próprio componente, mantém o
+    valor digitado; o hidden `bg_color` continua controlado e atualiza). Threading: além do dialog, o
+    primitivo `color_picker` ganhou `attr :target` + `phx-target` no swatch (só o highlight e o showcase usam
+    seu `on_select`; o context-menu rola swatches próprios com `phx-value-action`).
+  - **Sem matcher separado.** O pipeline de mensagens (`pubsub_handlers/messages.ex` → `maybe_highlight`) lê
+    `session.highlight_words` no momento da mensagem → basta a session do parent atualizar (depois do fix #1).
+    O "rebuild matcher" do plano não existe no código.
+  - `make ci` 9/9; `highlight_dialog_test` (5) + `chat-highlights.spec.ts` E2E verde (o que estava ⛔). O
+    `chat-highlights-persistence` U2 já falha no main (overlay de "Tip" pós-reconnect) — não relacionado.

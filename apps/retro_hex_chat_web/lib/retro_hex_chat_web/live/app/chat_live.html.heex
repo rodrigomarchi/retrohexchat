@@ -353,22 +353,10 @@
   timezone={@timezone}
 />
 
-<.highlight_dialog
-  id="highlight-dialog"
-  show={@show_highlight_dialog}
-  words={HighlightWords.entries(@session.highlight_words)}
-  own_nick={@session.nickname}
-  selected_word={@highlight_selected}
-  selected_color={@highlight_selected_color}
-  show_highlight_add_dialog={@show_highlight_add_dialog}
-  show_highlight_edit_dialog={@show_highlight_edit_dialog}
-  on_select="highlight_select"
-  on_add="open_highlight_add_dialog"
-  on_edit="open_highlight_edit_dialog"
-  on_remove="highlight_remove"
-  on_color_select="highlight_color_pick"
-  on_ok="close_highlight_dialog"
-  on_cancel="close_highlight_dialog"
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.HighlightDialog}
+  id={RetroHexChatWeb.ChatLive.Components.HighlightDialog.id()}
+  session={@session}
 />
 
 <.live_component

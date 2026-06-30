@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   }
 
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
+  alias RetroHexChatWeb.ChatLive.HighlightEvents
   alias RetroHexChatWeb.ChatLive.NavigationEvents
   alias RetroHexChatWeb.ChatLive.PerformAutojoinEvents
   alias RetroHexChatWeb.ChatLive.SearchEvents
@@ -87,16 +88,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_highlight_dialog, socket) do
-    if socket.assigns.show_highlight_dialog do
-      assign(socket,
-        show_highlight_dialog: false,
-        show_highlight_add_dialog: false,
-        show_highlight_edit_dialog: false,
-        highlight_selected: nil
-      )
-    else
-      assign(socket, show_highlight_dialog: true)
-    end
+    HighlightEvents.toggle(socket)
   end
 
   defp dispatch_action(:toggle_url_catcher, socket) do
@@ -173,9 +165,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     [
       {:cheatsheet_visible, &close_cheatsheet/1},
       {:show_contact_add_dialog, &close_contact_add_dialog/1},
-      {:show_contact_edit_dialog, &close_contact_edit_dialog/1},
-      {:show_highlight_add_dialog, &close_highlight_add_dialog/1},
-      {:show_highlight_edit_dialog, &close_highlight_edit_dialog/1}
+      {:show_contact_edit_dialog, &close_contact_edit_dialog/1}
     ]
   end
 
@@ -186,7 +176,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       {:show_knock_request_dialog, &close_knock_request_dialog/1},
       {:search_visible, &clear_search_state/1},
       {:show_address_book, &close_address_book/1},
-      {:show_highlight_dialog, &close_highlight_dialog/1},
       {:show_sound_settings_dialog, &close_sound_settings_dialog/1},
       {:show_flood_protection_dialog, &close_flood_protection_dialog/1},
       {:show_alias_dialog, &close_alias_dialog/1},
@@ -210,8 +199,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   defp close_cheatsheet(socket), do: assign(socket, cheatsheet_visible: false)
   defp close_contact_add_dialog(socket), do: assign(socket, show_contact_add_dialog: false)
   defp close_contact_edit_dialog(socket), do: assign(socket, show_contact_edit_dialog: false)
-  defp close_highlight_add_dialog(socket), do: assign(socket, show_highlight_add_dialog: false)
-  defp close_highlight_edit_dialog(socket), do: assign(socket, show_highlight_edit_dialog: false)
 
   defp cancel_notice_mode(socket) do
     send_update(Composer, id: Composer.id(), cancel_notice: true)
@@ -258,15 +245,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       show_nick_color_edit_dialog: false,
       control_selected: nil,
       show_control_add_dialog: false
-    )
-  end
-
-  defp close_highlight_dialog(socket) do
-    assign(socket,
-      show_highlight_dialog: false,
-      show_highlight_add_dialog: false,
-      show_highlight_edit_dialog: false,
-      highlight_selected: nil
     )
   end
 

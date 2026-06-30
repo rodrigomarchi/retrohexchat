@@ -27,7 +27,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.AddressBook
-  import RetroHexChatWeb.Components.UI.HighlightDialog
 
   import RetroHexChatWeb.Components.UI.InviteDialog
   import RetroHexChatWeb.Components.UI.NotifyList
@@ -41,7 +40,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Chat.{
     DuplicateTracker,
     FloodTracker,
-    HighlightWords,
     IgnoreList,
     KeyBindings
   }
@@ -310,6 +308,19 @@ defmodule RetroHexChatWeb.App.ChatLive do
      |> ChatLive.Helpers.maybe_persist_autojoin_list(session)}
   end
 
+  # Highlight dialog: the dialog owns the work; the parent owns the session
+  # read-model + persistence and the status-bar surface.
+  def handle_info({:highlight_dialog_session, session}, socket) do
+    {:noreply,
+     socket
+     |> assign(session: session)
+     |> ChatLive.Helpers.maybe_persist_highlight_words(session)}
+  end
+
+  def handle_info({:highlight_status_error, message}, socket) do
+    {:noreply, ChatLive.Helpers.push_status_message(socket, message, :error)}
+  end
+
   # ── Catch-all handle_info ─────────────────────────────────────
 
   def handle_info({_ref, _result}, socket), do: {:noreply, socket}
@@ -538,14 +549,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       show_notify_edit_dialog: false,
       show_notify_list: false,
       highlight_channels: MapSet.new(),
-      highlight_selected: nil,
-      highlight_selected_color: nil,
       selected_note: "",
       selected_contact_note: "",
       selected_notify_note: "",
-      show_highlight_add_dialog: false,
-      show_highlight_dialog: false,
-      show_highlight_edit_dialog: false,
       current_topic: nil,
       current_modes: nil,
       show_conversations: true,
