@@ -43,9 +43,7 @@ defmodule RetroHexChatWeb.Endpoint do
 
   plug Plug.RequestId
 
-  plug PromEx.Plug,
-    prom_ex_module: RetroHexChatWeb.PromEx,
-    path: "/metrics"
+  plug RetroHexChatWeb.PromExPlug, path: "/metrics"
 
   plug Plug.Telemetry, event_prefix: [:phoenix, :endpoint]
 

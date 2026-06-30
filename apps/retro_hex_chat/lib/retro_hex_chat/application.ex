@@ -8,6 +8,7 @@ defmodule RetroHexChat.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      RetroHexChat.PromEx,
       RetroHexChat.Repo,
       {DNSCluster, query: Application.get_env(:retro_hex_chat, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: RetroHexChat.PubSub},

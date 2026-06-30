@@ -1,6 +1,15 @@
 defmodule RetroHexChatWeb.PromExTest do
   use RetroHexChatWeb.ConnCase, async: false
 
+  describe "RetroHexChat.PromEx.plugins/0" do
+    test "includes Ecto before the Repo starts" do
+      assert [
+               {PromEx.Plugins.Ecto,
+                repos: [RetroHexChat.Repo], metric_prefix: [:retro_hex_chat_web, :prom_ex, :ecto]}
+             ] = RetroHexChat.PromEx.plugins()
+    end
+  end
+
   describe "plugins/0" do
     test "includes the expected runtime instrumentation plugins" do
       plugins = RetroHexChatWeb.PromEx.plugins()
@@ -15,17 +24,18 @@ defmodule RetroHexChatWeb.PromExTest do
               event_prefix: [:phoenix, :endpoint]} in plugins
 
       assert PromEx.Plugins.PhoenixLiveView in plugins
-      assert {PromEx.Plugins.Ecto, repos: [RetroHexChat.Repo]} in plugins
+      refute {PromEx.Plugins.Ecto, repos: [RetroHexChat.Repo]} in plugins
     end
   end
 
   describe "dashboards/0" do
     test "declares the built-in dashboards provisioned by infra" do
+      assert {:prom_ex, "ecto.json"} in RetroHexChat.PromEx.dashboards()
+
       assert {:prom_ex, "application.json"} in RetroHexChatWeb.PromEx.dashboards()
       assert {:prom_ex, "beam.json"} in RetroHexChatWeb.PromEx.dashboards()
       assert {:prom_ex, "phoenix.json"} in RetroHexChatWeb.PromEx.dashboards()
       assert {:prom_ex, "phoenix_live_view.json"} in RetroHexChatWeb.PromEx.dashboards()
-      assert {:prom_ex, "ecto.json"} in RetroHexChatWeb.PromEx.dashboards()
     end
   end
 
@@ -35,6 +45,8 @@ defmodule RetroHexChatWeb.PromExTest do
 
       assert response_content_type(conn, :text) =~ "text/plain"
       assert response(conn, 200) =~ "retro_hex_chat_web_prom_ex"
+      assert response(conn, 200) =~ "retro_hex_chat_web_prom_ex_ecto_repo_init_status_info"
+      assert response(conn, 200) =~ ~s(repo="RetroHexChat.Repo")
     end
   end
 end

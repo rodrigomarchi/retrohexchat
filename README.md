@@ -217,7 +217,7 @@ RetroHexChat.Supervisor (:one_for_one)
 | WebRTC | ExSTUN ~> 0.1 (embedded TURN/STUN server) |
 | HTTP Client | Req 0.5+ (async link previews via Task.Supervisor) |
 | Auth | bcrypt\_elixir (passwords), Plug.Crypto (favorites encryption) |
-| Observability | PromEx `/metrics` for Prometheus + OpenTelemetry OTLP traces for Tempo |
+| Observability | PromEx `/metrics` for Prometheus, with core Ecto metrics captured before `Repo` startup, plus OpenTelemetry OTLP traces for Tempo |
 | Assets | esbuild + Tailwind CSS |
 | JS Testing | Vitest + jsdom (706 tests, 62 files) |
 | Static Analysis | Credo (strict), Dialyxir, mix format, ESLint + Prettier |
@@ -326,13 +326,15 @@ retro_hex_chat/
 │   │   │   ├── commands/            # Parser, dispatcher, 65 handlers
 │   │   │   ├── p2p/                 # WebRTC signaling, TURN credentials
 │   │   │   ├── presence/            # Phoenix.Presence tracker
+│   │   │   ├── prom_ex.ex           # Core PromEx collector; Ecto starts before Repo
 │   │   │   ├── rate_limit/          # ETS-backed flood control
 │   │   │   └── services/            # NickServ + ChanServ
 │   │   └── priv/repo/migrations/    # 39 migrations
 │   │
 │   └── retro_hex_chat_web/          # Web (Phoenix + LiveView)
 │       ├── lib/retro_hex_chat_web/
-│       │   ├── prom_ex.ex           # Prometheus metrics + Grafana dashboards
+│       │   ├── prom_ex.ex           # Phoenix/LiveView PromEx collector
+│       │   ├── prom_ex_plug.ex      # Aggregates core + web collectors at /metrics
 │       │   ├── open_telemetry.ex    # Phoenix/Bandit/Ecto tracing setup
 │       │   ├── live/app/             # ConnectLive, ChatLive, P2PSessionLive
 │       │   └── components/          # 57 function components, icons, dialogs

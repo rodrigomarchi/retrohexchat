@@ -67,6 +67,7 @@ defmodule RetroHexChat.MixProject do
       {:req, "~> 0.5"},
       {:ex_stun, "~> 0.2.0"},
       {:ecto_psql_extras, "~> 0.8"},
+      {:prom_ex, "~> 1.11"},
       {:tz, "~> 0.28"},
 
       # Test dependencies

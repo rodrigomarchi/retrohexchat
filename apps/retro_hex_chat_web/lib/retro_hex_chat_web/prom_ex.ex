@@ -18,8 +18,7 @@ defmodule RetroHexChatWeb.PromEx do
        endpoint: RetroHexChatWeb.Endpoint,
        router: RetroHexChatWeb.Router,
        event_prefix: [:phoenix, :endpoint]},
-      PromEx.Plugins.PhoenixLiveView,
-      {PromEx.Plugins.Ecto, repos: [RetroHexChat.Repo]}
+      PromEx.Plugins.PhoenixLiveView
     ]
   end
 
@@ -30,8 +29,7 @@ defmodule RetroHexChatWeb.PromEx do
       {:prom_ex, "application.json"},
       {:prom_ex, "beam.json"},
       {:prom_ex, "phoenix.json"},
-      {:prom_ex, "phoenix_live_view.json"},
-      {:prom_ex, "ecto.json"}
+      {:prom_ex, "phoenix_live_view.json"}
     ]
   end
 
