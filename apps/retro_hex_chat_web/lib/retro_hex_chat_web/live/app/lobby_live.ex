@@ -24,11 +24,14 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.SignalingRateLimit
+  alias RetroHexChatWeb.App.ComposerEvents
+  alias RetroHexChatWeb.App.LobbyLive.ChatDispatch
   alias RetroHexChatWeb.App.LobbyLive.Components.ChatIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.GameIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.MediaIsland
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.Timezone
 
   @pubsub RetroHexChat.PubSub
 
@@ -42,7 +45,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
          {:ok, db_session} <- fetch_session(token),
          :ok <- SessionHelpers.verify_participant(user_id, db_session),
          :ok <- verify_not_terminal(db_session) do
-      mount_lobby(socket, token, nickname, user_id, db_session)
+      mount_lobby(socket, token, nickname, user_id, db_session, resolve_timezone(session, socket))
     else
       {:expired, reason} ->
         {:ok,
@@ -232,6 +235,13 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     {:noreply, assign(socket, call_summary: summary)}
   end
 
+  # Bubbled from the shared Composer on submit. `reply_to` is always nil here
+  # (the lobby capability set disables replies); ChatDispatch parses the text and
+  # runs the lobby's plain-message / `/command` effects.
+  def handle_info({:composer_dispatch, text, _reply_to}, socket) do
+    {:noreply, ChatDispatch.dispatch(socket, text)}
+  end
+
   def handle_info(_msg, socket), do: {:noreply, socket}
 
   # --- WebRTC lifecycle ---
@@ -295,15 +305,13 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   # --- Chat ---
+  #
+  # The chat window hosts the shared `Composer` LiveComponent. On submit it
+  # bubbles `{:composer_dispatch, text, reply_to}` here (handled in handle_info);
+  # the formatting toolbar's strip toggle bubbles `toggle_strip_formatting`.
 
-  def handle_event("send_message", %{"content" => content}, socket) do
-    case Lobby.send_lobby_message(socket.assigns.token, socket.assigns.user_id, content) do
-      :ok ->
-        {:noreply, push_event(socket, "p2p_lobby_message_sent", %{form_id: "lobby-chat-form"})}
-
-      {:error, _reason} ->
-        {:noreply, socket}
-    end
+  def handle_event("toggle_strip_formatting", _params, socket) do
+    {:noreply, assign(socket, strip_formatting: !socket.assigns.strip_formatting)}
   end
 
   # --- Media (self-controlled) ---
@@ -435,7 +443,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   # --- Private helpers ---
 
-  defp mount_lobby(socket, token, nickname, user_id, db_session) do
+  defp mount_lobby(socket, token, nickname, user_id, db_session, timezone) do
     role = if user_id == db_session.creator_id, do: :creator, else: :peer
     Logger.info("Lobby LiveView mounted: token=#{token}, user=#{nickname}, role=#{role}")
 
@@ -447,12 +455,19 @@ defmodule RetroHexChatWeb.App.LobbyLive do
       broadcast("lobby_client_info", token, %{from: user_id, info: local_info})
     end
 
+    # The lobby drives the shared chat Composer, so it relays the composer's
+    # keyboard events (autocomplete/history/tab/syntax) exactly like the chat.
+    socket =
+      attach_hook(socket, :composer_events, :handle_event, &ComposerEvents.handle_event/3)
+
     {:ok,
      assign(socket,
        token: token,
        nickname: nickname,
        user_id: user_id,
        role: role,
+       timezone: timezone,
+       strip_formatting: false,
        peer_nick: SessionHelpers.resolve_peer_nick(user_id, db_session),
        peer_online: false,
        session_status: db_session.status,
@@ -474,6 +489,21 @@ defmodule RetroHexChatWeb.App.LobbyLive do
        session_closed: false,
        ended_reason: nil
      )}
+  end
+
+  @spec resolve_timezone(map(), Phoenix.LiveView.Socket.t()) :: String.t()
+  defp resolve_timezone(http_session, socket) do
+    session_tz = http_session["chat_timezone"]
+    params_tz = Map.get(get_connect_params(socket) || %{}, "timezone")
+
+    tz =
+      cond do
+        session_tz && session_tz != "" && session_tz != "Etc/UTC" -> session_tz
+        params_tz && params_tz != "" -> params_tz
+        true -> "Etc/UTC"
+      end
+
+    Timezone.validate(tz)
   end
 
   defp fetch_session(token) do

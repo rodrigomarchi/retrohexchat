@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.ChatIslandTest do
     html = render_component(ChatIsland, id: ChatIsland.id())
 
     assert html =~ ~s(data-testid="lobby-chat")
-    assert html =~ ~s(id="lobby-chat-form")
+    assert html =~ ~s(id="lobby-messages")
   end
 
   test "a system message (C1) appears in the history" do

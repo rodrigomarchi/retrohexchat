@@ -16,11 +16,19 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
   def build_nick_color_fn(session) do
     fn nickname ->
       case NickColors.color_index_for(session.nick_colors, nickname) do
-        nil -> "nick-color-#{:erlang.phash2(nickname, @nick_color_count)}"
+        nil -> default_nick_color(nickname)
         irc_index -> "irc-fg-#{irc_index}"
       end
     end
   end
+
+  @doc """
+  Deterministic nick color class from the nickname hash, with no per-user
+  overrides. Used by surfaces without a `%Session{}` (e.g. the P2P lobby).
+  """
+  @spec default_nick_color(String.t()) :: String.t()
+  def default_nick_color(nickname),
+    do: "nick-color-#{:erlang.phash2(nickname, @nick_color_count)}"
 
   @spec format_content(String.t(), boolean()) :: String.t()
   def format_content(content, strip_formatting) do

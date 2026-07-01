@@ -136,10 +136,39 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       :ok = SessionServer.transition(token, :connected)
       Process.sleep(50)
 
-      render_submit(creator_view, "send_message", %{"content" => "hi there"})
+      creator_view
+      |> form(~s([data-testid="chat-input-form"]), %{input: "hi there"})
+      |> render_submit()
+
       Process.sleep(50)
 
       assert render(peer_view) =~ "hi there"
+    end
+
+    test "the /me command renders an action line for both peers", %{
+      conn: conn,
+      token: token,
+      creator: creator,
+      peer: peer
+    } do
+      {:ok, creator_view, _} = live(chat_conn(conn, creator.nickname), "/lobby/#{token}")
+      {:ok, peer_view, _} = live(chat_conn(conn, peer.nickname), "/lobby/#{token}")
+
+      SessionServer.join(token, creator.id)
+      SessionServer.join(token, peer.id)
+      :ok = SessionServer.transition(token, :connected)
+      Process.sleep(50)
+
+      creator_view
+      |> form(~s([data-testid="chat-input-form"]), %{input: "/me waves hello"})
+      |> render_submit()
+
+      Process.sleep(50)
+
+      html = render(peer_view)
+      assert html =~ "waves hello"
+      # Action lines are rendered as "* nick", not the "&lt;nick&gt;" normal format.
+      assert html =~ "* #{creator.nickname}"
     end
 
     test "starting a call shows media controls",

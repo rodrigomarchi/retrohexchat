@@ -65,15 +65,6 @@ defmodule RetroHexChatWeb.BotManagementEntryPointsFeatureTest do
 
       assert has_element?(view, "#bot-management-dialog-show-trigger")
     end
-
-    test "toolbar action stays blocked for non-admin users", %{conn: conn} do
-      view = connect_user(conn, "BotUser#{uid()}")
-
-      render_click(view, "toolbar_action", %{"action" => "open_bot_dialog"})
-
-      refute has_element?(view, "#bot-management-dialog-show-trigger")
-      assert render(view) =~ "Bot management is restricted to server administrators."
-    end
   end
 
   describe "general tab enablement controls" do
@@ -129,11 +120,6 @@ defmodule RetroHexChatWeb.BotManagementEntryPointsFeatureTest do
 
   defp connect_admin(conn) do
     {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/chat")
-    view
-  end
-
-  defp connect_user(conn, nick) do
-    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
   end
 

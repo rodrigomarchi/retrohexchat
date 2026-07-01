@@ -31,7 +31,8 @@ defmodule RetroHexChat.Lobby.SessionServer do
   @lobby_expiry_timeout :timer.minutes(15)
   @connecting_timeout :timer.seconds(30)
   @game_request_timeout :timer.seconds(60)
-  @max_message_length 500
+  # Matches the shared chat composer's char counter (…/1000).
+  @max_message_length 1000
   @max_messages 100
 
   @pubsub RetroHexChat.PubSub
@@ -82,9 +83,10 @@ defmodule RetroHexChat.Lobby.SessionServer do
     call(token, {:transition, new_status})
   end
 
-  @spec send_message(String.t(), integer(), String.t(), String.t()) :: :ok | {:error, atom()}
-  def send_message(token, user_id, sender_nick, content) do
-    call(token, {:send_message, user_id, sender_nick, content})
+  @spec send_message(String.t(), integer(), String.t(), String.t(), String.t()) ::
+          :ok | {:error, atom()}
+  def send_message(token, user_id, sender_nick, content, type \\ "message") do
+    call(token, {:send_message, user_id, sender_nick, content, type})
   end
 
   @spec set_media(String.t(), integer(), boolean(), boolean()) :: :ok | {:error, atom()}
@@ -224,11 +226,11 @@ defmodule RetroHexChat.Lobby.SessionServer do
     {:reply, {:error, :content_empty}, state}
   end
 
-  def handle_call({:send_message, user_id, sender_nick, content}, _from, state) do
+  def handle_call({:send_message, user_id, sender_nick, content, type}, _from, state) do
     if String.length(content) > @max_message_length do
       {:reply, {:error, :content_too_long}, state}
     else
-      {:reply, :ok, handle_send_message(state, user_id, sender_nick, content)}
+      {:reply, :ok, handle_send_message(state, user_id, sender_nick, content, type)}
     end
   end
 
@@ -475,13 +477,13 @@ defmodule RetroHexChat.Lobby.SessionServer do
     %{state | session: session}
   end
 
-  defp handle_send_message(state, user_id, sender_nick, content) do
+  defp handle_send_message(state, user_id, sender_nick, content, type) do
     msg = %{
       id: System.unique_integer([:positive]),
       sender_id: user_id,
       sender_nick: sender_nick,
       content: content,
-      type: "message",
+      type: type,
       timestamp: DateTime.utc_now()
     }
 

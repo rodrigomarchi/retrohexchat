@@ -57,10 +57,11 @@ defmodule RetroHexChat.Lobby.Service do
     :ok
   end
 
-  @spec send_lobby_message(String.t(), integer(), String.t()) :: :ok | {:error, atom()}
-  def send_lobby_message(token, user_id, content) do
+  @spec send_lobby_message(String.t(), integer(), String.t(), String.t()) ::
+          :ok | {:error, atom()}
+  def send_lobby_message(token, user_id, content, type \\ "message") do
     nick = get_nickname(user_id)
-    SessionServer.send_message(token, user_id, nick || "unknown", content)
+    SessionServer.send_message(token, user_id, nick || "unknown", content, type)
   end
 
   @spec propose_game(String.t(), integer(), String.t()) :: :ok | {:error, atom()}

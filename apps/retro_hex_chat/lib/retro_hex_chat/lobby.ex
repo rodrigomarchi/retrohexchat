@@ -24,8 +24,9 @@ defmodule RetroHexChat.Lobby do
   @spec close_sessions_between(integer(), integer()) :: :ok
   defdelegate close_sessions_between(user_a_id, user_b_id), to: Service
 
-  @spec send_lobby_message(String.t(), integer(), String.t()) :: :ok | {:error, atom()}
-  defdelegate send_lobby_message(token, user_id, content), to: Service
+  @spec send_lobby_message(String.t(), integer(), String.t(), String.t()) ::
+          :ok | {:error, atom()}
+  defdelegate send_lobby_message(token, user_id, content, type \\ "message"), to: Service
 
   @spec propose_game(String.t(), integer(), String.t()) :: :ok | {:error, atom()}
   defdelegate propose_game(token, user_id, game_id), to: Service

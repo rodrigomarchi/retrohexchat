@@ -45,6 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
   attr :italic_active, :boolean, default: false
   attr :underline_active, :boolean, default: false
   attr :strip_active, :boolean, default: false
+  attr :show_emoji, :boolean, default: true, doc: "Render the emoji-picker toggle button"
   attr :on_format, :any, default: nil, doc: "Format button callback (receives phx-value-format)"
   attr :on_toggle_emoji, :any, default: nil, doc: "Emoji picker toggle callback"
   attr :class, :string, default: nil
@@ -157,10 +158,11 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
           <Icons.icon_fmt_strip class="w-3.5 h-3.5" />
         </.toolbar_button>
 
-        <.toolbar_separator variant="compact" />
+        <.toolbar_separator :if={@show_emoji} variant="compact" />
 
         <%!-- Emoji toggle --%>
         <.toolbar_button
+          :if={@show_emoji}
           variant="compact"
           label={dgettext("chat", "Emoji Picker")}
           phx-click={@on_toggle_emoji}

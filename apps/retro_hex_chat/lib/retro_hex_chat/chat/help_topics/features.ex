@@ -1012,7 +1012,10 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "desktop",
           "window",
           "taskbar",
-          "start menu"
+          "start menu",
+          "chat",
+          "formatting",
+          "/me"
         ],
         icon: :icon_p2p,
         description:
@@ -1037,7 +1040,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "transfers and games still ask the other side to accept. The lobby always opens with a " <>
               "fresh default layout (your window arrangement is not kept between visits). It only " <>
               "closes when someone leaves or it goes idle. " <>
-              "See also: Video Call, File Transfer, Network Statistics."
+              "The Chat window is the same IRC surface as the main chat: messages show as " <>
+              "[time] <nick> text with colored nicks, the formatting toolbar and mIRC codes work, " <>
+              "and nick autocomplete completes the other peer. It supports a small command set — " <>
+              "/me <action> for an action line, /clear to clear your own view and /help to list " <>
+              "them. Lobby chat is ephemeral: it is never saved and disappears when the lobby closes. " <>
+              "See also: Video Call, File Transfer, Network Statistics, Text Formatting."
           )
       },
       %{

@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChatWeb.App.ChatHelpers
+  alias RetroHexChatWeb.App.ComposerEvents
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
   alias RetroHexChatWeb.Timezone
@@ -565,6 +566,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:perform_autojoin_events, &ChatLive.PerformAutojoinEvents.handle_event/3},
       {:channel_list_events, &ChatLive.ChannelListEvents.handle_event/3},
       {:menu_toolbar_events, &ChatLive.MenuToolbarEvents.handle_event/3},
+      {:composer_events, &ComposerEvents.handle_event/3},
       {:user_lookup_events, &ChatLive.UserLookupEvents.handle_event/3},
       {:hover_events, &ChatLive.HoverEvents.handle_event/3},
       {:context_menu_events, &ChatLive.ContextMenuEvents.handle_event/3},

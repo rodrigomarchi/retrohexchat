@@ -23,9 +23,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   and the edit Service calls (privileged work stays on the LiveView).
 
   `edit_mode_message_id` stays parent-owned (the MessageViewport reads it for the
-  `--editing` row class) and arrives here as passthrough context, along with the
-  read-model the composer renders from (`session`, `channel_users`,
-  `show_status_tab`, `show_emoji_picker`, `pm_typing_from`).
+  `--editing` row class) and arrives here as passthrough context. The composer
+  renders from a context-agnostic read-model: `nickname`, `channel_users`,
+  `channels`, `strip_formatting`, `placeholder`, `show_emoji_picker`,
+  `pm_typing_from`, and a `capabilities` map (`action_mode`, `nick_autocomplete`,
+  `channel_autocomplete`, `command_autocomplete`, `formatting_toolbar`, `emoji`,
+  `typing_indicator`, `paste`) that toggles which features light up. The main chat
+  passes a stable `%Session{}` + `show_status_tab` and the composer derives the
+  read-model in `update/2` (keeping change tracking keyed on the session struct);
+  the P2P lobby passes the `capabilities`/`nickname`/… fields directly. Same
+  component, two hosts, no fork.
   """
   use RetroHexChatWeb, :live_component
 
@@ -45,6 +52,40 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
   @spec id() :: String.t()
   def id, do: @id
+
+  @default_capabilities %{
+    action_mode: false,
+    nick_autocomplete: false,
+    channel_autocomplete: true,
+    command_autocomplete: true,
+    formatting_toolbar: true,
+    emoji: true,
+    typing_indicator: false,
+    paste: true
+  }
+
+  @doc "Default capability set (full-chat leaning, safe for first paint)."
+  @spec default_capabilities() :: map()
+  def default_capabilities, do: @default_capabilities
+
+  @doc """
+  Derives the composer capability map from a chat `%Session{}` and the
+  status-tab flag, preserving the exact gating the composer used to read inline.
+  """
+  @spec capabilities_from_session(struct(), boolean()) :: map()
+  def capabilities_from_session(session, show_status_tab) do
+    %{
+      action_mode:
+        not show_status_tab and session.active_pm == nil and session.active_channel != nil,
+      nick_autocomplete: not is_nil(session.active_channel) and not show_status_tab,
+      channel_autocomplete: true,
+      command_autocomplete: true,
+      formatting_toolbar: not show_status_tab,
+      emoji: true,
+      typing_indicator: not is_nil(session.active_pm),
+      paste: true
+    }
+  end
 
   @owned_defaults %{
     input: "",
@@ -72,8 +113,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
      |> assign(:id, @id)
      |> assign(@owned_defaults)
      |> assign(
-       session: nil,
+       nickname: "",
        channel_users: [],
+       channels: [],
+       strip_formatting: false,
+       placeholder: "",
+       capabilities: @default_capabilities,
+       session: nil,
        show_status_tab: false,
        show_emoji_picker: false,
        pm_typing_from: nil,
@@ -165,8 +211,30 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
      |> push_event("set_input", %{value: ""})}
   end
 
-  # passthrough context (session/channel_users/show_status_tab/…)
+  # Passthrough context. Two host shapes converge on the same `capabilities`
+  # read-model: the main chat passes a stable `%Session{}` + `show_status_tab`
+  # (a struct reference that only changes when the session does, keeping the
+  # composer's change tracking tight on the hot path) and the composer derives
+  # the flags here; the P2P lobby passes `capabilities`/`nickname`/… directly.
+  def update(%{session: _} = assigns, socket) do
+    {:ok, socket |> assign(assigns) |> derive_from_session()}
+  end
+
   def update(assigns, socket), do: {:ok, assign(socket, assigns)}
+
+  defp derive_from_session(socket) do
+    session = socket.assigns.session
+    show_status_tab = socket.assigns.show_status_tab
+
+    assign(socket,
+      nickname: session.nickname,
+      channels: session.channels,
+      strip_formatting: session.strip_formatting,
+      capabilities: capabilities_from_session(session, show_status_tab),
+      placeholder:
+        ChatHelpers.input_placeholder(%{session: session, show_status_tab: show_status_tab})
+    )
+  end
 
   # ── Form events (phx-target={@myself}) ───────────────────────────
 
@@ -177,7 +245,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   end
 
   def handle_event("toggle_action_mode", _params, socket) do
-    if action_mode_available?(socket.assigns) do
+    if socket.assigns.capabilities.action_mode do
       if socket.assigns.notice_target, do: send(self(), {:composer_notice_active, false})
 
       {:noreply,
@@ -229,14 +297,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
 
       <div class="shrink-0">
         <.live_component
+          :if={@capabilities.emoji}
           module={EmojiPickerDialog}
           id={EmojiPickerDialog.id()}
           visible={@show_emoji_picker}
         />
 
         <.formatting_toolbar
-          :if={!@show_status_tab}
-          strip_active={@session.strip_formatting}
+          :if={@capabilities.formatting_toolbar}
+          strip_active={@strip_formatting}
+          show_emoji={@capabilities.emoji}
           on_format="toggle_strip_formatting"
           on_toggle_emoji="toggle_emoji_picker"
         />
@@ -248,15 +318,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
           on_dismiss="cancel_reply"
         />
 
-        <.typing_indicator :if={@session.active_pm} nick={@pm_typing_from} />
+        <.typing_indicator :if={@capabilities.typing_indicator} nick={@pm_typing_from} />
 
         <.chat_input
           id="chat-input-area"
           input_id="chat-input"
           value={@input}
           name="input"
-          placeholder={ChatHelpers.input_placeholder(assigns)}
-          action_enabled={action_mode_available?(assigns)}
+          placeholder={@placeholder}
+          action_enabled={@capabilities.action_mode}
           action_active={@action_mode}
           notice_target={@notice_target}
           input_error={@input_error}
@@ -273,7 +343,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
         <%!-- Composer-owned hook: intercepts multi-line paste on #chat-input and
               pushes `paste_lines` to the root LiveView (handled by core_events,
               which forwards to the PasteConfirmDialog island). --%>
-        <div id="paste-hook" phx-hook="PasteHook" class="u-hidden"></div>
+        <div :if={@capabilities.paste} id="paste-hook" phx-hook="PasteHook" class="u-hidden"></div>
         <.history_search visible={true} class="u-hidden" />
       </div>
     </div>
@@ -336,24 +406,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     is_binary(socket.assigns.notice_target) and socket.assigns.notice_target != ""
   end
 
-  defp action_mode_available?(assigns) do
-    session = assigns.session
-    !assigns.show_status_tab and session.active_pm == nil and session.active_channel != nil
-  end
-
   # ── Autocomplete ─────────────────────────────────────────────────
 
   defp compute_autocomplete(socket, %{"type" => "command", "partial" => partial}) do
-    results = Autocomplete.search_commands(partial, socket.assigns.recent_commands)
-    open_autocomplete(socket, :command, results)
+    if socket.assigns.capabilities.command_autocomplete do
+      results = Autocomplete.search_commands(partial, socket.assigns.recent_commands)
+      open_autocomplete(socket, :command, results)
+    else
+      socket
+    end
   end
 
   defp compute_autocomplete(socket, %{"type" => "nick", "partial" => partial}) do
-    session = socket.assigns.session
-
-    if session.active_channel && !socket.assigns.show_status_tab do
+    if socket.assigns.capabilities.nick_autocomplete do
       results =
-        Autocomplete.search_nicks(partial, socket.assigns.channel_users, session.nickname)
+        Autocomplete.search_nicks(partial, socket.assigns.channel_users, socket.assigns.nickname)
 
       open_autocomplete(socket, :nick, results)
     else
@@ -362,8 +429,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   end
 
   defp compute_autocomplete(socket, %{"type" => "channel", "partial" => partial}) do
-    results = Autocomplete.search_channels(partial, socket.assigns.session.channels)
-    open_autocomplete(socket, :channel, results)
+    if socket.assigns.capabilities.channel_autocomplete do
+      results = Autocomplete.search_channels(partial, socket.assigns.channels)
+      open_autocomplete(socket, :channel, results)
+    else
+      socket
+    end
   end
 
   defp compute_autocomplete(socket, %{
@@ -371,12 +442,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
          "partial" => partial,
          "command" => command
        }) do
-    session = socket.assigns.session
-
     case Autocomplete.argument_context(command) do
       {:nick, scope} when scope in [:current_channel, :all_channels] ->
         results =
-          Autocomplete.search_nicks(partial, socket.assigns.channel_users, session.nickname)
+          Autocomplete.search_nicks(
+            partial,
+            socket.assigns.channel_users,
+            socket.assigns.nickname
+          )
 
         open_autocomplete(socket, :nick, results)
 
@@ -386,8 +459,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   end
 
   defp compute_autocomplete(socket, %{"type" => "arg_channel", "partial" => partial}) do
-    results = Autocomplete.search_channels(partial, socket.assigns.session.channels)
-    open_autocomplete(socket, :channel, results)
+    if socket.assigns.capabilities.channel_autocomplete do
+      results = Autocomplete.search_channels(partial, socket.assigns.channels)
+      open_autocomplete(socket, :channel, results)
+    else
+      socket
+    end
   end
 
   defp compute_autocomplete(socket, %{
@@ -608,7 +685,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     partial = params["partial"]
     is_start = Map.get(params, "is_start", true)
     users = socket.assigns.channel_users
-    own_nick = socket.assigns.session.nickname
+    own_nick = socket.assigns.nickname
 
     case Autocomplete.tab_complete_matches(partial, users, own_nick) do
       [] -> socket

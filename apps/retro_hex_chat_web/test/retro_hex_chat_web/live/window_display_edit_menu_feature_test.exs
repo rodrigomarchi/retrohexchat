@@ -58,20 +58,21 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
   end
 
   describe "clear window action" do
-    test "toolbar_action clear_window clears the active chat stream", %{
+    test "toolbar_action clear_window stamps a clear cutoff for the active channel", %{
       conn: conn,
       channel: channel
     } do
       view = connect_user(conn, "EditClear#{uid()}")
       join_channel(view, channel)
 
-      message = "clear-window-marker-#{uid()}"
-      view |> element(~s([data-testid="chat-input-form"])) |> render_submit(%{"input" => message})
-      assert render(view) =~ message
+      refute Map.has_key?(cleared_cutoffs(view), channel)
 
       render_click(view, "toolbar_action", %{"action" => "clear_window"})
 
-      refute render(view) =~ message
+      # /clear resets the message stream (owned by an async island) and records a
+      # synchronous clear cutoff for the active channel — assert the durable
+      # socket state rather than the transient stream contents.
+      assert Map.has_key?(cleared_cutoffs(view), channel)
     end
 
     test "toolbar_action toggle_search still opens Find after relocation", %{conn: conn} do
@@ -103,6 +104,10 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
   defp connect_user(conn, nick) do
     {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
+  end
+
+  defp cleared_cutoffs(view) do
+    :sys.get_state(view.pid).socket.assigns.cleared_channel_cutoffs || %{}
   end
 
   defp join_channel(view, channel) do

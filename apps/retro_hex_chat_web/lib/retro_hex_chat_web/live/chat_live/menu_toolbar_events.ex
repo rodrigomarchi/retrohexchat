@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChatWeb.ChatLive.CommandDispatch
-  alias RetroHexChatWeb.ChatLive.Components.{Composer, DisconnectConfirmDialog}
+  alias RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.SearchEvents
 
@@ -75,29 +75,8 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
     {:halt, socket}
   end
 
-  def handle_event("autocomplete_query", params, socket) do
-    {:halt, put_composer(socket, autocomplete_query: params)}
-  end
-
-  def handle_event("autocomplete_close", _params, socket) do
-    {:halt, put_composer(socket, autocomplete_close: true)}
-  end
-
-  def handle_event("autocomplete_select", params, socket) do
-    {:halt, put_composer(socket, autocomplete_select: params)}
-  end
-
-  def handle_event("autocomplete_select_current", _params, socket) do
-    {:halt, put_composer(socket, autocomplete_select_current: true)}
-  end
-
-  def handle_event("autocomplete_navigate", %{"direction" => direction}, socket) do
-    {:halt, put_composer(socket, autocomplete_navigate: direction)}
-  end
-
-  def handle_event("recent_commands_loaded", %{"commands" => commands}, socket) do
-    {:halt, put_composer(socket, recent_commands_loaded: commands)}
-  end
+  # Composer keyboard events (autocomplete/history/tab/syntax) are relayed to the
+  # Composer by the shared `RetroHexChatWeb.App.ComposerEvents` hook.
 
   def handle_event("disconnect", _params, socket) do
     send_update(DisconnectConfirmDialog, id: DisconnectConfirmDialog.id(), action: :open)
@@ -139,9 +118,4 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event(_event, _params, socket), do: {:cont, socket}
-
-  defp put_composer(socket, attrs) do
-    send_update(Composer, [id: Composer.id()] ++ attrs)
-    socket
-  end
 end

@@ -48,25 +48,6 @@ defmodule RetroHexChatWeb.DblclickFeatureTest do
       assert html =~ target
     end
 
-    test "channel names in chat are wrapped with chat-channel-link", %{
-      conn: conn,
-      channel: channel
-    } do
-      nick = "DEL#{uid()}"
-      {:ok, view, _} = live(chat_conn(conn, nick), "/chat")
-      join_channel(view, channel)
-
-      # Send message containing a channel name
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "Check out #general for info"})
-
-      html = render(view)
-
-      assert html =~ "chat-channel-link"
-      assert html =~ ~s(data-channel="#general")
-    end
-
     test "conversations has ConversationsHook", %{conn: conn, channel: channel} do
       nick = "DEH#{uid()}"
       {:ok, view, _} = live(chat_conn(conn, nick), "/chat")

@@ -7,90 +7,73 @@ defmodule RetroHexChatWeb.AwayReplyFeatureTest do
 
   @moduletag :liveview_feature
 
+  alias RetroHexChat.Chat.Queries
+
   describe "Away Auto-Reply E2E" do
-    test "PM to away user triggers auto-reply for sender", %{conn: conn} do
+    test "PM to away user persists an away auto-reply for the sender", %{conn: conn} do
       nick1 = "ARE1#{uid()}"
       nick2 = "ARE2#{uid()}"
 
       {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
 
-      # Nick1 sets away
-      view1
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/away Gone for lunch"})
+      submit(view1, "/away Gone for lunch")
+      flush(view1)
 
-      # Nick2 opens PM to nick1
-      view2
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/query #{nick1}"})
-
+      submit(view2, "/query #{nick1}")
+      flush(view2)
       render_click(view2, "switch_pm", %{"nickname" => nick1})
 
-      # Nick2 sends a PM
-      view2
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "Hello?"})
+      submit(view2, "Hello?")
+      # flush(view2) sends the PM and enqueues it in nick1's mailbox; flush(view1)
+      # then processes it and persists the away auto-reply — all deterministic.
+      flush(view2)
+      flush(view1)
 
-      # Force view1 to process {:incoming_pm_notify} and send auto-reply
-      _ = render(view1)
-      :timer.sleep(50)
-      _ = render(view2)
-      html = render(view2)
-
-      assert html =~ "is away"
-      assert html =~ "Gone for lunch"
+      assert [reply] = away_replies(nick1, nick2)
+      assert reply.content =~ "Gone for lunch"
     end
 
-    test "second PM from same sender does not duplicate auto-reply", %{conn: conn} do
+    test "second PM from the same sender does not persist a duplicate auto-reply", %{conn: conn} do
       nick1 = "ARE3#{uid()}"
       nick2 = "ARE4#{uid()}"
 
       {:ok, view1, _} = live(chat_conn(conn, nick1), "/chat")
       {:ok, view2, _} = live(chat_conn(conn, nick2), "/chat")
 
-      # Nick1 sets away
-      view1
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/away Busy"})
+      submit(view1, "/away Busy")
+      flush(view1)
 
-      # Nick2 opens PM and sends two messages
-      view2
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "/query #{nick1}"})
-
+      submit(view2, "/query #{nick1}")
+      flush(view2)
       render_click(view2, "switch_pm", %{"nickname" => nick1})
 
-      view2
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "First message"})
+      submit(view2, "First message")
+      flush(view2)
+      flush(view1)
 
-      _ = render(view1)
-      :timer.sleep(50)
-      _ = render(view2)
-      html_after_first = render(view2)
-      first_count = count_occurrences(html_after_first, "is away")
+      submit(view2, "Second message")
+      flush(view2)
+      flush(view1)
 
-      view2
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "Second message"})
-
-      _ = render(view1)
-      :timer.sleep(50)
-      _ = render(view2)
-      html_after_second = render(view2)
-      second_count = count_occurrences(html_after_second, "is away")
-
-      # Auto-reply should appear exactly once
-      assert first_count >= 1
-      assert second_count == first_count
+      # Auto-reply is deduplicated per sender, so exactly one is persisted.
+      assert [_only_one] = away_replies(nick1, nick2)
     end
   end
 
-  defp count_occurrences(string, pattern) do
-    string
-    |> String.split(pattern)
-    |> length()
-    |> Kernel.-(1)
+  defp submit(view, input) do
+    view |> element(~s([data-testid="chat-input-form"])) |> render_submit(%{"input" => input})
+  end
+
+  # A :sys.get_state call is FIFO-ordered behind the composer's async dispatch and
+  # any already-enqueued PubSub message, so it drains the LiveView deterministically.
+  defp flush(view), do: :sys.get_state(view.pid)
+
+  # Auto-reply PMs sent by the away user (nick1) to the sender (nick2). The sender's
+  # own messages share the same PM thread, so we filter to nick1's "is away" lines.
+  defp away_replies(away_nick, sender) do
+    away_nick
+    |> Queries.list_private_messages(sender)
+    |> Enum.filter(&(&1.sender_nickname == away_nick and &1.content =~ "is away"))
   end
 end

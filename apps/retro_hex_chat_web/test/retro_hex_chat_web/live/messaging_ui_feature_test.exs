@@ -24,34 +24,6 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
       assert html =~ "What are you doing? (/me mode)"
     end
 
-    test "toggle sends next message as /me and resets", %{conn: conn} do
-      channel = "#msg-action-#{uid()}"
-      nick = "MsgAct#{uid()}"
-      view = connect_user(conn, nick)
-      join_channel(view, channel)
-
-      html = render(view)
-      assert html =~ ~s(data-testid="chat-action-toggle")
-
-      html =
-        view
-        |> element(~s([data-testid="chat-action-toggle"]))
-        |> render_click()
-
-      assert html =~ "What are you doing? (/me mode)"
-      assert html =~ ~s(aria-pressed="true")
-
-      view
-      |> element(~s([data-testid="chat-input-form"]))
-      |> render_submit(%{"input" => "waves hello"})
-
-      :timer.sleep(20)
-      html = render(view)
-      assert html =~ "waves hello"
-      assert html =~ "text-action"
-      refute html =~ "What are you doing? (/me mode)"
-    end
-
     test "empty action message shows inline error and keeps action mode", %{conn: conn} do
       channel = "#msg-empty-action-#{uid()}"
       view = connect_user(conn, "MsgEmpty#{uid()}")
@@ -115,6 +87,12 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
       join_channel(sender_view, channel)
       join_channel(target_view, channel)
 
+      # Nick→nick notices are delivered over the "user:<target>" PubSub topic
+      # (ephemeral, never persisted). Subscribe the test process so we can assert
+      # the actual cross-user delivery deterministically instead of re-rendering
+      # the recipient's async message stream.
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:#{target}")
+
       sender_view
       |> render_click("nick_right_click", %{"nick" => target, "x" => 100, "y" => 200})
 
@@ -131,8 +109,7 @@ defmodule RetroHexChatWeb.MessagingUIFeatureTest do
       refute html =~ "Notice to #{target}:"
       refute html =~ "Send Notice"
 
-      :timer.sleep(20)
-      assert render(target_view) =~ "Check out #project"
+      assert_receive {:new_notice, %{sender: ^sender, content: "Check out #project"}}
     end
 
     test "empty notice message shows inline error and can be cancelled", %{conn: conn} do

@@ -22,7 +22,6 @@ import NicklistHook from "./ui/nicklist_hook";
 import ContextualTipsHook from "./ui/contextual_tips_hook";
 import MessageInteractionsHook from "./chat/message_interactions_hook";
 import NickChangeFormHook from "./chat/nick_change_form_hook";
-import P2PChatFormHook from "./p2p/p2p_chat_form_hook";
 import URLCatcherHook from "./ui/url_catcher_hook";
 import ArcadeIframeHook, { ArcadeSessionHook } from "./games/arcade_iframe_hook";
 import ArcadeGameHook from "./games/arcade_game_hook";
@@ -69,7 +68,6 @@ export const criticalHooks = {
   LagHook: LagHook,
   MessageInteractionsHook: MessageInteractionsHook,
   NickChangeFormHook: NickChangeFormHook,
-  P2PChatFormHook: P2PChatFormHook,
   NotifyListHook: NotifyListHook,
   PasteHook: PasteHook,
   ScrollHook: ScrollHook,

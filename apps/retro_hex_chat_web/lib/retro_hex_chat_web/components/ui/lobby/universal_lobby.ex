@@ -51,6 +51,10 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   attr :local_info, :map, default: %{}
   attr :peer_info, :map, default: %{}
 
+  # Ephemeral chat window (IRC surface shared with the main chat)
+  attr :strip_formatting, :boolean, default: false
+  attr :timezone, :string, default: "Etc/UTC"
+
   # Terminal state
   attr :expired, :boolean, default: false
   attr :session_closed, :boolean, default: false
@@ -209,13 +213,20 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             title={dgettext("lobby", "Chat")}
             default_x={16}
             default_y={300}
-            width={300}
-            height={280}
+            width={380}
+            height={340}
             body_class="p-1"
             data-testid="lobby-window-chat"
           >
             <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
-            <.live_component module={ChatIsland} id="lobby-chat" />
+            <.live_component
+              module={ChatIsland}
+              id="lobby-chat"
+              nickname={@nickname}
+              peer_nick={@peer_nick}
+              strip_formatting={@strip_formatting}
+              timezone={@timezone}
+            />
           </.desktop_window>
 
           <%!-- Audio/video call --%>

@@ -222,17 +222,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     {:halt, socket}
   end
 
-  # -- history_navigate --
-
-  def handle_event("history_navigate", %{"direction" => direction}, socket) do
-    {:halt, put_composer(socket, history_navigate: direction)}
-  end
-
-  # -- tab_complete --
-
-  def handle_event("tab_complete", params, socket) do
-    {:halt, put_composer(socket, tab_complete: params)}
-  end
+  # history_navigate/tab_complete/syntax_tooltip_* are relayed to the Composer by
+  # the shared `RetroHexChatWeb.App.ComposerEvents` hook.
 
   # The clipboard JS hook pushes the pasted lines to the parent; we filter out
   # blank lines and forward the rest to the `PasteConfirmDialog` LiveComponent,
@@ -247,18 +238,6 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     )
 
     {:halt, socket}
-  end
-
-  # -- syntax_tooltip_query --
-
-  def handle_event("syntax_tooltip_query", %{"command" => command, "args" => args}, socket) do
-    {:halt, put_composer(socket, syntax_query: %{command: command, args: args})}
-  end
-
-  # -- syntax_tooltip_dismiss --
-
-  def handle_event("syntax_tooltip_dismiss", _params, socket) do
-    {:halt, put_composer(socket, syntax_dismiss: true)}
   end
 
   # -- reply_to_message --

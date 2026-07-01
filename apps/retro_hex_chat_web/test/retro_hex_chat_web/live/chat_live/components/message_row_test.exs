@@ -41,10 +41,34 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     assert html =~ "hello world"
   end
 
+  test "renders the bracketed DD/MM HH:MM timestamp for the row" do
+    html = row(%{id: "m1", author: "bob", content: "hi", type: :normal, timestamp: @ts})
+    assert html =~ "[01/01 12:00]"
+  end
+
   test "renders an action message" do
     html = row(%{id: "a1", author: "bob", content: "waves", type: :action, timestamp: @ts})
     assert html =~ "* bob"
     assert html =~ "waves"
+  end
+
+  # Layout tokens the IRC nick-column alignment depends on. These were previously
+  # only asserted through a full LiveView render (flaky); pinned here on the
+  # component so the coverage is deterministic.
+  test "normal messages use the grid layout with a data-nick nick column" do
+    html = row(%{id: "g1", author: "alice", content: "hi", type: :normal, timestamp: @ts})
+    assert html =~ "grid-cols-[auto_10ch_1fr]"
+    assert html =~ ~s(data-nick="alice")
+  end
+
+  test "action messages carry the text-action class" do
+    html = row(%{id: "a2", author: "bob", content: "waves", type: :action, timestamp: @ts})
+    assert html =~ "text-action"
+  end
+
+  test "system messages are italicized (no grid nick column)" do
+    html = row(%{id: "sy1", content: "joined", type: :system, timestamp: @ts})
+    assert html =~ "italic"
   end
 
   test "renders system, service, error and notice rows" do
