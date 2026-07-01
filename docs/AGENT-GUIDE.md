@@ -579,7 +579,7 @@ This separation is Principle IV and is enforced.
 
 - **No inline `<svg>` anywhere.** Icons are function components in `Icons.*` submodules (chosen
   by *what the icon depicts*, not where it's used), exposed via the `components/icons.ex` facade;
-  complex illustrations go in `components/diagrams.ex`. Reuse from `docs/svg-catalog.md` /
+  complex illustrations go in `components/diagrams.ex`. Reuse from `docs/reference/svg-catalog.md` /
   `/showcase/icons` before adding one. A missing icon is a real prerequisite — add it via
   submodule + facade `defdelegate` + `@spec` first.
 - **No hardcoded hex colors or CSS values in Elixir/JS** — Tailwind classes or CSS custom
@@ -698,5 +698,69 @@ Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help
 - **When the spec contradicts the code, trust the code and record the discrepancy** — specs lag
   reality on key bindings (`Ctrl+Shift+F` not `Ctrl+F`), menu names (File/Edit/View/Tools/Help,
   no User menu), and handler permission gates. Don't invent parallel structure for a stale spec.
-</content>
-</invoke>
+
+---
+
+## 15. JS hook loading & bundle standard (CI-enforced)
+
+There is exactly ONE hook registration pattern; do not reintroduce local choice in `app.js`.
+
+- **One registration path.** A LiveSocket entrypoint imports a single `build*Hooks()` function
+  from `assets/js/hooks/*_hooks.js` and passes the returned map to `LiveSocket(..., {hooks})`.
+  No entrypoint may import individual hook implementations or define an inline hooks object.
+  `app.js` → `buildHooks()` (`hooks/registry.js`); `help_live.js` → `buildHelpHooks()`;
+  `retrohex_content.js` → `buildShowcaseHooks()`.
+- **Critical vs lazy classification is mandatory.** Critical hooks (chat shell input, keyboard,
+  autocomplete, scroll, menu/toolbar, conversations, connection/lag, sound/title/notification,
+  context-menu base) are imported eagerly in `critical_hooks.js` — **a critical hook must never
+  be lazy** and that file contains zero dynamic imports. Lazy feature hooks (P2P WebRTC, media
+  audio/video, file transfer, P2P diagram, game WebRTC, game canvas, game engines) are declared
+  **only** in the central `lazy_feature_hooks.js` allowlist via
+  `lazyFeatureHook({name, loader, serverEvents, readyEvent, reason})`.
+- **Readiness protocol for any lazy hook that receives server-pushed startup events.** Dynamic
+  `import()` is async, so a facade can mount before its impl loads and miss an early
+  `push_event`. The handshake: DOM renders `phx-hook` → facade mounts → impl loads → impl
+  registers all `handleEvent` callbacks → client pushes `*_ready` → server (re)sends startup
+  state. Rules: `serverEvents.length > 0` **requires** a `readyEvent`; `safeWithoutReady` is
+  banned. Server `handle_event("*_ready", …)` resends current state if the feature is already
+  active, and all startup pushes must be idempotent (a duplicate start must not create a second
+  `RTCPeerConnection`, media/file session, game engine, or timer). Client registers `handleEvent`
+  **before** `pushEvent("*_ready")`, guards duplicate starts, queues out-of-order signals, and
+  cleans up timers/listeners on `destroyed`.
+- **CI guard** (`enforce_hooks_contract.cjs`, run via `make lint.hooks`) fails on: direct hook
+  imports or inline hook maps in an entrypoint; `lazyFeatureHook(`/`import(` outside the approved
+  registry/facade/i18n/game-engine locations; a `phx-hook="Name"` with no registry entry; a
+  critical hook appearing in the lazy allowlist; a lazy hook with `serverEvents` but no
+  `readyEvent`; `safeWithoutReady`; a new hook file that isn't classified.
+- **Bundle budget** (`npm run bundle:budget`) fails if initial `app.js` exceeds budget, a known
+  lazy module is pulled back into the initial chunk, or an async chunk grows past budget without
+  an explicit budget update. Keep lazy feature chunks as async chunks. Approved dynamic-import
+  sites: `lazy_feature_hooks.js`, the JS i18n catalog loader (`lib/i18n.js`), the game-engine
+  loader — anything else must be added to the allowlist with rationale or it fails CI.
+
+---
+
+## 16. i18n & public-page URLs
+
+- **Gettext, English source, small per-domain catalogs.** English is the source language;
+  catalogs are kept small per functional domain, not concentrated in one `default.po`. Call
+  `Gettext.put_locale/2` in `mount/3` or a shared `on_mount`. Locales are registered in
+  `config/i18n_locales.exs` (Gettext dir code, BCP47 tag, Open Graph locale, native name, text
+  direction, `Plural-Forms`, rollout wave/status). See `docs/reference/i18n-catalogs.md` for the
+  catalog conventions and the locale roster.
+- **JS i18n catalogs are lazy-loaded** (dynamic `import()` in `lib/i18n.js`) while `t()`/`jt()`
+  stay synchronous at call sites — one of the approved dynamic-import boundaries (§15).
+- **Localized public URL model.** Default English is **unprefixed** (`/features`); non-default
+  locales use a BCP47 **path segment** (`/pt-BR/features`, `/zh-Hans/features`). Public SEO URLs
+  use only the clean path model — `?locale=` query URLs are non-canonical and must never appear
+  in `<head>` alternates, footer language links, or the sitemap. Query-locale routes
+  (`/locale/:locale?return_to=…`) exist solely for in-app user-initiated language switching.
+- **Routes: explicit localized scopes per enabled non-default locale, never a catch-all
+  `/:locale`** — a catch-all would capture app routes (`/connect`, `/chat`, `/p2p/:token`,
+  `/game/:token`, `/solo/:token`, `/arcade/:token/:game_id`, `/showcase`). `PutLocale` resolves
+  the locale from route params/assigns before the session / Accept-Language fallback.
+- **hreflang is reciprocal.** Sitemap and `<head>` alternates list every locale version of a
+  page reciprocally; `x-default` points at the English unprefixed URL. Canonical URLs on
+  localized pages are self-referencing clean paths.
+- **Public pages avoid the full app bundle.** Prefer server-rendered / CSS-first behavior on
+  landing and help pages; only actual app pages load `app.js`.

@@ -165,7 +165,7 @@ Same pattern: `attr :class` + `@spec` + `~H""" <svg> """`.
 
 ### Catalog
 
-See `docs/svg-catalog.md` for full inventory. Visit `/showcase/icons` (dev only) to browse all icons visually.
+See `docs/reference/svg-catalog.md` for full inventory. Visit `/showcase/icons` (dev only) to browse all icons visually.
 
 ## Help System (mandatory)
 
