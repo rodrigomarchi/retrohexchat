@@ -57,11 +57,17 @@ const WindowManagerHook = {
   },
 
   updated() {
-    // A server-driven DOM patch can reset the class/style we own on window roots.
-    // Re-assert client-owned geometry and visibility after every patch — but never
-    // mid-gesture, where the pointer handlers are already the source of truth.
-    if (this.drag || this.resize) return;
-    this.applyAll();
+    // A server-driven DOM patch resets the class/style we own on window roots
+    // (the server always renders `u-hidden`), so re-assert client-owned geometry
+    // and visibility after every patch. Mid-gesture the pointer handler owns the
+    // dragged/resized window, so re-assert every OTHER window but leave that one
+    // alone — otherwise a background patch (e.g. a stats tick) would hide the
+    // other windows until the gesture ends.
+    const activeId = (this.drag && this.drag.id) || (this.resize && this.resize.id);
+    for (const id in this.windows) {
+      if (id === activeId) continue;
+      this.applyWindow(id);
+    }
   },
 
   destroyed() {
@@ -231,6 +237,10 @@ const WindowManagerHook = {
     if (this.drag || this.resize) {
       this.drag = null;
       this.resize = null;
+      // Re-assert every window now the gesture is over, so a state left stale by
+      // the mid-gesture `updated()` guard is corrected immediately (not only on
+      // the next server patch).
+      this.applyAll();
       this.persist();
     }
   },

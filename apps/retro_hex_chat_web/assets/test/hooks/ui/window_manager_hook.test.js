@@ -172,6 +172,37 @@ describe("WindowManagerHook", () => {
     expect(saved.conn.open).toBe(true);
   });
 
+  it("keeps other windows visible when a server patch lands mid-drag", () => {
+    command({ action: "open", id: "call" }); // conn, chat and call all visible
+
+    // Start dragging chat.
+    hook.drag = { id: "chat", px: 0, py: 0, ox: 20, oy: 20 };
+
+    // A server patch re-renders the pinned conn window, resetting its class to the
+    // server default (which always includes `u-hidden`).
+    win("conn").classList.add("u-hidden");
+    hook.updated();
+
+    // The non-dragged window must be re-asserted, not left hidden.
+    expect(win("conn").classList.contains("u-hidden")).toBe(false);
+
+    hook.drag = null;
+  });
+
+  it("re-asserts every window's visibility on pointer up", () => {
+    command({ action: "open", id: "call" });
+
+    hook.drag = { id: "chat", px: 0, py: 0, ox: 20, oy: 20 };
+    // A patch clobbers the dragged window mid-gesture (updated() skips it).
+    win("chat").classList.add("u-hidden");
+    hook.updated();
+    expect(win("chat").classList.contains("u-hidden")).toBe(true);
+
+    // Releasing the pointer restores it immediately.
+    hook.onPointerUp();
+    expect(win("chat").classList.contains("u-hidden")).toBe(false);
+  });
+
   it("restores saved open state on a fresh mount", () => {
     localStorage.setItem(
       "rhc:desktop:test",
