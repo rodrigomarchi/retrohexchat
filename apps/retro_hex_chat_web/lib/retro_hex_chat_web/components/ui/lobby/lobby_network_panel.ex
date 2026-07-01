@@ -43,62 +43,63 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   def lobby_network_panel(assigns) do
     ~H"""
     <div class="lobby__stats flex flex-col gap-2" data-testid="lobby-network-panel">
-      <div class="flex items-center justify-end gap-2">
-        <Icons.icon_privacy
-          :if={@turn_only}
-          class="text-muted-foreground h-3.5 w-3.5"
-          data-testid="lobby-tray-privacy"
-        />
-        <.toolbar variant="compact" class="gap-[1px]">
-          <.toolbar_button
-            label={dgettext("p2p", "What do these mean?")}
-            active={@info_open}
-            variant="compact"
-            phx-click="toggle_network_info"
-            data-testid="lobby-network-info"
-          >
-            <Icons.icon_question class="h-4 w-4" />
-          </.toolbar_button>
-        </.toolbar>
-      </div>
-
       <.tabs :let={builder} id="lobby-stats-tabs" default="network">
-        <.tabs_list class="overflow-x-auto">
-          <.stats_tab builder={builder} value="network" icon={:icon_p2p}>
-            {dgettext("p2p", "Network")}
-          </.stats_tab>
+        <.tabs_list>
+          <.stats_tab
+            builder={builder}
+            value="network"
+            icon={:icon_p2p}
+            label={dgettext("p2p", "Network")}
+          />
           <.stats_tab
             builder={builder}
             value="audio"
             icon={:icon_microphone}
+            label={dgettext("p2p", "Audio")}
             active={@stats.audio.active}
-          >
-            {dgettext("p2p", "Audio")}
-          </.stats_tab>
+          />
           <.stats_tab
             builder={builder}
             value="video"
             icon={:icon_camera}
+            label={dgettext("p2p", "Video")}
             active={@stats.video.active}
-          >
-            {dgettext("p2p", "Video")}
-          </.stats_tab>
+          />
           <.stats_tab
             builder={builder}
             value="game"
             icon={:icon_joystick}
+            label={dgettext("p2p", "Game")}
             active={@stats.game.active}
-          >
-            {dgettext("p2p", "Game")}
-          </.stats_tab>
+          />
           <.stats_tab
             builder={builder}
             value="file"
             icon={:icon_file_send}
+            label={dgettext("p2p", "File")}
             active={@stats.file.active}
-          >
-            {dgettext("p2p", "File")}
-          </.stats_tab>
+          />
+
+          <%!-- Privacy + metric-help, tucked to the right of the tab strip so
+                they don't cost a whole header row. --%>
+          <div class="ml-auto flex items-center gap-2 self-center pl-2">
+            <Icons.icon_privacy
+              :if={@turn_only}
+              class="text-muted-foreground h-3.5 w-3.5"
+              data-testid="lobby-tray-privacy"
+            />
+            <.toolbar variant="compact" class="gap-[1px]">
+              <.toolbar_button
+                label={dgettext("p2p", "What do these mean?")}
+                active={@info_open}
+                variant="compact"
+                phx-click="toggle_network_info"
+                data-testid="lobby-network-info"
+              >
+                <Icons.icon_question class="h-4 w-4" />
+              </.toolbar_button>
+            </.toolbar>
+          </div>
         </.tabs_list>
 
         <%!-- Network: full diagram + connection quality --%>
@@ -295,18 +296,32 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
     """
   end
 
-  # A statistics tab trigger: icon + label, lit green with a pulse dot while active.
+  # A statistics tab trigger. To fit every tab without scrolling, only the active
+  # tab shows its text label (via CSS on `data-state`); the rest collapse to just
+  # their icon, with the label in the tooltip. A green pulse dot marks a live
+  # channel even while its tab is collapsed.
   attr :builder, :map, required: true
   attr :value, :string, required: true
   attr :icon, :atom, required: true
+  attr :label, :string, required: true
   attr :active, :boolean, default: false
-  slot :inner_block, required: true
 
   defp stats_tab(assigns) do
     ~H"""
-    <.tabs_trigger builder={@builder} value={@value} class="px-retro-6">
+    <.tabs_trigger
+      builder={@builder}
+      value={@value}
+      class="group px-retro-4"
+      title={@label}
+      aria-label={@label}
+    >
       <:icon>{apply(Icons, @icon, [%{class: "w-4 h-4"}])}</:icon>
-      <span class={@active && "text-success font-bold"}>{render_slot(@inner_block)}</span>
+      <span class={[
+        "hidden group-data-[state=active]:inline",
+        @active && "text-success font-bold"
+      ]}>
+        {@label}
+      </span>
       <span
         :if={@active}
         class="bg-success ml-retro-2 h-1.5 w-1.5 shrink-0 animate-pulse rounded-full"

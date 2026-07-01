@@ -183,7 +183,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             default_x={560}
             default_y={16}
             width={380}
-            height={500}
+            height={420}
             data-testid="lobby-window-conn"
           >
             <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>

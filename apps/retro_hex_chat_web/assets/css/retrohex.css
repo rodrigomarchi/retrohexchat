@@ -231,6 +231,47 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   padding: 12px 8px;
 }
 
+/* Compact variant for the lobby Statistics window (#conn): the full diagram is
+   sized for a wide screen, so scale the peers/whois/link down to fit the narrow
+   floating window (both peers + link must fit ~350px without horizontal
+   overflow). Scoped by the window id so the P2P screen's diagram is untouched. */
+#conn .p2p-diagram {
+  padding: 6px 2px;
+}
+#conn .p2p-diagram__peers {
+  gap: 4px;
+}
+#conn .p2p-diagram__peer {
+  min-width: 84px;
+  max-width: 116px;
+  gap: 2px;
+}
+#conn .p2p-diagram__browser-icon {
+  width: 32px;
+  height: 32px;
+}
+#conn .p2p-diagram__whois {
+  font-size: 0.6875rem;
+  gap: 0;
+  margin-top: 1px;
+}
+#conn .p2p-diagram__whois-svg {
+  width: 14px;
+  height: 14px;
+}
+#conn .p2p-diagram__whois-value {
+  max-width: 88px;
+}
+#conn .p2p-diagram__link {
+  min-width: 56px;
+  padding-top: 8px;
+}
+#conn .p2p-diagram__badge {
+  min-width: 60px;
+  padding: 2px 4px;
+  font-size: 0.6875rem;
+}
+
 .p2p-diagram__peers {
   display: flex;
   align-items: flex-start;
