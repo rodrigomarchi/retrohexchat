@@ -1149,6 +1149,10 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
     transparent 75%
   );
 }
+/* A maximized window fills the workspace; the resize grip makes no sense there. */
+.desktop-window--maximized .desktop-window__resize {
+  display: none;
+}
 /* Focused window's taskbar button looks pressed; flashing draws attention. */
 .desktop-taskbar__button.is-active {
   @apply shadow-retro-sunken;

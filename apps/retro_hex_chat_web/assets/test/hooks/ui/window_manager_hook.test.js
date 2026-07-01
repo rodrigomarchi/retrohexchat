@@ -134,6 +134,54 @@ describe("WindowManagerHook", () => {
     expect(hook.windows.call.state.maximized).toBe(false);
   });
 
+  it("restores the pre-maximize geometry when unmaximizing", () => {
+    command({ action: "open", id: "call" });
+    const st = hook.windows.call.state;
+    st.x = 60;
+    st.y = 80;
+    st.w = 400;
+
+    hook.toggleMaximize("call");
+    expect(win("call").classList.contains("desktop-window--maximized")).toBe(true);
+
+    hook.toggleMaximize("call");
+    expect(win("call").classList.contains("desktop-window--maximized")).toBe(false);
+    expect(st.x).toBe(60);
+    expect(st.y).toBe(80);
+    expect(st.w).toBe(400);
+  });
+
+  it("toggles maximize on a title bar double-click", () => {
+    command({ action: "open", id: "call" });
+    hook.stacked = false; // jsdom has no layout; force the desktop (non-stacked) mode
+
+    const titlebar = win("call").querySelector("[data-window-titlebar]");
+    titlebar.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+    expect(hook.windows.call.state.maximized).toBe(true);
+
+    titlebar.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+    expect(hook.windows.call.state.maximized).toBe(false);
+  });
+
+  it("does not toggle maximize when double-clicking a control button", () => {
+    command({ action: "open", id: "call" });
+    hook.stacked = false;
+
+    const minBtn = win("call").querySelector('[data-window-control="minimize"]');
+    minBtn.dispatchEvent(new MouseEvent("dblclick", { bubbles: true }));
+    expect(hook.windows.call.state.maximized).toBe(false);
+  });
+
+  it("does not start a resize gesture on a maximized window", () => {
+    command({ action: "open", id: "call" });
+    hook.stacked = false;
+    hook.toggleMaximize("call");
+
+    const grip = win("call").querySelector("[data-window-resize]");
+    grip.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true, button: 0 }));
+    expect(hook.resize).toBe(null);
+  });
+
   it("does not client-close a window whose X is wired to a server event", () => {
     command({ action: "open", id: "call" });
     const closeBtn = win("call").querySelector('[data-window-control="close"]');

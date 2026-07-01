@@ -175,7 +175,7 @@ const WindowManagerHook = {
     if (resizeH && !this.stacked) {
       const id = this.windowIdOf(resizeH);
       this.focusWindow(id);
-      this.startResize(e, id);
+      if (!this.windows[id].state.maximized) this.startResize(e, id);
       return;
     }
 
@@ -291,8 +291,19 @@ const WindowManagerHook = {
 
   onDblClick(e) {
     const shortcut = e.target.closest("[data-window-shortcut]");
-    if (!shortcut) return;
-    this.command("open", shortcut.dataset.windowShortcut);
+    if (shortcut) {
+      this.command("open", shortcut.dataset.windowShortcut);
+      return;
+    }
+
+    // Double-clicking a title bar toggles maximize/restore, like real Windows.
+    // Control buttons act on single click; a fast double-click on one must not
+    // also toggle maximize. Stacked mode has no window geometry to toggle.
+    if (e.target.closest("[data-window-control]") || this.stacked) return;
+    const titlebar = e.target.closest("[data-window-titlebar]");
+    if (!titlebar) return;
+    const id = this.windowIdOf(titlebar);
+    if (id) this.toggleMaximize(id);
   },
 
   selectShortcut(el) {
@@ -427,6 +438,7 @@ const WindowManagerHook = {
 
     el.classList.toggle("u-hidden", !visible);
     el.classList.toggle("desktop-window--blurred", this.focusedId !== id);
+    el.classList.toggle("desktop-window--maximized", st.maximized);
 
     // Geometry is driven through CSS custom properties (consumed by .desktop-window
     // in retrohex.css) so the hook never sets width/height/z-index inline directly.

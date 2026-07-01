@@ -1024,7 +1024,9 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             "Open one persistent P2P connection that hosts every feature at once, on a " <>
               "Windows-style desktop. Each feature lives in its own window you can drag, resize, " <>
               "minimize, maximize and close: an audio or video call, file transfer, a game, plus " <>
-              "chat and the pinned Statistics window. Launch features from the taskbar " <>
+              "chat and the pinned Statistics window. Maximize fills the whole desktop; the " <>
+              "restore button (or double-clicking the title bar, which also maximizes) brings the " <>
+              "window back to its previous size and position. Launch features from the taskbar " <>
               "Start menu (the [Lobby] button); every open window gets a taskbar button. A window's " <>
               "X ends that feature (hangs up the call, cancels the transfer, quits the game), while " <>
               "minimize keeps it running in the taskbar; choose Leave lobby from the Start menu to " <>

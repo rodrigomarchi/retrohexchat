@@ -21,7 +21,13 @@ defmodule RetroHexChatWeb.Components.UI.Window do
   @doc "Renders a Win98-style title bar with gradient and control buttons."
   attr :title, :string, required: true
   attr :inactive, :boolean, default: false
-  attr :controls, :list, default: [:minimize, :maximize, :close]
+
+  attr :controls, :list,
+    default: [:minimize, :maximize, :close],
+    doc:
+      "control buttons, in order. A :restore control renders hidden — pair it with " <>
+        ":maximize under the WindowManagerHook, which shows exactly one of the two"
+
   attr :on_close, :any, default: nil, doc: "Close button callback (wired to :close control)"
   attr :close_target, :string, default: nil, doc: "CSS selector for static close behavior"
 
@@ -68,7 +74,8 @@ defmodule RetroHexChatWeb.Components.UI.Window do
           class={[
             "inline-flex items-center justify-center w-[16px] h-[14px] p-0 shadow-retro-raised bg-surface",
             "active:shadow-retro-sunken focus:outline-none",
-            control == :close && "ml-[2px]"
+            control == :close && "ml-[2px]",
+            control == :restore && "u-hidden"
           ]}
           phx-click={control == :close && @on_close}
           data-hide-target={control == :close && @close_target}

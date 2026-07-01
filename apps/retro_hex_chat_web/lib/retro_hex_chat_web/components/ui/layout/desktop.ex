@@ -394,7 +394,9 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
     """
   end
 
-  # Pinned windows expose minimize + maximize but never a close control.
-  defp window_controls(true), do: [:minimize, :maximize]
-  defp window_controls(false), do: [:minimize, :maximize, :close]
+  # Pinned windows expose minimize + maximize/restore but never a close control.
+  # Maximize and restore are both rendered; the WindowManagerHook shows exactly
+  # one of them depending on the window's maximized state.
+  defp window_controls(true), do: [:minimize, :maximize, :restore]
+  defp window_controls(false), do: [:minimize, :maximize, :restore, :close]
 end
