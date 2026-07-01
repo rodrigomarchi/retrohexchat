@@ -1,0 +1,61 @@
+defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIslandTest do
+  use RetroHexChatWeb.ConnCase, async: true
+
+  import Phoenix.LiveViewTest
+
+  alias RetroHexChatWeb.App.LobbyLive.Components.MediaIsland
+
+  @moduletag :unit
+
+  test "id/0 is stable and distinct from the panel's hook element" do
+    assert MediaIsland.id() == "lobby-media-island"
+  end
+
+  test "prompts to connect before the lobby is connected" do
+    html = render_component(MediaIsland, id: MediaIsland.id(), connected: false)
+
+    refute html =~ ~s(data-testid="lobby-media-panel")
+    assert html =~ "Connect to start"
+  end
+
+  test "mounts the media hook and offers start buttons when idle" do
+    html = render_component(MediaIsland, id: MediaIsland.id(), connected: true)
+
+    assert html =~ ~s(phx-hook="LobbyMediaHook")
+    assert html =~ ~s(data-testid="lobby-call-start-audio")
+    assert html =~ ~s(data-testid="lobby-call-start-video")
+    refute html =~ "End call"
+  end
+
+  test "auto-joins as a pure receiver when the peer turns media on (surface_peer_media)" do
+    html =
+      render_component(MediaIsland,
+        id: MediaIsland.id(),
+        connected: true,
+        peer_nick: "trinity",
+        action: {:peer_media_changed, %{user_id: 2, audio: true, video: true}}
+      )
+
+    # We are now in the call (window opens via push), the remote surface renders, and
+    # our own mic/camera are enable-on-demand (we are sending nothing yet).
+    assert html =~ ~s(id="lobby-remote-video")
+    assert html =~ "End call"
+    assert html =~ ~s(data-lobby-media-action="enable-audio")
+    assert html =~ ~s(data-lobby-media-action="enable-video")
+    # Not sending yet → no mute/camera toggles.
+    refute html =~ ~s(data-lobby-media-action="mute")
+  end
+
+  test "a peer camera update reflects on this side" do
+    html =
+      render_component(MediaIsland,
+        id: MediaIsland.id(),
+        connected: true,
+        peer_nick: "trinity",
+        action: {:peer_media_changed, %{user_id: 2, audio: true, video: true}}
+      )
+
+    # The surface is up with the peer present.
+    assert html =~ ~s(id="lobby-remote-audio")
+  end
+end

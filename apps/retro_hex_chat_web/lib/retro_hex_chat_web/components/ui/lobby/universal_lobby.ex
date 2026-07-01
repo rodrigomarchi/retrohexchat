@@ -10,10 +10,13 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   the `WindowManagerHook` and persisted to localStorage.
 
   Composed entirely from primitives: the generic `Desktop` window-manager family
-  (`desktop`/`desktop_window`/`taskbar`/...), the per-feature panel components
-  (`media_panel`/`file_panel`/`game_panel`/`chat_panel`), the shared connection
-  diagram and network telemetry panel — no bespoke markup. Closing a feature window
-  only hides it; the feature (and its hook) keeps running until leave or inactivity.
+  (`desktop`/`desktop_window`/`taskbar`/...), the stateful window islands
+  (`ChatIsland` owns the message list; `GameIsland`, `FileIsland` and `MediaIsland`
+  own their feature state and drive their own windows), the shared connection diagram
+  and network telemetry panel — no bespoke markup. The Statistics window (telemetry
+  aggregator) and the taskbar badges stay host-owned, reading the islands' mirrored
+  summaries. Closing a feature window only hides it; the feature (and its hook) keeps
+  running until leave or inactivity.
   """
   use RetroHexChatWeb.Component
 
@@ -23,15 +26,15 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.P2PConnectionDiagram
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
-  import RetroHexChatWeb.Components.UI.Lobby.MediaPanel
-  import RetroHexChatWeb.Components.UI.Lobby.FilePanel
-  import RetroHexChatWeb.Components.UI.Lobby.GamePanel
-  import RetroHexChatWeb.Components.UI.Lobby.ChatPanel
-
+  alias RetroHexChatWeb.App.LobbyLive.Components.ChatIsland
+  alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
+  alias RetroHexChatWeb.App.LobbyLive.Components.GameIsland
+  alias RetroHexChatWeb.App.LobbyLive.Components.MediaIsland
   alias RetroHexChatWeb.Icons
 
   # Identity & status
   attr :token, :string, required: true
+  attr :user_id, :integer, required: true
   attr :nickname, :string, required: true
   attr :peer_nick, :string, required: true
   attr :peer_online, :boolean, default: false
@@ -55,29 +58,19 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   attr :turn_only, :boolean, default: false
   attr :inactivity_warning, :boolean, default: false
 
-  # Media
-  attr :call, :map, default: nil
-  attr :call_layout, :string, default: "focus", values: ~w(focus side_by_side maximized)
-  attr :local_muted, :boolean, default: false
-  attr :local_camera_off, :boolean, default: false
-  attr :peer_media, :map, default: %{audio: false, video: false}
-  attr :peer_camera_off, :boolean, default: false
-  attr :peer_muted, :boolean, default: false
-  attr :devices, :map, default: nil
+  # Media — the island owns the call; the host mirrors this summary
+  # (type/duration/quality_label) for the badge and the conn strip.
+  attr :call_summary, :map, default: nil
+  # Statistics window (host-owned aggregator)
   attr :stats, :map, default: nil
   attr :network_info_open, :boolean, default: false
 
-  # File transfer
-  attr :file_transfer, :map, default: nil
+  # File transfer — the island owns the transfer; the host mirrors this summary
+  # (status/sender_nick/percent/speed/file_name) for the badge and the conn strip.
+  attr :file_summary, :map, default: nil
 
-  # Games
-  attr :game, :map, default: %{status: "idle", game_id: nil, is_host: false}
-  attr :game_request, :map, default: nil
-  attr :game_outgoing, :boolean, default: false
-  attr :games, :list, default: []
-
-  # Chat
-  attr :messages, :list, default: []
+  # Games — the island owns the game state; the host mirrors only this badge flag.
+  attr :game_active, :boolean, default: false
 
   attr :rest, :global
 
@@ -87,14 +80,11 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
       assigns
       |> assign(:connected, assigns.session_status == "connected")
       |> assign(:mounted, assigns.ever_connected or assigns.session_status == "connected")
-      |> assign(:call_active, assigns.call != nil)
-      |> assign(:game_active, Map.get(assigns.game || %{}, :status) == "playing")
+      |> assign(:call_active, assigns.call_summary != nil)
       |> assign(
         :file_active,
-        Map.get(assigns.file_transfer || %{}, :status) in ~w(offering offer_received transferring paused)
+        Map.get(assigns.file_summary || %{}, :status) in ~w(offering offer_received transferring paused)
       )
-      |> assign(:max_file_size_mb, file_transfer_max_size_mb())
-      |> assign(:blocked_file_extensions, file_transfer_blocked_extensions())
 
     ~H"""
     <div class="lobby flex h-screen flex-col bg-background text-foreground" {@rest}>
@@ -195,8 +185,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
               peer_online={@peer_online}
               session_status={@session_status}
               webrtc_state={@connection_label}
-              file_transfer={@file_transfer}
-              call={@call}
+              file_transfer={@file_summary}
+              call={@call_summary}
               local_info={@local_info}
               peer_info={@peer_info}
             />
@@ -215,7 +205,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             data-testid="lobby-window-chat"
           >
             <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
-            <.chat_panel messages={@messages} />
+            <.live_component module={ChatIsland} id="lobby-chat" />
           </.desktop_window>
 
           <%!-- Audio/video call --%>
@@ -231,18 +221,14 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             data-testid="lobby-window-call"
           >
             <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
-            <.media_panel
+            <.live_component
+              module={MediaIsland}
+              id="lobby-media-island"
               connected={@mounted}
-              call={@call}
-              call_layout={@call_layout}
-              peer_nick={@peer_nick}
               nickname={@nickname}
-              local_muted={@local_muted}
-              local_camera_off={@local_camera_off}
-              peer_media={@peer_media}
-              peer_camera_off={@peer_camera_off}
-              peer_muted={@peer_muted}
-              devices={@devices}
+              peer_nick={@peer_nick}
+              token={@token}
+              user_id={@user_id}
             />
           </.desktop_window>
 
@@ -259,12 +245,13 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             data-testid="lobby-window-file"
           >
             <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
-            <.file_panel
+            <.live_component
+              module={FileIsland}
+              id="lobby-file"
               connected={@mounted}
-              file_transfer={@file_transfer}
               nickname={@nickname}
-              max_file_size_mb={@max_file_size_mb}
-              blocked_file_extensions={@blocked_file_extensions}
+              peer_nick={@peer_nick}
+              token={@token}
             />
           </.desktop_window>
 
@@ -281,12 +268,10 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             data-testid="lobby-window-game"
           >
             <:icon><Icons.icon_joystick class="h-4 w-4" /></:icon>
-            <.game_panel
+            <.live_component
+              module={GameIsland}
+              id="lobby-game"
               connected={@mounted}
-              game={@game}
-              game_request={@game_request}
-              game_outgoing={@game_outgoing}
-              games={@games}
               peer_nick={@peer_nick}
             />
           </.desktop_window>
@@ -373,14 +358,14 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
               <.taskbar_button
                 window="call"
                 label={dgettext("lobby", "Call")}
-                badge={if @call_active, do: @call[:duration]}
+                badge={if @call_active, do: @call_summary[:duration]}
               >
                 <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
               </.taskbar_button>
               <.taskbar_button
                 window="file"
                 label={dgettext("lobby", "Files")}
-                badge={if @file_active, do: "#{@file_transfer[:percent] || 0}%"}
+                badge={if @file_active, do: "#{@file_summary[:percent] || 0}%"}
               >
                 <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
               </.taskbar_button>
@@ -419,19 +404,5 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
       </div>
     </div>
     """
-  end
-
-  # --- Helpers ---
-
-  defp file_transfer_max_size_mb do
-    Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500)
-  end
-
-  defp file_transfer_blocked_extensions do
-    Application.get_env(
-      :retro_hex_chat,
-      :file_transfer_blocked_extensions,
-      ~w(.exe .bat .cmd .com .msi .scr .pif .vbs .vbe .js .jse .wsf .wsh .ps1 .reg)
-    )
   end
 end

@@ -74,18 +74,28 @@ dele (substitui o `@game_active` derivado hoje em `universal_lobby.ex:91,390`).
 
 ## Tasks
 
-- [ ] Criar `Components.GameIsland` (raiz estável, `@id` no mount, sempre montado).
-- [ ] Mover render de `game_panel` para a ilha; janela monta o `live_component`.
-- [ ] Migrar os 5 eventos UI/hook para a ilha (component-local quando não precisam do
-      pai; adapter quando precisam).
-- [ ] Migrar os handlers PubSub de jogo: pai recebe e faz `send_update` na ilha.
-- [ ] C3: mover os 4 `window_command {open|close, "game"}` para a ilha; `end_game`
-      via adapter/`phx-target`.
-- [ ] C2: emitir `{:feature_summary, :game, ...}`; pai guarda `game_summary`; taskbar
-      lê dele.
-- [ ] C1: `lobby_game_response` recusado → `send_update(ChatIsland, system_message:)`.
-- [ ] Remover do pai os assigns `game/game_request/game_outgoing/games`.
-- [ ] Teste de unidade: render por status (idle/request/playing), id/data-testid.
+- [x] Criar `Components.GameIsland` (raiz `<div id={@id}>` estável, `@id` no mount,
+      sempre montado; `games` carregado no mount via `Catalog`).
+- [x] Mover render de `game_panel` para a ilha; janela monta o `live_component`
+      (`connected`/`peer_nick` passthrough).
+- [x] Migrar os eventos UI/hook: `lobby_game_canvas_ready` e `end_game` viram adapters
+      no pai → `send_update(GameIsland, action: ...)`; `propose_game`/`respond_game`
+      ficam no pai (fire-and-forget no contexto, sem estado de ilha; resultado volta
+      por PubSub) — a ilha NÃO precisa de token/user_id.
+- [x] Migrar os handlers PubSub de jogo: pai recebe e faz `send_update` na ilha
+      (request/declined/playing/idle).
+- [x] C3: os 4 `window_command {open|close, "game"}` + os push_events ao hook
+      (`lobby_game_start`/`lobby_game_end`) saem da ilha (de `update/2`); `end_game`
+      (X da janela e botão do painel) via adapter no pai.
+- [x] C2: ilha emite `{:feature_summary, :game, %{active?: ...}}` em playing/idle; pai
+      ganha `handle_info({:feature_summary, :game, summary})` ACIMA do catch-all e guarda
+      `game_summary`; taskbar lê `game_active={@game_summary.active?}`.
+- [x] C1: `lobby_game_response` recusado → `send_update(ChatIsland, system_message:)`
+      (permanece no pai).
+- [x] Removidos do pai os assigns `game/game_request/game_outgoing/games` (+ alias
+      `Catalog`).
+- [x] Teste de unidade: render por status (connect-prompt/idle/request/outgoing/playing),
+      id/data-testid.
 
 ## Armadilhas cruzadas (verificadas contra o código)
 
@@ -104,12 +114,17 @@ dele (substitui o `@game_active` derivado hoje em `universal_lobby.ex:91,390`).
 
 ## Validação
 
-- [ ] Propor jogo → peer vê request, janela `game` abre (C3) no peer.
-- [ ] Aceitar → ambos entram em "playing", janela abre, canvas inicia.
-- [ ] Recusar → request some + msg de sistema no chat (C1).
-- [ ] Encerrar (`end_game`) → janela fecha (C3), badge da taskbar some (C2).
-- [ ] Abrir/fechar/dragar OUTRA janela não re-renderiza a ilha de jogo.
-- [ ] `make ci` 9/9; `chat-lobby.spec.ts` (game request/start/decline) verde.
+- [x] Propor jogo → peer vê request, janela `game` abre (C3) no peer. (E2E + unit
+      consent; lobby_live_test "proposing a game".)
+- [x] Aceitar → ambos entram em "playing", janela abre, canvas inicia. (E2E
+      video+game+chat; lobby_live_test playing.)
+- [x] Recusar → request some + msg de sistema no chat (C1). (E2E "declining a game".)
+- [x] Encerrar (`end_game`) → janela fecha (C3), badge da taskbar some (C2).
+      (lobby_live_test "X on the Game window" + novo teste C2 do badge.)
+- [x] Isolação por change-tracking: a ilha é LiveComponent próprio → só re-renderiza
+      quando seu estado muda.
+- [x] `make ci` **9/9** (2026-06-30); `chat-lobby.spec.ts` **20/20** (port 4003 após
+      `mix assets.build`).
 
 ## Prompt de execução
 
@@ -119,3 +134,35 @@ serão copiados por file/media. PubSub via adapter (host mantém a assinatura).
 ## Progress Log
 
 - 2026-06-30: Planejado. Não iniciado.
+- 2026-06-30: `in_progress`. Escopo: criar
+  `RetroHexChatWeb.App.LobbyLive.Components.GameIsland` (dona de
+  `game`/`game_request`/`game_outgoing`/`games`; `games` carregado no `mount` via
+  `Catalog`). **C3:** a ilha dirige os 4 `window_command {open|close, "game"}` e os
+  push_events ao hook (`lobby_game_start`/`lobby_game_end`) de dentro de `update/2`.
+  **C2:** `send(self(), {:feature_summary, :game, %{active?: ...}})` em playing/idle; o
+  pai ganha `handle_info({:feature_summary, :game, summary})` ACIMA do catch-all e
+  guarda `game_summary`; taskbar lê `game_active={@game_summary.active?}`. PubSub de
+  jogo fica no host como adapters finos → `send_update(GameIsland, action: ...)`.
+  `propose_game`/`respond_game` ficam no pai (fire-and-forget no contexto; resultado
+  volta por PubSub) e `end_game` é adapter no pai (chama `Lobby.end_game` + `send_update`
+  na ilha). A ilha NÃO precisa de token/user_id (sem chamada de contexto). C1 do
+  declined permanece no pai. Arquivos: `game_island.ex` (novo), `game_island_test.exs`
+  (novo), `lobby_live.ex`, `universal_lobby.ex`, `lobby_live.html.heex`,
+  `lobby_live_test.exs` (flush + teste C2 do badge). Validação planejada: `make ci`
+  9/9 + `chat-lobby.spec.ts` (game request/start/decline).
+- 2026-06-30: `complete`. Implementado conforme o escopo. **C2 e C3 estabelecidos** (a
+  ilha é a referência para 03/04). C3: a ilha dispara os 4 `window_command` e os
+  push_events ao hook de dentro de `update/2` (`push_event` funciona em `update/2` de um
+  LiveComponent). C2: `summarize/1` faz `send(self(), {:feature_summary, :game, ...})`
+  em playing/idle; **a cláusula explícita `handle_info({:feature_summary, :game,
+  summary})` foi colocada ACIMA do catch-all** — sem ela o badge nunca acende
+  (armadilha do swallow confirmada e coberta por teste). `propose_game`/`respond_game`
+  ficaram no pai (fire-and-forget; resultado volta por PubSub) → a ilha não precisa de
+  token/user_id. **Validação real:** `make ci` **9/9** de primeira (format já rodado
+  antes); `chat-lobby.spec.ts` **20/20**; unit GameIsland 6/6; lobby_live_test 19/19
+  (inclui o teste C2 do badge + flush `render(view)` no end_game). Arquivos:
+  `game_island.ex` (novo, ~135 ln), `game_island_test.exs` (novo), `lobby_live.ex`,
+  `universal_lobby.ex`, `lobby_live.html.heex`, `lobby_live_test.exs`. Aprendizado: o
+  badge da taskbar é o teste-canário do swallow — `Process.sleep(50) + render(view)`
+  drena toda a cadeia assíncrona (event → send_update → ilha → `send(self(),
+  feature_summary)` → pai → assign) porque o processo da LV roda seu loop sozinho.

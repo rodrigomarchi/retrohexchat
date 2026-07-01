@@ -346,7 +346,32 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       view = connect_both(conn, token, creator, peer)
 
       render_click(view, "end_game", %{})
+      # The Game island drives its own window via send_update (async under
+      # LiveViewTest) — flush before asserting the push reached the client.
+      render(view)
       assert_push_event(view, "window_command", %{action: "close", id: "game"})
+    end
+
+    test "the taskbar game badge tracks the active game (C2 read-model)",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+      refute render(view) =~ "●"
+
+      # Entering "playing" makes the island mirror an active summary to the host,
+      # which lights the taskbar badge. If the host swallowed the {:feature_summary}
+      # tuple in its catch-all, the badge would never appear.
+      send(view.pid, %{
+        event: "lobby_game_status_changed",
+        payload: %{status: "playing", game_id: "hex_pong", host_id: creator.id}
+      })
+
+      Process.sleep(50)
+      assert render(view) =~ "●"
+
+      # Going idle clears the summary and the badge.
+      send(view.pid, %{event: "lobby_game_status_changed", payload: %{status: "idle"}})
+      Process.sleep(50)
+      refute render(view) =~ "●"
     end
 
     test "the X on the Files window cancels and closes it",
@@ -354,7 +379,40 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       view = connect_both(conn, token, creator, peer)
 
       render_click(view, "ft_cancel", %{})
+      # The File island drives its own window via send_update (async) — flush first.
+      render(view)
       assert_push_event(view, "window_command", %{action: "close", id: "file"})
+    end
+
+    test "the file transfer hook stays mounted so closing the window can't kill a transfer",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+
+      # The island is always mounted, so the FileTransferHook (and its data channel)
+      # lives for the whole connection.
+      assert render(view) =~ ~s(phx-hook="FileTransferHook")
+
+      # Cancelling/closing the Files window only hides it...
+      render_click(view, "ft_cancel", %{})
+      render(view)
+
+      # ...the island and its hook are still in the DOM.
+      html = render(view)
+      assert html =~ ~s(phx-hook="FileTransferHook")
+      assert html =~ ~s(id="lobby-file-transfer")
+    end
+
+    test "the taskbar file badge tracks transfer progress (C2 read-model)",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+
+      render_hook(view, "ft_offer_sent", %{"file_name" => "a.bin", "formatted_size" => "1 MB"})
+      render_hook(view, "ft_progress", %{"percent" => 50, "speed" => "1 MB/s"})
+      Process.sleep(50)
+
+      # The island mirrors a {status, percent} summary to the host, which lights the
+      # taskbar badge. A swallowed {:feature_summary} tuple would leave it blank.
+      assert render(view) =~ "50%"
     end
   end
 

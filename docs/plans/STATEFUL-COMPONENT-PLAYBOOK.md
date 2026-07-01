@@ -1018,3 +1018,75 @@ Aplicável quando o LiveView é um **desktop de janelas** (`Desktop`/`desktop_wi
     phx-click; só thread `attr :target`+string quando os testes disparam por nome (31/40).
   - **Migração COMPLETA.** Todo dialog/queue do ChatLive é uma ilha LiveComponent. Restam só caudas
     não-ilha: 03 hidden-hooks (segue os componentes donos) e os docs de tracking (01/02/57).
+- **2026-06-30 (lobby plano 01, Chat — primeira ilha do desktop Win98, valida §9):** a §9 escala limpa.
+  Confirmado em runtime: um `live_component` montado dentro do slot de um **function component**
+  (`desktop_window`), que por sua vez é chamado pela LiveView (`universal_lobby/1`), funciona — cid e
+  change-tracking corretos, sem precisar promover o `desktop_window` a LiveView. **C1 na prática:** a ilha
+  dona da lista expõe DOIS shapes de `update/2` — `{:system_message, txt}` (constrói o map de sistema
+  DENTRO da ilha, com seu próprio `system_message/1`) e `{:append_message, msg}` (eco cru do PubSub); o pai
+  vira só adaptador `send_update(Ilha, id: Ilha.id(), ...)` em N callsites (aqui 6: 1 eco de chat + 5
+  produtores de sistema). O `system_message/1` do pai foi REMOVIDO (a ilha é a única dona). **Wrapper de
+  raiz precisa de `class="h-full"`** pra preservar a cadeia `h-full` do panel reaproveitado dentro do
+  `window_body` (`flex-1`). `live/app/` é pulado pelo `lint.css_consistency` (lista de skip), então
+  Tailwind cru na ilha do lobby passa — diferente de `live/chat_live/components/` (§1d). Sem swallow de
+  catch-all aqui porque C1 usa `send_update` (não tupla `send(self(), ...)`); essa armadilha entra a partir
+  do plano 02 (C2). Único tropeço: linhas longas de `send_update` quebraram o Format no 1º `make ci`
+  (Stage 3/Dialyzer foi skipado em cascata) — rode `mix format` antes do gate.
+- **2026-06-30 (lobby plano 02, Game — C2 + C3 estabelecidos):** confirma os dois contratos novos da §9.
+  **C3 (ilha dirige a própria janela):** `push_event/3` funciona dentro do `update/2` de um LiveComponent,
+  não só no `handle_event` — então os PubSub de feature viram adapters de 2 linhas no host
+  (`send_update(Ilha, action: ...)`) e a ILHA dispara `window_command {open|close, id}` + os lifecycle do
+  hook (aqui `lobby_game_start`/`lobby_game_end`) de dentro do `update/2`. O `on_close` da janela e um
+  botão in-panel podem disparar o MESMO evento string (`end_game`) → um único adapter no host cobre os
+  dois sem churn. **C2 (read-model → taskbar):** a ilha faz `send(self(), {:feature_summary, key,
+  %{active?: ...}})` (em LiveComponent `self()` é o pid do host) e o host guarda `<key>_summary`; o badge
+  lê dele. ⚠️ **A cláusula `handle_info({:feature_summary, key, summary})` TEM que estar ACIMA do
+  catch-all `handle_info(_msg, socket)`** — a tupla não casa o shape `%{event:...}` do PubSub e é engolida
+  em silêncio (classe do bug do plano 41). O **badge da taskbar é o teste-canário**: um teste que entra/sai
+  de "ativo" e asserta o glifo do badge (`=~ "●"`) falha imediatamente se a cláusula faltar. **Ownership:**
+  eventos fire-and-forget que só chamam o contexto e cujo resultado VOLTA por PubSub (propose/respond)
+  ficam no HOST — a ilha não precisa de token/user_id; só estado + render + window-driving + summary
+  migram. **Mecânica de teste:** `Process.sleep(50) + render(view)` drena a cadeia assíncrona inteira
+  (event → send_update → ilha → `send(self(), feature_summary)` → host → assign) porque o processo da LV
+  roda seu próprio loop independente; `assert_push_event` de um push originado por `send_update` precisa de
+  `render(view)` antes (flush). Catálogo estático (`Catalog.list_games()`) carregou no `mount` da ilha —
+  saiu do host.
+- **2026-06-30 (lobby plano 03, File — hook compartilhado + cross-read rico):** duas lições novas que
+  refinam a §9. **(1) Um JS hook que faz `pushEvent` empurra para a LiveView RAIZ, não para o
+  LiveComponent**, mesmo que o elemento do hook esteja renderizado DENTRO da ilha. Logo os eventos de
+  ENTRADA de um hook compartilhado (aqui `FileTransferHook`, reaproveitado do chat) NÃO podem ser
+  component-local — ficam no host como adapters finos → `send_update(Ilha, action: {:ft_event, name,
+  params})`. Só a SAÍDA server→client (`push_event`/`window_command`) sai da ilha: o `this.handleEvent`
+  do hook escuta o socket inteiro e capta o push de qualquer componente (igual ao `window_command` do
+  WindowManagerHook). Truque de escala: ~18 handlers `ft_*` viraram **2 adapters** — um pro nome que não
+  casa o prefixo (`file_transfer_ready`) + a genérica `def handle_event("ft_" <> _ = event, params,
+  socket)` — e a ilha despacha por nome num `handle_ft/3`. Encolheu o host drasticamente. **(2) O resumo
+  C2 nem sempre é "mínimo de badge" — é a UNIÃO do que os leitores cross-cutting do host precisam.** Aqui
+  a janela agregadora `conn` (que FICA no host) tem uma strip que lê `file_transfer` rico (status,
+  sender_nick, percent, speed, file_name); então `file_summary` espelha esses 5 campos via `Map.take`, não
+  só o `%` do badge. Antes de decidir o shape do summary, cheque TODOS os leitores no template do host
+  (badge + strip + qualquer agregador), não só o badge. **Constraint do hook-sempre-montado** sai de graça
+  com a §9: a ilha é montada via `live_component` (nunca `:if`), então fechar a janela (X→`ft_cancel`)
+  só esconde — um teste assertando `phx-hook="FileTransferHook"` ainda no DOM após o cancel prova que o
+  data channel não morre. ⚠️ Flake de E2E conhecido: `delivers video both ways` (RTP real, bidirecional)
+  falha ~1/2 sob carga e passa quando isolada (`-g`) — é timing de WebRTC headless, NÃO regressão; ao ver
+  1 falha de mídia num plano que não toca mídia, isole o teste antes de investigar.
+- **2026-06-30 (lobby plano 04, Media — a gigante; série de ilhas do lobby concluída):** a ilha mais
+  entrelaçada (PubSub + windowing + sink + devices + `surface_peer_media`) migrou repetindo 02/03 — a
+  receita §9 escala até o pior caso. Três refinamentos finais. **(1) Self-contained quando estado e efeito
+  são inseparáveis.** No Game os context-calls fire-and-forget (propose/respond) ficaram no host; no Media
+  cada `Lobby.set_media`/`broadcast` vem JUNTO de uma transição de `call`/mute/camera, então a ilha recebe
+  `token`/`user_id` e chama o contexto + faz `broadcast` ela mesma — partir isso entre host e ilha
+  duplicaria a extração de params. A assinatura PubSub continua no host (adapters inbound). Regra: mantenha
+  o efeito no host quando ele é independente do estado da ilha; mova-o p/ a ilha quando ele é a OUTRA
+  metade de uma transição de estado que a ilha possui. **(2) ⚠️ O `id` da raiz da ilha não pode colidir
+  com nenhum `id=` que o function-component renderiza dentro dela.** O `media_panel` já usa
+  `id="lobby-media"` (o elemento do `phx-hook`), então a ilha precisou ser `lobby-media-island` — senão
+  "Duplicate id found while testing LiveView" em runtime. Cheque os `id=` internos do panel antes de
+  escolher o `@id` da ilha; e o `live_component id=` na montagem TEM que casar com `Ilha.id()` (senão o
+  `send_update` não acha o componente). **(3) Resumo C2 que muda por segundo (duration tick) → o
+  `handle_info({:feature_summary, ...})` só guarda (barato), nada de recomputar.** Single-offerer/signaling
+  intocados — a ilha só pede mídia via push ao hook; o backbone WebRTC é do host. **Resultado da série:**
+  `LobbyLive` virou orquestrador/agregador puro (backbone + presença + lifecycle + janela Statistics +
+  taskbar read-model); as 4 features são ilhas LiveComponent. Os 3 contratos (C1 sink, C2 read-model, C3
+  window self-drive) provados e reutilizados nas 4. Gate por tier: `make ci` 9/9 + `chat-lobby` 20/20 cada.

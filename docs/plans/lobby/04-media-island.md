@@ -92,19 +92,29 @@ component-local; PubSub via adapter do pai → `send_update`).
 
 ## Tasks
 
-- [ ] Criar `Components.MediaIsland` (raiz estável, `@id` no mount, sempre montado).
-- [ ] Mover `media_panel` para a ilha; janela monta o `live_component`.
-- [ ] Migrar todos os eventos UI/hook de mídia (component-local).
-- [ ] Migrar `surface_peer_media` + os 3 handlers PubSub (via adapters do pai).
-- [ ] C3: `window_command {open|close, "call"}` saem da ilha; `end_call` (on_close)
-      via adapter/`phx-target`.
-- [ ] C2: emitir `{:feature_summary, :call, ...}`; pai guarda `call_summary`; taskbar
-      E strip passam a ler dele (ampliar o resumo até cobrir a strip).
-- [ ] C1: device_fallback/error → `send_update(ChatIsland, system_message:)`.
-- [ ] NÃO tocar na lógica de negociação single-offerer (backbone do pai).
-- [ ] Remover do pai os 9 assigns de mídia.
-- [ ] Teste de unidade: render por estado (idle/audio/video, mute/camera, layouts,
-      devices); cobrir `surface_peer_media` via `update({...})`.
+- [x] Criar `Components.MediaIsland` (raiz `<div id={@id} class="h-full">`,
+      `@id="lobby-media-island"` no mount — distinto do `id="lobby-media"` do panel —,
+      sempre montado).
+- [x] Mover `media_panel` para a ilha; janela monta o `live_component`.
+- [x] Migrar todos os eventos UI/hook de mídia — via adapters no host (o `LobbyMediaHook`
+      faz `pushEvent` p/ a raiz): `lobby_media_call_ended` explícito (reset de `stats`
+      host-owned) + genérica `"lobby_media_" <> _` + guarda
+      `start_call`/`end_call`/`set_call_layout`/`media_select_preset` →
+      `send_update(MediaIsland, action: {:media_event, name, params})`.
+- [x] Migrar `surface_peer_media` (inteiro) + os 3 handlers PubSub
+      (peer_mute/peer_camera/media_changed) via adapters do host → `send_update`.
+- [x] C3: `window_command {open|close, "call"}` + push_events ao hook saem da ilha;
+      `end_call` (on_close) via adapter.
+- [x] C2: ilha emite `{:feature_summary, :call, %{type, duration, quality_label}}`; pai
+      guarda `call_summary`; taskbar (badge `duration`) E a `p2p_connection_strip` leem
+      dele (resumo ampliado p/ cobrir o que a strip mostra).
+- [x] C1: device_fallback/error → `send_update(ChatIsland, system_message:)` (da ilha).
+- [x] NÃO toquei na negociação single-offerer nem no signaling (backbone do host).
+- [x] Removidos do pai os 9 assigns de mídia (+ `surface_peer_media`); pai mantém
+      `stats`/`network_info_open` (janela Statistics) e a assinatura PubSub.
+- [x] Teste de unidade: idle/connect-prompt/start-buttons + `surface_peer_media`
+      (auto-join recvonly) via `update({:peer_media_changed, ...})`. Estados que chamam
+      `Lobby.set_media` (call_started) ficam no E2E.
 
 ## Armadilhas cruzadas (verificadas contra o código)
 
@@ -126,15 +136,19 @@ component-local; PubSub via adapter do pai → `send_update`).
 
 ## Validação
 
-- [ ] Iniciar áudio → janela `call` abre (C3); upgrade para vídeo funciona.
-- [ ] **Ambos ligam vídeo ao mesmo instante → vídeo bidirecional com RTP real**
-      (`track.muted === false`) — o teste mais sensível; não pode regredir.
-- [ ] Mute/camera local refletem no peer (broadcast); peer mute/camera refletem aqui.
-- [ ] `surface_peer_media`: peer liga mídia → call auto-join + janela abre/`flash`.
-- [ ] Encerrar call (`end_call`) → janela fecha (C3), badge/strip limpam (C2).
-- [ ] device fallback/error → msg de sistema no chat (C1).
-- [ ] Call + game + chat concorrentes; all-four-at-once.
-- [ ] `make ci` 9/9; `chat-lobby.spec.ts` (media suite) verde.
+- [x] Iniciar áudio → janela `call` abre (C3); upgrade para vídeo (E2E #6).
+- [x] **Ambos ligam vídeo ao mesmo instante → vídeo bidirecional com RTP real**
+      (`track.muted === false`) — E2E #13, passou limpo (sem flake nesta run).
+- [x] Mute/camera local refletem no peer (broadcast da ilha); peer mute/camera refletem
+      aqui (E2E #10 media controls).
+- [x] `surface_peer_media`: peer liga mídia → call auto-join + janela abre (E2E #2 +
+      unit auto-join).
+- [x] Encerrar call (`end_call`) → janela fecha (C3), badge/strip limpam (C2)
+      (E2E #3 + lobby_live_test).
+- [x] device fallback/error → msg de sistema no chat (C1) (na ilha → ChatIsland).
+- [x] Call + game + chat concorrentes (E2E #4); all-four-at-once (E2E #14).
+- [x] `make ci` **9/9** (2026-06-30); `chat-lobby.spec.ts` **20/20** (media suite verde,
+      incl. bidirectional RTP).
 
 ## Prompt de execução
 
@@ -145,3 +159,39 @@ nó górdio — migre inteiro, teste o cenário bidirecional. NÃO mexa no backb
 ## Progress Log
 
 - 2026-06-30: Planejado. Não iniciado.
+- 2026-06-30: `in_progress`. Escopo: criar
+  `RetroHexChatWeb.App.LobbyLive.Components.MediaIsland` (dona de `call`/`call_layout`/
+  `local_muted`/`local_camera_off`/`peer_muted`/`peer_camera_off`/`peer_media`/`devices`/
+  `media_ready`), SEMPRE montada. Como o `LobbyMediaHook` faz `pushEvent` p/ a raiz (igual
+  ao file), todos os eventos de mídia chegam ao host e são forwardados via adapters
+  (`lobby_media_call_ended` explícito p/ resetar `stats` host-owned + genérica
+  `"lobby_media_" <> _` + guarda p/ `start_call`/`end_call`/`set_call_layout`/
+  `media_select_preset`) → `send_update(MediaIsland, action: {:media_event, name,
+  params})`. A ilha é **self-contained**: chama `Lobby.set_media` e faz `broadcast`
+  (lobby_peer_mute/camera) ela mesma (token/user_id passthrough), roda
+  `surface_peer_media` inteiro, dispara os push_events ao hook + `window_command` (C3) e
+  espelha `call_summary` (`type`/`duration`/`quality_label`) p/ badge E strip da janela
+  `conn` (C2). `handle_info({:feature_summary, :call, summary})` ACIMA do catch-all.
+  C1: device_fallback/error → ChatIsland. **NÃO toca** signaling/single-offerer (host).
+  Host MANTÉM: assinatura PubSub + 3 adapters inbound (peer_mute/peer_camera/
+  media_changed), `lobby_stats`→`stats`, `toggle_network_info`→`network_info_open`.
+  Arquivos: `media_island.ex` (novo), `media_island_test.exs` (novo), `lobby_live.ex`,
+  `universal_lobby.ex` (+attr user_id), `lobby_live.html.heex` (+user_id), 
+  `lobby_live_test.exs`. Validação: `make ci` 9/9 + `chat-lobby.spec.ts` (media suite,
+  incl. bidirectional-video RTP real).
+- 2026-06-30: `complete`. A gigante migrou sem regressão. **Self-contained island:** a
+  `MediaIsland` chama `Lobby.set_media` e faz `broadcast` (peer mute/camera) ela mesma
+  (token/user_id passthrough), roda `surface_peer_media` inteiro, dispara push_events ao
+  hook + `window_command` (C3) e espelha `call_summary` (type/duration/quality_label) p/
+  badge + strip (C2). O host virou adapters finos (a hook empurra p/ a raiz, igual ao
+  file): `lobby_media_call_ended` explícito (reset `stats`) + `"lobby_media_" <> _` +
+  guarda das 4 UI events. **Armadilha resolvida:** o `@id` da ilha colidia com o
+  `id="lobby-media"` do próprio `media_panel` (hook) → "Duplicate id" em runtime; renomeei
+  p/ `lobby-media-island` (e o `live_component id=` casa com `MediaIsland.id()`). **NÃO
+  toquei** signaling/single-offerer. **Validação real:** `make ci` **9/9**;
+  `chat-lobby.spec.ts` **20/20** — incl. bidirectional-video RTP (#13) limpo nesta run,
+  audio→video (#6), media controls (#10), auto-join (#2), all-four (#14). Unit MediaIsland
+  5/5; lobby_live_test 21/21. Arquivos: `media_island.ex` (novo, ~290 ln),
+  `media_island_test.exs` (novo), `lobby_live.ex` (encolheu ~140 ln), `universal_lobby.ex`
+  (+attr user_id, -8 attrs media), `lobby_live.html.heex`, `lobby_live_test.exs`.
+  **Série COMPLETA: as 4 ilhas extraídas.**

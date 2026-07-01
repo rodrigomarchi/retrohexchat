@@ -1,5 +1,6 @@
 <.universal_lobby
   token={@token}
+  user_id={@user_id}
   nickname={@nickname}
   peer_nick={@peer_nick}
   peer_online={@peer_online}
@@ -14,20 +15,9 @@
   turn_configured={@turn_configured}
   turn_only={@turn_only}
   inactivity_warning={@inactivity_warning}
-  call={@call}
-  call_layout={@call_layout}
-  local_muted={@local_muted}
-  local_camera_off={@local_camera_off}
-  peer_media={@peer_media}
-  peer_camera_off={@peer_camera_off}
-  peer_muted={@peer_muted}
-  devices={@devices}
+  call_summary={@call_summary}
   stats={@stats}
   network_info_open={@network_info_open}
-  file_transfer={@file_transfer}
-  game={@game}
-  game_request={@game_request}
-  game_outgoing={@game_outgoing}
-  games={@games}
-  messages={@messages}
+  file_summary={@file_summary}
+  game_active={@game_summary.active?}
 />

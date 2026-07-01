@@ -20,11 +20,14 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   import RetroHexChatWeb.Components.UI.Lobby.UniversalLobby
 
   alias RetroHexChat.Chat.Schemas.UserPreference
-  alias RetroHexChat.Games.Catalog
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.SignalingRateLimit
+  alias RetroHexChatWeb.App.LobbyLive.Components.ChatIsland
+  alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
+  alias RetroHexChatWeb.App.LobbyLive.Components.GameIsland
+  alias RetroHexChatWeb.App.LobbyLive.Components.MediaIsland
   alias RetroHexChatWeb.App.SessionHelpers
 
   @pubsub RetroHexChat.PubSub
@@ -110,57 +113,49 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   def handle_info(%{event: "lobby_peer_mute", payload: %{muted: muted, from: from_id}}, socket) do
-    if from_id == socket.assigns.user_id do
-      {:noreply, socket}
-    else
-      {:noreply,
-       socket
-       |> assign(peer_muted: muted)
-       |> push_event("lobby_media_peer_muted", %{muted: muted})}
+    unless from_id == socket.assigns.user_id do
+      send_update(MediaIsland, id: MediaIsland.id(), action: {:peer_mute, muted})
     end
+
+    {:noreply, socket}
   end
 
   def handle_info(%{event: "lobby_peer_camera", payload: %{off: off, from: from_id}}, socket) do
-    if from_id == socket.assigns.user_id do
-      {:noreply, socket}
-    else
-      {:noreply,
-       socket
-       |> assign(peer_camera_off: off)
-       |> push_event("lobby_media_peer_camera", %{off: off})}
+    unless from_id == socket.assigns.user_id do
+      send_update(MediaIsland, id: MediaIsland.id(), action: {:peer_camera, off})
     end
+
+    {:noreply, socket}
   end
 
   def handle_info(%{event: "lobby_message", payload: msg}, socket) do
-    {:noreply, assign(socket, messages: socket.assigns.messages ++ [msg])}
+    send_update(ChatIsland, id: ChatIsland.id(), append_message: msg)
+    {:noreply, socket}
   end
 
   def handle_info(%{event: "lobby_media_changed", payload: payload}, socket) do
-    if payload.user_id == socket.assigns.user_id do
-      {:noreply, socket}
-    else
-      socket
-      |> assign(peer_media: %{audio: payload.audio, video: payload.video})
-      |> surface_peer_media(payload.audio or payload.video)
+    unless payload.user_id == socket.assigns.user_id do
+      send_update(MediaIsland, id: MediaIsland.id(), action: {:peer_media_changed, payload})
     end
+
+    {:noreply, socket}
   end
 
   def handle_info(%{event: "lobby_game_request", payload: request}, socket) do
     outgoing = request.proposer_id == socket.assigns.user_id
-
-    {:noreply,
-     socket
-     |> assign(game_request: request, game_outgoing: outgoing)
-     |> push_event("window_command", %{action: "open", id: "game"})}
+    send_update(GameIsland, id: GameIsland.id(), action: {:request, request, outgoing})
+    {:noreply, socket}
   end
 
   def handle_info(%{event: "lobby_game_response", payload: %{accepted: false}}, socket) do
-    msg = system_message(dgettext("lobby", "Game request declined."))
+    send_update(GameIsland, id: GameIsland.id(), action: :request_declined)
 
-    {:noreply,
-     socket
-     |> assign(game_request: nil, game_outgoing: false)
-     |> assign(messages: socket.assigns.messages ++ [msg])}
+    send_update(ChatIsland,
+      id: ChatIsland.id(),
+      system_message: dgettext("lobby", "Game request declined.")
+    )
+
+    {:noreply, socket}
   end
 
   def handle_info(%{event: "lobby_game_response", payload: %{accepted: true}}, socket) do
@@ -172,24 +167,13 @@ defmodule RetroHexChatWeb.App.LobbyLive do
         socket
       ) do
     is_host = p.host_id == socket.assigns.user_id
-
-    {:noreply,
-     socket
-     |> assign(
-       game: %{status: "playing", game_id: p.game_id, is_host: is_host},
-       game_request: nil,
-       game_outgoing: false
-     )
-     |> push_event("lobby_game_start", %{game_id: p.game_id, is_host: is_host})
-     |> push_event("window_command", %{action: "open", id: "game"})}
+    send_update(GameIsland, id: GameIsland.id(), action: {:playing, p.game_id, is_host})
+    {:noreply, socket}
   end
 
   def handle_info(%{event: "lobby_game_status_changed", payload: %{status: "idle"}}, socket) do
-    {:noreply,
-     socket
-     |> assign(game: %{status: "idle", game_id: nil, is_host: false})
-     |> push_event("lobby_game_end", %{})
-     |> push_event("window_command", %{action: "close", id: "game"})}
+    send_update(GameIsland, id: GameIsland.id(), action: :idle)
+    {:noreply, socket}
   end
 
   def handle_info(%{event: "lobby_inactivity_warning"}, socket) do
@@ -223,6 +207,21 @@ defmodule RetroHexChatWeb.App.LobbyLive do
          recover: payload[:recover] || false
        })}
     end
+  end
+
+  # Read-model bubble from a feature island (C2). This is a tuple, not the
+  # `%{event: ...}` PubSub shape, so it MUST be matched above the catch-all or it
+  # is silently swallowed and the taskbar badge never updates.
+  def handle_info({:feature_summary, :game, summary}, socket) do
+    {:noreply, assign(socket, game_summary: summary)}
+  end
+
+  def handle_info({:feature_summary, :file, summary}, socket) do
+    {:noreply, assign(socket, file_summary: summary)}
+  end
+
+  def handle_info({:feature_summary, :call, summary}, socket) do
+    {:noreply, assign(socket, call_summary: summary)}
   end
 
   def handle_info(_msg, socket), do: {:noreply, socket}
@@ -275,12 +274,12 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   def handle_event("lobby_failed", _params, socket) do
-    msg = system_message(dgettext("lobby", "The connection failed."))
+    send_update(ChatIsland,
+      id: ChatIsland.id(),
+      system_message: dgettext("lobby", "The connection failed.")
+    )
 
-    {:noreply,
-     socket
-     |> assign(connection_label: dgettext("lobby", "Connection failed"))
-     |> assign(messages: socket.assigns.messages ++ [msg])}
+    {:noreply, assign(socket, connection_label: dgettext("lobby", "Connection failed"))}
   end
 
   def handle_event("lobby_retry", _params, socket) do
@@ -300,141 +299,34 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   # --- Media (self-controlled) ---
+  #
+  # The LobbyMediaHook and the call window's controls push to the root LV, so the
+  # host forwards the whole media family to the MediaIsland, which owns the call
+  # state and drives its window. `lobby_stats`/`toggle_network_info` feed the
+  # host-owned Statistics window; ending a call also clears that telemetry here.
 
-  def handle_event("lobby_media_hook_ready", _params, socket) do
-    {:noreply, assign(socket, media_ready: true)}
-  end
-
-  def handle_event("start_call", %{"type" => "video"}, socket) do
-    Lobby.set_media(socket.assigns.token, socket.assigns.user_id, true, true)
-
-    {:noreply,
-     socket
-     |> push_event("lobby_media_start_video", %{})
-     |> push_event("window_command", %{action: "open", id: "call"})}
-  end
-
-  def handle_event("start_call", %{"type" => "audio"}, socket) do
-    Lobby.set_media(socket.assigns.token, socket.assigns.user_id, true, false)
-
-    {:noreply,
-     socket
-     |> push_event("lobby_media_start_audio", %{})
-     |> push_event("window_command", %{action: "open", id: "call"})}
-  end
-
-  # The media hook reports its self-controlled send state here for every change:
-  # starting a call, or an auto-joined receiver later enabling mic/camera. The
-  # `audio_on`/`video_on` flags describe what THIS peer is sending now.
-  def handle_event("lobby_media_call_started", params, socket) do
-    type = params["type"] || "audio"
-    audio_on = Map.get(params, "audio_on", true)
-    video_on = Map.get(params, "video_on", type == "video")
-    Lobby.set_media(socket.assigns.token, socket.assigns.user_id, audio_on, video_on)
-
-    call =
-      Map.merge(socket.assigns.call || %{}, %{
-        type: type,
-        audio_on: audio_on,
-        video_on: video_on,
-        duration: socket.assigns.call[:duration] || "00:00:00",
-        muted: socket.assigns.local_muted,
-        camera_off: socket.assigns.local_camera_off
-      })
-
-    {:noreply, assign(socket, call: call)}
-  end
-
-  # The user ended the call from the window's close (X) button. Tell the media hook
-  # to tear the call down AND echo back (`notify: true`) so `lobby_media_call_ended`
-  # clears our state and closes the window — without the echo the call would stop
-  # locally but the window state would linger.
-  def handle_event("end_call", _params, socket) do
-    {:noreply, push_event(socket, "lobby_media_end_call", %{notify: true})}
-  end
-
-  def handle_event("lobby_media_call_ended", _params, socket) do
-    Lobby.set_media(socket.assigns.token, socket.assigns.user_id, false, false)
-
-    {:noreply,
-     socket
-     |> assign(
-       call: nil,
-       stats: empty_stats(),
-       call_layout: "focus",
-       local_muted: false,
-       local_camera_off: false,
-       peer_muted: false,
-       peer_camera_off: false
-     )
-     |> push_event("window_command", %{action: "close", id: "call"})}
-  end
-
-  def handle_event("lobby_media_mute_changed", %{"muted" => muted}, socket) do
-    broadcast("lobby_peer_mute", socket.assigns.token, %{
-      muted: muted,
-      from: socket.assigns.user_id
-    })
-
-    {:noreply,
-     assign(socket,
-       local_muted: muted,
-       call: Map.merge(socket.assigns.call || %{}, %{muted: muted})
-     )}
-  end
-
-  def handle_event("lobby_media_camera_changed", %{"off" => off}, socket) do
-    broadcast("lobby_peer_camera", socket.assigns.token, %{off: off, from: socket.assigns.user_id})
-
-    {:noreply,
-     assign(socket,
-       local_camera_off: off,
-       call: Map.merge(socket.assigns.call || %{}, %{camera_off: off})
-     )}
-  end
-
-  def handle_event("lobby_media_duration_tick", %{"formatted" => formatted}, socket) do
-    {:noreply,
-     assign(socket, call: Map.merge(socket.assigns.call || %{}, %{duration: formatted}))}
-  end
-
-  def handle_event("lobby_media_quality_update", %{"label" => label} = p, socket) do
-    call =
-      Map.merge(socket.assigns.call || %{}, %{quality_level: p["level"], quality_label: label})
-
-    {:noreply, assign(socket, call: call)}
+  def handle_event("lobby_media_call_ended" = event, params, socket) do
+    send_update(MediaIsland, id: MediaIsland.id(), action: {:media_event, event, params})
+    {:noreply, assign(socket, stats: empty_stats())}
   end
 
   def handle_event("lobby_stats", payload, socket) do
     {:noreply, assign(socket, stats: normalize_stats(payload))}
   end
 
-  def handle_event("media_select_preset", %{"preset" => preset}, socket) do
-    {:noreply, push_event(socket, "lobby_media_set_preset", %{preset: preset})}
-  end
-
-  def handle_event("set_call_layout", %{"layout" => layout}, socket)
-      when layout in ~w(focus side_by_side maximized) do
-    {:noreply, assign(socket, call_layout: layout)}
-  end
-
-  def handle_event("set_call_layout", _params, socket), do: {:noreply, socket}
-
   def handle_event("toggle_network_info", _params, socket) do
     {:noreply, assign(socket, network_info_open: !socket.assigns.network_info_open)}
   end
 
-  def handle_event("lobby_media_devices_listed", payload, socket) do
-    {:noreply, assign(socket, devices: payload)}
+  def handle_event("lobby_media_" <> _ = event, params, socket) do
+    send_update(MediaIsland, id: MediaIsland.id(), action: {:media_event, event, params})
+    {:noreply, socket}
   end
 
-  def handle_event("lobby_media_device_fallback", %{"message" => message}, socket) do
-    {:noreply, assign(socket, messages: socket.assigns.messages ++ [system_message(message)])}
-  end
-
-  def handle_event("lobby_media_error", _params, socket) do
-    msg = system_message(dgettext("lobby", "Could not access your microphone or camera."))
-    {:noreply, assign(socket, call: nil, messages: socket.assigns.messages ++ [msg])}
+  def handle_event(event, params, socket)
+      when event in ~w(start_call end_call set_call_layout media_select_preset) do
+    send_update(MediaIsland, id: MediaIsland.id(), action: {:media_event, event, params})
+    {:noreply, socket}
   end
 
   def handle_event("toggle_privacy_mode", _params, socket) do
@@ -444,140 +336,26 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   # --- File transfer (reuses FileTransferHook) ---
+  #
+  # The hook pushes its `ft_*` events to the root LiveView, so the host forwards
+  # the whole family to the FileIsland verbatim; the island owns the state and
+  # drives its window. `file_transfer_ready` does not share the `ft_` prefix.
 
   def handle_event("file_transfer_ready", _params, socket) do
-    {:noreply,
-     socket
-     |> assign(file_transfer_ready: true)
-     |> ensure_file_transfer()
-     |> maybe_push_ft_config()}
+    send_update(FileIsland, id: FileIsland.id(), action: {:ft_event, "file_transfer_ready", %{}})
+    {:noreply, socket}
   end
 
-  def handle_event("ft_offer_sent", params, socket) do
-    {:noreply,
-     assign(socket, file_transfer: ft_meta(params, "offering", socket.assigns.nickname))}
-  end
-
-  def handle_event("ft_offer_received", params, socket) do
-    {:noreply,
-     socket
-     |> assign(file_transfer: ft_meta(params, "offer_received", socket.assigns.peer_nick))
-     |> push_event("window_command", %{action: "open", id: "file"})}
-  end
-
-  def handle_event("ft_respond", %{"accepted" => "true"}, socket) do
-    {:noreply, push_event(socket, "ft_accept", %{})}
-  end
-
-  def handle_event("ft_respond", _params, socket) do
-    {:noreply, push_event(socket, "ft_reject", %{})}
-  end
-
-  def handle_event("ft_accepted", _params, socket) do
-    ft = Map.merge(socket.assigns.file_transfer || %{}, %{status: "transferring", percent: 0})
-    {:noreply, assign(socket, file_transfer: ft)}
-  end
-
-  def handle_event("ft_progress", params, socket) do
-    ft =
-      Map.merge(socket.assigns.file_transfer || %{}, %{
-        status: "transferring",
-        percent: params["percent"],
-        speed: params["speed"],
-        eta: params["eta"]
-      })
-
-    {:noreply, assign(socket, file_transfer: ft)}
-  end
-
-  # A finished transfer returns to "ready" — the lobby connection stays alive.
-  def handle_event("ft_completed", params, socket) do
-    Logger.info("Lobby file completed: #{params["file_name"]}, token=#{socket.assigns.token}")
-
-    msg =
-      system_message(
-        dgettext("lobby", "File transfer completed: %{name}", name: params["file_name"])
-      )
-
-    {:noreply,
-     socket
-     |> assign(file_transfer: %{status: "ready"}, messages: socket.assigns.messages ++ [msg])
-     |> maybe_push_ft_config()}
-  end
-
-  def handle_event("ft_failed", params, socket) do
-    ft =
-      Map.merge(socket.assigns.file_transfer || %{}, %{status: "failed", reason: params["reason"]})
-
-    {:noreply, assign(socket, file_transfer: ft)}
-  end
-
-  def handle_event("ft_cancelled", _params, socket) do
-    {:noreply,
-     socket
-     |> assign(file_transfer: %{status: "ready"})
-     |> maybe_push_ft_config()
-     |> push_event("window_command", %{action: "close", id: "file"})}
-  end
-
-  def handle_event("ft_reset", _params, socket) do
-    {:noreply, socket |> assign(file_transfer: %{status: "ready"}) |> maybe_push_ft_config()}
-  end
-
-  def handle_event("ft_validation_error", params, socket) do
-    {:noreply,
-     assign(socket,
-       file_transfer: %{status: "validation_error", validation_error: params["error"]}
-     )}
-  end
-
-  def handle_event("ft_accept_offer", _params, socket) do
-    {:noreply, push_event(socket, "ft_accept", %{})}
-  end
-
-  # The X on the Files window cancels an in-flight transfer (the hook tears it down)
-  # and closes the window in every state, including an idle picker.
-  def handle_event("ft_cancel", _params, socket) do
-    {:noreply,
-     socket
-     |> push_event("ft_cancel", %{nickname: socket.assigns.nickname})
-     |> push_event("window_command", %{action: "close", id: "file"})}
-  end
-
-  def handle_event("ft_retry", _params, socket) do
-    {:noreply, push_event(socket, "ft_retry", %{})}
-  end
-
-  def handle_event("ft_paused", _params, socket) do
-    {:noreply,
-     assign(socket,
-       file_transfer: Map.merge(socket.assigns.file_transfer || %{}, %{status: "paused"})
-     )}
-  end
-
-  def handle_event("ft_resumed", _params, socket) do
-    {:noreply,
-     assign(socket,
-       file_transfer: Map.merge(socket.assigns.file_transfer || %{}, %{status: "transferring"})
-     )}
-  end
-
-  def handle_event(event, params, socket) when event in ~w(ft_queued ft_rejected) do
-    _ = params
+  def handle_event("ft_" <> _ = event, params, socket) do
+    send_update(FileIsland, id: FileIsland.id(), action: {:ft_event, event, params})
     {:noreply, socket}
   end
 
   # --- Games ---
 
   def handle_event("lobby_game_canvas_ready", _params, socket) do
-    game = socket.assigns.game
-
-    if game.status == "playing" do
-      {:noreply,
-       push_event(socket, "lobby_game_start", %{game_id: game.game_id, is_host: game.is_host})}
-    else
-      {:noreply, socket}
-    end
+    send_update(GameIsland, id: GameIsland.id(), action: :canvas_ready)
+    {:noreply, socket}
   end
 
   def handle_event("propose_game", %{"game_id" => game_id}, socket) do
@@ -597,11 +375,8 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   # playing game ends for both peers; an open picker or pending proposal just closes.
   def handle_event("end_game", _params, socket) do
     Lobby.end_game(socket.assigns.token, socket.assigns.user_id)
-
-    {:noreply,
-     socket
-     |> assign(game_request: nil, game_outgoing: false)
-     |> push_event("window_command", %{action: "close", id: "game"})}
+    send_update(GameIsland, id: GameIsland.id(), action: :end_game)
+    {:noreply, socket}
   end
 
   def handle_event("lobby_game_result", _result, socket) do
@@ -655,28 +430,15 @@ defmodule RetroHexChatWeb.App.LobbyLive do
        inactivity_warning: false,
        webrtc_ready: false,
        webrtc_started: false,
-       media_ready: false,
-       messages: [],
-       call: nil,
-       call_layout: "focus",
-       local_muted: false,
-       local_camera_off: false,
-       peer_muted: false,
-       peer_camera_off: false,
-       peer_media: %{audio: false, video: false},
+       call_summary: nil,
        stats: empty_stats(),
        network_info_open: false,
-       devices: nil,
        local_info: local_info,
        peer_info: %{},
        turn_only: load_turn_only_preference(nickname),
        turn_configured: P2P.turn_configured?(),
-       file_transfer: nil,
-       file_transfer_ready: false,
-       game: %{status: "idle", game_id: nil, is_host: false},
-       game_request: nil,
-       game_outgoing: false,
-       games: Catalog.list_games(),
+       file_summary: nil,
+       game_summary: %{active?: false},
        expired: false,
        session_closed: false,
        ended_reason: nil
@@ -717,90 +479,8 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   defp maybe_start_webrtc(socket), do: socket
 
-  defp ensure_file_transfer(%{assigns: %{file_transfer: nil}} = socket) do
-    socket |> assign(file_transfer: %{status: "ready"}) |> maybe_push_ft_config()
-  end
-
-  defp ensure_file_transfer(socket), do: socket
-
-  defp maybe_push_ft_config(%{assigns: %{file_transfer_ready: true}} = socket) do
-    config = %{
-      max_size_mb: Application.get_env(:retro_hex_chat, :file_transfer_max_size_mb, 500),
-      blocked_extensions:
-        Application.get_env(
-          :retro_hex_chat,
-          :file_transfer_blocked_extensions,
-          ~w(.exe .bat .cmd .com .msi .scr .pif .vbs .vbe .js .jse .wsf .wsh .ps1 .reg)
-        )
-    }
-
-    push_event(socket, "ft_config", config)
-  end
-
-  defp maybe_push_ft_config(socket), do: socket
-
-  defp ft_meta(params, status, sender_nick) do
-    %{
-      status: status,
-      file_name: params["file_name"],
-      formatted_size: params["formatted_size"],
-      sender_nick: sender_nick
-    }
-  end
-
   defp broadcast(event, token, payload) do
     Phoenix.PubSub.broadcast(@pubsub, "lobby:#{token}", %{event: event, payload: payload})
-  end
-
-  # The peer's media turned on. If we are not in the call yet, auto-join as a pure
-  # receiver: become a participant (window opens, surface renders) with our own mic
-  # and camera off — the user then chooses to enable them, no permission prompt. If
-  # we are already in, just keep the window surfaced.
-  defp surface_peer_media(socket, true) do
-    if is_nil(socket.assigns.call) do
-      # We are sending nothing yet, so mic/camera are simply "not on" — NOT muted
-      # or camera-off. Keeping these false means that when the user later enables a
-      # device the toggle reflects its real state instead of starting inverted.
-      call = %{
-        type: "receiving",
-        audio_on: false,
-        video_on: false,
-        duration: "00:00:00",
-        muted: false,
-        camera_off: false
-      }
-
-      {:noreply,
-       socket
-       |> assign(call: call, local_muted: false, local_camera_off: false)
-       |> push_event("lobby_media_join", %{})
-       |> push_event("window_command", %{action: "open", id: "call"})}
-    else
-      {:noreply, push_event(socket, "window_command", %{action: "open", id: "call"})}
-    end
-  end
-
-  # The peer turned everything off. If we were only receiving (sending nothing),
-  # there is no media left for us, so leave the call; otherwise stay as we are.
-  defp surface_peer_media(socket, false) do
-    call = socket.assigns.call
-    sending? = call != nil and (call[:audio_on] or call[:video_on])
-
-    if call != nil and not sending? do
-      {:noreply, push_event(socket, "lobby_media_end_call", %{notify: true})}
-    else
-      {:noreply, socket}
-    end
-  end
-
-  defp system_message(content) do
-    %{
-      id: System.unique_integer([:positive]),
-      sender_nick: dgettext("lobby", "System"),
-      content: content,
-      type: "system",
-      timestamp: DateTime.utc_now()
-    }
   end
 
   defp connected_label, do: dgettext("lobby", "Connected")
