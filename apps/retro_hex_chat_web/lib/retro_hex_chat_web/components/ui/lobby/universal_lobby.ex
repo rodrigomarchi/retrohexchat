@@ -21,13 +21,11 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Alert
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
-  import RetroHexChatWeb.Components.UI.P2PConnectionDiagram
   import RetroHexChatWeb.Components.UI.Lobby.LobbyMenuBar
   import RetroHexChatWeb.Components.UI.Lobby.LobbyStatusBar
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
@@ -174,50 +172,35 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
               <:icon><Icons.icon_status_signal class="h-8 w-8" /></:icon>
             </.desktop_shortcut>
           </:shortcuts>
-          <%!-- Statistics — identity, live connection state and always-complete
-                per-feature telemetry. Pinned: it is the lobby's status home and
-                cannot be closed. --%>
+          <%!-- Statistics — the lobby's telemetry home: a Network tab (full
+                connection diagram + whois + connection quality) and one tab per
+                media/data channel. Pinned: it cannot be closed. Identity, live
+                connection state and the clock live in the top bar. --%>
           <.desktop_window
             id="conn"
             title={dgettext("lobby", "Statistics")}
             pinned
             default_x={560}
             default_y={16}
-            width={330}
-            height={460}
+            width={380}
+            height={500}
             data-testid="lobby-window-conn"
           >
             <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>
-            <%!-- Status header (moved off the desktop): peer, connection state,
-                  privacy and the clock. --%>
-            <div class="mb-2 flex items-center gap-2 text-xs">
-              <.badge variant="outline">
-                <Icons.icon_webrtc class="mr-1 h-3 w-3" />{@connection_label}
-              </.badge>
-              <Icons.icon_privacy
-                :if={@turn_only}
-                class="text-muted-foreground h-3 w-3"
-                data-testid="lobby-tray-privacy"
-              />
-              <span
-                id="lobby-clock"
-                phx-hook="ClockHook"
-                class="text-muted-foreground ml-auto tabular-nums"
-              >
-              </span>
-            </div>
-            <.p2p_connection_strip
+            <.lobby_network_panel
+              stats={@stats}
+              info_open={@network_info_open}
               nickname={@nickname}
               peer_nick={@peer_nick}
               peer_online={@peer_online}
               session_status={@session_status}
-              webrtc_state={@connection_label}
-              file_transfer={@file_summary}
-              call={@call_summary}
+              connection_label={@connection_label}
               local_info={@local_info}
               peer_info={@peer_info}
+              call_summary={@call_summary}
+              file_summary={@file_summary}
+              turn_only={@turn_only}
             />
-            <.lobby_network_panel stats={@stats} info_open={@network_info_open} />
           </.desktop_window>
 
           <%!-- Chat — open by default --%>
