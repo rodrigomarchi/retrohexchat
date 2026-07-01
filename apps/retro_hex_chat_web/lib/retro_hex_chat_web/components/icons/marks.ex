@@ -356,4 +356,64 @@ defmodule RetroHexChatWeb.Icons.Marks do
     </svg>
     """
   end
+
+  @doc "Win98 cascade windows — two staggered window frames."
+  attr :class, :string, default: nil
+
+  @spec icon_win_cascade(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_win_cascade(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        fill="#000"
+        d="M3 0h11v2H3zM13 2h1v8h-1zM11 9h2v1h-2zM3 2h1v1H3zM0 4h11v2H0zM0 6h1v8H0zM10 6h1v8h-1zM1 13h9v1H1z"
+      />
+    </svg>
+    """
+  end
+
+  @doc "Win98 tile windows horizontally — two stacked window frames."
+  attr :class, :string, default: nil
+
+  @spec icon_win_tile_h(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_win_tile_h(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        fill="#000"
+        d="M0 0h14v2H0zM0 2h1v3H0zM13 2h1v3h-1zM0 5h14v1H0zM0 8h14v2H0zM0 10h1v3H0zM13 10h1v3h-1zM0 13h14v1H0z"
+      />
+    </svg>
+    """
+  end
+
+  @doc "Win98 tile windows vertically — two side-by-side window frames."
+  attr :class, :string, default: nil
+
+  @spec icon_win_tile_v(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_win_tile_v(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        fill="#000"
+        d="M0 0h6v2H0zM0 2h1v11H0zM5 2h1v11H5zM1 13h4v1H1zM8 0h6v2H8zM8 2h1v11H8zM13 2h1v11h-1zM9 13h4v1H9z"
+      />
+    </svg>
+    """
+  end
+
+  @doc "Win98 minimize all windows — down arrow onto a taskbar bar."
+  attr :class, :string, default: nil
+
+  @spec icon_win_minimize_all(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_win_minimize_all(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 14 14" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        fill="#000"
+        d="M6 0h2v4H6zM4 4h6v1H4zM5 5h4v1H5zM6 6h2v1H6zM2 10h10v3H2z"
+      />
+    </svg>
+    """
+  end
 end

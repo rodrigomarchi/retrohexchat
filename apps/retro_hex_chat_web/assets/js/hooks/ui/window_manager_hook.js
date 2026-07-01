@@ -9,12 +9,20 @@
  * data attributes, so the hook is generic and reusable:
  *   - `[data-window-id]`            a window (with `data-window-default-*` geometry)
  *   - `[data-window-titlebar]`      drag handle inside a window
- *   - `[data-window-resize]`        resize grip inside a window
+ *   - `[data-window-resize=<dir>]`  resize handle (n|s|e|w|ne|nw|se|sw; bare = se)
  *   - `[data-window-control=...]`   minimize | maximize | restore | close button
  *   - `[data-window-taskbar=<id>]`  taskbar button targeting a window
  *   - `[data-window-start]`         Start button (toggles the menu)
  *   - `[data-window-start-menu]`    Start menu popup
  *   - `[data-window-open=<id>]`     opens/focuses a window (e.g. a menu item)
+ *   - `[data-taskbar-menu=<kind>]`  right-click menu (window | desktop)
+ *   - `[data-taskbar-menu-action]`  item inside a taskbar menu
+ *
+ * Right-clicking a taskbar button opens the window menu (restore/minimize/
+ * maximize/close); right-clicking elsewhere on the taskbar opens the desktop
+ * menu (cascade/tile/minimize all). Minimize, restore-from-taskbar and
+ * maximize play a Win98 zoom-wireframe animation (skipped when the user
+ * prefers reduced motion).
  *
  * The server can drive it via `push_event("window_command", {action, id})` where
  * action is one of open | focus | flash | close | minimize | maximize.
@@ -23,6 +31,9 @@ const STORAGE_PREFIX = "rhc:desktop:";
 const Z_BASE = 10;
 const STACK_BREAKPOINT = 720;
 const EDGE_MARGIN = 40;
+const CASCADE_STEP = 26;
+const CASCADE_SIZE_RATIO = 0.6;
+const ZOOM_FALLBACK_MS = 400;
 
 const WindowManagerHook = {
   mounted() {
@@ -35,6 +46,11 @@ const WindowManagerHook = {
     this.drag = null;
     this.resize = null;
     this.windows = {};
+    this.menuWindowId = null;
+    this._ghosts = new Set();
+    this.reducedMotion =
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     // Persistence disabled: wipe any stale saved layout so we always open from the
     // default layout (and a layout saved by an older version can't corrupt the
@@ -132,6 +148,8 @@ const WindowManagerHook = {
     this._onPointerDown = (e) => this.onPointerDown(e);
     this._onClick = (e) => this.onClick(e);
     this._onDblClick = (e) => this.onDblClick(e);
+    this._onContextMenu = (e) => this.onContextMenu(e);
+    this._onKeyDown = (e) => this.onKeyDown(e);
     this._onPointerMove = (e) => this.onPointerMove(e);
     this._onPointerUp = (e) => this.onPointerUp(e);
     this._onDocPointerDown = (e) => this.onDocPointerDown(e);
@@ -140,6 +158,8 @@ const WindowManagerHook = {
     this.el.addEventListener("pointerdown", this._onPointerDown);
     this.el.addEventListener("click", this._onClick);
     this.el.addEventListener("dblclick", this._onDblClick);
+    this.el.addEventListener("contextmenu", this._onContextMenu);
+    document.addEventListener("keydown", this._onKeyDown);
     document.addEventListener("pointermove", this._onPointerMove);
     document.addEventListener("pointerup", this._onPointerUp);
     document.addEventListener("pointerdown", this._onDocPointerDown, true);
@@ -158,12 +178,16 @@ const WindowManagerHook = {
     this.el.removeEventListener("pointerdown", this._onPointerDown);
     this.el.removeEventListener("click", this._onClick);
     this.el.removeEventListener("dblclick", this._onDblClick);
+    this.el.removeEventListener("contextmenu", this._onContextMenu);
+    document.removeEventListener("keydown", this._onKeyDown);
     document.removeEventListener("pointermove", this._onPointerMove);
     document.removeEventListener("pointerup", this._onPointerUp);
     document.removeEventListener("pointerdown", this._onDocPointerDown, true);
     window.removeEventListener("resize", this._onResize);
     if (this._resizeObserver) this._resizeObserver.disconnect();
     if (this._rafResize) cancelAnimationFrame(this._rafResize);
+    for (const ghost of this._ghosts) ghost.remove();
+    this._ghosts.clear();
   },
 
   // ── Pointer interactions (drag / resize / focus) ───────────
@@ -175,7 +199,9 @@ const WindowManagerHook = {
     if (resizeH && !this.stacked) {
       const id = this.windowIdOf(resizeH);
       this.focusWindow(id);
-      if (!this.windows[id].state.maximized) this.startResize(e, id);
+      if (!this.windows[id].state.maximized) {
+        this.startResize(e, id, resizeH.dataset.windowResize || "se");
+      }
       return;
     }
 
@@ -203,14 +229,17 @@ const WindowManagerHook = {
     this.drag = { id, px: e.clientX, py: e.clientY, ox: st.x, oy: st.y };
   },
 
-  startResize(e, id) {
+  startResize(e, id, dir) {
     e.preventDefault();
     const st = this.windows[id].state;
     const rect = this.windows[id].el.getBoundingClientRect();
     this.resize = {
       id,
+      dir,
       px: e.clientX,
       py: e.clientY,
+      ox: st.x,
+      oy: st.y,
       ow: st.w || rect.width,
       oh: st.h || rect.height,
     };
@@ -227,8 +256,21 @@ const WindowManagerHook = {
     } else if (this.resize) {
       const win = this.windows[this.resize.id];
       const st = win.state;
-      st.w = Math.max(win.minW, this.resize.ow + (e.clientX - this.resize.px));
-      st.h = Math.max(win.minH, this.resize.oh + (e.clientY - this.resize.py));
+      const { dir, px, py, ox, oy, ow, oh } = this.resize;
+      const dx = e.clientX - px;
+      const dy = e.clientY - py;
+      if (dir.includes("e")) st.w = Math.max(win.minW, ow + dx);
+      if (dir.includes("s")) st.h = Math.max(win.minH, oh + dy);
+      // North/west handles move the near edge while the far edge stays put; the
+      // upper clamp keeps the moving edge inside the workspace (x/y >= 0).
+      if (dir.includes("w")) {
+        st.w = clamp(ow - dx, win.minW, ox + ow);
+        st.x = ox + ow - st.w;
+      }
+      if (dir.includes("n")) {
+        st.h = clamp(oh - dy, win.minH, oy + oh);
+        st.y = oy + oh - st.h;
+      }
       this.applyWindow(this.resize.id);
     }
   },
@@ -248,6 +290,13 @@ const WindowManagerHook = {
   // ── Click interactions (controls / taskbar / start menu) ───
 
   onClick(e) {
+    const menuItem = e.target.closest("[data-taskbar-menu-action]");
+    if (menuItem) {
+      this.onTaskbarMenuAction(menuItem.dataset.taskbarMenuAction);
+      this.closeTaskbarMenus();
+      return;
+    }
+
     // A single click selects a desktop shortcut (it opens on double-click); any
     // other click clears the selection, mirroring a real desktop.
     const shortcut = e.target.closest("[data-window-shortcut]");
@@ -306,6 +355,98 @@ const WindowManagerHook = {
     if (id) this.toggleMaximize(id);
   },
 
+  // ── Taskbar context menus ──────────────────────────────────
+
+  onContextMenu(e) {
+    const taskBtn = e.target.closest("[data-window-taskbar]");
+    const taskbar = e.target.closest(".desktop-taskbar");
+    if (!taskBtn && !taskbar) return; // keep the native menu elsewhere
+    e.preventDefault();
+    this.closeStartMenu();
+    if (taskBtn) this.openTaskbarMenu("window", e, taskBtn.dataset.windowTaskbar);
+    else this.openTaskbarMenu("desktop", e, null);
+  },
+
+  openTaskbarMenu(kind, e, id) {
+    this.closeTaskbarMenus();
+    const menu = this.el.querySelector(`[data-taskbar-menu="${kind}"]`);
+    if (!menu) return;
+    this.menuWindowId = id;
+    if (kind === "window") this.syncWindowMenu(menu, id);
+    menu.classList.remove("u-hidden");
+    // Anchor at the cursor, opening upward — the taskbar sits at the bottom.
+    const x = clamp(e.clientX, 0, Math.max(0, window.innerWidth - menu.offsetWidth));
+    const y = Math.max(0, e.clientY - menu.offsetHeight);
+    menu.style.left = `${x}px`;
+    menu.style.top = `${y}px`;
+  },
+
+  // Gray out the menu entries that don't apply to the target window's state,
+  // mirroring the Win98 system menu.
+  syncWindowMenu(menu, id) {
+    const win = this.windows[id];
+    if (!win) return;
+    const st = win.state;
+    const disabled = {
+      restore: !st.maximized && !st.minimized,
+      minimize: st.minimized,
+      maximize: st.maximized,
+      close: win.pinned,
+    };
+    for (const item of menu.querySelectorAll("[data-taskbar-menu-action]")) {
+      const off = !!disabled[item.dataset.taskbarMenuAction];
+      if (off) item.setAttribute("aria-disabled", "true");
+      else item.removeAttribute("aria-disabled");
+    }
+  },
+
+  closeTaskbarMenus() {
+    for (const menu of this.el.querySelectorAll("[data-taskbar-menu]")) {
+      menu.classList.add("u-hidden");
+    }
+    this.menuWindowId = null;
+  },
+
+  onTaskbarMenuAction(action) {
+    const id = this.menuWindowId;
+    switch (action) {
+      case "restore": {
+        const st = this.windows[id]?.state;
+        if (!st) return;
+        if (st.minimized) this.openWindow(id);
+        else if (st.maximized) this.toggleMaximize(id);
+        break;
+      }
+      case "minimize":
+        if (this.windows[id]) this.minimizeWindow(id);
+        break;
+      case "maximize":
+        if (this.windows[id] && !this.windows[id].state.maximized) this.toggleMaximize(id);
+        break;
+      case "close":
+        if (this.windows[id]) this.closeWindow(id);
+        break;
+      case "cascade":
+        this.cascadeWindows();
+        break;
+      case "tile-h":
+        this.tileWindows("h");
+        break;
+      case "tile-v":
+        this.tileWindows("v");
+        break;
+      case "minimize-all":
+        this.minimizeAll();
+        break;
+    }
+  },
+
+  onKeyDown(e) {
+    if (e.key !== "Escape") return;
+    this.closeTaskbarMenus();
+    this.closeStartMenu();
+  },
+
   selectShortcut(el) {
     this.clearShortcutSelection();
     el.classList.add("is-selected");
@@ -359,11 +500,17 @@ const WindowManagerHook = {
   },
 
   openWindow(id) {
-    const st = this.windows[id].state;
+    const win = this.windows[id];
+    const st = win.state;
+    const wasMinimized = st.open && st.minimized;
     st.open = true;
     st.minimized = false;
     this.clearFlash(id);
     this.focusWindow(id);
+    if (wasMinimized) {
+      const btn = this.taskbarButton(id);
+      if (btn) this.animateZoom(btn.getBoundingClientRect(), win.el.getBoundingClientRect());
+    }
   },
 
   closeWindow(id) {
@@ -377,17 +524,89 @@ const WindowManagerHook = {
   },
 
   minimizeWindow(id) {
-    this.windows[id].state.minimized = true;
+    const win = this.windows[id];
+    const st = win.state;
+    const fromRect = st.open && !st.minimized ? win.el.getBoundingClientRect() : null;
+    st.minimized = true;
     if (this.focusedId === id) this.focusTopmost();
+    this.applyAll();
+    this.persist();
+    const btn = this.taskbarButton(id);
+    if (fromRect && btn) this.animateZoom(fromRect, btn.getBoundingClientRect());
+  },
+
+  toggleMaximize(id) {
+    const win = this.windows[id];
+    const st = win.state;
+    // A window restored from the taskbar animates inside openWindow instead.
+    const fromRect = st.open && !st.minimized ? win.el.getBoundingClientRect() : null;
+    st.maximized = !st.maximized;
+    this.openWindow(id);
+    this.persist();
+    if (fromRect) this.animateZoom(fromRect, win.el.getBoundingClientRect());
+  },
+
+  // Arrange every visible window: staggered stacks (cascade) or an even
+  // one-direction split of the workspace (tile), like the Win98 taskbar menu.
+  cascadeWindows() {
+    const { w: wsW, h: wsH } = this.workspaceSize();
+    const ids = this.visibleWindows();
+    ids.forEach((id, i) => {
+      const win = this.windows[id];
+      const st = win.state;
+      st.maximized = false;
+      st.w = Math.max(win.minW, Math.round(wsW * CASCADE_SIZE_RATIO));
+      st.h = Math.max(win.minH, Math.round(wsH * CASCADE_SIZE_RATIO));
+      st.x = i * CASCADE_STEP;
+      st.y = i * CASCADE_STEP;
+      st.z = this.zCounter += 1;
+    });
+    if (ids.length > 0) this.focusedId = ids[ids.length - 1];
     this.applyAll();
     this.persist();
   },
 
-  toggleMaximize(id) {
-    const st = this.windows[id].state;
-    st.maximized = !st.maximized;
-    this.openWindow(id);
+  tileWindows(direction) {
+    const { w: wsW, h: wsH } = this.workspaceSize();
+    const ids = this.visibleWindows();
+    if (ids.length === 0) return;
+    const rowH = Math.floor(wsH / ids.length);
+    const colW = Math.floor(wsW / ids.length);
+    let offset = 0;
+    for (const id of ids) {
+      const win = this.windows[id];
+      const st = win.state;
+      st.maximized = false;
+      if (direction === "h") {
+        st.x = 0;
+        st.y = offset;
+        st.w = Math.max(win.minW, wsW);
+        st.h = Math.max(win.minH, rowH);
+        offset += st.h;
+      } else {
+        st.x = offset;
+        st.y = 0;
+        st.w = Math.max(win.minW, colW);
+        st.h = Math.max(win.minH, wsH);
+        offset += st.w;
+      }
+    }
+    this.applyAll();
     this.persist();
+  },
+
+  minimizeAll() {
+    for (const id of this.visibleWindows()) this.minimizeWindow(id);
+  },
+
+  // Visible (open, not minimized) window ids in z-order, bottom to top.
+  visibleWindows() {
+    return Object.keys(this.windows)
+      .filter((id) => {
+        const st = this.windows[id].state;
+        return st.open && !st.minimized;
+      })
+      .sort((a, b) => (this.windows[a].state.z || 0) - (this.windows[b].state.z || 0));
   },
 
   focusWindow(id) {
@@ -422,6 +641,40 @@ const WindowManagerHook = {
   clearFlash(id) {
     const btn = this.taskbarButton(id);
     if (btn) btn.classList.remove("is-flashing");
+  },
+
+  // ── Zoom animation ─────────────────────────────────────────
+
+  // Win98 minimize/maximize zoom: a transient dotted wireframe flies from one
+  // rect to the other. Purely decorative — the real window switches state
+  // instantly, so a lost transitionend (or reduced-motion) costs nothing.
+  animateZoom(fromRect, toRect) {
+    if (this.reducedMotion || this.stacked) return;
+    if (!fromRect || !toRect) return;
+    if (fromRect.width === 0 && fromRect.height === 0) return;
+
+    const ghost = document.createElement("div");
+    ghost.className = "desktop-zoom";
+    this.setZoomRect(ghost, fromRect);
+    this.el.appendChild(ghost);
+    this._ghosts.add(ghost);
+    ghost.getBoundingClientRect(); // flush layout so the transition animates
+    this.setZoomRect(ghost, toRect);
+
+    const timer = setTimeout(() => cleanup(), ZOOM_FALLBACK_MS);
+    const cleanup = () => {
+      clearTimeout(timer);
+      this._ghosts.delete(ghost);
+      ghost.remove();
+    };
+    ghost.addEventListener("transitionend", cleanup, { once: true });
+  },
+
+  setZoomRect(el, rect) {
+    el.style.setProperty("--zoom-x", `${rect.left}px`);
+    el.style.setProperty("--zoom-y", `${rect.top}px`);
+    el.style.setProperty("--zoom-w", `${rect.width}px`);
+    el.style.setProperty("--zoom-h", `${rect.height}px`);
   },
 
   // ── Rendering ──────────────────────────────────────────────
@@ -495,6 +748,8 @@ const WindowManagerHook = {
   },
 
   onDocPointerDown(e) {
+    if (!e.target.closest("[data-taskbar-menu]")) this.closeTaskbarMenus();
+
     const menu = this.startMenu();
     if (!menu || menu.classList.contains("u-hidden")) return;
     if (e.target.closest("[data-window-start-menu]") || e.target.closest("[data-window-start]")) {

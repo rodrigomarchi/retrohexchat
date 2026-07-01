@@ -247,6 +247,10 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_win_maximize(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_win_restore(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_win_help(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_win_cascade(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_win_tile_h(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_win_tile_v(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_win_minimize_all(assigns), to: RetroHexChatWeb.Icons.Marks
 
   # ── Tools ───────────────────────────────────────────────
   defdelegate icon_wrench(assigns), to: RetroHexChatWeb.Icons.Tools

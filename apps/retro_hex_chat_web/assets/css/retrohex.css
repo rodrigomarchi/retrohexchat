@@ -1135,7 +1135,7 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   @apply bg-title-bar-inactive;
 }
 /* Win98 diagonal resize grip in the bottom-right corner. */
-.desktop-window__resize {
+.desktop-window__resize--grip {
   background-image: linear-gradient(
     135deg,
     transparent 0,
@@ -1149,9 +1149,81 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
     transparent 75%
   );
 }
-/* A maximized window fills the workspace; the resize grip makes no sense there. */
+/* Invisible resize handles along every edge and corner (the SE corner is the
+   visible grip above). Edge strips stop short of the corners/grip zones. */
+.desktop-window__resize--n {
+  top: 0;
+  left: 10px;
+  right: 10px;
+  height: 4px;
+  cursor: ns-resize;
+}
+.desktop-window__resize--s {
+  bottom: 0;
+  left: 10px;
+  right: 18px;
+  height: 4px;
+  cursor: ns-resize;
+}
+.desktop-window__resize--e {
+  right: 0;
+  top: 10px;
+  bottom: 18px;
+  width: 4px;
+  cursor: ew-resize;
+}
+.desktop-window__resize--w {
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+  width: 4px;
+  cursor: ew-resize;
+}
+.desktop-window__resize--nw {
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  cursor: nwse-resize;
+}
+.desktop-window__resize--ne {
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  cursor: nesw-resize;
+}
+.desktop-window__resize--sw {
+  bottom: 0;
+  left: 0;
+  width: 10px;
+  height: 10px;
+  cursor: nesw-resize;
+}
+/* A maximized window fills the workspace; resize handles make no sense there. */
 .desktop-window--maximized .desktop-window__resize {
   display: none;
+}
+/* Taskbar context-menu items the hook marks inapplicable for the target window. */
+[data-taskbar-menu] [data-taskbar-menu-action][aria-disabled="true"] {
+  @apply text-disabled;
+  pointer-events: none;
+}
+/* Transient Win98 zoom wireframe that flies between a window and its taskbar
+   button on minimize/restore, or between the two geometries on maximize.
+   Geometry is driven by custom properties set by the WindowManagerHook. */
+.desktop-zoom {
+  @apply z-floating pointer-events-none fixed;
+  left: var(--zoom-x, 0px);
+  top: var(--zoom-y, 0px);
+  width: var(--zoom-w, 0px);
+  height: var(--zoom-h, 0px);
+  border: 2px dotted #808080;
+  transition:
+    left 0.16s linear,
+    top 0.16s linear,
+    width 0.16s linear,
+    height 0.16s linear;
 }
 /* Focused window's taskbar button looks pressed; flashing draws attention. */
 .desktop-taskbar__button.is-active {

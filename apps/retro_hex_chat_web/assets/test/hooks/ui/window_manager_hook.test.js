@@ -18,6 +18,24 @@ function windowMarkup(id, { pinned = false, open = true } = {}) {
       <div data-window-titlebar>${controls}</div>
       <div data-window-content></div>
       <button data-window-resize></button>
+      <span data-window-resize="w"></span>
+      <span data-window-resize="n"></span>
+    </div>`;
+}
+
+function taskbarMenusMarkup() {
+  return `
+    <div data-taskbar-menu="window" class="u-hidden">
+      <li data-taskbar-menu-action="restore"></li>
+      <li data-taskbar-menu-action="minimize"></li>
+      <li data-taskbar-menu-action="maximize"></li>
+      <li data-taskbar-menu-action="close"></li>
+    </div>
+    <div data-taskbar-menu="desktop" class="u-hidden">
+      <li data-taskbar-menu-action="cascade"></li>
+      <li data-taskbar-menu-action="tile-h"></li>
+      <li data-taskbar-menu-action="tile-v"></li>
+      <li data-taskbar-menu-action="minimize-all"></li>
     </div>`;
 }
 
@@ -39,6 +57,7 @@ function buildDesktop() {
       <button data-window-taskbar="conn"></button>
       <button data-window-taskbar="chat"></button>
       <button data-window-taskbar="call"></button>
+      ${taskbarMenusMarkup()}
     </div>`;
   document.body.appendChild(el);
   return el;
@@ -180,6 +199,194 @@ describe("WindowManagerHook", () => {
     const grip = win("call").querySelector("[data-window-resize]");
     grip.dispatchEvent(new MouseEvent("pointerdown", { bubbles: true, button: 0 }));
     expect(hook.resize).toBe(null);
+  });
+
+  it("resizes from the west edge, keeping the right edge fixed and clamping at min width", () => {
+    command({ action: "open", id: "call" });
+    hook.stacked = false;
+    hook.workspaceSize = () => ({ w: 800, h: 600 }); // jsdom has no layout
+
+    // Defaults from the markup: x=20, w=300, minW=200 — the right edge sits at 320.
+    const handle = win("call").querySelector('[data-window-resize="w"]');
+    handle.dispatchEvent(
+      new MouseEvent("pointerdown", { bubbles: true, button: 0, clientX: 100, clientY: 50 }),
+    );
+    expect(hook.resize.dir).toBe("w");
+
+    document.dispatchEvent(new MouseEvent("pointermove", { clientX: 80, clientY: 50 }));
+    expect(hook.windows.call.state.w).toBe(320);
+    expect(hook.windows.call.state.x).toBe(0);
+
+    document.dispatchEvent(new MouseEvent("pointermove", { clientX: 250, clientY: 50 }));
+    expect(hook.windows.call.state.w).toBe(200);
+    expect(hook.windows.call.state.x).toBe(120);
+
+    document.dispatchEvent(new MouseEvent("pointerup", {}));
+    expect(hook.resize).toBe(null);
+  });
+
+  it("resizes from the north edge, keeping the bottom edge fixed and clamping at min height", () => {
+    command({ action: "open", id: "call" });
+    hook.stacked = false;
+    hook.workspaceSize = () => ({ w: 800, h: 600 });
+    const st = hook.windows.call.state;
+    st.h = 200; // markup has auto height; the bottom edge sits at y=20+200=220
+
+    const handle = win("call").querySelector('[data-window-resize="n"]');
+    handle.dispatchEvent(
+      new MouseEvent("pointerdown", { bubbles: true, button: 0, clientX: 50, clientY: 100 }),
+    );
+
+    document.dispatchEvent(new MouseEvent("pointermove", { clientX: 50, clientY: 90 }));
+    expect(st.h).toBe(210);
+    expect(st.y).toBe(10);
+
+    document.dispatchEvent(new MouseEvent("pointermove", { clientX: 50, clientY: 400 }));
+    expect(st.h).toBe(120);
+    expect(st.y).toBe(100);
+
+    document.dispatchEvent(new MouseEvent("pointerup", {}));
+  });
+
+  const windowMenu = () => el.querySelector('[data-taskbar-menu="window"]');
+  const desktopMenu = () => el.querySelector('[data-taskbar-menu="desktop"]');
+  const menuItem = (menu, action) => menu.querySelector(`[data-taskbar-menu-action="${action}"]`);
+
+  it("opens the window menu on taskbar-button right-click with state-aware items", () => {
+    command({ action: "open", id: "call" });
+
+    taskbarBtn("call").dispatchEvent(new MouseEvent("contextmenu", { bubbles: true }));
+    expect(windowMenu().classList.contains("u-hidden")).toBe(false);
+    expect(hook.menuWindowId).toBe("call");
+    // Visible + not maximized: restore is inapplicable, everything else applies.
+    expect(menuItem(windowMenu(), "restore").getAttribute("aria-disabled")).toBe("true");
+    expect(menuItem(windowMenu(), "minimize").hasAttribute("aria-disabled")).toBe(false);
+    expect(menuItem(windowMenu(), "maximize").hasAttribute("aria-disabled")).toBe(false);
+    expect(menuItem(windowMenu(), "close").hasAttribute("aria-disabled")).toBe(false);
+
+    // A pinned window never offers close.
+    taskbarBtn("conn").dispatchEvent(new MouseEvent("contextmenu", { bubbles: true }));
+    expect(menuItem(windowMenu(), "close").getAttribute("aria-disabled")).toBe("true");
+  });
+
+  it("applies a window-menu action to the right-clicked window and closes the menu", () => {
+    command({ action: "open", id: "call" });
+
+    taskbarBtn("call").dispatchEvent(new MouseEvent("contextmenu", { bubbles: true }));
+    menuItem(windowMenu(), "minimize").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+    expect(hook.windows.call.state.minimized).toBe(true);
+    expect(windowMenu().classList.contains("u-hidden")).toBe(true);
+    expect(hook.menuWindowId).toBe(null);
+  });
+
+  it("opens the desktop menu on empty-taskbar right-click and minimizes all windows", () => {
+    command({ action: "open", id: "call" });
+
+    el.querySelector(".desktop-taskbar").dispatchEvent(
+      new MouseEvent("contextmenu", { bubbles: true }),
+    );
+    expect(desktopMenu().classList.contains("u-hidden")).toBe(false);
+
+    menuItem(desktopMenu(), "minimize-all").dispatchEvent(
+      new MouseEvent("click", { bubbles: true }),
+    );
+    for (const id of ["conn", "chat", "call"]) {
+      expect(hook.windows[id].state.minimized).toBe(true);
+    }
+  });
+
+  it("cascades visible windows into a staggered stack", () => {
+    command({ action: "open", id: "call" });
+    hook.workspaceSize = () => ({ w: 800, h: 600 });
+
+    el.querySelector(".desktop-taskbar").dispatchEvent(
+      new MouseEvent("contextmenu", { bubbles: true }),
+    );
+    menuItem(desktopMenu(), "cascade").dispatchEvent(new MouseEvent("click", { bubbles: true }));
+
+    // z-order at this point: conn, chat, call (call was focused last).
+    ["conn", "chat", "call"].forEach((id, i) => {
+      const st = hook.windows[id].state;
+      expect(st.maximized).toBe(false);
+      expect(st.x).toBe(i * 26);
+      expect(st.y).toBe(i * 26);
+      expect(st.w).toBe(480);
+      expect(st.h).toBe(360);
+    });
+    expect(hook.focusedId).toBe("call");
+  });
+
+  it("tiles visible windows horizontally as full-width rows", () => {
+    command({ action: "open", id: "call" });
+    hook.workspaceSize = () => ({ w: 800, h: 600 });
+
+    hook.tileWindows("h");
+
+    ["conn", "chat", "call"].forEach((id, i) => {
+      const st = hook.windows[id].state;
+      expect(st.x).toBe(0);
+      expect(st.y).toBe(i * 200);
+      expect(st.w).toBe(800);
+      expect(st.h).toBe(200);
+    });
+  });
+
+  it("tiles visible windows vertically as full-height columns", () => {
+    command({ action: "open", id: "call" });
+    hook.workspaceSize = () => ({ w: 900, h: 600 });
+
+    hook.tileWindows("v");
+
+    ["conn", "chat", "call"].forEach((id, i) => {
+      const st = hook.windows[id].state;
+      expect(st.x).toBe(i * 300);
+      expect(st.y).toBe(0);
+      expect(st.w).toBe(300);
+      expect(st.h).toBe(600);
+    });
+  });
+
+  it("closes taskbar menus on Escape", () => {
+    el.querySelector(".desktop-taskbar").dispatchEvent(
+      new MouseEvent("contextmenu", { bubbles: true }),
+    );
+    expect(desktopMenu().classList.contains("u-hidden")).toBe(false);
+
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" }));
+    expect(desktopMenu().classList.contains("u-hidden")).toBe(true);
+  });
+
+  it("plays a zoom wireframe on minimize and removes it after the transition", () => {
+    hook.stacked = false;
+    hook.reducedMotion = false;
+    win("chat").getBoundingClientRect = () => ({ left: 30, top: 40, width: 200, height: 150 });
+    taskbarBtn("chat").getBoundingClientRect = () => ({
+      left: 5,
+      top: 500,
+      width: 80,
+      height: 20,
+    });
+
+    hook.minimizeWindow("chat");
+
+    const ghost = el.querySelector(".desktop-zoom");
+    expect(ghost).not.toBe(null);
+    // Both keyframes were applied synchronously; the ghost ends at the button rect.
+    expect(ghost.style.getPropertyValue("--zoom-x")).toBe("5px");
+    expect(ghost.style.getPropertyValue("--zoom-w")).toBe("80px");
+
+    ghost.dispatchEvent(new Event("transitionend"));
+    expect(el.querySelector(".desktop-zoom")).toBe(null);
+  });
+
+  it("skips the zoom animation when the user prefers reduced motion", () => {
+    hook.stacked = false;
+    hook.reducedMotion = true;
+    win("chat").getBoundingClientRect = () => ({ left: 30, top: 40, width: 200, height: 150 });
+
+    hook.minimizeWindow("chat");
+    expect(el.querySelector(".desktop-zoom")).toBe(null);
   });
 
   it("does not client-close a window whose X is wired to a server event", () => {

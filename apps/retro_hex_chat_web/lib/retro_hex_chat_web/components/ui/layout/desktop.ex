@@ -17,7 +17,10 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   """
   use RetroHexChatWeb.Component
 
+  import RetroHexChatWeb.Components.UI.ContextMenu
   import RetroHexChatWeb.Components.UI.Window
+
+  alias RetroHexChatWeb.Icons
 
   @doc """
   Renders the desktop workspace that hosts windows and a taskbar.
@@ -171,11 +174,18 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         <button
           :if={@resizable}
           type="button"
-          data-window-resize
+          data-window-resize="se"
           aria-label={dgettext("ui", "Resize")}
-          class="desktop-window__resize absolute bottom-0 right-0 h-4 w-4 cursor-nwse-resize"
+          class="desktop-window__resize desktop-window__resize--grip absolute bottom-0 right-0 h-4 w-4 cursor-nwse-resize"
         >
         </button>
+        <span
+          :for={dir <- ~w(n s e w ne nw sw)}
+          :if={@resizable}
+          data-window-resize={dir}
+          aria-hidden="true"
+          class={"desktop-window__resize desktop-window__resize--#{dir} absolute"}
+        />
       </.window>
     </div>
     """
@@ -186,6 +196,11 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
 
   Slots: `start` (a Start button + menu), `inner_block` (one `taskbar_button/1`
   per window) and `tray` (a `desktop_tray/1`).
+
+  Ships the two Win98 right-click menus: one for a window's taskbar button
+  (restore/minimize/maximize/close) and one for the empty taskbar area
+  (cascade/tile/minimize all). The `WindowManagerHook` opens and positions them
+  and applies the actions — they render hidden and carry no server events.
   """
   attr :id, :string, default: nil
   attr :class, :any, default: nil
@@ -214,7 +229,61 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         {render_slot(@inner_block)}
       </div>
       {render_slot(@tray)}
+      <.taskbar_window_menu id={"#{@id || "desktop-taskbar"}-window-menu"} />
+      <.taskbar_desktop_menu id={"#{@id || "desktop-taskbar"}-desktop-menu"} />
     </div>
+    """
+  end
+
+  attr :id, :string, required: true
+
+  defp taskbar_window_menu(assigns) do
+    ~H"""
+    <.context_menu id={@id} class="u-hidden" data-taskbar-menu="window">
+      <.context_menu_item data-taskbar-menu-action="restore">
+        <:icon><Icons.icon_win_restore class="h-[9px] w-[8px]" /></:icon>
+        {dgettext("ui", "Restore")}
+      </.context_menu_item>
+      <.context_menu_item data-taskbar-menu-action="minimize">
+        <:icon><Icons.icon_win_minimize class="h-[2px] w-[6px]" /></:icon>
+        {dgettext("ui", "Minimize")}
+      </.context_menu_item>
+      <.context_menu_item data-taskbar-menu-action="maximize">
+        <:icon><Icons.icon_win_maximize class="h-[9px] w-[9px]" /></:icon>
+        {dgettext("ui", "Maximize")}
+      </.context_menu_item>
+      <.context_menu_separator />
+      <.context_menu_item data-taskbar-menu-action="close">
+        <:icon><Icons.icon_close_pixel class="h-[7px] w-[8px]" /></:icon>
+        {dgettext("ui", "Close")}
+      </.context_menu_item>
+    </.context_menu>
+    """
+  end
+
+  attr :id, :string, required: true
+
+  defp taskbar_desktop_menu(assigns) do
+    ~H"""
+    <.context_menu id={@id} class="u-hidden" data-taskbar-menu="desktop">
+      <.context_menu_item data-taskbar-menu-action="cascade">
+        <:icon><Icons.icon_win_cascade class="h-[14px] w-[14px]" /></:icon>
+        {dgettext("ui", "Cascade Windows")}
+      </.context_menu_item>
+      <.context_menu_item data-taskbar-menu-action="tile-h">
+        <:icon><Icons.icon_win_tile_h class="h-[14px] w-[14px]" /></:icon>
+        {dgettext("ui", "Tile Windows Horizontally")}
+      </.context_menu_item>
+      <.context_menu_item data-taskbar-menu-action="tile-v">
+        <:icon><Icons.icon_win_tile_v class="h-[14px] w-[14px]" /></:icon>
+        {dgettext("ui", "Tile Windows Vertically")}
+      </.context_menu_item>
+      <.context_menu_separator />
+      <.context_menu_item data-taskbar-menu-action="minimize-all">
+        <:icon><Icons.icon_win_minimize_all class="h-[14px] w-[14px]" /></:icon>
+        {dgettext("ui", "Minimize All Windows")}
+      </.context_menu_item>
+    </.context_menu>
     """
   end
 
