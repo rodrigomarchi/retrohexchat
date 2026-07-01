@@ -61,4 +61,7 @@ defmodule RetroHexChat.Lobby do
 
   @spec end_game(String.t(), integer()) :: :ok | {:error, atom()}
   defdelegate end_game(token, user_id), to: SessionServer
+
+  @spec finish_game(String.t(), integer(), map()) :: :ok | {:error, atom()}
+  defdelegate finish_game(token, user_id, result), to: SessionServer
 end

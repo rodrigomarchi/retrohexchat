@@ -134,7 +134,8 @@ const LobbyGameCanvasHook = {
     try {
       engine = await createEngine(canvas, this.channel, this._gameId, isHost, onGameEnd);
     } catch (error) {
-      this._engineLoadError = error;
+      console.error("[LobbyGameCanvasHook] failed to load game engine", error);
+      this.pushEvent("lobby_game_error", { game_id: this._gameId });
       return;
     } finally {
       if (this._engineLoadToken === loadToken) {

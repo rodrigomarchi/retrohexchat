@@ -187,6 +187,49 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       stop_server(ctx.token)
     end
 
+    test "the host finishing a game relays the score to both peers" do
+      ctx = setup_connected_lobby("fin1")
+
+      :ok = SessionServer.propose_game(ctx.token, ctx.creator.id, "creator", "hex_pong")
+      assert_receive %{event: "lobby_game_request"}
+      :ok = SessionServer.respond_game(ctx.token, ctx.peer.id, "peer", true)
+      assert_receive %{event: "lobby_game_status_changed", payload: %{status: "playing"}}
+
+      result = %{"score" => %{"p1" => 11, "p2" => 7}, "winner" => 1}
+      assert :ok = SessionServer.finish_game(ctx.token, ctx.creator.id, result)
+
+      assert_receive %{
+        event: "lobby_game_status_changed",
+        payload: %{status: "finished", game_id: "hex_pong", result: ^result}
+      }
+
+      {:ok, finished} = SessionServer.get_state(ctx.token)
+      assert finished.game.status == "finished"
+      assert finished.game.result == result
+      assert finished.session.status == "connected"
+
+      stop_server(ctx.token)
+    end
+
+    test "only the game host may finish, and only while a game is in progress" do
+      ctx = setup_connected_lobby("fin2")
+
+      result = %{"score" => %{"p1" => 1, "p2" => 0}, "winner" => 1}
+
+      assert {:error, :no_game_in_progress} =
+               SessionServer.finish_game(ctx.token, ctx.creator.id, result)
+
+      :ok = SessionServer.propose_game(ctx.token, ctx.creator.id, "creator", "hex_pong")
+      assert_receive %{event: "lobby_game_request"}
+      :ok = SessionServer.respond_game(ctx.token, ctx.peer.id, "peer", true)
+      assert_receive %{event: "lobby_game_status_changed", payload: %{status: "playing"}}
+
+      assert {:error, :not_host} =
+               SessionServer.finish_game(ctx.token, ctx.peer.id, result)
+
+      stop_server(ctx.token)
+    end
+
     test "cannot respond to your own game proposal" do
       ctx = setup_connected_lobby("feat3")
 

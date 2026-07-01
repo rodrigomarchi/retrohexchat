@@ -525,8 +525,9 @@ export function createRtcMediaHook(configInput) {
 
       try {
         await togglePiP(remoteVideo);
-      } catch {
-        // PiP can fail before the remote video is playing.
+      } catch (error) {
+        // PiP can fail before the remote video is playing — non-fatal, but log it.
+        console.warn("[RtcMedia] Picture-in-Picture toggle failed", error);
       }
     },
 
@@ -632,7 +633,8 @@ export function createRtcMediaHook(configInput) {
           })),
           supports_sink_id: supportsSetSinkId(),
         });
-      } catch {
+      } catch (error) {
+        console.warn("[RtcMedia] Failed to enumerate media devices", error);
         this._push(config.clientEvents.deviceFallback, {
           message: t("Could not list media devices. Check your browser permissions."),
         });
@@ -658,7 +660,8 @@ export function createRtcMediaHook(configInput) {
             break;
           }
         }
-      } catch {
+      } catch (error) {
+        console.warn("[RtcMedia] Failed to switch media device", error);
         this._push(config.clientEvents.deviceFallback, {
           message: t("Device disconnected, using default device"),
         });
@@ -687,8 +690,10 @@ export function createRtcMediaHook(configInput) {
           if (config.clientEvents.statsUpdate) {
             this._push(config.clientEvents.statsUpdate, derived);
           }
-        } catch {
-          // Stats can be unavailable until RTP starts flowing.
+        } catch (error) {
+          // Stats can be unavailable until RTP starts flowing — debug, not warn,
+          // to avoid spamming the console on every early poll.
+          console.debug("[RtcMedia] Quality stats sample failed", error);
         }
       }, 3000);
     },
@@ -698,8 +703,8 @@ export function createRtcMediaHook(configInput) {
 
       try {
         await applyBitratePreset(this.pc, preset);
-      } catch {
-        // Preset application can fail on older browsers.
+      } catch (error) {
+        console.warn("[RtcMedia] Failed to apply bitrate preset", error);
       }
     },
 
@@ -737,8 +742,13 @@ export function createRtcMediaHook(configInput) {
             this._push(config.clientEvents.deviceFallback, {
               message: t("Device disconnected, using default device"),
             });
-          } catch {
-            // Fallback failed; keep the current UI state.
+          } catch (error) {
+            // Falling back to the default mic also failed — the peer can no longer
+            // hear this user. Surface it instead of leaving them silently muted.
+            console.error("[RtcMedia] Audio device fallback failed", error);
+            this._push(config.clientEvents.deviceFallback, {
+              message: t("Your microphone is unavailable. Check your audio devices."),
+            });
           }
         }
       };

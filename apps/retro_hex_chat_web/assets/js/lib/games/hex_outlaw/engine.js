@@ -551,8 +551,9 @@ export class OutlawEngine extends GameEngine {
           winner: 0,
           disconnected: true,
         });
-      } catch {
-        // callback error — ignore
+      } catch (error) {
+        // The disconnect result callback (pushEvent) threw — do not lose it.
+        console.debug("[GameEngine] game-end callback failed", error);
       }
     }
   }

@@ -176,6 +176,14 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     {:noreply, socket}
   end
 
+  def handle_info(
+        %{event: "lobby_game_status_changed", payload: %{status: "finished"} = p},
+        socket
+      ) do
+    send_update(GameIsland, id: GameIsland.id(), action: {:result, p.result})
+    {:noreply, socket}
+  end
+
   def handle_info(%{event: "lobby_inactivity_warning"}, socket) do
     {:noreply, assign(socket, inactivity_warning: true)}
   end
@@ -379,7 +387,30 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     {:noreply, socket}
   end
 
-  def handle_event("lobby_game_result", _result, socket) do
+  # Only the host's game engine fires onGameEnd; it reports the authoritative
+  # result to the server, which relays "finished" (with the score) to both peers.
+  def handle_event("lobby_game_result", result, socket) do
+    Lobby.finish_game(socket.assigns.token, socket.assigns.user_id, result)
+    {:noreply, socket}
+  end
+
+  # The "Back to games" button on the result card dismisses it locally (the lobby
+  # is self-controlled — each peer leaves the result at its own pace).
+  def handle_event("dismiss_game_result", _params, socket) do
+    send_update(GameIsland, id: GameIsland.id(), action: :dismiss_result)
+    {:noreply, socket}
+  end
+
+  # The game canvas failed to load its engine bundle: end the game for both peers
+  # (it cannot be played one-sided) and tell the user why.
+  def handle_event("lobby_game_error", _params, socket) do
+    Lobby.end_game(socket.assigns.token, socket.assigns.user_id)
+
+    send_update(ChatIsland,
+      id: ChatIsland.id(),
+      system_message: dgettext("lobby", "Could not load the game. Please try again.")
+    )
+
     {:noreply, socket}
   end
 

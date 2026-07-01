@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
   import RetroHexChatWeb.Components.UI.Lobby.GamePanel
 
   alias RetroHexChat.Games.Catalog
+  alias RetroHexChatWeb.App.LobbyLive.Components.ChatIsland
 
   @id "lobby-game"
   @idle %{status: "idle", game_id: nil, is_host: false}
@@ -80,7 +81,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
   @spec handle_action(Phoenix.LiveView.Socket.t(), term()) :: Phoenix.LiveView.Socket.t()
   defp handle_action(socket, {:request, request, outgoing}) do
     socket
-    |> assign(game_request: request, game_outgoing: outgoing)
+    |> assign(game: @idle, game_request: request, game_outgoing: outgoing)
     |> push_event("window_command", %{action: "open", id: "game"})
   end
 
@@ -108,6 +109,26 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
     |> summarize()
   end
 
+  # Both peers receive the finished broadcast: swap the frozen canvas for the
+  # result card (the canvas hook unmounts and stops its engine), and drop a chat
+  # line. The badge goes idle via summarize.
+  defp handle_action(socket, {:result, result}) do
+    game = socket.assigns.game
+
+    socket
+    |> assign(
+      game: %{status: "finished", game_id: game.game_id, is_host: game.is_host, result: result},
+      game_request: nil,
+      game_outgoing: false
+    )
+    |> post_result_message(game.game_id, result)
+    |> summarize()
+  end
+
+  defp handle_action(socket, :dismiss_result) do
+    assign(socket, game: @idle)
+  end
+
   defp handle_action(socket, :canvas_ready) do
     game = socket.assigns.game
 
@@ -122,6 +143,29 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
     socket
     |> assign(game_request: nil, game_outgoing: false)
     |> push_event("window_command", %{action: "close", id: "game"})
+  end
+
+  @spec post_result_message(Phoenix.LiveView.Socket.t(), String.t() | nil, map()) ::
+          Phoenix.LiveView.Socket.t()
+  defp post_result_message(socket, game_id, result) do
+    name = game_name(socket.assigns.games, game_id)
+    score = result["score"] || %{}
+    p1 = score["p1"] || 0
+    p2 = score["p2"] || 0
+
+    message =
+      dgettext("lobby", "Game over — %{game}: %{p1} × %{p2}", game: name, p1: p1, p2: p2)
+
+    send_update(ChatIsland, id: ChatIsland.id(), system_message: message)
+    socket
+  end
+
+  @spec game_name([map()], String.t() | nil) :: String.t()
+  defp game_name(games, game_id) do
+    case Enum.find(games, &(&1.id == game_id)) do
+      %{name: name} -> name
+      _ -> to_string(game_id)
+    end
   end
 
   # The host owns the taskbar read-model: bubble a minimal summary up so the badge

@@ -234,8 +234,9 @@ export class TennisEngine extends GameEngine {
                 score: { p1: result.p1Games, p2: result.p2Games },
                 winner: result.winner,
               });
-            } catch {
-              // callback error — ignore
+            } catch (error) {
+              // The disconnect result callback (pushEvent) threw — do not lose it.
+              console.debug("[GameEngine] game-end callback failed", error);
             }
           }
         }
@@ -446,8 +447,9 @@ export class TennisEngine extends GameEngine {
           score: { p1: p1Games, p2: p2Games },
           winner,
         });
-      } catch {
-        // callback error — ignore
+      } catch (error) {
+        // The disconnect result callback (pushEvent) threw — do not lose it.
+        console.debug("[GameEngine] game-end callback failed", error);
       }
     }
   }
@@ -464,8 +466,9 @@ export class TennisEngine extends GameEngine {
           score: { p1: this.gameState.p1Games, p2: this.gameState.p2Games },
           winner: 0,
         });
-      } catch {
-        // callback error — ignore
+      } catch (error) {
+        // The disconnect result callback (pushEvent) threw — do not lose it.
+        console.debug("[GameEngine] game-end callback failed", error);
       }
     }
   }

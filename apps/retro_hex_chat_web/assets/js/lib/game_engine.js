@@ -67,13 +67,15 @@ export class GameEngine {
   /** Override in subclass to handle key releases with game-specific input mapping. */
   _handleKeyUp(_event) {}
 
-  /** Safely send data over DataChannel, ignoring errors on closed channels. */
+  /** Safely send data over DataChannel, logging errors on closed channels. */
   _safeSend(data) {
     if (this.channel.readyState === "open") {
       try {
         this.channel.send(data);
-      } catch {
-        // Channel closed between readyState check and send — ignore
+      } catch (error) {
+        // Channel closed between readyState check and send — expected during
+        // teardown, so debug (not warn) to avoid per-frame noise.
+        console.debug("[GameEngine] DataChannel send failed", error);
       }
     }
   }

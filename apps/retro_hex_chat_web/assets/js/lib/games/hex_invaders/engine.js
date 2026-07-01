@@ -207,8 +207,9 @@ export class HexInvadersEngine extends GameEngine {
                 score: { p1: result.score1, p2: result.score2 },
                 winner: result.winner,
               });
-            } catch {
-              // callback error — ignore
+            } catch (error) {
+              // The disconnect result callback (pushEvent) threw — do not lose it.
+              console.debug("[GameEngine] game-end callback failed", error);
             }
           }
         }
@@ -447,8 +448,9 @@ export class HexInvadersEngine extends GameEngine {
           score: { p1: this.gameState.score1, p2: this.gameState.score2 },
           winner: result.winner,
         });
-      } catch {
-        // callback error — ignore
+      } catch (error) {
+        // The disconnect result callback (pushEvent) threw — do not lose it.
+        console.debug("[GameEngine] game-end callback failed", error);
       }
     }
   }
@@ -465,8 +467,9 @@ export class HexInvadersEngine extends GameEngine {
           score: { p1: this.gameState.score1, p2: this.gameState.score2 },
           winner: 0, // no winner on disconnect
         });
-      } catch {
-        // callback error — ignore
+      } catch (error) {
+        // The disconnect result callback (pushEvent) threw — do not lose it.
+        console.debug("[GameEngine] game-end callback failed", error);
       }
     }
   }

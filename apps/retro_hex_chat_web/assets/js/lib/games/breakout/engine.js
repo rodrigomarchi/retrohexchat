@@ -389,8 +389,9 @@ export class BreakoutEngine extends GameEngine {
           winner: -1,
           disconnected: true,
         });
-      } catch {
-        // callback error — ignore
+      } catch (error) {
+        // The disconnect result callback (pushEvent) threw — do not lose it.
+        console.debug("[GameEngine] game-end callback failed", error);
       }
     }
   }

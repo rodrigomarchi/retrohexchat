@@ -28,7 +28,10 @@ export async function requestPermission(type) {
     // Stop tracks immediately — we only need permission, not the stream
     stream.getTracks().forEach((track) => track.stop());
     return { granted: true, type };
-  } catch {
+  } catch (error) {
+    // Denied or no device — the caller surfaces granted:false to the user; log
+    // the raw reason (permission vs. missing hardware) for diagnosis.
+    console.warn(`[P2P] ${type} permission request failed`, error);
     return { granted: false, type };
   }
 }

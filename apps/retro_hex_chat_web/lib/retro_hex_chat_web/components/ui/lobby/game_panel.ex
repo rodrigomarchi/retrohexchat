@@ -3,12 +3,14 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
   Games panel for the universal lobby — the body of the "Games" window.
 
   Shows the game catalog, the incoming-proposal consent prompt, the "waiting for
-  peer" state and, while playing, the game canvas (hosting `LobbyGameCanvasHook`).
-  Composed from the button primitive and the game-icon facade.
+  peer" state, the game canvas (hosting `LobbyGameCanvasHook`) while playing, and
+  the final-score card once a game ends. Composed from the button/badge primitives
+  and the game-icon facade.
   """
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.Badge
 
   alias RetroHexChatWeb.Icons
 
@@ -50,7 +52,36 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
         </div>
       </div>
 
-      <div :if={@game.status != "playing"}>
+      <div
+        :if={@game.status == "finished"}
+        class="shadow-retro-field bg-white space-y-2 p-4 text-center"
+        data-testid="lobby-game-result"
+      >
+        <p class="text-muted-foreground text-xs font-bold uppercase tracking-wider">
+          {dgettext("lobby", "Final Score")}
+        </p>
+        <div class="text-muted-foreground text-xs">{game_name(@games, @game.game_id)}</div>
+        <div class="flex items-center justify-center gap-4 text-sm">
+          <span class={["font-bold", score_class(@game, 1)]}>
+            {dgettext("lobby", "P1 %{score}", score: score_of(@game, "p1"))}
+          </span>
+          <span class="text-muted-foreground">{dgettext("lobby", "×")}</span>
+          <span class={["font-bold", score_class(@game, 2)]}>
+            {dgettext("lobby", "%{score} P2", score: score_of(@game, "p2"))}
+          </span>
+        </div>
+        <div>
+          <.badge variant="default">{outcome_label(@game)}</.badge>
+        </div>
+        <div class="pt-1">
+          <.button size="sm" variant="outline" phx-click="dismiss_game_result">
+            <:icon><Icons.icon_joystick class="h-4 w-4" /></:icon>
+            {dgettext("lobby", "Back to games")}
+          </.button>
+        </div>
+      </div>
+
+      <div :if={@game.status not in ["playing", "finished"]}>
         <div :if={@game_request && !@game_outgoing} class="mb-3" data-testid="lobby-game-consent">
           <p class="flex items-center gap-1 text-xs">
             <Icons.game_icon game_id={@game_request.game_id} class="h-4 w-4" />
@@ -100,4 +131,36 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
     </section>
     """
   end
+
+  @spec game_name([map()], String.t() | nil) :: String.t()
+  defp game_name(games, game_id) do
+    case Enum.find(games, &(&1.id == game_id)) do
+      %{name: name} -> name
+      _ -> to_string(game_id)
+    end
+  end
+
+  @spec score_of(map(), String.t()) :: integer()
+  defp score_of(game, key) do
+    get_in(game, [:result, "score", key]) || 0
+  end
+
+  @spec score_class(map(), integer()) :: String.t()
+  defp score_class(game, player) do
+    if winner(game) == player, do: "text-foreground", else: "text-muted-foreground"
+  end
+
+  @spec outcome_label(map()) :: String.t()
+  defp outcome_label(game) do
+    viewer = if game.is_host, do: 1, else: 2
+
+    case winner(game) do
+      w when w in [1, 2] and w == viewer -> dgettext("lobby", "You win!")
+      w when w in [1, 2] -> dgettext("lobby", "You lose.")
+      _ -> dgettext("lobby", "Draw.")
+    end
+  end
+
+  @spec winner(map()) :: integer() | nil
+  defp winner(game), do: get_in(game, [:result, "winner"])
 end

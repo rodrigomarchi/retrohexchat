@@ -107,6 +107,11 @@ defmodule RetroHexChat.Lobby.SessionServer do
     call(token, {:end_game, user_id})
   end
 
+  @spec finish_game(String.t(), integer(), map()) :: :ok | {:error, atom()}
+  def finish_game(token, user_id, result) do
+    call(token, {:finish_game, user_id, result})
+  end
+
   defp call(token, message) do
     case Registry.lookup(token) do
       {:ok, pid} -> GenServer.call(pid, message)
@@ -297,6 +302,20 @@ defmodule RetroHexChat.Lobby.SessionServer do
     else
       {:reply, {:error, :not_participant}, state}
     end
+  end
+
+  # Only the game host reports the authoritative result (the guest engine never
+  # fires onGameEnd), so the server relays it to both peers.
+  def handle_call({:finish_game, user_id, result}, _from, %{game: %{status: "playing"}} = state) do
+    if user_id == state.game.host_id do
+      {:reply, :ok, handle_finish_game(state, result)}
+    else
+      {:reply, {:error, :not_host}, state}
+    end
+  end
+
+  def handle_call({:finish_game, _user_id, _result}, _from, state) do
+    {:reply, {:error, :no_game_in_progress}, state}
   end
 
   @impl true
@@ -527,6 +546,25 @@ defmodule RetroHexChat.Lobby.SessionServer do
   defp handle_end_game(state) do
     game = %{status: "idle", game_id: nil, host_id: nil}
     broadcast(state.token, "lobby_game_status_changed", %{status: "idle", game_id: nil})
+    %{state | game: game, game_request: nil}
+  end
+
+  defp handle_finish_game(state, result) do
+    Logger.info("Lobby game finished: token=#{state.token}, game=#{state.game.game_id}")
+
+    game = %{
+      status: "finished",
+      game_id: state.game.game_id,
+      host_id: state.game.host_id,
+      result: result
+    }
+
+    broadcast(state.token, "lobby_game_status_changed", %{
+      status: "finished",
+      game_id: state.game.game_id,
+      result: result
+    })
+
     %{state | game: game, game_request: nil}
   end
 

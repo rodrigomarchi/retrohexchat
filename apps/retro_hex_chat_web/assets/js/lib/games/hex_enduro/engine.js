@@ -236,8 +236,9 @@ export class HexEnduroEngine extends GameEngine {
                 score: { p1: result.score1, p2: result.score2 },
                 winner: result.winner,
               });
-            } catch {
-              /* callback error */
+            } catch (error) {
+              // The result callback (pushEvent) threw — do not lose it.
+              console.debug("[GameEngine] game-end callback failed", error);
             }
           }
         }
@@ -404,8 +405,10 @@ export class HexEnduroEngine extends GameEngine {
     try {
       const packed = packState(this.gameState);
       this._safeSend(encodeGameState(packed));
-    } catch {
-      /* encoding/send error — don't crash game loop */
+    } catch (error) {
+      // Don't crash the game loop, but a broadcast failure desyncs the peer —
+      // log it instead of hiding the desync.
+      console.warn("[GameEngine] Failed to broadcast game state", error);
     }
   }
 
@@ -455,8 +458,9 @@ export class HexEnduroEngine extends GameEngine {
           score: { p1: result.score1, p2: result.score2 },
           winner: result.winner,
         });
-      } catch {
-        /* callback error */
+      } catch (error) {
+        // The result callback (pushEvent) threw — do not lose it.
+        console.debug("[GameEngine] game-end callback failed", error);
       }
     }
   }
@@ -488,8 +492,9 @@ export class HexEnduroEngine extends GameEngine {
             score: { p1: this.gameState.p1.score, p2: this.gameState.p2.score },
             winner: 0, // draw on disconnect
           });
-        } catch {
-          /* callback error */
+        } catch (error) {
+          // The result callback (pushEvent) threw — do not lose it.
+          console.debug("[GameEngine] game-end callback failed", error);
         }
       }
     }
