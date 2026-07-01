@@ -22,14 +22,11 @@ import NicklistHook from "./ui/nicklist_hook";
 import ContextualTipsHook from "./ui/contextual_tips_hook";
 import MessageInteractionsHook from "./chat/message_interactions_hook";
 import NickChangeFormHook from "./chat/nick_change_form_hook";
-import P2PCapabilityHook from "./p2p/p2p_capability_hook";
 import P2PChatFormHook from "./p2p/p2p_chat_form_hook";
-import P2PSessionHook from "./p2p/p2p_session_hook";
 import URLCatcherHook from "./ui/url_catcher_hook";
 import ArcadeIframeHook, { ArcadeSessionHook } from "./games/arcade_iframe_hook";
 import ArcadeGameHook from "./games/arcade_game_hook";
 import ArcadeTimerHook from "./games/arcade_timer_hook";
-import GameSessionHook from "./games/game_session_hook";
 import ViewportDetectHook from "./ui/viewport_detect_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
 
@@ -67,15 +64,12 @@ export const criticalHooks = {
   ArcadeSession: ArcadeSessionHook,
   ArcadeGame: ArcadeGameHook,
   ArcadeTimer: ArcadeTimerHook,
-  GameSessionHook: GameSessionHook,
   FormatToolbarHook: FormatToolbarHook,
   KeyboardHook: KeyboardHook,
   LagHook: LagHook,
   MessageInteractionsHook: MessageInteractionsHook,
   NickChangeFormHook: NickChangeFormHook,
-  P2PCapabilityHook: P2PCapabilityHook,
   P2PChatFormHook: P2PChatFormHook,
-  P2PSessionHook: P2PSessionHook,
   NotifyListHook: NotifyListHook,
   PasteHook: PasteHook,
   ScrollHook: ScrollHook,

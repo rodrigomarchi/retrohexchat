@@ -2,20 +2,10 @@ import {
   Browser,
   BrowserContext,
   BrowserContextOptions,
-  Locator,
   Page,
-  expect,
 } from '@playwright/test';
 import { ChatPage } from '../pages/ChatPage';
 import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import {
-  P2PLobbyPage,
-  openP2PLobbyFromInvite,
-} from '../pages/P2PLobbyPage';
-import {
-  GameSessionPage,
-  openGameSessionFromInvite,
-} from '../pages/GameSessionPage';
 
 export type P2PTestUser = {
   chat: ChatPage;
@@ -38,7 +28,6 @@ type NewP2PUserOptions = {
   permissions?: BrowserContextOptions['permissions'];
 };
 
-type P2PSessionKind = 'generic' | 'audio_call' | 'file_transfer';
 
 export async function installSyntheticMedia(ctx: BrowserContext) {
   await ctx.addInitScript(() => {
@@ -395,135 +384,3 @@ export async function newP2PUser(
 export async function closeP2PUsers(users: P2PTestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close().catch(() => {})));
 }
-
-export async function openP2PLobbiesFromCommand(
-  initiator: P2PTestUser,
-  receiver: P2PTestUser,
-  kind: P2PSessionKind = 'generic',
-) {
-  await initiator.chat.sendMessage(`${commandFor(kind)} ${receiver.nick}`);
-  await initiator.chat.expectTabVisible(receiver.nick);
-  await initiator.chat.expectTabSelected(receiver.nick);
-  await initiator.chat.expectMessageVisible(
-    `P2P invite sent to ${receiver.nick}. Waiting for response...`,
-  );
-
-  const startedText = sessionStartedText(kind);
-  if (startedText) {
-    await initiator.chat.expectMessageVisible(startedText);
-  }
-
-  return openP2PLobbiesFromInviteCards(
-    initiator,
-    receiver,
-    /^\/p2p\/[A-Za-z0-9_-]+$/,
-  );
-}
-
-export async function openP2PLobbiesFromInviteCards(
-  initiator: P2PTestUser,
-  receiver: P2PTestUser,
-  hrefPattern: RegExp,
-) {
-  const initiatorLink = initiator.chat
-    .p2pInviteCard()
-    .getByRole('link', { name: 'Join lobby' });
-  await expect(initiatorLink).toHaveAttribute('href', hrefPattern);
-  const inviteHref = await requireHref(initiatorLink);
-
-  await receiver.chat.expectTabVisible(initiator.nick);
-  await receiver.chat.switchToTab(initiator.nick);
-
-  const receiverLink = receiver.chat
-    .p2pInviteCard()
-    .getByRole('link', { name: 'Join lobby' });
-  await expect(receiverLink).toHaveAttribute('href', inviteHref);
-
-  const initiatorLobby = await openP2PLobbyFromInvite(
-    initiator.page,
-    initiatorLink,
-  );
-  const receiverLobby = await openP2PLobbyFromInvite(receiver.page, receiverLink);
-
-  await initiatorLobby.waitUntilLiveViewConnected();
-  await receiverLobby.waitUntilLiveViewConnected();
-
-  return { initiatorLobby, receiverLobby, inviteHref };
-}
-
-export async function openGameSessionsFromCommand(
-  host: P2PTestUser,
-  peer: P2PTestUser,
-) {
-  await host.chat.sendMessage(`/game ${peer.nick}`);
-  await host.chat.expectTabVisible(peer.nick);
-  await host.chat.expectTabSelected(peer.nick);
-  await host.chat.expectMessageVisible(
-    `Game invite sent to ${peer.nick}. Waiting for response...`,
-  );
-  await host.chat.expectMessageVisible('Game session started');
-
-  const hostLink = host.chat
-    .p2pInviteCard()
-    .getByRole('link', { name: 'Join lobby' });
-  await expect(hostLink).toHaveAttribute('href', /^\/game\/[A-Za-z0-9_-]+$/);
-  const inviteHref = await requireHref(hostLink);
-
-  await peer.chat.expectTabVisible(host.nick);
-  await peer.chat.expectTabSelected('#lobby');
-  await peer.chat.switchToTab(host.nick);
-
-  const peerLink = peer.chat
-    .p2pInviteCard()
-    .getByRole('link', { name: 'Join lobby' });
-  await expect(peerLink).toHaveAttribute('href', inviteHref);
-
-  const hostGame = await openGameSessionFromInvite(host.page, hostLink);
-  const peerGame = await openGameSessionFromInvite(peer.page, peerLink);
-
-  return { hostGame, peerGame, inviteHref };
-}
-
-async function requireHref(link: Locator) {
-  const href = await link.getAttribute('href');
-
-  if (!href) {
-    throw new Error('Expected invite link to have an href');
-  }
-
-  return href;
-}
-
-function commandFor(kind: P2PSessionKind) {
-  switch (kind) {
-    case 'audio_call':
-      return '/call';
-    case 'file_transfer':
-      return '/sendfile';
-    case 'generic':
-      return '/p2p';
-  }
-}
-
-function sessionStartedText(kind: P2PSessionKind) {
-  switch (kind) {
-    case 'audio_call':
-      return 'Audio call started';
-    case 'file_transfer':
-      return 'File transfer started';
-    case 'generic':
-      return null;
-  }
-}
-
-export type OpenP2PLobbiesResult = {
-  initiatorLobby: P2PLobbyPage;
-  receiverLobby: P2PLobbyPage;
-  inviteHref: string;
-};
-
-export type OpenGameSessionsResult = {
-  hostGame: GameSessionPage;
-  peerGame: GameSessionPage;
-  inviteHref: string;
-};

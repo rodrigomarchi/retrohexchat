@@ -156,17 +156,12 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
      [
        {dgettext_noop("showcase", "Connection Diagram"), "p2p-connection-diagram",
         "/showcase/p2p-connection-diagram"},
-       {dgettext_noop("showcase", "File Transfer"), "file-transfer", "/showcase/file-transfer"},
-       {dgettext_noop("showcase", "Media Controls"), "media-controls",
-        "/showcase/media-controls"},
-       {dgettext_noop("showcase", "P2P Lobby"), "p2p-lobby", "/showcase/p2p-lobby"}
+       {dgettext_noop("showcase", "File Transfer"), "file-transfer", "/showcase/file-transfer"}
      ]},
     {dgettext_noop("showcase", "Games"), :icon_joystick,
      [
        {dgettext_noop("showcase", "Arcade Frame"), "arcade-frame", "/showcase/arcade-frame"},
-       {dgettext_noop("showcase", "Game Canvas"), "game-canvas", "/showcase/game-canvas"},
        {dgettext_noop("showcase", "Game Cards"), "game-cards", "/showcase/game-cards"},
-       {dgettext_noop("showcase", "Game Lobby"), "game-lobby", "/showcase/game-lobby"},
        {dgettext_noop("showcase", "Solo Lobby"), "solo-lobby", "/showcase/solo-lobby"}
      ]},
     {dgettext_noop("showcase", "Assets"), :icon_folder,
@@ -370,8 +365,6 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     "channel-list" => :icon_channels,
     "highlight-dialog" => :icon_star,
     "config-form" => :icon_btn_settings,
-    "p2p-lobby" => :icon_p2p,
-    "media-controls" => :icon_microphone,
     "file-transfer" => :icon_file_send,
     "chat-layout" => :icon_chat,
     "scroll-loader" => :icon_clock,
@@ -381,12 +374,10 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     "disconnect-confirm-dialog" => :icon_btn_disconnect,
     "status-bar-app" => :icon_status_signal,
     "conversations-context-menu" => :icon_tab_conversations,
-    "game-canvas" => :icon_joystick,
     "alias-dialog" => :icon_dialog_alias,
     "flood-protection-dialog" => :icon_dialog_flood,
     "notify-list" => :icon_btn_bell,
     "url-catcher" => :icon_link,
-    "game-lobby" => :icon_joystick,
     "auto-respond-dialog" => :icon_dialog_auto_respond,
     "custom-menus-dialog" => :icon_dialog_custom_menus,
     "sound-settings-dialog" => :icon_dialog_sound,

@@ -167,34 +167,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:welcome_changed, _} = msg, socket),
     do: ServerMessages.handle_info(msg, socket)
 
-  # ── P2P: invite notification ─────────────────────────────
-
-  def handle_info(%{event: "p2p_invite"} = msg, socket) do
-    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
-
-    %{payload: %{token: token, from: from, session_type: session_type}} = msg
-
-    if ignored_invite?(socket, from) do
-      {:halt, socket}
-    else
-      label =
-        case session_type do
-          "audio_call" -> dgettext("chat", "Audio call from %{from}", from: from)
-          "video_call" -> dgettext("chat", "Video call from %{from}", from: from)
-          "file_transfer" -> dgettext("chat", "File transfer from %{from}", from: from)
-          _ -> dgettext("chat", "P2P invite from %{from}", from: from)
-        end
-
-      {:halt,
-       push_status_message(
-         socket,
-         dgettext("chat", "%{label} — /p2p/%{token}", label: label, token: token),
-         :system
-       )}
-    end
-  end
-
-  # ── Universal lobby: invite notification ─────────────────
+  # ── P2P lobby: invite notification ───────────────────────
 
   def handle_info(%{event: "lobby_invite"} = msg, socket) do
     import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
@@ -207,95 +180,13 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
       {:halt,
        push_status_message(
          socket,
-         dgettext("chat", "Universal lobby invite from %{from} — /lobby/%{token}",
+         dgettext("chat", "P2P lobby invite from %{from} — /lobby/%{token}",
            from: from,
            token: token
          ),
          :system
        )}
     end
-  end
-
-  # ── Games: invite notification ────────────────────────────
-
-  def handle_info(%{event: "game_invite"} = msg, socket) do
-    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
-
-    %{payload: %{token: token, from: from}} = msg
-
-    if ignored_invite?(socket, from) do
-      {:halt, socket}
-    else
-      {:halt,
-       push_status_message(
-         socket,
-         dgettext("chat", "Game invite from %{from} — /game/%{token}", from: from, token: token),
-         :system
-       )}
-    end
-  end
-
-  # ── P2P/Game: session ended ─────────────────────────────
-
-  def handle_info(%{event: "p2p_session_ended"} = msg, socket) do
-    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
-
-    %{payload: %{peer_nick: peer, session_type: type, reason: reason, duration_seconds: secs}} =
-      msg
-
-    label =
-      case type do
-        "audio_call" -> dgettext("chat", "Audio call")
-        "video_call" -> dgettext("chat", "Video call")
-        "file_transfer" -> dgettext("chat", "File transfer")
-        _ -> dgettext("chat", "P2P session")
-      end
-
-    text =
-      dgettext("chat", "%{label} with %{peer} ended (%{duration}) — %{reason}",
-        label: label,
-        peer: peer,
-        duration: format_duration(secs),
-        reason: humanize_reason(reason)
-      )
-
-    {:halt, push_status_message(socket, text, :system)}
-  end
-
-  def handle_info(%{event: "game_session_ended"} = msg, socket) do
-    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
-
-    %{payload: payload} = msg
-    peer = payload.peer_nick
-    game_label = payload.game_name || dgettext("chat", "Game")
-    reason = payload.reason
-    duration = payload[:duration_seconds]
-    result = payload[:game_result]
-
-    base =
-      case reason do
-        r when r in ["finished", "game_over"] ->
-          dgettext("chat", "%{game} with %{peer} finished", game: game_label, peer: peer)
-
-        _ ->
-          dgettext("chat", "%{game} with %{peer} ended — %{reason}",
-            game: game_label,
-            peer: peer,
-            reason: humanize_reason(reason)
-          )
-      end
-
-    parts = [base]
-
-    parts =
-      if duration,
-        do: parts ++ [dgettext("chat", "(%{duration})", duration: format_duration(duration))],
-        else: parts
-
-    result_text = format_game_result(result)
-    parts = if result_text != "", do: parts ++ [result_text], else: parts
-
-    {:halt, push_status_message(socket, Enum.join(parts, " "), :system)}
   end
 
   def handle_info(%{event: "bot_notice", payload: payload}, socket) do
@@ -385,25 +276,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   defp format_duration(secs) when is_integer(secs), do: "#{secs}s"
   defp format_duration(_), do: "0s"
 
-  defp format_game_result(%{"score" => %{"p1" => p1, "p2" => p2}, "winner" => w}),
-    do: dgettext("chat", "— %{p1} × %{p2}%{winner}", p1: p1, p2: p2, winner: format_winner(w))
-
-  defp format_game_result(%{"score_p1" => p1, "score_p2" => p2, "winner" => w}),
-    do: dgettext("chat", "— %{p1} × %{p2}%{winner}", p1: p1, p2: p2, winner: format_winner(w))
-
-  defp format_game_result(_), do: ""
-
-  defp format_winner("draw"), do: dgettext("chat", ", draw")
-  defp format_winner(0), do: dgettext("chat", ", draw")
-  defp format_winner(_), do: ""
-
   defp humanize_reason("user_closed"), do: dgettext("chat", "closed by user")
   defp humanize_reason("disconnected"), do: dgettext("chat", "disconnected")
   defp humanize_reason("expired"), do: dgettext("chat", "expired")
   defp humanize_reason("pending_timeout"), do: dgettext("chat", "invite expired")
   defp humanize_reason("failed"), do: dgettext("chat", "connection failed")
   defp humanize_reason("lobby_inactivity"), do: dgettext("chat", "inactivity timeout")
-  defp humanize_reason("game_ended"), do: dgettext("chat", "ended")
   defp humanize_reason("game_over"), do: dgettext("chat", "game over")
   defp humanize_reason(reason) when is_binary(reason), do: reason
   defp humanize_reason(_), do: dgettext("chat", "ended")

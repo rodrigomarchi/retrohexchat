@@ -6,7 +6,7 @@ import {
 } from "../helpers/lobbyFlows";
 
 test.describe("Universal lobby", () => {
-  test("/lobby command opens a connected lobby for both peers", async ({
+  test("/p2p command opens a connected lobby for both peers", async ({
     browser,
   }) => {
     const alice = await newP2PUser(browser, "loba", { media: true });

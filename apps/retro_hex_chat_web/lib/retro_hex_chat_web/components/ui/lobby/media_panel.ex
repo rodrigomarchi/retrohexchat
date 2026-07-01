@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
   @moduledoc """
-  Self-controlled audio/video panel for the universal lobby — the body of the
+  Self-controlled audio/video panel for the P2P lobby — the body of the
   "Call" window.
 
   Hosts the `LobbyMediaHook` (mounted once the connection is up and kept mounted for

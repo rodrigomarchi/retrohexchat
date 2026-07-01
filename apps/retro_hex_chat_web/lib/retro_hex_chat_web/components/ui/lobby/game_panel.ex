@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.Lobby.GamePanel do
   @moduledoc """
-  Games panel for the universal lobby — the body of the "Games" window.
+  Games panel for the P2P lobby — the body of the "Games" window.
 
   Shows the game catalog, the incoming-proposal consent prompt, the "waiting for
   peer" state, the game canvas (hosting `LobbyGameCanvasHook`) while playing, and

@@ -957,7 +957,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Make video calls with camera controls, picture-in-picture, and quality settings. " <>
-              "See also: Universal Lobby."
+              "See also: P2P Lobby."
           )
       },
       %{
@@ -997,33 +997,12 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
-        id: "feature-p2p-sessions",
-        title: dgettext("help", "P2P Sessions"),
-        category: dgettext("help", "P2P & Calls"),
-        keywords: [
-          "p2p",
-          "peer",
-          "session",
-          "lobby",
-          "consent",
-          "bilateral",
-          "invite"
-        ],
-        icon: :icon_p2p,
-        description:
-          dgettext(
-            "help",
-            "Establish peer-to-peer sessions with bilateral consent for calls and file transfers. " <>
-              "See also: Universal Lobby."
-          )
-      },
-      %{
         id: "feature-universal-lobby",
-        title: dgettext("help", "Universal Lobby"),
+        title: dgettext("help", "P2P Lobby"),
         category: dgettext("help", "P2P & Calls"),
         keywords: [
           "lobby",
-          "universal",
+          "p2p lobby",
           "p2p",
           "everything",
           "concurrent",
@@ -1058,7 +1037,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "transfers and games still ask the other side to accept. The lobby always opens with a " <>
               "fresh default layout (your window arrangement is not kept between visits). It only " <>
               "closes when someone leaves or it goes idle. " <>
-              "See also: P2P Sessions, Video Call, File Transfer, Network Statistics."
+              "See also: Video Call, File Transfer, Network Statistics."
           )
       },
       %{
@@ -1130,7 +1109,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Send files directly to other users via peer-to-peer with drag-and-drop support. " <>
-              "See also: Universal Lobby."
+              "See also: P2P Lobby."
           )
       },
       %{
@@ -1294,65 +1273,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         ]
       },
       %{
-        id: "feature-p2p-games",
-        title: dgettext("help", "P2P Games"),
-        category: dgettext("help", "P2P Games: Action"),
-        keywords: [
-          "game",
-          "games",
-          "p2p",
-          "arcade",
-          "retro",
-          "multiplayer",
-          "pong",
-          "lobby",
-          "play"
-        ],
-        icon: :icon_game_generic,
-        description:
-          dgettext(
-            "help",
-            "Play retro arcade games directly with other users via peer-to-peer WebRTC connections."
-          ),
-        see_also: [
-          "feature-hex-pong",
-          "feature-light-trails",
-          "feature-block-breakers",
-          "feature-star-duel",
-          "feature-gravity-well",
-          "feature-debris-field",
-          "feature-hex-warlords",
-          "feature-pixel-tanks",
-          "feature-hex-raid",
-          "feature-hex-raid-pacifist",
-          "feature-hex-raid-blitz",
-          "feature-hex-boxing",
-          "feature-hex-outlaw",
-          "feature-hex-outlaw-ricochet",
-          "feature-hex-outlaw-stagecoach",
-          "feature-hex-outlaw-nml",
-          "feature-hex-invaders",
-          "feature-hex-invaders-coop",
-          "feature-hex-invaders-blitz",
-          "feature-hex-enduro",
-          "feature-hex-enduro-night",
-          "feature-hex-enduro-sprint",
-          "feature-hex-tennis",
-          "feature-hex-tennis-quick",
-          "feature-hex-tennis-sudden",
-          "feature-hex-skiing",
-          "feature-hex-skiing-escape",
-          "feature-hex-skiing-clean",
-          "feature-hex-frost",
-          "feature-hex-frost-blizzard",
-          "feature-hex-frost-peaceful",
-          "feature-hex-hockey",
-          "feature-hex-hockey-blitz",
-          "feature-hex-hockey-showdown",
-          "feature-arcade"
-        ]
-      },
-      %{
         id: "feature-hex-pong",
         title: dgettext("help", "Hex Pong"),
         category: dgettext("help", "P2P Games: Action"),
@@ -1362,8 +1282,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Cyberpunk Pong with neon visuals, CRT effects, and synth audio. First to 11 (win by 2). Use Arrow keys or W/S."
-          ),
-        see_also: ["feature-p2p-games"]
+          )
       },
       %{
         id: "feature-light-trails",
@@ -1375,8 +1294,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Race across a grid leaving a glowing trail. Hit a trail or wall and you lose."
-          ),
-        see_also: ["feature-p2p-games"]
+          )
       },
       %{
         id: "feature-pixel-tanks",
@@ -1409,8 +1327,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext(
               "help",
               "Controls: Arrow keys (Left/Right rotate, Up forward) or A/D/W, Space or Shift to fire."
-            ),
-        see_also: ["feature-p2p-games"]
+            )
       },
       %{
         id: "feature-star-duel",
@@ -1440,7 +1357,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "help",
               "Controls: Arrow keys or WASD to thrust/rotate, Space to fire, Down/S to warp."
             ),
-        see_also: ["feature-gravity-well", "feature-debris-field", "feature-p2p-games"]
+        see_also: ["feature-gravity-well", "feature-debris-field"]
       },
       %{
         id: "feature-gravity-well",
@@ -1466,7 +1383,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "use gravity slingshots for speed, but fly too close and you die. Same controls "
             ) <>
             dgettext("help", "as Star Duel. First to 7 wins."),
-        see_also: ["feature-star-duel", "feature-debris-field", "feature-p2p-games"]
+        see_also: ["feature-star-duel", "feature-debris-field"]
       },
       %{
         id: "feature-debris-field",
@@ -1492,7 +1409,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "kill ships on contact. Use debris for cover or it destroys you. Same controls "
             ) <>
             dgettext("help", "as Star Duel. First to 7 wins."),
-        see_also: ["feature-star-duel", "feature-gravity-well", "feature-p2p-games"]
+        see_also: ["feature-star-duel", "feature-gravity-well"]
       },
       %{
         id: "feature-block-breakers",
@@ -1518,8 +1435,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext(
               "help",
               "3 shared lives, 50 neon blocks (5 rows), ball speeds up. Arrow keys or A/D to move."
-            ),
-        see_also: ["feature-p2p-games"]
+            )
       },
       %{
         id: "feature-hex-warlords",
@@ -1552,7 +1468,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "help",
               "Controls: Arrow keys (Up/Down) to move shield, Space to catch/release fireball."
             ),
-        see_also: ["feature-block-breakers", "feature-p2p-games"]
+        see_also: ["feature-block-breakers"]
       },
       %{
         id: "feature-hex-raid",
@@ -1588,8 +1504,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ),
         see_also: [
           "feature-hex-raid-pacifist",
-          "feature-hex-raid-blitz",
-          "feature-p2p-games"
+          "feature-hex-raid-blitz"
         ]
       },
       %{
@@ -1613,7 +1528,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "Pure competition for points, fuel, and survival across 10 sections. "
             ) <>
             dgettext("help", "Controls: Arrow keys to move/speed, Space to fire."),
-        see_also: ["feature-hex-raid", "feature-hex-raid-blitz", "feature-p2p-games"]
+        see_also: ["feature-hex-raid", "feature-hex-raid-blitz"]
       },
       %{
         id: "feature-hex-raid-blitz",
@@ -1636,7 +1551,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "help",
               "Controls: Arrow keys to move/speed, Space to fire, Shift to drop mine."
             ),
-        see_also: ["feature-hex-raid", "feature-hex-raid-pacifist", "feature-p2p-games"]
+        see_also: ["feature-hex-raid", "feature-hex-raid-pacifist"]
       },
       %{
         id: "feature-hex-boxing",
@@ -1660,8 +1575,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "help",
               "medium 2, far 1. First to 100 is KO! Best of 3 rounds, 2 minutes each. "
             ) <>
-            dgettext("help", "Controls: Arrow keys or WASD to move, Space or Shift to punch."),
-        see_also: ["feature-p2p-games"]
+            dgettext("help", "Controls: Arrow keys or WASD to move, Space or Shift to punch.")
       },
       %{
         id: "feature-hex-outlaw",
@@ -1690,8 +1604,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-hex-outlaw-ricochet",
           "feature-hex-outlaw-stagecoach",
-          "feature-hex-outlaw-nml",
-          "feature-p2p-games"
+          "feature-hex-outlaw-nml"
         ]
       },
       %{
@@ -1722,8 +1635,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-hex-outlaw",
           "feature-hex-outlaw-stagecoach",
-          "feature-hex-outlaw-nml",
-          "feature-p2p-games"
+          "feature-hex-outlaw-nml"
         ]
       },
       %{
@@ -1750,8 +1662,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-hex-outlaw",
           "feature-hex-outlaw-ricochet",
-          "feature-hex-outlaw-nml",
-          "feature-p2p-games"
+          "feature-hex-outlaw-nml"
         ]
       },
       %{
@@ -1778,8 +1689,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         see_also: [
           "feature-hex-outlaw",
           "feature-hex-outlaw-ricochet",
-          "feature-hex-outlaw-stagecoach",
-          "feature-p2p-games"
+          "feature-hex-outlaw-stagecoach"
         ]
       },
       %{
@@ -1813,8 +1723,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext("help", "Controls: Arrow keys or A/D to move, Space to fire."),
         see_also: [
           "feature-hex-invaders-coop",
-          "feature-hex-invaders-blitz",
-          "feature-p2p-games"
+          "feature-hex-invaders-blitz"
         ]
       },
       %{
@@ -1840,8 +1749,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext("help", "Controls: Arrow keys or A/D to move, Space to fire."),
         see_also: [
           "feature-hex-invaders",
-          "feature-hex-invaders-blitz",
-          "feature-p2p-games"
+          "feature-hex-invaders-blitz"
         ]
       },
       %{
@@ -1867,8 +1775,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext("help", "Controls: Arrow keys or A/D to move, Space to fire."),
         see_also: [
           "feature-hex-invaders",
-          "feature-hex-invaders-coop",
-          "feature-p2p-games"
+          "feature-hex-invaders-coop"
         ]
       },
       %{
@@ -1903,8 +1810,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ),
         see_also: [
           "feature-hex-enduro-night",
-          "feature-hex-enduro-sprint",
-          "feature-p2p-games"
+          "feature-hex-enduro-sprint"
         ]
       },
       %{
@@ -1929,8 +1835,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ),
         see_also: [
           "feature-hex-enduro",
-          "feature-hex-enduro-sprint",
-          "feature-p2p-games"
+          "feature-hex-enduro-sprint"
         ]
       },
       %{
@@ -1956,8 +1861,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ),
         see_also: [
           "feature-hex-enduro",
-          "feature-hex-enduro-night",
-          "feature-p2p-games"
+          "feature-hex-enduro-night"
         ]
       },
       %{
@@ -1984,8 +1888,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext("help", "Controls: Arrow keys or WASD to move, Space or Shift to serve."),
         see_also: [
           "feature-hex-tennis-quick",
-          "feature-hex-tennis-sudden",
-          "feature-p2p-games"
+          "feature-hex-tennis-sudden"
         ]
       },
       %{
@@ -2007,8 +1910,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext("help", "Controls: Arrow keys or WASD to move, Space or Shift to serve."),
         see_also: [
           "feature-hex-tennis",
-          "feature-hex-tennis-sudden",
-          "feature-p2p-games"
+          "feature-hex-tennis-sudden"
         ]
       },
       %{
@@ -2030,8 +1932,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext("help", "Controls: Arrow keys or WASD to move, Space or Shift to serve."),
         see_also: [
           "feature-hex-tennis",
-          "feature-hex-tennis-quick",
-          "feature-p2p-games"
+          "feature-hex-tennis-quick"
         ]
       },
       %{
@@ -2062,8 +1963,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext("help", "Controls: Arrow keys (←/→) or A/D to steer."),
         see_also: [
           "feature-hex-skiing-escape",
-          "feature-hex-skiing-clean",
-          "feature-p2p-games"
+          "feature-hex-skiing-clean"
         ]
       },
       %{
@@ -2086,8 +1986,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext("help", "Controls: Arrow keys (←/→) or A/D to steer."),
         see_also: [
           "feature-hex-skiing",
-          "feature-hex-skiing-clean",
-          "feature-p2p-games"
+          "feature-hex-skiing-clean"
         ]
       },
       %{
@@ -2110,8 +2009,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             dgettext("help", "Controls: Arrow keys (←/→) or A/D to steer."),
         see_also: [
           "feature-hex-skiing",
-          "feature-hex-skiing-escape",
-          "feature-p2p-games"
+          "feature-hex-skiing-escape"
         ]
       },
       %{
@@ -2153,8 +2051,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ),
         see_also: [
           "feature-hex-frost-blizzard",
-          "feature-hex-frost-peaceful",
-          "feature-p2p-games"
+          "feature-hex-frost-peaceful"
         ]
       },
       %{
@@ -2185,8 +2082,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ),
         see_also: [
           "feature-hex-frost",
-          "feature-hex-frost-peaceful",
-          "feature-p2p-games"
+          "feature-hex-frost-peaceful"
         ]
       },
       %{
@@ -2215,8 +2111,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ),
         see_also: [
           "feature-hex-frost",
-          "feature-hex-frost-blizzard",
-          "feature-p2p-games"
+          "feature-hex-frost-blizzard"
         ]
       },
       %{
@@ -2257,8 +2152,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ),
         see_also: [
           "feature-hex-hockey-blitz",
-          "feature-hex-hockey-showdown",
-          "feature-p2p-games"
+          "feature-hex-hockey-showdown"
         ]
       },
       %{
@@ -2286,8 +2180,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ),
         see_also: [
           "feature-hex-hockey",
-          "feature-hex-hockey-showdown",
-          "feature-p2p-games"
+          "feature-hex-hockey-showdown"
         ]
       },
       %{
@@ -2315,8 +2208,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ),
         see_also: [
           "feature-hex-hockey",
-          "feature-hex-hockey-blitz",
-          "feature-p2p-games"
+          "feature-hex-hockey-blitz"
         ]
       },
       # ── Solo Arcade ──────────────────────────────────

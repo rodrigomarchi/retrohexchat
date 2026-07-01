@@ -1,6 +1,6 @@
 defmodule RetroHexChat.Lobby.Service do
   @moduledoc """
-  Orchestrates universal lobby operations: policy check → persist → process → notify.
+  Orchestrates P2P lobby operations: policy check → persist → process → notify.
   """
   use Gettext, backend: RetroHexChat.Gettext
 

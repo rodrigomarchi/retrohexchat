@@ -26,5 +26,5 @@ defmodule RetroHexChatWeb.HelpContent.Games do
 
   def help_icon(assigns), do: apply(Icons, assigns.name, [%{class: assigns.class}])
 
-  embed_templates "{feature_hex_*,feature_block_breakers*,feature_debris_field*,feature_gravity_well*,feature_light_trails*,feature_p2p_games*,feature_pixel_tanks*,feature_star_duel*}"
+  embed_templates "{feature_hex_*,feature_block_breakers*,feature_debris_field*,feature_gravity_well*,feature_light_trails*,feature_pixel_tanks*,feature_star_duel*}"
 end

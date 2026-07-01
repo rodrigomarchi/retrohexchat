@@ -284,13 +284,6 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
   end
 
   describe "P2P help topics" do
-    test "P2P Sessions topic exists with correct category" do
-      topic = HelpTopics.get_topic("feature-p2p-sessions")
-      assert topic != nil
-      assert topic.category == "P2P & Calls"
-      assert topic.title == "P2P Sessions"
-    end
-
     test "File Transfer topic exists with correct category" do
       topic = HelpTopics.get_topic("feature-file-transfer")
       assert topic != nil
@@ -305,12 +298,10 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
       assert topic.title == "Privacy Settings"
     end
 
-    test "command topics exist for P2P commands" do
-      for id <- ~w(cmd-p2p cmd-call cmd-sendfile) do
-        topic = HelpTopics.get_topic(id)
-        assert topic != nil, "Missing help topic: #{id}"
-        assert topic.category == "P2P & Calls"
-      end
+    test "command topic exists for the /p2p lobby command" do
+      topic = HelpTopics.get_topic("cmd-p2p")
+      assert topic != nil, "Missing help topic: cmd-p2p"
+      assert topic.category == "P2P & Calls"
     end
   end
 

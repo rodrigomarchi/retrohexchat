@@ -1,11 +1,11 @@
 defmodule RetroHexChatWeb.App.LobbyLive do
   @moduledoc """
-  Universal P2P lobby.
+  P2P lobby.
 
   A single, persistent WebRTC connection between two peers that hosts every
   feature concurrently: ephemeral chat, self-controlled audio/video, file
-  transfer and games — all at the same time. Unlike `P2PSessionLive`, ending a
-  feature never closes the session; only an explicit leave or inactivity does.
+  transfer and games — all at the same time. Ending a feature never closes the
+  session; only an explicit leave or inactivity does.
   """
   use Phoenix.LiveView
   use Gettext, backend: RetroHexChatWeb.Gettext

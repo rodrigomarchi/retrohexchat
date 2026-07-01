@@ -1,7 +1,7 @@
 /**
  * LiveView Hook: LobbyWebRTCHook
  *
- * Owns the single, persistent RTCPeerConnection for a universal lobby and
+ * Owns the single, persistent RTCPeerConnection for a P2P lobby and
  * multiplexes EVERY feature over it:
  *
  *   - audio/video  → transceivers (the lobby media hook reuses `this.pc`)

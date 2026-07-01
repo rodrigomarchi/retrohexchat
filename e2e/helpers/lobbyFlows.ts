@@ -3,15 +3,15 @@ import { P2PTestUser } from './p2pFlows';
 import { LobbyPage, openLobbyFromInvite } from '../pages/LobbyPage';
 
 /**
- * Drives the `/lobby` command end-to-end: the initiator invites the receiver,
- * both click the "Join lobby" card, and the two universal-lobby pages open and
+ * Drives the `/p2p` command end-to-end: the initiator invites the receiver,
+ * both click the "Join lobby" card, and the two P2P-lobby pages open and
  * establish a connection.
  */
 export async function openLobbiesFromCommand(
   initiator: P2PTestUser,
   receiver: P2PTestUser,
 ): Promise<{ initiatorLobby: LobbyPage; receiverLobby: LobbyPage }> {
-  await initiator.chat.sendMessage(`/lobby ${receiver.nick}`);
+  await initiator.chat.sendMessage(`/p2p ${receiver.nick}`);
   await initiator.chat.expectTabVisible(receiver.nick);
   await initiator.chat.expectTabSelected(receiver.nick);
   await initiator.chat.expectMessageVisible(
@@ -22,9 +22,9 @@ export async function openLobbiesFromCommand(
 }
 
 /**
- * Drives the `Universal Lobby` nicklist context-menu entry point: the initiator
+ * Drives the `P2P Lobby` nicklist context-menu entry point: the initiator
  * right-clicks the receiver in the nicklist (both must already share a channel)
- * and the same invite/join flow as the `/lobby` command unfolds.
+ * and the same invite/join flow as the `/p2p` command unfolds.
  */
 export async function openLobbiesFromContextMenu(
   initiator: P2PTestUser,

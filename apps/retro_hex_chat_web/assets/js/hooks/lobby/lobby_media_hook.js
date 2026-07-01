@@ -1,7 +1,7 @@
 import { createRtcMediaHook } from "../../lib/p2p/rtc_media_hook_factory.js";
 
 /**
- * Media hook for the universal lobby.
+ * Media hook for the P2P lobby.
  *
  * Reuses the shared RTC media factory but in *self-controlled* mode: each peer
  * starts/stops their own mic and camera independently (no bilateral consent),

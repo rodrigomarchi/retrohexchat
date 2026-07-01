@@ -1,6 +1,6 @@
 defmodule RetroHexChat.Lobby do
   @moduledoc """
-  Public API for the universal lobby bounded context.
+  Public API for the P2P lobby bounded context.
 
   A lobby is a single *persistent* P2P connection between two registered users
   that hosts audio, video, file transfer and games **concurrently**. All

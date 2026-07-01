@@ -115,9 +115,7 @@ defmodule RetroHexChatWeb.Router do
     live_session :app_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
       live "/connect", ConnectLive
       live "/chat", ChatLive
-      live "/p2p/:token", P2PSessionLive
       live "/lobby/:token", LobbyLive
-      live "/game/:token", GameSessionLive
       live "/solo/:token", SoloSessionLive
       live "/arcade/:token/:game_id", ArcadeGameLive
     end
@@ -251,14 +249,10 @@ defmodule RetroHexChatWeb.Router do
 
       # P2P
       live "/p2p-connection-diagram", P2P.P2PConnectionDiagramPage
-      live "/p2p-lobby", P2P.P2PLobbyPage
-      live "/media-controls", P2P.MediaControlsPage
       live "/file-transfer", P2P.FileTransferPage
 
       # Games
       live "/game-cards", Games.GameCardsPage
-      live "/game-canvas", Games.GameCanvasPage
-      live "/game-lobby", Games.GameLobbyPage
       live "/solo-lobby", Games.SoloLobbyPage
       live "/arcade-frame", Games.ArcadeFramePage
 

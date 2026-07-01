@@ -1,6 +1,6 @@
 defmodule RetroHexChat.Lobby.Registry do
   @moduledoc """
-  Registry helpers for universal lobby session process lookup.
+  Registry helpers for P2P lobby session process lookup.
   Uses Elixir Registry with the via_tuple pattern.
   """
 

@@ -1,7 +1,7 @@
 import { Locator, Page, expect } from "@playwright/test";
 
 /**
- * Page object for the universal lobby (`/lobby/:token`) — one persistent
+ * Page object for the P2P lobby (`/lobby/:token`) — one persistent
  * connection that hosts audio/video, file transfer and games concurrently,
  * rendered as a Win98 desktop. Features live in draggable windows; navigation is
  * the taskbar Start menu. Window chrome is owned client-side by WindowManagerHook.
@@ -95,7 +95,7 @@ export class LobbyPage {
     this.enableVideoButton = page.locator(
       '[data-lobby-media-action="enable-video"]',
     );
-    // In the universal lobby, "add video" to an ongoing call is the same in-call
+    // In the P2P lobby, "add video" to an ongoing call is the same in-call
     // "turn on camera" control an auto-joined receiver uses.
     this.addVideoButton = this.enableVideoButton;
     this.peerMutedIndicator = page.getByTestId("lobby-peer-muted");
@@ -187,7 +187,7 @@ export class LobbyPage {
   /**
    * Turn our camera on, whether we are the first mover (start from the Start menu)
    * or an auto-joined receiver (use the in-call "Turn on camera" control). Waits
-   * for whichever path the universal lobby offers.
+   * for whichever path the P2P lobby offers.
    */
   async sendVideo() {
     await expect

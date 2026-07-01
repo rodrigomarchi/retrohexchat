@@ -67,8 +67,6 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     "/showcase/highlight-dialog",
     "/showcase/config-form",
     "/showcase/p2p-connection-diagram",
-    "/showcase/p2p-lobby",
-    "/showcase/media-controls",
     "/showcase/file-transfer",
     "/showcase/chat-layout",
     # New simple components
@@ -84,7 +82,6 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     # New medium components
     "/showcase/status-bar-app",
     "/showcase/conversations-context-menu",
-    "/showcase/game-canvas",
     "/showcase/cheatsheet-dialog",
     "/showcase/nick-change-dialog",
     "/showcase/syntax-tooltip",
@@ -96,7 +93,6 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     "/showcase/sound-settings-dialog",
     "/showcase/notify-list",
     "/showcase/url-catcher",
-    "/showcase/game-lobby",
     # New large components
     "/showcase/toolbar-app",
     "/showcase/solo-lobby",

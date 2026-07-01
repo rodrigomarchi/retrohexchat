@@ -1,6 +1,6 @@
 defmodule RetroHexChat.Lobby.Schema.Session do
   @moduledoc """
-  Ecto schema for `lobby_sessions` — the universal P2P lobby.
+  Ecto schema for `lobby_sessions` — the P2P lobby.
 
   Unlike `RetroHexChat.P2P.Schema.Session`, a lobby session is a single
   *persistent* connection between two registered users that hosts every P2P

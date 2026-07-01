@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   @moduledoc """
-  Universal lobby master component — the complete `/lobby` session UI, rendered as a
+  P2P lobby master component — the complete `/lobby` session UI, rendered as a
   Win98 desktop.
 
   Every P2P feature runs concurrently over one persistent connection and lives in its

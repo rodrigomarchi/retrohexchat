@@ -4,7 +4,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
 
   Composed from ContextMenu primitives. Supports:
   - PM, Whois, Add to Contacts, Set Nick Color, Ignore/Unignore
-  - P2P actions: Audio Call, Video Call, Send File, Play Game (if identified)
+  - P2P Lobby (if identified)
   - Operator actions: Kick, Ban, Give/Remove Op, Give/Remove Voice, Mute/Unmute
   - Custom nicklist menu items
   - Inline nick color picker sub-panel
@@ -121,7 +121,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         {if @is_target_ignored, do: dgettext("chat", "Unignore"), else: dgettext("chat", "Ignore")}
       </.context_menu_item>
 
-      <%!-- P2P actions (only if viewer is identified) --%>
+      <%!-- P2P lobby (only if viewer is identified) --%>
       <.context_menu_separator :if={@viewer_is_identified && !@is_target_self} />
       <.context_menu_item
         :if={@viewer_is_identified && !@is_target_self}
@@ -130,52 +130,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
         phx-value-nick={@target_nick}
       >
         <:icon><Icons.icon_p2p class="w-[14px] h-[14px]" /></:icon>
-        {dgettext("chat", "Universal Lobby")}
-      </.context_menu_item>
-      <.context_menu_item
-        :if={@viewer_is_identified && !@is_target_self}
-        on_click={@on_action}
-        action="context_p2p"
-        phx-value-nick={@target_nick}
-      >
-        <:icon><Icons.icon_p2p class="w-[14px] h-[14px]" /></:icon>
-        {dgettext("chat", "P2P Session")}
-      </.context_menu_item>
-      <.context_menu_item
-        :if={@viewer_is_identified && !@is_target_self}
-        on_click={@on_action}
-        action="context_call"
-        phx-value-nick={@target_nick}
-      >
-        <:icon><Icons.icon_microphone class="w-[14px] h-[14px]" /></:icon>
-        {dgettext("chat", "Audio Call")}
-      </.context_menu_item>
-      <.context_menu_item
-        :if={@viewer_is_identified && !@is_target_self}
-        on_click={@on_action}
-        action="context_video_call"
-        phx-value-nick={@target_nick}
-      >
-        <:icon><Icons.icon_camera class="w-[14px] h-[14px]" /></:icon>
-        {dgettext("chat", "Video Call")}
-      </.context_menu_item>
-      <.context_menu_item
-        :if={@viewer_is_identified && !@is_target_self}
-        on_click={@on_action}
-        action="context_sendfile"
-        phx-value-nick={@target_nick}
-      >
-        <:icon><Icons.icon_file_send class="w-[14px] h-[14px]" /></:icon>
-        {dgettext("chat", "Send File")}
-      </.context_menu_item>
-      <.context_menu_item
-        :if={@viewer_is_identified && !@is_target_self}
-        on_click={@on_action}
-        action="context_game"
-        phx-value-nick={@target_nick}
-      >
-        <:icon><Icons.icon_star class="w-[14px] h-[14px]" /></:icon>
-        {dgettext("chat", "Play Game")}
+        {dgettext("chat", "P2P Lobby")}
       </.context_menu_item>
 
       <%!-- Op actions (only if viewer is op and not targeting self) --%>

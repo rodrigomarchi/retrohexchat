@@ -1,8 +1,7 @@
 defmodule RetroHexChatWeb.App.SessionHelpers do
   @moduledoc """
-  Shared session helper functions for app session LiveViews.
-  Extracted from duplicated private helpers across ArcadeGameLive,
-  SoloSessionLive, GameSessionLive, and P2PSessionLive.
+  Shared session helper functions for app session LiveViews
+  (LobbyLive, SoloSessionLive, ArcadeGameLive).
   """
 
   use Phoenix.VerifiedRoutes,

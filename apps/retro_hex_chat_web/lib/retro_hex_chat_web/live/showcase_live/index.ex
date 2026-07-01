@@ -39,15 +39,15 @@ defmodule RetroHexChatWeb.ShowcaseLive.Index do
        "showcase",
        "Complex dialog composites — channel settings, perform, address book, sound settings, and 20+ more."
      )},
-    {"P2P", :icon_p2p, 3,
+    {"P2P", :icon_p2p, 2,
      dgettext(
        "showcase",
-       "Peer-to-peer session components — P2P lobby, file transfer, and media controls."
+       "Peer-to-peer session components — connection diagram and file transfer."
      )},
-    {dgettext("showcase", "Games"), :icon_joystick, 5,
+    {dgettext("showcase", "Games"), :icon_joystick, 3,
      dgettext(
        "showcase",
-       "Arcade and solo game components — game lobby, game canvas, solo lobby, and arcade frame."
+       "Arcade and solo game components — game cards, solo lobby, and arcade frame."
      )},
     {dgettext("showcase", "Assets"), :icon_folder, 3,
      dgettext("showcase", "Icons catalog, SVG diagrams, and design tokens reference.")}

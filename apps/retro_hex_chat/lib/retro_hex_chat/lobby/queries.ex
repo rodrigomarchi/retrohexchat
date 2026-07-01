@@ -1,6 +1,6 @@
 defmodule RetroHexChat.Lobby.Queries do
   @moduledoc """
-  Database queries for universal lobby sessions.
+  Database queries for P2P lobby sessions.
   """
 
   import Ecto.Query

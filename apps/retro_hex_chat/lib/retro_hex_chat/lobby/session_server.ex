@@ -1,6 +1,6 @@
 defmodule RetroHexChat.Lobby.SessionServer do
   @moduledoc """
-  GenServer managing a single universal lobby session.
+  GenServer managing a single P2P lobby session.
 
   Unlike `RetroHexChat.P2P.SessionServer`, the connection is *persistent*:
   the state machine `pending → lobby → connected → terminal` tracks only the

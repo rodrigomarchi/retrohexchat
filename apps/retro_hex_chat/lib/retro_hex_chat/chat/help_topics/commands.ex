@@ -98,15 +98,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           )
       },
       %{
-        id: "cmd-call",
-        title: "/call",
-        category: dgettext("help", "P2P & Calls"),
-        keywords: ["call", "audio", "voice", dgettext("help", "voice call"), "p2p"],
-        icon: :icon_microphone,
-        description:
-          dgettext("help", "Start a peer-to-peer audio or video call with another user.")
-      },
-      %{
         id: "cmd-clear",
         title: "/clear",
         category: dgettext("help", "Chat & Messaging"),
@@ -136,18 +127,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description:
           dgettext("help", "Send commands to ChanServ for channel registration and management."),
         see_also: ["chanserv", "chanserv-register", "chanserv-access", "chanserv-ui"]
-      },
-      %{
-        id: "cmd-game",
-        title: "/game",
-        category: dgettext("help", "P2P & Calls"),
-        keywords: ["game", "play", "p2p", "games", "arcade", "retro"],
-        icon: :icon_star,
-        description:
-          dgettext(
-            "help",
-            "Start a peer-to-peer game session with another user for retro arcade games."
-          )
       },
       %{
         id: "cmd-help",
@@ -338,27 +317,27 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
           )
       },
       %{
-        id: "cmd-lobby",
-        title: "/lobby",
-        category: dgettext("help", "P2P & Calls"),
-        keywords: ["lobby", "universal", "p2p", "everything", "concurrent", "all"],
-        icon: :icon_p2p,
-        description:
-          dgettext(
-            "help",
-            "Open a universal lobby that runs a call, file transfers, and games together over one connection."
-          )
-      },
-      %{
         id: "cmd-p2p",
         title: "/p2p",
         category: dgettext("help", "P2P & Calls"),
-        keywords: ["p2p", "peer", "session", "direct", "peer-to-peer"],
+        keywords: [
+          "p2p",
+          "lobby",
+          "peer",
+          "call",
+          "audio",
+          "video",
+          "file",
+          "game",
+          "peer-to-peer",
+          "everything",
+          "concurrent"
+        ],
         icon: :icon_p2p,
         description:
           dgettext(
             "help",
-            "Manage peer-to-peer sessions for direct communication, calls, and file transfers."
+            "Open a P2P Lobby that runs an audio/video call, file transfers, and games together over one connection."
           )
       },
       %{
@@ -414,15 +393,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         keywords: ["quit", "disconnect", "exit", "logout"],
         icon: :icon_close,
         description: dgettext("help", "Disconnect from the server with an optional quit message.")
-      },
-      %{
-        id: "cmd-sendfile",
-        title: "/sendfile",
-        category: dgettext("help", "P2P & Calls"),
-        keywords: ["sendfile", "send", "file", "transfer", "p2p"],
-        icon: :icon_file_send,
-        description:
-          dgettext("help", "Send a file to another user through a peer-to-peer connection.")
       },
       %{
         id: "cmd-singleplayer",

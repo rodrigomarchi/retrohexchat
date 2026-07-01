@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.Lobby.FilePanel do
   @moduledoc """
-  File-transfer panel for the universal lobby — the body of the "Files" window.
+  File-transfer panel for the P2P lobby — the body of the "Files" window.
 
   Hosts the `FileTransferHook` (kept mounted for the whole connection so the data
   channel always has an `onmessage` handler and incoming offers surface). Renders the

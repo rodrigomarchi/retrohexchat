@@ -1,6 +1,6 @@
 defmodule RetroHexChat.Lobby.Supervisor do
   @moduledoc """
-  DynamicSupervisor for universal lobby session GenServer processes.
+  DynamicSupervisor for P2P lobby session GenServer processes.
   One child process per active session (Constitution III).
   """
 

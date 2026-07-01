@@ -116,7 +116,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       <:icon><Icons.icon_tab_contacts class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "Address Book")}
     </.context_menu_item>
-    <%!-- P2P items (only if viewer is identified) --%>
+    <%!-- P2P lobby (only if viewer is identified) --%>
     <.context_menu_separator :if={@viewer_is_identified} />
     <.context_menu_item
       :if={@viewer_is_identified}
@@ -129,59 +129,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       phx-value-nick={@target_nick}
     >
       <:icon><Icons.icon_p2p class="w-[14px] h-[14px]" /></:icon>
-      {dgettext("chat", "Universal Lobby")}
-    </.context_menu_item>
-    <.context_menu_item
-      :if={@viewer_is_identified}
-      on_click={if @is_target_registered && !@is_target_self, do: @on_action}
-      action="ctx_chat_call"
-      disabled={!@is_target_registered || @is_target_self}
-      title={
-        if !@is_target_registered && !@is_target_self, do: dgettext("chat", "User not registered")
-      }
-      phx-value-nick={@target_nick}
-    >
-      <:icon><Icons.icon_microphone class="w-[14px] h-[14px]" /></:icon>
-      {dgettext("chat", "Audio Call")}
-    </.context_menu_item>
-    <.context_menu_item
-      :if={@viewer_is_identified}
-      on_click={if @is_target_registered && !@is_target_self, do: @on_action}
-      action="ctx_chat_video_call"
-      disabled={!@is_target_registered || @is_target_self}
-      title={
-        if !@is_target_registered && !@is_target_self, do: dgettext("chat", "User not registered")
-      }
-      phx-value-nick={@target_nick}
-    >
-      <:icon><Icons.icon_camera class="w-[14px] h-[14px]" /></:icon>
-      {dgettext("chat", "Video Call")}
-    </.context_menu_item>
-    <.context_menu_item
-      :if={@viewer_is_identified}
-      on_click={if @is_target_registered && !@is_target_self, do: @on_action}
-      action="ctx_chat_sendfile"
-      disabled={!@is_target_registered || @is_target_self}
-      title={
-        if !@is_target_registered && !@is_target_self, do: dgettext("chat", "User not registered")
-      }
-      phx-value-nick={@target_nick}
-    >
-      <:icon><Icons.icon_file_send class="w-[14px] h-[14px]" /></:icon>
-      {dgettext("chat", "Send File")}
-    </.context_menu_item>
-    <.context_menu_item
-      :if={@viewer_is_identified}
-      on_click={if @is_target_registered && !@is_target_self, do: @on_action}
-      action="ctx_chat_game"
-      disabled={!@is_target_registered || @is_target_self}
-      title={
-        if !@is_target_registered && !@is_target_self, do: dgettext("chat", "User not registered")
-      }
-      phx-value-nick={@target_nick}
-    >
-      <:icon><Icons.icon_star class="w-[14px] h-[14px]" /></:icon>
-      {dgettext("chat", "Play Game")}
+      {dgettext("chat", "P2P Lobby")}
     </.context_menu_item>
     <%!-- Op actions (only if viewer is op and not targeting self) --%>
     <.context_menu_separator :if={@viewer_is_op && !@is_target_self} />

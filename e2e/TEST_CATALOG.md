@@ -259,14 +259,6 @@ make ci
 
 | # | Flow | Spec file | Priority | Status |
 |---|------|-----------|----------|--------|
-| N1 | Unidentified user P2P/call/sendfile/game shows identify-required errors | `tests/chat-p2p-errors.spec.ts` | P0 | done |
-| N2 | Registered identified user cannot P2P/call/sendfile/game self | `tests/chat-p2p-errors.spec.ts` | P1 | done |
-| N3 | Target not registered shows not-registered error | `tests/chat-p2p-errors.spec.ts` | P1 | done |
-| N4 | `/p2p bob` creates PM invite cards and both users can open lobby | `tests/chat-p2p-invite.spec.ts` | P1 | done |
-| N5 | `/call bob` creates audio-call lobby/session with mocked permissions | `tests/chat-p2p-call.spec.ts` | P2 | done |
-| N6 | `/sendfile bob` creates file-transfer session and upload accepts temp file | `tests/chat-p2p-file.spec.ts` | P2 | done |
-| N7 | `/game bob` creates invite/lobby and starts shared game shell | `tests/chat-p2p-game.spec.ts` | P2 | done |
-| N8 | P2P decline clears consent from both lobbies without chat focus steal | `tests/chat-p2p-invite.spec.ts` | P2 | done |
 
 ## O - Chat UI Micro-Journeys
 
@@ -468,45 +460,7 @@ make ci
 
 | # | Flow | Spec file | Priority | Status |
 |---|------|-----------|----------|--------|
-| Z1 | P2P, call, sendfile, and game commands reject registered targets who are currently offline | `tests/chat-p2p-availability.spec.ts` | P1 | done |
-| Z2 | P2P invite ignores suppress target PM invite card, status notification, title flash, and message-only ignores still allow P2P invite delivery | `tests/chat-p2p-ignore.spec.ts` | P1 | done |
-| Z3 | Closing a pending P2P invite notifies both chats, closes the sender lobby, and leaves stale invite links in an ended state | `tests/chat-p2p-expiry-cancel.spec.ts` | P2 | done |
-| Z4 | Double-clicking P2P lobby Accept/Decline settles each action once without duplicate feedback or stale media state | `tests/chat-p2p-idempotency.spec.ts` | P1 | done |
-| Z5 | Closing one open P2P lobby closes that popup, updates the peer lobby to ended state, and preserves both main chat tabs | `tests/chat-p2p-session-lifecycle.spec.ts` | P1 | done |
-| Z6 | Denied microphone permission during `/call` shows actionable browser-permission guidance once and leaves PM chat usable | `tests/chat-p2p-call-permissions.spec.ts` | P1 | done |
-| Z7 | Video-call mute and camera toggles update local controls and remote muted/camera-off indicators | `tests/chat-p2p-call-controls.spec.ts` | P2 | done |
-| Z8 | File-transfer cancellation before receiver accept and after transfer start keeps both lobby panels visible with cancelled status | `tests/chat-p2p-file-cancel.spec.ts` | P1 | done |
-| Z9 | File-transfer validation rejects blocked extensions and oversized files locally without creating a receiver offer | `tests/chat-p2p-file-limits.spec.ts` | P1 | done |
-| Z10 | Game lobby leave and game-selection decline return both peers to the expected chat/lobby state without focus steal | `tests/chat-p2p-game-lifecycle.spec.ts` | P2 | done |
-| Z11 | Hex Pong peer canvas paints and changes after start, proving shared state frames arrive beyond the lobby shell | `tests/chat-p2p-game-state.spec.ts` | P2 | done |
 | Z12 | Solo arcade link opens the solo lobby, starts a playable external arcade window, returns to completed state, and leaves chat usable | `tests/chat-singleplayer-arcade.spec.ts` | P2 | done |
-| Z13 | Nicklist-launched P2P lobby handles bidirectional lobby chat, declined action retry, and reverse-direction file transfer completion | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
-| Z14 | Audio call handles video-upgrade decline, retry, accepted video tracks, layout changes, and peer mute/camera indicators | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
-| Z15 | Game lobby can decline a selected game, retry selection, and still start shared play with changing peer canvas frames | `tests/chat-p2p-complete-flows.spec.ts` | P2 | done |
-| Z16 | P2P lobby keeps one pending action at a time and blocks requester self-accept from starting local media state | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
-| Z17 | Cancelled incoming file offer can be retried through a new clean send-file session that completes download | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
-| Z18 | Chat-message nickname context menu exposes P2P actions and can start a send-file invite through consent decline | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
-| Z19 | P2P lobby messages and file names render HTML-like payloads as inert text without executing markup | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
-| Z20 | Adding an invites ignore while a P2P lobby is open closes both lobby windows and records ended-session status | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
-| Z21 | Direct video call with denied camera shows camera-specific guidance and leaves the P2P lobby usable | `tests/chat-p2p-call-media-edges.spec.ts` | P1 | done |
-| Z22 | Camera denial during audio-to-video upgrade rolls both peers back to a live audio call | `tests/chat-p2p-call-media-edges.spec.ts` | P1 | done |
-| Z23 | Ending an active audio call closes the local popup and ends the peer session with call-ended status | `tests/chat-p2p-call-media-edges.spec.ts` | P1 | done |
-| Z24 | Closing a popup during an active audio call disconnects the peer coherently with disconnected status | `tests/chat-p2p-call-media-edges.spec.ts` | P1 | done |
-| Z25 | Nicklist-launched video call reaches full video media with local and remote audio/video tracks | `tests/chat-p2p-call-media-edges.spec.ts` | P1 | done |
-| Z26 | Browser offline/online during an active audio call restores coherent media controls | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
-| Z27 | Browser offline/online during an active video call restores video tracks and controls | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
-| Z28 | Closing the peer popup while video upgrade is pending ends the requester coherently | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
-| Z29 | Adding an invites ignore during an active video call closes both peers and clears media state | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
-| Z30 | The same users can start a fresh audio call after ending the previous call | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
-| Z31 | Double-clicking video-upgrade accept settles once and reaches a single video call | `tests/chat-p2p-call-resilience.spec.ts` | P1 | done |
-| Z32 | Audio call with missing microphone shows microphone-specific missing-device guidance | `tests/chat-p2p-call-device-errors.spec.ts` | P1 | done |
-| Z33 | Video call with missing camera shows missing-camera guidance | `tests/chat-p2p-call-device-errors.spec.ts` | P1 | done |
-| Z34 | Video call with busy camera shows not-readable camera guidance | `tests/chat-p2p-call-device-errors.spec.ts` | P1 | done |
-| Z35 | Chat-message nickname context menu starts a full video call with media tracks | `tests/chat-p2p-call-device-errors.spec.ts` | P1 | done |
-| Z36 | Active game voice call upgrades to video and delivers local and remote media tracks | `tests/chat-p2p-game-media-edges.spec.ts` | P1 | done |
-| Z37 | Camera denial inside active game media leaves the canvas playable and media idle | `tests/chat-p2p-game-media-edges.spec.ts` | P1 | done |
-| Z38 | Ending an active game while video media is running closes the peer coherently | `tests/chat-p2p-game-media-edges.spec.ts` | P1 | done |
-| Z39 | Closing a popup during active game video media disconnects the peer coherently | `tests/chat-p2p-game-media-edges.spec.ts` | P1 | done |
 
 ## Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
 
@@ -514,7 +468,6 @@ make ci
 |---|------|-----------|----------|--------|
 | AA1 | Browser offline/online during an active PM preserves the PM draft, selected PM tab, existing unread PM badge, and typing indicator state | `tests/chat-reconnect-window-state.spec.ts` | P1 | done |
 | AA2 | Browser offline/online with an unsaved Alias Editor draft preserves the dialog inputs and can save/run the alias after reconnect | `tests/chat-reconnect-dialog-state.spec.ts` | P2 | done |
-| AA3 | Browser offline/online while a P2P lobby is open keeps both peers usable, preserves the invite session, and can transition into file transfer | `tests/chat-reconnect-p2p.spec.ts` | P2 | done |
 | AA4 | Same-nick multi-context takeover redirects the source with unsaved draft/dialog state and leaves the new chat session usable without inherited local state | `tests/multi-tab-takeover-edges.spec.ts` | P1 | done |
 | AA5 | Admin kick while a target browser is offline redirects on reconnect but allows later login, while admin ban blocks reconnect until unban | `tests/chat-admin-reconnect-edges.spec.ts` | P1 | done |
 | AA6 | Closed registration blocks brand-new nick registration while existing registered users can still authenticate | `tests/admin-registration-closed-edges.spec.ts` | P1 | done |
@@ -533,8 +486,6 @@ make ci
 |-------------|--------|---------|
 | `pages/ConnectPage.ts` | done | Connect/register/auth flows and `uniqueNickname()` helper |
 | `pages/ChatPage.ts` | active | Chat shell locators and shared high-level actions |
-| `pages/P2PLobbyPage.ts` | active | P2P lobby, media, and file-transfer controls |
-| `pages/GameSessionPage.ts` | active | Shared game lobby/canvas lifecycle checks |
 | `pages/SoloArcadePage.ts` | active | Solo arcade lobby and external game-window lifecycle checks |
 
 ## Notable Product Fixes Found By E2E
