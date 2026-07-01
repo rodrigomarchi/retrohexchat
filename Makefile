@@ -174,7 +174,7 @@ e2e.db.setup: ## First-time: create + migrate the retro_hex_chat_e2e database
 	MIX_ENV=e2e mix ecto.migrate
 
 # ---------------------------------------------------------------------
-# Static Analysis (Constitution Principle VI)
+# Static Analysis
 # ---------------------------------------------------------------------
 
 lint: format.check credo dialyzer lint.js lint.hooks lint.css lint.bundle ## Run all static analysis checks

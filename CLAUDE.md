@@ -178,8 +178,10 @@ Every new feature MUST include corresponding help documentation:
 - Update "See Also" cross-references in related existing topics
 - The Help system is accessible via F1, Help menu > Help Topics, and `/help`
 
-## Constitution
+## Governing Principles & Durable Guidance
 
-See `.specify/memory/constitution.md` for 11 governing principles.
+See `docs/AGENT-GUIDE.md` for the 11 governing principles plus the crystallized,
+hard-won engineering learnings (state tiers, command/dispatch architecture,
+LiveComponent island decomposition, WebRTC/P2P, testing gotchas).
 Key non-negotiables: TDD, umbrella separation, OTP process architecture,
 static analysis from day one, retro design fidelity, mandatory help documentation.

@@ -344,14 +344,14 @@ retro_hex_chat/
 │
 ├── config/                          # dev / test / prod / runtime configs
 ├── scripts/                         # ci.exs, deploy_all.exs
-└── .specify/memory/constitution.md  # 11 governing principles
+└── docs/AGENT-GUIDE.md              # 11 governing principles + durable guidance
 ```
 
 ---
 
 ## Design Principles
 
-This project follows 11 governing principles documented in `.specify/memory/constitution.md`. The non-negotiables:
+This project follows 11 governing principles documented in `docs/AGENT-GUIDE.md`. The non-negotiables:
 
 1. **TDD** — Tests come first or alongside; no retrofitting
 2. **Umbrella boundaries** — Domain never imports from web layer
