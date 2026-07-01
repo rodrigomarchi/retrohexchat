@@ -17,11 +17,11 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
       aria-label={
         dgettext(
           "diagrams",
-          "P2P multiplayer games flow: type /game command, join lobby, select game, play via WebRTC DataChannel between two players"
+          "P2P multiplayer games flow: type /p2p command, join lobby, select game, play via WebRTC DataChannel between two players"
         )
       }
     >
-      <%!-- ── Step 1: /game bob command ── --%>
+      <%!-- ── Step 1: /p2p bob command ── --%>
       <%!-- Shadow --%>
       <rect x="14" y="14" width="160" height="60" fill="#000" />
       <%!-- Window --%>
@@ -54,7 +54,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
       >
         {dgettext("diagrams", "Chat")}
       </text>
-      <%!-- Content: input field with /game bob --%>
+      <%!-- Content: input field with /p2p bob --%>
       <rect x="16" y="34" width="148" height="30" fill="#dfdfdf" stroke="#000" stroke-width="1" />
       <polyline points="17,63 17,35 163,35" fill="none" stroke="#808080" stroke-width="1" />
       <polyline points="163,36 163,63 17,63" fill="none" stroke="#fff" stroke-width="1" />
@@ -67,7 +67,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="9"
         font-family="'Courier New',monospace"
       >
-        {dgettext("diagrams", "/game bob")}
+        {dgettext("diagrams", "/p2p bob")}
       </text>
       <%!-- Send button --%>
       <rect x="130" y="40" width="30" height="16" fill="#c0c0c0" stroke="#000" stroke-width="1" />
@@ -385,7 +385,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         font-size="9"
         font-family="Tahoma,sans-serif"
       >
-        {dgettext("diagrams", "28 games · Real-time sync · No server")}
+        {dgettext("diagrams", "34 games · Real-time sync · No server")}
       </text>
 
       <%!-- Dashed lines from nodes to game window --%>

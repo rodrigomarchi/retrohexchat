@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.LandingLive.Features do
        page_description:
          dgettext(
            "landing",
-           "Real-time chat, channels, P2P voice/video calls, 28 multiplayer games, "
+           "Real-time chat, channels, P2P voice/video calls, 34 multiplayer games, "
          ) <>
            dgettext(
              "landing",
@@ -106,7 +106,7 @@ defmodule RetroHexChatWeb.LandingLive.Features do
   ▸ Getting Started
   ▸ Commands
     ▸ /join   ▸ /msg
-    ▸ /call   ▸ /game
+    ▸ /p2p    ▸ /whois
   ▸ Features
   ▸ Keyboard Shortcuts\
   """
