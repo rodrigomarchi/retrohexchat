@@ -56,9 +56,18 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
     >
       <div :if={@show_surface} class={"lobby-media lobby-media--#{@call_layout}"}>
         <div class="relative">
-          <div class="lobby-media__nameplate">
-            <Icons.icon_camera class="h-3 w-3" />
-            <span>{@peer_nick}</span>
+          <%!-- Measured-quality HUD: a live signal meter over the video, colored
+               by the connection level (not to be confused with the cap presets). --%>
+          <div
+            :if={@call && @call[:quality_label]}
+            class={[
+              "absolute left-2 top-2 z-10 flex items-center gap-1 rounded bg-black/60 px-1.5 py-0.5 text-xs font-bold",
+              quality_class(@call[:quality_level])
+            ]}
+            data-testid="lobby-call-quality"
+          >
+            <Icons.icon_status_signal class="h-3 w-3" />
+            <span>{@call[:quality_label]}</span>
           </div>
           <%!-- Remote video is always in the DOM while the surface shows so the
                media hook can attach the peer's stream the moment it arrives; it is
@@ -207,16 +216,11 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
             >
               <Icons.icon_layout_maximize class="h-4 w-4" />
             </.toolbar_button>
-          </.toolbar>
-
-          <%!-- Quality presets --%>
-          <div
-            :if={@call[:quality_label]}
-            class="text-muted-foreground mt-1 flex items-center gap-1 text-xs"
-          >
-            <span>{dgettext("lobby", "Quality: %{q}", q: @call[:quality_label])}</span>
+            <%!-- Quality-cap presets: user-chosen bitrate ceilings (High/Medium/Low),
+                 distinct from the measured HUD meter over the video. --%>
+            <.toolbar_separator variant="compact" />
             <.toolbar_button
-              label={dgettext("lobby", "High")}
+              label={dgettext("lobby", "High quality")}
               variant="compact"
               phx-click="media_select_preset"
               phx-value-preset="high"
@@ -224,7 +228,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
               <Icons.icon_quality_high class="h-4 w-4" />
             </.toolbar_button>
             <.toolbar_button
-              label={dgettext("lobby", "Medium")}
+              label={dgettext("lobby", "Medium quality")}
               variant="compact"
               phx-click="media_select_preset"
               phx-value-preset="medium"
@@ -232,14 +236,14 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
               <Icons.icon_quality_medium class="h-4 w-4" />
             </.toolbar_button>
             <.toolbar_button
-              label={dgettext("lobby", "Low")}
+              label={dgettext("lobby", "Low quality")}
               variant="compact"
               phx-click="media_select_preset"
               phx-value-preset="low"
             >
               <Icons.icon_quality_low class="h-4 w-4" />
             </.toolbar_button>
-          </div>
+          </.toolbar>
 
           <%!-- Device selectors: native selects read by LobbyMediaHook via data-device-kind --%>
           <div :if={@devices} class="mt-1 flex flex-wrap gap-2" data-testid="lobby-devices">
@@ -287,4 +291,14 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
     </section>
     """
   end
+
+  # ── Private helpers ───────────────────────────────────
+
+  # Color for the measured-quality HUD, mirroring the network panel's convention.
+  @spec quality_class(String.t() | nil) :: String.t()
+  defp quality_class("excellent"), do: "text-success"
+  defp quality_class("good"), do: "text-success"
+  defp quality_class("fair"), do: "text-warning"
+  defp quality_class("poor"), do: "text-error"
+  defp quality_class(_), do: "text-white"
 end

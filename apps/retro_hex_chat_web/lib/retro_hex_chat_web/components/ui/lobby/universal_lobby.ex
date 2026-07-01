@@ -24,7 +24,12 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Alert
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.AppHeader
+  import RetroHexChatWeb.Components.UI.AboutDialog
+  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.P2PConnectionDiagram
+  import RetroHexChatWeb.Components.UI.Lobby.LobbyMenuBar
+  import RetroHexChatWeb.Components.UI.Lobby.LobbyStatusBar
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
   alias RetroHexChatWeb.App.LobbyLive.Components.ChatIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
@@ -110,6 +115,28 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
           persist={false}
           data-testid="lobby-desktop"
         >
+          <:header>
+            <.app_header on_logo_click={show_modal("about-dialog")}>
+              <:panels>
+                <.lobby_menu_bar
+                  id="lobby-menubar"
+                  phx-hook="MenuBarHook"
+                  connected={@connected}
+                  call_active={@call_active}
+                  turn_configured={@turn_configured}
+                  turn_only={@turn_only}
+                />
+                <.lobby_status_bar
+                  class="ml-auto"
+                  nickname={@nickname}
+                  peer_nick={@peer_nick}
+                  peer_online={@peer_online}
+                  connection_label={@connection_label}
+                  stats={@stats}
+                />
+              </:panels>
+            </.app_header>
+          </:header>
           <:shortcuts>
             <.desktop_shortcut
               window="call"
@@ -211,7 +238,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
           <%!-- Audio/video call --%>
           <.desktop_window
             id="call"
-            title={dgettext("lobby", "Call")}
+            title={if @peer_nick in [nil, ""], do: dgettext("lobby", "Call"), else: @peer_nick}
             open={false}
             on_close="end_call"
             default_x={16}
@@ -379,6 +406,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             </.taskbar>
           </:taskbar>
         </.desktop>
+
+        <.about_dialog id="about-dialog" />
       </div>
     </div>
     """

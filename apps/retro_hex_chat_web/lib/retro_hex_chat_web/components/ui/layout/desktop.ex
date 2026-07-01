@@ -38,6 +38,11 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :class, :any, default: nil
   attr :rest, :global
 
+  slot :header,
+    doc:
+      "optional top bar (e.g. a menu/status bar) rendered above the workspace; lives inside " <>
+        "the hook element so its data-window-* controls are wired like the taskbar's"
+
   slot :shortcuts, doc: "desktop_shortcut/1 icons pinned to the workspace (behind windows)"
   slot :inner_block, required: true, doc: "desktop_window/1 children"
   slot :taskbar, doc: "a taskbar/1"
@@ -53,6 +58,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       class={classes(["desktop flex flex-1 flex-col overflow-hidden", @class])}
       {@rest}
     >
+      {render_slot(@header)}
       <div class="desktop__workspace relative isolate flex-1 overflow-hidden">
         <div
           :if={@shortcuts != []}
