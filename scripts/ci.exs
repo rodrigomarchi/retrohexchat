@@ -134,7 +134,7 @@ defmodule CI do
     IO.puts("    #{c(:dim)}⟳#{c(:reset)} #{label}...")
     start = System.monotonic_time(:millisecond)
 
-    env = if check in ["test", "test_feature"], do: [{~c"MIX_ENV", ~c"test"}], else: []
+    env = worker_env(check)
 
     port =
       Port.open(
@@ -151,6 +151,21 @@ defmodule CI do
       IO.puts("    #{c(:red)}✗#{c(:reset)} #{check}: #{Exception.message(e)}")
       :fail
   end
+
+  # The `test` and `test_feature` checks run concurrently as two separate `mix
+  # test` OS processes (separate BEAM VMs). Ecto's SQL Sandbox only isolates
+  # connections WITHIN a VM, so if both point at the same database the per-VM key
+  # generators (`System.unique_integer`, ExMachina `sequence`) produce identical
+  # values that collide on shared unique constraints — intermittent failures. Give
+  # each worker its own partitioned database (`retro_hex_chat_test<N>`, resolved
+  # from MIX_TEST_PARTITION in config/test.exs); the `mix test` alias creates +
+  # migrates it on first run.
+  defp worker_env("test"), do: [{~c"MIX_ENV", ~c"test"}, {~c"MIX_TEST_PARTITION", ~c"1"}]
+
+  defp worker_env("test_feature"),
+    do: [{~c"MIX_ENV", ~c"test"}, {~c"MIX_TEST_PARTITION", ~c"2"}]
+
+  defp worker_env(_check), do: []
 
   defp report_result(label, 0, _output, elapsed) do
     IO.puts("    #{c(:green)}✓#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}")

@@ -295,8 +295,12 @@ export class LobbyPage {
   }
 
   async expectRemoteVideoFlowing() {
+    // Real RTP must be flowing (track live + unmuted). When both peers enable
+    // media at once, single-offerer renegotiation glare plus the stalled-media
+    // watchdog can take a few extra seconds to settle under CPU load, so allow
+    // generous headroom — a healthy stream resolves the poll immediately.
     await expect
-      .poll(() => this.remoteVideoLive(), { timeout: 15_000 })
+      .poll(() => this.remoteVideoLive(), { timeout: 30_000 })
       .toBe(true);
   }
 

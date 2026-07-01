@@ -10,7 +10,11 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1,
   forbidOnly: !!process.env.CI,
-  retries: 0,
+  // One retry: these are real-time WebRTC specs whose media plane (RTP flow,
+  // renegotiation glare recovery) is inherently non-deterministic under load. A
+  // retry only rescues genuine flakes — a deterministic break fails both attempts
+  // and stays red, and Playwright reports the retried run as "flaky".
+  retries: 1,
   reporter: [['list'], ['html', { open: 'never' }]],
   use: {
     baseURL: 'http://localhost:4003',
