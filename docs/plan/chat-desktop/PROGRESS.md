@@ -118,13 +118,20 @@ hold for the chat and extend:
   plus the page-object helpers (`open<X>FromMenu`, `close<X>`). Fix them WITH
   the code change; run each test layer ONCE. The run-fail-fix loop across three
   layers is where iterations bleed time.
-- KNOWN BROKEN SPEC (pre-existing, Phase 6 candidate): chat-address-book-contacts
-  U12 expects `----- Whois: -----` TEXT output but `whois_output_mode` defaults
-  to `:card` — fails at HEAD, unrelated to the migration.
-- KNOWN FLAKE (pre-existing, Phase 6 candidate): channel_moderation_context_menu
-  and channel_central feature tests race the second user's /join against channel
-  membership ("user not in channel" / "no process") — nondeterministic across
-  identical runs. Don't burn a bisect on it again; rerun the file to confirm.
+- FIXED (was wrongly labeled "pre-existing flake"): composer commands run via
+  `send(self(), {:composer_dispatch, ...})`, i.e. AFTER `render_submit` returns.
+  Tests that call server APIs right after submitting `/join` (or any command)
+  race the LiveView; the migration's heavier renders exposed it. Barrier fix:
+  `render(view)` after the submit (a synchronous call processed behind the
+  dispatch in the mailbox). Shared helper: `LiveViewCase.submit_command_sync/2`.
+  RULE: never call domain APIs right after a composer submit without the barrier.
+- FIXED (pre-existing since the user-lookup card, 8c5b4cbc): U12 asserted the
+  removed whois TEXT format; now asserts the lookup-result card. The
+  `whois_output_mode == :text` branch in helpers/whois.ex is currently
+  unreachable (nothing sets it) — Phase 6 cleanup candidate.
+- LESSON: "fails at HEAD" proves nothing while this loop IS building HEAD —
+  attribution requires running at the pre-loop base commit. And a failure is
+  never "someone else's flake": reproduce N times, bisect, fix the root cause.
 - "Receives updates while closed" only forces always-mounted when the updates
   target the ISLAND (send_update). If they mutate the parent's session
   read-model, a managed island gets fresh state at mount — NotifyList is

@@ -34,6 +34,23 @@ defmodule RetroHexChatWeb.LiveViewCase do
   Use this instead of appending `?nickname=X` to the URL.
   """
   @spec chat_conn(Plug.Conn.t(), String.t(), keyword()) :: Plug.Conn.t()
+  @doc """
+  Submits a composer command and waits for it to be processed.
+
+  The Composer bubbles commands to the LiveView via `send/2`, so the command
+  runs AFTER `render_submit` returns; `render/1` is a synchronous call
+  processed behind it in the mailbox — once it returns, the command completed.
+  """
+  def submit_command_sync(view, command) do
+    import Phoenix.LiveViewTest
+
+    view
+    |> element(~s([data-testid="chat-input-form"]))
+    |> render_submit(%{"input" => command})
+
+    render(view)
+  end
+
   def chat_conn(conn, nickname, opts \\ []) do
     session = %{"chat_nickname" => nickname}
 

@@ -137,6 +137,11 @@ defmodule RetroHexChatWeb.ChannelModerationContextMenuFeatureTest do
     view
     |> element(~s([data-testid="chat-input-form"]))
     |> render_submit(%{"input" => "/join #{channel}"})
+
+    # The composer bubbles commands to the LiveView via send/2, so the join runs
+    # AFTER render_submit returns. render/1 is a synchronous call processed
+    # behind it in the mailbox — once it returns, the join has completed.
+    render(view)
   end
 
   defp menu_actions(document) do

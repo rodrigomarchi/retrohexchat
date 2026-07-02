@@ -631,6 +631,10 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
 
   defp submit_command(view, command) do
     view |> element(~s([data-testid="chat-input-form"])) |> render_submit(%{"input" => command})
+
+    # Composer commands run via send/2 AFTER render_submit returns; render/1 is
+    # a synchronous barrier that guarantees the command has been processed.
+    render(view)
   end
 
   defp ensure_channel(name) do

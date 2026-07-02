@@ -77,9 +77,12 @@ test.describe('Address Book contacts', () => {
       await expect(card).toContainText('Note');
       await expect(card).toContainText(note);
 
+      // /whois opens the lookup result card (the text mode was replaced by the
+      // card in the user-lookup UI); the contact note is a card row.
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await alice.chat.expectMessageVisible(`----- Whois: ${bob.nick} -----`);
-      await alice.chat.expectMessageVisible(`Contact note: ${note}`);
+      await expect(alice.chat.lookupResultCard).toBeVisible();
+      await expect(alice.chat.lookupResultCard).toContainText('Contact note');
+      await expect(alice.chat.lookupResultCard).toContainText(note);
     } finally {
       await closeUsers([alice, bob]);
     }
