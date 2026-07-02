@@ -126,6 +126,12 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
         "means open). The hook pushes \"window_open\" when something opens it while unmounted " <>
         "and \"window_closed\" on a client-side close — the host must handle both events"
 
+  attr :default_maximized, :boolean,
+    default: false,
+    doc:
+      "start maximized when no saved layout exists for this window; restoring falls back " <>
+        "to the default_x/default_y/width/height geometry"
+
   attr :default_x, :integer, default: 24
   attr :default_y, :integer, default: 24
   attr :width, :integer, default: 360
@@ -156,6 +162,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       data-window-pinned={to_string(@pinned)}
       data-window-managed={to_string(@managed)}
       data-window-open={to_string(@open)}
+      data-window-default-maximized={to_string(@default_maximized)}
       data-window-default-x={@default_x}
       data-window-default-y={@default_y}
       data-window-default-width={@width}

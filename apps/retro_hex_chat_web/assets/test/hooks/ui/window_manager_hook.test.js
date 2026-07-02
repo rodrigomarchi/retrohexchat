@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import WindowManagerHook from "../../../js/hooks/ui/window_manager_hook";
 
-function windowMarkup(id, { pinned = false, open = true } = {}) {
+function windowMarkup(id, { pinned = false, open = true, defaultMaximized = false } = {}) {
   const controls = pinned
     ? `<button data-window-control="minimize"></button>
        <button data-window-control="maximize"></button>
@@ -13,7 +13,8 @@ function windowMarkup(id, { pinned = false, open = true } = {}) {
 
   return `
     <div id="${id}" data-window-id="${id}" data-window-pinned="${pinned}"
-         data-window-open="${open}" data-window-default-x="20" data-window-default-y="20"
+         data-window-open="${open}" data-window-default-maximized="${defaultMaximized}"
+         data-window-default-x="20" data-window-default-y="20"
          data-window-default-width="300" data-window-min-width="200" data-window-min-height="120">
       <div data-window-titlebar>${controls}</div>
       <div data-window-content></div>
@@ -626,6 +627,102 @@ describe("WindowManagerHook — persistence opt-out", () => {
 
     hook.destroyed();
     el.remove();
+  });
+});
+
+describe("WindowManagerHook — default maximized", () => {
+  let store;
+  let el;
+  let hook;
+
+  function mountDesktop() {
+    el = document.createElement("div");
+    el.dataset.persistKey = "test";
+    el.innerHTML = `
+      <div class="desktop__workspace">
+        ${windowMarkup("chat", { pinned: true, open: true, defaultMaximized: true })}
+        ${windowMarkup("tools", { open: false })}
+      </div>
+      <div class="desktop-taskbar">
+        <button data-window-taskbar="chat"></button>
+        <button data-window-taskbar="tools"></button>
+      </div>`;
+    document.body.appendChild(el);
+    hook = { ...WindowManagerHook, el, handleEvent: vi.fn() };
+    hook.mounted();
+  }
+
+  beforeEach(() => {
+    store = new Map();
+    vi.stubGlobal("localStorage", {
+      getItem: (k) => (store.has(k) ? store.get(k) : null),
+      setItem: (k, v) => store.set(k, String(v)),
+      removeItem: (k) => store.delete(k),
+      clear: () => store.clear(),
+    });
+  });
+
+  afterEach(() => {
+    hook.destroyed();
+    el.remove();
+    vi.unstubAllGlobals();
+  });
+
+  it("mounts maximized when there is no saved layout", () => {
+    mountDesktop();
+
+    expect(hook.windows.chat.state.maximized).toBe(true);
+    const winEl = document.getElementById("chat");
+    expect(winEl.classList.contains("desktop-window--maximized")).toBe(true);
+    // Windows without the flag keep the normal default.
+    expect(hook.windows.tools.state.maximized).toBe(false);
+  });
+
+  it("lets a saved layout win over the default", () => {
+    store.set(
+      "rhc:desktop:test",
+      JSON.stringify({ chat: { open: true, maximized: false, x: 60, y: 70, w: 400, h: 300 } }),
+    );
+    mountDesktop();
+
+    const st = hook.windows.chat.state;
+    expect(st.maximized).toBe(false);
+    expect(st.x).toBe(60);
+    expect(st.y).toBe(70);
+  });
+
+  it("restores from the default-maximized state to the default geometry, not zeros", () => {
+    mountDesktop();
+    hook.workspaceSize = () => ({ w: 800, h: 600 });
+
+    hook.toggleMaximize("chat");
+
+    const st = hook.windows.chat.state;
+    expect(st.maximized).toBe(false);
+    // Defaults from the markup: x=20, y=20, w=300.
+    expect(st.x).toBe(20);
+    expect(st.y).toBe(20);
+    expect(st.w).toBe(300);
+  });
+
+  it("applies the default to a window patched in after mount, unless saved state exists", () => {
+    mountDesktop();
+    const workspace = el.querySelector(".desktop__workspace");
+    workspace.insertAdjacentHTML(
+      "beforeend",
+      windowMarkup("late", { open: true, defaultMaximized: true }),
+    );
+    hook.updated();
+    expect(hook.windows.late.state.maximized).toBe(true);
+
+    // A saved layout for a late arrival still wins over the default.
+    store.set("rhc:desktop:test", JSON.stringify({ later: { open: true, maximized: false } }));
+    workspace.insertAdjacentHTML(
+      "beforeend",
+      windowMarkup("later", { open: true, defaultMaximized: true }),
+    );
+    hook.updated();
+    expect(hook.windows.later.state.maximized).toBe(false);
   });
 });
 

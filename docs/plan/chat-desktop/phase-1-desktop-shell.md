@@ -16,14 +16,16 @@ from today.
 
 ### A. Generic WM extension: maximized-by-default
 
-- [ ] Add a `default_maximized` attr to `desktop_window/1` (`desktop.ex`) emitting
+- [x] Add a `default_maximized` attr to `desktop_window/1` (`desktop.ex`) emitting
       `data-window-default-maximized`, honored by `registerWindow` in
       `window_manager_hook.js` when there is no persisted state for the window.
       Restoring from maximized must fall back to the `default_x/y/width/height`
       geometry, not to zeros.
-- [ ] Vitest coverage: fresh mount → maximized; persisted state wins over the
-      default; restore-from-default-maximized yields sane geometry.
-- [ ] Confirm lobby + showcase behavior unchanged (their tests stay green).
+- [x] Vitest coverage: fresh mount → maximized; persisted state wins over the
+      default; restore-from-default-maximized yields sane geometry (+ late-arrival
+      reconcile path honors the default).
+- [x] Confirm lobby + showcase behavior unchanged (their tests stay green —
+      full suite + all 40 pre-existing WM Vitest tests via `make ci.quick`).
 
 ### B. Desktop shell in the chat template
 

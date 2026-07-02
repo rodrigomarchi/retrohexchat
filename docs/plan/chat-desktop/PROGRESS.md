@@ -4,7 +4,7 @@
 
 | Phase | Status | Notes |
 |-------|--------|-------|
-| 1 — Desktop shell | not started | |
+| 1 — Desktop shell | in progress | Task A (default_maximized WM extension) done |
 | 2 — Pilot + recipe | not started | |
 | 3 — Tools/Settings batch | not started | |
 | 4 — View/Account batch | not started | |
@@ -37,6 +37,10 @@ hold for the chat and extend:
   window-body flex chain.
 - Island/window DOM ids must not collide with panel-internal ids.
 - `persist_key` must be unique per LiveView ("chat"; lobby="lobby", showcase="showcase").
+- `default_maximized` needs no restore-geometry special case: `registerWindow`
+  always seeds `default_x/y/w/h` into state, so restoring from a default-maximized
+  window falls back to them naturally. Only the initial `maximized` flag changes;
+  `applySavedState` overwrites it unconditionally, which is exactly "storage wins".
 - The `#{id}-show-trigger` marker is the modal-dialog test contract; migrated
   windows lose it — use `data-window-id` visibility, `render_hook(view,
   "window_open"/"window_closed")`, and `assert_push_event(view, "window_command", ...)`

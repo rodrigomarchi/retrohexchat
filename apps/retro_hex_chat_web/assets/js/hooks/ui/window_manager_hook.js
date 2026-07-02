@@ -7,7 +7,9 @@
  *
  * Windows, their taskbar buttons and Start-menu entries are wired purely through
  * data attributes, so the hook is generic and reusable:
- *   - `[data-window-id]`            a window (with `data-window-default-*` geometry)
+ *   - `[data-window-id]`            a window (with `data-window-default-*` geometry;
+ *                                   `data-window-default-maximized` starts it maximized
+ *                                   when no saved layout exists)
  *   - `[data-window-titlebar]`      drag handle inside a window
  *   - `[data-window-resize=<dir>]`  resize handle (n|s|e|w|ne|nw|se|sw; bare = se)
  *   - `[data-window-control=...]`   minimize | maximize | restore | close button
@@ -165,7 +167,10 @@ const WindowManagerHook = {
       state: {
         open,
         minimized: false,
-        maximized: false,
+        // Default only — a saved layout overrides it in applySavedState. The
+        // default_* geometry stays populated either way, so restoring from a
+        // default-maximized window lands on sane coordinates.
+        maximized: d.windowDefaultMaximized === "true",
         x: int(d.windowDefaultX, 24),
         y: int(d.windowDefaultY, 24),
         w: int(d.windowDefaultWidth, 360),
