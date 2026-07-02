@@ -26,6 +26,15 @@
  *
  * The server can drive it via `push_event("window_command", {action, id})` where
  * action is one of open | focus | flash | close | minimize | maximize.
+ *
+ * Windows may enter and leave the DOM after mount (server-conditional islands):
+ * every patch reconciles the registry — new `[data-window-id]` elements are
+ * registered (honouring any saved layout), replaced nodes are re-bound keeping
+ * their client state, and removed windows are pruned. A window marked
+ * `data-window-managed` has a server-owned lifecycle (presence in the DOM means
+ * open): opening one that is not in the DOM pushes `"window_open"` and closing
+ * it client-side pushes `"window_closed"`, so the host can mount/unmount its
+ * island. Hosts with managed windows must handle both events.
  */
 const STORAGE_PREFIX = "rhc:desktop:";
 const Z_BASE = 10;
@@ -73,6 +82,8 @@ const WindowManagerHook = {
   },
 
   updated() {
+    this.reconcileWindows();
+
     // A server-driven DOM patch resets the class/style we own on window roots
     // (the server always renders `u-hidden`), so re-assert client-owned geometry
     // and visibility after every patch. Mid-gesture the pointer handler owns the
@@ -86,6 +97,47 @@ const WindowManagerHook = {
     }
   },
 
+  // Reconcile the registry with the patched DOM: register windows that entered,
+  // re-bind windows whose root node was replaced (keeping their client state),
+  // and prune windows that left.
+  reconcileWindows() {
+    const present = new Set();
+    const added = [];
+    for (const el of this.el.querySelectorAll("[data-window-id]")) {
+      const id = el.dataset.windowId;
+      present.add(id);
+      if (!this.windows[id]) {
+        this.registerWindow(el);
+        const saved = this.readStorage();
+        if (saved && saved[id]) this.applySavedState(id, saved[id]);
+        added.push(id);
+      } else if (this.windows[id].el !== el) {
+        this.windows[id].el = el;
+      }
+    }
+    for (const id of Object.keys(this.windows)) {
+      if (!present.has(id)) this.pruneWindow(id);
+    }
+    // A window that arrived open takes focus, mirroring mount behaviour. Focus
+    // state only — the updated() re-assert right after this renders everything.
+    for (const id of added) {
+      const st = this.windows[id].state;
+      if (st.open && !st.minimized) {
+        this.focusedId = id;
+        st.z = this.zCounter += 1;
+      }
+    }
+  },
+
+  pruneWindow(id) {
+    if (this.drag && this.drag.id === id) this.drag = null;
+    if (this.resize && this.resize.id === id) this.resize = null;
+    if (this.menuWindowId === id) this.closeTaskbarMenus();
+    this.clearFlash(id);
+    delete this.windows[id];
+    if (this.focusedId === id) this.focusTopmost();
+  },
+
   destroyed() {
     this.unbindEvents();
   },
@@ -93,55 +145,59 @@ const WindowManagerHook = {
   // ── Setup ──────────────────────────────────────────────────
 
   collectWindows() {
-    const els = this.el.querySelectorAll("[data-window-id]");
-    let order = 0;
-    for (const el of els) {
-      const id = el.dataset.windowId;
-      const d = el.dataset;
-      const open = d.windowOpen !== "false";
-      this.windows[id] = {
-        el,
-        pinned: d.windowPinned === "true",
-        minW: int(d.windowMinWidth, 220),
-        minH: int(d.windowMinHeight, 120),
-        state: {
-          open,
-          minimized: false,
-          maximized: false,
-          x: int(d.windowDefaultX, 24),
-          y: int(d.windowDefaultY, 24),
-          w: int(d.windowDefaultWidth, 360),
-          h: d.windowDefaultHeight ? int(d.windowDefaultHeight, null) : null,
-          z: open ? (this.zCounter += 1) : Z_BASE,
-        },
-      };
-      if (open) this.focusedId = id;
-      order += 1;
-    }
-    this._count = order;
+    for (const el of this.el.querySelectorAll("[data-window-id]")) this.registerWindow(el);
+  },
+
+  registerWindow(el) {
+    const id = el.dataset.windowId;
+    const d = el.dataset;
+    const open = d.windowOpen !== "false";
+    this.windows[id] = {
+      el,
+      pinned: d.windowPinned === "true",
+      managed: d.windowManaged === "true",
+      minW: int(d.windowMinWidth, 220),
+      minH: int(d.windowMinHeight, 120),
+      state: {
+        open,
+        minimized: false,
+        maximized: false,
+        x: int(d.windowDefaultX, 24),
+        y: int(d.windowDefaultY, 24),
+        w: int(d.windowDefaultWidth, 360),
+        h: d.windowDefaultHeight ? int(d.windowDefaultHeight, null) : null,
+        z: open ? (this.zCounter += 1) : Z_BASE,
+      },
+    };
+    if (open) this.focusedId = id;
   },
 
   restore() {
     const saved = this.readStorage();
     if (!saved) return;
     for (const id in this.windows) {
-      const s = saved[id];
-      if (!s) continue;
-      const win = this.windows[id];
-      const st = win.state;
-      if (typeof s.x === "number") st.x = s.x;
-      if (typeof s.y === "number") st.y = s.y;
-      if (typeof s.w === "number") st.w = Math.max(s.w, win.minW);
-      if (typeof s.h === "number") st.h = Math.max(s.h, win.minH);
-      st.maximized = !!s.maximized;
-      st.minimized = !!s.minimized;
-      // Pinned windows are always open; otherwise honour the saved flag.
-      if (!win.pinned && typeof s.open === "boolean") st.open = s.open;
+      if (!saved[id]) continue;
+      this.applySavedState(id, saved[id]);
+      const st = this.windows[id].state;
       if (st.open && !st.minimized) {
         st.z = this.zCounter += 1;
         this.focusedId = id;
       }
     }
+  },
+
+  applySavedState(id, s) {
+    const win = this.windows[id];
+    const st = win.state;
+    if (typeof s.x === "number") st.x = s.x;
+    if (typeof s.y === "number") st.y = s.y;
+    if (typeof s.w === "number") st.w = Math.max(s.w, win.minW);
+    if (typeof s.h === "number") st.h = Math.max(s.h, win.minH);
+    st.maximized = !!s.maximized;
+    st.minimized = !!s.minimized;
+    // Pinned windows are always open; a managed window's presence in the DOM
+    // already means open (the server owns that flag); otherwise honour storage.
+    if (!win.pinned && !win.managed && typeof s.open === "boolean") st.open = s.open;
   },
 
   bindEvents() {
@@ -423,9 +479,16 @@ const WindowManagerHook = {
       case "maximize":
         if (this.windows[id] && !this.windows[id].state.maximized) this.toggleMaximize(id);
         break;
-      case "close":
-        if (this.windows[id]) this.closeWindow(id);
+      case "close": {
+        const win = this.windows[id];
+        if (!win) return;
+        // Mirror the X button: a close wired to a server event ends the feature
+        // (hang up / cancel / quit) — the menu must not bypass it.
+        const closeBtn = win.el.querySelector('[data-window-control="close"][phx-click]');
+        if (closeBtn) closeBtn.click();
+        else this.closeWindow(id);
         break;
+      }
       case "cascade":
         this.cascadeWindows();
         break;
@@ -478,7 +541,14 @@ const WindowManagerHook = {
   // ── Window operations ──────────────────────────────────────
 
   command(action, id) {
-    if (!this.windows[id]) return;
+    if (!this.windows[id]) {
+      // Unknown id = a server-managed window that is not mounted. Ask the host
+      // to mount its island; the patch registers it and it opens on arrival.
+      if ((action === "open" || action === "focus") && typeof this.pushEvent === "function") {
+        this.pushEvent("window_open", { id });
+      }
+      return;
+    }
     switch (action) {
       case "open":
       case "focus":
@@ -516,6 +586,12 @@ const WindowManagerHook = {
   closeWindow(id) {
     const win = this.windows[id];
     if (win.pinned) return;
+    // A managed window's lifecycle is server-owned: hide it right away for
+    // snappy feedback, then tell the host so it unmounts the island (the patch
+    // then prunes the registry).
+    if (win.managed && typeof this.pushEvent === "function") {
+      this.pushEvent("window_closed", { id });
+    }
     win.state.open = false;
     this.clearFlash(id);
     if (this.focusedId === id) this.focusTopmost();

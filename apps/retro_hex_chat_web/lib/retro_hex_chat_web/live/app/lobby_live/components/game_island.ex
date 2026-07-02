@@ -3,8 +3,10 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
   Game island — owner of the lobby's game state (the catalog, the active game and
   the incoming/outgoing proposal) and the body of the "Games" window.
 
-  The island drives its own window: it pushes `window_command` to open the Games
-  window on a proposal or game start and to close it when the game ends, and it
+  The Games window is server-managed: the island mounts only while the window is
+  open, so every open starts from a fresh island. It pushes `window_command` open
+  to restore/focus the window on a proposal or game start, asks the host to
+  unmount it when the game ends — `send(self(), {:close_window, "game"})` — and
   pushes the canvas hook's `lobby_game_start`/`lobby_game_end` lifecycle events
   (C3). Whenever the game becomes active or idle it mirrors a minimal summary to
   the host — `send(self(), {:feature_summary, :game, %{active?: ...}})` — so the
@@ -102,10 +104,11 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
   end
 
   defp handle_action(socket, :idle) do
+    send(self(), {:close_window, "game"})
+
     socket
     |> assign(game: @idle)
     |> push_event("lobby_game_end", %{})
-    |> push_event("window_command", %{action: "close", id: "game"})
     |> summarize()
   end
 
@@ -140,9 +143,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
   end
 
   defp handle_action(socket, :end_game) do
-    socket
-    |> assign(game_request: nil, game_outgoing: false)
-    |> push_event("window_command", %{action: "close", id: "game"})
+    send(self(), {:close_window, "game"})
+    assign(socket, game_request: nil, game_outgoing: false)
   end
 
   @spec post_result_message(Phoenix.LiveView.Socket.t(), String.t() | nil, map()) ::

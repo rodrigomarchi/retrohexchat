@@ -118,6 +118,14 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :title, :string, required: true
   attr :pinned, :boolean, default: false, doc: "no close control; window cannot be closed"
   attr :open, :boolean, default: true, doc: "initial open state (storage may override)"
+
+  attr :managed, :boolean,
+    default: false,
+    doc:
+      "server-owned lifecycle: render the window only while it is open (presence in the DOM " <>
+        "means open). The hook pushes \"window_open\" when something opens it while unmounted " <>
+        "and \"window_closed\" on a client-side close — the host must handle both events"
+
   attr :default_x, :integer, default: 24
   attr :default_y, :integer, default: 24
   attr :width, :integer, default: 360
@@ -146,6 +154,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       id={@id}
       data-window-id={@id}
       data-window-pinned={to_string(@pinned)}
+      data-window-managed={to_string(@managed)}
       data-window-open={to_string(@open)}
       data-window-default-x={@default_x}
       data-window-default-y={@default_y}

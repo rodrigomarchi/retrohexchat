@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
   end
 
   describe "connected lobby" do
-    test "the game picker lists available games", %{
+    test "the game picker lists available games once the Games window is opened", %{
       conn: conn,
       token: token,
       creator: creator,
@@ -91,12 +91,42 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
     } do
       view = connect_both(conn, token, creator, peer)
 
-      # The game window content renders as soon as the lobby is connected — no
-      # panel toggle needed; the window manager owns visibility on the client.
+      # The Games window is server-managed: its island mounts only while open.
+      refute render(view) =~ ~s(data-testid="lobby-window-game")
+
+      render_hook(view, "window_open", %{"id" => "game"})
       html = render(view)
 
+      assert html =~ ~s(data-testid="lobby-window-game")
       assert html =~ ~s(data-testid="lobby-game-panel")
       assert html =~ "Hex Pong"
+    end
+
+    test "closing the Games window client-side unmounts its island", %{
+      conn: conn,
+      token: token,
+      creator: creator,
+      peer: peer
+    } do
+      view = connect_both(conn, token, creator, peer)
+
+      render_hook(view, "window_open", %{"id" => "game"})
+      assert render(view) =~ ~s(data-testid="lobby-window-game")
+
+      render_hook(view, "window_closed", %{"id" => "game"})
+      refute render(view) =~ ~s(data-testid="lobby-window-game")
+    end
+
+    test "window_open ignores ids that are not server-managed windows", %{
+      conn: conn,
+      token: token,
+      creator: creator,
+      peer: peer
+    } do
+      view = connect_both(conn, token, creator, peer)
+
+      html = render_hook(view, "window_open", %{"id" => "bogus"})
+      refute html =~ ~s(data-window-id="bogus")
     end
 
     test "proposing a game shows a waiting state for the proposer and lets the peer accept",
@@ -370,15 +400,18 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       refute html =~ ~s(title="Camera On")
     end
 
-    test "the X on the Game window quits and closes it",
+    test "the X on the Game window quits and unmounts it",
          %{conn: conn, token: token, creator: creator, peer: peer} do
       view = connect_both(conn, token, creator, peer)
 
+      render_hook(view, "window_open", %{"id" => "game"})
+      assert render(view) =~ ~s(data-testid="lobby-window-game")
+
       render_click(view, "end_game", %{})
-      # The Game island drives its own window via send_update (async under
-      # LiveViewTest) — flush before asserting the push reached the client.
+      # The island asks the host to unmount via {:close_window, "game"} (async
+      # under LiveViewTest) — flush the update cycle before asserting.
       render(view)
-      assert_push_event(view, "window_command", %{action: "close", id: "game"})
+      refute render(view) =~ ~s(data-testid="lobby-window-game")
     end
 
     test "the taskbar game badge tracks the active game (C2 read-model)",

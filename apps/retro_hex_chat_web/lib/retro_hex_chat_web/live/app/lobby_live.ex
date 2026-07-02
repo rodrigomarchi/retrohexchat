@@ -35,6 +35,10 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   @pubsub RetroHexChat.PubSub
 
+  # Server-managed desktop windows: their islands render only while listed in
+  # @open_windows (see UniversalLobby). Every other window is static chrome.
+  @managed_windows ~w(game)
+
   @impl true
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(%{"token" => token}, session, socket) do
@@ -146,12 +150,17 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   def handle_info(%{event: "lobby_game_request", payload: request}, socket) do
     outgoing = request.proposer_id == socket.assigns.user_id
+    # Mount the island first — send_update is processed after this render, so
+    # the freshly mounted island receives the request.
+    socket = open_window(socket, "game")
     send_update(GameIsland, id: GameIsland.id(), action: {:request, request, outgoing})
     {:noreply, socket}
   end
 
   def handle_info(%{event: "lobby_game_response", payload: %{accepted: false}}, socket) do
-    send_update(GameIsland, id: GameIsland.id(), action: :request_declined)
+    if window_open?(socket, "game") do
+      send_update(GameIsland, id: GameIsland.id(), action: :request_declined)
+    end
 
     send_update(ChatIsland,
       id: ChatIsland.id(),
@@ -170,12 +179,16 @@ defmodule RetroHexChatWeb.App.LobbyLive do
         socket
       ) do
     is_host = p.host_id == socket.assigns.user_id
+    socket = open_window(socket, "game")
     send_update(GameIsland, id: GameIsland.id(), action: {:playing, p.game_id, is_host})
     {:noreply, socket}
   end
 
   def handle_info(%{event: "lobby_game_status_changed", payload: %{status: "idle"}}, socket) do
-    send_update(GameIsland, id: GameIsland.id(), action: :idle)
+    if window_open?(socket, "game") do
+      send_update(GameIsland, id: GameIsland.id(), action: :idle)
+    end
+
     {:noreply, socket}
   end
 
@@ -183,7 +196,10 @@ defmodule RetroHexChatWeb.App.LobbyLive do
         %{event: "lobby_game_status_changed", payload: %{status: "finished"} = p},
         socket
       ) do
-    send_update(GameIsland, id: GameIsland.id(), action: {:result, p.result})
+    if window_open?(socket, "game") do
+      send_update(GameIsland, id: GameIsland.id(), action: {:result, p.result})
+    end
+
     {:noreply, socket}
   end
 
@@ -233,6 +249,17 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   def handle_info({:feature_summary, :call, summary}, socket) do
     {:noreply, assign(socket, call_summary: summary)}
+  end
+
+  # Islands drive their own server-managed window lifecycle with these messages
+  # (mirroring the {:feature_summary, ...} pattern): the host mounts/unmounts the
+  # island by toggling @open_windows.
+  def handle_info({:open_window, id}, socket) do
+    {:noreply, open_window(socket, id)}
+  end
+
+  def handle_info({:close_window, id}, socket) do
+    {:noreply, close_window(socket, id)}
   end
 
   # Bubbled from the shared Composer on submit. `reply_to` is always nil here
@@ -391,8 +418,26 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   # playing game ends for both peers; an open picker or pending proposal just closes.
   def handle_event("end_game", _params, socket) do
     Lobby.end_game(socket.assigns.token, socket.assigns.user_id)
-    send_update(GameIsland, id: GameIsland.id(), action: :end_game)
+
+    if window_open?(socket, "game") do
+      send_update(GameIsland, id: GameIsland.id(), action: :end_game)
+    end
+
     {:noreply, socket}
+  end
+
+  # WindowManagerHook lifecycle for server-managed windows: something opened a
+  # window whose island is not mounted (Start menu, shortcut, taskbar), or the
+  # user closed one client-side. Unknown ids are ignored — only ids the desktop
+  # declares as managed may toggle islands.
+  def handle_event("window_open", %{"id" => id}, socket) when id in @managed_windows do
+    {:noreply, open_window(socket, id)}
+  end
+
+  def handle_event("window_open", _params, socket), do: {:noreply, socket}
+
+  def handle_event("window_closed", %{"id" => id}, socket) do
+    {:noreply, close_window(socket, id)}
   end
 
   # Only the host's game engine fires onGameEnd; it reports the authoritative
@@ -485,10 +530,30 @@ defmodule RetroHexChatWeb.App.LobbyLive do
        turn_configured: P2P.turn_configured?(),
        file_summary: nil,
        game_summary: %{active?: false},
+       open_windows: MapSet.new(),
        expired: false,
        session_closed: false,
        ended_reason: nil
      )}
+  end
+
+  # --- Server-managed window lifecycle ---
+
+  @spec open_window(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  defp open_window(socket, id) when id in @managed_windows do
+    update(socket, :open_windows, &MapSet.put(&1, id))
+  end
+
+  defp open_window(socket, _id), do: socket
+
+  @spec close_window(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  defp close_window(socket, id) do
+    update(socket, :open_windows, &MapSet.delete(&1, id))
+  end
+
+  @spec window_open?(Phoenix.LiveView.Socket.t(), String.t()) :: boolean()
+  defp window_open?(socket, id) do
+    MapSet.member?(socket.assigns.open_windows, id)
   end
 
   @spec resolve_timezone(map(), Phoenix.LiveView.Socket.t()) :: String.t()

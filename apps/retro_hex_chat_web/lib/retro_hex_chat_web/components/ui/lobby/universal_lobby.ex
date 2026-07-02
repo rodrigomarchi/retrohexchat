@@ -15,8 +15,16 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   own their feature state and drive their own windows), the shared connection diagram
   and network telemetry panel — no bespoke markup. The Statistics window (telemetry
   aggregator) and the taskbar badges stay host-owned, reading the islands' mirrored
-  summaries. Closing a feature window only hides it; the feature (and its hook) keeps
-  running until leave or inactivity.
+  summaries.
+
+  Window lifecycles come in two flavours. The Games window is server-managed
+  (dynamic): it renders only while listed in `open_windows`, so closing it unmounts
+  the island entirely and reopening mounts a fresh one — the host handles the
+  hook's `"window_open"`/`"window_closed"` events and the game adapters open it on
+  demand (e.g. an incoming game request). The other feature windows are static:
+  closing one only hides it, because their islands host client hooks that must
+  stay alive for the whole connection (the call's media elements, the file
+  transfer's data-channel hook, the chat history).
   """
   use RetroHexChatWeb.Component
 
@@ -78,6 +86,10 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
 
   # Games — the island owns the game state; the host mirrors only this badge flag.
   attr :game_active, :boolean, default: false
+
+  # Server-managed (dynamic) windows currently open — their islands render only
+  # while listed here. Holds any enumerable of window ids (e.g. a MapSet).
+  attr :open_windows, :any, default: []
 
   attr :rest, :global
 
@@ -276,11 +288,13 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             />
           </.desktop_window>
 
-          <%!-- Games --%>
+          <%!-- Games — server-managed: mounted only while open, so a closed
+                window costs nothing and reopening starts from a fresh island. --%>
           <.desktop_window
+            :if={"game" in @open_windows}
             id="game"
             title={dgettext("lobby", "Games")}
-            open={false}
+            managed
             on_close="end_game"
             default_x={120}
             default_y={48}
@@ -391,6 +405,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
                 <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
               </.taskbar_button>
               <.taskbar_button
+                :if={"game" in @open_windows}
                 window="game"
                 label={dgettext("lobby", "Games")}
                 badge={if @game_active, do: "●"}

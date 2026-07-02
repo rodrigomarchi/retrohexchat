@@ -471,6 +471,102 @@ describe("WindowManagerHook", () => {
   });
 });
 
+describe("WindowManagerHook — dynamic windows (reconciliation)", () => {
+  let el;
+  let hook;
+
+  beforeEach(() => {
+    vi.stubGlobal("localStorage", {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {},
+      clear: () => {},
+    });
+
+    el = buildDesktop();
+    el.dataset.persist = "false";
+    hook = { ...WindowManagerHook, el, handleEvent: vi.fn(), pushEvent: vi.fn() };
+    hook.mounted();
+  });
+
+  afterEach(() => {
+    hook.destroyed();
+    el.remove();
+    vi.unstubAllGlobals();
+  });
+
+  const workspace = () => el.querySelector(".desktop__workspace");
+
+  it("registers a window patched in after mount and focuses it", () => {
+    workspace().insertAdjacentHTML("beforeend", windowMarkup("game", { open: true }));
+    hook.updated();
+
+    expect(hook.windows.game).toBeTruthy();
+    expect(hook.focusedId).toBe("game");
+    expect(document.getElementById("game").classList.contains("u-hidden")).toBe(false);
+
+    // Once registered, it behaves like any other window.
+    hook.minimizeWindow("game");
+    expect(hook.windows.game.state.minimized).toBe(true);
+  });
+
+  it("prunes a window removed by a patch and moves focus to the topmost survivor", () => {
+    hook.focusWindow("chat");
+    document.getElementById("chat").remove();
+    hook.updated();
+
+    expect(hook.windows.chat).toBeUndefined();
+    expect(hook.focusedId).toBe("conn");
+  });
+
+  it("re-binds a window whose root node was replaced, keeping its client state", () => {
+    const st = hook.windows.chat.state;
+    st.x = 111;
+
+    const old = document.getElementById("chat");
+    old.insertAdjacentHTML("afterend", windowMarkup("chat", { open: true }));
+    old.remove();
+    hook.updated();
+
+    expect(hook.windows.chat.el).toBe(document.getElementById("chat"));
+    expect(hook.windows.chat.state.x).toBe(111);
+  });
+
+  it("cancels an active gesture when the dragged window is pruned", () => {
+    hook.drag = { id: "chat", px: 0, py: 0, ox: 20, oy: 20 };
+    document.getElementById("chat").remove();
+    hook.updated();
+
+    expect(hook.drag).toBe(null);
+  });
+
+  it("asks the server to mount an unknown window instead of failing silently", () => {
+    hook.command("open", "game-x");
+    expect(hook.pushEvent).toHaveBeenCalledWith("window_open", { id: "game-x" });
+
+    // Non-open actions on unknown windows stay no-ops.
+    hook.pushEvent.mockClear();
+    hook.command("close", "game-x");
+    expect(hook.pushEvent).not.toHaveBeenCalled();
+  });
+
+  it("notifies the server when a managed window is closed client-side", () => {
+    workspace().insertAdjacentHTML("beforeend", windowMarkup("game", { open: true }));
+    document.getElementById("game").dataset.windowManaged = "true";
+    hook.updated();
+
+    hook.closeWindow("game");
+    expect(hook.pushEvent).toHaveBeenCalledWith("window_closed", { id: "game" });
+    // Hidden immediately for snappy feedback; the server patch unmounts it after.
+    expect(document.getElementById("game").classList.contains("u-hidden")).toBe(true);
+
+    // Static windows close silently on the client.
+    hook.pushEvent.mockClear();
+    hook.closeWindow("chat");
+    expect(hook.pushEvent).not.toHaveBeenCalled();
+  });
+});
+
 describe("WindowManagerHook — persistence opt-out", () => {
   let store;
 
