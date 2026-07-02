@@ -8,7 +8,7 @@
 | 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
 | 3 — Tools/Settings batch | **complete** (2026-07-02) | All 8 migrated (all managed); full `make ci` 9/9 incl. dialyzer |
 | 4 — View/Account batch | **complete** (2026-07-02) | All 6 migrated; full `make ci` 9/9 incl. dialyzer. Knock-flake root-caused + fixed (see Learnings: "ephemeral lines lost to a modal-close ack diff") |
-| 5 — Admin batch | in progress 1/2 (2026-07-02) | AdminConsole DONE (87f87274 + 70f19999); `make ci` 9/9, Feature 12 E2E green. Next: BotManagement (map in `phase-5-admin.md` "Execution map"). |
+| 5 — Admin batch | **complete** (2026-07-02) | AdminConsole (87f87274 + singleplayer fix 70f19999) + BotManagement (3be22041); `make ci` 9/9, admin + bot E2E green. All 18 planned windows migrated. |
 | 6 — Unify + cleanup | not started | |
 
 ## Per-dialog migration recipe
@@ -256,6 +256,15 @@ hold for the chat and extend:
   the host runs dispatch on its full socket and reflects the result back with a
   `send_update` to the (already-mounted) island. RULE: island → host command
   dispatch is always a delegated message, never a direct call on the island socket.
+- MOUNT-STATE for a managed window: load it in the island's `mount/3`, NOT via a
+  post-mount `open_with` send_update. BotManagement delivered its bot list through
+  `open_with` and the list never populated on the first open (the send_update
+  raced the managed-window mount patch — E2E Y4 caught it; ExUnit could not).
+  Loading in mount rides the mount's own render (the main diff) → always DOM-safe.
+  Rule refinement: `open_with` is for a DIRECTIVE to an island that owns the data
+  lifecycle (a tab to select, an auth mode); for INITIAL DATA the island can fetch
+  itself, prefer mount-load. (Island mutations after mount send_update fine — the
+  race is only mount-cycle.)
 - PANEL EXTRACTION shortcut for a HUGE dialog (~90 attrs): don't duplicate the
   attr block onto a second `_panel/1`. Add a `windowed` flag to the existing
   `*_dialog/1` that branches: windowed → bare `<div id="#{@id}-content">` content;

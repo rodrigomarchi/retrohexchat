@@ -14,8 +14,7 @@ Phase 4 complete.
 - [x] AdminConsole (8 tabs: users, channels, MOTD, broadcast, settings, TURN,
       audit, danger zone). Danger-zone confirmations stay modal (locked decision
       #2), scoped to the console window. DONE (87f87274 + singleplayer fix 70f19999).
-- [ ] BotManagement (+ BotForm sub-dialogs — new/edit stay modal scoped to the
-      window).
+- [x] BotManagement (+ BotForm sub-dialogs — new/edit stay modal). DONE (3be22041).
 
 ## Batch-specific watchpoints
 
@@ -28,11 +27,14 @@ Phase 4 complete.
 
 ## Completion criteria
 
-- [ ] Both open as windows for admins from menu bar and start menu Admin group.
-- [ ] Non-admins: no taskbar/start-menu traces, and server-side rejection test for
-      forged `window_open`.
-- [ ] All 18 planned windows are now windows; the modal-only survivors are exactly
+- [x] Both open as windows for admins from menu bar and start menu Admin group.
+- [x] Non-admins: no taskbar/start-menu traces, and server-side gating test for
+      forged `window_open` (render guard behind the opener gate; both covered).
+- [x] All 18 planned windows are now windows; the modal-only survivors are exactly
       the locked-decision-#2 list.
+
+**PHASE 5 COMPLETE (2026-07-02).** Commits: 87f87274, 70f19999 (admin console +
+singleplayer fix), 3be22041 (bot management). `make ci` 9/9; admin + bot E2E green.
 
 ## Verification
 
