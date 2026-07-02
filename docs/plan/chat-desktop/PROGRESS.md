@@ -8,7 +8,7 @@
 | 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
 | 3 — Tools/Settings batch | **complete** (2026-07-02) | All 8 migrated (all managed); full `make ci` 9/9 incl. dialyzer |
 | 4 — View/Account batch | **complete** (2026-07-02) | All 6 migrated; full `make ci` 9/9 incl. dialyzer. Knock-flake root-caused + fixed (see Learnings: "ephemeral lines lost to a modal-close ack diff") |
-| 5 — Admin batch | not started | |
+| 5 — Admin batch | scoped (2026-07-02) | Turnkey execution map in `phase-5-admin.md` "Execution map" (every file/line, panel-extraction steps, contract migration). Next: execute AdminConsole (own commit), then BotManagement. Both = `managed` windows, admin-gated, opener is the server-side authz for forged `window_open`. |
 | 6 — Unify + cleanup | not started | |
 
 ## Per-dialog migration recipe
