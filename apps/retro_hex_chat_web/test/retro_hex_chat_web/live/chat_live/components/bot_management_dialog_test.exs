@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialogTest do
 
     assert html =~ ~s(id="bot-management-dialog-mount")
     # the design-system dialog always renders content; closed = the `hidden` class
-    assert html =~ "group/dialog hidden"
+    assert html =~ ~r/class="[^"]*group\/dialog[^"]*hidden[^"]*"/
   end
 
   test "renders the bot list when the management dialog is shown" do

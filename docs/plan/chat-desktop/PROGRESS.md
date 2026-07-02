@@ -5,7 +5,7 @@
 | Phase | Status | Notes |
 |-------|--------|-------|
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
-| 2 — Pilot + recipe | in progress | Task A (Escape WM extension, opt-in per desktop) done |
+| 2 — Pilot + recipe | in progress | Tasks A (Escape) + B (dialog `scope=:window`) done; next: pilot migrations (UrlCatcher → Timers → Highlight) |
 | 3 — Tools/Settings batch | not started | |
 | 4 — View/Account batch | not started | |
 | 5 — Admin batch | not started | |
@@ -58,6 +58,10 @@ hold for the chat and extend:
   `escape_closes_windows`); a consumed press is stopPropagation'd so the server
   `dismiss_topmost` ladder never sees it. New Escape-owning overlays must carry
   `data-escape-guard` (hidden state must be `u-hidden` or absence from the DOM).
+- Window-scoped modals (`dialog scope={:window}`): the dialog root must NOT be
+  `relative` in that scope — its absolute children would anchor to the zero-size
+  root instead of the desktop window. Don't assert exact class-string order in
+  tests (`classes/1` reorders); match with a regex.
 - `hook.command` takes `(action, id)` — only the `handleEvent` callback takes the
   `{action, id}` object. Passing the object to `command` silently no-ops (it
   pushes `window_open` for id `undefined`) — easy test bug.

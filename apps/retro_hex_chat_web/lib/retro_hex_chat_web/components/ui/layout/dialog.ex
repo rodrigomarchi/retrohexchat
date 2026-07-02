@@ -28,6 +28,14 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   attr :show, :boolean, default: false
   attr :on_cancel, :any, default: nil
   attr :lock, :boolean, default: false, doc: "When true, disables click-away and escape dismissal"
+
+  attr :scope, :atom,
+    default: :viewport,
+    values: [:viewport, :window],
+    doc:
+      ":viewport centers over the whole screen; :window anchors to the nearest positioned " <>
+        "ancestor — render it inside a desktop window to modally block just that window"
+
   attr :class, :string, default: nil
   slot :inner_block, required: true
 
@@ -38,7 +46,7 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
       phx-mounted={@show && JS.exec("phx-show-modal", to: "##{@id}")}
       phx-show-modal={show_modal(@id)}
       phx-hide-modal={close_modal(@on_cancel, @id)}
-      class={classes(["relative z-modal group/dialog", !@show && "hidden"])}
+      class={classes(["z-modal group/dialog", @scope == :viewport && "relative", !@show && "hidden"])}
     >
       <%!-- Server-driven show/hide trigger: mounts when show=true, removed when show=false --%>
       <div
@@ -51,12 +59,12 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
       <%!-- Overlay --%>
       <div
         id={"#{@id}-bg"}
-        class="fixed inset-0 bg-black/30 group-data-[state=open]/dialog:animate-in group-data-[state=closed]/dialog:animate-out group-data-[state=closed]/dialog:fade-out-0 group-data-[state=open]/dialog:fade-in-0"
+        class={"#{scope_position(@scope)} inset-0 bg-black/30 group-data-[state=open]/dialog:animate-in group-data-[state=closed]/dialog:animate-out group-data-[state=closed]/dialog:fade-out-0 group-data-[state=open]/dialog:fade-in-0"}
         aria-hidden="true"
       />
       <%!-- Centering container --%>
       <div
-        class="fixed inset-0 flex items-center justify-center overflow-y-auto"
+        class={"#{scope_position(@scope)} inset-0 flex items-center justify-center overflow-y-auto"}
         role="dialog"
         aria-modal="true"
         tabindex="0"
@@ -69,16 +77,27 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
           class={classes(["w-full max-w-none md:max-w-lg p-0 md:p-4", @class])}
         >
           <%!-- Window frame (Win98 3D border) --%>
-          <div
-            id={"#{@id}-surface"}
-            class="flex flex-col bg-surface shadow-retro-window p-[3px] min-h-[100dvh] max-h-[100dvh] md:min-h-0 md:max-h-[90dvh]"
-          >
+          <div id={"#{@id}-surface"} class={scope_frame_classes(@scope)}>
             {render_slot(@inner_block)}
           </div>
         </.focus_wrap>
       </div>
     </div>
     """
+  end
+
+  # Viewport dialogs claim the full dynamic viewport height on mobile;
+  # window-scoped dialogs must fit inside their host window at any size.
+  defp scope_position(:viewport), do: "fixed"
+  defp scope_position(:window), do: "absolute"
+
+  defp scope_frame_classes(:viewport) do
+    "flex flex-col bg-surface shadow-retro-window p-[3px] " <>
+      "min-h-[100dvh] max-h-[100dvh] md:min-h-0 md:max-h-[90dvh]"
+  end
+
+  defp scope_frame_classes(:window) do
+    "flex flex-col bg-surface shadow-retro-window p-[3px] min-h-0 max-h-full"
   end
 
   @doc """

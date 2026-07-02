@@ -37,11 +37,14 @@ that recipe — do not start them until the recipe is written.
 
 ### B. Sub-form scoping primitive
 
-- [ ] Add a generic way to center a `UI.Dialog` over its parent window instead of
-      the viewport (e.g. a `container`/`scope` attr on `dialog/1` that positions
-      `absolute inset-0` within the window body). Component-first: extend
-      `dialog.ex` generically, no per-dialog forks. Unit test + one Vitest/CSS
-      check if positioning is hook-assisted.
+- [x] Added `scope` attr to `dialog/1` (`:viewport` default | `:window`). Window
+      scope swaps `fixed`→`absolute` on overlay + centering container (anchoring
+      to the nearest positioned ancestor — the `.desktop-window` root, since the
+      dialog root drops `relative` in that scope) and the frame uses
+      `min-h-0 max-h-full` instead of the mobile `100dvh` claim. Pure CSS — no
+      hook assistance needed, so unit tests only (`dialog_test.exs`).
+      Body `overflow-auto` does not clip it: the containing block (window root)
+      sits outside the scrollable body.
 
 ### C. Migrate the three pilots
 
