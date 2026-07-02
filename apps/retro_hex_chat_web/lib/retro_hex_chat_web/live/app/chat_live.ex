@@ -48,6 +48,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.App.ComposerEvents
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
+  alias RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Timezone
 
@@ -304,6 +305,26 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # Admin Console bubbles the same way.
   def handle_info({:admin_system_error, message}, socket) do
     {:noreply, ChatLive.Helpers.error_event(socket, message)}
+  end
+
+  # The Admin Console delegates a command to the host: `dispatch_command_with_result`
+  # touches host-only assigns (e.g. `show_status_tab`) that the island socket lacks.
+  # The result is reflected back to the island for its inline display.
+  def handle_info({:admin_console_command, name, args}, socket) do
+    {socket, result} =
+      ChatLive.CommandDispatch.dispatch_command_with_result(
+        socket,
+        socket.assigns.session,
+        name,
+        args
+      )
+
+    send_update(AdminConsoleDialog,
+      id: AdminConsoleDialog.id(),
+      singleplayer_result: result
+    )
+
+    {:noreply, socket}
   end
 
   # Perform dialog bubbles validation errors to the chat surface.

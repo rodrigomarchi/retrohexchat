@@ -26,7 +26,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
   alias RetroHexChat.Commands.{Dispatcher, Parser}
   alias RetroHexChat.Services.Motd
   alias RetroHexChatWeb.ChatLive.ChatContext
-  alias RetroHexChatWeb.ChatLive.CommandDispatch
 
   @id "admin-console-dialog"
 
@@ -99,6 +98,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{open: true}, socket), do: {:ok, assign(socket, @reset)}
   def update(%{close: true}, socket), do: {:ok, assign(socket, show: false)}
+
+  def update(%{singleplayer_result: result}, socket),
+    do: {:ok, put_console(socket, server_settings_result: result_entry(result))}
+
   def update(assigns, socket), do: {:ok, assign(socket, assigns)}
 
   def handle_event("admin_console_tab", %{"tab" => tab}, socket) do
@@ -439,15 +442,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
 
   def handle_event("admin_console_start_singleplayer", _params, socket) do
     if admin?(socket) do
-      {socket, result} =
-        CommandDispatch.dispatch_command_with_result(
-          socket,
-          socket.assigns.session,
-          "singleplayer",
-          []
-        )
-
-      {:noreply, put_console(socket, server_settings_result: result_entry(result))}
+      # Run on the host: the command touches host-only assigns the island lacks.
+      # The host reflects the result back via `singleplayer_result` (update/2).
+      send(self(), {:admin_console_command, "singleplayer", []})
+      {:noreply, socket}
     else
       {:noreply,
        error_event(
