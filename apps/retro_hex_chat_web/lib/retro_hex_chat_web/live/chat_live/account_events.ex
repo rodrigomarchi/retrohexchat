@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   """
 
   import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [send_update: 2]
+  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
@@ -15,6 +15,7 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.AccountDialog
   alias RetroHexChatWeb.ChatLive.Helpers
+  alias RetroHexChatWeb.ChatLive.Windows
 
   @max_bio_graphemes 200
 
@@ -49,8 +50,7 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   end
 
   def handle_event("close_account_dialog", _params, socket) do
-    send_update(AccountDialog, id: AccountDialog.id(), action: :reset)
-    {:halt, assign(socket, show_account_dialog: false)}
+    {:halt, push_event(socket, "window_command", %{action: "close", id: "account"})}
   end
 
   def handle_event("account_info", _params, socket) do
@@ -226,16 +226,14 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   defp open_account(socket, tab, auth_mode) do
-    socket = assign(sync_identity(socket), show_account_dialog: true)
+    socket = sync_identity(socket)
     normalized = normalize_auth_mode(socket, auth_mode)
     bio = Session.get_bio(socket.assigns.session) || ""
 
-    send_update(AccountDialog,
+    Windows.open_with(socket, "account", AccountDialog,
       id: AccountDialog.id(),
       action: {:open, tab, normalized, bio}
     )
-
-    socket
   end
 
   defp submit_nickserv(socket, subcommand, args, auth_mode) do

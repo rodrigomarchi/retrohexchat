@@ -465,6 +465,35 @@
       />
     </.desktop_window>
 
+    <%!-- Account — server-managed: every opener re-seeds tab/auth-mode/bio. --%>
+    <.desktop_window
+      :if={"account" in @open_windows}
+      id="account"
+      title={dgettext("chat", "Account")}
+      managed
+      default_x={180}
+      default_y={70}
+      width={560}
+      height={520}
+      min_width={420}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="account-window"
+    >
+      <:icon><Icons.icon_status_user class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AccountDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AccountDialog.id()}
+        nickname={@session.nickname}
+        account_state={Session.identity_state(@session)}
+        registered={@account_registered}
+        identified={@session.identified}
+        away={@session.away}
+        away_message={@session.away_message || @account_last_away_message || ""}
+        wallops_enabled={Session.has_mode?(@session, :wallops)}
+      />
+    </.desktop_window>
+
     <%!-- User Lookup — server-managed: closing resets the draft and result. --%>
     <.desktop_window
       :if={"user-lookup" in @open_windows}
@@ -532,6 +561,13 @@
           label={dgettext("chat", "Keyboard Shortcuts")}
         >
           <:icon><Icons.icon_dialog_cheatsheet class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={"account" in @open_windows}
+          window="account"
+          label={dgettext("chat", "Account")}
+        >
+          <:icon><Icons.icon_status_user class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
           :if={"user-lookup" in @open_windows}
@@ -664,19 +700,6 @@
 
 <%!-- About: stateless, opened client-side via show_modal (logo + Help menu) --%>
 <.about_dialog id="about-dialog" show={false} />
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.AccountDialog}
-  id={RetroHexChatWeb.ChatLive.Components.AccountDialog.id()}
-  visible={@show_account_dialog}
-  nickname={@session.nickname}
-  account_state={Session.identity_state(@session)}
-  registered={@account_registered}
-  identified={@session.identified}
-  away={@session.away}
-  away_message={@session.away_message || @account_last_away_message || ""}
-  wallops_enabled={Session.has_mode?(@session, :wallops)}
-/>
 
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog}

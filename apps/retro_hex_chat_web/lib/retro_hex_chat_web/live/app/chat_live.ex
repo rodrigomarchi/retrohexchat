@@ -647,7 +647,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # for Escape-dismissal/overlay coordination (see SearchEvents).
       search_visible: false,
       session: session,
-      show_account_dialog: false,
       account_registered: false,
       account_last_away_message: nil,
       show_status_tab: false,

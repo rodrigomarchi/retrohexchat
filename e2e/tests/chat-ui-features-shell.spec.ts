@@ -66,7 +66,9 @@ test.describe.serial('UI feature shell journeys', () => {
         .locator('input[type="checkbox"][name="wallops"]')
         .check();
       await user.chat.accountDialog.getByRole('button', { name: 'Apply' }).click();
-      await user.chat.accountDialog.getByText('Close', { exact: true }).click();
+      await user.chat.accountDialog
+        .locator('[data-window-control="close"]')
+        .click();
       await expect(user.chat.accountDialog).toBeHidden();
       await user.chat.switchToStatusTab();
       await user.chat.expectStatusMessageVisible('User mode +w enabled.');

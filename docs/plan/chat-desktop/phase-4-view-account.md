@@ -25,9 +25,11 @@ Phase 3 complete (recipe battle-tested on the heavy Tools batch).
       `toggle_cheatsheet` (menu + shortcut) routes through `Windows.open`
       (open/focus, never toggle-close); Escape is WM-owned. This emptied
       `topmost_dismissals` (Phase 6 cleanup candidate).
-- [ ] Account (NickServ mini-app; 8 `update(%{action...})` entry points —
-      register/identify/profile/presence/modes/ghost/drop must each open+focus the
-      window and switch its internal mode; sweep all `open_account_*` actions)
+- [x] Account — MANAGED window. All 6 `open_account_*` entry points funnel
+      through `open_account/3` → `Windows.open_with` with the `{:open, tab,
+      mode, bio}` directive (deferred one hop); every open re-seeds tab/auth
+      mode/bio, so close-as-unmount matches the old reset semantics. Orphaned
+      `:reset` directive removed; status-bar opener unchanged (server event).
 - [ ] ChannelCentral (4 sub-forms; opened from channel context menus too — sweep
       openers)
 

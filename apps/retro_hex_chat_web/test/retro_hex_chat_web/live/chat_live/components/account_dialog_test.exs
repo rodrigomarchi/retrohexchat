@@ -11,18 +11,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialogTest do
     assert AccountDialog.id() == "account-dialog"
   end
 
-  test "renders hidden by default" do
+  test "renders the panel bare (no modal chrome)" do
     html = render_component(AccountDialog, id: AccountDialog.id(), nickname: "Alice")
 
     assert html =~ "data-testid=\"account-dialog\""
-    assert html =~ "hidden"
+    refute html =~ "phx-show-modal"
   end
 
-  test "renders all four tab panels and the account state when visible" do
+  test "renders all four tab panels and the account state" do
     html =
       render_component(AccountDialog,
         id: AccountDialog.id(),
-        visible: true,
         nickname: "Alice",
         account_state: :guest,
         registered: false,
@@ -33,8 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialogTest do
     assert html =~ "Bio (about me)"
     assert html =~ "Away message"
     assert html =~ "Receive wallops"
-    # Unregistered guest sees the register form and the close event.
+    # Unregistered guest sees the register form.
     assert html =~ "data-testid=\"account-register-only\""
-    assert html =~ "close_account_dialog"
   end
 end

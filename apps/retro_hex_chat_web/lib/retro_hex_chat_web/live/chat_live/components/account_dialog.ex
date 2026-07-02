@@ -6,17 +6,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
   `auth_valid`, `error`), the nickname-change `nick_error`, the bio editor
   (`bio_draft`, `bio_warning`) and the `ghost_error`. The session-derived display
   fields (`nickname`, `account_state`, `registered`, `identified`, `away`,
-  `away_message`, `wallops_enabled`, current `bio`) and `visible` are supplied by
-  the parent.
+  `away_message`, `wallops_enabled`, current `bio`) are supplied by the parent as
+  template attrs. The island lives inside the managed `account` desktop window;
+  every opener re-seeds tab, auth mode and bio via the `{:open, ...}` directive.
 
   Each form (`account_register_submit`, `account_auth_change`,
   `account_profile_change`, `account_change_nick_submit`, ...) is handled on the
   parent's `AccountEvents`, which runs the NickServ / profile / presence commands
   and reflects the resulting errors, auth mode, validity and bio draft back here
-  via `send_update`. Password params are never logged. `show_account_dialog`, the
-  NickServ-registration snapshot `account_registered`, and the remembered
-  `account_last_away_message` (read by the status-bar away toggle) live on the
-  parent.
+  via `send_update`. Password params are never logged. The NickServ-registration
+  snapshot `account_registered` and the remembered `account_last_away_message`
+  (read by the status-bar away toggle) live on the parent.
   """
   use RetroHexChatWeb, :live_component
 
@@ -34,7 +34,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
     {:ok,
      assign(socket,
        id: @id,
-       visible: false,
        # passthrough context (session-derived)
        nickname: "",
        account_state: :guest,
@@ -116,15 +115,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
     {:ok, assign(socket, bio_draft: draft, bio_warning: warning)}
   end
 
-  def update(%{action: :reset}, socket) do
-    {:ok, assign(socket, error: nil, nick_error: nil, bio_warning: nil, ghost_error: nil)}
-  end
-
   def update(assigns, socket) do
     {:ok,
      assign(socket,
        id: Map.get(assigns, :id, socket.assigns.id),
-       visible: Map.get(assigns, :visible, socket.assigns.visible),
        nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
        account_state: Map.get(assigns, :account_state, socket.assigns.account_state),
        registered: Map.get(assigns, :registered, socket.assigns.registered),
@@ -139,10 +133,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <div id={"#{@id}-mount"}>
-      <.account_dialog
+    <div id={"#{@id}-mount"} class="contents">
+      <.account_panel
         id={@id}
-        show={@visible}
         nickname={@nickname}
         account_state={@account_state}
         registered={@registered}
@@ -160,7 +153,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
         wallops_enabled={@wallops_enabled}
         error_message={@error}
         ghost_error={@ghost_error}
-        on_close="close_account_dialog"
       />
     </div>
     """

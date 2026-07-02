@@ -544,7 +544,7 @@ export class ChatPage {
     this.soundSettingsDialog = page.getByTestId('sound-settings-window');
     this.autorespondDialog = page.getByTestId('auto-respond-window');
     this.autorespondEditForm = this.autorespondDialog.locator('form');
-    this.accountDialog = page.locator('#account-dialog [role="dialog"]');
+    this.accountDialog = page.getByTestId('account-window');
     this.accountPasswordInput = page.getByTestId('account-password');
     this.accountConfirmInput = page.getByTestId('account-confirm');
     this.accountDropPasswordInput = page.getByTestId('account-drop-password');

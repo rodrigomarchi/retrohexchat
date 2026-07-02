@@ -55,14 +55,15 @@ defmodule RetroHexChatWeb.AccountEntryPointsFeatureTest do
       assert html =~ ~s(title="Set Away")
     end
 
-    test "toolbar actions open Account dialog entry tabs", %{conn: conn} do
+    test "toolbar actions open Account window entry tabs", %{conn: conn} do
       view = connect_user(conn, "Acct#{uid()}")
 
-      refute has_element?(view, "#account-dialog-show-trigger")
+      refute has_element?(view, ~s([data-testid="account-window"]))
 
       render_click(view, "toolbar_action", %{"action" => "open_account_register"})
 
-      assert has_element?(view, "#account-dialog-show-trigger")
+      assert_push_event(view, "window_command", %{action: "open", id: "account"})
+      assert has_element?(view, ~s([data-testid="account-window"]))
       assert render(view) =~ "Register/Login"
 
       render_click(view, "toolbar_action", %{"action" => "open_account_profile"})

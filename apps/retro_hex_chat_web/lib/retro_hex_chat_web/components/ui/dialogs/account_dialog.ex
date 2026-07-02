@@ -6,16 +6,14 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Checkbox
-  import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.Textarea
 
   alias RetroHexChatWeb.Icons
 
-  @doc "Renders the Account dialog."
+  @doc "Renders the Account panel: register/login, profile, presence and user-mode tabs."
   attr :id, :string, required: true
-  attr :show, :boolean, default: false
   attr :nickname, :string, required: true
   attr :account_state, :atom, default: :guest, values: [:guest, :identified, :away]
   attr :registered, :boolean, default: false
@@ -33,85 +31,73 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
   attr :wallops_enabled, :boolean, default: false
   attr :error_message, :string, default: nil
   attr :ghost_error, :string, default: nil
-  attr :on_close, :any, default: nil
 
-  @spec account_dialog(map()) :: Phoenix.LiveView.Rendered.t()
-  def account_dialog(assigns) do
+  @spec account_panel(map()) :: Phoenix.LiveView.Rendered.t()
+  def account_panel(assigns) do
     assigns =
       assigns
       |> assign(:bio_count, String.length(assigns.bio || ""))
       |> assign(:status_label, account_state_label(assigns.account_state))
 
     ~H"""
-    <.dialog id={@id} show={@show} on_cancel={@on_close} class="md:max-w-xl">
-      <.dialog_header id={@id} title={dgettext("dialogs", "Account")} on_close={@on_close}>
-        <:icon><Icons.icon_status_user class="w-4 h-4" /></:icon>
-      </.dialog_header>
+    <div
+      id={"#{@id}-content"}
+      data-testid="account-dialog"
+      class="flex h-full min-h-0 flex-col overflow-y-auto"
+    >
+      <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
+        <.tabs_list class="px-0 pt-0">
+          <.tabs_trigger builder={builder} value="register">
+            <:icon><Icons.icon_lock class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Register/Login")}
+          </.tabs_trigger>
+          <.tabs_trigger builder={builder} value="profile">
+            <:icon><Icons.icon_status_user class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Profile")}
+          </.tabs_trigger>
+          <.tabs_trigger builder={builder} value="presence">
+            <:icon><Icons.icon_btn_dnd class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Presence")}
+          </.tabs_trigger>
+          <.tabs_trigger builder={builder} value="modes">
+            <:icon><Icons.icon_tab_status class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "User Modes")}
+          </.tabs_trigger>
+        </.tabs_list>
 
-      <.dialog_body>
-        <div data-testid="account-dialog">
-          <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
-            <.tabs_list class="px-0 pt-0">
-              <.tabs_trigger builder={builder} value="register">
-                <:icon><Icons.icon_lock class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "Register/Login")}
-              </.tabs_trigger>
-              <.tabs_trigger builder={builder} value="profile">
-                <:icon><Icons.icon_status_user class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "Profile")}
-              </.tabs_trigger>
-              <.tabs_trigger builder={builder} value="presence">
-                <:icon><Icons.icon_btn_dnd class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "Presence")}
-              </.tabs_trigger>
-              <.tabs_trigger builder={builder} value="modes">
-                <:icon><Icons.icon_tab_status class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "User Modes")}
-              </.tabs_trigger>
-            </.tabs_list>
+        <.tabs_content builder={builder} value="register">
+          <.register_tab
+            nickname={@nickname}
+            status_label={@status_label}
+            registered={@registered}
+            identified={@identified}
+            auth_valid={@auth_valid}
+            auth_password={@auth_password}
+            auth_confirm={@auth_confirm}
+            error_message={@error_message}
+            ghost_error={@ghost_error}
+          />
+        </.tabs_content>
 
-            <.tabs_content builder={builder} value="register">
-              <.register_tab
-                nickname={@nickname}
-                status_label={@status_label}
-                registered={@registered}
-                identified={@identified}
-                auth_valid={@auth_valid}
-                auth_password={@auth_password}
-                auth_confirm={@auth_confirm}
-                error_message={@error_message}
-                ghost_error={@ghost_error}
-              />
-            </.tabs_content>
+        <.tabs_content builder={builder} value="profile">
+          <.profile_tab
+            nickname={@nickname}
+            nick_error={@nick_error}
+            bio={@bio || ""}
+            bio_count={@bio_count}
+            bio_warning={@bio_warning}
+          />
+        </.tabs_content>
 
-            <.tabs_content builder={builder} value="profile">
-              <.profile_tab
-                nickname={@nickname}
-                nick_error={@nick_error}
-                bio={@bio || ""}
-                bio_count={@bio_count}
-                bio_warning={@bio_warning}
-              />
-            </.tabs_content>
+        <.tabs_content builder={builder} value="presence">
+          <.presence_tab away={@away} away_message={@away_message || ""} />
+        </.tabs_content>
 
-            <.tabs_content builder={builder} value="presence">
-              <.presence_tab away={@away} away_message={@away_message || ""} />
-            </.tabs_content>
-
-            <.tabs_content builder={builder} value="modes">
-              <.modes_tab wallops_enabled={@wallops_enabled} />
-            </.tabs_content>
-          </.tabs>
-        </div>
-      </.dialog_body>
-
-      <.dialog_footer>
-        <.button type="button" variant="outline" phx-click={@on_close || hide_modal(@id)}>
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Close")}
-        </.button>
-      </.dialog_footer>
-    </.dialog>
+        <.tabs_content builder={builder} value="modes">
+          <.modes_tab wallops_enabled={@wallops_enabled} />
+        </.tabs_content>
+      </.tabs>
+    </div>
     """
   end
 
