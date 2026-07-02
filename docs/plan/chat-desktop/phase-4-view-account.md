@@ -52,15 +52,20 @@ Follow the Phase 2 recipe per dialog; record mounting decisions.
 
 ## Completion criteria
 
-- [ ] All 6 verified as windows; every programmatic opener (context menus, slash
+- [x] All 6 verified as windows; every programmatic opener (context menus, slash
       commands, menu bar, start menu View group, shortcuts) opens/focuses the
-      window.
-- [ ] Mounting decisions recorded.
-- [ ] No entries for these remain in `dismiss_topmost`.
+      window. (Verified via targeted E2E: chat-whois, chat-ui-features-shell
+      Feature 01, chat-channel-central{,-sync,-exceptions}, chat-context-menus,
+      chat-tools-menu, chat-cheatsheet, chat-channel-list.)
+- [x] Mounting decisions recorded (per-window notes above).
+- [x] No entries for these remain in `dismiss_topmost` — the ladder is empty
+      (Phase 6 removes the plumbing).
 
 ## Verification
 
-- `make ci` fully green.
+- `make ci` fully green (9/9 incl. dialyzer). ✔ 2026-07-02
+- Known open issue (pre-existing, intermittent, NOT phase-4-caused):
+  chat-ui-features-channel Feature 06 knock line — tracked in PROGRESS.
 - Manual smoke: `/whois` from composer → UserLookup window; open Account via menu
   Register vs Identify (mode switches, single window); ChannelCentral from a
   channel context menu; Cheatsheet shortcut toggle.

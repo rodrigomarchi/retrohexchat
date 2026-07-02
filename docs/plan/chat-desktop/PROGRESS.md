@@ -7,7 +7,7 @@
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
 | 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
 | 3 — Tools/Settings batch | **complete** (2026-07-02) | All 8 migrated (all managed); full `make ci` 9/9 incl. dialyzer |
-| 4 — View/Account batch | **in progress** | ChannelList (always-mounted) + Cheatsheet (managed) committed; UserLookup/Account/ChannelCentral remain |
+| 4 — View/Account batch | **complete** (2026-07-02) | All 6 migrated; full `make ci` 9/9 incl. dialyzer. Open issue: intermittent Feature 06 knock E2E (pre-existing — see Learnings) |
 | 5 — Admin batch | not started | |
 | 6 — Unify + cleanup | not started | |
 
