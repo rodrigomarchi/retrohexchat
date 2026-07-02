@@ -29,23 +29,20 @@ from today.
 
 ### B. Desktop shell in the chat template
 
-- [ ] Restructure `chat_live.html.heex`: wrap the page in
+- [x] Restructure `chat_live.html.heex`: wrap the page in
       `<.desktop id="chat-desktop" persist_key="chat">` with the existing header
       (`chat_shell_header`: logo + menu bar + status bar) moved into the `:header`
       slot. Keep the modal dialogs block OUTSIDE the window, at desktop level
       (they overlay everything, unchanged).
-- [ ] Move sidebar + tab bar + topic bar + viewport islands + nicklist + composer
+- [x] Move sidebar + tab bar + topic bar + viewport islands + nicklist + composer
       into `<.desktop_window id="chat" pinned default_maximized ...>` with a
-      sensible restored-size default. Preserve the `h-full`/flex chain inside
-      `window_body` — the chat layout must fill the window at any size.
-      Watch for: `#app-container` currently is `fixed inset-0` with
-      `phx-hook="SoundHook"` and window-level keydown bindings — those semantics
-      must survive the move (hook stays mounted, `phx-window-keydown` is
-      window-scoped and unaffected by nesting).
-- [ ] Taskbar: `<.taskbar>` with the chat window button + `<.desktop_tray>` with
-      the clock (ClockHook, as in the showcase). Keep the existing header clock
-      only if it isn't redundant — if the header status bar already shows a clock,
-      remove the duplication (tray wins).
+      sensible restored-size default (920×580, min 480×320). Preserved the flex
+      chain via `body_class="flex flex-col min-h-0 p-0 overflow-hidden"`;
+      `#app-container` (SoundHook + window keydown) kept as the outer wrapper.
+- [x] Taskbar: `<.taskbar>` with the chat window button + `<.desktop_tray>` with
+      the clock (ClockHook). Header status-bar clock was redundant — removed via a
+      `show_clock` capability flag on `status_bar_app` (tray wins; showcase keeps
+      its clock).
 - [ ] Start button + `<.start_menu>` skeleton with the four category groups
       (Tools / View / Admin / Help). Until dialogs migrate, items trigger the
       SAME existing `toolbar_action` events via `phx-click` (no `data-window-open`

@@ -24,6 +24,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.TopicBar
   import RetroHexChatWeb.Components.UI.ConnectionStatus
 
+  # ── Desktop window manager ───────────────────────────────────
+  import RetroHexChatWeb.Components.UI.Desktop
+
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AboutDialog
 
@@ -44,6 +47,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.App.ComposerEvents
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
+  alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Timezone
 
   # ── Mount ─────────────────────────────────────────────────────

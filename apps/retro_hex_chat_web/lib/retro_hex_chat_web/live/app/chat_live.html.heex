@@ -27,130 +27,166 @@
   id="app-container"
   phx-hook="SoundHook"
 >
-  <%!-- App header with toolbar & status bar --%>
-  <.chat_shell_header
-    session={@session}
-    channel_user_count={length(@channel_users)}
-    lag_ms={@lag_ms}
-    lag_status={@lag_status}
-    muted={@muted}
-    timezone={@timezone}
-  />
-
-  <%!-- MDI layout: conversations | chat | nicklist --%>
-  <div class="flex flex-1 min-h-0">
-    <%!-- Conversations sidebar --%>
-    <.live_component
-      module={RetroHexChatWeb.ChatLive.Components.Conversations}
-      id={RetroHexChatWeb.ChatLive.Components.Conversations.id()}
-      visible={@show_conversations}
-      channels={@session.channels}
-      active_channel={@session.active_channel}
-      active_pm={@session.active_pm}
-      pm_conversations={@session.pm_conversations}
-      unread_counts={@unread_counts}
-      highlight_channels={@highlight_channels}
-      flash_channels={@flash_channels}
-      muted_channels={@muted_channels}
-      disconnected_channels={Map.get(assigns, :disconnected_channels, MapSet.new())}
-      conversations_sections={@conversations_sections}
-      channel_user_counts={@channel_user_counts}
-      popular_channels={@popular_channels}
-      nick_color_fn={@nick_color_fn}
-    />
-
-    <%!-- Chat area --%>
-    <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
-      <%!-- Tab bar (shrink, no grow) --%>
-      <.chat_tabs
-        channels={@session.channels}
-        pm_conversations={@session.pm_conversations}
-        unread_counts={@unread_counts}
-        status_unread={@status_unread}
-        show_status_tab={@show_status_tab}
-        active_channel={@session.active_channel}
-        active_pm={@session.active_pm}
-        nick_color_fn={@nick_color_fn}
+  <.desktop id="chat-desktop" persist_key="chat" data-testid="chat-desktop">
+    <:header>
+      <%!-- App header with toolbar & status bar --%>
+      <.chat_shell_header
+        session={@session}
+        channel_user_count={length(@channel_users)}
+        lag_ms={@lag_ms}
+        lag_status={@lag_status}
+        muted={@muted}
+        timezone={@timezone}
       />
+    </:header>
 
-      <%!-- Topic bar --%>
-      <.topic_bar
-        topic={@current_topic || ""}
-        channel_name={@session.active_channel}
-        variant={
-          cond do
-            @show_status_tab -> "status"
-            @session.active_pm -> "pm"
-            true -> "channel"
-          end
-        }
-        modes={@current_modes}
-      />
+    <%!-- The whole chat surface is one pinned window: maximized by default,
+          restorable/draggable/resizable, never closable. --%>
+    <.desktop_window
+      id="chat"
+      title={dgettext("chat", "RetroHexChat")}
+      pinned
+      default_maximized
+      default_x={48}
+      default_y={24}
+      width={920}
+      height={580}
+      min_width={480}
+      min_height={320}
+      body_class="flex flex-col min-h-0 p-0 overflow-hidden"
+      data-testid="chat-window"
+    >
+      <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
 
-      <%!-- Connection status banner + JS-driven reconnect overlay --%>
-      <.connection_status_panel />
-
-      <%!-- Search bar (stateful island — owns its content state) --%>
-      <.live_component
-        module={RetroHexChatWeb.ChatLive.Components.SearchBar}
-        id={RetroHexChatWeb.ChatLive.Components.SearchBar.id()}
-        visible={@search_visible}
-        nickname={@session.nickname}
-        active_channel={@session.active_channel}
-      />
-
-      <%!-- Messages + Nicklist row (fills remaining space) --%>
+      <%!-- MDI layout: conversations | chat | nicklist --%>
       <div class="flex flex-1 min-h-0">
-        <%!-- Messages column --%>
-        <div class="flex flex-col flex-1 min-w-0 min-h-0 relative">
-          <%!-- Chat messages stream (stateful island — owns the :chat_messages stream
-               + the channel-load spinner and load-older indicator) --%>
-          <.live_component
-            module={RetroHexChatWeb.ChatLive.Components.MessageViewport}
-            id={RetroHexChatWeb.ChatLive.Components.MessageViewport.id()}
-            chat_clear_token={@chat_clear_token}
-            nick_color_fn={@nick_color_fn}
-            timestamp_format={@timestamp_format}
-            timezone={@timezone}
-            strip_formatting={@session.strip_formatting}
-            edit_mode_message_id={@edit_mode_message_id}
-            show_status_tab={@show_status_tab}
-            loading_more={@loading_more}
-            loading_channel={@loading_channel}
-          />
-
-          <%!-- Status messages stream (stateful island — owns the :status_messages stream) --%>
-          <.live_component
-            module={RetroHexChatWeb.ChatLive.Components.StatusViewport}
-            id={RetroHexChatWeb.ChatLive.Components.StatusViewport.id()}
-            timestamp_format={@timestamp_format}
-            timezone={@timezone}
-            show_status_tab={@show_status_tab}
-          />
-        </div>
-
-        <%!-- Nicklist sidebar --%>
+        <%!-- Conversations sidebar --%>
         <.live_component
-          module={RetroHexChatWeb.ChatLive.Components.Nicklist}
-          id={RetroHexChatWeb.ChatLive.Components.Nicklist.id()}
-          visible={@show_nicklist && !@session.active_pm && !@show_status_tab}
+          module={RetroHexChatWeb.ChatLive.Components.Conversations}
+          id={RetroHexChatWeb.ChatLive.Components.Conversations.id()}
+          visible={@show_conversations}
+          channels={@session.channels}
+          active_channel={@session.active_channel}
+          active_pm={@session.active_pm}
+          pm_conversations={@session.pm_conversations}
+          unread_counts={@unread_counts}
+          highlight_channels={@highlight_channels}
+          flash_channels={@flash_channels}
+          muted_channels={@muted_channels}
+          disconnected_channels={Map.get(assigns, :disconnected_channels, MapSet.new())}
+          conversations_sections={@conversations_sections}
+          channel_user_counts={@channel_user_counts}
+          popular_channels={@popular_channels}
           nick_color_fn={@nick_color_fn}
         />
-      </div>
 
-      <%!-- Composer island: autocomplete + syntax tooltip + bottom input panel --%>
-      <.live_component
-        module={RetroHexChatWeb.ChatLive.Components.Composer}
-        id={RetroHexChatWeb.ChatLive.Components.Composer.id()}
-        session={@session}
-        show_status_tab={@show_status_tab}
-        channel_users={@channel_users}
-        show_emoji_picker={@show_emoji_picker}
-        pm_typing_from={@pm_typing_from}
-        edit_mode_message_id={@edit_mode_message_id}
-      />
-    </div>
-  </div>
+        <%!-- Chat area --%>
+        <div class="flex flex-col flex-1 min-w-0 min-h-0 overflow-hidden">
+          <%!-- Tab bar (shrink, no grow) --%>
+          <.chat_tabs
+            channels={@session.channels}
+            pm_conversations={@session.pm_conversations}
+            unread_counts={@unread_counts}
+            status_unread={@status_unread}
+            show_status_tab={@show_status_tab}
+            active_channel={@session.active_channel}
+            active_pm={@session.active_pm}
+            nick_color_fn={@nick_color_fn}
+          />
+
+          <%!-- Topic bar --%>
+          <.topic_bar
+            topic={@current_topic || ""}
+            channel_name={@session.active_channel}
+            variant={
+              cond do
+                @show_status_tab -> "status"
+                @session.active_pm -> "pm"
+                true -> "channel"
+              end
+            }
+            modes={@current_modes}
+          />
+
+          <%!-- Connection status banner + JS-driven reconnect overlay --%>
+          <.connection_status_panel />
+
+          <%!-- Search bar (stateful island — owns its content state) --%>
+          <.live_component
+            module={RetroHexChatWeb.ChatLive.Components.SearchBar}
+            id={RetroHexChatWeb.ChatLive.Components.SearchBar.id()}
+            visible={@search_visible}
+            nickname={@session.nickname}
+            active_channel={@session.active_channel}
+          />
+
+          <%!-- Messages + Nicklist row (fills remaining space) --%>
+          <div class="flex flex-1 min-h-0">
+            <%!-- Messages column --%>
+            <div class="flex flex-col flex-1 min-w-0 min-h-0 relative">
+              <%!-- Chat messages stream (stateful island — owns the :chat_messages stream
+               + the channel-load spinner and load-older indicator) --%>
+              <.live_component
+                module={RetroHexChatWeb.ChatLive.Components.MessageViewport}
+                id={RetroHexChatWeb.ChatLive.Components.MessageViewport.id()}
+                chat_clear_token={@chat_clear_token}
+                nick_color_fn={@nick_color_fn}
+                timestamp_format={@timestamp_format}
+                timezone={@timezone}
+                strip_formatting={@session.strip_formatting}
+                edit_mode_message_id={@edit_mode_message_id}
+                show_status_tab={@show_status_tab}
+                loading_more={@loading_more}
+                loading_channel={@loading_channel}
+              />
+
+              <%!-- Status messages stream (stateful island — owns the :status_messages stream) --%>
+              <.live_component
+                module={RetroHexChatWeb.ChatLive.Components.StatusViewport}
+                id={RetroHexChatWeb.ChatLive.Components.StatusViewport.id()}
+                timestamp_format={@timestamp_format}
+                timezone={@timezone}
+                show_status_tab={@show_status_tab}
+              />
+            </div>
+
+            <%!-- Nicklist sidebar --%>
+            <.live_component
+              module={RetroHexChatWeb.ChatLive.Components.Nicklist}
+              id={RetroHexChatWeb.ChatLive.Components.Nicklist.id()}
+              visible={@show_nicklist && !@session.active_pm && !@show_status_tab}
+              nick_color_fn={@nick_color_fn}
+            />
+          </div>
+
+          <%!-- Composer island: autocomplete + syntax tooltip + bottom input panel --%>
+          <.live_component
+            module={RetroHexChatWeb.ChatLive.Components.Composer}
+            id={RetroHexChatWeb.ChatLive.Components.Composer.id()}
+            session={@session}
+            show_status_tab={@show_status_tab}
+            channel_users={@channel_users}
+            show_emoji_picker={@show_emoji_picker}
+            pm_typing_from={@pm_typing_from}
+            edit_mode_message_id={@edit_mode_message_id}
+          />
+        </div>
+      </div>
+    </.desktop_window>
+
+    <:taskbar>
+      <.taskbar id="chat-taskbar">
+        <.taskbar_button window="chat" label={dgettext("chat", "RetroHexChat")}>
+          <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <:tray>
+          <.desktop_tray>
+            <span id="chat-tray-clock" phx-hook="ClockHook" class="font-mono tabular-nums"></span>
+          </.desktop_tray>
+        </:tray>
+      </.taskbar>
+    </:taskbar>
+  </.desktop>
 </div>
 
 <%!-- Hover card (stateful island — owns the nick hover-card state) --%>

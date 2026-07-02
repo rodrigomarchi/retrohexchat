@@ -51,8 +51,10 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
           is_admin={@is_admin}
           on_action={@on_toolbar_action}
         />
+        <%!-- The desktop tray owns the clock; the status bar drops its own. --%>
         <.status_bar_app
           class="ml-auto"
+          show_clock={false}
           nickname={@nickname}
           account_state={@account_state}
           away={@away}

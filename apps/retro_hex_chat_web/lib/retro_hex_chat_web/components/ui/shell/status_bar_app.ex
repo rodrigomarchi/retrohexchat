@@ -41,6 +41,11 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   attr :on_notify_toggle, :any, default: nil
   attr :muted, :boolean, default: false
   attr :timezone, :string, default: "Etc/UTC"
+
+  attr :show_clock, :boolean,
+    default: true,
+    doc: "hide the clock zone when the surrounding chrome already shows one (e.g. a desktop tray)"
+
   attr :on_mute_toggle, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
@@ -107,7 +112,10 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
       </.window_status_bar_field>
 
       <%!-- Zone 5: Clock (hidden on mobile) --%>
-      <.window_status_bar_field class="hidden md:flex items-center gap-retro-2 min-w-[64px]">
+      <.window_status_bar_field
+        :if={@show_clock}
+        class="hidden md:flex items-center gap-retro-2 min-w-[64px]"
+      >
         <Icons.icon_clock class="w-3 h-3 shrink-0" />
         <span id="clock-display" phx-hook="ClockHook" class="text-xs font-mono">--:--</span>
       </.window_status_bar_field>

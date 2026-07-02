@@ -4,7 +4,7 @@
 
 | Phase | Status | Notes |
 |-------|--------|-------|
-| 1 — Desktop shell | in progress | Task A (default_maximized WM extension) done |
+| 1 — Desktop shell | in progress | A done; B: desktop shell + chat window + taskbar/tray done — start menu + managed plumbing remain |
 | 2 — Pilot + recipe | not started | |
 | 3 — Tools/Settings batch | not started | |
 | 4 — View/Account batch | not started | |
@@ -41,6 +41,12 @@ hold for the chat and extend:
   always seeds `default_x/y/w/h` into state, so restoring from a default-maximized
   window falls back to them naturally. Only the initial `maximized` flag changes;
   `applySavedState` overwrites it unconditionally, which is exactly "storage wins".
+- `classes/1` is TwMerge, so `body_class` on `desktop_window` cleanly overrides the
+  body defaults (`p-0` beats `p-2`, `overflow-hidden` beats `overflow-auto`) — use
+  `body_class="flex flex-col min-h-0 p-0 overflow-hidden"` for windows whose body
+  is a flex layout that must fill.
+- The chat tab strip has no stable id/testid — select it with `[role="tablist"]`
+  in tests.
 - The `#{id}-show-trigger` marker is the modal-dialog test contract; migrated
   windows lose it — use `data-window-id` visibility, `render_hook(view,
   "window_open"/"window_closed")`, and `assert_push_event(view, "window_command", ...)`

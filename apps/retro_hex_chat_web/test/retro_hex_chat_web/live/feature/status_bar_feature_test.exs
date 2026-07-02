@@ -30,12 +30,13 @@ defmodule RetroHexChatWeb.StatusBarFeatureTest do
       assert html =~ "id=\"lag-display\""
     end
 
-    test "clock display has hook attached", %{conn: conn} do
+    test "clock lives in the desktop tray, not the status bar", %{conn: conn} do
       nick = "SB4#{uid()}"
       {:ok, _view, html} = live(chat_conn(conn, nick), "/chat")
 
       assert html =~ "phx-hook=\"ClockHook\""
-      assert html =~ "id=\"clock-display\""
+      assert html =~ "id=\"chat-tray-clock\""
+      refute html =~ "id=\"clock-display\""
     end
 
     test "lag hook is attached", %{conn: conn} do
