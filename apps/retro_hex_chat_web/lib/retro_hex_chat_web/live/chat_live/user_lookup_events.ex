@@ -1,34 +1,32 @@
 defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
   @moduledoc """
-  Handle User Lookup dialog and result card events.
+  Handle User Lookup window and result card events.
 
-  Covers: open_user_lookup, close_user_lookup, user_lookup_change,
-  user_lookup_whois, user_lookup_whowas, close_lookup_result,
-  lookup_result_whois, lookup_result_whowas, lookup_result_query.
+  Covers: open_user_lookup, close_user_lookup, user_lookup_whois,
+  user_lookup_whowas, close_lookup_result, lookup_result_whois,
+  lookup_result_whowas, lookup_result_query.
   """
 
-  import Phoenix.Component, only: [assign: 2]
-  import Phoenix.LiveView, only: [send_update: 2]
+  import Phoenix.LiveView, only: [push_event: 3, send_update: 2]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
+  import Phoenix.Component, only: [assign: 2]
   import RetroHexChatWeb.ChatLive.Helpers, only: [open_pm_conversation: 2]
 
   alias RetroHexChatWeb.ChatLive.CommandDispatch
   alias RetroHexChatWeb.ChatLive.Components.UserLookupDialog
+  alias RetroHexChatWeb.ChatLive.Windows
 
-  @doc "Opens the User Lookup dialog (parent keeps `show_user_lookup_dialog` for Escape)."
+  @doc "Opens (or focuses) the User Lookup window with a fresh input draft."
   @spec open(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   def open(socket) do
-    send_update(UserLookupDialog, id: UserLookupDialog.id(), action: :open)
-    assign(socket, show_user_lookup_dialog: true)
-  end
-
-  @doc "Closes the User Lookup dialog and resets the component draft."
-  @spec close(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
-  def close(socket) do
-    send_update(UserLookupDialog, id: UserLookupDialog.id(), action: :open)
-    assign(socket, show_user_lookup_dialog: false)
+    socket
+    |> assign(lookup_result: nil)
+    |> Windows.open_with("user-lookup", UserLookupDialog,
+      id: UserLookupDialog.id(),
+      action: :open
+    )
   end
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
@@ -38,7 +36,7 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
   end
 
   def handle_event("close_user_lookup", _params, socket) do
-    {:halt, close(socket)}
+    {:halt, push_event(socket, "window_command", %{action: "close", id: "user-lookup"})}
   end
 
   def handle_event("user_lookup_whois", params, socket) do
@@ -65,6 +63,7 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
     {:halt,
      socket
      |> assign(lookup_result: nil)
+     |> push_event("window_command", %{action: "close", id: "user-lookup"})
      |> open_pm_conversation(nick)}
   end
 
@@ -81,9 +80,7 @@ defmodule RetroHexChatWeb.ChatLive.UserLookupEvents do
 
       socket
     else
-      socket
-      |> close()
-      |> dispatch_lookup(command, nickname)
+      dispatch_lookup(socket, command, nickname)
     end
   end
 

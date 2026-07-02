@@ -76,8 +76,16 @@ hold for the chat and extend:
   server-side). Choose `managed` per dialog ONLY if the component holds no
   long-lived state that must survive while closed and receives no `send_update`
   while closed — otherwise keep it always-mounted with `open={false}`.
-- When the host opens a managed window and updates its island in the same event:
-  `open_window(socket, id)` BEFORE `send_update` (island must exist in the patch).
+- REVERSED (2026-07-02, browser-verified): "open_window before send_update in
+  the same event" is NOT safe. Server-side it works (ExUnit passes), but the
+  CLIENT fails to patch a component-only diff that races a managed-window
+  mount — the update merges into the virtual tree and never reaches the DOM
+  (zero mutations), intermittently leaving the island stale. Rules:
+  (a) state the island needs at mount rides PARENT ASSIGNS as template attrs
+  (travels in the same main diff — always safe: channel-list/url-catcher
+  pattern); (b) a directive that must reach a possibly-fresh island goes
+  through `Windows.open_with/4`, which defers the send_update one message hop;
+  (c) never send_update an island in the cycle that mounts it.
 - `push_event("window_command", %{action:, id:})` works from island `update/2`,
   not just `handle_event` (hook's handleEvent is global).
 - Island root wrapper needs `class="h-full"` (or `"contents"`) to preserve the
@@ -136,9 +144,11 @@ hold for the chat and extend:
   target the ISLAND (send_update). If they mutate the parent's session
   read-model, a managed island gets fresh state at mount — NotifyList is
   managed despite live buddy-status updates.
-- Open-on-tab for a managed window: `Windows.open(socket, id)` FIRST, then
-  `send_update(island, open: tab)` — confirms the seed gotcha (island must exist
-  in the patch for the directive to land).
+- Open-on-tab for a managed window: `Windows.open_with(socket, id, Island,
+  open: tab)` — the tab directive is deferred one hop (see the REVERSED gotcha
+  above; the old same-cycle pattern only looked correct because ExUnit cannot
+  see the client patch failure). E2E must cover every managed-window
+  mount+state flow — it is the ONLY layer that catches this class.
 - The Playwright suite is NOT in `make ci` — expect to find pre-existing broken
   specs when touching an area (parity spec clicked the View menu for Find, which
   lives in Edit). Fix them in passing; they are ours.
@@ -196,6 +206,16 @@ hold for the chat and extend:
   mounted") — the chat's MANAGED-window pattern (`ChatLive.Windows`, `@managed`,
   conditional mount) extends/contradicts it. Phase 6 crystallization MUST update
   §7, or the guide will mislead the next feature.
+- Debug technique for "server right, browser wrong": compare
+  `JSON.stringify(liveSocket.main.rendered).includes(marker)` (virtual tree)
+  against `document.querySelector` (DOM) plus a MutationObserver on the island
+  mount — tree-has-it/DOM-doesn't pinpoints a skipped component patch in one
+  disposable Playwright spec.
+- FIXED (pre-existing, Feature 01): controlled inputs in a `phx-change` form
+  MUST render `value=` from mirrored state — the account register form's
+  password/confirm inputs had no value binding, so any patch between fill and
+  submit wiped the unfocused field ("Passwords do not match" on submit). The
+  auth drafts are now mirrored via the `{:auth, ...}` directive.
 
 ## Decision log
 

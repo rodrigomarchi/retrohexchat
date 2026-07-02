@@ -465,6 +465,29 @@
       />
     </.desktop_window>
 
+    <%!-- User Lookup — server-managed: closing resets the draft and result. --%>
+    <.desktop_window
+      :if={"user-lookup" in @open_windows}
+      id="user-lookup"
+      title={dgettext("chat", "User Lookup")}
+      managed
+      default_x={240}
+      default_y={100}
+      width={420}
+      height={460}
+      min_width={340}
+      min_height={280}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="user-lookup-window"
+    >
+      <:icon><Icons.icon_btn_search class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.UserLookupDialog}
+        id={RetroHexChatWeb.ChatLive.Components.UserLookupDialog.id()}
+        result={@lookup_result}
+      />
+    </.desktop_window>
+
     <%!-- URL Catcher — always mounted (URLs keep accumulating while closed);
           the window manager owns open/close client-side. --%>
     <.desktop_window
@@ -509,6 +532,13 @@
           label={dgettext("chat", "Keyboard Shortcuts")}
         >
           <:icon><Icons.icon_dialog_cheatsheet class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={"user-lookup" in @open_windows}
+          window="user-lookup"
+          label={dgettext("chat", "User Lookup")}
+        >
+          <:icon><Icons.icon_btn_search class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
           :if={"timers" in @open_windows}
@@ -668,13 +698,6 @@
   id={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog.id()}
   session={@session}
   timezone={@timezone}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.UserLookupDialog}
-  id={RetroHexChatWeb.ChatLive.Components.UserLookupDialog.id()}
-  visible={@show_user_lookup_dialog}
-  result={@lookup_result}
 />
 
 <.live_component

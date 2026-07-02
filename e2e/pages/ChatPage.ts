@@ -555,10 +555,9 @@ export class ChatPage {
     this.accountGhostPasswordInput = page.getByTestId('account-ghost-password');
     this.timersDialog = page.getByTestId('timers-window');
     this.timersEditForm = page.getByTestId('timers-edit-form');
-    this.userLookupDialog = page.locator('#user-lookup-dialog [role="dialog"]');
-    this.lookupResultDialog = page.locator(
-      '#lookup-result-dialog [role="dialog"]',
-    );
+    this.userLookupDialog = page.getByTestId('user-lookup-window');
+    // The result card renders inside the user-lookup window, title included.
+    this.lookupResultDialog = page.getByTestId('lookup-result-card');
     this.lookupResultCard = page.getByTestId('lookup-result-card');
     this.inviteChannelPickerDialog = page.locator(
       '#invite-channel-picker-dialog [role="dialog"]',

@@ -16,8 +16,23 @@ defmodule RetroHexChatWeb.ChatLive.Windows do
   import Phoenix.Component, only: [update: 3]
   import Phoenix.LiveView, only: [push_event: 3]
 
+  @doc """
+  Open/focus a window and deliver a `send_update` directive to its island.
+
+  The directive is deferred one message hop (`{:window_send_update, ...}`,
+  handled by the host LiveView): a `send_update` issued in the SAME cycle that
+  mounts a managed island merges into the client's virtual tree but never
+  patches the DOM, leaving the component permanently stale client-side.
+  """
+  @spec open_with(Phoenix.LiveView.Socket.t(), String.t(), module(), keyword()) ::
+          Phoenix.LiveView.Socket.t()
+  def open_with(socket, id, module, assigns) do
+    send(self(), {:window_send_update, module, assigns})
+    open(socket, id)
+  end
+
   @managed MapSet.new(
-             ~w(address-book alias auto-respond cheatsheet custom-menus flood-protection highlight notify-list perform sound-settings timers)
+             ~w(address-book alias auto-respond cheatsheet custom-menus flood-protection highlight notify-list perform sound-settings timers user-lookup)
            )
 
   @doc "Whether the window's lifecycle is server-owned."

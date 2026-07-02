@@ -23,6 +23,8 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
   attr :active_tab, :string, default: "register"
   attr :auth_mode, :string, default: "register"
   attr :auth_valid, :boolean, default: false
+  attr :auth_password, :string, default: ""
+  attr :auth_confirm, :string, default: ""
   attr :bio, :string, default: ""
   attr :bio_warning, :string, default: nil
   attr :nick_error, :string, default: nil
@@ -75,6 +77,8 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
                 registered={@registered}
                 identified={@identified}
                 auth_valid={@auth_valid}
+                auth_password={@auth_password}
+                auth_confirm={@auth_confirm}
                 error_message={@error_message}
                 ghost_error={@ghost_error}
               />
@@ -116,6 +120,8 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
   attr :registered, :boolean, required: true
   attr :identified, :boolean, required: true
   attr :auth_valid, :boolean, required: true
+  attr :auth_password, :string, default: ""
+  attr :auth_confirm, :string, default: ""
   attr :error_message, :string, default: nil
   attr :ghost_error, :string, default: nil
 
@@ -194,6 +200,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
             id="account-password"
             name="password"
             type="password"
+            value={@auth_password}
             autocomplete="current-password"
             class="text-xs h-7"
             data-testid="account-password"
@@ -208,6 +215,7 @@ defmodule RetroHexChatWeb.Components.UI.AccountDialog do
             id="account-confirm"
             name="confirm"
             type="password"
+            value={@auth_confirm}
             autocomplete="new-password"
             class="text-xs h-7"
             data-testid="account-confirm"

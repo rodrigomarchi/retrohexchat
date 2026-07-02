@@ -11,8 +11,6 @@ defmodule RetroHexChatWeb.ChatLive.PerformAutojoinEvents do
   Attached as `attach_hook(:perform_autojoin_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
-  import Phoenix.LiveView, only: [send_update: 2]
-
   alias RetroHexChatWeb.ChatLive.Components.PerformDialog
   alias RetroHexChatWeb.ChatLive.Windows
 
@@ -25,13 +23,11 @@ defmodule RetroHexChatWeb.ChatLive.PerformAutojoinEvents do
 
   @doc """
   Opens/focuses the Perform window on a specific tab. The window mounts first
-  (managed), then the tab directive reaches the island — `open_window` before
-  `send_update`, so the island exists in the patch.
+  (managed); the tab directive is deferred one hop via `Windows.open_with/4`
+  so the client can patch the freshly mounted island.
   """
   @spec open(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def open(socket, tab \\ "commands") do
-    socket = Windows.open(socket, "perform")
-    send_update(PerformDialog, id: PerformDialog.id(), open: tab)
-    socket
+    Windows.open_with(socket, "perform", PerformDialog, id: PerformDialog.id(), open: tab)
   end
 end

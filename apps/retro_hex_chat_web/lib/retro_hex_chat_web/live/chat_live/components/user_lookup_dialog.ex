@@ -1,26 +1,27 @@
 defmodule RetroHexChatWeb.ChatLive.Components.UserLookupDialog do
   @moduledoc """
-  The User Lookup dialog and its Whois/Whowas result card.
+  The User Lookup island: a nickname form plus the Whois/Whowas result card,
+  rendered inside the user-lookup desktop window.
 
-  Holds a nickname input and renders the result card from `lookup_result` (the
-  card shares this component because it belongs to the same lookup flow). `result`
-  and `visible` are supplied by the parent; `lookup_result` is produced by the
-  `/whois` and `/whowas` commands, which run on the parent.
-
-  Owns the input draft — `nick` and `error`. `user_lookup_change` updates the
+  Owns the input draft (`nick`, `error`); the last `result` is a parent assign
+  (`lookup_result`) passed through as a template attr, so it reaches the island
+  in the same diff that mounts the window. The window is managed, so closing it
+  unmounts the island and resets the draft. `user_lookup_change` updates the
   controlled nickname input locally. `user_lookup_whois` (form submit) and
-  `user_lookup_whowas` run the lookup on the parent's `UserLookupEvents`, reading
-  the nickname from the submitted params. The result-card actions
+  `user_lookup_whowas` run the lookup on the parent's `UserLookupEvents`,
+  reading the nickname from the submitted params. The result-card actions
   (`lookup_result_whois`, `lookup_result_whowas`, `lookup_result_query`,
-  `close_lookup_result`) are handled by the parent, which re-runs a lookup, opens
-  a PM, or clears the result. `show_user_lookup_dialog` and `lookup_result` live
-  on the parent because the Escape handler reads them.
+  `close_lookup_result`) are handled by the parent, which re-runs a lookup,
+  opens a PM, or clears the card.
   """
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.UserLookupDialog
 
-  @id "user-lookup"
+  # Must differ from the desktop window's DOM id ("user-lookup") — a
+  # LiveComponent whose logical id collides with another element's DOM id
+  # breaks component patching (updates land in the virtual tree, never the DOM).
+  @id "user-lookup-dialog"
 
   @doc "Stable component id."
   @spec id() :: String.t()
@@ -32,7 +33,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserLookupDialog do
     {:ok,
      assign(socket,
        id: @id,
-       visible: false,
        result: nil,
        nick: "",
        error: nil
@@ -53,7 +53,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserLookupDialog do
     {:ok,
      assign(socket,
        id: Map.get(assigns, :id, socket.assigns.id),
-       visible: Map.get(assigns, :visible, socket.assigns.visible),
        result: Map.get(assigns, :result, socket.assigns.result)
      )}
   end
@@ -69,26 +68,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserLookupDialog do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <div id={"#{@id}-mount"}>
-      <.user_lookup_dialog
+    <div id={"#{@id}-mount"} class="contents">
+      <.user_lookup_panel
         id="user-lookup-dialog"
-        show={@visible}
         nickname={@nick}
         error_message={@error}
+        result={@result}
         on_change={JS.push("user_lookup_change", target: @myself)}
         on_whois="user_lookup_whois"
         on_whowas="user_lookup_whowas"
-        on_close="close_user_lookup"
-      />
-
-      <.lookup_result_card
-        id="lookup-result-dialog"
-        show={@result != nil}
-        result={@result}
-        on_close="close_lookup_result"
-        on_whois="lookup_result_whois"
-        on_whowas="lookup_result_whowas"
-        on_query="lookup_result_query"
       />
     </div>
     """

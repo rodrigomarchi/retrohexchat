@@ -94,9 +94,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "URL Catcher")}
           icon_fn={:icon_btn_url_catcher}
         />
-        <.app_item
-          action="open_user_lookup"
-          on_action={@on_action}
+        <.window_item
+          window="user-lookup"
           label={dgettext("ui", "User Lookup")}
           icon_fn={:icon_btn_search}
         />

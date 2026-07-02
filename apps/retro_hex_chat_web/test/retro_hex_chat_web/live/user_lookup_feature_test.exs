@@ -67,14 +67,15 @@ defmodule RetroHexChatWeb.UserLookupFeatureTest do
       assert tools_html =~ "User Lookup"
     end
 
-    test "toolbar action opens the User Lookup dialog", %{conn: conn} do
+    test "toolbar action opens the User Lookup window", %{conn: conn} do
       view = connect_user(conn, "LookupMenu#{uid()}")
 
-      refute has_element?(view, "#user-lookup-dialog-show-trigger")
+      refute has_element?(view, ~s([data-testid="user-lookup-window"]))
 
       render_click(view, "toolbar_action", %{"action" => "open_user_lookup"})
 
-      assert has_element?(view, "#user-lookup-dialog-show-trigger")
+      assert_push_event(view, "window_command", %{action: "open", id: "user-lookup"})
+      assert has_element?(view, ~s([data-testid="user-lookup-window"]))
       assert render(view) =~ "Enter nickname..."
     end
   end
@@ -87,15 +88,17 @@ defmodule RetroHexChatWeb.UserLookupFeatureTest do
 
       render_click(view, "toolbar_action", %{"action" => "open_user_lookup"})
 
-      html =
-        view
-        |> element(~s(form[data-testid="user-lookup-form"]))
-        |> render_submit(%{"nickname" => target})
+      view
+      |> element(~s(form[data-testid="user-lookup-form"]))
+      |> render_submit(%{"nickname" => target})
+
+      # The result card arrives in the island's send_update diff, after the
+      # submit's own patch.
+      html = render(view)
 
       assert html =~ "Whois: #{target}"
       assert html =~ "Query (PM)"
       assert html =~ "Whowas"
-      refute has_element?(view, "#user-lookup-dialog-show-trigger")
     end
 
     test "dialog Last Seen button shows whowas card", %{conn: conn} do
@@ -109,10 +112,11 @@ defmodule RetroHexChatWeb.UserLookupFeatureTest do
       |> element(~s(form[data-testid="user-lookup-form"]))
       |> render_change(%{"nickname" => target})
 
-      html =
-        view
-        |> element(~s([data-testid="user-lookup-whowas"]))
-        |> render_click()
+      view
+      |> element(~s([data-testid="user-lookup-whowas"]))
+      |> render_click()
+
+      html = render(view)
 
       assert html =~ "Last Seen: #{target}"
       assert html =~ "Channels"
@@ -128,9 +132,10 @@ defmodule RetroHexChatWeb.UserLookupFeatureTest do
       _target_view = connect_user(conn, target)
       view = connect_user(conn, "CardFrom#{uid()}")
 
-      submit_command(view, "/whois #{target}")
-
+      submit_command_sync(view, "/whois #{target}")
       html = render(view)
+
+      assert html =~ ~s(data-testid="user-lookup-window")
       assert html =~ "Whois: #{target}"
       assert html =~ ~s(data-testid="lookup-result-card")
       assert html =~ "Online for"
@@ -143,9 +148,9 @@ defmodule RetroHexChatWeb.UserLookupFeatureTest do
       WhowasCache.record(target, ["#lobby", "#elixir"], "Later!")
       view = connect_user(conn, "CWasFrom#{uid()}")
 
-      submit_command(view, "/whowas #{target}")
-
+      submit_command_sync(view, "/whowas #{target}")
       html = render(view)
+
       assert html =~ "Last Seen: #{target}"
       assert html =~ ~s(data-testid="lookup-result-card")
       assert html =~ "#lobby, #elixir"
@@ -158,7 +163,8 @@ defmodule RetroHexChatWeb.UserLookupFeatureTest do
       WhowasCache.record(target, ["#lobby"], "Context bye")
       view = connect_user(conn, "CtxFrom#{uid()}")
 
-      html = render_click(view, "context_whowas", %{"nick" => target})
+      render_click(view, "context_whowas", %{"nick" => target})
+      html = render(view)
 
       assert html =~ "Last Seen: #{target}"
       assert html =~ "Context bye"
@@ -187,14 +193,6 @@ defmodule RetroHexChatWeb.UserLookupFeatureTest do
   defp connect_user(conn, nick) do
     {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
-  end
-
-  defp submit_command(view, command) do
-    view
-    |> element(~s([data-testid="chat-input-form"]))
-    |> render_submit(%{"input" => command})
-
-    Process.sleep(50)
   end
 
   defp menu_actions(document) do

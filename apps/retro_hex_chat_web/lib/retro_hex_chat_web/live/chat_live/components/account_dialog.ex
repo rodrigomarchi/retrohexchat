@@ -47,6 +47,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
        tab: "register",
        auth_mode: "register",
        auth_valid: false,
+       auth_password: "",
+       auth_confirm: "",
        error: nil,
        nick_error: nil,
        bio_draft: "",
@@ -65,14 +67,25 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
        bio_draft: bio,
        error: nil,
        auth_valid: false,
+       auth_password: "",
+       auth_confirm: "",
        nick_error: nil,
        bio_warning: nil,
        ghost_error: nil
      )}
   end
 
-  def update(%{action: {:auth, mode, valid?, error}}, socket) do
-    {:ok, assign(socket, auth_mode: mode, auth_valid: valid?, error: error)}
+  # Drafts are mirrored back so patches re-render the typed values — inputs in a
+  # phx-change form lose unfocused values on any patch otherwise.
+  def update(%{action: {:auth, mode, valid?, error, drafts}}, socket) do
+    {:ok,
+     assign(socket,
+       auth_mode: mode,
+       auth_valid: valid?,
+       error: error,
+       auth_password: drafts.password,
+       auth_confirm: drafts.confirm
+     )}
   end
 
   def update(%{action: {:auth_error, mode, message}}, socket) do
@@ -80,7 +93,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
   end
 
   def update(%{action: {:auth_reset, mode}}, socket) do
-    {:ok, assign(socket, auth_mode: mode, error: nil, ghost_error: nil, auth_valid: false)}
+    {:ok,
+     assign(socket,
+       auth_mode: mode,
+       error: nil,
+       ghost_error: nil,
+       auth_valid: false,
+       auth_password: "",
+       auth_confirm: ""
+     )}
   end
 
   def update(%{action: {:ghost_error, message}}, socket) do
@@ -129,6 +150,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AccountDialog do
         active_tab={@tab}
         auth_mode={@auth_mode}
         auth_valid={@auth_valid}
+        auth_password={@auth_password}
+        auth_confirm={@auth_confirm}
         bio={@bio_draft || ""}
         bio_warning={@bio_warning}
         nick_error={@nick_error}

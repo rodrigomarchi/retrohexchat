@@ -432,6 +432,13 @@ defmodule RetroHexChatWeb.App.ChatLive do
   def handle_info({:close_window, id}, socket),
     do: {:noreply, ChatLive.Windows.close_window(socket, id)}
 
+  # Deferred island directive from ChatLive.Windows.open_with/4 — runs one
+  # message hop after the mount so the client can patch the component.
+  def handle_info({:window_send_update, module, assigns}, socket) do
+    send_update(module, assigns)
+    {:noreply, socket}
+  end
+
   # ── Catch-all handle_info ─────────────────────────────────────
 
   def handle_info({_ref, _result}, socket), do: {:noreply, socket}
@@ -653,7 +660,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       popular_channels: [],
       popular_channels_loaded: false,
       conversations_sections: %{channels: true, pms: true, popular: false},
-      show_user_lookup_dialog: false,
       lookup_result: nil,
       whois_output_mode: :card,
       unread_counts: %{},

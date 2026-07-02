@@ -123,7 +123,11 @@ defmodule RetroHexChatWeb.ChatLive.AccountEvents do
           {true, nil}
       end
 
-    send_update(AccountDialog, id: AccountDialog.id(), action: {:auth, mode, valid?, error})
+    send_update(AccountDialog,
+      id: AccountDialog.id(),
+      action: {:auth, mode, valid?, error, %{password: password, confirm: confirm}}
+    )
+
     {:halt, socket}
   end
 

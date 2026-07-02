@@ -10,8 +10,6 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
   Attached as `attach_hook(:address_book_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
-  import Phoenix.LiveView, only: [send_update: 2]
-
   alias RetroHexChatWeb.ChatLive.Components.AddressBookDialog
   alias RetroHexChatWeb.ChatLive.Windows
 
@@ -23,15 +21,16 @@ defmodule RetroHexChatWeb.ChatLive.AddressBookEvents do
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   @doc """
-  Opens/focuses the Address Book window on a specific tab. The window mounts
-  first (managed), then the tab directive reaches the island — `open_window`
-  before `send_update`, so the island exists in the patch.
+  Opens/focuses the Address Book window on a specific tab. The tab directive
+  is deferred one hop via `Windows.open_with/4` so the client can patch the
+  freshly mounted island.
   """
   @spec open(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def open(socket, tab \\ "contacts") do
-    socket = Windows.open(socket, "address-book")
-    send_update(AddressBookDialog, id: AddressBookDialog.id(), open: tab)
-    socket
+    Windows.open_with(socket, "address-book", AddressBookDialog,
+      id: AddressBookDialog.id(),
+      open: tab
+    )
   end
 
   @doc "Opens/focuses the Address Book window (keyboard shortcut)."

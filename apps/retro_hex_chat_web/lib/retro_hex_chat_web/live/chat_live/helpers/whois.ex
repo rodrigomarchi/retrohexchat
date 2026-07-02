@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   alias RetroHexChat.Presence.{Tracker, WhowasCache}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Windows
 
   @type lookup_row :: %{label: String.t(), value: String.t()}
   @type lookup_result :: %{
@@ -44,7 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   @spec show_whois_card(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def show_whois_card(socket, target) do
     case whois_result(socket, target) do
-      {:ok, result} -> assign(socket, lookup_result: result)
+      {:ok, result} -> deliver_card(socket, result)
       {:error, message} -> Messages.system_event(socket, message)
     end
   end
@@ -52,9 +53,18 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Whois do
   @spec show_whowas_card(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def show_whowas_card(socket, target) do
     case whowas_result(target) do
-      {:ok, result} -> assign(socket, lookup_result: result)
+      {:ok, result} -> deliver_card(socket, result)
       {:error, message} -> Messages.system_event(socket, message)
     end
+  end
+
+  # The result rides the parent assign (template attr) so it reaches the island
+  # in the same main diff that mounts the window — a component-only send_update
+  # racing a managed-window mount is unreliable client-side.
+  defp deliver_card(socket, result) do
+    socket
+    |> assign(lookup_result: result)
+    |> Windows.open("user-lookup")
   end
 
   @spec whois_result(Phoenix.LiveView.Socket.t(), String.t()) ::

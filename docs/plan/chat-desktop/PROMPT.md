@@ -11,6 +11,11 @@ already powers the P2P lobby. Work through the plan in `docs/plan/chat-desktop/`
    learned so far. Read the current phase file (`phase-N-*.md`).
 2. Pick the next unchecked task in the current phase. Do ONE coherent unit of work
    (one task, or one dialog migration end-to-end).
+   BEFORE writing any code: run the test files (ExUnit + the affected Playwright
+   specs) that cover the area you are about to touch. Fix any pre-existing
+   failure FIRST, as its own commit. Never start development on top of red
+   tests — mixing pre-existing breakage with migration changes is where whole
+   hours get lost.
 3. Work TDD: write/adjust the test first when practical. Follow the per-dialog
    recipe in PROGRESS.md once Phase 2 has established it.
 4. Validate: `make ci.quick` while iterating; the FULL `make ci` must be green
