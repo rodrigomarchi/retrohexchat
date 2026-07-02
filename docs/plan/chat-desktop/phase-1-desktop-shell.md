@@ -67,18 +67,26 @@ from today.
 
 ## Completion criteria
 
-- [ ] Chat page loads as a desktop; chat window maximized by default; restore/drag/
-      resize/minimize work; minimize → taskbar button restores it.
-- [ ] All ~28 dialogs still open/close exactly as before (modals over the desktop).
-- [ ] Window layout persists across reload (localStorage `rhc:desktop:chat`).
-- [ ] Lobby and showcase desktops unaffected.
-- [ ] Help: no new user-facing feature is fully shipped yet, but if the taskbar/
-      start menu are visible to users at the end of this phase, add the
-      "Desktop & Windows" HelpTopics entry now rather than deferring to Phase 6.
+- [x] Chat page loads as a desktop; chat window maximized by default; restore/drag/
+      resize/minimize work; minimize → taskbar button restores it. (Verified live
+      in Chrome on the dev server.)
+- [x] All ~28 dialogs still open/close exactly as before (modals over the desktop).
+      (Full suite green + Address Book/Alias Editor verified live.)
+- [x] Window layout persists across reload (localStorage `rhc:desktop:chat` —
+      verified live: restored geometry survived a reload and beat the
+      default-maximized flag).
+- [x] Lobby and showcase desktops unaffected (their suites green; WM Vitest 45/45).
+- [x] Help: "Desktop & Windows" topic added (`ui-desktop`) with content template
+      and See Also cross-refs from ui-overview and ui-toolbar; ui-overview's
+      stale status-bar-clock mention fixed.
 
 ## Verification
 
-- `make ci` fully green (all 9 checks — this is the gate).
-- Manual smoke (dev server): load `/chat`, restore + move + resize + re-maximize
-  the chat window, reload and confirm persistence, open 3 different dialogs from
-  menu bar and start menu, check <720px stacked mode doesn't break the chat.
+- `make ci` fully green (all 9 checks — this is the gate). ✔ 2026-07-02
+- Manual smoke (dev server): ✔ 2026-07-02 via browser automation — restore, drag,
+  resize (SE grip), re-maximize (control button), minimize → taskbar restore,
+  reload persistence, Address Book via menu bar + Alias Editor via start menu,
+  admin group correctly absent for a guest, zero console errors.
+  ⚠ Not verified: <720px stacked mode (Chrome window was fullscreen and refused
+  programmatic resize). Stacked mode is untouched generic WM code the lobby
+  already ships, but give it one quick look in devtools responsive mode.

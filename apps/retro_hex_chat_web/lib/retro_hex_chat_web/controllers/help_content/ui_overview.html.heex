@@ -3,6 +3,11 @@
 </p>
 <.help_h4 icon={:icon_tab_display}>{dgettext("help_ui", "Layout")}</.help_h4>
 <p>
+  <strong>{dgettext("help_ui", "Desktop:")}</strong>
+  {dgettext(
+    "help_ui",
+    "The chat lives in one pinned window on a Windows-style desktop with a taskbar, Start menu, and tray clock."
+  )}<br />
   <strong>{dgettext("help_ui", "Toolbar:")}</strong>
   {dgettext("help_ui", "Quick-access buttons for common actions.")}<br />
   <strong>{dgettext("help_ui", "Edit Menu:")}</strong>
@@ -35,11 +40,13 @@
   </strong>
   {dgettext(
     "help_ui",
-    "Your account state, current channel, user count, online buddy badge, lag, clock, and mute state."
+    "Your account state, current channel, user count, online buddy badge, lag, and mute state."
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_ui", "See Also")}</.help_h4>
 <p>
+  <.help_link topic="ui-desktop">{dgettext("help_ui", "Desktop & Windows")}</.help_link>
+  ·
   <.help_link topic="ui-conversations sidebar">{dgettext("help_ui", "Conversations")}</.help_link>
   · <.help_link topic="ui-tab-bar">{dgettext("help_ui", "Tab Bar")}</.help_link>
   · <.help_link topic="ui-nicklist">{dgettext("help_ui", "User List")}</.help_link>

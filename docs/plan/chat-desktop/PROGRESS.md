@@ -4,7 +4,7 @@
 
 | Phase | Status | Notes |
 |-------|--------|-------|
-| 1 — Desktop shell | in progress | Tasks A, B, C done. Remaining: "Desktop & Windows" HelpTopics entry, full `make ci` + manual smoke for completion criteria |
+| 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
 | 2 — Pilot + recipe | not started | |
 | 3 — Tools/Settings batch | not started | |
 | 4 — View/Account batch | not started | |
@@ -53,6 +53,12 @@ hold for the chat and extend:
 - Start-menu items that fire server actions (`phx-click` + `phx-value-action`)
   need no extra close wiring — the WM hook closes the menu on any in-menu click
   that isn't a `data-window-open` opener.
+- Browser-smoke gotcha: don't verify WM behavior by mutating inline styles on
+  server-rendered elements — the next LiveView patch (e.g. a bot message) wipes
+  them and invalidates the test. Use real window/geometry changes.
+- Help content: topic metadata lives in `HelpTopics.*` (domain app); the body is
+  a `ui_<id>.html.heex` template under `controllers/help_content/` auto-embedded
+  by glob — no registration step beyond the metadata entry.
 - The `#{id}-show-trigger` marker is the modal-dialog test contract; migrated
   windows lose it — use `data-window-id` visibility, `render_hook(view,
   "window_open"/"window_closed")`, and `assert_push_event(view, "window_command", ...)`

@@ -19,6 +19,32 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           )
       },
       %{
+        id: "ui-desktop",
+        title: dgettext("help", "Desktop & Windows"),
+        category: dgettext("help", "User Interface"),
+        keywords: [
+          "desktop",
+          "window",
+          "taskbar",
+          "start menu",
+          "minimize",
+          "maximize",
+          "restore",
+          "tray",
+          "clock",
+          "cascade",
+          "tile"
+        ],
+        icon: :icon_win_maximize,
+        description:
+          dgettext(
+            "help",
+            "The chat runs on a Windows-style desktop: the chat itself is one pinned window " <>
+              "(maximized by default) that you can restore, drag and resize, over a taskbar " <>
+              "with a Start menu and a tray clock. Window layout persists across visits."
+          )
+      },
+      %{
         id: "ui-conversations",
         title: dgettext("help", "Conversations"),
         category: dgettext("help", "User Interface"),
