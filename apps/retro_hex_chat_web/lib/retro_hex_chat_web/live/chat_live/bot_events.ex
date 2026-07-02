@@ -34,10 +34,6 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     end
   end
 
-  def handle_event("close_bot_dialog", _params, socket) do
-    {:halt, put_bot(socket, show_bot: false)}
-  end
-
   def handle_event("bot_select", %{"name" => name}, socket) do
     bot = Queries.get_bot_by_name(name)
 

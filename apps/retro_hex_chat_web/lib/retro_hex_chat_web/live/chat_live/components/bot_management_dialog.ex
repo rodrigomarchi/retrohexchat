@@ -76,7 +76,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
         active_tab={@tab}
         is_admin={@is_admin}
         editing_field={@editing_field}
-        on_close="close_bot_dialog"
       />
 
       <.new_bot_dialog id="new-bot-dialog" show={@show_new_bot} on_close="close_new_bot_dialog" />

@@ -1343,7 +1343,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
         on_danger_zone_preview="admin_console_preview_nuke"
         on_danger_zone_change="admin_console_change_nuke_confirm"
         on_danger_zone_execute="admin_console_execute_nuke"
-        on_close="close_admin_console"
       />
     </div>
     """

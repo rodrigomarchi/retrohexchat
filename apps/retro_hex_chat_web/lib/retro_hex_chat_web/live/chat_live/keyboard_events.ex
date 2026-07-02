@@ -131,11 +131,15 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     end
   end
 
+  # Desktop windows and WM menus own Escape client-side (a consumed press is
+  # stopPropagation'd), so the server ladder only ever sees Escape for the
+  # non-window overlays below: a pending invite prompt first, then the modal
+  # survivors (locked decision #2) and the search/notice chat modes.
   defp topmost_dismissal(socket) do
     if socket.assigns.pending_invites != [] do
       &dismiss_pending_invite/1
     else
-      find_active_dismissal(socket, topmost_dismissals())
+      nil
     end
   end
 
@@ -144,10 +148,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       nil -> nil
       {_assign, dismissal} -> dismissal
     end
-  end
-
-  defp topmost_dismissals do
-    []
   end
 
   defp secondary_dismissals do
