@@ -216,6 +216,14 @@ hold for the chat and extend:
   password/confirm inputs had no value binding, so any patch between fill and
   submit wiped the unfocused field ("Passwords do not match" on submit). The
   auth drafts are now mirrored via the `{:auth, ...}` directive.
+- OPEN ISSUE (E2E, intermittent): chat-ui-features-channel Feature 06 — the
+  "Knock sent" system line sometimes never renders. Fails/passes on the SAME
+  commit (passed at 1b539d58 in the morning, failed there in the evening);
+  failure snapshot looks post-remount (channel-list window gone, sidebar back)
+  with NO knock line (neither success nor error) and no server [error].
+  Suspect the client component-patch fragility class (see REVERSED gotcha).
+  Next loop iteration: dedicated repro (run the spec N times, capture server
+  log at debug + browser console), then root-cause.
 
 ## Decision log
 

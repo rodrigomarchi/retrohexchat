@@ -16,9 +16,8 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
   describe "Registration tab entry point" do
     test "Channel Central component appends Registration after Invite Exceptions" do
       html =
-        render_component(&ChannelCentralDialog.channel_central_dialog/1,
+        render_component(&ChannelCentralDialog.channel_central_panel/1,
           id: "channel-central-dialog",
-          show: true,
           channel_name: "#lobby",
           on_tab: "channel_central_tab"
         )

@@ -5,34 +5,29 @@
     title={dgettext("showcase", "Operator View")}
     description="Channel Central with full operator access — all fields are editable."
   >
-    <.button phx-click={show_modal("channel-central-op")}>
-      <:icon><Icons.icon_btn_channel_central /></:icon>
-      {dgettext("showcase", "Open as Operator")}
-    </.button>
-
-    <.channel_central_dialog
-      id="channel-central-op"
-      show={false}
-      channel_name="#retro-chat"
-      topic="Welcome to RetroHexChat! Type /help for commands."
-      topic_set_by="Troll"
-      topic_set_at="2025-12-15 14:30"
-      created_at="2025-01-01 00:00"
-      member_count={42}
-      operator={true}
-      modes={@sample_modes}
-      bans={@sample_bans}
-      ban_exceptions={@sample_ban_exceptions}
-      invite_exceptions={@sample_invite_exceptions}
-      ban_selected={@ban_selected}
-      ban_ex_selected={@ban_ex_selected}
-      invite_ex_selected={@invite_ex_selected}
-    />
+    <div class="h-[420px] shadow-retro-field overflow-hidden p-2 flex flex-col">
+      <.channel_central_panel
+        id="channel-central-op"
+        channel_name="#retro-chat"
+        topic="Welcome to RetroHexChat! Type /help for commands."
+        topic_set_by="Troll"
+        topic_set_at="2025-12-15 14:30"
+        created_at="2025-01-01 00:00"
+        member_count={42}
+        operator={true}
+        modes={@sample_modes}
+        bans={@sample_bans}
+        ban_exceptions={@sample_ban_exceptions}
+        invite_exceptions={@sample_invite_exceptions}
+        ban_selected={@ban_selected}
+        ban_ex_selected={@ban_ex_selected}
+        invite_ex_selected={@invite_ex_selected}
+      />
+    </div>
 
     <.code_example>
-      &lt;.channel_central_dialog
+      &lt;.channel_central_panel
       id="channel-central"
-      show=&#123;true&#125;
       channel_name="#retro-chat"
       topic="Welcome!"
       topic_set_by="Troll"
@@ -43,7 +38,6 @@
       on_mode_apply="apply-modes"
       on_ban_add="add-ban"
       on_ban_remove="remove-ban"
-      on_close="close"
       /&gt;
     </.code_example>
   </.showcase_card>
@@ -52,26 +46,22 @@
     title={dgettext("showcase", "Regular User View")}
     description="Channel Central as a non-operator — topic and modes are read-only, list management is hidden."
   >
-    <.button phx-click={show_modal("channel-central-user")}>
-      <:icon><Icons.icon_btn_channel_central /></:icon>
-      {dgettext("showcase", "Open as User")}
-    </.button>
-
-    <.channel_central_dialog
-      id="channel-central-user"
-      show={false}
-      channel_name="#lobby"
-      topic="General discussion channel"
-      topic_set_by="Admin"
-      topic_set_at="2025-11-20 09:15"
-      created_at="2025-01-01 00:00"
-      member_count={128}
-      operator={false}
-      modes={%{moderated: true, invite_only: false, topic_lock: true, key: nil, limit: 200}}
-      bans={@sample_bans}
-      ban_exceptions={[]}
-      invite_exceptions={[]}
-    />
+    <div class="h-[420px] shadow-retro-field overflow-hidden p-2 flex flex-col">
+      <.channel_central_panel
+        id="channel-central-user"
+        channel_name="#lobby"
+        topic="General discussion channel"
+        topic_set_by="Admin"
+        topic_set_at="2025-11-20 09:15"
+        created_at="2025-01-01 00:00"
+        member_count={128}
+        operator={false}
+        modes={%{moderated: true, invite_only: false, topic_lock: true, key: nil, limit: 200}}
+        bans={@sample_bans}
+        ban_exceptions={[]}
+        invite_exceptions={[]}
+      />
+    </div>
   </.showcase_card>
 
   <.showcase_card

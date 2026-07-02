@@ -20,8 +20,8 @@ defmodule RetroHexChatWeb.ChatLive.ChannelCentralEvents do
     {:halt, open(socket, channel)}
   end
 
-  # Close fires on this LiveView from the dialog Close button, its title-bar X,
-  # and the dialog's own Escape/click-away `JS.push` — all reflect into the island.
+  # Programmatic close: resets the island, which also pushes the client-side
+  # window close. (The window X only hides the window client-side.)
   def handle_event("close_channel_central", _params, socket) do
     send_update(ChannelCentralDialog, id: ChannelCentralDialog.id(), close: true)
     {:halt, socket}

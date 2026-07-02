@@ -10,7 +10,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
   `send_update` and forwards live channel updates from PubSub.
 
   Every UI event targets this component (`phx-target={@myself}` threaded through
-  the design-system `channel_central_dialog/1`), so the 4 add/transfer sub-forms
+  the design-system `channel_central_panel/1`), so the 4 add/transfer sub-forms
   (`fixed inset-0` overlays) submit to the component that owns their DOM subtree —
   the component-id matches, so LiveView preserves the typed input across the
   background re-renders that channel PubSub triggers (the modal-in-modal
@@ -560,10 +560,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
 
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
-      <.channel_central_dialog
+      <.channel_central_panel
         id={@id}
         target={@myself}
-        show={@show_channel_central}
         active_tab={@channel_central_tab}
         channel_name={@channel_central_channel}
         topic={@cc_topic}
@@ -622,7 +621,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
         on_cs_access_add="cc_cs_access_add"
         on_cs_access_select="cc_cs_access_select"
         on_cs_access_remove="cc_cs_access_remove"
-        on_close="close_channel_central"
       />
     </div>
     """
@@ -641,6 +639,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
           operator = nickname in state.operators or nickname in Map.get(state, :owners, [])
           owner = nickname in Map.get(state, :owners, [])
 
+          send(self(), {:cc_window_channel, channel})
+
           socket
           |> assign(@closed)
           |> assign(
@@ -651,6 +651,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
             channel_central_owner: owner,
             channel_central_registration: ChanServ.registration_snapshot(channel, nickname)
           )
+          |> push_event("window_command", %{action: "open", id: "channel-central"})
         else
           bubble_error(
             socket,
@@ -665,7 +666,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog do
     end
   end
 
-  defp close_channel_central(socket), do: assign(socket, @closed)
+  defp close_channel_central(socket) do
+    socket
+    |> assign(@closed)
+    |> push_event("window_command", %{action: "close", id: "channel-central"})
+  end
 
   defp refresh_channel_central(socket) do
     channel = socket.assigns.channel_central_channel

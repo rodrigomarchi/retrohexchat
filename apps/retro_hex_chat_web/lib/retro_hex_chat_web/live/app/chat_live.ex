@@ -432,6 +432,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
   def handle_info({:close_window, id}, socket),
     do: {:noreply, ChatLive.Windows.close_window(socket, id)}
 
+  # Channel Central mirrors its open channel up for the window title/taskbar.
+  def handle_info({:cc_window_channel, channel}, socket),
+    do: {:noreply, assign(socket, cc_window_channel: channel)}
+
   # Deferred island directive from ChatLive.Windows.open_with/4 — runs one
   # message hop after the mount so the client can patch the component.
   def handle_info({:window_send_update, module, assigns}, socket) do
@@ -660,6 +664,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       popular_channels_loaded: false,
       conversations_sections: %{channels: true, pms: true, popular: false},
       lookup_result: nil,
+      cc_window_channel: nil,
       whois_output_mode: :card,
       unread_counts: %{},
       url_catcher_entries: [],

@@ -504,9 +504,7 @@ export class ChatPage {
     );
     this.addressBookDialog = page.getByTestId('address-book-window');
     this.channelListDialog = page.getByTestId('channel-list-window');
-    this.channelCentralDialog = page.locator(
-      '#channel-central-dialog [role="dialog"]',
-    );
+    this.channelCentralDialog = page.getByTestId('channel-central-window');
     this.aliasDialog = page.getByTestId('alias-window');
     this.aliasEditForm = page.getByTestId('alias-edit-form');
     this.aliasWarning = page.getByTestId('alias-warning');
@@ -1584,8 +1582,7 @@ export class ChatPage {
 
   async closeChannelCentral() {
     await this.channelCentralDialog
-      .getByRole('button', { name: 'Close' })
-      .last()
+      .locator('[data-window-control="close"]')
       .click();
     await expect(this.channelCentralDialog).toBeHidden();
   }

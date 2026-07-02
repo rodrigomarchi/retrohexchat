@@ -465,6 +465,31 @@
       />
     </.desktop_window>
 
+    <%!-- Channel Central — always mounted: the island owns all state, gates
+          opens on membership, receives blind PubSub refreshes while closed,
+          and drives its own window via window_command. --%>
+    <.desktop_window
+      id="channel-central"
+      title={dgettext("chat", "Channel Central: %{channel}", channel: @cc_window_channel || "")}
+      open={false}
+      default_x={140}
+      default_y={50}
+      width={620}
+      height={560}
+      min_width={480}
+      min_height={380}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="channel-central-window"
+    >
+      <:icon><Icons.icon_dialog_channel_central class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog}
+        id={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog.id()}
+        session={@session}
+        timezone={@timezone}
+      />
+    </.desktop_window>
+
     <%!-- Account — server-managed: every opener re-seeds tab/auth-mode/bio. --%>
     <.desktop_window
       :if={"account" in @open_windows}
@@ -561,6 +586,13 @@
           label={dgettext("chat", "Keyboard Shortcuts")}
         >
           <:icon><Icons.icon_dialog_cheatsheet class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={@cc_window_channel}
+          window="channel-central"
+          label={dgettext("chat", "Channel Central")}
+        >
+          <:icon><Icons.icon_dialog_channel_central class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
           :if={"account" in @open_windows}
@@ -714,13 +746,6 @@
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.NickChangeDialog}
   id={RetroHexChatWeb.ChatLive.Components.NickChangeDialog.id()}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog}
-  id={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog.id()}
-  session={@session}
-  timezone={@timezone}
 />
 
 <.live_component

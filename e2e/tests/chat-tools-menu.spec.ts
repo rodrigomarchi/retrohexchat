@@ -43,8 +43,7 @@ test.describe('Tools menu', () => {
     await openToolsItem(chat, chat.channelCentralMenuItem);
     await expect(chat.channelCentralDialog).toBeVisible();
     await chat.channelCentralDialog
-      .getByRole('button', { name: 'Close' })
-      .last()
+      .locator('[data-window-control="close"]')
       .click();
     await expect(chat.channelCentralDialog).toBeHidden();
 

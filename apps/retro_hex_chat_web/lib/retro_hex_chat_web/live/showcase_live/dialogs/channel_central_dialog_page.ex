@@ -9,10 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelCentralDialogPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.ChannelCentralDialog
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.ShowcaseHelpers
-  alias RetroHexChatWeb.Icons
 
   @impl true
   def handle_event("select_entry", %{"mask" => mask}, socket) do

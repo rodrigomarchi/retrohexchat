@@ -30,8 +30,14 @@ Phase 3 complete (recipe battle-tested on the heavy Tools batch).
       mode, bio}` directive (deferred one hop); every open re-seeds tab/auth
       mode/bio, so close-as-unmount matches the old reset semantics. Orphaned
       `:reset` directive removed; status-bar opener unchanged (server event).
-- [ ] ChannelCentral (4 sub-forms; opened from channel context menus too — sweep
-      openers)
+- [x] ChannelCentral — ALWAYS-MOUNTED window (`open={false}`): the island owns
+      all state, gates opens on membership (so IT drives the window via
+      `window_command` from `update/2`), and receives blind PubSub refreshes
+      while closed. The open channel is mirrored up (`{:cc_window_channel, ch}`)
+      for the dynamic window title + conditional taskbar button. RECIPE
+      DEVIATION (step 7): the 4 sub-forms kept their bespoke Win98 overlay
+      markup — re-anchored `fixed`→`absolute` (window-scoped) + `data-escape-guard`;
+      Escape-neutral matches the old `lock` semantics exactly.
 
 Follow the Phase 2 recipe per dialog; record mounting decisions.
 

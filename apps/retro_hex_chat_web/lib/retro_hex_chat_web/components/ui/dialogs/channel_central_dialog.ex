@@ -11,7 +11,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Tabs
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Button
@@ -39,7 +38,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
       />
   """
   attr :id, :string, required: true
-  attr :show, :boolean, default: false
   attr :active_tab, :string, default: "general"
   attr :channel_name, :string, default: nil
   attr :topic, :string, default: ""
@@ -98,218 +96,195 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   attr :show_add_ban_ex_dialog, :boolean, default: false
   attr :show_add_invite_ex_dialog, :boolean, default: false
   attr :show_transfer_dialog, :boolean, default: false
-  attr :on_close, :any, default: nil
 
-  @spec channel_central_dialog(map()) :: Phoenix.LiveView.Rendered.t()
+  @spec channel_central_panel(map()) :: Phoenix.LiveView.Rendered.t()
   attr :target, :any, default: nil
 
-  def channel_central_dialog(assigns) do
+  def channel_central_panel(assigns) do
     modes = Map.merge(default_modes(), assigns.modes)
     assigns = assign(assigns, :modes, modes)
 
     ~H"""
-    <.dialog
-      id={@id}
-      show={@show}
-      class="max-w-xl"
-      lock={
-        @show_add_ban_dialog || @show_add_ban_ex_dialog || @show_add_invite_ex_dialog ||
-          @show_transfer_dialog
-      }
-      on_cancel={@on_close}
+    <div
+      id={"#{@id}-content"}
+      data-testid="channel-central-panel"
+      class="flex h-full min-h-0 flex-col overflow-y-auto"
     >
-      <.dialog_header
-        id={@id}
-        title={
-          dgettext("dialogs", "Channel Central: %{channel}", channel: display_channel(@channel_name))
-        }
-        on_close={@on_close}
-      >
-        <:icon><Icons.icon_dialog_channel_central /></:icon>
-      </.dialog_header>
-      <.dialog_body>
-        <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
-          <.tabs_list class="flex flex-wrap">
-            <.tabs_trigger
-              builder={builder}
-              value="general"
-              phx-click={@on_tab}
-              phx-target={@target}
-              phx-value-tab="general"
-            >
-              <:icon><Icons.icon_tab_general class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "General")}
-            </.tabs_trigger>
-            <.tabs_trigger
-              builder={builder}
-              value="modes"
-              phx-click={@on_tab}
-              phx-target={@target}
-              phx-value-tab="modes"
-            >
-              <:icon><Icons.icon_tab_modes class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Modes")}
-            </.tabs_trigger>
-            <.tabs_trigger
-              builder={builder}
-              value="bans"
-              phx-click={@on_tab}
-              phx-target={@target}
-              phx-value-tab="bans"
-            >
-              <:icon><Icons.icon_tab_bans class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Bans")}
-            </.tabs_trigger>
-            <.tabs_trigger
-              builder={builder}
-              value="ban_exceptions"
-              phx-click={@on_tab}
-              phx-target={@target}
-              phx-value-tab="ban_exceptions"
-            >
-              <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Ban Exc.")}
-            </.tabs_trigger>
-            <.tabs_trigger
-              builder={builder}
-              value="invite_exceptions"
-              phx-click={@on_tab}
-              phx-target={@target}
-              phx-value-tab="invite_exceptions"
-            >
-              <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Invite Exc.")}
-            </.tabs_trigger>
-            <.tabs_trigger
-              builder={builder}
-              value="registration"
-              phx-click={@on_tab}
-              phx-target={@target}
-              phx-value-tab="registration"
-            >
-              <:icon><Icons.icon_tab_registration class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Registration")}
-            </.tabs_trigger>
-          </.tabs_list>
+      <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
+        <.tabs_list class="flex flex-wrap">
+          <.tabs_trigger
+            builder={builder}
+            value="general"
+            phx-click={@on_tab}
+            phx-target={@target}
+            phx-value-tab="general"
+          >
+            <:icon><Icons.icon_tab_general class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "General")}
+          </.tabs_trigger>
+          <.tabs_trigger
+            builder={builder}
+            value="modes"
+            phx-click={@on_tab}
+            phx-target={@target}
+            phx-value-tab="modes"
+          >
+            <:icon><Icons.icon_tab_modes class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Modes")}
+          </.tabs_trigger>
+          <.tabs_trigger
+            builder={builder}
+            value="bans"
+            phx-click={@on_tab}
+            phx-target={@target}
+            phx-value-tab="bans"
+          >
+            <:icon><Icons.icon_tab_bans class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Bans")}
+          </.tabs_trigger>
+          <.tabs_trigger
+            builder={builder}
+            value="ban_exceptions"
+            phx-click={@on_tab}
+            phx-target={@target}
+            phx-value-tab="ban_exceptions"
+          >
+            <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Ban Exc.")}
+          </.tabs_trigger>
+          <.tabs_trigger
+            builder={builder}
+            value="invite_exceptions"
+            phx-click={@on_tab}
+            phx-target={@target}
+            phx-value-tab="invite_exceptions"
+          >
+            <:icon><Icons.icon_tab_exceptions class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Invite Exc.")}
+          </.tabs_trigger>
+          <.tabs_trigger
+            builder={builder}
+            value="registration"
+            phx-click={@on_tab}
+            phx-target={@target}
+            phx-value-tab="registration"
+          >
+            <:icon><Icons.icon_tab_registration class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Registration")}
+          </.tabs_trigger>
+        </.tabs_list>
 
-          <.tabs_content value="general" builder={builder}>
-            <.general_tab
-              target={@target}
-              channel_name={@channel_name}
-              topic={@topic}
-              topic_set_by={@topic_set_by}
-              topic_set_at={@topic_set_at}
-              created_at={@created_at}
-              member_count={@member_count}
-              operator={@operator}
-              owner={@owner}
-              welcome_message={@welcome_message}
-              throttle_seconds={@throttle_seconds}
-              notice={@notice}
-              on_topic_save={@on_topic_save}
-              on_welcome_save={@on_welcome_save}
-              on_welcome_clear={@on_welcome_clear}
-              on_throttle_apply={@on_throttle_apply}
-              on_transfer_open={@on_transfer_open}
-            />
-          </.tabs_content>
+        <.tabs_content value="general" builder={builder}>
+          <.general_tab
+            target={@target}
+            channel_name={@channel_name}
+            topic={@topic}
+            topic_set_by={@topic_set_by}
+            topic_set_at={@topic_set_at}
+            created_at={@created_at}
+            member_count={@member_count}
+            operator={@operator}
+            owner={@owner}
+            welcome_message={@welcome_message}
+            throttle_seconds={@throttle_seconds}
+            notice={@notice}
+            on_topic_save={@on_topic_save}
+            on_welcome_save={@on_welcome_save}
+            on_welcome_clear={@on_welcome_clear}
+            on_throttle_apply={@on_throttle_apply}
+            on_transfer_open={@on_transfer_open}
+          />
+        </.tabs_content>
 
-          <.tabs_content value="modes" builder={builder}>
-            <.modes_tab
-              target={@target}
-              modes={@modes}
-              operator={@operator}
-              on_mode_apply={@on_mode_apply}
-            />
-          </.tabs_content>
+        <.tabs_content value="modes" builder={builder}>
+          <.modes_tab
+            target={@target}
+            modes={@modes}
+            operator={@operator}
+            on_mode_apply={@on_mode_apply}
+          />
+        </.tabs_content>
 
-          <.tabs_content value="bans" builder={builder}>
-            <.list_tab
-              target={@target}
-              entries={@bans}
-              selected={@ban_selected}
-              operator={@operator}
-              on_add={@on_ban_add}
-              on_remove={@on_ban_remove}
-              on_select={@on_ban_select}
-              empty_label={dgettext("dialogs", "No bans set on this channel.")}
-            />
-          </.tabs_content>
+        <.tabs_content value="bans" builder={builder}>
+          <.list_tab
+            target={@target}
+            entries={@bans}
+            selected={@ban_selected}
+            operator={@operator}
+            on_add={@on_ban_add}
+            on_remove={@on_ban_remove}
+            on_select={@on_ban_select}
+            empty_label={dgettext("dialogs", "No bans set on this channel.")}
+          />
+        </.tabs_content>
 
-          <.tabs_content value="ban_exceptions" builder={builder}>
-            <.list_tab
-              target={@target}
-              entries={@ban_exceptions}
-              selected={@ban_ex_selected}
-              operator={@operator}
-              on_add={@on_ban_ex_add}
-              on_remove={@on_ban_ex_remove}
-              on_select={@on_ban_ex_select}
-              empty_label={dgettext("dialogs", "No ban exceptions set.")}
-            />
-          </.tabs_content>
+        <.tabs_content value="ban_exceptions" builder={builder}>
+          <.list_tab
+            target={@target}
+            entries={@ban_exceptions}
+            selected={@ban_ex_selected}
+            operator={@operator}
+            on_add={@on_ban_ex_add}
+            on_remove={@on_ban_ex_remove}
+            on_select={@on_ban_ex_select}
+            empty_label={dgettext("dialogs", "No ban exceptions set.")}
+          />
+        </.tabs_content>
 
-          <.tabs_content value="invite_exceptions" builder={builder}>
-            <.list_tab
-              target={@target}
-              entries={@invite_exceptions}
-              selected={@invite_ex_selected}
-              operator={@operator}
-              on_add={@on_invite_ex_add}
-              on_remove={@on_invite_ex_remove}
-              on_select={@on_invite_ex_select}
-              empty_label={dgettext("dialogs", "No invite exceptions set.")}
-            />
-          </.tabs_content>
+        <.tabs_content value="invite_exceptions" builder={builder}>
+          <.list_tab
+            target={@target}
+            entries={@invite_exceptions}
+            selected={@invite_ex_selected}
+            operator={@operator}
+            on_add={@on_invite_ex_add}
+            on_remove={@on_invite_ex_remove}
+            on_select={@on_invite_ex_select}
+            empty_label={dgettext("dialogs", "No invite exceptions set.")}
+          />
+        </.tabs_content>
 
-          <.tabs_content value="registration" builder={builder}>
-            <.registration_tab
-              target={@target}
-              channel_name={@channel_name}
-              operator={@operator}
-              identified={@identified}
-              registration={@registration}
-              access_tab={@access_tab}
-              access_selected={@access_selected}
-              access_nick={@access_nick}
-              error_message={@cs_error}
-              confirm_drop={@cs_confirm_drop}
-              on_register={@on_cs_register}
-              on_drop_request={@on_cs_drop_request}
-              on_drop={@on_cs_drop}
-              on_drop_cancel={@on_cs_drop_cancel}
-              on_access_tab={@on_cs_access_tab}
-              on_access_change={@on_cs_access_change}
-              on_access_add={@on_cs_access_add}
-              on_access_select={@on_cs_access_select}
-              on_access_remove={@on_cs_access_remove}
-            />
-          </.tabs_content>
-        </.tabs>
-      </.dialog_body>
-      <.dialog_footer>
-        <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
-          <:icon><Icons.icon_close /></:icon>
-          {dgettext("dialogs", "Close")}
-        </.button>
-      </.dialog_footer>
-    </.dialog>
+        <.tabs_content value="registration" builder={builder}>
+          <.registration_tab
+            target={@target}
+            channel_name={@channel_name}
+            operator={@operator}
+            identified={@identified}
+            registration={@registration}
+            access_tab={@access_tab}
+            access_selected={@access_selected}
+            access_nick={@access_nick}
+            error_message={@cs_error}
+            confirm_drop={@cs_confirm_drop}
+            on_register={@on_cs_register}
+            on_drop_request={@on_cs_drop_request}
+            on_drop={@on_cs_drop}
+            on_drop_cancel={@on_cs_drop_cancel}
+            on_access_tab={@on_cs_access_tab}
+            on_access_change={@on_cs_access_change}
+            on_access_add={@on_cs_access_add}
+            on_access_select={@on_cs_access_select}
+            on_access_remove={@on_cs_access_remove}
+          />
+        </.tabs_content>
+      </.tabs>
 
-    <%!-- Ban Add Sub-Dialog --%>
-    <.ban_add_sub_form :if={@show_add_ban_dialog} target={@target} />
-    <%!-- Ban Exception Add Sub-Dialog --%>
-    <.ban_ex_add_sub_form :if={@show_add_ban_ex_dialog} target={@target} />
-    <%!-- Invite Exception Add Sub-Dialog --%>
-    <.invite_ex_add_sub_form :if={@show_add_invite_ex_dialog} target={@target} />
-    <%!-- Ownership Transfer Sub-Dialog --%>
-    <.transfer_confirm_sub_form
-      :if={@show_transfer_dialog}
-      target={@target}
-      channel_name={@channel_name}
-      error_message={@transfer_error}
-      on_close={@on_transfer_close}
-      on_submit={@on_transfer_submit}
-    />
+      <%!-- Ban Add Sub-Dialog --%>
+      <.ban_add_sub_form :if={@show_add_ban_dialog} target={@target} />
+      <%!-- Ban Exception Add Sub-Dialog --%>
+      <.ban_ex_add_sub_form :if={@show_add_ban_ex_dialog} target={@target} />
+      <%!-- Invite Exception Add Sub-Dialog --%>
+      <.invite_ex_add_sub_form :if={@show_add_invite_ex_dialog} target={@target} />
+      <%!-- Ownership Transfer Sub-Dialog --%>
+      <.transfer_confirm_sub_form
+        :if={@show_transfer_dialog}
+        target={@target}
+        channel_name={@channel_name}
+        error_message={@transfer_error}
+        on_close={@on_transfer_close}
+        on_submit={@on_transfer_submit}
+      />
+    </div>
     """
   end
 
@@ -584,7 +559,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   defp ban_add_sub_form(assigns) do
     ~H"""
     <div
-      class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center"
+      class="absolute inset-0 z-modal-above bg-black/50 flex items-center justify-center"
+      data-escape-guard
       data-testid="cc-add-ban-dialog"
     >
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
@@ -644,7 +620,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   defp ban_ex_add_sub_form(assigns) do
     ~H"""
     <div
-      class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center"
+      class="absolute inset-0 z-modal-above bg-black/50 flex items-center justify-center"
+      data-escape-guard
       data-testid="cc-add-ban-ex-dialog"
     >
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
@@ -704,7 +681,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   defp invite_ex_add_sub_form(assigns) do
     ~H"""
     <div
-      class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center"
+      class="absolute inset-0 z-modal-above bg-black/50 flex items-center justify-center"
+      data-escape-guard
       data-testid="cc-add-invite-ex-dialog"
     >
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
@@ -769,7 +747,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelCentralDialog do
   defp transfer_confirm_sub_form(assigns) do
     ~H"""
     <div
-      class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center"
+      class="absolute inset-0 z-modal-above bg-black/50 flex items-center justify-center"
+      data-escape-guard
       data-testid="cc-transfer-dialog"
     >
       <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
