@@ -25,17 +25,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialogTest do
     assert PerformDialog.id() == "perform-dialog"
   end
 
-  test "renders only the (empty) mount wrapper when closed (show defaults false)" do
+  test "renders the bare panel with both tab panels" do
     html = dialog(%{})
 
-    assert html =~ ~s(id="perform-dialog-mount")
-    refute html =~ ~s(id="perform-dialog-show-trigger")
-  end
-
-  test "renders both tab panels when shown" do
-    html = dialog(%{show: true})
-
-    assert html =~ ~s(id="perform-dialog-show-trigger")
+    assert html =~ ~s(data-testid="perform-panel")
+    refute html =~ "phx-show-modal"
     assert html =~ "No commands configured"
     assert html =~ "No auto-join channels"
   end
@@ -47,7 +41,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialogTest do
       render_component(PerformDialog, %{
         id: PerformDialog.id(),
         session: session(list),
-        show: true,
         perform_selected: 0
       })
 
@@ -61,15 +54,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialogTest do
     html =
       render_component(PerformDialog, %{
         id: PerformDialog.id(),
-        session: session(PerformList.new(), list),
-        show: true
+        session: session(PerformList.new(), list)
       })
 
     assert html =~ "#lobby"
   end
 
   test "renders the perform add sub-form when its flag is set" do
-    html = dialog(%{show: true, show_perform_add_dialog: true})
+    html = dialog(%{show_perform_add_dialog: true})
 
     assert html =~ ~s(data-testid="perform-add-dialog")
     assert html =~ ~s(phx-target=)

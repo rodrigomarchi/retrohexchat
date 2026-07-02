@@ -50,7 +50,7 @@ test.describe('Tools menu', () => {
 
     await openToolsItem(chat, chat.performMenuItem);
     await expect(chat.performDialog).toBeVisible();
-    await chat.performDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.performDialog.locator('[data-window-control="close"]').click();
     await expect(chat.performDialog).toBeHidden();
 
     await openToolsItem(chat, chat.soundSettingsMenuItem);

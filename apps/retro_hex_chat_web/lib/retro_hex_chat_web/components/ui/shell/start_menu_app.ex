@@ -55,12 +55,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "Channel Central")}
           icon_fn={:icon_btn_channel_central}
         />
-        <.app_item
-          action="open_perform_dialog"
-          on_action={@on_action}
-          label={dgettext("ui", "Perform")}
-          icon_fn={:icon_btn_perform}
-        />
+        <.window_item window="perform" label={dgettext("ui", "Perform")} icon_fn={:icon_btn_perform} />
         <.window_item
           window="sound-settings"
           label={dgettext("ui", "Sounds")}

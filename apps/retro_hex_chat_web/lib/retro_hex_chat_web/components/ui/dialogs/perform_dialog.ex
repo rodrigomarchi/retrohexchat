@@ -73,46 +73,32 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         <:icon><Icons.icon_dialog_perform /></:icon>
       </.dialog_header>
       <.dialog_body>
-        <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
-          <.tabs_list>
-            <.tabs_trigger builder={builder} value="commands">
-              <:icon><Icons.icon_tab_commands class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Commands")}
-            </.tabs_trigger>
-            <.tabs_trigger builder={builder} value="autojoin">
-              <:icon><Icons.icon_tab_autojoin class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Auto-Join")}
-            </.tabs_trigger>
-          </.tabs_list>
-
-          <.tabs_content value="commands">
-            <.commands_tab
-              target={@target}
-              entries={@perform_entries}
-              selected={@perform_selected}
-              enabled={@perform_enabled}
-              on_select={@on_select}
-              on_add={@on_add}
-              on_edit={@on_edit}
-              on_remove={@on_remove}
-              on_move_up={@on_move_up}
-              on_move_down={@on_move_down}
-              on_toggle_enabled={@on_toggle_enabled}
-            />
-          </.tabs_content>
-
-          <.tabs_content value="autojoin">
-            <.autojoin_tab
-              target={@target}
-              entries={@autojoin_entries}
-              selected={@autojoin_selected}
-              on_select={@on_autojoin_select}
-              on_add={@on_autojoin_add}
-              on_edit={@on_autojoin_edit}
-              on_remove={@on_autojoin_remove}
-            />
-          </.tabs_content>
-        </.tabs>
+        <.perform_panel
+          id={@id}
+          target={@target}
+          active_tab={@active_tab}
+          perform_entries={@perform_entries}
+          perform_selected={@perform_selected}
+          perform_enabled={@perform_enabled}
+          autojoin_entries={@autojoin_entries}
+          autojoin_selected={@autojoin_selected}
+          show_perform_add_dialog={@show_perform_add_dialog}
+          show_perform_edit_dialog={@show_perform_edit_dialog}
+          show_autojoin_add_dialog={@show_autojoin_add_dialog}
+          show_autojoin_edit_dialog={@show_autojoin_edit_dialog}
+          on_select={@on_select}
+          on_add={@on_add}
+          on_edit={@on_edit}
+          on_remove={@on_remove}
+          on_move_up={@on_move_up}
+          on_move_down={@on_move_down}
+          on_toggle_enabled={@on_toggle_enabled}
+          on_autojoin_select={@on_autojoin_select}
+          on_autojoin_add={@on_autojoin_add}
+          on_autojoin_edit={@on_autojoin_edit}
+          on_autojoin_remove={@on_autojoin_remove}
+          sub_scope={:viewport}
+        />
       </.dialog_body>
       <.dialog_footer>
         <.button phx-click={@on_ok}>
@@ -125,25 +111,109 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
         </.button>
       </.dialog_footer>
     </.dialog>
+    """
+  end
 
-    <%!-- Perform Add Sub-Dialog --%>
-    <.perform_add_sub_form :if={@show_perform_add_dialog} target={@target} />
-    <%!-- Perform Edit Sub-Dialog --%>
-    <.perform_edit_sub_form
-      :if={@show_perform_edit_dialog}
-      target={@target}
-      entries={@perform_entries}
-      selected={@perform_selected}
-    />
-    <%!-- Autojoin Add Sub-Dialog --%>
-    <.autojoin_add_sub_form :if={@show_autojoin_add_dialog} target={@target} />
-    <%!-- Autojoin Edit Sub-Dialog --%>
-    <.autojoin_edit_sub_form
-      :if={@show_autojoin_edit_dialog}
-      target={@target}
-      entries={@autojoin_entries}
-      selected={@autojoin_selected}
-    />
+  @doc """
+  Renders the Perform content (Commands/Auto-Join tabs + the four add/edit
+  sub-form modals) without any frame — compose it inside a dialog or a desktop
+  window body. `sub_scope` decides where the sub-form modals anchor.
+  """
+  attr :id, :string, required: true
+  attr :target, :any, default: nil
+  attr :active_tab, :string, default: "commands"
+  attr :perform_entries, :list, default: []
+  attr :perform_selected, :integer, default: nil
+  attr :perform_enabled, :boolean, default: true
+  attr :autojoin_entries, :list, default: []
+  attr :autojoin_selected, :string, default: nil
+  attr :show_perform_add_dialog, :boolean, default: false
+  attr :show_perform_edit_dialog, :boolean, default: false
+  attr :show_autojoin_add_dialog, :boolean, default: false
+  attr :show_autojoin_edit_dialog, :boolean, default: false
+  attr :on_select, :any, default: nil
+  attr :on_add, :any, default: nil
+  attr :on_edit, :any, default: nil
+  attr :on_remove, :any, default: nil
+  attr :on_move_up, :any, default: nil
+  attr :on_move_down, :any, default: nil
+  attr :on_toggle_enabled, :any, default: nil
+  attr :on_autojoin_select, :any, default: nil
+  attr :on_autojoin_add, :any, default: nil
+  attr :on_autojoin_edit, :any, default: nil
+  attr :on_autojoin_remove, :any, default: nil
+  attr :sub_scope, :atom, default: :window, values: [:viewport, :window]
+
+  @spec perform_panel(map()) :: Phoenix.LiveView.Rendered.t()
+  def perform_panel(assigns) do
+    ~H"""
+    <div
+      id={"#{@id}-content"}
+      data-testid="perform-panel"
+      class="flex h-full min-h-0 flex-col gap-retro-8"
+    >
+      <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
+        <.tabs_list>
+          <.tabs_trigger builder={builder} value="commands">
+            <:icon><Icons.icon_tab_commands class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Commands")}
+          </.tabs_trigger>
+          <.tabs_trigger builder={builder} value="autojoin">
+            <:icon><Icons.icon_tab_autojoin class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Auto-Join")}
+          </.tabs_trigger>
+        </.tabs_list>
+
+        <.tabs_content value="commands">
+          <.commands_tab
+            target={@target}
+            entries={@perform_entries}
+            selected={@perform_selected}
+            enabled={@perform_enabled}
+            on_select={@on_select}
+            on_add={@on_add}
+            on_edit={@on_edit}
+            on_remove={@on_remove}
+            on_move_up={@on_move_up}
+            on_move_down={@on_move_down}
+            on_toggle_enabled={@on_toggle_enabled}
+          />
+        </.tabs_content>
+
+        <.tabs_content value="autojoin">
+          <.autojoin_tab
+            target={@target}
+            entries={@autojoin_entries}
+            selected={@autojoin_selected}
+            on_select={@on_autojoin_select}
+            on_add={@on_autojoin_add}
+            on_edit={@on_autojoin_edit}
+            on_remove={@on_autojoin_remove}
+          />
+        </.tabs_content>
+      </.tabs>
+
+      <%!-- Perform Add Sub-Dialog --%>
+      <.perform_add_sub_form :if={@show_perform_add_dialog} target={@target} scope={@sub_scope} />
+      <%!-- Perform Edit Sub-Dialog --%>
+      <.perform_edit_sub_form
+        :if={@show_perform_edit_dialog}
+        target={@target}
+        entries={@perform_entries}
+        selected={@perform_selected}
+        scope={@sub_scope}
+      />
+      <%!-- Autojoin Add Sub-Dialog --%>
+      <.autojoin_add_sub_form :if={@show_autojoin_add_dialog} target={@target} scope={@sub_scope} />
+      <%!-- Autojoin Edit Sub-Dialog --%>
+      <.autojoin_edit_sub_form
+        :if={@show_autojoin_edit_dialog}
+        target={@target}
+        entries={@autojoin_entries}
+        selected={@autojoin_selected}
+        scope={@sub_scope}
+      />
+    </div>
     """
   end
 
@@ -151,64 +221,64 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
 
   attr :target, :any, default: nil
 
+  attr :scope, :atom, default: :window
+
   defp perform_add_sub_form(assigns) do
     ~H"""
-    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
-      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
-        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">
-            {dgettext("dialogs", "Add Perform Command")}
-          </span>
-          <div class="ml-auto">
-            <button
-              type="button"
-              aria-label={dgettext("dialogs", "Close")}
-              phx-click="close_perform_add_dialog"
-              phx-target={@target}
+    <.dialog
+      id="perform-add-modal"
+      show
+      scope={@scope}
+      on_cancel={JS.push("close_perform_add_dialog", target: @target)}
+      class="md:max-w-sm"
+    >
+      <.dialog_header
+        id="perform-add-modal"
+        title={dgettext("dialogs", "Add Perform Command")}
+        on_close={JS.push("close_perform_add_dialog", target: @target)}
+      >
+        <:icon><Icons.icon_dialog_perform /></:icon>
+      </.dialog_header>
+      <.dialog_body>
+        <form
+          phx-submit="perform_dialog_add_confirm"
+          phx-target={@target}
+          data-testid="perform-add-dialog"
+        >
+          <div class="flex flex-col gap-1.5 mb-2">
+            <label class="text-xs font-bold" for="perform-command-input">
+              {dgettext("dialogs", "Command")}:
+            </label>
+            <.input
+              type="text"
+              id="perform-command-input"
+              name="command"
+              maxlength="500"
+              placeholder={dgettext("dialogs", "/join #channel")}
+              required
+              autofocus
+              class="w-full"
             />
           </div>
-        </div>
-        <div class="p-2">
-          <form
-            phx-submit="perform_dialog_add_confirm"
-            phx-target={@target}
-            data-testid="perform-add-dialog"
-          >
-            <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="perform-command-input">
-                {dgettext("dialogs", "Command")}:
-              </label>
-              <.input
-                type="text"
-                id="perform-command-input"
-                name="command"
-                maxlength="500"
-                placeholder={dgettext("dialogs", "/join #channel")}
-                required
-                autofocus
-                class="w-full"
-              />
-            </div>
-            <div class="flex justify-end gap-1">
-              <.button type="submit" size="sm">
-                <:icon><Icons.icon_checkmark /></:icon>
-                {dgettext("dialogs", "OK")}
-              </.button>
-              <.button
-                type="button"
-                size="sm"
-                variant="outline"
-                phx-click="close_perform_add_dialog"
-                phx-target={@target}
-              >
-                <:icon><Icons.icon_close /></:icon>
-                {dgettext("dialogs", "Cancel")}
-              </.button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+          <div class="flex justify-end gap-1">
+            <.button type="submit" size="sm">
+              <:icon><Icons.icon_checkmark /></:icon>
+              {dgettext("dialogs", "OK")}
+            </.button>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click="close_perform_add_dialog"
+              phx-target={@target}
+            >
+              <:icon><Icons.icon_close /></:icon>
+              {dgettext("dialogs", "Cancel")}
+            </.button>
+          </div>
+        </form>
+      </.dialog_body>
+    </.dialog>
     """
   end
 
@@ -216,149 +286,151 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
   attr :entries, :list, required: true
   attr :selected, :integer, default: nil
 
+  attr :scope, :atom, default: :window
+
   defp perform_edit_sub_form(assigns) do
     entry = Enum.find(assigns.entries, fn e -> e.position == assigns.selected end)
     assigns = assign(assigns, :edit_command, if(entry, do: entry.command, else: ""))
 
     ~H"""
-    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
-      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
-        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">
-            {dgettext("dialogs", "Edit Perform Command")}
-          </span>
-          <div class="ml-auto">
-            <button
-              type="button"
-              aria-label={dgettext("dialogs", "Close")}
-              phx-click="close_perform_edit_dialog"
-              phx-target={@target}
+    <.dialog
+      id="perform-edit-modal"
+      show
+      scope={@scope}
+      on_cancel={JS.push("close_perform_edit_dialog", target: @target)}
+      class="md:max-w-sm"
+    >
+      <.dialog_header
+        id="perform-edit-modal"
+        title={dgettext("dialogs", "Edit Perform Command")}
+        on_close={JS.push("close_perform_edit_dialog", target: @target)}
+      >
+        <:icon><Icons.icon_dialog_perform /></:icon>
+      </.dialog_header>
+      <.dialog_body>
+        <form
+          phx-submit="perform_dialog_edit_confirm"
+          phx-target={@target}
+          data-testid="perform-edit-dialog"
+        >
+          <div class="flex flex-col gap-1.5 mb-2">
+            <label class="text-xs font-bold" for="perform-edit-input">
+              {dgettext("dialogs", "Command")}:
+            </label>
+            <.input
+              type="text"
+              id="perform-edit-input"
+              name="command"
+              maxlength="500"
+              value={@edit_command}
+              required
+              autofocus
+              class="w-full"
             />
           </div>
-        </div>
-        <div class="p-2">
-          <form
-            phx-submit="perform_dialog_edit_confirm"
-            phx-target={@target}
-            data-testid="perform-edit-dialog"
-          >
-            <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="perform-edit-input">
-                {dgettext("dialogs", "Command")}:
-              </label>
-              <.input
-                type="text"
-                id="perform-edit-input"
-                name="command"
-                maxlength="500"
-                value={@edit_command}
-                required
-                autofocus
-                class="w-full"
-              />
-            </div>
-            <div class="flex justify-end gap-1">
-              <.button type="submit" size="sm">
-                <:icon><Icons.icon_checkmark /></:icon>
-                {dgettext("dialogs", "OK")}
-              </.button>
-              <.button
-                type="button"
-                size="sm"
-                variant="outline"
-                phx-click="close_perform_edit_dialog"
-                phx-target={@target}
-              >
-                <:icon><Icons.icon_close /></:icon>
-                {dgettext("dialogs", "Cancel")}
-              </.button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+          <div class="flex justify-end gap-1">
+            <.button type="submit" size="sm">
+              <:icon><Icons.icon_checkmark /></:icon>
+              {dgettext("dialogs", "OK")}
+            </.button>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click="close_perform_edit_dialog"
+              phx-target={@target}
+            >
+              <:icon><Icons.icon_close /></:icon>
+              {dgettext("dialogs", "Cancel")}
+            </.button>
+          </div>
+        </form>
+      </.dialog_body>
+    </.dialog>
     """
   end
 
   attr :target, :any, default: nil
 
+  attr :scope, :atom, default: :window
+
   defp autojoin_add_sub_form(assigns) do
     ~H"""
-    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
-      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-xs">
-        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">
-            {dgettext("dialogs", "Add Auto-Join Channel")}
-          </span>
-          <div class="ml-auto">
-            <button
-              type="button"
-              aria-label={dgettext("dialogs", "Close")}
-              phx-click="close_autojoin_add_dialog"
-              phx-target={@target}
+    <.dialog
+      id="autojoin-add-modal"
+      show
+      scope={@scope}
+      on_cancel={JS.push("close_autojoin_add_dialog", target: @target)}
+      class="md:max-w-xs"
+    >
+      <.dialog_header
+        id="autojoin-add-modal"
+        title={dgettext("dialogs", "Add Auto-Join Channel")}
+        on_close={JS.push("close_autojoin_add_dialog", target: @target)}
+      >
+        <:icon><Icons.icon_dialog_perform /></:icon>
+      </.dialog_header>
+      <.dialog_body>
+        <form
+          phx-submit="autojoin_dialog_add_confirm"
+          phx-target={@target}
+          data-testid="autojoin-add-dialog"
+        >
+          <div class="flex flex-col gap-1.5 mb-2">
+            <label class="text-xs font-bold" for="autojoin-channel-input">
+              {dgettext("dialogs", "Channel")}:
+            </label>
+            <.input
+              type="text"
+              id="autojoin-channel-input"
+              name="channel"
+              maxlength="50"
+              placeholder="#channel"
+              required
+              autofocus
+              class="w-full"
             />
           </div>
-        </div>
-        <div class="p-2">
-          <form
-            phx-submit="autojoin_dialog_add_confirm"
-            phx-target={@target}
-            data-testid="autojoin-add-dialog"
-          >
-            <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="autojoin-channel-input">
-                {dgettext("dialogs", "Channel")}:
-              </label>
-              <.input
-                type="text"
-                id="autojoin-channel-input"
-                name="channel"
-                maxlength="50"
-                placeholder="#channel"
-                required
-                autofocus
-                class="w-full"
-              />
-            </div>
-            <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="autojoin-key-input">
-                {dgettext("dialogs", "Key")}:
-              </label>
-              <.input
-                type="text"
-                id="autojoin-key-input"
-                name="key"
-                maxlength="50"
-                placeholder={dgettext("dialogs", "Leave empty if no key")}
-                class="w-full"
-              />
-            </div>
-            <div class="flex justify-end gap-1">
-              <.button type="submit" size="sm">
-                <:icon><Icons.icon_checkmark /></:icon>
-                {dgettext("dialogs", "OK")}
-              </.button>
-              <.button
-                type="button"
-                size="sm"
-                variant="outline"
-                phx-click="close_autojoin_add_dialog"
-                phx-target={@target}
-              >
-                <:icon><Icons.icon_close /></:icon>
-                {dgettext("dialogs", "Cancel")}
-              </.button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+          <div class="flex flex-col gap-1.5 mb-2">
+            <label class="text-xs font-bold" for="autojoin-key-input">
+              {dgettext("dialogs", "Key")}:
+            </label>
+            <.input
+              type="text"
+              id="autojoin-key-input"
+              name="key"
+              maxlength="50"
+              placeholder={dgettext("dialogs", "Leave empty if no key")}
+              class="w-full"
+            />
+          </div>
+          <div class="flex justify-end gap-1">
+            <.button type="submit" size="sm">
+              <:icon><Icons.icon_checkmark /></:icon>
+              {dgettext("dialogs", "OK")}
+            </.button>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click="close_autojoin_add_dialog"
+              phx-target={@target}
+            >
+              <:icon><Icons.icon_close /></:icon>
+              {dgettext("dialogs", "Cancel")}
+            </.button>
+          </div>
+        </form>
+      </.dialog_body>
+    </.dialog>
     """
   end
 
   attr :target, :any, default: nil
   attr :entries, :list, required: true
   attr :selected, :string, default: nil
+
+  attr :scope, :atom, default: :window
 
   defp autojoin_edit_sub_form(assigns) do
     entry = Enum.find(assigns.entries, fn e -> e.channel_name == assigns.selected end)
@@ -370,75 +442,73 @@ defmodule RetroHexChatWeb.Components.UI.PerformDialog do
       )
 
     ~H"""
-    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
-      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-xs">
-        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">
-            {dgettext("dialogs", "Edit Auto-Join Channel")}
-          </span>
-          <div class="ml-auto">
-            <button
-              type="button"
-              aria-label={dgettext("dialogs", "Close")}
-              phx-click="close_autojoin_edit_dialog"
-              phx-target={@target}
+    <.dialog
+      id="autojoin-edit-modal"
+      show
+      scope={@scope}
+      on_cancel={JS.push("close_autojoin_edit_dialog", target: @target)}
+      class="md:max-w-xs"
+    >
+      <.dialog_header
+        id="autojoin-edit-modal"
+        title={dgettext("dialogs", "Edit Auto-Join Channel")}
+        on_close={JS.push("close_autojoin_edit_dialog", target: @target)}
+      >
+        <:icon><Icons.icon_dialog_perform /></:icon>
+      </.dialog_header>
+      <.dialog_body>
+        <form
+          phx-submit="autojoin_dialog_edit_confirm"
+          phx-target={@target}
+          data-testid="autojoin-edit-dialog"
+        >
+          <input type="hidden" name="channel" value={@edit_channel} />
+          <div class="flex flex-col gap-1.5 mb-2">
+            <label class="text-xs font-bold" for="autojoin-edit-channel">
+              {dgettext("dialogs", "Channel")}:
+            </label>
+            <.input
+              type="text"
+              id="autojoin-edit-channel"
+              name="channel"
+              value={@edit_channel}
+              disabled
+              class="w-full"
             />
           </div>
-        </div>
-        <div class="p-2">
-          <form
-            phx-submit="autojoin_dialog_edit_confirm"
-            phx-target={@target}
-            data-testid="autojoin-edit-dialog"
-          >
-            <input type="hidden" name="channel" value={@edit_channel} />
-            <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="autojoin-edit-channel">
-                {dgettext("dialogs", "Channel")}:
-              </label>
-              <.input
-                type="text"
-                id="autojoin-edit-channel"
-                name="channel"
-                value={@edit_channel}
-                disabled
-                class="w-full"
-              />
-            </div>
-            <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="autojoin-edit-key">
-                {dgettext("dialogs", "Key")}:
-              </label>
-              <.input
-                type="text"
-                id="autojoin-edit-key"
-                name="key"
-                maxlength="50"
-                value={@edit_key}
-                autofocus
-                class="w-full"
-              />
-            </div>
-            <div class="flex justify-end gap-1">
-              <.button type="submit" size="sm">
-                <:icon><Icons.icon_checkmark /></:icon>
-                {dgettext("dialogs", "OK")}
-              </.button>
-              <.button
-                type="button"
-                size="sm"
-                variant="outline"
-                phx-click="close_autojoin_edit_dialog"
-                phx-target={@target}
-              >
-                <:icon><Icons.icon_close /></:icon>
-                {dgettext("dialogs", "Cancel")}
-              </.button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+          <div class="flex flex-col gap-1.5 mb-2">
+            <label class="text-xs font-bold" for="autojoin-edit-key">
+              {dgettext("dialogs", "Key")}:
+            </label>
+            <.input
+              type="text"
+              id="autojoin-edit-key"
+              name="key"
+              maxlength="50"
+              value={@edit_key}
+              autofocus
+              class="w-full"
+            />
+          </div>
+          <div class="flex justify-end gap-1">
+            <.button type="submit" size="sm">
+              <:icon><Icons.icon_checkmark /></:icon>
+              {dgettext("dialogs", "OK")}
+            </.button>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click="close_autojoin_edit_dialog"
+              phx-target={@target}
+            >
+              <:icon><Icons.icon_close /></:icon>
+              {dgettext("dialogs", "Cancel")}
+            </.button>
+          </div>
+        </form>
+      </.dialog_body>
+    </.dialog>
     """
   end
 

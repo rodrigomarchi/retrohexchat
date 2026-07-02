@@ -1,13 +1,12 @@
 defmodule RetroHexChatWeb.ChatLive.PerformAutojoinEvents do
   @moduledoc """
-  Routes the Perform dialog open/close triggers to the stateful island.
+  Routes the Perform open trigger to its server-managed desktop window.
 
   All Perform/AutoJoin state, events and `PerformList`/`AutoJoinList` business
-  logic live in `RetroHexChatWeb.ChatLive.Components.PerformDialog`. This hook only
-  opens the dialog (toolbar/menu action) and reflects the main dialog's
-  Close/OK/Cancel and its own Escape/click-away back into the island via
-  `send_update`; the perform/autojoin lists are persisted by the parent when the
-  component bubbles a new session.
+  logic live in `RetroHexChatWeb.ChatLive.Components.PerformDialog`, mounted
+  inside the window; closing the window unmounts the island. The
+  perform/autojoin lists are persisted by the parent when the component bubbles
+  a new session.
 
   Attached as `attach_hook(:perform_autojoin_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -15,34 +14,24 @@ defmodule RetroHexChatWeb.ChatLive.PerformAutojoinEvents do
   import Phoenix.LiveView, only: [send_update: 2]
 
   alias RetroHexChatWeb.ChatLive.Components.PerformDialog
+  alias RetroHexChatWeb.ChatLive.Windows
 
   def handle_event("open_perform_dialog", _params, socket) do
     {:halt, open(socket)}
-  end
-
-  def handle_event("close_perform_dialog", _params, socket) do
-    send_update(PerformDialog, id: PerformDialog.id(), close: true)
-    {:halt, socket}
   end
 
   # Catch-all: pass unhandled events to the next hook
   def handle_event(_event, _params, socket), do: {:cont, socket}
 
   @doc """
-  Opens the Perform dialog (optionally on a specific tab) by driving the island.
+  Opens/focuses the Perform window on a specific tab. The window mounts first
+  (managed), then the tab directive reaches the island — `open_window` before
+  `send_update`, so the island exists in the patch.
   """
   @spec open(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
   def open(socket, tab \\ "commands") do
+    socket = Windows.open(socket, "perform")
     send_update(PerformDialog, id: PerformDialog.id(), open: tab)
-    socket
-  end
-
-  @doc """
-  Toggles the Perform dialog open/closed (keyboard shortcut).
-  """
-  @spec toggle(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
-  def toggle(socket) do
-    send_update(PerformDialog, id: PerformDialog.id(), toggle: true)
     socket
   end
 end

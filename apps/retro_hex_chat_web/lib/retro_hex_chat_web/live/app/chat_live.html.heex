@@ -272,6 +272,31 @@
       />
     </.desktop_window>
 
+    <%!-- Perform — server-managed: two-tab mini-app (perform + auto-join) with
+          window-scoped add/edit sub-forms; open-on-tab via send_update after
+          the window mounts. --%>
+    <.desktop_window
+      :if={"perform" in @open_windows}
+      id="perform"
+      title={dgettext("chat", "Perform")}
+      managed
+      default_x={190}
+      default_y={130}
+      width={680}
+      height={500}
+      min_width={520}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="perform-window"
+    >
+      <:icon><Icons.icon_dialog_perform class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.PerformDialog}
+        id={RetroHexChatWeb.ChatLive.Components.PerformDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
     <%!-- Sound Settings — server-managed: the draft seeds from the session on
           mount; closing discards an uncommitted draft. --%>
     <.desktop_window
@@ -428,6 +453,13 @@
         >
           <:icon><Icons.icon_dialog_auto_respond class="h-4 w-4" /></:icon>
         </.taskbar_button>
+        <.taskbar_button
+          :if={"perform" in @open_windows}
+          window="perform"
+          label={dgettext("chat", "Perform")}
+        >
+          <:icon><Icons.icon_dialog_perform class="h-4 w-4" /></:icon>
+        </.taskbar_button>
         <:tray>
           <.desktop_tray>
             <span id="chat-tray-clock" phx-hook="ClockHook" class="font-mono tabular-nums"></span>
@@ -531,12 +563,6 @@
   visible={@show_channel_list}
   channels={@channel_list_channels}
   loading={@channel_list_loading}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.PerformDialog}
-  id={RetroHexChatWeb.ChatLive.Components.PerformDialog.id()}
-  session={@session}
 />
 
 <.live_component

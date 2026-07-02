@@ -19,7 +19,7 @@ Phase 2 complete; recipe present in `PROGRESS.md`.
 - [x] Alias (managed — editor, close resets draft; `/alias` command opener rewired)
 - [x] CustomMenus (managed — editor, close resets draft)
 - [x] AutoRespond (managed — rules editor, close resets draft)
-- [ ] Perform (4 sub-forms: perform add/edit + autojoin add/edit)
+- [x] Perform (managed — open-on-tab via `send_update(open: tab)` AFTER `Windows.open` mounts the island; 4 sub-forms converted to `dialog scope={:window}`)
 - [x] SoundSettings (managed — draft seeds from session at mount, discarded on close; OK/Apply/Cancel stay in the panel)
 - [x] FloodProtection (managed — uncontrolled form, nothing survives closes)
 

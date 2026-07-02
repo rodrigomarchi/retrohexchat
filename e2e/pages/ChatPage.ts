@@ -538,7 +538,7 @@ export class ChatPage {
     this.urlCatcherDialog = page.getByTestId('url-catcher-window');
     this.urlCatcherSearch = page.getByTestId('url-catcher-search');
     this.urlCatcherRows = this.urlCatcherDialog.getByTestId('url-catcher-row');
-    this.performDialog = page.locator('#perform-dialog [role="dialog"]');
+    this.performDialog = page.getByTestId('perform-window');
     this.performAddDialog = page.getByTestId('perform-add-dialog');
     this.performEditDialog = page.getByTestId('perform-edit-dialog');
     this.autojoinAddDialog = page.getByTestId('autojoin-add-dialog');
@@ -1778,7 +1778,7 @@ export class ChatPage {
   }
 
   async closePerformDialog() {
-    await this.performDialog.getByRole('button', { name: 'OK' }).click();
+    await this.performDialog.locator('[data-window-control="close"]').click();
     await expect(this.performDialog).toBeHidden();
   }
 

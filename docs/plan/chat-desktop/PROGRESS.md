@@ -6,7 +6,7 @@
 |-------|--------|-------|
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
 | 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
-| 3 — Tools/Settings batch | in progress | 5/8 done (SoundSettings, FloodProtection, Alias, CustomMenus, AutoRespond — all managed). Next: Perform, then NotifyList, then AddressBook |
+| 3 — Tools/Settings batch | in progress | 6/8 done (+ Perform, managed, open-on-tab). Next: NotifyList, then AddressBook (both always-mounted candidates) |
 | 4 — View/Account batch | not started | |
 | 5 — Admin batch | not started | |
 | 6 — Unify + cleanup | not started | |
@@ -112,6 +112,12 @@ hold for the chat and extend:
 - `hook.command` takes `(action, id)` — only the `handleEvent` callback takes the
   `{action, id}` object. Passing the object to `command` silently no-ops (it
   pushes `window_open` for id `undefined`) — easy test bug.
+- Open-on-tab for a managed window: `Windows.open(socket, id)` FIRST, then
+  `send_update(island, open: tab)` — confirms the seed gotcha (island must exist
+  in the patch for the directive to land).
+- The Playwright suite is NOT in `make ci` — expect to find pre-existing broken
+  specs when touching an area (parity spec clicked the View menu for Find, which
+  lives in Edit). Fix them in passing; they are ours.
 - Managed windows survive a transient offline/online blip: the LV process (and
   `open_windows` + island drafts) outlives a short socket drop, so the
   reconnect-dialog-state E2E contract holds without extra work. A full remount

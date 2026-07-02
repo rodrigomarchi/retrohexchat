@@ -1,22 +1,19 @@
 defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
   @moduledoc """
-  Stateful island for the Perform dialog — the two-tab mini-app that manages the
-  auto-execute command list (perform on connect) and the auto-join channel list,
-  each with its own add/edit/remove sub-form modal.
+  Stateful island for the Perform window body — the two-tab mini-app that manages
+  the auto-execute command list (perform on connect) and the auto-join channel
+  list, each with its own add/edit/remove sub-form modal centered over the
+  window. Mounted inside a server-managed desktop window: closing unmounts the
+  island (resetting selections and sub-forms); opening on a specific tab is a
+  `send_update(open: tab)` after the window mounts.
 
-  Owns the ENTIRE dialog: the `show`/`active_tab` flags, both selections, all four
-  sub-form `show_*` flags, every event, and the `PerformList`/`AutoJoinList`
-  business logic that used to live in the `perform_autojoin_events` hook. Nothing
-  about the dialog's own state lives in `ChatLive` anymore — the parent only routes
-  the open trigger here via `send_update` and persists the resulting session.
-
-  Every UI event targets this component (`phx-target={@target}` threaded through the
-  design-system `perform_dialog/1`), so the four `fixed inset-0` add/edit sub-forms
-  submit to the component that owns their DOM subtree — the component-id matches, so
-  LiveView preserves the typed input across background re-renders (the modal-in-modal
-  anti-pattern, §0a-anti, fixed at the root). The main dialog's Close/OK/Cancel and
-  its own Escape/click-away fire `close_perform_dialog` on the parent LiveView, which
-  reflects back via `send_update(close: true)`.
+  Owns the `active_tab` flag, both selections, all four sub-form `show_*` flags,
+  every event, and the `PerformList`/`AutoJoinList` business logic. Every UI
+  event targets this component (`phx-target={@target}` threaded through the
+  design-system `perform_panel/1`), so the add/edit sub-forms submit to the
+  component that owns their DOM subtree — the component-id matches, so LiveView
+  preserves the typed input across background re-renders (the modal-in-modal
+  anti-pattern, §0a-anti, fixed at the root).
 
   The perform/autojoin lists live on the `session`, which is the central chat
   read-model (the connect flow auto-runs perform, the composer and every other
@@ -38,8 +35,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
   @spec id() :: String.t()
   def id, do: @id
 
-  @closed %{
-    show: false,
+  @initial %{
     active_tab: "commands",
     perform_selected: nil,
     autojoin_selected: nil,
@@ -54,7 +50,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
     {:ok,
      socket
      |> assign(:id, @id)
-     |> assign(@closed)
+     |> assign(@initial)
      |> assign(session: nil)}
   end
 
@@ -62,17 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{open: tab}, socket) do
-    {:ok, assign(socket, %{@closed | show: true, active_tab: tab || "commands"})}
-  end
-
-  def update(%{close: true}, socket), do: {:ok, assign(socket, @closed)}
-
-  def update(%{toggle: true}, socket) do
-    if socket.assigns.show do
-      {:ok, assign(socket, @closed)}
-    else
-      {:ok, assign(socket, %{@closed | show: true})}
-    end
+    {:ok, assign(socket, %{@initial | active_tab: tab || "commands"})}
   end
 
   # passthrough context (session)
@@ -275,10 +261,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
 
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
-      <.perform_dialog
+      <.perform_panel
         id={@id}
         target={@myself}
-        show={@show}
         active_tab={@active_tab}
         perform_entries={@perform_entries}
         perform_selected={@perform_selected}
@@ -300,8 +285,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.PerformDialog do
         on_autojoin_add="autojoin_dialog_add"
         on_autojoin_edit="autojoin_dialog_edit"
         on_autojoin_remove="autojoin_dialog_remove"
-        on_ok="close_perform_dialog"
-        on_cancel="close_perform_dialog"
       />
     </div>
     """

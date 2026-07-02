@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_perform_dialog, socket) do
-    PerformAutojoinEvents.toggle(socket)
+    PerformAutojoinEvents.open(socket)
   end
 
   defp dispatch_action(:toggle_cheatsheet, socket) do

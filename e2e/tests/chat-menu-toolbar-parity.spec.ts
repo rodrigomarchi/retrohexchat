@@ -23,8 +23,11 @@ async function pressCtrlShift(page: Page, key: string) {
 }
 
 async function openMenuItem(trigger: Locator, item: Locator) {
-  await trigger.click();
-  await expect(item).toBeVisible();
+  // Retry the trigger click — the first click can race the menubar hook mount.
+  await expect(async () => {
+    await trigger.click();
+    await expect(item).toBeVisible({ timeout: 1000 });
+  }).toPass({ timeout: 10_000 });
   await item.click();
 }
 
@@ -34,7 +37,8 @@ test.describe('Menu action parity', () => {
   }) => {
     const chat = await signedInUser(page);
 
-    await openMenuItem(chat.viewMenuTrigger, chat.findMenuItem);
+    // Find lives in the Edit menu (moved there in the Edit-menu reorg).
+    await openMenuItem(chat.editMenuTrigger, chat.findMenuItem);
     await expect(chat.searchBar).toBeVisible();
     await chat.searchBar.getByRole('button', { name: 'Close' }).click();
     await expect(chat.searchBar).toBeHidden();
@@ -56,38 +60,32 @@ test.describe('Menu action parity', () => {
 
     await openMenuItem(chat.toolsMenuTrigger, chat.highlightWordsMenuItem);
     await expect(chat.highlightDialog).toBeVisible();
-    await chat.highlightDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.highlightDialog.locator('[data-window-control="close"]').click();
     await expect(chat.highlightDialog).toBeHidden();
 
     await pressCtrlShift(page, 'H');
     await expect(chat.highlightDialog).toBeVisible();
-    await chat.highlightDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.highlightDialog.locator('[data-window-control="close"]').click();
     await expect(chat.highlightDialog).toBeHidden();
 
     await openMenuItem(chat.toolsMenuTrigger, chat.urlCatcherMenuItem);
     await expect(chat.urlCatcherDialog).toBeVisible();
-    await chat.urlCatcherDialog
-      .getByRole('button', { name: 'Close' })
-      .last()
-      .click();
+    await chat.urlCatcherDialog.locator('[data-window-control="close"]').click();
     await expect(chat.urlCatcherDialog).toBeHidden();
 
     await pressCtrlShift(page, 'S');
     await expect(chat.urlCatcherDialog).toBeVisible();
-    await chat.urlCatcherDialog
-      .getByRole('button', { name: 'Close' })
-      .last()
-      .click();
+    await chat.urlCatcherDialog.locator('[data-window-control="close"]').click();
     await expect(chat.urlCatcherDialog).toBeHidden();
 
     await openMenuItem(chat.toolsMenuTrigger, chat.performMenuItem);
     await expect(chat.performDialog).toBeVisible();
-    await chat.performDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.performDialog.locator('[data-window-control="close"]').click();
     await expect(chat.performDialog).toBeHidden();
 
     await pressCtrlShift(page, 'E');
     await expect(chat.performDialog).toBeVisible();
-    await chat.performDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.performDialog.locator('[data-window-control="close"]').click();
     await expect(chat.performDialog).toBeHidden();
 
     await openMenuItem(chat.helpMenuTrigger, chat.cheatsheetMenuItem);

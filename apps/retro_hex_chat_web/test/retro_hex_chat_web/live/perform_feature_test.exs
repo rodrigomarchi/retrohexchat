@@ -43,7 +43,7 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
   # ══════════════════════════════════════════════════════════════
 
   describe "US2: perform dialog" do
-    test "Ctrl+Shift+E opens and closes dialog", %{conn: conn} do
+    test "Ctrl+Shift+E opens/focuses the window (never toggle-closes)", %{conn: conn} do
       view = connect_user(conn, "E2EDlg#{uid()}")
 
       render_click(view, "window_keydown", %{
@@ -52,22 +52,24 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
         "shiftKey" => true
       })
 
-      assert has_element?(view, "#perform-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="perform"]))
+      assert_push_event(view, "window_command", %{action: "open", id: "perform"})
 
+      # Re-invoking focuses the existing window instead of closing it.
       render_click(view, "window_keydown", %{
         "key" => "e",
         "ctrlKey" => true,
         "shiftKey" => true
       })
 
-      refute has_element?(view, "#perform-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="perform"]))
     end
 
     test "menu bar opens dialog", %{conn: conn} do
       view = connect_user(conn, "E2EMnu#{uid()}")
 
       open_perform(view)
-      assert has_element?(view, "#perform-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="perform"][data-window-managed="true"]))
     end
 
     test "add command via dialog", %{conn: conn} do
@@ -130,14 +132,16 @@ defmodule RetroHexChatWeb.PerformFeatureTest do
       refute html =~ "mysecret"
     end
 
-    test "Escape closes dialog", %{conn: conn} do
+    test "a client-side window close unmounts the island", %{conn: conn} do
       view = connect_user(conn, "E2EEsc#{uid()}")
 
       open_perform(view)
-      assert has_element?(view, "#perform-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="perform"]))
 
-      view |> element("#perform-dialog-wrap") |> render_keydown(%{"key" => "Escape"})
-      refute has_element?(view, "#perform-dialog-show-trigger")
+      # Escape/X are handled client-side by the window manager, which reports
+      # the close back so the host unmounts the managed island.
+      render_hook(view, "window_closed", %{"id" => "perform"})
+      refute has_element?(view, ~s([data-window-id="perform"]))
     end
   end
 
