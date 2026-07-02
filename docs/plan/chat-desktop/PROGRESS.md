@@ -5,7 +5,7 @@
 | Phase | Status | Notes |
 |-------|--------|-------|
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
-| 2 — Pilot + recipe | in progress | Tasks A (Escape) + B (dialog `scope=:window`) done; next: pilot migrations (UrlCatcher → Timers → Highlight) |
+| 2 — Pilot + recipe | in progress | A (Escape), B (dialog scope), pilot 1 UrlCatcher done; recipe drafted. Next: Timers, then Highlight |
 | 3 — Tools/Settings batch | not started | |
 | 4 — View/Account batch | not started | |
 | 5 — Admin batch | not started | |
@@ -13,8 +13,41 @@
 
 ## Per-dialog migration recipe
 
-(Established in Phase 2. Until then, this section is empty — do not improvise a
-recipe in Phase 3+ without it.)
+DRAFT after pilot 1 (UrlCatcher) — refine with Timers (send_update lifecycle)
+and Highlight (sub-forms) before Phase 3.
+
+1. **Mounting decision.** Always-mounted (`open={false}`, client owns
+   open/close) when the island holds view state that must survive closes OR
+   receives passthrough data while closed (UrlCatcher: both). `managed` only
+   when neither holds (then: add to `@managed_windows`, render `:if` open in
+   `open_windows`).
+2. **Split the UI layer.** Extract a bare `<feature>_panel/1` (content only,
+   root: `id="#{id}-content"` + hooks + stable `data-testid`, class
+   `flex h-full min-h-0 flex-col`) from the dialog wrapper. Keep the dialog
+   wrapper only if the showcase (or another consumer) still uses it; give the
+   panel a `table_class`-style knob where the dialog needs a height cap.
+3. **Window in `chat_live.html.heex`** (inside `<.desktop>`, after the chat
+   window): `<.desktop_window id="<feature>" open={false} title icon
+   default_x/y width/height min_* body_class="flex min-h-0 flex-col p-2">`
+   wrapping the island `live_component` (island root gets `class="contents"`).
+   Add a `<.taskbar_button window="<feature>">`.
+4. **Openers.** Server path (menu bar / toolbar / keyboard `dispatch_action`):
+   `push_event(socket, "window_command", %{action: "open", id: "<feature>"})` —
+   open/focus, never toggle. Start menu: switch the item to
+   `<.window_item window="<feature>">` (client-side `data-window-open`).
+5. **Delete the server open-state.** Remove the `show_*` assign from
+   `assign_defaults`, the `visible` passthrough, the Escape entry in
+   `keyboard_events.ex` dismissals (+ its `close_*` helper), and any
+   `close_*` event handler nothing references anymore.
+6. **Tests.** Component test: panel renders bare (no `phx-show-modal`), events
+   still routed. New `<feature>_window_test.exs`: window present +
+   `data-window-open="false"` + taskbar button; opener event →
+   `assert_push_event(view, "window_command", %{action: "open", id: ...})`;
+   start-menu `[data-window-open=...]` present; `show_*` assign gone.
+   E2E: keep `data-testid`s stable and menu-open specs pass unchanged —
+   verify with a TARGETED run of the affected spec only.
+7. **Help.** Update the feature topic: it is a window now (drag/resize/
+   minimize/taskbar/Escape; Start menu path).
 
 ## Learnings
 

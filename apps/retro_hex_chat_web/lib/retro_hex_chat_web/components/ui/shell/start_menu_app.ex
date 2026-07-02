@@ -106,9 +106,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "Channel List")}
           icon_fn={:icon_btn_channel_list}
         />
-        <.app_item
-          action="toggle_url_catcher"
-          on_action={@on_action}
+        <.window_item
+          window="url-catcher"
           label={dgettext("ui", "URL Catcher")}
           icon_fn={:icon_btn_url_catcher}
         />
@@ -161,6 +160,24 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   end
 
   # ── Private helpers ─────────────────────────────────
+
+  # Opens/focuses a desktop window client-side (no server round trip) — used by
+  # entries whose dialog has migrated to a window.
+  attr :icon_fn, :atom, required: true
+  attr :label, :string, required: true
+  attr :window, :string, required: true, doc: "target window id"
+
+  defp window_item(assigns) do
+    ~H"""
+    <.start_menu_item
+      data-window-open={@window}
+      label={@label}
+      data-testid={"start-menu-item-#{@window}"}
+    >
+      <:icon>{apply(Icons, @icon_fn, [%{class: "h-4 w-4"}])}</:icon>
+    </.start_menu_item>
+    """
+  end
 
   attr :icon_fn, :atom, required: true
   attr :label, :string, required: true

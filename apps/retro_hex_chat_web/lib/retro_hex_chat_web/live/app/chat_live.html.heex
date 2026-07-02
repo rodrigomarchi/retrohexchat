@@ -179,6 +179,30 @@
       </div>
     </.desktop_window>
 
+    <%!-- URL Catcher — always mounted (URLs keep accumulating while closed);
+          the window manager owns open/close client-side. --%>
+    <.desktop_window
+      id="url-catcher"
+      title={dgettext("chat", "URL Catcher")}
+      open={false}
+      default_x={80}
+      default_y={60}
+      width={640}
+      height={440}
+      min_width={420}
+      min_height={280}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="url-catcher-window"
+    >
+      <:icon><Icons.icon_link class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog}
+        id={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog.id()}
+        entries={@url_catcher_entries}
+        timezone={@timezone}
+      />
+    </.desktop_window>
+
     <:taskbar>
       <.taskbar id="chat-taskbar">
         <:start>
@@ -186,6 +210,9 @@
         </:start>
         <.taskbar_button window="chat" label={dgettext("chat", "RetroHexChat")}>
           <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button window="url-catcher" label={dgettext("chat", "URL Catcher")}>
+          <:icon><Icons.icon_link class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <:tray>
           <.desktop_tray>
@@ -349,14 +376,6 @@
   module={RetroHexChatWeb.ChatLive.Components.HighlightDialog}
   id={RetroHexChatWeb.ChatLive.Components.HighlightDialog.id()}
   session={@session}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog}
-  id={RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog.id()}
-  visible={@show_url_catcher}
-  entries={@url_catcher_entries}
-  timezone={@timezone}
 />
 
 <.live_component

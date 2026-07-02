@@ -11,11 +11,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialogTest do
     assert UrlCatcherDialog.id() == "url-catcher-dialog"
   end
 
-  test "renders hidden by default" do
+  test "renders the content panel without any frame" do
     html = render_component(UrlCatcherDialog, id: UrlCatcherDialog.id())
 
-    assert html =~ "URL Catcher"
-    assert html =~ "hidden"
+    # Bare panel: the desktop window provides the chrome.
+    assert html =~ ~s(data-testid="url-catcher")
+    refute html =~ "phx-show-modal"
   end
 
   test "renders the filtered/sorted entries from the passthrough log" do
@@ -31,7 +32,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialogTest do
     html =
       render_component(UrlCatcherDialog,
         id: UrlCatcherDialog.id(),
-        visible: true,
         entries: entries,
         timezone: "UTC"
       )

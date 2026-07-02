@@ -651,7 +651,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       popular_channels: [],
       popular_channels_loaded: false,
       conversations_sections: %{channels: true, pms: true, popular: false},
-      show_url_catcher: false,
       show_user_lookup_dialog: false,
       lookup_result: nil,
       whois_output_mode: :card,

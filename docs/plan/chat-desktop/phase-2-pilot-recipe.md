@@ -48,6 +48,15 @@ that recipe — do not start them until the recipe is written.
 
 ### C. Migrate the three pilots
 
+Status: **UrlCatcher done** (always-mounted `open={false}` — entries accumulate
+host-side while closed and view state survives closes; UI split into
+`url_catcher_panel/1` (bare content, used by the window) + `url_catcher/1`
+(dialog wrapper kept for the showcase); menu-bar/toolbar/shortcut open via
+`push_event window_command`, start menu via `data-window-open` (`window_item`
+in StartMenuApp); `show_url_catcher` fully removed incl. Escape dismissal;
+targeted Playwright spec passed UNCHANGED thanks to stable testids).
+Timers and Highlight pending.
+
 For each pilot (this becomes the recipe draft):
 
 - [ ] Decide mounting: `managed` (server-mounted on demand — add to

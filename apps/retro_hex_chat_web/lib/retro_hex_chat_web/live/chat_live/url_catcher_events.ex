@@ -1,24 +1,21 @@
 defmodule RetroHexChatWeb.ChatLive.UrlCatcherEvents do
   @moduledoc """
-  Handle window open/close for the URL Catcher.
+  Route the URL Catcher menu/toolbar action to its desktop window.
 
-  The view state (sort/filter/search) lives in the `Components.UrlCatcherDialog`
-  LiveComponent; this module only flips `show_url_catcher` (kept in the parent for
-  the Escape-dismissal map). The capture log (`url_catcher_entries`) also stays in
-  the parent (appended from messages + the context menu) and is passed to the
-  component as passthrough.
+  The window is always mounted and the window manager owns open/close
+  client-side, so the action just pushes a `window_command` to open/focus it —
+  re-invoking focuses the existing window. The capture log
+  (`url_catcher_entries`) stays in the parent (appended from messages + the
+  context menu) and flows into the window island as passthrough; the view state
+  (sort/filter/search) lives in `Components.UrlCatcherDialog`.
 
   Attached as `attach_hook(:url_catcher_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
-  import Phoenix.Component, only: [assign: 2]
+  import Phoenix.LiveView, only: [push_event: 3]
 
   def handle_event("toggle_url_catcher", _params, socket) do
-    {:halt, assign(socket, show_url_catcher: !socket.assigns.show_url_catcher)}
-  end
-
-  def handle_event("close_url_catcher", _params, socket) do
-    {:halt, assign(socket, show_url_catcher: false)}
+    {:halt, push_event(socket, "window_command", %{action: "open", id: "url-catcher"})}
   end
 
   # ── Catch-all ──────────────────────────────────────────────

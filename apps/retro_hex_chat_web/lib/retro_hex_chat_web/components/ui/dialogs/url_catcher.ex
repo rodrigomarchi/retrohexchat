@@ -44,165 +44,27 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
   def url_catcher(assigns) do
     ~H"""
     <.dialog id={@id} show={@show} class="max-w-2xl" on_cancel={@on_close}>
-      <div id={"#{@id}-content"} phx-hook="URLCatcherHook" data-testid="url-catcher">
+      <div>
         <.dialog_header id={@id} title={dgettext("dialogs", "URL Catcher")} on_close={@on_close}>
           <:icon><Icons.icon_link class="w-4 h-4" /></:icon>
         </.dialog_header>
 
-        <.dialog_body class="space-y-retro-8">
-          <%!-- Filters row --%>
-          <div class="flex items-center gap-retro-4">
-            <%!-- Channel filter --%>
-            <form phx-change={@on_filter}>
-              <.select
-                :let={builder}
-                id="url-catcher-channel-filter"
-                name="channel"
-                value={@filter_channel || ""}
-                label={@filter_channel || dgettext("dialogs", "All Channels")}
-                placeholder={dgettext("dialogs", "All Channels")}
-              >
-                <.select_trigger builder={builder} class="h-7 text-xs w-[140px]" />
-                <.select_content builder={builder}>
-                  <.select_group>
-                    <.select_item
-                      builder={builder}
-                      value=""
-                      label={dgettext("dialogs", "All Channels")}
-                    >
-                      {dgettext("dialogs", "All Channels")}
-                    </.select_item>
-                    <.select_item
-                      :for={ch <- @channels}
-                      builder={builder}
-                      value={ch}
-                      label={ch}
-                    >
-                      {ch}
-                    </.select_item>
-                  </.select_group>
-                </.select_content>
-              </.select>
-            </form>
-
-            <%!-- Search --%>
-            <form phx-change={@on_search} phx-submit={@on_search} class="flex-1 flex gap-retro-4">
-              <.input
-                type="text"
-                value={@search_query}
-                placeholder={dgettext("dialogs", "Search URLs...")}
-                class="flex-1"
-                phx-debounce="300"
-                name="query"
-                data-testid="url-catcher-search"
-              />
-              <.button type="submit" size="sm" variant="outline">
-                <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "Search")}
-              </.button>
-            </form>
-          </div>
-
-          <%!-- URL table --%>
-          <div class="max-h-[300px] overflow-y-auto retro-scrollbar">
-            <.table>
-              <.table_header>
-                <.table_row>
-                  <.table_head>
-                    <.button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      class="gap-retro-2 hover:underline p-0 h-auto"
-                      phx-click={@on_sort}
-                      phx-value-column="url"
-                    >
-                      <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
-                      {dgettext("dialogs", "URL")}
-                      <.sort_indicator col={:url} active={@sort_column} dir={@sort_direction} />
-                    </.button>
-                  </.table_head>
-                  <.table_head>
-                    <.button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      class="gap-retro-2 hover:underline p-0 h-auto"
-                      phx-click={@on_sort}
-                      phx-value-column="posted_by"
-                    >
-                      <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
-                      {dgettext("dialogs", "Nick")}
-                      <.sort_indicator col={:posted_by} active={@sort_column} dir={@sort_direction} />
-                    </.button>
-                  </.table_head>
-                  <.table_head>
-                    <.button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      class="gap-retro-2 hover:underline p-0 h-auto"
-                      phx-click={@on_sort}
-                      phx-value-column="source"
-                    >
-                      <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
-                      {dgettext("dialogs", "Channel")}
-                      <.sort_indicator col={:source} active={@sort_column} dir={@sort_direction} />
-                    </.button>
-                  </.table_head>
-                  <.table_head>
-                    <.button
-                      type="button"
-                      variant="ghost"
-                      size="sm"
-                      class="gap-retro-2 hover:underline p-0 h-auto"
-                      phx-click={@on_sort}
-                      phx-value-column="timestamp"
-                    >
-                      <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
-                      {dgettext("dialogs", "Time")}
-                      <.sort_indicator col={:timestamp} active={@sort_column} dir={@sort_direction} />
-                    </.button>
-                  </.table_head>
-                </.table_row>
-              </.table_header>
-              <.table_body>
-                <.table_row
-                  :for={entry <- @entries}
-                  data-testid="url-catcher-row"
-                  data-url={entry.url}
-                >
-                  <.table_cell class="max-w-[200px] truncate">
-                    <a
-                      href={entry.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-link hover:underline"
-                    >
-                      {entry.url}
-                    </a>
-                    <div
-                      :if={Map.get(entry, :preview_title)}
-                      class="text-[10px] text-muted-foreground truncate"
-                      data-testid="url-catcher-preview-title"
-                    >
-                      {Map.get(entry, :preview_title)}
-                    </div>
-                  </.table_cell>
-                  <.table_cell>{entry.posted_by}</.table_cell>
-                  <.table_cell>{entry.source}</.table_cell>
-                  <.table_cell class="text-xs text-muted-foreground whitespace-nowrap">
-                    {format_timestamp(Map.get(entry, :timestamp), @timezone)}
-                  </.table_cell>
-                </.table_row>
-              </.table_body>
-            </.table>
-          </div>
-
-          <%!-- Status line --%>
-          <div class="shadow-retro-status px-retro-4 py-[2px] text-xs text-muted-foreground">
-            {entry_count_label(@entry_count)}
-          </div>
+        <.dialog_body>
+          <.url_catcher_panel
+            id={@id}
+            entries={@entries}
+            sort_column={@sort_column}
+            sort_direction={@sort_direction}
+            filter_channel={@filter_channel}
+            search_query={@search_query}
+            channels={@channels}
+            entry_count={@entry_count}
+            timezone={@timezone}
+            on_sort={@on_sort}
+            on_filter={@on_filter}
+            on_search={@on_search}
+            table_class="max-h-[300px]"
+          />
         </.dialog_body>
 
         <.dialog_footer>
@@ -213,6 +75,193 @@ defmodule RetroHexChatWeb.Components.UI.UrlCatcher do
         </.dialog_footer>
       </div>
     </.dialog>
+    """
+  end
+
+  @doc """
+  Renders the URL catcher content panel (filters + table + status line) without
+  any frame — compose it inside a dialog or a desktop window body.
+  """
+  attr :id, :string, required: true
+  attr :entries, :list, default: [], doc: "List of CapturedURL structs"
+  attr :sort_column, :atom, default: :timestamp
+  attr :sort_direction, :atom, default: :desc
+  attr :filter_channel, :string, default: nil
+  attr :search_query, :string, default: ""
+  attr :channels, :list, default: []
+  attr :entry_count, :integer, default: 0
+  attr :on_sort, :any, default: nil
+  attr :on_filter, :any, default: nil
+  attr :on_search, :any, default: nil
+  attr :timezone, :string, default: nil
+
+  attr :table_class, :any,
+    default: nil,
+    doc: "extra classes for the scrollable table region (e.g. a max-height cap in a dialog)"
+
+  @spec url_catcher_panel(map()) :: Phoenix.LiveView.Rendered.t()
+  def url_catcher_panel(assigns) do
+    ~H"""
+    <div
+      id={"#{@id}-content"}
+      phx-hook="URLCatcherHook"
+      data-testid="url-catcher"
+      class="flex h-full min-h-0 flex-col gap-retro-8"
+    >
+      <%!-- Filters row --%>
+      <div class="flex items-center gap-retro-4">
+        <%!-- Channel filter --%>
+        <form phx-change={@on_filter}>
+          <.select
+            :let={builder}
+            id="url-catcher-channel-filter"
+            name="channel"
+            value={@filter_channel || ""}
+            label={@filter_channel || dgettext("dialogs", "All Channels")}
+            placeholder={dgettext("dialogs", "All Channels")}
+          >
+            <.select_trigger builder={builder} class="h-7 text-xs w-[140px]" />
+            <.select_content builder={builder}>
+              <.select_group>
+                <.select_item
+                  builder={builder}
+                  value=""
+                  label={dgettext("dialogs", "All Channels")}
+                >
+                  {dgettext("dialogs", "All Channels")}
+                </.select_item>
+                <.select_item
+                  :for={ch <- @channels}
+                  builder={builder}
+                  value={ch}
+                  label={ch}
+                >
+                  {ch}
+                </.select_item>
+              </.select_group>
+            </.select_content>
+          </.select>
+        </form>
+
+        <%!-- Search --%>
+        <form phx-change={@on_search} phx-submit={@on_search} class="flex-1 flex gap-retro-4">
+          <.input
+            type="text"
+            value={@search_query}
+            placeholder={dgettext("dialogs", "Search URLs...")}
+            class="flex-1"
+            phx-debounce="300"
+            name="query"
+            data-testid="url-catcher-search"
+          />
+          <.button type="submit" size="sm" variant="outline">
+            <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Search")}
+          </.button>
+        </form>
+      </div>
+
+      <%!-- URL table --%>
+      <div class={classes(["flex-1 min-h-0 overflow-y-auto retro-scrollbar", @table_class])}>
+        <.table>
+          <.table_header>
+            <.table_row>
+              <.table_head>
+                <.button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  class="gap-retro-2 hover:underline p-0 h-auto"
+                  phx-click={@on_sort}
+                  phx-value-column="url"
+                >
+                  <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "URL")}
+                  <.sort_indicator col={:url} active={@sort_column} dir={@sort_direction} />
+                </.button>
+              </.table_head>
+              <.table_head>
+                <.button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  class="gap-retro-2 hover:underline p-0 h-auto"
+                  phx-click={@on_sort}
+                  phx-value-column="posted_by"
+                >
+                  <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Nick")}
+                  <.sort_indicator col={:posted_by} active={@sort_column} dir={@sort_direction} />
+                </.button>
+              </.table_head>
+              <.table_head>
+                <.button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  class="gap-retro-2 hover:underline p-0 h-auto"
+                  phx-click={@on_sort}
+                  phx-value-column="source"
+                >
+                  <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Channel")}
+                  <.sort_indicator col={:source} active={@sort_column} dir={@sort_direction} />
+                </.button>
+              </.table_head>
+              <.table_head>
+                <.button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  class="gap-retro-2 hover:underline p-0 h-auto"
+                  phx-click={@on_sort}
+                  phx-value-column="timestamp"
+                >
+                  <:icon><Icons.icon_btn_down class="w-4 h-4" /></:icon>
+                  {dgettext("dialogs", "Time")}
+                  <.sort_indicator col={:timestamp} active={@sort_column} dir={@sort_direction} />
+                </.button>
+              </.table_head>
+            </.table_row>
+          </.table_header>
+          <.table_body>
+            <.table_row
+              :for={entry <- @entries}
+              data-testid="url-catcher-row"
+              data-url={entry.url}
+            >
+              <.table_cell class="max-w-[200px] truncate">
+                <a
+                  href={entry.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-link hover:underline"
+                >
+                  {entry.url}
+                </a>
+                <div
+                  :if={Map.get(entry, :preview_title)}
+                  class="text-[10px] text-muted-foreground truncate"
+                  data-testid="url-catcher-preview-title"
+                >
+                  {Map.get(entry, :preview_title)}
+                </div>
+              </.table_cell>
+              <.table_cell>{entry.posted_by}</.table_cell>
+              <.table_cell>{entry.source}</.table_cell>
+              <.table_cell class="text-xs text-muted-foreground whitespace-nowrap">
+                {format_timestamp(Map.get(entry, :timestamp), @timezone)}
+              </.table_cell>
+            </.table_row>
+          </.table_body>
+        </.table>
+      </div>
+
+      <%!-- Status line --%>
+      <div class="shadow-retro-status shrink-0 px-retro-4 py-[2px] text-xs text-muted-foreground">
+        {entry_count_label(@entry_count)}
+      </div>
+    </div>
     """
   end
 

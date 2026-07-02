@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_url_catcher, socket) do
-    assign(socket, show_url_catcher: !socket.assigns.show_url_catcher)
+    push_event(socket, "window_command", %{action: "open", id: "url-catcher"})
   end
 
   defp dispatch_action(:toggle_perform_dialog, socket) do
@@ -168,7 +168,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       {:show_flood_protection_dialog, &close_flood_protection_dialog/1},
       {:show_alias_dialog, &close_alias_dialog/1},
       {:show_custom_menus_dialog, &close_custom_menus_dialog/1},
-      {:show_url_catcher, &close_url_catcher/1},
       {:show_user_lookup_dialog, &close_user_lookup_dialog/1},
       {:lookup_result, &close_lookup_result/1},
       {:show_autorespond_dialog, &close_autorespond_dialog/1},
@@ -199,7 +198,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   defp close_flood_protection_dialog(socket),
     do: assign(socket, show_flood_protection_dialog: false)
 
-  defp close_url_catcher(socket), do: assign(socket, show_url_catcher: false)
   defp close_user_lookup_dialog(socket), do: UserLookupEvents.close(socket)
   defp close_lookup_result(socket), do: assign(socket, lookup_result: nil)
 

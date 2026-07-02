@@ -1,13 +1,13 @@
 defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
   @moduledoc """
-  The URL Catcher window. The parent keeps `show_url_catcher` (read by the
-  Escape-dismissal map) and passes it as `visible`, plus the running capture log
-  `entries` (appended from messages and the context menu) and the `timezone`.
+  The URL Catcher window body. Always mounted inside its desktop window (the
+  window manager owns open/close client-side), so the parent's running capture
+  log `entries` (appended from messages and the context menu) keeps flowing in
+  while the window is closed, and the view state survives closes.
 
   Owns the view state — `filter_channel`, `search_query`, `sort_column`,
   `sort_direction` — and filters, searches and sorts `entries` for display. These
-  are pure-UI events handled component-locally (`@myself`). The view state
-  persists between opens (closing does not reset it), so there is no `:reset`.
+  are pure-UI events handled component-locally (`@myself`).
   """
   use RetroHexChatWeb, :live_component
 
@@ -27,7 +27,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
     {:ok,
      assign(socket,
        id: @id,
-       visible: false,
        entries: [],
        timezone: nil,
        filter_channel: nil,
@@ -42,7 +41,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
   def update(assigns, socket) do
     {:ok,
      assign(socket,
-       visible: Map.get(assigns, :visible, socket.assigns.visible),
        entries: Map.get(assigns, :entries, socket.assigns.entries),
        timezone: Map.get(assigns, :timezone, socket.assigns.timezone)
      )}
@@ -84,10 +82,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
       )
 
     ~H"""
-    <div id={"#{@id}-mount"}>
-      <.url_catcher
+    <div id={"#{@id}-mount"} class="contents">
+      <.url_catcher_panel
         id={@id}
-        show={@visible}
         entries={@filtered}
         sort_column={@sort_column}
         sort_direction={@sort_direction}
@@ -99,7 +96,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.UrlCatcherDialog do
         on_sort={JS.push("url_catcher_sort", target: @myself)}
         on_filter={JS.push("url_catcher_filter", target: @myself)}
         on_search={JS.push("url_catcher_search", target: @myself)}
-        on_close="close_url_catcher"
       />
     </div>
     """
