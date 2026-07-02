@@ -226,14 +226,29 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
     session = socket.assigns.session
     show_status_tab = socket.assigns.show_status_tab
 
-    assign(socket,
+    placeholder =
+      ChatHelpers.input_placeholder(%{session: session, show_status_tab: show_status_tab})
+
+    socket
+    |> push_placeholder_change(placeholder)
+    |> assign(
       nickname: session.nickname,
       channels: session.channels,
       strip_formatting: session.strip_formatting,
       capabilities: capabilities_from_session(session, show_status_tab),
-      placeholder:
-        ChatHelpers.input_placeholder(%{session: session, show_status_tab: show_status_tab})
+      placeholder: placeholder
     )
+  end
+
+  # LiveView skips attribute patches on a focused input, so a placeholder that
+  # changes while the user is typing (e.g. /join switching the active channel)
+  # never lands through the DOM diff — push it to the input hook explicitly.
+  defp push_placeholder_change(socket, placeholder) do
+    if Map.get(socket.assigns, :placeholder) == placeholder do
+      socket
+    else
+      push_event(socket, "composer_placeholder", %{placeholder: placeholder})
+    end
   end
 
   # ── Form events (phx-target={@myself}) ───────────────────────────

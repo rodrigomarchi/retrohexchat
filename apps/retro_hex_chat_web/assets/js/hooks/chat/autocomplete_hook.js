@@ -283,6 +283,14 @@ const AutocompleteHook = {
       this.inputEl.focus();
     });
 
+    // LiveView skips attribute patches on a focused input, so a placeholder
+    // change (e.g. /join switching the active channel while typing) never
+    // lands through the DOM diff — the server pushes it explicitly instead.
+    this.handleEvent("composer_placeholder", ({ placeholder }) => {
+      this.serverPlaceholder = placeholder;
+      this.inputEl.placeholder = placeholder;
+    });
+
     this.handleEvent("clear_input", () => {
       this.inputEl.value = "";
       this.inputEl.dispatchEvent(new Event("input", { bubbles: true }));
@@ -299,6 +307,18 @@ const AutocompleteHook = {
   },
 
   updated() {
+    // LiveView's focused-input handling can re-apply a stale placeholder from
+    // its cached tree on later patches; while focused, the pushed value wins.
+    // Unfocused patches apply normally and become the new source of truth
+    // (they also carry mode placeholders like "Notice message").
+    if (document.activeElement === this.inputEl) {
+      if (this.serverPlaceholder && this.inputEl.placeholder !== this.serverPlaceholder) {
+        this.inputEl.placeholder = this.serverPlaceholder;
+      }
+    } else {
+      this.serverPlaceholder = this.inputEl.placeholder;
+    }
+
     const dropdown = document.getElementById("autocomplete-dropdown");
     if (!dropdown) return;
 
