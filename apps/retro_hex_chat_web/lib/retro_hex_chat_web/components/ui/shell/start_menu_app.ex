@@ -32,9 +32,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
       </.start_button>
       <.start_menu id={@id}>
         <%!-- Tools --%>
-        <.app_item
-          action="toggle_address_book"
-          on_action={@on_action}
+        <.window_item
+          window="address-book"
           label={dgettext("ui", "Address Book")}
           icon_fn={:icon_btn_address_book}
         />

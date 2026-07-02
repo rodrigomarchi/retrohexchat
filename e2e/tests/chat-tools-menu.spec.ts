@@ -27,7 +27,7 @@ test.describe('Tools menu', () => {
 
     await openToolsItem(chat, chat.addressBookMenuItem);
     await expect(chat.addressBookDialog).toBeVisible();
-    await chat.addressBookDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.addressBookDialog.locator('[data-window-control="close"]').click();
     await expect(chat.addressBookDialog).toBeHidden();
 
     await openToolsItem(chat, chat.highlightWordsMenuItem);

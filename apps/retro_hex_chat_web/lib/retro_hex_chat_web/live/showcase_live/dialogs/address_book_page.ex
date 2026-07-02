@@ -9,10 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AddressBookPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.AddressBook
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.ShowcaseHelpers
-  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -65,22 +62,20 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.AddressBookPage do
 
       <.showcase_card
         title={dgettext("showcase", "Address Book")}
-        description="Contact list with color assignments."
+        description="Contact list with color assignments — the panel composes into a desktop window in the chat."
       >
-        <.button variant="outline" phx-click={show_modal("address-book-demo")}>
-          <:icon><Icons.icon_dialog_address_book class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open Address Book")}
-        </.button>
-        <.address_book
-          id="address-book-demo"
-          contacts={@contacts}
-          notify_list={@notify_list}
-          nick_colors={@nick_colors}
-          control_list={@control_list}
-          nick_color_fn={fn nick -> "nick-color-#{:erlang.phash2(nick, 12)}" end}
-        />
+        <div class="h-[420px] shadow-retro-field overflow-hidden p-2">
+          <.address_book_panel
+            id="address-book-demo"
+            contacts={@contacts}
+            notify_list={@notify_list}
+            nick_colors={@nick_colors}
+            control_list={@control_list}
+            nick_color_fn={fn nick -> "nick-color-#{:erlang.phash2(nick, 12)}" end}
+          />
+        </div>
         <.code_example>
-          &lt;.address_book
+          &lt;.address_book_panel
           id="address-book"
           contacts=&#123;@contacts&#125;
           /&gt;

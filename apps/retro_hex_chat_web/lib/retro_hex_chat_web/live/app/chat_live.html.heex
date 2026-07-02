@@ -272,6 +272,32 @@
       />
     </.desktop_window>
 
+    <%!-- Address Book — server-managed four-tab mini-app; open-on-tab via
+          send_update after the window mounts; seven window-scoped sub-forms. --%>
+    <.desktop_window
+      :if={"address-book" in @open_windows}
+      id="address-book"
+      title={dgettext("chat", "Address Book")}
+      managed
+      default_x={100}
+      default_y={50}
+      width={720}
+      height={560}
+      min_width={560}
+      min_height={400}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="address-book-window"
+    >
+      <:icon><Icons.icon_dialog_address_book class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AddressBookDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AddressBookDialog.id()}
+        session={@session}
+        nick_color_fn={@nick_color_fn}
+        timezone={@timezone}
+      />
+    </.desktop_window>
+
     <%!-- Notify List — server-managed: selection/sub-form state resets on close;
           the buddy list lives on the session and flows in as passthrough. --%>
     <.desktop_window
@@ -491,6 +517,13 @@
         >
           <:icon><Icons.icon_tab_notify class="h-4 w-4" /></:icon>
         </.taskbar_button>
+        <.taskbar_button
+          :if={"address-book" in @open_windows}
+          window="address-book"
+          label={dgettext("chat", "Address Book")}
+        >
+          <:icon><Icons.icon_dialog_address_book class="h-4 w-4" /></:icon>
+        </.taskbar_button>
         <:tray>
           <.desktop_tray>
             <span id="chat-tray-clock" phx-hook="ClockHook" class="font-mono tabular-nums"></span>
@@ -572,14 +605,6 @@
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.NickChangeDialog}
   id={RetroHexChatWeb.ChatLive.Components.NickChangeDialog.id()}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.AddressBookDialog}
-  id={RetroHexChatWeb.ChatLive.Components.AddressBookDialog.id()}
-  session={@session}
-  nick_color_fn={@nick_color_fn}
-  timezone={@timezone}
 />
 
 <.live_component

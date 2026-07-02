@@ -15,8 +15,11 @@ async function signedInUser(page: Page) {
 }
 
 async function openMenuItem(trigger: Locator, item: Locator) {
-  await trigger.click();
-  await expect(item).toBeVisible();
+  // Retry the trigger click — the first click can race the menubar hook mount.
+  await expect(async () => {
+    await trigger.click();
+    await expect(item).toBeVisible({ timeout: 1000 });
+  }).toPass({ timeout: 10_000 });
   await item.click();
 }
 
@@ -34,19 +37,22 @@ test.describe('Dialog close behavior', () => {
   }) => {
     const chat = await signedInUser(page);
 
+    // Address Book is a desktop window: the title-bar X closes it…
     await openMenuItem(chat.toolsMenuTrigger, chat.addressBookMenuItem);
     await expect(chat.addressBookDialog).toBeVisible();
-    await clickTitleClose(chat.addressBookDialog);
+    await chat.addressBookDialog.locator('[data-window-control="close"]').click();
     await expect(chat.addressBookDialog).toBeHidden();
 
+    // …clicking the desktop does NOT close it (windows have no backdrop)…
     await openMenuItem(chat.toolsMenuTrigger, chat.addressBookMenuItem);
     await expect(chat.addressBookDialog).toBeVisible();
-    await clickBackdrop(page);
-    await expect(chat.addressBookDialog).toBeHidden();
+    await page
+      .locator('#chat-desktop .desktop__workspace')
+      .click({ position: { x: 10, y: 400 } });
+    await expect(chat.addressBookDialog).toBeVisible();
 
-    await openMenuItem(chat.toolsMenuTrigger, chat.addressBookMenuItem);
-    await expect(chat.addressBookDialog).toBeVisible();
-    await chat.addressBookDialog.getByRole('button', { name: 'Cancel' }).click();
+    // …and Escape closes the topmost unpinned window.
+    await page.keyboard.press('Escape');
     await expect(chat.addressBookDialog).toBeHidden();
 
     await openMenuItem(chat.viewMenuTrigger, chat.channelListMenuItem);
@@ -62,14 +68,20 @@ test.describe('Dialog close behavior', () => {
       .click();
     await expect(chat.channelListDialog).toBeHidden();
 
+    // Highlight Words is a desktop window: no backdrop close; the title-bar X
+    // and Escape close it.
     await openMenuItem(chat.toolsMenuTrigger, chat.highlightWordsMenuItem);
     await expect(chat.highlightDialog).toBeVisible();
-    await clickBackdrop(page);
+    await page
+      .locator('#chat-desktop .desktop__workspace')
+      .click({ position: { x: 10, y: 400 } });
+    await expect(chat.highlightDialog).toBeVisible();
+    await page.keyboard.press('Escape');
     await expect(chat.highlightDialog).toBeHidden();
 
     await openMenuItem(chat.toolsMenuTrigger, chat.highlightWordsMenuItem);
     await expect(chat.highlightDialog).toBeVisible();
-    await chat.highlightDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.highlightDialog.locator('[data-window-control="close"]').click();
     await expect(chat.highlightDialog).toBeHidden();
   });
 });

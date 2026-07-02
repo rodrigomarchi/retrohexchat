@@ -4,8 +4,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   Nick Colors, Control/Ignore), each with its own selection, note/draft and modal
   sub-forms.
 
-  Owns the ENTIRE dialog UI state (tab, the four selections, the note drafts, the
-  palette-edit index, and all seven sub-form flags) plus every event. The domain
+  Mounted inside a server-managed desktop window: closing unmounts the island
+  (resetting tab, selections, drafts and sub-forms); opening on a specific tab
+  is a `send_update(open: tab)` after the window mounts. Owns the tab, the four
+  selections, the note drafts, the palette-edit index, and all seven sub-form
+  flags, plus every event. The domain
   mutations (`ContactList`/`NickColors`/`IgnoreList`/`NotifyOps`) run here and
   produce a new `session`; the parent owns `session` (the central read-model) so
   the work bubbles up:
@@ -16,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
     * `{:ab_ignore_timer, op, ...}` — the parent owns the ignore debounce timers.
 
   Every event targets this component: the passed-in callbacks are `JS.push(..,
-  target: @myself)` structs, and the seven `fixed inset-0` sub-forms get
+  target: @myself)` structs, and the seven window-scoped sub-form modals get
   `phx-target={@myself}` threaded through the design-system `address_book/1` so
   their typed inputs survive background re-renders (§0a-anti). The Nick-Color add
   sub-form additionally uses `phx-update="ignore"` because its in-form color
@@ -42,8 +45,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
   @spec id() :: String.t()
   def id, do: @id
 
-  @closed %{
-    show: false,
+  @initial %{
     address_book_tab: "contacts",
     contacts_selected: nil,
     selected_contact_note: "",
@@ -66,26 +68,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
     {:ok,
      socket
      |> assign(:id, @id)
-     |> assign(@closed)
+     |> assign(@initial)
      |> assign(session: nil, nick_color_fn: nil, timezone: "Etc/UTC")}
   end
 
   # ── Directives ───────────────────────────────────────────────────
 
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(%{toggle: true}, socket) do
-    if socket.assigns.show do
-      {:ok, assign(socket, @closed)}
-    else
-      {:ok, assign(socket, %{@closed | show: true})}
-    end
-  end
-
   def update(%{open: tab}, socket) do
-    {:ok, assign(socket, %{@closed | show: true, address_book_tab: tab || "contacts"})}
+    {:ok, assign(socket, %{@initial | address_book_tab: tab || "contacts"})}
   end
-
-  def update(%{close: true}, socket), do: {:ok, assign(socket, @closed)}
 
   # passthrough context (session, nick_color_fn, timezone)
   def update(assigns, socket), do: {:ok, assign(socket, assigns)}
@@ -468,10 +460,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
 
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
-      <.address_book
+      <.address_book_panel
         id={@id}
         target={@myself}
-        show={@show}
         selected_tab={@address_book_tab}
         contacts={@contacts}
         selected_index={@contacts_selected}
@@ -510,9 +501,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialog do
         on_control_add="control_add_dialog"
         on_control_remove="control_remove"
         on_tab={JS.push("address_book_tab", target: @myself)}
-        on_ok="close_address_book"
-        on_cancel="close_address_book"
-        on_close="close_address_book"
       />
     </div>
     """

@@ -24,12 +24,12 @@ defmodule RetroHexChatWeb.AddressBookTest do
   # The Address Book is a stateful island; its events target the component, so
   # fire them element-based (the design-system threads phx-target through).
   defp ab_click(view, event) do
-    view |> element("#address-book-dialog [phx-click='#{event}']") |> render_click()
+    view |> element("#address-book-dialog-mount [phx-click='#{event}']") |> render_click()
   end
 
   defp ab_select(view, event, nick) do
     view
-    |> element("#address-book-dialog [phx-click='#{event}'][phx-value-nickname='#{nick}']")
+    |> element("#address-book-dialog-mount [phx-click='#{event}'][phx-value-nickname='#{nick}']")
     |> render_click()
   end
 
@@ -45,51 +45,36 @@ defmodule RetroHexChatWeb.AddressBookTest do
 
   # ── Phase 3: US1 — Dialog Shell ──────────────────────────
 
-  describe "dialog open/close" do
-    test "Ctrl+Shift+A opens the dialog", %{conn: conn} do
+  describe "window open/close" do
+    test "Ctrl+Shift+A opens the window", %{conn: conn} do
       view = connect_user(conn, "AltBUser")
-      refute has_element?(view, "#address-book-dialog-show-trigger")
+      refute has_element?(view, ~s([data-window-id="address-book"]))
 
       render_click(view, "window_keydown", %{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
 
-      html = render(view)
-      assert html =~ "address-book-dialog"
-      assert html =~ "Address Book"
+      assert has_element?(view, ~s([data-window-id="address-book"][data-window-managed="true"]))
+      assert render(view) =~ "Address Book"
+      assert_push_event(view, "window_command", %{action: "open", id: "address-book"})
     end
 
-    test "Ctrl+Shift+A toggles dialog closed", %{conn: conn} do
+    test "re-invoking the shortcut focuses the window (never toggle-closes)", %{conn: conn} do
       view = connect_user(conn, "AltBToggle")
 
-      # Open
       render_click(view, "window_keydown", %{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
-      assert render(view) =~ "address-book-dialog"
+      assert has_element?(view, ~s([data-window-id="address-book"]))
 
-      # Close
       render_click(view, "window_keydown", %{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
-      refute has_element?(view, "#address-book-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="address-book"]))
     end
 
-    test "close button closes dialog", %{conn: conn} do
+    test "a client-side window close unmounts the island", %{conn: conn} do
       view = connect_user(conn, "CloseBtn")
 
-      # Open via toggle event
       view |> render_click("toggle_address_book")
-      assert render(view) =~ "address-book-dialog"
+      assert has_element?(view, ~s([data-window-id="address-book"]))
 
-      # Close via toggle (same event from close button)
-      view |> render_click("toggle_address_book")
-      refute has_element?(view, "#address-book-dialog-show-trigger")
-    end
-
-    test "toggle_address_book event toggles dialog", %{conn: conn} do
-      view = connect_user(conn, "ToolbarBtn")
-
-      render_click(view, "toggle_address_book")
-      html = render(view)
-      assert html =~ "address-book-dialog"
-
-      render_click(view, "toggle_address_book")
-      refute has_element?(view, "#address-book-dialog-show-trigger")
+      render_hook(view, "window_closed", %{"id" => "address-book"})
+      refute has_element?(view, ~s([data-window-id="address-book"]))
     end
   end
 
@@ -145,7 +130,7 @@ defmodule RetroHexChatWeb.AddressBookTest do
       assert render(view) =~ "address-book-dialog"
     end
 
-    test "reopening dialog resets to Contacts tab", %{conn: conn} do
+    test "reopening the window resets to Contacts tab", %{conn: conn} do
       view = connect_user(conn, "ResetTab")
       view |> render_click("toggle_address_book")
 
@@ -153,8 +138,8 @@ defmodule RetroHexChatWeb.AddressBookTest do
       view |> ab_tab("colors")
       assert render(view) =~ "No custom colors set. Nicknames use automatic colors."
 
-      # Close and reopen
-      view |> render_click("toggle_address_book")
+      # Close (client contract unmounts the managed island) and reopen fresh.
+      render_hook(view, "window_closed", %{"id" => "address-book"})
       view |> render_click("toggle_address_book")
       assert render(view) =~ "No contacts saved"
     end

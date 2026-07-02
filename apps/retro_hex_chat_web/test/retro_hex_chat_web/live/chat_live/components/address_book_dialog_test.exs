@@ -35,17 +35,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialogTest do
     assert AddressBookDialog.id() == "address-book-dialog"
   end
 
-  test "stays closed by default (no show-trigger)" do
+  test "renders the bare panel with the 4 tabs" do
     html = dialog(%{})
 
     assert html =~ ~s(id="address-book-dialog-mount")
-    refute html =~ ~s(id="address-book-dialog-show-trigger")
-  end
-
-  test "renders the 4 tabs when shown" do
-    html = dialog(%{show: true})
-
-    assert html =~ ~s(id="address-book-dialog-show-trigger")
+    assert html =~ ~s(data-testid="address-book-panel")
+    refute html =~ "phx-show-modal"
     assert html =~ "Contacts"
     assert html =~ "Notify"
     assert html =~ "Nick Colors"
@@ -54,7 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialogTest do
 
   test "renders contact rows from the session" do
     {:ok, contacts} = ContactList.add_entry(ContactList.new(), "Nick", "Buddy", "a note")
-    html = dialog(%{show: true, session: session(%{contacts: contacts})})
+    html = dialog(%{session: session(%{contacts: contacts})})
 
     assert html =~ "Buddy"
   end
@@ -63,14 +58,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.AddressBookDialogTest do
     {:ok, colors} = NickColors.add_entry(NickColors.new(), "ColorBud", 4)
 
     html =
-      dialog(%{show: true, address_book_tab: "colors", session: session(%{nick_colors: colors})})
+      dialog(%{address_book_tab: "colors", session: session(%{nick_colors: colors})})
 
     assert html =~ "ColorBud"
     assert html =~ "irc-bg-4"
   end
 
   test "renders the contact add sub-form targeting the component" do
-    html = dialog(%{show: true, show_contact_add_dialog: true})
+    html = dialog(%{show_contact_add_dialog: true})
 
     assert html =~ ~s(data-testid="contact-add-form")
     assert html =~ ~s(phx-target=)

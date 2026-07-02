@@ -500,9 +500,7 @@ export class ChatPage {
     this.notifyAutoWhoisToggle = page.locator(
       '#notify-list-dialog-auto-whois',
     );
-    this.addressBookDialog = page.locator(
-      '#address-book-dialog [role="dialog"]',
-    );
+    this.addressBookDialog = page.getByTestId('address-book-window');
     this.channelListDialog = page.locator(
       '#channel-list-dialog [role="dialog"]',
     );
@@ -1547,7 +1545,7 @@ export class ChatPage {
   }
 
   async closeAddressBook() {
-    await this.addressBookDialog.getByRole('button', { name: 'OK' }).click();
+    await this.addressBookDialog.locator('[data-window-control="close"]').click();
     await expect(this.addressBookDialog).toBeHidden();
   }
 

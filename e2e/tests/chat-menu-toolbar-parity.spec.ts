@@ -50,12 +50,12 @@ test.describe('Menu action parity', () => {
 
     await openMenuItem(chat.toolsMenuTrigger, chat.addressBookMenuItem);
     await expect(chat.addressBookDialog).toBeVisible();
-    await chat.addressBookDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.addressBookDialog.locator('[data-window-control="close"]').click();
     await expect(chat.addressBookDialog).toBeHidden();
 
     await pressCtrlShift(page, 'A');
     await expect(chat.addressBookDialog).toBeVisible();
-    await chat.addressBookDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.addressBookDialog.locator('[data-window-control="close"]').click();
     await expect(chat.addressBookDialog).toBeHidden();
 
     await openMenuItem(chat.toolsMenuTrigger, chat.highlightWordsMenuItem);

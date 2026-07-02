@@ -53,8 +53,9 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
       assert has_element?(view, ~s(#chat-desktop [data-window-start]))
       assert has_element?(view, ~s(#chat-start-menu[data-window-start-menu]))
-      # Items dispatch the existing toolbar_action events (no window wiring yet).
-      assert has_element?(view, ~s(#chat-start-menu [phx-value-action="toggle_address_book"]))
+      # Migrated dialogs open client-side; unmigrated ones still dispatch
+      # toolbar_action events.
+      assert has_element?(view, ~s(#chat-start-menu [data-window-open="address-book"]))
       assert has_element?(view, ~s(#chat-start-menu [phx-value-action="toggle_channel_list"]))
       assert has_element?(view, ~s(#chat-start-menu [phx-value-action="help_topics"]))
     end

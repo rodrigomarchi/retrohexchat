@@ -6,7 +6,7 @@
 |-------|--------|-------|
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
 | 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
-| 3 — Tools/Settings batch | in progress | 7/8 done (+ NotifyList, managed — presence mutates the session, not the island). Last: AddressBook |
+| 3 — Tools/Settings batch | **complete** (2026-07-02) | All 8 migrated (all managed); full `make ci` 9/9 incl. dialyzer |
 | 4 — View/Account batch | not started | |
 | 5 — Admin batch | not started | |
 | 6 — Unify + cleanup | not started | |
@@ -112,6 +112,15 @@ hold for the chat and extend:
 - `hook.command` takes `(action, id)` — only the `handleEvent` callback takes the
   `{action, id}` object. Passing the object to `command` silently no-ops (it
   pushes `window_open` for id `undefined`) — easy test bug.
+- PROCESS: fix tests PROACTIVELY, not reactively. Before migrating dialog X,
+  one sweep finds every affected test:
+  `grep -rn "<id>-show-trigger\|<id>-dialog \[role\|<X>Dialog.getByRole" test/ e2e/`
+  plus the page-object helpers (`open<X>FromMenu`, `close<X>`). Fix them WITH
+  the code change; run each test layer ONCE. The run-fail-fix loop across three
+  layers is where iterations bleed time.
+- KNOWN BROKEN SPEC (pre-existing, Phase 6 candidate): chat-address-book-contacts
+  U12 expects `----- Whois: -----` TEXT output but `whois_output_mode` defaults
+  to `:card` — fails at HEAD, unrelated to the migration.
 - KNOWN FLAKE (pre-existing, Phase 6 candidate): channel_moderation_context_menu
   and channel_central feature tests race the second user's /join against channel
   membership ("user not in channel" / "no process") — nondeterministic across

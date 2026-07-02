@@ -18,12 +18,12 @@ defmodule RetroHexChatWeb.AddressBookFeatureTest do
   # them element-based (scoped to the dialog — notify_* collide with the
   # standalone Notify dialog).
   defp ab_click(view, event) do
-    view |> element("#address-book-dialog [phx-click='#{event}']") |> render_click()
+    view |> element("#address-book-dialog-mount [phx-click='#{event}']") |> render_click()
   end
 
   defp ab_select(view, event, nick) do
     view
-    |> element("#address-book-dialog [phx-click='#{event}'][phx-value-nickname='#{nick}']")
+    |> element("#address-book-dialog-mount [phx-click='#{event}'][phx-value-nickname='#{nick}']")
     |> render_click()
   end
 
@@ -44,7 +44,7 @@ defmodule RetroHexChatWeb.AddressBookFeatureTest do
   describe "US1: Dialog Shell" do
     test "toggle_address_book opens dialog", %{conn: conn} do
       view = connect_user(conn, "E2EAbOpen#{uid()}")
-      refute has_element?(view, "#address-book-dialog-show-trigger")
+      refute has_element?(view, ~s([data-window-id="address-book"]))
 
       html = render_click(view, "toggle_address_book")
       assert html =~ "address-book-dialog"
@@ -85,27 +85,30 @@ defmodule RetroHexChatWeb.AddressBookFeatureTest do
       assert html =~ "No contacts saved"
     end
 
-    test "close button (toggle_address_book again) closes dialog", %{conn: conn} do
+    test "the window X reports the close and the island unmounts", %{conn: conn} do
       view = connect_user(conn, "E2EAbClose#{uid()}")
 
       render_click(view, "toggle_address_book")
-      assert render(view) =~ "address-book-dialog"
+      assert has_element?(view, ~s([data-window-id="address-book"]))
 
-      render_click(view, "toggle_address_book")
-      refute has_element?(view, "#address-book-dialog-show-trigger")
+      render_hook(view, "window_closed", %{"id" => "address-book"})
+      refute has_element?(view, ~s([data-window-id="address-book"]))
     end
 
     test "Ctrl+Shift+A toggle opens and closes dialog", %{conn: conn} do
       view = connect_user(conn, "E2EAltB#{uid()}")
-      refute has_element?(view, "#address-book-dialog-show-trigger")
+      refute has_element?(view, ~s([data-window-id="address-book"]))
 
       # Open
       render_click(view, "window_keydown", %{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
-      assert render(view) =~ "address-book-dialog"
+      assert has_element?(view, ~s([data-window-id="address-book"]))
 
-      # Close
+      # Re-invoking focuses (never toggle-closes); the client contract closes.
       render_click(view, "window_keydown", %{"key" => "a", "ctrlKey" => true, "shiftKey" => true})
-      refute has_element?(view, "#address-book-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="address-book"]))
+
+      render_hook(view, "window_closed", %{"id" => "address-book"})
+      refute has_element?(view, ~s([data-window-id="address-book"]))
     end
 
     test "toggle_address_book event opens dialog", %{conn: conn} do
