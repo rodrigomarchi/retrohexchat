@@ -7,7 +7,7 @@
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
 | 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
 | 3 — Tools/Settings batch | **complete** (2026-07-02) | All 8 migrated (all managed); full `make ci` 9/9 incl. dialyzer |
-| 4 — View/Account batch | **complete** (2026-07-02) | All 6 migrated; full `make ci` 9/9 incl. dialyzer. Open issue: intermittent Feature 06 knock E2E (pre-existing — see Learnings) |
+| 4 — View/Account batch | **complete** (2026-07-02) | All 6 migrated; full `make ci` 9/9 incl. dialyzer. Knock-flake root-caused + fixed (see Learnings: "ephemeral lines lost to a modal-close ack diff") |
 | 5 — Admin batch | not started | |
 | 6 — Unify + cleanup | not started | |
 
@@ -216,14 +216,43 @@ hold for the chat and extend:
   password/confirm inputs had no value binding, so any patch between fill and
   submit wiped the unfocused field ("Passwords do not match" on submit). The
   auth drafts are now mirrored via the `{:auth, ...}` directive.
-- OPEN ISSUE (E2E, intermittent): chat-ui-features-channel Feature 06 — the
-  "Knock sent" system line sometimes never renders. Fails/passes on the SAME
-  commit (passed at 1b539d58 in the morning, failed there in the evening);
-  failure snapshot looks post-remount (channel-list window gone, sidebar back)
-  with NO knock line (neither success nor error) and no server [error].
-  Suspect the client component-patch fragility class (see REVERSED gotcha).
-  Next loop iteration: dedicated repro (run the spec N times, capture server
-  log at debug + browser console), then root-cause.
+- RESOLVED — three pre-existing bugs in the "ephemeral / optimistic stream row"
+  family (all failed on the clean base 8b6bb2d8; fixed together). Root patterns
+  and fixes:
+  (a) OPTIMISTIC-ECHO REORDER/DUP (the real cause of the flaky chat-paste O4/O5
+  and chat-history-pagination P10 — P10 pastes first, so it fails on the paste,
+  not pagination). The optimistic channel row was keyed by a temp id; the PubSub
+  echo carried the real DB id, so the echo did `stream_delete(temp) +
+  stream_insert(real)` — and a fresh id APPENDS at the tail. Under rapid sends
+  (paste) whose echoes lag, that reorders/duplicates. FIX: `Channels.Server.
+  send_message` now returns `{:ok, id}`; the optimistic row is keyed by that same
+  id, so the echo `stream_insert` UPDATES IT IN PLACE (Phoenix streams update an
+  existing id without moving it — same reason edits don't reorder). This deletes
+  the entire pending-reconciliation machinery: no `pending_channel_msg_id(s)`,
+  no delete+reinsert — `apply_visible_channel_message` is now a plain insert.
+  RULE: for optimistic stream rows, seed the OPTIMISTIC row with the id the echo
+  will carry; never reconcile by swapping a temp id for a real one.
+  (b) LOAD-MORE wipe — `prepend_older_messages`/`prepend_older_pm_messages`
+  re-queried the whole window and `MessageViewport.reset`, rebuilding the stream
+  from the DB and so DROPPING ephemeral (non-persisted) system lines. FIX: fetch
+  only the new page (cursor `before_id`) and `MessageViewport.prepend`
+  (`stream_insert(at: 0)`, reversed) — additive, never resets.
+  (c) KNOCK line dropped — the KnockRequest MODAL's submit emitted the "Knock
+  sent" system line in the same ack that closed the modal (tree reshape drops the
+  racing stream insert). FIX: defer it one hop via `send(self(),
+  {:deferred_system_event, msg})` (handled in `chat_live.ex`). RULE: a system
+  line emitted from a handler that also closes a modal must ride its own diff.
+  Coverage: existing E2E chat-paste O4/O5, chat-history-pagination P10,
+  chat-channel-knock I15 — all green on a FRESH server. No ExUnit test added: the
+  reorder needs real client-diff + PubSub-echo timing (E2E only); asserting it in
+  ExUnit would race send_update/broadcast, which the "no async stream timing"
+  rule forbids.
+- GOTCHA (cost me an hour): the Playwright config has `reuseExistingServer:
+  true`. A server left running on :4003 from an earlier run serves STALE code —
+  `mix compile`/`assets.build` update the beam files but NOT the running node.
+  Tests then validate old code and "fail with the fix applied". Before trusting
+  an E2E result after an Elixir change: `lsof -ti:4003 | xargs kill -9` (or
+  `pkill -f phx.server`) and let Playwright boot a fresh server.
 
 ## Decision log
 

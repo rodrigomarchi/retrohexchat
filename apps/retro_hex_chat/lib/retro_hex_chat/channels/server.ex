@@ -73,9 +73,13 @@ defmodule RetroHexChat.Channels.Server do
 
   @doc """
   Send a message to the channel. The message is broadcast via PubSub.
+
+  On success returns `{:ok, id}` with the persisted message id, so a caller can
+  render an optimistic row keyed by the same id the PubSub echo will carry — the
+  echo then updates that row in place instead of appending a duplicate.
   """
   @spec send_message(String.t(), String.t(), String.t(), atom() | keyword()) ::
-          :ok | {:error, String.t()}
+          {:ok, term()} | {:error, String.t()}
   def send_message(channel_name, nickname, content, type_or_opts \\ :message) do
     {type, opts} =
       if is_list(type_or_opts) do
@@ -348,7 +352,7 @@ defmodule RetroHexChat.Channels.Server do
 
       broadcast(state.name, %{event: "new_message", payload: payload})
 
-      {:reply, :ok, maybe_touch_activity(state)}
+      {:reply, {:ok, id}, maybe_touch_activity(state)}
     else
       {:error, _} = err ->
         {:reply, err, state}

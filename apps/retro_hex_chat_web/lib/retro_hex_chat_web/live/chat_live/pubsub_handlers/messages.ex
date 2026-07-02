@@ -267,17 +267,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
-  defp apply_visible_channel_message(socket, decorated, session) do
-    case socket.assigns[:pending_channel_msg_id] do
-      pending_id when is_binary(pending_id) and decorated.author == session.nickname ->
-        socket
-        |> MessageViewport.delete(pending_id)
-        |> MessageViewport.insert(decorated)
-        |> assign(pending_channel_msg_id: nil)
-
-      _ ->
-        MessageViewport.insert(socket, decorated)
-    end
+  # An own message echoes back with the persisted id that the optimistic row was
+  # already keyed by, so `stream_insert` updates that row in place (clearing its
+  # `pending` status). A message from anyone else carries a new id and appends.
+  # Either way a plain insert is correct — no reconciliation bookkeeping needed.
+  defp apply_visible_channel_message(socket, decorated, _session) do
+    MessageViewport.insert(socket, decorated)
   end
 
   defp cleared_channel_message?(socket, channel, %{timestamp: timestamp}) do

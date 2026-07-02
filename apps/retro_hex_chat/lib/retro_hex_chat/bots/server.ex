@@ -530,7 +530,7 @@ defmodule RetroHexChat.Bots.Server do
   @spec send_bot_message(String.t(), String.t(), String.t()) :: :ok | {:error, term()}
   defp send_bot_message(channel, nickname, content) do
     case Channels.Server.send_message(channel, nickname, content) do
-      :ok -> :ok
+      {:ok, _id} -> :ok
       {:error, reason} -> Logger.warning("Bot #{nickname} failed to send: #{inspect(reason)}")
     end
   catch

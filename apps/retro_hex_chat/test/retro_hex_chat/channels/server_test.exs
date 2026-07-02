@@ -533,7 +533,7 @@ defmodule RetroHexChat.Channels.ServerTest do
 
       :ok = Server.rename_user(channel, "rename_user", "renamed_user")
 
-      assert :ok = Server.send_message(channel, "renamed_user", "Hello after rename!")
+      assert {:ok, _} = Server.send_message(channel, "renamed_user", "Hello after rename!")
 
       assert_receive %{
         event: "new_message",
@@ -579,7 +579,7 @@ defmodule RetroHexChat.Channels.ServerTest do
       {:ok, _} = Server.join(channel, "user1")
       assert_receive {:user_joined, _}
 
-      assert :ok = Server.send_message(channel, "user1", "Hello!")
+      assert {:ok, _} = Server.send_message(channel, "user1", "Hello!")
 
       assert_receive %{
         event: "new_message",
@@ -669,7 +669,7 @@ defmodule RetroHexChat.Channels.ServerTest do
       :ok = Server.set_mode(channel, "op", "+m")
       :ok = Server.set_mode(channel, "op", "+v", ["voiced_user"])
 
-      assert :ok = Server.send_message(channel, "voiced_user", "I can speak!")
+      assert {:ok, _} = Server.send_message(channel, "voiced_user", "I can speak!")
 
       assert_receive %{
         event: "new_message",
@@ -770,7 +770,7 @@ defmodule RetroHexChat.Channels.ServerTest do
       {:ok, _} = Server.join(channel, "actor")
       assert_receive {:user_joined, _}
 
-      assert :ok = Server.send_message(channel, "actor", "dances", :action)
+      assert {:ok, _} = Server.send_message(channel, "actor", "dances", :action)
 
       assert_receive %{
         event: "new_message",
@@ -1126,7 +1126,7 @@ defmodule RetroHexChat.Channels.ServerTest do
       {:ok, _} = Server.join(channel, "owner")
       :ok = Server.set_mode(channel, "owner", "+n", [])
 
-      assert :ok = Server.send_message(channel, "owner", "hello members")
+      assert {:ok, _} = Server.send_message(channel, "owner", "hello members")
     end
   end
 
@@ -1198,7 +1198,7 @@ defmodule RetroHexChat.Channels.ServerTest do
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
 
-      :ok = Server.send_message(channel, "owner", "\x03Hello\x03 \x02bold\x02")
+      {:ok, _} = Server.send_message(channel, "owner", "\x03Hello\x03 \x02bold\x02")
 
       assert_receive %{event: "new_message", payload: payload}
       refute payload.content =~ "\x03"
@@ -1213,7 +1213,7 @@ defmodule RetroHexChat.Channels.ServerTest do
 
       Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
 
-      :ok = Server.send_message(channel, "owner", "\x02bold\x02")
+      {:ok, _} = Server.send_message(channel, "owner", "\x02bold\x02")
 
       assert_receive %{event: "new_message", payload: payload}
       assert payload.content =~ "\x02"

@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
     session = socket.assigns.session
 
     case Server.send_message(target, session.nickname, content) do
-      :ok ->
+      {:ok, _id} ->
         {:halt,
          socket
          |> MessageViewport.delete(temp_id)
@@ -518,14 +518,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   end
 
   defp prepend_older_messages(socket, older_messages) do
-    channel = socket.assigns.session.active_channel
-    loaded_count = (socket.assigns[:loaded_message_count] || 50) + length(older_messages)
-
-    raw_messages = Queries.list_messages(channel, limit: loaded_count)
-    new_oldest = List.last(raw_messages)
+    new_oldest = List.last(older_messages)
 
     stream_items =
-      raw_messages
+      older_messages
       |> MessageHelpers.visible_channel_messages(socket.assigns.session.ignore_list)
       |> Enum.reverse()
       |> Enum.map(&message_to_stream_item/1)
@@ -535,10 +531,10 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       loading_more: false,
       oldest_message_id: new_oldest.id,
       has_more: length(older_messages) == 50,
-      loaded_message_count: length(raw_messages)
+      loaded_message_count: (socket.assigns[:loaded_message_count] || 50) + length(older_messages)
     )
     |> push_event("prepend_start", %{})
-    |> MessageViewport.reset(stream_items)
+    |> MessageViewport.prepend(stream_items)
   end
 
   defp message_to_stream_item(msg) do

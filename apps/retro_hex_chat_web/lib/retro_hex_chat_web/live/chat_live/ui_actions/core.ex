@@ -268,10 +268,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Core do
           :ok ->
             updated_timestamps = Map.put(knock_timestamps, channel, now)
 
-            {:ok,
-             socket
-             |> assign(knock_timestamps: updated_timestamps)
-             |> system_event(dgettext("chat", "Knock sent to %{channel}", channel: channel))}
+            send(
+              self(),
+              {:deferred_system_event,
+               dgettext("chat", "Knock sent to %{channel}", channel: channel)}
+            )
+
+            {:ok, assign(socket, knock_timestamps: updated_timestamps)}
 
           {:error, msg} ->
             {:error, error_event(socket, msg), msg}

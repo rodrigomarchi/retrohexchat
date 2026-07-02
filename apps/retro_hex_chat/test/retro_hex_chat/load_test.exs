@@ -34,7 +34,7 @@ defmodule RetroHexChat.LoadTest do
 
           Task.async(fn ->
             {:ok, _} = Server.join(channel, nickname)
-            :ok = Server.send_message(channel, nickname, "Message from #{nickname}")
+            {:ok, _} = Server.send_message(channel, nickname, "Message from #{nickname}")
             {channel, nickname}
           end)
         end

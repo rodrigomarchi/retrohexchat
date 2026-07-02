@@ -24,7 +24,7 @@ defmodule RetroHexChat.Channels.MessageOrderingTest do
 
     # Send 100 messages sequentially from the same user
     for i <- 1..100 do
-      :ok = Server.send_message(channel, "sender", "Message #{i}")
+      {:ok, _} = Server.send_message(channel, "sender", "Message #{i}")
     end
 
     # Collect all received messages
@@ -58,7 +58,7 @@ defmodule RetroHexChat.Channels.MessageOrderingTest do
     # Each user sends 10 messages sequentially (all via GenServer calls)
     for nick <- ~w(alice bob carol) do
       for i <- 1..10 do
-        :ok = Server.send_message(channel, nick, "#{nick}-#{i}")
+        {:ok, _} = Server.send_message(channel, nick, "#{nick}-#{i}")
       end
     end
 

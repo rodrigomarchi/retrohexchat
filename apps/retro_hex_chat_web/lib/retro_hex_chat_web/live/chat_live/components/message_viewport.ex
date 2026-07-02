@@ -5,10 +5,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   added, changed or removed — not on every parent re-render (typing, lag, sidebar
   churn). The per-row markup lives in the pure `MessageRow` function component.
 
-  The parent stays the canonical owner of all pagination/scroll/pending state
+  The parent stays the canonical owner of all pagination/scroll state
   (`oldest_message_id`, `has_more`, `loaded_message_count`, `loading_more`,
-  `chat_clear_token`, `pending_channel_msg_id`,
-  `cleared_channel_cutoffs`) and of the message-production logic (commands, PubSub
+  `chat_clear_token`, `cleared_channel_cutoffs`) and of the message-production
+  logic (commands, PubSub
   inserts, edits/deletes, load-more pagination, pending reconciliation, cleared-
   channel checks). Wherever that logic would mutate the stream it instead pushes a
   delta here via `send_update/2`:
@@ -50,6 +50,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
     socket
   end
 
+  @doc "Prepends a chronological page of older messages. Returns the socket."
+  @spec prepend(Phoenix.LiveView.Socket.t(), [map()]) :: Phoenix.LiveView.Socket.t()
+  def prepend(socket, items) do
+    send_update(__MODULE__, id: @id, action: {:prepend, items})
+    socket
+  end
+
   @doc "Removes a single message row by id. Returns the socket."
   @spec delete(Phoenix.LiveView.Socket.t(), term()) :: Phoenix.LiveView.Socket.t()
   def delete(socket, id) do
@@ -88,6 +95,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: {:insert, msg}}, socket) do
     {:ok, stream_insert(socket, :chat_messages, msg)}
+  end
+
+  # Items arrive oldest-first; inserting reversed at position 0 lands them in
+  # order above the existing rows (a load-more must never reset the stream —
+  # ephemeral system lines are not in the DB and would vanish).
+  def update(%{action: {:prepend, items}}, socket) do
+    {:ok,
+     items
+     |> Enum.reverse()
+     |> Enum.reduce(socket, &stream_insert(&2, :chat_messages, &1, at: 0))}
   end
 
   def update(%{action: {:delete, id}}, socket) do

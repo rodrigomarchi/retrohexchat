@@ -289,6 +289,13 @@ defmodule RetroHexChatWeb.App.ChatLive do
     {:noreply, assign(socket, notice_active: active)}
   end
 
+  # System lines deferred out of a form-submit ack cycle: a stream insert that
+  # rides the same ack diff that closes the submitting modal is dropped
+  # client-side, so the line must travel in its own diff.
+  def handle_info({:deferred_system_event, message}, socket) do
+    {:noreply, ChatLive.Helpers.system_event(socket, message)}
+  end
+
   # Channel Central bubbles errors that belong to the chat surface (system lines).
   def handle_info({:cc_system_error, message}, socket) do
     {:noreply, ChatLive.Helpers.error_event(socket, message)}

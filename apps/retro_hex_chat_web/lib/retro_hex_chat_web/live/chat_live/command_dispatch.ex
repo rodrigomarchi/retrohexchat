@@ -174,27 +174,33 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     end
   end
 
+  # The optimistic row is keyed by the persisted message id (returned by
+  # `send_message`), the same id the PubSub echo carries. The echo therefore
+  # updates this exact row in place — it neither appends a duplicate nor moves
+  # the row to the tail, so rapid sends (paste) keep their order. `pending`
+  # status is stripped client-side by `message_confirmed`; the echo also clears
+  # it when it re-renders the row with the decorated payload.
   defp do_send_channel_message(socket, session, text, reply_to) do
-    temp_id = "pending_#{System.unique_integer([:positive])}"
-
-    pending_msg =
-      build_pending_msg(temp_id, session.nickname, text, session.active_channel, reply_to)
-
-    socket = MessageViewport.insert(socket, pending_msg)
     opts = if reply_to, do: [reply_to_id: reply_to.id], else: []
 
     case Server.send_message(session.active_channel, session.nickname, text, opts) do
-      :ok ->
+      {:ok, id} ->
+        pending_msg =
+          build_pending_msg(id, session.nickname, text, session.active_channel, reply_to)
+
         socket
-        |> assign(pending_channel_msg_id: temp_id)
-        |> push_event("message_confirmed", %{temp_id: temp_id})
+        |> MessageViewport.insert(pending_msg)
+        |> push_event("message_confirmed", %{temp_id: id})
 
       {:error, reason} ->
-        failed_msg = %{pending_msg | status: :failed}
+        temp_id = "pending_#{System.unique_integer([:positive])}"
+
+        failed_msg =
+          build_pending_msg(temp_id, session.nickname, text, session.active_channel, reply_to)
+          |> Map.put(:status, :failed)
 
         socket
         |> MessageViewport.insert(failed_msg)
-        |> assign(pending_channel_msg_id: nil)
         |> push_event("message_failed", %{temp_id: temp_id, reason: reason})
         |> error_event(reason)
     end
@@ -361,7 +367,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
       session.active_channel ->
         case Server.send_message(session.active_channel, session.nickname, content, :action) do
-          :ok -> socket
+          {:ok, _id} -> socket
           {:error, reason} -> error_event(socket, reason)
         end
 

@@ -40,18 +40,23 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   end
 
   def prepend_older_pm_messages(socket, older_messages) do
-    session = socket.assigns.session
-    loaded_count = (socket.assigns[:loaded_message_count] || 50) + length(older_messages)
+    new_oldest = List.last(older_messages)
 
-    raw_messages =
-      Queries.list_private_messages(session.nickname, session.active_pm, limit: loaded_count)
+    stream_items =
+      older_messages
+      |> Messages.visible_private_messages(socket.assigns.session.ignore_list)
+      |> Enum.reverse()
+      |> Enum.map(&pm_to_stream_item/1)
 
     socket
-    |> push_event("prepend_start", %{})
-    |> stream_pm_page(raw_messages,
+    |> assign(
+      loading_more: false,
+      oldest_message_id: new_oldest.id,
       has_more: length(older_messages) == 50,
-      loading_more: false
+      loaded_message_count: (socket.assigns[:loaded_message_count] || 50) + length(older_messages)
     )
+    |> push_event("prepend_start", %{})
+    |> MessageViewport.prepend(stream_items)
   end
 
   @spec open_pm_conversation(Phoenix.LiveView.Socket.t(), String.t()) ::
@@ -126,7 +131,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
       session.active_channel ->
         case Server.send_message(session.active_channel, session.nickname, text) do
-          :ok ->
+          {:ok, _id} ->
             socket
 
           {:error, reason} ->
@@ -143,7 +148,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   def handle_notice_send(socket, session, "#" <> _ = channel, content) do
     if channel in session.channels do
       case Server.send_message(channel, session.nickname, content, :notice) do
-        :ok -> socket
+        {:ok, _id} -> socket
         {:error, reason} -> Messages.error_event(socket, reason)
       end
     else
@@ -190,7 +195,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
       session.active_channel ->
         case Server.send_message(session.active_channel, session.nickname, content, :action) do
-          :ok ->
+          {:ok, _id} ->
             socket
 
           {:error, reason} ->
