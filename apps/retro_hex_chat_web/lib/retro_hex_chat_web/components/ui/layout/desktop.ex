@@ -38,6 +38,12 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       "when false, the hook starts from the default layout every time and clears any " <>
         "previously saved state for persist_key — a clean slate each open, no cross-visit memory"
 
+  attr :escape_closes_windows, :boolean,
+    default: false,
+    doc:
+      "when true, Escape closes the topmost unpinned window (dialog-window desktops). " <>
+        "Open WM menus, modal dialogs and visible [data-escape-guard] overlays take priority"
+
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -58,6 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       phx-hook="WindowManagerHook"
       data-persist-key={@persist_key}
       data-persist={to_string(@persist)}
+      data-escape-closes-windows={to_string(@escape_closes_windows)}
       class={classes(["desktop flex flex-1 flex-col overflow-hidden", @class])}
       {@rest}
     >

@@ -22,15 +22,18 @@ that recipe — do not start them until the recipe is written.
 
 ### A. Generic WM extension: Escape closes the focused window
 
-- [ ] Design + implement Escape handling for dialog-windows: when no start/taskbar
-      menu is open AND no modal `UI.Dialog` is open (guard: presence of an open
-      dialog overlay in the DOM), Escape closes the topmost visible unpinned
-      window. Pinned windows (chat) are never closed by Escape.
-      Transition safety: while unmigrated modals exist, an open modal must win —
-      the hook must not double-handle. Verify against `keyboard_events.ex`
-      `dismiss_topmost` order.
-- [ ] Vitest coverage for the new Escape behavior (menu open wins, modal open
-      wins, pinned skipped, topmost-by-z chosen).
+- [x] Design + implement Escape handling for dialog-windows. Shipped as opt-in:
+      `escape_closes_windows` attr on `desktop/1` (chat=on, lobby untouched).
+      Priority ladder in the hook: open WM menu (closed, press consumed) →
+      open modal (`[phx-show-modal][data-state="open"]`) or visible
+      `[data-escape-guard]` overlay (menu-bar dropdown, context menu, emoji
+      picker — marker added to those components) → topmost unpinned window,
+      mirroring the X-button semantics (a `phx-click` close is clicked, not
+      client-closed) and consuming the press via stopPropagation so the server
+      `dismiss_topmost` ladder never double-handles.
+- [x] Vitest coverage (8 cases): menu wins, modal wins, guard-overlay
+      visible/hidden, pinned skipped + press passes through, topmost-by-z,
+      server-owned close mirrored, opt-out desktops inert.
 
 ### B. Sub-form scoping primitive
 

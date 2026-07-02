@@ -49,6 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
       }
       style={"left: #{@x}px; top: #{@y}px;"}
       data-testid={"context-menu-#{@id}"}
+      data-escape-guard
       {@rest}
     >
       <div class="shadow-retro-window bg-surface p-[3px]">

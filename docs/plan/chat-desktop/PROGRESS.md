@@ -5,7 +5,7 @@
 | Phase | Status | Notes |
 |-------|--------|-------|
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
-| 2 — Pilot + recipe | not started | |
+| 2 — Pilot + recipe | in progress | Task A (Escape WM extension, opt-in per desktop) done |
 | 3 — Tools/Settings batch | not started | |
 | 4 — View/Account batch | not started | |
 | 5 — Admin batch | not started | |
@@ -53,6 +53,14 @@ hold for the chat and extend:
 - Start-menu items that fire server actions (`phx-click` + `phx-value-action`)
   need no extra close wiring — the WM hook closes the menu on any in-menu click
   that isn't a `data-window-open` opener.
+- Escape ownership is layered client-side: WM menus → modal/`data-escape-guard`
+  overlays → topmost unpinned window (opt-in per desktop via
+  `escape_closes_windows`); a consumed press is stopPropagation'd so the server
+  `dismiss_topmost` ladder never sees it. New Escape-owning overlays must carry
+  `data-escape-guard` (hidden state must be `u-hidden` or absence from the DOM).
+- `hook.command` takes `(action, id)` — only the `handleEvent` callback takes the
+  `{action, id}` object. Passing the object to `command` silently no-ops (it
+  pushes `window_open` for id `undefined`) — easy test bug.
 - Browser-smoke gotcha: don't verify WM behavior by mutating inline styles on
   server-rendered elements — the next LiveView patch (e.g. a bot message) wipes
   them and invalidates the test. Use real window/geometry changes.

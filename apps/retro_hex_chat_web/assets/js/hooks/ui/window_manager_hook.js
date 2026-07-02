@@ -29,6 +29,11 @@
  * The server can drive it via `push_event("window_command", {action, id})` where
  * action is one of open | focus | flash | close | minimize | maximize.
  *
+ * Escape first closes any open WM menu. On desktops opting in via
+ * `data-escape-closes-windows`, it then closes the topmost unpinned window —
+ * unless an open modal dialog or a visible `[data-escape-guard]` overlay owns
+ * the key. A consumed press never reaches the server's keydown bindings.
+ *
  * Windows may enter and leave the DOM after mount (server-conditional islands):
  * every patch reconciles the registry — new `[data-window-id]` elements are
  * registered (honouring any saved layout), replaced nodes are re-bound keeping
@@ -45,6 +50,14 @@ const EDGE_MARGIN = 40;
 const CASCADE_STEP = 26;
 const CASCADE_SIZE_RATIO = 0.6;
 const ZOOM_FALLBACK_MS = 400;
+
+// Overlays that own the Escape key while open — the hook must not close a
+// window when one is visible. Modal dialogs flip data-state; other overlays
+// (menu-bar dropdowns, context menus, the emoji picker) carry
+// [data-escape-guard] and are either removed from the DOM or u-hidden when
+// closed.
+const ESCAPE_OWNER_SELECTOR =
+  '[phx-show-modal][data-state="open"], [data-escape-guard]:not(.u-hidden)';
 
 const WindowManagerHook = {
   mounted() {
@@ -518,8 +531,60 @@ const WindowManagerHook = {
 
   onKeyDown(e) {
     if (e.key !== "Escape") return;
-    this.closeTaskbarMenus();
-    this.closeStartMenu();
+
+    // An open WM menu owns the press: close it and consume the event so the
+    // server's window-level Escape ladder cannot also dismiss something.
+    if (this.anyMenuOpen()) {
+      e.stopPropagation();
+      this.closeTaskbarMenus();
+      this.closeStartMenu();
+      return;
+    }
+
+    // Escape-close is opt-in per desktop (dialog-window desktops like the chat).
+    // Feature desktops (the lobby) keep Escape inert for windows.
+    if (this.el.dataset.escapeClosesWindows !== "true") return;
+
+    // Any other open overlay owns Escape: a modal dialog (its own phx-key +
+    // the server ladder) or a visible [data-escape-guard] surface (menu-bar
+    // dropdown, context menu, emoji picker). Defer entirely.
+    if (document.querySelector(ESCAPE_OWNER_SELECTOR)) return;
+
+    const id = this.topmostClosableWindow();
+    if (!id) return;
+
+    // This press is ours — consume it so the server ladder doesn't double-handle.
+    e.stopPropagation();
+    // Mirror the X button: a close wired to a server event ends the feature;
+    // otherwise close client-side.
+    const closeBtn = this.windows[id].el.querySelector('[data-window-control="close"][phx-click]');
+    if (closeBtn) closeBtn.click();
+    else this.closeWindow(id);
+  },
+
+  anyMenuOpen() {
+    const start = this.startMenu();
+    if (start && !start.classList.contains("u-hidden")) return true;
+    for (const menu of this.el.querySelectorAll("[data-taskbar-menu]")) {
+      if (!menu.classList.contains("u-hidden")) return true;
+    }
+    return false;
+  },
+
+  // Topmost open, visible, unpinned window — the one Escape may close.
+  topmostClosableWindow() {
+    let top = null;
+    let topZ = -1;
+    for (const id in this.windows) {
+      const win = this.windows[id];
+      const st = win.state;
+      if (win.pinned || !st.open || st.minimized) continue;
+      if ((st.z || 0) > topZ) {
+        topZ = st.z || 0;
+        top = id;
+      }
+    }
+    return top;
   },
 
   selectShortcut(el) {

@@ -103,6 +103,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
     <div
       class="u-hidden absolute top-full left-0 min-w-[180px] p-[3px] bg-surface shadow-retro-window z-dropdown"
       data-menubar-dropdown
+      data-escape-guard
     >
       <ul class="list-none m-0 p-retro-2">
         {render_slot(@inner_block)}

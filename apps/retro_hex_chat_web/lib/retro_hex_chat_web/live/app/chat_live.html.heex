@@ -27,7 +27,12 @@
   id="app-container"
   phx-hook="SoundHook"
 >
-  <.desktop id="chat-desktop" persist_key="chat" data-testid="chat-desktop">
+  <.desktop
+    id="chat-desktop"
+    persist_key="chat"
+    escape_closes_windows
+    data-testid="chat-desktop"
+  >
     <:header>
       <%!-- App header with toolbar & status bar --%>
       <.chat_shell_header

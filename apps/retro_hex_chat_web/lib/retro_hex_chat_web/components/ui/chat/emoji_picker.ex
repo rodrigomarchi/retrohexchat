@@ -67,6 +67,7 @@ defmodule RetroHexChatWeb.Components.UI.EmojiPicker do
       phx-hook="EmojiPickerHook"
       class={classes(["w-full md:w-[320px]", @class])}
       data-testid="emoji-picker"
+      data-escape-guard
       {@rest}
     >
       <.window_title_bar title={dgettext("chat", "Emoji")} controls={[:close]} on_close={@on_close}>

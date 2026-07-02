@@ -630,6 +630,131 @@ describe("WindowManagerHook — persistence opt-out", () => {
   });
 });
 
+describe("WindowManagerHook — Escape closes the focused window", () => {
+  let el;
+  let hook;
+  let windowSpy;
+
+  const pressEscape = () =>
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape", bubbles: true }));
+
+  function mount({ escapeCloses = true } = {}) {
+    el = buildDesktop();
+    el.dataset.persist = "false";
+    if (escapeCloses) el.dataset.escapeClosesWindows = "true";
+    hook = { ...WindowManagerHook, el, handleEvent: vi.fn(), pushEvent: vi.fn() };
+    hook.mounted();
+  }
+
+  beforeEach(() => {
+    vi.stubGlobal("localStorage", {
+      getItem: () => null,
+      setItem: () => {},
+      removeItem: () => {},
+      clear: () => {},
+    });
+    windowSpy = vi.fn();
+    window.addEventListener("keydown", windowSpy);
+  });
+
+  afterEach(() => {
+    window.removeEventListener("keydown", windowSpy);
+    hook.destroyed();
+    el.remove();
+    document.querySelectorAll("[data-escape-test]").forEach((n) => n.remove());
+    vi.unstubAllGlobals();
+  });
+
+  it("closes the topmost unpinned window and stops the event", () => {
+    mount();
+    hook.command("open", "call"); // call is now topmost
+    pressEscape();
+
+    expect(hook.windows.call.state.open).toBe(false);
+    expect(hook.windows.chat.state.open).toBe(true);
+    // The press was consumed — it must not also reach the server's window
+    // keydown binding and double-dismiss something there.
+    expect(windowSpy).not.toHaveBeenCalled();
+  });
+
+  it("picks the topmost by z-order", () => {
+    mount();
+    hook.command("open", "call");
+    hook.focusWindow("chat"); // chat now above call
+    pressEscape();
+
+    expect(hook.windows.chat.state.open).toBe(false);
+    expect(hook.windows.call.state.open).toBe(true);
+  });
+
+  it("never closes a pinned window and lets the event through", () => {
+    mount();
+    hook.closeWindow("chat"); // only pinned conn remains visible
+    pressEscape();
+
+    expect(hook.windows.conn.state.open).toBe(true);
+    expect(windowSpy).toHaveBeenCalled();
+  });
+
+  it("an open menu wins: Escape closes the menu, not a window", () => {
+    mount();
+    el.querySelector("[data-window-start-menu]").classList.remove("u-hidden");
+    pressEscape();
+
+    expect(el.querySelector("[data-window-start-menu]").classList.contains("u-hidden")).toBe(true);
+    expect(hook.windows.chat.state.open).toBe(true);
+  });
+
+  it("an open modal dialog wins", () => {
+    mount();
+    const modal = document.createElement("div");
+    modal.setAttribute("phx-show-modal", "");
+    modal.setAttribute("data-state", "open");
+    modal.setAttribute("data-escape-test", "");
+    document.body.appendChild(modal);
+
+    pressEscape();
+    expect(hook.windows.chat.state.open).toBe(true);
+    expect(windowSpy).toHaveBeenCalled();
+  });
+
+  it("a visible escape-guard overlay wins; a hidden one does not", () => {
+    mount();
+    const overlay = document.createElement("div");
+    overlay.setAttribute("data-escape-guard", "");
+    overlay.setAttribute("data-escape-test", "");
+    document.body.appendChild(overlay);
+
+    pressEscape();
+    expect(hook.windows.chat.state.open).toBe(true);
+
+    overlay.classList.add("u-hidden");
+    pressEscape();
+    expect(hook.windows.chat.state.open).toBe(false);
+  });
+
+  it("mirrors the X button for a server-owned close", () => {
+    mount();
+    const closeBtn = document.getElementById("chat").querySelector('[data-window-control="close"]');
+    closeBtn.setAttribute("phx-click", "end_feature");
+    const clickSpy = vi.fn();
+    closeBtn.addEventListener("click", clickSpy);
+
+    pressEscape();
+    // Deferred to LiveView via the button, not client-closed.
+    expect(clickSpy).toHaveBeenCalled();
+    expect(hook.windows.chat.state.open).toBe(true);
+  });
+
+  it("does nothing without the desktop opt-in flag", () => {
+    mount({ escapeCloses: false });
+    pressEscape();
+
+    expect(hook.windows.chat.state.open).toBe(true);
+    expect(windowSpy).toHaveBeenCalled();
+  });
+});
+
 describe("WindowManagerHook — default maximized", () => {
   let store;
   let el;
