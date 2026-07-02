@@ -58,7 +58,7 @@ test.describe('Highlight words dialog', () => {
       await alice.chat.editHighlightWordColor(word, 9);
       await expect(alice.chat.highlightWordColor(word)).toHaveClass(/irc-bg-9/);
 
-      await alice.chat.highlightDialog.getByRole('button', { name: 'OK' }).click();
+      await alice.chat.highlightDialog.locator('[data-window-control="close"]').click();
       await expect(alice.chat.highlightDialog).toBeHidden();
 
       await bob.chat.sendMessage(highlightedText);
@@ -73,7 +73,7 @@ test.describe('Highlight words dialog', () => {
 
       await alice.chat.openHighlightDialogFromMenu();
       await alice.chat.removeHighlightWord(word);
-      await alice.chat.highlightDialog.getByRole('button', { name: 'OK' }).click();
+      await alice.chat.highlightDialog.locator('[data-window-control="close"]').click();
       await expect(alice.chat.highlightDialog).toBeHidden();
 
       await bob.chat.sendMessage(plainText);

@@ -5,7 +5,7 @@
 | Phase | Status | Notes |
 |-------|--------|-------|
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
-| 2 — Pilot + recipe | in progress | A, B, pilots 1 (UrlCatcher) + 2 (Timers, managed variant) done; `ChatLive.Windows` opener shared. Next: Highlight (sub-forms) |
+| 2 — Pilot + recipe | in progress | A, B + all 3 pilots done (UrlCatcher always-mounted, Timers managed, Highlight managed+sub-forms). Remaining: crystallize recipe (Task D) + phase gate (full `make ci` + smoke) |
 | 3 — Tools/Settings batch | not started | |
 | 4 — View/Account batch | not started | |
 | 5 — Admin batch | not started | |
@@ -50,7 +50,13 @@ and Highlight (sub-forms) before Phase 3.
    start-menu `[data-window-open=...]` present; `show_*` assign gone.
    E2E: keep `data-testid`s stable and menu-open specs pass unchanged —
    verify with a TARGETED run of the affected spec only.
-7. **Help.** Update the feature topic: it is a window now (drag/resize/
+7. **Sub-forms.** Convert bespoke `fixed inset-0` overlays to
+   `<.dialog scope={@sub_scope}>` (island passes `:window`; a showcase dialog
+   wrapper passes `:viewport`). Close paths route to the island via
+   `JS.push(event, target: @target)` in `on_cancel`/`on_close` — no dialog.ex
+   changes needed. The dialog primitive's `data-state` makes the WM Escape
+   defer while a sub-form is open (Escape ladder: sub-form → window).
+8. **Help.** Update the feature topic: it is a window now (drag/resize/
    minimize/taskbar/Escape; Start menu path).
 
 ## Learnings

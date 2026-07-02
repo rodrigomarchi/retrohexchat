@@ -58,7 +58,7 @@ test.describe('Highlight words persistence', () => {
     await chat.openHighlightDialogFromMenu();
     await chat.addHighlightWord(word, 6);
     await expect(chat.highlightWordColor(word)).toHaveClass(/irc-bg-6/);
-    await chat.highlightDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.highlightDialog.locator('[data-window-control="close"]').click();
     await expect(chat.highlightDialog).toBeHidden();
 
     await page.waitForTimeout(750);
@@ -81,7 +81,7 @@ test.describe('Highlight words persistence', () => {
     await chat.openHighlightDialogFromMenu();
     await chat.addHighlightWord(word, 11);
     await expect(chat.highlightWordColor(word)).toHaveClass(/irc-bg-11/);
-    await chat.highlightDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.highlightDialog.locator('[data-window-control="close"]').click();
     await expect(chat.highlightDialog).toBeHidden();
 
     await page.reload();

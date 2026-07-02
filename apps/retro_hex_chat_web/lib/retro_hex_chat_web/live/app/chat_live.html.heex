@@ -179,6 +179,31 @@
       </div>
     </.desktop_window>
 
+    <%!-- Highlight Words — server-managed: closing unmounts the island
+          (selection/sub-form state resets); the session read-model stays
+          parent-owned and flows in as passthrough. --%>
+    <.desktop_window
+      :if={"highlight" in @open_windows}
+      id="highlight"
+      title={dgettext("chat", "Highlight Words")}
+      managed
+      default_x={160}
+      default_y={70}
+      width={520}
+      height={520}
+      min_width={400}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="highlight-window"
+    >
+      <:icon><Icons.icon_star class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.HighlightDialog}
+        id={RetroHexChatWeb.ChatLive.Components.HighlightDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
     <%!-- Timers — server-managed: closing unmounts the island (draft state
           resets by design); reopening mounts a fresh one. --%>
     <.desktop_window
@@ -244,6 +269,13 @@
           label={dgettext("chat", "Timers")}
         >
           <:icon><Icons.icon_btn_timers class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={"highlight" in @open_windows}
+          window="highlight"
+          label={dgettext("chat", "Highlight Words")}
+        >
+          <:icon><Icons.icon_star class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <:tray>
           <.desktop_tray>
@@ -395,12 +427,6 @@
   id={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog.id()}
   session={@session}
   timezone={@timezone}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.HighlightDialog}
-  id={RetroHexChatWeb.ChatLive.Components.HighlightDialog.id()}
-  session={@session}
 />
 
 <.live_component

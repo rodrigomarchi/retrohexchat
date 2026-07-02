@@ -64,7 +64,19 @@ used by TimerEvents, the `/timer` command (`UiActions.Scripting`) and now the
 UrlCatcher openers too. `timers_dialog/1` converted in place to `timers_panel/1`
 (no other consumer). Component dropped `show`/`{:open}`/`timers_close`. E2E:
 `timersDialog` locator → `timers-window` testid; Close-button step → title-bar
-X; targeted run green.) Highlight pending.
+X; targeted run green.)
+
+**Highlight done** (managed + the sub-forms variant: the bespoke
+`fixed inset-0` Add/Edit sub-forms became real `<.dialog scope={...}>` modals
+— `:window` in the chat (centered over the Highlight window; carries
+`data-state` so the WM Escape defers correctly: Escape ladder = sub-form →
+window), `:viewport` via the panel's `sub_scope` attr for the showcase dialog
+wrapper. No dialog.ex `target` plumbing was needed: the island passes
+`JS.push(event, target: @myself)` as `on_cancel`/`on_close` — the `%JS{}`
+branch of `close_modal` already routes it. HighlightEvents gutted to one
+`Windows.open` line; open/close/toggle send_update directives deleted. E2E:
+3 specs (add/edit/remove + 2 persistence) green with only locator + close-X
+updates.)
 
 For each pilot (this becomes the recipe draft):
 

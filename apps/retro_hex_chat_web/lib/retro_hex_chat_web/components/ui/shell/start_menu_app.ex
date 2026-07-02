@@ -44,9 +44,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "Notify List")}
           icon_fn={:icon_tab_notify}
         />
-        <.app_item
-          action="open_highlight_dialog"
-          on_action={@on_action}
+        <.window_item
+          window="highlight"
           label={dgettext("ui", "Highlight Words")}
           icon_fn={:icon_btn_highlight_words}
         />

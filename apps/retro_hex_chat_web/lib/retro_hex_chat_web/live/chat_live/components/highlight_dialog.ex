@@ -1,25 +1,26 @@
 defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
   @moduledoc """
-  Stateful island for the Highlight Words dialog — the word list with per-word
-  background color, plus the Add/Edit sub-form modals and their color pickers.
+  Stateful island for the Highlight Words window body — the word list with
+  per-word background color, plus the Add/Edit sub-form modals (centered over
+  the enclosing desktop window) and their color pickers. Mounted inside a
+  server-managed window: presence in the DOM means open, so closing unmounts
+  the island and reopening starts from a clean selection.
 
-  Owns the ENTIRE dialog: `show`, the selected word, the color-picker draft, both
-  sub-form `show_*` flags, every event (`@myself`), and the `HighlightWords`
-  business logic. `highlight_events.ex` is gutted to open/close/toggle routing.
+  Owns the selected word, the color-picker draft, both sub-form `show_*` flags,
+  every event (`@myself`), and the `HighlightWords` business logic.
 
-  This is the dialog plan 41 was BLOCKED on — the modal-in-modal color-pick
-  clobber. The Add sub-form is a `fixed inset-0` overlay living in this
-  component's DOM, but its word `<input>` is uncontrolled; when the color picker
-  inside it submitted to the PARENT (cid mismatch), the background re-render reset
-  the typed word. Fixed at the root (§0a-anti): a `target` attr threaded through
-  the design-system `highlight_dialog/1` — and through the `color_picker`
-  primitive — puts `phx-target={@myself}` on the form, the close buttons AND the
-  color swatches, so every event routes to the component that owns the DOM. The
-  cid matches, so LiveView preserves the input across the color-pick re-render.
+  The modal-in-modal color-pick clobber (plan 41): the Add sub-form's word
+  `<input>` is uncontrolled; when the color picker inside it submitted to the
+  PARENT (cid mismatch), the background re-render reset the typed word. Fixed
+  at the root (§0a-anti): a `target` attr threaded through the design-system
+  `highlight_panel/1` — and through the `color_picker` primitive — puts
+  `phx-target={@myself}` on the form, the close buttons AND the color swatches,
+  so every event routes to the component that owns the DOM. The cid matches, so
+  LiveView preserves the input across the color-pick re-render.
 
   Highlight words live on the `session` — the central read-model the message
   pipeline reads at render time to highlight inbound lines — so it stays
-  parent-owned (§1d). The dialog runs the `HighlightWords` mutation and bubbles
+  parent-owned (§1d). The island runs the `HighlightWords` mutation and bubbles
   the new session via `send(self(), {:highlight_dialog_session, session})`; the
   parent assigns it + fires the fire-and-forget persist. Validation errors go to
   the status bar (a parent-owned surface) via
@@ -37,39 +38,21 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
   @spec id() :: String.t()
   def id, do: @id
 
-  @closed %{
-    show: false,
-    highlight_selected: nil,
-    highlight_selected_color: nil,
-    show_highlight_add_dialog: false,
-    show_highlight_edit_dialog: false
-  }
-
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
     {:ok,
-     socket
-     |> assign(:id, @id)
-     |> assign(@closed)
-     |> assign(session: nil)}
-  end
-
-  # ── Directives (driven by parent send_update) ────────────────────
-
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(%{open: true}, socket), do: {:ok, assign(socket, %{@closed | show: true})}
-
-  def update(%{close: true}, socket), do: {:ok, assign(socket, @closed)}
-
-  def update(%{toggle: true}, socket) do
-    if socket.assigns.show do
-      {:ok, assign(socket, @closed)}
-    else
-      {:ok, assign(socket, %{@closed | show: true})}
-    end
+     assign(socket,
+       id: @id,
+       highlight_selected: nil,
+       highlight_selected_color: nil,
+       show_highlight_add_dialog: false,
+       show_highlight_edit_dialog: false,
+       session: nil
+     )}
   end
 
   # passthrough context (session)
+  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket), do: {:ok, assign(socket, assigns)}
 
   # ── Selection ────────────────────────────────────────────────────
@@ -172,10 +155,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
 
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
-      <.highlight_dialog
+      <.highlight_panel
         id={@id}
         target={@myself}
-        show={@show}
         words={@words}
         own_nick={@session.nickname}
         selected_word={@highlight_selected}
@@ -187,8 +169,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialog do
         on_edit="open_highlight_edit_dialog"
         on_remove="highlight_remove"
         on_color_select="highlight_color_pick"
-        on_ok="close_highlight_dialog"
-        on_cancel="close_highlight_dialog"
       />
     </div>
     """

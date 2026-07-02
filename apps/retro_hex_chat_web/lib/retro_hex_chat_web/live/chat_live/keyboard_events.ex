@@ -27,7 +27,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
 
   alias RetroHexChatWeb.ChatLive.AddressBookEvents
   alias RetroHexChatWeb.ChatLive.ChannelListEvents
-  alias RetroHexChatWeb.ChatLive.HighlightEvents
   alias RetroHexChatWeb.ChatLive.NavigationEvents
   alias RetroHexChatWeb.ChatLive.PerformAutojoinEvents
   alias RetroHexChatWeb.ChatLive.SearchEvents
@@ -80,7 +79,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_highlight_dialog, socket) do
-    HighlightEvents.toggle(socket)
+    Windows.open(socket, "highlight")
   end
 
   defp dispatch_action(:toggle_url_catcher, socket) do

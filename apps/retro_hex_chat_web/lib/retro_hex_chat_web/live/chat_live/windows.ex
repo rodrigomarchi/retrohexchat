@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.Windows do
   import Phoenix.Component, only: [update: 3]
   import Phoenix.LiveView, only: [push_event: 3]
 
-  @managed MapSet.new(~w(timers))
+  @managed MapSet.new(~w(highlight timers))
 
   @doc "Whether the window's lifecycle is server-owned."
   @spec managed?(String.t()) :: boolean()

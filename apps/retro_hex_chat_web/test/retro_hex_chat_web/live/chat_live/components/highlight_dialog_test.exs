@@ -22,19 +22,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialogTest do
     assert HighlightDialog.id() == "highlight-dialog"
   end
 
-  test "renders only the (empty) mount wrapper when closed (show defaults false)" do
+  test "renders the bare panel with the own-nick row (the window provides the chrome)" do
     html = dialog(%{})
 
-    assert html =~ ~s(id="highlight-dialog-mount")
-    refute html =~ ~s(id="highlight-dialog-show-trigger")
-  end
-
-  test "renders the dialog and own-nick row when shown" do
-    html = dialog(%{show: true})
-
-    assert html =~ ~s(id="highlight-dialog-show-trigger")
-    assert html =~ "Highlight Words"
+    assert html =~ ~s(data-testid="highlight-panel")
     assert html =~ "Nick"
+    # No sub-form until requested.
+    refute html =~ ~s(data-testid="highlight-add-form")
   end
 
   test "renders highlight word rows from the session with their color" do
@@ -43,20 +37,36 @@ defmodule RetroHexChatWeb.ChatLive.Components.HighlightDialogTest do
     html =
       render_component(HighlightDialog, %{
         id: HighlightDialog.id(),
-        session: session(words),
-        show: true
+        session: session(words)
       })
 
     assert html =~ ~s(data-testid="highlight-word-row-spark")
     assert html =~ "irc-bg-9"
   end
 
-  test "renders the add sub-form with its color picker targeting the component" do
-    html = dialog(%{show: true, show_highlight_add_dialog: true})
+  test "renders the add sub-form as a window-scoped modal targeting the component" do
+    html = dialog(%{show_highlight_add_dialog: true})
 
     assert html =~ ~s(data-testid="highlight-add-form")
+    # Scoped to the enclosing desktop window, not the viewport.
+    assert html =~ ~s(id="highlight-add-dialog-bg" class="absolute inset-0)
     # The form and its swatches submit to the island that owns their DOM (§0a-anti).
     assert html =~ ~s(phx-target=)
     assert html =~ ~s(id="highlight-add-color")
+  end
+
+  test "renders the edit sub-form with the selected word and color" do
+    {:ok, words} = HighlightWords.add_entry(HighlightWords.new(), "spark", 4)
+
+    html =
+      render_component(HighlightDialog, %{
+        id: HighlightDialog.id(),
+        session: session(words),
+        highlight_selected: "spark",
+        show_highlight_edit_dialog: true
+      })
+
+    assert html =~ ~s(data-testid="highlight-edit-form")
+    assert html =~ ~s(id="highlight-edit-dialog-bg" class="absolute inset-0)
   end
 end

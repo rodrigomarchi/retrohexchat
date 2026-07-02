@@ -512,7 +512,7 @@ export class ChatPage {
     this.aliasDialog = page.locator('#alias-dialog [role="dialog"]');
     this.aliasEditForm = page.getByTestId('alias-edit-form');
     this.aliasWarning = page.getByTestId('alias-warning');
-    this.highlightDialog = page.locator('#highlight-dialog [role="dialog"]');
+    this.highlightDialog = page.getByTestId('highlight-window');
     this.highlightAddForm = page.getByTestId('highlight-add-form');
     this.highlightEditForm = page.getByTestId('highlight-edit-form');
     this.highlightWordInput = page.locator('#highlight-word-input');
