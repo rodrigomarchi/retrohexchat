@@ -125,6 +125,10 @@ const WindowManagerHook = {
       if (st.open && !st.minimized) {
         this.focusedId = id;
         st.z = this.zCounter += 1;
+      } else if (this.focusedId === id) {
+        // registerWindow claimed focus before the saved layout marked the
+        // window minimized — hand focus back to a visible window.
+        this.focusTopmost();
       }
     }
   },
@@ -385,6 +389,9 @@ const WindowManagerHook = {
 
     const opener = e.target.closest("[data-window-open]");
     if (opener) {
+      // A disabled menu item still carries data-window-open (it's a <li>, not a
+      // <button>) — it must not act.
+      if (opener.getAttribute("aria-disabled") === "true" || opener.disabled) return;
       this.command("open", opener.dataset.windowOpen);
       this.closeStartMenu();
       return;

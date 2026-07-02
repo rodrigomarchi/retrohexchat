@@ -540,6 +540,29 @@ describe("WindowManagerHook — dynamic windows (reconciliation)", () => {
     expect(hook.drag).toBe(null);
   });
 
+  it("hands focus to a visible window when the arrival is restored as minimized", () => {
+    // Saved layouts can mark a late-arriving window minimized; registerWindow
+    // claims focus before the saved state applies, so reconcile must hand it back.
+    hook.focusWindow("chat");
+    workspace().insertAdjacentHTML("beforeend", windowMarkup("game", { open: true }));
+    hook.readStorage = () => ({ game: { minimized: true } });
+    hook.updated();
+
+    expect(hook.windows.game.state.minimized).toBe(true);
+    expect(hook.focusedId).toBe("chat");
+  });
+
+  it("ignores a disabled window opener", () => {
+    const opener = document.createElement("button");
+    opener.dataset.windowOpen = "call";
+    opener.setAttribute("aria-disabled", "true");
+    el.appendChild(opener);
+
+    opener.click();
+    expect(hook.windows.call.state.open).toBe(false);
+    expect(hook.pushEvent).not.toHaveBeenCalled();
+  });
+
   it("asks the server to mount an unknown window instead of failing silently", () => {
     hook.command("open", "game-x");
     expect(hook.pushEvent).toHaveBeenCalledWith("window_open", { id: "game-x" });

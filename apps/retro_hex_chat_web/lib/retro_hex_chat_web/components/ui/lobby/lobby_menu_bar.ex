@@ -56,7 +56,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyMenuBar do
           on_click="start_call"
           phx-value-type="audio"
           disabled={not @connected or @call_active}
-          data-testid="lobby-menu-audio"
+          data-testid="lobby-menubar-audio"
         >
           <:icon><Icons.icon_microphone class="h-[14px] w-[14px]" /></:icon>
           {dgettext("lobby", "Start audio")}
@@ -65,7 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyMenuBar do
           on_click="start_call"
           phx-value-type="video"
           disabled={not @connected or @call_active}
-          data-testid="lobby-menu-video"
+          data-testid="lobby-menubar-video"
         >
           <:icon><Icons.icon_camera class="h-[14px] w-[14px]" /></:icon>
           {dgettext("lobby", "Start video")}
@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyMenuBar do
         <.context_menu_item
           data-window-open="file"
           disabled={not @connected}
-          data-testid="lobby-menu-file"
+          data-testid="lobby-menubar-file"
         >
           <:icon><Icons.icon_file_send class="h-[14px] w-[14px]" /></:icon>
           {dgettext("lobby", "Send a file")}
@@ -82,7 +82,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyMenuBar do
         <.context_menu_item
           data-window-open="game"
           disabled={not @connected}
-          data-testid="lobby-menu-game"
+          data-testid="lobby-menubar-game"
         >
           <:icon><Icons.icon_joystick class="h-[14px] w-[14px]" /></:icon>
           {dgettext("lobby", "Play a game")}

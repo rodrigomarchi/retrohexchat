@@ -91,6 +91,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
       }
       phx-click={unless(@disabled, do: @on_click)}
       phx-value-action={unless(@disabled, do: @action)}
+      aria-disabled={@disabled && "true"}
       data-testid={if @action, do: "context-menu-item-#{@action}"}
       {@rest}
     >

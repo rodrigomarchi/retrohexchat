@@ -77,8 +77,10 @@ export class LobbyPage {
     this.gameConsent = page.getByTestId("lobby-game-consent");
     this.gameCanvas = page.locator("#lobby-game-canvas canvas");
     this.chat = page.getByTestId("lobby-chat");
-    this.chatInput = this.chat.getByPlaceholder("Type a message");
-    this.chatSendButton = this.chat.getByRole("button", {
+    // The lobby chat is the shared Composer — the page's only chat-input-field.
+    // (data-testid="lobby-chat" marks the message list, which holds no input.)
+    this.chatInput = page.getByTestId("chat-input-field");
+    this.chatSendButton = page.getByRole("button", {
       name: "Send",
       exact: true,
     });

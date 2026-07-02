@@ -565,10 +565,11 @@ test.describe("Universal lobby", () => {
       // the always-on poller fills in the connection health.
       const panel = initiatorLobby.networkPanel;
       await expect(panel).toBeVisible({ timeout: 15_000 });
+      // Tab labels only render on the active tab, so check presence, not visibility.
       for (const section of ["Connection", "Audio", "Video", "Games", "Files"]) {
         await expect(
           panel.getByText(section, { exact: true }).first(),
-        ).toBeVisible();
+        ).toBeAttached();
       }
       await expect(initiatorLobby.networkHealth).not.toBeEmpty();
     } finally {
