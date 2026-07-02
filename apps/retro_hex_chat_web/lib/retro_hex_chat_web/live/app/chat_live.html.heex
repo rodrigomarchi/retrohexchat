@@ -419,6 +419,52 @@
       />
     </.desktop_window>
 
+    <%!-- Channel List — always mounted: the search filter survives closes by
+          design; /list reloads the rows into the passthrough on open. --%>
+    <.desktop_window
+      id="channel-list"
+      title={dgettext("chat", "Channel List")}
+      open={false}
+      default_x={120}
+      default_y={70}
+      width={620}
+      height={480}
+      min_width={480}
+      min_height={320}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="channel-list-window"
+    >
+      <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.ChannelListDialog}
+        id={RetroHexChatWeb.ChatLive.Components.ChannelListDialog.id()}
+        channels={@channel_list_channels}
+        loading={@channel_list_loading}
+      />
+    </.desktop_window>
+
+    <%!-- Cheatsheet — server-managed: static content, recomputed on mount. --%>
+    <.desktop_window
+      :if={"cheatsheet" in @open_windows}
+      id="cheatsheet"
+      title={dgettext("chat", "Keyboard Shortcuts")}
+      managed
+      default_x={200}
+      default_y={60}
+      width={640}
+      height={520}
+      min_width={480}
+      min_height={320}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="cheatsheet-window"
+    >
+      <:icon><Icons.icon_dialog_cheatsheet class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.CheatsheetDialog}
+        id={RetroHexChatWeb.ChatLive.Components.CheatsheetDialog.id()}
+      />
+    </.desktop_window>
+
     <%!-- URL Catcher — always mounted (URLs keep accumulating while closed);
           the window manager owns open/close client-side. --%>
     <.desktop_window
@@ -453,6 +499,16 @@
         </.taskbar_button>
         <.taskbar_button window="url-catcher" label={dgettext("chat", "URL Catcher")}>
           <:icon><Icons.icon_link class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button window="channel-list" label={dgettext("chat", "Channel List")}>
+          <:icon><Icons.icon_channels class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={"cheatsheet" in @open_windows}
+          window="cheatsheet"
+          label={dgettext("chat", "Keyboard Shortcuts")}
+        >
+          <:icon><Icons.icon_dialog_cheatsheet class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
           :if={"timers" in @open_windows}
@@ -608,24 +664,10 @@
 />
 
 <.live_component
-  module={RetroHexChatWeb.ChatLive.Components.ChannelListDialog}
-  id={RetroHexChatWeb.ChatLive.Components.ChannelListDialog.id()}
-  visible={@show_channel_list}
-  channels={@channel_list_channels}
-  loading={@channel_list_loading}
-/>
-
-<.live_component
   module={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog}
   id={RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog.id()}
   session={@session}
   timezone={@timezone}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.CheatsheetDialog}
-  id={RetroHexChatWeb.ChatLive.Components.CheatsheetDialog.id()}
-  visible={@cheatsheet_visible}
 />
 
 <.live_component

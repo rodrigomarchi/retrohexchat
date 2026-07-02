@@ -151,10 +151,13 @@ defmodule RetroHexChatWeb.ChatLive.HoverEvents do
     }
   end
 
+  # Total for nil meta (offline/untracked nick): every client field must be
+  # present — hover_card_fields/1 reads them with dot access, and a missing key
+  # crashes the whole LiveView session.
   @spec extract_client_fields(map() | nil) :: map()
-  defp extract_client_fields(nil), do: %{}
-
   defp extract_client_fields(meta) do
+    meta = meta || %{}
+
     %{
       browser: meta[:browser],
       os: meta[:os],

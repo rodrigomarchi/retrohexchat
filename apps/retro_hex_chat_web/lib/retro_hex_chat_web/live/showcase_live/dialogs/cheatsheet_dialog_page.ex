@@ -9,11 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.CheatsheetDialogPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.CheatsheetDialog
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.ShowcaseHelpers
-
-  alias RetroHexChatWeb.Icons
 
   @sample_bindings [
     %{
@@ -104,19 +100,16 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.CheatsheetDialogPage do
         title={dgettext("showcase", "With Sample Shortcuts")}
         description="Grouped keyboard shortcuts displayed in a table. Navigation, Chat, and Help categories."
       >
-        <.button variant="outline" phx-click={show_modal("cheatsheet-sample")}>
-          <:icon><Icons.icon_dialog_cheatsheet class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open Cheatsheet")}
-        </.button>
-        <.cheatsheet_dialog id="cheatsheet-sample" bindings={@sample_bindings} />
+        <div class="h-[320px] shadow-retro-field overflow-hidden p-2 flex flex-col">
+          <.cheatsheet_panel id="cheatsheet-sample" bindings={@sample_bindings} />
+        </div>
         <.code_example>
-          &lt;.cheatsheet_dialog
+          &lt;.cheatsheet_panel
           id="cheatsheet"
           bindings=&#123;[
           %&#123;category: "Navigation",
           items: [%&#123;action: "Focus input", keys: "Alt+I", description: "Jump to input"&#125;]&#125;
           ]&#125;
-          on_close="close_cheatsheet"
           /&gt;
         </.code_example>
       </.showcase_card>
@@ -125,11 +118,9 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.CheatsheetDialogPage do
         title={dgettext("showcase", "Empty State")}
         description="Dialog with no shortcuts defined — shows placeholder message."
       >
-        <.button variant="outline" phx-click={show_modal("cheatsheet-empty")}>
-          <:icon><Icons.icon_dialog_cheatsheet class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Open Empty Cheatsheet")}
-        </.button>
-        <.cheatsheet_dialog id="cheatsheet-empty" bindings={[]} />
+        <div class="shadow-retro-field overflow-hidden p-2">
+          <.cheatsheet_panel id="cheatsheet-empty" bindings={[]} />
+        </div>
       </.showcase_card>
     </.showcase_layout>
     """

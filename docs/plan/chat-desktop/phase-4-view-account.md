@@ -11,12 +11,17 @@ Phase 3 complete (recipe battle-tested on the heavy Tools batch).
 ## Windows to migrate
 
 - [ ] UrlCatcher — already done in Phase 2 (pilot); verify only.
-- [ ] ChannelList (/list results; server-fed rows — check send_update-while-closed)
+- [x] ChannelList — ALWAYS-MOUNTED (`open={false}`): the search filter survives
+      closes and the island receives targeted send_updates. Opener stays
+      server-side everywhere (incl. start menu `app_item`): opening loads fresh
+      /list rows, so a client-only `data-window-open` would show stale data.
 - [ ] UserLookup (whois result card; opened programmatically from nick context
       menus and `/whois` — openers include non-menu paths, sweep for every
       `open_user_lookup` call site)
-- [ ] Cheatsheet (keyboard shortcuts overlay → now a window; `toggle_cheatsheet`
-      shortcut focuses/toggles it)
+- [x] Cheatsheet — MANAGED: static content, no state to preserve.
+      `toggle_cheatsheet` (menu + shortcut) routes through `Windows.open`
+      (open/focus, never toggle-close); Escape is WM-owned. This emptied
+      `topmost_dismissals` (Phase 6 cleanup candidate).
 - [ ] Account (NickServ mini-app; 8 `update(%{action...})` entry points —
       register/identify/profile/presence/modes/ghost/drop must each open+focus the
       window and switch its internal mode; sweep all `open_account_*` actions)

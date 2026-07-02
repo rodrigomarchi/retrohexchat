@@ -55,17 +55,15 @@ test.describe('Dialog close behavior', () => {
     await page.keyboard.press('Escape');
     await expect(chat.addressBookDialog).toBeHidden();
 
+    // Channel List is a desktop window: X and Escape close it.
     await openMenuItem(chat.viewMenuTrigger, chat.channelListMenuItem);
     await expect(chat.channelListDialog).toBeVisible();
-    await clickTitleClose(chat.channelListDialog);
+    await chat.channelListDialog.locator('[data-window-control="close"]').click();
     await expect(chat.channelListDialog).toBeHidden();
 
     await openMenuItem(chat.viewMenuTrigger, chat.channelListMenuItem);
     await expect(chat.channelListDialog).toBeVisible();
-    await chat.channelListDialog
-      .getByRole('button', { name: 'Close' })
-      .last()
-      .click();
+    await page.keyboard.press('Escape');
     await expect(chat.channelListDialog).toBeHidden();
 
     // Highlight Words is a desktop window: no backdrop close; the title-bar X

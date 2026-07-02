@@ -94,9 +94,8 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
   describe "knock entry point" do
     test "Channel List marks invite-only rows and swaps Join for Request Access" do
       html =
-        render_component(&ChannelList.channel_list/1,
+        render_component(&ChannelList.channel_list_panel/1,
           id: "channel-list-dialog",
-          show: true,
           channels: [
             %{name: "#open", user_count: 3, topic: "Public", invite_only?: false, joined?: false},
             %{
@@ -111,8 +110,7 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
           on_search: "channel_list_filter",
           on_select: "channel_list_select",
           on_join: "channel_list_join",
-          on_knock: "channel_list_knock",
-          on_close: "close_channel_list"
+          on_knock: "channel_list_knock"
         )
 
       assert html =~ "data-testid=\"channel-list-invite-only-#private\""
@@ -124,9 +122,8 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
 
     test "Channel List keeps Join for invite-only channels already joined" do
       html =
-        render_component(&ChannelList.channel_list/1,
+        render_component(&ChannelList.channel_list_panel/1,
           id: "channel-list-dialog",
-          show: true,
           channels: [
             %{
               name: "#private",
@@ -140,8 +137,7 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
           on_search: "channel_list_filter",
           on_select: "channel_list_select",
           on_join: "channel_list_join",
-          on_knock: "channel_list_knock",
-          on_close: "close_channel_list"
+          on_knock: "channel_list_knock"
         )
 
       assert html =~ "Join"

@@ -490,8 +490,10 @@ export class ChatPage {
     this.deleteCancelButton = page.getByTestId('delete-confirm-dialog-cancel');
     this.aboutDialog = page.locator('#about-dialog [role="dialog"]');
     this.aboutOkButton = this.aboutDialog.getByRole('button', { name: 'OK' });
-    this.cheatsheetDialog = page.locator('#cheatsheet-dialog [role="dialog"]');
-    this.cheatsheetCloseButton = page.getByTestId('cheatsheet-dialog-close');
+    this.cheatsheetDialog = page.getByTestId('cheatsheet-window');
+    this.cheatsheetCloseButton = page
+      .getByTestId('cheatsheet-window')
+      .locator('[data-window-control="close"]');
     this.helpContentPane = page.getByTestId('help-content-pane');
     this.notifyListDialog = page.getByTestId('notify-list-window');
     this.notifyAutoAddPmToggle = page.locator(
@@ -501,9 +503,7 @@ export class ChatPage {
       '#notify-list-dialog-auto-whois',
     );
     this.addressBookDialog = page.getByTestId('address-book-window');
-    this.channelListDialog = page.locator(
-      '#channel-list-dialog [role="dialog"]',
-    );
+    this.channelListDialog = page.getByTestId('channel-list-window');
     this.channelCentralDialog = page.locator(
       '#channel-central-dialog [role="dialog"]',
     );
@@ -605,7 +605,9 @@ export class ChatPage {
     this.nickChangeError = page.getByTestId('nick-change-error');
     this.channelListSearch = page.getByTestId('channel-list-search');
     this.channelListJoinButton = page.getByTestId('channel-list-join');
-    this.channelListCloseButton = page.getByTestId('channel-list-close');
+    this.channelListCloseButton = page
+      .getByTestId('channel-list-window')
+      .locator('[data-window-control="close"]');
     // The dialog component wraps content in a <span data-testid="...">, but
     // that wrapper has zero visible size when the dialog is closed; use the
     // confirm button instead as the open/closed signal.

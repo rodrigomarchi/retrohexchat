@@ -28,6 +28,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   alias RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.SearchEvents
+  alias RetroHexChatWeb.ChatLive.Windows
 
   use Phoenix.VerifiedRoutes, endpoint: RetroHexChatWeb.Endpoint, router: RetroHexChatWeb.Router
 
@@ -99,7 +100,7 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event("toggle_cheatsheet", _params, socket) do
-    {:halt, assign(socket, cheatsheet_visible: !socket.assigns.cheatsheet_visible)}
+    {:halt, Windows.open(socket, "cheatsheet")}
   end
 
   def handle_event("viewport_info", %{"width" => width}, socket) when width < 768 do

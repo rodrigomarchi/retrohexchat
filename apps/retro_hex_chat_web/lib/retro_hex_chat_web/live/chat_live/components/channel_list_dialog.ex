@@ -5,14 +5,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
 
   Owns the view state — the `search` term and the `selected` channel name — and
   derives the displayed rows by filtering `channels` (the full list supplied by
-  the parent together with `loading` and `visible`) on name and topic.
+  the parent together with `loading`) on name and topic.
 
   `channel_list_filter` and `channel_list_select` are received by
   `ChannelListEvents` on the root LiveView and forwarded here via `send_update`.
-  `channel_list_join`, `channel_list_knock` and `close_channel_list` are handled
-  by the parent, which joins the channel, opens the knock-request dialog, or hides
-  the window; `show_channel_list` lives on the parent because the Escape handler
-  reads it.
+  `channel_list_join` and `channel_list_knock` are handled by the parent, which
+  joins the channel or opens the knock-request modal. The island is always
+  mounted inside its desktop window: the window manager owns open/close, so the
+  search filter survives closes (by design); `:open` only resets the selection.
   """
   use RetroHexChatWeb, :live_component
 
@@ -43,7 +43,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
     {:ok,
      assign(socket,
        id: @id,
-       visible: false,
        channels: [],
        loading: false,
        search: "",
@@ -77,7 +76,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
     {:ok,
      assign(socket,
        id: Map.get(assigns, :id, socket.assigns.id),
-       visible: Map.get(assigns, :visible, socket.assigns.visible),
        channels: Map.get(assigns, :channels, socket.assigns.channels),
        loading: Map.get(assigns, :loading, socket.assigns.loading)
      )}
@@ -89,10 +87,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
     assigns = assign(assigns, filtered: filter_channels(assigns.channels, assigns.search))
 
     ~H"""
-    <div id={"#{@id}-mount"}>
-      <.channel_list
+    <div id={"#{@id}-mount"} class="contents">
+      <.channel_list_panel
         id={@id}
-        show={@visible}
         channels={@filtered}
         search={@search}
         selected_channel={@selected}
@@ -101,7 +98,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialog do
         on_select="channel_list_select"
         on_join="channel_list_join"
         on_knock="channel_list_knock"
-        on_close="close_channel_list"
       />
     </div>
     """

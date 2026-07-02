@@ -82,6 +82,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.window_item window="timers" label={dgettext("ui", "Timers")} icon_fn={:icon_btn_timers} />
         <.start_menu_separator />
         <%!-- View --%>
+        <%!-- Server opener: /list rows are loaded by the LiveView on open. --%>
         <.app_item
           action="toggle_channel_list"
           on_action={@on_action}
@@ -99,9 +100,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "User Lookup")}
           icon_fn={:icon_btn_search}
         />
-        <.app_item
-          action="toggle_cheatsheet"
-          on_action={@on_action}
+        <.window_item
+          window="cheatsheet"
           label={dgettext("ui", "Shortcut Cheatsheet")}
           icon_fn={:icon_dialog_cheatsheet}
         />

@@ -12,27 +12,20 @@ defmodule RetroHexChatWeb.ChannelListDialogTest do
   end
 
   describe "open/close" do
-    test "channel_list event opens the dialog with channels", %{conn: conn} do
+    test "channel_list event opens the window with channels", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "CldOpen"), "/chat")
       render_click(view, "channel_list")
       html = render(view)
       assert html =~ "Channel List"
-      assert has_element?(view, "#channel-list-dialog-show-trigger")
+      assert_push_event(view, "window_command", %{action: "open", id: "channel-list"})
       assert html =~ "#cld_test"
     end
 
-    test "toggle_channel_list closes the dialog", %{conn: conn} do
+    test "toggle_channel_list opens/focuses the window (never toggle-closes)", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "CldClose"), "/chat")
       render_click(view, "channel_list")
       render_click(view, "toggle_channel_list")
-      refute has_element?(view, "#channel-list-dialog-show-trigger")
-    end
-
-    test "Escape dismisses the dialog", %{conn: conn} do
-      {:ok, view, _html} = live(chat_conn(conn, "CldEsc"), "/chat")
-      render_click(view, "channel_list")
-      render_click(view, "window_keydown", %{"key" => "Escape"})
-      refute has_element?(view, "#channel-list-dialog-show-trigger")
+      assert_push_event(view, "window_command", %{action: "open", id: "channel-list"})
     end
   end
 
@@ -88,8 +81,8 @@ defmodule RetroHexChatWeb.ChannelListDialogTest do
       {:ok, view, _html} = live(chat_conn(conn, "CldJoin"), "/chat")
       render_click(view, "channel_list")
       render_click(view, "channel_list_join", %{"channel" => "#cld_test"})
-      # Dialog should be closed
-      refute has_element?(view, "#channel-list-dialog-show-trigger")
+      # Joining closes the window client-side.
+      assert_push_event(view, "window_command", %{action: "close", id: "channel-list"})
     end
   end
 

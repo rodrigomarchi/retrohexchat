@@ -7,7 +7,7 @@
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
 | 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
 | 3 — Tools/Settings batch | **complete** (2026-07-02) | All 8 migrated (all managed); full `make ci` 9/9 incl. dialyzer |
-| 4 — View/Account batch | not started | |
+| 4 — View/Account batch | **in progress** | ChannelList (always-mounted) + Cheatsheet (managed) committed; UserLookup/Account/ChannelCentral remain |
 | 5 — Admin batch | not started | |
 | 6 — Unify + cleanup | not started | |
 
@@ -161,6 +161,41 @@ hold for the chat and extend:
   windows lose it — use `data-window-id` visibility, `render_hook(view,
   "window_open"/"window_closed")`, and `assert_push_event(view, "window_command", ...)`
   instead (see `lobby_live_test.exs` for the patterns).
+
+- RECIPE DEVIATION (step 4, ChannelList): the start-menu item stays a server
+  `app_item` (not `window_item`) when opening must LOAD data — the channel-list
+  open fetches fresh /list rows; a client-side `data-window-open` would show
+  stale rows. Rule: opener must be server-side whenever open implies a data load.
+- FIXED (pre-existing production crash, exposed by layout shift): `nick_hover`
+  on an offline/untracked nick crashed the whole LiveView — `extract_client_
+  fields(nil)` returned `%{}` and `hover_card_fields/1` reads keys with DOT
+  access (KeyError :browser). Rule: any map built for dot-access readers must be
+  TOTAL (every key present, nil values). Regression test:
+  `hover_offline_nick_test.exs`.
+- E2E failure signature: an asserted system message that "never appears" can
+  mean the LiveView CRASHED server-side (message swallowed by the remount).
+  Always read the Playwright WebServer `[error]` output before debugging the
+  assertion itself — that's where the hover crash showed up.
+- `topmost_dismissals` in `keyboard_events.ex` is now an EMPTY list (cheatsheet
+  was its last entry) — Phase 6: remove the server Escape-ladder plumbing or
+  document why it stays for future modals.
+- `LiveViewCase.submit_command_sync/2` exists but the fixed tests use local
+  `render(view)` barriers — Phase 6: migrate them to the shared helper so the
+  barrier pattern has ONE spelling.
+- FIXED (pre-existing, chat-view-menu T4): the spec asserted `toHaveCount(0)`
+  on the conversations/nicklist sidebars, but they hide via a CSS `hidden`
+  class (mobile-overlay design) — the node never leaves the DOM. Assert
+  `toBeHidden()`/`toBeVisible()` for CSS-toggled panels; reserve `toHaveCount`
+  for `:if`-mounted DOM. Same spec also clicked Find in the View menu (it lives
+  in Edit — second instance of that bug after the parity spec).
+- Sweep gap: grepping testids/page-objects misses ExUnit tests that call the UI
+  function DIRECTLY (`render_component(&Mod.fun/1, ...)`). Add
+  `grep -rn "&<Module>\." test/` to the per-dialog sweep (channel_membership
+  feature test broke on the removed `channel_list/1`).
+- AGENT-GUIDE §7 currently documents only the lobby rules ("islands are always
+  mounted") — the chat's MANAGED-window pattern (`ChatLive.Windows`, `@managed`,
+  conditional mount) extends/contradicts it. Phase 6 crystallization MUST update
+  §7, or the guide will mislead the next feature.
 
 ## Decision log
 

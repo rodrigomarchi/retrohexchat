@@ -79,8 +79,9 @@ test.describe('View menu', () => {
         'true',
       );
 
+      // Sidebars hide via CSS (mobile overlay design) — the node stays mounted.
       await clickViewItem(alice.chat, alice.chat.toggleConversationsMenuItem);
-      await expect(alice.chat.page.getByTestId('conversations')).toHaveCount(0);
+      await expect(alice.chat.page.getByTestId('conversations')).toBeHidden();
       await alice.chat.expectTabSelected('#lobby');
       await expect(alice.chat.tab(channel)).toHaveAttribute(
         'data-unread',
@@ -92,7 +93,7 @@ test.describe('View menu', () => {
       await alice.chat.expectTabSelected('#lobby');
 
       await clickViewItem(alice.chat, alice.chat.toggleNicklistMenuItem);
-      await expect(alice.chat.nicklist).toHaveCount(0);
+      await expect(alice.chat.nicklist).toBeHidden();
       await alice.chat.expectTabSelected('#lobby');
 
       await clickViewItem(alice.chat, alice.chat.toggleNicklistMenuItem);
@@ -107,13 +108,12 @@ test.describe('View menu', () => {
         'true',
       );
       await alice.chat.channelListDialog
-        .getByRole('button', { name: 'Close' })
-        .last()
+        .locator('[data-window-control="close"]')
         .click();
       await expect(alice.chat.channelListDialog).toBeHidden();
 
-      await clickViewItem(alice.chat, alice.chat.findMenuItem);
-      await expect(alice.chat.searchBar).toBeVisible();
+      // Find lives in the Edit menu, not View.
+      await alice.chat.openSearchFromEditMenu();
       await alice.chat.expectTabSelected('#lobby');
       await expect(alice.chat.tab(channel)).toHaveAttribute(
         'data-unread',

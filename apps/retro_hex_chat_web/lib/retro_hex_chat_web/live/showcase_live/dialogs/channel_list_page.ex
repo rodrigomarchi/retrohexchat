@@ -9,10 +9,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
     statics: RetroHexChatWeb.static_paths()
 
   import RetroHexChatWeb.Components.UI.ChannelList
-  import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.ShowcaseHelpers
-  alias RetroHexChatWeb.Icons
 
   @impl true
   def mount(_params, _session, socket) do
@@ -49,13 +46,11 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
         title={dgettext("showcase", "Channel List")}
         description="Searchable channel table with user count and topic."
       >
-        <.button variant="outline" phx-click={show_modal("channel-list-demo")}>
-          <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Channel List")}
-        </.button>
-        <.channel_list id="channel-list-demo" channels={@channels} />
+        <div class="h-[360px] shadow-retro-field overflow-hidden p-2">
+          <.channel_list_panel id="channel-list-demo" channels={@channels} />
+        </div>
         <.code_example>
-          &lt;.channel_list
+          &lt;.channel_list_panel
           id="channel-list"
           channels=&#123;@channels&#125;
           on_search="filter_channels"
@@ -69,31 +64,27 @@ defmodule RetroHexChatWeb.ShowcaseLive.Dialogs.ChannelListPage do
         title={dgettext("showcase", "With Selection")}
         description="Channel list with a channel pre-selected. Join button is enabled."
       >
-        <.button variant="outline" phx-click={show_modal("channel-list-selected")}>
-          <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Channel List (Selected)")}
-        </.button>
-        <.channel_list
-          id="channel-list-selected"
-          channels={@channels}
-          selected_channel="#dev"
-        />
+        <div class="h-[360px] shadow-retro-field overflow-hidden p-2">
+          <.channel_list_panel
+            id="channel-list-selected"
+            channels={@channels}
+            selected_channel="#dev"
+          />
+        </div>
       </.showcase_card>
 
       <.showcase_card
         title={dgettext("showcase", "Loading State")}
         description="Channel list showing the 'Searching...' state while fetching channels."
       >
-        <.button variant="outline" phx-click={show_modal("channel-list-loading")}>
-          <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-          {dgettext("showcase", "Channel List (Loading)")}
-        </.button>
-        <.channel_list
-          id="channel-list-loading"
-          channels={[]}
-          loading={true}
-          search="game"
-        />
+        <div class="h-[200px] shadow-retro-field overflow-hidden p-2">
+          <.channel_list_panel
+            id="channel-list-loading"
+            channels={[]}
+            loading={true}
+            search="game"
+          />
+        </div>
       </.showcase_card>
     </.showcase_layout>
     """

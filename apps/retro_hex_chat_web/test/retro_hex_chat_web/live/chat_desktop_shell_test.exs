@@ -63,13 +63,12 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
     test "a start menu item opens its dialog through toolbar_action", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 
-      refute :sys.get_state(view.pid).socket.assigns.cheatsheet_visible
-
+      # Channel List keeps the server opener (it loads the /list rows on open).
       view
-      |> element(~s(#chat-start-menu [phx-value-action="toggle_cheatsheet"]))
+      |> element(~s(#chat-start-menu [phx-value-action="toggle_channel_list"]))
       |> render_click()
 
-      assert :sys.get_state(view.pid).socket.assigns.cheatsheet_visible
+      assert_push_event(view, "window_command", %{action: "open", id: "channel-list"})
     end
 
     test "the admin group is permission-gated", %{conn: conn} do

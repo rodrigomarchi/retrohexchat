@@ -22,7 +22,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   }
 
   alias RetroHexChatWeb.ChatLive.AddressBookEvents
-  alias RetroHexChatWeb.ChatLive.ChannelListEvents
   alias RetroHexChatWeb.ChatLive.NavigationEvents
   alias RetroHexChatWeb.ChatLive.PerformAutojoinEvents
   alias RetroHexChatWeb.ChatLive.SearchEvents
@@ -87,7 +86,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_cheatsheet, socket) do
-    assign(socket, cheatsheet_visible: !socket.assigns.cheatsheet_visible)
+    Windows.open(socket, "cheatsheet")
   end
 
   defp dispatch_action(:open_help, socket) do
@@ -149,14 +148,11 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp topmost_dismissals do
-    [
-      {:cheatsheet_visible, &close_cheatsheet/1}
-    ]
+    []
   end
 
   defp secondary_dismissals do
     [
-      {:show_channel_list, &close_channel_list/1},
       {:show_invite_channel_picker, &close_invite_channel_picker/1},
       {:show_knock_request_dialog, &close_knock_request_dialog/1},
       {:search_visible, &clear_search_state/1},
@@ -174,8 +170,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     assign(socket, pending_invites: remaining)
   end
 
-  defp close_cheatsheet(socket), do: assign(socket, cheatsheet_visible: false)
-
   defp cancel_notice_mode(socket) do
     send_update(Composer, id: Composer.id(), cancel_notice: true)
     assign(socket, notice_active: false)
@@ -187,8 +181,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   # ---------------------------------------------------------------------------
   # Private helpers
   # ---------------------------------------------------------------------------
-
-  defp close_channel_list(socket), do: ChannelListEvents.close(socket)
 
   defp close_invite_channel_picker(socket) do
     send_update(InviteChannelPickerDialog, id: InviteChannelPickerDialog.id(), action: :close)

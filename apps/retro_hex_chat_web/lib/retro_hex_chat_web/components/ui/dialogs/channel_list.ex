@@ -11,7 +11,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Dialog
   import RetroHexChatWeb.Components.UI.Table
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Button
@@ -22,7 +21,6 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
 
   @doc "Renders the channel list dialog."
   attr :id, :string, required: true
-  attr :show, :boolean, default: false
   attr :channels, :list, default: []
   attr :search, :string, default: ""
   attr :selected_channel, :string, default: nil, doc: "Currently selected channel name"
@@ -31,10 +29,9 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   attr :on_select, :any, default: nil, doc: "Row click callback"
   attr :on_join, :any, default: nil, doc: "Join button callback"
   attr :on_knock, :any, default: nil, doc: "Request-access button callback"
-  attr :on_close, :any, default: nil, doc: "Close button callback"
 
-  @spec channel_list(map()) :: Phoenix.LiveView.Rendered.t()
-  def channel_list(assigns) do
+  @spec channel_list_panel(map()) :: Phoenix.LiveView.Rendered.t()
+  def channel_list_panel(assigns) do
     assigns =
       assign(
         assigns,
@@ -43,88 +40,86 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
       )
 
     ~H"""
-    <.dialog id={@id} show={@show} on_cancel={@on_close}>
-      <.dialog_header id={@id} title={dgettext("dialogs", "Channel List")} on_close={@on_close}>
-        <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
-      </.dialog_header>
+    <div
+      id={"#{@id}-content"}
+      data-testid="channel-list-panel"
+      class="flex h-full min-h-0 flex-col gap-retro-8"
+    >
+      <%!-- Search --%>
+      <form
+        class="flex items-center gap-retro-4"
+        phx-change={@on_search}
+        phx-submit={@on_search}
+      >
+        <.input
+          type="text"
+          value={@search}
+          placeholder={dgettext("dialogs", "Filter channels...")}
+          class="flex-1"
+          phx-debounce="300"
+          name="search"
+          data-testid="channel-list-search"
+        />
+        <.button size="sm" variant="outline" type="submit">
+          <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
+          {dgettext("dialogs", "Search")}
+        </.button>
+      </form>
 
-      <.dialog_body class="space-y-retro-8">
-        <%!-- Search --%>
-        <form
-          class="flex items-center gap-retro-4"
-          phx-change={@on_search}
-          phx-submit={@on_search}
-        >
-          <.input
-            type="text"
-            value={@search}
-            placeholder={dgettext("dialogs", "Filter channels...")}
-            class="flex-1"
-            phx-debounce="300"
-            name="search"
-            data-testid="channel-list-search"
-          />
-          <.button size="sm" variant="outline" type="submit">
-            <:icon><Icons.icon_btn_find class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Search")}
-          </.button>
-        </form>
+      <%!-- Channel table --%>
+      <div class="max-h-[300px] overflow-y-auto retro-scrollbar">
+        <%= if @loading do %>
+          <div class="flex items-center justify-center py-retro-24">
+            <.loading_spinner size="sm" text={dgettext("dialogs", "Searching...")} />
+          </div>
+        <% else %>
+          <.table>
+            <.table_header>
+              <.table_row>
+                <.table_head>{dgettext("dialogs", "Channel")}</.table_head>
+                <.table_head>{dgettext("dialogs", "Users")}</.table_head>
+                <.table_head>{dgettext("dialogs", "Topic")}</.table_head>
+              </.table_row>
+            </.table_header>
+            <.table_body>
+              <.table_row :if={@channels == []}>
+                <.table_cell colspan="3" class="text-center text-muted-foreground py-4">
+                  {dgettext("dialogs", "No channels found")}
+                </.table_cell>
+              </.table_row>
+              <.table_row
+                :for={ch <- @channels}
+                class={
+                  if(@selected_channel == ch.name,
+                    do: "bg-selection-bg text-selection-fg",
+                    else: ""
+                  )
+                }
+                phx-click={@on_select}
+                phx-value-channel={ch.name}
+                data-testid={"channel-list-row-#{ch.name}"}
+              >
+                <.table_cell class="font-bold">
+                  <span class="inline-flex items-center gap-retro-4">
+                    <span>{ch.name}</span>
+                    <.badge
+                      :if={invite_only?(ch)}
+                      variant="secondary"
+                      data-testid={"channel-list-invite-only-#{ch.name}"}
+                    >
+                      +i
+                    </.badge>
+                  </span>
+                </.table_cell>
+                <.table_cell>{ch.user_count}</.table_cell>
+                <.table_cell class="truncate max-w-[200px]">{ch.topic}</.table_cell>
+              </.table_row>
+            </.table_body>
+          </.table>
+        <% end %>
+      </div>
 
-        <%!-- Channel table --%>
-        <div class="max-h-[300px] overflow-y-auto retro-scrollbar">
-          <%= if @loading do %>
-            <div class="flex items-center justify-center py-retro-24">
-              <.loading_spinner size="sm" text={dgettext("dialogs", "Searching...")} />
-            </div>
-          <% else %>
-            <.table>
-              <.table_header>
-                <.table_row>
-                  <.table_head>{dgettext("dialogs", "Channel")}</.table_head>
-                  <.table_head>{dgettext("dialogs", "Users")}</.table_head>
-                  <.table_head>{dgettext("dialogs", "Topic")}</.table_head>
-                </.table_row>
-              </.table_header>
-              <.table_body>
-                <.table_row :if={@channels == []}>
-                  <.table_cell colspan="3" class="text-center text-muted-foreground py-4">
-                    {dgettext("dialogs", "No channels found")}
-                  </.table_cell>
-                </.table_row>
-                <.table_row
-                  :for={ch <- @channels}
-                  class={
-                    if(@selected_channel == ch.name,
-                      do: "bg-selection-bg text-selection-fg",
-                      else: ""
-                    )
-                  }
-                  phx-click={@on_select}
-                  phx-value-channel={ch.name}
-                  data-testid={"channel-list-row-#{ch.name}"}
-                >
-                  <.table_cell class="font-bold">
-                    <span class="inline-flex items-center gap-retro-4">
-                      <span>{ch.name}</span>
-                      <.badge
-                        :if={invite_only?(ch)}
-                        variant="secondary"
-                        data-testid={"channel-list-invite-only-#{ch.name}"}
-                      >
-                        +i
-                      </.badge>
-                    </span>
-                  </.table_cell>
-                  <.table_cell>{ch.user_count}</.table_cell>
-                  <.table_cell class="truncate max-w-[200px]">{ch.topic}</.table_cell>
-                </.table_row>
-              </.table_body>
-            </.table>
-          <% end %>
-        </div>
-      </.dialog_body>
-
-      <.dialog_footer>
+      <div class="flex justify-end gap-retro-4">
         <.button
           variant="default"
           phx-click={if @request_access?, do: @on_knock, else: @on_join}
@@ -143,16 +138,8 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
             do: dgettext("dialogs", "Request Access..."),
             else: dgettext("dialogs", "Join")}
         </.button>
-        <.button
-          variant="outline"
-          phx-click={@on_close || hide_modal(@id)}
-          data-testid="channel-list-close"
-        >
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Close")}
-        </.button>
-      </.dialog_footer>
-    </.dialog>
+      </div>
+    </div>
     """
   end
 

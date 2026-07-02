@@ -2,8 +2,9 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
   @moduledoc """
   Handle events for the Channel List dialog.
 
-  Covers: channel_list (open), toggle_channel_list (close),
-  channel_list_filter, channel_list_select, channel_list_join.
+  Covers: channel_list / toggle_channel_list (open/focus the window),
+  channel_list_filter, channel_list_select, channel_list_join, and the
+  knock-request modal flow.
 
   Attached as `attach_hook(:channel_list_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -18,29 +19,31 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
   alias RetroHexChatWeb.ChatLive.Components.KnockRequestDialog
   alias RetroHexChatWeb.ChatLive.Helpers.Channel, as: ChannelHelpers
   alias RetroHexChatWeb.ChatLive.UiActions.Core
+  alias RetroHexChatWeb.ChatLive.Windows
 
   @max_knock_message_length 200
 
   @doc """
-  Opens the Channel List: loads the visible channels into the parent passthrough
-  assign and resets the component's view state. Shared by the menu/toolbar event,
-  the conversations "browse all" button, and the `/list` command.
+  Opens/focuses the Channel List window: loads the visible channels into the
+  parent passthrough assign and resets the island's selection. Shared by the
+  menu/toolbar event, the conversations "browse all" button, and the `/list`
+  command.
   """
   @spec open(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
   def open(socket) do
     channels = Autocomplete.list_visible_channels(socket.assigns.session.channels)
     send_update(ChannelListDialog, id: ChannelListDialog.id(), action: :open)
 
-    assign(socket,
-      show_channel_list: true,
-      channel_list_channels: channels,
-      channel_list_loading: false
-    )
+    socket
+    |> assign(channel_list_channels: channels, channel_list_loading: false)
+    |> Windows.open("channel-list")
   end
 
-  @doc "Closes the Channel List dialog (parent keeps `show_channel_list` for Escape)."
+  @doc "Closes the Channel List window client-side (e.g. after joining)."
   @spec close(Phoenix.LiveView.Socket.t()) :: Phoenix.LiveView.Socket.t()
-  def close(socket), do: assign(socket, show_channel_list: false)
+  def close(socket) do
+    Phoenix.LiveView.push_event(socket, "window_command", %{action: "close", id: "channel-list"})
+  end
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:halt, Phoenix.LiveView.Socket.t()} | {:cont, Phoenix.LiveView.Socket.t()}
@@ -50,15 +53,7 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
   end
 
   def handle_event("toggle_channel_list", _params, socket) do
-    if socket.assigns.show_channel_list do
-      {:halt, close(socket)}
-    else
-      {:halt, open(socket)}
-    end
-  end
-
-  def handle_event("close_channel_list", _params, socket) do
-    {:halt, close(socket)}
+    {:halt, open(socket)}
   end
 
   def handle_event("channel_list_filter", %{"search" => search}, socket) do

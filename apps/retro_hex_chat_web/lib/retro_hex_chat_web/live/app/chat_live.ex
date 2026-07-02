@@ -640,7 +640,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       # for Escape-dismissal/overlay coordination (see SearchEvents).
       search_visible: false,
       session: session,
-      cheatsheet_visible: false,
       show_account_dialog: false,
       account_registered: false,
       account_last_away_message: nil,
@@ -689,7 +688,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       nick_change_token: nil,
       show_invite_channel_picker: false,
       show_knock_request_dialog: false,
-      show_channel_list: false,
       channel_list_channels: [],
       channel_list_loading: false
     )

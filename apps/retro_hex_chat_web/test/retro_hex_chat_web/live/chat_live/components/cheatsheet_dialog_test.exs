@@ -11,19 +11,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.CheatsheetDialogTest do
     assert CheatsheetDialog.id() == "cheatsheet-dialog"
   end
 
-  test "is hidden by default (no show-trigger)" do
+  test "renders the bare static bindings panel" do
     html = render_component(CheatsheetDialog, id: CheatsheetDialog.id())
 
     assert html =~ ~s(data-testid="cheatsheet-dialog")
-    refute html =~ "cheatsheet-dialog-show-trigger"
-  end
-
-  test "renders the static bindings table when visible" do
-    html = render_component(CheatsheetDialog, id: CheatsheetDialog.id(), visible: true)
-
-    assert html =~ "cheatsheet-dialog-show-trigger"
-    assert html =~ "Keyboard Shortcuts"
-    # Close bubbles to the parent's Escape-managed toggle.
-    assert html =~ "toggle_cheatsheet"
+    refute html =~ "phx-show-modal"
+    # The bindings table is computed once at mount.
+    assert html =~ "Navigation"
   end
 end

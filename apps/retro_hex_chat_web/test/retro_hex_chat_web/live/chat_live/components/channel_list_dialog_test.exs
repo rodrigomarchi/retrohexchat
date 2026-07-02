@@ -16,18 +16,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChannelListDialogTest do
     assert ChannelListDialog.id() == "channel-list-dialog"
   end
 
-  test "renders hidden by default" do
+  test "renders the bare panel by default" do
     html = render_component(ChannelListDialog, id: ChannelListDialog.id())
 
-    assert html =~ "Channel List"
-    assert html =~ "hidden"
+    assert html =~ ~s(data-testid="channel-list-panel")
+    refute html =~ "phx-show-modal"
   end
 
   test "renders the supplied channels and bubbling event names" do
     html =
       render_component(ChannelListDialog,
         id: ChannelListDialog.id(),
-        visible: true,
         channels: @channels
       )
 

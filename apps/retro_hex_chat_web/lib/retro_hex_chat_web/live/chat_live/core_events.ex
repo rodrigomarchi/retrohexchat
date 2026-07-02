@@ -200,7 +200,8 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- close_dialog --
 
   def handle_event("close_dialog", _params, socket) do
-    {:halt, assign(socket, cheatsheet_visible: false)}
+    {:halt,
+     Phoenix.LiveView.push_event(socket, "window_command", %{action: "close", id: "cheatsheet"})}
   end
 
   # -- load_more --

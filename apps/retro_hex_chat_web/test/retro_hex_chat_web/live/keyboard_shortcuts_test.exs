@@ -21,7 +21,7 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
       assert html =~ "Keyboard Shortcuts"
     end
 
-    test "Escape closes cheatsheet", %{conn: conn} do
+    test "the window manager owns Escape; a client close unmounts the island", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "CheatE"), "/chat")
 
       render_click(view, "window_keydown", %{
@@ -31,11 +31,14 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
         "altKey" => false
       })
 
-      render_click(view, "window_keydown", %{"key" => "Escape"})
-      refute has_element?(view, "#cheatsheet-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="cheatsheet"]))
+
+      # Escape is handled client-side (WM); the hook reports the close back.
+      render_hook(view, "window_closed", %{"id" => "cheatsheet"})
+      refute has_element?(view, ~s([data-window-id="cheatsheet"]))
     end
 
-    test "Ctrl+Shift+/ toggles cheatsheet off", %{conn: conn} do
+    test "Ctrl+Shift+/ re-invocation focuses (never toggle-closes)", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "CheatT"), "/chat")
 
       params = %{
@@ -47,7 +50,8 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
 
       render_click(view, "window_keydown", params)
       render_click(view, "window_keydown", params)
-      refute has_element?(view, "#cheatsheet-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="cheatsheet"]))
+      assert_push_event(view, "window_command", %{action: "open", id: "cheatsheet"})
     end
 
     test "cheatsheet renders categories", %{conn: conn} do
@@ -76,7 +80,8 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
       })
 
       render_click(view, "close_dialog", %{"dialog" => "cheatsheet"})
-      refute has_element?(view, "#cheatsheet-dialog-show-trigger")
+      # close_dialog now delegates to the window manager client-side.
+      assert_push_event(view, "window_command", %{action: "close", id: "cheatsheet"})
     end
   end
 
