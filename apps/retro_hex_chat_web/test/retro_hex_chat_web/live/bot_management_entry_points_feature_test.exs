@@ -56,14 +56,27 @@ defmodule RetroHexChatWeb.BotManagementEntryPointsFeatureTest do
       refute user_toolbar_html =~ ~s(data-testid="context-menu-item-open_bot_dialog")
     end
 
-    test "toolbar action opens the Bot Management dialog for an identified admin", %{conn: conn} do
+    test "toolbar action opens the Bot Management window for an identified admin", %{conn: conn} do
       view = connect_admin(conn)
 
-      refute has_element?(view, "#bot-management-dialog-show-trigger")
+      refute has_element?(view, ~s([data-testid="bot-management-window"]))
 
       render_click(view, "toolbar_action", %{"action" => "open_bot_dialog"})
 
-      assert has_element?(view, "#bot-management-dialog-show-trigger")
+      assert has_element?(view, ~s([data-testid="bot-management-window"]))
+      assert has_element?(view, "#bot-management-dialog-content")
+    end
+
+    test "a non-admin cannot open Bot Management, and a forged window_open renders nothing",
+         %{conn: conn} do
+      view = connect_user(conn, "Rando#{uid()}")
+
+      render_click(view, "toolbar_action", %{"action" => "open_bot_dialog"})
+      refute has_element?(view, ~s([data-testid="bot-management-window"]))
+      assert render(view) =~ "restricted to server administrators"
+
+      render_hook(view, "window_open", %{"id" => "bot-management-dialog"})
+      refute has_element?(view, ~s([data-testid="bot-management-window"]))
     end
   end
 
@@ -120,6 +133,11 @@ defmodule RetroHexChatWeb.BotManagementEntryPointsFeatureTest do
 
   defp connect_admin(conn) do
     {:ok, view, _html} = live(chat_conn(conn, "TestAdmin", pre_identified: true), "/chat")
+    view
+  end
+
+  defp connect_user(conn, nick) do
+    {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
   end
 

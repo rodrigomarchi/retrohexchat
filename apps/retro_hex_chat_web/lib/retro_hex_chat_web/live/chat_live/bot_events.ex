@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
   alias RetroHexChat.Bots.Capabilities.{RSS, Scheduler, Trivia}
   alias RetroHexChat.Bots.{Lifecycle, Queries, Server, Supervisor}
   alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
+  alias RetroHexChatWeb.ChatLive.Windows
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
           {:cont | :halt, Phoenix.LiveView.Socket.t()}
@@ -21,8 +22,9 @@ defmodule RetroHexChatWeb.ChatLive.BotEvents do
     session = socket.assigns.session
 
     if admin?(session) do
-      bots = Queries.list_bots()
-      {:halt, put_bot(socket, show_bot: true, bots: bots)}
+      # Managed window: the island loads the bot list itself on mount. The admin
+      # gate here is the server-side authorization for a forged window_open.
+      {:halt, Windows.open(socket, BotManagementDialog.id())}
     else
       {:halt,
        error_event(

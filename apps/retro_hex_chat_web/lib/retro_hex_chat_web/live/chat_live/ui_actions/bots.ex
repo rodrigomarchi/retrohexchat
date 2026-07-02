@@ -3,14 +3,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
   Bot UI actions: open dialog, create bot, etc.
   """
 
-  import Phoenix.Component, only: [assign: 2]
-
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   import RetroHexChatWeb.ChatLive.Helpers, only: [error_event: 2]
 
   alias RetroHexChat.Accounts.ServerRoles
-  alias RetroHexChat.Bots.Queries
+  alias RetroHexChatWeb.ChatLive.Components.BotManagementDialog
+  alias RetroHexChatWeb.ChatLive.Windows
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
@@ -19,8 +18,9 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Bots do
     session = socket.assigns.session
 
     if admin?(session) do
-      bots = Queries.list_bots()
-      assign(socket, show_bot_dialog: true, bot_dialog_bots: bots)
+      # The /bot command routes here — open the managed window; the island loads
+      # its own bot list on mount (same as the menu-bar path).
+      Windows.open(socket, BotManagementDialog.id())
     else
       error_event(
         socket,

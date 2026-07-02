@@ -24,6 +24,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
   import RetroHexChatWeb.Components.UI.BotManagementDialog
   import RetroHexChatWeb.Components.UI.BotFormDialog
 
+  alias RetroHexChat.Bots.Queries
+
   @id "bot-management-dialog"
 
   @spec id() :: String.t()
@@ -45,11 +47,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
 
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
+    # A managed window mounts fresh on open, so the bot list is loaded here — it
+    # rides the mount's own render (the main diff), which is always DOM-safe.
+    # Delivering it via a post-mount send_update races the mount patch client-side
+    # (see AGENT-GUIDE §7 / the REVERSED gotcha).
     {:ok,
      socket
      |> assign(:id, @id)
      |> assign(:is_admin, false)
-     |> assign(@owned_defaults)}
+     |> assign(@owned_defaults)
+     |> assign(:bots, Queries.list_bots())}
   end
 
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
@@ -58,6 +65,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.BotManagementDialog do
     <div id={"#{@id}-mount"} class="contents">
       <.bot_management_dialog
         id={@id}
+        windowed
         show={@show_bot}
         bots={@bots}
         selected={@selected}

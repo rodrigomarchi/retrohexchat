@@ -567,7 +567,7 @@ export class ChatPage {
       '#mute-duration-dialog [role="dialog"]',
     );
     this.botManagementDialog = page.locator(
-      '#bot-management-dialog [role="dialog"]',
+      '[data-testid="bot-management-window"]',
     );
     this.adminConsoleDialog = page.locator(
       '[data-testid="admin-console-window"]',
@@ -575,10 +575,9 @@ export class ChatPage {
     this.adminConsoleInput = page.locator('#admin-console-input');
     this.adminConsoleOutput = page.getByTestId('admin-console-output');
     this.botList = page.getByTestId('bot-list');
-    this.botManagementCloseButton = page
-      .locator('#bot-management-dialog')
-      .getByRole('button', { name: 'Close' })
-      .last();
+    this.botManagementCloseButton = this.botManagementDialog.locator(
+      '[data-window-control="close"]',
+    );
     this.newBotButton = this.botManagementDialog.getByRole('button', {
       name: 'New',
     });

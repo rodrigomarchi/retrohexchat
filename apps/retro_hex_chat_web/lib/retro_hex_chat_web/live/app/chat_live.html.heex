@@ -591,6 +591,30 @@
       />
     </.desktop_window>
 
+    <%!-- Bot Management — server-managed, admin-gated (same authz model as the
+          admin console: the open event gates; the render guard is defense-in-depth). --%>
+    <.desktop_window
+      :if={admin?(@session) and "bot-management-dialog" in @open_windows}
+      id="bot-management-dialog"
+      title={dgettext("chat", "Bot Management")}
+      managed
+      default_x={200}
+      default_y={80}
+      width={720}
+      height={560}
+      min_width={520}
+      min_height={400}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="bot-management-window"
+    >
+      <:icon><Icons.icon_btn_bot_management class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.BotManagementDialog}
+        id={RetroHexChatWeb.ChatLive.Components.BotManagementDialog.id()}
+        is_admin={admin?(@session)}
+      />
+    </.desktop_window>
+
     <:taskbar>
       <.taskbar id="chat-taskbar">
         <:start>
@@ -639,6 +663,13 @@
           label={dgettext("chat", "Admin Console")}
         >
           <:icon><Icons.icon_dialog_admin_console class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={admin?(@session) and "bot-management-dialog" in @open_windows}
+          window="bot-management-dialog"
+          label={dgettext("chat", "Bot Management")}
+        >
+          <:icon><Icons.icon_btn_bot_management class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
           :if={"timers" in @open_windows}
@@ -794,11 +825,4 @@
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.KickQueueDialog}
   id={RetroHexChatWeb.ChatLive.Components.KickQueueDialog.id()}
-/>
-
-<%!-- Bot Management dialog --%>
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.BotManagementDialog}
-  id={RetroHexChatWeb.ChatLive.Components.BotManagementDialog.id()}
-  is_admin={admin?(@session)}
 />
