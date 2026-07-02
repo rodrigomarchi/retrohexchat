@@ -12,12 +12,13 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Aliases do
 
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AliasList
+  alias RetroHexChatWeb.ChatLive.Windows
 
   @spec handle_ui_action(Phoenix.LiveView.Socket.t(), atom(), map()) ::
           Phoenix.LiveView.Socket.t()
 
   def handle_ui_action(socket, :open_alias_dialog, _payload) do
-    assign(socket, show_alias_dialog: true)
+    Windows.open(socket, "alias")
   end
 
   def handle_ui_action(socket, :alias_added, %{name: name, expansion: expansion}) do

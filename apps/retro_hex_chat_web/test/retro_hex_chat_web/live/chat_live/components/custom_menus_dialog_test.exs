@@ -12,11 +12,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialogTest do
     assert CustomMenusDialog.id() == "custom-menus-dialog"
   end
 
-  test "renders hidden by default" do
+  test "renders the bare panel by default" do
     html = render_component(CustomMenusDialog, id: CustomMenusDialog.id())
 
-    assert html =~ "Custom Menus"
-    assert html =~ "hidden"
+    assert html =~ ~s(data-testid="custom-menus-panel")
+    refute html =~ "phx-show-modal"
   end
 
   test "renders entries for the default (nicklist) tab from the passthrough struct" do
@@ -25,7 +25,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialogTest do
     html =
       render_component(CustomMenusDialog,
         id: CustomMenusDialog.id(),
-        visible: true,
         custom_menus: menus
       )
 

@@ -204,6 +204,74 @@
       />
     </.desktop_window>
 
+    <%!-- Alias / Custom Menus / Auto Respond — server-managed editors: closing
+          unmounts the island, resetting selection and draft. --%>
+    <.desktop_window
+      :if={"alias" in @open_windows}
+      id="alias"
+      title={dgettext("chat", "Alias Editor")}
+      managed
+      default_x={130}
+      default_y={100}
+      width={640}
+      height={460}
+      min_width={480}
+      min_height={320}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="alias-window"
+    >
+      <:icon><Icons.icon_dialog_alias class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AliasDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AliasDialog.id()}
+        aliases={@session.aliases}
+      />
+    </.desktop_window>
+
+    <.desktop_window
+      :if={"custom-menus" in @open_windows}
+      id="custom-menus"
+      title={dgettext("chat", "Custom Menus")}
+      managed
+      default_x={150}
+      default_y={110}
+      width={640}
+      height={480}
+      min_width={480}
+      min_height={340}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="custom-menus-window"
+    >
+      <:icon><Icons.icon_dialog_custom_menus class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.CustomMenusDialog}
+        id={RetroHexChatWeb.ChatLive.Components.CustomMenusDialog.id()}
+        custom_menus={@session.custom_menus}
+      />
+    </.desktop_window>
+
+    <.desktop_window
+      :if={"auto-respond" in @open_windows}
+      id="auto-respond"
+      title={dgettext("chat", "Auto Respond")}
+      managed
+      default_x={170}
+      default_y={120}
+      width={700}
+      height={440}
+      min_width={540}
+      min_height={320}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="auto-respond-window"
+    >
+      <:icon><Icons.icon_dialog_auto_respond class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog.id()}
+        rules={@session.autorespond_rules}
+      />
+    </.desktop_window>
+
     <%!-- Sound Settings — server-managed: the draft seeds from the session on
           mount; closing discards an uncommitted draft. --%>
     <.desktop_window
@@ -339,6 +407,27 @@
         >
           <:icon><Icons.icon_dialog_flood class="h-4 w-4" /></:icon>
         </.taskbar_button>
+        <.taskbar_button
+          :if={"alias" in @open_windows}
+          window="alias"
+          label={dgettext("chat", "Alias Editor")}
+        >
+          <:icon><Icons.icon_dialog_alias class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={"custom-menus" in @open_windows}
+          window="custom-menus"
+          label={dgettext("chat", "Custom Menus")}
+        >
+          <:icon><Icons.icon_dialog_custom_menus class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={"auto-respond" in @open_windows}
+          window="auto-respond"
+          label={dgettext("chat", "Auto Respond")}
+        >
+          <:icon><Icons.icon_dialog_auto_respond class="h-4 w-4" /></:icon>
+        </.taskbar_button>
         <:tray>
           <.desktop_tray>
             <span id="chat-tray-clock" phx-hook="ClockHook" class="font-mono tabular-nums"></span>
@@ -448,27 +537,6 @@
   module={RetroHexChatWeb.ChatLive.Components.PerformDialog}
   id={RetroHexChatWeb.ChatLive.Components.PerformDialog.id()}
   session={@session}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.AliasDialog}
-  id={RetroHexChatWeb.ChatLive.Components.AliasDialog.id()}
-  visible={@show_alias_dialog}
-  aliases={@session.aliases}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.CustomMenusDialog}
-  id={RetroHexChatWeb.ChatLive.Components.CustomMenusDialog.id()}
-  visible={@show_custom_menus_dialog}
-  custom_menus={@session.custom_menus}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog}
-  id={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog.id()}
-  visible={@show_autorespond_dialog}
-  rules={@session.autorespond_rules}
 />
 
 <.live_component

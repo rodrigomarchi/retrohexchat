@@ -71,21 +71,18 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "Flood Protection")}
           icon_fn={:icon_btn_flood_protection}
         />
-        <.app_item
-          action="open_alias_dialog"
-          on_action={@on_action}
+        <.window_item
+          window="alias"
           label={dgettext("ui", "Alias Editor")}
           icon_fn={:icon_btn_alias_editor}
         />
-        <.app_item
-          action="open_custom_menus_dialog"
-          on_action={@on_action}
+        <.window_item
+          window="custom-menus"
           label={dgettext("ui", "Custom Menus")}
           icon_fn={:icon_btn_custom_menus}
         />
-        <.app_item
-          action="open_autorespond_dialog"
-          on_action={@on_action}
+        <.window_item
+          window="auto-respond"
           label={dgettext("ui", "Auto Respond")}
           icon_fn={:icon_btn_auto_respond}
         />

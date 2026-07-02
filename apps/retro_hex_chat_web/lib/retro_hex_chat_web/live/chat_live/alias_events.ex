@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
   `Components.AliasDialog` LiveComponent. This module handles the events that need
   the session: open/close, and the mutating save/delete (which carry the selected
   entry via `JS.push` and reflect results back to the component via
-  `send_update/2`). The parent keeps `show_alias_dialog` for the Escape map.
+  `send_update/2`). The window manager owns open/close (server-managed window).
 
   Attached as an `attach_hook(:alias_events, :handle_event, ...)` in ChatLive.mount/3.
   Returns `{:halt, socket}` when the event is handled, `{:cont, socket}` otherwise.
@@ -21,16 +21,12 @@ defmodule RetroHexChatWeb.ChatLive.AliasEvents do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AliasList
   alias RetroHexChatWeb.ChatLive.Components.AliasDialog
+  alias RetroHexChatWeb.ChatLive.Windows
 
   # ── Handled events ─────────────────────────────────────────
 
   def handle_event("open_alias_dialog", _params, socket) do
-    {:halt, assign(socket, show_alias_dialog: true)}
-  end
-
-  def handle_event("close_alias_dialog", _params, socket) do
-    send_update(AliasDialog, id: AliasDialog.id(), action: :reset)
-    {:halt, assign(socket, show_alias_dialog: false)}
+    {:halt, Windows.open(socket, "alias")}
   end
 
   def handle_event("alias_dialog_save", params, socket) do

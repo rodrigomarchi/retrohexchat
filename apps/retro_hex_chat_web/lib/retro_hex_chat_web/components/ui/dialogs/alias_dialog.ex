@@ -63,151 +63,191 @@ defmodule RetroHexChatWeb.Components.UI.AliasDialog do
         <:icon><Icons.icon_dialog_alias class="w-4 h-4" /></:icon>
       </.dialog_header>
 
-      <.dialog_body class="space-y-retro-8">
-        <%!-- Alias table --%>
-        <div class="max-h-[200px] overflow-y-auto retro-scrollbar shadow-retro-sunken">
-          <.table>
-            <.table_header>
-              <.table_row>
-                <.table_head>{dgettext("dialogs", "Name")}</.table_head>
-                <.table_head>{dgettext("dialogs", "Expansion")}</.table_head>
-              </.table_row>
-            </.table_header>
-            <.table_body>
-              <tr :if={@aliases == []}>
-                <td colspan="2" class="p-4 text-center text-muted-foreground text-xs">
-                  {dgettext("dialogs", "No aliases configured. Click \"Add\" to create one.")}
-                </td>
-              </tr>
-              <.table_row
-                :for={entry <- @aliases}
-                data-testid="alias-row"
-                data-alias-name={entry.name}
-                class={
-                  if(entry.name == @selected_alias,
-                    do: "bg-selection-bg text-selection-fg cursor-pointer",
-                    else: "cursor-pointer"
-                  )
-                }
-                phx-click={@on_select}
-                phx-value-name={entry.name}
-              >
-                <.table_cell class="font-mono text-xs">/{entry.name}</.table_cell>
-                <.table_cell class="text-xs truncate max-w-[180px]">{entry.expansion}</.table_cell>
-              </.table_row>
-            </.table_body>
-          </.table>
-        </div>
-
-        <%!-- Warning message --%>
-        <div
-          :if={@warning_message}
-          data-testid="alias-warning"
-          class="text-xs text-warning font-bold px-retro-2"
-        >
-          {@warning_message}
-        </div>
-
-        <%!-- Edit / Add form panel --%>
-        <form
-          :if={@editing}
-          phx-submit={@on_save}
-          data-testid="alias-edit-form"
-          class="shadow-retro-field bg-white p-retro-8 space-y-retro-4"
-        >
-          <h3 class="font-bold text-xs mb-retro-4">
-            {if @selected_alias,
-              do: dgettext("dialogs", "Edit Alias"),
-              else: dgettext("dialogs", "Add Alias")}
-          </h3>
-
-          <div class="space-y-retro-4">
-            <div>
-              <label class="text-xs font-bold block mb-retro-2">{dgettext("dialogs", "Name")}</label>
-              <.input
-                type="text"
-                name="name"
-                value={@draft_name}
-                placeholder={dgettext("dialogs", "e.g. hi")}
-                data-testid="alias-name-input"
-                class="w-full text-xs h-7"
-                maxlength="30"
-                disabled={@selected_alias != nil}
-              />
-            </div>
-            <div>
-              <label class="text-xs font-bold block mb-retro-2">
-                {dgettext("dialogs", "Expansion")}
-              </label>
-              <.input
-                type="text"
-                name="expansion"
-                value={@draft_expansion}
-                placeholder={dgettext("dialogs", "e.g. /msg $1 hello!")}
-                data-testid="alias-expansion-input"
-                class="w-full text-xs h-7"
-                maxlength="500"
-              />
-            </div>
-            <p class="text-[10px] text-muted-foreground">
-              {dgettext("dialogs", "Variables: $1–$9 (args), $nick (your nick), $chan (channel)")}
-            </p>
-          </div>
-
-          <div
-            :if={@error_message}
-            data-testid="alias-error"
-            class="text-xs text-destructive font-bold"
-          >
-            {@error_message}
-          </div>
-
-          <div class="flex gap-retro-4 pt-retro-4">
-            <.button type="submit" size="sm" variant="default">
-              <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Save")}
-            </.button>
-            <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
-              <:icon><Icons.icon_btn_cancel class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Cancel")}
-            </.button>
-          </div>
-        </form>
-
-        <%!-- Action buttons --%>
-        <div class="flex gap-retro-4">
-          <.button size="sm" variant="outline" phx-click={@on_add}>
-            <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Add")}
-          </.button>
-          <.button
-            size="sm"
-            variant="outline"
-            phx-click={@on_edit}
-            disabled={@selected_alias == nil}
-          >
-            <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Edit")}
-          </.button>
-          <.button
-            size="sm"
-            variant="outline"
-            phx-click={@on_delete}
-            disabled={@selected_alias == nil}
-          >
-            <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Remove")}
-          </.button>
-        </div>
+      <.dialog_body>
+        <.alias_panel
+          id={@id}
+          aliases={@aliases}
+          selected_alias={@selected_alias}
+          editing={@editing}
+          draft_name={@draft_name}
+          draft_expansion={@draft_expansion}
+          warning_message={@warning_message}
+          error_message={@error_message}
+          on_select={@on_select}
+          on_add={@on_add}
+          on_edit={@on_edit}
+          on_delete={@on_delete}
+          on_save={@on_save}
+          on_cancel_edit={@on_cancel_edit}
+        />
       </.dialog_body>
-
-      <.dialog_footer>
-        <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Close")}
-        </.button>
-      </.dialog_footer>
     </.dialog>
+    """
+  end
+
+  @doc """
+  Renders the alias editor content (table + CRUD + edit form) without any
+  frame — compose it inside a dialog or a desktop window body.
+  """
+  attr :id, :string, required: true
+  attr :aliases, :list, default: []
+  attr :selected_alias, :string, default: nil
+  attr :editing, :boolean, default: false
+  attr :draft_name, :string, default: ""
+  attr :draft_expansion, :string, default: ""
+  attr :warning_message, :string, default: nil
+  attr :error_message, :string, default: nil
+  attr :on_select, :any, default: nil
+  attr :on_add, :any, default: nil
+  attr :on_edit, :any, default: nil
+  attr :on_delete, :any, default: nil
+  attr :on_save, :any, default: nil
+  attr :on_cancel_edit, :any, default: nil
+
+  @spec alias_panel(map()) :: Phoenix.LiveView.Rendered.t()
+  def alias_panel(assigns) do
+    ~H"""
+    <div
+      id={"#{@id}-content"}
+      data-testid="alias-panel"
+      class="flex h-full min-h-0 flex-col gap-retro-8"
+    >
+      <%!-- Alias table --%>
+      <div class="max-h-[200px] overflow-y-auto retro-scrollbar shadow-retro-sunken">
+        <.table>
+          <.table_header>
+            <.table_row>
+              <.table_head>{dgettext("dialogs", "Name")}</.table_head>
+              <.table_head>{dgettext("dialogs", "Expansion")}</.table_head>
+            </.table_row>
+          </.table_header>
+          <.table_body>
+            <tr :if={@aliases == []}>
+              <td colspan="2" class="p-4 text-center text-muted-foreground text-xs">
+                {dgettext("dialogs", "No aliases configured. Click \"Add\" to create one.")}
+              </td>
+            </tr>
+            <.table_row
+              :for={entry <- @aliases}
+              data-testid="alias-row"
+              data-alias-name={entry.name}
+              class={
+                if(entry.name == @selected_alias,
+                  do: "bg-selection-bg text-selection-fg cursor-pointer",
+                  else: "cursor-pointer"
+                )
+              }
+              phx-click={@on_select}
+              phx-value-name={entry.name}
+            >
+              <.table_cell class="font-mono text-xs">/{entry.name}</.table_cell>
+              <.table_cell class="text-xs truncate max-w-[180px]">{entry.expansion}</.table_cell>
+            </.table_row>
+          </.table_body>
+        </.table>
+      </div>
+
+      <%!-- Warning message --%>
+      <div
+        :if={@warning_message}
+        data-testid="alias-warning"
+        class="text-xs text-warning font-bold px-retro-2"
+      >
+        {@warning_message}
+      </div>
+
+      <%!-- Edit / Add form panel --%>
+      <form
+        :if={@editing}
+        phx-submit={@on_save}
+        data-testid="alias-edit-form"
+        class="shadow-retro-field bg-white p-retro-8 space-y-retro-4"
+      >
+        <h3 class="font-bold text-xs mb-retro-4">
+          {if @selected_alias,
+            do: dgettext("dialogs", "Edit Alias"),
+            else: dgettext("dialogs", "Add Alias")}
+        </h3>
+
+        <div class="space-y-retro-4">
+          <div>
+            <label class="text-xs font-bold block mb-retro-2">{dgettext("dialogs", "Name")}</label>
+            <.input
+              type="text"
+              name="name"
+              value={@draft_name}
+              placeholder={dgettext("dialogs", "e.g. hi")}
+              data-testid="alias-name-input"
+              class="w-full text-xs h-7"
+              maxlength="30"
+              disabled={@selected_alias != nil}
+            />
+          </div>
+          <div>
+            <label class="text-xs font-bold block mb-retro-2">
+              {dgettext("dialogs", "Expansion")}
+            </label>
+            <.input
+              type="text"
+              name="expansion"
+              value={@draft_expansion}
+              placeholder={dgettext("dialogs", "e.g. /msg $1 hello!")}
+              data-testid="alias-expansion-input"
+              class="w-full text-xs h-7"
+              maxlength="500"
+            />
+          </div>
+          <p class="text-[10px] text-muted-foreground">
+            {dgettext("dialogs", "Variables: $1–$9 (args), $nick (your nick), $chan (channel)")}
+          </p>
+        </div>
+
+        <div
+          :if={@error_message}
+          data-testid="alias-error"
+          class="text-xs text-destructive font-bold"
+        >
+          {@error_message}
+        </div>
+
+        <div class="flex gap-retro-4 pt-retro-4">
+          <.button type="submit" size="sm" variant="default">
+            <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Save")}
+          </.button>
+          <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
+            <:icon><Icons.icon_btn_cancel class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Cancel")}
+          </.button>
+        </div>
+      </form>
+
+      <%!-- Action buttons --%>
+      <div class="flex gap-retro-4">
+        <.button size="sm" variant="outline" phx-click={@on_add}>
+          <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
+          {dgettext("dialogs", "Add")}
+        </.button>
+        <.button
+          size="sm"
+          variant="outline"
+          phx-click={@on_edit}
+          disabled={@selected_alias == nil}
+        >
+          <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
+          {dgettext("dialogs", "Edit")}
+        </.button>
+        <.button
+          size="sm"
+          variant="outline"
+          phx-click={@on_delete}
+          disabled={@selected_alias == nil}
+        >
+          <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
+          {dgettext("dialogs", "Remove")}
+        </.button>
+      </div>
+    </div>
     """
   end
 end

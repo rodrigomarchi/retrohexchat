@@ -63,170 +63,208 @@ defmodule RetroHexChatWeb.Components.UI.AutoRespondDialog do
         <:icon><Icons.icon_dialog_auto_respond class="w-4 h-4" /></:icon>
       </.dialog_header>
 
-      <.dialog_body class="flex gap-retro-8 min-h-[260px]">
-        <%!-- Rules list --%>
-        <div class="flex-1 space-y-retro-4">
-          <div class="max-h-[200px] overflow-y-auto retro-scrollbar">
-            <.table>
-              <.table_header>
-                <.table_row>
-                  <.table_head class="w-[40px]">{dgettext("dialogs", "Enable")}</.table_head>
-                  <.table_head>{dgettext("dialogs", "Trigger")}</.table_head>
-                  <.table_head>{dgettext("dialogs", "Channel")}</.table_head>
-                  <.table_head>{dgettext("dialogs", "Command")}</.table_head>
-                </.table_row>
-              </.table_header>
-              <.table_body>
-                <.table_row
-                  :for={rule <- @rules}
-                  class={
-                    if(@selected_position == rule.position,
-                      do: "bg-selection-bg text-selection-fg",
-                      else: ""
-                    )
-                  }
-                  phx-click={@on_select}
-                  phx-value-position={rule.position}
-                >
-                  <.table_cell>
-                    <.checkbox
-                      value={Map.get(rule, :enabled, true)}
-                      phx-click={@on_toggle}
-                      phx-value-position={rule.position}
-                    />
-                  </.table_cell>
-                  <.table_cell>{trigger_label(rule_trigger(rule))}</.table_cell>
-                  <.table_cell>{rule_channel(rule)}</.table_cell>
-                  <.table_cell class="font-mono text-[11px]">
-                    {Map.get(rule, :command, "")}
-                  </.table_cell>
-                </.table_row>
-              </.table_body>
-            </.table>
+      <.dialog_body>
+        <.auto_respond_panel
+          id={@id}
+          rules={@rules}
+          selected_position={@selected_position}
+          editing={@editing}
+          draft_trigger={@draft_trigger}
+          draft_channel={@draft_channel}
+          draft_command={@draft_command}
+          error_message={@error_message}
+          on_select={@on_select}
+          on_toggle={@on_toggle}
+          on_add={@on_add}
+          on_edit={@on_edit}
+          on_delete={@on_delete}
+          on_save={@on_save}
+          on_cancel_edit={@on_cancel_edit}
+        />
+      </.dialog_body>
+    </.dialog>
+    """
+  end
+
+  @doc """
+  Renders the auto-respond rules editor (list + edit form) without any frame — compose it inside a dialog or a
+  desktop window body.
+  """
+  attr :id, :string, required: true
+  attr :rules, :any, default: nil
+  attr :selected_position, :any, default: nil
+  attr :editing, :any, default: nil
+  attr :draft_trigger, :any, default: nil
+  attr :draft_channel, :any, default: nil
+  attr :draft_command, :any, default: nil
+  attr :error_message, :any, default: nil
+  attr :on_select, :any, default: nil
+  attr :on_toggle, :any, default: nil
+  attr :on_add, :any, default: nil
+  attr :on_edit, :any, default: nil
+  attr :on_delete, :any, default: nil
+  attr :on_save, :any, default: nil
+  attr :on_cancel_edit, :any, default: nil
+
+  @spec auto_respond_panel(map()) :: Phoenix.LiveView.Rendered.t()
+  def auto_respond_panel(assigns) do
+    ~H"""
+    <div
+      id={"#{@id}-content"}
+      data-testid="auto-respond-panel"
+      class="flex h-full min-h-0 gap-retro-8"
+    >
+      <%!-- Rules list --%>
+      <div class="flex-1 space-y-retro-4">
+        <div class="max-h-[200px] overflow-y-auto retro-scrollbar">
+          <.table>
+            <.table_header>
+              <.table_row>
+                <.table_head class="w-[40px]">{dgettext("dialogs", "Enable")}</.table_head>
+                <.table_head>{dgettext("dialogs", "Trigger")}</.table_head>
+                <.table_head>{dgettext("dialogs", "Channel")}</.table_head>
+                <.table_head>{dgettext("dialogs", "Command")}</.table_head>
+              </.table_row>
+            </.table_header>
+            <.table_body>
+              <.table_row
+                :for={rule <- @rules}
+                class={
+                  if(@selected_position == rule.position,
+                    do: "bg-selection-bg text-selection-fg",
+                    else: ""
+                  )
+                }
+                phx-click={@on_select}
+                phx-value-position={rule.position}
+              >
+                <.table_cell>
+                  <.checkbox
+                    value={Map.get(rule, :enabled, true)}
+                    phx-click={@on_toggle}
+                    phx-value-position={rule.position}
+                  />
+                </.table_cell>
+                <.table_cell>{trigger_label(rule_trigger(rule))}</.table_cell>
+                <.table_cell>{rule_channel(rule)}</.table_cell>
+                <.table_cell class="font-mono text-[11px]">
+                  {Map.get(rule, :command, "")}
+                </.table_cell>
+              </.table_row>
+            </.table_body>
+          </.table>
+        </div>
+
+        <div class="flex gap-retro-4">
+          <.button size="sm" variant="outline" phx-click={@on_add}>
+            <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Add")}
+          </.button>
+          <.button
+            size="sm"
+            variant="outline"
+            phx-click={@on_edit}
+            disabled={@selected_position == nil}
+          >
+            <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Edit")}
+          </.button>
+          <.button
+            size="sm"
+            variant="outline"
+            phx-click={@on_delete}
+            disabled={@selected_position == nil}
+          >
+            <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Remove")}
+          </.button>
+        </div>
+      </div>
+
+      <%!-- Edit form panel --%>
+      <form
+        :if={@editing}
+        phx-submit={@on_save}
+        class="w-[220px] shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
+      >
+        <h3 class="font-bold text-xs mb-retro-4">
+          {if @selected_position == nil,
+            do: dgettext("dialogs", "Add Rule"),
+            else: dgettext("dialogs", "Edit Rule")}
+        </h3>
+
+        <div class="space-y-retro-4">
+          <div>
+            <.label class="text-xs font-bold block mb-retro-2">
+              {dgettext("dialogs", "Trigger")}
+            </.label>
+            <.select
+              :let={builder}
+              id="draft-trigger-select"
+              name="trigger"
+              value={@draft_trigger}
+              label={trigger_label(@draft_trigger)}
+              class="w-full"
+            >
+              <.select_trigger builder={builder} class="h-8 text-xs" />
+              <.select_content builder={builder}>
+                <.select_group>
+                  <.select_item
+                    :for={{key, lbl} <- trigger_options()}
+                    builder={builder}
+                    value={key}
+                    label={lbl}
+                  >
+                    {lbl}
+                  </.select_item>
+                </.select_group>
+              </.select_content>
+            </.select>
           </div>
 
-          <div class="flex gap-retro-4">
-            <.button size="sm" variant="outline" phx-click={@on_add}>
-              <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Add")}
+          <div>
+            <.label class="text-xs font-bold block mb-retro-2">
+              {dgettext("dialogs", "Channel (optional)")}
+            </.label>
+            <.input
+              type="text"
+              name="channel"
+              value={@draft_channel}
+              placeholder="#channel"
+              class="w-full"
+              maxlength="50"
+            />
+          </div>
+
+          <div>
+            <.label class="text-xs font-bold block mb-retro-2">
+              {dgettext("dialogs", "Command")}
+            </.label>
+            <.input
+              type="text"
+              name="command"
+              value={@draft_command}
+              placeholder={dgettext("dialogs", "/say Hello!")}
+              class="w-full"
+              maxlength="500"
+            />
+          </div>
+
+          <p :if={@error_message} class="text-xs text-destructive">{@error_message}</p>
+
+          <div class="flex gap-retro-4 pt-retro-4">
+            <.button type="submit" size="sm" variant="default">
+              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Save")}
             </.button>
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_edit}
-              disabled={@selected_position == nil}
-            >
-              <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Edit")}
-            </.button>
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_delete}
-              disabled={@selected_position == nil}
-            >
-              <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Remove")}
+            <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
+              <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Cancel")}
             </.button>
           </div>
         </div>
-
-        <%!-- Edit form panel --%>
-        <form
-          :if={@editing}
-          phx-submit={@on_save}
-          class="w-[220px] shrink-0 shadow-retro-field bg-white p-retro-8 space-y-retro-8"
-        >
-          <h3 class="font-bold text-xs mb-retro-4">
-            {if @selected_position == nil,
-              do: dgettext("dialogs", "Add Rule"),
-              else: dgettext("dialogs", "Edit Rule")}
-          </h3>
-
-          <div class="space-y-retro-4">
-            <div>
-              <.label class="text-xs font-bold block mb-retro-2">
-                {dgettext("dialogs", "Trigger")}
-              </.label>
-              <.select
-                :let={builder}
-                id="draft-trigger-select"
-                name="trigger"
-                value={@draft_trigger}
-                label={trigger_label(@draft_trigger)}
-                class="w-full"
-              >
-                <.select_trigger builder={builder} class="h-8 text-xs" />
-                <.select_content builder={builder}>
-                  <.select_group>
-                    <.select_item
-                      :for={{key, lbl} <- trigger_options()}
-                      builder={builder}
-                      value={key}
-                      label={lbl}
-                    >
-                      {lbl}
-                    </.select_item>
-                  </.select_group>
-                </.select_content>
-              </.select>
-            </div>
-
-            <div>
-              <.label class="text-xs font-bold block mb-retro-2">
-                {dgettext("dialogs", "Channel (optional)")}
-              </.label>
-              <.input
-                type="text"
-                name="channel"
-                value={@draft_channel}
-                placeholder="#channel"
-                class="w-full"
-                maxlength="50"
-              />
-            </div>
-
-            <div>
-              <.label class="text-xs font-bold block mb-retro-2">
-                {dgettext("dialogs", "Command")}
-              </.label>
-              <.input
-                type="text"
-                name="command"
-                value={@draft_command}
-                placeholder={dgettext("dialogs", "/say Hello!")}
-                class="w-full"
-                maxlength="500"
-              />
-            </div>
-
-            <p :if={@error_message} class="text-xs text-destructive">{@error_message}</p>
-
-            <div class="flex gap-retro-4 pt-retro-4">
-              <.button type="submit" size="sm" variant="default">
-                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "Save")}
-              </.button>
-              <.button type="button" size="sm" variant="outline" phx-click={@on_cancel_edit}>
-                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "Cancel")}
-              </.button>
-            </div>
-          </div>
-        </form>
-      </.dialog_body>
-
-      <.dialog_footer>
-        <.button variant="default" phx-click={@on_close || hide_modal(@id)}>
-          <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "OK")}
-        </.button>
-        <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Cancel")}
-        </.button>
-      </.dialog_footer>
-    </.dialog>
+      </form>
+    </div>
     """
   end
 

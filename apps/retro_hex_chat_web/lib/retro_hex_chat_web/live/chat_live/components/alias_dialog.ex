@@ -1,8 +1,9 @@
 defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
   @moduledoc """
-  Stateful LiveComponent for the Alias editor — the inline-edit-list
-  pattern. The parent keeps `show_alias_dialog` (read by the Escape-dismissal map)
-  and passes it as `visible`; the `aliases` list is parent data passed through.
+  Stateful LiveComponent for the Alias editor window body — the inline-edit-list
+  pattern. Mounted inside a server-managed desktop window (presence in the DOM
+  means open; closing unmounts the island, resetting the draft); the `aliases`
+  list is parent data passed through.
 
   The component owns the dialog's UI/draft state: `selected`, `editing`,
   `draft_name`, `draft_expansion`, `warning`, `error`. Pure-UI events
@@ -34,7 +35,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
     {:ok,
      assign(socket,
        id: @id,
-       visible: false,
        aliases: nil,
        selected: nil,
        editing: false,
@@ -100,10 +100,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
     assigns = assign(assigns, :entries, entries(assigns.aliases))
 
     ~H"""
-    <div id={"#{@id}-mount"}>
-      <.alias_dialog
+    <div id={"#{@id}-mount"} class="contents">
+      <.alias_panel
         id={@id}
-        show={@visible}
         aliases={@entries}
         selected_alias={@selected}
         editing={@editing}
@@ -117,7 +116,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
         on_save={JS.push("alias_dialog_save", value: %{selected: @selected})}
         on_delete={JS.push("alias_dialog_delete", value: %{selected: @selected})}
         on_cancel_edit={JS.push("alias_dialog_cancel_edit", target: @myself)}
-        on_close="close_alias_dialog"
       />
     </div>
     """
@@ -126,7 +124,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialog do
   @spec assign_passthrough(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   defp assign_passthrough(socket, assigns) do
     assign(socket,
-      visible: Map.get(assigns, :visible, socket.assigns.visible),
       aliases: Map.get(assigns, :aliases, socket.assigns.aliases)
     )
   end

@@ -12,18 +12,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.AliasDialogTest do
     assert AliasDialog.id() == "alias-dialog"
   end
 
-  test "renders hidden with an empty-state when there are no aliases" do
+  test "renders the bare panel with an empty-state when there are no aliases" do
     html = render_component(AliasDialog, id: AliasDialog.id())
 
-    assert html =~ "Alias Editor"
     assert html =~ "No aliases configured"
-    assert html =~ "hidden"
+    assert html =~ "No aliases configured"
+    assert html =~ ~s(data-testid="alias-panel")
+    refute html =~ "phx-show-modal"
   end
 
   test "renders alias rows from the passthrough list" do
     {:ok, aliases} = AliasList.add_entry(AliasList.new(), "hi", "/msg $1 hello")
 
-    html = render_component(AliasDialog, id: AliasDialog.id(), visible: true, aliases: aliases)
+    html = render_component(AliasDialog, id: AliasDialog.id(), aliases: aliases)
 
     assert html =~ "/hi"
     assert html =~ "hello"

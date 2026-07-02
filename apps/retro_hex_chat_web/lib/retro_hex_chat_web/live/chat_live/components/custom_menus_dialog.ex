@@ -1,8 +1,8 @@
 defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
   @moduledoc """
   Stateful LiveComponent for the Custom Menus editor — the inline-edit-
-  list pattern (see `AliasDialog`), with an extra `tab` dimension. The parent keeps
-  `show_custom_menus_dialog` (Escape map) and passes it as `visible`; the whole
+  list pattern (see `AliasDialog`), with an extra `tab` dimension. Mounted inside a server-managed
+  desktop window (closing unmounts the island, resetting the draft); the whole
   `custom_menus` struct is passed through so the component computes the entries for
   the currently selected tab itself.
 
@@ -34,7 +34,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
     {:ok,
      assign(socket,
        id: @id,
-       visible: false,
        custom_menus: nil,
        tab: :nicklist,
        selected: nil,
@@ -106,10 +105,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
     assigns = assign(assigns, :entries, entries(assigns.custom_menus, assigns.tab))
 
     ~H"""
-    <div id={"#{@id}-mount"}>
-      <.custom_menus_dialog
+    <div id={"#{@id}-mount"} class="contents">
+      <.custom_menus_panel
         id={@id}
-        show={@visible}
         active_tab={@tab}
         entries={@entries}
         selected_item={@selected}
@@ -124,7 +122,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
         on_save={JS.push("custom_menu_dialog_save", value: %{selected: @selected, tab: @tab})}
         on_delete={JS.push("custom_menu_dialog_delete", value: %{selected: @selected, tab: @tab})}
         on_cancel_edit={JS.push("custom_menu_dialog_cancel_edit", target: @myself)}
-        on_close="close_custom_menus_dialog"
       />
     </div>
     """
@@ -133,7 +130,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.CustomMenusDialog do
   @spec assign_passthrough(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   defp assign_passthrough(socket, assigns) do
     assign(socket,
-      visible: Map.get(assigns, :visible, socket.assigns.visible),
       custom_menus: Map.get(assigns, :custom_menus, socket.assigns.custom_menus)
     )
   end

@@ -67,108 +67,148 @@ defmodule RetroHexChatWeb.Components.UI.CustomMenusDialog do
         <:icon><Icons.icon_dialog_custom_menus class="w-4 h-4" /></:icon>
       </.dialog_header>
 
-      <.dialog_body class="space-y-retro-8">
-        <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab_str}>
-          <.tabs_list>
-            <.tabs_trigger
-              builder={builder}
-              value="nicklist"
-              phx-click={@on_tab}
-              phx-value-tab="nicklist"
-            >
-              <:icon><Icons.icon_tab_nicklist class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Nicklist")}
-            </.tabs_trigger>
-            <.tabs_trigger
-              builder={builder}
-              value="channel"
-              phx-click={@on_tab}
-              phx-value-tab="channel"
-            >
-              <:icon><Icons.icon_tab_channel class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Channel")}
-            </.tabs_trigger>
-            <.tabs_trigger
-              builder={builder}
-              value="chat"
-              phx-click={@on_tab}
-              phx-value-tab="chat"
-            >
-              <:icon><Icons.icon_tab_pm class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Chat")}
-            </.tabs_trigger>
-          </.tabs_list>
-
-          <%!-- Nicklist Tab --%>
-          <.tabs_content value="nicklist">
-            <.menu_entries_section
-              id={@id}
-              entries={filter_entries(@entries, :nicklist)}
-              selected_item={if(@active_tab == :nicklist, do: @selected_item)}
-              editing={@editing && @active_tab == :nicklist}
-              draft_label={@draft_label}
-              draft_command={@draft_command}
-              error_message={@error_message}
-              on_select={@on_select}
-              on_add={@on_add}
-              on_edit={@on_edit}
-              on_delete={@on_delete}
-              on_save={@on_save}
-              on_cancel_edit={@on_cancel_edit}
-            />
-          </.tabs_content>
-
-          <%!-- Channel Tab --%>
-          <.tabs_content value="channel">
-            <.menu_entries_section
-              id={@id}
-              entries={filter_entries(@entries, :channel)}
-              selected_item={if(@active_tab == :channel, do: @selected_item)}
-              editing={@editing && @active_tab == :channel}
-              draft_label={@draft_label}
-              draft_command={@draft_command}
-              error_message={@error_message}
-              on_select={@on_select}
-              on_add={@on_add}
-              on_edit={@on_edit}
-              on_delete={@on_delete}
-              on_save={@on_save}
-              on_cancel_edit={@on_cancel_edit}
-            />
-          </.tabs_content>
-
-          <%!-- Chat Tab --%>
-          <.tabs_content value="chat">
-            <.menu_entries_section
-              id={@id}
-              entries={filter_entries(@entries, :chat)}
-              selected_item={if(@active_tab == :chat, do: @selected_item)}
-              editing={@editing && @active_tab == :chat}
-              draft_label={@draft_label}
-              draft_command={@draft_command}
-              error_message={@error_message}
-              on_select={@on_select}
-              on_add={@on_add}
-              on_edit={@on_edit}
-              on_delete={@on_delete}
-              on_save={@on_save}
-              on_cancel_edit={@on_cancel_edit}
-            />
-          </.tabs_content>
-        </.tabs>
+      <.dialog_body>
+        <.custom_menus_panel
+          id={@id}
+          active_tab={@active_tab}
+          entries={@entries}
+          selected_item={@selected_item}
+          editing={@editing}
+          draft_label={@draft_label}
+          draft_command={@draft_command}
+          error_message={@error_message}
+          on_tab={@on_tab}
+          on_select={@on_select}
+          on_add={@on_add}
+          on_edit={@on_edit}
+          on_delete={@on_delete}
+          on_save={@on_save}
+          on_cancel_edit={@on_cancel_edit}
+        />
       </.dialog_body>
-
-      <.dialog_footer>
-        <.button variant="default" phx-click={@on_close || hide_modal(@id)}>
-          <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "OK")}
-        </.button>
-        <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {dgettext("dialogs", "Cancel")}
-        </.button>
-      </.dialog_footer>
     </.dialog>
+    """
+  end
+
+  @doc """
+  Renders the custom menus editor (tabs + CRUD + edit form) without any frame — compose it inside a dialog or a
+  desktop window body.
+  """
+  attr :id, :string, required: true
+  attr :active_tab, :any, default: nil
+  attr :entries, :any, default: nil
+  attr :selected_item, :any, default: nil
+  attr :editing, :any, default: nil
+  attr :draft_label, :any, default: nil
+  attr :draft_command, :any, default: nil
+  attr :error_message, :any, default: nil
+  attr :on_tab, :any, default: nil
+  attr :on_select, :any, default: nil
+  attr :on_add, :any, default: nil
+  attr :on_edit, :any, default: nil
+  attr :on_delete, :any, default: nil
+  attr :on_save, :any, default: nil
+  attr :on_cancel_edit, :any, default: nil
+
+  @spec custom_menus_panel(map()) :: Phoenix.LiveView.Rendered.t()
+  def custom_menus_panel(assigns) do
+    assigns = assign(assigns, :active_tab_str, Atom.to_string(assigns.active_tab))
+
+    ~H"""
+    <div
+      id={"#{@id}-content"}
+      data-testid="custom-menus-panel"
+      class="flex h-full min-h-0 flex-col gap-retro-8"
+    >
+      <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab_str}>
+        <.tabs_list>
+          <.tabs_trigger
+            builder={builder}
+            value="nicklist"
+            phx-click={@on_tab}
+            phx-value-tab="nicklist"
+          >
+            <:icon><Icons.icon_tab_nicklist class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Nicklist")}
+          </.tabs_trigger>
+          <.tabs_trigger
+            builder={builder}
+            value="channel"
+            phx-click={@on_tab}
+            phx-value-tab="channel"
+          >
+            <:icon><Icons.icon_tab_channel class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Channel")}
+          </.tabs_trigger>
+          <.tabs_trigger
+            builder={builder}
+            value="chat"
+            phx-click={@on_tab}
+            phx-value-tab="chat"
+          >
+            <:icon><Icons.icon_tab_pm class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Chat")}
+          </.tabs_trigger>
+        </.tabs_list>
+
+        <%!-- Nicklist Tab --%>
+        <.tabs_content value="nicklist">
+          <.menu_entries_section
+            id={@id}
+            entries={filter_entries(@entries, :nicklist)}
+            selected_item={if(@active_tab == :nicklist, do: @selected_item)}
+            editing={@editing && @active_tab == :nicklist}
+            draft_label={@draft_label}
+            draft_command={@draft_command}
+            error_message={@error_message}
+            on_select={@on_select}
+            on_add={@on_add}
+            on_edit={@on_edit}
+            on_delete={@on_delete}
+            on_save={@on_save}
+            on_cancel_edit={@on_cancel_edit}
+          />
+        </.tabs_content>
+
+        <%!-- Channel Tab --%>
+        <.tabs_content value="channel">
+          <.menu_entries_section
+            id={@id}
+            entries={filter_entries(@entries, :channel)}
+            selected_item={if(@active_tab == :channel, do: @selected_item)}
+            editing={@editing && @active_tab == :channel}
+            draft_label={@draft_label}
+            draft_command={@draft_command}
+            error_message={@error_message}
+            on_select={@on_select}
+            on_add={@on_add}
+            on_edit={@on_edit}
+            on_delete={@on_delete}
+            on_save={@on_save}
+            on_cancel_edit={@on_cancel_edit}
+          />
+        </.tabs_content>
+
+        <%!-- Chat Tab --%>
+        <.tabs_content value="chat">
+          <.menu_entries_section
+            id={@id}
+            entries={filter_entries(@entries, :chat)}
+            selected_item={if(@active_tab == :chat, do: @selected_item)}
+            editing={@editing && @active_tab == :chat}
+            draft_label={@draft_label}
+            draft_command={@draft_command}
+            error_message={@error_message}
+            on_select={@on_select}
+            on_add={@on_add}
+            on_edit={@on_edit}
+            on_delete={@on_delete}
+            on_save={@on_save}
+            on_cancel_edit={@on_cancel_edit}
+          />
+        </.tabs_content>
+      </.tabs>
+    </div>
     """
   end
 

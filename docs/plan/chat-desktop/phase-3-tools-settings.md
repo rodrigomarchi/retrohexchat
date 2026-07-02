@@ -16,9 +16,9 @@ Phase 2 complete; recipe present in `PROGRESS.md`.
       deciding managed vs always-mounted)
 - [ ] NotifyList (2 sub-forms; receives notify status updates — likely
       always-mounted)
-- [ ] Alias (editor)
-- [ ] CustomMenus (editor)
-- [ ] AutoRespond (rules editor)
+- [x] Alias (managed — editor, close resets draft; `/alias` command opener rewired)
+- [x] CustomMenus (managed — editor, close resets draft)
+- [x] AutoRespond (managed — rules editor, close resets draft)
 - [ ] Perform (4 sub-forms: perform add/edit + autojoin add/edit)
 - [x] SoundSettings (managed — draft seeds from session at mount, discarded on close; OK/Apply/Cancel stay in the panel)
 - [x] FloodProtection (managed — uncontrolled form, nothing survives closes)

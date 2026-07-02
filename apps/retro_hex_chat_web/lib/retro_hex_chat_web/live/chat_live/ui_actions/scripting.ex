@@ -18,11 +18,11 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Scripting do
           Phoenix.LiveView.Socket.t()
 
   def handle_ui_action(socket, :open_custom_menus_dialog, _payload) do
-    assign(socket, show_custom_menus_dialog: true)
+    Windows.open(socket, "custom-menus")
   end
 
   def handle_ui_action(socket, :open_autorespond_dialog, _payload) do
-    assign(socket, show_autorespond_dialog: true)
+    Windows.open(socket, "auto-respond")
   end
 
   def handle_ui_action(socket, :open_timers_dialog, _payload) do

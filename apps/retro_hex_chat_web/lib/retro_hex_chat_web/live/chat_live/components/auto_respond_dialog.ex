@@ -2,8 +2,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
   @moduledoc """
   Stateful LiveComponent for the Auto-Respond Rules editor — the
   inline-edit-list pattern (see `AliasDialog`). Selection is an integer `position`.
-  The parent keeps `show_autorespond_dialog` (Escape map) and passes it as
-  `visible`; the `autorespond_rules` struct is passed through.
+  Mounted inside a server-managed desktop window (closing unmounts the
+  island, resetting the draft); the `autorespond_rules` struct is passed through.
 
   Owned UI/draft state: `selected` (position), `editing`, `draft_trigger`,
   `draft_channel`, `draft_command`, `error`. Pure-UI events
@@ -35,7 +35,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
     {:ok,
      assign(socket,
        id: @id,
-       visible: false,
        rules: nil,
        selected: nil,
        editing: false,
@@ -103,10 +102,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
     assigns = assign(assigns, :entries, entries(assigns.rules))
 
     ~H"""
-    <div id={"#{@id}-mount"}>
-      <.auto_respond_dialog
+    <div id={"#{@id}-mount"} class="contents">
+      <.auto_respond_panel
         id={@id}
-        show={@visible}
         rules={@entries}
         selected_position={@selected}
         editing={@editing}
@@ -121,7 +119,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
         on_save={JS.push("autorespond_dialog_save", value: %{selected: @selected})}
         on_delete={JS.push("autorespond_dialog_delete", value: %{selected: @selected})}
         on_cancel_edit={JS.push("autorespond_dialog_cancel_edit", target: @myself)}
-        on_close="close_autorespond_dialog"
       />
     </div>
     """
@@ -130,7 +127,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AutoRespondDialog do
   @spec assign_passthrough(Phoenix.LiveView.Socket.t(), map()) :: Phoenix.LiveView.Socket.t()
   defp assign_passthrough(socket, assigns) do
     assign(socket,
-      visible: Map.get(assigns, :visible, socket.assigns.visible),
       rules: Map.get(assigns, :rules, socket.assigns.rules)
     )
   end

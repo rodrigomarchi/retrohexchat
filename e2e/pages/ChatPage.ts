@@ -509,7 +509,7 @@ export class ChatPage {
     this.channelCentralDialog = page.locator(
       '#channel-central-dialog [role="dialog"]',
     );
-    this.aliasDialog = page.locator('#alias-dialog [role="dialog"]');
+    this.aliasDialog = page.getByTestId('alias-window');
     this.aliasEditForm = page.getByTestId('alias-edit-form');
     this.aliasWarning = page.getByTestId('alias-warning');
     this.highlightDialog = page.getByTestId('highlight-window');
@@ -533,11 +533,9 @@ export class ChatPage {
       'button',
       { name: 'Reset Defaults' },
     );
-    this.customMenusDialog = page.locator(
-      '#custom-menus-dialog [role="dialog"]',
-    );
+    this.customMenusDialog = page.getByTestId('custom-menus-window');
     this.customMenuEditForm = page.getByTestId('custom-menu-edit-form');
-    this.urlCatcherDialog = page.getByTestId('url-catcher');
+    this.urlCatcherDialog = page.getByTestId('url-catcher-window');
     this.urlCatcherSearch = page.getByTestId('url-catcher-search');
     this.urlCatcherRows = this.urlCatcherDialog.getByTestId('url-catcher-row');
     this.performDialog = page.locator('#perform-dialog [role="dialog"]');
@@ -546,9 +544,7 @@ export class ChatPage {
     this.autojoinAddDialog = page.getByTestId('autojoin-add-dialog');
     this.autojoinEditDialog = page.getByTestId('autojoin-edit-dialog');
     this.soundSettingsDialog = page.getByTestId('sound-settings-window');
-    this.autorespondDialog = page.locator(
-      '#autorespond-dialog [role="dialog"]',
-    );
+    this.autorespondDialog = page.getByTestId('auto-respond-window');
     this.autorespondEditForm = this.autorespondDialog.locator('form');
     this.accountDialog = page.locator('#account-dialog [role="dialog"]');
     this.accountPasswordInput = page.getByTestId('account-password');

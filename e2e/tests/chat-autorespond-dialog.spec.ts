@@ -55,7 +55,7 @@ test.describe('Autorespond dialog', () => {
 
     await chat.autorespondRuleToggle(initialCommand).click();
     await expect(chat.autorespondRuleToggle(initialCommand)).not.toBeChecked();
-    await chat.autorespondDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.autorespondDialog.locator('[data-window-control="close"]').click();
     await expect(chat.autorespondDialog).toBeHidden();
 
     await chat.sendMessage('/clear');
@@ -67,7 +67,7 @@ test.describe('Autorespond dialog', () => {
     await chat.editAutorespondRule(initialCommand, editedCommand);
     await chat.autorespondRuleToggle(editedCommand).click();
     await expect(chat.autorespondRuleToggle(editedCommand)).toBeChecked();
-    await chat.autorespondDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.autorespondDialog.locator('[data-window-control="close"]').click();
     await expect(chat.autorespondDialog).toBeHidden();
 
     await chat.sendMessage('/clear');
@@ -77,7 +77,7 @@ test.describe('Autorespond dialog', () => {
 
     await chat.openAutorespondDialogFromMenu();
     await chat.removeAutorespondRule(editedCommand);
-    await chat.autorespondDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.autorespondDialog.locator('[data-window-control="close"]').click();
     await expect(chat.autorespondDialog).toBeHidden();
 
     await chat.sendMessage('/clear');

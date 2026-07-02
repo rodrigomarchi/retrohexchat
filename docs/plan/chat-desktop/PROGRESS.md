@@ -6,7 +6,7 @@
 |-------|--------|-------|
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
 | 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
-| 3 — Tools/Settings batch | in progress | SoundSettings + FloodProtection done (both managed). Next: Alias, CustomMenus, AutoRespond, Perform, NotifyList, AddressBook |
+| 3 — Tools/Settings batch | in progress | 5/8 done (SoundSettings, FloodProtection, Alias, CustomMenus, AutoRespond — all managed). Next: Perform, then NotifyList, then AddressBook |
 | 4 — View/Account batch | not started | |
 | 5 — Admin batch | not started | |
 | 6 — Unify + cleanup | not started | |
@@ -112,6 +112,15 @@ hold for the chat and extend:
 - `hook.command` takes `(action, id)` — only the `handleEvent` callback takes the
   `{action, id}` object. Passing the object to `command` silently no-ops (it
   pushes `window_open` for id `undefined`) — easy test bug.
+- Managed windows survive a transient offline/online blip: the LV process (and
+  `open_windows` + island drafts) outlives a short socket drop, so the
+  reconnect-dialog-state E2E contract holds without extra work. A full remount
+  (reload/takeover) still resets them — that matches modal behavior.
+- E2E page-object locators must target the WINDOW testid (`<id>-window`), not
+  the panel testid — the title-bar X lives outside the panel.
+- Batch migrations: the per-dialog diff is nearly identical, so migrating 2–3
+  same-shape dialogs per commit halves CI wall-clock with no extra risk (each
+  dialog has its own tests to bisect failures).
 - Browser-smoke gotcha: don't verify WM behavior by mutating inline styles on
   server-rendered elements — the next LiveView patch (e.g. a bot message) wipes
   them and invalidates the test. Use real window/geometry changes.

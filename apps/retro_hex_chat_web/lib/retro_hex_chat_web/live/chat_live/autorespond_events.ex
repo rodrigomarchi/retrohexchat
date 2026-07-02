@@ -18,14 +18,10 @@ defmodule RetroHexChatWeb.ChatLive.AutorespondEvents do
   alias RetroHexChat.Accounts.Session
   alias RetroHexChat.Chat.AutoRespondRules
   alias RetroHexChatWeb.ChatLive.Components.AutoRespondDialog
+  alias RetroHexChatWeb.ChatLive.Windows
 
   def handle_event("open_autorespond_dialog", _params, socket) do
-    {:halt, assign(socket, show_autorespond_dialog: true)}
-  end
-
-  def handle_event("close_autorespond_dialog", _params, socket) do
-    send_update(AutoRespondDialog, id: AutoRespondDialog.id(), action: :reset)
-    {:halt, assign(socket, show_autorespond_dialog: false)}
+    {:halt, Windows.open(socket, "auto-respond")}
   end
 
   def handle_event("autorespond_toggle", %{"position" => pos_str}, socket) do

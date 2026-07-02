@@ -16,10 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   alias RetroHexChat.Chat.KeyBindings
 
   alias RetroHexChatWeb.ChatLive.Components.{
-    AliasDialog,
-    AutoRespondDialog,
     Composer,
-    CustomMenusDialog,
     InviteChannelPickerDialog,
     KnockRequestDialog
   }
@@ -163,11 +160,8 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       {:show_invite_channel_picker, &close_invite_channel_picker/1},
       {:show_knock_request_dialog, &close_knock_request_dialog/1},
       {:search_visible, &clear_search_state/1},
-      {:show_alias_dialog, &close_alias_dialog/1},
-      {:show_custom_menus_dialog, &close_custom_menus_dialog/1},
       {:show_user_lookup_dialog, &close_user_lookup_dialog/1},
       {:lookup_result, &close_lookup_result/1},
-      {:show_autorespond_dialog, &close_autorespond_dialog/1},
       {:notice_active, &cancel_notice_mode/1}
     ]
   end
@@ -204,21 +198,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   defp close_knock_request_dialog(socket) do
     send_update(KnockRequestDialog, id: KnockRequestDialog.id(), action: :close)
     assign(socket, show_knock_request_dialog: false)
-  end
-
-  defp close_alias_dialog(socket) do
-    send_update(AliasDialog, id: AliasDialog.id(), action: :reset)
-    assign(socket, show_alias_dialog: false)
-  end
-
-  defp close_custom_menus_dialog(socket) do
-    send_update(CustomMenusDialog, id: CustomMenusDialog.id(), action: :reset)
-    assign(socket, show_custom_menus_dialog: false)
-  end
-
-  defp close_autorespond_dialog(socket) do
-    send_update(AutoRespondDialog, id: AutoRespondDialog.id(), action: :reset)
-    assign(socket, show_autorespond_dialog: false)
   end
 
   defp clear_search_state(socket) do

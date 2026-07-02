@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
   alias RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu
   alias RetroHexChatWeb.ChatLive.Components.CustomMenusDialog
   alias RetroHexChatWeb.ChatLive.Components.UserContextMenus
+  alias RetroHexChatWeb.ChatLive.Windows
 
   # ── Execute custom menu command ────────────────────────────
 
@@ -67,12 +68,7 @@ defmodule RetroHexChatWeb.ChatLive.CustomMenusEvents do
   # ── Dialog events ──────────────────────────────────────────
 
   def handle_event("open_custom_menus_dialog", _params, socket) do
-    {:halt, assign(socket, show_custom_menus_dialog: true)}
-  end
-
-  def handle_event("close_custom_menus_dialog", _params, socket) do
-    send_update(CustomMenusDialog, id: CustomMenusDialog.id(), action: :reset)
-    {:halt, assign(socket, show_custom_menus_dialog: false)}
+    {:halt, Windows.open(socket, "custom-menus")}
   end
 
   def handle_event(

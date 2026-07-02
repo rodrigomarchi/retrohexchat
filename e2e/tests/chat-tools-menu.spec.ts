@@ -15,8 +15,9 @@ async function signedInUser(page: Page) {
 }
 
 async function openToolsItem(chat: ChatPage, item: Locator) {
-  await chat.toolsMenuTrigger.click();
-  await expect(item).toBeVisible();
+  // The page-object helper retries the trigger click — the first click can
+  // race the menubar hook mount right after connect.
+  await chat.openToolsMenuItem(item);
   await item.click();
 }
 
@@ -31,15 +32,12 @@ test.describe('Tools menu', () => {
 
     await openToolsItem(chat, chat.highlightWordsMenuItem);
     await expect(chat.highlightDialog).toBeVisible();
-    await chat.highlightDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.highlightDialog.locator('[data-window-control="close"]').click();
     await expect(chat.highlightDialog).toBeHidden();
 
     await openToolsItem(chat, chat.urlCatcherMenuItem);
     await expect(chat.urlCatcherDialog).toBeVisible();
-    await chat.urlCatcherDialog
-      .getByRole('button', { name: 'Close' })
-      .last()
-      .click();
+    await chat.urlCatcherDialog.locator('[data-window-control="close"]').click();
     await expect(chat.urlCatcherDialog).toBeHidden();
 
     await openToolsItem(chat, chat.channelCentralMenuItem);
@@ -71,17 +69,17 @@ test.describe('Tools menu', () => {
 
     await openToolsItem(chat, chat.aliasEditorMenuItem);
     await expect(chat.aliasDialog).toBeVisible();
-    await chat.aliasDialog.getByRole('button', { name: 'Close' }).last().click();
+    await chat.aliasDialog.locator('[data-window-control="close"]').click();
     await expect(chat.aliasDialog).toBeHidden();
 
     await openToolsItem(chat, chat.customMenusMenuItem);
     await expect(chat.customMenusDialog).toBeVisible();
-    await chat.customMenusDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.customMenusDialog.locator('[data-window-control="close"]').click();
     await expect(chat.customMenusDialog).toBeHidden();
 
     await openToolsItem(chat, chat.autorespondMenuItem);
     await expect(chat.autorespondDialog).toBeVisible();
-    await chat.autorespondDialog.getByRole('button', { name: 'OK' }).click();
+    await chat.autorespondDialog.locator('[data-window-control="close"]').click();
     await expect(chat.autorespondDialog).toBeHidden();
   });
 });
