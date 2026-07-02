@@ -61,15 +61,13 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "Perform")}
           icon_fn={:icon_btn_perform}
         />
-        <.app_item
-          action="open_sound_settings_dialog"
-          on_action={@on_action}
+        <.window_item
+          window="sound-settings"
           label={dgettext("ui", "Sounds")}
           icon_fn={:icon_btn_sounds}
         />
-        <.app_item
-          action="open_flood_protection_dialog"
-          on_action={@on_action}
+        <.window_item
+          window="flood-protection"
           label={dgettext("ui", "Flood Protection")}
           icon_fn={:icon_btn_flood_protection}
         />

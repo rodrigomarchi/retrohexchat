@@ -21,8 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     Composer,
     CustomMenusDialog,
     InviteChannelPickerDialog,
-    KnockRequestDialog,
-    SoundSettingsDialog
+    KnockRequestDialog
   }
 
   alias RetroHexChatWeb.ChatLive.AddressBookEvents
@@ -164,8 +163,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
       {:show_invite_channel_picker, &close_invite_channel_picker/1},
       {:show_knock_request_dialog, &close_knock_request_dialog/1},
       {:search_visible, &clear_search_state/1},
-      {:show_sound_settings_dialog, &close_sound_settings_dialog/1},
-      {:show_flood_protection_dialog, &close_flood_protection_dialog/1},
       {:show_alias_dialog, &close_alias_dialog/1},
       {:show_custom_menus_dialog, &close_custom_menus_dialog/1},
       {:show_user_lookup_dialog, &close_user_lookup_dialog/1},
@@ -189,14 +186,6 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     send_update(Composer, id: Composer.id(), cancel_notice: true)
     assign(socket, notice_active: false)
   end
-
-  defp close_sound_settings_dialog(socket) do
-    send_update(SoundSettingsDialog, id: SoundSettingsDialog.id(), action: :close)
-    assign(socket, show_sound_settings_dialog: false)
-  end
-
-  defp close_flood_protection_dialog(socket),
-    do: assign(socket, show_flood_protection_dialog: false)
 
   defp close_user_lookup_dialog(socket), do: UserLookupEvents.close(socket)
   defp close_lookup_result(socket), do: assign(socket, lookup_result: nil)

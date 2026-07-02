@@ -5,16 +5,17 @@
 | Phase | Status | Notes |
 |-------|--------|-------|
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
-| 2 — Pilot + recipe | in progress | A, B + all 3 pilots done (UrlCatcher always-mounted, Timers managed, Highlight managed+sub-forms). Remaining: crystallize recipe (Task D) + phase gate (full `make ci` + smoke) |
-| 3 — Tools/Settings batch | not started | |
+| 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
+| 3 — Tools/Settings batch | in progress | SoundSettings + FloodProtection done (both managed). Next: Alias, CustomMenus, AutoRespond, Perform, NotifyList, AddressBook |
 | 4 — View/Account batch | not started | |
 | 5 — Admin batch | not started | |
 | 6 — Unify + cleanup | not started | |
 
 ## Per-dialog migration recipe
 
-DRAFT after pilot 1 (UrlCatcher) — refine with Timers (send_update lifecycle)
-and Highlight (sub-forms) before Phase 3.
+FINAL (validated by all three pilots: UrlCatcher = always-mounted, Timers =
+managed, Highlight = managed + sub-forms). Phases 3–5 apply these steps
+mechanically; when a dialog doesn't fit a step, record why here.
 
 1. **Mounting decision.** Always-mounted (`open={false}`, client owns
    open/close) when the island holds view state that must survive closes OR
@@ -30,9 +31,12 @@ and Highlight (sub-forms) before Phase 3.
    panel a `table_class`-style knob where the dialog needs a height cap.
 3. **Window in `chat_live.html.heex`** (inside `<.desktop>`, after the chat
    window): `<.desktop_window id="<feature>" open={false} title icon
-   default_x/y width/height min_* body_class="flex min-h-0 flex-col p-2">`
-   wrapping the island `live_component` (island root gets `class="contents"`).
-   Add a `<.taskbar_button window="<feature>">`.
+   default_x/y width/height min_* body_class="flex min-h-0 flex-col p-2"
+   data-testid="<feature>-window">` wrapping the island `live_component`
+   (island root gets `class="contents"`). Managed variant instead uses
+   `:if={"<id>" in @open_windows}` + `managed` (no `open` attr). Add a
+   `<.taskbar_button window="<feature>">` (conditional for managed). Stagger
+   `default_x/y` a bit per window so restored windows don't stack exactly.
 4. **Openers.** Every server entry point (menu bar / toolbar / keyboard
    `dispatch_action` / commands) calls `ChatLive.Windows.open(socket, "<id>")`
    — it mounts the island when managed and pushes `window_command open` either

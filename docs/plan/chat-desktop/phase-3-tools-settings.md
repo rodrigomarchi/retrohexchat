@@ -20,8 +20,8 @@ Phase 2 complete; recipe present in `PROGRESS.md`.
 - [ ] CustomMenus (editor)
 - [ ] AutoRespond (rules editor)
 - [ ] Perform (4 sub-forms: perform add/edit + autojoin add/edit)
-- [ ] SoundSettings
-- [ ] FloodProtection
+- [x] SoundSettings (managed — draft seeds from session at mount, discarded on close; OK/Apply/Cancel stay in the panel)
+- [x] FloodProtection (managed — uncontrolled form, nothing survives closes)
 
 Per dialog, follow the recipe exactly: mounting decision recorded → window frame →
 icon → openers (menu bar + start menu + shortcut) → Escape-stack removal →

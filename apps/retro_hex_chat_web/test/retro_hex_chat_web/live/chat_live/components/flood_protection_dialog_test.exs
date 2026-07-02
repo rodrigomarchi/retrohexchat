@@ -19,22 +19,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.FloodProtectionDialogTest do
     assert FloodProtectionDialog.id() == "flood-protection-dialog"
   end
 
-  test "is hidden by default (no show-trigger)" do
-    html = render_component(FloodProtectionDialog, id: FloodProtectionDialog.id())
-
-    assert html =~ "Flood Protection"
-    refute html =~ "flood-protection-dialog-show-trigger"
-  end
-
-  test "shows the passed-through settings when visible" do
+  test "renders the bare panel with the passed-through settings" do
     html =
       render_component(FloodProtectionDialog,
         id: FloodProtectionDialog.id(),
-        visible: true,
         settings: @settings
       )
 
-    assert html =~ "flood-protection-dialog-show-trigger"
+    assert html =~ ~s(data-testid="flood-protection-panel")
+    refute html =~ "phx-show-modal"
     # Uncontrolled form seeded from the session settings; save bubbles to the parent.
     assert html =~ ~s(value="7")
     assert html =~ "flood_save_settings"

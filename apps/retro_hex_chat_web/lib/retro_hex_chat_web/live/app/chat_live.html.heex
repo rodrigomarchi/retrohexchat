@@ -204,6 +204,54 @@
       />
     </.desktop_window>
 
+    <%!-- Sound Settings — server-managed: the draft seeds from the session on
+          mount; closing discards an uncommitted draft. --%>
+    <.desktop_window
+      :if={"sound-settings" in @open_windows}
+      id="sound-settings"
+      title={dgettext("chat", "Sound Settings")}
+      managed
+      default_x={140}
+      default_y={80}
+      width={620}
+      height={480}
+      min_width={520}
+      min_height={340}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="sound-settings-window"
+    >
+      <:icon><Icons.icon_dialog_sound class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog}
+        id={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog.id()}
+        settings={@session.sound_settings}
+      />
+    </.desktop_window>
+
+    <%!-- Flood Protection — server-managed: uncontrolled form, nothing to keep
+          across closes. --%>
+    <.desktop_window
+      :if={"flood-protection" in @open_windows}
+      id="flood-protection"
+      title={dgettext("chat", "Flood Protection")}
+      managed
+      default_x={180}
+      default_y={60}
+      width={480}
+      height={560}
+      min_width={420}
+      min_height={400}
+      body_class="p-2"
+      data-testid="flood-protection-window"
+    >
+      <:icon><Icons.icon_dialog_flood class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog}
+        id={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog.id()}
+        settings={@session.flood_protection}
+      />
+    </.desktop_window>
+
     <%!-- Timers — server-managed: closing unmounts the island (draft state
           resets by design); reopening mounts a fresh one. --%>
     <.desktop_window
@@ -276,6 +324,20 @@
           label={dgettext("chat", "Highlight Words")}
         >
           <:icon><Icons.icon_star class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={"sound-settings" in @open_windows}
+          window="sound-settings"
+          label={dgettext("chat", "Sound Settings")}
+        >
+          <:icon><Icons.icon_dialog_sound class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={"flood-protection" in @open_windows}
+          window="flood-protection"
+          label={dgettext("chat", "Flood Protection")}
+        >
+          <:icon><Icons.icon_dialog_flood class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <:tray>
           <.desktop_tray>
@@ -380,19 +442,6 @@
   visible={@show_channel_list}
   channels={@channel_list_channels}
   loading={@channel_list_loading}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog}
-  id={RetroHexChatWeb.ChatLive.Components.FloodProtectionDialog.id()}
-  visible={@show_flood_protection_dialog}
-  settings={@session.flood_protection}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog}
-  id={RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog.id()}
-  visible={@show_sound_settings_dialog}
 />
 
 <.live_component

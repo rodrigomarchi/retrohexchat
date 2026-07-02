@@ -516,9 +516,7 @@ export class ChatPage {
     this.highlightAddForm = page.getByTestId('highlight-add-form');
     this.highlightEditForm = page.getByTestId('highlight-edit-form');
     this.highlightWordInput = page.locator('#highlight-word-input');
-    this.floodProtectionDialog = page.locator(
-      '#flood-protection-dialog [role="dialog"]',
-    );
+    this.floodProtectionDialog = page.getByTestId('flood-protection-window');
     this.floodThresholdInput = this.floodProtectionDialog.locator(
       'input[name="flood_threshold"]',
     );
@@ -547,9 +545,7 @@ export class ChatPage {
     this.performEditDialog = page.getByTestId('perform-edit-dialog');
     this.autojoinAddDialog = page.getByTestId('autojoin-add-dialog');
     this.autojoinEditDialog = page.getByTestId('autojoin-edit-dialog');
-    this.soundSettingsDialog = page.locator(
-      '#sound-settings-dialog [role="dialog"]',
-    );
+    this.soundSettingsDialog = page.getByTestId('sound-settings-window');
     this.autorespondDialog = page.locator(
       '#autorespond-dialog [role="dialog"]',
     );

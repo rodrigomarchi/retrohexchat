@@ -63,131 +63,158 @@ defmodule RetroHexChatWeb.Components.UI.FloodProtectionDialog do
       </.dialog_header>
 
       <.dialog_body>
-        <form phx-submit={@on_save}>
-          <div class="space-y-retro-8">
-            <p class="text-xs text-muted-foreground">
-              {dgettext(
-                "dialogs",
-                "Configure limits to prevent message flooding in channels and private messages."
-              )}
-            </p>
+        <.flood_protection_panel
+          id={@id}
+          settings={@settings}
+          on_save={@on_save}
+          on_reset={@on_reset}
+          on_cancel={@on_cancel}
+        />
+      </.dialog_body>
+    </.dialog>
+    """
+  end
 
-            <%!-- Message Flood --%>
-            <fieldset class="shadow-retro-field p-retro-8">
-              <legend class="text-xs font-bold px-1">{dgettext("dialogs", "Message Flood")}</legend>
-              <div class="space-y-retro-4">
-                <div class="flex items-center gap-retro-4">
-                  <label for={"#{@id}-threshold"} class="text-xs w-[120px]">
-                    {dgettext("dialogs", "Threshold:")}
-                  </label>
-                  <.input
-                    id={"#{@id}-threshold"}
-                    name="flood_threshold"
-                    type="number"
-                    value={Map.get(@settings, :flood_threshold, 5)}
-                    min="1"
-                    max="100"
-                    class="w-16 text-xs h-7"
-                  />
-                  <span class="text-xs text-muted-foreground">{dgettext("dialogs", "messages")}</span>
-                </div>
-                <div class="flex items-center gap-retro-4">
-                  <label for={"#{@id}-window"} class="text-xs w-[120px]">
-                    {dgettext("dialogs", "Time window:")}
-                  </label>
-                  <.input
-                    id={"#{@id}-window"}
-                    name="flood_window_seconds"
-                    type="number"
-                    value={Map.get(@settings, :flood_window_seconds, 10)}
-                    min="1"
-                    max="300"
-                    class="w-16 text-xs h-7"
-                  />
-                  <span class="text-xs text-muted-foreground">{dgettext("dialogs", "seconds")}</span>
-                </div>
-              </div>
-            </fieldset>
+  @doc """
+  Renders the flood protection form (3 fieldsets + Save/Reset/Cancel) without
+  any frame — compose it inside a dialog or a desktop window body.
+  """
+  attr :id, :string, required: true
+  attr :settings, :map, default: @default_settings
+  attr :on_save, :any, default: nil
+  attr :on_reset, :any, default: nil
+  attr :on_cancel, :any, default: nil
 
-            <%!-- Anti-Spam --%>
-            <fieldset class="shadow-retro-field p-retro-8">
-              <legend class="text-xs font-bold px-1">
-                {dgettext("dialogs", "Anti-Spam (Duplicate Detection)")}
-              </legend>
-              <div class="space-y-retro-4">
-                <div class="flex items-center gap-retro-4">
-                  <label for={"#{@id}-spam-threshold"} class="text-xs w-[120px]">
-                    {dgettext("dialogs", "Duplicate limit:")}
-                  </label>
-                  <.input
-                    id={"#{@id}-spam-threshold"}
-                    name="spam_threshold"
-                    type="number"
-                    value={Map.get(@settings, :spam_threshold, 3)}
-                    min="1"
-                    max="50"
-                    class="w-16 text-xs h-7"
-                  />
-                  <span class="text-xs text-muted-foreground">
-                    {dgettext("dialogs", "identical msgs")}
-                  </span>
-                </div>
-                <div class="flex items-center gap-retro-4">
-                  <label for={"#{@id}-spam-window"} class="text-xs w-[120px]">
-                    {dgettext("dialogs", "Time window:")}
-                  </label>
-                  <.input
-                    id={"#{@id}-spam-window"}
-                    name="spam_window_seconds"
-                    type="number"
-                    value={Map.get(@settings, :spam_window_seconds, 30)}
-                    min="1"
-                    max="120"
-                    class="w-16 text-xs h-7"
-                  />
-                  <span class="text-xs text-muted-foreground">{dgettext("dialogs", "seconds")}</span>
-                </div>
-              </div>
-            </fieldset>
+  @spec flood_protection_panel(map()) :: Phoenix.LiveView.Rendered.t()
+  def flood_protection_panel(assigns) do
+    assigns = assign_new(assigns, :settings, fn -> @default_settings end)
 
-            <%!-- Auto-Ignore --%>
-            <fieldset class="shadow-retro-field p-retro-8">
-              <legend class="text-xs font-bold px-1">{dgettext("dialogs", "Auto-Ignore")}</legend>
+    ~H"""
+    <div id={"#{@id}-content"} data-testid="flood-protection-panel">
+      <form phx-submit={@on_save}>
+        <div class="space-y-retro-8">
+          <p class="text-xs text-muted-foreground">
+            {dgettext(
+              "dialogs",
+              "Configure limits to prevent message flooding in channels and private messages."
+            )}
+          </p>
+
+          <%!-- Message Flood --%>
+          <fieldset class="shadow-retro-field p-retro-8">
+            <legend class="text-xs font-bold px-1">{dgettext("dialogs", "Message Flood")}</legend>
+            <div class="space-y-retro-4">
               <div class="flex items-center gap-retro-4">
-                <label for={"#{@id}-ignore-duration"} class="text-xs w-[120px]">
-                  {dgettext("dialogs", "Duration:")}
+                <label for={"#{@id}-threshold"} class="text-xs w-[120px]">
+                  {dgettext("dialogs", "Threshold:")}
                 </label>
                 <.input
-                  id={"#{@id}-ignore-duration"}
-                  name="auto_ignore_duration_seconds"
+                  id={"#{@id}-threshold"}
+                  name="flood_threshold"
                   type="number"
-                  value={Map.get(@settings, :auto_ignore_duration_seconds, 60)}
+                  value={Map.get(@settings, :flood_threshold, 5)}
                   min="1"
-                  max="86400"
-                  class="w-20 text-xs h-7"
+                  max="100"
+                  class="w-16 text-xs h-7"
+                />
+                <span class="text-xs text-muted-foreground">{dgettext("dialogs", "messages")}</span>
+              </div>
+              <div class="flex items-center gap-retro-4">
+                <label for={"#{@id}-window"} class="text-xs w-[120px]">
+                  {dgettext("dialogs", "Time window:")}
+                </label>
+                <.input
+                  id={"#{@id}-window"}
+                  name="flood_window_seconds"
+                  type="number"
+                  value={Map.get(@settings, :flood_window_seconds, 10)}
+                  min="1"
+                  max="300"
+                  class="w-16 text-xs h-7"
                 />
                 <span class="text-xs text-muted-foreground">{dgettext("dialogs", "seconds")}</span>
               </div>
-            </fieldset>
-          </div>
+            </div>
+          </fieldset>
 
-          <.dialog_footer>
-            <.button type="submit" variant="default">
-              <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Save")}
-            </.button>
-            <.button type="button" variant="outline" phx-click={@on_reset}>
-              <:icon><Icons.icon_btn_reset class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Reset Defaults")}
-            </.button>
-            <.button type="button" variant="outline" phx-click={@on_cancel || hide_modal(@id)}>
-              <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Cancel")}
-            </.button>
-          </.dialog_footer>
-        </form>
-      </.dialog_body>
-    </.dialog>
+          <%!-- Anti-Spam --%>
+          <fieldset class="shadow-retro-field p-retro-8">
+            <legend class="text-xs font-bold px-1">
+              {dgettext("dialogs", "Anti-Spam (Duplicate Detection)")}
+            </legend>
+            <div class="space-y-retro-4">
+              <div class="flex items-center gap-retro-4">
+                <label for={"#{@id}-spam-threshold"} class="text-xs w-[120px]">
+                  {dgettext("dialogs", "Duplicate limit:")}
+                </label>
+                <.input
+                  id={"#{@id}-spam-threshold"}
+                  name="spam_threshold"
+                  type="number"
+                  value={Map.get(@settings, :spam_threshold, 3)}
+                  min="1"
+                  max="50"
+                  class="w-16 text-xs h-7"
+                />
+                <span class="text-xs text-muted-foreground">
+                  {dgettext("dialogs", "identical msgs")}
+                </span>
+              </div>
+              <div class="flex items-center gap-retro-4">
+                <label for={"#{@id}-spam-window"} class="text-xs w-[120px]">
+                  {dgettext("dialogs", "Time window:")}
+                </label>
+                <.input
+                  id={"#{@id}-spam-window"}
+                  name="spam_window_seconds"
+                  type="number"
+                  value={Map.get(@settings, :spam_window_seconds, 30)}
+                  min="1"
+                  max="120"
+                  class="w-16 text-xs h-7"
+                />
+                <span class="text-xs text-muted-foreground">{dgettext("dialogs", "seconds")}</span>
+              </div>
+            </div>
+          </fieldset>
+
+          <%!-- Auto-Ignore --%>
+          <fieldset class="shadow-retro-field p-retro-8">
+            <legend class="text-xs font-bold px-1">{dgettext("dialogs", "Auto-Ignore")}</legend>
+            <div class="flex items-center gap-retro-4">
+              <label for={"#{@id}-ignore-duration"} class="text-xs w-[120px]">
+                {dgettext("dialogs", "Duration:")}
+              </label>
+              <.input
+                id={"#{@id}-ignore-duration"}
+                name="auto_ignore_duration_seconds"
+                type="number"
+                value={Map.get(@settings, :auto_ignore_duration_seconds, 60)}
+                min="1"
+                max="86400"
+                class="w-20 text-xs h-7"
+              />
+              <span class="text-xs text-muted-foreground">{dgettext("dialogs", "seconds")}</span>
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="flex justify-end gap-retro-4 pt-retro-8">
+          <.button type="submit" variant="default">
+            <:icon><Icons.icon_btn_save class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Save")}
+          </.button>
+          <.button type="button" variant="outline" phx-click={@on_reset}>
+            <:icon><Icons.icon_btn_reset class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Reset Defaults")}
+          </.button>
+          <.button type="button" variant="outline" phx-click={@on_cancel}>
+            <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+            {dgettext("dialogs", "Cancel")}
+          </.button>
+        </div>
+      </form>
+    </div>
     """
   end
 end

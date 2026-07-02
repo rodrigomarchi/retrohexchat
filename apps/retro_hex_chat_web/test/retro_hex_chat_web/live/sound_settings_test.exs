@@ -10,12 +10,12 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       nick = "SndDlg#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      refute has_element?(view, "#sound-settings-dialog-show-trigger")
+      refute has_element?(view, ~s([data-window-id="sound-settings"]))
 
       render_click(view, "open_sound_settings_dialog", %{})
 
       html = render(view)
-      assert has_element?(view, "#sound-settings-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="sound-settings"][data-window-managed="true"]))
       assert html =~ "Sound Settings"
     end
 
@@ -77,14 +77,15 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
 
       render_click(view, "open_sound_settings_dialog", %{})
 
-      assert has_element?(view, "#sound-settings-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="sound-settings"]))
 
       # OK is owned by the SoundSettingsDialog LiveComponent; click the element so
       # the event routes to the component (which commits the draft via the parent).
       view |> element(~s([data-testid="sound-settings-ok"])) |> render_click()
 
       html = render(view)
-      refute has_element?(view, "#sound-settings-dialog-show-trigger")
+      # Managed window: OK closes it, unmounting the island.
+      refute has_element?(view, ~s([data-window-id="sound-settings"]))
       assert html =~ "Sound settings saved"
     end
 
@@ -97,8 +98,8 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
       view |> element(~s([data-testid="sound-settings-apply"])) |> render_click()
 
       html = render(view)
-      # Dialog stays open
-      assert has_element?(view, "#sound-settings-dialog-show-trigger")
+      # Apply keeps the window open
+      assert has_element?(view, ~s([data-window-id="sound-settings"]))
       # System message shown
       assert html =~ "Sound settings applied"
     end
@@ -109,12 +110,12 @@ defmodule RetroHexChatWeb.SoundSettingsTest do
 
       render_click(view, "open_sound_settings_dialog", %{})
 
-      assert has_element?(view, "#sound-settings-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="sound-settings"]))
 
       render_click(view, "close_sound_settings_dialog")
 
       html = render(view)
-      refute has_element?(view, "#sound-settings-dialog-show-trigger")
+      refute has_element?(view, ~s([data-window-id="sound-settings"]))
       refute html =~ "Sound settings saved"
     end
   end

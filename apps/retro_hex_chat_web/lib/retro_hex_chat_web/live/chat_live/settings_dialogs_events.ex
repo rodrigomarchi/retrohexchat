@@ -23,15 +23,16 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   alias RetroHexChat.Chat.{FloodProtection, SoundSettings}
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog
+  alias RetroHexChatWeb.ChatLive.Windows
 
   # ── Flood Protection ────────────────────────────────────────
 
   def handle_event("open_flood_protection_dialog", _params, socket) do
-    {:halt, assign(socket, show_flood_protection_dialog: true)}
+    {:halt, Windows.open(socket, "flood-protection")}
   end
 
   def handle_event("close_flood_protection_dialog", _params, socket) do
-    {:halt, assign(socket, show_flood_protection_dialog: false)}
+    {:halt, Windows.close_window(socket, "flood-protection")}
   end
 
   def handle_event("flood_save_settings", params, socket) do
@@ -57,7 +58,8 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
 
     {:halt,
      socket
-     |> assign(session: new_session, show_flood_protection_dialog: false)
+     |> assign(session: new_session)
+     |> Windows.close_window("flood-protection")
      |> MessageViewport.insert(
        system_message(dgettext("chat", "* Flood protection settings saved"))
      )}
@@ -74,7 +76,8 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
 
     {:halt,
      socket
-     |> assign(session: new_session, show_flood_protection_dialog: false)
+     |> assign(session: new_session)
+     |> Windows.close_window("flood-protection")
      |> MessageViewport.insert(
        system_message(dgettext("chat", "* Flood protection settings reset to defaults"))
      )}
@@ -83,17 +86,11 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   # ── Sound Settings ──────────────────────────────────────────
 
   def handle_event("open_sound_settings_dialog", _params, socket) do
-    send_update(SoundSettingsDialog,
-      id: SoundSettingsDialog.id(),
-      action: {:open, socket.assigns.session.sound_settings}
-    )
-
-    {:halt, assign(socket, show_sound_settings_dialog: true)}
+    {:halt, Windows.open(socket, "sound-settings")}
   end
 
   def handle_event("close_sound_settings_dialog", _params, socket) do
-    send_update(SoundSettingsDialog, id: SoundSettingsDialog.id(), action: :close)
-    {:halt, assign(socket, show_sound_settings_dialog: false)}
+    {:halt, Windows.close_window(socket, "sound-settings")}
   end
 
   # Sound-dropdown change must be a string event (the design-system `select_item`
@@ -154,11 +151,7 @@ defmodule RetroHexChatWeb.ChatLive.SettingsDialogsEvents do
   @spec maybe_close_sound_dialog(Phoenix.LiveView.Socket.t(), :apply | :ok) ::
           Phoenix.LiveView.Socket.t()
   defp maybe_close_sound_dialog(socket, :apply), do: socket
-
-  defp maybe_close_sound_dialog(socket, :ok) do
-    send_update(SoundSettingsDialog, id: SoundSettingsDialog.id(), action: :close)
-    assign(socket, show_sound_settings_dialog: false)
-  end
+  defp maybe_close_sound_dialog(socket, :ok), do: Windows.close_window(socket, "sound-settings")
 
   @spec try_set(map(), (map(), integer() -> map() | {:error, atom()}), String.t() | nil) ::
           map()

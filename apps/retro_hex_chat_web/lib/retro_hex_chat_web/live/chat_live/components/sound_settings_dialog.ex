@@ -1,8 +1,10 @@
 defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
   @moduledoc """
-  Stateful LiveComponent for Sound Settings — a draft-with-preview dialog.
-  The parent keeps `show_sound_settings_dialog` (Escape map) and passes it as
-  `visible`; the component owns the editable `draft` (a `SoundSettings` struct).
+  Stateful LiveComponent for the Sound Settings window body — draft-with-preview.
+  Mounted inside a server-managed desktop window: the draft seeds from the
+  `settings` passthrough on mount and closing the window unmounts the island
+  (discarding an uncommitted draft). The component owns the editable `draft`
+  (a `SoundSettings` struct).
 
   Flash toggle and preview are component-local (`@myself`) — preview pushes
   `play_sound` straight to the client. The sound-dropdown change must be an event
@@ -29,20 +31,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
 
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def mount(socket), do: {:ok, assign(socket, id: @id, visible: false, draft: nil)}
+  def mount(socket), do: {:ok, assign(socket, id: @id, draft: nil)}
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(%{action: {:open, settings}}, socket), do: {:ok, assign(socket, draft: settings)}
-  def update(%{action: :close}, socket), do: {:ok, assign(socket, draft: nil)}
-
   def update(%{action: {:change, params}}, socket) do
     {:ok,
      assign(socket, draft: apply_change(socket.assigns.draft || SoundSettings.new(), params))}
   end
 
+  # Passthrough: seed the draft from the session's settings once, at mount —
+  # later parent re-renders must not clobber an in-progress draft.
   def update(assigns, socket) do
-    {:ok, assign(socket, visible: Map.get(assigns, :visible, socket.assigns.visible))}
+    {:ok, assign(socket, draft: socket.assigns.draft || Map.get(assigns, :settings))}
   end
 
   @impl true
@@ -83,10 +84,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.SoundSettingsDialog do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <div id={"#{@id}-mount"}>
-      <.sound_settings_dialog
+    <div id={"#{@id}-mount"} class="contents">
+      <.sound_settings_panel
         id={@id}
-        show={@visible}
         settings={@draft || %{}}
         on_ok={JS.push("sound_settings_ok", target: @myself)}
         on_cancel="close_sound_settings_dialog"

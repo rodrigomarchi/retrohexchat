@@ -78,37 +78,38 @@ branch of `close_modal` already routes it. HighlightEvents gutted to one
 3 specs (add/edit/remove + 2 persistence) green with only locator + close-X
 updates.)
 
-For each pilot (this becomes the recipe draft):
+All per-pilot items below were completed for the three pilots (see the status
+notes above and the crystallized recipe in PROGRESS.md):
 
-- [ ] Decide mounting: `managed` (server-mounted on demand — add to
+- [x] Decide mounting: `managed` (server-mounted on demand — add to
       `@managed_windows`, render `:if` open) vs always-mounted (`open={false}`)
       per the state-survival rule in PROGRESS.md. Record the decision + reason.
-- [ ] Replace the `UI.Dialog` frame with `<.desktop_window>` inside the chat
+- [x] Replace the `UI.Dialog` frame with `<.desktop_window>` inside the chat
       desktop: stable window id, title, 16×16 title-bar icon (`icon_dialog_*` —
       add to the right `Icons` submodule by subject if missing), default
       geometry, `resizable`, `on_close` adapter event.
-- [ ] Rewire openers: menu-bar `toolbar_action` handler + start-menu item + any
+- [x] Rewire openers: menu-bar `toolbar_action` handler + start-menu item + any
       keyboard shortcut now open/focus the window (`open_window` + `send_update`,
       or `data-window-open` for pure client opens). Toggle semantics: re-invoking
       focuses, not duplicates.
-- [ ] Remove the dialog's entry from the Escape `dismiss_topmost` stack in
+- [x] Remove the dialog's entry from the Escape `dismiss_topmost` stack in
       `keyboard_events.ex` (the WM owns it now).
-- [ ] Sub-forms (Highlight): keep modal, scoped to the parent window via the
+- [x] Sub-forms (Highlight): keep modal, scoped to the parent window via the
       Task B primitive.
-- [ ] Tests: rewrite the dialog's tests to the window contract
+- [x] Tests: rewrite the dialog's tests to the window contract
       (`render_hook("window_open")`, `assert_push_event(view, "window_command",
       ...)`, `data-window-id` presence/visibility, `:sys.get_state` for
       synchronous open-state). Keep `data-testid`s stable wherever possible so
       E2E churn stays low; update affected Playwright specs (targeted runs only).
-- [ ] Help topic for the window updated (it moved from modal to window — mention
+- [x] Help topic for the window updated (it moved from modal to window — mention
       taskbar/minimize behavior where the topic describes usage).
 
 ### D. Crystallize the recipe
 
-- [ ] Write the final step-by-step per-dialog recipe into `PROGRESS.md`
-      ("Per-dialog migration recipe" section), including the
-      managed-vs-always-mounted decision rule, the test-rewrite pattern, and
-      every gotcha hit during the pilots.
+- [x] Written incrementally after each pilot; final polish pass done. The
+      recipe in PROGRESS.md has 8 steps: mounting decision, UI panel split,
+      window in the template, `Windows.open/2` openers, server open-state
+      removal, test contract, sub-form scoping, help update.
 
 ## Completion criteria
 

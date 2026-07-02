@@ -667,8 +667,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       duplicate_tracker: DuplicateTracker.new(),
       flood_tracker: FloodTracker.new(),
       auto_ignore_state: %{active: %{}, cooldowns: %{}},
-      show_flood_protection_dialog: false,
-      show_sound_settings_dialog: false,
       show_nicklist: true,
       muted: false,
       muted_channels: MapSet.new(),
