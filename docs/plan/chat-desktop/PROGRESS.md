@@ -4,7 +4,7 @@
 
 | Phase | Status | Notes |
 |-------|--------|-------|
-| 1 — Desktop shell | in progress | A done; B: desktop shell + chat window + taskbar/tray done — start menu + managed plumbing remain |
+| 1 — Desktop shell | in progress | Tasks A, B, C done. Remaining: "Desktop & Windows" HelpTopics entry, full `make ci` + manual smoke for completion criteria |
 | 2 — Pilot + recipe | not started | |
 | 3 — Tools/Settings batch | not started | |
 | 4 — View/Account batch | not started | |
@@ -47,6 +47,12 @@ hold for the chat and extend:
   is a flex layout that must fill.
 - The chat tab strip has no stable id/testid — select it with `[role="tablist"]`
   in tests.
+- An empty `@managed_windows` list in a guard (`when id in @managed_windows`)
+  compiles to `when false` → dead-clause warnings. Use a `MapSet` attribute +
+  runtime `MapSet.member?/2` until the set is non-empty.
+- Start-menu items that fire server actions (`phx-click` + `phx-value-action`)
+  need no extra close wiring — the WM hook closes the menu on any in-menu click
+  that isn't a `data-window-open` opener.
 - The `#{id}-show-trigger` marker is the modal-dialog test contract; migrated
   windows lose it — use `data-window-id` visibility, `render_hook(view,
   "window_open"/"window_closed")`, and `assert_push_event(view, "window_command", ...)`

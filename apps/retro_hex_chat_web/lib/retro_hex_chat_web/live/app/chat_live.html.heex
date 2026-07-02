@@ -176,6 +176,9 @@
 
     <:taskbar>
       <.taskbar id="chat-taskbar">
+        <:start>
+          <.start_menu_app id="chat-start-menu" is_admin={admin?(@session)} />
+        </:start>
         <.taskbar_button window="chat" label={dgettext("chat", "RetroHexChat")}>
           <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
         </.taskbar_button>

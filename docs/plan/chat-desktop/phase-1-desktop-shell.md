@@ -43,25 +43,27 @@ from today.
       the clock (ClockHook). Header status-bar clock was redundant — removed via a
       `show_clock` capability flag on `status_bar_app` (tray wins; showcase keeps
       its clock).
-- [ ] Start button + `<.start_menu>` skeleton with the four category groups
-      (Tools / View / Admin / Help). Until dialogs migrate, items trigger the
-      SAME existing `toolbar_action` events via `phx-click` (no `data-window-open`
-      yet). Admin group renders only for admins (same permission gate the menu
-      bar uses).
-- [ ] Managed-window plumbing on ChatLive (copied from `lobby_live.ex`):
-      `@managed_windows` (empty for now), `open_windows` assign,
-      `handle_event("window_open"/"window_closed")`, `handle_info({:open_window,
-      id}/{:close_window, id})`, `open_window/close_window/window_open?` helpers.
-      Place `handle_info` clauses above any catch-all.
+- [x] Start button + `<.start_menu>` skeleton with the four category groups
+      (Tools / View / Admin / Help). Built as the design-system `StartMenuApp`
+      component (`components/ui/shell/start_menu_app.ex`, mirroring `MenuBarApp`:
+      semantic `toolbar_action` events, no Session). Admin group gated on the
+      host's `admin?(@session)`.
+- [x] Managed-window plumbing on ChatLive: `@managed_windows` (empty `MapSet` —
+      runtime membership check avoids the dead-clause warning an empty guard list
+      would raise), `open_windows` assign, `handle_event("window_open"/
+      "window_closed")` above the dispatch catch-all, `handle_info({:open_window,
+      id}/{:close_window, id})` above the catch-all. `window_open?/2` deferred to
+      the first managed window (unused private fn would warn).
 
 ### C. Tests
 
-- [ ] LiveView tests: desktop + taskbar + start menu render; chat window is
+- [x] LiveView tests: desktop + taskbar + start menu render; chat window is
       `pinned` (no close button) and `data-window-default-maximized`; persist key
       is `chat` with persistence enabled; start menu items dispatch the existing
       open events; `window_open` for an unknown/non-managed id is a no-op.
-- [ ] Existing ChatLive test suite green (layout restructure must not break
-      selectors — fix tests that asserted on the old top-level structure).
+      (`chat_desktop_shell_test.exs` — 9 tests.)
+- [x] Existing ChatLive test suite green (only `status_bar_feature_test.exs`
+      needed updating: the clock moved from the status bar to the tray).
 
 ## Completion criteria
 

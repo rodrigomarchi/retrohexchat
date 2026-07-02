@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── Desktop window manager ───────────────────────────────────
   import RetroHexChatWeb.Components.UI.Desktop
+  import RetroHexChatWeb.Components.UI.StartMenuApp
 
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AboutDialog
@@ -251,6 +252,17 @@ defmodule RetroHexChatWeb.App.ChatLive do
     dispatch_to_hooks(action, Map.delete(params, "action"), socket)
   end
 
+  # Desktop window manager: the WindowManagerHook asks the host to mount a
+  # server-managed window it doesn't know ("window_open") and reports a
+  # client-side close of one ("window_closed"). Non-managed ids are no-ops.
+  def handle_event("window_open", %{"id" => id}, socket) do
+    {:noreply, open_window(socket, id)}
+  end
+
+  def handle_event("window_closed", %{"id" => id}, socket) do
+    {:noreply, close_window(socket, id)}
+  end
+
   def handle_event(event, params, socket) do
     dispatch_to_hooks(event, params, socket)
   end
@@ -411,6 +423,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
      |> ChatLive.Helpers.cancel_ignore_timer(nick)
      |> ChatLive.Helpers.cancel_auto_ignore_with_cooldown(nick)}
   end
+
+  # Islands drive their own server-managed window lifecycle with these messages:
+  # the host mounts/unmounts a managed window by toggling @open_windows.
+  def handle_info({:open_window, id}, socket), do: {:noreply, open_window(socket, id)}
+  def handle_info({:close_window, id}, socket), do: {:noreply, close_window(socket, id)}
 
   # ── Catch-all handle_info ─────────────────────────────────────
 
@@ -604,6 +621,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     socket
     |> assign(
       channel_users: [],
+      open_windows: MapSet.new(),
       nick_color_fn: ChatHelpers.build_nick_color_fn(session),
       has_more: true,
       notice_active: false,
@@ -683,6 +701,26 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── View helpers ──────────────────────────────────────────────
 
   defp admin?(session), do: ChatContext.admin?(session)
+
+  # ── Managed windows ───────────────────────────────────────────
+  # Server-managed (dynamic) windows render only while listed in @open_windows.
+  # None yet — dialogs join this set as they migrate to desktop windows.
+
+  @managed_windows MapSet.new([])
+
+  @spec open_window(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  defp open_window(socket, id) do
+    if MapSet.member?(@managed_windows, id) do
+      update(socket, :open_windows, &MapSet.put(&1, id))
+    else
+      socket
+    end
+  end
+
+  @spec close_window(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  defp close_window(socket, id) do
+    update(socket, :open_windows, &MapSet.delete(&1, id))
+  end
 
   # ── Startup messages ──────────────────────────────────────────
 
