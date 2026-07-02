@@ -256,11 +256,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # server-managed window it doesn't know ("window_open") and reports a
   # client-side close of one ("window_closed"). Non-managed ids are no-ops.
   def handle_event("window_open", %{"id" => id}, socket) do
-    {:noreply, open_window(socket, id)}
+    {:noreply, ChatLive.Windows.open_window(socket, id)}
   end
 
   def handle_event("window_closed", %{"id" => id}, socket) do
-    {:noreply, close_window(socket, id)}
+    {:noreply, ChatLive.Windows.close_window(socket, id)}
   end
 
   def handle_event(event, params, socket) do
@@ -426,8 +426,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # Islands drive their own server-managed window lifecycle with these messages:
   # the host mounts/unmounts a managed window by toggling @open_windows.
-  def handle_info({:open_window, id}, socket), do: {:noreply, open_window(socket, id)}
-  def handle_info({:close_window, id}, socket), do: {:noreply, close_window(socket, id)}
+  def handle_info({:open_window, id}, socket),
+    do: {:noreply, ChatLive.Windows.open_window(socket, id)}
+
+  def handle_info({:close_window, id}, socket),
+    do: {:noreply, ChatLive.Windows.close_window(socket, id)}
 
   # ── Catch-all handle_info ─────────────────────────────────────
 
@@ -700,26 +703,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── View helpers ──────────────────────────────────────────────
 
   defp admin?(session), do: ChatContext.admin?(session)
-
-  # ── Managed windows ───────────────────────────────────────────
-  # Server-managed (dynamic) windows render only while listed in @open_windows.
-  # None yet — dialogs join this set as they migrate to desktop windows.
-
-  @managed_windows MapSet.new([])
-
-  @spec open_window(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
-  defp open_window(socket, id) do
-    if MapSet.member?(@managed_windows, id) do
-      update(socket, :open_windows, &MapSet.put(&1, id))
-    else
-      socket
-    end
-  end
-
-  @spec close_window(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
-  defp close_window(socket, id) do
-    update(socket, :open_windows, &MapSet.delete(&1, id))
-  end
 
   # ── Startup messages ──────────────────────────────────────────
 

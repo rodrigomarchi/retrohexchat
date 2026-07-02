@@ -92,12 +92,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "Auto Respond")}
           icon_fn={:icon_btn_auto_respond}
         />
-        <.app_item
-          action="open_timers_dialog"
-          on_action={@on_action}
-          label={dgettext("ui", "Timers")}
-          icon_fn={:icon_btn_timers}
-        />
+        <.window_item window="timers" label={dgettext("ui", "Timers")} icon_fn={:icon_btn_timers} />
         <.start_menu_separator />
         <%!-- View --%>
         <.app_item

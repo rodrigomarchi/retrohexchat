@@ -11,17 +11,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.TimersDialogTest do
     assert TimersDialog.id() == "timers-dialog"
   end
 
-  test "is hidden with no show-trigger by default" do
+  test "renders the bare panel (the desktop window provides the chrome)" do
     html = render_component(TimersDialog, id: TimersDialog.id())
 
-    assert html =~ "Timers"
-    refute html =~ "timers-dialog-show-trigger"
-  end
-
-  test "opens via the :open action" do
-    html = render_component(TimersDialog, id: TimersDialog.id(), action: {:open})
-
-    assert html =~ "timers-dialog-show-trigger"
+    assert html =~ ~s(data-testid="timers-panel")
+    refute html =~ "phx-show-modal"
   end
 
   test "renders timer rows from the passthrough map" do

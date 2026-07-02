@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   alias RetroHexChatWeb.ChatLive.PerformAutojoinEvents
   alias RetroHexChatWeb.ChatLive.SearchEvents
   alias RetroHexChatWeb.ChatLive.UserLookupEvents
+  alias RetroHexChatWeb.ChatLive.Windows
 
   # Escape — always hardcoded to dismiss topmost dialog/overlay
   def handle_event("window_keydown", %{"key" => "Escape"}, socket) do
@@ -83,7 +84,7 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
   end
 
   defp dispatch_action(:toggle_url_catcher, socket) do
-    push_event(socket, "window_command", %{action: "open", id: "url-catcher"})
+    Windows.open(socket, "url-catcher")
   end
 
   defp dispatch_action(:toggle_perform_dialog, socket) do

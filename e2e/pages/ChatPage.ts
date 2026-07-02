@@ -563,7 +563,7 @@ export class ChatPage {
     this.accountAwayMessageInput = page.getByTestId('account-away-message');
     this.accountGhostNicknameInput = page.getByTestId('account-ghost-nickname');
     this.accountGhostPasswordInput = page.getByTestId('account-ghost-password');
-    this.timersDialog = page.locator('#timers-dialog [role="dialog"]');
+    this.timersDialog = page.getByTestId('timers-window');
     this.timersEditForm = page.getByTestId('timers-edit-form');
     this.userLookupDialog = page.locator('#user-lookup-dialog [role="dialog"]');
     this.lookupResultDialog = page.locator(

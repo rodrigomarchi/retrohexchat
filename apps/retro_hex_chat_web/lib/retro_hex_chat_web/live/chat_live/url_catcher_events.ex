@@ -12,10 +12,10 @@ defmodule RetroHexChatWeb.ChatLive.UrlCatcherEvents do
   Attached as `attach_hook(:url_catcher_events, :handle_event, ...)` in ChatLive.mount/3.
   """
 
-  import Phoenix.LiveView, only: [push_event: 3]
+  alias RetroHexChatWeb.ChatLive.Windows
 
   def handle_event("toggle_url_catcher", _params, socket) do
-    {:halt, push_event(socket, "window_command", %{action: "open", id: "url-catcher"})}
+    {:halt, Windows.open(socket, "url-catcher")}
   end
 
   # ── Catch-all ──────────────────────────────────────────────

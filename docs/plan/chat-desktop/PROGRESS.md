@@ -5,7 +5,7 @@
 | Phase | Status | Notes |
 |-------|--------|-------|
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
-| 2 — Pilot + recipe | in progress | A (Escape), B (dialog scope), pilot 1 UrlCatcher done; recipe drafted. Next: Timers, then Highlight |
+| 2 — Pilot + recipe | in progress | A, B, pilots 1 (UrlCatcher) + 2 (Timers, managed variant) done; `ChatLive.Windows` opener shared. Next: Highlight (sub-forms) |
 | 3 — Tools/Settings batch | not started | |
 | 4 — View/Account batch | not started | |
 | 5 — Admin batch | not started | |
@@ -18,9 +18,11 @@ and Highlight (sub-forms) before Phase 3.
 
 1. **Mounting decision.** Always-mounted (`open={false}`, client owns
    open/close) when the island holds view state that must survive closes OR
-   receives passthrough data while closed (UrlCatcher: both). `managed` only
-   when neither holds (then: add to `@managed_windows`, render `:if` open in
-   `open_windows`).
+   receives passthrough data while closed (UrlCatcher: both). `managed` when
+   neither holds — closing must be a clean reset (Timers). For managed: add the
+   id to `ChatLive.Windows` `@managed`, render the window `:if={"<id>" in
+   @open_windows}` with the `managed` attr, and make its taskbar button
+   conditional too.
 2. **Split the UI layer.** Extract a bare `<feature>_panel/1` (content only,
    root: `id="#{id}-content"` + hooks + stable `data-testid`, class
    `flex h-full min-h-0 flex-col`) from the dialog wrapper. Keep the dialog
@@ -31,10 +33,12 @@ and Highlight (sub-forms) before Phase 3.
    default_x/y width/height min_* body_class="flex min-h-0 flex-col p-2">`
    wrapping the island `live_component` (island root gets `class="contents"`).
    Add a `<.taskbar_button window="<feature>">`.
-4. **Openers.** Server path (menu bar / toolbar / keyboard `dispatch_action`):
-   `push_event(socket, "window_command", %{action: "open", id: "<feature>"})` —
-   open/focus, never toggle. Start menu: switch the item to
-   `<.window_item window="<feature>">` (client-side `data-window-open`).
+4. **Openers.** Every server entry point (menu bar / toolbar / keyboard
+   `dispatch_action` / commands) calls `ChatLive.Windows.open(socket, "<id>")`
+   — it mounts the island when managed and pushes `window_command open` either
+   way (open/focus, never toggle). Start menu: switch the item to
+   `<.window_item window="<id>">` (client-side `data-window-open`; for an
+   unmounted managed window the hook round-trips through `"window_open"`).
 5. **Delete the server open-state.** Remove the `show_*` assign from
    `assign_defaults`, the `visible` passthrough, the Escape entry in
    `keyboard_events.ex` dismissals (+ its `close_*` helper), and any

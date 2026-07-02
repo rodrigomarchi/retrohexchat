@@ -2,10 +2,11 @@ defmodule RetroHexChatWeb.ChatLive.TimerEvents do
   @moduledoc """
   Handles the Timers dialog events that need the LiveView.
 
-  The dialog's UI/draft state (select/add/edit/change/cancel/close) lives in the
-  `Components.TimersDialog` LiveComponent. This module handles opening the dialog
-  (forwarded via `send_update`) and the mutating save/stop, which schedule through
-  `UiActions.Scripting` and reflect results back to the component.
+  The dialog's UI/draft state (select/add/edit/change/cancel) lives in the
+  `Components.TimersDialog` LiveComponent, mounted inside a server-managed
+  desktop window. This module opens the window (mounting the island) and
+  handles the mutating save/stop, which schedule through `UiActions.Scripting`
+  and reflect results back to the component.
 
   Attached as `attach_hook(:timer_events, :handle_event, ...)` in ChatLive.mount/3.
   """
@@ -17,14 +18,14 @@ defmodule RetroHexChatWeb.ChatLive.TimerEvents do
   alias RetroHexChat.Chat.TimerManager
   alias RetroHexChatWeb.ChatLive.Components.TimersDialog
   alias RetroHexChatWeb.ChatLive.UiActions.Scripting
+  alias RetroHexChatWeb.ChatLive.Windows
 
   @type event_result ::
           {:halt, Phoenix.LiveView.Socket.t()} | {:cont, Phoenix.LiveView.Socket.t()}
 
   @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) :: event_result()
   def handle_event("open_timers_dialog", _params, socket) do
-    send_update(TimersDialog, id: TimersDialog.id(), action: {:open})
-    {:halt, socket}
+    {:halt, Windows.open(socket, "timers")}
   end
 
   def handle_event("timers_dialog_save", params, socket) do

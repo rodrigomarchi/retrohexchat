@@ -55,7 +55,16 @@ host-side while closed and view state survives closes; UI split into
 `push_event window_command`, start menu via `data-window-open` (`window_item`
 in StartMenuApp); `show_url_catcher` fully removed incl. Escape dismissal;
 targeted Playwright spec passed UNCHANGED thanks to stable testids).
-Timers and Highlight pending.
+
+**Timers done** (the `managed` variant: state resets on close by design, no
+data flows in while closed → closing unmounts the island, reopening starts
+blank. New shared `ChatLive.Windows` module owns `@managed` + the universal
+opener `Windows.open/2` — mounts if managed, then pushes `window_command open`;
+used by TimerEvents, the `/timer` command (`UiActions.Scripting`) and now the
+UrlCatcher openers too. `timers_dialog/1` converted in place to `timers_panel/1`
+(no other consumer). Component dropped `show`/`{:open}`/`timers_close`. E2E:
+`timersDialog` locator → `timers-window` testid; Close-button step → title-bar
+X; targeted run green.) Highlight pending.
 
 For each pilot (this becomes the recipe draft):
 

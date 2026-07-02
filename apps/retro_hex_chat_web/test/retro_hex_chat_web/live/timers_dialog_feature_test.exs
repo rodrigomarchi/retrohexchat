@@ -40,19 +40,44 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
       assert action_before?(toolbar_html, "open_autorespond_dialog", "open_timers_dialog")
     end
 
-    test "bare /timer opens the Timers dialog", %{conn: conn} do
+    test "bare /timer opens the Timers window", %{conn: conn} do
       view = connect_user(conn, "TimerOpen#{uid()}")
 
-      refute has_element?(view, "#timers-dialog-show-trigger")
+      # Server-managed window: unmounted until opened.
+      refute has_element?(view, ~s([data-window-id="timers"]))
 
       view
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/timer"})
 
-      # Dialog opens via an async send_update to the TimersDialog component; flush.
-      html = render(view)
-      assert has_element?(view, "#timers-dialog-show-trigger")
-      assert html =~ "No active timers. Click Add to schedule one."
+      assert_push_event(view, "window_command", %{action: "open", id: "timers"})
+      assert has_element?(view, ~s([data-window-id="timers"][data-window-managed="true"]))
+      assert render(view) =~ "No active timers. Click Add to schedule one."
+    end
+
+    test "the start menu opens the managed window through the hook round trip", %{conn: conn} do
+      view = connect_user(conn, "TimerMenu#{uid()}")
+
+      # The item is a client-side opener; on an unmounted managed window the
+      # hook pushes "window_open" and the host mounts the island.
+      assert has_element?(view, ~s(#chat-start-menu [data-window-open="timers"]))
+
+      render_hook(view, "window_open", %{"id" => "timers"})
+      assert has_element?(view, ~s([data-window-id="timers"]))
+    end
+
+    test "closing the window unmounts the island; reopening starts blank", %{conn: conn} do
+      view = connect_user(conn, "TimerWin#{uid()}")
+
+      render_click(view, "toolbar_action", %{"action" => "open_timers_dialog"})
+      view |> element(~s([data-testid="timers-dialog-add"])) |> render_click()
+      assert has_element?(view, ~s([data-testid="timers-edit-form"]))
+
+      render_hook(view, "window_closed", %{"id" => "timers"})
+      refute has_element?(view, ~s([data-window-id="timers"]))
+
+      render_click(view, "toolbar_action", %{"action" => "open_timers_dialog"})
+      refute has_element?(view, ~s([data-testid="timers-edit-form"]))
     end
   end
 
@@ -195,7 +220,6 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
   defp render_timers_dialog(overrides) do
     defaults = %{
       id: "timers-dialog",
-      show: true,
       timers: %{},
       selected_timer: nil,
       editing: false,
@@ -210,11 +234,10 @@ defmodule RetroHexChatWeb.TimersDialogFeatureTest do
       on_stop: "timers_dialog_stop",
       on_change: "timers_dialog_change",
       on_save: "timers_dialog_save",
-      on_cancel_edit: "timers_dialog_cancel_edit",
-      on_close: "close_timers_dialog"
+      on_cancel_edit: "timers_dialog_cancel_edit"
     }
 
-    render_component(&TimersDialog.timers_dialog/1, Map.merge(defaults, overrides))
+    render_component(&TimersDialog.timers_panel/1, Map.merge(defaults, overrides))
   end
 
   defp action_before?(html, before_action, after_action) do

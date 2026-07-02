@@ -179,6 +179,30 @@
       </div>
     </.desktop_window>
 
+    <%!-- Timers — server-managed: closing unmounts the island (draft state
+          resets by design); reopening mounts a fresh one. --%>
+    <.desktop_window
+      :if={"timers" in @open_windows}
+      id="timers"
+      title={dgettext("chat", "Timers")}
+      managed
+      default_x={120}
+      default_y={90}
+      width={720}
+      height={470}
+      min_width={520}
+      min_height={320}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="timers-window"
+    >
+      <:icon><Icons.icon_btn_timers class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.TimersDialog}
+        id={RetroHexChatWeb.ChatLive.Components.TimersDialog.id()}
+        timers={@user_timers}
+      />
+    </.desktop_window>
+
     <%!-- URL Catcher — always mounted (URLs keep accumulating while closed);
           the window manager owns open/close client-side. --%>
     <.desktop_window
@@ -213,6 +237,13 @@
         </.taskbar_button>
         <.taskbar_button window="url-catcher" label={dgettext("chat", "URL Catcher")}>
           <:icon><Icons.icon_link class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={"timers" in @open_windows}
+          window="timers"
+          label={dgettext("chat", "Timers")}
+        >
+          <:icon><Icons.icon_btn_timers class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <:tray>
           <.desktop_tray>
@@ -357,12 +388,6 @@
   id={RetroHexChatWeb.ChatLive.Components.AutoRespondDialog.id()}
   visible={@show_autorespond_dialog}
   rules={@session.autorespond_rules}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.TimersDialog}
-  id={RetroHexChatWeb.ChatLive.Components.TimersDialog.id()}
-  timers={@user_timers}
 />
 
 <.live_component

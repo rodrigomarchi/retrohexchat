@@ -234,7 +234,10 @@ test.describe.serial('UI feature shell journeys', () => {
       await user.chat.timersDialog.getByTestId('timers-dialog-stop').click();
       await expect(user.page.getByTestId(`timer-row-${timerName}`)).toHaveCount(0);
 
-      await user.chat.timersDialog.getByText('Close', { exact: true }).click();
+      // Managed window: the title-bar X closes it and unmounts the island.
+      await user.chat.timersDialog
+        .locator('[data-window-control="close"]')
+        .click();
       await expect(user.chat.timersDialog).toBeHidden();
       await user.chat.sendMessage('/timer');
       await expect(user.chat.timersDialog).toBeVisible();
