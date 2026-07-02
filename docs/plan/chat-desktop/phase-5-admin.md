@@ -11,9 +11,9 @@ Phase 4 complete.
 
 ## Windows to migrate
 
-- [ ] AdminConsole (8 tabs: users, channels, MOTD, broadcast, settings, TURN,
+- [x] AdminConsole (8 tabs: users, channels, MOTD, broadcast, settings, TURN,
       audit, danger zone). Danger-zone confirmations stay modal (locked decision
-      #2), scoped to the console window.
+      #2), scoped to the console window. DONE (87f87274 + singleplayer fix 70f19999).
 - [ ] BotManagement (+ BotForm sub-dialogs — new/edit stay modal scoped to the
       window).
 

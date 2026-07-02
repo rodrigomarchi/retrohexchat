@@ -8,7 +8,7 @@
 | 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
 | 3 — Tools/Settings batch | **complete** (2026-07-02) | All 8 migrated (all managed); full `make ci` 9/9 incl. dialyzer |
 | 4 — View/Account batch | **complete** (2026-07-02) | All 6 migrated; full `make ci` 9/9 incl. dialyzer. Knock-flake root-caused + fixed (see Learnings: "ephemeral lines lost to a modal-close ack diff") |
-| 5 — Admin batch | scoped (2026-07-02) | Turnkey execution map in `phase-5-admin.md` "Execution map" (every file/line, panel-extraction steps, contract migration). Next: execute AdminConsole (own commit), then BotManagement. Both = `managed` windows, admin-gated, opener is the server-side authz for forged `window_open`. |
+| 5 — Admin batch | in progress 1/2 (2026-07-02) | AdminConsole DONE (87f87274 + 70f19999); `make ci` 9/9, Feature 12 E2E green. Next: BotManagement (map in `phase-5-admin.md` "Execution map"). |
 | 6 — Unify + cleanup | not started | |
 
 ## Per-dialog migration recipe
@@ -247,6 +247,22 @@ hold for the chat and extend:
   reorder needs real client-diff + PubSub-echo timing (E2E only); asserting it in
   ExUnit would race send_update/broadcast, which the "no async stream timing"
   rule forbids.
+- GOTCHA (AdminConsole migration, but pre-existing): a stateful island must NOT
+  call a HOST-level function that reads host assigns on its own component socket.
+  The admin console ran `CommandDispatch.dispatch_command_with_result` on the
+  island socket; the `/singleplayer` result path calls `push_status_message`,
+  which reads `show_status_tab` — a host assign the island lacks → KeyError crash.
+  Fix: island delegates via `send(self(), {:admin_console_command, name, args})`;
+  the host runs dispatch on its full socket and reflects the result back with a
+  `send_update` to the (already-mounted) island. RULE: island → host command
+  dispatch is always a delegated message, never a direct call on the island socket.
+- PANEL EXTRACTION shortcut for a HUGE dialog (~90 attrs): don't duplicate the
+  attr block onto a second `_panel/1`. Add a `windowed` flag to the existing
+  `*_dialog/1` that branches: windowed → bare `<div id="#{@id}-content">` content;
+  else → the `<.dialog>` wrapper (showcase). Move the shared body into a private
+  `*_tabs/1`/`*_body/1` that both branches render via `{assigns}` spread (a
+  no-attr private component reads what it needs, no re-declaration). The island
+  passes `windowed`; the showcase stays on the dialog branch.
 - GOTCHA (cost me an hour): the Playwright config has `reuseExistingServer:
   true`. A server left running on :4003 from an earlier run serves STALE code —
   `mix compile`/`assets.build` update the beam files but NOT the running node.
