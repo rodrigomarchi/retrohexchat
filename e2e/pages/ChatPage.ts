@@ -493,7 +493,7 @@ export class ChatPage {
     this.cheatsheetDialog = page.locator('#cheatsheet-dialog [role="dialog"]');
     this.cheatsheetCloseButton = page.getByTestId('cheatsheet-dialog-close');
     this.helpContentPane = page.getByTestId('help-content-pane');
-    this.notifyListDialog = page.locator('#notify-list-dialog [role="dialog"]');
+    this.notifyListDialog = page.getByTestId('notify-list-window');
     this.notifyAutoAddPmToggle = page.locator(
       '#notify-list-dialog-auto-add-pm',
     );

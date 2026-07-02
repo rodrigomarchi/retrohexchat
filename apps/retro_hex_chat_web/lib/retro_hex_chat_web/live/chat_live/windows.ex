@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.ChatLive.Windows do
   import Phoenix.LiveView, only: [push_event: 3]
 
   @managed MapSet.new(
-             ~w(alias auto-respond custom-menus flood-protection highlight perform sound-settings timers)
+             ~w(alias auto-respond custom-menus flood-protection highlight notify-list perform sound-settings timers)
            )
 
   @doc "Whether the window's lifecycle is server-owned."

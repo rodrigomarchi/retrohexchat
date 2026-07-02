@@ -22,18 +22,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialogTest do
     assert NotifyListDialog.id() == "notify-list-dialog"
   end
 
-  test "stays closed by default (no show-trigger)" do
+  test "renders the bare panel with its toggles" do
     html = dialog(%{})
 
     assert html =~ ~s(id="notify-list-dialog-mount")
-    refute html =~ ~s(id="notify-list-dialog-show-trigger")
-  end
-
-  test "renders the notify dialog with its toggles when shown" do
-    html = dialog(%{show: true})
-
     assert html =~ ~s(data-testid="notify-list")
-    assert html =~ "Notify List"
+    refute html =~ "phx-show-modal"
     assert html =~ ~s(id="notify-list-dialog-auto-whois")
     assert html =~ ~s(id="notify-list-dialog-auto-add-pm")
   end
@@ -44,8 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialogTest do
     html =
       render_component(NotifyListDialog, %{
         id: NotifyListDialog.id(),
-        session: session(list),
-        show: true
+        session: session(list)
       })
 
     assert html =~ ~s(data-testid="notify-list-row-Buddy")
@@ -53,7 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialogTest do
   end
 
   test "renders the add sub-form targeting the component" do
-    html = dialog(%{show: true, show_notify_add_dialog: true})
+    html = dialog(%{show_notify_add_dialog: true})
 
     assert html =~ ~s(data-testid="notify-add-form")
     assert html =~ ~s(phx-target=)

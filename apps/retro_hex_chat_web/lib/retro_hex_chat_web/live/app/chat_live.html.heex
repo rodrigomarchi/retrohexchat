@@ -272,6 +272,30 @@
       />
     </.desktop_window>
 
+    <%!-- Notify List — server-managed: selection/sub-form state resets on close;
+          the buddy list lives on the session and flows in as passthrough. --%>
+    <.desktop_window
+      :if={"notify-list" in @open_windows}
+      id="notify-list"
+      title={dgettext("chat", "Notify List")}
+      managed
+      default_x={210}
+      default_y={140}
+      width={560}
+      height={520}
+      min_width={440}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="notify-list-window"
+    >
+      <:icon><Icons.icon_tab_notify class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.NotifyListDialog}
+        id={RetroHexChatWeb.ChatLive.Components.NotifyListDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
     <%!-- Perform — server-managed: two-tab mini-app (perform + auto-join) with
           window-scoped add/edit sub-forms; open-on-tab via send_update after
           the window mounts. --%>
@@ -460,6 +484,13 @@
         >
           <:icon><Icons.icon_dialog_perform class="h-4 w-4" /></:icon>
         </.taskbar_button>
+        <.taskbar_button
+          :if={"notify-list" in @open_windows}
+          window="notify-list"
+          label={dgettext("chat", "Notify List")}
+        >
+          <:icon><Icons.icon_tab_notify class="h-4 w-4" /></:icon>
+        </.taskbar_button>
         <:tray>
           <.desktop_tray>
             <span id="chat-tray-clock" phx-hook="ClockHook" class="font-mono tabular-nums"></span>
@@ -541,12 +572,6 @@
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.NickChangeDialog}
   id={RetroHexChatWeb.ChatLive.Components.NickChangeDialog.id()}
-/>
-
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.NotifyListDialog}
-  id={RetroHexChatWeb.ChatLive.Components.NotifyListDialog.id()}
-  session={@session}
 />
 
 <.live_component

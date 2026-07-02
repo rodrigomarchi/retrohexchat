@@ -892,8 +892,10 @@ defmodule RetroHexChatWeb.AddressBookTest do
       Process.sleep(100)
       sender = connect_user(conn, "PmTogOff")
 
-      # Disable auto-add via the standalone notify list dialog (the checkbox is
-      # owned by the NotifyListDialog island, so fire it element-based).
+      # Disable auto-add via the standalone Notify List window (managed: the
+      # island mounts when the window opens; the checkbox is owned by the
+      # NotifyListDialog island, so fire it element-based).
+      sender |> render_click("toggle_notify_list")
       sender |> element("#notify-list-dialog-auto-add-pm") |> render_click()
 
       # Send PM

@@ -36,14 +36,15 @@ defmodule RetroHexChatWeb.NotifyListEntryPointsFeatureTest do
       assert toolbar_html =~ "Notify List"
     end
 
-    test "toolbar action opens the Notify List dialog", %{conn: conn} do
+    test "toolbar action opens the Notify List window", %{conn: conn} do
       view = connect_user(conn, "NtfMenu#{uid()}")
 
-      refute has_element?(view, "#notify-list-dialog-show-trigger")
+      refute has_element?(view, ~s([data-window-id="notify-list"]))
 
       render_click(view, "toolbar_action", %{"action" => "toggle_notify_list"})
 
-      assert has_element?(view, "#notify-list-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="notify-list"][data-window-managed="true"]))
+      assert_push_event(view, "window_command", %{action: "open", id: "notify-list"})
     end
 
     test "status bar component hides zero count and shows positive buddy count badge" do
@@ -79,8 +80,11 @@ defmodule RetroHexChatWeb.NotifyListEntryPointsFeatureTest do
       refute has_element?(view, ~s([data-testid="status-bar-notify-badge"]))
 
       render_click(view, "toggle_notify_list")
-      # The Notify List dialog is a stateful island; fire its events element-based.
-      view |> element("#notify-list-dialog [phx-click='notify_add_dialog']") |> render_click()
+      # The Notify List is a stateful island in a managed window; fire its
+      # events element-based.
+      view
+      |> element(~s([data-window-id="notify-list"] [phx-click='notify_add_dialog']))
+      |> render_click()
 
       view
       |> element(~s([data-testid="notify-add-form"]))
@@ -89,14 +93,16 @@ defmodule RetroHexChatWeb.NotifyListEntryPointsFeatureTest do
       assert has_element?(view, ~s([data-testid="status-bar-notify-badge"]))
       assert render(view) =~ ~s(title="1 buddy online")
 
-      render_click(view, "toggle_notify_list")
-      refute has_element?(view, "#notify-list-dialog-show-trigger")
+      # Re-invoking the action focuses the window (never toggle-closes); close it
+      # via the client contract instead.
+      render_hook(view, "window_closed", %{"id" => "notify-list"})
+      refute has_element?(view, ~s([data-window-id="notify-list"]))
 
       view
       |> element(~s([data-testid="status-bar-notify-badge"]))
       |> render_click()
 
-      assert has_element?(view, "#notify-list-dialog-show-trigger")
+      assert has_element?(view, ~s([data-window-id="notify-list"]))
     end
   end
 

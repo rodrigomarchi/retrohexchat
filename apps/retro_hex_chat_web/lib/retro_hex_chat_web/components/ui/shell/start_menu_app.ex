@@ -38,9 +38,8 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           label={dgettext("ui", "Address Book")}
           icon_fn={:icon_btn_address_book}
         />
-        <.app_item
-          action="toggle_notify_list"
-          on_action={@on_action}
+        <.window_item
+          window="notify-list"
           label={dgettext("ui", "Notify List")}
           icon_fn={:icon_tab_notify}
         />

@@ -14,8 +14,9 @@ Phase 2 complete; recipe present in `PROGRESS.md`.
 - [ ] AddressBook (4 tabs + 7 sub-forms — the heaviest; sub-forms scope to the
       window; watch send_update-while-closed for notify/contact updates when
       deciding managed vs always-mounted)
-- [ ] NotifyList (2 sub-forms; receives notify status updates — likely
-      always-mounted)
+- [x] NotifyList (managed, NOT always-mounted as guessed: buddy status updates
+      mutate the parent's session, never the island — presence flows in as
+      passthrough at mount; 2 sub-forms window-scoped)
 - [x] Alias (managed — editor, close resets draft; `/alias` command opener rewired)
 - [x] CustomMenus (managed — editor, close resets draft)
 - [x] AutoRespond (managed — rules editor, close resets draft)

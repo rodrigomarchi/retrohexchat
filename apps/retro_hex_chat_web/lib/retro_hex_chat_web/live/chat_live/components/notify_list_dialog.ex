@@ -3,14 +3,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
   Stateful island for the standalone Notify List dialog — the tracked-buddy list
   with Add/Edit/Remove sub-forms and the auto-whois / auto-add-PM toggles.
 
-  Owns its OWN dialog state: `show`, selection, note draft, both sub-form flags.
+  Mounted inside a server-managed desktop window (closing unmounts the island,
+  resetting selection and sub-forms). Owns selection, note draft and both
+  sub-form flags.
   It is a SEPARATE use case from the Address Book's Notify tab (they never open at
   once) — both read/mutate the same `session.notify_list` (the shared read-model)
   but neither leaks selection into the other because each owns its state locally.
   The mutation logic is shared through the pure `NotifyOps` helper.
 
   Every event targets this component (`phx-target={@target}` threaded through the
-  design-system `notify_list/1`), so the `fixed inset-0` Add/Edit sub-forms submit
+  design-system `notify_list/1`), so the window-scoped Add/Edit sub-form modals submit
   to the component that owns their DOM — the typed input survives the presence
   re-renders that flip buddies online/offline (§0a-anti).
 
@@ -32,8 +34,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
   @spec id() :: String.t()
   def id, do: @id
 
-  @closed %{
-    show: false,
+  @initial %{
     notify_selected: nil,
     selected_note: "",
     show_notify_add_dialog: false,
@@ -45,25 +46,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
     {:ok,
      socket
      |> assign(:id, @id)
-     |> assign(@closed)
+     |> assign(@initial)
      |> assign(session: nil)}
   end
 
-  # ── Directives (driven by parent send_update) ────────────────────
-
-  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
-  def update(%{toggle: true}, socket) do
-    if socket.assigns.show do
-      {:ok, assign(socket, @closed)}
-    else
-      {:ok, assign(socket, %{@closed | show: true})}
-    end
-  end
-
-  def update(%{open: true}, socket), do: {:ok, assign(socket, %{@closed | show: true})}
-  def update(%{close: true}, socket), do: {:ok, assign(socket, @closed)}
-
   # passthrough context (session)
+  @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(assigns, socket), do: {:ok, assign(socket, assigns)}
 
   # ── Selection / sub-form open-close ──────────────────────────────
@@ -167,10 +155,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
 
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
-      <.notify_list
+      <.notify_panel
         id={@id}
         target={@myself}
-        show={@show}
         entries={@entries}
         selected_entry={@notify_selected}
         selected_note={@selected_note}
@@ -184,7 +171,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.NotifyListDialog do
         on_remove="notify_remove"
         on_toggle_auto_whois="toggle_auto_whois"
         on_toggle_auto_add_pm="toggle_auto_add_pm"
-        on_close="toggle_notify_list"
       />
     </div>
     """

@@ -46,123 +46,169 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
   @spec notify_list(map()) :: Phoenix.LiveView.Rendered.t()
   def notify_list(assigns) do
     ~H"""
-    <.dialog id={@id} show={@show} lock={@show_add_dialog || @show_edit_dialog}>
-      <div data-testid="notify-list">
-        <.dialog_header id={@id} title={dgettext("dialogs", "Notify List")}>
-          <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
-        </.dialog_header>
-
-        <.dialog_body class="space-y-retro-8">
-          <%!-- Settings toggles --%>
-          <div class="flex flex-col gap-retro-4">
-            <div class="flex items-center gap-retro-4">
-              <.checkbox
-                name="auto_add_pm"
-                value={@auto_add_pm}
-                phx-click={@on_toggle_auto_add_pm}
-                phx-target={@target}
-                id={"#{@id}-auto-add-pm"}
-              />
-              <label for={"#{@id}-auto-add-pm"} class="text-xs cursor-pointer select-none">
-                {dgettext("dialogs", "Auto-add PM contacts to notify list")}
-              </label>
-            </div>
-            <div class="flex items-center gap-retro-4">
-              <.checkbox
-                name="auto_whois"
-                value={@auto_whois}
-                phx-click={@on_toggle_auto_whois}
-                phx-target={@target}
-                id={"#{@id}-auto-whois"}
-              />
-              <label for={"#{@id}-auto-whois"} class="text-xs cursor-pointer select-none">
-                {dgettext("dialogs", "Perform WHOIS on notify nicks when they come online")}
-              </label>
-            </div>
-          </div>
-
-          <%!-- Entries table --%>
-          <div class="max-h-[260px] overflow-y-auto retro-scrollbar">
-            <.table>
-              <.table_header>
-                <.table_row>
-                  <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
-                  <.table_head>{dgettext("dialogs", "Status")}</.table_head>
-                  <.table_head>{dgettext("dialogs", "Last Seen")}</.table_head>
-                </.table_row>
-              </.table_header>
-              <.table_body>
-                <.table_row
-                  :for={entry <- @entries}
-                  class={
-                    if(@selected_entry == entry.tracked_nickname,
-                      do: "bg-selection-bg text-selection-fg",
-                      else: ""
-                    )
-                  }
-                  phx-click={@on_select}
-                  phx-target={@target}
-                  phx-value-nickname={entry.tracked_nickname}
-                  data-testid={"notify-list-row-#{entry.tracked_nickname}"}
-                >
-                  <.table_cell class="font-bold">{entry.tracked_nickname}</.table_cell>
-                  <.table_cell>
-                    <.online_status online={entry.online} />
-                  </.table_cell>
-                  <.table_cell class="text-xs">{Map.get(entry, :last_seen_at, "")}</.table_cell>
-                </.table_row>
-              </.table_body>
-            </.table>
-          </div>
-
-          <%!-- CRUD buttons --%>
-          <div class="flex gap-retro-4">
-            <.button size="sm" variant="outline" phx-click={@on_add} phx-target={@target}>
-              <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Add")}
-            </.button>
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_edit}
-              phx-target={@target}
-              disabled={@selected_entry == nil}
-            >
-              <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Edit")}
-            </.button>
-            <.button
-              size="sm"
-              variant="outline"
-              phx-click={@on_remove}
-              phx-target={@target}
-              phx-value-nickname={@selected_entry}
-              disabled={@selected_entry == nil}
-            >
-              <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
-              {dgettext("dialogs", "Remove")}
-            </.button>
-          </div>
-        </.dialog_body>
-
-        <.dialog_footer>
-          <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
-            <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-            {dgettext("dialogs", "Close")}
-          </.button>
-        </.dialog_footer>
-      </div>
+    <.dialog id={@id} show={@show} lock={@show_add_dialog || @show_edit_dialog} on_cancel={@on_close}>
+      <.dialog_header id={@id} title={dgettext("dialogs", "Notify List")} on_close={@on_close}>
+        <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
+      </.dialog_header>
+      <.dialog_body>
+        <.notify_panel
+          id={@id}
+          target={@target}
+          entries={@entries}
+          selected_entry={@selected_entry}
+          selected_note={@selected_note}
+          auto_whois={@auto_whois}
+          auto_add_pm={@auto_add_pm}
+          show_add_dialog={@show_add_dialog}
+          show_edit_dialog={@show_edit_dialog}
+          on_select={@on_select}
+          on_add={@on_add}
+          on_edit={@on_edit}
+          on_remove={@on_remove}
+          on_toggle_auto_whois={@on_toggle_auto_whois}
+          on_toggle_auto_add_pm={@on_toggle_auto_add_pm}
+        />
+      </.dialog_body>
+      <.dialog_footer>
+        <.button variant="outline" phx-click={@on_close || hide_modal(@id)}>
+          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+          {dgettext("dialogs", "Close")}
+        </.button>
+      </.dialog_footer>
     </.dialog>
+    """
+  end
 
-    <%!-- Notify Add Sub-Dialog --%>
-    <.notify_add_sub_form :if={@show_add_dialog} target={@target} />
-    <%!-- Notify Edit Sub-Dialog --%>
-    <.notify_edit_sub_form
-      :if={@show_edit_dialog}
-      target={@target}
-      selected_entry={@selected_entry}
-      selected_note={@selected_note}
-    />
+  @doc """
+  Renders the notify list content (settings toggles + buddy table + CRUD +
+  Add/Edit sub-form modals) without any frame — compose it inside a desktop
+  window body. Sub-forms are window-scoped modals.
+  """
+  attr :id, :string, required: true
+  attr :target, :any, default: nil
+  attr :entries, :list, default: []
+  attr :selected_entry, :string, default: nil
+  attr :auto_whois, :boolean, default: false
+  attr :on_select, :any, default: nil
+  attr :on_add, :any, default: nil
+  attr :on_edit, :any, default: nil
+  attr :on_remove, :any, default: nil
+  attr :show_add_dialog, :boolean, default: false
+  attr :show_edit_dialog, :boolean, default: false
+  attr :selected_note, :string, default: ""
+  attr :on_toggle_auto_whois, :any, default: nil
+  attr :auto_add_pm, :boolean, default: true
+  attr :on_toggle_auto_add_pm, :any, default: nil
+
+  @spec notify_panel(map()) :: Phoenix.LiveView.Rendered.t()
+  def notify_panel(assigns) do
+    ~H"""
+    <div
+      id={"#{@id}-content"}
+      data-testid="notify-list"
+      class="flex h-full min-h-0 flex-col gap-retro-8"
+    >
+      <%!-- Settings toggles --%>
+      <div class="flex flex-col gap-retro-4">
+        <div class="flex items-center gap-retro-4">
+          <.checkbox
+            name="auto_add_pm"
+            value={@auto_add_pm}
+            phx-click={@on_toggle_auto_add_pm}
+            phx-target={@target}
+            id={"#{@id}-auto-add-pm"}
+          />
+          <label for={"#{@id}-auto-add-pm"} class="text-xs cursor-pointer select-none">
+            {dgettext("dialogs", "Auto-add PM contacts to notify list")}
+          </label>
+        </div>
+        <div class="flex items-center gap-retro-4">
+          <.checkbox
+            name="auto_whois"
+            value={@auto_whois}
+            phx-click={@on_toggle_auto_whois}
+            phx-target={@target}
+            id={"#{@id}-auto-whois"}
+          />
+          <label for={"#{@id}-auto-whois"} class="text-xs cursor-pointer select-none">
+            {dgettext("dialogs", "Perform WHOIS on notify nicks when they come online")}
+          </label>
+        </div>
+      </div>
+
+      <%!-- Entries table --%>
+      <div class="flex-1 min-h-0 overflow-y-auto retro-scrollbar">
+        <.table>
+          <.table_header>
+            <.table_row>
+              <.table_head>{dgettext("dialogs", "Nick")}</.table_head>
+              <.table_head>{dgettext("dialogs", "Status")}</.table_head>
+              <.table_head>{dgettext("dialogs", "Last Seen")}</.table_head>
+            </.table_row>
+          </.table_header>
+          <.table_body>
+            <.table_row
+              :for={entry <- @entries}
+              class={
+                if(@selected_entry == entry.tracked_nickname,
+                  do: "bg-selection-bg text-selection-fg",
+                  else: ""
+                )
+              }
+              phx-click={@on_select}
+              phx-target={@target}
+              phx-value-nickname={entry.tracked_nickname}
+              data-testid={"notify-list-row-#{entry.tracked_nickname}"}
+            >
+              <.table_cell class="font-bold">{entry.tracked_nickname}</.table_cell>
+              <.table_cell>
+                <.online_status online={entry.online} />
+              </.table_cell>
+              <.table_cell class="text-xs">{Map.get(entry, :last_seen_at, "")}</.table_cell>
+            </.table_row>
+          </.table_body>
+        </.table>
+      </div>
+
+      <%!-- CRUD buttons --%>
+      <div class="flex gap-retro-4">
+        <.button size="sm" variant="outline" phx-click={@on_add} phx-target={@target}>
+          <:icon><Icons.icon_btn_add class="w-4 h-4" /></:icon>
+          {dgettext("dialogs", "Add")}
+        </.button>
+        <.button
+          size="sm"
+          variant="outline"
+          phx-click={@on_edit}
+          phx-target={@target}
+          disabled={@selected_entry == nil}
+        >
+          <:icon><Icons.icon_btn_edit class="w-4 h-4" /></:icon>
+          {dgettext("dialogs", "Edit")}
+        </.button>
+        <.button
+          size="sm"
+          variant="outline"
+          phx-click={@on_remove}
+          phx-target={@target}
+          phx-value-nickname={@selected_entry}
+          disabled={@selected_entry == nil}
+        >
+          <:icon><Icons.icon_btn_remove class="w-4 h-4" /></:icon>
+          {dgettext("dialogs", "Remove")}
+        </.button>
+      </div>
+
+      <%!-- Notify Add Sub-Dialog --%>
+      <.notify_add_sub_form :if={@show_add_dialog} target={@target} />
+      <%!-- Notify Edit Sub-Dialog --%>
+      <.notify_edit_sub_form
+        :if={@show_edit_dialog}
+        target={@target}
+        selected_entry={@selected_entry}
+        selected_note={@selected_note}
+      />
+    </div>
     """
   end
 
@@ -172,70 +218,68 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
 
   defp notify_add_sub_form(assigns) do
     ~H"""
-    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
-      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
-        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">
-            {dgettext("dialogs", "Add Notify Entry")}
-          </span>
-          <div class="ml-auto">
-            <button
-              type="button"
-              aria-label={dgettext("dialogs", "Close")}
-              phx-click="notify_add_cancel"
-              phx-target={@target}
+    <.dialog
+      id="notify-add-modal"
+      show
+      scope={:window}
+      on_cancel={JS.push("notify_add_cancel", target: @target)}
+      class="md:max-w-sm"
+    >
+      <.dialog_header
+        id="notify-add-modal"
+        title={dgettext("dialogs", "Add Notify Entry")}
+        on_close={JS.push("notify_add_cancel", target: @target)}
+      >
+        <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
+      </.dialog_header>
+      <.dialog_body>
+        <form phx-submit="notify_add" phx-target={@target} data-testid="notify-add-form">
+          <div class="flex flex-col gap-1.5 mb-2">
+            <label class="text-xs font-bold" for="notify-add-nickname">
+              {dgettext("dialogs", "Nickname:")}
+            </label>
+            <.input
+              type="text"
+              id="notify-add-nickname"
+              name="nickname"
+              maxlength="16"
+              required
+              autocomplete="off"
+              class="w-full"
             />
           </div>
-        </div>
-        <div class="p-2">
-          <form phx-submit="notify_add" phx-target={@target} data-testid="notify-add-form">
-            <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="notify-add-nickname">
-                {dgettext("dialogs", "Nickname:")}
-              </label>
-              <.input
-                type="text"
-                id="notify-add-nickname"
-                name="nickname"
-                maxlength="16"
-                required
-                autocomplete="off"
-                class="w-full"
-              />
-            </div>
-            <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="notify-add-note">
-                {dgettext("dialogs", "Note:")}
-              </label>
-              <.input
-                type="text"
-                id="notify-add-note"
-                name="note"
-                maxlength="200"
-                autocomplete="off"
-                class="w-full"
-              />
-            </div>
-            <div class="flex justify-end gap-2">
-              <.button type="submit" size="sm">
-                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "OK")}
-              </.button>
-              <.button
-                type="button"
-                size="sm"
-                variant="outline"
-                phx-click="notify_add_cancel"
-                phx-target={@target}
-              >
-                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "Cancel")}
-              </.button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+          <div class="flex flex-col gap-1.5 mb-2">
+            <label class="text-xs font-bold" for="notify-add-note">
+              {dgettext("dialogs", "Note:")}
+            </label>
+            <.input
+              type="text"
+              id="notify-add-note"
+              name="note"
+              maxlength="200"
+              autocomplete="off"
+              class="w-full"
+            />
+          </div>
+          <div class="flex justify-end gap-2">
+            <.button type="submit" size="sm">
+              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "OK")}
+            </.button>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click="notify_add_cancel"
+              phx-target={@target}
+            >
+              <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Cancel")}
+            </.button>
+          </div>
+        </form>
+      </.dialog_body>
+    </.dialog>
     """
   end
 
@@ -245,70 +289,68 @@ defmodule RetroHexChatWeb.Components.UI.NotifyList do
 
   defp notify_edit_sub_form(assigns) do
     ~H"""
-    <div class="fixed inset-0 z-modal-above bg-black/50 flex items-center justify-center">
-      <div class="bg-surface shadow-retro-window p-[3px] w-full max-w-sm">
-        <div class="bg-title-bar flex items-center gap-retro-4 px-retro-2 py-retro-2">
-          <span class="text-xs font-bold text-white truncate select-none">
-            {dgettext("dialogs", "Edit Notify Entry")}
-          </span>
-          <div class="ml-auto">
-            <button
-              type="button"
-              aria-label={dgettext("dialogs", "Close")}
-              phx-click="notify_edit_cancel"
-              phx-target={@target}
+    <.dialog
+      id="notify-edit-modal"
+      show
+      scope={:window}
+      on_cancel={JS.push("notify_edit_cancel", target: @target)}
+      class="md:max-w-sm"
+    >
+      <.dialog_header
+        id="notify-edit-modal"
+        title={dgettext("dialogs", "Edit Notify Entry")}
+        on_close={JS.push("notify_edit_cancel", target: @target)}
+      >
+        <:icon><Icons.icon_btn_bell class="w-4 h-4" /></:icon>
+      </.dialog_header>
+      <.dialog_body>
+        <form phx-submit="notify_edit" phx-target={@target} data-testid="notify-edit-form">
+          <div class="flex flex-col gap-1.5 mb-2">
+            <label class="text-xs font-bold" for="notify-edit-nickname">
+              {dgettext("dialogs", "Nickname:")}
+            </label>
+            <.input
+              type="text"
+              id="notify-edit-nickname"
+              name="nickname"
+              value={@selected_entry}
+              readonly
+              class="w-full input-readonly"
             />
           </div>
-        </div>
-        <div class="p-2">
-          <form phx-submit="notify_edit" phx-target={@target} data-testid="notify-edit-form">
-            <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="notify-edit-nickname">
-                {dgettext("dialogs", "Nickname:")}
-              </label>
-              <.input
-                type="text"
-                id="notify-edit-nickname"
-                name="nickname"
-                value={@selected_entry}
-                readonly
-                class="w-full input-readonly"
-              />
-            </div>
-            <div class="flex flex-col gap-1.5 mb-2">
-              <label class="text-xs font-bold" for="notify-edit-note">
-                {dgettext("dialogs", "Note:")}
-              </label>
-              <.input
-                type="text"
-                id="notify-edit-note"
-                name="note"
-                value={@selected_note}
-                maxlength="200"
-                autocomplete="off"
-                class="w-full"
-              />
-            </div>
-            <div class="flex justify-end gap-2">
-              <.button type="submit" size="sm">
-                <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "OK")}
-              </.button>
-              <.button
-                type="button"
-                size="sm"
-                variant="outline"
-                phx-click="notify_edit_cancel"
-                phx-target={@target}
-              >
-                <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-                {dgettext("dialogs", "Cancel")}
-              </.button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+          <div class="flex flex-col gap-1.5 mb-2">
+            <label class="text-xs font-bold" for="notify-edit-note">
+              {dgettext("dialogs", "Note:")}
+            </label>
+            <.input
+              type="text"
+              id="notify-edit-note"
+              name="note"
+              value={@selected_note}
+              maxlength="200"
+              autocomplete="off"
+              class="w-full"
+            />
+          </div>
+          <div class="flex justify-end gap-2">
+            <.button type="submit" size="sm">
+              <:icon><Icons.icon_checkmark class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "OK")}
+            </.button>
+            <.button
+              type="button"
+              size="sm"
+              variant="outline"
+              phx-click="notify_edit_cancel"
+              phx-target={@target}
+            >
+              <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+              {dgettext("dialogs", "Cancel")}
+            </.button>
+          </div>
+        </form>
+      </.dialog_body>
+    </.dialog>
     """
   end
 

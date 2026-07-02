@@ -6,7 +6,7 @@
 |-------|--------|-------|
 | 1 — Desktop shell | **complete** (2026-07-02) | Full `make ci` 9/9 green; browser smoke done (only <720px stacked check pending — needs devtools responsive mode; untouched generic WM code) |
 | 2 — Pilot + recipe | **complete** (2026-07-02) | Recipe final; dialyzer runs with the Phase 3 batch gate |
-| 3 — Tools/Settings batch | in progress | 6/8 done (+ Perform, managed, open-on-tab). Next: NotifyList, then AddressBook (both always-mounted candidates) |
+| 3 — Tools/Settings batch | in progress | 7/8 done (+ NotifyList, managed — presence mutates the session, not the island). Last: AddressBook |
 | 4 — View/Account batch | not started | |
 | 5 — Admin batch | not started | |
 | 6 — Unify + cleanup | not started | |
@@ -112,6 +112,14 @@ hold for the chat and extend:
 - `hook.command` takes `(action, id)` — only the `handleEvent` callback takes the
   `{action, id}` object. Passing the object to `command` silently no-ops (it
   pushes `window_open` for id `undefined`) — easy test bug.
+- KNOWN FLAKE (pre-existing, Phase 6 candidate): channel_moderation_context_menu
+  and channel_central feature tests race the second user's /join against channel
+  membership ("user not in channel" / "no process") — nondeterministic across
+  identical runs. Don't burn a bisect on it again; rerun the file to confirm.
+- "Receives updates while closed" only forces always-mounted when the updates
+  target the ISLAND (send_update). If they mutate the parent's session
+  read-model, a managed island gets fresh state at mount — NotifyList is
+  managed despite live buddy-status updates.
 - Open-on-tab for a managed window: `Windows.open(socket, id)` FIRST, then
   `send_update(island, open: tab)` — confirms the seed gotcha (island must exist
   in the patch for the directive to land).
