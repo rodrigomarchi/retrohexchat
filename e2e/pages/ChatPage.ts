@@ -570,7 +570,7 @@ export class ChatPage {
       '#bot-management-dialog [role="dialog"]',
     );
     this.adminConsoleDialog = page.locator(
-      '#admin-console-dialog [role="dialog"]',
+      '[data-testid="admin-console-window"]',
     );
     this.adminConsoleInput = page.locator('#admin-console-input');
     this.adminConsoleOutput = page.getByTestId('admin-console-output');

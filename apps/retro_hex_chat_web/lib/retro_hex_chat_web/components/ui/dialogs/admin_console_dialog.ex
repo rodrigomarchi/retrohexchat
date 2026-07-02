@@ -96,11 +96,34 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
 
   @spec admin_console_dialog(map()) :: Phoenix.LiveView.Rendered.t()
   attr :target, :any, default: nil
+  attr :windowed, :boolean, default: false
 
   def admin_console_dialog(assigns) do
     ~H"""
     <div
-      :if={@show}
+      :if={@windowed}
+      id={"#{@id}-content"}
+      data-testid="admin-console-panel"
+      class="flex h-full min-h-0 flex-col gap-retro-8"
+    >
+      <div class="min-h-0 flex-1 overflow-y-auto">
+        <.admin_console_tabs {assigns} />
+      </div>
+      <div class="flex justify-end">
+        <.button
+          type="button"
+          variant="outline"
+          phx-click="clear_admin_console"
+          phx-target={@target}
+        >
+          <:icon><Icons.icon_trash class="w-[14px] h-[14px]" /></:icon>
+          {dgettext("dialogs", "Clear")}
+        </.button>
+      </div>
+    </div>
+
+    <div
+      :if={not @windowed and @show}
       phx-window-keydown="close_admin_console"
       phx-key="Escape"
     >
@@ -109,221 +132,7 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
           <:icon><Icons.icon_dialog_admin_console class="w-[16px] h-[16px]" /></:icon>
         </.dialog_header>
         <.dialog_body>
-          <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
-            <.tabs_list class="flex flex-wrap">
-              <.admin_tab
-                target={@target}
-                builder={builder}
-                value="server_settings"
-                label={dgettext("dialogs", "Server Settings")}
-                icon_fn={:icon_server}
-                on_tab={@on_tab}
-              />
-              <.admin_tab
-                target={@target}
-                builder={builder}
-                value="users"
-                label={dgettext("dialogs", "Users")}
-                icon_fn={:icon_tab_nicklist}
-                on_tab={@on_tab}
-              />
-              <.admin_tab
-                target={@target}
-                builder={builder}
-                value="channels"
-                label={dgettext("dialogs", "Channels")}
-                icon_fn={:icon_channels}
-                on_tab={@on_tab}
-              />
-              <.admin_tab
-                target={@target}
-                builder={builder}
-                value="motd"
-                label={dgettext("dialogs", "MOTD")}
-                icon_fn={:icon_notepad}
-                on_tab={@on_tab}
-              />
-              <.admin_tab
-                target={@target}
-                builder={builder}
-                value="broadcast"
-                label={dgettext("dialogs", "Broadcast")}
-                icon_fn={:icon_megaphone}
-                on_tab={@on_tab}
-              />
-              <.admin_tab
-                target={@target}
-                builder={builder}
-                value="audit_log"
-                label={dgettext("dialogs", "Audit Log")}
-                icon_fn={:icon_notepad}
-                on_tab={@on_tab}
-              />
-              <.admin_tab
-                target={@target}
-                builder={builder}
-                value="turn"
-                label={dgettext("dialogs", "TURN")}
-                icon_fn={:icon_websocket}
-                on_tab={@on_tab}
-              />
-              <.admin_tab
-                target={@target}
-                builder={builder}
-                value="danger_zone"
-                label={dgettext("dialogs", "Danger Zone")}
-                icon_fn={:icon_warning}
-                on_tab={@on_tab}
-              />
-              <.admin_tab
-                target={@target}
-                builder={builder}
-                value="console"
-                label={dgettext("dialogs", "Console")}
-                icon_fn={:icon_terminal}
-                on_tab={@on_tab}
-              />
-            </.tabs_list>
-
-            <.tabs_content
-              :for={tab <- admin_shell_tabs()}
-              value={tab}
-              builder={builder}
-              class="min-h-[240px]"
-            >
-              <div
-                class="shadow-retro-sunken bg-white h-[240px]"
-                data-testid={"admin-console-tab-#{tab}"}
-              />
-            </.tabs_content>
-
-            <.tabs_content value="motd" builder={builder}>
-              <.motd_tab
-                target={@target}
-                content={@motd_content}
-                result={@motd_result}
-                editable={@motd_editable}
-                on_set={@on_motd_set}
-                on_clear={@on_motd_clear}
-                on_refresh={@on_motd_refresh}
-              />
-            </.tabs_content>
-
-            <.tabs_content value="broadcast" builder={builder}>
-              <.broadcast_tab
-                target={@target}
-                result={@broadcast_result}
-                can_wallops={@broadcast_can_wallops}
-                can_announce={@broadcast_can_announce}
-                on_send={@on_broadcast_send}
-              />
-            </.tabs_content>
-
-            <.tabs_content value="turn" builder={builder}>
-              <.turn_tab
-                target={@target}
-                stats={@turn_stats}
-                allocations={@turn_allocations}
-                result={@turn_result}
-                can_refresh={@turn_can_refresh}
-                on_refresh={@on_turn_refresh}
-              />
-            </.tabs_content>
-
-            <.tabs_content value="audit_log" builder={builder}>
-              <.audit_log_tab
-                target={@target}
-                text={@audit_log_text}
-                last={@audit_log_last}
-                user={@audit_log_user}
-                result={@audit_log_result}
-                can_refresh={@audit_log_can_refresh}
-                on_refresh={@on_audit_log_refresh}
-              />
-            </.tabs_content>
-
-            <.tabs_content value="server_settings" builder={builder}>
-              <.server_settings_tab
-                target={@target}
-                info={@server_settings_info}
-                settings_text={@server_settings_text}
-                values={@server_settings_values}
-                result={@server_settings_result}
-                can_edit={@server_settings_can_edit}
-                on_save={@on_server_settings_save}
-                on_refresh={@on_server_settings_refresh}
-                on_singleplayer={@on_singleplayer}
-              />
-            </.tabs_content>
-
-            <.tabs_content value="users" builder={builder}>
-              <.users_tab
-                target={@target}
-                text={@users_text}
-                banlist_text={@users_banlist_text}
-                result={@users_result}
-                search={@users_search}
-                online_only={@users_online_only}
-                info_nick={@users_info_nick}
-                can_refresh={@users_can_refresh}
-                can_set_admin_role={@users_can_set_admin_role}
-                on_refresh={@on_users_refresh}
-                on_info={@on_users_info}
-                on_ban={@on_users_ban}
-                on_unban={@on_users_unban}
-                on_kick={@on_users_kick}
-                on_mute={@on_users_mute}
-                on_unmute={@on_users_unmute}
-                on_rename={@on_users_rename}
-                on_role={@on_users_role}
-                on_ns_info={@on_users_ns_info}
-                on_ns_drop={@on_users_ns_drop}
-                on_ns_resetpass={@on_users_ns_resetpass}
-              />
-            </.tabs_content>
-
-            <.tabs_content value="channels" builder={builder}>
-              <.channels_tab
-                target={@target}
-                text={@channels_text}
-                banlist_text={@channels_banlist_text}
-                result={@channels_result}
-                search={@channels_search}
-                info_channel={@channels_info_channel}
-                create_name={@channels_create_name}
-                can_refresh={@channels_can_refresh}
-                on_refresh={@on_channels_refresh}
-                on_info={@on_channels_info}
-                on_create={@on_channels_create}
-                on_delete={@on_channels_delete}
-                on_purge={@on_channels_purge}
-                on_cs_info={@on_channels_cs_info}
-                on_cs_drop={@on_channels_cs_drop}
-                on_cs_transfer={@on_channels_cs_transfer}
-                on_cs_access_list={@on_channels_cs_access_list}
-                on_cs_access_add={@on_channels_cs_access_add}
-                on_cs_access_del={@on_channels_cs_access_del}
-              />
-            </.tabs_content>
-
-            <.tabs_content value="danger_zone" builder={builder}>
-              <.danger_zone_tab
-                target={@target}
-                preview={@danger_zone_preview}
-                result={@danger_zone_result}
-                confirm={@danger_zone_confirm}
-                server_name={@danger_zone_server_name}
-                can_execute={@danger_zone_can_execute}
-                on_preview={@on_danger_zone_preview}
-                on_change={@on_danger_zone_change}
-                on_execute={@on_danger_zone_execute}
-              />
-            </.tabs_content>
-
-            <.tabs_content value="console" builder={builder}>
-              <.console_tab results={@results} target={@target} />
-            </.tabs_content>
-          </.tabs>
+          <.admin_console_tabs {assigns} />
         </.dialog_body>
         <.dialog_footer>
           <.button
@@ -342,6 +151,226 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         </.dialog_footer>
       </.dialog>
     </div>
+    """
+  end
+
+  defp admin_console_tabs(assigns) do
+    ~H"""
+    <.tabs :let={builder} id={"#{@id}-tabs"} default={@active_tab}>
+      <.tabs_list class="flex flex-wrap">
+        <.admin_tab
+          target={@target}
+          builder={builder}
+          value="server_settings"
+          label={dgettext("dialogs", "Server Settings")}
+          icon_fn={:icon_server}
+          on_tab={@on_tab}
+        />
+        <.admin_tab
+          target={@target}
+          builder={builder}
+          value="users"
+          label={dgettext("dialogs", "Users")}
+          icon_fn={:icon_tab_nicklist}
+          on_tab={@on_tab}
+        />
+        <.admin_tab
+          target={@target}
+          builder={builder}
+          value="channels"
+          label={dgettext("dialogs", "Channels")}
+          icon_fn={:icon_channels}
+          on_tab={@on_tab}
+        />
+        <.admin_tab
+          target={@target}
+          builder={builder}
+          value="motd"
+          label={dgettext("dialogs", "MOTD")}
+          icon_fn={:icon_notepad}
+          on_tab={@on_tab}
+        />
+        <.admin_tab
+          target={@target}
+          builder={builder}
+          value="broadcast"
+          label={dgettext("dialogs", "Broadcast")}
+          icon_fn={:icon_megaphone}
+          on_tab={@on_tab}
+        />
+        <.admin_tab
+          target={@target}
+          builder={builder}
+          value="audit_log"
+          label={dgettext("dialogs", "Audit Log")}
+          icon_fn={:icon_notepad}
+          on_tab={@on_tab}
+        />
+        <.admin_tab
+          target={@target}
+          builder={builder}
+          value="turn"
+          label={dgettext("dialogs", "TURN")}
+          icon_fn={:icon_websocket}
+          on_tab={@on_tab}
+        />
+        <.admin_tab
+          target={@target}
+          builder={builder}
+          value="danger_zone"
+          label={dgettext("dialogs", "Danger Zone")}
+          icon_fn={:icon_warning}
+          on_tab={@on_tab}
+        />
+        <.admin_tab
+          target={@target}
+          builder={builder}
+          value="console"
+          label={dgettext("dialogs", "Console")}
+          icon_fn={:icon_terminal}
+          on_tab={@on_tab}
+        />
+      </.tabs_list>
+
+      <.tabs_content
+        :for={tab <- admin_shell_tabs()}
+        value={tab}
+        builder={builder}
+        class="min-h-[240px]"
+      >
+        <div
+          class="shadow-retro-sunken bg-white h-[240px]"
+          data-testid={"admin-console-tab-#{tab}"}
+        />
+      </.tabs_content>
+
+      <.tabs_content value="motd" builder={builder}>
+        <.motd_tab
+          target={@target}
+          content={@motd_content}
+          result={@motd_result}
+          editable={@motd_editable}
+          on_set={@on_motd_set}
+          on_clear={@on_motd_clear}
+          on_refresh={@on_motd_refresh}
+        />
+      </.tabs_content>
+
+      <.tabs_content value="broadcast" builder={builder}>
+        <.broadcast_tab
+          target={@target}
+          result={@broadcast_result}
+          can_wallops={@broadcast_can_wallops}
+          can_announce={@broadcast_can_announce}
+          on_send={@on_broadcast_send}
+        />
+      </.tabs_content>
+
+      <.tabs_content value="turn" builder={builder}>
+        <.turn_tab
+          target={@target}
+          stats={@turn_stats}
+          allocations={@turn_allocations}
+          result={@turn_result}
+          can_refresh={@turn_can_refresh}
+          on_refresh={@on_turn_refresh}
+        />
+      </.tabs_content>
+
+      <.tabs_content value="audit_log" builder={builder}>
+        <.audit_log_tab
+          target={@target}
+          text={@audit_log_text}
+          last={@audit_log_last}
+          user={@audit_log_user}
+          result={@audit_log_result}
+          can_refresh={@audit_log_can_refresh}
+          on_refresh={@on_audit_log_refresh}
+        />
+      </.tabs_content>
+
+      <.tabs_content value="server_settings" builder={builder}>
+        <.server_settings_tab
+          target={@target}
+          info={@server_settings_info}
+          settings_text={@server_settings_text}
+          values={@server_settings_values}
+          result={@server_settings_result}
+          can_edit={@server_settings_can_edit}
+          on_save={@on_server_settings_save}
+          on_refresh={@on_server_settings_refresh}
+          on_singleplayer={@on_singleplayer}
+        />
+      </.tabs_content>
+
+      <.tabs_content value="users" builder={builder}>
+        <.users_tab
+          target={@target}
+          text={@users_text}
+          banlist_text={@users_banlist_text}
+          result={@users_result}
+          search={@users_search}
+          online_only={@users_online_only}
+          info_nick={@users_info_nick}
+          can_refresh={@users_can_refresh}
+          can_set_admin_role={@users_can_set_admin_role}
+          on_refresh={@on_users_refresh}
+          on_info={@on_users_info}
+          on_ban={@on_users_ban}
+          on_unban={@on_users_unban}
+          on_kick={@on_users_kick}
+          on_mute={@on_users_mute}
+          on_unmute={@on_users_unmute}
+          on_rename={@on_users_rename}
+          on_role={@on_users_role}
+          on_ns_info={@on_users_ns_info}
+          on_ns_drop={@on_users_ns_drop}
+          on_ns_resetpass={@on_users_ns_resetpass}
+        />
+      </.tabs_content>
+
+      <.tabs_content value="channels" builder={builder}>
+        <.channels_tab
+          target={@target}
+          text={@channels_text}
+          banlist_text={@channels_banlist_text}
+          result={@channels_result}
+          search={@channels_search}
+          info_channel={@channels_info_channel}
+          create_name={@channels_create_name}
+          can_refresh={@channels_can_refresh}
+          on_refresh={@on_channels_refresh}
+          on_info={@on_channels_info}
+          on_create={@on_channels_create}
+          on_delete={@on_channels_delete}
+          on_purge={@on_channels_purge}
+          on_cs_info={@on_channels_cs_info}
+          on_cs_drop={@on_channels_cs_drop}
+          on_cs_transfer={@on_channels_cs_transfer}
+          on_cs_access_list={@on_channels_cs_access_list}
+          on_cs_access_add={@on_channels_cs_access_add}
+          on_cs_access_del={@on_channels_cs_access_del}
+        />
+      </.tabs_content>
+
+      <.tabs_content value="danger_zone" builder={builder}>
+        <.danger_zone_tab
+          target={@target}
+          preview={@danger_zone_preview}
+          result={@danger_zone_result}
+          confirm={@danger_zone_confirm}
+          server_name={@danger_zone_server_name}
+          can_execute={@danger_zone_can_execute}
+          on_preview={@on_danger_zone_preview}
+          on_change={@on_danger_zone_change}
+          on_execute={@on_danger_zone_execute}
+        />
+      </.tabs_content>
+
+      <.tabs_content value="console" builder={builder}>
+        <.console_tab results={@results} target={@target} />
+      </.tabs_content>
+    </.tabs>
     """
   end
 

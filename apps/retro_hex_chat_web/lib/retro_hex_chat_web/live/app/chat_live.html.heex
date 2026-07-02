@@ -566,6 +566,31 @@
       />
     </.desktop_window>
 
+    <%!-- Admin Console — server-managed, admin-gated. The open event is the
+          server-side authz for a forged window_open; the render guard here is
+          the second line of defense (no admin content for non-admins). --%>
+    <.desktop_window
+      :if={admin?(@session) and "admin-console-dialog" in @open_windows}
+      id="admin-console-dialog"
+      title={dgettext("chat", "Admin Console")}
+      managed
+      default_x={140}
+      default_y={50}
+      width={680}
+      height={580}
+      min_width={520}
+      min_height={400}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="admin-console-window"
+    >
+      <:icon><Icons.icon_dialog_admin_console class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog}
+        id={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog.id()}
+        session={@session}
+      />
+    </.desktop_window>
+
     <:taskbar>
       <.taskbar id="chat-taskbar">
         <:start>
@@ -607,6 +632,13 @@
           label={dgettext("chat", "User Lookup")}
         >
           <:icon><Icons.icon_btn_search class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={admin?(@session) and "admin-console-dialog" in @open_windows}
+          window="admin-console-dialog"
+          label={dgettext("chat", "Admin Console")}
+        >
+          <:icon><Icons.icon_dialog_admin_console class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
           :if={"timers" in @open_windows}
@@ -769,11 +801,4 @@
   module={RetroHexChatWeb.ChatLive.Components.BotManagementDialog}
   id={RetroHexChatWeb.ChatLive.Components.BotManagementDialog.id()}
   is_admin={admin?(@session)}
-/>
-
-<%!-- Admin Console dialog --%>
-<.live_component
-  module={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog}
-  id={RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog.id()}
-  session={@session}
 />

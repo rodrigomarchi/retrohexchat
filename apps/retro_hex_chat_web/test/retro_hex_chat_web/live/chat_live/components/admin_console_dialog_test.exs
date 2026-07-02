@@ -22,18 +22,22 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialogTest do
     assert AdminConsoleDialog.id() == "admin-console-dialog"
   end
 
-  test "renders only the (empty) mount wrapper when closed (show defaults false)" do
+  test "renders the bare windowed panel with no modal chrome" do
+    # The island is a desktop window now: it renders the content panel (the
+    # `desktop_window` supplies the title bar/close), never the modal dialog.
     html = dialog(%{})
 
     assert html =~ ~s(id="admin-console-dialog-mount")
-    refute html =~ ~s(data-testid="admin-console-output")
+    assert html =~ ~s(id="admin-console-dialog-content")
+    assert html =~ ~s(data-testid="admin-console-panel")
+    refute html =~ "phx-show-modal"
+    refute html =~ "admin-console-dialog-show-trigger"
   end
 
-  test "renders the console output area by default when shown" do
-    html = dialog(%{show: true})
+  test "renders the console output area (default active tab)" do
+    html = dialog(%{})
 
-    assert html =~ ~s(id="admin-console-dialog")
-    assert html =~ "Admin Console"
+    assert html =~ ~s(data-testid="admin-console-panel")
     assert html =~ ~s(data-testid="admin-console-output")
   end
 

@@ -1265,6 +1265,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
       <.admin_console_dialog
         id={@id}
         target={@myself}
+        windowed
         show={@show}
         active_tab={@active_tab}
         results={@results}

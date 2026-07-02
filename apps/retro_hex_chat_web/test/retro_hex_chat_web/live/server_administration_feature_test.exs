@@ -1003,6 +1003,35 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
     end
   end
 
+  describe "Admin Console window gating" do
+    test "admin opens the console as a managed desktop window", %{conn: conn} do
+      view = connect_admin(conn)
+      html = open_admin(view)
+
+      assert html =~ ~s(data-testid="admin-console-window")
+      assert has_element?(view, "#admin-console-dialog-tabs")
+    end
+
+    test "a non-admin cannot open the console, and a forged window_open renders nothing",
+         %{conn: conn} do
+      view = connect_user(conn, "Rando#{uid()}")
+
+      # The opener event is gated server-side — this is the authorization for a
+      # forged open, since the console is a managed window.
+      html = open_admin(view)
+      refute html =~ ~s(data-testid="admin-console-window")
+      refute has_element?(view, "#admin-console-dialog-tabs")
+      assert html =~ "restricted to server administrators"
+
+      # Even if the client forges the generic window_open, the render guard keeps
+      # admin content out of a non-admin's DOM.
+      render_hook(view, "window_open", %{"id" => "admin-console-dialog"})
+      html = render(view)
+      refute html =~ ~s(data-testid="admin-console-window")
+      refute has_element?(view, "#admin-console-dialog-tabs")
+    end
+  end
+
   defp connect_user(conn, nick) do
     {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
