@@ -45,7 +45,15 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
   @spec chat_context_menu(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_context_menu(assigns) do
     ~H"""
-    <.context_menu id="chat-context-menu" show={@visible} x={@x} y={@y} class={@class} {@rest}>
+    <.context_menu
+      id="chat-context-menu"
+      show={@visible}
+      x={@x}
+      y={@y}
+      reposition
+      class={@class}
+      {@rest}
+    >
       <%= case @type do %>
         <% :nick -> %>
           {nick_menu_items(assigns)}

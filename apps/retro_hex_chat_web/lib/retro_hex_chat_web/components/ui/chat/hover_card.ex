@@ -102,25 +102,55 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
           </div>
 
           <%!-- Info fields --%>
-          <.info_field :if={@real_name} label={dgettext("chat", "Name")} value={@real_name} />
-          <.info_field :if={@away} label={dgettext("chat", "Away")} value={@away} />
-          <.info_field :if={@host} label={dgettext("chat", "Host")} value={@host} />
-          <.info_field :if={@server} label={dgettext("chat", "Server")} value={@server} />
-          <.info_field :if={@online_since} label={dgettext("chat", "Online")} value={@online_since} />
-          <.info_field :if={@online_for} label={dgettext("chat", "For")} value={@online_for} />
-          <.info_field :if={@idle} label={dgettext("chat", "Idle")} value={@idle} />
-          <.info_field :if={@client} label={dgettext("chat", "Client")} value={@client} />
-          <.info_field :if={@browser} label={dgettext("chat", "Browser")} value={@browser} />
-          <.info_field :if={@os} label={dgettext("chat", "OS")} value={@os} />
+          <.info_field :if={@real_name} label={dgettext("chat", "Name")} value={@real_name}>
+            <:icon><Icons.icon_status_user class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@away} label={dgettext("chat", "Away")} value={@away}>
+            <:icon><Icons.icon_btn_dnd class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@host} label={dgettext("chat", "Host")} value={@host}>
+            <:icon><Icons.icon_link class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@server} label={dgettext("chat", "Server")} value={@server}>
+            <:icon><Icons.icon_server class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@online_since} label={dgettext("chat", "Online")} value={@online_since}>
+            <:icon><Icons.icon_clock class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@online_for} label={dgettext("chat", "For")} value={@online_for}>
+            <:icon><Icons.icon_clock class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@idle} label={dgettext("chat", "Idle")} value={@idle}>
+            <:icon><Icons.icon_btn_timers class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@client} label={dgettext("chat", "Client")} value={@client}>
+            <:icon><Icons.icon_terminal class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@browser} label={dgettext("chat", "Browser")} value={@browser}>
+            <:icon><Icons.icon_globe class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@os} label={dgettext("chat", "OS")} value={@os}>
+            <:icon><Icons.icon_laptop class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
           <.info_field
             :if={@screen_resolution}
             label={dgettext("chat", "Screen")}
             value={@screen_resolution}
-          />
-          <.info_field :if={@language} label={dgettext("chat", "Lang")} value={@language} />
-          <.info_field :if={@timezone_info} label={dgettext("chat", "TZ")} value={@timezone_info} />
-          <.info_field :if={@color_depth} label={dgettext("chat", "Colors")} value={@color_depth} />
-          <.info_field :if={@contact_note} label={dgettext("chat", "Note")} value={@contact_note} />
+          >
+            <:icon><Icons.icon_tab_display class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@language} label={dgettext("chat", "Lang")} value={@language}>
+            <:icon><Icons.icon_tag class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@timezone_info} label={dgettext("chat", "TZ")} value={@timezone_info}>
+            <:icon><Icons.icon_clock class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@color_depth} label={dgettext("chat", "Colors")} value={@color_depth}>
+            <:icon><Icons.icon_palette class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
+          <.info_field :if={@contact_note} label={dgettext("chat", "Note")} value={@contact_note}>
+            <:icon><Icons.icon_notepad class="w-[14px] h-[14px]" /></:icon>
+          </.info_field>
 
           <%!-- Registration status --%>
           <div :if={@registered} class="flex items-center gap-retro-4">
@@ -130,7 +160,10 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
 
           <div :if={@channels != []} class="space-y-retro-2">
             <.separator />
-            <div class="font-bold text-muted-foreground">{dgettext("chat", "Channels")}</div>
+            <div class="flex items-center gap-retro-4 font-bold text-muted-foreground">
+              <Icons.icon_channels class="w-[14px] h-[14px]" />
+              {dgettext("chat", "Channels")}
+            </div>
             <div class="flex flex-wrap gap-retro-4">
               <.badge :for={ch <- @channels} variant="outline">{ch}</.badge>
             </div>
@@ -153,11 +186,15 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
 
   attr :label, :string, required: true
   attr :value, :string, required: true
+  slot :icon, required: true, doc: "14×14 icon depicting the field"
 
   defp info_field(assigns) do
     ~H"""
-    <div class="flex">
-      <span class="font-bold text-muted-foreground w-[60px] shrink-0">{@label}</span>
+    <div class="flex items-center gap-retro-4">
+      <span class="shrink-0 w-[14px] h-[14px] inline-flex items-center justify-center">
+        {render_slot(@icon)}
+      </span>
+      <span class="font-bold text-muted-foreground w-[52px] shrink-0">{@label}</span>
       <span class="truncate">{@value}</span>
     </div>
     """

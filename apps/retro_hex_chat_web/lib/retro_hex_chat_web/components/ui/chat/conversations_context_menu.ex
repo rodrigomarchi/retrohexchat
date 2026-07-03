@@ -52,6 +52,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       x={@x}
       y={@y}
       position="absolute"
+      reposition
       class={@class}
       {@rest}
     >

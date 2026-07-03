@@ -119,6 +119,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_p2p(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_chat(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_channels(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_globe(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_websocket(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_webrtc(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_megaphone(assigns), to: RetroHexChatWeb.Icons.Communication

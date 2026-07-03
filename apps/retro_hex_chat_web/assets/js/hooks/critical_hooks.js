@@ -16,6 +16,7 @@ import ShortcutDispatcherHook from "./input/shortcut_dispatcher_hook";
 import SoundHook from "./input/sound_hook";
 import TitleFlashHook from "./notifications/title_flash_hook";
 import MenuBarHook from "./ui/menu_bar_hook";
+import MenuRepositionHook from "./ui/menu_reposition_hook";
 import ToolbarGroupHook from "./ui/toolbar_group_hook";
 import ConversationsHook from "./ui/conversations_hook";
 import NicklistHook from "./ui/nicklist_hook";
@@ -76,6 +77,7 @@ export const criticalHooks = {
   SoundHook: SoundHook,
   TitleFlashHook: TitleFlashHook,
   MenuBarHook: MenuBarHook,
+  MenuRepositionHook: MenuRepositionHook,
   ToolbarGroupHook: ToolbarGroupHook,
   ConversationsHook: ConversationsHook,
   NicklistHook: NicklistHook,

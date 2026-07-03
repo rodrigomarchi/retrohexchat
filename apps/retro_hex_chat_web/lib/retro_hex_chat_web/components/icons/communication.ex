@@ -186,6 +186,33 @@ defmodule RetroHexChatWeb.Icons.Communication do
 
   attr :class, :string, default: nil
 
+  @spec icon_globe(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_globe(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <!-- Shadow -->
+      <circle cx="16" cy="16" r="11" fill="#000" transform="translate(1,1)" />
+      
+    <!-- Globe base + ocean -->
+      <circle cx="16" cy="16" r="11" fill="#C0E0FF" stroke="#000080" stroke-width="1.5" />
+      
+    <!-- Grid: meridian ellipse, equator, prime meridian -->
+      <ellipse cx="16" cy="16" rx="5" ry="11" fill="none" stroke="#000080" stroke-width="1.5" />
+      <line x1="16" y1="5" x2="16" y2="27" stroke="#000080" stroke-width="1.5" />
+      <line x1="5" y1="16" x2="27" y2="16" stroke="#000080" stroke-width="1.5" />
+      
+    <!-- Latitude lines -->
+      <line x1="7.5" y1="11" x2="24.5" y2="11" stroke="#000080" stroke-width="1" />
+      <line x1="7.5" y1="21" x2="24.5" y2="21" stroke="#000080" stroke-width="1" />
+      
+    <!-- Highlight -->
+      <circle cx="12" cy="11.5" r="1.5" fill="#fff" opacity="0.7" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_websocket(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_websocket(assigns) do
     ~H"""

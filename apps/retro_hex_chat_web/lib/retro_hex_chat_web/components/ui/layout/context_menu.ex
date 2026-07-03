@@ -30,6 +30,11 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
   attr :x, :integer, default: 0
   attr :y, :integer, default: 0
   attr :position, :string, default: "fixed", values: ~w(fixed absolute)
+
+  attr :reposition, :boolean,
+    default: false,
+    doc: "Clamp within the viewport (flip left/up) via the MenuReposition hook"
+
   attr :class, :string, default: nil
   attr :rest, :global
   slot :inner_block, required: true
@@ -48,6 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
         ])
       }
       style={"left: #{@x}px; top: #{@y}px;"}
+      phx-hook={@reposition && "MenuRepositionHook"}
       data-testid={"context-menu-#{@id}"}
       data-escape-guard
       {@rest}

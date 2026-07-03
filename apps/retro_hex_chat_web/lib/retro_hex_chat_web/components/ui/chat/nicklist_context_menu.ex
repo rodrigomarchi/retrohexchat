@@ -41,7 +41,15 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
   @spec nicklist_context_menu(map()) :: Phoenix.LiveView.Rendered.t()
   def nicklist_context_menu(assigns) do
     ~H"""
-    <.context_menu id="nicklist-context-menu" show={@visible} x={@x} y={@y} class={@class} {@rest}>
+    <.context_menu
+      id="nicklist-context-menu"
+      show={@visible}
+      x={@x}
+      y={@y}
+      reposition
+      class={@class}
+      {@rest}
+    >
       <%!-- Core actions --%>
       <.context_menu_item
         on_click={unless(@is_target_self, do: @on_action)}
