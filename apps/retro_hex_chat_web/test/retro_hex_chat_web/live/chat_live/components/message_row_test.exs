@@ -153,6 +153,34 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     assert html =~ ~s(data-testid="highlighted-message")
   end
 
+  test "tags each row with the kind icon matching its type" do
+    assert row(%{id: "k1", author: "bob", content: "hi", type: :normal, timestamp: @ts}) =~
+             ~s(data-message-kind="user")
+
+    assert row(%{id: "k2", content: "joined", type: :system, timestamp: @ts}) =~
+             ~s(data-message-kind="system")
+
+    assert row(%{id: "k3", content: "boom", type: :error, timestamp: @ts}) =~
+             ~s(data-message-kind="error")
+
+    assert row(%{id: "k4", content: "svc", type: :service, timestamp: @ts}) =~
+             ~s(data-message-kind="service")
+  end
+
+  test "deleted rows use the deleted kind icon" do
+    html =
+      row(%{
+        id: "k5",
+        author: "bob",
+        content: "x",
+        type: :normal,
+        timestamp: @ts,
+        deleted_at: @ts
+      })
+
+    assert html =~ ~s(data-message-kind="deleted")
+  end
+
   test "renders a reply block when reply_to_id is present" do
     msg = %{
       id: "r1",

@@ -116,6 +116,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
             meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
             source={dgettext("chat", "Help")}
             type="system"
+            kind="help"
           >
             <.inline_help_card
               topic_id={@msg.topic_id}
@@ -129,6 +130,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
             meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
             source={dgettext("chat", "Arcade")}
             type="system"
+            kind="arcade"
           >
             <.session_card
               :if={Map.get(@msg, :session_card)}
@@ -169,6 +171,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
               timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
               meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
               source={dgettext("chat", "Deleted")}
+              kind="deleted"
             >
               <.deleted_placeholder />
             </.chat_message>

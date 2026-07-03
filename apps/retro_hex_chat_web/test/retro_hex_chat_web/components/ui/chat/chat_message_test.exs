@@ -82,4 +82,61 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
       assert html =~ ~s(title="01/01/2024 12:00")
     end
   end
+
+  describe "chat_message/1 kind icon" do
+    test "a nick-authored line shows the user glyph" do
+      html =
+        render_component(&chat_message/1,
+          type: "normal",
+          nick: "alice",
+          inner_block: %{inner_block: fn _, _ -> "hi" end}
+        )
+
+      assert html =~ ~s(data-message-kind="user")
+      assert html =~ "<svg"
+    end
+
+    test "a system origin line shows the system glyph, not the user glyph" do
+      html =
+        render_component(&chat_message/1,
+          type: "system",
+          source: "System",
+          inner_block: %{inner_block: fn _, _ -> "joined" end}
+        )
+
+      assert html =~ ~s(data-message-kind="system")
+      refute html =~ ~s(data-message-kind="user")
+    end
+
+    test "an explicit kind overrides the type-derived icon" do
+      html =
+        render_component(&chat_message/1,
+          type: "system",
+          source: "Help",
+          kind: "help",
+          inner_block: %{inner_block: fn _, _ -> "help" end}
+        )
+
+      assert html =~ ~s(data-message-kind="help")
+      refute html =~ ~s(data-message-kind="system")
+    end
+  end
+
+  describe "message_kind_icon/1" do
+    test "renders a distinct svg for each known kind" do
+      user = render_component(&message_kind_icon/1, kind: "user")
+      system = render_component(&message_kind_icon/1, kind: "system")
+
+      assert user =~ "<svg"
+      assert system =~ "<svg"
+      refute user == system
+    end
+
+    test "renders nothing for an unknown kind" do
+      html = render_component(&message_kind_icon/1, kind: "some_future_kind")
+
+      refute html =~ "<svg"
+      refute html =~ "data-message-kind"
+    end
+  end
 end
