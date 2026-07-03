@@ -238,16 +238,23 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
 
   # --- surface_peer_media (auto-join) ---
 
-  # The peer's media turned on. If we are not in the call yet, auto-join as a pure
-  # receiver: become a participant (window opens, surface renders) with our own mic
-  # and camera off — the user then chooses to enable them, no permission prompt. If
+  # The peer's media turned on. If we are not in the call yet, auto-join and open our
+  # own media by default to match the call: mic always, plus camera when the peer is
+  # sharing video. The user can mute or turn the camera off afterwards — starting open
+  # keeps the controls honest (an "on" icon means a live track). The hook acquires the
+  # media and echoes `lobby_media_call_started`, which sets the real call state; if it
+  # cannot (permission denied), it falls back to a pure receiver. While the interim
+  # "receiving" state stands, the surface still renders because the peer is sharing. If
   # we are already in, just keep the window surfaced.
   @spec surface_peer_media(Phoenix.LiveView.Socket.t(), boolean()) ::
           Phoenix.LiveView.Socket.t()
   defp surface_peer_media(socket, true) do
     if is_nil(socket.assigns.call) do
-      # We are sending nothing yet, so mic/camera are simply "not on" — NOT muted or
-      # camera-off. Keeping these false means a later enable reflects the real state.
+      start_event =
+        if socket.assigns.peer_media.video,
+          do: "lobby_media_start_video",
+          else: "lobby_media_start_audio"
+
       call = %{
         type: "receiving",
         audio_on: false,
@@ -259,7 +266,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
 
       socket
       |> assign(call: call, local_muted: false, local_camera_off: false)
-      |> push_event("lobby_media_join", %{})
+      |> push_event(start_event, %{auto: true})
       |> push_event("window_command", %{action: "open", id: "call"})
       |> summarize()
     else

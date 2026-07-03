@@ -27,7 +27,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIslandTest do
     refute html =~ "End call"
   end
 
-  test "auto-joins as a pure receiver when the peer turns media on (surface_peer_media)" do
+  test "auto-joins and surfaces the call when the peer turns media on (surface_peer_media)" do
     html =
       render_component(MediaIsland,
         id: MediaIsland.id(),
@@ -36,13 +36,15 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIslandTest do
         action: {:peer_media_changed, %{user_id: 2, audio: true, video: true}}
       )
 
-    # We are now in the call (window opens via push), the remote surface renders, and
-    # our own mic/camera are enable-on-demand (we are sending nothing yet).
+    # We are now in the call (window opens via push) and the remote surface renders.
+    # This is the synchronous interim state: the island also pushes a start event so
+    # the hook opens our own mic/camera by default, then echoes the real call state.
+    # Until that echo, we render as sending nothing (enable-on-demand controls).
     assert html =~ ~s(id="lobby-remote-video")
     assert html =~ "End call"
     assert html =~ ~s(data-lobby-media-action="enable-audio")
     assert html =~ ~s(data-lobby-media-action="enable-video")
-    # Not sending yet → no mute/camera toggles.
+    # Interim state has no live track yet → no mute/camera toggles.
     refute html =~ ~s(data-lobby-media-action="mute")
   end
 

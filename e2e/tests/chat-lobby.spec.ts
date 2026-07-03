@@ -29,7 +29,7 @@ test.describe("Universal lobby", () => {
     }
   });
 
-  test("a peer who only receives auto-joins the call and can turn on their own camera", async ({
+  test("a peer auto-joins with its own camera open by default", async ({
     browser,
   }) => {
     const alice = await newP2PUser(browser, "loba", { media: true });
@@ -51,16 +51,15 @@ test.describe("Universal lobby", () => {
       await expect(receiverLobby.remoteVideo).toBeVisible();
       await receiverLobby.expectRemoteVideoFlowing();
 
-      // The receiver is in the call but sending nothing yet, so it offers to turn
-      // the camera on rather than forcing a Start-menu round trip.
-      const enableCamera = receiverLobby.page.locator(
-        '[data-lobby-media-action="enable-video"]',
-      );
-      await expect(enableCamera).toBeVisible();
-      await enableCamera.click();
-
-      // Once the receiver enables its camera, the initiator sees it flow back.
+      // Default open: the receiver also opens its OWN camera automatically, so the
+      // initiator sees the receiver's stream flow back without any extra click. The
+      // receiver's controls are mute / camera-off toggles (a live track), not the
+      // "turn on camera" enable button.
       await initiatorLobby.expectRemoteVideoFlowing();
+      await expect(receiverLobby.cameraButton).toBeVisible();
+      await expect(
+        receiverLobby.page.locator('[data-lobby-media-action="enable-video"]'),
+      ).toBeHidden();
     } finally {
       await closeP2PUsers([alice, bob]);
     }

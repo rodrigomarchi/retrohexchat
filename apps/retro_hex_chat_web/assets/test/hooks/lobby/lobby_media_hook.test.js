@@ -59,6 +59,32 @@ describe("LobbyMediaHook auto-join", () => {
     expect(ctx.pushed.some((e) => e.event === "lobby_media_call_started")).toBe(false);
   });
 
+  it("auto-join falls back to recvonly when its own media cannot open", async () => {
+    const ctx = setup();
+    hook = ctx.hook;
+    hook.pc = {}; // PeerConnection is ready.
+
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        getUserMedia: vi
+          .fn()
+          .mockRejectedValue(Object.assign(new Error("denied"), { name: "NotAllowedError" })),
+      },
+    });
+
+    // The server asks us to open media by default (auto), but permission is denied.
+    await hook._startCall("audio", { auto: true });
+
+    // We still join the call as a pure receiver so the user can watch and listen.
+    expect(hook.inCall).toBe(true);
+    expect(hook.callType).toBe("receiving");
+    expect(hook.localStream).toBe(null);
+    // Soft device fallback, not the hard media error a first mover would get.
+    expect(ctx.pushed.some((e) => e.event === "lobby_media_error")).toBe(false);
+    expect(ctx.pushed.some((e) => e.event === "lobby_media_device_fallback")).toBe(true);
+  });
+
   it("asks the WebRTC hook to recover a remote video track stuck muted", () => {
     vi.useFakeTimers();
     const ctx = setup();

@@ -120,8 +120,12 @@ export function createRtcMediaHook(configInput) {
         }
       }
 
-      this._handleServerEvent(config.serverEvents.startAudio, () => this._startCall("audio"));
-      this._handleServerEvent(config.serverEvents.startVideo, () => this._startCall("video"));
+      this._handleServerEvent(config.serverEvents.startAudio, (payload = {}) =>
+        this._startCall("audio", payload),
+      );
+      this._handleServerEvent(config.serverEvents.startVideo, (payload = {}) =>
+        this._startCall("video", payload),
+      );
       this._handleServerEvent(config.serverEvents.endCall, (payload = {}) =>
         this._endCall(payload.reason || "ended", { notify: payload.notify === true }),
       );
@@ -193,7 +197,7 @@ export function createRtcMediaHook(configInput) {
 
     // --- Call start/end ---
 
-    async _startCall(type) {
+    async _startCall(type, opts = {}) {
       if (!this.pc || this.callType || this.startingCall) return;
       this.startingCall = true;
 
@@ -206,7 +210,20 @@ export function createRtcMediaHook(configInput) {
         this.localStream = await acquireMedia(constraints);
       } catch (error) {
         this.startingCall = false;
-        this._push(config.clientEvents.error, error);
+        // An auto-joined receiver that cannot open its own mic/camera (e.g.
+        // permission denied) still joins as a pure receiver, so the user can watch
+        // and listen and retry from the enable controls. A first mover instead
+        // surfaces the hard error.
+        if (opts.auto) {
+          this._joinCall();
+          this._push(config.clientEvents.deviceFallback, {
+            message: t(
+              "Could not access your microphone or camera. You can still watch and listen.",
+            ),
+          });
+        } else {
+          this._push(config.clientEvents.error, error);
+        }
         return;
       }
 

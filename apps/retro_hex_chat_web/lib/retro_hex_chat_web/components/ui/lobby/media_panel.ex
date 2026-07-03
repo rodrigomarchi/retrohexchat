@@ -109,9 +109,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
           {dgettext("lobby", "%{peer} is muted", peer: @peer_nick)}
         </p>
 
-        <%!-- Sending controls. We are a participant the moment the call opens
-             (auto-join), but start recvonly: the mic and camera are enabled on
-             demand, then become mute / on-off toggles. --%>
+        <%!-- Sending controls. Joining a call opens our own mic (and camera, for a
+             video call) by default, so these are mute / camera-off toggles. If media
+             could not be acquired we stay recvonly and show enable buttons instead. --%>
         <div :if={@in_call}>
           <.toolbar class="mt-2 flex-wrap items-center gap-1">
             <.toolbar_button

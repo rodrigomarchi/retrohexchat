@@ -336,38 +336,49 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       refute render(view) =~ "End call"
     end
 
-    test "the peer starting a call auto-joins us recvonly: window opens, surface renders, media off",
+    test "the peer starting a video call auto-joins us and opens our media by default",
          %{conn: conn, token: token, creator: creator, peer: peer} do
       view = connect_both(conn, token, creator, peer)
 
       # Before the peer shares, there is no remote video element to attach to.
       refute render(view) =~ ~s(id="lobby-remote-video")
 
-      # The peer starts a video call. We auto-join as a pure receiver: the hook is
-      # told to enter recvonly mode, the window opens, and the surface renders.
+      # The peer starts a video call. We auto-join and are told to open our own media
+      # by default (mic + camera, since it's a video call); the window opens and the
+      # surface renders. The hook then echoes lobby_media_call_started with the real
+      # state — until then we render the interim "receiving" state.
       SessionServer.set_media(token, peer.id, true, true)
 
-      assert_push_event(view, "lobby_media_join", %{})
+      assert_push_event(view, "lobby_media_start_video", %{auto: true})
       assert_push_event(view, "window_command", %{action: "open", id: "call"})
 
       html = render(view)
       assert html =~ ~s(id="lobby-remote-video")
       assert html =~ ~s(id="lobby-remote-audio")
-      # We are in the call but sending nothing: controls offer to enable mic/camera,
-      # and we can leave the call we were placed into.
+      # Interim state (no live track echoed yet): enable controls, and we can leave.
       assert html =~ ~s(data-lobby-media-action="enable-audio")
       assert html =~ ~s(data-lobby-media-action="enable-video")
       assert html =~ "End call"
-      # No mute/camera toggles yet — we are not sending.
       refute html =~ ~s(data-lobby-media-action="mute")
       refute html =~ ~s(data-lobby-media-action="camera")
+    end
+
+    test "the peer starting an audio call auto-joins us and opens our mic by default",
+         %{conn: conn, token: token, creator: creator, peer: peer} do
+      view = connect_both(conn, token, creator, peer)
+
+      # Audio-only call: we auto-join and are told to open just our mic.
+      SessionServer.set_media(token, peer.id, true, false)
+
+      assert_push_event(view, "lobby_media_start_audio", %{auto: true})
+      assert_push_event(view, "window_command", %{action: "open", id: "call"})
     end
 
     test "an auto-joined receiver enabling the camera flips it to an on/off toggle",
          %{conn: conn, token: token, creator: creator, peer: peer} do
       view = connect_both(conn, token, creator, peer)
       SessionServer.set_media(token, peer.id, true, true)
-      assert_push_event(view, "lobby_media_join", %{})
+      assert_push_event(view, "lobby_media_start_video", %{auto: true})
 
       # The media hook reports we turned our camera on (no mic).
       render_hook(view, "lobby_media_call_started", %{"audio_on" => false, "video_on" => true})
@@ -383,7 +394,7 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
          %{conn: conn, token: token, creator: creator, peer: peer} do
       view = connect_both(conn, token, creator, peer)
       SessionServer.set_media(token, peer.id, true, true)
-      assert_push_event(view, "lobby_media_join", %{})
+      assert_push_event(view, "lobby_media_start_video", %{auto: true})
 
       # The peer stops all media. We were only receiving, so we leave the call.
       SessionServer.set_media(token, peer.id, false, false)
@@ -406,7 +417,7 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
          %{conn: conn, token: token, creator: creator, peer: peer} do
       view = connect_both(conn, token, creator, peer)
       SessionServer.set_media(token, peer.id, true, true)
-      assert_push_event(view, "lobby_media_join", %{})
+      assert_push_event(view, "lobby_media_start_video", %{auto: true})
 
       # We turn our own camera on. The control must read "Camera Off" (the action to
       # turn it off) — it used to start inverted because auto-join pre-set camera-off.
