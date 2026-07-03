@@ -713,6 +713,14 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   animation: activity-dot-blink 1s steps(2, end) infinite;
 }
 
+.message-viewport__channel-loader {
+  @apply mx-auto my-retro-12 flex w-fit;
+}
+
+.message-viewport__scroll-loader {
+  @apply mx-auto flex w-fit py-retro-8;
+}
+
 /* ── Reduced Motion ── */
 
 @media (prefers-reduced-motion: reduce) {

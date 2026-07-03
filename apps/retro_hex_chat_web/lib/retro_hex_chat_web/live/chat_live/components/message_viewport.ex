@@ -144,7 +144,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
         :if={@loading_channel != nil}
         icon={:chat}
         variant="panel"
-        class="mx-auto my-retro-12"
+        class="message-viewport__channel-loader"
         text={
           dgettext("chat", "Loading %{channel}...",
             channel: @loading_channel || dgettext("chat", "messages")
@@ -157,7 +157,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
         :if={@loading_more}
         icon={:clock}
         text={dgettext("chat", "Loading older messages...")}
-        class="justify-center py-retro-8"
+        class="message-viewport__scroll-loader"
         data-testid="scroll-loader"
       />
 
