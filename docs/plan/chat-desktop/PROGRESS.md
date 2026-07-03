@@ -9,7 +9,7 @@
 | 3 — Tools/Settings batch | **complete** (2026-07-02) | All 8 migrated (all managed); full `make ci` 9/9 incl. dialyzer |
 | 4 — View/Account batch | **complete** (2026-07-02) | All 6 migrated; full `make ci` 9/9 incl. dialyzer. Knock-flake root-caused + fixed (see Learnings: "ephemeral lines lost to a modal-close ack diff") |
 | 5 — Admin batch | **complete** (2026-07-02) | AdminConsole (87f87274 + singleplayer fix 70f19999) + BotManagement (3be22041); `make ci` 9/9, admin + bot E2E green. All 18 planned windows migrated. |
-| 6 — Unify + cleanup | not started | |
+| 6 — Unify + cleanup | code/docs done (2026-07-02) | A state cleanup (f62d3542), B window-naming comment, C help polish (055d8cd8), D crystallized into AGENT-GUIDE §7.1 (8cbe9f2d). `make ci` 9/9. REMAINING (gated on Rodrigo): E — `make deploy` to production + then delete this plan dir as the final migration commit. |
 
 ## Per-dialog migration recipe
 

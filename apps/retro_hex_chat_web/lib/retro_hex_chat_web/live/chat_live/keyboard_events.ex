@@ -92,6 +92,9 @@ defmodule RetroHexChatWeb.ChatLive.KeyboardEvents do
     push_event(socket, "open_url", %{url: "/chat/help"})
   end
 
+  # `window_next`/`window_prev` are mIRC "window" semantics = the chat's
+  # CHANNEL/PM TABS, not desktop windows. They cycle the active conversation tab
+  # inside the pinned chat window; desktop-window focus is the WM's job.
   defp dispatch_action(:window_next, socket) do
     {:halt, socket} = NavigationEvents.handle_event("window_next", %{}, socket)
     socket
