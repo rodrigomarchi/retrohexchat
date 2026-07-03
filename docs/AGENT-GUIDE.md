@@ -464,6 +464,64 @@ becomes a thin orchestrator; each island owns its own state, events, and streams
   relocates the coupling. There is a menu-bar top chrome (Session/Call/Window/Help) + status
   bar built from the shared `menu_bar` primitive + a desktop `:header` slot.
 
+### 7.1 Chat: managed windows (server-owned lifecycle)
+
+The lobby keeps every island **always mounted** (rule above) because their hooks/data channels
+must outlive a close. The chat adds a second kind — **`managed` windows** — and the two coexist.
+The chat is one `pinned default_maximized` window (never closable); ~18 former modals are windows;
+confirmations/transient prompts stay modal `UI.Dialog`; persistence is ON (`persist_key="chat"`,
+unique per LiveView).
+
+- **Managed vs always-mounted — the decision.** `managed` = the host mounts/unmounts the island
+  (`ChatLive.Windows` `@managed` set + an `open_windows` MapSet assign; render the window
+  `:if={"<id>" in @open_windows}` with the `managed` attr). Choose `managed` ONLY when the island
+  holds no state that must survive a close AND receives no `send_update` while closed — closing is
+  then a clean reset. Otherwise keep it **always-mounted** (`open={false}`, client owns
+  visibility): the island accumulates state while hidden (UrlCatcher) or receives passthrough data
+  while closed. "Receives updates while closed" forces always-mounted only when the updates target
+  the ISLAND; if they mutate the host read-model, a managed island gets fresh state at mount
+  (NotifyList is managed despite live buddy updates).
+- **One opener: `Windows.open/2`.** Every server entry point (menu bar / toolbar / keyboard
+  `dispatch_action` / commands) calls it — it adds the id to `open_windows` when managed and pushes
+  `window_command open` either way (open/focus, never toggle, never duplicate). Start-menu items are
+  `window_item` (client `data-window-open`) EXCEPT when opening implies a data load — then keep a
+  server `app_item` so the fresh data is fetched (ChannelList).
+- **Mount-state rides `mount/3`, never a post-mount `send_update`.** A managed island loads its
+  initial data in its own `mount/3` (`assign(:bots, Queries.list_bots())`) so it travels in the
+  mount's main diff — always DOM-safe. Delivering initial data via a post-mount `send_update` (even
+  deferred) RACES the managed-window mount patch client-side: the component-only diff merges into
+  the virtual tree but never mutates the DOM, so the data silently never appears. `Windows.open_with/4`
+  (defer one hop) is for a DIRECTIVE to an island that owns the data lifecycle (which tab to select,
+  an auth mode) — not for initial data. This class is invisible to ExUnit; **only E2E catches it.**
+- **Optimistic stream rows: key by the id the echo will carry.** Seed an optimistic channel row
+  with the persisted DB id (`Server.send_message` returns `{:ok, id}`), never a temp id you swap on
+  the echo. Phoenix `stream_insert` UPDATES an existing id in place; a fresh id APPENDS at the tail,
+  so a temp→real swap reorders/duplicates under rapid sends (paste). Same rule kills the
+  pending-reconciliation bookkeeping entirely.
+- **Panel extraction for a big dialog.** Add a `windowed` flag to the design-system `*_dialog/1`:
+  windowed → a bare `<div id="#{@id}-content" data-testid="…-panel">`; else → the `<.dialog>`
+  wrapper (showcase keeps it). Move the shared body into a private no-attr `*_body/1`/`*_tabs/1`
+  that both branches render via `{assigns}` spread — no re-declaring ~90 attrs. The island passes
+  `windowed`; the window chrome (title bar / close X) replaces the modal header/footer.
+- **Admin-gated windows.** The opener event's admin check IS the server-side authorization for a
+  forged `window_open` (the generic `window_open` handler adds any managed id to `open_windows`
+  without gating). The window's `:if={admin?(@session) and …}` render guard is defense-in-depth —
+  no admin content in a non-admin's DOM. Test both.
+- **Island → host command dispatch is always delegated.** Never call a host-level function that
+  reads host assigns (`CommandDispatch.dispatch_command_*`, which touches `show_status_tab`) on the
+  island's component socket — KeyError crash. `send(self(), {:admin_console_command, name, args})`;
+  the host runs it on its full socket and reflects the result back via `send_update`.
+- **Escape is layered client-side** (WM menus → `data-escape-guard` overlays → topmost unpinned
+  window), stopPropagation'd when consumed. The server `dismiss_topmost` ladder therefore only ever
+  sees the non-window overlays (modal survivors + search/notice). New Escape-owning overlays carry
+  `data-escape-guard`.
+- **Test contract shift.** A migrated window has no `#<id>-show-trigger`; assert with the window
+  `data-testid`, `has_element?(view, "#<id>-content")`, `render_hook(view, "window_open"/
+  "window_closed")`, and `assert_push_event(view, "window_command", %{action: "open", id})`. E2E
+  page objects target the window testid + `[data-window-control="close"]` (the X lives outside the
+  panel). And: the Playwright config uses `reuseExistingServer` — after an Elixir change, kill the
+  stale server on its port (`lsof -ti:<port> | xargs kill -9`) or you validate old code.
+
 ---
 
 ## 8. WebRTC / P2P
