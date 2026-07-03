@@ -749,6 +749,18 @@
       </.taskbar>
     </:taskbar>
   </.desktop>
+
+  <div
+    :if={!@live_ready}
+    class="absolute inset-0 z-[2000] flex items-center justify-center bg-background/95"
+    data-testid="chat-boot-loading"
+  >
+    <.loading_spinner
+      size="lg"
+      text={dgettext("chat", "Connecting to RetroHexChat...")}
+      class="shadow-retro-window bg-surface"
+    />
+  </div>
 </div>
 
 <%!-- Hover card (stateful island — owns the nick hover-card state) --%>

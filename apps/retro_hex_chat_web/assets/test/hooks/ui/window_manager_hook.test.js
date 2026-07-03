@@ -629,6 +629,24 @@ describe("WindowManagerHook — dynamic windows (reconciliation)", () => {
     expect(hook.pushEvent).not.toHaveBeenCalled();
   });
 
+  it("shows a pending window while an unknown managed window is being mounted", () => {
+    const opener = document.createElement("button");
+    opener.textContent = "Games";
+
+    hook.command("open", "game-x", opener);
+
+    const pending = workspace().querySelector('[data-window-pending-id="game-x"]');
+    expect(pending).toBeTruthy();
+    expect(pending.textContent).toContain("Games");
+    expect(pending.textContent).toContain("Opening...");
+
+    workspace().insertAdjacentHTML("beforeend", windowMarkup("game-x", { open: true }));
+    hook.updated();
+
+    expect(workspace().querySelector('[data-window-pending-id="game-x"]')).toBeNull();
+    expect(hook.windows["game-x"]).toBeTruthy();
+  });
+
   it("notifies the server when a managed window is closed client-side", () => {
     workspace().insertAdjacentHTML("beforeend", windowMarkup("game", { open: true }));
     document.getElementById("game").dataset.windowManaged = "true";

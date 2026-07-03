@@ -510,6 +510,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
        token: token,
        nickname: nickname,
        user_id: user_id,
+       live_ready: connected?(socket),
        role: role,
        timezone: timezone,
        strip_formatting: false,

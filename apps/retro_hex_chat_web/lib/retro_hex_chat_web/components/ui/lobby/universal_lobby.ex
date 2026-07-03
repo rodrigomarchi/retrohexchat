@@ -37,6 +37,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   import RetroHexChatWeb.Components.UI.Lobby.LobbyMenuBar
   import RetroHexChatWeb.Components.UI.Lobby.LobbyStatusBar
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
+  import RetroHexChatWeb.Components.UI.LoadingSpinner
   alias RetroHexChatWeb.App.LobbyLive.Components.ChatIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.GameIsland
@@ -46,6 +47,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   # Identity & status
   attr :token, :string, required: true
   attr :user_id, :integer, required: true
+  attr :live_ready, :boolean, default: true
   attr :nickname, :string, required: true
   attr :peer_nick, :string, required: true
   attr :peer_online, :boolean, default: false
@@ -109,7 +111,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
     <div class="lobby flex h-screen flex-col bg-background text-foreground" {@rest}>
       <.lobby_ended :if={@expired or @session_closed} reason={@ended_reason} />
 
-      <div :if={!(@expired or @session_closed)} class="flex h-full flex-col">
+      <div :if={!(@expired or @session_closed)} class="relative flex h-full flex-col">
         <%!-- Persistent connection hook (always mounted once joined) --%>
         <div id="lobby-webrtc" phx-hook="LobbyWebRTCHook" phx-update="ignore" class="u-hidden"></div>
 
@@ -417,6 +419,18 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
         </.desktop>
 
         <.about_dialog id="about-dialog" />
+
+        <div
+          :if={!@live_ready}
+          class="absolute inset-0 z-[2000] flex items-center justify-center bg-background/95"
+          data-testid="lobby-boot-loading"
+        >
+          <.loading_spinner
+            size="lg"
+            text={dgettext("lobby", "Opening P2P lobby...")}
+            class="shadow-retro-window bg-surface"
+          />
+        </div>
       </div>
     </div>
     """

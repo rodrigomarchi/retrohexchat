@@ -228,7 +228,18 @@ export function createRtcMediaHook(configInput) {
       this._setupDeviceChangeListener();
 
       this._reportSendState();
+      // Sync the icon to the freshly acquired (enabled) tracks instead of relying on
+      // the server assigns already being false — they may be stale from a prior call.
+      this._syncSendToggles();
       this.startingCall = false;
+    },
+
+    // Push the current mute / camera-off flags so the server-side icon reflects the
+    // real (freshly enabled) track state when a call starts, instead of trusting the
+    // server assigns to already be false — they may be stale from a prior call.
+    _syncSendToggles() {
+      this._push(config.clientEvents.muteChanged, { muted: this.muted });
+      this._push(config.clientEvents.cameraChanged, { off: this.cameraOff });
     },
 
     // Enter the call as a pure receiver (auto-join), without acquiring any media.
@@ -248,6 +259,9 @@ export function createRtcMediaHook(configInput) {
       this._startDurationTimer();
       this._startQualityPolling();
       this._startMediaWatchdog();
+      // No toggle sync here: a pure receiver sends nothing, so the mute/camera
+      // controls stay hidden until `_enableAudio` / `_enableVideo` (which push their
+      // own state) reveal them.
     },
 
     // Acquire and send the microphone on demand (the auto-joined peer choosing to
@@ -354,6 +368,10 @@ export function createRtcMediaHook(configInput) {
       this.inCall = false;
       this.audioOn = false;
       this.videoOn = false;
+      // The send-toggle flags are per-track state; clear them with the tracks so a
+      // later call does not inherit a stale mute/camera-off from the previous one.
+      this.muted = false;
+      this.cameraOff = false;
       this.startTime = null;
 
       if (notify) {
@@ -648,9 +666,13 @@ export function createRtcMediaHook(configInput) {
         switch (kind) {
           case "audioinput":
             this.localStream = await switchAudioInput(this.localStream, this.senders, deviceId);
+            // A fresh getUserMedia track is always enabled; re-apply the mute flag so
+            // switching mics does not silently un-mute the user.
+            toggleTrack(this.localStream, "audio", !this.muted);
             break;
           case "videoinput":
             this.localStream = await switchVideoInput(this.localStream, this.senders, deviceId);
+            toggleTrack(this.localStream, "video", !this.cameraOff);
             break;
           case "audiooutput": {
             const remoteAudio = this._query(config.elementIds.remoteAudio);
@@ -739,6 +761,8 @@ export function createRtcMediaHook(configInput) {
         if (!stillAvailable) {
           try {
             this.localStream = await switchAudioInput(this.localStream, this.senders, "default");
+            // Preserve the mute state across the automatic fallback to the default mic.
+            toggleTrack(this.localStream, "audio", !this.muted);
             this._push(config.clientEvents.deviceFallback, {
               message: t("Device disconnected, using default device"),
             });
@@ -794,6 +818,8 @@ export function createRtcMediaHook(configInput) {
       this.inCall = false;
       this.audioOn = false;
       this.videoOn = false;
+      this.muted = false;
+      this.cameraOff = false;
       this.startTime = null;
       this.upgradeInProgress = false;
       this.upgradeCancelled = false;

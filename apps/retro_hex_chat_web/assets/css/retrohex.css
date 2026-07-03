@@ -1130,6 +1130,36 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   height: var(--win-h, auto);
   z-index: var(--win-z, 10);
 }
+.desktop-window--pending {
+  pointer-events: none;
+}
+.desktop-window-opening {
+  @apply bg-surface shadow-retro-window flex h-full flex-col p-[3px] text-foreground;
+}
+.desktop-window-opening__titlebar {
+  @apply flex items-center gap-1 bg-title-bar px-[3px] py-[3px] text-xs font-bold text-white;
+}
+.desktop-window-opening__icon {
+  @apply inline-flex h-4 w-4 shrink-0 items-center justify-center bg-surface shadow-retro-sunken;
+}
+.desktop-window-opening__title {
+  @apply min-w-0 truncate;
+}
+.desktop-window-opening__body {
+  @apply flex flex-1 flex-col items-center justify-center gap-retro-8 p-retro-12 text-xs text-muted-foreground;
+}
+.desktop-window-opening__bar {
+  @apply shadow-retro-field h-[14px] w-[200px];
+  animation: progress-scroll 1s linear infinite;
+  background-image: repeating-linear-gradient(
+    90deg,
+    #0000ee 0,
+    #0000ee 8px,
+    transparent 8px,
+    transparent 12px
+  );
+  background-size: 20px 14px;
+}
 /* Unfocused windows dim their title bar to the inactive gradient. */
 .desktop-window--blurred [data-window-titlebar] {
   @apply bg-title-bar-inactive;

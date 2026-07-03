@@ -70,6 +70,7 @@ const WindowManagerHook = {
     this.drag = null;
     this.resize = null;
     this.windows = {};
+    this.pendingWindows = {};
     this.menuWindowId = null;
     this._ghosts = new Set();
     this.reducedMotion =
@@ -98,6 +99,7 @@ const WindowManagerHook = {
 
   updated() {
     this.reconcileWindows();
+    this.pruneDetachedPendingWindows();
 
     // Re-assert the stacked-mode class: the server patch just rebuilt the desktop
     // root's class list without it (it is client-owned), and window visibility
@@ -126,6 +128,7 @@ const WindowManagerHook = {
     for (const el of this.el.querySelectorAll("[data-window-id]")) {
       const id = el.dataset.windowId;
       present.add(id);
+      this.clearPendingWindow(id);
       if (!this.windows[id]) {
         this.registerWindow(el);
         const saved = this.readStorage();
@@ -164,6 +167,11 @@ const WindowManagerHook = {
 
   destroyed() {
     this.unbindEvents();
+    for (const pending of Object.values(this.pendingWindows)) {
+      clearTimeout(pending.timer);
+      pending.el.remove();
+    }
+    this.pendingWindows = {};
   },
 
   // ── Setup ──────────────────────────────────────────────────
@@ -401,7 +409,7 @@ const WindowManagerHook = {
 
     const taskBtn = e.target.closest("[data-window-taskbar]");
     if (taskBtn) {
-      this.onTaskbarClick(taskBtn.dataset.windowTaskbar);
+      this.onTaskbarClick(taskBtn.dataset.windowTaskbar, taskBtn);
       return;
     }
 
@@ -415,7 +423,7 @@ const WindowManagerHook = {
       // A disabled menu item still carries data-window-open (it's a <li>, not a
       // <button>) — it must not act.
       if (opener.getAttribute("aria-disabled") === "true" || opener.disabled) return;
-      this.command("open", opener.dataset.windowOpen);
+      this.command("open", opener.dataset.windowOpen, opener);
       this.closeStartMenu();
       return;
     }
@@ -427,7 +435,7 @@ const WindowManagerHook = {
   onDblClick(e) {
     const shortcut = e.target.closest("[data-window-shortcut]");
     if (shortcut) {
-      this.command("open", shortcut.dataset.windowShortcut);
+      this.command("open", shortcut.dataset.windowShortcut, shortcut);
       return;
     }
 
@@ -609,12 +617,12 @@ const WindowManagerHook = {
     else if (action === "maximize" || action === "restore") this.toggleMaximize(id);
   },
 
-  onTaskbarClick(id) {
+  onTaskbarClick(id, taskBtn = null) {
     const win = this.windows[id];
     if (!win) return;
     const st = win.state;
     if (!st.open || st.minimized || this.focusedId !== id) {
-      this.command("open", id);
+      this.command("open", id, taskBtn);
     } else {
       this.minimizeWindow(id);
     }
@@ -622,15 +630,18 @@ const WindowManagerHook = {
 
   // ── Window operations ──────────────────────────────────────
 
-  command(action, id) {
+  command(action, id, sourceEl = null) {
+    if (!id) return;
     if (!this.windows[id]) {
       // Unknown id = a server-managed window that is not mounted. Ask the host
       // to mount its island; the patch registers it and it opens on arrival.
       if ((action === "open" || action === "focus") && typeof this.pushEvent === "function") {
+        this.showPendingWindow(id, sourceEl);
         this.pushEvent("window_open", { id });
       }
       return;
     }
+    this.clearPendingWindow(id);
     switch (action) {
       case "open":
       case "focus":
@@ -649,6 +660,101 @@ const WindowManagerHook = {
         this.toggleMaximize(id);
         break;
     }
+  },
+
+  showPendingWindow(id, sourceEl) {
+    const existing = this.pendingWindows[id];
+    if (existing) {
+      clearTimeout(existing.timer);
+      existing.timer = setTimeout(() => this.clearPendingWindow(id), 5000);
+      this.focusPendingWindow(id);
+      return;
+    }
+
+    const node = document.createElement("div");
+    node.className = "desktop-window desktop-window--pending absolute";
+    node.dataset.windowPendingId = id;
+    node.setAttribute("role", "status");
+    node.setAttribute("aria-live", "polite");
+
+    const frame = document.createElement("div");
+    frame.className = "desktop-window-opening";
+
+    const titlebar = document.createElement("div");
+    titlebar.className = "desktop-window-opening__titlebar";
+
+    const icon = document.createElement("span");
+    icon.className = "desktop-window-opening__icon";
+    icon.setAttribute("aria-hidden", "true");
+
+    const title = document.createElement("span");
+    title.className = "desktop-window-opening__title";
+    title.textContent = this.pendingWindowTitle(id, sourceEl);
+
+    const body = document.createElement("div");
+    body.className = "desktop-window-opening__body";
+
+    const bar = document.createElement("div");
+    bar.className = "desktop-window-opening__bar";
+    bar.setAttribute("aria-hidden", "true");
+
+    const text = document.createElement("span");
+    text.className = "desktop-window-opening__text";
+    text.textContent = this.el.dataset.windowLoadingText || "Opening...";
+
+    titlebar.append(icon, title);
+    body.append(bar, text);
+    frame.append(titlebar, body);
+    node.append(frame);
+    node.setAttribute("aria-label", `${text.textContent} ${title.textContent}`);
+
+    const { w, h } = this.workspaceSize();
+    const width = Math.min(360, Math.max(260, w - 32));
+    const height = 128;
+    const x = clamp(Math.round((w - width) / 2), 0, Math.max(0, w - width));
+    const y = clamp(Math.round(h * 0.28), 16, Math.max(16, h - height));
+    const z = this.zCounter += 1;
+    this.setGeom(node, x, y, width, height, z);
+
+    (this.workspace || this.el).appendChild(node);
+    this.pendingWindows[id] = {
+      el: node,
+      timer: setTimeout(() => this.clearPendingWindow(id), 5000),
+    };
+  },
+
+  focusPendingWindow(id) {
+    const pending = this.pendingWindows[id];
+    if (!pending) return;
+    const z = this.zCounter += 1;
+    pending.el.style.setProperty("--win-z", String(z));
+  },
+
+  clearPendingWindow(id) {
+    const pending = this.pendingWindows[id];
+    if (!pending) return;
+    clearTimeout(pending.timer);
+    pending.el.remove();
+    delete this.pendingWindows[id];
+  },
+
+  pruneDetachedPendingWindows() {
+    for (const [id, pending] of Object.entries(this.pendingWindows)) {
+      if (pending.el.isConnected) continue;
+      clearTimeout(pending.timer);
+      delete this.pendingWindows[id];
+    }
+  },
+
+  pendingWindowTitle(id, sourceEl) {
+    const sourceLabel =
+      sourceEl?.getAttribute("aria-label") || sourceEl?.textContent || sourceEl?.innerText || "";
+    const label = sourceLabel.replace(/\s+/g, " ").trim();
+    if (label) return label.slice(0, 60);
+
+    return String(id)
+      .replace(/[-_]+/g, " ")
+      .replace(/\b\w/g, (char) => char.toUpperCase());
   },
 
   openWindow(id) {

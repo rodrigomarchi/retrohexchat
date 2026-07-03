@@ -8,6 +8,17 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
   @moduletag :liveview
 
   describe "desktop shell" do
+    test "static render shows a boot loading state until LiveView connects", %{conn: conn} do
+      html =
+        conn
+        |> chat_conn("Desk#{uid()}")
+        |> get("/chat")
+        |> html_response(200)
+
+      assert html =~ ~s(data-testid="chat-boot-loading")
+      assert html =~ "Connecting to RetroHexChat..."
+    end
+
     test "renders the chat inside a persistent desktop", %{conn: conn} do
       {:ok, view, html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 

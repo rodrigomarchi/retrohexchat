@@ -65,6 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       data-persist-key={@persist_key}
       data-persist={to_string(@persist)}
       data-escape-closes-windows={to_string(@escape_closes_windows)}
+      data-window-loading-text={dgettext("ui", "Opening...")}
       class={classes(["desktop flex flex-1 flex-col overflow-hidden", @class])}
       {@rest}
     >

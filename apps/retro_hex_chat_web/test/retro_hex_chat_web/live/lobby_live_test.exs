@@ -43,6 +43,21 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
   end
 
   describe "mount" do
+    test "static render shows a lobby boot loading state until LiveView connects", %{
+      conn: conn,
+      token: token,
+      creator: creator
+    } do
+      html =
+        conn
+        |> chat_conn(creator.nickname)
+        |> get("/lobby/#{token}")
+        |> html_response(200)
+
+      assert html =~ ~s(data-testid="lobby-boot-loading")
+      assert html =~ "Opening P2P lobby..."
+    end
+
     test "renders the lobby shell as a desktop with a taskbar", %{
       conn: conn,
       token: token,
