@@ -33,7 +33,9 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "tray",
           "clock",
           "cascade",
-          "tile"
+          "tile",
+          "help viewer",
+          "search topics"
         ],
         icon: :icon_win_maximize,
         description:
@@ -41,8 +43,15 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
             "help",
             "The chat runs on a Windows-style desktop: the chat itself is one pinned window " <>
               "(maximized by default) that you can restore, drag and resize, over a taskbar " <>
-              "with a Start menu and a tray clock. Window layout persists across visits."
-          )
+              "with a Start menu and a tray clock. Window layout persists across visits. "
+          ) <>
+            dgettext(
+              "help",
+              "The P2P lobby, the solo arcade and this Help viewer share the same window " <>
+                "manager. The Help viewer is laid out like the classic Windows Help: a toolbar " <>
+                "(Back / Forward / Home), a navigator with Contents, Index and Search tabs, and " <>
+                "a \"See Also\" list of related topics under each article."
+            )
       },
       %{
         id: "ui-conversations",

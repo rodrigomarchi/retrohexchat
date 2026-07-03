@@ -24,8 +24,40 @@ defmodule RetroHexChatWeb.HelpLive.Index do
   @spec mount(map(), map(), Phoenix.LiveView.Socket.t()) ::
           {:ok, Phoenix.LiveView.Socket.t()}
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, topics_by_category: HelpTopics.topics_by_category())}
+    all_topics = HelpTopics.all_topics()
+
+    {:ok,
+     assign(socket,
+       topics_by_category: HelpTopics.topics_by_category(),
+       all_topics: all_topics,
+       topic_count: length(all_topics),
+       nav_tab: :contents,
+       search_query: "",
+       search_results: []
+     )}
   end
+
+  @impl true
+  @spec handle_event(String.t(), map(), Phoenix.LiveView.Socket.t()) ::
+          {:noreply, Phoenix.LiveView.Socket.t()}
+  def handle_event("help_nav_tab", %{"tab" => tab}, socket) do
+    {:noreply, assign(socket, :nav_tab, parse_tab(tab))}
+  end
+
+  def handle_event("help_search", %{"q" => query}, socket) do
+    {:noreply,
+     assign(socket,
+       search_query: query,
+       search_results: HelpTopics.search(query),
+       nav_tab: if(String.trim(query) == "", do: socket.assigns.nav_tab, else: :search)
+     )}
+  end
+
+  def handle_event("help_back_to_chat", _params, socket) do
+    {:noreply, redirect(socket, to: "/chat")}
+  end
+
+  def handle_event(_event, _params, socket), do: {:noreply, socket}
 
   @impl true
   @spec handle_params(map(), String.t(), Phoenix.LiveView.Socket.t()) ::
@@ -48,7 +80,15 @@ defmodule RetroHexChatWeb.HelpLive.Index do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <.help_layout topics_by_category={@topics_by_category} selected_topic={@selected_topic}>
+    <.help_layout
+      topics_by_category={@topics_by_category}
+      all_topics={@all_topics}
+      topic_count={@topic_count}
+      selected_topic={@selected_topic}
+      nav_tab={@nav_tab}
+      search_query={@search_query}
+      search_results={@search_results}
+    >
       <div :if={@selected_topic}>
         <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-300">
           <.help_icon name={@selected_topic.icon} class="w-6 h-6 flex-shrink-0" />
@@ -77,6 +117,8 @@ defmodule RetroHexChatWeb.HelpLive.Index do
         ]}>
           <.render_topic_content id={@selected_topic.id} />
         </article>
+
+        <.see_also_section see_also={Map.get(@selected_topic, :see_also, [])} />
       </div>
 
       <div :if={!@selected_topic} class="text-center py-12 text-muted-foreground">
@@ -94,6 +136,11 @@ defmodule RetroHexChatWeb.HelpLive.Index do
   end
 
   # ── Private ────────────────────────────────────────────────
+
+  @spec parse_tab(String.t()) :: :contents | :index | :search
+  defp parse_tab("index"), do: :index
+  defp parse_tab("search"), do: :search
+  defp parse_tab(_tab), do: :contents
 
   @spec resolve_topic(map()) :: map() | nil
   defp resolve_topic(%{"topic" => topic_id}) do

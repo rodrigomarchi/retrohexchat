@@ -138,4 +138,48 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       assert html =~ "IRC Commands Reference"
     end
   end
+
+  describe "windowed help desktop (CHM viewer)" do
+    test "renders the desktop shell, window and CHM chrome", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat/help")
+
+      assert has_element?(view, "[data-testid=help-desktop]")
+      assert has_element?(view, "[data-testid=help-window]")
+      assert has_element?(view, "[data-testid=help-content-pane]")
+      assert has_element?(view, "[data-testid=help-menu-bar]")
+      assert has_element?(view, "[data-testid=help-status-bar]")
+      assert has_element?(view, "[data-testid=help-search-input]")
+    end
+
+    test "search filters topics and links to them", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat/help")
+
+      view
+      |> form(~s(form[phx-change="help_search"]), %{q: "keyboard"})
+      |> render_change()
+
+      assert has_element?(
+               view,
+               ~s([data-testid=help-search-results] a[href="/chat/help/keyboard-shortcuts"])
+             )
+    end
+
+    test "an empty search shows a no-results hint", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat/help")
+
+      view
+      |> form(~s(form[phx-change="help_search"]), %{q: "zzz-no-such-topic-xyz"})
+      |> render_change()
+
+      assert has_element?(view, "[data-testid=help-search-empty]")
+    end
+
+    test "switching to the Index tab activates it", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat/help")
+
+      view |> element("[data-testid=help-tab-index]") |> render_click()
+
+      assert has_element?(view, ~s([data-testid=help-tab-index][aria-selected="true"]))
+    end
+  end
 end

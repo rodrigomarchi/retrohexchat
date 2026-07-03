@@ -118,6 +118,39 @@ defmodule RetroHexChat.Chat.HelpTopics do
     |> then(&Map.fetch!(@category_icons, &1))
   end
 
+  @doc """
+  Search topics by a free-text query, matching (case-insensitively) against each
+  topic's title, keywords and category. A blank query returns an empty list.
+  Title matches rank above keyword/category matches; ties break alphabetically.
+  """
+  @spec search(String.t()) :: [topic()]
+  def search(query) when is_binary(query) do
+    q = query |> String.trim() |> String.downcase()
+
+    if q == "" do
+      []
+    else
+      topics()
+      |> Enum.filter(&topic_matches?(&1, q))
+      |> Enum.sort_by(&{search_rank(&1, q), &1.title})
+    end
+  end
+
+  def search(_query), do: []
+
+  @spec topic_matches?(topic(), String.t()) :: boolean()
+  defp topic_matches?(topic, q) do
+    String.contains?(String.downcase(topic.title), q) or
+      String.contains?(String.downcase(topic.category), q) or
+      Enum.any?(topic.keywords, &String.contains?(String.downcase(&1), q))
+  end
+
+  # Title hits rank first (0), everything else second (1).
+  @spec search_rank(topic(), String.t()) :: 0 | 1
+  defp search_rank(topic, q) do
+    if String.contains?(String.downcase(topic.title), q), do: 0, else: 1
+  end
+
   @doc "Return a sorted list of {keyword, topic_id} for the index tab."
   @spec all_keywords() :: [{String.t(), String.t()}]
   def all_keywords do

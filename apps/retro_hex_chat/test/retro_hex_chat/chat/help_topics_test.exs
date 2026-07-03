@@ -305,6 +305,38 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
+  describe "search/1" do
+    test "returns [] for a blank query" do
+      assert HelpTopics.search("") == []
+      assert HelpTopics.search("   ") == []
+    end
+
+    test "matches topics by title (case-insensitively)" do
+      results = HelpTopics.search("keyboard")
+      assert Enum.any?(results, &(&1.id == "keyboard-shortcuts"))
+
+      lower = HelpTopics.search("keyboard")
+      upper = HelpTopics.search("KEYBOARD")
+      assert Enum.map(lower, & &1.id) == Enum.map(upper, & &1.id)
+    end
+
+    test "matches topics by keyword not present in the title" do
+      # "singleplayer" is a keyword of the Solo Arcade topic, not in its title.
+      results = HelpTopics.search("singleplayer")
+      assert Enum.any?(results, &(&1.id == "feature-arcade"))
+    end
+
+    test "ranks title matches ahead of keyword-only matches" do
+      results = HelpTopics.search("join")
+      assert results != []
+      assert results |> hd() |> Map.get(:title) |> String.downcase() =~ "join"
+    end
+
+    test "returns [] when nothing matches" do
+      assert HelpTopics.search("zzz-no-such-topic-xyz") == []
+    end
+  end
+
   describe "connection states help topic" do
     test "topic exists" do
       topic = HelpTopics.get_topic("feature-connection-states")
