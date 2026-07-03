@@ -1,27 +1,33 @@
-<.universal_lobby
-  token={@token}
-  user_id={@user_id}
-  live_ready={@live_ready}
-  nickname={@nickname}
-  peer_nick={@peer_nick}
-  peer_online={@peer_online}
-  session_status={@session_status}
-  ever_connected={@ever_connected}
-  connection_label={@connection_label}
-  local_info={@local_info}
-  peer_info={@peer_info}
-  expired={@expired}
-  session_closed={@session_closed}
-  ended_reason={@ended_reason}
-  turn_configured={@turn_configured}
-  turn_only={@turn_only}
-  inactivity_warning={@inactivity_warning}
-  call_summary={@call_summary}
-  stats={@stats}
-  network_info_open={@network_info_open}
-  file_summary={@file_summary}
-  game_active={@game_summary.active?}
-  open_windows={@open_windows}
-  strip_formatting={@strip_formatting}
-  timezone={@timezone}
-/>
+<%= if @expired or @session_closed or @invalid do %>
+  <.lobby_terminal
+    invalid={@invalid}
+    summary={@ended_summary}
+    reason={@ended_reason}
+    timezone={@timezone}
+  />
+<% else %>
+  <.universal_lobby
+    token={@token}
+    user_id={@user_id}
+    live_ready={@live_ready}
+    nickname={@nickname}
+    peer_nick={@peer_nick}
+    peer_online={@peer_online}
+    session_status={@session_status}
+    ever_connected={@ever_connected}
+    connection_label={@connection_label}
+    local_info={@local_info}
+    peer_info={@peer_info}
+    turn_configured={@turn_configured}
+    turn_only={@turn_only}
+    inactivity_warning={@inactivity_warning}
+    call_summary={@call_summary}
+    stats={@stats}
+    network_info_open={@network_info_open}
+    file_summary={@file_summary}
+    game_active={@game_summary.active?}
+    open_windows={@open_windows}
+    strip_formatting={@strip_formatting}
+    timezone={@timezone}
+  />
+<% end %>

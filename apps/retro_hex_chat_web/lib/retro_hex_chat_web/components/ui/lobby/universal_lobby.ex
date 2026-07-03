@@ -28,7 +28,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   """
   use RetroHexChatWeb.Component
 
-  import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Alert
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.AppHeader
@@ -64,11 +63,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   # Ephemeral chat window (IRC surface shared with the main chat)
   attr :strip_formatting, :boolean, default: false
   attr :timezone, :string, default: "Etc/UTC"
-
-  # Terminal state
-  attr :expired, :boolean, default: false
-  attr :session_closed, :boolean, default: false
-  attr :ended_reason, :string, default: nil
 
   # Session controls
   attr :turn_configured, :boolean, default: false
@@ -109,9 +103,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
 
     ~H"""
     <div class="lobby flex h-screen flex-col bg-background text-foreground" {@rest}>
-      <.lobby_ended :if={@expired or @session_closed} reason={@ended_reason} />
-
-      <div :if={!(@expired or @session_closed)} class="relative flex h-full flex-col">
+      <div class="relative flex h-full flex-col">
         <%!-- Persistent connection hook (always mounted once joined) --%>
         <div id="lobby-webrtc" phx-hook="LobbyWebRTCHook" phx-update="ignore" class="u-hidden"></div>
 
@@ -431,28 +423,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
             class="shadow-retro-window bg-surface"
           />
         </div>
-      </div>
-    </div>
-    """
-  end
-
-  # --- Terminal state ---
-
-  attr :reason, :string, default: nil
-
-  defp lobby_ended(assigns) do
-    ~H"""
-    <div class="flex flex-1 items-center justify-center p-8">
-      <div class="shadow-retro-raised bg-accent max-w-md p-6 text-center" data-testid="lobby-ended">
-        <Icons.icon_warning class="mx-auto mb-3 h-8 w-8" />
-        <p class="mb-3 text-sm font-bold">{dgettext("lobby", "Lobby ended")}</p>
-        <p class="text-muted-foreground mb-4 text-xs">{@reason}</p>
-        <.link navigate="/chat">
-          <.button size="sm" variant="outline">
-            <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
-            {dgettext("lobby", "Back to chat")}
-          </.button>
-        </.link>
       </div>
     </div>
     """

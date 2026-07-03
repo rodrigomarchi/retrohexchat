@@ -29,6 +29,7 @@ import ArcadeGameHook from "./games/arcade_game_hook";
 import ArcadeTimerHook from "./games/arcade_timer_hook";
 import ViewportDetectHook from "./ui/viewport_detect_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
+import LobbyCloseWindowHook from "./lobby/lobby_close_window_hook";
 
 const AutoFocusHook = {
   mounted() {
@@ -84,4 +85,5 @@ export const criticalHooks = {
   URLCatcherHook: URLCatcherHook,
   ViewportDetectHook: ViewportDetectHook,
   WindowManagerHook: WindowManagerHook,
+  LobbyCloseWindowHook: LobbyCloseWindowHook,
 };

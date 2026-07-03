@@ -507,6 +507,78 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
     end
   end
 
+  describe "terminal state" do
+    test "opening a link to an already-ended lobby shows the rich goodbye card", %{
+      conn: conn,
+      token: token,
+      session: session,
+      creator: creator
+    } do
+      session
+      |> Ecto.Changeset.change(status: "closed", closed_reason: "peer_left")
+      |> Repo.update!()
+
+      {:ok, _view, html} = live(chat_conn(conn, creator.nickname), "/lobby/#{token}")
+
+      # The goodbye screen — not the desktop — with the same rich card the chat draws.
+      assert html =~ ~s(data-testid="lobby-ended")
+      assert html =~ ~s(data-testid="session-card")
+      assert html =~ "Lobby ended"
+      assert html =~ "left"
+      refute html =~ ~s(data-testid="lobby-desktop")
+
+      # The action closes the browser tab (hook) rather than navigating to /chat.
+      assert html =~ "LobbyCloseWindowHook"
+      assert html =~ "Close window"
+      refute html =~ ~s(href="/chat")
+    end
+
+    test "opening an unknown lobby link shows a friendly unavailable screen", %{
+      conn: conn,
+      creator: creator
+    } do
+      {:ok, _view, html} = live(chat_conn(conn, creator.nickname), "/lobby/does-not-exist")
+
+      assert html =~ ~s(data-testid="lobby-ended")
+      assert html =~ "Lobby unavailable"
+      assert html =~ "no longer valid"
+      assert html =~ "LobbyCloseWindowHook"
+      # No session to describe, so no rich card and no desktop.
+      refute html =~ ~s(data-testid="session-card")
+      refute html =~ ~s(data-testid="lobby-desktop")
+    end
+
+    test "a user who is not a participant sees the unavailable screen", %{
+      conn: conn,
+      token: token
+    } do
+      stranger = create_registered_nick("strg#{uid()}")
+
+      {:ok, _view, html} = live(chat_conn(conn, stranger.nickname), "/lobby/#{token}")
+
+      assert html =~ "Lobby unavailable"
+      refute html =~ ~s(data-testid="lobby-desktop")
+    end
+
+    test "a live lobby closing switches to the goodbye card in place", %{
+      conn: conn,
+      token: token,
+      creator: creator,
+      peer: peer
+    } do
+      view = connect_both(conn, token, creator, peer)
+      refute render(view) =~ ~s(data-testid="lobby-ended")
+
+      :ok = SessionServer.close(token, peer.id, "peer_left")
+      Process.sleep(50)
+
+      html = render(view)
+      assert html =~ ~s(data-testid="lobby-ended")
+      assert html =~ ~s(data-testid="session-card")
+      assert html =~ "Close window"
+    end
+  end
+
   defp create_registered_nick(nickname) do
     {:ok, nick} =
       %RegisteredNick{}

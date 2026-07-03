@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   require Logger
 
   import RetroHexChatWeb.Components.UI.Lobby.UniversalLobby
+  import RetroHexChatWeb.Components.UI.Lobby.LobbyTerminal
 
   alias RetroHexChat.Chat.Schemas.UserPreference
   alias RetroHexChat.Lobby
@@ -52,18 +53,13 @@ defmodule RetroHexChatWeb.App.LobbyLive do
       mount_lobby(socket, token, nickname, user_id, db_session, resolve_timezone(session, socket))
     else
       {:expired, reason} ->
-        {:ok,
-         assign(socket,
-           expired: true,
-           session_closed: false,
-           ended_reason: expired_reason_label(reason)
-         )}
+        {:ok, assign_terminal(socket, token, reason, resolve_timezone(session, socket))}
 
       {:redirect, redirect_socket} when is_struct(redirect_socket) ->
         {:ok, redirect_socket}
 
       {:redirect, _} ->
-        {:ok, push_navigate(socket, to: ~p"/chat")}
+        {:ok, assign_invalid(socket)}
     end
   end
 
@@ -91,7 +87,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   def handle_info(%{event: "lobby_status_changed", payload: %{status: status}}, socket) do
     if Session.terminal?(status) do
-      {:noreply, assign(socket, session_closed: true, ended_reason: expired_reason_label(status))}
+      {:noreply, mark_session_closed(socket, status)}
     else
       {:noreply, assign(socket, session_status: status)}
     end
@@ -211,7 +207,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     if socket.assigns.session_closed do
       {:noreply, socket}
     else
-      {:noreply, assign(socket, session_closed: true, ended_reason: expired_reason_label(reason))}
+      {:noreply, mark_session_closed(socket, reason)}
     end
   end
 
@@ -471,7 +467,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   def handle_event("leave_lobby", _params, socket) do
     Lobby.close_session(socket.assigns.token, socket.assigns.user_id, "user_closed")
-    {:noreply, assign(socket, session_closed: true)}
+    {:noreply, mark_session_closed(socket, "user_closed")}
   end
 
   def handle_event(_event, _params, socket), do: {:noreply, socket}
@@ -534,7 +530,9 @@ defmodule RetroHexChatWeb.App.LobbyLive do
        open_windows: MapSet.new(),
        expired: false,
        session_closed: false,
-       ended_reason: nil
+       invalid: false,
+       ended_reason: nil,
+       ended_summary: nil
      )}
   end
 
@@ -726,6 +724,51 @@ defmodule RetroHexChatWeb.App.LobbyLive do
         pref
         |> UserPreference.changeset(%{display_settings: updated})
         |> RetroHexChat.Repo.update()
+    end
+  end
+
+  # --- Terminal-state assigns ---
+
+  # An already-terminal session at mount: show the rich goodbye card.
+  defp assign_terminal(socket, token, reason, timezone) do
+    assign(socket,
+      expired: true,
+      session_closed: false,
+      invalid: false,
+      ended_reason: expired_reason_label(reason),
+      ended_summary: summary_for(token),
+      timezone: timezone
+    )
+  end
+
+  # An unknown token, or a link the viewer was never part of: no session to show,
+  # just a friendly explanation. `timezone` is only read by the rich card.
+  defp assign_invalid(socket) do
+    assign(socket,
+      expired: false,
+      session_closed: false,
+      invalid: true,
+      ended_reason:
+        dgettext("lobby", "This lobby link is no longer valid, or the lobby never existed."),
+      ended_summary: nil,
+      timezone: "Etc/UTC"
+    )
+  end
+
+  # A live session that just closed: flip to the terminal screen and resolve the
+  # final summary (timestamps/duration) for the goodbye card.
+  defp mark_session_closed(socket, reason) do
+    assign(socket,
+      session_closed: true,
+      ended_reason: expired_reason_label(reason),
+      ended_summary: summary_for(socket.assigns.token)
+    )
+  end
+
+  defp summary_for(token) do
+    case Lobby.session_summary(token) do
+      {:ok, summary} -> summary
+      {:error, :not_found} -> nil
     end
   end
 
