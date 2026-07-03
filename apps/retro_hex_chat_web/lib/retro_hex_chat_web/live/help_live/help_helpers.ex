@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.HelpLive.HelpHelpers do
             <:start>
               <div class="relative">
                 <.start_button label={dgettext("help", "Help")}>
-                  <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
+                  <:icon><Icons.icon_hex_stone class="h-4 w-4" /></:icon>
                 </.start_button>
                 <.start_menu id="help-start-menu">
                   <.start_menu_item data-window-open="help" label={dgettext("help", "Help Topics")}>
