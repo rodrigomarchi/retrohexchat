@@ -1,5 +1,5 @@
 <%!-- Expired state --%>
-<div :if={assigns[:expired]} class="flex flex-col min-h-screen bg-surface">
+<div :if={assigns[:expired]} class="flex flex-col min-h-screen bg-background">
   <.app_header on_logo_click={show_modal("about-dialog")}>
     <:panels>
       <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
@@ -19,7 +19,7 @@
   :if={!assigns[:expired]}
   id="arcade-session"
   phx-hook="ArcadeSession"
-  class="flex flex-col h-screen bg-surface"
+  class="flex flex-col h-screen bg-background"
 >
   <.desktop id="arcade-desktop" persist_key="arcade" data-testid="arcade-desktop">
     <:header>

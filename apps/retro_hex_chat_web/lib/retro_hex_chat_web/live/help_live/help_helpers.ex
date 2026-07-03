@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.HelpLive.HelpHelpers do
   @spec help_layout(map()) :: Phoenix.LiveView.Rendered.t()
   def help_layout(assigns) do
     ~H"""
-    <div class="min-h-screen bg-desktop font-system text-text flex flex-col">
+    <div class="min-h-screen bg-background font-system text-text flex flex-col">
       <.app_header logo_href="/">
         <:panels>
           <.menu_bar_app id="help-menubar" phx-hook="MenuBarHook" connected={false} />
