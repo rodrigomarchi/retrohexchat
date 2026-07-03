@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       Server.join(channel, "E2EFounder")
 
       view = connect_user(conn, "E2ECcRo#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       html = open_cc(view, channel)
 
@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "1.7 operator sees editable controls", %{conn: conn} do
       channel = "#e2eop-#{uid()}"
       view = connect_user(conn, "E2ECcOp#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       html = open_cc(view, channel)
 
@@ -135,7 +135,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "1.8 empty bans shows placeholder", %{conn: conn} do
       channel = "#e2eeb-#{uid()}"
       view = connect_user(conn, "E2ECcEb#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -152,7 +152,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "2.1 operator sets topic from Channel Central", %{conn: conn} do
       channel = "#e2etp-#{uid()}"
       view = connect_user(conn, "E2ETpOp#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -172,7 +172,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       channel = "#e2eclr-#{uid()}"
       nick = "E2EClr#{uid()}"
       view = connect_user(conn, nick)
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
 
       Server.set_topic(channel, nick, "Temp topic")
@@ -193,7 +193,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "3.1 operator toggles +m moderated", %{conn: conn} do
       channel = "#e2emd-#{uid()}"
       view = connect_user(conn, "E2EMd#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -210,7 +210,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "3.2 operator sets +k key", %{conn: conn} do
       channel = "#e2eky-#{uid()}"
       view = connect_user(conn, "E2EKy#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -227,7 +227,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "3.3 operator sets +l limit", %{conn: conn} do
       channel = "#e2elm-#{uid()}"
       view = connect_user(conn, "E2ELm#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -251,7 +251,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       channel = "#e2ewl-#{uid()}"
       nick = "E2EWl#{uid()}"
       view = connect_user(conn, nick)
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       html = open_cc(view, channel)
 
@@ -281,7 +281,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       channel = "#e2esl-#{uid()}"
       nick = "E2ESl#{uid()}"
       view = connect_user(conn, nick)
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       html = open_cc(view, channel)
 
@@ -313,12 +313,12 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       guest = "CfgGuest#{uid()}"
 
       owner_view = connect_user(conn, owner)
-      submit_command(owner_view, "/join #{channel}")
+      submit_command_sync(owner_view, "/join #{channel}")
       :ok = Server.set_welcome(channel, "Owner managed welcome", owner)
       :ok = Server.set_mode(channel, owner, "+j", ["5:45"])
 
       view = connect_user(conn, guest)
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       html = open_cc(view, channel)
 
@@ -339,9 +339,9 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       target = "E2ENew#{uid()}"
 
       owner_view = connect_user(conn, owner)
-      submit_command(owner_view, "/join #{channel}")
+      submit_command_sync(owner_view, "/join #{channel}")
       target_view = connect_user(conn, target)
-      submit_command(target_view, "/join #{channel}")
+      submit_command_sync(target_view, "/join #{channel}")
 
       render_click(owner_view, "switch_channel", %{"channel" => channel})
       html = open_cc(owner_view, channel)
@@ -381,7 +381,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "4.1 operator adds ban via dialog", %{conn: conn} do
       channel = "#e2ebn-#{uid()}"
       view = connect_user(conn, "E2EBn#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -401,7 +401,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       channel = "#e2erb-#{uid()}"
       nick = "E2ERb#{uid()}"
       view = connect_user(conn, nick)
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
 
       Server.ban(channel, nick, "TempBan")
@@ -429,7 +429,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "5.1 operator adds ban exception via dialog", %{conn: conn} do
       channel = "#e2ebe-#{uid()}"
       view = connect_user(conn, "E2EBe#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -451,7 +451,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       channel = "#e2erbx-#{uid()}"
       nick = "E2ERbx#{uid()}"
       view = connect_user(conn, nick)
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
 
       Server.add_ban_exception(channel, nick, "ExUser")
@@ -472,7 +472,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "5.3 empty ban exceptions shows placeholder", %{conn: conn} do
       channel = "#e2eebx-#{uid()}"
       view = connect_user(conn, "E2EEbx#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -490,7 +490,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "6.1 operator adds invite exception via dialog", %{conn: conn} do
       channel = "#e2eie-#{uid()}"
       view = connect_user(conn, "E2EIe#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -512,7 +512,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       channel = "#e2erix-#{uid()}"
       nick = "E2ERix#{uid()}"
       view = connect_user(conn, nick)
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
 
       Server.add_invite_exception(channel, nick, "InvEx1")
@@ -533,7 +533,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
     test "6.3 empty invite exceptions shows placeholder", %{conn: conn} do
       channel = "#e2eeix-#{uid()}"
       view = connect_user(conn, "E2EEix#{uid()}")
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -552,7 +552,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       channel = "#e2ert1-#{uid()}"
       nick = "E2ERt1#{uid()}"
       view = connect_user(conn, nick)
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -565,7 +565,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       channel = "#e2ert2-#{uid()}"
       nick = "E2ERt2#{uid()}"
       view = connect_user(conn, nick)
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -583,7 +583,7 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
       channel = "#e2ert3-#{uid()}"
       nick = "E2ERt3#{uid()}"
       view = connect_user(conn, nick)
-      submit_command(view, "/join #{channel}")
+      submit_command_sync(view, "/join #{channel}")
       render_click(view, "switch_channel", %{"channel" => channel})
       open_cc(view, channel)
 
@@ -625,14 +625,6 @@ defmodule RetroHexChatWeb.ChannelCentralFeatureTest do
   defp connect_user(conn, nick) do
     {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
     view
-  end
-
-  defp submit_command(view, command) do
-    view |> element(~s([data-testid="chat-input-form"])) |> render_submit(%{"input" => command})
-
-    # Composer commands run via send/2 AFTER render_submit returns; render/1 is
-    # a synchronous barrier that guarantees the command has been processed.
-    render(view)
   end
 
   defp ensure_channel(name) do
