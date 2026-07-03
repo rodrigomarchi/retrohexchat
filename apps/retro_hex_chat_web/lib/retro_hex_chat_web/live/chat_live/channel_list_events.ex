@@ -83,12 +83,19 @@ defmodule RetroHexChatWeb.ChatLive.ChannelListEvents do
   end
 
   def handle_event("knock_request_change", params, socket) do
-    send_update(KnockRequestDialog,
-      id: KnockRequestDialog.id(),
-      action: {:change, message_of(params)}
-    )
+    # A change only tracks the draft while the dialog is already open — it must
+    # never OPEN the dialog. On a deploy reconnect LiveView re-fires phx-change
+    # for every form still in the (persisted) DOM to recover in-flight input; the
+    # hidden knock form is one of them, and force-opening here surfaced a spurious
+    # "Request Channel Access" window with no channel on every reconnect.
+    if socket.assigns.show_knock_request_dialog do
+      send_update(KnockRequestDialog,
+        id: KnockRequestDialog.id(),
+        action: {:change, message_of(params)}
+      )
+    end
 
-    {:halt, assign(socket, show_knock_request_dialog: true)}
+    {:halt, socket}
   end
 
   def handle_event("knock_request_submit", params, socket) do

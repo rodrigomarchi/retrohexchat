@@ -214,6 +214,28 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
       document = Floki.parse_document!(html)
       assert Floki.find(document, "[data-testid=\"knock-request-submit\"][disabled]") != []
     end
+
+    test "a reconnect-recovered knock_request_change must not open the dialog", %{conn: conn} do
+      guest = "CMRecover#{uid()}"
+      guest_view = connect_user(conn, guest)
+
+      # The user never opened the knock dialog — the `show-trigger` is the only
+      # markup gated on `@show`, so its absence is the reliable "closed" signal
+      # (the dialog body itself is always in the DOM, just hidden).
+      refute has_element?(guest_view, "#knock-request-dialog-show-trigger")
+      refute show_knock_request_dialog?(guest_view)
+
+      # On a deploy reconnect the client DOM survives and LiveView re-fires
+      # phx-change for every mounted form to recover in-flight input — including
+      # the hidden knock form. This is that recovered event, arriving closed with
+      # an empty channel (a fresh cold mount has no channel draft). It must NOT
+      # surface the "Request Channel Access" window with "Channel: unknown".
+      render_change(guest_view, "knock_request_change", %{"channel" => "", "message" => ""})
+      _ = render(guest_view)
+
+      refute has_element?(guest_view, "#knock-request-dialog-show-trigger")
+      refute show_knock_request_dialog?(guest_view)
+    end
   end
 
   describe "help documentation" do
@@ -265,6 +287,10 @@ defmodule RetroHexChatWeb.ChannelMembershipFeatureTest do
 
   defp knock_timestamps(view) do
     :sys.get_state(view.pid).socket.assigns[:knock_timestamps] || %{}
+  end
+
+  defp show_knock_request_dialog?(view) do
+    :sys.get_state(view.pid).socket.assigns[:show_knock_request_dialog] == true
   end
 
   defp cleanup_channel(name) do

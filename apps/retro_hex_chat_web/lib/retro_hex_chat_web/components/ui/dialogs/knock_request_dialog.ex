@@ -49,6 +49,7 @@ defmodule RetroHexChatWeb.Components.UI.KnockRequestDialog do
           id={"#{@id}-form"}
           phx-change={@on_change}
           phx-submit={@on_submit}
+          phx-auto-recover="ignore"
           class="space-y-retro-10"
         >
           <input type="hidden" name="channel" value={@channel || ""} />

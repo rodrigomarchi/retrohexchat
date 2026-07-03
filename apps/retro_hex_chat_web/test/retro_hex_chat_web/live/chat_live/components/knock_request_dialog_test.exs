@@ -18,6 +18,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.KnockRequestDialogTest do
     assert html =~ "hidden"
   end
 
+  test "opts the form out of reconnect form recovery" do
+    # The dialog markup always sits in the DOM (just hidden). On a deploy
+    # reconnect LiveView re-fires phx-change for every mounted form to recover
+    # in-flight input; without this opt-out the hidden knock form's change event
+    # fired on every reconnect and popped a spurious "Channel: unknown" window.
+    html = render_component(KnockRequestDialog, id: KnockRequestDialog.id())
+
+    assert html =~ ~s(phx-auto-recover="ignore")
+  end
+
   test "opens for a channel with a cleared draft" do
     html =
       render_component(KnockRequestDialog,
