@@ -52,6 +52,31 @@ defmodule RetroHexChatWeb.LandingLiveTest do
     end
   end
 
+  describe "static win98 taskbar" do
+    for {path, _heading_id} <- @landing_pages do
+      test "GET #{path} renders the taskbar, start menu and page links", %{conn: conn} do
+        conn = get(conn, unquote(path))
+        document = html_response(conn, 200) |> Floki.parse_document!()
+
+        assert Floki.find(document, ".desktop-taskbar") != []
+
+        # Start menu is toggled by the existing vanilla data-toggle-target JS.
+        assert Floki.find(document, ~s([data-toggle-target="#landing-start-menu"])) != []
+
+        start_menu = Floki.find(document, "#landing-start-menu")
+        assert start_menu != []
+        hrefs = start_menu |> Floki.find("a") |> Floki.attribute("href")
+        assert "/connect" in hrefs
+        assert "/faq" in hrefs
+        assert "/chat/help" in hrefs
+
+        # The current page's taskbar button is pressed (is-active).
+        active = Floki.find(document, "a.desktop-taskbar__button.is-active")
+        assert Floki.attribute(active, "href") == [unquote(path)]
+      end
+    end
+  end
+
   describe "secondary landing page content" do
     for {path, heading_id} <- @secondary_landing_pages do
       test "GET #{path} starts with a visible intro summary", %{conn: conn} do

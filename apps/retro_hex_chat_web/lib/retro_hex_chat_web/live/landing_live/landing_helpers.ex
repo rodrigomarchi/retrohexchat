@@ -14,13 +14,146 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
   @spec landing_layout(map()) :: Phoenix.LiveView.Rendered.t()
   def landing_layout(assigns) do
     ~H"""
-    <div class="min-h-screen flex flex-col">
+    <div class="landing-desktop min-h-screen flex flex-col bg-background pb-10">
       <.landing_header active_page={@active_page} />
       <main class="flex-1">
         {render_slot(@inner_block)}
       </main>
       <.landing_footer active_page={@active_page} />
+      <.landing_taskbar active_page={@active_page} />
     </div>
+    """
+  end
+
+  # Static Win98 taskbar for the landing desktop. It mirrors the window manager's
+  # look (`desktop-taskbar*` classes) but is fully static — no LiveSocket, no
+  # WindowManagerHook. The Start menu opens via the existing `data-toggle-target`
+  # vanilla toggle (public_pages.js); page buttons and menu items are real
+  # `<a href>` links, so navigation and SEO stay intact. Each landing page is a
+  # "window": its taskbar button shows pressed (`is-active`) for the current page.
+  attr :active_page, :atom, required: true
+
+  defp landing_taskbar(assigns) do
+    pages = [
+      %{page: :home, path: "/", label: dgettext("landing", "Home"), icon: :icon_hex_stone},
+      %{
+        page: :how_it_works,
+        path: "/how-it-works",
+        label: dgettext("landing", "How It Works"),
+        icon: :icon_server
+      },
+      %{
+        page: :features,
+        path: "/features",
+        label: dgettext("landing", "Features"),
+        icon: :icon_chat
+      },
+      %{
+        page: :privacy,
+        path: "/privacy",
+        label: dgettext("landing", "Privacy"),
+        icon: :icon_lock
+      },
+      %{
+        page: :install,
+        path: "/install",
+        label: dgettext("landing", "Install"),
+        icon: :icon_terminal
+      },
+      %{
+        page: :community,
+        path: "/community",
+        label: dgettext("landing", "Community"),
+        icon: :icon_code
+      },
+      %{page: :faq, path: "/faq", label: dgettext("landing", "FAQ"), icon: :icon_question}
+    ]
+
+    assigns = assign(assigns, :pages, pages)
+
+    ~H"""
+    <div class="desktop-taskbar shadow-retro-window bg-surface fixed inset-x-0 bottom-0 z-floating flex items-center gap-[3px] p-[2px]">
+      <%!-- Start button + menu (toggled by the existing data-toggle-target JS) --%>
+      <div class="relative shrink-0">
+        <button
+          type="button"
+          data-toggle-target="#landing-start-menu"
+          aria-controls="landing-start-menu"
+          aria-expanded="false"
+          class="desktop-start-button shadow-retro-raised bg-surface active:shadow-retro-sunken inline-flex items-center gap-1 px-2 py-[2px] text-xs font-bold"
+        >
+          <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+            <Icons.icon_hex_stone class="h-4 w-4" />
+          </span>
+          {dgettext("landing", "Start")}
+        </button>
+        <div
+          id="landing-start-menu"
+          hidden
+          class="desktop-start-menu shadow-retro-window bg-surface absolute bottom-full left-0 z-floating mb-[2px] w-56 p-[3px]"
+        >
+          <.start_link :for={p <- @pages} href={p.path} label={p.label}>
+            <:icon>{apply(Icons, p.icon, [%{class: "h-4 w-4"}])}</:icon>
+          </.start_link>
+          <div class="shadow-retro-status my-[2px] h-[2px]"></div>
+          <.start_link href="/chat/help" label={dgettext("landing", "Documentation")}>
+            <:icon><Icons.icon_notepad class="h-4 w-4" /></:icon>
+          </.start_link>
+          <.start_link href="/connect" label={dgettext("landing", "Open the app")} emphasis>
+            <:icon><Icons.icon_connect class="h-4 w-4" /></:icon>
+          </.start_link>
+        </div>
+      </div>
+
+      <%!-- Page "windows" (hidden on mobile — navigation lives in the Start menu) --%>
+      <div class="hidden md:flex flex-1 items-center gap-[3px] overflow-x-auto">
+        <a
+          :for={p <- @pages}
+          href={p.path}
+          aria-current={(p.page == @active_page && "page") || nil}
+          class={[
+            "desktop-taskbar__button shadow-retro-raised bg-surface no-underline text-text",
+            "inline-flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs",
+            p.page == @active_page && "is-active"
+          ]}
+        >
+          <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+            {apply(Icons, p.icon, [%{class: "w-3 h-3"}])}
+          </span>
+          <span class="max-w-[12ch] truncate">{p.label}</span>
+        </a>
+      </div>
+
+      <%!-- Tray: persistent Connect CTA --%>
+      <a
+        href="/connect"
+        class="shadow-retro-raised bg-surface active:shadow-retro-sunken ml-auto md:ml-0 inline-flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs font-bold no-underline text-text"
+      >
+        <Icons.icon_connect class="w-4 h-4" /> {dgettext("landing", "Connect")}
+      </a>
+    </div>
+    """
+  end
+
+  attr :href, :string, required: true
+  attr :label, :string, required: true
+  attr :emphasis, :boolean, default: false
+  slot :icon, required: true
+
+  defp start_link(assigns) do
+    ~H"""
+    <a
+      href={@href}
+      class={[
+        "flex items-center gap-2 px-2 py-1 text-xs no-underline hover:bg-primary hover:text-white",
+        if(@emphasis, do: "font-bold text-primary", else: "text-text")
+      ]}
+    >
+      <span class="inline-flex h-4 w-4 shrink-0 items-center justify-center">
+        {render_slot(@icon)}
+      </span>
+      {@label}
+    </a>
     """
   end
 
