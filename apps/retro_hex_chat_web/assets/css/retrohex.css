@@ -1251,20 +1251,29 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   @apply bg-primary text-white;
   text-shadow: none;
 }
-/* Narrow viewports drop window management: windows stack and flow vertically. */
+/* Narrow viewports drop window management: exactly one window is shown at a
+   time (the WM hook keeps only the focused window visible), filling the
+   workspace like a fullscreen mobile app. The taskbar is the window switcher. */
 .desktop--stacked .desktop__workspace {
-  overflow-y: auto;
+  overflow: hidden;
 }
 /* Shortcuts are window-management chrome — hidden in the stacked mobile layout. */
 .desktop--stacked .desktop__shortcuts {
   display: none;
 }
 .desktop--stacked .desktop-window {
-  position: static !important;
+  position: absolute !important;
+  inset: 0 !important;
   width: auto !important;
   height: auto !important;
-  margin: 0 0 6px 0;
+  margin: 0;
 }
-.desktop--stacked .desktop-window__resize {
+/* Resize and geometry controls are meaningless when every window is fullscreen:
+   drop the resize handle and the minimize/maximize/restore title-bar buttons.
+   Only the title and the close (X) button remain (pinned windows show neither). */
+.desktop--stacked .desktop-window__resize,
+.desktop--stacked [data-window-control="minimize"],
+.desktop--stacked [data-window-control="maximize"],
+.desktop--stacked [data-window-control="restore"] {
   display: none;
 }

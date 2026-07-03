@@ -87,6 +87,7 @@ describe("WindowManagerHook", () => {
         if (name === "window_command") command = cb;
       }),
     };
+    hook.workspaceSize = () => ({ w: 1024, h: 768 }); // jsdom has no layout
     hook.mounted();
   });
 
@@ -100,6 +101,8 @@ describe("WindowManagerHook", () => {
   const taskbarBtn = (id) => el.querySelector(`[data-window-taskbar="${id}"]`);
 
   it("collects every window and honours initial open state", () => {
+    hook.stacked = false; // desktop mode: every open window is visible at once
+    hook.applyAll();
     expect(Object.keys(hook.windows).sort()).toEqual(["call", "chat", "conn"]);
     expect(win("conn").classList.contains("u-hidden")).toBe(false);
     expect(win("call").classList.contains("u-hidden")).toBe(true);
@@ -138,6 +141,55 @@ describe("WindowManagerHook", () => {
     hook.closeWindow("call");
     expect(hook.windows.call.state.open).toBe(false);
     expect(win("call").classList.contains("u-hidden")).toBe(true);
+  });
+
+  describe("stacked (mobile) mode", () => {
+    it("shows only the focused window, hiding other open windows", () => {
+      hook.stacked = true;
+      hook.focusWindow("chat");
+
+      expect(hook.focusedId).toBe("chat");
+      expect(win("chat").classList.contains("u-hidden")).toBe(false);
+      // conn is open (pinned) but not focused — hidden in the single-window layout.
+      expect(win("conn").classList.contains("u-hidden")).toBe(true);
+      expect(win("call").classList.contains("u-hidden")).toBe(true);
+    });
+
+    it("opening a window makes it the sole visible window", () => {
+      hook.stacked = true;
+      command({ action: "open", id: "call" });
+
+      expect(hook.focusedId).toBe("call");
+      expect(win("call").classList.contains("u-hidden")).toBe(false);
+      expect(win("chat").classList.contains("u-hidden")).toBe(true);
+      expect(win("conn").classList.contains("u-hidden")).toBe(true);
+    });
+
+    it("falls back to another open window when the focused one closes", () => {
+      hook.stacked = true;
+      command({ action: "open", id: "call" });
+      hook.closeWindow("call");
+
+      expect(hook.focusedId).not.toBe("call");
+      expect(["chat", "conn"]).toContain(hook.focusedId);
+      expect(win(hook.focusedId).classList.contains("u-hidden")).toBe(false);
+    });
+
+    it("entering stacked mode focuses the topmost open window when none is focused", () => {
+      const originalWidth = window.innerWidth;
+      window.innerWidth = 375; // a phone-sized viewport, below the breakpoint
+      try {
+        hook.stacked = false;
+        hook.focusedId = null;
+        hook.updateStacking();
+
+        expect(hook.stacked).toBe(true);
+        expect(hook.focusedId).not.toBeNull();
+        expect(hook.windows[hook.focusedId].state.open).toBe(true);
+      } finally {
+        window.innerWidth = originalWidth;
+      }
+    });
   });
 
   it("toggles maximize and swaps the maximize/restore controls", () => {
@@ -429,6 +481,7 @@ describe("WindowManagerHook", () => {
   });
 
   it("keeps other windows visible when a server patch lands mid-drag", () => {
+    hook.stacked = false; // dragging only exists in desktop (multi-window) mode
     command({ action: "open", id: "call" }); // conn, chat and call all visible
 
     // Start dragging chat.
@@ -446,6 +499,7 @@ describe("WindowManagerHook", () => {
   });
 
   it("re-asserts every window's visibility on pointer up", () => {
+    hook.stacked = false; // dragging only exists in desktop (multi-window) mode
     command({ action: "open", id: "call" });
 
     hook.drag = { id: "chat", px: 0, py: 0, ox: 20, oy: 20 };
@@ -487,6 +541,7 @@ describe("WindowManagerHook — dynamic windows (reconciliation)", () => {
     el = buildDesktop();
     el.dataset.persist = "false";
     hook = { ...WindowManagerHook, el, handleEvent: vi.fn(), pushEvent: vi.fn() };
+    hook.workspaceSize = () => ({ w: 1024, h: 768 }); // jsdom has no layout
     hook.mounted();
   });
 
@@ -774,6 +829,7 @@ describe("WindowManagerHook — default maximized", () => {
       </div>`;
     document.body.appendChild(el);
     hook = { ...WindowManagerHook, el, handleEvent: vi.fn() };
+    hook.workspaceSize = () => ({ w: 1024, h: 768 }); // jsdom has no layout
     hook.mounted();
   }
 

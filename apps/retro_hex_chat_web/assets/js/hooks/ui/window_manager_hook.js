@@ -99,6 +99,11 @@ const WindowManagerHook = {
   updated() {
     this.reconcileWindows();
 
+    // Re-assert the stacked-mode class: the server patch just rebuilt the desktop
+    // root's class list without it (it is client-owned), and window visibility
+    // below depends on the current stacked state.
+    this.updateStacking();
+
     // A server-driven DOM patch resets the class/style we own on window roots
     // (the server always renders `u-hidden`), so re-assert client-owned geometry
     // and visibility after every patch. Mid-gesture the pointer handler owns the
@@ -840,7 +845,10 @@ const WindowManagerHook = {
     const win = this.windows[id];
     const el = win.el;
     const st = win.state;
-    const visible = st.open && !st.minimized;
+    // In stacked (mobile) mode exactly one window shows at a time — the focused
+    // one, filling the workspace like a fullscreen app. The taskbar switches
+    // between them; there is always a focused window (the pinned base window).
+    const visible = st.open && !st.minimized && (!this.stacked || this.focusedId === id);
 
     el.classList.toggle("u-hidden", !visible);
     el.classList.toggle("desktop-window--blurred", this.focusedId !== id);
@@ -922,10 +930,27 @@ const WindowManagerHook = {
   },
 
   updateStacking() {
-    const stacked = this.workspaceSize().w < STACK_BREAKPOINT;
-    if (stacked !== this.stacked) {
-      this.stacked = stacked;
-      this.el.classList.toggle("desktop--stacked", stacked);
+    // Decide stacking from the viewport width, not the workspace width: at mount
+    // the workspace has no laid-out width yet (dead render / page transition), so
+    // measuring it there misclassifies a phone as a desktop. The desktop always
+    // spans the viewport, so innerWidth is the reliable "is this a phone" signal.
+    const viewportW =
+      typeof window !== "undefined" && window.innerWidth
+        ? window.innerWidth
+        : this.workspaceSize().w;
+    this.stacked = viewportW < STACK_BREAKPOINT;
+    // Re-assert unconditionally (not only on change): a server DOM patch rebuilds
+    // the desktop root from its server class list, which never carries this
+    // client-owned class — so it must be reapplied after every patch.
+    this.el.classList.toggle("desktop--stacked", this.stacked);
+    // Stacked mode shows only the focused window; if none is focused (or the
+    // focused one is closed/minimized), fall back to the topmost open window so
+    // the mobile viewport is never blank.
+    if (this.stacked) {
+      const focused = this.focusedId && this.windows[this.focusedId];
+      if (!focused || !focused.state.open || focused.state.minimized) {
+        this.focusTopmost();
+      }
     }
   },
 

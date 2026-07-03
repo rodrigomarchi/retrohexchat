@@ -86,8 +86,10 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
     """
   end
 
-  # Viewport dialogs claim the full dynamic viewport height on mobile;
-  # window-scoped dialogs must fit inside their host window at any size.
+  # Both scopes go fullscreen on mobile so a modal can never overflow a small
+  # viewport: a viewport dialog claims the full dynamic viewport height, and a
+  # window-scoped sub-form fills its host window (itself fullscreen in the
+  # stacked mobile layout). Both revert to a centered card at `md`.
   defp scope_position(:viewport), do: "fixed"
   defp scope_position(:window), do: "absolute"
 
@@ -97,7 +99,8 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
   end
 
   defp scope_frame_classes(:window) do
-    "flex flex-col bg-surface shadow-retro-window p-[3px] min-h-0 max-h-full"
+    "flex flex-col bg-surface shadow-retro-window p-[3px] " <>
+      "min-h-full max-h-full md:min-h-0"
   end
 
   @doc """
