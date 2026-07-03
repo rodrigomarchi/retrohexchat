@@ -323,7 +323,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         {dgettext("diagrams", "Alice")}
       </text>
       <text x="130" y="264" text-anchor="middle" fill="#000" font-size="18">
-        {dgettext("diagrams", "&#x1F468;")}
+        {dgettext("diagrams", "👨")}
       </text>
 
       <%!-- Bob node --%>
@@ -344,7 +344,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameP2pFlow do
         {dgettext("diagrams", "Bob")}
       </text>
       <text x="390" y="264" text-anchor="middle" fill="#000" font-size="18">
-        {dgettext("diagrams", "&#x1F469;")}
+        {dgettext("diagrams", "👩")}
       </text>
 
       <%!-- Bidirectional green arrow --%>

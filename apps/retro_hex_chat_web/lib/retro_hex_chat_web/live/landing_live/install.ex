@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.LandingLive.Install do
                   <legend class="text-sm font-bold px-1">
                     <Icons.icon_git class="w-4 h-4 inline" /> {dgettext(
                       "landing",
-                      "Step 1 &mdash; Clone"
+                      "Step 1 — Clone"
                     )}
                   </legend>
                   <.step_clone />
@@ -72,7 +72,7 @@ defmodule RetroHexChatWeb.LandingLive.Install do
                   <legend class="text-sm font-bold px-1">
                     <Icons.icon_wrench class="w-4 h-4 inline" /> {dgettext(
                       "landing",
-                      "Step 2 &mdash; Setup"
+                      "Step 2 — Setup"
                     )}
                   </legend>
                   <.step_setup />
@@ -82,7 +82,7 @@ defmodule RetroHexChatWeb.LandingLive.Install do
                   <legend class="text-sm font-bold px-1">
                     <Icons.icon_terminal class="w-4 h-4 inline" /> {dgettext(
                       "landing",
-                      "Step 3 &mdash; Run"
+                      "Step 3 — Run"
                     )}
                   </legend>
                   <.step_run />
@@ -107,19 +107,19 @@ defmodule RetroHexChatWeb.LandingLive.Install do
                   <strong>
                     <Icons.icon_elixir class="w-4 h-4 inline" /> {dgettext("landing", "Elixir")}
                   </strong>
-                  {dgettext("landing", "&mdash; Version 1.17+")}
+                  {dgettext("landing", "— Version 1.17+")}
                 </div>
                 <div class="shadow-retro-field bg-white p-3 text-sm">
                   <strong>
                     <Icons.icon_postgres class="w-4 h-4 inline" /> {dgettext("landing", "PostgreSQL")}
                   </strong>
-                  {dgettext("landing", "&mdash; Version 16+")}
+                  {dgettext("landing", "— Version 16+")}
                 </div>
                 <div class="shadow-retro-field bg-white p-3 text-sm">
                   <strong>
                     <Icons.icon_code class="w-4 h-4 inline" /> {dgettext("landing", "Node.js")}
                   </strong>
-                  {dgettext("landing", "&mdash; Version 20+")}
+                  {dgettext("landing", "— Version 20+")}
                 </div>
               </div>
               <p class="text-sm mt-3">

@@ -83,7 +83,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.Voice do
     <!-- Small avatar icon square -->
       <rect x="30" y="52" width="32" height="32" fill="#008080" stroke="#fff" stroke-width="1" />
       <text x="46" y="74" text-anchor="middle" fill="#fff" font-size="20">
-        {dgettext("diagrams", "&#x1F469;")}
+        {dgettext("diagrams", "👩")}
       </text>
       
     <!-- Timer elements -->

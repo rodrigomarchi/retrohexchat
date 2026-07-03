@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
       <polyline points="153,50 153,93 27,93" fill="none" stroke="#fff" stroke-width="1" />
 
       <text x="90" y="80" text-anchor="middle" fill="#000" font-size="28">
-        {dgettext("diagrams", "&#x1F468;")}
+        {dgettext("diagrams", "👨")}
       </text>
       
     <!-- Bob window -->
@@ -78,7 +78,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.P2pArchitecture do
       <polyline points="493,50 493,93 367,93" fill="none" stroke="#fff" stroke-width="1" />
 
       <text x="430" y="80" text-anchor="middle" fill="#000" font-size="28">
-        {dgettext("diagrams", "&#x1F469;")}
+        {dgettext("diagrams", "👩")}
       </text>
       
     <!-- P2P arrow (bidirectional thick line) -->

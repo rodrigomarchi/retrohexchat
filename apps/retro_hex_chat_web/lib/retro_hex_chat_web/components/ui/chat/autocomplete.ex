@@ -140,7 +140,7 @@ defmodule RetroHexChatWeb.Components.UI.Autocomplete do
       phx-value-value={result.name}
       data-testid={"autocomplete-item-#{idx}"}
     >
-      <span :if={result.joined?} class="text-success shrink-0">&#10003;</span>
+      <span :if={result.joined?} class="text-success shrink-0">✓</span>
       <span class="font-bold shrink-0">{result.name}</span>
       <span class="truncate text-muted-foreground">
         ({dngettext("chat", "%{count} user", "%{count} users", result.user_count)})

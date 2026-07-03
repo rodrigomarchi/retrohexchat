@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
             {dgettext("showcase", "Troll heading out? Cool cool. The lobby will keep your seat warm.")}
           </.chat_message>
           <.chat_message timestamp="27/02 12:08" nick="Reginald" nick_color="text-success-dark">
-            {dgettext("showcase", "*adjusts monocle* Reginald here &mdash; your server concierge.")}
+            {dgettext("showcase", "*adjusts monocle* Reginald here — your server concierge.")}
           </.chat_message>
         </.chat_message_list>
         <.code_example>
@@ -124,7 +124,7 @@ defmodule RetroHexChatWeb.ShowcaseLive.Chat.ChatMessagePage do
           <.chat_message timestamp="16:01" nick="Brutus" nick_color="text-teal">
             {dgettext(
               "showcase",
-              "Brutus here &mdash; I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
+              "Brutus here — I keep the peace. Play nice and we'll get along. Type !rules if you need a reminder."
             )}
           </.chat_message>
         </.chat_message_list>

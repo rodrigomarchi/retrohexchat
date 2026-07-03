@@ -497,13 +497,13 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
           </div>
 
           <p class="text-sm text-center italic mb-2">
-            {dgettext("landing", "&ldquo;Your data. Your rules. Nobody in between.&rdquo;")}
+            {dgettext("landing", "“Your data. Your rules. Nobody in between.”")}
           </p>
 
           <div class="flex justify-center gap-4 text-xs text-gray-600">
             <span>{dgettext("landing", "v0.1.0")}</span>
             <span>{dgettext("landing", "Made by humans")}</span>
-            <span>{dgettext("landing", "2025&ndash;2026")}</span>
+            <span>{dgettext("landing", "2025–2026")}</span>
           </div>
         </.window_body>
         <.window_status_bar>
