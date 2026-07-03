@@ -685,12 +685,47 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   50% { opacity: 1; }
 }
 
+@keyframes activity-dot-blink {
+  0%, 45% { opacity: 1; }
+  46%, 100% { opacity: 0.25; }
+}
+
+@keyframes activity-icon-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 0.72;
+    transform: translateY(-1px);
+  }
+}
+
+.activity-indicator__icon,
+.activity-indicator__brand,
+.desktop-window-opening__logo {
+  animation: activity-icon-pulse 1.5s ease-in-out infinite;
+}
+
+.activity-indicator__dot,
+.desktop-window-opening__dot {
+  @apply bg-success inline-block h-1.5 w-1.5 shrink-0 rounded-full;
+  animation: activity-dot-blink 1s steps(2, end) infinite;
+}
+
 /* ── Reduced Motion ── */
 
 @media (prefers-reduced-motion: reduce) {
   .p2p-diagram__line { animation: none !important; }
   .p2p-diagram__dot { display: none; }
   .p2p-diagram__status-dot--offline { animation: none; }
+  .activity-indicator__icon,
+  .activity-indicator__brand,
+  .activity-indicator__dot,
+  .desktop-window-opening__logo,
+  .desktop-window-opening__dot {
+    animation: none;
+  }
 }
 
 /* ══════════════════════════════════════════════════════
@@ -1141,7 +1176,7 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   @apply flex items-center gap-1 bg-title-bar px-[3px] py-[3px] text-xs font-bold text-white;
 }
 .desktop-window-opening__icon {
-  @apply inline-flex h-4 w-4 shrink-0 items-center justify-center bg-surface shadow-retro-sunken;
+  @apply h-4 w-4 shrink-0;
 }
 .desktop-window-opening__title {
   @apply min-w-0 truncate;
@@ -1149,17 +1184,8 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
 .desktop-window-opening__body {
   @apply flex flex-1 flex-col items-center justify-center gap-retro-8 p-retro-12 text-xs text-muted-foreground;
 }
-.desktop-window-opening__bar {
-  @apply shadow-retro-field h-[14px] w-[200px];
-  animation: progress-scroll 1s linear infinite;
-  background-image: repeating-linear-gradient(
-    90deg,
-    #0000ee 0,
-    #0000ee 8px,
-    transparent 8px,
-    transparent 12px
-  );
-  background-size: 20px 14px;
+.desktop-window-opening__logo {
+  @apply h-8 w-8;
 }
 .desktop-window-opening__text {
   @apply text-center text-muted-foreground;

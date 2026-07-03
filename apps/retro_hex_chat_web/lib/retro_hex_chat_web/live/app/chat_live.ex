@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── Chat components ──────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.TopicBar
   import RetroHexChatWeb.Components.UI.ConnectionStatus
-  import RetroHexChatWeb.Components.UI.LoadingSpinner
+  import RetroHexChatWeb.Components.UI.ActivityIndicator
 
   # ── Desktop window manager ───────────────────────────────────
   import RetroHexChatWeb.Components.UI.Desktop

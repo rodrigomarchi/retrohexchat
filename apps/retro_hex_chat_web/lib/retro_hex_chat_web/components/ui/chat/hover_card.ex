@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   @moduledoc """
   Hover card component for the showcase design system.
 
-  Composed from window + badge + separator + loading_spinner primitives.
+  Composed from window + badge + separator + activity indicator primitives.
   Displays nick info in a retro popup window with role badges,
   absolute positioning, and loading state.
 
@@ -25,7 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Separator
-  import RetroHexChatWeb.Components.UI.LoadingSpinner
+  import RetroHexChatWeb.Components.UI.ActivityIndicator
 
   alias RetroHexChatWeb.Icons
 
@@ -89,7 +89,12 @@ defmodule RetroHexChatWeb.Components.UI.HoverCard do
 
       <.window_body class="p-retro-8 text-xs space-y-retro-4">
         <%= if @loading do %>
-          <.loading_spinner size="sm" text={dgettext("chat", "Looking up %{nick}...", nick: @nick)} />
+          <.activity_indicator
+            icon={:status_user}
+            variant="panel"
+            text={dgettext("chat", "Looking up %{nick}...", nick: @nick)}
+            class="w-full justify-center"
+          />
         <% else %>
           <%!-- Role badge (from role attr) --%>
           <div :if={@role} class="flex gap-retro-4 flex-wrap">

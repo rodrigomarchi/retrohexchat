@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
   import RetroHexChatWeb.Components.UI.Lobby.LobbyMenuBar
   import RetroHexChatWeb.Components.UI.Lobby.LobbyStatusBar
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
-  import RetroHexChatWeb.Components.UI.LoadingSpinner
+  import RetroHexChatWeb.Components.UI.ActivityIndicator
   alias RetroHexChatWeb.App.LobbyLive.Components.ChatIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.GameIsland
@@ -417,10 +417,10 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.UniversalLobby do
           class="absolute inset-0 z-[2000] flex items-center justify-center bg-background/95"
           data-testid="lobby-boot-loading"
         >
-          <.loading_spinner
-            size="lg"
-            text={dgettext("lobby", "Opening P2P lobby...")}
-            class="shadow-retro-window bg-surface"
+          <.boot_activity_panel
+            title={dgettext("lobby", "P2P Lobby")}
+            text={dgettext("lobby", "Opening private session...")}
+            icon={:p2p}
           />
         </div>
       </div>

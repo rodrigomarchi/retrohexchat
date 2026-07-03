@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
   @moduledoc """
   Connection status component for the showcase design system.
 
-  Composed from alert + button + loading_spinner primitives.
+  Composed from alert + button + activity indicator primitives.
   Connection banner with states: connected, reconnecting, disconnected.
 
   ## Usage
@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
 
   import RetroHexChatWeb.Components.UI.Alert
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.LoadingSpinner
+  import RetroHexChatWeb.Components.UI.ActivityIndicator
 
   alias RetroHexChatWeb.Icons
 
@@ -125,7 +125,11 @@ defmodule RetroHexChatWeb.Components.UI.ConnectionStatus do
     <.alert variant="destructive">
       <:icon><Icons.icon_warning class="w-4 h-4" /></:icon>
       <div class="flex items-center gap-retro-4">
-        <.loading_spinner size="sm" text="" />
+        <.activity_indicator
+          icon={:status_signal}
+          size="sm"
+          label={dgettext("chat", "Reconnecting")}
+        />
         <.alert_title>{dgettext("chat", "Reconnecting...")}</.alert_title>
       </div>
       <.alert_description>

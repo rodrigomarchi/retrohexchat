@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Checkbox
+  import RetroHexChatWeb.Components.UI.ActivityIndicator
 
   alias RetroHexChatWeb.Icons
 
@@ -31,6 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
   attr :regex, :boolean, default: false
   attr :mentions_only, :boolean, default: false
   attr :search_history, :boolean, default: false
+  attr :history_loading, :boolean, default: false
   attr :error, :string, default: nil, doc: "Regex validation error message"
   attr :visible, :boolean, default: true, doc: "Show/hide the search bar"
   attr :on_search, :any, default: nil, doc: "Search input change callback"
@@ -70,11 +72,17 @@ defmodule RetroHexChatWeb.Components.UI.SearchBar do
             phx-keydown={@on_navigate}
             data-testid="search-bar-input"
           />
-          <span
-            class="text-xs text-muted-foreground whitespace-nowrap"
-            data-testid="search-bar-count"
-          >
-            {@current_result}/{@result_count}
+          <span class="flex items-center gap-retro-4 whitespace-nowrap">
+            <.activity_indicator
+              :if={@history_loading}
+              icon={:clock}
+              size="sm"
+              label={dgettext("chat", "Searching history")}
+              data-testid="search-history-loading"
+            />
+            <span class="text-xs text-muted-foreground" data-testid="search-bar-count">
+              {@current_result}/{@result_count}
+            </span>
           </span>
         </form>
 

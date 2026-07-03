@@ -32,8 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.ChatMessage
-  import RetroHexChatWeb.Components.UI.LoadingSpinner
-  import RetroHexChatWeb.Components.UI.ScrollLoader
+  import RetroHexChatWeb.Components.UI.ActivityIndicator
 
   alias RetroHexChatWeb.ChatLive.Components.MessageRow
 
@@ -141,12 +140,26 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
   def render(assigns) do
     ~H"""
     <div id={"#{@id}-mount"} class="contents">
-      <.loading_spinner
+      <.activity_indicator
         :if={@loading_channel != nil}
-        text={"Loading #{@loading_channel || "messages"}..."}
+        icon={:chat}
+        variant="panel"
+        class="mx-auto my-retro-12"
+        text={
+          dgettext("chat", "Loading %{channel}...",
+            channel: @loading_channel || dgettext("chat", "messages")
+          )
+        }
+        data-testid="channel-loader"
       />
 
-      <.scroll_loader loading={@loading_more} />
+      <.activity_indicator
+        :if={@loading_more}
+        icon={:clock}
+        text={dgettext("chat", "Loading older messages...")}
+        class="justify-center py-retro-8"
+        data-testid="scroll-loader"
+      />
 
       <.chat_message_list
         id="chat-messages"

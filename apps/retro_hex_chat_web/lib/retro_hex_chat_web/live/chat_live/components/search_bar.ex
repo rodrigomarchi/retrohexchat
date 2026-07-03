@@ -44,6 +44,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
        result_count: 0,
        dom_count: 0,
        history_count: 0,
+       history_pending: nil,
        current_index: 0,
        case_sensitive: false,
        regex: false,
@@ -81,6 +82,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
         regex={@regex}
         mentions_only={@my_mentions}
         search_history={@history}
+        history_loading={@history_pending != nil}
         on_search="search_input"
         on_next="search_next"
         on_prev="search_prev"
@@ -163,8 +165,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
     # Apply only if still relevant: a newer query or a disabled history filter
     # supersedes a slow result (stale-result guard, no socket captured in task).
     socket =
+      if socket.assigns.history_pending == query do
+        assign(socket, history_pending: nil)
+      else
+        socket
+      end
+
+    socket =
       if socket.assigns.history and socket.assigns.query == query do
-        socket |> assign(history_count: count) |> recount()
+        socket
+        |> assign(history_count: count)
+        |> recount()
       else
         socket
       end
@@ -172,7 +183,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
     {:noreply, socket}
   end
 
-  def handle_async(:history_count, {:exit, _reason}, socket), do: {:noreply, socket}
+  def handle_async(:history_count, {:exit, _reason}, socket),
+    do: {:noreply, assign(socket, history_pending: nil)}
 
   # The displayed total is the larger of the live DOM match count (from the JS
   # hook) and the persisted-history match count (from the async DB lookup).
@@ -211,6 +223,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
       result_count: 0,
       dom_count: 0,
       history_count: 0,
+      history_pending: nil,
       current_index: 0,
       error: nil
     )
@@ -228,6 +241,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
         result_count: 0,
         dom_count: 0,
         history_count: 0,
+        history_pending: nil,
         current_index: 0,
         error: if(invalid_regex?, do: invalid_regex_error(), else: nil)
       )
@@ -254,7 +268,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
     if socket.assigns.history do
       opts = build_search_opts(socket.assigns)
 
-      start_async(socket, :history_count, fn ->
+      socket
+      |> assign(history_pending: query)
+      |> start_async(:history_count, fn ->
         {query, Search.count_matches(channel, query, opts)}
       end)
     else
@@ -273,6 +289,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SearchBar do
       result_count: 0,
       dom_count: 0,
       history_count: 0,
+      history_pending: nil,
       current_index: 0,
       error: nil
     )

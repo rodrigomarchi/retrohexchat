@@ -55,7 +55,7 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
         |> html_response(200)
 
       assert html =~ ~s(data-testid="lobby-boot-loading")
-      assert html =~ "Opening P2P lobby..."
+      assert html =~ "Opening private session..."
     end
 
     test "renders the lobby shell as a desktop with a taskbar", %{

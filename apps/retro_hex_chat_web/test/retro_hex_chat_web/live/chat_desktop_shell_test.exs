@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
         |> html_response(200)
 
       assert html =~ ~s(data-testid="chat-boot-loading")
-      assert html =~ "Connecting to RetroHexChat..."
+      assert html =~ "Opening chat..."
     end
 
     test "renders the chat inside a persistent desktop", %{conn: conn} do

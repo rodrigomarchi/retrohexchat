@@ -15,7 +15,7 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Badge
-  import RetroHexChatWeb.Components.UI.LoadingSpinner
+  import RetroHexChatWeb.Components.UI.ActivityIndicator
 
   alias RetroHexChatWeb.Icons
 
@@ -70,7 +70,11 @@ defmodule RetroHexChatWeb.Components.UI.ChannelList do
       <div class="max-h-[300px] overflow-y-auto retro-scrollbar">
         <%= if @loading do %>
           <div class="flex items-center justify-center py-retro-24">
-            <.loading_spinner size="sm" text={dgettext("dialogs", "Searching...")} />
+            <.activity_indicator
+              icon={:channels}
+              variant="panel"
+              text={dgettext("dialogs", "Searching...")}
+            />
           </div>
         <% else %>
           <.table>

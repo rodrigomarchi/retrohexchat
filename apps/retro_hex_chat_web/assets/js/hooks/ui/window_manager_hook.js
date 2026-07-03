@@ -683,8 +683,10 @@ const WindowManagerHook = {
     const titlebar = document.createElement("div");
     titlebar.className = "desktop-window-opening__titlebar";
 
-    const icon = document.createElement("span");
+    const icon = document.createElement("img");
     icon.className = "desktop-window-opening__icon";
+    icon.src = "/images/header-hex.svg";
+    icon.alt = "";
     icon.setAttribute("aria-hidden", "true");
 
     const title = document.createElement("span");
@@ -694,16 +696,22 @@ const WindowManagerHook = {
     const body = document.createElement("div");
     body.className = "desktop-window-opening__body";
 
-    const bar = document.createElement("div");
-    bar.className = "desktop-window-opening__bar";
-    bar.setAttribute("aria-hidden", "true");
+    const logo = document.createElement("img");
+    logo.className = "desktop-window-opening__logo";
+    logo.src = "/images/header-hex.svg";
+    logo.alt = "";
+    logo.setAttribute("aria-hidden", "true");
 
     const text = document.createElement("span");
     text.className = "desktop-window-opening__text";
     text.textContent = this.el.dataset.windowLoadingText || "Opening...";
 
+    const dot = document.createElement("span");
+    dot.className = "desktop-window-opening__dot";
+    dot.setAttribute("aria-hidden", "true");
+
     titlebar.append(icon, title);
-    body.append(bar, text);
+    body.append(logo, text, dot);
     frame.append(titlebar, body);
     node.append(frame);
     node.setAttribute("aria-label", `${text.textContent} ${title.textContent}`);
