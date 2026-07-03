@@ -268,7 +268,7 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     test "topic exists with bot dialog discovery keywords" do
       topic = HelpTopics.get_topic("ui-bot-management")
       assert topic != nil
-      assert topic.title == "Bot Management Dialog"
+      assert topic.title == "Bot Management Window"
       assert topic.category == "User Interface"
       assert "bot management" in topic.keywords
       assert "open_bot_dialog" in topic.keywords

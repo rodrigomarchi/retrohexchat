@@ -257,7 +257,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
       },
       %{
         id: "ui-bot-management",
-        title: dgettext("help", "Bot Management Dialog"),
+        title: dgettext("help", "Bot Management Window"),
         category: dgettext("help", "User Interface"),
         keywords: [
           "bot management",
