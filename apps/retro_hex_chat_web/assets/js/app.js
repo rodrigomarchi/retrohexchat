@@ -18,6 +18,10 @@ const liveSocket = new LiveSocket("/live", Socket, {
     _csrf_token: document.querySelector("meta[name='csrf-token']").getAttribute("content"),
     timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || "Etc/UTC",
     client_info: JSON.stringify(getClientInfo()),
+    // Signals a reconnect (deploy/socket drop) or a reload of a live session, so
+    // the server restores silently instead of replaying the login sequence. Only
+    // a genuinely fresh first login has no saved reconnect state.
+    reconnect: !!localStorage.getItem("rhc_reconnect_state"),
   }),
   hooks: Hooks,
 });

@@ -112,28 +112,40 @@ defmodule RetroHexChatWeb.App.ChatLive do
     )
 
     timezone = resolve_timezone(http_session, socket)
-    client_info = parse_client_info(get_connect_params(socket))
+    connect_params = get_connect_params(socket) || %{}
+    client_info = parse_client_info(connect_params)
+    reconnecting? = connect_params["reconnect"] == true
     previous_nickname = Map.get(socket.assigns.flash, "nick_changed_from")
     pre_identified = http_session["chat_pre_identified"] == true
     join_channel = params["join"]
 
     ChatLive.Helpers.safe_track_user("presence:global", nickname)
 
-    socket
-    |> attach_all_hooks()
-    |> assign_defaults(session)
-    |> assign(timezone: timezone, client_info: client_info)
-    |> ChatLive.Helpers.join_channel(default_channel, session)
-    |> ChatLive.Helpers.maybe_join_channel(join_channel)
-    |> maybe_broadcast_nick_changed(previous_nickname, nickname)
-    |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified)
-    |> ChatLive.Helpers.maybe_trigger_perform()
-    |> ChatLive.Helpers.play_event_sound(:connect, session)
-    |> maybe_show_motd()
-    |> show_welcome_message()
-    |> show_chanserv_announcement()
-    |> show_nickserv_announcement()
-    |> push_initial_preferences()
+    socket =
+      socket
+      |> attach_all_hooks()
+      |> assign_defaults(session)
+      |> assign(timezone: timezone, client_info: client_info)
+      |> ChatLive.Helpers.join_channel(default_channel, session)
+      |> ChatLive.Helpers.maybe_join_channel(join_channel)
+      |> maybe_broadcast_nick_changed(previous_nickname, nickname)
+      |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified, reconnecting?)
+      |> ChatLive.Helpers.maybe_trigger_perform()
+
+    # A reconnect (deploy / socket drop) or a reload of a live session restores
+    # silently: replaying the connect sound, MOTD, welcome and announcements on
+    # every deploy is just noise. Only a fresh first login gets the full greeting.
+    if reconnecting? do
+      push_initial_preferences(socket)
+    else
+      socket
+      |> ChatLive.Helpers.play_event_sound(:connect, session)
+      |> maybe_show_motd()
+      |> show_welcome_message()
+      |> show_chanserv_announcement()
+      |> show_nickserv_announcement()
+      |> push_initial_preferences()
+    end
   end
 
   defp takeover_expected?(default_channel, nickname) do

@@ -303,11 +303,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     active_channel = Map.get(params, "active_channel")
     active_pm = Map.get(params, "active_pm")
 
+    # Restore silently — this path only runs on a reconnect, and surfacing a
+    # "Restoring session..." line on every deploy is noise the user never asked for.
     socket =
       socket
       |> restore_welcomed_channels(Map.get(params, "welcomed_channels", []))
       |> assign(reconnect_active_channel: active_channel, reconnect_active_pm: active_pm)
-      |> Messages.system_event(dgettext("chat", "* Restoring session..."))
 
     if channels != [] do
       Process.send_after(self(), {:execute_rejoin, 0, channels}, 200)
@@ -446,9 +447,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
   # ── Mount helpers ─────────────────────────────────────────
 
-  @spec maybe_start_nickserv_timer(Phoenix.LiveView.Socket.t(), String.t(), boolean()) ::
-          Phoenix.LiveView.Socket.t()
-  def maybe_start_nickserv_timer(socket, nickname, pre_identified \\ false) do
+  @spec maybe_start_nickserv_timer(
+          Phoenix.LiveView.Socket.t(),
+          String.t(),
+          boolean(),
+          boolean()
+        ) :: Phoenix.LiveView.Socket.t()
+  def maybe_start_nickserv_timer(socket, nickname, pre_identified \\ false, quiet \\ false) do
     cond do
       pre_identified or NickServ.identified?(nickname) ->
         session =
@@ -456,12 +461,18 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
           |> Session.set_identified(true)
           |> Persistence.load_persisted_data(nickname)
 
-        socket
-        |> assign(session: session)
-        |> rebuild_nick_color_fn(session)
-        |> Messages.system_event(
-          dgettext("chat", "You are now identified as %{nickname}", nickname: nickname)
-        )
+        socket = socket |> assign(session: session) |> rebuild_nick_color_fn(session)
+
+        # On a reconnect the identity work still runs, but the greeting is
+        # suppressed — the user never left, so re-announcing it is just noise.
+        if quiet do
+          socket
+        else
+          Messages.system_event(
+            socket,
+            dgettext("chat", "You are now identified as %{nickname}", nickname: nickname)
+          )
+        end
 
       NickServ.registered?(nickname) ->
         NickServ.start_identify_timer(nickname)

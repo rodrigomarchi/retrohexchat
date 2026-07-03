@@ -37,7 +37,7 @@ describe("connection_state_machine", () => {
       expect(DEFAULTS.maxAttempts).toBe(10);
       expect(DEFAULTS.maxDelay).toBe(30);
       expect(DEFAULTS.bannerDebounceMs).toBe(1000);
-      expect(DEFAULTS.bannerToOverlayMs).toBe(2000);
+      expect(DEFAULTS.bannerToOverlayMs).toBe(15000);
       expect(DEFAULTS.reconnectedFadeMs).toBe(3000);
     });
   });

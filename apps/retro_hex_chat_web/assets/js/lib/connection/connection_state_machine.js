@@ -9,7 +9,10 @@ export const DEFAULTS = {
   maxAttempts: 10,
   maxDelay: 30,
   bannerDebounceMs: 1000,
-  bannerToOverlayMs: 2000,
+  // A routine deploy is a short outage: keep the unobtrusive banner up, and only
+  // escalate to the full-screen "Connection Lost" modal after a longer wait, so a
+  // quick restart never traps the user behind the modal.
+  bannerToOverlayMs: 15000,
   reconnectedFadeMs: 3000,
 };
 

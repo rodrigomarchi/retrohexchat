@@ -143,8 +143,13 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
   defdelegate handle_quit(socket, reason), to: __MODULE__.Session
   defdelegate handle_set_away(socket, message), to: __MODULE__.Session
 
-  defdelegate maybe_start_nickserv_timer(socket, nickname, pre_identified \\ false),
-    to: __MODULE__.Session
+  defdelegate maybe_start_nickserv_timer(
+                socket,
+                nickname,
+                pre_identified \\ false,
+                quiet \\ false
+              ),
+              to: __MODULE__.Session
 
   defdelegate maybe_join_channel(socket, channel_name), to: __MODULE__.Session
   defdelegate maybe_trigger_perform(socket), to: __MODULE__.Session
