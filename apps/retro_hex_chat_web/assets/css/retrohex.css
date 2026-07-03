@@ -1131,6 +1131,7 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   z-index: var(--win-z, 10);
 }
 .desktop-window--pending {
+  position: absolute;
   pointer-events: none;
 }
 .desktop-window-opening {
@@ -1159,6 +1160,9 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
     transparent 12px
   );
   background-size: 20px 14px;
+}
+.desktop-window-opening__text {
+  @apply text-center text-muted-foreground;
 }
 /* Unfocused windows dim their title bar to the inactive gradient. */
 .desktop-window--blurred [data-window-titlebar] {

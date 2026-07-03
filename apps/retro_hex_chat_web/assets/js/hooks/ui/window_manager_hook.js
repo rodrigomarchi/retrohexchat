@@ -672,7 +672,7 @@ const WindowManagerHook = {
     }
 
     const node = document.createElement("div");
-    node.className = "desktop-window desktop-window--pending absolute";
+    node.className = "desktop-window desktop-window--pending";
     node.dataset.windowPendingId = id;
     node.setAttribute("role", "status");
     node.setAttribute("aria-live", "polite");
@@ -713,7 +713,7 @@ const WindowManagerHook = {
     const height = 128;
     const x = clamp(Math.round((w - width) / 2), 0, Math.max(0, w - width));
     const y = clamp(Math.round(h * 0.28), 16, Math.max(16, h - height));
-    const z = this.zCounter += 1;
+    const z = (this.zCounter += 1);
     this.setGeom(node, x, y, width, height, z);
 
     (this.workspace || this.el).appendChild(node);
@@ -726,7 +726,7 @@ const WindowManagerHook = {
   focusPendingWindow(id) {
     const pending = this.pendingWindows[id];
     if (!pending) return;
-    const z = this.zCounter += 1;
+    const z = (this.zCounter += 1);
     pending.el.style.setProperty("--win-z", String(z));
   },
 
