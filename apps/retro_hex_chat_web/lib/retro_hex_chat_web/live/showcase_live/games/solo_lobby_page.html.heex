@@ -8,7 +8,6 @@
     <div class="max-w-lg">
       <.solo_lobby
         id="lobby-picker"
-        nickname="Troll"
         games={@sample_games}
         session_status="lobby"
       />
@@ -16,7 +15,6 @@
     <.code_example>
       &lt;.solo_lobby
       id="lobby-picker"
-      nickname="Troll"
       games=&#123;@games&#125;
       session_status="lobby"
       /&gt;
@@ -30,7 +28,6 @@
     <div class="max-w-lg">
       <.solo_lobby
         id="lobby-preview"
-        nickname="Troll"
         games={@sample_games}
         session_status="lobby"
         previewed_game={@sample_preview}
@@ -39,7 +36,6 @@
     <.code_example>
       &lt;.solo_lobby
       id="lobby-preview"
-      nickname="Troll"
       games=&#123;@games&#125;
       session_status="lobby"
       previewed_game=&#123;@previewed_game&#125;
@@ -54,7 +50,6 @@
     <div class="max-w-lg">
       <.solo_lobby
         id="lobby-playing"
-        nickname="Troll"
         games={@sample_games}
         session_status="playing"
         game_name="DOOM"
@@ -65,7 +60,6 @@
     <.code_example>
       &lt;.solo_lobby
       id="lobby-playing"
-      nickname="Troll"
       games=&#123;@games&#125;
       session_status="playing"
       game_name="DOOM"
@@ -82,7 +76,6 @@
     <div class="max-w-lg">
       <.solo_lobby
         id="lobby-finished"
-        nickname="Troll"
         games={@sample_games}
         session_status="finished"
         game_name="DOOM"
@@ -107,7 +100,6 @@
     <div class="max-w-lg">
       <.solo_lobby
         id="lobby-inactivity"
-        nickname="Troll"
         games={@sample_games}
         session_status="lobby"
         inactivity_warning={true}
@@ -116,7 +108,6 @@
     <.code_example>
       &lt;.solo_lobby
       id="lobby-inactivity"
-      nickname="Troll"
       games=&#123;@games&#125;
       session_status="lobby"
       inactivity_warning=&#123;true&#125;

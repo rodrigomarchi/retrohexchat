@@ -2316,7 +2316,14 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
             ) <>
             dgettext(
               "help",
-              "gameplay tips before launching. Join #games and type !play to start."
+              "gameplay tips before launching. Join #games and type !play to start. "
+            ) <>
+            dgettext(
+              "help",
+              "The arcade opens as a Windows 98-style desktop — the same window manager as " <>
+                "chat and the P2P lobby, with a menu bar, taskbar and Start menu. The game " <>
+                "library lives in a draggable, maximizable window; launching a game opens it " <>
+                "in a separate browser window so it gets full keyboard focus."
             ),
         see_also: [
           "feature-arcade-doom",

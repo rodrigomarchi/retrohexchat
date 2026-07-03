@@ -16,13 +16,17 @@ defmodule RetroHexChatWeb.App.SoloSessionLive do
 
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.MenuBarApp
+  import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Components.UI.SoloLobby
+  import RetroHexChatWeb.Components.UI.Games.ArcadeMenuBar
+  import RetroHexChatWeb.Components.UI.Games.ArcadeStatusBar
 
   alias RetroHexChat.Arcade
   alias RetroHexChat.Arcade.Schema.SoloSession
   alias RetroHexChatWeb.App.SessionHelpers
+  alias RetroHexChatWeb.Icons
 
   @pubsub RetroHexChat.PubSub
 

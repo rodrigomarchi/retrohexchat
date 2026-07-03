@@ -14,35 +14,83 @@
   <.about_dialog id="about-dialog" />
 </div>
 
-<%!-- Normal state --%>
+<%!-- Normal state — Win98 arcade desktop --%>
 <div
   :if={!assigns[:expired]}
   id="arcade-session"
   phx-hook="ArcadeSession"
-  class="flex flex-col min-h-screen bg-surface"
+  class="flex flex-col h-screen bg-surface"
 >
-  <.app_header on_logo_click={show_modal("about-dialog")}>
-    <:panels>
-      <.menu_bar_app id="menubar" phx-hook="MenuBarHook" connected={false} />
-    </:panels>
-  </.app_header>
-  <div class="flex-1 flex items-center justify-center p-4">
-    <.solo_lobby
-      id="solo-lobby"
-      nickname={@nickname}
-      games={@games}
-      session_status={@session_status}
-      inactivity_warning={@inactivity_warning}
-      previewed_game={@previewed_game}
-      game_name={@game_name}
-      game_id={@game_id}
-      game_started_at={@game_started_at}
-      game_duration={@game_duration}
-      on_preview_game="preview_game"
-      on_select_game="select_game"
-      on_back="back_to_grid"
-      on_close="close_session"
-    />
-  </div>
+  <.desktop id="arcade-desktop" persist_key="arcade" data-testid="arcade-desktop">
+    <:header>
+      <.app_header on_logo_click={show_modal("about-dialog")}>
+        <:panels>
+          <.arcade_menu_bar id="arcade-menubar" phx-hook="MenuBarHook" />
+          <.arcade_status_bar
+            class="ml-auto"
+            nickname={@nickname}
+            session_status={@session_status}
+            game_name={@game_name}
+          />
+        </:panels>
+      </.app_header>
+    </:header>
+
+    <.desktop_window
+      id="arcade"
+      title={dgettext("games", "Arcade — %{nickname}", nickname: @nickname)}
+      pinned
+      default_maximized
+      body_class="p-retro-16"
+      data-testid="arcade-window"
+    >
+      <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
+      <.solo_lobby
+        id="solo-lobby"
+        games={@games}
+        session_status={@session_status}
+        inactivity_warning={@inactivity_warning}
+        previewed_game={@previewed_game}
+        game_name={@game_name}
+        game_id={@game_id}
+        game_started_at={@game_started_at}
+        game_duration={@game_duration}
+        on_preview_game="preview_game"
+        on_select_game="select_game"
+        on_back="back_to_grid"
+        on_close="close_session"
+      />
+    </.desktop_window>
+
+    <:taskbar>
+      <.taskbar>
+        <:start>
+          <div class="relative">
+            <.start_button label={dgettext("games", "Arcade")}>
+              <:icon><Icons.icon_joystick class="h-4 w-4" /></:icon>
+            </.start_button>
+            <.start_menu id="arcade-start-menu">
+              <.start_menu_item data-window-open="arcade" label={dgettext("games", "Arcade")}>
+                <:icon><Icons.icon_joystick class="h-4 w-4" /></:icon>
+              </.start_menu_item>
+              <.start_menu_separator />
+              <.start_menu_item
+                phx-click="close_session"
+                label={dgettext("games", "Leave")}
+                data-testid="arcade-menu-start-leave"
+              >
+                <:icon><Icons.icon_close class="h-4 w-4" /></:icon>
+              </.start_menu_item>
+            </.start_menu>
+          </div>
+        </:start>
+
+        <.taskbar_button window="arcade" label={dgettext("games", "Arcade")}>
+          <:icon><Icons.icon_joystick class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+      </.taskbar>
+    </:taskbar>
+  </.desktop>
+
   <.about_dialog id="about-dialog" />
 </div>

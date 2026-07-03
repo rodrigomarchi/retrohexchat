@@ -6,16 +6,16 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   import RetroHexChatWeb.Components.UI.Badge
   import RetroHexChatWeb.Components.UI.Button
-  import RetroHexChatWeb.Components.UI.Window
 
   @doc """
-  Renders a multi-state solo arcade lobby with game picker, preview, playing, and finished states.
+  Renders the multi-state body of the solo arcade window: the game picker, preview,
+  playing and finished states.
 
-  Composed entirely from platform primitives (Window, Button, Badge, Icons).
+  The window chrome (title bar, close control) is supplied by the enclosing
+  `desktop_window` — this component renders only the body content. Composed from
+  platform primitives (Button, Badge, Icons).
   """
   attr :id, :string, required: true
-  attr :show, :boolean, default: true
-  attr :nickname, :string, required: true
   attr :games, :list, required: true
   attr :session_status, :string, default: "lobby"
   attr :previewed_game, :map, default: nil
@@ -34,69 +34,51 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   @spec solo_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def solo_lobby(assigns) do
     ~H"""
-    <div :if={@show} id={@id} class={@class} {@rest}>
-      <.window class={[
-        "max-w-full",
-        if(@session_status == "lobby" && @previewed_game,
-          do: "w-full md:w-[1100px]",
-          else: "w-full md:w-[1050px]"
-        )
-      ]}>
-        <.window_title_bar
-          title={dgettext("games", "Arcade — %{nickname}", nickname: @nickname)}
-          controls={[:close]}
-          on_close={@on_close}
-        >
-          <:icon><Icons.icon_joystick class="w-4 h-4" /></:icon>
-        </.window_title_bar>
+    <div id={@id} class={classes(["space-y-retro-12", @class])} {@rest}>
+      <%!-- Inactivity warning --%>
+      <div
+        :if={@inactivity_warning}
+        class="flex items-center gap-retro-4 shadow-retro-field bg-warning-light px-retro-8 py-retro-4 text-xs"
+      >
+        <Icons.icon_warning class="w-4 h-4 flex-shrink-0" />
+        <span>
+          {dgettext(
+            "games",
+            "Session will be closed due to inactivity soon. Select a game to keep it active."
+          )}
+        </span>
+      </div>
 
-        <.window_body class="p-retro-16 space-y-retro-12">
-          <%!-- Inactivity warning --%>
-          <div
-            :if={@inactivity_warning}
-            class="flex items-center gap-retro-4 shadow-retro-field bg-warning-light px-retro-8 py-retro-4 text-xs"
-          >
-            <Icons.icon_warning class="w-4 h-4 flex-shrink-0" />
-            <span>
-              {dgettext(
-                "games",
-                "Session will be closed due to inactivity soon. Select a game to keep it active."
-              )}
-            </span>
-          </div>
+      <.lobby_picker
+        :if={@session_status == "lobby" && !@previewed_game}
+        games={@games}
+        on_preview_game={@on_preview_game}
+        on_close={@on_close}
+      />
 
-          <.lobby_picker
-            :if={@session_status == "lobby" && !@previewed_game}
-            games={@games}
-            on_preview_game={@on_preview_game}
-            on_close={@on_close}
-          />
+      <.lobby_preview
+        :if={@session_status == "lobby" && @previewed_game}
+        previewed_game={@previewed_game}
+        on_select_game={@on_select_game}
+        on_back={@on_back}
+        on_close={@on_close}
+      />
 
-          <.lobby_preview
-            :if={@session_status == "lobby" && @previewed_game}
-            previewed_game={@previewed_game}
-            on_select_game={@on_select_game}
-            on_back={@on_back}
-            on_close={@on_close}
-          />
+      <.playing_state
+        :if={@session_status == "playing"}
+        game_name={@game_name}
+        game_id={@game_id}
+        game_started_at={@game_started_at}
+        on_close={@on_close}
+      />
 
-          <.playing_state
-            :if={@session_status == "playing"}
-            game_name={@game_name}
-            game_id={@game_id}
-            game_started_at={@game_started_at}
-            on_close={@on_close}
-          />
-
-          <.finished_state
-            :if={@session_status == "finished"}
-            game_name={@game_name}
-            game_id={@game_id}
-            game_duration={@game_duration}
-            on_close={@on_close}
-          />
-        </.window_body>
-      </.window>
+      <.finished_state
+        :if={@session_status == "finished"}
+        game_name={@game_name}
+        game_id={@game_id}
+        game_duration={@game_duration}
+        on_close={@on_close}
+      />
     </div>
     """
   end
