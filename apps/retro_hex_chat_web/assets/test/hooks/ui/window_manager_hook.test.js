@@ -13,7 +13,7 @@ function windowMarkup(id, { pinned = false, open = true, defaultMaximized = fals
 
   return `
     <div id="${id}" data-window-id="${id}" data-window-pinned="${pinned}"
-         data-window-open="${open}" data-window-default-maximized="${defaultMaximized}"
+         data-window-initial-open="${open}" data-window-default-maximized="${defaultMaximized}"
          data-window-default-x="20" data-window-default-y="20"
          data-window-default-width="300" data-window-min-width="200" data-window-min-height="120">
       <div data-window-titlebar>${controls}</div>
@@ -617,6 +617,17 @@ describe("WindowManagerHook — dynamic windows (reconciliation)", () => {
     opener.click();
     expect(hook.windows.call.state.open).toBe(false);
     expect(hook.pushEvent).not.toHaveBeenCalled();
+  });
+
+  it("does not treat a window root as an opener when clicking inside it", () => {
+    const chat = document.getElementById("chat");
+    chat.dataset.windowOpen = "true";
+    chat.querySelector("[data-window-content]").innerHTML = "<button>Profile</button>";
+
+    chat.querySelector("button").click();
+
+    expect(hook.pushEvent).not.toHaveBeenCalled();
+    expect(workspace().querySelector("[data-window-pending-id]")).toBeNull();
   });
 
   it("asks the server to mount an unknown window instead of failing silently", () => {

@@ -183,7 +183,7 @@ const WindowManagerHook = {
   registerWindow(el) {
     const id = el.dataset.windowId;
     const d = el.dataset;
-    const open = d.windowOpen !== "false";
+    const open = d.windowInitialOpen !== "false";
     this.windows[id] = {
       el,
       pinned: d.windowPinned === "true",
@@ -420,6 +420,9 @@ const WindowManagerHook = {
 
     const opener = e.target.closest("[data-window-open]");
     if (opener) {
+      // Window roots used to carry data-window-open as initial state. Keep this
+      // guard so a click inside a window can never be mistaken for an opener.
+      if (opener.hasAttribute("data-window-id")) return;
       // A disabled menu item still carries data-window-open (it's a <li>, not a
       // <button>) — it must not act.
       if (opener.getAttribute("aria-disabled") === "true" || opener.disabled) return;
