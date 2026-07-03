@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   }
 
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
-  alias RetroHexChatWeb.ChatLive.Helpers.{Channel, PM}
+  alias RetroHexChatWeb.ChatLive.Helpers.{Channel, PM, SessionCard}
 
   # ── Channel messages ──────────────────────────────────────
 
@@ -464,6 +464,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     else
       base
     end
+    |> SessionCard.enrich()
   end
 
   defp pm_field(map, keys) do

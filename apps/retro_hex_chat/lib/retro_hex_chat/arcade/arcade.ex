@@ -6,6 +6,28 @@ defmodule RetroHexChat.Arcade do
 
   alias RetroHexChat.Arcade.{Catalog, Content, Queries, Service, SoloSessionServer}
   alias RetroHexChat.Arcade.Schema.SoloSession
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
+
+  @typedoc """
+  Resolved, presentation-ready summary of a solo arcade session for a chat
+  activity card. The creator nick is resolved from `creator_id`; the game name
+  from the catalog; timestamps stay raw for timezone-aware rendering.
+  """
+  @type summary :: %{
+          kind: :arcade,
+          token: String.t(),
+          status: String.t(),
+          terminal?: boolean(),
+          created_by: String.t() | nil,
+          created_at: DateTime.t() | nil,
+          lobby_at: DateTime.t() | nil,
+          started_at: DateTime.t() | nil,
+          closed_at: DateTime.t() | nil,
+          closed_reason: String.t() | nil,
+          duration_seconds: integer() | nil,
+          game_id: String.t() | nil,
+          game_name: String.t() | nil
+        }
 
   # --- Session lifecycle ---
 
@@ -24,6 +46,45 @@ defmodule RetroHexChat.Arcade do
     case Queries.get_session_by_token(token) do
       nil -> {:error, :not_found}
       session -> {:ok, session}
+    end
+  end
+
+  @doc """
+  Resolves a solo arcade session into a `t:summary/0` for rendering a rich
+  activity card (creator nick, game name, lifecycle timestamps, duration).
+  """
+  @spec session_summary(String.t()) :: {:ok, summary()} | {:error, :not_found}
+  def session_summary(token) do
+    case Queries.get_session_by_token(token) do
+      nil ->
+        {:error, :not_found}
+
+      session ->
+        {:ok,
+         %{
+           kind: :arcade,
+           token: session.token,
+           status: session.status,
+           terminal?: SoloSession.terminal?(session.status),
+           created_by: ServiceQueries.get_nickname_by_id(session.creator_id),
+           created_at: session.inserted_at,
+           lobby_at: session.lobby_at,
+           started_at: session.game_started_at,
+           closed_at: session.closed_at,
+           closed_reason: session.closed_reason,
+           duration_seconds: session.duration_seconds,
+           game_id: session.game_id,
+           game_name: game_name(session.game_id)
+         }}
+    end
+  end
+
+  defp game_name(nil), do: nil
+
+  defp game_name(game_id) do
+    case Catalog.get_game(game_id) do
+      {:ok, game} -> game.name
+      {:error, :not_found} -> nil
     end
   end
 

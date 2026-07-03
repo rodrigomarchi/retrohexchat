@@ -38,4 +38,48 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessageTest do
       assert render_message("notify_online") =~ "text-success"
     end
   end
+
+  describe "chat_message/1 meta column" do
+    test "renders an interactive .chat-nick handle without angle brackets" do
+      html =
+        render_component(&chat_message/1,
+          type: "normal",
+          nick: "alice",
+          inner_block: %{inner_block: fn _, _ -> "hi" end}
+        )
+
+      assert html =~ ~s(class="chat-nick)
+      assert html =~ ~s(data-nick="alice")
+      assert html =~ "alice"
+      refute html =~ "&lt;alice&gt;"
+    end
+
+    test "renders a non-interactive .chat-source origin with no data-nick" do
+      html =
+        render_component(&chat_message/1,
+          type: "system",
+          source: "System",
+          inner_block: %{inner_block: fn _, _ -> "joined" end}
+        )
+
+      assert html =~ ~s(class="chat-source)
+      assert html =~ "System"
+      refute html =~ "data-nick"
+    end
+
+    test "keeps the timestamp testid and carries the full datetime in the title" do
+      html =
+        render_component(&chat_message/1,
+          type: "normal",
+          nick: "bob",
+          timestamp: "01/01 12:00",
+          meta_title: "01/01/2024 12:00",
+          inner_block: %{inner_block: fn _, _ -> "hi" end}
+        )
+
+      assert html =~ ~s(data-testid="chat-message-timestamp")
+      assert html =~ "01/01 12:00"
+      assert html =~ ~s(title="01/01/2024 12:00")
+    end
+  end
 end

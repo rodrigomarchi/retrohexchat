@@ -197,8 +197,11 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
 
       html = render(peer_view)
       assert html =~ "waves hello"
-      # Action lines are rendered as "* nick", not the "&lt;nick&gt;" normal format.
-      assert html =~ "* #{creator.nickname}"
+      # The action body is prefixed with "* "; the author is an interactive nick
+      # handle in the meta column (no angle brackets).
+      assert html =~ "* waves hello"
+      assert html =~ ~s(data-nick="#{creator.nickname}")
+      refute html =~ "&lt;#{creator.nickname}&gt;"
     end
 
     test "starting a call shows media controls",

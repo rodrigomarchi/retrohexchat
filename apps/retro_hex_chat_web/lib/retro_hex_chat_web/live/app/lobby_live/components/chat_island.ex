@@ -86,7 +86,9 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.ChatIsland do
           nick_color={ChatHelpers.default_nick_color(msg.sender_nick)}
           type={line_type(msg)}
         >
-          {Phoenix.HTML.raw(ChatHelpers.format_content(msg.content, @strip_formatting))}
+          {action_prefix(msg)}{Phoenix.HTML.raw(
+            ChatHelpers.format_content(msg.content, @strip_formatting)
+          )}
         </.chat_message>
       </.chat_message_list>
 
@@ -116,6 +118,12 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.ChatIsland do
   defp line_type(%{type: "system"}), do: "system"
   defp line_type(%{type: "action"}), do: "action"
   defp line_type(_msg), do: "normal"
+
+  # The nick moves to the meta column, so the action affordance ("* ") is
+  # prepended to the body — mirroring the main chat's MessageRow.
+  @spec action_prefix(map()) :: String.t()
+  defp action_prefix(%{type: "action"}), do: "* "
+  defp action_prefix(_msg), do: ""
 
   # Two-peer nick pool for the composer's nick autocomplete. `search_nicks`
   # filters out the caller's own nick, so including it is harmless.

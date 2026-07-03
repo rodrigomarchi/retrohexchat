@@ -44,15 +44,34 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
     """
   end
 
-  @doc "Renders a single IRC-style chat message."
+  @doc """
+  Renders a single chat message row.
+
+  Layout is a two-column grid: a compact right-aligned metadata column
+  (interactive nick *or* non-interactive origin on the first line, a smaller
+  timestamp on the second) and the message body, which gets the wider column and
+  a slightly larger font. This reads well on phones while keeping the retro
+  monospace identity.
+
+  `nick` renders the interactive `.chat-nick[data-nick]` handle (click, hover
+  card, PM, context menu). `source` renders a non-interactive `.chat-source`
+  origin label (e.g. "System", "Error", "MOTD") — never both. `meta_title`
+  carries the full datetime for the timestamp's hover/accessibility label.
+  """
   attr :id, :string, default: nil, doc: "Message ID for stream compatibility"
   attr :timestamp, :string, default: nil
-  attr :nick, :string, default: nil
+  attr :nick, :string, default: nil, doc: "Interactive author nick (rendered as .chat-nick)"
+
+  attr :source, :string,
+    default: nil,
+    doc: "Non-interactive origin label (rendered as .chat-source)"
+
   attr :nick_color, :string, default: nil
+  attr :meta_title, :string, default: nil, doc: "Full datetime for the timestamp hover/aria label"
 
   attr :type, :string,
     values:
-      ~w(normal action system service error notice notify_online notify_offline notify_rename motd wallops),
+      ~w(normal action system service error notice notify_online notify_offline notify_rename motd wallops announcement),
     default: "normal"
 
   attr :class, :any, default: nil
@@ -66,7 +85,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       id={@id}
       class={
         classes([
-          "grid min-w-0 grid-cols-[auto_10ch_1fr] md:grid-cols-[auto_18ch_1fr] items-baseline",
+          "grid min-w-0 grid-cols-[5rem_1fr] sm:grid-cols-[7rem_1fr] gap-x-2 items-start py-0.5",
           type_class(@type),
           @class
         ])
@@ -74,43 +93,38 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
       data-message-id={@id}
       {@rest}
     >
-      <span
-        :if={@timestamp}
-        class="text-gray-500 mr-1 font-mono text-xs whitespace-nowrap"
-        data-testid="chat-message-timestamp"
-      >
-        {@timestamp}
+      <span class="chat-message-meta min-w-0 flex flex-col items-end leading-tight text-right">
+        <span
+          :if={@nick}
+          class={[
+            "chat-nick block max-w-full truncate font-mono text-[11px] font-bold leading-tight",
+            @nick_color || "text-text"
+          ]}
+          data-nick={@nick}
+          title={@nick}
+        >
+          {@nick}
+        </span>
+        <span
+          :if={!@nick && @source}
+          class="chat-source block max-w-full truncate font-mono text-[11px] font-bold leading-tight"
+          title={@source}
+        >
+          {@source}
+        </span>
+        <time
+          :if={@timestamp && @timestamp != ""}
+          class="block font-mono text-[10px] text-gray-500 whitespace-nowrap leading-tight"
+          data-testid="chat-message-timestamp"
+          title={@meta_title}
+        >
+          {@timestamp}
+        </time>
       </span>
-      <span :if={!@timestamp} />
-      <span
-        :if={@nick && @type == "normal"}
-        class={[
-          "chat-nick font-bold mr-1 font-mono text-right overflow-hidden text-ellipsis whitespace-nowrap",
-          @nick_color || "text-text"
-        ]}
-        data-nick={@nick}
-      >
-        &lt;{@nick}&gt;
-      </span>
-      <span
-        :if={@nick && @type == "action"}
-        class={[
-          "chat-nick font-bold mr-1 font-mono overflow-hidden text-ellipsis whitespace-nowrap",
-          "text-action"
-        ]}
-        data-nick={@nick}
-      >
-        * {@nick}
-      </span>
-      <span
-        :if={@nick && @type not in ["normal", "action"]}
-        class="chat-nick font-bold mr-1 font-mono"
-        data-nick={@nick}
-      >
-        {@nick}
-      </span>
-      <span :if={!@nick} />
-      <span class={["font-mono min-w-0 break-words", message_body_class(@type)]}>
+      <span class={[
+        "font-mono min-w-0 break-words text-[15px] leading-snug",
+        message_body_class(@type)
+      ]}>
         {render_slot(@inner_block)}
       </span>
     </div>
@@ -128,6 +142,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatMessage do
   defp type_class("notify_online"), do: "text-success"
   defp type_class("notify_offline"), do: "text-gray-500 italic"
   defp type_class("notify_rename"), do: "text-notice"
+  defp type_class("announcement"), do: "text-service font-bold"
   # Defensive catch-all: an unknown message type must never crash the chat
   # LiveView (which would reload every connected client). Render it plainly.
   defp type_class(_type), do: ""

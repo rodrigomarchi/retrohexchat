@@ -10,6 +10,27 @@ defmodule RetroHexChat.Lobby do
 
   alias RetroHexChat.Lobby.{Queries, Service, SessionServer}
   alias RetroHexChat.Lobby.Schema.Session
+  alias RetroHexChat.Services.Queries, as: ServiceQueries
+
+  @typedoc """
+  Resolved, presentation-ready summary of a lobby session for a chat invite
+  card. Nicks are resolved from `creator_id`/`peer_id`; timestamps are raw so
+  the renderer can localize them to the viewer's timezone.
+  """
+  @type summary :: %{
+          kind: :lobby,
+          token: String.t(),
+          status: String.t(),
+          terminal?: boolean(),
+          created_by: String.t() | nil,
+          peer: String.t() | nil,
+          created_at: DateTime.t() | nil,
+          accepted_at: DateTime.t() | nil,
+          connected_at: DateTime.t() | nil,
+          closed_at: DateTime.t() | nil,
+          closed_reason: String.t() | nil,
+          duration_seconds: integer() | nil
+        }
 
   @spec create_session(integer(), integer()) ::
           {:ok, %{session: Session.t(), token: String.t()}} | {:error, String.t()}
@@ -42,6 +63,35 @@ defmodule RetroHexChat.Lobby do
     case Queries.get_session_by_token(token) do
       nil -> {:error, :not_found}
       session -> {:ok, session}
+    end
+  end
+
+  @doc """
+  Resolves a lobby session into a `t:summary/0` for rendering a rich invite card
+  (creator/peer nicks, lifecycle timestamps, duration and close reason).
+  """
+  @spec session_summary(String.t()) :: {:ok, summary()} | {:error, :not_found}
+  def session_summary(token) do
+    case Queries.get_session_by_token(token) do
+      nil ->
+        {:error, :not_found}
+
+      session ->
+        {:ok,
+         %{
+           kind: :lobby,
+           token: session.token,
+           status: session.status,
+           terminal?: Session.terminal?(session.status),
+           created_by: ServiceQueries.get_nickname_by_id(session.creator_id),
+           peer: ServiceQueries.get_nickname_by_id(session.peer_id),
+           created_at: session.inserted_at,
+           accepted_at: session.accepted_at,
+           connected_at: session.connected_at,
+           closed_at: session.closed_at,
+           closed_reason: session.closed_reason,
+           duration_seconds: session.duration_seconds
+         }}
     end
   end
 

@@ -77,6 +77,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
         <div :for={{dom_id, msg} <- @streams.status_messages} id={dom_id}>
           <.chat_message
             timestamp={ChatHelpers.format_time(msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(msg.timestamp, @timezone)}
+            source={status_source(msg.type)}
             type={to_string(msg.type)}
           >
             {msg.content}
@@ -85,5 +87,25 @@ defmodule RetroHexChatWeb.ChatLive.Components.StatusViewport do
       </.chat_message_list>
     </div>
     """
+  end
+
+  # Origin label shown in the compact meta column so a status line is never a
+  # bare timestamp. Interactive nicks are never used on the status tab.
+  @spec status_source(atom() | String.t()) :: String.t() | nil
+  defp status_source(type) when is_binary(type), do: status_source(to_atom(type))
+  defp status_source(:motd), do: dgettext("chat", "MOTD")
+  defp status_source(:system), do: dgettext("chat", "System")
+  defp status_source(:error), do: dgettext("chat", "Error")
+  defp status_source(:service), do: dgettext("chat", "Service")
+  defp status_source(:wallops), do: dgettext("chat", "Wallops")
+  defp status_source(:notify_online), do: dgettext("chat", "Online")
+  defp status_source(:notify_offline), do: dgettext("chat", "Offline")
+  defp status_source(:notify_rename), do: dgettext("chat", "Rename")
+  defp status_source(_), do: nil
+
+  defp to_atom(type) do
+    String.to_existing_atom(type)
+  rescue
+    ArgumentError -> :unknown
   end
 end

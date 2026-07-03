@@ -51,6 +51,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChatWeb.ChatLive.Components.NickChangeDialog
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
+  alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
   alias RetroHexChatWeb.ChatLive.UiActionHandlers
 
   require Logger
@@ -315,13 +316,15 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, :arcade_session, payload}) do
     url = PathHelpers.activity_path(socket, "/solo/#{payload.token}")
 
-    msg = %{
-      id: "system-#{System.unique_integer([:positive])}",
-      author: dgettext("chat", "System"),
-      content: url,
-      type: :arcade_link,
-      timestamp: DateTime.utc_now()
-    }
+    msg =
+      %{
+        id: "system-#{System.unique_integer([:positive])}",
+        author: dgettext("chat", "System"),
+        content: url,
+        type: :arcade_link,
+        timestamp: DateTime.utc_now()
+      }
+      |> SessionCard.enrich()
 
     socket
     |> MessageViewport.insert(msg)

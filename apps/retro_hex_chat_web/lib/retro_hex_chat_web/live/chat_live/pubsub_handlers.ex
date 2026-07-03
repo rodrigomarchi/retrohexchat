@@ -192,14 +192,17 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info(%{event: "bot_notice", payload: payload}, socket) do
     import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
     alias RetroHexChatWeb.ChatLive.Components.MessageViewport
+    alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
 
-    msg = %{
-      id: "system-#{System.unique_integer([:positive])}",
-      author: dgettext("chat", "System"),
-      content: payload.content,
-      type: :arcade_link,
-      timestamp: DateTime.utc_now()
-    }
+    msg =
+      %{
+        id: "system-#{System.unique_integer([:positive])}",
+        author: dgettext("chat", "System"),
+        content: payload.content,
+        type: :arcade_link,
+        timestamp: DateTime.utc_now()
+      }
+      |> SessionCard.enrich()
 
     socket =
       socket

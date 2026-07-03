@@ -59,22 +59,27 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
     end)
   end
 
+  @doc """
+  Formats a message timestamp for the metadata column. Bare (no brackets): the
+  two-line meta column carries its own visual framing, so `[ ]` would only add
+  noise on small screens.
+  """
   @spec format_time(DateTime.t() | any(), atom(), String.t()) :: String.t()
   def format_time(%DateTime{} = dt, :hh_mm, tz),
-    do: "[#{dt |> Timezone.shift(tz) |> Calendar.strftime("%H:%M")}]"
+    do: dt |> Timezone.shift(tz) |> Calendar.strftime("%H:%M")
 
   def format_time(%DateTime{} = dt, :hh_mm_ss, tz),
-    do: "[#{dt |> Timezone.shift(tz) |> Calendar.strftime("%H:%M:%S")}]"
+    do: dt |> Timezone.shift(tz) |> Calendar.strftime("%H:%M:%S")
 
   def format_time(%DateTime{} = dt, :dd_mm_hh_mm, tz),
-    do: "[#{dt |> Timezone.shift(tz) |> Calendar.strftime("%d/%m %H:%M")}]"
+    do: dt |> Timezone.shift(tz) |> Calendar.strftime("%d/%m %H:%M")
 
   def format_time(_, :none, _tz), do: ""
 
   def format_time(%DateTime{} = dt, _, tz),
-    do: "[#{dt |> Timezone.shift(tz) |> Calendar.strftime("%H:%M")}]"
+    do: dt |> Timezone.shift(tz) |> Calendar.strftime("%H:%M")
 
-  def format_time(_, _, _tz), do: "[--:--]"
+  def format_time(_, _, _tz), do: "--:--"
 
   @spec format_edit_timestamp(DateTime.t() | any(), String.t()) :: String.t()
   def format_edit_timestamp(%DateTime{} = dt, tz) do
@@ -89,6 +94,28 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
   end
 
   def format_datetime(_, _tz), do: nil
+
+  @doc """
+  Formats a session duration (in seconds) as a compact `MMm SSs` string, or
+  `HHh MMm` once it passes an hour. Returns `nil` for a missing/invalid value so
+  callers can omit the line entirely.
+  """
+  @spec format_duration(integer() | any()) :: String.t() | nil
+  def format_duration(seconds) when is_integer(seconds) and seconds >= 0 do
+    hours = div(seconds, 3600)
+    minutes = div(rem(seconds, 3600), 60)
+    secs = rem(seconds, 60)
+
+    if hours > 0 do
+      "#{hours}h #{pad2(minutes)}m"
+    else
+      "#{pad2(minutes)}m #{pad2(secs)}s"
+    end
+  end
+
+  def format_duration(_), do: nil
+
+  defp pad2(n), do: String.pad_leading(Integer.to_string(n), 2, "0")
 
   @spec extract_p2p_label(String.t()) :: String.t()
   def extract_p2p_label(content) when is_binary(content) do

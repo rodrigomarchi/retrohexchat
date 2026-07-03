@@ -41,24 +41,27 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     assert html =~ "hello world"
   end
 
-  test "renders the bracketed DD/MM HH:MM timestamp for the row" do
+  test "renders the bracket-free DD/MM HH:MM timestamp for the row" do
     html = row(%{id: "m1", author: "bob", content: "hi", type: :normal, timestamp: @ts})
-    assert html =~ "[01/01 12:00]"
+    assert html =~ "01/01 12:00"
+    refute html =~ "[01/01 12:00]"
   end
 
-  test "renders an action message" do
+  test "renders an action message with the author in the meta column and * body" do
     html = row(%{id: "a1", author: "bob", content: "waves", type: :action, timestamp: @ts})
-    assert html =~ "* bob"
-    assert html =~ "waves"
+    # The author moves to the interactive nick column; the body keeps only "* content".
+    assert html =~ ~s(data-nick="bob")
+    assert html =~ "* waves"
+    refute html =~ "* bob"
   end
 
-  # Layout tokens the IRC nick-column alignment depends on. These were previously
-  # only asserted through a full LiveView render (flaky); pinned here on the
-  # component so the coverage is deterministic.
-  test "normal messages use the grid layout with a data-nick nick column" do
+  # Layout tokens the two-column meta layout depends on. Pinned on the component
+  # so the coverage is deterministic (a full LiveView render was flaky).
+  test "normal messages use the two-column grid with a data-nick handle, no angle brackets" do
     html = row(%{id: "g1", author: "alice", content: "hi", type: :normal, timestamp: @ts})
-    assert html =~ "grid-cols-[auto_10ch_1fr]"
+    assert html =~ "grid-cols-[5rem_1fr]"
     assert html =~ ~s(data-nick="alice")
+    refute html =~ "&lt;alice&gt;"
   end
 
   test "action messages carry the text-action class" do

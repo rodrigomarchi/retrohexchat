@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   import RetroHexChatWeb.Components.UI.P2PInviteCard
   import RetroHexChatWeb.Components.UI.ArcadeSessionLink
   import RetroHexChatWeb.Components.UI.MessageIndicators
+  import RetroHexChatWeb.ChatLive.Components.SessionCard
 
   alias RetroHexChatWeb.App.ChatHelpers
 
@@ -56,13 +57,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
         <% :action -> %>
           <.chat_message
             timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
             type="action"
+            nick={@msg.author}
+            nick_color={@nick_color_fn.(@msg.author)}
           >
-            * {@msg.author} {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
+            * {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
           </.chat_message>
         <% :system -> %>
           <.chat_message
             timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
+            source={dgettext("chat", "System")}
             type="system"
           >
             * {@msg.content}
@@ -70,6 +76,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
         <% :service -> %>
           <.chat_message
             timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
+            source={dgettext("chat", "Service")}
             type="service"
           >
             {@msg.content}
@@ -77,6 +85,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
         <% :error -> %>
           <.chat_message
             timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
+            source={dgettext("chat", "Error")}
             type="error"
           >
             {@msg.content}
@@ -84,15 +94,27 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
         <% :notice -> %>
           <.chat_message
             timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
             type="notice"
             nick={@msg.author}
             nick_color={@nick_color_fn.(@msg.author)}
           >
             {@msg.content}
           </.chat_message>
+        <% :announcement -> %>
+          <.chat_message
+            timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
+            source={dgettext("chat", "Server")}
+            type="announcement"
+          >
+            {raw(ChatHelpers.format_content(@msg.content, @strip_formatting))}
+          </.chat_message>
         <% :inline_help -> %>
           <.chat_message
             timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
+            source={dgettext("chat", "Help")}
             type="system"
           >
             <.inline_help_card
@@ -104,17 +126,31 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
         <% :arcade_link -> %>
           <.chat_message
             timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
+            source={dgettext("chat", "Arcade")}
             type="system"
           >
-            <.arcade_session_link href={@msg.content} />
+            <.session_card
+              :if={Map.get(@msg, :session_card)}
+              card={@msg.session_card}
+              timezone={@timezone}
+            />
+            <.arcade_session_link :if={!Map.get(@msg, :session_card)} href={@msg.content} />
           </.chat_message>
         <% :p2p_invite -> %>
           <.chat_message
             timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
             nick={@msg.author}
             nick_color={@nick_color_fn.(@msg.author)}
           >
+            <.session_card
+              :if={Map.get(@msg, :session_card)}
+              card={@msg.session_card}
+              timezone={@timezone}
+            />
             <.p2p_invite_card
+              :if={!Map.get(@msg, :session_card)}
               label={ChatHelpers.extract_p2p_label(@msg.content)}
               link={ChatHelpers.extract_p2p_link(@msg.content)}
             />
@@ -129,14 +165,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
             on_click="scroll_to_reply_parent"
           />
           <%= if Map.get(@msg, :deleted_at) do %>
-            <.chat_message timestamp={
-              ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)
-            }>
+            <.chat_message
+              timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+              meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
+              source={dgettext("chat", "Deleted")}
+            >
               <.deleted_placeholder />
             </.chat_message>
           <% else %>
             <.chat_message
               timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+              meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
               nick={@msg.author}
               nick_color={@nick_color_fn.(@msg.author)}
             >

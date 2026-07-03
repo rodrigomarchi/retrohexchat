@@ -8,16 +8,18 @@ defmodule RetroHexChatWeb.App.ChatHelpersTest do
   @dt ~U[2026-01-07 11:37:05Z]
 
   describe "format_time/3" do
-    test "hh_mm renders bracketed HH:MM" do
-      assert ChatHelpers.format_time(@dt, :hh_mm, "Etc/UTC") == "[11:37]"
+    # The two-line meta column frames the timestamp itself, so format_time is
+    # bracket-free (no [ ]) across every format.
+    test "hh_mm renders bare HH:MM" do
+      assert ChatHelpers.format_time(@dt, :hh_mm, "Etc/UTC") == "11:37"
     end
 
-    test "hh_mm_ss renders bracketed HH:MM:SS" do
-      assert ChatHelpers.format_time(@dt, :hh_mm_ss, "Etc/UTC") == "[11:37:05]"
+    test "hh_mm_ss renders bare HH:MM:SS" do
+      assert ChatHelpers.format_time(@dt, :hh_mm_ss, "Etc/UTC") == "11:37:05"
     end
 
-    test "dd_mm_hh_mm renders bracketed DD/MM HH:MM (the IRC line format)" do
-      assert ChatHelpers.format_time(@dt, :dd_mm_hh_mm, "Etc/UTC") == "[07/01 11:37]"
+    test "dd_mm_hh_mm renders bare DD/MM HH:MM (the default line format)" do
+      assert ChatHelpers.format_time(@dt, :dd_mm_hh_mm, "Etc/UTC") == "07/01 11:37"
     end
 
     test "none renders empty string" do
@@ -25,17 +27,33 @@ defmodule RetroHexChatWeb.App.ChatHelpersTest do
     end
 
     test "unknown format falls back to HH:MM" do
-      assert ChatHelpers.format_time(@dt, :whatever, "Etc/UTC") == "[11:37]"
+      assert ChatHelpers.format_time(@dt, :whatever, "Etc/UTC") == "11:37"
     end
 
     test "shifts to the given timezone" do
       # America/Sao_Paulo is UTC-3 → 11:37 UTC becomes 08:37 local.
-      assert ChatHelpers.format_time(@dt, :hh_mm, "America/Sao_Paulo") == "[08:37]"
+      assert ChatHelpers.format_time(@dt, :hh_mm, "America/Sao_Paulo") == "08:37"
     end
 
     test "non-datetime input renders a placeholder, never crashes" do
-      assert ChatHelpers.format_time(nil, :hh_mm, "Etc/UTC") == "[--:--]"
-      assert ChatHelpers.format_time("bogus", :dd_mm_hh_mm, "Etc/UTC") == "[--:--]"
+      assert ChatHelpers.format_time(nil, :hh_mm, "Etc/UTC") == "--:--"
+      assert ChatHelpers.format_time("bogus", :dd_mm_hh_mm, "Etc/UTC") == "--:--"
+    end
+  end
+
+  describe "format_duration/1" do
+    test "formats sub-hour durations as MMm SSs" do
+      assert ChatHelpers.format_duration(522) == "08m 42s"
+      assert ChatHelpers.format_duration(0) == "00m 00s"
+    end
+
+    test "formats hour-plus durations as HHh MMm" do
+      assert ChatHelpers.format_duration(3720) == "1h 02m"
+    end
+
+    test "returns nil for a missing/invalid value" do
+      assert ChatHelpers.format_duration(nil) == nil
+      assert ChatHelpers.format_duration(-5) == nil
     end
   end
 

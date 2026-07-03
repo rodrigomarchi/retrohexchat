@@ -29,6 +29,14 @@ defmodule RetroHexChat.Services.Queries do
     Repo.get_by(RegisteredNick, nickname: nickname)
   end
 
+  @spec get_nickname_by_id(integer() | nil) :: String.t() | nil
+  def get_nickname_by_id(nil), do: nil
+
+  def get_nickname_by_id(id) do
+    from(n in RegisteredNick, where: n.id == ^id, select: n.nickname)
+    |> Repo.one()
+  end
+
   @spec delete_registered_nick(RegisteredNick.t()) ::
           {:ok, RegisteredNick.t()} | {:error, Ecto.Changeset.t()}
   def delete_registered_nick(%RegisteredNick{} = nick) do

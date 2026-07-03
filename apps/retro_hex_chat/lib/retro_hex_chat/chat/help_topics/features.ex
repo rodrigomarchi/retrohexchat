@@ -518,19 +518,51 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "Clickable nicknames, channels, and URLs with hover cards and link previews."
-          )
+          ),
+        see_also: ["feature-session-cards", "feature-message-layout"]
       },
       %{
-        id: "feature-nick-alignment",
-        title: dgettext("help", "Nick Column Alignment"),
+        id: "feature-session-cards",
+        title: dgettext("help", "P2P & Arcade Session Cards"),
         category: dgettext("help", "Chat Display"),
-        keywords: ["nick", "alignment", "column", "grid", "layout", "readability"],
+        keywords: [
+          "p2p",
+          "lobby",
+          "arcade",
+          "invite",
+          "session",
+          dgettext("help", "session card"),
+          dgettext("help", "game link"),
+          dgettext("help", "lobby invite")
+        ],
+        icon: :icon_p2p,
+        description:
+          dgettext(
+            "help",
+            "P2P lobby invites and Arcade links render as rich cards showing who created the session, its lifecycle (created, connected/started, ended), how long it ran, and a Join/Open button while it is still live. Finished sessions show their final state instead."
+          ),
+        see_also: ["feature-interactive-elements", "feature-message-layout"]
+      },
+      %{
+        id: "feature-message-layout",
+        title: dgettext("help", "Message Layout"),
+        category: dgettext("help", "Chat Display"),
+        keywords: [
+          "nick",
+          "alignment",
+          "column",
+          "layout",
+          "timestamp",
+          "readability",
+          dgettext("help", "message format")
+        ],
         icon: :icon_tab_nicklist,
         description:
           dgettext(
             "help",
-            "Align nicknames in a fixed-width column for improved chat readability."
-          )
+            "Each message uses a compact metadata column — the author's nick (or the origin, like System or Error) above a smaller timestamp — beside the message text, which gets the wider column. This reads well on phones while keeping the retro monospace look."
+          ),
+        see_also: ["feature-timestamp-format", "feature-session-cards"]
       },
       %{
         id: "feature-copy",

@@ -151,6 +151,39 @@ toast-text
 toast-visible
 window
 window-body
+# Session cards & message meta column — semantic classes (JS/testid selectors, no distinct CSS)
+chat-session-card
+chat-message-meta
+chat-source
+# Session card & message layout — Tailwind utility classes (not in CSS files)
+bg-canvas
+flex-1
+flex-col
+gap-0.5
+gap-1
+gap-2
+h-6
+inline-block
+inline-flex
+items-start
+max-w-full
+mb-2
+min-w-0
+mt-1
+no-underline
+p-2
+px-2
+py-0.5
+shadow-retro-field
+shadow-retro-raised
+text-[10px]
+text-muted-foreground
+text-xs
+tracking-wide
+truncate
+uppercase
+w-24
+w-6
 
 [dynamic-prefixes]
 # Prefixes with dynamic suffixes (e.g. chat-message--#{type})

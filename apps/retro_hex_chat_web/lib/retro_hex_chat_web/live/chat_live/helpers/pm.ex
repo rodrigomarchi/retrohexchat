@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
 
   @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
@@ -285,6 +286,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     |> maybe_add_field(pm, :reply_to_preview)
     |> maybe_add_field(pm, :edited_at)
     |> maybe_add_field(pm, :deleted_at)
+    |> SessionCard.enrich()
   end
 
   defp pm_field(map, keys) do
