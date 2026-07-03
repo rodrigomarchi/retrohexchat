@@ -86,7 +86,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCardTest do
             terminal?: true,
             connected_at: @connected,
             closed_at: @closed,
-            closed_reason: "peer left",
+            closed_reason: "peer_left",
             duration_seconds: 522
           })
         )
@@ -94,9 +94,27 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCardTest do
       assert html =~ "P2P lobby ended"
       assert html =~ "01/01 14:22"
       assert html =~ "08m 42s"
-      assert html =~ "peer left"
+      assert html =~ "The other user left"
+      refute html =~ "peer_left"
       refute html =~ "Open lobby"
       refute html =~ "Join"
+    end
+
+    test "humanizes an unknown close reason instead of showing the raw key" do
+      html =
+        card(
+          lobby(%{
+            status: "closed",
+            terminal?: true,
+            connected_at: @connected,
+            closed_at: @closed,
+            closed_reason: "some_new_reason",
+            duration_seconds: 10
+          })
+        )
+
+      assert html =~ "Some new reason"
+      refute html =~ "some_new_reason"
     end
   end
 

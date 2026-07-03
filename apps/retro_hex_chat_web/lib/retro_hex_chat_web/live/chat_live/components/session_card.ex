@@ -167,9 +167,31 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
 
   defp reason_entry(%{terminal?: true, closed_reason: reason})
        when is_binary(reason) and reason != "",
-       do: entry(:icon_warning, dgettext("chat", "reason"), reason)
+       do: entry(:icon_warning, dgettext("chat", "reason"), humanize_reason(reason))
 
   defp reason_entry(_card), do: nil
+
+  # Maps internal close-reason keys (see Lobby/P2P/Arcade session servers) to
+  # friendly, translated text. Unknown keys fall back to a prettified form so a
+  # raw snake_case token is never shown to the user.
+  defp humanize_reason("peer_left"), do: dgettext("chat", "The other user left")
+  defp humanize_reason("host_left"), do: dgettext("chat", "The host left")
+  defp humanize_reason("user"), do: dgettext("chat", "Closed by a user")
+  defp humanize_reason("closed"), do: dgettext("chat", "Closed by a user")
+  defp humanize_reason("user_blocked"), do: dgettext("chat", "Blocked by a user")
+  defp humanize_reason("pending_timeout"), do: dgettext("chat", "No one joined in time")
+  defp humanize_reason("connecting_timeout"), do: dgettext("chat", "Connection timed out")
+  defp humanize_reason("expired"), do: dgettext("chat", "Expired due to inactivity")
+  defp humanize_reason("failed"), do: dgettext("chat", "Connection failed")
+  defp humanize_reason("stale_cleanup"), do: dgettext("chat", "Closed automatically")
+  defp humanize_reason("game_over"), do: dgettext("chat", "Game over")
+  defp humanize_reason("finished"), do: dgettext("chat", "Finished")
+
+  defp humanize_reason(reason) do
+    reason
+    |> String.replace("_", " ")
+    |> String.capitalize()
+  end
 
   defp terminal_icon(%{status: "failed"}), do: :icon_reject
   defp terminal_icon(%{status: "expired"}), do: :icon_warning
