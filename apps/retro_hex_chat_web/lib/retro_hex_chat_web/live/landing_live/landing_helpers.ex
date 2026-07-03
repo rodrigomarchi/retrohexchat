@@ -5,6 +5,8 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
 
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.Window
+  import RetroHexChatWeb.Components.UI.MenuBar
+  import RetroHexChatWeb.Components.UI.ContextMenu
 
   alias RetroHexChatWeb.Icons
 
@@ -34,42 +36,7 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
   attr :active_page, :atom, required: true
 
   defp landing_taskbar(assigns) do
-    pages = [
-      %{page: :home, path: "/", label: dgettext("landing", "Home"), icon: :icon_hex_stone},
-      %{
-        page: :how_it_works,
-        path: "/how-it-works",
-        label: dgettext("landing", "How It Works"),
-        icon: :icon_server
-      },
-      %{
-        page: :features,
-        path: "/features",
-        label: dgettext("landing", "Features"),
-        icon: :icon_chat
-      },
-      %{
-        page: :privacy,
-        path: "/privacy",
-        label: dgettext("landing", "Privacy"),
-        icon: :icon_lock
-      },
-      %{
-        page: :install,
-        path: "/install",
-        label: dgettext("landing", "Install"),
-        icon: :icon_terminal
-      },
-      %{
-        page: :community,
-        path: "/community",
-        label: dgettext("landing", "Community"),
-        icon: :icon_code
-      },
-      %{page: :faq, path: "/faq", label: dgettext("landing", "FAQ"), icon: :icon_question}
-    ]
-
-    assigns = assign(assigns, :pages, pages)
+    assigns = assign(assigns, :pages, nav_pages())
 
     ~H"""
     <div class="desktop-taskbar shadow-retro-window bg-surface fixed inset-x-0 bottom-0 z-floating flex items-center gap-[3px] p-[2px]">
@@ -124,13 +91,17 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
         </a>
       </div>
 
-      <%!-- Tray: persistent Connect CTA --%>
+      <%!-- Tray: persistent Connect CTA + clock (bottom-right, like the real desktop) --%>
       <a
         href="/connect"
         class="shadow-retro-raised bg-surface active:shadow-retro-sunken ml-auto md:ml-0 inline-flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs font-bold no-underline text-text"
       >
         <Icons.icon_connect class="w-4 h-4" /> {dgettext("landing", "Connect")}
       </a>
+      <div class="shadow-retro-status ml-[2px] flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs">
+        <Icons.icon_clock class="h-3 w-3 shrink-0" />
+        <span data-clock class="font-mono tabular-nums">--:--</span>
+      </div>
     </div>
     """
   end
@@ -154,6 +125,118 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
       </span>
       {@label}
     </a>
+    """
+  end
+
+  # The 7 landing pages, shared by the taskbar buttons, Start menu and menu bar.
+  defp nav_pages do
+    [
+      %{page: :home, path: "/", label: dgettext("landing", "Home"), icon: :icon_hex_stone},
+      %{
+        page: :how_it_works,
+        path: "/how-it-works",
+        label: dgettext("landing", "How It Works"),
+        icon: :icon_server
+      },
+      %{
+        page: :features,
+        path: "/features",
+        label: dgettext("landing", "Features"),
+        icon: :icon_chat
+      },
+      %{
+        page: :privacy,
+        path: "/privacy",
+        label: dgettext("landing", "Privacy"),
+        icon: :icon_lock
+      },
+      %{
+        page: :install,
+        path: "/install",
+        label: dgettext("landing", "Install"),
+        icon: :icon_terminal
+      },
+      %{
+        page: :community,
+        path: "/community",
+        label: dgettext("landing", "Community"),
+        icon: :icon_code
+      },
+      %{page: :faq, path: "/faq", label: dgettext("landing", "FAQ"), icon: :icon_question}
+    ]
+  end
+
+  # Real dropdown menu bar (Navigate / Help / Language) built from the shared
+  # MenuBar/ContextMenu primitives — same DOM contract (data-menubar-*) as the
+  # logged-in app. Behaviour is wired by public_pages.js (vanilla), so no
+  # phx-hook/LiveSocket. All items are real <a href> links (navigation + SEO).
+  attr :active_page, :atom, required: true
+  attr :class, :any, default: nil
+
+  defp landing_menu_bar(assigns) do
+    assigns =
+      assigns
+      |> assign(:pages, nav_pages())
+      |> assign(:current_path, active_page_path(assigns.active_page))
+      |> assign(:supported_locales, RetroHexChatWeb.I18n.supported_locales())
+
+    ~H"""
+    <.menu_bar id="landing-menubar" testid="landing-menu-bar" class={@class}>
+      <.menu label={dgettext("landing", "Navigate")}>
+        <.context_menu_item :for={p <- @pages} data-testid={"landing-menu-nav-#{p.page}"}>
+          <:icon>{apply(Icons, p.icon, [%{class: "h-[14px] w-[14px]"}])}</:icon>
+          <a href={p.path} class={["block flex-1", p.page == @active_page && "font-bold"]}>
+            {p.label}
+          </a>
+        </.context_menu_item>
+      </.menu>
+
+      <.menu label={dgettext("landing", "Help")}>
+        <.context_menu_item data-testid="landing-menu-docs">
+          <:icon><Icons.icon_notepad class="h-[14px] w-[14px]" /></:icon>
+          <a href="/chat/help" class="block flex-1">{dgettext("landing", "Documentation")}</a>
+        </.context_menu_item>
+        <.context_menu_separator />
+        <.context_menu_item data-testid="landing-menu-github">
+          <:icon><Icons.icon_code class="h-[14px] w-[14px]" /></:icon>
+          <a
+            href="https://github.com/rodrigomarchi/retro_hex_chat"
+            target="_blank"
+            rel="noopener"
+            class="block flex-1"
+          >
+            GitHub
+          </a>
+        </.context_menu_item>
+        <.context_menu_item data-testid="landing-menu-license">
+          <:icon><Icons.icon_legal class="h-[14px] w-[14px]" /></:icon>
+          <a
+            href="https://github.com/rodrigomarchi/retro_hex_chat/blob/main/LICENSE"
+            target="_blank"
+            rel="noopener"
+            class="block flex-1"
+          >
+            {dgettext("landing", "License (MIT)")}
+          </a>
+        </.context_menu_item>
+      </.menu>
+
+      <.menu label={dgettext("landing", "Language")}>
+        <.context_menu_item
+          :for={{code, label} <- @supported_locales}
+          data-testid={"landing-menu-lang-#{code}"}
+        >
+          <:icon><Icons.icon_link class="h-[14px] w-[14px]" /></:icon>
+          <a
+            href={RetroHexChatWeb.SEO.localized_path(@current_path, code)}
+            hreflang={RetroHexChatWeb.I18n.Locales.bcp47(code)}
+            class="block flex-1"
+          >
+            {label}
+          </a>
+        </.context_menu_item>
+      </.menu>
+    </.menu_bar>
     """
   end
 
@@ -190,8 +273,10 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
     <div class="sticky top-0 z-modal">
       <.app_header logo_href="/">
         <:panels>
-          <nav class="flex items-center flex-1">
-            <a href="/connect" class="no-underline">
+          <div class="flex items-center flex-1">
+            <%!-- Real dropdown menu bar (behaviour wired by public_pages.js, no LiveSocket) --%>
+            <.landing_menu_bar active_page={@active_page} class="hidden lg:flex" />
+            <a href="/connect" class="ml-auto no-underline">
               <button
                 type="button"
                 class="inline-flex items-center gap-1 h-7 px-3 text-xs shadow-retro-raised bg-surface active:shadow-retro-sunken"
@@ -199,54 +284,10 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
                 <Icons.icon_connect class="w-4 h-4" /> {dgettext("landing", "Connect")}
               </button>
             </a>
-            <.nav_link
-              href="/how-it-works"
-              label={dgettext("landing", "How It Works")}
-              active={@active_page == :how_it_works}
-            >
-              <Icons.icon_server class="w-3 h-3" />
-            </.nav_link>
-            <.nav_link
-              href="/features"
-              label={dgettext("landing", "Features")}
-              active={@active_page == :features}
-            >
-              <Icons.icon_chat class="w-3 h-3" />
-            </.nav_link>
-            <.nav_link
-              href="/privacy"
-              label={dgettext("landing", "Privacy")}
-              active={@active_page == :privacy}
-            >
-              <Icons.icon_lock class="w-3 h-3" />
-            </.nav_link>
-            <.nav_link
-              href="/install"
-              label={dgettext("landing", "Install")}
-              active={@active_page == :install}
-            >
-              <Icons.icon_terminal class="w-3 h-3" />
-            </.nav_link>
-            <.nav_link
-              href="/community"
-              label={dgettext("landing", "Community")}
-              active={@active_page == :community}
-            >
-              <Icons.icon_code class="w-3 h-3" />
-            </.nav_link>
-            <.nav_link href="/faq" label={dgettext("landing", "FAQ")} active={@active_page == :faq}>
-              <Icons.icon_question class="w-3 h-3" />
-            </.nav_link>
-            <a
-              href="/chat/help"
-              class="hidden lg:inline-flex items-center gap-1 px-2 text-xs hover:underline no-underline text-text"
-            >
-              <Icons.icon_notepad class="w-3 h-3" /> {dgettext("landing", "Docs")}
-            </a>
             <%!-- Mobile menu toggle --%>
             <button
               type="button"
-              class="lg:hidden ml-auto inline-flex items-center h-7 px-2 text-xs shadow-retro-raised bg-surface active:shadow-retro-sunken"
+              class="lg:hidden ml-1 inline-flex items-center h-7 px-2 text-xs shadow-retro-raised bg-surface active:shadow-retro-sunken"
               data-toggle-target="#mobile-nav"
               aria-controls="mobile-nav"
               aria-expanded="false"
@@ -254,7 +295,7 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
             >
               <Icons.icon_btn_menu class="w-4 h-4" />
             </button>
-          </nav>
+          </div>
         </:panels>
       </.app_header>
       <%!-- Mobile dropdown nav --%>
@@ -312,25 +353,6 @@ defmodule RetroHexChatWeb.LandingLive.LandingHelpers do
         </div>
       </nav>
     </div>
-    """
-  end
-
-  attr :href, :string, required: true
-  attr :label, :string, required: true
-  attr :active, :boolean, default: false
-  slot :inner_block, required: true
-
-  defp nav_link(assigns) do
-    ~H"""
-    <a
-      href={@href}
-      class={[
-        "hidden lg:inline-flex items-center gap-1 px-2 text-xs hover:underline no-underline whitespace-nowrap",
-        if(@active, do: "font-bold text-primary", else: "text-text")
-      ]}
-    >
-      {render_slot(@inner_block)} {@label}
-    </a>
     """
   end
 

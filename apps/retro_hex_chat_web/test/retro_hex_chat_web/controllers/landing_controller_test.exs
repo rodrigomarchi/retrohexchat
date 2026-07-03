@@ -77,6 +77,41 @@ defmodule RetroHexChatWeb.LandingLiveTest do
     end
   end
 
+  describe "top menu bar and clock" do
+    for {path, _heading_id} <- @landing_pages do
+      test "GET #{path} renders a real dropdown menu bar and a tray clock", %{conn: conn} do
+        conn = get(conn, unquote(path))
+        document = html_response(conn, 200) |> Floki.parse_document!()
+
+        assert Floki.find(document, ~s(nav[role="menubar"])) != []
+
+        # At least the three landing menus (Navigate / Help / Language).
+        triggers = Floki.find(document, "[data-menubar-trigger]")
+        assert length(triggers) >= 3
+
+        # Dropdowns start hidden (the vanilla public_pages.js toggles u-hidden).
+        dropdowns = Floki.find(document, "[data-menubar-dropdown]")
+        assert dropdowns != []
+
+        Enum.each(dropdowns, fn dd ->
+          classes = dd |> Floki.attribute("class") |> Enum.join(" ")
+          assert classes =~ "u-hidden"
+        end)
+
+        # Menu items are real links: pages, docs and locale switchers.
+        menubar_hrefs =
+          document |> Floki.find(~s(nav[role="menubar"] a)) |> Floki.attribute("href")
+
+        assert "/faq" in menubar_hrefs
+        assert "/chat/help" in menubar_hrefs
+        assert Enum.any?(menubar_hrefs, &String.starts_with?(&1, "/pt-BR"))
+
+        # Tray clock element (updated client-side by public_pages.js).
+        assert Floki.find(document, "[data-clock]") != []
+      end
+    end
+  end
+
   describe "secondary landing page content" do
     for {path, heading_id} <- @secondary_landing_pages do
       test "GET #{path} starts with a visible intro summary", %{conn: conn} do
