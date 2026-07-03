@@ -693,7 +693,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
       conversations_sections: %{channels: true, pms: true, popular: false},
       lookup_result: nil,
       cc_window_channel: nil,
-      whois_output_mode: :card,
       unread_counts: %{},
       url_catcher_entries: [],
       ignore_timers: %{},

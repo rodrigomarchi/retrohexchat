@@ -88,8 +88,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers do
 
   defdelegate show_whois_result(socket, target), to: __MODULE__.Whois
   defdelegate show_whowas_result(socket, target), to: __MODULE__.Whois
-  defdelegate show_whois_text(socket, target), to: __MODULE__.Whois
-  defdelegate show_whowas_text(socket, target), to: __MODULE__.Whois
 
   # ── Flood ────────────────────────────────────────────────────
 
