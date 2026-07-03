@@ -13,7 +13,7 @@ defmodule RetroHexChatWeb.UrlCatcherWindowTest do
 
       assert has_element?(
                view,
-               ~s(#chat-desktop [data-window-id="url-catcher"][data-window-open="false"])
+               ~s(#chat-desktop [data-window-id="url-catcher"][data-window-initial-open="false"])
              )
 
       # Content island is mounted even while the window is closed.
