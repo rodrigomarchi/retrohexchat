@@ -77,5 +77,17 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
       ids = Enum.map(ctx.definition.interactables, & &1.id)
       assert length(ids) == length(Enum.uniq(ids))
     end
+
+    test "the floor layer is a full height×width matrix of known tile ids", ctx do
+      floor = ctx.definition.layers.floor
+      known = ~w(wall_stone floor_stone floor_grass floor_wood)
+
+      assert length(floor) == ctx.definition.height
+
+      for row <- floor do
+        assert length(row) == ctx.definition.width
+        assert Enum.all?(row, &(&1 in known))
+      end
+    end
   end
 end

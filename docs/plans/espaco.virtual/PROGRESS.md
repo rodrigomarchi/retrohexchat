@@ -7,14 +7,14 @@ e termina atualizando-o. O checklist canônico é o
 ## Estado atual
 
 - **Status**: EM ANDAMENTO
-- **Fase corrente**: Fase 2 — canvas, snapshot e presença (Fase 1 FECHADA:
+- **Fase corrente**: Fase 3 — movimento autoritativo (Fase 2 FECHADA:
   CI 9/9 verde + commit único na main)
-- **Próximo item**: primeiro item da Fase 2 — `SpaceCanvasHook` lazy
-  (`serverEvents: []`, `reason` obrigatório) em
-  `hooks/lazy_feature_hooks.js`; começar pelos Vitest de
-  `test/hooks/space/space_canvas_hook.test.js` (§Fase 2 do mapa de testes);
-  na sequência `lib/space/protocol.js` e `lib/space/map.js`.
-- **Último commit do projeto**: `feat(space): fase 1` (ver git log)
+- **Próximo item**: primeiro item da Fase 3 — `space_input` no Channel →
+  `VirtualSpace.input/3`; começar pelos testes de domínio de movimento
+  (`session_server` §Fase 3 do mapa de testes: passo cardinal válido publica
+  delta com `seq_ack`, colisão/bounds/diagonal rejeitados, cooldown
+  `virtual_space_step_ms`, input de sessão terminal/ausente ignorado).
+- **Último commit do projeto**: `feat(space): fase 2` (ver git log)
 
 ## Perguntas para o usuário
 
@@ -54,6 +54,88 @@ implementação:
 - **Commits**: um por fase, direto na `main`, stage por caminho explícito.
 
 ## Histórico de iterações
+
+### 2026-07-05 — Iteração 4 (Fase 2 COMPLETA + fechada)
+
+Runtime JS do espaço (TDD, 41 testes Vitest do espaço; suíte JS 3714 verde) +
+backend do protocolo. Fluxo E2E ponta-a-ponta verde num browser real.
+
+Frontend (`js/lib/space/` + `js/hooks/space/`):
+- `protocol.js` — versão, constantes `CLIENT_EVENTS/SERVER_EVENTS`,
+  normalização defensiva de `space_init/snapshot/delta/participant` (defaults
+  seguros; versão desconhecida loga `console.error` e segue).
+- `map.js` — `SpaceMap.from(def)` indexa a definição recebida: colisão em
+  `Set` (`isBlocked` inclui out-of-bounds), `zoneAt`, `seat/interactable` por
+  id, `defaultSpawn`, `floorTile(x,y)` lendo `layers.floor` com fallback.
+- `sprite_atlas.js` — atlas autoral procedural (11 tiles + 4 avatares×4
+  direções + board art), paleta como dígitos hex sem `#` montados via
+  `String.fromCharCode(35)` (padrão game_colors → audit-clean), cache lazy,
+  `OffscreenCanvas`→`createElement` fallback.
+- `camera.js` — segue o avatar local, clampa às bordas, `worldToScreen`.
+- `renderer.js` — Canvas 2D, `imageSmoothingEnabled=false`, floor a partir de
+  `map.floorTile`, avatares ordenados por Y, labels de nick.
+- `engine.js` — estado local (participants Map), `start(init)`/`applySnapshot`/
+  `applyDelta` (joins/leaves/updates), rAF loop injetável, `destroy()` limpa
+  rAF+listener resize+renderer.
+- `space_canvas_hook.js` lazy (`serverEvents: []`) — abre `Socket("/socket")`,
+  join `space:<token>` com `join_token`, roteia delta/snapshot→engine,
+  `destroyed` faz engine.destroy+channel.leave+socket.disconnect. Factories
+  de socket/engine injetáveis p/ teste.
+
+Backend:
+- `space_init` reescrito p/ o protocolo: `%{version, token, self_key, map
+  (definição completa inline), config, snapshot}`.
+- `build_snapshot` → shape do protocolo `%{server_time, participants:
+  %{key => view}}`; `participant_view` com chaves JSON limpas (sem `?`, sem
+  campos server-only).
+- Avatar determinístico por participante (`avatar_for`, phash2 do key, cicla
+  os 4 evitando colisão) — em sync com `AVATAR_IDS` do JS.
+- `tavern_cafe_v1` ganhou `layers.floor` (matriz 48×64 gerada: perímetro
+  wall_stone, side_room floor_stone, quiet_corner floor_grass, resto
+  floor_wood).
+- Takeover de reconexão já vinha da Fase 1.
+
+Infra de teste:
+- `vitest.config.js` aliasa `phoenix` → `deps/phoenix/priv/static/phoenix.mjs`
+  (espelha o `NODE_PATH=deps` do esbuild) p/ testar hooks que importam Socket.
+- ChannelCase de space_init atualizado ao novo shape + teste de broadcast
+  `participant_joined` com 2 sockets.
+- E2E `space-canvas.spec.ts`: registra, entra em canal, `/space`, abre
+  `/space/<token>`, valida shell+título e canvas não-branco (amostra de
+  pixels com variância). VERDE.
+
+Aprendizados desta iteração:
+- **`OffscreenCanvas` é undefined no jsdom** mas `document`/canvas existem;
+  atlas usa fallback `createElement` e guarda `if (ctx)` (getContext 2d é null
+  no jsdom — canvas mantém dims, contrato testável sem pixels). Falha inicial
+  "document is not defined" foi transiente de setup do jsdom (re-run passou).
+- **`phoenix` não resolve no vitest** sem alias (esbuild usa NODE_PATH=deps) —
+  alias no vitest.config resolve.
+- **eslint do projeto: `eqeqeq: ["error","always"]`** — `!= null` quebra; usar
+  helper `isPresent` (`!== undefined && !== null`). `no-console` é só warning
+  (surface de erro é OK, igual aos hooks existentes).
+- **audit.styles escaneia JS por `#[0-9a-fA-F]{3,8}`** (categoria JS-COLOR) —
+  paleta de sprite como dígitos sem `#` + `String.fromCharCode(35)` é o padrão
+  audit-clean (game_colors.js).
+- **enforce_hooks_contract.cjs (lint.hooks) NÃO está no `make ci`** — mas
+  greps ingênuos: `import(...)` em JSDoc `@param {import("./x").T}` dispara
+  falso-positivo de dynamic-import; usar tipos simples no JSDoc. (Pré-existente
+  fora do meu escopo: LobbyMediaHook readyEvent sem handler — não corrigido,
+  feature diferente, fora do gate.)
+- **Snapshot da Fase 1 era lista; protocolo quer map keyed** — mudança de
+  contrato deliberada, ChannelCase atualizado junto.
+- **DB e2e (`retro_hex_chat_e2e`) precisa `MIX_ENV=e2e mix ecto.migrate`**
+  separado — o E2E falhou com "relation virtual_space_sessions does not exist"
+  até migrar; e `MIX_ENV=e2e mix assets.build` antes do playwright.
+- **credo --strict do CI**: comprehension aninhada + cond estoura nesting/
+  complexity; extrair `floor_tile/2` resolve.
+
+Decisões de implementação:
+- space_init sempre carrega o mapa completo inline (decisão 21); o JS só
+  indexa, nunca tem cópia própria.
+- Camada `floor` gerada programaticamente (não Tiled); renderer consome
+  `floorTile` com fallback procedural p/ tiles fora da matriz.
+- Avatar determinístico por key (reconnect preserva o visual).
 
 ### 2026-07-05 — Iteração 3 (FECHAMENTO da Fase 1)
 

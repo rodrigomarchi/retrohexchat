@@ -109,35 +109,35 @@ Fechamento da fase:
 
 Frontend:
 
-- [ ] `SpaceCanvasHook` lazy (`serverEvents: []`, `reason` obrigatório) em
+- [x] `SpaceCanvasHook` lazy (`serverEvents: []`, `reason` obrigatório) em
       `hooks/lazy_feature_hooks.js`.
-- [ ] `lib/space/protocol.js` (constantes de eventos, normalização,
+- [x] `lib/space/protocol.js` (constantes de eventos, normalização,
       versionamento).
-- [ ] `lib/space/map.js` (indexa definição recebida no `space_init`: colisão em
+- [x] `lib/space/map.js` (indexa definição recebida no `space_init`: colisão em
       `Set`, zonas, assentos, interactables).
-- [ ] `lib/space/sprite_atlas.js` autoral (tiles, avatares 4 direções,
+- [x] `lib/space/sprite_atlas.js` autoral (tiles, avatares 4 direções,
       paleta própria).
-- [ ] `lib/space/camera.js` + `lib/space/renderer.js` (camadas, ordenação por
+- [x] `lib/space/camera.js` + `lib/space/renderer.js` (camadas, ordenação por
       Y, `imageSmoothingEnabled = false`, escala inteira).
-- [ ] `lib/space/engine.js` (ciclo de vida, rAF, estado local, aplicação de
+- [x] `lib/space/engine.js` (ciclo de vida, rAF, estado local, aplicação de
       snapshot).
-- [ ] Cleanup completo em `destroyed` (rAF, listeners, timers, canvas,
+- [x] Cleanup completo em `destroyed` (rAF, listeners, timers, canvas,
       `channel.leave()` + `socket.disconnect()`).
 
 Backend:
 
-- [ ] `tavern_cafe_v1` completo no domínio (camadas, colisão real, zonas,
+- [x] `tavern_cafe_v1` completo no domínio (camadas, colisão real, zonas,
       assentos, interactables, spawns).
-- [ ] `space_init` como resposta do join com mapa inline + snapshot.
-- [ ] Broadcasts `participant_joined/left` -> eventos do Channel.
-- [ ] Takeover de reconexão pelo mesmo `participant_key` (posição preservada).
+- [x] `space_init` como resposta do join com mapa inline + snapshot.
+- [x] Broadcasts `participant_joined/left` -> eventos do Channel.
+- [x] Takeover de reconexão pelo mesmo `participant_key` (posição preservada).
 
 Fechamento da fase:
 
-- [ ] Testes §Fase 2 verdes (Vitest de map/protocol/atlas, contrato do hook,
+- [x] Testes §Fase 2 verdes (Vitest de map/protocol/atlas, contrato do hook,
       ChannelCase de snapshot, E2E canvas não branco).
-- [ ] `make ci` completo verde.
-- [ ] Commit único da fase na `main`.
+- [x] `make ci` completo verde.
+- [x] Commit único da fase na `main`.
 
 ## Fase 3: movimento autoritativo
 

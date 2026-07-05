@@ -170,7 +170,9 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
       :ok ->
         {participant, state} = do_join(state, key, context, returning)
-        {:reply, {:ok, %{participant: participant, snapshot: build_snapshot(state)}}, state}
+
+        reply = %{participant: participant, snapshot: build_snapshot(state), map: state.map}
+        {:reply, {:ok, reply}, state}
     end
   end
 
@@ -236,12 +238,14 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       user_id: context.user_id,
       nickname: context.nickname,
       role: role_for(state.session, context.user_id),
+      avatar: avatar_for(state, key),
       x: x,
       y: y,
       dir: dir,
       pose: "standing",
       seat_id: nil,
       zone_id: nil,
+      moving?: false,
       online?: true,
       muted?: false,
       input_seq: 0,
@@ -314,16 +318,54 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     if session.creator_id == user_id, do: :creator, else: :participant
   end
 
+  # Deterministic avatar assignment so a reconnect keeps the same look and two
+  # people rarely clash. Must stay in sync with `AVATAR_IDS` in the JS atlas.
+  @avatars ~w(mage_blue mage_green rogue_red bard_gold)
+  defp avatar_for(state, key) do
+    index = rem(:erlang.phash2(key), length(@avatars))
+
+    taken =
+      state.participants
+      |> Map.values()
+      |> MapSet.new(&Map.get(&1, :avatar))
+
+    @avatars
+    |> Stream.drop(index)
+    |> Stream.concat(@avatars)
+    |> Enum.find(@avatars |> List.first(), &(&1 not in taken))
+  end
+
   defp online_count(state) do
     state.participants |> Map.values() |> Enum.count(& &1.online?)
   end
 
+  # Wire-protocol snapshot (see `js/lib/space/protocol.js`): a server timestamp
+  # plus participants keyed by participant key, each in the public view shape.
   defp build_snapshot(state) do
+    participants =
+      Map.new(state.participants, fn {key, participant} ->
+        {key, participant_view(participant)}
+      end)
+
+    %{server_time: System.system_time(:millisecond), participants: participants}
+  end
+
+  # Internal participant → public view: clean JSON keys, no bang atoms, no
+  # server-only fields (channel_pid, input_seq, timestamps).
+  defp participant_view(participant) do
     %{
-      token: state.token,
-      status: state.session.status,
-      map_id: state.session.map_id,
-      participants: Map.values(state.participants)
+      key: participant.key,
+      nickname: participant.nickname,
+      avatar: Map.get(participant, :avatar, "default"),
+      x: participant.x,
+      y: participant.y,
+      dir: participant.dir,
+      moving: Map.get(participant, :moving?, false),
+      pose: participant.pose,
+      seat_id: participant.seat_id,
+      zone_id: participant.zone_id,
+      muted: participant.muted?,
+      online: participant.online?
     }
   end
 

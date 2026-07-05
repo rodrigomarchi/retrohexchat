@@ -26,7 +26,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
         |> assign(:space_token, token)
         |> assign(:participant_key, result.participant.key)
 
-      {:ok, space_init(result), socket}
+      {:ok, space_init(token, result), socket}
     else
       {:error, reason} ->
         {:error, %{reason: join_error(reason)}}
@@ -72,10 +72,21 @@ defmodule RetroHexChatWeb.SpaceChannel do
     }
   end
 
-  defp space_init(result) do
+  # `space_init` is the join reply (see `js/lib/space/protocol.js`): the full
+  # canonical map inline, the viewer's own key, render config and the initial
+  # snapshot. The map is serialized from the Elixir source of truth so the
+  # client never keeps its own copy.
+  defp space_init(token, result) do
     %{
       version: 1,
-      participant: result.participant,
+      token: token,
+      self_key: result.participant.key,
+      map: result.map,
+      config: %{
+        tile_size: result.map.tile_size,
+        scale: 3,
+        text_chat: "global"
+      },
       snapshot: result.snapshot
     }
   end

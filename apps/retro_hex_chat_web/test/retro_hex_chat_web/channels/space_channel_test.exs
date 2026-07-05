@@ -44,15 +44,27 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
   end
 
   describe "join" do
-    test "a valid join_token gets a space_init reply with the snapshot" do
+    test "a valid join_token gets a space_init reply carrying the full map and snapshot" do
       creator = register_and_identify("chc#{uid()}")
       session = insert_space(creator)
 
       assert {:ok, space_init, _socket} = join_space(creator, session)
 
-      assert space_init.participant.key == "registered:#{creator.id}"
-      assert space_init.snapshot.map_id == "tavern_cafe_v1"
-      assert Enum.any?(space_init.snapshot.participants, &(&1.key == space_init.participant.key))
+      self_key = "registered:#{creator.id}"
+      assert space_init.version == 1
+      assert space_init.token == session.token
+      assert space_init.self_key == self_key
+
+      # The full canonical map is serialized inline (no client-side map copy).
+      assert space_init.map.id == "tavern_cafe_v1"
+      assert is_list(space_init.map.collision)
+      assert is_list(space_init.map.seats)
+      assert space_init.map.tile_size == 16
+
+      # Snapshot follows the wire protocol: server_time + participants keyed by key.
+      assert is_integer(space_init.snapshot.server_time)
+      assert Map.has_key?(space_init.snapshot.participants, self_key)
+      assert space_init.snapshot.participants[self_key].nickname == creator.nickname
     end
 
     test "a tampered join_token is refused" do
@@ -89,13 +101,27 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
     end
   end
 
+  describe "presence broadcasts" do
+    test "a second join reaches the first participant's socket" do
+      creator = register_and_identify("chb#{uid()}")
+      other = register_and_identify("chd#{uid()}")
+      session = insert_space(creator)
+
+      assert {:ok, _init, _socket} = join_space(creator, session)
+      assert {:ok, _init2, _socket2} = join_space(other, session)
+
+      assert_push "space_participant_joined", %{nickname: nickname}
+      assert nickname == other.nickname
+    end
+  end
+
   describe "leave" do
     test "closing the channel marks the participant offline in the SessionServer" do
       creator = register_and_identify("chl#{uid()}")
       session = insert_space(creator)
 
       {:ok, init, socket} = join_space(creator, session)
-      key = init.participant.key
+      key = init.self_key
 
       Process.unlink(socket.channel_pid)
       :ok = close(socket)
