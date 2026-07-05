@@ -518,14 +518,26 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       |> Ecto.Changeset.change(status: "closed", closed_reason: "peer_left")
       |> Repo.update!()
 
-      {:ok, _view, html} = live(chat_conn(conn, creator.nickname), "/lobby/#{token}")
+      {:ok, view, html} = live(chat_conn(conn, creator.nickname), "/lobby/#{token}")
 
-      # The goodbye screen — not the desktop — with the same rich card the chat draws.
+      # The goodbye dialog — a centered pinned window on the terminal desktop,
+      # not the feature desktop — with the same rich card the chat draws.
       assert html =~ ~s(data-testid="lobby-ended")
       assert html =~ ~s(data-testid="session-card")
       assert html =~ "Lobby ended"
       assert html =~ "left"
       refute html =~ ~s(data-testid="lobby-desktop")
+
+      assert has_element?(view, ~s(#lobby-terminal-desktop[data-persist="false"]))
+
+      assert has_element?(
+               view,
+               ~s([data-window-id="lobby-ended"][data-window-pinned="true"]) <>
+                 ~s([data-window-default-centered="true"])
+             )
+
+      assert has_element?(view, ~s([data-window-taskbar="lobby-ended"]))
+      assert has_element?(view, ~s(#lobby-terminal-tray-clock[phx-hook="ClockHook"]))
 
       # The action closes the browser tab (hook) rather than navigating to /chat.
       assert html =~ "LobbyCloseWindowHook"
@@ -543,9 +555,11 @@ defmodule RetroHexChatWeb.App.LobbyLiveTest do
       assert html =~ "Lobby unavailable"
       assert html =~ "no longer valid"
       assert html =~ "LobbyCloseWindowHook"
-      # No session to describe, so no rich card and no desktop.
+      # No session to describe, so no rich card and no feature desktop —
+      # only the terminal desktop with the goodbye dialog.
       refute html =~ ~s(data-testid="session-card")
       refute html =~ ~s(data-testid="lobby-desktop")
+      assert html =~ ~s(data-testid="lobby-terminal-desktop")
     end
 
     test "a user who is not a participant sees the unavailable screen", %{
