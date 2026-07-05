@@ -26,6 +26,8 @@ Registry, DynamicSupervisor e um GenServer por sessão ativa.
   decisões fechadas.
 - `07-decisoes-produto-usuario.md`: respostas do usuário para escopo, comando,
   admissão, mapas e interações da V1.
+- `08-referencias-locais.md`: checkouts locais dos projetos de referência e onde
+  o agente de implementação deve pesquisar dúvidas.
 
 ## Recomendação curta
 
@@ -49,3 +51,6 @@ corrige suavemente quando chega a posição oficial.
 
 Essas referências informam decisões de produto e arquitetura, mas a proposta
 abaixo evita copiar código ou trazer engines externas.
+
+Os repositórios foram clonados em `~/src` para consulta local. Veja
+`08-referencias-locais.md`.
