@@ -1345,3 +1345,68 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
 .desktop--stacked [data-window-control="restore"] {
   display: none;
 }
+
+/* ══════════════════════════════════════════════════════
+   Blue screen of death — ErrorHTML (404/500/fallback)
+   ══════════════════════════════════════════════════════ */
+/* Error pages render without a layout and may load while the app is degraded,
+   so the whole treatment lives in these classes: full-viewport Win98 blue,
+   monospace copy, inverted product chip and a blinking prompt cursor. The
+   entire screen is a link back to "/" (works without JS); a keydown listener
+   in the template adds the "press any key" behaviour. */
+.bsod {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: #0000aa;
+  color: #ffffff;
+  font-family: "Courier New", "Lucida Console", ui-monospace, monospace;
+  font-size: 15px;
+  line-height: 1.6;
+  text-decoration: none;
+  cursor: pointer;
+}
+.bsod__panel {
+  max-width: 620px;
+}
+.bsod__chip {
+  display: block;
+  width: fit-content;
+  margin: 0 auto 28px;
+  padding: 0 14px;
+  background: #a8a8a8;
+  color: #0000aa;
+  font-weight: 700;
+}
+.bsod__text {
+  margin: 0 0 20px;
+}
+.bsod__list {
+  margin: 0 0 28px;
+  padding: 0;
+  list-style: none;
+}
+.bsod__list li {
+  padding-left: 2ch;
+  text-indent: -2ch;
+}
+.bsod__continue {
+  margin: 0;
+  text-align: center;
+}
+.bsod__cursor {
+  animation: bsod-blink 1s steps(1) infinite;
+}
+@keyframes bsod-blink {
+  50% {
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bsod__cursor {
+    animation: none;
+  }
+}
