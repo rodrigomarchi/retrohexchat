@@ -9,7 +9,11 @@
  * data attributes, so the hook is generic and reusable:
  *   - `[data-window-id]`            a window (with `data-window-default-*` geometry;
  *                                   `data-window-default-maximized` starts it maximized
- *                                   when no saved layout exists)
+ *                                   when no saved layout exists;
+ *                                   `data-window-default-centered` centers it in the
+ *                                   workspace until the user touches it — pointerdown
+ *                                   freezes the current position so the window never
+ *                                   moves mid-click — or a saved layout applies)
  *   - `[data-window-titlebar]`      drag handle inside a window
  *   - `[data-window-resize=<dir>]`  resize handle (n|s|e|w|ne|nw|se|sw; bare = se)
  *   - `[data-window-control=...]`   minimize | maximize | restore | close button
@@ -197,6 +201,10 @@ const WindowManagerHook = {
         // default_* geometry stays populated either way, so restoring from a
         // default-maximized window lands on sane coordinates.
         maximized: d.windowDefaultMaximized === "true",
+        // Centered geometry is computed lazily in applyWindow (the workspace may
+        // have no laid-out size at mount); cleared once anything else takes
+        // ownership of the position (drag, resize, cascade/tile, saved layout).
+        centered: d.windowDefaultCentered === "true",
         x: int(d.windowDefaultX, 24),
         y: int(d.windowDefaultY, 24),
         w: int(d.windowDefaultWidth, 360),
@@ -224,6 +232,7 @@ const WindowManagerHook = {
   applySavedState(id, s) {
     const win = this.windows[id];
     const st = win.state;
+    st.centered = false;
     if (typeof s.x === "number") st.x = s.x;
     if (typeof s.y === "number") st.y = s.y;
     if (typeof s.w === "number") st.w = Math.max(s.w, win.minW);
@@ -286,6 +295,14 @@ const WindowManagerHook = {
   onPointerDown(e) {
     if (e.button !== 0) return;
 
+    // Touching a centered window freezes it at its current position BEFORE any
+    // re-apply below runs: a recompute here could move the window mid-click
+    // (the press lands, the window shifts, the release misses the target).
+    const touchedId = this.windowIdOf(e.target);
+    if (touchedId && this.windows[touchedId]) {
+      this.windows[touchedId].state.centered = false;
+    }
+
     const resizeH = e.target.closest("[data-window-resize]");
     if (resizeH && !this.stacked) {
       const id = this.windowIdOf(resizeH);
@@ -317,12 +334,14 @@ const WindowManagerHook = {
   startDrag(e, id) {
     e.preventDefault();
     const st = this.windows[id].state;
+    st.centered = false;
     this.drag = { id, px: e.clientX, py: e.clientY, ox: st.x, oy: st.y };
   },
 
   startResize(e, id, dir) {
     e.preventDefault();
     const st = this.windows[id].state;
+    st.centered = false;
     const rect = this.windows[id].el.getBoundingClientRect();
     this.resize = {
       id,
@@ -829,6 +848,7 @@ const WindowManagerHook = {
     ids.forEach((id, i) => {
       const win = this.windows[id];
       const st = win.state;
+      st.centered = false;
       st.maximized = false;
       st.w = Math.max(win.minW, Math.round(wsW * CASCADE_SIZE_RATIO));
       st.h = Math.max(win.minH, Math.round(wsH * CASCADE_SIZE_RATIO));
@@ -851,6 +871,7 @@ const WindowManagerHook = {
     for (const id of ids) {
       const win = this.windows[id];
       const st = win.state;
+      st.centered = false;
       st.maximized = false;
       if (direction === "h") {
         st.x = 0;
@@ -984,6 +1005,15 @@ const WindowManagerHook = {
         // off a wider screen (or after the workspace shrinks) can't get stranded
         // outside an `overflow-hidden` workspace with no way to drag it back.
         const { w, h } = this.workspaceSize();
+        if (st.centered) {
+          // Auto-height windows have no --win-h; measure the laid-out element
+          // (u-hidden was removed above). A zero-size workspace at mount is fine:
+          // the workspace ResizeObserver re-runs applyAll once it has real
+          // dimensions, and the clamp below keeps the interim position sane.
+          const winH = st.h || el.offsetHeight || win.minH;
+          st.x = Math.round((w - st.w) / 2);
+          st.y = Math.round((h - winH) / 2);
+        }
         st.x = clamp(st.x, 0, Math.max(0, w - EDGE_MARGIN));
         st.y = clamp(st.y, 0, Math.max(0, h - EDGE_MARGIN));
         this.setGeom(el, st.x, st.y, st.w, st.h, st.z);

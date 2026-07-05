@@ -140,6 +140,12 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       "start maximized when no saved layout exists for this window; restoring falls back " <>
         "to the default_x/default_y/width/height geometry"
 
+  attr :default_centered, :boolean,
+    default: false,
+    doc:
+      "center in the workspace when no saved layout exists (recomputed on workspace resize); " <>
+        "touching the window, cascade/tile or a saved position takes over"
+
   attr :default_x, :integer, default: 24
   attr :default_y, :integer, default: 24
   attr :width, :integer, default: 360
@@ -171,6 +177,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       data-window-managed={to_string(@managed)}
       data-window-initial-open={to_string(@open)}
       data-window-default-maximized={to_string(@default_maximized)}
+      data-window-default-centered={to_string(@default_centered)}
       data-window-default-x={@default_x}
       data-window-default-y={@default_y}
       data-window-default-width={@width}

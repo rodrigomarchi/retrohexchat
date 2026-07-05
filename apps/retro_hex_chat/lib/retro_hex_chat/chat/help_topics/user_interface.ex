@@ -35,7 +35,9 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           "cascade",
           "tile",
           "help viewer",
-          "search topics"
+          "search topics",
+          "logon",
+          "connect screen"
         ],
         icon: :icon_win_maximize,
         description:
@@ -51,6 +53,12 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
                 "manager. The Help viewer is laid out like the classic Windows Help: a toolbar " <>
                 "(Back / Forward / Home), a navigator with Contents, Index and Search tabs, and " <>
                 "a \"See Also\" list of related topics under each article."
+            ) <>
+            " " <>
+            dgettext(
+              "help",
+              "The Connect screen is a logon-style desktop too: the connect dialog is a pinned " <>
+                "window centered over the taskbar, with Help available from its Start menu."
             )
       },
       %{

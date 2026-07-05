@@ -1,7 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import WindowManagerHook from "../../../js/hooks/ui/window_manager_hook";
 
-function windowMarkup(id, { pinned = false, open = true, defaultMaximized = false } = {}) {
+function windowMarkup(
+  id,
+  { pinned = false, open = true, defaultMaximized = false, defaultCentered = false } = {},
+) {
   const controls = pinned
     ? `<button data-window-control="minimize"></button>
        <button data-window-control="maximize"></button>
@@ -14,6 +17,7 @@ function windowMarkup(id, { pinned = false, open = true, defaultMaximized = fals
   return `
     <div id="${id}" data-window-id="${id}" data-window-pinned="${pinned}"
          data-window-initial-open="${open}" data-window-default-maximized="${defaultMaximized}"
+         data-window-default-centered="${defaultCentered}"
          data-window-default-x="20" data-window-default-y="20"
          data-window-default-width="300" data-window-min-width="200" data-window-min-height="120">
       <div data-window-titlebar>${controls}</div>
@@ -933,6 +937,115 @@ describe("WindowManagerHook — default maximized", () => {
     );
     hook.updated();
     expect(hook.windows.later.state.maximized).toBe(false);
+  });
+});
+
+describe("WindowManagerHook — default centered", () => {
+  let store;
+  let el;
+  let hook;
+
+  function mountDesktop() {
+    el = document.createElement("div");
+    el.dataset.persistKey = "test";
+    el.innerHTML = `
+      <div class="desktop__workspace">
+        ${windowMarkup("logon", { pinned: true, open: true, defaultCentered: true })}
+      </div>
+      <div class="desktop-taskbar">
+        <button data-window-taskbar="logon"></button>
+      </div>`;
+    document.body.appendChild(el);
+    hook = { ...WindowManagerHook, el, handleEvent: vi.fn() };
+    hook.workspaceSize = () => ({ w: 1024, h: 768 }); // jsdom has no layout
+    hook.mounted();
+  }
+
+  beforeEach(() => {
+    store = new Map();
+    vi.stubGlobal("localStorage", {
+      getItem: (k) => (store.has(k) ? store.get(k) : null),
+      setItem: (k, v) => store.set(k, String(v)),
+      removeItem: (k) => store.delete(k),
+      clear: () => store.clear(),
+    });
+  });
+
+  afterEach(() => {
+    hook.destroyed();
+    el.remove();
+    vi.unstubAllGlobals();
+  });
+
+  it("centers the window in the workspace on mount", () => {
+    mountDesktop();
+
+    const st = hook.windows.logon.state;
+    // Width from the markup: 300 → x = (1024 - 300) / 2. Auto height measures 0
+    // in jsdom, so the minH fallback (120) drives y = (768 - 120) / 2.
+    expect(st.x).toBe(362);
+    expect(st.y).toBe(324);
+    expect(document.getElementById("logon").style.getPropertyValue("--win-x")).toBe("362px");
+  });
+
+  it("recenters when the workspace resizes, until the user takes over", () => {
+    mountDesktop();
+    hook.workspaceSize = () => ({ w: 800, h: 600 });
+
+    hook.applyAll();
+    expect(hook.windows.logon.state.x).toBe(250);
+    expect(hook.windows.logon.state.y).toBe(240);
+  });
+
+  it("a drag clears centering and the dragged position sticks", () => {
+    mountDesktop();
+    const st = hook.windows.logon.state;
+
+    hook.startDrag({ preventDefault() {}, clientX: 500, clientY: 400 }, "logon");
+    document.dispatchEvent(new MouseEvent("pointermove", { clientX: 540, clientY: 430 }));
+    document.dispatchEvent(new MouseEvent("pointerup", {}));
+
+    expect(st.centered).toBe(false);
+    expect(st.x).toBe(402);
+    expect(st.y).toBe(354);
+
+    // A later re-apply (e.g. a workspace resize) must not recenter.
+    hook.applyAll();
+    expect(st.x).toBe(402);
+    expect(st.y).toBe(354);
+  });
+
+  it("a pointerdown inside the window freezes the current position", () => {
+    mountDesktop();
+    const st = hook.windows.logon.state;
+    expect(st.x).toBe(362);
+
+    // A patch may have stored a slightly stale center; the press must keep it
+    // as-is (recomputing here would move the window mid-click).
+    st.y = 300;
+    document
+      .getElementById("logon")
+      .querySelector("[data-window-content]")
+      .dispatchEvent(new MouseEvent("pointerdown", { bubbles: true, button: 0 }));
+
+    expect(st.centered).toBe(false);
+    expect(st.y).toBe(300);
+
+    hook.applyAll();
+    expect(st.y).toBe(300);
+  });
+
+  it("a saved layout wins over centering", () => {
+    store.set(
+      "rhc:desktop:test",
+      JSON.stringify({ logon: { open: true, x: 60, y: 70, w: 300, h: 200 } }),
+    );
+    mountDesktop();
+
+    const st = hook.windows.logon.state;
+    expect(st.centered).toBe(false);
+    expect(st.x).toBe(60);
+    expect(st.y).toBe(70);
   });
 });
 

@@ -12,7 +12,6 @@ defmodule RetroHexChatWeb.App.ConnectLive do
     router: RetroHexChatWeb.Router,
     statics: RetroHexChatWeb.static_paths()
 
-  import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.Input
   import RetroHexChatWeb.Components.UI.Label
@@ -20,6 +19,8 @@ defmodule RetroHexChatWeb.App.ConnectLive do
   import RetroHexChatWeb.Components.UI.Fieldset
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.MenuBarApp
+  import RetroHexChatWeb.Components.UI.ConnectStatusBar
+  import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
   import RetroHexChatWeb.Components.UI.AboutDialog
   import RetroHexChatWeb.Icons
@@ -166,6 +167,18 @@ defmodule RetroHexChatWeb.App.ConnectLive do
        password_error: nil
      )}
   end
+
+  def handle_event("help_topics", _params, socket) do
+    {:noreply, push_navigate(socket, to: ~p"/chat/help")}
+  end
+
+  def handle_event("menu_action", %{"action" => "help_topics"}, socket) do
+    {:noreply, push_navigate(socket, to: ~p"/chat/help")}
+  end
+
+  # The disconnected menu bar still emits actions this screen has no feature
+  # for (MOTD, cheatsheet); ignore them instead of crashing the LiveView.
+  def handle_event("menu_action", _params, socket), do: {:noreply, socket}
 
   defp validate_nickname(nickname) do
     case NicknameValidator.validate(nickname) do

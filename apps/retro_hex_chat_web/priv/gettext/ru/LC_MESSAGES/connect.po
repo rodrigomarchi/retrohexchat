@@ -11,200 +11,210 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:219
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:233
 #, elixir-autogen, elixir-format
 msgid "1-16 characters"
 msgstr "1-16 персонажей"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:293
+#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:42
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:307
 #, elixir-autogen, elixir-format
 msgid "Authentication"
 msgstr "аутентификация"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:331
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:406
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:345
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:420
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Назад"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:231
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:245
 #, elixir-autogen, elixir-format
 msgid "Case sensitive"
 msgstr "Дело деликатное"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:372
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:386
 #, elixir-autogen, elixir-format
 msgid "Choose a password (min. 5 characters)..."
 msgstr "Выберите пароль (мин. 5 символов)"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:383
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:397
 #, elixir-autogen, elixir-format
 msgid "Confirm password"
 msgstr "Подтвердить пароль"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:246
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:335
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:260
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:349
+#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:89
+#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:111
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Соединить"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:44
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:46
 #, elixir-autogen, elixir-format
 msgid "Connect - RetroHexChat"
 msgstr "Обсуждение RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:14
+#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "Connect to RetroHexChat"
 msgstr "Подключение к RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:256
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:270
 #, elixir-autogen, elixir-format
 msgid "Connecting from another window ends the previous session."
 msgstr "Подключение из другого окна завершает предыдущий сеанс."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:212
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:226
 #, elixir-autogen, elixir-format
 msgid "Enter your nickname..."
 msgstr "Введите свое прозвище..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:315
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:329
 #, elixir-autogen, elixir-format
 msgid "Enter your password..."
 msgstr "Введите свой пароль..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:116
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:118
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "Неправильный пароль"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:55
+#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "Language"
 msgstr "Язык языка"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:222
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:236
 #, elixir-autogen, elixir-format
 msgid "Must start with a letter"
 msgstr "Начинать надо с письма"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:203
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:217
 #, elixir-autogen, elixir-format
 msgid "Nickname"
 msgstr "Прозвище"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:181
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:195
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:190
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:204
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "Прозвища не могут содержать пространства"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:275
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:289
 #, elixir-autogen, elixir-format
 msgid "Nickname cleanup"
 msgstr "Уборка по прозвищу"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:178
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:192
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "Имя должно быть строкой"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:184
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:198
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
 msgstr "Имя должно быть максимум 16 символов"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:187
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:201
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "Имя должно начинаться с буквы или специального символа."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:277
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:291
 #, elixir-autogen, elixir-format
 msgid "Nicknames unused for 7 days are automatically released."
 msgstr "Прозвища, не используемые в течение 7 дней, выпускаются автоматически."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:228
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:242
 #, elixir-autogen, elixir-format
 msgid "No spaces allowed"
 msgstr "Пространства не допускаются"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:254
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:268
 #, elixir-autogen, elixir-format
 msgid "One session per nickname"
 msgstr "Один сеанс по прозвищу"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:307
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:364
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:321
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:378
 #, elixir-autogen, elixir-format
 msgid "Password"
 msgstr "Пароль"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:137
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:139
 #, elixir-autogen, elixir-format
 msgid "Password must be at least 5 characters"
 msgstr "Пароль должен быть не менее 5 символов"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:141
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:143
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "Пароли не совпадают"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:414
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:428
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "Регистрация и подключение"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:350
+#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:43
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:364
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "Регистрация"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:391
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:405
 #, elixir-autogen, elixir-format
 msgid "Repeat your password..."
 msgstr "Повторите свой пароль..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:61
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:63
 #, elixir-autogen, elixir-format
 msgid "Server banned"
 msgstr "Сервер запрещен"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:60
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:62
 #, elixir-autogen, elixir-format
 msgid "Session ended"
 msgstr "Заседание завершилось"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:59
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:61
 #, elixir-autogen, elixir-format
 msgid "Session expired"
 msgstr "Сессия закончилась"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:263
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:277
 #, elixir-autogen, elixir-format
 msgid "Session expiry"
 msgstr "Сессия заканчивается"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:265
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:279
 #, elixir-autogen, elixir-format
 msgid "Sessions expire after 10 failed reconnection attempts."
 msgstr "Сессии истекают после 10 неудачных попыток воссоединения."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:354
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:368
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is available! Choose a password to register it."
 msgstr "прозвище %{nickname} Доступно! Выберите пароль для его регистрации."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:297
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:311
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is registered. Please enter your password to continue."
 msgstr "прозвище %{nickname} Зарегистрирована. Пожалуйста, введите пароль, чтобы продолжить."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:200
+#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:44
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "User Information"
 msgstr "Пользовательская информация"
+
+#: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:27
+#, elixir-autogen, elixir-format
+msgid "Not connected"
+msgstr "Не подключено"
