@@ -208,3 +208,45 @@ de posição enquanto a sessão estiver ativa e poderes do criador.
 Ambiguidade: criador só fecha ou também modera?
 
 Decisão: criador pode expulsar usuário, fechar espaço, trocar mapa e mutar chat.
+
+## Decisões da auditoria de codebase (fechadas com o usuário em 2026-07-05)
+
+### 18. Transporte confirmado apesar da infra inexistente
+
+Ambiguidade: a auditoria revelou que o projeto não tem NENHUMA infra de Phoenix
+Channel (sem `UserSocket`, sem `socket "/socket"`, sem `channels/`, sem
+`ChannelCase`). Manter Channel ou cair para eventos LiveView?
+
+Decisão: manter Phoenix Channel. A Fase 1 cria a infra do zero (UserSocket,
+declaração no endpoint, SpaceChannel, ChannelCase de teste). É a primeira
+Phoenix Channel do projeto.
+
+### 19. Card do espaço é mensagem de canal persistida
+
+Ambiguidade: não existe card rico persistido em canal no codebase
+(`:p2p_invite` é só PM; `:arcade_link` é efêmero). Como persistir o card?
+
+Decisão: novo tipo `space_invite` adicionado ao `@type_values` de
+`Chat.Message` (mensagem de canal persistida) + `@known_types` de
+`Chat.Service`, com enrich em `Helpers.SessionCard` e render em
+`Components.SessionCard`/`MessageRow`. Primeiro card rico de canal do projeto.
+
+### 20. Sem refresh ao vivo de card
+
+Ambiguidade: o plano prometia "refresh ao vivo" do card no fim da sessão, mas
+não existe mecanismo de atualização push de cards no ChatLive.
+
+Decisão: seguir o padrão existente — o card mostra o estado de quando a linha
+foi construída e se corrige em rebuild/remount. Link expirado leva à tela
+terminal do espaço, então card desatualizado não é problema. Refresh
+push-driven fica fora da V1 (listado em fases futuras).
+
+### 21. Fonte canônica do mapa é Elixir
+
+Ambiguidade: o plano definia mapas como módulos JS, mas o servidor autoritativo
+precisa da mesma colisão/zonas/assentos para validar movimento.
+
+Decisão: mapa canônico no domínio Elixir (`VirtualSpace.Maps.*` + registry
+`VirtualSpace.Map`). O cliente recebe a definição completa no `space_init` e
+apenas a indexa — não há cópia JS. O atlas visual (desenho dos tiles) continua
+100% JS autoral.

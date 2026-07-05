@@ -1,6 +1,7 @@
 # Mapa, renderização e assets
 
-Status: proposta para conversa. Nenhuma implementação feita ainda.
+Status: auditado contra o codebase em 2026-07-05. Decisões fechadas com o
+usuário. Pronto para implementação.
 
 ## Direção visual
 
@@ -35,34 +36,37 @@ Regras:
 
 ## Formato de mapa V1
 
-Decisão V1: começar com JSON/JS interno, versionado no repositório, sem exigir
-Tiled no fluxo de desenvolvimento:
+Decisão fechada (2026-07-05): a fonte canônica do mapa vive no domínio Elixir,
+versionada no repositório, sem exigir Tiled no fluxo de desenvolvimento. O
+cliente recebe a definição completa no `space_init` e nunca mantém cópia:
 
-```js
-export const tavernCafeV1 = {
-  id: "tavern_cafe_v1",
-  version: 1,
-  width: 64,
-  height: 48,
-  tileSize: 16,
-  spawn: [
-    {x: 10, y: 12, dir: "down"},
-    {x: 11, y: 12, dir: "down"}
-  ],
-  layers: {
-    floor: [],
-    decor: [],
-    above: []
-  },
-  collision: [],
-  zones: [],
-  interactables: [],
-  seats: []
-};
+```elixir
+defmodule RetroHexChat.VirtualSpace.Maps.TavernCafeV1 do
+  @spec definition() :: map()
+  def definition do
+    %{
+      id: "tavern_cafe_v1",
+      version: 1,
+      width: 64,
+      height: 48,
+      tile_size: 16,
+      spawn: [
+        %{x: 10, y: 12, dir: "down"},
+        %{x: 11, y: 12, dir: "down"}
+      ],
+      layers: %{floor: [], decor: [], above: []},
+      collision: [],
+      zones: [],
+      interactables: [],
+      seats: []
+    }
+  end
+end
 ```
 
-`layers` pode começar como matriz de IDs por tile. `collision` deve ser fácil de
-consultar no servidor e no cliente.
+`layers` pode começar como matriz de IDs por tile. `collision` é expandida em
+`MapSet` de tiles bloqueados no servidor (validação oficial) e em `Set` no
+cliente (previsão local), a partir da mesma estrutura transportada como JSON.
 
 Formato recomendado para colisão:
 
@@ -147,21 +151,33 @@ Regras:
 ## Map registry
 
 V1 deve nascer com suporte a quatro mapas, mesmo que o primeiro seja o playbook
-completo:
+completo. O registry é Elixir (`virtual_space/map.ex`), único lugar que aceita
+`map_id`:
 
-```js
-export const spaceMaps = {
-  tavern_cafe_v1,
-  guild_hall_v1,
-  arcane_library_v1,
-  garden_camp_v1
-};
+```elixir
+defmodule RetroHexChat.VirtualSpace.Map do
+  @maps %{
+    "tavern_cafe_v1" => RetroHexChat.VirtualSpace.Maps.TavernCafeV1,
+    "guild_hall_v1" => RetroHexChat.VirtualSpace.Maps.GuildHallV1,
+    "arcane_library_v1" => RetroHexChat.VirtualSpace.Maps.ArcaneLibraryV1,
+    "garden_camp_v1" => RetroHexChat.VirtualSpace.Maps.GardenCampV1
+  }
+
+  @spec get(String.t()) :: {:ok, map()} | {:error, :unknown_map}
+end
 ```
 
-Os três mapas depois do primeiro podem seguir o mesmo schema e reaproveitar o
-atlas, mas a primeira entrega deve completar `tavern_cafe_v1` antes de expandir.
+`map_id` arbitrário do cliente nunca chega em código: `change_map` só aceita
+chaves desse registry. Os três mapas depois do primeiro seguem o mesmo schema e
+reaproveitam o atlas, mas a primeira entrega deve completar `tavern_cafe_v1`
+antes de expandir.
 
 ## Asset strategy
+
+Validado contra o codebase: desenho procedural é a norma dos jogos atuais
+(bitmaps 5x7 no pong, sprites via `fillRect` no hex_invaders) — não existe
+nenhum sprite sheet/PNG nem uso de `drawImage`. Um atlas gerado por código é
+novo, mas totalmente consistente com o padrão da casa.
 
 Para manter "100% JS autoral" na primeira etapa, a opção mais limpa é gerar um
 atlas em `sprite_atlas.js` usando `OffscreenCanvas` ou canvas temporário:

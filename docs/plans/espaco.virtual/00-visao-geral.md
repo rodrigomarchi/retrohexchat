@@ -1,6 +1,7 @@
 # Visão geral: espaço virtual
 
-Status: proposta para conversa. Nenhuma implementação feita ainda.
+Status: auditado contra o codebase em 2026-07-05. Decisões fechadas com o
+usuário. Pronto para implementação.
 
 ## Problema
 

@@ -1,10 +1,18 @@
 # Protocolo e runtime JavaScript
 
-Status: proposta para conversa. Nenhuma implementação feita ainda.
+Status: auditado contra o codebase em 2026-07-05. Decisões fechadas com o
+usuário. Pronto para implementação.
 
 ## Organização dos arquivos JS
 
 Seguir a separação dos jogos atuais: hook só faz wiring, lib faz lógica.
+Convenção auditada: os jogos vivem em `js/lib/games/<jogo>/` com exatamente
+`audio.js, engine.js, physics.js, protocol.js, renderer.js`, mais a base
+compartilhada `js/lib/game_engine.js`. Importante: NÃO herdar de
+`game_engine.js` — ele é host-autoritativo sobre RTCDataChannel (modelo P2P);
+o espaço é servidor-autoritativo sobre Phoenix Channel. O runtime do espaço é
+uma engine nova que segue apenas a convenção modular. Testes Vitest espelham a
+árvore em `assets/test/` (ex.: `test/lib/space/collision.test.js`).
 
 Estrutura sugerida:
 
@@ -30,18 +38,22 @@ apps/retro_hex_chat_web/assets/js/lib/space/
   interpolation.js
 ```
 
-O hook deve ser lazy:
+O hook deve ser lazy. Contrato auditado de `lazyFeatureHook` (definido em
+`js/hooks/lazy_feature_hook.js`, registrado em `js/hooks/lazy_feature_hooks.js`
+e mesclado por `js/hooks/registry.js`): `reason` é obrigatório (lança erro se
+faltar); `serverEvents` é um array — se não vazio, `readyEvent` é obrigatório.
 
 ```js
 SpaceCanvasHook: lazyFeatureHook({
   name: "SpaceCanvasHook",
   loader: () => import("./space/space_canvas_hook"),
+  serverEvents: [],
   reason: "Virtual-space canvas and engine are only needed inside a space session.",
 })
 ```
 
 O hook não recebe eventos LiveView via `push_event`; ele abre um Phoenix Channel
-com o `join_token` assinado por `SpaceLive`. Por isso, não precisa de
+com o `join_token` assinado por `SpaceLive`. Por isso, `serverEvents: []` e sem
 `readyEvent` no registro lazy. A readiness do runtime é o `channel.join()`.
 
 ## Responsabilidades
@@ -101,7 +113,8 @@ V1 deve usar JSON em Phoenix Channel. O limite default configurável, começando
 20 pessoas, torna isso simples, observável e suficiente. Binário só deve entrar
 depois de medição real.
 
-O hook cria:
+O hook cria (validado: `import { Socket } from "phoenix"` já é usado no
+`app.js` — o pacote vem dos deps Elixir, não do npm):
 
 ```js
 import { Socket } from "phoenix";
@@ -160,8 +173,11 @@ Payload:
 }
 ```
 
-O mapa pode vir inline na V1. Se crescer, a LiveView manda só `map_id` e o JS
-faz import lazy de `lib/space/maps/tavern_cafe_v1.js`.
+Decisão fechada (2026-07-05): o campo `map` do `space_init` SEMPRE carrega a
+definição completa do mapa, serializada da fonte canônica em Elixir
+(`VirtualSpace.Maps.*`). O cliente não tem cópia própria de mapa — `map.js` no
+cliente apenas indexa/consulta a estrutura recebida (colisão em `Set`, zonas,
+assentos, interactables).
 
 ## `space_input`
 
@@ -295,6 +311,12 @@ Trocar mapa deve reemitir snapshot completo. Participantes voltam para spawn
 válido do novo mapa, preservando identidade, mute e presença.
 
 ## Previsão e reconciliação
+
+Atenção (auditado): não existe precedente de previsão/reconciliação de rede no
+codebase — os jogos atuais são host-autoritativos com broadcast de estado
+binário via DataChannel, e as "interpolações" existentes são suavização visual
+local. Este bloco é trabalho novo de verdade, sem análogo local para copiar.
+Cobrir pesado em Vitest (`engine`, `interpolation`) antes de integrar.
 
 Para parecer responsivo:
 

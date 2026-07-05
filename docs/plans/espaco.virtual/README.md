@@ -1,6 +1,9 @@
 # Plano: espaço virtual estilo Zelda 8-bit
 
-Status: proposta para conversa. Nenhuma implementação feita ainda.
+Status: auditado contra o codebase em 2026-07-05 (3 varreduras: domínio, web,
+JS); apontamentos inválidos corrigidos; ambiguidades fechadas com o usuário
+(decisões 18–21). Pronto para o loop de implementação — ver `10-prompt-loop.md`
+e `PROGRESS.md`. Nenhuma implementação feita ainda.
 
 ## Objetivo
 
@@ -28,6 +31,11 @@ Registry, DynamicSupervisor e um GenServer por sessão ativa.
   admissão, mapas e interações da V1.
 - `08-referencias-locais.md`: checkouts locais dos projetos de referência e onde
   o agente de implementação deve pesquisar dúvidas.
+- `09-mapa-de-testes.md`: inventário TDD — os testes de cada fase, escritos
+  antes da implementação.
+- `10-prompt-loop.md`: prompt do loop de implementação (rodar até concluir).
+- `PROGRESS.md`: arquivo vivo do loop — estado, histórico de iterações e
+  aprendizados.
 
 ## Recomendação curta
 

@@ -1,227 +1,247 @@
 # Plano de implementação
 
-Status: proposta para conversa. Nenhuma implementação feita ainda.
+Status: auditado contra o codebase em 2026-07-05. Decisões fechadas com o
+usuário. Este documento é a lista de tarefas canônica do loop de implementação:
+o agente marca `[x]` aqui conforme avança e registra aprendizados em
+`PROGRESS.md`.
 
-## Fase 0: decisão e documentação
+## Regras do ciclo (obrigatórias)
 
-Entregáveis:
+- **TDD do começo ao fim**: cada item começa pelos testes do
+  `09-mapa-de-testes.md` (vermelhos), depois implementa até verde. Nunca
+  implementar antes do teste existir.
+- **Validação por arquivo durante o loop** (o CI completo demora; não rodar a
+  cada passo):
+  - Elixir: `mix format <arquivos>` + `mix test <arquivo_de_teste>` (do app
+    correspondente) + `mix credo <arquivos>` quando tocar módulo novo;
+  - JS: `npx vitest run <arquivo>` + `npx eslint <arquivos>` +
+    `npx prettier --check <arquivos>` (em `apps/retro_hex_chat_web/assets`);
+  - E2E: somente specs alvo, `npx playwright test <arquivo>:<linha>` — nunca a
+    suite inteira; matar servidor stale na :4003 antes de confiar no resultado.
+- **`make ci` completo SOMENTE no fechamento de cada fase**, imediatamente
+  antes do commit da fase. Se falhar, a fase não fecha — corrigir e rodar de
+  novo. Nenhuma das 9 checagens pode ser pulada no fechamento.
+- **Um commit por fase**, grande e funcional, direto na `main` (nunca criar
+  branch). Stage por caminho explícito (`git add <paths>`), nunca `git add -A`.
+- **Aprendizados**: cada iteração do loop registra em `PROGRESS.md` o que fez,
+  o que aprendeu e o próximo passo antes de encerrar.
+- Todo módulo/função pública com `@spec`; LiveViews finas delegando ao domínio;
+  aliases já no primeiro write; comentários descrevem o código, não a migração;
+  sem cores hardcoded em Elixir/JS; sem SVG inline (usar módulos `Icons`);
+  nenhum `catch` silencioso no JS.
 
-- estes documentos em `docs/plans/espaco.virtual/`;
-- decisões abertas revisadas;
-- nome final do comando e da rota.
+## Fase 0: decisão e documentação — CONCLUÍDA (2026-07-05)
 
-Critério de saída:
+- [x] Documentos em `docs/plans/espaco.virtual/`.
+- [x] Auditoria dos apontamentos contra o codebase (3 varreduras: domínio,
+      web, JS).
+- [x] Ambiguidades levadas ao usuário e fechadas: Phoenix Channel; card
+      persistido `space_invite` em mensagem de canal; sem refresh ao vivo de
+      card; mapa canônico no Elixir.
+- [x] Nome final: contexto `VirtualSpace`, rota `/space/:token`, comando
+      `/space [#canal-alvo] [nome-do-space] ttl=2h`, limite default 20
+      configurável via `server_settings`.
+- [x] Mapa de testes (`09-mapa-de-testes.md`), prompt de loop
+      (`10-prompt-loop.md`) e `PROGRESS.md` criados.
 
-- concordância sobre `VirtualSpace`, `/space/:token`,
-  `/space [#canal-alvo] [nome-do-space] ttl=2h` e limite default configurável;
-- decisões fechadas em `06-ambiguidades-fechadas.md` aceitas;
-- decisões do usuário em `07-decisoes-produto-usuario.md` aceitas.
+## Fase 1: domínio, comando, card e channel mínimo (sem canvas)
 
-## Fase 1: sessão, comando e card sem canvas
+Backend — domínio:
 
-Backend:
+- [ ] Migration `virtual_space_sessions` (gabarito:
+      `20260625200000_create_lobby_sessions.exs`; token size 64 + unique index,
+      FK `creator_id` -> `registered_nicks`).
+- [ ] `VirtualSpace.Schema.Session` (status
+      `pending/active/closed/expired/failed`, `terminal?/1`).
+- [ ] `VirtualSpace.Queries` (get por token, listagem de vencidas, expire).
+- [ ] `VirtualSpace.Policy` (criar/entrar/fechar/kick/mute/change_map;
+      integração com `Channels.Policy`/`Membership`/`Modes`).
+- [ ] `VirtualSpace.Map` + `VirtualSpace.Maps.TavernCafeV1` esqueleto
+      (definição mínima válida: bounds, spawn, collision vazia é aceitável
+      nesta fase).
+- [ ] `VirtualSpace.Registry` + `VirtualSpace.Supervisor` (gabarito Lobby) +
+      children em `application.ex`.
+- [ ] `VirtualSpace.SessionServer` mínimo (join/leave/close/expire, estado de
+      participantes, snapshot simples; TTLs via `Application.get_env`).
+- [ ] `VirtualSpace.Service` (create com token forte + rate limit via
+      `P2P.RateLimiter.check_session_rate/1`, join com recuperação de processo,
+      close, summaries).
+- [ ] Facade `RetroHexChat.VirtualSpace` com `@spec` em tudo.
+- [ ] Setting `"space_max_participants"`: leitura com fallback + whitelist em
+      `Handlers.Admin.Server.validate_setting_value/2`.
+- [ ] Comando `Handlers.Space` (behaviour completo: `help/0`,
+      `syntax_definition/0`, `category/0 = :user`; parse de
+      `[#canal-alvo] [nome] ttl=`; recusa em PM/Status) + registro em
+      `Commands.Registry`.
 
-- migration `virtual_space_sessions`;
-- schema, queries, policy, service, registry, supervisor, session_server mínimo;
-- facade `RetroHexChat.VirtualSpace`;
-- comando `/space [#canal-alvo] [nome-do-space] ttl=2h`;
-- UI action `:space_invite`;
-- card `:space_invite`;
-- rota `/space/:token`;
-- `SpaceLive` terminal/skeleton;
-- `UserSocket` e `SpaceChannel` com join/leave mínimo.
+Backend — web:
 
-Comportamento:
+- [ ] Tipo `space_invite` em `Chat.Message @type_values` +
+      `Chat.Service @known_types`.
+- [ ] `Helpers.SpaceInvite` + especial-case em
+      `CommandDispatch.handle_dispatch_result/3` (análogo `:lobby_invite`).
+- [ ] Enrich clause em `Helpers.SessionCard` + render em
+      `Components.SessionCard`/`MessageRow` + pontos de
+      `pubsub_handlers/messages.ex`.
+- [ ] Rota `live "/space/:token", SpaceLive` na `live_session :app_locale`.
+- [ ] `SpaceLive` shell: auth via `SessionHelpers`, validação de token/policy,
+      terminal retro para inválido/expirado/cheio, assinatura do `join_token`
+      (`Phoenix.Token`, padrão `P2P.SessionToken`), canvas placeholder com
+      `phx-hook="SpaceCanvasHook"` + data attributes.
+- [ ] Infra Phoenix Channel do zero: `UserSocket`, `socket "/socket"` no
+      endpoint, `SpaceChannel` (join valida `join_token` + policy + capacidade;
+      responde snapshot simples; leave em `terminate/2`),
+      `test/support/channel_case.ex`.
+- [ ] Cleanup periódico (gabarito `P2P.CleanupTask`) + config
+      `virtual_space_*`.
+- [ ] Tópicos de help (`/space` em Commands; "Virtual spaces" em Features) +
+      strings gettext (domínio `space`/`chat`).
 
-- cria link;
-- vincula sessão ao canal de origem;
-- exige usuário registrado/identificado;
-- valida permissão de canal;
-- abre link;
-- valida capacidade;
-- entra/sai;
-- Channel join retorna snapshot textual/simples;
-- expira;
-- card mostra status.
+Fechamento da fase:
 
-Testes:
+- [ ] Testes da fase no `09-mapa-de-testes.md` §Fase 1 todos verdes.
+- [ ] `make ci` completo verde.
+- [ ] Commit único da fase na `main`.
 
-- unit de policy;
-- unit de changeset;
-- unit de service create/join/expire;
-- command handler;
-- render de card vivo/terminal;
-- LiveView mount para token válido, inválido, expirado e cheio.
-- Channel join autorizado, inválido, expirado e cheio.
-- Policy para canal público/privado e usuário não identificado.
-
-## Fase 2: canvas local e snapshot
+## Fase 2: canvas, snapshot e presença
 
 Frontend:
 
-- `SpaceCanvasHook` lazy;
-- `engine.js`;
-- `renderer.js`;
-- `sprite_atlas.js` autoral;
-- mapa `tavern_cafe_v1`;
-- render local com câmera e avatar próprio;
-- receber `space_init` pelo Channel e snapshot;
-- renderizar outros participantes parados.
+- [ ] `SpaceCanvasHook` lazy (`serverEvents: []`, `reason` obrigatório) em
+      `hooks/lazy_feature_hooks.js`.
+- [ ] `lib/space/protocol.js` (constantes de eventos, normalização,
+      versionamento).
+- [ ] `lib/space/map.js` (indexa definição recebida no `space_init`: colisão em
+      `Set`, zonas, assentos, interactables).
+- [ ] `lib/space/sprite_atlas.js` autoral (tiles, avatares 4 direções,
+      paleta própria).
+- [ ] `lib/space/camera.js` + `lib/space/renderer.js` (camadas, ordenação por
+      Y, `imageSmoothingEnabled = false`, escala inteira).
+- [ ] `lib/space/engine.js` (ciclo de vida, rAF, estado local, aplicação de
+      snapshot).
+- [ ] Cleanup completo em `destroyed` (rAF, listeners, timers, canvas,
+      `channel.leave()` + `socket.disconnect()`).
 
 Backend:
 
-- `join_session` publica snapshot;
-- presença básica com `participant_joined` e `participant_left`;
-- substituição de aba/reconnect pelo mesmo participant key.
+- [ ] `tavern_cafe_v1` completo no domínio (camadas, colisão real, zonas,
+      assentos, interactables, spawns).
+- [ ] `space_init` como resposta do join com mapa inline + snapshot.
+- [ ] Broadcasts `participant_joined/left` -> eventos do Channel.
+- [ ] Takeover de reconexão pelo mesmo `participant_key` (posição preservada).
 
-Testes:
+Fechamento da fase:
 
-- hook registry contract;
-- Vitest para parser/normalização de mapa;
-- E2E abre `/space/:token` e verifica canvas não branco.
+- [ ] Testes §Fase 2 verdes (Vitest de map/protocol/atlas, contrato do hook,
+      ChannelCase de snapshot, E2E canvas não branco).
+- [ ] `make ci` completo verde.
+- [ ] Commit único da fase na `main`.
 
 ## Fase 3: movimento autoritativo
 
 Backend:
 
-- `space_input`;
-- validação de passo adjacente;
-- colisão;
-- bounds;
-- cooldown de velocidade;
-- delta broadcast.
+- [ ] `space_input` no Channel -> `VirtualSpace.input/3`.
+- [ ] Validação: passo cardinal adjacente, colisão, bounds, cooldown
+      `virtual_space_step_ms`, ignore em sessão terminal/participante ausente.
+- [ ] Delta broadcast com `seq_ack`.
 
 Frontend:
 
-- input teclado;
-- previsão local;
-- reconciliação por `seq_ack`;
-- interpolação para remotos;
-- label de nickname.
+- [ ] `lib/space/input.js` (setas/WASD, coalescência, respeito a foco de
+      input/textarea).
+- [ ] Previsão local com colisão local + envio de intenção.
+- [ ] Reconciliação por `seq_ack` (snap curto/easing 80-120ms em divergência).
+- [ ] `lib/space/interpolation.js` para remotos.
+- [ ] Labels de nickname sobre avatares.
 
-Testes:
+Fechamento da fase:
 
-- unit de colisão/validação no servidor;
-- unit JS de collision/map;
-- E2E com 2-3 usuários vendo movimento um do outro;
-- teste de input inválido não move o jogador.
+- [ ] Testes §Fase 3 verdes (unit servidor de colisão/cooldown/bounds, Vitest
+      de previsão/reconciliação, E2E 2 usuários vendo movimento mútuo, input
+      inválido não move).
+- [ ] `make ci` completo verde.
+- [ ] Commit único da fase na `main`.
 
 ## Fase 4: escritório vivo
 
-Adicionar:
+- [ ] Zonas com transição (`zone_id` em delta; `space_zone_changed`).
+- [ ] Chat textual global (`space_chat_bubble`: limite 160 chars, escape,
+      rate limit, mute).
+- [ ] Balão de fala sobre avatar + log lateral efêmero.
+- [ ] Cadeiras: reserva no servidor (`seats`), pose `sitting`, levantar ao
+      andar, rejeição de segunda ocupação.
+- [ ] Interactables: quadro -> `space_modal` com imagem autoral do atlas.
+- [ ] HUD de participantes/lotação.
+- [ ] Telas de cheio/expirado/encerrado refinadas.
 
-- zonas `spawn`, `meeting`, `quiet`;
-- chat textual global;
-- balão de fala curto;
-- cadeiras sentáveis;
-- salas/zonas navegáveis;
-- quadro/interactable com modal de imagem;
-- indicador de participante/lotação;
-- tela de cheio/expirado refinada;
-- pequenos detalhes visuais autorais.
+Fechamento da fase:
 
-Testes:
-
-- zona muda ao entrar/sair;
-- balão escapa HTML;
-- limite de mensagem;
-- cadeira não aceita dois ocupantes;
-- quadro abre modal;
-- capacidade configurável.
+- [ ] Testes §Fase 4 verdes.
+- [ ] `make ci` completo verde.
+- [ ] Commit único da fase na `main`.
 
 ## Fase 5: poderes do criador e mapas
 
-Adicionar:
+- [ ] `space_admin_action`: kick (com bloqueio de reentrada na sessão), mute/
+      unmute, close, change_map — validação de papel no servidor.
+- [ ] UI do criador no HUD.
+- [ ] Três mapas restantes no registry Elixir (`guild_hall_v1`,
+      `arcane_library_v1`, `garden_camp_v1`) seguindo o playbook do primeiro.
+- [ ] Troca de mapa: snapshot completo, respawn válido, preserva identidade/
+      mute/presença.
+- [ ] Persistência de posição em reload/reconnect (snapshot leve em `metadata`
+      em eventos de leave/map-change, nunca por passo).
 
-- expulsar participante;
-- mutar/desmutar participante;
-- fechar espaço manualmente;
-- trocar mapa;
-- registry de quatro mapas;
-- snapshot completo em troca de mapa;
-- persistência de posição em reload/reconnect.
+Fechamento da fase:
 
-Testes:
+- [ ] Testes §Fase 5 verdes.
+- [ ] `make ci` completo verde.
+- [ ] Commit único da fase na `main`.
 
-- criador consegue usar ações administrativas;
-- participante comum não consegue;
-- usuário expulso sai e recebe erro claro ao tentar reentrar, se banido da sessão;
-- mutado não envia chat;
-- troca de mapa respawna em tile válido;
-- reload mantém posição enquanto sessão ativa.
+## Fase 6: robustez e produto completo
 
-## Fase 6: robustez
+- [ ] Cenários de reconnect/offline (fechar aba marca offline; takeover).
+- [ ] Reinício do processo retoma sessão não expirada (join re-inicia child).
+- [ ] Métricas simples (PromEx se encaixar no padrão existente).
+- [ ] Logs de erro úteis em todas as bordas.
+- [ ] Revisão final de help/i18n (traduções reais, não msgstr seeds).
+- [ ] Passada de `/code-review` no diff acumulado e correções.
+- [ ] Verificação manual guiada (abrir espaço com 2+ sessões, fluxo completo
+      do produto).
 
-Adicionar:
+Fechamento da fase:
 
-- cleanup task para sessões vencidas;
-- refresh ao vivo de cards de sessão;
-- métricas simples;
-- logs de erro úteis;
-- rate limiter específico se o P2P rate limiter não encaixar;
-- cenários de reconnect/offline.
+- [ ] Testes §Fase 6 verdes.
+- [ ] `make ci` completo verde.
+- [ ] Commit único da fase na `main`.
+- [ ] `PROGRESS.md` marcado como CONCLUÍDO com resumo final.
 
-Testes:
+## Fases futuras (fora da V1)
 
-- reconnect mantém ou substitui participante corretamente;
-- fechar aba remove/coloca offline;
-- reinício do processo retoma sessão não expirada;
-- `make ci`.
-
-## Fases futuras
-
-Não colocar na V1, mas deixar o desenho preparado:
-
-- proximidade de áudio/vídeo;
-- salas privadas;
-- múltiplos andares;
-- portais para outros espaços;
-- editor de mapa;
-- importador Tiled/TMJ;
-- persistência de escritórios além do lobby;
-- uploads/edição de imagens de quadros.
+- proximidade de áudio/vídeo (server-mediated/SFU);
+- salas privadas; múltiplos andares; portais entre espaços;
+- editor de mapa; importador Tiled/TMJ;
+- persistência permanente de escritórios;
+- uploads/edição de imagens de quadros;
+- refresh ao vivo de cards de sessão no chat.
 
 ## Decisões fechadas
 
-1. Criar e entrar exigem usuário registrado/identificado, permissão de canal e
-   token de join assinado.
-2. TTL é fixo desde criação, default 2h, sem renovação por atividade, com close
-   manual pelo criador.
-3. Comando e rota V1 são `/space [#canal-alvo] [nome-do-space] ttl=2h` e
-   `/space/:token`; `/office` fica fora da V1.
-4. `/space` posta card somente em canal de chat; PM/Status não são origem de
-   espaço na V1.
-5. Runtime realtime usa Phoenix Channel; LiveView é shell.
-6. Mapas V1 são JS/JSON autorais internos; primeiro completo é `tavern_cafe_v1`;
-   importador Tiled fica para depois.
-7. Movimento V1 é tile-a-tile cardinal, servidor autoritativo, sem colisão entre
-   participantes.
-8. V1 inclui chat global do espaço, balões, cadeiras, salas/zonas, quadro com
-   modal, poderes do criador e persistência de posição em sessão ativa.
+Ver `06-ambiguidades-fechadas.md` (17 originais + 4 da auditoria de
+2026-07-05).
 
 ## Riscos
 
-- Eventos realtime em alta frequência podem ficar pesados se enviarmos movimento
-  por frame. Mitigação: Phoenix Channel, input discreto tile-a-tile, deltas
-  pequenos e limite de 20.
-- Se o servidor aceitar posição livre, o mundo vira trivial de burlar. Mitigação:
-  input como intenção, servidor valida.
-- Se o canvas captura teclado sempre, quebra chat. Mitigação: respeitar foco e
-  ter modo explícito de chat/balão.
-- Assets "inspirados em Zelda" podem virar cópia sem querer. Mitigação: tiles e
-  personagens autorais, nomes próprios e paleta própria.
-- Reaproveitar `Lobby` para 20 pessoas cria ambiguidade com P2P. Mitigação:
-  contexto novo `VirtualSpace`.
-
-## Primeiro PR recomendado
-
-O menor PR que cria valor sem assumir engine:
-
-1. migration/schema/contexto `VirtualSpace`;
-2. `/space` cria sessão e card;
-3. `/space/:token` abre uma LiveView skeleton;
-4. `SpaceChannel` aceita join e retorna snapshot simples;
-5. join/leave/expire funcionam;
-6. testes de domínio, comando, LiveView e Channel.
-
-Depois disso, o canvas entra em PR separado.
+- Primeira Phoenix Channel do projeto: sem análogo local; riscos de
+  configuração de socket/CSRF e de teste. Mitigação: ChannelCase próprio desde
+  a Fase 1 e testes de join antes de qualquer feature.
+- Previsão/reconciliação sem precedente no repo. Mitigação: Vitest denso na
+  engine antes da integração; tile-a-tile simplifica o problema.
+- Eventos realtime pesados. Mitigação: input discreto, deltas pequenos,
+  limite 20.
+- Canvas capturando teclado quebra chat. Mitigação: respeitar foco; testes de
+  input com foco em textarea.
+- Assets "inspirados" virarem cópia. Mitigação: tiles/personagens/nomes/paleta
+  autorais; checkouts de referência são só pesquisa (ver
+  `08-referencias-locais.md`).
