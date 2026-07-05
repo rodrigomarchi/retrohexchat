@@ -315,21 +315,44 @@ JavaScript:
 
 Testes:
 
+Regra de teste para esta implementacao: nao criar uma linha paralela de produto
+nem substituir a cobertura P2P existente. Os fluxos atuais de lobby, chamada,
+arquivo, jogo, sinalizacao e estatisticas devem continuar passando. A mudanca de
+teste e incremental:
+
+1. Remover apenas expectativas que comprovavam a existencia do toggle de
+   privacidade/TURN-only.
+2. Adaptar os testes atuais ao novo contrato automatico de camadas ICE.
+3. Acrescentar os cenarios de fallback direto -> relay nas mesmas suites que ja
+   testam WebRTC, stats e lobby.
+4. Manter os E2E P2P existentes como a validacao principal de comportamento,
+   adicionando neles a verificacao visual de rota quando fizer sentido.
+
 - `apps/retro_hex_chat/test/retro_hex_chat/p2p/p2p_test.exs`
-  - cobrir perfis ICE direto/relay.
+  - atualizar o teste atual de `ice_servers/1` para o novo contrato de camadas
+    ICE automaticas;
+  - cobrir que `direct` e tentado primeiro e que `relay` aparece como fallback
+    tecnico quando TURN esta configurado.
 - `apps/retro_hex_chat_web/assets/test/lib/p2p/webrtc.test.js`
-  - remover expectativa de `turnOnly` usuario;
-  - cobrir criacao normal sem `iceTransportPolicy`.
+  - remover os casos atuais que validam `turnOnly` como opcao de usuario;
+  - manter a cobertura de criacao normal de `RTCPeerConnection`;
+  - se houver uma opcao interna de relay para fallback, testa-la como detalhe do
+    hook/maquina automatica, nao como API de privacidade.
 - `apps/retro_hex_chat_web/assets/test/lib/p2p/feature_stats.test.js`
-  - cobrir `route.type` e candidate pair ativo.
+  - estender a suite atual de stats para cobrir `route.type` e candidate pair
+    ativo.
 - `apps/retro_hex_chat_web/assets/test/hooks/lobby/lobby_webrtc_hook.test.js`
-  - cobrir timeout/falha direto -> fallback relay.
-- `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/app/lobby_live/*`
-  - ajustar assigns e renderizacao, se houver testes afetados.
+  - estender a suite atual do hook para cobrir timeout/falha direto -> fallback
+    relay no mesmo fluxo de conexao.
+- `apps/retro_hex_chat_web/test/retro_hex_chat_web/live/lobby_live_test.exs`
+  - estender os testes existentes da janela Statistics/status bar para incluir
+    `stats.route` e labels de conexao.
 - `e2e/pages/LobbyPage.ts`
   - remover locator `privacyButton`.
 - E2E P2P, se existir cobertura ativa:
-  - validar que Statistics/status bar mostram direto ou relay.
+  - manter os mesmos fluxos de chamada/arquivo/jogo;
+  - adicionar validacao visual de que Statistics/status bar mostram direto ou
+    relay, sem criar um produto/caminho novo.
 
 Documentacao:
 
@@ -390,6 +413,10 @@ Documentacao:
 
 ### Fase 6 - Verificacao
 
+- [ ] Confirmar que os testes P2P atuais continuam representando o fluxo
+      principal; nao substituir por uma suite paralela.
+- [ ] Remover somente asserts/locators ligados ao toggle de privacidade.
+- [ ] Adicionar cenarios de fallback nas suites existentes de WebRTC/stats/lobby.
 - [ ] Rodar testes Elixir focados em P2P/Lobby.
 - [ ] Rodar testes JS focados em `p2p` e `lobby_webrtc_hook`.
 - [ ] Rodar testes LiveView afetados.
