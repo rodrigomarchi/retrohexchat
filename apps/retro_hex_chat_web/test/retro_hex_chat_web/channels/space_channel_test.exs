@@ -115,6 +115,27 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
     end
   end
 
+  describe "movement" do
+    test "a valid space_input push moves the participant and broadcasts a delta" do
+      creator = register_and_identify("chm#{uid()}")
+      session = insert_space(creator)
+
+      {:ok, init, socket} = join_space(creator, session)
+      self_key = init.self_key
+      %{x: x0, y: y0} = init.snapshot.participants[self_key]
+
+      push(socket, "space_input", %{"seq" => 1, "dx" => 1, "dy" => 0})
+
+      assert_push "space_delta", %{seq_ack: seq_ack, updates: updates}
+      assert seq_ack[self_key] == 1
+      assert updates[self_key].x == x0 + 1
+      assert updates[self_key].dir == "right"
+
+      {:ok, state} = SessionServer.get_state(session.token)
+      assert {state.participants[self_key].x, state.participants[self_key].y} == {x0 + 1, y0}
+    end
+  end
+
   describe "leave" do
     test "closing the channel marks the participant offline in the SessionServer" do
       creator = register_and_identify("chl#{uid()}")

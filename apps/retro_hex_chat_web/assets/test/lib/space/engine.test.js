@@ -157,3 +157,108 @@ describe("SpaceEngine", () => {
     expect(renderer.destroy).toHaveBeenCalled();
   });
 });
+
+describe("SpaceEngine local prediction and reconciliation", () => {
+  function startedEngine(initOverrides = {}) {
+    const { engine } = buildEngine();
+    engine.start(tavernInit(initOverrides));
+    return engine;
+  }
+
+  it("predicts a step immediately and tracks it as pending", () => {
+    const engine = startedEngine();
+    const self = engine.participant("registered:1");
+
+    const result = engine.predict({ dx: 1, dy: 0, dir: "right" });
+
+    expect(result.moved).toBe(true);
+    expect(result.seq).toBe(1);
+    expect(engine.participant("registered:1").x).toBe(self.x + 1);
+    expect(engine.participant("registered:1").dir).toBe("right");
+    expect(engine.pendingCount()).toBe(1);
+  });
+
+  it("does not predict into a locally-blocked tile", () => {
+    // Wall directly to the left of the self spawn at (5,5).
+    const engine = startedEngine({
+      map: {
+        id: "t",
+        width: 20,
+        height: 15,
+        tile_size: 16,
+        spawn: [{ x: 1, y: 1, dir: "down" }],
+        collision: [{ x: 4, y: 5, w: 1, h: 1, kind: "wall" }],
+        zones: [],
+        seats: [],
+        interactables: [],
+      },
+    });
+
+    const result = engine.predict({ dx: -1, dy: 0, dir: "left" });
+
+    expect(result.moved).toBe(false);
+    expect(engine.participant("registered:1").x).toBe(5);
+    expect(engine.pendingCount()).toBe(0);
+  });
+
+  it("confirms via seq_ack and discards acknowledged predictions", () => {
+    const engine = startedEngine();
+    engine.predict({ dx: 1, dy: 0, dir: "right" }); // seq 1 -> x=6
+    engine.predict({ dx: 1, dy: 0, dir: "right" }); // seq 2 -> x=7
+    expect(engine.pendingCount()).toBe(2);
+
+    engine.applyDelta({
+      serverTime: 1,
+      seqAck: { "registered:1": 1 },
+      updates: { "registered:1": { x: 6, y: 5, dir: "right" } },
+      joined: {},
+      left: [],
+    });
+
+    // Prediction 1 acknowledged; prediction 2 still pending and re-applied.
+    expect(engine.pendingCount()).toBe(1);
+    expect(engine.participant("registered:1").x).toBe(7);
+  });
+
+  it("rolls back a rejected prediction when the server corrects to the old tile", () => {
+    const engine = startedEngine();
+    const { x } = engine.participant("registered:1");
+    engine.predict({ dx: 1, dy: 0, dir: "right" }); // seq 1 -> optimistic x+1
+    expect(engine.participant("registered:1").x).toBe(x + 1);
+
+    // Server rejected (e.g. cooldown): it acks seq 1 but reports the OLD tile.
+    engine.applyDelta({
+      serverTime: 2,
+      seqAck: { "registered:1": 1 },
+      updates: { "registered:1": { x, y: 5, dir: "right" } },
+      joined: {},
+      left: [],
+    });
+
+    expect(engine.pendingCount()).toBe(0);
+    expect(engine.participant("registered:1").x).toBe(x);
+  });
+
+  it("interpolates a remote participant's move over time", () => {
+    const engine = startedEngine();
+    let clock = 0;
+    engine.setClock(() => clock);
+
+    engine.applyDelta({
+      serverTime: 10,
+      seqAck: {},
+      updates: { "registered:2": { x: 9, y: 6, dir: "right" } },
+      joined: {},
+      left: [],
+    });
+
+    // registered:2 started at (8,6); it should glide, not teleport.
+    clock = 0;
+    const mid = engine.renderPosition("registered:2", 60);
+    expect(mid.x).toBeGreaterThan(8);
+    expect(mid.x).toBeLessThan(9);
+
+    const settled = engine.renderPosition("registered:2", 1000);
+    expect(settled.x).toBe(9);
+  });
+});

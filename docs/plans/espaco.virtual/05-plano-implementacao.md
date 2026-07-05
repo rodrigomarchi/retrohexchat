@@ -143,27 +143,27 @@ Fechamento da fase:
 
 Backend:
 
-- [ ] `space_input` no Channel -> `VirtualSpace.input/3`.
-- [ ] Validação: passo cardinal adjacente, colisão, bounds, cooldown
+- [x] `space_input` no Channel -> `VirtualSpace.input/3`.
+- [x] Validação: passo cardinal adjacente, colisão, bounds, cooldown
       `virtual_space_step_ms`, ignore em sessão terminal/participante ausente.
-- [ ] Delta broadcast com `seq_ack`.
+- [x] Delta broadcast com `seq_ack`.
 
 Frontend:
 
-- [ ] `lib/space/input.js` (setas/WASD, coalescência, respeito a foco de
+- [x] `lib/space/input.js` (setas/WASD, coalescência, respeito a foco de
       input/textarea).
-- [ ] Previsão local com colisão local + envio de intenção.
-- [ ] Reconciliação por `seq_ack` (snap curto/easing 80-120ms em divergência).
-- [ ] `lib/space/interpolation.js` para remotos.
-- [ ] Labels de nickname sobre avatares.
+- [x] Previsão local com colisão local + envio de intenção.
+- [x] Reconciliação por `seq_ack` (snap curto/easing 80-120ms em divergência).
+- [x] `lib/space/interpolation.js` para remotos.
+- [x] Labels de nickname sobre avatares.
 
 Fechamento da fase:
 
-- [ ] Testes §Fase 3 verdes (unit servidor de colisão/cooldown/bounds, Vitest
+- [x] Testes §Fase 3 verdes (unit servidor de colisão/cooldown/bounds, Vitest
       de previsão/reconciliação, E2E 2 usuários vendo movimento mútuo, input
       inválido não move).
-- [ ] `make ci` completo verde.
-- [ ] Commit único da fase na `main`.
+- [x] `make ci` completo verde.
+- [x] Commit único da fase na `main`.
 
 ## Fase 4: escritório vivo
 

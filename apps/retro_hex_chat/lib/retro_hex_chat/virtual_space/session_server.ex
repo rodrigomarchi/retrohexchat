@@ -61,6 +61,27 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     call(token, {:join, participant_context})
   end
 
+  @type input_payload :: %{
+          required(:seq) => integer(),
+          required(:dx) => integer(),
+          required(:dy) => integer(),
+          optional(:client_time) => integer()
+        }
+
+  @type input_error ::
+          :not_found
+          | :not_participant
+          | :terminal
+          | :invalid_step
+          | :cooldown
+          | :out_of_bounds
+          | :blocked
+
+  @spec input(String.t(), String.t(), input_payload()) :: :ok | {:error, input_error()}
+  def input(token, participant_key, payload) do
+    call(token, {:input, participant_key, payload})
+  end
+
   @spec leave(String.t(), String.t()) :: :ok
   def leave(token, participant_key) do
     case Registry.lookup(token) do
@@ -184,6 +205,13 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     {:reply, {:ok, build_snapshot(state)}, state}
   end
 
+  def handle_call({:input, key, payload}, _from, state) do
+    case apply_input(state, key, payload) do
+      {:ok, state} -> {:reply, :ok, state}
+      {:error, reason, state} -> {:reply, {:error, reason}, state}
+    end
+  end
+
   def handle_call({:close, reason}, _from, state) do
     state = do_end(state, "closed", reason)
     {:stop, :normal, :ok, state}
@@ -249,6 +277,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       online?: true,
       muted?: false,
       input_seq: 0,
+      last_input_at: nil,
       joined_at: DateTime.utc_now(),
       last_seen_at: DateTime.utc_now()
     }
@@ -298,6 +327,114 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   defp maybe_activate(state), do: state
+
+  # Authoritative movement: validate a single cardinal step and either apply it
+  # (broadcast a delta) or reject it. Bounds/collision rejections still publish a
+  # correction delta so the client can reconcile its local prediction; malformed
+  # or cooled-down inputs are dropped silently.
+  defp apply_input(state, key, payload) do
+    participant = Map.get(state.participants, key)
+
+    cond do
+      Session.terminal?(state.session.status) ->
+        {:error, :terminal, state}
+
+      participant == nil or not participant.online? ->
+        {:error, :not_participant, state}
+
+      not valid_step?(payload) ->
+        {:error, :invalid_step, state}
+
+      not cooldown_elapsed?(participant) ->
+        {:error, :cooldown, state}
+
+      true ->
+        resolve_step(state, key, participant, payload)
+    end
+  end
+
+  defp resolve_step(state, key, participant, payload) do
+    target_x = participant.x + payload.dx
+    target_y = participant.y + payload.dy
+    dir = step_dir(payload.dx, payload.dy)
+
+    cond do
+      not in_bounds?(state.map, target_x, target_y) ->
+        state = broadcast_correction(state, key, participant, payload.seq)
+        {:error, :out_of_bounds, state}
+
+      MapSet.member?(state.blocked, {target_x, target_y}) ->
+        state = broadcast_correction(state, key, participant, payload.seq)
+        {:error, :blocked, state}
+
+      true ->
+        moved = %{
+          participant
+          | x: target_x,
+            y: target_y,
+            dir: dir,
+            zone_id: zone_at(state.map, target_x, target_y),
+            last_input_at: mono_ms(),
+            input_seq: payload.seq
+        }
+
+        state = put_in(state.participants[key], moved)
+        state = broadcast_delta(state, key, moved, payload.seq)
+        {:ok, state}
+    end
+  end
+
+  # A rejected step keeps the official position; echo it back so the client snaps
+  # its mispredicted avatar to truth.
+  defp broadcast_correction(state, key, participant, seq) do
+    broadcast_delta(state, key, %{participant | dir: participant.dir}, seq)
+  end
+
+  defp broadcast_delta(state, key, participant, seq) do
+    payload = %{
+      server_time: System.system_time(:millisecond),
+      seq_ack: %{key => seq},
+      updates: %{key => participant_view(participant)},
+      joined: %{},
+      left: []
+    }
+
+    broadcast(state.token, "space_delta", payload)
+    state
+  end
+
+  defp valid_step?(%{dx: dx, dy: dy})
+       when dx in [-1, 0, 1] and dy in [-1, 0, 1],
+       do: abs(dx) + abs(dy) == 1
+
+  defp valid_step?(_), do: false
+
+  defp step_dir(1, 0), do: "right"
+  defp step_dir(-1, 0), do: "left"
+  defp step_dir(0, 1), do: "down"
+  defp step_dir(0, -1), do: "up"
+
+  defp in_bounds?(map, x, y) do
+    x >= 0 and y >= 0 and x < map.width and y < map.height
+  end
+
+  defp zone_at(map, x, y) do
+    Enum.find_value(map.zones, fn zone ->
+      if x >= zone.x and x < zone.x + zone.w and y >= zone.y and y < zone.y + zone.h,
+        do: zone.id
+    end)
+  end
+
+  defp cooldown_elapsed?(participant) do
+    case participant.last_input_at do
+      nil -> true
+      last -> mono_ms() - last >= step_ms()
+    end
+  end
+
+  defp mono_ms, do: System.monotonic_time(:millisecond)
+
+  defp step_ms, do: Application.get_env(:retro_hex_chat, :virtual_space_step_ms, 150)
 
   defp pick_spawn(state) do
     occupied =

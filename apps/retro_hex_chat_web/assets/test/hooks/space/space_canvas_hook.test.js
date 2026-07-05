@@ -163,4 +163,53 @@ describe("SpaceCanvasHook implementation", () => {
     expect(channel.leave).toHaveBeenCalled();
     expect(socket.disconnect).toHaveBeenCalled();
   });
+
+  it("predicts a key intent locally and pushes only the accepted step", () => {
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      destroy: vi.fn(),
+      predict: vi.fn(),
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    let intentCb;
+    const input = {
+      attach: vi.fn(),
+      detach: vi.fn(),
+    };
+    const inputFactory = ({ onIntent }) => {
+      intentCb = onIntent;
+      return input;
+    };
+
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({
+          socketFactory: () => socket,
+          engineFactory: () => engine,
+          inputFactory,
+        }),
+      ),
+      mountContext(),
+    );
+
+    hook.mounted();
+    expect(input.attach).toHaveBeenCalled();
+
+    // Accepted (locally-free) step is pushed with its prediction seq.
+    engine.predict.mockReturnValueOnce({ moved: true, seq: 7, dx: 1, dy: 0, dir: "right" });
+    intentCb({ dx: 1, dy: 0, dir: "right" });
+    expect(channel.push).toHaveBeenCalledWith("space_input", { seq: 7, dx: 1, dy: 0 });
+
+    // A locally-blocked step predicts but is not sent.
+    channel.push.mockClear();
+    engine.predict.mockReturnValueOnce({ moved: false });
+    intentCb({ dx: -1, dy: 0, dir: "left" });
+    expect(channel.push).not.toHaveBeenCalled();
+
+    hook.destroyed();
+    expect(input.detach).toHaveBeenCalled();
+  });
 });

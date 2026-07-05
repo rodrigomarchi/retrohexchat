@@ -7,14 +7,16 @@ e termina atualizando-o. O checklist canônico é o
 ## Estado atual
 
 - **Status**: EM ANDAMENTO
-- **Fase corrente**: Fase 3 — movimento autoritativo (Fase 2 FECHADA:
-  CI 9/9 verde + commit único na main)
-- **Próximo item**: primeiro item da Fase 3 — `space_input` no Channel →
-  `VirtualSpace.input/3`; começar pelos testes de domínio de movimento
-  (`session_server` §Fase 3 do mapa de testes: passo cardinal válido publica
-  delta com `seq_ack`, colisão/bounds/diagonal rejeitados, cooldown
-  `virtual_space_step_ms`, input de sessão terminal/ausente ignorado).
-- **Último commit do projeto**: `feat(space): fase 2` (ver git log)
+- **Fase corrente**: Fase 4 — escritório vivo (Fase 3 FECHADA: CI 9/9 verde +
+  commit único na main)
+- **Próximo item**: primeiro item da Fase 4 — zonas com transição (`zone_id`
+  em delta; evento `space_zone_changed`). O `zone_id` já é calculado no move
+  (SessionServer.resolve_step usa `zone_at`); falta emitir `space_zone_changed`
+  quando muda de zona. Depois: chat textual global (`space_chat_bubble`),
+  balão de fala, cadeiras (reserva `seats`, pose sitting), interactables
+  (quadro → `space_modal`), HUD de participantes. Ver §Fase 4 do mapa de
+  testes.
+- **Último commit do projeto**: `feat(space): fase 3` (ver git log)
 
 ## Perguntas para o usuário
 
@@ -54,6 +56,68 @@ implementação:
 - **Commits**: um por fase, direto na `main`, stage por caminho explícito.
 
 ## Histórico de iterações
+
+### 2026-07-05 — Iteração 5 (Fase 3 COMPLETA + fechada)
+
+Movimento tile-a-tile server-authoritative com previsão/reconciliação no
+cliente e interpolação de remotos. CI 9/9 verde; 2 E2E (canvas + movimento
+multiplayer) verdes.
+
+Backend (`SessionServer` + Channel):
+- `SessionServer.input/3` + `handle_call({:input,...})`: valida passo cardinal
+  (dx/dy ∈ {-1,0,1}, exatamente um não-zero), cooldown
+  (`virtual_space_step_ms`, monotonic `last_input_at`), bounds, colisão
+  (`state.blocked`); ignora terminal/ausente. Aceito → atualiza pos+dir+
+  zone_id e publica `space_delta` com `seq_ack`; rejeitado por bounds/colisão
+  → publica delta de CORREÇÃO (posição atual) p/ o cliente reconciliar;
+  malformado/cooldown → drop silencioso. Facade `VirtualSpace.input/3`.
+- `SpaceChannel.handle_in("space_input")` parseia o payload fechado
+  (seq/dx/dy inteiros; qualquer outra coisa é descartada) e chama a facade.
+
+Frontend:
+- `input.js` (`InputController`): setas+WASD → intent {dx,dy,dir}, coalesce
+  auto-repeat (Set de teclas pressionadas; 1 intent por press), suprime
+  captura quando `document.activeElement` é input/textarea/contenteditable;
+  `currentIntent`, attach/detach.
+- `interpolation.js` (`Interpolator`): tween linear por-remoto entre tiles
+  (duração 120ms), `reset`/`moveTo` (retarget a partir da pos amostrada)/
+  `position`/`remove`.
+- `engine.js` previsão/reconciliação: `predict(intent)` move o self na hora
+  se o tile é livre localmente (mesma colisão do servidor), enfileira pending
+  {seq,dx,dy}, retorna payload; colisão local → não anima nem envia.
+  `applyDelta` reconcilia o self (descarta pending ≤ seq_ack, rebase na pos
+  autoritativa, re-aplica pending restante com colisão local → rollback limpo
+  em rejeição) e alimenta o interpolador dos remotos; `renderPosition(key,now)`
+  = predito (self) / interpolado (remoto); `_draw` monta participantes com
+  posições (fracionárias) por frame; `setClock` p/ teste.
+- Hook liga `InputController` → `engine.predict` → só o passo aceito vai ao
+  canal (`space_input` com seq); `destroyed` faz `input.detach`.
+
+E2E `space-movement.spec.ts`: 2 usuários no mesmo espaço; Alice anda e a
+assinatura do canvas do Bob muda (viu o avatar mover); vista estável sem input.
+
+Aprendizados desta iteração:
+- **eslint pega `import` não usado como ERRO** (`vi` importado sem uso no
+  input.test) — quebra o JS Lint do CI; warnings de console não quebram.
+- **`assert_receive` de PubSub pega o PRIMEIRO match** — testes que geram
+  vários deltas (walk_to) precisam drenar o mailbox (`flush_deltas`) antes de
+  assertar o delta específico.
+- **Colisão local == servidor** (mesma definição de mapa via space_init) →
+  a previsão do cliente já bloqueia contra parede; o servidor só corrige
+  divergências reais (ex.: rejeição por cooldown → delta de correção com a
+  pos antiga → rollback do pending).
+- **E2E de movimento sem seam de teste**: assinatura do canvas (soma
+  ponderada por índice de getImageData) detecta mudança de sprite sem expor
+  a engine; polling com toPass evita flake.
+- **cooldown com monotonic time**: `System.monotonic_time(:millisecond)` +
+  `last_input_at` no participante; `step_ms=0` no setup de teste desliga o
+  cooldown, `10_000` força a rejeição.
+
+Decisões de implementação:
+- Rejeição por bounds/colisão publica correção; cooldown/malformado é drop
+  silencioso (evita spam; o cliente já não move localmente contra parede).
+- `dir` derivado de dx/dy no servidor (fonte de verdade do facing).
+- Interpolação só para remotos; self usa previsão (já imediata/suave).
 
 ### 2026-07-05 — Iteração 4 (Fase 2 COMPLETA + fechada)
 

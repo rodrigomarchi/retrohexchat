@@ -34,6 +34,20 @@ defmodule RetroHexChatWeb.SpaceChannel do
   end
 
   @impl true
+  def handle_in("space_input", payload, socket) do
+    with %{space_token: token, participant_key: key} <- socket.assigns,
+         {:ok, step} <- parse_input(payload) do
+      VirtualSpace.input(token, key, step)
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_in(_event, _payload, socket) do
+    {:noreply, socket}
+  end
+
+  @impl true
   def handle_info(%{event: event, payload: payload}, socket) do
     push(socket, event, payload)
     {:noreply, socket}
@@ -61,6 +75,15 @@ defmodule RetroHexChatWeb.SpaceChannel do
   end
 
   defp verify_join_token(_params, _token), do: {:error, :invalid_token}
+
+  # Only the closed step payload is accepted; anything else is dropped so the
+  # channel never forwards malformed client input to the domain.
+  defp parse_input(%{"seq" => seq, "dx" => dx, "dy" => dy})
+       when is_integer(seq) and is_integer(dx) and is_integer(dy) do
+    {:ok, %{seq: seq, dx: dx, dy: dy}}
+  end
+
+  defp parse_input(_), do: :error
 
   defp build_actor(data) do
     %{

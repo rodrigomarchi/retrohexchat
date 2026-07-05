@@ -13,6 +13,7 @@
 import { Socket } from "phoenix";
 
 import { SpaceEngine } from "../../lib/space/engine.js";
+import { InputController } from "../../lib/space/input.js";
 import { createSpriteAtlas } from "../../lib/space/sprite_atlas.js";
 import { normalizeSpaceInit, CLIENT_EVENTS, SERVER_EVENTS } from "../../lib/space/protocol.js";
 
@@ -20,14 +21,15 @@ const TILE_SIZE = 16;
 const RENDER_SCALE = 3;
 
 /**
- * Build the hook implementation. Socket/engine construction is injectable so
- * the wiring can be unit-tested without a live server or a real canvas.
- * @param {{socketFactory?: Function, engineFactory?: Function}} [deps]
+ * Build the hook implementation. Socket/engine/input construction is injectable
+ * so the wiring can be unit-tested without a live server or a real canvas.
+ * @param {{socketFactory?: Function, engineFactory?: Function, inputFactory?: Function}} [deps]
  * @returns {object} LiveView hook implementation
  */
 export function createSpaceCanvasHook(deps = {}) {
   const socketFactory = deps.socketFactory ?? defaultSocketFactory;
   const engineFactory = deps.engineFactory ?? defaultEngineFactory;
+  const inputFactory = deps.inputFactory ?? defaultInputFactory;
 
   return {
     mounted() {
@@ -37,6 +39,9 @@ export function createSpaceCanvasHook(deps = {}) {
       const canvas = this.el.querySelector("canvas");
       const atlas = createSpriteAtlas({ tileSize: TILE_SIZE, scale: RENDER_SCALE });
       this._engine = engineFactory({ canvas, atlas });
+
+      this._input = inputFactory({ onIntent: (intent) => this._onIntent(intent) });
+      this._input.attach();
 
       this._socket = socketFactory();
       this._socket.connect();
@@ -59,12 +64,27 @@ export function createSpaceCanvasHook(deps = {}) {
     },
 
     destroyed() {
+      this._input?.detach();
       this._engine?.destroy();
       this._channel?.leave();
       this._socket?.disconnect();
+      this._input = null;
       this._engine = null;
       this._channel = null;
       this._socket = null;
+    },
+
+    // A key intent predicts locally; only an accepted (locally-free) step is
+    // sent to the server, carrying its prediction seq for reconciliation.
+    _onIntent(intent) {
+      const result = this._engine?.predict(intent);
+      if (result?.moved) {
+        this._channel?.push(CLIENT_EVENTS.INPUT, {
+          seq: result.seq,
+          dx: result.dx,
+          dy: result.dy,
+        });
+      }
     },
 
     _wireChannelEvents(channel) {
@@ -73,11 +93,6 @@ export function createSpaceCanvasHook(deps = {}) {
       channel.on(SERVER_EVENTS.CLOSED, (payload) => {
         console.info("[space] session closed", payload?.reason);
       });
-    },
-
-    // Sends a step intent to the server; the engine calls this from input.
-    pushInput(payload) {
-      this._channel?.push(CLIENT_EVENTS.INPUT, payload);
     },
   };
 }
@@ -88,6 +103,10 @@ function defaultSocketFactory() {
 
 function defaultEngineFactory(options) {
   return new SpaceEngine(options);
+}
+
+function defaultInputFactory(options) {
+  return new InputController(options);
 }
 
 function csrfToken() {

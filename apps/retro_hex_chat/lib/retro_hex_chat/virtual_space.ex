@@ -27,6 +27,10 @@ defmodule RetroHexChat.VirtualSpace do
           | {:error, Policy.error() | :not_found}
   defdelegate join_session(token, actor), to: Service
 
+  @spec input(String.t(), String.t(), SessionServer.input_payload()) ::
+          :ok | {:error, SessionServer.input_error()}
+  defdelegate input(token, participant_key, payload), to: SessionServer
+
   @spec leave(String.t(), String.t()) :: :ok
   defdelegate leave(token, participant_key), to: Service
 
