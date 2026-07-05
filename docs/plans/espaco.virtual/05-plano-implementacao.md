@@ -167,21 +167,21 @@ Fechamento da fase:
 
 ## Fase 4: escritório vivo
 
-- [ ] Zonas com transição (`zone_id` em delta; `space_zone_changed`).
-- [ ] Chat textual global (`space_chat_bubble`: limite 160 chars, escape,
+- [x] Zonas com transição (`zone_id` em delta; `space_zone_changed`).
+- [x] Chat textual global (`space_chat_bubble`: limite 160 chars, escape,
       rate limit, mute).
-- [ ] Balão de fala sobre avatar + log lateral efêmero.
-- [ ] Cadeiras: reserva no servidor (`seats`), pose `sitting`, levantar ao
+- [x] Balão de fala sobre avatar + log lateral efêmero.
+- [x] Cadeiras: reserva no servidor (`seats`), pose `sitting`, levantar ao
       andar, rejeição de segunda ocupação.
-- [ ] Interactables: quadro -> `space_modal` com imagem autoral do atlas.
-- [ ] HUD de participantes/lotação.
-- [ ] Telas de cheio/expirado/encerrado refinadas.
+- [x] Interactables: quadro -> `space_modal` com imagem autoral do atlas.
+- [x] HUD de participantes/lotação.
+- [x] Telas de cheio/expirado/encerrado refinadas.
 
 Fechamento da fase:
 
-- [ ] Testes §Fase 4 verdes.
-- [ ] `make ci` completo verde.
-- [ ] Commit único da fase na `main`.
+- [x] Testes §Fase 4 verdes.
+- [x] `make ci` completo verde.
+- [x] Commit único da fase na `main`.
 
 ## Fase 5: poderes do criador e mapas
 

@@ -16,6 +16,7 @@ import { SpaceMap } from "./map.js";
 import { Camera } from "./camera.js";
 import { Renderer } from "./renderer.js";
 import { Interpolator } from "./interpolation.js";
+import { ChatState } from "./chat.js";
 
 export class SpaceEngine {
   /**
@@ -46,6 +47,8 @@ export class SpaceEngine {
     this._selfBase = null;
     // Remote interpolation.
     this._interp = new Interpolator();
+    // Ephemeral chat bubbles + side log.
+    this._chat = new ChatState();
     this._clock = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
 
     this.running = false;
@@ -164,6 +167,16 @@ export class SpaceEngine {
     return this._pending.length;
   }
 
+  /** Record an incoming `space_message` (speech bubble + side log). */
+  receiveMessage(message) {
+    this._chat.receive(message, this._clock());
+  }
+
+  /** @returns {Array} the ephemeral side chat log. */
+  chatLog() {
+    return this._chat.log();
+  }
+
   /**
    * Render-space tile position at `now`: predicted for self, interpolated for
    * remotes, falling back to the last known tile.
@@ -179,6 +192,11 @@ export class SpaceEngine {
   /** @returns {object|null} participant by key. */
   participant(key) {
     return this.participants.get(key) ?? null;
+  }
+
+  /** @returns {object|null} the local participant. */
+  self() {
+    return this.selfKey ? (this.participants.get(this.selfKey) ?? null) : null;
   }
 
   /** @returns {number} live participant count. */
@@ -243,11 +261,14 @@ export class SpaceEngine {
   _draw() {
     const now = this._clock();
     const rendered = new Map();
+    const bubbles = new Map();
     for (const [key, participant] of this.participants) {
       const pos = this.renderPosition(key, now);
       rendered.set(key, { ...participant, x: pos.x, y: pos.y });
+      const bubble = this._chat.bubble(key, now);
+      if (bubble) bubbles.set(key, bubble.text);
     }
-    this.renderer?.draw?.({ participants: rendered, selfKey: this.selfKey });
+    this.renderer?.draw?.({ participants: rendered, selfKey: this.selfKey, bubbles });
   }
 
   _recenter() {

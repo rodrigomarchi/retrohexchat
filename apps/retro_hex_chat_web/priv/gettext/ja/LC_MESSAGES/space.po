@@ -16,7 +16,7 @@ msgstr ""
 msgid "ACCESS DENIED"
 msgstr "アクセス拒否"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:116
+#: lib/retro_hex_chat_web/live/app/space_live.ex:137
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "チャットに戻る"
@@ -51,7 +51,7 @@ msgstr "このバーチャルスペースはすでに終了しています。"
 msgid "This virtual space link is invalid or was removed."
 msgstr "このバーチャルスペースのリンクは無効か、削除されています。"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:142 lib/retro_hex_chat_web/live/app/space_live.ex:146 lib/retro_hex_chat_web/live/app/space_live.ex:166
+#: lib/retro_hex_chat_web/live/app/space_live.ex:163 lib/retro_hex_chat_web/live/app/space_live.ex:167 lib/retro_hex_chat_web/live/app/space_live.ex:187
 #, elixir-autogen, elixir-format
 msgid "Virtual space"
 msgstr "バーチャルスペース"
@@ -60,3 +60,18 @@ msgstr "バーチャルスペース"
 #, elixir-autogen, elixir-format
 msgid "You do not have access to this virtual space. You must be registered, identified and allowed into its channel."
 msgstr "このバーチャルスペースへのアクセス権がありません。登録・認証済みで、そのチャンネルへの参加が許可されている必要があります。"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:116
+#, elixir-autogen, elixir-format
+msgid "Arrows/WASD to move · E to use · F to sit · Esc to close"
+msgstr "矢印/WASD で移動 · E で使用 · F で着席 · Esc で閉じる"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:111
+#, elixir-autogen, elixir-format
+msgid "Say something… (Enter to send)"
+msgstr "何か話す…（Enter で送信）"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:98
+#, elixir-autogen, elixir-format
+msgid "here"
+msgstr "人"

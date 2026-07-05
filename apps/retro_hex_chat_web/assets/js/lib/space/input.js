@@ -17,12 +17,19 @@ const KEY_MAP = {
   d: { dx: 1, dy: 0, dir: "right" },
 };
 
+// Non-movement action keys: interact with a board / sit on a chair.
+const ACTION_MAP = {
+  e: "interact",
+  f: "sit",
+};
+
 export class InputController {
   /**
    * @param {{onIntent: (intent: {dx:number,dy:number,dir:string}) => void, target?: EventTarget}} opts
    */
-  constructor({ onIntent, target } = {}) {
+  constructor({ onIntent, onAction, target } = {}) {
     this._onIntent = onIntent ?? (() => {});
+    this._onAction = onAction ?? (() => {});
     this._target = target ?? window;
     this._pressed = new Set();
     this._onKeyDown = this._onKeyDown.bind(this);
@@ -47,10 +54,22 @@ export class InputController {
   }
 
   _onKeyDown(event) {
-    const intent = KEY_MAP[normalizeKey(event.key)];
-    if (!intent || typingInField()) return;
-
+    if (typingInField()) return;
     const key = normalizeKey(event.key);
+
+    const action = ACTION_MAP[key];
+    if (action) {
+      event.preventDefault();
+      if (!this._pressed.has(key)) {
+        this._pressed.add(key);
+        this._onAction(action);
+      }
+      return;
+    }
+
+    const intent = KEY_MAP[key];
+    if (!intent) return;
+
     // Coalesce OS auto-repeat: only the first keydown for a key emits.
     if (this._pressed.has(key)) {
       event.preventDefault();

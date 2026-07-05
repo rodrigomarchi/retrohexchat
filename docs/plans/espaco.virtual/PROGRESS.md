@@ -7,16 +7,16 @@ e termina atualizando-o. O checklist canônico é o
 ## Estado atual
 
 - **Status**: EM ANDAMENTO
-- **Fase corrente**: Fase 4 — escritório vivo (Fase 3 FECHADA: CI 9/9 verde +
-  commit único na main)
-- **Próximo item**: primeiro item da Fase 4 — zonas com transição (`zone_id`
-  em delta; evento `space_zone_changed`). O `zone_id` já é calculado no move
-  (SessionServer.resolve_step usa `zone_at`); falta emitir `space_zone_changed`
-  quando muda de zona. Depois: chat textual global (`space_chat_bubble`),
-  balão de fala, cadeiras (reserva `seats`, pose sitting), interactables
-  (quadro → `space_modal`), HUD de participantes. Ver §Fase 4 do mapa de
-  testes.
-- **Último commit do projeto**: `feat(space): fase 3` (ver git log)
+- **Fase corrente**: Fase 5 — poderes do criador e mapas (Fase 4 FECHADA:
+  CI 9/9 verde + commit único na main)
+- **Próximo item**: primeiro item da Fase 5 — `space_admin_action`: kick (com
+  bloqueio de reentrada na sessão), mute/unmute, close, change_map — validação
+  de papel no servidor (`VirtualSpace.Policy.can_admin?` já existe). Depois:
+  UI do criador no HUD, os 3 mapas restantes no registry
+  (`guild_hall_v1`/`arcane_library_v1`/`garden_camp_v1` seguindo o playbook do
+  tavern), troca de mapa com snapshot completo, persistência de posição em
+  reload (snapshot leve em `metadata`). Ver §Fase 5 do mapa de testes.
+- **Último commit do projeto**: `feat(space): fase 4` (ver git log)
 
 ## Perguntas para o usuário
 
@@ -56,6 +56,72 @@ implementação:
 - **Commits**: um por fase, direto na `main`, stage por caminho explícito.
 
 ## Histórico de iterações
+
+### 2026-07-05 — Iteração 6 (Fase 4 COMPLETA + fechada)
+
+Escritório vivo: zonas, chat/balões, cadeiras, quadro→modal, HUD. CI 9/9;
+3 E2E do espaço verdes (canvas, movimento, office).
+
+Backend (SessionServer + Channel):
+- Zonas: `zone_id` setado no join e no move; `space_zone_changed`
+  (%{key, zone_id, from}) publicado ao cruzar zona.
+- Assentos: `interact/3` kind "sit"/"stand"; `state.seats` (%{seat_id => key});
+  sentar exige adjacência (Chebyshev ≤ 1), snap ao tile do assento, pose
+  "sitting", dir do assento; 2ª ocupação → `:seat_taken`; andar levanta
+  primeiro (`free_seat` em resolve_step) e leave/close libera o assento.
+- Quadro: interact kind "use" → `{:ok, %{modal: %{title, kind, asset}}}`
+  (asset do mapa); alvo inexistente `:invalid_target`, distante `:too_far`.
+- Chat: `chat_bubble/3` normaliza (strip control, colapsa whitespace, trim),
+  rejeita >160 (`:too_long`), mutado (`:muted`), rate limit por participante
+  (`virtual_space_chat_rate`, default {5,5000}, `:rate_limited`); publica
+  `space_message` (%{key, nickname, text}).
+- Channel `handle_in` para `space_chat_bubble` e `space_interact` (payload
+  fechado; board → push `space_modal` só para o requester).
+
+Frontend (js/lib/space + hook):
+- `chat.js` (ChatState): balão por participante com expiração + side log
+  limitado.
+- `seating.js`/`interactions.js`: `frontTile`, `interactTarget`, `seatTarget`
+  (resolvem o tile à frente/adjacente; sit vs stand).
+- `modal.js` (ModalController): open/close, Escape fecha.
+- `input.js`: teclas de ação `e` (interact) / `f` (sit) via `onAction`,
+  coalescidas e respeitando foco.
+- `engine.js`: ChatState integrada — `receiveMessage`/`chatLog`, balões
+  passados ao renderer por frame; `self()` exposto.
+- `renderer.js`: desenha balão de fala com `fillText` (texto, nunca HTML) —
+  teste dedicado com `<b>` verbatim.
+- hook: liga `onAction`→interact/seat, `space_message`→engine,
+  `space_modal`→ModalController (desenha o board do atlas num overlay),
+  input de chat (Enter→push), HUD de contagem (só o número no JS; label
+  traduzida no HEEx).
+- SpaceLive shell: input de chat, host do modal, HUD e dica de controles
+  (todos DENTRO do canvas-root p/ o hook querySelect).
+
+E2E `space-office.spec.ts`: chat pinta balão (canvas muda) e o quadro abre
+`data-space-modal` (com "Tavern menu"), Escape fecha.
+
+Aprendizados desta iteração:
+- **CSS consistency (lint.css) valida classes Tailwind usadas em JS**: uma
+  classe nova só em string JS (`mb-1`) que o Tailwind não gerou quebra o CI
+  ("Missing CSS classes"). Usar só classes já geradas em JS, ou evitar classe
+  nova em JS.
+- **credo --strict conta complexidade em TESTES também**: helper `walk_to`
+  com cond+`&&` estourou (10>9); extrair `step_toward/3`.
+- **HUD/labels no JS**: manter a label traduzível no HEEx (`dgettext`) e o JS
+  atualizar só o número via `data-*` — evita a maquinaria de i18n JS.
+- **elementos que o hook consulta** (`querySelector`) precisam estar DENTRO do
+  elemento com `phx-hook` (o `this.el`), não irmãos.
+- **normalização de chat**: `\p{C}` (control) + colapso `\s+` + trim; canvas
+  `fillText` já é seguro contra HTML, mas o side-log DOM deve usar textContent.
+- gettext desta fase: só o domínio `space` (3 strings novas) traduzido nos 20
+  locales; resto revertido.
+
+Decisões de implementação:
+- Sentar exige adjacência e faz snap ao tile do assento; andar levanta.
+- Rate limit e bubble/log são efêmeros (chat do espaço não persiste).
+- Modal é per-usuário (push ao requester), não broadcast.
+- HUD mostra contagem viva (participantCount da engine), atualizado em
+  snapshot/delta.
 
 ### 2026-07-05 — Iteração 5 (Fase 3 COMPLETA + fechada)
 

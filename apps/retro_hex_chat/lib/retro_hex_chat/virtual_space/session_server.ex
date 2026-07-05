@@ -82,6 +82,28 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     call(token, {:input, participant_key, payload})
   end
 
+  @type interact_payload :: %{
+          optional(:seq) => integer(),
+          required(:kind) => String.t(),
+          required(:target_id) => String.t()
+        }
+
+  @spec interact(String.t(), String.t(), interact_payload()) ::
+          :ok
+          | {:ok, %{modal: map()}}
+          | {:error,
+             :not_found | :not_participant | :invalid_target | :too_far | :seat_taken | :terminal}
+  def interact(token, participant_key, payload) do
+    call(token, {:interact, participant_key, payload})
+  end
+
+  @spec chat_bubble(String.t(), String.t(), String.t()) ::
+          :ok
+          | {:error, :not_found | :not_participant | :muted | :too_long | :empty | :rate_limited}
+  def chat_bubble(token, participant_key, text) do
+    call(token, {:chat_bubble, participant_key, text})
+  end
+
   @spec leave(String.t(), String.t()) :: :ok
   def leave(token, participant_key) do
     case Registry.lookup(token) do
@@ -212,6 +234,17 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     end
   end
 
+  def handle_call({:interact, key, payload}, _from, state) do
+    do_interact(state, key, payload)
+  end
+
+  def handle_call({:chat_bubble, key, text}, _from, state) do
+    case do_chat(state, key, text) do
+      {:ok, state} -> {:reply, :ok, state}
+      {:error, reason, state} -> {:reply, {:error, reason}, state}
+    end
+  end
+
   def handle_call({:close, reason}, _from, state) do
     state = do_end(state, "closed", reason)
     {:stop, :normal, :ok, state}
@@ -224,7 +257,8 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         {:noreply, state}
 
       participant ->
-        updated = %{participant | online?: false, last_seen_at: DateTime.utc_now()}
+        state = free_seat(state, participant)
+        updated = %{participant | online?: false, seat_id: nil, last_seen_at: DateTime.utc_now()}
         state = put_in(state.participants[participant_key], updated)
 
         broadcast(state.token, "space_participant_left", %{
@@ -272,12 +306,13 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       dir: dir,
       pose: "standing",
       seat_id: nil,
-      zone_id: nil,
+      zone_id: zone_at(state.map, x, y),
       moving?: false,
       online?: true,
       muted?: false,
       input_seq: 0,
       last_input_at: nil,
+      chat_times: [],
       joined_at: DateTime.utc_now(),
       last_seen_at: DateTime.utc_now()
     }
@@ -368,17 +403,23 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         {:error, :blocked, state}
 
       true ->
+        state = free_seat(state, participant)
+        new_zone = zone_at(state.map, target_x, target_y)
+
         moved = %{
           participant
           | x: target_x,
             y: target_y,
             dir: dir,
-            zone_id: zone_at(state.map, target_x, target_y),
+            pose: "standing",
+            seat_id: nil,
+            zone_id: new_zone,
             last_input_at: mono_ms(),
             input_seq: payload.seq
         }
 
         state = put_in(state.participants[key], moved)
+        state = maybe_broadcast_zone(state, key, participant.zone_id, new_zone)
         state = broadcast_delta(state, key, moved, payload.seq)
         {:ok, state}
     end
@@ -408,6 +449,151 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
        do: abs(dx) + abs(dy) == 1
 
   defp valid_step?(_), do: false
+
+  # --- Interactions (seats, boards) ---
+
+  defp do_interact(state, key, %{kind: "sit", target_id: seat_id}) do
+    participant = Map.get(state.participants, key)
+    seat = Enum.find(state.map.seats, &(&1.id == seat_id))
+
+    cond do
+      participant == nil -> {:reply, {:error, :not_participant}, state}
+      seat == nil -> {:reply, {:error, :invalid_target}, state}
+      seat_taken?(state, seat_id, key) -> {:reply, {:error, :seat_taken}, state}
+      not adjacent?(participant, seat) -> {:reply, {:error, :too_far}, state}
+      true -> sit(state, key, participant, seat)
+    end
+  end
+
+  defp do_interact(state, key, %{kind: "stand"}) do
+    case Map.get(state.participants, key) do
+      nil -> {:reply, {:error, :not_participant}, state}
+      participant -> stand(state, key, participant)
+    end
+  end
+
+  defp do_interact(state, key, %{kind: "use", target_id: id}) do
+    participant = Map.get(state.participants, key)
+    target = Enum.find(state.map.interactables, &(&1.id == id))
+
+    cond do
+      participant == nil -> {:reply, {:error, :not_participant}, state}
+      target == nil -> {:reply, {:error, :invalid_target}, state}
+      not adjacent?(participant, target) -> {:reply, {:error, :too_far}, state}
+      true -> {:reply, {:ok, %{modal: modal_of(target)}}, state}
+    end
+  end
+
+  defp do_interact(state, _key, _payload), do: {:reply, {:error, :invalid_target}, state}
+
+  defp sit(state, key, participant, seat) do
+    state = free_seat(state, participant)
+
+    seated = %{
+      participant
+      | x: seat.x,
+        y: seat.y,
+        dir: seat.dir,
+        pose: "sitting",
+        seat_id: seat.id,
+        zone_id: zone_at(state.map, seat.x, seat.y)
+    }
+
+    state = put_in(state.participants[key], seated)
+    state = put_in(state.seats[seat.id], key)
+    state = broadcast_delta(state, key, seated, seated.input_seq)
+    {:reply, :ok, state}
+  end
+
+  defp stand(state, key, participant) do
+    state = free_seat(state, participant)
+    stood = %{participant | pose: "standing", seat_id: nil}
+    state = put_in(state.participants[key], stood)
+    state = broadcast_delta(state, key, stood, stood.input_seq)
+    {:reply, :ok, state}
+  end
+
+  defp free_seat(state, %{seat_id: nil}), do: state
+
+  defp free_seat(state, %{seat_id: seat_id}) do
+    update_in(state.seats, &Map.delete(&1, seat_id))
+  end
+
+  defp seat_taken?(state, seat_id, key) do
+    case Map.get(state.seats, seat_id) do
+      nil -> false
+      ^key -> false
+      _other -> true
+    end
+  end
+
+  defp adjacent?(participant, %{x: x, y: y}) do
+    abs(participant.x - x) <= 1 and abs(participant.y - y) <= 1
+  end
+
+  defp modal_of(%{title: title, modal: modal}) do
+    %{title: title, kind: Map.get(modal, :kind, "image"), asset: Map.get(modal, :asset)}
+  end
+
+  # --- Chat bubbles ---
+
+  defp do_chat(state, key, text) do
+    participant = Map.get(state.participants, key)
+    normalized = normalize_text(text)
+
+    cond do
+      participant == nil or not participant.online? -> {:error, :not_participant, state}
+      participant.muted? -> {:error, :muted, state}
+      normalized == "" -> {:error, :empty, state}
+      String.length(normalized) > 160 -> {:error, :too_long, state}
+      chat_rate_limited?(participant) -> {:error, :rate_limited, state}
+      true -> deliver_chat(state, key, participant, normalized)
+    end
+  end
+
+  defp deliver_chat(state, key, participant, text) do
+    now = mono_ms()
+    updated = %{participant | chat_times: [now | recent_chat_times(participant, now)]}
+    state = put_in(state.participants[key], updated)
+
+    broadcast(state.token, "space_message", %{
+      key: key,
+      nickname: participant.nickname,
+      text: text
+    })
+
+    {:ok, state}
+  end
+
+  defp chat_rate_limited?(participant) do
+    {max, _window} = chat_rate()
+    length(recent_chat_times(participant, mono_ms())) >= max
+  end
+
+  defp recent_chat_times(participant, now) do
+    {_max, window} = chat_rate()
+    Enum.filter(participant.chat_times, &(now - &1 < window))
+  end
+
+  defp normalize_text(text) when is_binary(text) do
+    text
+    |> String.replace(~r/\p{C}/u, "")
+    |> String.replace(~r/\s+/u, " ")
+    |> String.trim()
+  end
+
+  defp normalize_text(_), do: ""
+
+  defp chat_rate, do: Application.get_env(:retro_hex_chat, :virtual_space_chat_rate, {5, 5000})
+
+  # --- Zones ---
+
+  defp maybe_broadcast_zone(state, _key, same, same), do: state
+
+  defp maybe_broadcast_zone(state, key, from, to) do
+    broadcast(state.token, "space_zone_changed", %{key: key, zone_id: to, from: from})
+    state
+  end
 
   defp step_dir(1, 0), do: "right"
   defp step_dir(-1, 0), do: "left"

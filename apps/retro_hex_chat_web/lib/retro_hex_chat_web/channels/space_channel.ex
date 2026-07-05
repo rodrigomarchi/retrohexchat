@@ -43,6 +43,24 @@ defmodule RetroHexChatWeb.SpaceChannel do
     {:noreply, socket}
   end
 
+  def handle_in("space_chat_bubble", %{"text" => text}, socket) when is_binary(text) do
+    with %{space_token: token, participant_key: key} <- socket.assigns do
+      VirtualSpace.chat_bubble(token, key, text)
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_in("space_interact", payload, socket) do
+    with %{space_token: token, participant_key: key} <- socket.assigns,
+         {:ok, interact} <- parse_interact(payload),
+         {:ok, %{modal: modal}} <- VirtualSpace.interact(token, key, interact) do
+      push(socket, "space_modal", modal)
+    end
+
+    {:noreply, socket}
+  end
+
   def handle_in(_event, _payload, socket) do
     {:noreply, socket}
   end
@@ -84,6 +102,15 @@ defmodule RetroHexChatWeb.SpaceChannel do
   end
 
   defp parse_input(_), do: :error
+
+  defp parse_interact(%{"kind" => kind, "target_id" => target_id})
+       when kind in ["sit", "stand", "use"] and is_binary(target_id) do
+    {:ok, %{kind: kind, target_id: target_id}}
+  end
+
+  defp parse_interact(%{"kind" => "stand"}), do: {:ok, %{kind: "stand", target_id: nil}}
+
+  defp parse_interact(_), do: :error
 
   defp build_actor(data) do
     %{

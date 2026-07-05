@@ -62,6 +62,16 @@ export class SpaceMap {
     return this._interactables.get(id) ?? null;
   }
 
+  /** @returns {object[]} all interactables. */
+  interactables() {
+    return [...this._interactables.values()];
+  }
+
+  /** @returns {object[]} all seats. */
+  seats() {
+    return [...this._seats.values()];
+  }
+
   /**
    * Floor tile id at a tile, from the `layers.floor` matrix. Falls back to a
    * procedural guess (wall vs wood) for tiles the matrix does not cover.

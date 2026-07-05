@@ -90,10 +90,31 @@ defmodule RetroHexChatWeb.App.SpaceLive do
               data-space-token={@space_token}
               data-join-token={@join_token}
               data-nickname={@nickname}
-              class="bg-canvas shadow-retro-field aspect-[4/3] w-full"
+              class="relative bg-canvas shadow-retro-field aspect-[4/3] w-full"
             >
               <canvas id="space-canvas" class="h-full w-full"></canvas>
+              <div class="absolute top-1 right-1 bg-canvas shadow-retro-field px-2 py-0.5 text-xs font-bold">
+                <span data-space-hud-count>1</span>
+                <span>{dgettext("space", "here")}</span>
+              </div>
+              <div
+                data-space-modal
+                hidden
+                class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
+              >
+              </div>
+              <input
+                type="text"
+                data-space-chat-input
+                maxlength="160"
+                autocomplete="off"
+                placeholder={dgettext("space", "Say something… (Enter to send)")}
+                class="absolute bottom-1 left-1 right-1 bg-canvas shadow-retro-field px-2 py-1 text-sm"
+              />
             </div>
+            <p class="mt-1 text-xs text-muted-foreground">
+              {dgettext("space", "Arrows/WASD to move · E to use · F to sit · Esc to close")}
+            </p>
           </div>
       <% end %>
     </div>

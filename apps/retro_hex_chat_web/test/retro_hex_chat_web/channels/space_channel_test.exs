@@ -7,7 +7,36 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
   @moduletag :integration
 
+  setup do
+    Application.put_env(:retro_hex_chat, :virtual_space_step_ms, 0)
+    on_exit(fn -> Application.delete_env(:retro_hex_chat, :virtual_space_step_ms) end)
+    :ok
+  end
+
   defp uid, do: System.unique_integer([:positive])
+
+  # Drives the socket's participant to a target tile with valid input steps.
+  defp walk_channel_to(socket, session, key, {tx, ty}) do
+    {:ok, state} = SessionServer.get_state(session.token)
+    %{x: x, y: y} = state.participants[key]
+
+    step =
+      cond do
+        x < tx -> %{"dx" => 1, "dy" => 0}
+        x > tx -> %{"dx" => -1, "dy" => 0}
+        y < ty -> %{"dx" => 0, "dy" => 1}
+        y > ty -> %{"dx" => 0, "dy" => -1}
+        true -> nil
+      end
+
+    if step do
+      push(socket, "space_input", Map.put(step, "seq", uid()))
+      assert_push "space_delta", %{}
+      walk_channel_to(socket, session, key, {tx, ty})
+    else
+      :ok
+    end
+  end
 
   defp register_and_identify(nick) do
     NickServ.register(nick, "pass123")
@@ -133,6 +162,36 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
       {:ok, state} = SessionServer.get_state(session.token)
       assert {state.participants[self_key].x, state.participants[self_key].y} == {x0 + 1, y0}
+    end
+  end
+
+  describe "chat" do
+    test "a space_chat_bubble push broadcasts space_message with normalized text" do
+      creator = register_and_identify("chc#{uid()}")
+      session = insert_space(creator)
+
+      {:ok, _init, socket} = join_space(creator, session)
+
+      push(socket, "space_chat_bubble", %{"text" => "  hi   there  "})
+
+      assert_push "space_message", %{text: "hi there", nickname: nickname}
+      assert nickname == creator.nickname
+    end
+  end
+
+  describe "interactions" do
+    test "a space_interact use on a board pushes a space_modal to the requester" do
+      creator = register_and_identify("chi#{uid()}")
+      session = insert_space(creator)
+
+      {:ok, init, socket} = join_space(creator, session)
+
+      # Walk adjacent to the menu_board at (12,10): spawn is near it.
+      walk_channel_to(socket, session, init.self_key, {12, 11})
+
+      push(socket, "space_interact", %{"seq" => 1, "kind" => "use", "target_id" => "menu_board"})
+
+      assert_push "space_modal", %{asset: "board_menu_v1", title: "Tavern menu"}
     end
   end
 

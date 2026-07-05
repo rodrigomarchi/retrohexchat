@@ -31,6 +31,13 @@ defmodule RetroHexChat.VirtualSpace do
           :ok | {:error, SessionServer.input_error()}
   defdelegate input(token, participant_key, payload), to: SessionServer
 
+  @spec interact(String.t(), String.t(), SessionServer.interact_payload()) ::
+          :ok | {:ok, %{modal: map()}} | {:error, atom()}
+  defdelegate interact(token, participant_key, payload), to: SessionServer
+
+  @spec chat_bubble(String.t(), String.t(), String.t()) :: :ok | {:error, atom()}
+  defdelegate chat_bubble(token, participant_key, text), to: SessionServer
+
   @spec leave(String.t(), String.t()) :: :ok
   defdelegate leave(token, participant_key), to: Service
 

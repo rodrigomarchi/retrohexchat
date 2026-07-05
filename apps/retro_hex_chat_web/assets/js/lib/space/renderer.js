@@ -9,6 +9,8 @@ const LABEL_FONT = "10px monospace";
 const HASH = String.fromCharCode(35);
 const LABEL_BG = "1b1d24";
 const LABEL_FG = "e8dcc0";
+const BUBBLE_BG = "e8dcc0";
+const BUBBLE_FG = "20232b";
 
 export class Renderer {
   /**
@@ -33,11 +35,13 @@ export class Renderer {
   }
 
   /**
-   * @param {{participants: Map<string, object>, selfKey: string|null}} state
+   * @param {{participants: Map<string, object>, selfKey: string|null, bubbles?: Map<string,string>}} state
    */
   draw(state) {
     const ctx = this.ctx;
     if (!ctx) return;
+
+    const bubbles = state.bubbles ?? new Map();
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this._drawFloor(ctx);
@@ -48,6 +52,8 @@ export class Renderer {
     }
     for (const participant of ordered) {
       this._drawLabel(ctx, participant);
+      const text = bubbles.get(participant.key);
+      if (text) this._drawBubble(ctx, participant, text);
     }
   }
 
@@ -93,6 +99,22 @@ export class Renderer {
     ctx.fillRect(Math.round(cx - width / 2), Math.round(y - 12), Math.round(width), 11);
     ctx.fillStyle = HASH + LABEL_FG;
     ctx.fillText(participant.nickname, Math.round(cx), Math.round(y - 3));
+  }
+
+  // Speech bubble above the nickname label. The text is drawn with fillText —
+  // canvas never interprets markup, so a message can never inject HTML.
+  _drawBubble(ctx, participant, text) {
+    const { x, y } = this._avatarScreenPos(participant);
+    ctx.font = LABEL_FONT;
+    ctx.textAlign = "center";
+    const cx = x + this.tilePx / 2;
+    const width = Math.min(ctx.measureText(text).width + 8, this.canvas.width - 4);
+    const top = y - 26;
+
+    ctx.fillStyle = HASH + BUBBLE_BG;
+    ctx.fillRect(Math.round(cx - width / 2), Math.round(top), Math.round(width), 13);
+    ctx.fillStyle = HASH + BUBBLE_FG;
+    ctx.fillText(text, Math.round(cx), Math.round(top + 10));
   }
 
   _avatarScreenPos(participant) {
