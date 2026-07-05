@@ -7,7 +7,7 @@ defmodule RetroHexChat.Chat.Message do
 
   @type t :: %__MODULE__{}
 
-  @type_values ~w(message action system service error notice)
+  @type_values ~w(message action system service error notice space_invite)
 
   schema "messages" do
     field :channel_name, :string

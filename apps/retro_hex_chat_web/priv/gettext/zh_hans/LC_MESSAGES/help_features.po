@@ -36,11 +36,6 @@ msgstr "\"用QQ来编辑您最后的消息\""
 msgid "\"Your nick was mentioned! Configure alerts in Settings\""
 msgstr "\"你的昵称被提到了! 在设置中配置提醒 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "# Configure main channels /chanserv register #general /chanserv set #general guard on /chanserv set #general topiclock on # Create a bot /bot create HelperBot"
-msgstr "# 配置主频道 /chanserv 注册 #general /chanserv 设置 #general 守护在 /chanserv 设置 #general 主题锁 # 创建一个bot /bot 创建 HelperBot"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:49
 #, elixir-autogen, elixir-format
@@ -83,37 +78,22 @@ msgstr ") 从未保存到本地Storage。"
 msgid ") that run sequentially on connect. Use"
 msgstr "在连接上依次运行。 使用"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:16
-#, elixir-autogen, elixir-format
-msgid ") to add custom trigger words with optional background colors."
-msgstr ")添加带有可选背景颜色的自定义触发词。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:22
 #, elixir-autogen, elixir-format
 msgid ") to only trigger in that channel."
 msgstr ")只在该频道触发。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_alignment.html.heex:9
-#, elixir-autogen, elixir-format
-msgid ") with the nick column set to a fixed width. This dramatically improves readability in busy channels."
-msgstr "),昵称列设置为固定宽度。 这大大提高了繁忙渠道的可读性。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "), a tooltip appears above the input showing the command syntax with the current parameter highlighted in bold."
 msgstr "),一个工具提示出现在显示命令语法的输入上方,以粗体突出显示当前参数."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_alignment.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "), notices, and system messages are not grid-aligned as they use different formatting."
-msgstr "),通知,和系统消息没有网格对齐,因为它们使用不同的格式."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "). Invalid regex patterns show an inline error."
 msgstr ") (中文(简体) ). 无效的 regex 模式显示内含错误 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "). Lines starting with"
 msgstr ") (中文(简体) ). 起始线条"
@@ -123,7 +103,7 @@ msgstr ") (中文(简体) ). 起始线条"
 msgid "* YourNick is away: Gone for lunch"
 msgstr "\"你的尼克不在了,去吃午饭了\""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "+i Invite Only"
 msgstr "+i 只邀请"
@@ -234,7 +214,7 @@ msgstr "- 不触发通知声音或亮点"
 msgid "- Ignored users' typing indicators are not shown"
 msgstr "- 未显示被忽略的用户打字指标"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "- Maximum 5 concurrent timers per session."
 msgstr "- 每届最多5个同时计时器。"
@@ -254,7 +234,7 @@ msgstr "- 静音不影响打字指标"
 msgid "- Muting does not affect visual notifications (conversations sidebar flash, title flash)"
 msgstr "- 静电不影响视觉通知(侧边栏闪存、标题闪存)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "- One-shot: minimum 1 second, maximum 86,400 seconds (24 hours)."
 msgstr "- 一发:最少1秒,最多86 400秒(24小时)。"
@@ -264,7 +244,7 @@ msgstr "- 一发:最少1秒,最多86 400秒(24小时)。"
 msgid "- Only appears in private message conversations (not channels)"
 msgstr "- 只出现在私人信件对话中(不是频道)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "- Repeat: minimum 10 seconds, maximum 86,400 seconds."
 msgstr "- 重复:最少10秒,最多86400秒。"
@@ -294,11 +274,6 @@ msgstr "- 你自己的信息不会引发洪水追踪"
 msgid "-Nick-"
 msgstr "- 尼克 - 尼克 - Nick -"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:12
-#, elixir-autogen, elixir-format
-msgid ". Each command runs sequentially and results are displayed inline."
-msgstr "。每个命令按顺序运行,结果显示在内。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:37
 #, elixir-autogen, elixir-format
 msgid ". It only activates on unexpected connection loss."
@@ -324,7 +299,7 @@ msgstr "。规则可以通过对话框中的复选框单独启用/disabled。"
 msgid ". Switch between Nicklist, Channel, and Chat tabs. Each item has a label (display text) and a command (what runs on click)."
 msgstr "在Nicklist、Channel和Chat标签之间切换。 每个项目都有一个标签(播放文本)和一个命令(点击时运行的是什么)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:33
 #, elixir-autogen, elixir-format
 msgid ". Wallops appear in the Status tab."
 msgstr "。Wallops 出现在状态标签中。"
@@ -339,7 +314,7 @@ msgstr "。启用时,将自动接受收到的邀请,而不显示对话框。 此
 msgid ". Your 5 most recently used commands appear at the top."
 msgstr "。您最近使用的五个命令出现在顶端。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:105
 #, elixir-autogen, elixir-format
 msgid "/admin Command"
 msgstr "/admin Command"
@@ -354,8 +329,9 @@ msgstr "/alias Command"
 msgid "/alias add <name> <expansion>"
 msgstr "/alias add <name> <expansion>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:86
 #, elixir-autogen, elixir-format
 msgid "/announce"
 msgstr "/announce"
@@ -383,6 +359,7 @@ msgid "/autorespond Command"
 msgstr "/autorespond Command"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:2
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "/away"
 msgstr "/away"
@@ -398,22 +375,18 @@ msgid "/away Gone for lunch"
 msgstr "/away Gone for lunch"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "/ban Command"
 msgstr "/ban Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "/chanserv register #main"
-msgstr "/chanserv register #main"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "/clearmotd"
 msgstr "/clearmotd"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "/clearwelcome"
 msgstr "/clearwelcome"
@@ -423,18 +396,18 @@ msgstr "/clearwelcome"
 msgid "/identify"
 msgstr "/identify"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "/ignore <nick>"
 msgstr "/ignore <nick>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "/ignore <nick> notices"
 msgstr "/ignore <nick> notices"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "/ignore Command"
 msgstr "/ignore Command"
@@ -472,11 +445,6 @@ msgstr "/join"
 msgid "/join Command"
 msgstr "/join Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_alignment.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "/me"
-msgstr "/me"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:18
 #, elixir-autogen, elixir-format
@@ -493,15 +461,16 @@ msgstr "/mode #general +o"
 msgid "/mode +x"
 msgstr "/mode +x"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "/mode Command"
 msgstr "/mode Command"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:110
 #: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:13
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:77
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "/motd"
 msgstr "/motd"
@@ -527,37 +496,38 @@ msgstr "/nickserv"
 msgid "/notice <nickname> <message> /notice <#channel> <message>"
 msgstr "/notice <nickname> <message> /notice <#channel> <message>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "/notice Command"
 msgstr "/notice Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "/notice_routing"
 msgstr "/notice_routing"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "/notice_routing Command"
 msgstr "/notice_routing Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "/notify"
 msgstr "/notify"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "/notify Command"
 msgstr "/notify Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "/notify add <nickname> [note]"
 msgstr "/notify add <nickname> [note]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "/ns"
 msgstr "/ns"
@@ -613,17 +583,18 @@ msgstr "/quit Command"
 msgid "/quit Your message here"
 msgstr "/quit Your message here"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "/setmotd"
 msgstr "/setmotd"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "/setwelcome"
 msgstr "/setwelcome"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "/timer Command"
 msgstr "/timer Command"
@@ -633,7 +604,7 @@ msgstr "/timer Command"
 msgid "/timer hb repeat 600 /me is still here"
 msgstr "/timer hb repeat 600 /me is still here"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "/timer list"
 msgstr "/timer list"
@@ -643,23 +614,25 @@ msgstr "/timer list"
 msgid "/timer remind 1800 /me standup in 30 minutes"
 msgstr "/timer remind 1800 /me standup in 30 minutes"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "/timer stop <name>"
 msgstr "/timer stop <name>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "/topic Command"
 msgstr "/topic Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:71
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:87
 #, elixir-autogen, elixir-format
 msgid "/umode"
 msgstr "/umode"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "/umode +w"
 msgstr "/umode +w"
@@ -669,8 +642,9 @@ msgstr "/umode +w"
 msgid "/unignore Command"
 msgstr "/unignore Command"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:63
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:66
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:85
 #, elixir-autogen, elixir-format
 msgid "/wallops"
 msgstr "/wallops"
@@ -860,7 +834,7 @@ msgstr ":该频道自动添加到您的自动连接列表中(最多20个频道).
 msgid ": The channel is automatically removed from your auto-join list."
 msgstr ": 频道自动从自动连接列表中删除。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:58
 #, elixir-autogen, elixir-format
 msgid ": Timers do NOT survive page reload or disconnection."
 msgstr ": 计时器在页面重新加载或断开时不会幸存."
@@ -890,7 +864,7 @@ msgstr "显示原作者的输入上方有一个栏,并预览他们的消息。 �
 msgid "A maximum of"
 msgstr "最高额"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "A notification sound plays when a highlight match occurs."
 msgstr "当发生亮点匹配时, 通知声音播放 。"
@@ -900,7 +874,7 @@ msgstr "当发生亮点匹配时, 通知声音播放 。"
 msgid "A real-time character counter appears near the input box showing"
 msgstr "一个实时字符计数器出现在显示的输入框附近"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:95
 #, elixir-autogen, elixir-format
 msgid "Access"
 msgstr "访问"
@@ -915,12 +889,7 @@ msgstr "访问一个有300+Unicode emojis的Popup emoji拾取器,按8类排列."
 msgid "Accessing the Ignore List"
 msgstr "访问忽略列表"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_alignment.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Action messages ("
-msgstr "行动信息"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Add"
 msgstr "添加"
@@ -930,13 +899,13 @@ msgstr "添加"
 msgid "Add custom items to the user list and channel right-click context menus. Each item executes a command with variable expansion when clicked."
 msgstr "在用户列表中添加自定义项目,并右键单击上下文菜单。 单击时,每个项目执行带有变量扩展的指令。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Adding Users"
 msgstr "添加用户"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:26
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:55
 #, elixir-autogen, elixir-format
 msgid "Address Book"
 msgstr "地址簿"
@@ -953,7 +922,7 @@ msgstr "别名编辑器"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:57
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:63
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Aliases"
 msgstr "别名"
@@ -989,7 +958,7 @@ msgstr "向下箭头"
 msgid "Arrow Up"
 msgstr "向上箭头"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Arrow Up/Down"
 msgstr "向上箭头/Down"
@@ -1015,7 +984,7 @@ msgstr "试图自动重联."
 msgid "Audio Call"
 msgstr "音频调用"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Auto-Add PM Contacts"
 msgstr "自动添加 PM 联系人"
@@ -1040,7 +1009,7 @@ msgstr "应邀请自动加入"
 msgid "Auto-Reconnect"
 msgstr "自动重联"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Auto-Whois"
 msgstr "自动身份"
@@ -1086,7 +1055,7 @@ msgid "Available Toggles"
 msgstr "可用切换"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:12
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Ban Exceptions"
 msgstr "禁止例外"
@@ -1229,7 +1198,7 @@ msgstr "Channel Central为在一个地方查看和管理所有频道设置提供
 msgid "Channel Filtering"
 msgstr "通道过滤"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Channel Menu"
 msgstr "频道菜单"
@@ -1239,7 +1208,7 @@ msgstr "频道菜单"
 msgid "Channel Names"
 msgstr "频道名称"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Channel Welcome Messages"
 msgstr "频道欢迎信件"
@@ -1264,12 +1233,12 @@ msgstr "频道名称,主题,以及基本信息."
 msgid "Channel names (e.g.,"
 msgstr "频道名称(例如,"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Channel operators can set a welcome message shown once to users when they first join. The message is not shown to the user who set it, and not repeated on rejoin within the same session."
 msgstr "频道运营商可以在用户首次加入时设置一次显示的欢迎消息. 信件不显示给设置该信件的用户,也不在同一会话内重新加入时重复."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Channel operators see editable controls and can modify settings directly. Non-operators see read-only views of the channel configuration."
 msgstr "频道操作员可以看到可编辑控件,可以直接修改设置. 非操作者参见频道配置的只读视图."
@@ -1358,7 +1327,7 @@ msgstr "自动完成命令"
 msgid "Command Syntax Tooltip"
 msgstr "命令语法工具提示"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Commands"
 msgstr "图标"
@@ -1405,7 +1374,7 @@ msgid "Connection Banners"
 msgstr "连接封条"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Connection States"
 msgstr "连接国"
@@ -1414,11 +1383,6 @@ msgstr "连接国"
 #, elixir-autogen, elixir-format
 msgid "Connection lost — shown in red."
 msgstr "连接丢失——以红色显示 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Connection state with colored indicator (green = connected, red = disconnected)."
-msgstr "与彩色指标的连接状态(绿色=连接,红色=断开)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:9
 #, elixir-autogen, elixir-format
@@ -1432,6 +1396,8 @@ msgstr "背景菜单 :"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Context Menus"
 msgstr "背景菜单"
@@ -1471,7 +1437,7 @@ msgstr "控制您的 P2P 连接如何保护您的隐私 。"
 msgid "Control:"
 msgstr "控件 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Conversations Menu"
 msgstr "对话菜单"
@@ -1571,18 +1537,13 @@ msgstr "缩写+ 移动+S"
 msgid "Ctrl+Up"
 msgstr "缩写+ 上来"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "Current channel name and user count."
-msgstr "当前频道名称和用户数 。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Custom Bindings"
 msgstr "自定义绑定"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:61
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
 msgstr "自定义菜单"
@@ -1672,7 +1633,7 @@ msgstr "断开连接"
 msgid "Display"
 msgstr "显示"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Double-click a channel in the conversations sidebar, or go to"
 msgstr "双击对话边栏中的频道,或前往"
@@ -1706,11 +1667,6 @@ msgstr "在音频/video通话时,该行显示双向数据流点. 中心徽章显
 #, elixir-autogen, elixir-format
 msgid "During reconnection attempts, a"
 msgstr "在重新连接过程中,a"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
-#, elixir-autogen, elixir-format
-msgid "Each line should be a slash command (e.g.,"
-msgstr "每行应为斜线命令(例如,"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:46
 #, elixir-autogen, elixir-format
@@ -1758,7 +1714,7 @@ msgstr "空编辑 :"
 msgid "Enable / Disable"
 msgstr "启用/ 禁用"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Enable auto-whois to automatically look up user info when they come online."
 msgstr "启用自动查询用户信息时自动查询。"
@@ -1769,7 +1725,7 @@ msgid "Enhanced History"
 msgstr "增强历史"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:62
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:61
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:28
 #, elixir-autogen, elixir-format
@@ -1784,7 +1740,7 @@ msgstr "输入 :"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:65
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_emoji.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:62
@@ -1802,15 +1758,10 @@ msgstr "逃脱:"
 msgid "Event Types"
 msgstr "事件类型"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Example Script"
 msgstr "示例脚本"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "Execute"
-msgstr "执行"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:39
 #, elixir-autogen, elixir-format
@@ -1925,7 +1876,7 @@ msgstr "将军:"
 msgid "Getting Started"
 msgstr "开始"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "Global Announcements"
 msgstr "全球通知"
@@ -1998,7 +1949,6 @@ msgstr "在聊天信息中超过昵称500ms可以看到有用户信息的悬浮�
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:24
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_alignment.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "How It Works"
@@ -2028,11 +1978,6 @@ msgstr "如何防止过期"
 #, elixir-autogen, elixir-format
 msgid "How to Reply"
 msgstr "如何答复"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "How to Use"
-msgstr "如何使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_contextual_tips.html.heex:24
 #, elixir-autogen, elixir-format
@@ -2079,7 +2024,7 @@ msgstr "如果手动解码为自动ignore的用户,60秒的冷却会阻止自动
 msgid "Ignore"
 msgstr "忽略"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Ignore Integration"
 msgstr "忽略整合"
@@ -2126,7 +2071,7 @@ msgstr "在P2P会话中,检查"
 msgid "Initial connection in progress."
 msgstr "初步联系正在进行中。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:63
 #, elixir-autogen, elixir-format
 msgid "Input Format"
 msgstr "输入格式"
@@ -2151,8 +2096,8 @@ msgstr "有意断开"
 msgid "Interaction"
 msgstr "互动"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:71
-#: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:89
+#: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Interactive Chat Elements"
 msgstr "交互式聊天元素"
@@ -2162,8 +2107,8 @@ msgstr "交互式聊天元素"
 msgid "Interactive elements do not trigger during text selection. The nick hover card does not appear for your own nickname. Hover tooltips dismiss when the mouse leaves the viewport."
 msgstr "交互式元素不会在文本选择时触发 。 昵称悬浮卡不为您自己的昵称出现 。 当鼠标离开景点时, Hover 工具提示会解除 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:60
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Invite Exceptions"
@@ -2207,19 +2152,20 @@ msgid "Key Characteristics"
 msgstr "密钥特征"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Keyboard"
 msgstr "键盘"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "Keyboard Navigation"
 msgstr "键盘导航"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autocomplete.html.heex:76
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:98
 #: lib/retro_hex_chat_web/controllers/help_content/feature_contextual_tips.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_display_settings.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:59
@@ -2228,6 +2174,7 @@ msgstr "键盘导航"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_edit.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:70
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
 msgstr "键盘快捷键"
@@ -2243,7 +2190,7 @@ msgid "Kick Notifications"
 msgstr "踢出通知"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_states.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Lag Indicator"
 msgstr "标签指标"
@@ -2273,7 +2220,7 @@ msgstr "限制"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:53
 #, elixir-autogen, elixir-format
 msgid "Limits"
 msgstr "限制"
@@ -2368,7 +2315,7 @@ msgstr "Mensagem para NickName / para 昏迷症患者"
 msgid "Menu Types"
 msgstr "菜单类型"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Menus automatically reposition if they would go off-screen. The browser's default right-click menu is preserved in the input field. Self-targeting actions (Kick, Ban, Ignore, P2P actions on yourself) appear disabled."
 msgstr "门努斯会自动重新定位 如果他们会关闭屏幕。 浏览器默认右键点击菜单保存在输入字段中. 自瞄准动作(Kick, Ban, 忽略, P2P 动作针对你自己)似乎已禁用."
@@ -2390,7 +2337,7 @@ msgstr "删除信件"
 msgid "Message Edit"
 msgstr "信件编辑"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Message Menu"
 msgstr "信件菜单"
@@ -2405,11 +2352,6 @@ msgstr "信件回复"
 #, elixir-autogen, elixir-format
 msgid "Message of the Day (MOTD)"
 msgstr "每日贺词(MOTD)"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_alignment.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Messages use a CSS grid layout ("
-msgstr "信件使用 CSS 网格布局("
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:12
 #, elixir-autogen, elixir-format
@@ -2482,6 +2424,7 @@ msgstr "NickName 正在输入..."
 msgid "NickServ"
 msgstr "尼克塞尔"
 
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:53
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:66
 #, elixir-autogen, elixir-format
 msgid "NickServ Overview"
@@ -2496,11 +2439,6 @@ msgstr "昵称列表"
 #, elixir-autogen, elixir-format
 msgid "Nicknames"
 msgstr "昵称"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_alignment.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Nicknames in channel messages are rendered in a fixed-width column. Whether the nick is 3 characters or 15, all message text starts at the same horizontal position."
-msgstr "频道消息中的昵称在一个固定宽度的列中提供. 无论昵称是3个字符还是15个,所有消息文本都从同一水平位置开始."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:52
 #, elixir-autogen, elixir-format
@@ -2539,10 +2477,10 @@ msgid "Normal operation — you are connected to the server."
 msgstr "正常操作——您连接到服务器."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:20
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:66
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:17
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/feature_nick_alignment.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_timestamp_format.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Notes"
@@ -2553,15 +2491,16 @@ msgstr "页:1"
 msgid "Notices are a lightweight message type inspired by IRC's NOTICE command. They are used for announcements, service messages, and bot responses."
 msgstr "通知(Noments)是一种受IRC的NOTICE命令启发的轻量级消息类型. 它们用于公告、服务信息和机器人反应。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "Notices respect the ignore system. Use"
 msgstr "通知尊重忽略系统。 使用"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:30
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:80
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Notify List"
 msgstr "通知名单"
@@ -2622,7 +2561,7 @@ msgstr "只有频道运营商可以发送邀请函. 频道必须设置 +i (只�
 msgid "Only search messages that mention your nickname."
 msgstr "只有提到你昵称的搜索信息 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:97
 #, elixir-autogen, elixir-format
 msgid "Only server administrators and server operators can access the Admin Console. Non-admin users will see an error message if they attempt to open it."
 msgstr "只有服务器管理员和服务器操作员才能访问行政控制台. 非管理员用户如果试图打开错误消息,会看到错误消息."
@@ -2632,18 +2571,8 @@ msgstr "只有服务器管理员和服务器操作员才能访问行政控制台
 msgid "Open"
 msgstr "打开"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Open the Admin Console from the toolbar (only visible to admins). Paste your commands one per line, then click"
-msgstr "从工具栏打开管理控制台(只可见管理器) 。 每行粘贴一个命令,然后单击"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Open the Highlight Words dialog ("
-msgstr "打开高亮单词对话框( E)"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:27
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:7
@@ -2686,7 +2615,7 @@ msgstr "选项 > 显示 > 显示上下文提示"
 msgid "Options > Key Bindings"
 msgstr "选项 > 密钥绑定"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Or use the"
 msgstr "或使用"
@@ -2705,13 +2634,6 @@ msgstr "覆盖整个用户界面的特定昵称的显示颜色 。"
 #, elixir-autogen, elixir-format
 msgid "Own-action exclusion"
 msgstr "自主行动排除"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:75
-#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:37
-#, elixir-autogen, elixir-format
-msgid "P2P Sessions"
-msgstr "P2P会议"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:14
 #, elixir-autogen, elixir-format
@@ -2748,7 +2670,7 @@ msgstr "端点信息( Whois)"
 msgid "Per-Type Filtering:"
 msgstr "按类型过滤 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:124
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "Perform / Auto-Commands"
@@ -2764,13 +2686,13 @@ msgstr "执行对话框"
 msgid "Perform List"
 msgstr "执行列表"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Permissions"
 msgstr "权限"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:40
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Persistence"
 msgstr "持久性"
@@ -2815,7 +2737,7 @@ msgstr "预览"
 msgid "Privacy"
 msgstr "隐私"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Private Messages"
@@ -2861,7 +2783,7 @@ msgstr "限制费率"
 msgid "Ready"
 msgstr "准备"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Real-Time Updates"
 msgstr "实时更新"
@@ -2901,7 +2823,7 @@ msgstr "红点徽章"
 msgid "Regex:"
 msgstr "缩写 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Register and identify with NickServ to save your notify list across sessions."
 msgstr "与 NickServ 注册并识别, 以保存您整个会话的通知列表 。"
@@ -2994,30 +2916,20 @@ msgstr "RetroHexChat对所有动作使用固定键盘快捷键. 所有快捷键"
 msgid "Reverse Search (Ctrl+R)"
 msgstr "反向搜索 (Ctrl+R)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Right-click a #channel reference in a chat message to see: Join Channel (disabled if already joined), Copy Channel Name, Channel Info."
 msgstr "在聊天信息中右键单击 #channel 引用以查看: 加入频道(如果已经加入,则无法访问), 复制频道名称, 频道信息."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "Right-click a URL in a chat message to see: Open Link, Copy URL, Save to URL List."
 msgstr "在聊天信件中右键单击 URL 查看: 打开链接, 复制 URL, 保存到 URL 列表 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "Right-click a channel in the conversations sidebar to see: Mark as Read, Mute/Unmute Channel, Copy Name, Leave Channel, Channel Settings."
-msgstr "在对话边栏中右键单击一个频道,以查看:标记为Read,Mute/Unmute频道,复制名称,离开频道,频道设置."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Right-click a message and select \"Responder\"."
 msgstr "右键单击消息并选择\"Responder\"."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "Right-click a nickname in a chat message to see: Private Message, Whois, Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Kick, Ban, Give Voice (+v), Give Op (+o)."
-msgstr "在聊天信息中右键单击昵称查看: 私人信件, Whois, Copy Nick, 忽略 /Unignore, 添加到地址簿, 设置 Nick Color. 注册用户还参见P2P动作:P2P会话,音频呼叫,视频呼叫,发送文件(如果目标没有注册或者自己是). 频道运营商还参见: Kick, Ban, Give Voice (+v), Give Op (+o)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:45
 #, elixir-autogen, elixir-format
@@ -3029,7 +2941,7 @@ msgstr "右键单击昵称以快速忽略或 Unignore 。"
 msgid "Right-click on elements in the chat area and conversations sidebar to access context-specific actions."
 msgstr "右键单击聊天区和对话侧边栏中的元素访问特定上下文的动作."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Right-click the general chat area to see: Copy Message, Copy Selected Text, Quote/Reply (disabled), Ignore Sender. If the message contains URLs, Open Link and Copy URL also appear."
 msgstr "右键单击一般聊天区域以查看: Copy Message, Copy September Text, Quote/Reply (已失效), 忽略发送器 。 如果信件包含 URL, 打开链接和复制 URL 也会出现 。"
@@ -3048,11 +2960,6 @@ msgstr "右键点击 :"
 #, elixir-autogen, elixir-format
 msgid "Right:"
 msgstr "对:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "Routing Preferences"
-msgstr "运行首选项"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:24
@@ -3076,7 +2983,7 @@ msgid "Search through messages in the current channel or PM with real-time highl
 msgstr "在当前频道或PM中以实时突出显示搜索消息."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:102
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_join_channels.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_auto_reconnect.html.heex:49
@@ -3084,13 +2991,13 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:52
 #: lib/retro_hex_chat_web/controllers/help_content/feature_away_reply.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ban_exceptions.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:56
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_cheatsheet.html.heex:39
 #: lib/retro_hex_chat_web/controllers/help_content/feature_command_syntax_tooltip.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:75
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_states.html.heex:38
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:64
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:73
 #: lib/retro_hex_chat_web/controllers/help_content/feature_contextual_tips.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_copy_feedback.html.heex:21
@@ -3098,7 +3005,8 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_display_settings.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/feature_enhanced_history.html.heex:54
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:49
-#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_interactive_elements.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/feature_invite_exceptions.html.heex:25
@@ -3110,21 +3018,23 @@ msgstr "在当前频道或PM中以实时突出显示搜索消息."
 #: lib/retro_hex_chat_web/controllers/help_content/feature_message_reply.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_mute.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/feature_nick_expiry.html.heex:64
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_perform.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/feature_pm_persistence.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:34
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:67
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_sounds.html.heex:76
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:75
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:63
 #: lib/retro_hex_chat_web/controllers/help_content/feature_typing_indicator.html.heex:20
 #: lib/retro_hex_chat_web/controllers/help_content/feature_unread_indicators.html.heex:53
-#: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "另见"
@@ -3159,7 +3069,7 @@ msgstr "发送通知"
 msgid "Sensitive commands ("
 msgstr "敏感命令( E)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Server administrators can send announcements that appear in every user's active window. Announcements bypass ignore lists and have distinctive bold styling."
 msgstr "服务器管理员可以发送出现在每个用户活动窗口中的公告. 通告绕过列表,并有独特的大胆风格."
@@ -3169,7 +3079,7 @@ msgstr "服务器管理员可以发送出现在每个用户活动窗口中的公
 msgid "Server administrators can set a MOTD that all users see when they connect. Use"
 msgstr "服务器管理员可以设置一个所有用户在连接时看到的MOTD. 使用"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Server operators can send wallops messages to users who opt in with"
 msgstr "服务器操作员可以向选择加入的用户发送Wallops消息"
@@ -3189,7 +3099,7 @@ msgstr "会话恢复"
 msgid "Session expired"
 msgstr "会话过期"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Session-only"
 msgstr "仅会话"
@@ -3270,7 +3180,7 @@ msgstr "微笑与情感,人与身体,动物与自然,食物与饮料,旅行与�
 msgid "Sound Catalog"
 msgstr "声音目录"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Sound Notifications"
 msgstr "声音通知"
@@ -3287,6 +3197,7 @@ msgstr "国家"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_states.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/feature_lag_indicator.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Status Bar"
 msgstr "状态栏"
@@ -3329,12 +3240,13 @@ msgid "Tab"
 msgstr "标签"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_address_book.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Tabs"
 msgstr "标签"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Text Formatting"
 msgstr "文本格式"
@@ -3343,11 +3255,6 @@ msgstr "文本格式"
 #, elixir-autogen, elixir-format
 msgid "The Address Book (Ctrl+Shift+A) organizes your contacts, notify list, nick color overrides, and future ignore management in one window."
 msgstr "地址簿( Ctrl+Shift+A) 组织您的联系人、 通知列表、 昵称色彩覆盖, 以及未来忽略一个窗口的管理 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The Admin Console lets server administrators execute multiple commands at once by pasting them into a text area. This is useful for initial server setup, configuring ChanServ for multiple channels, or creating bots."
-msgstr "Admin Console 让服务器管理员通过将其粘贴到文本区域来同时执行多个命令. 这对初始服务器设置、 为多个频道配置 ChanServ 或者创建 bots 有用 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3373,11 +3280,6 @@ msgstr "快捷键 Cheetsheet 显示所有可用的键盘快捷键, 按类别排�
 #, elixir-autogen, elixir-format
 msgid "The URL Catcher captures all URLs shared in channels and PMs. URLs in messages are automatically made clickable with link previews."
 msgstr "URL Catcher捕捉所有频道和PM共享的URL. 信件中的 URL 可以自动点击链接预览 。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The channel invite system allows operators of invite-only (+i) channels to invite specific users to join. Invited users receive a retro-style dialog with Join and Ignore options."
-msgstr "频道邀请系统允许只邀请(+i)频道的运营商邀请特定用户加入. 被邀请的用户会收到一个带有join和忽略选项的复古式对话框."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_smart_input.html.heex:2
 #, elixir-autogen, elixir-format
@@ -3419,7 +3321,7 @@ msgstr "该图将两个端点显示为浏览器图标, 由一条基于当前状�
 msgid "The dialog shows: the channel name, who kicked you, and the reason (if provided). Example: \"You have been kicked from #general by AdminNick: spam\""
 msgstr "对话框显示:频道名称,谁踢你,以及原因(如果提供的话). 示例:\"你已经被行政网(AdminNick:垃圾邮件)踢出了#general\""
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "The dialog updates in real time when other users change channel settings, so you always see the current state."
 msgstr "当其他用户更改频道设置时,对话框会实时更新,所以您总是看到当前状态."
@@ -3484,11 +3386,6 @@ msgstr "登记被永久删除"
 msgid "The search bar remembers your last search term. When you reopen it, the previous query is restored and matches are re-highlighted."
 msgstr "搜索栏会记住你上次的搜索术语. 当重新打开时,会恢复之前的查询,并重新突出匹配."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "The status bar at the bottom of the screen provides real-time information about your connection and current channel."
-msgstr "屏幕底部的状态栏提供了您连接和当前频道的实时信息."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_connection_states.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "The status bar shows four possible connection states with visual indicators."
@@ -3519,12 +3416,13 @@ msgstr "超时(?) :"
 msgid "Timer Types"
 msgstr "计时器类型"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Timer commands run in the window that was active when the timer was created. If you switch tabs before a timer fires, the scheduled command still targets the original window and your current window stays selected."
 msgstr "定时器命令运行在创建定时器时活动的窗口中. 如果您在计时器起火前切换标签, 预定命令仍然针对原始窗口, 而您当前窗口仍然被选中 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:58
+#: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Timers"
 msgstr "计时器"
@@ -3574,7 +3472,7 @@ msgstr "工具 > 别名编辑器"
 msgid "Tools > Auto-Respond"
 msgstr "工具 > 自动响应"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Tools > Channel Central"
 msgstr "工具 > 中央频道"
@@ -3589,7 +3487,7 @@ msgstr "工具 > 自定义菜单"
 msgid "Tools > Flood Protection"
 msgstr "工具 > 防洪"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "Tools > Highlight Words"
 msgstr "工具 > 突出显示单词"
@@ -3646,7 +3544,7 @@ msgstr "URL 抓取器"
 msgid "URL Catcher Window:"
 msgstr "URL 抓取窗口 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "URL Menu"
 msgstr "URL 菜单"
@@ -3690,19 +3588,14 @@ msgstr "使用量"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_aliases.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/feature_autorespond.html.heex:39
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:59
 #: lib/retro_hex_chat_web/controllers/help_content/feature_custom_menus.html.heex:34
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/feature_quit_message.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Use"
 msgstr "使用"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "Use the conversations sidebar (click \"Notify List\") or the"
-msgstr "使用对话框边栏(单击“通知列表”)或"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_ignore_list.html.heex:53
 #, elixir-autogen, elixir-format
@@ -3740,11 +3633,6 @@ msgstr "视频呼叫"
 msgid "View"
 msgstr "视图"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "View > Find"
-msgstr "视图 > 查找"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "View and manage the channel ban list."
@@ -3776,7 +3664,8 @@ msgstr "视觉状态"
 msgid "Waiting"
 msgstr "等待时"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "Wallops"
 msgstr "钱包"
@@ -3811,7 +3700,7 @@ msgstr "当一个用户试图加入禁止他们的频道时,服务器会检查�
 msgid "When a user attempts to join an invite-only channel, the server checks the invite exception list. If the user matches an invite exception entry, they are allowed to join without needing an invite."
 msgstr "当用户试图加入一个只邀请频道时,服务器会检查邀请例外列表. 如果用户符合邀请例外条目,则允许他们加入,而不需要邀请."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "When enabled (default), anyone you exchange private messages with is automatically added to the notify list. If the list is full (50 entries), the oldest entry is removed to make room. Toggle this in the Notify List dialog settings."
 msgstr "当启用( 默认) 时, 与您交换私人信件的都会自动添加到通知列表中 。 如果列表是完整的(50个条目),则删除最古老的条目以腾出空间. 在通知列表对话框设置中切换此选项 。"
@@ -3936,7 +3825,7 @@ msgstr "自动清理并可供新登记。"
 msgid "are made. If all attempts fail, you are automatically redirected to the Connect screen with a"
 msgstr "已经做了。 如果全部尝试失败, 您会被自动重定向到 Connect 屏幕上 。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:70
 #, elixir-autogen, elixir-format
 msgid "are treated as comments and skipped. Empty lines are also ignored."
 msgstr "改为批注并跳过。 空行也被忽略."
@@ -3946,7 +3835,7 @@ msgstr "改为批注并跳过。 空行也被忽略."
 msgid "at the start of input to cycle through matching nicknames IRC-style (with"
 msgstr "通过匹配昵称 IRC 风格( 与"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:18
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "button in the Notify List window."
 msgstr "按钮。"
@@ -3980,11 +3869,6 @@ msgstr "组合,以避免与浏览器快捷键冲突。"
 #, elixir-autogen, elixir-format
 msgid "command for finer control."
 msgstr "用于更细的控制。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:12
-#, elixir-autogen, elixir-format
-msgid "command."
-msgstr "命令。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_char_counter.html.heex:3
 #, elixir-autogen, elixir-format
@@ -4135,15 +4019,10 @@ msgstr "以添加命令,或在“表演对话框”中以视觉方式管理命�
 msgid "to cancel."
 msgstr "取消。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:55
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "to close."
 msgstr "关闭。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:31
-#, elixir-autogen, elixir-format
-msgid "to configure where user-targeted notices appear. Channel notices always appear in the channel window regardless of routing settings."
-msgstr "以配置显示针对用户的通知。 频道通知总是出现在频道窗口中,无论路由设置如何."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_flood_protection.html.heex:37
 #, elixir-autogen, elixir-format
@@ -4170,22 +4049,17 @@ msgstr "连接自定义信件,或者在“选项”对话框中配置默认退�
 msgid "to dismiss the tooltip. The tooltip automatically hides when the autocomplete dropdown is open."
 msgstr "以删除工具提示。 工具提示在自动完成下拉打开时自动隐藏."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:42
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "to filter all message types."
 msgstr "以过滤所有信件类型。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "to filter notices from a specific user, or"
 msgstr "过滤特定用户的通知,或"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "to invite a user."
-msgstr "以邀请用户。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "to navigate menu items,"
 msgstr "导航菜单项目,"
@@ -4210,12 +4084,7 @@ msgstr ",以随时打开快捷键Cheetsheet,以完整列出所有可用的快捷
 msgid "to open the command palette. Commands are grouped by category (Basics, Channel, User, Settings, Advanced) with fuzzy search — typing"
 msgstr "打开命令调色板。 命令按类别(基本、频道、用户、设置、高级)分组,并进行模糊搜索——打字"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "to re-read it at any time."
-msgstr "随时重读"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:62
 #, elixir-autogen, elixir-format
 msgid "to select, and"
 msgstr "选择,和"
@@ -4255,7 +4124,7 @@ msgstr "- 通知列表联系人在线"
 msgid "— A notify list contact goes offline"
 msgstr "——通知列表联系人下线."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "— Cancel a specific timer."
 msgstr "——取消特定计时器."
@@ -4265,12 +4134,12 @@ msgstr "——取消特定计时器."
 msgid "— Cancels the paste operation."
 msgstr "——取消贴吧业务."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:64
 #, elixir-autogen, elixir-format
 msgid "— Clear channel welcome (operator)"
 msgstr "——明确频道欢迎(运营商)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:53
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:56
 #, elixir-autogen, elixir-format
 msgid "— Clear the MOTD (admin)"
 msgstr "- 清除MOTD(广告)"
@@ -4390,7 +4259,7 @@ msgstr "——将当前文本保存为草稿并显示之前的历史条目."
 msgid "— Select the highlighted item."
 msgstr "选择突出显示的项目。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:72
 #, elixir-autogen, elixir-format
 msgid "— Send global announcement (admin)"
 msgstr "——发送全球公告(admin)."
@@ -4400,7 +4269,7 @@ msgstr "——发送全球公告(admin)."
 msgid "— Send message."
 msgstr "- 发送信息。"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "— Send wallops message (operator)"
 msgstr "——发送wallops消息(操作)."
@@ -4410,22 +4279,22 @@ msgstr "——发送wallops消息(操作)."
 msgid "— Sends each line as a separate message."
 msgstr "——将每行作为单独的信息发送."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:60
 #, elixir-autogen, elixir-format
 msgid "— Set channel welcome (operator)"
 msgstr "— 设置频道欢迎( 操作)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:49
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "— Set the MOTD (admin)"
 msgstr "——设置MOTD(admin)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:76
 #, elixir-autogen, elixir-format
 msgid "— Set user modes (+w for wallops)"
 msgstr "— 设置用户模式( +w for wallops)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "— Show all active timers."
 msgstr "显示所有活动计时器 。"
@@ -4455,7 +4324,7 @@ msgstr "——用户加入一个频道"
 msgid "— User leaves a channel"
 msgstr "—用户离开频道."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "— View the MOTD"
 msgstr "查看 MOTD 软件"
@@ -4579,3 +4448,609 @@ msgstr "* 断开连接:"
 #, elixir-autogen, elixir-format
 msgid "⚡ icon + gray"
 msgstr "++ 图标 + 灰色"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:94
+#, elixir-autogen, elixir-format
+msgid "# Inspect server state /admin server info /admin channel list /admin cs info #general /setmotd Welcome to RetroHexChat!"
+msgstr "# Inspect server state /admin server info /admin channel list /admin cs info #general /setmotd Welcome to RetroHexChat!"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:29
+#, elixir-autogen, elixir-format
+msgid ", toolbar Options > Timers, or by running"
+msgstr ", toolbar Options > Timers, or by running"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "- active-channel snapshots, search, Info, Create, Delete, Purge, selected-channel banlist output, and ChanServ admin actions."
+msgstr "- active-channel snapshots, search, Info, Create, Delete, Purge, selected-channel banlist output, and ChanServ admin actions."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "- guarded factory-reset controls."
+msgstr "- guarded factory-reset controls."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:47
+#, elixir-autogen, elixir-format
+msgid "- raw batch command execution."
+msgstr "- raw batch command execution."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "- read-only TURN relay stats and active allocations from /admin turn."
+msgstr "- read-only TURN relay stats and active allocations from /admin turn."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "- read-only administrative history with Last and User filters."
+msgstr "- read-only administrative history with Last and User filters."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "- registered-user snapshots, search, online-only filtering, banlist output, Info lookups, moderation actions, roles, rename, and NickServ admin actions."
+msgstr "- registered-user snapshots, search, online-only filtering, banlist output, Info lookups, moderation actions, roles, rename, and NickServ admin actions."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "- send wallops to +w users or announcements to every connected user."
+msgstr "- send wallops to +w users or announcements to every connected user."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "- server information, editable settings, and the solo arcade debug launcher."
+msgstr "- server information, editable settings, and the solo arcade debug launcher."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "- view the current Message of the Day, edit it with /setmotd, or clear it with /clearmotd."
+msgstr "- view the current Message of the Day, edit it with /setmotd, or clear it with /clearmotd."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:109
+#, elixir-autogen, elixir-format
+msgid "/admin channel"
+msgstr "/admin channel"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:117
+#, elixir-autogen, elixir-format
+msgid "/admin nuke"
+msgstr "/admin nuke"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:106
+#, elixir-autogen, elixir-format
+msgid "/admin server"
+msgstr "/admin server"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "/admin server info"
+msgstr "/admin server info"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:107
+#, elixir-autogen, elixir-format
+msgid "/admin user"
+msgstr "/admin user"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "/bio"
+msgstr "/bio"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:91
+#, elixir-autogen, elixir-format
+msgid "/invite"
+msgstr "/invite"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "/knock Command"
+msgstr "/knock Command"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "/mute"
+msgstr "/mute"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "/nick"
+msgstr "/nick"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "/timer"
+msgstr "/timer"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "/unmute"
+msgstr "/unmute"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "/whois"
+msgstr "/whois"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "/whowas"
+msgstr "/whowas"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "A Real Window:"
+msgstr "A Real Window:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "A card names who created the session and walks through its lifecycle on a small timeline: when it was created, when it connected (P2P) or the game started (Arcade), and — once it is over — when it ended, how long it ran, and why it closed."
+msgstr "A card names who created the session and walks through its lifecycle on a small timeline: when it was created, when it connected (P2P) or the game started (Arcade), and — once it is over — when it ended, how long it ran, and why it closed."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "A small pixel-art icon sits in front of each name to signal where the line came from at a glance: a user glyph for anything a person typed, and distinct glyphs for System, Service, Error, Server, Help, Arcade and deleted lines. The nickname itself is shown a little larger and bolder, while the timestamp is smaller, so your eye lands on who spoke first."
+msgstr "A small pixel-art icon sits in front of each name to signal where the line came from at a glance: a user glyph for anything a person typed, and distinct glyphs for System, Service, Error, Server, Help, Arcade and deleted lines. The nickname itself is shown a little larger and bolder, while the timestamp is smaller, so your eye lands on who spoke first."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:41
+#, elixir-autogen, elixir-format
+msgid "Account Dialog"
+msgstr "Account Dialog"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Account widget with nickname and identity or away state."
+msgstr "Account widget with nickname and identity or away state."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "Admin Console"
+msgstr "管理控制台"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Announcements"
+msgstr "Announcements"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Announcements go to every connected user and bypass ignore filters. Only server administrators can send them."
+msgstr "Announcements go to every connected user and bypass ignore filters. Only server administrators can send them."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Audit Log"
+msgstr "Audit Log"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "Auto Respond"
+msgstr "自动响应"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Away Status"
+msgstr "Away Status"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Broadcast"
+msgstr "Broadcast"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Broadcast Tab"
+msgstr "Broadcast Tab"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "ChanServ Registration Tab"
+msgstr "ChanServ Registration Tab"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Changing Nicknames"
+msgstr "Changing Nicknames"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Channels"
+msgstr "频道"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "Channels Tab"
+msgstr "Channels Tab"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Console"
+msgstr "Console"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:80
+#, elixir-autogen, elixir-format
+msgid "Context Menu UI"
+msgstr "Context Menu UI"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Current channel or private message name, user count, and online buddy badge."
+msgstr "Current channel or private message name, user count, and online buddy badge."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:86
+#, elixir-autogen, elixir-format
+msgid "Danger Zone"
+msgstr "Danger Zone"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:104
+#, elixir-autogen, elixir-format
+msgid "Desktop & Windows"
+msgstr "Desktop & Windows"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Each chat message is laid out in two columns: a compact metadata column and the message text."
+msgstr "Each chat message is laid out in two columns: a compact metadata column and the message text."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Edit > Find"
+msgstr "Edit > Find"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_search.html.heex:76
+#, elixir-autogen, elixir-format
+msgid "Edit Menu"
+msgstr "Edit Menu"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:27
+#, elixir-autogen, elixir-format
+msgid "From the UI, right-click a nickname in the nicklist or chat and choose Send Notice. The main input becomes a notice composer for that target."
+msgstr "From the UI, right-click a nickname in the nicklist or chat and choose Send Notice. The main input becomes a notice composer for that target."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Identity & Presence"
+msgstr "Identity & Presence"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Identity and presence cover how you appear to other users: your nickname, NickServ login state, profile bio, away status, and personal user modes."
+msgstr "Identity and presence cover how you appear to other users: your nickname, NickServ login state, profile bio, away status, and personal user modes."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "If a session can no longer be found (for example, an old invite whose session was purged), the card falls back to the plain join link."
+msgstr "If a session can no longer be found (for example, an old invite whose session was purged), the card falls back to the plain join link."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "In Admin Console > Broadcast, choose Wallops or Announce, enter a message, and send it through the same command handlers as /wallops and /announce."
+msgstr "In Admin Console > Broadcast, choose Wallops or Announce, enter a message, and send it through the same command handlers as /wallops and /announce."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "In the Console tab, each line should be a slash command (e.g.,"
+msgstr "In the Console tab, each line should be a slash command (e.g.,"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Last Seen"
+msgstr "最后看见"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Last Seen runs the Whowas lookup for recently disconnected users and shows when they left, which channels they were in, and their quit message when one was recorded."
+msgstr "Last Seen runs the Whowas lookup for recently disconnected users and shows when they left, which channels they were in, and their quit message when one was recorded."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Live vs. Finished"
+msgstr "Live vs. Finished"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "MOTD"
+msgstr "MOTD"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "MOTD Tab"
+msgstr "MOTD Tab"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:120
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:83
+#, elixir-autogen, elixir-format
+msgid "Message of the Day Menu"
+msgstr "Message of the Day Menu"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Moderation Actions"
+msgstr "Moderation Actions"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Nickname Ownership"
+msgstr "Nickname Ownership"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Nickname context menus include Whois and Last Seen (Whowas). Whois cards include buttons for Whowas and Query (PM). Last Seen cards include a Whois button when the user is currently online."
+msgstr "Nickname context menus include Whois and Last Seen (Whowas). Whois cards include buttons for Whowas and Query (PM). Last Seen cards include a Whois button when the user is currently online."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Open it from View > Notify List, the Options dropdown, or by typing"
+msgstr "Open it from View > Notify List, the Options dropdown, or by typing"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Open the Highlight Words window ("
+msgstr "Open the Highlight Words window ("
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Open the Timers dialog from"
+msgstr "Open the Timers dialog from"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "Operator and voice entries toggle based on the target's current role: Give Op (+o) becomes Remove Op (-o), and Give Voice (+v) becomes Remove Voice (-v). Mute (channel) opens a duration prompt; leave it blank for a permanent mute, or enter 30s, 5m, 1h, or 1d. Unmute (channel) removes the channel-level mute immediately."
+msgstr "Operator and voice entries toggle based on the target's current role: Give Op (+o) becomes Remove Op (-o), and Give Voice (+v) becomes Remove Voice (-v). Mute (channel) opens a duration prompt; leave it blank for a permanent mute, or enter 30s, 5m, 1h, or 1d. Unmute (channel) removes the channel-level mute immediately."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_connection_diagram.html.heex:78
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:94
+#: lib/retro_hex_chat_web/controllers/help_content/feature_privacy_settings.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "P2P Lobby"
+msgstr "P2P 大厅"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "P2P lobby invites and Arcade links appear as rich session cards instead of a plain line with a link."
+msgstr "P2P lobby invites and Arcade links appear as rich session cards instead of a plain line with a link."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Personal User Modes"
+msgstr "Personal User Modes"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Profile Bio"
+msgstr "Profile Bio"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Register the channel with ChanServ, drop registration as founder, and manage SOP, AOP, and VOP lists."
+msgstr "Register the channel with ChanServ, drop registration as founder, and manage SOP, AOP, and VOP lists."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_central.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Registration:"
+msgstr "Registration:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "Right-click a channel in the conversations sidebar to see: Mark as Read, Mute/Unmute Channel, Copy Name, Leave Channel, Channel Settings. This mute controls notifications for the conversation; it is different from the channel-level user mute in nickname menus."
+msgstr "Right-click a channel in the conversations sidebar to see: Mark as Read, Mute/Unmute Channel, Copy Name, Leave Channel, Channel Settings. This mute controls notifications for the conversation; it is different from the channel-level user mute in nickname menus."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Right-click a nickname in a chat message to see: Private Message, Whois, Last Seen (Whowas), Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Invite to Channel..., Kick, Ban, status-aware Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
+msgstr "Right-click a nickname in a chat message to see: Private Message, Whois, Last Seen (Whowas), Copy Nick, Ignore/Unignore, Add to Address Book, Set Nick Color. Registered users also see P2P actions: P2P Session, Audio Call, Video Call, Send File (disabled if target is not registered or is yourself). Channel operators also see: Invite to Channel..., Kick, Ban, status-aware Give/Remove Voice, status-aware Give/Remove Op, and Mute/Unmute (channel)."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Routing Policy"
+msgstr "Routing Policy"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Sender Icons"
+msgstr "Sender Icons"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:115
+#, elixir-autogen, elixir-format
+msgid "Server Broadcasts"
+msgstr "Server Broadcasts"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "Server Broadcasts covers operator wallops and administrator announcements sent from the Admin Console Broadcast tab or slash commands."
+msgstr "Server Broadcasts covers operator wallops and administrator announcements sent from the Admin Console Broadcast tab or slash commands."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Server Settings"
+msgstr "Server Settings"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:79
+#, elixir-autogen, elixir-format
+msgid "Server Settings Tab"
+msgstr "Server Settings Tab"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "Set away when you are unavailable. The status-bar quick action can mark you away or back, and the Presence tab lets you set a custom message."
+msgstr "Set away when you are unavailable. The status-bar quick action can mark you away or back, and the Presence tab lets you set a custom message."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "TURN"
+msgstr "TURN"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "The Account dialog profile tab can start a nickname change. Registered target nicknames still require the NickServ password in the confirmation flow."
+msgstr "The Account dialog profile tab can start a nickname change. Registered target nicknames still require the NickServ password in the confirmation flow."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The Admin Console is a tabbed server administration panel for inspecting and managing server state. Open it from the File menu, the Start menu Admin group, or the toolbar; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X. The Console tab keeps the raw batch command runner for provisioning and power-user workflows."
+msgstr "The Admin Console is a tabbed server administration panel for inspecting and managing server state. Open it from the File menu, the Start menu Admin group, or the toolbar; it opens as a desktop window you can drag, resize, minimize to the taskbar, and close with its title-bar X. The Console tab keeps the raw batch command runner for provisioning and power-user workflows."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "The Channels tab reads /admin channel list as a point-in-time snapshot. Use Search before Refresh, enter a channel and choose Info to run /admin channel info and load its banlist, enter a new channel name and choose Create to run /admin channel create, type a channel name into the confirmation field before Delete or Purge, or use ChanServ admin forms for info, drop, transfer, and access-list commands."
+msgstr "The Channels tab reads /admin channel list as a point-in-time snapshot. Use Search before Refresh, enter a channel and choose Info to run /admin channel info and load its banlist, enter a new channel name and choose Create to run /admin channel create, type a channel name into the confirmation field before Delete or Purge, or use ChanServ admin forms for info, drop, transfer, and access-list commands."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:88
+#, elixir-autogen, elixir-format
+msgid "The Danger Zone tab previews /admin nuke, shows the preserved tables, and requires typing the current server name before it dispatches /admin nuke --confirm."
+msgstr "The Danger Zone tab previews /admin nuke, shows the preserved tables, and requires typing the current server name before it dispatches /admin nuke --confirm."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:74
+#, elixir-autogen, elixir-format
+msgid "The MOTD tab shows the current Message of the Day and gives administrators Set MOTD, Clear MOTD, and Refresh controls. Server operators can view the tab, but editing still requires administrator privileges."
+msgstr "The MOTD tab shows the current Message of the Day and gives administrators Set MOTD, Clear MOTD, and Refresh controls. Server operators can view the tab, but editing still requires administrator privileges."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "The Metadata Column"
+msgstr "The Metadata Column"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:81
+#, elixir-autogen, elixir-format
+msgid "The Server Settings tab reads /admin server info and /admin server settings, then saves changed fields with /admin server set. It also exposes the admin-only /singleplayer debug launcher."
+msgstr "The Server Settings tab reads /admin server info and /admin server settings, then saves changed fields with /admin server set. It also exposes the admin-only /singleplayer debug launcher."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_url_catcher.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "The URL Catcher is a desktop window — drag, resize, minimize to its taskbar button, or press Escape to close it. URLs keep being captured while it is closed. Also available from the Start menu."
+msgstr "The URL Catcher is a desktop window — drag, resize, minimize to its taskbar button, or press Escape to close it. URLs keep being captured while it is closed. Also available from the Start menu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:51
+#, elixir-autogen, elixir-format
+msgid "The Users tab reads /admin user list and /admin user banlist as point-in-time snapshots. Use Search and Online only before Refresh, enter a nick and choose Info to run /admin user info, use the moderation forms to confirm ban/unban, kick, mute, and unmute actions, or use Account & Roles and NickServ admin forms for rename, role, info, drop, and password reset commands."
+msgstr "The Users tab reads /admin user list and /admin user banlist as point-in-time snapshots. Use Search and Online only before Refresh, enter a nick and choose Info to run /admin user info, use the moderation forms to confirm ban/unban, kick, mute, and unmute actions, or use Account & Roles and NickServ admin forms for rename, role, info, drop, and password reset commands."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The channel invite system allows operators of invite-only (+i) channels to invite specific users to join. Operators can type /invite or right-click a nick in the nicklist and choose Invite to Channel... to select one of their joined channels. Invited users receive a retro-style dialog with Join and Ignore options."
+msgstr "The channel invite system allows operators of invite-only (+i) channels to invite specific users to join. Operators can type /invite or right-click a nick in the nicklist and choose Invite to Channel... to select one of their joined channels. Invited users receive a retro-style dialog with Join and Ignore options."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:42
+#, elixir-autogen, elixir-format
+msgid "The current user mode is wallops (+w), which controls whether operator broadcast messages are delivered to your Status tab."
+msgstr "The current user mode is wallops (+w), which controls whether operator broadcast messages are delivered to your Status tab."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "The message text gets the wider column and a slightly larger font, so it reads well on phones as well as desktop — without dropping the retro monospace identity. Nicknames are shown plainly, with no surrounding angle brackets, and the timestamp carries the full date and time in its hover tooltip."
+msgstr "The message text gets the wider column and a slightly larger font, so it reads well on phones as well as desktop — without dropping the retro monospace identity. Nicknames are shown plainly, with no surrounding angle brackets, and the timestamp carries the full date and time in its hover tooltip."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The narrow left column shows the author's nickname — or, for system lines, an origin label such as System, Error, Service or MOTD — on the first line, with a smaller, muted timestamp beneath it. The nickname stays clickable for the hover card, private messages and the context menu."
+msgstr "The narrow left column shows the author's nickname — or, for system lines, an origin label such as System, Error, Service or MOTD — on the first line, with a smaller, muted timestamp beneath it. The nickname stays clickable for the hover card, private messages and the context menu."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_status_bar.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The status bar at the bottom of the screen provides real-time information about your account, connection, and current channel."
+msgstr "The status bar at the bottom of the screen provides real-time information about your account, connection, and current channel."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "There is no dedicated keyboard shortcut for User Lookup. Use the Tools menu, a nickname context menu, /whois, or /whowas."
+msgstr "There is no dedicated keyboard shortcut for User Lookup. Use the Tools menu, a nickname context menu, /whois, or /whowas."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "Timers Dialog"
+msgstr "Timers Dialog"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:29
+#, elixir-autogen, elixir-format
+msgid "Tools > Timers"
+msgstr "Tools > Timers"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Use NickServ to register your current nickname and identify when you reconnect. Registration protects the name and lets identified users keep saved preferences. If you no longer want the nickname registered, the Account dialog can drop the registration after you confirm with its password. If an old session is still holding a registered nickname, use the advanced Ghost session action."
+msgstr "Use NickServ to register your current nickname and identify when you reconnect. Registration protects the name and lets identified users keep saved preferences. If you no longer want the nickname registered, the Account dialog can drop the registration after you confirm with its password. If an old session is still holding a registered nickname, use the advanced Ghost session action."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_context_menus.html.heex:85
+#, elixir-autogen, elixir-format
+msgid "User Lookup"
+msgstr "User Lookup"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "User Lookup collects Whois and Last Seen lookups in one place. Open it from Tools > User Lookup, or right-click a nickname in the nick list or chat area."
+msgstr "User Lookup collects Whois and Last Seen lookups in one place. Open it from Tools > User Lookup, or right-click a nickname in the nick list or chat area."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Users"
+msgstr "用户"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_admin_console.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Users Tab"
+msgstr "Users Tab"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_server_broadcasts.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Wallops messages go only to users who enabled +w with /umode +w. Server operators and administrators can send them."
+msgstr "Wallops messages go only to users who enabled +w with /umode +w. Server operators and administrators can send them."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "What the Card Shows"
+msgstr "What the Card Shows"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notify_list.html.heex:15
+#, elixir-autogen, elixir-format
+msgid "When one or more tracked buddies are online, a bell badge appears in the status bar; click it to open the same window."
+msgstr "When one or more tracked buddies are online, a bell badge appears in the status bar; click it to open the same window."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_session_cards.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "While a session is still live the card offers a button — Join or Open lobby for P2P, Open Arcade for a game. Once the session has finished the card shows its final state and drops the button."
+msgstr "While a session is still live the card offers a button — Join or Open lobby for P2P, Open Arcade for a game. Once the session has finished the card shows its final state and drops the button."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Whois"
+msgstr "谁是"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_user_lookup.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Whois shows current information for an online user in a result card, including shared channels, online time, idle time, registration, away status, bio, and client details when available."
+msgstr "Whois shows current information for an online user in a result card, including shared channels, online time, idle time, registration, away status, bio, and client details when available."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_message_layout.html.heex:22
+#, elixir-autogen, elixir-format
+msgid "Why It Looks This Way"
+msgstr "Why It Looks This Way"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_identity_presence.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Your bio is a short profile line shown in whois output. Registered users keep it across sessions; guests keep it for the current session. The Account dialog shows the 200-character limit while you type."
+msgstr "Your bio is a short profile line shown in whois output. Registered users keep it across sessions; guests keep it for the current session. The Account dialog shows the 200-character limit while you type."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_special_messages.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "or Help > Message of the Day to re-read it at any time."
+msgstr "or Help > Message of the Day to re-read it at any time."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_channel_invites.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "or the Invite to Channel... nicklist menu item to invite a user."
+msgstr "or the Invite to Channel... nicklist menu item to invite a user."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_highlight_words.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "or the Start menu) to add custom trigger words with optional background colors. It is a desktop window — drag, resize, minimize to its taskbar button, or press Escape to close it; the Add/Edit forms open as small modals centered over the window."
+msgstr "or the Start menu) to add custom trigger words with optional background colors. It is a desktop window — drag, resize, minimize to its taskbar button, or press Escape to close it; the Add/Edit forms open as small modals centered over the window."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_notices.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "to display the current routing policy. User notices are routed to the active window, and channel notices appear in the channel window."
+msgstr "to display the current routing policy. User notices are routed to the active window, and channel notices appear in the channel window."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_timers.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "with no arguments. The dialog lists active timers and provides Add, Edit, and Stop buttons without requiring raw command syntax."
+msgstr "with no arguments. The dialog lists active timers and provides Add, Edit, and Stop buttons without requiring raw command syntax."

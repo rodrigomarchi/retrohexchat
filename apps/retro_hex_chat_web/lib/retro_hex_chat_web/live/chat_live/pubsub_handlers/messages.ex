@@ -63,7 +63,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         {:halt, socket}
       else
         socket = check_flood_and_auto_ignore(socket, payload.author, payload.type, session)
-        decorated = maybe_highlight(payload, session)
+        decorated = payload |> maybe_highlight(session) |> SessionCard.enrich()
 
         socket =
           socket

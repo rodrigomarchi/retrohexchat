@@ -256,7 +256,7 @@ msgstr ""
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr ""
 
-#: lib/retro_hex_chat/admin.ex:483
+#: lib/retro_hex_chat/admin.ex:512
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr ""
@@ -493,7 +493,7 @@ msgstr ""
 msgid "Active channels: %{channel_count}\n"
 msgstr ""
 
-#: lib/retro_hex_chat/admin.ex:502
+#: lib/retro_hex_chat/admin.ex:531
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr ""
@@ -568,7 +568,7 @@ msgstr ""
 msgid "Server banned: %{reason}"
 msgstr ""
 
-#: lib/retro_hex_chat/admin.ex:351
+#: lib/retro_hex_chat/admin.ex:380
 #, elixir-autogen, elixir-format
 msgid "Server setting '%{key}' set to '%{value}'."
 msgstr ""
@@ -730,17 +730,17 @@ msgstr ""
 msgid "server.info"
 msgstr ""
 
-#: lib/retro_hex_chat/admin.ex:343
+#: lib/retro_hex_chat/admin.ex:372
 #, elixir-autogen, elixir-format
 msgid "server.set"
 msgstr ""
 
-#: lib/retro_hex_chat/admin.ex:416
+#: lib/retro_hex_chat/admin.ex:445
 #, elixir-autogen, elixir-format
 msgid "system.nuke"
 msgstr ""
 
-#: lib/retro_hex_chat/admin.ex:400
+#: lib/retro_hex_chat/admin.ex:429
 #, elixir-autogen, elixir-format
 msgid "system.nuke_preview"
 msgstr ""
@@ -775,8 +775,8 @@ msgstr ""
 msgid "user.rename"
 msgstr ""
 
-#: lib/retro_hex_chat/admin.ex:479
-#: lib/retro_hex_chat/admin.ex:500
+#: lib/retro_hex_chat/admin.ex:508
+#: lib/retro_hex_chat/admin.ex:529
 #, elixir-autogen, elixir-format
 msgid "user.role"
 msgstr ""
@@ -794,4 +794,9 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:140
 #, elixir-autogen, elixir-format
 msgid "whowas_retention_seconds must be an integer from 1 to 86400"
+msgstr ""
+
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:153
+#, elixir-autogen, elixir-format
+msgid "space_max_participants must be an integer from 1 to %{max}"
 msgstr ""

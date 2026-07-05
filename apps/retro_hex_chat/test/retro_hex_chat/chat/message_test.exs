@@ -12,6 +12,18 @@ defmodule RetroHexChat.Chat.MessageTest do
       assert changeset.valid?
     end
 
+    test "accepts the space_invite type" do
+      attrs = %{
+        channel_name: "#lobby",
+        author_nickname: "Alice",
+        content: "/space/some-token",
+        type: "space_invite"
+      }
+
+      changeset = Message.changeset(%Message{}, attrs)
+      assert changeset.valid?
+    end
+
     test "requires channel_name, author_nickname, content" do
       changeset = Message.changeset(%Message{}, %{})
       refute changeset.valid?

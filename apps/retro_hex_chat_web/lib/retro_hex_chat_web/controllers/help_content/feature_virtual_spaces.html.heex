@@ -1,0 +1,31 @@
+<p>
+  {dgettext(
+    "help_space",
+    "A virtual space is a multiplayer 8-bit office linked to a channel: up to 20 people walk around a tile map with their avatars, sit at tables and chat in real time. Spaces are created with /space and joined through the invite card posted in the channel."
+  )}
+</p>
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "Creating a Space")}</.help_h4>
+<p>
+  {dgettext(
+    "help_space",
+    "Any registered, identified user who can post in a channel can run /space there. The command accepts an optional target channel, a name and a lifetime (ttl=2h by default, 8h maximum). The invite card shows the space name, creator, channel, map and expiry."
+  )}
+</p>
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "Joining and Moving")}</.help_h4>
+<p>
+  {dgettext(
+    "help_space",
+    "Click the invite card or open the /space/<token> link to drop into the map. Move with the arrow keys or WASD; the server validates every step, so walls and furniture block movement for everyone equally. Reloading the page brings you back to the same tile."
+  )}
+</p>
+<.help_h4 icon={:icon_community}>{dgettext("help_space", "Lifecycle")}</.help_h4>
+<p>
+  {dgettext(
+    "help_space",
+    "A space expires when its lifetime ends — activity does not extend it. If nobody enters within 5 minutes of creation, it expires early. The creator (or an admin) can close it at any time."
+  )}
+</p>
+<.help_h4 icon={:icon_link}>{dgettext("help_space", "See Also")}</.help_h4>
+<p>
+  <.help_link topic="cmd-space">{dgettext("help_space", "/space")}</.help_link>
+</p>

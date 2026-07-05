@@ -48,60 +48,62 @@ o agente marca `[x]` aqui conforme avança e registra aprendizados em
 
 Backend — domínio:
 
-- [ ] Migration `virtual_space_sessions` (gabarito:
+- [x] Migration `virtual_space_sessions` (gabarito:
       `20260625200000_create_lobby_sessions.exs`; token size 64 + unique index,
       FK `creator_id` -> `registered_nicks`).
-- [ ] `VirtualSpace.Schema.Session` (status
+- [x] `VirtualSpace.Schema.Session` (status
       `pending/active/closed/expired/failed`, `terminal?/1`).
-- [ ] `VirtualSpace.Queries` (get por token, listagem de vencidas, expire).
-- [ ] `VirtualSpace.Policy` (criar/entrar/fechar/kick/mute/change_map;
+- [x] `VirtualSpace.Queries` (get por token, listagem de vencidas, expire).
+- [x] `VirtualSpace.Policy` (criar/entrar/fechar/kick/mute/change_map;
       integração com `Channels.Policy`/`Membership`/`Modes`).
-- [ ] `VirtualSpace.Map` + `VirtualSpace.Maps.TavernCafeV1` esqueleto
+- [x] `VirtualSpace.Map` + `VirtualSpace.Maps.TavernCafeV1` esqueleto
       (definição mínima válida: bounds, spawn, collision vazia é aceitável
       nesta fase).
-- [ ] `VirtualSpace.Registry` + `VirtualSpace.Supervisor` (gabarito Lobby) +
+- [x] `VirtualSpace.Registry` + `VirtualSpace.Supervisor` (gabarito Lobby) +
       children em `application.ex`.
-- [ ] `VirtualSpace.SessionServer` mínimo (join/leave/close/expire, estado de
+- [x] `VirtualSpace.SessionServer` mínimo (join/leave/close/expire, estado de
       participantes, snapshot simples; TTLs via `Application.get_env`).
-- [ ] `VirtualSpace.Service` (create com token forte + rate limit via
+- [x] `VirtualSpace.Service` (create com token forte + rate limit via
       `P2P.RateLimiter.check_session_rate/1`, join com recuperação de processo,
       close, summaries).
-- [ ] Facade `RetroHexChat.VirtualSpace` com `@spec` em tudo.
-- [ ] Setting `"space_max_participants"`: leitura com fallback + whitelist em
+- [x] Facade `RetroHexChat.VirtualSpace` com `@spec` em tudo.
+- [x] Setting `"space_max_participants"`: leitura com fallback + whitelist em
       `Handlers.Admin.Server.validate_setting_value/2`.
-- [ ] Comando `Handlers.Space` (behaviour completo: `help/0`,
+- [x] Comando `Handlers.Space` (behaviour completo: `help/0`,
       `syntax_definition/0`, `category/0 = :user`; parse de
       `[#canal-alvo] [nome] ttl=`; recusa em PM/Status) + registro em
       `Commands.Registry`.
 
 Backend — web:
 
-- [ ] Tipo `space_invite` em `Chat.Message @type_values` +
+- [x] Tipo `space_invite` em `Chat.Message @type_values` +
       `Chat.Service @known_types`.
-- [ ] `Helpers.SpaceInvite` + especial-case em
+- [x] `Helpers.SpaceInvite` + especial-case em
       `CommandDispatch.handle_dispatch_result/3` (análogo `:lobby_invite`).
-- [ ] Enrich clause em `Helpers.SessionCard` + render em
+- [x] Enrich clause em `Helpers.SessionCard` + render em
       `Components.SessionCard`/`MessageRow` + pontos de
-      `pubsub_handlers/messages.ex`.
-- [ ] Rota `live "/space/:token", SpaceLive` na `live_session :app_locale`.
-- [ ] `SpaceLive` shell: auth via `SessionHelpers`, validação de token/policy,
+      `pubsub_handlers/messages.ex` (+ history/pagination enrich; migration
+      alargou `messages.type` p/ varchar(20)).
+- [x] Rota `live "/space/:token", SpaceLive` na `live_session :app_locale`.
+- [x] `SpaceLive` shell: auth via `SessionHelpers`, validação de token/policy,
       terminal retro para inválido/expirado/cheio, assinatura do `join_token`
       (`Phoenix.Token`, padrão `P2P.SessionToken`), canvas placeholder com
       `phx-hook="SpaceCanvasHook"` + data attributes.
-- [ ] Infra Phoenix Channel do zero: `UserSocket`, `socket "/socket"` no
+- [x] Infra Phoenix Channel do zero: `UserSocket`, `socket "/socket"` no
       endpoint, `SpaceChannel` (join valida `join_token` + policy + capacidade;
       responde snapshot simples; leave em `terminate/2`),
       `test/support/channel_case.ex`.
-- [ ] Cleanup periódico (gabarito `P2P.CleanupTask`) + config
+- [x] Cleanup periódico (gabarito `P2P.CleanupTask`) + config
       `virtual_space_*`.
-- [ ] Tópicos de help (`/space` em Commands; "Virtual spaces" em Features) +
-      strings gettext (domínio `space`/`chat`).
+- [x] Tópicos de help (`/space` em Commands; "Virtual spaces" em Features) +
+      strings gettext (domínios afetados extraídos; ~61 strings novas
+      traduzidas de verdade nos 20 locales exigidos).
 
 Fechamento da fase:
 
-- [ ] Testes da fase no `09-mapa-de-testes.md` §Fase 1 todos verdes.
-- [ ] `make ci` completo verde.
-- [ ] Commit único da fase na `main`.
+- [x] Testes da fase no `09-mapa-de-testes.md` §Fase 1 todos verdes.
+- [x] `make ci` completo verde (9/9, incluindo dialyzer).
+- [x] Commit único da fase na `main`.
 
 ## Fase 2: canvas, snapshot e presença
 

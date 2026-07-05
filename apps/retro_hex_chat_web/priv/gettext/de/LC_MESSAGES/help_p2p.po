@@ -41,18 +41,7 @@ msgstr ". Der Peer muss akzeptieren, bevor die Kamera aktiviert ist."
 msgid ". The peer must accept."
 msgstr "Der Peer muss akzeptieren."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "/call <nickname>"
-msgstr "/call <nickname>"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "/p2p <nickname>"
-msgstr "/p2p <nickname>"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:8
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "/sendfile <nickname>"
 msgstr "/sendfile <nickname>"
@@ -95,8 +84,7 @@ msgstr "Nach dem Transfer wird die Hash SHA-256 automatisch überprüft. Wenn es
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:6
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:21
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:56
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "Audio Call"
@@ -113,6 +101,7 @@ msgid "Blocked extensions: .exe, .bat, .cmd, .com, .msi, .scr, .pif, .vbs, .js, 
 msgstr "Blockierte Erweiterungen: .exe, .bat, .cmd, .com, .msi, .scr, .pif, .vbs, .js, unter anderem. Maximale Größe ist vom Server konfigurierbar (Standard: 500 MB)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:58
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Call Quality"
@@ -120,32 +109,16 @@ msgstr "Rufqualität"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:4
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:77
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Click"
 msgstr "Klicken Sie hier"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "Click a nick (in the user list or chat) and select P2P Session, Audio Call, Video Call, or Send File. P2P items only appear for registered users and are disabled if the target is not registered."
-msgstr "Klicken Sie auf einen Nick (in der Benutzerliste oder im Chat) und wählen Sie P2P Session, Audio Call, Video Call oder Datei senden. P2P-Elemente erscheinen nur für registrierte Benutzer und werden deaktiviert, wenn das Ziel nicht registriert ist."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Click the"
 msgstr "Klicken Sie auf"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:93
-#, elixir-autogen, elixir-format
-msgid "Context Menus"
-msgstr "Kontextmenüs"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Creating a Session"
-msgstr "Eine Sitzung erstellen"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:12
 #, elixir-autogen, elixir-format
@@ -173,26 +146,10 @@ msgstr "Klicken Sie während eines Audioanrufs auf"
 msgid "End Call"
 msgstr "End Call"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:78
-#, elixir-autogen, elixir-format
-msgid "End Session"
-msgstr "Ende der Sitzung"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:75
-#, elixir-autogen, elixir-format
-msgid "Ending"
-msgstr "Ende"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:50
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:85
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "File Transfer"
 msgstr "Dateiübertragung"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:44
-#, elixir-autogen, elixir-format
-msgid "Generic"
-msgstr "Generika"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:12
 #, elixir-autogen, elixir-format
@@ -235,11 +192,6 @@ msgstr "Layout"
 msgid "Live Switching"
 msgstr "Live Switching"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "Lobby"
-msgstr "Lobby"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Low"
@@ -281,23 +233,6 @@ msgstr "Mute/Unmute Mikrofon"
 msgid "Or in the P2P session, click"
 msgstr "Oder in der P2P-Sitzung klicken Sie"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:88
-#, elixir-autogen, elixir-format
-msgid "P2P Games"
-msgstr "P2P Spiele"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:48
-#, elixir-autogen, elixir-format
-msgid "P2P Sessions"
-msgstr "P2P Sitzungen"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "P2P sessions allow direct communication between two registered users for chat, file transfer, and audio/video calls."
-msgstr "P2P-Sitzungen ermöglichen eine direkte Kommunikation zwischen zwei registrierten Benutzern für Chat, Dateiübertragung und Audio/video-Aufrufe."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Pause and Resume"
@@ -307,11 +242,6 @@ msgstr "Pause und Wiederaufnahme"
 #, elixir-autogen, elixir-format
 msgid "Peer-to-peer video calls with full-screen remote video and a local video thumbnail."
 msgstr "Peer-to-Peer Videoanrufe mit Full-Screen Remote-Video und einem lokalen Video-Daumenail."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:70
-#, elixir-autogen, elixir-format
-msgid "Pending sessions (waiting for the peer) expire in 5 minutes. The lobby expires due to inactivity after 15 minutes. The WebRTC connection has a 30-second timeout."
-msgstr "Pending Sessions (waiting for the peer) verfallen in 5 Minuten. Die Lobby endet aufgrund von Inaktivität nach 15 Minuten. Die WebRTC-Verbindung hat einen 30-Sekunden-Timeout."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:31
 #, elixir-autogen, elixir-format
@@ -324,7 +254,6 @@ msgid "Picture-in-Picture"
 msgstr "Bild-in-Bild"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:42
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:91
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Privacy Settings"
@@ -359,7 +288,8 @@ msgstr "Einschränkungen"
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:19
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:83
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:35
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:46
 #, elixir-autogen, elixir-format
 msgid "See Also"
@@ -390,11 +320,6 @@ msgstr "Senden Sie Dateien direkt an einen anderen Benutzer über eine Peer-to-P
 msgid "Sending a File"
 msgstr "Senden einer Datei"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "Session Types"
-msgstr "Sitzungstypen"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Start peer-to-peer audio calls with another user in a P2P session."
@@ -410,30 +335,10 @@ msgstr "Einen Anruf starten"
 msgid "Starting a Video Call"
 msgstr "Beginn eines Video-Calls"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "Starts a file transfer session."
-msgstr "Startet eine Dateiübertragungssitzung."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "Starts a generic session. The target user receives an invite and must accept."
-msgstr "Startet eine generische Sitzung. Der Zielbenutzer erhält eine Einladung und muss akzeptieren."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "Starts an audio call session. Automatically requests permission after entering the lobby."
-msgstr "Startet eine Audio-Call-Sitzung. Beantragt automatisch die Erlaubnis nach der Eingabe der Lobby."
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:3
 #, elixir-autogen, elixir-format
 msgid "The 4 bars indicate connection quality:"
 msgstr "Die 4 Bars zeigen Verbindungsqualität:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "The lobby is the session waiting room. Both users can chat and request actions (calls, transfers). All actions require"
-msgstr "Die Lobby ist der Sitzungswarteraum. Beide Benutzer können Chat und Anfragen Aktionen (Calls, Transfers). Alle Aktionen erfordern"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:24
 #, elixir-autogen, elixir-format
@@ -449,11 +354,6 @@ msgstr "Das Remote-Video nimmt den Hauptbereich ein. Ihr lokales Video erscheint
 #, elixir-autogen, elixir-format
 msgid "The timer shows the call duration. The quality indicator shows 4 levels: Excellent, Good, Fair, Poor."
 msgstr "Der Timer zeigt die Rufdauer. Der Qualitätsindikator zeigt 4 Ebenen: Ausgezeichnet, gut, fair, arm."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:68
-#, elixir-autogen, elixir-format
-msgid "Timeouts"
-msgstr "Timeouts"
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:24
 #, elixir-autogen, elixir-format
@@ -475,21 +375,10 @@ msgstr "Upgrade von Audio auf Video"
 msgid "Use the"
 msgstr "Verwenden Sie die"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "Via commands:"
-msgstr "Über Befehle:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:26
-#, elixir-autogen, elixir-format
-msgid "Via context menu:"
-msgstr "Über das Kontextmenü:"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/feature_call_quality.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/feature_media_devices.html.heex:22
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:62
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:87
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Video Call"
@@ -510,20 +399,10 @@ msgstr "Wenn Sie ein Angebot erhalten, sehen Sie den Dateinamen und die Größe.
 msgid "and select the file."
 msgstr "und wählen Sie die Datei."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:38
-#, elixir-autogen, elixir-format
-msgid "bilateral consent"
-msgstr "bilaterale Zustimmung"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "button to mute your microphone. The other user will see an indication that you are muted."
 msgstr "Knopf, um Ihr Mikrofon zu stumm. Der andere Benutzer wird eine Anzeige sehen, dass Sie mutiert sind."
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:78
-#, elixir-autogen, elixir-format
-msgid "or close the tab. The other user will be notified."
-msgstr "oder die Registerkarte schließen. Der andere Benutzer wird informiert."
 
 #: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:22
 #, elixir-autogen, elixir-format
@@ -545,27 +424,144 @@ msgstr "das ferne Video in ein schwimmendes Fenster, das während des Navigieren
 msgid "to see available devices. Choose a microphone, camera, or audio output from the menus."
 msgstr "um verfügbare Geräte zu sehen. Wählen Sie ein Mikrofon, eine Kamera oder Audioausgabe aus den Menüs."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:37
 #, elixir-autogen, elixir-format
-msgid "— auto-requests audio call"
-msgstr "— Auto-Requests Audio-Aufruf"
+msgid "/p2p"
+msgstr "/p2p"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:50
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "— auto-requests file transfer"
-msgstr "— auto-requests Dateiübertragung"
+msgid "A persistent dock exposes every feature: Audio, Video, File and Game. Each feature opens its own panel, and panels stack so several activities can run together."
+msgstr "A persistent dock exposes every feature: Audio, Video, File and Game. Each feature opens its own panel, and panels stack so several activities can run together."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "— auto-requests video call"
-msgstr "— auto-requests video call"
+msgid "Audio and video are self-controlled: each peer turns their own microphone and camera on or off independently, like a modern video call. There is no separate consent to start a call."
+msgstr "Audio and video are self-controlled: each peer turns their own microphone and camera on or off independently, like a modern video call. There is no separate consent to start a call."
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:44
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:61
 #, elixir-autogen, elixir-format
-msgid "— chat with action options"
-msgstr "— Chat mit Aktionsoptionen"
+msgid "Connection Diagram"
+msgstr "Connection Diagram"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_p2p_sessions.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "— the other user must accept before the action starts."
-msgstr "— der andere Benutzer muss akzeptieren, bevor die Aktion beginnt."
+msgid "Download / Upload"
+msgstr "Download / Upload"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "During a call the Network panel shows live statistics about your peer-to-peer connection. Click the ? button in the panel to see a short explanation of each metric inline, or hover any row for a tooltip."
+msgstr "During a call the Network panel shows live statistics about your peer-to-peer connection. Click the ? button in the panel to see a short explanation of each metric inline, or hover any row for a tooltip."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Ending any one activity — hanging up a call, finishing a transfer, closing a game — keeps the lobby open for the next thing. The connection only closes when someone leaves or the lobby goes idle."
+msgstr "Ending any one activity — hanging up a call, finishing a transfer, closing a game — keeps the lobby open for the next thing. The connection only closes when someone leaves or the lobby goes idle."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "File transfers and games still ask the other side to accept. Send a file at any time — even during a call — and the receiver confirms. Propose a game from the picker; once accepted it runs on the same connection alongside your call and transfers."
+msgstr "File transfers and games still ask the other side to accept. Send a file at any time — even during a call — and the receiver confirms. Propose a game from the picker; once accepted it runs on the same connection alongside your call and transfers."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Files and Games"
+msgstr "Files and Games"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Health & MOS"
+msgstr "Health & MOS"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Jitter"
+msgstr "Jitter"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Latency"
+msgstr "Latency"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Limited by"
+msgstr "Limited by"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Metrics"
+msgstr "Metrics"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_audio_call.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/feature_file_transfer.html.heex:52
+#: lib/retro_hex_chat_web/controllers/help_content/feature_video_call.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "P2P Lobby"
+msgstr "P2P Lobby"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Packet loss"
+msgstr "Packet loss"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Self-Controlled Media"
+msgstr "Self-Controlled Media"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "Staying Connected"
+msgstr "Staying Connected"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "The Dock"
+msgstr "The Dock"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_universal_lobby.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "The P2P Lobby opens a single, persistent peer-to-peer connection that hosts every feature at the same time. Open it with /p2p. Once two users are connected you can run a call, send files, and play a game together — all concurrently — without ever leaving the lobby."
+msgstr "The P2P Lobby opens a single, persistent peer-to-peer connection that hosts every feature at the same time. Open it with /p2p. Once two users are connected you can run a call, send files, and play a game together — all concurrently — without ever leaving the lobby."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "The header shows an overall health rating (Excellent / Good / Fair / Poor) and a MOS score. MOS (Mean Opinion Score) is a 1–5 estimate of call quality derived from latency, jitter and packet loss: 5 is excellent, and anything below 3.5 usually feels uncomfortable."
+msgstr "The header shows an overall health rating (Excellent / Good / Fair / Poor) and a MOS score. MOS (Mean Opinion Score) is a 1–5 estimate of call quality derived from latency, jitter and packet loss: 5 is excellent, and anything below 3.5 usually feels uncomfortable."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "Video"
+msgstr "Video"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:39
+#, elixir-autogen, elixir-format
+msgid "— how much media you are currently receiving and sending, in kilobits per second."
+msgstr "— how much media you are currently receiving and sending, in kilobits per second."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "— percentage of packets that never arrived. Above ~3% noticeably degrades quality."
+msgstr "— percentage of packets that never arrived. Above ~3% noticeably degrades quality."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "— resolution and frame rate of the received video."
+msgstr "— resolution and frame rate of the received video."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "— round-trip time for data to reach the peer and return. Lower is better; under ~150 ms feels instant."
+msgstr "— round-trip time for data to reach the peer and return. Lower is better; under ~150 ms feels instant."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "— variation in packet arrival timing. High jitter causes choppy audio and video."
+msgstr "— variation in packet arrival timing. High jitter causes choppy audio and video."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_network_stats.html.heex:50
+#, elixir-autogen, elixir-format
+msgid "— why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."
+msgstr "— why quality was capped: CPU means your device is too busy; Bandwidth means the network is too slow."

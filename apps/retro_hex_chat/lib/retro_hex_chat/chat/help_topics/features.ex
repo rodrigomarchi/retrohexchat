@@ -3091,6 +3091,30 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "feature-arcade-scummvm-fotaq",
           "feature-arcade-scummvm-lure"
         ]
+      },
+      %{
+        id: "feature-virtual-spaces",
+        title: dgettext("help", "Virtual Spaces"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "space",
+          "virtual",
+          "office",
+          "map",
+          "avatar",
+          "multiplayer",
+          "walk",
+          "sit",
+          dgettext("help", "virtual office"),
+          dgettext("help", "tile map")
+        ],
+        icon: :icon_community,
+        description:
+          dgettext(
+            "help",
+            "A multiplayer 8-bit virtual office linked to a channel: up to 20 people walk around a tile map with their avatars, sit at tables and chat. Created with /space; joined through the invite card or a /space/<token> link."
+          ),
+        see_also: ["cmd-space"]
       }
     ]
   end

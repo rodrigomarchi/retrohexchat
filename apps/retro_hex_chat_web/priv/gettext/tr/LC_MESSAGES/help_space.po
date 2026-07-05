@@ -1,0 +1,57 @@
+# "msgid"s in this file come from help_space.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: tr; status: enabled; wave: 2.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: tr\n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "/space"
+msgstr "/space"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "A space expires when its lifetime ends — activity does not extend it. If nobody enters within 5 minutes of creation, it expires early. The creator (or an admin) can close it at any time."
+msgstr "Bir alan, süresi dolunca sona erer — etkinlik süreyi uzatmaz. Oluşturulduktan sonra 5 dakika içinde kimse girmezse daha erken sona erer. Oluşturan (veya bir yönetici) alanı istediği an kapatabilir."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
+#, elixir-autogen, elixir-format
+msgid "A virtual space is a multiplayer 8-bit office linked to a channel: up to 20 people walk around a tile map with their avatars, sit at tables and chat in real time. Spaces are created with /space and joined through the invite card posted in the channel."
+msgstr "Sanal alan, bir kanala bağlı 8-bit çok oyunculu bir ofistir: en fazla 20 kişi avatarlarıyla karo haritasında dolaşır, masalara oturur ve gerçek zamanlı sohbet eder. Alanlar /space ile oluşturulur ve kanalda yayınlanan davet kartıyla girilir."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Any registered, identified user who can post in a channel can run /space there. The command accepts an optional target channel, a name and a lifetime (ttl=2h by default, 8h maximum). The invite card shows the space name, creator, channel, map and expiry."
+msgstr "Bir kanalda yazma izni olan her kayıtlı, kimliği doğrulanmış kullanıcı orada /space çalıştırabilir. Komut isteğe bağlı bir hedef kanal, bir ad ve bir süre (varsayılan ttl=2h, en fazla 8h) kabul eder. Davet kartı alanın adını, oluşturanı, kanalı, haritayı ve geçerlilik süresini gösterir."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Click the invite card or open the /space/<token> link to drop into the map. Move with the arrow keys or WASD; the server validates every step, so walls and furniture block movement for everyone equally. Reloading the page brings you back to the same tile."
+msgstr "Haritaya girmek için davet kartına tıklayın veya /space/<token> bağlantısını açın. Ok tuşları veya WASD ile hareket edin; sunucu her adımı doğrular, bu yüzden duvarlar ve mobilyalar herkes için eşit şekilde hareketi engeller. Sayfayı yenilemek sizi aynı karoya geri getirir."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Creating a Space"
+msgstr "Alan Oluşturma"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Joining and Moving"
+msgstr "Katılma ve Hareket"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Lifecycle"
+msgstr "Yaşam Döngüsü"
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:28
+#, elixir-autogen, elixir-format
+msgid "See Also"
+msgstr "Ayrıca bakınız"

@@ -8,7 +8,7 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
   alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Services.Queries
 
-  @valid_settings ~w(server_name server_description welcome_message max_channels registration whowas_retention_seconds)
+  @valid_settings ~w(server_name server_description welcome_message max_channels registration whowas_retention_seconds space_max_participants)
 
   @spec execute([String.t()], Handler.context()) :: Handler.result()
   def execute(["info"], context) do
@@ -138,6 +138,21 @@ defmodule RetroHexChat.Commands.Handlers.Admin.Server do
 
       _ ->
         {:error, dgettext("admin", "whowas_retention_seconds must be an integer from 1 to 86400")}
+    end
+  end
+
+  defp validate_setting_value("space_max_participants", value) do
+    ceiling = Application.get_env(:retro_hex_chat, :virtual_space_max_participants_ceiling, 50)
+
+    case Integer.parse(value) do
+      {n, ""} when n > 0 and n <= ceiling ->
+        :ok
+
+      _ ->
+        {:error,
+         dgettext("admin", "space_max_participants must be an integer from 1 to %{max}",
+           max: ceiling
+         )}
     end
   end
 

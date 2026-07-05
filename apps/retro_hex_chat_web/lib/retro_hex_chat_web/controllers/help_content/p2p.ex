@@ -26,5 +26,5 @@ defmodule RetroHexChatWeb.HelpContent.P2P do
 
   def help_icon(assigns), do: apply(Icons, assigns.name, [%{class: assigns.class}])
 
-  embed_templates "{feature_audio_call*,feature_call_quality*,feature_connection_diagram*,feature_file_transfer*,feature_media_devices*,feature_privacy_settings*,feature_single_session*,feature_universal_lobby*,feature_video_call*}"
+  embed_templates "{feature_audio_call*,feature_call_quality*,feature_connection_diagram*,feature_file_transfer*,feature_media_devices*,feature_network_stats*,feature_privacy_settings*,feature_single_session*,feature_universal_lobby*,feature_video_call*}"
 end

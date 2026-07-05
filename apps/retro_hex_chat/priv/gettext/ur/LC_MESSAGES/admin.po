@@ -59,7 +59,6 @@ msgstr "  %{table}: %{count} حذف"
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:30
 #, elixir-autogen, elixir-format
 msgid "  Access list:\n"
-""
 msgstr "رسائی فہرست:"
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:27
@@ -70,37 +69,27 @@ msgstr "رسائی فہرست:"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:62
 #, elixir-autogen, elixir-format
 msgid "  Active allocations: %{active}\n"
-""
 msgstr "  فعال افعال : %{active}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Admin: %{is_admin}\n"
-""
 msgstr "  ناظم: %{is_admin}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Atoms: %{atom}\n"
-""
 msgstr "  ایٹم: %{atom}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:78
 #, elixir-autogen, elixir-format
 msgid "  Bans: %{state_bans_count}\n"
-""
 msgstr "  بانس: %{state_bans_count}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:60
 #, elixir-autogen, elixir-format
 msgid "  Binary: %{binary}\n"
-""
 msgstr "  بینکاری: %{binary}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:61
 #, elixir-autogen, elixir-format
@@ -110,16 +99,12 @@ msgstr "  کوڈ: %{code}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:58
 #, elixir-autogen, elixir-format
 msgid "  ETS: %{ets}\n"
-""
 msgstr "  ای ٹی ایس: %{ets}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:35
 #, elixir-autogen, elixir-format
 msgid "  Founder: %{founder}\n"
-""
 msgstr "  تلاش کنندہ: %{founder}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:32
 #, elixir-autogen, elixir-format
@@ -129,46 +114,32 @@ msgstr "  متناسقات: %{identified}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:71
 #, elixir-autogen, elixir-format
 msgid "  Identified: %{identified}\n"
-""
 msgstr "  متناسقات: %{identified}\n"
-""
 
-#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:31
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:69
+#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:31 lib/retro_hex_chat/commands/handlers/admin/user.ex:69
 #, elixir-autogen, elixir-format
 msgid "  Last seen: %{last_seen_at}\n"
-""
 msgstr "  آخری مشاہدہ: %{last_seen_at}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:58
 #, elixir-autogen, elixir-format
 msgid "  Listen port: %{listen_port}\n"
-""
 msgstr "  سنو پور: %{listen_port}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:59
 #, elixir-autogen, elixir-format
 msgid "  Listeners: %{listener_count}\n"
-""
 msgstr "  غلطی: %{listener_count}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:73
 #, elixir-autogen, elixir-format
 msgid "  Members (%{member_count}): %{members}\n"
-""
 msgstr "  ارکان (%{member_count}): %{members}\n"
-""
 
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:40
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:77
+#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:40 lib/retro_hex_chat/commands/handlers/admin/channel.ex:77
 #, elixir-autogen, elixir-format
 msgid "  Modes: %{modes}\n"
-""
 msgstr "  طریقے: %{modes}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:54
 #, elixir-autogen, elixir-format
@@ -178,9 +149,7 @@ msgstr "  آن لائن: %{online}"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:70
 #, elixir-autogen, elixir-format
 msgid "  Online: %{online}\n"
-""
 msgstr "  آن لائن: %{online}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:67
 #, elixir-autogen, elixir-format
@@ -190,18 +159,12 @@ msgstr "  پورٹ رینج: %{port_min}-%{port_max}"
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Processes: %{processes}\n"
-""
 msgstr "  سوال : %{processes}\n"
-""
 
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:36
-#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:28
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:66
+#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:36 lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:28 lib/retro_hex_chat/commands/handlers/admin/user.ex:66
 #, elixir-autogen, elixir-format
 msgid "  Registered: %{registered_at}\n"
-""
 msgstr "  مصنف: %{registered_at}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:65
 #, elixir-autogen, elixir-format
@@ -211,7 +174,6 @@ msgstr "کتاب: نہیں۔"
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:53
 #, elixir-autogen, elixir-format
 msgid "  Registered: no\n"
-""
 msgstr "کتاب: نہیں۔"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:61
@@ -222,16 +184,12 @@ msgstr "  اخذ شدہ بتاریخ: %{founder_nickname})"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:57
 #, elixir-autogen, elixir-format
 msgid "  Relay IP: %{relay_ip}\n"
-""
 msgstr "  ریلوے آئی پی: %{relay_ip}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:63
 #, elixir-autogen, elixir-format
 msgid "  Relay ports: %{used_ports}/%{total_ports} in use\n"
-""
 msgstr "  ریلوے بندرگاہیں (انگریزی: %{used_ports}/%{total_ports} استعمال میں\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/user.ex:73
 #, elixir-autogen, elixir-format
@@ -241,23 +199,17 @@ msgstr "  سرور آپریٹنگ: %{is_oper}"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Status: running\n"
-""
 msgstr "حالت:"
 
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:39
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
+#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:39 lib/retro_hex_chat/commands/handlers/admin/channel.ex:72
 #, elixir-autogen, elixir-format
 msgid "  Topic: %{topic}\n"
-""
 msgstr "  توپ: %{topic}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:56
 #, elixir-autogen, elixir-format
 msgid "  Total: %{total}\n"
-""
 msgstr "  جملہ: %{total}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/log.ex:48
 #, elixir-autogen, elixir-format
@@ -299,7 +251,7 @@ msgstr "%{nickname} منسوخ کردیا گیا ہے %{duration_text}."
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr "%{nickname} سرور اب تک جاری ہے۔%{duration_text}."
 
-#: lib/retro_hex_chat/admin.ex:483
+#: lib/retro_hex_chat/admin.ex:512
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname} مقرر کیا گیا ہے۔ %{role}."
@@ -344,23 +296,7 @@ msgstr "*** %{key} = '%{value}'"
 msgid "*** %{key} is not set"
 msgstr "*** %{key} کوئی سیٹ نہیں ہے"
 
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:13
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:54
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:88
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:97
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:92
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:99
-#: lib/retro_hex_chat/commands/handlers/admin/channel.ex:107
-#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:15
-#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:45
-#: lib/retro_hex_chat/commands/handlers/admin/server.ex:57
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:84
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:93
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:103
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:112
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:120
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:128
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:143
+#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:13 lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:54 lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:88 lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:97 lib/retro_hex_chat/commands/handlers/admin/channel.ex:92 lib/retro_hex_chat/commands/handlers/admin/channel.ex:99 lib/retro_hex_chat/commands/handlers/admin/channel.ex:107 lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:15 lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:45 lib/retro_hex_chat/commands/handlers/admin/server.ex:57 lib/retro_hex_chat/commands/handlers/admin/user.ex:84 lib/retro_hex_chat/commands/handlers/admin/user.ex:93 lib/retro_hex_chat/commands/handlers/admin/user.ex:103 lib/retro_hex_chat/commands/handlers/admin/user.ex:112 lib/retro_hex_chat/commands/handlers/admin/user.ex:120 lib/retro_hex_chat/commands/handlers/admin/user.ex:128 lib/retro_hex_chat/commands/handlers/admin/user.ex:143
 #, elixir-autogen, elixir-format
 msgid "*** %{message}"
 msgstr "*** %{message}"
@@ -368,9 +304,7 @@ msgstr "*** %{message}"
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:36
 #, elixir-autogen, elixir-format
 msgid "*** %{server_name} ***%{desc_line}\n"
-""
 msgstr "*** %{server_name} ***%{desc_line}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:67
 #, elixir-autogen, elixir-format
@@ -400,7 +334,6 @@ msgstr "( اِس مضمون کی پہلی تصویر کو دیکھیں )%{entrie
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** BEAM Memory ***\n"
-""
 msgstr "یادگاری تقریب"
 
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:120
@@ -416,9 +349,7 @@ msgstr "چینل فہرست (انگریزی:%{filtered_count}) ***"
 #: lib/retro_hex_chat/commands/handlers/admin/channel.ex:71
 #, elixir-autogen, elixir-format
 msgid "*** Channel: %{channel}\n"
-""
 msgstr "چینل : %{channel}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/debug.ex:14
 #, elixir-autogen, elixir-format
@@ -508,7 +439,6 @@ msgstr "سرور ترتیبات نصب کریں"
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:55
 #, elixir-autogen, elixir-format
 msgid "*** TURN Server Stats ***\n"
-""
 msgstr "اِس شمارے میں"
 
 #: lib/retro_hex_chat/commands/handlers/admin/turn.ex:9
@@ -521,36 +451,27 @@ msgstr "وائیرڈ نیٹ ورک سرور نامزد نہیں ہوا (Exter co
 msgid "*** User List (%{entries_count} results) ***"
 msgstr "صارف فہرست (انگریزی:%{entries_count} نتائج) settlement –"
 
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:52
-#: lib/retro_hex_chat/commands/handlers/admin/user.ex:65
+#: lib/retro_hex_chat/commands/handlers/admin/user.ex:52 lib/retro_hex_chat/commands/handlers/admin/user.ex:65
 #, elixir-autogen, elixir-format
 msgid "*** User: %{nick}\n"
-""
 msgstr "صارف کا نام: %{nick}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:34
 #, elixir-autogen, elixir-format
 msgid "*** [ChanServ] %{name}\n"
-""
 msgstr "[Chanserv] %{name}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:27
 #, elixir-autogen, elixir-format
 msgid "*** [NickServ] %{nick}\n"
-""
 msgstr "[ تصویر کا حوالہ ] %{nick}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:41
 #, elixir-autogen, elixir-format
 msgid "Active channels: %{channel_count}\n"
-""
 msgstr "فعال چینل: %{channel_count}\n"
-""
 
-#: lib/retro_hex_chat/admin.ex:502
+#: lib/retro_hex_chat/admin.ex:531
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr "انتظامی کردار ہٹا دیے۔ %{nickname}."
@@ -613,23 +534,19 @@ msgstr "بند %{count} پیغامات %{from_nick} اندر %{channel_name}."
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:42
 #, elixir-autogen, elixir-format
 msgid "Registered nicks: %{nick_count}\n"
-""
 msgstr "درج ذیل ربط : %{nick_count}\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:43
 #, elixir-autogen, elixir-format
 msgid "Registration: %{registration}\n"
-""
 msgstr "جگہ %{registration}\n"
-""
 
 #: lib/retro_hex_chat/admin.ex:44
 #, elixir-autogen, elixir-format
 msgid "Server banned: %{reason}"
 msgstr "سرور نے منع کیا: %{reason}"
 
-#: lib/retro_hex_chat/admin.ex:351
+#: lib/retro_hex_chat/admin.ex:380
 #, elixir-autogen, elixir-format
 msgid "Server setting '%{key}' set to '%{value}'."
 msgstr "سرور سیٹ '%{key}کہا:%{value}'."
@@ -682,27 +599,19 @@ msgstr "اخذ شدہ بتاریخ: https://www.d-date= (معاونت);"
 #: lib/retro_hex_chat/commands/handlers/admin/server.ex:40
 #, elixir-autogen, elixir-format
 msgid "Users online: %{online_count}\n"
-""
 msgstr "صارفین آن لائن: %{online_count}\n"
-""
 
 #: lib/retro_hex_chat/admin.ex:181
 #, elixir-autogen, elixir-format
 msgid "Your nick registration was dropped by an administrator"
 msgstr "ایک منتظم نے آپ کی رجسٹریشن کو گرا دیا"
 
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:14
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:46
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:55
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:89
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:98
+#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:14 lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:46 lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:55 lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:89 lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:98
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{message}"
 msgstr "[Chanserv] %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:16
-#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:37
-#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:46
+#: lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:16 lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:37 lib/retro_hex_chat/commands/handlers/admin/nick_serv.ex:46
 #, elixir-autogen, elixir-format
 msgid "[NickServ] %{message}"
 msgstr "[NickServ] %{message}"
@@ -732,8 +641,7 @@ msgstr "چینل. فہرست"
 msgid "channel.purge"
 msgstr "چینل.purge"
 
-#: lib/retro_hex_chat/admin.ex:242
-#: lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:60
+#: lib/retro_hex_chat/admin.ex:242 lib/retro_hex_chat/commands/handlers/admin/chan_serv.ex:60
 #, elixir-autogen, elixir-format
 msgid "cs.access"
 msgstr "س . ع ."
@@ -793,17 +701,17 @@ msgstr "رجسٹریشن 'open' یا 'پُورڈ' ہونا ضروری ہے۔"
 msgid "server.info"
 msgstr "سرور.info."
 
-#: lib/retro_hex_chat/admin.ex:343
+#: lib/retro_hex_chat/admin.ex:372
 #, elixir-autogen, elixir-format
 msgid "server.set"
 msgstr "سرور۔ سیٹ۔"
 
-#: lib/retro_hex_chat/admin.ex:416
+#: lib/retro_hex_chat/admin.ex:445
 #, elixir-autogen, elixir-format
 msgid "system.nuke"
 msgstr "نظام.nuke"
 
-#: lib/retro_hex_chat/admin.ex:400
+#: lib/retro_hex_chat/admin.ex:429
 #, elixir-autogen, elixir-format
 msgid "system.nuke_preview"
 msgstr "سسٹم.nuke preview."
@@ -838,8 +746,7 @@ msgstr "صارف"
 msgid "user.rename"
 msgstr "صارف.ینام"
 
-#: lib/retro_hex_chat/admin.ex:479
-#: lib/retro_hex_chat/admin.ex:500
+#: lib/retro_hex_chat/admin.ex:508 lib/retro_hex_chat/admin.ex:529
 #, elixir-autogen, elixir-format
 msgid "user.role"
 msgstr "صارف ۔"
@@ -858,3 +765,8 @@ msgstr "صارف"
 #, elixir-autogen, elixir-format
 msgid "whowas_retention_seconds must be an integer from 1 to 86400"
 msgstr "جو کہ \"ثانی\" 1 سے 8400 تک ایک انٹر ہونا ضروری ہے۔"
+
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:153
+#, elixir-autogen, elixir-format
+msgid "space_max_participants must be an integer from 1 to %{max}"
+msgstr "space_max_participants لازماً 1 سے %{max} تک کا عدد صحیح ہو"

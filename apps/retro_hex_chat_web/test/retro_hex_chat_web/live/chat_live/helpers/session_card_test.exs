@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCardTest do
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
+  alias RetroHexChat.VirtualSpace.Queries, as: SpaceQueries
   alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
 
   @moduletag :integration
@@ -89,6 +90,43 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCardTest do
       assert card.created_by == "rodrigo"
       assert card.game_name == "DOOM: Knee-Deep in the Dead"
       assert card.href == "https://example.test/activity/solo/arc_tok"
+    end
+  end
+
+  describe "enrich/1 for :space_invite" do
+    test "attaches a resolved virtual space card" do
+      creator = nick("rodrigo")
+
+      {:ok, _} =
+        SpaceQueries.insert_session(%{
+          token: "spc_tok",
+          channel_name: "#general",
+          creator_id: creator.id,
+          creator_nick: creator.nickname,
+          title: "Guild Tavern",
+          expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
+        })
+
+      item = %{
+        type: :space_invite,
+        content: "Virtual space ready. Enter the space: /space/spc_tok"
+      }
+
+      enriched = SessionCard.enrich(item)
+      card = enriched.session_card
+
+      assert card.kind == :space
+      assert card.title == "Guild Tavern"
+      assert card.creator_nick == "rodrigo"
+      assert card.channel_name == "#general"
+      assert card.map_id == "tavern_cafe_v1"
+      assert card.status == "pending"
+      assert card.href == "/space/spc_tok"
+    end
+
+    test "leaves the item untouched when the space is unknown (fallback)" do
+      item = %{type: :space_invite, content: "Enter the space: /space/ghost_token"}
+      assert SessionCard.enrich(item) == item
     end
   end
 

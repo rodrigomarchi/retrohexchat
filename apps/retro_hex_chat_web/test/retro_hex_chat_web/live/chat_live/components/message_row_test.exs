@@ -181,6 +181,51 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
     assert html =~ ~s(data-message-kind="deleted")
   end
 
+  test "renders a space_invite with a rich card when the session resolved" do
+    msg = %{
+      id: "s1",
+      author: "alice",
+      content: "Virtual space ready. Enter the space: /space/tokS",
+      type: :space_invite,
+      timestamp: @ts,
+      session_card: %{
+        kind: :space,
+        token: "tokS",
+        href: "/space/tokS",
+        status: "active",
+        terminal?: false,
+        title: "Guild Tavern",
+        creator_nick: "alice",
+        channel_name: "#general",
+        map_id: "tavern_cafe_v1",
+        participant_count: 1,
+        max_participants: 20,
+        created_at: @ts,
+        expires_at: ~U[2024-01-01 14:00:00Z],
+        closed_at: nil,
+        closed_reason: nil
+      }
+    }
+
+    html = row(msg)
+    assert html =~ ~s(data-session-kind="space")
+    assert html =~ "Guild Tavern"
+    assert html =~ "Enter space"
+  end
+
+  test "renders a space_invite fallback link when the session did not resolve" do
+    msg = %{
+      id: "s2",
+      author: "alice",
+      content: "Virtual space ready. Enter the space: /space/ghost",
+      type: :space_invite,
+      timestamp: @ts
+    }
+
+    html = row(msg)
+    assert html =~ ~s(href="/space/ghost")
+  end
+
   test "renders a reply block when reply_to_id is present" do
     msg = %{
       id: "r1",

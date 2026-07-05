@@ -11,25 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:20
-#, elixir-autogen, elixir-format
-msgid "       /timer <name> repeat <seconds> <command> — repeating timer\n"
-""
-msgstr "       /timer <name> repeat <seconds> <command> — repeating timer\n"
-""
-
-#: lib/retro_hex_chat/commands/handlers/timer.ex:24
-#, elixir-autogen, elixir-format
-msgid "       /timer list — show active timers\n"
-""
-msgstr "       /timer list — show active timers\n"
-""
-
-#: lib/retro_hex_chat/commands/handlers/timer.ex:25
-#, elixir-autogen, elixir-format
-msgid "       /timer stop <name> — cancel a timer"
-msgstr "       /timer stop <name> — cancel a timer"
-
 #: lib/retro_hex_chat/commands/handlers/bot.ex:594
 #, elixir-autogen, elixir-format
 msgid "  %{command_prefix}%{bot_name} %{trigger} — %{cmd_description_cmd_response}%{status}"
@@ -371,18 +352,6 @@ msgstr "/bot list"
 msgid "/bot set GreeterBot greeting Welcome, {nickname}!"
 msgstr "/bot set GreeterBot greeting Welcome, {nickname}!"
 
-#: lib/retro_hex_chat/commands/handlers/call.ex:32
-#: lib/retro_hex_chat/commands/handlers/call.ex:53
-#, elixir-autogen, elixir-format
-msgid "/call <nickname>"
-msgstr "/call <nickname>"
-
-#: lib/retro_hex_chat/commands/handlers/call.ex:38
-#: lib/retro_hex_chat/commands/handlers/call.ex:69
-#, elixir-autogen, elixir-format
-msgid "/call mario"
-msgstr "/call mario"
-
 #: lib/retro_hex_chat/commands/handlers/cs.ex:78
 #: lib/retro_hex_chat/commands/handlers/cs.ex:198
 #, elixir-autogen, elixir-format
@@ -448,18 +417,6 @@ msgstr "/devoice <nickname>"
 #, elixir-autogen, elixir-format
 msgid "/devoice alice"
 msgstr "/devoice alice"
-
-#: lib/retro_hex_chat/commands/handlers/game.ex:41
-#: lib/retro_hex_chat/commands/handlers/game.ex:62
-#, elixir-autogen, elixir-format
-msgid "/game <nickname>"
-msgstr "/game <nickname>"
-
-#: lib/retro_hex_chat/commands/handlers/game.ex:47
-#: lib/retro_hex_chat/commands/handlers/game.ex:78
-#, elixir-autogen, elixir-format
-msgid "/game mario"
-msgstr "/game mario"
 
 #: lib/retro_hex_chat/commands/handlers/help.ex:40
 #: lib/retro_hex_chat/commands/handlers/help.ex:61
@@ -773,14 +730,14 @@ msgstr "/op <nickname>"
 msgid "/op alice"
 msgstr "/op alice"
 
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:33
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:54
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:41
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:62
 #, elixir-autogen, elixir-format
 msgid "/p2p <nickname>"
 msgstr "/p2p <nickname>"
 
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:39
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:70
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:47
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:78
 #, elixir-autogen, elixir-format
 msgid "/p2p mario"
 msgstr "/p2p mario"
@@ -869,18 +826,6 @@ msgstr "/quit Goodbye!"
 msgid "/quit [message]"
 msgstr "/quit [message]"
 
-#: lib/retro_hex_chat/commands/handlers/send_file.ex:32
-#: lib/retro_hex_chat/commands/handlers/send_file.ex:53
-#, elixir-autogen, elixir-format
-msgid "/sendfile <nickname>"
-msgstr "/sendfile <nickname>"
-
-#: lib/retro_hex_chat/commands/handlers/send_file.ex:38
-#: lib/retro_hex_chat/commands/handlers/send_file.ex:69
-#, elixir-autogen, elixir-format
-msgid "/sendfile mario"
-msgstr "/sendfile mario"
-
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:42
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:63
 #, elixir-autogen, elixir-format
@@ -923,32 +868,32 @@ msgstr "/slow 30"
 msgid "/slow <seconds>"
 msgstr "/slow <seconds>"
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:61
-#: lib/retro_hex_chat/commands/handlers/timer.ex:87
+#: lib/retro_hex_chat/commands/handlers/timer.ex:51
+#: lib/retro_hex_chat/commands/handlers/timer.ex:77
 #, elixir-autogen, elixir-format
 msgid "/timer <name> [repeat] <seconds> <command>"
 msgstr "/timer <name> [repeat] <seconds> <command>"
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:69
-#: lib/retro_hex_chat/commands/handlers/timer.ex:112
+#: lib/retro_hex_chat/commands/handlers/timer.ex:59
+#: lib/retro_hex_chat/commands/handlers/timer.ex:102
 #, elixir-autogen, elixir-format
 msgid "/timer heartbeat repeat 600 /me is still here"
 msgstr "/timer heartbeat repeat 600 /me is still here"
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:70
-#: lib/retro_hex_chat/commands/handlers/timer.ex:113
+#: lib/retro_hex_chat/commands/handlers/timer.ex:60
+#: lib/retro_hex_chat/commands/handlers/timer.ex:103
 #, elixir-autogen, elixir-format
 msgid "/timer list"
 msgstr "/timer list"
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:68
-#: lib/retro_hex_chat/commands/handlers/timer.ex:111
+#: lib/retro_hex_chat/commands/handlers/timer.ex:58
+#: lib/retro_hex_chat/commands/handlers/timer.ex:101
 #, elixir-autogen, elixir-format
 msgid "/timer remind 1800 /me reminds everyone: standup in 30 minutes"
 msgstr "/timer remind 1800 /me reminds everyone: standup in 30 minutes"
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:71
-#: lib/retro_hex_chat/commands/handlers/timer.ex:114
+#: lib/retro_hex_chat/commands/handlers/timer.ex:61
+#: lib/retro_hex_chat/commands/handlers/timer.ex:104
 #, elixir-autogen, elixir-format
 msgid "/timer stop heartbeat"
 msgstr "/timer stop heartbeat"
@@ -1114,7 +1059,7 @@ msgstr "Add a user to your notify list"
 msgid "Add an auto-respond rule"
 msgstr "Add an auto-respond rule"
 
-#: lib/retro_hex_chat/commands/registry.ex:76
+#: lib/retro_hex_chat/commands/registry.ex:74
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "Advanced"
@@ -1165,7 +1110,7 @@ msgstr "Ban"
 msgid "Ban user from channel"
 msgstr "Ban user from channel"
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:70
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Basics"
@@ -1212,7 +1157,7 @@ msgstr "Change your display name. A confirmation dialog appears before the chang
 "Allowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\n"
 "Cannot change to your current nickname or one already in use."
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Channel"
@@ -1288,12 +1233,12 @@ msgstr "Clear your entire autojoin list"
 msgid "Command name to view detailed help"
 msgstr "Command name to view detailed help"
 
-#: lib/retro_hex_chat/commands/registry.ex:75
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "Configuration"
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:107
+#: lib/retro_hex_chat/commands/handlers/timer.ex:97
 #, elixir-autogen, elixir-format
 msgid "Configuration: [repeat] <seconds> <command>"
 msgstr "Configuration: [repeat] <seconds> <command>"
@@ -1427,11 +1372,6 @@ msgstr "Farewell disabled."
 #, elixir-autogen, elixir-format
 msgid "Farewell set to '%{farewell}'."
 msgstr "Farewell set to '%{farewell}'."
-
-#: lib/retro_hex_chat/commands/handlers/send_file.ex:66
-#, elixir-autogen, elixir-format
-msgid "File recipient"
-msgstr "File recipient"
 
 #: lib/retro_hex_chat/commands/handlers/op.ex:49
 #, elixir-autogen, elixir-format
@@ -1873,7 +1813,7 @@ msgstr "Reason for the ban"
 msgid "Reason for the kick"
 msgstr "Reason for the kick"
 
-#: lib/retro_hex_chat/commands/autocomplete.ex:134
+#: lib/retro_hex_chat/commands/autocomplete.ex:136
 #, elixir-autogen, elixir-format
 msgid "Recent"
 msgstr "Recent"
@@ -2043,7 +1983,7 @@ msgstr "Request to be let into an invite-only (+i) channel. Operators see your k
 msgid "Requires: server administrator, registered and identified."
 msgstr "Requires: server administrator, registered and identified."
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:63
+#: lib/retro_hex_chat/commands/handlers/timer.ex:53
 #, elixir-autogen, elixir-format
 msgid "Schedule a command to run after a delay or on a repeating interval.\n"
 "Create: /timer <name> <seconds> <command>. Repeat: /timer <name> repeat <seconds> <command>.\n"
@@ -2056,7 +1996,7 @@ msgstr "Schedule a command to run after a delay or on a repeating interval.\n"
 "Manage: /timer list, /timer stop <name>.\n"
 "Max 5 timers. One-shot: 1-86400s. Repeat minimum: 10s. Session-only (lost on disconnect)."
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:89
+#: lib/retro_hex_chat/commands/handlers/timer.ex:79
 #, elixir-autogen, elixir-format
 msgid "Schedule a command to run after a delay or on a repeating interval. The command runs in the window that was active when the timer was created."
 msgstr "Schedule a command to run after a delay or on a repeating interval. The command runs in the window that was active when the timer was created."
@@ -2070,22 +2010,6 @@ msgid "Send a channel invitation to another user. Required for invite-only (+i) 
 msgstr "Send a channel invitation to another user. Required for invite-only (+i) channels.\n"
 "Defaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n"
 "/invite auto — toggles whether you automatically join channels when invited."
-
-#: lib/retro_hex_chat/commands/handlers/send_file.ex:55
-#, elixir-autogen, elixir-format
-msgid "Send a file to another user through a direct peer-to-peer connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr "Send a file to another user through a direct peer-to-peer connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-
-#: lib/retro_hex_chat/commands/handlers/send_file.ex:34
-#, elixir-autogen, elixir-format
-msgid "Send a file to another user through a direct peer-to-peer connection.\n"
-"Requires: both you and the target must be registered and identified (/ns identify).\n"
-"You cannot send files to yourself. Creates a P2P session — the peer must accept."
-msgstr "Send a file to another user through a direct peer-to-peer connection.\n"
-"Requires: both you and the target must be registered and identified (/ns identify).\n"
-"You cannot send files to yourself. Creates a P2P session — the peer must accept."
 
 #: lib/retro_hex_chat/commands/handlers/notice.ex:65
 #, elixir-autogen, elixir-format
@@ -2251,7 +2175,7 @@ msgstr "Show ChanServ help"
 msgid "Show NickServ help"
 msgstr "Show NickServ help"
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:117
+#: lib/retro_hex_chat/commands/handlers/timer.ex:107
 #, elixir-autogen, elixir-format
 msgid "Show active timers"
 msgstr "Show active timers"
@@ -2281,54 +2205,6 @@ msgstr "Show your autojoin list"
 msgid "Show your notify list"
 msgstr "Show your notify list"
 
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:56
-#, elixir-autogen, elixir-format
-msgid "Start a direct peer-to-peer session with another user for file transfers, audio calls, or video calls.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr "Start a direct peer-to-peer session with another user for file transfers, audio calls, or video calls.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:35
-#, elixir-autogen, elixir-format
-msgid "Start a direct peer-to-peer session with another user for file transfers, audio calls, or video calls.\n"
-"Requires: both you and the target must be registered and identified (/ns identify).\n"
-"You cannot start a session with yourself."
-msgstr "Start a direct peer-to-peer session with another user for file transfers, audio calls, or video calls.\n"
-"Requires: both you and the target must be registered and identified (/ns identify).\n"
-"You cannot start a session with yourself."
-
-#: lib/retro_hex_chat/commands/handlers/call.ex:55
-#, elixir-autogen, elixir-format
-msgid "Start a peer-to-peer audio call with another user.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr "Start a peer-to-peer audio call with another user.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-
-#: lib/retro_hex_chat/commands/handlers/call.ex:34
-#, elixir-autogen, elixir-format
-msgid "Start a peer-to-peer audio call with another user.\n"
-"Requires: both you and the target must be registered and identified (/ns identify).\n"
-"You cannot call yourself. Creates a P2P session — the peer must accept in their lobby."
-msgstr "Start a peer-to-peer audio call with another user.\n"
-"Requires: both you and the target must be registered and identified (/ns identify).\n"
-"You cannot call yourself. Creates a P2P session — the peer must accept in their lobby."
-
-#: lib/retro_hex_chat/commands/handlers/game.ex:64
-#, elixir-autogen, elixir-format
-msgid "Start a peer-to-peer game session with another user.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-msgstr "Start a peer-to-peer game session with another user.\n"
-"Requires: both users must be registered and identified (/ns identify)."
-
-#: lib/retro_hex_chat/commands/handlers/game.ex:43
-#, elixir-autogen, elixir-format
-msgid "Start a peer-to-peer game session with another user.\n"
-"Requires: both you and the target must be registered and identified (/ns identify).\n"
-"You pick a game in the lobby after both players join."
-msgstr "Start a peer-to-peer game session with another user.\n"
-"Requires: both you and the target must be registered and identified (/ns identify).\n"
-"You pick a game in the lobby after both players join."
-
 #: lib/retro_hex_chat/commands/handlers/singleplayer.ex:41
 #, elixir-autogen, elixir-format
 msgid "Start a solo arcade session (admin-only debug command).\n"
@@ -2341,7 +2217,7 @@ msgstr "Start a solo arcade session (admin-only debug command).\n"
 msgid "Start a solo arcade session (admin-only). Regular users: type !play in #games."
 msgstr "Start a solo arcade session (admin-only). Regular users: type !play in #games."
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:118
+#: lib/retro_hex_chat/commands/handlers/timer.ex:108
 #, elixir-autogen, elixir-format
 msgid "Stop a running timer"
 msgstr "Stop a running timer"
@@ -2428,7 +2304,7 @@ msgstr "Target channel (defaults to current channel)"
 msgid "Target nickname (for +o, +v, +b)"
 msgstr "Target nickname (for +o, +v, +b)"
 
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:67
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:75
 #, elixir-autogen, elixir-format
 msgid "Target user"
 msgstr "Target user"
@@ -2443,7 +2319,7 @@ msgstr "This command is reserved for administrators. "
 msgid "Throttle interval in seconds (0 to disable)"
 msgstr "Throttle interval in seconds (0 to disable)"
 
-#: lib/retro_hex_chat/commands/handlers/timer.ex:100
+#: lib/retro_hex_chat/commands/handlers/timer.ex:90
 #, elixir-autogen, elixir-format
 msgid "Timer name"
 msgstr "Timer name"
@@ -2587,12 +2463,6 @@ msgstr "Usage: /autorespond remove <position>"
 msgid "Usage: /ban <nickname> [reason]"
 msgstr "Usage: /ban <nickname> [reason]"
 
-#: lib/retro_hex_chat/commands/handlers/call.ex:11
-#: lib/retro_hex_chat/commands/handlers/call.ex:16
-#, elixir-autogen, elixir-format
-msgid "Usage: /call <nickname>"
-msgstr "Usage: /call <nickname>"
-
 #: lib/retro_hex_chat/commands/handlers/cs.ex:19
 #, elixir-autogen, elixir-format
 msgid "Usage: /cs <register|drop|info|sop|aop|vop|help> [args]"
@@ -2607,12 +2477,6 @@ msgstr "Usage: /deop <nickname>"
 #, elixir-autogen, elixir-format
 msgid "Usage: /devoice <nickname>"
 msgstr "Usage: /devoice <nickname>"
-
-#: lib/retro_hex_chat/commands/handlers/game.ex:12
-#: lib/retro_hex_chat/commands/handlers/game.ex:17
-#, elixir-autogen, elixir-format
-msgid "Usage: /game <nickname>"
-msgstr "Usage: /game <nickname>"
 
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:83
 #, elixir-autogen, elixir-format
@@ -2721,8 +2585,8 @@ msgstr "Usage: /ns register <password>"
 msgid "Usage: /op <nickname>"
 msgstr "Usage: /op <nickname>"
 
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:12
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:17
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:12
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:17
 #, elixir-autogen, elixir-format
 msgid "Usage: /p2p <nickname>"
 msgstr "Usage: /p2p <nickname>"
@@ -2750,12 +2614,6 @@ msgstr "Usage: /perform remove <number>"
 msgid "Usage: /query <nickname>"
 msgstr "Usage: /query <nickname>"
 
-#: lib/retro_hex_chat/commands/handlers/send_file.ex:11
-#: lib/retro_hex_chat/commands/handlers/send_file.ex:16
-#, elixir-autogen, elixir-format
-msgid "Usage: /sendfile <nickname>"
-msgstr "Usage: /sendfile <nickname>"
-
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:20
 #, elixir-autogen, elixir-format
 msgid "Usage: /setmotd <text>"
@@ -2770,13 +2628,6 @@ msgstr "Usage: /slow <seconds> (0 to disable)"
 #, elixir-autogen, elixir-format
 msgid "Usage: /slow <seconds> — must be a positive number (0 to disable)"
 msgstr "Usage: /slow <seconds> — must be a positive number (0 to disable)"
-
-#: lib/retro_hex_chat/commands/handlers/timer.ex:19
-#, elixir-autogen, elixir-format
-msgid "Usage: /timer <name> <seconds> <command> — one-shot timer\n"
-""
-msgstr "Usage: /timer <name> <seconds> <command> — one-shot timer\n"
-""
 
 #: lib/retro_hex_chat/commands/handlers/transfer.ex:14
 #, elixir-autogen, elixir-format
@@ -2827,13 +2678,12 @@ msgstr "Usage: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Usage: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "User"
 
-#: lib/retro_hex_chat/commands/handlers/game.ex:99
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:106
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:107
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is not registered."
 msgstr "User '%{nickname}' is not registered."
@@ -2852,11 +2702,6 @@ msgstr "User mode: +w (wallops), -w"
 #, elixir-autogen, elixir-format
 msgid "User to ban"
 msgstr "User to ban"
-
-#: lib/retro_hex_chat/commands/handlers/call.ex:66
-#, elixir-autogen, elixir-format
-msgid "User to call"
-msgstr "User to call"
 
 #: lib/retro_hex_chat/commands/handlers/op.ex:57
 #, elixir-autogen, elixir-format
@@ -2892,11 +2737,6 @@ msgstr "User to look up"
 #, elixir-autogen, elixir-format
 msgid "User to mute"
 msgstr "User to mute"
-
-#: lib/retro_hex_chat/commands/handlers/game.ex:75
-#, elixir-autogen, elixir-format
-msgid "User to play with"
-msgstr "User to play with"
 
 #: lib/retro_hex_chat/commands/handlers/deop.ex:57
 #, elixir-autogen, elixir-format
@@ -3010,16 +2850,6 @@ msgstr "You are not in any channel"
 msgid "You cannot ignore yourself"
 msgstr "You cannot ignore yourself"
 
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:96
-#, elixir-autogen, elixir-format
-msgid "You cannot start a P2P session with yourself."
-msgstr "You cannot start a P2P session with yourself."
-
-#: lib/retro_hex_chat/commands/handlers/game.ex:89
-#, elixir-autogen, elixir-format
-msgid "You cannot start a game session with yourself."
-msgstr "You cannot start a game session with yourself."
-
 #: lib/retro_hex_chat/commands/handlers/ban.ex:59
 #, elixir-autogen, elixir-format
 msgid "You must be a channel operator to ban users"
@@ -3062,12 +2892,7 @@ msgstr "You must be a server administrator to use this command"
 msgid "You must be at least a half-operator to use this command"
 msgstr "You must be at least a half-operator to use this command"
 
-#: lib/retro_hex_chat/commands/handlers/game.ex:85
-#, elixir-autogen, elixir-format
-msgid "You must be identified to use /game."
-msgstr "You must be identified to use /game."
-
-#: lib/retro_hex_chat/commands/handlers/p2p.ex:92
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:85
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use /p2p."
 msgstr "You must be identified to use /p2p."
@@ -3259,3 +3084,126 @@ msgid "set, commands, addcmd, delcmd, help.\n"
 ""
 msgstr "set, commands, addcmd, delcmd, help.\n"
 ""
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:54
+#: lib/retro_hex_chat/commands/handlers/space.ex:103
+#, elixir-autogen, elixir-format
+msgid "/space"
+msgstr "/space"
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:55
+#, elixir-autogen, elixir-format
+msgid "/space #general"
+msgstr "/space #general"
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:56
+#: lib/retro_hex_chat/commands/handlers/space.ex:104
+#, elixir-autogen, elixir-format
+msgid "/space #general Guild Tavern ttl=4h"
+msgstr "/space #general Guild Tavern ttl=4h"
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:47
+#: lib/retro_hex_chat/commands/handlers/space.ex:72
+#, elixir-autogen, elixir-format
+msgid "/space [#channel] [name] [ttl=2h]"
+msgstr "/space [#channel] [name] [ttl=2h]"
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:120
+#, elixir-autogen, elixir-format
+msgid "/space only works from a channel, not from PMs or the Status window."
+msgstr "/space only works from a channel, not from PMs or the Status window."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:194
+#, elixir-autogen, elixir-format
+msgid "/space only works from a channel."
+msgstr "/space only works from a channel."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:203
+#, elixir-autogen, elixir-format
+msgid "Could not create the space. Try again."
+msgstr "Could not create the space. Try again."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:74
+#, elixir-autogen, elixir-format
+msgid "Create a multiplayer virtual space linked to a channel and post its invite card there.\n"
+"Requires: you must be registered and identified (/ns identify)."
+msgstr "Create a multiplayer virtual space linked to a channel and post its invite card there.\n"
+"Requires: you must be registered and identified (/ns identify)."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:49
+#, elixir-autogen, elixir-format
+msgid "Create a virtual space: a multiplayer 8-bit office linked to a channel, where up to 20 people walk around, sit and chat. Posts an invite card in the channel.\n"
+"Requires: you must be registered and identified (/ns identify)."
+msgstr "Create a virtual space: a multiplayer 8-bit office linked to a channel, where up to 20 people walk around, sit and chat. Posts an invite card in the channel.\n"
+"Requires: you must be registered and identified (/ns identify)."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:150
+#, elixir-autogen, elixir-format
+msgid "Invalid ttl. Use ttl=<duration>, e.g. ttl=2h (max 8h)."
+msgstr "Invalid ttl. Use ttl=<duration>, e.g. ttl=2h (max 8h)."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:99
+#, elixir-autogen, elixir-format
+msgid "Lifetime, e.g. ttl=2h (max 8h)"
+msgstr "Lifetime, e.g. ttl=2h (max 8h)"
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:64
+#, elixir-autogen, elixir-format
+msgid "Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr "Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:43
+#, elixir-autogen, elixir-format
+msgid "Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+msgstr "Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+"Requires: both users must be registered and identified (/ns identify)."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:92
+#, elixir-autogen, elixir-format
+msgid "Space name"
+msgstr "Space name"
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:85
+#, elixir-autogen, elixir-format
+msgid "Target channel (defaults to the active channel)"
+msgstr "Target channel (defaults to the active channel)"
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:179
+#, elixir-autogen, elixir-format
+msgid "Too many spaces created. Try again in %{seconds} seconds."
+msgstr "Too many spaces created. Try again in %{seconds} seconds."
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:99
+#, elixir-autogen, elixir-format
+msgid "User '%{nickname}' is offline."
+msgstr "User '%{nickname}' is offline."
+
+#: lib/retro_hex_chat/commands/handlers/lobby.ex:89
+#, elixir-autogen, elixir-format
+msgid "You cannot open a lobby with yourself."
+msgstr "You cannot open a lobby with yourself."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:114
+#: lib/retro_hex_chat/commands/handlers/space.ex:200
+#, elixir-autogen, elixir-format
+msgid "You must be identified to use /space."
+msgstr "You must be identified to use /space."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:155
+#: lib/retro_hex_chat/commands/handlers/space.ex:197
+#, elixir-autogen, elixir-format
+msgid "You must be registered to use /space."
+msgstr "You must be registered to use /space."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:189
+#, elixir-autogen, elixir-format
+msgid "You need permission to post in %{channel} to create a space there."
+msgstr "You need permission to post in %{channel} to create a space there."
+
+#: lib/retro_hex_chat/commands/handlers/space.ex:185
+#, elixir-autogen, elixir-format
+msgid "ttl exceeds the maximum lifetime of 8h."
+msgstr "ttl exceeds the maximum lifetime of 8h."

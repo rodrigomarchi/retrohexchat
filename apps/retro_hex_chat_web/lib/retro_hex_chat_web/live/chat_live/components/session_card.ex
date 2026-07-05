@@ -86,6 +86,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
     ~H"<Icons.icon_game_arcade class={@class} />"
   end
 
+  defp subject_icon(%{card: %{kind: :space}} = assigns) do
+    ~H"<Icons.icon_community class={@class} />"
+  end
+
   defp subject_icon(assigns) do
     ~H"<Icons.icon_p2p class={@class} />"
   end
@@ -96,10 +100,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
   defp title(%{kind: :lobby}), do: dgettext("chat", "P2P lobby")
   defp title(%{kind: :arcade, game_name: name}) when is_binary(name), do: name
   defp title(%{kind: :arcade}), do: dgettext("chat", "Arcade session")
+  defp title(%{kind: :space, title: title}) when is_binary(title) and title != "", do: title
+  defp title(%{kind: :space}), do: dgettext("chat", "Virtual space")
 
   defp subtitle(%{kind: :lobby, created_by: by, peer: peer})
        when is_binary(by) and is_binary(peer) do
     dgettext("chat", "by %{creator} · with %{peer}", creator: by, peer: peer)
+  end
+
+  defp subtitle(%{kind: :space, creator_nick: by, channel_name: channel})
+       when is_binary(by) and is_binary(channel) do
+    dgettext("chat", "by %{creator} · %{channel}", creator: by, channel: channel)
   end
 
   defp subtitle(%{created_by: by}) when is_binary(by),
@@ -133,6 +144,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
     |> Enum.reject(&is_nil/1)
   end
 
+  defp timeline(%{kind: :space} = card, tz) do
+    [
+      entry(:icon_checkmark, dgettext("chat", "created"), time(card.created_at, tz)),
+      entry(:icon_radio_dot, dgettext("chat", "map"), map_name(card.map_id)),
+      occupancy_entry(card),
+      expiry_entry(card, tz),
+      terminal_entry(card, dgettext("chat", "ended"), tz),
+      reason_entry(card)
+    ]
+    |> Enum.reject(&is_nil/1)
+  end
+
   defp timeline(%{kind: :arcade} = card, tz) do
     [
       entry(:icon_checkmark, dgettext("chat", "created"), time(card.created_at, tz)),
@@ -157,6 +180,28 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
     do: entry(terminal_icon(card), label, time(card.closed_at, tz))
 
   defp terminal_entry(_card, _label, _tz), do: nil
+
+  defp occupancy_entry(%{participant_count: count, max_participants: max})
+       when is_integer(count) and is_integer(max) do
+    entry(:icon_status_signal, dgettext("chat", "people"), "#{count}/#{max}")
+  end
+
+  defp occupancy_entry(_card), do: nil
+
+  defp expiry_entry(%{terminal?: true}, _tz), do: nil
+
+  defp expiry_entry(%{expires_at: expires_at}, tz),
+    do: entry(:icon_btn_timers, dgettext("chat", "expires"), time(expires_at, tz))
+
+  # Turns a map id like "tavern_cafe_v1" into a display name ("Tavern Cafe").
+  defp map_name(map_id) when is_binary(map_id) do
+    map_id
+    |> String.replace(~r/_v\d+$/, "")
+    |> String.split("_")
+    |> Enum.map_join(" ", &String.capitalize/1)
+  end
+
+  defp map_name(_), do: nil
 
   defp duration_entry(%{duration_seconds: secs}) do
     case ChatHelpers.format_duration(secs) do
@@ -217,6 +262,9 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
 
   defp cta(%{kind: :arcade}),
     do: %{label: dgettext("chat", "Open Arcade"), icon: :icon_btn_open}
+
+  defp cta(%{kind: :space}),
+    do: %{label: dgettext("chat", "Enter space"), icon: :icon_btn_join}
 
   # ── Icon dispatch ───────────────────────────────────────────
 

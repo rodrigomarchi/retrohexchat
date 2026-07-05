@@ -57,6 +57,67 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCardTest do
     )
   end
 
+  defp space(overrides) do
+    Map.merge(
+      %{
+        kind: :space,
+        token: "tokS",
+        href: "/space/tokS",
+        status: "active",
+        terminal?: false,
+        title: "Guild Tavern",
+        creator_nick: "rodrigo",
+        channel_name: "#general",
+        map_id: "tavern_cafe_v1",
+        participant_count: 3,
+        max_participants: 20,
+        created_at: @created,
+        expires_at: ~U[2024-01-01 16:10:00Z],
+        closed_at: nil,
+        closed_reason: nil
+      },
+      overrides
+    )
+  end
+
+  describe "virtual space card" do
+    test "live space shows title, creator, channel, map, expiry and an Enter CTA" do
+      html = card(space(%{}))
+
+      assert html =~ ~s(data-session-kind="space")
+      assert html =~ ~s(data-session-status="active")
+      assert html =~ "Guild Tavern"
+      assert html =~ "rodrigo"
+      assert html =~ "#general"
+      assert html =~ "Tavern Cafe"
+      assert html =~ "01/01 16:10"
+      assert html =~ "3/20"
+      assert html =~ "Enter space"
+      assert html =~ ~s(href="/space/tokS")
+    end
+
+    test "an untitled space falls back to a generic title" do
+      html = card(space(%{title: nil}))
+      assert html =~ "Virtual space"
+    end
+
+    test "terminal space shows the close reason and drops the CTA" do
+      html =
+        card(
+          space(%{
+            status: "expired",
+            terminal?: true,
+            closed_at: @closed,
+            closed_reason: "expired"
+          })
+        )
+
+      assert html =~ ~s(data-session-status="expired")
+      assert html =~ "01/01 14:22"
+      refute html =~ "Enter space"
+    end
+  end
+
   describe "P2P lobby card" do
     test "pending session shows the creator, a waiting step and a Join CTA" do
       html = card(lobby(%{status: "pending"}))

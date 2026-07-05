@@ -302,7 +302,7 @@ msgstr "%{nickname} has been muted %{duration_text}."
 msgid "%{nickname} has been server-banned%{duration_text}."
 msgstr "%{nickname} has been server-banned%{duration_text}."
 
-#: lib/retro_hex_chat/admin.ex:483
+#: lib/retro_hex_chat/admin.ex:512
 #, elixir-autogen, elixir-format
 msgid "%{nickname} has been set as %{role}."
 msgstr "%{nickname} has been set as %{role}."
@@ -555,7 +555,7 @@ msgid "Active channels: %{channel_count}\n"
 msgstr "Active channels: %{channel_count}\n"
 ""
 
-#: lib/retro_hex_chat/admin.ex:502
+#: lib/retro_hex_chat/admin.ex:531
 #, elixir-autogen, elixir-format
 msgid "Admin roles removed from %{nickname}."
 msgstr "Admin roles removed from %{nickname}."
@@ -634,7 +634,7 @@ msgstr "Registration: %{registration}\n"
 msgid "Server banned: %{reason}"
 msgstr "Server banned: %{reason}"
 
-#: lib/retro_hex_chat/admin.ex:351
+#: lib/retro_hex_chat/admin.ex:380
 #, elixir-autogen, elixir-format
 msgid "Server setting '%{key}' set to '%{value}'."
 msgstr "Server setting '%{key}' set to '%{value}'."
@@ -798,17 +798,17 @@ msgstr "registration must be 'open' or 'closed'"
 msgid "server.info"
 msgstr "server.info"
 
-#: lib/retro_hex_chat/admin.ex:343
+#: lib/retro_hex_chat/admin.ex:372
 #, elixir-autogen, elixir-format
 msgid "server.set"
 msgstr "server.set"
 
-#: lib/retro_hex_chat/admin.ex:416
+#: lib/retro_hex_chat/admin.ex:445
 #, elixir-autogen, elixir-format
 msgid "system.nuke"
 msgstr "system.nuke"
 
-#: lib/retro_hex_chat/admin.ex:400
+#: lib/retro_hex_chat/admin.ex:429
 #, elixir-autogen, elixir-format
 msgid "system.nuke_preview"
 msgstr "system.nuke_preview"
@@ -843,8 +843,8 @@ msgstr "user.mute"
 msgid "user.rename"
 msgstr "user.rename"
 
-#: lib/retro_hex_chat/admin.ex:479
-#: lib/retro_hex_chat/admin.ex:500
+#: lib/retro_hex_chat/admin.ex:508
+#: lib/retro_hex_chat/admin.ex:529
 #, elixir-autogen, elixir-format
 msgid "user.role"
 msgstr "user.role"
@@ -863,3 +863,8 @@ msgstr "user.unmute"
 #, elixir-autogen, elixir-format
 msgid "whowas_retention_seconds must be an integer from 1 to 86400"
 msgstr "whowas_retention_seconds must be an integer from 1 to 86400"
+
+#: lib/retro_hex_chat/commands/handlers/admin/server.ex:153
+#, elixir-autogen, elixir-format
+msgid "space_max_participants must be an integer from 1 to %{max}"
+msgstr "space_max_participants must be an integer from 1 to %{max}"

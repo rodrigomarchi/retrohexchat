@@ -27,6 +27,34 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
     end
   end
 
+  describe "virtual space topics" do
+    test "the /space command topic exists with a valid shape" do
+      topic = HelpTopics.get_topic("cmd-space")
+      assert topic.title == "/space"
+      assert topic.category == "Virtual Spaces"
+      assert is_atom(topic.icon)
+      assert topic.description != ""
+      assert "space" in topic.keywords
+    end
+
+    test "the Virtual Spaces feature topic exists with a valid shape" do
+      topic = HelpTopics.get_topic("feature-virtual-spaces")
+      assert topic.title == "Virtual Spaces"
+      assert topic.category == "Virtual Spaces"
+      assert is_atom(topic.icon)
+      assert topic.description != ""
+      assert "office" in topic.keywords
+    end
+
+    test "the Virtual Spaces category is listed with an icon" do
+      categories = HelpTopics.topics_by_category()
+
+      assert Enum.any?(categories, fn {name, icon, topics} ->
+               name == "Virtual Spaces" and is_atom(icon) and topics != []
+             end)
+    end
+  end
+
   describe "get_topic/1" do
     test "returns a topic by id" do
       topic = HelpTopics.get_topic("welcome")
