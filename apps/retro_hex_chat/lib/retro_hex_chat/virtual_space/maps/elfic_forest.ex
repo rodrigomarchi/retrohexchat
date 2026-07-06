@@ -1,37 +1,102 @@
 defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
   @moduledoc """
-  Elfic Forest map: an open grass valley walled by a dense treeline, entered
-  through a cave passage in a cliff. Cliff ledges drop the forested high ground
-  into the valley, a pond pools at the base of the lower cliff, and a cabin sits
-  on the upper-left ground. The floor layer carries ground and single-tile props
-  over a grass base; multi-tile props (cabin, boulder, trees, cave) are decor
-  sprites. Collision blocks the treeline, canopies, cliff faces, cabin, boulder
-  and pond, leaving the cave mouth and cliff-top lip walkable.
+  Elfic Forest map: a forest basin traced from the reference overworld. A
+  `@mask_rows` bitmap marks the forested high ground; the open valley is
+  everything else. A small autotiler reads the mask and terraces the boundary —
+  a grass lip on the high edge, a rock face stepping down (face/mid/base) into
+  the valley, and vertical side faces where a shelf turns — so the cliffs snake
+  and step exactly where the mask does. High ground renders as dense forest
+  (bush undergrowth crowned by canopies); the valley is open grass broken up by
+  dark-grass patches, clover and a worn dirt trail. A cabin sits on the upper-
+  left shelf, a pond pools at the base of the lower cliff, and logs, a boulder
+  and scattered rocks are placed on the shelves and clearings they belong to.
   """
 
-  @width 44
-  @height 32
+  @width 50
+  @height 36
 
-  @house {3, 2}
-  @boulder {33, 14}
-  @cave_x 15
+  @mask_rows [
+    "##################################################",
+    "##################################################",
+    "##..######......############.....#################",
+    "##..######......############.....#################",
+    "##..######...........#######.......###############",
+    "##..######..............####.......###############",
+    "##...........................###...###############",
+    "##...........................###...###############",
+    "##...........................###.......###########",
+    "##.....................................###########",
+    "##.....................................###########",
+    "##.........#####.......................###########",
+    "##.........#####.......................###########",
+    "################........................##########",
+    "################........................##########",
+    "################........................##########",
+    "##......................................##########",
+    "##..........................................######",
+    "##............###............................#####",
+    "##............###.............................####",
+    "##............###.............................####",
+    "##.........######.............................####",
+    "##.........######........................####.####",
+    "##.........######.....................#######...##",
+    "##....................................#########.##",
+    "##..............................####..############",
+    "##..............................####.#############",
+    "##..............................###########..#####",
+    "##........................#################...####",
+    "##........................#############.........##",
+    "##........................#########.............##",
+    "##..............................................##",
+    "##.....#####.................................#####",
+    "##.....#####.................................#####",
+    "##################################################",
+    "##################################################"
+  ]
 
-  # Rects (x0, y0, x1, y1 inclusive) kept clear of tree canopies: the cabin, the
-  # spawn clearing, the two cliff bands, the pond, the boulder and the cave
-  # passage.
-  @keepout [
-    {1, 1, 8, 7},
-    {16, 15, 27, 23},
-    {3, 8, 31, 12},
-    {23, 21, 41, 26},
-    {29, 25, 34, 30},
-    {32, 13, 36, 16},
-    {@cave_x - 1, 7, @cave_x + 1, 12}
+  # Open-grass shelf around the cabin (kept clear of forest); its south edge is
+  # a cliff into the valley.
+  @cabin_shelf {2, 0, 10, 6}
+  @house {4, 1}
+  @boulder {30, 6}
+
+  # Pond region (x, y, w, h) at the base of the lower cliff, nine-sliced from the
+  # pond tiles.
+  @pond_x 25
+  @pond_y 31
+  @pond_w 7
+  @pond_h 3
+
+  # Logs on ledges / clearings — passable benches; rocks trail the edges.
+  @logs [{21, 20}, {8, 16}, {33, 25}]
+  @rock_spots [
+    {6, 15, "rock"},
+    {24, 17, "rock"},
+    {9, 18, "rock_s"},
+    {5, 12, "rock_s"},
+    {22, 24, "rock_s"},
+    {30, 24, "rock_s"},
+    {16, 12, "rock_s"},
+    {35, 10, "rock_s"},
+    {12, 27, "rock_s"},
+    {27, 27, "rock_s"}
+  ]
+  @valley_trees [
+    {8, 9},
+    {21, 8},
+    {12, 25},
+    {28, 12},
+    {9, 22},
+    {26, 22},
+    {18, 28},
+    {6, 27},
+    {31, 15}
   ]
 
   @spec definition() :: map()
   def definition do
-    props = props()
+    floor = floor_layer()
+    logs = Enum.filter(@logs, fn {x, y} -> log_fits?(floor, x, y) end)
 
     %{
       id: "elfic_forest",
@@ -41,162 +106,193 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
       tile_size: 16,
       ground: "grass",
       spawn: [
-        %{x: 20, y: 19, dir: "down"},
-        %{x: 21, y: 19, dir: "down"},
-        %{x: 22, y: 19, dir: "down"},
-        %{x: 20, y: 20, dir: "down"},
-        %{x: 21, y: 20, dir: "down"},
-        %{x: 22, y: 20, dir: "down"}
+        %{x: 18, y: 17, dir: "down"},
+        %{x: 19, y: 17, dir: "down"},
+        %{x: 20, y: 17, dir: "down"},
+        %{x: 18, y: 18, dir: "down"},
+        %{x: 19, y: 18, dir: "down"},
+        %{x: 20, y: 18, dir: "down"}
       ],
-      layers: %{floor: floor_layer(props), decor: decor(), above: []},
-      collision: collision(props),
+      layers: %{floor: floor, decor: decor(floor, logs), above: []},
+      collision: collision(floor),
       zones: [
-        %{id: "spawn", kind: "spawn", x: 18, y: 17, w: 8, h: 5},
-        %{id: "valley", kind: "common", x: 4, y: 13, w: 36, h: 14},
-        %{id: "highground", kind: "quiet", x: 4, y: 4, w: 26, h: 4},
-        %{id: "pondside", kind: "quiet", x: 28, y: 26, w: 8, h: 4}
+        %{id: "spawn", kind: "spawn", x: 16, y: 16, w: 8, h: 4},
+        %{id: "valley", kind: "common", x: 3, y: 9, w: 22, h: 14},
+        %{id: "highground", kind: "quiet", x: 4, y: 1, w: 6, h: 4},
+        %{id: "pondside", kind: "quiet", x: 24, y: 28, w: 10, h: 3}
       ],
       interactables: [
         %{
           id: "notice_board",
           kind: "board",
-          x: 25,
-          y: 18,
+          x: 22,
+          y: 16,
           title: "Forest notice",
           modal: %{kind: "image", asset: "board_daily_v1"}
         }
       ],
-      seats: [
-        %{id: "valley_log_l", x: 9, y: 16, dir: "up"},
-        %{id: "valley_log_m", x: 10, y: 16, dir: "up"},
-        %{id: "valley_log_r", x: 11, y: 16, dir: "up"},
-        %{id: "pond_log_l", x: 24, y: 27, dir: "up"},
-        %{id: "pond_log_m", x: 25, y: 27, dir: "up"}
-      ]
+      seats: seats(logs)
     }
   end
 
-  defp props do
-    %{}
-    |> forest_border()
-    # Top cliff: forested high ground dropping into the valley, split by a cave
-    # passage; lower cliff: the ledge the pond pools under.
-    |> cliff(4, 8, @cave_x - 2)
-    |> cliff(@cave_x + 2, 8, 30)
-    |> cliff(24, 22, 40)
-    |> pond(29, 26)
-    |> log(9, 16)
-    |> log(23, 27)
-    |> flower_beds()
+  defp seats(logs) do
+    for {x, y} <- logs, {sx, i} <- Enum.with_index([x, x + 1, x + 2]) do
+      %{id: "log_#{x}_#{y}_#{i}", x: sx, y: y, dir: "down"}
+    end
   end
 
-  # Cabin, boulder, cave mouth and the dense ring of tree canopies.
-  defp decor do
+  defp log_fits?(floor, x, y) do
+    Enum.all?([x, x + 1, x + 2], fn cx -> ground?(floor, cx, y) end)
+  end
+
+  # ── Floor ─────────────────────────────────────────────────────────
+
+  defp floor_layer do
+    for y <- 0..(@height - 1) do
+      for x <- 0..(@width - 1), do: floor_cell(x, y)
+    end
+  end
+
+  defp floor_cell(x, y) do
+    cond do
+      pond?(x, y) -> pond_tile(x, y)
+      high?(x, y) -> high_tile(x, y)
+      true -> low_tile(x, y)
+    end
+  end
+
+  # A high cell drops a grass lip on its southern edge, is open grass on the
+  # cabin shelf, and forested (bush undergrowth) everywhere else.
+  defp high_tile(x, y) do
+    cond do
+      not high?(x, y + 1) -> "cliff_edge"
+      shelf?(x, y) -> "grass"
+      true -> "bush"
+    end
+  end
+
+  # A low cell is a cliff face under a terrace, otherwise valley ground textured
+  # with the dirt trail, dark-grass patches and clover.
+  defp low_tile(x, y) do
+    cond do
+      face = face_tile(x, y) -> face
+      path?(x, y) -> "dirt"
+      dark?(x, y) -> "grass_dark"
+      clover?(x, y) -> "flowers"
+      true -> "grass"
+    end
+  end
+
+  defp high?(x, y) do
+    if x < 0 or y < 0 or x >= @width or y >= @height do
+      false
+    else
+      :binary.at(Enum.at(@mask_rows, y), x) == ?#
+    end
+  end
+
+  defp shelf?(x, y) do
+    {x0, y0, x1, y1} = @cabin_shelf
+    x in x0..x1 and y in y0..y1
+  end
+
+  # The autotiler for a low cell: depth below the terrace selects face → mid →
+  # base, and an east/west high neighbour draws a vertical side face.
+  defp face_tile(x, y) do
+    cond do
+      high?(x, y - 1) -> "cliff_face"
+      high?(x, y - 2) -> "cliff_mid"
+      high?(x, y - 3) -> "cliff_base"
+      high?(x - 1, y) or high?(x + 1, y) -> "cliff_face"
+      true -> nil
+    end
+  end
+
+  # ── Pond (nine-slice) ─────────────────────────────────────────────
+
+  defp pond?(x, y) do
+    x in @pond_x..(@pond_x + @pond_w - 1) and y in @pond_y..(@pond_y + @pond_h - 1)
+  end
+
+  defp pond_tile(x, y) do
+    v = band(y - @pond_y, @pond_h, "t", "b")
+    h = band(x - @pond_x, @pond_w, "l", "r")
+    if v == "m" and h == "m", do: "pond_c", else: "pond_" <> v <> h
+  end
+
+  defp band(0, _size, lo, _hi), do: lo
+  defp band(i, size, _lo, hi) when i == size - 1, do: hi
+  defp band(_i, _size, _lo, _hi), do: "m"
+
+  # ── Ground texture (valley only) ──────────────────────────────────
+
+  # A worn dirt trail dropping from the cabin shelf into the valley.
+  defp path?(x, y), do: x == 8 and y in 6..14
+
+  # Dark-grass seeds grown into soft 2x2 blobs so patches read as rounded areas,
+  # not single specks — the valley's main texture break.
+  defp dark?(x, y) do
+    dark_seed?(x, y) or dark_seed?(x - 1, y) or dark_seed?(x, y - 1) or dark_seed?(x - 1, y - 1)
+  end
+
+  defp dark_seed?(x, y), do: rem(x * 7 + y * 13, 15) == 0
+  defp clover?(x, y), do: rem(x * 5 + y * 11, 19) == 0
+
+  # ── Decor: cabin, boulder, forest canopies, logs, rocks ───────────
+
+  defp decor(floor, logs) do
     {hx, hy} = @house
     {bx, by} = @boulder
 
+    canopies = Enum.map(tree_positions(), fn {x, y} -> %{x: x, y: y, tile: "tree"} end)
+    log_props = Enum.flat_map(logs, fn {x, y} -> log_decor(x, y) end)
+
+    [%{x: hx, y: hy, tile: "house"}, %{x: bx, y: by, tile: "boulder"}] ++
+      canopies ++ log_props ++ rocks(floor)
+  end
+
+  defp log_decor(x, y) do
     [
-      %{x: hx, y: hy, tile: "house"},
-      %{x: bx, y: by, tile: "boulder"},
-      %{x: @cave_x, y: 9, tile: "cave"}
-    ] ++ Enum.map(tree_positions(), fn {x, y} -> %{x: x, y: y, tile: "tree"} end)
-  end
-
-  # A dense two-deep ring of canopies crowning the border, plus a crown on the
-  # high ground and a few valley clusters — everything clear of the keepout rects.
-  defp tree_positions do
-    ring =
-      Enum.map(3..40//2, &{&1, 1}) ++
-        Enum.map(3..40//2, &{&1, 29}) ++
-        Enum.map(3..28//2, &{1, &1}) ++
-        Enum.map(3..28//2, &{41, &1})
-
-    inner =
-      Enum.map(6..37//4, &{&1, 3}) ++
-        Enum.map(7..26//4, &{3, &1}) ++
-        Enum.map(7..26//4, &{39, &1})
-
-    crown = [{6, 5}, {10, 5}, {20, 5}, {24, 5}, {28, 5}, {12, 13}, {29, 13}]
-    clusters = [{7, 24}, {14, 25}, {20, 26}, {37, 22}, {6, 20}, {35, 19}]
-
-    (ring ++ inner ++ crown ++ clusters)
-    |> Enum.uniq()
-    |> Enum.reject(&in_keepout?/1)
-  end
-
-  # A 2x2 canopy at {x, y} clears the keepout only if it overlaps no rect.
-  defp in_keepout?({x, y}) do
-    Enum.any?(@keepout, fn {x0, y0, x1, y1} ->
-      x + 1 >= x0 and x <= x1 and y + 1 >= y0 and y <= y1
-    end)
-  end
-
-  defp floor_layer(props) do
-    for y <- 0..(@height - 1) do
-      for x <- 0..(@width - 1), do: Elixir.Map.get(props, {x, y}) || "grass"
-    end
-  end
-
-  # Three-tile-thick band of bushes hugging the border — the forest wall.
-  defp forest_border(props) do
-    for x <- 0..(@width - 1),
-        y <- 0..(@height - 1),
-        x < 3 or x >= @width - 3 or y < 3 or y >= @height - 3,
-        into: props do
-      {{x, y}, "bush"}
-    end
-  end
-
-  # Horizontal ledge: grass-lip edge on top, then a three-tile rock face
-  # (top / mid / base) so it reads clearly as raised ground dropping down.
-  defp cliff(props, x0, y, x1) do
-    Enum.reduce(x0..x1, props, fn x, acc ->
-      acc
-      |> Elixir.Map.put({x, y}, "cliff_edge")
-      |> Elixir.Map.put({x, y + 1}, "cliff_face")
-      |> Elixir.Map.put({x, y + 2}, "cliff_mid")
-      |> Elixir.Map.put({x, y + 3}, "cliff_base")
-    end)
-  end
-
-  defp pond(props, x, y) do
-    [
-      {0, 0, "pond_tl"},
-      {1, 0, "pond_tm"},
-      {2, 0, "pond_tr"},
-      {0, 1, "pond_ml"},
-      {1, 1, "pond_c"},
-      {2, 1, "pond_mr"},
-      {0, 2, "pond_bl"},
-      {1, 2, "pond_bm"},
-      {2, 2, "pond_br"}
+      %{x: x, y: y, tile: "log_l"},
+      %{x: x + 1, y: y, tile: "log_m"},
+      %{x: x + 2, y: y, tile: "log_r"}
     ]
-    |> Enum.reduce(props, fn {dx, dy, tile}, acc ->
-      Elixir.Map.put(acc, {x + dx, y + dy}, tile)
-    end)
   end
 
-  defp log(props, x, y) do
-    props
-    |> Elixir.Map.put({x, y}, "log_l")
-    |> Elixir.Map.put({x + 1, y}, "log_m")
-    |> Elixir.Map.put({x + 2, y}, "log_r")
+  # Canopies fill the high ground on a 2-tile grid wherever the whole 2x2
+  # footprint is forest, plus a few lone valley clumps — dense at the edges,
+  # open in the middle.
+  defp tree_positions do
+    forest =
+      for y <- 0..(@height - 2)//2,
+          x <- 0..(@width - 2)//2,
+          forest_tile?(x, y),
+          do: {x, y}
+
+    forest ++ Enum.filter(@valley_trees, fn {x, y} -> not high?(x, y) end)
   end
 
-  defp flower_beds(props) do
-    [{16, 15}, {17, 15}, {13, 18}, {27, 15}, {28, 15}, {19, 24}, {32, 20}, {8, 22}]
-    |> Enum.reduce(props, fn {x, y}, acc -> Elixir.Map.put(acc, {x, y}, "flowers") end)
+  defp forest_tile?(x, y) do
+    high?(x, y) and high?(x + 1, y) and high?(x, y + 1) and high?(x + 1, y + 1) and
+      not shelf?(x, y)
   end
 
-  # Floor-prop collision + the decor footprints (cabin, boulder, tree bases).
-  # Logs, flowers, the cliff-top lip and the cave mouth stay passable.
-  defp collision(props) do
-    passable = MapSet.new(["log_l", "log_m", "log_r", "flowers", "cliff_edge"])
+  defp rocks(floor) do
+    for {x, y, tile} <- @rock_spots, ground?(floor, x, y), do: %{x: x, y: y, tile: tile}
+  end
 
-    floor =
-      for {{x, y}, tile} <- props,
-          tile != "grass",
-          not MapSet.member?(passable, tile) do
+  defp ground?(floor, x, y) do
+    tile = floor |> Enum.at(y) |> Enum.at(x)
+    tile in ~w(grass grass_dark dirt flowers)
+  end
+
+  # ── Collision ─────────────────────────────────────────────────────
+
+  defp collision(floor) do
+    tiles =
+      for {row, y} <- Enum.with_index(floor),
+          {tile, x} <- Enum.with_index(row),
+          blocked_tile?(tile) do
         %{x: x, y: y, w: 1, h: 1, kind: "forest"}
       end
 
@@ -204,10 +300,15 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
     {bx, by} = @boulder
     trees = Enum.flat_map(tree_positions(), fn {x, y} -> rect(x, y, 2, 2, "tree") end)
 
-    floor ++ house_collision(hx, hy) ++ rect(bx, by, 3, 2, "boulder") ++ trees
+    tiles ++ house_collision(hx, hy) ++ rect(bx, by, 3, 2, "boulder") ++ trees
   end
 
-  # The cabin's walls (5x5 sprite minus the transparent roof peak).
+  defp blocked_tile?(tile) do
+    tile == "bush" or
+      (String.starts_with?(tile, "cliff_") and tile != "cliff_edge") or
+      String.starts_with?(tile, "pond_")
+  end
+
   defp house_collision(x, y) do
     for dx <- 0..4, dy <- 1..4, do: %{x: x + dx, y: y + dy, w: 1, h: 1, kind: "house"}
   end

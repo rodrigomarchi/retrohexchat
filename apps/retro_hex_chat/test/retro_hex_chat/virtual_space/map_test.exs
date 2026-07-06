@@ -96,7 +96,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
         legacy = ~w(wall_stone floor_stone floor_grass floor_wood)
 
         forest =
-          ~w(grass grass_tuft grass_worn flowers bush rock rock_s
+          ~w(grass grass_tuft grass_worn grass_dark dirt flowers bush rock rock_s
              log_l log_m log_r pond_tl pond_tm pond_tr pond_ml pond_c pond_mr
              pond_bl pond_bm pond_br cliff_edge cliff_face cliff_mid cliff_base)
 

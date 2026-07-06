@@ -6,8 +6,10 @@ import cliff_base from "./tiles/cliff_base.js";
 import cliff_edge from "./tiles/cliff_edge.js";
 import cliff_face from "./tiles/cliff_face.js";
 import cliff_mid from "./tiles/cliff_mid.js";
+import dirt from "./tiles/dirt.js";
 import flowers from "./tiles/flowers.js";
 import grass from "./tiles/grass.js";
+import grass_dark from "./tiles/grass_dark.js";
 import grass_tuft from "./tiles/grass_tuft.js";
 import grass_worn from "./tiles/grass_worn.js";
 import house from "./tiles/house.js";
@@ -35,8 +37,10 @@ export const TILES = {
   cliff_edge,
   cliff_face,
   cliff_mid,
+  dirt,
   flowers,
   grass,
+  grass_dark,
   grass_tuft,
   grass_worn,
   house,
