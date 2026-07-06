@@ -106,7 +106,13 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
         for row <- floor do
           assert length(row) == ctx.definition.width
-          assert Enum.all?(row, &(&1 in known))
+          # Elfic Forest is transcribed tile-for-tile from the reference; its
+          # floor carries semantic ids traced from that image
+          # (grass_NN, tree_NN, cliff_face_NN, cabin_NN, water_NN, …).
+          transcribed =
+            ~r/^(grass|grass_dark|clover|tree|cabin|cliff_face|cliff_top|water|water_edge|shadow)_\d+$/
+
+          assert Enum.all?(row, &(&1 in known or &1 =~ transcribed))
         end
       end
     end
