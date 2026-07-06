@@ -25,6 +25,10 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
 
     floor = Enum.map(floor_idx, fn row -> Enum.map(row, &Elixir.Enum.at(legend, &1)) end)
     spawn = spawn_cells(floor_idx, blocked, tree_cells, width, height)
+    # Traced tile pixels travel with the map (registered into the sprite atlas on
+    # the client) rather than in the JS bundle, so the tileset can be arbitrarily
+    # large without bloating the space chunk.
+    tileset = legend |> Enum.zip(data["tiles"]) |> Elixir.Map.new()
 
     %{
       id: "elfic_forest",
@@ -34,6 +38,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
       tile_size: 16,
       ground: Elixir.Enum.at(legend, ground_index(floor_idx)),
       spawn: spawn,
+      tileset: tileset,
       layers: %{floor: floor, decor: canopies(trees), above: []},
       collision: collision(floor_idx, blocked) ++ tree_collision(tree_cells),
       zones: zones(spawn, width, height),

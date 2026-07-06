@@ -69,6 +69,7 @@ export class SpaceEngine {
   start(init) {
     this.selfKey = init.selfKey ?? null;
     this.map = SpaceMap.from(init.map);
+    this.atlas?.registerTiles?.(init.map?.tileset);
     this.camera = new Camera({
       tileSize: this.map.tileSize,
       scale: init.config?.scale ?? 2,
@@ -174,6 +175,7 @@ export class SpaceEngine {
    */
   applyMapChanged(payload) {
     this.map = SpaceMap.from(payload.map);
+    this.atlas?.registerTiles?.(payload.map?.tileset);
     if (this.camera) {
       this.camera = new Camera({
         tileSize: this.map.tileSize,

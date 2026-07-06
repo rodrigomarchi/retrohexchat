@@ -107,6 +107,9 @@ export function createSpriteAtlas(opts = {}) {
   const tileSize = opts.tileSize ?? 16;
   const scale = opts.scale ?? 3;
   const cache = new Map();
+  // Map-supplied traced tiles (id -> {w,h,p,d}), registered at map load; these
+  // ship as map data rather than in the JS bundle.
+  const dynamic = new Map();
 
   function build(key, painter) {
     if (cache.has(key)) return cache.get(key);
@@ -152,7 +155,12 @@ export function createSpriteAtlas(opts = {}) {
       return AVATAR_IDS;
     },
     hasTile(id) {
-      return Boolean(TILES[id]) || TILE_IDS.includes(id);
+      return dynamic.has(id) || Boolean(TILES[id]) || TILE_IDS.includes(id);
+    },
+    // Register map-supplied traced tiles (from the map definition's `tileset`).
+    registerTiles(dict) {
+      if (!dict) return;
+      for (const [name, mod] of Object.entries(dict)) dynamic.set(name, mod);
     },
     hasAvatar(id) {
       return AVATAR_IDS.includes(id) && true;
@@ -160,6 +168,8 @@ export function createSpriteAtlas(opts = {}) {
     // Traced pixel tiles take precedence; unmapped ids fall back to the legacy
     // procedural painters so older maps keep rendering during the migration.
     tile(id) {
+      const dyn = dynamic.get(id);
+      if (dyn) return buildTraced(`tile:${id}`, dyn);
       const traced = TILES[id];
       if (traced) return buildTraced(`tile:${id}`, traced);
       const painter = TILE_PAINTERS[id] || TILE_PAINTERS.floor_stone;
