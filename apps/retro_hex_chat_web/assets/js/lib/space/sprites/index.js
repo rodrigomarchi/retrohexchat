@@ -4,6 +4,7 @@ import bush from "./tiles/bush.js";
 import cliff_base from "./tiles/cliff_base.js";
 import cliff_edge from "./tiles/cliff_edge.js";
 import cliff_face from "./tiles/cliff_face.js";
+import cliff_mid from "./tiles/cliff_mid.js";
 import flowers from "./tiles/flowers.js";
 import grass from "./tiles/grass.js";
 import grass_tuft from "./tiles/grass_tuft.js";
@@ -23,12 +24,7 @@ import pond_tm from "./tiles/pond_tm.js";
 import pond_tr from "./tiles/pond_tr.js";
 import rock from "./tiles/rock.js";
 import rock_s from "./tiles/rock_s.js";
-import tree_bl from "./tiles/tree_bl.js";
-import tree_br from "./tiles/tree_br.js";
-import tree_ml from "./tiles/tree_ml.js";
-import tree_mr from "./tiles/tree_mr.js";
-import tree_tl from "./tiles/tree_tl.js";
-import tree_tr from "./tiles/tree_tr.js";
+import tree from "./tiles/tree.js";
 
 export const TILES = {
   boulder,
@@ -36,6 +32,7 @@ export const TILES = {
   cliff_base,
   cliff_edge,
   cliff_face,
+  cliff_mid,
   flowers,
   grass,
   grass_tuft,
@@ -55,10 +52,5 @@ export const TILES = {
   pond_tr,
   rock,
   rock_s,
-  tree_bl,
-  tree_br,
-  tree_ml,
-  tree_mr,
-  tree_tl,
-  tree_tr,
+  tree,
 };
