@@ -11,8 +11,39 @@
  */
 
 import { TILES } from "./sprites/index.js";
+import { AVATARS } from "./sprites/avatars/index.js";
 
 const HASH = String.fromCharCode(35);
+
+// Avatar shirt colour per registry id; the traced hero is red, other colours are
+// a channel swap on its saturated-red shirt pixels so players stay distinct.
+const AVATAR_COLOR = {
+  mage_blue: "blue",
+  mage_green: "green",
+  rogue_red: "red",
+  bard_gold: "gold",
+};
+
+function h2(n) {
+  return n.toString(16).padStart(2, "0");
+}
+
+function recolorHex(hex, color) {
+  if (color === "red") return hex;
+  const r = parseInt(hex.slice(0, 2), 16);
+  const g = parseInt(hex.slice(2, 4), 16);
+  const b = parseInt(hex.slice(4, 6), 16);
+  if (!(r > 90 && g < r * 0.62 && b < r * 0.62)) return hex;
+  if (color === "blue") return h2(b) + h2(g) + h2(r);
+  if (color === "green") return h2(g) + h2(r) + h2(b);
+  if (color === "gold") return h2(r) + h2(Math.floor(r * 0.8)) + h2(b);
+  return hex;
+}
+
+function recolorMod(mod, color) {
+  if (color === "red") return mod;
+  return { w: mod.w, h: mod.h, d: mod.d, p: mod.p.map((hex) => recolorHex(hex, color)) };
+}
 
 // Palette-index alphabet shared with the extraction tool (png2js). Each traced
 // tile module is `{ w, h, p: [hex...], d: "<indices>" }`; "." marks a
@@ -134,10 +165,18 @@ export function createSpriteAtlas(opts = {}) {
       const painter = TILE_PAINTERS[id] || TILE_PAINTERS.floor_stone;
       return build(`tile:${id}`, painter);
     },
-    avatar(id, dir) {
-      const robe = AVATAR_ROBES[id] || "robe_blue";
+    // Traced hero walk sprite (16x32) for the direction + walk frame, recoloured
+    // per avatar id; falls back to the procedural painter if a sprite is missing.
+    avatar(id, dir, frame = 0) {
       const direction = DIRECTIONS.includes(dir) ? dir : "down";
-      return build(`avatar:${id}:${direction}`, (pad) => paintAvatar(pad, robe, direction));
+      const f = Math.max(0, Math.min(3, frame | 0));
+      const mod = AVATARS[`hero_${direction}_${f}`];
+      if (!mod) {
+        const robe = AVATAR_ROBES[id] || "robe_blue";
+        return build(`avatar:${id}:${direction}`, (pad) => paintAvatar(pad, robe, direction));
+      }
+      const color = AVATAR_COLOR[id] || "red";
+      return buildTraced(`avatar:${id}:${direction}:${f}`, recolorMod(mod, color));
     },
     board(assetId) {
       const canvas = makeCanvas(160, 120);

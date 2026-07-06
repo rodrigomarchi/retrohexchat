@@ -31,6 +31,8 @@ export class Renderer {
     this.ctx = canvas?.getContext?.("2d") ?? null;
     if (this.ctx) this.ctx.imageSmoothingEnabled = false;
     this.tilePx = map.tileSize * camera.scale;
+    // Per-avatar last render position + time, to drive the walk animation.
+    this._motion = new Map();
   }
 
   resize() {
@@ -45,6 +47,7 @@ export class Renderer {
     if (!ctx) return;
 
     const bubbles = state.bubbles ?? new Map();
+    const now = state.now ?? (typeof performance !== "undefined" ? performance.now() : 0);
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.fillStyle = HASH + VOID_BG;
@@ -54,7 +57,7 @@ export class Renderer {
 
     const ordered = [...state.participants.values()].sort((a, b) => a.y - b.y);
     for (const participant of ordered) {
-      this._drawAvatar(ctx, participant);
+      this._drawAvatar(ctx, participant, now);
     }
     for (const participant of ordered) {
       this._drawLabel(ctx, participant);
@@ -103,11 +106,29 @@ export class Renderer {
     }
   }
 
-  _drawAvatar(ctx, participant) {
-    const sprite = this.atlas?.avatar(participant.avatar, participant.dir);
+  _drawAvatar(ctx, participant, now) {
+    const frame = this._walkFrame(participant, now);
+    const sprite = this.atlas?.avatar(participant.avatar, participant.dir, frame);
     if (!sprite) return;
     const { x, y } = this._avatarScreenPos(participant);
-    ctx.drawImage(sprite.canvas, Math.round(x), Math.round(y));
+    // A tall sprite (2 tiles) sits with its feet on the tile, head rising above;
+    // a tile-sized sprite aligns exactly (dy = 0).
+    const dy = sprite.canvas.height - this.tilePx;
+    ctx.drawImage(sprite.canvas, Math.round(x), Math.round(y - dy));
+  }
+
+  // Walk frame from recent movement: cycle 0-3 while the render position keeps
+  // changing, settle on the idle frame 0 shortly after it stops.
+  _walkFrame(participant, now) {
+    const key = participant.key;
+    const m = this._motion.get(key) ?? { x: participant.x, y: participant.y, t: -1e9 };
+    if (participant.x !== m.x || participant.y !== m.y) {
+      m.x = participant.x;
+      m.y = participant.y;
+      m.t = now;
+    }
+    this._motion.set(key, m);
+    return now - m.t < 180 ? Math.floor(now / 130) % 4 : 0;
   }
 
   _drawLabel(ctx, participant) {
@@ -116,12 +137,13 @@ export class Renderer {
     ctx.font = LABEL_FONT;
     ctx.textAlign = "center";
     const cx = x + this.tilePx / 2;
+    const headY = y - this.tilePx;
     const width = ctx.measureText(participant.nickname).width + 6;
 
     ctx.fillStyle = HASH + LABEL_BG;
-    ctx.fillRect(Math.round(cx - width / 2), Math.round(y - 12), Math.round(width), 11);
+    ctx.fillRect(Math.round(cx - width / 2), Math.round(headY - 12), Math.round(width), 11);
     ctx.fillStyle = HASH + LABEL_FG;
-    ctx.fillText(participant.nickname, Math.round(cx), Math.round(y - 3));
+    ctx.fillText(participant.nickname, Math.round(cx), Math.round(headY - 3));
   }
 
   // Speech bubble above the nickname label. The text is drawn with fillText —
@@ -132,7 +154,7 @@ export class Renderer {
     ctx.textAlign = "center";
     const cx = x + this.tilePx / 2;
     const width = Math.min(ctx.measureText(text).width + 8, this.canvas.width - 4);
-    const top = y - 26;
+    const top = y - this.tilePx - 26;
 
     ctx.fillStyle = HASH + BUBBLE_BG;
     ctx.fillRect(Math.round(cx - width / 2), Math.round(top), Math.round(width), 13);

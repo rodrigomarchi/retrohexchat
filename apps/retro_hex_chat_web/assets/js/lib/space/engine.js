@@ -303,7 +303,7 @@ export class SpaceEngine {
       const bubble = this._chat.bubble(key, now);
       if (bubble) bubbles.set(key, bubble.text);
     }
-    this.renderer?.draw?.({ participants: rendered, selfKey: this.selfKey, bubbles });
+    this.renderer?.draw?.({ participants: rendered, selfKey: this.selfKey, bubbles, now });
   }
 
   _recenter() {
