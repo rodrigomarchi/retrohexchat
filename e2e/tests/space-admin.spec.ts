@@ -33,7 +33,7 @@ test.describe("Virtual space admin", () => {
 
       // The host's control panel lists the guest with a Kick button.
       const kickButton = host.page
-        .locator("[data-space-admin-list] button")
+        .locator("[data-space-admin-list] [data-kick-key]")
         .first();
       await expect(kickButton).toBeVisible({ timeout: 10_000 });
       await kickButton.click();

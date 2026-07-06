@@ -47,7 +47,7 @@ test.describe("Virtual space office", () => {
 
       // Walk to (12,11) facing up: the menu board is the faced tile (12,10).
       // Spawn is ~(10,12): right, right, up.
-      await user.page.locator("body").click();
+      await user.page.locator("#space-canvas").click();
       await user.page.keyboard.press("ArrowRight");
       await user.page.waitForTimeout(250);
       await user.page.keyboard.press("ArrowRight");

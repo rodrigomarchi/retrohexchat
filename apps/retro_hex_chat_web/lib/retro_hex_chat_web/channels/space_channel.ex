@@ -172,7 +172,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
       map: result.map,
       config: %{
         tile_size: result.map.tile_size,
-        scale: 3,
+        scale: 2,
         text_chat: "global"
       },
       snapshot: result.snapshot

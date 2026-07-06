@@ -29,7 +29,8 @@ test.describe("Virtual space canvas", () => {
 
       const shell = user.page.getByTestId("space-shell");
       await expect(shell).toBeVisible({ timeout: 15_000 });
-      await expect(shell).toContainText("Tavern E2E");
+      // The space name shows in the window-manager chrome (window title + status bar).
+      await expect(user.page.getByTestId("space-root")).toContainText("Tavern E2E");
 
       const canvas = user.page.locator("#space-canvas");
       await expect(canvas).toBeVisible();

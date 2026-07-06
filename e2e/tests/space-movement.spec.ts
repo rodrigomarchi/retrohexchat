@@ -65,7 +65,7 @@ test.describe("Virtual space movement", () => {
       const before = await canvasSignature(bob.page);
 
       // Alice walks right a few tiles.
-      await alice.page.locator("body").click();
+      await alice.page.locator("#space-canvas").click();
       for (let i = 0; i < 3; i += 1) {
         await alice.page.keyboard.press("ArrowRight");
         await alice.page.waitForTimeout(200);

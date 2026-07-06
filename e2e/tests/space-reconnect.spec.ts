@@ -55,7 +55,7 @@ test.describe("Virtual space reconnect", () => {
       await alice.page.waitForTimeout(400);
       const spawnSig = await canvasSignature(alice.page);
 
-      await alice.page.locator("body").click();
+      await alice.page.locator("#space-canvas").click();
       for (let i = 0; i < 3; i += 1) {
         await alice.page.keyboard.press("ArrowRight");
         await alice.page.waitForTimeout(200);

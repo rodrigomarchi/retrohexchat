@@ -71,7 +71,7 @@ export class SpaceEngine {
     this.map = SpaceMap.from(init.map);
     this.camera = new Camera({
       tileSize: this.map.tileSize,
-      scale: init.config?.scale ?? 3,
+      scale: init.config?.scale ?? 2,
       mapWidth: this.map.width,
       mapHeight: this.map.height,
     });
@@ -228,6 +228,15 @@ export class SpaceEngine {
   /** @returns {number} live participant count. */
   participantCount() {
     return this.participants.size;
+  }
+
+  /**
+   * Re-read the canvas backing-store size into the camera viewport and recenter.
+   * Call after the canvas element is resized (e.g. a window maximize) so a
+   * bigger canvas reveals more map instead of upscaling the same view.
+   */
+  resize() {
+    this._onResize();
   }
 
   /** Tear down: stop the loop, drop listeners, release the renderer. */

@@ -21,7 +21,9 @@ import { createSpriteAtlas } from "../../lib/space/sprite_atlas.js";
 import { normalizeSpaceInit, CLIENT_EVENTS, SERVER_EVENTS } from "../../lib/space/protocol.js";
 
 const TILE_SIZE = 16;
-const RENDER_SCALE = 3;
+// Integer pixel scale shared by the sprite atlas and the camera step (they must
+// match so floor tiles and avatars align). Lower = more map visible per screen.
+const RENDER_SCALE = 2;
 
 /**
  * Build the hook implementation. Socket/engine/input construction is injectable
@@ -40,8 +42,18 @@ export function createSpaceCanvasHook(deps = {}) {
       this._joinToken = this.el.dataset.joinToken;
 
       const canvas = this.el.querySelector("canvas");
+      this._canvas = canvas;
       this._atlas = createSpriteAtlas({ tileSize: TILE_SIZE, scale: RENDER_SCALE });
       this._engine = engineFactory({ canvas, atlas: this._atlas });
+
+      // Size the canvas backing store to its laid-out box and keep it in sync,
+      // so a bigger window (maximize) reveals more map. ResizeObserver catches
+      // window-manager resizes that never fire a browser "resize" event.
+      this._resizeCanvas();
+      if (typeof ResizeObserver !== "undefined") {
+        this._resizeObserver = new ResizeObserver(() => this._resizeCanvas());
+        this._resizeObserver.observe(this.el);
+      }
 
       this._input = inputFactory({
         onIntent: (intent) => this._onIntent(intent),
@@ -78,6 +90,7 @@ export function createSpaceCanvasHook(deps = {}) {
     destroyed() {
       this._input?.detach();
       this._modal?.detach();
+      this._resizeObserver?.disconnect();
       if (this._chatField && this._onChatKey) {
         this._chatField.removeEventListener("keydown", this._onChatKey);
       }
@@ -87,6 +100,8 @@ export function createSpaceCanvasHook(deps = {}) {
       this._input = null;
       this._modal = null;
       this._chatField = null;
+      this._resizeObserver = null;
+      this._canvas = null;
       this._engine = null;
       this._channel = null;
       this._socket = null;
@@ -150,9 +165,24 @@ export function createSpaceCanvasHook(deps = {}) {
       channel.on(SERVER_EVENTS.CLOSED, (payload) => this._onClosed(payload));
     },
 
+    // Match the canvas backing store to its CSS box, then let the engine
+    // re-fit the camera viewport. No-op until the element has a real size.
+    _resizeCanvas() {
+      const canvas = this._canvas;
+      if (!canvas) return;
+      const width = canvas.clientWidth || this.el.clientWidth;
+      const height = canvas.clientHeight || this.el.clientHeight;
+      if (width > 0 && height > 0 && (canvas.width !== width || canvas.height !== height)) {
+        canvas.width = width;
+        canvas.height = height;
+      }
+      this._engine?.resize?.();
+    },
+
     _afterWorldChange() {
       this._updateHud();
       this._renderAdminPanel();
+      this._renderPeoplePanel();
     },
 
     // A kick of the local participant ends the session locally (terminal
@@ -186,39 +216,129 @@ export function createSpaceCanvasHook(deps = {}) {
     // Reflect the live participant count in the corner HUD (label is in the
     // template so it stays translated).
     _updateHud() {
-      const el = this.el.querySelector("[data-space-hud-count]");
+      // The count lives in the status bar / people window, outside the hook's
+      // canvas root, so it is addressed on the document.
+      const el = document.querySelector("[data-space-hud-count]");
       if (el) el.textContent = String(this._engine?.participantCount?.() ?? 1);
     },
 
-    // Creator-only: list other participants with a Kick button. The panel only
-    // exists in the DOM for the creator (server-rendered), so non-creators can
-    // never drive admin actions from here.
+    // A small canvas thumbnail of a participant's actual avatar sprite, used as
+    // the row "icon" in the people/host lists. Draws a fresh copy so the cached
+    // atlas canvas is never moved into the DOM.
+    _avatarThumb(avatarId) {
+      const thumb = document.createElement("canvas");
+      thumb.width = 24;
+      thumb.height = 24;
+      thumb.className = "space-roster__avatar";
+      const ctx = thumb.getContext("2d");
+      const src = this._atlas?.avatar?.(avatarId, "down")?.canvas;
+      if (ctx && src) {
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(src, 0, 0, thumb.width, thumb.height);
+      }
+      return thumb;
+    },
+
+    // Clones a real Icons glyph rendered into a hidden <template> by the shell,
+    // so JS-built buttons carry proper icons without inlining SVG here.
+    _icon(name) {
+      const tpl = document.querySelector(`[data-space-tpl="${name}"]`);
+      return tpl?.content ? tpl.content.cloneNode(true) : null;
+    },
+
+    _iconButton(label, iconName, onClick) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "space-roster__btn";
+      const icon = this._icon(iconName);
+      if (icon) btn.appendChild(icon);
+      const span = document.createElement("span");
+      span.textContent = label;
+      btn.appendChild(span);
+      btn.addEventListener("click", onClick);
+      return btn;
+    },
+
+    _emptyRow(text) {
+      const row = document.createElement("div");
+      row.className = "space-roster__empty";
+      row.textContent = text;
+      return row;
+    },
+
+    _participantRow(p, selfKey) {
+      const row = document.createElement("div");
+      row.className = "space-roster__row";
+      row.appendChild(this._avatarThumb(p.avatar));
+      const name = document.createElement("span");
+      name.className = "space-roster__name";
+      name.title = p.nickname;
+      name.textContent = p.key === selfKey ? `${p.nickname} (you)` : p.nickname;
+      row.appendChild(name);
+      return row;
+    },
+
+    // Fills the "Who's here" window with every online participant (self marked,
+    // muted ones flagged). The window body is server-rendered but JS-populated,
+    // so it is queried on the document and guarded by phx-update="ignore".
+    _renderPeoplePanel() {
+      const panel = document.querySelector("[data-space-people-list]");
+      if (!panel || !this._engine) return;
+
+      const selfKey = this._engine.selfKey;
+      const rows = [];
+      for (const p of this._engine.participants.values()) {
+        if (!p.online) continue;
+        const row = this._participantRow(p, selfKey);
+        if (p.muted) {
+          const badge = document.createElement("span");
+          badge.className = "space-roster__badge";
+          badge.title = "Muted";
+          const icon = this._icon("mute");
+          if (icon) badge.appendChild(icon);
+          row.appendChild(badge);
+        }
+        rows.push(row);
+      }
+      if (!rows.length) rows.push(this._emptyRow("No one here yet"));
+      panel.replaceChildren(...rows);
+    },
+
+    // Creator-only: list other participants with Mute/Unmute and Kick actions.
+    // The panel lives in the Host controls window (outside the hook root, only
+    // rendered for the creator), so it is addressed on the document.
     _renderAdminPanel() {
-      const panel = this.el.querySelector("[data-space-admin-list]");
+      const panel = document.querySelector("[data-space-admin-list]");
       if (!panel || !this._engine) return;
 
       const selfKey = this._engine.selfKey;
       const rows = [];
       for (const p of this._engine.participants.values()) {
         if (p.key === selfKey || !p.online) continue;
-        const row = document.createElement("div");
-        row.className = "flex items-center gap-2";
-        const name = document.createElement("span");
-        name.textContent = p.nickname;
-        const kick = document.createElement("button");
-        kick.type = "button";
-        kick.textContent = "Kick";
-        kick.dataset.kickKey = p.key;
-        kick.addEventListener("click", () =>
+        const row = this._participantRow(p, selfKey);
+
+        const mute = this._iconButton(p.muted ? "Unmute" : "Mute", "mute", () =>
+          this._channel?.push(CLIENT_EVENTS.ADMIN_ACTION, {
+            kind: "mute",
+            target_key: p.key,
+            muted: !p.muted,
+          }),
+        );
+        row.appendChild(mute);
+
+        const kick = this._iconButton("Kick", "ban", () =>
           this._channel?.push(CLIENT_EVENTS.ADMIN_ACTION, {
             kind: "kick",
             target_key: p.key,
             reason: "removed by host",
           }),
         );
-        row.append(name, kick);
+        kick.dataset.kickKey = p.key;
+        row.appendChild(kick);
+
         rows.push(row);
       }
+      if (!rows.length) rows.push(this._emptyRow("No one else is here to manage"));
       panel.replaceChildren(...rows);
     },
 

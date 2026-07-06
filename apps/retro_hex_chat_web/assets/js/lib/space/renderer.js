@@ -7,6 +7,9 @@
 
 const LABEL_FONT = "10px monospace";
 const HASH = String.fromCharCode(35);
+// Solid backdrop painted before the floor so any tile without a sprite (map
+// edges / gaps) reads as a dark void instead of transparent canvas.
+const VOID_BG = "14161c";
 const LABEL_BG = "1b1d24";
 const LABEL_FG = "e8dcc0";
 const BUBBLE_BG = "e8dcc0";
@@ -44,6 +47,8 @@ export class Renderer {
     const bubbles = state.bubbles ?? new Map();
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.fillStyle = HASH + VOID_BG;
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this._drawFloor(ctx);
 
     const ordered = [...state.participants.values()].sort((a, b) => a.y - b.y);
