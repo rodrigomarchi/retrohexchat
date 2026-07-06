@@ -13,6 +13,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   require Logger
 
+  alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.JoinToken
@@ -25,6 +26,8 @@ defmodule RetroHexChatWeb.SpaceChannel do
         socket
         |> assign(:space_token, token)
         |> assign(:participant_key, result.participant.key)
+        |> assign(:user_id, data.user_id)
+        |> assign(:nickname, data.nickname)
 
       {:ok, space_init(token, result), socket}
     else
@@ -46,6 +49,15 @@ defmodule RetroHexChatWeb.SpaceChannel do
   def handle_in("space_chat_bubble", %{"text" => text}, socket) when is_binary(text) do
     with %{space_token: token, participant_key: key} <- socket.assigns do
       VirtualSpace.chat_bubble(token, key, text)
+    end
+
+    {:noreply, socket}
+  end
+
+  def handle_in("space_admin_action", payload, socket) do
+    with %{space_token: token} <- socket.assigns,
+         {:ok, action} <- parse_admin_action(payload) do
+      VirtualSpace.admin_action(token, admin_actor(socket), action)
     end
 
     {:noreply, socket}
@@ -112,6 +124,31 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   defp parse_interact(_), do: :error
 
+  defp parse_admin_action(%{"kind" => "kick"} = p),
+    do: {:ok, %{kind: "kick", target_key: p["target_key"], reason: p["reason"] || "kicked"}}
+
+  defp parse_admin_action(%{"kind" => "mute"} = p),
+    do: {:ok, %{kind: "mute", target_key: p["target_key"], muted: p["muted"] == true}}
+
+  defp parse_admin_action(%{"kind" => "close"} = p),
+    do: {:ok, %{kind: "close", reason: p["reason"] || "closed"}}
+
+  defp parse_admin_action(%{"kind" => "change_map", "map_id" => map_id}) when is_binary(map_id),
+    do: {:ok, %{kind: "change_map", map_id: map_id}}
+
+  defp parse_admin_action(_), do: :error
+
+  defp admin_actor(socket) do
+    nickname = socket.assigns[:nickname]
+
+    %{
+      user_id: socket.assigns[:user_id],
+      nickname: nickname,
+      is_admin: ServerRoles.admin?(nickname, true),
+      is_server_operator: ServerRoles.server_operator?(nickname, true)
+    }
+  end
+
   defp build_actor(data) do
     %{
       user_id: data.user_id,
@@ -145,6 +182,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
   defp join_error(:not_found), do: "not_found"
   defp join_error(:terminal_session), do: "terminal_session"
   defp join_error(:invalid_token), do: "invalid_token"
+  defp join_error(:kicked), do: "kicked"
 
   defp join_error(other) do
     Logger.info("Space join denied: #{inspect(other)}")

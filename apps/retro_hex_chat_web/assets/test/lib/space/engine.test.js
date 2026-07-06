@@ -239,6 +239,41 @@ describe("SpaceEngine local prediction and reconciliation", () => {
     expect(engine.participant("registered:1").x).toBe(x);
   });
 
+  it("rebuilds the world on space_map_changed", () => {
+    const engine = startedEngine();
+
+    engine.applyMapChanged({
+      map: {
+        id: "guild_hall_v1",
+        width: 30,
+        height: 24,
+        tile_size: 16,
+        spawn: [{ x: 2, y: 2, dir: "down" }],
+        collision: [{ x: 5, y: 5, w: 1, h: 1, kind: "wall" }],
+        zones: [],
+        seats: [],
+        interactables: [],
+      },
+      snapshot: {
+        serverTime: 1,
+        participants: { "registered:1": { nickname: "alice", x: 2, y: 2, dir: "down" } },
+      },
+    });
+
+    expect(engine.map.id).toBe("guild_hall_v1");
+    expect(engine.map.isBlocked(5, 5)).toBe(true);
+    expect(engine.participant("registered:1").x).toBe(2);
+    expect(engine.participantCount()).toBe(1);
+  });
+
+  it("removes a kicked remote participant", () => {
+    const engine = startedEngine();
+    expect(engine.participant("registered:2")).not.toBe(null);
+
+    engine.removeParticipant("registered:2");
+    expect(engine.participant("registered:2")).toBe(null);
+  });
+
   it("interpolates a remote participant's move over time", () => {
     const engine = startedEngine();
     let clock = 0;

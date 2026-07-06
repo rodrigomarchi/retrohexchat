@@ -16,7 +16,7 @@ msgstr ""
 msgid "ACCESS DENIED"
 msgstr "접근 거부"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:137
+#: lib/retro_hex_chat_web/live/app/space_live.ex:130 lib/retro_hex_chat_web/live/app/space_live.ex:143 lib/retro_hex_chat_web/live/app/space_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "채팅으로 돌아가기"
@@ -51,7 +51,7 @@ msgstr "이 가상 스페이스는 더 이상 활성 상태가 아닙니다."
 msgid "This virtual space link is invalid or was removed."
 msgstr "이 가상 스페이스 링크는 잘못되었거나 삭제되었습니다."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:163 lib/retro_hex_chat_web/live/app/space_live.ex:167 lib/retro_hex_chat_web/live/app/space_live.ex:187
+#: lib/retro_hex_chat_web/live/app/space_live.ex:196 lib/retro_hex_chat_web/live/app/space_live.ex:201 lib/retro_hex_chat_web/live/app/space_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Virtual space"
 msgstr "가상 스페이스"
@@ -61,7 +61,7 @@ msgstr "가상 스페이스"
 msgid "You do not have access to this virtual space. You must be registered, identified and allowed into its channel."
 msgstr "이 가상 스페이스에 접근할 수 없습니다. 등록되고 인증되었으며 해당 채널에 허용된 상태여야 합니다."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:116
+#: lib/retro_hex_chat_web/live/app/space_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Arrows/WASD to move · E to use · F to sit · Esc to close"
 msgstr "화살표/WASD 이동 · E 사용 · F 앉기 · Esc 닫기"
@@ -75,3 +75,28 @@ msgstr "뭔가 말해보세요… (Enter로 전송)"
 #, elixir-autogen, elixir-format
 msgid "here"
 msgstr "명"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:118
+#, elixir-autogen, elixir-format
+msgid "Host controls"
+msgstr "호스트 제어"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "REMOVED FROM SPACE"
+msgstr "스페이스에서 내보내짐"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "SPACE CLOSED"
+msgstr "스페이스 종료됨"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "The host removed you from this space."
+msgstr "호스트가 이 스페이스에서 당신을 내보냈습니다."
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "This virtual space has ended."
+msgstr "이 가상 스페이스가 종료되었습니다."

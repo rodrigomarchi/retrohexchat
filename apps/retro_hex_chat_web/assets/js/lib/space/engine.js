@@ -167,6 +167,32 @@ export class SpaceEngine {
     return this._pending.length;
   }
 
+  /**
+   * Rebuild the world after `space_map_changed`: swap the map, recentre the
+   * camera on the new bounds, and reseat everyone from the fresh snapshot.
+   * @param {{map: object, snapshot: object}} payload
+   */
+  applyMapChanged(payload) {
+    this.map = SpaceMap.from(payload.map);
+    if (this.camera) {
+      this.camera = new Camera({
+        tileSize: this.map.tileSize,
+        scale: this.camera.scale,
+        mapWidth: this.map.width,
+        mapHeight: this.map.height,
+      });
+      this.camera.setViewport(this.canvas?.width ?? 0, this.canvas?.height ?? 0);
+      if (this.renderer) this.renderer.camera = this.camera;
+    }
+    this.applySnapshot(payload.snapshot);
+  }
+
+  /** Drop a participant (e.g. kicked) from the world. */
+  removeParticipant(key) {
+    this.participants.delete(key);
+    this._interp.remove(key);
+  }
+
   /** Record an incoming `space_message` (speech bubble + side log). */
   receiveMessage(message) {
     this._chat.receive(message, this._clock());

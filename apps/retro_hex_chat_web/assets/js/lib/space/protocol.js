@@ -25,6 +25,8 @@ export const SERVER_EVENTS = Object.freeze({
   RECONCILE: "space_reconcile",
   MESSAGE: "space_message",
   MODAL: "space_modal",
+  MAP_CHANGED: "space_map_changed",
+  KICKED: "space_participant_kicked",
   ADMIN_NOTICE: "space_admin_notice",
   CLOSED: "space_closed",
 });

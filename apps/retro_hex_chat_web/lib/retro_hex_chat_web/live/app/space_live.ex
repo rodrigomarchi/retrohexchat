@@ -111,6 +111,39 @@ defmodule RetroHexChatWeb.App.SpaceLive do
                 placeholder={dgettext("space", "Say something… (Enter to send)")}
                 class="absolute bottom-1 left-1 right-1 bg-canvas shadow-retro-field px-2 py-1 text-sm"
               />
+              <div
+                :if={@is_creator}
+                class="absolute top-1 left-1 bg-canvas shadow-retro-field p-2 text-xs"
+              >
+                <div class="font-bold mb-1">{dgettext("space", "Host controls")}</div>
+                <div data-space-admin-list class="flex flex-col gap-1"></div>
+              </div>
+              <div
+                data-space-kicked
+                hidden
+                class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
+              >
+                <div>
+                  <div class="font-bold mb-2">{dgettext("space", "REMOVED FROM SPACE")}</div>
+                  <p class="text-sm">{dgettext("space", "The host removed you from this space.")}</p>
+                  <.link navigate={~p"/chat"} class="mt-4 inline-block underline text-sm">
+                    {dgettext("space", "Back to chat")}
+                  </.link>
+                </div>
+              </div>
+              <div
+                data-space-closed
+                hidden
+                class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
+              >
+                <div>
+                  <div class="font-bold mb-2">{dgettext("space", "SPACE CLOSED")}</div>
+                  <p class="text-sm">{dgettext("space", "This virtual space has ended.")}</p>
+                  <.link navigate={~p"/chat"} class="mt-4 inline-block underline text-sm">
+                    {dgettext("space", "Back to chat")}
+                  </.link>
+                </div>
+              </div>
             </div>
             <p class="mt-1 text-xs text-muted-foreground">
               {dgettext("space", "Arrows/WASD to move · E to use · F to sit · Esc to close")}
@@ -164,6 +197,7 @@ defmodule RetroHexChatWeb.App.SpaceLive do
       channel_name: db_session.channel_name,
       nickname: nickname,
       user_id: user_id,
+      is_creator: db_session.creator_id == user_id,
       page_title: db_session.title || dgettext("space", "Virtual space")
     )
   end

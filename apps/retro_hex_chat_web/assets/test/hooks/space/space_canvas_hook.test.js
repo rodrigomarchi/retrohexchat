@@ -212,4 +212,47 @@ describe("SpaceCanvasHook implementation", () => {
     hook.destroyed();
     expect(input.detach).toHaveBeenCalled();
   });
+
+  it("shows the kicked screen when the local participant is kicked", () => {
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      destroy: vi.fn(),
+      removeParticipant: vi.fn(),
+      selfKey: "registered:1",
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    const input = { attach: vi.fn(), detach: vi.fn() };
+    const ctx = mountContext();
+    const kickedEl = document.createElement("div");
+    kickedEl.setAttribute("data-space-kicked", "");
+    kickedEl.hidden = true;
+    ctx.el.appendChild(kickedEl);
+
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({
+          socketFactory: () => socket,
+          engineFactory: () => engine,
+          inputFactory: () => input,
+        }),
+      ),
+      ctx,
+    );
+
+    hook.mounted();
+
+    // A kick of another participant only drops that avatar.
+    channel.handlers.space_participant_kicked({ key: "registered:2", reason: "x" });
+    expect(engine.removeParticipant).toHaveBeenCalledWith("registered:2");
+    expect(kickedEl.hidden).toBe(true);
+
+    // A kick of self shows the terminal screen and leaves.
+    channel.handlers.space_participant_kicked({ key: "registered:1", reason: "spam" });
+    expect(kickedEl.hidden).toBe(false);
+    expect(input.detach).toHaveBeenCalled();
+    expect(channel.leave).toHaveBeenCalled();
+  });
 });

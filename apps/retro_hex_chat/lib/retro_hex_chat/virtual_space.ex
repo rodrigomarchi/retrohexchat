@@ -24,7 +24,7 @@ defmodule RetroHexChat.VirtualSpace do
   @spec join_session(String.t(), Policy.actor()) ::
           {:ok,
            %{participant: SessionServer.participant(), snapshot: map(), session: Session.t()}}
-          | {:error, Policy.error() | :not_found}
+          | {:error, Policy.error() | :not_found | :kicked}
   defdelegate join_session(token, actor), to: Service
 
   @spec input(String.t(), String.t(), SessionServer.input_payload()) ::
@@ -37,6 +37,9 @@ defmodule RetroHexChat.VirtualSpace do
 
   @spec chat_bubble(String.t(), String.t(), String.t()) :: :ok | {:error, atom()}
   defdelegate chat_bubble(token, participant_key, text), to: SessionServer
+
+  @spec admin_action(String.t(), SessionServer.actor(), map()) :: :ok | {:error, atom()}
+  defdelegate admin_action(token, actor, action), to: SessionServer
 
   @spec leave(String.t(), String.t()) :: :ok
   defdelegate leave(token, participant_key), to: Service

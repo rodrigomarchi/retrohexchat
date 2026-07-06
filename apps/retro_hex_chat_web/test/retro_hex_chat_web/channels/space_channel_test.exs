@@ -195,6 +195,45 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
     end
   end
 
+  describe "admin actions" do
+    test "the creator can kick a member, whose socket receives the kick" do
+      creator = register_and_identify("chk#{uid()}")
+      member = register_and_identify("chj#{uid()}")
+      session = insert_space(creator)
+
+      {:ok, _cinit, creator_socket} = join_space(creator, session)
+      {:ok, minit, member_socket} = join_space(member, session)
+      member_key = minit.self_key
+
+      push(creator_socket, "space_admin_action", %{
+        "kind" => "kick",
+        "target_key" => member_key,
+        "reason" => "spam"
+      })
+
+      assert_push "space_participant_kicked", %{key: ^member_key, reason: "spam"}
+      # The kicked member's own socket also receives the broadcast.
+      Process.unlink(member_socket.channel_pid)
+    end
+
+    test "a non-creator admin action is ignored (no kick broadcast)" do
+      creator = register_and_identify("chn#{uid()}")
+      member = register_and_identify("chm2#{uid()}")
+      session = insert_space(creator)
+
+      {:ok, _cinit, _creator_socket} = join_space(creator, session)
+      {:ok, minit, member_socket} = join_space(member, session)
+
+      push(member_socket, "space_admin_action", %{
+        "kind" => "kick",
+        "target_key" => minit.self_key,
+        "reason" => "self"
+      })
+
+      refute_push "space_participant_kicked", %{}, 200
+    end
+  end
+
   describe "leave" do
     test "closing the channel marks the participant offline in the SessionServer" do
       creator = register_and_identify("chl#{uid()}")

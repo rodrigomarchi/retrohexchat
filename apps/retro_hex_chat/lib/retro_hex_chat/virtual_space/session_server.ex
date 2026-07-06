@@ -104,6 +104,19 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     call(token, {:chat_bubble, participant_key, text})
   end
 
+  @type actor :: %{
+          required(:user_id) => integer(),
+          optional(:nickname) => String.t(),
+          optional(:is_admin) => boolean(),
+          optional(:is_server_operator) => boolean()
+        }
+
+  @spec admin_action(String.t(), actor(), map()) ::
+          :ok | {:error, :not_found | :forbidden | :unknown_map | :invalid_action}
+  def admin_action(token, actor, action) do
+    call(token, {:admin_action, actor, action})
+  end
+
   @spec leave(String.t(), String.t()) :: :ok
   def leave(token, participant_key) do
     case Registry.lookup(token) do
@@ -180,6 +193,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
           blocked: SpaceMap.collision_set(map_definition),
           participants: %{},
           seats: %{},
+          kicked: MapSet.new(),
           timers: %{}
         }
 
@@ -207,15 +221,10 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     returning = Map.get(state.participants, key)
     active_count = online_count(state)
 
-    case Policy.check_capacity(state.session, active_count, returning != nil) do
-      {:error, reason} ->
-        {:reply, {:error, reason}, state}
-
-      :ok ->
-        {participant, state} = do_join(state, key, context, returning)
-
-        reply = %{participant: participant, snapshot: build_snapshot(state), map: state.map}
-        {:reply, {:ok, reply}, state}
+    if MapSet.member?(state.kicked, key) do
+      {:reply, {:error, :kicked}, state}
+    else
+      join_if_room(state, key, context, returning, active_count)
     end
   end
 
@@ -245,6 +254,13 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     end
   end
 
+  def handle_call({:admin_action, actor, action}, _from, state) do
+    case Policy.can_admin?(admin_actor(actor), state.session) do
+      {:error, _} -> {:reply, {:error, :forbidden}, state}
+      :ok -> do_admin_action(state, action)
+    end
+  end
+
   def handle_call({:close, reason}, _from, state) do
     state = do_end(state, "closed", reason)
     {:stop, :normal, :ok, state}
@@ -260,12 +276,14 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         state = free_seat(state, participant)
         updated = %{participant | online?: false, seat_id: nil, last_seen_at: DateTime.utc_now()}
         state = put_in(state.participants[participant_key], updated)
+        state = persist_positions(state)
 
         broadcast(state.token, "space_participant_left", %{
           key: participant_key,
           nickname: participant.nickname
         })
 
+        broadcast_presence_left(state, participant_key)
         update_participant_counts(state)
         {:noreply, state}
     end
@@ -292,8 +310,20 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   defp participant_key(%{user_id: user_id}), do: "registered:#{user_id}"
 
+  defp join_if_room(state, key, context, returning, active_count) do
+    case Policy.check_capacity(state.session, active_count, returning != nil) do
+      {:error, reason} ->
+        {:reply, {:error, reason}, state}
+
+      :ok ->
+        {participant, state} = do_join(state, key, context, returning)
+        reply = %{participant: participant, snapshot: build_snapshot(state), map: state.map}
+        {:reply, {:ok, reply}, state}
+    end
+  end
+
   defp do_join(state, key, context, nil) do
-    {x, y, dir} = pick_spawn(state)
+    {x, y, dir} = spawn_for(state, key)
 
     participant = %{
       key: key,
@@ -325,6 +355,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       nickname: participant.nickname
     })
 
+    broadcast_presence_join(state, key, participant)
     update_participant_counts(state)
     {participant, state}
   end
@@ -345,6 +376,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       nickname: participant.nickname
     })
 
+    broadcast_presence_join(state, key, participant)
     update_participant_counts(state)
     {participant, state}
   end
@@ -444,11 +476,168 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     state
   end
 
+  # Presence deltas so every other client's engine adds/removes the participant
+  # (the named space_participant_joined/left events carry only the nickname).
+  defp broadcast_presence_join(state, key, participant) do
+    broadcast(state.token, "space_delta", %{
+      server_time: System.system_time(:millisecond),
+      seq_ack: %{},
+      updates: %{},
+      joined: %{key => participant_view(participant)},
+      left: []
+    })
+  end
+
+  defp broadcast_presence_left(state, key) do
+    broadcast(state.token, "space_delta", %{
+      server_time: System.system_time(:millisecond),
+      seq_ack: %{},
+      updates: %{},
+      joined: %{},
+      left: [key]
+    })
+  end
+
   defp valid_step?(%{dx: dx, dy: dy})
        when dx in [-1, 0, 1] and dy in [-1, 0, 1],
        do: abs(dx) + abs(dy) == 1
 
   defp valid_step?(_), do: false
+
+  # --- Admin actions (creator / server operator only) ---
+
+  defp admin_actor(actor) do
+    %{
+      user_id: actor.user_id,
+      nickname: Map.get(actor, :nickname, ""),
+      identified: true,
+      is_admin: Map.get(actor, :is_admin, false),
+      is_server_operator: Map.get(actor, :is_server_operator, false)
+    }
+  end
+
+  defp do_admin_action(state, %{kind: "kick", target_key: target_key} = action) do
+    reason = Map.get(action, :reason, "kicked")
+
+    case Map.get(state.participants, target_key) do
+      nil ->
+        {:reply, {:error, :invalid_target}, state}
+
+      participant ->
+        state = free_seat(state, participant)
+        updated = %{participant | online?: false, seat_id: nil}
+        state = put_in(state.participants[target_key], updated)
+        state = update_in(state.kicked, &MapSet.put(&1, target_key))
+
+        broadcast(state.token, "space_participant_kicked", %{key: target_key, reason: reason})
+        broadcast_presence_left(state, target_key)
+        update_participant_counts(state)
+        {:reply, :ok, state}
+    end
+  end
+
+  defp do_admin_action(state, %{kind: "mute", target_key: target_key} = action) do
+    muted? = Map.get(action, :muted, true)
+
+    case Map.get(state.participants, target_key) do
+      nil ->
+        {:reply, {:error, :invalid_target}, state}
+
+      participant ->
+        updated = %{participant | muted?: muted?}
+        state = put_in(state.participants[target_key], updated)
+        state = broadcast_delta(state, target_key, updated, updated.input_seq)
+        {:reply, :ok, state}
+    end
+  end
+
+  defp do_admin_action(state, %{kind: "close"} = action) do
+    reason = Map.get(action, :reason, "closed")
+    state = do_end(state, "closed", reason)
+    {:stop, :normal, :ok, state}
+  end
+
+  defp do_admin_action(state, %{kind: "change_map", map_id: map_id}) do
+    case SpaceMap.get(map_id) do
+      {:error, :unknown_map} ->
+        {:reply, {:error, :unknown_map}, state}
+
+      {:ok, map_definition} ->
+        {:reply, :ok, change_map(state, map_id, map_definition)}
+    end
+  end
+
+  defp do_admin_action(state, _action), do: {:reply, {:error, :invalid_action}, state}
+
+  # Swaps the map, respawns everyone onto valid tiles (identity/mute/presence
+  # preserved) and re-emits a full snapshot so clients rebuild their world.
+  defp change_map(state, map_id, map_definition) do
+    blocked = SpaceMap.collision_set(map_definition)
+    spawns = map_definition.spawn
+
+    {participants, _} =
+      Enum.map_reduce(state.participants, MapSet.new(), fn {key, p}, taken ->
+        spawn = free_spawn(spawns, taken)
+        moved = %{p | x: spawn.x, y: spawn.y, dir: spawn.dir, pose: "standing", seat_id: nil}
+        moved = %{moved | zone_id: zone_at(map_definition, spawn.x, spawn.y)}
+        {{key, moved}, MapSet.put(taken, {spawn.x, spawn.y})}
+      end)
+
+    {:ok, session} =
+      Queries.update_status(state.session, state.session.status, %{map_id: map_id})
+
+    state = %{
+      state
+      | session: session,
+        map: map_definition,
+        blocked: blocked,
+        participants: Map.new(participants),
+        seats: %{}
+    }
+
+    state = persist_positions(state)
+
+    broadcast(state.token, "space_map_changed", %{
+      map: map_definition,
+      snapshot: build_snapshot(state)
+    })
+
+    state
+  end
+
+  defp free_spawn(spawns, taken) do
+    Enum.find(spawns, List.first(spawns), fn s -> not MapSet.member?(taken, {s.x, s.y}) end)
+  end
+
+  # Restores a saved position (from a previous leave / process lifetime) if the
+  # metadata carries one and it is still walkable; otherwise picks a free spawn.
+  defp spawn_for(state, key) do
+    with %{"positions" => positions} <- state.session.metadata,
+         %{"x" => x, "y" => y} = saved when is_integer(x) and is_integer(y) <-
+           Map.get(positions, key),
+         false <- MapSet.member?(state.blocked, {x, y}) do
+      {x, y, Map.get(saved, "dir", "down")}
+    else
+      _ -> pick_spawn(state)
+    end
+  end
+
+  # A light snapshot of tile positions written to the session row on leave and
+  # map change (never per step), so a reload or process restart lands people
+  # back where they were.
+  defp persist_positions(state) do
+    positions =
+      Map.new(state.participants, fn {key, p} ->
+        {key, %{"x" => p.x, "y" => p.y, "dir" => p.dir}}
+      end)
+
+    metadata = Map.put(state.session.metadata || %{}, "positions", positions)
+
+    case Queries.update_status(state.session, state.session.status, %{metadata: metadata}) do
+      {:ok, session} -> %{state | session: session}
+      {:error, _} -> state
+    end
+  end
 
   # --- Interactions (seats, boards) ---
 

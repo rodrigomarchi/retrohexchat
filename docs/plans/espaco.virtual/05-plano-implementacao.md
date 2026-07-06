@@ -185,21 +185,21 @@ Fechamento da fase:
 
 ## Fase 5: poderes do criador e mapas
 
-- [ ] `space_admin_action`: kick (com bloqueio de reentrada na sessão), mute/
+- [x] `space_admin_action`: kick (com bloqueio de reentrada na sessão), mute/
       unmute, close, change_map — validação de papel no servidor.
-- [ ] UI do criador no HUD.
-- [ ] Três mapas restantes no registry Elixir (`guild_hall_v1`,
+- [x] UI do criador no HUD.
+- [x] Três mapas restantes no registry Elixir (`guild_hall_v1`,
       `arcane_library_v1`, `garden_camp_v1`) seguindo o playbook do primeiro.
-- [ ] Troca de mapa: snapshot completo, respawn válido, preserva identidade/
+- [x] Troca de mapa: snapshot completo, respawn válido, preserva identidade/
       mute/presença.
-- [ ] Persistência de posição em reload/reconnect (snapshot leve em `metadata`
+- [x] Persistência de posição em reload/reconnect (snapshot leve em `metadata`
       em eventos de leave/map-change, nunca por passo).
 
 Fechamento da fase:
 
-- [ ] Testes §Fase 5 verdes.
-- [ ] `make ci` completo verde.
-- [ ] Commit único da fase na `main`.
+- [x] Testes §Fase 5 verdes.
+- [x] `make ci` completo verde.
+- [x] Commit único da fase na `main`.
 
 ## Fase 6: robustez e produto completo
 

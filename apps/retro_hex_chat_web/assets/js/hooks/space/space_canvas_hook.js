@@ -68,6 +68,7 @@ export function createSpaceCanvasHook(deps = {}) {
         .receive("ok", (reply) => this._engine.start(normalizeSpaceInit(reply)))
         .receive("error", (reply) => {
           console.error("[space] channel join rejected", reply);
+          if (reply?.reason === "kicked") this._showKickedScreen();
         })
         .receive("timeout", () => {
           console.error("[space] channel join timed out");
@@ -133,17 +134,53 @@ export function createSpaceCanvasHook(deps = {}) {
     _wireChannelEvents(channel) {
       channel.on(SERVER_EVENTS.SNAPSHOT, (payload) => {
         this._engine?.applySnapshot(payload);
-        this._updateHud();
+        this._afterWorldChange();
       });
       channel.on(SERVER_EVENTS.DELTA, (payload) => {
         this._engine?.applyDelta(payload);
-        this._updateHud();
+        this._afterWorldChange();
       });
       channel.on(SERVER_EVENTS.MESSAGE, (payload) => this._engine?.receiveMessage(payload));
       channel.on(SERVER_EVENTS.MODAL, (payload) => this._modal?.open(payload));
-      channel.on(SERVER_EVENTS.CLOSED, (payload) => {
-        console.info("[space] session closed", payload?.reason);
+      channel.on(SERVER_EVENTS.MAP_CHANGED, (payload) => {
+        this._engine?.applyMapChanged(payload);
+        this._afterWorldChange();
       });
+      channel.on(SERVER_EVENTS.KICKED, (payload) => this._onKicked(payload));
+      channel.on(SERVER_EVENTS.CLOSED, (payload) => this._onClosed(payload));
+    },
+
+    _afterWorldChange() {
+      this._updateHud();
+      this._renderAdminPanel();
+    },
+
+    // A kick of the local participant ends the session locally (terminal
+    // screen); a remote kick just drops that avatar.
+    _onKicked(payload) {
+      if (payload?.key === this._engine?.selfKey) {
+        this._showKickedScreen();
+      } else {
+        this._engine?.removeParticipant(payload?.key);
+        this._afterWorldChange();
+      }
+    },
+
+    _onClosed(payload) {
+      console.info("[space] session closed", payload?.reason);
+      this._showClosedScreen(payload?.reason);
+    },
+
+    _showKickedScreen() {
+      this._input?.detach();
+      this._channel?.leave();
+      const el = this.el.querySelector("[data-space-kicked]");
+      if (el) el.hidden = false;
+    },
+
+    _showClosedScreen(_reason) {
+      const el = this.el.querySelector("[data-space-closed]");
+      if (el) el.hidden = false;
     },
 
     // Reflect the live participant count in the corner HUD (label is in the
@@ -151,6 +188,38 @@ export function createSpaceCanvasHook(deps = {}) {
     _updateHud() {
       const el = this.el.querySelector("[data-space-hud-count]");
       if (el) el.textContent = String(this._engine?.participantCount?.() ?? 1);
+    },
+
+    // Creator-only: list other participants with a Kick button. The panel only
+    // exists in the DOM for the creator (server-rendered), so non-creators can
+    // never drive admin actions from here.
+    _renderAdminPanel() {
+      const panel = this.el.querySelector("[data-space-admin-list]");
+      if (!panel || !this._engine) return;
+
+      const selfKey = this._engine.selfKey;
+      const rows = [];
+      for (const p of this._engine.participants.values()) {
+        if (p.key === selfKey || !p.online) continue;
+        const row = document.createElement("div");
+        row.className = "flex items-center gap-2";
+        const name = document.createElement("span");
+        name.textContent = p.nickname;
+        const kick = document.createElement("button");
+        kick.type = "button";
+        kick.textContent = "Kick";
+        kick.dataset.kickKey = p.key;
+        kick.addEventListener("click", () =>
+          this._channel?.push(CLIENT_EVENTS.ADMIN_ACTION, {
+            kind: "kick",
+            target_key: p.key,
+            reason: "removed by host",
+          }),
+        );
+        row.append(name, kick);
+        rows.push(row);
+      }
+      panel.replaceChildren(...rows);
     },
 
     // A chat input field in the shell sends messages on Enter; the input

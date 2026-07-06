@@ -45,48 +45,61 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
     end
   end
 
-  describe "tavern_cafe_v1 consistency" do
-    setup do
-      {:ok, definition} = SpaceMap.get("tavern_cafe_v1")
-      %{definition: definition, blocked: SpaceMap.collision_set(definition)}
-    end
+  # Every registry map must satisfy the same invariants, so a new map can never
+  # ship a spawn on a wall, a zone out of bounds or an overlapping seat.
+  for map_id <- ~w(tavern_cafe_v1 guild_hall_v1 arcane_library_v1 garden_camp_v1) do
+    describe "#{map_id} consistency" do
+      @describetag map_id: map_id
 
-    test "spawns are inside bounds and off collision tiles", ctx do
-      for spawn <- ctx.definition.spawn do
-        assert spawn.x >= 0 and spawn.x < ctx.definition.width
-        assert spawn.y >= 0 and spawn.y < ctx.definition.height
-        refute MapSet.member?(ctx.blocked, {spawn.x, spawn.y})
-        assert spawn.dir in ~w(up down left right)
+      setup %{map_id: map_id} do
+        {:ok, definition} = SpaceMap.get(map_id)
+        %{definition: definition, blocked: SpaceMap.collision_set(definition)}
       end
-    end
 
-    test "zones fit inside the map bounds", ctx do
-      for zone <- ctx.definition.zones do
-        assert zone.x >= 0 and zone.y >= 0
-        assert zone.x + zone.w <= ctx.definition.width
-        assert zone.y + zone.h <= ctx.definition.height
+      test "spawns are inside bounds and off collision tiles", ctx do
+        assert ctx.definition.spawn != []
+
+        for spawn <- ctx.definition.spawn do
+          assert spawn.x >= 0 and spawn.x < ctx.definition.width
+          assert spawn.y >= 0 and spawn.y < ctx.definition.height
+          refute MapSet.member?(ctx.blocked, {spawn.x, spawn.y})
+          assert spawn.dir in ~w(up down left right)
+        end
       end
-    end
 
-    test "seats do not overlap each other", ctx do
-      tiles = Enum.map(ctx.definition.seats, &{&1.x, &1.y})
-      assert length(tiles) == length(Enum.uniq(tiles))
-    end
+      test "zones fit inside the map bounds", ctx do
+        for zone <- ctx.definition.zones do
+          assert zone.x >= 0 and zone.y >= 0
+          assert zone.x + zone.w <= ctx.definition.width
+          assert zone.y + zone.h <= ctx.definition.height
+        end
+      end
 
-    test "interactable ids are unique", ctx do
-      ids = Enum.map(ctx.definition.interactables, & &1.id)
-      assert length(ids) == length(Enum.uniq(ids))
-    end
+      test "seats do not overlap each other and sit off collision", ctx do
+        tiles = Enum.map(ctx.definition.seats, &{&1.x, &1.y})
+        assert length(tiles) == length(Enum.uniq(tiles))
 
-    test "the floor layer is a full height×width matrix of known tile ids", ctx do
-      floor = ctx.definition.layers.floor
-      known = ~w(wall_stone floor_stone floor_grass floor_wood)
+        for seat <- ctx.definition.seats do
+          refute MapSet.member?(ctx.blocked, {seat.x, seat.y})
+          assert seat.dir in ~w(up down left right)
+        end
+      end
 
-      assert length(floor) == ctx.definition.height
+      test "interactable ids are unique", ctx do
+        ids = Enum.map(ctx.definition.interactables, & &1.id)
+        assert length(ids) == length(Enum.uniq(ids))
+      end
 
-      for row <- floor do
-        assert length(row) == ctx.definition.width
-        assert Enum.all?(row, &(&1 in known))
+      test "the floor layer is a full height×width matrix of known tile ids", ctx do
+        floor = ctx.definition.layers.floor
+        known = ~w(wall_stone floor_stone floor_grass floor_wood)
+
+        assert length(floor) == ctx.definition.height
+
+        for row <- floor do
+          assert length(row) == ctx.definition.width
+          assert Enum.all?(row, &(&1 in known))
+        end
       end
     end
   end

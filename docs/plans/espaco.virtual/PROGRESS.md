@@ -7,16 +7,15 @@ e termina atualizando-o. O checklist canônico é o
 ## Estado atual
 
 - **Status**: EM ANDAMENTO
-- **Fase corrente**: Fase 5 — poderes do criador e mapas (Fase 4 FECHADA:
-  CI 9/9 verde + commit único na main)
-- **Próximo item**: primeiro item da Fase 5 — `space_admin_action`: kick (com
-  bloqueio de reentrada na sessão), mute/unmute, close, change_map — validação
-  de papel no servidor (`VirtualSpace.Policy.can_admin?` já existe). Depois:
-  UI do criador no HUD, os 3 mapas restantes no registry
-  (`guild_hall_v1`/`arcane_library_v1`/`garden_camp_v1` seguindo o playbook do
-  tavern), troca de mapa com snapshot completo, persistência de posição em
-  reload (snapshot leve em `metadata`). Ver §Fase 5 do mapa de testes.
-- **Último commit do projeto**: `feat(space): fase 4` (ver git log)
+- **Fase corrente**: Fase 6 — robustez e produto completo (Fase 5 FECHADA:
+  CI 9/9 verde + commit único na main). ÚLTIMA fase.
+- **Próximo item**: primeiro item da Fase 6 — cenários de reconnect/offline
+  (fechar aba marca offline; takeover); reinício do processo retoma sessão não
+  expirada; métricas simples (PromEx se encaixar); logs de erro nas bordas;
+  revisão final de help/i18n; passada de `/code-review` no diff acumulado;
+  verificação manual guiada. Ver §Fase 6 do mapa de testes. Ao fechar a Fase
+  6, marcar PROGRESS como CONCLUÍDO.
+- **Último commit do projeto**: `feat(space): fase 5` (ver git log)
 
 ## Perguntas para o usuário
 
@@ -56,6 +55,68 @@ implementação:
 - **Commits**: um por fase, direto na `main`, stage por caminho explícito.
 
 ## Histórico de iterações
+
+### 2026-07-06 — Iteração 7 (Fase 5 COMPLETA + fechada)
+
+Poderes do criador, 4 mapas e persistência de posição. CI 9/9; 4 E2E do
+espaço verdes (canvas, movimento, office, admin).
+
+Backend (SessionServer + Channel):
+- `admin_action/3` (kick/mute/close/change_map) com `Policy.can_admin?`;
+  não-criador → `:forbidden`.
+  - kick: marca offline + `state.kicked` (MapSet, bloqueia reentrada — join
+    retorna `:kicked`), broadcast `space_participant_kicked` (+ delta left).
+  - mute/unmute: seta `muted?`, delta.
+  - close: `do_end` + stop.
+  - change_map: valida no registry, respawna todos em spawn livre do novo
+    mapa (identidade/mute/presença preservados), atualiza `session.map_id`,
+    broadcast `space_map_changed` (map completo + snapshot).
+- Channel `space_admin_action` (parse fechado; ator com is_admin/
+  is_server_operator via `Accounts.ServerRoles`).
+- **Presence deltas** (lacuna da Fase 2 corrigida): join/leave/kick agora
+  transmitem `space_delta` com `joined`/`left` — antes só o nome ia, então a
+  engine remota nunca adicionava/removia o outro participante.
+- Persistência: snapshot leve de posições em `session.metadata["positions"]`
+  no leave e no change_map (nunca por passo); `spawn_for/2` restaura a posição
+  salva no join novo (sobrevive a restart do processo).
+
+Mapas: `guild_hall_v1`, `arcane_library_v1`, `garden_camp_v1` completos
+(floor layer gerada, zonas, assentos off-collision, board). `map_test`
+generalizado — os 4 passam as mesmas invariantes.
+
+Frontend:
+- engine `applyMapChanged` (troca mapa + câmera + snapshot) e
+  `removeParticipant`.
+- hook: `space_map_changed`→engine, `space_participant_kicked` (self→tela de
+  expulso + detach + leave; remoto→remove), painel do criador
+  (`[data-space-admin-list]`, só renderizado p/ criador no HEEx, populado com
+  botões Kick), overlays de expulso/encerrado, join-error `kicked`→tela.
+- SpaceLive shell: `is_creator`, painel do host, overlays kicked/closed.
+
+E2E `space-admin`: host expulsa guest → guest vê tela de expulso e, ao
+recarregar, é rejeitado (kicked de novo).
+
+Aprendizados desta iteração:
+- **Lacuna de presença**: `space_participant_joined/left` (nome) não bastam;
+  a engine remota precisa de `space_delta` com `joined`/`left`. Ao adicionar,
+  o delta de presença aparece ANTES do delta de movimento nos testes → drenar
+  no `start_space`.
+- **`defp` no meio de cláusulas `handle_call`** dispara warning "clauses
+  should be grouped" que quebra `--warnings-as-errors` — mover helpers para a
+  seção privada.
+- **dialyzer com tipos de mapa fechados**: `@type actor` com only
+  required/optional é FECHADO — passar uma chave extra (`nickname`) falha;
+  adicionar `optional(:nickname)`. E specs de erro precisam propagar `:kicked`
+  por toda a cadeia (SessionServer→Service→facade→Channel `join_error`).
+- **change_map**: respawn determinístico evitando colisão de tiles com
+  `Enum.map_reduce` + `free_spawn`.
+
+Decisões de implementação:
+- kick bloqueia reentrada via `state.kicked` (runtime), não persistido na V1.
+- Painel do criador só existe no DOM para o criador (server-rendered) — não
+  há como um não-criador acionar admin pela UI.
+- Persistência de posição é best-effort em leave/map-change; posição inválida
+  (colisão) cai no spawn.
 
 ### 2026-07-05 — Iteração 6 (Fase 4 COMPLETA + fechada)
 

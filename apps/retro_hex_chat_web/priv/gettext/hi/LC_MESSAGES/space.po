@@ -16,7 +16,7 @@ msgstr ""
 msgid "ACCESS DENIED"
 msgstr "पहुँच अस्वीकृत"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:137
+#: lib/retro_hex_chat_web/live/app/space_live.ex:130 lib/retro_hex_chat_web/live/app/space_live.ex:143 lib/retro_hex_chat_web/live/app/space_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "चैट पर वापस जाएँ"
@@ -51,7 +51,7 @@ msgstr "यह वर्चुअल स्पेस अब सक्रिय �
 msgid "This virtual space link is invalid or was removed."
 msgstr "यह वर्चुअल स्पेस लिंक अमान्य है या हटा दिया गया है।"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:163 lib/retro_hex_chat_web/live/app/space_live.ex:167 lib/retro_hex_chat_web/live/app/space_live.ex:187
+#: lib/retro_hex_chat_web/live/app/space_live.ex:196 lib/retro_hex_chat_web/live/app/space_live.ex:201 lib/retro_hex_chat_web/live/app/space_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Virtual space"
 msgstr "वर्चुअल स्पेस"
@@ -61,7 +61,7 @@ msgstr "वर्चुअल स्पेस"
 msgid "You do not have access to this virtual space. You must be registered, identified and allowed into its channel."
 msgstr "आपको इस वर्चुअल स्पेस तक पहुँच नहीं है। आपको पंजीकृत, पहचान-सत्यापित और इसके चैनल में अनुमत होना चाहिए।"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:116
+#: lib/retro_hex_chat_web/live/app/space_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Arrows/WASD to move · E to use · F to sit · Esc to close"
 msgstr "तीर/WASD चलने के लिए · E उपयोग · F बैठने · Esc बंद करने"
@@ -75,3 +75,28 @@ msgstr "कुछ कहिए… (भेजने के लिए Enter)"
 #, elixir-autogen, elixir-format
 msgid "here"
 msgstr "यहाँ"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:118
+#, elixir-autogen, elixir-format
+msgid "Host controls"
+msgstr "होस्ट नियंत्रण"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "REMOVED FROM SPACE"
+msgstr "स्पेस से हटाया गया"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "SPACE CLOSED"
+msgstr "स्पेस बंद"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "The host removed you from this space."
+msgstr "होस्ट ने आपको इस स्पेस से हटा दिया।"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "This virtual space has ended."
+msgstr "यह वर्चुअल स्पेस समाप्त हो गया।"

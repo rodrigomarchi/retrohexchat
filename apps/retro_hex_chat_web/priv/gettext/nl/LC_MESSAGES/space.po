@@ -16,7 +16,7 @@ msgstr ""
 msgid "ACCESS DENIED"
 msgstr "TOEGANG GEWEIGERD"
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:137
+#: lib/retro_hex_chat_web/live/app/space_live.ex:130 lib/retro_hex_chat_web/live/app/space_live.ex:143 lib/retro_hex_chat_web/live/app/space_live.ex:170
 #, elixir-autogen, elixir-format
 msgid "Back to chat"
 msgstr "Terug naar chat"
@@ -51,7 +51,7 @@ msgstr "Deze virtuele space is niet meer actief."
 msgid "This virtual space link is invalid or was removed."
 msgstr "Deze space-link is ongeldig of verwijderd."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:163 lib/retro_hex_chat_web/live/app/space_live.ex:167 lib/retro_hex_chat_web/live/app/space_live.ex:187
+#: lib/retro_hex_chat_web/live/app/space_live.ex:196 lib/retro_hex_chat_web/live/app/space_live.ex:201 lib/retro_hex_chat_web/live/app/space_live.ex:221
 #, elixir-autogen, elixir-format
 msgid "Virtual space"
 msgstr "Virtuele space"
@@ -61,7 +61,7 @@ msgstr "Virtuele space"
 msgid "You do not have access to this virtual space. You must be registered, identified and allowed into its channel."
 msgstr "Je hebt geen toegang tot deze virtuele space. Je moet geregistreerd, geïdentificeerd en toegelaten zijn in het kanaal ervan."
 
-#: lib/retro_hex_chat_web/live/app/space_live.ex:116
+#: lib/retro_hex_chat_web/live/app/space_live.ex:149
 #, elixir-autogen, elixir-format
 msgid "Arrows/WASD to move · E to use · F to sit · Esc to close"
 msgstr "Pijltjes/WASD om te bewegen · E om te gebruiken · F om te zitten · Esc om te sluiten"
@@ -75,3 +75,28 @@ msgstr "Zeg iets… (Enter om te versturen)"
 #, elixir-autogen, elixir-format
 msgid "here"
 msgstr "hier"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:118
+#, elixir-autogen, elixir-format
+msgid "Host controls"
+msgstr "Hostbediening"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:127
+#, elixir-autogen, elixir-format
+msgid "REMOVED FROM SPACE"
+msgstr "VERWIJDERD UIT SPACE"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:140
+#, elixir-autogen, elixir-format
+msgid "SPACE CLOSED"
+msgstr "SPACE GESLOTEN"
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:128
+#, elixir-autogen, elixir-format
+msgid "The host removed you from this space."
+msgstr "De host heeft je uit deze space verwijderd."
+
+#: lib/retro_hex_chat_web/live/app/space_live.ex:141
+#, elixir-autogen, elixir-format
+msgid "This virtual space has ended."
+msgstr "Deze virtuele space is beëindigd."

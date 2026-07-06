@@ -35,6 +35,8 @@ defmodule RetroHexChat.VirtualSpace.MovementTest do
     {:ok, joined} =
       SessionServer.join(session.token, %{user_id: creator.id, nickname: creator.nickname})
 
+    # Drop the presence-join delta so tests assert on the movement delta.
+    flush_deltas()
     %{token: session.token, key: joined.participant.key, spawn: joined.participant}
   end
 
