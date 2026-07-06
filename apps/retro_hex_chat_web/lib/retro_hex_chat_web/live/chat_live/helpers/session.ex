@@ -456,6 +456,12 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
   def maybe_start_nickserv_timer(socket, nickname, pre_identified \\ false, quiet \\ false) do
     cond do
       pre_identified or NickServ.identified?(nickname) ->
+        # A reconnect trusts the signed `pre_identified` session, so re-seed
+        # NickServ's in-memory set (wiped by a restart/deploy) too — otherwise it
+        # disagrees with the client and downstream checks (virtual spaces, P2P)
+        # wrongly deny access.
+        NickServ.restore_identified(nickname)
+
         session =
           socket.assigns.session
           |> Session.set_identified(true)

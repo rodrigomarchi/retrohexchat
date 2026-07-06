@@ -104,6 +104,29 @@ defmodule RetroHexChatWeb.App.SpaceLiveTest do
       assert data.nickname == creator.nickname
     end
 
+    test "grants access after a reconnect restores identification wiped by a restart",
+         %{conn: conn} do
+      creator = register_and_identify("spr#{uid()}")
+      session = insert_space(creator)
+
+      # Simulate a server restart / deploy: NickServ's in-memory identified set is
+      # wiped, but the DB registration and the user's signed pre-identified session
+      # survive. The user is still legitimately identified.
+      NickServ.remove_identified(creator.nickname)
+      refute NickServ.identified?(creator.nickname)
+
+      # The chat reconnects with the pre-identified session flag. This must restore
+      # the NickServ identification so downstream checks (the space) stay consistent.
+      {:ok, _view, _html} = live(chat_conn(conn, creator.nickname, pre_identified: true), "/chat")
+      assert NickServ.identified?(creator.nickname)
+
+      # Opening the already-running space now grants access instead of denying it.
+      {:ok, _view, html} =
+        live(chat_conn(conn, creator.nickname, pre_identified: true), "/space/#{session.token}")
+
+      assert html =~ ~s(data-testid="space-shell")
+    end
+
     test "denies a user without access to the session's invite-only channel", %{conn: conn} do
       creator = register_and_identify("spd#{uid()}")
       outsider = register_and_identify("spx#{uid()}")

@@ -90,6 +90,18 @@ defmodule RetroHexChat.Services.NickServ do
     GenServer.cast(server, {:remove_identified, nickname})
   end
 
+  @doc """
+  Re-mark a nickname as identified without a password, for a reconnect that
+  already proves prior identification (a signed `chat_pre_identified` session).
+  Restores the in-memory set after a restart/deploy wiped it, keeping it in sync
+  with the client's identity so downstream checks (virtual spaces, P2P) agree.
+  Only takes effect for a registered nickname.
+  """
+  @spec restore_identified(String.t(), GenServer.server()) :: :ok
+  def restore_identified(nickname, server \\ __MODULE__) do
+    GenServer.cast(server, {:restore_identified, nickname})
+  end
+
   # -- GenServer callbacks --
 
   @impl true
@@ -279,6 +291,14 @@ defmodule RetroHexChat.Services.NickServ do
 
   def handle_cast({:remove_identified, nickname}, state) do
     {:noreply, %{state | identified: MapSet.delete(state.identified, nickname)}}
+  end
+
+  def handle_cast({:restore_identified, nickname}, state) do
+    if Queries.find_by_nickname(nickname) != nil do
+      {:noreply, %{state | identified: MapSet.put(state.identified, nickname)}}
+    else
+      {:noreply, state}
+    end
   end
 
   def handle_cast({:cancel_identify_timer, nickname}, state) do
