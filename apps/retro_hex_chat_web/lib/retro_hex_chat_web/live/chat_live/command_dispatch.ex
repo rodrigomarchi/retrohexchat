@@ -77,7 +77,7 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
           non_neg_integer()
         ) :: {Phoenix.LiveView.Socket.t(), term()}
   def dispatch_command_with_result(socket, session, name, args, alias_depth \\ 0) do
-    context = build_context(session)
+    context = build_context(session, socket.assigns.show_status_tab)
 
     case try_alias_expansion(session, name, args, context, alias_depth) do
       {:expanded, expanded_input} ->
@@ -115,10 +115,11 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
     end
   end
 
-  defp build_context(session) do
+  defp build_context(session, show_status_tab) do
     %{
       nickname: session.nickname,
       active_channel: session.active_channel,
+      show_status_tab: show_status_tab,
       channels: session.channels,
       identified: session.identified,
       owner_in: channels_where_owner(session),

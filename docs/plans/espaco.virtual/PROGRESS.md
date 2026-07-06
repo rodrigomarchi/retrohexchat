@@ -6,16 +6,16 @@ e termina atualizando-o. O checklist canônico é o
 
 ## Estado atual
 
-- **Status**: EM ANDAMENTO
-- **Fase corrente**: Fase 6 — robustez e produto completo (Fase 5 FECHADA:
-  CI 9/9 verde + commit único na main). ÚLTIMA fase.
-- **Próximo item**: primeiro item da Fase 6 — cenários de reconnect/offline
-  (fechar aba marca offline; takeover); reinício do processo retoma sessão não
-  expirada; métricas simples (PromEx se encaixar); logs de erro nas bordas;
-  revisão final de help/i18n; passada de `/code-review` no diff acumulado;
-  verificação manual guiada. Ver §Fase 6 do mapa de testes. Ao fechar a Fase
-  6, marcar PROGRESS como CONCLUÍDO.
-- **Último commit do projeto**: `feat(space): fase 5` (ver git log)
+- **Status**: CONCLUÍDO ✅ (2026-07-06)
+- **Fase corrente**: nenhuma — todas as fases 1–6 fechadas com commit único na
+  `main` e `make ci` 9/9 verde. Projeto completo e funcional ponta-a-ponta.
+- **Resumo final**: `/space` cria sessão num canal (card persistido), 2+ usuários
+  entram via `/space/<token>`, andam com colisão/previsão/reconciliação, chat com
+  balões, sentam, cruzam zonas, abrem o quadro (modal), o criador tem poderes
+  (kick/mute/close/change_map), posição persiste em reload/restart, sessões
+  expiram e o cleanup as recolhe. 5 E2E verdes (canvas, movimento 2-user, office,
+  admin, reconnect). Métricas de domínio via telemetry. i18n real em 20 locales.
+- **Último commit do projeto**: `feat(space): fase 6` (ver git log)
 
 ## Perguntas para o usuário
 
@@ -55,6 +55,99 @@ implementação:
 - **Commits**: um por fase, direto na `main`, stage por caminho explícito.
 
 ## Histórico de iterações
+
+### 2026-07-06 — Iteração 8 (Fase 6 COMPLETA + PROJETO CONCLUÍDO)
+
+Robustez, métricas, i18n e uma passada de `/code-review` sobre o diff acumulado
+das 6 fases. CI 9/9 verde. Commit único `feat(space): fase 6` na main.
+
+Entregas:
+- **Métricas** no padrão existente (`RetroHexChatWeb.Telemetry`, não PromEx
+  custom): novo `VirtualSpace.Events` (`session_created`/`participant_joined`/
+  `session_ended` via `:telemetry.execute`), emitido em Service.create_session,
+  SessionServer join-success e do_end; 4 métricas de domínio + medição periódica
+  `count_active_spaces` (espelha `count_active_channels`).
+- **E2E `space-reconnect.spec.ts`**: reload volta ao mesmo tile (assinatura de
+  canvas determinística) e 2ª aba (mesma identidade, `ctx.newPage()`) faz
+  takeover (HUD continua 1). Cenários de reconnect/offline/restart já cobertos
+  por `persistence_test`/`cleanup_task_test`/`space_channel_test` (terminate →
+  offline).
+- **i18n**: 4 strings novas do domínio `system` (descrições de métrica)
+  traduzidas de verdade nos 20 locales; nomes de métrica ficam `msgid==msgstr`
+  (padrão dos identificadores). Débito repo-wide da extração revertido.
+
+**`/code-review` (10 finders paralelos por subsistema) — correções reais
+aplicadas, todas com teste de regressão onde testável:**
+1. `SpaceChannel.admin_actor` passava `identified: true` fixo a
+   `ServerRoles.admin?/2` → um não-identificado com nick de admin viraria admin
+   (kick/mute/close). Agora usa `NickServ.identified?/1` (igual `build_actor`).
+2. `SessionServer.do_interact` (sit/stand/use) só checava `participant == nil` —
+   faltava a guarda de `online?`/terminal que input/chat têm. Um kicked/offline
+   com socket aberto podia sentar e reaparecer a todos, furando o kick. Guarda
+   `active_participant?/1` + `Session.terminal?` adicionada.
+3. `update_participant_counts/1` retornava `:ok` e descartava a sessão
+   atualizada → `peak_participants` congelava no init e writes posteriores
+   rebaixavam o pico no DB. Agora retorna `%{state | session: session}` e os 4
+   call sites fazem rebind.
+4. `Service.close_session` reescrevia uma sessão já terminal (expired→closed),
+   destruindo o registro de expiração original. Guard `Session.terminal?` →
+   `:ok` sem reescrever.
+5. `change_map` respawnava TODOS os participantes (inclusive offline),
+   consumindo slots e caindo no fallback `List.first` (colisão de tiles) quando
+   os spawns esgotavam. Agora respawna só os online e preserva a posição dos
+   offline.
+6. `/space` não recusava na janela Status (o check só olhava `active_channel`,
+   que permanece populado com a Status aberta). `show_status_tab` agora flui do
+   socket → `build_context/2` → contexto do handler (`optional` no
+   `Handler.context()`), e `validate_channel_origin` recusa.
+7. `input.js`: um keyup perdido no blur (Alt-Tab) deixava a tecla presa em
+   `_pressed` (coalescida para sempre) → handler `blur` que limpa; e
+   `currentIntent()` retornava tecla de ação (`e`/`f`) como direção → varre da
+   última tecla de MOVIMENTO.
+8. `chat.js`: bolhas nunca eram removidas do Map (poll-on-read só filtrava) →
+   evicção no read.
+
+**Findings deferidos (documentados, não são bugs alcançáveis/são decisão):**
+- seq_ack "estável" em sit/stand/mute usa `input_seq` de movimento — o cliente
+  não prevê assentos com pending seq, sem consequência.
+- `state.kicked` só em memória (perde no restart) — **decisão V1** (iteração 7).
+- flags `moving`/`pending` do engine e `interpolation` duration 0 — não
+  alcançáveis (renderer não anima por `moving`; servidor sempre manda `seq_ack`;
+  duração default 120ms).
+- renderer sprite vs `tile_size≠16` e `normalizeUpdates` snake_case para
+  `seat_id/zone_id/pose` — latentes sob o contrato "position/dir only" (todos os
+  mapas usam 16); `expire_if_overdue` mata o processo sem broadcast (o timer
+  próprio cobre o caso normal); down-migration do `messages.type` não encolhe com
+  segurança (down raramente roda).
+
+Aprendizados desta iteração:
+- **Métricas de domínio ≠ PromEx custom aqui**: o padrão da casa é
+  `Telemetry.Metrics` em `telemetry.ex` referenciando eventos `:telemetry`
+  emitidos por um `Events` do contexto + `periodic_measurements`. PromEx só usa
+  plugins built-in. Nomes de métrica entram como msgid no domínio `system` e
+  ficam `msgstr==msgid` (não traduzir); só as descrições traduzem.
+- **`gettext.extract` reescreve 600+ catálogos** (débito repo-wide): reverter
+  tudo menos o domínio afetado (`git checkout` por padrão de path) e apagar os
+  `.pot/.po` novos não-rastreados (ex.: `lobby` do app de domínio). Confirmar que
+  os pots fora do escopo já estavam desatualizados no HEAD (débito pré-existente,
+  não meu) — e o `gettext.check` NÃO está no `make ci`.
+- **`build_context/1` → `/2`**: adicionar chave ao `Handler.context()` fechado
+  quebra contextos de teste sob dialyzer; usar forma explícita `required(...)`
+  \+ `optional(:show_status_tab)`. `show_status_tab` é assign do socket, não do
+  `Session` — só o dispatch (com o socket em mãos) sabe.
+- **Revisão em fan-out por subsistema** foi o que pegou os bugs reais: cada
+  finder leu ~1 arquivo a fundo. Verifiquei cada candidato contra o código antes
+  de corrigir — vários "candidatos" eram na verdade corretos (client Chebyshev
+  casa com o server; mapas com invariantes ok; token não cruza espaços).
+
+Decisões de implementação:
+- Guarda de interação reusa `Session.terminal?` + `active_participant?/1` (nil ou
+  offline → `:not_participant`), simétrico a input/chat.
+- change_map preserva offline sem respawnar (eles respawnam no rejoin), o que
+  também alivia a pressão de spawn dos online.
+- E2E de reconnect usa assinatura de canvas (determinística p/ posição fixa);
+  aceito que é frágil a futuras animações/bolhas — a alternativa (expor
+  `self()` no window) fica p/ quando houver animação.
 
 ### 2026-07-06 — Iteração 7 (Fase 5 COMPLETA + fechada)
 

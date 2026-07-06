@@ -185,13 +185,34 @@ defmodule RetroHexChatWeb.Telemetry do
         tags: [:nickname],
         description: dgettext("system", "Number of user away toggles"),
         reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+
+      # Domain Metrics – Virtual Spaces
+      sum(dgettext("system", "retro_hex_chat.virtual_space.session_created.count"),
+        tags: [:channel],
+        description: dgettext("system", "Number of virtual spaces created"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.virtual_space.participant_joined.count"),
+        description: dgettext("system", "Number of virtual space joins"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.virtual_space.session_ended.count"),
+        tags: [:status],
+        description: dgettext("system", "Number of virtual spaces ended by terminal status"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.virtual_space.active_count.value"),
+        description: dgettext("system", "Number of active virtual space processes"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       )
     ]
   end
 
   defp periodic_measurements do
     [
-      {__MODULE__, :count_active_channels, []}
+      {__MODULE__, :count_active_channels, []},
+      {__MODULE__, :count_active_spaces, []}
     ]
   end
 
@@ -202,6 +223,18 @@ defmodule RetroHexChatWeb.Telemetry do
 
     :telemetry.execute(
       [:retro_hex_chat, :channels, :active_count],
+      %{value: active},
+      %{}
+    )
+  end
+
+  @doc false
+  def count_active_spaces do
+    %{active: active} =
+      DynamicSupervisor.count_children(RetroHexChat.VirtualSpace.Supervisor)
+
+    :telemetry.execute(
+      [:retro_hex_chat, :virtual_space, :active_count],
       %{value: active},
       %{}
     )

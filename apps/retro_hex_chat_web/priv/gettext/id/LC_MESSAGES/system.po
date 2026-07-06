@@ -28,6 +28,10 @@ msgstr "Basis Data"
 #: lib/retro_hex_chat_web/telemetry.ex:177
 #: lib/retro_hex_chat_web/telemetry.ex:182
 #: lib/retro_hex_chat_web/telemetry.ex:187
+#: lib/retro_hex_chat_web/telemetry.ex:194
+#: lib/retro_hex_chat_web/telemetry.ex:198
+#: lib/retro_hex_chat_web/telemetry.ex:203
+#: lib/retro_hex_chat_web/telemetry.ex:207
 #, elixir-autogen, elixir-format
 msgid "Domain"
 msgstr "Domain"
@@ -100,7 +104,8 @@ msgstr "Jumlah pengukuran lainnya"
 #: lib/retro_hex_chat_web/telemetry.ex:88
 #, elixir-autogen, elixir-format
 msgid "The time spent decoding the data received from the database"
-msgstr "Waktu yang dihabiskan untuk mendekode data yang diterima dari basis data"
+msgstr ""
+"Waktu yang dihabiskan untuk mendekode data yang diterima dari basis data"
 
 #: lib/retro_hex_chat_web/telemetry.ex:93
 #, elixir-autogen, elixir-format
@@ -114,8 +119,10 @@ msgstr "Waktu yang dihabiskan menunggu koneksi basis data"
 
 #: lib/retro_hex_chat_web/telemetry.ex:104
 #, elixir-autogen, elixir-format
-msgid "The time the connection spent waiting before being checked out for the query"
-msgstr "Waktu koneksi yang dihabiskan menunggu sebelum diperiksa untuk permintaan"
+msgid ""
+"The time the connection spent waiting before being checked out for the query"
+msgstr ""
+"Waktu koneksi yang dihabiskan menunggu sebelum diperiksa untuk permintaan"
 
 #: lib/retro_hex_chat_web/telemetry.ex:114
 #: lib/retro_hex_chat_web/telemetry.ex:118
@@ -305,3 +312,43 @@ msgstr "vm.total _ run _ queue _ lenghs.io"
 #, elixir-autogen, elixir-format
 msgid "vm.total_run_queue_lengths.total"
 msgstr "vm.total _ run _ queue _ lenghs.total"
+
+#: lib/retro_hex_chat_web/telemetry.ex:206
+#, elixir-autogen, elixir-format
+msgid "Number of active virtual space processes"
+msgstr "Jumlah proses ruang virtual aktif"
+
+#: lib/retro_hex_chat_web/telemetry.ex:197
+#, elixir-autogen, elixir-format
+msgid "Number of virtual space joins"
+msgstr "Jumlah gabungan ke ruang virtual"
+
+#: lib/retro_hex_chat_web/telemetry.ex:193
+#, elixir-autogen, elixir-format
+msgid "Number of virtual spaces created"
+msgstr "Jumlah ruang virtual yang dibuat"
+
+#: lib/retro_hex_chat_web/telemetry.ex:202
+#, elixir-autogen, elixir-format
+msgid "Number of virtual spaces ended by terminal status"
+msgstr "Jumlah ruang virtual yang berakhir menurut status akhir"
+
+#: lib/retro_hex_chat_web/telemetry.ex:205
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.active_count.value"
+msgstr "retro_hex_chat.virtual_space.active_count.value"
+
+#: lib/retro_hex_chat_web/telemetry.ex:196
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.participant_joined.count"
+msgstr "retro_hex_chat.virtual_space.participant_joined.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:191
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.session_created.count"
+msgstr "retro_hex_chat.virtual_space.session_created.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:200
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.session_ended.count"
+msgstr "retro_hex_chat.virtual_space.session_ended.count"

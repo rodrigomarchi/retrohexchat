@@ -101,6 +101,14 @@ defmodule RetroHexChat.Commands.Handlers.SpaceTest do
       assert {:error, _} = Space.execute([channel], context(nick, "Status"))
     end
 
+    test "refuses the Status window even while a channel is still active" do
+      {channel, nick} = channel_with_member()
+      ctx = Map.put(context(nick, channel), :show_status_tab, true)
+
+      assert {:error, message} = Space.execute([], ctx)
+      assert message =~ "Status window"
+    end
+
     test "refuses an unidentified user" do
       {channel, nick} = channel_with_member()
       ctx = %{context(nick, channel) | identified: false}

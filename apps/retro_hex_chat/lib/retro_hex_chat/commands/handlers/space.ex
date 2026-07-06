@@ -113,9 +113,11 @@ defmodule RetroHexChat.Commands.Handlers.Space do
   defp validate_identified(_),
     do: {:error, dgettext("commands", "You must be identified to use /space.")}
 
+  defp validate_channel_origin(%{show_status_tab: true}), do: origin_error()
   defp validate_channel_origin(%{active_channel: "#" <> _}), do: :ok
+  defp validate_channel_origin(_), do: origin_error()
 
-  defp validate_channel_origin(_) do
+  defp origin_error do
     {:error,
      dgettext("commands", "/space only works from a channel, not from PMs or the Status window.")}
   end

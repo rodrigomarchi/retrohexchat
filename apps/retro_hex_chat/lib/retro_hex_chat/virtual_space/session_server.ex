@@ -15,6 +15,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   require Logger
 
+  alias RetroHexChat.VirtualSpace.Events
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
   alias RetroHexChat.VirtualSpace.Policy
   alias RetroHexChat.VirtualSpace.Queries
@@ -284,7 +285,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         })
 
         broadcast_presence_left(state, participant_key)
-        update_participant_counts(state)
+        state = update_participant_counts(state)
         {:noreply, state}
     end
   end
@@ -317,6 +318,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
       :ok ->
         {participant, state} = do_join(state, key, context, returning)
+        Events.emit_participant_joined(state.token)
         reply = %{participant: participant, snapshot: build_snapshot(state), map: state.map}
         {:reply, {:ok, reply}, state}
     end
@@ -356,7 +358,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     })
 
     broadcast_presence_join(state, key, participant)
-    update_participant_counts(state)
+    state = update_participant_counts(state)
     {participant, state}
   end
 
@@ -377,7 +379,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     })
 
     broadcast_presence_join(state, key, participant)
-    update_participant_counts(state)
+    state = update_participant_counts(state)
     {participant, state}
   end
 
@@ -531,7 +533,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
         broadcast(state.token, "space_participant_kicked", %{key: target_key, reason: reason})
         broadcast_presence_left(state, target_key)
-        update_participant_counts(state)
+        state = update_participant_counts(state)
         {:reply, :ok, state}
     end
   end
@@ -575,13 +577,20 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     blocked = SpaceMap.collision_set(map_definition)
     spawns = map_definition.spawn
 
-    {participants, _} =
-      Enum.map_reduce(state.participants, MapSet.new(), fn {key, p}, taken ->
+    # Only online participants are respawned onto fresh tiles; offline entries
+    # keep their stored position (they respawn on rejoin) and never consume a
+    # spawn slot, so the online crowd can't be pushed into a colliding fallback.
+    {online, offline} = Enum.split_with(state.participants, fn {_key, p} -> p.online? end)
+
+    {respawned, _} =
+      Enum.map_reduce(online, MapSet.new(), fn {key, p}, taken ->
         spawn = free_spawn(spawns, taken)
         moved = %{p | x: spawn.x, y: spawn.y, dir: spawn.dir, pose: "standing", seat_id: nil}
         moved = %{moved | zone_id: zone_at(map_definition, spawn.x, spawn.y)}
         {{key, moved}, MapSet.put(taken, {spawn.x, spawn.y})}
       end)
+
+    participants = respawned ++ offline
 
     {:ok, session} =
       Queries.update_status(state.session, state.session.status, %{map_id: map_id})
@@ -646,7 +655,8 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     seat = Enum.find(state.map.seats, &(&1.id == seat_id))
 
     cond do
-      participant == nil -> {:reply, {:error, :not_participant}, state}
+      Session.terminal?(state.session.status) -> {:reply, {:error, :terminal}, state}
+      not active_participant?(participant) -> {:reply, {:error, :not_participant}, state}
       seat == nil -> {:reply, {:error, :invalid_target}, state}
       seat_taken?(state, seat_id, key) -> {:reply, {:error, :seat_taken}, state}
       not adjacent?(participant, seat) -> {:reply, {:error, :too_far}, state}
@@ -655,9 +665,12 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   defp do_interact(state, key, %{kind: "stand"}) do
-    case Map.get(state.participants, key) do
-      nil -> {:reply, {:error, :not_participant}, state}
-      participant -> stand(state, key, participant)
+    participant = Map.get(state.participants, key)
+
+    cond do
+      Session.terminal?(state.session.status) -> {:reply, {:error, :terminal}, state}
+      not active_participant?(participant) -> {:reply, {:error, :not_participant}, state}
+      true -> stand(state, key, participant)
     end
   end
 
@@ -666,7 +679,8 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     target = Enum.find(state.map.interactables, &(&1.id == id))
 
     cond do
-      participant == nil -> {:reply, {:error, :not_participant}, state}
+      Session.terminal?(state.session.status) -> {:reply, {:error, :terminal}, state}
+      not active_participant?(participant) -> {:reply, {:error, :not_participant}, state}
       target == nil -> {:reply, {:error, :invalid_target}, state}
       not adjacent?(participant, target) -> {:reply, {:error, :too_far}, state}
       true -> {:reply, {:ok, %{modal: modal_of(target)}}, state}
@@ -719,6 +733,9 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   defp adjacent?(participant, %{x: x, y: y}) do
     abs(participant.x - x) <= 1 and abs(participant.y - y) <= 1
   end
+
+  defp active_participant?(nil), do: false
+  defp active_participant?(%{online?: online?}), do: online?
 
   defp modal_of(%{title: title, modal: modal}) do
     %{title: title, kind: Map.get(modal, :kind, "image"), asset: Map.get(modal, :asset)}
@@ -904,14 +921,14 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     count = online_count(state)
     peak = max(state.session.peak_participants, count)
 
-    {:ok, _} =
+    {:ok, session} =
       Queries.update_status(state.session, state.session.status, %{
         last_participant_count: count,
         peak_participants: peak,
         last_activity_at: DateTime.utc_now()
       })
 
-    :ok
+    %{state | session: session}
   end
 
   defp do_end(state, status, reason) do
@@ -926,6 +943,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       })
 
     broadcast(state.token, "space_closed", %{reason: reason, status: status})
+    Events.emit_session_ended(state.token, status)
     %{state | session: session}
   end
 

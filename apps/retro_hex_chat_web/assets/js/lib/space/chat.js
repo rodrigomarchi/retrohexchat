@@ -42,7 +42,13 @@ export class ChatState {
    */
   bubble(key, now) {
     const entry = this._bubbles.get(key);
-    if (!entry || now >= entry.until) return null;
+    if (!entry) return null;
+    // Evict on read so expired senders (including departed avatars) don't
+    // accumulate in the Map for the life of the session.
+    if (now >= entry.until) {
+      this._bubbles.delete(key);
+      return null;
+    }
     return { text: entry.text, nickname: entry.nickname };
   }
 

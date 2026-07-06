@@ -86,6 +86,31 @@ defmodule RetroHexChat.VirtualSpace.AdminTest do
       assert {:error, :kicked} =
                SessionServer.join(ctx.token, %{user_id: member.id, nickname: member.nickname})
     end
+
+    test "a kicked participant cannot resurrect via interact (sit)" do
+      ctx = start_space()
+      {_member, member_key} = join_member(ctx)
+
+      assert :ok =
+               SessionServer.admin_action(ctx.token, creator_actor(ctx), %{
+                 kind: "kick",
+                 target_key: member_key,
+                 reason: "spam"
+               })
+
+      # An offline/kicked participant whose socket is still open must not be
+      # able to reseat and reappear to everyone.
+      assert {:error, :not_participant} =
+               SessionServer.interact(ctx.token, member_key, %{
+                 seq: 1,
+                 kind: "sit",
+                 target_id: "seat_bar_1"
+               })
+
+      {:ok, state} = SessionServer.get_state(ctx.token)
+      refute state.participants[member_key].online?
+      assert state.participants[member_key].seat_id == nil
+    end
   end
 
   describe "mute" do

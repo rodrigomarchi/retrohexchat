@@ -34,23 +34,32 @@ export class InputController {
     this._pressed = new Set();
     this._onKeyDown = this._onKeyDown.bind(this);
     this._onKeyUp = this._onKeyUp.bind(this);
+    this._onBlur = this._onBlur.bind(this);
   }
 
   attach() {
     this._target.addEventListener("keydown", this._onKeyDown);
     this._target.addEventListener("keyup", this._onKeyUp);
+    // A keyup can be missed when the window loses focus (Alt-Tab), which would
+    // otherwise leave a key stuck in `_pressed` and permanently coalesced away.
+    window.addEventListener("blur", this._onBlur);
   }
 
   detach() {
     this._target.removeEventListener("keydown", this._onKeyDown);
     this._target.removeEventListener("keyup", this._onKeyUp);
+    window.removeEventListener("blur", this._onBlur);
     this._pressed.clear();
   }
 
   /** @returns {{dx:number,dy:number,dir:string}|null} the most recent held direction. */
   currentIntent() {
-    const key = [...this._pressed].at(-1);
-    return key ? KEY_MAP[key] : null;
+    const keys = [...this._pressed];
+    for (let i = keys.length - 1; i >= 0; i -= 1) {
+      const intent = KEY_MAP[keys[i]];
+      if (intent) return intent;
+    }
+    return null;
   }
 
   _onKeyDown(event) {
@@ -83,6 +92,10 @@ export class InputController {
 
   _onKeyUp(event) {
     this._pressed.delete(normalizeKey(event.key));
+  }
+
+  _onBlur() {
+    this._pressed.clear();
   }
 }
 

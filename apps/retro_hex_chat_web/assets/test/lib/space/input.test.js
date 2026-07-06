@@ -69,6 +69,25 @@ describe("InputController", () => {
     expect(controller.currentIntent()).toBe(null);
   });
 
+  it("currentIntent ignores action keys and reports the last held direction", () => {
+    window.dispatchEvent(keydown("ArrowRight"));
+    window.dispatchEvent(keydown("e")); // action key pressed after a move key
+    expect(controller.currentIntent()).toEqual({ dx: 1, dy: 0, dir: "right" });
+  });
+
+  it("clears pressed keys on window blur so a missed keyup can't stick", () => {
+    window.dispatchEvent(keydown("ArrowRight"));
+    expect(intents).toHaveLength(1);
+
+    // Alt-Tab: the window loses focus and the keyup never arrives.
+    window.dispatchEvent(new Event("blur"));
+
+    // Pressing the same direction again must emit — not be coalesced as "held".
+    window.dispatchEvent(keydown("ArrowRight"));
+    expect(intents).toHaveLength(2);
+    expect(controller.currentIntent()).toEqual({ dx: 1, dy: 0, dir: "right" });
+  });
+
   it("detach removes listeners so later keys are ignored", () => {
     controller.detach();
     window.dispatchEvent(keydown("ArrowRight"));

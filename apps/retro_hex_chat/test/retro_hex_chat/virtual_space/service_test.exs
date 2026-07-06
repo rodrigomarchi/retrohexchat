@@ -228,6 +228,28 @@ defmodule RetroHexChat.VirtualSpace.ServiceTest do
       assert {:error, :forbidden} = Service.close_session(token, actor(other), "nope")
     end
 
+    test "does not rewrite an already-terminal (expired) session" do
+      {channel, nick} = channel_with_member()
+      {:ok, %{token: token}} = Service.create_session(actor(nick), channel, %{})
+
+      stop_process(token)
+      wait_for_deregistration(token, 50)
+
+      session = Queries.get_session_by_token(token)
+
+      {:ok, _} =
+        Queries.update_status(session, "expired", %{
+          closed_at: DateTime.utc_now(),
+          closed_reason: "expired"
+        })
+
+      assert :ok = Service.close_session(token, actor(nick), "manual")
+
+      reloaded = Queries.get_session_by_token(token)
+      assert reloaded.status == "expired"
+      assert reloaded.closed_reason == "expired"
+    end
+
     test "closes a session whose process is already gone" do
       {channel, nick} = channel_with_member()
 

@@ -28,6 +28,10 @@ msgstr "Datenbank"
 #: lib/retro_hex_chat_web/telemetry.ex:177
 #: lib/retro_hex_chat_web/telemetry.ex:182
 #: lib/retro_hex_chat_web/telemetry.ex:187
+#: lib/retro_hex_chat_web/telemetry.ex:194
+#: lib/retro_hex_chat_web/telemetry.ex:198
+#: lib/retro_hex_chat_web/telemetry.ex:203
+#: lib/retro_hex_chat_web/telemetry.ex:207
 #, elixir-autogen, elixir-format
 msgid "Domain"
 msgstr "Gebiet"
@@ -114,8 +118,11 @@ msgstr "Die Zeit für eine Datenbankverbindung"
 
 #: lib/retro_hex_chat_web/telemetry.ex:104
 #, elixir-autogen, elixir-format
-msgid "The time the connection spent waiting before being checked out for the query"
-msgstr "Die Zeit, in der die Verbindung gewartet wurde, bevor sie auf die Abfrage überprüft wurde"
+msgid ""
+"The time the connection spent waiting before being checked out for the query"
+msgstr ""
+"Die Zeit, in der die Verbindung gewartet wurde, bevor sie auf die Abfrage "
+"überprüft wurde"
 
 #: lib/retro_hex_chat_web/telemetry.ex:114
 #: lib/retro_hex_chat_web/telemetry.ex:118
@@ -305,3 +312,43 @@ msgstr "vm.total run queue lengths.io"
 #, elixir-autogen, elixir-format
 msgid "vm.total_run_queue_lengths.total"
 msgstr "vm.total run queue lengths.total"
+
+#: lib/retro_hex_chat_web/telemetry.ex:206
+#, elixir-autogen, elixir-format
+msgid "Number of active virtual space processes"
+msgstr "Anzahl der aktiven virtuellen Raumprozesse"
+
+#: lib/retro_hex_chat_web/telemetry.ex:197
+#, elixir-autogen, elixir-format
+msgid "Number of virtual space joins"
+msgstr "Anzahl der Beitritte zu virtuellen Räumen"
+
+#: lib/retro_hex_chat_web/telemetry.ex:193
+#, elixir-autogen, elixir-format
+msgid "Number of virtual spaces created"
+msgstr "Anzahl der erstellten virtuellen Räume"
+
+#: lib/retro_hex_chat_web/telemetry.ex:202
+#, elixir-autogen, elixir-format
+msgid "Number of virtual spaces ended by terminal status"
+msgstr "Anzahl der nach Endstatus beendeten virtuellen Räume"
+
+#: lib/retro_hex_chat_web/telemetry.ex:205
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.active_count.value"
+msgstr "retro_hex_chat.virtual_space.active_count.value"
+
+#: lib/retro_hex_chat_web/telemetry.ex:196
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.participant_joined.count"
+msgstr "retro_hex_chat.virtual_space.participant_joined.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:191
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.session_created.count"
+msgstr "retro_hex_chat.virtual_space.session_created.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:200
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.session_ended.count"
+msgstr "retro_hex_chat.virtual_space.session_ended.count"

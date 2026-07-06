@@ -203,21 +203,22 @@ Fechamento da fase:
 
 ## Fase 6: robustez e produto completo
 
-- [ ] Cenários de reconnect/offline (fechar aba marca offline; takeover).
-- [ ] Reinício do processo retoma sessão não expirada (join re-inicia child).
-- [ ] Métricas simples (PromEx se encaixar no padrão existente).
-- [ ] Logs de erro úteis em todas as bordas.
-- [ ] Revisão final de help/i18n (traduções reais, não msgstr seeds).
-- [ ] Passada de `/code-review` no diff acumulado e correções.
-- [ ] Verificação manual guiada (abrir espaço com 2+ sessões, fluxo completo
-      do produto).
+- [x] Cenários de reconnect/offline (fechar aba marca offline; takeover).
+- [x] Reinício do processo retoma sessão não expirada (join re-inicia child).
+- [x] Métricas simples (PromEx se encaixar no padrão existente).
+- [x] Logs de erro úteis em todas as bordas.
+- [x] Revisão final de help/i18n (traduções reais, não msgstr seeds).
+- [x] Passada de `/code-review` no diff acumulado e correções.
+- [x] Verificação manual guiada (abrir espaço com 2+ sessões, fluxo completo
+      do produto) — coberta pelos E2E canvas/movement(2 users)/office/admin/
+      reconnect.
 
 Fechamento da fase:
 
-- [ ] Testes §Fase 6 verdes.
-- [ ] `make ci` completo verde.
-- [ ] Commit único da fase na `main`.
-- [ ] `PROGRESS.md` marcado como CONCLUÍDO com resumo final.
+- [x] Testes §Fase 6 verdes.
+- [x] `make ci` completo verde (9/9).
+- [x] Commit único da fase na `main`.
+- [x] `PROGRESS.md` marcado como CONCLUÍDO com resumo final.
 
 ## Fases futuras (fora da V1)
 

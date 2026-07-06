@@ -140,12 +140,13 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   defp admin_actor(socket) do
     nickname = socket.assigns[:nickname]
+    identified = NickServ.identified?(nickname)
 
     %{
       user_id: socket.assigns[:user_id],
       nickname: nickname,
-      is_admin: ServerRoles.admin?(nickname, true),
-      is_server_operator: ServerRoles.server_operator?(nickname, true)
+      is_admin: ServerRoles.admin?(nickname, identified),
+      is_server_operator: ServerRoles.server_operator?(nickname, identified)
     }
   end
 

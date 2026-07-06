@@ -28,6 +28,10 @@ msgstr "Veritabanı Veritabanı"
 #: lib/retro_hex_chat_web/telemetry.ex:177
 #: lib/retro_hex_chat_web/telemetry.ex:182
 #: lib/retro_hex_chat_web/telemetry.ex:187
+#: lib/retro_hex_chat_web/telemetry.ex:194
+#: lib/retro_hex_chat_web/telemetry.ex:198
+#: lib/retro_hex_chat_web/telemetry.ex:203
+#: lib/retro_hex_chat_web/telemetry.ex:207
 #, elixir-autogen, elixir-format
 msgid "Domain"
 msgstr "Domain Domain Domain Domain"
@@ -114,7 +118,8 @@ msgstr "Bir veritabanı bağlantısı için bekleme süresi"
 
 #: lib/retro_hex_chat_web/telemetry.ex:104
 #, elixir-autogen, elixir-format
-msgid "The time the connection spent waiting before being checked out for the query"
+msgid ""
+"The time the connection spent waiting before being checked out for the query"
 msgstr "Sorgu için kontrol etmeden önce bekleyen bağlantı zamanı"
 
 #: lib/retro_hex_chat_web/telemetry.ex:114
@@ -194,7 +199,9 @@ msgstr "phoenix.socket drain.count"
 #: lib/retro_hex_chat_web/telemetry.ex:168
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.channels.active_count.value"
-msgstr "retro hex chat.channels.active count.values.active count.values.active count.value"
+msgstr ""
+"retro hex chat.channels.active count.values.active count.values.active "
+"count.value"
 
 #: lib/retro_hex_chat_web/telemetry.ex:148
 #, elixir-autogen, elixir-format
@@ -305,3 +312,43 @@ msgstr "vm. total run queue longs.io"
 #, elixir-autogen, elixir-format
 msgid "vm.total_run_queue_lengths.total"
 msgstr "vm. total run queue longs.total"
+
+#: lib/retro_hex_chat_web/telemetry.ex:206
+#, elixir-autogen, elixir-format
+msgid "Number of active virtual space processes"
+msgstr "Etkin sanal alan işlemi sayısı"
+
+#: lib/retro_hex_chat_web/telemetry.ex:197
+#, elixir-autogen, elixir-format
+msgid "Number of virtual space joins"
+msgstr "Sanal alana katılma sayısı"
+
+#: lib/retro_hex_chat_web/telemetry.ex:193
+#, elixir-autogen, elixir-format
+msgid "Number of virtual spaces created"
+msgstr "Oluşturulan sanal alan sayısı"
+
+#: lib/retro_hex_chat_web/telemetry.ex:202
+#, elixir-autogen, elixir-format
+msgid "Number of virtual spaces ended by terminal status"
+msgstr "Sonlanma durumuna göre sona eren sanal alan sayısı"
+
+#: lib/retro_hex_chat_web/telemetry.ex:205
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.active_count.value"
+msgstr "retro_hex_chat.virtual_space.active_count.value"
+
+#: lib/retro_hex_chat_web/telemetry.ex:196
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.participant_joined.count"
+msgstr "retro_hex_chat.virtual_space.participant_joined.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:191
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.session_created.count"
+msgstr "retro_hex_chat.virtual_space.session_created.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:200
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.session_ended.count"
+msgstr "retro_hex_chat.virtual_space.session_ended.count"

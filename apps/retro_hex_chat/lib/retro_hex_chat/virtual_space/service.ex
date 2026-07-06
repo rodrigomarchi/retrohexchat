@@ -9,6 +9,7 @@ defmodule RetroHexChat.VirtualSpace.Service do
 
   alias RetroHexChat.P2P.RateLimiter
   alias RetroHexChat.Services.Queries, as: ServiceQueries
+  alias RetroHexChat.VirtualSpace.Events
   alias RetroHexChat.VirtualSpace.Policy
   alias RetroHexChat.VirtualSpace.Queries
   alias RetroHexChat.VirtualSpace.Registry
@@ -38,6 +39,7 @@ defmodule RetroHexChat.VirtualSpace.Service do
           "creator=#{actor.nickname}"
       )
 
+      Events.emit_session_created(session.token, channel_name)
       {:ok, %{session: session, token: session.token}}
     end
   end
@@ -67,14 +69,28 @@ defmodule RetroHexChat.VirtualSpace.Service do
   def close_session(token, actor, reason) do
     with {:ok, session} <- fetch_session(token),
          :ok <- Policy.can_close?(actor, session) do
-      case SessionServer.close(token, reason) do
-        :ok ->
-          :ok
+      finalize_close(token, session, reason)
+    end
+  end
 
-        {:error, :not_found} ->
-          mark_closed(session, reason)
-          :ok
-      end
+  defp finalize_close(token, session, reason) do
+    # Already terminal (e.g. expired): keep the original terminal record
+    # instead of rewriting its reason/timestamp.
+    if Session.terminal?(session.status) do
+      :ok
+    else
+      do_close(token, session, reason)
+    end
+  end
+
+  defp do_close(token, session, reason) do
+    case SessionServer.close(token, reason) do
+      :ok ->
+        :ok
+
+      {:error, :not_found} ->
+        mark_closed(session, reason)
+        :ok
     end
   end
 

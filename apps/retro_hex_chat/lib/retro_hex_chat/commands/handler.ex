@@ -4,15 +4,16 @@ defmodule RetroHexChat.Commands.Handler do
   """
 
   @type context :: %{
-          nickname: String.t(),
-          active_channel: String.t() | nil,
-          channels: [String.t()],
-          identified: boolean(),
-          owner_in: [String.t()],
-          operator_in: [String.t()],
-          half_operator_in: [String.t()],
-          is_admin: boolean(),
-          is_server_operator: boolean()
+          required(:nickname) => String.t(),
+          required(:active_channel) => String.t() | nil,
+          required(:channels) => [String.t()],
+          required(:identified) => boolean(),
+          required(:owner_in) => [String.t()],
+          required(:operator_in) => [String.t()],
+          required(:half_operator_in) => [String.t()],
+          required(:is_admin) => boolean(),
+          required(:is_server_operator) => boolean(),
+          optional(:show_status_tab) => boolean()
         }
 
   @type result ::
