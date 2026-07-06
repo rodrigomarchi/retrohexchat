@@ -22,6 +22,7 @@ defmodule RetroHexChat.VirtualSpace.AdminTest do
         channel_name: "#retro",
         creator_id: creator.id,
         creator_nick: creator.nickname,
+        map_id: "tavern_cafe_v1",
         expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
       })
 

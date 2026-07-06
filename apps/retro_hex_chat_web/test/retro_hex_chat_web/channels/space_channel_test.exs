@@ -51,6 +51,8 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       creator_id: creator.id,
       creator_nick: creator.nickname,
       title: "HQ",
+      # Channel mechanics tests pin a stable map; the product default is elsewhere.
+      map_id: "tavern_cafe_v1",
       expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
     }
 

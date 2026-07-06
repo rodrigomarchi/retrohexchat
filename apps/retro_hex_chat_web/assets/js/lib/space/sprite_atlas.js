@@ -10,7 +10,15 @@
  * @module space/sprite_atlas
  */
 
+import { TILES } from "./sprites/index.js";
+
 const HASH = String.fromCharCode(35);
+
+// Palette-index alphabet shared with the extraction tool (png2js). Each traced
+// tile module is `{ w, h, p: [hex...], d: "<indices>" }`; "." marks a
+// transparent pixel. Kept in sync with scripts that generate the modules.
+const ALPHA =
+  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!$%&()*+,-/:;<=>?@[]^_{|}~";
 
 // Authorial palette (fantasy coffeehouse). Values are hex digits without `#`.
 const PALETTE = {
@@ -82,6 +90,27 @@ export function createSpriteAtlas(opts = {}) {
     return sprite;
   }
 
+  // Draw a traced-pixel module into a cached canvas, one scaled rect per pixel.
+  function buildTraced(key, mod) {
+    if (cache.has(key)) return cache.get(key);
+    const canvas = makeCanvas(mod.w * scale, mod.h * scale);
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.imageSmoothingEnabled = false;
+      for (let i = 0; i < mod.d.length; i += 1) {
+        const ch = mod.d[i];
+        if (ch === ".") continue;
+        const pi = ALPHA.indexOf(ch);
+        if (pi < 0) continue;
+        ctx.fillStyle = HASH + mod.p[pi];
+        ctx.fillRect((i % mod.w) * scale, Math.floor(i / mod.w) * scale, scale, scale);
+      }
+    }
+    const sprite = { key, canvas };
+    cache.set(key, sprite);
+    return sprite;
+  }
+
   return {
     tileSize,
     scale,
@@ -92,12 +121,16 @@ export function createSpriteAtlas(opts = {}) {
       return AVATAR_IDS;
     },
     hasTile(id) {
-      return TILE_IDS.includes(id);
+      return Boolean(TILES[id]) || TILE_IDS.includes(id);
     },
     hasAvatar(id) {
       return AVATAR_IDS.includes(id) && true;
     },
+    // Traced pixel tiles take precedence; unmapped ids fall back to the legacy
+    // procedural painters so older maps keep rendering during the migration.
     tile(id) {
+      const traced = TILES[id];
+      if (traced) return buildTraced(`tile:${id}`, traced);
       const painter = TILE_PAINTERS[id] || TILE_PAINTERS.floor_stone;
       return build(`tile:${id}`, painter);
     },

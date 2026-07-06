@@ -5,7 +5,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
   @moduletag :unit
 
-  @map_ids ~w(tavern_cafe_v1 guild_hall_v1 arcane_library_v1 garden_camp_v1)
+  @map_ids ~w(elfic_forest tavern_cafe_v1 guild_hall_v1 arcane_library_v1 garden_camp_v1)
 
   describe "get/1" do
     test "returns a definition for every registry id" do
@@ -47,7 +47,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
   # Every registry map must satisfy the same invariants, so a new map can never
   # ship a spawn on a wall, a zone out of bounds or an overlapping seat.
-  for map_id <- ~w(tavern_cafe_v1 guild_hall_v1 arcane_library_v1 garden_camp_v1) do
+  for map_id <- ~w(elfic_forest tavern_cafe_v1 guild_hall_v1 arcane_library_v1 garden_camp_v1) do
     describe "#{map_id} consistency" do
       @describetag map_id: map_id
 
@@ -92,7 +92,16 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
       test "the floor layer is a full height×width matrix of known tile ids", ctx do
         floor = ctx.definition.layers.floor
-        known = ~w(wall_stone floor_stone floor_grass floor_wood)
+
+        legacy = ~w(wall_stone floor_stone floor_grass floor_wood)
+
+        forest =
+          ~w(grass grass_tuft grass_worn flowers bush rock rock_s
+             log_l log_m log_r pond_tl pond_tm pond_tr pond_ml pond_c pond_mr
+             pond_bl pond_bm pond_br tree_tl tree_tr tree_ml tree_mr tree_bl tree_br
+             cliff_edge cliff_face cliff_base)
+
+        known = legacy ++ forest
 
         assert length(floor) == ctx.definition.height
 

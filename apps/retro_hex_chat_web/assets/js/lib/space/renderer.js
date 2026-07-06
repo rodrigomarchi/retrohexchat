@@ -74,13 +74,19 @@ export class Renderer {
     const cols = Math.ceil(this.canvas.width / this.tilePx) + 1;
     const rows = Math.ceil(this.canvas.height / this.tilePx) + 1;
 
+    const ground = this.map.ground ? this.atlas?.tile(this.map.ground) : null;
+
     for (let ty = startY; ty < startY + rows; ty += 1) {
       for (let tx = startX; tx < startX + cols; tx += 1) {
         if (!this.map.inBounds(tx, ty)) continue;
-        const sprite = this.atlas?.tile(this.map.floorTile(tx, ty));
-        if (!sprite) continue;
         const { x, y } = this.camera.worldToScreen(tx * this.tilePx, ty * this.tilePx);
-        ctx.drawImage(sprite.canvas, Math.round(x), Math.round(y));
+        const dx = Math.round(x);
+        const dy = Math.round(y);
+        const tileId = this.map.floorTile(tx, ty);
+        // Lay the opaque ground first so transparent props read over it.
+        if (ground && tileId !== this.map.ground) ctx.drawImage(ground.canvas, dx, dy);
+        const sprite = this.atlas?.tile(tileId);
+        if (sprite) ctx.drawImage(sprite.canvas, dx, dy);
       }
     }
   }

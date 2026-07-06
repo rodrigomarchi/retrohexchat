@@ -26,7 +26,7 @@ defmodule RetroHexChat.VirtualSpace.Schema.SessionTest do
 
       session = Ecto.Changeset.apply_changes(changeset)
       assert session.status == "pending"
-      assert session.map_id == "tavern_cafe_v1"
+      assert session.map_id == "elfic_forest"
       assert session.max_participants == 20
     end
 

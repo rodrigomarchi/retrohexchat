@@ -23,7 +23,7 @@ defmodule RetroHexChat.VirtualSpace.Schema.Session do
     field :creator_nick, :string
     field :title, :string
     field :status, :string, default: "pending"
-    field :map_id, :string, default: "tavern_cafe_v1"
+    field :map_id, :string, default: "elfic_forest"
     field :max_participants, :integer, default: 20
     field :last_participant_count, :integer, default: 0
     field :peak_participants, :integer, default: 0

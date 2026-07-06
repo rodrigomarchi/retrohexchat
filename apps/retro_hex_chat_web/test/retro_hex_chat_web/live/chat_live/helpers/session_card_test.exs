@@ -104,6 +104,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCardTest do
           creator_id: creator.id,
           creator_nick: creator.nickname,
           title: "Guild Tavern",
+          map_id: "tavern_cafe_v1",
           expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
         })
 

@@ -22,6 +22,9 @@ export class SpaceMap {
     this.width = definition.width ?? 0;
     this.height = definition.height ?? 0;
     this.tileSize = definition.tile_size ?? definition.tileSize ?? 16;
+    // Opaque base tile drawn under every floor cell so props with transparent
+    // pixels (bushes, flowers) composite over ground instead of the backdrop.
+    this.ground = definition.ground ?? null;
     this.layers = definition.layers ?? { floor: [], decor: [], above: [] };
     this.spawns = Array.isArray(definition.spawn) ? definition.spawn : [];
 
