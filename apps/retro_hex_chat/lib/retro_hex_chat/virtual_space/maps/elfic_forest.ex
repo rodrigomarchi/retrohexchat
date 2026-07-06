@@ -1,59 +1,33 @@
 defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
   @moduledoc """
-  Elfic Forest map: an open grass clearing walled by a thick treeline of bushes
-  crowned with round tree canopies, a cabin landmark, a cliff ledge dropping
-  into the clearing, a pond, boulders and fallen-log seats. The floor layer
-  carries ground and single-tile props over a grass base; multi-tile props
-  (cabin, boulder, trees) are decor sprites. Collision blocks the treeline,
-  canopies, cliff face, cabin, boulder and pond.
+  Elfic Forest map: an open grass valley walled by a dense treeline, entered
+  through a cave passage in a cliff. Cliff ledges drop the forested high ground
+  into the valley, a pond pools at the base of the lower cliff, and a cabin sits
+  on the upper-left ground. The floor layer carries ground and single-tile props
+  over a grass base; multi-tile props (cabin, boulder, trees, cave) are decor
+  sprites. Collision blocks the treeline, canopies, cliff faces, cabin, boulder
+  and pond, leaving the cave mouth and cliff-top lip walkable.
   """
 
   @width 44
   @height 32
 
-  # Round tree canopies (2x2 decor) placed as a dense ring just inside the bush
-  # border, on the forested high ground above the cliff, and in a few clusters.
-  @trees [
-    # Top forest wall.
-    {9, 1},
-    {12, 2},
-    {15, 1},
-    {24, 1},
-    {27, 2},
-    {33, 1},
-    {37, 2},
-    # Forested high ground crowning the cliffs.
-    {9, 4},
-    {12, 5},
-    {15, 4},
-    {17, 5},
-    {23, 5},
-    {25, 4},
-    {28, 6},
-    {31, 4},
-    {34, 7},
-    {37, 5},
-    # Side and bottom treeline.
-    {1, 13},
-    {2, 18},
-    {1, 23},
-    {2, 27},
-    {41, 14},
-    {40, 19},
-    {41, 24},
-    {40, 27},
-    {11, 29},
-    {17, 28},
-    {24, 29},
-    {30, 28},
-    {36, 29},
-    # Clearing accents.
-    {6, 18},
-    {38, 17}
-  ]
-
   @house {3, 2}
-  @boulder {20, 15}
+  @boulder {33, 14}
+  @cave_x 15
+
+  # Rects (x0, y0, x1, y1 inclusive) kept clear of tree canopies: the cabin, the
+  # spawn clearing, the two cliff bands, the pond, the boulder and the cave
+  # passage.
+  @keepout [
+    {1, 1, 8, 7},
+    {16, 15, 27, 23},
+    {3, 8, 31, 12},
+    {23, 21, 41, 26},
+    {29, 25, 34, 30},
+    {32, 13, 36, 16},
+    {@cave_x - 1, 7, @cave_x + 1, 12}
+  ]
 
   @spec definition() :: map()
   def definition do
@@ -67,37 +41,37 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
       tile_size: 16,
       ground: "grass",
       spawn: [
+        %{x: 20, y: 19, dir: "down"},
+        %{x: 21, y: 19, dir: "down"},
+        %{x: 22, y: 19, dir: "down"},
         %{x: 20, y: 20, dir: "down"},
         %{x: 21, y: 20, dir: "down"},
-        %{x: 22, y: 20, dir: "down"},
-        %{x: 20, y: 21, dir: "down"},
-        %{x: 21, y: 21, dir: "down"},
-        %{x: 22, y: 21, dir: "down"}
+        %{x: 22, y: 20, dir: "down"}
       ],
       layers: %{floor: floor_layer(props), decor: decor(), above: []},
       collision: collision(props),
       zones: [
-        %{id: "spawn", kind: "spawn", x: 18, y: 18, w: 8, h: 6},
-        %{id: "clearing", kind: "common", x: 4, y: 4, w: 36, h: 24},
-        %{id: "grove", kind: "quiet", x: 6, y: 20, w: 10, h: 6},
-        %{id: "pondside", kind: "quiet", x: 30, y: 22, w: 8, h: 7}
+        %{id: "spawn", kind: "spawn", x: 18, y: 17, w: 8, h: 5},
+        %{id: "valley", kind: "common", x: 4, y: 13, w: 36, h: 14},
+        %{id: "highground", kind: "quiet", x: 4, y: 4, w: 26, h: 4},
+        %{id: "pondside", kind: "quiet", x: 28, y: 26, w: 8, h: 4}
       ],
       interactables: [
         %{
           id: "notice_board",
           kind: "board",
-          x: 24,
-          y: 20,
+          x: 25,
+          y: 18,
           title: "Forest notice",
           modal: %{kind: "image", asset: "board_daily_v1"}
         }
       ],
       seats: [
-        %{id: "grove_log_l", x: 9, y: 24, dir: "up"},
-        %{id: "grove_log_m", x: 10, y: 24, dir: "up"},
-        %{id: "grove_log_r", x: 11, y: 24, dir: "up"},
-        %{id: "pond_log_l", x: 31, y: 27, dir: "up"},
-        %{id: "pond_log_m", x: 32, y: 27, dir: "up"}
+        %{id: "valley_log_l", x: 9, y: 16, dir: "up"},
+        %{id: "valley_log_m", x: 10, y: 16, dir: "up"},
+        %{id: "valley_log_r", x: 11, y: 16, dir: "up"},
+        %{id: "pond_log_l", x: 24, y: 27, dir: "up"},
+        %{id: "pond_log_m", x: 25, y: 27, dir: "up"}
       ]
     }
   end
@@ -105,24 +79,56 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
   defp props do
     %{}
     |> forest_border()
-    # Cliff framing the clearing: the forested high ground drops to the clearing
-    # in two stepped ledges.
-    |> cliff(3, 7, 20)
-    |> cliff(20, 10, 40)
-    |> pond(33, 24)
-    |> log(9, 24)
-    |> log(31, 27)
+    # Top cliff: forested high ground dropping into the valley, split by a cave
+    # passage; lower cliff: the ledge the pond pools under.
+    |> cliff(4, 8, @cave_x - 2)
+    |> cliff(@cave_x + 2, 8, 30)
+    |> cliff(24, 22, 40)
+    |> pond(29, 26)
+    |> log(9, 16)
+    |> log(23, 27)
     |> flower_beds()
   end
 
-  # Multi-tile sprites drawn over the floor: the cabin, a boulder, and the ring
-  # of tree canopies.
+  # Cabin, boulder, cave mouth and the dense ring of tree canopies.
   defp decor do
     {hx, hy} = @house
     {bx, by} = @boulder
 
-    [%{x: hx, y: hy, tile: "house"}, %{x: bx, y: by, tile: "boulder"}] ++
-      Enum.map(@trees, fn {x, y} -> %{x: x, y: y, tile: "tree"} end)
+    [
+      %{x: hx, y: hy, tile: "house"},
+      %{x: bx, y: by, tile: "boulder"},
+      %{x: @cave_x, y: 9, tile: "cave"}
+    ] ++ Enum.map(tree_positions(), fn {x, y} -> %{x: x, y: y, tile: "tree"} end)
+  end
+
+  # A dense two-deep ring of canopies crowning the border, plus a crown on the
+  # high ground and a few valley clusters — everything clear of the keepout rects.
+  defp tree_positions do
+    ring =
+      Enum.map(3..40//2, &{&1, 1}) ++
+        Enum.map(3..40//2, &{&1, 29}) ++
+        Enum.map(3..28//2, &{1, &1}) ++
+        Enum.map(3..28//2, &{41, &1})
+
+    inner =
+      Enum.map(6..37//4, &{&1, 3}) ++
+        Enum.map(7..26//4, &{3, &1}) ++
+        Enum.map(7..26//4, &{39, &1})
+
+    crown = [{6, 5}, {10, 5}, {20, 5}, {24, 5}, {28, 5}, {12, 13}, {29, 13}]
+    clusters = [{7, 24}, {14, 25}, {20, 26}, {37, 22}, {6, 20}, {35, 19}]
+
+    (ring ++ inner ++ crown ++ clusters)
+    |> Enum.uniq()
+    |> Enum.reject(&in_keepout?/1)
+  end
+
+  # A 2x2 canopy at {x, y} clears the keepout only if it overlaps no rect.
+  defp in_keepout?({x, y}) do
+    Enum.any?(@keepout, fn {x0, y0, x1, y1} ->
+      x + 1 >= x0 and x <= x1 and y + 1 >= y0 and y <= y1
+    end)
   end
 
   defp floor_layer(props) do
@@ -178,12 +184,12 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
   end
 
   defp flower_beds(props) do
-    [{14, 16}, {15, 16}, {14, 17}, {28, 8}, {29, 8}, {17, 24}, {18, 24}, {35, 18}]
+    [{16, 15}, {17, 15}, {13, 18}, {27, 15}, {28, 15}, {19, 24}, {32, 20}, {8, 22}]
     |> Enum.reduce(props, fn {x, y}, acc -> Elixir.Map.put(acc, {x, y}, "flowers") end)
   end
 
-  # Floor-prop collision + the multi-tile decor footprints (cabin walls, boulder,
-  # tree bases). Logs, flowers and the cliff-top grass lip stay passable.
+  # Floor-prop collision + the decor footprints (cabin, boulder, tree bases).
+  # Logs, flowers, the cliff-top lip and the cave mouth stay passable.
   defp collision(props) do
     passable = MapSet.new(["log_l", "log_m", "log_r", "flowers", "cliff_edge"])
 
@@ -196,7 +202,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
 
     {hx, hy} = @house
     {bx, by} = @boulder
-    trees = Enum.flat_map(@trees, fn {x, y} -> rect(x, y, 2, 2, "tree") end)
+    trees = Enum.flat_map(tree_positions(), fn {x, y} -> rect(x, y, 2, 2, "tree") end)
 
     floor ++ house_collision(hx, hy) ++ rect(bx, by, 3, 2, "boulder") ++ trees
   end
