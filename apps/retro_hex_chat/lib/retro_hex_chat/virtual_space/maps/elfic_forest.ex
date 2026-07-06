@@ -29,8 +29,12 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
         %{x: 21, y: 19, dir: "down"},
         %{x: 22, y: 19, dir: "down"}
       ],
-      layers: %{floor: floor_layer(props), decor: [], above: []},
-      collision: collision(props),
+      layers: %{
+        floor: floor_layer(props),
+        decor: [%{x: 4, y: 3, tile: "house"}, %{x: 16, y: 9, tile: "boulder"}],
+        above: []
+      },
+      collision: collision(props) ++ house_collision(4, 3) ++ rect(16, 9, 3, 2),
       zones: [
         %{id: "spawn", kind: "spawn", x: 18, y: 16, w: 8, h: 6},
         %{id: "clearing", kind: "common", x: 4, y: 4, w: 36, h: 24},
@@ -51,8 +55,8 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
         %{id: "grove_log_l", x: 7, y: 24, dir: "up"},
         %{id: "grove_log_m", x: 8, y: 24, dir: "up"},
         %{id: "grove_log_r", x: 9, y: 24, dir: "up"},
-        %{id: "pond_log_l", x: 33, y: 25, dir: "up"},
-        %{id: "pond_log_m", x: 34, y: 25, dir: "up"}
+        %{id: "pond_log_l", x: 34, y: 26, dir: "up"},
+        %{id: "pond_log_m", x: 35, y: 26, dir: "up"}
       ]
     }
   end
@@ -60,21 +64,24 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
   defp props do
     %{}
     |> treeline()
-    # Terraced cliff ledges (grass-lip top, rock face + base below).
-    |> cliff(6, 7, 19)
-    |> cliff(25, 11, 39)
+    # Cliff cascade: stepped ledges (grass-lip top, rock face + base) that
+    # snake down across the clearing.
+    |> cliff(10, 7, 21)
+    |> cliff(20, 10, 31)
+    |> cliff(31, 13, 40)
     # Tree clusters: overlapping canopies for dense masses.
-    |> grove(4, 3, 3)
+    |> grove(11, 3, 3)
     |> grove(33, 3, 2)
-    |> grove(37, 15, 2)
-    |> grove(3, 13, 2)
-    |> grove(6, 25, 2)
-    |> grove(29, 24, 2)
-    |> grove(14, 4, 1)
-    |> grove(28, 20, 1)
-    |> pond(32, 22)
+    |> grove(37, 17, 2)
+    |> grove(3, 14, 3)
+    |> grove(6, 26, 3)
+    |> grove(29, 26, 2)
+    |> grove(20, 4, 1)
+    |> grove(15, 23, 2)
+    |> grove(40, 9, 1)
+    |> pond(32, 23)
     |> log(7, 24)
-    |> log(33, 25)
+    |> log(34, 26)
     |> boulders()
     |> flower_beds()
   end
@@ -168,6 +175,15 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
       {23, 26}
     ]
     |> Enum.reduce(props, fn {x, y}, acc -> Elixir.Map.put(acc, {x, y}, "flowers") end)
+  end
+
+  # Blocks the cabin's walls (its 5x5 sprite minus the transparent roof peak).
+  defp house_collision(x, y) do
+    for dx <- 0..4, dy <- 1..4, do: %{x: x + dx, y: y + dy, w: 1, h: 1, kind: "house"}
+  end
+
+  defp rect(x, y, w, h) do
+    for dx <- 0..(w - 1), dy <- 0..(h - 1), do: %{x: x + dx, y: y + dy, w: 1, h: 1, kind: "prop"}
   end
 
   defp collision(props) do

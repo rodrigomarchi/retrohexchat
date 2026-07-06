@@ -12,9 +12,9 @@ Run `slice.py` first. Usage:
 import json
 import os
 
-from PIL import Image, ImageDraw
+from PIL import Image
 
-from png2js import convert
+from png2js import convert, convert_image
 
 TOOLS = os.path.dirname(os.path.abspath(__file__))
 GFX = os.path.dirname(TOOLS)
@@ -27,20 +27,32 @@ def sliced_png(sheet, col, row):
     return os.path.join(SLICED, sheet, f"c{col:02d}_r{row:02d}.png")
 
 
+# A tile spec may span several tiles (w/h in tiles): those are cropped straight
+# from the source sheet so multi-tile props (houses, big trees) become one
+# sprite module.
+def _extract(name, spec, tile=16):
+    dst = os.path.join(SRC, "tiles", f"{name}.js")
+    w, h = spec.get("w", 1), spec.get("h", 1)
+    if w == 1 and h == 1:
+        src = sliced_png(spec["sheet"], spec["col"], spec["row"])
+        if not os.path.exists(src):
+            print(f"MISSING {name}: {src}")
+            return False
+        convert(src, dst, name)
+        return True
+    sheet = Image.open(os.path.join(GFX, f"{spec['sheet']}.png")).convert("RGBA")
+    x, y = spec["col"] * tile, spec["row"] * tile
+    region = sheet.crop((x, y, x + w * tile, y + h * tile))
+    convert_image(region, dst, name)
+    return True
+
+
 def run():
     manifest = json.load(open(os.path.join(TOOLS, "manifest.json")))
     tiles = manifest.get("tiles", {})
     os.makedirs(os.path.join(SRC, "tiles"), exist_ok=True)
-    names = []
-    for name, spec in tiles.items():
-        src = sliced_png(spec["sheet"], spec["col"], spec["row"])
-        if not os.path.exists(src):
-            print(f"MISSING {name}: {src}")
-            continue
-        convert(src, os.path.join(SRC, "tiles", f"{name}.js"), name)
-        names.append(name)
+    names = [name for name, spec in tiles.items() if _extract(name, spec)]
     _write_index(sorted(names))
-    _montage(tiles, names)
     print(f"migrated {len(names)} tiles -> {SRC}")
 
 
@@ -55,22 +67,6 @@ def _write_index(names):
     lines.append("};")
     with open(os.path.join(SRC, "index.js"), "w") as f:
         f.write("\n".join(lines) + "\n")
-
-
-def _montage(tiles, names, scale=8):
-    cell = 16 * scale
-    cols = 6
-    rows = (len(names) + cols - 1) // cols
-    mos = Image.new("RGBA", (cols * cell, rows * (cell + 16)), (28, 30, 40, 255))
-    d = ImageDraw.Draw(mos)
-    for i, name in enumerate(names):
-        spec = tiles[name]
-        src = sliced_png(spec["sheet"], spec["col"], spec["row"])
-        x, y = (i % cols) * cell, (i // cols) * (cell + 16)
-        t = Image.open(src).convert("RGBA").resize((cell, cell), Image.NEAREST)
-        mos.alpha_composite(t, (x, y))
-        d.text((x + 2, y + cell + 2), name, fill=(255, 255, 0, 255))
-    mos.save(os.path.join(TOOLS, "_verify_tiles.png"))
 
 
 if __name__ == "__main__":

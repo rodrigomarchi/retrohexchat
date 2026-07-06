@@ -50,6 +50,7 @@ export class Renderer {
     ctx.fillStyle = HASH + VOID_BG;
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this._drawFloor(ctx);
+    this._drawDecor(ctx);
 
     const ordered = [...state.participants.values()].sort((a, b) => a.y - b.y);
     for (const participant of ordered) {
@@ -88,6 +89,17 @@ export class Renderer {
         const sprite = this.atlas?.tile(tileId);
         if (sprite) ctx.drawImage(sprite.canvas, dx, dy);
       }
+    }
+  }
+
+  // Multi-tile props anchored at their top-left tile, drawn at their native
+  // sprite size over the floor.
+  _drawDecor(ctx) {
+    for (const prop of this.map.decor ?? []) {
+      const sprite = this.atlas?.tile(prop.tile);
+      if (!sprite) continue;
+      const { x, y } = this.camera.worldToScreen(prop.x * this.tilePx, prop.y * this.tilePx);
+      ctx.drawImage(sprite.canvas, Math.round(x), Math.round(y));
     }
   }
 

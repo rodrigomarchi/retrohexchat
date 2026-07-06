@@ -21,7 +21,12 @@ ALPHA = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!$%&()*+,
 
 def convert(src, dst, name):
     """Trace `src` PNG into a JS module at `dst`. Returns (bytes, colors)."""
-    im = Image.open(src).convert("RGBA")
+    return convert_image(Image.open(src), dst, name)
+
+
+def convert_image(im, dst, name):
+    """Trace an RGBA PIL image into a JS module at `dst`. Returns (bytes, colors)."""
+    im = im.convert("RGBA")
     w, h = im.size
     px = im.load()
     palette = []

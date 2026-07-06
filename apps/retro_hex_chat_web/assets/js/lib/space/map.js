@@ -26,6 +26,8 @@ export class SpaceMap {
     // pixels (bushes, flowers) composite over ground instead of the backdrop.
     this.ground = definition.ground ?? null;
     this.layers = definition.layers ?? { floor: [], decor: [], above: [] };
+    // Multi-tile props (houses, big trees) drawn as whole sprites over the floor.
+    this.decor = Array.isArray(this.layers.decor) ? this.layers.decor : [];
     this.spawns = Array.isArray(definition.spawn) ? definition.spawn : [];
 
     this._blocked = buildCollisionSet(definition.collision);
