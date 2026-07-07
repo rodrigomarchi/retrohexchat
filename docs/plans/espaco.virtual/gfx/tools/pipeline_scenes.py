@@ -59,7 +59,94 @@ def path_demo():
     return s
 
 
-SCENES = {"pond": pond, "path_demo": path_demo, "churchyard": churchyard}
+def market():
+    # A village market square: two awning stalls facing the gravel plaza, a tall
+    # vendor table with produce crates displayed in front, a cargo corner and a
+    # bench to rest. Greenery frames the square.
+    s = Scene(22, 15, "grass")
+    s.fill(2, 1, 19, 13, "gravel")           # the paved square; grass frames it
+    s.prop("market_stall_awning", 3, 1)      # west stall (cols3-7, counter row6)
+    s.prop("market_stall_awning", 13, 1)     # east stall (cols13-17)
+    s.prop("counter_wood", 9, 4)             # open-air vendor table between them
+    s.prop("stool_wood", 12, 4)              # the vendor's stool
+    for i, crate in enumerate(["produce_crate_banana", "produce_crate_greens",
+                               "produce_crate_tomato", "produce_crate_lemon"]):
+        s.prop(crate, 7 + 2 * i, 7)          # produce displayed in front, spaced out
+    s.prop("barrel_wood", 3, 10)             # cargo corner on the plaza
+    s.prop("barrel_wood", 4, 10)
+    s.prop("crate_x", 6, 10)
+    s.prop("crate_wood", 3, 12)
+    s.prop("sack_flour", 4, 12)
+    s.prop("bench_wood", 15, 10)
+    s.prop("bush_round", 0, 13)
+    s.prop("bush_round", 20, 13)
+    s.prop("flowers_white", 1, 5)
+    s.prop("flowers_white", 20, 5)
+    return s
+
+
+def blacksmith_forge():
+    # The smith's compound: the house at the back, a packed-dirt work yard in
+    # front with the forge furnace + coal pile on one side and the workbench by
+    # the door; quenching barrels, a chopping block and a log pile fill the yard.
+    s = Scene(18, 13, "grass")
+    s.prop("house_large", 2, 0)              # the smithy (cols2-6, door at bottom)
+    s.fill(2, 5, 14, 10, "dirt")             # the work yard the door opens onto
+    s.prop("anvil_forge", 12, 5)             # forge furnace (1x3), east side of yard
+    s.prop("coal_rocks", 13, 6)              # coal heap feeding the furnace
+    s.prop("barrel_wood", 10, 5)             # quenching barrels beside the furnace
+    s.prop("barrel_wood", 11, 5)
+    s.prop("counter_wood", 4, 6)             # workbench near the door
+    s.prop("stool_wood", 7, 7)
+    s.prop("hedge_block", 1, 1)              # vertical shrubs aligned to the walls
+    s.prop("hedge_block", 1, 3)
+    s.prop("hedge_block", 7, 1)
+    s.prop("hedge_block", 7, 3)
+    s.prop("crate_x", 2, 8)
+    s.prop("tree_stumps", 8, 9)              # chopping block
+    s.prop("log_horizontal", 11, 9)          # log pile awaiting the axe
+    s.prop("log_horizontal", 10, 10)
+    s.prop("tree_foliage", 15, 1)            # green frame outside the yard
+    s.prop("bush_round", 0, 11)
+    s.prop("flowers_white", 16, 5)
+    return s
+
+
+def farmstead():
+    # A fenced farm: barn at the top-left (front doors facing south), an L-shaped
+    # gravel lane from the south gate up to the barn doors, two crop plots on the
+    # east side split by a bush hedgerow, and the working yard (well, haystacks,
+    # stores) in the bottom-left quadrant so the barn stands free.
+    s = Scene(24, 18, "grass")
+    s.fence_rect(0, 0, 23, 17, openings=[(10, 17), (11, 17)])
+    s.prop("house_large", 2, 1)              # farmhouse, cols2-6, door facing south
+    s.fill(3, 6, 11, 7, "gravel")            # lane, west leg: barn doors <- corner
+    s.fill(10, 6, 11, 17, "gravel")          # lane, south leg: corner <- gate
+    s.fill(13, 2, 20, 7, "crops")            # north field
+    s.fill(13, 10, 20, 15, "crops")          # south field
+    for x in (13, 15, 17, 19):
+        s.prop("bush_round", x, 8)           # hedgerow splitting the two fields
+    s.fill(2, 10, 8, 15, "dirt")             # working yard, bottom-left quadrant
+    s.prop("well_lidded", 3, 11)
+    s.prop("haystack", 6, 10)
+    s.prop("haystack", 6, 13)
+    s.prop("crate_wood", 2, 13)
+    s.prop("sack_flour", 4, 14)
+    s.prop("tree_foliage", 8, 2)             # shade tree NE of the house
+    s.prop("bush_round", 7, 1)
+    s.prop("flowers_white", 7, 4)
+    s.prop("flowers_white", 11, 3)
+    s.prop("tree_stumps", 2, 8)              # woodpile between lane and yard
+    s.prop("log_horizontal", 4, 8)
+    s.prop("log_horizontal", 5, 9)
+    s.prop("flowers_white", 21, 4)
+    s.prop("flowers_white", 13, 16)
+    return s
+
+
+SCENES = {"pond": pond, "path_demo": path_demo, "churchyard": churchyard,
+          "market": market, "blacksmith_forge": blacksmith_forge,
+          "farmstead": farmstead}
 
 if __name__ == "__main__":
     for n in (sys.argv[1:] or list(SCENES)):

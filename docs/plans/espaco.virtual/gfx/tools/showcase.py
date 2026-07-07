@@ -40,13 +40,19 @@ for _n, (_c, _r) in VOCAB.items():
 # the catalog only names the vertical post (fence_wood); this is its horizontal mate.
 CAT["fence_h"] = {"name": "fence_h", "sheet": "overworld", "col": 0, "row": 19, "w": 2, "h": 1}
 
+# The closed-lid twin of well_stone (stone rim + hinged wooden double lid) —
+# self-contained and grounded, the cleaner standalone read of the two wells.
+CAT["well_lidded"] = {"name": "well_lidded", "sheet": "overworld",
+                      "col": 31, "row": 5, "w": 2, "h": 2}
+
 # Corrections for catalog entries whose col/row/w/h clip or mis-frame the art
 # (verified by grid-inspecting overworld.png). See overworld-catalog-rect-bugs.
 RECT_FIX = {
     "house_large": (6, 0, 5, 5),
-    "barn_large": (11, 0, 5, 6),
-    "tent_wood": (12, 5, 2, 3),
-    "well_stone": (33, 6, 2, 2),
+    "barn_large": (11, 0, 5, 5),     # r5 under the barn is moss + the tent apex, not barn art
+    "tent_wood": (13, 5, 2, 3),      # col12 is a moss column; the tent spans cols13-14
+    "well_stone": (33, 5, 2, 2),     # r6 caught only the bottom half (mouth + lip);
+                                     # the flung-open lid doors live at r5
     "tree_foliage": (5, 16, 2, 2),   # 3x3 caught a lighter bush appendage; keep the canopy
     "haystack": (31, 3, 2, 2),       # col32 caught half a trapdoor to its right
     "fence_wood": (0, 17, 1, 2),     # a single vertical picket post; 4x1 was wrong
@@ -63,6 +69,24 @@ RECT_FIX = {
     "gravel_light": (14, 11, 1, 1),
     "statue_pawn": (10, 22, 1, 4),   # 2x4 caught the coal_rocks column beside the pawn
     "tree_stumps": (4, 1, 2, 2),     # row2 2x1 cut off the stump tops (they span rows1-2)
+    # The awning stall: col17 is a separate jug-and-bottles table; the stall spans
+    # cols18-22 and its counter front reaches row27 (6 rows, not 5).
+    "market_stall_awning": (18, 22, 5, 6),
+    "barrel_wood": (33, 0, 1, 2),    # 1x1 caught only the lid; the body is at row1
+    # Produce crates are produce (r20) + X-braced crate front (r21); 1x1 cut the box off.
+    "produce_crate_banana": (26, 20, 1, 2),
+    "produce_crate_greens": (27, 20, 1, 2),
+    "produce_crate_tomato": (28, 20, 1, 2),
+    "produce_crate_lemon": (29, 20, 1, 2),
+    "crate_wood": (30, 0, 1, 2),     # a grounded two-crate stack; 1x1 was a topless slice
+    "crate_x": (35, 8, 2, 2),        # the wide crate spans c35-36; c36-only cut its left frame
+    "stool_wood": (37, 8, 1, 2),     # the stool has a pedestal foot + shadow at r9
+    # The table has knobbed legs at all four corners: cols8-10, rows6-8; the
+    # catalog 2x2 at c9 cut off the left post column and the bottom row.
+    "counter_wood": (8, 6, 3, 3),
+    # Only the c24 column is the freestanding forge furnace; c25 is a second anvil
+    # sitting on a wooden deck corner (diagonal background baked in).
+    "anvil_forge": (24, 17, 1, 3),
 }
 for _n, (_c, _r, _w, _h) in RECT_FIX.items():
     CAT[_n].update(col=_c, row=_r, w=_w, h=_h)
