@@ -10,7 +10,7 @@ mis-sized catalog entries are applied up front (see overworld-catalog-rect-bugs)
 """
 import os, sys
 from PIL import Image
-from showcase import Map, slice_tile, CAT   # CAT already has RECT_FIX applied
+from showcase import Map, slice_tile, CAT, PREVIEW_SCALE   # CAT has RECT_FIX applied
 
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "previews", "scenes")
 os.makedirs(OUT, exist_ok=True)
@@ -37,7 +37,7 @@ def scene(fn):
     return fn
 
 
-def render(name, scale=6):
+def render(name, scale=PREVIEW_SCALE):
     m = SCENES[name]()
     img = m.render(scale)
     img.convert("RGB").save(os.path.join(OUT, name + ".png"))

@@ -14,6 +14,10 @@ os.makedirs(OUT, exist_ok=True)
 
 SHEET = Image.open(os.path.join(GFX, "Overworld.png")).convert("RGBA")
 T = 16  # tile px
+# STANDARD preview zoom for every scene render: 3x = 48px/tile reads natural, not
+# "exploded". Never render previews closer than this; high zoom is for deliberate
+# defect-inspection crops only, never the default output.
+PREVIEW_SCALE = 3
 
 CAT = {e["name"]: e for e in json.load(open(os.path.join(GFX, "catalog", "catalog.json")))
        if e["sheet"] == "overworld"}
@@ -54,6 +58,11 @@ RECT_FIX = {
     # The sheet has no dedicated round bush (the greens are hedge tiles); a 2x1 pair
     # of hedge humps reads as one coherent low, wide bush. 1x1 clipped the base+shadow.
     "bush_round": (0, 16, 2, 1),
+    # gravel_light 2x2 caught the uniform gravel + a dark neighbour column -> striped
+    # when sub-tiled. The clean seamless gravel is the single tile at col14 row11.
+    "gravel_light": (14, 11, 1, 1),
+    "statue_pawn": (10, 22, 1, 4),   # 2x4 caught the coal_rocks column beside the pawn
+    "tree_stumps": (4, 1, 2, 2),     # row2 2x1 cut off the stump tops (they span rows1-2)
 }
 for _n, (_c, _r, _w, _h) in RECT_FIX.items():
     CAT[_n].update(col=_c, row=_r, w=_w, h=_h)
@@ -173,7 +182,7 @@ class Map:
             self.p(cx, y, n)
             cx += w + gap
 
-    def render(self, scale=2):
+    def render(self, scale=PREVIEW_SCALE):
         base = Image.new("RGBA", (self.w * T, self.h * T), (58, 190, 65, 255))
         for y in range(self.h):
             for x in range(self.w):
@@ -187,7 +196,7 @@ class Map:
         return base
 
 
-def save(m, fname, scale=2):
+def save(m, fname, scale=PREVIEW_SCALE):
     img = m.render(scale)
     path = os.path.join(OUT, fname)
     img.convert("RGB").save(path)
