@@ -144,9 +144,82 @@ def farmstead():
     return s
 
 
+def orchard():
+    # A fenced orchard: two blocks of fruit trees in planted rows flanking a
+    # gravel lane from the south gate, a harvest corner (produce + barrel) by
+    # the lane, and one felled tree in the far corner.
+    s = Scene(20, 15, "grass")
+    s.fence_rect(0, 0, 19, 14, openings=[(9, 14), (10, 14)])
+    s.fill(9, 2, 10, 14, "gravel")           # lane: gate -> heart of the orchard
+    for ty in (2, 5, 8):                     # west block, planted rows
+        for tx in (2, 5):
+            s.prop("tree_foliage", tx, ty)
+    for ty in (2, 5, 8):                     # east block
+        for tx in (13, 16):
+            s.prop("tree_foliage", tx, ty)
+    s.prop("produce_crate_lemon", 7, 11)     # harvest corner by the lane
+    s.prop("produce_crate_banana", 8, 12)
+    s.prop("barrel_wood", 6, 12)
+    s.prop("tree_stumps", 16, 11)            # the felled tree
+    s.prop("flowers_white", 4, 11)
+    s.prop("flowers_white", 13, 11)
+    s.prop("flowers_white", 18, 4)
+    s.prop("bush_round", 12, 12)
+    return s
+
+
+def graveyard():
+    # A fenced graveyard (no chapel — that is the churchyard's): rows of round
+    # tombstones flanking a lane, a stone arch monument at its head guarded by
+    # two statues, a dead yew and quiet flowers.
+    s = Scene(20, 15, "grass")
+    s.fence_rect(0, 0, 19, 14, openings=[(9, 14), (10, 14)])
+    s.prop("statue_relief", 5, 1)            # guardians watching over the yard
+    s.prop("statue_relief", 13, 1)
+    for gy in (5, 8, 11):                    # west tomb rows
+        for gx in (2, 5):
+            s.prop("stone_slab_round", gx, gy)
+    for gy in (5, 8, 11):                    # east tomb rows
+        for gx in (13, 16):
+            s.prop("stone_slab_round", gx, gy)
+    s.prop("bush_dead_grey", 16, 1)          # the graveyard yew
+    s.prop("flowers_white", 4, 7)
+    s.prop("flowers_white", 15, 10)
+    s.prop("flowers_white", 7, 12)
+    for (x, y) in [(12, 6), (7, 9), (15, 9), (4, 4), (9, 5),
+                   (10, 10), (8, 13), (18, 8), (11, 2)]:  # scattered mementos mori
+        s.prop("skull", x, y)
+    s.prop("bone", 11, 12)
+    s.prop("bone", 17, 4)
+    return s
+
+
+def campfire():
+    # A camp clearing in the trees: a LIT campfire (flame over the coal heap) on
+    # bare ground, a log and stumps to sit on, supplies at the clearing's edge,
+    # rocks at the border.
+    s = Scene(16, 12, "grass")
+    s.fill(4, 4, 10, 8, "dirt")              # the trodden clearing
+    s.prop("coal_bed", 7, 6)                 # the fire pit's coals, dead centre
+    s.detail("flame_fire", 7, 5.5)           # flame half a tile up: bed stays visible
+    s.prop("tree_stumps", 4, 5)              # seats west of the fire
+    s.prop("log_horizontal", 6, 8)           # bench log south of the fire
+    s.prop("crate_wood", 10, 4)              # camp supplies at the clearing edge
+    s.prop("sack_flour", 9, 4)
+    s.prop("rocks_row", 3, 9)
+    s.prop("tree_foliage", 0, 0)             # the woods closing the clearing in
+    s.prop("tree_foliage", 14, 0)
+    s.prop("tree_foliage", 0, 9)
+    s.prop("tree_foliage", 14, 9)
+    s.prop("flowers_white", 2, 3)
+    s.prop("flowers_white", 13, 7)
+    return s
+
+
 SCENES = {"pond": pond, "path_demo": path_demo, "churchyard": churchyard,
           "market": market, "blacksmith_forge": blacksmith_forge,
-          "farmstead": farmstead}
+          "farmstead": farmstead, "orchard": orchard, "graveyard": graveyard,
+          "campfire": campfire}
 
 if __name__ == "__main__":
     for n in (sys.argv[1:] or list(SCENES)):

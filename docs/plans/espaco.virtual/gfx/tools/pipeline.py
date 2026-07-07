@@ -16,6 +16,20 @@ from showcase import CAT, T, PREVIEW_SCALE   # CAT carries the verified RECT_FIX
 
 GFX = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SHEET = Image.open(os.path.join(GFX, "Overworld.png")).convert("RGBA")
+# Named tiles may live on the other sheets (e.g. flame_fire on objects.png);
+# sliced lazily by the catalog entry's "sheet" field. overworld stays SHEET.
+_SHEET_FILES = {"overworld": "Overworld.png", "objects": "objects.png",
+                "cave": "cave.png", "inner": "Inner.png", "log": "log.png"}
+_SHEETS = {"overworld": SHEET}
+
+
+def _sheet_img(sheet):
+    if sheet not in _SHEETS:
+        _SHEETS[sheet] = Image.open(
+            os.path.join(GFX, _SHEET_FILES[sheet])).convert("RGBA")
+    return _SHEETS[sheet]
+
+
 OUT = os.path.join(GFX, "previews", "pipeline")
 os.makedirs(OUT, exist_ok=True)
 GRASS_RGBA = (58, 190, 65, 255)
@@ -40,14 +54,16 @@ def _rect(name):
 
 def slice_full(name):
     x, y, w, h = _rect(name)
-    return SHEET.crop((x, y, x + w * T, y + h * T)), w, h
+    img = _sheet_img(CAT[name].get("sheet", "overworld"))
+    return img.crop((x, y, x + w * T, y + h * T)), w, h
 
 
 def sub_tile(name, cx, cy):
     """The 16x16 sub-cell (cx, cy) of a WxH tile, wrapped — for seamless fills."""
     x, y, w, h = _rect(name)
+    img = _sheet_img(CAT[name].get("sheet", "overworld"))
     sx, sy = (cx % w) * T, (cy % h) * T
-    return SHEET.crop((x + sx, y + sy, x + sx + T, y + sy + T))
+    return img.crop((x + sx, y + sy, x + sx + T, y + sy + T))
 
 
 class Scene:
@@ -77,7 +93,9 @@ class Scene:
 
     def detail(self, name, x, y):
         """An overlay meant to sit ON a prop (door in a wall, chimney on a roof,
-        banner on a tower) — rendered on top, bounds-checked but not overlap-checked."""
+        flame on a coal bed) — rendered on top, bounds-checked but not
+        overlap-checked. x/y may be fractional to centre it on its carrier
+        (e.g. a flame half a tile above the coals so the bed stays visible)."""
         self.details.append((name, x, y))
 
     def fence_rect(self, x0, y0, x1, y1, openings=()):
@@ -221,7 +239,8 @@ class Scene:
         for name, x, y in sorted(self.props, key=lambda p: (p[2], p[1])):
             base.alpha_composite(slice_full(name)[0], (x * T, y * T))
         for name, x, y in self.details:
-            base.alpha_composite(slice_full(name)[0], (x * T, y * T))
+            base.alpha_composite(slice_full(name)[0],
+                                 (int(round(x * T)), int(round(y * T))))
         if scale != 1:
             base = base.resize((base.width * scale, base.height * scale), Image.NEAREST)
         return base, issues

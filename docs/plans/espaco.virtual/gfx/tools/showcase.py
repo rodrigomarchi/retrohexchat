@@ -45,6 +45,22 @@ CAT["fence_h"] = {"name": "fence_h", "sheet": "overworld", "col": 0, "row": 19, 
 CAT["well_lidded"] = {"name": "well_lidded", "sheet": "overworld",
                       "col": 31, "row": 5, "w": 2, "h": 2}
 
+# Just the solid coal pyramid (rows23-24) — coal_rocks' top row is loose
+# scattered lumps that read as floating black balls away from a furnace.
+CAT["coal_heap"] = {"name": "coal_heap", "sheet": "overworld",
+                    "col": 12, "row": 23, "w": 2, "h": 2}
+
+# A single-tile trio of coals: flame_fire composited on the same cell gives a
+# perfectly centred lit campfire.
+CAT["coal_bed"] = {"name": "coal_bed", "sheet": "overworld",
+                   "col": 11, "row": 23, "w": 1, "h": 1}
+
+# A clean transparent flame from objects.png (frame 3 of the 5-frame burn row)
+# — composited over a coal heap it reads as a lit campfire. (torch_flame on
+# cave.png carries a baked glow disc; don't use it outdoors.)
+CAT["flame_fire"] = {"name": "flame_fire", "sheet": "objects",
+                     "col": 8, "row": 3, "w": 1, "h": 1}
+
 # Corrections for catalog entries whose col/row/w/h clip or mis-frame the art
 # (verified by grid-inspecting overworld.png). See overworld-catalog-rect-bugs.
 RECT_FIX = {
