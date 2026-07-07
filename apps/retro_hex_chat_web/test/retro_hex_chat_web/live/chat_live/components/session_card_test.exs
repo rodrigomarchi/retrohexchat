@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCardTest do
         title: "Guild Tavern",
         creator_nick: "rodrigo",
         channel_name: "#general",
-        map_id: "tavern_cafe_v1",
+        map_id: "elfic_forest",
         participant_count: 3,
         max_participants: 20,
         created_at: @created,
@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCardTest do
       assert html =~ "Guild Tavern"
       assert html =~ "rodrigo"
       assert html =~ "#general"
-      assert html =~ "Tavern Cafe"
+      assert html =~ "Elfic Forest"
       assert html =~ "01/01 16:10"
       assert html =~ "3/20"
       assert html =~ "Enter space"

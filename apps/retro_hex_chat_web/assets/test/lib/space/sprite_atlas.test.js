@@ -1,52 +1,80 @@
 import { describe, it, expect } from "vitest";
 
-import {
-  createSpriteAtlas,
-  TILE_IDS,
-  AVATAR_IDS,
-  DIRECTIONS,
-} from "../../../js/lib/space/sprite_atlas.js";
+import { createSpriteAtlas, AVATAR_IDS, DIRECTIONS } from "../../../js/lib/space/sprite_atlas.js";
+
+const TILESETS = [
+  { id: "overworld", src: "/images/space/overworld.png", tile: 16, columns: 40 },
+  { id: "character", src: "/images/space/character.png", tile: 16, columns: 17 },
+];
+
+const TILES = {
+  grass: { ts: "overworld", col: 5, row: 9 },
+  tree: { ts: "overworld", col: 5, row: 16, w: 2, h: 2 },
+};
+
+function loadedAtlas() {
+  const atlas = createSpriteAtlas({ tileSize: 16, scale: 2 });
+  atlas.loadTilesets(TILESETS);
+  atlas.registerTiles(TILES);
+  return atlas;
+}
 
 describe("sprite atlas contract", () => {
-  it("declares the tavern tile ids and avatar ids", () => {
-    expect(TILE_IDS).toContain("floor_stone");
-    expect(TILE_IDS).toContain("floor_wood");
-    expect(TILE_IDS).toContain("wall_stone");
-    expect(TILE_IDS).toContain("counter_wood");
-    expect(AVATAR_IDS.length).toBeGreaterThanOrEqual(4);
+  it("declares four avatar ids and the four facings", () => {
+    expect(AVATAR_IDS.length).toBe(4);
+    expect(AVATAR_IDS).toContain("rogue_red");
     expect(DIRECTIONS).toEqual(["down", "up", "left", "right"]);
   });
 
-  it("has a sprite for every declared tile id", () => {
-    const atlas = createSpriteAtlas({ tileSize: 16, scale: 3 });
-    for (const id of TILE_IDS) {
-      expect(atlas.hasTile(id)).toBe(true);
-      const sprite = atlas.tile(id);
-      expect(sprite.canvas).toBeTruthy();
-      expect(sprite.canvas.width).toBe(16 * 3);
-      expect(sprite.canvas.height).toBe(16 * 3);
-    }
+  it("resolves a tile name into a source rectangle on its sheet", () => {
+    const atlas = loadedAtlas();
+    const grass = atlas.tile("grass");
+    expect(grass).toMatchObject({ sx: 80, sy: 144, sw: 16, sh: 16 });
+    expect(grass.img).toBeTruthy();
   });
 
-  it("has an avatar sprite in each of the four directions", () => {
-    const atlas = createSpriteAtlas({ tileSize: 16, scale: 3 });
-    for (const id of AVATAR_IDS) {
-      for (const dir of DIRECTIONS) {
-        expect(atlas.hasAvatar(id, dir)).toBe(true);
-        expect(atlas.avatar(id, dir).canvas).toBeTruthy();
-      }
-    }
+  it("sizes a multi-tile prop from its w/h", () => {
+    const atlas = loadedAtlas();
+    expect(atlas.tile("tree")).toMatchObject({ sx: 80, sy: 256, sw: 32, sh: 32 });
   });
 
-  it("falls back to a default avatar for an unknown id", () => {
+  it("shares one sheet image across every tile from it", () => {
+    const atlas = loadedAtlas();
+    expect(atlas.tile("grass").img).toBe(atlas.tile("tree").img);
+  });
+
+  it("returns null for an unknown tile or before its sheet loads", () => {
+    const atlas = loadedAtlas();
+    expect(atlas.tile("does_not_exist")).toBe(null);
+    const bare = createSpriteAtlas();
+    bare.registerTiles(TILES);
+    expect(bare.tile("grass")).toBe(null);
+  });
+
+  it("reports whether a tile name is registered", () => {
+    const atlas = loadedAtlas();
+    expect(atlas.hasTile("grass")).toBe(true);
+    expect(atlas.hasTile("nope")).toBe(false);
+  });
+
+  it("slices the character sheet per avatar, facing and frame", () => {
+    const atlas = loadedAtlas();
+    // rogue_red block is at (0,0); down = row 0, frame 0 = col 0.
+    expect(atlas.avatar("rogue_red", "down", 0)).toMatchObject({ sx: 0, sy: 0, sw: 16, sh: 32 });
+    // up = row offset 4, frame 1 = col 1.
+    expect(atlas.avatar("rogue_red", "up", 1)).toMatchObject({ sx: 16, sy: 64 });
+    // mage_green block is at (4,8); left = row offset 6.
+    expect(atlas.avatar("mage_green", "left", 0)).toMatchObject({ sx: 64, sy: 224 });
+  });
+
+  it("falls back to the default block for an unknown avatar id", () => {
+    const atlas = loadedAtlas();
+    expect(atlas.avatar("who", "down", 0)).toMatchObject({ sx: 0, sy: 0, sw: 16, sh: 32 });
+  });
+
+  it("returns null for an avatar before the character sheet loads", () => {
     const atlas = createSpriteAtlas();
-    expect(atlas.avatar("does_not_exist", "down").canvas).toBeTruthy();
-  });
-
-  it("caches sprites so repeated lookups return the same canvas", () => {
-    const atlas = createSpriteAtlas();
-    expect(atlas.tile("floor_stone")).toBe(atlas.tile("floor_stone"));
-    expect(atlas.avatar("mage_blue", "up")).toBe(atlas.avatar("mage_blue", "up"));
+    expect(atlas.avatar("rogue_red", "down")).toBe(null);
   });
 
   it("draws board modal art for a known asset id", () => {

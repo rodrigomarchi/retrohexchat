@@ -78,15 +78,14 @@ export class SpaceMap {
   }
 
   /**
-   * Floor tile id at a tile, from the `layers.floor` matrix. Falls back to a
-   * procedural guess (wall vs wood) for tiles the matrix does not cover.
-   * @returns {string}
+   * Floor tile id at a tile, from the `layers.floor` matrix. Cells the matrix
+   * does not cover fall back to the opaque ground tile.
+   * @returns {string|null}
    */
   floorTile(x, y) {
     const row = this.layers?.floor?.[y];
     const id = row?.[x];
-    if (typeof id === "string") return id;
-    return this.isBlocked(x, y) ? "wall_stone" : "floor_wood";
+    return typeof id === "string" ? id : this.ground;
   }
 
   /** @returns {{x:number,y:number,dir:string}} first spawn, or origin. */

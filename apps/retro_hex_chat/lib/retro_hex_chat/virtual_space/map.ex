@@ -9,18 +9,12 @@ defmodule RetroHexChat.VirtualSpace.Map do
   arbitrary ids from clients never reach map code.
   """
 
-  alias RetroHexChat.VirtualSpace.Maps.ArcaneLibraryV1
   alias RetroHexChat.VirtualSpace.Maps.ElficForest
-  alias RetroHexChat.VirtualSpace.Maps.GardenCampV1
-  alias RetroHexChat.VirtualSpace.Maps.GuildHallV1
-  alias RetroHexChat.VirtualSpace.Maps.TavernCafeV1
+  alias RetroHexChat.VirtualSpace.Maps.MossGrove
 
   @maps %{
     "elfic_forest" => ElficForest,
-    "tavern_cafe_v1" => TavernCafeV1,
-    "guild_hall_v1" => GuildHallV1,
-    "arcane_library_v1" => ArcaneLibraryV1,
-    "garden_camp_v1" => GardenCampV1
+    "moss_grove" => MossGrove
   }
 
   @spec get(String.t()) :: {:ok, map()} | {:error, :unknown_map}

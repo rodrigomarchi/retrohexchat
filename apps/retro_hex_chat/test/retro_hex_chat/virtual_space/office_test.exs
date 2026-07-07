@@ -28,7 +28,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
         channel_name: "#retro",
         creator_id: creator.id,
         creator_nick: creator.nickname,
-        map_id: "tavern_cafe_v1",
+        map_id: "elfic_forest",
         expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
       })
 
@@ -95,36 +95,36 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       ctx = start_space()
       assert entry(ctx.token, ctx.key).zone_id == "spawn"
 
-      # Walk right out of the spawn zone (x > 15) into main_cafe.
-      walk_to(ctx, {16, entry(ctx.token, ctx.key).y})
+      # Walk right out of the spawn zone (x > 33) into the valley.
+      walk_to(ctx, {35, entry(ctx.token, ctx.key).y})
 
       assert_receive %{
         event: "space_zone_changed",
-        payload: %{zone_id: "main_cafe", from: "spawn"}
+        payload: %{zone_id: "valley", from: "spawn"}
       }
 
-      assert entry(ctx.token, ctx.key).zone_id == "main_cafe"
+      assert entry(ctx.token, ctx.key).zone_id == "valley"
     end
   end
 
   describe "seating" do
     test "sitting reserves the seat, changes pose, and rejects a second occupant" do
       ctx = start_space()
-      walk_to(ctx, {17, 14})
+      walk_to(ctx, {33, 33})
       flush()
 
       assert :ok =
                SessionServer.interact(ctx.token, ctx.key, %{
                  seq: 1,
                  kind: "sit",
-                 target_id: "seat_bar_1"
+                 target_id: "seat_log_a"
                })
 
       p = entry(ctx.token, ctx.key)
       assert p.pose == "sitting"
-      assert p.seat_id == "seat_bar_1"
-      assert {p.x, p.y} == {18, 14}
-      assert p.dir == "up"
+      assert p.seat_id == "seat_log_a"
+      assert {p.x, p.y} == {33, 34}
+      assert p.dir == "down"
 
       assert_receive %{event: "space_delta", payload: %{updates: updates}}
       assert updates[ctx.key].pose == "sitting"
@@ -134,51 +134,51 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       {:ok, o} = SessionServer.join(ctx.token, %{user_id: other.id, nickname: other.nickname})
       okey = o.participant.key
       octx = %{token: ctx.token, key: okey}
-      walk_to(octx, {17, 14})
+      walk_to(octx, {33, 33})
 
       assert {:error, :seat_taken} =
                SessionServer.interact(ctx.token, okey, %{
                  seq: 1,
                  kind: "sit",
-                 target_id: "seat_bar_1"
+                 target_id: "seat_log_a"
                })
     end
 
     test "walking stands the participant up and frees the seat" do
       ctx = start_space()
-      walk_to(ctx, {17, 14})
+      walk_to(ctx, {33, 33})
 
       :ok =
-        SessionServer.interact(ctx.token, ctx.key, %{seq: 1, kind: "sit", target_id: "seat_bar_1"})
+        SessionServer.interact(ctx.token, ctx.key, %{seq: 1, kind: "sit", target_id: "seat_log_a"})
 
       assert entry(ctx.token, ctx.key).pose == "sitting"
 
-      step(ctx, 0, -1)
+      step(ctx, 0, 1)
 
       p = entry(ctx.token, ctx.key)
       assert p.pose == "standing"
       assert p.seat_id == nil
 
       {:ok, state} = SessionServer.get_state(ctx.token)
-      refute Map.has_key?(state.seats, "seat_bar_1")
+      refute Map.has_key?(state.seats, "seat_log_a")
     end
 
     test "leaving frees the seat" do
       ctx = start_space()
-      walk_to(ctx, {17, 14})
+      walk_to(ctx, {33, 33})
 
       :ok =
-        SessionServer.interact(ctx.token, ctx.key, %{seq: 1, kind: "sit", target_id: "seat_bar_1"})
+        SessionServer.interact(ctx.token, ctx.key, %{seq: 1, kind: "sit", target_id: "seat_log_a"})
 
       SessionServer.leave(ctx.token, ctx.key)
 
       wait_until(fn ->
         {:ok, state} = SessionServer.get_state(ctx.token)
-        not Map.has_key?(state.seats, "seat_bar_1")
+        not Map.has_key?(state.seats, "seat_log_a")
       end)
 
       {:ok, state} = SessionServer.get_state(ctx.token)
-      refute Map.has_key?(state.seats, "seat_bar_1")
+      refute Map.has_key?(state.seats, "seat_log_a")
     end
 
     test "sitting on an unknown or distant seat is rejected" do
@@ -191,12 +191,12 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
                  target_id: "nope"
                })
 
-      # Spawn is far from seat_bar_1.
+      # Spawn is far from seat_log_a.
       assert {:error, :too_far} =
                SessionServer.interact(ctx.token, ctx.key, %{
                  seq: 2,
                  kind: "sit",
-                 target_id: "seat_bar_1"
+                 target_id: "seat_log_a"
                })
     end
   end
@@ -204,17 +204,17 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
   describe "board interactables" do
     test "using a board returns a modal with the map's asset" do
       ctx = start_space()
-      walk_to(ctx, {12, 11})
+      walk_to(ctx, {30, 31})
 
       assert {:ok, %{modal: modal}} =
                SessionServer.interact(ctx.token, ctx.key, %{
                  seq: 1,
                  kind: "use",
-                 target_id: "menu_board"
+                 target_id: "notice_board"
                })
 
       assert modal.asset == "board_menu_v1"
-      assert modal.title == "Tavern menu"
+      assert modal.title == "Notice board"
     end
 
     test "an unknown or distant board is rejected" do
@@ -231,7 +231,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
                SessionServer.interact(ctx.token, ctx.key, %{
                  seq: 2,
                  kind: "use",
-                 target_id: "menu_board"
+                 target_id: "notice_board"
                })
     end
   end

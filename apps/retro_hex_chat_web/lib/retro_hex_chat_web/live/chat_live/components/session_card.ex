@@ -193,7 +193,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
   defp expiry_entry(%{expires_at: expires_at}, tz),
     do: entry(:icon_btn_timers, dgettext("chat", "expires"), time(expires_at, tz))
 
-  # Turns a map id like "tavern_cafe_v1" into a display name ("Tavern Cafe").
+  # Turns a map id like "elfic_forest" into a display name ("Elfic Forest").
   defp map_name(map_id) when is_binary(map_id) do
     map_id
     |> String.replace(~r/_v\d+$/, "")

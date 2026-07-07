@@ -9,7 +9,7 @@ defmodule RetroHexChat.Repo.Migrations.CreateVirtualSpaceSessions do
       add :creator_nick, :string, size: 50, null: false
       add :title, :string, size: 100
       add :status, :string, size: 20, null: false, default: "pending"
-      add :map_id, :string, size: 50, null: false, default: "tavern_cafe_v1"
+      add :map_id, :string, size: 50, null: false, default: "elfic_forest"
       add :max_participants, :integer, null: false, default: 20
       add :last_participant_count, :integer, null: false, default: 0
       add :peak_participants, :integer, null: false, default: 0

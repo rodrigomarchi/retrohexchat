@@ -22,7 +22,7 @@ defmodule RetroHexChat.VirtualSpace.AdminTest do
         channel_name: "#retro",
         creator_id: creator.id,
         creator_nick: creator.nickname,
-        map_id: "tavern_cafe_v1",
+        map_id: "elfic_forest",
         expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
       })
 
@@ -171,15 +171,15 @@ defmodule RetroHexChat.VirtualSpace.AdminTest do
       assert :ok =
                SessionServer.admin_action(ctx.token, creator_actor(ctx), %{
                  kind: "change_map",
-                 map_id: "guild_hall_v1"
+                 map_id: "moss_grove"
                })
 
       assert_receive %{event: "space_map_changed", payload: payload}
-      assert payload.map.id == "guild_hall_v1"
+      assert payload.map.id == "moss_grove"
       assert Map.has_key?(payload.snapshot.participants, member_key)
 
       {:ok, state} = SessionServer.get_state(ctx.token)
-      assert state.session.map_id == "guild_hall_v1"
+      assert state.session.map_id == "moss_grove"
 
       # Everyone is on a valid (non-collision) spawn of the new map; mute kept.
       blocked = RetroHexChat.VirtualSpace.Map.collision_set(state.map)
@@ -201,7 +201,7 @@ defmodule RetroHexChat.VirtualSpace.AdminTest do
                })
 
       {:ok, state} = SessionServer.get_state(ctx.token)
-      assert state.session.map_id == "tavern_cafe_v1"
+      assert state.session.map_id == "elfic_forest"
     end
   end
 end

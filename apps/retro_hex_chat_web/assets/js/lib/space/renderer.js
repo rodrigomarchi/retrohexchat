@@ -88,9 +88,8 @@ export class Renderer {
         const dy = Math.round(y);
         const tileId = this.map.floorTile(tx, ty);
         // Lay the opaque ground first so transparent props read over it.
-        if (ground && tileId !== this.map.ground) ctx.drawImage(ground.canvas, dx, dy);
-        const sprite = this.atlas?.tile(tileId);
-        if (sprite) ctx.drawImage(sprite.canvas, dx, dy);
+        if (ground && tileId !== this.map.ground) this._blit(ctx, ground, dx, dy);
+        this._blit(ctx, this.atlas?.tile(tileId), dx, dy);
       }
     }
   }
@@ -102,7 +101,7 @@ export class Renderer {
       const sprite = this.atlas?.tile(prop.tile);
       if (!sprite) continue;
       const { x, y } = this.camera.worldToScreen(prop.x * this.tilePx, prop.y * this.tilePx);
-      ctx.drawImage(sprite.canvas, Math.round(x), Math.round(y));
+      this._blit(ctx, sprite, Math.round(x), Math.round(y));
     }
   }
 
@@ -113,8 +112,29 @@ export class Renderer {
     const { x, y } = this._avatarScreenPos(participant);
     // A tall sprite (2 tiles) sits with its feet on the tile, head rising above;
     // a tile-sized sprite aligns exactly (dy = 0).
-    const dy = sprite.canvas.height - this.tilePx;
-    ctx.drawImage(sprite.canvas, Math.round(x), Math.round(y - dy));
+    const dy = sprite.sh * this.camera.scale - this.tilePx;
+    this._blit(ctx, sprite, Math.round(x), Math.round(y - dy));
+  }
+
+  // Draw a sheet slice `{ img, sx, sy, sw, sh }` scaled by the camera at the
+  // destination pixel. Skips images that have not finished loading so a slow
+  // fetch never throws mid-frame.
+  _blit(ctx, sprite, dx, dy) {
+    if (!sprite) return;
+    const img = sprite.img;
+    if (!img || !img.complete || !img.naturalWidth) return;
+    const s = this.camera.scale;
+    ctx.drawImage(
+      img,
+      sprite.sx,
+      sprite.sy,
+      sprite.sw,
+      sprite.sh,
+      dx,
+      dy,
+      sprite.sw * s,
+      sprite.sh * s,
+    );
   }
 
   // Walk frame from recent movement: cycle 0-3 while the render position keeps

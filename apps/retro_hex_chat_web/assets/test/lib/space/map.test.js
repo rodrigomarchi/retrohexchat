@@ -9,6 +9,7 @@ function tavernDefinition() {
     width: 8,
     height: 6,
     tile_size: 16,
+    ground: "grass",
     spawn: [{ x: 1, y: 1, dir: "down" }],
     collision: [
       { x: 0, y: 0, w: 8, h: 1, kind: "wall" },
@@ -74,14 +75,13 @@ describe("SpaceMap.from", () => {
     expect(map.defaultSpawn()).toEqual({ x: 1, y: 1, dir: "down" });
   });
 
-  it("reads the floor tile id from the layer matrix with a fallback", () => {
+  it("reads the floor tile id from the layer matrix, falling back to ground", () => {
     const map = SpaceMap.from(tavernDefinition());
     expect(map.floorTile(2, 1)).toBe("floor_grass");
     expect(map.floorTile(1, 1)).toBe("floor_wood");
-    // Outside the provided matrix rows falls back procedurally.
-    expect(map.floorTile(1, 5)).toBe("floor_wood");
-    // The counter at (3,3) is blocked and beyond the 2-row matrix → wall fallback.
-    expect(map.floorTile(3, 3)).toBe("wall_stone");
+    // Cells the matrix does not cover fall back to the opaque ground tile.
+    expect(map.floorTile(1, 5)).toBe("grass");
+    expect(map.floorTile(3, 3)).toBe("grass");
   });
 
   it("tolerates a definition missing optional collections", () => {
@@ -90,5 +90,7 @@ describe("SpaceMap.from", () => {
     expect(map.zoneAt(1, 1)).toBe(null);
     expect(map.seat("x")).toBe(null);
     expect(map.defaultSpawn()).toEqual({ x: 0, y: 0, dir: "down" });
+    // With no ground tile an uncovered cell is null (renderer skips it).
+    expect(map.floorTile(1, 1)).toBe(null);
   });
 });

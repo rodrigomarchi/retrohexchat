@@ -104,7 +104,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCardTest do
           creator_id: creator.id,
           creator_nick: creator.nickname,
           title: "Guild Tavern",
-          map_id: "tavern_cafe_v1",
+          map_id: "elfic_forest",
           expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
         })
 
@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCardTest do
       assert card.title == "Guild Tavern"
       assert card.creator_nick == "rodrigo"
       assert card.channel_name == "#general"
-      assert card.map_id == "tavern_cafe_v1"
+      assert card.map_id == "elfic_forest"
       assert card.status == "pending"
       assert card.href == "/space/spc_tok"
     end

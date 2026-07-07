@@ -24,7 +24,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServerTest do
       creator_id: creator.id,
       creator_nick: creator.nickname,
       title: "HQ",
-      map_id: "tavern_cafe_v1",
+      map_id: "elfic_forest",
       expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
     }
 
@@ -162,7 +162,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServerTest do
       assert summary.participant_count == 2
       assert summary.max_participants == session.max_participants
       assert summary.title == "HQ"
-      assert summary.map_id == "tavern_cafe_v1"
+      assert summary.map_id == "elfic_forest"
 
       :ok = SessionServer.leave(session.token, "registered:#{other.id}")
 

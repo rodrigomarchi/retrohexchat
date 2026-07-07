@@ -45,13 +45,9 @@ test.describe("Virtual space office", () => {
         expect(await canvasSignature(user.page)).not.toBe(before);
       }).toPass({ timeout: 10_000 });
 
-      // Walk to (12,11) facing up: the menu board is the faced tile (12,10).
-      // Spawn is ~(10,12): right, right, up.
+      // Spawn is (30,32); the notice board sits at (30,30). Walk up one tile to
+      // (30,31) facing up so the faced tile is the board.
       await user.page.locator("#space-canvas").click();
-      await user.page.keyboard.press("ArrowRight");
-      await user.page.waitForTimeout(250);
-      await user.page.keyboard.press("ArrowRight");
-      await user.page.waitForTimeout(250);
       await user.page.keyboard.press("ArrowUp");
       await user.page.waitForTimeout(250);
 
@@ -59,7 +55,7 @@ test.describe("Virtual space office", () => {
 
       const modal = user.page.locator("[data-space-modal]");
       await expect(modal).toBeVisible({ timeout: 10_000 });
-      await expect(modal).toContainText("Tavern menu");
+      await expect(modal).toContainText("Notice board");
 
       // Escape closes it.
       await user.page.keyboard.press("Escape");

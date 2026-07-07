@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       creator_nick: creator.nickname,
       title: "HQ",
       # Channel mechanics tests pin a stable map; the product default is elsewhere.
-      map_id: "tavern_cafe_v1",
+      map_id: "elfic_forest",
       expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
     }
 
@@ -87,7 +87,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert space_init.self_key == self_key
 
       # The full canonical map is serialized inline (no client-side map copy).
-      assert space_init.map.id == "tavern_cafe_v1"
+      assert space_init.map.id == "elfic_forest"
       assert is_list(space_init.map.collision)
       assert is_list(space_init.map.seats)
       assert space_init.map.tile_size == 16
@@ -188,12 +188,12 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
       {:ok, init, socket} = join_space(creator, session)
 
-      # Walk adjacent to the menu_board at (12,10): spawn is near it.
-      walk_channel_to(socket, session, init.self_key, {12, 11})
+      # Walk adjacent to the notice_board at (30,30): spawn is just south of it.
+      walk_channel_to(socket, session, init.self_key, {30, 31})
 
-      push(socket, "space_interact", %{"seq" => 1, "kind" => "use", "target_id" => "menu_board"})
+      push(socket, "space_interact", %{"seq" => 1, "kind" => "use", "target_id" => "notice_board"})
 
-      assert_push "space_modal", %{asset: "board_menu_v1", title: "Tavern menu"}
+      assert_push "space_modal", %{asset: "board_menu_v1", title: "Notice board"}
     end
   end
 

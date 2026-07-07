@@ -2,10 +2,11 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
   use ExUnit.Case, async: true
 
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
+  alias RetroHexChat.VirtualSpace.Maps.Overworld
 
   @moduletag :unit
 
-  @map_ids ~w(elfic_forest tavern_cafe_v1 guild_hall_v1 arcane_library_v1 garden_camp_v1)
+  @map_ids ~w(elfic_forest moss_grove)
 
   describe "get/1" do
     test "returns a definition for every registry id" do
@@ -25,8 +26,19 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
   end
 
   describe "ids/0" do
-    test "lists the four registry ids" do
+    test "lists the registry ids" do
       assert Enum.sort(SpaceMap.ids()) == Enum.sort(@map_ids)
+    end
+  end
+
+  describe "definition tilesets" do
+    test "every map ships the sheet tilesets and a tile legend" do
+      for map_id <- @map_ids do
+        {:ok, d} = SpaceMap.get(map_id)
+        assert d.tilesets == Overworld.tilesets()
+        assert d.tiles == Overworld.tiles()
+        assert d.ground == "grass"
+      end
     end
   end
 
@@ -47,7 +59,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
   # Every registry map must satisfy the same invariants, so a new map can never
   # ship a spawn on a wall, a zone out of bounds or an overlapping seat.
-  for map_id <- ~w(elfic_forest tavern_cafe_v1 guild_hall_v1 arcane_library_v1 garden_camp_v1) do
+  for map_id <- ~w(elfic_forest moss_grove) do
     describe "#{map_id} consistency" do
       @describetag map_id: map_id
 
@@ -92,28 +104,20 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
       test "the floor layer is a full height×width matrix of known tile ids", ctx do
         floor = ctx.definition.layers.floor
-
-        legacy = ~w(wall_stone floor_stone floor_grass floor_wood)
-
-        forest =
-          ~w(grass grass_tuft grass_worn grass_dark dirt flowers bush rock rock_s
-             log_l log_m log_r pond_tl pond_tm pond_tr pond_ml pond_c pond_mr
-             pond_bl pond_bm pond_br cliff_edge cliff_face cliff_mid cliff_base)
-
-        known = legacy ++ forest
+        known = Elixir.Map.keys(Overworld.tiles())
 
         assert length(floor) == ctx.definition.height
 
         for row <- floor do
           assert length(row) == ctx.definition.width
-          # Elfic Forest is transcribed tile-for-tile from the reference; its
-          # floor carries semantic ids traced from that image
-          # (grass_NN, tree_NN, cliff_face_NN, cabin_NN, water_NN, …).
-          transcribed =
-            ~r/^(grass|grass_dark|clover|tree|cabin|cliff_face|cliff_top|water|water_edge|shadow)_\d+$/
-
-          assert Enum.all?(row, &(&1 in known or &1 =~ transcribed))
+          # Every floor cell names a tile from the shared Overworld vocabulary.
+          assert Enum.all?(row, &(&1 in known))
         end
+      end
+
+      test "every decor prop names a known tile", ctx do
+        known = Elixir.Map.keys(Overworld.tiles())
+        assert Enum.all?(ctx.definition.layers.decor, &(&1.tile in known))
       end
     end
   end

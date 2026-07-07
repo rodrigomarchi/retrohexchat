@@ -43,7 +43,13 @@ export function createSpaceCanvasHook(deps = {}) {
 
       const canvas = this.el.querySelector("canvas");
       this._canvas = canvas;
-      this._atlas = createSpriteAtlas({ tileSize: TILE_SIZE, scale: RENDER_SCALE });
+      // Redraw the roster thumbnails once the tileset sheets finish loading, so
+      // avatar icons appear even though the canvas render loop drives the world.
+      this._atlas = createSpriteAtlas({
+        tileSize: TILE_SIZE,
+        scale: RENDER_SCALE,
+        onReady: () => this._afterWorldChange(),
+      });
       this._engine = engineFactory({ canvas, atlas: this._atlas });
 
       // Size the canvas backing store to its laid-out box and keep it in sync,
@@ -231,10 +237,12 @@ export function createSpaceCanvasHook(deps = {}) {
       thumb.height = 24;
       thumb.className = "space-roster__avatar";
       const ctx = thumb.getContext("2d");
-      const src = this._atlas?.avatar?.(avatarId, "down")?.canvas;
-      if (ctx && src) {
+      const src = this._atlas?.avatar?.(avatarId, "down");
+      const img = src?.img;
+      if (ctx && img && img.complete && img.naturalWidth) {
         ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(src, 0, 0, thumb.width, thumb.height);
+        // Frame the head+torso (top tile of the 16×32 sprite) in the square.
+        ctx.drawImage(img, src.sx, src.sy, src.sw, src.sw, 0, 0, thumb.width, thumb.height);
       }
       return thumb;
     },

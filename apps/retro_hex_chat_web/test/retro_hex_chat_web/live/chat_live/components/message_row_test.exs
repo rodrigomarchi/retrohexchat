@@ -197,7 +197,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRowTest do
         title: "Guild Tavern",
         creator_nick: "alice",
         channel_name: "#general",
-        map_id: "tavern_cafe_v1",
+        map_id: "elfic_forest",
         participant_count: 1,
         max_participants: 20,
         created_at: @ts,
