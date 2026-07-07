@@ -73,6 +73,7 @@ class Scene:
         self.w, self.h = w, h
         self.mat = [[ground] * w for _ in range(h)]      # semantic material grid
         self.fence = [[False] * w for _ in range(h)]     # fence overlay mask
+        self.fence_rects = []                            # one entry per fence_rect call
         self.opening = set()                             # entrance cells (no fence)
         self.props = []                                  # standalone objects (overlap-checked)
         self.details = []                                # overlays (door/chimney/window) on a prop
@@ -120,6 +121,7 @@ class Scene:
             if self.inb(ox, oy):
                 self.fence[oy][ox] = False
                 self.opening.add((ox, oy))
+        self.fence_rects.append((x0, y0, x1, y1))
 
     # ---- deterministic resolution -----------------------------------------
     def _is_water(self, x, y):
@@ -143,35 +145,31 @@ class Scene:
         return POND[vy + vx]
 
     def _draw_fence(self, base):
-        """Draw the fence as 4 runs so multi-tile pieces align and never overflow:
-        horizontal sides use fence_h (2x1) stepped by 2; vertical sides use
-        fence_wood (1x2) stepped by 2."""
-        cells = [(x, y) for y in range(self.h) for x in range(self.w) if self.fence[y][x]]
-        if not cells:
-            return
-        xs = [c[0] for c in cells]; ys = [c[1] for c in cells]
-        xL, xR, yT, yB = min(xs), max(xs), min(ys), max(ys)
-
+        """Draw each fenced rectangle as 4 runs so multi-tile pieces align and
+        never overflow: horizontal sides use fence_h (2x1) stepped by 2;
+        vertical sides use fence_wood (1x2) stepped by 2. Drawing per rect (not
+        from the global mask extremes) keeps several fences on one map correct."""
         def put(name, x, y):
             base.alpha_composite(slice_full(name)[0], (x * T, y * T))
 
-        for yy in (yT, yB):                          # top & bottom (horizontal)
-            x = xL
-            while x <= xR:
-                if not self.fence[yy][x]:
-                    x += 1; continue
-                if x + 1 <= xR and self.fence[yy][x + 1] and x + 1 < self.w:
-                    put("fence_h", x, yy); x += 2
-                elif x - 1 >= xL and self.fence[yy][x - 1]:
-                    put("fence_h", x - 1, yy); x += 1   # tail of a run: overlap-extend, no orphan post
-                else:
-                    put("fence_wood", x, yy); x += 1   # a genuinely isolated single cell
-        for xx in (xL, xR):                          # left & right (vertical)
-            y = yT + 1
-            while y < yB:
-                if not self.fence[y][xx]:
-                    y += 1; continue
-                put("fence_wood", xx, y); y += 2
+        for (xL, yT, xR, yB) in self.fence_rects:
+            for yy in {yT, yB}:                      # top & bottom (horizontal)
+                x = xL
+                while x <= xR:
+                    if not self.fence[yy][x]:
+                        x += 1; continue
+                    if x + 1 <= xR and self.fence[yy][x + 1] and x + 1 < self.w:
+                        put("fence_h", x, yy); x += 2
+                    elif x - 1 >= xL and self.fence[yy][x - 1]:
+                        put("fence_h", x - 1, yy); x += 1   # tail of a run: overlap-extend
+                    else:
+                        put("fence_wood", x, yy); x += 1    # a genuinely isolated cell
+            for xx in {xL, xR}:                      # left & right (vertical)
+                y = yT + 1
+                while y < yB:
+                    if not self.fence[y][xx]:
+                        y += 1; continue
+                    put("fence_wood", xx, y); y += 2
 
     # ---- validation (runs before render) ----------------------------------
     def validate(self):
