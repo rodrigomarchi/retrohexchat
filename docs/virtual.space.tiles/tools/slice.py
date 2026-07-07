@@ -1,6 +1,6 @@
 """Slice each reference sheet into individual per-tile PNGs + a contact sheet.
 
-The sliced PNGs under `gfx/sliced/<sheet>/cCC_rRR.png` are the full browsable
+The sliced PNGs under `sliced/<sheet>/cCC_rRR.png` are the full browsable
 library (freedom to pick any tile later); the labeled `_contact_<sheet>.png`
 images help locate coordinates. Only the tiles you name in `manifest.json` get
 migrated to code by `migrate.py`.

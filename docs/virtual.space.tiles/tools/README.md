@@ -1,7 +1,7 @@
 # Space sprite tooling
 
 The virtual space renders the human-made reference sheets in
-`docs/plans/espaco.virtual/gfx/*.png` **directly at runtime**: the sheets are
+`docs/virtual.space.tiles/*.png` **directly at runtime**: the sheets are
 copied into `apps/retro_hex_chat_web/priv/static/images/space/` and the client
 sprite atlas slices them with `drawImage`. No pixel data is traced into JS or
 into the map payload anymore.
@@ -27,7 +27,7 @@ The single source of truth for **which Overworld tiles the vocabulary uses**
 ## `slice.py`
 
 Cuts every reference sheet into individual per-tile PNGs under
-`gfx/sliced/<sheet>/cCC_rRR.png` plus a labeled `_contact_<sheet>.png` to locate
+`sliced/<sheet>/cCC_rRR.png` plus a labeled `_contact_<sheet>.png` to locate
 `(col, row)` coordinates while authoring. These are browsing aids only — nothing
 here ships at runtime.
 
@@ -38,7 +38,7 @@ python3 -m venv .venv && .venv/bin/pip install Pillow
 
 ## Adding a tile to a map
 
-1. Find it in `gfx/sliced/_contact_<sheet>.png` (col, row).
+1. Find it in `sliced/_contact_<sheet>.png` (col, row).
 2. Add a semantic entry to `manifest.json` and to
    `RetroHexChat.VirtualSpace.Maps.Overworld`.
 3. Reference it by name in a map module's floor/decor.
