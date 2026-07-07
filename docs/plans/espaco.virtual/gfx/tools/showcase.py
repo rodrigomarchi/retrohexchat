@@ -61,6 +61,44 @@ CAT["coal_bed"] = {"name": "coal_bed", "sheet": "overworld",
 CAT["flame_fire"] = {"name": "flame_fire", "sheet": "objects",
                      "col": 8, "row": 3, "w": 1, "h": 1}
 
+# Curated props from the other sheets (the pipeline slices any catalog sheet).
+# Every rect was verified on-grass + in sheet context; cauldron_grey's catalog
+# 1x1 at c4r7 was an empty corner — the pot straddles c4-5 r6-7, so it gets a
+# 2x2 box (art centred inside it).
+for _n, _s, _c, _r, _w, _h in [
+    ("statue_totem_a", "cave", 6, 0, 1, 3),
+    ("statue_totem_b", "cave", 7, 0, 1, 3),
+    ("idol_skull", "cave", 8, 0, 1, 3),
+    ("idol_face", "cave", 9, 0, 1, 3),
+    ("rock_boulder", "cave", 5, 4, 1, 1),
+    ("rock_pile", "cave", 5, 5, 1, 1),
+    ("rock_pebbles_scatter", "cave", 5, 6, 1, 1),
+    ("rock_islet", "cave", 9, 7, 2, 2),          # boulder ringed by water foam
+    ("stepping_stones", "cave", 7, 9, 3, 1),     # foam baked in — water only
+    ("stepping_stone", "cave", 10, 9, 1, 1),     # foam baked in — water only
+    ("stump_creature_front", "log", 0, 0, 2, 2),
+    ("stump_creature_sleep", "log", 8, 0, 2, 2),
+    ("stump_plain", "log", 0, 4, 2, 2),
+    ("pot_stone_a", "objects", 13, 0, 1, 1),
+    ("pot_stone_b", "objects", 14, 0, 1, 1),
+    ("cauldron_grey", "objects", 4, 6, 2, 2),
+    ("grave_stone_a", "objects", 0, 8, 1, 1),
+    ("grave_stone_b", "objects", 1, 8, 1, 1),
+    ("bush_clover", "objects", 2, 0, 1, 1),
+    ("boulder_pile", "objects", 20, 0, 2, 2),
+    ("pebble_stone", "objects", 16, 1, 1, 1),
+    # River rocks carved out of the useless boulder_large 5x6 grab-bag rect
+    # (assorted sprites); foam baked in — water only.
+    ("river_boulder", "overworld", 13, 8, 2, 2),
+    ("river_rock_cluster", "overworld", 11, 7, 2, 2),
+    ("river_rocks", "overworld", 11, 10, 3, 1),
+    # The cliff-face cave mouth drawn to match the cliff_* tiles: crack-in-grass
+    # crown (r10), arch top on the lip row, arch on the base row — it replaces
+    # one column of a 2-row cliff_south plus the plateau tile above it.
+    ("cave_mouth", "overworld", 7, 10, 1, 3),
+]:
+    CAT[_n] = {"name": _n, "sheet": _s, "col": _c, "row": _r, "w": _w, "h": _h}
+
 # Corrections for catalog entries whose col/row/w/h clip or mis-frame the art
 # (verified by grid-inspecting overworld.png). See overworld-catalog-rect-bugs.
 RECT_FIX = {
@@ -85,6 +123,11 @@ RECT_FIX = {
     "gravel_light": (14, 11, 1, 1),
     "statue_pawn": (10, 22, 1, 4),   # 2x4 caught the coal_rocks column beside the pawn
     "tree_stumps": (4, 1, 2, 2),     # row2 2x1 cut off the stump tops (they span rows1-2)
+    "tower_stone_round": (0, 21, 3, 7),  # 3x6 cut the rounded footing at r27
+    # The gatehouse art straddles half-tiles (x 25.5-29.5) and its pillar feet
+    # (r28) carry baked water foam — col26 clipped the left tower; anchoring at
+    # col25 x 6 rows keeps it symmetric and cuts the water feet.
+    "castle_gate": (25, 22, 5, 6),
     # The awning stall: col17 is a separate jug-and-bottles table; the stall spans
     # cols18-22 and its counter front reaches row27 (6 rows, not 5).
     "market_stall_awning": (18, 22, 5, 6),

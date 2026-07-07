@@ -44,7 +44,9 @@ FILL = {
 POND = {"tl": "pond_tl", "tm": "pond_tm", "tr": "pond_tr",
         "ml": "pond_ml", "mm": "pond_c", "mr": "pond_mr",
         "bl": "pond_bl", "bm": "pond_bm", "br": "pond_br"}
-WATER_PROPS = {"water_lily", "water_lilies_cluster", "water_ripple"}   # must sit on water
+WATER_PROPS = {"water_lily", "water_lilies_cluster", "water_ripple",
+               "stepping_stones", "stepping_stone", "rock_islet",
+               "river_boulder", "river_rock_cluster", "river_rocks"}  # must sit on water
 
 
 def _rect(name):
@@ -74,6 +76,7 @@ class Scene:
         self.opening = set()                             # entrance cells (no fence)
         self.props = []                                  # standalone objects (overlap-checked)
         self.details = []                                # overlays (door/chimney/window) on a prop
+        self.cliffs = []                                 # (x0, x1, y, h) escarpments
 
     def inb(self, x, y):
         return 0 <= x < self.w and 0 <= y < self.h
@@ -97,6 +100,12 @@ class Scene:
         overlap-checked. x/y may be fractional to centre it on its carrier
         (e.g. a flame half a tile above the coals so the bed stays visible)."""
         self.details.append((name, x, y))
+
+    def cliff_south(self, x0, x1, y, h=2):
+        """A south-facing escarpment from (x0,y) to (x1,y): grass lip row, then
+        face rows (h-2 of them), then the rocky base row. h=2 is the sheet's
+        short cliff (lip + footed base); taller cliffs insert face rows."""
+        self.cliffs.append((x0, x1, y, h))
 
     def fence_rect(self, x0, y0, x1, y1, openings=()):
         """Mark a fence around a rectangle. `openings` = list of (x, y) cells to
@@ -200,6 +209,9 @@ class Scene:
             _, _, w, h = _rect(name)
             if x < 0 or y < 0 or x + w > self.w or y + h > self.h:
                 issues.append(f"OFF-MAP detail: {name} at ({x},{y}) {w}x{h}")
+        for (x0, x1, y, ch) in self.cliffs:
+            if x0 < 0 or x1 >= self.w or y < 0 or y + ch > self.h or ch < 2:
+                issues.append(f"OFF-MAP cliff: ({x0}..{x1}, {y}) h={ch}")
         # reachability: every opening should reach the map interior (flood over free cells)
         if self.opening:
             free = [[not blocked[y][x] for x in range(self.w)] for y in range(self.h)]
@@ -233,6 +245,14 @@ class Scene:
             for x in range(self.w):
                 if self.mat[y][x] == "water":
                     base.alpha_composite(slice_full(self._water_tile(x, y))[0], (x * T, y * T))
+        # 2.5) escarpments: lip row, face rows, footed base row (terrain layer)
+        for (x0, x1, y, ch) in self.cliffs:
+            for x in range(x0, x1 + 1):
+                vx = "l" if x == x0 else ("r" if x == x1 else "m")
+                parts = ["lip"] + ["face"] * (ch - 2) + ["base"]
+                for dy, part in enumerate(parts):
+                    base.alpha_composite(
+                        slice_full(f"cliff_{part}_{vx}")[0], (x * T, (y + dy) * T))
         # 3) fence, drawn as aligned runs (h on top/bottom, v on the sides)
         self._draw_fence(base)
         # 4) props, painter-sorted (back-to-front), then overlay details on top
