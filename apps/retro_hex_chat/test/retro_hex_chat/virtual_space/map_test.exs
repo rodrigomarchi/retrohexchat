@@ -37,7 +37,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
         {:ok, d} = SpaceMap.get(map_id)
         assert d.tilesets == Overworld.tilesets()
         assert d.tiles == Overworld.tiles()
-        assert d.ground == "grass"
+        assert Overworld.known?(d.ground)
       end
     end
   end

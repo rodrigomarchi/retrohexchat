@@ -188,8 +188,8 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
       {:ok, init, socket} = join_space(creator, session)
 
-      # Walk adjacent to the notice_board at (30,30): spawn is just south of it.
-      walk_channel_to(socket, session, init.self_key, {30, 31})
+      # Walk adjacent to the notice_board at (40,18): spawn is south of it.
+      walk_channel_to(socket, session, init.self_key, {40, 19})
 
       push(socket, "space_interact", %{"seq" => 1, "kind" => "use", "target_id" => "notice_board"})
 
