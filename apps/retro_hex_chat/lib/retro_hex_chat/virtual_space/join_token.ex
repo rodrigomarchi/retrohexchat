@@ -1,9 +1,9 @@
 defmodule RetroHexChat.VirtualSpace.JoinToken do
   @moduledoc """
   Short-lived signed token that authorizes a Phoenix Channel join to a
-  virtual space. `SpaceLive` signs it after running the join policy; the
-  `SpaceChannel` verifies it before touching the SessionServer, so the
-  channel never trusts raw client input for identity.
+  virtual space. The LiveView surface signs it after resolving the current
+  actor; the `SpaceChannel` verifies it before touching the SessionServer, so
+  the channel never trusts raw client input for identity.
   """
 
   @salt "space_join"

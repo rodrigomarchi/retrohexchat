@@ -52,7 +52,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
   alias RetroHexChatWeb.ChatLive.Helpers.PathHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
-  alias RetroHexChatWeb.ChatLive.Helpers.SpaceInvite
   alias RetroHexChatWeb.ChatLive.UiActionHandlers
 
   require Logger
@@ -314,9 +313,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
   defp handle_dispatch_result(socket, session, {:ok, :ui_action, :lobby_invite, payload}),
     do: LobbyInvite.handle_lobby_invite(socket, session, payload)
-
-  defp handle_dispatch_result(socket, session, {:ok, :ui_action, :space_invite, payload}),
-    do: SpaceInvite.handle_space_invite(socket, session, payload)
 
   defp handle_dispatch_result(socket, _session, {:ok, :ui_action, :arcade_session, payload}) do
     url = PathHelpers.activity_path(socket, "/solo/#{payload.token}")

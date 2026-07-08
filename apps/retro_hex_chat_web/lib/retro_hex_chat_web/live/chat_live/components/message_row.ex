@@ -139,24 +139,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
             />
             <.arcade_session_link :if={!Map.get(@msg, :session_card)} href={@msg.content} />
           </.chat_message>
-        <% :space_invite -> %>
-          <.chat_message
-            timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
-            nick={@msg.author}
-            nick_color={@nick_color_fn.(@msg.author)}
-          >
-            <.session_card
-              :if={Map.get(@msg, :session_card)}
-              card={@msg.session_card}
-              timezone={@timezone}
-            />
-            <.p2p_invite_card
-              :if={!Map.get(@msg, :session_card)}
-              label={ChatHelpers.extract_space_label(@msg.content)}
-              link={ChatHelpers.extract_space_link(@msg.content)}
-            />
-          </.chat_message>
         <% :p2p_invite -> %>
           <.chat_message
             timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}

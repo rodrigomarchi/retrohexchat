@@ -2,12 +2,12 @@ defmodule RetroHexChatWeb.SpaceChannel do
   @moduledoc """
   Realtime channel for a virtual space (`space:<token>` or `space:#channel`).
 
-  Join is authorized by the signed `join_token` that `SpaceLive` issues after
-  running the join policy; the channel re-runs policy and capacity through
-  `VirtualSpace.join_session/2`, so a stale or replayed token can never
-  overfill a space. The reply is the `space_init` payload (participant +
-  snapshot). Domain broadcasts on the `space:<token>` PubSub topic are pushed
-  through to the client verbatim.
+  Join is authorized by the signed `join_token` issued by the LiveView shell.
+  Legacy token spaces still re-run policy and capacity through
+  `VirtualSpace.join_session/2`; channel spaces validate channel presence before
+  joining. The reply is the `space_init` payload (participant + snapshot).
+  Domain broadcasts on the `space:<token>` or `space:#channel` PubSub topic are
+  pushed through to the client verbatim.
   """
   use Phoenix.Channel
 

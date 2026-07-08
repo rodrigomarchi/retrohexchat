@@ -3112,9 +3112,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "A multiplayer 8-bit virtual office linked to a channel: up to 20 people walk around a tile map with their avatars, sit at tables and chat. Created with /space; joined through the invite card or a /space/<token> link."
-          ),
-        see_also: ["cmd-space"]
+            "A multiplayer 8-bit virtual space built into every channel: people in the channel can switch from Chat to Space, walk around the shared map, and keep using the same channel conversation."
+          )
       }
     ]
   end

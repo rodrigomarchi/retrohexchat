@@ -724,27 +724,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description: dgettext("help", "Remove voice status from a user in the current channel.")
       },
       %{
-        id: "cmd-space",
-        title: "/space",
-        category: dgettext("help", "Virtual Spaces"),
-        keywords: [
-          "space",
-          "virtual",
-          "office",
-          "map",
-          "avatar",
-          "multiplayer",
-          dgettext("help", "virtual office"),
-          dgettext("help", "virtual space")
-        ],
-        icon: :icon_community,
-        description:
-          dgettext(
-            "help",
-            "Create a virtual space linked to a channel: a multiplayer 8-bit office where people walk around, sit and chat. Posts an invite card in the channel. Syntax: /space [#channel] [name] [ttl=2h]."
-          )
-      },
-      %{
         id: "cmd-slow",
         title: "/slow",
         category: dgettext("help", "Moderation"),

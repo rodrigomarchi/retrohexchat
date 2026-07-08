@@ -16,7 +16,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCard do
   renders its final state, and a live session renders its current one.
   """
 
-  alias RetroHexChat.{Arcade, Lobby, VirtualSpace}
+  alias RetroHexChat.{Arcade, Lobby}
   alias RetroHexChatWeb.App.ChatHelpers
 
   # Matches the token in a lobby/legacy-p2p link (`/lobby/<token>`,
@@ -25,9 +25,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCard do
 
   # Matches the token in an arcade solo link (`/solo/<token>`, `/arcade/<token>`).
   @arcade_token_regex ~r{/(?:solo|arcade)/([^\s/?#]+)}
-
-  # Matches the token in a virtual space link (`/space/<token>`).
-  @space_token_regex ~r{(/space/([^\s/?#]+))}
 
   @doc """
   Attaches a `:session_card` summary to a stream item when it is a resolvable
@@ -47,15 +44,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCard do
     with token when is_binary(token) <- extract_token(@arcade_token_regex, content),
          {:ok, summary} <- Arcade.session_summary(token) do
       Map.put(item, :session_card, Map.put(summary, :href, content))
-    else
-      _ -> item
-    end
-  end
-
-  def enrich(%{type: :space_invite, content: content} = item) when is_binary(content) do
-    with [_, href, token] <- Regex.run(@space_token_regex, content),
-         {:ok, summary} <- VirtualSpace.session_summary(token) do
-      Map.put(item, :session_card, Map.put(summary, :href, href))
     else
       _ -> item
     end

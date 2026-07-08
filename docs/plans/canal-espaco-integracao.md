@@ -7,9 +7,9 @@
 
 O virtual space deixa de ser uma sala efêmera criada por comando e passa a ser
 **uma dimensão permanente de todo canal**. Entrar no canal é entrar no espaço;
-quem está no canal (pessoas e bots) existe como avatar no mapa. A janela do
-canal ganha duas abas — **Chat** e **Espaço** — sobre a mesma conversa: o chat
-do jogo É o chat do canal, público, uma única fonte de mensagens.
+quem está no canal existe como avatar no mapa. A janela do canal ganha duas abas
+— **Chat** e **Espaço** — sobre a mesma conversa: o chat do jogo É o chat do
+canal, público, uma única fonte de mensagens.
 
 ```
 ┌─ #retro ────────────────────────────────┐
@@ -27,7 +27,7 @@ do jogo É o chat do canal, público, uma única fonte de mensagens.
 | # | Decisão |
 |---|---------|
 | D1 | Todo canal é virtual space **por default**, **sem expiração** |
-| D2 | Presença espelhada: quem está no canal (usuários **e bots**) aparece no espaço |
+| D2 | Presença espelhada: usuários presentes no canal aparecem no espaço; bots/NPCs ficam fora do escopo atual |
 | D3 | Todos nascem em volta de um lugar do mapa — **a praça do mercado** (o spawn atual do v4 já é ela) |
 | D4 | **Sem limite de participantes** (era 20; "infinito por hora") |
 | D5 | Remover a lógica de "lobby" do espaço: sem `/space`, sem invite card, sem token/TTL, sem página própria — o espaço vive dentro da janela do canal |
@@ -57,11 +57,9 @@ do jogo É o chat do canal, público, uma única fonte de mensagens.
   avatar surge na praça; saiu/timeout → avatar some.
 - Estar com a aba Chat aberta ≠ ausente: o avatar existe do mesmo jeito
   (parado onde estava). Movimento só acontece com a aba Espaço ativa e focada.
-- **Bots**: avatares como os demais. v1: cada bot recebe um posto fixo temático
-  determinístico (hash do nome → um ponto de interesse: banca do mercado,
-  forja, poço...). Comportamento (perambular, falar via balão quando posta no
-  canal) já sai de graça pelo chat unificado; movimento de bot fica para
-  fase posterior.
+- **Bots/NPCs**: fora do escopo atual por decisão de 2026-07-08. O espaço por
+  canal deve funcionar sem depender de presença, postos temáticos ou movimento
+  de bots; se isso voltar, entra como plano próprio.
 - **Convidados (guests)**: mesmas regras — presença no canal manda.
 
 ### 3.3 Spawn na praça (D3) sem colisão
@@ -154,23 +152,33 @@ Chat/Space fica na linha do tópico, antes do texto do tópico, com botões
 maiores, ícones SVG e texto. A aba Espaço monta `SpaceCanvasHook` usando
 `space:#canal`; a aba Chat e o composer permanecem montados pelo LiveView.
 
-### F4 — Bots na vila
-Bots do canal viram avatares com postos temáticos determinísticos.
-**Testes**: unit (atribuição de posto), integração (bot presente → avatar).
-**Status 2026-07-08**: próximo passo funcional. O modo por canal já aceita papel
-`:bot` no participante, mas ainda falta atribuir postos temáticos determinísticos
-e validar a fonte de presença dos bots.
-
-### F5 — Remoções + docs
+### F4 — Remoções + docs
 Tudo da seção 4; migração DB; **help topics** (atualizar "Virtual Spaces",
 remover `/space` de Commands, atualizar atalhos com o toggle); i18n dos textos
 novos (regra da memória: só os catálogos do domínio afetado).
 **Aceite**: `make ci` 9/9; nenhuma referência morta a token/lobby de espaço.
-**Status 2026-07-08**: pendente por decisão. O código legado fica por enquanto
-para reduzir risco; remoção acontece depois que o canal-espaço estiver validado
-no chat.
+**Status 2026-07-08**: em andamento. A superfície pública de `/space` e a criação
+de `space_invite` já foram removidas; o runtime legado de sessão/token fica por
+enquanto para permitir a remoção em camadas.
 
-### F6 — (futura) Escala de verdade
+#### Backlog executável da F4
+
+- [x] Despublicar `/space` da superfície de comandos e help, mantendo o código
+  legado apenas enquanto existirem dependências internas.
+- [x] Remover criação de invite card (`:space_invite`) e os helpers/cards de
+  renderização ligados a `/space/<token>`.
+- [x] Remover `SpaceLive` e a rota `/space/:token` depois que o convite legado não
+  for mais criado.
+- [ ] Substituir o `join_token.ex` por um contrato específico do canal-espaço, ou
+   renomeá-lo antes de remover o join legado por token.
+- [ ] Aposentar `Schema.Session`, `virtual_space_sessions`, TTL/status/cleanup e a
+   política de capacidade/criador quando o fluxo legado não tiver chamadas vivas.
+- [ ] Atualizar docs/help/i18n para explicar que o espaço é uma aba do canal e não
+   um comando separado.
+- [ ] Rodar `make ci` e registrar aprendizados/decisões antes de apagar a próxima
+   camada.
+
+### F5 — (futura) Escala de verdade
 Interest management, tick batching, culling. Fora do escopo desta entrega.
 
 ## 6. Riscos
@@ -181,12 +189,13 @@ Interest management, tick batching, culling. Fora do escopo desta entrega.
 | Praça congestionada no spawn | espiral + sem colisão avatar-avatar |
 | Foco de teclado (jogar vs digitar) | contrato explícito de foco na F3; testar no E2E |
 | Duas abas = dois estados de scroll/stream do chat | aba Chat permanece o LiveView atual intocado; Espaço só assina os mesmos eventos |
-| Bots "fantasmas" (presença de bot difere da humana) | tratar fonte de presença de bot na F4 antes de generalizar |
+| Bots/NPCs voltarem ao escopo antes do canal-espaço estabilizar | manter fora desta fase; abrir plano próprio se a decisão mudar |
 | Drop da tabela quebra histórico/admin | decidir soft-drop vs drop na revisão |
 
 ## 7. Perguntas abertas (responder na revisão)
 
-- **P1**: LobbyLive P2P fica ou também sai? (seção 4)
+- **P1**: LobbyLive P2P fica ou também sai? **Respondida**: fica fora desta
+  mudança.
 - **P2**: posição do avatar persiste entre visitas (por canal), ou sempre
   renasce na praça? (proposta: renasce; persistência é estado novo sem dono claro)
 - **P3**: o espaço roda mesmo com zero gente na aba Espaço (avatares "parados"
@@ -234,6 +243,19 @@ delta — antes de F6 para decidir quando ela vira necessidade.
   normalizado (`nick:<lower>`), não `user_id`.
 - O spawn precisa expandir além da praça inicial sem depender de RNG; a espiral
   determinística resolveu o gargalo inicial.
+- Bots/NPCs foram removidos do escopo atual. O foco volta para aposentar o
+  fluxo legado de `/space`/token/TTL depois que o canal-espaço já funciona no
+  chat.
+- Primeiro corte da F4 concluído: `/space` saiu do `Commands.Registry`, do índice
+  de help e dos templates embutidos.
+- Segundo corte da F4 concluído: `RetroHexChat.Commands.Handlers.Space`,
+  `SpaceInvite`, `:space_invite` como tipo novo e os cards ricos de `/space/<token>`
+  foram removidos. Mensagens antigas desse tipo, se existirem no banco, passam a
+  cair como texto comum no renderer.
+- Terceiro corte da F4 concluído: `SpaceLive`, rota `/space/:token` e testes
+  dedicados da página legada foram removidos. O canal Phoenix ainda aceita o
+  caminho legado `space:<token>` até a fase de substituição/remoção do
+  `join_token`.
 
 ### Validação registrada
 
@@ -244,3 +266,12 @@ delta — antes de F6 para decidir quando ela vira necessidade.
 - `rtk mix test` completo após os ajustes finais: core com 15 properties e 2837
   testes sem falhas; web com 769 testes sem falhas (193 excluídos).
 - `rtk git diff --check`.
+- Após o primeiro corte da F4: `rtk mix format` nos arquivos alterados; testes
+  focados de registry/help/handler e HelpLive; `rtk make ci` completo com 9/9
+  checks passando.
+- Após o segundo corte da F4: testes focados de `Message`, registry/syntax,
+  `SessionCard` helper e componentes de mensagem/card; `rtk make ci` completo
+  com 9/9 checks passando.
+- Após o terceiro corte da F4: testes focados de `SpaceChannel`, shell do chat,
+  HelpLive e domínio `VirtualSpace`; `rtk make ci` completo com 9/9 checks
+  passando na rerodada.

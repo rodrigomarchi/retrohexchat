@@ -28,13 +28,8 @@ defmodule RetroHexChat.Chat.HelpTopicsTest do
   end
 
   describe "virtual space topics" do
-    test "the /space command topic exists with a valid shape" do
-      topic = HelpTopics.get_topic("cmd-space")
-      assert topic.title == "/space"
-      assert topic.category == "Virtual Spaces"
-      assert is_atom(topic.icon)
-      assert topic.description != ""
-      assert "space" in topic.keywords
+    test "the retired /space command topic is no longer listed" do
+      assert HelpTopics.get_topic("cmd-space") == nil
     end
 
     test "the Virtual Spaces feature topic exists with a valid shape" do

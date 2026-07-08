@@ -133,22 +133,6 @@ defmodule RetroHexChatWeb.App.ChatHelpers do
     end
   end
 
-  @spec extract_space_label(String.t()) :: String.t()
-  def extract_space_label(content) when is_binary(content) do
-    case Regex.run(~r{^(.+?)[.!?]?\s*Enter the space:}, content) do
-      [_, label] -> label
-      _ -> content
-    end
-  end
-
-  @spec extract_space_link(String.t()) :: String.t()
-  def extract_space_link(content) when is_binary(content) do
-    case Regex.run(~r{(/space/[^\s]+)}, content) do
-      [_, path] -> path
-      _ -> "#"
-    end
-  end
-
   @spec highlight_bg_class(map()) :: String.t()
   def highlight_bg_class(%{highlighted: true, highlight_color: nil}), do: " highlight-bg-default"
   def highlight_bg_class(%{highlighted: true, highlight_color: idx}), do: " irc-bg-#{idx}"
