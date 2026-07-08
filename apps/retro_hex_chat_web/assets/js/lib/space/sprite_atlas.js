@@ -17,16 +17,14 @@ export const DIRECTIONS = Object.freeze(["down", "up", "left", "right"]);
 const WALK_DIR_ROW = Object.freeze({ down: 0, right: 2, up: 4, left: 6 });
 const SWORD_DIR_ROW = Object.freeze({ down: 0, up: 2, right: 4, left: 6 });
 
-// Avatars are sliced from `character.png` as 16×32 sprites. The sheet contains
-// one red-tunic hero: rows 0-7 are walk cycles, rows 8-15 are sword attacks.
+// Avatars are sliced from `character.png`. Walk frames are 16×32; sword frames
+// are wider 32×32 cells because the blade extends outside the body tile.
 const AVATAR_SHEET = "character";
-const AVATAR_W = 16;
-const AVATAR_H = 32;
 const DEFAULT_AVATAR_ID = "redtunic_hero";
 const AVATAR_BLOCKS = Object.freeze({
   redtunic_hero: {
-    walk: { col: 0, row: 0, frames: [0, 1, 2, 3], dirRow: WALK_DIR_ROW },
-    sword: { col: 0, row: 8, frames: [0, 1, 2, 3], dirRow: SWORD_DIR_ROW },
+    walk: { col: 0, row: 0, w: 1, h: 2, step: 1, frames: [0, 1, 2, 3], dirRow: WALK_DIR_ROW },
+    sword: { col: 0, row: 8, w: 2, h: 2, step: 2, frames: [0, 1, 2, 3], dirRow: SWORD_DIR_ROW },
   },
 });
 
@@ -90,9 +88,10 @@ export function createSpriteAtlas(opts = {}) {
     const direction = DIRECTIONS.includes(dir) ? dir : "down";
     const frames = block.frames;
     const idx = ((Math.trunc(frame) % frames.length) + frames.length) % frames.length;
-    const col = block.col + frames[idx];
+    const t = sheet.tile;
+    const col = block.col + frames[idx] * block.step;
     const row = block.row + block.dirRow[direction];
-    return { img: sheet.img, sx: col * 16, sy: row * 16, sw: AVATAR_W, sh: AVATAR_H };
+    return { img: sheet.img, sx: col * t, sy: row * t, sw: block.w * t, sh: block.h * t };
   }
 
   return {

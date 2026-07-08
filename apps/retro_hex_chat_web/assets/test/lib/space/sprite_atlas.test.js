@@ -75,22 +75,28 @@ describe("sprite atlas contract", () => {
     expect(atlas.avatar("redtunic_hero", "up", 1)).toMatchObject({ sx: 16, sy: 64 });
     // Sword block starts at row 8 and uses its own row order: down/up/right/left.
     expect(atlas.avatar("redtunic_hero", "down", 2, "sword")).toMatchObject({
-      sx: 32,
+      sx: 64,
       sy: 128,
-      sw: 16,
+      sw: 32,
       sh: 32,
     });
     expect(atlas.avatar("redtunic_hero", "right", 3, "sword")).toMatchObject({
-      sx: 48,
+      sx: 96,
       sy: 192,
+      sw: 32,
+      sh: 32,
     });
     expect(atlas.avatar("redtunic_hero", "up", 1, "sword")).toMatchObject({
-      sx: 16,
+      sx: 32,
       sy: 160,
+      sw: 32,
+      sh: 32,
     });
     expect(atlas.avatar("redtunic_hero", "left", 3, "sword")).toMatchObject({
-      sx: 48,
+      sx: 96,
       sy: 224,
+      sw: 32,
+      sh: 32,
     });
     expect(atlas.avatarFrameCount("redtunic_hero", "walk")).toBe(4);
     expect(atlas.avatarFrameCount("redtunic_hero", "sword")).toBe(4);

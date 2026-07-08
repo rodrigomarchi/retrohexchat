@@ -115,10 +115,13 @@ export class Renderer {
     const sprite = this.atlas?.avatar(participant.avatar, dir, frame, actionKind);
     if (!sprite) return;
     const { x, y } = this._avatarScreenPos(participant);
-    // A tall sprite (2 tiles) sits with its feet on the tile, head rising above;
-    // a tile-sized sprite aligns exactly (dy = 0).
-    const dy = sprite.sh * this.camera.scale - this.tilePx;
-    this._blit(ctx, sprite, Math.round(x), Math.round(y - dy));
+    const dw = sprite.sw * this.camera.scale;
+    const dh = sprite.sh * this.camera.scale;
+    const dx = x - (dw - this.tilePx) / 2;
+    // Tall sprites sit with their feet on the tile; wider action sprites stay
+    // centered on the avatar tile so the body does not jump during a swing.
+    const dy = dh - this.tilePx;
+    this._blit(ctx, sprite, Math.round(dx), Math.round(y - dy));
   }
 
   // Draw a sheet slice `{ img, sx, sy, sw, sh }` scaled by the camera at the

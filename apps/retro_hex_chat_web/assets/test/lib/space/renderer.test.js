@@ -101,4 +101,32 @@ describe("Renderer avatar actions", () => {
 
     expect(atlas.avatar).toHaveBeenCalledWith("redtunic_hero", "left", 2, "sword");
   });
+
+  it("centers wide sword sprites on the avatar tile", () => {
+    const img = { complete: true, naturalWidth: 32 };
+    const atlas = {
+      tile: () => null,
+      avatar: vi.fn(() => ({ img, sx: 0, sy: 128, sw: 32, sh: 32 })),
+      avatarFrameCount: vi.fn(() => 4),
+    };
+    const { ctx, renderer } = build({ atlas });
+    const participants = new Map([
+      [
+        "registered:1",
+        {
+          key: "registered:1",
+          nickname: "",
+          avatar: "redtunic_hero",
+          x: 5,
+          y: 5,
+          dir: "down",
+          action: { kind: "sword", dir: "down", startedAt: 0, duration: 420 },
+        },
+      ],
+    ]);
+
+    renderer.draw({ participants, selfKey: "registered:1", bubbles: new Map(), now: 0 });
+
+    expect(ctx.drawImage).toHaveBeenCalledWith(img, 0, 128, 32, 32, 144, 128, 64, 64);
+  });
 });
