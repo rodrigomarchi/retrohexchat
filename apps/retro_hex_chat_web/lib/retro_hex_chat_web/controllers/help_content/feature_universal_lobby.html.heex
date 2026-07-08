@@ -1,41 +1,36 @@
 <p>
   {dgettext(
     "help_p2p",
-    "The P2P Lobby opens a single, persistent peer-to-peer connection that hosts every feature at the same time. Open it with /p2p. Once two users are connected you can run a call, send files, and play a game together — all concurrently — without ever leaving the lobby."
+    "The P2P Lobby is the persistent peer-to-peer connection behind /p2p: one link between two users that hosts a call, file transfers and games all at the same time. It lives inside the chat — accepting an invite opens the session windows right on the chat desktop, next to your conversations."
   )}
 </p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "The Dock")}</.help_h4>
+<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "One Connection, Every Feature")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "A persistent dock exposes every feature: Audio, Video, File and Game. Each feature opens its own panel, and panels stack so several activities can run together."
+    "Once connected, the call starts automatically and the Files, Games and Statistics windows wait minimized on the taskbar. Everything runs concurrently over the same connection: send a file during the call, start a game without hanging up. Ending any one activity never drops the others — only ending the session does."
   )}
 </p>
 <.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "Self-Controlled Media")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "Audio and video are self-controlled: each peer turns their own microphone and camera on or off independently, like a modern video call. There is no separate consent to start a call."
+    "Audio and video are self-controlled: each peer turns their own microphone and camera on or off independently, like a modern video call. File transfers and games still ask the other side to accept."
   )}
 </p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "Files and Games")}</.help_h4>
+<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "Closing vs. Minimizing")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "File transfers and games still ask the other side to accept. Send a file at any time — even during a call — and the receiver confirms. Propose a game from the picker; once accepted it runs on the same connection alongside your call and transfers."
-  )}
-</p>
-<.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "Staying Connected")}</.help_h4>
-<p>
-  {dgettext(
-    "help_p2p",
-    "Ending any one activity — hanging up a call, finishing a transfer, closing a game — keeps the lobby open for the next thing. The connection only closes when someone leaves or the lobby goes idle."
+    "Closing any session window disconnects the whole session (after a confirmation); minimizing keeps everything running in the taskbar. The status bar always shows the active session — click it to bring the windows back to the front."
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>
 <p>
-  <.help_link topic="cmd-p2p">{dgettext("help_p2p", "/p2p")}</.help_link>
+  <.help_link topic="feature-p2p-in-chat">
+    {dgettext("help_p2p", "P2P Sessions in Chat")}
+  </.help_link>
+  · <.help_link topic="cmd-p2p">{dgettext("help_p2p", "/p2p")}</.help_link>
   · <.help_link topic="feature-video-call">{dgettext("help_p2p", "Video Call")}</.help_link>
   · <.help_link topic="feature-file-transfer">{dgettext("help_p2p", "File Transfer")}</.help_link>
-  · <.help_link topic="feature-audio-call">{dgettext("help_p2p", "Audio Call")}</.help_link>
 </p>

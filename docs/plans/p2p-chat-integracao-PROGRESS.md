@@ -259,7 +259,32 @@ chat, com as 3 ilhas do lobby reusadas (zero fork) e o standalone intacto.
   sempre habilitado com um item "Start a P2P Session..." que ensina
   (system line + inline help card).
 
-## F6 — remoção do standalone: **AGUARDANDO PRÉ-REQUISITOS** (recomendação)
+## F6 — CONCLUÍDA (2026-07-08)
+
+- [x] **Pré-requisito 1**: E2E de vídeo consertado — a causa raiz da suíte
+  vermelha era os helpers de mídia não conhecerem o auto-join com mic+câmera
+  abertos (comportamento da auditoria de paridade do lobby); `sendVideo`/
+  `startAudioCall` agora reconhecem "já transmitindo" (toggle mute/camera só
+  renderiza com track ligada). Suíte standalone 20/20 verde antes de morrer.
+- [x] **Pré-requisito 2**: cobertura de mídia portada — `chat-p2p.spec.ts`
+  prova RTP real bidirecional do auto-call, arquivo real durante a chamada
+  (download verificado + linha p2p_system) e jogo com canvas nos dois lados,
+  restaurando as janelas minimizadas da taskbar.
+- [x] **Remoção**: `lobby_live.ex(.heex)`, `chat_dispatch`, `ChatIsland`,
+  `universal_lobby`, `lobby_menu_bar/status_bar/terminal`,
+  `LobbyCloseWindowHook` (+ registro), `chat-lobby.spec.ts` + `lobbyFlows` +
+  `LobbyPage`, `lobby_live_test` + `chat_island_test`. Rota `/lobby/:token`
+  → `LobbyRedirectController` → `/chat` (re-hidratação assume links velhos).
+- [x] **Help**: tópico "P2P Lobby" REESCRITO (não deletado — dezenas de
+  páginas de jogos linkam para ele) descrevendo a realidade in-chat;
+  `cmd_p2p` atualizado.
+- [x] **MANTIDO** (o chat usa): Media/File/Game islands + panels +
+  `lobby_network_panel`, domínio `Lobby` + `RetroHexChat.P2P`, hooks WebRTC,
+  `P2PStats`, `SessionHelpers`.
+- [ ] Rename do namespace `App.LobbyLive.Components.*` das ilhas (cosmético,
+  commit próprio a seguir).
+
+## Notas antigas da F6 (superadas)
 
 A F6 (deletar LobbyLive/universal_lobby/rota + redirect) está pronta para
 executar, MAS removê-la agora apagaria a suite `chat-lobby.spec.ts` — a única

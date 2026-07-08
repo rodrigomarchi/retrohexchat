@@ -339,8 +339,8 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
             "help",
             "Invite someone to a P2P session that runs an audio/video call, file transfers, " <>
               "and games together over one connection. The invite arrives as a card in the " <>
-              "private message — they can accept it right there and the session windows open " <>
-              "on the chat desktop, or open the standalone P2P Lobby page from the same card. " <>
+              "private message — accepting it starts the session right there, with the " <>
+              "session windows opening on the chat desktop. " <>
               "See also: P2P Sessions in Chat, P2P Lobby."
           )
       },

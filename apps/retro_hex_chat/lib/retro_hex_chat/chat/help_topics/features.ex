@@ -1041,50 +1041,17 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           "call",
           "file",
           "game",
-          "desktop",
-          "window",
-          "taskbar",
-          "start menu",
-          "chat",
-          "formatting",
-          "/me"
+          "window"
         ],
         icon: :icon_p2p,
         description:
           dgettext(
             "help",
-            "Open one persistent P2P connection that hosts every feature at once, on a " <>
-              "Windows-style desktop. Each feature lives in its own window you can drag, resize " <>
-              "from any edge or corner, minimize, maximize and close: an audio or video call, " <>
-              "file transfer, a game, plus chat and the pinned Statistics window. Maximize fills " <>
-              "the whole desktop; the restore button (or double-clicking the title bar, which " <>
-              "also maximizes) brings the window back to its previous size and position. " <>
-              "Right-click a taskbar button for window commands (Restore, Minimize, Maximize, " <>
-              "Close), or right-click an empty spot on the taskbar to arrange every open window " <>
-              "at once: Cascade Windows, Tile Windows Horizontally or Vertically, and Minimize " <>
-              "All Windows. Launch features from the taskbar " <>
-              "Start menu (the [Lobby] button); every open window gets a taskbar button. A window's " <>
-              "X ends that feature (hangs up the call, cancels the transfer, quits the game), while " <>
-              "minimize keeps it running in the taskbar; choose Leave lobby from the Start menu to " <>
-              "leave entirely. The desktop carries a Win98-style shortcut icon for each feature — " <>
-              "double-click one to open its window (a single click just selects it). The desktop " <>
-              "itself stays clear; the Statistics window is the status home — it shows who you are " <>
-              "connected to, the live connection state, the privacy lock and a clock, plus " <>
-              "always-complete telemetry broken down per feature (connection, audio, video, games " <>
-              "and files), with every metric shown even when a feature is idle. " <>
-              "When someone starts an audio or video call, the other person joins it " <>
-              "automatically — the call window opens and they see and hear the caller right away, " <>
-              "with their own microphone and camera off until they choose to turn each one on. File " <>
-              "transfers and games still ask the other side to accept. The lobby always opens with a " <>
-              "fresh default layout (your window arrangement is not kept between visits). It only " <>
-              "closes when someone leaves or it goes idle. " <>
-              "The Chat window is the same IRC surface as the main chat: messages show as " <>
-              "[time] <nick> text with colored nicks, the formatting toolbar and mIRC codes work, " <>
-              "and nick autocomplete completes the other peer. It supports a small command set — " <>
-              "/me <action> for an action line, /clear to clear your own view and /help to list " <>
-              "them. Lobby chat is ephemeral: it is never saved and disappears when the lobby closes. " <>
-              "See also: P2P Sessions in Chat, Video Call, File Transfer, Network Statistics, " <>
-              "Text Formatting."
+            "The P2P Lobby is the persistent peer-to-peer connection behind /p2p — one link " <>
+              "that hosts a call, file transfers and games all at the same time. It lives " <>
+              "inside the chat: accepting an invite opens the session windows right on the " <>
+              "chat desktop, and ending any one activity never drops the others. " <>
+              "See also: P2P Sessions in Chat."
           )
       },
       %{

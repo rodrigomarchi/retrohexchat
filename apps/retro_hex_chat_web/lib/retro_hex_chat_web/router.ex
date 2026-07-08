@@ -115,10 +115,14 @@ defmodule RetroHexChatWeb.Router do
     live_session :app_locale, on_mount: [{RetroHexChatWeb.Live.PutLocale, :default}] do
       live "/connect", ConnectLive
       live "/chat", ChatLive
-      live "/lobby/:token", LobbyLive
       live "/solo/:token", SoloSessionLive
       live "/arcade/:token/:game_id", ArcadeGameLive
     end
+
+    # The standalone lobby page is gone — P2P sessions live inside the chat
+    # (old invite links and bookmarks land there; the chat re-hydrates the
+    # user's active session on mount).
+    get "/lobby/:token", LobbyRedirectController, :show
   end
 
   scope "/", RetroHexChatWeb.App do
