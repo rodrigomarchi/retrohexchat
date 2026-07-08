@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   attr :timezone, :string, required: true
   attr :strip_formatting, :boolean, required: true
   attr :edit_mode_message_id, :any, required: true
+  attr :viewer, :string, default: nil, doc: "Viewing user's nickname (P2P invite cards)"
 
   @doc "Renders one chat message row (wrapper + type-specific body) for the viewport stream."
   @spec message_row(map()) :: Phoenix.LiveView.Rendered.t()
@@ -150,6 +151,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
               :if={Map.get(@msg, :session_card)}
               card={@msg.session_card}
               timezone={@timezone}
+              viewer={@viewer}
             />
             <.p2p_invite_card
               :if={!Map.get(@msg, :session_card)}

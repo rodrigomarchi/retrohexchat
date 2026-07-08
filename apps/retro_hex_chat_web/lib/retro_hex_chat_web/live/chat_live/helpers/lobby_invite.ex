@@ -2,20 +2,48 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   @moduledoc """
   Shared P2P-lobby invite logic used by both command dispatch and the context
   menu. Sends a PM invitation (rendered as a join card pointing at
-  `/lobby/<token>`), notifies the target, and switches the sender to the PM
-  conversation.
+  `/lobby/<token>`), notifies the target, switches the sender to the PM
+  conversation, and joins the in-chat P2P session as its creator.
+
+  With a P2P session already active, the invite is NOT delivered yet: the
+  switch confirm opens first, and only confirming ends the current session
+  and sends the invite (backing out cancels the just-created pending session).
   """
 
+  import Phoenix.Component, only: [assign: 2]
   import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Chat.Service
+  alias RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog
   alias RetroHexChatWeb.ChatLive.Helpers.{Messages, PM}
+  alias RetroHexChatWeb.ChatLive.P2PSessionEvents
 
   @spec handle_lobby_invite(Phoenix.LiveView.Socket.t(), map(), map()) ::
           Phoenix.LiveView.Socket.t()
   def handle_lobby_invite(socket, session, payload) do
+    case socket.assigns.p2p_session do
+      nil ->
+        deliver_invite(socket, session, payload)
+
+      p2p ->
+        Phoenix.LiveView.send_update(P2PConfirmDialog,
+          id: P2PConfirmDialog.id(),
+          action: {:open_switch, p2p.peer_nick, payload.target}
+        )
+
+        assign(socket, p2p_pending: %{kind: :outgoing, payload: payload})
+    end
+  end
+
+  @doc """
+  Sends the invite PM, opens the conversation and joins the new session as
+  creator. Also the continuation of a confirmed outgoing switch.
+  """
+  @spec deliver_invite(Phoenix.LiveView.Socket.t(), map(), map()) ::
+          Phoenix.LiveView.Socket.t()
+  def deliver_invite(socket, session, payload) do
     %{target: target, token: token} = payload
 
     pm_content = lobby_invite_content(token)
@@ -40,6 +68,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
     socket
     |> Messages.system_event(confirm_msg)
     |> push_event("scroll_to_bottom", %{})
+    |> P2PSessionEvents.start_as_creator(token, payload.creator_id)
   end
 
   @spec lobby_invite_content(String.t()) :: String.t()

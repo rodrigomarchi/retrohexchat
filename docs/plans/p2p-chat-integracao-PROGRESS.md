@@ -27,7 +27,49 @@
 - [x] 7. Testes: session_server (grace/rejoin/segunda aba/re-sinalização/record_activity), service_test novo (decline/cancel/query), private_message
 - [x] 8. `make ci` 9/9 (2026-07-08) + commit
 
-**F1 CONCLUÍDA.**
+**F1 CONCLUÍDA** (commit `3f38a244`).
+
+## F2 — passos
+
+- [x] 1. `chat_live/p2p_session_events.ex`: máquina `@p2p_session` (nil → invite_sent → joining → connecting → connected), adapters de sinalização portados do LobbyLive, aceite/recusa/cancela/encerra, troca A→B, re-hidratação no mount
+- [x] 2. Anchor `#lobby-webrtc` no template (wrapper keyado por token p/ remount na troca; NÃO monta em :invite_sent)
+- [x] 3. Card do PM: [Aceitar][Recusar] p/ o convidado (viewer == peer, status pending) + link standalone mantido (side-by-side)
+- [x] 4. `P2PConfirmDialog` (end + switch)
+- [x] 5. Zona P2P na `status_bar_app` (+ threading chat_shell/chat_app_header)
+- [x] 6. `/p2p` com sessão ativa → confirm ANTES de enviar o PM (E2); cancelar desfaz a sessão pendente criada pelo comando
+- [x] 7. Testes liveview (6, cobrindo invite/accept/decline/cancel/switch nos dois sentidos) + Playwright alvo `chat-lobby.spec.ts:9` verde (side-by-side validado)
+- [x] 8. `make ci` 9/9 + commit
+
+**F2 CONCLUÍDA.**
+
+## Aprendizados F2
+
+- **ChatLive já força UMA instância por usuário** (takeover `:force_disconnect`
+  no mount) — o guard multi-aba vira: takeover mata o LV antigo → grace F1
+  segura a sessão → re-hidratação no novo LV reconecta. `:already_joined` fica
+  como fallback da race.
+- **Side-by-side exigiu o creator NÃO joinar no convite**: se o ChatLive
+  joinasse ao enviar o convite, abrir o standalone devolveria :already_joined
+  e a página própria ficaria inutilizável. Modelo: creator = subscribe-only em
+  :invite_sent; joina quando o peer entra (lobby_peer_joined); se o join
+  devolver :already_joined (o próprio standalone assumiu), o chat se desanexa
+  em silêncio e deixa aquela superfície dirigir.
+- **O anchor WebRTC não pode montar em :invite_sent** — montaria um segundo
+  RTCPeerConnection do mesmo usuário se ele fosse para o standalone (dois hooks
+  respondendo ao mesmo lobby_start_offer = sinalização em guerra).
+- **Race de troca A→B resolvida com token no envelope PubSub**: o
+  lobby_session_closed da sessão antiga já estava na mailbox quando a nova
+  entrava; sem `%{token:}` no envelope o handler derrubava a sessão NOVA.
+  Extra key não quebra os matches existentes do LobbyLive.
+- **E2E `chat-lobby.spec.ts` estava quebrado na main ANTES da F1** (verificado
+  via stash em 77614a13): o helper procurava o card fallback
+  (`p2p-invite-card`/"Join lobby") mas o card rico renderiza (`session-card`/
+  "Join") — corrigi os locators (:9 voltou a passar). **:96 e :200 (vídeo)
+  continuam vermelhos na main limpa — quebra pré-existente NÃO relacionada à
+  migração** (enableVideoButton nunca aparece); investigar à parte.
+- Componente com key list explícita (MessageViewport) precisa do default do
+  assign novo também no `mount` — `render_component` dos testes unitários não
+  passa pelo merge do update.
 
 ## Validações
 

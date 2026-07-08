@@ -42,6 +42,7 @@
         lag_status={@lag_status}
         muted={@muted}
         timezone={@timezone}
+        p2p_session={@p2p_session}
       />
     </:header>
 
@@ -187,6 +188,7 @@
                   show_status_tab={@show_status_tab}
                   loading_more={@loading_more}
                   loading_channel={@loading_channel}
+                  viewer={@session.nickname}
                 />
 
                 <%!-- Status messages stream (stateful island — owns the :status_messages stream) --%>
@@ -883,6 +885,27 @@
   module={RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog}
   id={RetroHexChatWeb.ChatLive.Components.DisconnectConfirmDialog.id()}
 />
+
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog}
+  id={RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog.id()}
+/>
+
+<%!-- P2P WebRTC anchor: the wrapper is keyed by session token so switching
+      sessions replaces it wholesale — the hook remounts with a fresh
+      RTCPeerConnection. The inner id MUST stay "lobby-webrtc": the media,
+      game and file-transfer hooks locate the shared PC through it.
+      NOT mounted during :invite_sent — the creator hasn't joined yet, and a
+      hook here would fight the standalone page's RTCPeerConnection if the
+      creator claims the session there instead. --%>
+<div
+  :if={@p2p_session && @p2p_session.state != :invite_sent}
+  id={"p2p-session-#{@p2p_session.token}"}
+  class="hidden"
+>
+  <div id="lobby-webrtc" phx-hook="LobbyWebRTCHook" phx-update="ignore" data-testid="p2p-webrtc">
+  </div>
+</div>
 
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.DeleteConfirmDialog}

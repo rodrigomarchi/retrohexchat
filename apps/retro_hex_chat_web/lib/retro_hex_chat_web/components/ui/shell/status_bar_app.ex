@@ -42,6 +42,14 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   attr :muted, :boolean, default: false
   attr :timezone, :string, default: "Etc/UTC"
 
+  attr :p2p, :map,
+    default: nil,
+    doc:
+      "Active P2P session display (%{label, title, stop_title}) — the zone stays visible on mobile"
+
+  attr :on_p2p_click, :any, default: nil
+  attr :on_p2p_stop, :any, default: nil
+
   attr :show_clock, :boolean,
     default: true,
     doc: "hide the clock zone when the surrounding chrome already shows one (e.g. a desktop tray)"
@@ -80,6 +88,33 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         >
           ({@user_count})
         </span>
+      </.window_status_bar_field>
+
+      <%!-- Zone P2P: active session — click focuses the P2P windows, the
+            trailing button cancels a pending invite / ends the session.
+            Never hidden on mobile: an active session must stay visible. --%>
+      <.window_status_bar_field :if={@p2p} class="flex items-center gap-retro-2 min-w-0 px-[2px]">
+        <button
+          type="button"
+          class="inline-flex items-center gap-retro-2 min-w-0 h-full min-h-0 bg-transparent"
+          phx-click={@on_p2p_click}
+          title={@p2p.title}
+          aria-label={@p2p.title}
+          data-testid="status-bar-p2p"
+        >
+          <Icons.icon_p2p class="w-3 h-3 shrink-0" />
+          <span class="truncate text-xs">{@p2p.label}</span>
+        </button>
+        <button
+          type="button"
+          class="inline-flex items-center justify-center h-full min-h-0 bg-transparent shrink-0"
+          phx-click={@on_p2p_stop}
+          title={@p2p.stop_title}
+          aria-label={@p2p.stop_title}
+          data-testid="status-bar-p2p-stop"
+        >
+          <Icons.icon_btn_disconnect class="w-3 h-3" />
+        </button>
       </.window_status_bar_field>
 
       <%!-- Zone 3: Online buddy count (hidden on mobile) --%>

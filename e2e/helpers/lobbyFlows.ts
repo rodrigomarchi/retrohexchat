@@ -48,7 +48,7 @@ async function openLobbiesFromInviteCards(
 ): Promise<{ initiatorLobby: LobbyPage; receiverLobby: LobbyPage }> {
   const initiatorLink = initiator.chat
     .p2pInviteCard()
-    .getByRole('link', { name: 'Join lobby' });
+    .getByRole('link', { name: 'Join' });
   await expect(initiatorLink).toHaveAttribute(
     'href',
     /^\/lobby\/[A-Za-z0-9_-]+$/,
@@ -60,7 +60,7 @@ async function openLobbiesFromInviteCards(
 
   const receiverLink = receiver.chat
     .p2pInviteCard()
-    .getByRole('link', { name: 'Join lobby' });
+    .getByRole('link', { name: 'Join' });
   await expect(receiverLink).toHaveAttribute('href', inviteHref ?? '');
 
   const initiatorLobby = await openLobbyFromInvite(initiator.page, initiatorLink);

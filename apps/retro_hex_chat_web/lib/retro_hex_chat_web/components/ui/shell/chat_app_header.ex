@@ -31,6 +31,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
   attr :muted, :boolean, default: false
   attr :timezone, :string, default: "Etc/UTC"
   attr :is_admin, :boolean, default: false
+  attr :p2p, :map, default: nil, doc: "Active P2P session display map for the status bar"
+  attr :on_p2p_click, :any, default: "p2p_statusbar_click"
+  attr :on_p2p_stop, :any, default: "p2p_statusbar_stop"
 
   attr :on_logo_action, :any, default: "about-dialog", doc: "Modal id opened by the logo"
   attr :on_toolbar_action, :any, default: "toolbar_action"
@@ -70,6 +73,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
           muted={@muted}
           timezone={@timezone}
           on_mute_toggle={@on_mute_toggle}
+          p2p={@p2p}
+          on_p2p_click={@on_p2p_click}
+          on_p2p_stop={@on_p2p_stop}
         />
       </:panels>
     </.app_header>

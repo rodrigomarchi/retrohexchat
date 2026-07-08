@@ -962,7 +962,7 @@ export class ChatPage {
   }
 
   p2pInviteCard(): Locator {
-    return this.messageList.getByTestId('p2p-invite-card').last();
+    return this.messageList.getByTestId('session-card').last();
   }
 
   emojiButton(char: string): Locator {

@@ -85,7 +85,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
        edit_mode_message_id: nil,
        show_status_tab: false,
        loading_more: false,
-       loading_channel: nil
+       loading_channel: nil,
+       viewer: nil
      )
      |> stream(:chat_messages, [])}
   end
@@ -124,7 +125,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
       :edit_mode_message_id,
       :show_status_tab,
       :loading_more,
-      :loading_channel
+      :loading_channel,
+      :viewer
     ]
 
     merged =
@@ -179,6 +181,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageViewport do
           timezone={@timezone}
           strip_formatting={@strip_formatting}
           edit_mode_message_id={@edit_mode_message_id}
+          viewer={@viewer}
         />
       </.chat_message_list>
     </div>

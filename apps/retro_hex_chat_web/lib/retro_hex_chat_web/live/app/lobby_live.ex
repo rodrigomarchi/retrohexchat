@@ -615,7 +615,11 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   defp maybe_start_webrtc(socket), do: socket
 
   defp broadcast(event, token, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, "lobby:#{token}", %{event: event, payload: payload})
+    Phoenix.PubSub.broadcast(@pubsub, "lobby:#{token}", %{
+      event: event,
+      payload: payload,
+      token: token
+    })
   end
 
   defp connected_label, do: dgettext("lobby", "Connected")

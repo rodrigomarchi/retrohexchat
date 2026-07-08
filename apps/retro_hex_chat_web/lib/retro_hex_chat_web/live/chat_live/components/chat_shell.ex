@@ -31,6 +31,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   attr :muted, :boolean, default: false
   attr :timezone, :string, default: "Etc/UTC"
 
+  attr :p2p_session, :map,
+    default: nil,
+    doc: "The host's @p2p_session state-machine assign (nil when no session)"
+
   @spec chat_shell_header(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_shell_header(assigns) do
     session = assigns.session
@@ -41,7 +45,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
         is_admin: ChatContext.admin?(session),
         online_buddy_count: online_buddy_count(session.notify_list),
         channel: session.active_pm || session.active_channel,
-        tab_type: if(session.active_pm, do: :pm, else: :channel)
+        tab_type: if(session.active_pm, do: :pm, else: :channel),
+        p2p: p2p_display(assigns.p2p_session)
       )
 
     ~H"""
@@ -58,8 +63,41 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
       muted={@muted}
       timezone={@timezone}
       is_admin={@is_admin}
+      p2p={@p2p}
     />
     """
+  end
+
+  # Derives the status-bar P2P zone strings from the host state machine —
+  # the design-system component receives display text only.
+  @spec p2p_display(map() | nil) :: map() | nil
+  defp p2p_display(nil), do: nil
+
+  defp p2p_display(%{state: state, peer_nick: peer_nick}) do
+    peer = peer_nick || "?"
+
+    case state do
+      :invite_sent ->
+        %{
+          label: dgettext("chat", "P2P: waiting for %{peer}...", peer: peer),
+          title: dgettext("chat", "P2P invite pending"),
+          stop_title: dgettext("chat", "Cancel the P2P invite")
+        }
+
+      :connected ->
+        %{
+          label: dgettext("chat", "P2P: %{peer}", peer: peer),
+          title: dgettext("chat", "P2P session with %{peer} — click to focus", peer: peer),
+          stop_title: dgettext("chat", "End the P2P session")
+        }
+
+      _joining_or_connecting ->
+        %{
+          label: dgettext("chat", "P2P: connecting to %{peer}...", peer: peer),
+          title: dgettext("chat", "P2P session connecting"),
+          stop_title: dgettext("chat", "End the P2P session")
+        }
+    end
   end
 
   @spec online_buddy_count(%{entries: list()} | nil) :: non_neg_integer()

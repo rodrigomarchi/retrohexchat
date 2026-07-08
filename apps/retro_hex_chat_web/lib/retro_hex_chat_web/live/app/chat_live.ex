@@ -133,6 +133,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       |> maybe_broadcast_nick_changed(previous_nickname, nickname)
       |> ChatLive.Helpers.maybe_start_nickserv_timer(nickname, pre_identified, reconnecting?)
       |> ChatLive.Helpers.maybe_trigger_perform()
+      |> ChatLive.P2PSessionEvents.rehydrate()
 
     # A reconnect (deploy / socket drop) or a reload of a live session restores
     # silently: replaying the connect sound, MOTD, welcome and announcements on
@@ -658,13 +659,17 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:bot_events, &ChatLive.BotEvents.handle_event/3},
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
       {:connection_events, &ChatLive.ConnectionEvents.handle_event/3},
+      {:p2p_session_events, &ChatLive.P2PSessionEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
     ]
 
     info_hooks = [
       {:settings_dialogs_info, &ChatLive.SettingsDialogsEvents.handle_info/2},
       {:timer_handlers, &ChatLive.TimerHandlers.handle_info/2},
-      {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2}
+      {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2},
+      # After PubsubHandlers: it consumes "lobby_invite" (user topic) first;
+      # this one owns the session-topic "lobby_*" events.
+      {:p2p_session_info, &ChatLive.P2PSessionEvents.handle_info/2}
     ]
 
     socket =
@@ -748,7 +753,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       show_knock_request_dialog: false,
       channel_list_channels: [],
       channel_list_loading: false,
-      channel_view: :chat
+      channel_view: :chat,
+      p2p_session: nil,
+      p2p_pending: nil
     )
   end
 

@@ -769,8 +769,15 @@ defmodule RetroHexChat.Lobby.SessionServer do
     end)
   end
 
+  # The envelope carries the token so a subscriber holding session state can
+  # drop stale events from a previous session (extra keys don't break the
+  # existing %{event:, payload:} matches).
   defp broadcast(token, event, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, "lobby:#{token}", %{event: event, payload: payload})
+    Phoenix.PubSub.broadcast(@pubsub, "lobby:#{token}", %{
+      event: event,
+      payload: payload,
+      token: token
+    })
   end
 
   @valid_transitions %{

@@ -21,13 +21,18 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
   attr :card, :map, required: true, doc: "Resolved session summary (:lobby or :arcade)"
   attr :timezone, :string, default: "Etc/UTC"
 
+  attr :viewer, :string,
+    default: nil,
+    doc: "Nickname of the viewing user — the invited peer gets accept/decline buttons"
+
   @doc "Renders the rich session card for a resolved lobby/arcade summary."
   @spec session_card(map()) :: Phoenix.LiveView.Rendered.t()
   def session_card(assigns) do
     assigns =
       assign(assigns,
         entries: timeline(assigns.card, assigns.timezone),
-        cta: cta(assigns.card)
+        cta: cta(assigns.card),
+        invited?: invited_viewer?(assigns.card, assigns.viewer)
       )
 
     ~H"""
@@ -58,6 +63,29 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
         </li>
       </ul>
 
+      <div :if={@invited?} class="flex items-center gap-2">
+        <button
+          type="button"
+          class="inline-flex items-center gap-1 px-2 py-0.5 bg-canvas shadow-retro-raised font-bold"
+          phx-click="p2p_accept_invite"
+          phx-value-token={@card.token}
+          data-testid="session-card-accept"
+        >
+          <.timeline_icon name={:icon_btn_join} class="h-3.5 w-3.5" />
+          {dgettext("chat", "Accept")}
+        </button>
+        <button
+          type="button"
+          class="inline-flex items-center gap-1 px-2 py-0.5 bg-canvas shadow-retro-raised"
+          phx-click="p2p_decline_invite"
+          phx-value-token={@card.token}
+          data-testid="session-card-decline"
+        >
+          <.timeline_icon name={:icon_reject} class="h-3.5 w-3.5" />
+          {dgettext("chat", "Decline")}
+        </button>
+      </div>
+
       <a
         :if={@cta}
         href={@card.href}
@@ -71,6 +99,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
     </div>
     """
   end
+
+  # The accept/decline buttons belong only to the invited peer of a still
+  # pending lobby invite; everyone else (the creator, later viewers) keeps the
+  # plain link CTA while the standalone page exists.
+  defp invited_viewer?(%{kind: :lobby, status: "pending", peer: peer}, viewer)
+       when is_binary(peer) and is_binary(viewer),
+       do: String.downcase(peer) == String.downcase(viewer)
+
+  defp invited_viewer?(_card, _viewer), do: false
 
   # ── Subject icon ────────────────────────────────────────────
 
