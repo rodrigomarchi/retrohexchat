@@ -58,7 +58,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   @spec join(String.t(), %{user_id: integer() | nil, nickname: String.t()}) ::
-          {:ok, %{participant: participant(), snapshot: map()}} | {:error, atom()}
+          {:ok, %{participant: participant(), snapshot: map(), map: map()}} | {:error, atom()}
   def join(token, participant_context) do
     call(token, {:join, participant_context})
   end

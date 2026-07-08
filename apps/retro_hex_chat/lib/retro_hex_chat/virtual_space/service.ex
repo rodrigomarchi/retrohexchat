@@ -46,7 +46,12 @@ defmodule RetroHexChat.VirtualSpace.Service do
 
   @spec join_session(String.t(), Policy.actor()) ::
           {:ok,
-           %{participant: SessionServer.participant(), snapshot: map(), session: Session.t()}}
+           %{
+             participant: SessionServer.participant(),
+             snapshot: map(),
+             map: map(),
+             session: Session.t()
+           }}
           | {:error, Policy.error() | :not_found | :kicked}
   def join_session(token, actor) do
     with {:ok, session} <- fetch_session(token),

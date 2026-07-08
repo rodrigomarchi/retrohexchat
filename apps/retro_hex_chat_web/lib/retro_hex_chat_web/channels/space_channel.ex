@@ -23,7 +23,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
     channel_name = "#" <> channel_tail
 
     with {:ok, data} <- verify_join_token(params, channel_name),
-         {:ok, result} <- VirtualSpace.join_channel_space(channel_name, data) do
+         {:ok, result} <- VirtualSpace.join_channel_space(channel_name, build_channel_actor(data)) do
       socket =
         socket
         |> assign(:space_kind, :channel)
@@ -182,6 +182,13 @@ defmodule RetroHexChatWeb.SpaceChannel do
       identified: NickServ.identified?(data.nickname),
       is_admin: false,
       is_server_operator: false
+    }
+  end
+
+  defp build_channel_actor(data) do
+    %{
+      user_id: data.user_id,
+      nickname: data.nickname
     }
   end
 

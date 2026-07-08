@@ -19,11 +19,13 @@ defmodule RetroHexChat.VirtualSpace.Supervisor do
     }
   end
 
+  @spec start_child(String.t()) :: DynamicSupervisor.on_start_child()
   @spec start_child(GenServer.server(), String.t()) :: DynamicSupervisor.on_start_child()
   def start_child(supervisor \\ __MODULE__, token) do
     DynamicSupervisor.start_child(supervisor, {RetroHexChat.VirtualSpace.SessionServer, token})
   end
 
+  @spec start_channel_child(String.t()) :: DynamicSupervisor.on_start_child()
   @spec start_channel_child(GenServer.server(), String.t()) :: DynamicSupervisor.on_start_child()
   def start_channel_child(supervisor \\ __MODULE__, channel_name) do
     DynamicSupervisor.start_child(
