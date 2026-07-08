@@ -62,6 +62,7 @@ describe("SpaceCanvasHook implementation", () => {
       start: vi.fn(),
       applyDelta: vi.fn(),
       applySnapshot: vi.fn(),
+      receiveAction: vi.fn(),
       destroy: vi.fn(),
     };
     const channel = fakeChannel();
@@ -116,11 +117,12 @@ describe("SpaceCanvasHook implementation", () => {
     expect(init.snapshot.participants["registered:1"].nickname).toBe("alice");
   });
 
-  it("routes channel delta/snapshot events into the engine", () => {
+  it("routes channel delta/snapshot/action events into the engine", () => {
     const engine = {
       start: vi.fn(),
       applyDelta: vi.fn(),
       applySnapshot: vi.fn(),
+      receiveAction: vi.fn(),
       destroy: vi.fn(),
     };
     const channel = fakeChannel();
@@ -135,9 +137,15 @@ describe("SpaceCanvasHook implementation", () => {
     hook.mounted();
     channel.handlers.space_delta({ updates: {}, joined: {}, left: [] });
     channel.handlers.space_snapshot({ participants: {} });
+    channel.handlers.space_action({ key: "registered:2", kind: "sword", dir: "left" });
 
     expect(engine.applyDelta).toHaveBeenCalledOnce();
     expect(engine.applySnapshot).toHaveBeenCalledOnce();
+    expect(engine.receiveAction).toHaveBeenCalledWith({
+      key: "registered:2",
+      kind: "sword",
+      dir: "left",
+    });
   });
 
   it("tears down the engine, channel and socket on destroyed", () => {
@@ -145,6 +153,7 @@ describe("SpaceCanvasHook implementation", () => {
       start: vi.fn(),
       applyDelta: vi.fn(),
       applySnapshot: vi.fn(),
+      receiveAction: vi.fn(),
       destroy: vi.fn(),
     };
     const channel = fakeChannel();
@@ -211,5 +220,50 @@ describe("SpaceCanvasHook implementation", () => {
 
     hook.destroyed();
     expect(input.detach).toHaveBeenCalled();
+  });
+
+  it("plays a local attack and broadcasts a visual space action", () => {
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      destroy: vi.fn(),
+      performAction: vi.fn(),
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    let actionCb;
+    const input = {
+      attach: vi.fn(),
+      detach: vi.fn(),
+    };
+    const inputFactory = ({ onAction }) => {
+      actionCb = onAction;
+      return input;
+    };
+
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({
+          socketFactory: () => socket,
+          engineFactory: () => engine,
+          inputFactory,
+        }),
+      ),
+      mountContext(),
+    );
+
+    hook.mounted();
+
+    engine.performAction.mockReturnValueOnce({ acted: true, kind: "sword", dir: "down" });
+    actionCb("attack");
+    expect(channel.push).toHaveBeenCalledWith("space_action", { kind: "sword", dir: "down" });
+
+    channel.push.mockClear();
+    engine.performAction.mockReturnValueOnce({ acted: false });
+    actionCb("attack");
+    expect(channel.push).not.toHaveBeenCalled();
+
+    hook.destroyed();
   });
 });

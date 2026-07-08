@@ -21,7 +21,7 @@ function mockCtx() {
   };
 }
 
-function build() {
+function build(overrides = {}) {
   const ctx = mockCtx();
   const canvas = { width: 320, height: 240, getContext: () => ctx };
   const map = SpaceMap.from({
@@ -37,7 +37,7 @@ function build() {
   });
   const camera = new Camera({ tileSize: 16, scale: 2, mapWidth: 20, mapHeight: 15 });
   camera.setViewport(320, 240);
-  const atlas = {
+  const atlas = overrides.atlas ?? {
     tile: () => ({ canvas: {} }),
     avatar: () => ({ canvas: {} }),
   };
@@ -71,5 +71,34 @@ describe("Renderer speech bubbles", () => {
     const printed = ctx.fillText.mock.calls.map((c) => c[0]);
     // Only the nickname label is printed, no bubble body.
     expect(printed).toEqual(["alice"]);
+  });
+});
+
+describe("Renderer avatar actions", () => {
+  it("requests sword frames from the atlas while an action is active", () => {
+    const atlas = {
+      tile: () => null,
+      avatar: vi.fn(() => null),
+      avatarFrameCount: vi.fn(() => 4),
+    };
+    const { renderer } = build({ atlas });
+    const participants = new Map([
+      [
+        "registered:1",
+        {
+          key: "registered:1",
+          nickname: "alice",
+          avatar: "redtunic_hero",
+          x: 5,
+          y: 5,
+          dir: "down",
+          action: { kind: "sword", dir: "left", startedAt: 0, duration: 420 },
+        },
+      ],
+    ]);
+
+    renderer.draw({ participants, selfKey: "registered:1", bubbles: new Map(), now: 210 });
+
+    expect(atlas.avatar).toHaveBeenCalledWith("redtunic_hero", "left", 2, "sword");
   });
 });

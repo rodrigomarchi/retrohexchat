@@ -14,9 +14,9 @@ into the map payload anymore.
 - **Tile vocabulary** — `RetroHexChat.VirtualSpace.Maps.Overworld` (Elixir) maps
   semantic tile names (`grass`, `tree`, `pond_c`, `cliff_face`…) to a source
   rectangle `{ts, col, row, w, h}` on a sheet. Maps reference tiles by name.
-- **Avatars** — sliced from `character.png` by the client atlas
-  (`js/lib/space/sprite_atlas.js`): 16×32 sprites, four facings, four frames per
-  character block.
+- **Avatar** — sliced from `character.png` by the client atlas
+  (`js/lib/space/sprite_atlas.js`): one red-tunic hero, 16×32 sprites, four
+  facings, four walk frames per facing, and two four-frame sword variants.
 
 ## `manifest.json`
 

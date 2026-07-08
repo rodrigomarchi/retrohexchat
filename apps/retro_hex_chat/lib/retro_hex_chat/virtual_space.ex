@@ -28,6 +28,10 @@ defmodule RetroHexChat.VirtualSpace do
           :ok | {:ok, %{modal: map()}} | {:error, atom()}
   defdelegate interact(channel_name, participant_key, payload), to: ChannelSpaceServer
 
+  @spec action(String.t(), String.t(), ChannelSpaceServer.action_payload()) ::
+          :ok | {:error, atom()}
+  defdelegate action(channel_name, participant_key, payload), to: ChannelSpaceServer
+
   @spec leave_channel_space_viewer(String.t()) :: :ok
   defdelegate leave_channel_space_viewer(channel_name),
     to: ChannelSpaceServer,

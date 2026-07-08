@@ -1,3 +1,4 @@
+import { log } from "./logger.js";
 import { t, jt } from "./i18n.js";
 import { gameColor } from "./game_colors.js";
 /**
@@ -75,7 +76,7 @@ export class GameEngine {
       } catch (error) {
         // Channel closed between readyState check and send — expected during
         // teardown, so debug (not warn) to avoid per-frame noise.
-        console.debug("[GameEngine] DataChannel send failed", error);
+        log.debug("[GameEngine] DataChannel send failed", error);
       }
     }
   }

@@ -5,6 +5,7 @@
  * file_transfer.js pure logic module and LiveView pushEvent calls.
  * MUST NOT contain transfer protocol logic.
  */
+import { log } from "../../lib/logger.js";
 import {
   MSG,
   STATE,
@@ -208,7 +209,7 @@ const FileTransferHook = {
       const buffer = await readFileAsArrayBuffer(file);
       sha256 = await computeHash(buffer);
     } catch (error) {
-      console.error("[P2P] file read/hash failed", error);
+      log.error("[P2P] file read/hash failed", error);
       this.pushEvent("ft_validation_error", {
         error: t("Could not read the selected file. Please try another file."),
       });
@@ -248,7 +249,7 @@ const FileTransferHook = {
   // --- DataChannel Message Handling ---
 
   _failTransfer(reason, error) {
-    if (error) console.error("[P2P] file transfer error", error);
+    if (error) log.error("[P2P] file transfer error", error);
     this.pushEvent("ft_failed", { reason });
   },
 

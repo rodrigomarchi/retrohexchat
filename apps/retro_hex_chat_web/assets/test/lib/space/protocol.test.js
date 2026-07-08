@@ -7,6 +7,7 @@ import {
   normalizeSpaceInit,
   normalizeSnapshot,
   normalizeDelta,
+  normalizeAction,
   normalizeParticipant,
 } from "../../../js/lib/space/protocol.js";
 
@@ -22,9 +23,11 @@ describe("protocol constants", () => {
   it("names the client→server and server→client events", () => {
     expect(CLIENT_EVENTS.INPUT).toBe("space_input");
     expect(CLIENT_EVENTS.INTERACT).toBe("space_interact");
+    expect(CLIENT_EVENTS.ACTION).toBe("space_action");
     expect(SERVER_EVENTS.DELTA).toBe("space_delta");
     expect(SERVER_EVENTS.SNAPSHOT).toBe("space_snapshot");
     expect(SERVER_EVENTS.MESSAGE).toBe("space_message");
+    expect(SERVER_EVENTS.ACTION).toBe("space_action");
   });
 });
 
@@ -133,5 +136,31 @@ describe("normalizeDelta", () => {
     expect(delta.joined).toEqual({});
     expect(delta.left).toEqual([]);
     expect(delta.seqAck).toEqual({});
+  });
+});
+
+describe("normalizeAction", () => {
+  it("normalizes a visual action broadcast", () => {
+    const action = normalizeAction({
+      server_time: 300,
+      key: "registered:1",
+      kind: "sword",
+      dir: "left",
+    });
+
+    expect(action).toEqual({
+      serverTime: 300,
+      key: "registered:1",
+      kind: "sword",
+      dir: "left",
+    });
+  });
+
+  it("falls back safely for malformed action payloads", () => {
+    const action = normalizeAction({ kind: "unknown", dir: "diagonal" });
+
+    expect(action.key).toBe(null);
+    expect(action.kind).toBe("sword");
+    expect(action.dir).toBe("down");
   });
 });

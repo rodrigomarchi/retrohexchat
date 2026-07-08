@@ -94,22 +94,25 @@ describe("InputController", () => {
     expect(intents).toHaveLength(0);
   });
 
-  it("emits action intents for e (interact) and f (sit), coalesced and focus-aware", () => {
+  it("emits action intents for Space (attack), e (interact) and f (sit), coalesced and focus-aware", () => {
     const actions = [];
     const c = new InputController({ onAction: (a) => actions.push(a) });
     c.attach();
 
+    window.dispatchEvent(keydown(" "));
+    window.dispatchEvent(keydown(" ")); // auto-repeat coalesced
+    window.dispatchEvent(keyup(" "));
     window.dispatchEvent(keydown("e"));
     window.dispatchEvent(keydown("e")); // auto-repeat coalesced
     window.dispatchEvent(keyup("e"));
     window.dispatchEvent(keydown("f"));
-    expect(actions).toEqual(["interact", "sit"]);
+    expect(actions).toEqual(["attack", "interact", "sit"]);
 
     const field = document.createElement("textarea");
     document.body.appendChild(field);
     field.focus();
-    window.dispatchEvent(keydown("e"));
-    expect(actions).toHaveLength(2);
+    window.dispatchEvent(keydown(" "));
+    expect(actions).toHaveLength(3);
 
     field.remove();
     c.detach();

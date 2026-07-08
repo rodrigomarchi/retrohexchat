@@ -262,3 +262,62 @@ describe("SpaceEngine local prediction and reconciliation", () => {
     expect(settled.x).toBe(9);
   });
 });
+
+describe("SpaceEngine visual actions", () => {
+  it("performs a local sword action and expires it from rendered state", () => {
+    const { engine, renderer, scheduler } = buildEngine();
+    let clock = 1000;
+    engine.setClock(() => clock);
+    engine.start(tavernInit());
+
+    expect(engine.performAction("sword")).toEqual({ acted: true, kind: "sword", dir: "down" });
+
+    scheduler.flush();
+    let state = renderer.draw.mock.calls.at(-1)[0];
+    expect(state.participants.get("registered:1").action).toMatchObject({
+      kind: "sword",
+      dir: "down",
+      startedAt: 1000,
+    });
+    expect(engine.performAction("sword")).toEqual({ acted: false });
+    expect(engine.receiveAction({ key: "registered:1", kind: "sword", dir: "left" })).toBe(false);
+
+    clock += 500;
+    scheduler.flush();
+    state = renderer.draw.mock.calls.at(-1)[0];
+    expect(state.participants.get("registered:1").action).toBe(null);
+  });
+
+  it("records a remote sword action by participant key", () => {
+    const { engine, renderer, scheduler } = buildEngine();
+    const clock = 50;
+    engine.setClock(() => clock);
+    engine.start(tavernInit());
+
+    expect(engine.receiveAction({ key: "registered:2", kind: "sword", dir: "left" })).toBe(true);
+
+    scheduler.flush();
+    const state = renderer.draw.mock.calls.at(-1)[0];
+    expect(state.participants.get("registered:2").action).toMatchObject({
+      kind: "sword",
+      dir: "left",
+      startedAt: 50,
+    });
+  });
+
+  it("does not perform an unknown action or swing while sitting", () => {
+    const { engine } = buildEngine();
+    engine.start(
+      tavernInit({
+        snapshot: {
+          participants: {
+            "registered:1": { nickname: "alice", x: 5, y: 5, dir: "down", pose: "sitting" },
+          },
+        },
+      }),
+    );
+
+    expect(engine.performAction("dance")).toEqual({ acted: false });
+    expect(engine.performAction("sword")).toEqual({ acted: false });
+  });
+});

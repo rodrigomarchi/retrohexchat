@@ -58,6 +58,15 @@ defmodule RetroHexChatWeb.SpaceChannel do
     {:noreply, socket}
   end
 
+  def handle_in("space_action", payload, socket) do
+    with %{space_channel_name: channel_name, participant_key: key} <- socket.assigns,
+         {:ok, action} <- parse_action(payload) do
+      VirtualSpace.action(channel_name, key, action)
+    end
+
+    {:noreply, socket}
+  end
+
   def handle_in(_event, _payload, socket) do
     {:noreply, socket}
   end
@@ -108,6 +117,15 @@ defmodule RetroHexChatWeb.SpaceChannel do
   defp parse_interact(%{"kind" => "stand"}), do: {:ok, %{kind: "stand", target_id: nil}}
 
   defp parse_interact(_), do: :error
+
+  defp parse_action(%{"kind" => "sword", "dir" => dir})
+       when dir in ["up", "down", "left", "right"] do
+    {:ok, %{kind: "sword", dir: dir}}
+  end
+
+  defp parse_action(%{"kind" => "sword"}), do: {:ok, %{kind: "sword"}}
+
+  defp parse_action(_), do: :error
 
   defp build_channel_actor(data) do
     %{

@@ -7,6 +7,7 @@
  * (element id "lobby-webrtc") so a game can run alongside an active call and
  * file transfer.
  */
+import { log } from "../../lib/logger.js";
 import { GameEngine } from "../../lib/game_engine.js";
 
 async function loadEngineClass(gameId) {
@@ -134,7 +135,7 @@ const LobbyGameCanvasHook = {
     try {
       engine = await createEngine(canvas, this.channel, this._gameId, isHost, onGameEnd);
     } catch (error) {
-      console.error("[LobbyGameCanvasHook] failed to load game engine", error);
+      log.error("[LobbyGameCanvasHook] failed to load game engine", error);
       this.pushEvent("lobby_game_error", { game_id: this._gameId });
       return;
     } finally {

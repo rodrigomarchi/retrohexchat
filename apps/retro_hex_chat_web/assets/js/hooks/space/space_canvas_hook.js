@@ -10,6 +10,7 @@
  *
  * @module hooks/space/space_canvas_hook
  */
+import { log } from "../../lib/logger.js";
 import { Socket } from "phoenix";
 
 import { SpaceEngine } from "../../lib/space/engine.js";
@@ -80,10 +81,10 @@ export function createSpaceCanvasHook(deps = {}) {
         .join()
         .receive("ok", (reply) => this._engine.start(normalizeSpaceInit(reply)))
         .receive("error", (reply) => {
-          console.error("[space] channel join rejected", reply);
+          log.error("[space] channel join rejected", reply);
         })
         .receive("timeout", () => {
-          console.error("[space] channel join timed out");
+          log.error("[space] channel join timed out");
         });
     },
 
@@ -117,8 +118,17 @@ export function createSpaceCanvasHook(deps = {}) {
     },
 
     // Action keys resolve a target from the avatar's facing and ask the server;
-    // the server is authoritative on whether the sit/use succeeds.
+    // the server is authoritative on whether sit/use succeeds. Attack is
+    // visual-only: play locally for responsiveness, then broadcast to peers.
     _onAction(action) {
+      if (action === "attack") {
+        const result = this._engine?.performAction?.("sword");
+        if (result?.acted) {
+          this._channel?.push(CLIENT_EVENTS.ACTION, { kind: result.kind, dir: result.dir });
+        }
+        return;
+      }
+
       const self = this._engine?.self();
       const map = this._engine?.map;
       if (!self || !map) return;
@@ -143,10 +153,11 @@ export function createSpaceCanvasHook(deps = {}) {
     },
 
     _wireChannelEvents(channel) {
-      channel.on(SERVER_EVENTS.SNAPSHOT, (payload) => this._engine?.applySnapshot(payload));
-      channel.on(SERVER_EVENTS.DELTA, (payload) => this._engine?.applyDelta(payload));
-      channel.on(SERVER_EVENTS.MESSAGE, (payload) => this._engine?.receiveMessage(payload));
+      channel.on(SERVER_EVENTS.SNAPSHOT, (payload) => this._engine?.applySnapshot?.(payload));
+      channel.on(SERVER_EVENTS.DELTA, (payload) => this._engine?.applyDelta?.(payload));
+      channel.on(SERVER_EVENTS.MESSAGE, (payload) => this._engine?.receiveMessage?.(payload));
       channel.on(SERVER_EVENTS.MODAL, (payload) => this._modal?.open(payload));
+      channel.on(SERVER_EVENTS.ACTION, (payload) => this._engine?.receiveAction?.(payload));
     },
 
     // Match the canvas backing store to its CSS box, then let the engine

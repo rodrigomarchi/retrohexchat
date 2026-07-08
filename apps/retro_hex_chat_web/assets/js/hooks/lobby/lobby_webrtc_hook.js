@@ -12,6 +12,7 @@
  * renegotiation is only ever triggered by media tracks — this avoids glare
  * between "user toggles video" and "game channel opens".
  */
+import { log } from "../../lib/logger.js";
 import {
   createPeerConnection,
   addIceCandidate,
@@ -158,7 +159,7 @@ const LobbyWebRTCHook = {
       }
     } catch (error) {
       this.negotiating = false;
-      console.warn("[Lobby] Failed to apply remote description", error);
+      log.warn("[Lobby] Failed to apply remote description", error);
     }
   },
 
@@ -216,7 +217,7 @@ const LobbyWebRTCHook = {
       });
     } catch (error) {
       this.negotiating = false;
-      console.warn("[Lobby] Failed to create offer", error);
+      log.warn("[Lobby] Failed to create offer", error);
     }
   },
 
@@ -246,7 +247,7 @@ const LobbyWebRTCHook = {
     try {
       await addIceCandidate(this.pc, data.candidate);
     } catch (error) {
-      console.warn("[Lobby] Failed to add ICE candidate", error);
+      log.warn("[Lobby] Failed to add ICE candidate", error);
     }
   },
 
@@ -260,7 +261,7 @@ const LobbyWebRTCHook = {
       try {
         await addIceCandidate(this.pc, candidate);
       } catch (error) {
-        console.warn("[Lobby] Failed to flush ICE candidate", error);
+        log.warn("[Lobby] Failed to flush ICE candidate", error);
       }
     }
   },
@@ -297,7 +298,7 @@ const LobbyWebRTCHook = {
     onConnectionStateChange(this.pc, (state) => this._handleConnectionStateChange(state));
 
     this.pc.onicecandidateerror = (event) => {
-      console.warn("[Lobby] ICE candidate error", event.errorCode, event.errorText);
+      log.warn("[Lobby] ICE candidate error", event.errorCode, event.errorText);
     };
 
     // A local track change (e.g. this peer turned on its camera) needs a fresh
@@ -429,7 +430,7 @@ const LobbyWebRTCHook = {
   },
 
   _failConnection(phase, error) {
-    console.error(`[Lobby] connection ${phase} failed`, error);
+    log.error(`[Lobby] connection ${phase} failed`, error);
     this.pushEvent("lobby_failed", { reason: `${phase}_failed` });
   },
 
@@ -463,7 +464,7 @@ const LobbyWebRTCHook = {
       this._statsPrev = snapshot;
       this.pushEvent("lobby_stats", stats);
     } catch (error) {
-      console.warn("[Lobby] Failed to sample stats", error);
+      log.warn("[Lobby] Failed to sample stats", error);
     }
   },
 

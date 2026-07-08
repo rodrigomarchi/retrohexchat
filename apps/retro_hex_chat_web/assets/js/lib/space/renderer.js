@@ -106,8 +106,13 @@ export class Renderer {
   }
 
   _drawAvatar(ctx, participant, now) {
-    const frame = this._walkFrame(participant, now);
-    const sprite = this.atlas?.avatar(participant.avatar, participant.dir, frame);
+    const action = participant.action?.kind === "sword" ? participant.action : null;
+    const actionKind = action ? "sword" : "walk";
+    const dir = action?.dir ?? participant.dir;
+    const frame = action
+      ? this._actionFrame(participant, action, now)
+      : this._walkFrame(participant, now);
+    const sprite = this.atlas?.avatar(participant.avatar, dir, frame, actionKind);
     if (!sprite) return;
     const { x, y } = this._avatarScreenPos(participant);
     // A tall sprite (2 tiles) sits with its feet on the tile, head rising above;
@@ -149,6 +154,13 @@ export class Renderer {
     }
     this._motion.set(key, m);
     return now - m.t < 180 ? Math.floor(now / 130) % 4 : 0;
+  }
+
+  _actionFrame(participant, action, now) {
+    const frames = this.atlas?.avatarFrameCount?.(participant.avatar, action.kind) ?? 1;
+    const duration = Math.max(action.duration ?? 1, 1);
+    const elapsed = Math.max(now - action.startedAt, 0);
+    return Math.min(frames - 1, Math.floor((elapsed / duration) * frames));
   }
 
   _drawLabel(ctx, participant) {

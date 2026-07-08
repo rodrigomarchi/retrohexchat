@@ -190,13 +190,19 @@ function checkDynamicImports(failures) {
   for (const file of listFiles(JS_ROOT, (filename) => filename.endsWith(".js"))) {
     const rel = assetRel(file);
     const source = fs.readFileSync(file, "utf8");
-    if (!source.includes("import(")) continue;
+    const executableSource = stripComments(source);
+
+    if (!/\bimport\s*\(/.test(executableSource)) continue;
     if (!ALLOWED_DYNAMIC_IMPORT_FILES.has(rel)) {
       failures.push(
         `${rel} uses import(); dynamic imports must be added to the approved allowlist.`,
       );
     }
   }
+}
+
+function stripComments(source) {
+  return source.replace(/\/\*[\s\S]*?\*\//g, "").replace(/(^|[^:])\/\/.*$/gm, "$1");
 }
 
 function parseHookObjectKeys(source, exportName, failures) {

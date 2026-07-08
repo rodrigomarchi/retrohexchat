@@ -7,6 +7,7 @@
  * Host is authoritative: runs physics at 60fps, broadcasts state ~30Hz.
  * Peer sends input only and renders received state.
  */
+import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import {
@@ -561,7 +562,7 @@ export class HexHockeyEngine extends GameEngine {
         });
       } catch (error) {
         // The disconnect result callback (pushEvent) threw — do not lose it.
-        console.debug("[GameEngine] game-end callback failed", error);
+        log.debug("[GameEngine] game-end callback failed", error);
       }
     }
   }

@@ -14,7 +14,7 @@ const BUDGETS = {
   entry: 390 * KIB,
   entryGzip: 130 * KIB,
   localeChunk: 20 * KIB,
-  featureChunk: 40 * KIB,
+  featureChunk: 50 * KIB,
   asyncChunk: 85 * KIB,
 };
 

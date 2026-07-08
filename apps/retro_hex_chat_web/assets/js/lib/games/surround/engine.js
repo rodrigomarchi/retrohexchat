@@ -4,6 +4,7 @@
  * Two-loop design: 10Hz physics ticks + 60fps rendering.
  * @module games/surround_engine
  */
+import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import {
@@ -397,7 +398,7 @@ export class SurroundEngine extends GameEngine {
         });
       } catch (error) {
         // The disconnect result callback (pushEvent) threw — do not lose it.
-        console.debug("[GameEngine] game-end callback failed", error);
+        log.debug("[GameEngine] game-end callback failed", error);
       }
     }
   }

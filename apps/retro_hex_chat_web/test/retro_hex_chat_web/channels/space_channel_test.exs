@@ -222,6 +222,29 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
     end
   end
 
+  describe "visual actions" do
+    test "a space_action sword push broadcasts a visual action without moving the participant" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "alice")
+
+      assert {:ok, init, socket} = join_channel_space(channel, "alice")
+      self_key = init.self_key
+      %{x: x0, y: y0} = init.snapshot.participants[self_key]
+
+      push(socket, "space_action", %{"kind" => "sword", "dir" => "left"})
+
+      assert_push "space_action", %{
+        key: ^self_key,
+        kind: "sword",
+        dir: "left"
+      }
+
+      {:ok, state} = ChannelSpaceServer.get_state(channel)
+      assert {state.participants[self_key].x, state.participants[self_key].y} == {x0, y0}
+    end
+  end
+
   describe "interactions" do
     test "a space_interact use on a board pushes a space_modal to the requester" do
       channel = unique_channel()

@@ -1,6 +1,11 @@
 import { describe, it, expect } from "vitest";
 
-import { createSpriteAtlas, AVATAR_IDS, DIRECTIONS } from "../../../js/lib/space/sprite_atlas.js";
+import {
+  createSpriteAtlas,
+  AVATAR_IDS,
+  AVATAR_ACTIONS,
+  DIRECTIONS,
+} from "../../../js/lib/space/sprite_atlas.js";
 
 const TILESETS = [
   { id: "overworld", src: "/images/space/overworld.png", tile: 16, columns: 40 },
@@ -20,9 +25,9 @@ function loadedAtlas() {
 }
 
 describe("sprite atlas contract", () => {
-  it("declares four avatar ids and the four facings", () => {
-    expect(AVATAR_IDS.length).toBe(4);
-    expect(AVATAR_IDS).toContain("rogue_red");
+  it("declares the single red-tunic avatar, its actions, and the four facings", () => {
+    expect(AVATAR_IDS).toEqual(["redtunic_hero"]);
+    expect(AVATAR_ACTIONS).toEqual(["walk", "sword"]);
     expect(DIRECTIONS).toEqual(["down", "up", "left", "right"]);
   });
 
@@ -57,15 +62,38 @@ describe("sprite atlas contract", () => {
     expect(atlas.hasTile("nope")).toBe(false);
   });
 
-  it("slices the character sheet per avatar, facing and frame", () => {
+  it("slices the red-tunic hero walk and sword frames by facing", () => {
     const atlas = loadedAtlas();
-    // rogue_red block is at (0,0); down = row 0, frame 0 = col 0.
-    expect(atlas.avatar("rogue_red", "down", 0)).toMatchObject({ sx: 0, sy: 0, sw: 16, sh: 32 });
+    // Walk block is at (0,0); down = row 0, frame 0 = col 0.
+    expect(atlas.avatar("redtunic_hero", "down", 0)).toMatchObject({
+      sx: 0,
+      sy: 0,
+      sw: 16,
+      sh: 32,
+    });
     // up = row offset 4, frame 1 = col 1.
-    expect(atlas.avatar("rogue_red", "up", 1)).toMatchObject({ sx: 16, sy: 64 });
-    // mage_green is remapped to a complete walking block; rows 8+ are weapon poses.
-    expect(atlas.avatar("mage_green", "right", 0)).toMatchObject({ sx: 144, sy: 32 });
-    expect(atlas.avatar("mage_blue", "left", 0)).toMatchObject({ sx: 80, sy: 96 });
+    expect(atlas.avatar("redtunic_hero", "up", 1)).toMatchObject({ sx: 16, sy: 64 });
+    // Sword block starts at row 8 and uses its own row order: down/up/right/left.
+    expect(atlas.avatar("redtunic_hero", "down", 2, "sword")).toMatchObject({
+      sx: 32,
+      sy: 128,
+      sw: 16,
+      sh: 32,
+    });
+    expect(atlas.avatar("redtunic_hero", "right", 3, "sword")).toMatchObject({
+      sx: 48,
+      sy: 192,
+    });
+    expect(atlas.avatar("redtunic_hero", "up", 1, "sword")).toMatchObject({
+      sx: 16,
+      sy: 160,
+    });
+    expect(atlas.avatar("redtunic_hero", "left", 3, "sword")).toMatchObject({
+      sx: 48,
+      sy: 224,
+    });
+    expect(atlas.avatarFrameCount("redtunic_hero", "walk")).toBe(4);
+    expect(atlas.avatarFrameCount("redtunic_hero", "sword")).toBe(4);
   });
 
   it("falls back to the default block for an unknown avatar id", () => {
@@ -75,7 +103,7 @@ describe("sprite atlas contract", () => {
 
   it("returns null for an avatar before the character sheet loads", () => {
     const atlas = createSpriteAtlas();
-    expect(atlas.avatar("rogue_red", "down")).toBe(null);
+    expect(atlas.avatar("redtunic_hero", "down")).toBe(null);
   });
 
   it("draws board modal art for a known asset id", () => {

@@ -20,6 +20,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   alias RetroHexChat.VirtualSpace.Registry
 
   @pubsub RetroHexChat.PubSub
+  @action_cooldown_ms 250
 
   @type participant :: %{
           key: String.t(),
@@ -35,6 +36,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           online?: boolean(),
           muted?: boolean(),
           input_seq: integer(),
+          last_action_at: integer() | nil,
           joined_at: DateTime.t(),
           last_seen_at: DateTime.t()
         }
@@ -91,6 +93,22 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           | {:error, :not_found | :not_participant | :invalid_target | :too_far | :seat_taken}
   def interact(channel_name, participant_key, payload) do
     call(channel_name, {:interact, participant_key, payload})
+  end
+
+  @type action_payload :: %{
+          required(:kind) => String.t(),
+          optional(:dir) => String.t()
+        }
+
+  @type action_error ::
+          :not_found
+          | :not_participant
+          | :invalid_action
+          | :cooldown
+
+  @spec action(String.t(), String.t(), action_payload()) :: :ok | {:error, action_error()}
+  def action(channel_name, participant_key, payload) do
+    call(channel_name, {:action, participant_key, payload})
   end
 
   @spec leave(String.t(), String.t()) :: :ok
@@ -199,6 +217,13 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   def handle_call({:interact, key, payload}, _from, state) do
     do_interact(state, key, payload)
+  end
+
+  def handle_call({:action, key, payload}, _from, state) do
+    case apply_action(state, key, payload) do
+      {:ok, state} -> {:reply, :ok, state}
+      {:error, reason, state} -> {:reply, {:error, reason}, state}
+    end
   end
 
   @impl true
@@ -336,6 +361,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         muted?: false,
         input_seq: 0,
         last_input_at: nil,
+        last_action_at: nil,
         chat_times: [],
         joined_at: DateTime.utc_now(),
         last_seen_at: DateTime.utc_now()
@@ -539,6 +565,45 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   defp do_interact(state, _key, _payload), do: {:reply, {:error, :invalid_target}, state}
 
+  # --- Visual actions (no hitbox / no damage) ---
+
+  defp apply_action(state, key, %{kind: "sword"} = payload) do
+    participant = Map.get(state.participants, key)
+
+    cond do
+      not active_participant?(participant) ->
+        {:error, :not_participant, state}
+
+      participant.pose != "standing" ->
+        {:error, :invalid_action, state}
+
+      not action_cooldown_elapsed?(participant) ->
+        {:error, :cooldown, state}
+
+      true ->
+        participant = Map.put(participant, :last_action_at, mono_ms())
+        state = put_in(state.participants[key], participant)
+        broadcast_action(state, key, participant, "sword", Map.get(payload, :dir))
+        {:ok, state}
+    end
+  end
+
+  defp apply_action(state, _key, _payload), do: {:error, :invalid_action, state}
+
+  defp broadcast_action(state, key, participant, kind, dir) do
+    broadcast(state.channel_name, "space_action", %{
+      server_time: System.system_time(:millisecond),
+      key: key,
+      kind: kind,
+      dir: valid_dir(dir) || participant.dir
+    })
+
+    state
+  end
+
+  defp valid_dir(dir) when dir in ["up", "down", "left", "right"], do: dir
+  defp valid_dir(_), do: nil
+
   defp sit(state, key, participant, seat) do
     state = free_seat(state, participant)
 
@@ -629,6 +694,13 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     case participant.last_input_at do
       nil -> true
       last -> mono_ms() - last >= step_ms()
+    end
+  end
+
+  defp action_cooldown_elapsed?(participant) do
+    case Map.get(participant, :last_action_at) do
+      nil -> true
+      last -> mono_ms() - last >= @action_cooldown_ms
     end
   end
 
@@ -735,9 +807,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     in_bounds?(state.map, x, y) and not MapSet.member?(state.blocked, {x, y})
   end
 
-  # Deterministic avatar assignment so a reconnect keeps the same look and two
-  # people rarely clash. Must stay in sync with `AVATAR_IDS` in the JS atlas.
-  @avatars ~w(mage_blue mage_green rogue_red bard_gold)
+  # Deterministic avatar assignment. Must stay in sync with `AVATAR_IDS` in the JS atlas.
+  @avatars ~w(redtunic_hero)
   defp avatar_for(state, key) do
     index = rem(:erlang.phash2(key), length(@avatars))
 

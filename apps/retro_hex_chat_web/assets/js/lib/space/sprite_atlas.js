@@ -14,23 +14,24 @@ const HASH = String.fromCharCode(35);
 export const DIRECTIONS = Object.freeze(["down", "up", "left", "right"]);
 
 // Row offset (in tiles) of each facing inside a character block on the sheet.
-const DIR_ROW = Object.freeze({ down: 0, right: 2, up: 4, left: 6 });
+const WALK_DIR_ROW = Object.freeze({ down: 0, right: 2, up: 4, left: 6 });
+const SWORD_DIR_ROW = Object.freeze({ down: 0, up: 2, right: 4, left: 6 });
 
-// Avatars are sliced from the walking blocks at the top of `character.png`
-// (16×32 sprites, 4 frames per facing). Rows 8+ are weapon/action poses, not
-// walking blocks, and produce half-body frames when used with DIR_ROW.
+// Avatars are sliced from `character.png` as 16×32 sprites. The sheet contains
+// one red-tunic hero: rows 0-7 are walk cycles, rows 8-15 are sword attacks.
 const AVATAR_SHEET = "character";
 const AVATAR_W = 16;
 const AVATAR_H = 32;
+const DEFAULT_AVATAR_ID = "redtunic_hero";
 const AVATAR_BLOCKS = Object.freeze({
-  rogue_red: { col: 0, row: 0, frames: [0, 1, 2, 3] },
-  mage_blue: { col: 5, row: 0, frames: [0, 1, 2, 3] },
-  mage_green: { col: 9, row: 0, frames: [0, 1, 2, 3] },
-  // This block's walk frames sit in columns 1–3; cycle them for a 4-step gait.
-  bard_gold: { col: 4, row: 0, frames: [1, 2, 3, 2] },
+  redtunic_hero: {
+    walk: { col: 0, row: 0, frames: [0, 1, 2, 3], dirRow: WALK_DIR_ROW },
+    sword: { col: 0, row: 8, frames: [0, 1, 2, 3], dirRow: SWORD_DIR_ROW },
+  },
 });
 
 export const AVATAR_IDS = Object.freeze(Object.keys(AVATAR_BLOCKS));
+export const AVATAR_ACTIONS = Object.freeze(["walk", "sword"]);
 
 /**
  * @param {{tileSize?: number, scale?: number, onReady?: Function}} [opts]
@@ -81,15 +82,16 @@ export function createSpriteAtlas(opts = {}) {
     return { img: sheet.img, sx: spec.col * t, sy: spec.row * t, sw: w * t, sh: h * t };
   }
 
-  function avatar(id, dir, frame = 0) {
-    const block = AVATAR_BLOCKS[id] ?? AVATAR_BLOCKS.rogue_red;
+  function avatar(id, dir, frame = 0, action = "walk") {
+    const avatarBlock = AVATAR_BLOCKS[id] ?? AVATAR_BLOCKS[DEFAULT_AVATAR_ID];
+    const block = avatarBlock[action] ?? avatarBlock.walk;
     const sheet = sheets.get(AVATAR_SHEET);
     if (!sheet) return null;
     const direction = DIRECTIONS.includes(dir) ? dir : "down";
     const frames = block.frames;
     const idx = ((Math.trunc(frame) % frames.length) + frames.length) % frames.length;
     const col = block.col + frames[idx];
-    const row = block.row + DIR_ROW[direction];
+    const row = block.row + block.dirRow[direction];
     return { img: sheet.img, sx: col * 16, sy: row * 16, sw: AVATAR_W, sh: AVATAR_H };
   }
 
@@ -102,6 +104,11 @@ export function createSpriteAtlas(opts = {}) {
     },
     tile,
     avatar,
+    avatarFrameCount(id, action = "walk") {
+      const avatarBlock = AVATAR_BLOCKS[id] ?? AVATAR_BLOCKS[DEFAULT_AVATAR_ID];
+      const block = avatarBlock[action] ?? avatarBlock.walk;
+      return block.frames.length;
+    },
     // Notice-board modal art. This is illustration data (like the SVG icons the
     // style audit excludes); the palette lives here as hex digits with `#`
     // assembled via HASH to stay clear of the JS colour audit.

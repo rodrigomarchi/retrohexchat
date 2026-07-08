@@ -17,8 +17,11 @@ const KEY_MAP = {
   d: { dx: 1, dy: 0, dir: "right" },
 };
 
-// Non-movement action keys: interact with a board / sit on a chair.
+// Non-movement action keys: interact with a board / sit on a chair / swing.
 const ACTION_MAP = {
+  " ": "attack",
+  Space: "attack",
+  Spacebar: "attack",
   e: "interact",
   f: "sit",
 };

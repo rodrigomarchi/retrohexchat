@@ -11,12 +11,19 @@
  * @module space/engine
  */
 
-import { normalizeParticipant, normalizeSnapshot, normalizeDelta } from "./protocol.js";
+import {
+  normalizeParticipant,
+  normalizeSnapshot,
+  normalizeDelta,
+  normalizeAction,
+} from "./protocol.js";
 import { SpaceMap } from "./map.js";
 import { Camera } from "./camera.js";
 import { Renderer } from "./renderer.js";
 import { Interpolator } from "./interpolation.js";
 import { ChatState } from "./chat.js";
+
+const ACTION_DURATION_MS = 420;
 
 export class SpaceEngine {
   /**
@@ -49,6 +56,8 @@ export class SpaceEngine {
     this._interp = new Interpolator();
     // Ephemeral speech bubbles derived from public channel messages.
     this._chat = new ChatState();
+    // Ephemeral visual-only actions such as sword swings.
+    this._actions = new Map();
     this._clock = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
 
     this.running = false;
@@ -99,6 +108,7 @@ export class SpaceEngine {
     this.participants = new Map();
     this._pending = [];
     this._interp = new Interpolator();
+    this._actions.clear();
 
     for (const [key, participant] of Object.entries(normalized.participants)) {
       this.participants.set(key, participant);
@@ -123,6 +133,7 @@ export class SpaceEngine {
     for (const key of normalized.left) {
       this.participants.delete(key);
       this._interp.remove(key);
+      this._actions.delete(key);
     }
 
     for (const [key, participant] of Object.entries(normalized.joined)) {
@@ -172,6 +183,50 @@ export class SpaceEngine {
   /** Record an incoming `space_message` as a speech bubble. */
   receiveMessage(message) {
     this._chat.receive(message, this._clock());
+  }
+
+  /**
+   * Trigger a local visual action for the current participant.
+   * @param {string} kind
+   * @returns {{acted:boolean, kind?:string, dir?:string}}
+   */
+  performAction(kind) {
+    const self = this.self();
+    if (!self || self.pose !== "standing") return { acted: false };
+    if (kind !== "sword") return { acted: false };
+    if (this._activeAction(self.key, this._clock())) return { acted: false };
+
+    this.triggerAction({ key: self.key, kind, dir: self.dir });
+    return { acted: true, kind, dir: self.dir };
+  }
+
+  /** Record an incoming `space_action` as a visual animation. */
+  receiveAction(action) {
+    const normalized = normalizeAction(action);
+    if (normalized.key === this.selfKey && this._activeAction(normalized.key, this._clock())) {
+      return false;
+    }
+    return this.triggerAction(normalized);
+  }
+
+  /**
+   * Start an ephemeral action animation for any known participant.
+   * @param {{key:string,kind:string,dir:string}} action
+   * @returns {boolean}
+   */
+  triggerAction(action) {
+    const normalized = normalizeAction(action);
+    const participant = normalized.key ? this.participants.get(normalized.key) : null;
+    if (!participant || participant.pose !== "standing") return false;
+    if (this._activeAction(normalized.key, this._clock())) return false;
+
+    this._actions.set(normalized.key, {
+      kind: normalized.kind,
+      dir: normalized.dir,
+      startedAt: this._clock(),
+      duration: ACTION_DURATION_MS,
+    });
+    return true;
   }
 
   /** @returns {Array} recent bubble events for diagnostics/tests. */
@@ -225,6 +280,7 @@ export class SpaceEngine {
     window.removeEventListener("resize", this._onResize);
     this.renderer?.destroy?.();
     this.participants.clear();
+    this._actions.clear();
   }
 
   // ── Internals ────────────────────────────────────────────────────
@@ -275,11 +331,26 @@ export class SpaceEngine {
     const bubbles = new Map();
     for (const [key, participant] of this.participants) {
       const pos = this.renderPosition(key, now);
-      rendered.set(key, { ...participant, x: pos.x, y: pos.y });
+      rendered.set(key, {
+        ...participant,
+        x: pos.x,
+        y: pos.y,
+        action: this._activeAction(key, now),
+      });
       const bubble = this._chat.bubble(key, now);
       if (bubble) bubbles.set(key, bubble.text);
     }
     this.renderer?.draw?.({ participants: rendered, selfKey: this.selfKey, bubbles, now });
+  }
+
+  _activeAction(key, now) {
+    const action = this._actions.get(key);
+    if (!action) return null;
+    if (now - action.startedAt >= action.duration) {
+      this._actions.delete(key);
+      return null;
+    }
+    return action;
   }
 
   _recenter() {

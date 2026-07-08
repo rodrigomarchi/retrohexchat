@@ -194,8 +194,6 @@ defmodule RetroHexChatWeb.ChanServChannelCentralFeatureTest do
     end
   end
 
-  defp cc(view, event, params \\ %{})
-
   defp cc(view, "channel_central_tab", %{"tab" => tab}) do
     view
     |> element("#channel-central-dialog-tabs .tabs-trigger[data-target='#{tab}']")

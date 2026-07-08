@@ -5,6 +5,7 @@
  * engine never has to null-check raw channel payloads.
  * @module space/protocol
  */
+import { log } from "../logger.js";
 
 export const PROTOCOL_VERSION = 1;
 
@@ -12,6 +13,7 @@ export const PROTOCOL_VERSION = 1;
 export const CLIENT_EVENTS = Object.freeze({
   INPUT: "space_input",
   INTERACT: "space_interact",
+  ACTION: "space_action",
 });
 
 /** Server → client event names (channel events). */
@@ -20,10 +22,12 @@ export const SERVER_EVENTS = Object.freeze({
   DELTA: "space_delta",
   MESSAGE: "space_message",
   MODAL: "space_modal",
+  ACTION: "space_action",
 });
 
 const DIRECTIONS = new Set(["up", "down", "left", "right"]);
 const POSES = new Set(["standing", "sitting"]);
+const ACTIONS = new Set(["sword"]);
 
 /**
  * Normalize a single participant record into a fully-populated object.
@@ -55,7 +59,7 @@ export function normalizeParticipant(key, raw = {}) {
  */
 export function normalizeSpaceInit(raw = {}) {
   if (isPresent(raw.version) && raw.version !== PROTOCOL_VERSION) {
-    console.error(
+    log.error(
       `[space] unknown protocol version ${raw.version} (expected ${PROTOCOL_VERSION}); ` +
         "attempting best-effort decode",
     );
@@ -94,6 +98,20 @@ export function normalizeDelta(raw = {}) {
     updates: normalizeUpdates(raw.updates),
     joined: normalizeParticipants(raw.joined),
     left: Array.isArray(raw.left) ? raw.left : [],
+  };
+}
+
+/**
+ * Normalize an ephemeral visual action broadcast.
+ * @param {object} raw
+ * @returns {{serverTime:number|null,key:string|null,kind:string,dir:string}}
+ */
+export function normalizeAction(raw = {}) {
+  return {
+    serverTime: raw.server_time ?? raw.serverTime ?? null,
+    key: typeof raw.key === "string" ? raw.key : null,
+    kind: ACTIONS.has(raw.kind) ? raw.kind : "sword",
+    dir: DIRECTIONS.has(raw.dir) ? raw.dir : "down",
   };
 }
 

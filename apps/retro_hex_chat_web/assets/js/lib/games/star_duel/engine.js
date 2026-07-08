@@ -4,6 +4,7 @@
  * Supports 3 game modes: Open Space, Gravity Well, Debris Field.
  * @module games/star_duel_engine
  */
+import { log } from "../../logger.js";
 
 import { GameEngine } from "../../game_engine.js";
 import {
@@ -641,7 +642,7 @@ export class StarDuelEngine extends GameEngine {
         });
       } catch (error) {
         // The disconnect result callback (pushEvent) threw — do not lose it.
-        console.debug("[GameEngine] game-end callback failed", error);
+        log.debug("[GameEngine] game-end callback failed", error);
       }
     }
   }
