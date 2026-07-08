@@ -58,24 +58,39 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCardTest do
   end
 
   describe "P2P lobby card" do
-    test "pending session shows the creator, a waiting step and a Join CTA" do
+    test "pending session shows the creator, the waiting step and the token metadata" do
       html = card(lobby(%{status: "pending"}))
 
       assert html =~ ~s(data-session-kind="lobby")
       assert html =~ ~s(data-session-status="pending")
+      assert html =~ ~s(data-session-token="tok123")
       assert html =~ "P2P lobby"
       assert html =~ "rodrigo"
       assert html =~ "01/01 14:10"
-      assert html =~ "Join"
-      assert html =~ ~s(href="/lobby/tok123")
+      # The session lives in the chat: no link out to a standalone page, and
+      # no accept buttons for a viewer who is not the invited peer.
+      refute html =~ ~s(href="/lobby/tok123")
+      refute html =~ "session-card-accept"
     end
 
-    test "connected session shows the connected time and an Open lobby CTA" do
+    test "pending session gives the invited peer the accept/decline buttons" do
+      html =
+        render_component(&SessionCard.session_card/1,
+          card: lobby(%{status: "pending"}),
+          timezone: "Etc/UTC",
+          viewer: "alice"
+        )
+
+      assert html =~ "session-card-accept"
+      assert html =~ "session-card-decline"
+    end
+
+    test "connected session shows the connected time and no CTA" do
       html = card(lobby(%{status: "connected", connected_at: @connected}))
 
       assert html =~ "01/01 14:13"
-      assert html =~ "Open lobby"
-      refute html =~ "Join"
+      refute html =~ "Open lobby"
+      refute html =~ "session-card-accept"
     end
 
     test "terminal session shows the close time, duration and reason, and drops the CTA" do

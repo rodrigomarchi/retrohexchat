@@ -263,6 +263,25 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, decline_invite(socket, token)}
   end
 
+  # The P2P menu without a session: teach the entry points and drop the
+  # inline help card for the full walkthrough.
+  def handle_event("p2p_how_to_start", _params, socket) do
+    socket =
+      socket
+      |> Messages.system_event(
+        dgettext(
+          "chat",
+          "Start a P2P session with /p2p <nick>, or right-click a user in the nicklist."
+        )
+      )
+      |> Messages.inline_help_event(
+        "feature-p2p-in-chat",
+        dgettext("chat", "P2P Sessions in Chat")
+      )
+
+    {:halt, socket}
+  end
+
   def handle_event("p2p_statusbar_click", _params, socket) do
     case socket.assigns.p2p_session do
       nil ->

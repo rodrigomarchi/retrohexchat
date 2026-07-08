@@ -329,13 +329,18 @@ export class LobbyPage {
   }
 }
 
-export async function openLobbyFromInvite(
+/**
+ * Opens the standalone lobby page directly by session token. The chat UI no
+ * longer links out to /lobby (the in-chat session is THE experience); the
+ * invite card carries the token as metadata, which these standalone-page
+ * tests use until F6 removes the page.
+ */
+export async function openLobbyByToken(
   sourcePage: Page,
-  inviteLink: Locator,
+  token: string,
 ): Promise<LobbyPage> {
-  const popupPromise = sourcePage.waitForEvent("popup");
-  await inviteLink.click();
-  const page = await popupPromise;
+  const page = await sourcePage.context().newPage();
+  await page.goto(`/lobby/${token}`);
   const lobby = new LobbyPage(page);
   await lobby.waitUntilOpen();
   return lobby;

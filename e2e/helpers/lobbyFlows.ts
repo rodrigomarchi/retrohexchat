@@ -1,6 +1,6 @@
 import { expect } from '@playwright/test';
 import { P2PTestUser } from './p2pFlows';
-import { LobbyPage, openLobbyFromInvite } from '../pages/LobbyPage';
+import { LobbyPage, openLobbyByToken } from '../pages/LobbyPage';
 
 /**
  * Drives the `/p2p` command end-to-end: the initiator invites the receiver,
@@ -46,25 +46,24 @@ async function openLobbiesFromInviteCards(
   initiator: P2PTestUser,
   receiver: P2PTestUser,
 ): Promise<{ initiatorLobby: LobbyPage; receiverLobby: LobbyPage }> {
-  const initiatorLink = initiator.chat
-    .p2pInviteCard()
-    .getByRole('link', { name: 'Join' });
-  await expect(initiatorLink).toHaveAttribute(
-    'href',
-    /^\/lobby\/[A-Za-z0-9_-]+$/,
+  // The chat no longer links out to /lobby — the card carries the session
+  // token as metadata, which these standalone-page tests use until F6.
+  const initiatorCard = initiator.chat.p2pInviteCard();
+  await expect(initiatorCard).toHaveAttribute(
+    'data-session-token',
+    /^[A-Za-z0-9_-]+$/,
   );
-  const inviteHref = await initiatorLink.getAttribute('href');
+  const token = (await initiatorCard.getAttribute('data-session-token')) ?? '';
 
   await receiver.chat.expectTabVisible(initiator.nick);
   await receiver.chat.switchToTab(initiator.nick);
+  await expect(receiver.chat.p2pInviteCard()).toHaveAttribute(
+    'data-session-token',
+    token,
+  );
 
-  const receiverLink = receiver.chat
-    .p2pInviteCard()
-    .getByRole('link', { name: 'Join' });
-  await expect(receiverLink).toHaveAttribute('href', inviteHref ?? '');
-
-  const initiatorLobby = await openLobbyFromInvite(initiator.page, initiatorLink);
-  const receiverLobby = await openLobbyFromInvite(receiver.page, receiverLink);
+  const initiatorLobby = await openLobbyByToken(initiator.page, token);
+  const receiverLobby = await openLobbyByToken(receiver.page, token);
 
   await initiatorLobby.waitUntilLiveViewConnected();
   await receiverLobby.waitUntilLiveViewConnected();

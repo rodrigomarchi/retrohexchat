@@ -172,7 +172,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info(%{event: "lobby_invite"} = msg, socket) do
     import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
 
-    %{payload: %{token: token, from: from}} = msg
+    %{payload: %{from: from}} = msg
 
     if ignored_invite?(socket, from) do
       {:halt, socket}
@@ -180,9 +180,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
       {:halt,
        push_status_message(
          socket,
-         dgettext("chat", "P2P lobby invite from %{from} — /lobby/%{token}",
-           from: from,
-           token: token
+         dgettext("chat", "P2P invite from %{from} — accept it in your private messages.",
+           from: from
          ),
          :system
        )}

@@ -41,6 +41,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
       data-testid="session-card"
       data-session-kind={to_string(@card.kind)}
       data-session-status={@card.status}
+      data-session-token={@card.kind == :lobby && @card.token}
     >
       <div class="flex items-start gap-2 mb-1.5">
         <.subject_icon card={@card} class="h-6 w-6 shrink-0" />
@@ -246,11 +247,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
 
   defp cta(%{terminal?: true}), do: nil
 
-  defp cta(%{kind: :lobby, status: status}) when status in ["pending", "lobby"],
-    do: %{label: dgettext("chat", "Join"), icon: :icon_btn_join}
-
-  defp cta(%{kind: :lobby}),
-    do: %{label: dgettext("chat", "Open lobby"), icon: :icon_btn_link}
+  # P2P sessions live entirely in the chat: the invited peer gets the
+  # accept/decline buttons and everyone else just watches the timeline —
+  # there is no link out to a separate page.
+  defp cta(%{kind: :lobby}), do: nil
 
   defp cta(%{kind: :arcade}),
     do: %{label: dgettext("chat", "Open Arcade"), icon: :icon_btn_open}

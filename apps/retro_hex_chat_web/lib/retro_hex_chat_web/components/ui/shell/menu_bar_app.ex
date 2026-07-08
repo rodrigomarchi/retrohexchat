@@ -241,47 +241,61 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         />
       </.menu>
 
-      <%!-- P2P menu (enabled while a P2P session exists) --%>
-      <.menu label={dgettext("ui", "P2P")} disabled={!@p2p_active}>
+      <%!-- P2P menu — always enabled: without a session it teaches how to
+            start one; with a session it drives the session windows. --%>
+      <.menu label={dgettext("ui", "P2P")} disabled={!@connected}>
         <.menu_item
+          :if={!@p2p_active}
+          icon_fn={:icon_p2p}
+          label={dgettext("ui", "Start a P2P Session...")}
+          action="p2p_how_to_start"
+          on_action={@on_action}
+        />
+        <.menu_item
+          :if={@p2p_active}
           icon_fn={:icon_microphone}
           label={dgettext("ui", "Start Audio Call")}
           action="p2p_start_audio"
           on_action={@on_action}
         />
         <.menu_item
+          :if={@p2p_active}
           icon_fn={:icon_camera}
           label={dgettext("ui", "Start Video Call")}
           action="p2p_start_video"
           on_action={@on_action}
         />
         <.menu_item
+          :if={@p2p_active}
           icon_fn={:icon_file_send}
           label={dgettext("ui", "Send a File...")}
           action="p2p_open_files"
           on_action={@on_action}
         />
         <.menu_item
+          :if={@p2p_active}
           icon_fn={:icon_game_arcade}
           label={dgettext("ui", "Play a Game...")}
           action="p2p_open_games"
           on_action={@on_action}
         />
         <.menu_item
+          :if={@p2p_active}
           icon_fn={:icon_status_signal}
           label={dgettext("ui", "Statistics")}
           action="p2p_open_stats"
           on_action={@on_action}
         />
         <.menu_item
-          :if={@p2p_turn_available}
+          :if={@p2p_active && @p2p_turn_available}
           icon_fn={:icon_lock}
           label={dgettext("ui", "Toggle Privacy Mode")}
           action="p2p_toggle_privacy"
           on_action={@on_action}
         />
-        <.context_menu_separator />
+        <.context_menu_separator :if={@p2p_active} />
         <.menu_item
+          :if={@p2p_active}
           icon_fn={:icon_btn_disconnect}
           label={dgettext("ui", "End Session")}
           action="p2p_end_session"
