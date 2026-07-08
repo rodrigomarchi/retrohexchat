@@ -78,8 +78,35 @@
   (propose/respond/end/result/error/dismiss/canvas_ready); "Play a Game..."
   nos dois menus. CI 9/9.
 
-**F3 CONCLUÍDA** — as 4 janelas P2P vivem no desktop do chat, com as 3 ilhas
-do lobby reusadas (zero fork) e o standalone intacto.
+**F3 CONCLUÍDA** (commit `faeebabf`) — as 4 janelas P2P vivem no desktop do
+chat, com as 3 ilhas do lobby reusadas (zero fork) e o standalone intacto.
+
+## F4 — absorção do PM
+
+- [x] Tipo `p2p_system` renderizado no PM (branch no MessageRow, source "P2P",
+  `Messages.stream_type` estendido)
+- [x] **Regra do escritor único implementada no contrato da notícia**: as
+  ilhas emitem `{:p2p_feature_notice, feature, text, scope:/writer:}` —
+  `:shared` + writer → o chat persiste como `p2p_system` (arquivo: receptor;
+  jogo: host da partida); `:shared` + !writer → descarta (o PM chega via
+  broadcast); `:local` (erros de mídia) → linha efêmera. LobbyLive ignora
+  opts (ChatIsland como sempre).
+- [x] Mensagens de ciclo de vida persistidas pelo ator: conectada (creator),
+  recusada (decliner), cancelada (creator), encerrada (quem encerrou —
+  inclusive na troca A→B); `finish_session` suprime a efêmera para reasons
+  com escritor (`user_closed/declined/invite_cancelled/user_blocked`) e mantém
+  para fins de domínio (expired/failed/peer_left).
+- [x] **Card vivo**: `Chat.Queries.get_p2p_invite_between/3` +
+  `PM.refresh_p2p_invite_card/3` re-enriquecem e re-inserem a row do card
+  (mesmo dom id) quando a sessão muda (aceita → perde botões; terminal →
+  card inerte) — só quando o PM do peer está na tela (load re-enriquece o resto).
+- [x] Glifo de sessão na tab do PM (`p2p` attr no `irc_tab_item`, só quando
+  `:connected`)
+- [x] Fallback `p2p_invite_card` inerte ("session no longer available") —
+  gap do apêndice fechado.
+- [x] CI 9/9
+
+**F4 CONCLUÍDA.**
 
 ### Aprendizados F3 (parciais)
 

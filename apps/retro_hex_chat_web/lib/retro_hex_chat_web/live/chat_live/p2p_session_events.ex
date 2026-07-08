@@ -26,6 +26,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   alias Phoenix.LiveView.Socket
   alias RetroHexChat.Chat.Schemas.UserPreference
+  alias RetroHexChat.Chat.Service, as: ChatService
   alias RetroHexChat.Lobby
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.P2P
@@ -38,6 +39,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Helpers.PM, as: PMHelper
   alias RetroHexChatWeb.ChatLive.Windows
 
   @pubsub RetroHexChat.PubSub
@@ -69,7 +71,11 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def handle_event("lobby_connected", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
     _ = Lobby.transition_status(p2p.token, :connected)
-    {:halt, put_p2p(socket, %{p2p | state: :connected})}
+
+    {:halt,
+     socket
+     |> maybe_persist_connected(p2p)
+     |> put_p2p(%{p2p | state: :connected})}
   end
 
   # The answerer asks the initiator to re-offer after adding local media
@@ -266,6 +272,14 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
     case socket.assigns.p2p_session do
       %{} = p2p ->
+        persist_p2p_system(
+          socket,
+          p2p.peer_nick,
+          dgettext("chat", "%{nick} ended the P2P session.",
+            nick: socket.assigns.session.nickname
+          )
+        )
+
         _ = Lobby.close_session(p2p.token, p2p.user_id, "user_closed")
         {:halt, socket}
 
@@ -329,9 +343,22 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     end
   end
 
-  # C1 sink: feature notices land in the conversation as system lines.
-  def handle_info({:p2p_feature_notice, _feature, text}, socket) do
-    {:halt, Messages.system_event(socket, text)}
+  # C1 sink with the single-writer rule (plan §4.3): shared notices are
+  # persisted into the PM as "p2p_system" by exactly ONE side (the writer);
+  # the other side drops its copy and renders the arriving PM instead.
+  # Local-only notices (device errors) stay ephemeral.
+  def handle_info({:p2p_feature_notice, _feature, text, opts}, socket) do
+    case {Keyword.get(opts, :scope, :local), socket.assigns.p2p_session} do
+      {_scope, nil} ->
+        {:halt, socket}
+
+      {:shared, p2p} ->
+        if Keyword.get(opts, :writer, false), do: persist_p2p_system(socket, p2p.peer_nick, text)
+        {:halt, socket}
+
+      {:local, _p2p} ->
+        {:halt, Messages.system_event(socket, text)}
+    end
   end
 
   def handle_info(_msg, socket), do: {:cont, socket}
@@ -365,10 +392,17 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
        ) do
     cond do
       status == "connected" ->
-        {:halt, put_p2p(socket, %{p2p | state: :connected})}
+        {:halt,
+         socket
+         |> maybe_persist_connected(p2p)
+         |> put_p2p(%{p2p | state: :connected})}
 
       LobbySession.terminal?(status) ->
         {:halt, finish_session(socket, payload[:reason] || status)}
+
+      status == "lobby" ->
+        # Both joined: the pending invite card loses its accept CTA.
+        {:halt, PMHelper.refresh_p2p_invite_card(socket, p2p.peer_nick, p2p.token)}
 
       true ->
         {:halt, socket}
@@ -681,6 +715,14 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   defp request_stop(socket) do
     case socket.assigns.p2p_session do
       %{state: :invite_sent} = p2p ->
+        persist_p2p_system(
+          socket,
+          p2p.peer_nick,
+          dgettext("chat", "%{nick} cancelled the P2P invite.",
+            nick: socket.assigns.session.nickname
+          )
+        )
+
         _ = Lobby.cancel_invite(p2p.token, p2p.user_id)
         {:halt, socket}
 
@@ -765,6 +807,14 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
         socket
 
       p2p ->
+        persist_p2p_system(
+          socket,
+          p2p.peer_nick,
+          dgettext("chat", "%{nick} ended the P2P session.",
+            nick: socket.assigns.session.nickname
+          )
+        )
+
         _ = Lobby.close_session(p2p.token, p2p.user_id, "user_closed")
         detach_session(socket, p2p)
     end
@@ -784,12 +834,19 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   defp decline_invite(socket, token) do
     nickname = socket.assigns.session.nickname
+    creator = creator_nick(token)
 
     case resolve_user_id(nickname) do
       user_id when is_integer(user_id) ->
         case Lobby.decline_session(token, user_id) do
           :ok ->
-            Messages.system_event(socket, dgettext("chat", "P2P invite declined."))
+            persist_p2p_system(
+              socket,
+              creator,
+              dgettext("chat", "%{nick} declined the P2P invite.", nick: nickname)
+            )
+
+            PMHelper.refresh_p2p_invite_card(socket, creator, token)
 
           {:error, message} ->
             Messages.system_event(socket, message)
@@ -799,6 +856,26 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
         socket
     end
   end
+
+  defp creator_nick(token) do
+    case Lobby.session_summary(token) do
+      {:ok, %{created_by: created_by}} -> created_by
+      _ -> nil
+    end
+  end
+
+  defp maybe_persist_connected(socket, %{role: :creator, state: state} = p2p)
+       when state != :connected do
+    persist_p2p_system(
+      socket,
+      p2p.peer_nick,
+      dgettext("chat", "P2P session connected — calls, files and games are available.")
+    )
+
+    socket
+  end
+
+  defp maybe_persist_connected(socket, _p2p), do: socket
 
   defp attach_session(socket, token, user_id, role) do
     case Lobby.join_session(token, user_id) do
@@ -831,12 +908,23 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     end)
   end
 
+  # Reasons with a single writer already persisted a p2p_system line into the
+  # PM (end/decline/cancel actors) — an ephemeral copy here would duplicate
+  # it. Domain-driven ends (timeout, peer_left, failure) have no writer, so
+  # both sides render the ephemeral line.
+  @persisted_by_actor ~w(user_closed declined invite_cancelled user_blocked)
+
   defp finish_session(socket, reason) do
     p2p = socket.assigns.p2p_session
 
-    socket
-    |> detach_session(p2p)
-    |> Messages.system_event(ended_message(p2p.peer_nick, reason))
+    socket =
+      socket |> detach_session(p2p) |> PMHelper.refresh_p2p_invite_card(p2p.peer_nick, p2p.token)
+
+    if reason in @persisted_by_actor do
+      socket
+    else
+      Messages.system_event(socket, ended_message(p2p.peer_nick, reason))
+    end
   end
 
   # Mirrors the standalone lobby's maybe_start_webrtc: ICE config + the
@@ -933,6 +1021,23 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       action: :close
     )
   end
+
+  # Persists a session notice into the PM thread (D2: the PM is the
+  # conversation). The PM broadcast delivers it to BOTH sides — hence the
+  # single-writer rule everywhere this is called.
+  defp persist_p2p_system(socket, peer_nick, text) when is_binary(peer_nick) do
+    _ =
+      ChatService.send_private_message(
+        socket.assigns.session.nickname,
+        peer_nick,
+        text,
+        "p2p_system"
+      )
+
+    :ok
+  end
+
+  defp persist_p2p_system(_socket, _peer_nick, _text), do: :ok
 
   defp broadcast(token, event, payload) do
     Phoenix.PubSub.broadcast(@pubsub, "lobby:#{token}", %{

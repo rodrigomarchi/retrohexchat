@@ -271,6 +271,29 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
 
   defp maybe_put_clear_token(assigns, _stream_items), do: assigns
 
+  @doc """
+  Live invite card (plan §4.7): re-enriches the P2P invite row for the given
+  session and re-inserts it in place (same dom id), so the card never keeps
+  promising an Accept that would fail. Only matters when the PM with that
+  peer is on screen — a buffer opened later re-enriches on load anyway.
+  """
+  @spec refresh_p2p_invite_card(Phoenix.LiveView.Socket.t(), String.t() | nil, String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  def refresh_p2p_invite_card(socket, peer_nick, token) when is_binary(peer_nick) do
+    active = socket.assigns.session.active_pm
+
+    with true <- is_binary(active),
+         true <- String.downcase(active) == String.downcase(peer_nick),
+         %{} = pm <-
+           Queries.get_p2p_invite_between(socket.assigns.session.nickname, peer_nick, token) do
+      MessageViewport.insert(socket, pm_to_stream_item(pm))
+    else
+      _ -> socket
+    end
+  end
+
+  def refresh_p2p_invite_card(socket, _peer_nick, _token), do: socket
+
   defp pm_to_stream_item(pm) do
     base = %{
       id: pm_field(pm, [:id]),

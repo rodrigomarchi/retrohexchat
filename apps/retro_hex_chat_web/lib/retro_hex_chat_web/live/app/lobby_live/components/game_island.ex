@@ -159,7 +159,11 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
     message =
       dgettext("lobby", "Game over — %{game}: %{p1} × %{p2}", game: name, p1: p1, p2: p2)
 
-    send(self(), {:p2p_feature_notice, :game, message})
+    send(
+      self(),
+      {:p2p_feature_notice, :game, message, scope: :shared, writer: socket.assigns.game.is_host}
+    )
+
     socket
   end
 

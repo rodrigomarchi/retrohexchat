@@ -74,6 +74,15 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
           >
             * {@msg.content}
           </.chat_message>
+        <% :p2p_system -> %>
+          <.chat_message
+            timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
+            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
+            source={dgettext("chat", "P2P")}
+            type="system"
+          >
+            * {@msg.content}
+          </.chat_message>
         <% :service -> %>
           <.chat_message
             timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}

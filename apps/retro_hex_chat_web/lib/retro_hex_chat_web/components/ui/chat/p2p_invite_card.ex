@@ -2,18 +2,20 @@ defmodule RetroHexChatWeb.Components.UI.P2PInviteCard do
   @moduledoc """
   P2P invite card component for the showcase design system.
 
-  Displays a P2P session invite within a chat message, with a label
-  and a "Join lobby" link.
+  The inert fallback for a P2P invite whose session could NOT be resolved —
+  the session row no longer exists, so there is nothing to join. The rich,
+  actionable card is `SessionCard`; this one only preserves the historical
+  line without promising a Join that would fail.
 
   ## Usage
 
-      <.p2p_invite_card label="Voice chat session" link="/p2p/abc123" />
+      <.p2p_invite_card label="Voice chat session" />
   """
   use RetroHexChatWeb.Component
 
-  @doc "Renders a P2P invite card with label and join link."
+  @doc "Renders the inert P2P invite fallback (unresolvable session)."
   attr :label, :string, required: true, doc: "Invite description text"
-  attr :link, :string, required: true, doc: "URL path to the P2P lobby"
+  attr :link, :string, default: nil, doc: "Ignored — kept for call-site compatibility"
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -22,14 +24,9 @@ defmodule RetroHexChatWeb.Components.UI.P2PInviteCard do
     ~H"""
     <span class={@class} data-testid="p2p-invite-card" {@rest}>
       {@label}
-      <a
-        href={@link}
-        class="underline font-bold ml-1"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        {dgettext("chat", "Join lobby")}
-      </a>
+      <span class="text-muted-foreground ml-1">
+        {dgettext("chat", "(this session is no longer available)")}
+      </span>
     </span>
     """
   end

@@ -98,6 +98,9 @@
             active_channel={@session.active_channel}
             active_pm={@session.active_pm}
             nick_color_fn={@nick_color_fn}
+            p2p_peer={
+              if @p2p_session && @p2p_session.state == :connected, do: @p2p_session.peer_nick
+            }
           />
 
           <% channel_space_available? = channel_space_available?(@session, @show_status_tab) %>

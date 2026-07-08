@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
 
   @moduletag :liveview_feature
 
+  alias RetroHexChat.Chat.Queries, as: ChatQueries
   alias RetroHexChat.Lobby
   alias RetroHexChat.Services.RegisteredNick
 
@@ -236,6 +237,63 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       flush(ctx.view_a)
       assert {:ok, %{game: %{status: "idle"}}} = Lobby.session_info(session.token)
       refute render(ctx.view_a) =~ "p2p-games-window"
+    end
+  end
+
+  describe "PM absorption (p2p_system)" do
+    defp p2p_system_messages(nick_a, nick_b) do
+      nick_a
+      |> ChatQueries.list_private_messages(nick_b)
+      |> Enum.filter(&(&1.type == "p2p_system"))
+    end
+
+    test "lifecycle notices persist into the PM with a single writer", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pfw#{uid()}", "p2pfx#{uid()}")
+      session = invite(ctx)
+      render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token})
+      flush(ctx.view_a)
+
+      # Both hooks report connected; only the CREATOR persists the line.
+      render_click(ctx.view_a, "lobby_connected", %{})
+      render_click(ctx.view_b, "lobby_connected", %{})
+      flush(ctx.view_a)
+      flush(ctx.view_b)
+
+      assert [connected_msg] = p2p_system_messages(ctx.a.nickname, ctx.b.nickname)
+      assert connected_msg.content =~ "connected"
+
+      # Ending persists exactly one more line, written by the ender.
+      render_click(ctx.view_a, "p2p_statusbar_stop", %{})
+      render_click(ctx.view_a, "p2p_confirm_end", %{})
+      flush(ctx.view_a)
+      flush(ctx.view_b)
+
+      assert [ended_msg, ^connected_msg] = p2p_system_messages(ctx.a.nickname, ctx.b.nickname)
+      assert ended_msg.content =~ "ended the P2P session"
+      assert ended_msg.sender_nickname == ctx.a.nickname
+    end
+
+    test "declining persists the decliner's p2p_system line", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pfy#{uid()}", "p2pfz#{uid()}")
+      session = invite(ctx)
+
+      render_click(ctx.view_b, "p2p_decline_invite", %{"token" => session.token})
+      flush(ctx.view_a)
+
+      assert [msg] = p2p_system_messages(ctx.a.nickname, ctx.b.nickname)
+      assert msg.content =~ "declined"
+      assert msg.sender_nickname == ctx.b.nickname
+    end
+
+    test "the connected session's PM tab carries the P2P glyph", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pga#{uid()}", "p2pgb#{uid()}")
+      session = invite(ctx)
+      render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token})
+      flush(ctx.view_a)
+
+      refute render(ctx.view_a) =~ "tab-p2p-glyph"
+      render_click(ctx.view_a, "lobby_connected", %{})
+      assert render(ctx.view_a) =~ "tab-p2p-glyph"
     end
   end
 

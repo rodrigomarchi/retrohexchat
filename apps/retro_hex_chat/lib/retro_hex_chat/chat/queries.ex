@@ -132,6 +132,26 @@ defmodule RetroHexChat.Chat.Queries do
     |> Repo.insert()
   end
 
+  @doc """
+  The most recent P2P invite message between the pair referencing the given
+  session token — the row a live invite card re-renders from when the session
+  state changes.
+  """
+  @spec get_p2p_invite_between(String.t(), String.t(), String.t()) :: PrivateMessage.t() | nil
+  def get_p2p_invite_between(nick_a, nick_b, token) do
+    PrivateMessage
+    |> where(
+      [pm],
+      (pm.sender_nickname == ^nick_a and pm.recipient_nickname == ^nick_b) or
+        (pm.sender_nickname == ^nick_b and pm.recipient_nickname == ^nick_a)
+    )
+    |> where([pm], pm.type == "p2p_invite")
+    |> where([pm], like(pm.content, ^"%#{token}%"))
+    |> order_by([pm], desc: pm.id)
+    |> limit(1)
+    |> Repo.one()
+  end
+
   @spec list_private_messages(String.t(), String.t(), keyword()) :: [PrivateMessage.t()]
   def list_private_messages(nick_a, nick_b, opts \\ []) do
     limit = Keyword.get(opts, :limit, @default_limit)

@@ -36,6 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   attr :label, :string, required: true
   attr :closeable, :boolean, default: true
   attr :nick_color, :string, default: nil, doc: "CSS class for nick coloring (PM tabs)"
+  attr :p2p, :boolean, default: false, doc: "Marks the PM tab that owns the live P2P session"
   attr :on_click, :any, default: nil, doc: "Tab click callback"
   attr :on_close, :any, default: nil, doc: "Close button callback"
   attr :class, :any, default: nil
@@ -74,6 +75,14 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
         !@active && @nick_color
       ]}>
         {@label}
+      </span>
+      <span
+        :if={@p2p}
+        class="w-3 h-3 flex-shrink-0 inline-flex items-center justify-center"
+        title={dgettext("chat", "P2P session active")}
+        data-testid="tab-p2p-glyph"
+      >
+        <Icons.icon_p2p class="w-3 h-3" />
       </span>
       <.button
         :if={@closeable}

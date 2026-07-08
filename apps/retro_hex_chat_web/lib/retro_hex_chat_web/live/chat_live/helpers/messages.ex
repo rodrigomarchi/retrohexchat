@@ -132,7 +132,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
     |> push_status_message(dgettext("chat", "Help: %{topic}", topic: topic_title), :system)
   end
 
-  @stream_types ~w(message action system service error notice announcement inline_help arcade_link p2p_invite)a
+  @stream_types ~w(message action system service error notice announcement inline_help arcade_link p2p_invite p2p_system)a
   @stream_type_by_string Map.new(@stream_types, fn type -> {Atom.to_string(type), type} end)
 
   @spec stream_type(atom() | String.t() | nil) :: atom()

@@ -28,6 +28,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
   attr :on_switch, :any, default: "switch_tab"
   attr :on_close, :any, default: "close_tab"
 
+  attr :p2p_peer, :string,
+    default: nil,
+    doc: "Peer of the active P2P session — that PM tab gets the session glyph"
+
   @spec chat_tabs(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_tabs(assigns) do
     assigns = assign(assigns, :tabs, build_tabs(assigns))
@@ -42,6 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
         unread={tab.unread}
         closeable={tab.closeable}
         nick_color={tab.nick_color}
+        p2p={tab.p2p}
         on_click={@on_switch}
         on_close={@on_close}
       />
@@ -59,7 +64,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       active: assigns.show_status_tab,
       unread: assigns.status_unread,
       closeable: false,
-      nick_color: nil
+      nick_color: nil,
+      p2p: false
     }
 
     channel_tabs =
@@ -70,9 +76,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
           active: assigns.active_channel == channel && !assigns.show_status_tab,
           unread: Map.get(assigns.unread_counts, channel, 0) > 0,
           closeable: true,
-          nick_color: nil
+          nick_color: nil,
+          p2p: false
         }
       end
+
+    p2p_peer = assigns.p2p_peer && String.downcase(assigns.p2p_peer)
 
     pm_tabs =
       for pm <- assigns.pm_conversations do
@@ -82,7 +91,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
           active: assigns.active_pm == pm && !assigns.show_status_tab,
           unread: Map.get(assigns.unread_counts, "pm:#{pm}", 0) > 0,
           closeable: true,
-          nick_color: assigns.nick_color_fn.(pm)
+          nick_color: assigns.nick_color_fn.(pm),
+          p2p: p2p_peer == String.downcase(pm)
         }
       end
 

@@ -140,10 +140,16 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.FileIsland do
   defp handle_ft(socket, "ft_completed", params) do
     Logger.info("Lobby file completed: #{params["file_name"]}, token=#{socket.assigns.token}")
 
+    # Single-writer rule: only the RECEIVING side persists the shared notice
+    # (both hooks fire ft_completed; without a writer the line would land in
+    # the PM twice).
+    receiver? = (socket.assigns.file_transfer || %{})[:sender_nick] != socket.assigns.nickname
+
     send(
       self(),
       {:p2p_feature_notice, :file,
-       dgettext("lobby", "File transfer completed: %{name}", name: params["file_name"])}
+       dgettext("lobby", "File transfer completed: %{name}", name: params["file_name"]),
+       scope: :shared, writer: receiver?}
     )
 
     socket

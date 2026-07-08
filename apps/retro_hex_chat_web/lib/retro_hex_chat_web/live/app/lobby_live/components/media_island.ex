@@ -226,7 +226,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
   end
 
   defp media_event(socket, "lobby_media_device_fallback", %{"message" => message}) do
-    send(self(), {:p2p_feature_notice, :call, message})
+    send(self(), {:p2p_feature_notice, :call, message, scope: :local})
     socket
   end
 
@@ -234,7 +234,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
     send(
       self(),
       {:p2p_feature_notice, :call,
-       dgettext("lobby", "Could not access your microphone or camera.")}
+       dgettext("lobby", "Could not access your microphone or camera."), scope: :local}
     )
 
     socket |> assign(call: nil) |> summarize()

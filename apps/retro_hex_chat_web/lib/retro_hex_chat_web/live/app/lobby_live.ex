@@ -238,7 +238,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   # is silently swallowed and the taskbar badge never updates.
   # C1 sink: islands bubble feature notices host-agnostically; the lobby's
   # chat sink is the ChatIsland.
-  def handle_info({:p2p_feature_notice, _feature, text}, socket) do
+  def handle_info({:p2p_feature_notice, _feature, text, _opts}, socket) do
     send_update(ChatIsland, id: ChatIsland.id(), system_message: text)
     {:noreply, socket}
   end
