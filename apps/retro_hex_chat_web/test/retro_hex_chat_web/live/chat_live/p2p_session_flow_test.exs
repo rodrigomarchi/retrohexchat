@@ -259,6 +259,23 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
         assert html =~ window
       end
 
+      # Everything but the Call window is sent to the taskbar minimized.
+      for id <- ~w(p2p-stats p2p-games p2p-files) do
+        assert_push_event(ctx.view_a, "window_command", %{action: "minimize", id: ^id})
+      end
+
+      # Once the media hook reports ready, the call auto-starts (mic+camera)
+      # exactly once — media presence lands in the domain.
+      render_click(ctx.view_a, "lobby_media_hook_ready", %{})
+      flush(ctx.view_a)
+      {:ok, state} = Lobby.session_info(session.token)
+      assert state.media.creator == %{audio: true, video: true}
+      assert p2p_assigns(ctx.view_a).auto_call_started
+
+      # A second ready report (hook re-mount) must not restart the call.
+      render_click(ctx.view_a, "lobby_media_hook_ready", %{})
+      assert p2p_assigns(ctx.view_a).auto_call_started
+
       # Ending the session tears every session window down with it.
       render_click(ctx.view_a, "p2p_statusbar_stop", %{})
       render_click(ctx.view_a, "p2p_confirm_end", %{})

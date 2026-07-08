@@ -40,16 +40,20 @@ test.describe('In-chat P2P session', () => {
         timeout: 20_000,
       });
 
-      // The session presents itself: all four windows burst open on BOTH
-      // sides, on top of the chat.
+      // The session presents itself: the Call window opens in front and the
+      // call auto-starts (mic+camera) on BOTH sides; Files, Games and
+      // Statistics land minimized on the taskbar.
       for (const page of [alice.page, bob.page]) {
-        for (const id of [
-          'p2p-call-window',
-          'p2p-files-window',
-          'p2p-games-window',
-          'p2p-stats-window',
-        ]) {
-          await expect(page.getByTestId(id)).toBeVisible();
+        await expect(page.getByTestId('p2p-call-window')).toBeVisible();
+        await expect(
+          page.locator('[data-lobby-media-action="end-call"]'),
+        ).toBeVisible({ timeout: 20_000 });
+
+        for (const id of ['p2p-files', 'p2p-games', 'p2p-stats']) {
+          await expect(page.getByTestId(`${id}-window`)).toBeHidden();
+          await expect(
+            page.locator(`[data-window-taskbar="${id}"]`),
+          ).toBeVisible();
         }
       }
 

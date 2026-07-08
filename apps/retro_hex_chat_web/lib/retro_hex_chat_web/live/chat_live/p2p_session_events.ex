@@ -163,6 +163,26 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, put_p2p(socket, %{p2p | stats: P2PStats.empty()})}
   end
 
+  # The media hook finished its lazy load and is listening. This is the
+  # race-free moment to auto-start the call: both sides open mic+camera on
+  # connect (the single-offerer model absorbs the simultaneous start). Once
+  # per session; skipped on mobile, where the Call window isn't surfaced.
+  def handle_event(
+        "lobby_media_hook_ready",
+        _params,
+        %{assigns: %{p2p_session: %{}}} = socket
+      ) do
+    p2p = socket.assigns.p2p_session
+
+    if p2p.state == :connected and not p2p.auto_call_started and
+         not socket.assigns[:mobile_viewport] do
+      {:halt, socket} = forward_media(socket, "start_call", %{"type" => "video"})
+      {:halt, put_p2p(socket, %{p2p | auto_call_started: true})}
+    else
+      {:halt, socket}
+    end
+  end
+
   def handle_event("lobby_media_" <> _ = event, params, %{assigns: %{p2p_session: %{}}} = socket) do
     forward_media(socket, event, params)
   end
@@ -735,6 +755,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       file_summary: nil,
       call_summary: nil,
       game_summary: nil,
+      auto_call_started: false,
       turn_only: load_turn_only(socket.assigns.session.nickname),
       turn_configured: P2P.turn_configured?()
     }
@@ -938,12 +959,12 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     |> burst_windows()
   end
 
-  # The session presents itself: every session window opens in a preset
-  # arrangement the moment the link comes up, on both sides — the open Call
-  # window invites (Start audio/video), Files shows the picker, Games the
-  # catalog, Statistics the live telemetry. Closing any of them only hides
-  # (features keep running). Skipped on stacked mobile, where four windows
-  # would bury the conversation.
+  # The session presents itself the moment the link comes up, on both sides:
+  # the Call window opens in front (the call auto-starts once the media hook
+  # reports ready — see lobby_media_hook_ready) while Files, Games and
+  # Statistics open MINIMIZED to the taskbar, present but out of the way.
+  # Closing any of them only hides (features keep running). Skipped on
+  # stacked mobile, where the windows would bury the conversation.
   defp burst_windows(socket) do
     if socket.assigns[:mobile_viewport] do
       socket
@@ -953,6 +974,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       |> Windows.open("p2p-games")
       |> Windows.open("p2p-files")
       |> Windows.open("p2p-call")
+      |> push_event("window_command", %{action: "minimize", id: "p2p-stats"})
+      |> push_event("window_command", %{action: "minimize", id: "p2p-games"})
+      |> push_event("window_command", %{action: "minimize", id: "p2p-files"})
     end
   end
 
