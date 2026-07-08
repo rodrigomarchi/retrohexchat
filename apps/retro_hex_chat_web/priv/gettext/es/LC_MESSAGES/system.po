@@ -29,6 +29,9 @@ msgstr "Base de datos"
 #: lib/retro_hex_chat_web/telemetry.ex:182
 #: lib/retro_hex_chat_web/telemetry.ex:187
 #: lib/retro_hex_chat_web/telemetry.ex:193
+#: lib/retro_hex_chat_web/telemetry.ex:198
+#: lib/retro_hex_chat_web/telemetry.ex:203
+#: lib/retro_hex_chat_web/telemetry.ex:209
 #, elixir-autogen, elixir-format
 msgid "Domain"
 msgstr "Dominio"
@@ -316,3 +319,33 @@ msgstr "Número de procesos de espacios virtuales activos"
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.virtual_space.active_count.value"
 msgstr "retro_hex_chat.virtual_space.active_count.value"
+
+#: lib/retro_hex_chat_web/telemetry.ex:197
+#, elixir-autogen, elixir-format
+msgid "Current virtual space participant count by channel"
+msgstr "Current virtual space participant count by channel"
+
+#: lib/retro_hex_chat_web/telemetry.ex:202
+#, elixir-autogen, elixir-format
+msgid "Number of virtual space movement steps"
+msgstr "Number of virtual space movement steps"
+
+#: lib/retro_hex_chat_web/telemetry.ex:208
+#, elixir-autogen, elixir-format
+msgid "Virtual space movement input handling duration"
+msgstr "Virtual space movement input handling duration"
+
+#: lib/retro_hex_chat_web/telemetry.ex:195
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.participant_count.value"
+msgstr "retro_hex_chat.virtual_space.participant_count.value"
+
+#: lib/retro_hex_chat_web/telemetry.ex:200
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.step.count"
+msgstr "retro_hex_chat.virtual_space.step.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:205
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.virtual_space.step.duration"
+msgstr "retro_hex_chat.virtual_space.step.duration"

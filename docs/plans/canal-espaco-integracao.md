@@ -181,6 +181,11 @@ O help agora descreve o espaço como uma aba permanente do canal.
 
 ### F5 — (futura) Escala de verdade
 Interest management, tick batching, culling. Fora do escopo desta entrega.
+**Status 2026-07-08**: iniciado pelo pré-requisito de observabilidade. Antes de
+alterar o modelo de broadcast/renderização, o runtime agora mede contagem de
+participantes por canal, passos aceitos/rejeitados e duração de processamento
+do input de movimento. Interest management, batching e culling continuam como
+otimizações futuras guiadas por esses números.
 
 ## 6. Riscos
 
@@ -279,6 +284,10 @@ delta — antes de F6 para decidir quando ela vira necessidade.
   `space_init` passou a ser nomeada como `channel_name`/`channelName`, não
   `token`. O termo `token` fica reservado para a credencial assinada
   `channel_join_token`, que continua necessária para autorizar o join do socket.
+- Primeiro corte da F5 concluído: adicionada telemetria de base para escala do
+  espaço por canal. O domínio emite `participant_count` por canal e `step` com
+  resultado/razão/duração; o PromEx expõe gauge de participantes, contador de
+  passos e summary de duração de input de movimento.
 
 ### Validação registrada
 
@@ -312,3 +321,7 @@ delta — antes de F6 para decidir quando ela vira necessidade.
 - Após o hardening pós-F4: testes focados de `VirtualSpace` e `SpaceChannel`
   com 49 testes sem falhas; testes JS de `space/protocol`, `space/engine` e
   `SpaceCanvasHook` com 33 testes sem falhas.
+- Após o primeiro corte da F5: testes focados de `VirtualSpace.Events`,
+  `VirtualSpace.MovementTest` e `PromExTest` com 14 testes sem falhas; gettext
+  atualizado apenas no domínio `system`; `rtk make ci` completo com 9/9 checks
+  passando.

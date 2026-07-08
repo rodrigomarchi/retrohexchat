@@ -191,6 +191,22 @@ defmodule RetroHexChatWeb.Telemetry do
       sum(dgettext("system", "retro_hex_chat.virtual_space.active_count.value"),
         description: dgettext("system", "Number of active virtual space processes"),
         reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      last_value(dgettext("system", "retro_hex_chat.virtual_space.participant_count.value"),
+        tags: [:channel],
+        description: dgettext("system", "Current virtual space participant count by channel"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.virtual_space.step.count"),
+        tags: [:channel, :result, :reason],
+        description: dgettext("system", "Number of virtual space movement steps"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      summary(dgettext("system", "retro_hex_chat.virtual_space.step.duration"),
+        tags: [:channel, :result, :reason],
+        unit: {:native, :millisecond},
+        description: dgettext("system", "Virtual space movement input handling duration"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       )
     ]
   end

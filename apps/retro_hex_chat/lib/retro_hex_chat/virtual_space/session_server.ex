@@ -15,6 +15,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   require Logger
 
   alias RetroHexChat.Channels.Server, as: ChannelServer
+  alias RetroHexChat.VirtualSpace.Events
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
   alias RetroHexChat.VirtualSpace.Registry
 
@@ -200,9 +201,16 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   def handle_call({:input, key, payload}, _from, state) do
+    started_at = System.monotonic_time()
+
     case apply_input(state, key, payload) do
-      {:ok, state} -> {:reply, :ok, state}
-      {:error, reason, state} -> {:reply, {:error, reason}, state}
+      {:ok, state} ->
+        emit_step(state, :accepted, :ok, started_at)
+        {:reply, :ok, state}
+
+      {:error, reason, state} ->
+        emit_step(state, :rejected, reason, started_at)
+        {:reply, {:error, reason}, state}
     end
   end
 
@@ -824,6 +832,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   defp update_participant_counts(state) do
     count = online_count(state)
+    Events.emit_participant_count(state.channel_name, count)
 
     session = %{
       state.session
@@ -832,6 +841,15 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     }
 
     %{state | session: session}
+  end
+
+  defp emit_step(state, result, reason, started_at) do
+    Events.emit_step(
+      state.channel_name,
+      result,
+      reason,
+      System.monotonic_time() - started_at
+    )
   end
 
   defp broadcast(channel_name, event, payload) do

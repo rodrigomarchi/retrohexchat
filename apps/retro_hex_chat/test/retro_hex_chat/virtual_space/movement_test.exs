@@ -66,6 +66,33 @@ defmodule RetroHexChat.VirtualSpace.MovementTest do
       assert updates[ctx.key].dir == "right"
     end
 
+    test "emits participant count and step telemetry" do
+      count_ref =
+        :telemetry_test.attach_event_handlers(self(), [
+          [:retro_hex_chat, :virtual_space, :participant_count]
+        ])
+
+      step_ref =
+        :telemetry_test.attach_event_handlers(self(), [
+          [:retro_hex_chat, :virtual_space, :step]
+        ])
+
+      ctx = start_space()
+
+      assert_received {[:retro_hex_chat, :virtual_space, :participant_count], ^count_ref,
+                       %{value: 1}, %{channel: channel}}
+
+      assert channel == ctx.token
+
+      assert :ok = SessionServer.input(ctx.token, ctx.key, %{seq: 1, dx: 1, dy: 0})
+
+      assert_received {[:retro_hex_chat, :virtual_space, :step], ^step_ref,
+                       %{count: 1, duration: duration},
+                       %{channel: ^channel, result: :accepted, reason: :ok}}
+
+      assert is_integer(duration)
+    end
+
     test "each cardinal direction sets the matching facing" do
       ctx = start_space()
 
