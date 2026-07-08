@@ -1,4 +1,4 @@
-defmodule RetroHexChatWeb.App.LobbyLive.Components.FileIsland do
+defmodule RetroHexChatWeb.ChatLive.Components.P2PFileIsland do
   @moduledoc """
   File-transfer island — owner of `file_transfer`/`file_transfer_ready` and the
   body of the "Files" window.
@@ -18,9 +18,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.FileIsland do
   read it without owning the transfer (C2), and bubbles the completion notice to
   the host (`{:p2p_feature_notice, :file, text}`) for its chat sink (C1).
 
-  Host-agnostic: the standalone lobby and the in-chat P2P session mount the
-  same island — `window_id` names the desktop window it drives ("file" in the
-  lobby, "p2p-files" in the chat).
+  `window_id` names the desktop window the island drives ("p2p-files" on the
+  chat desktop).
   """
   use RetroHexChatWeb, :live_component
 

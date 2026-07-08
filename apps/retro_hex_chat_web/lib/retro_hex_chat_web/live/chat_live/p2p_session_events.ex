@@ -31,12 +31,12 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.SignalingRateLimit
-  alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
-  alias RetroHexChatWeb.App.LobbyLive.Components.GameIsland
-  alias RetroHexChatWeb.App.LobbyLive.Components.MediaIsland
   alias RetroHexChatWeb.App.P2PStats
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog
+  alias RetroHexChatWeb.ChatLive.Components.P2PFileIsland
+  alias RetroHexChatWeb.ChatLive.Components.P2PGameIsland
+  alias RetroHexChatWeb.ChatLive.Components.P2PMediaIsland
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Helpers.PM, as: PMHelper
@@ -150,7 +150,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   # Media is self-controlled: the LobbyMediaHook and the Call window's controls
-  # push to this root LV; the whole family forwards to the MediaIsland, which
+  # push to this root LV; the whole family forwards to the P2PMediaIsland, which
   # owns the call state and drives its window. Ending a call clears the
   # host-held telemetry, mirroring the standalone lobby.
   def handle_event(
@@ -193,7 +193,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   def handle_event("lobby_game_canvas_ready", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    Phoenix.LiveView.send_update(GameIsland, id: GameIsland.id(), action: :canvas_ready)
+    Phoenix.LiveView.send_update(P2PGameIsland, id: P2PGameIsland.id(), action: :canvas_ready)
     {:halt, socket}
   end
 
@@ -224,7 +224,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     _ = Lobby.end_game(p2p.token, p2p.user_id)
 
     if "p2p-games" in socket.assigns.open_windows do
-      Phoenix.LiveView.send_update(GameIsland, id: GameIsland.id(), action: :end_game)
+      Phoenix.LiveView.send_update(P2PGameIsland, id: P2PGameIsland.id(), action: :end_game)
     end
 
     {:halt, socket}
@@ -239,7 +239,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   def handle_event("dismiss_game_result", _params, %{assigns: %{p2p_session: %{}}} = socket) do
-    Phoenix.LiveView.send_update(GameIsland, id: GameIsland.id(), action: :dismiss_result)
+    Phoenix.LiveView.send_update(P2PGameIsland, id: P2PGameIsland.id(), action: :dismiss_result)
     {:halt, socket}
   end
 
@@ -442,8 +442,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   defp summary_key(:game), do: :game_summary
 
   defp forward_ft(socket, event, params) do
-    Phoenix.LiveView.send_update(FileIsland,
-      id: FileIsland.id(),
+    Phoenix.LiveView.send_update(P2PFileIsland,
+      id: P2PFileIsland.id(),
       action: {:ft_event, event, params}
     )
 
@@ -451,8 +451,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   defp forward_media(socket, event, params) do
-    Phoenix.LiveView.send_update(MediaIsland,
-      id: MediaIsland.id(),
+    Phoenix.LiveView.send_update(P2PMediaIsland,
+      id: P2PMediaIsland.id(),
       action: {:media_event, event, params}
     )
 
@@ -575,8 +575,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
          p2p
        ) do
     unless payload.user_id == p2p.user_id do
-      Phoenix.LiveView.send_update(MediaIsland,
-        id: MediaIsland.id(),
+      Phoenix.LiveView.send_update(P2PMediaIsland,
+        id: P2PMediaIsland.id(),
         action: {:peer_media_changed, payload}
       )
     end
@@ -590,8 +590,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
          p2p
        ) do
     unless from == p2p.user_id do
-      Phoenix.LiveView.send_update(MediaIsland,
-        id: MediaIsland.id(),
+      Phoenix.LiveView.send_update(P2PMediaIsland,
+        id: P2PMediaIsland.id(),
         action: {:peer_mute, muted}
       )
     end
@@ -605,8 +605,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
          p2p
        ) do
     unless from == p2p.user_id do
-      Phoenix.LiveView.send_update(MediaIsland,
-        id: MediaIsland.id(),
+      Phoenix.LiveView.send_update(P2PMediaIsland,
+        id: P2PMediaIsland.id(),
         action: {:peer_camera, off}
       )
     end
@@ -620,8 +620,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     # open_with defers the send_update one message hop: a same-cycle
     # send_update into the freshly mounted managed island never patches.
     {:halt,
-     Windows.open_with(socket, "p2p-games", GameIsland,
-       id: GameIsland.id(),
+     Windows.open_with(socket, "p2p-games", P2PGameIsland,
+       id: P2PGameIsland.id(),
        action: {:request, request, outgoing}
      )}
   end
@@ -632,7 +632,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
          _p2p
        ) do
     if "p2p-games" in socket.assigns.open_windows do
-      Phoenix.LiveView.send_update(GameIsland, id: GameIsland.id(), action: :request_declined)
+      Phoenix.LiveView.send_update(P2PGameIsland,
+        id: P2PGameIsland.id(),
+        action: :request_declined
+      )
     end
 
     {:halt, Messages.system_event(socket, dgettext("chat", "Game request declined."))}
@@ -654,8 +657,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     is_host = payload.host_id == p2p.user_id
 
     {:halt,
-     Windows.open_with(socket, "p2p-games", GameIsland,
-       id: GameIsland.id(),
+     Windows.open_with(socket, "p2p-games", P2PGameIsland,
+       id: P2PGameIsland.id(),
        action: {:playing, payload.game_id, is_host}
      )}
   end
@@ -666,7 +669,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
          _p2p
        ) do
     if "p2p-games" in socket.assigns.open_windows do
-      Phoenix.LiveView.send_update(GameIsland, id: GameIsland.id(), action: :idle)
+      Phoenix.LiveView.send_update(P2PGameIsland, id: P2PGameIsland.id(), action: :idle)
     end
 
     {:halt, socket}
@@ -678,8 +681,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
          _p2p
        ) do
     if "p2p-games" in socket.assigns.open_windows do
-      Phoenix.LiveView.send_update(GameIsland,
-        id: GameIsland.id(),
+      Phoenix.LiveView.send_update(P2PGameIsland,
+        id: P2PGameIsland.id(),
         action: {:result, payload.result}
       )
     end

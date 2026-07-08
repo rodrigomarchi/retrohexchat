@@ -281,8 +281,12 @@ chat, com as 3 ilhas do lobby reusadas (zero fork) e o standalone intacto.
 - [x] **MANTIDO** (o chat usa): Media/File/Game islands + panels +
   `lobby_network_panel`, domínio `Lobby` + `RetroHexChat.P2P`, hooks WebRTC,
   `P2PStats`, `SessionHelpers`.
-- [ ] Rename do namespace `App.LobbyLive.Components.*` das ilhas (cosmético,
-  commit próprio a seguir).
+- [x] Rename do namespace: ilhas movidas para
+  `RetroHexChatWeb.ChatLive.Components.P2P{Media,File,Game}Island`
+  (`live/chat_live/components/p2p_*_island.ex` + testes); DOM ids/`@id`
+  INALTERADOS (contratos com hooks); moduledocs sem referências ao standalone.
+
+**PLANO CONCLUÍDO — todas as fases (F0–F6) entregues em 2026-07-08.**
 
 ## Notas antigas da F6 (superadas)
 

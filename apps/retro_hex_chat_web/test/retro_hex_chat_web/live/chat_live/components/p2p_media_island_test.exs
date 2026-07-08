@@ -1,25 +1,25 @@
-defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIslandTest do
+defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIslandTest do
   use RetroHexChatWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
 
-  alias RetroHexChatWeb.App.LobbyLive.Components.MediaIsland
+  alias RetroHexChatWeb.ChatLive.Components.P2PMediaIsland
 
   @moduletag :unit
 
   test "id/0 is stable and distinct from the panel's hook element" do
-    assert MediaIsland.id() == "lobby-media-island"
+    assert P2PMediaIsland.id() == "lobby-media-island"
   end
 
   test "prompts to connect before the lobby is connected" do
-    html = render_component(MediaIsland, id: MediaIsland.id(), connected: false)
+    html = render_component(P2PMediaIsland, id: P2PMediaIsland.id(), connected: false)
 
     refute html =~ ~s(data-testid="lobby-media-panel")
     assert html =~ "Connect to start"
   end
 
   test "mounts the media hook and offers start buttons when idle" do
-    html = render_component(MediaIsland, id: MediaIsland.id(), connected: true)
+    html = render_component(P2PMediaIsland, id: P2PMediaIsland.id(), connected: true)
 
     assert html =~ ~s(phx-hook="LobbyMediaHook")
     assert html =~ ~s(data-testid="lobby-call-start-audio")
@@ -29,8 +29,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIslandTest do
 
   test "auto-joins and surfaces the call when the peer turns media on (surface_peer_media)" do
     html =
-      render_component(MediaIsland,
-        id: MediaIsland.id(),
+      render_component(P2PMediaIsland,
+        id: P2PMediaIsland.id(),
         connected: true,
         peer_nick: "trinity",
         action: {:peer_media_changed, %{user_id: 2, audio: true, video: true}}
@@ -50,8 +50,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIslandTest do
 
   test "a peer camera update reflects on this side" do
     html =
-      render_component(MediaIsland,
-        id: MediaIsland.id(),
+      render_component(P2PMediaIsland,
+        id: P2PMediaIsland.id(),
         connected: true,
         peer_nick: "trinity",
         action: {:peer_media_changed, %{user_id: 2, audio: true, video: true}}

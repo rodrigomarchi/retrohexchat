@@ -522,8 +522,8 @@
     >
       <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
       <.live_component
-        module={RetroHexChatWeb.App.LobbyLive.Components.GameIsland}
-        id={RetroHexChatWeb.App.LobbyLive.Components.GameIsland.id()}
+        module={RetroHexChatWeb.ChatLive.Components.P2PGameIsland}
+        id={RetroHexChatWeb.ChatLive.Components.P2PGameIsland.id()}
         connected={@p2p_session.state == :connected}
         peer_nick={@p2p_session.peer_nick}
         window_id="p2p-games"
@@ -552,8 +552,8 @@
     >
       <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
       <.live_component
-        module={RetroHexChatWeb.App.LobbyLive.Components.MediaIsland}
-        id={RetroHexChatWeb.App.LobbyLive.Components.MediaIsland.id()}
+        module={RetroHexChatWeb.ChatLive.Components.P2PMediaIsland}
+        id={RetroHexChatWeb.ChatLive.Components.P2PMediaIsland.id()}
         connected={@p2p_session.state == :connected}
         nickname={@session.nickname}
         peer_nick={@p2p_session.peer_nick}
@@ -582,8 +582,8 @@
     >
       <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
       <.live_component
-        module={RetroHexChatWeb.App.LobbyLive.Components.FileIsland}
-        id={RetroHexChatWeb.App.LobbyLive.Components.FileIsland.id()}
+        module={RetroHexChatWeb.ChatLive.Components.P2PFileIsland}
+        id={RetroHexChatWeb.ChatLive.Components.P2PFileIsland.id()}
         connected={@p2p_session.state == :connected}
         nickname={@session.nickname}
         peer_nick={@p2p_session.peer_nick}

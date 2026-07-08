@@ -1,4 +1,4 @@
-defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
+defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
   @moduledoc """
   Audio/video call island — owner of the whole media state (`call`, `call_layout`,
   the local/peer mute and camera flags, `peer_media`, `devices`) and the body of the
@@ -15,9 +15,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
   the Statistics-window connection strip (C2). Device fallbacks and errors bubble
   to the host (`{:p2p_feature_notice, :call, text}`) for its chat sink (C1).
 
-  Host-agnostic: the standalone lobby and the in-chat P2P session mount the
-  same island — `window_id` names the desktop window it drives ("call" in the
-  lobby, "p2p-call" in the chat).
+  `window_id` names the desktop window the island drives ("p2p-call" on the
+  chat desktop).
 
   WebRTC negotiation is single-offerer and lives in the host/JS backbone — the
   island only asks for media via hook push-events; it never touches offer/answer.
