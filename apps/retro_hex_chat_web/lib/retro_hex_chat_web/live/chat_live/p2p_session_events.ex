@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.SignalingRateLimit
   alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
+  alias RetroHexChatWeb.App.LobbyLive.Components.MediaIsland
   alias RetroHexChatWeb.App.P2PStats
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog
@@ -112,6 +113,37 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   def handle_event("p2p_open_files", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     {:halt, Windows.open(socket, "p2p-files")}
+  end
+
+  def handle_event("p2p_start_audio", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    forward_media(socket, "start_call", %{"type" => "audio"})
+  end
+
+  def handle_event("p2p_start_video", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    forward_media(socket, "start_call", %{"type" => "video"})
+  end
+
+  # Media is self-controlled: the LobbyMediaHook and the Call window's controls
+  # push to this root LV; the whole family forwards to the MediaIsland, which
+  # owns the call state and drives its window. Ending a call clears the
+  # host-held telemetry, mirroring the standalone lobby.
+  def handle_event(
+        "lobby_media_call_ended" = event,
+        params,
+        %{assigns: %{p2p_session: %{}}} = socket
+      ) do
+    {:halt, socket} = forward_media(socket, event, params)
+    p2p = socket.assigns.p2p_session
+    {:halt, put_p2p(socket, %{p2p | stats: P2PStats.empty()})}
+  end
+
+  def handle_event("lobby_media_" <> _ = event, params, %{assigns: %{p2p_session: %{}}} = socket) do
+    forward_media(socket, event, params)
+  end
+
+  def handle_event(event, params, %{assigns: %{p2p_session: %{}}} = socket)
+      when event in ~w(start_call end_call set_call_layout media_select_preset) do
+    forward_media(socket, event, params)
   end
 
   # File-transfer control rides the data channel; the hook's ft_* events are
@@ -248,6 +280,15 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, socket}
   end
 
+  defp forward_media(socket, event, params) do
+    Phoenix.LiveView.send_update(MediaIsland,
+      id: MediaIsland.id(),
+      action: {:media_event, event, params}
+    )
+
+    {:halt, socket}
+  end
+
   defp handle_session_event(
          %{event: "lobby_status_changed", payload: %{status: status} = payload},
          socket,
@@ -345,6 +386,51 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
          )
        )}
     end
+  end
+
+  defp handle_session_event(
+         %{event: "lobby_media_changed", payload: payload},
+         socket,
+         p2p
+       ) do
+    unless payload.user_id == p2p.user_id do
+      Phoenix.LiveView.send_update(MediaIsland,
+        id: MediaIsland.id(),
+        action: {:peer_media_changed, payload}
+      )
+    end
+
+    {:halt, socket}
+  end
+
+  defp handle_session_event(
+         %{event: "lobby_peer_mute", payload: %{muted: muted, from: from}},
+         socket,
+         p2p
+       ) do
+    unless from == p2p.user_id do
+      Phoenix.LiveView.send_update(MediaIsland,
+        id: MediaIsland.id(),
+        action: {:peer_mute, muted}
+      )
+    end
+
+    {:halt, socket}
+  end
+
+  defp handle_session_event(
+         %{event: "lobby_peer_camera", payload: %{off: off, from: from}},
+         socket,
+         p2p
+       ) do
+    unless from == p2p.user_id do
+      Phoenix.LiveView.send_update(MediaIsland,
+        id: MediaIsland.id(),
+        action: {:peer_camera, off}
+      )
+    end
+
+    {:halt, socket}
   end
 
   defp handle_session_event(

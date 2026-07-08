@@ -239,6 +239,18 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       <%!-- P2P menu (enabled while a P2P session exists) --%>
       <.menu label={dgettext("ui", "P2P")} disabled={!@p2p_active}>
         <.menu_item
+          icon_fn={:icon_microphone}
+          label={dgettext("ui", "Start Audio Call")}
+          action="p2p_start_audio"
+          on_action={@on_action}
+        />
+        <.menu_item
+          icon_fn={:icon_camera}
+          label={dgettext("ui", "Start Video Call")}
+          action="p2p_start_video"
+          on_action={@on_action}
+        />
+        <.menu_item
           icon_fn={:icon_file_send}
           label={dgettext("ui", "Send a File...")}
           action="p2p_open_files"

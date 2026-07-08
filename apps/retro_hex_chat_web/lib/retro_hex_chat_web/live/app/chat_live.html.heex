@@ -499,6 +499,38 @@
       />
     </.desktop_window>
 
+    <%!-- P2P Call — always mounted while a session is joined so the media
+          hooks and streams survive hide/show; the X asks the island to end
+          the call (never just hides a live call silently). --%>
+    <.desktop_window
+      :if={@p2p_session && @p2p_session.state != :invite_sent}
+      id="p2p-call"
+      title={
+        if @p2p_session.peer_nick in [nil, ""],
+          do: dgettext("chat", "P2P Call"),
+          else: @p2p_session.peer_nick
+      }
+      open={false}
+      on_close="end_call"
+      default_x={40}
+      default_y={60}
+      width={460}
+      body_class="p-1"
+      data-testid="p2p-call-window"
+    >
+      <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.App.LobbyLive.Components.MediaIsland}
+        id={RetroHexChatWeb.App.LobbyLive.Components.MediaIsland.id()}
+        connected={@p2p_session.state == :connected}
+        nickname={@session.nickname}
+        peer_nick={@p2p_session.peer_nick}
+        token={@p2p_session.token}
+        user_id={@p2p_session.user_id}
+        window_id="p2p-call"
+      />
+    </.desktop_window>
+
     <%!-- P2P Files — always mounted while a session is joined: the island's
           FileTransferHook must stay alive for the whole connection (the data
           channel has no onmessage without it). The X cancels the transfer via
@@ -820,6 +852,13 @@
           label={dgettext("chat", "P2P Statistics")}
         >
           <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={@p2p_session && @p2p_session.state != :invite_sent}
+          window="p2p-call"
+          label={@p2p_session.peer_nick || dgettext("chat", "P2P Call")}
+        >
+          <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
           :if={@p2p_session && @p2p_session.state != :invite_sent}

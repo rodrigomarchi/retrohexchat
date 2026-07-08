@@ -60,7 +60,15 @@
   adapters `ft_*`/`file_transfer_ready` no host; `{:feature_summary, ...}`
   alimenta `file_summary`/`call_summary`/`game_summary` no `@p2p_session`
   (strip do Statistics + badges); menu "Send a File..." nos dois menus. CI 9/9.
-- [ ] **p2p-call**: MediaIsland + media_panel + LobbyMediaHook adapters
+- [x] **p2p-call**: a MESMA `MediaIsland` do lobby montada no chat (`window_id`
+  + notícias `{:p2p_feature_notice, :call, ...}` + **token no envelope do
+  broadcast interno** — sem isso o gate token-gated do ChatLive descartava
+  `lobby_peer_mute`/`camera`). Janela sempre montada enquanto joinado (streams
+  sobrevivem a hide/show), X encerra a chamada via `on_close="end_call"`;
+  adapters `lobby_media_*`/`start_call`/`end_call`/layout/preset no host;
+  pubsub `lobby_media_changed`/`peer_mute`/`peer_camera` → ilha (auto-join
+  surface incluso); "Start Audio/Video Call" nos dois menus; encerrar chamada
+  zera a telemetria do host. CI 9/9.
 - [ ] **p2p-games**: GameIsland + game_panel + LobbyGameCanvasHook adapters
 
 ### Aprendizados F3 (parciais)

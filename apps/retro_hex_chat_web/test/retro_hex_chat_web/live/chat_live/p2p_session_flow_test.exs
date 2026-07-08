@@ -166,6 +166,37 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     end
   end
 
+  describe "call window" do
+    test "starting an audio call records media presence and mirrors the summary",
+         %{conn: conn} do
+      ctx = mount_pair(conn, "p2pfs#{uid()}", "p2pft#{uid()}")
+      session = invite(ctx)
+      render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token})
+      flush(ctx.view_a)
+      render_click(ctx.view_a, "lobby_connected", %{})
+
+      assert render(ctx.view_a) =~ "p2p-call-window"
+
+      # Menu action → island → domain records this peer's media presence.
+      render_click(ctx.view_a, "toolbar_action", %{"action" => "p2p_start_audio"})
+      flush(ctx.view_a)
+      {:ok, state} = Lobby.session_info(session.token)
+      assert state.media.creator == %{audio: true, video: false}
+
+      # The media hook echoes the call start; the C2 summary reaches the host.
+      render_click(ctx.view_a, "lobby_media_call_started", %{"type" => "audio"})
+      flush(ctx.view_a)
+      assert %{call_summary: %{type: "audio"}} = p2p_assigns(ctx.view_a)
+
+      # Ending the call clears the summary and the media presence.
+      render_click(ctx.view_a, "lobby_media_call_ended", %{})
+      flush(ctx.view_a)
+      assert p2p_assigns(ctx.view_a).call_summary == nil
+      {:ok, state} = Lobby.session_info(session.token)
+      assert state.media.creator == %{audio: false, video: false}
+    end
+  end
+
   describe "one session at a time (switch)" do
     test "accepting a second invite asks to switch and ends the first session", %{conn: conn} do
       ctx = mount_pair(conn, "p2pfi#{uid()}", "p2pfj#{uid()}")

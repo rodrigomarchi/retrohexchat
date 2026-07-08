@@ -12,8 +12,12 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
   media presence with `Lobby.set_media`, broadcasts its own mute/camera changes,
   pushes the hook's media commands and its own `window_command` (C3), and mirrors a
   `{type, duration, quality_label}` summary to the host for the taskbar badge and
-  the Statistics-window connection strip (C2). Device fallbacks and errors go to the
-  chat sink (C1).
+  the Statistics-window connection strip (C2). Device fallbacks and errors bubble
+  to the host (`{:p2p_feature_notice, :call, text}`) for its chat sink (C1).
+
+  Host-agnostic: the standalone lobby and the in-chat P2P session mount the
+  same island — `window_id` names the desktop window it drives ("call" in the
+  lobby, "p2p-call" in the chat).
 
   WebRTC negotiation is single-offerer and lives in the host/JS backbone — the
   island only asks for media via hook push-events; it never touches offer/answer.
@@ -23,7 +27,6 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
   import RetroHexChatWeb.Components.UI.Lobby.MediaPanel
 
   alias RetroHexChat.Lobby
-  alias RetroHexChatWeb.App.LobbyLive.Components.ChatIsland
 
   @pubsub RetroHexChat.PubSub
   # Distinct from the media panel's own `id="lobby-media"` hook element inside it.
@@ -51,7 +54,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
        nickname: nil,
        peer_nick: nil,
        token: nil,
-       user_id: nil
+       user_id: nil,
+       window_id: "call"
      )}
   end
 
@@ -114,7 +118,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
       nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
       peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
       token: Map.get(assigns, :token, socket.assigns.token),
-      user_id: Map.get(assigns, :user_id, socket.assigns.user_id)
+      user_id: Map.get(assigns, :user_id, socket.assigns.user_id),
+      window_id: Map.get(assigns, :window_id, socket.assigns.window_id)
     )
   end
 
@@ -127,7 +132,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
 
     socket
     |> push_event("lobby_media_start_video", %{})
-    |> push_event("window_command", %{action: "open", id: "call"})
+    |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
   end
 
   defp media_event(socket, "start_call", %{"type" => "audio"}) do
@@ -135,7 +140,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
 
     socket
     |> push_event("lobby_media_start_audio", %{})
-    |> push_event("window_command", %{action: "open", id: "call"})
+    |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
   end
 
   # The media hook reports its self-controlled send state for every change: starting
@@ -178,7 +183,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
       peer_muted: false,
       peer_camera_off: false
     )
-    |> push_event("window_command", %{action: "close", id: "call"})
+    |> push_event("window_command", %{action: "close", id: socket.assigns.window_id})
     |> summarize()
   end
 
@@ -221,14 +226,15 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
   end
 
   defp media_event(socket, "lobby_media_device_fallback", %{"message" => message}) do
-    send_update(ChatIsland, id: ChatIsland.id(), system_message: message)
+    send(self(), {:p2p_feature_notice, :call, message})
     socket
   end
 
   defp media_event(socket, "lobby_media_error", _params) do
-    send_update(ChatIsland,
-      id: ChatIsland.id(),
-      system_message: dgettext("lobby", "Could not access your microphone or camera.")
+    send(
+      self(),
+      {:p2p_feature_notice, :call,
+       dgettext("lobby", "Could not access your microphone or camera.")}
     )
 
     socket |> assign(call: nil) |> summarize()
@@ -267,10 +273,10 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
       socket
       |> assign(call: call, local_muted: false, local_camera_off: false)
       |> push_event(start_event, %{auto: true})
-      |> push_event("window_command", %{action: "open", id: "call"})
+      |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
       |> summarize()
     else
-      push_event(socket, "window_command", %{action: "open", id: "call"})
+      push_event(socket, "window_command", %{action: "open", id: socket.assigns.window_id})
     end
   end
 
@@ -300,7 +306,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.MediaIsland do
   defp broadcast(socket, event, payload) do
     Phoenix.PubSub.broadcast(@pubsub, "lobby:#{socket.assigns.token}", %{
       event: event,
-      payload: payload
+      payload: payload,
+      token: socket.assigns.token
     })
   end
 

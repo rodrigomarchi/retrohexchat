@@ -109,6 +109,20 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.start_menu_separator :if={@p2p_active} />
         <.app_item
           :if={@p2p_active}
+          action="p2p_start_audio"
+          on_action={@on_action}
+          label={dgettext("ui", "Start Audio Call")}
+          icon_fn={:icon_microphone}
+        />
+        <.app_item
+          :if={@p2p_active}
+          action="p2p_start_video"
+          on_action={@on_action}
+          label={dgettext("ui", "Start Video Call")}
+          icon_fn={:icon_camera}
+        />
+        <.app_item
+          :if={@p2p_active}
           action="p2p_open_files"
           on_action={@on_action}
           label={dgettext("ui", "Send a File...")}
