@@ -77,9 +77,10 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
       assert has_element?(
                view,
-               ~s([data-testid="channel-space-shell"][phx-hook="SpaceCanvasHook"])
+               ~s([data-testid="channel-content-row"] [data-testid="channel-space-shell"][phx-hook="SpaceCanvasHook"])
              )
 
+      assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))
       assert has_element?(view, ~s([data-window-id="chat"] #chat-input-area))
     end
   end

@@ -1092,23 +1092,39 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       |> Map.values()
       |> MapSet.new(&{&1.x, &1.y})
 
+    pick_seed_spawn(state, occupied, true, true) ||
+      pick_spiral_spawn(state, occupied, true, true) ||
+      pick_seed_spawn(state, occupied, false, true) ||
+      pick_spiral_spawn(state, occupied, false, true) ||
+      pick_seed_spawn(state, occupied, true, false) ||
+      pick_spiral_spawn(state, occupied, true, false) ||
+      pick_seed_spawn(state, occupied, false, false) ||
+      pick_spiral_spawn(state, occupied, false, false) ||
+      fallback_walkable_spawn(state)
+  end
+
+  defp pick_seed_spawn(state, occupied, participant_clear?, visual_clear?) do
     state.map.spawn
-    |> Enum.find(&spawn_available?(state, occupied, &1.x, &1.y))
+    |> Enum.find(
+      &spawn_available?(state, occupied, &1.x, &1.y, participant_clear?, visual_clear?)
+    )
     |> case do
-      nil -> pick_spiral_spawn(state, occupied)
+      nil -> nil
       spawn -> {spawn.x, spawn.y, spawn.dir}
     end
   end
 
-  defp pick_spiral_spawn(state, occupied) do
+  defp pick_spiral_spawn(state, occupied, participant_clear?, visual_clear?) do
     {origin_x, origin_y} = spawn_origin(state.map.spawn)
     max_radius = max(state.map.width, state.map.height)
 
     1..max_radius
     |> Stream.flat_map(&spiral_ring(origin_x, origin_y, &1))
-    |> Enum.find(fn {x, y} -> spawn_available?(state, occupied, x, y) end)
+    |> Enum.find(fn {x, y} ->
+      spawn_available?(state, occupied, x, y, participant_clear?, visual_clear?)
+    end)
     |> case do
-      nil -> fallback_walkable_spawn(state)
+      nil -> nil
       {x, y} -> {x, y, "down"}
     end
   end
@@ -1130,6 +1146,30 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   defp spawn_available?(state, occupied, x, y) do
     in_bounds?(state.map, x, y) and not MapSet.member?(state.blocked, {x, y}) and
       not MapSet.member?(occupied, {x, y})
+  end
+
+  defp spawn_available?(state, occupied, x, y, participant_clear?, visual_clear?) do
+    spawn_available?(state, occupied, x, y) and
+      (not participant_clear? or clear_of_occupied?(occupied, x, y)) and
+      (not visual_clear? or clear_of_static_obstacles?(state, x, y))
+  end
+
+  defp clear_of_occupied?(occupied, x, y) do
+    Enum.all?(occupied, fn {occupied_x, occupied_y} ->
+      max(abs(x - occupied_x), abs(y - occupied_y)) > 1
+    end)
+  end
+
+  # Avatars are two tiles tall and labels sit just above them. For spawn points,
+  # prefer cells whose immediate visual column does not overlap market crates,
+  # benches, walls, or other static collision cells.
+  defp clear_of_static_obstacles?(state, x, y) do
+    Enum.all?((y - 2)..y, fn tile_y ->
+      Enum.all?((x - 1)..(x + 1), fn tile_x ->
+        not in_bounds?(state.map, tile_x, tile_y) or
+          not MapSet.member?(state.blocked, {tile_x, tile_y})
+      end)
+    end)
   end
 
   defp fallback_walkable_spawn(state) do

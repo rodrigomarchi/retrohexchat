@@ -16,16 +16,16 @@ export const DIRECTIONS = Object.freeze(["down", "up", "left", "right"]);
 // Row offset (in tiles) of each facing inside a character block on the sheet.
 const DIR_ROW = Object.freeze({ down: 0, right: 2, up: 4, left: 6 });
 
-// Avatars are sliced from `character.png` (16×32 sprites, 4 frames per facing).
-// Each registry id maps to a distinct character block (top-left tile) so the
-// four avatars are visually different people, not recolours.
+// Avatars are sliced from the walking blocks at the top of `character.png`
+// (16×32 sprites, 4 frames per facing). Rows 8+ are weapon/action poses, not
+// walking blocks, and produce half-body frames when used with DIR_ROW.
 const AVATAR_SHEET = "character";
 const AVATAR_W = 16;
 const AVATAR_H = 32;
 const AVATAR_BLOCKS = Object.freeze({
   rogue_red: { col: 0, row: 0, frames: [0, 1, 2, 3] },
-  mage_blue: { col: 0, row: 8, frames: [0, 1, 2, 3] },
-  mage_green: { col: 4, row: 8, frames: [0, 1, 2, 3] },
+  mage_blue: { col: 5, row: 0, frames: [0, 1, 2, 3] },
+  mage_green: { col: 9, row: 0, frames: [0, 1, 2, 3] },
   // This block's walk frames sit in columns 1–3; cycle them for a 4-step gait.
   bard_gold: { col: 4, row: 0, frames: [1, 2, 3, 2] },
 });

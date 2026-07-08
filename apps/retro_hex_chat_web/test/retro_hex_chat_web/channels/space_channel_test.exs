@@ -5,6 +5,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.VirtualSpace.{JoinToken, Queries, Registry, SessionServer}
+  alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
   alias RetroHexChatWeb.UserSocket
 
   @moduletag :integration
@@ -100,6 +101,27 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
     {:ok, socket} = connect(UserSocket, %{})
     join_token = JoinToken.sign(channel, nil, nickname)
     subscribe_and_join(socket, "space:#{channel}", %{"join_token" => join_token})
+  end
+
+  defp separated?(positions) do
+    positions
+    |> Enum.with_index()
+    |> Enum.all?(fn {{x, y}, index} ->
+      positions
+      |> Enum.with_index()
+      |> Enum.all?(fn
+        {_other, ^index} -> true
+        {{other_x, other_y}, _other_index} -> max(abs(x - other_x), abs(y - other_y)) > 1
+      end)
+    end)
+  end
+
+  defp visually_clear_spawn?(blocked, {x, y}) do
+    Enum.all?((y - 2)..y, fn tile_y ->
+      Enum.all?((x - 1)..(x + 1), fn tile_x ->
+        not MapSet.member?(blocked, {tile_x, tile_y})
+      end)
+    end)
   end
 
   describe "join" do
@@ -204,7 +226,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert_push "space_delta", %{left: ["nick:bob"]}
     end
 
-    test "channel spaces expand spawn positions beyond the market square seeds" do
+    test "channel spaces expand spawn positions beyond the market square with clearance" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
 
@@ -218,7 +240,12 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
         |> Map.values()
         |> Enum.map(&{&1.x, &1.y})
 
+      blocked = SpaceMap.collision_set(space_init.map)
+
       assert length(Enum.uniq(positions)) == 9
+      assert Enum.all?(positions, &(not MapSet.member?(blocked, &1)))
+      assert separated?(positions)
+      assert Enum.all?(positions, &visually_clear_spawn?(blocked, &1))
     end
   end
 

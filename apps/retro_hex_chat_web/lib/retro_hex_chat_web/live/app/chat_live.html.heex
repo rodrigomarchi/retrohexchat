@@ -165,10 +165,10 @@
             active_channel={@session.active_channel}
           />
 
-          <%!-- Messages + Nicklist row (fills remaining space) --%>
-          <div class={["flex flex-1 min-h-0", space_view? && "hidden"]}>
+          <%!-- Main content + Nicklist row (fills remaining space) --%>
+          <div class="flex flex-1 min-h-0" data-testid="channel-content-row">
             <%!-- Messages column --%>
-            <div class="flex flex-col flex-1 min-w-0 min-h-0 relative">
+            <div class={["flex flex-col flex-1 min-w-0 min-h-0 relative", space_view? && "hidden"]}>
               <%!-- Chat messages stream (stateful island — owns the :chat_messages stream
                + the channel-load spinner and load-older indicator) --%>
               <.live_component
@@ -195,6 +195,46 @@
               />
             </div>
 
+            <div :if={space_view?} class="relative flex flex-1 min-w-0 min-h-0">
+              <div
+                id={space_dom_id(@session.active_channel)}
+                phx-hook="SpaceCanvasHook"
+                phx-update="ignore"
+                data-testid="channel-space-shell"
+                data-space-token={@session.active_channel}
+                data-join-token={channel_space_join_token(@session)}
+                data-nickname={@session.nickname}
+                data-space-mode="channel"
+                class="relative flex-1 min-h-0 w-full bg-canvas"
+              >
+                <canvas
+                  id={"#{space_dom_id(@session.active_channel)}-canvas"}
+                  class="absolute inset-0 block h-full w-full"
+                >
+                </canvas>
+                <div
+                  data-space-modal
+                  hidden
+                  class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
+                >
+                </div>
+                <div
+                  data-space-kicked
+                  hidden
+                  class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
+                >
+                  <div class="font-bold">{dgettext("chat", "Removed from channel space")}</div>
+                </div>
+                <div
+                  data-space-closed
+                  hidden
+                  class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
+                >
+                  <div class="font-bold">{dgettext("chat", "Channel space closed")}</div>
+                </div>
+              </div>
+            </div>
+
             <%!-- Nicklist sidebar --%>
             <.live_component
               module={RetroHexChatWeb.ChatLive.Components.Nicklist}
@@ -202,46 +242,6 @@
               visible={@show_nicklist && !@session.active_pm && !@show_status_tab}
               nick_color_fn={@nick_color_fn}
             />
-          </div>
-
-          <div :if={space_view?} class="relative flex flex-1 min-h-0">
-            <div
-              id={space_dom_id(@session.active_channel)}
-              phx-hook="SpaceCanvasHook"
-              phx-update="ignore"
-              data-testid="channel-space-shell"
-              data-space-token={@session.active_channel}
-              data-join-token={channel_space_join_token(@session)}
-              data-nickname={@session.nickname}
-              data-space-mode="channel"
-              class="relative flex-1 min-h-0 w-full bg-canvas"
-            >
-              <canvas
-                id={"#{space_dom_id(@session.active_channel)}-canvas"}
-                class="absolute inset-0 block h-full w-full"
-              >
-              </canvas>
-              <div
-                data-space-modal
-                hidden
-                class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
-              >
-              </div>
-              <div
-                data-space-kicked
-                hidden
-                class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
-              >
-                <div class="font-bold">{dgettext("chat", "Removed from channel space")}</div>
-              </div>
-              <div
-                data-space-closed
-                hidden
-                class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
-              >
-                <div class="font-bold">{dgettext("chat", "Channel space closed")}</div>
-              </div>
-            </div>
           </div>
 
           <%!-- Composer island: autocomplete + syntax tooltip + bottom input panel --%>

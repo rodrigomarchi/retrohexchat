@@ -63,8 +63,9 @@ describe("sprite atlas contract", () => {
     expect(atlas.avatar("rogue_red", "down", 0)).toMatchObject({ sx: 0, sy: 0, sw: 16, sh: 32 });
     // up = row offset 4, frame 1 = col 1.
     expect(atlas.avatar("rogue_red", "up", 1)).toMatchObject({ sx: 16, sy: 64 });
-    // mage_green block is at (4,8); left = row offset 6.
-    expect(atlas.avatar("mage_green", "left", 0)).toMatchObject({ sx: 64, sy: 224 });
+    // mage_green is remapped to a complete walking block; rows 8+ are weapon poses.
+    expect(atlas.avatar("mage_green", "right", 0)).toMatchObject({ sx: 144, sy: 32 });
+    expect(atlas.avatar("mage_blue", "left", 0)).toMatchObject({ sx: 80, sy: 96 });
   });
 
   it("falls back to the default block for an unknown avatar id", () => {
