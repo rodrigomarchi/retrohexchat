@@ -257,6 +257,12 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
           on_action={@on_action}
         />
         <.menu_item
+          icon_fn={:icon_game_arcade}
+          label={dgettext("ui", "Play a Game...")}
+          action="p2p_open_games"
+          on_action={@on_action}
+        />
+        <.menu_item
           icon_fn={:icon_status_signal}
           label={dgettext("ui", "Statistics")}
           action="p2p_open_stats"

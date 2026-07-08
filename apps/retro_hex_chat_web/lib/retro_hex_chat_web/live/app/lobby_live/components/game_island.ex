@@ -6,7 +6,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
   The Games window is server-managed: the island mounts only while the window is
   open, so every open starts from a fresh island. It pushes `window_command` open
   to restore/focus the window on a proposal or game start, asks the host to
-  unmount it when the game ends — `send(self(), {:close_window, "game"})` — and
+  unmount it when the game ends — `send(self(), {:close_window, socket.assigns.window_id})` — and
   pushes the canvas hook's `lobby_game_start`/`lobby_game_end` lifecycle events
   (C3). Whenever the game becomes active or idle it mirrors a minimal summary to
   the host — `send(self(), {:feature_summary, :game, %{active?: ...}})` — so the
@@ -23,7 +23,6 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
   import RetroHexChatWeb.Components.UI.Lobby.GamePanel
 
   alias RetroHexChat.Games.Catalog
-  alias RetroHexChatWeb.App.LobbyLive.Components.ChatIsland
 
   @id "lobby-game"
   @idle %{status: "idle", game_id: nil, is_host: false}
@@ -43,7 +42,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
        game_outgoing: false,
        games: Catalog.list_games(),
        connected: false,
-       peer_nick: nil
+       peer_nick: nil,
+       window_id: "game"
      )}
   end
 
@@ -76,7 +76,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
   defp assign_context(socket, assigns) do
     assign(socket,
       connected: Map.get(assigns, :connected, socket.assigns.connected),
-      peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick)
+      peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
+      window_id: Map.get(assigns, :window_id, socket.assigns.window_id)
     )
   end
 
@@ -84,7 +85,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
   defp handle_action(socket, {:request, request, outgoing}) do
     socket
     |> assign(game: @idle, game_request: request, game_outgoing: outgoing)
-    |> push_event("window_command", %{action: "open", id: "game"})
+    |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
   end
 
   defp handle_action(socket, :request_declined) do
@@ -99,12 +100,12 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
       game_outgoing: false
     )
     |> push_event("lobby_game_start", %{game_id: game_id, is_host: is_host})
-    |> push_event("window_command", %{action: "open", id: "game"})
+    |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
     |> summarize()
   end
 
   defp handle_action(socket, :idle) do
-    send(self(), {:close_window, "game"})
+    send(self(), {:close_window, socket.assigns.window_id})
 
     socket
     |> assign(game: @idle)
@@ -143,7 +144,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
   end
 
   defp handle_action(socket, :end_game) do
-    send(self(), {:close_window, "game"})
+    send(self(), {:close_window, socket.assigns.window_id})
     assign(socket, game_request: nil, game_outgoing: false)
   end
 
@@ -158,7 +159,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.GameIsland do
     message =
       dgettext("lobby", "Game over — %{game}: %{p1} × %{p2}", game: name, p1: p1, p2: p2)
 
-    send_update(ChatIsland, id: ChatIsland.id(), system_message: message)
+    send(self(), {:p2p_feature_notice, :game, message})
     socket
   end
 

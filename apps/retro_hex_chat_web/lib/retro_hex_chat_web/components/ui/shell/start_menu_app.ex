@@ -130,6 +130,13 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         />
         <.app_item
           :if={@p2p_active}
+          action="p2p_open_games"
+          on_action={@on_action}
+          label={dgettext("ui", "Play a Game...")}
+          icon_fn={:icon_game_arcade}
+        />
+        <.app_item
+          :if={@p2p_active}
           action="p2p_open_stats"
           on_action={@on_action}
           label={dgettext("ui", "P2P Statistics")}

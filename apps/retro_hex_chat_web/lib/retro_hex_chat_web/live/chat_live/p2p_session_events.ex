@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.SignalingRateLimit
   alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
+  alias RetroHexChatWeb.App.LobbyLive.Components.GameIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.MediaIsland
   alias RetroHexChatWeb.App.P2PStats
   alias RetroHexChatWeb.App.SessionHelpers
@@ -115,6 +116,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, Windows.open(socket, "p2p-files")}
   end
 
+  def handle_event("p2p_open_games", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    {:halt, Windows.open(socket, "p2p-games")}
+  end
+
   def handle_event("p2p_start_audio", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     forward_media(socket, "start_call", %{"type" => "audio"})
   end
@@ -144,6 +149,70 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def handle_event(event, params, %{assigns: %{p2p_session: %{}}} = socket)
       when event in ~w(start_call end_call set_call_layout media_select_preset) do
     forward_media(socket, event, params)
+  end
+
+  def handle_event("lobby_game_canvas_ready", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    Phoenix.LiveView.send_update(GameIsland, id: GameIsland.id(), action: :canvas_ready)
+    {:halt, socket}
+  end
+
+  def handle_event(
+        "propose_game",
+        %{"game_id" => game_id},
+        %{assigns: %{p2p_session: %{}}} = socket
+      ) do
+    p2p = socket.assigns.p2p_session
+    _ = Lobby.propose_game(p2p.token, p2p.user_id, game_id)
+    {:halt, socket}
+  end
+
+  def handle_event(
+        "respond_game",
+        %{"accepted" => accepted},
+        %{assigns: %{p2p_session: %{}}} = socket
+      ) do
+    p2p = socket.assigns.p2p_session
+    _ = Lobby.respond_game(p2p.token, p2p.user_id, accepted == "true")
+    {:halt, socket}
+  end
+
+  # The X on the Games window quits/cancels whatever is there — a playing game
+  # ends for both peers; an open picker or pending proposal just closes.
+  def handle_event("end_game", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    p2p = socket.assigns.p2p_session
+    _ = Lobby.end_game(p2p.token, p2p.user_id)
+
+    if "p2p-games" in socket.assigns.open_windows do
+      Phoenix.LiveView.send_update(GameIsland, id: GameIsland.id(), action: :end_game)
+    end
+
+    {:halt, socket}
+  end
+
+  # Only the host's game engine fires onGameEnd; it reports the authoritative
+  # result and the server relays "finished" (with the score) to both peers.
+  def handle_event("lobby_game_result", result, %{assigns: %{p2p_session: %{}}} = socket) do
+    p2p = socket.assigns.p2p_session
+    _ = Lobby.finish_game(p2p.token, p2p.user_id, result)
+    {:halt, socket}
+  end
+
+  def handle_event("dismiss_game_result", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    Phoenix.LiveView.send_update(GameIsland, id: GameIsland.id(), action: :dismiss_result)
+    {:halt, socket}
+  end
+
+  # The game canvas failed to load its engine bundle: end the game for both
+  # peers (it cannot be played one-sided) and tell the user why.
+  def handle_event("lobby_game_error", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    p2p = socket.assigns.p2p_session
+    _ = Lobby.end_game(p2p.token, p2p.user_id)
+
+    {:halt,
+     Messages.system_event(
+       socket,
+       dgettext("chat", "Could not load the game. Please try again.")
+     )}
   end
 
   # File-transfer control rides the data channel; the hook's ft_* events are
@@ -427,6 +496,79 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       Phoenix.LiveView.send_update(MediaIsland,
         id: MediaIsland.id(),
         action: {:peer_camera, off}
+      )
+    end
+
+    {:halt, socket}
+  end
+
+  defp handle_session_event(%{event: "lobby_game_request", payload: request}, socket, p2p) do
+    outgoing = request.proposer_id == p2p.user_id
+
+    # open_with defers the send_update one message hop: a same-cycle
+    # send_update into the freshly mounted managed island never patches.
+    {:halt,
+     Windows.open_with(socket, "p2p-games", GameIsland,
+       id: GameIsland.id(),
+       action: {:request, request, outgoing}
+     )}
+  end
+
+  defp handle_session_event(
+         %{event: "lobby_game_response", payload: %{accepted: false}},
+         socket,
+         _p2p
+       ) do
+    if "p2p-games" in socket.assigns.open_windows do
+      Phoenix.LiveView.send_update(GameIsland, id: GameIsland.id(), action: :request_declined)
+    end
+
+    {:halt, Messages.system_event(socket, dgettext("chat", "Game request declined."))}
+  end
+
+  defp handle_session_event(
+         %{event: "lobby_game_response", payload: %{accepted: true}},
+         socket,
+         _p2p
+       ) do
+    {:halt, socket}
+  end
+
+  defp handle_session_event(
+         %{event: "lobby_game_status_changed", payload: %{status: "playing"} = payload},
+         socket,
+         p2p
+       ) do
+    is_host = payload.host_id == p2p.user_id
+
+    {:halt,
+     Windows.open_with(socket, "p2p-games", GameIsland,
+       id: GameIsland.id(),
+       action: {:playing, payload.game_id, is_host}
+     )}
+  end
+
+  defp handle_session_event(
+         %{event: "lobby_game_status_changed", payload: %{status: "idle"}},
+         socket,
+         _p2p
+       ) do
+    if "p2p-games" in socket.assigns.open_windows do
+      Phoenix.LiveView.send_update(GameIsland, id: GameIsland.id(), action: :idle)
+    end
+
+    {:halt, socket}
+  end
+
+  defp handle_session_event(
+         %{event: "lobby_game_status_changed", payload: %{status: "finished"} = payload},
+         socket,
+         _p2p
+       ) do
+    if "p2p-games" in socket.assigns.open_windows do
+      Phoenix.LiveView.send_update(GameIsland,
+        id: GameIsland.id(),
+        action: {:result, payload.result}
       )
     end
 

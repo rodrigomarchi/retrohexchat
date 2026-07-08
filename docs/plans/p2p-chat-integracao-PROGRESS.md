@@ -69,7 +69,17 @@
   pubsub `lobby_media_changed`/`peer_mute`/`peer_camera` → ilha (auto-join
   surface incluso); "Start Audio/Video Call" nos dois menus; encerrar chamada
   zera a telemetria do host. CI 9/9.
-- [ ] **p2p-games**: GameIsland + game_panel + LobbyGameCanvasHook adapters
+- [x] **p2p-games**: a MESMA `GameIsland` do lobby montada no chat (`window_id`
+  + notícia de resultado `{:p2p_feature_notice, :game, ...}`). Server-managed
+  (ilha monta só com a janela aberta; picker sempre fresco); X encerra o jogo
+  para os dois via `on_close="end_game"`; propostas/status abrem a janela nos
+  DOIS lados via `Windows.open_with` (send_update deferido — o mount da ilha
+  managed não pode receber send_update no mesmo ciclo); handlers completos
+  (propose/respond/end/result/error/dismiss/canvas_ready); "Play a Game..."
+  nos dois menus. CI 9/9.
+
+**F3 CONCLUÍDA** — as 4 janelas P2P vivem no desktop do chat, com as 3 ilhas
+do lobby reusadas (zero fork) e o standalone intacto.
 
 ### Aprendizados F3 (parciais)
 

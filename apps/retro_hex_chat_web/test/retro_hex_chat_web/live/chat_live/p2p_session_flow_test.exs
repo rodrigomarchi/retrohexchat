@@ -197,6 +197,48 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     end
   end
 
+  describe "games window" do
+    test "a full propose → accept → finish cycle drives both windows", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pfu#{uid()}", "p2pfv#{uid()}")
+      session = invite(ctx)
+      render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token})
+      flush(ctx.view_a)
+      render_click(ctx.view_a, "lobby_connected", %{})
+      flush(ctx.view_b)
+
+      # A proposes; the request opens the (managed) window on BOTH sides.
+      render_click(ctx.view_a, "propose_game", %{"game_id" => "hex_pong"})
+      flush(ctx.view_a)
+      flush(ctx.view_b)
+      assert render(ctx.view_a) =~ "p2p-games-window"
+      assert render(ctx.view_b) =~ "p2p-games-window"
+
+      # B accepts: the game starts and the C2 summary flags it active.
+      render_click(ctx.view_b, "respond_game", %{"accepted" => "true"})
+      flush(ctx.view_a)
+      flush(ctx.view_b)
+      assert {:ok, %{game: %{status: "playing"}}} = Lobby.session_info(session.token)
+      assert %{game_summary: %{active?: true}} = p2p_assigns(ctx.view_a)
+
+      # The host reports the authoritative result; both islands show it and
+      # the session stays connected.
+      render_click(ctx.view_a, "lobby_game_result", %{
+        "score" => %{"p1" => 5, "p2" => 3},
+        "winner" => 1
+      })
+
+      flush(ctx.view_a)
+      assert {:ok, %{game: %{status: "finished"}}} = Lobby.session_info(session.token)
+      assert render(ctx.view_a) =~ "p2p-games-window"
+
+      # Quitting via the window returns the domain to idle and unmounts.
+      render_click(ctx.view_a, "end_game", %{})
+      flush(ctx.view_a)
+      assert {:ok, %{game: %{status: "idle"}}} = Lobby.session_info(session.token)
+      refute render(ctx.view_a) =~ "p2p-games-window"
+    end
+  end
+
   describe "one session at a time (switch)" do
     test "accepting a second invite asks to switch and ends the first session", %{conn: conn} do
       ctx = mount_pair(conn, "p2pfi#{uid()}", "p2pfj#{uid()}")
