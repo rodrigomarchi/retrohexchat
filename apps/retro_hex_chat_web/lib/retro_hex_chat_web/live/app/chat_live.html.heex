@@ -477,6 +477,7 @@
     <.desktop_window
       :if={@p2p_session && "p2p-stats" in @open_windows}
       id="p2p-stats"
+      persist_geometry={false}
       title={dgettext("chat", "P2P Statistics")}
       managed
       default_x={880}
@@ -508,16 +509,14 @@
     <.desktop_window
       :if={@p2p_session && "p2p-games" in @open_windows}
       id="p2p-games"
+      persist_geometry={false}
       title={dgettext("chat", "P2P Games")}
       managed
       on_close="end_game"
       default_x={120}
-      default_y={90}
-      width={560}
-      height={520}
-      min_width={420}
-      min_height={360}
-      body_class="flex min-h-0 flex-col p-1"
+      default_y={48}
+      width={680}
+      body_class="p-1"
       data-testid="p2p-games-window"
     >
       <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
@@ -536,6 +535,7 @@
     <.desktop_window
       :if={@p2p_session && @p2p_session.state != :invite_sent}
       id="p2p-call"
+      persist_geometry={false}
       title={
         if @p2p_session.peer_nick in [nil, ""],
           do: dgettext("chat", "P2P Call"),
@@ -569,6 +569,7 @@
     <.desktop_window
       :if={@p2p_session && @p2p_session.state != :invite_sent}
       id="p2p-files"
+      persist_geometry={false}
       title={dgettext("chat", "P2P Files")}
       open={false}
       on_close="ft_cancel"

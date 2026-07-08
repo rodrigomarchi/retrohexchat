@@ -154,6 +154,13 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
   attr :min_height, :integer, default: 120
   attr :resizable, :boolean, default: true
 
+  attr :persist_geometry, :boolean,
+    default: true,
+    doc:
+      "when false the window is ephemeral: the window manager neither applies nor saves " <>
+        "layout state for it, so every mount starts from the default geometry (session " <>
+        "windows whose content only exists while a live feature runs)"
+
   attr :on_close, :any,
     default: nil,
     doc:
@@ -184,6 +191,7 @@ defmodule RetroHexChatWeb.Components.UI.Desktop do
       data-window-default-height={@height}
       data-window-min-width={@min_width}
       data-window-min-height={@min_height}
+      data-window-ephemeral={to_string(!@persist_geometry)}
       class={classes(["desktop-window u-hidden absolute", @class])}
       {@rest}
     >

@@ -192,6 +192,9 @@ const WindowManagerHook = {
       el,
       pinned: d.windowPinned === "true",
       managed: d.windowManaged === "true",
+      // Ephemeral windows never load or save layout state: every mount
+      // starts from the default geometry (session windows).
+      ephemeral: d.windowEphemeral === "true",
       minW: int(d.windowMinWidth, 220),
       minH: int(d.windowMinHeight, 120),
       state: {
@@ -231,6 +234,7 @@ const WindowManagerHook = {
 
   applySavedState(id, s) {
     const win = this.windows[id];
+    if (win.ephemeral) return;
     const st = win.state;
     st.centered = false;
     if (typeof s.x === "number") st.x = s.x;
@@ -1146,6 +1150,7 @@ const WindowManagerHook = {
     if (!this.persistKey || !this.persistEnabled) return;
     const data = {};
     for (const id in this.windows) {
+      if (this.windows[id].ephemeral) continue;
       const s = this.windows[id].state;
       data[id] = {
         open: s.open,
