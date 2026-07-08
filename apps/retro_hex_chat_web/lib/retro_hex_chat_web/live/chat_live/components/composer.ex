@@ -318,14 +318,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
           visible={@show_emoji_picker}
         />
 
-        <.formatting_toolbar
-          :if={@capabilities.formatting_toolbar}
-          strip_active={@strip_formatting}
-          show_emoji={@capabilities.emoji}
-          on_format="toggle_strip_formatting"
-          on_toggle_emoji="toggle_emoji_picker"
-        />
-
         <.reply_bar
           :if={@reply_to}
           author={@reply_to.author}
@@ -353,8 +345,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
           hook="AutocompleteHook"
           wrapper_hook="CharCounterHook"
           autofocus
-          show_toolbar={false}
-        />
+        >
+          <:toolbar_buttons :if={@capabilities.formatting_toolbar}>
+            <.formatting_toolbar
+              strip_active={@strip_formatting}
+              show_emoji={@capabilities.emoji}
+              on_format="toggle_strip_formatting"
+              on_toggle_emoji="toggle_emoji_picker"
+            />
+          </:toolbar_buttons>
+        </.chat_input>
         <%!-- Composer-owned hook: intercepts multi-line paste on #chat-input and
               pushes `paste_lines` to the root LiveView (handled by core_events,
               which forwards to the PasteConfirmDialog island). --%>

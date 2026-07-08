@@ -10,11 +10,30 @@ describe("ScrollHook", () => {
       attrs: { id: "chat-messages", style: "height: 200px; overflow: auto;" },
       html: '<div style="height: 500px;">messages</div>',
     });
+    finishInitialScroll(hook);
   });
 
   afterEach(() => {
+    hook?.destroyed?.();
     cleanupDOM();
   });
+
+  function finishInitialScroll(hook) {
+    hook.cancelInitialScrollSettle();
+    hook.initialScrollPending = false;
+    hook.hideNewMessagesButton();
+  }
+
+  function messageNode(id = "1") {
+    const el = document.createElement("div");
+    el.dataset.messageId = `chat_messages-${id}`;
+    el.textContent = `message ${id}`;
+    return el;
+  }
+
+  function flushMutations() {
+    return new Promise((resolve) => setTimeout(resolve, 0));
+  }
 
   // ── scroll detection ───────────────────────────────────
 
@@ -46,6 +65,55 @@ describe("ScrollHook", () => {
       });
       hook.handleScroll();
       expect(hook.isAtBottom).toBe(true);
+    });
+  });
+
+  // ── initial scroll settling ────────────────────────────
+
+  describe("initial scroll settling", () => {
+    it("keeps initial stream mutations pinned to bottom without showing new messages", async () => {
+      hook.initialScrollPending = true;
+      hook.isAtBottom = false;
+
+      hook.el.appendChild(messageNode("initial"));
+      await flushMutations();
+
+      const btn = document.querySelector(".new-messages-btn");
+      expect(hook.isAtBottom).toBe(true);
+      expect(btn?.classList.contains("new-messages-btn--visible")).not.toBe(true);
+    });
+
+    it("does not trigger load_more while the initial scroll is settling", () => {
+      hook.initialScrollPending = true;
+      hook.pushEvent.mockClear();
+      Object.defineProperty(hook.el, "scrollTop", { value: 5, writable: true, configurable: true });
+
+      hook.handleScroll();
+
+      expect(hook.pushEvent).not.toHaveBeenCalledWith("load_more", {});
+    });
+
+    it("scrolls stream resets to bottom instead of showing new messages", async () => {
+      hook.el.appendChild(messageNode("old"));
+      await flushMutations();
+      hook.isAtBottom = false;
+
+      hook.el.replaceChildren(messageNode("new"));
+      await flushMutations();
+
+      const btn = document.querySelector(".new-messages-btn");
+      expect(hook.isAtBottom).toBe(true);
+      expect(btn?.classList.contains("new-messages-btn--visible")).not.toBe(true);
+    });
+
+    it("still shows new messages when a live message arrives while scrolled up", async () => {
+      hook.isAtBottom = false;
+
+      hook.el.appendChild(messageNode("live"));
+      await flushMutations();
+
+      const btn = document.querySelector(".new-messages-btn");
+      expect(btn?.classList.contains("new-messages-btn--visible")).toBe(true);
     });
   });
 

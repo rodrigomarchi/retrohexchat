@@ -97,7 +97,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       )
 
     ~H"""
-    <div id={"#{@id}-mount"}>
+    <div id={"#{@id}-mount"} class="flex h-full shrink-0">
       <.conversations_sidebar visible={@visible} on_backdrop="toggle_conversations">
         <.conversations
           channels={@channels}

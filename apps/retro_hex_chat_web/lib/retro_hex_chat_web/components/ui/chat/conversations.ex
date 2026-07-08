@@ -87,7 +87,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   def conversations(assigns) do
     ~H"""
     <div
-      class={classes(["flex flex-col", @class])}
+      class={classes(["flex h-full min-h-0 flex-col", @class])}
       id={@id}
       phx-hook="ConversationsHook"
       data-testid="conversations"
@@ -113,7 +113,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       </div>
 
       <%!-- Tree content --%>
-      <.tree_view class="flex-1 retro-scrollbar">
+      <.tree_view class="flex-1 min-h-0 retro-scrollbar">
         <%= if @channels == [] and @pm_conversations == [] do %>
           <.empty_state>
             <:icon><Icons.icon_channels class="w-6 h-6" /></:icon>

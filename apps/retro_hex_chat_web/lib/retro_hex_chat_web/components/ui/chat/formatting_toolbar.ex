@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.FormattingToolbar do
 
     ~H"""
     <div
-      class={classes(["space-y-retro-2 hidden md:block", @class])}
+      class={classes(["hidden md:block", @class])}
       phx-hook="FormatToolbarHook"
       id={@id}
       {@rest}

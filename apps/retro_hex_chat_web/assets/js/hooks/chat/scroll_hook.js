@@ -34,17 +34,26 @@ import {
 import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
 import { t } from "../../lib/i18n.js";
 
+const INITIAL_SCROLL_FRAME_COUNT = 3;
+const INITIAL_SCROLL_SETTLE_MS = 120;
+
 const ScrollHook = {
   mounted() {
     this.chatEl = this.el;
     this.isAtBottom = true;
+    this.initialScrollPending = true;
+    this.initialScrollFrames = 0;
+    this.initialScrollFrameHandle = null;
+    this.initialScrollTimer = null;
     this.pendingPrepend = false;
     this.prevScrollHeight = this.chatEl.scrollHeight;
     this.mouseDownPos = null;
     this.lastClearToken = this.el.dataset.clearToken || "";
 
-    // Scroll to bottom on mount
+    // Scroll to bottom on mount, then keep settling briefly while the flex
+    // layout, fonts, and initial LiveView stream patches finish landing.
     this.scrollToBottom();
+    this.scheduleInitialScrollSettle();
 
     // Listen for scroll events
     this.chatEl.addEventListener("scroll", () => {
@@ -348,6 +357,9 @@ const ScrollHook = {
         const heightDiff = newScrollHeight - this.prevScrollHeight;
         this.chatEl.scrollTop += heightDiff;
         this.pendingPrepend = false;
+      } else if (this.initialScrollPending || this.isStreamResetMutation(mutations)) {
+        this.scrollToBottom();
+        this.hideNewMessagesButton();
       } else if (this.isAtBottom) {
         this.scrollToBottom();
       } else {
@@ -379,6 +391,7 @@ const ScrollHook = {
   },
 
   destroyed() {
+    this.cancelInitialScrollSettle();
     if (this.observer) {
       this.observer.disconnect();
     }
@@ -390,6 +403,12 @@ const ScrollHook = {
   },
 
   handleScroll() {
+    if (this.initialScrollPending) {
+      this.isAtBottom = true;
+      this.hideNewMessagesButton();
+      return;
+    }
+
     this.isAtBottom = checkIsAtBottom(this.chatEl);
 
     if (this.isAtBottom) {
@@ -406,7 +425,75 @@ const ScrollHook = {
     this.isAtBottom = true;
   },
 
+  scheduleInitialScrollSettle() {
+    this.cancelInitialScrollSettle();
+    this.initialScrollPending = true;
+    this.initialScrollFrames = 0;
+
+    const settle = () => {
+      this.initialScrollFrameHandle = null;
+
+      if (!this.chatEl?.isConnected) {
+        this.initialScrollPending = false;
+        return;
+      }
+
+      this.scrollToBottom();
+      this.hideNewMessagesButton();
+      this.initialScrollFrames += 1;
+
+      if (this.initialScrollFrames < INITIAL_SCROLL_FRAME_COUNT) {
+        this.initialScrollFrameHandle = this.requestNextFrame(settle);
+        return;
+      }
+
+      this.initialScrollTimer = setTimeout(() => {
+        this.initialScrollTimer = null;
+
+        if (!this.chatEl?.isConnected) {
+          this.initialScrollPending = false;
+          return;
+        }
+
+        this.scrollToBottom();
+        this.hideNewMessagesButton();
+        this.initialScrollPending = false;
+      }, INITIAL_SCROLL_SETTLE_MS);
+    };
+
+    this.initialScrollFrameHandle = this.requestNextFrame(settle);
+  },
+
+  cancelInitialScrollSettle() {
+    if (this.initialScrollFrameHandle) {
+      const { type, id } = this.initialScrollFrameHandle;
+
+      if (type === "frame" && typeof window.cancelAnimationFrame === "function") {
+        window.cancelAnimationFrame(id);
+      } else {
+        clearTimeout(id);
+      }
+
+      this.initialScrollFrameHandle = null;
+    }
+
+    if (this.initialScrollTimer) {
+      clearTimeout(this.initialScrollTimer);
+      this.initialScrollTimer = null;
+    }
+  },
+
+  requestNextFrame(callback) {
+    if (typeof window.requestAnimationFrame === "function") {
+      return { type: "frame", id: window.requestAnimationFrame(callback) };
+    }
+
+    return { type: "timer", id: setTimeout(callback, 0) };
+  },
+
   showNewMessagesButton() {
+    if (!this.chatEl.parentElement) return;
+
     let btn = this.chatEl.parentElement.querySelector(".new-messages-btn");
     if (!btn) {
       btn = document.createElement("button");
@@ -423,6 +510,8 @@ const ScrollHook = {
   },
 
   hideNewMessagesButton() {
+    if (!this.chatEl.parentElement) return;
+
     const btn = this.chatEl.parentElement.querySelector(".new-messages-btn");
     if (btn) {
       btn.classList.remove("new-messages-btn--visible");
@@ -448,6 +537,29 @@ const ScrollHook = {
     const nodes = [...mutation.addedNodes, ...mutation.removedNodes];
 
     return nodes.some((node) => {
+      if (node.nodeType !== Node.ELEMENT_NODE) return false;
+      return node.matches?.("[data-message-id]") || node.querySelector?.("[data-message-id]");
+    });
+  },
+
+  isStreamResetMutation(mutations) {
+    let addedMessage = false;
+    let removedMessage = false;
+
+    for (const mutation of mutations) {
+      if (mutation.type !== "childList") continue;
+
+      addedMessage ||= this.hasMessageNode(mutation.addedNodes);
+      removedMessage ||= this.hasMessageNode(mutation.removedNodes);
+
+      if (addedMessage && removedMessage) return true;
+    }
+
+    return false;
+  },
+
+  hasMessageNode(nodes) {
+    return [...nodes].some((node) => {
       if (node.nodeType !== Node.ELEMENT_NODE) return false;
       return node.matches?.("[data-message-id]") || node.querySelector?.("[data-message-id]");
     });

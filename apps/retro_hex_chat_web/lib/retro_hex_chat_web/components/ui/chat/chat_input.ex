@@ -88,12 +88,6 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
       {@rest}
     >
       <div
-        :if={@show_toolbar && @toolbar_buttons != []}
-        class="flex items-center bg-surface py-[2px] px-[2px] gap-0"
-      >
-        {render_slot(@toolbar_buttons)}
-      </div>
-      <div
         :if={@notice_mode?}
         class="flex items-center gap-1 px-[2px] pt-[2px] bg-surface text-xs"
         data-testid="chat-notice-composer"
@@ -121,6 +115,13 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
         class="flex items-center gap-1 p-[2px] bg-surface"
         data-testid="chat-input-form"
       >
+        <div
+          :if={@show_toolbar && @toolbar_buttons != []}
+          class="flex shrink-0 items-center gap-0"
+          data-testid="chat-input-toolbar"
+        >
+          {render_slot(@toolbar_buttons)}
+        </div>
         <.button
           :if={@action_enabled}
           type="button"
@@ -137,37 +138,40 @@ defmodule RetroHexChatWeb.Components.UI.ChatInput do
           <:icon><span class="font-bold leading-none">*</span></:icon>
           <span class="sr-only">{dgettext("chat", "Send action message (/me)")}</span>
         </.button>
-        <textarea
-          id={@input_id}
-          name={@name}
-          rows="1"
-          placeholder={@effective_placeholder}
-          maxlength={@max_length}
-          disabled={@disabled}
-          autocomplete="off"
-          autofocus={@autofocus}
-          phx-change={@on_change}
-          phx-target={@target}
-          phx-keydown={@on_keydown}
-          phx-hook={@hook}
-          data-testid="chat-input-field"
-          class="flex-1 py-[3px] px-1 font-mono text-sm bg-white border border-border shadow-retro-field resize-none outline-none"
-        >{@value}</textarea>
-        <div class="flex flex-col items-center gap-0">
-          <.button
-            type="submit"
-            disabled={@disabled || @char_count == 0}
-            data-testid="chat-input-send"
-            size="sm"
-            class="min-w-[60px]"
+        <div class="relative flex flex-1 min-w-0">
+          <textarea
+            id={@input_id}
+            name={@name}
+            rows="1"
+            placeholder={@effective_placeholder}
+            maxlength={@max_length}
+            disabled={@disabled}
+            autocomplete="off"
+            autofocus={@autofocus}
+            phx-change={@on_change}
+            phx-target={@target}
+            phx-keydown={@on_keydown}
+            phx-hook={@hook}
+            data-testid="chat-input-field"
+            class="h-8 w-full py-[5px] pl-1 pr-12 font-mono text-sm leading-5 bg-white border border-border shadow-retro-field resize-none outline-none"
+          >{@value}</textarea>
+          <span
+            class="pointer-events-none absolute bottom-[2px] right-1 hidden bg-white px-0.5 text-[9px] leading-none text-muted-foreground md:block"
+            data-testid="char-counter"
           >
-            <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
-            {@send_label}
-          </.button>
-          <span class="hidden md:block text-[10px] text-muted-foreground" data-testid="char-counter">
             {@char_count}/{@max_length}
           </span>
         </div>
+        <.button
+          type="submit"
+          disabled={@disabled || @char_count == 0}
+          data-testid="chat-input-send"
+          size="sm"
+          class="min-w-[60px]"
+        >
+          <:icon><Icons.icon_btn_send class="w-4 h-4" /></:icon>
+          {@send_label}
+        </.button>
       </form>
       <p
         :if={@input_error}

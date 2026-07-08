@@ -54,7 +54,17 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
 
       assert has_element?(view, ~s([data-window-id="chat"] [role="tablist"]))
-      assert has_element?(view, ~s([data-window-id="chat"] #chat-input-area))
+      assert has_element?(view, ~s([data-window-id="chat"] #conversations-mount.h-full))
+      assert has_element?(view, ~s([data-window-id="chat"] #conversations.h-full))
+      assert has_element?(view, ~s([data-testid="channel-main-column"] #chat-input-area))
+      assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))
+
+      assert has_element?(
+               view,
+               ~s([data-testid="chat-input-form"] [data-testid="format-btn-bold"])
+             )
+
+      assert has_element?(view, ~s([data-testid="chat-input-form"] [data-testid="char-counter"]))
     end
 
     test "a channel can switch from Chat to Space without replacing the composer", %{conn: conn} do
@@ -81,7 +91,7 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
              )
 
       assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))
-      assert has_element?(view, ~s([data-window-id="chat"] #chat-input-area))
+      assert has_element?(view, ~s([data-testid="channel-main-column"] #chat-input-area))
     end
   end
 

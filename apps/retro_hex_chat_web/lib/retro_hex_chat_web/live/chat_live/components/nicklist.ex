@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Nicklist do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <div id={"#{@id}-mount"}>
+    <div id={"#{@id}-mount"} class="flex h-full shrink-0">
       <.nicklist_sidebar
         visible={@visible}
         on_backdrop="toggle_nicklist"

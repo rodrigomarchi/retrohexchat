@@ -167,72 +167,89 @@
 
           <%!-- Main content + Nicklist row (fills remaining space) --%>
           <div class="flex flex-1 min-h-0" data-testid="channel-content-row">
-            <%!-- Messages column --%>
-            <div class={["flex flex-col flex-1 min-w-0 min-h-0 relative", space_view? && "hidden"]}>
-              <%!-- Chat messages stream (stateful island — owns the :chat_messages stream
+            <div class="flex flex-col flex-1 min-w-0 min-h-0" data-testid="channel-main-column">
+              <%!-- Messages column --%>
+              <div class={[
+                "flex flex-col flex-1 min-w-0 min-h-0 relative",
+                space_view? && "hidden"
+              ]}>
+                <%!-- Chat messages stream (stateful island — owns the :chat_messages stream
                + the channel-load spinner and load-older indicator) --%>
-              <.live_component
-                module={RetroHexChatWeb.ChatLive.Components.MessageViewport}
-                id={RetroHexChatWeb.ChatLive.Components.MessageViewport.id()}
-                chat_clear_token={@chat_clear_token}
-                nick_color_fn={@nick_color_fn}
-                timestamp_format={@timestamp_format}
-                timezone={@timezone}
-                strip_formatting={@session.strip_formatting}
-                edit_mode_message_id={@edit_mode_message_id}
-                show_status_tab={@show_status_tab}
-                loading_more={@loading_more}
-                loading_channel={@loading_channel}
-              />
+                <.live_component
+                  module={RetroHexChatWeb.ChatLive.Components.MessageViewport}
+                  id={RetroHexChatWeb.ChatLive.Components.MessageViewport.id()}
+                  chat_clear_token={@chat_clear_token}
+                  nick_color_fn={@nick_color_fn}
+                  timestamp_format={@timestamp_format}
+                  timezone={@timezone}
+                  strip_formatting={@session.strip_formatting}
+                  edit_mode_message_id={@edit_mode_message_id}
+                  show_status_tab={@show_status_tab}
+                  loading_more={@loading_more}
+                  loading_channel={@loading_channel}
+                />
 
-              <%!-- Status messages stream (stateful island — owns the :status_messages stream) --%>
-              <.live_component
-                module={RetroHexChatWeb.ChatLive.Components.StatusViewport}
-                id={RetroHexChatWeb.ChatLive.Components.StatusViewport.id()}
-                timestamp_format={@timestamp_format}
-                timezone={@timezone}
-                show_status_tab={@show_status_tab}
-              />
-            </div>
+                <%!-- Status messages stream (stateful island — owns the :status_messages stream) --%>
+                <.live_component
+                  module={RetroHexChatWeb.ChatLive.Components.StatusViewport}
+                  id={RetroHexChatWeb.ChatLive.Components.StatusViewport.id()}
+                  timestamp_format={@timestamp_format}
+                  timezone={@timezone}
+                  show_status_tab={@show_status_tab}
+                />
+              </div>
 
-            <div :if={space_view?} class="relative flex flex-1 min-w-0 min-h-0">
-              <div
-                id={space_dom_id(@session.active_channel)}
-                phx-hook="SpaceCanvasHook"
-                phx-update="ignore"
-                data-testid="channel-space-shell"
-                data-space-token={@session.active_channel}
-                data-join-token={channel_space_join_token(@session)}
-                data-nickname={@session.nickname}
-                data-space-mode="channel"
-                class="relative flex-1 min-h-0 w-full bg-canvas"
-              >
-                <canvas
-                  id={"#{space_dom_id(@session.active_channel)}-canvas"}
-                  class="absolute inset-0 block h-full w-full"
-                >
-                </canvas>
+              <div :if={space_view?} class="relative flex flex-1 min-w-0 min-h-0">
                 <div
-                  data-space-modal
-                  hidden
-                  class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
+                  id={space_dom_id(@session.active_channel)}
+                  phx-hook="SpaceCanvasHook"
+                  phx-update="ignore"
+                  data-testid="channel-space-shell"
+                  data-space-token={@session.active_channel}
+                  data-join-token={channel_space_join_token(@session)}
+                  data-nickname={@session.nickname}
+                  data-space-mode="channel"
+                  class="relative flex-1 min-h-0 w-full bg-canvas"
                 >
-                </div>
-                <div
-                  data-space-kicked
-                  hidden
-                  class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
-                >
-                  <div class="font-bold">{dgettext("chat", "Removed from channel space")}</div>
-                </div>
-                <div
-                  data-space-closed
-                  hidden
-                  class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
-                >
-                  <div class="font-bold">{dgettext("chat", "Channel space closed")}</div>
+                  <canvas
+                    id={"#{space_dom_id(@session.active_channel)}-canvas"}
+                    class="absolute inset-0 block h-full w-full"
+                  >
+                  </canvas>
+                  <div
+                    data-space-modal
+                    hidden
+                    class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
+                  >
+                  </div>
+                  <div
+                    data-space-kicked
+                    hidden
+                    class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
+                  >
+                    <div class="font-bold">{dgettext("chat", "Removed from channel space")}</div>
+                  </div>
+                  <div
+                    data-space-closed
+                    hidden
+                    class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
+                  >
+                    <div class="font-bold">{dgettext("chat", "Channel space closed")}</div>
+                  </div>
                 </div>
               </div>
+
+              <%!-- Composer island: autocomplete + syntax tooltip + bottom input panel --%>
+              <.live_component
+                module={RetroHexChatWeb.ChatLive.Components.Composer}
+                id={RetroHexChatWeb.ChatLive.Components.Composer.id()}
+                session={@session}
+                show_status_tab={@show_status_tab}
+                channel_users={@channel_users}
+                show_emoji_picker={@show_emoji_picker}
+                pm_typing_from={@pm_typing_from}
+                edit_mode_message_id={@edit_mode_message_id}
+              />
             </div>
 
             <%!-- Nicklist sidebar --%>
@@ -243,18 +260,6 @@
               nick_color_fn={@nick_color_fn}
             />
           </div>
-
-          <%!-- Composer island: autocomplete + syntax tooltip + bottom input panel --%>
-          <.live_component
-            module={RetroHexChatWeb.ChatLive.Components.Composer}
-            id={RetroHexChatWeb.ChatLive.Components.Composer.id()}
-            session={@session}
-            show_status_tab={@show_status_tab}
-            channel_users={@channel_users}
-            show_emoji_picker={@show_emoji_picker}
-            pm_typing_from={@pm_typing_from}
-            edit_mode_message_id={@edit_mode_message_id}
-          />
         </div>
       </div>
     </.desktop_window>
