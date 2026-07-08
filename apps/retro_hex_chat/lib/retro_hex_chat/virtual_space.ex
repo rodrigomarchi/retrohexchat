@@ -14,6 +14,7 @@ defmodule RetroHexChat.VirtualSpace do
   alias RetroHexChat.VirtualSpace.Schema.Session
   alias RetroHexChat.VirtualSpace.Service
   alias RetroHexChat.VirtualSpace.SessionServer
+  alias RetroHexChat.VirtualSpace.Supervisor
 
   @spec create_session(Policy.actor(), String.t(), Service.create_opts()) ::
           {:ok, %{session: Session.t(), token: String.t()}}
@@ -26,6 +27,15 @@ defmodule RetroHexChat.VirtualSpace do
            %{participant: SessionServer.participant(), snapshot: map(), session: Session.t()}}
           | {:error, Policy.error() | :not_found | :kicked}
   defdelegate join_session(token, actor), to: Service
+
+  @spec join_channel_space(String.t(), %{user_id: integer() | nil, nickname: String.t()}) ::
+          {:ok, %{participant: SessionServer.participant(), snapshot: map(), map: map()}}
+          | {:error, atom()}
+  def join_channel_space(channel_name, actor) do
+    with :ok <- ensure_channel_space_process(channel_name) do
+      SessionServer.join(channel_name, %{user_id: actor.user_id, nickname: actor.nickname})
+    end
+  end
 
   @spec input(String.t(), String.t(), SessionServer.input_payload()) ::
           :ok | {:error, SessionServer.input_error()}
@@ -43,6 +53,11 @@ defmodule RetroHexChat.VirtualSpace do
 
   @spec leave(String.t(), String.t()) :: :ok
   defdelegate leave(token, participant_key), to: Service
+
+  @spec leave_channel_space_viewer(String.t()) :: :ok
+  defdelegate leave_channel_space_viewer(channel_name),
+    to: SessionServer,
+    as: :leave_channel_viewer
 
   @spec close_session(String.t(), Policy.actor(), String.t()) ::
           :ok | {:error, Policy.error() | :not_found}
@@ -76,4 +91,18 @@ defmodule RetroHexChat.VirtualSpace do
 
   @spec map_ids() :: [String.t()]
   defdelegate map_ids(), to: SpaceMap, as: :ids
+
+  defp ensure_channel_space_process(channel_name) do
+    case RetroHexChat.VirtualSpace.Registry.lookup({:channel_space, channel_name}) do
+      {:ok, _pid} ->
+        :ok
+
+      {:error, :not_found} ->
+        case Supervisor.start_channel_child(channel_name) do
+          {:ok, _pid} -> :ok
+          {:error, {:already_started, _pid}} -> :ok
+          {:error, reason} -> {:error, reason}
+        end
+    end
+  end
 end

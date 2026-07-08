@@ -9,14 +9,14 @@ defmodule RetroHexChat.VirtualSpace.JoinToken do
   @salt "space_join"
   @max_age 3_600
 
-  @spec sign(String.t(), integer(), String.t()) :: String.t()
+  @spec sign(String.t(), integer() | nil, String.t()) :: String.t()
   def sign(space_token, user_id, nickname) do
     data = %{space_token: space_token, user_id: user_id, nickname: nickname}
     Phoenix.Token.sign(secret_key_base(), @salt, data)
   end
 
   @spec verify(String.t(), keyword()) ::
-          {:ok, %{space_token: String.t(), user_id: integer(), nickname: String.t()}}
+          {:ok, %{space_token: String.t(), user_id: integer() | nil, nickname: String.t()}}
           | {:error, :expired | :invalid}
   def verify(token, opts \\ []) do
     max_age = Keyword.get(opts, :max_age, @max_age)

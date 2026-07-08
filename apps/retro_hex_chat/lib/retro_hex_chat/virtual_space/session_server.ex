@@ -15,6 +15,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   require Logger
 
+  alias RetroHexChat.Channels.Server, as: ChannelServer
   alias RetroHexChat.VirtualSpace.Events
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
   alias RetroHexChat.VirtualSpace.Policy
@@ -28,9 +29,9 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   @type participant :: %{
           key: String.t(),
-          user_id: integer(),
+          user_id: integer() | nil,
           nickname: String.t(),
-          role: :creator | :participant,
+          role: :creator | :participant | :bot,
           x: integer(),
           y: integer(),
           dir: String.t(),
@@ -46,9 +47,9 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   # --- Public API ---
 
-  @spec start_link(String.t()) :: GenServer.on_start()
-  def start_link(token) do
-    GenServer.start_link(__MODULE__, token, name: Registry.via_tuple(token))
+  @spec start_link(String.t() | {:channel, String.t()}) :: GenServer.on_start()
+  def start_link(arg) do
+    GenServer.start_link(__MODULE__, arg, name: Registry.via_tuple(registry_key(arg)))
   end
 
   @spec get_state(String.t()) :: {:ok, map()} | {:error, :not_found}
@@ -56,7 +57,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     call(token, :get_state)
   end
 
-  @spec join(String.t(), %{user_id: integer(), nickname: String.t()}) ::
+  @spec join(String.t(), %{user_id: integer() | nil, nickname: String.t()}) ::
           {:ok, %{participant: participant(), snapshot: map()}} | {:error, atom()}
   def join(token, participant_context) do
     call(token, {:join, participant_context})
@@ -120,15 +121,23 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   @spec leave(String.t(), String.t()) :: :ok
   def leave(token, participant_key) do
-    case Registry.lookup(token) do
+    case Registry.lookup(lookup_key(token)) do
       {:ok, pid} -> GenServer.cast(pid, {:leave, participant_key})
+      {:error, :not_found} -> :ok
+    end
+  end
+
+  @spec leave_channel_viewer(String.t()) :: :ok
+  def leave_channel_viewer(channel_name) do
+    case Registry.lookup({:channel_space, channel_name}) do
+      {:ok, pid} -> GenServer.cast(pid, :viewer_left)
       {:error, :not_found} -> :ok
     end
   end
 
   @spec close(String.t(), String.t()) :: :ok | {:error, :not_found}
   def close(token, reason) do
-    case Registry.lookup(token) do
+    case Registry.lookup(lookup_key(token)) do
       {:ok, pid} -> call_close(pid, reason)
       {:error, :not_found} -> {:error, :not_found}
     end
@@ -147,7 +156,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   # The Registry entry outlives the process for a moment (monitor-based
   # cleanup), so a call can still hit a dead pid — treat it as not_found.
   defp call(token, message) do
-    case Registry.lookup(token) do
+    case Registry.lookup(lookup_key(token)) do
       {:ok, pid} -> GenServer.call(pid, message)
       {:error, :not_found} -> {:error, :not_found}
     end
@@ -155,6 +164,12 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     :exit, {:noproc, _call} -> {:error, :not_found}
     :exit, {:normal, _call} -> {:error, :not_found}
   end
+
+  defp registry_key({:channel, channel_name}), do: {:channel_space, channel_name}
+  defp registry_key(token), do: token
+
+  defp lookup_key("#" <> _ = channel_name), do: {:channel_space, channel_name}
+  defp lookup_key(key), do: key
 
   defp call_close(pid, reason) do
     GenServer.call(pid, {:close, reason})
@@ -167,6 +182,10 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   # --- GenServer callbacks ---
 
   @impl true
+  def init({:channel, channel_name}) do
+    init_channel_state(channel_name)
+  end
+
   def init(token) do
     case Queries.get_session_by_token(token) do
       nil ->
@@ -178,6 +197,35 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         else
           init_state(token, session)
         end
+    end
+  end
+
+  defp init_channel_state(channel_name) do
+    case SpaceMap.get("elfic_forest") do
+      {:error, :unknown_map} ->
+        {:stop, :unknown_map}
+
+      {:ok, map_definition} ->
+        Phoenix.PubSub.subscribe(@pubsub, "channel:#{channel_name}")
+
+        state = %{
+          kind: :channel,
+          token: channel_name,
+          channel_name: channel_name,
+          session: channel_session(channel_name),
+          map: map_definition,
+          blocked: SpaceMap.collision_set(map_definition),
+          participants: %{},
+          seats: %{},
+          kicked: MapSet.new(),
+          timers: %{},
+          viewer_count: 0
+        }
+
+        state = sync_channel_members(state)
+
+        Logger.info("VirtualSpace channel runtime started: channel=#{channel_name}")
+        {:ok, state}
     end
   end
 
@@ -217,6 +265,21 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     {:reply, {:ok, state}, state}
   end
 
+  def handle_call({:join, context}, _from, %{kind: :channel} = state) do
+    state = sync_channel_members(state)
+    key = channel_participant_key(context.nickname)
+
+    case Map.get(state.participants, key) do
+      nil ->
+        {:reply, {:error, :not_in_channel}, state}
+
+      participant ->
+        state = %{state | viewer_count: state.viewer_count + 1}
+        reply = %{participant: participant, snapshot: build_snapshot(state), map: state.map}
+        {:reply, {:ok, reply}, state}
+    end
+  end
+
   def handle_call({:join, context}, _from, state) do
     key = participant_key(context)
     returning = Map.get(state.participants, key)
@@ -248,11 +311,19 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     do_interact(state, key, payload)
   end
 
+  def handle_call({:chat_bubble, _key, _text}, _from, %{kind: :channel} = state) do
+    {:reply, :ok, state}
+  end
+
   def handle_call({:chat_bubble, key, text}, _from, state) do
     case do_chat(state, key, text) do
       {:ok, state} -> {:reply, :ok, state}
       {:error, reason, state} -> {:reply, {:error, reason}, state}
     end
+  end
+
+  def handle_call({:admin_action, _actor, _action}, _from, %{kind: :channel} = state) do
+    {:reply, {:error, :forbidden}, state}
   end
 
   def handle_call({:admin_action, actor, action}, _from, state) do
@@ -268,6 +339,17 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   @impl true
+  def handle_cast(:viewer_left, %{kind: :channel} = state) do
+    viewer_count = max(state.viewer_count - 1, 0)
+    state = %{state | viewer_count: viewer_count}
+
+    if viewer_count == 0 do
+      {:stop, :normal, state}
+    else
+      {:noreply, state}
+    end
+  end
+
   def handle_cast({:leave, participant_key}, state) do
     case Map.get(state.participants, participant_key) do
       nil ->
@@ -307,9 +389,183 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     end
   end
 
+  def handle_info({:user_joined, %{nickname: nickname, role: role}}, %{kind: :channel} = state) do
+    {:noreply, add_channel_member(state, nickname, role)}
+  end
+
+  def handle_info({:user_left, %{nickname: nickname}}, %{kind: :channel} = state) do
+    {:noreply, remove_channel_member(state, nickname)}
+  end
+
+  def handle_info({:user_kicked, %{target: nickname}}, %{kind: :channel} = state) do
+    {:noreply, remove_channel_member(state, nickname)}
+  end
+
+  def handle_info(
+        {:nick_changed, %{old_nick: old_nick, new_nick: new_nick}},
+        %{kind: :channel} = state
+      ) do
+    old_key = channel_participant_key(old_nick)
+    old = Map.get(state.participants, old_key)
+    state = remove_channel_member(state, old_nick)
+    state = add_channel_member(state, new_nick, :participant, old)
+    {:noreply, state}
+  end
+
+  def handle_info(
+        %{event: "new_message", payload: %{author: author, content: content, type: type}},
+        %{kind: :channel} = state
+      ) do
+    if public_channel_message?(type) do
+      broadcast_channel_bubble(state, author, content)
+    end
+
+    {:noreply, state}
+  end
+
+  def handle_info(_message, %{kind: :channel} = state), do: {:noreply, state}
+
   # --- Private helpers ---
 
   defp participant_key(%{user_id: user_id}), do: "registered:#{user_id}"
+
+  defp channel_session(channel_name) do
+    %{
+      status: "active",
+      creator_id: nil,
+      creator_nick: nil,
+      title: channel_name,
+      channel_name: channel_name,
+      map_id: "elfic_forest",
+      max_participants: :infinity,
+      peak_participants: 0,
+      last_participant_count: 0,
+      metadata: %{},
+      inserted_at: DateTime.utc_now(),
+      expires_at: nil,
+      closed_at: nil,
+      closed_reason: nil
+    }
+  end
+
+  defp sync_channel_members(%{kind: :channel, channel_name: channel_name} = state) do
+    case ChannelServer.get_state(channel_name) do
+      {:ok, %{members: members}} ->
+        current_keys =
+          members
+          |> Enum.map(fn {nick, _role} -> channel_participant_key(nick) end)
+          |> MapSet.new()
+
+        state =
+          state.participants
+          |> Map.keys()
+          |> Enum.reject(&MapSet.member?(current_keys, &1))
+          |> Enum.reduce(state, fn key, acc ->
+            case Map.get(acc.participants, key) do
+              nil -> acc
+              participant -> remove_channel_member(acc, participant.nickname)
+            end
+          end)
+
+        Enum.reduce(members, state, fn {nick, role}, acc ->
+          add_channel_member(acc, nick, role)
+        end)
+
+      {:error, :not_found} ->
+        state
+    end
+  end
+
+  defp sync_channel_members(state), do: state
+
+  defp add_channel_member(state, nickname, role, previous \\ nil) do
+    key = channel_participant_key(nickname)
+
+    if Map.has_key?(state.participants, key) do
+      update_in(state.participants[key], fn participant ->
+        %{participant | nickname: nickname, role: channel_role(role), online?: true}
+      end)
+    else
+      {x, y, dir} =
+        case previous do
+          %{x: x, y: y, dir: dir} -> {x, y, dir}
+          _ -> pick_spawn(state)
+        end
+
+      participant = %{
+        key: key,
+        user_id: nil,
+        nickname: nickname,
+        role: channel_role(role),
+        avatar: avatar_for(state, key),
+        x: x,
+        y: y,
+        dir: dir,
+        pose: "standing",
+        seat_id: nil,
+        zone_id: zone_at(state.map, x, y),
+        moving?: false,
+        online?: true,
+        muted?: false,
+        input_seq: 0,
+        last_input_at: nil,
+        chat_times: [],
+        joined_at: DateTime.utc_now(),
+        last_seen_at: DateTime.utc_now()
+      }
+
+      state = put_in(state.participants[key], participant)
+      broadcast_presence_join(state, key, participant)
+      update_participant_counts(state)
+    end
+  end
+
+  defp remove_channel_member(state, nickname) do
+    key = channel_participant_key(nickname)
+
+    case Map.get(state.participants, key) do
+      nil ->
+        state
+
+      participant ->
+        state =
+          state
+          |> free_seat(participant)
+          |> update_in([:participants], &Map.delete(&1, key))
+
+        broadcast_presence_left(state, key)
+        update_participant_counts(state)
+    end
+  end
+
+  defp channel_role(:bot), do: :bot
+  defp channel_role(_), do: :participant
+
+  defp channel_participant_key(nickname) do
+    normalized = nickname |> to_string() |> String.downcase()
+    "nick:#{normalized}"
+  end
+
+  defp public_channel_message?(type) when type in [:message, :action, "message", "action"],
+    do: true
+
+  defp public_channel_message?(_), do: false
+
+  defp broadcast_channel_bubble(state, author, content) do
+    key = channel_participant_key(author)
+
+    case Map.get(state.participants, key) do
+      nil ->
+        :ok
+
+      participant ->
+        broadcast(state.token, "space_message", %{
+          key: key,
+          nickname: participant.nickname,
+          text: normalize_text(content)
+        })
+    end
+  end
 
   defp join_if_room(state, key, context, returning, active_count) do
     case Policy.check_capacity(state.session, active_count, returning != nil) do
@@ -631,6 +887,8 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     end
   end
 
+  defp persist_positions(%{kind: :channel} = state), do: state
+
   # A light snapshot of tile positions written to the session row on leave and
   # map change (never per step), so a reload or process restart lands people
   # back where they were.
@@ -834,13 +1092,57 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       |> Map.values()
       |> MapSet.new(&{&1.x, &1.y})
 
-    free =
-      Enum.find(state.map.spawn, fn spawn ->
-        not MapSet.member?(occupied, {spawn.x, spawn.y})
-      end)
+    state.map.spawn
+    |> Enum.find(&spawn_available?(state, occupied, &1.x, &1.y))
+    |> case do
+      nil -> pick_spiral_spawn(state, occupied)
+      spawn -> {spawn.x, spawn.y, spawn.dir}
+    end
+  end
 
-    spawn = free || List.first(state.map.spawn)
-    {spawn.x, spawn.y, spawn.dir}
+  defp pick_spiral_spawn(state, occupied) do
+    {origin_x, origin_y} = spawn_origin(state.map.spawn)
+    max_radius = max(state.map.width, state.map.height)
+
+    1..max_radius
+    |> Stream.flat_map(&spiral_ring(origin_x, origin_y, &1))
+    |> Enum.find(fn {x, y} -> spawn_available?(state, occupied, x, y) end)
+    |> case do
+      nil -> fallback_walkable_spawn(state)
+      {x, y} -> {x, y, "down"}
+    end
+  end
+
+  defp spawn_origin(spawns) do
+    xs = Enum.map(spawns, & &1.x)
+    ys = Enum.map(spawns, & &1.y)
+    {div(Enum.min(xs) + Enum.max(xs), 2), div(Enum.min(ys) + Enum.max(ys), 2)}
+  end
+
+  defp spiral_ring(origin_x, origin_y, radius) do
+    for y <- (origin_y - radius)..(origin_y + radius),
+        x <- (origin_x - radius)..(origin_x + radius),
+        max(abs(x - origin_x), abs(y - origin_y)) == radius do
+      {x, y}
+    end
+  end
+
+  defp spawn_available?(state, occupied, x, y) do
+    in_bounds?(state.map, x, y) and not MapSet.member?(state.blocked, {x, y}) and
+      not MapSet.member?(occupied, {x, y})
+  end
+
+  defp fallback_walkable_spawn(state) do
+    state.map.spawn
+    |> Enum.find(&walkable?(state, &1.x, &1.y))
+    |> case do
+      nil -> {0, 0, "down"}
+      spawn -> {spawn.x, spawn.y, spawn.dir}
+    end
+  end
+
+  defp walkable?(state, x, y) do
+    in_bounds?(state.map, x, y) and not MapSet.member?(state.blocked, {x, y})
   end
 
   defp role_for(session, user_id) do
@@ -917,6 +1219,18 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     }
   end
 
+  defp update_participant_counts(%{kind: :channel} = state) do
+    count = online_count(state)
+
+    session = %{
+      state.session
+      | last_participant_count: count,
+        peak_participants: max(Map.get(state.session, :peak_participants, 0), count)
+    }
+
+    %{state | session: session}
+  end
+
   defp update_participant_counts(state) do
     count = online_count(state)
     peak = max(state.session.peak_participants, count)
@@ -929,6 +1243,22 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       })
 
     %{state | session: session}
+  end
+
+  defp do_end(%{kind: :channel} = state, status, reason) do
+    Logger.info("VirtualSpace channel #{status}: channel=#{state.token}, reason=#{reason}")
+    state = cancel_all_timers(state)
+    broadcast(state.token, "space_closed", %{reason: reason, status: status})
+
+    %{
+      state
+      | session: %{
+          state.session
+          | status: status,
+            closed_at: DateTime.utc_now(),
+            closed_reason: reason
+        }
+    }
   end
 
   defp do_end(state, status, reason) do

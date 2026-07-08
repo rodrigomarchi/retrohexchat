@@ -6,14 +6,16 @@ defmodule RetroHexChat.VirtualSpace.Registry do
 
   @registry RetroHexChat.VirtualSpace.SessionRegistry
 
-  @spec via_tuple(String.t()) :: {:via, Registry, {atom(), String.t()}}
-  def via_tuple(token) do
-    {:via, Registry, {@registry, token}}
+  @type key :: String.t() | {:channel_space, String.t()}
+
+  @spec via_tuple(key()) :: {:via, Registry, {atom(), key()}}
+  def via_tuple(key) do
+    {:via, Registry, {@registry, key}}
   end
 
-  @spec lookup(String.t()) :: {:ok, pid()} | {:error, :not_found}
-  def lookup(token) do
-    case Registry.lookup(@registry, token) do
+  @spec lookup(key()) :: {:ok, pid()} | {:error, :not_found}
+  def lookup(key) do
+    case Registry.lookup(@registry, key) do
       [{pid, _}] -> {:ok, pid}
       [] -> {:error, :not_found}
     end

@@ -37,6 +37,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.{Motd, Queries}
+  alias RetroHexChat.VirtualSpace.JoinToken
 
   alias RetroHexChat.Chat.{
     DuplicateTracker,
@@ -251,6 +252,12 @@ defmodule RetroHexChatWeb.App.ChatLive do
       "pm" -> dispatch_to_hooks("close_pm_tab", %{"nickname" => label}, socket)
       _ -> {:noreply, socket}
     end
+  end
+
+  def handle_event("switch_channel_view", %{"view" => view}, socket)
+      when view in ["chat", "space"] do
+    channel_view = if view == "space", do: :space, else: :chat
+    {:noreply, assign(socket, channel_view: channel_view)}
   end
 
   # Context menus — components emit v1 event names directly
@@ -740,13 +747,29 @@ defmodule RetroHexChatWeb.App.ChatLive do
       show_invite_channel_picker: false,
       show_knock_request_dialog: false,
       channel_list_channels: [],
-      channel_list_loading: false
+      channel_list_loading: false,
+      channel_view: :chat
     )
   end
 
   # ── View helpers ──────────────────────────────────────────────
 
   defp admin?(session), do: ChatContext.admin?(session)
+
+  defp channel_space_available?(session, show_status_tab) do
+    not show_status_tab and is_nil(session.active_pm) and is_binary(session.active_channel)
+  end
+
+  defp channel_space_join_token(session) do
+    JoinToken.sign(session.active_channel, nil, session.nickname)
+  end
+
+  defp space_dom_id(channel_name) when is_binary(channel_name) do
+    encoded = Base.url_encode64(channel_name, padding: false)
+    "channel-space-#{encoded}"
+  end
+
+  defp space_dom_id(_), do: "channel-space-none"
 
   # ── Startup messages ──────────────────────────────────────────
 

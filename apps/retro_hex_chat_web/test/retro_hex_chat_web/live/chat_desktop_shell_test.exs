@@ -56,6 +56,32 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       assert has_element?(view, ~s([data-window-id="chat"] [role="tablist"]))
       assert has_element?(view, ~s([data-window-id="chat"] #chat-input-area))
     end
+
+    test "a channel can switch from Chat to Space without replacing the composer", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+
+      chat_button =
+        ~s([data-testid="topic-bar"] [data-testid="channel-view-tabs"] button[phx-value-view="chat"])
+
+      space_button =
+        ~s([data-testid="topic-bar"] [data-testid="channel-view-tabs"] button[phx-value-view="space"])
+
+      assert has_element?(view, "#{chat_button} svg")
+      assert has_element?(view, chat_button, "Chat")
+      assert has_element?(view, "#{space_button} svg")
+      assert has_element?(view, space_button, "Space")
+
+      view
+      |> element(space_button)
+      |> render_click()
+
+      assert has_element?(
+               view,
+               ~s([data-testid="channel-space-shell"][phx-hook="SpaceCanvasHook"])
+             )
+
+      assert has_element?(view, ~s([data-window-id="chat"] #chat-input-area))
+    end
   end
 
   describe "start menu" do

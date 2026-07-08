@@ -1,6 +1,8 @@
 defmodule RetroHexChatWeb.SpaceChannelTest do
   use RetroHexChatWeb.ChannelCase, async: false
 
+  alias RetroHexChat.Channels.{Server, Supervisor}
+  alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.VirtualSpace.{JoinToken, Queries, Registry, SessionServer}
   alias RetroHexChatWeb.UserSocket
@@ -14,6 +16,26 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
   end
 
   defp uid, do: System.unique_integer([:positive])
+
+  defp unique_channel, do: "#space-channel-#{uid()}"
+
+  defp start_channel(channel) do
+    {:ok, pid} = Supervisor.start_child(channel)
+
+    on_exit(fn ->
+      case Registry.lookup({:channel_space, channel}) do
+        {:ok, space_pid} -> GenServer.stop(space_pid, :normal)
+        {:error, :not_found} -> :ok
+      end
+
+      case ChannelRegistry.lookup(channel) do
+        {:ok, ^pid} -> Supervisor.stop_child(pid)
+        _ -> :ok
+      end
+    end)
+
+    {:ok, pid}
+  end
 
   # Drives the socket's participant to a target tile with valid input steps.
   defp walk_channel_to(socket, session, key, {tx, ty}) do
@@ -74,6 +96,12 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
     subscribe_and_join(socket, "space:#{session.token}", %{"join_token" => join_token})
   end
 
+  defp join_channel_space(channel, nickname) do
+    {:ok, socket} = connect(UserSocket, %{})
+    join_token = JoinToken.sign(channel, nil, nickname)
+    subscribe_and_join(socket, "space:#{channel}", %{"join_token" => join_token})
+  end
+
   describe "join" do
     test "a valid join_token gets a space_init reply carrying the full map and snapshot" do
       creator = register_and_identify("chc#{uid()}")
@@ -129,6 +157,68 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert {:ok, _init, _socket} = join_space(creator, session)
 
       assert {:error, %{reason: "space_full"}} = join_space(other, session)
+    end
+
+    test "channel spaces join by channel name and mirror current channel members" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "alice")
+      {:ok, _} = Server.join(channel, "bob")
+
+      assert {:ok, space_init, _socket} = join_channel_space(channel, "alice")
+
+      assert space_init.token == channel
+      assert space_init.self_key == "nick:alice"
+      assert space_init.map.id == "elfic_forest"
+      assert Map.has_key?(space_init.snapshot.participants, "nick:alice")
+      assert Map.has_key?(space_init.snapshot.participants, "nick:bob")
+    end
+
+    test "channel spaces reject a signed nickname that is not in the channel" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "alice")
+
+      assert {:error, %{reason: "not_in_channel"}} = join_channel_space(channel, "mallory")
+    end
+
+    test "channel spaces mirror joins, parts and public channel messages as bubbles" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "alice")
+
+      assert {:ok, _space_init, _socket} = join_channel_space(channel, "alice")
+
+      {:ok, _} = Server.join(channel, "bob")
+      assert_push "space_delta", %{joined: %{"nick:bob" => %{nickname: "bob"}}}
+
+      {:ok, _id} = Server.send_message(channel, "alice", "hello from chat")
+
+      assert_push "space_message", %{
+        key: "nick:alice",
+        nickname: "alice",
+        text: "hello from chat"
+      }
+
+      :ok = Server.part(channel, "bob")
+      assert_push "space_delta", %{left: ["nick:bob"]}
+    end
+
+    test "channel spaces expand spawn positions beyond the market square seeds" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+
+      nicks = for idx <- 1..9, do: "spawn#{idx}"
+      Enum.each(nicks, fn nick -> assert {:ok, _} = Server.join(channel, nick) end)
+
+      assert {:ok, space_init, _socket} = join_channel_space(channel, "spawn1")
+
+      positions =
+        space_init.snapshot.participants
+        |> Map.values()
+        |> Enum.map(&{&1.x, &1.y})
+
+      assert length(Enum.uniq(positions)) == 9
     end
   end
 

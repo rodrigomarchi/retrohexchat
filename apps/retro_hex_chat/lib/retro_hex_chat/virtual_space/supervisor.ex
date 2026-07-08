@@ -24,6 +24,14 @@ defmodule RetroHexChat.VirtualSpace.Supervisor do
     DynamicSupervisor.start_child(supervisor, {RetroHexChat.VirtualSpace.SessionServer, token})
   end
 
+  @spec start_channel_child(GenServer.server(), String.t()) :: DynamicSupervisor.on_start_child()
+  def start_channel_child(supervisor \\ __MODULE__, channel_name) do
+    DynamicSupervisor.start_child(
+      supervisor,
+      {RetroHexChat.VirtualSpace.SessionServer, {:channel, channel_name}}
+    )
+  end
+
   @spec stop_child(GenServer.server(), pid()) :: :ok | {:error, :not_found}
   def stop_child(supervisor \\ __MODULE__, pid) do
     DynamicSupervisor.terminate_child(supervisor, pid)

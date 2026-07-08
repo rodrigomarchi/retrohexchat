@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
   attr :channel_name, :string, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
+  slot :leading_controls
 
   @spec topic_bar(map()) :: Phoenix.LiveView.Rendered.t()
   def topic_bar(assigns) do
@@ -50,6 +51,10 @@ defmodule RetroHexChatWeb.Components.UI.TopicBar do
       {@rest}
     >
       <.topic_icon variant={@variant} />
+
+      <div :if={@leading_controls != []} class="flex h-6 shrink-0 items-center gap-px">
+        {render_slot(@leading_controls)}
+      </div>
 
       <span :if={@channel_name} class="font-bold shrink-0">{@channel_name}</span>
 

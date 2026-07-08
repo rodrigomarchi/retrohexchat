@@ -32,6 +32,9 @@ do jogo É o chat do canal, público, uma única fonte de mensagens.
 | D4 | **Sem limite de participantes** (era 20; "infinito por hora") |
 | D5 | Remover a lógica de "lobby" do espaço: sem `/space`, sem invite card, sem token/TTL, sem página própria — o espaço vive dentro da janela do canal |
 | D6 | Chat unificado: mensagem no espaço = mensagem no canal (pública), e vice-versa |
+| D7 | Entrega inicial **side-by-side**: fazer funcionar dentro do chat antes de remover o fluxo legado de `/space` |
+| D8 | O chat textual do espaço de canal fica **100% LiveView**: o canvas usa canal Phoenix só para movimento/interações e balões derivados do chat público |
+| D9 | **LobbyLive P2P fica fora** desta mudança; chamadas, jogos e transferência de arquivo não entram no escopo |
 
 ## 3. Modelo alvo
 
@@ -128,26 +131,44 @@ pela presença do canal; spawn em espiral; cap removido; sem DB/TTL.
 canal cria/destroi avatar), movement/office adaptados.
 **Aceite**: entrar no canal pelo chat faz o avatar aparecer para quem está na
 aba Espaço, sem nenhum comando.
+**Status 2026-07-08**: implementado side-by-side. `SessionServer` aceita modo
+runtime por canal (`{:channel_space, "#canal"}`), materializa membros atuais do
+canal, espelha join/part/kick/nick change, usa `elfic_forest`, spawn em espiral
+e hiberna quando não há espectadores da aba Espaço.
 
 ### F2 — Chat unificado
 Composer do espaço → mensagem de canal; mensagem de canal → balão no avatar.
 Remoção do chat próprio do espaço (se existir hoje) e do rate limit paralelo.
 **Testes**: integração canal↔espaço nos dois sentidos; LiveView do log inalterado.
+**Status 2026-07-08**: implementado para canal-espaço. O composer continua sendo
+o componente LiveView do chat; `chat_bubble` do espaço de canal é no-op para não
+criar transporte paralelo. Mensagens públicas do canal viram balões no canvas;
+system/service/PM ficam fora dos balões.
 
 ### F3 — Tab na janela do canal
 Tab strip Chat|Espaço; embed do engine; contrato de foco; resize; `space_init`
 no join da aba; sair da aba não sai do espaço.
 **Testes**: LiveView (toggle, foco), E2E pontual (andar + ver balão).
+**Status 2026-07-08**: implementado no fluxo principal do chat. O toggle
+Chat/Space fica na linha do tópico, antes do texto do tópico, com botões
+maiores, ícones SVG e texto. A aba Espaço monta `SpaceCanvasHook` usando
+`space:#canal`; a aba Chat e o composer permanecem montados pelo LiveView.
 
 ### F4 — Bots na vila
 Bots do canal viram avatares com postos temáticos determinísticos.
 **Testes**: unit (atribuição de posto), integração (bot presente → avatar).
+**Status 2026-07-08**: próximo passo funcional. O modo por canal já aceita papel
+`:bot` no participante, mas ainda falta atribuir postos temáticos determinísticos
+e validar a fonte de presença dos bots.
 
 ### F5 — Remoções + docs
 Tudo da seção 4; migração DB; **help topics** (atualizar "Virtual Spaces",
 remover `/space` de Commands, atualizar atalhos com o toggle); i18n dos textos
 novos (regra da memória: só os catálogos do domínio afetado).
 **Aceite**: `make ci` 9/9; nenhuma referência morta a token/lobby de espaço.
+**Status 2026-07-08**: pendente por decisão. O código legado fica por enquanto
+para reduzir risco; remoção acontece depois que o canal-espaço estiver validado
+no chat.
 
 ### F6 — (futura) Escala de verdade
 Interest management, tick batching, culling. Fora do escopo desta entrega.
@@ -179,3 +200,47 @@ Interest management, tick batching, culling. Fora do escopo desta entrega.
 
 PromEx: gauge de participantes por canal-espaço, taxa de passos/s, latência de
 delta — antes de F6 para decidir quando ela vira necessidade.
+
+## 9. Registro de execução — 2026-07-08
+
+### Progresso entregue
+
+- Criado caminho side-by-side para espaço por canal sem remover o fluxo legado
+  de sessão/token.
+- `Registry`, `Supervisor`, `VirtualSpace` e `SessionServer` passaram a suportar
+  chave de canal (`{:channel_space, channel_name}`) além de token legado.
+- `SpaceChannel` passou a aceitar join em `space:#canal` autorizado por token
+  assinado pela LiveView do chat.
+- `ChatLive` ganhou modo `:chat | :space` por canal. A aba Espaço monta o canvas
+  dentro da janela do chat e mantém o composer LiveView como única entrada de
+  texto.
+- A barra de tópico ganhou slot de controles; o seletor Chat/Space foi movido
+  para a linha do tópico, com ícones SVG e texto.
+- Testes cobrem join por canal, rejeição de nick fora do canal, espelhamento de
+  join/part/mensagem, spawn além das células iniciais e preservação do composer
+  ao alternar para Space.
+
+### Aprendizados
+
+- A separação correta é: LiveView continua dono do chat textual; canal Phoenix
+  do espaço fica restrito a movimento, interações e renderização de balões.
+- Para canal-espaço, permissões de host/criador do virtual space legado não se
+  aplicam. Moderação deve permanecer no canal; `admin_action` do espaço de canal
+  responde `:forbidden` por enquanto.
+- O estado por canal deve ser materializável a partir da presença. Isso permite
+  hibernar o processo quando ninguém está vendo a aba Espaço sem perder a
+  semântica visual.
+- A chave operacional mais estável para convidados e bots nesta fase é o nick
+  normalizado (`nick:<lower>`), não `user_id`.
+- O spawn precisa expandir além da praça inicial sem depender de RNG; a espiral
+  determinística resolveu o gargalo inicial.
+
+### Validação registrada
+
+- `rtk mix format` nos arquivos alterados.
+- `rtk mix compile`.
+- Testes Elixir focados de virtual space, `SpaceChannel` e `ChatDesktopShell`.
+- Testes JS focados de `SpaceCanvasHook` e `js/lib/space`.
+- `rtk mix test` completo após os ajustes finais: core com 15 properties e 2837
+  testes sem falhas; web com 769 testes sem falhas (193 excluídos).
+- `rtk git diff --check`.

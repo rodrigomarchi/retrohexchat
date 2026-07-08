@@ -99,6 +99,9 @@
             nick_color_fn={@nick_color_fn}
           />
 
+          <% channel_space_available? = channel_space_available?(@session, @show_status_tab) %>
+          <% space_view? = channel_space_available? && @channel_view == :space %>
+
           <%!-- Topic bar --%>
           <.topic_bar
             topic={@current_topic || ""}
@@ -111,7 +114,44 @@
               end
             }
             modes={@current_modes}
-          />
+          >
+            <:leading_controls :if={channel_space_available?}>
+              <div class="flex items-center gap-px" data-testid="channel-view-tabs">
+                <button
+                  type="button"
+                  phx-click="switch_channel_view"
+                  phx-value-view="chat"
+                  class={[
+                    "flex h-6 items-center justify-center gap-1 px-2 py-0 shadow-retro-raised bg-surface text-xs whitespace-nowrap",
+                    "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+                    @channel_view == :chat && "bg-canvas font-bold shadow-retro-sunken"
+                  ]}
+                  aria-label={dgettext("chat", "Chat")}
+                  title={dgettext("chat", "Chat")}
+                  aria-pressed={@channel_view == :chat}
+                >
+                  <Icons.icon_chat class="h-3.5 w-3.5 shrink-0" />
+                  <span>{dgettext("chat", "Chat")}</span>
+                </button>
+                <button
+                  type="button"
+                  phx-click="switch_channel_view"
+                  phx-value-view="space"
+                  class={[
+                    "flex h-6 items-center justify-center gap-1 px-2 py-0 shadow-retro-raised bg-surface text-xs whitespace-nowrap",
+                    "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+                    @channel_view == :space && "bg-canvas font-bold shadow-retro-sunken"
+                  ]}
+                  aria-label={dgettext("chat", "Space")}
+                  title={dgettext("chat", "Space")}
+                  aria-pressed={@channel_view == :space}
+                >
+                  <Icons.icon_community class="h-3.5 w-3.5 shrink-0" />
+                  <span>{dgettext("chat", "Space")}</span>
+                </button>
+              </div>
+            </:leading_controls>
+          </.topic_bar>
 
           <%!-- Connection status banner + JS-driven reconnect overlay --%>
           <.connection_status_panel />
@@ -126,7 +166,7 @@
           />
 
           <%!-- Messages + Nicklist row (fills remaining space) --%>
-          <div class="flex flex-1 min-h-0">
+          <div class={["flex flex-1 min-h-0", space_view? && "hidden"]}>
             <%!-- Messages column --%>
             <div class="flex flex-col flex-1 min-w-0 min-h-0 relative">
               <%!-- Chat messages stream (stateful island — owns the :chat_messages stream
@@ -162,6 +202,46 @@
               visible={@show_nicklist && !@session.active_pm && !@show_status_tab}
               nick_color_fn={@nick_color_fn}
             />
+          </div>
+
+          <div :if={space_view?} class="relative flex flex-1 min-h-0">
+            <div
+              id={space_dom_id(@session.active_channel)}
+              phx-hook="SpaceCanvasHook"
+              phx-update="ignore"
+              data-testid="channel-space-shell"
+              data-space-token={@session.active_channel}
+              data-join-token={channel_space_join_token(@session)}
+              data-nickname={@session.nickname}
+              data-space-mode="channel"
+              class="relative flex-1 min-h-0 w-full bg-canvas"
+            >
+              <canvas
+                id={"#{space_dom_id(@session.active_channel)}-canvas"}
+                class="absolute inset-0 block h-full w-full"
+              >
+              </canvas>
+              <div
+                data-space-modal
+                hidden
+                class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
+              >
+              </div>
+              <div
+                data-space-kicked
+                hidden
+                class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
+              >
+                <div class="font-bold">{dgettext("chat", "Removed from channel space")}</div>
+              </div>
+              <div
+                data-space-closed
+                hidden
+                class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
+              >
+                <div class="font-bold">{dgettext("chat", "Channel space closed")}</div>
+              </div>
+            </div>
           </div>
 
           <%!-- Composer island: autocomplete + syntax tooltip + bottom input panel --%>

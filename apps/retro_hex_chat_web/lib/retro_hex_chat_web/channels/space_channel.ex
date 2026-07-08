@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.SpaceChannel do
   @moduledoc """
-  Realtime channel for a virtual space (`space:<token>`).
+  Realtime channel for a virtual space (`space:<token>` or `space:#channel`).
 
   Join is authorized by the signed `join_token` that `SpaceLive` issues after
   running the join policy; the channel re-runs policy and capacity through
@@ -19,11 +19,33 @@ defmodule RetroHexChatWeb.SpaceChannel do
   alias RetroHexChat.VirtualSpace.JoinToken
 
   @impl true
+  def join("space:#" <> channel_tail, params, socket) do
+    channel_name = "#" <> channel_tail
+
+    with {:ok, data} <- verify_join_token(params, channel_name),
+         {:ok, result} <- VirtualSpace.join_channel_space(channel_name, data) do
+      socket =
+        socket
+        |> assign(:space_kind, :channel)
+        |> assign(:space_token, channel_name)
+        |> assign(:space_channel_name, channel_name)
+        |> assign(:participant_key, result.participant.key)
+        |> assign(:user_id, data.user_id)
+        |> assign(:nickname, data.nickname)
+
+      {:ok, space_init(channel_name, result), socket}
+    else
+      {:error, reason} ->
+        {:error, %{reason: join_error(reason)}}
+    end
+  end
+
   def join("space:" <> token, params, socket) do
     with {:ok, data} <- verify_join_token(params, token),
          {:ok, result} <- VirtualSpace.join_session(token, build_actor(data)) do
       socket =
         socket
+        |> assign(:space_kind, :session)
         |> assign(:space_token, token)
         |> assign(:participant_key, result.participant.key)
         |> assign(:user_id, data.user_id)
@@ -86,6 +108,9 @@ defmodule RetroHexChatWeb.SpaceChannel do
   @impl true
   def terminate(_reason, socket) do
     case socket.assigns do
+      %{space_kind: :channel, space_channel_name: channel_name} ->
+        VirtualSpace.leave_channel_space_viewer(channel_name)
+
       %{space_token: token, participant_key: key} ->
         VirtualSpace.leave(token, key)
 
@@ -184,6 +209,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
   defp join_error(:terminal_session), do: "terminal_session"
   defp join_error(:invalid_token), do: "invalid_token"
   defp join_error(:kicked), do: "kicked"
+  defp join_error(:not_in_channel), do: "not_in_channel"
 
   defp join_error(other) do
     Logger.info("Space join denied: #{inspect(other)}")
