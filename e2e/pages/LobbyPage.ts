@@ -187,19 +187,25 @@ export class LobbyPage {
   }
 
   /**
-   * Turn our camera on, whether we are the first mover (start from the Start menu)
-   * or an auto-joined receiver (use the in-call "Turn on camera" control). Waits
-   * for whichever path the P2P lobby offers.
+   * Ensure our camera is on, whatever state the self-controlled media is in:
+   * already sending video (an auto-joined receiver joins a VIDEO call with
+   * the camera open by default — nothing to click), in a call without video
+   * (the in-call "Turn on camera" control), or not in a call yet (Start
+   * video from the Start menu).
    */
   async sendVideo() {
     await expect
       .poll(
         async () =>
+          (await this.cameraButton.isVisible()) ||
           (await this.enableVideoButton.isVisible()) ||
           (await this.videoButton.isEnabled()),
         { timeout: 15_000 },
       )
       .toBe(true);
+
+    // The camera toggle only renders while our video is ON — already done.
+    if (await this.cameraButton.isVisible()) return;
 
     if (await this.enableVideoButton.isVisible()) {
       await this.enableVideoButton.click();
@@ -214,15 +220,27 @@ export class LobbyPage {
     await this.videoButton.click();
   }
 
+  /**
+   * Ensure our microphone is on, whatever state the self-controlled media is
+   * in: already sending audio (an auto-joined receiver opens the mic by
+   * default — nothing to click), in a call without audio (the in-call
+   * "Turn on microphone" control), or not in a call yet (the Start menu).
+   * The auto-join can land between the poll and the click, so the click
+   * path re-checks instead of trusting a stale poll result.
+   */
   async startAudioCall() {
     await expect
       .poll(
         async () =>
+          (await this.muteButton.isVisible()) ||
           (await this.enableAudioButton.isVisible()) ||
           (await this.audioButton.isEnabled()),
         { timeout: 15_000 },
       )
       .toBe(true);
+
+    // The mute toggle only renders while our mic is ON — already done.
+    if (await this.muteButton.isVisible()) return;
 
     if (await this.enableAudioButton.isVisible()) {
       await this.enableAudioButton.click();
