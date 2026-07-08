@@ -56,7 +56,7 @@ describe("normalizeSpaceInit", () => {
   it("normalizes a full init payload", () => {
     const init = normalizeSpaceInit({
       version: 1,
-      token: "abc",
+      channel_name: "#lobby",
       self_key: "registered:1",
       map: { id: "tavern_cafe_v1", version: 1, tile_size: 16 },
       snapshot: {
@@ -64,7 +64,7 @@ describe("normalizeSpaceInit", () => {
       },
     });
 
-    expect(init.token).toBe("abc");
+    expect(init.channelName).toBe("#lobby");
     expect(init.selfKey).toBe("registered:1");
     expect(init.map.id).toBe("tavern_cafe_v1");
     expect(init.snapshot.participants["registered:1"].nickname).toBe("alice");
@@ -72,16 +72,21 @@ describe("normalizeSpaceInit", () => {
 
   it("logs an error but still returns a value for an unknown version", () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    const init = normalizeSpaceInit({ version: 99, token: "x", map: {}, snapshot: {} });
+    const init = normalizeSpaceInit({ version: 99, channelName: "#x", map: {}, snapshot: {} });
 
     expect(spy).toHaveBeenCalled();
-    expect(init.token).toBe("x");
+    expect(init.channelName).toBe("#x");
   });
 
   it("provides safe defaults when snapshot or map are missing", () => {
-    const init = normalizeSpaceInit({ token: "y" });
+    const init = normalizeSpaceInit({ channel_name: "#y" });
     expect(init.map).toEqual({});
     expect(init.snapshot.participants).toEqual({});
+  });
+
+  it("keeps a fallback for the old token field during rolling deploys", () => {
+    const init = normalizeSpaceInit({ token: "#legacy" });
+    expect(init.channelName).toBe("#legacy");
   });
 });
 

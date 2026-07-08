@@ -275,6 +275,10 @@ delta — antes de F6 para decidir quando ela vira necessidade.
   pessoas e configuração `space_max_participants`. O tópico "Virtual Spaces"
   agora descreve o toggle Chat/Space dentro do canal e deixa claro que não há
   comando separado para criar o mapa.
+- Hardening pós-F4: a identidade do espaço no domínio, no channel Phoenix e no
+  `space_init` passou a ser nomeada como `channel_name`/`channelName`, não
+  `token`. O termo `token` fica reservado para a credencial assinada
+  `channel_join_token`, que continua necessária para autorizar o join do socket.
 
 ### Validação registrada
 
@@ -305,3 +309,6 @@ delta — antes de F6 para decidir quando ela vira necessidade.
 - Após o sexto corte da F4: testes focados de `HelpTopics`, `HelpLive` e
   cobertura de conteúdo do help com 69 testes sem falhas; busca por referências
   mortas a `/space`/token/TTL/invite card/admin setting nos catálogos afetados.
+- Após o hardening pós-F4: testes focados de `VirtualSpace` e `SpaceChannel`
+  com 49 testes sem falhas; testes JS de `space/protocol`, `space/engine` e
+  `SpaceCanvasHook` com 33 testes sem falhas.

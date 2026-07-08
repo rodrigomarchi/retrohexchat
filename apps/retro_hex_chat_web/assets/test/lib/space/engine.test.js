@@ -11,7 +11,7 @@ function fakeCanvas() {
 
 function tavernInit(overrides = {}) {
   return {
-    token: "tok",
+    channelName: "#test",
     selfKey: "registered:1",
     map: {
       id: "tavern_cafe_v1",

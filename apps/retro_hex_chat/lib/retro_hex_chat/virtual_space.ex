@@ -22,17 +22,17 @@ defmodule RetroHexChat.VirtualSpace do
 
   @spec input(String.t(), String.t(), SessionServer.input_payload()) ::
           :ok | {:error, SessionServer.input_error()}
-  defdelegate input(token, participant_key, payload), to: SessionServer
+  defdelegate input(channel_name, participant_key, payload), to: SessionServer
 
   @spec interact(String.t(), String.t(), SessionServer.interact_payload()) ::
           :ok | {:ok, %{modal: map()}} | {:error, atom()}
-  defdelegate interact(token, participant_key, payload), to: SessionServer
+  defdelegate interact(channel_name, participant_key, payload), to: SessionServer
 
   @spec chat_bubble(String.t(), String.t(), String.t()) :: :ok | {:error, atom()}
-  defdelegate chat_bubble(token, participant_key, text), to: SessionServer
+  defdelegate chat_bubble(channel_name, participant_key, text), to: SessionServer
 
   @spec admin_action(String.t(), SessionServer.actor(), map()) :: :ok | {:error, atom()}
-  defdelegate admin_action(token, actor, action), to: SessionServer
+  defdelegate admin_action(channel_name, actor, action), to: SessionServer
 
   @spec leave_channel_space_viewer(String.t()) :: :ok
   defdelegate leave_channel_space_viewer(channel_name),
@@ -40,10 +40,10 @@ defmodule RetroHexChat.VirtualSpace do
     as: :leave_channel_viewer
 
   @spec session_info(String.t()) :: {:ok, map()} | {:error, :not_found}
-  defdelegate session_info(token), to: SessionServer, as: :get_state
+  defdelegate session_info(channel_name), to: SessionServer, as: :get_state
 
   @spec snapshot(String.t()) :: {:ok, map()} | {:error, :not_found}
-  defdelegate snapshot(token), to: SessionServer
+  defdelegate snapshot(channel_name), to: SessionServer
 
   @spec get_map(String.t()) :: {:ok, map()} | {:error, :unknown_map}
   defdelegate get_map(map_id), to: SpaceMap, as: :get

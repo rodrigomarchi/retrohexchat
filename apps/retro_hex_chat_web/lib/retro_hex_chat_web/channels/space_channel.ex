@@ -25,7 +25,6 @@ defmodule RetroHexChatWeb.SpaceChannel do
       socket =
         socket
         |> assign(:space_kind, :channel)
-        |> assign(:space_token, channel_name)
         |> assign(:space_channel_name, channel_name)
         |> assign(:participant_key, result.participant.key)
         |> assign(:user_id, data.user_id)
@@ -42,35 +41,35 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   @impl true
   def handle_in("space_input", payload, socket) do
-    with %{space_token: token, participant_key: key} <- socket.assigns,
+    with %{space_channel_name: channel_name, participant_key: key} <- socket.assigns,
          {:ok, step} <- parse_input(payload) do
-      VirtualSpace.input(token, key, step)
+      VirtualSpace.input(channel_name, key, step)
     end
 
     {:noreply, socket}
   end
 
   def handle_in("space_chat_bubble", %{"text" => text}, socket) when is_binary(text) do
-    with %{space_token: token, participant_key: key} <- socket.assigns do
-      VirtualSpace.chat_bubble(token, key, text)
+    with %{space_channel_name: channel_name, participant_key: key} <- socket.assigns do
+      VirtualSpace.chat_bubble(channel_name, key, text)
     end
 
     {:noreply, socket}
   end
 
   def handle_in("space_admin_action", payload, socket) do
-    with %{space_token: token} <- socket.assigns,
+    with %{space_channel_name: channel_name} <- socket.assigns,
          {:ok, action} <- parse_admin_action(payload) do
-      VirtualSpace.admin_action(token, admin_actor(socket), action)
+      VirtualSpace.admin_action(channel_name, admin_actor(socket), action)
     end
 
     {:noreply, socket}
   end
 
   def handle_in("space_interact", payload, socket) do
-    with %{space_token: token, participant_key: key} <- socket.assigns,
+    with %{space_channel_name: channel_name, participant_key: key} <- socket.assigns,
          {:ok, interact} <- parse_interact(payload),
-         {:ok, %{modal: modal}} <- VirtualSpace.interact(token, key, interact) do
+         {:ok, %{modal: modal}} <- VirtualSpace.interact(channel_name, key, interact) do
       push(socket, "space_modal", modal)
     end
 
@@ -165,10 +164,10 @@ defmodule RetroHexChatWeb.SpaceChannel do
   # canonical map inline, the viewer's own key, render config and the initial
   # snapshot. The map is serialized from the Elixir source of truth so the
   # client never keeps its own copy.
-  defp space_init(token, result) do
+  defp space_init(channel_name, result) do
     %{
       version: 1,
-      token: token,
+      channel_name: channel_name,
       self_key: result.participant.key,
       map: result.map,
       config: %{

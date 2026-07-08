@@ -48,14 +48,14 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   @spec get_state(String.t()) :: {:ok, map()} | {:error, :not_found}
-  def get_state(token) do
-    call(token, :get_state)
+  def get_state(channel_name) do
+    call(channel_name, :get_state)
   end
 
   @spec join(String.t(), %{user_id: integer() | nil, nickname: String.t()}) ::
           {:ok, %{participant: participant(), snapshot: map(), map: map()}} | {:error, atom()}
-  def join(token, participant_context) do
-    call(token, {:join, participant_context})
+  def join(channel_name, participant_context) do
+    call(channel_name, {:join, participant_context})
   end
 
   @type input_payload :: %{
@@ -74,8 +74,8 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
           | :blocked
 
   @spec input(String.t(), String.t(), input_payload()) :: :ok | {:error, input_error()}
-  def input(token, participant_key, payload) do
-    call(token, {:input, participant_key, payload})
+  def input(channel_name, participant_key, payload) do
+    call(channel_name, {:input, participant_key, payload})
   end
 
   @type interact_payload :: %{
@@ -88,13 +88,13 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
           :ok
           | {:ok, %{modal: map()}}
           | {:error, :not_found | :not_participant | :invalid_target | :too_far | :seat_taken}
-  def interact(token, participant_key, payload) do
-    call(token, {:interact, participant_key, payload})
+  def interact(channel_name, participant_key, payload) do
+    call(channel_name, {:interact, participant_key, payload})
   end
 
   @spec chat_bubble(String.t(), String.t(), String.t()) :: :ok | {:error, :not_found}
-  def chat_bubble(token, participant_key, text) do
-    call(token, {:chat_bubble, participant_key, text})
+  def chat_bubble(channel_name, participant_key, text) do
+    call(channel_name, {:chat_bubble, participant_key, text})
   end
 
   @type actor :: %{
@@ -105,13 +105,13 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         }
 
   @spec admin_action(String.t(), actor(), map()) :: {:error, :not_found | :forbidden}
-  def admin_action(token, _actor, _action) do
-    call(token, :admin_action)
+  def admin_action(channel_name, _actor, _action) do
+    call(channel_name, :admin_action)
   end
 
   @spec leave(String.t(), String.t()) :: :ok
-  def leave(token, participant_key) do
-    case Registry.lookup(lookup_key(token)) do
+  def leave(channel_name, participant_key) do
+    case Registry.lookup({:channel_space, channel_name}) do
       {:ok, pid} -> GenServer.cast(pid, {:leave, participant_key})
       {:error, :not_found} -> :ok
     end
@@ -126,14 +126,14 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   @spec snapshot(String.t()) :: {:ok, map()} | {:error, :not_found}
-  def snapshot(token) do
-    call(token, :snapshot)
+  def snapshot(channel_name) do
+    call(channel_name, :snapshot)
   end
 
   # The Registry entry outlives the process for a moment (monitor-based
   # cleanup), so a call can still hit a dead pid — treat it as not_found.
-  defp call(token, message) do
-    case Registry.lookup(lookup_key(token)) do
+  defp call(channel_name, message) do
+    case Registry.lookup({:channel_space, channel_name}) do
       {:ok, pid} -> GenServer.call(pid, message)
       {:error, :not_found} -> {:error, :not_found}
     end
@@ -141,9 +141,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     :exit, {:noproc, _call} -> {:error, :not_found}
     :exit, {:normal, _call} -> {:error, :not_found}
   end
-
-  defp lookup_key("#" <> _ = channel_name), do: {:channel_space, channel_name}
-  defp lookup_key(key), do: key
 
   # --- GenServer callbacks ---
 
@@ -162,7 +159,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
         state = %{
           kind: :channel,
-          token: channel_name,
           channel_name: channel_name,
           session: channel_session(channel_name),
           map: map_definition,
@@ -244,7 +240,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         updated = %{participant | online?: false, seat_id: nil, last_seen_at: DateTime.utc_now()}
         state = put_in(state.participants[participant_key], updated)
 
-        broadcast(state.token, "space_participant_left", %{
+        broadcast(state.channel_name, "space_participant_left", %{
           key: participant_key,
           nickname: participant.nickname
         })
@@ -426,7 +422,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         :ok
 
       participant ->
-        broadcast(state.token, "space_message", %{
+        broadcast(state.channel_name, "space_message", %{
           key: key,
           nickname: participant.nickname,
           text: normalize_text(content)
@@ -508,14 +504,14 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       left: []
     }
 
-    broadcast(state.token, "space_delta", payload)
+    broadcast(state.channel_name, "space_delta", payload)
     state
   end
 
   # Presence deltas so every other client's engine adds/removes the participant
   # (the named space_participant_joined/left events carry only the nickname).
   defp broadcast_presence_join(state, key, participant) do
-    broadcast(state.token, "space_delta", %{
+    broadcast(state.channel_name, "space_delta", %{
       server_time: System.system_time(:millisecond),
       seq_ack: %{},
       updates: %{},
@@ -525,7 +521,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   defp broadcast_presence_left(state, key) do
-    broadcast(state.token, "space_delta", %{
+    broadcast(state.channel_name, "space_delta", %{
       server_time: System.system_time(:millisecond),
       seq_ack: %{},
       updates: %{},
@@ -645,7 +641,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   defp maybe_broadcast_zone(state, _key, same, same), do: state
 
   defp maybe_broadcast_zone(state, key, from, to) do
-    broadcast(state.token, "space_zone_changed", %{key: key, zone_id: to, from: from})
+    broadcast(state.channel_name, "space_zone_changed", %{key: key, zone_id: to, from: from})
     state
   end
 
@@ -838,7 +834,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     %{state | session: session}
   end
 
-  defp broadcast(token, event, payload) do
-    Phoenix.PubSub.broadcast(@pubsub, "space:#{token}", %{event: event, payload: payload})
+  defp broadcast(channel_name, event, payload) do
+    Phoenix.PubSub.broadcast(@pubsub, "space:#{channel_name}", %{event: event, payload: payload})
   end
 end

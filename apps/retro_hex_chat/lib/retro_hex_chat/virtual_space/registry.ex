@@ -1,12 +1,12 @@
 defmodule RetroHexChat.VirtualSpace.Registry do
   @moduledoc """
-  Registry helpers for virtual space session process lookup.
+  Registry helpers for virtual space runtime process lookup.
   Uses Elixir Registry with the via_tuple pattern.
   """
 
   @registry RetroHexChat.VirtualSpace.SessionRegistry
 
-  @type key :: String.t() | {:channel_space, String.t()}
+  @type key :: {:channel_space, String.t()}
 
   @spec via_tuple(key()) :: {:via, Registry, {atom(), key()}}
   def via_tuple(key) do

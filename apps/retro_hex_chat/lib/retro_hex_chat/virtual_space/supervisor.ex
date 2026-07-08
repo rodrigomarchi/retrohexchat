@@ -1,7 +1,7 @@
 defmodule RetroHexChat.VirtualSpace.Supervisor do
   @moduledoc """
-  DynamicSupervisor for virtual space session GenServer processes.
-  One child process per active session.
+  DynamicSupervisor for virtual space runtime GenServer processes.
+  One child process per viewed channel space.
   """
 
   @spec start_link(keyword()) :: Supervisor.on_start()

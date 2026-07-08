@@ -105,7 +105,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert {:ok, space_init, _socket} = join_channel_space(channel, "alice")
 
       assert space_init.version == 1
-      assert space_init.token == channel
+      assert space_init.channel_name == channel
       assert space_init.self_key == "nick:alice"
       assert space_init.map.id == "elfic_forest"
       assert is_list(space_init.map.collision)

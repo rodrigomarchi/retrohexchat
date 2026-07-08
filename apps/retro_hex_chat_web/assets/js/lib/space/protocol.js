@@ -71,7 +71,7 @@ export function normalizeSpaceInit(raw = {}) {
   }
 
   return {
-    token: raw.token ?? null,
+    channelName: raw.channel_name ?? raw.channelName ?? raw.token ?? null,
     selfKey: raw.self_key ?? raw.selfKey ?? null,
     map: raw.map && typeof raw.map === "object" ? raw.map : {},
     config: raw.config && typeof raw.config === "object" ? raw.config : {},
