@@ -47,6 +47,7 @@ const ScrollHook = {
     this.initialScrollTimer = null;
     this.pendingPrepend = false;
     this.prevScrollHeight = this.chatEl.scrollHeight;
+    this.wasHidden = this.isHidden();
     this.mouseDownPos = null;
     this.lastClearToken = this.el.dataset.clearToken || "";
 
@@ -357,9 +358,11 @@ const ScrollHook = {
         const heightDiff = newScrollHeight - this.prevScrollHeight;
         this.chatEl.scrollTop += heightDiff;
         this.pendingPrepend = false;
-      } else if (this.initialScrollPending || this.isStreamResetMutation(mutations)) {
+      } else if (this.initialScrollPending) {
         this.scrollToBottom();
         this.hideNewMessagesButton();
+      } else if (this.isStreamResetMutation(mutations)) {
+        this.scheduleInitialScrollSettle();
       } else if (this.isAtBottom) {
         this.scrollToBottom();
       } else {
@@ -383,6 +386,18 @@ const ScrollHook = {
     if (clearToken !== this.lastClearToken) {
       this.lastClearToken = clearToken;
       this.clearMessages();
+    }
+
+    const hidden = this.isHidden();
+    if (hidden) {
+      this.wasHidden = true;
+      return;
+    }
+
+    if (this.wasHidden) {
+      this.wasHidden = false;
+      this.scheduleInitialScrollSettle();
+      return;
     }
 
     if (this.isAtBottom) {
@@ -429,6 +444,8 @@ const ScrollHook = {
     this.cancelInitialScrollSettle();
     this.initialScrollPending = true;
     this.initialScrollFrames = 0;
+    this.scrollToBottom();
+    this.hideNewMessagesButton();
 
     const settle = () => {
       this.initialScrollFrameHandle = null;
@@ -489,6 +506,14 @@ const ScrollHook = {
     }
 
     return { type: "timer", id: setTimeout(callback, 0) };
+  },
+
+  isHidden() {
+    return (
+      this.chatEl.hidden ||
+      this.chatEl.classList.contains("hidden") ||
+      !!this.chatEl.closest(".hidden")
+    );
   },
 
   showNewMessagesButton() {

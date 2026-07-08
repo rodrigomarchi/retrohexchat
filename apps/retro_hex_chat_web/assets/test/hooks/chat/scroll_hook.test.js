@@ -115,6 +115,21 @@ describe("ScrollHook", () => {
       const btn = document.querySelector(".new-messages-btn");
       expect(btn?.classList.contains("new-messages-btn--visible")).toBe(true);
     });
+
+    it("resettles to bottom when the hidden chat viewport becomes visible again", () => {
+      const hiddenParent = document.createElement("div");
+      hiddenParent.className = "hidden";
+      document.body.appendChild(hiddenParent);
+      hiddenParent.appendChild(hook.el);
+      hook.wasHidden = true;
+      const schedule = vi.spyOn(hook, "scheduleInitialScrollSettle");
+
+      hiddenParent.className = "";
+      hook.updated();
+
+      expect(schedule).toHaveBeenCalled();
+      expect(hook.isAtBottom).toBe(true);
+    });
   });
 
   // ── load_more ──────────────────────────────────────────

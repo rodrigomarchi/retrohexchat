@@ -460,12 +460,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
           state.participants
           |> Map.keys()
           |> Enum.reject(&MapSet.member?(current_keys, &1))
-          |> Enum.reduce(state, fn key, acc ->
-            case Map.get(acc.participants, key) do
-              nil -> acc
-              participant -> remove_channel_member(acc, participant.nickname)
-            end
-          end)
+          |> Enum.reduce(state, &remove_channel_member_by_key/2)
 
         Enum.reduce(members, state, fn {nick, role}, acc ->
           add_channel_member(acc, nick, role)
@@ -477,6 +472,13 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   defp sync_channel_members(state), do: state
+
+  defp remove_channel_member_by_key(key, state) do
+    case Map.fetch(state.participants, key) do
+      {:ok, participant} -> remove_channel_member(state, participant.nickname)
+      :error -> state
+    end
+  end
 
   defp add_channel_member(state, nickname, role, previous \\ nil) do
     key = channel_participant_key(nickname)

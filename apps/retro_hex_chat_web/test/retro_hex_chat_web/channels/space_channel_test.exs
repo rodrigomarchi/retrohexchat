@@ -1,8 +1,8 @@
 defmodule RetroHexChatWeb.SpaceChannelTest do
   use RetroHexChatWeb.ChannelCase, async: false
 
-  alias RetroHexChat.Channels.{Server, Supervisor}
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
+  alias RetroHexChat.Channels.{Server, Supervisor}
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.VirtualSpace.{JoinToken, Queries, Registry, SessionServer}
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
