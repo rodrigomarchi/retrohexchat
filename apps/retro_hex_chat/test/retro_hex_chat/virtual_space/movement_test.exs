@@ -1,9 +1,11 @@
 defmodule RetroHexChat.VirtualSpace.MovementTest do
   use RetroHexChat.DataCase, async: false
 
-  import RetroHexChat.Factory
-
-  alias RetroHexChat.VirtualSpace.{Queries, SessionServer, Supervisor}
+  alias RetroHexChat.Channels.Registry, as: ChannelRegistry
+  alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
+  alias RetroHexChat.VirtualSpace.SessionServer
+  alias RetroHexChat.VirtualSpace.Supervisor
 
   @moduletag :integration
 
@@ -14,30 +16,29 @@ defmodule RetroHexChat.VirtualSpace.MovementTest do
     :ok
   end
 
-  defp start_space(attrs \\ %{}) do
-    creator = insert(:registered_nick)
+  defp start_space(nickname \\ "alice") do
+    channel = "#mv-#{System.unique_integer([:positive])}"
 
-    base = %{
-      token: "mv-#{System.unique_integer([:positive])}",
-      channel_name: "#retro",
-      creator_id: creator.id,
-      creator_nick: creator.nickname,
-      map_id: "elfic_forest",
-      expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
-    }
+    {:ok, channel_pid} = ChannelSupervisor.start_child(channel)
+    {:ok, _} = Server.join(channel, nickname)
+    {:ok, space_pid} = Supervisor.start_channel_child(channel)
 
-    {:ok, session} = Queries.insert_session(Map.merge(base, attrs))
-    {:ok, pid} = Supervisor.start_child(session.token)
-    on_exit(fn -> if Process.alive?(pid), do: GenServer.stop(pid, :normal) end)
+    on_exit(fn ->
+      if Process.alive?(space_pid), do: GenServer.stop(space_pid, :normal)
 
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "space:#{session.token}")
+      case ChannelRegistry.lookup(channel) do
+        {:ok, ^channel_pid} -> ChannelSupervisor.stop_child(channel_pid)
+        _ -> :ok
+      end
+    end)
 
-    {:ok, joined} =
-      SessionServer.join(session.token, %{user_id: creator.id, nickname: creator.nickname})
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "space:#{channel}")
 
-    # Drop the presence-join delta so tests assert on the movement delta.
+    {:ok, joined} = SessionServer.join(channel, %{user_id: nil, nickname: nickname})
+
+    # Drop any presence delta so tests assert on movement deltas.
     flush_deltas()
-    %{token: session.token, key: joined.participant.key, spawn: joined.participant}
+    %{token: channel, key: joined.participant.key, spawn: joined.participant}
   end
 
   defp pos(token, key) do
@@ -88,7 +89,7 @@ defmodule RetroHexChat.VirtualSpace.MovementTest do
       {x, y, _} = pos(ctx.token, ctx.key)
       flush_deltas()
 
-      # The next step up hits the wall → rejected, position unchanged.
+      # The next step up hits the wall -> rejected, position unchanged.
       assert {:error, :blocked} =
                SessionServer.input(ctx.token, ctx.key, %{seq: 999, dx: 0, dy: -1})
 
@@ -132,12 +133,12 @@ defmodule RetroHexChat.VirtualSpace.MovementTest do
       ctx = start_space()
 
       assert {:error, :not_participant} =
-               SessionServer.input(ctx.token, "registered:999999", %{seq: 1, dx: 1, dy: 0})
+               SessionServer.input(ctx.token, "nick:missing", %{seq: 1, dx: 1, dy: 0})
     end
 
-    test "input on an unknown token returns not_found" do
+    test "input on an unknown channel returns not_found" do
       assert {:error, :not_found} =
-               SessionServer.input("nope", "registered:1", %{seq: 1, dx: 1, dy: 0})
+               SessionServer.input("#nope", "nick:alice", %{seq: 1, dx: 1, dy: 0})
     end
   end
 

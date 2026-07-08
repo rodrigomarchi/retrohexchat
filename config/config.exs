@@ -30,11 +30,7 @@ config :retro_hex_chat,
   # P2P rate limiting
   p2p_session_rate_limit: {5, 600_000},
   signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.ETS,
-  # Virtual space sessions
-  virtual_space_pending_timeout: :timer.minutes(5),
-  virtual_space_default_ttl: :timer.hours(2),
-  virtual_space_max_ttl: :timer.hours(8),
-  virtual_space_max_participants_ceiling: 50,
+  # Virtual space runtime
   virtual_space_step_ms: 150
 
 config :retro_hex_chat_web,

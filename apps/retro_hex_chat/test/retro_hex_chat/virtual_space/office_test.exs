@@ -1,46 +1,51 @@
 defmodule RetroHexChat.VirtualSpace.OfficeTest do
   use RetroHexChat.DataCase, async: false
 
-  import RetroHexChat.Factory
-
-  alias RetroHexChat.VirtualSpace.{Queries, SessionServer, Supervisor}
+  alias RetroHexChat.Channels.Registry, as: ChannelRegistry
+  alias RetroHexChat.Channels.Server
+  alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
+  alias RetroHexChat.VirtualSpace.SessionServer
+  alias RetroHexChat.VirtualSpace.Supervisor
 
   @moduletag :integration
 
   setup do
     Application.put_env(:retro_hex_chat, :virtual_space_step_ms, 0)
-    Application.put_env(:retro_hex_chat, :virtual_space_chat_rate, {3, 1000})
-
-    on_exit(fn ->
-      Application.delete_env(:retro_hex_chat, :virtual_space_step_ms)
-      Application.delete_env(:retro_hex_chat, :virtual_space_chat_rate)
-    end)
-
+    on_exit(fn -> Application.delete_env(:retro_hex_chat, :virtual_space_step_ms) end)
     :ok
   end
 
-  defp start_space do
-    creator = insert(:registered_nick)
+  defp start_space(nickname \\ "alice") do
+    channel = "#office-#{System.unique_integer([:positive])}"
 
-    {:ok, session} =
-      Queries.insert_session(%{
-        token: "office-#{System.unique_integer([:positive])}",
-        channel_name: "#retro",
-        creator_id: creator.id,
-        creator_nick: creator.nickname,
-        map_id: "elfic_forest",
-        expires_at: DateTime.add(DateTime.utc_now(), 3600, :second)
-      })
+    {:ok, channel_pid} = ChannelSupervisor.start_child(channel)
+    {:ok, _} = Server.join(channel, nickname)
+    {:ok, space_pid} = Supervisor.start_channel_child(channel)
 
-    {:ok, pid} = Supervisor.start_child(session.token)
-    on_exit(fn -> if Process.alive?(pid), do: GenServer.stop(pid, :normal) end)
+    on_exit(fn ->
+      if Process.alive?(space_pid), do: GenServer.stop(space_pid, :normal)
 
-    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "space:#{session.token}")
+      case ChannelRegistry.lookup(channel) do
+        {:ok, ^channel_pid} -> ChannelSupervisor.stop_child(channel_pid)
+        _ -> :ok
+      end
+    end)
 
-    {:ok, joined} =
-      SessionServer.join(session.token, %{user_id: creator.id, nickname: creator.nickname})
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "space:#{channel}")
 
-    %{token: session.token, key: joined.participant.key}
+    {:ok, joined} = SessionServer.join(channel, %{user_id: nil, nickname: nickname})
+
+    %{
+      token: channel,
+      nickname: nickname,
+      key: joined.participant.key
+    }
+  end
+
+  defp join_member(ctx, nickname) do
+    {:ok, _} = Server.join(ctx.token, nickname)
+    {:ok, joined} = SessionServer.join(ctx.token, %{user_id: nil, nickname: nickname})
+    joined.participant.key
   end
 
   defp entry(token, key) do
@@ -130,9 +135,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       assert updates[ctx.key].pose == "sitting"
 
       # A second participant cannot take the reserved seat.
-      other = insert(:registered_nick)
-      {:ok, o} = SessionServer.join(ctx.token, %{user_id: other.id, nickname: other.nickname})
-      okey = o.participant.key
+      okey = join_member(ctx, "bob")
       octx = %{token: ctx.token, key: okey}
       walk_to(octx, {50, 26})
 
@@ -167,7 +170,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       refute Map.has_key?(state.seats, "seat_market_a")
     end
 
-    test "leaving frees the seat" do
+    test "leaving the text channel frees the seat" do
       ctx = start_space()
       walk_to(ctx, {49, 26})
 
@@ -178,7 +181,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
           target_id: "seat_market_a"
         })
 
-      SessionServer.leave(ctx.token, ctx.key)
+      Server.part(ctx.token, ctx.nickname)
 
       wait_until(fn ->
         {:ok, state} = SessionServer.get_state(ctx.token)
@@ -187,6 +190,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
 
       {:ok, state} = SessionServer.get_state(ctx.token)
       refute Map.has_key?(state.seats, "seat_market_a")
+      refute Map.has_key?(state.participants, ctx.key)
     end
 
     test "sitting on an unknown or distant seat is rejected" do
@@ -245,46 +249,26 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
   end
 
   describe "chat bubbles" do
-    test "a message broadcasts space_message with the normalized text" do
+    test "public channel messages become virtual space bubbles" do
       ctx = start_space()
+      flush()
 
-      assert :ok = SessionServer.chat_bubble(ctx.token, ctx.key, "  hello   world  ")
+      assert {:ok, _id} = Server.send_message(ctx.token, ctx.nickname, "  hello   world  ")
 
       assert_receive %{event: "space_message", payload: payload}
       assert payload.key == ctx.key
       assert payload.text == "hello world"
-      assert payload.nickname
+      assert payload.nickname == ctx.nickname
     end
 
-    test "a message over 160 chars is rejected" do
+    test "space_chat_bubble remains a no-op in channel spaces" do
       ctx = start_space()
-      long = String.duplicate("a", 161)
+      flush()
 
-      assert {:error, :too_long} = SessionServer.chat_bubble(ctx.token, ctx.key, long)
-    end
-
-    test "a muted participant cannot send" do
-      ctx = start_space()
-
-      :sys.replace_state(
-        elem(lookup(ctx.token), 1),
-        &put_in(&1.participants[ctx.key].muted?, true)
-      )
-
-      assert {:error, :muted} = SessionServer.chat_bubble(ctx.token, ctx.key, "hi")
-    end
-
-    test "the rate limit rejects a burst" do
-      ctx = start_space()
-
-      assert :ok = SessionServer.chat_bubble(ctx.token, ctx.key, "1")
-      assert :ok = SessionServer.chat_bubble(ctx.token, ctx.key, "2")
-      assert :ok = SessionServer.chat_bubble(ctx.token, ctx.key, "3")
-      assert {:error, :rate_limited} = SessionServer.chat_bubble(ctx.token, ctx.key, "4")
+      assert :ok = SessionServer.chat_bubble(ctx.token, ctx.key, "local-only")
+      refute_receive %{event: "space_message"}, 100
     end
   end
-
-  defp lookup(token), do: RetroHexChat.VirtualSpace.Registry.lookup(token)
 
   defp wait_until(fun, retries \\ 50) do
     cond do

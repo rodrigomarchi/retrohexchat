@@ -1,29 +1,22 @@
 defmodule RetroHexChat.VirtualSpace.SessionServer do
   @moduledoc """
-  GenServer managing a single virtual space session.
+  GenServer managing one channel-backed virtual space runtime.
 
   Holds the hot state of the world: participants (position, direction, pose,
-  online flag), the map definition and the expiry timers. The database keeps
-  only audit and macro status; movement and presence never touch it.
+  online flag) and the map definition. The runtime is ephemeral and mirrors
+  membership from `RetroHexChat.Channels.Server`.
 
   Participants are keyed by a stable `participant_key`
-  (`"registered:<user_id>"`), so a reconnect of the same user takes over the
-  existing entry and keeps its position. Offline participants stay in the hot
-  state until the session ends, which lets a reload land on the same tile.
+  (`"nick:<nickname>"`) so channel events and socket joins address the same
+  avatar.
   """
   use GenServer, restart: :transient
 
   require Logger
 
   alias RetroHexChat.Channels.Server, as: ChannelServer
-  alias RetroHexChat.VirtualSpace.Events
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
-  alias RetroHexChat.VirtualSpace.Policy
-  alias RetroHexChat.VirtualSpace.Queries
   alias RetroHexChat.VirtualSpace.Registry
-  alias RetroHexChat.VirtualSpace.Schema.Session
-
-  @pending_timeout :timer.minutes(5)
 
   @pubsub RetroHexChat.PubSub
 
@@ -31,7 +24,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
           key: String.t(),
           user_id: integer() | nil,
           nickname: String.t(),
-          role: :creator | :participant | :bot,
+          role: :participant | :bot,
           x: integer(),
           y: integer(),
           dir: String.t(),
@@ -47,9 +40,11 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   # --- Public API ---
 
-  @spec start_link(String.t() | {:channel, String.t()}) :: GenServer.on_start()
-  def start_link(arg) do
-    GenServer.start_link(__MODULE__, arg, name: Registry.via_tuple(registry_key(arg)))
+  @spec start_link({:channel, String.t()}) :: GenServer.on_start()
+  def start_link({:channel, channel_name} = arg) do
+    GenServer.start_link(__MODULE__, arg,
+      name: Registry.via_tuple({:channel_space, channel_name})
+    )
   end
 
   @spec get_state(String.t()) :: {:ok, map()} | {:error, :not_found}
@@ -73,7 +68,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   @type input_error ::
           :not_found
           | :not_participant
-          | :terminal
           | :invalid_step
           | :cooldown
           | :out_of_bounds
@@ -93,15 +87,12 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   @spec interact(String.t(), String.t(), interact_payload()) ::
           :ok
           | {:ok, %{modal: map()}}
-          | {:error,
-             :not_found | :not_participant | :invalid_target | :too_far | :seat_taken | :terminal}
+          | {:error, :not_found | :not_participant | :invalid_target | :too_far | :seat_taken}
   def interact(token, participant_key, payload) do
     call(token, {:interact, participant_key, payload})
   end
 
-  @spec chat_bubble(String.t(), String.t(), String.t()) ::
-          :ok
-          | {:error, :not_found | :not_participant | :muted | :too_long | :empty | :rate_limited}
+  @spec chat_bubble(String.t(), String.t(), String.t()) :: :ok | {:error, :not_found}
   def chat_bubble(token, participant_key, text) do
     call(token, {:chat_bubble, participant_key, text})
   end
@@ -113,10 +104,9 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
           optional(:is_server_operator) => boolean()
         }
 
-  @spec admin_action(String.t(), actor(), map()) ::
-          :ok | {:error, :not_found | :forbidden | :unknown_map | :invalid_action}
-  def admin_action(token, actor, action) do
-    call(token, {:admin_action, actor, action})
+  @spec admin_action(String.t(), actor(), map()) :: {:error, :not_found | :forbidden}
+  def admin_action(token, _actor, _action) do
+    call(token, :admin_action)
   end
 
   @spec leave(String.t(), String.t()) :: :ok
@@ -133,19 +123,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
       {:ok, pid} -> GenServer.cast(pid, :viewer_left)
       {:error, :not_found} -> :ok
     end
-  end
-
-  @spec close(String.t(), String.t()) :: :ok | {:error, :not_found}
-  def close(token, reason) do
-    case Registry.lookup(lookup_key(token)) do
-      {:ok, pid} -> call_close(pid, reason)
-      {:error, :not_found} -> {:error, :not_found}
-    end
-  end
-
-  @spec session_summary(String.t()) :: {:ok, map()} | {:error, :not_found}
-  def session_summary(token) do
-    call(token, :session_summary)
   end
 
   @spec snapshot(String.t()) :: {:ok, map()} | {:error, :not_found}
@@ -165,39 +142,14 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     :exit, {:normal, _call} -> {:error, :not_found}
   end
 
-  defp registry_key({:channel, channel_name}), do: {:channel_space, channel_name}
-  defp registry_key(token), do: token
-
   defp lookup_key("#" <> _ = channel_name), do: {:channel_space, channel_name}
   defp lookup_key(key), do: key
-
-  defp call_close(pid, reason) do
-    GenServer.call(pid, {:close, reason})
-  catch
-    :exit, :normal -> {:error, :not_found}
-    :exit, {:normal, _call} -> {:error, :not_found}
-    :exit, {:noproc, _call} -> {:error, :not_found}
-  end
 
   # --- GenServer callbacks ---
 
   @impl true
   def init({:channel, channel_name}) do
     init_channel_state(channel_name)
-  end
-
-  def init(token) do
-    case Queries.get_session_by_token(token) do
-      nil ->
-        {:stop, :session_not_found}
-
-      session ->
-        if Session.terminal?(session.status) do
-          :ignore
-        else
-          init_state(token, session)
-        end
-    end
   end
 
   defp init_channel_state(channel_name) do
@@ -217,8 +169,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
           blocked: SpaceMap.collision_set(map_definition),
           participants: %{},
           seats: %{},
-          kicked: MapSet.new(),
-          timers: %{},
           viewer_count: 0
         }
 
@@ -229,43 +179,12 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     end
   end
 
-  defp init_state(token, session) do
-    case SpaceMap.get(session.map_id) do
-      {:error, :unknown_map} ->
-        {:stop, :unknown_map}
-
-      {:ok, map_definition} ->
-        state = %{
-          token: token,
-          session: session,
-          map: map_definition,
-          blocked: SpaceMap.collision_set(map_definition),
-          participants: %{},
-          seats: %{},
-          kicked: MapSet.new(),
-          timers: %{}
-        }
-
-        state =
-          if session.status == "pending" do
-            schedule_timeout(state, :pending_expiry, pending_timeout())
-          else
-            state
-          end
-
-        state = schedule_session_expiry(state)
-
-        Logger.info("VirtualSpace SessionServer started: token=#{token}")
-        {:ok, state}
-    end
-  end
-
   @impl true
   def handle_call(:get_state, _from, state) do
     {:reply, {:ok, state}, state}
   end
 
-  def handle_call({:join, context}, _from, %{kind: :channel} = state) do
+  def handle_call({:join, context}, _from, state) do
     state = sync_channel_members(state)
     key = channel_participant_key(context.nickname)
 
@@ -278,22 +197,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         reply = %{participant: participant, snapshot: build_snapshot(state), map: state.map}
         {:reply, {:ok, reply}, state}
     end
-  end
-
-  def handle_call({:join, context}, _from, state) do
-    key = participant_key(context)
-    returning = Map.get(state.participants, key)
-    active_count = online_count(state)
-
-    if MapSet.member?(state.kicked, key) do
-      {:reply, {:error, :kicked}, state}
-    else
-      join_if_room(state, key, context, returning, active_count)
-    end
-  end
-
-  def handle_call(:session_summary, _from, state) do
-    {:reply, {:ok, build_summary(state)}, state}
   end
 
   def handle_call(:snapshot, _from, state) do
@@ -311,35 +214,16 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     do_interact(state, key, payload)
   end
 
-  def handle_call({:chat_bubble, _key, _text}, _from, %{kind: :channel} = state) do
+  def handle_call({:chat_bubble, _key, _text}, _from, state) do
     {:reply, :ok, state}
   end
 
-  def handle_call({:chat_bubble, key, text}, _from, state) do
-    case do_chat(state, key, text) do
-      {:ok, state} -> {:reply, :ok, state}
-      {:error, reason, state} -> {:reply, {:error, reason}, state}
-    end
-  end
-
-  def handle_call({:admin_action, _actor, _action}, _from, %{kind: :channel} = state) do
+  def handle_call(:admin_action, _from, state) do
     {:reply, {:error, :forbidden}, state}
   end
 
-  def handle_call({:admin_action, actor, action}, _from, state) do
-    case Policy.can_admin?(admin_actor(actor), state.session) do
-      {:error, _} -> {:reply, {:error, :forbidden}, state}
-      :ok -> do_admin_action(state, action)
-    end
-  end
-
-  def handle_call({:close, reason}, _from, state) do
-    state = do_end(state, "closed", reason)
-    {:stop, :normal, :ok, state}
-  end
-
   @impl true
-  def handle_cast(:viewer_left, %{kind: :channel} = state) do
+  def handle_cast(:viewer_left, state) do
     viewer_count = max(state.viewer_count - 1, 0)
     state = %{state | viewer_count: viewer_count}
 
@@ -359,7 +243,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         state = free_seat(state, participant)
         updated = %{participant | online?: false, seat_id: nil, last_seen_at: DateTime.utc_now()}
         state = put_in(state.participants[participant_key], updated)
-        state = persist_positions(state)
 
         broadcast(state.token, "space_participant_left", %{
           key: participant_key,
@@ -373,37 +256,21 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   @impl true
-  def handle_info({:timeout, :pending_expiry}, state) do
-    if state.session.status == "pending" do
-      {:stop, :normal, do_end(state, "expired", "pending_timeout")}
-    else
-      {:noreply, state}
-    end
-  end
-
-  def handle_info({:timeout, :session_expiry}, state) do
-    if Session.terminal?(state.session.status) do
-      {:noreply, state}
-    else
-      {:stop, :normal, do_end(state, "expired", "expired")}
-    end
-  end
-
-  def handle_info({:user_joined, %{nickname: nickname, role: role}}, %{kind: :channel} = state) do
+  def handle_info({:user_joined, %{nickname: nickname, role: role}}, state) do
     {:noreply, add_channel_member(state, nickname, role)}
   end
 
-  def handle_info({:user_left, %{nickname: nickname}}, %{kind: :channel} = state) do
+  def handle_info({:user_left, %{nickname: nickname}}, state) do
     {:noreply, remove_channel_member(state, nickname)}
   end
 
-  def handle_info({:user_kicked, %{target: nickname}}, %{kind: :channel} = state) do
+  def handle_info({:user_kicked, %{target: nickname}}, state) do
     {:noreply, remove_channel_member(state, nickname)}
   end
 
   def handle_info(
         {:nick_changed, %{old_nick: old_nick, new_nick: new_nick}},
-        %{kind: :channel} = state
+        state
       ) do
     old_key = channel_participant_key(old_nick)
     old = Map.get(state.participants, old_key)
@@ -414,7 +281,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   def handle_info(
         %{event: "new_message", payload: %{author: author, content: content, type: type}},
-        %{kind: :channel} = state
+        state
       ) do
     if public_channel_message?(type) do
       broadcast_channel_bubble(state, author, content)
@@ -423,11 +290,9 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     {:noreply, state}
   end
 
-  def handle_info(_message, %{kind: :channel} = state), do: {:noreply, state}
+  def handle_info(_message, state), do: {:noreply, state}
 
   # --- Private helpers ---
-
-  defp participant_key(%{user_id: user_id}), do: "registered:#{user_id}"
 
   defp channel_session(channel_name) do
     %{
@@ -569,92 +434,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     end
   end
 
-  defp join_if_room(state, key, context, returning, active_count) do
-    case Policy.check_capacity(state.session, active_count, returning != nil) do
-      {:error, reason} ->
-        {:reply, {:error, reason}, state}
-
-      :ok ->
-        {participant, state} = do_join(state, key, context, returning)
-        Events.emit_participant_joined(state.token)
-        reply = %{participant: participant, snapshot: build_snapshot(state), map: state.map}
-        {:reply, {:ok, reply}, state}
-    end
-  end
-
-  defp do_join(state, key, context, nil) do
-    {x, y, dir} = spawn_for(state, key)
-
-    participant = %{
-      key: key,
-      user_id: context.user_id,
-      nickname: context.nickname,
-      role: role_for(state.session, context.user_id),
-      avatar: avatar_for(state, key),
-      x: x,
-      y: y,
-      dir: dir,
-      pose: "standing",
-      seat_id: nil,
-      zone_id: zone_at(state.map, x, y),
-      moving?: false,
-      online?: true,
-      muted?: false,
-      input_seq: 0,
-      last_input_at: nil,
-      chat_times: [],
-      joined_at: DateTime.utc_now(),
-      last_seen_at: DateTime.utc_now()
-    }
-
-    state = put_in(state.participants[key], participant)
-    state = maybe_activate(state)
-
-    broadcast(state.token, "space_participant_joined", %{
-      key: key,
-      nickname: participant.nickname
-    })
-
-    broadcast_presence_join(state, key, participant)
-    state = update_participant_counts(state)
-    {participant, state}
-  end
-
-  defp do_join(state, key, context, returning) do
-    participant = %{
-      returning
-      | nickname: context.nickname,
-        online?: true,
-        last_seen_at: DateTime.utc_now()
-    }
-
-    state = put_in(state.participants[key], participant)
-    state = maybe_activate(state)
-
-    broadcast(state.token, "space_participant_joined", %{
-      key: key,
-      nickname: participant.nickname
-    })
-
-    broadcast_presence_join(state, key, participant)
-    state = update_participant_counts(state)
-    {participant, state}
-  end
-
-  defp maybe_activate(%{session: %{status: "pending"}} = state) do
-    state = cancel_timer(state, :pending_expiry)
-
-    {:ok, session} =
-      Queries.update_status(state.session, "active", %{
-        activated_at: DateTime.utc_now(),
-        last_activity_at: DateTime.utc_now()
-      })
-
-    %{state | session: session}
-  end
-
-  defp maybe_activate(state), do: state
-
   # Authoritative movement: validate a single cardinal step and either apply it
   # (broadcast a delta) or reject it. Bounds/collision rejections still publish a
   # correction delta so the client can reconcile its local prediction; malformed
@@ -663,9 +442,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     participant = Map.get(state.participants, key)
 
     cond do
-      Session.terminal?(state.session.status) ->
-        {:error, :terminal, state}
-
       participant == nil or not participant.online? ->
         {:error, :not_participant, state}
 
@@ -764,150 +540,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   defp valid_step?(_), do: false
 
-  # --- Admin actions (creator / server operator only) ---
-
-  defp admin_actor(actor) do
-    %{
-      user_id: actor.user_id,
-      nickname: Map.get(actor, :nickname, ""),
-      identified: true,
-      is_admin: Map.get(actor, :is_admin, false),
-      is_server_operator: Map.get(actor, :is_server_operator, false)
-    }
-  end
-
-  defp do_admin_action(state, %{kind: "kick", target_key: target_key} = action) do
-    reason = Map.get(action, :reason, "kicked")
-
-    case Map.get(state.participants, target_key) do
-      nil ->
-        {:reply, {:error, :invalid_target}, state}
-
-      participant ->
-        state = free_seat(state, participant)
-        updated = %{participant | online?: false, seat_id: nil}
-        state = put_in(state.participants[target_key], updated)
-        state = update_in(state.kicked, &MapSet.put(&1, target_key))
-
-        broadcast(state.token, "space_participant_kicked", %{key: target_key, reason: reason})
-        broadcast_presence_left(state, target_key)
-        state = update_participant_counts(state)
-        {:reply, :ok, state}
-    end
-  end
-
-  defp do_admin_action(state, %{kind: "mute", target_key: target_key} = action) do
-    muted? = Map.get(action, :muted, true)
-
-    case Map.get(state.participants, target_key) do
-      nil ->
-        {:reply, {:error, :invalid_target}, state}
-
-      participant ->
-        updated = %{participant | muted?: muted?}
-        state = put_in(state.participants[target_key], updated)
-        state = broadcast_delta(state, target_key, updated, updated.input_seq)
-        {:reply, :ok, state}
-    end
-  end
-
-  defp do_admin_action(state, %{kind: "close"} = action) do
-    reason = Map.get(action, :reason, "closed")
-    state = do_end(state, "closed", reason)
-    {:stop, :normal, :ok, state}
-  end
-
-  defp do_admin_action(state, %{kind: "change_map", map_id: map_id}) do
-    case SpaceMap.get(map_id) do
-      {:error, :unknown_map} ->
-        {:reply, {:error, :unknown_map}, state}
-
-      {:ok, map_definition} ->
-        {:reply, :ok, change_map(state, map_id, map_definition)}
-    end
-  end
-
-  defp do_admin_action(state, _action), do: {:reply, {:error, :invalid_action}, state}
-
-  # Swaps the map, respawns everyone onto valid tiles (identity/mute/presence
-  # preserved) and re-emits a full snapshot so clients rebuild their world.
-  defp change_map(state, map_id, map_definition) do
-    blocked = SpaceMap.collision_set(map_definition)
-    spawns = map_definition.spawn
-
-    # Only online participants are respawned onto fresh tiles; offline entries
-    # keep their stored position (they respawn on rejoin) and never consume a
-    # spawn slot, so the online crowd can't be pushed into a colliding fallback.
-    {online, offline} = Enum.split_with(state.participants, fn {_key, p} -> p.online? end)
-
-    {respawned, _} =
-      Enum.map_reduce(online, MapSet.new(), fn {key, p}, taken ->
-        spawn = free_spawn(spawns, taken)
-        moved = %{p | x: spawn.x, y: spawn.y, dir: spawn.dir, pose: "standing", seat_id: nil}
-        moved = %{moved | zone_id: zone_at(map_definition, spawn.x, spawn.y)}
-        {{key, moved}, MapSet.put(taken, {spawn.x, spawn.y})}
-      end)
-
-    participants = respawned ++ offline
-
-    {:ok, session} =
-      Queries.update_status(state.session, state.session.status, %{map_id: map_id})
-
-    state = %{
-      state
-      | session: session,
-        map: map_definition,
-        blocked: blocked,
-        participants: Map.new(participants),
-        seats: %{}
-    }
-
-    state = persist_positions(state)
-
-    broadcast(state.token, "space_map_changed", %{
-      map: map_definition,
-      snapshot: build_snapshot(state)
-    })
-
-    state
-  end
-
-  defp free_spawn(spawns, taken) do
-    Enum.find(spawns, List.first(spawns), fn s -> not MapSet.member?(taken, {s.x, s.y}) end)
-  end
-
-  # Restores a saved position (from a previous leave / process lifetime) if the
-  # metadata carries one and it is still walkable; otherwise picks a free spawn.
-  defp spawn_for(state, key) do
-    with %{"positions" => positions} <- state.session.metadata,
-         %{"x" => x, "y" => y} = saved when is_integer(x) and is_integer(y) <-
-           Map.get(positions, key),
-         false <- MapSet.member?(state.blocked, {x, y}) do
-      {x, y, Map.get(saved, "dir", "down")}
-    else
-      _ -> pick_spawn(state)
-    end
-  end
-
-  defp persist_positions(%{kind: :channel} = state), do: state
-
-  # A light snapshot of tile positions written to the session row on leave and
-  # map change (never per step), so a reload or process restart lands people
-  # back where they were.
-  defp persist_positions(state) do
-    positions =
-      Map.new(state.participants, fn {key, p} ->
-        {key, %{"x" => p.x, "y" => p.y, "dir" => p.dir}}
-      end)
-
-    metadata = Map.put(state.session.metadata || %{}, "positions", positions)
-
-    case Queries.update_status(state.session, state.session.status, %{metadata: metadata}) do
-      {:ok, session} -> %{state | session: session}
-      {:error, _} -> state
-    end
-  end
-
   # --- Interactions (seats, boards) ---
 
   defp do_interact(state, key, %{kind: "sit", target_id: seat_id}) do
@@ -915,7 +547,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     seat = Enum.find(state.map.seats, &(&1.id == seat_id))
 
     cond do
-      Session.terminal?(state.session.status) -> {:reply, {:error, :terminal}, state}
       not active_participant?(participant) -> {:reply, {:error, :not_participant}, state}
       seat == nil -> {:reply, {:error, :invalid_target}, state}
       seat_taken?(state, seat_id, key) -> {:reply, {:error, :seat_taken}, state}
@@ -927,10 +558,10 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   defp do_interact(state, key, %{kind: "stand"}) do
     participant = Map.get(state.participants, key)
 
-    cond do
-      Session.terminal?(state.session.status) -> {:reply, {:error, :terminal}, state}
-      not active_participant?(participant) -> {:reply, {:error, :not_participant}, state}
-      true -> stand(state, key, participant)
+    if active_participant?(participant) do
+      stand(state, key, participant)
+    else
+      {:reply, {:error, :not_participant}, state}
     end
   end
 
@@ -939,7 +570,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     target = Enum.find(state.map.interactables, &(&1.id == id))
 
     cond do
-      Session.terminal?(state.session.status) -> {:reply, {:error, :terminal}, state}
       not active_participant?(participant) -> {:reply, {:error, :not_participant}, state}
       target == nil -> {:reply, {:error, :invalid_target}, state}
       not adjacent?(participant, target) -> {:reply, {:error, :too_far}, state}
@@ -1001,46 +631,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     %{title: title, kind: Map.get(modal, :kind, "image"), asset: Map.get(modal, :asset)}
   end
 
-  # --- Chat bubbles ---
-
-  defp do_chat(state, key, text) do
-    participant = Map.get(state.participants, key)
-    normalized = normalize_text(text)
-
-    cond do
-      participant == nil or not participant.online? -> {:error, :not_participant, state}
-      participant.muted? -> {:error, :muted, state}
-      normalized == "" -> {:error, :empty, state}
-      String.length(normalized) > 160 -> {:error, :too_long, state}
-      chat_rate_limited?(participant) -> {:error, :rate_limited, state}
-      true -> deliver_chat(state, key, participant, normalized)
-    end
-  end
-
-  defp deliver_chat(state, key, participant, text) do
-    now = mono_ms()
-    updated = %{participant | chat_times: [now | recent_chat_times(participant, now)]}
-    state = put_in(state.participants[key], updated)
-
-    broadcast(state.token, "space_message", %{
-      key: key,
-      nickname: participant.nickname,
-      text: text
-    })
-
-    {:ok, state}
-  end
-
-  defp chat_rate_limited?(participant) do
-    {max, _window} = chat_rate()
-    length(recent_chat_times(participant, mono_ms())) >= max
-  end
-
-  defp recent_chat_times(participant, now) do
-    {_max, window} = chat_rate()
-    Enum.filter(participant.chat_times, &(now - &1 < window))
-  end
-
   defp normalize_text(text) when is_binary(text) do
     text
     |> String.replace(~r/\p{C}/u, "")
@@ -1049,8 +639,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   end
 
   defp normalize_text(_), do: ""
-
-  defp chat_rate, do: Application.get_env(:retro_hex_chat, :virtual_space_chat_rate, {5, 5000})
 
   # --- Zones ---
 
@@ -1187,10 +775,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     in_bounds?(state.map, x, y) and not MapSet.member?(state.blocked, {x, y})
   end
 
-  defp role_for(session, user_id) do
-    if session.creator_id == user_id, do: :creator, else: :participant
-  end
-
   # Deterministic avatar assignment so a reconnect keeps the same look and two
   # people rarely clash. Must stay in sync with `AVATAR_IDS` in the JS atlas.
   @avatars ~w(mage_blue mage_green rogue_red bard_gold)
@@ -1242,26 +826,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     }
   end
 
-  defp build_summary(state) do
-    %{
-      kind: :space,
-      token: state.token,
-      status: state.session.status,
-      terminal?: Session.terminal?(state.session.status),
-      title: state.session.title,
-      map_id: state.session.map_id,
-      channel_name: state.session.channel_name,
-      creator_nick: state.session.creator_nick,
-      participant_count: online_count(state),
-      max_participants: state.session.max_participants,
-      created_at: state.session.inserted_at,
-      expires_at: state.session.expires_at,
-      closed_at: state.session.closed_at,
-      closed_reason: state.session.closed_reason
-    }
-  end
-
-  defp update_participant_counts(%{kind: :channel} = state) do
+  defp update_participant_counts(state) do
     count = online_count(state)
 
     session = %{
@@ -1273,83 +838,7 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     %{state | session: session}
   end
 
-  defp update_participant_counts(state) do
-    count = online_count(state)
-    peak = max(state.session.peak_participants, count)
-
-    {:ok, session} =
-      Queries.update_status(state.session, state.session.status, %{
-        last_participant_count: count,
-        peak_participants: peak,
-        last_activity_at: DateTime.utc_now()
-      })
-
-    %{state | session: session}
-  end
-
-  defp do_end(%{kind: :channel} = state, status, reason) do
-    Logger.info("VirtualSpace channel #{status}: channel=#{state.token}, reason=#{reason}")
-    state = cancel_all_timers(state)
-    broadcast(state.token, "space_closed", %{reason: reason, status: status})
-
-    %{
-      state
-      | session: %{
-          state.session
-          | status: status,
-            closed_at: DateTime.utc_now(),
-            closed_reason: reason
-        }
-    }
-  end
-
-  defp do_end(state, status, reason) do
-    Logger.info("VirtualSpace #{status}: token=#{state.token}, reason=#{reason}")
-    state = cancel_all_timers(state)
-
-    {:ok, session} =
-      Queries.update_status(state.session, status, %{
-        closed_at: DateTime.utc_now(),
-        closed_reason: reason,
-        last_participant_count: online_count(state)
-      })
-
-    broadcast(state.token, "space_closed", %{reason: reason, status: status})
-    Events.emit_session_ended(state.token, status)
-    %{state | session: session}
-  end
-
-  defp schedule_session_expiry(%{session: %{expires_at: nil}} = state), do: state
-
-  defp schedule_session_expiry(state) do
-    delay = max(DateTime.diff(state.session.expires_at, DateTime.utc_now(), :millisecond), 0)
-    schedule_timeout(state, :session_expiry, delay)
-  end
-
-  defp schedule_timeout(state, name, delay) do
-    ref = Process.send_after(self(), {:timeout, name}, delay)
-    put_in(state.timers[name], ref)
-  end
-
-  defp cancel_timer(state, name) do
-    case Map.get(state.timers, name) do
-      nil ->
-        state
-
-      ref ->
-        Process.cancel_timer(ref)
-        put_in(state.timers[name], nil)
-    end
-  end
-
-  defp cancel_all_timers(state) do
-    Enum.reduce(Map.keys(state.timers), state, &cancel_timer(&2, &1))
-  end
-
   defp broadcast(token, event, payload) do
     Phoenix.PubSub.broadcast(@pubsub, "space:#{token}", %{event: event, payload: payload})
   end
-
-  defp pending_timeout,
-    do: Application.get_env(:retro_hex_chat, :virtual_space_pending_timeout, @pending_timeout)
 end

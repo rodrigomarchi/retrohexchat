@@ -188,20 +188,6 @@ defmodule RetroHexChatWeb.Telemetry do
       ),
 
       # Domain Metrics – Virtual Spaces
-      sum(dgettext("system", "retro_hex_chat.virtual_space.session_created.count"),
-        tags: [:channel],
-        description: dgettext("system", "Number of virtual spaces created"),
-        reporter_options: [nav: dgettext("system", "Domain")]
-      ),
-      sum(dgettext("system", "retro_hex_chat.virtual_space.participant_joined.count"),
-        description: dgettext("system", "Number of virtual space joins"),
-        reporter_options: [nav: dgettext("system", "Domain")]
-      ),
-      sum(dgettext("system", "retro_hex_chat.virtual_space.session_ended.count"),
-        tags: [:status],
-        description: dgettext("system", "Number of virtual spaces ended by terminal status"),
-        reporter_options: [nav: dgettext("system", "Domain")]
-      ),
       sum(dgettext("system", "retro_hex_chat.virtual_space.active_count.value"),
         description: dgettext("system", "Number of active virtual space processes"),
         reporter_options: [nav: dgettext("system", "Domain")]

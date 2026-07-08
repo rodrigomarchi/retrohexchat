@@ -23,7 +23,6 @@ defmodule RetroHexChat.Application do
       RetroHexChat.Lobby.Supervisor,
       {Registry, keys: :unique, name: RetroHexChat.VirtualSpace.SessionRegistry},
       RetroHexChat.VirtualSpace.Supervisor,
-      RetroHexChat.VirtualSpace.CleanupTask,
       {Registry, keys: :unique, name: RetroHexChat.Arcade.SessionRegistry},
       RetroHexChat.Arcade.Supervisor,
       RetroHexChat.Admin.BanCache,

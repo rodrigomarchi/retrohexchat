@@ -157,9 +157,10 @@ Tudo da seção 4; migração DB; **help topics** (atualizar "Virtual Spaces",
 remover `/space` de Commands, atualizar atalhos com o toggle); i18n dos textos
 novos (regra da memória: só os catálogos do domínio afetado).
 **Aceite**: `make ci` 9/9; nenhuma referência morta a token/lobby de espaço.
-**Status 2026-07-08**: em andamento. A superfície pública de `/space` e a criação
-de `space_invite` já foram removidas; o runtime legado de sessão/token fica por
-enquanto para permitir a remoção em camadas.
+**Status 2026-07-08**: em andamento. A superfície pública de `/space`, a criação
+de `space_invite`, `SpaceLive`, o join legado por token e o runtime persistido
+por `virtual_space_sessions` já foram removidos. Falta revisar docs/help/i18n
+para refletir que o espaço é uma aba do canal.
 
 #### Backlog executável da F4
 
@@ -171,11 +172,11 @@ enquanto para permitir a remoção em camadas.
   for mais criado.
 - [x] Substituir o `join_token.ex` por um contrato específico do canal-espaço, ou
   renomeá-lo antes de remover o join legado por token.
-- [ ] Aposentar `Schema.Session`, `virtual_space_sessions`, TTL/status/cleanup e a
+- [x] Aposentar `Schema.Session`, `virtual_space_sessions`, TTL/status/cleanup e a
    política de capacidade/criador quando o fluxo legado não tiver chamadas vivas.
 - [ ] Atualizar docs/help/i18n para explicar que o espaço é uma aba do canal e não
    um comando separado.
-- [ ] Rodar `make ci` e registrar aprendizados/decisões antes de apagar a próxima
+- [x] Rodar `make ci` e registrar aprendizados/decisões antes de apagar a próxima
    camada.
 
 ### F5 — (futura) Escala de verdade
@@ -190,20 +191,24 @@ Interest management, tick batching, culling. Fora do escopo desta entrega.
 | Foco de teclado (jogar vs digitar) | contrato explícito de foco na F3; testar no E2E |
 | Duas abas = dois estados de scroll/stream do chat | aba Chat permanece o LiveView atual intocado; Espaço só assina os mesmos eventos |
 | Bots/NPCs voltarem ao escopo antes do canal-espaço estabilizar | manter fora desta fase; abrir plano próprio se a decisão mudar |
-| Drop da tabela quebra histórico/admin | decidir soft-drop vs drop na revisão |
+| Drop da tabela quebra histórico/admin | decidido drop reversível: runtime atual é efêmero por canal e não há tela/admin restante usando histórico |
 
 ## 7. Perguntas abertas (responder na revisão)
 
 - **P1**: LobbyLive P2P fica ou também sai? **Respondida**: fica fora desta
   mudança.
 - **P2**: posição do avatar persiste entre visitas (por canal), ou sempre
-  renasce na praça? (proposta: renasce; persistência é estado novo sem dono claro)
+  renasce na praça? **Respondida**: sem persistência em banco; o processo quente
+  mantém posição enquanto existe, e uma materialização nova recalcula spawn a
+  partir da presença do canal.
 - **P3**: o espaço roda mesmo com zero gente na aba Espaço (avatares "parados"
   processando), ou o servidor hiberna e materializa tudo do presence no
-  primeiro espectador? (proposta: hibernar — mais barato, mesmo resultado visual)
+  primeiro espectador? **Respondida**: hiberna quando o último viewer sai.
 - **P4**: kick/moderação dentro do espaço segue as permissões do canal (op/admin)?
-- **P5**: DM/whisper aparece como balão? (proposta: não — só mensagens públicas
-  do canal viram balão)
+  **Respondida**: não há moderação própria no espaço nesta fase; `admin_action`
+  responde `:forbidden` e a moderação permanece no canal.
+- **P5**: DM/whisper aparece como balão? **Respondida**: não; só mensagens
+  públicas do canal viram balão.
 
 ## 8. Telemetria
 
@@ -260,6 +265,11 @@ delta — antes de F6 para decidir quando ela vira necessidade.
   `ChannelJoinToken`; `SpaceChannel` deixou de aceitar `space:<token>` e ficou
   restrito a `space:#canal`. A suíte de channel agora cobre o caminho real de
   canal-espaço.
+- Quinto corte da F4 concluído: `VirtualSpace.Service`, `Policy`, `Queries`,
+  `Schema.Session`, `CleanupTask` e `Events` foram removidos. `SessionServer`
+  ficou canal-only, sem token persistido, TTL/status/capacidade/criador ou
+  telemetria de lifecycle. A tabela `virtual_space_sessions` ganhou migração de
+  drop reversível.
 
 ### Validação registrada
 
@@ -282,3 +292,8 @@ delta — antes de F6 para decidir quando ela vira necessidade.
 - Após o quarto corte da F4: testes focados de `ChannelJoinToken`,
   `SpaceChannel`, `ChatDesktopShell` e JS `SpaceCanvasHook`; `rtk make ci`
   completo com 9/9 checks passando.
+- Após o quinto corte da F4: `rtk mix compile --warnings-as-errors`; testes
+  focados de `apps/retro_hex_chat/test/retro_hex_chat/virtual_space` e
+  `SpaceChannel` com 49 testes sem falhas; primeira rodada de `rtk make ci`
+  falhou no Credo por `cond` simplificável e a correção foi aplicada; rerodada
+  de `rtk make ci` completa com 9/9 checks passando.
