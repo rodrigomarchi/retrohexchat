@@ -32,7 +32,10 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
   }
 
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
-  alias RetroHexChatWeb.ChatLive.Helpers.{Channel, PM, SessionCard}
+  alias RetroHexChatWeb.ChatLive.Helpers.Channel
+  alias RetroHexChatWeb.ChatLive.Helpers.Messages, as: MessageHelpers
+  alias RetroHexChatWeb.ChatLive.Helpers.PM
+  alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
 
   # ── Channel messages ──────────────────────────────────────
 
@@ -478,8 +481,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
-  defp pm_resolve_type(%{type: type}) when is_atom(type), do: type
-  defp pm_resolve_type(%{type: type}) when is_binary(type), do: String.to_existing_atom(type)
+  defp pm_resolve_type(%{type: type}), do: MessageHelpers.stream_type(type)
   defp pm_resolve_type(_), do: :message
 
   defp stream_item_for_message_event(%{channel: _channel, id: id}, _session) do

@@ -300,7 +300,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
     end
   end
 
-  defp pm_resolve_type(%{type: type}) when is_atom(type), do: type
-  defp pm_resolve_type(%{type: type}) when is_binary(type), do: String.to_existing_atom(type)
+  defp pm_resolve_type(%{type: type}), do: Messages.stream_type(type)
   defp pm_resolve_type(_), do: :message
 end

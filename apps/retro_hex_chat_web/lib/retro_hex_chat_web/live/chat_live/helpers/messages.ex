@@ -132,6 +132,20 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Messages do
     |> push_status_message(dgettext("chat", "Help: %{topic}", topic: topic_title), :system)
   end
 
+  @stream_types ~w(message action system service error notice announcement inline_help arcade_link p2p_invite)a
+  @stream_type_by_string Map.new(@stream_types, fn type -> {Atom.to_string(type), type} end)
+
+  @spec stream_type(atom() | String.t() | nil) :: atom()
+  def stream_type(type) when is_atom(type) do
+    if type in @stream_types, do: type, else: :message
+  end
+
+  def stream_type(type) when is_binary(type) do
+    Map.get(@stream_type_by_string, type, :message)
+  end
+
+  def stream_type(_type), do: :message
+
   defp ignored_author?(_ignore_list, nil, _type), do: false
 
   defp ignored_author?(ignore_list, author, type),

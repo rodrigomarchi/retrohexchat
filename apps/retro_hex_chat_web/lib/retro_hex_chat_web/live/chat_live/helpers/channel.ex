@@ -415,7 +415,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       id: msg.id,
       author: msg.author_nickname,
       content: msg.content,
-      type: String.to_existing_atom(msg.type),
+      type: Messages.stream_type(msg.type),
       timestamp: msg.inserted_at
     }
 

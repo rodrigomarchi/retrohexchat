@@ -543,7 +543,7 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
       id: msg.id,
       author: msg.author_nickname,
       content: msg.content,
-      type: String.to_existing_atom(msg.type),
+      type: MessageHelpers.stream_type(msg.type),
       timestamp: msg.inserted_at
     }
     |> maybe_add_field(msg, :reply_to_id)
