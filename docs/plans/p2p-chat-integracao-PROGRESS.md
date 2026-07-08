@@ -144,6 +144,19 @@ chat, com as 3 ilhas do lobby reusadas (zero fork) e o standalone intacto.
   `:if={@p2p_session}` + open_windows limpo no detach).
 - [x] Aviso no aceite nos dois lados: "connecting... the session windows
   will open shortly."
+- [x] **Chamada auto-inicia (mic+câmera) nos dois lados** no conectar,
+  disparada por `lobby_media_hook_ready` (imune à race do lazy-load); burst
+  revisto: Call em primeiro plano, Files/Games/Stats abrem MINIMIZADAS.
+- [x] Janelas P2P com dimensões espelhando o lobby (Games 680/auto) e
+  `persist_geometry={false}` (efêmeras — WM nem carrega nem salva layout;
+  atributo novo no `desktop_window` + suporte no WindowManagerHook).
+- [x] **X = disconnect (nova regra, decisão do Rodrigo 2026-07-08 — supersede
+  o "X esconde" herdado PARA AS JANELAS P2P)**: fechar qualquer janela da
+  sessão abre confirm "Closing this window disconnects the whole P2P
+  session... minimize instead"; confirmar encerra para os dois. Todos os
+  caminhos cobertos (X server-driven; taskbar menu e Escape clicam o mesmo
+  botão). Minimizar = manter rodando. Controles internos (end call, cancel
+  transfer, end game) seguem encerrando só a feature.
 
 ## F6 — remoção do standalone: **AGUARDANDO PRÉ-REQUISITOS** (recomendação)
 
