@@ -3,7 +3,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.{Server, Supervisor}
-  alias RetroHexChat.VirtualSpace.{ChannelJoinToken, Registry, SessionServer}
+  alias RetroHexChat.VirtualSpace.{ChannelJoinToken, ChannelSpaceServer, Registry}
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
   alias RetroHexChatWeb.UserSocket
 
@@ -43,17 +43,17 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
     signed_channel = Keyword.get(opts, :signed_channel, channel)
     signed_nick = Keyword.get(opts, :signed_nick, nickname)
 
-    token =
+    join_token =
       Keyword.get_lazy(opts, :token, fn ->
         ChannelJoinToken.sign(signed_channel, nil, signed_nick)
       end)
 
-    subscribe_and_join(socket, "space:#{channel}", %{"join_token" => token})
+    subscribe_and_join(socket, "space:#{channel}", %{"join_token" => join_token})
   end
 
   # Drives the socket's participant to a target tile with valid input steps.
   defp walk_channel_to(socket, channel, key, {tx, ty}) do
-    {:ok, state} = SessionServer.get_state(channel)
+    {:ok, state} = ChannelSpaceServer.get_state(channel)
     %{x: x, y: y} = state.participants[key]
 
     step =
@@ -137,12 +137,12 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
                join_channel_space(channel, "alice", signed_channel: other_channel)
     end
 
-    test "legacy token topics are no longer accepted" do
+    test "non-channel space topics are rejected" do
       {:ok, socket} = connect(UserSocket, %{})
-      token = ChannelJoinToken.sign("#lobby", nil, "alice")
+      join_token = ChannelJoinToken.sign("#lobby", nil, "alice")
 
       assert {:error, %{reason: "not_found"}} =
-               subscribe_and_join(socket, "space:legacy-token", %{"join_token" => token})
+               subscribe_and_join(socket, "space:lobby-token", %{"join_token" => join_token})
     end
 
     test "channel spaces reject a signed nickname that is not in the channel" do
@@ -198,18 +198,6 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       :ok = Server.part(channel, "bob")
       assert_push "space_delta", %{left: ["nick:bob"]}
     end
-
-    test "space_chat_bubble is a no-op for channel spaces" do
-      channel = unique_channel()
-      {:ok, _pid} = start_channel(channel)
-      {:ok, _} = Server.join(channel, "alice")
-
-      assert {:ok, _space_init, socket} = join_channel_space(channel, "alice")
-
-      push(socket, "space_chat_bubble", %{"text" => "  hi   there  "})
-
-      refute_push "space_message", %{}, 200
-    end
   end
 
   describe "movement" do
@@ -229,7 +217,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert updates[self_key].x == x0 + 1
       assert updates[self_key].dir == "right"
 
-      {:ok, state} = SessionServer.get_state(channel)
+      {:ok, state} = ChannelSpaceServer.get_state(channel)
       assert {state.participants[self_key].x, state.participants[self_key].y} == {x0 + 1, y0}
     end
   end
@@ -248,24 +236,6 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       push(socket, "space_interact", %{"seq" => 1, "kind" => "use", "target_id" => "notice_board"})
 
       assert_push "space_modal", %{asset: "board_menu_v1", title: "Notice board"}
-    end
-  end
-
-  describe "admin actions" do
-    test "channel space admin actions are ignored" do
-      channel = unique_channel()
-      {:ok, _pid} = start_channel(channel)
-      {:ok, _} = Server.join(channel, "alice")
-
-      assert {:ok, init, socket} = join_channel_space(channel, "alice")
-
-      push(socket, "space_admin_action", %{
-        "kind" => "kick",
-        "target_key" => init.self_key,
-        "reason" => "self"
-      })
-
-      refute_push "space_participant_kicked", %{}, 200
     end
   end
 

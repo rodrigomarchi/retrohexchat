@@ -1,8 +1,7 @@
 /**
- * Ephemeral space chat state: a transient speech bubble per participant (shown
- * for a few seconds above their avatar) plus a bounded side log of recent
- * messages. Nothing is persisted — the space chat disappears when the session
- * closes.
+ * Ephemeral channel-space bubble state. Public channel messages arrive as
+ * `space_message` events and briefly appear above the matching avatar; text
+ * history remains owned by the LiveView chat log.
  * @module space/chat
  */
 
@@ -19,8 +18,8 @@ export class ChatState {
   }
 
   /**
-   * Record an incoming `space_message`: refresh the sender's bubble and append
-   * to the side log.
+   * Record an incoming `space_message`: refresh the sender's bubble and keep a
+   * bounded diagnostic buffer for tests/debug tooling.
    * @param {{key:string, nickname:string, text:string}} message
    * @param {number} now
    */
@@ -52,7 +51,7 @@ export class ChatState {
     return { text: entry.text, nickname: entry.nickname };
   }
 
-  /** @returns {Array<{key:string, nickname:string, text:string}>} the side log. */
+  /** @returns {Array<{key:string, nickname:string, text:string}>} recent bubble events. */
   log() {
     return this._log;
   }

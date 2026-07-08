@@ -40,7 +40,7 @@ canal, público, uma única fonte de mensagens.
 
 ### 3.1 Ciclo de vida — espaço por canal, runtime-only
 
-- `SessionServer` passa a ser **registrado por nome de canal** (Registry key
+- `ChannelSpaceServer` é **registrado por nome de canal** (Registry key
   `{:channel_space, "#retro"}`), iniciado on-demand no primeiro join e
   hibernando/terminando quando o canal esvazia (estado é descartável — posições
   não persistem entre "gerações" do processo; ver P2).
@@ -123,25 +123,25 @@ pelo canal, mas jogos/chamadas precisam de novo lar). → responder na revisão.
 ## 5. Fases
 
 ### F1 — Espaço por canal no domínio
-`SessionServer`/`Registry`/`Supervisor` chaveados por canal; join/leave dirigidos
+`ChannelSpaceServer`/`Registry`/`Supervisor` chaveados por canal; join/leave dirigidos
 pela presença do canal; spawn em espiral; cap removido; sem DB/TTL.
 **Testes**: unit (spawn espiral, mirror join/leave), integração (presença do
 canal cria/destroi avatar), movement/office adaptados.
 **Aceite**: entrar no canal pelo chat faz o avatar aparecer para quem está na
 aba Espaço, sem nenhum comando.
-**Status 2026-07-08**: implementado side-by-side. `SessionServer` aceita modo
-runtime por canal (`{:channel_space, "#canal"}`), materializa membros atuais do
-canal, espelha join/part/kick/nick change, usa `elfic_forest`, spawn em espiral
-e hiberna quando não há espectadores da aba Espaço.
+**Status 2026-07-08**: implementado. `ChannelSpaceServer` roda somente por
+canal (`{:channel_space, "#canal"}`), materializa membros atuais do canal,
+espelha join/part/kick/nick change, usa `elfic_forest`, spawn em espiral e
+hiberna quando não há espectadores da aba Espaço.
 
 ### F2 — Chat unificado
 Composer do espaço → mensagem de canal; mensagem de canal → balão no avatar.
 Remoção do chat próprio do espaço (se existir hoje) e do rate limit paralelo.
 **Testes**: integração canal↔espaço nos dois sentidos; LiveView do log inalterado.
 **Status 2026-07-08**: implementado para canal-espaço. O composer continua sendo
-o componente LiveView do chat; `chat_bubble` do espaço de canal é no-op para não
-criar transporte paralelo. Mensagens públicas do canal viram balões no canvas;
-system/service/PM ficam fora dos balões.
+o componente LiveView do chat; não há push textual paralelo no canal Phoenix do
+canvas. Mensagens públicas do canal viram balões no canvas; system/service/PM
+ficam fora dos balões.
 
 ### F3 — Tab na janela do canal
 Tab strip Chat|Espaço; embed do engine; contrato de foco; resize; `space_init`
@@ -226,7 +226,7 @@ delta — antes de F6 para decidir quando ela vira necessidade.
 
 - Criado caminho side-by-side para espaço por canal sem remover o fluxo legado
   de sessão/token.
-- `Registry`, `Supervisor`, `VirtualSpace` e `SessionServer` passaram a suportar
+- `Registry`, `Supervisor`, `VirtualSpace` e o runtime do espaço passaram a suportar
   chave de canal (`{:channel_space, channel_name}`) além de token legado.
 - `SpaceChannel` passou a aceitar join em `space:#canal` autorizado por token
   assinado pela LiveView do chat.
@@ -244,8 +244,8 @@ delta — antes de F6 para decidir quando ela vira necessidade.
 - A separação correta é: LiveView continua dono do chat textual; canal Phoenix
   do espaço fica restrito a movimento, interações e renderização de balões.
 - Para canal-espaço, permissões de host/criador do virtual space legado não se
-  aplicam. Moderação deve permanecer no canal; `admin_action` do espaço de canal
-  responde `:forbidden` por enquanto.
+  aplicam. Moderação permanece no canal; não há superfície `admin_action` no
+  canal Phoenix do espaço.
 - O estado por canal deve ser materializável a partir da presença. Isso permite
   hibernar o processo quando ninguém está vendo a aba Espaço sem perder a
   semântica visual.
@@ -271,8 +271,8 @@ delta — antes de F6 para decidir quando ela vira necessidade.
   restrito a `space:#canal`. A suíte de channel agora cobre o caminho real de
   canal-espaço.
 - Quinto corte da F4 concluído: `VirtualSpace.Service`, `Policy`, `Queries`,
-  `Schema.Session`, `CleanupTask` e `Events` foram removidos. `SessionServer`
-  ficou canal-only, sem token persistido, TTL/status/capacidade/criador ou
+  `Schema.Session`, `CleanupTask` e `Events` foram removidos. O runtime do
+  espaço ficou canal-only, sem token persistido, TTL/status/capacidade/criador ou
   telemetria de lifecycle. A tabela `virtual_space_sessions` ganhou migração de
   drop reversível.
 - Sexto corte da F4 concluído: help e catálogos gettext dos domínios afetados
@@ -288,6 +288,13 @@ delta — antes de F6 para decidir quando ela vira necessidade.
   espaço por canal. O domínio emite `participant_count` por canal e `step` com
   resultado/razão/duração; o PromEx expõe gauge de participantes, contador de
   passos e summary de duração de input de movimento.
+- Hardening semântico pós-F5: `SessionServer` foi renomeado para
+  `ChannelSpaceServer`; o estado interno não carrega mais pseudo-`session`;
+  `data-space-token` virou `data-space-channel`; o protocolo JS deixou de
+  aceitar fallback `token`; `space_chat_bubble`, `space_admin_action`, eventos
+  de host/closed/map-change sem produtor e o domínio Gettext `space` órfão
+  foram removidos. `ChannelJoinToken` passou a usar segredo próprio
+  `:channel_space_join_secret`.
 
 ### Validação registrada
 
@@ -325,3 +332,9 @@ delta — antes de F6 para decidir quando ela vira necessidade.
   `VirtualSpace.MovementTest` e `PromExTest` com 14 testes sem falhas; gettext
   atualizado apenas no domínio `system`; `rtk make ci` completo com 9/9 checks
   passando.
+- Após o hardening semântico pós-F5: `rtk mix format`; testes Elixir focados de
+  `VirtualSpace` e `SpaceChannel` com 49 testes sem falhas; testes JS focados de
+  `space/protocol`, `space/engine`, `space/chat` e `SpaceCanvasHook` com 34
+  testes sem falhas; primeira rodada de `rtk make ci` falhou apenas no Credo
+  por ordenação de alias e foi corrigida; rerodada completa de `rtk make ci`
+  passou com 9/9 checks.

@@ -4,7 +4,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Channels.Supervisor, as: ChannelSupervisor
-  alias RetroHexChat.VirtualSpace.SessionServer
+  alias RetroHexChat.VirtualSpace.ChannelSpaceServer
   alias RetroHexChat.VirtualSpace.Supervisor
 
   @moduletag :integration
@@ -33,28 +33,28 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
 
     Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "space:#{channel}")
 
-    {:ok, joined} = SessionServer.join(channel, %{user_id: nil, nickname: nickname})
+    {:ok, joined} = ChannelSpaceServer.join(channel, %{user_id: nil, nickname: nickname})
 
     %{
-      token: channel,
+      channel_name: channel,
       nickname: nickname,
       key: joined.participant.key
     }
   end
 
   defp join_member(ctx, nickname) do
-    {:ok, _} = Server.join(ctx.token, nickname)
-    {:ok, joined} = SessionServer.join(ctx.token, %{user_id: nil, nickname: nickname})
+    {:ok, _} = Server.join(ctx.channel_name, nickname)
+    {:ok, joined} = ChannelSpaceServer.join(ctx.channel_name, %{user_id: nil, nickname: nickname})
     joined.participant.key
   end
 
-  defp entry(token, key) do
-    {:ok, state} = SessionServer.get_state(token)
+  defp entry(channel_name, key) do
+    {:ok, state} = ChannelSpaceServer.get_state(channel_name)
     state.participants[key]
   end
 
   defp walk_to(ctx, {tx, ty}) do
-    p = entry(ctx.token, ctx.key)
+    p = entry(ctx.channel_name, ctx.key)
 
     case step_toward(p, tx, ty) do
       nil ->
@@ -78,7 +78,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
 
   defp step(ctx, dx, dy) do
     :ok =
-      SessionServer.input(ctx.token, ctx.key, %{
+      ChannelSpaceServer.input(ctx.channel_name, ctx.key, %{
         seq: System.unique_integer([:positive]),
         dx: dx,
         dy: dy
@@ -98,17 +98,17 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
   describe "zones" do
     test "sets the spawn zone on join and broadcasts space_zone_changed on crossing" do
       ctx = start_space()
-      assert entry(ctx.token, ctx.key).zone_id == "spawn"
+      assert entry(ctx.channel_name, ctx.key).zone_id == "spawn"
 
       # Walk right out of the spawn zone (x > 44) into the village.
-      walk_to(ctx, {46, entry(ctx.token, ctx.key).y})
+      walk_to(ctx, {46, entry(ctx.channel_name, ctx.key).y})
 
       assert_receive %{
         event: "space_zone_changed",
         payload: %{zone_id: "village", from: "spawn"}
       }
 
-      assert entry(ctx.token, ctx.key).zone_id == "village"
+      assert entry(ctx.channel_name, ctx.key).zone_id == "village"
     end
   end
 
@@ -119,13 +119,13 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       flush()
 
       assert :ok =
-               SessionServer.interact(ctx.token, ctx.key, %{
+               ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
                  seq: 1,
                  kind: "sit",
                  target_id: "seat_market_a"
                })
 
-      p = entry(ctx.token, ctx.key)
+      p = entry(ctx.channel_name, ctx.key)
       assert p.pose == "sitting"
       assert p.seat_id == "seat_market_a"
       assert {p.x, p.y} == {49, 27}
@@ -136,11 +136,11 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
 
       # A second participant cannot take the reserved seat.
       okey = join_member(ctx, "bob")
-      octx = %{token: ctx.token, key: okey}
+      octx = %{channel_name: ctx.channel_name, key: okey}
       walk_to(octx, {50, 26})
 
       assert {:error, :seat_taken} =
-               SessionServer.interact(ctx.token, okey, %{
+               ChannelSpaceServer.interact(ctx.channel_name, okey, %{
                  seq: 1,
                  kind: "sit",
                  target_id: "seat_market_a"
@@ -152,21 +152,21 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       walk_to(ctx, {49, 26})
 
       :ok =
-        SessionServer.interact(ctx.token, ctx.key, %{
+        ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
           seq: 1,
           kind: "sit",
           target_id: "seat_market_a"
         })
 
-      assert entry(ctx.token, ctx.key).pose == "sitting"
+      assert entry(ctx.channel_name, ctx.key).pose == "sitting"
 
       step(ctx, 0, 1)
 
-      p = entry(ctx.token, ctx.key)
+      p = entry(ctx.channel_name, ctx.key)
       assert p.pose == "standing"
       assert p.seat_id == nil
 
-      {:ok, state} = SessionServer.get_state(ctx.token)
+      {:ok, state} = ChannelSpaceServer.get_state(ctx.channel_name)
       refute Map.has_key?(state.seats, "seat_market_a")
     end
 
@@ -175,20 +175,20 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       walk_to(ctx, {49, 26})
 
       :ok =
-        SessionServer.interact(ctx.token, ctx.key, %{
+        ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
           seq: 1,
           kind: "sit",
           target_id: "seat_market_a"
         })
 
-      Server.part(ctx.token, ctx.nickname)
+      Server.part(ctx.channel_name, ctx.nickname)
 
       wait_until(fn ->
-        {:ok, state} = SessionServer.get_state(ctx.token)
+        {:ok, state} = ChannelSpaceServer.get_state(ctx.channel_name)
         not Map.has_key?(state.seats, "seat_market_a")
       end)
 
-      {:ok, state} = SessionServer.get_state(ctx.token)
+      {:ok, state} = ChannelSpaceServer.get_state(ctx.channel_name)
       refute Map.has_key?(state.seats, "seat_market_a")
       refute Map.has_key?(state.participants, ctx.key)
     end
@@ -197,7 +197,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       ctx = start_space()
 
       assert {:error, :invalid_target} =
-               SessionServer.interact(ctx.token, ctx.key, %{
+               ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
                  seq: 1,
                  kind: "sit",
                  target_id: "nope"
@@ -205,7 +205,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
 
       # Spawn is far from seat_market_a.
       assert {:error, :too_far} =
-               SessionServer.interact(ctx.token, ctx.key, %{
+               ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
                  seq: 2,
                  kind: "sit",
                  target_id: "seat_market_a"
@@ -219,7 +219,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       walk_to(ctx, {40, 19})
 
       assert {:ok, %{modal: modal}} =
-               SessionServer.interact(ctx.token, ctx.key, %{
+               ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
                  seq: 1,
                  kind: "use",
                  target_id: "notice_board"
@@ -233,14 +233,14 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       ctx = start_space()
 
       assert {:error, :invalid_target} =
-               SessionServer.interact(ctx.token, ctx.key, %{
+               ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
                  seq: 1,
                  kind: "use",
                  target_id: "ghost"
                })
 
       assert {:error, :too_far} =
-               SessionServer.interact(ctx.token, ctx.key, %{
+               ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
                  seq: 2,
                  kind: "use",
                  target_id: "notice_board"
@@ -253,20 +253,12 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       ctx = start_space()
       flush()
 
-      assert {:ok, _id} = Server.send_message(ctx.token, ctx.nickname, "  hello   world  ")
+      assert {:ok, _id} = Server.send_message(ctx.channel_name, ctx.nickname, "  hello   world  ")
 
       assert_receive %{event: "space_message", payload: payload}
       assert payload.key == ctx.key
       assert payload.text == "hello world"
       assert payload.nickname == ctx.nickname
-    end
-
-    test "space_chat_bubble remains a no-op in channel spaces" do
-      ctx = start_space()
-      flush()
-
-      assert :ok = SessionServer.chat_bubble(ctx.token, ctx.key, "local-only")
-      refute_receive %{event: "space_message"}, 100
     end
   end
 

@@ -11,8 +11,6 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   require Logger
 
-  alias RetroHexChat.Accounts.ServerRoles
-  alias RetroHexChat.Services.NickServ
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
 
@@ -37,30 +35,14 @@ defmodule RetroHexChatWeb.SpaceChannel do
     end
   end
 
-  def join("space:" <> _legacy_token, _params, _socket), do: {:error, %{reason: "not_found"}}
+  def join("space:" <> _not_channel_topic, _params, _socket),
+    do: {:error, %{reason: "not_found"}}
 
   @impl true
   def handle_in("space_input", payload, socket) do
     with %{space_channel_name: channel_name, participant_key: key} <- socket.assigns,
          {:ok, step} <- parse_input(payload) do
       VirtualSpace.input(channel_name, key, step)
-    end
-
-    {:noreply, socket}
-  end
-
-  def handle_in("space_chat_bubble", %{"text" => text}, socket) when is_binary(text) do
-    with %{space_channel_name: channel_name, participant_key: key} <- socket.assigns do
-      VirtualSpace.chat_bubble(channel_name, key, text)
-    end
-
-    {:noreply, socket}
-  end
-
-  def handle_in("space_admin_action", payload, socket) do
-    with %{space_channel_name: channel_name} <- socket.assigns,
-         {:ok, action} <- parse_admin_action(payload) do
-      VirtualSpace.admin_action(channel_name, admin_actor(socket), action)
     end
 
     {:noreply, socket}
@@ -127,32 +109,6 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   defp parse_interact(_), do: :error
 
-  defp parse_admin_action(%{"kind" => "kick"} = p),
-    do: {:ok, %{kind: "kick", target_key: p["target_key"], reason: p["reason"] || "kicked"}}
-
-  defp parse_admin_action(%{"kind" => "mute"} = p),
-    do: {:ok, %{kind: "mute", target_key: p["target_key"], muted: p["muted"] == true}}
-
-  defp parse_admin_action(%{"kind" => "close"} = p),
-    do: {:ok, %{kind: "close", reason: p["reason"] || "closed"}}
-
-  defp parse_admin_action(%{"kind" => "change_map", "map_id" => map_id}) when is_binary(map_id),
-    do: {:ok, %{kind: "change_map", map_id: map_id}}
-
-  defp parse_admin_action(_), do: :error
-
-  defp admin_actor(socket) do
-    nickname = socket.assigns[:nickname]
-    identified = NickServ.identified?(nickname)
-
-    %{
-      user_id: socket.assigns[:user_id],
-      nickname: nickname,
-      is_admin: ServerRoles.admin?(nickname, identified),
-      is_server_operator: ServerRoles.server_operator?(nickname, identified)
-    }
-  end
-
   defp build_channel_actor(data) do
     %{
       user_id: data.user_id,
@@ -179,11 +135,8 @@ defmodule RetroHexChatWeb.SpaceChannel do
     }
   end
 
-  defp join_error(:space_full), do: "space_full"
   defp join_error(:not_found), do: "not_found"
-  defp join_error(:terminal_session), do: "terminal_session"
   defp join_error(:invalid_token), do: "invalid_token"
-  defp join_error(:kicked), do: "kicked"
   defp join_error(:not_in_channel), do: "not_in_channel"
 
   defp join_error(other) do

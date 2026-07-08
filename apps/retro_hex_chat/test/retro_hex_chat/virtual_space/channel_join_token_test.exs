@@ -20,7 +20,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinTokenTest do
   end
 
   test "rejects a token signed with a different salt" do
-    secret = Application.get_env(:retro_hex_chat, :p2p_token_secret)
+    secret = Application.get_env(:retro_hex_chat, :channel_space_join_secret)
     foreign = Phoenix.Token.sign(secret, "other_salt", %{channel_name: "#lobby"})
 
     assert {:error, :invalid} = ChannelJoinToken.verify(foreign)

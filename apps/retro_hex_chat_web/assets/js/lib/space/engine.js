@@ -47,7 +47,7 @@ export class SpaceEngine {
     this._selfBase = null;
     // Remote interpolation.
     this._interp = new Interpolator();
-    // Ephemeral chat bubbles + side log.
+    // Ephemeral speech bubbles derived from public channel messages.
     this._chat = new ChatState();
     this._clock = () => (typeof performance !== "undefined" ? performance.now() : Date.now());
 
@@ -169,40 +169,12 @@ export class SpaceEngine {
     return this._pending.length;
   }
 
-  /**
-   * Rebuild the world after `space_map_changed`: swap the map, recentre the
-   * camera on the new bounds, and reseat everyone from the fresh snapshot.
-   * @param {{map: object, snapshot: object}} payload
-   */
-  applyMapChanged(payload) {
-    this.map = SpaceMap.from(payload.map);
-    this.atlas?.loadTilesets?.(payload.map?.tilesets);
-    this.atlas?.registerTiles?.(payload.map?.tiles);
-    if (this.camera) {
-      this.camera = new Camera({
-        tileSize: this.map.tileSize,
-        scale: this.camera.scale,
-        mapWidth: this.map.width,
-        mapHeight: this.map.height,
-      });
-      this.camera.setViewport(this.canvas?.width ?? 0, this.canvas?.height ?? 0);
-      if (this.renderer) this.renderer.camera = this.camera;
-    }
-    this.applySnapshot(payload.snapshot);
-  }
-
-  /** Drop a participant (e.g. kicked) from the world. */
-  removeParticipant(key) {
-    this.participants.delete(key);
-    this._interp.remove(key);
-  }
-
-  /** Record an incoming `space_message` (speech bubble + side log). */
+  /** Record an incoming `space_message` as a speech bubble. */
   receiveMessage(message) {
     this._chat.receive(message, this._clock());
   }
 
-  /** @returns {Array} the ephemeral side chat log. */
+  /** @returns {Array} recent bubble events for diagnostics/tests. */
   chatLog() {
     return this._chat.log();
   }

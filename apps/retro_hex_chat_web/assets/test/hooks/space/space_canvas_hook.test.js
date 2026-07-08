@@ -37,7 +37,7 @@ function fakeSocket(channel) {
 
 function mountContext() {
   const el = document.createElement("div");
-  el.dataset.spaceToken = "tok-1";
+  el.dataset.spaceChannel = "#lobby";
   el.dataset.joinToken = "signed-join-token";
   el.dataset.nickname = "alice";
   const canvas = document.createElement("canvas");
@@ -79,7 +79,7 @@ describe("SpaceCanvasHook implementation", () => {
     hook.mounted();
 
     expect(socket.connect).toHaveBeenCalled();
-    expect(socket.channel).toHaveBeenCalledWith("space:tok-1", {
+    expect(socket.channel).toHaveBeenCalledWith("space:#lobby", {
       join_token: "signed-join-token",
     });
     expect(channel.join).toHaveBeenCalled();
@@ -104,7 +104,7 @@ describe("SpaceCanvasHook implementation", () => {
     hook.mounted();
     channel._receivers.ok({
       version: 1,
-      token: "tok-1",
+      channel_name: "#lobby",
       self_key: "registered:1",
       map: { id: "tavern_cafe_v1", width: 10, height: 8, tile_size: 16 },
       snapshot: { participants: { "registered:1": { nickname: "alice", x: 1, y: 1 } } },
@@ -211,48 +211,5 @@ describe("SpaceCanvasHook implementation", () => {
 
     hook.destroyed();
     expect(input.detach).toHaveBeenCalled();
-  });
-
-  it("shows the kicked screen when the local participant is kicked", () => {
-    const engine = {
-      start: vi.fn(),
-      applyDelta: vi.fn(),
-      applySnapshot: vi.fn(),
-      destroy: vi.fn(),
-      removeParticipant: vi.fn(),
-      selfKey: "registered:1",
-    };
-    const channel = fakeChannel();
-    const socket = fakeSocket(channel);
-    const input = { attach: vi.fn(), detach: vi.fn() };
-    const ctx = mountContext();
-    const kickedEl = document.createElement("div");
-    kickedEl.setAttribute("data-space-kicked", "");
-    kickedEl.hidden = true;
-    ctx.el.appendChild(kickedEl);
-
-    const hook = Object.assign(
-      Object.create(
-        createSpaceCanvasHook({
-          socketFactory: () => socket,
-          engineFactory: () => engine,
-          inputFactory: () => input,
-        }),
-      ),
-      ctx,
-    );
-
-    hook.mounted();
-
-    // A kick of another participant only drops that avatar.
-    channel.handlers.space_participant_kicked({ key: "registered:2", reason: "x" });
-    expect(engine.removeParticipant).toHaveBeenCalledWith("registered:2");
-    expect(kickedEl.hidden).toBe(true);
-
-    // A kick of self shows the terminal screen and leaves.
-    channel.handlers.space_participant_kicked({ key: "registered:1", reason: "spam" });
-    expect(kickedEl.hidden).toBe(false);
-    expect(input.detach).toHaveBeenCalled();
-    expect(channel.leave).toHaveBeenCalled();
   });
 });

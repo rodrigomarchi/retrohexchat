@@ -1,4 +1,4 @@
-defmodule RetroHexChat.VirtualSpace.SessionServer do
+defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   @moduledoc """
   GenServer managing one channel-backed virtual space runtime.
 
@@ -93,23 +93,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     call(channel_name, {:interact, participant_key, payload})
   end
 
-  @spec chat_bubble(String.t(), String.t(), String.t()) :: :ok | {:error, :not_found}
-  def chat_bubble(channel_name, participant_key, text) do
-    call(channel_name, {:chat_bubble, participant_key, text})
-  end
-
-  @type actor :: %{
-          required(:user_id) => integer(),
-          optional(:nickname) => String.t(),
-          optional(:is_admin) => boolean(),
-          optional(:is_server_operator) => boolean()
-        }
-
-  @spec admin_action(String.t(), actor(), map()) :: {:error, :not_found | :forbidden}
-  def admin_action(channel_name, _actor, _action) do
-    call(channel_name, :admin_action)
-  end
-
   @spec leave(String.t(), String.t()) :: :ok
   def leave(channel_name, participant_key) do
     case Registry.lookup({:channel_space, channel_name}) do
@@ -161,12 +144,12 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
         state = %{
           kind: :channel,
           channel_name: channel_name,
-          session: channel_session(channel_name),
           map: map_definition,
           blocked: SpaceMap.collision_set(map_definition),
           participants: %{},
           seats: %{},
-          viewer_count: 0
+          viewer_count: 0,
+          participant_counts: %{current: 0, peak: 0}
         }
 
         state = sync_channel_members(state)
@@ -216,14 +199,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
 
   def handle_call({:interact, key, payload}, _from, state) do
     do_interact(state, key, payload)
-  end
-
-  def handle_call({:chat_bubble, _key, _text}, _from, state) do
-    {:reply, :ok, state}
-  end
-
-  def handle_call(:admin_action, _from, state) do
-    {:reply, {:error, :forbidden}, state}
   end
 
   @impl true
@@ -297,25 +272,6 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
   def handle_info(_message, state), do: {:noreply, state}
 
   # --- Private helpers ---
-
-  defp channel_session(channel_name) do
-    %{
-      status: "active",
-      creator_id: nil,
-      creator_nick: nil,
-      title: channel_name,
-      channel_name: channel_name,
-      map_id: "elfic_forest",
-      max_participants: :infinity,
-      peak_participants: 0,
-      last_participant_count: 0,
-      metadata: %{},
-      inserted_at: DateTime.utc_now(),
-      expires_at: nil,
-      closed_at: nil,
-      closed_reason: nil
-    }
-  end
 
   defp sync_channel_members(%{kind: :channel, channel_name: channel_name} = state) do
     case ChannelServer.get_state(channel_name) do
@@ -834,13 +790,12 @@ defmodule RetroHexChat.VirtualSpace.SessionServer do
     count = online_count(state)
     Events.emit_participant_count(state.channel_name, count)
 
-    session = %{
-      state.session
-      | last_participant_count: count,
-        peak_participants: max(Map.get(state.session, :peak_participants, 0), count)
+    participant_counts = %{
+      current: count,
+      peak: max(state.participant_counts.peak, count)
     }
 
-    %{state | session: session}
+    %{state | participant_counts: participant_counts}
   end
 
   defp emit_step(state, result, reason, started_at) do

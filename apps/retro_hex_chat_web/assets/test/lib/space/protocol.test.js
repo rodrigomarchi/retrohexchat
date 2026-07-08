@@ -21,10 +21,10 @@ describe("protocol constants", () => {
 
   it("names the client→server and server→client events", () => {
     expect(CLIENT_EVENTS.INPUT).toBe("space_input");
-    expect(CLIENT_EVENTS.CHAT_BUBBLE).toBe("space_chat_bubble");
+    expect(CLIENT_EVENTS.INTERACT).toBe("space_interact");
     expect(SERVER_EVENTS.DELTA).toBe("space_delta");
     expect(SERVER_EVENTS.SNAPSHOT).toBe("space_snapshot");
-    expect(SERVER_EVENTS.CLOSED).toBe("space_closed");
+    expect(SERVER_EVENTS.MESSAGE).toBe("space_message");
   });
 });
 
@@ -84,9 +84,9 @@ describe("normalizeSpaceInit", () => {
     expect(init.snapshot.participants).toEqual({});
   });
 
-  it("keeps a fallback for the old token field during rolling deploys", () => {
-    const init = normalizeSpaceInit({ token: "#legacy" });
-    expect(init.channelName).toBe("#legacy");
+  it("does not infer a channel name when the init payload omits one", () => {
+    const init = normalizeSpaceInit({});
+    expect(init.channelName).toBe(null);
   });
 });
 

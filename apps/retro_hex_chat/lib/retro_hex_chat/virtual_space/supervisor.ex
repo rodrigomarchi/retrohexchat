@@ -24,7 +24,7 @@ defmodule RetroHexChat.VirtualSpace.Supervisor do
   def start_channel_child(supervisor \\ __MODULE__, channel_name) do
     DynamicSupervisor.start_child(
       supervisor,
-      {RetroHexChat.VirtualSpace.SessionServer, {:channel, channel_name}}
+      {RetroHexChat.VirtualSpace.ChannelSpaceServer, {:channel, channel_name}}
     )
   end
 

@@ -26,8 +26,8 @@ describe("ChatState bubbles", () => {
   });
 });
 
-describe("ChatState side log", () => {
-  it("appends entries and caps the log length", () => {
+describe("ChatState diagnostic buffer", () => {
+  it("appends bubble events and caps the buffer length", () => {
     const chat = new ChatState({ logLimit: 3 });
     for (let i = 1; i <= 5; i += 1) {
       chat.receive({ key: "registered:1", nickname: "a", text: `m${i}` }, i);

@@ -4,8 +4,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
   channel-backed virtual space.
 
   The token binds a nickname to a concrete channel name. `SpaceChannel` verifies
-  it before touching the SessionServer, so the channel never trusts raw client
-  input for identity.
+  it before touching the channel-space runtime, so the channel never trusts raw
+  client input for identity.
   """
 
   @salt "channel_space_join"
@@ -34,7 +34,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
   def max_age, do: @max_age
 
   defp secret_key_base do
-    Application.get_env(:retro_hex_chat, :p2p_token_secret) ||
-      raise "Missing :p2p_token_secret configuration"
+    Application.get_env(:retro_hex_chat, :channel_space_join_secret) ||
+      raise "Missing :channel_space_join_secret configuration"
   end
 end

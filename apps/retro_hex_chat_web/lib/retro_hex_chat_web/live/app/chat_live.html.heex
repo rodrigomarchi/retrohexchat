@@ -205,7 +205,7 @@
                   phx-hook="SpaceCanvasHook"
                   phx-update="ignore"
                   data-testid="channel-space-shell"
-                  data-space-token={@session.active_channel}
+                  data-space-channel={@session.active_channel}
                   data-join-token={channel_space_join_token(@session)}
                   data-nickname={@session.nickname}
                   data-space-mode="channel"
@@ -221,20 +221,6 @@
                     hidden
                     class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"
                   >
-                  </div>
-                  <div
-                    data-space-kicked
-                    hidden
-                    class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
-                  >
-                    <div class="font-bold">{dgettext("chat", "Removed from channel space")}</div>
-                  </div>
-                  <div
-                    data-space-closed
-                    hidden
-                    class="absolute inset-0 flex items-center justify-center bg-canvas font-mono text-center p-6"
-                  >
-                    <div class="font-bold">{dgettext("chat", "Channel space closed")}</div>
                   </div>
                 </div>
               </div>

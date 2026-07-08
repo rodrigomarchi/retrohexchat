@@ -11,24 +11,15 @@ export const PROTOCOL_VERSION = 1;
 /** Client → server event names (channel pushes). */
 export const CLIENT_EVENTS = Object.freeze({
   INPUT: "space_input",
-  STOP: "space_stop",
   INTERACT: "space_interact",
-  CHAT_BUBBLE: "space_chat_bubble",
-  ADMIN_ACTION: "space_admin_action",
-  LEAVE: "space_leave",
 });
 
 /** Server → client event names (channel events). */
 export const SERVER_EVENTS = Object.freeze({
   SNAPSHOT: "space_snapshot",
   DELTA: "space_delta",
-  RECONCILE: "space_reconcile",
   MESSAGE: "space_message",
   MODAL: "space_modal",
-  MAP_CHANGED: "space_map_changed",
-  KICKED: "space_participant_kicked",
-  ADMIN_NOTICE: "space_admin_notice",
-  CLOSED: "space_closed",
 });
 
 const DIRECTIONS = new Set(["up", "down", "left", "right"]);
@@ -71,7 +62,7 @@ export function normalizeSpaceInit(raw = {}) {
   }
 
   return {
-    channelName: raw.channel_name ?? raw.channelName ?? raw.token ?? null,
+    channelName: raw.channel_name ?? raw.channelName ?? null,
     selfKey: raw.self_key ?? raw.selfKey ?? null,
     map: raw.map && typeof raw.map === "object" ? raw.map : {},
     config: raw.config && typeof raw.config === "object" ? raw.config : {},

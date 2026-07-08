@@ -19,6 +19,11 @@ config :retro_hex_chat,
       "P2P_TOKEN_SECRET",
       "p2p-dev-secret-change-me-in-production-at-least-64-bytes-long-padding"
     ),
+  channel_space_join_secret:
+    System.get_env(
+      "CHANNEL_SPACE_JOIN_SECRET",
+      "channel-space-dev-secret-change-me-in-production-at-least-64-bytes"
+    ),
   # TURN server compile-time config
   turn_realm: "retro-hex-chat",
   turn_credentials_lifetime: 3_600,

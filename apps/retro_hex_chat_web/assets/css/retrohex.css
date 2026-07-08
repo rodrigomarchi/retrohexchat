@@ -1300,30 +1300,6 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
 .desktop-taskbar__button.is-flashing {
   @apply animate-pulse;
 }
-/* Virtual space roster rows (Host controls / Who's here). Built in JS by the
-   SpaceCanvasHook, so the styling lives here as defined classes rather than as
-   Tailwind utility strings in JS (which the CSS consistency lint rejects). */
-.space-roster__row {
-  @apply flex items-center gap-2 px-2 py-1;
-}
-.space-roster__avatar {
-  @apply shrink-0 shadow-retro-status;
-}
-.space-roster__name {
-  @apply min-w-0 flex-1 truncate text-xs;
-}
-.space-roster__badge {
-  @apply inline-flex shrink-0 items-center;
-}
-.space-roster__btn {
-  @apply shadow-retro-raised bg-surface inline-flex shrink-0 items-center gap-1 px-2 py-[2px] text-xs;
-}
-.space-roster__btn:active {
-  @apply shadow-retro-sunken;
-}
-.space-roster__empty {
-  @apply text-muted-foreground px-2 py-2 text-xs;
-}
 /* Win98 desktop shortcuts: icon over a label, click to select, double-click opens. */
 .desktop__shortcuts {
   max-height: 100%;
