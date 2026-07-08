@@ -71,11 +71,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def handle_event("lobby_connected", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     p2p = socket.assigns.p2p_session
     _ = Lobby.transition_status(p2p.token, :connected)
-
-    {:halt,
-     socket
-     |> maybe_persist_connected(p2p)
-     |> put_p2p(%{p2p | state: :connected})}
+    {:halt, enter_connected(socket, p2p)}
   end
 
   # The answerer asks the initiator to re-offer after adding local media
@@ -430,10 +426,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
        ) do
     cond do
       status == "connected" ->
-        {:halt,
-         socket
-         |> maybe_persist_connected(p2p)
-         |> put_p2p(%{p2p | state: :connected})}
+        {:halt, enter_connected(socket, p2p)}
 
       LobbySession.terminal?(status) ->
         {:halt, finish_session(socket, payload[:reason] || status)}
@@ -495,7 +488,14 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
             {:halt,
              socket
              |> put_p2p(%{p2p | state: :joining, peer_online: true})
-             |> share_client_info(p2p)}
+             |> share_client_info(p2p)
+             |> Messages.system_event(
+               dgettext(
+                 "chat",
+                 "%{peer} accepted the invite — connecting... the session windows will open shortly.",
+                 peer: p2p.peer_nick || dgettext("chat", "The other user")
+               )
+             )}
 
           {:error, :already_joined} ->
             {:halt, detach_session(socket, p2p)}
@@ -863,7 +863,19 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
     with user_id when is_integer(user_id) <- resolve_user_id(nickname),
          {:ok, _summary} <- joinable_summary(token) do
-      attach_session(socket, token, user_id, :peer)
+      socket = attach_session(socket, token, user_id, :peer)
+
+      if socket.assigns.p2p_session do
+        Messages.system_event(
+          socket,
+          dgettext(
+            "chat",
+            "Invite accepted — connecting... the session windows will open shortly."
+          )
+        )
+      else
+        socket
+      end
     else
       {:error, message} -> Messages.system_event(socket, message)
       _ -> socket
@@ -914,6 +926,35 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   defp maybe_persist_connected(socket, _p2p), do: socket
+
+  # Already connected (duplicate hook event / PubSub echo): nothing to do —
+  # in particular, no second window burst.
+  defp enter_connected(socket, %{state: :connected}), do: socket
+
+  defp enter_connected(socket, p2p) do
+    socket
+    |> maybe_persist_connected(p2p)
+    |> put_p2p(%{p2p | state: :connected})
+    |> burst_windows()
+  end
+
+  # The session presents itself: every session window opens in a preset
+  # arrangement the moment the link comes up, on both sides — the open Call
+  # window invites (Start audio/video), Files shows the picker, Games the
+  # catalog, Statistics the live telemetry. Closing any of them only hides
+  # (features keep running). Skipped on stacked mobile, where four windows
+  # would bury the conversation.
+  defp burst_windows(socket) do
+    if socket.assigns[:mobile_viewport] do
+      socket
+    else
+      socket
+      |> Windows.open("p2p-stats")
+      |> Windows.open("p2p-games")
+      |> Windows.open("p2p-files")
+      |> Windows.open("p2p-call")
+    end
+  end
 
   defp attach_session(socket, token, user_id, role) do
     case Lobby.join_session(token, user_id) do

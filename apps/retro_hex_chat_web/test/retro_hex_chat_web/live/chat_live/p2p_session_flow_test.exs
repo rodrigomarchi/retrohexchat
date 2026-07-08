@@ -240,6 +240,52 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     end
   end
 
+  describe "window burst on connect" do
+    test "connecting opens all four session windows; ending closes them all", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pgc#{uid()}", "p2pgd#{uid()}")
+      session = invite(ctx)
+      render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token})
+      flush(ctx.view_a)
+
+      render_click(ctx.view_a, "lobby_connected", %{})
+
+      assigns = :sys.get_state(ctx.view_a.pid).socket.assigns
+      assert "p2p-stats" in assigns.open_windows
+      assert "p2p-games" in assigns.open_windows
+
+      html = render(ctx.view_a)
+
+      for window <- ~w(p2p-call-window p2p-files-window p2p-games-window p2p-stats-window) do
+        assert html =~ window
+      end
+
+      # Ending the session tears every session window down with it.
+      render_click(ctx.view_a, "p2p_statusbar_stop", %{})
+      render_click(ctx.view_a, "p2p_confirm_end", %{})
+      flush(ctx.view_a)
+
+      html = render(ctx.view_a)
+
+      for window <- ~w(p2p-call-window p2p-files-window p2p-games-window p2p-stats-window) do
+        refute html =~ window
+      end
+    end
+
+    test "the burst is skipped on a mobile viewport", %{conn: conn} do
+      ctx = mount_pair(conn, "p2pge#{uid()}", "p2pgf#{uid()}")
+      session = invite(ctx)
+      render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token})
+      flush(ctx.view_a)
+
+      render_click(ctx.view_a, "viewport_info", %{"width" => 390})
+      render_click(ctx.view_a, "lobby_connected", %{})
+
+      assigns = :sys.get_state(ctx.view_a.pid).socket.assigns
+      refute "p2p-stats" in assigns.open_windows
+      refute "p2p-games" in assigns.open_windows
+    end
+  end
+
   describe "PM absorption (p2p_system)" do
     defp p2p_system_messages(nick_a, nick_b) do
       nick_a

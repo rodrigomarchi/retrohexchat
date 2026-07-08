@@ -104,7 +104,8 @@ defmodule RetroHexChatWeb.ChatLive.MenuToolbarEvents do
   end
 
   def handle_event("viewport_info", %{"width" => width}, socket) when width < 768 do
-    {:halt, assign(socket, show_conversations: false, show_nicklist: false)}
+    {:halt,
+     assign(socket, show_conversations: false, show_nicklist: false, mobile_viewport: true)}
   end
 
   def handle_event("viewport_info", _params, socket), do: {:halt, socket}

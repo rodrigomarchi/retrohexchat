@@ -129,6 +129,22 @@ chat, com as 3 ilhas do lobby reusadas (zero fork) e o standalone intacto.
 `chat-lobby.spec.ts` continua cobrindo a página própria até a F6 (menos
 :96/:200, quebra pré-existente de vídeo na main).
 
+## Pós-F5 — refinos de UX (validação do Rodrigo, 2026-07-08)
+
+- [x] **Chat é A superfície**: card sem links para /lobby (convidado só
+  [Aceitar][Recusar]; demais veem a timeline), aviso de convite sem URL,
+  menu P2P sempre habilitado ("Start a P2P Session..." ensina + help inline
+  quando sem sessão). E2E standalone entra via `data-session-token` do card.
+- [x] **Burst de janelas ao conectar** (decisão do Rodrigo): as QUATRO
+  janelas (Call/Files/Games/Statistics) abrem sozinhas nos dois lados no
+  `:connected`, em layout preset por cima do chat maximizado; Call ociosa já
+  convida (Start audio/video no painel); burst pulado em viewport <768
+  (`mobile_viewport` assign via viewport_info); guard de idempotência
+  (`enter_connected` só age na transição). Encerrar fecha todas (unmount via
+  `:if={@p2p_session}` + open_windows limpo no detach).
+- [x] Aviso no aceite nos dois lados: "connecting... the session windows
+  will open shortly."
+
 ## F6 — remoção do standalone: **AGUARDANDO PRÉ-REQUISITOS** (recomendação)
 
 A F6 (deletar LobbyLive/universal_lobby/rota + redirect) está pronta para

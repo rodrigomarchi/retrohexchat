@@ -40,6 +40,19 @@ test.describe('In-chat P2P session', () => {
         timeout: 20_000,
       });
 
+      // The session presents itself: all four windows burst open on BOTH
+      // sides, on top of the chat.
+      for (const page of [alice.page, bob.page]) {
+        for (const id of [
+          'p2p-call-window',
+          'p2p-files-window',
+          'p2p-games-window',
+          'p2p-stats-window',
+        ]) {
+          await expect(page.getByTestId(id)).toBeVisible();
+        }
+      }
+
       // Both PM tabs carry the session glyph, and the persisted P2P line
       // landed in the conversation.
       await expect(
@@ -53,6 +66,18 @@ test.describe('In-chat P2P session', () => {
       await expect(statusBarP2P(alice.page)).toBeHidden();
       await expect(statusBarP2P(bob.page)).toBeHidden({ timeout: 10_000 });
       await alice.chat.expectMessageVisible('ended the P2P session');
+
+      // Ending closes every session window, on both sides.
+      for (const page of [alice.page, bob.page]) {
+        for (const id of [
+          'p2p-call-window',
+          'p2p-files-window',
+          'p2p-games-window',
+          'p2p-stats-window',
+        ]) {
+          await expect(page.getByTestId(id)).toBeHidden();
+        }
+      }
     } finally {
       await closeP2PUsers([alice, bob]);
     }

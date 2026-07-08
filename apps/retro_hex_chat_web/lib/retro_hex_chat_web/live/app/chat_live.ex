@@ -759,7 +759,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       channel_list_loading: false,
       channel_view: :chat,
       p2p_session: nil,
-      p2p_pending: nil
+      p2p_pending: nil,
+      mobile_viewport: false
     )
   end
 
