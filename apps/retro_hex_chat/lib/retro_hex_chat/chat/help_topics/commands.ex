@@ -337,7 +337,11 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description:
           dgettext(
             "help",
-            "Open a P2P Lobby that runs an audio/video call, file transfers, and games together over one connection."
+            "Invite someone to a P2P session that runs an audio/video call, file transfers, " <>
+              "and games together over one connection. The invite arrives as a card in the " <>
+              "private message — they can accept it right there and the session windows open " <>
+              "on the chat desktop, or open the standalone P2P Lobby page from the same card. " <>
+              "See also: P2P Sessions in Chat, P2P Lobby."
           )
       },
       %{

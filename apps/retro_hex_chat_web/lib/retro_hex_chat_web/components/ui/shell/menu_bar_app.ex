@@ -34,6 +34,11 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   attr :connected, :boolean, default: false
   attr :is_admin, :boolean, default: false
   attr :p2p_active, :boolean, default: false, doc: "Enables the P2P menu while a session exists"
+
+  attr :p2p_turn_available, :boolean,
+    default: false,
+    doc: "Shows the privacy-mode item (needs a configured TURN relay)"
+
   attr :on_action, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
@@ -266,6 +271,13 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
           icon_fn={:icon_status_signal}
           label={dgettext("ui", "Statistics")}
           action="p2p_open_stats"
+          on_action={@on_action}
+        />
+        <.menu_item
+          :if={@p2p_turn_available}
+          icon_fn={:icon_lock}
+          label={dgettext("ui", "Toggle Privacy Mode")}
+          action="p2p_toggle_privacy"
           on_action={@on_action}
         />
         <.context_menu_separator />

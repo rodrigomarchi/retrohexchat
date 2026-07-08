@@ -126,6 +126,25 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, Windows.open(socket, "p2p-games")}
   end
 
+  # Privacy mode: force every P2P connection through the TURN relay (hides
+  # the direct peer IP). Persisted per user; applies from the next
+  # (re)signaling round.
+  def handle_event("p2p_toggle_privacy", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    p2p = socket.assigns.p2p_session
+    new_value = not p2p.turn_only
+    save_turn_only(socket.assigns.session.nickname, new_value)
+
+    label =
+      if new_value,
+        do: dgettext("chat", "Privacy mode enabled — the P2P connection will use the relay."),
+        else: dgettext("chat", "Privacy mode disabled.")
+
+    {:halt,
+     socket
+     |> put_p2p(%{p2p | turn_only: new_value})
+     |> Messages.system_event(label)}
+  end
+
   def handle_event("p2p_start_audio", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     forward_media(socket, "start_call", %{"type" => "audio"})
   end
@@ -1012,6 +1031,27 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     case RetroHexChat.Repo.get(UserPreference, nickname) do
       nil -> false
       pref -> get_in(pref.display_settings, ["p2p_settings", "turn_only"]) == true
+    end
+  end
+
+  defp save_turn_only(nickname, turn_only) do
+    case RetroHexChat.Repo.get(UserPreference, nickname) do
+      nil ->
+        %UserPreference{}
+        |> UserPreference.changeset(%{
+          owner_nickname: nickname,
+          display_settings: %{"p2p_settings" => %{"turn_only" => turn_only}}
+        })
+        |> RetroHexChat.Repo.insert()
+
+      pref ->
+        current = pref.display_settings || %{}
+        p2p = Map.get(current, "p2p_settings", %{})
+        updated = Map.put(current, "p2p_settings", Map.put(p2p, "turn_only", turn_only))
+
+        pref
+        |> UserPreference.changeset(%{display_settings: updated})
+        |> RetroHexChat.Repo.update()
     end
   end
 

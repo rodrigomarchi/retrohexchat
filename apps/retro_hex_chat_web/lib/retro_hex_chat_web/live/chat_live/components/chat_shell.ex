@@ -46,7 +46,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
         online_buddy_count: online_buddy_count(session.notify_list),
         channel: session.active_pm || session.active_channel,
         tab_type: if(session.active_pm, do: :pm, else: :channel),
-        p2p: p2p_display(assigns.p2p_session)
+        p2p: p2p_display(assigns.p2p_session),
+        p2p_turn_available: (assigns.p2p_session || %{})[:turn_configured] == true
       )
 
     ~H"""
@@ -64,6 +65,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
       timezone={@timezone}
       is_admin={@is_admin}
       p2p={@p2p}
+      p2p_turn_available={@p2p_turn_available}
     />
     """
   end

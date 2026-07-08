@@ -1083,7 +1083,47 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
               "and nick autocomplete completes the other peer. It supports a small command set — " <>
               "/me <action> for an action line, /clear to clear your own view and /help to list " <>
               "them. Lobby chat is ephemeral: it is never saved and disappears when the lobby closes. " <>
-              "See also: Video Call, File Transfer, Network Statistics, Text Formatting."
+              "See also: P2P Sessions in Chat, Video Call, File Transfer, Network Statistics, " <>
+              "Text Formatting."
+          )
+      },
+      %{
+        id: "feature-p2p-in-chat",
+        title: dgettext("help", "P2P Sessions in Chat"),
+        category: dgettext("help", "P2P & Calls"),
+        keywords: [
+          "p2p",
+          "session",
+          "private message",
+          "invite",
+          "accept",
+          "decline",
+          "call",
+          "file",
+          "game",
+          "statistics",
+          "status bar",
+          "privacy",
+          "switch"
+        ],
+        icon: :icon_p2p,
+        description:
+          dgettext(
+            "help",
+            "Run a P2P session without leaving the chat: /p2p <nick> sends an invite card " <>
+              "into the private message, and the invited person accepts or declines right on " <>
+              "the card. Once connected, the P2P menu (also mirrored in the Start menu) opens " <>
+              "the session windows on the chat desktop: Call (audio/video), Files, Games and " <>
+              "P2P Statistics. The conversation IS the private message — session events " <>
+              "(connected, file received, game results, who ended it) are saved into the PM " <>
+              "history as P2P lines, and the PM tab shows a small P2P icon while the session " <>
+              "is live. The status bar always shows the active session: click it to bring the " <>
+              "P2P windows to the front, or use its stop button to cancel a pending invite / " <>
+              "end the session. You can hold ONE session at a time — accepting a new invite " <>
+              "(or inviting someone else) asks to end the current session first. When a TURN " <>
+              "relay is configured, Toggle Privacy Mode in the P2P menu forces the connection " <>
+              "through the relay so your IP address is never shared with the peer. " <>
+              "See also: P2P Lobby, Video Call, File Transfer, Private Messages."
           )
       },
       %{

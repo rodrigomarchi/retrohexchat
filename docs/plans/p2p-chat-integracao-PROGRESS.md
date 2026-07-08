@@ -106,7 +106,28 @@ chat, com as 3 ilhas do lobby reusadas (zero fork) e o standalone intacto.
   gap do apêndice fechado.
 - [x] CI 9/9
 
-**F4 CONCLUÍDA.**
+**F4 CONCLUÍDA** (commit `69c3c0b3`).
+
+## F5 — paridade + E2E + help
+
+- [x] **Auditoria de paridade** vs inventário do plano §3.5: chat (PM ✓),
+  chamada áudio/vídeo ✓, transferência ✓, 28 jogos ✓, estatísticas ✓,
+  whois/diagrama ✓ — **gap fechado**: privacy mode (TURN-only) adicionado ao
+  menu P2P (`p2p_toggle_privacy`, persiste em UserPreference, gated em
+  `turn_configured`).
+- [x] **Help (obrigatório)**: novo tópico "P2P Sessions in Chat"
+  (`feature-p2p-in-chat` + página HEEx + embed no `HelpContent.P2P`);
+  tópico `/p2p` reescrito (aceitar no card); "See also" cruzados com P2P Lobby.
+- [x] **E2E in-chat**: `e2e/tests/chat-p2p.spec.ts` (3 testes): aceitar no
+  card → **conexão WebRTC REAL estabelecida sem sair do /chat** (status bar
+  "P2P: <peer>" nos dois lados) + glifo na tab + linha p2p_system persistida
+  + encerrar com confirm; recusar; cancelar pendente. 3/3 verdes.
+- [x] CI 9/9
+
+**F5 CONCLUÍDA.** Fora de paridade por decisão: layout/PiP (recursos internos
+da MediaIsland, funcionam idem), suite standalone `chat-lobby.spec.ts`
+continua cobrindo a página própria até a F6 (menos :96/:200, quebra
+pré-existente de vídeo na main).
 
 ### Aprendizados F3 (parciais)
 

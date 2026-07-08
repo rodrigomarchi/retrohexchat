@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
   attr :timezone, :string, default: "Etc/UTC"
   attr :is_admin, :boolean, default: false
   attr :p2p, :map, default: nil, doc: "Active P2P session display map for the status bar"
+  attr :p2p_turn_available, :boolean, default: false
   attr :on_p2p_click, :any, default: "p2p_statusbar_click"
   attr :on_p2p_stop, :any, default: "p2p_statusbar_stop"
 
@@ -53,6 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
           connected={true}
           is_admin={@is_admin}
           p2p_active={@p2p != nil}
+          p2p_turn_available={@p2p_turn_available}
           on_action={@on_toolbar_action}
         />
         <%!-- The desktop tray owns the clock; the status bar drops its own. --%>
