@@ -158,6 +158,107 @@ chat, com as 3 ilhas do lobby reusadas (zero fork) e o standalone intacto.
   botão). Minimizar = manter rodando. Controles internos (end call, cancel
   transfer, end game) seguem encerrando só a feature.
 
+## Aprendizados consolidados (cristalizar no AGENT-GUIDE ao fechar a F6)
+
+### Arquitetura de reuso (o que fez a migração custar 1/3 do esperado)
+
+- **Ilhas sobrevivem à troca de host sem fork.** As 3 ilhas (Media/File/Game)
+  rodam em LobbyLive E ChatLive simultaneamente com dois capability flags:
+  `window_id` (a ilha dirige a PRÓPRIA janela via `window_command`, com id
+  por host) e a notícia desacoplada do sink. Os contratos C1/C2/C3 da
+  decomposição aguentaram a troca de host intactos — validação forte do
+  padrão ilha.
+- **Contrato de notícia com escritor único**:
+  `{:p2p_feature_notice, feature, text, scope: :shared|:local, writer: bool}`.
+  `:shared`+writer persiste (PM chega aos dois via broadcast); `:shared` sem
+  writer descarta; `:local` é efêmero. Sem a regra, todo aviso compartilhado
+  duplica. Escritores: arquivo → receptor; jogo → host da partida; ciclo de
+  vida → o ator. Host antigo ignora os opts (compat total).
+- **Eventos de sessão em PubSub PRECISAM do token no envelope** quando um
+  assinante segura estado de sessão: na troca A→B, o `lobby_session_closed`
+  de A já estava na mailbox quando B assumiu — sem `%{token:}` o handler
+  derruba a sessão NOVA. Chave extra não quebra matches existentes.
+- **Estado global = máquina única no host.** `@p2p_session`
+  (nil→invite_sent→joining→connecting→connected) alimenta TODA a UI (status
+  bar, menu, janelas, cards, glifo). Cada superfície derivando do mesmo
+  assign eliminou classes inteiras de inconsistência.
+- **Side-by-side com página própria**: o creator NÃO joina ao convidar
+  (subscribe-only em :invite_sent); joina quando o peer entra; `:already_joined`
+  = outra superfície assumiu → desanexa em silêncio. E o anchor WebRTC nunca
+  monta em :invite_sent (dois PCs do mesmo usuário guerreiam na sinalização).
+
+### Window manager (Win98) — fatos duros
+
+- **Patch aplica ANTES do dispatch de push_event** no cliente: abrir uma
+  janela managed e minimizá-la no MESMO render funciona (registra no patch,
+  comandos acham o id). É o que permite o burst "abre tudo, minimiza três".
+- **`persist_geometry={false}` (janela efêmera)**: desktop com persistência
+  congela o tamanho MEDIDO de janelas auto-height no primeiro cascade/tile/
+  resize — a Call gravada pequena ociosa não cresce quando o vídeo chega.
+  Janelas de sessão nunca devem persistir layout.
+- **X server-driven não tem bypass**: com `on_close`, o botão vira
+  `phx-click` que o WM ignora (linha 428) — e taskbar menu + Escape CLICAM
+  nesse botão em vez de fechar por conta. Um único ponto de decisão para
+  todos os caminhos de fechar. (Sem `on_close`, o X fecha client-side
+  silencioso — a Statistics escapava assim.)
+- Dimensões portadas têm que ESPELHAR o original (Games era 680/auto; eu
+  inventei 560×520 fixo e cortei o canvas). Auto-height é parte do design.
+
+### Hooks lazy e mídia
+
+- O registro lazy é **global** (hook map único do LiveSocket) — qualquer LV
+  monta os hooks do lobby. MAS não há replay de eventos pré-import:
+  **comandos automáticos de feature disparam no `readyEvent` do hook**
+  (`lobby_media_hook_ready`), nunca no evento de conexão — o auto-start da
+  chamada seria perdido na race do import. O gate `webrtc_ready` do domínio
+  é o mesmo princípio no nível da sessão.
+
+### ChatLive/host
+
+- `dispatch_to_hooks` usa `@event_hook_fns` — lista SEPARADA de
+  `attach_all_hooks`; módulo novo de eventos entra NAS DUAS ou ações de menu
+  nunca chegam nele.
+- `Windows.open_with` (send_update deferido) é obrigatório para send_update
+  em ilha managed recém-montada (o mesmo ciclo nunca aplica o patch).
+- Componente com key-list explícita (MessageViewport) precisa do default de
+  assign novo TAMBÉM no mount (render_component não passa pelo update).
+- ChatLive já força 1 instância/usuário (takeover `:force_disconnect`) — o
+  guard multi-aba do P2P veio de graça: takeover + grace F1 + re-hidratação.
+- Card vivo é barato: edits/deletes já fazem `stream_insert` com o mesmo
+  dom_id; "vivo" = re-enrich + re-insert no evento. `enrich` roda só no
+  build — sem evento, o card só atualiza no próximo load.
+- `p2p_system` em PM = valor novo no changeset (type é string com
+  validate_inclusion) + `stream_type` + branch no MessageRow. Sem migração.
+
+### Design system / testes
+
+- `status_bar_app` é de zonas fixas (sem slot) — área nova = zona no
+  componente (precedente: botão de notify). `menu_bar_app` e `start_menu_app`
+  são HEEx literal e NÃO se espelham automaticamente — wiring manual nos dois.
+- Feature tests fixam a menu bar por posição (`Enum.at`) e lista literal —
+  menu novo desloca índices (Help 4→5).
+- Playwright roda do diretório `e2e/` (rodar da raiz mistura os dois
+  `@playwright/test` e explode com "test.describe() called here").
+- Depois de remover os links de UI para /lobby, o E2E standalone entra via
+  `data-session-token` do card (metadado invisível) — cobertura de mídia
+  preservada sem affordance para o usuário.
+- `chat-lobby.spec.ts:96/:200` (vídeo) estavam quebrados na main ANTES da
+  migração (verificado com stash em `77614a13`) — pré-requisito da F6.
+
+### UX (validação em produção com o Rodrigo)
+
+- **Sessão precisa de um "lar" visível.** Status bar sozinha não comunica;
+  a resposta foi o burst: as 4 janelas abrem ao conectar, Call na frente com
+  a **chamada de vídeo já iniciada nos dois lados**, Files/Games/Stats
+  minimizadas (presentes, sem cobrir a conversa). Aviso no aceite anuncia.
+- **X = disconnect, minimizar = manter** (supersede o "X esconde" do lobby,
+  SÓ para janelas P2P): usuários fechavam a câmera sem perceber a conexão
+  viva. O confirm ensina o gesto certo. Controles internos seguem encerrando
+  só a feature.
+- Menu desabilitado sem explicação é anti-descoberta: o menu P2P ficou
+  sempre habilitado com um item "Start a P2P Session..." que ensina
+  (system line + inline help card).
+
 ## F6 — remoção do standalone: **AGUARDANDO PRÉ-REQUISITOS** (recomendação)
 
 A F6 (deletar LobbyLive/universal_lobby/rota + redirect) está pronta para
