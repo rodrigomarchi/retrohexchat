@@ -1104,7 +1104,6 @@ msgstr "/ns <subcommand> [arguments]"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "/ns identify"
 msgstr "/ns identify"
@@ -2004,7 +2003,6 @@ msgstr "Hide messages from a specific user. The ignored user is not notified —
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:20
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:21
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:36
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:19
@@ -2280,7 +2278,6 @@ msgstr "Options"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:12
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:16
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:11
@@ -2532,7 +2529,6 @@ msgstr "Root admins cannot be demoted via commands"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:32
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:29
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:24
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:27
@@ -2550,7 +2546,6 @@ msgstr "Rules & Limits"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:15
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Running"
@@ -2612,7 +2607,6 @@ msgstr "Schedule a command to run after a delay, optionally repeating at a regul
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:31
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:41
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:37
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:39
@@ -2805,7 +2799,6 @@ msgstr "Subcommands"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:8
@@ -4661,58 +4654,3 @@ msgstr "— Optional duration token such as 30s, 5m, 1h, or 1d. Omit for permane
 #, elixir-autogen, elixir-format
 msgid "— The user to open a P2P Lobby with."
 msgstr "— The user to open a P2P Lobby with."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "/space"
-msgstr "/space"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:8
-#, elixir-autogen, elixir-format
-msgid "/space [#channel] [name] [ttl=2h]"
-msgstr "/space [#channel] [name] [ttl=2h]"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Create a virtual space: a multiplayer 8-bit office linked to a channel where up to 20 people walk around a tile map, sit at tables and chat. The command posts an invite card in the channel so anyone eligible can join."
-msgstr "Create a virtual space: a multiplayer 8-bit office linked to a channel where up to 20 people walk around a tile map, sit at tables and chat. The command posts an invite card in the channel so anyone eligible can join."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:35
-#, elixir-autogen, elixir-format
-msgid "The command only works from a channel, not from PMs or the Status window."
-msgstr "The command only works from a channel, not from PMs or the Status window."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:45
-#, elixir-autogen, elixir-format
-msgid "Virtual Spaces"
-msgstr "Virtual Spaces"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:32
-#, elixir-autogen, elixir-format
-msgid "You must be registered and identified (via"
-msgstr "You must be registered and identified (via"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:40
-#, elixir-autogen, elixir-format
-msgid "You need permission to post in the target channel."
-msgstr "You need permission to post in the target channel."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:24
-#, elixir-autogen, elixir-format
-msgid "creates the space and publishes an invite card in the channel. Clicking the card (or opening the /space/<token> link) drops your avatar into the map. The space expires when its lifetime ends, or earlier if the creator closes it. If nobody joins within 5 minutes, it expires automatically."
-msgstr "creates the space and publishes an invite card in the channel. Clicking the card (or opening the /space/<token> link) drops your avatar into the map. The space expires when its lifetime ends, or earlier if the creator closes it. If nobody joins within 5 minutes, it expires automatically."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "— Optional lifetime, e.g. ttl=4h. Default 2h, maximum 8h."
-msgstr "— Optional lifetime, e.g. ttl=4h. Default 2h, maximum 8h."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:15
-#, elixir-autogen, elixir-format
-msgid "— Optional space name shown on the card."
-msgstr "— Optional space name shown on the card."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_space.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "— Target channel for the invite card (defaults to the active channel)."
-msgstr "— Target channel for the invite card (defaults to the active channel)."

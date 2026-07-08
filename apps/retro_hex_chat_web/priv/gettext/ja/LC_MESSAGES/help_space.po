@@ -11,36 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:30
-#, elixir-autogen, elixir-format
-msgid "/space"
-msgstr "/space"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "A space expires when its lifetime ends — activity does not extend it. If nobody enters within 5 minutes of creation, it expires early. The creator (or an admin) can close it at any time."
-msgstr "スペースは有効期間が終わると期限切れになります — アクティビティで延長はされません。作成から 5 分以内に誰も入らなければ早めに期限切れになります。作成者(または管理者)はいつでも閉じられます。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "A virtual space is a multiplayer 8-bit office linked to a channel: up to 20 people walk around a tile map with their avatars, sit at tables and chat in real time. Spaces are created with /space and joined through the invite card posted in the channel."
-msgstr "バーチャルスペースは、チャンネルに紐づく 8 ビットのマルチプレイヤーオフィスです。最大 20 人がアバターでタイルマップを歩き回り、テーブルに座ってリアルタイムにチャットします。スペースは /space で作成し、チャンネルに投稿された招待カードから参加します。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
-#, elixir-autogen, elixir-format
-msgid "Any registered, identified user who can post in a channel can run /space there. The command accepts an optional target channel, a name and a lifetime (ttl=2h by default, 8h maximum). The invite card shows the space name, creator, channel, map and expiry."
-msgstr "チャンネルに投稿できる登録・認証済みユーザーなら誰でも、そこで /space を実行できます。コマンドは任意の対象チャンネル、名前、有効期間(既定 ttl=2h、最大 8h)を受け付けます。招待カードにはスペース名、作成者、チャンネル、マップ、有効期限が表示されます。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Click the invite card or open the /space/<token> link to drop into the map. Move with the arrow keys or WASD; the server validates every step, so walls and furniture block movement for everyone equally. Reloading the page brings you back to the same tile."
-msgstr "招待カードをクリックするか /space/<token> リンクを開くとマップに入れます。矢印キーまたは WASD で移動します。サーバーが一歩ごとに検証するため、壁や家具は全員の移動を同じようにブロックします。ページを再読み込みしても同じタイルに戻ります。"
-
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:7
-#, elixir-autogen, elixir-format
-msgid "Creating a Space"
-msgstr "スペースの作成"
-
 #: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Joining and Moving"
@@ -51,9 +21,27 @@ msgstr "参加と移動"
 msgid "Lifecycle"
 msgstr "ライフサイクル"
 
-#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "See Also"
-msgstr ""
-"の特長\n"
-"お問い合わせ"
+msgid "A virtual space is the map view built into every channel. People who are present in the channel can switch from Chat to Space, walk around the shared 8-bit village, and keep using the same public channel conversation."
+msgstr "A virtual space is the map view built into every channel. People who are present in the channel can switch from Chat to Space, walk around the shared 8-bit village, and keep using the same public channel conversation."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Channel spaces are runtime state. They wake when someone views Space, mirror the current channel presence, and can be rebuilt from that presence when the view is opened again."
+msgstr "Channel spaces are runtime state. They wake when someone views Space, mirror the current channel presence, and can be rebuilt from that presence when the view is opened again."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Entering the channel makes your avatar available in Space. Move with the arrow keys or WASD while the canvas is focused; the server validates every step, so walls and furniture block movement for everyone equally."
+msgstr "Entering the channel makes your avatar available in Space. Move with the arrow keys or WASD while the canvas is focused; the server validates every step, so walls and furniture block movement for everyone equally."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:9
+#, elixir-autogen, elixir-format
+msgid "Open any channel and use the Chat and Space buttons in the topic row. There is no separate invite card or space command for the channel map."
+msgstr "Open any channel and use the Chat and Space buttons in the topic row. There is no separate invite card or space command for the channel map."
+
+#: lib/retro_hex_chat_web/controllers/help_content/feature_virtual_spaces.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Opening Space"
+msgstr "Opening Space"

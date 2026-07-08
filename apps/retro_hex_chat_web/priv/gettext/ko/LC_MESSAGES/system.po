@@ -28,10 +28,7 @@ msgstr "관련 기사"
 #: lib/retro_hex_chat_web/telemetry.ex:177
 #: lib/retro_hex_chat_web/telemetry.ex:182
 #: lib/retro_hex_chat_web/telemetry.ex:187
-#: lib/retro_hex_chat_web/telemetry.ex:194
-#: lib/retro_hex_chat_web/telemetry.ex:198
-#: lib/retro_hex_chat_web/telemetry.ex:203
-#: lib/retro_hex_chat_web/telemetry.ex:207
+#: lib/retro_hex_chat_web/telemetry.ex:193
 #, elixir-autogen, elixir-format
 msgid "Domain"
 msgstr "이름 *"
@@ -118,8 +115,7 @@ msgstr "데이터베이스 연결을 기다리는 시간"
 
 #: lib/retro_hex_chat_web/telemetry.ex:104
 #, elixir-autogen, elixir-format
-msgid ""
-"The time the connection spent waiting before being checked out for the query"
+msgid "The time the connection spent waiting before being checked out for the query"
 msgstr "자주 묻는 질문"
 
 #: lib/retro_hex_chat_web/telemetry.ex:114
@@ -311,42 +307,12 @@ msgstr "프로젝트"
 msgid "vm.total_run_queue_lengths.total"
 msgstr "vm.total run queue lengths.total'실제 이름입 vm.total니다."
 
-#: lib/retro_hex_chat_web/telemetry.ex:206
+#: lib/retro_hex_chat_web/telemetry.ex:192
 #, elixir-autogen, elixir-format
 msgid "Number of active virtual space processes"
 msgstr "활성 가상 공간 프로세스 수"
 
-#: lib/retro_hex_chat_web/telemetry.ex:197
-#, elixir-autogen, elixir-format
-msgid "Number of virtual space joins"
-msgstr "가상 공간 참여 수"
-
-#: lib/retro_hex_chat_web/telemetry.ex:193
-#, elixir-autogen, elixir-format
-msgid "Number of virtual spaces created"
-msgstr "생성된 가상 공간 수"
-
-#: lib/retro_hex_chat_web/telemetry.ex:202
-#, elixir-autogen, elixir-format
-msgid "Number of virtual spaces ended by terminal status"
-msgstr "종료 상태별로 종료된 가상 공간 수"
-
-#: lib/retro_hex_chat_web/telemetry.ex:205
+#: lib/retro_hex_chat_web/telemetry.ex:191
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.virtual_space.active_count.value"
 msgstr "retro_hex_chat.virtual_space.active_count.value"
-
-#: lib/retro_hex_chat_web/telemetry.ex:196
-#, elixir-autogen, elixir-format
-msgid "retro_hex_chat.virtual_space.participant_joined.count"
-msgstr "retro_hex_chat.virtual_space.participant_joined.count"
-
-#: lib/retro_hex_chat_web/telemetry.ex:191
-#, elixir-autogen, elixir-format
-msgid "retro_hex_chat.virtual_space.session_created.count"
-msgstr "retro_hex_chat.virtual_space.session_created.count"
-
-#: lib/retro_hex_chat_web/telemetry.ex:200
-#, elixir-autogen, elixir-format
-msgid "retro_hex_chat.virtual_space.session_ended.count"
-msgstr "retro_hex_chat.virtual_space.session_ended.count"

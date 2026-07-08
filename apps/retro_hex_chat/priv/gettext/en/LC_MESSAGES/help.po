@@ -1017,7 +1017,7 @@ msgstr "Empty States"
 msgid "Enable TURN-only relay mode to hide your IP address during peer-to-peer connections."
 msgstr "Enable TURN-only relay mode to hide your IP address during peer-to-peer connections."
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:754
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:733
 #, elixir-autogen, elixir-format
 msgid "Enable or disable slow mode (join throttle) in the current channel."
 msgstr "Enable or disable slow mode (join throttle) in the current channel."
@@ -1542,10 +1542,10 @@ msgstr "Message Reply"
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:687
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:702
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:716
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:750
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:759
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:779
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:797
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:729
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:738
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:758
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:776
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "Moderation"
@@ -1565,7 +1565,7 @@ msgstr "Multi-Line Paste Dialog"
 msgid "Mute"
 msgstr "Mute"
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:771
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:750
 #, elixir-autogen, elixir-format
 msgid "Mute a user in the current channel, preventing them from sending messages."
 msgstr "Mute a user in the current channel, preventing them from sending messages."
@@ -1947,7 +1947,7 @@ msgstr "Registered nicknames expire after 7 days of inactivity and become availa
 msgid "Remove a ban from a channel to allow the user to rejoin."
 msgstr "Remove a ban from a channel to allow the user to rejoin."
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:789
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:768
 #, elixir-autogen, elixir-format
 msgid "Remove a channel mute from a user, allowing them to send messages again."
 msgstr "Remove a channel mute from a user, allowing them to send messages again."
@@ -2439,7 +2439,7 @@ msgstr "Topic Bar"
 msgid "Track when specific users connect or disconnect with the notify list."
 msgstr "Track when specific users connect or disconnect with the notify list."
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:800
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:779
 #, elixir-autogen, elixir-format
 msgid "Transfer channel ownership to another user."
 msgstr "Transfer channel ownership to another user."
@@ -2923,7 +2923,7 @@ msgstr "channel menu"
 msgid "channel mode"
 msgstr "channel mode"
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:763
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:742
 #: lib/retro_hex_chat/chat/help_topics/features.ex:742
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:135
 #, elixir-autogen, elixir-format
@@ -2938,7 +2938,7 @@ msgstr "channel operator"
 
 #: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:93
 #: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:165
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:798
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:777
 #, elixir-autogen, elixir-format
 msgid "channel owner"
 msgstr "channel owner"
@@ -2964,7 +2964,7 @@ msgstr "channel settings"
 msgid "channel topic"
 msgstr "channel topic"
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:783
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:762
 #, elixir-autogen, elixir-format
 msgid "channel unmute"
 msgstr "channel unmute"
@@ -3054,8 +3054,8 @@ msgstr "connection lost"
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:693
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:708
 #: lib/retro_hex_chat/chat/help_topics/commands.ex:721
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:767
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:785
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:746
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:764
 #: lib/retro_hex_chat/chat/help_topics/features.ex:46
 #: lib/retro_hex_chat/chat/help_topics/features.ex:431
 #: lib/retro_hex_chat/chat/help_topics/features.ex:575
@@ -3535,7 +3535,7 @@ msgstr "modes display"
 msgid "multiple tabs"
 msgstr "multiple tabs"
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:765
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:744
 #: lib/retro_hex_chat/chat/help_topics/features.ex:736
 #, elixir-autogen, elixir-format
 msgid "mute channel"
@@ -3767,7 +3767,7 @@ msgid "quote message"
 msgstr "quote message"
 
 #: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:279
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:751
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:730
 #: lib/retro_hex_chat/chat/help_topics/features.ex:327
 #, elixir-autogen, elixir-format
 msgid "rate limit"
@@ -4066,11 +4066,6 @@ msgstr "virtual theatre"
 msgid "wolf 3d"
 msgstr "wolf 3d"
 
-#: lib/retro_hex_chat/chat/help_topics/features.ex:3113
-#, elixir-autogen, elixir-format
-msgid "A multiplayer 8-bit virtual office linked to a channel: up to 20 people walk around a tile map with their avatars, sit at tables and chat. Created with /space; joined through the invite card or a /space/<token> link."
-msgstr "A multiplayer 8-bit virtual office linked to a channel: up to 20 people walk around a tile map with their avatars, sit at tables and chat. Created with /space; joined through the invite card or a /space/<token> link."
-
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:202
 #, elixir-autogen, elixir-format
 msgid "Access common features through the menu bar and toolbar options."
@@ -4125,11 +4120,6 @@ msgstr "Channel Welcome Message"
 #, elixir-autogen, elixir-format
 msgid "Clear the current chat window, copy selected chat text, and open Find from the Edit menu."
 msgstr "Clear the current chat window, copy selected chat text, and open Find from the Edit menu."
-
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:742
-#, elixir-autogen, elixir-format
-msgid "Create a virtual space linked to a channel: a multiplayer 8-bit office where people walk around, sit and chat. Posts an invite card in the channel. Syntax: /space [#channel] [name] [ttl=2h]."
-msgstr "Create a virtual space linked to a channel: a multiplayer 8-bit office where people walk around, sit and chat. Posts an invite card in the channel. Syntax: /space [#channel] [name] [ttl=2h]."
 
 #: lib/retro_hex_chat/chat/help_topics/bots.ex:27
 #, elixir-autogen, elixir-format
@@ -4350,7 +4340,6 @@ msgstr "User Lookup"
 
 #: lib/retro_hex_chat/chat/help_topics.ex:60
 #: lib/retro_hex_chat/chat/help_topics.ex:89
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:729
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3097
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3098
 #, elixir-autogen, elixir-format
@@ -4363,7 +4352,7 @@ msgstr "Virtual Spaces"
 msgid "clear window"
 msgstr "clear window"
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:766
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:745
 #, elixir-autogen, elixir-format
 msgid "duration"
 msgstr "duration"
@@ -4484,7 +4473,7 @@ msgstr "toolbar options"
 msgid "tools menu"
 msgstr "tools menu"
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:784
+#: lib/retro_hex_chat/chat/help_topics/commands.ex:763
 #: lib/retro_hex_chat/chat/help_topics/user_interface.ex:136
 #, elixir-autogen, elixir-format
 msgid "unmute channel"
@@ -4499,18 +4488,17 @@ msgstr "unmute channel"
 msgid "user lookup"
 msgstr "user lookup"
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:737
 #: lib/retro_hex_chat/chat/help_topics/features.ex:3108
 #, elixir-autogen, elixir-format
 msgid "virtual office"
 msgstr "virtual office"
 
-#: lib/retro_hex_chat/chat/help_topics/commands.ex:738
-#, elixir-autogen, elixir-format
-msgid "virtual space"
-msgstr "virtual space"
-
 #: lib/retro_hex_chat/chat/help_topics/channel_modes.ex:74
 #, elixir-autogen, elixir-format
 msgid "welcome message"
 msgstr "welcome message"
+
+#: lib/retro_hex_chat/chat/help_topics/features.ex:3113
+#, elixir-autogen, elixir-format
+msgid "A multiplayer 8-bit virtual space built into every channel: people in the channel can switch from Chat to Space, walk around the shared map, and keep using the same channel conversation."
+msgstr "A multiplayer 8-bit virtual space built into every channel: people in the channel can switch from Chat to Space, walk around the shared map, and keep using the same channel conversation."

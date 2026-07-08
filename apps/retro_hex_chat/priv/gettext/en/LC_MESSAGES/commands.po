@@ -1059,7 +1059,7 @@ msgstr "Add a user to your notify list"
 msgid "Add an auto-respond rule"
 msgstr "Add an auto-respond rule"
 
-#: lib/retro_hex_chat/commands/registry.ex:74
+#: lib/retro_hex_chat/commands/registry.ex:73
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "Advanced"
@@ -1110,7 +1110,7 @@ msgstr "Ban"
 msgid "Ban user from channel"
 msgstr "Ban user from channel"
 
-#: lib/retro_hex_chat/commands/registry.ex:70
+#: lib/retro_hex_chat/commands/registry.ex:69
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "Basics"
@@ -1157,7 +1157,7 @@ msgstr "Change your display name. A confirmation dialog appears before the chang
 "Allowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\n"
 "Cannot change to your current nickname or one already in use."
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:70
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "Channel"
@@ -1233,7 +1233,7 @@ msgstr "Clear your entire autojoin list"
 msgid "Command name to view detailed help"
 msgstr "Command name to view detailed help"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "Configuration"
@@ -2678,7 +2678,7 @@ msgstr "Usage: /whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "Usage: /whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "User"
@@ -3085,68 +3085,6 @@ msgid "set, commands, addcmd, delcmd, help.\n"
 msgstr "set, commands, addcmd, delcmd, help.\n"
 ""
 
-#: lib/retro_hex_chat/commands/handlers/space.ex:54
-#: lib/retro_hex_chat/commands/handlers/space.ex:103
-#, elixir-autogen, elixir-format
-msgid "/space"
-msgstr "/space"
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:55
-#, elixir-autogen, elixir-format
-msgid "/space #general"
-msgstr "/space #general"
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:56
-#: lib/retro_hex_chat/commands/handlers/space.ex:104
-#, elixir-autogen, elixir-format
-msgid "/space #general Guild Tavern ttl=4h"
-msgstr "/space #general Guild Tavern ttl=4h"
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:47
-#: lib/retro_hex_chat/commands/handlers/space.ex:72
-#, elixir-autogen, elixir-format
-msgid "/space [#channel] [name] [ttl=2h]"
-msgstr "/space [#channel] [name] [ttl=2h]"
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:120
-#, elixir-autogen, elixir-format
-msgid "/space only works from a channel, not from PMs or the Status window."
-msgstr "/space only works from a channel, not from PMs or the Status window."
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:194
-#, elixir-autogen, elixir-format
-msgid "/space only works from a channel."
-msgstr "/space only works from a channel."
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:203
-#, elixir-autogen, elixir-format
-msgid "Could not create the space. Try again."
-msgstr "Could not create the space. Try again."
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:74
-#, elixir-autogen, elixir-format
-msgid "Create a multiplayer virtual space linked to a channel and post its invite card there.\n"
-"Requires: you must be registered and identified (/ns identify)."
-msgstr "Create a multiplayer virtual space linked to a channel and post its invite card there.\n"
-"Requires: you must be registered and identified (/ns identify)."
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:49
-#, elixir-autogen, elixir-format
-msgid "Create a virtual space: a multiplayer 8-bit office linked to a channel, where up to 20 people walk around, sit and chat. Posts an invite card in the channel.\n"
-"Requires: you must be registered and identified (/ns identify)."
-msgstr "Create a virtual space: a multiplayer 8-bit office linked to a channel, where up to 20 people walk around, sit and chat. Posts an invite card in the channel.\n"
-"Requires: you must be registered and identified (/ns identify)."
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:150
-#, elixir-autogen, elixir-format
-msgid "Invalid ttl. Use ttl=<duration>, e.g. ttl=2h (max 8h)."
-msgstr "Invalid ttl. Use ttl=<duration>, e.g. ttl=2h (max 8h)."
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:99
-#, elixir-autogen, elixir-format
-msgid "Lifetime, e.g. ttl=2h (max 8h)"
-msgstr "Lifetime, e.g. ttl=2h (max 8h)"
-
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:64
 #, elixir-autogen, elixir-format
 msgid "Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
@@ -3161,21 +3099,6 @@ msgid "Open a P2P lobby with another user: one persistent connection that runs a
 msgstr "Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
 "Requires: both users must be registered and identified (/ns identify)."
 
-#: lib/retro_hex_chat/commands/handlers/space.ex:92
-#, elixir-autogen, elixir-format
-msgid "Space name"
-msgstr "Space name"
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:85
-#, elixir-autogen, elixir-format
-msgid "Target channel (defaults to the active channel)"
-msgstr "Target channel (defaults to the active channel)"
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:179
-#, elixir-autogen, elixir-format
-msgid "Too many spaces created. Try again in %{seconds} seconds."
-msgstr "Too many spaces created. Try again in %{seconds} seconds."
-
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
@@ -3185,25 +3108,3 @@ msgstr "User '%{nickname}' is offline."
 #, elixir-autogen, elixir-format
 msgid "You cannot open a lobby with yourself."
 msgstr "You cannot open a lobby with yourself."
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:114
-#: lib/retro_hex_chat/commands/handlers/space.ex:200
-#, elixir-autogen, elixir-format
-msgid "You must be identified to use /space."
-msgstr "You must be identified to use /space."
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:155
-#: lib/retro_hex_chat/commands/handlers/space.ex:197
-#, elixir-autogen, elixir-format
-msgid "You must be registered to use /space."
-msgstr "You must be registered to use /space."
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:189
-#, elixir-autogen, elixir-format
-msgid "You need permission to post in %{channel} to create a space there."
-msgstr "You need permission to post in %{channel} to create a space there."
-
-#: lib/retro_hex_chat/commands/handlers/space.ex:185
-#, elixir-autogen, elixir-format
-msgid "ttl exceeds the maximum lifetime of 8h."
-msgstr "ttl exceeds the maximum lifetime of 8h."

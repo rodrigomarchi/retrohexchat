@@ -157,10 +157,10 @@ Tudo da seção 4; migração DB; **help topics** (atualizar "Virtual Spaces",
 remover `/space` de Commands, atualizar atalhos com o toggle); i18n dos textos
 novos (regra da memória: só os catálogos do domínio afetado).
 **Aceite**: `make ci` 9/9; nenhuma referência morta a token/lobby de espaço.
-**Status 2026-07-08**: em andamento. A superfície pública de `/space`, a criação
-de `space_invite`, `SpaceLive`, o join legado por token e o runtime persistido
-por `virtual_space_sessions` já foram removidos. Falta revisar docs/help/i18n
-para refletir que o espaço é uma aba do canal.
+**Status 2026-07-08**: concluído. A superfície pública de `/space`, a criação de
+`space_invite`, `SpaceLive`, o join legado por token, o runtime persistido por
+`virtual_space_sessions` e os textos/help/i18n do fluxo antigo foram removidos.
+O help agora descreve o espaço como uma aba permanente do canal.
 
 #### Backlog executável da F4
 
@@ -174,7 +174,7 @@ para refletir que o espaço é uma aba do canal.
   renomeá-lo antes de remover o join legado por token.
 - [x] Aposentar `Schema.Session`, `virtual_space_sessions`, TTL/status/cleanup e a
    política de capacidade/criador quando o fluxo legado não tiver chamadas vivas.
-- [ ] Atualizar docs/help/i18n para explicar que o espaço é uma aba do canal e não
+- [x] Atualizar docs/help/i18n para explicar que o espaço é uma aba do canal e não
    um comando separado.
 - [x] Rodar `make ci` e registrar aprendizados/decisões antes de apagar a próxima
    camada.
@@ -270,6 +270,11 @@ delta — antes de F6 para decidir quando ela vira necessidade.
   ficou canal-only, sem token persistido, TTL/status/capacidade/criador ou
   telemetria de lifecycle. A tabela `virtual_space_sessions` ganhou migração de
   drop reversível.
+- Sexto corte da F4 concluído: help e catálogos gettext dos domínios afetados
+  foram atualizados para remover `/space`, invite card, token/TTL, limite de 20
+  pessoas e configuração `space_max_participants`. O tópico "Virtual Spaces"
+  agora descreve o toggle Chat/Space dentro do canal e deixa claro que não há
+  comando separado para criar o mapa.
 
 ### Validação registrada
 
@@ -297,3 +302,6 @@ delta — antes de F6 para decidir quando ela vira necessidade.
   `SpaceChannel` com 49 testes sem falhas; primeira rodada de `rtk make ci`
   falhou no Credo por `cond` simplificável e a correção foi aplicada; rerodada
   de `rtk make ci` completa com 9/9 checks passando.
+- Após o sexto corte da F4: testes focados de `HelpTopics`, `HelpLive` e
+  cobertura de conteúdo do help com 69 testes sem falhas; busca por referências
+  mortas a `/space`/token/TTL/invite card/admin setting nos catálogos afetados.
