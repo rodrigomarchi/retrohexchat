@@ -321,6 +321,26 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     request_stop(socket)
   end
 
+  # The X on ANY session window means disconnecting the whole session, never
+  # a silent hide — users were closing the camera and not realizing the
+  # connection stayed up. Every close path (X, taskbar menu, Escape) routes
+  # here via on_close; the window only goes away if the disconnect is
+  # confirmed. Minimize remains the "keep it running" gesture.
+  def handle_event("p2p_window_close", _params, socket) do
+    case socket.assigns.p2p_session do
+      %{} = p2p ->
+        Phoenix.LiveView.send_update(P2PConfirmDialog,
+          id: P2PConfirmDialog.id(),
+          action: {:open_close, p2p.peer_nick}
+        )
+
+        {:halt, socket}
+
+      nil ->
+        {:halt, socket}
+    end
+  end
+
   def handle_event("p2p_confirm_end", _params, socket) do
     close_dialog()
 

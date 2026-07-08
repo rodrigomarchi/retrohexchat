@@ -64,8 +64,15 @@ test.describe('In-chat P2P session', () => {
       ).toBeVisible();
       await alice.chat.expectMessageVisible('P2P session connected');
 
-      // Alice ends the session from the status bar (with the confirm).
-      await statusBarStop(alice.page).click();
+      // Closing ANY session window means disconnecting: the X on the Call
+      // window opens the warning dialog, and confirming ends the session.
+      await alice.page
+        .getByTestId('p2p-call-window')
+        .locator('[data-window-control="close"]')
+        .click();
+      await expect(
+        alice.page.getByTestId('p2p-confirm-dialog'),
+      ).toContainText('disconnects the whole P2P session');
       await alice.page.getByTestId('p2p-confirm-dialog-confirm').click();
       await expect(statusBarP2P(alice.page)).toBeHidden();
       await expect(statusBarP2P(bob.page)).toBeHidden({ timeout: 10_000 });

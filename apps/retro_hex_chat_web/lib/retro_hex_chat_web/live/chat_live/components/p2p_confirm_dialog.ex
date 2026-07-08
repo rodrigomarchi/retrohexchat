@@ -28,6 +28,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog do
     {:ok, assign(socket, show: true, mode: :end, peer: peer, new_peer: nil)}
   end
 
+  def update(%{action: {:open_close, peer}}, socket) do
+    {:ok, assign(socket, show: true, mode: :close, peer: peer, new_peer: nil)}
+  end
+
   def update(%{action: {:open_switch, peer, new_peer}}, socket) do
     {:ok, assign(socket, show: true, mode: :switch, peer: peer, new_peer: new_peer)}
   end
@@ -46,7 +50,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog do
         mode={@mode}
         peer={@peer}
         new_peer={@new_peer}
-        on_confirm={if @mode == :switch, do: "p2p_confirm_switch", else: "p2p_confirm_end"}
+        on_confirm={
+          if @mode == :switch,
+            do: "p2p_confirm_switch",
+            else: "p2p_confirm_end"
+        }
         on_cancel="p2p_confirm_cancel"
       />
     </div>

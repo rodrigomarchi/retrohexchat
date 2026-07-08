@@ -2,9 +2,11 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   @moduledoc """
   Confirmation dialog for destructive P2P session actions.
 
-  Composed from dialog + button primitives. Two modes:
+  Composed from dialog + button primitives. Three modes:
 
     * `:end` — confirm ending the active session with `peer`.
+    * `:close` — the user clicked X on a session window: closing means
+      disconnecting the whole P2P session, so warn before it happens.
     * `:switch` — confirm ending the session with `peer` to accept a new
       invite from `new_peer` (the one-session-at-a-time switch).
 
@@ -30,7 +32,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   @doc "Renders the P2P end/switch confirmation dialog."
   attr :id, :string, required: true
   attr :show, :boolean, default: false
-  attr :mode, :atom, default: :end, values: [:end, :switch]
+  attr :mode, :atom, default: :end, values: [:end, :close, :switch]
   attr :peer, :string, default: nil
   attr :new_peer, :string, default: nil
   attr :on_confirm, :any, required: true
@@ -69,12 +71,23 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   end
 
   defp title(:end), do: dgettext("dialogs", "End P2P Session")
+  defp title(:close), do: dgettext("dialogs", "Close P2P Session?")
   defp title(:switch), do: dgettext("dialogs", "Switch P2P Session")
 
   defp body(:end, peer, _new_peer) do
     dgettext(
       "dialogs",
       "End the P2P session with %{peer}? Any call, game or file transfer in progress will stop.",
+      peer: peer || "?"
+    )
+  end
+
+  defp body(:close, peer, _new_peer) do
+    dgettext(
+      "dialogs",
+      "Closing this window disconnects the whole P2P session with %{peer} — any call, game " <>
+        "or file transfer in progress will stop. To keep the session and just tidy up, " <>
+        "minimize the window instead.",
       peer: peer || "?"
     )
   end
@@ -89,5 +102,6 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   end
 
   defp confirm_label(:end), do: dgettext("dialogs", "End session")
+  defp confirm_label(:close), do: dgettext("dialogs", "Disconnect")
   defp confirm_label(:switch), do: dgettext("dialogs", "Switch")
 end

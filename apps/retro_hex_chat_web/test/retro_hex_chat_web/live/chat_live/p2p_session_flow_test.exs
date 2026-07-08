@@ -288,6 +288,27 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       end
     end
 
+    test "closing any session window asks to disconnect; confirming ends the session",
+         %{conn: conn} do
+      ctx = mount_pair(conn, "p2pgg#{uid()}", "p2pgh#{uid()}")
+      session = invite(ctx)
+      render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token})
+      flush(ctx.view_a)
+      render_click(ctx.view_a, "lobby_connected", %{})
+
+      # The X routes to the confirm — nothing ends yet.
+      render_click(ctx.view_a, "p2p_window_close", %{})
+      assert {:ok, %{status: "connected"}} = Lobby.get_session(session.token)
+      assert %{state: :connected} = p2p_assigns(ctx.view_a)
+
+      # Confirming the dialog disconnects the whole session.
+      render_click(ctx.view_a, "p2p_confirm_end", %{})
+      flush(ctx.view_a)
+      assert {:ok, %{status: "closed"}} = Lobby.get_session(session.token)
+      assert p2p_assigns(ctx.view_a) == nil
+      refute render(ctx.view_a) =~ "p2p-call-window"
+    end
+
     test "the burst is skipped on a mobile viewport", %{conn: conn} do
       ctx = mount_pair(conn, "p2pge#{uid()}", "p2pgf#{uid()}")
       session = invite(ctx)
