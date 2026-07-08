@@ -94,6 +94,106 @@ test.describe('In-chat P2P session', () => {
     }
   });
 
+  test('the auto-started call carries real video both ways; file and game share the connection', async ({
+    browser,
+  }) => {
+    const alice = await newP2PUser(browser, 'cpg', {
+      media: true,
+      acceptDownloads: true,
+    });
+    const bob = await newP2PUser(browser, 'cph', {
+      media: true,
+      acceptDownloads: true,
+    });
+
+    const remoteVideoLive = (page: Page) =>
+      page.evaluate(() => {
+        const v = document.getElementById(
+          'lobby-remote-video',
+        ) as HTMLVideoElement | null;
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const stream = v?.srcObject as any;
+        const track = stream?.getVideoTracks?.()[0];
+        return !!track && track.readyState === 'live' && track.muted === false;
+      });
+
+    try {
+      await alice.chat.sendMessage(`/p2p ${bob.nick}`);
+      await bob.chat.expectTabVisible(alice.nick);
+      await bob.chat.switchToTab(alice.nick);
+      await bob.page.getByTestId('session-card-accept').click();
+
+      await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`, {
+        timeout: 20_000,
+      });
+
+      // The auto-started call must carry REAL RTP in both directions —
+      // live, unmuted remote video tracks, not just visible elements.
+      for (const page of [alice.page, bob.page]) {
+        await expect
+          .poll(() => remoteVideoLive(page), { timeout: 30_000 })
+          .toBe(true);
+      }
+
+      // File transfer over the SAME connection, mid-call: restore the
+      // minimized Files window from the taskbar and send.
+      await alice.page.locator('[data-window-taskbar="p2p-files"]').click();
+      await expect(alice.page.getByTestId('lobby-file-panel')).toBeVisible();
+      const fileName = 'chat-p2p-during-call.txt';
+      await alice.page.locator('#lobby-file-input').setInputFiles({
+        name: fileName,
+        mimeType: 'text/plain',
+        buffer: Buffer.from('concurrent call + file payload'),
+      });
+
+      // The receiver's Files window surfaces on the offer; accepting
+      // downloads the file for real.
+      const bobFilePanel = bob.page.getByTestId('lobby-file-panel');
+      await expect(bobFilePanel).toBeVisible({ timeout: 15_000 });
+      await expect(bobFilePanel.getByTestId('file-transfer')).toContainText(
+        fileName,
+        { timeout: 15_000 },
+      );
+      const downloadPromise = bob.page.waitForEvent('download', {
+        timeout: 20_000,
+      });
+      await bobFilePanel.getByTestId('file-transfer-accept').click();
+      const download = await downloadPromise;
+      expect(download.suggestedFilename()).toBe(fileName);
+
+      // The completed transfer lands as a persisted P2P line in the PM.
+      await bob.chat.expectMessageVisible('File transfer completed');
+
+      // A game joins the party on the same connection: the Games window is
+      // minimized on the taskbar; restore, propose, accept, play.
+      await alice.page.locator('[data-window-taskbar="p2p-games"]').click();
+      await expect(alice.page.getByTestId('lobby-game-panel')).toBeVisible();
+      await alice.page
+        .getByTestId('lobby-game-panel')
+        .getByRole('button', { name: 'Hex Pong' })
+        .click();
+
+      const consent = bob.page.getByTestId('lobby-game-consent');
+      await expect(consent).toBeVisible({ timeout: 15_000 });
+      await consent.getByRole('button', { name: 'Accept' }).click();
+
+      for (const page of [alice.page, bob.page]) {
+        await expect(page.locator('#lobby-game-canvas canvas')).toBeVisible({
+          timeout: 20_000,
+        });
+      }
+
+      // The thesis carries over from the lobby: call + file + game coexist —
+      // the video is STILL flowing after everything else ran.
+      await expect
+        .poll(() => remoteVideoLive(alice.page), { timeout: 15_000 })
+        .toBe(true);
+      await expect(statusBarP2P(alice.page)).toContainText(`P2P: ${bob.nick}`);
+    } finally {
+      await closeP2PUsers([alice, bob]);
+    }
+  });
+
   test('declining the invite tells the inviter and clears the pending state', async ({
     browser,
   }) => {
