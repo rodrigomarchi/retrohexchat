@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpStatusBar do
   @moduledoc """
   Status bar for the help desktop's top bar.
 
-  The help counterpart to `StatusBarApp`/`LobbyStatusBar`, composed from the same
+  The help counterpart to `StatusBarApp`, composed from the same
   `window_status_bar`/`window_status_bar_field` primitives but surfacing
   help-relevant state: the current topic breadcrumb (category › title), the total
   topic count, and the clock (filled in client-side by `ClockHook`).

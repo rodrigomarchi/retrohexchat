@@ -31,7 +31,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Composer do
   `typing_indicator`, `paste`) that toggles which features light up. The main chat
   passes a stable `%Session{}` + `show_status_tab` and the composer derives the
   read-model in `update/2` (keeping change tracking keyed on the session struct);
-  the P2P lobby passes the `capabilities`/`nickname`/… fields directly. Same
+  a host may pass the `capabilities`/`nickname`/… fields directly. Same
   component, two hosts, no fork.
   """
   use RetroHexChatWeb, :live_component

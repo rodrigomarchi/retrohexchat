@@ -1,7 +1,7 @@
 defmodule RetroHexChatWeb.App.SessionHelpers do
   @moduledoc """
   Shared session helper functions for app session LiveViews
-  (LobbyLive, SoloSessionLive, ArcadeGameLive).
+  (SoloSessionLive, ArcadeGameLive).
   """
 
   use Phoenix.VerifiedRoutes,
@@ -41,25 +41,6 @@ defmodule RetroHexChatWeb.App.SessionHelpers do
     end
   end
 
-  @spec resolve_peer_nick(integer(), map()) :: String.t()
-  def resolve_peer_nick(user_id, session) do
-    peer_id = if user_id == session.creator_id, do: session.peer_id, else: session.creator_id
-
-    case RetroHexChat.Repo.get(RegisteredNick, peer_id) do
-      nil -> "unknown"
-      nick -> nick.nickname
-    end
-  end
-
-  @spec verify_participant(integer(), map()) :: :ok | {:redirect, nil}
-  def verify_participant(user_id, session) do
-    if user_id == session.creator_id or user_id == session.peer_id do
-      :ok
-    else
-      {:redirect, nil}
-    end
-  end
-
   @spec parse_client_info(map() | nil) :: map()
   def parse_client_info(nil), do: %{}
 
@@ -69,13 +50,6 @@ defmodule RetroHexChatWeb.App.SessionHelpers do
       _ -> %{}
     end
   end
-
-  @spec webrtc_state_label(String.t(), any()) :: String.t() | nil
-  def webrtc_state_label("connecting", _attempt), do: dgettext("chat", "Connecting...")
-  def webrtc_state_label("connected", _attempt), do: dgettext("chat", "Connected")
-  def webrtc_state_label("disconnected", _attempt), do: dgettext("chat", "Reconnecting...")
-  def webrtc_state_label("failed", _attempt), do: dgettext("chat", "Connection failed")
-  def webrtc_state_label(_state, _attempt), do: nil
 
   # --- Private Helpers ---
 

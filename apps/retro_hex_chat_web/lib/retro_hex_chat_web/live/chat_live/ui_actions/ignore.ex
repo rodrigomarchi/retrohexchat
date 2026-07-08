@@ -118,7 +118,7 @@ defmodule RetroHexChatWeb.ChatLive.UiActions.Ignore do
 
     with %{id: owner_id} <- RetroHexChat.Repo.get_by(RegisteredNick, nickname: owner_nick),
          %{id: ignored_id} <- RetroHexChat.Repo.get_by(RegisteredNick, nickname: ignored_nick) do
-      RetroHexChat.P2P.close_sessions_between(owner_id, ignored_id)
+      RetroHexChat.Lobby.close_sessions_between(owner_id, ignored_id)
     end
   end
 end

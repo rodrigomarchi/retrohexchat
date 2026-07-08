@@ -102,8 +102,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
   end
 
   # The accept/decline buttons belong only to the invited peer of a still
-  # pending lobby invite; everyone else (the creator, later viewers) keeps the
-  # plain link CTA while the standalone page exists.
+  # pending lobby invite; everyone else (the creator, later viewers) just
+  # watches the timeline — P2P sessions have no link out of the chat.
   defp invited_viewer?(%{kind: :lobby, status: "pending", peer: peer}, viewer)
        when is_binary(peer) and is_binary(viewer),
        do: String.downcase(peer) == String.downcase(viewer)

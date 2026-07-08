@@ -46,8 +46,6 @@ tree-view-marker-open
 # P2P/game media components — used by components/ui/* files (skipped by template scanner)
 activity-indicator__*
 game-media*
-p2p-lobby__*
-p2p-lobby-window*
 p2p-media-call*
 # Desktop window manager — BEM classes applied via classes([...]) in components/ui/layout/desktop.ex
 # and toggled by WindowManagerHook (both skipped by the template scanner)
@@ -59,10 +57,6 @@ system
 # JS-only — toast body queried via querySelector in notification_toast.js
 toast-body
 # Semantic modifier classes — used in dynamic class expressions, no distinct styling needed
-p2p-lobby-chat__content
-p2p-lobby-consent__btn--reject
-p2p-lobby-presence__user--offline
-p2p-lobby-presence__user--online
 # Semantic container classes with no visual styling needed
 cheatsheet-dialog
 context-color-picker

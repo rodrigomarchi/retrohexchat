@@ -165,7 +165,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
             <.p2p_invite_card
               :if={!Map.get(@msg, :session_card)}
               label={ChatHelpers.extract_p2p_label(@msg.content)}
-              link={ChatHelpers.extract_p2p_link(@msg.content)}
             />
           </.chat_message>
         <% _ -> %>

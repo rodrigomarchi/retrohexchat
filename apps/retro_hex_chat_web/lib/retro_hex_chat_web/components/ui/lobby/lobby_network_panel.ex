@@ -1,6 +1,6 @@
 defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   @moduledoc """
-  Tabbed statistics panel for the P2P lobby — the body of the "Statistics"
+  Tabbed statistics panel for the P2P session — the body of the "Statistics"
   window.
 
   A tab per view: **Network** (the full `p2p_connection_diagram` topology + whois

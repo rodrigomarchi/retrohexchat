@@ -15,7 +15,6 @@ defmodule RetroHexChatWeb.Components.UI.P2PInviteCard do
 
   @doc "Renders the inert P2P invite fallback (unresolvable session)."
   attr :label, :string, required: true, doc: "Invite description text"
-  attr :link, :string, default: nil, doc: "Ignored — kept for call-site compatibility"
   attr :class, :any, default: nil
   attr :rest, :global
 

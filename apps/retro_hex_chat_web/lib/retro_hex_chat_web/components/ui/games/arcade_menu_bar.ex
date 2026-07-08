@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.ArcadeMenuBar do
   @moduledoc """
   macOS-style menu bar for the solo arcade desktop.
 
-  The arcade counterpart to `MenuBarApp`/`LobbyMenuBar`: same `MenuBar`/`ContextMenu`
+  The arcade counterpart to `MenuBarApp`: same `MenuBar`/`ContextMenu`
   primitives and the same `MenuBarHook` DOM contract, with arcade menus — Session,
   Window and Help. Items route through the two interaction styles: server events
   (`close_session`, handled by `SoloSessionLive`) and client-side `data-window-open`

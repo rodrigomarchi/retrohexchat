@@ -73,13 +73,6 @@ defmodule RetroHexChat.Lobby.Service do
     :ok
   end
 
-  @spec send_lobby_message(String.t(), integer(), String.t(), String.t()) ::
-          :ok | {:error, atom()}
-  def send_lobby_message(token, user_id, content, type \\ "message") do
-    nick = get_nickname(user_id)
-    SessionServer.send_message(token, user_id, nick || "unknown", content, type)
-  end
-
   @spec propose_game(String.t(), integer(), String.t()) :: :ok | {:error, atom()}
   def propose_game(token, user_id, game_id) do
     nick = get_nickname(user_id)
@@ -90,17 +83,6 @@ defmodule RetroHexChat.Lobby.Service do
   def respond_game(token, user_id, accepted?) do
     nick = get_nickname(user_id)
     SessionServer.respond_game(token, user_id, nick || "unknown", accepted?)
-  end
-
-  @spec start_signaling(integer(), integer()) :: %{creator_payload: map(), peer_payload: map()}
-  def start_signaling(creator_id, peer_id) do
-    creator_ice = RetroHexChat.P2P.ice_servers(to_string(creator_id))
-    peer_ice = RetroHexChat.P2P.ice_servers(to_string(peer_id))
-
-    %{
-      creator_payload: %{ice_servers: creator_ice, role: "initiator"},
-      peer_payload: %{ice_servers: peer_ice}
-    }
   end
 
   # --- Private helpers ---

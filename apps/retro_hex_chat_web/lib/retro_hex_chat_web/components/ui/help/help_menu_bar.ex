@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
   @moduledoc """
   macOS-style menu bar for the help desktop.
 
-  The help counterpart to `MenuBarApp`/`LobbyMenuBar`: same `MenuBar`/`ContextMenu`
+  The help counterpart to `MenuBarApp`: same `MenuBar`/`ContextMenu`
   primitives and the same `MenuBarHook` DOM contract, with help menus — Navigate,
   View and Help. Items route through three interaction styles: LiveView `navigate`
   links (Home / go to a topic), client-side `data-help-nav` (Back/Forward, read by

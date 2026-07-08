@@ -231,42 +231,42 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   padding: 12px 8px;
 }
 
-/* Compact variant for the lobby Statistics window (#conn): the full diagram is
-   sized for a wide screen, so scale the peers/whois/link down to fit the narrow
-   floating window (both peers + link must fit ~350px without horizontal
-   overflow). Scoped by the window id so the P2P screen's diagram is untouched. */
-#conn .p2p-diagram {
+/* Compact variant for the P2P Statistics window (#p2p-stats): the full diagram
+   is sized for a wide screen, so scale the peers/whois/link down to fit the
+   narrow floating window (both peers + link must fit ~350px without horizontal
+   overflow). Scoped by the window id so the showcase diagram is untouched. */
+#p2p-stats .p2p-diagram {
   padding: 6px 2px;
 }
-#conn .p2p-diagram__peers {
+#p2p-stats .p2p-diagram__peers {
   gap: 4px;
 }
-#conn .p2p-diagram__peer {
+#p2p-stats .p2p-diagram__peer {
   min-width: 84px;
   max-width: 116px;
   gap: 2px;
 }
-#conn .p2p-diagram__browser-icon {
+#p2p-stats .p2p-diagram__browser-icon {
   width: 32px;
   height: 32px;
 }
-#conn .p2p-diagram__whois {
+#p2p-stats .p2p-diagram__whois {
   font-size: 0.6875rem;
   gap: 0;
   margin-top: 1px;
 }
-#conn .p2p-diagram__whois-svg {
+#p2p-stats .p2p-diagram__whois-svg {
   width: 14px;
   height: 14px;
 }
-#conn .p2p-diagram__whois-value {
+#p2p-stats .p2p-diagram__whois-value {
   max-width: 88px;
 }
-#conn .p2p-diagram__link {
+#p2p-stats .p2p-diagram__link {
   min-width: 56px;
   padding-top: 8px;
 }
-#conn .p2p-diagram__badge {
+#p2p-stats .p2p-diagram__badge {
   min-width: 60px;
   padding: 2px 4px;
   font-size: 0.6875rem;
@@ -736,80 +736,6 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   }
 }
 
-/* ══════════════════════════════════════════════════════
-   P2P Lobby — active session surfaces
-   ══════════════════════════════════════════════════════ */
-
-.p2p-lobby-window {
-  max-width: 600px;
-}
-
-.p2p-lobby-window--active {
-  max-width: min(1120px, calc(100vw - 32px));
-}
-
-.p2p-lobby-window--call-maximized {
-  max-width: min(1240px, calc(100vw - 16px));
-}
-
-.p2p-lobby__diagram-panel {
-  min-width: 0;
-}
-
-.p2p-lobby__diagram-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  margin-bottom: 4px;
-}
-
-.p2p-lobby__diagram-title {
-  font-size: 0.75rem;
-  font-weight: bold;
-  color: var(--color-muted);
-}
-
-.p2p-lobby__activity {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(240px, 300px);
-  gap: 8px;
-  align-items: start;
-}
-
-.p2p-lobby__activity--maximized {
-  grid-template-columns: minmax(0, 1fr);
-}
-
-.p2p-lobby__activity--maximized .p2p-lobby__activity-side {
-  display: none;
-}
-
-.p2p-lobby__activity-side {
-  min-width: 0;
-}
-
-.p2p-lobby__chat-log {
-  max-height: 160px;
-  min-height: 60px;
-}
-
-.p2p-lobby__activity-side .p2p-lobby__chat-log {
-  max-height: 320px;
-  min-height: 168px;
-}
-
-.p2p-lobby__file-panel {
-  min-width: 0;
-}
-
-.p2p-lobby__file-drop {
-  min-height: 148px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
 /* ── Compact connection strip ── */
 
 .p2p-diagram-strip {
@@ -1125,13 +1051,7 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
 }
 
 @media (max-width: 860px) {
-  .p2p-lobby-window--active {
-    max-width: calc(100vw - 16px);
-  }
 
-  .p2p-lobby__activity {
-    grid-template-columns: minmax(0, 1fr);
-  }
 
   .p2p-diagram-strip {
     grid-template-columns: minmax(0, 1fr);

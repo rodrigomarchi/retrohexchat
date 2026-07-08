@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
   hook closes on click.
 
   Content lives in the concrete bars that compose these primitives
-  (`MenuBarApp` for chat, `Lobby.LobbyMenuBar` for the lobby); nothing here is
+  (`MenuBarApp` for chat, `ArcadeMenuBar` for the arcade); nothing here is
   screen-specific.
   """
   use RetroHexChatWeb.Component

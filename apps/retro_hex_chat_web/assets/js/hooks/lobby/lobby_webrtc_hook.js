@@ -11,9 +11,6 @@
  * Both data channels are created up front at connection time so that later
  * renegotiation is only ever triggered by media tracks — this avoids glare
  * between "user toggles video" and "game channel opens".
- *
- * Derived from p2p/webrtc_hook.js + games/game_webrtc_hook.js, kept isolated
- * so the dedicated /p2p and /game flows are untouched.
  */
 import {
   createPeerConnection,
@@ -36,7 +33,7 @@ const STATS_INTERVAL_MS = 2500;
 // (`lobby_renegotiate`). This sidesteps the offer glare that "perfect negotiation"
 // resolves with rollback but which, in practice, leaves the polite peer's freshly
 // received tracks muted (no RTP) when both peers add video at the same instant.
-// Mirrors the proven approach in games/game_webrtc_hook.js.
+// Single-offerer negotiation, serialized per round.
 const LobbyWebRTCHook = {
   mounted() {
     this.pc = null;

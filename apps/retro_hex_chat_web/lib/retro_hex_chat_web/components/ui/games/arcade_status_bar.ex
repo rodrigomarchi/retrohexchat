@@ -2,7 +2,7 @@ defmodule RetroHexChatWeb.Components.UI.Games.ArcadeStatusBar do
   @moduledoc """
   Status bar for the solo arcade desktop's top bar.
 
-  The arcade counterpart to `StatusBarApp`/`LobbyStatusBar`, composed from the same
+  The arcade counterpart to `StatusBarApp`, composed from the same
   `window_status_bar`/`window_status_bar_field` primitives but surfacing
   arcade-relevant state: the player's nickname, the current game (when playing) or a
   session-status label, and the clock (filled in client-side by `ClockHook`).

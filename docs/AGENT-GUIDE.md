@@ -198,7 +198,7 @@ get fresh timers with the *remaining* duration.
 ## 6. LiveComponent island decomposition
 
 The single most important architectural pattern: extract stateful UI islands out of a large
-orchestrator LiveView (`ChatLive`, `LobbyLive`) into `Phoenix.LiveComponent`s. The parent
+orchestrator LiveView (`ChatLive`) into `Phoenix.LiveComponent`s. The parent
 becomes a thin orchestrator; each island owns its own state, events, and streams.
 
 ### 6.1 Ownership — what migrates, what stays
@@ -377,7 +377,7 @@ becomes a thin orchestrator; each island owns its own state, events, and streams
   other producer (host or sibling island) enqueues with a one-line `send_update`; only the
   owner mutates the list:
   ```elixir
-  send_update(ChatIsland, id: ChatIsland.id(), system_message: txt)
+  send_update(P2PFileIsland, id: P2PFileIsland.id(), action: {:ft_event, name, params})
   # owner builds the map itself:
   def update(%{system_message: txt}, socket),
     do: {:ok, update(socket, :messages, &(&1 ++ [system_msg(txt)]))}
@@ -434,7 +434,7 @@ becomes a thin orchestrator; each island owns its own state, events, and streams
 
 ---
 
-## 7. Windowed desktop UI (Win98 lobby)
+## 7. Windowed desktop UI (Win98 desktop)
 
 - Each feature lives in a `desktop_window` — client-side chrome owned by a
   `WindowManagerHook` (position/size/z-order/min-max/open persisted to localStorage) wrapping a
@@ -466,8 +466,8 @@ becomes a thin orchestrator; each island owns its own state, events, and streams
 
 ### 7.1 Chat: managed windows (server-owned lifecycle)
 
-The lobby keeps every island **always mounted** (rule above) because their hooks/data channels
-must outlive a close. The chat adds a second kind — **`managed` windows** — and the two coexist.
+The chat's P2P session windows keep their islands **always mounted** (rule above) because their
+hooks/data channels must outlive a close. A second kind — **`managed` windows** — coexists.
 The chat is one `pinned default_maximized` window (never closable); ~18 former modals are windows;
 confirmations/transient prompts stay modal `UI.Dialog`; persistence is ON (`persist_key="chat"`,
 unique per LiveView).
@@ -525,6 +525,13 @@ unique per LiveView).
 ---
 
 ## 8. WebRTC / P2P
+
+**Naming policy — "lobby" is the DOMAIN, not a page.** `RetroHexChat.Lobby` is the
+P2P-session bounded context; the PubSub topic `"lobby:#{token}"`, the `lobby_*`
+events, the `lobby-*` DOM ids and the `Lobby*` module names all refer to that
+domain concept. There is NO standalone lobby page — `/lobby/:token` only
+redirects to `/chat`, where P2P sessions live (invite card in the PM, `p2p-*`
+desktop windows). Do not invent or search for a lobby LiveView/page.
 
 ### 8.1 Session model
 
@@ -611,7 +618,7 @@ This separation is Principle IV and is enforced.
   ChanServ tabs extend the existing Channel Central dialog; wiring specs just add a menu entry to
   an already-built dialog. **Reuse a whole stateful component across contexts via
   capability/flag toggles** rather than copying it per context — this is how the chat Composer is
-  context-agnostic (capabilities map) and shared by main chat + P2P lobby.
+  context-agnostic (capabilities map).
 - Aggregator dialogs (Options, Admin Console) are built incrementally: ship a tabbed/tree shell
   that preserves a safe default fallback (e.g. the raw Console tab), then fill structured tabs one
   slice per iteration.

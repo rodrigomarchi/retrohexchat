@@ -51,18 +51,11 @@ defmodule RetroHexChat.Lobby do
   @spec close_sessions_between(integer(), integer()) :: :ok
   defdelegate close_sessions_between(user_a_id, user_b_id), to: Service
 
-  @spec send_lobby_message(String.t(), integer(), String.t(), String.t()) ::
-          :ok | {:error, atom()}
-  defdelegate send_lobby_message(token, user_id, content, type \\ "message"), to: Service
-
   @spec propose_game(String.t(), integer(), String.t()) :: :ok | {:error, atom()}
   defdelegate propose_game(token, user_id, game_id), to: Service
 
   @spec respond_game(String.t(), integer(), boolean()) :: :ok | {:error, atom()}
   defdelegate respond_game(token, user_id, accepted?), to: Service
-
-  @spec start_signaling(integer(), integer()) :: %{creator_payload: map(), peer_payload: map()}
-  defdelegate start_signaling(creator_id, peer_id), to: Service
 
   @spec get_session(String.t()) :: {:ok, Session.t()} | {:error, :not_found}
   def get_session(token) do

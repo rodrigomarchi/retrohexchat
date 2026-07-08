@@ -32,9 +32,6 @@ defmodule RetroHexChat.Lobby.SessionServer do
   @connecting_timeout :timer.seconds(30)
   @game_request_timeout :timer.seconds(60)
   @rejoin_grace_timeout :timer.seconds(30)
-  # Matches the shared chat composer's char counter (…/1000).
-  @max_message_length 1000
-  @max_messages 100
 
   @pubsub RetroHexChat.PubSub
 
@@ -103,12 +100,6 @@ defmodule RetroHexChat.Lobby.SessionServer do
     call(token, {:transition, new_status})
   end
 
-  @spec send_message(String.t(), integer(), String.t(), String.t(), String.t()) ::
-          :ok | {:error, atom()}
-  def send_message(token, user_id, sender_nick, content, type \\ "message") do
-    call(token, {:send_message, user_id, sender_nick, content, type})
-  end
-
   @spec set_media(String.t(), integer(), boolean(), boolean()) :: :ok | {:error, atom()}
   def set_media(token, user_id, audio?, video?) do
     call(token, {:set_media, user_id, audio?, video?})
@@ -161,7 +152,6 @@ defmodule RetroHexChat.Lobby.SessionServer do
             connections: %{creator: nil, peer: nil},
             webrtc_ready: %{creator: false, peer: false},
             signaling_started: false,
-            messages: [],
             media: %{
               creator: %{audio: false, video: false},
               peer: %{audio: false, video: false}
@@ -231,27 +221,6 @@ defmodule RetroHexChat.Lobby.SessionServer do
           from: state.session.status,
           to: new_status_str
         )}, state}
-    end
-  end
-
-  def handle_call(
-        {:send_message, _user_id, _nick, _content},
-        _from,
-        %{session: %{status: s}} = state
-      )
-      when s not in ~w(lobby connected) do
-    {:reply, {:error, :not_connected}, state}
-  end
-
-  def handle_call({:send_message, _user_id, _nick, ""}, _from, state) do
-    {:reply, {:error, :content_empty}, state}
-  end
-
-  def handle_call({:send_message, user_id, sender_nick, content, type}, _from, state) do
-    if String.length(content) > @max_message_length do
-      {:reply, {:error, :content_too_long}, state}
-    else
-      {:reply, :ok, handle_send_message(state, user_id, sender_nick, content, type)}
     end
   end
 
@@ -593,22 +562,6 @@ defmodule RetroHexChat.Lobby.SessionServer do
     broadcast(state.token, "lobby_status_changed", %{status: "failed", reason: reason})
     notify_chat_participants(session, reason)
     %{state | session: session}
-  end
-
-  defp handle_send_message(state, user_id, sender_nick, content, type) do
-    msg = %{
-      id: System.unique_integer([:positive]),
-      sender_id: user_id,
-      sender_nick: sender_nick,
-      content: content,
-      type: type,
-      timestamp: DateTime.utc_now()
-    }
-
-    messages = Enum.take(state.messages ++ [msg], -@max_messages)
-    state = reset_lobby_timers(%{state | messages: messages})
-    broadcast(state.token, "lobby_message", msg)
-    state
   end
 
   defp handle_propose_game(state, user_id, proposer_nick, game_id) do

@@ -49,7 +49,7 @@ defmodule RetroHexChat.Chat.HelpTopics.UserInterface do
           ) <>
             dgettext(
               "help",
-              "The P2P lobby, the solo arcade and this Help viewer share the same window " <>
+              "The chat, the solo arcade and this Help viewer share the same window " <>
                 "manager. The Help viewer is laid out like the classic Windows Help: a toolbar " <>
                 "(Back / Forward / Home), a navigator with Contents, Index and Search tabs, and " <>
                 "a \"See Also\" list of related topics under each article."

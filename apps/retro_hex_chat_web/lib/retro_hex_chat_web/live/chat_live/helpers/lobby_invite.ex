@@ -1,9 +1,10 @@
 defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   @moduledoc """
-  Shared P2P-lobby invite logic used by both command dispatch and the context
-  menu. Sends a PM invitation (rendered as a join card pointing at
-  `/lobby/<token>`), notifies the target, switches the sender to the PM
-  conversation, and joins the in-chat P2P session as its creator.
+  Shared P2P invite logic used by both command dispatch and the context
+  menu. Sends a PM invitation (rendered as an in-chat card with
+  Accept/Decline; the `/lobby/<token>` path in the content only embeds the
+  session token for card enrichment), notifies the target, switches the
+  sender to the PM conversation, and tracks the session as its creator.
 
   With a P2P session already active, the invite is NOT delivered yet: the
   switch confirm opens first, and only confirming ends the current session
@@ -73,5 +74,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
 
   @spec lobby_invite_content(String.t()) :: String.t()
   def lobby_invite_content(token),
-    do: dgettext("chat", "P2P lobby ready. Join the lobby: /lobby/%{token}", token: token)
+    do:
+      dgettext("chat", "P2P session invite — accept it on this card. /lobby/%{token}",
+        token: token
+      )
 end

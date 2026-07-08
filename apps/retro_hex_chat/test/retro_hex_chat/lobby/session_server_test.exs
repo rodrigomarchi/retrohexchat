@@ -356,22 +356,4 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       stop_server(ctx.token)
     end
   end
-
-  describe "chat" do
-    test "messages are broadcast and retained while connected" do
-      ctx = setup_connected_lobby("chat1")
-
-      assert :ok = SessionServer.send_message(ctx.token, ctx.creator.id, "creator", "hello")
-
-      assert_receive %{
-        event: "lobby_message",
-        payload: %{content: "hello", sender_nick: "creator"}
-      }
-
-      {:ok, state} = SessionServer.get_state(ctx.token)
-      assert length(state.messages) == 1
-
-      stop_server(ctx.token)
-    end
-  end
 end

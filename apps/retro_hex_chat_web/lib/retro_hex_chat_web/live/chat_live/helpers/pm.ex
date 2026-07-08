@@ -99,9 +99,25 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
         socket
         |> assign(session: new_session)
         |> maybe_auto_add_to_notify(target)
+        |> touch_p2p_session(target)
 
       {:error, reason} ->
         Messages.error_event(socket, reason)
+    end
+  end
+
+  # A PM to the P2P peer counts as session activity: it resets the
+  # pre-connection inactivity timers (no-op once connected).
+  defp touch_p2p_session(socket, target) do
+    case socket.assigns[:p2p_session] do
+      %{token: token, peer_nick: peer} when is_binary(peer) ->
+        if String.downcase(peer) == String.downcase(target),
+          do: RetroHexChat.Lobby.record_activity(token)
+
+        socket
+
+      _ ->
+        socket
     end
   end
 

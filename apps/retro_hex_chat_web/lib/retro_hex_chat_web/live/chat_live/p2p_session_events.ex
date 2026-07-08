@@ -7,8 +7,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       nil → :invite_sent → :joining → :connecting → :connected → nil
 
   Every P2P surface (status-bar area, invite-card buttons, confirm dialogs,
-  the WebRTC hook anchor) derives from this single assign. The WebRTC wiring
-  mirrors the standalone lobby: hooks push events to this root LiveView, the
+  the WebRTC hook anchor) derives from this single assign. WebRTC wiring:
+  hooks push events to this root LiveView, the
   domain relays signals through `"lobby:\#{token}"`, and signaling only starts
   after BOTH hooks report ready (never re-order this — the first offer is
   dropped if the answerer's hook isn't listening yet).
@@ -152,7 +152,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   # Media is self-controlled: the LobbyMediaHook and the Call window's controls
   # push to this root LV; the whole family forwards to the P2PMediaIsland, which
   # owns the call state and drives its window. Ending a call clears the
-  # host-held telemetry, mirroring the standalone lobby.
+  # host-held telemetry.
   def handle_event(
         "lobby_media_call_ended" = event,
         params,
@@ -257,7 +257,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   # File-transfer control rides the data channel; the hook's ft_* events are
-  # forwarded verbatim to the island, exactly like the standalone lobby.
+  # forwarded verbatim to the island.
   # `file_transfer_ready` does not share the ft_ prefix.
   def handle_event("file_transfer_ready", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     forward_ft(socket, "file_transfer_ready", %{})
@@ -512,11 +512,11 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     end
   end
 
-  # The creator holds :invite_sent WITHOUT having joined (so the standalone
-  # page stays free to claim the session while it exists). The peer joining is
-  # the cue to join from here; :already_joined means the creator's own
-  # standalone tab claimed it — the chat detaches silently and lets that
-  # surface drive.
+  # The creator holds :invite_sent WITHOUT having joined — a pending invite
+  # is just a card, not a connection. The peer joining is the cue to join
+  # from here; :already_joined means another process of this user (an old
+  # LiveView finishing a takeover) still holds the slot — detach silently
+  # and let it drive.
   defp handle_session_event(%{event: "lobby_peer_joined", payload: %{user_id: uid}}, socket, p2p) do
     cond do
       uid == p2p.user_id ->
@@ -749,9 +749,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   @doc """
-  Tracks the freshly created invite as its creator — subscribe-only, no join:
-  while the standalone page exists it must stay free to claim the session,
-  so the creator only joins once the peer does (see lobby_peer_joined).
+  Tracks the freshly created invite as its creator — subscribe-only, no
+  join: a pending invite is just a card, so the creator only joins once the
+  peer does (see lobby_peer_joined).
   """
   @spec start_as_creator(Socket.t(), String.t(), integer()) :: Socket.t()
   def start_as_creator(socket, token, creator_id) do
@@ -1053,8 +1053,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     end
   end
 
-  # Mirrors the standalone lobby's maybe_start_webrtc: ICE config + the
-  # role-specific start event, exactly once per (re)signaling round.
+  # ICE config + the role-specific start event, exactly once per
+  # (re)signaling round.
   defp start_webrtc(socket, %{webrtc_started: true} = _p2p), do: socket
 
   defp start_webrtc(socket, p2p) do
