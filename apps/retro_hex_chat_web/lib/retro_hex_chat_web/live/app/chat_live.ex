@@ -37,7 +37,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.{Motd, Queries}
-  alias RetroHexChat.VirtualSpace.JoinToken
+  alias RetroHexChat.VirtualSpace.ChannelJoinToken
 
   alias RetroHexChat.Chat.{
     DuplicateTracker,
@@ -761,7 +761,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   defp channel_space_join_token(session) do
-    JoinToken.sign(session.active_channel, nil, session.nickname)
+    ChannelJoinToken.sign(session.active_channel, nil, session.nickname)
   end
 
   defp space_dom_id(channel_name) when is_binary(channel_name) do

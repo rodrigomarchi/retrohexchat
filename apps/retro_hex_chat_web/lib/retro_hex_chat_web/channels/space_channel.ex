@@ -1,13 +1,11 @@
 defmodule RetroHexChatWeb.SpaceChannel do
   @moduledoc """
-  Realtime channel for a virtual space (`space:<token>` or `space:#channel`).
+  Realtime channel for a channel-backed virtual space (`space:#channel`).
 
-  Join is authorized by the signed `join_token` issued by the LiveView shell.
-  Legacy token spaces still re-run policy and capacity through
-  `VirtualSpace.join_session/2`; channel spaces validate channel presence before
-  joining. The reply is the `space_init` payload (participant + snapshot).
-  Domain broadcasts on the `space:<token>` or `space:#channel` PubSub topic are
-  pushed through to the client verbatim.
+  Join is authorized by the signed `channel_join_token` issued by the LiveView
+  shell. Channel spaces validate channel presence before joining. The reply is
+  the `space_init` payload (participant + snapshot). Domain broadcasts on the
+  `space:#channel` PubSub topic are pushed through to the client verbatim.
   """
   use Phoenix.Channel
 
@@ -16,13 +14,13 @@ defmodule RetroHexChatWeb.SpaceChannel do
   alias RetroHexChat.Accounts.ServerRoles
   alias RetroHexChat.Services.NickServ
   alias RetroHexChat.VirtualSpace
-  alias RetroHexChat.VirtualSpace.JoinToken
+  alias RetroHexChat.VirtualSpace.ChannelJoinToken
 
   @impl true
   def join("space:#" <> channel_tail, params, socket) do
     channel_name = "#" <> channel_tail
 
-    with {:ok, data} <- verify_join_token(params, channel_name),
+    with {:ok, data} <- verify_channel_join_token(params, channel_name),
          {:ok, result} <- VirtualSpace.join_channel_space(channel_name, build_channel_actor(data)) do
       socket =
         socket
@@ -40,23 +38,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
     end
   end
 
-  def join("space:" <> token, params, socket) do
-    with {:ok, data} <- verify_join_token(params, token),
-         {:ok, result} <- VirtualSpace.join_session(token, build_actor(data)) do
-      socket =
-        socket
-        |> assign(:space_kind, :session)
-        |> assign(:space_token, token)
-        |> assign(:participant_key, result.participant.key)
-        |> assign(:user_id, data.user_id)
-        |> assign(:nickname, data.nickname)
-
-      {:ok, space_init(token, result), socket}
-    else
-      {:error, reason} ->
-        {:error, %{reason: join_error(reason)}}
-    end
-  end
+  def join("space:" <> _legacy_token, _params, _socket), do: {:error, %{reason: "not_found"}}
 
   @impl true
   def handle_in("space_input", payload, socket) do
@@ -111,9 +93,6 @@ defmodule RetroHexChatWeb.SpaceChannel do
       %{space_kind: :channel, space_channel_name: channel_name} ->
         VirtualSpace.leave_channel_space_viewer(channel_name)
 
-      %{space_token: token, participant_key: key} ->
-        VirtualSpace.leave(token, key)
-
       _ ->
         :ok
     end
@@ -121,15 +100,15 @@ defmodule RetroHexChatWeb.SpaceChannel do
     :ok
   end
 
-  defp verify_join_token(%{"join_token" => join_token}, token) do
-    case JoinToken.verify(join_token) do
-      {:ok, %{space_token: ^token} = data} -> {:ok, data}
-      {:ok, _other_space} -> {:error, :invalid_token}
+  defp verify_channel_join_token(%{"join_token" => join_token}, channel_name) do
+    case ChannelJoinToken.verify(join_token) do
+      {:ok, %{channel_name: ^channel_name} = data} -> {:ok, data}
+      {:ok, _other_channel} -> {:error, :invalid_token}
       {:error, _} -> {:error, :invalid_token}
     end
   end
 
-  defp verify_join_token(_params, _token), do: {:error, :invalid_token}
+  defp verify_channel_join_token(_params, _channel_name), do: {:error, :invalid_token}
 
   # Only the closed step payload is accepted; anything else is dropped so the
   # channel never forwards malformed client input to the domain.
@@ -172,16 +151,6 @@ defmodule RetroHexChatWeb.SpaceChannel do
       nickname: nickname,
       is_admin: ServerRoles.admin?(nickname, identified),
       is_server_operator: ServerRoles.server_operator?(nickname, identified)
-    }
-  end
-
-  defp build_actor(data) do
-    %{
-      user_id: data.user_id,
-      nickname: data.nickname,
-      identified: NickServ.identified?(data.nickname),
-      is_admin: false,
-      is_server_operator: false
     }
   end
 

@@ -169,8 +169,8 @@ enquanto para permitir a remoção em camadas.
   renderização ligados a `/space/<token>`.
 - [x] Remover `SpaceLive` e a rota `/space/:token` depois que o convite legado não
   for mais criado.
-- [ ] Substituir o `join_token.ex` por um contrato específico do canal-espaço, ou
-   renomeá-lo antes de remover o join legado por token.
+- [x] Substituir o `join_token.ex` por um contrato específico do canal-espaço, ou
+  renomeá-lo antes de remover o join legado por token.
 - [ ] Aposentar `Schema.Session`, `virtual_space_sessions`, TTL/status/cleanup e a
    política de capacidade/criador quando o fluxo legado não tiver chamadas vivas.
 - [ ] Atualizar docs/help/i18n para explicar que o espaço é uma aba do canal e não
@@ -253,9 +253,13 @@ delta — antes de F6 para decidir quando ela vira necessidade.
   foram removidos. Mensagens antigas desse tipo, se existirem no banco, passam a
   cair como texto comum no renderer.
 - Terceiro corte da F4 concluído: `SpaceLive`, rota `/space/:token` e testes
-  dedicados da página legada foram removidos. O canal Phoenix ainda aceita o
-  caminho legado `space:<token>` até a fase de substituição/remoção do
+  dedicados da página legada foram removidos. Naquele momento o canal Phoenix
+  ainda aceitava o caminho legado `space:<token>` até a substituição do
   `join_token`.
+- Quarto corte da F4 concluído: `JoinToken` foi substituído por
+  `ChannelJoinToken`; `SpaceChannel` deixou de aceitar `space:<token>` e ficou
+  restrito a `space:#canal`. A suíte de channel agora cobre o caminho real de
+  canal-espaço.
 
 ### Validação registrada
 
@@ -275,3 +279,6 @@ delta — antes de F6 para decidir quando ela vira necessidade.
 - Após o terceiro corte da F4: testes focados de `SpaceChannel`, shell do chat,
   HelpLive e domínio `VirtualSpace`; `rtk make ci` completo com 9/9 checks
   passando na rerodada.
+- Após o quarto corte da F4: testes focados de `ChannelJoinToken`,
+  `SpaceChannel`, `ChatDesktopShell` e JS `SpaceCanvasHook`; `rtk make ci`
+  completo com 9/9 checks passando.

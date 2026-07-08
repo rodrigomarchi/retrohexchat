@@ -4,8 +4,8 @@
  * Wires the virtual-space canvas to its own Phoenix Channel. Unlike LiveView
  * feature hooks that receive `push_event`, the world runtime bypasses LiveView
  * entirely: the hook opens a raw Phoenix Socket at `/socket`, joins
- * `space:<token>` with the signed `join_token` SpaceLive minted, and pipes the
- * channel's authoritative snapshots/deltas into the engine. That is why the
+ * `space:#channel` with the signed `join_token` the LiveView shell minted, and
+ * pipes the channel's authoritative snapshots/deltas into the engine. That is why the
  * lazy registration declares `serverEvents: []`.
  *
  * @module hooks/space/space_canvas_hook

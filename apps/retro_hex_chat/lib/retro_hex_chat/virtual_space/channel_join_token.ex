@@ -1,22 +1,24 @@
-defmodule RetroHexChat.VirtualSpace.JoinToken do
+defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
   @moduledoc """
   Short-lived signed token that authorizes a Phoenix Channel join to a
-  virtual space. The LiveView surface signs it after resolving the current
-  actor; the `SpaceChannel` verifies it before touching the SessionServer, so
-  the channel never trusts raw client input for identity.
+  channel-backed virtual space.
+
+  The token binds a nickname to a concrete channel name. `SpaceChannel` verifies
+  it before touching the SessionServer, so the channel never trusts raw client
+  input for identity.
   """
 
-  @salt "space_join"
+  @salt "channel_space_join"
   @max_age 3_600
 
   @spec sign(String.t(), integer() | nil, String.t()) :: String.t()
-  def sign(space_token, user_id, nickname) do
-    data = %{space_token: space_token, user_id: user_id, nickname: nickname}
+  def sign(channel_name, user_id, nickname) do
+    data = %{channel_name: channel_name, user_id: user_id, nickname: nickname}
     Phoenix.Token.sign(secret_key_base(), @salt, data)
   end
 
   @spec verify(String.t(), keyword()) ::
-          {:ok, %{space_token: String.t(), user_id: integer() | nil, nickname: String.t()}}
+          {:ok, %{channel_name: String.t(), user_id: integer() | nil, nickname: String.t()}}
           | {:error, :expired | :invalid}
   def verify(token, opts \\ []) do
     max_age = Keyword.get(opts, :max_age, @max_age)

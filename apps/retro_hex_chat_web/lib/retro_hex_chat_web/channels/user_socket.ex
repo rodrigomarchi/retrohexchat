@@ -3,8 +3,8 @@ defmodule RetroHexChatWeb.UserSocket do
   Raw Phoenix socket for realtime channels that live outside LiveView.
 
   The socket itself is anonymous: authorization happens per channel via a
-  signed join token (see `RetroHexChat.VirtualSpace.JoinToken`), so `connect/3`
-  accepts everyone and never identifies the transport.
+  signed join token (see `RetroHexChat.VirtualSpace.ChannelJoinToken`), so
+  `connect/3` accepts everyone and never identifies the transport.
   """
   use Phoenix.Socket
 

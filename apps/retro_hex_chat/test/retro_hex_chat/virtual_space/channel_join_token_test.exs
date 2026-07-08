@@ -1,0 +1,35 @@
+defmodule RetroHexChat.VirtualSpace.ChannelJoinTokenTest do
+  use ExUnit.Case, async: true
+
+  alias RetroHexChat.VirtualSpace.ChannelJoinToken
+
+  @moduletag :unit
+
+  test "signs and verifies the channel join payload" do
+    token = ChannelJoinToken.sign("#lobby", 42, "alice")
+
+    assert {:ok, data} = ChannelJoinToken.verify(token)
+    assert data.channel_name == "#lobby"
+    assert data.user_id == 42
+    assert data.nickname == "alice"
+  end
+
+  test "rejects a tampered token" do
+    token = ChannelJoinToken.sign("#lobby", 42, "alice")
+    assert {:error, :invalid} = ChannelJoinToken.verify(token <> "x")
+  end
+
+  test "rejects a token signed with a different salt" do
+    secret = Application.get_env(:retro_hex_chat, :p2p_token_secret)
+    foreign = Phoenix.Token.sign(secret, "other_salt", %{channel_name: "#lobby"})
+
+    assert {:error, :invalid} = ChannelJoinToken.verify(foreign)
+  end
+
+  test "expires after max_age" do
+    token = ChannelJoinToken.sign("#lobby", 42, "alice")
+
+    assert {:ok, _} = ChannelJoinToken.verify(token, max_age: ChannelJoinToken.max_age())
+    assert {:error, :expired} = ChannelJoinToken.verify(token, max_age: -1)
+  end
+end
