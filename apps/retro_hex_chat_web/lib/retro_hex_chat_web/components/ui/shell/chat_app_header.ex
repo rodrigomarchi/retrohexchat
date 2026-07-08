@@ -52,6 +52,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
           phx-hook="MenuBarHook"
           connected={true}
           is_admin={@is_admin}
+          p2p_active={@p2p != nil}
           on_action={@on_toolbar_action}
         />
         <%!-- The desktop tray owns the clock; the status bar drops its own. --%>

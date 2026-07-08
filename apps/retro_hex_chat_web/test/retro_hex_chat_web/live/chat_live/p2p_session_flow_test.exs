@@ -103,6 +103,36 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     end
   end
 
+  describe "statistics window" do
+    test "opens via the P2P menu action, shows telemetry, and closes with the session",
+         %{conn: conn} do
+      ctx = mount_pair(conn, "p2pfo#{uid()}", "p2pfp#{uid()}")
+      session = invite(ctx)
+      render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token})
+      flush(ctx.view_a)
+
+      # Menu bar / start menu dispatch the same semantic action.
+      render_click(ctx.view_a, "toolbar_action", %{"action" => "p2p_open_stats"})
+      assert render(ctx.view_a) =~ "p2p-stats-window"
+
+      # A telemetry sample from the WebRTC hook lands normalized in the panel.
+      render_click(ctx.view_a, "lobby_stats", %{"connection" => %{"rtt_ms" => 42}})
+      assert p2p_assigns(ctx.view_a).stats.connection.rtt_ms == 42
+
+      # Clicking the status-bar area focuses the open P2P windows (no crash,
+      # window stays open).
+      render_click(ctx.view_a, "p2p_statusbar_click", %{})
+      assert render(ctx.view_a) =~ "p2p-stats-window"
+
+      # Ending the session tears the window down with it.
+      render_click(ctx.view_a, "p2p_statusbar_stop", %{})
+      render_click(ctx.view_a, "p2p_confirm_end", %{})
+      flush(ctx.view_a)
+      assert p2p_assigns(ctx.view_a) == nil
+      refute render(ctx.view_a) =~ "p2p-stats-window"
+    end
+  end
+
   describe "one session at a time (switch)" do
     test "accepting a second invite asks to switch and ends the first session", %{conn: conn} do
       ctx = mount_pair(conn, "p2pfi#{uid()}", "p2pfj#{uid()}")

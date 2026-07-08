@@ -29,6 +29,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.Desktop
   import RetroHexChatWeb.Components.UI.StartMenuApp
 
+  # ── P2P session windows ──────────────────────────────────────
+  import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
+
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AboutDialog
 
@@ -598,6 +601,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.BotEvents.handle_event/3,
     &ChatLive.KeyboardEvents.handle_event/3,
     &ChatLive.ConnectionEvents.handle_event/3,
+    &ChatLive.P2PSessionEvents.handle_event/3,
     &ChatLive.CoreEvents.handle_event/3
   ]
 
@@ -777,6 +781,20 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   defp space_dom_id(_), do: "channel-space-none"
+
+  # The shared Statistics panel speaks the domain status vocabulary; the chat
+  # state machine maps onto it (invite pending reads as "pending", both
+  # joining phases as "lobby").
+  defp p2p_panel_status(%{state: :connected}), do: "connected"
+  defp p2p_panel_status(%{state: :invite_sent}), do: "pending"
+  defp p2p_panel_status(_p2p), do: "lobby"
+
+  defp p2p_connection_label(%{state: :connected}), do: dgettext("chat", "Connected")
+
+  defp p2p_connection_label(%{state: :invite_sent}),
+    do: dgettext("chat", "Waiting for peer...")
+
+  defp p2p_connection_label(_p2p), do: dgettext("chat", "Connecting...")
 
   # ── Startup messages ──────────────────────────────────────────
 

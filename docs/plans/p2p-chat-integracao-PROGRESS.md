@@ -40,7 +40,29 @@
 - [x] 7. Testes liveview (6, cobrindo invite/accept/decline/cancel/switch nos dois sentidos) + Playwright alvo `chat-lobby.spec.ts:9` verde (side-by-side validado)
 - [x] 8. `make ci` 9/9 + commit
 
-**F2 CONCLUÍDA.**
+**F2 CONCLUÍDA** (commit `45465f53`).
+
+## F3 — janelas (uma por vez)
+
+- [x] **p2p-stats**: janela P2P Statistics (managed, gated na sessão) reusando
+  `lobby_network_panel`; normalização de stats extraída para
+  `RetroHexChatWeb.App.P2PStats` (compartilhada com o LobbyLive, não
+  duplicada); menu **P2P** na menu bar (Statistics / End Session) + seção no
+  start menu; clique na status bar foca as janelas P2P abertas (ou abre
+  Statistics); `lobby_client_info` (whois) e `peer_online` portados;
+  `detach_session` fecha as janelas p2p-*. CI 9/9.
+- [ ] **p2p-files**: FileIsland + file_panel + FileTransferHook adapters (`ft_*`)
+- [ ] **p2p-call**: MediaIsland + media_panel + LobbyMediaHook adapters
+- [ ] **p2p-games**: GameIsland + game_panel + LobbyGameCanvasHook adapters
+
+### Aprendizados F3 (parciais)
+
+- `dispatch_to_hooks` usa a lista `@event_hook_fns` — SEPARADA do
+  `attach_all_hooks`; um módulo de eventos novo precisa entrar NAS DUAS listas
+  ou os eventos de menu (toolbar_action) nunca chegam nele.
+- Dois feature tests fixam a menu bar por posição/lista literal
+  (`window_display_edit_menu`, `server_administration` Help em `Enum.at(4)`) —
+  menu novo desloca o Help; atualizados para P2P entre Tools e Help.
 
 ## Aprendizados F2
 

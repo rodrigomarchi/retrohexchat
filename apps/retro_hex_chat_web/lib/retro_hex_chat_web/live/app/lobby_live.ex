@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.GameIsland
   alias RetroHexChatWeb.App.LobbyLive.Components.MediaIsland
+  alias RetroHexChatWeb.App.P2PStats
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.Timezone
 
@@ -346,11 +347,11 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   def handle_event("lobby_media_call_ended" = event, params, socket) do
     send_update(MediaIsland, id: MediaIsland.id(), action: {:media_event, event, params})
-    {:noreply, assign(socket, stats: empty_stats())}
+    {:noreply, assign(socket, stats: P2PStats.empty())}
   end
 
   def handle_event("lobby_stats", payload, socket) do
-    {:noreply, assign(socket, stats: normalize_stats(payload))}
+    {:noreply, assign(socket, stats: P2PStats.normalize(payload))}
   end
 
   def handle_event("toggle_network_info", _params, socket) do
@@ -528,7 +529,7 @@ defmodule RetroHexChatWeb.App.LobbyLive do
            webrtc_ready: false,
            webrtc_started: false,
            call_summary: nil,
-           stats: empty_stats(),
+           stats: P2PStats.empty(),
            network_info_open: false,
            local_info: local_info,
            peer_info: %{},
@@ -623,95 +624,6 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   end
 
   defp connected_label, do: dgettext("lobby", "Connected")
-
-  # The statistics window is ALWAYS complete: every section and metric is present
-  # even with no activity (idle features simply read zero). This normalizes the
-  # per-feature payload from LobbyWebRTCHook into a fully-populated struct so the
-  # panel never has to guard against missing keys.
-  @spec normalize_stats(map()) :: map()
-  defp normalize_stats(payload) do
-    conn = Map.get(payload, "connection", %{})
-    audio = Map.get(payload, "audio", %{})
-    video = Map.get(payload, "video", %{})
-    game = Map.get(payload, "game", %{})
-    file = Map.get(payload, "file", %{})
-
-    %{
-      connection: %{
-        level: Map.get(conn, "level", "excellent"),
-        label: Map.get(conn, "label", ""),
-        mos: Map.get(conn, "mos", 0),
-        rtt_ms: Map.get(conn, "rtt_ms", 0),
-        jitter_ms: Map.get(conn, "jitter_ms", 0),
-        loss_pct: Map.get(conn, "loss_pct", 0),
-        available_kbps: Map.get(conn, "available_kbps", 0)
-      },
-      audio: %{
-        active: Map.get(audio, "active", false),
-        in_kbps: Map.get(audio, "in_kbps", 0),
-        out_kbps: Map.get(audio, "out_kbps", 0),
-        loss_pct: Map.get(audio, "loss_pct", 0),
-        jitter_ms: Map.get(audio, "jitter_ms", 0)
-      },
-      video: %{
-        active: Map.get(video, "active", false),
-        in_kbps: Map.get(video, "in_kbps", 0),
-        out_kbps: Map.get(video, "out_kbps", 0),
-        loss_pct: Map.get(video, "loss_pct", 0),
-        jitter_ms: Map.get(video, "jitter_ms", 0),
-        fps: Map.get(video, "fps", 0),
-        width: Map.get(video, "width", 0),
-        height: Map.get(video, "height", 0),
-        freeze_count: Map.get(video, "freeze_count", 0),
-        limitation: Map.get(video, "limitation", "none")
-      },
-      game: normalize_channel_stats(game),
-      file: normalize_channel_stats(file)
-    }
-  end
-
-  @spec normalize_channel_stats(map()) :: map()
-  defp normalize_channel_stats(channel) do
-    %{
-      active: Map.get(channel, "active", false),
-      state: Map.get(channel, "state", "closed"),
-      sent_kbps: Map.get(channel, "sent_kbps", 0),
-      recv_kbps: Map.get(channel, "recv_kbps", 0),
-      messages: Map.get(channel, "messages", 0)
-    }
-  end
-
-  # A zeroed statistics struct so the window renders complete before the first
-  # sample (and whenever there is no connection yet).
-  @spec empty_stats() :: map()
-  defp empty_stats do
-    %{
-      connection: %{
-        level: "excellent",
-        label: "",
-        mos: 0,
-        rtt_ms: 0,
-        jitter_ms: 0,
-        loss_pct: 0,
-        available_kbps: 0
-      },
-      audio: %{active: false, in_kbps: 0, out_kbps: 0, loss_pct: 0, jitter_ms: 0},
-      video: %{
-        active: false,
-        in_kbps: 0,
-        out_kbps: 0,
-        loss_pct: 0,
-        jitter_ms: 0,
-        fps: 0,
-        width: 0,
-        height: 0,
-        freeze_count: 0,
-        limitation: "none"
-      },
-      game: %{active: false, state: "closed", sent_kbps: 0, recv_kbps: 0, messages: 0},
-      file: %{active: false, state: "closed", sent_kbps: 0, recv_kbps: 0, messages: 0}
-    }
-  end
 
   defp load_turn_only_preference(nickname) do
     case RetroHexChat.Repo.get(UserPreference, nickname) do

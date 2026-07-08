@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
   attr :id, :string, default: "chat-start-menu"
   attr :label, :string, default: nil, doc: "Start button label (defaults to \"Start\")"
   attr :is_admin, :boolean, default: false
+  attr :p2p_active, :boolean, default: false, doc: "Shows the P2P group while a session exists"
   attr :on_action, :any, default: "toolbar_action"
   attr :about_modal, :string, default: "about-dialog", doc: "Modal id opened by the About item"
 
@@ -103,6 +104,22 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
           window="cheatsheet"
           label={dgettext("ui", "Shortcut Cheatsheet")}
           icon_fn={:icon_dialog_cheatsheet}
+        />
+        <%!-- P2P (session-gated, mirrors the P2P menu-bar menu) --%>
+        <.start_menu_separator :if={@p2p_active} />
+        <.app_item
+          :if={@p2p_active}
+          action="p2p_open_stats"
+          on_action={@on_action}
+          label={dgettext("ui", "P2P Statistics")}
+          icon_fn={:icon_status_signal}
+        />
+        <.app_item
+          :if={@p2p_active}
+          action="p2p_end_session"
+          on_action={@on_action}
+          label={dgettext("ui", "End P2P Session")}
+          icon_fn={:icon_btn_disconnect}
         />
         <%!-- Admin (permission-gated) --%>
         <.start_menu_separator :if={@is_admin} />

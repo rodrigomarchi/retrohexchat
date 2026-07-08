@@ -19,7 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   the WebRTC hook with a fresh RTCPeerConnection.
   """
 
-  import Phoenix.Component, only: [assign: 2]
+  import Phoenix.Component, only: [assign: 2, update: 3]
   import Phoenix.LiveView, only: [push_event: 3]
 
   use Gettext, backend: RetroHexChatWeb.Gettext
@@ -30,12 +30,17 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.SignalingRateLimit
+  alias RetroHexChatWeb.App.P2PStats
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog
   alias RetroHexChatWeb.ChatLive.Helpers.LobbyInvite
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
+  alias RetroHexChatWeb.ChatLive.Windows
 
   @pubsub RetroHexChat.PubSub
+
+  # The P2P desktop windows, in status-bar focus order.
+  @p2p_windows ~w(p2p-stats p2p-files p2p-call p2p-games)
 
   # ── Client events (WebRTC hooks + P2P UI) ─────────────────────
 
@@ -90,6 +95,24 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, socket}
   end
 
+  def handle_event("lobby_stats", payload, %{assigns: %{p2p_session: %{}}} = socket) do
+    p2p = socket.assigns.p2p_session
+    {:halt, put_p2p(socket, %{p2p | stats: P2PStats.normalize(payload)})}
+  end
+
+  def handle_event("toggle_network_info", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    p2p = socket.assigns.p2p_session
+    {:halt, put_p2p(socket, %{p2p | info_open: not p2p.info_open})}
+  end
+
+  def handle_event("p2p_open_stats", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    {:halt, Windows.open(socket, "p2p-stats")}
+  end
+
+  def handle_event("p2p_end_session", _params, socket) do
+    request_stop(socket)
+  end
+
   def handle_event("p2p_accept_invite", %{"token" => token}, socket) do
     {:halt, request_accept(socket, token)}
   end
@@ -99,27 +122,26 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   def handle_event("p2p_statusbar_click", _params, socket) do
-    # F3 opens/focuses the p2p-* desktop windows here; nothing to focus yet.
-    {:halt, socket}
+    case socket.assigns.p2p_session do
+      nil ->
+        {:halt, socket}
+
+      _p2p ->
+        case Enum.filter(@p2p_windows, &(&1 in socket.assigns.open_windows)) do
+          [] ->
+            {:halt, Windows.open(socket, "p2p-stats")}
+
+          open_ids ->
+            {:halt,
+             Enum.reduce(open_ids, socket, fn id, acc ->
+               push_event(acc, "window_command", %{action: "focus", id: id})
+             end)}
+        end
+    end
   end
 
   def handle_event("p2p_statusbar_stop", _params, socket) do
-    case socket.assigns.p2p_session do
-      %{state: :invite_sent} = p2p ->
-        _ = Lobby.cancel_invite(p2p.token, p2p.user_id)
-        {:halt, socket}
-
-      %{} ->
-        Phoenix.LiveView.send_update(P2PConfirmDialog,
-          id: P2PConfirmDialog.id(),
-          action: {:open_end, socket.assigns.p2p_session.peer_nick}
-        )
-
-        {:halt, socket}
-
-      nil ->
-        {:halt, socket}
-    end
+    request_stop(socket)
   end
 
   def handle_event("p2p_confirm_end", _params, socket) do
@@ -234,19 +256,28 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   # standalone tab claimed it — the chat detaches silently and lets that
   # surface drive.
   defp handle_session_event(%{event: "lobby_peer_joined", payload: %{user_id: uid}}, socket, p2p) do
-    if uid != p2p.user_id and p2p.state == :invite_sent do
-      case Lobby.join_session(p2p.token, p2p.user_id) do
-        :ok ->
-          {:halt, put_p2p(socket, %{p2p | state: :joining})}
+    cond do
+      uid == p2p.user_id ->
+        {:halt, socket}
 
-        {:error, :already_joined} ->
-          {:halt, detach_session(socket, p2p)}
+      p2p.state == :invite_sent ->
+        case Lobby.join_session(p2p.token, p2p.user_id) do
+          :ok ->
+            {:halt,
+             socket
+             |> put_p2p(%{p2p | state: :joining, peer_online: true})
+             |> share_client_info(p2p)}
 
-        {:error, message} ->
-          {:halt, socket |> detach_session(p2p) |> Messages.system_event(message)}
-      end
-    else
-      {:halt, socket}
+          {:error, :already_joined} ->
+            {:halt, detach_session(socket, p2p)}
+
+          {:error, message} ->
+            {:halt, socket |> detach_session(p2p) |> Messages.system_event(message)}
+        end
+
+      true ->
+        # Re-share our whois so a peer that joined after us still receives it.
+        {:halt, socket |> put_p2p(%{p2p | peer_online: true}) |> share_client_info(p2p)}
     end
   end
 
@@ -259,12 +290,25 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       {:halt, socket}
     else
       {:halt,
-       Messages.system_event(
-         socket,
+       socket
+       |> put_p2p(%{p2p | peer_online: false})
+       |> Messages.system_event(
          dgettext("chat", "%{peer} lost the P2P connection — waiting for them to return...",
            peer: p2p.peer_nick
          )
        )}
+    end
+  end
+
+  defp handle_session_event(
+         %{event: "lobby_client_info", payload: %{from: from, info: info}},
+         socket,
+         p2p
+       ) do
+    if from == p2p.user_id do
+      {:halt, socket}
+    else
+      {:halt, put_p2p(socket, %{p2p | peer_info: info, peer_online: true})}
     end
   end
 
@@ -326,17 +370,53 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   defp subscribe_invite_sent(socket, token, user_id) do
     Phoenix.PubSub.subscribe(@pubsub, "lobby:#{token}")
+    put_p2p(socket, new_session(socket, token, user_id, :creator, :invite_sent))
+  end
 
-    put_p2p(socket, %{
+  defp new_session(socket, token, user_id, role, state) do
+    %{
       token: token,
       user_id: user_id,
-      role: :creator,
+      role: role,
       peer_nick: peer_nick_for(token, user_id),
-      state: :invite_sent,
+      state: state,
       webrtc_started: false,
+      stats: P2PStats.empty(),
+      info_open: false,
+      peer_online: false,
+      peer_info: %{},
       turn_only: load_turn_only(socket.assigns.session.nickname),
       turn_configured: P2P.turn_configured?()
+    }
+  end
+
+  defp share_client_info(socket, p2p) do
+    broadcast(p2p.token, "lobby_client_info", %{
+      from: p2p.user_id,
+      info: socket.assigns[:client_info] || %{}
     })
+
+    socket
+  end
+
+  # Cancel a pending invite outright; anything past that needs the confirm.
+  defp request_stop(socket) do
+    case socket.assigns.p2p_session do
+      %{state: :invite_sent} = p2p ->
+        _ = Lobby.cancel_invite(p2p.token, p2p.user_id)
+        {:halt, socket}
+
+      %{} = p2p ->
+        Phoenix.LiveView.send_update(P2PConfirmDialog,
+          id: P2PConfirmDialog.id(),
+          action: {:open_end, p2p.peer_nick}
+        )
+
+        {:halt, socket}
+
+      nil ->
+        {:halt, socket}
+    end
   end
 
   @doc """
@@ -446,17 +526,11 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     case Lobby.join_session(token, user_id) do
       :ok ->
         Phoenix.PubSub.subscribe(@pubsub, "lobby:#{token}")
+        p2p = new_session(socket, token, user_id, role, :joining)
 
-        put_p2p(socket, %{
-          token: token,
-          user_id: user_id,
-          role: role,
-          peer_nick: peer_nick_for(token, user_id),
-          state: :joining,
-          webrtc_started: false,
-          turn_only: load_turn_only(socket.assigns.session.nickname),
-          turn_configured: P2P.turn_configured?()
-        })
+        socket
+        |> put_p2p(p2p)
+        |> share_client_info(p2p)
 
       {:error, :already_joined} ->
         Messages.system_event(
@@ -471,7 +545,12 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   defp detach_session(socket, p2p) do
     Phoenix.PubSub.unsubscribe(@pubsub, "lobby:#{p2p.token}")
-    put_p2p(socket, nil)
+
+    socket
+    |> put_p2p(nil)
+    |> update(:open_windows, fn open ->
+      Enum.reduce(@p2p_windows, open, &MapSet.delete(&2, &1))
+    end)
   end
 
   defp finish_session(socket, reason) do

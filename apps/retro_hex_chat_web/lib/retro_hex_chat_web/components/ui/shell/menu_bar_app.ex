@@ -33,6 +33,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   attr :id, :string, default: "menubar"
   attr :connected, :boolean, default: false
   attr :is_admin, :boolean, default: false
+  attr :p2p_active, :boolean, default: false, doc: "Enables the P2P menu while a session exists"
   attr :on_action, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
@@ -231,6 +232,23 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
           icon_fn={:icon_btn_bot_management}
           label={dgettext("ui", "Bot Management")}
           action="open_bot_dialog"
+          on_action={@on_action}
+        />
+      </.menu>
+
+      <%!-- P2P menu (enabled while a P2P session exists) --%>
+      <.menu label={dgettext("ui", "P2P")} disabled={!@p2p_active}>
+        <.menu_item
+          icon_fn={:icon_status_signal}
+          label={dgettext("ui", "Statistics")}
+          action="p2p_open_stats"
+          on_action={@on_action}
+        />
+        <.context_menu_separator />
+        <.menu_item
+          icon_fn={:icon_btn_disconnect}
+          label={dgettext("ui", "End Session")}
+          action="p2p_end_session"
           on_action={@on_action}
         />
       </.menu>

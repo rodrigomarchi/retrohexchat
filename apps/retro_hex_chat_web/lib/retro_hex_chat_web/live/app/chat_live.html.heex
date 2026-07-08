@@ -468,6 +468,35 @@
       />
     </.desktop_window>
 
+    <%!-- P2P Statistics — server-managed and gated on the active session:
+          per-feature telemetry, connection diagram and whois for the in-chat
+          P2P session (the same panel the standalone lobby pins). --%>
+    <.desktop_window
+      :if={@p2p_session && "p2p-stats" in @open_windows}
+      id="p2p-stats"
+      title={dgettext("chat", "P2P Statistics")}
+      managed
+      default_x={560}
+      default_y={40}
+      width={380}
+      height={420}
+      data-testid="p2p-stats-window"
+    >
+      <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>
+      <.lobby_network_panel
+        stats={@p2p_session.stats}
+        info_open={@p2p_session.info_open}
+        nickname={@session.nickname}
+        peer_nick={@p2p_session.peer_nick}
+        peer_online={@p2p_session.peer_online}
+        session_status={p2p_panel_status(@p2p_session)}
+        connection_label={p2p_connection_label(@p2p_session)}
+        local_info={@client_info}
+        peer_info={@p2p_session.peer_info}
+        turn_only={@p2p_session.turn_only}
+      />
+    </.desktop_window>
+
     <%!-- Timers — server-managed: closing unmounts the island (draft state
           resets by design); reopening mounts a fresh one. --%>
     <.desktop_window
@@ -691,7 +720,11 @@
     <:taskbar>
       <.taskbar id="chat-taskbar">
         <:start>
-          <.start_menu_app id="chat-start-menu" is_admin={admin?(@session)} />
+          <.start_menu_app
+            id="chat-start-menu"
+            is_admin={admin?(@session)}
+            p2p_active={@p2p_session != nil}
+          />
         </:start>
         <.taskbar_button window="chat" label={dgettext("chat", "RetroHexChat")}>
           <:icon><Icons.icon_chat class="h-4 w-4" /></:icon>
@@ -750,6 +783,13 @@
           label={dgettext("chat", "Timers")}
         >
           <:icon><Icons.icon_btn_timers class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={@p2p_session && "p2p-stats" in @open_windows}
+          window="p2p-stats"
+          label={dgettext("chat", "P2P Statistics")}
+        >
+          <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
           :if={"highlight" in @open_windows}
