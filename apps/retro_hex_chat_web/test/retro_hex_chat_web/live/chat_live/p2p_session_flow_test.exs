@@ -133,6 +133,39 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
     end
   end
 
+  describe "files window" do
+    test "mounts with the session, reacts to ft_* events, and feeds the summary",
+         %{conn: conn} do
+      ctx = mount_pair(conn, "p2pfq#{uid()}", "p2pfr#{uid()}")
+      session = invite(ctx)
+      render_click(ctx.view_b, "p2p_accept_invite", %{"token" => session.token})
+      flush(ctx.view_a)
+
+      # The window (and its island/hook) is always mounted while joined.
+      assert render(ctx.view_b) =~ "p2p-files-window"
+
+      # The WebRTC hook reports the link up; the panel unlocks on :connected.
+      render_click(ctx.view_b, "lobby_connected", %{})
+      assert %{state: :connected} = p2p_assigns(ctx.view_b)
+
+      # An incoming offer flows hook → host adapter → island, opens the
+      # window and mirrors the C2 summary up to the host.
+      render_click(ctx.view_b, "file_transfer_ready", %{})
+
+      render_click(ctx.view_b, "ft_offer_received", %{
+        "file_name" => "relatorio.pdf",
+        "formatted_size" => "1.2 MB"
+      })
+
+      flush(ctx.view_b)
+
+      assert %{file_summary: %{status: "offer_received", file_name: "relatorio.pdf"}} =
+               p2p_assigns(ctx.view_b)
+
+      assert render(ctx.view_b) =~ "relatorio.pdf"
+    end
+  end
+
   describe "one session at a time (switch)" do
     test "accepting a second invite asks to switch and ends the first session", %{conn: conn} do
       ctx = mount_pair(conn, "p2pfi#{uid()}", "p2pfj#{uid()}")

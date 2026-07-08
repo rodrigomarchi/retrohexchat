@@ -493,7 +493,37 @@
         connection_label={p2p_connection_label(@p2p_session)}
         local_info={@client_info}
         peer_info={@p2p_session.peer_info}
+        call_summary={@p2p_session.call_summary}
+        file_summary={@p2p_session.file_summary}
         turn_only={@p2p_session.turn_only}
+      />
+    </.desktop_window>
+
+    <%!-- P2P Files — always mounted while a session is joined: the island's
+          FileTransferHook must stay alive for the whole connection (the data
+          channel has no onmessage without it). The X cancels the transfer via
+          the island; the window merely hides. --%>
+    <.desktop_window
+      :if={@p2p_session && @p2p_session.state != :invite_sent}
+      id="p2p-files"
+      title={dgettext("chat", "P2P Files")}
+      open={false}
+      on_close="ft_cancel"
+      default_x={380}
+      default_y={120}
+      width={320}
+      body_class="p-1"
+      data-testid="p2p-files-window"
+    >
+      <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.App.LobbyLive.Components.FileIsland}
+        id={RetroHexChatWeb.App.LobbyLive.Components.FileIsland.id()}
+        connected={@p2p_session.state == :connected}
+        nickname={@session.nickname}
+        peer_nick={@p2p_session.peer_nick}
+        token={@p2p_session.token}
+        window_id="p2p-files"
       />
     </.desktop_window>
 
@@ -790,6 +820,13 @@
           label={dgettext("chat", "P2P Statistics")}
         >
           <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
+          :if={@p2p_session && @p2p_session.state != :invite_sent}
+          window="p2p-files"
+          label={dgettext("chat", "P2P Files")}
+        >
+          <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
           :if={"highlight" in @open_windows}

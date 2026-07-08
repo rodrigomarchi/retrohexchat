@@ -15,14 +15,16 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.FileIsland do
 
   It mirrors a summary (status, sender, percent, speed, file name) to the host on
   every change so the taskbar badge and the Statistics-window connection strip can
-  read it without owning the transfer (C2), and routes the completion notice into
-  the chat sink (C1).
+  read it without owning the transfer (C2), and bubbles the completion notice to
+  the host (`{:p2p_feature_notice, :file, text}`) for its chat sink (C1).
+
+  Host-agnostic: the standalone lobby and the in-chat P2P session mount the
+  same island — `window_id` names the desktop window it drives ("file" in the
+  lobby, "p2p-files" in the chat).
   """
   use RetroHexChatWeb, :live_component
 
   import RetroHexChatWeb.Components.UI.Lobby.FilePanel
-
-  alias RetroHexChatWeb.App.LobbyLive.Components.ChatIsland
 
   require Logger
 
@@ -45,6 +47,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.FileIsland do
        nickname: nil,
        peer_nick: nil,
        token: nil,
+       window_id: "file",
        max_file_size_mb: max_file_size_mb(),
        blocked_file_extensions: blocked_file_extensions()
      )}
@@ -80,7 +83,8 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.FileIsland do
       connected: Map.get(assigns, :connected, socket.assigns.connected),
       nickname: Map.get(assigns, :nickname, socket.assigns.nickname),
       peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
-      token: Map.get(assigns, :token, socket.assigns.token)
+      token: Map.get(assigns, :token, socket.assigns.token),
+      window_id: Map.get(assigns, :window_id, socket.assigns.window_id)
     )
   end
 
@@ -103,7 +107,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.FileIsland do
   defp handle_ft(socket, "ft_offer_received", params) do
     socket
     |> assign(file_transfer: ft_meta(params, "offer_received", socket.assigns.peer_nick))
-    |> push_event("window_command", %{action: "open", id: "file"})
+    |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
     |> summarize()
   end
 
@@ -136,10 +140,10 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.FileIsland do
   defp handle_ft(socket, "ft_completed", params) do
     Logger.info("Lobby file completed: #{params["file_name"]}, token=#{socket.assigns.token}")
 
-    send_update(ChatIsland,
-      id: ChatIsland.id(),
-      system_message:
-        dgettext("lobby", "File transfer completed: %{name}", name: params["file_name"])
+    send(
+      self(),
+      {:p2p_feature_notice, :file,
+       dgettext("lobby", "File transfer completed: %{name}", name: params["file_name"])}
     )
 
     socket
@@ -158,7 +162,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.FileIsland do
     socket
     |> assign(file_transfer: %{status: "ready"})
     |> maybe_push_ft_config()
-    |> push_event("window_command", %{action: "close", id: "file"})
+    |> push_event("window_command", %{action: "close", id: socket.assigns.window_id})
     |> summarize()
   end
 
@@ -184,7 +188,7 @@ defmodule RetroHexChatWeb.App.LobbyLive.Components.FileIsland do
   defp handle_ft(socket, "ft_cancel", _params) do
     socket
     |> push_event("ft_cancel", %{nickname: socket.assigns.nickname})
-    |> push_event("window_command", %{action: "close", id: "file"})
+    |> push_event("window_command", %{action: "close", id: socket.assigns.window_id})
   end
 
   defp handle_ft(socket, "ft_retry", _params) do

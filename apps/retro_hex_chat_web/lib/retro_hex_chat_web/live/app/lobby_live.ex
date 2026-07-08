@@ -236,6 +236,13 @@ defmodule RetroHexChatWeb.App.LobbyLive do
   # Read-model bubble from a feature island (C2). This is a tuple, not the
   # `%{event: ...}` PubSub shape, so it MUST be matched above the catch-all or it
   # is silently swallowed and the taskbar badge never updates.
+  # C1 sink: islands bubble feature notices host-agnostically; the lobby's
+  # chat sink is the ChatIsland.
+  def handle_info({:p2p_feature_notice, _feature, text}, socket) do
+    send_update(ChatIsland, id: ChatIsland.id(), system_message: text)
+    {:noreply, socket}
+  end
+
   def handle_info({:feature_summary, :game, summary}, socket) do
     {:noreply, assign(socket, game_summary: summary)}
   end

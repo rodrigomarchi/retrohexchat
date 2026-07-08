@@ -51,7 +51,15 @@
   start menu; clique na status bar foca as janelas P2P abertas (ou abre
   Statistics); `lobby_client_info` (whois) e `peer_online` portados;
   `detach_session` fecha as janelas p2p-*. CI 9/9.
-- [ ] **p2p-files**: FileIsland + file_panel + FileTransferHook adapters (`ft_*`)
+- [x] **p2p-files**: a MESMA `FileIsland` do lobby montada no chat (reuso via
+  flags, sem fork): ganhou `window_id` (dirige "file" no lobby, "p2p-files" no
+  chat) e a notícia de conclusão desacoplada da ChatIsland — a ilha agora
+  emite `{:p2p_feature_notice, :file, text}` e cada host roteia (LobbyLive →
+  ChatIsland; ChatLive → system_event). Janela sempre montada enquanto
+  joinado (constraint do FileTransferHook), X cancela via `on_close="ft_cancel"`;
+  adapters `ft_*`/`file_transfer_ready` no host; `{:feature_summary, ...}`
+  alimenta `file_summary`/`call_summary`/`game_summary` no `@p2p_session`
+  (strip do Statistics + badges); menu "Send a File..." nos dois menus. CI 9/9.
 - [ ] **p2p-call**: MediaIsland + media_panel + LobbyMediaHook adapters
 - [ ] **p2p-games**: GameIsland + game_panel + LobbyGameCanvasHook adapters
 

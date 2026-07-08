@@ -109,6 +109,13 @@ defmodule RetroHexChatWeb.Components.UI.StartMenuApp do
         <.start_menu_separator :if={@p2p_active} />
         <.app_item
           :if={@p2p_active}
+          action="p2p_open_files"
+          on_action={@on_action}
+          label={dgettext("ui", "Send a File...")}
+          icon_fn={:icon_file_send}
+        />
+        <.app_item
+          :if={@p2p_active}
           action="p2p_open_stats"
           on_action={@on_action}
           label={dgettext("ui", "P2P Statistics")}

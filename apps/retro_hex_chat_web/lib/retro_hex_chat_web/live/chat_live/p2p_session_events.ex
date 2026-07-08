@@ -30,6 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.P2P
   alias RetroHexChat.P2P.SignalingRateLimit
+  alias RetroHexChatWeb.App.LobbyLive.Components.FileIsland
   alias RetroHexChatWeb.App.P2PStats
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog
@@ -107,6 +108,21 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
   def handle_event("p2p_open_stats", _params, %{assigns: %{p2p_session: %{}}} = socket) do
     {:halt, Windows.open(socket, "p2p-stats")}
+  end
+
+  def handle_event("p2p_open_files", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    {:halt, Windows.open(socket, "p2p-files")}
+  end
+
+  # File-transfer control rides the data channel; the hook's ft_* events are
+  # forwarded verbatim to the island, exactly like the standalone lobby.
+  # `file_transfer_ready` does not share the ft_ prefix.
+  def handle_event("file_transfer_ready", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    forward_ft(socket, "file_transfer_ready", %{})
+  end
+
+  def handle_event("ft_" <> _ = event, params, %{assigns: %{p2p_session: %{}}} = socket) do
+    forward_ft(socket, event, params)
   end
 
   def handle_event("p2p_end_session", _params, socket) do
@@ -199,7 +215,38 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   # PubsubHandlers consumed lobby_invite before this hook.
   def handle_info(%{event: "lobby_" <> _rest}, socket), do: {:halt, socket}
 
+  # C2 read-model bubbles from the feature islands (taskbar badges + the
+  # Statistics strip read them from the host state).
+  def handle_info({:feature_summary, feature, summary}, socket)
+      when feature in [:file, :call, :game] do
+    case socket.assigns.p2p_session do
+      nil ->
+        {:halt, socket}
+
+      p2p ->
+        {:halt, put_p2p(socket, Map.put(p2p, summary_key(feature), summary))}
+    end
+  end
+
+  # C1 sink: feature notices land in the conversation as system lines.
+  def handle_info({:p2p_feature_notice, _feature, text}, socket) do
+    {:halt, Messages.system_event(socket, text)}
+  end
+
   def handle_info(_msg, socket), do: {:cont, socket}
+
+  defp summary_key(:file), do: :file_summary
+  defp summary_key(:call), do: :call_summary
+  defp summary_key(:game), do: :game_summary
+
+  defp forward_ft(socket, event, params) do
+    Phoenix.LiveView.send_update(FileIsland,
+      id: FileIsland.id(),
+      action: {:ft_event, event, params}
+    )
+
+    {:halt, socket}
+  end
 
   defp handle_session_event(
          %{event: "lobby_status_changed", payload: %{status: status} = payload},
@@ -385,6 +432,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       info_open: false,
       peer_online: false,
       peer_info: %{},
+      file_summary: nil,
+      call_summary: nil,
+      game_summary: nil,
       turn_only: load_turn_only(socket.assigns.session.nickname),
       turn_configured: P2P.turn_configured?()
     }
