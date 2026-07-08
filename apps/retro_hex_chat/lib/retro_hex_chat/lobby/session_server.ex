@@ -2,8 +2,8 @@ defmodule RetroHexChat.Lobby.SessionServer do
   @moduledoc """
   GenServer managing a single P2P lobby session.
 
-  Unlike `RetroHexChat.P2P.SessionServer`, the connection is *persistent*:
-  the state machine `pending → lobby → connected → terminal` tracks only the
+  The connection is *persistent*: the state machine
+  `pending → lobby → connected → terminal` tracks only the
   WebRTC link, never a single feature. Once `connected`, the session hosts
   audio, video, file transfer and games **concurrently**, and ending any one
   feature never closes the session — only an explicit leave/close or

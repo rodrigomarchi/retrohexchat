@@ -1,9 +1,7 @@
 defmodule RetroHexChat.Lobby.Policy do
   @moduledoc """
-  Authorization rules for P2P lobby operations.
-
-  Mirrors `RetroHexChat.P2P.Policy` but checks active sessions against the
-  `lobby_sessions` table so a lobby and a legacy P2P session can coexist.
+  Authorization rules for P2P lobby operations, checked against the
+  `lobby_sessions` table.
   """
   use Gettext, backend: RetroHexChat.Gettext
 

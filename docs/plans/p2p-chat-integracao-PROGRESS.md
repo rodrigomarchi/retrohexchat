@@ -288,6 +288,29 @@ chat, com as 3 ilhas do lobby reusadas (zero fork) e o standalone intacto.
 
 **PLANO CONCLUÍDO — todas as fases (F0–F6) entregues em 2026-07-08.**
 
+## Pós-plano: auditoria de código morto e semântica (3 agentes, 2026-07-08)
+
+- **Mortos removidos**: chat efêmero do domínio (send_lobby_message →
+  SessionServer.send_message/messages), Lobby.start_signaling, helpers órfãos
+  do SessionHelpers, parser de client_info duplicado no ChatLive (unificado no
+  canônico), CSS `.p2p-lobby*` + allowlist, computação de link morta no card.
+- **Fluxo legado `P2P.*` removido** (morto em produção desde a remoção de
+  /p2p//game em 2026-07-01): SessionServer/Supervisor/CleanupTask/Policy/
+  SessionToken/Registry/Queries/Service + 3 entradas de supervisão + 7 arquivos
+  de teste. **MANTIDO**: fachada P2P mínima (ice_servers/validate_signal/
+  turn_configured?), RateLimiter, SignalingRateLimit, RateLimitTable, Turn.*,
+  Schema.Session (tabela `p2p_sessions` lida pelo admin nuke).
+- **Gaps reais achados pela auditoria e CORRIGIDOS**: (1) ignorar um usuário
+  agora fecha a sessão P2P ativa do par (Lobby.close_sessions_between estava
+  escrito e nunca cabeado — o call antigo só tocava a tabela legada); (2) PM ao
+  peer reseta os timers de inatividade (record_activity, decisão do plano nunca
+  cabeada); (3) o CSS compacto do diagrama era `#conn` (id extinto) — renomeado
+  para `#p2p-stats`, sem ele o diagrama estourava a janela de 380px.
+- **Anti-alucinação**: toda prosa que citava a página standalone corrigida
+  (p2p_session_events, LobbyInvite, hooks JS, help, AGENT-GUIDE §6/§7/§8) +
+  política de nomenclatura registrada no AGENT-GUIDE §8: **"lobby" nomeia o
+  contexto de domínio, não uma página**.
+
 ## Notas antigas da F6 (superadas)
 
 A F6 (deletar LobbyLive/universal_lobby/rota + redirect) está pronta para
