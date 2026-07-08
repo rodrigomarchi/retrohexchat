@@ -36,11 +36,17 @@ defmodule RetroHexChat.Lobby do
           {:ok, %{session: Session.t(), token: String.t()}} | {:error, String.t()}
   defdelegate create_session(creator_id, peer_id), to: Service
 
-  @spec join_session(String.t(), integer()) :: :ok | {:error, String.t()}
+  @spec join_session(String.t(), integer()) :: :ok | {:error, String.t() | :already_joined}
   defdelegate join_session(token, user_id), to: Service
 
   @spec close_session(String.t(), integer(), String.t()) :: :ok | {:error, String.t()}
   defdelegate close_session(token, user_id, reason), to: Service
+
+  @spec decline_session(String.t(), integer()) :: :ok | {:error, String.t()}
+  defdelegate decline_session(token, user_id), to: Service
+
+  @spec cancel_invite(String.t(), integer()) :: :ok | {:error, String.t()}
+  defdelegate cancel_invite(token, user_id), to: Service
 
   @spec close_sessions_between(integer(), integer()) :: :ok
   defdelegate close_sessions_between(user_a_id, user_b_id), to: Service
@@ -103,6 +109,19 @@ defmodule RetroHexChat.Lobby do
 
   @spec leave(String.t(), integer()) :: :ok
   defdelegate leave(token, user_id), to: SessionServer
+
+  @spec record_activity(String.t()) :: :ok
+  defdelegate record_activity(token), to: SessionServer
+
+  @doc """
+  The user's most recently updated non-terminal session, if any — the entry
+  point for re-hydrating a P2P session after a LiveView reconnect, where the
+  client no longer carries the token.
+  """
+  @spec active_session_for_user(integer()) :: Session.t() | nil
+  def active_session_for_user(user_id) do
+    user_id |> Queries.active_sessions_for_user() |> List.first()
+  end
 
   @spec mark_webrtc_ready(String.t(), integer()) :: :ok | {:error, atom()}
   defdelegate mark_webrtc_ready(token, user_id), to: SessionServer

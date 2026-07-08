@@ -31,6 +31,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
   @lobby_expiry_timeout :timer.minutes(15)
   @connecting_timeout :timer.seconds(30)
   @game_request_timeout :timer.seconds(60)
+  @rejoin_grace_timeout :timer.seconds(30)
   # Matches the shared chat composer's char counter (…/1000).
   @max_message_length 1000
   @max_messages 100
@@ -52,15 +53,34 @@ defmodule RetroHexChat.Lobby.SessionServer do
     end
   end
 
-  @spec join(String.t(), integer()) :: :ok | {:error, String.t()}
+  @spec join(String.t(), integer()) :: :ok | {:error, String.t() | :already_joined}
   def join(token, user_id) do
     call(token, {:join, user_id})
   end
 
+  @doc """
+  Marks the user as disconnected and starts the rejoin grace window.
+
+  Leaving is NOT terminal: the session only closes if the user does not
+  rejoin within the grace period (a page refresh or LiveView reconnect lands
+  well inside it). Explicit teardown goes through `close/3` instead.
+  """
   @spec leave(String.t(), integer()) :: :ok
   def leave(token, user_id) do
     case Registry.lookup(token) do
       {:ok, pid} -> GenServer.cast(pid, {:leave, user_id})
+      {:error, :not_found} -> :ok
+    end
+  end
+
+  @doc """
+  Resets the pre-connection inactivity timers. No-op outside the `lobby`
+  status (once connected there is no inactivity timeout).
+  """
+  @spec record_activity(String.t()) :: :ok
+  def record_activity(token) do
+    case Registry.lookup(token) do
+      {:ok, pid} -> GenServer.cast(pid, :record_activity)
       {:error, :not_found} -> :ok
     end
   end
@@ -138,6 +158,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
             session: session,
             creator_joined: false,
             peer_joined: false,
+            connections: %{creator: nil, peer: nil},
             webrtc_ready: %{creator: false, peer: false},
             signaling_started: false,
             messages: [],
@@ -163,22 +184,22 @@ defmodule RetroHexChat.Lobby.SessionServer do
     {:reply, state, state}
   end
 
-  def handle_call({:join, user_id}, _from, state) do
-    Logger.info("Lobby join: user=#{user_id}, token=#{state.token}")
-
-    cond do
-      user_id == state.session.creator_id ->
-        state = %{state | creator_joined: true}
-        broadcast(state.token, "lobby_peer_joined", %{user_id: user_id})
-        {:reply, :ok, maybe_transition_to_lobby(state)}
-
-      user_id == state.session.peer_id ->
-        state = %{state | peer_joined: true}
-        broadcast(state.token, "lobby_peer_joined", %{user_id: user_id})
-        {:reply, :ok, maybe_transition_to_lobby(state)}
-
-      true ->
+  def handle_call({:join, user_id}, {caller_pid, _tag}, state) do
+    case role_of(state, user_id) do
+      nil ->
         {:reply, {:error, dgettext("lobby", "Not a participant")}, state}
+
+      role ->
+        case attach_connection(state, role, caller_pid) do
+          {:ok, state} ->
+            Logger.info("Lobby join: user=#{user_id}, role=#{role}, token=#{state.token}")
+            state = set_joined(state, role, true)
+            broadcast(state.token, "lobby_peer_joined", %{user_id: user_id})
+            {:reply, :ok, maybe_transition_to_lobby(state)}
+
+          {:error, :already_joined} ->
+            {:reply, {:error, :already_joined}, state}
+        end
     end
   end
 
@@ -322,9 +343,22 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   @impl true
   def handle_cast({:leave, user_id}, state) do
-    Logger.info("Lobby leave: user=#{user_id}, token=#{state.token}")
-    state = do_close(state, "peer_left", "user")
-    {:stop, :normal, state}
+    case role_of(state, user_id) do
+      nil ->
+        {:noreply, state}
+
+      role ->
+        Logger.info("Lobby leave: user=#{user_id}, role=#{role}, token=#{state.token}")
+        {:noreply, begin_disconnect(state, role)}
+    end
+  end
+
+  def handle_cast(:record_activity, state) do
+    if state.session.status == "lobby" do
+      {:noreply, reset_lobby_timers(state)}
+    else
+      {:noreply, state}
+    end
   end
 
   @impl true
@@ -371,6 +405,21 @@ defmodule RetroHexChat.Lobby.SessionServer do
     end
   end
 
+  def handle_info({:timeout, {:rejoin_grace, role}}, state) do
+    if state.connections[role] == nil do
+      {:stop, :normal, do_close(state, "peer_left", "system")}
+    else
+      {:noreply, state}
+    end
+  end
+
+  def handle_info({:DOWN, ref, :process, _pid, _reason}, state) do
+    case connection_role_by_ref(state, ref) do
+      nil -> {:noreply, state}
+      role -> {:noreply, begin_disconnect(state, role)}
+    end
+  end
+
   # --- Private helpers ---
 
   defp maybe_transition_to_lobby(state) do
@@ -386,8 +435,12 @@ defmodule RetroHexChat.Lobby.SessionServer do
   # its "lobby_signal" handler before the initiator's offer is broadcast — otherwise
   # the very first offer can be delivered to a not-yet-listening client and dropped,
   # leaving the connection stuck until `connecting_timeout`.
+  #
+  # `connected` is also accepted: a peer disconnect resets `signaling_started` and
+  # that peer's readiness, so once the rejoined hook reports ready again the same
+  # gate re-broadcasts `lobby_start_signaling` to rebuild the WebRTC link.
   defp maybe_start_signaling(state) do
-    if not state.signaling_started and state.session.status == "lobby" and
+    if not state.signaling_started and state.session.status in ~w(lobby connected) and
          state.webrtc_ready.creator and state.webrtc_ready.peer do
       broadcast(state.token, "lobby_start_signaling", %{})
       %{state | signaling_started: true}
@@ -395,6 +448,71 @@ defmodule RetroHexChat.Lobby.SessionServer do
       state
     end
   end
+
+  # A user's LiveView going away (crash, refresh, tab close) or an explicit
+  # `leave` both land here: drop the connection, reset that side's WebRTC
+  # readiness so a rejoin can re-signal, and give the user the grace window
+  # before the session turns terminal.
+  defp begin_disconnect(state, role) do
+    case state.connections[role] do
+      nil ->
+        state
+
+      %{ref: ref} ->
+        Process.demonitor(ref, [:flush])
+        user_id = user_id_for(state, role)
+        Logger.info("Lobby peer disconnected: role=#{role}, token=#{state.token}")
+
+        state =
+          state
+          |> put_in([:connections, role], nil)
+          |> set_joined(role, false)
+          |> put_in([:webrtc_ready, role], false)
+          |> Map.put(:signaling_started, false)
+
+        broadcast(state.token, "lobby_peer_disconnected", %{user_id: user_id, role: role})
+        schedule_timeout(state, {:rejoin_grace, role}, rejoin_grace_timeout())
+    end
+  end
+
+  defp attach_connection(state, role, pid) do
+    case state.connections[role] do
+      nil ->
+        {:ok, monitor_connection(state, role, pid)}
+
+      %{pid: ^pid} ->
+        {:ok, cancel_timer(state, {:rejoin_grace, role})}
+
+      %{pid: old_pid, ref: old_ref} ->
+        if Process.alive?(old_pid) do
+          {:error, :already_joined}
+        else
+          Process.demonitor(old_ref, [:flush])
+          {:ok, monitor_connection(state, role, pid)}
+        end
+    end
+  end
+
+  defp monitor_connection(state, role, pid) do
+    ref = Process.monitor(pid)
+
+    state
+    |> put_in([:connections, role], %{pid: pid, ref: ref})
+    |> cancel_timer({:rejoin_grace, role})
+  end
+
+  defp connection_role_by_ref(state, ref) do
+    Enum.find_value(state.connections, fn
+      {role, %{ref: ^ref}} -> role
+      _ -> nil
+    end)
+  end
+
+  defp set_joined(state, :creator, joined?), do: %{state | creator_joined: joined?}
+  defp set_joined(state, :peer, joined?), do: %{state | peer_joined: joined?}
+
+  defp user_id_for(state, :creator), do: state.session.creator_id
+  defp user_id_for(state, :peer), do: state.session.peer_id
 
   defp do_transition(state, "lobby") do
     Logger.info("Lobby transition: #{state.session.status} → lobby, token=#{state.token}")
@@ -680,4 +798,7 @@ defmodule RetroHexChat.Lobby.SessionServer do
 
   defp game_request_timeout,
     do: Application.get_env(:retro_hex_chat, :lobby_game_request_timeout, @game_request_timeout)
+
+  defp rejoin_grace_timeout,
+    do: Application.get_env(:retro_hex_chat, :lobby_rejoin_grace_timeout, @rejoin_grace_timeout)
 end

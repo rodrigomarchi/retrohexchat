@@ -42,6 +42,22 @@ defmodule RetroHexChat.Lobby.Policy do
     end
   end
 
+  @spec can_decline?(integer(), Session.t()) :: :ok | {:error, String.t()}
+  def can_decline?(user_id, session) do
+    with :ok <- check_role(user_id, session, :peer),
+         :ok <- check_pending(session) do
+      :ok
+    end
+  end
+
+  @spec can_cancel_invite?(integer(), Session.t()) :: :ok | {:error, String.t()}
+  def can_cancel_invite?(user_id, session) do
+    with :ok <- check_role(user_id, session, :creator),
+         :ok <- check_pending(session) do
+      :ok
+    end
+  end
+
   defp check_not_self(id, id),
     do: {:error, dgettext("lobby", "Cannot create a session with yourself")}
 
@@ -98,6 +114,27 @@ defmodule RetroHexChat.Lobby.Policy do
       {:error, dgettext("lobby", "You are not a participant in this lobby")}
     end
   end
+
+  defp check_role(user_id, session, :peer) do
+    if user_id == session.peer_id do
+      :ok
+    else
+      {:error, dgettext("lobby", "Only the invited user can decline")}
+    end
+  end
+
+  defp check_role(user_id, session, :creator) do
+    if user_id == session.creator_id do
+      :ok
+    else
+      {:error, dgettext("lobby", "Only the inviter can cancel the invite")}
+    end
+  end
+
+  defp check_pending(%{status: "pending"}), do: :ok
+
+  defp check_pending(_session),
+    do: {:error, dgettext("lobby", "Invite is no longer pending")}
 
   defp check_not_terminal(session) do
     if Session.terminal?(session.status) do

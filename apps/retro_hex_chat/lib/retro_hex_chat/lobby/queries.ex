@@ -56,6 +56,15 @@ defmodule RetroHexChat.Lobby.Queries do
     |> Repo.all()
   end
 
+  @spec active_sessions_for_user(integer()) :: [Session.t()]
+  def active_sessions_for_user(user_id) do
+    Session
+    |> where([s], s.creator_id == ^user_id or s.peer_id == ^user_id)
+    |> where([s], s.status not in ^@terminal_statuses)
+    |> order_by([s], desc: s.updated_at)
+    |> Repo.all()
+  end
+
   @spec list_stale_sessions(DateTime.t()) :: [Session.t()]
   def list_stale_sessions(before_datetime) do
     Session

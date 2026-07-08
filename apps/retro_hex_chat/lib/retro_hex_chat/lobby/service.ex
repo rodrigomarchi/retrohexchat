@@ -32,7 +32,7 @@ defmodule RetroHexChat.Lobby.Service do
     end
   end
 
-  @spec join_session(String.t(), integer()) :: :ok | {:error, String.t()}
+  @spec join_session(String.t(), integer()) :: :ok | {:error, String.t() | :already_joined}
   def join_session(token, user_id) do
     with {:ok, session} <- fetch_session(token),
          :ok <- Policy.can_join?(user_id, session) do
@@ -45,6 +45,22 @@ defmodule RetroHexChat.Lobby.Service do
     with {:ok, session} <- fetch_session(token),
          :ok <- Policy.can_close?(user_id, session) do
       close_session_server(session, token, user_id, reason)
+    end
+  end
+
+  @spec decline_session(String.t(), integer()) :: :ok | {:error, String.t()}
+  def decline_session(token, user_id) do
+    with {:ok, session} <- fetch_session(token),
+         :ok <- Policy.can_decline?(user_id, session) do
+      close_session_server(session, token, user_id, "declined")
+    end
+  end
+
+  @spec cancel_invite(String.t(), integer()) :: :ok | {:error, String.t()}
+  def cancel_invite(token, user_id) do
+    with {:ok, session} <- fetch_session(token),
+         :ok <- Policy.can_cancel_invite?(user_id, session) do
+      close_session_server(session, token, user_id, "invite_cancelled")
     end
   end
 

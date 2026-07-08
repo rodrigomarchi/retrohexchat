@@ -46,7 +46,7 @@ defmodule RetroHexChat.Chat.PrivateMessageTest do
     end
 
     test "validates type inclusion" do
-      for valid <- ~w(message action system p2p_invite) do
+      for valid <- ~w(message action system p2p_invite p2p_system) do
         attrs = %{
           sender_nickname: "Alice",
           recipient_nickname: "Admin",

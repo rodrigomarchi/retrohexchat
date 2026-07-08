@@ -12,11 +12,13 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
     Application.put_env(:retro_hex_chat, :lobby_expiry_timeout, 200)
     Application.put_env(:retro_hex_chat, :lobby_connecting_timeout, 200)
     Application.put_env(:retro_hex_chat, :lobby_game_request_timeout, 150)
+    Application.put_env(:retro_hex_chat, :lobby_rejoin_grace_timeout, 120)
 
     on_exit(fn ->
       for key <- ~w(
             lobby_pending_timeout lobby_warning_timeout lobby_expiry_timeout
             lobby_connecting_timeout lobby_game_request_timeout
+            lobby_rejoin_grace_timeout
           )a do
         Application.delete_env(:retro_hex_chat, key)
       end
@@ -79,12 +81,114 @@ defmodule RetroHexChat.Lobby.SessionServerTest do
       stop_server(ctx.token)
     end
 
-    test "leaving closes the session" do
+    test "leaving starts the rejoin grace instead of closing immediately" do
       ctx = setup_connected_lobby("life2")
       SessionServer.leave(ctx.token, ctx.creator.id)
 
-      assert_receive %{event: "lobby_session_closed", payload: %{reason: "peer_left"}}
+      assert_receive %{event: "lobby_peer_disconnected", payload: %{role: :creator}}
+      refute_received %{event: "lobby_session_closed"}
+      assert Queries.get_session_by_token(ctx.token).status == "connected"
+
+      # No rejoin within the grace window → the session closes for both peers.
+      assert_receive %{event: "lobby_session_closed", payload: %{reason: "peer_left"}}, 500
       assert Queries.get_session_by_token(ctx.token).status == "closed"
+    end
+
+    test "a rejoin within the grace window keeps the session alive" do
+      ctx = setup_connected_lobby("life3")
+      SessionServer.leave(ctx.token, ctx.creator.id)
+      assert_receive %{event: "lobby_peer_disconnected", payload: %{role: :creator}}
+
+      assert :ok = SessionServer.join(ctx.token, ctx.creator.id)
+      assert_receive %{event: "lobby_peer_joined", payload: %{user_id: _}}
+
+      # Wait past the grace window: the session must still be alive.
+      refute_receive %{event: "lobby_session_closed"}, 300
+      assert Queries.get_session_by_token(ctx.token).status == "connected"
+
+      stop_server(ctx.token)
+    end
+
+    test "the joined LiveView process dying starts the same grace window" do
+      ctx = setup_connected_lobby("life4")
+      parent = self()
+
+      # A separate process takes over the creator's connection (simulating a
+      # second LiveView after a reconnect), then dies without leaving.
+      pid =
+        spawn(fn ->
+          send(parent, {:joined, SessionServer.join(ctx.token, ctx.creator.id)})
+
+          receive do
+            :stop -> :ok
+          end
+        end)
+
+      # The creator connection currently belongs to the (alive) test process,
+      # so the takeover attempt is rejected: one active tab per session.
+      assert_receive {:joined, {:error, :already_joined}}
+
+      # Release the creator slot, let the new process claim it, then kill it.
+      SessionServer.leave(ctx.token, ctx.creator.id)
+      assert_receive %{event: "lobby_peer_disconnected", payload: %{role: :creator}}
+
+      pid2 =
+        spawn(fn ->
+          send(parent, {:joined2, SessionServer.join(ctx.token, ctx.creator.id)})
+
+          receive do
+            :stop -> :ok
+          end
+        end)
+
+      assert_receive {:joined2, :ok}
+      assert_receive %{event: "lobby_peer_joined"}
+
+      Process.exit(pid2, :kill)
+      assert_receive %{event: "lobby_peer_disconnected", payload: %{role: :creator}}, 500
+      assert_receive %{event: "lobby_session_closed", payload: %{reason: "peer_left"}}, 500
+
+      send(pid, :stop)
+    end
+
+    test "a disconnected peer rejoining re-establishes the signaling gate" do
+      ctx = setup_connected_lobby("life5")
+
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.creator.id)
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.peer.id)
+      assert_receive %{event: "lobby_start_signaling"}
+
+      SessionServer.leave(ctx.token, ctx.creator.id)
+      assert_receive %{event: "lobby_peer_disconnected", payload: %{role: :creator}}
+
+      assert :ok = SessionServer.join(ctx.token, ctx.creator.id)
+      :ok = SessionServer.mark_webrtc_ready(ctx.token, ctx.creator.id)
+
+      # The peer's readiness survived the disconnect; only the returning side
+      # re-arms, and the same both-ready gate re-broadcasts signaling.
+      assert_receive %{event: "lobby_start_signaling"}
+
+      stop_server(ctx.token)
+    end
+
+    test "record_activity reschedules the pre-connection inactivity timers" do
+      creator = create_registered_nick("act_c#{System.unique_integer([:positive])}")
+      peer = create_registered_nick("act_p#{System.unique_integer([:positive])}")
+      session = create_session_record(creator.id, peer.id)
+      {:ok, _pid} = Supervisor.start_child(session.token)
+
+      :ok = SessionServer.join(session.token, creator.id)
+      :ok = SessionServer.join(session.token, peer.id)
+
+      {:ok, before_state} = SessionServer.get_state(session.token)
+      assert before_state.session.status == "lobby"
+
+      :ok = SessionServer.record_activity(session.token)
+
+      {:ok, after_state} = SessionServer.get_state(session.token)
+      assert after_state.timers.lobby_expiry != before_state.timers.lobby_expiry
+
+      stop_server(session.token)
     end
   end
 

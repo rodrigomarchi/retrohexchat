@@ -490,50 +490,60 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
     local_info = SessionHelpers.parse_client_info(get_connect_params(socket))
 
-    if connected?(socket) do
-      Phoenix.PubSub.subscribe(@pubsub, "lobby:#{token}")
-      Lobby.join_session(token, user_id)
-      broadcast("lobby_client_info", token, %{from: user_id, info: local_info})
+    join_result =
+      if connected?(socket) do
+        Phoenix.PubSub.subscribe(@pubsub, "lobby:#{token}")
+        result = Lobby.join_session(token, user_id)
+        broadcast("lobby_client_info", token, %{from: user_id, info: local_info})
+        result
+      else
+        :ok
+      end
+
+    case join_result do
+      {:error, :already_joined} ->
+        {:ok, assign_already_joined(socket)}
+
+      _ ->
+        # The lobby drives the shared chat Composer, so it relays the composer's
+        # keyboard events (autocomplete/history/tab/syntax) exactly like the chat.
+        socket =
+          attach_hook(socket, :composer_events, :handle_event, &ComposerEvents.handle_event/3)
+
+        {:ok,
+         assign(socket,
+           token: token,
+           nickname: nickname,
+           user_id: user_id,
+           live_ready: connected?(socket),
+           role: role,
+           timezone: timezone,
+           strip_formatting: false,
+           peer_nick: SessionHelpers.resolve_peer_nick(user_id, db_session),
+           peer_online: false,
+           session_status: db_session.status,
+           ever_connected: false,
+           connection_label: dgettext("lobby", "Waiting for peer..."),
+           inactivity_warning: false,
+           webrtc_ready: false,
+           webrtc_started: false,
+           call_summary: nil,
+           stats: empty_stats(),
+           network_info_open: false,
+           local_info: local_info,
+           peer_info: %{},
+           turn_only: load_turn_only_preference(nickname),
+           turn_configured: P2P.turn_configured?(),
+           file_summary: nil,
+           game_summary: %{active?: false},
+           open_windows: MapSet.new(),
+           expired: false,
+           session_closed: false,
+           invalid: false,
+           ended_reason: nil,
+           ended_summary: nil
+         )}
     end
-
-    # The lobby drives the shared chat Composer, so it relays the composer's
-    # keyboard events (autocomplete/history/tab/syntax) exactly like the chat.
-    socket =
-      attach_hook(socket, :composer_events, :handle_event, &ComposerEvents.handle_event/3)
-
-    {:ok,
-     assign(socket,
-       token: token,
-       nickname: nickname,
-       user_id: user_id,
-       live_ready: connected?(socket),
-       role: role,
-       timezone: timezone,
-       strip_formatting: false,
-       peer_nick: SessionHelpers.resolve_peer_nick(user_id, db_session),
-       peer_online: false,
-       session_status: db_session.status,
-       ever_connected: false,
-       connection_label: dgettext("lobby", "Waiting for peer..."),
-       inactivity_warning: false,
-       webrtc_ready: false,
-       webrtc_started: false,
-       call_summary: nil,
-       stats: empty_stats(),
-       network_info_open: false,
-       local_info: local_info,
-       peer_info: %{},
-       turn_only: load_turn_only_preference(nickname),
-       turn_configured: P2P.turn_configured?(),
-       file_summary: nil,
-       game_summary: %{active?: false},
-       open_windows: MapSet.new(),
-       expired: false,
-       session_closed: false,
-       invalid: false,
-       ended_reason: nil,
-       ended_summary: nil
-     )}
   end
 
   # --- Server-managed window lifecycle ---
@@ -755,6 +765,19 @@ defmodule RetroHexChatWeb.App.LobbyLive do
     )
   end
 
+  # The same user already holds a live connection to this session from another
+  # process — one active tab per session.
+  defp assign_already_joined(socket) do
+    assign(socket,
+      expired: false,
+      session_closed: false,
+      invalid: true,
+      ended_reason: dgettext("lobby", "This lobby is already open in another tab or window."),
+      ended_summary: nil,
+      timezone: "Etc/UTC"
+    )
+  end
+
   # A live session that just closed: flip to the terminal screen and resolve the
   # final summary (timestamps/duration) for the goodbye card.
   defp mark_session_closed(socket, reason) do
@@ -781,6 +804,12 @@ defmodule RetroHexChatWeb.App.LobbyLive do
 
   defp expired_reason_label("user_blocked"),
     do: dgettext("lobby", "Lobby closed because a user was ignored.")
+
+  defp expired_reason_label("declined"),
+    do: dgettext("lobby", "The invite was declined.")
+
+  defp expired_reason_label("invite_cancelled"),
+    do: dgettext("lobby", "The invite was cancelled.")
 
   defp expired_reason_label(_reason), do: dgettext("lobby", "The lobby ended.")
 end
