@@ -124,10 +124,35 @@ chat, com as 3 ilhas do lobby reusadas (zero fork) e o standalone intacto.
   + encerrar com confirm; recusar; cancelar pendente. 3/3 verdes.
 - [x] CI 9/9
 
-**F5 CONCLUÍDA.** Fora de paridade por decisão: layout/PiP (recursos internos
-da MediaIsland, funcionam idem), suite standalone `chat-lobby.spec.ts`
-continua cobrindo a página própria até a F6 (menos :96/:200, quebra
-pré-existente de vídeo na main).
+**F5 CONCLUÍDA** (commit `bd760465`). Fora de paridade por decisão: layout/PiP
+(recursos internos da MediaIsland, funcionam idem), suite standalone
+`chat-lobby.spec.ts` continua cobrindo a página própria até a F6 (menos
+:96/:200, quebra pré-existente de vídeo na main).
+
+## F6 — remoção do standalone: **AGUARDANDO PRÉ-REQUISITOS** (recomendação)
+
+A F6 (deletar LobbyLive/universal_lobby/rota + redirect) está pronta para
+executar, MAS removê-la agora apagaria a suite `chat-lobby.spec.ts` — a única
+cobertura E2E de MÍDIA (vídeo bidirecional com RTP real, upgrade de áudio,
+device fallback) — enquanto:
+1. **A quebra pré-existente de vídeo no E2E** (`:96`/`:200`, `enableVideoButton`
+   nunca habilita; falha na main desde antes da F1) impede portar essa
+   cobertura para o fluxo in-chat. Diagnóstico preliminar: a conexão E2E passa
+   (`:9` verde) e o `waitUntilConnected` já assere o botão habilitado — a
+   falha posterior no `sendVideo` sugere locator/strict-mode ou regressão de
+   UI dos commits do space; precisa de sessão de trace Playwright dedicada.
+2. Ordem recomendada: (a) consertar o E2E de vídeo → (b) portar os testes de
+   mídia para `chat-p2p.spec.ts` → (c) executar a F6.
+
+Checklist da F6 quando destravar: deletar `lobby_live.ex(.heex)`,
+`chat_dispatch.ex`, `ChatIsland`+`chat_panel`, `universal_lobby.ex`,
+`lobby_menu_bar/status_bar/terminal`, `LobbyCloseWindowHook`, rota →
+redirect `/lobby/:token` → `/chat` (re-hidratação assume), e2e
+`chat-lobby.spec.ts`+`lobbyFlows`+`LobbyPage`, `lobby_live_test.exs`;
+**MANTER**: Media/File/Game islands + panels + network panel (o chat usa),
+domínio `Lobby`, `RetroHexChat.P2P`, hooks WebRTC; renomear o namespace
+`App.LobbyLive.Components.*` das ilhas sobreviventes; tópico de help
+"P2P Lobby" reescrito/removido; card sem link standalone.
 
 ### Aprendizados F3 (parciais)
 
