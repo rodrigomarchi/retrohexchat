@@ -346,7 +346,15 @@ export class SpaceEngine {
     }
 
     const self = this.participants.get(this.selfKey) ?? {};
-    this.participants.set(this.selfKey, { ...self, x, y, dir: serverPos.dir ?? self.dir });
+    this.participants.set(this.selfKey, {
+      ...self,
+      x,
+      y,
+      dir: serverPos.dir ?? self.dir,
+      // A self delta can also carry an avatar swap (the player picked a
+      // character); keep it rather than dropping every non-position field.
+      avatar: serverPos.avatar ?? self.avatar,
+    });
   }
 
   _applyRemoteUpdate(key, update, now) {

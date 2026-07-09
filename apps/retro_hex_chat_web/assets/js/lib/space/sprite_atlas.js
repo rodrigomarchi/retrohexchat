@@ -13,22 +13,72 @@ const HASH = String.fromCharCode(35);
 
 export const DIRECTIONS = Object.freeze(["down", "up", "left", "right"]);
 
-// Row offset (in tiles) of each facing inside a character block on the sheet.
-const WALK_DIR_ROW = Object.freeze({ down: 0, right: 2, up: 4, left: 6 });
-const SWORD_DIR_ROW = Object.freeze({ down: 0, up: 2, right: 4, left: 6 });
-
-// Avatars are sliced from `character.png`. Walk frames are 16×32; sword frames
-// are wider 32×32 cells because the blade extends outside the body tile.
-const AVATAR_SHEET = "character";
+// Avatar frame geometry is expressed in PIXELS so each avatar can live on its
+// own sheet at its own resolution. The legacy red-tunic hero is sliced from the
+// shared 16px `character.png` (walk 16×32; wider 32×32 sword cells because the
+// blade extends past the body). The PixelLab-authored classes each ship a
+// compact 36px sheet under `/images/space/avatars/`, laid out as four facing
+// rows (down, up, left, right) × four walk frames.
 const DEFAULT_AVATAR_ID = "redtunic_hero";
-const AVATAR_BLOCKS = Object.freeze({
+
+// 36px class sheets the atlas loads on its own, independent of the active map.
+const AVATAR_SHEETS = Object.freeze([
+  { id: "av_sorceress", src: "/images/space/avatars/sorceress.png" },
+  { id: "av_knight", src: "/images/space/avatars/knight.png" },
+  { id: "av_archer", src: "/images/space/avatars/archer.png" },
+  { id: "av_barbarian", src: "/images/space/avatars/barbarian.png" },
+  { id: "av_rogue", src: "/images/space/avatars/rogue.png" },
+  { id: "av_cleric", src: "/images/space/avatars/cleric.png" },
+  { id: "av_monk", src: "/images/space/avatars/monk.png" },
+]);
+
+// Standard blocks for a 36px class sheet (144×288): walk on rows 0-3 and attack
+// on rows 4-7, each down/up/left/right × 4 frames. The game's "sword" action
+// maps to the attack block (each class swings its own weapon).
+function classAvatar(sheet) {
+  return {
+    sheet,
+    walk: {
+      frameW: 36,
+      frameH: 36,
+      cols: [0, 36, 72, 108],
+      rows: Object.freeze({ down: 0, up: 36, left: 72, right: 108 }),
+    },
+    sword: {
+      frameW: 36,
+      frameH: 36,
+      cols: [0, 36, 72, 108],
+      rows: Object.freeze({ down: 144, up: 180, left: 216, right: 252 }),
+    },
+  };
+}
+
+const AVATARS = Object.freeze({
   redtunic_hero: {
-    walk: { col: 0, row: 0, w: 1, h: 2, step: 1, frames: [0, 1, 2, 3], dirRow: WALK_DIR_ROW },
-    sword: { col: 0, row: 8, w: 2, h: 2, step: 2, frames: [0, 1, 2, 3], dirRow: SWORD_DIR_ROW },
+    sheet: "character",
+    walk: {
+      frameW: 16,
+      frameH: 32,
+      cols: [0, 16, 32, 48],
+      rows: Object.freeze({ down: 0, up: 64, left: 96, right: 32 }),
+    },
+    sword: {
+      frameW: 32,
+      frameH: 32,
+      cols: [0, 32, 64, 96],
+      rows: Object.freeze({ down: 128, up: 160, right: 192, left: 224 }),
+    },
   },
+  sorceress: classAvatar("av_sorceress"),
+  knight: classAvatar("av_knight"),
+  archer: classAvatar("av_archer"),
+  barbarian: classAvatar("av_barbarian"),
+  rogue: classAvatar("av_rogue"),
+  cleric: classAvatar("av_cleric"),
+  monk: classAvatar("av_monk"),
 });
 
-export const AVATAR_IDS = Object.freeze(Object.keys(AVATAR_BLOCKS));
+export const AVATAR_IDS = Object.freeze(Object.keys(AVATARS));
 export const AVATAR_ACTIONS = Object.freeze(["walk", "sword"]);
 
 /**
@@ -88,18 +138,25 @@ export function createSpriteAtlas(opts = {}) {
   }
 
   function avatar(id, dir, frame = 0, action = "walk") {
-    const avatarBlock = AVATAR_BLOCKS[id] ?? AVATAR_BLOCKS[DEFAULT_AVATAR_ID];
-    const block = avatarBlock[action] ?? avatarBlock.walk;
-    const sheet = sheets.get(AVATAR_SHEET);
+    const desc = AVATARS[id] ?? AVATARS[DEFAULT_AVATAR_ID];
+    const block = desc[action] ?? desc.walk;
+    const sheet = sheets.get(desc.sheet);
     if (!sheet) return null;
     const direction = DIRECTIONS.includes(dir) ? dir : "down";
-    const frames = block.frames;
-    const idx = ((Math.trunc(frame) % frames.length) + frames.length) % frames.length;
-    const t = sheet.tile;
-    const col = block.col + frames[idx] * block.step;
-    const row = block.row + block.dirRow[direction];
-    return { img: sheet.img, sx: col * t, sy: row * t, sw: block.w * t, sh: block.h * t };
+    const n = block.cols.length;
+    const idx = ((Math.trunc(frame) % n) + n) % n;
+    return {
+      img: sheet.img,
+      sx: block.cols[idx],
+      sy: block.rows[direction],
+      sw: block.frameW,
+      sh: block.frameH,
+    };
   }
+
+  // Class avatar sheets are global (every map uses them), so the atlas loads
+  // them itself rather than depending on the map's tileset list.
+  loadTilesets(AVATAR_SHEETS);
 
   return {
     tileSize,
@@ -111,9 +168,9 @@ export function createSpriteAtlas(opts = {}) {
     tile,
     avatar,
     avatarFrameCount(id, action = "walk") {
-      const avatarBlock = AVATAR_BLOCKS[id] ?? AVATAR_BLOCKS[DEFAULT_AVATAR_ID];
-      const block = avatarBlock[action] ?? avatarBlock.walk;
-      return block.frames.length;
+      const desc = AVATARS[id] ?? AVATARS[DEFAULT_AVATAR_ID];
+      const block = desc[action] ?? desc.walk;
+      return block.cols.length;
     },
     // Notice-board modal art. This is illustration data (like the SVG icons the
     // style audit excludes); the palette lives here as hex digits with `#`

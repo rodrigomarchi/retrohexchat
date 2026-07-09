@@ -59,6 +59,17 @@ defmodule RetroHexChat.VirtualSpace do
           :ok | {:error, atom()}
   defdelegate action_direct_message(space_id, participant_key, payload), to: ChannelSpaceServer
 
+  @spec avatars() :: [String.t()]
+  defdelegate avatars(), to: ChannelSpaceServer
+
+  @spec select_avatar(String.t(), String.t(), String.t()) :: :ok | {:error, atom()}
+  defdelegate select_avatar(channel_name, participant_key, avatar), to: ChannelSpaceServer
+
+  @spec select_avatar_direct_message(String.t(), String.t(), String.t()) ::
+          :ok | {:error, atom()}
+  defdelegate select_avatar_direct_message(space_id, participant_key, avatar),
+    to: ChannelSpaceServer
+
   @spec leave_channel_space_viewer(String.t()) :: :ok
   defdelegate leave_channel_space_viewer(channel_name),
     to: ChannelSpaceServer,

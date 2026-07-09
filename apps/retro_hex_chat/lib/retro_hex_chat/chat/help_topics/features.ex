@@ -3120,7 +3120,34 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           dgettext(
             "help",
             "A multiplayer 8-bit virtual space built into every channel: people in the channel can switch from Chat to Space, walk around the shared map, and keep using the same channel conversation."
-          )
+          ),
+        see_also: ["feature-choose-character"]
+      },
+      %{
+        id: "feature-choose-character",
+        title: dgettext("help", "Choosing a Character"),
+        category: dgettext("help", "Virtual Spaces"),
+        keywords: [
+          "character",
+          "avatar",
+          "class",
+          "hero",
+          "sorceress",
+          "knight",
+          "archer",
+          "barbarian",
+          "rogue",
+          "cleric",
+          "monk",
+          dgettext("help", "pick character")
+        ],
+        icon: :icon_community,
+        description:
+          dgettext(
+            "help",
+            "When you enter a Space, a character picker appears first: choose from the classic Hero or one of seven classes — Sorceress, Knight, Archer, Barbarian, Rogue, Cleric or Monk. Each shows an animated preview and has its own walking and attack animations; click one to enter the map wearing it, and everyone in the space sees your choice. The picker shows again each time you re-enter, defaulting to your last pick."
+          ),
+        see_also: ["feature-virtual-spaces"]
       }
     ]
   end

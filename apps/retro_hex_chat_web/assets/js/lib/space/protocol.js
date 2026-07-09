@@ -14,6 +14,7 @@ export const CLIENT_EVENTS = Object.freeze({
   INPUT: "space_input",
   INTERACT: "space_interact",
   ACTION: "space_action",
+  SELECT_AVATAR: "space_select_avatar",
 });
 
 /** Server → client event names (channel events). */
@@ -125,8 +126,8 @@ function normalizeParticipants(rawParticipants) {
   return out;
 }
 
-// Delta updates are partial (position/dir only), so they keep raw fields but
-// still coerce coordinates and clamp direction.
+// Delta updates are partial (position/dir, or an avatar swap), so they keep raw
+// fields but still coerce coordinates, clamp direction and validate the avatar.
 function normalizeUpdates(rawUpdates) {
   if (!isObject(rawUpdates)) return {};
 
@@ -139,6 +140,7 @@ function normalizeUpdates(rawUpdates) {
       ...(isPresent(update.y) ? { y: toInt(update.y, 0) } : {}),
       ...(isPresent(update.dir) ? { dir: DIRECTIONS.has(update.dir) ? update.dir : "down" } : {}),
       ...(isPresent(update.moving) ? { moving: update.moving === true } : {}),
+      ...(typeof update.avatar === "string" ? { avatar: update.avatar } : {}),
     };
   }
   return out;

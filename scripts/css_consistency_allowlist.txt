@@ -5,6 +5,9 @@
 # Dynamic prefixes suppress matches in both directions.
 
 [unused]
+# False positive — the selector scanner matches the ".png" in url("…avatars/x.png")
+# background-image declarations (retrohex.css avatar previews) as a class.
+png
 # IRC format classes — generated dynamically by formatter.ex (irc-fg-0..15, irc-bg-0..15)
 irc-fg-*
 irc-bg-*
@@ -38,6 +41,12 @@ licon-32
 hljs*
 # P2P connection diagram — BEM classes used by p2p_connection_diagram.ex (skipped by template scanner)
 p2p-diagram*
+# Virtual-space character-picker previews — used by components/ui/space_character_select.ex
+# (a Tailwind-path component skipped by the template scanner); the per-avatar
+# modifier is composed dynamically from the avatar id.
+rh-charsel-preview
+rh-charsel-sprite
+rh-charsel-sprite--*
 # retrohex.css components — used by App templates in Tailwind paths (skipped by template scanner)
 retro-fieldset
 toolbar-group

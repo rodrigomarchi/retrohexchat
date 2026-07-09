@@ -94,6 +94,15 @@ defmodule RetroHexChatWeb.SpaceChannel do
     {:noreply, socket}
   end
 
+  def handle_in("space_select_avatar", payload, socket) do
+    with %{space_kind: kind, space_id: space_id, participant_key: key} <- socket.assigns,
+         {:ok, avatar} <- parse_select_avatar(payload) do
+      dispatch_select_avatar(kind, space_id, key, avatar)
+    end
+
+    {:noreply, socket}
+  end
+
   def handle_in(_event, _payload, socket) do
     {:noreply, socket}
   end
@@ -188,6 +197,11 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   defp parse_action(_), do: :error
 
+  defp parse_select_avatar(%{"avatar" => avatar}) when is_binary(avatar) and avatar != "",
+    do: {:ok, avatar}
+
+  defp parse_select_avatar(_), do: :error
+
   defp build_channel_actor(data) do
     %{
       user_id: data.user_id,
@@ -242,4 +256,10 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   defp dispatch_action(:direct_message, space_id, key, payload),
     do: VirtualSpace.action_direct_message(space_id, key, payload)
+
+  defp dispatch_select_avatar(:channel, space_id, key, avatar),
+    do: VirtualSpace.select_avatar(space_id, key, avatar)
+
+  defp dispatch_select_avatar(:direct_message, space_id, key, avatar),
+    do: VirtualSpace.select_avatar_direct_message(space_id, key, avatar)
 end

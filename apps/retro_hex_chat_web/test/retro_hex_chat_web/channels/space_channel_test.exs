@@ -356,6 +356,39 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
     end
   end
 
+  describe "avatar selection" do
+    test "a space_select_avatar push swaps the avatar and broadcasts a delta" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "alice")
+
+      assert {:ok, init, socket} = join_channel_space(channel, "alice")
+      self_key = init.self_key
+      assert init.snapshot.participants[self_key].avatar == "redtunic_hero"
+
+      push(socket, "space_select_avatar", %{"avatar" => "sorceress"})
+
+      # Match the selection delta specifically (a join presence delta also fires).
+      assert_push "space_delta", %{updates: %{^self_key => %{avatar: "sorceress"}}}
+
+      {:ok, state} = ChannelSpaceServer.get_state(channel)
+      assert state.participants[self_key].avatar == "sorceress"
+    end
+
+    test "an unknown avatar id leaves the participant on the default hero" do
+      channel = unique_channel()
+      {:ok, _pid} = start_channel(channel)
+      {:ok, _} = Server.join(channel, "alice")
+
+      assert {:ok, init, socket} = join_channel_space(channel, "alice")
+
+      push(socket, "space_select_avatar", %{"avatar" => "dragon_lord"})
+      # Round-trip a benign call so the invalid push is fully processed first.
+      {:ok, state} = ChannelSpaceServer.get_state(channel)
+      assert state.participants[init.self_key].avatar == "redtunic_hero"
+    end
+  end
+
   describe "interactions" do
     test "a space_interact use on a board pushes a space_modal to the requester" do
       channel = unique_channel()

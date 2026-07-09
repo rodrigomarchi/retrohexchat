@@ -1,0 +1,85 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "284d9e33-ffd0-4021-b73e-34dc5cbcbbb9",
+        "name": "Knight",
+        "prompt": "chibi RPG overworld knight, big round head, small body, steel blue plate armor, round shield on the back",
+        "size": {
+          "width": 36,
+          "height": 36
+        },
+        "template_id": "mannequin",
+        "directions": 4,
+        "view": "low top-down",
+        "created_at": "2026-07-09T19:28:41.704484+00:00"
+      },
+      "folder": "Knight",
+      "frames": {
+        "rotations": {
+          "south": "Knight/rotations/south.png",
+          "west": "Knight/rotations/west.png",
+          "east": "Knight/rotations/east.png",
+          "north": "Knight/rotations/north.png"
+        },
+        "animations": {
+          "animating": {
+            "east": [
+              "Knight/animations/animating/east/frame_000.png",
+              "Knight/animations/animating/east/frame_001.png",
+              "Knight/animations/animating/east/frame_002.png",
+              "Knight/animations/animating/east/frame_003.png"
+            ],
+            "south": [
+              "Knight/animations/animating/south/frame_000.png",
+              "Knight/animations/animating/south/frame_001.png",
+              "Knight/animations/animating/south/frame_002.png",
+              "Knight/animations/animating/south/frame_003.png"
+            ],
+            "west": [
+              "Knight/animations/animating/west/frame_000.png",
+              "Knight/animations/animating/west/frame_001.png",
+              "Knight/animations/animating/west/frame_002.png",
+              "Knight/animations/animating/west/frame_003.png"
+            ],
+            "north": [
+              "Knight/animations/animating/north/frame_000.png",
+              "Knight/animations/animating/north/frame_001.png",
+              "Knight/animations/animating/north/frame_002.png",
+              "Knight/animations/animating/north/frame_003.png"
+            ]
+          },
+          "attack": {
+            "east": [
+              "Knight/animations/attack/east/frame_000.png",
+              "Knight/animations/attack/east/frame_001.png",
+              "Knight/animations/attack/east/frame_002.png",
+              "Knight/animations/attack/east/frame_003.png"
+            ],
+            "north": [
+              "Knight/animations/attack/north/frame_000.png",
+              "Knight/animations/attack/north/frame_001.png",
+              "Knight/animations/attack/north/frame_002.png",
+              "Knight/animations/attack/north/frame_003.png"
+            ],
+            "west": [
+              "Knight/animations/attack/west/frame_000.png",
+              "Knight/animations/attack/west/frame_001.png",
+              "Knight/animations/attack/west/frame_002.png",
+              "Knight/animations/attack/west/frame_003.png"
+            ],
+            "south": [
+              "Knight/animations/attack/south/frame_000.png",
+              "Knight/animations/attack/south/frame_001.png",
+              "Knight/animations/attack/south/frame_002.png",
+              "Knight/animations/attack/south/frame_003.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-07-09T22:07:05.627277"
+}

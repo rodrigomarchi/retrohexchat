@@ -24,6 +24,11 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   @pubsub RetroHexChat.PubSub
   @action_cooldown_ms 250
 
+  # Selectable avatar ids. Must stay in sync with `AVATAR_IDS` in the JS atlas
+  # (`assets/js/lib/space/sprite_atlas.js`). The first entry is the default the
+  # runtime assigns on join, before the player picks a character.
+  @avatars ~w(redtunic_hero sorceress knight archer barbarian rogue cleric monk)
+
   @type participant :: %{
           key: String.t(),
           user_id: integer() | nil,
@@ -149,6 +154,24 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           :ok | {:error, action_error()}
   def action_direct_message(space_id, participant_key, payload) do
     call_by_key({:direct_message_space, space_id}, {:action, participant_key, payload})
+  end
+
+  @type select_avatar_error :: :not_found | :not_participant | :invalid_avatar
+
+  @doc "The canonical list of selectable avatar ids (in sync with the JS atlas)."
+  @spec avatars() :: [String.t()]
+  def avatars, do: @avatars
+
+  @spec select_avatar(String.t(), String.t(), String.t()) ::
+          :ok | {:error, select_avatar_error()}
+  def select_avatar(channel_name, participant_key, avatar) do
+    call(channel_name, {:select_avatar, participant_key, avatar})
+  end
+
+  @spec select_avatar_direct_message(String.t(), String.t(), String.t()) ::
+          :ok | {:error, select_avatar_error()}
+  def select_avatar_direct_message(space_id, participant_key, avatar) do
+    call_by_key({:direct_message_space, space_id}, {:select_avatar, participant_key, avatar})
   end
 
   @spec leave(String.t(), String.t()) :: :ok
@@ -323,6 +346,13 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   def handle_call({:action, key, payload}, _from, state) do
     case apply_action(state, key, payload) do
+      {:ok, state} -> {:reply, :ok, state}
+      {:error, reason, state} -> {:reply, {:error, reason}, state}
+    end
+  end
+
+  def handle_call({:select_avatar, key, avatar}, _from, state) do
+    case apply_select_avatar(state, key, avatar) do
       {:ok, state} -> {:reply, :ok, state}
       {:error, reason, state} -> {:reply, {:error, reason}, state}
     end
@@ -885,6 +915,29 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   defp apply_action(state, _key, _payload), do: {:error, :invalid_action, state}
 
+  # --- Avatar selection ---
+
+  defp apply_select_avatar(state, key, avatar) do
+    participant = Map.get(state.participants, key)
+
+    cond do
+      not active_participant?(participant) ->
+        {:error, :not_participant, state}
+
+      avatar not in @avatars ->
+        {:error, :invalid_avatar, state}
+
+      participant.avatar == avatar ->
+        {:ok, state}
+
+      true ->
+        participant = Map.put(participant, :avatar, avatar)
+        state = put_in(state.participants[key], participant)
+        state = broadcast_delta(state, key, participant, participant.input_seq)
+        {:ok, state}
+    end
+  end
+
   defp broadcast_action(state, key, participant, kind, dir) do
     broadcast(state.channel_name, "space_action", %{
       server_time: System.system_time(:millisecond),
@@ -1102,21 +1155,10 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     in_bounds?(state.map, x, y) and not MapSet.member?(state.blocked, {x, y})
   end
 
-  # Deterministic avatar assignment. Must stay in sync with `AVATAR_IDS` in the JS atlas.
-  @avatars ~w(redtunic_hero)
-  defp avatar_for(state, key) do
-    index = rem(:erlang.phash2(key), length(@avatars))
-
-    taken =
-      state.participants
-      |> Map.values()
-      |> MapSet.new(&Map.get(&1, :avatar))
-
-    @avatars
-    |> Stream.drop(index)
-    |> Stream.concat(@avatars)
-    |> Enum.find(@avatars |> List.first(), &(&1 not in taken))
-  end
+  # Everyone spawns as the default hero; players then pick a character on the
+  # entry screen, which drives `select_avatar`. Kept as a function (not a bare
+  # constant) so a future map could vary the starting look.
+  defp avatar_for(_state, _key), do: hd(@avatars)
 
   defp online_count(state) do
     state.participants |> Map.values() |> Enum.count(& &1.online?)

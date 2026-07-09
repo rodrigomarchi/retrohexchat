@@ -47,6 +47,9 @@ export function createSpaceCanvasHook(deps = {}) {
     mounted() {
       this._spaceChannel = this.el.dataset.spaceChannel;
       this._joinToken = this.el.dataset.joinToken;
+      // The chosen character (picked on the entry screen). Pushed to the server
+      // right after join so the world swaps this participant's avatar.
+      this._avatar = this.el.dataset.avatar || "";
       this._assetsReady = false;
       this._frameRenderedAfterAssets = false;
       this._loadingHidden = false;
@@ -107,6 +110,9 @@ export function createSpaceCanvasHook(deps = {}) {
         .receive("ok", (reply) => {
           this._setLoadingText("Loading room...");
           this._engine.start(normalizeSpaceInit(reply));
+          if (this._avatar) {
+            this._channel.push(CLIENT_EVENTS.SELECT_AVATAR, { avatar: this._avatar });
+          }
         })
         .receive("error", (reply) => {
           log.error("[space] channel join rejected", reply);

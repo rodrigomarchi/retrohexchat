@@ -1,0 +1,84 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "f018900c-d01a-4cb5-9d25-2acbef003f97",
+        "name": "Monk",
+        "prompt": "chibi RPG overworld monk, big round head, small body, bald head, orange and tan martial arts robe, cloth belt, bare hands",
+        "size": {
+          "width": 36,
+          "height": 36
+        },
+        "template_id": "mannequin",
+        "directions": 4,
+        "view": "low top-down",
+        "created_at": "2026-07-09T21:45:03.555498+00:00"
+      },
+      "folder": "Monk",
+      "frames": {
+        "rotations": {
+          "south": "Monk/rotations/south.png",
+          "west": "Monk/rotations/west.png",
+          "east": "Monk/rotations/east.png",
+          "north": "Monk/rotations/north.png"
+        },
+        "animations": {
+          "animating": {
+            "south": [
+              "Monk/animations/animating/south/frame_000.png",
+              "Monk/animations/animating/south/frame_001.png",
+              "Monk/animations/animating/south/frame_002.png",
+              "Monk/animations/animating/south/frame_003.png"
+            ],
+            "east": [
+              "Monk/animations/animating/east/frame_000.png",
+              "Monk/animations/animating/east/frame_001.png",
+              "Monk/animations/animating/east/frame_002.png",
+              "Monk/animations/animating/east/frame_003.png"
+            ],
+            "west": [
+              "Monk/animations/animating/west/frame_000.png",
+              "Monk/animations/animating/west/frame_001.png",
+              "Monk/animations/animating/west/frame_002.png",
+              "Monk/animations/animating/west/frame_003.png"
+            ],
+            "north": [
+              "Monk/animations/animating/north/frame_000.png",
+              "Monk/animations/animating/north/frame_001.png",
+              "Monk/animations/animating/north/frame_002.png",
+              "Monk/animations/animating/north/frame_003.png"
+            ]
+          },
+          "attack": {
+            "north": [
+              "Monk/animations/attack/north/frame_000.png",
+              "Monk/animations/attack/north/frame_001.png",
+              "Monk/animations/attack/north/frame_002.png",
+              "Monk/animations/attack/north/frame_003.png"
+            ],
+            "west": [
+              "Monk/animations/attack/west/frame_000.png",
+              "Monk/animations/attack/west/frame_001.png",
+              "Monk/animations/attack/west/frame_003.png"
+            ],
+            "south": [
+              "Monk/animations/attack/south/frame_000.png",
+              "Monk/animations/attack/south/frame_001.png",
+              "Monk/animations/attack/south/frame_002.png",
+              "Monk/animations/attack/south/frame_003.png"
+            ],
+            "east": [
+              "Monk/animations/attack/east/frame_000.png",
+              "Monk/animations/attack/east/frame_001.png",
+              "Monk/animations/attack/east/frame_002.png",
+              "Monk/animations/attack/east/frame_003.png"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-07-09T22:07:23.932870"
+}

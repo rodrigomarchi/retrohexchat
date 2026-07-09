@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   import RetroHexChatWeb.Components.UI.TopicBar
   import RetroHexChatWeb.Components.UI.ConnectionStatus
   import RetroHexChatWeb.Components.UI.ActivityIndicator
+  import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
 
   # ── Desktop window manager ───────────────────────────────────
   import RetroHexChatWeb.Components.UI.Desktop
@@ -266,7 +267,17 @@ defmodule RetroHexChatWeb.App.ChatLive do
   def handle_event("switch_channel_view", %{"view" => view}, socket)
       when view in ["chat", "space"] do
     channel_view = if view == "space", do: :space, else: :chat
-    {:noreply, assign(socket, channel_view: channel_view)}
+    # Entering the space always shows the character picker first (space_avatar
+    # nil gates the canvas mount); leaving it drops back to chat.
+    {:noreply, assign(socket, channel_view: channel_view, space_avatar: nil)}
+  end
+
+  def handle_event("space_select_avatar", %{"avatar" => avatar}, socket) do
+    if avatar in socket.assigns.space_avatars do
+      {:noreply, assign(socket, space_avatar: avatar, space_last_avatar: avatar)}
+    else
+      {:noreply, socket}
+    end
   end
 
   # Context menus — components emit v1 event names directly
@@ -706,6 +717,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       channel_list_channels: [],
       channel_list_loading: false,
       channel_view: :chat,
+      space_avatars: RetroHexChat.VirtualSpace.avatars(),
+      space_avatar: nil,
+      space_last_avatar: "redtunic_hero",
       p2p_session: nil,
       p2p_pending: nil,
       arcade_session: nil,

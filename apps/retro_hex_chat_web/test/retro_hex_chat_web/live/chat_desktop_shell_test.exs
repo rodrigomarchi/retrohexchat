@@ -85,9 +85,18 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       |> element(space_button)
       |> render_click()
 
+      # Entering the space shows the character picker first; the canvas only
+      # mounts after a character is chosen.
+      assert has_element?(view, ~s([data-testid="space-character-select"]))
+      refute has_element?(view, ~s([data-testid="channel-space-shell"]))
+
+      view
+      |> element(~s([data-testid="space-avatar-knight"]))
+      |> render_click()
+
       assert has_element?(
                view,
-               ~s([data-testid="channel-content-row"] [data-testid="channel-space-shell"][phx-hook="SpaceCanvasHook"][data-space-mode="channel"])
+               ~s([data-testid="channel-content-row"] [data-testid="channel-space-shell"][phx-hook="SpaceCanvasHook"][data-space-mode="channel"][data-avatar="knight"])
              )
 
       assert has_element?(
@@ -118,6 +127,13 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       |> element(
         ~s([data-testid="topic-bar"] [data-testid="channel-view-tabs"] button[phx-value-view="space"])
       )
+      |> render_click()
+
+      # Pick a character to dismiss the picker and mount the private-room canvas.
+      assert has_element?(view, ~s([data-testid="space-character-select"]))
+
+      view
+      |> element(~s([data-testid="space-avatar-sorceress"]))
       |> render_click()
 
       assert has_element?(

@@ -10,6 +10,7 @@ import {
 const TILESETS = [
   { id: "overworld", src: "/images/space/overworld.png", tile: 16, columns: 40 },
   { id: "character", src: "/images/space/character.png", tile: 16, columns: 17 },
+  { id: "av_knight", src: "/images/space/avatars/knight.png" },
 ];
 
 const TILES = {
@@ -26,8 +27,17 @@ function loadedAtlas() {
 }
 
 describe("sprite atlas contract", () => {
-  it("declares the single red-tunic avatar, its actions, and the four facings", () => {
-    expect(AVATAR_IDS).toEqual(["redtunic_hero"]);
+  it("declares the hero plus the seven class avatars, their actions, and the four facings", () => {
+    expect(AVATAR_IDS).toEqual([
+      "redtunic_hero",
+      "sorceress",
+      "knight",
+      "archer",
+      "barbarian",
+      "rogue",
+      "cleric",
+      "monk",
+    ]);
     expect(AVATAR_ACTIONS).toEqual(["walk", "sword"]);
     expect(DIRECTIONS).toEqual(["down", "up", "left", "right"]);
   });
@@ -107,6 +117,30 @@ describe("sprite atlas contract", () => {
     });
     expect(atlas.avatarFrameCount("redtunic_hero", "walk")).toBe(4);
     expect(atlas.avatarFrameCount("redtunic_hero", "sword")).toBe(4);
+  });
+
+  it("slices a 36px class avatar from its own sheet by facing and frame", () => {
+    const atlas = loadedAtlas();
+    // Class sheets are a 4x4 grid of 36px cells: rows down/up/left/right.
+    expect(atlas.avatar("knight", "down", 0)).toMatchObject({
+      sx: 0,
+      sy: 0,
+      sw: 36,
+      sh: 36,
+    });
+    expect(atlas.avatar("knight", "up", 1)).toMatchObject({ sx: 36, sy: 36 });
+    expect(atlas.avatar("knight", "left", 2)).toMatchObject({ sx: 72, sy: 72 });
+    expect(atlas.avatar("knight", "right", 3)).toMatchObject({ sx: 108, sy: 108 });
+    // Attack block lives on rows 4-7 (y 144..252) of the same 36px sheet.
+    expect(atlas.avatar("knight", "down", 0, "sword")).toMatchObject({
+      sx: 0,
+      sy: 144,
+      sw: 36,
+      sh: 36,
+    });
+    expect(atlas.avatar("knight", "right", 2, "sword")).toMatchObject({ sx: 72, sy: 252 });
+    expect(atlas.avatarFrameCount("knight", "walk")).toBe(4);
+    expect(atlas.avatarFrameCount("knight", "sword")).toBe(4);
   });
 
   it("falls back to the default block for an unknown avatar id", () => {
