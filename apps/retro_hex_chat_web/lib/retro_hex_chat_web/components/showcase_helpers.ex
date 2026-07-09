@@ -160,7 +160,6 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
      ]},
     {dgettext_noop("showcase", "Games"), :icon_joystick,
      [
-       {dgettext_noop("showcase", "Arcade Frame"), "arcade-frame", "/showcase/arcade-frame"},
        {dgettext_noop("showcase", "Game Cards"), "game-cards", "/showcase/game-cards"},
        {dgettext_noop("showcase", "Solo Lobby"), "solo-lobby", "/showcase/solo-lobby"}
      ]},
@@ -383,7 +382,6 @@ defmodule RetroHexChatWeb.ShowcaseHelpers do
     "sound-settings-dialog" => :icon_dialog_sound,
     "invite-dialog" => :icon_btn_join,
     "paste-confirm-dialog" => :icon_warning,
-    "arcade-frame" => :icon_joystick,
     "app-header" => :icon_laptop,
     "cheatsheet-dialog" => :icon_btn_keyboard,
     "nick-change-dialog" => :icon_status_user,

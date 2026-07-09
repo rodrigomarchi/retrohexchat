@@ -24,7 +24,7 @@ defmodule RetroHexChat.Commands.RegistryTest do
       assert "nick" in commands
       assert "invite" in commands
       refute "space" in commands
-      assert length(commands) == 55
+      assert length(commands) == 54
     end
   end
 
@@ -42,7 +42,7 @@ defmodule RetroHexChat.Commands.RegistryTest do
     test "returns all commands with metadata" do
       metadata = Registry.command_metadata()
       assert is_list(metadata)
-      assert length(metadata) == 55
+      assert length(metadata) == 54
 
       join = Enum.find(metadata, &(&1.name == "join"))
       assert join.description =~ "chat channel"
@@ -87,7 +87,7 @@ defmodule RetroHexChat.Commands.RegistryTest do
         |> Enum.flat_map(fn {_label, cmds} -> Enum.map(cmds, & &1.name) end)
 
       # leave is an alias for part; both stay registered while /space is retired.
-      assert length(all_names) == 55
+      assert length(all_names) == 54
     end
   end
 end

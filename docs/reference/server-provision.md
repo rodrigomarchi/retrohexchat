@@ -93,7 +93,7 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 # #games — Arcade & retro games
 /join #games
 /cs register
-/topic Retro arcade games — type !play to start a solo session. DOOM, Quake, Half-Life, and more running in your browser via WebAssembly.
+/topic Retro arcade games — open the Games menu and choose Arcade to play. DOOM, Quake, Half-Life, and more running in your browser via WebAssembly.
 /mode +tn
 
 # #rules — Read-only info (moderated)
@@ -298,16 +298,15 @@ Paste the **entire block below** into the **Admin Console** and click **Execute*
 
 /bot join Leeroy #gaming
 
-# ── Pixel — #games arcade session host ─────────────────────
+# ── Pixel — #games retro-gaming personality ────────────────
 # Personality: Retro gaming enthusiast. Speaks in 8-bit culture references.
-# Has the arcade capability — responds to !play with solo session links.
+# The arcade itself opens from the Games menu → Arcade (no bot command).
 /bot create Pixel Arcade Operator and Retro Gaming Enthusiast
 /bot set Pixel prefix !
 /bot set Pixel cooldown 2000
-/bot set Pixel arcade_enabled true
-/bot set Pixel greeting Welcome to the arcade, {nickname}! I'm Pixel — type !play to start a solo session. DOOM, Quake, Half-Life, and more await!
-/bot set Pixel farewell GG {nickname}! Come back anytime — the arcade never closes. Insert coin to continue... or just type !play.
-/bot set Pixel mention_response Player {nickname} has entered the chat! Want to play? Type !play and I'll fire up the arcade for you.
+/bot set Pixel greeting Welcome to the arcade, {nickname}! I'm Pixel — open the Games menu and choose Arcade to play. DOOM, Quake, Half-Life, and more await!
+/bot set Pixel farewell GG {nickname}! Come back anytime — the arcade never closes. Insert coin to continue...
+/bot set Pixel mention_response Player {nickname} has entered the chat! Want to play? Open the Games menu → Arcade and fire up a classic.
 
 /bot addcmd Pixel games 18 classics available: DOOM, Quake, Quake II, Wolfenstein 3D, Half-Life, ScummVM adventures, and more — all running in your browser via WebAssembly!
 /bot addcmd Pixel controls Keyboard + mouse for FPS games, keyboard for adventures. Gamepad support available. Check each game's help screen for specific bindings.
@@ -435,7 +434,7 @@ After running the script, verify with:
 | #music | **Amadeus** | Pretentious audiophile, secretly likes pop | `!recommend` `!rate` `!genre` `!playlist` `!vinyl` |
 | #movies | **Oscar** | Dramatic film critic, quotes movies | `!recommend` `!rate` `!spoiler` `!quote` `!snack` |
 | #gaming | **Leeroy** | Over-the-top gamer, has dice! | `!roll` `!gg` `!rage` `!loot` `!build` |
-| #games | **Pixel** | Arcade operator, retro enthusiast | `!play` `!games` `!controls` |
+| #games | **Pixel** | Arcade operator, retro enthusiast | `!games` `!controls` |
 | #tech | **Murphy** | Pessimistic sysadmin, everything is on fire | `!deploy` `!fix` `!tabs` `!stack` `!wisdom` |
 | #creative | **Vincent** | Tortured artist, very supportive | `!inspire` `!feedback` `!block` `!color` `!share` |
 | #feedback | **Susan** | VP of User Happiness, has spreadsheets | `!noted` `!feature` `!bug` `!survey` `!roadmap` |
@@ -471,7 +470,7 @@ After running the script, verify with:
 - **Every channel has 3 bots**: The 2 globals + its own themed bot (except #rules which is moderated and has no bots)
 - **Every bot introduces itself**: All bots greet on join, announcing who they are and which commands to use
 - **Leeroy has dice**: The #gaming bot includes dice rolling capability (`!roll`)
-- **Pixel has arcade**: The #games bot includes arcade capability (`!play` creates solo sessions)
+- **Pixel hypes the arcade**: The #games bot is a retro-gaming personality; the arcade itself opens from the Games menu → Arcade (no bot command)
 - **No "bot" in any name**: Reginald, Brutus, Doug, Wendy, Harold, Derek, Amadeus, Oscar, Leeroy, Pixel, Murphy, Vincent, Susan, Patches
 - **All messages are unique**: Every bot has its own personality, greeting, farewell, mention response, and custom commands — all contextualized to the channel topic
 - **Adding more channels later**: `/join #newchan`, `/cs register`, create a themed bot, then also `/bot join Reginald #newchan` and `/bot join Brutus #newchan`

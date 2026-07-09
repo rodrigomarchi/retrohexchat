@@ -6,13 +6,21 @@
 </p>
 <.help_h4 icon={:icon_send}>{dgettext("help_arcade", "Starting an Arcade Session")}</.help_h4>
 <p>
-  {dgettext("help_arcade", "Join")} <strong>#games</strong> {dgettext("help_arcade", "and type:")}
+  {dgettext(
+    "help_arcade",
+    "Open the "
+  )}<strong>{dgettext("help_arcade", "Games")}</strong> {dgettext(
+    "help_arcade",
+    "menu and choose"
+  )} <strong>{dgettext(
+    "help_arcade",
+    "Arcade"
+  )}</strong>{dgettext("help_arcade", ".")}
 </p>
-<pre>{dgettext("help_arcade", "!play")}</pre>
 <p>
   {dgettext(
     "help_arcade",
-    "The arcade bot will create a solo arcade session and send you a link to the game lobby where you can browse and select a game from the catalog. You must be registered and identified ("
+    "A window opens right on the chat desktop where you can browse and select a game from the catalog. Click a game to open it in a new browser window. You must be registered and identified ("
   )}<code>{dgettext("help_arcade", "/ns identify")}</code>{dgettext("help_arcade", ") to play.")}
 </p>
 <.help_h4 icon={:icon_game_halflife}>

@@ -253,7 +253,7 @@ make ci
 | M17 | Bot enable/disable/destroy changes response behavior and cleans up | `tests/chat-bots.spec.ts` | P2 | done |
 | M18 | `/announce` broadcasts to connected users and bypasses ignore | `tests/chat-announce.spec.ts` | P1 | done |
 | M19 | Regular user admin-only commands show permission errors | `tests/chat-admin-permissions.spec.ts` | P1 | done |
-| M20 | Admin `/singleplayer` emits usable solo arcade link/card | `tests/chat-singleplayer.spec.ts` | P2 | done |
+| M20 | Games menu → Arcade opens the in-chat game picker and previews a game | `tests/chat-arcade.spec.ts` | P2 | done |
 
 ## N - P2P, File, Call, Game
 
@@ -456,12 +456,6 @@ make ci
 | Y11 | Alias commands expand inside timer, perform reconnect, and autorespond trigger flows | `tests/chat-automation-composition.spec.ts` | P2 | done |
 | Y12 | Rapid nick change plus immediate channel message leaves no stale old nick tab, nicklist row, or attribution | `tests/chat-realtime-race-edges.spec.ts` | P2 | done |
 
-## Backlog Z - P2P, File, Call, Game, And Arcade
-
-| # | Flow | Spec file | Priority | Status |
-|---|------|-----------|----------|--------|
-| Z12 | Solo arcade link opens the solo lobby, starts a playable external arcade window, returns to completed state, and leaves chat usable | `tests/chat-singleplayer-arcade.spec.ts` | P2 | done |
-
 ## Backlog AA - Reconnect, Multi-Context, Browser State, And Destructive Safety
 
 | # | Flow | Spec file | Priority | Status |
@@ -485,8 +479,7 @@ make ci
 | Page Object | Status | Purpose |
 |-------------|--------|---------|
 | `pages/ConnectPage.ts` | done | Connect/register/auth flows and `uniqueNickname()` helper |
-| `pages/ChatPage.ts` | active | Chat shell locators and shared high-level actions |
-| `pages/SoloArcadePage.ts` | active | Solo arcade lobby and external game-window lifecycle checks |
+| `pages/ChatPage.ts` | active | Chat shell locators and shared high-level actions (incl. Games → Arcade) |
 
 ## Notable Product Fixes Found By E2E
 

@@ -43,6 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
       assign(assigns,
         account_state: Session.identity_state(session),
         is_admin: ChatContext.admin?(session),
+        arcade_available: session.identified == true,
         online_buddy_count: online_buddy_count(session.notify_list),
         channel: session.active_pm || session.active_channel,
         tab_type: if(session.active_pm, do: :pm, else: :channel),
@@ -64,6 +65,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
       muted={@muted}
       timezone={@timezone}
       is_admin={@is_admin}
+      arcade_available={@arcade_available}
       p2p={@p2p}
       p2p_turn_available={@p2p_turn_available}
     />

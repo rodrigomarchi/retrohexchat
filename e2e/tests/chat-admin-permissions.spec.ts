@@ -47,11 +47,6 @@ test.describe('Admin command permission gates', () => {
       await user.chat.expectMessageVisible(
         'Permission denied: you must be a server administrator.',
       );
-
-      await user.chat.sendMessage('/singleplayer');
-      await user.chat.expectMessageVisible(
-        'This command is reserved for administrators.',
-      );
     } finally {
       await user.ctx.close();
     }

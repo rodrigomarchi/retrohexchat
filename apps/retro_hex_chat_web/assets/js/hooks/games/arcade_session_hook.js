@@ -6,34 +6,11 @@ function closeArcadeTab() {
 }
 
 /**
- * ArcadeIframe hook — auto-focuses the iframe so keyboard/mouse input
- * reaches the Emscripten canvas immediately, and handles the
- * arcade_close_tab server event.
- */
-const ArcadeIframeHook = {
-  mounted() {
-    const iframe = this.el;
-
-    // Focus the iframe once it loads so keystrokes reach the game
-    iframe.addEventListener("load", () => {
-      iframe.focus();
-    });
-
-    // Also focus on click (in case focus was lost)
-    iframe.addEventListener("mouseenter", () => {
-      iframe.focus();
-    });
-
-    // Handle server-pushed close event
-    this.handleEvent("arcade_close_tab", () => {
-      closeArcadeTab();
-    });
-  },
-};
-
-/**
- * ArcadeSession hook — attached to the solo session container,
- * handles the arcade_close_tab event and opens game windows.
+ * ArcadeSession hook — anchored on the in-chat arcade session element. Opens the
+ * selected WASM game in a separate browser window on `open_game_window`, polls it
+ * and reports `game_window_closed`/`game_window_blocked` back to the LiveView so
+ * the host can finish the solo session. Also handles the `arcade_close_tab`
+ * server event (legacy standalone-tab close; harmless in the chat context).
  */
 const ArcadeSessionHook = {
   mounted() {
@@ -89,5 +66,4 @@ const ArcadeSessionHook = {
   },
 };
 
-export default ArcadeIframeHook;
-export { ArcadeSessionHook };
+export default ArcadeSessionHook;

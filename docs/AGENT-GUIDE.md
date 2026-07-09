@@ -821,8 +821,8 @@ There is exactly ONE hook registration pattern; do not reintroduce local choice 
   in `<head>` alternates, footer language links, or the sitemap. Query-locale routes
   (`/locale/:locale?return_to=…`) exist solely for in-app user-initiated language switching.
 - **Routes: explicit localized scopes per enabled non-default locale, never a catch-all
-  `/:locale`** — a catch-all would capture app routes (`/connect`, `/chat`, `/p2p/:token`,
-  `/game/:token`, `/solo/:token`, `/arcade/:token/:game_id`, `/showcase`). `PutLocale` resolves
+  `/:locale`** — a catch-all would capture app routes (`/connect`, `/chat`, `/lobby/:token`,
+  `/showcase`). `PutLocale` resolves
   the locale from route params/assigns before the session / Accept-Language fallback.
 - **hreflang is reciprocal.** Sitemap and `<head>` alternates list every locale version of a
   page reciprocally; `x-default` points at the English unprefixed URL. Canonical URLs on

@@ -592,6 +592,44 @@
       />
     </.desktop_window>
 
+    <%!-- Arcade — server-managed solo-game picker, a pure read-model of the
+          @arcade_session assign (like P2P Statistics, no island component).
+          The X keeps the session alive while a game is running (the pop-up
+          keeps playing); the Leave/Close button inside ends it. --%>
+    <.desktop_window
+      :if={@arcade_session && "arcade-games" in @open_windows}
+      id="arcade-games"
+      persist_geometry={false}
+      title={dgettext("chat", "Arcade")}
+      managed
+      on_close="arcade_window_close"
+      default_x={200}
+      default_y={80}
+      width={680}
+      height={520}
+      min_width={420}
+      min_height={340}
+      body_class="p-2"
+      data-testid="arcade-games-window"
+    >
+      <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
+      <.solo_lobby
+        id="arcade-lobby"
+        games={arcade_games()}
+        session_status={@arcade_session.status}
+        previewed_game={@arcade_session.previewed_game}
+        game_name={@arcade_session.game_name}
+        game_id={@arcade_session.game_id}
+        game_started_at={@arcade_session.game_started_at}
+        game_duration={@arcade_session.game_duration}
+        inactivity_warning={@arcade_session.inactivity_warning}
+        on_preview_game="arcade_preview"
+        on_select_game="arcade_select_game"
+        on_back="arcade_back"
+        on_close="arcade_leave"
+      />
+    </.desktop_window>
+
     <%!-- Timers — server-managed: closing unmounts the island (draft state
           resets by design); reopening mounts a fresh one. --%>
     <.desktop_window
@@ -908,6 +946,13 @@
           <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
+          :if={@arcade_session && "arcade-games" in @open_windows}
+          window="arcade-games"
+          label={dgettext("chat", "Arcade")}
+        >
+          <:icon><Icons.icon_game_arcade class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
           :if={"highlight" in @open_windows}
           window="highlight"
           label={dgettext("chat", "Highlight Words")}
@@ -1061,6 +1106,20 @@
 >
   <div id="lobby-webrtc" phx-hook="LobbyWebRTCHook" phx-update="ignore" data-testid="p2p-webrtc">
   </div>
+</div>
+
+<%!-- Solo arcade anchor: gated on @arcade_session (NOT the window) so the
+      ArcadeSession hook keeps polling the launched game window even while the
+      picker is minimized or closed. Receives `open_game_window` and reports
+      `game_window_closed`/`game_window_blocked`. --%>
+<div
+  :if={@arcade_session}
+  id="arcade-session"
+  phx-hook="ArcadeSession"
+  phx-update="ignore"
+  class="hidden"
+  data-testid="arcade-session"
+>
 </div>
 
 <.live_component

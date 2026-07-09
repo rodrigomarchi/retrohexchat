@@ -32,6 +32,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── P2P session windows ──────────────────────────────────────
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
 
+  # ── Solo arcade window body ──────────────────────────────────
+  import RetroHexChatWeb.Components.UI.SoloLobby
+
   # ── Dialog components ────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.AboutDialog
 
@@ -54,7 +57,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
-  alias RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Timezone
 
@@ -217,6 +219,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       unless socket.assigns[:skip_channel_cleanup] do
         ChatLive.Helpers.cleanup_channels(session, quit_reason)
       end
+
+      ChatLive.ArcadeSessionEvents.close_on_terminate(socket)
     end
 
     :ok
@@ -330,26 +334,6 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # Admin Console bubbles the same way.
   def handle_info({:admin_system_error, message}, socket) do
     {:noreply, ChatLive.Helpers.error_event(socket, message)}
-  end
-
-  # The Admin Console delegates a command to the host: `dispatch_command_with_result`
-  # touches host-only assigns (e.g. `show_status_tab`) that the island socket lacks.
-  # The result is reflected back to the island for its inline display.
-  def handle_info({:admin_console_command, name, args}, socket) do
-    {socket, result} =
-      ChatLive.CommandDispatch.dispatch_command_with_result(
-        socket,
-        socket.assigns.session,
-        name,
-        args
-      )
-
-    send_update(AdminConsoleDialog,
-      id: AdminConsoleDialog.id(),
-      singleplayer_result: result
-    )
-
-    {:noreply, socket}
   end
 
   # Perform dialog bubbles validation errors to the chat surface.
@@ -562,6 +546,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.KeyboardEvents.handle_event/3,
     &ChatLive.ConnectionEvents.handle_event/3,
     &ChatLive.P2PSessionEvents.handle_event/3,
+    &ChatLive.ArcadeSessionEvents.handle_event/3,
     &ChatLive.CoreEvents.handle_event/3
   ]
 
@@ -624,6 +609,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
       {:connection_events, &ChatLive.ConnectionEvents.handle_event/3},
       {:p2p_session_events, &ChatLive.P2PSessionEvents.handle_event/3},
+      {:arcade_session_events, &ChatLive.ArcadeSessionEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
     ]
 
@@ -633,7 +619,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:pubsub_handlers, &ChatLive.PubsubHandlers.handle_info/2},
       # After PubsubHandlers: it consumes "lobby_invite" (user topic) first;
       # this one owns the session-topic "lobby_*" events.
-      {:p2p_session_info, &ChatLive.P2PSessionEvents.handle_info/2}
+      {:p2p_session_info, &ChatLive.P2PSessionEvents.handle_info/2},
+      # Owns the "arcade:#{token}" topic events for the in-chat solo arcade.
+      {:arcade_session_info, &ChatLive.ArcadeSessionEvents.handle_info/2}
     ]
 
     socket =
@@ -720,6 +708,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       channel_view: :chat,
       p2p_session: nil,
       p2p_pending: nil,
+      arcade_session: nil,
       mobile_viewport: false
     )
   end
@@ -727,6 +716,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── View helpers ──────────────────────────────────────────────
 
   defp admin?(session), do: ChatContext.admin?(session)
+
+  # Static solo-arcade catalog for the in-chat Arcade window body.
+  defp arcade_games, do: RetroHexChat.Arcade.list_games()
 
   defp conversation_space(session, show_status_tab) do
     cond do

@@ -29,8 +29,7 @@ defmodule RetroHexChat.Bots.Server do
     moderation: RetroHexChat.Bots.Capabilities.Moderation,
     rss: RetroHexChat.Bots.Capabilities.RSS,
     trivia: RetroHexChat.Bots.Capabilities.Trivia,
-    dice: RetroHexChat.Bots.Capabilities.Dice,
-    arcade: RetroHexChat.Bots.Capabilities.Arcade
+    dice: RetroHexChat.Bots.Capabilities.Dice
   }
 
   @type state :: %{
@@ -490,16 +489,6 @@ defmodule RetroHexChat.Bots.Server do
     Enum.each(lines, fn line ->
       send_bot_message(channel, state.nickname, line)
     end)
-
-    update_cooldown(state, channel)
-  end
-
-  defp maybe_respond(state, channel, {:notice, target_nick, text}) do
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      "user:#{target_nick}",
-      %{event: "bot_notice", payload: %{bot: state.nickname, channel: channel, content: text}}
-    )
 
     update_cooldown(state, channel)
   end

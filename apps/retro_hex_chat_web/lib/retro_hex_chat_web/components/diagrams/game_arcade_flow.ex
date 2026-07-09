@@ -17,11 +17,11 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
       aria-label={
         dgettext(
           "diagrams",
-          "Solo arcade flow: type !play in #games channel, pick a game from catalog, new window opens, WASM game runs in browser"
+          "Solo arcade flow: open the Games menu and choose Arcade, pick a game from the catalog, a new window opens, WASM game runs in browser"
         )
       }
     >
-      <%!-- ── Step 1: !play command in #games ── --%>
+      <%!-- ── Step 1: open Games menu → Arcade ── --%>
       <%!-- Shadow --%>
       <rect x="64" y="14" width="300" height="44" fill="#000" />
       <%!-- Window --%>
@@ -51,9 +51,9 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-family="Tahoma,sans-serif"
         font-weight="bold"
       >
-        #games
+        {dgettext("diagrams", "Games menu")}
       </text>
-      <%!-- Input field with !play --%>
+      <%!-- Menu item: Arcade --%>
       <rect x="70" y="34" width="178" height="14" fill="#fff" stroke="#808080" stroke-width="1" />
       <text
         x="74"
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.Components.Diagrams.GameArcadeFlow do
         font-size="9"
         font-family="'Courier New',monospace"
       >
-        {dgettext("diagrams", "!play")}
+        {dgettext("diagrams", "▸ Arcade")}
       </text>
       <%!-- Send button --%>
       <rect x="254" y="34" width="40" height="14" fill="#c0c0c0" stroke="#000" stroke-width="1" />

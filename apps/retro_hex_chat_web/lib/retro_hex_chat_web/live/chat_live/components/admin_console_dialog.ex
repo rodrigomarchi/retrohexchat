@@ -99,9 +99,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
   def update(%{open: true}, socket), do: {:ok, assign(socket, @reset)}
   def update(%{close: true}, socket), do: {:ok, assign(socket, show: false)}
 
-  def update(%{singleplayer_result: result}, socket),
-    do: {:ok, put_console(socket, server_settings_result: result_entry(result))}
-
   def update(assigns, socket), do: {:ok, assign(socket, assigns)}
 
   def handle_event("admin_console_tab", %{"tab" => tab}, socket) do
@@ -431,21 +428,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
       changes = Admin.server_setting_changes(current, server_settings_params(params))
       result = save_server_settings(changes, socket)
       {:noreply, assign_server_settings_snapshot(socket, result)}
-    else
-      {:noreply,
-       error_event(
-         socket,
-         dgettext("chat", "Admin Console is restricted to server administrators.")
-       )}
-    end
-  end
-
-  def handle_event("admin_console_start_singleplayer", _params, socket) do
-    if admin?(socket) do
-      # Run on the host: the command touches host-only assigns the island lacks.
-      # The host reflects the result back via `singleplayer_result` (update/2).
-      send(self(), {:admin_console_command, "singleplayer", []})
-      {:noreply, socket}
     else
       {:noreply,
        error_event(
@@ -1316,7 +1298,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.AdminConsoleDialog do
         on_audit_log_refresh="admin_console_refresh_audit_log"
         on_server_settings_save="admin_console_save_server_settings"
         on_server_settings_refresh="admin_console_refresh_server_settings"
-        on_singleplayer="admin_console_start_singleplayer"
         on_users_refresh="admin_console_refresh_users"
         on_users_info="admin_console_user_info"
         on_users_ban="admin_console_user_ban"

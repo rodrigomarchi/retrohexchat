@@ -22,7 +22,7 @@ defmodule RetroHexChatWeb.WindowDisplayEditMenuFeatureTest do
         )
         |> Floki.parse_document!()
 
-      assert trigger_labels(document) == ["File", "Edit", "View", "Tools", "P2P", "Help"]
+      assert trigger_labels(document) == ["File", "Edit", "View", "Tools", "P2P", "Games", "Help"]
 
       sections = Floki.find(document, "nav > div")
       edit_section = Enum.at(sections, 1)

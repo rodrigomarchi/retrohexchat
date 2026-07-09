@@ -1,15 +1,8 @@
 defmodule RetroHexChatWeb.App.SessionHelpers do
   @moduledoc """
-  Shared session helper functions for app session LiveViews
-  (SoloSessionLive, ArcadeGameLive).
+  Shared session helpers for app LiveViews: registered-nick resolution (used to
+  gate the in-chat arcade) and client-info parsing.
   """
-
-  use Phoenix.VerifiedRoutes,
-    endpoint: RetroHexChatWeb.Endpoint,
-    router: RetroHexChatWeb.Router,
-    statics: RetroHexChatWeb.static_paths()
-
-  use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Services.RegisteredNick
 
@@ -24,14 +17,6 @@ defmodule RetroHexChatWeb.App.SessionHelpers do
     "timezone" => :timezone
   }
   @max_string_length 100
-
-  @spec verify_nickname(Phoenix.LiveView.Socket.t(), String.t() | nil) ::
-          {:ok, Phoenix.LiveView.Socket.t()} | {:redirect, Phoenix.LiveView.Socket.t()}
-  def verify_nickname(socket, nil) do
-    {:redirect, Phoenix.LiveView.push_navigate(socket, to: ~p"/connect")}
-  end
-
-  def verify_nickname(socket, _nickname), do: {:ok, socket}
 
   @spec resolve_user_id(String.t()) :: {:ok, integer()} | {:redirect, nil}
   def resolve_user_id(nickname) do

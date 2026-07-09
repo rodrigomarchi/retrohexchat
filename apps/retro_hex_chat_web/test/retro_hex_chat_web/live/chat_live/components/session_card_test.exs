@@ -35,28 +35,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCardTest do
     )
   end
 
-  defp arcade(overrides) do
-    Map.merge(
-      %{
-        kind: :arcade,
-        token: "tokA",
-        href: "/solo/tokA",
-        status: "pending",
-        terminal?: false,
-        created_by: "rodrigo",
-        created_at: @created,
-        lobby_at: nil,
-        started_at: nil,
-        closed_at: nil,
-        closed_reason: nil,
-        duration_seconds: nil,
-        game_id: "doom_shareware",
-        game_name: "DOOM: Knee-Deep in the Dead"
-      },
-      overrides
-    )
-  end
-
   describe "P2P lobby card" do
     test "pending session shows the creator, the waiting step and the token metadata" do
       html = card(lobby(%{status: "pending"}))
@@ -130,34 +108,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCardTest do
 
       assert html =~ "Some new reason"
       refute html =~ "some_new_reason"
-    end
-  end
-
-  describe "Arcade card" do
-    test "shows the game name and an Open Arcade CTA while live" do
-      html = card(arcade(%{status: "playing", started_at: @connected}))
-
-      assert html =~ ~s(data-session-kind="arcade")
-      assert html =~ "DOOM: Knee-Deep in the Dead"
-      assert html =~ "01/01 14:13"
-      assert html =~ "Open Arcade"
-    end
-
-    test "finished session shows the duration and no CTA" do
-      html =
-        card(
-          arcade(%{
-            status: "finished",
-            terminal?: true,
-            started_at: @connected,
-            closed_at: @closed,
-            closed_reason: "completed",
-            duration_seconds: 522
-          })
-        )
-
-      assert html =~ "08m 42s"
-      refute html =~ "Open Arcade"
     end
   end
 end

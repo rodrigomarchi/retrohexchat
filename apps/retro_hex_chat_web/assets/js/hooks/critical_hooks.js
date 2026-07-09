@@ -24,9 +24,7 @@ import ContextualTipsHook from "./ui/contextual_tips_hook";
 import MessageInteractionsHook from "./chat/message_interactions_hook";
 import NickChangeFormHook from "./chat/nick_change_form_hook";
 import URLCatcherHook from "./ui/url_catcher_hook";
-import ArcadeIframeHook, { ArcadeSessionHook } from "./games/arcade_iframe_hook";
-import ArcadeGameHook from "./games/arcade_game_hook";
-import ArcadeTimerHook from "./games/arcade_timer_hook";
+import ArcadeSessionHook from "./games/arcade_session_hook";
 import ViewportDetectHook from "./ui/viewport_detect_hook";
 import WindowManagerHook from "./ui/window_manager_hook";
 
@@ -60,10 +58,7 @@ export const criticalHooks = {
   AutocompleteHook: AutocompleteHook,
   EmojiPickerHook: EmojiPickerHook,
   FocusChatInputOnClickHook: FocusChatInputOnClickHook,
-  ArcadeIframe: ArcadeIframeHook,
   ArcadeSession: ArcadeSessionHook,
-  ArcadeGame: ArcadeGameHook,
-  ArcadeTimer: ArcadeTimerHook,
   FormatToolbarHook: FormatToolbarHook,
   KeyboardHook: KeyboardHook,
   LagHook: LagHook,

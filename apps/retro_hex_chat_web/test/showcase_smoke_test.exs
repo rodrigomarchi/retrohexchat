@@ -77,7 +77,6 @@ defmodule RetroHexChatWeb.ShowcaseSmokeTest do
     "/showcase/disconnect-confirm-dialog",
     "/showcase/invite-dialog",
     "/showcase/paste-confirm-dialog",
-    "/showcase/arcade-frame",
     "/showcase/app-header",
     # New medium components
     "/showcase/status-bar-app",

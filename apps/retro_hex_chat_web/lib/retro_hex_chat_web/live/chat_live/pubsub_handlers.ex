@@ -188,62 +188,6 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     end
   end
 
-  def handle_info(%{event: "bot_notice", payload: payload}, socket) do
-    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
-    alias RetroHexChatWeb.ChatLive.Components.MessageViewport
-    alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
-
-    msg =
-      %{
-        id: "system-#{System.unique_integer([:positive])}",
-        author: dgettext("chat", "System"),
-        content: payload.content,
-        type: :arcade_link,
-        timestamp: DateTime.utc_now()
-      }
-      |> SessionCard.enrich()
-
-    socket =
-      socket
-      |> MessageViewport.insert(msg)
-      |> push_status_message(
-        dgettext("chat", "%{bot}: Arcade session ready!", bot: payload.bot),
-        :system
-      )
-
-    {:halt, socket}
-  end
-
-  def handle_info(%{event: "arcade_session_ended"} = msg, socket) do
-    import RetroHexChatWeb.ChatLive.Helpers, only: [push_status_message: 3]
-
-    %{payload: payload} = msg
-    game_label = payload.game_name || dgettext("chat", "Arcade game")
-    reason = payload.reason
-    duration = payload[:duration_seconds]
-
-    base =
-      case reason do
-        r when r in ["finished", "game_over"] ->
-          dgettext("chat", "%{game} finished", game: game_label)
-
-        _ ->
-          dgettext("chat", "%{game} ended — %{reason}",
-            game: game_label,
-            reason: humanize_reason(reason)
-          )
-      end
-
-    parts = [base]
-
-    parts =
-      if duration,
-        do: parts ++ [dgettext("chat", "(%{duration})", duration: format_duration(duration))],
-        else: parts
-
-    {:halt, push_status_message(socket, Enum.join(parts, " "), :system)}
-  end
-
   # ── Task/DOWN catch-all ───────────────────────────────────
   # Swallow stray async `Task` results (`{ref, result}`, ref is a reference) and
   # their `:DOWN`s so they don't fall through. The `is_reference/1` guard is load
@@ -262,29 +206,4 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   defp ignored_invite?(socket, from) do
     IgnoreList.ignored?(socket.assigns.session.ignore_list, from, :invite)
   end
-
-  defp format_duration(secs) when is_integer(secs) and secs >= 3600 do
-    h = div(secs, 3600)
-    m = div(rem(secs, 3600), 60)
-    dgettext("chat", "%{hours}h %{minutes}m", hours: h, minutes: m)
-  end
-
-  defp format_duration(secs) when is_integer(secs) and secs >= 60 do
-    m = div(secs, 60)
-    s = rem(secs, 60)
-    dgettext("chat", "%{minutes}m %{seconds}s", minutes: m, seconds: s)
-  end
-
-  defp format_duration(secs) when is_integer(secs), do: "#{secs}s"
-  defp format_duration(_), do: "0s"
-
-  defp humanize_reason("user_closed"), do: dgettext("chat", "closed by user")
-  defp humanize_reason("disconnected"), do: dgettext("chat", "disconnected")
-  defp humanize_reason("expired"), do: dgettext("chat", "expired")
-  defp humanize_reason("pending_timeout"), do: dgettext("chat", "invite expired")
-  defp humanize_reason("failed"), do: dgettext("chat", "connection failed")
-  defp humanize_reason("lobby_inactivity"), do: dgettext("chat", "inactivity timeout")
-  defp humanize_reason("game_over"), do: dgettext("chat", "game over")
-  defp humanize_reason(reason) when is_binary(reason), do: reason
-  defp humanize_reason(_), do: dgettext("chat", "ended")
 end

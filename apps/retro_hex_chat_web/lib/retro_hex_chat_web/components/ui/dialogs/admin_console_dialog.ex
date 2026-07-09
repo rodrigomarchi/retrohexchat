@@ -65,7 +65,6 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :on_audit_log_refresh, :any, default: nil
   attr :on_server_settings_save, :any, default: nil
   attr :on_server_settings_refresh, :any, default: nil
-  attr :on_singleplayer, :any, default: nil
   attr :on_users_refresh, :any, default: nil
   attr :on_users_info, :any, default: nil
   attr :on_users_ban, :any, default: nil
@@ -299,7 +298,6 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
           can_edit={@server_settings_can_edit}
           on_save={@on_server_settings_save}
           on_refresh={@on_server_settings_refresh}
-          on_singleplayer={@on_singleplayer}
         />
       </.tabs_content>
 
@@ -726,7 +724,6 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
   attr :can_edit, :boolean, default: false
   attr :on_save, :any, default: nil
   attr :on_refresh, :any, default: nil
-  attr :on_singleplayer, :any, default: nil
 
   attr :target, :any, default: nil
 
@@ -806,17 +803,6 @@ defmodule RetroHexChatWeb.Components.UI.AdminConsoleDialog do
         </div>
 
         <div class="flex flex-wrap justify-end gap-retro-4">
-          <.button
-            type="button"
-            size="sm"
-            variant="outline"
-            phx-click={@on_singleplayer}
-            phx-target={@target}
-            disabled={not @can_edit}
-          >
-            <:icon><Icons.icon_game_generic class="w-[14px] h-[14px]" /></:icon>
-            {dgettext("dialogs", "Start solo arcade (debug)")}
-          </.button>
           <.button
             type="button"
             size="sm"

@@ -1,10 +1,9 @@
 defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
   @moduledoc """
-  Pure function component that renders a rich P2P-lobby or Arcade session card
-  inside a chat message.
+  Pure function component that renders a rich P2P-lobby session card inside a
+  chat message.
 
-  Given a resolved summary (see `Lobby.session_summary/1` /
-  `Arcade.session_summary/1`, wrapped by
+  Given a resolved summary (see `Lobby.session_summary/1`, wrapped by
   `RetroHexChatWeb.ChatLive.Helpers.SessionCard`), it draws a small retro panel:
   a title with the subject icon, a subtitle crediting the creator, a lifecycle
   timeline (created → started/connected → ended, with duration and reason) built
@@ -18,14 +17,14 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Icons
 
-  attr :card, :map, required: true, doc: "Resolved session summary (:lobby or :arcade)"
+  attr :card, :map, required: true, doc: "Resolved session summary (:lobby)"
   attr :timezone, :string, default: "Etc/UTC"
 
   attr :viewer, :string,
     default: nil,
     doc: "Nickname of the viewing user — the invited peer gets accept/decline buttons"
 
-  @doc "Renders the rich session card for a resolved lobby/arcade summary."
+  @doc "Renders the rich session card for a resolved lobby summary."
   @spec session_card(map()) :: Phoenix.LiveView.Rendered.t()
   def session_card(assigns) do
     assigns =
@@ -115,15 +114,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
   attr :card, :map, required: true
   attr :class, :string, default: nil
 
-  defp subject_icon(%{card: %{kind: :arcade, game_id: game_id}} = assigns)
-       when is_binary(game_id) do
-    ~H"<Icons.game_icon game_id={@card.game_id} class={@class} />"
-  end
-
-  defp subject_icon(%{card: %{kind: :arcade}} = assigns) do
-    ~H"<Icons.icon_game_arcade class={@class} />"
-  end
-
   defp subject_icon(assigns) do
     ~H"<Icons.icon_p2p class={@class} />"
   end
@@ -132,8 +122,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
 
   defp title(%{kind: :lobby, terminal?: true}), do: dgettext("chat", "P2P lobby ended")
   defp title(%{kind: :lobby}), do: dgettext("chat", "P2P lobby")
-  defp title(%{kind: :arcade, game_name: name}) when is_binary(name), do: name
-  defp title(%{kind: :arcade}), do: dgettext("chat", "Arcade session")
 
   defp subtitle(%{kind: :lobby, created_by: by, peer: peer})
        when is_binary(by) and is_binary(peer) do
@@ -171,24 +159,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
     |> Enum.reject(&is_nil/1)
   end
 
-  defp timeline(%{kind: :arcade} = card, tz) do
-    [
-      entry(:icon_checkmark, dgettext("chat", "created"), time(card.created_at, tz)),
-      entry(:icon_btn_play, dgettext("chat", "started"), time(card.started_at, tz)),
-      waiting_entry(card, dgettext("chat", "waiting for game")),
-      terminal_entry(card, dgettext("chat", "finished"), tz),
-      duration_entry(card),
-      reason_entry(card)
-    ]
-    |> Enum.reject(&is_nil/1)
-  end
-
   # The "current step" line only appears while the session is live and hasn't
-  # reached its active phase yet (connected / playing), so it never duplicates a
-  # concrete timeline row.
+  # reached its active phase yet (connected), so it never duplicates a concrete
+  # timeline row.
   defp waiting_entry(%{terminal?: true}, _label), do: nil
   defp waiting_entry(%{kind: :lobby, connected_at: %DateTime{}}, _label), do: nil
-  defp waiting_entry(%{kind: :arcade, started_at: %DateTime{}}, _label), do: nil
   defp waiting_entry(_card, label), do: entry(:icon_radio_dot, label, "…")
 
   defp terminal_entry(%{terminal?: true} = card, label, tz),
@@ -233,8 +208,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
 
   defp terminal_icon(%{status: "failed"}), do: :icon_reject
   defp terminal_icon(%{status: "expired"}), do: :icon_warning
-  defp terminal_icon(%{kind: :lobby}), do: :icon_btn_disconnect
-  defp terminal_icon(_card), do: :icon_checkmark
+  defp terminal_icon(_card), do: :icon_btn_disconnect
 
   defp entry(_icon, _label, nil), do: nil
   defp entry(_icon, _label, ""), do: nil
@@ -251,9 +225,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
   # accept/decline buttons and everyone else just watches the timeline —
   # there is no link out to a separate page.
   defp cta(%{kind: :lobby}), do: nil
-
-  defp cta(%{kind: :arcade}),
-    do: %{label: dgettext("chat", "Open Arcade"), icon: :icon_btn_open}
 
   # ── Icon dispatch ───────────────────────────────────────────
 

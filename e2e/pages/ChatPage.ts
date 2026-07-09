@@ -37,6 +37,9 @@ export class ChatPage {
   readonly viewMenuTrigger: Locator;
   readonly helpMenuTrigger: Locator;
   readonly toolsMenuTrigger: Locator;
+  readonly gamesMenuTrigger: Locator;
+  readonly arcadeMenuItem: Locator;
+  readonly arcadeWindow: Locator;
   readonly disconnectMenuItem: Locator;
   readonly adminConsoleMenuItem: Locator;
   readonly accountRegisterMenuItem: Locator;
@@ -286,6 +289,11 @@ export class ChatPage {
     this.toolsMenuTrigger = page
       .locator('button[data-menubar-trigger]')
       .filter({ hasText: 'Tools' });
+    this.gamesMenuTrigger = page
+      .locator('button[data-menubar-trigger]')
+      .filter({ hasText: 'Games' });
+    this.arcadeMenuItem = page.getByTestId('context-menu-item-open_arcade');
+    this.arcadeWindow = page.getByTestId('arcade-games-window');
     // context_menu_item exposes data-testid="context-menu-item-<action>".
     this.disconnectMenuItem = page.getByTestId('context-menu-item-disconnect');
     this.adminConsoleMenuItem = page.getByTestId(
@@ -672,6 +680,13 @@ export class ChatPage {
     await expect(this.findMenuItem).toBeVisible();
     await this.findMenuItem.click();
     await expect(this.searchBar).toBeVisible();
+  }
+
+  async openArcadeFromGamesMenu() {
+    await this.gamesMenuTrigger.click();
+    await expect(this.arcadeMenuItem).toBeVisible();
+    await this.arcadeMenuItem.click();
+    await expect(this.arcadeWindow).toBeVisible();
   }
 
   async openNotifyListFromViewMenu() {

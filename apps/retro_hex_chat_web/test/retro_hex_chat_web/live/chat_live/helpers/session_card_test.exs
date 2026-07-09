@@ -1,7 +1,6 @@
 defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCardTest do
   use RetroHexChatWeb.ConnCase, async: true
 
-  alias RetroHexChat.Arcade.Schema.SoloSession
   alias RetroHexChat.Lobby.Schema.Session, as: LobbySession
   alias RetroHexChat.Repo
   alias RetroHexChat.Services.RegisteredNick
@@ -22,15 +21,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCardTest do
     {:ok, s} =
       %LobbySession{}
       |> LobbySession.changeset(attrs)
-      |> Repo.insert()
-
-    s
-  end
-
-  defp arcade_session(attrs) do
-    {:ok, s} =
-      %SoloSession{}
-      |> SoloSession.changeset(attrs)
       |> Repo.insert()
 
     s
@@ -66,29 +56,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.SessionCardTest do
     test "leaves the item untouched when the session is unknown (fallback)" do
       item = %{type: :p2p_invite, content: "Join the lobby: /lobby/ghost_token"}
       assert SessionCard.enrich(item) == item
-    end
-  end
-
-  describe "enrich/1 for :arcade_link" do
-    test "attaches a resolved arcade card with the game name" do
-      creator = nick("rodrigo")
-
-      arcade_session(%{
-        token: "arc_tok",
-        creator_id: creator.id,
-        status: "playing",
-        game_id: "doom_shareware"
-      })
-
-      item = %{type: :arcade_link, content: "https://example.test/activity/solo/arc_tok"}
-
-      enriched = SessionCard.enrich(item)
-      card = enriched.session_card
-
-      assert card.kind == :arcade
-      assert card.created_by == "rodrigo"
-      assert card.game_name == "DOOM: Knee-Deep in the Dead"
-      assert card.href == "https://example.test/activity/solo/arc_tok"
     end
   end
 

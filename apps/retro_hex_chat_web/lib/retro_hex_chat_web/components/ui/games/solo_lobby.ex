@@ -34,7 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
   @spec solo_lobby(map()) :: Phoenix.LiveView.Rendered.t()
   def solo_lobby(assigns) do
     ~H"""
-    <div id={@id} class={classes(["space-y-retro-12", @class])} {@rest}>
+    <div id={@id} class={classes(["flex h-full flex-col space-y-retro-12", @class])} {@rest}>
       <%!-- Inactivity warning --%>
       <div
         :if={@inactivity_warning}
@@ -254,22 +254,32 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   defp playing_state(assigns) do
     ~H"""
-    <div class="flex items-center gap-retro-12">
-      <Icons.game_icon game_id={@game_id} class="w-8 h-8 flex-shrink-0" />
-      <div class="flex-1 space-y-retro-2">
-        <h3 class="text-sm font-bold">{@game_name}</h3>
-        <p class="text-xs text-muted-foreground">{dgettext("games", "Game in progress...")}</p>
-        <p :if={@game_started_at} class="text-xs font-mono">
-          {dgettext("games", "Started: %{started_at}", started_at: @game_started_at)}
+    <div class="flex flex-1 flex-col items-center justify-center gap-retro-16 py-retro-16 text-center">
+      <div class="flex flex-col items-center gap-retro-8 shadow-retro-field bg-white px-retro-16 py-retro-12 min-w-[240px]">
+        <Icons.game_icon game_id={@game_id} class="w-20 h-20 shrink-0" />
+        <h3 class="text-base font-bold">{@game_name}</h3>
+        <.badge variant="secondary">
+          <span class="flex items-center gap-retro-4">
+            <Icons.icon_btn_play class="w-3 h-3" />
+            {dgettext("games", "Game in progress")}
+          </span>
+        </.badge>
+        <p :if={@game_started_at} class="text-[10px] font-mono text-muted-foreground">
+          {dgettext("games", "Started %{time}", time: format_started(@game_started_at))}
         </p>
       </div>
-      <.button
-        variant="outline"
-        size="sm"
-        class="flex-shrink-0"
-        phx-click={@on_close}
-        data-testid="solo-session-end"
-      >
+
+      <div class="flex items-start gap-retro-8 shadow-retro-field bg-white px-retro-12 py-retro-8 text-xs max-w-sm text-left">
+        <Icons.icon_btn_open class="w-4 h-4 flex-shrink-0 mt-[1px]" />
+        <span>
+          {dgettext(
+            "games",
+            "The game runs in a separate window. Keep this window open to track your session — closing the game window ends it."
+          )}
+        </span>
+      </div>
+
+      <.button variant="outline" phx-click={@on_close} data-testid="solo-session-end">
         <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
         {dgettext("games", "End Session")}
       </.button>
@@ -286,22 +296,17 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
 
   defp finished_state(assigns) do
     ~H"""
-    <div class="space-y-retro-8">
-      <%!-- Game header --%>
-      <div class="flex items-center gap-retro-10">
-        <Icons.game_icon game_id={@game_id} class="w-8 h-8 flex-shrink-0" />
-        <h3 class="text-sm font-bold">{@game_name}</h3>
-      </div>
-
-      <hr class="border-t border-gray-400" />
-
-      <%!-- Summary --%>
-      <div class="space-y-retro-6">
-        <div class="flex items-center gap-retro-6 text-xs">
-          <Icons.icon_checkmark class="w-4 h-4 flex-shrink-0" />
-          <span>{dgettext("games", "Session Complete")}</span>
-        </div>
-        <div :if={@game_duration} class="flex items-center gap-retro-6 text-xs">
+    <div class="flex flex-1 flex-col items-center justify-center gap-retro-16 py-retro-16 text-center">
+      <div class="flex flex-col items-center gap-retro-8 shadow-retro-field bg-white px-retro-16 py-retro-12 min-w-[240px]">
+        <Icons.game_icon game_id={@game_id} class="w-20 h-20 shrink-0" />
+        <h3 class="text-base font-bold">{@game_name}</h3>
+        <.badge variant="secondary">
+          <span class="flex items-center gap-retro-4">
+            <Icons.icon_checkmark class="w-3 h-3" />
+            {dgettext("games", "Session complete")}
+          </span>
+        </.badge>
+        <div :if={@game_duration} class="flex items-center gap-retro-6 text-xs text-muted-foreground">
           <Icons.icon_clock class="w-4 h-4 flex-shrink-0" />
           <span>
             {dgettext("games", "Play time:")} <strong>{format_duration(@game_duration)}</strong>
@@ -309,20 +314,29 @@ defmodule RetroHexChatWeb.Components.UI.SoloLobby do
         </div>
       </div>
 
-      <hr class="border-t border-gray-400" />
-
-      <%!-- Close button --%>
-      <div>
-        <.button variant="outline" phx-click={@on_close} data-testid="solo-session-close">
-          <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
-          {dgettext("games", "Close")}
-        </.button>
-      </div>
+      <.button variant="outline" phx-click={@on_close} data-testid="solo-session-close">
+        <:icon><Icons.icon_close class="w-4 h-4" /></:icon>
+        {dgettext("games", "Close")}
+      </.button>
     </div>
     """
   end
 
   # ── Helpers ─────────────────────────────────────────────
+
+  # The domain sends the raw start instant (DateTime or ISO8601 string); show a
+  # readable wall-clock time rather than the full microsecond ISO timestamp.
+  @spec format_started(DateTime.t() | String.t() | nil) :: String.t() | nil
+  defp format_started(%DateTime{} = dt), do: Calendar.strftime(dt, "%H:%M:%S")
+
+  defp format_started(iso) when is_binary(iso) do
+    case DateTime.from_iso8601(iso) do
+      {:ok, dt, _offset} -> Calendar.strftime(dt, "%H:%M:%S")
+      _ -> iso
+    end
+  end
+
+  defp format_started(_), do: nil
 
   @spec format_duration(integer()) :: String.t()
   defp format_duration(seconds) when seconds < 60,

@@ -198,7 +198,6 @@ green catalog in `TEST_CATALOG.md`.
 | Z9 | File transfer rejects oversized or disallowed file according to product limits | `tests/chat-p2p-file-limits.spec.ts` | P1 | done |
 | Z10 | Game invite decline and game selection cancellation return both users to chat/lobby state cleanly | `tests/chat-p2p-game-lifecycle.spec.ts` | P2 | done |
 | Z11 | Shared game shell exchanges at least one state update between peers, beyond simply opening the lobby | `tests/chat-p2p-game-state.spec.ts` | P2 | done |
-| Z12 | Solo arcade link opens playable session; canvas/frame is nonblank and can return to chat | `tests/chat-singleplayer-arcade.spec.ts` | P2 | done |
 | Z13 | Nicklist-started P2P session exercises lobby chat, declined action retry, and reverse-direction file transfer | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
 | Z14 | Audio call exercises video-upgrade decline, retry, accepted media tracks, layout, and peer indicators | `tests/chat-p2p-complete-flows.spec.ts` | P1 | done |
 | Z15 | Game lobby declines a selection, retries, and still reaches shared playable canvas state | `tests/chat-p2p-complete-flows.spec.ts` | P2 | done |

@@ -26,5 +26,5 @@ defmodule RetroHexChatWeb.HelpContent.CommandsNtoZ do
 
   def help_icon(assigns), do: apply(Icons, assigns.name, [%{class: assigns.class}])
 
-  embed_templates "cmd_{nick*,notice*,notify*,ns*,op*,p2p*,part*,perform*,popups*,query*,quit*,setmotd*,setwelcome*,singleplayer*,slow*,timer*,topic*,transfer*,umode*,unban*,unignore*,unmute*,voice*,wallops*,whois*,whowas*}"
+  embed_templates "cmd_{nick*,notice*,notify*,ns*,op*,p2p*,part*,perform*,popups*,query*,quit*,setmotd*,setwelcome*,slow*,timer*,topic*,transfer*,umode*,unban*,unignore*,unmute*,voice*,wallops*,whois*,whowas*}"
 end

@@ -31,6 +31,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
   attr :muted, :boolean, default: false
   attr :timezone, :string, default: "Etc/UTC"
   attr :is_admin, :boolean, default: false
+  attr :arcade_available, :boolean, default: false, doc: "Enables the Games/Arcade menu item"
   attr :p2p, :map, default: nil, doc: "Active P2P session display map for the status bar"
   attr :p2p_turn_available, :boolean, default: false
   attr :on_p2p_click, :any, default: "p2p_statusbar_click"
@@ -53,6 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
           phx-hook="MenuBarHook"
           connected={true}
           is_admin={@is_admin}
+          arcade_available={@arcade_available}
           p2p_active={@p2p != nil}
           p2p_turn_available={@p2p_turn_available}
           on_action={@on_toolbar_action}

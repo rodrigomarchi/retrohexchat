@@ -5,7 +5,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   Renders the row wrapper (the stream `dom_id`, the status/highlight CSS classes,
   and the `data-*` attributes the message-interaction hooks read) plus the body for
   each message type: normal, action, system, service, error, notice, inline-help,
-  arcade-link, p2p-invite, deleted, edited, and failed-retry (with its reply block).
+  p2p-invite, deleted, edited, and failed-retry (with its reply block).
 
   Deterministic and side-effect free. It takes only the rendering context it needs
   (`nick_color_fn`, `timestamp_format`, `timezone`, `strip_formatting`,
@@ -18,7 +18,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
   import RetroHexChatWeb.Components.UI.MessageReplyBlock
   import RetroHexChatWeb.Components.UI.InlineHelpCard
   import RetroHexChatWeb.Components.UI.P2PInviteCard
-  import RetroHexChatWeb.Components.UI.ArcadeSessionLink
   import RetroHexChatWeb.Components.UI.MessageIndicators
   import RetroHexChatWeb.ChatLive.Components.SessionCard
 
@@ -47,7 +46,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
       data-msg-status={if(Map.get(@msg, :status), do: Atom.to_string(@msg.status), else: nil)}
       data-system-message={
         if(
-          Map.get(@msg, :type, :normal) in [:system, :service, :inline_help, :arcade_link],
+          Map.get(@msg, :type, :normal) in [:system, :service, :inline_help],
           do: "true",
           else: nil
         )
@@ -133,21 +132,6 @@ defmodule RetroHexChatWeb.ChatLive.Components.MessageRow do
               topic_title={@msg.topic_title}
               help_url={~p"/chat/help/#{@msg.topic_id}"}
             />
-          </.chat_message>
-        <% :arcade_link -> %>
-          <.chat_message
-            timestamp={ChatHelpers.format_time(@msg.timestamp, @timestamp_format, @timezone)}
-            meta_title={ChatHelpers.format_datetime(@msg.timestamp, @timezone)}
-            source={dgettext("chat", "Arcade")}
-            type="system"
-            kind="arcade"
-          >
-            <.session_card
-              :if={Map.get(@msg, :session_card)}
-              card={@msg.session_card}
-              timezone={@timezone}
-            />
-            <.arcade_session_link :if={!Map.get(@msg, :session_card)} href={@msg.content} />
           </.chat_message>
         <% :p2p_invite -> %>
           <.chat_message

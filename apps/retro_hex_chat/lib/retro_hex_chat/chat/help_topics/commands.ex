@@ -399,18 +399,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
         description: dgettext("help", "Disconnect from the server with an optional quit message.")
       },
       %{
-        id: "cmd-singleplayer",
-        title: "/singleplayer",
-        category: dgettext("help", "Solo Arcade: FPS"),
-        keywords: ["singleplayer", dgettext("help", "single player"), "solo", "arcade", "admin"],
-        icon: :icon_game_arcade,
-        description:
-          dgettext(
-            "help",
-            "Start a solo arcade session. This command is reserved for administrators."
-          )
-      },
-      %{
         id: "cmd-timer",
         title: "/timer",
         category: dgettext("help", "Automation"),
@@ -528,7 +516,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Commands do
             "help",
             "View server information and manage server settings (name, description, registration, limits)."
           ),
-        see_also: ["feature-admin-console", "cmd-singleplayer"]
+        see_also: ["feature-admin-console"]
       },
       %{
         id: "cmd-admin-user",

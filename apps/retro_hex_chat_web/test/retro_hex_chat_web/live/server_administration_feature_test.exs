@@ -32,7 +32,7 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       help_section =
         document
         |> Floki.find("nav > div")
-        |> Enum.at(5)
+        |> Enum.at(6)
 
       assert "show_motd" in menu_actions(help_section)
       assert Floki.raw_html(help_section) =~ "Message of the Day"
@@ -173,7 +173,6 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
           on_tab: "admin_console_tab",
           on_server_settings_save: "admin_console_save_server_settings",
           on_server_settings_refresh: "admin_console_refresh_server_settings",
-          on_singleplayer: "admin_console_start_singleplayer",
           on_close: "close_admin_console"
         )
         |> Floki.parse_document!()
@@ -194,7 +193,6 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       assert html =~ ~s(id="admin-console-server-settings-output")
       assert html =~ "*** Server Settings ***"
       assert html =~ "Save settings"
-      assert html =~ "Start solo arcade"
       assert html =~ "Refresh"
     end
 

@@ -39,6 +39,10 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
     default: false,
     doc: "Shows the privacy-mode item (needs a configured TURN relay)"
 
+  attr :arcade_available, :boolean,
+    default: false,
+    doc: "Enables the Games/Arcade item (needs a registered + identified nick)"
+
   attr :on_action, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
@@ -303,6 +307,21 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
         />
       </.menu>
 
+      <%!-- Games menu — solo arcade. The item needs a registered + identified
+            nick; it grays out (with a hint label) until then. --%>
+      <.menu label={dgettext("ui", "Games")} disabled={!@connected}>
+        <.menu_item
+          icon_fn={:icon_game_arcade}
+          label={dgettext("ui", "Arcade...")}
+          action="open_arcade"
+          on_action={@on_action}
+          disabled={!@arcade_available}
+        />
+        <.context_menu_label :if={!@arcade_available}>
+          {dgettext("ui", "Register & identify to play")}
+        </.context_menu_label>
+      </.menu>
+
       <%!-- Help menu (always enabled) --%>
       <.menu label={dgettext("ui", "Help")} disabled={false}>
         <.menu_item
@@ -340,11 +359,12 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
   attr :action, :string, required: true
   attr :on_action, :any, default: nil
   attr :shortcut, :string, default: nil
+  attr :disabled, :boolean, default: false
   attr :rest, :global
 
   defp menu_item(assigns) do
     ~H"""
-    <.context_menu_item on_click={@on_action} action={@action} {@rest}>
+    <.context_menu_item on_click={@on_action} action={@action} disabled={@disabled} {@rest}>
       <:icon>{apply(Icons, @icon_fn, [%{class: "w-[14px] h-[14px]"}])}</:icon>
       <:shortcut :if={@shortcut}>{@shortcut}</:shortcut>
       {@label}

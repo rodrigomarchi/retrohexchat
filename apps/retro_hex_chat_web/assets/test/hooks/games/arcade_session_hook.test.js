@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { ArcadeSessionHook } from "../../../js/hooks/games/arcade_iframe_hook";
+import ArcadeSessionHook from "../../../js/hooks/games/arcade_session_hook";
 
 describe("ArcadeSessionHook", () => {
   let hook;
