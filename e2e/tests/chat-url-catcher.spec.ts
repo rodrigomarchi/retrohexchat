@@ -1,26 +1,27 @@
-import { Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
+import { e2eURL } from "../helpers/env";
 
-function uniqueChannel(prefix = 'url'): string {
+function uniqueChannel(prefix = "url"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'url') {
+async function signedInUser(page: Page, prefix = "url") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
 }
 
-test.describe('URL Catcher', () => {
-  test('captures chat links, updates preview titles, and search filters rows (O15)', async ({
+test.describe("URL Catcher", () => {
+  test("captures chat links, updates preview titles, and search filters rows (O15)", async ({
     page,
   }) => {
     const { chat, nick } = await signedInUser(page);
@@ -28,8 +29,8 @@ test.describe('URL Catcher', () => {
     const marker = Date.now();
     const keepToken = `keep${marker}`;
     const hideToken = `hide${marker}`;
-    const keepUrl = `http://localhost:4003/connect?${keepToken}=1`;
-    const hideUrl = `http://localhost:4003/connect?${hideToken}=1`;
+    const keepUrl = e2eURL(`/connect?${keepToken}=1`);
+    const hideUrl = e2eURL(`/connect?${hideToken}=1`);
 
     await chat.sendMessage(`/join ${channel}`);
     await chat.expectTabVisible(channel);
@@ -50,8 +51,8 @@ test.describe('URL Catcher', () => {
     await expect(hideRow).toBeVisible();
 
     await expect(
-      keepRow.getByTestId('url-catcher-preview-title'),
-    ).toContainText('Connect - RetroHexChat', { timeout: 10_000 });
+      keepRow.getByTestId("url-catcher-preview-title"),
+    ).toContainText("Connect - RetroHexChat", { timeout: 10_000 });
 
     await chat.urlCatcherSearch.fill(keepToken);
 

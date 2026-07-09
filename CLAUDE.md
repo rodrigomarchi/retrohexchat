@@ -48,6 +48,19 @@ make deploy                   # CI + deploy Sun (production) (THE standard)
 make deploy.skip-ci           # Deploy Sun without CI (already validated)
 ```
 
+## Git Safety
+
+Before any direct commit or push to `main`, inspect the remote and pull first:
+
+```bash
+git fetch origin
+git status --short --branch
+git pull --ff-only origin main
+```
+
+If local edits are uncommitted, use `git pull --ff-only --autostash origin main`.
+Only push after confirming local `main` is current.
+
 ## Deploy (MANDATORY — always use the pipeline)
 
 **ALWAYS use `make deploy`** (or `elixir scripts/deploy_all.exs`) to deploy.

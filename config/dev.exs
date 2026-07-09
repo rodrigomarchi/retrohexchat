@@ -6,6 +6,8 @@ dev_gettext_locales =
   |> Enum.map(&String.trim/1)
   |> Enum.reject(&(&1 == ""))
 
+dev_http_port = String.to_integer(System.get_env("PORT", "4000"))
+
 config :retro_hex_chat, RetroHexChat.Gettext, allowed_locales: dev_gettext_locales
 config :retro_hex_chat_web, RetroHexChatWeb.Gettext, allowed_locales: dev_gettext_locales
 
@@ -29,7 +31,7 @@ config :retro_hex_chat, RetroHexChat.Repo,
 config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
   # Binding to loopback ipv4 address prevents access from other machines.
   # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
-  http: [ip: {127, 0, 0, 1}],
+  http: [ip: {127, 0, 0, 1}, port: dev_http_port],
   check_origin: false,
   code_reloader: true,
   debug_errors: true,

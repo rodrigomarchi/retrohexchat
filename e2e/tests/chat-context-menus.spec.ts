@@ -1,6 +1,7 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
+import { e2eOrigin } from "../helpers/env";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +9,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'ctxmenu'): string {
+function uniqueChannel(prefix = "ctxmenu"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'ctx') {
+async function signedInUser(page: Page, prefix = "ctx") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +28,7 @@ async function signedInUser(page: Page, prefix = 'ctx') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'ctx',
+  prefix = "ctx",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -37,8 +38,8 @@ async function newSignedInUser(
 }
 
 async function setupTwoUsersInChannel(browser: Browser, channel: string) {
-  const alice = await newSignedInUser(browser, 'ctxa');
-  const bob = await newSignedInUser(browser, 'ctxb');
+  const alice = await newSignedInUser(browser, "ctxa");
+  const bob = await newSignedInUser(browser, "ctxb");
 
   await alice.chat.sendMessage(`/join ${channel}`);
   await alice.chat.expectTabVisible(channel);
@@ -57,8 +58,8 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Chat context menus', () => {
-  test('nicklist context menu opens PM, shows whois, toggles ignore, and grants voice/op (O12)', async ({
+test.describe("Chat context menus", () => {
+  test("nicklist context menu opens PM, shows whois, toggles ignore, and grants voice/op (O12)", async ({
     browser,
   }) => {
     const channel = uniqueChannel();
@@ -83,7 +84,7 @@ test.describe('Chat context menus', () => {
       await alice.chat.openNicklistContextMenu(bob.nick);
       await alice.chat.nicklistContextWhoisMenuItem.click();
       await alice.chat.expectWhoisCard(bob.nick);
-      await alice.chat.expectLookupCardField('Shared channels', channel);
+      await alice.chat.expectLookupCardField("Shared channels", channel);
       await alice.chat.closeLookupResult();
 
       await alice.chat.openNicklistContextMenu(bob.nick);
@@ -96,36 +97,38 @@ test.describe('Chat context menus', () => {
       await alice.chat.openNicklistContextMenu(bob.nick);
       await expect(alice.chat.nicklistContextUnignoreMenuItem).toBeVisible();
       await alice.chat.nicklistContextUnignoreMenuItem.click();
-      await alice.chat.expectMessageVisible(`* ${bob.nick} is no longer ignored`);
+      await alice.chat.expectMessageVisible(
+        `* ${bob.nick} is no longer ignored`,
+      );
 
       await bob.chat.sendMessage(restoredText);
       await alice.chat.expectMessageVisible(restoredText);
 
       await alice.chat.openNicklistContextMenu(bob.nick);
       await alice.chat.nicklistContextVoiceMenuItem.click();
-      await alice.chat.expectNickRole(bob.nick, 'voiced');
-      await bob.chat.expectNickRole(bob.nick, 'voiced');
+      await alice.chat.expectNickRole(bob.nick, "voiced");
+      await bob.chat.expectNickRole(bob.nick, "voiced");
 
       await alice.chat.openNicklistContextMenu(bob.nick);
       await alice.chat.nicklistContextOpMenuItem.click();
-      await alice.chat.expectNickRole(bob.nick, 'operator');
-      await bob.chat.expectNickRole(bob.nick, 'operator');
+      await alice.chat.expectNickRole(bob.nick, "operator");
+      await bob.chat.expectNickRole(bob.nick, "operator");
     } finally {
       await closeUsers([alice, bob]);
     }
   });
 
-  test('conversation context menu marks read, toggles mute, copies channel name, opens settings, and leaves (O13)', async ({
+  test("conversation context menu marks read, toggles mute, copies channel name, opens settings, and leaves (O13)", async ({
     browser,
   }) => {
-    const channelA = uniqueChannel('ctxa');
-    const channelB = uniqueChannel('ctxb');
+    const channelA = uniqueChannel("ctxa");
+    const channelB = uniqueChannel("ctxb");
     const { alice, bob } = await setupTwoUsersInChannel(browser, channelA);
     const unreadText = `ctx-unread-${Date.now()}`;
 
     try {
-      await alice.ctx.grantPermissions(['clipboard-read', 'clipboard-write'], {
-        origin: 'http://localhost:4003',
+      await alice.ctx.grantPermissions(["clipboard-read", "clipboard-write"], {
+        origin: e2eOrigin(),
       });
 
       await alice.chat.sendMessage(`/join ${channelB}`);
@@ -138,13 +141,13 @@ test.describe('Chat context menus', () => {
       await bob.chat.switchToTab(channelB);
       await bob.chat.sendMessage(unreadText);
 
-      await expect(alice.chat.channelUnreadBadge(channelB)).toHaveText('1');
+      await expect(alice.chat.channelUnreadBadge(channelB)).toHaveText("1");
       await alice.chat.expectTabSelected(channelA);
 
       await alice.chat.openConversationContextMenu(channelB);
       await expect(alice.chat.conversationsMarkReadMenuItem).toBeVisible();
       await expect(alice.chat.conversationsMuteMenuItem).toContainText(
-        'Mute Channel',
+        "Mute Channel",
       );
       await expect(alice.chat.conversationsCopyNameMenuItem).toBeVisible();
       await expect(alice.chat.conversationsSettingsMenuItem).toBeVisible();
@@ -157,20 +160,18 @@ test.describe('Chat context menus', () => {
 
       await alice.chat.openConversationContextMenu(channelB);
       await alice.chat.conversationsMuteMenuItem.click();
-      await expect(alice.chat.channelConversationItem(channelB)).toHaveAttribute(
-        'data-muted',
-        'true',
-      );
+      await expect(
+        alice.chat.channelConversationItem(channelB),
+      ).toHaveAttribute("data-muted", "true");
 
       await alice.chat.openConversationContextMenu(channelB);
       await expect(alice.chat.conversationsMuteMenuItem).toContainText(
-        'Unmute Channel',
+        "Unmute Channel",
       );
       await alice.chat.conversationsMuteMenuItem.click();
-      await expect(alice.chat.channelConversationItem(channelB)).toHaveAttribute(
-        'data-muted',
-        'false',
-      );
+      await expect(
+        alice.chat.channelConversationItem(channelB),
+      ).toHaveAttribute("data-muted", "false");
 
       await alice.chat.openConversationContextMenu(channelB);
       await alice.chat.conversationsCopyNameMenuItem.click();

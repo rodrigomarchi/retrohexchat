@@ -34,7 +34,7 @@ config :retro_hex_chat,
 # TURN server runtime config (all environments)
 config :retro_hex_chat,
   turn_listen_ip: {0, 0, 0, 0},
-  turn_listen_port: 3478,
+  turn_listen_port: String.to_integer(System.get_env("TURN_LISTEN_PORT") || "3478"),
   turn_relay_ip:
     (case System.get_env("TURN_RELAY_IP") do
        nil -> :auto

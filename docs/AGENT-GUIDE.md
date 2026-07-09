@@ -741,6 +741,11 @@ Accessible via F1, Help menu → Help Topics, and `/help`. Stale/inaccurate help
 
 ## 14. Process & tooling discipline
 
+- **Always inspect and pull before committing or pushing to `main`:** run
+  `git fetch origin`, `git status --short --branch`, then
+  `git pull --ff-only origin main`. If local edits are uncommitted, use
+  `git pull --ff-only --autostash origin main`. Push only after confirming the
+  local `main` is current.
 - **⚠️ Never `git checkout <file>` to undo edits when work is uncommitted** — it reverts to HEAD
   and destroys *other* uncommitted work too. Undo with Edit or a recoverable
   `git stash push -- <file>`. Recover a lost stash via

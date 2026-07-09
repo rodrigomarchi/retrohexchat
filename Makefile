@@ -17,6 +17,29 @@ DOMAIN_APP = apps/retro_hex_chat
 WEB_APP    = apps/retro_hex_chat_web
 I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_hans,id,ar,ru,hi,ko,tr,vi,bn,ur,zh_hant,pt_PT,it,pl,nl
 
+ifneq (,$(wildcard .env))
+include .env
+endif
+
+PORT ?= 4000
+TEST_PORT ?= 4002
+E2E_PORT ?= 4003
+DEV_DB_PORT ?= 5432
+TEST_DB_PORT ?= 5433
+BASE_URL ?= http://localhost:$(PORT)
+PUBLIC_ORIGIN ?= $(BASE_URL)
+E2E_BASE_URL ?= http://localhost:$(E2E_PORT)
+TURN_LISTEN_PORT ?= 3478
+TURN_RELAY_PORT_MIN ?= 49152
+TURN_RELAY_PORT_MAX ?= 49651
+
+DEV_ENV = PGPORT=$(DEV_DB_PORT) PORT=$(PORT) BASE_URL=$(BASE_URL) PUBLIC_ORIGIN=$(PUBLIC_ORIGIN) TURN_LISTEN_PORT=$(TURN_LISTEN_PORT) TURN_RELAY_PORT_MIN=$(TURN_RELAY_PORT_MIN) TURN_RELAY_PORT_MAX=$(TURN_RELAY_PORT_MAX)
+TEST_ENV = PGPORT=$(TEST_DB_PORT) TEST_PORT=$(TEST_PORT)
+E2E_ENV = MIX_ENV=e2e PGPORT=$(TEST_DB_PORT) E2E_PORT=$(E2E_PORT) E2E_BASE_URL=$(E2E_BASE_URL) BASE_URL=$(E2E_BASE_URL) PUBLIC_ORIGIN=$(E2E_BASE_URL)
+DEV_MIX = $(DEV_ENV) mix
+TEST_MIX = $(TEST_ENV) mix
+E2E_MIX = $(E2E_ENV) mix
+
 # ---------------------------------------------------------------------
 # RetroHexChat -- Development Makefile
 # ---------------------------------------------------------------------
@@ -55,7 +78,7 @@ setup: ## First-time project setup (docker + deps + db + assets)
 	docker compose up -d
 	mix deps.get
 	npm install --prefix $(WEB_APP)/assets
-	mix ecto.setup
+	$(DEV_MIX) ecto.setup
 
 deps: ## Install Elixir dependencies
 	mix deps.get
@@ -65,84 +88,84 @@ deps: ## Install Elixir dependencies
 # ---------------------------------------------------------------------
 
 db.setup: ## Create database, run migrations, and seed
-	mix ecto.setup
+	$(DEV_MIX) ecto.setup
 
 db.create: ## Create the database
-	mix ecto.create
+	$(DEV_MIX) ecto.create
 
 db.migrate: ## Run pending migrations
-	mix ecto.migrate
+	$(DEV_MIX) ecto.migrate
 
 db.rollback: ## Rollback the last migration
-	mix ecto.rollback
+	$(DEV_MIX) ecto.rollback
 
 db.reset: ## Drop, create, migrate, and seed the database
-	mix ecto.reset
+	$(DEV_MIX) ecto.reset
 
 db.seed: ## Run seed script
-	mix run $(DOMAIN_APP)/priv/repo/seeds.exs
+	$(DEV_MIX) run $(DOMAIN_APP)/priv/repo/seeds.exs
 
 db.gen.migration: ## Generate a migration (usage: make db.gen.migration NAME=create_foo)
-	mix ecto.gen.migration $(NAME)
+	$(DEV_MIX) ecto.gen.migration $(NAME)
 
 # ---------------------------------------------------------------------
 # Server
 # ---------------------------------------------------------------------
 
-server: ## Start Phoenix dev server at localhost:4000
-	mix phx.server
+server: ## Start Phoenix dev server at configured PORT (default 4000)
+	$(DEV_MIX) phx.server
 
 iex: ## Start Phoenix dev server inside IEx
-	iex -S mix phx.server
+	$(DEV_ENV) iex -S mix phx.server
 
 routes: ## List all application routes
-	mix phx.routes RetroHexChatWeb.Router
+	$(DEV_MIX) phx.routes RetroHexChatWeb.Router
 
 # ---------------------------------------------------------------------
 # Tests
 # ---------------------------------------------------------------------
 
 test: ## Run full test suite -- excludes LiveView feature tests
-	mix test
+	$(TEST_MIX) test
 
 test.unit: ## Run unit tests only
-	cd $(DOMAIN_APP) && mix test --only unit
+	cd $(DOMAIN_APP) && $(TEST_MIX) test --only unit
 
 test.integration: ## Run integration tests only
-	cd $(DOMAIN_APP) && mix test --only integration
+	cd $(DOMAIN_APP) && $(TEST_MIX) test --only integration
 
 test.liveview: ## Run LiveView tests only
-	cd $(WEB_APP) && mix test --only liveview
+	cd $(WEB_APP) && $(TEST_MIX) test --only liveview
 
 test.feature: ## Run LiveView feature tests only (server-side feature/journey tests)
-	cd $(WEB_APP) && mix test --only liveview_feature
+	cd $(WEB_APP) && $(TEST_MIX) test --only liveview_feature
 
 test.all: ## Run ALL tests including LiveView feature tests
-	mix test --include liveview_feature
+	$(TEST_MIX) test --include liveview_feature
 
 test.cover: ## Run tests with coverage report
-	mix test --cover
+	$(TEST_MIX) test --cover
 
 test.cover.all: ## Run ALL tests with coverage (including LiveView feature tests)
-	mix test --include liveview_feature --cover
+	$(TEST_MIX) test --include liveview_feature --cover
 
 test.domain: ## Run domain app tests only
-	cd $(DOMAIN_APP) && mix test
+	cd $(DOMAIN_APP) && $(TEST_MIX) test
 
 test.web: ## Run web app tests only (excludes LiveView feature tests)
-	cd $(WEB_APP) && mix test
+	cd $(WEB_APP) && $(TEST_MIX) test
 
 test.failed: ## Re-run only previously failed tests
-	mix test --failed
+	$(TEST_MIX) test --failed
 
 test.seed: ## Run tests with a specific seed (usage: make test.seed SEED=12345)
-	mix test --seed $(SEED)
+	$(TEST_MIX) test --seed $(SEED)
 
 test.file: ## Run a specific test file (usage: make test.file FILE=path/to/test.exs)
-	mix test $(FILE)
+	$(TEST_MIX) test $(FILE)
 
 test.line: ## Run a specific test by file:line (usage: make test.line TARGET=path/to/test.exs:42)
-	mix test $(TARGET)
+	$(TEST_MIX) test $(TARGET)
 
 test.js: ## Run JavaScript tests (Vitest)
 	npm test --prefix $(WEB_APP)/assets
@@ -155,23 +178,23 @@ test.js.watch: ## Run JavaScript tests in watch mode
 # ---------------------------------------------------------------------
 
 e2e: ## Run Playwright with VISIBLE browser + slow-mo (default; watch the flow)
-	MIX_ENV=e2e mix assets.build
-	cd e2e && SLOW_MO=$${SLOW_MO:-300} npm run test:headed
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) SLOW_MO=$${SLOW_MO:-300} npm run test:headed
 
 e2e.headless: ## Run Playwright headless (faster, no browser window)
-	MIX_ENV=e2e mix assets.build
-	cd e2e && npm test
+	$(E2E_MIX) assets.build
+	cd e2e && $(E2E_ENV) npm test
 
 e2e.ui: ## Run Playwright in interactive UI mode (play/pause/inspect)
-	cd e2e && npm run test:ui
+	cd e2e && $(E2E_ENV) npm run test:ui
 
 e2e.install: ## First-time: install npm deps + download Chromium
 	cd e2e && npm install
 	cd e2e && npm run install:browsers
 
 e2e.db.setup: ## First-time: create + migrate the retro_hex_chat_e2e database
-	MIX_ENV=e2e mix ecto.create
-	MIX_ENV=e2e mix ecto.migrate
+	$(E2E_MIX) ecto.create
+	$(E2E_MIX) ecto.migrate
 
 # ---------------------------------------------------------------------
 # Static Analysis
@@ -212,10 +235,10 @@ lint.bundle: ## Enforce frontend bundle budgets
 	npm run bundle:budget --prefix $(WEB_APP)/assets
 
 ci: ## Run all CI checks locally with maximum parallelism
-	elixir scripts/ci.exs
+	$(TEST_ENV) elixir scripts/ci.exs
 
 ci.quick: ## Run CI checks without dialyzer (faster iteration)
-	elixir scripts/ci.exs --quick
+	$(TEST_ENV) elixir scripts/ci.exs --quick
 
 i18n.audit: ## Find hardcoded user-visible strings that still need i18n
 	elixir scripts/i18n_audit.exs
@@ -258,7 +281,7 @@ i18n.gettext.check: ## Verify Gettext catalogs are up to date for all apps
 	cd $(WEB_APP) && mix gettext.extract --check-up-to-date
 
 precommit: ## Run pre-commit pipeline (compile + format + test)
-	mix precommit
+	$(TEST_MIX) precommit
 
 compile: ## Compile with warnings as errors
 	mix compile --warnings-as-errors

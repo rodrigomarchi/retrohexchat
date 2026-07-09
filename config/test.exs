@@ -1,5 +1,7 @@
 import Config
 
+test_http_port = String.to_integer(System.get_env("TEST_PORT", "4002"))
+
 # Configure your database
 #
 # The MIX_TEST_PARTITION environment variable can be used
@@ -17,7 +19,7 @@ config :retro_hex_chat, RetroHexChat.Repo,
 # We don't run a server during test. If one is required,
 # you can enable the server option below.
 config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
-  http: [ip: {127, 0, 0, 1}, port: 4002],
+  http: [ip: {127, 0, 0, 1}, port: test_http_port],
   secret_key_base:
     "test_only_secret_key_base_not_for_production_run_mix_phx_gen_secret_to_replace",
   server: false

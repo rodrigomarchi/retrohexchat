@@ -26,7 +26,7 @@ make e2e.ui          # interactive Playwright UI mode for debugging
   isolated from `apps/retro_hex_chat_web/assets/` (where Vitest lives).
 - The complete catalog of mapped and implemented journeys lives in
   `TEST_CATALOG.md`.
-- Runs under **MIX_ENV=e2e** on port 4003 against a dedicated
+- Runs under **MIX_ENV=e2e** on `E2E_PORT` (default `4003`) against a dedicated
   `retro_hex_chat_e2e` Postgres database. See `config/e2e.exs`.
 - Real Chromium via Playwright — exercises JS hooks, the LiveView socket,
   PubSub broadcasts, and the full request/response cycle.

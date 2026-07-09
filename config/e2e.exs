@@ -1,5 +1,7 @@
 import Config
 
+e2e_http_port = String.to_integer(System.get_env("E2E_PORT", "4003"))
+
 # Dedicated MIX_ENV for the browser-driven Playwright suite under top-level
 # e2e/. Inherits patterns from config/test.exs but with two critical differences:
 #
@@ -9,8 +11,8 @@ import Config
 #      two separate BEAMs; a sandbox would isolate them from each other.
 #
 # A dedicated database (retro_hex_chat_e2e) keeps this env from polluting
-# test or dev state. The server listens on port 4003 to avoid colliding with
-# dev (4000) and test endpoint config (4002).
+# test or dev state. The server listens on E2E_PORT (default 4003) to avoid
+# colliding with dev (4000) and test endpoint config (4002).
 config :retro_hex_chat, RetroHexChat.Repo,
   username: System.get_env("PGUSER", "postgres"),
   password: System.get_env("PGPASSWORD", "postgres"),
@@ -20,7 +22,7 @@ config :retro_hex_chat, RetroHexChat.Repo,
   pool_size: 10
 
 config :retro_hex_chat_web, RetroHexChatWeb.Endpoint,
-  http: [ip: {127, 0, 0, 1}, port: 4003],
+  http: [ip: {127, 0, 0, 1}, port: e2e_http_port],
   secret_key_base:
     "e2e_only_secret_key_base_not_for_production_run_mix_phx_gen_secret_to_replace",
   server: true,

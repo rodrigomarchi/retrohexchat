@@ -1,6 +1,7 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
+import { e2eOrigin } from "../helpers/env";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +9,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'clip'): string {
+function uniqueChannel(prefix = "clip"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'clip') {
+async function signedInUser(page: Page, prefix = "clip") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +28,7 @@ async function signedInUser(page: Page, prefix = 'clip') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'clip',
+  prefix = "clip",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -46,17 +47,17 @@ async function expectClipboardText(chat: ChatPage, text: string) {
     .toBe(text);
 }
 
-test.describe('Conversation context clipboard actions', () => {
-  test('copy name writes channel and PM targets to the clipboard (V6)', async ({
+test.describe("Conversation context clipboard actions", () => {
+  test("copy name writes channel and PM targets to the clipboard (V6)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('copy');
-    const alice = await newSignedInUser(browser, 'v6a');
-    const bob = await newSignedInUser(browser, 'v6b');
+    const channel = uniqueChannel("copy");
+    const alice = await newSignedInUser(browser, "v6a");
+    const bob = await newSignedInUser(browser, "v6b");
 
     try {
-      await bob.ctx.grantPermissions(['clipboard-read', 'clipboard-write'], {
-        origin: 'http://localhost:4003',
+      await bob.ctx.grantPermissions(["clipboard-read", "clipboard-write"], {
+        origin: e2eOrigin(),
       });
 
       await bob.chat.sendMessage(`/join ${channel}`);
@@ -72,7 +73,7 @@ test.describe('Conversation context clipboard actions', () => {
 
       await bob.chat.openPmConversationContextMenu(alice.nick);
       await expect(bob.chat.conversationsCopyNameMenuItem).toContainText(
-        'Copy Nickname',
+        "Copy Nickname",
       );
       await bob.chat.conversationsCopyNameMenuItem.click();
       await expect(bob.chat.conversationsContextMenu).toBeHidden();

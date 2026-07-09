@@ -39,9 +39,18 @@ make server  # http://localhost:4000
 ### Workflow de PR
 
 1. Fork o repositório
-2. Crie uma branch a partir de `main`: `git checkout -b minha-feature`
-3. Faça suas mudanças
-4. Rode os testes e linters:
+2. Atualize sua base antes de criar a branch:
+
+```bash
+git fetch origin
+git checkout main
+git pull --ff-only origin main
+git status --short --branch
+```
+
+3. Crie uma branch a partir de `main`: `git checkout -b minha-feature`
+4. Faça suas mudanças
+5. Rode os testes e linters:
 
 ```bash
 mix compile --warnings-as-errors
@@ -54,8 +63,22 @@ make lint.css
 npm test --prefix apps/retro_hex_chat_web/assets
 ```
 
-5. Commit com mensagem descritiva
-6. Abra um Pull Request
+6. Commit com mensagem descritiva
+7. Abra um Pull Request
+
+### Push direto na `main`
+
+Antes de qualquer commit ou push direto para `main`, confira o remoto e faça pull
+com fast-forward:
+
+```bash
+git fetch origin
+git status --short --branch
+git pull --ff-only origin main
+```
+
+Se houver mudanças locais ainda não commitadas, use `git pull --ff-only --autostash origin main`.
+Só faça `git push origin main` depois de confirmar que a branch local está atualizada.
 
 ### Code style
 

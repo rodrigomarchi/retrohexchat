@@ -248,6 +248,14 @@ make setup   # deps + database + migrations
 make server  # starts at http://localhost:4000
 ```
 
+Before any direct commit or push to `main`, check the remote and pull first:
+
+```bash
+git fetch origin
+git status --short --branch
+git pull --ff-only origin main
+```
+
 ### Available Commands
 
 ```bash
