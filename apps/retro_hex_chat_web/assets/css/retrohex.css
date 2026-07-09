@@ -713,6 +713,13 @@ details:not([open]) .tree-view-marker-closed { display: inline; }
   animation: activity-dot-blink 1s steps(2, end) infinite;
 }
 
+/* Autoscroll is driven imperatively by ScrollHook writing scrollTop; disable
+   the browser's native scroll anchoring so it never fights that pin (which
+   showed up as the message list jumping up then snapping back to the bottom). */
+#chat-messages {
+  overflow-anchor: none;
+}
+
 .message-viewport__channel-loader {
   @apply mx-auto my-retro-12 flex w-fit;
 }

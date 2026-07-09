@@ -19,7 +19,7 @@ describe("ScrollHook", () => {
   });
 
   function finishInitialScroll(hook) {
-    hook.cancelInitialScrollSettle();
+    hook.cancelRepin();
     hook.initialScrollPending = false;
     hook.hideNewMessagesButton();
   }
@@ -122,12 +122,12 @@ describe("ScrollHook", () => {
       document.body.appendChild(hiddenParent);
       hiddenParent.appendChild(hook.el);
       hook.wasHidden = true;
-      const schedule = vi.spyOn(hook, "scheduleInitialScrollSettle");
+      const repin = vi.spyOn(hook, "repinToBottom");
 
       hiddenParent.className = "";
       hook.updated();
 
-      expect(schedule).toHaveBeenCalled();
+      expect(repin).toHaveBeenCalled();
       expect(hook.isAtBottom).toBe(true);
     });
   });
@@ -256,6 +256,121 @@ describe("ScrollHook", () => {
     it("sets pendingPrepend flag", () => {
       simulateEvent(hook, "prepend_start", {});
       expect(hook.pendingPrepend).toBe(true);
+    });
+  });
+
+  // ── link previews ──────────────────────────────────────
+
+  describe("link previews", () => {
+    // jsdom has no CSS.escape; the handler uses it to build the href selector.
+    globalThis.CSS = globalThis.CSS ?? { escape: (s) => String(s) };
+
+    function linkNode(url) {
+      const link = document.createElement("a");
+      link.className = "chat-link";
+      link.href = url;
+      link.textContent = url;
+      hook.el.appendChild(link);
+      return link;
+    }
+
+    it("re-pins to bottom after a preview grows the row while at bottom", () => {
+      linkNode("https://example.com/");
+      hook.isAtBottom = true;
+      hook.scrollToBottom = vi.fn();
+
+      simulateEvent(hook, "link_preview", { url: "https://example.com/", title: "Example" });
+
+      expect(hook.scrollToBottom).toHaveBeenCalled();
+    });
+
+    it("does not re-pin when the reader is scrolled up", () => {
+      linkNode("https://example.com/");
+      hook.isAtBottom = false;
+      hook.scrollToBottom = vi.fn();
+
+      simulateEvent(hook, "link_preview", { url: "https://example.com/", title: "Example" });
+
+      expect(hook.scrollToBottom).not.toHaveBeenCalled();
+    });
+  });
+
+  // ── resize pinning ─────────────────────────────────────
+
+  describe("resize pinning", () => {
+    let roCallback;
+    let observed;
+
+    function mountWithResizeObserver() {
+      roCallback = null;
+      observed = new Set();
+      globalThis.ResizeObserver = class {
+        constructor(cb) {
+          roCallback = cb;
+        }
+        observe(el) {
+          observed.add(el);
+        }
+        unobserve(el) {
+          observed.delete(el);
+        }
+        disconnect() {
+          observed.clear();
+        }
+      };
+
+      const h = mountHook(ScrollHook, {
+        tag: "div",
+        attrs: { id: "chat-messages", style: "height: 200px; overflow: auto;" },
+        html: "",
+      });
+      h.cancelRepin();
+      h.initialScrollPending = false;
+      return h;
+    }
+
+    afterEach(() => {
+      delete globalThis.ResizeObserver;
+    });
+
+    it("observes the scroll container so panel resizes can re-pin", () => {
+      const h = mountWithResizeObserver();
+      expect(observed.has(h.el)).toBe(true);
+      h.destroyed?.();
+    });
+
+    it("re-pins to bottom on resize while the reader is at the bottom", () => {
+      const h = mountWithResizeObserver();
+      h.isAtBottom = true;
+      h.scrollToBottom = vi.fn();
+
+      roCallback();
+
+      expect(h.scrollToBottom).toHaveBeenCalled();
+      h.destroyed?.();
+    });
+
+    it("does not re-pin on resize when the reader has scrolled up", () => {
+      const h = mountWithResizeObserver();
+      h.isAtBottom = false;
+      h.scrollToBottom = vi.fn();
+
+      roCallback();
+
+      expect(h.scrollToBottom).not.toHaveBeenCalled();
+      h.destroyed?.();
+    });
+
+    it("does not re-pin on resize during a prepend of older messages", () => {
+      const h = mountWithResizeObserver();
+      h.isAtBottom = true;
+      h.pendingPrepend = true;
+      h.scrollToBottom = vi.fn();
+
+      roCallback();
+
+      expect(h.scrollToBottom).not.toHaveBeenCalled();
+      h.destroyed?.();
     });
   });
 

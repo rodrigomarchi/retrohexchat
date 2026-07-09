@@ -34,27 +34,22 @@ import {
 import { showFeedbackToast } from "../../lib/notifications/feedback_toast.js";
 import { t } from "../../lib/i18n.js";
 
-const INITIAL_SCROLL_FRAME_COUNT = 3;
-const INITIAL_SCROLL_SETTLE_MS = 120;
-
 const ScrollHook = {
   mounted() {
     this.chatEl = this.el;
     this.isAtBottom = true;
     this.initialScrollPending = true;
-    this.initialScrollFrames = 0;
-    this.initialScrollFrameHandle = null;
-    this.initialScrollTimer = null;
+    this.repinHandle = null;
     this.pendingPrepend = false;
     this.prevScrollHeight = this.chatEl.scrollHeight;
     this.wasHidden = this.isHidden();
     this.mouseDownPos = null;
     this.lastClearToken = this.el.dataset.clearToken || "";
 
-    // Scroll to bottom on mount, then keep settling briefly while the flex
-    // layout, fonts, and initial LiveView stream patches finish landing.
-    this.scrollToBottom();
-    this.scheduleInitialScrollSettle();
+    // Pin to the bottom on mount, then re-pin once after the next frame so
+    // late layout (flex sizing, web fonts, initial stream patches) that grows
+    // the list can't strand the view above the newest message.
+    this.repinToBottom();
 
     // Listen for scroll events
     this.chatEl.addEventListener("scroll", () => {
@@ -119,6 +114,12 @@ const ScrollHook = {
           link.after(preview);
         }
       });
+
+      // Inserting a preview grows the row; keep the newest message in view if
+      // we were already pinned to the bottom.
+      if (this.isAtBottom) {
+        this.scrollToBottom();
+      }
     });
 
     // ── Interactive elements: Channel hover/click ───────────────
@@ -347,11 +348,21 @@ const ScrollHook = {
     };
     document.documentElement.addEventListener("mouseleave", this._viewportLeaveHandler);
 
+    // Re-pin continuously as content settles. The ResizeObserver callback runs
+    // after layout but before paint, so pinning here (unlike a rAF/timeout) is
+    // applied in the same frame the content grows — no visible "jump up then
+    // snap down", and no stranding above the newest message when rows, web
+    // fonts, avatars, or images land late (e.g. returning from a virtual space
+    // or another channel). Only pins while the reader is already at the bottom.
+    this.setupResizeObserver();
+
     // Observe DOM mutations for auto-scroll and prepend handling
     this.observer = new MutationObserver((mutations) => {
       if (!mutations.some((mutation) => this.isMessageStreamMutation(mutation))) {
         return;
       }
+
+      this.syncRowObservations(mutations);
 
       if (this.pendingPrepend) {
         const newScrollHeight = this.chatEl.scrollHeight;
@@ -362,7 +373,7 @@ const ScrollHook = {
         this.scrollToBottom();
         this.hideNewMessagesButton();
       } else if (this.isStreamResetMutation(mutations)) {
-        this.scheduleInitialScrollSettle();
+        this.repinToBottom();
       } else if (this.isAtBottom) {
         this.scrollToBottom();
       } else {
@@ -371,6 +382,41 @@ const ScrollHook = {
     });
 
     this.observer.observe(this.chatEl, { childList: true, subtree: true });
+  },
+
+  // Keep the view glued to the bottom whenever the content box or any message
+  // row changes size, provided the reader had not scrolled up. Runs pre-paint.
+  setupResizeObserver() {
+    if (typeof window.ResizeObserver !== "function") return;
+
+    this.resizeObserver = new ResizeObserver(() => {
+      if (this.pendingPrepend || !this.isAtBottom || this.isHidden()) return;
+      this.scrollToBottom();
+    });
+
+    // The container catches panel/window resizes and hidden→visible; the rows
+    // catch late per-message growth (images, link previews, wrapped text).
+    this.resizeObserver.observe(this.chatEl);
+    this.chatEl
+      .querySelectorAll("[data-message-id]")
+      .forEach((row) => this.resizeObserver.observe(row));
+  },
+
+  syncRowObservations(mutations) {
+    if (!this.resizeObserver) return;
+
+    for (const mutation of mutations) {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE && node.matches?.("[data-message-id]")) {
+          this.resizeObserver.observe(node);
+        }
+      });
+      mutation.removedNodes.forEach((node) => {
+        if (node.nodeType === Node.ELEMENT_NODE && node.matches?.("[data-message-id]")) {
+          this.resizeObserver.unobserve(node);
+        }
+      });
+    }
   },
 
   clearMessages() {
@@ -396,7 +442,7 @@ const ScrollHook = {
 
     if (this.wasHidden) {
       this.wasHidden = false;
-      this.scheduleInitialScrollSettle();
+      this.repinToBottom();
       return;
     }
 
@@ -406,9 +452,12 @@ const ScrollHook = {
   },
 
   destroyed() {
-    this.cancelInitialScrollSettle();
+    this.cancelRepin();
     if (this.observer) {
       this.observer.disconnect();
+    }
+    if (this.resizeObserver) {
+      this.resizeObserver.disconnect();
     }
     if (this._viewportLeaveHandler) {
       document.documentElement.removeEventListener("mouseleave", this._viewportLeaveHandler);
@@ -440,72 +489,37 @@ const ScrollHook = {
     this.isAtBottom = true;
   },
 
-  scheduleInitialScrollSettle() {
-    this.cancelInitialScrollSettle();
+  // Pin to the bottom now, then correct once on the next frame. The immediate
+  // scroll runs before paint (invisible); the single follow-up catches late
+  // layout that grew the list (streamed rows, web fonts) without the visible
+  // multi-frame "jump up then settle back down" the old rAF+timeout loop caused.
+  repinToBottom() {
+    this.cancelRepin();
     this.initialScrollPending = true;
-    this.initialScrollFrames = 0;
     this.scrollToBottom();
     this.hideNewMessagesButton();
 
-    const settle = () => {
-      this.initialScrollFrameHandle = null;
+    if (typeof window.requestAnimationFrame !== "function") {
+      this.initialScrollPending = false;
+      return;
+    }
 
-      if (!this.chatEl?.isConnected) {
-        this.initialScrollPending = false;
-        return;
-      }
+    this.repinHandle = window.requestAnimationFrame(() => {
+      this.repinHandle = null;
+      this.initialScrollPending = false;
+
+      if (!this.chatEl?.isConnected) return;
 
       this.scrollToBottom();
       this.hideNewMessagesButton();
-      this.initialScrollFrames += 1;
-
-      if (this.initialScrollFrames < INITIAL_SCROLL_FRAME_COUNT) {
-        this.initialScrollFrameHandle = this.requestNextFrame(settle);
-        return;
-      }
-
-      this.initialScrollTimer = setTimeout(() => {
-        this.initialScrollTimer = null;
-
-        if (!this.chatEl?.isConnected) {
-          this.initialScrollPending = false;
-          return;
-        }
-
-        this.scrollToBottom();
-        this.hideNewMessagesButton();
-        this.initialScrollPending = false;
-      }, INITIAL_SCROLL_SETTLE_MS);
-    };
-
-    this.initialScrollFrameHandle = this.requestNextFrame(settle);
+    });
   },
 
-  cancelInitialScrollSettle() {
-    if (this.initialScrollFrameHandle) {
-      const { type, id } = this.initialScrollFrameHandle;
-
-      if (type === "frame" && typeof window.cancelAnimationFrame === "function") {
-        window.cancelAnimationFrame(id);
-      } else {
-        clearTimeout(id);
-      }
-
-      this.initialScrollFrameHandle = null;
+  cancelRepin() {
+    if (this.repinHandle && typeof window.cancelAnimationFrame === "function") {
+      window.cancelAnimationFrame(this.repinHandle);
     }
-
-    if (this.initialScrollTimer) {
-      clearTimeout(this.initialScrollTimer);
-      this.initialScrollTimer = null;
-    }
-  },
-
-  requestNextFrame(callback) {
-    if (typeof window.requestAnimationFrame === "function") {
-      return { type: "frame", id: window.requestAnimationFrame(callback) };
-    }
-
-    return { type: "timer", id: setTimeout(callback, 0) };
+    this.repinHandle = null;
   },
 
   isHidden() {

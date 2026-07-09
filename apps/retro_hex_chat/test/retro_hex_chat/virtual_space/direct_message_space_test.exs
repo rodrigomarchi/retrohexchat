@@ -1,8 +1,8 @@
 defmodule RetroHexChat.VirtualSpace.DirectMessageSpaceTest do
   use RetroHexChat.DataCase, async: false
 
-  alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.Chat.Service
+  alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Registry
