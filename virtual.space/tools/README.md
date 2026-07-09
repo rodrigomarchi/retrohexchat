@@ -1,7 +1,7 @@
 # Space sprite tooling
 
 The virtual space renders the human-made reference sheets in
-`docs/virtual.space.tiles/*.png` **directly at runtime**: the sheets are
+`virtual.space/*.png` **directly at runtime**: the sheets are
 copied into `apps/retro_hex_chat_web/priv/static/images/space/` and the client
 sprite atlas slices them with `drawImage`. No pixel data is traced into JS or
 into the map payload anymore.

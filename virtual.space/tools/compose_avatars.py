@@ -2,7 +2,7 @@
 """Compose PixelLab character exports into engine-ready avatar sprite sheets.
 
 Each avatar's raw PixelLab export lives under
-``docs/virtual.space.tiles/characters/<id>/pixellab/<Name>/`` (unzipped from the
+``virtual.space/characters/<id>/pixellab/<Name>/`` (unzipped from the
 per-character download endpoint). This script slices the 36x36 frames of two
 animations and lays them out in the fixed grid the runtime atlas expects:
 
@@ -21,8 +21,8 @@ import sys
 
 from PIL import Image
 
-REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
-SRC = os.path.join(REPO, "docs", "virtual.space.tiles", "characters")
+REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+SRC = os.path.join(REPO, "virtual.space", "characters")
 OUT = os.path.join(
     REPO, "apps", "retro_hex_chat_web", "priv", "static", "images", "space", "avatars"
 )

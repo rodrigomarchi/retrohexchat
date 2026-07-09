@@ -16,7 +16,7 @@ from showcase import CAT
 from pipeline import WATER_PROPS, _rect, T  # noqa: F401  (T documents tile size)
 from full_map import full_map, W, H
 
-REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
+REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
 OUT_JSON = os.path.join(REPO, "apps", "retro_hex_chat", "priv", "maps", "elfic_forest.json")
 
 # pipeline material -> runtime floor tile name(s). crops is a 2x2 seamless

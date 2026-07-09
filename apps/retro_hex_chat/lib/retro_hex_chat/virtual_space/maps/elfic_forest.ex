@@ -8,7 +8,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.ElficForest do
   ruined watchtower, the lake, the old graveyard and the witch's camp.
 
   The layout is authored scene-by-scene in
-  `docs/virtual.space.tiles/tools/full_map.py` (semantic intent → deterministic
+  `virtual.space/tools/full_map.py` (semantic intent → deterministic
   autotile → validation) and exported by `tools/export_map.py` as
   `priv/maps/elfic_forest.json`: pure layout (floor tile names, decor in
   painter order, blocked cells) — no pixel data, the client slices the sheets

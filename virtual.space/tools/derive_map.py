@@ -136,7 +136,7 @@ def build(lab):
 
 def not_blocked(c,blocked): return c not in blocked
 
-REPO=os.path.abspath(os.path.join(GFX,"..",".."))  # docs/virtual.space.tiles -> repo root
+REPO=os.path.abspath(os.path.join(GFX,".."))  # virtual.space -> repo root
 OUT=os.path.join(REPO,"apps","retro_hex_chat","priv","maps","elfic_forest.json")
 
 lab=denoise(classify_grid())
