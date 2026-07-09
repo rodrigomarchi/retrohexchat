@@ -754,18 +754,22 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   defp direct_message_space(session) do
-    space_id = DirectMessageSpace.space_id(session.nickname, session.active_pm)
+    participants = [session.nickname, session.active_pm]
 
-    %{
-      id: space_dom_id(space_id),
-      channel: space_id,
-      join_token:
-        ChannelJoinToken.sign_direct_message(space_id, nil, session.nickname, [
-          session.nickname,
-          session.active_pm
-        ]),
-      mode: "direct_message"
-    }
+    with {:ok, [local_nick, peer_nick] = participants} <-
+           DirectMessageSpace.normalize_participants(participants) do
+      space_id = DirectMessageSpace.space_id(local_nick, peer_nick)
+
+      %{
+        id: space_dom_id(space_id),
+        channel: space_id,
+        join_token:
+          ChannelJoinToken.sign_direct_message(space_id, nil, session.nickname, participants),
+        mode: "direct_message"
+      }
+    else
+      {:error, :invalid_participants} -> nil
+    end
   end
 
   defp space_dom_id(space_id) when is_binary(space_id) do
