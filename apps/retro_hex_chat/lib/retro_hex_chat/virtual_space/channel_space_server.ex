@@ -244,6 +244,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
          ^space_id <- DirectMessageSpace.space_id(nick_a, nick_b),
          {:ok, map_definition} <- SpaceMap.get("direct_message_room") do
       Phoenix.PubSub.subscribe(@pubsub, "presence:global")
+      Phoenix.PubSub.subscribe(@pubsub, direct_message_pm_topic(nick_a, nick_b))
       map_definition = put_direct_message_label(map_definition, participants)
       global_online_keys = direct_message_global_online_keys(participants)
 
@@ -413,6 +414,17 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       ) do
     if public_channel_message?(type) do
       broadcast_channel_bubble(state, author, content)
+    end
+
+    {:noreply, state}
+  end
+
+  def handle_info(
+        %{event: "new_pm", payload: %{sender: sender, content: content, type: type}},
+        %{kind: :direct_message} = state
+      ) do
+    if private_space_message?(type) do
+      broadcast_channel_bubble(state, sender, content)
     end
 
     {:noreply, state}
@@ -677,6 +689,15 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     do: true
 
   defp public_channel_message?(_), do: false
+
+  defp private_space_message?(type) when type in [:message, :action, "message", "action"],
+    do: true
+
+  defp private_space_message?(_), do: false
+
+  defp direct_message_pm_topic(nick_a, nick_b) do
+    "pm:" <> Enum.join(Enum.sort([nick_a, nick_b]), ":")
+  end
 
   defp broadcast_channel_bubble(state, author, content) do
     key = channel_participant_key(author)

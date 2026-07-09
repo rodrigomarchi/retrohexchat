@@ -2,6 +2,7 @@ defmodule RetroHexChat.VirtualSpace.DirectMessageSpaceTest do
   use RetroHexChat.DataCase, async: false
 
   alias RetroHexChat.Presence.Tracker
+  alias RetroHexChat.Chat.Service
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Registry
@@ -126,6 +127,20 @@ defmodule RetroHexChat.VirtualSpace.DirectMessageSpaceTest do
     assert moved.x == x0 + 1
     assert moved.y == y0
     assert moved.dir == "right"
+  end
+
+  test "private messages become virtual space bubbles" do
+    [local, peer] = participants = unique_participants()
+    ctx = start_private_space(participants, local)
+
+    Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "space:#{ctx.space_id}")
+
+    assert {:ok, _pm} = Service.send_private_message(local, peer, "  hello   private  ")
+
+    assert_receive %{event: "space_message", payload: payload}
+    assert payload.key == participant_key(local)
+    assert payload.nickname == local
+    assert payload.text == "hello private"
   end
 
   defp wait_until(fun, retries \\ 50) do

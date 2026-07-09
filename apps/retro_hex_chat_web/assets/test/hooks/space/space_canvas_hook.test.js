@@ -45,6 +45,24 @@ function mountContext() {
   return { el, canvas };
 }
 
+function mountContextWithCanvasBox() {
+  const ctx = mountContext();
+  ctx.canvas.width = 400;
+  ctx.canvas.height = 200;
+  ctx.canvas.getBoundingClientRect = () => ({
+    left: 10,
+    top: 20,
+    width: 200,
+    height: 100,
+    right: 210,
+    bottom: 120,
+    x: 10,
+    y: 20,
+    toJSON: () => {},
+  });
+  return ctx;
+}
+
 function mountContextWithLoading() {
   const ctx = mountContext();
   const loading = document.createElement("div");
@@ -226,6 +244,81 @@ describe("SpaceCanvasHook implementation", () => {
       kind: "sword",
       dir: "left",
     });
+  });
+
+  it("pushes the shared nick hover event when the mouse rests over a space participant", () => {
+    vi.useFakeTimers();
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      receiveAction: vi.fn(),
+      destroy: vi.fn(),
+      participantAtCanvasPoint: vi.fn(() => ({ nickname: "bob" })),
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    const ctx = mountContextWithCanvasBox();
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({ socketFactory: () => socket, engineFactory: () => engine }),
+      ),
+      ctx,
+      { pushEvent: vi.fn() },
+    );
+
+    hook.mounted();
+    ctx.canvas.dispatchEvent(new MouseEvent("mousemove", { clientX: 50, clientY: 70 }));
+    vi.advanceTimersByTime(500);
+
+    expect(engine.participantAtCanvasPoint).toHaveBeenCalledWith(80, 100);
+    expect(hook.pushEvent).toHaveBeenCalledWith("nick_hover", {
+      nick: "bob",
+      x: 58,
+      y: 82,
+    });
+
+    hook.destroyed();
+    vi.useRealTimers();
+  });
+
+  it("pushes the shared nick context menu event on right-click over a space participant", () => {
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      receiveAction: vi.fn(),
+      destroy: vi.fn(),
+      participantAtCanvasPoint: vi.fn(() => ({ nickname: "bob" })),
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    const ctx = mountContextWithCanvasBox();
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({ socketFactory: () => socket, engineFactory: () => engine }),
+      ),
+      ctx,
+      { pushEvent: vi.fn() },
+    );
+
+    hook.mounted();
+    const event = new MouseEvent("contextmenu", {
+      clientX: 50,
+      clientY: 70,
+      cancelable: true,
+    });
+    ctx.canvas.dispatchEvent(event);
+
+    expect(event.defaultPrevented).toBe(true);
+    expect(hook.pushEvent).toHaveBeenCalledWith("nick_hover_dismiss", {});
+    expect(hook.pushEvent).toHaveBeenCalledWith("nick_right_click", {
+      nick: "bob",
+      x: 50,
+      y: 70,
+    });
+
+    hook.destroyed();
   });
 
   it("tears down the engine, channel and socket on destroyed", () => {

@@ -99,6 +99,31 @@ describe("SpaceEngine", () => {
     expect(onFrameRendered).toHaveBeenCalledOnce();
   });
 
+  it("finds a rendered participant under a canvas point", () => {
+    const { engine } = buildEngine();
+    engine.start(tavernInit());
+
+    expect(engine.participantAtCanvasPoint(256, 112)?.nickname).toBe("bob");
+    expect(engine.participantAtCanvasPoint(10, 10)).toBe(null);
+  });
+
+  it("hits the participant drawn on top when avatar bounds overlap", () => {
+    const { engine } = buildEngine();
+    engine.start(
+      tavernInit({
+        snapshot: {
+          serverTime: 1,
+          participants: {
+            "registered:1": { nickname: "alice", x: 5, y: 5, dir: "down" },
+            "registered:2": { nickname: "bob", x: 5, y: 6, dir: "up" },
+          },
+        },
+      }),
+    );
+
+    expect(engine.participantAtCanvasPoint(160, 120)?.nickname).toBe("bob");
+  });
+
   it("applies a delta: moves an existing participant", () => {
     const { engine } = buildEngine();
     engine.start(tavernInit());

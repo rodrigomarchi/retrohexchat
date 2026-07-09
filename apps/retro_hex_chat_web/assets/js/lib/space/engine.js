@@ -258,6 +258,42 @@ export class SpaceEngine {
     return this.selfKey ? (this.participants.get(this.selfKey) ?? null) : null;
   }
 
+  /**
+   * Find the topmost rendered participant under a canvas point.
+   * @param {number} canvasX
+   * @param {number} canvasY
+   * @returns {object|null}
+   */
+  participantAtCanvasPoint(canvasX, canvasY) {
+    if (!this.camera || !this.map) return null;
+
+    const now = this._clock();
+    const rendered = [];
+
+    for (const [key, participant] of this.participants) {
+      const pos = this.renderPosition(key, now);
+      if (!pos) continue;
+
+      rendered.push({
+        ...participant,
+        key,
+        x: pos.x,
+        y: pos.y,
+        action: this._activeAction(key, now),
+      });
+    }
+
+    rendered.sort((a, b) => b.y - a.y);
+
+    for (const participant of rendered) {
+      if (this._participantHitBox(participant).contains(canvasX, canvasY)) {
+        return participant;
+      }
+    }
+
+    return null;
+  }
+
   /** @returns {number} live participant count. */
   participantCount() {
     return this.participants.size;
@@ -319,6 +355,40 @@ export class SpaceEngine {
     const merged = { ...current, ...update };
     this.participants.set(key, merged);
     this._interp.moveTo(key, merged.x, merged.y, now);
+  }
+
+  _participantHitBox(participant) {
+    const tilePx = this.map.tileSize * this.camera.scale;
+    const { x, y } = this.camera.worldToScreen(participant.x * tilePx, participant.y * tilePx);
+    const action = participant.action?.kind ? participant.action : null;
+    const sprite = this.atlas?.avatar?.(
+      participant.avatar,
+      action?.dir ?? participant.dir,
+      0,
+      action?.kind ?? "walk",
+    );
+    const width = (sprite?.sw ?? this.map.tileSize) * this.camera.scale;
+    const height = (sprite?.sh ?? this.map.tileSize * 2) * this.camera.scale;
+    const left = x - (width - tilePx) / 2;
+    const top = y - (height - tilePx);
+    const right = left + width;
+    const bottom = top + height;
+    const labelWidth = Math.max(width, (participant.nickname?.length ?? 0) * 6 + 6);
+    const labelLeft = x + tilePx / 2 - labelWidth / 2;
+    const labelRight = labelLeft + labelWidth;
+    const labelTop = y - tilePx - 12;
+    const labelBottom = labelTop + 11;
+
+    return {
+      contains(px, py) {
+        return (
+          px >= Math.min(left, labelLeft) &&
+          px <= Math.max(right, labelRight) &&
+          py >= Math.min(top, labelTop) &&
+          py <= Math.max(bottom, labelBottom)
+        );
+      },
+    };
   }
 
   _frame() {

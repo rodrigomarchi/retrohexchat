@@ -20,6 +20,12 @@ import { interactTarget } from "../../lib/space/interactions.js";
 import { seatTarget } from "../../lib/space/seating.js";
 import { createSpriteAtlas } from "../../lib/space/sprite_atlas.js";
 import { normalizeSpaceInit, CLIENT_EVENTS, SERVER_EVENTS } from "../../lib/space/protocol.js";
+import {
+  cancelNickHoverTimer,
+  isContextMenuOpen,
+  resetNickHoverTimer,
+  startNickHoverTimer,
+} from "../../lib/chat/interactive.js";
 
 const TILE_SIZE = 16;
 // Integer pixel scale shared by the sprite atlas and the camera step (they must
@@ -44,6 +50,7 @@ export function createSpaceCanvasHook(deps = {}) {
       this._assetsReady = false;
       this._frameRenderedAfterAssets = false;
       this._loadingHidden = false;
+      this._hoveredNick = null;
       this._setLoadingText("Connecting to space...");
 
       const canvas = this.el.querySelector("canvas");
@@ -81,6 +88,7 @@ export function createSpaceCanvasHook(deps = {}) {
         onAction: (action) => this._onAction(action),
       });
       this._input.attach();
+      this._attachPointerEvents();
 
       this._modal = new ModalController({ onChange: (m) => this._renderModal(m) });
       this._modal.attach();
@@ -111,8 +119,10 @@ export function createSpaceCanvasHook(deps = {}) {
     },
 
     destroyed() {
+      this._detachPointerEvents();
       this._input?.detach();
       this._modal?.detach();
+      cancelNickHoverTimer();
       this._resizeObserver?.disconnect();
       this._engine?.destroy();
       this._channel?.leave();
@@ -124,6 +134,7 @@ export function createSpaceCanvasHook(deps = {}) {
       this._engine = null;
       this._channel = null;
       this._socket = null;
+      this._hoveredNick = null;
     },
 
     _setLoadingText(text) {
@@ -200,6 +211,105 @@ export function createSpaceCanvasHook(deps = {}) {
       channel.on(SERVER_EVENTS.MESSAGE, (payload) => this._engine?.receiveMessage?.(payload));
       channel.on(SERVER_EVENTS.MODAL, (payload) => this._modal?.open(payload));
       channel.on(SERVER_EVENTS.ACTION, (payload) => this._engine?.receiveAction?.(payload));
+    },
+
+    _attachPointerEvents() {
+      if (!this._canvas) return;
+
+      this._onCanvasMouseMove = (event) => this._handleCanvasMouseMove(event);
+      this._onCanvasMouseLeave = () => this._dismissCanvasHover();
+      this._onCanvasContextMenu = (event) => this._handleCanvasContextMenu(event);
+      this._onCanvasMouseDown = () => cancelNickHoverTimer();
+
+      this._canvas.addEventListener("mousemove", this._onCanvasMouseMove);
+      this._canvas.addEventListener("mouseleave", this._onCanvasMouseLeave);
+      this._canvas.addEventListener("contextmenu", this._onCanvasContextMenu);
+      this._canvas.addEventListener("mousedown", this._onCanvasMouseDown);
+    },
+
+    _detachPointerEvents() {
+      if (!this._canvas) return;
+
+      if (this._onCanvasMouseMove) {
+        this._canvas.removeEventListener("mousemove", this._onCanvasMouseMove);
+      }
+      if (this._onCanvasMouseLeave) {
+        this._canvas.removeEventListener("mouseleave", this._onCanvasMouseLeave);
+      }
+      if (this._onCanvasContextMenu) {
+        this._canvas.removeEventListener("contextmenu", this._onCanvasContextMenu);
+      }
+      if (this._onCanvasMouseDown) {
+        this._canvas.removeEventListener("mousedown", this._onCanvasMouseDown);
+      }
+
+      this._onCanvasMouseMove = null;
+      this._onCanvasMouseLeave = null;
+      this._onCanvasContextMenu = null;
+      this._onCanvasMouseDown = null;
+    },
+
+    _handleCanvasMouseMove(event) {
+      if (isContextMenuOpen()) return;
+
+      const participant = this._participantAtEvent(event);
+      const nick = participant?.nickname;
+
+      if (!nick) {
+        this._dismissCanvasHover();
+        return;
+      }
+
+      const payload = () => ({
+        nick,
+        x: event.clientX + 8,
+        y: event.clientY + 12,
+      });
+
+      if (this._hoveredNick !== nick) {
+        this._hoveredNick = nick;
+        startNickHoverTimer(nick, () => this.pushEvent("nick_hover", payload()));
+        return;
+      }
+
+      resetNickHoverTimer(() => this.pushEvent("nick_hover", payload()));
+    },
+
+    _handleCanvasContextMenu(event) {
+      const participant = this._participantAtEvent(event);
+      const nick = participant?.nickname;
+      if (!nick) return;
+
+      event.preventDefault();
+      cancelNickHoverTimer();
+      this._hoveredNick = null;
+      this.pushEvent("nick_hover_dismiss", {});
+      this.pushEvent("nick_right_click", {
+        nick,
+        x: event.clientX,
+        y: event.clientY,
+      });
+    },
+
+    _dismissCanvasHover() {
+      if (this._hoveredNick === null) return;
+
+      this._hoveredNick = null;
+      cancelNickHoverTimer();
+      this.pushEvent("nick_hover_dismiss", {});
+    },
+
+    _participantAtEvent(event) {
+      const canvas = this._canvas;
+      const engine = this._engine;
+      if (!canvas || typeof engine?.participantAtCanvasPoint !== "function") return null;
+
+      const rect = canvas.getBoundingClientRect();
+      if (rect.width <= 0 || rect.height <= 0) return null;
+
+      const x = ((event.clientX - rect.left) * canvas.width) / rect.width;
+      const y = ((event.clientY - rect.top) * canvas.height) / rect.height;
+      return engine.participantAtCanvasPoint(x, y);
     },
 
     // Match the canvas backing store to its CSS box, then let the engine
