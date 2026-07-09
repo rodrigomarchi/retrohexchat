@@ -14,9 +14,12 @@ into the map payload anymore.
 - **Tile vocabulary** — `RetroHexChat.VirtualSpace.Maps.Overworld` (Elixir) maps
   semantic tile names (`grass`, `tree`, `pond_c`, `cliff_face`…) to a source
   rectangle `{ts, col, row, w, h}` on a sheet. Maps reference tiles by name.
-- **Avatar** — sliced from `character.png` by the client atlas
-  (`js/lib/space/sprite_atlas.js`): one red-tunic hero, 16×32 sprites, four
-  facings, four walk frames per facing, and two four-frame sword variants.
+- **Avatars** — the legacy red-tunic hero (sliced from `character.png`, 16×32)
+  plus seven PixelLab-authored classes (`avatars/<id>.png`, 36×36), each with a
+  4-direction walk and attack. The full generation → composition → integration
+  pipeline and the "add a new character" recipe are in
+  [`../CHARACTERS.md`](../CHARACTERS.md). Raw generation exports live under
+  `characters/<id>/pixellab/`; `compose_avatars.py` builds the runtime sheets.
 
 ## `manifest.json`
 
