@@ -9,9 +9,21 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinTokenTest do
     token = ChannelJoinToken.sign("#lobby", 42, "alice")
 
     assert {:ok, data} = ChannelJoinToken.verify(token)
+    assert data.space_kind == "channel"
     assert data.channel_name == "#lobby"
     assert data.user_id == 42
     assert data.nickname == "alice"
+  end
+
+  test "signs and verifies a direct-message join payload" do
+    token = ChannelJoinToken.sign_direct_message("dm:alice:bob", 42, "alice", ["alice", "bob"])
+
+    assert {:ok, data} = ChannelJoinToken.verify(token)
+    assert data.space_kind == "direct_message"
+    assert data.space_id == "dm:alice:bob"
+    assert data.user_id == 42
+    assert data.nickname == "alice"
+    assert data.participants == ["alice", "bob"]
   end
 
   test "rejects a tampered token" do

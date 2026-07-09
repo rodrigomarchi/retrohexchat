@@ -9,10 +9,12 @@ defmodule RetroHexChat.VirtualSpace.Map do
   arbitrary ids from clients never reach map code.
   """
 
+  alias RetroHexChat.VirtualSpace.Maps.DirectMessageRoom
   alias RetroHexChat.VirtualSpace.Maps.ElficForest
   alias RetroHexChat.VirtualSpace.Maps.MossGrove
 
   @maps %{
+    "direct_message_room" => DirectMessageRoom,
     "elfic_forest" => ElficForest,
     "moss_grove" => MossGrove
   }

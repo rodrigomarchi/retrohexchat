@@ -3,7 +3,15 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
   alias RetroHexChat.Channels.Registry, as: ChannelRegistry
   alias RetroHexChat.Channels.{Server, Supervisor}
-  alias RetroHexChat.VirtualSpace.{ChannelJoinToken, ChannelSpaceServer, Registry}
+  alias RetroHexChat.Presence.Tracker
+
+  alias RetroHexChat.VirtualSpace.{
+    ChannelJoinToken,
+    ChannelSpaceServer,
+    DirectMessageSpace,
+    Registry
+  }
+
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
   alias RetroHexChatWeb.UserSocket
 
@@ -18,6 +26,18 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
   defp uid, do: System.unique_integer([:positive])
 
   defp unique_channel, do: "#space-channel-#{uid()}"
+
+  defp unique_dm_participants do
+    suffix = uid()
+    ["dm_alice_#{suffix}", "dm_bob_#{suffix}"]
+  end
+
+  defp participant_key(nickname), do: "nick:#{String.downcase(nickname)}"
+
+  defp track_online(nickname) do
+    assert {:ok, _ref} = Tracker.track_user("presence:global", nickname)
+    Process.sleep(50)
+  end
 
   defp start_channel(channel) do
     {:ok, pid} = Supervisor.start_child(channel)
@@ -49,6 +69,35 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       end)
 
     subscribe_and_join(socket, "space:#{channel}", %{"join_token" => join_token})
+  end
+
+  defp join_direct_message_space(space_id, nickname, participants, opts \\ []) do
+    {:ok, socket} = connect(UserSocket, %{})
+
+    signed_space_id = Keyword.get(opts, :signed_space_id, space_id)
+    signed_nick = Keyword.get(opts, :signed_nick, nickname)
+    signed_participants = Keyword.get(opts, :signed_participants, participants)
+
+    join_token =
+      Keyword.get_lazy(opts, :token, fn ->
+        ChannelJoinToken.sign_direct_message(
+          signed_space_id,
+          nil,
+          signed_nick,
+          signed_participants
+        )
+      end)
+
+    subscribe_and_join(socket, "space:#{space_id}", %{"join_token" => join_token})
+  end
+
+  defp cleanup_direct_message_space(space_id) do
+    on_exit(fn ->
+      case Registry.lookup({:direct_message_space, space_id}) do
+        {:ok, space_pid} -> GenServer.stop(space_pid, :normal)
+        {:error, :not_found} -> :ok
+      end
+    end)
   end
 
   # Drives the socket's participant to a target tile with valid input steps.
@@ -151,6 +200,68 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       {:ok, _} = Server.join(channel, "alice")
 
       assert {:error, %{reason: "not_in_channel"}} = join_channel_space(channel, "mallory")
+    end
+
+    test "direct message spaces use the indoor room and snapshot only online participants" do
+      [local, peer] = participants = unique_dm_participants()
+      track_online(peer)
+      space_id = DirectMessageSpace.space_id(local, peer)
+      cleanup_direct_message_space(space_id)
+
+      assert {:ok, space_init, _socket} =
+               join_direct_message_space(space_id, local, participants)
+
+      assert space_init.version == 1
+      assert space_init.channel_name == space_id
+      assert space_init.self_key == participant_key(local)
+      assert space_init.map.id == "direct_message_room"
+      assert space_init.map.width == 72
+      assert space_init.map.height == 30
+
+      expected_label = "#{local} + #{peer}"
+
+      assert %{text: ^expected_label} =
+               Enum.find(space_init.map.labels, &(&1.id == "dm_nameplate"))
+
+      assert Map.keys(space_init.snapshot.participants) |> Enum.sort() ==
+               [participant_key(local), participant_key(peer)] |> Enum.sort()
+
+      refute Map.has_key?(space_init.snapshot.participants, "nick:charlie")
+    end
+
+    test "direct message spaces omit an offline peer from the initial snapshot" do
+      [local, peer] = participants = unique_dm_participants()
+      space_id = DirectMessageSpace.space_id(local, peer)
+      cleanup_direct_message_space(space_id)
+
+      assert {:ok, space_init, _socket} =
+               join_direct_message_space(space_id, local, participants)
+
+      assert Map.keys(space_init.snapshot.participants) == [participant_key(local)]
+      refute Map.has_key?(space_init.snapshot.participants, participant_key(peer))
+    end
+
+    test "direct message spaces reject a signed nickname outside the conversation" do
+      participants = ["alice", "bob"]
+      space_id = DirectMessageSpace.space_id("alice", "bob")
+      cleanup_direct_message_space(space_id)
+
+      assert {:error, %{reason: "invalid_token"}} =
+               join_direct_message_space(space_id, "charlie", participants,
+                 signed_nick: "charlie"
+               )
+    end
+
+    test "direct message spaces reject a token for another private room" do
+      space_id = DirectMessageSpace.space_id("alice", "bob")
+      other_space_id = DirectMessageSpace.space_id("alice", "charlie")
+      cleanup_direct_message_space(space_id)
+      cleanup_direct_message_space(other_space_id)
+
+      assert {:error, %{reason: "invalid_token"}} =
+               join_direct_message_space(space_id, "alice", ["alice", "charlie"],
+                 signed_space_id: other_space_id
+               )
     end
 
     test "channel spaces expand spawn positions beyond the market square with clearance" do

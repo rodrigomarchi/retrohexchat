@@ -29,6 +29,7 @@ export class SpaceMap {
     // Multi-tile props (houses, big trees) drawn as whole sprites over the floor.
     this.decor = Array.isArray(this.layers.decor) ? this.layers.decor : [];
     this.spawns = Array.isArray(definition.spawn) ? definition.spawn : [];
+    this.labels = Array.isArray(definition.labels) ? definition.labels : [];
 
     this._blocked = buildCollisionSet(definition.collision);
     this._zones = Array.isArray(definition.zones) ? definition.zones : [];

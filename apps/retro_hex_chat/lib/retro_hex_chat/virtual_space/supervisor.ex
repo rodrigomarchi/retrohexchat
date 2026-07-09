@@ -28,6 +28,16 @@ defmodule RetroHexChat.VirtualSpace.Supervisor do
     )
   end
 
+  @spec start_direct_message_child(String.t(), [String.t()]) :: DynamicSupervisor.on_start_child()
+  @spec start_direct_message_child(GenServer.server(), String.t(), [String.t()]) ::
+          DynamicSupervisor.on_start_child()
+  def start_direct_message_child(supervisor \\ __MODULE__, space_id, participants) do
+    DynamicSupervisor.start_child(
+      supervisor,
+      {RetroHexChat.VirtualSpace.ChannelSpaceServer, {:direct_message, space_id, participants}}
+    )
+  end
+
   @spec stop_child(GenServer.server(), pid()) :: :ok | {:error, :not_found}
   def stop_child(supervisor \\ __MODULE__, pid) do
     DynamicSupervisor.terminate_child(supervisor, pid)

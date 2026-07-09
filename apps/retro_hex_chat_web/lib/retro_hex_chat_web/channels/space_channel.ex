@@ -1,6 +1,7 @@
 defmodule RetroHexChatWeb.SpaceChannel do
   @moduledoc """
-  Realtime channel for a channel-backed virtual space (`space:#channel`).
+  Realtime channel for conversation-backed virtual spaces (`space:#channel` or
+  `space:dm:<key>`).
 
   Join is authorized by the signed `channel_join_token` issued by the LiveView
   shell. Channel spaces validate channel presence before joining. The reply is
@@ -13,6 +14,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   alias RetroHexChat.VirtualSpace
   alias RetroHexChat.VirtualSpace.ChannelJoinToken
+  alias RetroHexChat.VirtualSpace.DirectMessageSpace
 
   @impl true
   def join("space:#" <> channel_tail, params, socket) do
@@ -23,7 +25,7 @@ defmodule RetroHexChatWeb.SpaceChannel do
       socket =
         socket
         |> assign(:space_kind, :channel)
-        |> assign(:space_channel_name, channel_name)
+        |> assign(:space_id, channel_name)
         |> assign(:participant_key, result.participant.key)
         |> assign(:user_id, data.user_id)
         |> assign(:nickname, data.nickname)
@@ -35,23 +37,48 @@ defmodule RetroHexChatWeb.SpaceChannel do
     end
   end
 
+  def join("space:dm:" <> key_tail, params, socket) do
+    space_id = "dm:" <> key_tail
+
+    with {:ok, data} <- verify_direct_message_join_token(params, space_id),
+         {:ok, result} <-
+           VirtualSpace.join_direct_message_space(
+             space_id,
+             build_channel_actor(data),
+             data.participants
+           ) do
+      socket =
+        socket
+        |> assign(:space_kind, :direct_message)
+        |> assign(:space_id, space_id)
+        |> assign(:participant_key, result.participant.key)
+        |> assign(:user_id, data.user_id)
+        |> assign(:nickname, data.nickname)
+
+      {:ok, space_init(space_id, result), socket}
+    else
+      {:error, reason} ->
+        {:error, %{reason: join_error(reason)}}
+    end
+  end
+
   def join("space:" <> _not_channel_topic, _params, _socket),
     do: {:error, %{reason: "not_found"}}
 
   @impl true
   def handle_in("space_input", payload, socket) do
-    with %{space_channel_name: channel_name, participant_key: key} <- socket.assigns,
+    with %{space_kind: kind, space_id: space_id, participant_key: key} <- socket.assigns,
          {:ok, step} <- parse_input(payload) do
-      VirtualSpace.input(channel_name, key, step)
+      dispatch_input(kind, space_id, key, step)
     end
 
     {:noreply, socket}
   end
 
   def handle_in("space_interact", payload, socket) do
-    with %{space_channel_name: channel_name, participant_key: key} <- socket.assigns,
+    with %{space_kind: kind, space_id: space_id, participant_key: key} <- socket.assigns,
          {:ok, interact} <- parse_interact(payload),
-         {:ok, %{modal: modal}} <- VirtualSpace.interact(channel_name, key, interact) do
+         {:ok, %{modal: modal}} <- dispatch_interact(kind, space_id, key, interact) do
       push(socket, "space_modal", modal)
     end
 
@@ -59,9 +86,9 @@ defmodule RetroHexChatWeb.SpaceChannel do
   end
 
   def handle_in("space_action", payload, socket) do
-    with %{space_channel_name: channel_name, participant_key: key} <- socket.assigns,
+    with %{space_kind: kind, space_id: space_id, participant_key: key} <- socket.assigns,
          {:ok, action} <- parse_action(payload) do
-      VirtualSpace.action(channel_name, key, action)
+      dispatch_action(kind, space_id, key, action)
     end
 
     {:noreply, socket}
@@ -80,8 +107,11 @@ defmodule RetroHexChatWeb.SpaceChannel do
   @impl true
   def terminate(_reason, socket) do
     case socket.assigns do
-      %{space_kind: :channel, space_channel_name: channel_name} ->
-        VirtualSpace.leave_channel_space_viewer(channel_name)
+      %{space_kind: :channel, space_id: space_id} ->
+        VirtualSpace.leave_channel_space_viewer(space_id)
+
+      %{space_kind: :direct_message, space_id: space_id, participant_key: participant_key} ->
+        VirtualSpace.leave_direct_message_space_viewer(space_id, participant_key)
 
       _ ->
         :ok
@@ -92,13 +122,44 @@ defmodule RetroHexChatWeb.SpaceChannel do
 
   defp verify_channel_join_token(%{"join_token" => join_token}, channel_name) do
     case ChannelJoinToken.verify(join_token) do
-      {:ok, %{channel_name: ^channel_name} = data} -> {:ok, data}
-      {:ok, _other_channel} -> {:error, :invalid_token}
-      {:error, _} -> {:error, :invalid_token}
+      {:ok, %{channel_name: ^channel_name} = data} ->
+        if Map.get(data, :space_kind, "channel") == "channel" do
+          {:ok, data}
+        else
+          {:error, :invalid_token}
+        end
+
+      {:ok, _other_channel} ->
+        {:error, :invalid_token}
+
+      {:error, _} ->
+        {:error, :invalid_token}
     end
   end
 
   defp verify_channel_join_token(_params, _channel_name), do: {:error, :invalid_token}
+
+  defp verify_direct_message_join_token(%{"join_token" => join_token}, space_id) do
+    case ChannelJoinToken.verify(join_token) do
+      {:ok, %{space_kind: "direct_message", space_id: ^space_id} = data} ->
+        with {:ok, [nick_a, nick_b] = participants} <-
+               DirectMessageSpace.normalize_participants(Map.get(data, :participants)),
+             true <- DirectMessageSpace.member?(participants, data.nickname),
+             ^space_id <- DirectMessageSpace.space_id(nick_a, nick_b) do
+          {:ok, %{data | participants: participants}}
+        else
+          _ -> {:error, :invalid_token}
+        end
+
+      {:ok, _other_space} ->
+        {:error, :invalid_token}
+
+      {:error, _} ->
+        {:error, :invalid_token}
+    end
+  end
+
+  defp verify_direct_message_join_token(_params, _space_id), do: {:error, :invalid_token}
 
   # Only the closed step payload is accepted; anything else is dropped so the
   # channel never forwards malformed client input to the domain.
@@ -156,9 +217,29 @@ defmodule RetroHexChatWeb.SpaceChannel do
   defp join_error(:not_found), do: "not_found"
   defp join_error(:invalid_token), do: "invalid_token"
   defp join_error(:not_in_channel), do: "not_in_channel"
+  defp join_error(:not_in_direct_message), do: "not_in_direct_message"
+  defp join_error(:invalid_participants), do: "invalid_token"
 
   defp join_error(other) do
     Logger.info("Space join denied: #{inspect(other)}")
     "access_denied"
   end
+
+  defp dispatch_input(:channel, space_id, key, payload),
+    do: VirtualSpace.input(space_id, key, payload)
+
+  defp dispatch_input(:direct_message, space_id, key, payload),
+    do: VirtualSpace.input_direct_message(space_id, key, payload)
+
+  defp dispatch_interact(:channel, space_id, key, payload),
+    do: VirtualSpace.interact(space_id, key, payload)
+
+  defp dispatch_interact(:direct_message, space_id, key, payload),
+    do: VirtualSpace.interact_direct_message(space_id, key, payload)
+
+  defp dispatch_action(:channel, space_id, key, payload),
+    do: VirtualSpace.action(space_id, key, payload)
+
+  defp dispatch_action(:direct_message, space_id, key, payload),
+    do: VirtualSpace.action_direct_message(space_id, key, payload)
 end

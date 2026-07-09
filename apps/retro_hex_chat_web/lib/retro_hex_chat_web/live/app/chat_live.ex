@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChat.Admin.ServerBans
   alias RetroHexChat.Channels.Server
   alias RetroHexChat.Services.{Motd, Queries}
-  alias RetroHexChat.VirtualSpace.ChannelJoinToken
+  alias RetroHexChat.VirtualSpace.{ChannelJoinToken, DirectMessageSpace}
 
   alias RetroHexChat.Chat.{
     DuplicateTracker,
@@ -728,20 +728,50 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   defp admin?(session), do: ChatContext.admin?(session)
 
-  defp channel_space_available?(session, show_status_tab) do
-    not show_status_tab and is_nil(session.active_pm) and is_binary(session.active_channel)
+  defp conversation_space(session, show_status_tab) do
+    cond do
+      show_status_tab ->
+        nil
+
+      is_binary(session.active_pm) ->
+        direct_message_space(session)
+
+      is_binary(session.active_channel) ->
+        channel_space(session)
+
+      true ->
+        nil
+    end
   end
 
-  defp channel_space_join_token(session) do
-    ChannelJoinToken.sign(session.active_channel, nil, session.nickname)
+  defp channel_space(session) do
+    %{
+      id: space_dom_id(session.active_channel),
+      channel: session.active_channel,
+      join_token: ChannelJoinToken.sign(session.active_channel, nil, session.nickname),
+      mode: "channel"
+    }
   end
 
-  defp space_dom_id(channel_name) when is_binary(channel_name) do
-    encoded = Base.url_encode64(channel_name, padding: false)
-    "channel-space-#{encoded}"
+  defp direct_message_space(session) do
+    space_id = DirectMessageSpace.space_id(session.nickname, session.active_pm)
+
+    %{
+      id: space_dom_id(space_id),
+      channel: space_id,
+      join_token:
+        ChannelJoinToken.sign_direct_message(space_id, nil, session.nickname, [
+          session.nickname,
+          session.active_pm
+        ]),
+      mode: "direct_message"
+    }
   end
 
-  defp space_dom_id(_), do: "channel-space-none"
+  defp space_dom_id(space_id) when is_binary(space_id) do
+    encoded = Base.url_encode64(space_id, padding: false)
+    "conversation-space-#{encoded}"
+  end
 
   # The shared Statistics panel speaks the domain status vocabulary; the chat
   # state machine maps onto it (invite pending reads as "pending", both

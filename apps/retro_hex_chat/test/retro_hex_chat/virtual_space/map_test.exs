@@ -2,11 +2,12 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
   use ExUnit.Case, async: true
 
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
+  alias RetroHexChat.VirtualSpace.Maps.Catalog
   alias RetroHexChat.VirtualSpace.Maps.Overworld
 
   @moduletag :unit
 
-  @map_ids ~w(elfic_forest moss_grove)
+  @map_ids ~w(direct_message_room elfic_forest moss_grove)
 
   describe "get/1" do
     test "returns a definition for every registry id" do
@@ -35,10 +36,16 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
     test "every map ships the sheet tilesets and a tile legend" do
       for map_id <- @map_ids do
         {:ok, d} = SpaceMap.get(map_id)
-        assert d.tilesets == Overworld.tilesets()
-        assert d.tiles == Overworld.tiles()
-        assert Overworld.known?(d.ground)
+        assert is_list(d.tilesets)
+        assert is_map(d.tiles)
+        assert Map.has_key?(d.tiles, d.ground)
       end
+
+      {:ok, room} = SpaceMap.get("direct_message_room")
+      assert room.tilesets == Catalog.tilesets()
+
+      {:ok, grove} = SpaceMap.get("moss_grove")
+      assert grove.tilesets == Overworld.tilesets()
     end
   end
 
@@ -59,7 +66,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
   # Every registry map must satisfy the same invariants, so a new map can never
   # ship a spawn on a wall, a zone out of bounds or an overlapping seat.
-  for map_id <- ~w(elfic_forest moss_grove) do
+  for map_id <- @map_ids do
     describe "#{map_id} consistency" do
       @describetag map_id: map_id
 
@@ -104,7 +111,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
       test "the floor layer is a full height×width matrix of known tile ids", ctx do
         floor = ctx.definition.layers.floor
-        known = Elixir.Map.keys(Overworld.tiles())
+        known = Elixir.Map.keys(ctx.definition.tiles)
 
         assert length(floor) == ctx.definition.height
 
@@ -116,7 +123,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
       end
 
       test "every decor prop names a known tile", ctx do
-        known = Elixir.Map.keys(Overworld.tiles())
+        known = Elixir.Map.keys(ctx.definition.tiles)
         assert Enum.all?(ctx.definition.layers.decor, &(&1.tile in known))
       end
     end

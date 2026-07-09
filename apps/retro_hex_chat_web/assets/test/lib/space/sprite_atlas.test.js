@@ -15,6 +15,7 @@ const TILESETS = [
 const TILES = {
   grass: { ts: "overworld", col: 5, row: 9 },
   tree: { ts: "overworld", col: 5, row: 16, w: 2, h: 2 },
+  mirrored_chair: { ts: "overworld", col: 7, row: 9, flip_x: true },
 };
 
 function loadedAtlas() {
@@ -35,12 +36,18 @@ describe("sprite atlas contract", () => {
     const atlas = loadedAtlas();
     const grass = atlas.tile("grass");
     expect(grass).toMatchObject({ sx: 80, sy: 144, sw: 16, sh: 16 });
+    expect(grass.flipX).toBe(false);
     expect(grass.img).toBeTruthy();
   });
 
   it("sizes a multi-tile prop from its w/h", () => {
     const atlas = loadedAtlas();
     expect(atlas.tile("tree")).toMatchObject({ sx: 80, sy: 256, sw: 32, sh: 32 });
+  });
+
+  it("preserves tile flip metadata for directional furniture", () => {
+    const atlas = loadedAtlas();
+    expect(atlas.tile("mirrored_chair")).toMatchObject({ sx: 112, sy: 144, flipX: true });
   });
 
   it("shares one sheet image across every tile from it", () => {

@@ -6,7 +6,7 @@ defmodule RetroHexChat.VirtualSpace.Registry do
 
   @registry RetroHexChat.VirtualSpace.SessionRegistry
 
-  @type key :: {:channel_space, String.t()}
+  @type key :: {:channel_space, String.t()} | {:direct_message_space, String.t()}
 
   @spec via_tuple(key()) :: {:via, Registry, {atom(), key()}}
   def via_tuple(key) do

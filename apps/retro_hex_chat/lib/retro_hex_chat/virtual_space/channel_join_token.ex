@@ -11,14 +11,37 @@ defmodule RetroHexChat.VirtualSpace.ChannelJoinToken do
   @salt "channel_space_join"
   @max_age 3_600
 
+  alias RetroHexChat.VirtualSpace.DirectMessageSpace
+
   @spec sign(String.t(), integer() | nil, String.t()) :: String.t()
   def sign(channel_name, user_id, nickname) do
-    data = %{channel_name: channel_name, user_id: user_id, nickname: nickname}
+    data = %{
+      space_kind: "channel",
+      channel_name: channel_name,
+      user_id: user_id,
+      nickname: nickname
+    }
+
+    Phoenix.Token.sign(secret_key_base(), @salt, data)
+  end
+
+  @spec sign_direct_message(String.t(), integer() | nil, String.t(), [String.t()]) :: String.t()
+  def sign_direct_message(space_id, user_id, nickname, participants) do
+    {:ok, participants} = DirectMessageSpace.normalize_participants(participants)
+
+    data = %{
+      space_kind: "direct_message",
+      space_id: space_id,
+      user_id: user_id,
+      nickname: nickname,
+      participants: participants
+    }
+
     Phoenix.Token.sign(secret_key_base(), @salt, data)
   end
 
   @spec verify(String.t(), keyword()) ::
-          {:ok, %{channel_name: String.t(), user_id: integer() | nil, nickname: String.t()}}
+          {:ok, map()}
           | {:error, :expired | :invalid}
   def verify(token, opts \\ []) do
     max_age = Keyword.get(opts, :max_age, @max_age)

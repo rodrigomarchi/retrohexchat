@@ -14,6 +14,14 @@ const LABEL_BG = "1b1d24";
 const LABEL_FG = "e8dcc0";
 const BUBBLE_BG = "e8dcc0";
 const BUBBLE_FG = "20232b";
+const SIGN_BG = "5a442e";
+const SIGN_BORDER = "2f241a";
+const SIGN_FG = "f7e6b6";
+const SIGN_FONT = "12px monospace";
+const TABLE_SIGN_BG = "6b4f2f";
+const TABLE_SIGN_BORDER = "3a2919";
+const TABLE_SIGN_FG = "f4e4b8";
+const TABLE_SIGN_FONT = "10px monospace";
 
 export class Renderer {
   /**
@@ -54,6 +62,7 @@ export class Renderer {
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     this._drawFloor(ctx);
     this._drawDecor(ctx);
+    this._drawMapLabels(ctx);
 
     const ordered = [...state.participants.values()].sort((a, b) => a.y - b.y);
     for (const participant of ordered) {
@@ -105,6 +114,73 @@ export class Renderer {
     }
   }
 
+  _drawMapLabels(ctx) {
+    for (const label of this.map.labels ?? []) {
+      if (!label?.text) continue;
+      if (label.kind === "table_nameplate") {
+        this._drawTableNameplate(ctx, label);
+        continue;
+      }
+
+      const width = Math.max((label.w ?? 1) * this.tilePx, this.tilePx);
+      const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
+      const { x, y } = this.camera.worldToScreen(
+        (label.x ?? 0) * this.tilePx,
+        (label.y ?? 0) * this.tilePx,
+      );
+      const dx = Math.round(x);
+      const dy = Math.round(y);
+
+      ctx.fillStyle = HASH + SIGN_BORDER;
+      ctx.fillRect(dx, dy, Math.round(width), Math.round(height));
+      ctx.fillStyle = HASH + SIGN_BG;
+      ctx.fillRect(
+        dx + 3,
+        dy + 3,
+        Math.max(Math.round(width) - 6, 1),
+        Math.max(Math.round(height) - 6, 1),
+      );
+      ctx.font = SIGN_FONT;
+      ctx.textAlign = "center";
+      ctx.fillStyle = HASH + SIGN_FG;
+      ctx.fillText(
+        String(label.text),
+        Math.round(dx + width / 2),
+        Math.round(dy + height / 2 + 4),
+        Math.max(Math.round(width) - 12, 1),
+      );
+    }
+  }
+
+  _drawTableNameplate(ctx, label) {
+    const width = Math.max((label.w ?? 1) * this.tilePx, this.tilePx);
+    const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
+    const { x, y } = this.camera.worldToScreen(
+      (label.x ?? 0) * this.tilePx,
+      (label.y ?? 0) * this.tilePx,
+    );
+    const dx = Math.round(x);
+    const dy = Math.round(y);
+    const plaqueWidth = Math.max(Math.round(width) - 20, this.tilePx * 2);
+    const plaqueHeight = Math.min(18, Math.max(Math.round(height) - 8, 12));
+    const px = Math.round(dx + (width - plaqueWidth) / 2);
+    const py = Math.round(dy + (height - plaqueHeight) / 2);
+
+    ctx.fillStyle = HASH + TABLE_SIGN_BORDER;
+    ctx.fillRect(px, py, plaqueWidth, plaqueHeight);
+    ctx.fillStyle = HASH + TABLE_SIGN_BG;
+    ctx.fillRect(px + 2, py + 2, Math.max(plaqueWidth - 4, 1), Math.max(plaqueHeight - 4, 1));
+    ctx.font = TABLE_SIGN_FONT;
+    ctx.textAlign = "center";
+    ctx.fillStyle = HASH + TABLE_SIGN_FG;
+    ctx.fillText(
+      String(label.text),
+      Math.round(px + plaqueWidth / 2),
+      Math.round(py + plaqueHeight / 2 + 4),
+      Math.max(plaqueWidth - 8, 1),
+    );
+  }
+
   _drawAvatar(ctx, participant, now) {
     const action = participant.action?.kind === "sword" ? participant.action : null;
     const actionKind = action ? "sword" : "walk";
@@ -132,6 +208,24 @@ export class Renderer {
     const img = sprite.img;
     if (!img || !img.complete || !img.naturalWidth) return;
     const s = this.camera.scale;
+    if (sprite.flipX) {
+      ctx.save();
+      ctx.scale(-1, 1);
+      ctx.drawImage(
+        img,
+        sprite.sx,
+        sprite.sy,
+        sprite.sw,
+        sprite.sh,
+        -dx - sprite.sw * s,
+        dy,
+        sprite.sw * s,
+        sprite.sh * s,
+      );
+      ctx.restore();
+      return;
+    }
+
     ctx.drawImage(
       img,
       sprite.sx,

@@ -103,8 +103,8 @@
             }
           />
 
-          <% channel_space_available? = channel_space_available?(@session, @show_status_tab) %>
-          <% space_view? = channel_space_available? && @channel_view == :space %>
+          <% conversation_space = conversation_space(@session, @show_status_tab) %>
+          <% space_view? = conversation_space && @channel_view == :space %>
 
           <%!-- Topic bar --%>
           <.topic_bar
@@ -119,7 +119,7 @@
             }
             modes={@current_modes}
           >
-            <:leading_controls :if={channel_space_available?}>
+            <:leading_controls :if={conversation_space}>
               <div class="flex items-center gap-px" data-testid="channel-view-tabs">
                 <button
                   type="button"
@@ -206,18 +206,18 @@
 
               <div :if={space_view?} class="relative flex flex-1 min-w-0 min-h-0">
                 <div
-                  id={space_dom_id(@session.active_channel)}
+                  id={conversation_space.id}
                   phx-hook="SpaceCanvasHook"
                   phx-update="ignore"
                   data-testid="channel-space-shell"
-                  data-space-channel={@session.active_channel}
-                  data-join-token={channel_space_join_token(@session)}
+                  data-space-channel={conversation_space.channel}
+                  data-join-token={conversation_space.join_token}
                   data-nickname={@session.nickname}
-                  data-space-mode="channel"
+                  data-space-mode={conversation_space.mode}
                   class="relative flex-1 min-h-0 w-full bg-canvas"
                 >
                   <canvas
-                    id={"#{space_dom_id(@session.active_channel)}-canvas"}
+                    id={"#{conversation_space.id}-canvas"}
                     class="absolute inset-0 block h-full w-full"
                   >
                   </canvas>

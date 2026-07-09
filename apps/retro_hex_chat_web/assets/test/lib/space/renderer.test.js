@@ -15,6 +15,9 @@ function mockCtx() {
     fillText: vi.fn(),
     drawImage: vi.fn(),
     measureText: vi.fn(() => ({ width: 40 })),
+    save: vi.fn(),
+    scale: vi.fn(),
+    restore: vi.fn(),
     beginPath: vi.fn(),
     arc: vi.fn(),
     fill: vi.fn(),
@@ -30,10 +33,12 @@ function build(overrides = {}) {
     height: 15,
     tile_size: 16,
     spawn: [],
+    layers: overrides.layers ?? undefined,
     collision: [],
     zones: [],
     seats: [],
     interactables: [],
+    labels: overrides.labels ?? [],
   });
   const camera = new Camera({ tileSize: 16, scale: 2, mapWidth: 20, mapHeight: 15 });
   camera.setViewport(320, 240);
@@ -43,6 +48,63 @@ function build(overrides = {}) {
   };
   return { ctx, renderer: new Renderer({ canvas, atlas, map, camera }) };
 }
+
+describe("Renderer map labels", () => {
+  it("draws static room labels supplied by the map definition", () => {
+    const { ctx, renderer } = build({
+      labels: [{ id: "nameplate", kind: "nameplate", x: 2, y: 2, w: 6, h: 1, text: "Alice + Bob" }],
+    });
+
+    renderer.draw({ participants: new Map(), selfKey: null, bubbles: new Map() });
+
+    const printed = ctx.fillText.mock.calls.map((c) => c[0]);
+    expect(printed).toContain("Alice + Bob");
+  });
+
+  it("draws compact table nameplates supplied by the map definition", () => {
+    const { ctx, renderer } = build({
+      labels: [
+        {
+          id: "dm_nameplate",
+          kind: "table_nameplate",
+          x: 2,
+          y: 2,
+          w: 3,
+          h: 1,
+          text: "Alice + Bob",
+        },
+      ],
+    });
+
+    renderer.draw({ participants: new Map(), selfKey: null, bubbles: new Map() });
+
+    const printed = ctx.fillText.mock.calls.map((c) => c[0]);
+    expect(printed).toContain("Alice + Bob");
+    expect(ctx.font).toBe("10px monospace");
+  });
+});
+
+describe("Renderer flipped tiles", () => {
+  it("mirrors tiles that request flipX without changing their world anchor", () => {
+    const img = { complete: true, naturalWidth: 64 };
+    const atlas = {
+      tile: (name) =>
+        name === "chair" ? { img, sx: 16, sy: 64, sw: 16, sh: 48, flipX: true } : null,
+      avatar: () => null,
+    };
+    const { ctx, renderer } = build({
+      atlas,
+      layers: { floor: [], decor: [{ x: 2, y: 3, tile: "chair" }], above: [] },
+    });
+
+    renderer.draw({ participants: new Map(), selfKey: null, bubbles: new Map() });
+
+    expect(ctx.save).toHaveBeenCalledTimes(1);
+    expect(ctx.scale).toHaveBeenCalledWith(-1, 1);
+    expect(ctx.drawImage).toHaveBeenCalledWith(img, 16, 64, 16, 48, -96, 96, 32, 96);
+    expect(ctx.restore).toHaveBeenCalledTimes(1);
+  });
+});
 
 describe("Renderer speech bubbles", () => {
   it("draws bubble text as text via fillText (never as HTML)", () => {

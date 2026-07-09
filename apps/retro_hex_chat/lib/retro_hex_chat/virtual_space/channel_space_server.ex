@@ -15,6 +15,8 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   require Logger
 
   alias RetroHexChat.Channels.Server, as: ChannelServer
+  alias RetroHexChat.Presence.Tracker
+  alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Events
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
   alias RetroHexChat.VirtualSpace.Registry
@@ -43,10 +45,17 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   # --- Public API ---
 
-  @spec start_link({:channel, String.t()}) :: GenServer.on_start()
+  @spec start_link({:channel, String.t()} | {:direct_message, String.t(), [String.t()]}) ::
+          GenServer.on_start()
   def start_link({:channel, channel_name} = arg) do
     GenServer.start_link(__MODULE__, arg,
       name: Registry.via_tuple({:channel_space, channel_name})
+    )
+  end
+
+  def start_link({:direct_message, space_id, _participants} = arg) do
+    GenServer.start_link(__MODULE__, arg,
+      name: Registry.via_tuple({:direct_message_space, space_id})
     )
   end
 
@@ -55,10 +64,21 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     call(channel_name, :get_state)
   end
 
+  @spec get_direct_message_state(String.t()) :: {:ok, map()} | {:error, :not_found}
+  def get_direct_message_state(space_id) do
+    call_by_key({:direct_message_space, space_id}, :get_state)
+  end
+
   @spec join(String.t(), %{user_id: integer() | nil, nickname: String.t()}) ::
           {:ok, %{participant: participant(), snapshot: map(), map: map()}} | {:error, atom()}
   def join(channel_name, participant_context) do
     call(channel_name, {:join, participant_context})
+  end
+
+  @spec join_direct_message(String.t(), %{user_id: integer() | nil, nickname: String.t()}) ::
+          {:ok, %{participant: participant(), snapshot: map(), map: map()}} | {:error, atom()}
+  def join_direct_message(space_id, participant_context) do
+    call_by_key({:direct_message_space, space_id}, {:join, participant_context})
   end
 
   @type input_payload :: %{
@@ -81,6 +101,12 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     call(channel_name, {:input, participant_key, payload})
   end
 
+  @spec input_direct_message(String.t(), String.t(), input_payload()) ::
+          :ok | {:error, input_error()}
+  def input_direct_message(space_id, participant_key, payload) do
+    call_by_key({:direct_message_space, space_id}, {:input, participant_key, payload})
+  end
+
   @type interact_payload :: %{
           optional(:seq) => integer(),
           required(:kind) => String.t(),
@@ -93,6 +119,14 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
           | {:error, :not_found | :not_participant | :invalid_target | :too_far | :seat_taken}
   def interact(channel_name, participant_key, payload) do
     call(channel_name, {:interact, participant_key, payload})
+  end
+
+  @spec interact_direct_message(String.t(), String.t(), interact_payload()) ::
+          :ok
+          | {:ok, %{modal: map()}}
+          | {:error, :not_found | :not_participant | :invalid_target | :too_far | :seat_taken}
+  def interact_direct_message(space_id, participant_key, payload) do
+    call_by_key({:direct_message_space, space_id}, {:interact, participant_key, payload})
   end
 
   @type action_payload :: %{
@@ -111,6 +145,12 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     call(channel_name, {:action, participant_key, payload})
   end
 
+  @spec action_direct_message(String.t(), String.t(), action_payload()) ::
+          :ok | {:error, action_error()}
+  def action_direct_message(space_id, participant_key, payload) do
+    call_by_key({:direct_message_space, space_id}, {:action, participant_key, payload})
+  end
+
   @spec leave(String.t(), String.t()) :: :ok
   def leave(channel_name, participant_key) do
     case Registry.lookup({:channel_space, channel_name}) do
@@ -127,15 +167,32 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
+  @spec leave_direct_message_viewer(String.t(), String.t()) :: :ok
+  def leave_direct_message_viewer(space_id, participant_key) do
+    case Registry.lookup({:direct_message_space, space_id}) do
+      {:ok, pid} -> GenServer.cast(pid, {:direct_message_viewer_left, participant_key})
+      {:error, :not_found} -> :ok
+    end
+  end
+
   @spec snapshot(String.t()) :: {:ok, map()} | {:error, :not_found}
   def snapshot(channel_name) do
     call(channel_name, :snapshot)
   end
 
+  @spec direct_message_snapshot(String.t()) :: {:ok, map()} | {:error, :not_found}
+  def direct_message_snapshot(space_id) do
+    call_by_key({:direct_message_space, space_id}, :snapshot)
+  end
+
   # The Registry entry outlives the process for a moment (monitor-based
   # cleanup), so a call can still hit a dead pid — treat it as not_found.
   defp call(channel_name, message) do
-    case Registry.lookup({:channel_space, channel_name}) do
+    call_by_key({:channel_space, channel_name}, message)
+  end
+
+  defp call_by_key(registry_key, message) do
+    case Registry.lookup(registry_key) do
       {:ok, pid} -> GenServer.call(pid, message)
       {:error, :not_found} -> {:error, :not_found}
     end
@@ -149,6 +206,10 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   @impl true
   def init({:channel, channel_name}) do
     init_channel_state(channel_name)
+  end
+
+  def init({:direct_message, space_id, participants}) do
+    init_direct_message_state(space_id, participants)
   end
 
   defp init_channel_state(channel_name) do
@@ -177,6 +238,43 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
+  defp init_direct_message_state(space_id, participants) do
+    with {:ok, [nick_a, nick_b] = participants} <-
+           DirectMessageSpace.normalize_participants(participants),
+         ^space_id <- DirectMessageSpace.space_id(nick_a, nick_b),
+         {:ok, map_definition} <- SpaceMap.get("direct_message_room") do
+      Phoenix.PubSub.subscribe(@pubsub, "presence:global")
+      map_definition = put_direct_message_label(map_definition, participants)
+      global_online_keys = direct_message_global_online_keys(participants)
+
+      state = %{
+        kind: :direct_message,
+        channel_name: space_id,
+        participants_allowed: participants,
+        viewer_keys: %{},
+        global_online_keys: global_online_keys,
+        map: map_definition,
+        blocked: SpaceMap.collision_set(map_definition),
+        participants: %{},
+        seats: %{},
+        viewer_count: 0,
+        participant_counts: %{current: 0, peak: 0}
+      }
+
+      state =
+        Enum.reduce(participants, state, fn nickname, acc ->
+          seed_direct_message_member(acc, nickname)
+        end)
+
+      Logger.info("VirtualSpace DM runtime started: space_id=#{space_id}")
+      {:ok, state}
+    else
+      {:error, :invalid_participants} -> {:stop, :invalid_participants}
+      {:error, :unknown_map} -> {:stop, :unknown_map}
+      _ -> {:stop, :invalid_participants}
+    end
+  end
+
   @impl true
   def handle_call(:get_state, _from, state) do
     {:reply, {:ok, state}, state}
@@ -188,10 +286,13 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
     case Map.get(state.participants, key) do
       nil ->
-        {:reply, {:error, :not_in_channel}, state}
+        {:reply, {:error, join_missing_reason(state)}, state}
 
-      participant ->
+      _participant ->
+        state = mark_participant_online(state, key, %{user_id: context.user_id})
+        participant = Map.fetch!(state.participants, key)
         state = %{state | viewer_count: state.viewer_count + 1}
+        state = increment_viewer_key(state, key)
         reply = %{participant: participant, snapshot: build_snapshot(state), map: state.map}
         {:reply, {:ok, reply}, state}
     end
@@ -238,6 +339,21 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
+  def handle_cast({:direct_message_viewer_left, participant_key}, state) do
+    viewer_count = max(state.viewer_count - 1, 0)
+
+    state =
+      %{state | viewer_count: viewer_count}
+      |> decrement_viewer_key(participant_key)
+      |> maybe_mark_direct_message_participant_offline(participant_key)
+
+    if viewer_count == 0 do
+      {:stop, :normal, state}
+    else
+      {:noreply, state}
+    end
+  end
+
   def handle_cast({:leave, participant_key}, state) do
     case Map.get(state.participants, participant_key) do
       nil ->
@@ -270,6 +386,14 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   def handle_info({:user_kicked, %{target: nickname}}, state) do
     {:noreply, remove_channel_member(state, nickname)}
+  end
+
+  def handle_info({:user_connected, %{nickname: nickname}}, %{kind: :direct_message} = state) do
+    {:noreply, update_direct_message_presence(state, nickname, true)}
+  end
+
+  def handle_info({:user_disconnected, %{nickname: nickname}}, %{kind: :direct_message} = state) do
+    {:noreply, update_direct_message_presence(state, nickname, false)}
   end
 
   def handle_info(
@@ -331,11 +455,28 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   end
 
   defp add_channel_member(state, nickname, role, previous \\ nil) do
+    add_participant(state, nickname, channel_role(role), previous, true, true)
+  end
+
+  defp seed_direct_message_member(state, nickname) do
+    key = channel_participant_key(nickname)
+
+    add_participant(
+      state,
+      nickname,
+      :participant,
+      nil,
+      false,
+      direct_message_globally_online?(state, key)
+    )
+  end
+
+  defp add_participant(state, nickname, role, previous, broadcast?, online?) do
     key = channel_participant_key(nickname)
 
     if Map.has_key?(state.participants, key) do
       update_in(state.participants[key], fn participant ->
-        %{participant | nickname: nickname, role: channel_role(role), online?: true}
+        %{participant | nickname: nickname, role: role, online?: online?}
       end)
     else
       {x, y, dir} =
@@ -348,7 +489,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         key: key,
         user_id: nil,
         nickname: nickname,
-        role: channel_role(role),
+        role: role,
         avatar: avatar_for(state, key),
         x: x,
         y: y,
@@ -357,7 +498,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
         seat_id: nil,
         zone_id: zone_at(state.map, x, y),
         moving?: false,
-        online?: true,
+        online?: online?,
         muted?: false,
         input_seq: 0,
         last_input_at: nil,
@@ -368,8 +509,138 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
       }
 
       state = put_in(state.participants[key], participant)
-      broadcast_presence_join(state, key, participant)
+      if broadcast? and online?, do: broadcast_presence_join(state, key, participant)
       update_participant_counts(state)
+    end
+  end
+
+  defp put_direct_message_label(map_definition, participants) do
+    label = Enum.join(participants, " + ")
+
+    labels =
+      Enum.map(Map.get(map_definition, :labels, []), fn
+        %{id: "dm_nameplate"} = nameplate -> %{nameplate | text: label}
+        other -> other
+      end)
+
+    Map.put(map_definition, :labels, labels)
+  end
+
+  defp increment_viewer_key(%{kind: :direct_message} = state, key) do
+    update_in(state.viewer_keys, &Map.update(&1, key, 1, fn count -> count + 1 end))
+  end
+
+  defp increment_viewer_key(state, _key), do: state
+
+  defp decrement_viewer_key(%{kind: :direct_message} = state, key) do
+    update_in(state.viewer_keys, fn viewer_keys ->
+      case Map.get(viewer_keys, key, 0) do
+        count when count <= 1 -> Map.delete(viewer_keys, key)
+        count -> Map.put(viewer_keys, key, count - 1)
+      end
+    end)
+  end
+
+  defp direct_message_viewer_online?(%{viewer_keys: viewer_keys}, key) do
+    Map.get(viewer_keys, key, 0) > 0
+  end
+
+  defp direct_message_global_online_keys(participants) do
+    Enum.reduce(participants, MapSet.new(), fn nickname, acc ->
+      if Tracker.online?("presence:global", nickname) do
+        MapSet.put(acc, channel_participant_key(nickname))
+      else
+        acc
+      end
+    end)
+  end
+
+  defp direct_message_globally_online?(%{global_online_keys: keys}, key) do
+    MapSet.member?(keys, key)
+  end
+
+  defp put_direct_message_global_online(%{kind: :direct_message} = state, key) do
+    update_in(state.global_online_keys, &MapSet.put(&1, key))
+  end
+
+  defp delete_direct_message_global_online(%{kind: :direct_message} = state, key) do
+    update_in(state.global_online_keys, &MapSet.delete(&1, key))
+  end
+
+  defp maybe_mark_direct_message_participant_offline(%{kind: :direct_message} = state, key) do
+    case Map.get(state.participants, key) do
+      nil ->
+        state
+
+      _participant ->
+        if direct_message_viewer_online?(state, key) or
+             direct_message_globally_online?(state, key) do
+          state
+        else
+          mark_participant_offline(state, key)
+        end
+    end
+  end
+
+  defp update_direct_message_presence(state, nickname, online?) do
+    key = channel_participant_key(nickname)
+
+    if Map.has_key?(state.participants, key) do
+      if online? do
+        state
+        |> put_direct_message_global_online(key)
+        |> mark_participant_online(key)
+      else
+        state
+        |> delete_direct_message_global_online(key)
+        |> maybe_mark_direct_message_participant_offline(key)
+      end
+    else
+      state
+    end
+  end
+
+  defp mark_participant_online(state, key, attrs \\ %{}) do
+    case Map.get(state.participants, key) do
+      nil ->
+        state
+
+      participant ->
+        was_online? = participant.online?
+
+        participant =
+          participant
+          |> Map.merge(attrs)
+          |> Map.merge(%{online?: true, last_seen_at: DateTime.utc_now()})
+
+        state = put_in(state.participants[key], participant)
+        unless was_online?, do: broadcast_presence_join(state, key, participant)
+        update_participant_counts(state)
+    end
+  end
+
+  defp mark_participant_offline(state, key) do
+    case Map.get(state.participants, key) do
+      nil ->
+        state
+
+      participant ->
+        if participant.online? do
+          state = free_seat(state, participant)
+
+          updated = %{
+            participant
+            | online?: false,
+              seat_id: nil,
+              last_seen_at: DateTime.utc_now()
+          }
+
+          state = put_in(state.participants[key], updated)
+          broadcast_presence_left(state, key)
+          update_participant_counts(state)
+        else
+          state
+        end
     end
   end
 
@@ -398,6 +669,9 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     normalized = nickname |> to_string() |> String.downcase()
     "nick:#{normalized}"
   end
+
+  defp join_missing_reason(%{kind: :direct_message}), do: :not_in_direct_message
+  defp join_missing_reason(_state), do: :not_in_channel
 
   defp public_channel_message?(type) when type in [:message, :action, "message", "action"],
     do: true
@@ -831,7 +1105,9 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   # plus participants keyed by participant key, each in the public view shape.
   defp build_snapshot(state) do
     participants =
-      Map.new(state.participants, fn {key, participant} ->
+      state.participants
+      |> Enum.filter(fn {_key, participant} -> participant.online? end)
+      |> Map.new(fn {key, participant} ->
         {key, participant_view(participant)}
       end)
 

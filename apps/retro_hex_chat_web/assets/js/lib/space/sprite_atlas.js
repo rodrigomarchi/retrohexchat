@@ -40,7 +40,7 @@ export function createSpriteAtlas(opts = {}) {
   const onReady = typeof opts.onReady === "function" ? opts.onReady : null;
   // tileset id -> { img, tile, columns }
   const sheets = new Map();
-  // tile name -> { ts, col, row, w?, h? }
+  // tile name -> { ts, col, row, w?, h?, flip_x? }
   let tiles = {};
   let boardCanvas = null;
   let pending = 0;
@@ -77,7 +77,14 @@ export function createSpriteAtlas(opts = {}) {
     const t = sheet.tile;
     const w = spec.w ?? 1;
     const h = spec.h ?? 1;
-    return { img: sheet.img, sx: spec.col * t, sy: spec.row * t, sw: w * t, sh: h * t };
+    return {
+      img: sheet.img,
+      sx: spec.col * t,
+      sy: spec.row * t,
+      sw: w * t,
+      sh: h * t,
+      flipX: Boolean(spec.flip_x ?? spec.flipX),
+    };
   }
 
   function avatar(id, dir, frame = 0, action = "walk") {

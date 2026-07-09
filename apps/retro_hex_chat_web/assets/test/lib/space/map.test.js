@@ -18,6 +18,7 @@ function tavernDefinition() {
     zones: [{ id: "main", kind: "common", x: 1, y: 1, w: 4, h: 3 }],
     seats: [{ id: "seat_a", x: 2, y: 2, dir: "up" }],
     interactables: [{ id: "board", kind: "board", x: 5, y: 2, title: "Menu" }],
+    labels: [{ id: "nameplate", kind: "nameplate", x: 1, y: 1, w: 4, h: 1, text: "Alice + Bob" }],
     layers: {
       floor: [
         ["wall_stone", "wall_stone", "wall_stone", "wall_stone"],
@@ -68,6 +69,13 @@ describe("SpaceMap.from", () => {
     expect(map.seat("missing")).toBe(null);
     expect(map.interactable("board")?.title).toBe("Menu");
     expect(map.interactable("nope")).toBe(null);
+  });
+
+  it("keeps static map labels from the server definition", () => {
+    const map = SpaceMap.from(tavernDefinition());
+    expect(map.labels).toEqual([
+      { id: "nameplate", kind: "nameplate", x: 1, y: 1, w: 4, h: 1, text: "Alice + Bob" },
+    ]);
   });
 
   it("returns the first spawn as the default", () => {
