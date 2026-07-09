@@ -87,11 +87,55 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
 
       assert has_element?(
                view,
-               ~s([data-testid="channel-content-row"] [data-testid="channel-space-shell"][phx-hook="SpaceCanvasHook"])
+               ~s([data-testid="channel-content-row"] [data-testid="channel-space-shell"][phx-hook="SpaceCanvasHook"][data-space-mode="channel"])
+             )
+
+      assert has_element?(
+               view,
+               ~s([data-testid="channel-space-shell"] [data-testid="space-loading"]),
+               "Channel Space"
+             )
+
+      assert has_element?(
+               view,
+               ~s([data-testid="channel-space-shell"] [data-testid="space-loading"]),
+               "Entering channel space..."
              )
 
       assert has_element?(view, ~s([data-testid="channel-content-row"] [data-testid="nicklist"]))
       assert has_element?(view, ~s([data-testid="channel-main-column"] #chat-input-area))
+    end
+
+    test "a private conversation can switch from Chat to Space with its loading panel", %{
+      conn: conn
+    } do
+      other = "Peer#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, "Desk#{uid()}"), "/chat")
+
+      render_click(view, "nicklist_dblclick", %{"nick" => other})
+
+      view
+      |> element(
+        ~s([data-testid="topic-bar"] [data-testid="channel-view-tabs"] button[phx-value-view="space"])
+      )
+      |> render_click()
+
+      assert has_element?(
+               view,
+               ~s([data-testid="channel-content-row"] [data-testid="channel-space-shell"][phx-hook="SpaceCanvasHook"][data-space-mode="direct_message"])
+             )
+
+      assert has_element?(
+               view,
+               ~s([data-testid="channel-space-shell"] [data-testid="space-loading"]),
+               "Private Space"
+             )
+
+      assert has_element?(
+               view,
+               ~s([data-testid="channel-space-shell"] [data-testid="space-loading"]),
+               "Opening private room..."
+             )
     end
   end
 

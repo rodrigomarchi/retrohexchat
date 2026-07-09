@@ -222,6 +222,32 @@
                   >
                   </canvas>
                   <div
+                    data-space-loading
+                    class="absolute inset-0 z-20 flex items-center justify-center bg-background/95"
+                    data-testid="space-loading"
+                  >
+                    <.boot_activity_panel
+                      title={
+                        if conversation_space.mode == "direct_message",
+                          do: dgettext("chat", "Private Space"),
+                          else: dgettext("chat", "Channel Space")
+                      }
+                      text={
+                        if conversation_space.mode == "direct_message",
+                          do: dgettext("chat", "Opening private room..."),
+                          else: dgettext("chat", "Entering channel space...")
+                      }
+                      icon={
+                        if conversation_space.mode == "direct_message",
+                          do: :p2p,
+                          else: :channels
+                      }
+                      class="w-full max-w-sm"
+                      data-space-loading-panel
+                      text_attrs={%{"data-space-loading-text" => ""}}
+                    />
+                  </div>
+                  <div
                     data-space-modal
                     hidden
                     class="absolute inset-0 m-auto h-fit w-fit bg-canvas shadow-retro-field p-3 text-center"

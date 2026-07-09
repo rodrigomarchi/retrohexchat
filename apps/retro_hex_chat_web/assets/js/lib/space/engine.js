@@ -33,13 +33,15 @@ export class SpaceEngine {
    * @param {object} [opts.renderer] injected renderer (tests)
    * @param {Function} [opts.requestFrame] frame scheduler
    * @param {Function} [opts.cancelFrame]
+   * @param {Function} [opts.onFrameRendered] called after each draw completes
    */
-  constructor({ canvas, atlas, renderer, requestFrame, cancelFrame } = {}) {
+  constructor({ canvas, atlas, renderer, requestFrame, cancelFrame, onFrameRendered } = {}) {
     this.canvas = canvas;
     this.atlas = atlas;
     this._injectedRenderer = renderer ?? null;
     this._requestFrame = requestFrame ?? ((cb) => window.requestAnimationFrame(cb));
     this._cancelFrame = cancelFrame ?? ((id) => window.cancelAnimationFrame(id));
+    this._onFrameRendered = typeof onFrameRendered === "function" ? onFrameRendered : null;
 
     this.selfKey = null;
     this.map = null;
@@ -341,6 +343,7 @@ export class SpaceEngine {
       if (bubble) bubbles.set(key, bubble.text);
     }
     this.renderer?.draw?.({ participants: rendered, selfKey: this.selfKey, bubbles, now });
+    this._onFrameRendered?.();
   }
 
   _activeAction(key, now) {

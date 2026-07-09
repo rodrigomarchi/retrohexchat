@@ -45,6 +45,20 @@ function mountContext() {
   return { el, canvas };
 }
 
+function mountContextWithLoading() {
+  const ctx = mountContext();
+  const loading = document.createElement("div");
+  loading.dataset.spaceLoading = "";
+  loading.innerHTML = `
+    <div data-space-loading-panel aria-label="Channel Space: Entering channel space...">
+      <div><span>Channel Space</span></div>
+      <span data-space-loading-text>Entering channel space...</span>
+    </div>
+  `;
+  ctx.el.appendChild(loading);
+  return { ...ctx, loading };
+}
+
 describe("SpaceCanvasHook lazy registration", () => {
   it("registers with serverEvents [] and a reason (channel-driven, no push_event)", () => {
     const meta = lazyFeatureHooks.SpaceCanvasHook.__lazyFeature;
@@ -115,6 +129,72 @@ describe("SpaceCanvasHook implementation", () => {
     const init = engine.start.mock.calls[0][0];
     expect(init.selfKey).toBe("registered:1");
     expect(init.snapshot.participants["registered:1"].nickname).toBe("alice");
+  });
+
+  it("keeps the loading panel until a frame renders after assets are ready", () => {
+    let frameRendered;
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      destroy: vi.fn(),
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({
+          socketFactory: () => socket,
+          engineFactory: (opts) => {
+            frameRendered = opts.onFrameRendered;
+            return engine;
+          },
+        }),
+      ),
+      mountContextWithLoading(),
+    );
+
+    hook.mounted();
+
+    expect(hook.loading.hidden).toBe(false);
+    expect(hook.loading.querySelector("[data-space-loading-text]").textContent).toBe(
+      "Connecting to space...",
+    );
+
+    frameRendered();
+    expect(hook.loading.hidden).toBe(false);
+
+    hook._assetsReady = true;
+    frameRendered();
+    expect(hook.loading.hidden).toBe(true);
+    expect(hook.loading.getAttribute("aria-hidden")).toBe("true");
+  });
+
+  it("updates the loading panel when channel join fails", () => {
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      destroy: vi.fn(),
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({
+          socketFactory: () => socket,
+          engineFactory: () => engine,
+        }),
+      ),
+      mountContextWithLoading(),
+    );
+
+    hook.mounted();
+    channel._receivers.error({ reason: "forbidden" });
+
+    expect(hook.loading.querySelector("[data-space-loading-text]").textContent).toBe(
+      "Could not open space.",
+    );
   });
 
   it("routes channel delta/snapshot/action events into the engine", () => {

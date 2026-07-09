@@ -89,6 +89,16 @@ describe("SpaceEngine", () => {
     expect(renderer.draw).toHaveBeenCalled();
   });
 
+  it("notifies after a frame is rendered", () => {
+    const onFrameRendered = vi.fn();
+    const { engine, scheduler } = buildEngine({ onFrameRendered });
+    engine.start(tavernInit());
+
+    scheduler.flush();
+
+    expect(onFrameRendered).toHaveBeenCalledOnce();
+  });
+
   it("applies a delta: moves an existing participant", () => {
     const { engine } = buildEngine();
     engine.start(tavernInit());

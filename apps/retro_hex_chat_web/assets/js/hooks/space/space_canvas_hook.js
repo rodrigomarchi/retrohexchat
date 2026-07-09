@@ -41,14 +41,31 @@ export function createSpaceCanvasHook(deps = {}) {
     mounted() {
       this._spaceChannel = this.el.dataset.spaceChannel;
       this._joinToken = this.el.dataset.joinToken;
+      this._assetsReady = false;
+      this._frameRenderedAfterAssets = false;
+      this._loadingHidden = false;
+      this._setLoadingText("Connecting to space...");
 
       const canvas = this.el.querySelector("canvas");
       this._canvas = canvas;
       this._atlas = createSpriteAtlas({
         tileSize: TILE_SIZE,
         scale: RENDER_SCALE,
+        onReady: () => {
+          this._assetsReady = true;
+          this._setLoadingText("Drawing room...");
+        },
       });
-      this._engine = engineFactory({ canvas, atlas: this._atlas });
+      this._engine = engineFactory({
+        canvas,
+        atlas: this._atlas,
+        onFrameRendered: () => {
+          if (this._assetsReady) {
+            this._frameRenderedAfterAssets = true;
+            this._hideLoading();
+          }
+        },
+      });
 
       // Size the canvas backing store to its laid-out box and keep it in sync,
       // so a bigger window (maximize) reveals more map. ResizeObserver catches
@@ -79,12 +96,17 @@ export function createSpaceCanvasHook(deps = {}) {
 
       this._channel
         .join()
-        .receive("ok", (reply) => this._engine.start(normalizeSpaceInit(reply)))
+        .receive("ok", (reply) => {
+          this._setLoadingText("Loading room...");
+          this._engine.start(normalizeSpaceInit(reply));
+        })
         .receive("error", (reply) => {
           log.error("[space] channel join rejected", reply);
+          this._setLoadingText("Could not open space.");
         })
         .receive("timeout", () => {
           log.error("[space] channel join timed out");
+          this._setLoadingText("Space connection timed out.");
         });
     },
 
@@ -102,6 +124,26 @@ export function createSpaceCanvasHook(deps = {}) {
       this._engine = null;
       this._channel = null;
       this._socket = null;
+    },
+
+    _setLoadingText(text) {
+      const host = this.el.querySelector("[data-space-loading]");
+      if (!host || this._loadingHidden) return;
+
+      const indicatorText = host.querySelector("[data-space-loading-text]");
+      if (indicatorText) indicatorText.textContent = text;
+
+      const panel = host.querySelector("[data-space-loading-panel]");
+      const title = panel?.getAttribute("aria-label")?.split(":")[0];
+      if (panel && title) panel.setAttribute("aria-label", `${title}: ${text}`);
+    },
+
+    _hideLoading() {
+      const host = this.el.querySelector("[data-space-loading]");
+      if (!host || this._loadingHidden) return;
+      this._loadingHidden = true;
+      host.hidden = true;
+      host.setAttribute("aria-hidden", "true");
     },
 
     // A key intent predicts locally; only an accepted (locally-free) step is

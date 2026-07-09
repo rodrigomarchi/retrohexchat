@@ -17,6 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.ActivityIndicator do
   attr :size, :string, default: "default", values: ~w(sm default lg)
   attr :variant, :string, default: "inline", values: ~w(inline panel)
   attr :class, :string, default: nil
+  attr :text_attrs, :map, default: %{}
   attr :rest, :global
 
   @spec activity_indicator(map()) :: Phoenix.LiveView.Rendered.t()
@@ -37,7 +38,11 @@ defmodule RetroHexChatWeb.Components.UI.ActivityIndicator do
       <span class={classes(["activity-indicator__icon", icon_box(@size)])} aria-hidden="true">
         <.activity_icon icon={@icon} class={icon_size(@size)} />
       </span>
-      <span :if={@show_text} class={classes(["activity-indicator__text", text_size(@size)])}>
+      <span
+        :if={@show_text}
+        class={classes(["activity-indicator__text", text_size(@size)])}
+        {@text_attrs}
+      >
         {@text}
       </span>
       <span class="activity-indicator__dot" aria-hidden="true"></span>
@@ -51,6 +56,7 @@ defmodule RetroHexChatWeb.Components.UI.ActivityIndicator do
   attr :icon, :atom, default: :hex
   attr :logo_src, :string, default: "/images/header-hex.svg"
   attr :class, :string, default: nil
+  attr :text_attrs, :map, default: %{}
   attr :rest, :global
 
   @spec boot_activity_panel(map()) :: Phoenix.LiveView.Rendered.t()
@@ -72,7 +78,13 @@ defmodule RetroHexChatWeb.Components.UI.ActivityIndicator do
         <img src={@logo_src} alt="" class="activity-indicator__brand h-12 w-12" />
         <div class="space-y-retro-4">
           <p class="text-sm font-bold leading-tight">{@title}</p>
-          <.activity_indicator icon={@icon} text={@text} size="sm" class="justify-center" />
+          <.activity_indicator
+            icon={@icon}
+            text={@text}
+            size="sm"
+            class="justify-center"
+            text_attrs={@text_attrs}
+          />
         </div>
       </div>
     </div>
