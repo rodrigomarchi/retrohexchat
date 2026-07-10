@@ -24,7 +24,24 @@ See ``virtual.space/SCENES.md`` and ``virtual.space/ANIMATIONS.md``.
 import json
 import os
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageEnhance
+
+# Soften the generated stone: the raw Wang floor reads too dark/strong, so we
+# lighten it, pull a little saturation out and warm it slightly toward a gentle
+# weathered-stone tone. Tunable (brightness, saturation, warm RGB multipliers).
+FLOOR_BRIGHTNESS = 1.32
+FLOOR_SATURATION = 0.62
+FLOOR_WARM = (1.11, 1.05, 0.88)
+
+
+def _grade_floor(img):
+    img = ImageEnhance.Brightness(img).enhance(FLOOR_BRIGHTNESS)
+    img = ImageEnhance.Color(img).enhance(FLOOR_SATURATION)
+    r, g, b, a = img.split()
+    r = r.point(lambda v: min(255, round(v * FLOOR_WARM[0])))
+    g = g.point(lambda v: min(255, round(v * FLOOR_WARM[1])))
+    b = b.point(lambda v: min(255, round(v * FLOOR_WARM[2])))
+    return Image.merge("RGBA", (r, g, b, a))
 
 TOOLS = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(TOOLS, "..", ".."))
@@ -170,7 +187,7 @@ def _pack_prop(sheet, ims, col, row, w, h):
 
 
 def _compose_sheet():
-    wang = Image.open(os.path.join(SRC, "floor_wang.png")).convert("RGBA")
+    wang = _grade_floor(Image.open(os.path.join(SRC, "floor_wang.png")).convert("RGBA"))
     lut = json.load(open(os.path.join(SRC, "wang_lut.json")))
     sheet = Image.new("RGBA", (SHEET_COLS * T, 40 * T), (0, 0, 0, 0))
     vocab = {}
