@@ -106,19 +106,26 @@ present; combo `0000` is the pure-void tile, `1111` the interior.
 Define the scene's terrain at **vertices** (a `(W+1)×(H+1)` grid): for End of
 Time, a smoothed super-ellipse (`(|x-cx|/rx)^p + (|y-cy|/ry)^p ≤ 1`, `p≈2.6`),
 then one **majority-smoothing pass** to erode lone 1-vertex bumps/notches. Each
-cell picks `f<nw><ne><sw><se>` from the LUT; fully-void cells pick a **starfield
-variant** (`void0..5`) by a positional hash so the void isn't a flat repeat.
+cell picks `f<nw><ne><sw><se>` from the LUT; fully-void cells use the single
+static `void` tile. The starry sky's *life* comes from scattered real
+**animated star props**, not tile variants — see [`ANIMATIONS.md`](ANIMATIONS.md).
 
 ### The packed sheet
 
 `author_scene.py` packs everything into one 16px sheet
-(`priv/static/images/space/<name>.png`): the 16 Wang tiles + the void variants +
-a procedurally-baked soft **lamp glow** (a radial amber alpha gradient — a PNG,
-not runtime colour) + the props, each **bottom-center anchored** in its `w×h`
-tile block (so a prop's base sits on the floor). It emits the tile **vocab**
-(`name → {col,row,w,h}`) plus the full layout into `priv/maps/<name>.json`:
-`floor`, `decor` (painter order, glow first, tall props last), `collision`
-(every non-full-stone cell + solid prop footprints), `spawn`, `zones`, `labels`.
+(`priv/static/images/space/<name>.png`): the 16 Wang tiles + the static `void`
+tile + the static props (each **bottom-center anchored** in its `w×h` tile block)
++ the **animated props** as horizontal frame strips (see
+[`ANIMATIONS.md`](ANIMATIONS.md) for the packing rules — union bbox,
+scale-to-fit). It emits the tile **vocab** (`name → {col,row,w,h,frames?,
+period_ms?,flip_x?}`) plus the full layout into `priv/maps/<name>.json`:
+`floor`, `decor` (painter order: far stars, then near stars, then props),
+`collision` (every non-full-stone cell + solid prop footprints), `spawn`,
+`zones`, `labels`.
+
+> **No procedural animation on the platform.** There is no baked glow or
+> runtime-drawn motion; all movement is real generated frames cycled by the
+> engine ([`ANIMATIONS.md`](ANIMATIONS.md)).
 
 Raw art lives in `virtual.space/scenes/<name>/`; the tool reads it and is
 deterministic — re-run after regenerating any art.
@@ -143,8 +150,9 @@ Wire it up:
 2. Register the module in `virtual_space/map.ex` `@maps`.
 3. Point whoever uses it — the DM space is chosen at
    `channel_space_server.ex` `SpaceMap.get("end_of_time")`.
-4. Keep a `%{id: "dm_nameplate", kind: "table_nameplate"}` label if it's a DM
-   scene — the server fills it with `"nickA + nickB"`.
+4. Keep a `%{id: "dm_nameplate", kind: ...}` label if it's a DM scene — the
+   server fills it with `"nickA + nickB"`. End of Time uses the `hologram` kind
+   (glowing text on the artifact); see §7.
 
 ---
 
@@ -171,8 +179,9 @@ Wire it up:
 - **Wang LUT corner order** — this repo reads corners NW,NE,SW,SE. Match it.
 - **Smooth the vertex mask** — a raw ellipse leaves lone 1-tile spikes; one
   majority pass fixes it.
-- **Void variety** — pick a starfield variant per void cell by hash, or the void
-  tiles repeat visibly.
+- **Void life comes from animated star props** — the void tile is a single
+  static tile; hash-scatter real animated stars over it for a twinkling sky
+  ([`ANIMATIONS.md`](ANIMATIONS.md)), don't rely on tile variants.
 - **Floor = high top-down, props = low top-down** — the intended JRPG mix.
 - **Props auto-crop** to their bbox; bottom-center them in their tile block so
   the base sits on the floor.
