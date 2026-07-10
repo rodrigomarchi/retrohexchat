@@ -19,8 +19,8 @@ defmodule RetroHexChat.GroupCall.PeerServer do
   }
 
   alias RetroHexChat.GroupCall.Registry
-  alias RetroHexChat.GroupCall.RTPForwarder
   alias RetroHexChat.GroupCall.RoomServer
+  alias RetroHexChat.GroupCall.RTPForwarder
   alias RetroHexChat.GroupCall.Schema.Participant
   alias RetroHexChat.P2P
 

@@ -7,7 +7,7 @@ defmodule RetroHexChat.GroupCall.RoomSupervisor do
 
   alias RetroHexChat.GroupCall.RoomServer
 
-  @spec start_link(keyword()) :: DynamicSupervisor.on_start()
+  @spec start_link(keyword()) :: Supervisor.on_start()
   def start_link(opts \\ []) do
     name = Keyword.get(opts, :name, __MODULE__)
     DynamicSupervisor.start_link(__MODULE__, opts, name: name)

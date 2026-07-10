@@ -382,10 +382,6 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     |> push_event("window_command", %{action: "close", id: @window_id})
   end
 
-  defp end_current_call(socket, _reason) do
-    assign(socket, group_call: nil, group_call_pending: nil)
-  end
-
   defp get_or_create_room(channel_name, actor) do
     case GroupCall.active_room_for_channel(channel_name) do
       nil -> GroupCall.create_channel_call(channel_name, actor)

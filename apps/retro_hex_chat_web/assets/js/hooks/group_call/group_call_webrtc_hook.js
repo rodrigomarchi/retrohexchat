@@ -256,7 +256,7 @@ const GroupCallWebRTCHook = {
       video.dataset.streamId = streamId;
       video.autoplay = true;
       video.playsInline = true;
-      video.className = "h-full min-h-0 w-full bg-black object-cover";
+      video.className = "group-call-remote-video";
       host.appendChild(video);
     }
 

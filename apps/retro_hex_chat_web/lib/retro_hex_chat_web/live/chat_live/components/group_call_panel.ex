@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.GroupCallPanel do
   @spec render(map()) :: Phoenix.LiveView.Rendered.t()
   def render(assigns) do
     ~H"""
-    <div id={@id} class="h-full min-h-0">
+    <div id={@id} class="h-full">
       <.group_call_panel id={"#{@id}-surface"} call={@call} />
     </div>
     """

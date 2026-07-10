@@ -174,15 +174,6 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   defp join_error(:expired, _room_token), do: "invalid_token"
   defp join_error(:invalid_token, _room_token), do: "invalid_token"
 
-  defp join_error(other, room_token) do
-    Logger.info("Group call channel join denied",
-      room_token: room_token,
-      reason: inspect(other)
-    )
-
-    "access_denied"
-  end
-
   defp error_message(%Ecto.Changeset{}), do: "Invalid group call state"
   defp error_message(:not_joined), do: "Join the group call before signaling"
   defp error_message(:not_found), do: "Group call not found"

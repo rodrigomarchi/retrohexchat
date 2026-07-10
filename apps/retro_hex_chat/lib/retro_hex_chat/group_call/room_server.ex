@@ -175,33 +175,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
          membership = membership_from_channel_state(channel_state),
          :ok <-
            Policy.can_join?(actor.user_id, actor.nickname, state.room, membership) do
-      case disconnected_participant(state, actor.nickname) do
-        {:ok, participant_id, data} ->
-          case reconnect_participant(state, participant_id, data, signal_pid, client_info) do
-            {:ok, participant, state} ->
-              telemetry(:join, %{count: 1}, %{result: :reconnect})
-              {:reply, {:ok, join_payload(state, participant)}, state}
-
-            {:error, reason} = error ->
-              telemetry(:join, %{count: 1}, %{result: :error, reason: inspect(reason)})
-              {:reply, error, state}
-          end
-
-        :not_found ->
-          with :ok <- check_capacity(state),
-               :ok <- check_not_already_joined(state, actor.nickname),
-               {:ok, participant} <-
-                 insert_participant(state.room, actor, membership, client_info),
-               {:ok, participant, state} <-
-                 put_participant_pending(state, participant, signal_pid) do
-            telemetry(:join, %{count: 1}, %{result: :ok})
-            {:reply, {:ok, join_payload(state, participant)}, state}
-          else
-            {:error, reason} = error ->
-              telemetry(:join, %{count: 1}, %{result: :error, reason: inspect(reason)})
-              {:reply, error, state}
-          end
-      end
+      join_authorized_participant(state, actor, signal_pid, client_info, membership)
     else
       {:error, reason} = error ->
         Logger.info("Group call join denied",
@@ -354,6 +328,44 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
   def handle_call(:summary, _from, state) do
     {:reply, {:ok, summary_payload(state)}, state}
+  end
+
+  defp join_authorized_participant(state, actor, signal_pid, client_info, membership) do
+    case disconnected_participant(state, actor.nickname) do
+      {:ok, participant_id, data} ->
+        reconnect_authorized_participant(state, participant_id, data, signal_pid, client_info)
+
+      :not_found ->
+        join_new_participant(state, actor, signal_pid, client_info, membership)
+    end
+  end
+
+  defp reconnect_authorized_participant(state, participant_id, data, signal_pid, client_info) do
+    case reconnect_participant(state, participant_id, data, signal_pid, client_info) do
+      {:ok, participant, state} ->
+        telemetry(:join, %{count: 1}, %{result: :reconnect})
+        {:reply, {:ok, join_payload(state, participant)}, state}
+
+      {:error, reason} = error ->
+        telemetry(:join, %{count: 1}, %{result: :error, reason: inspect(reason)})
+        {:reply, error, state}
+    end
+  end
+
+  defp join_new_participant(state, actor, signal_pid, client_info, membership) do
+    with :ok <- check_capacity(state),
+         :ok <- check_not_already_joined(state, actor.nickname),
+         {:ok, participant} <-
+           insert_participant(state.room, actor, membership, client_info),
+         {:ok, participant, state} <-
+           put_participant_pending(state, participant, signal_pid) do
+      telemetry(:join, %{count: 1}, %{result: :ok})
+      {:reply, {:ok, join_payload(state, participant)}, state}
+    else
+      {:error, reason} = error ->
+        telemetry(:join, %{count: 1}, %{result: :error, reason: inspect(reason)})
+        {:reply, error, state}
+    end
   end
 
   @impl true
@@ -1092,7 +1104,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
   defp normalize_media_state(_media_state, fallback), do: fallback
 
-  defp media_value(media_state, key, fallback) when is_map(media_state) do
+  defp media_value(media_state, key, fallback) do
     atom_key = media_atom_key(key)
 
     case Map.get(media_state, key, Map.get(media_state, atom_key, fallback)) do
@@ -1104,9 +1116,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     end
   end
 
-  defp media_value(_media_state, _key, fallback), do: fallback
-
-  defp maybe_put_extra(target, source, key) when is_map(source) do
+  defp maybe_put_extra(target, source, key) do
     atom_key = media_atom_key(key)
 
     case Map.get(source, key, Map.get(source, atom_key)) do
@@ -1114,8 +1124,6 @@ defmodule RetroHexChat.GroupCall.RoomServer do
       value -> Map.put(target, key, value)
     end
   end
-
-  defp maybe_put_extra(target, _source, _key), do: target
 
   defp enforce_server_media_policy(media_state, current_media_state) do
     if Map.get(current_media_state, "server_audio_muted") == true do
