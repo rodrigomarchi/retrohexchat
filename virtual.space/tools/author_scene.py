@@ -75,6 +75,9 @@ ANIM_PROPS = {
     "eot_star": ("star", 0, 30, 2, 2, 1400),
     # The same twinkle art, shrunk to a faint pinpoint: the deep-sky field.
     "eot_star_far": ("star", 0, 32, 1, 1, 1600),
+    # The Matrix nook TV crackling with off-air static, and the Nu breathing.
+    "eot_tv": ("tv", 0, 33, 2, 3, 420),
+    "eot_nu": ("nu", 0, 36, 3, 3, 1800),
 }
 
 # Animated tiles whose frames are scaled down to a small point (px) centred in
@@ -95,7 +98,7 @@ def _compose_sheet():
     wang = Image.open(os.path.join(SRC, "floor_wang.png")).convert("RGBA")
     lut = json.load(open(os.path.join(SRC, "wang_lut.json")))
     cols = 18
-    sheet = Image.new("RGBA", (cols * T, 34 * T), (0, 0, 0, 0))
+    sheet = Image.new("RGBA", (cols * T, 40 * T), (0, 0, 0, 0))
     vocab = {}
     sheet.alpha_composite(wang, (0, 0))
     for combo, (x, y) in lut.items():
@@ -111,8 +114,8 @@ def _compose_sheet():
         "eot_pillar": ("pillar.png", 8, 0, 2, 4),
         "eot_sapling": ("sapling.png", 10, 0, 2, 3), "eot_signpost": ("signpost.png", 12, 0, 2, 3),
         "eot_bench": ("bench.png", 6, 5, 3, 2), "eot_bucket": ("bucket.png", 9, 5, 2, 2),
-        "eot_tv": ("tv.png", 14, 0, 2, 3), "eot_armchair": ("armchair_side.png", 6, 7, 3, 3),
-        "eot_nu": ("nu.png", 11, 5, 3, 3), "eot_artifact": ("artifact2.png", 0, 14, 8, 5),
+        "eot_armchair": ("armchair_side.png", 6, 7, 3, 3),
+        "eot_artifact": ("artifact2.png", 0, 14, 8, 5),
     }
     for name, (fn, col, row, w, h) in props.items():
         im = Image.open(os.path.join(SRC, fn)).convert("RGBA")
@@ -149,25 +152,22 @@ def _compose_sheet():
         boxes = [im.getbbox() or (0, 0, im.width, im.height) for im in ims]
         union = (min(b[0] for b in boxes), min(b[1] for b in boxes),
                  max(b[2] for b in boxes), max(b[3] for b in boxes))
-        # Same crop window + same in-block offset for every frame → stable base.
-        cw, ch = union[2] - union[0], union[3] - union[1]
-        ox = max(0, (cw - w * T) // 2)
-        oy = max(0, ch - h * T)
-        dx = (w * T - min(cw, w * T)) // 2
+        # Crop every frame to ONE shared window (the union bbox) so the moving
+        # parts animate while the base stays pinned; then scale the whole object
+        # to fit its w×h block (never crop content away). SCALE_TO_FIT shrinks to
+        # a tiny centred pinpoint instead (the deep-sky stars).
+        bw, bh = w * T, h * T
+        uw, uh = union[2] - union[0], union[3] - union[1]
         fit = SCALE_TO_FIT.get(name)
+        scale = fit / max(uw, uh) if fit else min(1.0, bw / uw, bh / uh)
         for i, im in enumerate(ims):
-            crop = im.crop((union[0] + ox, union[1] + oy,
-                            min(union[0] + ox + w * T, union[2]), union[3]))
-            if fit:
-                scale = fit / max(crop.width, crop.height)
-                crop = crop.resize((max(1, round(crop.width * scale)),
-                                    max(1, round(crop.height * scale))), Image.LANCZOS)
-            block = Image.new("RGBA", (w * T, h * T), (0, 0, 0, 0))
-            if fit:  # centre the pinpoint in its tile
-                block.alpha_composite(crop, ((w * T - crop.width) // 2,
-                                             (h * T - crop.height) // 2))
-            else:  # bottom-anchor like a standing prop
-                block.alpha_composite(crop, (dx, h * T - crop.height))
+            crop = im.crop(union)
+            if scale != 1.0:
+                crop = crop.resize((max(1, round(uw * scale)),
+                                    max(1, round(uh * scale))), Image.LANCZOS)
+            block = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+            dy = (bh - crop.height) // 2 if fit else bh - crop.height
+            block.alpha_composite(crop, ((bw - crop.width) // 2, dy))
             sheet.alpha_composite(block, ((col + i * w) * T, row * T))
         vocab[name] = {"col": col, "row": row, "w": w, "h": h,
                        "frames": len(ims), "period_ms": period}
