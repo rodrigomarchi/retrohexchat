@@ -235,7 +235,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   end
 
   defp init_channel_state(channel_name) do
-    case SpaceMap.get("elfic_forest") do
+    case SpaceMap.get("millennial_fair") do
       {:error, :unknown_map} ->
         {:stop, :unknown_map}
 

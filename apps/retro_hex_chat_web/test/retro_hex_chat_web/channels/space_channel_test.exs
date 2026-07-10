@@ -156,7 +156,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert space_init.version == 1
       assert space_init.channel_name == channel
       assert space_init.self_key == "nick:alice"
-      assert space_init.map.id == "elfic_forest"
+      assert space_init.map.id == "millennial_fair"
       assert is_list(space_init.map.collision)
       assert is_list(space_init.map.seats)
       assert space_init.map.tile_size == 16
@@ -413,8 +413,8 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
       assert {:ok, init, socket} = join_channel_space(channel, "alice")
 
-      # Walk adjacent to the notice_board at (40,18): spawn is south of it.
-      walk_channel_to(socket, channel, init.self_key, {40, 19})
+      # Walk onto the tile just above the notice_board at (7,22) and interact.
+      walk_channel_to(socket, channel, init.self_key, {7, 21})
 
       push(socket, "space_interact", %{"seq" => 1, "kind" => "use", "target_id" => "notice_board"})
 

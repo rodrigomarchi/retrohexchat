@@ -100,35 +100,35 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       ctx = start_space()
       assert entry(ctx.channel_name, ctx.key).zone_id == "spawn"
 
-      # Walk right out of the spawn zone (x > 44) into the village.
+      # Walk right across the centre line into the plaza zone.
       walk_to(ctx, {46, entry(ctx.channel_name, ctx.key).y})
 
       assert_receive %{
         event: "space_zone_changed",
-        payload: %{zone_id: "village", from: "spawn"}
+        payload: %{zone_id: "plaza", from: "spawn"}
       }
 
-      assert entry(ctx.channel_name, ctx.key).zone_id == "village"
+      assert entry(ctx.channel_name, ctx.key).zone_id == "plaza"
     end
   end
 
   describe "seating" do
     test "sitting reserves the seat, changes pose, and rejects a second occupant" do
       ctx = start_space()
-      walk_to(ctx, {49, 26})
+      walk_to(ctx, {43, 21})
       flush()
 
       assert :ok =
                ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
                  seq: 1,
                  kind: "sit",
-                 target_id: "seat_market_a"
+                 target_id: "seat_bench_a"
                })
 
       p = entry(ctx.channel_name, ctx.key)
       assert p.pose == "sitting"
-      assert p.seat_id == "seat_market_a"
-      assert {p.x, p.y} == {49, 27}
+      assert p.seat_id == "seat_bench_a"
+      assert {p.x, p.y} == {43, 22}
       assert p.dir == "down"
 
       assert_receive %{event: "space_delta", payload: %{updates: updates}}
@@ -137,25 +137,25 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       # A second participant cannot take the reserved seat.
       okey = join_member(ctx, "bob")
       octx = %{channel_name: ctx.channel_name, key: okey}
-      walk_to(octx, {50, 26})
+      walk_to(octx, {43, 21})
 
       assert {:error, :seat_taken} =
                ChannelSpaceServer.interact(ctx.channel_name, okey, %{
                  seq: 1,
                  kind: "sit",
-                 target_id: "seat_market_a"
+                 target_id: "seat_bench_a"
                })
     end
 
     test "walking stands the participant up and frees the seat" do
       ctx = start_space()
-      walk_to(ctx, {49, 26})
+      walk_to(ctx, {43, 21})
 
       :ok =
         ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
           seq: 1,
           kind: "sit",
-          target_id: "seat_market_a"
+          target_id: "seat_bench_a"
         })
 
       assert entry(ctx.channel_name, ctx.key).pose == "sitting"
@@ -167,29 +167,29 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       assert p.seat_id == nil
 
       {:ok, state} = ChannelSpaceServer.get_state(ctx.channel_name)
-      refute Map.has_key?(state.seats, "seat_market_a")
+      refute Map.has_key?(state.seats, "seat_bench_a")
     end
 
     test "leaving the text channel frees the seat" do
       ctx = start_space()
-      walk_to(ctx, {49, 26})
+      walk_to(ctx, {43, 21})
 
       :ok =
         ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
           seq: 1,
           kind: "sit",
-          target_id: "seat_market_a"
+          target_id: "seat_bench_a"
         })
 
       Server.part(ctx.channel_name, ctx.nickname)
 
       wait_until(fn ->
         {:ok, state} = ChannelSpaceServer.get_state(ctx.channel_name)
-        not Map.has_key?(state.seats, "seat_market_a")
+        not Map.has_key?(state.seats, "seat_bench_a")
       end)
 
       {:ok, state} = ChannelSpaceServer.get_state(ctx.channel_name)
-      refute Map.has_key?(state.seats, "seat_market_a")
+      refute Map.has_key?(state.seats, "seat_bench_a")
       refute Map.has_key?(state.participants, ctx.key)
     end
 
@@ -203,12 +203,12 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
                  target_id: "nope"
                })
 
-      # Spawn is far from seat_market_a.
+      # Spawn is far from seat_bench_a.
       assert {:error, :too_far} =
                ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
                  seq: 2,
                  kind: "sit",
-                 target_id: "seat_market_a"
+                 target_id: "seat_bench_a"
                })
     end
   end
@@ -216,7 +216,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
   describe "board interactables" do
     test "using a board returns a modal with the map's asset" do
       ctx = start_space()
-      walk_to(ctx, {40, 19})
+      walk_to(ctx, {7, 21})
 
       assert {:ok, %{modal: modal}} =
                ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
