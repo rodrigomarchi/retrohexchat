@@ -3,8 +3,7 @@ defmodule RetroHexChat.P2P do
   Shared WebRTC infrastructure for P2P sessions: signal validation, ICE/TURN
   server configuration and the rate limiters (`RateLimiter`,
   `SignalingRateLimit`). The session lifecycle itself lives in
-  `RetroHexChat.Lobby`; the legacy `p2p_sessions` table is retained
-  read-only for the admin tooling (`Schema.Session`).
+  `RetroHexChat.Lobby`.
   """
   use Gettext, backend: RetroHexChat.Gettext
 

@@ -389,7 +389,6 @@ defmodule RetroHexChat.Admin do
   @nuke_schemas [
     {"messages", RetroHexChat.Chat.Message},
     {"private_messages", RetroHexChat.Chat.PrivateMessage},
-    {"p2p_sessions", RetroHexChat.P2P.Schema.Session},
     {"bans", RetroHexChat.Services.Ban},
     {"ban_exceptions", RetroHexChat.Services.BanException},
     {"invite_exceptions", RetroHexChat.Services.InviteException},

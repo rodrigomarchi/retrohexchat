@@ -3,12 +3,11 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
 
   @moduledoc """
   Custom LiveDashboard page showing RetroHexChat application info:
-  active channels, connected users, and P2P sessions.
+  active channels and connected users.
   """
   use Phoenix.LiveDashboard.PageBuilder
 
   alias RetroHexChat.Channels
-  alias RetroHexChat.P2P
   alias RetroHexChat.Presence.Tracker
 
   @impl true
@@ -20,7 +19,6 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
   def render(assigns) do
     {channels, channel_count} = list_channels()
     user_count = count_connected_users(channels)
-    p2p_count = count_p2p_sessions()
 
     channel_fields =
       Enum.map(channels, fn name ->
@@ -34,7 +32,6 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
       assigns
       |> Map.put(:channel_count, channel_count)
       |> Map.put(:user_count, user_count)
-      |> Map.put(:p2p_count, p2p_count)
       |> Map.put(:channel_fields, channel_fields)
 
     ~H"""
@@ -45,8 +42,7 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
           inner_title="Application Stats"
           fields={[
             {"Active Channels", @channel_count},
-            {"Connected Users", @user_count},
-            {"Active P2P Sessions", @p2p_count}
+            {"Connected Users", @user_count}
           ]}
         />
       </:col>
@@ -80,12 +76,5 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
     end)
     |> Enum.uniq()
     |> length()
-  end
-
-  # P2P is peer-to-peer in the browser (no runtime session registry); the
-  # server-side record is the persisted `p2p_sessions` table.
-  @spec count_p2p_sessions() :: non_neg_integer()
-  defp count_p2p_sessions do
-    RetroHexChat.Repo.aggregate(P2P.Schema.Session, :count)
   end
 end

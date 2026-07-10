@@ -2,9 +2,9 @@ defmodule RetroHexChat.Lobby.Schema.Session do
   @moduledoc """
   Ecto schema for `lobby_sessions` — the P2P lobby.
 
-  Unlike `RetroHexChat.P2P.Schema.Session`, a lobby session is a single
-  *persistent* connection between two registered users that hosts every P2P
-  feature (audio, video, file transfer and games) concurrently. The status
+  A lobby session is a single *persistent* connection between two registered
+  users that hosts every P2P feature (audio, video, file transfer and games)
+  concurrently. The status
   reflects only the connection lifecycle, never which feature is active:
 
       pending → lobby → connected → (closed | expired | failed)
