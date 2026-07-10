@@ -46,8 +46,8 @@ DECOR = [
     ("eot_pillar", 27, 3),
     ("eot_artifact", 15, 3),
     ("eot_portal", 17, 5),
-    ("eot_fire", 14, 6),
-    ("eot_fire", 21, 6),
+    ("eot_fire", 7, 4),
+    ("eot_fire", 30, 4),
     ("eot_lamp", 19, 8),
     ("eot_tv", 9, 10),
     ("eot_armchair", 6, 13),
@@ -60,7 +60,7 @@ DECOR = [
 SOLID = [(11, 6, 2, 1), (27, 6, 2, 1), (31, 12, 2, 1),
          (18, 19, 1, 1), (19, 11, 2, 1),
          (6, 15, 3, 1), (11, 15, 3, 1), (9, 12, 2, 1),
-         (26, 15, 3, 1), (16, 7, 6, 1), (14, 9, 3, 1), (21, 9, 3, 1)]
+         (26, 15, 3, 1), (16, 7, 6, 1), (7, 7, 3, 1), (30, 7, 3, 1)]
 SPAWN = [{"x": 18, "y": 12, "dir": "right"}, {"x": 22, "y": 12, "dir": "left"}]
 
 # Animated props: real PixelLab object animations. name -> (frames folder under
