@@ -61,11 +61,22 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
     }
   end
 
+  # Optional per-tile keys the client atlas understands: `flip_x` (mirror) and
+  # `frames`/`period_ms` (a tile animated across frames packed from `col`).
+  @optional_tile_keys ~w(flip_x frames period_ms)
+
   defp tiles(data) do
     Map.new(data["vocab"], fn {name, v} ->
-      rect = %{ts: @sheet, col: v["col"], row: v["row"], w: v["w"], h: v["h"]}
-      {name, if(v["flip_x"], do: Map.put(rect, :flip_x, true), else: rect)}
+      base = %{ts: @sheet, col: v["col"], row: v["row"], w: v["w"], h: v["h"]}
+      {name, Enum.reduce(@optional_tile_keys, base, &put_optional(&2, &1, v))}
     end)
+  end
+
+  defp put_optional(rect, key, v) do
+    case v[key] do
+      nil -> rect
+      value -> Map.put(rect, String.to_atom(key), value)
+    end
   end
 
   defp decor(data) do

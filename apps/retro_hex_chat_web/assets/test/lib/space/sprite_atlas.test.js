@@ -60,6 +60,26 @@ describe("sprite atlas contract", () => {
     expect(atlas.tile("mirrored_chair")).toMatchObject({ sx: 112, sy: 144, flipX: true });
   });
 
+  it("cycles an animated tile's frame on the clock, offset by the seed", () => {
+    const atlas = loadedAtlas();
+    atlas.registerTiles({
+      ...TILES,
+      water: { ts: "overworld", col: 4, row: 2, w: 1, h: 1, frames: 4, period_ms: 800 },
+    });
+    // 4 frames over 800ms → 200ms each, packed horizontally from col 4.
+    expect(atlas.tile("water", 0, 0)).toMatchObject({ sx: 64, sy: 32, sw: 16 });
+    expect(atlas.tile("water", 250, 0)).toMatchObject({ sx: 80 });
+    expect(atlas.tile("water", 650, 0)).toMatchObject({ sx: 112 });
+    expect(atlas.tile("water", 850, 0)).toMatchObject({ sx: 64 }); // wraps
+
+    // A per-position seed offsets the phase so repeated tiles desync.
+    const cols = [0, 1, 2].map((s) => atlas.tile("water", 0, s).sx);
+    expect(new Set(cols).size).toBeGreaterThan(1);
+
+    // A static tile ignores now/seed entirely.
+    expect(atlas.tile("grass", 999, 42)).toMatchObject({ sx: 80, sy: 144 });
+  });
+
   it("shares one sheet image across every tile from it", () => {
     const atlas = loadedAtlas();
     expect(atlas.tile("grass").img).toBe(atlas.tile("tree").img);

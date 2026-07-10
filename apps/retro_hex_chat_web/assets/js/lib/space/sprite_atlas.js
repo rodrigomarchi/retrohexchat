@@ -119,7 +119,11 @@ export function createSpriteAtlas(opts = {}) {
     if (dict && typeof dict === "object") tiles = dict;
   }
 
-  function tile(name) {
+  // Resolve a tile name to a source rect. Static tiles ignore `now`/`seed`.
+  // Animated tiles (`frames > 1`) pack their frames horizontally from `col`
+  // (frame i at col + i*w) and cycle on a global clock; `seed` (a per-position
+  // hash from the renderer) offsets the phase so repeated tiles desync.
+  function tile(name, now = 0, seed = 0) {
     const spec = tiles[name];
     if (!spec) return null;
     const sheet = sheets.get(spec.ts);
@@ -127,9 +131,17 @@ export function createSpriteAtlas(opts = {}) {
     const t = sheet.tile;
     const w = spec.w ?? 1;
     const h = spec.h ?? 1;
+    let col = spec.col;
+    const frames = spec.frames ?? 1;
+    if (frames > 1) {
+      const period = spec.period_ms ?? 800;
+      const phase = ((seed >>> 0) * 2654435761) % period;
+      const idx = Math.floor((now + phase) / (period / frames)) % frames;
+      col = spec.col + idx * w;
+    }
     return {
       img: sheet.img,
-      sx: spec.col * t,
+      sx: col * t,
       sy: spec.row * t,
       sw: w * t,
       sh: h * t,

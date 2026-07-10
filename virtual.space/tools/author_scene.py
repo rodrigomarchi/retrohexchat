@@ -42,60 +42,57 @@ ELLIPSE = {"cx": 20.0, "cy": 12.0, "rx": 15.5, "ry": 9.2, "p": 2.6}
 # chairs face each other (left one faces right, right one is the mirror) with
 # the TV set between them, a little higher up.
 DECOR = [
-    ("eot_glow", 17, 10),
     ("eot_pillar", 11, 3),
     ("eot_pillar", 27, 3),
-    ("eot_sapling", 25, 6),
+    ("eot_sapling", 31, 9),
     ("eot_armchair", 6, 9),
     ("eot_armchair_l", 11, 9),
     ("eot_tv", 9, 7),
     ("eot_nu", 25, 10),
     ("eot_artifact", 15, 3),
+    ("eot_portal", 17, 5),
+    ("eot_fire", 13, 7),
+    ("eot_fire", 24, 7),
     ("eot_bench", 11, 14),
     ("eot_bucket", 27, 15),
     ("eot_signpost", 18, 17),
     ("eot_lamp", 19, 8),
 ]
 # Solid footprints (the tiles a prop blocks): (col, row, w, h).
-SOLID = [(11, 6, 2, 1), (27, 6, 2, 1), (25, 8, 2, 1), (11, 15, 3, 1),
+SOLID = [(11, 6, 2, 1), (27, 6, 2, 1), (31, 11, 2, 1), (11, 15, 3, 1),
          (27, 16, 2, 1), (18, 19, 1, 1), (19, 11, 2, 1),
          (6, 11, 3, 1), (11, 11, 3, 1), (9, 9, 2, 1),
-         (25, 12, 3, 1), (16, 7, 6, 1)]
+         (25, 12, 3, 1), (16, 7, 6, 1), (13, 10, 3, 1), (24, 10, 3, 1)]
 SPAWN = [{"x": 18, "y": 12, "dir": "right"}, {"x": 22, "y": 12, "dir": "left"}]
+
+# Animated props: real PixelLab object animations. name -> (frames folder under
+# scenes/end_of_time/anim/, sheet col, sheet row, w, h, period_ms). Frames are
+# packed as a horizontal strip from (col,row); the atlas cycles them.
+ANIM_PROPS = {
+    "eot_fire": ("fire", 0, 19, 3, 4, 660),
+    "eot_lamp": ("lamp", 0, 23, 2, 4, 780),
+    "eot_portal": ("portal", 0, 27, 3, 3, 700),
+}
 
 
 def _compose_sheet():
     wang = Image.open(os.path.join(SRC, "floor_wang.png")).convert("RGBA")
     lut = json.load(open(os.path.join(SRC, "wang_lut.json")))
-    cols = 16
-    sheet = Image.new("RGBA", (cols * T, 19 * T), (0, 0, 0, 0))
+    cols = 18
+    sheet = Image.new("RGBA", (cols * T, 30 * T), (0, 0, 0, 0))
     vocab = {}
     sheet.alpha_composite(wang, (0, 0))
     for combo, (x, y) in lut.items():
         vocab["f" + combo] = {"col": x // T, "row": y // T, "w": 1, "h": 1}
+
+    # Static starfield void tile — the PixelLab Wang tileset's own void terrain
+    # (image-based; no procedural stars).
     vx, vy = lut["0000"]
-    base = wang.crop((vx, vy, vx + T, vy + T))
-    star = [(220, 232, 255, 255), (180, 200, 255, 255), (255, 244, 214, 255)]
-    for i in range(6):
-        v = base.copy()
-        px = v.load()
-        for k in range((i % 3) + 1 if i else 0):
-            sx = (i * 5 + k * 7 + 3) % 14 + 1
-            sy = (i * 3 + k * 11 + 2) % 14 + 1
-            px[sx, sy] = star[(i + k) % 3]
-        sheet.alpha_composite(v, (i * T, 4 * T))
-        vocab[f"void{i}"] = {"col": i, "row": 4, "w": 1, "h": 1}
-    gw = 5 * T
-    glow = Image.new("RGBA", (gw, gw), (0, 0, 0, 0))
-    gp = glow.load()
-    for y in range(gw):
-        for x in range(gw):
-            d = math.hypot(x - gw / 2, y - gw / 2) / (gw / 2)
-            gp[x, y] = (255, 190, 95, int(max(0.0, 1 - d) ** 2 * 0.6 * 255))
-    sheet.alpha_composite(glow, (0, 5 * T))
-    vocab["eot_glow"] = {"col": 0, "row": 5, "w": 5, "h": 5}
+    sheet.alpha_composite(wang.crop((vx, vy, vx + T, vy + T)), (0, 4 * T))
+    vocab["void"] = {"col": 0, "row": 4, "w": 1, "h": 1}
+
     props = {
-        "eot_lamp": ("lamp.png", 6, 0, 2, 4), "eot_pillar": ("pillar.png", 8, 0, 2, 4),
+        "eot_pillar": ("pillar.png", 8, 0, 2, 4),
         "eot_sapling": ("sapling.png", 10, 0, 2, 3), "eot_signpost": ("signpost.png", 12, 0, 2, 3),
         "eot_bench": ("bench.png", 6, 5, 3, 2), "eot_bucket": ("bucket.png", 9, 5, 2, 2),
         "eot_tv": ("tv.png", 14, 0, 2, 3), "eot_armchair": ("armchair_side.png", 6, 7, 3, 3),
@@ -117,6 +114,34 @@ def _compose_sheet():
     # the two chairs face each other.
     av = vocab["eot_armchair"]
     vocab["eot_armchair_l"] = {**av, "flip_x": True}
+
+    # Animated props: real PixelLab object animations (frames downloaded into
+    # scenes/end_of_time/anim/<name>/) packed as horizontal frame strips. Each
+    # frame is auto-cropped and bottom-centered into its w×h block, like a
+    # static prop; the atlas cycles them on the global clock.
+    for name, (folder, col, row, w, h, period) in ANIM_PROPS.items():
+        adir = os.path.join(SRC, "anim", folder)
+        frames = []
+        i = 0
+        while os.path.exists(os.path.join(adir, f"{i}.png")):
+            frames.append(os.path.join(adir, f"{i}.png"))
+            i += 1
+        if not frames:
+            raise FileNotFoundError(f"no animation frames for {name} in {adir}")
+        for i, fp in enumerate(frames):
+            im = Image.open(fp).convert("RGBA")
+            crop = im.crop(im.getbbox() or (0, 0, im.width, im.height))
+            if crop.width > w * T:
+                o = (crop.width - w * T) // 2
+                crop = crop.crop((o, 0, o + w * T, crop.height))
+            if crop.height > h * T:
+                crop = crop.crop((0, crop.height - h * T, crop.width, crop.height))
+            block = Image.new("RGBA", (w * T, h * T), (0, 0, 0, 0))
+            block.alpha_composite(crop, ((w * T - crop.width) // 2, h * T - crop.height))
+            sheet.alpha_composite(block, ((col + i * w) * T, row * T))
+        vocab[name] = {"col": col, "row": row, "w": w, "h": h,
+                       "frames": len(frames), "period_ms": period}
+
     return sheet, vocab, cols
 
 
@@ -148,7 +173,7 @@ def build():
         row = []
         for x in range(W):
             nw, ne, sw, se = g[y][x], g[y][x + 1], g[y + 1][x], g[y + 1][x + 1]
-            row.append(f"void{_hash(x, y) % 6}" if not (nw or ne or sw or se) else f"f{nw}{ne}{sw}{se}")
+            row.append("void" if not (nw or ne or sw or se) else f"f{nw}{ne}{sw}{se}")
         floor.append(row)
     solid = {(x + dx, y + dy) for (x, y, w, h) in SOLID for dx in range(w) for dy in range(h)}
     collision = []
@@ -159,7 +184,7 @@ def build():
             elif (x, y) in solid:
                 collision.append({"x": x, "y": y, "w": 1, "h": 1, "kind": "prop"})
     layout = {
-        "width": W, "height": H, "tile_size": T, "ground": "void0", "columns": cols,
+        "width": W, "height": H, "tile_size": T, "ground": "void", "columns": cols,
         "vocab": vocab,
         "floor": floor,
         "decor": [{"x": c, "y": r, "tile": n} for (n, c, r) in DECOR],

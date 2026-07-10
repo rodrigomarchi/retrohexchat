@@ -28,6 +28,12 @@ const HOLO_GLOW = "1f6f7d";
 const HOLO_FG = "9ff6ff";
 const HOLO_FONT = "10px monospace";
 
+// Deterministic per-tile phase seed so repeated animated tiles (stars, water)
+// don't cycle in lockstep — the atlas offsets an animated tile's clock by it.
+function seedAt(x, y) {
+  return (Math.trunc(x) * 73856093) ^ (Math.trunc(y) * 19349663);
+}
+
 export class Renderer {
   /**
    * @param {object} opts
@@ -65,8 +71,8 @@ export class Renderer {
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.fillStyle = HASH + VOID_BG;
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    this._drawFloor(ctx);
-    this._drawDecor(ctx);
+    this._drawFloor(ctx, now);
+    this._drawDecor(ctx, now);
     this._drawMapLabels(ctx);
 
     const ordered = [...state.participants.values()].sort((a, b) => a.y - b.y);
@@ -86,7 +92,7 @@ export class Renderer {
 
   // ── Layers ───────────────────────────────────────────────────────
 
-  _drawFloor(ctx) {
+  _drawFloor(ctx, now = 0) {
     const startX = Math.floor(this.camera.x / this.tilePx);
     const startY = Math.floor(this.camera.y / this.tilePx);
     const cols = Math.ceil(this.canvas.width / this.tilePx) + 1;
@@ -103,16 +109,16 @@ export class Renderer {
         const tileId = this.map.floorTile(tx, ty);
         // Lay the opaque ground first so transparent props read over it.
         if (ground && tileId !== this.map.ground) this._blit(ctx, ground, dx, dy);
-        this._blit(ctx, this.atlas?.tile(tileId), dx, dy);
+        this._blit(ctx, this.atlas?.tile(tileId, now, seedAt(tx, ty)), dx, dy);
       }
     }
   }
 
   // Multi-tile props anchored at their top-left tile, drawn at their native
   // sprite size over the floor.
-  _drawDecor(ctx) {
+  _drawDecor(ctx, now = 0) {
     for (const prop of this.map.decor ?? []) {
-      const sprite = this.atlas?.tile(prop.tile);
+      const sprite = this.atlas?.tile(prop.tile, now, seedAt(prop.x, prop.y));
       if (!sprite) continue;
       const { x, y } = this.camera.worldToScreen(prop.x * this.tilePx, prop.y * this.tilePx);
       this._blit(ctx, sprite, Math.round(x), Math.round(y));
