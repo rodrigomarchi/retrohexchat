@@ -265,7 +265,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     with {:ok, [nick_a, nick_b] = participants} <-
            DirectMessageSpace.normalize_participants(participants),
          ^space_id <- DirectMessageSpace.space_id(nick_a, nick_b),
-         {:ok, map_definition} <- SpaceMap.get("direct_message_room") do
+         {:ok, map_definition} <- SpaceMap.get("end_of_time") do
       Phoenix.PubSub.subscribe(@pubsub, "presence:global")
       Phoenix.PubSub.subscribe(@pubsub, direct_message_pm_topic(nick_a, nick_b))
       map_definition = put_direct_message_label(map_definition, participants)

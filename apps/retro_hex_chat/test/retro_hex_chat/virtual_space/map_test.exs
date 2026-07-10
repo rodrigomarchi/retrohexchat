@@ -7,7 +7,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
   @moduletag :unit
 
-  @map_ids ~w(direct_message_room elfic_forest moss_grove)
+  @map_ids ~w(direct_message_room end_of_time elfic_forest moss_grove)
 
   describe "get/1" do
     test "returns a definition for every registry id" do

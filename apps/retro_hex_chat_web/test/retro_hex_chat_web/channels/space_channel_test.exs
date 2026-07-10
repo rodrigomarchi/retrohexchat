@@ -202,7 +202,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert {:error, %{reason: "not_in_channel"}} = join_channel_space(channel, "mallory")
     end
 
-    test "direct message spaces use the indoor room and snapshot only online participants" do
+    test "direct message spaces use the End of Time scene and snapshot only online participants" do
       [local, peer] = participants = unique_dm_participants()
       track_online(peer)
       space_id = DirectMessageSpace.space_id(local, peer)
@@ -214,9 +214,9 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert space_init.version == 1
       assert space_init.channel_name == space_id
       assert space_init.self_key == participant_key(local)
-      assert space_init.map.id == "direct_message_room"
-      assert space_init.map.width == 72
-      assert space_init.map.height == 30
+      assert space_init.map.id == "end_of_time"
+      assert space_init.map.width == 40
+      assert space_init.map.height == 24
 
       expected_label = "#{local} + #{peer}"
 

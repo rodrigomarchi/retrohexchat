@@ -11,10 +11,12 @@ defmodule RetroHexChat.VirtualSpace.Map do
 
   alias RetroHexChat.VirtualSpace.Maps.DirectMessageRoom
   alias RetroHexChat.VirtualSpace.Maps.ElficForest
+  alias RetroHexChat.VirtualSpace.Maps.EndOfTime
   alias RetroHexChat.VirtualSpace.Maps.MossGrove
 
   @maps %{
     "direct_message_room" => DirectMessageRoom,
+    "end_of_time" => EndOfTime,
     "elfic_forest" => ElficForest,
     "moss_grove" => MossGrove
   }

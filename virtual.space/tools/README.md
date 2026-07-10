@@ -39,6 +39,14 @@ python3 -m venv .venv && .venv/bin/pip install Pillow
 .venv/bin/python3 slice.py
 ```
 
+## Scenes, spaces & maps
+
+The full pipeline for authoring a virtual-space scene — PixelLab Wang-tileset
+floors + map-object props, autotiling, sheet composition, the map module and
+its integration — is in [`../SCENES.md`](../SCENES.md). `author_scene.py` is the
+worked example (the "End of Time" private-message scene): it reads the raw art
+from `../scenes/end_of_time/` and emits `endoftime.png` + `priv/maps/end_of_time.json`.
+
 ## Adding a tile to a map
 
 1. Find it in `sliced/_contact_<sheet>.png` (col, row).

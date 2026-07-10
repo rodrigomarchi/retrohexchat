@@ -22,6 +22,11 @@ const TABLE_SIGN_BG = "6b4f2f";
 const TABLE_SIGN_BORDER = "3a2919";
 const TABLE_SIGN_FG = "f4e4b8";
 const TABLE_SIGN_FONT = "10px monospace";
+// Holographic display (End of Time nameplate artifact): glowing cyan text with
+// no frame of its own — reads as surviving tech on the artifact's own screen.
+const HOLO_GLOW = "1f6f7d";
+const HOLO_FG = "9ff6ff";
+const HOLO_FONT = "10px monospace";
 
 export class Renderer {
   /**
@@ -121,6 +126,10 @@ export class Renderer {
         this._drawTableNameplate(ctx, label);
         continue;
       }
+      if (label.kind === "hologram") {
+        this._drawHologram(ctx, label);
+        continue;
+      }
 
       const width = Math.max((label.w ?? 1) * this.tilePx, this.tilePx);
       const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
@@ -179,6 +188,38 @@ export class Renderer {
       Math.round(py + plaqueHeight / 2 + 4),
       Math.max(plaqueWidth - 8, 1),
     );
+  }
+
+  // Glowing holographic name display, drawn over the End of Time artifact's own
+  // display panel: cyan text with a 1px glow (four offset copies under a bright
+  // core). No panel or frame of its own — the names float on the stone screen,
+  // shrunk to fit the label box so they never spill past the artifact.
+  _drawHologram(ctx, label) {
+    const width = Math.max((label.w ?? 1) * this.tilePx, this.tilePx);
+    const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
+    const { x, y } = this.camera.worldToScreen(
+      (label.x ?? 0) * this.tilePx,
+      (label.y ?? 0) * this.tilePx,
+    );
+    const dx = Math.round(x);
+    const dy = Math.round(y);
+    const cx = Math.round(dx + width / 2);
+    const ty = Math.round(dy + height / 2 + 4);
+    const maxWidth = Math.max(Math.round(width) - 8, 1);
+
+    ctx.font = HOLO_FONT;
+    ctx.textAlign = "center";
+    ctx.fillStyle = HASH + HOLO_GLOW;
+    for (const [ox, oy] of [
+      [-1, 0],
+      [1, 0],
+      [0, -1],
+      [0, 1],
+    ]) {
+      ctx.fillText(String(label.text), cx + ox, ty + oy, maxWidth);
+    }
+    ctx.fillStyle = HASH + HOLO_FG;
+    ctx.fillText(String(label.text), cx, ty, maxWidth);
   }
 
   _drawAvatar(ctx, participant, now) {

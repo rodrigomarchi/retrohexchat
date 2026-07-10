@@ -53,9 +53,9 @@ defmodule RetroHexChat.VirtualSpace.DirectMessageSpaceTest do
     [local, peer] = participants = unique_participants()
     ctx = start_private_space(participants, local)
 
-    assert ctx.joined.map.id == "direct_message_room"
-    assert ctx.joined.map.width == 72
-    assert ctx.joined.map.height == 30
+    assert ctx.joined.map.id == "end_of_time"
+    assert ctx.joined.map.width == 40
+    assert ctx.joined.map.height == 24
     assert ctx.joined.participant.key == participant_key(local)
 
     snapshot_participants = ctx.joined.snapshot.participants
