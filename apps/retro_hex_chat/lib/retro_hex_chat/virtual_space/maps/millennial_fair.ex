@@ -72,10 +72,10 @@ defmodule RetroHexChat.VirtualSpace.Maps.MillennialFair do
   defp seats do
     [
       %{id: "seat_bench_a", x: 43, y: 22, dir: "down"},
-      %{id: "seat_bench_b", x: 21, y: 20, dir: "down"},
-      %{id: "seat_bench_c", x: 29, y: 20, dir: "down"},
-      %{id: "seat_bench_d", x: 21, y: 11, dir: "down"},
-      %{id: "seat_bench_e", x: 29, y: 11, dir: "down"}
+      %{id: "seat_bench_b", x: 21, y: 21, dir: "down"},
+      %{id: "seat_bench_c", x: 29, y: 21, dir: "down"},
+      %{id: "seat_bench_d", x: 21, y: 12, dir: "down"},
+      %{id: "seat_bench_e", x: 29, y: 12, dir: "down"}
     ]
   end
 

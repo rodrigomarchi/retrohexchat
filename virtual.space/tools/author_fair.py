@@ -64,31 +64,38 @@ SHEET_COLS = 20
 # Trigger scale — a person is ~2 tiles tall). `source` is a PNG (static) or an
 # anim/ folder holding {0..N-1}.png (animated, period_ms set). The union-bbox +
 # scale-to-fit packer shrinks each object's art to fit its block.
+# Sizes in tiles set a realistic HIERARCHY against the ~2-tile-tall avatar:
+# carnival tents tower, the belfry/stalls/telepod are mid structures, and the
+# small props (lanterns, benches, carts, flowers…) stay person-scale.
 PROPS = [
-    ("fair_bell", "anim/bell", 3, 4, 950),
-    ("fair_telepod", "anim/telepod", 3, 3, 480),
-    ("fair_fountain", "anim/fountain", 3, 3, 1500),
+    ("fair_bell", "anim/bell", 4, 5, 950),
+    ("fair_telepod", "anim/telepod", 4, 4, 480),
+    ("fair_fountain", "anim/fountain", 4, 3, 1500),
     ("fair_lantern", "anim/lantern", 1, 3, 720),
-    ("fair_tent", "bekkler_tent.png", 4, 4, None),
-    ("fair_stall", "melchior_stall.png", 3, 3, None),
+    ("fair_tent", "bekkler_tent.png", 5, 5, None),
+    ("fair_stall", "melchior_stall.png", 4, 4, None),
     ("fair_cart", "drink_cart.png", 2, 2, None),
-    ("fair_tree", "tree.png", 2, 3, None),
-    ("fair_arch", "arch.png", 5, 3, None),
+    ("fair_tree", "tree.png", 3, 4, None),
+    ("fair_arch", "arch.png", 6, 3, None),
     ("fair_board", "board.png", 2, 2, None),
     ("fair_bench", "bench.png", 2, 2, None),
     ("fair_flowers", "flowers.png", 2, 1, None),
     ("fair_barrels", "barrels.png", 2, 2, None),
-    ("fair_banner", "banner.png", 1, 3, None),
+    ("fair_banner", "banner.png", 1, 4, None),
     ("fair_hedge", "hedge.png", 2, 2, None),
-    ("fair_tent2", "bekkler_purple.png", 4, 4, None),
+    ("fair_tent2", "bekkler_purple.png", 5, 5, None),
 ]
 
 _PROP_W = {p[0]: p[2] for p in PROPS}
 
+# When a PAIR prop is mirrored to the right half, swap it for a flipped variant
+# so directional art faces back toward the centre (e.g. benches face inward).
+FLIP_MIRROR = {"fair_bench": "fair_bench_l"}
+
 # Props you can walk through/under — only their end columns block.
 WALKTHROUGH = {"fair_arch"}
 # Low props you walk over (and sit on) — they add no collision.
-NO_COLLIDE = {"fair_bench"}
+NO_COLLIDE = {"fair_bench", "fair_bench_l"}
 
 # The layout is built symmetrically about the vertical centre line (Leene Square
 # is a formal, mirrored plaza). CENTRE props sit on the axis; every PAIR entry
@@ -97,35 +104,35 @@ NO_COLLIDE = {"fair_bench"}
 # its balancing bench). Zoned top→bottom: telepod court, tent row, fountain
 # garden, market row, entrance — ringed by a dense green border of trees/hedges.
 CENTRE = [
-    ("fair_bell", 24, 1),           # Leene's Bell crowns the plaza
-    ("fair_fountain", 24, 14),      # fountain at the dead centre
+    ("fair_bell", 24, 1),           # Leene's Bell crowns the plaza (4x5)
+    ("fair_fountain", 24, 14),      # fountain at the dead centre (4x3)
     ("fair_flowers", 25, 12), ("fair_flowers", 25, 18),
-    ("fair_arch", 23, 29),          # welcome arch at the foot
+    ("fair_arch", 23, 29),          # welcome arch at the foot (6x3)
 ]
 PAIR = [
     # Telepod court (top) + banners flanking the bell.
-    ("fair_telepod", 9, 2), ("fair_banner", 20, 1), ("fair_barrels", 14, 4),
-    # Tent row: market stalls + banners + benches.
-    ("fair_stall", 4, 9), ("fair_banner", 9, 8), ("fair_bench", 21, 10),
-    # Fountain garden: hedges and banners frame it, benches face it.
-    ("fair_hedge", 20, 13), ("fair_hedge", 20, 16),
-    ("fair_banner", 18, 14), ("fair_bench", 21, 19),
+    ("fair_telepod", 7, 2), ("fair_banner", 20, 1), ("fair_barrels", 13, 4),
+    # Market stalls (tent row) — the big tents themselves are in EXTRA.
+    ("fair_stall", 3, 9),
+    # Fountain garden: hedges + banners frame it, benches face inward.
+    ("fair_bench", 21, 11), ("fair_hedge", 20, 14), ("fair_hedge", 20, 17),
+    ("fair_banner", 17, 14), ("fair_bench", 21, 20),
     # Market row (lower-mid).
-    ("fair_cart", 14, 22), ("fair_banner", 9, 23), ("fair_flowers", 20, 22),
-    # Entrance (bottom).
-    ("fair_stall", 14, 27), ("fair_cart", 7, 30),
-    ("fair_banner", 20, 28), ("fair_flowers", 19, 31),
+    ("fair_cart", 14, 23), ("fair_banner", 9, 24), ("fair_flowers", 20, 23),
+    # Entrance stalls (bottom).
+    ("fair_stall", 13, 26), ("fair_cart", 7, 30),
+    ("fair_banner", 20, 28), ("fair_flowers", 16, 31),
     # Dense green border ringing the plaza (trees + trimmed hedges).
-    ("fair_tree", 1, 4), ("fair_hedge", 1, 10), ("fair_tree", 1, 15),
-    ("fair_hedge", 1, 20), ("fair_tree", 1, 25),
-    ("fair_tree", 6, 0), ("fair_hedge", 13, 0),
-    ("fair_tree", 8, 31), ("fair_hedge", 16, 32),
+    ("fair_tree", 1, 4), ("fair_hedge", 1, 11), ("fair_tree", 1, 19),
+    ("fair_hedge", 1, 27),
+    ("fair_tree", 12, 0), ("fair_hedge", 18, 0),
+    ("fair_hedge", 10, 31),
 ]
 EXTRA = [
-    ("fair_tent2", 11, 8),          # Bekkler's purple tent (left)
-    ("fair_tent", 37, 8),           # red-and-white tent (right)
+    ("fair_tent2", 8, 6),           # Bekkler's purple tent (left, 5x5)
+    ("fair_tent", 39, 6),           # red-and-white tent (right, 5x5)
     ("fair_board", 7, 21),          # notice board (left, interactable)
-    ("fair_bench", 43, 21),         # bench balancing the board (right)
+    ("fair_bench_l", 43, 21),       # bench balancing the board (right, flipped)
 ]
 
 
@@ -133,7 +140,7 @@ def _decor():
     out = list(CENTRE)
     for name, c, r in PAIR:
         out.append((name, c, r))
-        out.append((name, W - c - _PROP_W[name], r))
+        out.append((FLIP_MIRROR.get(name, name), W - c - _PROP_W[name], r))
     out += EXTRA
     return out
 
@@ -209,6 +216,10 @@ def _compose_sheet():
             vocab[name].update(frames=len(ims), period_ms=period)
         cx += span
         shelf_h = max(shelf_h, h)
+
+    # Flipped bench variant (same sheet rect, mirrored at render time) so the
+    # right-hand benches face back toward the plaza centre.
+    vocab["fair_bench_l"] = {**vocab["fair_bench"], "flip_x": True}
 
     return sheet, vocab
 
