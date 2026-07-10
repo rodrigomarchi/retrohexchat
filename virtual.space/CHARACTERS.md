@@ -254,9 +254,10 @@ Grid tip: keep the roster a multiple of 4 so the picker stays a clean grid.
   hero lives on `/images/space/character.png`; the 7 class avatars on their own
   `avatars/*.png`. The atlas (`sprite_atlas.js`) loads `AVATAR_SHEETS`
   **independent of the active map** — and `character.png` MUST be in that list.
-  It wasn't: the hero sheet used to arrive only because the old channel map
-  (Overworld/ElficForest) happened to declare a `character` tileset. When the new
-  channel scene didn't, **bots** (and anyone who never picked a class, who all
+  It wasn't: the hero sheet used to arrive only because an old POC channel map
+  happened to declare a `character` tileset. When the new flat-16-bit channel
+  scene (Millennial Fair) didn't, **bots** (and anyone who never picked a class,
+  who all
   fall back to `redtunic_hero`) rendered a **nickname with no sprite**. Fix: put
   `{ id: "character", src: "/images/space/character.png" }` in `AVATAR_SHEETS` so
   the default avatar resolves on **every** map.

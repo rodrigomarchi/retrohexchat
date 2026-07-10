@@ -8,15 +8,15 @@ import {
 } from "../../../js/lib/space/sprite_atlas.js";
 
 const TILESETS = [
-  { id: "overworld", src: "/images/space/overworld.png", tile: 16, columns: 40 },
+  { id: "demo_sheet", src: "/images/space/demo_sheet.png", tile: 16, columns: 40 },
   { id: "character", src: "/images/space/character.png", tile: 16, columns: 17 },
   { id: "av_knight", src: "/images/space/avatars/knight.png" },
 ];
 
 const TILES = {
-  grass: { ts: "overworld", col: 5, row: 9 },
-  tree: { ts: "overworld", col: 5, row: 16, w: 2, h: 2 },
-  mirrored_chair: { ts: "overworld", col: 7, row: 9, flip_x: true },
+  grass: { ts: "demo_sheet", col: 5, row: 9 },
+  tree: { ts: "demo_sheet", col: 5, row: 16, w: 2, h: 2 },
+  mirrored_chair: { ts: "demo_sheet", col: 7, row: 9, flip_x: true },
 };
 
 function loadedAtlas() {
@@ -64,7 +64,7 @@ describe("sprite atlas contract", () => {
     const atlas = loadedAtlas();
     atlas.registerTiles({
       ...TILES,
-      water: { ts: "overworld", col: 4, row: 2, w: 1, h: 1, frames: 4, period_ms: 800 },
+      water: { ts: "demo_sheet", col: 4, row: 2, w: 1, h: 1, frames: 4, period_ms: 800 },
     });
     // 4 frames over 800ms → 200ms each, packed horizontally from col 4.
     expect(atlas.tile("water", 0, 0)).toMatchObject({ sx: 64, sy: 32, sw: 16 });

@@ -1,7 +1,12 @@
 # Canal = Espaço — integração do Virtual Space ao chat
 
-> Fase seguinte ao ship da nova Elfic Forest (mapa composto, v4). Este plano é
-> para revisão conjunta antes de qualquer código.
+> **SUPERSEDED (2026-07-09).** Este plano foi implementado e o virtual space já é
+> uma dimensão permanente de todo canal. Os detalhes de POC aqui (mapa
+> `elfic_forest`, tilesets antigos, pipeline `derive_map`) foram substituídos: os
+> canais agora usam o mapa `millennial_fair` (arte flat 16-bit coesa) e as DMs o
+> `end_of_time`; a arte é gerada via PixelLab e empacotada pelos `author_*.py`.
+> Mantido como registro histórico da decisão de arquitetura. Não seguir os
+> nomes de mapa/tileset citados abaixo.
 
 ## 1. Visão
 

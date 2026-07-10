@@ -2,12 +2,10 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
   use ExUnit.Case, async: true
 
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
-  alias RetroHexChat.VirtualSpace.Maps.Catalog
-  alias RetroHexChat.VirtualSpace.Maps.Overworld
 
   @moduletag :unit
 
-  @map_ids ~w(direct_message_room end_of_time elfic_forest millennial_fair moss_grove)
+  @map_ids ~w(end_of_time millennial_fair)
 
   describe "get/1" do
     test "returns a definition for every registry id" do
@@ -40,12 +38,6 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
         assert is_map(d.tiles)
         assert Map.has_key?(d.tiles, d.ground)
       end
-
-      {:ok, room} = SpaceMap.get("direct_message_room")
-      assert room.tilesets == Catalog.tilesets()
-
-      {:ok, grove} = SpaceMap.get("moss_grove")
-      assert grove.tilesets == Overworld.tilesets()
     end
   end
 
@@ -117,7 +109,7 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
         for row <- floor do
           assert length(row) == ctx.definition.width
-          # Every floor cell names a tile from the shared Overworld vocabulary.
+          # Every floor cell names a tile from the map's own vocabulary.
           assert Enum.all?(row, &(&1 in known))
         end
       end
