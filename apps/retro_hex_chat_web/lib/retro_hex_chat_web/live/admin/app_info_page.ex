@@ -82,9 +82,10 @@ defmodule RetroHexChatWeb.Admin.AppInfoPage do
     |> length()
   end
 
+  # P2P is peer-to-peer in the browser (no runtime session registry); the
+  # server-side record is the persisted `p2p_sessions` table.
   @spec count_p2p_sessions() :: non_neg_integer()
   defp count_p2p_sessions do
-    registry = P2P.Registry.registry_name()
-    Registry.select(registry, [{{:_, :_, :_}, [], [true]}]) |> length()
+    RetroHexChat.Repo.aggregate(P2P.Schema.Session, :count)
   end
 end
