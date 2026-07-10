@@ -44,25 +44,23 @@ ELLIPSE = {"cx": 20.0, "cy": 12.0, "rx": 15.5, "ry": 9.2, "p": 2.6}
 DECOR = [
     ("eot_pillar", 11, 3),
     ("eot_pillar", 27, 3),
-    ("eot_sapling", 31, 9),
-    ("eot_armchair", 6, 9),
-    ("eot_armchair_l", 11, 9),
-    ("eot_tv", 9, 7),
-    ("eot_nu", 25, 10),
     ("eot_artifact", 15, 3),
     ("eot_portal", 17, 5),
     ("eot_fire", 14, 6),
     ("eot_fire", 21, 6),
-    ("eot_bench", 11, 14),
-    ("eot_bucket", 27, 15),
-    ("eot_signpost", 18, 17),
     ("eot_lamp", 19, 8),
+    ("eot_tv", 9, 10),
+    ("eot_armchair", 6, 13),
+    ("eot_armchair_l", 11, 13),
+    ("eot_sapling", 31, 10),
+    ("eot_nu", 26, 13),
+    ("eot_signpost", 18, 17),
 ]
 # Solid footprints (the tiles a prop blocks): (col, row, w, h).
-SOLID = [(11, 6, 2, 1), (27, 6, 2, 1), (31, 11, 2, 1), (11, 15, 3, 1),
-         (27, 16, 2, 1), (18, 19, 1, 1), (19, 11, 2, 1),
-         (6, 11, 3, 1), (11, 11, 3, 1), (9, 9, 2, 1),
-         (25, 12, 3, 1), (16, 7, 6, 1), (14, 9, 3, 1), (21, 9, 3, 1)]
+SOLID = [(11, 6, 2, 1), (27, 6, 2, 1), (31, 12, 2, 1),
+         (18, 19, 1, 1), (19, 11, 2, 1),
+         (6, 15, 3, 1), (11, 15, 3, 1), (9, 12, 2, 1),
+         (26, 15, 3, 1), (16, 7, 6, 1), (14, 9, 3, 1), (21, 9, 3, 1)]
 SPAWN = [{"x": 18, "y": 12, "dir": "right"}, {"x": 22, "y": 12, "dir": "left"}]
 
 # Animated props: real PixelLab object animations. name -> (frames folder under
@@ -113,7 +111,6 @@ def _compose_sheet():
     props = {
         "eot_pillar": ("pillar.png", 8, 0, 2, 4),
         "eot_sapling": ("sapling.png", 10, 0, 2, 3), "eot_signpost": ("signpost.png", 12, 0, 2, 3),
-        "eot_bench": ("bench.png", 6, 5, 3, 2), "eot_bucket": ("bucket.png", 9, 5, 2, 2),
         "eot_armchair": ("armchair_side.png", 6, 7, 3, 3),
         "eot_artifact": ("artifact2.png", 0, 14, 8, 5),
     }
