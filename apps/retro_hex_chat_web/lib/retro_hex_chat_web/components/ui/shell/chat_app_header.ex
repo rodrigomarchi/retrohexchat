@@ -32,8 +32,11 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
   attr :timezone, :string, default: "Etc/UTC"
   attr :is_admin, :boolean, default: false
   attr :arcade_available, :boolean, default: false, doc: "Enables the Games/Arcade menu item"
+  attr :group_call, :map, default: nil, doc: "Active group call display map for the status bar"
   attr :p2p, :map, default: nil, doc: "Active P2P session display map for the status bar"
   attr :p2p_turn_available, :boolean, default: false
+  attr :on_group_call_click, :any, default: "group_call_statusbar_click"
+  attr :on_group_call_stop, :any, default: "group_call_statusbar_stop"
   attr :on_p2p_click, :any, default: "p2p_statusbar_click"
   attr :on_p2p_stop, :any, default: "p2p_statusbar_stop"
 
@@ -78,6 +81,9 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
           muted={@muted}
           timezone={@timezone}
           on_mute_toggle={@on_mute_toggle}
+          group_call={@group_call}
+          on_group_call_click={@on_group_call_click}
+          on_group_call_stop={@on_group_call_stop}
           p2p={@p2p}
           on_p2p_click={@on_p2p_click}
           on_p2p_stop={@on_p2p_stop}

@@ -2,15 +2,15 @@
 
 Single source of truth for the browser-level Playwright suite.
 
-**Last reviewed:** 2026-06-05
+**Last reviewed:** 2026-07-10
 
 ## Current Coverage
 
-- **206 spec files** under `e2e/tests/`.
-- **372 Playwright `test()` cases**.
+- **192 spec files** under `e2e/tests/`.
+- **332 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 330 mapped flows, 329 done, 1 intentionally blocked.
+- **Chat extended coverage:** 332 mapped flows, 331 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -259,6 +259,8 @@ make ci
 
 | # | Flow | Spec file | Priority | Status |
 |---|------|-----------|----------|--------|
+| N1 | Channel group call opens for two registered users, exchanges live remote video both ways, toggles mic/camera by asserting local `MediaStreamTrack.enabled` and remote participant media state, then removes a leaver | `tests/chat-group-call.spec.ts` | P0 | done |
+| N2 | Channel group call renegotiates with three registered media users: third participant joins, all clients receive two live remote videos, the third participant leaves, and remaining users keep media state propagation | `tests/chat-group-call.spec.ts` | P0 | done |
 
 ## O - Chat UI Micro-Journeys
 

@@ -42,6 +42,7 @@
         lag_status={@lag_status}
         muted={@muted}
         timezone={@timezone}
+        group_call={@group_call}
         p2p_session={@p2p_session}
       />
     </:header>
@@ -152,6 +153,34 @@
                 >
                   <Icons.icon_community class="h-3.5 w-3.5 shrink-0" />
                   <span>{dgettext("chat", "Space")}</span>
+                </button>
+                <button
+                  :if={@session.active_channel && !@show_status_tab}
+                  type="button"
+                  phx-click="group_call_open"
+                  class={[
+                    "flex h-6 items-center justify-center gap-1 px-2 py-0 shadow-retro-raised bg-surface text-xs whitespace-nowrap",
+                    "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+                    @group_call && @group_call.channel_name == @session.active_channel &&
+                      "bg-canvas font-bold shadow-retro-sunken",
+                    !@session.identified && "opacity-60"
+                  ]}
+                  aria-label={dgettext("chat", "Group Call")}
+                  title={
+                    if @session.identified,
+                      do: dgettext("chat", "Group Call"),
+                      else: dgettext("chat", "Identify with NickServ to use group calls")
+                  }
+                  aria-pressed={
+                    to_string(
+                      (@group_call && @group_call.channel_name == @session.active_channel) == true
+                    )
+                  }
+                  disabled={!@session.identified}
+                  data-testid="group-call-open"
+                >
+                  <Icons.icon_camera class="h-3.5 w-3.5 shrink-0" />
+                  <span>{dgettext("chat", "Call")}</span>
                 </button>
               </div>
             </:leading_controls>
@@ -625,6 +654,33 @@
       />
     </.desktop_window>
 
+    <%!-- Group Call — always mounted while the user is in a channel call so
+          the raw signaling channel and WebRTC hook survive hide/show. The X and
+          Leave controls ask for confirmation before tearing the call down. --%>
+    <.desktop_window
+      :if={@group_call}
+      id="group-call"
+      persist_geometry={false}
+      title={@group_call.channel_name || dgettext("chat", "Group Call")}
+      open
+      on_close="group_call_window_close"
+      default_x={448}
+      default_y={72}
+      width={640}
+      height={430}
+      min_width={500}
+      min_height={320}
+      body_class="h-full min-h-0 overflow-hidden p-1"
+      data-testid="group-call-window"
+    >
+      <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
+      <.live_component
+        module={RetroHexChatWeb.ChatLive.Components.GroupCallPanel}
+        id={RetroHexChatWeb.ChatLive.Components.GroupCallPanel.id()}
+        call={@group_call}
+      />
+    </.desktop_window>
+
     <%!-- Arcade — server-managed solo-game picker, a pure read-model of the
           @arcade_session assign (like P2P Statistics, no island component).
           The X keeps the session alive while a game is running (the pop-up
@@ -972,6 +1028,14 @@
           <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
+          :if={@group_call}
+          window="group-call"
+          label={@group_call.channel_name || dgettext("chat", "Group Call")}
+          data-testid="group-call-taskbar"
+        >
+          <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
           :if={@p2p_session && "p2p-games" in @open_windows}
           window="p2p-games"
           label={dgettext("chat", "P2P Games")}
@@ -1123,6 +1187,11 @@
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog}
   id={RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog.id()}
+/>
+
+<.live_component
+  module={RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog}
+  id={RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog.id()}
 />
 
 <%!-- P2P WebRTC anchor: the wrapper is keyed by session token so switching

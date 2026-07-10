@@ -35,6 +35,10 @@ config :retro_hex_chat,
   # P2P rate limiting
   p2p_session_rate_limit: {5, 600_000},
   signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.ETS,
+  # Group-call rate limiting
+  group_call_create_rate_limit: {3, 600_000},
+  group_call_join_rate_limit: {20, 60_000},
+  group_call_signal_rate_limit: {300, 60_000},
   # Virtual space runtime
   virtual_space_step_ms: 150
 

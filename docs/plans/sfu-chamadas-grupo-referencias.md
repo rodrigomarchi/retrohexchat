@@ -35,7 +35,7 @@ O que isso significa na prática:
 | Métricas completas | Última fase da implementação. Antes disso, só logs/inspeção mínima para desenvolvimento. |
 | Track | Persistir lifecycle completo das tracks. |
 | Moderação | Todos podem falar inicialmente; admins/moderadores do canal podem silenciar, kickar e moderar como em um canal normal. |
-| Limite inicial | `GROUP_CALL_MAX_PARTICIPANTS=100`, configurável. Testar primeiro com 4 para validar o caminho, depois escalar progressivamente até o alvo. |
+| Limite inicial | `GROUP_CALL_MAX_PARTICIPANTS=100`, configurável. A bateria progressiva com muitos browsers fica adiada para quando houver janela operacional própria. |
 | Reconnect | 30 segundos. Cobre refresh/troca rápida de rede sem segurar recursos por tempo demais. |
 | UDP/infra | Configuração operacional fica para a etapa de infraestrutura, depois do produto base. |
 
@@ -1011,9 +1011,10 @@ Entregas:
 
 ### F4 - Grupo real com alvo 100 configurável
 
-Objetivo: estabilizar join/leave/renegociação para mais de dois participantes,
-começando com 4 usuários reais e escalando progressivamente até o alvo
-configurável de 100.
+Objetivo: estabilizar join/leave/renegociação para mais de dois participantes
+no runtime e deixar o limite configurável pronto. A bateria progressiva com
+4/10/25/50/100 browsers reais fica fora do escopo imediato e será retomada em
+uma janela dedicada.
 
 Entregas:
 
@@ -1021,8 +1022,6 @@ Entregas:
 - queue de renegociação;
 - PLI routing;
 - reconexão curta;
-- testes com 4 browsers;
-- testes progressivos 4 -> 10 -> 25 -> 50 -> 100 quando a infra permitir;
 - benchmarks de fanout/roteamento de tracks no BEAM;
 - benchmarks de payload de signaling em join/leave;
 - inspeção de CPU, memória, mailbox e reduções dos `PeerServer`s;
@@ -1043,17 +1042,18 @@ Entregas:
 
 ### F6 - Infra UDP e métricas completas
 
-Objetivo: fechar a operação em produção.
+Objetivo: fechar a parte configurável e observável dentro deste projeto. Abrir
+portas, firewall, roteamento e demais ajustes de infraestrutura externa ficam
+em tarefa/repositório próprio.
 
 Entregas:
 
 - `SFU_ICE_PORT_RANGE`;
 - `SFU_PUBLIC_IP`/mapper quando necessário;
-- documentação de portas UDP;
 - dashboard em dev;
 - PromEx/métricas completas;
-- testes de deploy com NAT/TURN;
-- documentação operacional.
+- documentação operacional do que a aplicação espera receber por env;
+- validar NAT/TURN em tarefa de infraestrutura separada.
 
 ### F7 - Recursos futuros
 

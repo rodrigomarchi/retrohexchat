@@ -556,6 +556,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.BotEvents.handle_event/3,
     &ChatLive.KeyboardEvents.handle_event/3,
     &ChatLive.ConnectionEvents.handle_event/3,
+    &ChatLive.GroupCallEvents.handle_event/3,
     &ChatLive.P2PSessionEvents.handle_event/3,
     &ChatLive.ArcadeSessionEvents.handle_event/3,
     &ChatLive.CoreEvents.handle_event/3
@@ -619,6 +620,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:bot_events, &ChatLive.BotEvents.handle_event/3},
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
       {:connection_events, &ChatLive.ConnectionEvents.handle_event/3},
+      {:group_call_events, &ChatLive.GroupCallEvents.handle_event/3},
       {:p2p_session_events, &ChatLive.P2PSessionEvents.handle_event/3},
       {:arcade_session_events, &ChatLive.ArcadeSessionEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
@@ -720,6 +722,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
       space_avatars: RetroHexChat.VirtualSpace.avatars(),
       space_avatar: nil,
       space_last_avatar: "redtunic_hero",
+      group_call: nil,
+      group_call_pending: nil,
       p2p_session: nil,
       p2p_pending: nil,
       arcade_session: nil,

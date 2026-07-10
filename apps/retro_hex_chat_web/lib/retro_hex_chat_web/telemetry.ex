@@ -207,6 +207,51 @@ defmodule RetroHexChatWeb.Telemetry do
         unit: {:native, :millisecond},
         description: dgettext("system", "Virtual space movement input handling duration"),
         reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+
+      # Domain Metrics – Group Calls
+      last_value(dgettext("system", "retro_hex_chat.group_call.active_rooms.value"),
+        description: dgettext("system", "Number of active group-call room processes"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      last_value(dgettext("system", "retro_hex_chat.group_call.active_peers.value"),
+        description: dgettext("system", "Number of active group-call peer processes"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.group_call.join.count"),
+        tags: [:result, :reason],
+        description: dgettext("system", "Number of group-call join attempts"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.group_call.leave.count"),
+        tags: [:status, :reason],
+        description: dgettext("system", "Number of group-call participant leaves"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.group_call.track_added.count"),
+        tags: [:kind, :source],
+        description: dgettext("system", "Number of group-call media tracks announced"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.group_call.media_state.count"),
+        tags: [:result, :reason],
+        description: dgettext("system", "Number of group-call media state updates"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.group_call.media_moderated.count"),
+        tags: [:result, :reason, :enabled],
+        description: dgettext("system", "Number of group-call moderator media actions"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.group_call.participant_kicked.count"),
+        tags: [:result, :reason],
+        description: dgettext("system", "Number of group-call participant kick actions"),
+        reporter_options: [nav: dgettext("system", "Domain")]
+      ),
+      sum(dgettext("system", "retro_hex_chat.group_call.room_closed.count"),
+        tags: [:reason],
+        description: dgettext("system", "Number of group-call rooms closed"),
+        reporter_options: [nav: dgettext("system", "Domain")]
       )
     ]
   end
@@ -214,7 +259,9 @@ defmodule RetroHexChatWeb.Telemetry do
   defp periodic_measurements do
     [
       {__MODULE__, :count_active_channels, []},
-      {__MODULE__, :count_active_spaces, []}
+      {__MODULE__, :count_active_spaces, []},
+      {__MODULE__, :count_active_group_calls, []},
+      {__MODULE__, :count_active_group_call_peers, []}
     ]
   end
 
@@ -238,6 +285,27 @@ defmodule RetroHexChatWeb.Telemetry do
     :telemetry.execute(
       [:retro_hex_chat, :virtual_space, :active_count],
       %{value: active},
+      %{}
+    )
+  end
+
+  @doc false
+  def count_active_group_calls do
+    %{active: active} =
+      DynamicSupervisor.count_children(RetroHexChat.GroupCall.RoomSupervisor)
+
+    :telemetry.execute(
+      [:retro_hex_chat, :group_call, :active_rooms],
+      %{value: active},
+      %{}
+    )
+  end
+
+  @doc false
+  def count_active_group_call_peers do
+    :telemetry.execute(
+      [:retro_hex_chat, :group_call, :active_peers],
+      %{value: Registry.count(RetroHexChat.GroupCall.PeerRegistry)},
       %{}
     )
   end

@@ -34,6 +34,13 @@ export const lazyFeatureHooks = {
     readyEvent: "lobby_media_hook_ready",
     reason: "P2P lobby media capture is only needed inside an active lobby.",
   }),
+  GroupCallWebRTCHook: lazyFeatureHook({
+    name: "GroupCallWebRTCHook",
+    loader: () => import("./group_call/group_call_webrtc_hook"),
+    serverEvents: [],
+    readyEvent: "group_call_webrtc_ready",
+    reason: "Group-call SFU signaling and media capture are only needed inside a call window.",
+  }),
   LobbyGameCanvasHook: lazyFeatureHook({
     name: "LobbyGameCanvasHook",
     loader: () => import("./lobby/lobby_game_canvas_hook"),
