@@ -101,7 +101,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       assert entry(ctx.channel_name, ctx.key).zone_id == "spawn"
 
       # Walk right across the centre line into the plaza zone.
-      walk_to(ctx, {46, entry(ctx.channel_name, ctx.key).y})
+      walk_to(ctx, {34, entry(ctx.channel_name, ctx.key).y})
 
       assert_receive %{
         event: "space_zone_changed",
@@ -115,7 +115,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
   describe "seating" do
     test "sitting reserves the seat, changes pose, and rejects a second occupant" do
       ctx = start_space()
-      walk_to(ctx, {43, 21})
+      walk_to(ctx, {32, 16})
       flush()
 
       assert :ok =
@@ -128,7 +128,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       p = entry(ctx.channel_name, ctx.key)
       assert p.pose == "sitting"
       assert p.seat_id == "seat_bench_a"
-      assert {p.x, p.y} == {43, 22}
+      assert {p.x, p.y} == {32, 17}
       assert p.dir == "down"
 
       assert_receive %{event: "space_delta", payload: %{updates: updates}}
@@ -137,7 +137,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       # A second participant cannot take the reserved seat.
       okey = join_member(ctx, "bob")
       octx = %{channel_name: ctx.channel_name, key: okey}
-      walk_to(octx, {43, 21})
+      walk_to(octx, {32, 16})
 
       assert {:error, :seat_taken} =
                ChannelSpaceServer.interact(ctx.channel_name, okey, %{
@@ -149,7 +149,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
 
     test "walking stands the participant up and frees the seat" do
       ctx = start_space()
-      walk_to(ctx, {43, 21})
+      walk_to(ctx, {32, 16})
 
       :ok =
         ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
@@ -172,7 +172,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
 
     test "leaving the text channel frees the seat" do
       ctx = start_space()
-      walk_to(ctx, {43, 21})
+      walk_to(ctx, {32, 16})
 
       :ok =
         ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{
@@ -216,7 +216,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
   describe "board interactables" do
     test "using a board returns a modal with the map's asset" do
       ctx = start_space()
-      walk_to(ctx, {7, 21})
+      walk_to(ctx, {4, 16})
 
       assert {:ok, %{modal: modal}} =
                ChannelSpaceServer.interact(ctx.channel_name, ctx.key, %{

@@ -68,14 +68,11 @@ defmodule RetroHexChat.VirtualSpace.Maps.MillennialFair do
     ]
   end
 
-  # Every fair bench is sittable — the seat tile is the bench's front row.
+  # The two fountain-side benches are sittable — the seat tile is the front row.
   defp seats do
     [
-      %{id: "seat_bench_a", x: 43, y: 22, dir: "down"},
-      %{id: "seat_bench_b", x: 21, y: 21, dir: "down"},
-      %{id: "seat_bench_c", x: 29, y: 21, dir: "down"},
-      %{id: "seat_bench_d", x: 21, y: 12, dir: "down"},
-      %{id: "seat_bench_e", x: 29, y: 12, dir: "down"}
+      %{id: "seat_bench_a", x: 32, y: 17, dir: "down"},
+      %{id: "seat_bench_b", x: 18, y: 17, dir: "down"}
     ]
   end
 
@@ -86,8 +83,8 @@ defmodule RetroHexChat.VirtualSpace.Maps.MillennialFair do
       %{
         id: "notice_board",
         kind: "board",
-        x: 7,
-        y: 22,
+        x: 4,
+        y: 17,
         title: "Notice board",
         modal: %{kind: "image", asset: "board_menu_v1"}
       }

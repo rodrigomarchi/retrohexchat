@@ -58,7 +58,9 @@ W, H = 52, 34
 # the only edge, so there is no "void" collision. The map is larger than the
 # viewport so the camera follows the avatar and pans across the fair.
 PLAZA = {"cx": 25.5, "cy": 17.0, "rx": 23.0, "ry": 15.5, "p": 5.0}
-SHEET_COLS = 20
+# Wide enough for the widest animated frame strip (w × frames). An animated
+# 4-tile prop with 6 frames is 24 tiles; keep headroom.
+SHEET_COLS = 26
 
 # Props are sized in TILES to sit proportional to a 1x2-tile avatar (Chrono
 # Trigger scale — a person is ~2 tiles tall). `source` is a PNG (static) or an
@@ -74,7 +76,7 @@ PROPS = [
     ("fair_lantern", "anim/lantern", 1, 3, 720),
     ("fair_tent", "bekkler_tent.png", 5, 5, None),
     ("fair_stall", "melchior_stall.png", 4, 4, None),
-    ("fair_cart", "drink_cart.png", 2, 2, None),
+    ("fair_cart", "drink_cart.png", 3, 3, None),
     ("fair_tree", "tree.png", 3, 4, None),
     ("fair_arch", "arch.png", 6, 3, None),
     ("fair_board", "board.png", 2, 2, None),
@@ -88,74 +90,57 @@ PROPS = [
 
 _PROP_W = {p[0]: p[2] for p in PROPS}
 
-# When a PAIR prop is mirrored to the right half, swap it for a flipped variant
-# so directional art faces back toward the centre (e.g. benches face inward).
-FLIP_MIRROR = {"fair_bench": "fair_bench_l"}
-
 # Props you can walk through/under — only their end columns block.
 WALKTHROUGH = {"fair_arch"}
 # Low props you walk over (and sit on) — they add no collision.
 NO_COLLIDE = {"fair_bench", "fair_bench_l"}
 
-# The layout is built symmetrically about the vertical centre line (Leene Square
-# is a formal, mirrored plaza). CENTRE props sit on the axis; every PAIR entry
-# (a left-half placement) is auto-mirrored to the right; EXTRA holds the few
-# deliberately-asymmetric pieces (the two different tents, the notice board and
-# its balancing bench). Zoned top→bottom: telepod court, tent row, fountain
-# garden, market row, entrance — ringed by a dense green border of trees/hedges.
-CENTRE = [
-    ("fair_bell", 24, 1),           # Leene's Bell crowns the plaza (4x5)
-    ("fair_fountain", 24, 14),      # fountain at the dead centre (4x3)
-    ("fair_flowers", 25, 12), ("fair_flowers", 25, 18),
-    ("fair_arch", 23, 29),          # welcome arch at the foot (6x3)
+# Grass garden beds carved into the stone plaza (vertex rects x0,y0,x1,y1) so the
+# floor is not a uniform slab — each holds a tree/flowers, like a real square.
+GARDEN_BEDS = [(12, 6, 18, 12), (33, 18, 40, 25)]
+
+# Hand-placed, not mirror-stamped: each piece has a reason and a spot. The plaza
+# reads as areas — bell & fountain down the middle, Bekkler's tent and Melchior's
+# stall to the west, the striped tent, refreshments and Lucca's telepod to the
+# east, the arch at the entrance — with greenery gathered in natural clumps and
+# the two garden beds, never a repeated ring.
+DECOR = [
+    # Landmarks — the plaza's spine.
+    ("fair_bell", 23, 1),
+    ("fair_banner", 20, 2), ("fair_banner", 29, 2),
+    ("fair_fountain", 24, 15),
+    ("fair_flowers", 24, 13), ("fair_flowers", 24, 19),
+    ("fair_hedge", 20, 16), ("fair_hedge", 30, 16),
+    ("fair_bench", 18, 16), ("fair_bench_l", 32, 16),
+    # West — Bekkler's fortune tent, the notice board, Melchior's market corner.
+    ("fair_tent2", 5, 9),
+    ("fair_board", 4, 17),
+    ("fair_stall", 7, 25), ("fair_barrels", 12, 26),
+    # East — the striped tent, a refreshment cart, Lucca's telepod.
+    ("fair_tent", 40, 4), ("fair_cart", 40, 11),
+    ("fair_telepod", 41, 24),
+    # Entrance at the foot, lit by a pair of lanterns.
+    ("fair_arch", 22, 30),
+    ("fair_lantern", 20, 27), ("fair_lantern", 31, 27),
+    # Garden bed A (west) and B (east): a tree and blooms in each grass patch.
+    ("fair_tree", 13, 7), ("fair_flowers", 14, 11),
+    ("fair_tree", 35, 19), ("fair_hedge", 38, 22),
+    # Greenery gathered in corner clumps (framing, not a ring).
+    ("fair_tree", 2, 2), ("fair_hedge", 5, 4),
+    ("fair_tree", 47, 2),
+    ("fair_tree", 2, 29), ("fair_hedge", 5, 30),
+    ("fair_tree", 47, 29), ("fair_hedge", 44, 30),
 ]
-PAIR = [
-    # Telepod court (top) + banners flanking the bell.
-    ("fair_telepod", 7, 2), ("fair_banner", 20, 1), ("fair_barrels", 13, 4),
-    # Market stalls (tent row) — the big tents themselves are in EXTRA.
-    ("fair_stall", 3, 9),
-    # Fountain garden: hedges + banners frame it, benches face inward.
-    ("fair_bench", 21, 11), ("fair_hedge", 20, 14), ("fair_hedge", 20, 17),
-    ("fair_banner", 17, 14), ("fair_bench", 21, 20),
-    # Market row (lower-mid).
-    ("fair_cart", 14, 23), ("fair_banner", 9, 24), ("fair_flowers", 20, 23),
-    # Entrance stalls (bottom).
-    ("fair_stall", 13, 26), ("fair_cart", 7, 30),
-    ("fair_banner", 20, 28), ("fair_flowers", 16, 31),
-    # Dense green border ringing the plaza (trees + trimmed hedges).
-    ("fair_tree", 1, 4), ("fair_hedge", 1, 11), ("fair_tree", 1, 19),
-    ("fair_hedge", 1, 27),
-    ("fair_tree", 12, 0), ("fair_hedge", 18, 0),
-    ("fair_hedge", 10, 31),
-]
-EXTRA = [
-    ("fair_tent2", 8, 6),           # Bekkler's purple tent (left, 5x5)
-    ("fair_tent", 39, 6),           # red-and-white tent (right, 5x5)
-    ("fair_board", 7, 21),          # notice board (left, interactable)
-    ("fair_bench_l", 43, 21),       # bench balancing the board (right, flipped)
-]
 
-
-def _decor():
-    out = list(CENTRE)
-    for name, c, r in PAIR:
-        out.append((name, c, r))
-        out.append((FLIP_MIRROR.get(name, name), W - c - _PROP_W[name], r))
-    out += EXTRA
-    return out
-
-
-DECOR = _decor()
-
-# Spawns spread across the open plaza bands, clear of props. The first entry is
-# where a lone joiner lands (and the notice-board test walks from).
+# Spawns in the open plaza, clear of props. The first entry is where a lone
+# joiner lands (and the notice-board test walks from).
 SPAWN = [
-    {"x": 24, "y": 21, "dir": "up"},
-    {"x": 18, "y": 6, "dir": "down"}, {"x": 33, "y": 6, "dir": "down"},
-    {"x": 18, "y": 11, "dir": "down"}, {"x": 33, "y": 11, "dir": "down"},
-    {"x": 15, "y": 20, "dir": "right"}, {"x": 36, "y": 20, "dir": "left"},
-    {"x": 20, "y": 24, "dir": "up"}, {"x": 31, "y": 24, "dir": "up"},
-    {"x": 24, "y": 6, "dir": "down"}, {"x": 27, "y": 24, "dir": "up"},
+    {"x": 24, "y": 8, "dir": "down"},
+    {"x": 16, "y": 13, "dir": "right"}, {"x": 33, "y": 13, "dir": "left"},
+    {"x": 12, "y": 20, "dir": "down"}, {"x": 24, "y": 23, "dir": "up"},
+    {"x": 30, "y": 21, "dir": "up"}, {"x": 18, "y": 24, "dir": "up"},
+    {"x": 35, "y": 16, "dir": "left"}, {"x": 20, "y": 8, "dir": "down"},
+    {"x": 31, "y": 8, "dir": "down"}, {"x": 24, "y": 27, "dir": "up"},
 ]
 
 
@@ -208,6 +193,11 @@ def _compose_sheet():
     for name, source, w, h, period in PROPS:
         ims = _load_frames(source)
         span = w * len(ims)
+        if span > SHEET_COLS:
+            raise ValueError(
+                f"{name} strip is {span} tiles wide but SHEET_COLS={SHEET_COLS}; "
+                "frames would fall off the sheet and flicker — widen SHEET_COLS"
+            )
         if cx + span > SHEET_COLS:
             cx, cy, shelf_h = 0, cy + shelf_h, 0
         _pack_prop(sheet, ims, cx, cy, w, h)
@@ -236,6 +226,12 @@ def _plaza_grid():
             n = sum(g[y + dy][x + dx] for dy in (-1, 0, 1) for dx in (-1, 0, 1)
                     if 0 <= x + dx <= W and 0 <= y + dy <= H)
             out[y][x] = 1 if n >= 6 else (0 if n <= 2 else g[y][x])
+    # Carve grass garden beds back into the stone (0 = grass vertices).
+    for x0, y0, x1, y1 in GARDEN_BEDS:
+        for y in range(y0, y1 + 1):
+            for x in range(x0, x1 + 1):
+                if 0 <= x <= W and 0 <= y <= H:
+                    out[y][x] = 0
     return out
 
 
