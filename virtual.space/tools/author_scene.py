@@ -51,8 +51,8 @@ DECOR = [
     ("eot_nu", 25, 10),
     ("eot_artifact", 15, 3),
     ("eot_portal", 17, 5),
-    ("eot_fire", 13, 7),
-    ("eot_fire", 24, 7),
+    ("eot_fire", 14, 6),
+    ("eot_fire", 21, 6),
     ("eot_bench", 11, 14),
     ("eot_bucket", 27, 15),
     ("eot_signpost", 18, 17),
@@ -62,7 +62,7 @@ DECOR = [
 SOLID = [(11, 6, 2, 1), (27, 6, 2, 1), (31, 11, 2, 1), (11, 15, 3, 1),
          (27, 16, 2, 1), (18, 19, 1, 1), (19, 11, 2, 1),
          (6, 11, 3, 1), (11, 11, 3, 1), (9, 9, 2, 1),
-         (25, 12, 3, 1), (16, 7, 6, 1), (13, 10, 3, 1), (24, 10, 3, 1)]
+         (25, 12, 3, 1), (16, 7, 6, 1), (14, 9, 3, 1), (21, 9, 3, 1)]
 SPAWN = [{"x": 18, "y": 12, "dir": "right"}, {"x": 22, "y": 12, "dir": "left"}]
 
 # Animated props: real PixelLab object animations. name -> (frames folder under
@@ -72,14 +72,20 @@ ANIM_PROPS = {
     "eot_fire": ("fire", 0, 19, 3, 4, 660),
     "eot_lamp": ("lamp", 0, 23, 2, 4, 780),
     "eot_portal": ("portal", 0, 27, 3, 3, 700),
+    "eot_star": ("star", 0, 30, 2, 2, 1400),
 }
+
+# Twinkling stars scattered across the cosmic void (outside the island). The
+# per-position seed desyncs each one's twinkle so the whole sky shimmers.
+STARS = [(3, 2), (30, 2), (33, 4), (2, 11), (36, 10),
+         (5, 20), (33, 20), (18, 1), (9, 21)]
 
 
 def _compose_sheet():
     wang = Image.open(os.path.join(SRC, "floor_wang.png")).convert("RGBA")
     lut = json.load(open(os.path.join(SRC, "wang_lut.json")))
     cols = 18
-    sheet = Image.new("RGBA", (cols * T, 30 * T), (0, 0, 0, 0))
+    sheet = Image.new("RGBA", (cols * T, 34 * T), (0, 0, 0, 0))
     vocab = {}
     sheet.alpha_composite(wang, (0, 0))
     for combo, (x, y) in lut.items():
@@ -116,31 +122,36 @@ def _compose_sheet():
     vocab["eot_armchair_l"] = {**av, "flip_x": True}
 
     # Animated props: real PixelLab object animations (frames downloaded into
-    # scenes/end_of_time/anim/<name>/) packed as horizontal frame strips. Each
-    # frame is auto-cropped and bottom-centered into its w×h block, like a
-    # static prop; the atlas cycles them on the global clock.
+    # scenes/end_of_time/anim/<name>/) packed as horizontal frame strips. All
+    # frames share ONE union bbox + placement so only the moving parts (flame,
+    # vortex) change between frames — the base/post stays perfectly still. The
+    # atlas cycles them on the global clock.
     for name, (folder, col, row, w, h, period) in ANIM_PROPS.items():
         adir = os.path.join(SRC, "anim", folder)
-        frames = []
+        paths = []
         i = 0
         while os.path.exists(os.path.join(adir, f"{i}.png")):
-            frames.append(os.path.join(adir, f"{i}.png"))
+            paths.append(os.path.join(adir, f"{i}.png"))
             i += 1
-        if not frames:
+        if not paths:
             raise FileNotFoundError(f"no animation frames for {name} in {adir}")
-        for i, fp in enumerate(frames):
-            im = Image.open(fp).convert("RGBA")
-            crop = im.crop(im.getbbox() or (0, 0, im.width, im.height))
-            if crop.width > w * T:
-                o = (crop.width - w * T) // 2
-                crop = crop.crop((o, 0, o + w * T, crop.height))
-            if crop.height > h * T:
-                crop = crop.crop((0, crop.height - h * T, crop.width, crop.height))
+        ims = [Image.open(p).convert("RGBA") for p in paths]
+        boxes = [im.getbbox() or (0, 0, im.width, im.height) for im in ims]
+        union = (min(b[0] for b in boxes), min(b[1] for b in boxes),
+                 max(b[2] for b in boxes), max(b[3] for b in boxes))
+        # Same crop window + same in-block offset for every frame → stable base.
+        cw, ch = union[2] - union[0], union[3] - union[1]
+        ox = max(0, (cw - w * T) // 2)
+        oy = max(0, ch - h * T)
+        dx = (w * T - min(cw, w * T)) // 2
+        for i, im in enumerate(ims):
+            crop = im.crop((union[0] + ox, union[1] + oy,
+                            min(union[0] + ox + w * T, union[2]), union[3]))
             block = Image.new("RGBA", (w * T, h * T), (0, 0, 0, 0))
-            block.alpha_composite(crop, ((w * T - crop.width) // 2, h * T - crop.height))
+            block.alpha_composite(crop, (dx, h * T - crop.height))
             sheet.alpha_composite(block, ((col + i * w) * T, row * T))
         vocab[name] = {"col": col, "row": row, "w": w, "h": h,
-                       "frames": len(frames), "period_ms": period}
+                       "frames": len(ims), "period_ms": period}
 
     return sheet, vocab, cols
 
@@ -187,7 +198,8 @@ def build():
         "width": W, "height": H, "tile_size": T, "ground": "void", "columns": cols,
         "vocab": vocab,
         "floor": floor,
-        "decor": [{"x": c, "y": r, "tile": n} for (n, c, r) in DECOR],
+        "decor": [{"x": x, "y": y, "tile": "eot_star"} for (x, y) in STARS]
+        + [{"x": c, "y": r, "tile": n} for (n, c, r) in DECOR],
         "collision": collision,
         "spawn": SPAWN,
         "zones": [{"id": "eot", "kind": "private", "x": 6, "y": 4, "w": 28, "h": 16}],
@@ -207,6 +219,8 @@ def build():
     for y in range(H):
         for x in range(W):
             prev.alpha_composite(rect(floor[y][x]), (x * T, y * T))
+    for x, y in STARS:
+        prev.alpha_composite(rect("eot_star"), (x * T, y * T))
     for n, c, r in DECOR:
         prev.alpha_composite(rect(n), (c * T, r * T))
     d = ImageDraw.Draw(prev)
