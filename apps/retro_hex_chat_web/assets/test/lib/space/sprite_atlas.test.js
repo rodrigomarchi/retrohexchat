@@ -168,9 +168,16 @@ describe("sprite atlas contract", () => {
     expect(atlas.avatar("who", "down", 0)).toMatchObject({ sx: 0, sy: 0, sw: 16, sh: 32 });
   });
 
-  it("returns null for an avatar before the character sheet loads", () => {
+  it("auto-loads the character sheet so the default hero renders on any map", () => {
+    // The character sheet (and the class sheets) load on creation, independent
+    // of the active map — so bots and anyone on the default avatar always draw.
     const atlas = createSpriteAtlas();
-    expect(atlas.avatar("redtunic_hero", "down")).toBe(null);
+    expect(atlas.avatar("redtunic_hero", "down")).toMatchObject({
+      sx: 0,
+      sy: 0,
+      sw: 16,
+      sh: 32,
+    });
   });
 
   it("draws board modal art for a known asset id", () => {

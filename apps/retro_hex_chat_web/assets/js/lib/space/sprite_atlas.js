@@ -21,8 +21,12 @@ export const DIRECTIONS = Object.freeze(["down", "up", "left", "right"]);
 // rows (down, up, left, right) × four walk frames.
 const DEFAULT_AVATAR_ID = "redtunic_hero";
 
-// 36px class sheets the atlas loads on its own, independent of the active map.
+// Avatar sheets the atlas loads on its own, independent of the active map — so
+// every participant renders even on maps that don't ship the character sheet.
+// `character` is the 16px legacy/default sheet (the red-tunic hero that bots and
+// anyone who hasn't picked a class fall back to); the rest are the 36px classes.
 const AVATAR_SHEETS = Object.freeze([
+  { id: "character", src: "/images/space/character.png" },
   { id: "av_sorceress", src: "/images/space/avatars/sorceress.png" },
   { id: "av_knight", src: "/images/space/avatars/knight.png" },
   { id: "av_archer", src: "/images/space/avatars/archer.png" },
