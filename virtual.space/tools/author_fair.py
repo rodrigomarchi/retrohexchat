@@ -59,7 +59,9 @@ W, H = 40, 26
 # avenues; grass fills the quadrants.
 PLAZA = {"cx": 20.0, "cy": 11.0, "rx": 6.5, "ry": 5.0}   # central stone plaza
 PATHS = [(18, 0, 21, 25), (0, 10, 39, 12)]               # vertical + horizontal avenues
-SHEET_COLS = 20
+# Wide enough for the widest animated strip (arch = 5w × 6 frames = 30 tiles);
+# the guard in _compose_sheet raises if any strip would overrun this.
+SHEET_COLS = 30
 
 # Props are sized in TILES to sit proportional to a 1x2-tile avatar (Chrono
 # Trigger scale — a person is ~2 tiles tall). `source` is a PNG (static) or an
@@ -70,23 +72,26 @@ SHEET_COLS = 20
 # small props (lanterns, benches, carts, flowers…) stay person-scale.
 # All art is cohesive flat 16-bit (SNES) now; tile sizes match each sprite's
 # native pixel size so nothing is up/down-scaled (crisp pixels).
+# A single gentle breeze runs through the fair: light fabric (flags, pennants)
+# ripples faster, heavy foliage sways slower — same wind, physically coherent
+# periods. Every animated strip is w × 6 frames wide (see SHEET_COLS guard).
 PROPS = [
     ("fair_bell", "anim/bell", 3, 4, 950),
     ("fair_telepod", "anim/telepod", 3, 3, 480),
     ("fair_fountain", "anim/fountain", 3, 3, 1500),
     ("fair_lantern", "anim/lantern", 1, 5, 720),
-    ("fair_tent", "bekkler_tent.png", 4, 4, None),
+    ("fair_tent", "anim/tent", 4, 4, 850),
     ("fair_stall", "melchior_stall.png", 3, 3, None),
     ("fair_cart", "drink_cart.png", 3, 3, None),
-    ("fair_arch", "arch.png", 5, 3, None),
+    ("fair_arch", "anim/arch", 5, 3, 1000),
     ("fair_board", "board.png", 3, 2, None),
     ("fair_bench", "bench.png", 2, 1, None),
     ("fair_flowers", "flowers.png", 3, 2, None),
     ("fair_barrels", "barrels.png", 3, 2, None),
-    ("fair_banner", "banner.png", 2, 4, None),
-    ("fair_tent2", "bekkler_purple.png", 4, 5, None),
-    ("fair_tree", "tree.png", 3, 4, None),
-    ("fair_bush", "bush.png", 2, 2, None),
+    ("fair_banner", "anim/banner", 2, 4, 900),
+    ("fair_tent2", "anim/tent2", 4, 5, 850),
+    ("fair_tree", "anim/tree", 3, 4, 1600),
+    ("fair_bush", "anim/bush", 2, 2, 1500),
 ]
 
 _PROP_W = {p[0]: p[2] for p in PROPS}
