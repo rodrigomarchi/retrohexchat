@@ -414,7 +414,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert {:ok, init, socket} = join_channel_space(channel, "alice")
 
       # Walk beside the notice_board at (4,17) and interact.
-      walk_channel_to(socket, channel, init.self_key, {4, 16})
+      walk_channel_to(socket, channel, init.self_key, {3, 15})
 
       push(socket, "space_interact", %{"seq" => 1, "kind" => "use", "target_id" => "notice_board"})
 

@@ -63,16 +63,16 @@ defmodule RetroHexChat.VirtualSpace.Maps.MillennialFair do
   # line enters the main "plaza".
   defp zones do
     [
-      %{id: "spawn", kind: "spawn", x: 0, y: 0, w: 26, h: 34},
-      %{id: "plaza", kind: "common", x: 26, y: 0, w: 26, h: 34}
+      %{id: "spawn", kind: "spawn", x: 0, y: 0, w: 20, h: 26},
+      %{id: "plaza", kind: "common", x: 20, y: 0, w: 20, h: 26}
     ]
   end
 
-  # The two fountain-side benches are sittable — the seat tile is the front row.
+  # The two fountain-side benches are sittable.
   defp seats do
     [
-      %{id: "seat_bench_a", x: 32, y: 17, dir: "down"},
-      %{id: "seat_bench_b", x: 18, y: 17, dir: "down"}
+      %{id: "seat_bench_a", x: 24, y: 11, dir: "down"},
+      %{id: "seat_bench_b", x: 15, y: 11, dir: "down"}
     ]
   end
 
@@ -83,8 +83,8 @@ defmodule RetroHexChat.VirtualSpace.Maps.MillennialFair do
       %{
         id: "notice_board",
         kind: "board",
-        x: 4,
-        y: 17,
+        x: 3,
+        y: 14,
         title: "Notice board",
         modal: %{kind: "image", asset: "board_menu_v1"}
       }

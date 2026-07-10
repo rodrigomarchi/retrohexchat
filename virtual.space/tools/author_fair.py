@@ -29,9 +29,10 @@ from PIL import Image, ImageDraw, ImageEnhance
 # Soften the generated stone: the raw Wang floor reads too dark/strong, so we
 # lighten it, pull a little saturation out and warm it slightly toward a gentle
 # weathered-stone tone. Tunable (brightness, saturation, warm RGB multipliers).
-FLOOR_BRIGHTNESS = 1.32
-FLOOR_SATURATION = 0.62
-FLOOR_WARM = (1.11, 1.05, 0.88)
+# Gently mute the flat tileset (mostly pulls the grass green down a touch).
+FLOOR_BRIGHTNESS = 0.95
+FLOOR_SATURATION = 0.78
+FLOOR_WARM = (1.0, 1.0, 1.0)
 
 
 def _grade_floor(img):
@@ -52,15 +53,13 @@ SHEET_OUT = os.path.join(
 MAP_OUT = os.path.join(REPO, "apps", "retro_hex_chat", "priv", "maps", "millennial_fair.json")
 
 T = 16
-W, H = 52, 34
-# The cobblestone plaza is a big rounded rectangle (squarish super-ellipse);
-# grass fills the rest of the lawn. Everything is walkable — the map bounds are
-# the only edge, so there is no "void" collision. The map is larger than the
-# viewport so the camera follows the avatar and pans across the fair.
-PLAZA = {"cx": 25.5, "cy": 17.0, "rx": 23.0, "ry": 15.5, "p": 5.0}
-# Wide enough for the widest animated frame strip (w × frames). An animated
-# 4-tile prop with 6 frames is 24 tiles; keep headroom.
-SHEET_COLS = 26
+W, H = 40, 26
+# Floor: a GRASS fairground with a round STONE plaza at the centre and stone
+# avenues crossing it (vertical entrance→bell, horizontal). Structures line the
+# avenues; grass fills the quadrants.
+PLAZA = {"cx": 20.0, "cy": 11.0, "rx": 6.5, "ry": 5.0}   # central stone plaza
+PATHS = [(18, 0, 21, 25), (0, 10, 39, 12)]               # vertical + horizontal avenues
+SHEET_COLS = 20
 
 # Props are sized in TILES to sit proportional to a 1x2-tile avatar (Chrono
 # Trigger scale — a person is ~2 tiles tall). `source` is a PNG (static) or an
@@ -69,23 +68,25 @@ SHEET_COLS = 26
 # Sizes in tiles set a realistic HIERARCHY against the ~2-tile-tall avatar:
 # carnival tents tower, the belfry/stalls/telepod are mid structures, and the
 # small props (lanterns, benches, carts, flowers…) stay person-scale.
+# All art is cohesive flat 16-bit (SNES) now; tile sizes match each sprite's
+# native pixel size so nothing is up/down-scaled (crisp pixels).
 PROPS = [
-    ("fair_bell", "anim/bell", 4, 5, 950),
-    ("fair_telepod", "anim/telepod", 4, 4, 480),
-    ("fair_fountain", "anim/fountain", 4, 3, 1500),
-    ("fair_lantern", "anim/lantern", 1, 3, 720),
-    ("fair_tent", "bekkler_tent.png", 5, 5, None),
-    ("fair_stall", "melchior_stall.png", 4, 4, None),
+    ("fair_bell", "anim/bell", 3, 4, 950),
+    ("fair_telepod", "anim/telepod", 3, 3, 480),
+    ("fair_fountain", "anim/fountain", 3, 3, 1500),
+    ("fair_lantern", "anim/lantern", 2, 2, 720),
+    ("fair_tent", "bekkler_tent.png", 4, 4, None),
+    ("fair_stall", "melchior_stall.png", 3, 3, None),
     ("fair_cart", "drink_cart.png", 3, 3, None),
+    ("fair_arch", "arch.png", 5, 3, None),
+    ("fair_board", "board.png", 3, 2, None),
+    ("fair_bench", "bench.png", 2, 1, None),
+    ("fair_flowers", "flowers.png", 3, 2, None),
+    ("fair_barrels", "barrels.png", 3, 2, None),
+    ("fair_banner", "banner.png", 2, 4, None),
+    ("fair_tent2", "bekkler_purple.png", 4, 5, None),
     ("fair_tree", "tree.png", 3, 4, None),
-    ("fair_arch", "arch.png", 6, 3, None),
-    ("fair_board", "board.png", 2, 2, None),
-    ("fair_bench", "bench.png", 2, 2, None),
-    ("fair_flowers", "flowers.png", 2, 1, None),
-    ("fair_barrels", "barrels.png", 2, 2, None),
-    ("fair_banner", "banner.png", 1, 4, None),
-    ("fair_hedge", "hedge.png", 2, 2, None),
-    ("fair_tent2", "bekkler_purple.png", 5, 5, None),
+    ("fair_bush", "bush.png", 2, 2, None),
 ]
 
 _PROP_W = {p[0]: p[2] for p in PROPS}
@@ -95,9 +96,9 @@ WALKTHROUGH = {"fair_arch"}
 # Low props you walk over (and sit on) — they add no collision.
 NO_COLLIDE = {"fair_bench", "fair_bench_l"}
 
-# Grass garden beds carved into the stone plaza (vertex rects x0,y0,x1,y1) so the
-# floor is not a uniform slab — each holds a tree/flowers, like a real square.
-GARDEN_BEDS = [(12, 6, 18, 12), (33, 18, 40, 25)]
+# Garden beds removed for now (the flat grass squares + potted trees read badly);
+# greenery returns once the ground and scale are coherent.
+GARDEN_BEDS = []
 
 # Hand-placed, not mirror-stamped: each piece has a reason and a spot. The plaza
 # reads as areas — bell & fountain down the middle, Bekkler's tent and Melchior's
@@ -105,42 +106,38 @@ GARDEN_BEDS = [(12, 6, 18, 12), (33, 18, 40, 25)]
 # east, the arch at the entrance — with greenery gathered in natural clumps and
 # the two garden beds, never a repeated ring.
 DECOR = [
-    # Landmarks — the plaza's spine.
-    ("fair_bell", 23, 1),
-    ("fair_banner", 20, 2), ("fair_banner", 29, 2),
-    ("fair_fountain", 24, 15),
-    ("fair_flowers", 24, 13), ("fair_flowers", 24, 19),
-    ("fair_hedge", 20, 16), ("fair_hedge", 30, 16),
-    ("fair_bench", 18, 16), ("fair_bench_l", 32, 16),
-    # West — Bekkler's fortune tent, the notice board, Melchior's market corner.
-    ("fair_tent2", 5, 9),
-    ("fair_board", 4, 17),
-    ("fair_stall", 7, 25), ("fair_barrels", 12, 26),
-    # East — the striped tent, a refreshment cart, Lucca's telepod.
-    ("fair_tent", 40, 4), ("fair_cart", 40, 11),
-    ("fair_telepod", 41, 24),
-    # Entrance at the foot, lit by a pair of lanterns.
-    ("fair_arch", 22, 30),
-    ("fair_lantern", 20, 27), ("fair_lantern", 31, 27),
-    # Garden bed A (west) and B (east): a tree and blooms in each grass patch.
-    ("fair_tree", 13, 7), ("fair_flowers", 14, 11),
-    ("fair_tree", 35, 19), ("fair_hedge", 38, 22),
-    # Greenery gathered in corner clumps (framing, not a ring).
-    ("fair_tree", 2, 2), ("fair_hedge", 5, 4),
-    ("fair_tree", 47, 2),
-    ("fair_tree", 2, 29), ("fair_hedge", 5, 30),
-    ("fair_tree", 47, 29), ("fair_hedge", 44, 30),
+    # The market street down the middle: bell → fountain → entrance arch.
+    ("fair_bell", 18, 0),
+    ("fair_banner", 15, 1), ("fair_banner", 23, 1),
+    ("fair_fountain", 19, 9),
+    ("fair_flowers", 19, 6), ("fair_flowers", 19, 13),
+    ("fair_bench", 15, 11), ("fair_bench_l", 24, 11),
+    ("fair_arch", 17, 23),
+    ("fair_lantern", 15, 21), ("fair_lantern", 23, 21),
+    # West of the street: Bekkler's tent, Melchior's stall + barrels, telepod, board.
+    ("fair_tent2", 10, 1),
+    ("fair_stall", 12, 6), ("fair_barrels", 12, 15),
+    ("fair_telepod", 2, 5),
+    ("fair_board", 2, 13),
+    # East of the street: the striped tent and a refreshment cart.
+    ("fair_tent", 25, 1),
+    ("fair_cart", 25, 6),
+    # Trees and bushes planted in the grass quadrants (natural clumps, framing).
+    ("fair_tree", 5, 1), ("fair_bush", 8, 4),
+    ("fair_tree", 34, 1), ("fair_bush", 31, 5),
+    ("fair_tree", 5, 16), ("fair_bush", 9, 20), ("fair_bush", 2, 21),
+    ("fair_tree", 28, 14), ("fair_tree", 34, 19),
+    ("fair_bush", 25, 20), ("fair_bush", 32, 16),
 ]
 
-# Spawns in the open plaza, clear of props. The first entry is where a lone
-# joiner lands (and the notice-board test walks from).
+# Spawns in the open plaza/avenues, clear of props. The first entry is where a
+# lone joiner lands (and the notice-board test walks from).
 SPAWN = [
-    {"x": 24, "y": 8, "dir": "down"},
-    {"x": 16, "y": 13, "dir": "right"}, {"x": 33, "y": 13, "dir": "left"},
-    {"x": 12, "y": 20, "dir": "down"}, {"x": 24, "y": 23, "dir": "up"},
-    {"x": 30, "y": 21, "dir": "up"}, {"x": 18, "y": 24, "dir": "up"},
-    {"x": 35, "y": 16, "dir": "left"}, {"x": 20, "y": 8, "dir": "down"},
-    {"x": 31, "y": 8, "dir": "down"}, {"x": 24, "y": 27, "dir": "up"},
+    {"x": 19, "y": 18, "dir": "up"},
+    {"x": 16, "y": 8, "dir": "down"}, {"x": 23, "y": 9, "dir": "down"},
+    {"x": 8, "y": 11, "dir": "right"}, {"x": 31, "y": 11, "dir": "left"},
+    {"x": 18, "y": 18, "dir": "up"}, {"x": 21, "y": 18, "dir": "up"},
+    {"x": 19, "y": 20, "dir": "up"}, {"x": 20, "y": 4, "dir": "down"},
 ]
 
 
@@ -215,23 +212,25 @@ def _compose_sheet():
 
 
 def _plaza_grid():
+    # Grass base (0); lay stone (1) as the central plaza + the avenues.
     c = PLAZA
-    def inside(vx, vy):
-        return 1 if (abs(vx - c["cx"]) / c["rx"]) ** c["p"] + (abs(vy - c["cy"]) / c["ry"]) ** c["p"] <= 1 else 0
-    g = [[inside(x, y) for x in range(W + 1)] for y in range(H + 1)]
-    # One majority-smoothing pass erodes lone spikes/notches on the plaza edge.
+    g = [[0] * (W + 1) for _ in range(H + 1)]
+    for y in range(H + 1):
+        for x in range(W + 1):
+            if ((x - c["cx"]) / c["rx"]) ** 2 + ((y - c["cy"]) / c["ry"]) ** 2 <= 1:
+                g[y][x] = 1
+    for x0, y0, x1, y1 in PATHS:
+        for y in range(max(0, y0), min(H, y1) + 1):
+            for x in range(max(0, x0), min(W, x1) + 1):
+                g[y][x] = 1
+    # One majority pass softens the rigid right-angle corners where the plaza
+    # meets the avenues, so the stone reads a little more organic.
     out = [row[:] for row in g]
     for y in range(H + 1):
         for x in range(W + 1):
             n = sum(g[y + dy][x + dx] for dy in (-1, 0, 1) for dx in (-1, 0, 1)
                     if 0 <= x + dx <= W and 0 <= y + dy <= H)
             out[y][x] = 1 if n >= 6 else (0 if n <= 2 else g[y][x])
-    # Carve grass garden beds back into the stone (0 = grass vertices).
-    for x0, y0, x1, y1 in GARDEN_BEDS:
-        for y in range(y0, y1 + 1):
-            for x in range(x0, x1 + 1):
-                if 0 <= x <= W and 0 <= y <= H:
-                    out[y][x] = 0
     return out
 
 
