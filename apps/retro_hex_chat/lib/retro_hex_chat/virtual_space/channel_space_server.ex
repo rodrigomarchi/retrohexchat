@@ -15,7 +15,6 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   require Logger
 
   alias RetroHexChat.Channels.Server, as: ChannelServer
-  alias RetroHexChat.Presence.Tracker
   alias RetroHexChat.VirtualSpace.DirectMessageSpace
   alias RetroHexChat.VirtualSpace.Events
   alias RetroHexChat.VirtualSpace.Map, as: SpaceMap
@@ -266,17 +265,14 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
            DirectMessageSpace.normalize_participants(participants),
          ^space_id <- DirectMessageSpace.space_id(nick_a, nick_b),
          {:ok, map_definition} <- SpaceMap.get("end_of_time") do
-      Phoenix.PubSub.subscribe(@pubsub, "presence:global")
       Phoenix.PubSub.subscribe(@pubsub, direct_message_pm_topic(nick_a, nick_b))
       map_definition = put_direct_message_label(map_definition, participants)
-      global_online_keys = direct_message_global_online_keys(participants)
 
       state = %{
         kind: :direct_message,
         channel_name: space_id,
         participants_allowed: participants,
         viewer_keys: %{},
-        global_online_keys: global_online_keys,
         map: map_definition,
         blocked: SpaceMap.collision_set(map_definition),
         participants: %{},
@@ -419,14 +415,6 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     {:noreply, remove_channel_member(state, nickname)}
   end
 
-  def handle_info({:user_connected, %{nickname: nickname}}, %{kind: :direct_message} = state) do
-    {:noreply, update_direct_message_presence(state, nickname, true)}
-  end
-
-  def handle_info({:user_disconnected, %{nickname: nickname}}, %{kind: :direct_message} = state) do
-    {:noreply, update_direct_message_presence(state, nickname, false)}
-  end
-
   def handle_info(
         {:nick_changed, %{old_nick: old_nick, new_nick: new_nick}},
         state
@@ -501,16 +489,10 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   end
 
   defp seed_direct_message_member(state, nickname) do
-    key = channel_participant_key(nickname)
-
-    add_participant(
-      state,
-      nickname,
-      :participant,
-      nil,
-      false,
-      direct_message_globally_online?(state, key)
-    )
+    # Seed both members' seats but mark them offline: a DM member becomes
+    # visible only when they actually enter the space (become a viewer), not
+    # merely by being connected to the chat.
+    add_participant(state, nickname, :participant, nil, false, false)
   end
 
   defp add_participant(state, nickname, role, previous, broadcast?, online?) do
@@ -587,36 +569,15 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     Map.get(viewer_keys, key, 0) > 0
   end
 
-  defp direct_message_global_online_keys(participants) do
-    Enum.reduce(participants, MapSet.new(), fn nickname, acc ->
-      if Tracker.online?("presence:global", nickname) do
-        MapSet.put(acc, channel_participant_key(nickname))
-      else
-        acc
-      end
-    end)
-  end
-
-  defp direct_message_globally_online?(%{global_online_keys: keys}, key) do
-    MapSet.member?(keys, key)
-  end
-
-  defp put_direct_message_global_online(%{kind: :direct_message} = state, key) do
-    update_in(state.global_online_keys, &MapSet.put(&1, key))
-  end
-
-  defp delete_direct_message_global_online(%{kind: :direct_message} = state, key) do
-    update_in(state.global_online_keys, &MapSet.delete(&1, key))
-  end
-
+  # A DM member leaves the scene as soon as they stop viewing the space. There
+  # is no "globally online" fallback: presence in the space is what shows them.
   defp maybe_mark_direct_message_participant_offline(%{kind: :direct_message} = state, key) do
     case Map.get(state.participants, key) do
       nil ->
         state
 
       _participant ->
-        if direct_message_viewer_online?(state, key) or
-             direct_message_globally_online?(state, key) do
+        if direct_message_viewer_online?(state, key) do
           state
         else
           mark_participant_offline(state, key)
@@ -624,25 +585,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
     end
   end
 
-  defp update_direct_message_presence(state, nickname, online?) do
-    key = channel_participant_key(nickname)
-
-    if Map.has_key?(state.participants, key) do
-      if online? do
-        state
-        |> put_direct_message_global_online(key)
-        |> mark_participant_online(key)
-      else
-        state
-        |> delete_direct_message_global_online(key)
-        |> maybe_mark_direct_message_participant_offline(key)
-      end
-    else
-      state
-    end
-  end
-
-  defp mark_participant_online(state, key, attrs \\ %{}) do
+  defp mark_participant_online(state, key, attrs) do
     case Map.get(state.participants, key) do
       nil ->
         state

@@ -202,8 +202,9 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert {:error, %{reason: "not_in_channel"}} = join_channel_space(channel, "mallory")
     end
 
-    test "direct message spaces use the End of Time scene and snapshot only online participants" do
+    test "direct message spaces use the End of Time scene and show only members in the space" do
       [local, peer] = participants = unique_dm_participants()
+      # The peer is connected to the chat but has not entered the space.
       track_online(peer)
       space_id = DirectMessageSpace.space_id(local, peer)
       cleanup_direct_message_space(space_id)
@@ -223,13 +224,28 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert %{text: ^expected_label} =
                Enum.find(space_init.map.labels, &(&1.id == "dm_nameplate"))
 
-      assert Map.keys(space_init.snapshot.participants) |> Enum.sort() ==
-               [participant_key(local), participant_key(peer)] |> Enum.sort()
-
-      refute Map.has_key?(space_init.snapshot.participants, "nick:charlie")
+      # Being online in the app is not enough: only members present in the space
+      # are shown, so the peer's seat stays empty (no orphan nickname).
+      assert Map.keys(space_init.snapshot.participants) == [participant_key(local)]
+      refute Map.has_key?(space_init.snapshot.participants, participant_key(peer))
     end
 
-    test "direct message spaces omit an offline peer from the initial snapshot" do
+    test "a direct message peer appears once they enter the space" do
+      [local, peer] = participants = unique_dm_participants()
+      space_id = DirectMessageSpace.space_id(local, peer)
+      cleanup_direct_message_space(space_id)
+
+      assert {:ok, _local_init, _s1} =
+               join_direct_message_space(space_id, local, participants)
+
+      assert {:ok, peer_init, _s2} =
+               join_direct_message_space(space_id, peer, participants)
+
+      assert Map.keys(peer_init.snapshot.participants) |> Enum.sort() ==
+               [participant_key(local), participant_key(peer)] |> Enum.sort()
+    end
+
+    test "direct message spaces omit a peer who is not in the space" do
       [local, peer] = participants = unique_dm_participants()
       space_id = DirectMessageSpace.space_id(local, peer)
       cleanup_direct_message_space(space_id)

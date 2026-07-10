@@ -63,14 +63,25 @@ defmodule RetroHexChat.VirtualSpace.DirectMessageSpaceTest do
     refute Map.has_key?(snapshot_participants, participant_key(peer))
   end
 
-  test "globally online peer appears and the room plaque names both users" do
+  test "a globally online peer stays hidden until they enter the space" do
     [local, peer] = participants = unique_participants()
+    # Connected to the chat, but not viewing the space.
     track_online(peer)
 
     ctx = start_private_space(participants, local)
-    snapshot_participants = ctx.joined.snapshot.participants
 
-    assert Map.keys(snapshot_participants) |> Enum.sort() ==
+    # Global presence is not enough — only local is in the scene.
+    assert Map.keys(ctx.joined.snapshot.participants) == [participant_key(local)]
+
+    # The peer entering the space makes them appear, and the plaque names both.
+    {:ok, peer_joined} =
+      VirtualSpace.join_direct_message_space(
+        ctx.space_id,
+        %{user_id: nil, nickname: peer},
+        participants
+      )
+
+    assert Map.keys(peer_joined.snapshot.participants) |> Enum.sort() ==
              [participant_key(local), participant_key(peer)] |> Enum.sort()
 
     expected_label = "#{local} + #{peer}"
@@ -79,18 +90,21 @@ defmodule RetroHexChat.VirtualSpace.DirectMessageSpaceTest do
              Enum.find(ctx.joined.map.labels, &(&1.id == "dm_nameplate"))
   end
 
-  test "global disconnect removes a DM peer even before presence untracks" do
+  test "a peer who leaves the space is removed from the snapshot" do
     [local, peer] = participants = unique_participants()
-    track_online(peer)
-
     ctx = start_private_space(participants, local)
     peer_key = participant_key(peer)
 
-    Phoenix.PubSub.broadcast(
-      RetroHexChat.PubSub,
-      "presence:global",
-      {:user_disconnected, %{nickname: peer}}
-    )
+    {:ok, peer_joined} =
+      VirtualSpace.join_direct_message_space(
+        ctx.space_id,
+        %{user_id: nil, nickname: peer},
+        participants
+      )
+
+    assert Map.has_key?(peer_joined.snapshot.participants, peer_key)
+
+    VirtualSpace.leave_direct_message_space_viewer(ctx.space_id, peer_key)
 
     wait_until(fn ->
       {:ok, snapshot} = VirtualSpace.direct_message_snapshot(ctx.space_id)
