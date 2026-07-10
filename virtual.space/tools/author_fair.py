@@ -74,7 +74,7 @@ PROPS = [
     ("fair_bell", "anim/bell", 3, 4, 950),
     ("fair_telepod", "anim/telepod", 3, 3, 480),
     ("fair_fountain", "anim/fountain", 3, 3, 1500),
-    ("fair_lantern", "anim/lantern", 2, 2, 720),
+    ("fair_lantern", "anim/lantern", 1, 5, 720),
     ("fair_tent", "bekkler_tent.png", 4, 4, None),
     ("fair_stall", "melchior_stall.png", 3, 3, None),
     ("fair_cart", "drink_cart.png", 3, 3, None),
