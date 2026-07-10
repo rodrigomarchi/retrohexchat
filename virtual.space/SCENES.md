@@ -215,3 +215,66 @@ Wire it up:
 - **Props can overhang the void** — decor is drawn regardless of the floor, so a
   monument's top may rise off the island into the starfield (dramatic); only its
   base needs to sit on walkable stone (block that footprint).
+
+## 8. Art-style COHESION — the hardest lesson (Millennial Fair rebuild)
+
+The Millennial Fair (channel scene) was rebuilt from scratch after repeated
+rejections. The problem was **never layout** — it was that
+`create_map_object` at `high detail` on a large canvas produces beautiful but
+**illustration-scale** sprites that read as *stickers pasted on a tile floor*.
+A cohesive JRPG/Chrono-Trigger map needs floor, props and the **avatar** all at
+the **same pixel density and palette register**. Hard-won rules:
+
+- **Generate props FLAT and NATIVE.** For a cohesive pixel map use
+  `detail: "low detail"`, `shading: "flat shading"`, `outline: "single color
+  outline"`, and generate each prop at (roughly) its **native on-map pixel
+  size** — set its tile size to `ceil(content_bbox / 16)` so the packer neither
+  up- nor down-scales it (crisp pixels that match the 16px tiles). A 5×5 tent is
+  ~80px, so generate ~64-80px, not 112px. Regenerate the **tileset** flat too
+  (`low detail`, `basic shading`).
+- **Judge cohesion against the AVATAR, not in isolation.** A prop can look great
+  alone and still clash with the character. Calibrate 2-3 flat props, render
+  them **next to the actual avatar sprite** (crop a frame from
+  `avatars/knight.png`), confirm the style, THEN batch-regenerate everything.
+  Cost of skipping this: regenerating ~15 props twice.
+- **Trees are PLANTED, never potted; grass is not a coloured square.** A potted
+  tree standing on grass, or a flat lime rectangle "garden bed", reads as lazy.
+  Plant trees (trunk in the ground) and fill grass with real greenery.
+- **Curate, don't mirror-stamp.** Auto-mirroring the same bench/lantern/stall N
+  times to fill space reads as repetitive/lazy. Hand-place a varied set — each
+  piece with a reason and a spot — asymmetric but balanced.
+
+### Floor design — circulation, not a uniform slab
+
+A single repeated tile (all stone, or all bright grass) reads *dead*. Give the
+ground **design**: a GRASS base with STONE **avenues** (a market street +
+crossing) and a round central **plaza**, structures **lining** the avenues (not
+floating in the lawn). One majority-smoothing pass softens the rigid right-angle
+path corners. Grade the tileset (`ImageEnhance`) to mute an over-bright grass
+green so it doesn't fight the muted stone.
+
+### Validate the layout programmatically (before trusting a browser)
+
+The author script's determinism lets you assert the layout in a few lines —
+do this every rebuild:
+- **Prop overlaps**: pairwise bbox test over `decor` using the vocab `w/h`.
+- **Spawns & seats off collision**, and **not on grass** if they should be on stone.
+- **Greedy-walk reachability**: `OfficeTest`/`space_channel_test` walk with a
+  greedy **X-then-Y** stepper, and `input` returns `{:error, :blocked}` on a
+  blocked tile — so the *entire* path from `spawn[0]` to each board/seat approach
+  tile must be collision-free. Simulate that greedy walk in Python against the
+  collision set and pick the first spawn + approach tiles so it never snags
+  (a prop's base row across the corridor will stall it).
+- **Animated frames on-sheet**: every frame cell of each animated tile must be
+  non-empty (see `ANIMATIONS.md` — widen `SHEET_COLS`, and keep a guard).
+
+### Collision helpers worth reusing
+
+- Auto-derive collision from `decor` (block each prop's **base row**); a
+  `WALKTHROUGH` set (the arch) blocks only its end posts; a `NO_COLLIDE` set
+  (benches) blocks nothing so they're walkable **and** sittable (the seat tile
+  must be off-collision for `map_test`).
+- Re-pointing the channel map (`init_channel_state` → `SpaceMap.get`) breaks the
+  coord-coupled `OfficeTest` (seats, zones, board) and `space_channel_test` — the
+  fair had to supply its own `zones()`/`seats()`/`interactables()` and every test
+  coordinate had to move with the layout.

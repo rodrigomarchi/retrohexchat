@@ -220,3 +220,33 @@ screenshot for the live look. Finish with `make ci` (9/9).
   moving; layout tests can't see animation.
 - **Commit the raw frames** — `scenes/<scene>/anim/<name>/*.png` is tracked
   source art; `author_scene.py` is deterministic and re-reads them.
+
+## 9. More gotchas — from the Millennial Fair (flat 16-bit) pass
+
+- **Sheet must fit the widest strip, or frames flicker.** An animated tile packs
+  `frames` cells horizontally, so its strip is `w × frames` tiles wide. If that
+  exceeds `SHEET_COLS` the trailing frames land off the sheet and render **empty
+  → the prop blinks** on those frames. A 4-tile prop × 6 frames = 24 tiles wide.
+  Set `SHEET_COLS` accordingly **and keep a guard** that raises if any
+  `w*frames > SHEET_COLS` (it fails loudly instead of silently flickering).
+- **Verify every frame cell is non-empty** after packing (crop each frame rect
+  from the sheet, assert `getbbox()` is not None) — the cheapest blink check.
+- **"Floating" = the art has no base.** A hanging-lantern sprite with no post
+  reads as floating in mid-air. Generate the *whole* object (a lamppost = post +
+  base + lamp head), not just the glowing part.
+- **Blinking ≠ animating.** If the animation frames disagree on the object's
+  fixed parts (a lantern whose post appears/vanishes frame to frame), it reads as
+  a strobe. Animate ONLY the moving element and keep the base identical across
+  frames (union-bbox handles alignment; the *prompt* must say "the post stays
+  perfectly still").
+- **Subtle beats spectacular.** An over-strong effect prompt ("electricity arcs
+  crackle") gave the telepod huge white bursts that read as a *mortar & pestle*.
+  Prompt for a **faint/small** effect ("a few faint blue sparks flicker at the
+  tip; the body stays perfectly still") and a **clean readable base shape**.
+- **Cohesive flat animations.** Generate the animated object itself in the flat
+  16-bit register (`detail: "low detail"`, `shading: "flat shading"`, native
+  size) — an animation only looks as coherent as the object it animates
+  (see `SCENES.md` §8).
+- **Animating a map-object directly works.** `animate_object` takes a
+  `create_map_object` id (not just character ids); the frames come back under
+  `.../objects/<id>/animations/<group>/unknown/{i}.png`.

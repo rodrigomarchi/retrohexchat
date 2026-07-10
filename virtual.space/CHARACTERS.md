@@ -247,3 +247,23 @@ Grid tip: keep the roster a multiple of 4 so the picker stays a clean grid.
 - **Picker lives in `components/ui/`**, never `chat_live/components/`.
 - **Renderer is size-agnostic**; don't special-case 36px there.
 - **Self deltas drop non-position fields** unless explicitly carried.
+
+## 7. Avatar rendering across maps (the bot regression)
+
+- **Auto-load the character sheet, don't rely on the map.** The default red-tunic
+  hero lives on `/images/space/character.png`; the 7 class avatars on their own
+  `avatars/*.png`. The atlas (`sprite_atlas.js`) loads `AVATAR_SHEETS`
+  **independent of the active map** — and `character.png` MUST be in that list.
+  It wasn't: the hero sheet used to arrive only because the old channel map
+  (Overworld/ElficForest) happened to declare a `character` tileset. When the new
+  channel scene didn't, **bots** (and anyone who never picked a class, who all
+  fall back to `redtunic_hero`) rendered a **nickname with no sprite**. Fix: put
+  `{ id: "character", src: "/images/space/character.png" }` in `AVATAR_SHEETS` so
+  the default avatar resolves on **every** map.
+- **Bots use the default avatar.** They never open the picker; the server seeds
+  them via `avatar_for/2 = hd(@avatars) = "redtunic_hero"`. Nothing bot-specific
+  is needed on the client beyond the default sheet being loaded.
+- **A nickname with no avatar = the sheet isn't loaded** (or the participant's
+  `avatar` id has no sheet). `atlas.avatar` returns the rect as soon as the sheet
+  is *registered*; the label draws from `nickname` alone, so a missing/late sheet
+  shows as a floating name. Auto-loading the needed sheets is the durable fix.
