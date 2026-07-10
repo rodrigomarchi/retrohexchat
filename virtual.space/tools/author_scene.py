@@ -73,12 +73,22 @@ ANIM_PROPS = {
     "eot_lamp": ("lamp", 0, 23, 2, 4, 780),
     "eot_portal": ("portal", 0, 27, 3, 3, 700),
     "eot_star": ("star", 0, 30, 2, 2, 1400),
+    # The same twinkle art, shrunk to a faint pinpoint: the deep-sky field.
+    "eot_star_far": ("star", 0, 32, 1, 1, 1600),
 }
 
-# Twinkling stars scattered across the cosmic void (outside the island). The
-# per-position seed desyncs each one's twinkle so the whole sky shimmers.
-STARS = [(3, 2), (30, 2), (33, 4), (2, 11), (36, 10),
-         (5, 20), (33, 20), (18, 1), (9, 21)]
+# Animated tiles whose frames are scaled down to a small point (px) centred in
+# the block, instead of packed at native size — used for the distant stars.
+SCALE_TO_FIT = {"eot_star_far": 5}
+
+# A few bright twinkling stars near the island — the foreground of the sky. The
+# per-position seed desyncs each one's twinkle so nothing pulses in lockstep.
+STARS = [(3, 2), (30, 2), (33, 4), (2, 11), (36, 10), (5, 20), (33, 20)]
+
+# The deep-sky field: tiny distant pinpoints twinkling far away, scattered
+# across the void by a hash so they read as an endless starfield (not a grid).
+# A void cell gets a far star when its hash clears this threshold.
+FAR_STAR_MOD = 5
 
 
 def _compose_sheet():
@@ -144,11 +154,20 @@ def _compose_sheet():
         ox = max(0, (cw - w * T) // 2)
         oy = max(0, ch - h * T)
         dx = (w * T - min(cw, w * T)) // 2
+        fit = SCALE_TO_FIT.get(name)
         for i, im in enumerate(ims):
             crop = im.crop((union[0] + ox, union[1] + oy,
                             min(union[0] + ox + w * T, union[2]), union[3]))
+            if fit:
+                scale = fit / max(crop.width, crop.height)
+                crop = crop.resize((max(1, round(crop.width * scale)),
+                                    max(1, round(crop.height * scale))), Image.LANCZOS)
             block = Image.new("RGBA", (w * T, h * T), (0, 0, 0, 0))
-            block.alpha_composite(crop, (dx, h * T - crop.height))
+            if fit:  # centre the pinpoint in its tile
+                block.alpha_composite(crop, ((w * T - crop.width) // 2,
+                                             (h * T - crop.height) // 2))
+            else:  # bottom-anchor like a standing prop
+                block.alpha_composite(crop, (dx, h * T - crop.height))
             sheet.alpha_composite(block, ((col + i * w) * T, row * T))
         vocab[name] = {"col": col, "row": row, "w": w, "h": h,
                        "frames": len(ims), "period_ms": period}
@@ -186,6 +205,9 @@ def build():
             nw, ne, sw, se = g[y][x], g[y][x + 1], g[y + 1][x], g[y + 1][x + 1]
             row.append("void" if not (nw or ne or sw or se) else f"f{nw}{ne}{sw}{se}")
         floor.append(row)
+    # Deep-sky field: a hash-scattered pinpoint in a fraction of the void cells.
+    far_stars = [(x, y) for y in range(H) for x in range(W)
+                 if floor[y][x] == "void" and _hash(x, y) % FAR_STAR_MOD == 0]
     solid = {(x + dx, y + dy) for (x, y, w, h) in SOLID for dx in range(w) for dy in range(h)}
     collision = []
     for y in range(H):
@@ -198,7 +220,8 @@ def build():
         "width": W, "height": H, "tile_size": T, "ground": "void", "columns": cols,
         "vocab": vocab,
         "floor": floor,
-        "decor": [{"x": x, "y": y, "tile": "eot_star"} for (x, y) in STARS]
+        "decor": [{"x": x, "y": y, "tile": "eot_star_far"} for (x, y) in far_stars]
+        + [{"x": x, "y": y, "tile": "eot_star"} for (x, y) in STARS]
         + [{"x": c, "y": r, "tile": n} for (n, c, r) in DECOR],
         "collision": collision,
         "spawn": SPAWN,
@@ -219,6 +242,8 @@ def build():
     for y in range(H):
         for x in range(W):
             prev.alpha_composite(rect(floor[y][x]), (x * T, y * T))
+    for x, y in far_stars:
+        prev.alpha_composite(rect("eot_star_far"), (x * T, y * T))
     for x, y in STARS:
         prev.alpha_composite(rect("eot_star"), (x * T, y * T))
     for n, c, r in DECOR:
