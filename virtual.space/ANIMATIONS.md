@@ -250,3 +250,15 @@ screenshot for the live look. Finish with `make ci` (9/9).
 - **Animating a map-object directly works.** `animate_object` takes a
   `create_map_object` id (not just character ids); the frames come back under
   `.../objects/<id>/animations/<group>/unknown/{i}.png`.
+- **To animate an existing static prop, regenerate it as an object.** Map
+  objects auto-delete after 8h, so the original id is usually gone. Recreate the
+  prop with `create_map_object` (same flat-16-bit params to stay cohesive), then
+  `animate_object`; frame 0 becomes the new static. Judge the regen against the
+  current sprite before accepting — swap the `PROPS` source from `foo.png` to
+  `anim/foo` and delete the orphaned static PNG.
+- **One coherent breeze beats scattered effects.** When several outdoor props
+  animate at once (flags, tent pennants, foliage), tie them to a *single* wind:
+  scale `period_ms` by the material's weight — light fabric ripples faster
+  (~850–1000 ms), heavy foliage sways slower (~1500–1600 ms). Same physical
+  cause, so the whole scene reads alive instead of twitchy. The per-position
+  seed already desyncs repeated props (every tree/bush out of phase).
