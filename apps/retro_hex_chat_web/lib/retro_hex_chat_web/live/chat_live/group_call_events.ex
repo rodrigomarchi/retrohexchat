@@ -220,8 +220,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   def handle_event("group_call_closed", payload, %{assigns: %{group_call: %{}}} = socket) do
     message =
       case value(payload, :reason) do
-        nil -> dgettext("chat", "Group call ended.")
-        reason -> dgettext("chat", "Group call ended: %{reason}", reason: reason)
+        nil -> dgettext("group_call", "Group call ended.")
+        reason -> dgettext("group_call", "Group call ended: %{reason}", reason: reason)
       end
 
     socket =
@@ -242,7 +242,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_client_warning", payload, %{assigns: %{group_call: %{}}} = socket) do
-    message = value(payload, :message) || dgettext("chat", "Group call media is degraded.")
+    message = value(payload, :message) || dgettext("group_call", "Group call media is degraded.")
 
     socket =
       update_call(socket, fn call ->
@@ -255,7 +255,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event("group_call_client_error", payload, %{assigns: %{group_call: %{}}} = socket) do
-    message = value(payload, :message) || dgettext("chat", "Group call connection failed.")
+    message = value(payload, :message) || dgettext("group_call", "Group call connection failed.")
 
     socket =
       update_call(socket, fn call ->
@@ -290,7 +290,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       {:redirect, nil} ->
         Messages.error_event(
           socket,
-          dgettext("chat", "You must be registered with NickServ to use group calls.")
+          dgettext("group_call", "You must be registered with NickServ to use group calls.")
         )
 
       {:error, message} ->
@@ -299,22 +299,23 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp active_channel(%{assigns: %{show_status_tab: true}}),
-    do: {:error, dgettext("chat", "Open a channel before starting a group call.")}
+    do: {:error, dgettext("group_call", "Open a channel before starting a group call.")}
 
   defp active_channel(%{assigns: %{session: %{active_pm: pm}}}) when is_binary(pm),
-    do: {:error, dgettext("chat", "Group calls are available in channels only.")}
+    do: {:error, dgettext("group_call", "Group calls are available in channels only.")}
 
   defp active_channel(%{assigns: %{session: %{active_channel: channel}}})
        when is_binary(channel) and channel != "",
        do: {:ok, channel}
 
   defp active_channel(_socket),
-    do: {:error, dgettext("chat", "Open a channel before starting a group call.")}
+    do: {:error, dgettext("group_call", "Open a channel before starting a group call.")}
 
   defp require_identified(%{assigns: %{session: %{identified: true}}}), do: :ok
 
   defp require_identified(_socket),
-    do: {:error, dgettext("chat", "You must be identified with NickServ to use group calls.")}
+    do:
+      {:error, dgettext("group_call", "You must be identified with NickServ to use group calls.")}
 
   defp join_channel_call(socket, channel_name, user_id) do
     actor = %{user_id: user_id, nickname: socket.assigns.session.nickname}
@@ -424,7 +425,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         end)
 
       "disconnected" ->
-        message = dgettext("chat", "Group call media connection interrupted. Trying to recover.")
+        message =
+          dgettext("group_call", "Group call media connection interrupted. Trying to recover.")
 
         update_call(socket, fn call ->
           call
@@ -435,7 +437,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       "failed" ->
         message =
           dgettext(
-            "chat",
+            "group_call",
             "Group call media connection failed. Leave and rejoin the call to retry."
           )
 
@@ -494,7 +496,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         Messages.error_event(socket, message)
 
       _error ->
-        Messages.error_event(socket, dgettext("chat", "Could not update participant media."))
+        Messages.error_event(
+          socket,
+          dgettext("group_call", "Could not update participant media.")
+        )
     end
   end
 
@@ -505,8 +510,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
          :ok <- GroupCall.kick_participant(socket.assigns.group_call.token, actor, participant_id) do
       update_call(socket, &remove_participant(&1, participant_id))
     else
-      {:error, message} when is_binary(message) -> Messages.error_event(socket, message)
-      _error -> Messages.error_event(socket, dgettext("chat", "Could not remove participant."))
+      {:error, message} when is_binary(message) ->
+        Messages.error_event(socket, message)
+
+      _error ->
+        Messages.error_event(socket, dgettext("group_call", "Could not remove participant."))
     end
   end
 
@@ -518,7 +526,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       |> push_event("window_command", %{action: "close", id: @window_id})
     else
       {:error, message} when is_binary(message) -> Messages.error_event(socket, message)
-      _error -> Messages.error_event(socket, dgettext("chat", "Could not end group call."))
+      _error -> Messages.error_event(socket, dgettext("group_call", "Could not end group call."))
     end
   end
 
@@ -532,7 +540,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   defp find_participant(call, participant_id) do
     case Enum.find(call.participants, &(&1.id == participant_id)) do
-      nil -> {:error, dgettext("chat", "Participant is no longer in the group call.")}
+      nil -> {:error, dgettext("group_call", "Participant is no longer in the group call.")}
       participant -> {:ok, participant}
     end
   end
@@ -552,7 +560,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         {:ok, %{user_id: user_id, nickname: socket.assigns.session.nickname}}
 
       {:redirect, nil} ->
-        {:error, dgettext("chat", "You must be registered to moderate group calls.")}
+        {:error, dgettext("group_call", "You must be registered to moderate group calls.")}
     end
   end
 

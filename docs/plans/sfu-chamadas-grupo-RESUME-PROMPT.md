@@ -314,25 +314,60 @@ Estado/decisoes:
   `AddressBookTest` por sandbox ownership durante `ChatLive.terminate/2`; o
   teste falho passou isolado e a segunda execucao completa de `make test`
   passou.
-- I18n caveat: `make i18n.gettext.check` foi executado e falhou por catalogos
-  Gettext fora de sync. `make i18n.gettext.rebuild` passou, mas gerou centenas
-  de mudancas em catalogos nao relacionados ao SFU; essas mudancas geradas em
-  `priv/gettext` foram descartadas para manter o diff escopado. Retomar depois
-  com uma atualizacao fina dos catalogos `chat`/`group_call`.
+- I18n escopado retomado apos o commit SFU principal:
+  - novas strings da UI/LiveView da conferencia foram movidas para o dominio
+    `group_call` no app web;
+  - catalogos `group_call.pot`/`group_call.po` foram gerados para os dois apps;
+  - traducoes foram preenchidas via venv temporario com Argos/Polib somente
+    para `group_call.po`;
+  - `scripts/i18n_machine_translate_po.py` passou a mapear `pt_BR` para o
+    modelo Argos `pt`;
+  - `scripts/i18n_apply_translation_overrides.py` recebeu tres overrides de
+    status bar com placeholders;
+  - `docs/reference/i18n-catalogs.md` registra o dominio `group_call`;
+  - checks focados de placeholder e source fallback passaram com 0 findings.
+- Caveat i18n: `make i18n.gettext.check` global continua bloqueado por
+  catalogos antigos fora de sync e por mudancas de location em dominios nao
+  relacionados ao SFU. O diff amplo de 700+ arquivos do rebuild global foi
+  descartado de proposito para manter esta feature revisavel.
+- F4 local retomada apos o commit SFU principal:
+  - `chat-group-call.spec.ts` agora cobre, com 3 browsers, video off/on e audio
+    off/on de Bob enquanto Alice e Carol observam propagacao de `media_state`;
+  - apos reativacao, os tres browsers validam dois videos remotos vivos.
+- Sincronizacao Git feita antes do commit/push deste bloco:
+  - mudancas nao commitadas guardadas com stash;
+  - `git fetch origin` trouxe dois commits novos em `origin/main`;
+  - `git pull --rebase origin main` reaplicou o commit SFU local sobre
+    `origin/main`;
+  - `git stash pop` reaplicou este bloco sem conflitos.
+- Validacoes finais executadas apos i18n escopado, F4 media transitions e
+  sincronizacao com `origin/main`:
+  - `mix format`;
+  - `npm run format:check --prefix apps/retro_hex_chat_web/assets`;
+  - `mix format --check-formatted`;
+  - `mix test apps/retro_hex_chat/test/retro_hex_chat/group_call`: 50 testes,
+    0 falhas;
+  - `mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/group_call_flow_test.exs --include liveview_feature`: 12 testes,
+    0 falhas;
+  - `npm test --prefix apps/retro_hex_chat_web/assets -- test/hooks/group_call/group_call_webrtc_hook.test.js`: 3 testes,
+    0 falhas;
+  - `npx tsc --noEmit` em `e2e/`;
+  - `npm run lint --prefix apps/retro_hex_chat_web/assets`;
+  - checks focados de i18n para `group_call.po`: 42 arquivos, 0 findings;
+  - `git diff --check`;
+  - `MIX_ENV=e2e ... mix assets.build`;
+  - `npm test --prefix e2e -- chat-group-call.spec.ts`: 2 testes, 0 falhas.
 - `mix compile --warnings-as-errors` falha por warning pre-existente em
   `RetroHexChatWeb.Admin.AppInfoPage` sobre `RetroHexChat.P2P.Registry`.
 
 Escopo recomendado ao retomar:
 1. Conferir `git status`.
 2. Ler o progresso atual.
-3. Se o Rodrigo autorizar, fazer commit do bloco atual. Antes do commit, repetir:
-   `rtk git fetch origin`, `rtk git status --short --branch` e
-   `rtk git pull --ff-only origin main` se o working tree permitir.
-4. Proximo desenvolvimento tecnico: i18n escopado se for possivel sem rebuild
-   amplo. Nao retomar a bateria multi-browser 4/10/25/50/100 ate o Rodrigo
-   pedir.
-5. Rodar testes focados e, se viavel, `make test`.
-6. Atualizar `sfu-chamadas-grupo-PROGRESS.md` com resultados, aprendizados e
-   pendencias.
-7. Nao commitar sem autorizacao.
+3. Antes de qualquer commit/push futuro, repetir `rtk git fetch origin`,
+   `rtk git status --short --branch` e `rtk git pull --ff-only origin main`
+   se o working tree permitir.
+4. Nao retomar a bateria multi-browser 4/10/25/50/100 ate o Rodrigo pedir.
+5. Proximo desenvolvimento tecnico deve ser definido pelo Rodrigo; o bloco
+   atual ja tem validacoes focadas registradas.
+6. Nao commitar sem autorizacao explicita.
 ```

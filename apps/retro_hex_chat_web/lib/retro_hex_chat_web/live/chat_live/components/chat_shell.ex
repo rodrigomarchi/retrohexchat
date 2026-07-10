@@ -86,42 +86,43 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
          status: status,
          participants: participants
        }) do
-    channel = channel_name || dgettext("chat", "Group Call")
+    channel = channel_name || dgettext("group_call", "Group Call")
     count = length(participants || [])
 
     %{
       label: group_call_label(status, channel, count),
-      title: dgettext("chat", "Group call in %{channel} — click to focus", channel: channel),
-      stop_title: dgettext("chat", "Leave the group call")
+      title:
+        dgettext("group_call", "Group call in %{channel} — click to focus", channel: channel),
+      stop_title: dgettext("group_call", "Leave the group call")
     }
   end
 
   defp group_call_label(:connected, channel, count) when count > 0 do
-    dgettext("chat", "Call: %{channel} (%{count})", channel: channel, count: count)
+    dgettext("group_call", "Call: %{channel} (%{count})", channel: channel, count: count)
   end
 
   defp group_call_label(:joining, channel, _count) do
-    dgettext("chat", "Call: joining %{channel}...", channel: channel)
+    dgettext("group_call", "Call: joining %{channel}...", channel: channel)
   end
 
   defp group_call_label(:connecting, channel, _count) do
-    dgettext("chat", "Call: connecting %{channel}...", channel: channel)
+    dgettext("group_call", "Call: connecting %{channel}...", channel: channel)
   end
 
   defp group_call_label(:negotiating, channel, _count) do
-    dgettext("chat", "Call: negotiating %{channel}...", channel: channel)
+    dgettext("group_call", "Call: negotiating %{channel}...", channel: channel)
   end
 
   defp group_call_label(:error, channel, _count) do
-    dgettext("chat", "Call: error in %{channel}", channel: channel)
+    dgettext("group_call", "Call: error in %{channel}", channel: channel)
   end
 
   defp group_call_label(_status, channel, count) when count > 0 do
-    dgettext("chat", "Call: %{channel} (%{count})", channel: channel, count: count)
+    dgettext("group_call", "Call: %{channel} (%{count})", channel: channel, count: count)
   end
 
   defp group_call_label(_status, channel, _count) do
-    dgettext("chat", "Call: %{channel}", channel: channel)
+    dgettext("group_call", "Call: %{channel}", channel: channel)
   end
 
   # Derives the status-bar P2P zone strings from the host state machine —

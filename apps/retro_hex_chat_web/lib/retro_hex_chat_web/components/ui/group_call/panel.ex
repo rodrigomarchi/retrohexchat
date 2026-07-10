@@ -78,8 +78,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             "mr-1 flex h-6 w-7 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-raised",
             "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           ]}
-          aria-label={dgettext("chat", "End group call")}
-          title={dgettext("chat", "End group call")}
+          aria-label={dgettext("group_call", "End group call")}
+          title={dgettext("group_call", "End group call")}
           data-testid="group-call-close-room"
         >
           <Icons.icon_ban class="h-3.5 w-3.5" />
@@ -92,8 +92,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
             !media_enabled?(@call, :audio) && "bg-muted shadow-retro-sunken"
           ]}
-          aria-label={dgettext("chat", "Toggle microphone")}
-          title={dgettext("chat", "Toggle microphone")}
+          aria-label={dgettext("group_call", "Toggle microphone")}
+          title={dgettext("group_call", "Toggle microphone")}
           aria-pressed={to_string(media_enabled?(@call, :audio))}
           data-testid="group-call-audio-toggle"
         >
@@ -108,8 +108,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
             !media_enabled?(@call, :video) && "bg-muted shadow-retro-sunken"
           ]}
-          aria-label={dgettext("chat", "Toggle camera")}
-          title={dgettext("chat", "Toggle camera")}
+          aria-label={dgettext("group_call", "Toggle camera")}
+          title={dgettext("group_call", "Toggle camera")}
           aria-pressed={to_string(media_enabled?(@call, :video))}
           data-testid="group-call-video-toggle"
         >
@@ -123,8 +123,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             "ml-1 flex h-6 w-7 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-raised",
             "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           ]}
-          aria-label={dgettext("chat", "Leave group call")}
-          title={dgettext("chat", "Leave group call")}
+          aria-label={dgettext("group_call", "Leave group call")}
+          title={dgettext("group_call", "Leave group call")}
           data-testid="group-call-leave"
         >
           <Icons.icon_phone_end class="h-3.5 w-3.5" />
@@ -157,7 +157,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           class="pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-center text-muted-foreground"
           data-group-call-remote-placeholder
         >
-          {dgettext("chat", "Waiting for remote video")}
+          {dgettext("group_call", "Waiting for remote video")}
         </div>
       </div>
 
@@ -205,13 +205,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <div class="flex min-h-0 flex-col border border-border bg-surface shadow-retro-sunken">
       <div class="flex h-7 shrink-0 items-center justify-between border-b border-border px-2">
-        <span class="font-bold">{dgettext("chat", "Participants")}</span>
+        <span class="font-bold">{dgettext("group_call", "Participants")}</span>
         <span class="text-muted-foreground">{participant_count(@call)}</span>
       </div>
 
       <div class="min-h-0 flex-1 overflow-auto p-1" data-testid="group-call-participants">
         <div :if={participant_count(@call) == 0} class="px-1 py-2 text-center text-muted-foreground">
-          {dgettext("chat", "Joining...")}
+          {dgettext("group_call", "Joining...")}
         </div>
 
         <.participant_row
@@ -262,8 +262,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           phx-click={@on_kick_participant}
           phx-value-participant-id={@participant.id}
           class="flex h-5 w-5 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          title={dgettext("chat", "Remove from call")}
-          aria-label={dgettext("chat", "Remove from call")}
+          title={dgettext("group_call", "Remove from call")}
+          aria-label={dgettext("group_call", "Remove from call")}
           data-testid={"group-call-participant-kick-#{@participant.id}"}
         >
           <Icons.icon_btn_remove class="h-3 w-3" />
@@ -324,21 +324,21 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     """
   end
 
-  defp media_badge_label(:audio, true), do: dgettext("chat", "Mic on")
-  defp media_badge_label(:audio, false), do: dgettext("chat", "Mic off")
-  defp media_badge_label(:video, true), do: dgettext("chat", "Camera on")
-  defp media_badge_label(:video, false), do: dgettext("chat", "Camera off")
+  defp media_badge_label(:audio, true), do: dgettext("group_call", "Mic on")
+  defp media_badge_label(:audio, false), do: dgettext("group_call", "Mic off")
+  defp media_badge_label(:video, true), do: dgettext("group_call", "Camera on")
+  defp media_badge_label(:video, false), do: dgettext("group_call", "Camera off")
 
-  defp channel_name(nil), do: dgettext("chat", "Group Call")
-  defp channel_name(call), do: call.channel_name || dgettext("chat", "Group Call")
+  defp channel_name(nil), do: dgettext("group_call", "Group Call")
+  defp channel_name(call), do: call.channel_name || dgettext("group_call", "Group Call")
 
-  defp status_label(nil), do: dgettext("chat", "Idle")
-  defp status_label(%{status: :joining}), do: dgettext("chat", "Joining call")
-  defp status_label(%{status: :connecting}), do: dgettext("chat", "Connecting media")
-  defp status_label(%{status: :negotiating}), do: dgettext("chat", "Negotiating media")
-  defp status_label(%{status: :connected}), do: dgettext("chat", "Connected")
-  defp status_label(%{status: :error}), do: dgettext("chat", "Connection error")
-  defp status_label(_call), do: dgettext("chat", "Group call")
+  defp status_label(nil), do: dgettext("group_call", "Idle")
+  defp status_label(%{status: :joining}), do: dgettext("group_call", "Joining call")
+  defp status_label(%{status: :connecting}), do: dgettext("group_call", "Connecting media")
+  defp status_label(%{status: :negotiating}), do: dgettext("group_call", "Negotiating media")
+  defp status_label(%{status: :connected}), do: dgettext("group_call", "Connected")
+  defp status_label(%{status: :error}), do: dgettext("group_call", "Connection error")
+  defp status_label(_call), do: dgettext("group_call", "Group call")
 
   defp status_icon_class(%{status: :connected}), do: "text-primary"
   defp status_icon_class(%{status: :error}), do: "text-destructive"
@@ -354,10 +354,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp track_count(%{tracks: tracks}) when is_list(tracks), do: length(tracks)
   defp track_count(_call), do: 0
 
-  defp participant_status(%{status: "connected"}), do: dgettext("chat", "Connected")
-  defp participant_status(%{status: "joining"}), do: dgettext("chat", "Joining")
-  defp participant_status(%{status: "disconnected"}), do: dgettext("chat", "Disconnected")
-  defp participant_status(_participant), do: dgettext("chat", "In call")
+  defp participant_status(%{status: "connected"}), do: dgettext("group_call", "Connected")
+  defp participant_status(%{status: "joining"}), do: dgettext("group_call", "Joining")
+  defp participant_status(%{status: "disconnected"}), do: dgettext("group_call", "Disconnected")
+  defp participant_status(_participant), do: dgettext("group_call", "In call")
 
   defp participant_media?(%{media_state: media}, key) when is_map(media) do
     case Map.get(media, key) do
@@ -398,19 +398,19 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp moderate_audio_title(participant) do
     if participant_media?(participant, :audio),
-      do: dgettext("chat", "Mute participant"),
-      else: dgettext("chat", "Unmute participant")
+      do: dgettext("group_call", "Mute participant"),
+      else: dgettext("group_call", "Unmute participant")
   end
 
   defp participant_media_title(participant, :audio) do
     if participant_media?(participant, :audio),
-      do: dgettext("chat", "Microphone on"),
-      else: dgettext("chat", "Microphone off")
+      do: dgettext("group_call", "Microphone on"),
+      else: dgettext("group_call", "Microphone off")
   end
 
   defp participant_media_title(participant, :video) do
     if participant_media?(participant, :video),
-      do: dgettext("chat", "Camera on"),
-      else: dgettext("chat", "Camera off")
+      do: dgettext("group_call", "Camera on"),
+      else: dgettext("group_call", "Camera off")
   end
 end

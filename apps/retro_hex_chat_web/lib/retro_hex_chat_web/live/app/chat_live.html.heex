@@ -165,11 +165,11 @@
                       "bg-canvas font-bold shadow-retro-sunken",
                     !@session.identified && "opacity-60"
                   ]}
-                  aria-label={dgettext("chat", "Group Call")}
+                  aria-label={dgettext("group_call", "Group Call")}
                   title={
                     if @session.identified,
-                      do: dgettext("chat", "Group Call"),
-                      else: dgettext("chat", "Identify with NickServ to use group calls")
+                      do: dgettext("group_call", "Group Call"),
+                      else: dgettext("group_call", "Identify with NickServ to use group calls")
                   }
                   aria-pressed={
                     to_string(
@@ -180,7 +180,7 @@
                   data-testid="group-call-open"
                 >
                   <Icons.icon_camera class="h-3.5 w-3.5 shrink-0" />
-                  <span>{dgettext("chat", "Call")}</span>
+                  <span>{dgettext("group_call", "Call")}</span>
                 </button>
               </div>
             </:leading_controls>
@@ -661,7 +661,7 @@
       :if={@group_call}
       id="group-call"
       persist_geometry={false}
-      title={@group_call.channel_name || dgettext("chat", "Group Call")}
+      title={@group_call.channel_name || dgettext("group_call", "Group Call")}
       open
       on_close="group_call_window_close"
       default_x={448}
@@ -1030,7 +1030,7 @@
         <.taskbar_button
           :if={@group_call}
           window="group-call"
-          label={@group_call.channel_name || dgettext("chat", "Group Call")}
+          label={@group_call.channel_name || dgettext("group_call", "Group Call")}
           data-testid="group-call-taskbar"
         >
           <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>

@@ -778,12 +778,70 @@
   - `mix format --check-formatted`;
   - `git diff --check`.
 
+### 2026-07-10 — I18n escopado e F4 media transitions
+
+- Sincronizacao Git antes do commit/push:
+  - mudancas nao commitadas guardadas com stash;
+  - `git fetch origin` trouxe dois commits novos em `origin/main`;
+  - `git pull --rebase origin main` reaplicou o commit SFU local sobre
+    `origin/main`;
+  - `git stash pop` reaplicou este bloco sem conflitos.
+- I18n:
+  - movidas as novas strings da UI/LiveView da conferencia para o dominio
+    `group_call` no app web, em vez de misturar esse fluxo em `chat` e
+    `dialogs`;
+  - gerados catalogos `group_call.pot` e `group_call.po` para
+    `apps/retro_hex_chat` e `apps/retro_hex_chat_web` pelo fluxo oficial
+    `make i18n.gettext.rebuild`;
+  - descartadas as mudancas globais nao relacionadas que o rebuild ainda gera
+    em centenas de catalogos antigos;
+  - usado o fluxo documentado de traducao automatica em venv temporario com
+    Argos/Polib apenas para `group_call.po`;
+  - adicionado `pt_BR -> pt` em `scripts/i18n_machine_translate_po.py`;
+  - adicionadas tres traducoes curadas de status bar em
+    `scripts/i18n_apply_translation_overrides.py`;
+  - atualizada a referencia `docs/reference/i18n-catalogs.md` para registrar o
+    novo dominio `group_call` nos dois apps.
+- Validacoes i18n focadas executadas:
+  - `mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings apps/retro_hex_chat/priv/gettext/*/LC_MESSAGES/group_call.po apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/group_call.po`: 42 arquivos, 0 findings;
+  - `python3 scripts/i18n_source_fallback_check.py --locales ... --fail-on-findings apps/retro_hex_chat/priv/gettext/*/LC_MESSAGES/group_call.po apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/group_call.po`: 0 findings.
+- Caveat mantido:
+  - `make i18n.gettext.check` global continua bloqueado por catalogos antigos
+    fora de sync e por mudancas de location em dominios nao relacionados ao
+    SFU; nao foi incluido o diff amplo de 700+ arquivos nesta feature.
+- F4 E2E local:
+  - ampliado `e2e/tests/chat-group-call.spec.ts` no cenario de 3 usuarios;
+  - antes de remover a terceira participante, Bob alterna video off/on e audio
+    off/on;
+  - Alice e Carol validam a propagacao de `media_state` para audio/video;
+  - os tres browsers validam que ainda ha dois videos remotos vivos depois das
+    transicoes de midia.
+- Validacoes finais desta retomada, repetidas depois da sincronizacao com
+  `origin/main`:
+  - `mix format`: ok;
+  - `npm run format:check --prefix apps/retro_hex_chat_web/assets`: ok;
+  - `npx prettier --write tests/chat-group-call.spec.ts TEST_CATALOG.md` em
+    `e2e/`: ok;
+  - `mix format --check-formatted`: ok;
+  - `mix test apps/retro_hex_chat/test/retro_hex_chat/group_call`: 50 testes,
+    0 falhas;
+  - `mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/group_call_flow_test.exs --include liveview_feature`:
+    12 testes, 0 falhas;
+  - `npm test --prefix apps/retro_hex_chat_web/assets -- test/hooks/group_call/group_call_webrtc_hook.test.js`:
+    3 testes, 0 falhas;
+  - `npx tsc --noEmit` em `e2e/`: ok;
+  - `npm run lint --prefix apps/retro_hex_chat_web/assets`: ok;
+  - checks focados de i18n para `group_call.po`: 42 arquivos, 0 findings;
+  - `git diff --check`: ok;
+  - `MIX_ENV=e2e ... mix assets.build`: ok;
+  - `npm test --prefix e2e -- chat-group-call.spec.ts`: 2 testes, 0 falhas.
+
 ## Pendencias abertas
 
-- F4: confirmar forwarding RTP ponta a ponta em mais cenarios alem do fluxo
-  local com 3 browsers.
+- F4 local: tratado com o cenario de 3 browsers cobrindo transicoes extras de
+  audio/video e forwarding vivo apos reativacao.
 - F4 adiado: bateria multi-browser 4/10/25/50/100 em janela dedicada.
-- I18n: atualizar catalogos Gettext de forma escopada para as novas strings
-  `chat`/`group_call`, sem carregar a reescrita ampla gerada pelo rebuild.
+- I18n: dominio `group_call` escopado criado e validado; check global ainda
+  depende de limpeza ampla de catalogos legados fora do escopo SFU.
 - F6 externo: abrir portas UDP/firewall, validar NAT/TURN e ajustar deploy no
   repositorio/tarefa de infraestrutura.

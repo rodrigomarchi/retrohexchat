@@ -45,7 +45,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
             data-testid="group-call-confirm-dialog-cancel"
           >
             <:icon><Icons.icon_close class="h-4 w-4" /></:icon>
-            {dgettext("dialogs", "Cancel")}
+            {dgettext("group_call", "Cancel")}
           </.button>
         </.dialog_footer>
       </.dialog>
@@ -53,14 +53,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
     """
   end
 
-  defp title(:leave), do: dgettext("dialogs", "Leave Group Call")
-  defp title(:close), do: dgettext("dialogs", "Close Group Call?")
-  defp title(:switch), do: dgettext("dialogs", "Switch Group Call")
-  defp title(:end_call), do: dgettext("dialogs", "End Group Call")
+  defp title(:leave), do: dgettext("group_call", "Leave Group Call")
+  defp title(:close), do: dgettext("group_call", "Close Group Call?")
+  defp title(:switch), do: dgettext("group_call", "Switch Group Call")
+  defp title(:end_call), do: dgettext("group_call", "End Group Call")
 
   defp body(:leave, channel, _new_channel) do
     dgettext(
-      "dialogs",
+      "group_call",
       "Leave the group call in %{channel}? Your microphone and camera will disconnect.",
       channel: channel || "?"
     )
@@ -68,7 +68,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
 
   defp body(:close, channel, _new_channel) do
     dgettext(
-      "dialogs",
+      "group_call",
       "Closing this window leaves the group call in %{channel}. To keep the call running and just tidy up, minimize the window instead.",
       channel: channel || "?"
     )
@@ -76,7 +76,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
 
   defp body(:switch, channel, new_channel) do
     dgettext(
-      "dialogs",
+      "group_call",
       "You are already in a group call in %{channel}. Leave it and join the call in %{new_channel}?",
       channel: channel || "?",
       new_channel: new_channel || "?"
@@ -85,14 +85,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
 
   defp body(:end_call, channel, _new_channel) do
     dgettext(
-      "dialogs",
+      "group_call",
       "End the group call in %{channel} for everyone? All participants will be disconnected.",
       channel: channel || "?"
     )
   end
 
-  defp confirm_label(:leave), do: dgettext("dialogs", "Leave call")
-  defp confirm_label(:close), do: dgettext("dialogs", "Leave call")
-  defp confirm_label(:switch), do: dgettext("dialogs", "Switch call")
-  defp confirm_label(:end_call), do: dgettext("dialogs", "End call")
+  defp confirm_label(:leave), do: dgettext("group_call", "Leave call")
+  defp confirm_label(:close), do: dgettext("group_call", "Leave call")
+  defp confirm_label(:switch), do: dgettext("group_call", "Switch call")
+  defp confirm_label(:end_call), do: dgettext("group_call", "End call")
 end

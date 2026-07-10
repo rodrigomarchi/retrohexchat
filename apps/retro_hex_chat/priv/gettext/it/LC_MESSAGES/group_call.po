@@ -1,0 +1,76 @@
+# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: it; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: it\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat/group_call/policy.ex:70
+#: lib/retro_hex_chat/group_call/policy.ex:76
+#, elixir-autogen, elixir-format
+msgid "Channel is required"
+msgstr "Canale è richiesto"
+
+#: lib/retro_hex_chat/group_call.ex:60
+#, elixir-autogen, elixir-format
+msgid "Channel not found"
+msgstr "Canale non trovato"
+
+#: lib/retro_hex_chat/group_call.ex:51
+#, elixir-autogen, elixir-format
+msgid "Could not create group call"
+msgstr "Non è possibile creare chiamate di gruppo"
+
+#: lib/retro_hex_chat/group_call.ex:55
+#, elixir-autogen, elixir-format
+msgid "Could not start group call"
+msgstr "Non potrebbe iniziare la chiamata di gruppo"
+
+#: lib/retro_hex_chat/group_call/policy.ex:111
+#, elixir-autogen, elixir-format
+msgid "Group call is no longer active"
+msgstr "La chiamata di gruppo non è più attiva"
+
+#: lib/retro_hex_chat/group_call.ex:64
+#, elixir-autogen, elixir-format
+msgid "Group call rate limit reached. Try again in %{count} second."
+msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
+msgstr[0] ""
+"Limiti di tasso di chiamata di gruppo raggiunto. Prova di nuovo %{count} "
+"secondo."
+msgstr[1] ""
+"Limiti di tasso di chiamata di gruppo raggiunto. Prova di nuovo %{count} "
+"secondi."
+
+#: lib/retro_hex_chat/group_call.ex:237
+#, elixir-autogen, elixir-format
+msgid "Group calls are disabled"
+msgstr "Chiamate di gruppo disattivate"
+
+#: lib/retro_hex_chat/group_call/policy.ex:123
+#: lib/retro_hex_chat/group_call/policy.ex:126
+#, elixir-autogen, elixir-format
+msgid "Insufficient privileges"
+msgstr "privilegi insufficienti"
+
+#: lib/retro_hex_chat/group_call/policy.ex:103
+#, elixir-autogen, elixir-format
+msgid "This channel already has an active group call"
+msgstr "Questo canale ha già una chiamata di gruppo attiva"
+
+#: lib/retro_hex_chat/group_call/policy.ex:97
+#, elixir-autogen, elixir-format
+msgid "You are not in this channel"
+msgstr "Tu non sei in questo canale"
+
+#: lib/retro_hex_chat/group_call/policy.ex:79
+#: lib/retro_hex_chat/group_call/policy.ex:89
+#, elixir-autogen, elixir-format
+msgid "You must be registered to use group calls"
+msgstr "Devi essere registrato per usare le chiamate di gruppo"

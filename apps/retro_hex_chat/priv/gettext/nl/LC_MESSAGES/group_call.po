@@ -1,0 +1,74 @@
+# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: nl; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: nl\n"
+"Language: nl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat/group_call/policy.ex:70
+#: lib/retro_hex_chat/group_call/policy.ex:76
+#, elixir-autogen, elixir-format
+msgid "Channel is required"
+msgstr "Kanaal is vereist"
+
+#: lib/retro_hex_chat/group_call.ex:60
+#, elixir-autogen, elixir-format
+msgid "Channel not found"
+msgstr "Kanaal niet gevonden"
+
+#: lib/retro_hex_chat/group_call.ex:51
+#, elixir-autogen, elixir-format
+msgid "Could not create group call"
+msgstr "Kon groepsaanroep niet aanmaken"
+
+#: lib/retro_hex_chat/group_call.ex:55
+#, elixir-autogen, elixir-format
+msgid "Could not start group call"
+msgstr "Kon groepsoproep niet starten"
+
+#: lib/retro_hex_chat/group_call/policy.ex:111
+#, elixir-autogen, elixir-format
+msgid "Group call is no longer active"
+msgstr "Groepsoproep is niet meer actief"
+
+#: lib/retro_hex_chat/group_call.ex:64
+#, elixir-autogen, elixir-format
+msgid "Group call rate limit reached. Try again in %{count} second."
+msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
+msgstr[0] ""
+"Grens voor groepsgesprekken bereikt. Probeer opnieuw in %{count} seconde."
+msgstr[1] ""
+"Grens voor groepsgesprekken bereikt. Probeer opnieuw in %{count} seconden."
+
+#: lib/retro_hex_chat/group_call.ex:237
+#, elixir-autogen, elixir-format
+msgid "Group calls are disabled"
+msgstr "Groepsgesprekken zijn uitgeschakeld"
+
+#: lib/retro_hex_chat/group_call/policy.ex:123
+#: lib/retro_hex_chat/group_call/policy.ex:126
+#, elixir-autogen, elixir-format
+msgid "Insufficient privileges"
+msgstr "Onvoldoende voorrechten"
+
+#: lib/retro_hex_chat/group_call/policy.ex:103
+#, elixir-autogen, elixir-format
+msgid "This channel already has an active group call"
+msgstr "Dit kanaal heeft al een actieve groepsaanroep"
+
+#: lib/retro_hex_chat/group_call/policy.ex:97
+#, elixir-autogen, elixir-format
+msgid "You are not in this channel"
+msgstr "Je bent niet in dit kanaal"
+
+#: lib/retro_hex_chat/group_call/policy.ex:79
+#: lib/retro_hex_chat/group_call/policy.ex:89
+#, elixir-autogen, elixir-format
+msgid "You must be registered to use group calls"
+msgstr "U moet geregistreerd zijn om groepsgesprekken te gebruiken"
