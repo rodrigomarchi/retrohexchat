@@ -10,6 +10,10 @@ The worked example throughout is **End of Time** (`maps/end_of_time.ex`,
 authored by `tools/author_scene.py`). Millennial Fair stays **top-down** and this
 playbook must never regress it.
 
+The **ground-truth reference** for End of Time (the real SNES area map + its
+distilled anatomy and ranked fidelity gaps) lives in
+[`DISCOVERY.md`](DISCOVERY.md) — read it before reworking the scene's art.
+
 ---
 
 ## 0. The one idea: a projection seam

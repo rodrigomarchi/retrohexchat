@@ -34,6 +34,11 @@ W, H = 40, 24
 RECT = {"x0": 9, "x1": 31, "y0": 5, "y1": 19, "bevel": 0}
 SHEET_COLS = 20
 Z_STEP = 16
+# A wooden door set into the middle of the back (top, y=y0) railing edge — the
+# CT End of Time has a door in its fence. The railing segments on these cells'
+# back edge are suppressed so the door sits in a clean gap.
+DOOR = {"x": 20, "y": 5}
+DOOR_GAP = {(19, 5), (20, 5), (21, 5)}  # cells whose "tr" back-edge rail is dropped
 
 
 def _crop(im):
@@ -87,6 +92,7 @@ def build():
     for name, fn in [
         ("iso_lamp", os.path.join(SRC, "lamp.png")),
         ("iso_bucket", os.path.join(SRC, "bucket.png")),
+        ("iso_door", os.path.join(SRC, "door.png")),
     ]:
         if os.path.exists(fn):
             props[name] = _crop(Image.open(fn).convert("RGBA"))
@@ -159,7 +165,7 @@ def build():
         for x in range(W):
             if not full(x, y):
                 continue
-            if not bfull(x, y - 1):
+            if not bfull(x, y - 1) and (x, y) not in DOOR_GAP:
                 rails.append({"x": x, "y": y, "edge": "tr"})
             if not bfull(x - 1, y):
                 rails.append({"x": x, "y": y, "edge": "tl"})
@@ -175,6 +181,9 @@ def build():
              if not full(x, y) and _h(x, y) % 13 == 0]
 
     decor = stars + [
+        # Nudge onto the back-right (tr) rail line: (+tile_w/4, -tile_h/4) screen px.
+        {"x": DOOR["x"], "y": DOOR["y"], "tile": "iso_door", "sort": "stand",
+         "ox": 16, "oy": -8},
         {"x": 20, "y": 12, "tile": "iso_lamp", "sort": "stand"},
         {"x": 17, "y": 13, "tile": "iso_bucket", "sort": "stand"},
     ]
@@ -190,8 +199,8 @@ def build():
         "vignette": {"color": "04050c", "alpha": 0.78, "inner": 0.36},
         "sea": {"top": "0c1e42", "bottom": "05060f", "band": "1a3d7a", "bands": 9, "amp": 5},
         "railings": rails,
-        "railing_style": {"height": 22, "color": "b98d3e", "hi": "e8c874",
-                          "base": "1c1a24", "posts": 4},
+        "railing_style": {"height": 27, "color": "b98d3e", "hi": "e8c874",
+                          "base": "1c1a24", "posts": 9},
         "vocab": {k: v for k, v in vocab.items() if v is not None},
         "floor": floor_matrix,
         "decor": decor,

@@ -374,63 +374,90 @@ export class Renderer {
     return { tr: [T, R], tl: [T, L], bl: [L, B], br: [R, B] }[r.edge];
   }
 
-  // A tall thin wrought-iron fence run along one edge: a dark base rail on the
-  // platform lip, evenly spaced gold posts rising to a gold top rail, with finial
-  // caps. Adjacent segments share endpoints → seamless continuous railing.
+  // An ornate wrought-iron fence run along one edge: a dark stone lip, a bottom
+  // and top gold rail with dense vertical spindles between them, and taller
+  // gold-highlight corner posts capped by diamond finials. Adjacent segments
+  // share endpoints (posts land on every cell boundary) → a seamless, continuous
+  // Victorian-park railing wrapping the whole platform.
   _drawRailingSegment(ctx, r, style) {
     const seg = this._railingEdge(r);
     if (!seg) return;
     const [a, b] = seg;
-    const h = (style.height ?? 22) * (this.projection.scale ?? 1);
+    const h = (style.height ?? 27) * (this.projection.scale ?? 1);
     const gold = style.color ?? "b98d3e";
     const goldHi = style.hi ?? "e8c874";
     const base = style.base ?? "1c1a24";
-    const posts = style.posts ?? 4;
+    const spindles = style.posts ?? 9;
+    const railLo = h * 0.26; // the lower horizontal rail height
+    const lerp = (t) => ({
+      x: Math.round(a.x + (b.x - a.x) * t),
+      y: Math.round(a.y + (b.y - a.y) * t),
+    });
     ctx.save();
-    // base rail on the edge (dark stone lip)
+    // dark stone lip on the platform edge
     ctx.strokeStyle = HASH + base;
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(Math.round(a.x), Math.round(a.y));
     ctx.lineTo(Math.round(b.x), Math.round(b.y));
     ctx.stroke();
-    // top rail + a mid rail (ornate double-rail wrought iron)
+    // two horizontal rails: a thick top rail + a thin lower rail
     ctx.strokeStyle = HASH + gold;
-    for (const off of [h, h * 0.5]) {
-      ctx.lineWidth = off === h ? 2 : 1;
+    for (const [off, lw] of [
+      [h, 2],
+      [railLo, 1],
+    ]) {
+      ctx.lineWidth = lw;
       ctx.beginPath();
       ctx.moveTo(Math.round(a.x), Math.round(a.y - off));
       ctx.lineTo(Math.round(b.x), Math.round(b.y - off));
       ctx.stroke();
     }
-    // vertical bars + finial caps
+    // dense thin spindles spanning the two rails
     ctx.lineWidth = 1;
-    for (let i = 0; i <= posts; i += 1) {
-      const t = i / posts;
-      const px = Math.round(a.x + (b.x - a.x) * t);
-      const py = Math.round(a.y + (b.y - a.y) * t);
-      const corner = i === 0 || i === posts;
-      ctx.strokeStyle = HASH + (corner ? goldHi : gold);
+    ctx.strokeStyle = HASH + gold;
+    for (let i = 1; i < spindles; i += 1) {
+      const p = lerp(i / spindles);
       ctx.beginPath();
-      ctx.moveTo(px, py);
-      ctx.lineTo(px, py - h - (corner ? 3 : 0));
+      ctx.moveTo(p.x, p.y - railLo);
+      ctx.lineTo(p.x, p.y - h);
       ctx.stroke();
+    }
+    // taller highlighted corner posts with diamond finial caps
+    for (const t of [0, 1]) {
+      const p = lerp(t);
+      ctx.strokeStyle = HASH + goldHi;
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(p.x, p.y - h - 4);
+      ctx.stroke();
+      const fy = p.y - h - 6;
       ctx.fillStyle = HASH + goldHi;
-      ctx.fillRect(px - 1, py - h - (corner ? 5 : 2), 2, 2);
+      ctx.beginPath();
+      ctx.moveTo(p.x, fy - 2);
+      ctx.lineTo(p.x + 2, fy);
+      ctx.lineTo(p.x, fy + 2);
+      ctx.lineTo(p.x - 2, fy);
+      ctx.closePath();
+      ctx.fill();
     }
     ctx.restore();
   }
 
   // Isometric standing prop: a billboard whose bottom-centre sits on the tile's
   // diamond foot and rises upward, so tall props tower while depth-sorting by
-  // their foot tile.
+  // their foot tile. An optional `ox`/`oy` (screen px, scaled) nudges the foot —
+  // e.g. the door sits on its edge's rail line rather than the tile centre.
   _blitBillboard(ctx, prop, sprite) {
     const scale = this.camera.scale;
     const f = this.projection.footAnchor(prop.x, prop.y, prop.h ?? 0);
     const { x, y } = this.camera.worldToScreen(f.x, f.y);
+    const ox = (prop.ox ?? 0) * scale;
+    const oy = (prop.oy ?? 0) * scale;
     const w = sprite.sw * scale;
     const h = sprite.sh * scale;
-    this._blit(ctx, sprite, Math.round(x - w / 2), Math.round(y - h), scale);
+    this._blit(ctx, sprite, Math.round(x + ox - w / 2), Math.round(y + oy - h), scale);
   }
 
   // Soft elliptical contact shadows under every standing prop and avatar, so
