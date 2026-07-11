@@ -57,11 +57,14 @@ activity-indicator__*
 game-media*
 p2p-media-call*
 # Group-call conference components — used by components/ui/group_call/* files
-# (skipped by the template scanner); hook-created tile classes are referenced
-# from JS and therefore do not need to be listed here.
+# (skipped by the template scanner); keep only classes that are not also
+# discovered through the JS hook scanner.
 group-call-empty-tile
 group-call-room
+group-call-video-badge
 group-call-video-surface
+group-call-video-tile--remote
+group-call-video-tile__badges
 # Desktop window manager — BEM classes applied via classes([...]) in components/ui/layout/desktop.ex
 # and toggled by WindowManagerHook (both skipped by the template scanner)
 desktop*
