@@ -142,6 +142,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_btn_channel_central(assigns), to: RetroHexChatWeb.Icons.Communication
 
   # ── Media ───────────────────────────────────────────────
+  defdelegate icon_conference(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_microphone(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_camera(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_camera_off(assigns), to: RetroHexChatWeb.Icons.Media

@@ -42,6 +42,13 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   attr :muted, :boolean, default: false
   attr :timezone, :string, default: "Etc/UTC"
 
+  attr :group_call, :map,
+    default: nil,
+    doc: "Active group-call display (%{label, title, stop_title})"
+
+  attr :on_group_call_click, :any, default: nil
+  attr :on_group_call_stop, :any, default: nil
+
   attr :p2p, :map,
     default: nil,
     doc:
@@ -90,9 +97,36 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         </span>
       </.window_status_bar_field>
 
-      <%!-- Zone P2P: active session — click focuses the P2P windows, the
-            trailing button cancels a pending invite / ends the session.
+      <%!-- Zone group call: active channel conference — click focuses the
+            conference windows, the trailing button leaves the session.
             Never hidden on mobile: an active session must stay visible. --%>
+      <.window_status_bar_field
+        :if={@group_call}
+        class="flex items-center gap-retro-2 min-w-0 px-[2px]"
+      >
+        <button
+          type="button"
+          class="inline-flex items-center gap-retro-2 min-w-0 h-full min-h-0 bg-transparent"
+          phx-click={@on_group_call_click}
+          title={@group_call.title}
+          aria-label={@group_call.title}
+          data-testid="status-bar-group-call"
+        >
+          <Icons.icon_conference class="w-3 h-3 shrink-0" />
+          <span class="truncate text-xs">{@group_call.label}</span>
+        </button>
+        <button
+          type="button"
+          class="inline-flex items-center justify-center h-full min-h-0 bg-transparent shrink-0"
+          phx-click={@on_group_call_stop}
+          title={@group_call.stop_title}
+          aria-label={@group_call.stop_title}
+          data-testid="status-bar-group-call-stop"
+        >
+          <Icons.icon_phone_end class="w-3 h-3" />
+        </button>
+      </.window_status_bar_field>
+
       <.window_status_bar_field :if={@p2p} class="flex items-center gap-retro-2 min-w-0 px-[2px]">
         <button
           type="button"

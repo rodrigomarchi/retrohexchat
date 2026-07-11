@@ -65,6 +65,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :flash_channels, :list, default: [], doc: "Channels with recent activity flash"
   attr :muted_channels, :list, default: []
   attr :disconnected_channels, :list, default: [], doc: "Channels marked disconnected"
+  attr :group_call_channels, :list, default: [], doc: "Channels with an active conference"
   attr :pm_conversations, :list, default: []
   attr :active_pm, :string, default: nil
   attr :unread_pms, :list, default: []
@@ -151,6 +152,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               flash={ch in @flash_channels}
               muted={ch in @muted_channels}
               disconnected={ch in @disconnected_channels}
+              group_call_active={ch in @group_call_channels}
               user_count={Map.get(@channel_user_counts, ch)}
               on_click={@on_channel_click}
               on_dblclick={@on_channel_dblclick}
@@ -222,6 +224,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :flash, :boolean, default: false
   attr :muted, :boolean, default: false
   attr :disconnected, :boolean, default: false
+  attr :group_call_active, :boolean, default: false
   attr :user_count, :integer, default: nil
   attr :on_click, :any, default: nil
   attr :on_dblclick, :any, default: nil
@@ -242,6 +245,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       data-channel={@name}
       data-muted={to_string(@muted)}
       data-unread={to_string(@unread)}
+      data-group-call-active={to_string(@group_call_active)}
       data-testid={"channel-#{@name}"}
     >
       <:icon>
@@ -255,6 +259,14 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
         <Icons.icon_tab_channel :if={!@disconnected} class="w-3 h-3" />
       </:icon>
       <span class="flex-1 truncate">{@name}</span>
+      <span
+        :if={@group_call_active}
+        class="inline-flex h-4 w-4 shrink-0 items-center justify-center text-success"
+        title={dgettext("group_call", "Conference active")}
+        data-testid={"channel-group-call-glyph-#{@name}"}
+      >
+        <Icons.icon_conference class="h-3.5 w-3.5" />
+      </span>
       <span
         :if={@user_count}
         class="text-[10px] text-muted-foreground shrink-0"

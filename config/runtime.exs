@@ -24,6 +24,62 @@ config :retro_hex_chat,
 config :retro_hex_chat,
   base_url: System.get_env("BASE_URL") || "http://localhost:4000"
 
+# Embedded SFU / group-call runtime config. The SFU runs inside the same BEAM
+# node, but WebRTC still needs a bounded UDP port range for ICE host candidates.
+sfu_public_ip =
+  case System.get_env("SFU_PUBLIC_IP") do
+    nil ->
+      nil
+
+    value ->
+      value
+      |> String.to_charlist()
+      |> :inet.parse_address()
+      |> case do
+        {:ok, address} -> address
+        {:error, _reason} -> nil
+      end
+  end
+
+config :retro_hex_chat,
+  group_call_enabled?: System.get_env("GROUP_CALL_ENABLED", "true") in ~w(true 1 yes),
+  group_call_max_participants:
+    String.to_integer(System.get_env("GROUP_CALL_MAX_PARTICIPANTS") || "100"),
+  group_call_ready_timeout_ms:
+    String.to_integer(System.get_env("GROUP_CALL_READY_TIMEOUT_MS") || "10000"),
+  group_call_reconnect_timeout_ms:
+    String.to_integer(System.get_env("GROUP_CALL_RECONNECT_TIMEOUT_MS") || "30000"),
+  group_call_peerless_timeout_ms:
+    String.to_integer(System.get_env("GROUP_CALL_PEERLESS_TIMEOUT_MS") || "60000"),
+  sfu_ice_port_range:
+    (case System.get_env("SFU_ICE_PORT_RANGE") do
+       nil ->
+         50_000..50_100
+
+       value ->
+         [first, last] =
+           value
+           |> String.split(["-", ".."], parts: 2)
+           |> Enum.map(&String.to_integer/1)
+
+         first..last
+     end),
+  sfu_ice_transport_policy:
+    (case System.get_env("SFU_ICE_TRANSPORT_POLICY", "all") do
+       "relay" -> :relay
+       _ -> :all
+     end),
+  sfu_public_ip: sfu_public_ip,
+  group_call_create_rate_limit:
+    {String.to_integer(System.get_env("GROUP_CALL_CREATE_RATE_LIMIT_COUNT") || "3"),
+     String.to_integer(System.get_env("GROUP_CALL_CREATE_RATE_LIMIT_WINDOW_MS") || "600000")},
+  group_call_join_rate_limit:
+    {String.to_integer(System.get_env("GROUP_CALL_JOIN_RATE_LIMIT_COUNT") || "20"),
+     String.to_integer(System.get_env("GROUP_CALL_JOIN_RATE_LIMIT_WINDOW_MS") || "60000")},
+  group_call_signal_rate_limit:
+    {String.to_integer(System.get_env("GROUP_CALL_SIGNAL_RATE_LIMIT_COUNT") || "300"),
+     String.to_integer(System.get_env("GROUP_CALL_SIGNAL_RATE_LIMIT_WINDOW_MS") || "60000")}
+
 # Base URL for the Solo Arcade WASM game assets. Games are served from
 # an external static host (built and published from the retro-wasm-builder
 # repo); the application never bundles or serves them locally.

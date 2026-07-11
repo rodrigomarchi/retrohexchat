@@ -56,4 +56,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShellTest do
 
     assert html =~ "bob"
   end
+
+  test "renders active group call status bar controls" do
+    html =
+      header(Session.new("alice"), %{
+        group_call: %{
+          channel_name: "#lobby",
+          status: :connected,
+          participants: [%{id: 1}, %{id: 2}]
+        }
+      })
+
+    assert html =~ ~s(data-testid="status-bar-group-call")
+    assert html =~ ~s(data-testid="status-bar-group-call-stop")
+    assert html =~ "Call: #lobby (2)"
+  end
 end

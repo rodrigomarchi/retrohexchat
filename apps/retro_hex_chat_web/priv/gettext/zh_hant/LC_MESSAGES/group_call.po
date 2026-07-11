@@ -1,0 +1,358 @@
+# "msgid"s in this file come from group_call.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_hant; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: zh_hant\n"
+"Language: zh_hant\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:183
+#, elixir-autogen, elixir-format
+msgid "Call"
+msgstr "調用"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:124
+#, elixir-autogen, elixir-format
+msgid "Call: %{channel}"
+msgstr "通話：%{channel}"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:100
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:120
+#, elixir-autogen, elixir-format
+msgid "Call: %{channel} (%{count})"
+msgstr "通話：%{channel}（%{count}）"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:108
+#, elixir-autogen, elixir-format
+msgid "Call: connecting %{channel}..."
+msgstr "呼叫: 連接 %{channel}..."
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:116
+#, elixir-autogen, elixir-format
+msgid "Call: error in %{channel}"
+msgstr "%{channel} 中的通話錯誤"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:104
+#, elixir-autogen, elixir-format
+msgid "Call: joining %{channel}..."
+msgstr "通話:加入 %{channel}..."
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:112
+#, elixir-autogen, elixir-format
+msgid "Call: negotiating %{channel}..."
+msgstr "電話:談判 %{channel}..."
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:330
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:414
+#, elixir-autogen, elixir-format
+msgid "Camera off"
+msgstr "關閉相機"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:329
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:413
+#, elixir-autogen, elixir-format
+msgid "Camera on"
+msgstr "攝像頭打開"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:48
+#, elixir-autogen, elixir-format
+msgid "Cancel"
+msgstr "取消"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:57
+#, elixir-autogen, elixir-format
+msgid "Close Group Call?"
+msgstr "關閉組呼叫 ?"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:70
+#, elixir-autogen, elixir-format
+msgid ""
+"Closing this window leaves the group call in %{channel}. To keep the call "
+"running and just tidy up, minimize the window instead."
+msgstr "關閉此窗口後, 組調用 %{channel}保持電話運行和清理, 將窗口最小化。"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:339
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:357
+#, elixir-autogen, elixir-format
+msgid "Connected"
+msgstr "已連接"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:337
+#, elixir-autogen, elixir-format
+msgid "Connecting media"
+msgstr "連接媒體"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:340
+#, elixir-autogen, elixir-format
+msgid "Connection error"
+msgstr "連接錯誤"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:521
+#, elixir-autogen, elixir-format
+msgid "Could not end group call."
+msgstr "無法結束組呼叫 。"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:509
+#, elixir-autogen, elixir-format
+msgid "Could not remove participant."
+msgstr "無法刪除參與者 。"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:497
+#, elixir-autogen, elixir-format
+msgid "Could not update participant media."
+msgstr "無法更新參與者介質 。"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:359
+#, elixir-autogen, elixir-format
+msgid "Disconnected"
+msgstr "斷開連接"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:59
+#, elixir-autogen, elixir-format
+msgid "End Group Call"
+msgstr "結束組呼叫"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:97
+#, elixir-autogen, elixir-format
+msgid "End call"
+msgstr "結束呼叫"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:81
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:82
+#, elixir-autogen, elixir-format
+msgid "End group call"
+msgstr "結束組呼叫"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:87
+#, elixir-autogen, elixir-format
+msgid ""
+"End the group call in %{channel} for everyone? All participants will be "
+"disconnected."
+msgstr "結束小組呼叫 %{channel} 給大家看? 所有參與者都將被切斷。"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:332
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:333
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:168
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:171
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:664
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:1033
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:89
+#, elixir-autogen, elixir-format
+msgid "Group Call"
+msgstr "分組呼叫"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:341
+#, elixir-autogen, elixir-format
+msgid "Group call"
+msgstr "分組呼叫"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:258
+#, elixir-autogen, elixir-format
+msgid "Group call connection failed."
+msgstr "組調用連接失敗 。"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:223
+#, elixir-autogen, elixir-format
+msgid "Group call ended."
+msgstr "組呼叫結束。"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:224
+#, elixir-autogen, elixir-format
+msgid "Group call ended: %{reason}"
+msgstr "組呼叫結束: %{reason}"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:94
+#, elixir-autogen, elixir-format
+msgid "Group call in %{channel} — click to focus"
+msgstr "組呼叫 %{channel} ——單擊以聚焦"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:437
+#, elixir-autogen, elixir-format
+msgid ""
+"Group call media connection failed. Leave and rejoin the call to retry."
+msgstr "組調用媒體連接失敗 。 離開,重新來過"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:427
+#, elixir-autogen, elixir-format
+msgid "Group call media connection interrupted. Trying to recover."
+msgstr "集團呼叫媒體連接中斷 。 試圖恢復。"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:245
+#, elixir-autogen, elixir-format
+msgid "Group call media is degraded."
+msgstr "集團呼叫媒體退化."
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:305
+#, elixir-autogen, elixir-format
+msgid "Group calls are available in channels only."
+msgstr "團體電話只能通過渠道提供。"
+
+#: lib/retro_hex_chat_web/live/app/chat_live.html.heex:172
+#, elixir-autogen, elixir-format
+msgid "Identify with NickServ to use group calls"
+msgstr "與 NickServe 識別使用組調用"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:335
+#, elixir-autogen, elixir-format
+msgid "Idle"
+msgstr "閒置"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:360
+#, elixir-autogen, elixir-format
+msgid "In call"
+msgstr "隨叫隨到"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:358
+#, elixir-autogen, elixir-format
+msgid "Joining"
+msgstr "加入時"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:336
+#, elixir-autogen, elixir-format
+msgid "Joining call"
+msgstr "連接呼叫中"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:214
+#, elixir-autogen, elixir-format
+msgid "Joining..."
+msgstr "正在加入..."
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:56
+#, elixir-autogen, elixir-format
+msgid "Leave Group Call"
+msgstr "離開組呼叫"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:94
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:95
+#, elixir-autogen, elixir-format
+msgid "Leave call"
+msgstr "請假電話"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:126
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:127
+#, elixir-autogen, elixir-format
+msgid "Leave group call"
+msgstr "離開小組呼叫"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/chat_shell.ex:95
+#, elixir-autogen, elixir-format
+msgid "Leave the group call"
+msgstr "離開小組呼叫"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:62
+#, elixir-autogen, elixir-format
+msgid ""
+"Leave the group call in %{channel}? Your microphone and camera will "
+"disconnect."
+msgstr "離開小組呼叫 %{channel}你的麥克風和相機會斷開。"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:328
+#, elixir-autogen, elixir-format
+msgid "Mic off"
+msgstr "米克關"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:327
+#, elixir-autogen, elixir-format
+msgid "Mic on"
+msgstr "彈米克"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:408
+#, elixir-autogen, elixir-format
+msgid "Microphone off"
+msgstr "關掉麥克風"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:407
+#, elixir-autogen, elixir-format
+msgid "Microphone on"
+msgstr "打開麥克風"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:401
+#, elixir-autogen, elixir-format
+msgid "Mute participant"
+msgstr "靜音參與者"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:338
+#, elixir-autogen, elixir-format
+msgid "Negotiating media"
+msgstr "談判媒體"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:302
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:312
+#, elixir-autogen, elixir-format
+msgid "Open a channel before starting a group call."
+msgstr "在啓動分組呼叫前打開頻道 。"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:535
+#, elixir-autogen, elixir-format
+msgid "Participant is no longer in the group call."
+msgstr "參賽者不再參加集體電話."
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:208
+#, elixir-autogen, elixir-format
+msgid "Participants"
+msgstr "與會者"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:265
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:266
+#, elixir-autogen, elixir-format
+msgid "Remove from call"
+msgstr "從呼叫中刪除"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:58
+#, elixir-autogen, elixir-format
+msgid "Switch Group Call"
+msgstr "切換組呼叫"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:96
+#, elixir-autogen, elixir-format
+msgid "Switch call"
+msgstr "切換呼叫"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:111
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:112
+#, elixir-autogen, elixir-format
+msgid "Toggle camera"
+msgstr "切換相機"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:95
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:96
+#, elixir-autogen, elixir-format
+msgid "Toggle microphone"
+msgstr "切換麥克風"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:402
+#, elixir-autogen, elixir-format
+msgid "Unmute participant"
+msgstr "無意參與者"
+
+#: lib/retro_hex_chat_web/components/ui/group_call/panel.ex:160
+#, elixir-autogen, elixir-format
+msgid "Waiting for remote video"
+msgstr "等待遠程視頻"
+
+#: lib/retro_hex_chat_web/components/ui/dialogs/group_call_confirm_dialog.ex:78
+#, elixir-autogen, elixir-format
+msgid ""
+"You are already in a group call in %{channel}. Leave it and join the call in"
+" %{new_channel}?"
+msgstr "你已經在小組呼叫中了 %{channel}離開它並加入呼叫 %{new_channel}?"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:317
+#, elixir-autogen, elixir-format
+msgid "You must be identified with NickServ to use group calls."
+msgstr "您必須和 NickServe 確定身份才能使用分組電話 。"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:555
+#, elixir-autogen, elixir-format
+msgid "You must be registered to moderate group calls."
+msgstr "您必須註冊到溫和組電話。"
+
+#: lib/retro_hex_chat_web/live/chat_live/group_call_events.ex:293
+#, elixir-autogen, elixir-format
+msgid "You must be registered with NickServ to use group calls."
+msgstr "您必須註冊在 NickServ 上才能使用組電話 。"

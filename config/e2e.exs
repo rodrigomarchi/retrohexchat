@@ -53,7 +53,10 @@ config :retro_hex_chat,
   turn_auth_secret: "e2e-auth-secret-64-bytes-long-padding-padding-padding-padding-padd",
   turn_nonce_secret: "e2e-nonce-secret-64-bytes-long-padding-padding-padding-padding-pad",
   p2p_session_rate_limit: {2, 10_000},
-  signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.Noop
+  signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.Noop,
+  group_call_create_rate_limit: {100, 10_000},
+  group_call_join_rate_limit: {100, 10_000},
+  group_call_signal_rate_limit: {2_000, 10_000}
 
 # Basic auth for LiveDashboard
 config :retro_hex_chat_web, :basic_auth, username: "admin", password: "e2e"

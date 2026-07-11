@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.UserSocket do
   use Phoenix.Socket
 
   channel "space:*", RetroHexChatWeb.SpaceChannel
+  channel "group_call:*", RetroHexChatWeb.GroupCallChannel
 
   @impl true
   @spec connect(map(), Phoenix.Socket.t(), map()) :: {:ok, Phoenix.Socket.t()}

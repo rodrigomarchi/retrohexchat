@@ -16,6 +16,33 @@ const openRegistrationExpression = [
   'RetroHexChat.Services.Queries.upsert_setting("registration", "open", "e2e-reset")',
 ].join('; ');
 
+function runMix(args: string[], description: string) {
+  const result = spawnSync('mix', args, {
+    cwd: repoRoot,
+    encoding: 'utf8',
+    env: {
+      ...process.env,
+      LOG_LEVEL: 'warning',
+      MIX_ENV: 'e2e',
+    },
+  });
+
+  if (result.error) {
+    throw result.error;
+  }
+
+  if (result.status !== 0) {
+    throw new Error(
+      [description, result.stdout, result.stderr].filter(Boolean).join('\n'),
+    );
+  }
+}
+
+export function ensureE2eDatabaseMigrated() {
+  runMix(['ecto.create'], 'Failed to create e2e database.');
+  runMix(['ecto.migrate'], 'Failed to migrate e2e database.');
+}
+
 export function resetRegistrationOpen() {
   const result = spawnSync(
     'mix',

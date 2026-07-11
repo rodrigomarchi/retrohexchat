@@ -32,6 +32,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     default: nil,
     doc: "Peer of the active P2P session — that PM tab gets the session glyph"
 
+  attr :group_call_channels, :any,
+    default: MapSet.new(),
+    doc: "Channel names that currently have an active group call"
+
   @spec chat_tabs(map()) :: Phoenix.LiveView.Rendered.t()
   def chat_tabs(assigns) do
     assigns = assign(assigns, :tabs, build_tabs(assigns))
@@ -47,6 +51,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
         closeable={tab.closeable}
         nick_color={tab.nick_color}
         p2p={tab.p2p}
+        group_call={tab.group_call}
         on_click={@on_switch}
         on_close={@on_close}
       />
@@ -65,7 +70,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
       unread: assigns.status_unread,
       closeable: false,
       nick_color: nil,
-      p2p: false
+      p2p: false,
+      group_call: false
     }
 
     channel_tabs =
@@ -77,7 +83,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
           unread: Map.get(assigns.unread_counts, channel, 0) > 0,
           closeable: true,
           nick_color: nil,
-          p2p: false
+          p2p: false,
+          group_call: channel_group_call?(assigns.group_call_channels, channel)
         }
       end
 
@@ -92,10 +99,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
           unread: Map.get(assigns.unread_counts, "pm:#{pm}", 0) > 0,
           closeable: true,
           nick_color: assigns.nick_color_fn.(pm),
-          p2p: p2p_peer == String.downcase(pm)
+          p2p: p2p_peer == String.downcase(pm),
+          group_call: false
         }
       end
 
     [status_tab | channel_tabs ++ pm_tabs]
   end
+
+  defp channel_group_call?(channels, channel) when is_binary(channel) do
+    MapSet.member?(MapSet.new(channels || []), channel)
+  end
+
+  defp channel_group_call?(_channels, _channel), do: false
 end

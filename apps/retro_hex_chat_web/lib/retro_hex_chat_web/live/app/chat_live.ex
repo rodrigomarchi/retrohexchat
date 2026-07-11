@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── P2P session windows ──────────────────────────────────────
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
+  import RetroHexChatWeb.Components.UI.GroupCall.StatsPanel
 
   # ── Solo arcade window body ──────────────────────────────────
   import RetroHexChatWeb.Components.UI.SoloLobby
@@ -300,6 +301,15 @@ defmodule RetroHexChatWeb.App.ChatLive do
     {:noreply, ChatLive.Windows.open_window(socket, id)}
   end
 
+  def handle_event(
+        "window_closed",
+        %{"id" => id} = params,
+        %{assigns: %{group_call: %{}}} = socket
+      )
+      when id in ~w(group-call group-call-stats) do
+    dispatch_to_hooks("group_call_window_close", params, socket)
+  end
+
   def handle_event("window_closed", %{"id" => id}, socket) do
     {:noreply, ChatLive.Windows.close_window(socket, id)}
   end
@@ -556,6 +566,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
     &ChatLive.BotEvents.handle_event/3,
     &ChatLive.KeyboardEvents.handle_event/3,
     &ChatLive.ConnectionEvents.handle_event/3,
+    &ChatLive.GroupCallEvents.handle_event/3,
     &ChatLive.P2PSessionEvents.handle_event/3,
     &ChatLive.ArcadeSessionEvents.handle_event/3,
     &ChatLive.CoreEvents.handle_event/3
@@ -619,6 +630,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       {:bot_events, &ChatLive.BotEvents.handle_event/3},
       {:keyboard_events, &ChatLive.KeyboardEvents.handle_event/3},
       {:connection_events, &ChatLive.ConnectionEvents.handle_event/3},
+      {:group_call_events, &ChatLive.GroupCallEvents.handle_event/3},
       {:p2p_session_events, &ChatLive.P2PSessionEvents.handle_event/3},
       {:arcade_session_events, &ChatLive.ArcadeSessionEvents.handle_event/3},
       {:core_events, &ChatLive.CoreEvents.handle_event/3}
@@ -720,6 +732,9 @@ defmodule RetroHexChatWeb.App.ChatLive do
       space_avatars: RetroHexChat.VirtualSpace.avatars(),
       space_avatar: nil,
       space_last_avatar: "redtunic_hero",
+      group_call: nil,
+      group_call_channels: MapSet.new(),
+      group_call_pending: nil,
       p2p_session: nil,
       p2p_pending: nil,
       arcade_session: nil,
@@ -913,4 +928,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       bindings: KeyBindings.to_persistable(KeyBindings.defaults())
     })
   end
+
+  defp channel_group_call_active?(channels, channel_name) when is_binary(channel_name) do
+    MapSet.member?(channels || MapSet.new(), channel_name)
+  end
+
+  defp channel_group_call_active?(_channels, _channel_name), do: false
 end

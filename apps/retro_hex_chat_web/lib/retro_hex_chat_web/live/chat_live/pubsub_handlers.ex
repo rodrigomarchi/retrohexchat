@@ -4,7 +4,8 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
 
   Delegates to:
   - `Messages` — new_message, new_pm, typing/stop_typing, notices
-  - `ChannelState` — mode_changed, kicked/banned/unbanned, ban/invite exceptions, topic
+  - `ChannelState` — mode_changed, kicked/banned/unbanned, ban/invite exceptions, topic,
+    group-call presence
   - `Membership` — user_joined/left, nick_changed, force_disconnect/rename, nickserv
   - `Presence` — user_connected/disconnected, notify_debounce, link_preview, invite
 
@@ -91,6 +92,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
     do: ChannelState.handle_info(msg, socket)
 
   def handle_info({:knock, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:group_call_started, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:group_call_ended, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 
   # ── Membership: join/leave, nick change, disconnect ───────

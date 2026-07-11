@@ -56,7 +56,11 @@ config :retro_hex_chat,
   turn_nonce_secret: "test-nonce-secret-64-bytes-long-padding-padding-padding-padding-pad",
   # P2P rate limiting — small windows for fast tests
   p2p_session_rate_limit: {5, 1_000},
-  signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.Noop
+  signaling_rate_limiter: RetroHexChat.P2P.SignalingRateLimit.Noop,
+  # Group-call rate limiting — high enough not to interfere except in focused tests
+  group_call_create_rate_limit: {100, 1_000},
+  group_call_join_rate_limit: {100, 1_000},
+  group_call_signal_rate_limit: {1_000, 1_000}
 
 # Basic auth for LiveDashboard
 config :retro_hex_chat_web, :basic_auth, username: "admin", password: "test"

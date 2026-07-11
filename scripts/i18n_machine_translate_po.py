@@ -32,6 +32,7 @@ LOCALE_TO_ARGOS = {
     "ko": "ko",
     "nl": "nl",
     "pl": "pl",
+    "pt_BR": "pt",
     "pt_PT": "pt",
     "ru": "ru",
     "tr": "tr",

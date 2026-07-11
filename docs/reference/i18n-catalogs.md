@@ -34,13 +34,13 @@ Idiomas RTL (`ar`, `ur`) exigem revisao visual dedicada, pois o layout usa
 `apps/retro_hex_chat`:
 
 - `accounts`, `admin`, `arcade`, `bots`, `channels`, `chat`, `commands`,
-  `emoji`, `games`, `help`, `p2p`, `services`
+  `emoji`, `games`, `group_call`, `help`, `p2p`, `services`
 - `default` deve ficar vazio ou conter apenas strings realmente transversais.
 
 `apps/retro_hex_chat_web`:
 
 - `admin`, `chat`, `connect`, `default`, `diagrams`, `dialogs`, `errors`,
-  `games`, `landing`, `p2p`, `showcase`, `system`, `ui`
+  `games`, `group_call`, `landing`, `p2p`, `showcase`, `system`, `ui`
 - Ajuda longa fica quebrada em `help`, `help_arcade`, `help_bots`,
   `help_channels`, `help_commands`, `help_features`, `help_games`,
   `help_p2p` e `help_ui`.
