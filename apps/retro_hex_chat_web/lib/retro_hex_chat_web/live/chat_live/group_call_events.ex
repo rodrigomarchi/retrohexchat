@@ -535,18 +535,15 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       layout =
         layout
         |> Map.put(:sidebar_open, sidebar_open)
-        |> then(fn layout ->
-          if sidebar_open do
-            layout
-          else
-            Map.put(layout, :mode, :auto)
-          end
-        end)
+        |> layout_for_sidebar(sidebar_open)
 
       %{call | layout: layout}
     end)
     |> push_group_call_layout()
   end
+
+  defp layout_for_sidebar(layout, true), do: layout
+  defp layout_for_sidebar(layout, false), do: Map.put(layout, :mode, :auto)
 
   defp cycle_self_view(socket) do
     update_call(socket, fn call ->
