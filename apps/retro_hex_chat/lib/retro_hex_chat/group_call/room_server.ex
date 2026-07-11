@@ -17,6 +17,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   alias RetroHexChat.GroupCall.Registry, as: GroupRegistry
   alias RetroHexChat.GroupCall.Schema.{Participant, Room, Track}
 
+  @pubsub RetroHexChat.PubSub
+
   @type participant_state :: %{
           participant: Participant.t(),
           peer_pid: pid() | nil,
@@ -856,6 +858,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
         last_activity_at: now
       })
 
+    broadcast_channel_call_ended(room, reason)
+
     %{state | room: room, participants: %{}, pending_participants: %{}, tracks: %{}}
   end
 
@@ -898,6 +902,13 @@ defmodule RetroHexChat.GroupCall.RoomServer do
           metadata: Map.get(attrs, :metadata, track.metadata)
         })
     end
+  end
+
+  defp broadcast_channel_call_ended(room, reason) do
+    Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+      :group_call_ended,
+      %{channel: room.channel_name, token: room.token, reason: reason}
+    })
   end
 
   defp update_tracks_for_media(state, participant_id, media_state) do

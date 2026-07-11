@@ -175,17 +175,22 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
       nick = create_registered_nick(unique_nick("creator"))
       {:ok, _pid} = start_channel(channel)
       {:ok, _state} = Server.join(channel, nick.nickname, nil, identified: true)
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "channel:#{channel}")
 
       assert {:ok, %{room: room, token: token}} =
                GroupCall.create_channel_call(channel, %{user_id: nick.id, nickname: nick.nickname})
 
       cleanup_room(token)
+      assert_receive {:group_call_started, %{channel: ^channel, token: ^token}}, 500
 
       assert room.channel_name == channel
       assert room.status == "open"
       assert GroupCall.active_room_for_channel(channel).id == room.id
       assert {:ok, _pid} = Registry.lookup_room({:room, token})
       assert {:ok, _pid} = Registry.lookup_room({:channel, channel})
+
+      assert :ok = GroupCall.close_call(token, %{user_id: nick.id, nickname: nick.nickname})
+      assert_receive {:group_call_ended, %{channel: ^channel, token: ^token}}, 500
     end
 
     test "rejects creation by a user who is not in the channel" do

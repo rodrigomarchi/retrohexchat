@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
   end
 
   defp group_call_assign(view), do: :sys.get_state(view.pid).socket.assigns.group_call
+  defp group_call_channels(view), do: :sys.get_state(view.pid).socket.assigns.group_call_channels
   defp active_channel(view), do: :sys.get_state(view.pid).socket.assigns.session.active_channel
   defp flush(view), do: :sys.get_state(view.pid)
 
@@ -35,6 +36,22 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         {:error, :not_found} -> :ok
       end
     end)
+  end
+
+  defp wait_until(fun, retries \\ 30)
+
+  defp wait_until(fun, retries) do
+    case fun.() do
+      true ->
+        :ok
+
+      _other when retries <= 0 ->
+        flunk("condition was not met before timeout")
+
+      _other ->
+        Process.sleep(20)
+        wait_until(fun, retries - 1)
+    end
   end
 
   describe "channel group call window" do
@@ -108,6 +125,59 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       call_b = group_call_assign(ctx_b.view)
       assert call_b.token == call_a.token
       assert call_b.channel_name == call_a.channel_name
+    end
+
+    test "joined channel shows a live conference indicator before entering the call", %{
+      conn: conn
+    } do
+      ctx_a = mount_identified(conn, "gcfi")
+      ctx_b = mount_identified(conn, "gcfj")
+      channel = "#gcli#{uid()}"
+
+      submit_command_sync(ctx_a.view, "/join #{channel}")
+      submit_command_sync(ctx_b.view, "/join #{channel}")
+
+      assert active_channel(ctx_a.view) == channel
+      assert active_channel(ctx_b.view) == channel
+
+      refute MapSet.member?(group_call_channels(ctx_b.view), channel)
+      refute has_element?(ctx_b.view, ~s([data-testid="group-call-channel-live-badge"]))
+
+      ctx_a.view
+      |> element(~s([data-testid="group-call-open"]))
+      |> render_click()
+
+      call_a = group_call_assign(ctx_a.view)
+      cleanup_room(call_a.token)
+
+      wait_until(fn ->
+        flush(ctx_b.view)
+        MapSet.member?(group_call_channels(ctx_b.view), channel)
+      end)
+
+      assert MapSet.member?(group_call_channels(ctx_b.view), channel)
+      assert has_element?(ctx_b.view, ~s([data-testid="group-call-channel-live-badge"]), "Live")
+      assert has_element?(ctx_b.view, ~s([data-testid="tab-group-call-glyph"]))
+
+      assert has_element?(
+               ctx_b.view,
+               ~s([data-testid="channel-group-call-glyph-#{channel}"])
+             )
+
+      render_click(ctx_a.view, "group_call_close_room", %{})
+      flush(ctx_a.view)
+      render_click(ctx_a.view, "group_call_confirm_end_call", %{})
+
+      assert group_call_assign(ctx_a.view) == nil
+
+      wait_until(fn ->
+        flush(ctx_b.view)
+        !MapSet.member?(group_call_channels(ctx_b.view), channel)
+      end)
+
+      refute MapSet.member?(group_call_channels(ctx_b.view), channel)
+      refute has_element?(ctx_b.view, ~s([data-testid="group-call-channel-live-badge"]))
+      refute has_element?(ctx_b.view, ~s([data-testid="tab-group-call-glyph"]))
     end
 
     test "hook events populate participants and leave tears the window down", %{conn: conn} do

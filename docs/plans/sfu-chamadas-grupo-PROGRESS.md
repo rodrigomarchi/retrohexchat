@@ -1011,6 +1011,57 @@
   - `npm test --prefix e2e -- chat-group-call.spec.ts`: 3 testes, 0 falhas;
   - `git diff --check`: ok.
 
+### 2026-07-11 — Commit do bloco de moderacao, estatisticas e icones
+
+- Antes do commit:
+  - working tree guardado em stash;
+  - `git fetch origin` e `git pull --ff-only origin main` executados com a
+    `main` limpa;
+  - stash reaplicado sem conflitos.
+- Validacoes repetidas antes do commit:
+  - `make compile`: ok;
+  - `npm --prefix apps/retro_hex_chat_web/assets test -- test/hooks/group_call/group_call_webrtc_hook.test.js`:
+    8 testes, 0 falhas;
+  - `PGPORT=15433 TEST_PORT=4102 mix test --include liveview_feature apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/group_call_flow_test.exs`:
+    13 testes, 0 falhas;
+  - `git diff --check`: ok.
+- Commit criado:
+  - `7940a264 feat(group-call): add conference moderation stats and visual polish`.
+- Push nao executado nesta etapa.
+
+### 2026-07-11 — Indicador de conferencia ativa no canal
+
+- Backend:
+  - `RetroHexChat.GroupCall.create_channel_call/3` passou a publicar
+    `{:group_call_started, ...}` no topico PubSub `channel:<canal>`;
+  - `RoomServer.close_room/2` passou a publicar `{:group_call_ended, ...}` no
+    mesmo topico quando a sala e encerrada;
+  - `RuntimeTest` cobre os broadcasts de inicio e fim da conferencia.
+- LiveView:
+  - `ChatLive` ganhou assign `:group_call_channels` como `MapSet`;
+  - `GroupCallEvents` centraliza `refresh_channel_call_state/2`,
+    `mark_channel_call_active/2` e `mark_channel_call_inactive/2`;
+  - entrada/ativacao de canal sincroniza com `GroupCall.active_room_exists?/1`,
+    entao reload ou usuario que entra depois tambem ve o indicador;
+  - handlers PubSub atualizam o `MapSet` quando a conferencia inicia ou termina.
+- UI:
+  - botao `Call` do canal ativo mostra badge `Live` com pulse dot quando ha
+    conferencia ativa;
+  - tabs de canal mostram o icone `icon_conference`;
+  - lista de conversas/canais mostra o mesmo icone no canal com conferencia;
+  - os pontos novos continuam compostos pelos componentes existentes de tabs e
+    conversations, reaproveitando o catalogo de icones.
+- Validacoes executadas:
+  - `mix format --check-formatted`: ok;
+  - `make compile`: ok;
+  - `make lint.hooks`: ok;
+  - `git diff --check`: ok;
+  - `PGPORT=15433 mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs`:
+    10 testes, 0 falhas;
+  - `PGPORT=15433 TEST_PORT=4102 mix test --include liveview_feature apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/group_call_flow_test.exs`:
+    14 testes, 0 falhas.
+- Bloco ainda sem commit.
+
 ## Pendencias abertas
 
 - F4 local: tratado com o cenario de 3 browsers cobrindo transicoes extras de

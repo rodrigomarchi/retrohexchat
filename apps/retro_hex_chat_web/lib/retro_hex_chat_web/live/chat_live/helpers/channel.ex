@@ -20,6 +20,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
+  alias RetroHexChatWeb.ChatLive.GroupCallEvents
   alias RetroHexChatWeb.ChatLive.Helpers.Presence, as: PresenceHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
   alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
@@ -79,6 +80,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
       loading_channel: channel_name,
       show_status_tab: false
     )
+    |> GroupCallEvents.refresh_channel_call_state(channel_name)
     |> tap(fn _ -> send_update(Composer, id: Composer.id(), reset_input: true) end)
     |> load_channel_users(channel_name)
     |> load_channel_user_count(channel_name)
@@ -99,6 +101,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
 
     socket
     |> assign(session: new_session)
+    |> GroupCallEvents.refresh_channel_call_state(channel_name)
     |> load_channel_user_count(channel_name)
     |> push_event("channel_joined_flash", %{channel: channel_name})
     |> SessionHelpers.push_reconnect_state()
@@ -132,6 +135,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
         highlight_channels: highlight,
         flash_channels: flash
       )
+      |> GroupCallEvents.mark_channel_call_inactive(channel_name)
 
     socket =
       if new_session.active_channel do
@@ -161,7 +165,10 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Channel do
     PresenceHelpers.safe_untrack_user("channel:#{channel_name}", socket.assigns.session.nickname)
     new_session = Session.remove_channel(socket.assigns.session, channel_name)
 
-    socket = assign(socket, session: new_session)
+    socket =
+      socket
+      |> assign(session: new_session)
+      |> GroupCallEvents.mark_channel_call_inactive(channel_name)
 
     if new_session.active_channel do
       socket

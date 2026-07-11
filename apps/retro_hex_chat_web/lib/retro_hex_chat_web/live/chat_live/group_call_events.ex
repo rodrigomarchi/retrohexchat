@@ -29,6 +29,41 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   @type event_result :: {:cont | :halt, Socket.t()}
 
+  @spec refresh_channel_call_state(Socket.t(), String.t() | nil) :: Socket.t()
+  def refresh_channel_call_state(socket, channel_name) when is_binary(channel_name) do
+    if GroupCall.active_room_exists?(channel_name) do
+      mark_channel_call_active(socket, channel_name)
+    else
+      mark_channel_call_inactive(socket, channel_name)
+    end
+  end
+
+  def refresh_channel_call_state(socket, _channel_name), do: socket
+
+  @spec mark_channel_call_active(Socket.t(), String.t() | nil) :: Socket.t()
+  def mark_channel_call_active(socket, channel_name) when is_binary(channel_name) do
+    assign(socket,
+      group_call_channels:
+        socket
+        |> group_call_channels()
+        |> MapSet.put(channel_name)
+    )
+  end
+
+  def mark_channel_call_active(socket, _channel_name), do: socket
+
+  @spec mark_channel_call_inactive(Socket.t(), String.t() | nil) :: Socket.t()
+  def mark_channel_call_inactive(socket, channel_name) when is_binary(channel_name) do
+    assign(socket,
+      group_call_channels:
+        socket
+        |> group_call_channels()
+        |> MapSet.delete(channel_name)
+    )
+  end
+
+  def mark_channel_call_inactive(socket, _channel_name), do: socket
+
   @spec handle_event(String.t(), map(), Socket.t()) :: event_result()
   def handle_event("group_call_open", _params, socket) do
     {:halt, open_or_join(socket)}
@@ -420,6 +455,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
       socket
       |> assign(group_call: call)
+      |> mark_channel_call_active(channel_name)
       |> open_call_windows()
     else
       {:error, message} when is_binary(message) -> Messages.error_event(socket, message)
@@ -767,11 +803,14 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp close_room(socket) do
+    channel_name = socket.assigns.group_call.channel_name
+
     with {:ok, actor} <- actor(socket),
          :ok <- GroupCall.close_call(socket.assigns.group_call.token, actor, "moderation") do
       socket
       |> Windows.close_window(@stats_window_id)
       |> assign(group_call: nil, group_call_pending: nil)
+      |> mark_channel_call_inactive(channel_name)
       |> push_event("window_command", %{action: "close", id: @window_id})
       |> push_event("window_command", %{action: "close", id: @stats_window_id})
     else
@@ -1034,5 +1073,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       Map.has_key?(map, Atom.to_string(key)) -> Map.get(map, Atom.to_string(key))
       true -> nil
     end
+  end
+
+  defp group_call_channels(socket) do
+    socket.assigns[:group_call_channels] || MapSet.new()
   end
 end

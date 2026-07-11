@@ -329,6 +329,16 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
     end
   end
 
+  # ── Group call presence ───────────────────────────────────
+
+  def handle_info({:group_call_started, %{channel: channel}}, socket) do
+    {:halt, GroupCallEvents.mark_channel_call_active(socket, channel)}
+  end
+
+  def handle_info({:group_call_ended, %{channel: channel}}, socket) do
+    {:halt, GroupCallEvents.mark_channel_call_inactive(socket, channel)}
+  end
+
   # ── Catch-all: pass unhandled to next hook ────────────────
 
   def handle_info(_, socket), do: {:cont, socket}

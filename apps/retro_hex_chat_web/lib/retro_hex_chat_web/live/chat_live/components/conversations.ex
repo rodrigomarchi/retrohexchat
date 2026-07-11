@@ -43,6 +43,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
        flash_channels: MapSet.new(),
        muted_channels: MapSet.new(),
        disconnected_channels: MapSet.new(),
+       group_call_channels: MapSet.new(),
        conversations_sections: %{},
        channel_user_counts: %{},
        popular_channels: [],
@@ -64,6 +65,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
       :flash_channels,
       :muted_channels,
       :disconnected_channels,
+      :group_call_channels,
       :conversations_sections,
       :channel_user_counts,
       :popular_channels,
@@ -109,6 +111,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.Conversations do
           flash_channels={MapSet.to_list(@flash_channels)}
           muted_channels={MapSet.to_list(@muted_channels)}
           disconnected_channels={MapSet.to_list(@disconnected_channels)}
+          group_call_channels={MapSet.to_list(@group_call_channels)}
           pm_conversations={@pm_conversations}
           active_pm={@active_pm}
           nick_color_fn={@nick_color_fn}

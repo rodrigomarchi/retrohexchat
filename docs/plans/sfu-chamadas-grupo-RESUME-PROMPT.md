@@ -359,7 +359,7 @@ Estado/decisoes:
   - `npm test --prefix e2e -- chat-group-call.spec.ts`: 2 testes, 0 falhas.
 - `mix compile --warnings-as-errors` falha por warning pre-existente em
   `RetroHexChatWeb.Admin.AppInfoPage` sobre `RetroHexChat.P2P.Registry`.
-- Bloco de 2026-07-11 ainda sem commit:
+- Bloco de moderacao/estatisticas/icones de 2026-07-11 ja commitado:
   - kick na conferencia agora abre confirmacao e executa ban do canal via
     `Channels.Server.ban/4`; canal e conferencia sao o mesmo escopo;
   - alvo banido recebe `user_kicked`, perde a conferencia ativa e nao consegue
@@ -399,6 +399,27 @@ Estado/decisoes:
     `make lint.js`, `make lint.hooks`, `MIX_ENV=e2e ... mix assets.build`,
     `npm test --prefix e2e -- chat-group-call.spec.ts` e `git diff --check`:
     ok.
+- Commit criado para o bloco acima:
+  - `7940a264 feat(group-call): add conference moderation stats and visual polish`.
+- Bloco atual ainda sem commit: indicador visual de conferencia ativa no canal.
+  - `RetroHexChat.GroupCall.create_channel_call/3` publica
+    `{:group_call_started, ...}` no topico PubSub `channel:<canal>`;
+  - `RoomServer.close_room/2` publica `{:group_call_ended, ...}` no mesmo
+    topico;
+  - `ChatLive` mantem `:group_call_channels` como `MapSet`;
+  - `GroupCallEvents` centraliza refresh/marcacao de canal ativo e sincroniza
+    ao entrar/ativar canal via `GroupCall.active_room_exists?/1`;
+  - handlers PubSub atualizam a LiveView quando uma conferencia inicia ou
+    termina;
+  - UI mostra indicador no botao `Call` do canal ativo, nas tabs de canal e na
+    lista de conversas/canais usando `Icons.icon_conference/1`;
+  - testes adicionados em `runtime_test.exs` e `group_call_flow_test.exs`;
+  - validacoes executadas: `mix format --check-formatted`, `make compile`,
+    `make lint.hooks`, `git diff --check`,
+    `PGPORT=15433 mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs`
+    com 10 testes e
+    `PGPORT=15433 TEST_PORT=4102 mix test --include liveview_feature apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/group_call_flow_test.exs`
+    com 14 testes, todos 0 falhas.
 
 Escopo recomendado ao retomar:
 1. Conferir `git status`.

@@ -733,6 +733,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       space_avatar: nil,
       space_last_avatar: "redtunic_hero",
       group_call: nil,
+      group_call_channels: MapSet.new(),
       group_call_pending: nil,
       p2p_session: nil,
       p2p_pending: nil,
@@ -927,4 +928,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       bindings: KeyBindings.to_persistable(KeyBindings.defaults())
     })
   end
+
+  defp channel_group_call_active?(channels, channel_name) when is_binary(channel_name) do
+    MapSet.member?(channels || MapSet.new(), channel_name)
+  end
+
+  defp channel_group_call_active?(_channels, _channel_name), do: false
 end

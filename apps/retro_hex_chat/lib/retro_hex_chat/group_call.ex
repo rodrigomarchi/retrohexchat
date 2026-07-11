@@ -21,6 +21,8 @@ defmodule RetroHexChat.GroupCall do
 
   alias RetroHexChat.GroupCall.Schema.{Participant, Room, Track}
 
+  @pubsub RetroHexChat.PubSub
+
   @type actor :: %{
           required(:user_id) => integer(),
           required(:nickname) => String.t()
@@ -44,6 +46,7 @@ defmodule RetroHexChat.GroupCall do
            ),
          {:ok, room} <- insert_channel_room(channel_name, actor, config, opts),
          {:ok, _pid} <- ensure_room_server(room) do
+      broadcast_channel_call_started(room)
       {:ok, %{room: room, token: room.token}}
     else
       {:error, %Ecto.Changeset{} = changeset} ->
@@ -304,6 +307,13 @@ defmodule RetroHexChat.GroupCall do
     32
     |> :crypto.strong_rand_bytes()
     |> Base.url_encode64(padding: false)
+  end
+
+  defp broadcast_channel_call_started(room) do
+    Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+      :group_call_started,
+      %{channel: room.channel_name, token: room.token}
+    })
   end
 
   defp membership_from_channel_state(%{members: members}) do
