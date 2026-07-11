@@ -7,6 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   """
   use RetroHexChatWeb.Component
 
+  alias RetroHexChatWeb.Components.UI.GroupCall.{LayoutControls, VideoSurface}
   alias RetroHexChatWeb.Icons
 
   attr :id, :string, required: true
@@ -17,6 +18,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   attr :on_leave, :any, default: "group_call_leave"
   attr :on_moderate_audio, :any, default: "group_call_moderate_audio"
   attr :on_kick_participant, :any, default: "group_call_kick_participant"
+  attr :on_focus_participant, :any, default: "group_call_focus_participant"
+  attr :on_layout_mode, :any, default: "group_call_layout_mode"
+  attr :on_toggle_sidebar, :any, default: "group_call_toggle_sidebar"
+  attr :on_cycle_self_view, :any, default: "group_call_cycle_self_view"
+  attr :on_clear_focus, :any, default: "group_call_clear_focus"
 
   @spec group_call_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def group_call_panel(assigns) do
@@ -28,14 +34,20 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         on_toggle_audio={@on_toggle_audio}
         on_toggle_video={@on_toggle_video}
         on_leave={@on_leave}
+        on_layout_mode={@on_layout_mode}
+        on_toggle_sidebar={@on_toggle_sidebar}
+        on_cycle_self_view={@on_cycle_self_view}
+        on_clear_focus={@on_clear_focus}
       />
 
-      <div class="grid min-h-0 flex-1 grid-cols-[minmax(0,1fr)_12rem] gap-1">
-        <.webrtc_surface call={@call} />
+      <div class={main_grid_class(@call)}>
+        <VideoSurface.video_surface call={@call} />
         <.participant_list
+          :if={sidebar_open?(@call)}
           call={@call}
           on_moderate_audio={@on_moderate_audio}
           on_kick_participant={@on_kick_participant}
+          on_focus_participant={@on_focus_participant}
         />
       </div>
 
@@ -47,7 +59,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
 
   defp call_header(assigns) do
     ~H"""
-    <div class="flex h-8 shrink-0 items-center justify-between gap-2 border border-border bg-surface px-2 shadow-retro-sunken">
+    <div class="flex min-h-8 shrink-0 items-center justify-between gap-2 border border-border bg-surface px-2 py-1 shadow-retro-sunken">
       <div class="flex min-w-0 items-center gap-2">
         <Icons.icon_camera class="h-4 w-4 shrink-0" />
         <div class="min-w-0">
@@ -70,6 +82,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       </div>
 
       <div class="flex shrink-0 items-center gap-px">
+        <LayoutControls.layout_controls
+          call={@call}
+          on_layout_mode={@on_layout_mode}
+          on_toggle_sidebar={@on_toggle_sidebar}
+          on_cycle_self_view={@on_cycle_self_view}
+          on_clear_focus={@on_clear_focus}
+        />
+
         <button
           :if={can_moderate_call?(@call)}
           type="button"
@@ -134,73 +154,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     """
   end
 
-  defp webrtc_surface(assigns) do
-    ~H"""
-    <div
-      :if={@call}
-      id={"group-call-webrtc-#{@call.token}"}
-      phx-hook="GroupCallWebRTCHook"
-      phx-update="ignore"
-      data-group-call-token={@call.token}
-      data-join-token={@call.join_token}
-      data-audio={media_enabled?(@call, :audio)}
-      data-video={media_enabled?(@call, :video)}
-      class="grid min-h-0 grid-rows-[minmax(0,1fr)_5.5rem] gap-1"
-      data-testid="group-call-webrtc"
-    >
-      <div
-        class="relative grid min-h-0 grid-cols-1 gap-1 overflow-hidden border border-border bg-canvas p-1 shadow-retro-sunken md:grid-cols-2"
-        data-group-call-remote-videos
-        data-testid="group-call-remote-videos"
-      >
-        <div
-          class="pointer-events-none absolute inset-0 flex items-center justify-center px-3 text-center text-muted-foreground"
-          data-group-call-remote-placeholder
-        >
-          {dgettext("group_call", "Waiting for remote video")}
-        </div>
-      </div>
-
-      <div class="grid min-h-0 grid-cols-[7rem_minmax(0,1fr)] gap-1">
-        <video
-          data-group-call-local-video
-          autoplay
-          muted
-          playsinline
-          class="h-full w-full border border-border bg-black object-cover shadow-retro-sunken"
-          data-testid="group-call-local-video"
-        >
-        </video>
-        <.local_media_summary call={@call} />
-      </div>
-    </div>
-    """
-  end
-
-  defp local_media_summary(assigns) do
-    ~H"""
-    <div class="min-h-0 border border-border bg-surface p-2 shadow-retro-sunken">
-      <div class="truncate font-bold">{@call && @call.nickname}</div>
-      <div class="mt-1 flex flex-wrap gap-1 text-[10px] text-muted-foreground">
-        <.media_badge enabled={media_enabled?(@call, :audio)} kind={:audio} />
-        <.media_badge enabled={media_enabled?(@call, :video)} kind={:video} />
-      </div>
-    </div>
-    """
-  end
-
-  defp media_badge(assigns) do
-    ~H"""
-    <span class="inline-flex items-center gap-1 bg-canvas px-1 shadow-retro-sunken">
-      <Icons.icon_microphone :if={@kind == :audio && @enabled} class="h-3 w-3" />
-      <Icons.icon_mute :if={@kind == :audio && !@enabled} class="h-3 w-3" />
-      <Icons.icon_camera :if={@kind == :video && @enabled} class="h-3 w-3" />
-      <Icons.icon_camera_off :if={@kind == :video && !@enabled} class="h-3 w-3" />
-      {media_badge_label(@kind, @enabled)}
-    </span>
-    """
-  end
-
   defp participant_list(assigns) do
     ~H"""
     <div class="flex min-h-0 flex-col border border-border bg-surface shadow-retro-sunken">
@@ -220,6 +173,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           participant={participant}
           on_moderate_audio={@on_moderate_audio}
           on_kick_participant={@on_kick_participant}
+          on_focus_participant={@on_focus_participant}
         />
       </div>
     </div>
@@ -243,6 +197,22 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         </div>
       </div>
       <div class="flex items-center gap-px">
+        <button
+          type="button"
+          phx-click={@on_focus_participant}
+          phx-value-participant-id={@participant.id}
+          class={[
+            "flex h-5 w-5 items-center justify-center bg-surface shadow-retro-raised",
+            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+            focused_participant?(@call, @participant) && "bg-muted shadow-retro-sunken"
+          ]}
+          title={focus_participant_title(@call, @participant)}
+          aria-label={focus_participant_title(@call, @participant)}
+          aria-pressed={to_string(focused_participant?(@call, @participant))}
+          data-testid={"group-call-participant-focus-#{@participant.id}"}
+        >
+          <Icons.icon_layout_focus class="h-3 w-3" />
+        </button>
         <button
           :if={can_moderate_participant?(@call, @participant)}
           type="button"
@@ -324,11 +294,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     """
   end
 
-  defp media_badge_label(:audio, true), do: dgettext("group_call", "Mic on")
-  defp media_badge_label(:audio, false), do: dgettext("group_call", "Mic off")
-  defp media_badge_label(:video, true), do: dgettext("group_call", "Camera on")
-  defp media_badge_label(:video, false), do: dgettext("group_call", "Camera off")
-
   defp channel_name(nil), do: dgettext("group_call", "Group Call")
   defp channel_name(call), do: call.channel_name || dgettext("group_call", "Group Call")
 
@@ -343,6 +308,17 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp status_icon_class(%{status: :connected}), do: "text-primary"
   defp status_icon_class(%{status: :error}), do: "text-destructive"
   defp status_icon_class(_call), do: "text-muted-foreground"
+
+  defp main_grid_class(call) do
+    classes([
+      "grid min-h-0 flex-1 gap-1",
+      sidebar_open?(call) && "grid-cols-[minmax(0,1fr)_12rem]",
+      !sidebar_open?(call) && "grid-cols-1"
+    ])
+  end
+
+  defp sidebar_open?(%{layout: %{sidebar_open: false}}), do: false
+  defp sidebar_open?(_call), do: true
 
   defp media_enabled?(%{media: media}, key), do: Map.get(media, key, true) == true
   defp media_enabled?(_call, _key), do: true
@@ -400,6 +376,18 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     if participant_media?(participant, :audio),
       do: dgettext("group_call", "Mute participant"),
       else: dgettext("group_call", "Unmute participant")
+  end
+
+  defp focused_participant?(%{layout: %{focused_participant_id: id}}, %{id: id})
+       when not is_nil(id),
+       do: true
+
+  defp focused_participant?(_call, _participant), do: false
+
+  defp focus_participant_title(call, participant) do
+    if focused_participant?(call, participant),
+      do: dgettext("group_call", "Focused participant"),
+      else: dgettext("group_call", "Focus participant")
   end
 
   defp participant_media_title(participant, :audio) do

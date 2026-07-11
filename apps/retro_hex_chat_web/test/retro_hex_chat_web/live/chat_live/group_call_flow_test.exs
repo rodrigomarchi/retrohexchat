@@ -199,6 +199,79 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       assert group_call_assign(view)
     end
 
+    test "conference layout controls update focus, self view, and participant rail", %{conn: conn} do
+      %{nick: nick, view: view} = mount_identified(conn, "gcfl")
+
+      view
+      |> element(~s([data-testid="group-call-open"]))
+      |> render_click()
+
+      assert_push_event(view, "window_command", %{action: "open", id: "group-call"})
+
+      call = group_call_assign(view)
+      cleanup_room(call.token)
+
+      render_click(view, "group_call_client_joined", %{
+        "room" => %{
+          "id" => call.room.id,
+          "token" => call.token,
+          "channel_name" => call.channel_name,
+          "status" => "open",
+          "max_participants" => call.room.max_participants
+        },
+        "participant" => %{
+          "id" => 123,
+          "nickname" => nick.nickname,
+          "status" => "connected",
+          "media_state" => %{"audio" => true, "video" => true},
+          "channel_role_snapshot" => "regular"
+        },
+        "participants" => []
+      })
+
+      render_click(view, "group_call_peer_joined", %{
+        "participant" => %{
+          "id" => 456,
+          "nickname" => "Ada",
+          "status" => "connected",
+          "media_state" => %{"audio" => true, "video" => true},
+          "channel_role_snapshot" => "regular"
+        }
+      })
+
+      assert group_call_assign(view).layout.mode == :auto
+      assert has_element?(view, ~s([data-testid="group-call-layout-auto"][aria-pressed="true"]))
+      assert has_element?(view, ~s([data-testid="group-call-participant-focus-456"]))
+
+      render_click(view, "group_call_layout_mode", %{"mode" => "grid"})
+      assert group_call_assign(view).layout.mode == :grid
+      assert_push_event(view, "group_call_layout_state", %{mode: "grid"})
+
+      render_click(view, "group_call_focus_participant", %{"participant-id" => "456"})
+      call = group_call_assign(view)
+      assert call.layout.mode == :focus
+      assert call.layout.focused_participant_id == 456
+
+      assert_push_event(view, "group_call_layout_state", %{
+        mode: "focus",
+        focused_participant_id: 456
+      })
+
+      assert has_element?(
+               view,
+               ~s([data-testid="group-call-participant-focus-456"][aria-pressed="true"])
+             )
+
+      render_click(view, "group_call_cycle_self_view", %{})
+      assert group_call_assign(view).layout.self_view == :pip
+      assert_push_event(view, "group_call_layout_state", %{self_view: "pip"})
+
+      render_click(view, "group_call_toggle_sidebar", %{})
+      refute group_call_assign(view).layout.sidebar_open
+      assert_push_event(view, "group_call_layout_state", %{sidebar_open: false})
+      refute has_element?(view, ~s([data-testid="group-call-participants"]))
+    end
+
     test "media warnings stay recoverable while failed connection becomes actionable error", %{
       conn: conn
     } do

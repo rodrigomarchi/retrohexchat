@@ -27,6 +27,204 @@ body {
   object-fit: cover;
 }
 
+.group-call-room {
+  display: grid;
+  height: 100%;
+  min-height: 0;
+}
+
+.group-call-video-surface {
+  position: relative;
+  display: grid;
+  min-height: 0;
+  gap: 4px;
+  overflow: auto;
+  border: 1px solid #808080;
+  background: #000000;
+  padding: 4px;
+  box-shadow:
+    inset 1px 1px #000000,
+    inset -1px -1px #ffffff;
+}
+
+.group-call-room[data-layout-mode="auto"] .group-call-video-surface,
+.group-call-room[data-layout-mode="grid"] .group-call-video-surface {
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  grid-auto-rows: minmax(8rem, 1fr);
+}
+
+.group-call-room[data-layout-mode="auto"] .group-call-video-surface[data-tile-count="1"],
+.group-call-room[data-layout-mode="grid"] .group-call-video-surface[data-tile-count="1"] {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.group-call-room[data-layout-mode="auto"] .group-call-video-surface[data-tile-count="2"],
+.group-call-room[data-layout-mode="grid"] .group-call-video-surface[data-tile-count="2"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.group-call-room[data-layout-mode="auto"] .group-call-video-surface[data-tile-count="3"],
+.group-call-room[data-layout-mode="auto"] .group-call-video-surface[data-tile-count="4"],
+.group-call-room[data-layout-mode="grid"] .group-call-video-surface[data-tile-count="3"],
+.group-call-room[data-layout-mode="grid"] .group-call-video-surface[data-tile-count="4"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.group-call-room[data-layout-mode="focus"] .group-call-video-surface,
+.group-call-room[data-layout-mode="sidebar"] .group-call-video-surface {
+  grid-template-columns: minmax(0, 1fr) minmax(7rem, 9rem);
+  grid-template-rows: repeat(6, minmax(0, 1fr));
+  grid-auto-rows: minmax(4.75rem, 5.75rem);
+}
+
+.group-call-video-tile {
+  position: relative;
+  min-width: 0;
+  min-height: 5rem;
+  overflow: hidden;
+  border: 1px solid #808080;
+  background: #000000;
+  color: #ffffff;
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #404040;
+}
+
+.group-call-video-tile:focus {
+  outline: 1px dotted #ffffff;
+  outline-offset: -4px;
+}
+
+.group-call-video-tile--remote {
+  cursor: pointer;
+}
+
+.group-call-video-tile--focused,
+.group-call-video-tile[data-focused="true"] {
+  border-color: #000080;
+  box-shadow:
+    inset 2px 2px #ffffff,
+    inset -2px -2px #000080;
+}
+
+.group-call-room[data-layout-mode="focus"] .group-call-video-tile[data-focused="true"],
+.group-call-room[data-layout-mode="focus"] .group-call-video-tile--focused,
+.group-call-room[data-layout-mode="sidebar"] .group-call-video-tile[data-focused="true"],
+.group-call-room[data-layout-mode="sidebar"] .group-call-video-tile--focused {
+  grid-column: 1;
+  grid-row: 1 / span 6;
+  min-height: 0;
+}
+
+.group-call-room[data-layout-mode="focus"] .group-call-video-tile:not([data-focused="true"]),
+.group-call-room[data-layout-mode="sidebar"] .group-call-video-tile:not([data-focused="true"]) {
+  grid-column: 2;
+  min-height: 4.75rem;
+}
+
+.group-call-video-tile__video,
+.group-call-remote-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  background: #000000;
+  object-fit: cover;
+}
+
+.group-call-video-tile__nameplate {
+  position: absolute;
+  left: 4px;
+  right: 4px;
+  bottom: 4px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px;
+  min-height: 1.4rem;
+  border: 1px solid #000000;
+  background: #c0c0c0;
+  color: #222222;
+  padding: 1px 3px;
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #808080;
+}
+
+.group-call-video-tile__badges {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.group-call-video-badge {
+  display: inline-flex;
+  width: 1rem;
+  height: 1rem;
+  align-items: center;
+  justify-content: center;
+  background: #dfdfdf;
+  color: #000080;
+  box-shadow:
+    inset 1px 1px #ffffff,
+    inset -1px -1px #808080;
+}
+
+.group-call-video-tile[data-media-audio="false"] [data-group-call-audio-badge],
+.group-call-video-tile[data-media-audio="false"] [data-group-call-local-audio-badge],
+.group-call-video-tile[data-media-video="false"] [data-group-call-video-badge],
+.group-call-video-tile[data-media-video="false"] [data-group-call-local-video-badge] {
+  background: #808080;
+  color: #222222;
+}
+
+.group-call-empty-tile {
+  display: flex;
+  min-height: 5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border: 1px dashed #808080;
+  background: #c0c0c0;
+  color: #555555;
+  padding: 8px;
+  text-align: center;
+}
+
+.group-call-empty-tile.hidden {
+  display: none;
+}
+
+.group-call-room[data-self-view="pip"] [data-group-call-local-tile] {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 3;
+  width: min(10rem, 34%);
+  height: min(7rem, 34%);
+  min-height: 5rem;
+}
+
+.group-call-room[data-self-view="hidden"] [data-group-call-local-tile] {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .group-call-room[data-layout-mode="focus"] .group-call-video-surface,
+  .group-call-room[data-layout-mode="sidebar"] .group-call-video-surface {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+  }
+
+  .group-call-room[data-layout-mode="focus"] .group-call-video-tile[data-focused="true"],
+  .group-call-room[data-layout-mode="sidebar"] .group-call-video-tile[data-focused="true"],
+  .group-call-room[data-layout-mode="focus"] .group-call-video-tile:not([data-focused="true"]),
+  .group-call-room[data-layout-mode="sidebar"] .group-call-video-tile:not([data-focused="true"]) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+}
+
 /* highlight.js — VS2015-inspired theme adapted for retro terminal */
 pre code.hljs {
   display: block;

@@ -21,6 +21,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   alias RetroHexChatWeb.ChatLive.Windows
 
   @window_id "group-call"
+  @layout_modes ~w(auto grid focus sidebar)
+  @self_view_cycle [:tile, :pip, :hidden]
 
   @type event_result :: {:cont | :halt, Socket.t()}
 
@@ -123,6 +125,44 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   def handle_event(
+        "group_call_layout_mode",
+        %{"mode" => mode},
+        %{assigns: %{group_call: %{}}} = socket
+      ) do
+    {:halt, set_layout_mode(socket, mode)}
+  end
+
+  def handle_event("group_call_layout_mode", _params, socket), do: {:halt, socket}
+
+  def handle_event("group_call_toggle_sidebar", _params, %{assigns: %{group_call: %{}}} = socket) do
+    {:halt, toggle_sidebar(socket)}
+  end
+
+  def handle_event("group_call_toggle_sidebar", _params, socket), do: {:halt, socket}
+
+  def handle_event("group_call_cycle_self_view", _params, %{assigns: %{group_call: %{}}} = socket) do
+    {:halt, cycle_self_view(socket)}
+  end
+
+  def handle_event("group_call_cycle_self_view", _params, socket), do: {:halt, socket}
+
+  def handle_event(
+        "group_call_focus_participant",
+        %{"participant-id" => participant_id},
+        %{assigns: %{group_call: %{}}} = socket
+      ) do
+    {:halt, focus_participant(socket, participant_id)}
+  end
+
+  def handle_event("group_call_focus_participant", _params, socket), do: {:halt, socket}
+
+  def handle_event("group_call_clear_focus", _params, %{assigns: %{group_call: %{}}} = socket) do
+    {:halt, clear_focus(socket)}
+  end
+
+  def handle_event("group_call_clear_focus", _params, socket), do: {:halt, socket}
+
+  def handle_event(
         "group_call_moderate_audio",
         %{"participant-id" => participant_id},
         %{assigns: %{group_call: %{}}} = socket
@@ -138,6 +178,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     {:halt, kick_participant(socket, participant_id)}
   end
 
+  def handle_event("group_call_webrtc_ready", _params, %{assigns: %{group_call: %{}}} = socket) do
+    {:halt, push_group_call_layout(socket)}
+  end
+
   def handle_event("group_call_webrtc_ready", _params, socket), do: {:halt, socket}
 
   def handle_event("group_call_client_joined", payload, %{assigns: %{group_call: %{}}} = socket) do
@@ -150,7 +194,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       |> merge_summary(payload)
       |> put_participant(participant)
 
-    {:halt, assign(socket, group_call: call)}
+    {:halt, socket |> assign(group_call: call) |> push_group_call_layout()}
   end
 
   def handle_event("group_call_offer_received", _payload, %{assigns: %{group_call: %{}}} = socket) do
@@ -165,7 +209,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       |> put_participant(participant)
       |> maybe_mark_connected(participant)
 
-    {:halt, assign(socket, group_call: call)}
+    {:halt, socket |> assign(group_call: call) |> push_group_call_layout()}
   end
 
   def handle_event("group_call_peer_left", payload, %{assigns: %{group_call: %{}}} = socket) do
@@ -178,13 +222,14 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
        |> assign(group_call: nil, group_call_pending: nil)
        |> push_event("window_command", %{action: "close", id: @window_id})}
     else
-      {:halt, update_call(socket, &remove_participant(&1, participant_id))}
+      {:halt,
+       socket |> update_call(&remove_participant(&1, participant_id)) |> push_group_call_layout()}
     end
   end
 
   def handle_event("group_call_media_state", payload, %{assigns: %{group_call: %{}}} = socket) do
     participant = normalize_participant(value(payload, :participant))
-    {:halt, update_call(socket, &put_participant(&1, participant))}
+    {:halt, socket |> update_call(&put_participant(&1, participant)) |> push_group_call_layout()}
   end
 
   def handle_event(
@@ -199,22 +244,23 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
        call
        |> Map.put(:media, media)
        |> update_self_media(media)
-     end)}
+     end)
+     |> push_group_call_layout()}
   end
 
   def handle_event("group_call_track_added", payload, %{assigns: %{group_call: %{}}} = socket) do
     track = normalize_track(value(payload, :track))
-    {:halt, update_call(socket, &put_track(&1, track))}
+    {:halt, socket |> update_call(&put_track(&1, track)) |> push_group_call_layout()}
   end
 
   def handle_event("group_call_track_updated", payload, %{assigns: %{group_call: %{}}} = socket) do
     track = normalize_track(value(payload, :track))
-    {:halt, update_call(socket, &put_track(&1, track))}
+    {:halt, socket |> update_call(&put_track(&1, track)) |> push_group_call_layout()}
   end
 
   def handle_event("group_call_track_removed", payload, %{assigns: %{group_call: %{}}} = socket) do
     track_id = value(payload, :track_id)
-    {:halt, update_call(socket, &remove_track(&1, track_id))}
+    {:halt, socket |> update_call(&remove_track(&1, track_id)) |> push_group_call_layout()}
   end
 
   def handle_event("group_call_closed", payload, %{assigns: %{group_call: %{}}} = socket) do
@@ -404,6 +450,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       pending_participants: normalize_participants(value(summary, :pending_participants)),
       tracks: normalize_tracks(value(summary, :tracks)),
       media: %{audio: true, video: true},
+      layout: default_layout(),
       error: nil,
       warning: nil
     }
@@ -461,6 +508,85 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     socket
     |> assign(group_call: call)
     |> push_event("group_call_set_media_state", media)
+    |> push_group_call_layout()
+  end
+
+  defp set_layout_mode(socket, mode) when mode in @layout_modes do
+    update_call(socket, fn call ->
+      layout =
+        call
+        |> layout()
+        |> Map.put(:mode, String.to_existing_atom(mode))
+        |> maybe_open_sidebar_for_mode()
+        |> maybe_focus_for_mode(call)
+
+      %{call | layout: layout}
+    end)
+    |> push_group_call_layout()
+  end
+
+  defp set_layout_mode(socket, _mode), do: socket
+
+  defp toggle_sidebar(socket) do
+    update_call(socket, fn call ->
+      layout = layout(call)
+      sidebar_open = !Map.get(layout, :sidebar_open, true)
+
+      layout =
+        layout
+        |> Map.put(:sidebar_open, sidebar_open)
+        |> then(fn layout ->
+          if sidebar_open do
+            layout
+          else
+            Map.put(layout, :mode, :auto)
+          end
+        end)
+
+      %{call | layout: layout}
+    end)
+    |> push_group_call_layout()
+  end
+
+  defp cycle_self_view(socket) do
+    update_call(socket, fn call ->
+      current = Map.get(layout(call), :self_view, :tile)
+      next = next_self_view(current)
+
+      %{call | layout: Map.put(layout(call), :self_view, next)}
+    end)
+    |> push_group_call_layout()
+  end
+
+  defp focus_participant(socket, participant_id) do
+    with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
+         true <- participant_id in Enum.map(socket.assigns.group_call.participants, & &1.id) do
+      update_call(socket, fn call ->
+        layout =
+          call
+          |> layout()
+          |> Map.put(:mode, :focus)
+          |> Map.put(:focused_participant_id, participant_id)
+
+        %{call | layout: layout}
+      end)
+      |> push_group_call_layout()
+    else
+      _error -> socket
+    end
+  end
+
+  defp clear_focus(socket) do
+    update_call(socket, fn call ->
+      layout =
+        call
+        |> layout()
+        |> Map.put(:mode, :auto)
+        |> Map.put(:focused_participant_id, nil)
+
+      %{call | layout: layout}
+    end)
+    |> push_group_call_layout()
   end
 
   defp update_self_media(%{participant_id: nil} = call, _media), do: call
@@ -480,6 +606,12 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   defp update_call(socket, fun) do
     assign(socket, group_call: fun.(socket.assigns.group_call))
   end
+
+  defp push_group_call_layout(%{assigns: %{group_call: call}} = socket) when is_map(call) do
+    push_event(socket, "group_call_layout_state", group_call_layout_payload(call))
+  end
+
+  defp push_group_call_layout(socket), do: socket
 
   defp moderate_audio(socket, participant_id) do
     with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
@@ -585,7 +717,13 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp remove_participant(call, participant_id) do
-    %{call | participants: Enum.reject(call.participants, &(&1.id == participant_id))}
+    call = %{call | participants: Enum.reject(call.participants, &(&1.id == participant_id))}
+
+    if layout(call).focused_participant_id == participant_id do
+      %{call | layout: %{layout(call) | focused_participant_id: nil, mode: :auto}}
+    else
+      call
+    end
   end
 
   defp remove_track(call, track_id) do
@@ -662,6 +800,78 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   end
 
   defp normalize_media(_media), do: %{}
+
+  defp default_layout do
+    %{
+      mode: :auto,
+      focused_participant_id: nil,
+      sidebar_open: true,
+      self_view: :tile
+    }
+  end
+
+  defp layout(%{layout: layout}) when is_map(layout), do: Map.merge(default_layout(), layout)
+  defp layout(_call), do: default_layout()
+
+  defp maybe_open_sidebar_for_mode(%{mode: :sidebar} = layout), do: %{layout | sidebar_open: true}
+  defp maybe_open_sidebar_for_mode(layout), do: layout
+
+  defp maybe_focus_for_mode(%{mode: mode, focused_participant_id: nil} = layout, call)
+       when mode in [:focus, :sidebar] do
+    %{layout | focused_participant_id: default_focus_participant_id(call)}
+  end
+
+  defp maybe_focus_for_mode(layout, _call), do: layout
+
+  defp default_focus_participant_id(call) do
+    remote =
+      call.participants
+      |> Enum.reject(&(&1.id == call.participant_id))
+      |> Enum.find(&participant_media?(&1, :video))
+
+    (remote || List.first(call.participants) || %{})[:id]
+  end
+
+  defp next_self_view(current) do
+    current_index = Enum.find_index(@self_view_cycle, &(&1 == current)) || 0
+    Enum.at(@self_view_cycle, rem(current_index + 1, length(@self_view_cycle)))
+  end
+
+  defp group_call_layout_payload(call) do
+    layout = layout(call)
+
+    %{
+      mode: Atom.to_string(layout.mode),
+      focused_participant_id: layout.focused_participant_id,
+      sidebar_open: layout.sidebar_open,
+      self_view: Atom.to_string(layout.self_view),
+      self_participant_id: call.participant_id,
+      participants: Enum.map(call.participants || [], &participant_payload/1),
+      tracks: Enum.map(call.tracks || [], &track_payload/1)
+    }
+  end
+
+  defp participant_payload(participant) do
+    %{
+      id: participant.id,
+      nickname: participant.nickname,
+      status: participant.status,
+      media_state: participant.media_state || %{},
+      channel_role_snapshot: participant.channel_role_snapshot
+    }
+  end
+
+  defp track_payload(track) do
+    %{
+      id: track.id,
+      participant_id: track.participant_id,
+      kind: track.kind,
+      source: track.source,
+      status: track.status,
+      webrtc_track_id: track[:webrtc_track_id],
+      stream_id: track[:stream_id]
+    }
+  end
 
   defp media_value(media, key) do
     case value(media, key) do

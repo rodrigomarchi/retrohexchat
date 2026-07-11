@@ -37,12 +37,51 @@ function groupCallStatusBar(page: Page) {
   return page.getByTestId("status-bar-group-call");
 }
 
+function groupCallLayoutGrid(page: Page) {
+  return page.getByTestId("group-call-layout-grid");
+}
+
+function groupCallLayoutFocus(page: Page) {
+  return page.getByTestId("group-call-layout-focus");
+}
+
+function groupCallLayoutSidebar(page: Page) {
+  return page.getByTestId("group-call-layout-sidebar");
+}
+
+function groupCallSelfViewToggle(page: Page) {
+  return page.getByTestId("group-call-self-view-toggle");
+}
+
+function groupCallClearFocus(page: Page) {
+  return page.getByTestId("group-call-clear-focus");
+}
+
+function groupCallWebRTC(page: Page) {
+  return page.getByTestId("group-call-webrtc");
+}
+
+function groupCallVideoGrid(page: Page) {
+  return page.getByTestId("group-call-video-grid");
+}
+
+function groupCallLocalTile(page: Page) {
+  return page.getByTestId("group-call-local-tile");
+}
+
+function remoteVideoTile(page: Page) {
+  return page
+    .locator('[data-group-call-video-tile][data-local="false"]')
+    .first();
+}
+
+const remoteTileVideoSelector =
+  '[data-group-call-video-tile][data-local="false"] video';
+
 async function remoteVideoLive(page: Page) {
-  return page.evaluate(() => {
+  return page.evaluate((selector) => {
     const videos = Array.from(
-      document.querySelectorAll<HTMLVideoElement>(
-        "[data-group-call-remote-videos] video",
-      ),
+      document.querySelectorAll<HTMLVideoElement>(selector),
     );
 
     return videos.some((video) => {
@@ -51,15 +90,30 @@ async function remoteVideoLive(page: Page) {
 
       return !!track && track.readyState === "live";
     });
-  });
+  }, remoteTileVideoSelector);
+}
+
+async function remoteVideoIdentity(page: Page) {
+  return page.evaluate((selector) => {
+    const video = document.querySelector<HTMLVideoElement>(selector);
+    if (!video) return null;
+
+    video.dataset.e2eVideoIdentity ||= `video-${Date.now()}-${Math.random()}`;
+    const stream = video.srcObject as MediaStream | null;
+    const track = stream?.getVideoTracks()[0];
+
+    return {
+      videoIdentity: video.dataset.e2eVideoIdentity,
+      streamId: stream?.id || null,
+      trackReadyState: track?.readyState || null,
+    };
+  }, remoteTileVideoSelector);
 }
 
 async function remoteLiveVideoCount(page: Page) {
-  return page.evaluate(() => {
+  return page.evaluate((selector) => {
     const videos = Array.from(
-      document.querySelectorAll<HTMLVideoElement>(
-        "[data-group-call-remote-videos] video",
-      ),
+      document.querySelectorAll<HTMLVideoElement>(selector),
     );
 
     return videos.filter((video) => {
@@ -68,7 +122,7 @@ async function remoteLiveVideoCount(page: Page) {
 
       return !!track && track.readyState === "live";
     }).length;
-  });
+  }, remoteTileVideoSelector);
 }
 
 async function localTrackEnabled(page: Page, kind: "audio" | "video") {
@@ -241,6 +295,132 @@ test.describe("Channel group calls", () => {
       await expect(
         bob.page.getByTestId("group-call-participants"),
       ).not.toContainText(alice.nick, { timeout: 10_000 });
+    } finally {
+      await closeGroupCallUsers([alice, bob]);
+    }
+  });
+
+  test("layout controls focus tiles without interrupting remote video", async ({
+    browser,
+  }) => {
+    const alice = await newGroupCallUser(browser, "gcla");
+    const bob = await newGroupCallUser(browser, "gclb");
+    const channel = uniqueChannel("gcallui");
+
+    try {
+      for (const user of [alice, bob]) {
+        await joinChannel(user, channel);
+      }
+
+      await groupCallButton(alice.page).click();
+      await expect(groupCallWindow(alice.page)).toBeVisible();
+
+      await groupCallButton(bob.page).click();
+      await expect(groupCallWindow(bob.page)).toBeVisible();
+
+      await expect
+        .poll(() => remoteVideoLive(alice.page), { timeout: 30_000 })
+        .toBe(true);
+
+      await expect(remoteVideoTile(alice.page)).toBeVisible();
+      await expect
+        .poll(() => remoteVideoIdentity(alice.page), { timeout: 10_000 })
+        .toMatchObject({ trackReadyState: "live" });
+
+      const initialRemote = await remoteVideoIdentity(alice.page);
+      expect(initialRemote?.videoIdentity).toBeTruthy();
+      expect(initialRemote?.streamId).toBeTruthy();
+
+      await groupCallLayoutGrid(alice.page).click();
+      await expect(groupCallLayoutGrid(alice.page)).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+        "data-layout-mode",
+        "grid",
+      );
+      await expect(groupCallVideoGrid(alice.page)).toHaveAttribute(
+        "data-tile-count",
+        "2",
+      );
+      await expect
+        .poll(() => remoteVideoIdentity(alice.page))
+        .toEqual(initialRemote);
+
+      await groupCallLayoutFocus(alice.page).click();
+      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+        "data-layout-mode",
+        "focus",
+      );
+      await expect(groupCallClearFocus(alice.page)).toBeVisible();
+      await expect(remoteVideoTile(alice.page)).toHaveAttribute(
+        "data-focused",
+        "true",
+      );
+      await expect
+        .poll(() => remoteVideoIdentity(alice.page))
+        .toEqual(initialRemote);
+
+      await groupCallSelfViewToggle(alice.page).click();
+      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+        "data-self-view",
+        "pip",
+      );
+      await expect(groupCallLocalTile(alice.page)).toBeVisible();
+
+      await groupCallSelfViewToggle(alice.page).click();
+      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+        "data-self-view",
+        "hidden",
+      );
+      await expect(groupCallLocalTile(alice.page)).toBeHidden();
+      await expect(groupCallVideoGrid(alice.page)).toHaveAttribute(
+        "data-tile-count",
+        "1",
+      );
+
+      await groupCallSelfViewToggle(alice.page).click();
+      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+        "data-self-view",
+        "tile",
+      );
+      await expect(groupCallLocalTile(alice.page)).toBeVisible();
+
+      await groupCallLayoutSidebar(alice.page).click();
+      await expect(groupCallLayoutSidebar(alice.page)).toHaveAttribute(
+        "aria-pressed",
+        "false",
+      );
+      await expect(
+        alice.page.getByTestId("group-call-participants"),
+      ).toBeHidden();
+      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+        "data-sidebar-open",
+        "false",
+      );
+
+      await groupCallLayoutSidebar(alice.page).click();
+      await expect(groupCallLayoutSidebar(alice.page)).toHaveAttribute(
+        "aria-pressed",
+        "true",
+      );
+      await expect(
+        alice.page.getByTestId("group-call-participants"),
+      ).toBeVisible();
+
+      await groupCallClearFocus(alice.page).click();
+      await expect(groupCallWebRTC(alice.page)).toHaveAttribute(
+        "data-layout-mode",
+        "auto",
+      );
+      await expect(remoteVideoTile(alice.page)).toHaveAttribute(
+        "data-focused",
+        "false",
+      );
+      await expect
+        .poll(() => remoteVideoIdentity(alice.page))
+        .toEqual(initialRemote);
     } finally {
       await closeGroupCallUsers([alice, bob]);
     }

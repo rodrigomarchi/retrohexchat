@@ -56,6 +56,12 @@ tree-view-marker-open
 activity-indicator__*
 game-media*
 p2p-media-call*
+# Group-call conference components — used by components/ui/group_call/* files
+# (skipped by the template scanner); hook-created tile classes are referenced
+# from JS and therefore do not need to be listed here.
+group-call-empty-tile
+group-call-room
+group-call-video-surface
 # Desktop window manager — BEM classes applied via classes([...]) in components/ui/layout/desktop.ex
 # and toggled by WindowManagerHook (both skipped by the template scanner)
 desktop*

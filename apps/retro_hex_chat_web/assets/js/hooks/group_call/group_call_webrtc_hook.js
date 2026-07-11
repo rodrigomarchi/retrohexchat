@@ -8,6 +8,8 @@ import { Socket } from "phoenix";
 import { log } from "../../lib/logger.js";
 
 const DEFAULT_CONSTRAINTS = { audio: true, video: true };
+const LAYOUT_MODES = new Set(["auto", "grid", "focus", "sidebar"]);
+const SELF_VIEW_MODES = new Set(["tile", "pip", "hidden"]);
 
 const GroupCallWebRTCHook = {
   mounted() {
@@ -23,6 +25,12 @@ const GroupCallWebRTCHook = {
     this.closing = false;
     this.offerQueue = Promise.resolve();
     this.lastAnsweredOfferSdp = null;
+    this.layoutState = this._layoutStateFromDataset();
+    this.participantsById = new Map();
+    this.tracksById = new Map();
+    this.tracksByStreamId = new Map();
+    this.tracksByWebrtcTrackId = new Map();
+    this.remoteTiles = new Map();
 
     if (!this.roomToken || !this.joinToken) {
       log.warn("[group-call] missing room token or join token");
@@ -33,6 +41,12 @@ const GroupCallWebRTCHook = {
       this._setMediaState(payload || {});
     });
 
+    this.handleEvent("group_call_layout_state", (payload) => {
+      this._syncLayoutState(payload || {});
+    });
+
+    this._bindLocalTile();
+    this._applyLayout();
     this._connect();
     this.pushEvent("group_call_webrtc_ready", {});
   },
@@ -51,6 +65,10 @@ const GroupCallWebRTCHook = {
 
     this.channel.on("group_call_joined", (payload) => {
       this.participantId = payload?.participant?.id || null;
+      this._upsertParticipant(payload?.participant);
+      this._syncParticipants(payload?.participants || []);
+      this._syncTracks(payload?.tracks || []);
+      this._syncLocalTile();
       this.pushEvent("group_call_client_joined", payload);
       this.channel?.push("group_call_media_state", this.mediaEnabled);
     });
@@ -64,15 +82,19 @@ const GroupCallWebRTCHook = {
       this._handleRemoteCandidate(payload.candidate);
     });
     this.channel.on("group_call_peer_joined", (payload) => {
+      this._upsertParticipant(payload?.participant);
       this.pushEvent("group_call_peer_joined", payload);
     });
     this.channel.on("group_call_peer_left", (payload) => {
+      this._removeParticipant(payload?.participant_id);
       this.pushEvent("group_call_peer_left", payload);
     });
     this.channel.on("group_call_track_added", (payload) => {
+      this._syncTrack(payload?.track);
       this.pushEvent("group_call_track_added", payload);
     });
     this.channel.on("group_call_media_state", (payload) => {
+      this._upsertParticipant(payload?.participant);
       this.pushEvent("group_call_media_state", payload);
     });
     this.channel.on("group_call_set_media_state", (payload) => {
@@ -80,9 +102,11 @@ const GroupCallWebRTCHook = {
       this.pushEvent("group_call_media_state_forced", payload || {});
     });
     this.channel.on("group_call_track_updated", (payload) => {
+      this._syncTrack(payload?.track);
       this.pushEvent("group_call_track_updated", payload);
     });
     this.channel.on("group_call_track_removed", (payload) => {
+      this._removeTrack(payload?.track_id);
       this.pushEvent("group_call_track_removed", payload);
     });
     this.channel.on("group_call_closed", (payload) => {
@@ -186,7 +210,7 @@ const GroupCallWebRTCHook = {
     };
 
     this.pc.ontrack = (event) => {
-      this._attachRemoteStream(event.streams[0]);
+      this._attachRemoteStream(event.streams[0], event.track);
     };
   },
 
@@ -242,28 +266,397 @@ const GroupCallWebRTCHook = {
       video.muted = true;
       video.playsInline = true;
     }
+
+    this._syncLocalTile();
   },
 
-  _attachRemoteStream(stream) {
+  _attachRemoteStream(stream, track = null) {
     if (!stream) return;
 
-    const host = this.el.querySelector("[data-group-call-remote-videos]") || this.el;
+    const host = this._videoGrid();
     const streamId = stream.id || `remote-${Date.now()}`;
-    let video = host.querySelector(`[data-stream-id="${streamId}"]`);
+    let tile =
+      this.remoteTiles.get(streamId) || host.querySelector(`[data-stream-id="${streamId}"]`);
+
+    if (!tile) {
+      tile = this._createRemoteTile(streamId);
+      host.appendChild(tile);
+      this.remoteTiles.set(streamId, tile);
+    }
+
+    let video = tile.querySelector("video");
 
     if (!video) {
       video = document.createElement("video");
-      video.dataset.streamId = streamId;
       video.autoplay = true;
       video.playsInline = true;
-      video.className = "group-call-remote-video";
-      host.appendChild(video);
+      video.className = "group-call-video-tile__video group-call-remote-video";
+      tile.insertBefore(video, tile.firstChild);
     }
 
-    const placeholder = host.querySelector("[data-group-call-remote-placeholder]");
-    placeholder?.classList.add("hidden");
-
     video.srcObject = stream;
+    this._applyTrackToTile(tile, streamId, track);
+    this._applyLayout();
+  },
+
+  _videoGrid() {
+    return this.el.querySelector("[data-group-call-video-grid]") || this.el;
+  },
+
+  _createRemoteTile(streamId) {
+    const tile = document.createElement("div");
+    tile.className = "group-call-video-tile group-call-video-tile--remote";
+    tile.dataset.groupCallVideoTile = "";
+    tile.dataset.streamId = streamId;
+    tile.dataset.mediaAudio = "true";
+    tile.dataset.mediaVideo = "true";
+    tile.dataset.local = "false";
+    tile.tabIndex = 0;
+    tile.role = "button";
+    tile.dataset.testid = `group-call-remote-tile-${streamId}`;
+    tile.addEventListener("click", () => this._toggleTileFocus(tile));
+    tile.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      this._toggleTileFocus(tile);
+    });
+
+    const nameplate = document.createElement("div");
+    nameplate.className = "group-call-video-tile__nameplate";
+
+    const name = document.createElement("span");
+    name.className = "truncate font-bold";
+    name.dataset.groupCallTileName = "";
+    name.textContent = "Remote";
+
+    const badges = document.createElement("span");
+    badges.className = "group-call-video-tile__badges";
+
+    const audio = document.createElement("span");
+    audio.className = "group-call-video-badge";
+    audio.dataset.groupCallAudioBadge = "";
+    audio.textContent = "M";
+
+    const video = document.createElement("span");
+    video.className = "group-call-video-badge";
+    video.dataset.groupCallVideoBadge = "";
+    video.textContent = "V";
+
+    badges.append(audio, video);
+    nameplate.append(name, badges);
+    tile.appendChild(nameplate);
+
+    return tile;
+  },
+
+  _bindLocalTile() {
+    const tile = this.el.querySelector("[data-group-call-local-tile]");
+    if (!tile) return;
+
+    tile.addEventListener("click", () => this._toggleTileFocus(tile));
+    tile.addEventListener("keydown", (event) => {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      event.preventDefault();
+      this._toggleTileFocus(tile);
+    });
+    this._syncLocalTile();
+  },
+
+  _syncLocalTile() {
+    const tile = this.el.querySelector("[data-group-call-local-tile]");
+    if (!tile) return;
+
+    if (this.participantId) {
+      tile.dataset.participantId = String(this.participantId);
+    }
+
+    tile.dataset.mediaAudio = String(this.mediaEnabled.audio);
+    tile.dataset.mediaVideo = String(this.mediaEnabled.video);
+    tile.setAttribute("aria-label", "Focus your video");
+    tile.title = "Focus your video";
+    this._applyLayout();
+  },
+
+  _toggleTileFocus(tile) {
+    const participantId = tile.dataset.participantId || null;
+    const streamId = tile.dataset.streamId || null;
+    const isFocused = tile.dataset.focused === "true";
+
+    if (isFocused) {
+      this.pushEvent("group_call_clear_focus", {});
+      this._syncLayoutState({
+        mode: "auto",
+        focused_participant_id: null,
+        focused_stream_id: null,
+      });
+      return;
+    }
+
+    if (participantId) {
+      this.pushEvent("group_call_focus_participant", {
+        participant_id: participantId,
+        "participant-id": participantId,
+      });
+      return;
+    }
+
+    this._syncLayoutState({
+      mode: "focus",
+      focused_participant_id: null,
+      focused_stream_id: streamId,
+    });
+  },
+
+  _layoutStateFromDataset() {
+    return {
+      mode: this._normalizeLayoutMode(this.el.dataset.layoutMode),
+      focusedParticipantId: this._stringOrNull(this.el.dataset.focusedParticipantId),
+      focusedStreamId: null,
+      selfView: this._normalizeSelfView(this.el.dataset.selfView),
+      sidebarOpen: this.el.dataset.sidebarOpen !== "false",
+    };
+  },
+
+  _syncLayoutState(payload) {
+    const mode = this._payloadValue(payload, "mode");
+    const focusedParticipantId = this._payloadValue(
+      payload,
+      "focused_participant_id",
+      "focusedParticipantId",
+    );
+    const focusedStreamId = this._payloadValue(payload, "focused_stream_id", "focusedStreamId");
+    const selfView = this._payloadValue(payload, "self_view", "selfView");
+    const sidebarOpen = this._payloadValue(payload, "sidebar_open", "sidebarOpen");
+    const selfParticipantId = this._payloadValue(
+      payload,
+      "self_participant_id",
+      "selfParticipantId",
+    );
+
+    this.layoutState = {
+      ...this.layoutState,
+      mode: mode === undefined ? this.layoutState.mode : this._normalizeLayoutMode(mode),
+      focusedParticipantId:
+        focusedParticipantId === undefined
+          ? this.layoutState.focusedParticipantId
+          : this._stringOrNull(focusedParticipantId),
+      focusedStreamId:
+        focusedStreamId === undefined
+          ? this.layoutState.focusedStreamId
+          : this._stringOrNull(focusedStreamId),
+      selfView:
+        selfView === undefined ? this.layoutState.selfView : this._normalizeSelfView(selfView),
+      sidebarOpen: sidebarOpen === undefined ? this.layoutState.sidebarOpen : sidebarOpen !== false,
+    };
+
+    if (selfParticipantId !== undefined && selfParticipantId !== null) {
+      this.participantId = selfParticipantId;
+      this._syncLocalTile();
+    }
+
+    this._syncParticipants(payload.participants || []);
+    this._syncTracks(payload.tracks || []);
+    this._applyLayout();
+  },
+
+  _syncParticipants(participants) {
+    for (const participant of participants || []) {
+      this._upsertParticipant(participant);
+    }
+  },
+
+  _upsertParticipant(participant) {
+    if (!participant?.id) return;
+
+    const id = String(participant.id);
+    this.participantsById.set(id, {
+      id,
+      nickname: participant.nickname || "Remote",
+      status: participant.status || "connected",
+      media_state: participant.media_state || participant.mediaState || {},
+    });
+
+    for (const tile of this._tilesForParticipant(id)) {
+      this._applyParticipantToTile(tile, id);
+    }
+
+    if (String(this.participantId || "") === id) {
+      this._syncLocalTile();
+    }
+  },
+
+  _removeParticipant(participantId) {
+    if (!participantId) return;
+
+    const id = String(participantId);
+    this.participantsById.delete(id);
+
+    for (const [streamId, tile] of this.remoteTiles) {
+      if (tile.dataset.participantId !== id) continue;
+      tile.remove();
+      this.remoteTiles.delete(streamId);
+    }
+
+    if (this.layoutState.focusedParticipantId === id) {
+      this.layoutState.focusedParticipantId = null;
+      this.layoutState.mode = "auto";
+    }
+
+    this._applyLayout();
+  },
+
+  _syncTracks(tracks) {
+    for (const track of tracks || []) {
+      this._syncTrack(track);
+    }
+  },
+
+  _syncTrack(track) {
+    if (!track?.id) return;
+
+    const normalized = {
+      id: String(track.id),
+      participantId: this._stringOrNull(track.participant_id ?? track.participantId),
+      kind: track.kind,
+      status: track.status,
+      streamId: this._stringOrNull(track.stream_id ?? track.streamId),
+      webrtcTrackId: this._stringOrNull(track.webrtc_track_id ?? track.webrtcTrackId),
+    };
+
+    this.tracksById.set(normalized.id, normalized);
+
+    if (normalized.streamId) {
+      this.tracksByStreamId.set(normalized.streamId, normalized);
+      const tile = this.remoteTiles.get(normalized.streamId);
+      if (tile) this._applyTrackToTile(tile, normalized.streamId);
+    }
+
+    if (normalized.webrtcTrackId) {
+      this.tracksByWebrtcTrackId.set(normalized.webrtcTrackId, normalized);
+    }
+  },
+
+  _removeTrack(trackId) {
+    if (!trackId) return;
+
+    const track = this.tracksById.get(String(trackId));
+    this.tracksById.delete(String(trackId));
+    if (!track) return;
+
+    if (track.streamId) this.tracksByStreamId.delete(track.streamId);
+    if (track.webrtcTrackId) this.tracksByWebrtcTrackId.delete(track.webrtcTrackId);
+  },
+
+  _applyTrackToTile(tile, streamId, browserTrack = null) {
+    const track =
+      this.tracksByStreamId.get(streamId) ||
+      this.tracksByWebrtcTrackId.get(browserTrack?.id) ||
+      null;
+
+    if (track?.participantId) {
+      tile.dataset.participantId = track.participantId;
+      this._applyParticipantToTile(tile, track.participantId);
+    }
+  },
+
+  _applyParticipantToTile(tile, participantId) {
+    const participant = this.participantsById.get(String(participantId));
+    if (!participant) return;
+
+    const name = tile.querySelector("[data-group-call-tile-name]");
+    const media = participant.media_state || {};
+    const audio = media.audio !== false;
+    const video = media.video !== false;
+
+    if (name) name.textContent = participant.nickname || "Remote";
+    tile.dataset.mediaAudio = String(audio);
+    tile.dataset.mediaVideo = String(video);
+    tile.setAttribute("aria-label", `Focus ${participant.nickname || "participant"}`);
+    tile.title = `Focus ${participant.nickname || "participant"}`;
+  },
+
+  _tilesForParticipant(participantId) {
+    return Array.from(this.el.querySelectorAll("[data-group-call-video-tile]")).filter(
+      (tile) => tile.dataset.participantId === String(participantId),
+    );
+  },
+
+  _applyLayout() {
+    if (!this.layoutState) return;
+
+    const host = this._videoGrid();
+    const tiles = Array.from(this.el.querySelectorAll("[data-group-call-video-tile]"));
+    const visibleTiles = tiles.filter((tile) => this._tileVisible(tile));
+    const focusedTile = this._focusedTile(visibleTiles);
+    const remoteCount = Array.from(this.remoteTiles.values()).filter((tile) =>
+      this._tileVisible(tile),
+    ).length;
+
+    this.el.dataset.layoutMode = this.layoutState.mode;
+    this.el.dataset.selfView = this.layoutState.selfView;
+    this.el.dataset.sidebarOpen = String(this.layoutState.sidebarOpen);
+    if (this.layoutState.focusedParticipantId) {
+      this.el.dataset.focusedParticipantId = this.layoutState.focusedParticipantId;
+    } else {
+      delete this.el.dataset.focusedParticipantId;
+    }
+
+    host.dataset.tileCount = String(visibleTiles.length);
+
+    for (const tile of tiles) {
+      const focused = focusedTile === tile;
+      tile.dataset.focused = String(focused);
+      tile.classList.toggle("group-call-video-tile--focused", focused);
+    }
+
+    const placeholder = this.el.querySelector("[data-group-call-remote-placeholder]");
+    placeholder?.classList.toggle("hidden", remoteCount > 0);
+  },
+
+  _focusedTile(tiles) {
+    if (!["focus", "sidebar"].includes(this.layoutState.mode)) return null;
+
+    if (this.layoutState.focusedParticipantId) {
+      const byParticipant = tiles.find(
+        (tile) => tile.dataset.participantId === this.layoutState.focusedParticipantId,
+      );
+      if (byParticipant) return byParticipant;
+    }
+
+    if (this.layoutState.focusedStreamId) {
+      const byStream = tiles.find(
+        (tile) => tile.dataset.streamId === this.layoutState.focusedStreamId,
+      );
+      if (byStream) return byStream;
+    }
+
+    return tiles.find((tile) => tile.dataset.local !== "true") || tiles[0] || null;
+  },
+
+  _tileVisible(tile) {
+    if (tile.dataset.local !== "true") return true;
+    return this.layoutState.selfView !== "hidden";
+  },
+
+  _normalizeLayoutMode(mode) {
+    return LAYOUT_MODES.has(mode) ? mode : "auto";
+  },
+
+  _normalizeSelfView(mode) {
+    return SELF_VIEW_MODES.has(mode) ? mode : "tile";
+  },
+
+  _stringOrNull(value) {
+    if (value === undefined || value === null || value === "") return null;
+    return String(value);
+  },
+
+  _payloadValue(payload, ...keys) {
+    for (const key of keys) {
+      if (Object.prototype.hasOwnProperty.call(payload, key)) return payload[key];
+    }
+
+    return undefined;
   },
 
   _mediaConstraints() {
@@ -279,6 +672,7 @@ const GroupCallWebRTCHook = {
     };
 
     this._applyMediaEnabled();
+    this._syncLocalTile();
 
     if (this.participantId) {
       this.channel?.push("group_call_media_state", this.mediaEnabled);
@@ -330,6 +724,11 @@ const GroupCallWebRTCHook = {
     this.participantId = null;
     this.offerQueue = Promise.resolve();
     this.lastAnsweredOfferSdp = null;
+    this.participantsById?.clear();
+    this.tracksById?.clear();
+    this.tracksByStreamId?.clear();
+    this.tracksByWebrtcTrackId?.clear();
+    this.remoteTiles?.clear();
   },
 };
 

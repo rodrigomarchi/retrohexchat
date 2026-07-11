@@ -836,6 +836,75 @@
   - `MIX_ENV=e2e ... mix assets.build`: ok;
   - `npm test --prefix e2e -- chat-group-call.spec.ts`: 2 testes, 0 falhas.
 
+### 2026-07-10 — UX de layout da janela de conferencia
+
+- Implementada evolucao da janela de conferencia inspirada em benchmarks de
+  Meet/Zoom/Teams/Webex:
+  - modos de layout `auto`, `grid`, `focus` e `sidebar`;
+  - foco local por participante a partir da lista e dos tiles de video;
+  - self-view ciclico `tile -> pip -> hidden`;
+  - sidebar de participantes colapsavel;
+  - tiles com nameplate, estado de audio/video e visual retro sunken/raised.
+- Composicao de UI:
+  - criado `RetroHexChatWeb.Components.UI.GroupCall.LayoutControls` para a
+    toolbar de layout;
+  - criado `RetroHexChatWeb.Components.UI.GroupCall.VideoSurface` para a
+    superficie WebRTC estavel;
+  - `GroupCall.Panel` ficou responsavel por compor header, controles,
+    superficie WebRTC e lista de participantes, sem HTML novo na LiveView.
+- Ilha LiveView:
+  - `ChatLive.GroupCallEvents` passou a guardar estado de UX em
+    `group_call.layout`;
+  - novos eventos: `group_call_layout_mode`,
+    `group_call_focus_participant`, `group_call_clear_focus`,
+    `group_call_toggle_sidebar` e `group_call_cycle_self_view`;
+  - `group_call_webrtc_ready` e atualizacoes de participante/track enviam
+    `group_call_layout_state` para o hook.
+- Hook WebRTC:
+  - videos remotos agora sao montados dentro de tiles estaveis, um por stream;
+  - mudancas de layout/foco atualizam classes e `data-*`, preservando o mesmo
+    elemento `<video>` e o mesmo `srcObject`;
+  - metadados de participante/track sao sincronizados por `participant_id`,
+    `stream_id` e `webrtc_track_id`;
+  - cliques/teclas em tiles disparam foco/clear-focus.
+- Validacoes executadas:
+  - `npm --prefix apps/retro_hex_chat_web/assets test -- test/hooks/group_call/group_call_webrtc_hook.test.js`:
+    6 testes, 0 falhas;
+  - `PGPORT=15433 TEST_PORT=4102 mix test --include liveview_feature apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/group_call_flow_test.exs`:
+    9 testes, 0 falhas;
+  - `make compile`: ok;
+  - `make lint.js`: ok;
+  - `make lint.css`: ok;
+  - `make lint.hooks`: ok;
+  - `mix format --check-formatted`: ok;
+  - `git diff --check`: ok.
+- Validacao E2E de layout executada em 2026-07-11:
+  - corrigidos os helpers Playwright `remoteVideoLive` e
+    `remoteLiveVideoCount` para considerar somente tiles remotos
+    (`data-local="false"`), evitando falso positivo com o preview local;
+  - adicionado cenario `layout controls focus tiles without interrupting remote video`;
+  - o cenario valida mudancas `grid`, `focus`, self-view `pip/hidden/tile`,
+    colapso/retorno da sidebar, clear focus e continuidade do mesmo video
+    remoto vivo (`<video>` e `srcObject`) durante as transicoes;
+  - `npx prettier --write tests/chat-group-call.spec.ts` em `e2e/`: ok;
+  - `npx tsc --noEmit` em `e2e/`: ok;
+  - `MIX_ENV=e2e ... mix assets.build`: ok;
+  - `npm test --prefix e2e -- chat-group-call.spec.ts`: 3 testes, 0 falhas.
+- Sincronizacao pre-commit executada em 2026-07-11:
+  - `git stash push -u` para guardar todo o codigo sem commit;
+  - `git fetch origin` e `git pull --ff-only origin main`;
+  - `origin/main` estava atualizado;
+  - `git stash pop` reaplicou as mudancas sem conflitos;
+  - validacoes repetidas antes do commit: `make compile`, `make lint.js`,
+    `make lint.css`, `make lint.hooks`, `mix format --check-formatted`,
+    teste JS focado do hook, teste LiveView focado da chamada, `npx tsc --noEmit`,
+    `MIX_ENV=e2e ... mix assets.build`, `npm test --prefix e2e -- chat-group-call.spec.ts`
+    e `git diff --check`.
+- Caveat:
+  - `make lint.bundle` continua falhando por budget preexistente/nao
+    relacionado em `app-space_canvas_hook-V2WNOIFB.js` com 56.2kb para um
+    limite de 50.0kb. O chunk nao pertence ao fluxo de conferencia.
+
 ## Pendencias abertas
 
 - F4 local: tratado com o cenario de 3 browsers cobrindo transicoes extras de
