@@ -7,6 +7,46 @@ defmodule RetroHexChatWeb.Icons.Media do
 
   attr :class, :string, default: nil
 
+  @spec icon_conference(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_conference(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <!-- Group monitor shadow -->
+      <rect x="4" y="5" width="21" height="15" rx="2" fill="#000" transform="translate(1,1)" />
+      <path
+        d="M25 10 L30 7 L30 21 L25 18 Z"
+        fill="#000"
+        stroke-linejoin="round"
+        transform="translate(1,1)"
+      />
+      <!-- Group monitor / camera -->
+      <rect x="4" y="5" width="21" height="15" rx="2" fill="#000080" stroke="#000" stroke-width="1.5" />
+      <rect x="6" y="7" width="17" height="11" fill="#008080" stroke="#000" stroke-width="1" />
+      <path
+        d="M25 10 L30 7 L30 21 L25 18 Z"
+        fill="#008080"
+        stroke="#000"
+        stroke-width="1.5"
+        stroke-linejoin="round"
+      />
+      <path d="M6 7 H23" stroke="#fff" stroke-width="1" opacity="0.7" />
+      <path d="M6 7 V18" stroke="#fff" stroke-width="1" opacity="0.55" />
+      <!-- Participants inside screen -->
+      <circle cx="11" cy="11" r="2" fill="#FFD700" stroke="#000" stroke-width="1" />
+      <circle cx="18" cy="11" r="2" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <path d="M8 17 C8 14 14 14 14 17 Z" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <path d="M15 17 C15 14 21 14 21 17 Z" fill="#FFD700" stroke="#000" stroke-width="1" />
+      <!-- Active-call badges -->
+      <circle cx="8" cy="24" r="4" fill="#008000" stroke="#000" stroke-width="1.5" />
+      <path d="M6 24 H10 M8 22 V26" stroke="#000080" stroke-width="1.5" />
+      <rect x="15" y="22" width="12" height="6" rx="1" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <rect x="17" y="24" width="8" height="2" fill="#000080" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_microphone(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_microphone(assigns) do
     ~H"""

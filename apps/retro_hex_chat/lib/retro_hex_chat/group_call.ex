@@ -173,6 +173,9 @@ defmodule RetroHexChat.GroupCall do
 
       {:error, :not_found} ->
         with {:ok, room} <- get_room(token) do
+          participants = Queries.list_active_participants(room.id)
+          tracks = Queries.list_active_tracks(room.id)
+
           {:ok,
            %{
              room: %{
@@ -182,8 +185,10 @@ defmodule RetroHexChat.GroupCall do
                status: room.status,
                max_participants: room.max_participants
              },
-             participants: Queries.list_active_participants(room.id),
-             tracks: Queries.list_active_tracks(room.id)
+             participants: participants,
+             pending_participants: [],
+             tracks: tracks,
+             server_stats: persisted_server_stats(room, participants, tracks)
            }}
         end
     end
@@ -232,6 +237,44 @@ defmodule RetroHexChat.GroupCall do
   @spec update_track_status(Track.t(), String.t(), map()) ::
           {:ok, Track.t()} | {:error, Ecto.Changeset.t()}
   defdelegate update_track_status(track, new_status, extra_attrs \\ %{}), to: Queries
+
+  defp persisted_server_stats(room, participants, tracks) do
+    %{
+      updated_at_ms: System.os_time(:millisecond),
+      room: %{
+        status: room.status,
+        max_participants: room.max_participants,
+        participant_count: length(participants),
+        pending_count: 0,
+        track_count: length(tracks),
+        audio_track_count: Enum.count(tracks, &(&1.kind == "audio")),
+        video_track_count: Enum.count(tracks, &(&1.kind == "video"))
+      },
+      peers: [],
+      totals: %{
+        peer_count: 0,
+        connected_peer_count: 0,
+        connecting_peer_count: 0,
+        failed_peer_count: 0,
+        inbound_track_count: 0,
+        outbound_peer_count: 0,
+        subscriber_count: 0,
+        inbound_packets: 0,
+        inbound_bytes: 0,
+        outbound_packets: 0,
+        outbound_bytes: 0,
+        nack_count: 0,
+        pli_count: 0,
+        candidate_pair_count: 0,
+        nominated_pair_count: 0,
+        valid_pair_count: 0,
+        ice_packets_sent: 0,
+        ice_packets_received: 0,
+        ice_bytes_sent: 0,
+        ice_bytes_received: 0
+      }
+    }
+  end
 
   defp check_enabled(%{enabled?: true}), do: :ok
   defp check_enabled(_config), do: {:error, dgettext("group_call", "Group calls are disabled")}

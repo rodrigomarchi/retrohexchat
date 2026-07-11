@@ -179,7 +179,7 @@
                   disabled={!@session.identified}
                   data-testid="group-call-open"
                 >
-                  <Icons.icon_camera class="h-3.5 w-3.5 shrink-0" />
+                  <Icons.icon_conference class="h-3.5 w-3.5 shrink-0" />
                   <span>{dgettext("group_call", "Call")}</span>
                 </button>
               </div>
@@ -654,6 +654,29 @@
       />
     </.desktop_window>
 
+    <%!-- Group Call Statistics — server-managed and opened minimized with the
+          conference. Browser getStats() feeds RTP/ICE metrics, while the call
+          assign supplies server-side room, participant and track state. --%>
+    <.desktop_window
+      :if={@group_call && "group-call-stats" in @open_windows}
+      id="group-call-stats"
+      persist_geometry={false}
+      title={dgettext("group_call", "Conference Statistics")}
+      managed
+      on_close="group_call_window_close"
+      default_x={896}
+      default_y={88}
+      width={390}
+      height={500}
+      min_width={340}
+      min_height={360}
+      body_class="flex min-h-0 flex-col p-2"
+      data-testid="group-call-stats-window"
+    >
+      <:icon><Icons.icon_webrtc class="h-4 w-4" /></:icon>
+      <.group_call_stats_panel call={@group_call} stats={@group_call.stats} />
+    </.desktop_window>
+
     <%!-- Group Call — always mounted while the user is in a channel call so
           the raw signaling channel and WebRTC hook survive hide/show. The X and
           Leave controls ask for confirmation before tearing the call down. --%>
@@ -673,7 +696,7 @@
       body_class="h-full min-h-0 overflow-hidden p-1"
       data-testid="group-call-window"
     >
-      <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
+      <:icon><Icons.icon_conference class="h-4 w-4" /></:icon>
       <.live_component
         module={RetroHexChatWeb.ChatLive.Components.GroupCallPanel}
         id={RetroHexChatWeb.ChatLive.Components.GroupCallPanel.id()}
@@ -1028,12 +1051,20 @@
           <:icon><Icons.icon_file_send class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
+          :if={@group_call && "group-call-stats" in @open_windows}
+          window="group-call-stats"
+          label={dgettext("group_call", "Conference Statistics")}
+          data-testid="group-call-stats-taskbar"
+        >
+          <:icon><Icons.icon_webrtc class="h-4 w-4" /></:icon>
+        </.taskbar_button>
+        <.taskbar_button
           :if={@group_call}
           window="group-call"
           label={@group_call.channel_name || dgettext("group_call", "Group Call")}
           data-testid="group-call-taskbar"
         >
-          <:icon><Icons.icon_camera class="h-4 w-4" /></:icon>
+          <:icon><Icons.icon_conference class="h-4 w-4" /></:icon>
         </.taskbar_button>
         <.taskbar_button
           :if={@p2p_session && "p2p-games" in @open_windows}

@@ -13,14 +13,17 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias Phoenix.LiveView.Socket
+  alias RetroHexChat.Channels.Server
   alias RetroHexChat.GroupCall
   alias RetroHexChat.GroupCall.JoinToken
+  alias RetroHexChatWeb.App.GroupCallStats
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Windows
 
   @window_id "group-call"
+  @stats_window_id "group-call-stats"
   @layout_modes ~w(auto grid focus sidebar)
   @self_view_cycle [:tile, :pip, :hidden]
 
@@ -37,8 +40,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   def handle_event("group_call_leave", _params, socket), do: {:halt, socket}
 
-  def handle_event("group_call_window_close", _params, %{assigns: %{group_call: %{}}} = socket) do
-    {:halt, open_confirm(socket, :close)}
+  def handle_event("group_call_window_close", params, %{assigns: %{group_call: %{}}} = socket) do
+    {:halt, open_confirm(socket, :close, value(params, :id) || @window_id)}
   end
 
   def handle_event("group_call_window_close", _params, socket), do: {:halt, socket}
@@ -79,7 +82,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   def handle_event(
         "group_call_confirm_switch",
         _params,
-        %{assigns: %{group_call: %{}, group_call_pending: %{}}} = socket
+        %{assigns: %{group_call: %{}, group_call_pending: %{channel_name: _, user_id: _}}} =
+          socket
       ) do
     close_confirm()
     pending = socket.assigns.group_call_pending
@@ -99,7 +103,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
   def handle_event("group_call_confirm_cancel", _params, socket) do
     close_confirm()
-    {:halt, assign(socket, group_call_pending: nil)}
+
+    {:halt,
+     socket
+     |> reopen_cancelled_close()
+     |> assign(group_call_pending: nil)}
   end
 
   def handle_event(
@@ -114,6 +122,27 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
   def handle_event("group_call_confirm_end_call", _params, socket) do
     close_confirm()
     {:halt, socket}
+  end
+
+  def handle_event(
+        "group_call_confirm_kick_participant",
+        _params,
+        %{assigns: %{group_call: %{}, group_call_pending: %{action: :kick_participant}}} = socket
+      ) do
+    close_confirm()
+    pending = socket.assigns.group_call_pending
+
+    socket =
+      socket
+      |> assign(group_call_pending: nil)
+      |> kick_participant(pending.participant_id)
+
+    {:halt, socket}
+  end
+
+  def handle_event("group_call_confirm_kick_participant", _params, socket) do
+    close_confirm()
+    {:halt, assign(socket, group_call_pending: nil)}
   end
 
   def handle_event("group_call_toggle_audio", _params, %{assigns: %{group_call: %{}}} = socket) do
@@ -175,7 +204,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
         %{"participant-id" => participant_id},
         %{assigns: %{group_call: %{}}} = socket
       ) do
-    {:halt, kick_participant(socket, participant_id)}
+    {:halt, open_kick_confirm(socket, participant_id)}
   end
 
   def handle_event("group_call_webrtc_ready", _params, %{assigns: %{group_call: %{}}} = socket) do
@@ -219,8 +248,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     if participant_id == call.participant_id do
       {:halt,
        socket
+       |> Windows.close_window(@stats_window_id)
        |> assign(group_call: nil, group_call_pending: nil)
-       |> push_event("window_command", %{action: "close", id: @window_id})}
+       |> push_event("window_command", %{action: "close", id: @window_id})
+       |> push_event("window_command", %{action: "close", id: @stats_window_id})}
     else
       {:halt,
        socket |> update_call(&remove_participant(&1, participant_id)) |> push_group_call_layout()}
@@ -272,8 +303,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
     socket =
       socket
+      |> Windows.close_window(@stats_window_id)
       |> assign(group_call: nil, group_call_pending: nil)
       |> push_event("window_command", %{action: "close", id: @window_id})
+      |> push_event("window_command", %{action: "close", id: @stats_window_id})
 
     {:halt, Messages.system_event(socket, message)}
   end
@@ -285,6 +318,15 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       ) do
     state = value(payload, :state)
     {:halt, apply_connection_state(socket, state)}
+  end
+
+  def handle_event("group_call_stats", payload, %{assigns: %{group_call: %{}}} = socket) do
+    {:halt,
+     update_call(socket, fn call ->
+       call
+       |> Map.put(:stats, GroupCallStats.normalize(payload))
+       |> refresh_server_stats()
+     end)}
   end
 
   def handle_event("group_call_client_warning", payload, %{assigns: %{group_call: %{}}} = socket) do
@@ -378,7 +420,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
 
       socket
       |> assign(group_call: call)
-      |> Windows.open(@window_id)
+      |> open_call_windows()
     else
       {:error, message} when is_binary(message) -> Messages.error_event(socket, message)
       {:error, reason} -> Messages.error_event(socket, inspect(reason))
@@ -396,7 +438,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     )
   end
 
-  defp open_confirm(socket, mode) when mode in [:leave, :close] do
+  defp open_confirm(socket, mode, window_id \\ nil) when mode in [:leave, :close] do
     action =
       case mode do
         :leave -> :open_leave
@@ -408,8 +450,22 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       action: {action, socket.assigns.group_call.channel_name}
     )
 
-    socket
+    if mode == :close and is_binary(window_id) do
+      assign(socket, group_call_pending: %{action: :close_window, window_id: window_id})
+    else
+      socket
+    end
   end
+
+  defp reopen_cancelled_close(
+         %{assigns: %{group_call_pending: %{action: :close_window, window_id: window_id}}} =
+           socket
+       )
+       when is_binary(window_id) do
+    Windows.open(socket, window_id)
+  end
+
+  defp reopen_cancelled_close(socket), do: socket
 
   defp close_confirm do
     Phoenix.LiveView.send_update(GroupCallConfirmDialog,
@@ -418,14 +474,38 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     )
   end
 
+  @doc "Close the active group call when its backing channel is removed from the session."
+  @spec leave_channel_call(Socket.t(), String.t(), String.t()) :: Socket.t()
+  def leave_channel_call(
+        %{assigns: %{group_call: %{channel_name: channel_name}}} = socket,
+        channel_name,
+        reason
+      ) do
+    end_current_call(socket, reason)
+  end
+
+  def leave_channel_call(socket, _channel_name, _reason), do: socket
+
+  defp open_call_windows(%{assigns: %{mobile_viewport: true}} = socket),
+    do: Windows.open(socket, @window_id)
+
+  defp open_call_windows(socket) do
+    socket
+    |> Windows.open(@stats_window_id)
+    |> push_event("window_command", %{action: "minimize", id: @stats_window_id})
+    |> Windows.open(@window_id)
+  end
+
   defp end_current_call(%{assigns: %{group_call: call}} = socket, reason) when is_map(call) do
     if is_integer(call.participant_id) do
       _ = GroupCall.leave_call(call.token, call.participant_id, reason)
     end
 
     socket
+    |> Windows.close_window(@stats_window_id)
     |> assign(group_call: nil, group_call_pending: nil)
     |> push_event("window_command", %{action: "close", id: @window_id})
+    |> push_event("window_command", %{action: "close", id: @stats_window_id})
   end
 
   defp get_or_create_room(channel_name, actor) do
@@ -449,6 +529,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       participants: normalize_participants(value(summary, :participants)),
       pending_participants: normalize_participants(value(summary, :pending_participants)),
       tracks: normalize_tracks(value(summary, :tracks)),
+      stats: GroupCallStats.empty(),
+      server_stats: normalize_server_stats(value(summary, :server_stats)),
       media: %{audio: true, video: true},
       layout: default_layout(),
       error: nil,
@@ -628,12 +710,44 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     end
   end
 
+  defp open_kick_confirm(socket, participant_id) do
+    with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
+         {:ok, target} <- find_participant(socket.assigns.group_call, participant_id) do
+      Phoenix.LiveView.send_update(GroupCallConfirmDialog,
+        id: GroupCallConfirmDialog.id(),
+        action:
+          {:open_kick_participant, socket.assigns.group_call.channel_name, participant_id,
+           target.nickname}
+      )
+
+      assign(socket,
+        group_call_pending: %{
+          action: :kick_participant,
+          participant_id: participant_id,
+          target_nickname: target.nickname
+        }
+      )
+    else
+      _error ->
+        Messages.error_event(socket, dgettext("group_call", "Could not remove participant."))
+    end
+  end
+
   defp kick_participant(socket, participant_id) do
     with {participant_id, ""} <- Integer.parse(to_string(participant_id)),
-         {:ok, _target} <- find_participant(socket.assigns.group_call, participant_id),
+         {:ok, target} <- find_participant(socket.assigns.group_call, participant_id),
          {:ok, actor} <- actor(socket),
-         :ok <- GroupCall.kick_participant(socket.assigns.group_call.token, actor, participant_id) do
-      update_call(socket, &remove_participant(&1, participant_id))
+         :ok <- ban_participant_from_channel(socket.assigns.group_call, actor, target) do
+      socket
+      |> update_call(&remove_participant(&1, participant_id))
+      |> Messages.system_event(
+        dgettext(
+          "group_call",
+          "%{target} was removed from the conference and banned from %{channel}.",
+          target: target.nickname,
+          channel: socket.assigns.group_call.channel_name
+        )
+      )
     else
       {:error, message} when is_binary(message) ->
         Messages.error_event(socket, message)
@@ -643,12 +757,23 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     end
   end
 
+  defp ban_participant_from_channel(call, actor, target) do
+    Server.ban(
+      call.channel_name,
+      actor.nickname,
+      target.nickname,
+      dgettext("group_call", "Removed from channel conference")
+    )
+  end
+
   defp close_room(socket) do
     with {:ok, actor} <- actor(socket),
          :ok <- GroupCall.close_call(socket.assigns.group_call.token, actor, "moderation") do
       socket
+      |> Windows.close_window(@stats_window_id)
       |> assign(group_call: nil, group_call_pending: nil)
       |> push_event("window_command", %{action: "close", id: @window_id})
+      |> push_event("window_command", %{action: "close", id: @stats_window_id})
     else
       {:error, message} when is_binary(message) -> Messages.error_event(socket, message)
       _error -> Messages.error_event(socket, dgettext("group_call", "Could not end group call."))
@@ -693,6 +818,25 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
     call
     |> Map.put(:room, normalize_room(value(payload, :room) || call.room))
     |> Map.put(:participants, normalize_participants(value(payload, :participants)))
+    |> Map.put(
+      :pending_participants,
+      normalize_participants(value(payload, :pending_participants))
+    )
+    |> Map.put(:tracks, normalize_tracks(value(payload, :tracks) || call.tracks))
+    |> Map.put(
+      :server_stats,
+      normalize_server_stats(value(payload, :server_stats) || call.server_stats)
+    )
+  end
+
+  defp refresh_server_stats(call) do
+    case GroupCall.get_summary(call.token) do
+      {:ok, summary} ->
+        Map.put(call, :server_stats, normalize_server_stats(value(summary, :server_stats)))
+
+      {:error, _reason} ->
+        call
+    end
   end
 
   defp maybe_mark_connected(call, %{id: id}) when id == call.participant_id do
@@ -786,6 +930,9 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallEvents do
       stream_id: value(track, :stream_id)
     }
   end
+
+  defp normalize_server_stats(nil), do: GroupCallStats.empty_server()
+  defp normalize_server_stats(stats), do: GroupCallStats.normalize_server(stats)
 
   defp normalize_media(nil), do: %{}
 

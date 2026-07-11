@@ -6,10 +6,12 @@
  */
 import { Socket } from "phoenix";
 import { log } from "../../lib/logger.js";
+import { collectFeatureSnapshot, deriveFeatureStats } from "../../lib/p2p/media.js";
 
 const DEFAULT_CONSTRAINTS = { audio: true, video: true };
 const LAYOUT_MODES = new Set(["auto", "grid", "focus", "sidebar"]);
 const SELF_VIEW_MODES = new Set(["tile", "pip", "hidden"]);
+const STATS_INTERVAL_MS = 2500;
 
 const GroupCallWebRTCHook = {
   mounted() {
@@ -31,6 +33,8 @@ const GroupCallWebRTCHook = {
     this.tracksByStreamId = new Map();
     this.tracksByWebrtcTrackId = new Map();
     this.remoteTiles = new Map();
+    this.statsTimer = null;
+    this.statsPrev = null;
 
     if (!this.roomToken || !this.joinToken) {
       log.warn("[group-call] missing room token or join token");
@@ -212,6 +216,8 @@ const GroupCallWebRTCHook = {
     this.pc.ontrack = (event) => {
       this._attachRemoteStream(event.streams[0], event.track);
     };
+
+    this._startStatsPolling();
   },
 
   async _ensureLocalTracks() {
@@ -304,8 +310,8 @@ const GroupCallWebRTCHook = {
   },
 
   _createRemoteTile(streamId) {
-    const tile = document.createElement("div");
-    tile.className = "group-call-video-tile group-call-video-tile--remote";
+    const tile = this._remoteTileFromTemplate() || document.createElement("div");
+    tile.classList.add("group-call-video-tile", "group-call-video-tile--remote");
     tile.dataset.groupCallVideoTile = "";
     tile.dataset.streamId = streamId;
     tile.dataset.mediaAudio = "true";
@@ -321,6 +327,21 @@ const GroupCallWebRTCHook = {
       this._toggleTileFocus(tile);
     });
 
+    this._ensureRemoteTileNameplate(tile);
+
+    return tile;
+  },
+
+  _remoteTileFromTemplate() {
+    const template = this.el.querySelector("[data-group-call-remote-tile-template]");
+    const node = template?.content?.firstElementChild?.cloneNode(true);
+
+    return node instanceof HTMLElement ? node : null;
+  },
+
+  _ensureRemoteTileNameplate(tile) {
+    if (tile.querySelector("[data-group-call-tile-name]")) return;
+
     const nameplate = document.createElement("div");
     nameplate.className = "group-call-video-tile__nameplate";
 
@@ -329,24 +350,8 @@ const GroupCallWebRTCHook = {
     name.dataset.groupCallTileName = "";
     name.textContent = "Remote";
 
-    const badges = document.createElement("span");
-    badges.className = "group-call-video-tile__badges";
-
-    const audio = document.createElement("span");
-    audio.className = "group-call-video-badge";
-    audio.dataset.groupCallAudioBadge = "";
-    audio.textContent = "M";
-
-    const video = document.createElement("span");
-    video.className = "group-call-video-badge";
-    video.dataset.groupCallVideoBadge = "";
-    video.textContent = "V";
-
-    badges.append(audio, video);
-    nameplate.append(name, badges);
+    nameplate.append(name);
     tile.appendChild(nameplate);
-
-    return tile;
   },
 
   _bindLocalTile() {
@@ -699,6 +704,46 @@ const GroupCallWebRTCHook = {
     this.pushEvent("group_call_client_warning", { code, message });
   },
 
+  _startStatsPolling() {
+    if (this.statsTimer) return;
+
+    this.statsPrev = null;
+    this.statsTimer = setInterval(() => this._sampleStats(), STATS_INTERVAL_MS);
+    this._sampleStats();
+  },
+
+  async _sampleStats() {
+    if (!this.pc) return;
+
+    try {
+      const snapshot = await collectFeatureSnapshot(this.pc);
+      const stats = deriveFeatureStats(this.statsPrev, snapshot);
+      this.statsPrev = snapshot;
+
+      this.pushEvent("group_call_stats", {
+        ...stats,
+        updated_at_ms: Date.now(),
+        connection_state: this.pc.connectionState || "",
+        summary: {
+          connection_state: this.pc.connectionState || "",
+          participant_count: this.participantsById.size,
+          remote_stream_count: this.remoteTiles.size,
+          track_count: this.tracksById.size,
+        },
+      });
+    } catch (error) {
+      log.debug("[group-call] stats sample failed", error);
+    }
+  },
+
+  _stopStatsPolling() {
+    if (!this.statsTimer) return;
+
+    clearInterval(this.statsTimer);
+    this.statsTimer = null;
+    this.statsPrev = null;
+  },
+
   _clientInfo() {
     return {
       user_agent: navigator.userAgent,
@@ -709,6 +754,7 @@ const GroupCallWebRTCHook = {
 
   _cleanup() {
     this.closing = true;
+    this._stopStatsPolling();
     this.channel?.push("group_call_leave", {});
     this.channel?.leave();
     this.socket?.disconnect();

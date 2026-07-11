@@ -21,6 +21,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
   alias RetroHexChatWeb.ChatLive.Components.ChannelCentralDialog
   alias RetroHexChatWeb.ChatLive.Components.KickQueueDialog
   alias RetroHexChatWeb.ChatLive.Components.Nicklist
+  alias RetroHexChatWeb.ChatLive.GroupCallEvents
 
   # ── Mode changes ──────────────────────────────────────────
 
@@ -79,6 +80,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
         |> assign(channel_users: users)
         |> play_event_sound(:kick, socket.assigns.session)
         |> part_channel_after_kick(socket.assigns.session.active_channel)
+        |> GroupCallEvents.leave_channel_call(kick_event.channel, "channel_kick")
         |> system_event(msg)
 
       {:halt, socket}

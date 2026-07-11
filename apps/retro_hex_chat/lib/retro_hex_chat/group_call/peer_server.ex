@@ -74,6 +74,11 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     end
   end
 
+  @spec stats(pid()) :: map()
+  def stats(pid) when is_pid(pid) do
+    GenServer.call(pid, :stats, 1_000)
+  end
+
   @spec notify(pid(), term()) :: :ok
   def notify(pid, message) when is_pid(pid), do: GenServer.cast(pid, message)
 
@@ -197,6 +202,27 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     else
       {:noreply, state |> remove_peer(participant_id) |> send_offer(ice_restart?: true)}
     end
+  end
+
+  @impl true
+  def handle_call(:stats, _from, state) do
+    stats = peer_connection_stats(state)
+
+    payload = %{
+      participant_id: state.participant.id,
+      nickname: state.participant.nickname,
+      connection_state: atom_to_string(stats.connection_state),
+      ice_connection_state: atom_to_string(stats.ice_connection_state),
+      signaling_state: atom_to_string(stats.signaling_state),
+      inbound_track_count: inbound_track_count(state),
+      outbound_peer_count: map_size(state.outbound_tracks),
+      subscriber_count: map_size(state.peer_tracks),
+      inbound_rtp: rtp_summary(stats.raw, :inbound_rtp),
+      outbound_rtp: rtp_summary(stats.raw, :outbound_rtp),
+      candidate_pairs: candidate_pair_summary(stats.raw)
+    }
+
+    {:reply, payload, state}
   end
 
   @impl true
@@ -437,4 +463,93 @@ defmodule RetroHexChat.GroupCall.PeerServer do
       GenServer.cast(channel_pid, {:group_call_push, event, payload})
     end
   end
+
+  defp peer_connection_stats(state) do
+    raw = PeerConnection.get_stats(state.pc)
+
+    %{
+      raw: raw,
+      connection_state: get_in(raw, [:peer_connection, :connection_state]),
+      ice_connection_state: PeerConnection.get_ice_connection_state(state.pc),
+      signaling_state: get_in(raw, [:peer_connection, :signaling_state])
+    }
+  rescue
+    _error ->
+      %{
+        raw: %{},
+        connection_state: :unknown,
+        ice_connection_state: :unknown,
+        signaling_state: :unknown
+      }
+  catch
+    :exit, _reason ->
+      %{
+        raw: %{},
+        connection_state: :closed,
+        ice_connection_state: :closed,
+        signaling_state: :closed
+      }
+  end
+
+  defp inbound_track_count(state) do
+    state.inbound_tracks
+    |> Map.values()
+    |> Enum.count(&is_binary/1)
+  end
+
+  defp rtp_summary(stats, type) do
+    stats
+    |> Map.values()
+    |> Enum.filter(&(Map.get(&1, :type) == type))
+    |> Enum.reduce(empty_rtp_summary(), fn row, acc ->
+      %{
+        track_count: acc.track_count + 1,
+        packets: acc.packets + packets(row, type),
+        bytes: acc.bytes + bytes(row, type),
+        nack_count: acc.nack_count + integer(row, :nack_count),
+        pli_count: acc.pli_count + integer(row, :pli_count)
+      }
+    end)
+  end
+
+  defp empty_rtp_summary do
+    %{track_count: 0, packets: 0, bytes: 0, nack_count: 0, pli_count: 0}
+  end
+
+  defp candidate_pair_summary(stats) do
+    rows =
+      stats
+      |> Map.values()
+      |> Enum.filter(&(Map.get(&1, :type) == :candidate_pair))
+
+    %{
+      total: length(rows),
+      nominated: Enum.count(rows, &truthy?(Map.get(&1, :nominated))),
+      valid: Enum.count(rows, &truthy?(Map.get(&1, :valid))),
+      packets_sent: Enum.reduce(rows, 0, &(&2 + integer(&1, :packets_sent))),
+      packets_received: Enum.reduce(rows, 0, &(&2 + integer(&1, :packets_received))),
+      bytes_sent: Enum.reduce(rows, 0, &(&2 + integer(&1, :bytes_sent))),
+      bytes_received: Enum.reduce(rows, 0, &(&2 + integer(&1, :bytes_received)))
+    }
+  end
+
+  defp packets(row, :inbound_rtp), do: integer(row, :packets_received)
+  defp packets(row, :outbound_rtp), do: integer(row, :packets_sent)
+  defp bytes(row, :inbound_rtp), do: integer(row, :bytes_received)
+  defp bytes(row, :outbound_rtp), do: integer(row, :bytes_sent)
+
+  defp integer(row, key) do
+    case Map.get(row, key, 0) do
+      value when is_integer(value) -> value
+      value when is_float(value) -> trunc(value)
+      _other -> 0
+    end
+  end
+
+  defp truthy?(true), do: true
+  defp truthy?(_value), do: false
+
+  defp atom_to_string(value) when is_atom(value), do: Atom.to_string(value)
+  defp atom_to_string(value) when is_binary(value), do: value
+  defp atom_to_string(_value), do: "unknown"
 end

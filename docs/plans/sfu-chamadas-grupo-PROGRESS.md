@@ -905,6 +905,112 @@
     relacionado em `app-space_canvas_hook-V2WNOIFB.js` com 56.2kb para um
     limite de 50.0kb. O chunk nao pertence ao fluxo de conferencia.
 
+### 2026-07-11 — Moderacao integrada ao canal e estatisticas completas
+
+- Kick da conferencia passou a ser kick/ban do canal:
+  - acao abre dialog de confirmacao explicando que o usuario sera removido da
+    conferencia, banido do canal e impedido de reentrar ate unban por operador;
+  - permissao de remover participante ficou restrita a owner/operator;
+  - a confirmacao chama `Channels.Server.ban/4`, remove o participante da UI e
+    fecha a conferencia do alvo via evento `user_kicked`;
+  - teste LiveView cobre ban, fechamento da conferencia do alvo e bloqueio de
+    novo join no canal.
+- Janela `group-call-stats`:
+  - adicionada como janela gerenciada e com botao proprio na taskbar;
+  - abre junto com a conferencia, minimizada/sem roubar foco, como no P2P;
+  - fechar a janela de estatisticas agora usa o mesmo dialog de confirmacao da
+    conferencia; cancelar restaura/foca a janela, confirmar encerra a sessao;
+  - fechamento client-side vindo do window manager (`window_closed`, taskbar
+    menu/Escape) tambem roteia para confirmacao, em vez de desmontar a janela
+    silenciosamente.
+- Estatisticas completas:
+  - browser: `GroupCallWebRTCHook` coleta `RTCPeerConnection.getStats()` a cada
+    2,5s usando os normalizadores de media do P2P e envia `group_call_stats`;
+  - servidor: `PeerServer.stats/1` agrega `ExWebRTC.PeerConnection.get_stats/1`
+    por peer, incluindo estados, ICE, RTP inbound/outbound, pacotes, bytes,
+    NACK/PLI, fanout e pares ICE;
+  - `RoomServer.summary/1` inclui `server_stats` agregadas por sala;
+  - `ChatLive.GroupCallEvents` mantem `call.stats` para browser e
+    `call.server_stats` para SFU/server;
+  - `GroupCall.StatsPanel` renderiza secoes separadas "Server",
+    "Server runtime", "Browser connection", "Audio", "Video" e
+    "Browser summary".
+- Aprendizados:
+  - stats da conferencia precisam ser de duas fontes: browser vivo para
+    qualidade percebida/local e servidor SFU para diagnosticar forwarding,
+    fanout, ICE server-side e runtime OTP;
+  - janela de diagnostico vinculada a uma sessao ativa nao pode ser tratada
+    como painel avulso; fechar deve passar pelo lifecycle da sessao.
+- Validacoes executadas:
+  - `mix format --check-formatted`: ok;
+  - `make compile`: ok;
+  - `mix credo --strict`: ok;
+  - `make lint.js`: ok;
+  - `make lint.hooks`: ok;
+  - `PGPORT=15433 mix test apps/retro_hex_chat/test/retro_hex_chat/group_call`:
+    50 testes, 0 falhas;
+  - `PGPORT=15433 mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs`:
+    4 testes, 0 falhas quando rerodado isolado; a primeira tentativa em
+    paralelo com a suite do dominio falhou por timeout de 100ms aguardando
+    reply durante lock/build concorrente;
+  - `npm --prefix apps/retro_hex_chat_web/assets test -- test/hooks/group_call/group_call_webrtc_hook.test.js`:
+    7 testes, 0 falhas;
+  - `PGPORT=15433 TEST_PORT=4102 mix test --include liveview_feature apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/group_call_flow_test.exs`:
+    13 testes, 0 falhas;
+  - `MIX_ENV=e2e ... mix assets.build`: ok;
+  - `npm test --prefix e2e -- chat-group-call.spec.ts`: 3 testes, 0 falhas;
+  - `git diff --check`: ok.
+
+### 2026-07-11 — Passe visual com icones na conferencia
+
+- Criado `Icons.icon_conference/1` em `Icons.Media` e exposto no facade
+  `RetroHexChatWeb.Icons` para diferenciar conferencia de canal/SFU de camera
+  local ou P2P.
+- Janela da conferencia:
+  - botao `Call`, taskbar, status bar, titulo da janela e header do painel
+    passaram a usar o icone de conferencia;
+  - contadores e status do header usam icones semanticos de sinal,
+    participantes e WebRTC;
+  - lista de participantes passou a mostrar icone de role do canal,
+    icone de estado de conexao e acao de ban/remocao com `icon_ban`;
+  - erros inline agora usam `icon_warning` e continuam no componente
+    `Components.UI.GroupCall.Panel`.
+- Superficie de video:
+  - placeholder remoto usa `icon_conference`;
+  - tiles remotos agora sao criados a partir de um `<template>` renderizado
+    pelo LiveView com SVGs de usuario, microfone e camera;
+  - fallback JS ainda cria tile funcional sem template, mas sem badges de texto
+    "M"/"V".
+- Janela de estatisticas:
+  - cabecalho ganhou identidade de conferencia, browser (`icon_laptop`),
+    servidor (`icon_server`) e participantes;
+  - metricas de runtime usam icones mais semanticos para servidor, WebRTC, ICE,
+    RTP e feedback.
+- Dialogs de confirmacao:
+  - header, bloco visual e botao confirm usam icones por modo (`leave`,
+    `close`, `switch`, `end_call`, `kick_participant`);
+  - cada dialog mostra linhas de impacto com icones sem mudar os textos
+    criticos ja cobertos por testes, como "Closing this window leaves" e
+    "prevent them from rejoining".
+- Composicao/padroes:
+  - as telas seguem montadas por componentes (`Panel`, `VideoSurface`,
+    `StatsPanel`, `GroupCallConfirmDialog`), sem HTML dedicado novo na LiveView;
+  - P2P foi conferido e preservado com seus icones originais de camera/sinal.
+- Validacoes executadas:
+  - `mix format`: ok;
+  - `make compile`: ok;
+  - `npm --prefix apps/retro_hex_chat_web/assets test -- test/hooks/group_call/group_call_webrtc_hook.test.js`:
+    8 testes, 0 falhas;
+  - `PGPORT=15433 TEST_PORT=4102 mix test --include liveview_feature apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/group_call_flow_test.exs`:
+    13 testes, 0 falhas;
+  - `mix format --check-formatted`: ok;
+  - `mix credo --strict`: ok;
+  - `make lint.js`: ok;
+  - `make lint.hooks`: ok;
+  - `MIX_ENV=e2e ... mix assets.build`: ok;
+  - `npm test --prefix e2e -- chat-group-call.spec.ts`: 3 testes, 0 falhas;
+  - `git diff --check`: ok.
+
 ## Pendencias abertas
 
 - F4 local: tratado com o cenario de 3 browsers cobrindo transicoes extras de

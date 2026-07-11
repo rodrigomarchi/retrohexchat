@@ -61,7 +61,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <div class="flex min-h-8 shrink-0 items-center justify-between gap-2 border border-border bg-surface px-2 py-1 shadow-retro-sunken">
       <div class="flex min-w-0 items-center gap-2">
-        <Icons.icon_camera class="h-4 w-4 shrink-0" />
+        <Icons.icon_conference class="h-4 w-4 shrink-0" />
         <div class="min-w-0">
           <div class="truncate font-bold leading-4">{channel_name(@call)}</div>
           <div class="flex min-w-0 items-center gap-2 text-[10px] leading-3 text-muted-foreground">
@@ -74,7 +74,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
               {participant_count(@call)}
             </span>
             <span class="inline-flex items-center gap-1">
-              <Icons.icon_camera class="h-3 w-3 shrink-0" />
+              <Icons.icon_webrtc class="h-3 w-3 shrink-0" />
               {track_count(@call)}
             </span>
           </div>
@@ -102,7 +102,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           title={dgettext("group_call", "End group call")}
           data-testid="group-call-close-room"
         >
-          <Icons.icon_ban class="h-3.5 w-3.5" />
+          <Icons.icon_phone_end class="h-3.5 w-3.5" />
         </button>
         <button
           type="button"
@@ -158,8 +158,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <div class="flex min-h-0 flex-col border border-border bg-surface shadow-retro-sunken">
       <div class="flex h-7 shrink-0 items-center justify-between border-b border-border px-2">
-        <span class="font-bold">{dgettext("group_call", "Participants")}</span>
-        <span class="text-muted-foreground">{participant_count(@call)}</span>
+        <span class="inline-flex min-w-0 items-center gap-1 font-bold">
+          <Icons.icon_community class="h-3.5 w-3.5 shrink-0" />
+          <span class="truncate">{dgettext("group_call", "Participants")}</span>
+        </span>
+        <span class="inline-flex items-center gap-1 text-muted-foreground">
+          <Icons.icon_status_user class="h-3 w-3 shrink-0" />
+          {participant_count(@call)}
+        </span>
       </div>
 
       <div class="min-h-0 flex-1 overflow-auto p-1" data-testid="group-call-participants">
@@ -191,9 +197,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       data-media-video={to_string(participant_media?(@participant, :video))}
     >
       <div class="min-w-0">
-        <div class="truncate font-bold">{@participant.nickname}</div>
-        <div class="truncate text-[10px] text-muted-foreground">
-          {participant_status(@participant)}
+        <div class="flex min-w-0 items-center gap-1">
+          {apply(Icons, participant_role_icon(@participant), [%{class: "h-3.5 w-3.5 shrink-0"}])}
+          <span class="truncate font-bold">{@participant.nickname}</span>
+        </div>
+        <div class="flex min-w-0 items-center gap-1 truncate text-[10px] text-muted-foreground">
+          {apply(Icons, participant_status_icon(@participant), [%{class: "h-3 w-3 shrink-0"}])}
+          <span class="truncate">{participant_status(@participant)}</span>
         </div>
       </div>
       <div class="flex items-center gap-px">
@@ -227,16 +237,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           <Icons.icon_microphone :if={!participant_media?(@participant, :audio)} class="h-3 w-3" />
         </button>
         <button
-          :if={can_moderate_participant?(@call, @participant)}
+          :if={can_remove_participant?(@call, @participant)}
           type="button"
           phx-click={@on_kick_participant}
           phx-value-participant-id={@participant.id}
           class="flex h-5 w-5 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          title={dgettext("group_call", "Remove from call")}
-          aria-label={dgettext("group_call", "Remove from call")}
+          title={dgettext("group_call", "Remove from conference and ban from channel")}
+          aria-label={dgettext("group_call", "Remove from conference and ban from channel")}
           data-testid={"group-call-participant-kick-#{@participant.id}"}
         >
-          <Icons.icon_btn_remove class="h-3 w-3" />
+          <Icons.icon_ban class="h-3 w-3" />
         </button>
         <.participant_media_indicator participant={@participant} kind={:audio} />
         <.participant_media_indicator participant={@participant} kind={:video} />
@@ -273,10 +283,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <div
       :if={@call && @call.error}
-      class="shrink-0 border border-destructive bg-destructive/10 px-2 py-1 text-destructive"
+      class="flex shrink-0 items-center gap-1 border border-destructive bg-destructive/10 px-2 py-1 text-destructive"
       data-testid="group-call-error"
     >
-      {@call.error}
+      <Icons.icon_warning class="h-3 w-3 shrink-0" />
+      <span class="min-w-0 truncate">{@call.error}</span>
     </div>
     """
   end
@@ -335,6 +346,17 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp participant_status(%{status: "disconnected"}), do: dgettext("group_call", "Disconnected")
   defp participant_status(_participant), do: dgettext("group_call", "In call")
 
+  defp participant_status_icon(%{status: "connected"}), do: :icon_status_signal
+  defp participant_status_icon(%{status: "joining"}), do: :icon_btn_timers
+  defp participant_status_icon(%{status: "disconnected"}), do: :icon_btn_disconnect
+  defp participant_status_icon(_participant), do: :icon_webrtc
+
+  defp participant_role_icon(%{channel_role_snapshot: "owner"}), do: :icon_role_owner
+  defp participant_role_icon(%{channel_role_snapshot: "operator"}), do: :icon_role_operator
+  defp participant_role_icon(%{channel_role_snapshot: "half_operator"}), do: :icon_role_halfop
+  defp participant_role_icon(%{channel_role_snapshot: "voiced"}), do: :icon_role_voiced
+  defp participant_role_icon(_participant), do: :icon_role_regular
+
   defp participant_media?(%{media_state: media}, key) when is_map(media) do
     case Map.get(media, key) do
       nil -> true
@@ -360,6 +382,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     |> moderator_participant?()
   end
 
+  defp can_remove_participant?(%{participant_id: self_id}, %{id: participant_id})
+       when self_id == participant_id,
+       do: false
+
+  defp can_remove_participant?(call, _participant) do
+    call
+    |> self_participant()
+    |> channel_operator_participant?()
+  end
+
   defp self_participant(%{participant_id: participant_id, participants: participants}) do
     Enum.find(participants || [], &(&1.id == participant_id))
   end
@@ -371,6 +403,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
        do: true
 
   defp moderator_participant?(_participant), do: false
+
+  defp channel_operator_participant?(%{channel_role_snapshot: role})
+       when role in ["owner", "operator"],
+       do: true
+
+  defp channel_operator_participant?(_participant), do: false
 
   defp moderate_audio_title(participant) do
     if participant_media?(participant, :audio),

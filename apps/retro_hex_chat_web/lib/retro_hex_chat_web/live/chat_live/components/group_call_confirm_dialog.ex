@@ -15,25 +15,75 @@ defmodule RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog do
   @impl true
   @spec mount(Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def mount(socket) do
-    {:ok, assign(socket, id: @id, show: false, mode: :leave, channel: nil, new_channel: nil)}
+    {:ok,
+     assign(socket,
+       id: @id,
+       show: false,
+       mode: :leave,
+       channel: nil,
+       new_channel: nil,
+       target_nickname: nil
+     )}
   end
 
   @impl true
   @spec update(map(), Phoenix.LiveView.Socket.t()) :: {:ok, Phoenix.LiveView.Socket.t()}
   def update(%{action: {:open_leave, channel}}, socket) do
-    {:ok, assign(socket, show: true, mode: :leave, channel: channel, new_channel: nil)}
+    {:ok,
+     assign(socket,
+       show: true,
+       mode: :leave,
+       channel: channel,
+       new_channel: nil,
+       target_nickname: nil
+     )}
   end
 
   def update(%{action: {:open_close, channel}}, socket) do
-    {:ok, assign(socket, show: true, mode: :close, channel: channel, new_channel: nil)}
+    {:ok,
+     assign(socket,
+       show: true,
+       mode: :close,
+       channel: channel,
+       new_channel: nil,
+       target_nickname: nil
+     )}
   end
 
   def update(%{action: {:open_switch, channel, new_channel}}, socket) do
-    {:ok, assign(socket, show: true, mode: :switch, channel: channel, new_channel: new_channel)}
+    {:ok,
+     assign(socket,
+       show: true,
+       mode: :switch,
+       channel: channel,
+       new_channel: new_channel,
+       target_nickname: nil
+     )}
   end
 
   def update(%{action: {:open_end_call, channel}}, socket) do
-    {:ok, assign(socket, show: true, mode: :end_call, channel: channel, new_channel: nil)}
+    {:ok,
+     assign(socket,
+       show: true,
+       mode: :end_call,
+       channel: channel,
+       new_channel: nil,
+       target_nickname: nil
+     )}
+  end
+
+  def update(
+        %{action: {:open_kick_participant, channel, _participant_id, target_nickname}},
+        socket
+      ) do
+    {:ok,
+     assign(socket,
+       show: true,
+       mode: :kick_participant,
+       channel: channel,
+       new_channel: nil,
+       target_nickname: target_nickname
+     )}
   end
 
   def update(%{action: :close}, socket), do: {:ok, assign(socket, show: false)}
@@ -50,10 +100,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog do
         mode={@mode}
         channel={@channel}
         new_channel={@new_channel}
+        target_nickname={@target_nickname}
         on_confirm={
           case @mode do
             :switch -> "group_call_confirm_switch"
             :end_call -> "group_call_confirm_end_call"
+            :kick_participant -> "group_call_confirm_kick_participant"
             _mode -> "group_call_confirm_leave"
           end
         }

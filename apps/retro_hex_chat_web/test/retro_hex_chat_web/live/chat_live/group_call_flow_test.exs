@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
   @moduletag :liveview_feature
 
+  alias RetroHexChat.Channels.Server
   alias RetroHexChat.GroupCall.Registry
   alias RetroHexChat.Services.RegisteredNick
 
@@ -46,6 +47,8 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       |> element(~s([data-testid="group-call-open"]))
       |> render_click()
 
+      assert_push_event(view, "window_command", %{action: "open", id: "group-call-stats"})
+      assert_push_event(view, "window_command", %{action: "minimize", id: "group-call-stats"})
       assert_push_event(view, "window_command", %{action: "open", id: "group-call"})
 
       call = group_call_assign(view)
@@ -60,10 +63,18 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
                ~s([data-testid="group-call-window"][data-window-initial-open="true"])
              )
 
+      assert has_element?(view, ~s([data-testid="group-call-stats-window"]))
+
       assert has_element?(
                view,
                ~s([data-testid="group-call-taskbar"][data-window-taskbar="group-call"]),
                call.channel_name
+             )
+
+      assert has_element?(
+               view,
+               ~s([data-testid="group-call-stats-taskbar"][data-window-taskbar="group-call-stats"]),
+               "Conference Statistics"
              )
 
       assert has_element?(view, ~s([data-testid="status-bar-group-call"]), "Call:")
@@ -168,8 +179,10 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       flush(view)
 
       assert_push_event(view, "window_command", %{action: "close", id: "group-call"})
+      assert_push_event(view, "window_command", %{action: "close", id: "group-call-stats"})
       assert group_call_assign(view) == nil
       refute has_element?(view, ~s([data-testid="group-call-window"]))
+      refute has_element?(view, ~s([data-testid="group-call-stats-window"]))
       refute has_element?(view, ~s([data-testid="status-bar-group-call"]))
     end
 
@@ -197,6 +210,47 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       flush(view)
 
       assert group_call_assign(view)
+    end
+
+    test "closing the statistics window asks before leaving the conference", %{conn: conn} do
+      %{view: view} = mount_identified(conn, "gcfx")
+
+      view
+      |> element(~s([data-testid="group-call-open"]))
+      |> render_click()
+
+      assert_push_event(view, "window_command", %{action: "open", id: "group-call"})
+
+      call = group_call_assign(view)
+      cleanup_room(call.token)
+
+      render_click(view, "group_call_window_close", %{"id" => "group-call-stats"})
+      flush(view)
+
+      assert has_element?(view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert group_call_assign(view)
+      assert has_element?(view, ~s([data-testid="group-call-stats-window"]))
+
+      render_click(view, "group_call_confirm_cancel", %{})
+      flush(view)
+
+      assert_push_event(view, "window_command", %{action: "open", id: "group-call-stats"})
+      assert group_call_assign(view)
+
+      render_hook(view, "window_closed", %{"id" => "group-call-stats"})
+      flush(view)
+
+      assert has_element?(view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert group_call_assign(view)
+
+      render_click(view, "group_call_confirm_leave", %{})
+      flush(view)
+
+      assert_push_event(view, "window_command", %{action: "close", id: "group-call"})
+      assert_push_event(view, "window_command", %{action: "close", id: "group-call-stats"})
+      assert group_call_assign(view) == nil
+      refute has_element?(view, ~s([data-testid="group-call-window"]))
+      refute has_element?(view, ~s([data-testid="group-call-stats-window"]))
     end
 
     test "conference layout controls update focus, self view, and participant rail", %{conn: conn} do
@@ -270,6 +324,155 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       refute group_call_assign(view).layout.sidebar_open
       assert_push_event(view, "group_call_layout_state", %{sidebar_open: false})
       refute has_element?(view, ~s([data-testid="group-call-participants"]))
+    end
+
+    test "browser stats update the conference statistics window", %{conn: conn} do
+      %{view: view} = mount_identified(conn, "gcfs")
+
+      view
+      |> element(~s([data-testid="group-call-open"]))
+      |> render_click()
+
+      call = group_call_assign(view)
+      cleanup_room(call.token)
+
+      render_click(view, "group_call_stats", %{
+        "connection" => %{
+          "level" => "good",
+          "mos" => 4.1,
+          "rtt_ms" => 42,
+          "jitter_ms" => 7,
+          "loss_pct" => 1.5,
+          "available_kbps" => 3200
+        },
+        "audio" => %{
+          "active" => true,
+          "in_kbps" => 64,
+          "out_kbps" => 48,
+          "loss_pct" => 0,
+          "jitter_ms" => 3
+        },
+        "video" => %{
+          "active" => true,
+          "in_kbps" => 900,
+          "out_kbps" => 700,
+          "loss_pct" => 2,
+          "jitter_ms" => 8,
+          "fps" => 30,
+          "width" => 1280,
+          "height" => 720,
+          "freeze_count" => 1,
+          "limitation" => "bandwidth"
+        },
+        "summary" => %{
+          "connection_state" => "connected",
+          "participant_count" => 2,
+          "remote_stream_count" => 1,
+          "track_count" => 4
+        }
+      })
+
+      call = group_call_assign(view)
+      assert call.stats.connection.rtt_ms == 42
+      assert call.stats.audio.active
+      assert call.stats.video.width == 1280
+      assert call.stats.summary.remote_stream_count == 1
+
+      assert has_element?(view, ~s([data-testid="group-call-stats-window"]))
+      assert has_element?(view, ~s([data-testid="group-call-stats-health"]), "Good")
+      assert render(view) =~ "1280x720"
+    end
+
+    test "server stats from the SFU summary render beside browser stats", %{conn: conn} do
+      %{nick: nick, view: view} = mount_identified(conn, "gcfr")
+
+      view
+      |> element(~s([data-testid="group-call-open"]))
+      |> render_click()
+
+      call = group_call_assign(view)
+      cleanup_room(call.token)
+
+      render_click(view, "group_call_client_joined", %{
+        "room" => %{
+          "id" => call.room.id,
+          "token" => call.token,
+          "channel_name" => call.channel_name,
+          "status" => "active",
+          "max_participants" => call.room.max_participants
+        },
+        "participant" => %{
+          "id" => 123,
+          "nickname" => nick.nickname,
+          "status" => "connected",
+          "media_state" => %{"audio" => true, "video" => true},
+          "channel_role_snapshot" => "regular"
+        },
+        "participants" => [
+          %{
+            "id" => 123,
+            "nickname" => nick.nickname,
+            "status" => "connected",
+            "media_state" => %{"audio" => true, "video" => true},
+            "channel_role_snapshot" => "regular"
+          }
+        ],
+        "tracks" => [
+          %{
+            "id" => 1,
+            "participant_id" => 123,
+            "kind" => "audio",
+            "source" => "microphone",
+            "status" => "active"
+          },
+          %{
+            "id" => 2,
+            "participant_id" => 123,
+            "kind" => "video",
+            "source" => "camera",
+            "status" => "active"
+          }
+        ],
+        "server_stats" => %{
+          "room" => %{
+            "status" => "active",
+            "max_participants" => 100,
+            "participant_count" => 1,
+            "pending_count" => 0,
+            "track_count" => 2,
+            "audio_track_count" => 1,
+            "video_track_count" => 1
+          },
+          "totals" => %{
+            "peer_count" => 1,
+            "connected_peer_count" => 1,
+            "inbound_track_count" => 2,
+            "outbound_peer_count" => 3,
+            "subscriber_count" => 2,
+            "inbound_packets" => 12,
+            "inbound_bytes" => 2048,
+            "outbound_packets" => 24,
+            "outbound_bytes" => 4096,
+            "nack_count" => 1,
+            "pli_count" => 2,
+            "candidate_pair_count" => 2,
+            "nominated_pair_count" => 1,
+            "ice_bytes_sent" => 1024,
+            "ice_bytes_received" => 2048
+          }
+        }
+      })
+
+      call = group_call_assign(view)
+      assert call.server_stats.totals.inbound_bytes == 2048
+      assert call.server_stats.totals.outbound_peer_count == 3
+
+      html = render(view)
+      assert html =~ "Server runtime"
+      assert html =~ "1/1 connected"
+      assert html =~ "12 pkt / 2.0 KB"
+      assert html =~ "24 pkt / 4.0 KB"
+      assert html =~ "NACK 1 / PLI 2"
     end
 
     test "media warnings stay recoverable while failed connection becomes actionable error", %{
@@ -378,6 +581,80 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
       flush(view)
 
       assert group_call_assign(view)
+    end
+
+    test "confirmed participant removal bans from channel and closes target conference", %{
+      conn: conn
+    } do
+      moderator = mount_identified(conn, "gckm")
+      target = mount_identified(conn, "gckt")
+      channel = "#gck#{uid()}"
+
+      submit_command_sync(moderator.view, "/join #{channel}")
+      submit_command_sync(target.view, "/join #{channel}")
+
+      moderator.view
+      |> element(~s([data-testid="group-call-open"]))
+      |> render_click()
+
+      mod_call = group_call_assign(moderator.view)
+      cleanup_room(mod_call.token)
+
+      target.view
+      |> element(~s([data-testid="group-call-open"]))
+      |> render_click()
+
+      assert group_call_assign(target.view).token == mod_call.token
+
+      for {ctx, id, role} <- [{moderator, 123, "owner"}, {target, 456, "regular"}] do
+        render_click(ctx.view, "group_call_client_joined", %{
+          "room" => %{
+            "id" => mod_call.room.id,
+            "token" => mod_call.token,
+            "channel_name" => channel,
+            "status" => "open",
+            "max_participants" => mod_call.room.max_participants
+          },
+          "participant" => %{
+            "id" => id,
+            "nickname" => ctx.nick.nickname,
+            "status" => "connected",
+            "media_state" => %{"audio" => true, "video" => true},
+            "channel_role_snapshot" => role
+          },
+          "participants" => []
+        })
+      end
+
+      render_click(moderator.view, "group_call_peer_joined", %{
+        "participant" => %{
+          "id" => 456,
+          "nickname" => target.nick.nickname,
+          "status" => "connected",
+          "media_state" => %{"audio" => true, "video" => true},
+          "channel_role_snapshot" => "regular"
+        }
+      })
+
+      moderator.view
+      |> element(~s([data-testid="group-call-participant-kick-456"]))
+      |> render_click()
+
+      flush(moderator.view)
+      assert has_element?(moderator.view, ~s|#group-call-confirm-dialog:not(.hidden)|)
+      assert render(moderator.view) =~ "prevent them from rejoining"
+
+      render_click(moderator.view, "group_call_confirm_kick_participant", %{})
+      flush(moderator.view)
+      flush(target.view)
+
+      assert render(moderator.view) =~ "banned from #{channel}"
+      refute has_element?(moderator.view, ~s([data-testid="group-call-participant-456"]))
+      assert group_call_assign(target.view) == nil
+      refute channel in :sys.get_state(target.view.pid).socket.assigns.session.channels
+
+      assert {:error, _message} =
+               Server.join(channel, target.nick.nickname, nil, identified: true)
     end
 
     test "opening Call in another channel asks before switching conferences", %{conn: conn} do

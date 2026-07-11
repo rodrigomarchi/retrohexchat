@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
           data-group-call-remote-placeholder
           data-testid="group-call-remote-placeholder"
         >
-          <Icons.icon_camera class="h-4 w-4 shrink-0" />
+          <Icons.icon_conference class="h-5 w-5 shrink-0" />
           <span>{dgettext("group_call", "Waiting for remote video")}</span>
         </div>
 
@@ -82,6 +82,45 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
             </span>
           </div>
         </div>
+
+        <template data-group-call-remote-tile-template>
+          <div
+            class="group-call-video-tile group-call-video-tile--remote"
+            data-group-call-video-tile
+            data-media-audio="true"
+            data-media-video="true"
+            data-local="false"
+            role="button"
+            tabindex="0"
+          >
+            <div class="group-call-video-tile__nameplate">
+              <span class="inline-flex min-w-0 items-center gap-1 truncate font-bold">
+                <Icons.icon_status_user class="h-3 w-3 shrink-0" />
+                <span class="truncate" data-group-call-tile-name>
+                  {dgettext("group_call", "Remote")}
+                </span>
+              </span>
+              <span class="group-call-video-tile__badges">
+                <span
+                  class="group-call-video-badge"
+                  data-group-call-audio-badge
+                  title={dgettext("group_call", "Remote microphone")}
+                  aria-label={dgettext("group_call", "Remote microphone")}
+                >
+                  <Icons.icon_microphone class="h-3 w-3" />
+                </span>
+                <span
+                  class="group-call-video-badge"
+                  data-group-call-video-badge
+                  title={dgettext("group_call", "Remote camera")}
+                  aria-label={dgettext("group_call", "Remote camera")}
+                >
+                  <Icons.icon_camera class="h-3 w-3" />
+                </span>
+              </span>
+            </div>
+          </div>
+        </template>
       </div>
     </div>
     """

@@ -359,6 +359,46 @@ Estado/decisoes:
   - `npm test --prefix e2e -- chat-group-call.spec.ts`: 2 testes, 0 falhas.
 - `mix compile --warnings-as-errors` falha por warning pre-existente em
   `RetroHexChatWeb.Admin.AppInfoPage` sobre `RetroHexChat.P2P.Registry`.
+- Bloco de 2026-07-11 ainda sem commit:
+  - kick na conferencia agora abre confirmacao e executa ban do canal via
+    `Channels.Server.ban/4`; canal e conferencia sao o mesmo escopo;
+  - alvo banido recebe `user_kicked`, perde a conferencia ativa e nao consegue
+    reentrar no canal ate unban;
+  - `group-call-stats` e janela gerenciada, tem botao proprio na taskbar e
+    fechar a janela abre o mesmo dialog de confirmacao da conferencia;
+  - fechamento client-side `window_closed` para `group-call` e
+    `group-call-stats` roteia para `group_call_window_close` em vez de apenas
+    desmontar a janela;
+  - `PeerServer.stats/1` usa `ExWebRTC.PeerConnection.get_stats/1` e
+    `RoomServer.summary/1` agrega `server_stats` por sala;
+  - `ChatLive.GroupCallEvents` mantem `call.stats` (browser) e
+    `call.server_stats` (SFU/server);
+  - novos arquivos principais: `live/app/group_call_stats.ex` e
+    `components/ui/group_call/stats_panel.ex`;
+  - passe visual de icones aplicado na conferencia:
+    `Icons.icon_conference/1` foi criado em `Icons.Media` e exposto no facade;
+    botao `Call`, janela, taskbar, status bar, header, placeholder remoto,
+    lista de participantes, estatisticas e dialogs usam icones semanticos;
+    tiles remotos sao clonados de `<template>` renderizado pelo LiveView com
+    SVGs de usuario/microfone/camera; P2P foi conferido e preservado com
+    camera/sinal originais;
+  - validacoes desse bloco: `mix format --check-formatted`, `make compile`,
+    `mix credo --strict`, `make lint.js`, `make lint.hooks`,
+    `mix test apps/retro_hex_chat/test/retro_hex_chat/group_call` com
+    50 testes, channel test de `group_call_channel_test.exs` com 4 testes
+    quando rerodado isolado, teste JS focado, teste LiveView focado com
+    13 testes, `MIX_ENV=e2e ... mix assets.build`,
+    `npm test --prefix e2e -- chat-group-call.spec.ts` com 3 testes e
+    `git diff --check`.
+- Validacoes adicionais do passe visual de icones em 2026-07-11:
+  - `npm --prefix apps/retro_hex_chat_web/assets test -- test/hooks/group_call/group_call_webrtc_hook.test.js`:
+    8 testes, 0 falhas;
+  - `PGPORT=15433 TEST_PORT=4102 mix test --include liveview_feature apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/group_call_flow_test.exs`:
+    13 testes, 0 falhas;
+  - `mix format --check-formatted`, `make compile`, `mix credo --strict`,
+    `make lint.js`, `make lint.hooks`, `MIX_ENV=e2e ... mix assets.build`,
+    `npm test --prefix e2e -- chat-group-call.spec.ts` e `git diff --check`:
+    ok.
 
 Escopo recomendado ao retomar:
 1. Conferir `git status`.

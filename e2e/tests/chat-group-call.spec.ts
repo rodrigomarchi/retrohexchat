@@ -13,6 +13,10 @@ function groupCallWindow(page: Page) {
   return page.getByTestId("group-call-window");
 }
 
+function groupCallStatsWindow(page: Page) {
+  return page.getByTestId("group-call-stats-window");
+}
+
 function groupCallLeave(page: Page) {
   return page.getByTestId("group-call-leave");
 }
@@ -29,8 +33,16 @@ function groupCallConfirmLeave(page: Page) {
   return page.getByTestId("group-call-confirm-dialog-confirm");
 }
 
+function groupCallConfirmCancel(page: Page) {
+  return page.getByTestId("group-call-confirm-dialog-cancel");
+}
+
 function groupCallTaskbarButton(page: Page) {
   return page.getByTestId("group-call-taskbar");
+}
+
+function groupCallStatsTaskbarButton(page: Page) {
+  return page.getByTestId("group-call-stats-taskbar");
 }
 
 function groupCallStatusBar(page: Page) {
@@ -216,6 +228,31 @@ test.describe("Channel group calls", () => {
       await expect(
         bob.page.getByTestId("group-call-participants"),
       ).toContainText(alice.nick);
+
+      await expect(groupCallStatsTaskbarButton(alice.page)).toBeVisible();
+      await groupCallStatsTaskbarButton(alice.page).click();
+      await expect(groupCallStatsWindow(alice.page)).toBeVisible();
+      await expect(groupCallStatsWindow(alice.page)).toContainText(
+        "Server runtime",
+      );
+      await expect(groupCallStatsWindow(alice.page)).toContainText(
+        "Browser connection",
+      );
+      await expect(groupCallStatsWindow(alice.page)).toContainText(
+        "Peer connections",
+      );
+
+      await groupCallStatsWindow(alice.page)
+        .locator('[data-window-control="close"]')
+        .click();
+      await expect(groupCallConfirmLeave(alice.page)).toBeVisible();
+      await expect(
+        alice.page.getByTestId("group-call-confirm-dialog"),
+      ).toContainText("Closing this window leaves");
+      await groupCallConfirmCancel(alice.page).click();
+      await expect(groupCallStatsWindow(alice.page)).toBeVisible();
+      await groupCallStatusBar(alice.page).click();
+      await expect(groupCallWindow(alice.page)).toBeVisible();
 
       await expect
         .poll(() => localTrackEnabled(alice.page, "audio"))

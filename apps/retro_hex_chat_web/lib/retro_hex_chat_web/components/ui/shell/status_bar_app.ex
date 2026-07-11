@@ -97,8 +97,8 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         </span>
       </.window_status_bar_field>
 
-      <%!-- Zone P2P: active session — click focuses the P2P windows, the
-            trailing button cancels a pending invite / ends the session.
+      <%!-- Zone group call: active channel conference — click focuses the
+            conference windows, the trailing button leaves the session.
             Never hidden on mobile: an active session must stay visible. --%>
       <.window_status_bar_field
         :if={@group_call}
@@ -112,7 +112,7 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
           aria-label={@group_call.title}
           data-testid="status-bar-group-call"
         >
-          <Icons.icon_camera class="w-3 h-3 shrink-0" />
+          <Icons.icon_conference class="w-3 h-3 shrink-0" />
           <span class="truncate text-xs">{@group_call.label}</span>
         </button>
         <button

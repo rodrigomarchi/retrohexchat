@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── P2P session windows ──────────────────────────────────────
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
+  import RetroHexChatWeb.Components.UI.GroupCall.StatsPanel
 
   # ── Solo arcade window body ──────────────────────────────────
   import RetroHexChatWeb.Components.UI.SoloLobby
@@ -298,6 +299,15 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # client-side close of one ("window_closed"). Non-managed ids are no-ops.
   def handle_event("window_open", %{"id" => id}, socket) do
     {:noreply, ChatLive.Windows.open_window(socket, id)}
+  end
+
+  def handle_event(
+        "window_closed",
+        %{"id" => id} = params,
+        %{assigns: %{group_call: %{}}} = socket
+      )
+      when id in ~w(group-call group-call-stats) do
+    dispatch_to_hooks("group_call_window_close", params, socket)
   end
 
   def handle_event("window_closed", %{"id" => id}, socket) do
