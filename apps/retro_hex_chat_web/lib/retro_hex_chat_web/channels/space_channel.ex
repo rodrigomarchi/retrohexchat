@@ -221,7 +221,11 @@ defmodule RetroHexChatWeb.SpaceChannel do
       map: result.map,
       config: %{
         tile_size: result.map.tile_size,
-        scale: 2,
+        # World scale targets a constant ~32px on-screen tile, so higher-res
+        # maps (32px tiles) render at scale 1 and 16px maps at 2. Avatars carry
+        # their own constant scale so they keep size across both.
+        scale: max(div(32, result.map.tile_size), 1),
+        avatar_scale: 2,
         text_chat: "global"
       },
       snapshot: result.snapshot

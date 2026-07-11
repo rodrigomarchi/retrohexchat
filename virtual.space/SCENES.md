@@ -18,19 +18,28 @@ A scene is a **map definition** consumed by the client renderer. A map module
 | Field | Meaning |
 |---|---|
 | `id` | Registry key (must match). |
-| `width`,`height`,`tile_size` | In tiles; `tile_size` is always **16**. |
-| `tilesets` | `[%{id, src: "/images/space/<id>.png", tile: 16, columns}]` — sheets the client loads. |
-| `tiles` | `name => %{ts, col, row, w, h, flip_x?}` — the vocabulary (rects on a sheet). Must contain `ground`. |
-| `ground` | Opaque base tile drawn under every floor cell. |
-| `layers` | `%{floor: HxW matrix of tile names, decor: [%{x,y,tile}], above: []}`. |
+| `width`,`height`,`tile_size` | In tiles; `tile_size` is **16** (Millennial Fair) or **32** (End of Time, higher-res). The client derives world scale = `32 / tile_size` so both render ~32px on-screen tiles; avatars carry their own `avatar_scale` (const 2) so they keep size across resolutions. |
+| `tilesets` | `[%{id, src: "/images/space/<id>.png", tile: tile_size, columns}]` — sheets the client loads. **`tile` must equal `tile_size`** (the atlas slices by it). |
+| `tiles` | `name => %{ts, col, row, w, h, flip_x?, frames?, period_ms?}` — the vocabulary (rects on a sheet). Must contain `ground`. |
+| `ground` | Opaque base tile drawn under every floor cell (the void terrain tile, e.g. `f0000`). |
+| `layers` | `%{floor: HxW matrix of tile names, decor: [%{x,y,tile,sort}], above: []}`. `sort:"flat"` (starfield, under everyone) vs `"stand"` (props Y-sorted with avatars → walk-behind). |
+| `lights`,`ambient`,`parallax` | Color-math atmosphere: additive radial `lights:[{x,y,radius,color,blend}]`, a multiply `ambient:{color,alpha}` dusk wash, and `parallax:[{tile,scroll,alpha,step}]` cosmic layers behind the floor. Absent → scene renders full-bright, no depth layers. |
 | `spawn` | `[%{x,y,dir}]` — off-collision, in-bounds. |
 | `collision` | `[%{x,y,w,h,kind}]` → expanded to a blocked-tile set. |
 | `zones`,`labels`,`interactables`,`seats` | Metadata + interactive furniture. |
 
-**Render order** (`renderer.js draw()`): void backdrop → floor → decor → map
-labels → **avatars** (Y-sorted) → nick labels/bubbles. So:
-- **Decor is drawn UNDER avatars.** The `above` layer is declared but NOT
-  rendered — canopies/roofs over avatars need new renderer support.
+**Render order** (`renderer.js draw()`): void backdrop → **parallax** layers →
+floor → **flat decor** (starfield) → **shadows** → **depth pass** (`stand` decor
++ avatars Y-sorted together, so avatars walk **behind** taller props) → `above`
+layer → **color-math lighting** (ambient multiply wash + additive light pools) →
+map labels → nick labels/bubbles. So:
+- **Walk-behind works:** a `sort:"stand"` prop occludes an avatar while the avatar
+  is above its base row, and the avatar passes in front once past it. `sort:"flat"`
+  decor (stars) stays under everyone. The `above` layer draws over all avatars.
+- **Atmosphere is color-math, not baked art:** the amber lamp pool, cyan Gate glow
+  and cozy dusk tint are canvas `globalCompositeOperation` passes driven by the
+  map's `lights`/`ambient`; the drifting nebula is a `parallax` layer. Motion is
+  still real frames (stars) — no procedural animation in the art.
 - The renderer is **size-agnostic**; multi-tile decor is anchored **top-left**
   and drawn at native sprite size. `flip_x` mirrors without moving the anchor.
 
@@ -185,7 +194,9 @@ Wire it up:
 - **Floor = high top-down, props = low top-down** — the intended JRPG mix.
 - **Props auto-crop** to their bbox; bottom-center them in their tile block so
   the base sits on the floor.
-- **Decor renders under avatars; `above` is unrendered** — don't rely on it.
+- **Depth is real:** `sort:"stand"` decor Y-sorts with avatars (walk-behind),
+  `sort:"flat"` stays under everyone, and the `above` layer draws over all. Tag
+  every decor entry's `sort` in the author script (starfield = flat, props = stand).
 - **Collision is the complement** — block every non-full-stone cell (the void)
   plus solid prop footprints; keep spawns on interior stone, clear of props.
 - **A DM scene keeps the `dm_nameplate` label** so the server nameplate works.
@@ -278,3 +289,43 @@ do this every rebuild:
   coord-coupled `OfficeTest` (seats, zones, board) and `space_channel_test` — the
   fair had to supply its own `zones()`/`seats()`/`interactables()` and every test
   coordinate had to move with the layout.
+
+## 9. Isometric projection (End of Time)
+
+> **Full playbook: [`ISOMETRIC.md`](ISOMETRIC.md)** — the durable, hard-won guide to
+> building isometric 3D scenes (projection seam, geometric railings, the floating
+> slab/diamond underside, procedural sea, the iso art pipeline + aspect-ratio rule,
+> depth ordering, all the gotchas). Read it before any iso work. The summary below
+> is the top-down doc's cross-reference.
+
+A map may set `projection: "isometric"` (default `"topdown"`). The whole difference
+is a **projection seam** — `assets/js/lib/space/projection.js` (`TopDownProjection`
+vs `IsoProjection`), injected into Camera/Renderer/Engine. `TopDownProjection`
+reproduces the historical square math exactly, so top-down maps (Millennial Fair)
+cannot regress. **Movement, collision, spawns and the server stay a square (x,y)
+grid** — only the tile→pixel mapping, depth order, hit-test inverse and input remap
+change. `worldToScreen` (camera offset) is untouched.
+
+Iso map fields (all optional, top-down-safe defaults):
+
+| Field | Meaning |
+|---|---|
+| `projection` | `"isometric"` |
+| `iso: {tile_w, tile_h, z_step, headroom}` | diamond footprint (e.g. 64×32 = 2:1) + elevation px |
+| `slab: {thickness}` | 3D side-face height (height units) → the floating slab |
+| `vignette: {color, alpha, inner}` | screen-space radial multiply framing the void |
+| `layers.decor` `sort:"stand"` | props/railings billboard on the diamond foot, depth-sorted by `x+y` |
+
+Hard-won iso lessons:
+- **Ratio is native, never deformed.** `create_tiles_pro` isometric yields ~1:1
+  diamonds (too steep for CT's flat 2:1) and ignores `tile_height`. The reliable 2:1
+  cobblestone diamond came from **`create_map_object` at exact 64×32** (transparent
+  corners → tessellates seam-free). The author must NOT crop the floor tile.
+- **Iso floor** is drawn far→near (`x+y`), skipping the `ground`/void tile so the slab
+  floats; **slab faces** are dark extruded quads on boundary tiles.
+- **Railings** are flat billboards along the back edges (PixelLab has no true iso
+  perspective for objects) — reads as the enclosing fence; true iso-angled rails
+  (shear / mirrored oriented sprites) is future polish.
+- **Reuse** upright top-down props (lamp/gate/bucket) as iso billboards — no regen.
+- Depth foot differs by projection (top-down = sprite bottom row; iso = base tile +
+  height tie-break), so `_drawDepthSorted` branches on `projection.kind`.

@@ -82,17 +82,31 @@ export class SpaceEngine {
     this.map = SpaceMap.from(init.map);
     this.atlas?.loadTilesets?.(init.map?.tilesets);
     this.atlas?.registerTiles?.(init.map?.tiles);
+    const scale = init.config?.scale ?? 2;
+    // Avatars keep a constant on-screen size across maps of different tile
+    // resolutions; the world scale varies with tile size, so avatars carry their
+    // own scale (defaults to the world scale when the server omits it).
+    this._avatarScale = init.config?.avatar_scale ?? scale;
     this.camera = new Camera({
       tileSize: this.map.tileSize,
-      scale: init.config?.scale ?? 2,
+      scale,
       mapWidth: this.map.width,
       mapHeight: this.map.height,
+      // The map picks the projection (square vs isometric); top-down maps get
+      // the historical square projection with identical numbers.
+      map: init.map,
     });
     this.camera.setViewport(this.canvas?.width ?? 0, this.canvas?.height ?? 0);
 
     this.renderer =
       this._injectedRenderer ??
-      new Renderer({ canvas: this.canvas, atlas: this.atlas, map: this.map, camera: this.camera });
+      new Renderer({
+        canvas: this.canvas,
+        atlas: this.atlas,
+        map: this.map,
+        camera: this.camera,
+        avatarScale: this._avatarScale,
+      });
 
     this.applySnapshot(init.snapshot);
 
@@ -165,6 +179,9 @@ export class SpaceEngine {
     const self = this.selfKey ? this.participants.get(this.selfKey) : null;
     if (!self) return { moved: false };
 
+    // The projection may remap which key drives which grid axis (iso rotates the
+    // D-pad); prediction/reconciliation stay grid-blind after this.
+    intent = this.camera?.projection?.remapIntent?.(intent) ?? intent;
     const nx = self.x + intent.dx;
     const ny = self.y + intent.dy;
     if (this.map?.isBlocked(nx, ny)) return { moved: false };
@@ -367,7 +384,13 @@ export class SpaceEngine {
 
   _participantHitBox(participant) {
     const tilePx = this.map.tileSize * this.camera.scale;
-    const { x, y } = this.camera.worldToScreen(participant.x * tilePx, participant.y * tilePx);
+    const avatarScale = this._avatarScale ?? this.camera.scale;
+    const proj = this.camera.projection;
+    const iso = proj.kind === "isometric";
+    const anchor = iso
+      ? proj.footAnchor(participant.x, participant.y)
+      : proj.floorAnchor(participant.x, participant.y);
+    const { x, y } = this.camera.worldToScreen(anchor.x, anchor.y);
     const action = participant.action?.kind ? participant.action : null;
     const sprite = this.atlas?.avatar?.(
       participant.avatar,
@@ -375,10 +398,11 @@ export class SpaceEngine {
       0,
       action?.kind ?? "walk",
     );
-    const width = (sprite?.sw ?? this.map.tileSize) * this.camera.scale;
-    const height = (sprite?.sh ?? this.map.tileSize * 2) * this.camera.scale;
-    const left = x - (width - tilePx) / 2;
-    const top = y - (height - tilePx);
+    const width = (sprite?.sw ?? this.map.tileSize) * avatarScale;
+    const height = (sprite?.sh ?? this.map.tileSize * 2) * avatarScale;
+    // Iso avatars billboard bottom-centre on the foot; top-down centre on the tile.
+    const left = iso ? x - width / 2 : x - (width - tilePx) / 2;
+    const top = iso ? y - height : y - (height - tilePx);
     const right = left + width;
     const bottom = top + height;
     const labelWidth = Math.max(width, (participant.nickname?.length ?? 0) * 6 + 6);

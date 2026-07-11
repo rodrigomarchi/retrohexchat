@@ -12,7 +12,8 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
       for map_id <- @map_ids do
         assert {:ok, definition} = SpaceMap.get(map_id)
         assert definition.id == map_id
-        assert definition.tile_size == 16
+        # 16px (Millennial Fair) or the higher-res 32px End of Time.
+        assert definition.tile_size in [16, 32]
         assert definition.width > 0 and definition.height > 0
         assert definition.spawn != []
       end

@@ -10,6 +10,12 @@ const HASH = String.fromCharCode(35);
 // Solid backdrop painted before the floor so any tile without a sprite (map
 // edges / gaps) reads as a dark void instead of transparent canvas.
 const VOID_BG = "14161c";
+// Soft contact shadow pooled under props and avatars (semi-transparent).
+const SHADOW = "05060c";
+// Isometric slab side faces (the platform's 3D thickness). The screen-left face
+// is darker than the screen-right for a faked directional light.
+const SLAB_FACE_L = "191b26";
+const SLAB_FACE_R = "23262f";
 const LABEL_BG = "1b1d24";
 const LABEL_FG = "e8dcc0";
 const BUBBLE_BG = "e8dcc0";
@@ -42,14 +48,21 @@ export class Renderer {
    * @param {object} opts.map SpaceMap instance
    * @param {object} opts.camera Camera instance
    */
-  constructor({ canvas, atlas, map, camera }) {
+  constructor({ canvas, atlas, map, camera, avatarScale }) {
     this.canvas = canvas;
     this.atlas = atlas;
     this.map = map;
     this.camera = camera;
     this.ctx = canvas?.getContext?.("2d") ?? null;
     if (this.ctx) this.ctx.imageSmoothingEnabled = false;
+    // The tile→world mapping (square or diamond) lives in the camera's projection.
+    this.projection = camera.projection;
     this.tilePx = map.tileSize * camera.scale;
+    // Avatars are drawn at their own scale so they keep a constant on-screen
+    // size regardless of the world scale (which varies with tile resolution:
+    // a 32px-tile map renders at world scale 1, a 16px-tile map at 2). Defaults
+    // to the world scale so callers/tests that omit it behave as before.
+    this.avatarScale = avatarScale ?? camera.scale;
     // Per-avatar last render position + time, to drive the walk animation.
     this._motion = new Map();
   }
@@ -71,14 +84,34 @@ export class Renderer {
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.fillStyle = HASH + VOID_BG;
     ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    // The cosmic sea abyss (deep-blue gradient + drifting horizontal ripple
+    // bands) fills the void behind a floating platform.
+    this._drawSea(ctx, now);
+    // Cosmic parallax layers drift behind the floor for depth.
+    this._drawParallax(ctx, now);
+    // In iso, flat decor is the distant STARFIELD in the void — draw it BEFORE
+    // the floor so the solid platform/slab occludes any stars behind it (a solid
+    // island can't have stars showing through it). Top-down flat decor (ground
+    // marks) stays on top of the floor.
+    const isoMap = this.projection.kind === "isometric";
+    if (isoMap) this._drawDecorList(ctx, this._flatDecor(), now);
     this._drawFloor(ctx, now);
-    this._drawDecor(ctx, now);
+    // Flat decor (ground marks) lies under every avatar and prop.
+    if (!isoMap) this._drawDecorList(ctx, this._flatDecor(), now);
+    // Soft contact shadows ground props and avatars before they are drawn over.
+    this._drawShadows(ctx, state.participants, now);
+    // Depth pass: standing props and avatars share one Y-sorted order so an
+    // avatar passes behind a taller prop (walk-behind) and in front once past
+    // its base.
+    this._drawDepthSorted(ctx, state.participants, now);
+    // Strictly-overhead decor (canopies, lamp tops) draws over everyone.
+    this._drawDecorList(ctx, this._aboveDecor(), now);
+    // Color-math atmosphere: a cozy ambient wash dims the lit world, then
+    // additive light pools re-brighten it near each source (lamp, fire, portal).
+    this._drawLighting(ctx);
     this._drawMapLabels(ctx);
 
     const ordered = [...state.participants.values()].sort((a, b) => a.y - b.y);
-    for (const participant of ordered) {
-      this._drawAvatar(ctx, participant, now);
-    }
     for (const participant of ordered) {
       this._drawLabel(ctx, participant);
       const text = bubbles.get(participant.key);
@@ -92,7 +125,66 @@ export class Renderer {
 
   // ── Layers ───────────────────────────────────────────────────────
 
+  // The cosmic sea: a deep-blue vertical gradient overlaid with slowly drifting,
+  // gently rippling horizontal bands — the Chrono-Trigger End-of-Time abyss the
+  // platform floats in. Absent `sea` → skipped (top-down maps keep the flat void).
+  _drawSea(ctx, now = 0) {
+    const sea = this.map.sea;
+    if (!sea) return;
+    const W = this.canvas.width;
+    const H = this.canvas.height;
+    const grad = ctx.createLinearGradient(0, 0, 0, H);
+    grad.addColorStop(0, HASH + (sea.top ?? "0b1a3a"));
+    grad.addColorStop(1, HASH + (sea.bottom ?? "05060f"));
+    ctx.save();
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, W, H);
+    const n = sea.bands ?? 8;
+    const spacing = H / n;
+    const drift = (now * 0.006) % spacing;
+    const amp = sea.amp ?? 6;
+    ctx.fillStyle = HASH + (sea.band ?? "18376f");
+    ctx.globalAlpha = sea.alpha ?? 0.24;
+    for (let i = -1; i <= n; i += 1) {
+      const y0 = i * spacing + drift;
+      const phase = now * 0.001 + i;
+      const bandH = spacing * 0.5;
+      ctx.beginPath();
+      ctx.moveTo(0, y0);
+      for (let x = 0; x <= W; x += 24) ctx.lineTo(x, y0 + Math.sin(x / 70 + phase) * amp);
+      for (let x = W; x >= 0; x -= 24) {
+        ctx.lineTo(x, y0 + bandH + Math.sin(x / 70 + phase + 0.6) * amp);
+      }
+      ctx.closePath();
+      ctx.fill();
+    }
+    ctx.restore();
+  }
+
+  // Cosmic parallax: repeat each layer's tile across the viewport, offset by the
+  // camera times a slow scroll factor so the void drifts behind the platform.
+  // Maps without a `parallax` list skip this entirely.
+  _drawParallax(ctx, now = 0) {
+    for (const layer of this.map.parallax ?? []) {
+      const sprite = this.atlas?.tile(layer.tile, now, 0);
+      if (!sprite?.img?.complete || !sprite.img.naturalWidth) continue;
+      const scroll = layer.scroll ?? 0.3;
+      const step = Math.max((layer.step ?? 6) * this.tilePx, 1);
+      const ox = -(((this.camera.x * scroll) % step) + step);
+      const oy = -(((this.camera.y * scroll) % step) + step);
+      ctx.save();
+      ctx.globalAlpha = layer.alpha ?? 0.5;
+      for (let y = oy; y < this.canvas.height + step; y += step) {
+        for (let x = ox; x < this.canvas.width + step; x += step) {
+          this._blit(ctx, sprite, Math.round(x), Math.round(y));
+        }
+      }
+      ctx.restore();
+    }
+  }
+
   _drawFloor(ctx, now = 0) {
+    if (this.projection.kind === "isometric") return this._drawFloorIso(ctx, now);
     const startX = Math.floor(this.camera.x / this.tilePx);
     const startY = Math.floor(this.camera.y / this.tilePx);
     const cols = Math.ceil(this.canvas.width / this.tilePx) + 1;
@@ -103,7 +195,8 @@ export class Renderer {
     for (let ty = startY; ty < startY + rows; ty += 1) {
       for (let tx = startX; tx < startX + cols; tx += 1) {
         if (!this.map.inBounds(tx, ty)) continue;
-        const { x, y } = this.camera.worldToScreen(tx * this.tilePx, ty * this.tilePx);
+        const a = this.projection.floorAnchor(tx, ty);
+        const { x, y } = this.camera.worldToScreen(a.x, a.y);
         const dx = Math.round(x);
         const dy = Math.round(y);
         const tileId = this.map.floorTile(tx, ty);
@@ -114,15 +207,328 @@ export class Renderer {
     }
   }
 
-  // Multi-tile props anchored at their top-left tile, drawn at their native
-  // sprite size over the floor.
-  _drawDecor(ctx, now = 0) {
-    for (const prop of this.map.decor ?? []) {
+  // Isometric floor: diamond tiles painted far→near (ascending x+y) so nearer
+  // diamonds and slab faces occlude farther ones. Void cells (the ground/`f0000`
+  // tile) are skipped so the platform reads as a slab floating in the abyss.
+  _drawFloorIso(ctx, now = 0) {
+    const ground = this.map.ground;
+    const fp = this.projection.tileFootprint;
+    // The slab underside (the block tapering to a diamond below) is one shape,
+    // drawn before the top tiles so the surface seats cleanly over its rim.
+    this._drawSlabUnderside(ctx);
+    for (const { x: tx, y: ty } of this._isoTileOrder()) {
+      const tileId = this.map.floorTile(tx, ty);
+      if (!tileId || tileId === ground) continue;
+      const a = this.projection.floorAnchor(tx, ty);
+      const s = this.camera.worldToScreen(a.x, a.y);
+      if (s.x + fp.w < 0 || s.x > this.canvas.width || s.y + fp.h < 0 || s.y > this.canvas.height) {
+        continue;
+      }
+      this._blit(
+        ctx,
+        this.atlas?.tile(tileId, now, seedAt(tx, ty)),
+        Math.round(s.x),
+        Math.round(s.y),
+      );
+    }
+  }
+
+  // The platform's 3D underside: the four hull corners projected, with the two
+  // camera-facing front faces (front-left, front-right) extruded down and pulled
+  // toward a centre apex by `taper` — so the block reads as a solid island that
+  // narrows to a diamond point below (taper=1 → a sharp point). `slab.hull` is the
+  // [minX,maxX,minY,maxY] of solid cells.
+  _drawSlabUnderside(ctx) {
+    const slab = this.map.slab;
+    if (!slab?.hull) return;
+    const [sx0, sx1, sy0, sy1] = slab.hull;
+    const depth = (slab.thickness ?? 0) * (this.projection.zs ?? 0);
+    const taper = slab.taper ?? 0;
+    const fp = this.projection.tileFootprint;
+    const hw = fp.w / 2;
+    const hh = fp.h / 2;
+    const vert = (tx, ty, dx, dy) => {
+      const f = this.projection.footAnchor(tx, ty);
+      const s = this.camera.worldToScreen(f.x, f.y);
+      return { x: s.x + dx, y: s.y + dy };
+    };
+    // Only the two camera-facing front faces are visible (top/back are hidden).
+    const right = vert(sx1, sy0, hw, 0);
+    const bottom = vert(sx1, sy1, 0, hh);
+    const left = vert(sx0, sy1, -hw, 0);
+    const apex = { x: (left.x + right.x) / 2, y: bottom.y + depth };
+    const dn = (p) => ({
+      x: p.x + (apex.x - p.x) * taper,
+      y: p.y + depth + (apex.y - (p.y + depth)) * taper,
+    });
+    this._fillPoly(ctx, SLAB_FACE_L, [left, bottom, dn(bottom), dn(left)]);
+    this._fillPoly(ctx, SLAB_FACE_R, [bottom, right, dn(right), dn(bottom)]);
+  }
+
+  _fillPoly(ctx, color, pts) {
+    ctx.fillStyle = HASH + color;
+    ctx.beginPath();
+    ctx.moveTo(Math.round(pts[0].x), Math.round(pts[0].y));
+    for (let i = 1; i < pts.length; i += 1) ctx.lineTo(Math.round(pts[i].x), Math.round(pts[i].y));
+    ctx.closePath();
+    ctx.fill();
+  }
+
+  // Tile coordinates ordered by isometric depth (x+y), cached per map.
+  _isoTileOrder() {
+    if (this._isoOrder) return this._isoOrder;
+    const order = [];
+    for (let y = 0; y < this.map.height; y += 1) {
+      for (let x = 0; x < this.map.width; x += 1) order.push({ x, y });
+    }
+    order.sort((a, b) => a.x + a.y - (b.x + b.y));
+    this._isoOrder = order;
+    return order;
+  }
+
+  // Ground-flat decor (stars, shadows, floor marks): drawn under everyone.
+  // A decor entry is flat unless it opts into the depth pass with sort:"stand".
+  _flatDecor() {
+    return (this.map.decor ?? []).filter((p) => p.sort !== "stand");
+  }
+
+  // Standing props (lamp, pillars, portal): Y-sorted against avatars.
+  _standDecor() {
+    return (this.map.decor ?? []).filter((p) => p.sort === "stand");
+  }
+
+  // The `above` layer — decor that always draws over avatars (overhead canopy).
+  _aboveDecor() {
+    return this.map.layers?.above ?? [];
+  }
+
+  // Multi-tile props anchored at their top-left tile, drawn at native sprite
+  // size over the floor.
+  _drawDecorList(ctx, list, now = 0) {
+    for (const prop of list) {
+      const sprite = this.atlas?.tile(prop.tile, now, seedAt(prop.x, prop.y));
+      if (sprite) this._blitProp(ctx, prop, sprite);
+    }
+  }
+
+  _blitProp(ctx, prop, sprite) {
+    const a = this.projection.floorAnchor(prop.x, prop.y);
+    const { x, y } = this.camera.worldToScreen(a.x, a.y);
+    this._blit(ctx, sprite, Math.round(x), Math.round(y));
+  }
+
+  // Interleave standing props and avatars by their base (feet) row so an avatar
+  // renders behind a prop while above its base, and in front once past it. A
+  // prop's base row is its top row plus its sprite height in tiles; an avatar's
+  // is its tile row plus one (feet at the bottom of the tile it stands on).
+  _drawDepthSorted(ctx, participants, now = 0) {
+    const iso = this.projection.kind === "isometric";
+    const items = [];
+    for (const prop of this._standDecor()) {
       const sprite = this.atlas?.tile(prop.tile, now, seedAt(prop.x, prop.y));
       if (!sprite) continue;
-      const { x, y } = this.camera.worldToScreen(prop.x * this.tilePx, prop.y * this.tilePx);
-      this._blit(ctx, sprite, Math.round(x), Math.round(y));
+      // Top-down foot = sprite bottom row; iso foot = the base tile (depthKey
+      // folds elevation in as a tie-break). Iso props draw as upright billboards.
+      const baseline = iso
+        ? this.projection.depthKey(prop.x, prop.y, prop.h ?? 0)
+        : prop.y + sprite.sh / this.map.tileSize;
+      const draw = iso
+        ? () => this._blitBillboard(ctx, prop, sprite)
+        : () => this._blitProp(ctx, prop, sprite);
+      items.push({ baseline, draw });
     }
+    for (const participant of participants.values()) {
+      const baseline = iso
+        ? this.projection.depthKey(participant.x, participant.y) + 0.5
+        : participant.y + 1;
+      items.push({ baseline, draw: () => this._drawAvatar(ctx, participant, now) });
+    }
+    // Geometric iso railing: one fence segment per platform edge cell, drawn on
+    // the cell's shared diamond edge with its void neighbour — so the segments
+    // abut into ONE continuous fence wrapping the square block's four sides,
+    // depth-sorted (back edges behind avatars, front edges in front).
+    if (iso) {
+      const style = this.map.railingStyle ?? {};
+      for (const r of this.map.railings ?? []) {
+        items.push({
+          baseline: this.projection.depthKey(r.x, r.y) + 0.25,
+          draw: () => this._drawRailingSegment(ctx, r, style),
+        });
+      }
+    }
+    items.sort((a, b) => a.baseline - b.baseline);
+    for (const item of items) item.draw();
+  }
+
+  // The two screen endpoints of a cell's diamond edge shared with a void
+  // neighbour: tr=top→right, tl=top→left, bl=left→bottom, br=right→bottom.
+  _railingEdge(r) {
+    const f = this.projection.footAnchor(r.x, r.y);
+    const s = this.camera.worldToScreen(f.x, f.y);
+    const hw = this.projection.hw;
+    const hh = this.projection.hh;
+    const T = { x: s.x, y: s.y - hh };
+    const R = { x: s.x + hw, y: s.y };
+    const B = { x: s.x, y: s.y + hh };
+    const L = { x: s.x - hw, y: s.y };
+    return { tr: [T, R], tl: [T, L], bl: [L, B], br: [R, B] }[r.edge];
+  }
+
+  // A tall thin wrought-iron fence run along one edge: a dark base rail on the
+  // platform lip, evenly spaced gold posts rising to a gold top rail, with finial
+  // caps. Adjacent segments share endpoints → seamless continuous railing.
+  _drawRailingSegment(ctx, r, style) {
+    const seg = this._railingEdge(r);
+    if (!seg) return;
+    const [a, b] = seg;
+    const h = (style.height ?? 22) * (this.projection.scale ?? 1);
+    const gold = style.color ?? "b98d3e";
+    const goldHi = style.hi ?? "e8c874";
+    const base = style.base ?? "1c1a24";
+    const posts = style.posts ?? 4;
+    ctx.save();
+    // base rail on the edge (dark stone lip)
+    ctx.strokeStyle = HASH + base;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(Math.round(a.x), Math.round(a.y));
+    ctx.lineTo(Math.round(b.x), Math.round(b.y));
+    ctx.stroke();
+    // top rail + a mid rail (ornate double-rail wrought iron)
+    ctx.strokeStyle = HASH + gold;
+    for (const off of [h, h * 0.5]) {
+      ctx.lineWidth = off === h ? 2 : 1;
+      ctx.beginPath();
+      ctx.moveTo(Math.round(a.x), Math.round(a.y - off));
+      ctx.lineTo(Math.round(b.x), Math.round(b.y - off));
+      ctx.stroke();
+    }
+    // vertical bars + finial caps
+    ctx.lineWidth = 1;
+    for (let i = 0; i <= posts; i += 1) {
+      const t = i / posts;
+      const px = Math.round(a.x + (b.x - a.x) * t);
+      const py = Math.round(a.y + (b.y - a.y) * t);
+      const corner = i === 0 || i === posts;
+      ctx.strokeStyle = HASH + (corner ? goldHi : gold);
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(px, py - h - (corner ? 3 : 0));
+      ctx.stroke();
+      ctx.fillStyle = HASH + goldHi;
+      ctx.fillRect(px - 1, py - h - (corner ? 5 : 2), 2, 2);
+    }
+    ctx.restore();
+  }
+
+  // Isometric standing prop: a billboard whose bottom-centre sits on the tile's
+  // diamond foot and rises upward, so tall props tower while depth-sorting by
+  // their foot tile.
+  _blitBillboard(ctx, prop, sprite) {
+    const scale = this.camera.scale;
+    const f = this.projection.footAnchor(prop.x, prop.y, prop.h ?? 0);
+    const { x, y } = this.camera.worldToScreen(f.x, f.y);
+    const w = sprite.sw * scale;
+    const h = sprite.sh * scale;
+    this._blit(ctx, sprite, Math.round(x - w / 2), Math.round(y - h), scale);
+  }
+
+  // Soft elliptical contact shadows under every standing prop and avatar, so
+  // they read as resting on the floor rather than floating. Drawn once with a
+  // shared alpha before the depth pass paints the sprites over them.
+  _drawShadows(ctx, participants, now = 0) {
+    const stand = this._standDecor();
+    if (stand.length === 0 && participants.size === 0) return;
+    const scale = this.camera.scale;
+    ctx.save();
+    ctx.globalAlpha = 0.26;
+    ctx.fillStyle = HASH + SHADOW;
+    for (const prop of stand) {
+      const sprite = this.atlas?.tile(prop.tile, now, seedAt(prop.x, prop.y));
+      if (!sprite) continue;
+      const ap = this.projection.floorAnchor(prop.x, prop.y);
+      const { x, y } = this.camera.worldToScreen(ap.x, ap.y);
+      const wpx = sprite.sw * scale;
+      const hpx = sprite.sh * scale;
+      this._ellipse(ctx, x + wpx / 2, y + hpx - this.tilePx * 0.15, wpx * 0.32, this.tilePx * 0.24);
+    }
+    for (const participant of participants.values()) {
+      const av = this.projection.floorAnchor(participant.x, participant.y);
+      const { x, y } = this.camera.worldToScreen(av.x, av.y);
+      this._ellipse(
+        ctx,
+        x + this.tilePx / 2,
+        y + this.tilePx * 0.9,
+        this.tilePx * 0.34,
+        this.tilePx * 0.2,
+      );
+    }
+    ctx.restore();
+  }
+
+  // A filled ellipse via a squashed arc (canvas has no primitive our mock ctx
+  // shares); the caller owns fillStyle/globalAlpha.
+  _ellipse(ctx, cx, cy, rx, ry) {
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.scale(1, ry / rx);
+    ctx.beginPath();
+    ctx.arc(0, 0, rx, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  // Color-math lighting: a multiply ambient wash dims the whole lit scene into a
+  // cozy dusk, then additive radial pools re-brighten it around each source. A
+  // map without `ambient`/`lights` renders unchanged (full bright).
+  _drawLighting(ctx) {
+    const ambient = this.map.ambient;
+    if (ambient) {
+      ctx.save();
+      ctx.globalCompositeOperation = "multiply";
+      ctx.globalAlpha = ambient.alpha ?? 0.4;
+      ctx.fillStyle = HASH + (ambient.color ?? "000000");
+      ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+      ctx.restore();
+    }
+    for (const light of this.map.lights ?? []) {
+      const a = this.projection.floorAnchor(light.x, light.y);
+      const { x, y } = this.camera.worldToScreen(a.x, a.y);
+      const radius = Math.max((light.radius ?? 3) * this.tilePx, 1);
+      const color = light.color ?? "ffffff";
+      const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
+      grad.addColorStop(0, HASH + color + "b3");
+      grad.addColorStop(0.5, HASH + color + "40");
+      grad.addColorStop(1, HASH + color + "00");
+      ctx.save();
+      ctx.globalCompositeOperation = light.blend === "multiply" ? "multiply" : "lighter";
+      ctx.fillStyle = grad;
+      ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
+      ctx.restore();
+    }
+    this._drawVignette(ctx);
+  }
+
+  // A screen-space radial multiply that darkens the canvas edges, framing the lit
+  // platform against the void. Absent `vignette` → skipped.
+  _drawVignette(ctx) {
+    const vig = this.map.vignette;
+    if (!vig) return;
+    const cx = this.canvas.width / 2;
+    const cy = this.canvas.height / 2;
+    const outer = Math.hypot(cx, cy);
+    const color = vig.color ?? "000000";
+    const alpha = Math.round((vig.alpha ?? 0.5) * 255)
+      .toString(16)
+      .padStart(2, "0");
+    const grad = ctx.createRadialGradient(cx, cy, outer * (vig.inner ?? 0.45), cx, cy, outer);
+    grad.addColorStop(0, HASH + color + "00");
+    grad.addColorStop(1, HASH + color + alpha);
+    ctx.save();
+    ctx.globalCompositeOperation = "multiply";
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.restore();
   }
 
   _drawMapLabels(ctx) {
@@ -139,10 +545,8 @@ export class Renderer {
 
       const width = Math.max((label.w ?? 1) * this.tilePx, this.tilePx);
       const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
-      const { x, y } = this.camera.worldToScreen(
-        (label.x ?? 0) * this.tilePx,
-        (label.y ?? 0) * this.tilePx,
-      );
+      const la = this.projection.floorAnchor(label.x ?? 0, label.y ?? 0);
+      const { x, y } = this.camera.worldToScreen(la.x, la.y);
       const dx = Math.round(x);
       const dy = Math.round(y);
 
@@ -170,10 +574,8 @@ export class Renderer {
   _drawTableNameplate(ctx, label) {
     const width = Math.max((label.w ?? 1) * this.tilePx, this.tilePx);
     const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
-    const { x, y } = this.camera.worldToScreen(
-      (label.x ?? 0) * this.tilePx,
-      (label.y ?? 0) * this.tilePx,
-    );
+    const la = this.projection.floorAnchor(label.x ?? 0, label.y ?? 0);
+    const { x, y } = this.camera.worldToScreen(la.x, la.y);
     const dx = Math.round(x);
     const dy = Math.round(y);
     const plaqueWidth = Math.max(Math.round(width) - 20, this.tilePx * 2);
@@ -202,16 +604,25 @@ export class Renderer {
   // shrunk to fit the label box so they never spill past the artifact.
   _drawHologram(ctx, label) {
     const width = Math.max((label.w ?? 1) * this.tilePx, this.tilePx);
-    const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
-    const { x, y } = this.camera.worldToScreen(
-      (label.x ?? 0) * this.tilePx,
-      (label.y ?? 0) * this.tilePx,
-    );
-    const dx = Math.round(x);
-    const dy = Math.round(y);
-    const cx = Math.round(dx + width / 2);
-    const ty = Math.round(dy + height / 2 + 4);
     const maxWidth = Math.max(Math.round(width) - 8, 1);
+    // In iso the nameplate centres over its tile (the lamppost) and is raised by
+    // `lift` px so it floats above the lamp, over its light. Top-down keeps the
+    // legacy box-anchored placement.
+    let cx;
+    let ty;
+    if (this.projection.kind === "isometric") {
+      const a = this.projection.footAnchor(label.x ?? 0, label.y ?? 0);
+      const lift = (label.lift ?? 0) * (this.projection.scale ?? 1);
+      const sp = this.camera.worldToScreen(a.x, a.y - lift);
+      cx = Math.round(sp.x);
+      ty = Math.round(sp.y);
+    } else {
+      const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
+      const la = this.projection.floorAnchor(label.x ?? 0, label.y ?? 0);
+      const { x, y } = this.camera.worldToScreen(la.x, la.y);
+      cx = Math.round(x + width / 2);
+      ty = Math.round(y + height / 2 + 4);
+    }
 
     ctx.font = HOLO_FONT;
     ctx.textAlign = "center";
@@ -237,24 +648,33 @@ export class Renderer {
       : this._walkFrame(participant, now);
     const sprite = this.atlas?.avatar(participant.avatar, dir, frame, actionKind);
     if (!sprite) return;
+    // Isometric: billboard the avatar with its feet on the diamond foot.
+    if (this.projection.kind === "isometric") {
+      const f = this.projection.footAnchor(participant.x, participant.y);
+      const s = this.camera.worldToScreen(f.x, f.y);
+      const aw = sprite.sw * this.avatarScale;
+      const ah = sprite.sh * this.avatarScale;
+      this._blit(ctx, sprite, Math.round(s.x - aw / 2), Math.round(s.y - ah), this.avatarScale);
+      return;
+    }
     const { x, y } = this._avatarScreenPos(participant);
-    const dw = sprite.sw * this.camera.scale;
-    const dh = sprite.sh * this.camera.scale;
+    const dw = sprite.sw * this.avatarScale;
+    const dh = sprite.sh * this.avatarScale;
     const dx = x - (dw - this.tilePx) / 2;
     // Tall sprites sit with their feet on the tile; wider action sprites stay
     // centered on the avatar tile so the body does not jump during a swing.
     const dy = dh - this.tilePx;
-    this._blit(ctx, sprite, Math.round(dx), Math.round(y - dy));
+    this._blit(ctx, sprite, Math.round(dx), Math.round(y - dy), this.avatarScale);
   }
 
   // Draw a sheet slice `{ img, sx, sy, sw, sh }` scaled by the camera at the
   // destination pixel. Skips images that have not finished loading so a slow
   // fetch never throws mid-frame.
-  _blit(ctx, sprite, dx, dy) {
+  _blit(ctx, sprite, dx, dy, scale = this.camera.scale) {
     if (!sprite) return;
     const img = sprite.img;
     if (!img || !img.complete || !img.naturalWidth) return;
-    const s = this.camera.scale;
+    const s = scale;
     if (sprite.flipX) {
       ctx.save();
       ctx.scale(-1, 1);
@@ -339,6 +759,7 @@ export class Renderer {
   }
 
   _avatarScreenPos(participant) {
-    return this.camera.worldToScreen(participant.x * this.tilePx, participant.y * this.tilePx);
+    const a = this.projection.floorAnchor(participant.x, participant.y);
+    return this.camera.worldToScreen(a.x, a.y);
   }
 }

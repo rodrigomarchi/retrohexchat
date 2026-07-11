@@ -28,6 +28,23 @@ export class SpaceMap {
     this.layers = definition.layers ?? { floor: [], decor: [], above: [] };
     // Multi-tile props (houses, big trees) drawn as whole sprites over the floor.
     this.decor = Array.isArray(this.layers.decor) ? this.layers.decor : [];
+    // Color-math lighting: additive radial pools + an optional ambient multiply
+    // wash. Empty/absent on maps that don't opt in (they render at full bright).
+    this.lights = Array.isArray(definition.lights) ? definition.lights : [];
+    this.ambient = definition.ambient ?? null;
+    // Parallax background layers (cosmic nebula) drawn behind the floor, offset
+    // by the camera times a per-layer scroll factor (< 1) for depth.
+    this.parallax = Array.isArray(definition.parallax) ? definition.parallax : [];
+    // Isometric slab thickness (3D side faces) + a screen-space vignette. Null on
+    // top-down maps → no faces, no vignette.
+    this.slab = definition.slab ?? null;
+    this.vignette = definition.vignette ?? null;
+    // The cosmic sea abyss behind a floating platform (deep-blue rippling void).
+    this.sea = definition.sea ?? null;
+    // Geometric iso railing: edge cells [{x,y,edge}] the renderer draws as one
+    // continuous wrought-iron fence, plus its style (height/colors/posts).
+    this.railings = Array.isArray(definition.railings) ? definition.railings : [];
+    this.railingStyle = definition.railing_style ?? null;
     this.spawns = Array.isArray(definition.spawn) ? definition.spawn : [];
     this.labels = Array.isArray(definition.labels) ? definition.labels : [];
 
