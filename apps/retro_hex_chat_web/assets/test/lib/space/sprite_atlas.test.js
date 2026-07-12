@@ -104,14 +104,16 @@ describe("sprite atlas contract", () => {
     expect(atlas.hasTile("nope")).toBe(false);
   });
 
-  it("slices a walk-only iso avatar by 8-direction facing and frame", () => {
+  it("slices an iso avatar's walk/idle/attack blocks by 8-direction facing", () => {
     const atlas = loadedAtlas();
-    // Hero: walk-only, 188×142 frames, one row per iso direction, 4 cols.
+    // Hero: walk/idle/attack (no sleep), 188×142 frames, one row per direction.
     expect(atlas.avatar("hero", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 142 });
     expect(atlas.avatar("hero", "south-east", 1)).toMatchObject({ sx: 188, sy: 142 });
-    expect(atlas.avatar("hero", "south-west", 3)).toMatchObject({ sx: 564, sy: 994 });
-    // With no idle/sword/sleep block, any action falls back to walk.
-    expect(atlas.avatar("hero", "south", 0, "sword")).toMatchObject({ sx: 0, sy: 0 });
+    // idle block starts at 8*142, sword(attack) at 16*142.
+    expect(atlas.avatar("hero", "south-east", 1, "idle")).toMatchObject({ sx: 188, sy: 1278 });
+    expect(atlas.avatar("hero", "south", 2, "sword")).toMatchObject({ sx: 376, sy: 2272 });
+    // No sleep block → falls back to walk.
+    expect(atlas.avatar("hero", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 568 });
     expect(atlas.avatarFrameCount("hero", "walk")).toBe(4);
   });
 
