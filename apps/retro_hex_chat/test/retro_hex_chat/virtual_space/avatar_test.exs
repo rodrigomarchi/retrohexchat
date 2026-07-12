@@ -39,9 +39,9 @@ defmodule RetroHexChat.VirtualSpace.AvatarTest do
   end
 
   describe "avatar catalog" do
-    test "exposes the hero plus the six class avatars, in sync with the JS atlas" do
+    test "exposes the hero, the class avatars, and the premium iso knight, in sync with the JS atlas" do
       assert ChannelSpaceServer.avatars() ==
-               ~w(redtunic_hero sorceress knight archer barbarian rogue cleric monk)
+               ~w(redtunic_hero sorceress knight archer barbarian rogue cleric monk iso_knight)
     end
   end
 

@@ -21,7 +21,8 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterSelect do
     "barbarian" => "Barbarian",
     "rogue" => "Rogue",
     "cleric" => "Cleric",
-    "monk" => "Monk"
+    "monk" => "Monk",
+    "iso_knight" => "Knight ⚔"
   }
 
   attr :avatars, :list, required: true, doc: "Selectable avatar ids (VirtualSpace.avatars/0)"

@@ -34,7 +34,56 @@ const AVATAR_SHEETS = Object.freeze([
   { id: "av_rogue", src: "/images/space/avatars/rogue.png" },
   { id: "av_cleric", src: "/images/space/avatars/cleric.png" },
   { id: "av_monk", src: "/images/space/avatars/monk.png" },
+  { id: "av_iso_knight", src: "/images/space/avatars/iso_knight.png" },
 ]);
+
+// The 8 isometric facing directions, in the row order the iso sheet is packed.
+export const DIRECTIONS_ISO = Object.freeze([
+  "south",
+  "south-east",
+  "east",
+  "north-east",
+  "north",
+  "north-west",
+  "west",
+  "south-west",
+]);
+
+// Premium 8-direction isometric avatar (PixelLab v3). One 92×73 sheet packs four
+// animation blocks — walk, idle (breathing), sword (attack), sleep — stacked in
+// direction-major rows. Authored by `tools/compose_iso_avatar.py`, which prints
+// this exact geometry. `scale` renders the tall 92px art down to world size, and
+// `sleep` is south-only (a seated pose used regardless of facing while AFK).
+const ISO_FRAME_W = 188;
+const ISO_FRAME_H = 151;
+
+function isoRows(base) {
+  const rows = {};
+  DIRECTIONS_ISO.forEach((d, i) => {
+    rows[d] = base + i * ISO_FRAME_H;
+  });
+  return Object.freeze(rows);
+}
+
+function isoKnightAvatar(sheet) {
+  const cols = [0, ISO_FRAME_W, ISO_FRAME_W * 2, ISO_FRAME_W * 3];
+  const block = (base) => ({ frameW: ISO_FRAME_W, frameH: ISO_FRAME_H, cols, rows: isoRows(base) });
+  return {
+    sheet,
+    // Authored at world size (92px human in a 188px frame) → renders native at
+    // avatar_scale 1. No per-avatar down/up-scaling.
+    scale: 1,
+    walk: block(0),
+    idle: block(1208),
+    sword: block(2416),
+    sleep: {
+      frameW: ISO_FRAME_W,
+      frameH: ISO_FRAME_H,
+      cols,
+      rows: Object.freeze({ south: 3624 }),
+    },
+  };
+}
 
 // Standard blocks for a 36px class sheet (144×288): walk on rows 0-3 and attack
 // on rows 4-7, each down/up/left/right × 4 frames. The game's "sword" action
@@ -42,6 +91,7 @@ const AVATAR_SHEETS = Object.freeze([
 function classAvatar(sheet) {
   return {
     sheet,
+    scale: 2,
     walk: {
       frameW: 36,
       frameH: 36,
@@ -60,6 +110,7 @@ function classAvatar(sheet) {
 const AVATARS = Object.freeze({
   redtunic_hero: {
     sheet: "character",
+    scale: 2,
     walk: {
       frameW: 16,
       frameH: 32,
@@ -80,10 +131,11 @@ const AVATARS = Object.freeze({
   rogue: classAvatar("av_rogue"),
   cleric: classAvatar("av_cleric"),
   monk: classAvatar("av_monk"),
+  iso_knight: isoKnightAvatar("av_iso_knight"),
 });
 
 export const AVATAR_IDS = Object.freeze(Object.keys(AVATARS));
-export const AVATAR_ACTIONS = Object.freeze(["walk", "sword"]);
+export const AVATAR_ACTIONS = Object.freeze(["walk", "sword", "idle", "sleep"]);
 
 /**
  * @param {{tileSize?: number, scale?: number, onReady?: Function}} [opts]
@@ -147,8 +199,10 @@ export function createSpriteAtlas(opts = {}) {
       img: sheet.img,
       sx: col * t,
       sy: spec.row * t,
-      sw: w * t,
-      sh: h * t,
+      // Native-sized tiles (iso floor) carry their exact pixel size so they render
+      // 1:1 without the cell-grid rounding that would shift the diamond off-anchor.
+      sw: spec.wpx ?? w * t,
+      sh: spec.hpx ?? h * t,
       flipX: Boolean(spec.flip_x ?? spec.flipX),
     };
   }
@@ -158,7 +212,10 @@ export function createSpriteAtlas(opts = {}) {
     const block = desc[action] ?? desc.walk;
     const sheet = sheets.get(desc.sheet);
     if (!sheet) return null;
-    const direction = DIRECTIONS.includes(dir) ? dir : "down";
+    // Resolve against the block's own facing keys so 4-dir (down/up/left/right)
+    // and 8-dir (south/east/…) avatars both work; fall back to the first facing
+    // (e.g. sleep is south-only, used for any direction).
+    const direction = dir in block.rows ? dir : Object.keys(block.rows)[0];
     const n = block.cols.length;
     const idx = ((Math.trunc(frame) % n) + n) % n;
     return {
@@ -167,6 +224,7 @@ export function createSpriteAtlas(opts = {}) {
       sy: block.rows[direction],
       sw: block.frameW,
       sh: block.frameH,
+      scale: desc.scale ?? 1,
     };
   }
 
@@ -187,6 +245,17 @@ export function createSpriteAtlas(opts = {}) {
       const desc = AVATARS[id] ?? AVATARS[DEFAULT_AVATAR_ID];
       const block = desc[action] ?? desc.walk;
       return block.cols.length;
+    },
+    // What animation capabilities an avatar has, so the renderer drives 8-dir iso
+    // avatars (facing + idle/sleep states) without changing the 4-dir legacy ones.
+    avatarMeta(id) {
+      const desc = AVATARS[id] ?? AVATARS[DEFAULT_AVATAR_ID];
+      return {
+        iso: "south" in (desc.walk?.rows ?? {}),
+        hasIdle: Boolean(desc.idle),
+        hasSleep: Boolean(desc.sleep),
+        scale: desc.scale ?? 1,
+      };
     },
     // Notice-board modal art. This is illustration data (like the SVG icons the
     // style audit excludes); the palette lives here as hex digits with `#`

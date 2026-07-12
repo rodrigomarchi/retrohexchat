@@ -81,7 +81,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
 
   # Optional per-tile keys the client atlas understands: `flip_x` (mirror) and
   # `frames`/`period_ms` (a tile animated across frames packed from `col`).
-  @optional_tile_keys ~w(flip_x frames period_ms)
+  @optional_tile_keys ~w(flip_x frames period_ms wpx hpx)
 
   defp tiles(data) do
     Map.new(data["vocab"], fn {name, v} ->

@@ -2100,6 +2100,23 @@ details:not([open]) .tree-view-marker-closed {
     background-position: -64px 0;
   }
 }
+.rh-charsel-sprite--iso_knight {
+  width: 188px;
+  height: 151px;
+  background-image: url("/images/space/avatars/iso_knight.png");
+  background-size: 752px 3775px;
+  background-position: 0 0;
+  transform: scale(0.4);
+  animation-name: rh-charsel-walk-iso;
+}
+@keyframes rh-charsel-walk-iso {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -752px;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .rh-charsel-sprite {
     animation: none;

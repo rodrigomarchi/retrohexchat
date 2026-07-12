@@ -27,7 +27,7 @@ function loadedAtlas() {
 }
 
 describe("sprite atlas contract", () => {
-  it("declares the hero plus the seven class avatars, their actions, and the four facings", () => {
+  it("declares the hero, the class avatars, the premium iso knight, their actions, and the facings", () => {
     expect(AVATAR_IDS).toEqual([
       "redtunic_hero",
       "sorceress",
@@ -37,8 +37,9 @@ describe("sprite atlas contract", () => {
       "rogue",
       "cleric",
       "monk",
+      "iso_knight",
     ]);
-    expect(AVATAR_ACTIONS).toEqual(["walk", "sword"]);
+    expect(AVATAR_ACTIONS).toEqual(["walk", "sword", "idle", "sleep"]);
     expect(DIRECTIONS).toEqual(["down", "up", "left", "right"]);
   });
 

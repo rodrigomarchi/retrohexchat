@@ -57,13 +57,21 @@ def _cells(w_px, h_px):
     return (w_px + T - 1) // T, (h_px + T - 1) // T
 
 
-def _place(sheet, vocab, name, im, col, row, anchor="bottom"):
+def _place(sheet, vocab, name, im, col, row, anchor="bottom", native=False):
+    # `native` packs the art flush to the cell's top-left and records its exact
+    # pixel size (wpx/hpx), so the atlas addresses it at true scale-1 size instead
+    # of rounding to the 32px cell grid + centring (which shifts an iso floor
+    # diamond off the projection's foot anchor → the railing floats off the tile).
     w, h = _cells(im.width, im.height)
     block = Image.new("RGBA", (w * T, h * T), (0, 0, 0, 0))
     dy = 0 if anchor == "top" else h * T - im.height
-    block.alpha_composite(im, ((w * T - im.width) // 2, dy))
+    dx = 0 if native else (w * T - im.width) // 2
+    block.alpha_composite(im, (dx, dy))
     sheet.alpha_composite(block, (col * T, row * T))
-    vocab[name] = {"col": col, "row": row, "w": w, "h": h}
+    entry = {"col": col, "row": row, "w": w, "h": h}
+    if native:
+        entry["wpx"], entry["hpx"] = im.width, im.height
+    vocab[name] = entry
     return col + w
 
 
@@ -80,7 +88,7 @@ def build():
     fcells_w, fcells_h = _cells(fw, fh)
     for i, im in enumerate(floor):
         vocab[f"iso_floor{i}"] = None
-        col = _place(sheet, vocab, f"iso_floor{i}", im, col, 0, anchor="top")
+        col = _place(sheet, vocab, f"iso_floor{i}", im, col, 0, anchor="top", native=True)
 
     # Props (billboarded): railing + reused upright lamp/gate/bucket + anim star.
     props = {}
@@ -202,9 +210,9 @@ def build():
         # ground + a tight bright halo lifted ~106px up to the lantern head.
         "lights": [
             {"x": 20, "y": 12, "radius": 4.2, "color": "ffd591", "blend": "add"},
-            {"x": 20, "y": 12, "lift": 106, "radius": 1.7, "color": "ffe6a8", "blend": "add"},
+            {"x": 20, "y": 12, "lift": 152, "radius": 1.6, "color": "ffe6a8", "blend": "add"},
         ],
-        "ambient": {"color": "0c1024", "alpha": 0.52},
+        "ambient": {"color": "1a2036", "alpha": 0.42},
         "zones": [{"id": "eot", "kind": "private", "x": 6, "y": 4, "w": 28, "h": 16}],
         # The DM nameplate floats above the central lamppost, over its light.
         "labels": [{"id": "dm_nameplate", "kind": "hologram",

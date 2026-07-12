@@ -40,6 +40,23 @@ function seedAt(x, y) {
   return (Math.trunc(x) * 73856093) ^ (Math.trunc(y) * 19349663);
 }
 
+// A tile-space step (sign of dx,dy) → the 8-direction iso facing it reads as on
+// screen (footAnchor: +x = down-right, +y = down-left), so a walking avatar faces
+// where it visibly moves. Used only by 8-direction iso avatars.
+const ISO_STEP_FACING = Object.freeze({
+  "1,1": "south",
+  "1,0": "south-east",
+  "1,-1": "east",
+  "0,-1": "north-east",
+  "-1,-1": "north",
+  "-1,0": "north-west",
+  "-1,1": "west",
+  "0,1": "south-west",
+});
+// After this long without moving, an iso avatar drops from idle (breathing) to
+// sleep (a seated doze).
+const ISO_SLEEP_MS = 12000;
+
 export class Renderer {
   /**
    * @param {object} opts
@@ -671,31 +688,83 @@ export class Renderer {
   }
 
   _drawAvatar(ctx, participant, now) {
-    const action = participant.action?.kind === "sword" ? participant.action : null;
-    const actionKind = action ? "sword" : "walk";
-    const dir = action?.dir ?? participant.dir;
-    const frame = action
-      ? this._actionFrame(participant, action, now)
-      : this._walkFrame(participant, now);
-    const sprite = this.atlas?.avatar(participant.avatar, dir, frame, actionKind);
+    const pose = this._avatarPose(participant, now);
+    const sprite = this.atlas?.avatar(participant.avatar, pose.dir, pose.frame, pose.actionKind);
     if (!sprite) return;
+    // Premium iso avatars ship oversized art; `sprite.scale` renders it to world size.
+    const scale = this.avatarScale * (sprite.scale ?? 1);
     // Isometric: billboard the avatar with its feet on the diamond foot.
     if (this.projection.kind === "isometric") {
       const f = this.projection.footAnchor(participant.x, participant.y);
       const s = this.camera.worldToScreen(f.x, f.y);
-      const aw = sprite.sw * this.avatarScale;
-      const ah = sprite.sh * this.avatarScale;
-      this._blit(ctx, sprite, Math.round(s.x - aw / 2), Math.round(s.y - ah), this.avatarScale);
+      const aw = sprite.sw * scale;
+      const ah = sprite.sh * scale;
+      this._blit(ctx, sprite, Math.round(s.x - aw / 2), Math.round(s.y - ah), scale);
       return;
     }
     const { x, y } = this._avatarScreenPos(participant);
-    const dw = sprite.sw * this.avatarScale;
-    const dh = sprite.sh * this.avatarScale;
+    const dw = sprite.sw * scale;
+    const dh = sprite.sh * scale;
     const dx = x - (dw - this.tilePx) / 2;
     // Tall sprites sit with their feet on the tile; wider action sprites stay
     // centered on the avatar tile so the body does not jump during a swing.
     const dy = dh - this.tilePx;
-    this._blit(ctx, sprite, Math.round(dx), Math.round(y - dy), this.avatarScale);
+    this._blit(ctx, sprite, Math.round(dx), Math.round(y - dy), scale);
+  }
+
+  // Resolve a participant into an animation pose {actionKind, dir, frame}. Legacy
+  // 4-direction avatars keep their walk/sword-or-idle-frame-0 behaviour; premium
+  // 8-direction iso avatars face where they move and run a full state machine:
+  // attack (sword) > walk (moving) > sleep (long idle) > idle (breathing).
+  _avatarPose(participant, now) {
+    const meta = this.atlas?.avatarMeta?.(participant.avatar) ?? { iso: false };
+    const action = participant.action?.kind === "sword" ? participant.action : null;
+    if (!meta.iso) {
+      const dir = action?.dir ?? participant.dir;
+      return action
+        ? { actionKind: "sword", dir, frame: this._actionFrame(participant, action, now) }
+        : { actionKind: "walk", dir, frame: this._walkFrame(participant, now) };
+    }
+    const m = this._trackMotion(participant, now);
+    if (action) {
+      return {
+        actionKind: "sword",
+        dir: m.dir8,
+        frame: this._actionFrame(participant, action, now),
+      };
+    }
+    const still = now - m.t;
+    if (still < 180) {
+      return { actionKind: "walk", dir: m.dir8, frame: Math.floor(now / 120) % 4 };
+    }
+    if (meta.hasSleep && still > ISO_SLEEP_MS) {
+      return { actionKind: "sleep", dir: m.dir8, frame: Math.floor(now / 300) % 4 };
+    }
+    if (meta.hasIdle) {
+      return { actionKind: "idle", dir: m.dir8, frame: Math.floor(now / 220) % 4 };
+    }
+    return { actionKind: "walk", dir: m.dir8, frame: 0 };
+  }
+
+  // Track a participant's last tile, the time it last changed, and the 8-direction
+  // facing implied by its most recent step (kept while it stands still).
+  _trackMotion(participant, now) {
+    const key = participant.key;
+    const m = this._motion.get(key) ?? {
+      x: participant.x,
+      y: participant.y,
+      t: -1e9,
+      dir8: "south",
+    };
+    if (participant.x !== m.x || participant.y !== m.y) {
+      const step = `${Math.sign(participant.x - m.x)},${Math.sign(participant.y - m.y)}`;
+      if (ISO_STEP_FACING[step]) m.dir8 = ISO_STEP_FACING[step];
+      m.x = participant.x;
+      m.y = participant.y;
+      m.t = now;
+    }
+    this._motion.set(key, m);
+    return m;
   }
 
   // Draw a sheet slice `{ img, sx, sy, sw, sh }` scaled by the camera at the
@@ -740,14 +809,7 @@ export class Renderer {
   // Walk frame from recent movement: cycle 0-3 while the render position keeps
   // changing, settle on the idle frame 0 shortly after it stops.
   _walkFrame(participant, now) {
-    const key = participant.key;
-    const m = this._motion.get(key) ?? { x: participant.x, y: participant.y, t: -1e9 };
-    if (participant.x !== m.x || participant.y !== m.y) {
-      m.x = participant.x;
-      m.y = participant.y;
-      m.t = now;
-    }
-    this._motion.set(key, m);
+    const m = this._trackMotion(participant, now);
     return now - m.t < 180 ? Math.floor(now / 130) % 4 : 0;
   }
 

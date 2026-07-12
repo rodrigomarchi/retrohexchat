@@ -225,7 +225,11 @@ defmodule RetroHexChatWeb.SpaceChannel do
         # maps (32px tiles) render at scale 1 and 16px maps at 2. Avatars carry
         # their own constant scale so they keep size across both.
         scale: max(div(32, result.map.tile_size), 1),
-        avatar_scale: 2,
+        # Everything renders at native size (avatar_scale 1): premium iso art is
+        # authored at world size so it composes 1:1. Each avatar declares its own
+        # native→world factor in the atlas (legacy 16-36px avatars use 2 until
+        # they are redrawn as premium iso art).
+        avatar_scale: 1,
         text_chat: "global"
       },
       snapshot: result.snapshot
