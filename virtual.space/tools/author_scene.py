@@ -197,9 +197,13 @@ def build():
         "decor": decor,
         "collision": collision,
         "spawn": [{"x": 18, "y": 12, "dir": "right"}, {"x": 22, "y": 12, "dir": "left"}],
-        # Pool centred on the lamppost's foot (the lamp decor sits at 20,12) so the
-        # amber glow reads as cast directly by the lamp.
-        "lights": [{"x": 20, "y": 12, "radius": 4.5, "color": "ffd591", "blend": "add"}],
+        # The lamppost (decor at 20,12) casts light as TWO stacked glows so it reads
+        # as emitting from the lantern head, not the pole base: a soft pool on the
+        # ground + a tight bright halo lifted ~106px up to the lantern head.
+        "lights": [
+            {"x": 20, "y": 12, "radius": 4.2, "color": "ffd591", "blend": "add"},
+            {"x": 20, "y": 12, "lift": 106, "radius": 1.7, "color": "ffe6a8", "blend": "add"},
+        ],
         "ambient": {"color": "0c1024", "alpha": 0.52},
         "zones": [{"id": "eot", "kind": "private", "x": 6, "y": 4, "w": 28, "h": 16}],
         # The DM nameplate floats above the central lamppost, over its light.

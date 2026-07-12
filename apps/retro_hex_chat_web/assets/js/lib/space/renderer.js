@@ -519,8 +519,12 @@ export class Renderer {
       // Anchor the pool at the tile's ground centre (foot), not the sprite-box
       // top-left — otherwise in iso the glow lands half a tile up-left of the
       // lamp that casts it. Only the iso scene uses lights, so top-down is unaffected.
+      // `lift` raises the glow centre up the screen (px) so a source can sit at an
+      // elevated emitter — e.g. the halo at a lamppost's head, not its base.
       const a = this.projection.footAnchor(light.x, light.y);
-      const { x, y } = this.camera.worldToScreen(a.x, a.y);
+      const s = this.camera.worldToScreen(a.x, a.y);
+      const x = s.x;
+      const y = s.y - (light.lift ?? 0) * this.camera.scale;
       const radius = Math.max((light.radius ?? 3) * this.tilePx, 1);
       const color = light.color ?? "ffffff";
       const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);

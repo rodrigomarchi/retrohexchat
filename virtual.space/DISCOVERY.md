@@ -62,9 +62,13 @@ Key visual facts (the ones that decide fidelity):
    prop transplants to a one-platform DM scene; the fence + lamp carry the read.
 4. ✅ **Railing height** (2026-07-11): raised (h 27 → 38) — CT's iron fence is tall;
    the shorter version read as a low garden edge.
-5. ✅ **Lamp light alignment** (2026-07-11): the amber pool is centred on the
-   lamppost's exact foot (light and lamp both at tile 20,12) — it was offset by
-   +½ tile and read as detached from the lamp.
+5. ✅ **Lamp light** (2026-07-11): two fixes. (a) The pool anchored at the sprite
+   box top-left (`floorAnchor`) → landed ½ tile up-left of the lamp; re-anchored to
+   the tile ground centre (`footAnchor`). (b) A single ground pool centred on the
+   base read as "light from the base" — the emitter is the lantern *head*. So the
+   lamp now casts **two stacked additive glows**: a soft ground pool + a tight
+   bright halo `lift`ed ~106px up to the lantern head (new `light.lift` field, px).
+   Reads as source-on-top, light-on-ground.
 6. 🟢 One platform vs three (+ bridges) — acceptable simplification for a 1:1 DM room.
 7. 🟢 Diamond underside vs flat reddish block — intentional stylisation, keep.
 

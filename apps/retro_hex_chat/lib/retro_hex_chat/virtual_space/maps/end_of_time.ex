@@ -109,7 +109,14 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
   defp lights(data) do
     Enum.map(
       data["lights"] || [],
-      &%{x: &1["x"], y: &1["y"], radius: &1["radius"], color: &1["color"], blend: &1["blend"]}
+      &%{
+        x: &1["x"],
+        y: &1["y"],
+        radius: &1["radius"],
+        color: &1["color"],
+        blend: &1["blend"],
+        lift: &1["lift"]
+      }
     )
   end
 
