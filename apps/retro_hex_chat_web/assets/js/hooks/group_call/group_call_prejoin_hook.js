@@ -12,15 +12,9 @@ const STORAGE_KEY = "rhc:group-call:prejoin";
 
 const GroupCallPreJoinHook = {
   mounted() {
+    this.config = this._config();
     this.form = this.el.closest("form");
-    this.video = this.el.querySelector("[data-group-call-prejoin-video]");
-    this.empty = this.el.querySelector("[data-group-call-prejoin-empty]");
-    this.warning = this.el.querySelector("[data-group-call-prejoin-warning]");
-    this.warningText = this.el.querySelector("[data-group-call-prejoin-warning-text]");
-    this.retry = this.el.querySelector("[data-group-call-prejoin-retry]");
-    this.deviceState = this.el.querySelector("[data-group-call-prejoin-device-state]");
-    this.deviceStateText = this.el.querySelector("[data-group-call-prejoin-device-state-text]");
-    this.emptyText = this.el.querySelector("[data-group-call-prejoin-empty-text]");
+    this._refreshElements();
     this.previewStream = null;
     this.previewKey = null;
     this.previewRun = 0;
@@ -51,15 +45,9 @@ const GroupCallPreJoinHook = {
   },
 
   updated() {
+    this.config = this._config();
     this.form = this.el.closest("form");
-    this.video = this.el.querySelector("[data-group-call-prejoin-video]");
-    this.empty = this.el.querySelector("[data-group-call-prejoin-empty]");
-    this.warning = this.el.querySelector("[data-group-call-prejoin-warning]");
-    this.warningText = this.el.querySelector("[data-group-call-prejoin-warning-text]");
-    this.retry = this.el.querySelector("[data-group-call-prejoin-retry]");
-    this.deviceState = this.el.querySelector("[data-group-call-prejoin-device-state]");
-    this.deviceStateText = this.el.querySelector("[data-group-call-prejoin-device-state-text]");
-    this.emptyText = this.el.querySelector("[data-group-call-prejoin-empty-text]");
+    this._refreshElements();
     this.storageKey = this._storageKey();
     this._loadPreferences();
     this._startPreview();
@@ -87,7 +75,7 @@ const GroupCallPreJoinHook = {
         audiooutput: this._devicePayload(devices.audiooutput, t("Speaker")),
       };
 
-      this.pushEvent("group_call_prejoin_devices_listed", payload);
+      this.pushEvent(this.config.devicesEvent, payload);
       this._setDeviceState(t("Devices ready"));
       this._showDeviceAvailabilityWarning(payload);
     } catch (error) {
@@ -199,7 +187,7 @@ const GroupCallPreJoinHook = {
   },
 
   _pushPreferences() {
-    this.pushEvent("group_call_prejoin_preferences_loaded", this._preferencesFromForm());
+    this.pushEvent(this.config.preferencesEvent, this._preferencesFromForm());
   },
 
   _readStoredPreferences() {
@@ -225,12 +213,12 @@ const GroupCallPreJoinHook = {
   },
 
   _field(name) {
-    return this.form?.querySelector(`[name="group_call_prejoin[${name}]"]`)?.value || "";
+    return this.form?.querySelector(`[name="${this.config.formName}[${name}]"]`)?.value || "";
   },
 
   _checkbox(name, defaultValue) {
     const checkbox = this.form?.querySelector(
-      `[name="group_call_prejoin[${name}]"][type="checkbox"]`,
+      `[name="${this.config.formName}[${name}]"][type="checkbox"]`,
     );
 
     return checkbox ? checkbox.checked : defaultValue;
@@ -238,7 +226,7 @@ const GroupCallPreJoinHook = {
 
   _setCheckbox(name, value) {
     const checkbox = this.form?.querySelector(
-      `[name="group_call_prejoin[${name}]"][type="checkbox"]`,
+      `[name="${this.config.formName}[${name}]"][type="checkbox"]`,
     );
 
     if (checkbox && typeof value === "boolean") {
@@ -248,7 +236,7 @@ const GroupCallPreJoinHook = {
 
   _setSelect(name, value) {
     if (typeof value !== "string") return;
-    const select = this.form?.querySelector(`[name="group_call_prejoin[${name}]"]`);
+    const select = this.form?.querySelector(`[name="${this.config.formName}[${name}]"]`);
     if (select) select.value = value;
   },
 
@@ -261,7 +249,32 @@ const GroupCallPreJoinHook = {
 
   _storageKey() {
     const scope = this.el.dataset.preferenceScope || "anonymous";
-    return `${STORAGE_KEY}:${scope}`;
+    return `${this.config.storageKey}:${scope}`;
+  },
+
+  _config() {
+    return {
+      prefix: this.el.dataset.prejoinPrefix || "group-call-prejoin",
+      formName: this.el.dataset.formName || "group_call_prejoin",
+      devicesEvent: this.el.dataset.devicesEvent || "group_call_prejoin_devices_listed",
+      preferencesEvent: this.el.dataset.preferencesEvent || "group_call_prejoin_preferences_loaded",
+      storageKey: this.el.dataset.storageKey || STORAGE_KEY,
+    };
+  },
+
+  _refreshElements() {
+    this.video = this.el.querySelector(this._selector("video"));
+    this.empty = this.el.querySelector(this._selector("empty"));
+    this.warning = this.el.querySelector(this._selector("warning"));
+    this.warningText = this.el.querySelector(this._selector("warning-text"));
+    this.retry = this.el.querySelector(this._selector("retry"));
+    this.deviceState = this.el.querySelector(this._selector("device-state"));
+    this.deviceStateText = this.el.querySelector(this._selector("device-state-text"));
+    this.emptyText = this.el.querySelector(this._selector("empty-text"));
+  },
+
+  _selector(suffix) {
+    return `[data-${this.config.prefix}-${suffix}]`;
   },
 
   _showEmpty(show, label = t("Camera preview is off")) {

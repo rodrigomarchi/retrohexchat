@@ -154,6 +154,28 @@ describe("WindowManagerHook", () => {
     expect(call.z).toBeGreaterThan(chat.z);
   });
 
+  it("sets a window geometry from a server command", () => {
+    command({
+      action: "set_geometry",
+      id: "call",
+      width: 280,
+      height: 180,
+      anchor: "bottom_right",
+      margin: 20,
+    });
+
+    const call = hook.windows.call.state;
+
+    expect(call.open).toBe(true);
+    expect(call.minimized).toBe(false);
+    expect(call.maximized).toBe(false);
+    expect(call.w).toBe(280);
+    expect(call.h).toBe(180);
+    expect(call.x).toBe(724);
+    expect(call.y).toBe(568);
+    expect(hook.focusedId).toBe("call");
+  });
+
   it("minimizing hides the window but keeps it open", () => {
     command({ action: "open", id: "call" });
     hook.minimizeWindow("call");

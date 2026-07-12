@@ -176,7 +176,24 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
 
     if p2p.state == :connected and not p2p.auto_call_started and
          not socket.assigns[:mobile_viewport] do
-      {:halt, socket} = forward_media(socket, "start_call", %{"type" => "video"})
+      socket =
+        case p2p[:media_mode] || "video" do
+          "video" ->
+            {:halt, socket} =
+              forward_media(socket, "start_call", start_call_payload(p2p, "video"))
+
+            socket
+
+          "audio" ->
+            {:halt, socket} =
+              forward_media(socket, "start_call", start_call_payload(p2p, "audio"))
+
+            socket
+
+          _receive_only ->
+            socket
+        end
+
       {:halt, put_p2p(socket, %{p2p | auto_call_started: true})}
     else
       {:halt, socket}
@@ -188,8 +205,12 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   end
 
   def handle_event(event, params, %{assigns: %{p2p_session: %{}}} = socket)
-      when event in ~w(start_call end_call set_call_layout media_select_preset) do
+      when event in ~w(start_call end_call set_call_layout cycle_call_self_view media_select_preset send_call_reaction) do
     forward_media(socket, event, params)
+  end
+
+  def handle_event("cycle_call_layout", params, %{assigns: %{p2p_session: %{}}} = socket) do
+    forward_media(socket, "cycle_call_layout", params)
   end
 
   def handle_event("lobby_game_canvas_ready", _params, %{assigns: %{p2p_session: %{}}} = socket) do
@@ -275,6 +296,41 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, request_accept(socket, token)}
   end
 
+  def handle_event("p2p_setup_accept", %{"p2p_setup" => params}, socket) do
+    {:halt, accept_setup(socket, params)}
+  end
+
+  def handle_event("p2p_setup_cancel", _params, socket) do
+    {:halt, assign(socket, p2p_setup: nil)}
+  end
+
+  def handle_event("p2p_setup_devices_listed", payload, %{assigns: %{p2p_setup: %{}}} = socket) do
+    {:halt,
+     update(socket, :p2p_setup, fn setup ->
+       Map.put(setup, :devices, normalize_devices(payload))
+     end)}
+  end
+
+  def handle_event("p2p_setup_devices_listed", _payload, socket), do: {:halt, socket}
+
+  def handle_event(
+        "p2p_setup_preferences_loaded",
+        payload,
+        %{assigns: %{p2p_setup: %{}}} = socket
+      ) do
+    preferences = normalize_p2p_setup_preferences(payload)
+
+    {:halt,
+     update(socket, :p2p_setup, fn setup ->
+       setup
+       |> Map.put(:media, preferences.media)
+       |> Map.put(:media_mode, media_mode_from_preferences(preferences))
+       |> Map.put(:device_preferences, preferences.device_preferences)
+     end)}
+  end
+
+  def handle_event("p2p_setup_preferences_loaded", _payload, socket), do: {:halt, socket}
+
   def handle_event("p2p_decline_invite", %{"token" => token}, socket) do
     {:halt, decline_invite(socket, token)}
   end
@@ -320,6 +376,25 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def handle_event("p2p_statusbar_stop", _params, socket) do
     request_stop(socket)
   end
+
+  def handle_event("p2p_toggle_call_mini", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    p2p = socket.assigns.p2p_session
+    mini = not Map.get(p2p, :call_mini, false)
+
+    {:halt,
+     socket
+     |> put_p2p(Map.put(p2p, :call_mini, mini))
+     |> Windows.open("p2p-call")
+     |> push_p2p_call_geometry(mini)}
+  end
+
+  def handle_event("p2p_toggle_call_mini", _params, socket), do: {:halt, socket}
+
+  def handle_event("p2p_dock_stats", _params, %{assigns: %{p2p_session: %{}}} = socket) do
+    {:halt, dock_p2p_stats(socket)}
+  end
+
+  def handle_event("p2p_dock_stats", _params, socket), do: {:halt, socket}
 
   # The X on ANY session window means disconnecting the whole session, never
   # a silent hide — users were closing the camera and not realizing the
@@ -370,8 +445,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def handle_event("p2p_confirm_cancel", _params, socket) do
     close_dialog()
 
-    # Backing out of an OUTGOING switch cancels the pending session the /p2p
-    # command already created — otherwise it would dangle for 5 minutes.
+    # Backing out clears the staged switch. New outgoing sessions are only
+    # created after setup submit; the token branch is defensive for callers
+    # that may stage an already-created invite.
     case socket.assigns.p2p_pending do
       %{kind: :outgoing, payload: %{token: token, creator_id: creator_id}} ->
         _ = Lobby.cancel_invite(token, creator_id)
@@ -415,6 +491,15 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       p2p ->
         {:halt, put_p2p(socket, Map.put(p2p, summary_key(feature), summary))}
     end
+  end
+
+  def handle_info({:p2p_call_reaction_timeout, reaction_id}, socket) do
+    Phoenix.LiveView.send_update(P2PMediaIsland,
+      id: P2PMediaIsland.id(),
+      action: {:clear_reaction, reaction_id}
+    )
+
+    {:halt, socket}
   end
 
   # C1 sink with the single-writer rule (plan §4.3): shared notices are
@@ -614,6 +699,39 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, socket}
   end
 
+  defp handle_session_event(
+         %{event: "lobby_peer_screen_share", payload: %{active: active, from: from}},
+         socket,
+         p2p
+       ) do
+    unless from == p2p.user_id do
+      Phoenix.LiveView.send_update(P2PMediaIsland,
+        id: P2PMediaIsland.id(),
+        action: {:peer_screen_share, active}
+      )
+    end
+
+    {:halt, socket}
+  end
+
+  defp handle_session_event(
+         %{
+           event: "lobby_peer_reaction",
+           payload: %{reaction: reaction, reaction_id: id, from: from}
+         },
+         socket,
+         p2p
+       ) do
+    unless from == p2p.user_id do
+      Phoenix.LiveView.send_update(P2PMediaIsland,
+        id: P2PMediaIsland.id(),
+        action: {:peer_reaction, reaction, id}
+      )
+    end
+
+    {:halt, socket}
+  end
+
   defp handle_session_event(%{event: "lobby_game_request", payload: request}, socket, p2p) do
     outgoing = request.proposer_id == p2p.user_id
 
@@ -718,8 +836,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
      )}
   end
 
-  # Session-topic events the in-chat host doesn't render (ephemeral lobby
-  # chat, client info, media/game relays until their windows land in F3).
+  # Session-topic events the in-chat host doesn't render directly. Feature
+  # windows consume their own relays through their islands/hooks.
   defp handle_session_event(_msg, socket, _p2p), do: {:halt, socket}
 
   # ── Session lifecycle (called from mount / invite helper) ─────
@@ -758,6 +876,23 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     subscribe_invite_sent(socket, token, creator_id)
   end
 
+  @doc """
+  Opens the same P2P setup used by incoming invites before an outgoing invite is
+  delivered. The lobby row and invite PM are created only after setup submit.
+  """
+  @spec open_outgoing_setup(Socket.t(), map()) :: Socket.t()
+  def open_outgoing_setup(socket, payload) do
+    assign(socket,
+      p2p_setup:
+        socket
+        |> setup_base(payload.target)
+        |> Map.merge(%{
+          kind: :outgoing,
+          payload: payload
+        })
+    )
+  end
+
   defp subscribe_invite_sent(socket, token, user_id) do
     Phoenix.PubSub.subscribe(@pubsub, "lobby:#{token}")
     put_p2p(socket, new_session(socket, token, user_id, :creator, :invite_sent))
@@ -779,6 +914,9 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       call_summary: nil,
       game_summary: nil,
       auto_call_started: false,
+      media_mode: "video",
+      call_mini: false,
+      device_preferences: default_device_preferences(),
       turn_only: load_turn_only(socket.assigns.session.nickname),
       turn_configured: P2P.turn_configured?()
     }
@@ -829,7 +967,7 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
   def request_accept(socket, token) do
     case socket.assigns.p2p_session do
       nil ->
-        do_accept(socket, token)
+        open_setup(socket, token)
 
       p2p ->
         case joinable_summary(token) do
@@ -861,22 +999,16 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
           {:ok, _summary} ->
             socket
             |> end_current_session()
-            |> do_accept(token)
+            |> open_setup(token)
 
           {:error, message} ->
             Messages.system_event(socket, message)
         end
 
       %{kind: :outgoing, payload: payload} ->
-        case joinable_summary(payload.token) do
-          {:ok, _summary} ->
-            socket
-            |> end_current_session()
-            |> LobbyInvite.deliver_invite(socket.assigns.session, payload)
-
-          {:error, message} ->
-            Messages.system_event(socket, message)
-        end
+        socket
+        |> end_current_session()
+        |> open_outgoing_setup(payload)
 
       _ ->
         socket
@@ -902,29 +1034,124 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     end
   end
 
-  defp do_accept(socket, token) do
+  defp open_setup(socket, token) do
+    case joinable_summary(token) do
+      {:ok, summary} ->
+        assign(socket,
+          p2p_setup:
+            socket
+            |> setup_base(summary.created_by)
+            |> Map.merge(%{
+              kind: :incoming,
+              token: token,
+              created_by: summary.created_by
+            })
+        )
+
+      {:error, message} ->
+        Messages.system_event(socket, message)
+    end
+  end
+
+  defp accept_setup(socket, params) do
+    case socket.assigns[:p2p_setup] do
+      %{kind: :outgoing, payload: payload, turn_configured: turn_configured?} ->
+        setup_opts = setup_options_from_params(socket, params, turn_configured?)
+
+        socket
+        |> assign(p2p_setup: nil)
+        |> deliver_outgoing_setup(payload, setup_opts)
+
+      %{token: token, turn_configured: turn_configured?} ->
+        setup_opts = setup_options_from_params(socket, params, turn_configured?)
+
+        socket
+        |> assign(p2p_setup: nil)
+        |> do_accept(token, setup_opts)
+
+      _ ->
+        assign(socket, p2p_setup: nil)
+    end
+  end
+
+  defp setup_base(socket, peer_nick) do
+    %{
+      peer_nick: peer_nick,
+      media_mode: "video",
+      media: %{audio: true, video: true},
+      user_id: resolve_user_id(socket.assigns.session.nickname),
+      devices: default_devices(),
+      device_preferences: default_device_preferences(),
+      turn_only: load_turn_only(socket.assigns.session.nickname),
+      turn_configured: P2P.turn_configured?()
+    }
+  end
+
+  defp setup_options_from_params(socket, params, turn_configured?) do
+    preferences = normalize_p2p_setup_preferences(params)
+
+    media_mode =
+      normalize_media_mode(params["media_mode"] || media_mode_from_preferences(preferences))
+
+    turn_only = turn_configured? and truthy?(params["turn_only"])
+
+    if turn_configured? do
+      save_turn_only(socket.assigns.session.nickname, turn_only)
+    end
+
+    %{
+      media_mode: media_mode,
+      turn_only: turn_only,
+      device_preferences: preferences.device_preferences
+    }
+  end
+
+  defp deliver_outgoing_setup(socket, payload, setup_opts) do
+    socket
+    |> LobbyInvite.deliver_invite(socket.assigns.session, payload)
+    |> apply_setup_options(setup_opts)
+  end
+
+  defp do_accept(socket, token, setup_opts) do
     nickname = socket.assigns.session.nickname
 
     with user_id when is_integer(user_id) <- resolve_user_id(nickname),
          {:ok, _summary} <- joinable_summary(token) do
-      socket = attach_session(socket, token, user_id, :peer)
-
-      if socket.assigns.p2p_session do
-        Messages.system_event(
-          socket,
-          dgettext(
-            "chat",
-            "Invite accepted — connecting... the session windows will open shortly."
-          )
-        )
-      else
-        socket
-      end
+      socket
+      |> attach_session(token, user_id, :peer)
+      |> apply_setup_options(setup_opts)
+      |> notify_invite_accepted()
     else
       {:error, message} -> Messages.system_event(socket, message)
       _ -> socket
     end
   end
+
+  defp apply_setup_options(%{assigns: %{p2p_session: p2p}} = socket, setup_opts)
+       when not is_nil(p2p) do
+    update(socket, :p2p_session, fn p2p ->
+      %{
+        p2p
+        | media_mode: setup_opts[:media_mode] || "video",
+          device_preferences: setup_opts[:device_preferences] || default_device_preferences(),
+          turn_only: setup_opts[:turn_only] == true
+      }
+    end)
+  end
+
+  defp apply_setup_options(socket, _setup_opts), do: socket
+
+  defp notify_invite_accepted(%{assigns: %{p2p_session: p2p}} = socket) when not is_nil(p2p) do
+    Messages.system_event(
+      socket,
+      dgettext(
+        "chat",
+        "Invite accepted — connecting... the session windows will open shortly."
+      )
+    )
+  end
+
+  defp notify_invite_accepted(socket), do: socket
 
   defp decline_invite(socket, token) do
     nickname = socket.assigns.session.nickname
@@ -1001,6 +1228,41 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       |> push_event("window_command", %{action: "minimize", id: "p2p-games"})
       |> push_event("window_command", %{action: "minimize", id: "p2p-files"})
     end
+  end
+
+  defp dock_p2p_stats(socket) do
+    socket
+    |> put_p2p(Map.put(socket.assigns.p2p_session, :call_mini, false))
+    |> Windows.open("p2p-stats")
+    |> Windows.open("p2p-call")
+    |> push_event("window_command", %{
+      action: "dock_pair",
+      id: "p2p-call",
+      secondary_id: "p2p-stats",
+      secondary_width: 390
+    })
+  end
+
+  defp push_p2p_call_geometry(socket, true) do
+    push_event(socket, "window_command", %{
+      action: "set_geometry",
+      id: "p2p-call",
+      width: 300,
+      height: 236,
+      anchor: "bottom_right",
+      margin: 16
+    })
+  end
+
+  defp push_p2p_call_geometry(socket, false) do
+    push_event(socket, "window_command", %{
+      action: "set_geometry",
+      id: "p2p-call",
+      width: 460,
+      height: nil,
+      x: 496,
+      y: 48
+    })
   end
 
   defp attach_session(socket, token, user_id, role) do
@@ -1133,6 +1395,80 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
       _ -> nil
     end
   end
+
+  defp start_call_payload(p2p, type) do
+    %{
+      "type" => type,
+      "device_preferences" => Map.get(p2p, :device_preferences, default_device_preferences())
+    }
+  end
+
+  defp normalize_media_mode(mode) when mode in ~w(video audio receive), do: mode
+  defp normalize_media_mode(_mode), do: "video"
+
+  defp normalize_p2p_setup_preferences(preferences) when is_map(preferences) do
+    audio = truthy?(value(preferences, :audio))
+    video = truthy?(value(preferences, :video))
+
+    %{
+      media: %{audio: audio, video: video},
+      device_preferences: %{
+        audio_input_id: clean_device_id(value(preferences, :audio_input_id)),
+        video_input_id: clean_device_id(value(preferences, :video_input_id)),
+        audio_output_id: clean_device_id(value(preferences, :audio_output_id))
+      }
+    }
+  end
+
+  defp normalize_p2p_setup_preferences(_preferences) do
+    %{media: %{audio: true, video: true}, device_preferences: default_device_preferences()}
+  end
+
+  defp media_mode_from_preferences(%{media: %{audio: true, video: true}}), do: "video"
+  defp media_mode_from_preferences(%{media: %{audio: true, video: false}}), do: "audio"
+  defp media_mode_from_preferences(_preferences), do: "receive"
+
+  defp default_device_preferences do
+    %{audio_input_id: nil, video_input_id: nil, audio_output_id: nil}
+  end
+
+  defp default_devices do
+    %{"audioinput" => [], "videoinput" => [], "audiooutput" => []}
+  end
+
+  defp normalize_devices(devices) when is_map(devices) do
+    %{
+      "audioinput" => normalize_device_list(value(devices, :audioinput)),
+      "videoinput" => normalize_device_list(value(devices, :videoinput)),
+      "audiooutput" => normalize_device_list(value(devices, :audiooutput))
+    }
+  end
+
+  defp normalize_devices(_devices), do: default_devices()
+
+  defp normalize_device_list(devices) when is_list(devices) do
+    Enum.map(devices, fn device ->
+      %{
+        "id" => to_string(value(device, :id) || value(device, :deviceId) || ""),
+        "label" => to_string(value(device, :label) || dgettext("chat", "Default device"))
+      }
+    end)
+  end
+
+  defp normalize_device_list(_devices), do: []
+
+  defp clean_device_id(nil), do: nil
+  defp clean_device_id(""), do: nil
+  defp clean_device_id(device_id) when is_binary(device_id), do: device_id
+  defp clean_device_id(device_id), do: to_string(device_id)
+
+  defp value(map, key) when is_map(map) do
+    Map.get(map, key) || Map.get(map, to_string(key))
+  end
+
+  defp value(_map, _key), do: nil
+
+  defp truthy?(value), do: value in [true, "true", "1", 1, "on"]
 
   defp load_turn_only(nickname) do
     case RetroHexChat.Repo.get(UserPreference, nickname) do

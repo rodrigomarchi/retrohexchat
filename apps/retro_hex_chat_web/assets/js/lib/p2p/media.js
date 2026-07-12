@@ -29,16 +29,18 @@ export const BITRATE_PRESETS = {
  * Standard audio constraints with echo cancellation.
  * @returns {MediaTrackConstraints}
  */
-export function getAudioConstraints() {
-  return { echoCancellation: true, noiseSuppression: true };
+export function getAudioConstraints(deviceId = "") {
+  const constraints = { echoCancellation: true, noiseSuppression: true };
+  return deviceId ? { ...constraints, deviceId: { exact: deviceId } } : constraints;
 }
 
 /**
  * Standard video constraints for 640x480.
  * @returns {MediaTrackConstraints}
  */
-export function getVideoConstraints() {
-  return { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "user" };
+export function getVideoConstraints(deviceId = "") {
+  const constraints = { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "user" };
+  return deviceId ? { ...constraints, deviceId: { exact: deviceId } } : constraints;
 }
 
 /**
@@ -96,6 +98,29 @@ export async function acquireMedia(constraints) {
     return await navigator.mediaDevices.getUserMedia(constraints);
   } catch (error) {
     throw categorizeMediaError(error, constraints);
+  }
+}
+
+/**
+ * Request a display capture stream for screen sharing.
+ * @param {DisplayMediaStreamOptions} constraints
+ * @returns {Promise<MediaStream>}
+ */
+export async function acquireDisplayMedia(constraints = { video: true, audio: false }) {
+  if (!navigator.mediaDevices?.getDisplayMedia) {
+    throw {
+      code: "screen_unsupported",
+      message: t("Screen sharing is not supported by this browser."),
+    };
+  }
+
+  try {
+    return await navigator.mediaDevices.getDisplayMedia(constraints);
+  } catch {
+    throw {
+      code: "screen_denied",
+      message: t("Screen sharing was cancelled or denied."),
+    };
   }
 }
 
@@ -192,7 +217,7 @@ export async function enumerateDevices() {
  */
 export async function switchAudioInput(stream, senders, deviceId) {
   const newStream = await navigator.mediaDevices.getUserMedia({
-    audio: { ...getAudioConstraints(), deviceId: { exact: deviceId } },
+    audio: getAudioConstraints(deviceId),
   });
   const newTrack = newStream.getAudioTracks()[0];
   const audioSender = senders.find((s) => s.track && s.track.kind === "audio");
@@ -215,7 +240,7 @@ export async function switchAudioInput(stream, senders, deviceId) {
  */
 export async function switchVideoInput(stream, senders, deviceId) {
   const newStream = await navigator.mediaDevices.getUserMedia({
-    video: { ...getVideoConstraints(), deviceId: { exact: deviceId } },
+    video: getVideoConstraints(deviceId),
   });
   const newTrack = newStream.getVideoTracks()[0];
   const videoSender = senders.find((s) => s.track && s.track.kind === "video");

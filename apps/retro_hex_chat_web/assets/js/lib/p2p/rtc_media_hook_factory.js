@@ -7,6 +7,7 @@
 import { log } from "../logger.js";
 import {
   acquireMedia,
+  acquireDisplayMedia,
   getAudioConstraints,
   getVideoConstraints,
   addMediaTracks,
@@ -29,6 +30,14 @@ import {
 import { t } from "../i18n.js";
 
 const noopEvent = null;
+
+function isEditableTarget(target) {
+  if (!(target instanceof Element)) return false;
+
+  return !!target.closest(
+    'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="textbox"]',
+  );
+}
 
 function normalizeConfig(config) {
   return {
@@ -73,6 +82,7 @@ function normalizeConfig(config) {
       requestUpgrade: config.clientEvents?.requestUpgrade,
       devicesListed: config.clientEvents?.devicesListed,
       deviceFallback: config.clientEvents?.deviceFallback,
+      screenShareChanged: config.clientEvents?.screenShareChanged,
     },
   };
 }
@@ -105,11 +115,13 @@ export function createRtcMediaHook(configInput) {
       this.inCall = false;
       this.audioOn = false;
       this.videoOn = false;
+      this.screenShare = { active: false, stream: null, track: null, previousVideoTrack: null };
       this.watchdogInterval = null;
       this._stalledSince = null;
 
       this._onPcReady = (event) => this._handlePcReady(event.detail.pc);
       this._onPcClosed = () => this._handlePcClosed();
+      this._onShortcutKeydown = (event) => this._handleShortcutKeydown(event);
       this._webrtcEl = document.getElementById(config.webrtcElementId);
 
       if (this._webrtcEl) {
@@ -149,6 +161,7 @@ export function createRtcMediaHook(configInput) {
       this._handleServerEvent(config.serverEvents.joinCall, () => this._joinCall());
 
       this._wireControls();
+      document.addEventListener("keydown", this._onShortcutKeydown, true);
       this._push(config.clientEvents.ready, {});
     },
 
@@ -163,6 +176,98 @@ export function createRtcMediaHook(configInput) {
         this._webrtcEl.removeEventListener(config.pcReadyEvent, this._onPcReady);
         this._webrtcEl.removeEventListener(config.pcClosedEvent, this._onPcClosed);
       }
+
+      document.removeEventListener("keydown", this._onShortcutKeydown, true);
+    },
+
+    _handleShortcutKeydown(event) {
+      if (!this._callWindowActive()) return;
+      if (!event.ctrlKey || !event.shiftKey || event.altKey || event.metaKey) return;
+      if (isEditableTarget(event.target)) return;
+
+      const action = this._shortcutAction(event.key);
+      if (!action) return;
+
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      switch (action) {
+        case "audio":
+          this._toggleAudioShortcut();
+          break;
+        case "video":
+          this._toggleVideoShortcut();
+          break;
+        case "layout":
+          this.pushEvent("cycle_call_layout", { source: "shortcut" });
+          break;
+        case "self-view":
+          this.pushEvent("cycle_call_self_view", { source: "shortcut" });
+          break;
+        case "screen-share":
+          this._toggleScreenShareShortcut();
+          break;
+        case "end-call":
+          if (this.inCall) this._endCall("shortcut");
+          break;
+      }
+    },
+
+    _callWindowActive() {
+      const windowEl = this.el.closest?.("[data-window-id]");
+      if (!windowEl) return true;
+
+      return (
+        windowEl.getAttribute("data-window-id") === "p2p-call" &&
+        !windowEl.classList.contains("u-hidden") &&
+        !windowEl.classList.contains("desktop-window--blurred")
+      );
+    },
+
+    _shortcutAction(key) {
+      const normalized = key.length === 1 ? key.toLowerCase() : key;
+
+      switch (normalized) {
+        case "ArrowUp":
+          return "audio";
+        case "ArrowLeft":
+          return "video";
+        case "ArrowRight":
+          return "layout";
+        case "ArrowDown":
+          return "self-view";
+        case ".":
+          return "screen-share";
+        case "q":
+          return "end-call";
+        default:
+          return null;
+      }
+    },
+
+    _toggleAudioShortcut() {
+      if (!this.inCall) {
+        this._startCall("audio");
+      } else if (!this.audioOn) {
+        this._enableAudio();
+      } else {
+        this._toggleMute();
+      }
+    },
+
+    _toggleVideoShortcut() {
+      if (!this.inCall) {
+        this._startCall("video");
+      } else if (!this.videoOn) {
+        this._enableVideo();
+      } else {
+        this._toggleCamera();
+      }
+    },
+
+    async _toggleScreenShareShortcut() {
+      if (!this.pc) return;
+      await this._toggleScreenShare();
     },
 
     _handleServerEvent(eventName, handler) {
@@ -202,9 +307,12 @@ export function createRtcMediaHook(configInput) {
       if (!this.pc || this.callType || this.startingCall) return;
       this.startingCall = true;
 
-      const constraints = { audio: getAudioConstraints() };
+      const preferences = opts.device_preferences || opts.devicePreferences || {};
+      const audioInputId = preferences.audio_input_id || preferences.audioInputId || "";
+      const videoInputId = preferences.video_input_id || preferences.videoInputId || "";
+      const constraints = { audio: getAudioConstraints(audioInputId) };
       if (type === "video") {
-        constraints.video = getVideoConstraints();
+        constraints.video = getVideoConstraints(videoInputId);
       }
 
       try {
@@ -269,6 +377,7 @@ export function createRtcMediaHook(configInput) {
       this.callType = "receiving";
       this.audioOn = false;
       this.videoOn = false;
+      this.screenShare = { active: false, stream: null, track: null, previousVideoTrack: null };
       this.muted = false;
       this.cameraOff = false;
       this.startTime = this.startTime || Date.now();
@@ -311,7 +420,7 @@ export function createRtcMediaHook(configInput) {
     // Push the current self-controlled send state. Reuses the callStarted event so
     // the server keeps one entry point for "this peer's media changed".
     _reportSendState() {
-      const type = this.videoOn ? "video" : "audio";
+      const type = this.videoOn ? "video" : this.audioOn ? "audio" : "receiving";
       // Only the auto-join (lobby) flow carries the granular send flags; the /p2p
       // and /game flows keep their original `{type}`-only payload untouched.
       const payload = config.autoJoin
@@ -382,6 +491,7 @@ export function createRtcMediaHook(configInput) {
         document.exitPictureInPicture().catch(() => {});
       }
 
+      this._clearScreenShareState({ stopTrack: true, notify: false });
       this.callType = null;
       this.inCall = false;
       this.audioOn = false;
@@ -518,6 +628,9 @@ export function createRtcMediaHook(configInput) {
           case "pip":
             this._togglePiP();
             break;
+          case "screen-share":
+            this._toggleScreenShare();
+            break;
           case "upgrade":
             if (config.upgradeMode === "local") {
               this._handleUpgradeAccepted();
@@ -565,6 +678,161 @@ export function createRtcMediaHook(configInput) {
         // PiP can fail before the remote video is playing — non-fatal, but log it.
         log.warn("[RtcMedia] Picture-in-Picture toggle failed", error);
       }
+    },
+
+    async _toggleScreenShare() {
+      if (this.screenShare?.active) {
+        await this._stopScreenShare();
+      } else {
+        await this._startScreenShare();
+      }
+    },
+
+    async _startScreenShare() {
+      if (!this.pc || this.screenShare?.active) return;
+
+      let screenStream;
+      try {
+        screenStream = await acquireDisplayMedia({ video: true, audio: false });
+      } catch (error) {
+        this._push(config.clientEvents.deviceFallback, {
+          message: error.message || t("Screen sharing was cancelled or denied."),
+        });
+        return;
+      }
+
+      const screenTrack = screenStream.getVideoTracks?.()[0];
+      if (!screenTrack) {
+        stopAllTracks(screenStream);
+        this._push(config.clientEvents.deviceFallback, {
+          message: t("No screen video track was provided by the browser."),
+        });
+        return;
+      }
+
+      const previousVideoTrack = this.localStream?.getVideoTracks?.()[0] || null;
+      const videoSender = this._videoSender();
+
+      try {
+        if (!this.localStream) this.localStream = new MediaStream();
+
+        if (videoSender) {
+          await videoSender.replaceTrack(screenTrack);
+        } else {
+          const sender = this.pc.addTrack(screenTrack, this.localStream);
+          this.senders.push(sender);
+        }
+
+        if (previousVideoTrack) {
+          this.localStream.removeTrack(previousVideoTrack);
+        }
+        this.localStream.addTrack(screenTrack);
+
+        this.screenShare = {
+          active: true,
+          stream: screenStream,
+          track: screenTrack,
+          previousVideoTrack,
+        };
+        screenTrack.onended = () => this._stopScreenShare();
+        const wasInCall = this.inCall;
+        this.videoOn = true;
+        this.cameraOff = false;
+        this.callType = "video";
+        this.inCall = true;
+        this.startTime = this.startTime || Date.now();
+        if (!wasInCall) {
+          this._startDurationTimer();
+          this._startQualityPolling();
+          this._startMediaWatchdog();
+          this._setupDeviceChangeListener();
+        }
+        this._attachMediaElements();
+        this._reportSendState();
+        this._reportMediaSource("screen");
+        this._push(config.clientEvents.cameraChanged, { off: false });
+        this._push(config.clientEvents.screenShareChanged, { active: true });
+      } catch (error) {
+        stopAllTracks(screenStream);
+        log.warn("[RtcMedia] Screen share publish failed", error);
+        this._push(config.clientEvents.deviceFallback, {
+          message: t("Could not publish the shared screen."),
+        });
+      }
+    },
+
+    async _stopScreenShare() {
+      if (!this.screenShare?.active) return;
+
+      const { stream, track, previousVideoTrack } = this.screenShare;
+      const sender = this._videoSender();
+
+      this.screenShare = { active: false, stream: null, track: null, previousVideoTrack: null };
+
+      try {
+        if (sender && previousVideoTrack && previousVideoTrack.readyState !== "ended") {
+          await sender.replaceTrack(previousVideoTrack);
+          if (this.localStream) {
+            if (track) this.localStream.removeTrack(track);
+            this.localStream.addTrack(previousVideoTrack);
+          }
+          this.videoOn = true;
+          this.callType = "video";
+        } else {
+          if (this.pc && sender) {
+            this.pc.removeTrack(sender);
+          }
+          this.senders = this.senders.filter((candidate) => candidate !== sender);
+          if (this.localStream && track) this.localStream.removeTrack(track);
+          this.videoOn = false;
+          this.callType = this.audioOn ? "audio" : "receiving";
+        }
+      } catch (error) {
+        log.warn("[RtcMedia] Screen share restore failed", error);
+        this.videoOn = false;
+        this.callType = this.audioOn ? "audio" : "receiving";
+      } finally {
+        if (track && track.readyState !== "ended") track.stop();
+        if (stream) stopAllTracks(stream);
+        this._attachMediaElements();
+        this._reportSendState();
+        this._reportMediaSource("camera");
+        this._push(config.clientEvents.screenShareChanged, { active: false });
+      }
+    },
+
+    _clearScreenShareState(opts = {}) {
+      const stopTrack = opts.stopTrack === true;
+      const notify = opts.notify === true;
+      const { stream, track, previousVideoTrack } = this.screenShare || {};
+
+      if (stopTrack) {
+        if (track && track.readyState !== "ended") {
+          track.stop();
+        }
+
+        if (previousVideoTrack && previousVideoTrack.readyState !== "ended") {
+          previousVideoTrack.stop();
+        }
+
+        if (stream) stopAllTracks(stream);
+      }
+
+      this.screenShare = { active: false, stream: null, track: null, previousVideoTrack: null };
+      if (notify) this._push(config.clientEvents.screenShareChanged, { active: false });
+      this._reportMediaSource("camera");
+    },
+
+    _reportMediaSource(source) {
+      this._webrtcEl?.dispatchEvent(
+        new CustomEvent("lobby_media_source_changed", {
+          detail: { source },
+        }),
+      );
+    },
+
+    _videoSender() {
+      return this.senders.find((sender) => sender.track?.kind === "video");
     },
 
     // --- Audio-to-video upgrade ---
@@ -836,6 +1104,7 @@ export function createRtcMediaHook(configInput) {
       this.inCall = false;
       this.audioOn = false;
       this.videoOn = false;
+      this._clearScreenShareState({ stopTrack: true, notify: false });
       this.muted = false;
       this.cameraOff = false;
       this.startTime = null;

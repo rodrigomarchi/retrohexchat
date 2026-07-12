@@ -52,6 +52,7 @@ const LobbyWebRTCHook = {
     this._pendingDescription = null;
     this.statsTimer = null;
     this._statsPrev = null;
+    this.videoSource = "camera";
 
     this.handleEvent("lobby_start_offer", (data) => this._handleStartOffer(data));
     this.handleEvent("lobby_start_answer", (data) => this._handleStartAnswer(data));
@@ -63,12 +64,17 @@ const LobbyWebRTCHook = {
     // that negotiated but never started flowing (black frame, no RTP).
     this._onMediaRecover = () => this._recoverMedia();
     this.el.addEventListener("lobby_media_recover", this._onMediaRecover);
+    this._onMediaSourceChanged = (event) => {
+      this.videoSource = event.detail?.source === "screen" ? "screen" : "camera";
+    };
+    this.el.addEventListener("lobby_media_source_changed", this._onMediaSourceChanged);
 
     this.pushEvent("lobby_webrtc_ready", {});
   },
 
   destroyed() {
     this.el.removeEventListener("lobby_media_recover", this._onMediaRecover);
+    this.el.removeEventListener("lobby_media_source_changed", this._onMediaSourceChanged);
     this._cleanup();
   },
 
@@ -462,6 +468,7 @@ const LobbyWebRTCHook = {
       const snapshot = await collectFeatureSnapshot(this.pc);
       const stats = deriveFeatureStats(this._statsPrev, snapshot);
       this._statsPrev = snapshot;
+      stats.video.source = this.videoSource;
       this.pushEvent("lobby_stats", stats);
     } catch (error) {
       log.warn("[Lobby] Failed to sample stats", error);

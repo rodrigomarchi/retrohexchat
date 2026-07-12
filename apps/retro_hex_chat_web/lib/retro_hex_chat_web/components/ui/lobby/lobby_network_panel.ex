@@ -37,12 +37,24 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   attr :peer_info, :map, default: %{}
   attr :call_summary, :map, default: nil
   attr :file_summary, :map, default: nil
+  attr :game_summary, :map, default: nil
   attr :turn_only, :boolean, default: false
 
   @spec lobby_network_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def lobby_network_panel(assigns) do
     ~H"""
     <div class="lobby__stats flex flex-col gap-2" data-testid="lobby-network-panel">
+      <.session_header
+        peer_nick={@peer_nick}
+        peer_online={@peer_online}
+        session_status={@session_status}
+        connection_label={@connection_label}
+        call_summary={@call_summary}
+        file_summary={@file_summary}
+        game_summary={@game_summary}
+        turn_only={@turn_only}
+      />
+
       <.tabs :let={builder} id="lobby-stats-tabs" default="network">
         <.tabs_list>
           <.stats_tab
@@ -225,6 +237,13 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
                 info_open={@info_open}
               />
               <.stat_row
+                icon={:icon_screen_share}
+                label={dgettext("p2p", "Source")}
+                value={net_video_source_label(@stats.video.source)}
+                tip={net_metric_tip(:source)}
+                info_open={@info_open}
+              />
+              <.stat_row
                 icon={:icon_upgrade_video}
                 label={dgettext("p2p", "Frame rate")}
                 value={dgettext("p2p", "%{n} fps", n: @stats.video.fps)}
@@ -293,6 +312,88 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
         </.tabs_content>
       </.tabs>
     </div>
+    """
+  end
+
+  attr :peer_nick, :string, required: true
+  attr :peer_online, :boolean, default: false
+  attr :session_status, :string, required: true
+  attr :connection_label, :string, default: nil
+  attr :call_summary, :map, default: nil
+  attr :file_summary, :map, default: nil
+  attr :game_summary, :map, default: nil
+  attr :turn_only, :boolean, default: false
+
+  defp session_header(assigns) do
+    ~H"""
+    <div
+      class="grid gap-1 border border-border bg-surface p-2 shadow-retro-sunken"
+      data-testid="p2p-stats-session-header"
+    >
+      <div class="flex min-w-0 flex-wrap items-center justify-between gap-2">
+        <div class="flex min-w-0 items-center gap-2">
+          <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken">
+            <Icons.icon_p2p class="h-5 w-5" />
+          </span>
+          <div class="min-w-0">
+            <div class="truncate font-bold leading-4">
+              {dgettext("p2p", "P2P session with %{peer}", peer: @peer_nick || "?")}
+            </div>
+            <div class="flex min-w-0 flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] leading-3 text-muted-foreground">
+              <span class={["inline-flex items-center gap-1", session_status_class(@session_status)]}>
+                <Icons.icon_status_signal class="h-3 w-3" />
+                {session_status_label(@session_status)}
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <Icons.icon_webrtc class="h-3 w-3" />
+                {@connection_label || dgettext("p2p", "Measuring")}
+              </span>
+              <span class="inline-flex items-center gap-1">
+                <Icons.icon_status_user class="h-3 w-3" />
+                {if @peer_online,
+                  do: dgettext("p2p", "Peer online"),
+                  else: dgettext("p2p", "Peer offline")}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex shrink-0 flex-wrap items-center justify-end gap-1">
+          <.session_badge :if={@call_summary} icon={:icon_camera} testid="p2p-stats-facet-call">
+            {call_badge_label(@call_summary)}
+          </.session_badge>
+          <.session_badge :if={@file_summary} icon={:icon_file_send} testid="p2p-stats-facet-file">
+            {dgettext("p2p", "File")}
+          </.session_badge>
+          <.session_badge
+            :if={get_in(@game_summary || %{}, [:active?]) == true}
+            icon={:icon_joystick}
+            testid="p2p-stats-facet-game"
+          >
+            {dgettext("p2p", "Game")}
+          </.session_badge>
+          <.session_badge :if={@turn_only} icon={:icon_privacy} testid="p2p-stats-relay">
+            {dgettext("p2p", "Relay")}
+          </.session_badge>
+        </div>
+      </div>
+    </div>
+    """
+  end
+
+  attr :icon, :atom, required: true
+  attr :testid, :string, required: true
+  slot :inner_block, required: true
+
+  defp session_badge(assigns) do
+    ~H"""
+    <span
+      class="inline-flex h-6 items-center gap-1 bg-canvas px-1.5 text-[10px] font-bold shadow-retro-sunken"
+      data-testid={@testid}
+    >
+      {apply(Icons, @icon, [%{class: "h-3.5 w-3.5"}])}
+      <span>{render_slot(@inner_block)}</span>
+    </span>
     """
   end
 
@@ -415,6 +516,26 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
     """
   end
 
+  defp session_status_label("connected"), do: dgettext("p2p", "Connected")
+  defp session_status_label("pending"), do: dgettext("p2p", "Pending")
+  defp session_status_label("lobby"), do: dgettext("p2p", "Joining")
+  defp session_status_label(_status), do: dgettext("p2p", "Session")
+
+  defp session_status_class("connected"), do: "text-success"
+  defp session_status_class("pending"), do: "text-warning"
+  defp session_status_class(_status), do: "text-muted-foreground"
+
+  defp call_badge_label(%{screen_sharing: true, duration: duration}) when is_binary(duration),
+    do: dgettext("p2p", "Screen %{duration}", duration: duration)
+
+  defp call_badge_label(%{duration: duration}) when is_binary(duration),
+    do: dgettext("p2p", "Call %{duration}", duration: duration)
+
+  defp call_badge_label(%{screen_sharing: true}), do: dgettext("p2p", "Screen")
+  defp call_badge_label(%{type: "video"}), do: dgettext("p2p", "Video")
+  defp call_badge_label(%{type: "audio"}), do: dgettext("p2p", "Audio")
+  defp call_badge_label(_call), do: dgettext("p2p", "Call")
+
   defp net_health_class("excellent"), do: "text-success"
   defp net_health_class("good"), do: "text-success"
   defp net_health_class("fair"), do: "text-warning"
@@ -431,6 +552,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   defp net_limitation_label("bandwidth"), do: dgettext("p2p", "Bandwidth")
   defp net_limitation_label(limit) when limit in [nil, "none", ""], do: dgettext("p2p", "Nothing")
   defp net_limitation_label(_), do: dgettext("p2p", "Other")
+
+  defp net_video_source_label("screen"), do: dgettext("p2p", "Screen")
+  defp net_video_source_label(_source), do: dgettext("p2p", "Camera")
 
   defp net_channel_state_label("open"), do: dgettext("p2p", "Open")
   defp net_channel_state_label("connecting"), do: dgettext("p2p", "Connecting")
@@ -487,6 +611,9 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
 
   defp net_metric_tip(:video),
     do: dgettext("p2p", "Resolution of the received video, in pixels.")
+
+  defp net_metric_tip(:source),
+    do: dgettext("p2p", "Whether the active video RTP is camera or shared screen.")
 
   defp net_metric_tip(:fps),
     do: dgettext("p2p", "Frames per second of the received video. Higher is smoother.")

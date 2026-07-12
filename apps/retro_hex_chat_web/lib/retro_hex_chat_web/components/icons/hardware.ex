@@ -52,6 +52,41 @@ defmodule RetroHexChatWeb.Icons.Hardware do
 
   attr :class, :string, default: nil
 
+  @spec icon_browser(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_browser(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true" shape-rendering="crispEdges">
+      <rect x="4" y="5" width="24" height="20" fill="#000" transform="translate(1,1)" />
+      <rect x="4" y="5" width="24" height="20" fill="#C0C0C0" stroke="#000" stroke-width="1.5" />
+      <rect x="6" y="7" width="20" height="4" fill="#000080" />
+      <rect x="7" y="8" width="2" height="2" fill="#FF0000" />
+      <rect x="10" y="8" width="2" height="2" fill="#FFD700" />
+      <rect x="13" y="8" width="2" height="2" fill="#00FF00" />
+      <rect x="7" y="13" width="18" height="10" fill="#008080" stroke="#000" stroke-width="1" />
+      <path d="M9 15h9M9 18h14M9 21h11" stroke="#fff" stroke-width="1.5" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_operating_system(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_operating_system(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true" shape-rendering="crispEdges">
+      <rect x="5" y="5" width="22" height="22" fill="#000" transform="translate(1,1)" />
+      <rect x="5" y="5" width="22" height="22" fill="#000080" stroke="#000" stroke-width="1.5" />
+      <rect x="8" y="8" width="7" height="7" fill="#008080" stroke="#000" stroke-width="1" />
+      <rect x="17" y="8" width="7" height="7" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <rect x="8" y="17" width="7" height="7" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <rect x="17" y="17" width="7" height="7" fill="#008080" stroke="#000" stroke-width="1" />
+      <path d="M6 6h20" stroke="#fff" stroke-width="1" opacity="0.6" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_server(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_server(assigns) do
     ~H"""

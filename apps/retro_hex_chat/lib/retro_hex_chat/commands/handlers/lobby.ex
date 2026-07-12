@@ -22,9 +22,9 @@ defmodule RetroHexChat.Commands.Handlers.Lobby do
          {:ok, target_id} <- resolve_registered_nick(target),
          :ok <- validate_target_online(target),
          {:ok, creator_id} <- resolve_registered_nick(context.nickname),
-         {:ok, result} <- RetroHexChat.Lobby.create_session(creator_id, target_id) do
+         :ok <- RetroHexChat.Lobby.can_create_session?(creator_id, target_id) do
       {:ok, :ui_action, :lobby_invite,
-       %{target: target, token: result.token, creator_id: creator_id}}
+       %{target: target, target_id: target_id, creator_id: creator_id}}
     end
   end
 

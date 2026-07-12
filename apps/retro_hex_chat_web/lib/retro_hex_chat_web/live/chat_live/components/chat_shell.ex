@@ -130,7 +130,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
   @spec p2p_display(map() | nil) :: map() | nil
   defp p2p_display(nil), do: nil
 
-  defp p2p_display(%{state: state, peer_nick: peer_nick}) do
+  defp p2p_display(%{state: state, peer_nick: peer_nick} = p2p) do
     peer = peer_nick || "?"
 
     case state do
@@ -143,9 +143,13 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
 
       :connected ->
         %{
-          label: dgettext("chat", "P2P: %{peer}", peer: peer),
-          title: dgettext("chat", "P2P session with %{peer} — click to focus", peer: peer),
-          stop_title: dgettext("chat", "End the P2P session")
+          label: connected_p2p_label(peer, p2p[:call_summary]),
+          title: connected_p2p_title(peer, p2p),
+          stop_title: dgettext("chat", "End the P2P session"),
+          facets: p2p_facets(p2p),
+          duration: get_in(p2p, [:call_summary, :duration]),
+          quality: get_in(p2p, [:call_summary, :quality_label]),
+          turn_only: p2p[:turn_only] == true and p2p[:turn_configured] == true
         }
 
       _joining_or_connecting ->
@@ -156,6 +160,43 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatShell do
         }
     end
   end
+
+  defp connected_p2p_label(peer, %{duration: duration}) when is_binary(duration) do
+    dgettext("chat", "P2P: %{peer} %{duration}", peer: peer, duration: duration)
+  end
+
+  defp connected_p2p_label(peer, _call_summary) do
+    dgettext("chat", "P2P: %{peer}", peer: peer)
+  end
+
+  defp connected_p2p_title(peer, p2p) do
+    facets = p2p_facets(p2p)
+
+    suffix =
+      case facets do
+        [] -> dgettext("chat", "session ready")
+        _ -> Enum.map_join(facets, ", ", &facet_title/1)
+      end
+
+    dgettext("chat", "P2P session with %{peer} — %{facets}. Click to focus",
+      peer: peer,
+      facets: suffix
+    )
+  end
+
+  defp p2p_facets(p2p) do
+    []
+    |> maybe_add_facet(:call, p2p[:call_summary] != nil)
+    |> maybe_add_facet(:file, p2p[:file_summary] != nil)
+    |> maybe_add_facet(:game, get_in(p2p, [:game_summary, :active?]) == true)
+  end
+
+  defp maybe_add_facet(facets, facet, true), do: facets ++ [facet]
+  defp maybe_add_facet(facets, _facet, _false), do: facets
+
+  defp facet_title(:call), do: dgettext("chat", "call active")
+  defp facet_title(:file), do: dgettext("chat", "file transfer active")
+  defp facet_title(:game), do: dgettext("chat", "game active")
 
   @spec online_buddy_count(%{entries: list()} | nil) :: non_neg_integer()
   defp online_buddy_count(%{entries: entries}) when is_list(entries) do

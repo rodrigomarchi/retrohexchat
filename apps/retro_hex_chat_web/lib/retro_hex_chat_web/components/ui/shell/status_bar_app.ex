@@ -138,6 +138,7 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
         >
           <Icons.icon_p2p class="w-3 h-3 shrink-0" />
           <span class="truncate text-xs">{@p2p.label}</span>
+          <.p2p_badges p2p={@p2p} />
         </button>
         <button
           type="button"
@@ -217,6 +218,58 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
   end
 
   # ── Private helpers ───────────────────────────────────
+
+  attr :p2p, :map, required: true
+
+  defp p2p_badges(assigns) do
+    ~H"""
+    <span
+      class="inline-flex min-w-0 shrink-0 items-center gap-[2px]"
+      data-testid="status-bar-p2p-badges"
+    >
+      <span
+        :for={facet <- @p2p[:facets] || []}
+        class="inline-flex h-4 w-4 items-center justify-center bg-canvas shadow-retro-sunken"
+        title={p2p_facet_title(facet)}
+        data-testid={"status-bar-p2p-facet-#{facet}"}
+      >
+        <.p2p_facet_icon facet={facet} />
+      </span>
+      <span
+        :if={@p2p[:quality]}
+        class="hidden h-4 items-center gap-[1px] bg-canvas px-1 text-[10px] shadow-retro-sunken sm:inline-flex"
+        title={dgettext("ui", "P2P call quality")}
+        data-testid="status-bar-p2p-quality"
+      >
+        <Icons.icon_status_signal class="h-3 w-3" />
+        {@p2p[:quality]}
+      </span>
+      <span
+        :if={@p2p[:turn_only]}
+        class="inline-flex h-4 w-4 items-center justify-center bg-canvas shadow-retro-sunken"
+        title={dgettext("ui", "P2P privacy relay active")}
+        data-testid="status-bar-p2p-relay"
+      >
+        <Icons.icon_privacy class="h-3 w-3" />
+      </span>
+    </span>
+    """
+  end
+
+  attr :facet, :atom, required: true
+
+  defp p2p_facet_icon(assigns) do
+    ~H"""
+    <Icons.icon_camera :if={@facet == :call} class="h-3 w-3" />
+    <Icons.icon_file_send :if={@facet == :file} class="h-3 w-3" />
+    <Icons.icon_joystick :if={@facet == :game} class="h-3 w-3" />
+    """
+  end
+
+  defp p2p_facet_title(:call), do: dgettext("ui", "P2P call active")
+  defp p2p_facet_title(:file), do: dgettext("ui", "P2P file transfer active")
+  defp p2p_facet_title(:game), do: dgettext("ui", "P2P game active")
+  defp p2p_facet_title(_facet), do: dgettext("ui", "P2P feature active")
 
   @spec buddy_count_label(non_neg_integer()) :: String.t()
   defp buddy_count_label(count),

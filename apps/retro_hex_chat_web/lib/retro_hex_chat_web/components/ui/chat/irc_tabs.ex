@@ -38,6 +38,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   attr :closeable, :boolean, default: true
   attr :nick_color, :string, default: nil, doc: "CSS class for nick coloring (PM tabs)"
   attr :p2p, :boolean, default: false, doc: "Marks the PM tab that owns the live P2P session"
+  attr :p2p_state, :string, default: nil, doc: "Visual P2P state: pending, connecting, connected"
 
   attr :group_call, :boolean,
     default: false,
@@ -88,11 +89,24 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
       </span>
       <span
         :if={@p2p}
-        class="w-3 h-3 flex-shrink-0 inline-flex items-center justify-center"
-        title={dgettext("chat", "P2P session active")}
+        class={[
+          "relative h-4 w-4 flex-shrink-0 inline-flex items-center justify-center",
+          "bg-canvas shadow-retro-sunken",
+          p2p_glyph_class(@p2p_state)
+        ]}
+        title={p2p_title(@p2p_state)}
+        data-p2p-state={p2p_data_state(@p2p_state)}
         data-testid="tab-p2p-glyph"
       >
         <Icons.icon_p2p class="w-3 h-3" />
+        <span
+          class={[
+            "absolute bottom-0 right-0 h-1.5 w-1.5 border border-border",
+            p2p_dot_class(@p2p_state)
+          ]}
+          aria-hidden="true"
+        >
+        </span>
       </span>
       <span
         :if={@group_call}
@@ -137,4 +151,24 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   defp type_icon(%{type: "status"} = assigns) do
     ~H'<Icons.icon_tab_status class="w-[16px] h-[16px]" />'
   end
+
+  defp p2p_data_state("pending"), do: "pending"
+  defp p2p_data_state("connecting"), do: "connecting"
+  defp p2p_data_state("connected"), do: "connected"
+  defp p2p_data_state(_state), do: "connected"
+
+  defp p2p_title("pending"), do: dgettext("chat", "P2P invite pending")
+  defp p2p_title("connecting"), do: dgettext("chat", "P2P session connecting")
+  defp p2p_title(_state), do: dgettext("chat", "P2P session active")
+
+  defp p2p_glyph_class("pending"), do: "border border-warning text-warning"
+
+  defp p2p_glyph_class("connecting"),
+    do: "border border-warning-alt text-warning-alt animate-pulse"
+
+  defp p2p_glyph_class(_state), do: "border border-success text-success"
+
+  defp p2p_dot_class("pending"), do: "bg-warning"
+  defp p2p_dot_class("connecting"), do: "bg-warning-alt animate-pulse"
+  defp p2p_dot_class(_state), do: "bg-success"
 end

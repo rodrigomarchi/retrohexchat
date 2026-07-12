@@ -67,6 +67,8 @@ defmodule RetroHexChatWeb.Live.KeyboardShortcutsTest do
 
       assert html =~ "Navigation"
       assert html =~ "System"
+      assert html =~ "P2P Call Window"
+      assert html =~ "Ctrl+Shift+."
     end
 
     test "close_dialog event closes cheatsheet", %{conn: conn} do

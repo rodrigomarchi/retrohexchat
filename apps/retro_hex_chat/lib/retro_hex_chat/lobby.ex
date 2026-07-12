@@ -36,6 +36,9 @@ defmodule RetroHexChat.Lobby do
           {:ok, %{session: Session.t(), token: String.t()}} | {:error, String.t()}
   defdelegate create_session(creator_id, peer_id), to: Service
 
+  @spec can_create_session?(integer(), integer()) :: :ok | {:error, String.t()}
+  defdelegate can_create_session?(creator_id, peer_id), to: Service
+
   @spec join_session(String.t(), integer()) :: :ok | {:error, String.t() | :already_joined}
   defdelegate join_session(token, user_id), to: Service
 

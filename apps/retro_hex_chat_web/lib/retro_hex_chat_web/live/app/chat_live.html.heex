@@ -101,9 +101,8 @@
             active_channel={@session.active_channel}
             active_pm={@session.active_pm}
             nick_color_fn={@nick_color_fn}
-            p2p_peer={
-              if @p2p_session && @p2p_session.state == :connected, do: @p2p_session.peer_nick
-            }
+            p2p_peer={if @p2p_session, do: @p2p_session.peer_nick}
+            p2p_state={if @p2p_session, do: @p2p_session.state}
             group_call_channels={@group_call_channels}
             group_call_summaries={@group_call_channel_summaries}
           />
@@ -556,6 +555,7 @@
         peer_info={@p2p_session.peer_info}
         call_summary={@p2p_session.call_summary}
         file_summary={@p2p_session.file_summary}
+        game_summary={@p2p_session.game_summary}
         turn_only={@p2p_session.turn_only}
       />
     </.desktop_window>
@@ -602,7 +602,10 @@
       on_close="p2p_window_close"
       default_x={496}
       default_y={48}
-      width={460}
+      width={if Map.get(@p2p_session, :call_mini, false), do: 300, else: 460}
+      height={if Map.get(@p2p_session, :call_mini, false), do: 236, else: nil}
+      min_width={260}
+      min_height={180}
       body_class="p-1"
       data-testid="p2p-call-window"
     >
@@ -616,6 +619,8 @@
         token={@p2p_session.token}
         user_id={@p2p_session.user_id}
         window_id="p2p-call"
+        mini={Map.get(@p2p_session, :call_mini, false)}
+        device_preferences={Map.get(@p2p_session, :device_preferences, %{})}
       />
     </.desktop_window>
 
@@ -1212,6 +1217,13 @@
 <.live_component
   module={RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog}
   id={RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog.id()}
+/>
+
+<.p2p_setup_dialog
+  id="p2p-setup-dialog"
+  setup={@p2p_setup}
+  on_accept="p2p_setup_accept"
+  on_cancel="p2p_setup_cancel"
 />
 
 <.group_call_pre_join_dialog

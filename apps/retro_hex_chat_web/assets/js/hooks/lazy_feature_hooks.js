@@ -47,6 +47,12 @@ export const lazyFeatureHooks = {
     serverEvents: [],
     reason: "Group-call device preview is only needed while the pre-join dialog is open.",
   }),
+  P2PSetupHook: lazyFeatureHook({
+    name: "P2PSetupHook",
+    loader: () => import("./group_call/group_call_prejoin_hook"),
+    serverEvents: [],
+    reason: "P2P setup device preview is only needed while accepting an invite.",
+  }),
   LobbyGameCanvasHook: lazyFeatureHook({
     name: "LobbyGameCanvasHook",
     loader: () => import("./lobby/lobby_game_canvas_hook"),

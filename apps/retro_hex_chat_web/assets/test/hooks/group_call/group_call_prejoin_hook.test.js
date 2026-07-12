@@ -55,6 +55,50 @@ function formFixture() {
   return hook;
 }
 
+function p2pSetupFixture() {
+  document.body.innerHTML = `
+    <form id="p2p-setup-form">
+      <section id="p2p-setup-preview"
+        data-prejoin-prefix="p2p-setup"
+        data-form-name="p2p_setup"
+        data-devices-event="p2p_setup_devices_listed"
+        data-preferences-event="p2p_setup_preferences_loaded"
+        data-storage-key="rhc:p2p:setup"
+        data-preference-scope="user-99">
+        <span data-p2p-setup-device-state>
+          <span data-p2p-setup-device-state-text>Checking devices</span>
+        </span>
+        <video data-p2p-setup-video></video>
+        <div data-p2p-setup-empty>
+          <span data-p2p-setup-empty-text></span>
+        </div>
+        <div data-p2p-setup-warning class="hidden">
+          <span data-p2p-setup-warning-text></span>
+          <button type="button" data-p2p-setup-retry>Retry</button>
+        </div>
+      </section>
+      <input type="checkbox" name="p2p_setup[audio]" checked />
+      <input type="checkbox" name="p2p_setup[video]" />
+      <select name="p2p_setup[audio_input_id]">
+        <option value="">Default</option>
+        <option value="mic-p2p" selected>Mic P2P</option>
+      </select>
+      <select name="p2p_setup[video_input_id]">
+        <option value="">Default</option>
+      </select>
+      <select name="p2p_setup[audio_output_id]">
+        <option value="">Default</option>
+      </select>
+    </form>
+  `;
+
+  const hook = Object.create(GroupCallPreJoinHook);
+  hook.el = document.getElementById("p2p-setup-preview");
+  hook.pushEvent = vi.fn();
+
+  return hook;
+}
+
 function streamFixture({ video = true } = {}) {
   const audioTrack = { kind: "audio", stop: vi.fn() };
   const videoTrack = { kind: "video", stop: vi.fn() };
@@ -202,5 +246,51 @@ describe("GroupCallPreJoinHook", () => {
       document.querySelector("[data-group-call-prejoin-warning]").classList.contains("hidden"),
     ).toBe(true);
     expect(document.querySelector("[data-group-call-prejoin-video]").srcObject).toBe(stream);
+  });
+
+  it("can be configured for the P2P setup dialog", async () => {
+    const stream = streamFixture({ video: false });
+    const getUserMedia = vi.fn(async () => stream);
+
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        enumerateDevices: vi.fn(async () => [
+          { kind: "audioinput", deviceId: "mic-p2p", label: "P2P Mic" },
+        ]),
+        getUserMedia,
+      },
+    });
+
+    const hook = p2pSetupFixture();
+    hook.mounted();
+    await flushPromises();
+
+    expect(hook.pushEvent).toHaveBeenCalledWith("p2p_setup_devices_listed", {
+      audioinput: [{ id: "mic-p2p", label: "P2P Mic" }],
+      videoinput: [],
+      audiooutput: [],
+    });
+    expect(hook.pushEvent).toHaveBeenCalledWith("p2p_setup_preferences_loaded", {
+      audio: true,
+      video: false,
+      sidebar_open: true,
+      layout_mode: "auto",
+      self_view: "tile",
+      audio_input_id: "mic-p2p",
+      video_input_id: "",
+      audio_output_id: "",
+    });
+    expect(getUserMedia).toHaveBeenCalledWith({
+      audio: expect.objectContaining({ deviceId: { exact: "mic-p2p" } }),
+      video: false,
+    });
+
+    document
+      .querySelector('[name="p2p_setup[audio_input_id]"]')
+      .dispatchEvent(new Event("change", { bubbles: true }));
+    await flushPromises();
+
+    expect(window.localStorage.getItem("rhc:p2p:setup:user-99")).toContain("mic-p2p");
   });
 });

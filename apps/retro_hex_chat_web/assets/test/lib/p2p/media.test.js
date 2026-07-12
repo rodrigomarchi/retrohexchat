@@ -4,6 +4,7 @@ import {
   getVideoConstraints,
   categorizeMediaError,
   acquireMedia,
+  acquireDisplayMedia,
   addMediaTracks,
   toggleTrack,
   stopAllTracks,
@@ -36,6 +37,14 @@ describe("Media Acquisition", () => {
         noiseSuppression: true,
       });
     });
+
+    it("adds an exact audio device when provided", () => {
+      expect(getAudioConstraints("mic-1")).toEqual({
+        echoCancellation: true,
+        noiseSuppression: true,
+        deviceId: { exact: "mic-1" },
+      });
+    });
   });
 
   describe("getVideoConstraints", () => {
@@ -45,6 +54,15 @@ describe("Media Acquisition", () => {
         width: { ideal: 640 },
         height: { ideal: 480 },
         facingMode: "user",
+      });
+    });
+
+    it("adds an exact video device when provided", () => {
+      expect(getVideoConstraints("cam-1")).toEqual({
+        width: { ideal: 640 },
+        height: { ideal: 480 },
+        facingMode: "user",
+        deviceId: { exact: "cam-1" },
       });
     });
   });
@@ -144,6 +162,42 @@ describe("Media Acquisition", () => {
       await expect(acquireMedia({ audio: true })).rejects.toEqual({
         code: "not_found",
         message: expect.stringContaining("No microphone found"),
+      });
+    });
+  });
+
+  describe("acquireDisplayMedia", () => {
+    it("returns display media on success", async () => {
+      const mockStream = { getTracks: () => [] };
+      navigator.mediaDevices = {
+        getDisplayMedia: vi.fn().mockResolvedValue(mockStream),
+      };
+
+      const stream = await acquireDisplayMedia();
+      expect(stream).toBe(mockStream);
+      expect(navigator.mediaDevices.getDisplayMedia).toHaveBeenCalledWith({
+        video: true,
+        audio: false,
+      });
+    });
+
+    it("throws a screen_unsupported error when display capture is unavailable", async () => {
+      navigator.mediaDevices = {};
+
+      await expect(acquireDisplayMedia()).rejects.toEqual({
+        code: "screen_unsupported",
+        message: expect.stringContaining("Screen sharing is not supported"),
+      });
+    });
+
+    it("throws a screen_denied error when display capture is denied", async () => {
+      navigator.mediaDevices = {
+        getDisplayMedia: vi.fn().mockRejectedValue(new DOMException("Denied", "NotAllowedError")),
+      };
+
+      await expect(acquireDisplayMedia()).rejects.toEqual({
+        code: "screen_denied",
+        message: expect.stringContaining("Screen sharing was cancelled or denied"),
       });
     });
   });

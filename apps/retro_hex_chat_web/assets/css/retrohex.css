@@ -1550,6 +1550,10 @@ details:not([open]) .tree-view-marker-closed {
   animation: diagram-strip-packet 1.4s linear infinite;
 }
 
+.p2p-diagram-strip__packet--one {
+  animation-delay: 0s;
+}
+
 .p2p-diagram-strip__packet--two {
   animation-delay: 0.2s;
 }

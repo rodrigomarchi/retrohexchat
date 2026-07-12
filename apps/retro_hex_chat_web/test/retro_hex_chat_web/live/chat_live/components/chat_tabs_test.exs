@@ -70,4 +70,25 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     assert html =~ ~s(data-unread="true")
     assert html =~ "nick-color-7"
   end
+
+  test "marks the P2P peer PM tab through pending, connecting and connected states" do
+    cases = [
+      {:invite_sent, "pending", "P2P invite pending"},
+      {:joining, "connecting", "P2P session connecting"},
+      {:connected, "connected", "P2P session active"}
+    ]
+
+    for {state, visual_state, title} <- cases do
+      html =
+        tabs(%{
+          pm_conversations: ["bob", "eve"],
+          p2p_peer: "BOB",
+          p2p_state: state
+        })
+
+      assert html =~ ~s(data-testid="tab-p2p-glyph")
+      assert html =~ ~s(data-p2p-state="#{visual_state}")
+      assert html =~ title
+    end
+  end
 end

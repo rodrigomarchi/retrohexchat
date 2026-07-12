@@ -60,4 +60,17 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIslandTest do
     # The surface is up with the peer present.
     assert html =~ ~s(id="lobby-remote-audio")
   end
+
+  test "local screen sharing forces the call surface into focus layout" do
+    html =
+      render_component(P2PMediaIsland,
+        id: P2PMediaIsland.id(),
+        connected: true,
+        action: {:media_event, "lobby_media_screen_share_changed", %{"active" => true}}
+      )
+
+    assert html =~ ~s(data-call-layout="focus")
+    assert html =~ ~s(data-screen-share="true")
+    assert html =~ "Screen session"
+  end
 end

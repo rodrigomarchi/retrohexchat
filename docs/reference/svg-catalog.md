@@ -48,6 +48,7 @@ All SVGs extracted and organized in the SVG consolidation effort.
 
 | Function | Description |
 |----------|-------------|
+| `icon_p2p_route` | Animated route strip used by the compact P2P network diagram **[DONE]** |
 | `icon_btn_disconnect` | Two circles + red X **[DONE]** |
 | `icon_btn_connect_lightning` | Two circles + lightning bolt **[DONE]** |
 | `icon_btn_connect_disabled` | Gray circles (disabled state) **[DONE]** |
@@ -130,6 +131,8 @@ All SVGs extracted and organized in the SVG consolidation effort.
 | Function | Description |
 |----------|-------------|
 | `icon_btn_bell` | Notification bell **[DONE]** |
+| `icon_browser` | Generic retro browser window for P2P whois/browser surfaces **[DONE]** |
+| `icon_operating_system` | Generic OS tile grid for P2P whois/device surfaces **[DONE]** |
 
 ### Files
 

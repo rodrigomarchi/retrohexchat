@@ -37,6 +37,44 @@ defmodule RetroHexChatWeb.Icons.Communication do
 
   attr :class, :string, default: nil
 
+  @spec icon_p2p_route(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_p2p_route(assigns) do
+    ~H"""
+    <svg
+      viewBox="0 0 240 28"
+      preserveAspectRatio="none"
+      shape-rendering="crispEdges"
+      class={@class}
+      aria-hidden="true"
+    >
+      <line x1="8" y1="14" x2="232" y2="14" class="p2p-diagram-strip__track" />
+      <rect
+        x="38"
+        y="11"
+        width="8"
+        height="6"
+        class="p2p-diagram-strip__packet p2p-diagram-strip__packet--one"
+      />
+      <rect
+        x="116"
+        y="11"
+        width="8"
+        height="6"
+        class="p2p-diagram-strip__packet p2p-diagram-strip__packet--two"
+      />
+      <rect
+        x="194"
+        y="11"
+        width="8"
+        height="6"
+        class="p2p-diagram-strip__packet p2p-diagram-strip__packet--three"
+      />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_chat(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_chat(assigns) do
     ~H"""

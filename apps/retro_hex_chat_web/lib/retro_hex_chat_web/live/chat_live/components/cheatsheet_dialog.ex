@@ -54,9 +54,54 @@ defmodule RetroHexChatWeb.ChatLive.Components.CheatsheetDialog do
           end)
       }
     end)
+    |> Kernel.++([p2p_call_window_shortcuts()])
   end
 
   @spec format_binding(map() | nil) :: String.t()
   defp format_binding(nil), do: "—"
   defp format_binding(binding), do: KeyBindings.to_display_string(binding)
+
+  @spec p2p_call_window_shortcuts() :: map()
+  defp p2p_call_window_shortcuts do
+    %{
+      category: dgettext("chat", "P2P Call Window"),
+      items: [
+        shortcut_item(
+          dgettext("chat", "Toggle P2P Microphone"),
+          %{key: "ArrowUp", modifiers: [:ctrl, :shift]},
+          dgettext("chat", "Mute, unmute, or enable your P2P microphone")
+        ),
+        shortcut_item(
+          dgettext("chat", "Toggle P2P Camera"),
+          %{key: "ArrowLeft", modifiers: [:ctrl, :shift]},
+          dgettext("chat", "Start, pause, or resume your P2P camera")
+        ),
+        shortcut_item(
+          dgettext("chat", "Next P2P Layout"),
+          %{key: "ArrowRight", modifiers: [:ctrl, :shift]},
+          dgettext("chat", "Cycle Auto, Focus, Split, Speaker and Compact layouts")
+        ),
+        shortcut_item(
+          dgettext("chat", "Cycle P2P Self View"),
+          %{key: "ArrowDown", modifiers: [:ctrl, :shift]},
+          dgettext("chat", "Move your self-view between tile, picture-in-picture and hidden")
+        ),
+        shortcut_item(
+          dgettext("chat", "Toggle P2P Screen Share"),
+          %{key: ".", modifiers: [:ctrl, :shift]},
+          dgettext("chat", "Start or stop screen sharing in the focused P2P Call window")
+        ),
+        shortcut_item(
+          dgettext("chat", "End P2P Call Media"),
+          %{key: "q", modifiers: [:ctrl, :shift]},
+          dgettext("chat", "Stop only the call media; the P2P session stays open")
+        )
+      ]
+    }
+  end
+
+  @spec shortcut_item(String.t(), map(), String.t()) :: map()
+  defp shortcut_item(action, binding, description) do
+    %{action: action, keys: format_binding(binding), description: description}
+  end
 end

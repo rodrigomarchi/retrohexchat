@@ -1,21 +1,47 @@
 <p>
   {dgettext(
     "help_p2p",
-    "Peer-to-peer video calls with full-screen remote video and a local video thumbnail."
+    "Peer-to-peer video calls with rich 1:1 layouts, self-view control, screen sharing, PiP, reactions and live quality indicators."
   )}
 </p>
 <.help_h4 icon={:icon_camera}>{dgettext("help_p2p", "Starting a Video Call")}</.help_h4>
 <p>
   {dgettext("help_p2p", "In the P2P session, click")} <strong>{dgettext("help_p2p", "Video Call")}</strong>{dgettext(
     "help_p2p",
-    ". The peer must accept."
+    ". P2P media is self-controlled: either peer can start camera or microphone independently, and the other side joins the media surface automatically."
   )}
 </p>
 <.help_h4 icon={:icon_tab_display}>{dgettext("help_p2p", "Layout")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "The remote video occupies the main area. Your local video appears in the bottom-right corner."
+    "Use the layout controls for Auto, Focus, Split, Speaker and Compact views. Click the remote tile to focus it. The self-view button cycles your own video between tile, picture-in-picture and hidden."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_p2p",
+    "With the P2P Call window focused, Ctrl+Shift+ArrowRight cycles layouts and Ctrl+Shift+ArrowDown cycles self-view."
+  )}
+</p>
+<.help_h4 icon={:icon_screen_share}>{dgettext("help_p2p", "Screen Share")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Click Share Screen to replace your camera feed with a browser display-capture track. Stopping from the browser or from the button restores the previous camera when possible; the peer sees a screen badge."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Ctrl+Shift+. toggles screen sharing when the P2P Call window is focused. A shared screen automatically favors the focus layout."
+  )}
+</p>
+<.help_h4 icon={:icon_heart}>{dgettext("help_p2p", "Reactions")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Reaction buttons send short visual effects over the active P2P session. They appear on the call tiles and do not create private-message rows."
   )}
 </p>
 <.help_h4 icon={:icon_camera_off}>{dgettext("help_p2p", "Turn Camera Off/On")}</.help_h4>
@@ -32,15 +58,6 @@
   {dgettext(
     "help_p2p",
     "to pop the remote video into a floating window that stays visible while navigating other tabs."
-  )}
-</p>
-<.help_h4 icon={:icon_upgrade_video}>
-  {dgettext("help_p2p", "Upgrade from Audio to Video")}
-</.help_h4>
-<p>
-  {dgettext("help_p2p", "During an audio call, click")} <strong>{dgettext("help_p2p", "Add Video")}</strong>{dgettext(
-    "help_p2p",
-    ". The peer must accept before the camera is activated."
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>

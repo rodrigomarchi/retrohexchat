@@ -42,6 +42,7 @@ const LobbyMediaHook = createRtcMediaHook({
     durationTick: "lobby_media_duration_tick",
     devicesListed: "lobby_media_devices_listed",
     deviceFallback: "lobby_media_device_fallback",
+    screenShareChanged: "lobby_media_screen_share_changed",
   },
 });
 

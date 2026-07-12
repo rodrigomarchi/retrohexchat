@@ -7,8 +7,9 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   sender to the PM conversation, and tracks the session as its creator.
 
   With a P2P session already active, the invite is NOT delivered yet: the
-  switch confirm opens first, and only confirming ends the current session
-  and sends the invite (backing out cancels the just-created pending session).
+  switch confirm opens first, and only confirming ends the current session and
+  opens outgoing setup. The lobby row and invite PM are still created only after
+  setup submit.
   """
 
   import Phoenix.Component, only: [assign: 2]
@@ -17,16 +18,17 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
   use Gettext, backend: RetroHexChatWeb.Gettext
 
   alias RetroHexChat.Chat.Service
+  alias RetroHexChat.Lobby
   alias RetroHexChatWeb.ChatLive.Components.P2PConfirmDialog
   alias RetroHexChatWeb.ChatLive.Helpers.{Messages, PM}
   alias RetroHexChatWeb.ChatLive.P2PSessionEvents
 
   @spec handle_lobby_invite(Phoenix.LiveView.Socket.t(), map(), map()) ::
           Phoenix.LiveView.Socket.t()
-  def handle_lobby_invite(socket, session, payload) do
+  def handle_lobby_invite(socket, _session, payload) do
     case socket.assigns.p2p_session do
       nil ->
-        deliver_invite(socket, session, payload)
+        P2PSessionEvents.open_outgoing_setup(socket, payload)
 
       p2p ->
         Phoenix.LiveView.send_update(P2PConfirmDialog,
@@ -40,11 +42,29 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
 
   @doc """
   Sends the invite PM, opens the conversation and joins the new session as
-  creator. Also the continuation of a confirmed outgoing switch.
+  creator. Also the continuation after outgoing setup or a confirmed switch.
   """
   @spec deliver_invite(Phoenix.LiveView.Socket.t(), map(), map()) ::
           Phoenix.LiveView.Socket.t()
-  def deliver_invite(socket, session, payload) do
+  def deliver_invite(socket, session, %{token: token} = payload) when is_binary(token) do
+    do_deliver_invite(socket, session, payload)
+  end
+
+  def deliver_invite(socket, session, %{creator_id: creator_id, target_id: target_id} = payload) do
+    case Lobby.create_session(creator_id, target_id) do
+      {:ok, %{token: token}} ->
+        do_deliver_invite(socket, session, Map.put(payload, :token, token))
+
+      {:error, message} ->
+        Messages.system_event(socket, message)
+    end
+  end
+
+  def deliver_invite(socket, _session, _payload) do
+    Messages.system_event(socket, dgettext("chat", "Could not start the P2P invite."))
+  end
+
+  defp do_deliver_invite(socket, session, payload) do
     %{target: target, token: token} = payload
 
     pm_content = lobby_invite_content(token)

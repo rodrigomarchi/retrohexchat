@@ -32,6 +32,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── P2P session windows ──────────────────────────────────────
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
+  import RetroHexChatWeb.Components.UI.P2P.SetupDialog
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
   import RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog
   import RetroHexChatWeb.Components.UI.GroupCall.StatsPanel
@@ -742,6 +743,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       group_call_prejoin_preferences: nil,
       p2p_session: nil,
       p2p_pending: nil,
+      p2p_setup: nil,
       arcade_session: nil,
       mobile_viewport: false
     )

@@ -687,10 +687,52 @@ const WindowManagerHook = {
       case "maximize":
         this.toggleMaximize(id);
         break;
+      case "set_geometry":
+        this.setWindowGeometry(id, payload);
+        break;
       case "dock_pair":
         this.dockPair(id, payload);
         break;
     }
+  },
+
+  setWindowGeometry(id, payload = {}) {
+    const win = this.windows[id];
+    if (!win || this.stacked) return;
+
+    const st = win.state;
+    const { w: wsW, h: wsH } = this.workspaceSize();
+    const margin = Math.max(8, int(payload.margin, 16));
+    const nextW = clamp(int(payload.width, st.w), win.minW, Math.max(win.minW, wsW - margin * 2));
+    const nextH =
+      payload.height === null
+        ? null
+        : clamp(
+            int(payload.height, st.h || win.minH),
+            win.minH,
+            Math.max(win.minH, wsH - margin * 2),
+          );
+
+    st.open = true;
+    st.minimized = false;
+    st.maximized = false;
+    st.centered = false;
+    st.w = nextW;
+    st.h = nextH;
+
+    if (payload.anchor === "bottom_right") {
+      const effectiveH = nextH || win.el.offsetHeight || win.minH;
+      st.x = Math.max(0, wsW - margin - nextW);
+      st.y = Math.max(0, wsH - margin - effectiveH);
+    } else {
+      if (payload.x !== undefined) st.x = int(payload.x, st.x);
+      if (payload.y !== undefined) st.y = int(payload.y, st.y);
+    }
+
+    st.z = this.zCounter += 1;
+    this.focusedId = id;
+    this.applyAll();
+    this.persist();
   },
 
   dockPair(primaryId, payload = {}) {

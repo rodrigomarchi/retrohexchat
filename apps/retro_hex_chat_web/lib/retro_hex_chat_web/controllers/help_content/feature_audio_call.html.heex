@@ -5,7 +5,7 @@
 <p>
   {dgettext("help_p2p", "In the P2P session, click")} <strong>{dgettext("help_p2p", "Audio Call")}</strong>{dgettext(
     "help_p2p",
-    ". The other user must accept the request."
+    ". Either peer can start or stop their own microphone independently; if your peer starts media first, your Call window opens and you join automatically."
   )}
 </p>
 <.help_h4 icon={:icon_mute}>{dgettext("help_p2p", "Mute/Unmute Microphone")}</.help_h4>
@@ -16,19 +16,31 @@
     "button to mute your microphone. The other user will see an indication that you are muted."
   )}
 </p>
+<p>
+  {dgettext(
+    "help_p2p",
+    "With the P2P Call window focused, Ctrl+Shift+ArrowUp toggles microphone state and Ctrl+Shift+ArrowLeft toggles camera state."
+  )}
+</p>
 <.help_h4 icon={:icon_phone_end}>{dgettext("help_p2p", "End Call")}</.help_h4>
 <p>
   {dgettext("help_p2p", "Click")}
   <strong>{dgettext("help_p2p", "End Call")}</strong> {dgettext(
     "help_p2p",
-    "to finish. Both users return to the lobby."
+    "to stop your media call. The P2P session remains available for private messages, files, games and statistics until you end the session itself."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Ctrl+Shift+Q in the focused P2P Call window ends only the call media. Use the status bar stop button or close confirmation to end the whole P2P session."
   )}
 </p>
 <.help_h4 icon={:icon_tab_status}>{dgettext("help_p2p", "Indicators")}</.help_h4>
 <p>
   {dgettext(
     "help_p2p",
-    "The timer shows the call duration. The quality indicator shows 4 levels: Excellent, Good, Fair, Poor."
+    "The header and status bar show call duration, quality, active facets and relay privacy. The peer list is intentionally compact because P2P is always one-to-one."
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>

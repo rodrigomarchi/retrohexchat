@@ -23,11 +23,12 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
   """
   use RetroHexChatWeb, :live_component
 
-  import RetroHexChatWeb.Components.UI.Lobby.MediaPanel
-
   alias RetroHexChat.Lobby
+  alias RetroHexChatWeb.Components.UI.P2P.CallPanel
 
   @pubsub RetroHexChat.PubSub
+  @reaction_ttl_ms 2400
+  @valid_reactions ~w(heart thumbs_up clap laugh sparkle)
   # Distinct from the media panel's own `id="lobby-media"` hook element inside it.
   @id "lobby-media-island"
 
@@ -43,13 +44,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
        id: @id,
        call: nil,
        call_layout: "focus",
+       self_view: "pip",
        local_muted: false,
        local_camera_off: false,
+       screen_sharing: false,
        peer_muted: false,
        peer_camera_off: false,
+       peer_screen_sharing: false,
        peer_media: %{audio: false, video: false},
+       reactions: [],
        devices: nil,
        connected: false,
+       mini: false,
+       device_preferences: %{},
        nickname: nil,
        peer_nick: nil,
        token: nil,
@@ -80,6 +87,25 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
      |> push_event("lobby_media_peer_camera", %{off: off})}
   end
 
+  def update(%{action: {:peer_screen_share, active}} = assigns, socket) do
+    socket =
+      socket
+      |> assign_context(assigns)
+      |> assign(peer_screen_sharing: active)
+      |> maybe_focus_shared_screen(active)
+
+    {:ok, socket}
+  end
+
+  def update(%{action: {:peer_reaction, reaction, reaction_id}} = assigns, socket) do
+    {:ok, socket |> assign_context(assigns) |> add_reaction(:peer, reaction, reaction_id)}
+  end
+
+  def update(%{action: {:clear_reaction, reaction_id}} = assigns, socket) do
+    socket = assign_context(socket, assigns)
+    {:ok, assign(socket, reactions: reject_reaction(socket.assigns.reactions, reaction_id))}
+  end
+
   def update(%{action: {:peer_media_changed, payload}} = assigns, socket) do
     socket = assign_context(socket, assigns)
     socket = assign(socket, peer_media: %{audio: payload.audio, video: payload.video})
@@ -93,18 +119,23 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
   def render(assigns) do
     ~H"""
     <div id={@id} class="h-full">
-      <.media_panel
+      <CallPanel.call_panel
         connected={@connected}
         call={@call}
         call_layout={@call_layout}
+        self_view={@self_view}
         peer_nick={@peer_nick}
         nickname={@nickname}
         local_muted={@local_muted}
         local_camera_off={@local_camera_off}
+        screen_sharing={@screen_sharing}
         peer_media={@peer_media}
         peer_camera_off={@peer_camera_off}
         peer_muted={@peer_muted}
+        peer_screen_sharing={@peer_screen_sharing}
+        reactions={@reactions}
         devices={@devices}
+        mini={@mini}
       />
     </div>
     """
@@ -118,7 +149,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
       peer_nick: Map.get(assigns, :peer_nick, socket.assigns.peer_nick),
       token: Map.get(assigns, :token, socket.assigns.token),
       user_id: Map.get(assigns, :user_id, socket.assigns.user_id),
-      window_id: Map.get(assigns, :window_id, socket.assigns.window_id)
+      window_id: Map.get(assigns, :window_id, socket.assigns.window_id),
+      self_view: Map.get(assigns, :self_view, socket.assigns.self_view),
+      mini: Map.get(assigns, :mini, socket.assigns.mini),
+      device_preferences: Map.get(assigns, :device_preferences, socket.assigns.device_preferences)
     )
   end
 
@@ -130,7 +164,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
     Lobby.set_media(socket.assigns.token, socket.assigns.user_id, true, true)
 
     socket
-    |> push_event("lobby_media_start_video", %{})
+    |> push_event("lobby_media_start_video", media_start_payload(socket))
     |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
   end
 
@@ -138,7 +172,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
     Lobby.set_media(socket.assigns.token, socket.assigns.user_id, true, false)
 
     socket
-    |> push_event("lobby_media_start_audio", %{})
+    |> push_event("lobby_media_start_audio", media_start_payload(socket))
     |> push_event("window_command", %{action: "open", id: socket.assigns.window_id})
   end
 
@@ -179,8 +213,10 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
       call_layout: "focus",
       local_muted: false,
       local_camera_off: false,
+      screen_sharing: false,
       peer_muted: false,
-      peer_camera_off: false
+      peer_camera_off: false,
+      peer_screen_sharing: false
     )
     |> push_event("window_command", %{action: "close", id: socket.assigns.window_id})
     |> summarize()
@@ -195,6 +231,30 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
     broadcast(socket, "lobby_peer_camera", %{off: off, from: socket.assigns.user_id})
     merge_call(socket, [local_camera_off: off], %{camera_off: off})
   end
+
+  defp media_event(socket, "lobby_media_screen_share_changed", %{"active" => active}) do
+    broadcast(socket, "lobby_peer_screen_share", %{active: active, from: socket.assigns.user_id})
+
+    socket
+    |> merge_call([screen_sharing: active], %{screen_sharing: active})
+    |> maybe_focus_shared_screen(active)
+    |> summarize()
+  end
+
+  defp media_event(socket, "send_call_reaction", %{"reaction" => reaction})
+       when reaction in @valid_reactions do
+    reaction_id = "p2p-reaction-#{System.unique_integer([:positive])}"
+
+    broadcast(socket, "lobby_peer_reaction", %{
+      reaction: reaction,
+      reaction_id: reaction_id,
+      from: socket.assigns.user_id
+    })
+
+    add_reaction(socket, :local, reaction, reaction_id)
+  end
+
+  defp media_event(socket, "send_call_reaction", _params), do: socket
 
   defp media_event(socket, "lobby_media_duration_tick", %{"formatted" => formatted}) do
     socket
@@ -214,11 +274,19 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
   end
 
   defp media_event(socket, "set_call_layout", %{"layout" => layout})
-       when layout in ~w(focus side_by_side maximized) do
+       when layout in ~w(auto focus split speaker compact side_by_side maximized) do
     assign(socket, call_layout: layout)
   end
 
   defp media_event(socket, "set_call_layout", _params), do: socket
+
+  defp media_event(socket, "cycle_call_self_view", _params) do
+    assign(socket, self_view: next_self_view(socket.assigns.self_view))
+  end
+
+  defp media_event(socket, "cycle_call_layout", _params) do
+    assign(socket, call_layout: next_layout(socket.assigns.call_layout))
+  end
 
   defp media_event(socket, "lobby_media_devices_listed", payload) do
     assign(socket, devices: payload)
@@ -310,6 +378,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
     })
   end
 
+  @spec media_start_payload(Phoenix.LiveView.Socket.t()) :: map()
+  defp media_start_payload(socket) do
+    %{device_preferences: socket.assigns.device_preferences || %{}}
+  end
+
   # The host owns the cross-cutting read-model (taskbar badge + Statistics strip);
   # mirror just the fields those readers need. The duration ticks every second, so
   # keep this cheap.
@@ -318,10 +391,45 @@ defmodule RetroHexChatWeb.ChatLive.Components.P2PMediaIsland do
     summary =
       case socket.assigns.call do
         nil -> nil
-        call -> Map.take(call, [:type, :duration, :quality_label])
+        call -> Map.take(call, [:type, :duration, :quality_label, :screen_sharing])
       end
 
     send(self(), {:feature_summary, :call, summary})
     socket
   end
+
+  @spec add_reaction(Phoenix.LiveView.Socket.t(), :local | :peer, String.t(), String.t()) ::
+          Phoenix.LiveView.Socket.t()
+  defp add_reaction(socket, source, reaction, reaction_id) do
+    Process.send_after(self(), {:p2p_call_reaction_timeout, reaction_id}, @reaction_ttl_ms)
+
+    reaction = %{
+      id: reaction_id,
+      source: source,
+      reaction: reaction
+    }
+
+    assign(socket, reactions: [reaction | reject_reaction(socket.assigns.reactions, reaction_id)])
+  end
+
+  defp reject_reaction(reactions, reaction_id) do
+    Enum.reject(reactions, &(&1.id == reaction_id))
+  end
+
+  @spec next_self_view(String.t()) :: String.t()
+  defp next_self_view("tile"), do: "pip"
+  defp next_self_view("pip"), do: "hidden"
+  defp next_self_view(_hidden_or_unknown), do: "tile"
+
+  @spec next_layout(String.t()) :: String.t()
+  defp next_layout("auto"), do: "focus"
+  defp next_layout("focus"), do: "split"
+  defp next_layout("split"), do: "speaker"
+  defp next_layout("speaker"), do: "compact"
+  defp next_layout(_compact_or_unknown), do: "auto"
+
+  @spec maybe_focus_shared_screen(Phoenix.LiveView.Socket.t(), boolean()) ::
+          Phoenix.LiveView.Socket.t()
+  defp maybe_focus_shared_screen(socket, true), do: assign(socket, call_layout: "focus")
+  defp maybe_focus_shared_screen(socket, _inactive), do: socket
 end

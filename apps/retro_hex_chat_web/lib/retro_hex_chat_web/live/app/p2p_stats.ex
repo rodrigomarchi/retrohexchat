@@ -40,6 +40,7 @@ defmodule RetroHexChatWeb.App.P2PStats do
         fps: Map.get(video, "fps", 0),
         width: Map.get(video, "width", 0),
         height: Map.get(video, "height", 0),
+        source: normalize_video_source(Map.get(video, "source")),
         freeze_count: Map.get(video, "freeze_count", 0),
         limitation: Map.get(video, "limitation", "none")
       },
@@ -74,6 +75,7 @@ defmodule RetroHexChatWeb.App.P2PStats do
         fps: 0,
         width: 0,
         height: 0,
+        source: "camera",
         freeze_count: 0,
         limitation: "none"
       },
@@ -92,4 +94,8 @@ defmodule RetroHexChatWeb.App.P2PStats do
       messages: Map.get(channel, "messages", 0)
     }
   end
+
+  @spec normalize_video_source(term()) :: String.t()
+  defp normalize_video_source("screen"), do: "screen"
+  defp normalize_video_source(_source), do: "camera"
 end

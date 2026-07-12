@@ -8,7 +8,13 @@
 <p>
   {dgettext(
     "help_p2p",
-    "Type /p2p <nick> (or use the nicklist context menu) to send an invite. It arrives as a card in the private message; the invited person clicks Accept to start the session in place, or Decline to refuse — the inviter is told either way."
+    "Type /p2p <nick> (or use the nicklist context menu) to open setup before sending an invite. Confirming setup sends the invite card in the private message; the invited person clicks Accept to start their own setup and join in place, or Decline to refuse — the inviter is told either way."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Both sides use the same setup dialog. It previews your camera, lists microphone/camera/speaker devices, lets you start with microphone, camera, both or receive-only, and applies those choices when the call auto-starts. If a TURN relay is configured, the same setup lets you enable privacy relay for the session."
   )}
 </p>
 <.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "The Session Windows")}</.help_h4>
@@ -29,7 +35,20 @@
 <p>
   {dgettext(
     "help_p2p",
-    "The status bar always shows your active session, wherever you are in the chat. Click it to bring the P2P windows to the front (or open Statistics when none is open); the stop button next to it cancels a pending invite or ends the session, after a confirmation."
+    "The status bar always shows your active session, wherever you are in the chat. It also shows compact badges for active call, file transfer, game, call quality and relay privacy. Click it to bring the P2P windows to the front (or open Statistics when none is open); the stop button next to it cancels a pending invite or ends the session, after a confirmation."
+  )}
+</p>
+<.help_h4 icon={:icon_camera}>{dgettext("help_p2p", "Media Controls")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "The Call window uses the same media language as channel conferences: mic, camera, screen share, devices, PiP, layout, self-view, mini mode, docked statistics and reaction controls are icon buttons with tooltips. End Call stops only the media; closing a P2P window asks before ending the whole P2P session."
+  )}
+</p>
+<p>
+  {dgettext(
+    "help_p2p",
+    "When the P2P Call window is focused, Ctrl+Shift media shortcuts control microphone, camera, layout, self-view, screen share and end-call media."
   )}
 </p>
 <.help_h4 icon={:icon_p2p}>{dgettext("help_p2p", "One Session at a Time")}</.help_h4>
@@ -43,7 +62,7 @@
 <p>
   {dgettext(
     "help_p2p",
-    "When the server has a TURN relay configured, Toggle Privacy Mode in the P2P menu forces the whole connection through the relay, so your IP address is never shared with your peer. The preference is remembered for future sessions."
+    "When the server has a TURN relay configured, the setup dialog or Toggle Privacy Mode in the P2P menu can force the whole connection through the relay, so your IP address is never shared with your peer. The preference is remembered for future sessions."
   )}
 </p>
 <.help_h4 icon={:icon_link}>{dgettext("help_p2p", "See Also")}</.help_h4>

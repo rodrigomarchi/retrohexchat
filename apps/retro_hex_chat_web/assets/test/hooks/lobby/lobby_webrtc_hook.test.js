@@ -114,6 +114,9 @@ describe("LobbyWebRTCHook", () => {
     hook.iceServers = [];
     await hook._createConnection();
     hook.pc.connectionState = "connected";
+    hook.el.dispatchEvent(
+      new CustomEvent("lobby_media_source_changed", { detail: { source: "screen" } }),
+    );
 
     await hook._sampleStats();
 
@@ -122,7 +125,7 @@ describe("LobbyWebRTCHook", () => {
       expect.objectContaining({
         connection: expect.any(Object),
         audio: expect.any(Object),
-        video: expect.any(Object),
+        video: expect.objectContaining({ source: "screen" }),
         game: expect.any(Object),
         file: expect.any(Object),
       }),

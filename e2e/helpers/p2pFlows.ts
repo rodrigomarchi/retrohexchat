@@ -3,9 +3,9 @@ import {
   BrowserContext,
   BrowserContextOptions,
   Page,
-} from '@playwright/test';
-import { ChatPage } from '../pages/ChatPage';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
+} from "@playwright/test";
+import { ChatPage } from "../pages/ChatPage";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 
 export type P2PTestUser = {
   chat: ChatPage;
@@ -20,14 +20,13 @@ type NewP2PUserOptions = {
   acceptDownloads?: boolean;
   media?:
     | boolean
-    | 'camera-denied'
-    | 'camera-missing'
-    | 'camera-busy'
-    | 'mic-missing'
-    | 'mic-busy';
-  permissions?: BrowserContextOptions['permissions'];
+    | "camera-denied"
+    | "camera-missing"
+    | "camera-busy"
+    | "mic-missing"
+    | "mic-busy";
+  permissions?: BrowserContextOptions["permissions"];
 };
-
 
 export async function installSyntheticMedia(ctx: BrowserContext) {
   await ctx.addInitScript(() => {
@@ -60,22 +59,22 @@ export async function installSyntheticMedia(ctx: BrowserContext) {
     }
 
     function createSyntheticVideoTrack() {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement("canvas");
       canvas.width = 320;
       canvas.height = 240;
-      const context = canvas.getContext('2d');
+      const context = canvas.getContext("2d");
       let frame = 0;
 
       const paint = () => {
         if (!context) return;
 
         frame += 1;
-        context.fillStyle = '#001818';
+        context.fillStyle = "#001818";
         context.fillRect(0, 0, canvas.width, canvas.height);
-        context.fillStyle = '#00ffff';
+        context.fillStyle = "#00ffff";
         context.fillRect((frame * 7) % canvas.width, 32, 64, 64);
-        context.fillStyle = '#ffffff';
-        context.font = '16px monospace';
+        context.fillStyle = "#ffffff";
+        context.font = "16px monospace";
         context.fillText(`p2p media ${frame}`, 16, 180);
       };
 
@@ -83,7 +82,7 @@ export async function installSyntheticMedia(ctx: BrowserContext) {
       const timer = window.setInterval(paint, 100);
       const stream = canvas.captureStream(10);
       const track = stream.getVideoTracks()[0];
-      track.addEventListener('ended', () => window.clearInterval(timer));
+      track.addEventListener("ended", () => window.clearInterval(timer));
 
       mockWindow.__mockMediaSources?.push({ canvas, timer });
 
@@ -107,21 +106,26 @@ export async function installSyntheticMedia(ctx: BrowserContext) {
 
         return stream;
       },
+      getDisplayMedia: async () => {
+        const stream = new MediaStream();
+        stream.addTrack(createSyntheticVideoTrack());
+        return stream;
+      },
       enumerateDevices: async () => [
         {
-          deviceId: 'mock-mic',
-          groupId: 'mock-p2p-media',
-          kind: 'audioinput',
-          label: 'Mock Microphone',
+          deviceId: "mock-mic",
+          groupId: "mock-p2p-media",
+          kind: "audioinput",
+          label: "Mock Microphone",
           toJSON() {
             return this;
           },
         },
         {
-          deviceId: 'mock-camera',
-          groupId: 'mock-p2p-media',
-          kind: 'videoinput',
-          label: 'Mock Camera',
+          deviceId: "mock-camera",
+          groupId: "mock-p2p-media",
+          kind: "videoinput",
+          label: "Mock Camera",
           toJSON() {
             return this;
           },
@@ -131,7 +135,7 @@ export async function installSyntheticMedia(ctx: BrowserContext) {
       removeEventListener: () => {},
     };
 
-    Object.defineProperty(navigator, 'mediaDevices', {
+    Object.defineProperty(navigator, "mediaDevices", {
       configurable: true,
       value: mediaDevices,
     });
@@ -171,7 +175,7 @@ export async function installAudioOnlyCameraDeniedMedia(ctx: BrowserContext) {
     const mediaDevices = {
       getUserMedia: async (constraints: MediaStreamConstraints = {}) => {
         if (constraints.video) {
-          throw new DOMException('Camera permission denied', 'NotAllowedError');
+          throw new DOMException("Camera permission denied", "NotAllowedError");
         }
 
         const stream = new MediaStream();
@@ -186,19 +190,19 @@ export async function installAudioOnlyCameraDeniedMedia(ctx: BrowserContext) {
       },
       enumerateDevices: async () => [
         {
-          deviceId: 'mock-mic',
-          groupId: 'mock-p2p-media',
-          kind: 'audioinput',
-          label: 'Mock Microphone',
+          deviceId: "mock-mic",
+          groupId: "mock-p2p-media",
+          kind: "audioinput",
+          label: "Mock Microphone",
           toJSON() {
             return this;
           },
         },
         {
-          deviceId: 'mock-camera-denied',
-          groupId: 'mock-p2p-media',
-          kind: 'videoinput',
-          label: 'Blocked Camera',
+          deviceId: "mock-camera-denied",
+          groupId: "mock-p2p-media",
+          kind: "videoinput",
+          label: "Blocked Camera",
           toJSON() {
             return this;
           },
@@ -208,7 +212,7 @@ export async function installAudioOnlyCameraDeniedMedia(ctx: BrowserContext) {
       removeEventListener: () => {},
     };
 
-    Object.defineProperty(navigator, 'mediaDevices', {
+    Object.defineProperty(navigator, "mediaDevices", {
       configurable: true,
       value: mediaDevices,
     });
@@ -217,11 +221,7 @@ export async function installAudioOnlyCameraDeniedMedia(ctx: BrowserContext) {
 
 export async function installMediaWithDeviceFailure(
   ctx: BrowserContext,
-  failure:
-    | 'camera-missing'
-    | 'camera-busy'
-    | 'mic-missing'
-    | 'mic-busy',
+  failure: "camera-missing" | "camera-busy" | "mic-missing" | "mic-busy",
 ) {
   await ctx.addInitScript((failureMode) => {
     type MockWindow = typeof window & {
@@ -253,15 +253,15 @@ export async function installMediaWithDeviceFailure(
     }
 
     function createSyntheticVideoTrack() {
-      const canvas = document.createElement('canvas');
+      const canvas = document.createElement("canvas");
       canvas.width = 320;
       canvas.height = 240;
-      const context = canvas.getContext('2d');
+      const context = canvas.getContext("2d");
 
       if (context) {
-        context.fillStyle = '#101820';
+        context.fillStyle = "#101820";
         context.fillRect(0, 0, canvas.width, canvas.height);
-        context.fillStyle = '#ffd166';
+        context.fillStyle = "#ffd166";
         context.fillRect(40, 40, 120, 80);
       }
 
@@ -269,21 +269,21 @@ export async function installMediaWithDeviceFailure(
       return stream.getVideoTracks()[0];
     }
 
-    function failureFor(kind: 'audio' | 'video') {
-      if (kind === 'video' && failureMode === 'camera-missing') {
-        return new DOMException('No camera found', 'NotFoundError');
+    function failureFor(kind: "audio" | "video") {
+      if (kind === "video" && failureMode === "camera-missing") {
+        return new DOMException("No camera found", "NotFoundError");
       }
 
-      if (kind === 'video' && failureMode === 'camera-busy') {
-        return new DOMException('Camera busy', 'NotReadableError');
+      if (kind === "video" && failureMode === "camera-busy") {
+        return new DOMException("Camera busy", "NotReadableError");
       }
 
-      if (kind === 'audio' && failureMode === 'mic-missing') {
-        return new DOMException('No microphone found', 'NotFoundError');
+      if (kind === "audio" && failureMode === "mic-missing") {
+        return new DOMException("No microphone found", "NotFoundError");
       }
 
-      if (kind === 'audio' && failureMode === 'mic-busy') {
-        return new DOMException('Microphone busy', 'NotReadableError');
+      if (kind === "audio" && failureMode === "mic-busy") {
+        return new DOMException("Microphone busy", "NotReadableError");
       }
 
       return null;
@@ -291,10 +291,10 @@ export async function installMediaWithDeviceFailure(
 
     const mediaDevices = {
       getUserMedia: async (constraints: MediaStreamConstraints = {}) => {
-        const videoFailure = constraints.video ? failureFor('video') : null;
+        const videoFailure = constraints.video ? failureFor("video") : null;
         if (videoFailure) throw videoFailure;
 
-        const audioFailure = constraints.audio ? failureFor('audio') : null;
+        const audioFailure = constraints.audio ? failureFor("audio") : null;
         if (audioFailure) throw audioFailure;
 
         const stream = new MediaStream();
@@ -308,19 +308,19 @@ export async function installMediaWithDeviceFailure(
       },
       enumerateDevices: async () => [
         {
-          deviceId: 'mock-mic',
-          groupId: 'mock-p2p-media',
-          kind: 'audioinput',
-          label: 'Mock Microphone',
+          deviceId: "mock-mic",
+          groupId: "mock-p2p-media",
+          kind: "audioinput",
+          label: "Mock Microphone",
           toJSON() {
             return this;
           },
         },
         {
-          deviceId: 'mock-camera',
-          groupId: 'mock-p2p-media',
-          kind: 'videoinput',
-          label: 'Mock Camera',
+          deviceId: "mock-camera",
+          groupId: "mock-p2p-media",
+          kind: "videoinput",
+          label: "Mock Camera",
           toJSON() {
             return this;
           },
@@ -330,7 +330,7 @@ export async function installMediaWithDeviceFailure(
       removeEventListener: () => {},
     };
 
-    Object.defineProperty(navigator, 'mediaDevices', {
+    Object.defineProperty(navigator, "mediaDevices", {
       configurable: true,
       value: mediaDevices,
     });
@@ -339,7 +339,7 @@ export async function installMediaWithDeviceFailure(
 
 export async function newP2PUser(
   browser: Browser,
-  prefix = 'p2p',
+  prefix = "p2p",
   options: NewP2PUserOptions = {},
 ): Promise<P2PTestUser> {
   const contextOptions: BrowserContextOptions = {};
@@ -349,18 +349,21 @@ export async function newP2PUser(
   }
 
   if (options.media) {
-    contextOptions.permissions = options.permissions || ['microphone', 'camera'];
+    contextOptions.permissions = options.permissions || [
+      "microphone",
+      "camera",
+    ];
   }
 
   const ctx = await browser.newContext(contextOptions);
 
-  if (options.media === 'camera-denied') {
+  if (options.media === "camera-denied") {
     await installAudioOnlyCameraDeniedMedia(ctx);
   } else if (
-    options.media === 'camera-missing' ||
-    options.media === 'camera-busy' ||
-    options.media === 'mic-missing' ||
-    options.media === 'mic-busy'
+    options.media === "camera-missing" ||
+    options.media === "camera-busy" ||
+    options.media === "mic-missing" ||
+    options.media === "mic-busy"
   ) {
     await installMediaWithDeviceFailure(ctx, options.media);
   } else if (options.media) {
@@ -371,7 +374,7 @@ export async function newP2PUser(
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
-  const password = 'pass12345';
+  const password = "pass12345";
 
   await connect.open();
   await connect.enterNickname(nick);
