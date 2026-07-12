@@ -32,6 +32,8 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── P2P session windows ──────────────────────────────────────
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
+  import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
+  import RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog
   import RetroHexChatWeb.Components.UI.GroupCall.StatsPanel
 
   # ── Solo arcade window body ──────────────────────────────────
@@ -734,7 +736,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
       space_last_avatar: "redtunic_hero",
       group_call: nil,
       group_call_channels: MapSet.new(),
+      group_call_channel_summaries: %{},
       group_call_pending: nil,
+      group_call_prejoin: nil,
+      group_call_prejoin_preferences: nil,
       p2p_session: nil,
       p2p_pending: nil,
       arcade_session: nil,
@@ -934,4 +939,20 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   defp channel_group_call_active?(_channels, _channel_name), do: false
+
+  defp channel_group_call_summary(summaries, group_call, channel_name)
+       when is_binary(channel_name) do
+    cond do
+      is_map(group_call) and group_call.channel_name == channel_name ->
+        group_call
+
+      is_map(summaries) ->
+        Map.get(summaries, channel_name)
+
+      true ->
+        nil
+    end
+  end
+
+  defp channel_group_call_summary(_summaries, _group_call, _channel_name), do: nil
 end

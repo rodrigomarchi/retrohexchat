@@ -1,0 +1,101 @@
+<p>
+  {dgettext(
+    "help_p2p",
+    "Channel conferences are audio/video calls attached to the active channel. Use the Call button in the channel topic bar to open the pre-join dialog before entering."
+  )}
+</p>
+
+<.help_h4 icon={:icon_conference}>{dgettext("help_p2p", "Channel Indicator")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "When a channel has an active conference, the Call control shows a live badge with state, participant count and elapsed time. The info button opens a summary with participants, current speaker when available, media icons and a Join/Open action. Channel tabs and the conversations sidebar also show a compact conference glyph."
+  )}
+</p>
+
+<.help_h4 icon={:icon_devices}>{dgettext("help_p2p", "Pre-join and Devices")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "The pre-join dialog lets you preview your camera, choose microphone, camera and speaker devices, and decide whether to join with microphone or camera enabled. Permission and device failures show a Retry action, and you can still join receive-only. Layout and media defaults are remembered for your account; browser-specific device choices are remembered locally."
+  )}
+</p>
+
+<.help_h4 icon={:icon_layout_focus}>{dgettext("help_p2p", "Layouts")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Inside the conference window, use the layout buttons to switch between automatic, grid, focus and speaker layouts, show or hide the participant panel, pin important participants, cycle your self-view between tile, picture-in-picture and hidden, or switch to compact mode when you want the call to stay visible while you keep working in chat. Larger calls automatically use a denser grid while focus and speaker layouts keep a filmstrip for the remaining participants."
+  )}
+</p>
+
+<.help_h4 icon={:icon_dialog_cheatsheet}>{dgettext("help_p2p", "Keyboard")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "When a conference is active, use Ctrl+Shift+ArrowUp to mute or unmute your microphone, Ctrl+Shift+ArrowLeft to start or stop your camera, Ctrl+Shift+ArrowRight to cycle layouts, Ctrl+Shift+ArrowDown to focus the next participant, and Ctrl+Shift+Q to open the leave confirmation. Hold Ctrl+Shift+Z for push-to-talk while muted. Conference shortcuts do not fire from editable text fields."
+  )}
+</p>
+
+<.help_h4 icon={:icon_screen_share}>{dgettext("help_p2p", "Screen Sharing")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Use the screen share button in the conference toolbar to publish your selected screen or window. The shared screen replaces your outgoing camera video while it is active, becomes the focused conference tile, and returns to camera when you stop sharing or the browser ends capture."
+  )}
+</p>
+
+<.help_h4 icon={:icon_quality_high}>{dgettext("help_p2p", "Speaker and Quality")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Participant tiles and the participant panel highlight the current speaker when browser audio levels are available. Quality badges summarize recent browser connection stats such as RTT, packet loss, bitrate, frame rate and freezes for each remote participant."
+  )}
+</p>
+
+<.help_h4 icon={:icon_heart}>{dgettext("help_p2p", "Reactions")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Use the reaction buttons in the conference toolbar to send a short visual reaction. Reactions are ephemeral, appear on participant tiles and rows, are not stored as chat messages, and are lightly rate limited to avoid spam."
+  )}
+</p>
+
+<.help_h4 icon={:icon_warning}>{dgettext("help_p2p", "Empty and Failure States")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "The conference window shows explicit states while waiting for participants, joining receive-only, recovering media, or handling a failed connection. Recoverable failures keep the call open and expose Retry; leaving from a warning or error still uses the confirmation dialog so microphone, camera and SFU cleanup stay predictable."
+  )}
+</p>
+
+<.help_h4 icon={:icon_btn_refresh}>{dgettext("help_p2p", "Recovery")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "If the media connection is interrupted, the conference tries a short automatic recovery sequence. When automatic recovery is exhausted, use Retry to request a fresh media offer without closing the conference window."
+  )}
+</p>
+
+<.help_h4 icon={:icon_ban}>{dgettext("help_p2p", "Moderation")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "Channel moderators can end the conference, lock or unlock new admission, mute microphones, turn participant cameras off, stop and temporarily block screen sharing, use bulk mute/camera-off for lower-ranked participants, allow raised-hand participants to speak, and remove users from both the conference and the channel when channel policy allows it. Participants can raise a hand when they need to speak; moderators see the request queue and allowing speech unmutes the participant. A locked conference keeps users in the channel but blocks non-moderators from joining the call. Camera or screen sharing disabled by moderation is shown differently from a participant turning it off voluntarily. Destructive and bulk actions ask for confirmation first. Administrative events are recorded with the conference and relevant events appear as system messages in the channel without turning media/presence updates into chat spam."
+  )}
+</p>
+
+<.help_h4 icon={:icon_status_signal}>{dgettext("help_p2p", "Statistics")}</.help_h4>
+<p>
+  {dgettext(
+    "help_p2p",
+    "A conference statistics window opens with the call and shows both server-side SFU state and live browser connection metrics. Use the stats/dock control in the conference header to arrange the call and statistics side by side without moving focus away from the call. Closing the statistics window leaves the conference, so minimize it to keep the session running."
+  )}
+</p>
+
+<p>
+  {dgettext("help_p2p", "See also:")}
+  <.help_link topic="feature-media-devices">{dgettext("help_p2p", "Media Devices")}</.help_link>
+  · <.help_link topic="feature-call-quality">{dgettext("help_p2p", "Call Quality")}</.help_link>
+  · <.help_link topic="ui-conversations">{dgettext("help_p2p", "Conversations")}</.help_link>
+</p>

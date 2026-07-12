@@ -14,7 +14,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
 
   attr :mode, :atom,
     default: :leave,
-    values: [:leave, :close, :switch, :end_call, :kick_participant]
+    values: [:leave, :close, :switch, :end_call, :kick_participant, :mute_all, :camera_off_all]
 
   attr :channel, :string, default: nil
   attr :new_channel, :string, default: nil
@@ -79,6 +79,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
   defp title(:switch), do: dgettext("group_call", "Switch Group Call")
   defp title(:end_call), do: dgettext("group_call", "End Group Call")
   defp title(:kick_participant), do: dgettext("group_call", "Remove From Channel?")
+  defp title(:mute_all), do: dgettext("group_call", "Mute Everyone?")
+  defp title(:camera_off_all), do: dgettext("group_call", "Turn Cameras Off?")
 
   defp body(:leave, channel, _new_channel, _target_nickname) do
     dgettext(
@@ -122,11 +124,29 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
     )
   end
 
+  defp body(:mute_all, channel, _new_channel, _target_nickname) do
+    dgettext(
+      "group_call",
+      "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again.",
+      channel: channel || "?"
+    )
+  end
+
+  defp body(:camera_off_all, channel, _new_channel, _target_nickname) do
+    dgettext(
+      "group_call",
+      "Turn off cameras for all lower-ranked participants in %{channel}? They cannot turn camera back on until a moderator allows it again.",
+      channel: channel || "?"
+    )
+  end
+
   defp confirm_label(:leave), do: dgettext("group_call", "Leave call")
   defp confirm_label(:close), do: dgettext("group_call", "Leave call")
   defp confirm_label(:switch), do: dgettext("group_call", "Switch call")
   defp confirm_label(:end_call), do: dgettext("group_call", "End call")
   defp confirm_label(:kick_participant), do: dgettext("group_call", "Remove and ban")
+  defp confirm_label(:mute_all), do: dgettext("group_call", "Mute all")
+  defp confirm_label(:camera_off_all), do: dgettext("group_call", "Cameras off")
 
   attr :name, :atom, required: true
   attr :class, :string, default: nil
@@ -142,9 +162,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
   defp mode_icon(:switch), do: :icon_btn_join
   defp mode_icon(:end_call), do: :icon_phone_end
   defp mode_icon(:kick_participant), do: :icon_ban
+  defp mode_icon(:mute_all), do: :icon_mute
+  defp mode_icon(:camera_off_all), do: :icon_camera_off
 
   defp confirm_icon(:switch), do: :icon_btn_join
   defp confirm_icon(:kick_participant), do: :icon_ban
+  defp confirm_icon(:mute_all), do: :icon_mute
+  defp confirm_icon(:camera_off_all), do: :icon_camera_off
   defp confirm_icon(_mode), do: :icon_phone_end
 
   defp dialog_badge_class(:kick_participant),
@@ -154,6 +178,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
   defp dialog_badge_class(:end_call),
     do:
       "flex h-9 w-9 shrink-0 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-sunken"
+
+  defp dialog_badge_class(:mute_all),
+    do:
+      "flex h-9 w-9 shrink-0 items-center justify-center bg-warning text-foreground shadow-retro-sunken"
+
+  defp dialog_badge_class(:camera_off_all),
+    do:
+      "flex h-9 w-9 shrink-0 items-center justify-center bg-warning text-foreground shadow-retro-sunken"
 
   defp dialog_badge_class(_mode),
     do: "flex h-9 w-9 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken"
@@ -191,6 +223,28 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
       %{icon: :icon_phone_end, label: dgettext("group_call", "Conference connection closes")},
       %{icon: :icon_ban, label: dgettext("group_call", "Channel access is banned")},
       %{icon: :icon_shield, label: dgettext("group_call", "Operators can unban later")}
+    ]
+  end
+
+  defp impact_items(:mute_all) do
+    [
+      %{icon: :icon_role_halfop, label: dgettext("group_call", "Only lower ranks are affected")},
+      %{icon: :icon_mute, label: dgettext("group_call", "Microphones are server-muted")},
+      %{
+        icon: :icon_shield,
+        label: dgettext("group_call", "Moderators can allow individuals later")
+      }
+    ]
+  end
+
+  defp impact_items(:camera_off_all) do
+    [
+      %{icon: :icon_role_halfop, label: dgettext("group_call", "Only lower ranks are affected")},
+      %{icon: :icon_camera_off, label: dgettext("group_call", "Cameras are server-blocked")},
+      %{
+        icon: :icon_shield,
+        label: dgettext("group_call", "Moderators can allow individuals later")
+      }
     ]
   end
 end

@@ -6,6 +6,7 @@ describe("ShortcutDispatcherHook", () => {
 
   const testBindings = {
     toggle_search: { key: "f", modifiers: ["ctrl", "shift"] },
+    group_call_toggle_audio: { key: "ArrowUp", modifiers: ["ctrl", "shift"] },
     next_channel: { key: "ArrowRight", modifiers: ["ctrl", "shift"] },
   };
 
@@ -43,6 +44,51 @@ describe("ShortcutDispatcherHook", () => {
       document.dispatchEvent(new KeyboardEvent("keydown", { key: "f", bubbles: true }));
       const actionCalls = hook.pushEvent.mock.calls.filter((c) => c[0] === "shortcut_action");
       expect(actionCalls).toHaveLength(0);
+    });
+
+    it("pushes conference shortcuts outside editable fields", () => {
+      hook.pushEvent.mockClear();
+      document.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "ArrowUp",
+          ctrlKey: true,
+          shiftKey: true,
+          bubbles: true,
+        }),
+      );
+      expect(hook.pushEvent).toHaveBeenCalledWith("shortcut_action", {
+        action: "group_call_toggle_audio",
+      });
+    });
+
+    it("ignores conference shortcuts from editable fields", () => {
+      hook.pushEvent.mockClear();
+      const input = document.createElement("input");
+      document.body.appendChild(input);
+
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", {
+          key: "ArrowUp",
+          ctrlKey: true,
+          shiftKey: true,
+          bubbles: true,
+        }),
+      );
+
+      const actionCalls = hook.pushEvent.mock.calls.filter((c) => c[0] === "shortcut_action");
+      expect(actionCalls).toHaveLength(0);
+    });
+
+    it("preserves non-conference shortcuts from editable fields", () => {
+      hook.pushEvent.mockClear();
+      const input = document.createElement("input");
+      document.body.appendChild(input);
+
+      input.dispatchEvent(
+        new KeyboardEvent("keydown", { key: "f", ctrlKey: true, shiftKey: true, bubbles: true }),
+      );
+
+      expect(hook.pushEvent).toHaveBeenCalledWith("shortcut_action", { action: "toggle_search" });
     });
   });
 

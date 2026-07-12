@@ -41,6 +41,12 @@ export const lazyFeatureHooks = {
     readyEvent: "group_call_webrtc_ready",
     reason: "Group-call SFU signaling and media capture are only needed inside a call window.",
   }),
+  GroupCallPreJoinHook: lazyFeatureHook({
+    name: "GroupCallPreJoinHook",
+    loader: () => import("./group_call/group_call_prejoin_hook"),
+    serverEvents: [],
+    reason: "Group-call device preview is only needed while the pre-join dialog is open.",
+  }),
   LobbyGameCanvasHook: lazyFeatureHook({
     name: "LobbyGameCanvasHook",
     loader: () => import("./lobby/lobby_game_canvas_hook"),

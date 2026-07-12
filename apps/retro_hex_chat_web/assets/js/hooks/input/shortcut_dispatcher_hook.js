@@ -10,6 +10,18 @@
  */
 import { findShortcutAction } from "../../lib/input/shortcuts.js";
 
+function isEditableTarget(target) {
+  if (!(target instanceof Element)) return false;
+
+  return !!target.closest(
+    'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="textbox"]',
+  );
+}
+
+function isConferenceAction(action) {
+  return typeof action === "string" && action.startsWith("group_call_");
+}
+
 const ShortcutDispatcherHook = {
   mounted() {
     this.bindings = {};
@@ -28,6 +40,8 @@ const ShortcutDispatcherHook = {
       const action = findShortcutAction(this.bindings, key);
 
       if (action) {
+        if (isConferenceAction(action) && isEditableTarget(e.target)) return;
+
         e.preventDefault();
         e.stopPropagation();
         this.pushEvent("shortcut_action", { action });

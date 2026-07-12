@@ -404,6 +404,7 @@ defmodule RetroHexChat.Channels.Server do
           state.name,
           {:user_kicked,
            %{
+             channel: state.name,
              operator: actor_nick,
              target: target_nick,
              reason: reason
@@ -883,7 +884,7 @@ defmodule RetroHexChat.Channels.Server do
     |> Enum.reduce(state, fn target, acc ->
       broadcast(
         acc.name,
-        {:user_kicked, %{operator: operator, target: target, reason: reason}}
+        {:user_kicked, %{channel: acc.name, operator: operator, target: target, reason: reason}}
       )
 
       %{acc | membership: Membership.remove(acc.membership, target)}

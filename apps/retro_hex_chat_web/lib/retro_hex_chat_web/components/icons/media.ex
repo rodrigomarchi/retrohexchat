@@ -119,6 +119,36 @@ defmodule RetroHexChatWeb.Icons.Media do
 
   attr :class, :string, default: nil
 
+  @spec icon_raise_hand(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_raise_hand(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true" shape-rendering="crispEdges">
+      <rect x="10" y="5" width="4" height="13" fill="#000" transform="translate(1,1)" />
+      <rect x="14" y="3" width="4" height="16" fill="#000" transform="translate(1,1)" />
+      <rect x="18" y="6" width="4" height="14" fill="#000" transform="translate(1,1)" />
+      <rect x="22" y="10" width="4" height="11" fill="#000" transform="translate(1,1)" />
+      <rect x="7" y="14" width="7" height="6" fill="#000" transform="translate(1,1)" />
+      <rect x="9" y="18" width="16" height="10" fill="#000" transform="translate(1,1)" />
+
+      <rect x="10" y="5" width="4" height="13" fill="#FFD700" stroke="#000" stroke-width="1" />
+      <rect x="14" y="3" width="4" height="16" fill="#FFD700" stroke="#000" stroke-width="1" />
+      <rect x="18" y="6" width="4" height="14" fill="#FFD700" stroke="#000" stroke-width="1" />
+      <rect x="22" y="10" width="4" height="11" fill="#FFD700" stroke="#000" stroke-width="1" />
+      <rect x="7" y="14" width="7" height="6" fill="#FFD700" stroke="#000" stroke-width="1" />
+      <rect x="9" y="18" width="16" height="10" fill="#FFD700" stroke="#000" stroke-width="1" />
+
+      <rect x="11" y="6" width="1" height="10" fill="#fff" opacity="0.8" />
+      <rect x="15" y="4" width="1" height="12" fill="#fff" opacity="0.8" />
+      <rect x="19" y="7" width="1" height="11" fill="#fff" opacity="0.75" />
+      <rect x="10" y="21" width="13" height="1" fill="#fff" opacity="0.65" />
+      <rect x="11" y="27" width="12" height="2" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <rect x="25" y="6" width="3" height="3" fill="#FF0000" stroke="#000" stroke-width="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_camera(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_camera(assigns) do
     ~H"""
@@ -198,6 +228,25 @@ defmodule RetroHexChatWeb.Icons.Media do
       <!-- Red Slash -->
       <line x1="3" y1="3" x2="29" y2="29" stroke="#FF0000" stroke-width="4" stroke-linecap="round" />
       <line x1="5" y1="4" x2="28" y2="27" stroke="#FF8080" stroke-width="1" stroke-linecap="round" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_screen_share(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_screen_share(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="4" y="5" width="22" height="16" fill="#000" transform="translate(1,1)" />
+      <rect x="4" y="5" width="22" height="16" fill="#000080" stroke="#000" stroke-width="1.5" />
+      <rect x="6" y="7" width="18" height="12" fill="#008080" stroke="#000" stroke-width="1" />
+      <rect x="7" y="8" width="16" height="2" fill="#00FFFF" opacity="0.8" />
+      <rect x="10" y="22" width="10" height="2" fill="#808080" stroke="#000" stroke-width="1" />
+      <rect x="8" y="25" width="14" height="3" fill="#C0C0C0" stroke="#000" stroke-width="1" />
+      <path d="M16 11 L22 17 H18 V22 H14 V17 H10 Z" fill="#FFD700" stroke="#000" stroke-width="1" />
+      <rect x="15" y="13" width="2" height="6" fill="#000080" />
+      <rect x="12" y="16" width="8" height="2" fill="#000080" />
     </svg>
     """
   end

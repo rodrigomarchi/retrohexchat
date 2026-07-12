@@ -18,7 +18,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
   @spec layout_controls(map()) :: Phoenix.LiveView.Rendered.t()
   def layout_controls(assigns) do
     ~H"""
-    <div class="flex shrink-0 items-center gap-px" data-testid="group-call-layout-controls">
+    <div
+      class="flex shrink-0 items-center gap-px"
+      role="toolbar"
+      aria-label={dgettext("group_call", "Conference layout controls")}
+      data-testid="group-call-layout-controls"
+    >
       <.layout_button
         mode={:auto}
         current={layout_mode(@call)}
@@ -47,6 +52,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         testid="group-call-layout-focus"
       >
         <Icons.icon_layout_focus class="h-3.5 w-3.5" />
+      </.layout_button>
+
+      <.layout_button
+        mode={:speaker}
+        current={layout_mode(@call)}
+        event={@on_layout_mode}
+        label={dgettext("group_call", "Speaker layout")}
+        testid="group-call-layout-speaker"
+      >
+        <Icons.icon_microphone class="h-3.5 w-3.5" />
       </.layout_button>
 
       <button
@@ -123,8 +138,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
     ])
   end
 
-  defp layout_mode(%{layout: %{mode: mode}}) when mode in [:auto, :grid, :focus, :sidebar],
-    do: mode
+  defp layout_mode(%{layout: %{mode: mode}})
+       when mode in [:auto, :grid, :focus, :sidebar, :speaker],
+       do: mode
 
   defp layout_mode(_call), do: :auto
 

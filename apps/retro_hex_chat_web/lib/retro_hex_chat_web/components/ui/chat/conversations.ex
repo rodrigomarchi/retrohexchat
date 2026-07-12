@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.EmptyState
+  import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
   import RetroHexChatWeb.Components.UI.TreeView
 
   alias RetroHexChatWeb.Icons
@@ -66,6 +67,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :muted_channels, :list, default: []
   attr :disconnected_channels, :list, default: [], doc: "Channels marked disconnected"
   attr :group_call_channels, :list, default: [], doc: "Channels with an active conference"
+  attr :group_call_summaries, :map, default: %{}, doc: "Conference summaries keyed by channel"
   attr :pm_conversations, :list, default: []
   attr :active_pm, :string, default: nil
   attr :unread_pms, :list, default: []
@@ -153,6 +155,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               muted={ch in @muted_channels}
               disconnected={ch in @disconnected_channels}
               group_call_active={ch in @group_call_channels}
+              group_call_summary={Map.get(@group_call_summaries || %{}, ch)}
               user_count={Map.get(@channel_user_counts, ch)}
               on_click={@on_channel_click}
               on_dblclick={@on_channel_dblclick}
@@ -225,6 +228,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :muted, :boolean, default: false
   attr :disconnected, :boolean, default: false
   attr :group_call_active, :boolean, default: false
+  attr :group_call_summary, :map, default: nil
   attr :user_count, :integer, default: nil
   attr :on_click, :any, default: nil
   attr :on_dblclick, :any, default: nil
@@ -261,11 +265,13 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       <span class="flex-1 truncate">{@name}</span>
       <span
         :if={@group_call_active}
-        class="inline-flex h-4 w-4 shrink-0 items-center justify-center text-success"
-        title={dgettext("group_call", "Conference active")}
-        data-testid={"channel-group-call-glyph-#{@name}"}
+        class="shrink-0"
       >
-        <Icons.icon_conference class="h-3.5 w-3.5" />
+        <.group_call_channel_glyph
+          channel={@name}
+          summary={@group_call_summary}
+          testid={"channel-group-call-glyph-#{@name}"}
+        />
       </span>
       <span
         :if={@user_count}

@@ -86,6 +86,28 @@ defmodule RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog do
      )}
   end
 
+  def update(%{action: {:open_mute_all, channel}}, socket) do
+    {:ok,
+     assign(socket,
+       show: true,
+       mode: :mute_all,
+       channel: channel,
+       new_channel: nil,
+       target_nickname: nil
+     )}
+  end
+
+  def update(%{action: {:open_camera_off_all, channel}}, socket) do
+    {:ok,
+     assign(socket,
+       show: true,
+       mode: :camera_off_all,
+       channel: channel,
+       new_channel: nil,
+       target_nickname: nil
+     )}
+  end
+
   def update(%{action: :close}, socket), do: {:ok, assign(socket, show: false)}
   def update(_assigns, socket), do: {:ok, socket}
 
@@ -106,6 +128,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.GroupCallConfirmDialog do
             :switch -> "group_call_confirm_switch"
             :end_call -> "group_call_confirm_end_call"
             :kick_participant -> "group_call_confirm_kick_participant"
+            :mute_all -> "group_call_confirm_mute_all"
+            :camera_off_all -> "group_call_confirm_camera_off_all"
             _mode -> "group_call_confirm_leave"
           end
         }

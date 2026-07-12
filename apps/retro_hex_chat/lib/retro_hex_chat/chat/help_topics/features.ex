@@ -993,6 +993,32 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
           )
       },
       %{
+        id: "feature-channel-conference",
+        title: dgettext("help", "Channel Conference"),
+        category: dgettext("help", "P2P & Calls"),
+        keywords: [
+          "conference",
+          "group call",
+          "channel call",
+          "sfu",
+          "pre-join",
+          "devices",
+          "receive-only",
+          "recovery",
+          "reactions",
+          "screen share",
+          "moderation",
+          "statistics"
+        ],
+        icon: :icon_conference,
+        description:
+          dgettext(
+            "help",
+            "Join a channel-scoped audio/video conference with pre-join device preview, layout controls, participant moderation, and live statistics. Conference moderation follows channel permissions: half-operators and above can moderate lower-ranked participants."
+          ),
+        see_also: ["feature-media-devices", "feature-call-quality", "ui-conversations"]
+      },
+      %{
         id: "feature-media-devices",
         title: dgettext("help", "Media Devices"),
         category: dgettext("help", "P2P & Calls"),

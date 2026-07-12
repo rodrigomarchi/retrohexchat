@@ -74,6 +74,13 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     end
   end
 
+  @spec request_offer(integer(), integer()) :: :ok | {:error, term()}
+  def request_offer(room_id, participant_id) do
+    with {:ok, pid} <- Registry.lookup_peer({:peer, room_id, participant_id}) do
+      GenServer.cast(pid, :request_offer)
+    end
+  end
+
   @spec stats(pid()) :: map()
   def stats(pid) when is_pid(pid) do
     GenServer.call(pid, :stats, 1_000)
@@ -170,6 +177,14 @@ defmodule RetroHexChat.GroupCall.PeerServer do
        %{state | pending_remote_candidates: [candidate_json | state.pending_remote_candidates]}}
     else
       {:noreply, add_remote_candidate(state, candidate_json)}
+    end
+  end
+
+  def handle_cast(:request_offer, state) do
+    if PeerConnection.get_signaling_state(state.pc) == :have_local_offer do
+      {:noreply, resend_pending_offer(state)}
+    else
+      {:noreply, send_offer(state, ice_restart?: true)}
     end
   end
 
@@ -401,13 +416,27 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     {:ok, offer} = PeerConnection.create_offer(state.pc, ice_restart: opts[:ice_restart?] == true)
     :ok = PeerConnection.set_local_description(state.pc, offer)
 
+    send_offer_payload(state, offer)
+
+    %{state | last_answer_sdp: nil}
+  end
+
+  defp resend_pending_offer(state) do
+    offer = PeerConnection.get_local_description(state.pc)
+
+    if offer do
+      send_offer_payload(state, offer)
+    end
+
+    state
+  end
+
+  defp send_offer_payload(state, offer) do
     send_channel_event(state.signal_pid, "group_call_offer", %{
       sdp: offer.sdp,
       participant_id: state.participant.id,
       ice_servers: P2P.ice_servers(to_string(state.participant.id))
     })
-
-    %{state | last_answer_sdp: nil}
   end
 
   defp flush_pending_remote_candidates(state) do

@@ -30,6 +30,13 @@ defmodule RetroHexChat.GroupCall.RateLimiter do
     check(Table.table_name(), {:group_call_signal, room_token, user_id}, limit)
   end
 
+  @spec check_reaction_rate(String.t(), integer()) ::
+          :ok | {:error, {:rate_limited, pos_integer()}}
+  def check_reaction_rate(room_token, user_id) do
+    limit = Application.get_env(:retro_hex_chat, :group_call_reaction_rate_limit, {5, 10_000})
+    check(Table.table_name(), {:group_call_reaction, room_token, user_id}, limit)
+  end
+
   @spec check(table(), term(), limit()) :: :ok | {:error, {:rate_limited, pos_integer()}}
   def check(table, key, {max_count, window_ms}) do
     now = System.monotonic_time(:millisecond)

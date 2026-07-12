@@ -5,13 +5,32 @@
  * not travel through the ChatLive process.
  */
 import { Socket } from "phoenix";
+import { t } from "../../lib/i18n.js";
 import { log } from "../../lib/logger.js";
-import { collectFeatureSnapshot, deriveFeatureStats } from "../../lib/p2p/media.js";
-
-const DEFAULT_CONSTRAINTS = { audio: true, video: true };
-const LAYOUT_MODES = new Set(["auto", "grid", "focus", "sidebar"]);
+import {
+  collectFeatureSnapshotFromReports,
+  deriveFeatureStats,
+  getAudioConstraints,
+  getVideoConstraints,
+  setSinkId,
+} from "../../lib/p2p/media.js";
+const LAYOUT_MODES = new Set(["auto", "grid", "focus", "sidebar", "speaker"]);
 const SELF_VIEW_MODES = new Set(["tile", "pip", "hidden"]);
 const STATS_INTERVAL_MS = 2500;
+const RECOVERY_BACKOFF_MS = [1000, 2000, 4000];
+const PUSH_TO_TALK_KEYS = new Set(["z", "Z"]);
+
+function hasOwn(object, key) {
+  return Object.prototype.hasOwnProperty.call(object || {}, key);
+}
+
+function isEditableKeyboardTarget(target) {
+  if (!(target instanceof Element)) return false;
+
+  return !!target.closest(
+    'input, textarea, select, [contenteditable=""], [contenteditable="true"], [role="textbox"]',
+  );
+}
 
 const GroupCallWebRTCHook = {
   mounted() {
@@ -23,7 +42,10 @@ const GroupCallWebRTCHook = {
     this.channel = null;
     this.pendingCandidates = [];
     this.participantId = null;
-    this.mediaEnabled = this._mediaConstraints();
+    this.mediaEnabled = this._mediaStateFromDataset();
+    this.serverAudioMuted = false;
+    this.serverVideoBlocked = false;
+    this.devicePreferences = this._devicePreferencesFromDataset();
     this.closing = false;
     this.offerQueue = Promise.resolve();
     this.lastAnsweredOfferSdp = null;
@@ -35,6 +57,59 @@ const GroupCallWebRTCHook = {
     this.remoteTiles = new Map();
     this.statsTimer = null;
     this.statsPrev = null;
+    this.recoveryTimer = null;
+    this.recoveryAttempts = 0;
+    this.maxRecoveryAttempts = RECOVERY_BACKOFF_MS.length;
+    this.participantStatsPrev = null;
+    this.participantQualityById = new Map();
+    this.activeSpeakerParticipantId = null;
+    this.reactionTimers = new Map();
+    this.pushToTalkActive = false;
+    this.pushToTalkRestoreAudio = null;
+    this.videoSender = null;
+    this.cameraVideoTrack = null;
+    this.screenShare = {
+      active: false,
+      stream: null,
+      track: null,
+    };
+    this.screenShareBlocked = false;
+    this.toggleScreenShareHandler = () => {
+      this._toggleScreenShare();
+    };
+    this.screenShareClickHandler = (event) => {
+      const button = event.target?.closest?.("[data-group-call-screen-share-for]");
+      if (!button || button.dataset.groupCallScreenShareFor !== this.roomToken) return;
+
+      event.preventDefault();
+      this._toggleScreenShare();
+    };
+    this.reactionClickHandler = (event) => {
+      const button = event.target?.closest?.("[data-group-call-reaction]");
+      if (!button || button.dataset.groupCallReactionFor !== this.roomToken) return;
+
+      event.preventDefault();
+      this._sendReaction(button.dataset.groupCallReaction);
+    };
+    this.pushToTalkKeydownHandler = (event) => {
+      this._handlePushToTalkKeydown(event);
+    };
+    this.pushToTalkKeyupHandler = (event) => {
+      this._handlePushToTalkKeyup(event);
+    };
+    this.participantQualityEventHandler = (event) => {
+      const payload = event.detail || {};
+      if (payload.token && payload.token !== this.roomToken) return;
+
+      this._syncParticipantQualityState(payload);
+      this.pushEvent("group_call_participant_quality", payload);
+    };
+    this.recoveryStateEventHandler = (event) => {
+      const payload = event.detail || {};
+      if (payload.token && payload.token !== this.roomToken) return;
+
+      this.pushEvent("group_call_recovery_state", payload);
+    };
 
     if (!this.roomToken || !this.joinToken) {
       log.warn("[group-call] missing room token or join token");
@@ -45,11 +120,26 @@ const GroupCallWebRTCHook = {
       this._setMediaState(payload || {});
     });
 
+    this.handleEvent("group_call_stop_screen_share", (payload) => {
+      this._stopScreenShareByModerator(payload || {});
+    });
+
+    this.handleEvent("group_call_retry_media", () => {
+      this._retryConnection("manual");
+    });
+
     this.handleEvent("group_call_layout_state", (payload) => {
       this._syncLayoutState(payload || {});
     });
 
     this._bindLocalTile();
+    this.el.addEventListener("group-call:toggle-screen-share", this.toggleScreenShareHandler);
+    this.el.addEventListener("group-call:participant-quality", this.participantQualityEventHandler);
+    this.el.addEventListener("group-call:recovery-state", this.recoveryStateEventHandler);
+    document.addEventListener("click", this.screenShareClickHandler);
+    document.addEventListener("click", this.reactionClickHandler);
+    document.addEventListener("keydown", this.pushToTalkKeydownHandler, true);
+    document.addEventListener("keyup", this.pushToTalkKeyupHandler, true);
     this._applyLayout();
     this._connect();
     this.pushEvent("group_call_webrtc_ready", {});
@@ -101,9 +191,28 @@ const GroupCallWebRTCHook = {
       this._upsertParticipant(payload?.participant);
       this.pushEvent("group_call_media_state", payload);
     });
+    this.channel.on("group_call_screen_share_state", (payload) => {
+      this._upsertParticipant(payload?.participant);
+      this._syncTrack(payload?.track);
+      this._applyScreenShareStateToTiles(payload || {});
+      this.pushEvent("group_call_screen_share_state", payload);
+    });
+    this.channel.on("group_call_reaction", (payload) => {
+      this._applyReaction(payload || {});
+      this.pushEvent("group_call_reaction", payload || {});
+    });
+    this.channel.on("group_call_reaction_error", (payload) => {
+      this._notifyWarning(
+        payload?.message || t("Could not send conference reaction."),
+        "reaction_failed",
+      );
+    });
     this.channel.on("group_call_set_media_state", (payload) => {
       this._setMediaState(payload || {});
       this.pushEvent("group_call_media_state_forced", payload || {});
+    });
+    this.channel.on("group_call_stop_screen_share", (payload) => {
+      this._stopScreenShareByModerator(payload || {});
     });
     this.channel.on("group_call_track_updated", (payload) => {
       this._syncTrack(payload?.track);
@@ -123,12 +232,12 @@ const GroupCallWebRTCHook = {
     });
     this.channel.onError(() => {
       if (!this.closing) {
-        this._notifyError("Group call signaling connection failed", "signaling_failed");
+        this._notifyError(t("Group call signaling connection failed"), "signaling_failed");
       }
     });
     this.channel.onClose(() => {
       if (!this.closing && this.participantId) {
-        this._notifyWarning("Group call signaling channel closed", "signaling_closed");
+        this._notifyWarning(t("Group call signaling channel closed"), "signaling_closed");
       }
     });
 
@@ -141,22 +250,22 @@ const GroupCallWebRTCHook = {
             media_constraints: this.mediaEnabled,
           })
           .receive("error", (reply) => {
-            this._notifyError(reply?.message || "Unable to join group call", "join_failed");
+            this._notifyError(reply?.message || t("Unable to join group call"), "join_failed");
           })
           .receive("timeout", () => {
-            this._notifyError("Group call join timed out", "join_timeout");
+            this._notifyError(t("Group call join timed out"), "join_timeout");
           });
       })
       .receive("error", (reply) => {
         log.warn("[group-call] channel join rejected", reply);
         this._notifyError(
-          reply?.reason || "Group call channel rejected the join",
+          reply?.reason || t("Group call channel rejected the join"),
           "channel_join_rejected",
         );
       })
       .receive("timeout", () => {
         log.warn("[group-call] channel join timed out");
-        this._notifyError("Group call channel join timed out", "channel_join_timeout");
+        this._notifyError(t("Group call channel join timed out"), "channel_join_timeout");
       });
   },
 
@@ -168,7 +277,7 @@ const GroupCallWebRTCHook = {
 
   async _processOffer({ sdp, ice_servers }) {
     if (!sdp) {
-      this._notifyError("Group call media negotiation failed", "media_negotiation_failed");
+      this._notifyError(t("Group call media negotiation failed"), "media_negotiation_failed");
       return;
     }
 
@@ -191,7 +300,7 @@ const GroupCallWebRTCHook = {
       this.lastAnsweredOfferSdp = sdp;
     } catch (error) {
       log.warn("[group-call] failed to handle offer", error);
-      this._notifyError("Group call media negotiation failed", "media_negotiation_failed");
+      this._notifyError(t("Group call media negotiation failed"), "media_negotiation_failed");
     }
   },
 
@@ -200,11 +309,7 @@ const GroupCallWebRTCHook = {
 
     this.pc = new RTCPeerConnection({ iceServers });
 
-    this.pc.onconnectionstatechange = () => {
-      this.pushEvent("group_call_connection_state", {
-        state: this.pc.connectionState,
-      });
-    };
+    this.pc.onconnectionstatechange = () => this._handleConnectionStateChange();
 
     this.pc.onicecandidate = (event) => {
       if (!event.candidate) return;
@@ -223,19 +328,31 @@ const GroupCallWebRTCHook = {
   async _ensureLocalTracks() {
     if (this.localStream) return;
 
+    if (!this.mediaEnabled.audio && !this.mediaEnabled.video) {
+      this.localStream = new MediaStream();
+      this._attachLocalStream(this.localStream);
+      this._applyMediaEnabled();
+      return;
+    }
+
     try {
-      this.localStream = await navigator.mediaDevices.getUserMedia(this.mediaEnabled);
+      this.localStream = await navigator.mediaDevices.getUserMedia(this._captureConstraints());
     } catch (error) {
       log.warn("[group-call] media capture failed, answering recvonly", error);
       this._notifyWarning(
-        "Could not access your microphone or camera. You joined receive-only.",
+        t("Could not access your microphone or camera. You joined receive-only."),
         "media_capture_failed",
       );
       return;
     }
 
     for (const track of this.localStream.getTracks()) {
-      this.pc.addTrack(track, this.localStream);
+      const sender = this.pc.addTrack(track, this.localStream);
+
+      if (track.kind === "video") {
+        this.videoSender = sender;
+        this.cameraVideoTrack = track;
+      }
     }
 
     this._attachLocalStream(this.localStream);
@@ -301,6 +418,7 @@ const GroupCallWebRTCHook = {
     }
 
     video.srcObject = stream;
+    this._applyAudioOutput(video);
     this._applyTrackToTile(tile, streamId, track);
     this._applyLayout();
   },
@@ -317,6 +435,9 @@ const GroupCallWebRTCHook = {
     tile.dataset.mediaAudio = "true";
     tile.dataset.mediaVideo = "true";
     tile.dataset.local = "false";
+    tile.dataset.activeSpeaker = "false";
+    tile.dataset.qualityLevel = "unknown";
+    tile.dataset.pinned = "false";
     tile.tabIndex = 0;
     tile.role = "button";
     tile.dataset.testid = `group-call-remote-tile-${streamId}`;
@@ -348,7 +469,7 @@ const GroupCallWebRTCHook = {
     const name = document.createElement("span");
     name.className = "truncate font-bold";
     name.dataset.groupCallTileName = "";
-    name.textContent = "Remote";
+    name.textContent = t("Remote");
 
     nameplate.append(name);
     tile.appendChild(nameplate);
@@ -377,9 +498,67 @@ const GroupCallWebRTCHook = {
 
     tile.dataset.mediaAudio = String(this.mediaEnabled.audio);
     tile.dataset.mediaVideo = String(this.mediaEnabled.video);
-    tile.setAttribute("aria-label", "Focus your video");
-    tile.title = "Focus your video";
+    tile.dataset.mediaScreen = String(this.screenShare?.active === true);
+    tile.dataset.trackSource = this.screenShare?.active === true ? "screen" : "camera";
+    tile.dataset.localEmptyState = this._localEmptyState();
+
+    const name = tile.querySelector("[data-group-call-local-name]");
+    if (name) {
+      tile.dataset.localName ||= name.textContent || t("You");
+      name.textContent =
+        this.screenShare?.active === true ? t("Your screen") : tile.dataset.localName;
+    }
+
+    this._syncLocalEmptyState(tile);
+
+    const label =
+      this.screenShare?.active === true ? t("Focus your shared screen") : t("Focus your video");
+    tile.setAttribute("aria-label", label);
+    tile.title = label;
     this._applyLayout();
+  },
+
+  _localEmptyState() {
+    if (this.screenShare?.active === true) return "screen-share";
+    if (this.mediaEnabled.audio === false && this.mediaEnabled.video === false) {
+      return "receive-only";
+    }
+    if (this.mediaEnabled.video === false) return "camera-off";
+    return "starting";
+  },
+
+  _syncLocalEmptyState(tile) {
+    const title = tile.querySelector("[data-group-call-local-empty-title]");
+    const detail = tile.querySelector("[data-group-call-local-empty-detail]");
+    const copy = this._localEmptyStateCopy(tile.dataset.localEmptyState);
+
+    if (title) title.textContent = copy.title;
+    if (detail) detail.textContent = copy.detail;
+  },
+
+  _localEmptyStateCopy(state) {
+    switch (state) {
+      case "screen-share":
+        return {
+          title: t("Sharing screen"),
+          detail: t("Your screen is replacing the camera feed."),
+        };
+      case "receive-only":
+        return {
+          title: t("Receive-only mode"),
+          detail: t("Your microphone and camera are off."),
+        };
+      case "camera-off":
+        return {
+          title: t("Camera off"),
+          detail: t("Your camera is not being sent."),
+        };
+      default:
+        return {
+          title: t("Camera preview starting"),
+          detail: t("Your local preview appears here when the camera is ready."),
+        };
+    }
   },
 
   _toggleTileFocus(tile) {
@@ -419,6 +598,7 @@ const GroupCallWebRTCHook = {
       focusedStreamId: null,
       selfView: this._normalizeSelfView(this.el.dataset.selfView),
       sidebarOpen: this.el.dataset.sidebarOpen !== "false",
+      pinnedParticipantIds: this._idsFromValue(this.el.dataset.pinnedParticipantIds),
     };
   },
 
@@ -437,6 +617,11 @@ const GroupCallWebRTCHook = {
       "self_participant_id",
       "selfParticipantId",
     );
+    const pinnedParticipantIds = this._payloadValue(
+      payload,
+      "pinned_participant_ids",
+      "pinnedParticipantIds",
+    );
 
     this.layoutState = {
       ...this.layoutState,
@@ -452,6 +637,10 @@ const GroupCallWebRTCHook = {
       selfView:
         selfView === undefined ? this.layoutState.selfView : this._normalizeSelfView(selfView),
       sidebarOpen: sidebarOpen === undefined ? this.layoutState.sidebarOpen : sidebarOpen !== false,
+      pinnedParticipantIds:
+        pinnedParticipantIds === undefined
+          ? this.layoutState.pinnedParticipantIds
+          : this._idsFromValue(pinnedParticipantIds),
     };
 
     if (selfParticipantId !== undefined && selfParticipantId !== null) {
@@ -476,7 +665,7 @@ const GroupCallWebRTCHook = {
     const id = String(participant.id);
     this.participantsById.set(id, {
       id,
-      nickname: participant.nickname || "Remote",
+      nickname: participant.nickname || t("Remote"),
       status: participant.status || "connected",
       media_state: participant.media_state || participant.mediaState || {},
     });
@@ -495,6 +684,8 @@ const GroupCallWebRTCHook = {
 
     const id = String(participantId);
     this.participantsById.delete(id);
+    this.participantQualityById?.delete(id);
+    if (this.activeSpeakerParticipantId === id) this.activeSpeakerParticipantId = null;
 
     for (const [streamId, tile] of this.remoteTiles) {
       if (tile.dataset.participantId !== id) continue;
@@ -506,6 +697,10 @@ const GroupCallWebRTCHook = {
       this.layoutState.focusedParticipantId = null;
       this.layoutState.mode = "auto";
     }
+
+    this.layoutState.pinnedParticipantIds = (this.layoutState.pinnedParticipantIds || []).filter(
+      (participantId) => participantId !== id,
+    );
 
     this._applyLayout();
   },
@@ -523,6 +718,7 @@ const GroupCallWebRTCHook = {
       id: String(track.id),
       participantId: this._stringOrNull(track.participant_id ?? track.participantId),
       kind: track.kind,
+      source: track.source || "camera",
       status: track.status,
       streamId: this._stringOrNull(track.stream_id ?? track.streamId),
       webrtcTrackId: this._stringOrNull(track.webrtc_track_id ?? track.webrtcTrackId),
@@ -562,6 +758,14 @@ const GroupCallWebRTCHook = {
       tile.dataset.participantId = track.participantId;
       this._applyParticipantToTile(tile, track.participantId);
     }
+
+    const source = track?.source || "camera";
+    tile.dataset.trackSource = source;
+    tile.dataset.mediaScreen = String(source === "screen");
+
+    if (track?.participantId) {
+      this._applyParticipantToTile(tile, track.participantId);
+    }
   },
 
   _applyParticipantToTile(tile, participantId) {
@@ -572,18 +776,74 @@ const GroupCallWebRTCHook = {
     const media = participant.media_state || {};
     const audio = media.audio !== false;
     const video = media.video !== false;
+    const screen = media.screen === true || tile.dataset.trackSource === "screen";
+    const nickname = participant.nickname || t("Remote");
 
-    if (name) name.textContent = participant.nickname || "Remote";
+    if (name) {
+      name.textContent = screen ? t("%{nickname}'s screen", { nickname }) : nickname;
+    }
     tile.dataset.mediaAudio = String(audio);
     tile.dataset.mediaVideo = String(video);
-    tile.setAttribute("aria-label", `Focus ${participant.nickname || "participant"}`);
-    tile.title = `Focus ${participant.nickname || "participant"}`;
+    tile.dataset.mediaScreen = String(screen);
+    this._applyParticipantQualityToTile(tile, participantId);
+
+    const label = screen ? `Focus ${nickname}'s shared screen` : `Focus ${nickname}`;
+    tile.setAttribute("aria-label", label);
+    tile.title = label;
+  },
+
+  _applyScreenShareStateToTiles(payload) {
+    const participantId = this._stringOrNull(payload.participant_id ?? payload.participantId);
+    if (!participantId) return;
+
+    const active = payload.active === true;
+    const source = active ? "screen" : "camera";
+    const participant = this.participantsById.get(participantId);
+
+    if (participant) {
+      participant.media_state = {
+        ...(participant.media_state || {}),
+        screen: active,
+      };
+    }
+
+    let tiles = this._tilesForParticipant(participantId).filter(
+      (tile) => tile.dataset.local !== "true",
+    );
+
+    if (tiles.length === 0) {
+      const unassignedRemoteTiles = this._remoteTileElements().filter(
+        (tile) => !tile.dataset.participantId,
+      );
+
+      if (unassignedRemoteTiles.length === 1) {
+        tiles = unassignedRemoteTiles;
+      }
+    }
+
+    for (const tile of tiles) {
+      tile.dataset.participantId = participantId;
+      tile.dataset.trackSource = source;
+      tile.dataset.mediaScreen = String(active);
+      this._applyParticipantToTile(tile, participantId);
+    }
+
+    this._applyLayout();
   },
 
   _tilesForParticipant(participantId) {
     return Array.from(this.el.querySelectorAll("[data-group-call-video-tile]")).filter(
       (tile) => tile.dataset.participantId === String(participantId),
     );
+  },
+
+  _remoteTileElements() {
+    const mappedTiles = Array.from(this.remoteTiles.values());
+    const domTiles = Array.from(
+      this.el.querySelectorAll('[data-group-call-video-tile][data-local="false"]'),
+    );
+
+    return Array.from(new Set([...mappedTiles, ...domTiles]));
   },
 
   _applyLayout() {
@@ -593,13 +853,12 @@ const GroupCallWebRTCHook = {
     const tiles = Array.from(this.el.querySelectorAll("[data-group-call-video-tile]"));
     const visibleTiles = tiles.filter((tile) => this._tileVisible(tile));
     const focusedTile = this._focusedTile(visibleTiles);
-    const remoteCount = Array.from(this.remoteTiles.values()).filter((tile) =>
-      this._tileVisible(tile),
-    ).length;
+    const remoteCount = this._remoteTileElements().filter((tile) => this._tileVisible(tile)).length;
 
     this.el.dataset.layoutMode = this.layoutState.mode;
     this.el.dataset.selfView = this.layoutState.selfView;
     this.el.dataset.sidebarOpen = String(this.layoutState.sidebarOpen);
+    this.el.dataset.pinnedParticipantIds = (this.layoutState.pinnedParticipantIds || []).join(",");
     if (this.layoutState.focusedParticipantId) {
       this.el.dataset.focusedParticipantId = this.layoutState.focusedParticipantId;
     } else {
@@ -607,11 +866,17 @@ const GroupCallWebRTCHook = {
     }
 
     host.dataset.tileCount = String(visibleTiles.length);
+    host.dataset.tileDensity = this._tileDensity(visibleTiles.length);
 
     for (const tile of tiles) {
       const focused = focusedTile === tile;
+      const participantId = this._stringOrNull(tile.dataset.participantId);
+      const pinned =
+        !!participantId && (this.layoutState.pinnedParticipantIds || []).includes(participantId);
       tile.dataset.focused = String(focused);
+      tile.dataset.pinned = String(pinned);
       tile.classList.toggle("group-call-video-tile--focused", focused);
+      tile.classList.toggle("group-call-video-tile--pinned", pinned);
     }
 
     const placeholder = this.el.querySelector("[data-group-call-remote-placeholder]");
@@ -619,7 +884,14 @@ const GroupCallWebRTCHook = {
   },
 
   _focusedTile(tiles) {
-    if (!["focus", "sidebar"].includes(this.layoutState.mode)) return null;
+    if (!["focus", "sidebar", "speaker"].includes(this.layoutState.mode)) return null;
+
+    if (this.layoutState.mode === "speaker" && this.activeSpeakerParticipantId) {
+      const activeSpeaker = tiles.find(
+        (tile) => tile.dataset.participantId === this.activeSpeakerParticipantId,
+      );
+      if (activeSpeaker) return activeSpeaker;
+    }
 
     if (this.layoutState.focusedParticipantId) {
       const byParticipant = tiles.find(
@@ -651,6 +923,27 @@ const GroupCallWebRTCHook = {
     return SELF_VIEW_MODES.has(mode) ? mode : "tile";
   },
 
+  _tileDensity(count) {
+    if (count >= 10) return "compact";
+    if (count >= 5) return "dense";
+    return "normal";
+  },
+
+  _idsFromValue(value) {
+    if (Array.isArray(value)) {
+      return value.map((id) => this._stringOrNull(id)).filter(Boolean);
+    }
+
+    if (typeof value === "string") {
+      return value
+        .split(",")
+        .map((id) => this._stringOrNull(id.trim()))
+        .filter(Boolean);
+    }
+
+    return [];
+  },
+
   _stringOrNull(value) {
     if (value === undefined || value === null || value === "") return null;
     return String(value);
@@ -664,16 +957,338 @@ const GroupCallWebRTCHook = {
     return undefined;
   },
 
-  _mediaConstraints() {
+  _mediaStateFromDataset() {
     const audio = this.el.dataset.audio !== "false";
     const video = this.el.dataset.video !== "false";
-    return { ...DEFAULT_CONSTRAINTS, audio, video };
+    return { audio, video };
+  },
+
+  _devicePreferencesFromDataset() {
+    return {
+      audioInputId: this._stringOrNull(this.el.dataset.audioInputId),
+      videoInputId: this._stringOrNull(this.el.dataset.videoInputId),
+      audioOutputId: this._stringOrNull(this.el.dataset.audioOutputId),
+    };
+  },
+
+  _captureConstraints() {
+    return {
+      audio: this.mediaEnabled.audio
+        ? this._withDevice(getAudioConstraints(), this.devicePreferences.audioInputId)
+        : false,
+      video: this.mediaEnabled.video
+        ? this._withDevice(getVideoConstraints(), this.devicePreferences.videoInputId)
+        : false,
+    };
+  },
+
+  _withDevice(base, deviceId) {
+    if (!deviceId) return base;
+    return { ...base, deviceId: { exact: deviceId } };
+  },
+
+  _applyAudioOutput(element) {
+    if (!this.devicePreferences.audioOutputId || !element) return;
+    setSinkId(element, this.devicePreferences.audioOutputId).catch(() => false);
+  },
+
+  _sendReaction(reaction) {
+    if (!reaction || !this.channel) {
+      this._notifyWarning(t("Join the conference before sending reactions."), "reaction_not_ready");
+      return;
+    }
+
+    this.channel
+      .push("group_call_reaction", { reaction })
+      ?.receive?.("error", (reply) => {
+        this._notifyWarning(
+          reply?.message || t("Could not send conference reaction."),
+          "reaction_failed",
+        );
+      })
+      ?.receive?.("timeout", () => {
+        this._notifyWarning(t("Conference reaction timed out."), "reaction_timeout");
+      });
+  },
+
+  _applyReaction(payload = {}) {
+    const participantId = this._stringOrNull(payload.participant_id ?? payload.participantId);
+    if (!participantId) return;
+
+    const reactionId = this._stringOrNull(payload.id) || `reaction-${Date.now()}`;
+    const reaction = payload.reaction || "heart";
+    const tiles = this._reactionTiles(participantId);
+
+    for (const tile of tiles) {
+      const stack = this._reactionStack(tile);
+      const bubble = document.createElement("span");
+      bubble.className = "group-call-reaction-bubble";
+      bubble.dataset.groupCallReactionBubble = "";
+      bubble.dataset.reaction = reaction;
+      bubble.dataset.reactionId = reactionId;
+      const icon = this._reactionIconNode(reaction);
+
+      if (icon) {
+        bubble.appendChild(icon);
+      } else {
+        bubble.textContent = this._reactionEmoji(reaction);
+      }
+
+      stack.appendChild(bubble);
+
+      const timer = setTimeout(() => {
+        bubble.remove();
+        this.reactionTimers.delete(`${reactionId}:${tile.dataset.streamId || "local"}`);
+      }, 2400);
+
+      this.reactionTimers.set(`${reactionId}:${tile.dataset.streamId || "local"}`, timer);
+    }
+  },
+
+  _reactionTiles(participantId) {
+    let tiles = this._tilesForParticipant(participantId);
+
+    if (tiles.length === 0) {
+      const unassignedRemoteTiles = this._remoteTileElements().filter(
+        (tile) => !tile.dataset.participantId,
+      );
+
+      if (unassignedRemoteTiles.length === 1) {
+        unassignedRemoteTiles[0].dataset.participantId = participantId;
+        this._applyParticipantToTile(unassignedRemoteTiles[0], participantId);
+        tiles = unassignedRemoteTiles;
+      }
+    }
+
+    return tiles;
+  },
+
+  _reactionStack(tile) {
+    let stack = tile.querySelector("[data-group-call-reactions]");
+
+    if (!stack) {
+      stack = document.createElement("div");
+      stack.className = "group-call-reaction-stack";
+      stack.dataset.groupCallReactions = "";
+      tile.appendChild(stack);
+    }
+
+    return stack;
+  },
+
+  _reactionIconNode(reaction) {
+    const template = this.el?.querySelector?.(
+      `[data-group-call-reaction-icon-template="${reaction}"]`,
+    );
+    const node = template?.content?.firstElementChild?.cloneNode(true);
+    const isHTMLElement = typeof HTMLElement !== "undefined" && node instanceof HTMLElement;
+    const isSVGElement = typeof SVGElement !== "undefined" && node instanceof SVGElement;
+
+    if (isHTMLElement || isSVGElement) {
+      return node;
+    }
+
+    return null;
+  },
+
+  _reactionEmoji(reaction) {
+    return (
+      {
+        heart: "❤️",
+        thumbs_up: "👍",
+        clap: "👏",
+        laugh: "😄",
+        wow: "✨",
+      }[reaction] || "❤️"
+    );
+  },
+
+  async _toggleScreenShare() {
+    if (this.screenShare?.active) {
+      await this._stopScreenShare("local_stop");
+    } else {
+      await this._startScreenShare();
+    }
+  },
+
+  async _startScreenShare() {
+    if (this.screenShare?.active) return;
+
+    if (this.screenShareBlocked) {
+      this._notifyWarning(
+        t("Screen sharing was disabled by a moderator."),
+        "screen_share_moderated",
+      );
+      return;
+    }
+
+    if (!navigator.mediaDevices?.getDisplayMedia) {
+      this._notifyWarning(
+        t("Screen sharing is not supported by this browser."),
+        "screen_unsupported",
+      );
+      return;
+    }
+
+    const sender = this._videoSender();
+    if (!sender?.replaceTrack) {
+      this._notifyWarning(
+        t("Screen sharing will be available after media connects."),
+        "screen_sender_missing",
+      );
+      return;
+    }
+
+    let stream;
+
+    try {
+      stream = await navigator.mediaDevices.getDisplayMedia({
+        video: true,
+        audio: false,
+      });
+    } catch (error) {
+      log.warn("[group-call] screen capture failed", error);
+      this._notifyWarning(t("Screen sharing was cancelled or denied."), "screen_capture_failed");
+      return;
+    }
+
+    const track = stream.getVideoTracks()[0];
+
+    if (!track) {
+      this._stopStream(stream);
+      this._notifyWarning(
+        t("Screen sharing did not provide a video track."),
+        "screen_track_missing",
+      );
+      return;
+    }
+
+    try {
+      await sender.replaceTrack(track);
+    } catch (error) {
+      log.warn("[group-call] screen replaceTrack failed", error);
+      this._stopStream(stream);
+      this._notifyWarning(t("Could not publish the shared screen."), "screen_publish_failed");
+      return;
+    }
+
+    this.videoSender = sender;
+    this.screenShare = { active: true, stream, track };
+
+    track.onended = () => {
+      this._stopScreenShare("browser_ended");
+    };
+
+    this._attachLocalPreviewStream(stream);
+    this._syncLocalTile();
+    this._publishScreenShareState(true, track, stream);
+  },
+
+  async _stopScreenShare(reason = "local_stop") {
+    if (!this.screenShare?.active) return;
+
+    const { stream, track } = this.screenShare;
+    this.screenShare = { active: false, stream: null, track: null };
+
+    const sender = this._videoSender();
+
+    try {
+      if (sender?.replaceTrack) {
+        await sender.replaceTrack(this.cameraVideoTrack || null);
+      }
+    } catch (error) {
+      log.warn("[group-call] unable to restore camera track after screen share", error);
+    }
+
+    if (track) track.onended = null;
+    this._stopStream(stream);
+    this._attachLocalPreviewStream(this.localStream);
+    this._syncLocalTile();
+    this._publishScreenShareState(false, track, stream, reason);
+  },
+
+  _videoSender() {
+    if (this.videoSender) return this.videoSender;
+    const senders = typeof this.pc?.getSenders === "function" ? this.pc.getSenders() : [];
+    this.videoSender =
+      senders.find((sender) => sender.track?.kind === "video") ||
+      senders.find((sender) => sender.track === null && sender.replaceTrack);
+
+    return this.videoSender;
+  },
+
+  _attachLocalPreviewStream(stream) {
+    const video = this.el.querySelector("[data-group-call-local-video]");
+    if (!video) return;
+
+    video.srcObject = stream || null;
+    video.muted = true;
+    video.playsInline = true;
+  },
+
+  _publishScreenShareState(active, track = null, stream = null, reason = null) {
+    const payload = {
+      active,
+      participant_id: this.participantId,
+      track_id: track?.id || null,
+      stream_id: stream?.id || null,
+      reason,
+    };
+
+    const push = this.channel?.push("group_call_screen_share_state", payload);
+
+    if (active && push?.receive) {
+      push.receive("error", (reply) => {
+        this._notifyWarning(
+          reply?.message || t("Screen sharing was disabled by a moderator."),
+          "screen_share_rejected",
+        );
+        this._stopScreenShare("server_rejected");
+      });
+    }
+
+    this.pushEvent("group_call_screen_share_state", payload);
+  },
+
+  async _stopScreenShareByModerator(payload = {}) {
+    this.screenShareBlocked = payload.server_screen_blocked !== false;
+    this._notifyWarning(t("Screen sharing was stopped by a moderator."), "screen_share_moderated");
+    await this._stopScreenShare(payload.reason || "moderation");
+  },
+
+  _stopStream(stream) {
+    stream?.getTracks?.().forEach((track) => {
+      if (track.readyState !== "ended") track.stop();
+    });
   },
 
   _setMediaState(payload) {
-    this.mediaEnabled = {
+    if (hasOwn(payload, "server_audio_muted")) {
+      this.serverAudioMuted = payload.server_audio_muted === true;
+    }
+
+    if (hasOwn(payload, "server_video_blocked")) {
+      this.serverVideoBlocked = payload.server_video_blocked === true;
+    }
+
+    if (hasOwn(payload, "server_screen_blocked")) {
+      this.screenShareBlocked = payload.server_screen_blocked === true;
+    }
+
+    if (this.screenShareBlocked && this.screenShare?.active) {
+      this._stopScreenShare("moderation");
+    }
+
+    this._publishLocalMediaState({
       audio: payload.audio !== false,
       video: payload.video !== false,
+    });
+  },
+
+  _publishLocalMediaState(media, { mirrorToLiveView = false } = {}) {
+    this.mediaEnabled = {
+      audio: media.audio !== false && !this.serverAudioMuted,
+      video: media.video !== false && !this.serverVideoBlocked,
     };
 
     this._applyMediaEnabled();
@@ -681,6 +1296,10 @@ const GroupCallWebRTCHook = {
 
     if (this.participantId) {
       this.channel?.push("group_call_media_state", this.mediaEnabled);
+    }
+
+    if (mirrorToLiveView) {
+      this.pushEvent("group_call_media_state_forced", this.mediaEnabled);
     }
   },
 
@@ -694,6 +1313,187 @@ const GroupCallWebRTCHook = {
     for (const track of this.localStream.getVideoTracks()) {
       track.enabled = this.mediaEnabled.video;
     }
+  },
+
+  _handlePushToTalkKeydown(event) {
+    if (!this._isPushToTalkEvent(event)) return;
+    if (event.defaultPrevented || event.repeat || this.pushToTalkActive) return;
+    if (isEditableKeyboardTarget(event.target)) return;
+    if (this.mediaEnabled.audio === true || this.serverAudioMuted) return;
+
+    if (!this._hasLocalAudioTrack()) {
+      this._notifyWarning(t("Microphone is not available for push-to-talk."), "ptt_audio_missing");
+      return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    this.pushToTalkActive = true;
+    this.pushToTalkRestoreAudio = this.mediaEnabled.audio;
+    this._publishLocalMediaState({ ...this.mediaEnabled, audio: true }, { mirrorToLiveView: true });
+  },
+
+  _handlePushToTalkKeyup(event) {
+    if (!this.pushToTalkActive || !this._isPushToTalkEvent(event)) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const restoreAudio = this.pushToTalkRestoreAudio === true;
+    this.pushToTalkActive = false;
+    this.pushToTalkRestoreAudio = null;
+
+    this._publishLocalMediaState(
+      { ...this.mediaEnabled, audio: restoreAudio },
+      { mirrorToLiveView: true },
+    );
+  },
+
+  _isPushToTalkEvent(event) {
+    return (
+      event.ctrlKey === true &&
+      event.shiftKey === true &&
+      event.altKey !== true &&
+      event.metaKey !== true &&
+      PUSH_TO_TALK_KEYS.has(event.key)
+    );
+  },
+
+  _hasLocalAudioTrack() {
+    return (this.localStream?.getAudioTracks?.() || []).some(
+      (track) => track.readyState !== "ended",
+    );
+  },
+
+  _handleConnectionStateChange() {
+    const state = this.pc?.connectionState || "";
+
+    this.pushEvent("group_call_connection_state", { state });
+
+    if (state === "connected") {
+      this._clearRecovery("connected");
+      return;
+    }
+
+    if (state === "connecting") {
+      this._publishRecoveryState({
+        state: "connecting",
+        message: t("Group call media is connecting."),
+      });
+      return;
+    }
+
+    if (state === "disconnected" || state === "failed") {
+      this._scheduleRecovery(state);
+    }
+  },
+
+  _scheduleRecovery(reason) {
+    if (this.recoveryTimer) return;
+
+    if (this.recoveryAttempts >= this.maxRecoveryAttempts) {
+      this._publishRecoveryState({
+        state: "failed",
+        reason,
+        manual_retry: true,
+        attempt: this.recoveryAttempts,
+        max_attempts: this.maxRecoveryAttempts,
+        message: t("Media recovery failed. Retry the media connection."),
+      });
+      return;
+    }
+
+    const attempt = this.recoveryAttempts + 1;
+    const delay = RECOVERY_BACKOFF_MS[Math.min(attempt - 1, RECOVERY_BACKOFF_MS.length - 1)];
+    this.recoveryAttempts = attempt;
+
+    this._publishRecoveryState({
+      state: "reconnecting",
+      reason,
+      attempt,
+      max_attempts: this.maxRecoveryAttempts,
+      next_retry_ms: delay,
+      message: t("Group call media connection interrupted. Trying to recover."),
+    });
+
+    this.recoveryTimer = setTimeout(() => {
+      this.recoveryTimer = null;
+      this._retryConnection("auto");
+    }, delay);
+  },
+
+  _retryConnection(trigger = "manual") {
+    if (this.recoveryTimer) {
+      clearTimeout(this.recoveryTimer);
+      this.recoveryTimer = null;
+    }
+
+    if (this.recoveryAttempts < 1) this.recoveryAttempts = 1;
+
+    const attempt = this.recoveryAttempts;
+
+    this._publishRecoveryState({
+      state: "negotiating",
+      trigger,
+      attempt,
+      max_attempts: this.maxRecoveryAttempts,
+      message: t("Requesting a fresh media offer."),
+    });
+
+    const push = this.channel?.push("group_call_request_offer", {
+      attempt,
+      trigger,
+    });
+
+    push
+      ?.receive?.("error", (reply) => {
+        this._publishRecoveryState({
+          state: "failed",
+          trigger,
+          attempt,
+          max_attempts: this.maxRecoveryAttempts,
+          manual_retry: true,
+          message: reply?.message || t("Media recovery failed. Retry the media connection."),
+        });
+      })
+      ?.receive?.("timeout", () => {
+        this._publishRecoveryState({
+          state: "failed",
+          trigger,
+          attempt,
+          max_attempts: this.maxRecoveryAttempts,
+          manual_retry: true,
+          message: t("Media recovery timed out. Retry the media connection."),
+        });
+      });
+  },
+
+  _clearRecovery(reason = "connected") {
+    if (this.recoveryTimer) {
+      clearTimeout(this.recoveryTimer);
+      this.recoveryTimer = null;
+    }
+
+    this.recoveryAttempts = 0;
+    this._publishRecoveryState({
+      state: "connected",
+      reason,
+      attempt: 0,
+      max_attempts: this.maxRecoveryAttempts,
+      manual_retry: false,
+      message: "",
+    });
+  },
+
+  _publishRecoveryState(payload) {
+    this.pushEvent("group_call_recovery_state", {
+      attempt: 0,
+      max_attempts: this.maxRecoveryAttempts,
+      manual_retry: false,
+      next_retry_ms: 0,
+      ...payload,
+    });
   },
 
   _notifyError(message, code = "connection_failed") {
@@ -716,9 +1516,11 @@ const GroupCallWebRTCHook = {
     if (!this.pc) return;
 
     try {
-      const snapshot = await collectFeatureSnapshot(this.pc);
+      const reports = await this.pc.getStats();
+      const snapshot = collectFeatureSnapshotFromReports(reports);
       const stats = deriveFeatureStats(this.statsPrev, snapshot);
       this.statsPrev = snapshot;
+      const participantQuality = this._deriveParticipantQuality(reports, stats.connection);
 
       this.pushEvent("group_call_stats", {
         ...stats,
@@ -729,11 +1531,267 @@ const GroupCallWebRTCHook = {
           participant_count: this.participantsById.size,
           remote_stream_count: this.remoteTiles.size,
           track_count: this.tracksById.size,
+          screen_share_active: this.screenShare?.active === true,
         },
       });
+
+      if (participantQuality.participants.length > 0) {
+        this._syncParticipantQualityState(participantQuality);
+        this.pushEvent("group_call_participant_quality", participantQuality);
+      }
     } catch (error) {
       log.debug("[group-call] stats sample failed", error);
     }
+  },
+
+  _deriveParticipantQuality(reports, connectionStats = {}) {
+    const snapshot = this._collectParticipantQualitySnapshot(reports);
+    const previous = this.participantStatsPrev;
+    this.participantStatsPrev = snapshot;
+
+    const participants = [];
+    let activeSpeakerParticipantId = null;
+    let loudestAudioLevel = 0.03;
+
+    for (const [participantId, current] of snapshot.participants) {
+      const prev = previous?.participants?.get(participantId) || null;
+      const intervalSec = prev
+        ? Math.max((snapshot.timestamp - previous.timestamp) / 1000, 0.001)
+        : 1;
+      const bytesDelta = prev ? Math.max(0, current.bytesReceived - prev.bytesReceived) : 0;
+      const lostDelta = prev ? Math.max(0, current.packetsLost - prev.packetsLost) : 0;
+      const receivedDelta = prev ? Math.max(0, current.packetsReceived - prev.packetsReceived) : 0;
+      const totalPacketDelta = lostDelta + receivedDelta;
+      const lossPct =
+        totalPacketDelta > 0 ? Math.round((lostDelta / totalPacketDelta) * 1000) / 10 : 0;
+      const bitrateKbps = Math.round((bytesDelta * 8) / intervalSec / 1000);
+      const jitterMs = Math.round((current.jitter || 0) * 1000);
+      const rttMs = connectionStats.rtt_ms || 0;
+      const freezeDelta = prev ? Math.max(0, current.freezeCount - prev.freezeCount) : 0;
+      const fps = Math.round(current.fps || 0);
+      const audioLevel = Math.round((current.audioLevel || 0) * 1000) / 1000;
+      const speaking = audioLevel >= 0.03;
+      const level = this._participantQualityLevel({
+        connectionState: this.pc?.connectionState || "",
+        rttMs,
+        jitterMs,
+        lossPct,
+        freezeDelta,
+      });
+
+      if (speaking && audioLevel > loudestAudioLevel) {
+        loudestAudioLevel = audioLevel;
+        activeSpeakerParticipantId = participantId;
+      }
+
+      participants.push({
+        participant_id: participantId,
+        level,
+        label: this._participantQualityLabel(level),
+        speaking,
+        rtt_ms: rttMs,
+        jitter_ms: jitterMs,
+        loss_pct: lossPct,
+        bitrate_kbps: bitrateKbps,
+        fps,
+        freeze_count: current.freezeCount,
+        audio_level: audioLevel,
+      });
+    }
+
+    return {
+      active_speaker_participant_id: activeSpeakerParticipantId,
+      participants,
+      updated_at_ms: Date.now(),
+    };
+  },
+
+  _collectParticipantQualitySnapshot(reports) {
+    const snapshot = {
+      timestamp: Date.now(),
+      participants: new Map(),
+    };
+
+    reports?.forEach?.((report) => {
+      if (report?.type !== "inbound-rtp") return;
+
+      const kind = report.kind || report.mediaType;
+      if (kind !== "audio" && kind !== "video") return;
+
+      const participantId = this._participantIdForStatsReport(report);
+      if (!participantId) return;
+
+      const current = this._ensureParticipantStats(snapshot, participantId);
+      current.bytesReceived += report.bytesReceived || 0;
+      current.packetsLost += report.packetsLost || 0;
+      current.packetsReceived += report.packetsReceived || 0;
+
+      if (typeof report.jitter === "number") {
+        current.jitter = Math.max(current.jitter, report.jitter);
+      }
+
+      if (kind === "audio") {
+        current.audioLevel = Math.max(current.audioLevel, report.audioLevel || 0);
+      }
+
+      if (kind === "video") {
+        current.fps = Math.max(current.fps, report.framesPerSecond || 0);
+        current.freezeCount = Math.max(current.freezeCount, report.freezeCount || 0);
+      }
+    });
+
+    return snapshot;
+  },
+
+  _ensureParticipantStats(snapshot, participantId) {
+    const id = String(participantId);
+
+    if (!snapshot.participants.has(id)) {
+      snapshot.participants.set(id, {
+        participant_id: id,
+        bytesReceived: 0,
+        packetsLost: 0,
+        packetsReceived: 0,
+        jitter: 0,
+        audioLevel: 0,
+        fps: 0,
+        freezeCount: 0,
+      });
+    }
+
+    return snapshot.participants.get(id);
+  },
+
+  _participantIdForStatsReport(report) {
+    const explicitParticipantId = this._stringOrNull(report.participant_id ?? report.participantId);
+    if (explicitParticipantId) return explicitParticipantId;
+
+    const trackIdentifier = this._stringOrNull(
+      report.trackIdentifier ?? report.trackId ?? report.track_id,
+    );
+
+    if (trackIdentifier) {
+      const persistedTrack = this.tracksByWebrtcTrackId.get(trackIdentifier);
+      if (persistedTrack?.participantId) return persistedTrack.participantId;
+
+      for (const tile of this._remoteTileElements()) {
+        if (!tile.dataset.participantId) continue;
+
+        const stream = tile.querySelector("video")?.srcObject;
+        const tracks = Array.from(stream?.getTracks?.() || []);
+        if (tracks.some((track) => track.id === trackIdentifier)) {
+          return tile.dataset.participantId;
+        }
+      }
+    }
+
+    const assignedTiles = this._remoteTileElements().filter((tile) => tile.dataset.participantId);
+
+    return assignedTiles.length === 1 ? assignedTiles[0].dataset.participantId : null;
+  },
+
+  _participantQualityLevel({ connectionState, rttMs, jitterMs, lossPct, freezeDelta }) {
+    if (["connecting", "disconnected", "failed"].includes(connectionState)) {
+      return "reconnecting";
+    }
+
+    if (lossPct >= 8 || rttMs >= 400 || jitterMs >= 80) return "poor";
+    if (lossPct >= 3 || rttMs >= 250 || jitterMs >= 50 || freezeDelta > 0) return "fair";
+    if (lossPct >= 1 || rttMs >= 120 || jitterMs >= 30) return "good";
+    return "excellent";
+  },
+
+  _participantQualityLabel(level) {
+    return (
+      {
+        excellent: "Excellent",
+        good: "Good",
+        fair: "Fair",
+        poor: "Poor",
+        reconnecting: "Reconnecting",
+        unknown: "Unknown",
+      }[level] || "Unknown"
+    );
+  },
+
+  _syncParticipantQualityState(payload) {
+    this.activeSpeakerParticipantId = this._stringOrNull(
+      payload.active_speaker_participant_id ?? payload.activeSpeakerParticipantId,
+    );
+
+    for (const quality of payload.participants || []) {
+      const participantId = this._stringOrNull(quality.participant_id ?? quality.participantId);
+      if (!participantId) continue;
+
+      const normalized = {
+        participant_id: participantId,
+        level: quality.level || "unknown",
+        label: quality.label || this._participantQualityLabel(quality.level),
+        speaking: quality.speaking === true,
+        rtt_ms: Number(quality.rtt_ms || quality.rttMs || 0),
+        jitter_ms: Number(quality.jitter_ms || quality.jitterMs || 0),
+        loss_pct: Number(quality.loss_pct || quality.lossPct || 0),
+        bitrate_kbps: Number(quality.bitrate_kbps || quality.bitrateKbps || 0),
+        fps: Number(quality.fps || 0),
+        freeze_count: Number(quality.freeze_count || quality.freezeCount || 0),
+        audio_level: Number(quality.audio_level || quality.audioLevel || 0),
+      };
+
+      this.participantQualityById.set(participantId, normalized);
+      const participant = this.participantsById.get(participantId);
+      if (participant) participant.quality = normalized;
+
+      const remoteTiles = this._tilesForParticipant(participantId).filter(
+        (tile) => tile.dataset.local !== "true",
+      );
+
+      if (remoteTiles.length === 0) {
+        const unassignedRemoteTiles = this._remoteTileElements().filter(
+          (tile) => !tile.dataset.participantId,
+        );
+
+        if (unassignedRemoteTiles.length === 1) {
+          unassignedRemoteTiles[0].dataset.participantId = participantId;
+          this._applyParticipantToTile(unassignedRemoteTiles[0], participantId);
+        }
+      }
+    }
+
+    for (const tile of this.el.querySelectorAll("[data-group-call-video-tile]")) {
+      const participantId = tile.dataset.participantId;
+      if (participantId) this._applyParticipantQualityToTile(tile, participantId);
+    }
+
+    this._applyLayout();
+  },
+
+  _applyParticipantQualityToTile(tile, participantId) {
+    const id = this._stringOrNull(participantId);
+    const quality = id ? this.participantQualityById?.get(id) : null;
+    const level = quality?.level || "unknown";
+    const activeSpeaker = id && this.activeSpeakerParticipantId === id;
+
+    tile.dataset.qualityLevel = level;
+    tile.dataset.activeSpeaker = String(activeSpeaker === true);
+
+    const qualityBadge = tile.querySelector("[data-group-call-quality-badge]");
+    if (qualityBadge) {
+      qualityBadge.dataset.qualityLevel = level;
+      qualityBadge.title = this._participantQualityTitle(quality);
+      qualityBadge.setAttribute("aria-label", this._participantQualityTitle(quality));
+    }
+
+    const speakerBadge = tile.querySelector("[data-group-call-active-speaker-badge]");
+    if (speakerBadge) {
+      speakerBadge.title = activeSpeaker ? "Speaking" : "Not speaking";
+      speakerBadge.setAttribute("aria-label", speakerBadge.title);
+    }
+  },
+
+  _participantQualityTitle(quality) {
+    if (!quality) return "Quality unknown";
+
+    return `${quality.label}: RTT ${quality.rtt_ms} ms, loss ${quality.loss_pct}%, ${quality.bitrate_kbps} kbps, ${quality.fps} fps`;
   },
 
   _stopStatsPolling() {
@@ -742,6 +1800,7 @@ const GroupCallWebRTCHook = {
     clearInterval(this.statsTimer);
     this.statsTimer = null;
     this.statsPrev = null;
+    this.participantStatsPrev = null;
   },
 
   _clientInfo() {
@@ -754,11 +1813,40 @@ const GroupCallWebRTCHook = {
 
   _cleanup() {
     this.closing = true;
+    if (this.toggleScreenShareHandler) {
+      this.el.removeEventListener("group-call:toggle-screen-share", this.toggleScreenShareHandler);
+    }
+    if (this.participantQualityEventHandler) {
+      this.el.removeEventListener(
+        "group-call:participant-quality",
+        this.participantQualityEventHandler,
+      );
+    }
+    if (this.recoveryStateEventHandler) {
+      this.el.removeEventListener("group-call:recovery-state", this.recoveryStateEventHandler);
+    }
+    if (this.screenShareClickHandler) {
+      document.removeEventListener("click", this.screenShareClickHandler);
+    }
+    if (this.reactionClickHandler) {
+      document.removeEventListener("click", this.reactionClickHandler);
+    }
+    if (this.pushToTalkKeydownHandler) {
+      document.removeEventListener("keydown", this.pushToTalkKeydownHandler, true);
+    }
+    if (this.pushToTalkKeyupHandler) {
+      document.removeEventListener("keyup", this.pushToTalkKeyupHandler, true);
+    }
     this._stopStatsPolling();
+    if (this.recoveryTimer) {
+      clearTimeout(this.recoveryTimer);
+      this.recoveryTimer = null;
+    }
     this.channel?.push("group_call_leave", {});
     this.channel?.leave();
     this.socket?.disconnect();
 
+    this._stopStream(this.screenShare?.stream);
     this.localStream?.getTracks()?.forEach((track) => track.stop());
     this.pc?.close();
 
@@ -770,6 +1858,22 @@ const GroupCallWebRTCHook = {
     this.participantId = null;
     this.offerQueue = Promise.resolve();
     this.lastAnsweredOfferSdp = null;
+    this.videoSender = null;
+    this.cameraVideoTrack = null;
+    this.screenShare = { active: false, stream: null, track: null };
+    this.screenShareBlocked = false;
+    this.serverAudioMuted = false;
+    this.serverVideoBlocked = false;
+    this.pushToTalkActive = false;
+    this.pushToTalkRestoreAudio = null;
+    this.recoveryAttempts = 0;
+    this.participantStatsPrev = null;
+    this.activeSpeakerParticipantId = null;
+    for (const timer of this.reactionTimers?.values?.() || []) {
+      clearTimeout(timer);
+    }
+    this.reactionTimers?.clear();
+    this.participantQualityById?.clear();
     this.participantsById?.clear();
     this.tracksById?.clear();
     this.tracksByStreamId?.clear();

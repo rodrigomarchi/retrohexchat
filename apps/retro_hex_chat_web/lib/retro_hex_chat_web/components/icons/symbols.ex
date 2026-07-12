@@ -159,6 +159,112 @@ defmodule RetroHexChatWeb.Icons.Symbols do
 
   attr :class, :string, default: nil
 
+  @spec icon_thumbs_up(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_thumbs_up(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="10" y="15" width="15" height="11" fill="#000" transform="translate(1,1)" />
+      <rect x="7" y="16" width="5" height="10" fill="#000" transform="translate(1,1)" />
+      <rect x="13" y="7" width="6" height="10" fill="#000" transform="translate(1,1)" />
+      <rect x="18" y="11" width="5" height="5" fill="#000" transform="translate(1,1)" />
+
+      <rect x="10" y="15" width="15" height="11" fill="#FFD700" stroke="#000" />
+      <rect x="7" y="16" width="5" height="10" fill="#000080" stroke="#000" />
+      <rect x="8" y="17" width="3" height="1" fill="#fff" />
+      <rect x="13" y="7" width="6" height="10" fill="#FFD700" stroke="#000" />
+      <rect x="18" y="11" width="5" height="5" fill="#FFD700" stroke="#000" />
+      <rect x="13" y="16" width="10" height="2" fill="#fff" opacity="0.7" />
+      <rect x="20" y="19" width="4" height="1" fill="#806000" />
+      <rect x="20" y="22" width="4" height="1" fill="#806000" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_clap(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_clap(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="5" y="6" width="2" height="5" fill="#000080" />
+      <rect x="24" y="4" width="2" height="5" fill="#000080" />
+      <rect x="27" y="10" width="3" height="2" fill="#000080" />
+      <rect x="8" y="9" width="8" height="17" fill="#000" transform="translate(1,1)" />
+      <rect x="14" y="6" width="8" height="19" fill="#000" transform="translate(1,1)" />
+
+      <rect x="8" y="9" width="8" height="17" fill="#FFD700" stroke="#000" />
+      <rect x="10" y="10" width="1" height="12" fill="#fff" opacity="0.7" />
+      <rect x="13" y="9" width="1" height="12" fill="#806000" />
+      <rect x="14" y="6" width="8" height="19" fill="#FFD700" stroke="#000" />
+      <rect x="16" y="7" width="1" height="14" fill="#fff" opacity="0.7" />
+      <rect x="19" y="6" width="1" height="13" fill="#806000" />
+      <rect x="11" y="25" width="12" height="4" fill="#C0C0C0" stroke="#000" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_laugh(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_laugh(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <circle cx="17" cy="17" r="12" fill="#000" />
+      <circle cx="16" cy="16" r="12" fill="#FFD700" stroke="#000" stroke-width="1" />
+      <rect x="10" y="11" width="5" height="2" fill="#000080" />
+      <rect x="19" y="11" width="5" height="2" fill="#000080" />
+      <rect x="9" y="18" width="14" height="5" fill="#000" />
+      <rect x="10" y="18" width="12" height="2" fill="#fff" />
+      <rect x="12" y="21" width="8" height="2" fill="#FF0000" />
+      <rect x="7" y="7" width="4" height="2" fill="#fff" opacity="0.75" />
+      <rect x="6" y="9" width="2" height="4" fill="#fff" opacity="0.75" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_sparkle(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_sparkle(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="15" y="3" width="3" height="8" fill="#000" transform="translate(1,1)" />
+      <rect x="11" y="11" width="11" height="3" fill="#000" transform="translate(1,1)" />
+      <rect x="15" y="14" width="3" height="8" fill="#000" transform="translate(1,1)" />
+      <rect x="7" y="5" width="3" height="3" fill="#000080" />
+      <rect x="24" y="9" width="4" height="4" fill="#000080" />
+      <rect x="5" y="22" width="4" height="4" fill="#000080" />
+
+      <rect x="15" y="3" width="3" height="8" fill="#FFD700" stroke="#000" />
+      <rect x="11" y="11" width="11" height="3" fill="#FFD700" stroke="#000" />
+      <rect x="15" y="14" width="3" height="8" fill="#FFD700" stroke="#000" />
+      <rect x="13" y="9" width="7" height="7" fill="#fff" opacity="0.7" />
+      <rect x="16" y="6" width="1" height="13" fill="#000080" opacity="0.45" />
+      <rect x="13" y="12" width="7" height="1" fill="#000080" opacity="0.45" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_pin(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_pin(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 32 32" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x="12" y="3" width="10" height="5" fill="#000" transform="translate(1,1)" />
+      <rect x="9" y="8" width="16" height="8" fill="#000" transform="translate(1,1)" />
+      <path d="M12 16 H22 L18 21 V29 H16 V21 Z" fill="#000" transform="translate(1,1)" />
+      <rect x="12" y="3" width="10" height="5" fill="#FFD700" stroke="#000" />
+      <rect x="9" y="8" width="16" height="8" fill="#C0C0C0" stroke="#000" />
+      <rect x="11" y="10" width="12" height="2" fill="#fff" />
+      <path d="M12 16 H22 L18 21 V29 H16 V21 Z" fill="#000080" stroke="#000" />
+      <rect x="16" y="21" width="1" height="7" fill="#fff" opacity="0.65" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_legal(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_legal(assigns) do
     ~H"""

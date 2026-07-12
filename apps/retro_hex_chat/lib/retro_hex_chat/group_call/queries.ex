@@ -174,4 +174,11 @@ defmodule RetroHexChat.GroupCall.Queries do
     |> Track.status_changeset(attrs)
     |> Repo.update()
   end
+
+  @spec update_track(Track.t(), map()) :: {:ok, Track.t()} | {:error, Ecto.Changeset.t()}
+  def update_track(track, attrs) do
+    track
+    |> Track.changeset(attrs)
+    |> Repo.update()
+  end
 end

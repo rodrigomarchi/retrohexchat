@@ -2,15 +2,15 @@
 
 Single source of truth for the browser-level Playwright suite.
 
-**Last reviewed:** 2026-07-10
+**Last reviewed:** 2026-07-12
 
 ## Current Coverage
 
 - **192 spec files** under `e2e/tests/`.
-- **332 Playwright `test()` cases**.
+- **337 Playwright `test()` cases**.
 - **Auth/lifecycle:** 17 mapped flows, all done.
 - **Chat foundation:** 25 mapped flows, all done.
-- **Chat extended coverage:** 332 mapped flows, 331 done, 1 intentionally blocked.
+- **Chat extended coverage:** 338 mapped flows, 337 done, 1 intentionally blocked.
 - **Open todo/investigate items in this catalog:** none. Planned backlog lives in `TEST_BACKLOG.md`.
 - **Blocked item:** M13, confirmed `/admin nuke --confirm`, until a disposable isolated E2E profile exists.
 
@@ -257,10 +257,25 @@ make ci
 
 ## N - P2P, File, Call, Game
 
-| #   | Flow                                                                                                                                                                                                                                                        | Spec file                       | Priority | Status |
-| --- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | -------- | ------ |
-| N1  | Channel group call opens for two registered users, exchanges live remote video both ways, toggles mic/camera by asserting local `MediaStreamTrack.enabled` and remote participant media state, then removes a leaver                                        | `tests/chat-group-call.spec.ts` | P0       | done   |
-| N2  | Channel group call renegotiates with three registered media users: third participant joins, all clients receive two live remote videos, audio/video off-on state propagates to both observers, the third participant leaves, and remaining users keep media | `tests/chat-group-call.spec.ts` | P0       | done   |
+| #   | Flow                                                                                                                                                                                                                                                                                         | Spec file                       | Priority | Status |
+| --- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- | -------- | ------ |
+| N1  | Channel group call opens for two registered users, shows the rich live channel badge/popover before the second user joins, exchanges live remote video both ways, toggles mic/camera by asserting local `MediaStreamTrack.enabled` and remote participant media state, then removes a leaver | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N2  | Channel group call renegotiates with three registered media users: third participant joins, all clients receive two live remote videos, audio/video off-on state propagates to both observers, the third participant leaves, and remaining users keep media                                  | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N3  | Channel group call pre-join persists muted media preferences after cancel/reopen, enters with microphone and camera disabled, mounts WebRTC with disabled media state, avoids local media tracks, and propagates disabled media to another participant                                       | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N4  | Channel group call screen share uses browser display capture, replaces the published video, marks the remote tile as `source=screen`, and returns to camera when stopped                                                                                                                     | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N5  | Channel group call participant quality and active speaker indicators update the ignored video tile and LiveView participant row from a browser stats summary                                                                                                                                 | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N6  | Channel group call failed media recovery shows a manual Retry action, requests a fresh media offer, keeps the conference window open, and preserves remote video                                                                                                                             | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N7  | Channel group call camera moderation lets a higher-ranked participant disable another user's camera, verifies the target browser video track is disabled, prevents local re-enable while blocked, and restores video after release                                                           | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N8  | Channel group call bulk moderation lets a higher-ranked participant mute microphones and turn off cameras for lower-ranked participants, verifies two target browsers are forced off, and confirms local attempts cannot bypass the server block                                             | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N9  | Channel group call lock lets a moderator prevent lower-ranked users from joining, shows the locked state in the channel badge, and returns a locked-call error when a blocked user attempts to enter                                                                                         | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N10 | Channel group call request-to-speak lets a muted participant raise a hand, shows the moderator queue, lets the moderator allow speech, and verifies the target browser audio track is re-enabled                                                                                             | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N11 | Channel group call screen-share moderation lets a moderator stop a participant screen share, blocks immediate re-share on the target browser, and re-allows sharing afterward                                                                                                                | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N12 | Channel group call mini mode keeps the WebRTC surface mounted, preserves the same remote video element, exposes compact mic/camera/leave/expand controls, and verifies compact mute affects the real local track and remote participant state                                                | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N13 | Channel group call can dock the statistics window beside the conference without stealing the call workflow, then maximize and restore the conference window while stats remains visible                                                                                                      | `tests/chat-group-call.spec.ts` | P1       | done   |
+| N14 | Channel group call advanced layouts switch to speaker view from active-speaker state, pin a participant, preserve the same remote video element across layout transitions, and expose compact grid density through the WebRTC surface                                                        | `tests/chat-group-call.spec.ts` | P1       | done   |
+| N15 | Channel group call reactions send through the conference signaling channel, appear on the remote video tile and participant row, then expire from the tile overlay                                                                                                                           | `tests/chat-group-call.spec.ts` | P1       | done   |
+| N16 | Channel group call pre-join handles denied microphone/camera permission with a visible warning, retry action, and a receive-only join path that mounts without local tracks                                                                                                                  | `tests/chat-group-call.spec.ts` | P0       | done   |
+| N17 | Channel group call visual polish renders SVG reaction controls, captures desktop/mobile windows, and asserts the conference panel has no horizontal layout overflow                                                                                                                           | `tests/chat-group-call.spec.ts` | P1       | done   |
 
 ## O - Chat UI Micro-Journeys
 

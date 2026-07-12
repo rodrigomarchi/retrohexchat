@@ -31,7 +31,7 @@
  * prefers reduced motion).
  *
  * The server can drive it via `push_event("window_command", {action, id})` where
- * action is one of open | focus | flash | close | minimize | maximize.
+ * action is one of open | focus | flash | close | minimize | maximize | dock_pair.
  *
  * Escape first closes any open WM menu. On desktops opting in via
  * `data-escape-closes-windows`, it then closes the topmost unpinned window —
@@ -98,7 +98,9 @@ const WindowManagerHook = {
     this.updateStacking();
     this.applyAll();
 
-    this.handleEvent("window_command", ({ action, id }) => this.command(action, id));
+    this.handleEvent("window_command", (payload = {}) =>
+      this.command(payload.action, payload.id, null, payload),
+    );
   },
 
   updated() {
@@ -656,7 +658,7 @@ const WindowManagerHook = {
 
   // ── Window operations ──────────────────────────────────────
 
-  command(action, id, sourceEl = null) {
+  command(action, id, sourceEl = null, payload = {}) {
     if (!id) return;
     if (!this.windows[id]) {
       // Unknown id = a server-managed window that is not mounted. Ask the host
@@ -685,7 +687,61 @@ const WindowManagerHook = {
       case "maximize":
         this.toggleMaximize(id);
         break;
+      case "dock_pair":
+        this.dockPair(id, payload);
+        break;
     }
+  },
+
+  dockPair(primaryId, payload = {}) {
+    const secondaryId = payload.secondary_id || payload.secondaryId;
+    const primary = this.windows[primaryId];
+    const secondary = this.windows[secondaryId];
+    if (!primary || !secondary || this.stacked) return;
+
+    const { w: wsW, h: wsH } = this.workspaceSize();
+    const margin = Math.max(8, int(payload.margin, 16));
+    const gap = Math.max(4, int(payload.gap, 8));
+    const availableW = Math.max(0, wsW - margin * 2 - gap);
+    const availableH = Math.max(0, wsH - margin * 2);
+    const requestedSecondaryW = int(payload.secondary_width, 390);
+    const secondaryW = clamp(
+      requestedSecondaryW,
+      secondary.minW,
+      Math.max(secondary.minW, Math.floor(availableW * 0.45)),
+    );
+    const primaryW = Math.max(primary.minW, availableW - secondaryW);
+    const height = Math.max(Math.max(primary.minH, secondary.minH), availableH);
+    const y = margin;
+
+    const primarySt = primary.state;
+    primarySt.open = true;
+    primarySt.minimized = false;
+    primarySt.maximized = false;
+    primarySt.centered = false;
+    primarySt.x = margin;
+    primarySt.y = y;
+    primarySt.w = primaryW;
+    primarySt.h = height;
+    primarySt.z = this.zCounter += 1;
+
+    const secondarySt = secondary.state;
+    secondarySt.open = true;
+    secondarySt.minimized = false;
+    secondarySt.maximized = false;
+    secondarySt.centered = false;
+    secondarySt.x = margin + primaryW + gap;
+    secondarySt.y = y;
+    secondarySt.w = secondaryW;
+    secondarySt.h = height;
+    secondarySt.z = this.zCounter += 1;
+
+    // Keep the work surface focused; stats becomes visible but does not steal focus.
+    this.focusedId = primaryId;
+    primarySt.z = this.zCounter += 1;
+    this.applyWindow(secondaryId);
+    this.applyWindow(primaryId);
+    this.persist();
   },
 
   showPendingWindow(id, sourceEl) {

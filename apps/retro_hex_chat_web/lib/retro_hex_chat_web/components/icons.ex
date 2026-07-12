@@ -144,8 +144,10 @@ defmodule RetroHexChatWeb.Icons do
   # ── Media ───────────────────────────────────────────────
   defdelegate icon_conference(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_microphone(assigns), to: RetroHexChatWeb.Icons.Media
+  defdelegate icon_raise_hand(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_camera(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_camera_off(assigns), to: RetroHexChatWeb.Icons.Media
+  defdelegate icon_screen_share(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_mute(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_phone_end(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_layout_focus(assigns), to: RetroHexChatWeb.Icons.Media
@@ -299,6 +301,11 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_star(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_bug(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_heart(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_thumbs_up(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_clap(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_laugh(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_sparkle(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_pin(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_legal(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_clock(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_btn_ignore(assigns), to: RetroHexChatWeb.Icons.Symbols

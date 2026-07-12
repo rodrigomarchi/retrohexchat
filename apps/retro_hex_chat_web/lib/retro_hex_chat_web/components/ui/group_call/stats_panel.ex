@@ -69,6 +69,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
             value={track_summary(@call, "video")}
           />
           <.stat_row
+            icon={:icon_screen_share}
+            label={dgettext("group_call", "Screen tracks")}
+            value={screen_track_summary(@call)}
+          />
+          <.stat_row
             icon={:icon_btn_timers}
             label={dgettext("group_call", "Pending")}
             value={Integer.to_string(pending_participant_count(@call))}
@@ -124,6 +129,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
             value={server_feedback_summary(@call)}
           />
         </dl>
+      </.retro_fieldset>
+
+      <.retro_fieldset :if={server_peers(@call) != []} legend={dgettext("group_call", "Server peers")}>
+        <div class="grid gap-1">
+          <.server_peer_card :for={peer <- server_peers(@call)} peer={peer} />
+        </div>
       </.retro_fieldset>
 
       <.retro_fieldset legend={dgettext("group_call", "Browser connection")}>
@@ -309,6 +320,71 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
     """
   end
 
+  attr :peer, :map, required: true
+
+  defp server_peer_card(assigns) do
+    ~H"""
+    <article
+      class="grid gap-1 border border-border bg-surface px-1.5 py-1 shadow-retro-sunken"
+      data-testid={"group-call-stats-server-peer-#{peer_dom_id(@peer)}"}
+    >
+      <div class="flex min-w-0 items-center justify-between gap-2">
+        <span class="inline-flex min-w-0 items-center gap-1 font-bold">
+          <Icons.icon_status_user class="h-3.5 w-3.5 shrink-0" />
+          <span class="truncate">{peer_label(@peer)}</span>
+        </span>
+        <span class="inline-flex shrink-0 items-center gap-1 text-[10px] text-muted-foreground">
+          <Icons.icon_status_signal class="h-3 w-3" />
+          {peer_state_summary(@peer)}
+        </span>
+      </div>
+
+      <dl class="grid grid-cols-2 gap-x-3 gap-y-[2px]">
+        <.stat_row
+          icon={:icon_webrtc}
+          label={dgettext("group_call", "Tracks")}
+          value={peer_track_summary(@peer)}
+        />
+        <.stat_row
+          icon={:icon_btn_connect_lightning}
+          label={dgettext("group_call", "Subscribers")}
+          value={dgettext("group_call", "%{n} subs", n: field(@peer, :subscriber_count, 0))}
+        />
+        <.stat_row
+          icon={:icon_btn_down}
+          label={dgettext("group_call", "Inbound RTP")}
+          value={peer_rtp_summary(@peer, :inbound_rtp)}
+        />
+        <.stat_row
+          icon={:icon_btn_up}
+          label={dgettext("group_call", "Outbound RTP")}
+          value={peer_rtp_summary(@peer, :outbound_rtp)}
+        />
+        <.stat_row
+          icon={:icon_globe}
+          label={dgettext("group_call", "ICE pairs")}
+          value={peer_ice_pair_summary(@peer)}
+        />
+        <.stat_row
+          icon={:icon_webrtc}
+          label={dgettext("group_call", "ICE traffic")}
+          value={peer_ice_traffic_summary(@peer)}
+        />
+        <.stat_row
+          icon={:icon_warning}
+          label={dgettext("group_call", "RTCP feedback")}
+          value={peer_feedback_summary(@peer)}
+        />
+        <.stat_row
+          icon={:icon_status_signal}
+          label={dgettext("group_call", "Signaling")}
+          value={to_string(field(@peer, :signaling_state, "unknown"))}
+        />
+      </dl>
+    </article>
+    """
+  end
+
   defp participant_count(_call, %{summary: %{participant_count: count}}) when count > 0,
     do: count
 
@@ -333,6 +409,9 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
   defp server_room(%{server_stats: %{room: room}}) when is_map(room), do: room
   defp server_room(_call), do: %{}
 
+  defp server_peers(%{server_stats: %{peers: peers}}) when is_list(peers), do: peers
+  defp server_peers(_call), do: []
+
   defp server_peer_summary(call) do
     totals = server_totals(call)
 
@@ -345,9 +424,10 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
   defp server_track_summary(call) do
     room = server_room(call)
 
-    dgettext("group_call", "%{audio} audio / %{video} video",
+    dgettext("group_call", "%{audio} audio / %{video} video / %{screen} screen",
       audio: Map.get(room, :audio_track_count, 0),
-      video: Map.get(room, :video_track_count, 0)
+      video: Map.get(room, :video_track_count, 0),
+      screen: Map.get(room, :screen_track_count, 0)
     )
   end
 
@@ -409,6 +489,82 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
     )
   end
 
+  defp peer_dom_id(peer) do
+    peer
+    |> field(:participant_id, field(peer, :nickname, "unknown"))
+    |> to_string()
+    |> String.replace(~r/[^a-zA-Z0-9_-]/, "-")
+  end
+
+  defp peer_label(peer) do
+    nickname = field(peer, :nickname, "")
+    participant_id = field(peer, :participant_id, nil)
+
+    cond do
+      is_binary(nickname) and nickname != "" ->
+        nickname
+
+      not is_nil(participant_id) ->
+        dgettext("group_call", "Participant %{id}", id: participant_id)
+
+      true ->
+        dgettext("group_call", "Unknown peer")
+    end
+  end
+
+  defp peer_state_summary(peer) do
+    dgettext("group_call", "%{connection} / ICE %{ice}",
+      connection: field(peer, :connection_state, "unknown"),
+      ice: field(peer, :ice_connection_state, "unknown")
+    )
+  end
+
+  defp peer_track_summary(peer) do
+    dgettext("group_call", "%{inbound} in / %{fanout} fanout",
+      inbound: field(peer, :inbound_track_count, 0),
+      fanout: field(peer, :outbound_peer_count, 0)
+    )
+  end
+
+  defp peer_rtp_summary(peer, key) do
+    rtp = field(peer, key, %{})
+
+    dgettext("group_call", "%{tracks} trk / %{packets} pkt / %{bytes}",
+      tracks: field(rtp, :track_count, 0),
+      packets: field(rtp, :packets, 0),
+      bytes: format_bytes(field(rtp, :bytes, 0))
+    )
+  end
+
+  defp peer_ice_pair_summary(peer) do
+    pairs = field(peer, :candidate_pairs, %{})
+
+    dgettext("group_call", "%{nominated}/%{total} nominated / %{valid} valid",
+      nominated: field(pairs, :nominated, 0),
+      total: field(pairs, :total, 0),
+      valid: field(pairs, :valid, 0)
+    )
+  end
+
+  defp peer_ice_traffic_summary(peer) do
+    pairs = field(peer, :candidate_pairs, %{})
+
+    dgettext("group_call", "%{sent} up / %{received} down",
+      sent: format_bytes(field(pairs, :bytes_sent, 0)),
+      received: format_bytes(field(pairs, :bytes_received, 0))
+    )
+  end
+
+  defp peer_feedback_summary(peer) do
+    inbound = field(peer, :inbound_rtp, %{})
+    outbound = field(peer, :outbound_rtp, %{})
+
+    dgettext("group_call", "NACK %{nack} / PLI %{pli}",
+      nack: field(inbound, :nack_count, 0) + field(outbound, :nack_count, 0),
+      pli: field(inbound, :pli_count, 0) + field(outbound, :pli_count, 0)
+    )
+  end
+
   defp server_participant_summary(%{participants: participants} = call)
        when is_list(participants) do
     connected = Enum.count(participants, &(Map.get(&1, :status) == "connected"))
@@ -433,6 +589,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
   end
 
   defp track_summary(_call, _kind), do: dgettext("group_call", "0 active")
+
+  defp screen_track_summary(%{tracks: tracks}) when is_list(tracks) do
+    matching =
+      Enum.filter(tracks, &(Map.get(&1, :kind) == "video" and Map.get(&1, :source) == "screen"))
+
+    active = Enum.count(matching, &(Map.get(&1, :status) == "active"))
+    dgettext("group_call", "%{active}/%{total} active", active: active, total: length(matching))
+  end
+
+  defp screen_track_summary(_call), do: dgettext("group_call", "0 active")
 
   defp connection_state(%{connection_state: state}, _stats) when is_binary(state) and state != "",
     do: state
@@ -474,6 +640,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
 
   defp format_bytes(bytes) when is_integer(bytes), do: "#{bytes} B"
   defp format_bytes(_bytes), do: "0 B"
+
+  defp field(map, key, default) when is_map(map) and is_atom(key) do
+    Map.get(map, key, Map.get(map, Atom.to_string(key), default))
+  end
+
+  defp field(_map, _key, default), do: default
 
   defp resolution_label(%{width: width, height: height}) when width > 0 and height > 0,
     do: "#{width}x#{height}"

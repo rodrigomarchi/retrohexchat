@@ -97,6 +97,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info({:group_call_started, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 
+  def handle_info({:group_call_updated, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
+  def handle_info({:group_call_moderation, _} = msg, socket),
+    do: ChannelState.handle_info(msg, socket)
+
   def handle_info({:group_call_ended, _} = msg, socket),
     do: ChannelState.handle_info(msg, socket)
 

@@ -70,7 +70,8 @@ defmodule RetroHexChatWeb.App.GroupCallStats do
         pending_count: value(room, "pending_count", 0),
         track_count: value(room, "track_count", 0),
         audio_track_count: value(room, "audio_track_count", 0),
-        video_track_count: value(room, "video_track_count", 0)
+        video_track_count: value(room, "video_track_count", 0),
+        screen_track_count: value(room, "screen_track_count", 0)
       },
       peers: normalize_server_peers(peers),
       totals: %{
@@ -247,6 +248,7 @@ defmodule RetroHexChatWeb.App.GroupCallStats do
   defp atom_key("room"), do: :room
   defp atom_key("rtt_ms"), do: :rtt_ms
   defp atom_key("signaling_state"), do: :signaling_state
+  defp atom_key("screen_track_count"), do: :screen_track_count
   defp atom_key("status"), do: :status
   defp atom_key("subscriber_count"), do: :subscriber_count
   defp atom_key("summary"), do: :summary

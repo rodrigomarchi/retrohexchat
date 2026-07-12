@@ -60,10 +60,13 @@ p2p-media-call*
 # (skipped by the template scanner); keep only classes that are not also
 # discovered through the JS hook scanner.
 group-call-empty-tile
+group-call-panel--mini
+group-call-participant-reaction
 group-call-room
 group-call-video-badge
 group-call-video-surface
 group-call-video-tile--remote
+group-call-video-tile__empty
 group-call-video-tile__badges
 # Desktop window manager — BEM classes applied via classes([...]) in components/ui/layout/desktop.ex
 # and toggled by WindowManagerHook (both skipped by the template scanner)

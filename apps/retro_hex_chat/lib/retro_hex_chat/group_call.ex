@@ -10,6 +10,7 @@ defmodule RetroHexChat.GroupCall do
   alias RetroHexChat.Channels.Membership
 
   alias RetroHexChat.GroupCall.{
+    Audit,
     Config,
     Policy,
     Queries,
@@ -131,10 +132,25 @@ defmodule RetroHexChat.GroupCall do
     end
   end
 
+  @spec request_offer(String.t(), integer()) :: :ok | {:error, term()}
+  def request_offer(token, participant_id) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.request_offer(token, participant_id)
+    end
+  end
+
   @spec set_media_state(String.t(), integer(), map()) :: :ok | {:error, term()}
   def set_media_state(token, participant_id, media_state) do
     with {:ok, _pid} <- ensure_room_server(token) do
       RoomServer.set_media_state(token, participant_id, media_state)
+    end
+  end
+
+  @spec set_screen_share_state(String.t(), integer(), boolean(), map()) ::
+          {:ok, map()} | {:error, term()}
+  def set_screen_share_state(token, participant_id, active?, screen_info \\ %{}) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.set_screen_share_state(token, participant_id, active?, screen_info)
     end
   end
 
@@ -152,6 +168,14 @@ defmodule RetroHexChat.GroupCall do
     end
   end
 
+  @spec force_kick_participant(String.t(), actor(), integer(), String.t()) ::
+          :ok | {:error, term()}
+  def force_kick_participant(token, actor, participant_id, reason \\ "kicked") do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.force_kick_participant(token, actor, participant_id, reason)
+    end
+  end
+
   @spec mute_participant(String.t(), actor(), integer()) ::
           {:ok, Participant.t()} | {:error, term()}
   def mute_participant(token, actor, participant_id) do
@@ -165,6 +189,91 @@ defmodule RetroHexChat.GroupCall do
   def unmute_participant(token, actor, participant_id) do
     with {:ok, _pid} <- ensure_room_server(token) do
       RoomServer.set_participant_audio(token, actor, participant_id, true)
+    end
+  end
+
+  @spec block_participant_video(String.t(), actor(), integer()) ::
+          {:ok, Participant.t()} | {:error, term()}
+  def block_participant_video(token, actor, participant_id) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.set_participant_video(token, actor, participant_id, false)
+    end
+  end
+
+  @spec unblock_participant_video(String.t(), actor(), integer()) ::
+          {:ok, Participant.t()} | {:error, term()}
+  def unblock_participant_video(token, actor, participant_id) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.set_participant_video(token, actor, participant_id, true)
+    end
+  end
+
+  @spec block_participant_screen_share(String.t(), actor(), integer()) ::
+          {:ok, Participant.t()} | {:error, term()}
+  def block_participant_screen_share(token, actor, participant_id) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.set_participant_screen_share(token, actor, participant_id, false)
+    end
+  end
+
+  @spec unblock_participant_screen_share(String.t(), actor(), integer()) ::
+          {:ok, Participant.t()} | {:error, term()}
+  def unblock_participant_screen_share(token, actor, participant_id) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.set_participant_screen_share(token, actor, participant_id, true)
+    end
+  end
+
+  @spec mute_all_participants(String.t(), actor()) :: {:ok, map()} | {:error, term()}
+  def mute_all_participants(token, actor) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.set_all_participants_media(token, actor, :audio, false)
+    end
+  end
+
+  @spec block_all_participant_videos(String.t(), actor()) :: {:ok, map()} | {:error, term()}
+  def block_all_participant_videos(token, actor) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.set_all_participants_media(token, actor, :video, false)
+    end
+  end
+
+  @spec lock_call(String.t(), actor()) :: {:ok, map()} | {:error, term()}
+  def lock_call(token, actor) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.set_locked(token, actor, true)
+    end
+  end
+
+  @spec unlock_call(String.t(), actor()) :: {:ok, map()} | {:error, term()}
+  def unlock_call(token, actor) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.set_locked(token, actor, false)
+    end
+  end
+
+  @spec set_hand_raised(String.t(), actor(), integer(), boolean()) ::
+          {:ok, Participant.t()} | {:error, term()}
+  def set_hand_raised(token, actor, participant_id, raised?) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.set_hand_raised(token, actor, participant_id, raised?)
+    end
+  end
+
+  @spec allow_participant_speak(String.t(), actor(), integer()) ::
+          {:ok, Participant.t()} | {:error, term()}
+  def allow_participant_speak(token, actor, participant_id) do
+    with {:ok, _pid} <- ensure_room_server(token) do
+      RoomServer.allow_participant_speak(token, actor, participant_id)
+    end
+  end
+
+  @spec send_reaction(String.t(), actor(), integer(), String.t()) ::
+          {:ok, map()} | {:error, term()}
+  def send_reaction(token, actor, participant_id, reaction) do
+    with {:ok, _pid} <- ensure_room_server(token),
+         :ok <- RateLimiter.check_reaction_rate(token, actor.user_id) do
+      RoomServer.send_reaction(token, actor, participant_id, reaction)
     end
   end
 
@@ -186,7 +295,11 @@ defmodule RetroHexChat.GroupCall do
                token: room.token,
                channel_name: room.channel_name,
                status: room.status,
-               max_participants: room.max_participants
+               max_participants: room.max_participants,
+               metadata: room.metadata,
+               inserted_at: room.inserted_at,
+               opened_at: room.opened_at,
+               activated_at: room.activated_at
              },
              participants: participants,
              pending_participants: [],
@@ -251,7 +364,8 @@ defmodule RetroHexChat.GroupCall do
         pending_count: 0,
         track_count: length(tracks),
         audio_track_count: Enum.count(tracks, &(&1.kind == "audio")),
-        video_track_count: Enum.count(tracks, &(&1.kind == "video"))
+        video_track_count: Enum.count(tracks, &(&1.kind == "video")),
+        screen_track_count: Enum.count(tracks, &(&1.kind == "video" and &1.source == "screen"))
       },
       peers: [],
       totals: %{
@@ -298,6 +412,11 @@ defmodule RetroHexChat.GroupCall do
       media_policy: %{"audio" => true, "video" => true},
       codec_policy: %{"audio" => "opus", "video" => "vp8"},
       ice_policy: %{"transport_policy" => Atom.to_string(config.ice_transport_policy)},
+      metadata:
+        Audit.append(%{}, :conference_started, %{
+          actor: actor.nickname,
+          channel: channel_name
+        }),
       opened_at: now,
       last_activity_at: now
     })
@@ -312,7 +431,11 @@ defmodule RetroHexChat.GroupCall do
   defp broadcast_channel_call_started(room) do
     Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
       :group_call_started,
-      %{channel: room.channel_name, token: room.token}
+      %{
+        channel: room.channel_name,
+        token: room.token,
+        event: Audit.last_event(room.metadata)
+      }
     })
   end
 

@@ -93,6 +93,18 @@ All SVGs extracted and organized in the SVG consolidation effort.
 | `icon_btn_dnd_active` | Moon + red slash (active) **[DONE]** |
 | `icon_btn_help_topics` | Question mark in circle **[DONE]** |
 
+### Symbols
+
+`apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/icons/symbols.ex`
+
+| Function | Description |
+|----------|-------------|
+| `icon_thumbs_up` | Pixel thumbs-up reaction for channel conferences **[DONE]** |
+| `icon_clap` | Pixel clapping-hands reaction for channel conferences **[DONE]** |
+| `icon_laugh` | Pixel laughing-face reaction for channel conferences **[DONE]** |
+| `icon_sparkle` | Pixel sparkle reaction for channel conferences **[DONE]** |
+| `icon_pin` | Push pin for pinned conference participants **[DONE]** |
+
 ### Code
 
 `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/icons/code.ex`

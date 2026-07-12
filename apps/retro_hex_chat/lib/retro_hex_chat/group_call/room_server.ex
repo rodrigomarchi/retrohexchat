@@ -13,11 +13,12 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
   alias RetroHexChat.Channels
   alias RetroHexChat.Channels.Membership
-  alias RetroHexChat.GroupCall.{Config, PeerServer, PeerSupervisor, Policy, Queries}
+  alias RetroHexChat.GroupCall.{Audit, Config, PeerServer, PeerSupervisor, Policy, Queries}
   alias RetroHexChat.GroupCall.Registry, as: GroupRegistry
   alias RetroHexChat.GroupCall.Schema.{Participant, Room, Track}
 
   @pubsub RetroHexChat.PubSub
+  @allowed_reactions ~w(heart thumbs_up clap laugh wow)
 
   @type participant_state :: %{
           participant: Participant.t(),
@@ -78,11 +79,28 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     )
   end
 
+  @spec request_offer(String.t(), integer()) :: :ok | {:error, term()}
+  def request_offer(room_token, participant_id) do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:request_offer, participant_id}
+    )
+  end
+
   @spec set_media_state(String.t(), integer(), map()) :: :ok | {:error, term()}
   def set_media_state(room_token, participant_id, media_state) do
     GenServer.call(
       GroupRegistry.room_via_tuple({:room, room_token}),
       {:set_media_state, participant_id, media_state}
+    )
+  end
+
+  @spec set_screen_share_state(String.t(), integer(), boolean(), map()) ::
+          {:ok, map()} | {:error, term()}
+  def set_screen_share_state(room_token, participant_id, active?, screen_info \\ %{}) do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:set_screen_share_state, participant_id, active?, screen_info}
     )
   end
 
@@ -102,12 +120,82 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     )
   end
 
+  @spec force_kick_participant(String.t(), map(), integer(), String.t()) :: :ok | {:error, term()}
+  def force_kick_participant(room_token, actor, participant_id, reason \\ "kicked") do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:force_kick_participant, actor, participant_id, reason}
+    )
+  end
+
   @spec set_participant_audio(String.t(), map(), integer(), boolean()) ::
           {:ok, Participant.t()} | {:error, term()}
   def set_participant_audio(room_token, actor, participant_id, enabled?) do
     GenServer.call(
       GroupRegistry.room_via_tuple({:room, room_token}),
       {:set_participant_audio, actor, participant_id, enabled?}
+    )
+  end
+
+  @spec set_participant_video(String.t(), map(), integer(), boolean()) ::
+          {:ok, Participant.t()} | {:error, term()}
+  def set_participant_video(room_token, actor, participant_id, enabled?) do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:set_participant_video, actor, participant_id, enabled?}
+    )
+  end
+
+  @spec set_participant_screen_share(String.t(), map(), integer(), boolean()) ::
+          {:ok, Participant.t()} | {:error, term()}
+  def set_participant_screen_share(room_token, actor, participant_id, allowed?) do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:set_participant_screen_share, actor, participant_id, allowed?}
+    )
+  end
+
+  @spec set_all_participants_media(String.t(), map(), :audio | :video, boolean()) ::
+          {:ok, map()} | {:error, term()}
+  def set_all_participants_media(room_token, actor, kind, enabled?)
+      when kind in [:audio, :video] do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:set_all_participants_media, actor, kind, enabled?}
+    )
+  end
+
+  @spec set_locked(String.t(), map(), boolean()) :: {:ok, map()} | {:error, term()}
+  def set_locked(room_token, actor, locked?) do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:set_locked, actor, locked?}
+    )
+  end
+
+  @spec set_hand_raised(String.t(), map(), integer(), boolean()) ::
+          {:ok, Participant.t()} | {:error, term()}
+  def set_hand_raised(room_token, actor, participant_id, raised?) do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:set_hand_raised, actor, participant_id, raised?}
+    )
+  end
+
+  @spec allow_participant_speak(String.t(), map(), integer()) ::
+          {:ok, Participant.t()} | {:error, term()}
+  def allow_participant_speak(room_token, actor, participant_id) do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:allow_participant_speak, actor, participant_id}
+    )
+  end
+
+  @spec send_reaction(String.t(), map(), integer(), String.t()) :: {:ok, map()} | {:error, term()}
+  def send_reaction(room_token, actor, participant_id, reaction) do
+    GenServer.call(
+      GroupRegistry.room_via_tuple({:room, room_token}),
+      {:send_reaction, actor, participant_id, reaction}
     )
   end
 
@@ -200,6 +288,36 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     {:reply, reply, state}
   end
 
+  def handle_call({:request_offer, participant_id}, _from, state) do
+    reply =
+      case participant_data(state, participant_id) do
+        {:ok, %{peer_pid: peer_pid}, _bucket} when is_pid(peer_pid) ->
+          PeerServer.request_offer(state.room.id, participant_id)
+
+        {:ok, _data, _bucket} ->
+          {:error, :peer_not_ready}
+
+        {:error, reason} ->
+          {:error, reason}
+      end
+
+    {:reply, reply, state}
+  end
+
+  def handle_call({:send_reaction, actor, participant_id, reaction}, _from, state) do
+    reply =
+      with {:ok, data, _bucket} <- participant_data(state, participant_id),
+           :ok <- authorize_reaction_actor(actor, data.participant),
+           {:ok, reaction} <- normalize_reaction(reaction) do
+        payload = reaction_payload(data.participant, reaction)
+        broadcast(state, "group_call_reaction", payload)
+        telemetry(:reaction, %{count: 1}, %{reaction: reaction})
+        {:ok, payload}
+      end
+
+    {:reply, reply, state}
+  end
+
   def handle_call({:set_media_state, participant_id, media_state}, _from, state) do
     case participant_data(state, participant_id) do
       {:ok, data, bucket} ->
@@ -236,6 +354,16 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     end
   end
 
+  def handle_call({:set_screen_share_state, participant_id, active?, screen_info}, _from, state) do
+    case participant_data(state, participant_id) do
+      {:ok, data, bucket} ->
+        reply_screen_share_state(state, participant_id, data, bucket, active?, screen_info)
+
+      {:error, _reason} = error ->
+        {:reply, error, state}
+    end
+  end
+
   def handle_call({:close, actor, reason}, _from, state) do
     with {:ok, membership} <- current_membership(state),
          :ok <- Policy.can_close?(actor.nickname, state.room, membership) do
@@ -243,6 +371,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
         close_room(state, %{
           status: "closed",
           reason: reason,
+          actor: actor.nickname,
           participant_status: "left",
           participant_reason: "room_closed"
         })
@@ -263,7 +392,16 @@ defmodule RetroHexChat.GroupCall.RoomServer do
              actor.nickname,
              target.participant.nickname
            ) do
-      state = leave_participant(state, participant_id, "kicked", "kicked")
+      state =
+        state
+        |> leave_participant(participant_id, "kicked", "kicked")
+        |> record_group_call_audit(:participant_kicked, %{
+          actor: actor.nickname,
+          target: target.participant.nickname,
+          target_participant_id: participant_id,
+          reason: "kicked"
+        })
+
       telemetry(:participant_kicked, %{count: 1}, %{result: :ok})
       {:reply, :ok, state}
     else
@@ -273,53 +411,127 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     end
   end
 
+  def handle_call({:force_kick_participant, actor, participant_id, reason}, _from, state) do
+    case participant_data(state, participant_id) do
+      {:ok, target, _bucket} ->
+        state =
+          state
+          |> leave_participant(participant_id, reason, "kicked")
+          |> record_group_call_audit(:participant_kicked, %{
+            actor: actor.nickname,
+            target: target.participant.nickname,
+            target_participant_id: participant_id,
+            reason: reason
+          })
+
+        telemetry(:participant_kicked, %{count: 1}, %{result: :ok, forced?: true})
+        {:reply, :ok, state}
+
+      {:error, :not_found} ->
+        telemetry(:participant_kicked, %{count: 1}, %{result: :not_found, forced?: true})
+        {:reply, :ok, state}
+    end
+  end
+
   def handle_call({:set_participant_audio, actor, participant_id, enabled?}, _from, state) do
-    with {:ok, data, bucket} <- participant_data(state, participant_id),
-         {:ok, membership} <- current_membership(state),
-         :ok <-
-           Policy.can_moderate_media?(
-             membership,
-             actor.nickname,
-             data.participant.nickname
-           ) do
-      media_state =
-        data.participant.media_state
-        |> normalize_media_state()
-        |> Map.merge(%{
-          "audio" => enabled?,
-          "server_audio_muted" => !enabled?,
-          "muted_by" => if(enabled?, do: nil, else: actor.nickname),
-          "muted_at" => if(enabled?, do: nil, else: DateTime.utc_now() |> DateTime.to_iso8601())
-        })
+    set_participant_media(state, actor, participant_id, :audio, enabled?)
+  end
 
-      attrs = %{media_state: media_state, last_seen_at: DateTime.utc_now()}
+  def handle_call({:set_participant_video, actor, participant_id, enabled?}, _from, state) do
+    set_participant_media(state, actor, participant_id, :video, enabled?)
+  end
 
-      case Queries.update_participant_status(data.participant, data.participant.status, attrs) do
-        {:ok, participant} ->
-          state =
-            state
-            |> put_in([bucket, participant_id, :participant], participant)
-            |> update_tracks_for_media(participant_id, media_state)
+  def handle_call({:set_participant_screen_share, actor, participant_id, allowed?}, _from, state) do
+    set_participant_screen_share_state(state, actor, participant_id, allowed?)
+  end
 
-          send_channel_event(data.channel_pid, "group_call_set_media_state", %{
-            audio: enabled?,
-            video: Map.get(media_state, "video", true)
-          })
+  def handle_call({:set_all_participants_media, actor, kind, enabled?}, _from, state)
+      when kind in [:audio, :video] do
+    apply_all_participants_media(state, actor, kind, enabled?)
+  end
 
-          broadcast(state, "group_call_media_state", %{
-            participant: participant_payload(participant)
-          })
+  def handle_call({:set_locked, actor, locked?}, _from, state) do
+    with {:ok, membership} <- current_membership(state),
+         :ok <- Policy.can_close?(actor.nickname, state.room, membership),
+         {:ok, room} <- update_room_lock(state.room, actor.nickname, locked?) do
+      state = %{state | room: room}
+      summary = summary_payload(state)
 
-          telemetry(:media_moderated, %{count: 1}, %{result: :ok, enabled: enabled?})
-          {:reply, {:ok, participant}, state}
+      broadcast_channel_call_updated(state, "lock_changed")
+      broadcast_lock_summary(room, actor.nickname, locked?)
 
-        {:error, reason} ->
-          telemetry(:media_moderated, %{count: 1}, %{result: :error, reason: inspect(reason)})
-          {:reply, {:error, reason}, state}
-      end
+      telemetry(:lock_changed, %{count: 1}, %{result: :ok, locked: locked? == true})
+
+      {:reply,
+       {:ok,
+        %{
+          locked: locked? == true,
+          room: room_payload(room),
+          summary: summary
+        }}, state}
     else
       {:error, reason} = error ->
-        telemetry(:media_moderated, %{count: 1}, %{result: :error, reason: inspect(reason)})
+        telemetry(:lock_changed, %{count: 1}, %{
+          result: :error,
+          locked: locked? == true,
+          reason: inspect(reason)
+        })
+
+        {:reply, error, state}
+    end
+  end
+
+  def handle_call({:set_hand_raised, actor, participant_id, raised?}, _from, state) do
+    with {:ok, data, bucket} <- participant_data(state, participant_id),
+         :ok <- can_set_hand_raised?(state, actor, data.participant, raised?),
+         {:ok, state, participant} <-
+           update_participant_media_state(state, data, bucket, fn media_state ->
+             put_hand_raised(media_state, raised? == true, actor.nickname)
+           end) do
+      broadcast_channel_call_updated(state, "hand_raised")
+      telemetry(:hand_raised, %{count: 1}, %{result: :ok, raised: raised? == true})
+      {:reply, {:ok, participant}, state}
+    else
+      {:error, reason} = error ->
+        telemetry(:hand_raised, %{count: 1}, %{
+          result: :error,
+          raised: raised? == true,
+          reason: inspect(reason)
+        })
+
+        {:reply, error, state}
+    end
+  end
+
+  def handle_call({:allow_participant_speak, actor, participant_id}, _from, state) do
+    with {:ok, data, bucket} <- participant_data(state, participant_id),
+         {:ok, membership} <- current_membership(state),
+         :ok <- Policy.can_moderate_media?(membership, actor.nickname, data.participant.nickname),
+         {:ok, state, participant} <-
+           update_participant_media_state(
+             state,
+             data,
+             bucket,
+             fn media_state ->
+               media_state
+               |> put_server_media_moderation(:audio, true, actor.nickname)
+               |> put_hand_raised(false, actor.nickname)
+             end,
+             force_client?: true
+           ) do
+      state =
+        record_group_call_audit(state, :participant_speak_allowed, %{
+          actor: actor.nickname,
+          target: participant.nickname,
+          target_participant_id: participant.id
+        })
+
+      broadcast_channel_call_updated(state, "speak_allowed")
+      telemetry(:speak_allowed, %{count: 1}, %{result: :ok})
+      {:reply, {:ok, participant}, state}
+    else
+      {:error, reason} = error ->
+        telemetry(:speak_allowed, %{count: 1}, %{result: :error, reason: inspect(reason)})
         {:reply, error, state}
     end
   end
@@ -331,6 +543,379 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   def handle_call(:summary, _from, state) do
     {:reply, {:ok, summary_payload(state)}, state}
   end
+
+  defp reply_screen_share_state(state, participant_id, data, bucket, active?, screen_info) do
+    current_media_state = normalize_media_state(data.participant.media_state)
+
+    if active? == true and Map.get(current_media_state, "server_screen_blocked") == true do
+      deny_screen_share(state)
+    else
+      persist_screen_share_state(
+        state,
+        participant_id,
+        data,
+        bucket,
+        active?,
+        screen_info,
+        current_media_state
+      )
+    end
+  end
+
+  defp deny_screen_share(state) do
+    reason = "Screen sharing was disabled by a moderator"
+    telemetry(:screen_share, %{count: 1}, %{result: :denied, reason: reason})
+    {:reply, {:error, reason}, state}
+  end
+
+  defp persist_screen_share_state(
+         state,
+         participant_id,
+         data,
+         bucket,
+         active?,
+         screen_info,
+         current_media_state
+       ) do
+    active = active? == true
+
+    media_state =
+      current_media_state
+      |> Map.put("screen", active)
+      |> put_screen_media_metadata(active, screen_info)
+
+    attrs = %{media_state: media_state, last_seen_at: DateTime.utc_now()}
+
+    case Queries.update_participant_status(data.participant, data.participant.status, attrs) do
+      {:ok, participant} ->
+        {state, payload} =
+          state
+          |> put_in([bucket, participant_id, :participant], participant)
+          |> update_screen_share_success(
+            participant_id,
+            participant,
+            media_state,
+            screen_info,
+            active,
+            current_media_state
+          )
+
+        {:reply, {:ok, payload}, state}
+
+      {:error, reason} ->
+        telemetry(:screen_share, %{count: 1}, %{result: :error, reason: inspect(reason)})
+        {:reply, {:error, reason}, state}
+    end
+  end
+
+  defp update_screen_share_success(
+         state,
+         participant_id,
+         participant,
+         media_state,
+         screen_info,
+         active,
+         previous_media_state
+       ) do
+    {state, track} = update_screen_share_track(state, participant_id, active, screen_info)
+    state = update_tracks_for_media(state, participant_id, media_state)
+    payload = screen_share_payload(participant_id, participant, active, track)
+
+    state =
+      maybe_record_screen_share_lifecycle(
+        state,
+        participant,
+        previous_media_state,
+        active
+      )
+
+    broadcast(state, "group_call_screen_share_state", payload)
+    broadcast(state, "group_call_media_state", %{participant: participant_payload(participant)})
+    telemetry(:screen_share, %{count: 1}, %{result: :ok, active: active})
+
+    {state, payload}
+  end
+
+  defp screen_share_payload(participant_id, participant, active, track) do
+    %{
+      active: active,
+      participant_id: participant_id,
+      participant: participant_payload(participant),
+      track: maybe_track_payload(track)
+    }
+  end
+
+  defp set_participant_media(state, actor, participant_id, kind, enabled?)
+       when kind in [:audio, :video] do
+    with {:ok, data, bucket} <- participant_data(state, participant_id),
+         {:ok, membership} <- current_membership(state),
+         :ok <-
+           Policy.can_moderate_media?(
+             membership,
+             actor.nickname,
+             data.participant.nickname
+           ) do
+      case update_moderated_participant_media(state, data, bucket, actor.nickname, kind, enabled?) do
+        {:ok, state, participant} ->
+          state =
+            record_media_moderation_audit(state, actor.nickname, participant, kind, enabled?)
+
+          telemetry(:media_moderated, %{count: 1}, %{
+            result: :ok,
+            kind: kind,
+            enabled: enabled?
+          })
+
+          {:reply, {:ok, participant}, state}
+
+        {:error, reason} ->
+          telemetry(:media_moderated, %{count: 1}, %{
+            result: :error,
+            kind: kind,
+            reason: inspect(reason)
+          })
+
+          {:reply, {:error, reason}, state}
+      end
+    else
+      {:error, reason} = error ->
+        telemetry(:media_moderated, %{count: 1}, %{
+          result: :error,
+          kind: kind,
+          reason: inspect(reason)
+        })
+
+        {:reply, error, state}
+    end
+  end
+
+  defp set_participant_screen_share_state(state, actor, participant_id, allowed?) do
+    with {:ok, data, bucket} <- participant_data(state, participant_id),
+         {:ok, membership} <- current_membership(state),
+         :ok <-
+           Policy.can_moderate_media?(
+             membership,
+             actor.nickname,
+             data.participant.nickname
+           ) do
+      case update_moderated_participant_screen_share(
+             state,
+             data,
+             bucket,
+             actor.nickname,
+             allowed?
+           ) do
+        {:ok, state, participant} ->
+          state =
+            record_screen_share_moderation_audit(state, actor.nickname, participant, allowed?)
+
+          telemetry(:screen_share_moderated, %{count: 1}, %{
+            result: :ok,
+            allowed: allowed? == true
+          })
+
+          {:reply, {:ok, participant}, state}
+
+        {:error, reason} ->
+          telemetry(:screen_share_moderated, %{count: 1}, %{
+            result: :error,
+            reason: inspect(reason)
+          })
+
+          {:reply, {:error, reason}, state}
+      end
+    else
+      {:error, reason} = error ->
+        telemetry(:screen_share_moderated, %{count: 1}, %{
+          result: :error,
+          reason: inspect(reason)
+        })
+
+        {:reply, error, state}
+    end
+  end
+
+  defp apply_all_participants_media(state, actor, kind, enabled?) when kind in [:audio, :video] do
+    with {:ok, membership} <- current_membership(state),
+         :ok <- Policy.can_close?(actor.nickname, state.room, membership) do
+      participant_ids =
+        state.participants
+        |> Map.keys()
+        |> Kernel.++(Map.keys(state.pending_participants))
+        |> Enum.uniq()
+
+      {state, changed, skipped_count} =
+        Enum.reduce(participant_ids, {state, [], 0}, fn participant_id, acc ->
+          moderate_bulk_participant(
+            participant_id,
+            acc,
+            membership,
+            actor.nickname,
+            kind,
+            enabled?
+          )
+        end)
+
+      changed = Enum.reverse(changed)
+
+      summary = %{
+        kind: kind,
+        enabled: enabled?,
+        action: bulk_media_action(kind, enabled?),
+        changed_count: length(changed),
+        skipped_count: skipped_count,
+        participants: Enum.map(changed, &participant_payload/1)
+      }
+
+      state = maybe_record_bulk_media_moderation_audit(state, actor.nickname, summary)
+
+      telemetry(:media_moderated_bulk, %{count: summary.changed_count}, %{
+        result: :ok,
+        kind: kind,
+        enabled: enabled?,
+        skipped_count: skipped_count
+      })
+
+      {:reply, {:ok, summary}, state}
+    else
+      {:error, reason} = error ->
+        telemetry(:media_moderated_bulk, %{count: 0}, %{
+          result: :error,
+          kind: kind,
+          reason: inspect(reason)
+        })
+
+        {:reply, error, state}
+    end
+  end
+
+  defp moderate_bulk_participant(
+         participant_id,
+         {state, changed, skipped_count},
+         membership,
+         actor_nickname,
+         kind,
+         enabled?
+       ) do
+    with {:ok, data, bucket} <- participant_data(state, participant_id),
+         :ok <- Policy.can_moderate_media?(membership, actor_nickname, data.participant.nickname),
+         {:ok, state, participant} <-
+           update_moderated_participant_media(
+             state,
+             data,
+             bucket,
+             actor_nickname,
+             kind,
+             enabled?
+           ) do
+      {state, [participant | changed], skipped_count}
+    else
+      _skip -> {state, changed, skipped_count + 1}
+    end
+  end
+
+  defp update_moderated_participant_media(state, data, bucket, actor_nickname, kind, enabled?) do
+    update_participant_media_state(
+      state,
+      data,
+      bucket,
+      fn media_state ->
+        put_server_media_moderation(media_state, kind, enabled?, actor_nickname)
+      end,
+      force_client?: true
+    )
+  end
+
+  defp update_moderated_participant_screen_share(state, data, bucket, actor_nickname, allowed?) do
+    update_participant_media_state(
+      state,
+      data,
+      bucket,
+      fn media_state -> put_server_screen_moderation(media_state, allowed?, actor_nickname) end,
+      force_client?: true,
+      after_update: fn state, participant, media_state ->
+        if allowed? == false do
+          send_channel_event(data.channel_pid, "group_call_stop_screen_share", %{
+            reason: "moderation",
+            server_screen_blocked: true
+          })
+        end
+
+        {state, track} =
+          if allowed? == false do
+            update_screen_share_track(state, participant.id, false, %{})
+          else
+            {state, nil}
+          end
+
+        state = update_tracks_for_media(state, participant.id, media_state)
+
+        broadcast(state, "group_call_screen_share_state", %{
+          active: false,
+          participant_id: participant.id,
+          participant: participant_payload(participant),
+          track: maybe_track_payload(track)
+        })
+
+        state
+      end
+    )
+  end
+
+  defp update_participant_media_state(state, data, bucket, update_fun, opts \\ []) do
+    participant_id = data.participant.id
+
+    media_state =
+      data.participant.media_state
+      |> normalize_media_state()
+      |> update_fun.()
+
+    attrs = %{media_state: media_state, last_seen_at: DateTime.utc_now()}
+
+    case Queries.update_participant_status(data.participant, data.participant.status, attrs) do
+      {:ok, participant} ->
+        state =
+          state
+          |> put_in([bucket, participant_id, :participant], participant)
+          |> update_tracks_for_media(participant_id, media_state)
+
+        if Keyword.get(opts, :force_client?, false) do
+          send_channel_event(
+            data.channel_pid,
+            "group_call_set_media_state",
+            forced_media_payload(media_state)
+          )
+        end
+
+        state =
+          case Keyword.get(opts, :after_update) do
+            fun when is_function(fun, 3) -> fun.(state, participant, media_state)
+            _none -> state
+          end
+
+        broadcast(state, "group_call_media_state", %{
+          participant: participant_payload(participant)
+        })
+
+        {:ok, state, participant}
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  defp can_set_hand_raised?(_state, %{nickname: actor_nickname}, %{nickname: nickname}, _raised?)
+       when actor_nickname == nickname,
+       do: :ok
+
+  defp can_set_hand_raised?(state, actor, participant, false) do
+    with {:ok, membership} <- current_membership(state) do
+      Policy.can_moderate_media?(membership, actor.nickname, participant.nickname)
+    end
+  end
+
+  defp can_set_hand_raised?(_state, _actor, _participant, true),
+    do: {:error, "Cannot raise another participant's hand"}
 
   defp join_authorized_participant(state, actor, signal_pid, client_info, membership) do
     case disconnected_participant(state, actor.nickname) do
@@ -402,14 +987,16 @@ defmodule RetroHexChat.GroupCall.RoomServer do
           participant: participant_payload(participant)
         })
 
+        broadcast_channel_call_updated(state, "participant_joined")
+
         {:noreply, state}
     end
   end
 
   def handle_cast({:track_added, participant_id, track_info}, state) do
     case participant_data(state, participant_id) do
-      {:ok, _data, _bucket} ->
-        source = source_for_kind(track_info.kind)
+      {:ok, data, _bucket} ->
+        source = source_for_track(track_info, data.participant)
         now = DateTime.utc_now()
 
         attrs = %{
@@ -742,6 +1329,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
         reason: reason
       })
 
+      broadcast_channel_call_updated(state, reason)
+
       telemetry(:leave, %{count: 1}, %{status: status, reason: reason})
 
       state
@@ -835,8 +1424,17 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     reason = Map.fetch!(opts, :reason)
     participant_status = Map.fetch!(opts, :participant_status)
     participant_reason = Map.fetch!(opts, :participant_reason)
+    actor = Map.get(opts, :actor)
 
     telemetry(:room_closed, %{count: 1}, %{reason: reason})
+
+    room_before_audit = state.room
+
+    state =
+      put_room_audit_event(state, :conference_ended, %{
+        actor: actor,
+        reason: reason
+      })
 
     broadcast(state, "group_call_closed", %{
       room: room_payload(state.room),
@@ -852,9 +1450,10 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     now = DateTime.utc_now()
 
     {:ok, room} =
-      Queries.update_room_status(state.room, Map.fetch!(opts, :status), %{
+      Queries.update_room_status(room_before_audit, Map.fetch!(opts, :status), %{
         closed_at: now,
         closed_reason: reason,
+        metadata: state.room.metadata,
         last_activity_at: now
       })
 
@@ -904,11 +1503,278 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     end
   end
 
+  defp update_screen_share_track(state, participant_id, true, screen_info) do
+    track =
+      find_active_video_track(state, participant_id, "camera") ||
+        find_active_video_track(state, participant_id, "screen")
+
+    update_video_track_source(state, participant_id, track, "screen", screen_info)
+  end
+
+  defp update_screen_share_track(state, participant_id, false, screen_info) do
+    track = find_active_video_track(state, participant_id, "screen")
+    update_video_track_source(state, participant_id, track, "camera", screen_info)
+  end
+
+  defp find_active_video_track(state, participant_id, source) do
+    state
+    |> tracks_for_participant(participant_id)
+    |> Enum.find(&(&1.kind == "video" and &1.source == source and &1.status != "ended"))
+  end
+
+  defp update_video_track_source(state, _participant_id, nil, _source, _screen_info),
+    do: {state, nil}
+
+  defp update_video_track_source(state, participant_id, track, source, screen_info) do
+    now = DateTime.utc_now()
+
+    attrs = %{
+      source: source,
+      status: "active",
+      activated_at: now,
+      muted_at: nil,
+      metadata: screen_track_metadata(track, source, screen_info)
+    }
+
+    case Queries.update_track(track, attrs) do
+      {:ok, updated} ->
+        broadcast(state, "group_call_track_updated", %{
+          track: track_payload(updated),
+          participant_id: participant_id
+        })
+
+        {put_in(state, [:tracks, updated.id], updated), updated}
+
+      {:error, reason} ->
+        Logger.debug("Ignoring group call screen-share track source update",
+          room_token: state.room.token,
+          participant_id: participant_id,
+          reason: inspect(reason)
+        )
+
+        {state, nil}
+    end
+  end
+
+  defp screen_track_metadata(track, "screen", screen_info) do
+    track
+    |> existing_metadata()
+    |> Map.merge(%{
+      "screen_shared_at" => DateTime.utc_now() |> DateTime.to_iso8601(),
+      "screen_track_id" => clean_string(screen_info_value(screen_info, "track_id")),
+      "screen_stream_id" => clean_string(screen_info_value(screen_info, "stream_id"))
+    })
+    |> Enum.reject(fn {_key, value} -> is_nil(value) end)
+    |> Map.new()
+  end
+
+  defp screen_track_metadata(track, _source, _screen_info) do
+    track
+    |> existing_metadata()
+    |> Map.delete("screen_track_id")
+    |> Map.delete("screen_stream_id")
+  end
+
+  defp existing_metadata(%{metadata: metadata}) when is_map(metadata), do: metadata
+  defp existing_metadata(_track), do: %{}
+
   defp broadcast_channel_call_ended(room, reason) do
     Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
       :group_call_ended,
-      %{channel: room.channel_name, token: room.token, reason: reason}
+      %{
+        channel: room.channel_name,
+        token: room.token,
+        reason: reason,
+        event: Audit.last_event(room.metadata)
+      }
     })
+  end
+
+  defp broadcast_channel_call_updated(state, reason) do
+    Phoenix.PubSub.broadcast(@pubsub, "channel:#{state.room.channel_name}", {
+      :group_call_updated,
+      %{
+        channel: state.room.channel_name,
+        token: state.room.token,
+        reason: reason,
+        summary: summary_payload(state)
+      }
+    })
+  end
+
+  defp put_room_audit_event(state, event_type, attrs) do
+    attrs = Map.put_new(attrs, :channel, state.room.channel_name)
+    metadata = Audit.append(state.room.metadata, event_type, attrs)
+    %{state | room: %{state.room | metadata: metadata}}
+  end
+
+  defp record_group_call_audit(state, event_type, attrs) do
+    attrs = Map.put_new(attrs, :channel, state.room.channel_name)
+    metadata = Audit.append(state.room.metadata, event_type, attrs)
+
+    case Queries.update_room_status(state.room, state.room.status, %{
+           metadata: metadata,
+           last_activity_at: DateTime.utc_now()
+         }) do
+      {:ok, room} ->
+        event = Audit.last_event(room.metadata)
+        broadcast_group_call_audit_event(room, event_type, event)
+        %{state | room: room}
+
+      {:error, reason} ->
+        Logger.debug("Ignoring group call audit persistence error",
+          room_token: state.room.token,
+          event_type: event_type,
+          reason: inspect(reason)
+        )
+
+        state
+    end
+  end
+
+  defp broadcast_group_call_audit_event(room, action, event) do
+    Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+      :group_call_moderation,
+      %{
+        channel: room.channel_name,
+        token: room.token,
+        actor: Map.get(event || %{}, "actor"),
+        target: Map.get(event || %{}, "target"),
+        action: action,
+        kind: Map.get(event || %{}, "kind"),
+        changed_count: Map.get(event || %{}, "changed_count"),
+        skipped_count: Map.get(event || %{}, "skipped_count"),
+        event: event
+      }
+    })
+  end
+
+  defp maybe_record_screen_share_lifecycle(state, participant, previous_media_state, active?) do
+    previous_active? = Map.get(previous_media_state, "screen", false) == true
+
+    cond do
+      active? and not previous_active? ->
+        record_group_call_audit(state, :screen_share_started, %{
+          actor: participant.nickname,
+          target: participant.nickname,
+          participant_id: participant.id
+        })
+
+      not active? and previous_active? ->
+        record_group_call_audit(state, :screen_share_stopped, %{
+          actor: participant.nickname,
+          target: participant.nickname,
+          participant_id: participant.id
+        })
+
+      true ->
+        state
+    end
+  end
+
+  defp record_media_moderation_audit(state, actor_nickname, participant, kind, enabled?) do
+    action =
+      case {kind, enabled? == true} do
+        {:audio, false} -> :participant_muted
+        {:audio, true} -> :participant_unmuted
+        {:video, false} -> :participant_camera_blocked
+        {:video, true} -> :participant_camera_unblocked
+      end
+
+    record_group_call_audit(state, action, %{
+      actor: actor_nickname,
+      target: participant.nickname,
+      target_participant_id: participant.id,
+      kind: kind
+    })
+  end
+
+  defp record_screen_share_moderation_audit(state, actor_nickname, participant, allowed?) do
+    action = if allowed? == true, do: :screen_share_unblocked, else: :screen_share_blocked
+
+    record_group_call_audit(state, action, %{
+      actor: actor_nickname,
+      target: participant.nickname,
+      target_participant_id: participant.id,
+      kind: :screen
+    })
+  end
+
+  defp maybe_record_bulk_media_moderation_audit(state, _actor_nickname, %{changed_count: 0}),
+    do: state
+
+  defp maybe_record_bulk_media_moderation_audit(state, actor_nickname, summary) do
+    record_group_call_audit(state, summary.action, %{
+      actor: actor_nickname,
+      kind: summary.kind,
+      changed_count: summary.changed_count,
+      skipped_count: summary.skipped_count,
+      metadata: %{
+        participants: Enum.map(summary.participants, &Map.take(&1, [:id, :nickname]))
+      }
+    })
+  end
+
+  defp broadcast_lock_summary(room, actor_nickname, true) do
+    Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+      :group_call_moderation,
+      %{
+        channel: room.channel_name,
+        token: room.token,
+        actor: actor_nickname,
+        action: :lock_call,
+        changed_count: 1,
+        skipped_count: 0,
+        event: Audit.last_event(room.metadata)
+      }
+    })
+  end
+
+  defp broadcast_lock_summary(room, actor_nickname, false) do
+    Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
+      :group_call_moderation,
+      %{
+        channel: room.channel_name,
+        token: room.token,
+        actor: actor_nickname,
+        action: :unlock_call,
+        changed_count: 1,
+        skipped_count: 0,
+        event: Audit.last_event(room.metadata)
+      }
+    })
+  end
+
+  defp update_room_lock(room, actor_nickname, locked?) do
+    action = if locked? == true, do: :conference_locked, else: :conference_unlocked
+
+    metadata =
+      room.metadata
+      |> normalize_room_metadata()
+      |> Map.put("locked", locked? == true)
+      |> Map.put("admission_locked", locked? == true)
+      |> maybe_put_lock_actor(actor_nickname, locked?)
+      |> Audit.append(action, %{
+        actor: actor_nickname,
+        channel: room.channel_name
+      })
+
+    Queries.update_room_status(room, room.status, %{metadata: metadata})
+  end
+
+  defp normalize_room_metadata(metadata) when is_map(metadata), do: metadata
+  defp normalize_room_metadata(_metadata), do: %{}
+
+  defp maybe_put_lock_actor(metadata, actor_nickname, true) do
+    metadata
+    |> Map.put("locked_by", actor_nickname)
+    |> Map.put("locked_at", DateTime.utc_now() |> DateTime.to_iso8601())
+  end
+
+  defp maybe_put_lock_actor(metadata, _actor_nickname, false) do
+    metadata
+    |> Map.delete("locked_by")
+    |> Map.delete("locked_at")
   end
 
   defp update_tracks_for_media(state, participant_id, media_state) do
@@ -917,39 +1783,50 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     state
     |> tracks_for_participant(participant_id)
     |> Enum.reduce(state, fn track, acc ->
-      target_status =
-        case {track.kind, Map.get(media_state, track.kind, true)} do
-          {"audio", false} -> "muted"
-          {"video", false} -> "muted"
-          _other -> "active"
-        end
-
-      attrs =
-        case target_status do
-          "muted" -> %{muted_at: DateTime.utc_now()}
-          "active" -> %{activated_at: DateTime.utc_now(), muted_at: nil}
-        end
-
-      case Queries.update_track_status(track, target_status, attrs) do
-        {:ok, updated} ->
-          broadcast(acc, "group_call_track_updated", %{
-            track: track_payload(updated),
-            participant_id: participant_id
-          })
-
-          put_in(acc, [:tracks, updated.id], updated)
-
-        {:error, reason} ->
-          Logger.debug("Ignoring group call track state update error",
-            room_token: state.room.token,
-            participant_id: participant_id,
-            reason: inspect(reason)
-          )
-
-          acc
-      end
+      update_track_for_media(track, acc, participant_id, media_state)
     end)
   end
+
+  defp update_track_for_media(track, state, participant_id, media_state) do
+    target_status = track_status_for_media(track, media_state)
+    attrs = track_status_attrs(target_status)
+
+    case Queries.update_track_status(track, target_status, attrs) do
+      {:ok, updated} ->
+        broadcast(state, "group_call_track_updated", %{
+          track: track_payload(updated),
+          participant_id: participant_id
+        })
+
+        put_in(state, [:tracks, updated.id], updated)
+
+      {:error, reason} ->
+        Logger.debug("Ignoring group call track state update error",
+          room_token: state.room.token,
+          participant_id: participant_id,
+          reason: inspect(reason)
+        )
+
+        state
+    end
+  end
+
+  defp track_status_for_media(%{kind: "audio"}, media_state) do
+    if Map.get(media_state, "audio", true), do: "active", else: "muted"
+  end
+
+  defp track_status_for_media(%{kind: "video", source: "screen"}, media_state) do
+    if Map.get(media_state, "screen", false), do: "active", else: "muted"
+  end
+
+  defp track_status_for_media(%{kind: "video"}, media_state) do
+    if Map.get(media_state, "video", true), do: "active", else: "muted"
+  end
+
+  defp track_status_for_media(_track, _media_state), do: "active"
+
+  defp track_status_attrs("muted"), do: %{muted_at: DateTime.utc_now()}
+  defp track_status_attrs("active"), do: %{activated_at: DateTime.utc_now(), muted_at: nil}
 
   defp end_participant_tracks(state, participant_id, reason) do
     state
@@ -1019,6 +1896,43 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     Map.merge(state.participants, state.pending_participants)
   end
 
+  defp authorize_reaction_actor(%{user_id: user_id}, %{registered_nick_id: user_id}), do: :ok
+  defp authorize_reaction_actor(_actor, _participant), do: {:error, :not_allowed}
+
+  defp normalize_reaction(reaction) when is_binary(reaction) do
+    reaction = String.trim(reaction)
+
+    if reaction in @allowed_reactions do
+      {:ok, reaction}
+    else
+      {:error, :invalid_reaction}
+    end
+  end
+
+  defp normalize_reaction(_reaction), do: {:error, :invalid_reaction}
+
+  defp reaction_payload(participant, reaction) do
+    %{
+      id: reaction_id(participant.id),
+      participant_id: participant.id,
+      nickname: participant.nickname,
+      reaction: reaction,
+      emoji: reaction_emoji(reaction),
+      occurred_at_ms: System.os_time(:millisecond)
+    }
+  end
+
+  defp reaction_id(participant_id) do
+    unique = System.unique_integer([:positive])
+    "#{participant_id}-#{System.os_time(:millisecond)}-#{unique}"
+  end
+
+  defp reaction_emoji("heart"), do: "❤️"
+  defp reaction_emoji("thumbs_up"), do: "👍"
+  defp reaction_emoji("clap"), do: "👏"
+  defp reaction_emoji("laugh"), do: "😄"
+  defp reaction_emoji("wow"), do: "✨"
+
   defp broadcast(state, event, payload) do
     state
     |> peer_states()
@@ -1085,7 +1999,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
         pending_count: map_size(state.pending_participants),
         track_count: map_size(state.tracks),
         audio_track_count: track_count(state, "audio"),
-        video_track_count: track_count(state, "video")
+        video_track_count: track_count(state, "video"),
+        screen_track_count: screen_track_count(state)
       },
       peers: peers,
       totals: server_totals(peers)
@@ -1159,6 +2074,12 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     |> Enum.count(&(&1.kind == kind))
   end
 
+  defp screen_track_count(state) do
+    state.tracks
+    |> Map.values()
+    |> Enum.count(&(&1.kind == "video" and &1.source == "screen"))
+  end
+
   defp count_connection_state(peers, state) do
     Enum.count(peers, &(Map.get(&1, :connection_state) == state))
   end
@@ -1197,7 +2118,11 @@ defmodule RetroHexChat.GroupCall.RoomServer do
       token: room.token,
       channel_name: room.channel_name,
       status: room.status,
-      max_participants: room.max_participants
+      max_participants: room.max_participants,
+      metadata: room.metadata,
+      inserted_at: room.inserted_at,
+      opened_at: room.opened_at,
+      activated_at: room.activated_at
     }
   end
 
@@ -1223,6 +2148,32 @@ defmodule RetroHexChat.GroupCall.RoomServer do
     }
   end
 
+  defp maybe_track_payload(nil), do: nil
+  defp maybe_track_payload(track), do: track_payload(track)
+
+  defp source_for_track(track_info, participant) do
+    source =
+      track_info
+      |> Map.get(:source)
+      |> normalize_source(track_info.kind)
+
+    cond do
+      is_binary(source) ->
+        source
+
+      track_info.kind == :video and
+          normalize_media_state(participant.media_state)["screen"] == true ->
+        "screen"
+
+      true ->
+        source_for_kind(track_info.kind)
+    end
+  end
+
+  defp normalize_source(source, :audio) when source in ["microphone"], do: source
+  defp normalize_source(source, :video) when source in ["camera", "screen"], do: source
+  defp normalize_source(_source, _kind), do: nil
+
   defp source_for_kind(:audio), do: "microphone"
   defp source_for_kind(:video), do: "camera"
 
@@ -1234,14 +2185,129 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   defp normalize_media_state(media_state, fallback) when is_map(media_state) do
     %{
       "audio" => media_value(media_state, "audio", Map.get(fallback, "audio", true)),
-      "video" => media_value(media_state, "video", Map.get(fallback, "video", true))
+      "video" => media_value(media_state, "video", Map.get(fallback, "video", true)),
+      "screen" => media_value(media_state, "screen", Map.get(fallback, "screen", false)),
+      "hand_raised" =>
+        media_value(media_state, "hand_raised", Map.get(fallback, "hand_raised", false))
     }
     |> maybe_put_extra(media_state, "server_audio_muted")
     |> maybe_put_extra(media_state, "muted_by")
     |> maybe_put_extra(media_state, "muted_at")
+    |> maybe_put_extra(media_state, "server_video_blocked")
+    |> maybe_put_extra(media_state, "video_blocked_by")
+    |> maybe_put_extra(media_state, "video_blocked_at")
+    |> maybe_put_extra(media_state, "server_screen_blocked")
+    |> maybe_put_extra(media_state, "screen_blocked_by")
+    |> maybe_put_extra(media_state, "screen_blocked_at")
+    |> maybe_put_extra(media_state, "screen_track_id")
+    |> maybe_put_extra(media_state, "screen_stream_id")
+    |> maybe_put_extra(media_state, "hand_raised_at")
+    |> maybe_put_extra(media_state, "hand_raised_by")
   end
 
   defp normalize_media_state(_media_state, fallback), do: fallback
+
+  defp put_server_media_moderation(media_state, :audio, enabled?, actor_nickname) do
+    Map.merge(media_state, %{
+      "audio" => enabled?,
+      "server_audio_muted" => !enabled?,
+      "muted_by" => if(enabled?, do: nil, else: actor_nickname),
+      "muted_at" => if(enabled?, do: nil, else: moderation_timestamp())
+    })
+  end
+
+  defp put_server_media_moderation(media_state, :video, enabled?, actor_nickname) do
+    Map.merge(media_state, %{
+      "video" => enabled?,
+      "server_video_blocked" => !enabled?,
+      "video_blocked_by" => if(enabled?, do: nil, else: actor_nickname),
+      "video_blocked_at" => if(enabled?, do: nil, else: moderation_timestamp())
+    })
+  end
+
+  defp put_server_screen_moderation(media_state, true, _actor_nickname) do
+    Map.merge(media_state, %{
+      "server_screen_blocked" => false,
+      "screen_blocked_by" => nil,
+      "screen_blocked_at" => nil
+    })
+  end
+
+  defp put_server_screen_moderation(media_state, false, actor_nickname) do
+    media_state
+    |> Map.merge(%{
+      "screen" => false,
+      "server_screen_blocked" => true,
+      "screen_blocked_by" => actor_nickname,
+      "screen_blocked_at" => moderation_timestamp()
+    })
+    |> Map.delete("screen_track_id")
+    |> Map.delete("screen_stream_id")
+  end
+
+  defp moderation_timestamp, do: DateTime.utc_now() |> DateTime.to_iso8601()
+
+  defp put_hand_raised(media_state, true, actor_nickname) do
+    Map.merge(media_state, %{
+      "hand_raised" => true,
+      "hand_raised_at" => Map.get(media_state, "hand_raised_at") || moderation_timestamp(),
+      "hand_raised_by" => actor_nickname
+    })
+  end
+
+  defp put_hand_raised(media_state, false, _actor_nickname) do
+    media_state
+    |> Map.put("hand_raised", false)
+    |> Map.delete("hand_raised_at")
+    |> Map.delete("hand_raised_by")
+  end
+
+  defp forced_media_payload(media_state) do
+    %{
+      audio: Map.get(media_state, "audio", true),
+      video: Map.get(media_state, "video", true),
+      screen: Map.get(media_state, "screen", false),
+      hand_raised: Map.get(media_state, "hand_raised") == true,
+      server_audio_muted: Map.get(media_state, "server_audio_muted") == true,
+      server_video_blocked: Map.get(media_state, "server_video_blocked") == true,
+      server_screen_blocked: Map.get(media_state, "server_screen_blocked") == true
+    }
+  end
+
+  defp bulk_media_action(:audio, false), do: :mute_all
+  defp bulk_media_action(:video, false), do: :camera_off_all
+  defp bulk_media_action(:audio, true), do: :unmute_all
+  defp bulk_media_action(:video, true), do: :camera_on_all
+
+  defp put_screen_media_metadata(media_state, true, screen_info) do
+    media_state
+    |> put_clean_media_string("screen_track_id", screen_info_value(screen_info, "track_id"))
+    |> put_clean_media_string("screen_stream_id", screen_info_value(screen_info, "stream_id"))
+  end
+
+  defp put_screen_media_metadata(media_state, false, _screen_info) do
+    media_state
+    |> Map.delete("screen_track_id")
+    |> Map.delete("screen_stream_id")
+  end
+
+  defp put_clean_media_string(media_state, key, value) do
+    case clean_string(value) do
+      nil -> media_state
+      value -> Map.put(media_state, key, value)
+    end
+  end
+
+  defp screen_info_value(screen_info, key) when is_map(screen_info) do
+    Map.get(screen_info, key, Map.get(screen_info, String.to_existing_atom(key)))
+  rescue
+    ArgumentError -> Map.get(screen_info, key)
+  end
+
+  defp screen_info_value(_screen_info, _key), do: nil
+
+  defp clean_string(value) when is_binary(value) and value != "", do: value
+  defp clean_string(_value), do: nil
 
   defp media_value(media_state, key, fallback) do
     atom_key = media_atom_key(key)
@@ -1265,12 +2331,43 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   end
 
   defp enforce_server_media_policy(media_state, current_media_state) do
+    media_state
+    |> enforce_server_audio_policy(current_media_state)
+    |> enforce_server_video_policy(current_media_state)
+    |> enforce_server_screen_policy(current_media_state)
+  end
+
+  defp enforce_server_audio_policy(media_state, current_media_state) do
     if Map.get(current_media_state, "server_audio_muted") == true do
       media_state
       |> Map.put("audio", false)
       |> Map.put("server_audio_muted", true)
       |> copy_current_media_extra(current_media_state, "muted_by")
       |> copy_current_media_extra(current_media_state, "muted_at")
+    else
+      media_state
+    end
+  end
+
+  defp enforce_server_video_policy(media_state, current_media_state) do
+    if Map.get(current_media_state, "server_video_blocked") == true do
+      media_state
+      |> Map.put("video", false)
+      |> Map.put("server_video_blocked", true)
+      |> copy_current_media_extra(current_media_state, "video_blocked_by")
+      |> copy_current_media_extra(current_media_state, "video_blocked_at")
+    else
+      media_state
+    end
+  end
+
+  defp enforce_server_screen_policy(media_state, current_media_state) do
+    if Map.get(current_media_state, "server_screen_blocked") == true do
+      media_state
+      |> Map.put("screen", false)
+      |> Map.put("server_screen_blocked", true)
+      |> copy_current_media_extra(current_media_state, "screen_blocked_by")
+      |> copy_current_media_extra(current_media_state, "screen_blocked_at")
     else
       media_state
     end
@@ -1285,9 +2382,22 @@ defmodule RetroHexChat.GroupCall.RoomServer do
 
   defp media_atom_key("audio"), do: :audio
   defp media_atom_key("video"), do: :video
+  defp media_atom_key("screen"), do: :screen
+  defp media_atom_key("hand_raised"), do: :hand_raised
+  defp media_atom_key("screen_track_id"), do: :screen_track_id
+  defp media_atom_key("screen_stream_id"), do: :screen_stream_id
+  defp media_atom_key("hand_raised_at"), do: :hand_raised_at
+  defp media_atom_key("hand_raised_by"), do: :hand_raised_by
   defp media_atom_key("server_audio_muted"), do: :server_audio_muted
   defp media_atom_key("muted_by"), do: :muted_by
   defp media_atom_key("muted_at"), do: :muted_at
+  defp media_atom_key("server_video_blocked"), do: :server_video_blocked
+  defp media_atom_key("video_blocked_by"), do: :video_blocked_by
+  defp media_atom_key("video_blocked_at"), do: :video_blocked_at
+  defp media_atom_key("server_screen_blocked"), do: :server_screen_blocked
+  defp media_atom_key("screen_blocked_by"), do: :screen_blocked_by
+  defp media_atom_key("screen_blocked_at"), do: :screen_blocked_at
+  defp media_atom_key(_key), do: nil
 
   defp telemetry(event, measurements, metadata) do
     :telemetry.execute([:retro_hex_chat, :group_call, event], measurements, metadata)

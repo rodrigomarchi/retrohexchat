@@ -5,9 +5,9 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
 
   describe "defaults/0" do
     @tag :unit
-    test "returns 20 default bindings" do
+    test "returns all default bindings" do
       bindings = KeyBindings.defaults()
-      assert map_size(bindings) == 19
+      assert map_size(bindings) == 24
     end
 
     @tag :unit
@@ -29,6 +29,11 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
       bindings = KeyBindings.defaults()
 
       assert Map.has_key?(bindings, :toggle_cheatsheet)
+      assert Map.has_key?(bindings, :group_call_toggle_audio)
+      assert Map.has_key?(bindings, :group_call_toggle_video)
+      assert Map.has_key?(bindings, :group_call_leave)
+      assert Map.has_key?(bindings, :group_call_layout_next)
+      assert Map.has_key?(bindings, :group_call_focus_next)
       assert Map.has_key?(bindings, :window_next)
       assert Map.has_key?(bindings, :window_prev)
 
@@ -76,14 +81,31 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
         assert bindings[action] == %{key: "#{n}", modifiers: [:ctrl, :shift]}
       end
     end
+
+    @tag :unit
+    test "conference shortcuts use non-reserved defaults" do
+      bindings = KeyBindings.defaults()
+
+      assert bindings.group_call_toggle_audio == %{key: "ArrowUp", modifiers: [:ctrl, :shift]}
+      assert bindings.group_call_toggle_video == %{key: "ArrowLeft", modifiers: [:ctrl, :shift]}
+      assert bindings.group_call_leave == %{key: "q", modifiers: [:ctrl, :shift]}
+      assert bindings.group_call_layout_next == %{key: "ArrowRight", modifiers: [:ctrl, :shift]}
+      assert bindings.group_call_focus_next == %{key: "ArrowDown", modifiers: [:ctrl, :shift]}
+
+      refute KeyBindings.reserved?(bindings.group_call_toggle_audio)
+      refute KeyBindings.reserved?(bindings.group_call_toggle_video)
+      refute KeyBindings.reserved?(bindings.group_call_leave)
+      refute KeyBindings.reserved?(bindings.group_call_layout_next)
+      refute KeyBindings.reserved?(bindings.group_call_focus_next)
+    end
   end
 
   describe "actions/0" do
     @tag :unit
-    test "returns sorted list of action-label pairs for all 20 actions" do
+    test "returns sorted list of action-label pairs for all actions" do
       actions = KeyBindings.actions()
       assert is_list(actions)
-      assert length(actions) == 19
+      assert length(actions) == 24
 
       labels = Enum.map(actions, fn {_action, label} -> label end)
       assert labels == Enum.sort(labels)
@@ -107,9 +129,9 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
     end
 
     @tag :unit
-    test "returns 20 entries for default bindings" do
+    test "returns entries for default bindings" do
       entries = KeyBindings.registry(KeyBindings.defaults())
-      assert length(entries) == 19
+      assert length(entries) == 24
     end
 
     @tag :unit
@@ -117,9 +139,11 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
       entries = KeyBindings.registry(KeyBindings.defaults())
       categories = Enum.map(entries, & &1.category)
 
-      # Navigation should come before Chat, Chat before Formatting, Formatting before System
+      # Navigation should come before Conference, Conference before System.
       nav_idx = Enum.find_index(categories, &(&1 == :navigation))
+      conference_idx = Enum.find_index(categories, &(&1 == :conference))
       sys_idx = Enum.find_index(categories, &(&1 == :system))
+      assert nav_idx < conference_idx
       assert nav_idx < sys_idx
     end
 
@@ -164,11 +188,12 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
 
   describe "categories/1" do
     @tag :unit
-    test "returns 4 categories" do
+    test "returns expected categories" do
       cats = KeyBindings.categories(KeyBindings.defaults())
       cat_names = Enum.map(cats, fn {cat, _} -> cat end)
 
       assert :navigation in cat_names
+      assert :conference in cat_names
       assert :system in cat_names
     end
 
@@ -203,6 +228,19 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
       assert :toggle_cheatsheet in sys_actions
       assert :toggle_search in sys_actions
     end
+
+    @tag :unit
+    test "conference category includes group call actions" do
+      cats = KeyBindings.categories(KeyBindings.defaults())
+      {_, conference_entries} = Enum.find(cats, fn {cat, _} -> cat == :conference end)
+      conference_actions = Enum.map(conference_entries, & &1.action)
+
+      assert :group_call_toggle_audio in conference_actions
+      assert :group_call_toggle_video in conference_actions
+      assert :group_call_leave in conference_actions
+      assert :group_call_layout_next in conference_actions
+      assert :group_call_focus_next in conference_actions
+    end
   end
 
   describe "find_action/2" do
@@ -220,6 +258,14 @@ defmodule RetroHexChat.Chat.KeyBindingsTest do
 
       params = %{"key" => "/", "altKey" => false, "ctrlKey" => true, "shiftKey" => true}
       assert KeyBindings.find_action(bindings, params) == :toggle_cheatsheet
+    end
+
+    @tag :unit
+    test "finds Ctrl+Shift+ArrowUp action for conference microphone" do
+      bindings = KeyBindings.defaults()
+
+      params = %{"key" => "ArrowUp", "altKey" => false, "ctrlKey" => true, "shiftKey" => true}
+      assert KeyBindings.find_action(bindings, params) == :group_call_toggle_audio
     end
 
     @tag :unit

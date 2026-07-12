@@ -126,6 +126,34 @@ describe("WindowManagerHook", () => {
     expect(taskbarBtn("call").classList.contains("u-hidden")).toBe(false);
   });
 
+  it("docks a primary and secondary window without stealing focus from the primary", () => {
+    command({
+      action: "dock_pair",
+      id: "call",
+      secondary_id: "chat",
+      secondary_width: 360,
+    });
+
+    const call = hook.windows.call.state;
+    const chat = hook.windows.chat.state;
+
+    expect(call.open).toBe(true);
+    expect(chat.open).toBe(true);
+    expect(call.minimized).toBe(false);
+    expect(chat.minimized).toBe(false);
+    expect(call.maximized).toBe(false);
+    expect(chat.maximized).toBe(false);
+    expect(hook.focusedId).toBe("call");
+    expect(call.x).toBe(16);
+    expect(call.y).toBe(16);
+    expect(chat.x).toBe(call.x + call.w + 8);
+    expect(chat.y).toBe(16);
+    expect(chat.w).toBe(360);
+    expect(call.h).toBe(736);
+    expect(chat.h).toBe(736);
+    expect(call.z).toBeGreaterThan(chat.z);
+  });
+
   it("minimizing hides the window but keeps it open", () => {
     command({ action: "open", id: "call" });
     hook.minimizeWindow("call");

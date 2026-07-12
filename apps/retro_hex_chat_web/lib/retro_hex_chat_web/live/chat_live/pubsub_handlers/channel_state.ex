@@ -57,7 +57,12 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
   # ── User kicked/banned/unbanned ───────────────────────────
 
-  def handle_info({:user_kicked, %{operator: op, target: target, reason: reason}}, socket) do
+  def handle_info(
+        {:user_kicked, %{operator: op, target: target, reason: reason} = payload},
+        socket
+      ) do
+    channel = Map.get(payload, :channel) || socket.assigns.session.active_channel
+
     msg =
       append_reason(
         dgettext("chat", "%{target} was kicked by %{operator}", target: target, operator: op),
@@ -68,7 +73,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
     if target == socket.assigns.session.nickname do
       kick_event = %{
-        channel: socket.assigns.session.active_channel,
+        channel: channel,
         operator: op,
         reason: reason
       }
@@ -79,7 +84,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
         socket
         |> assign(channel_users: users)
         |> play_event_sound(:kick, socket.assigns.session)
-        |> part_channel_after_kick(socket.assigns.session.active_channel)
+        |> part_channel_after_kick(channel)
         |> GroupCallEvents.leave_channel_call(kick_event.channel, "channel_kick")
         |> system_event(msg)
 
@@ -331,12 +336,43 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
   # ── Group call presence ───────────────────────────────────
 
-  def handle_info({:group_call_started, %{channel: channel}}, socket) do
-    {:halt, GroupCallEvents.mark_channel_call_active(socket, channel)}
+  def handle_info({:group_call_started, %{channel: channel} = payload}, socket) do
+    socket =
+      socket
+      |> GroupCallEvents.mark_channel_call_active(channel, Map.get(payload, :summary))
+      |> maybe_group_call_system_event(
+        channel,
+        dgettext("group_call", "Conference started in %{channel}.", channel: channel)
+      )
+
+    {:halt, socket}
+  end
+
+  def handle_info({:group_call_updated, %{channel: channel} = payload}, socket) do
+    {:halt, GroupCallEvents.mark_channel_call_active(socket, channel, Map.get(payload, :summary))}
+  end
+
+  def handle_info({:group_call_moderation, %{channel: channel} = payload}, socket) do
+    socket =
+      maybe_group_call_system_event(
+        socket,
+        channel,
+        group_call_moderation_message(payload)
+      )
+
+    {:halt, socket}
   end
 
   def handle_info({:group_call_ended, %{channel: channel}}, socket) do
-    {:halt, GroupCallEvents.mark_channel_call_inactive(socket, channel)}
+    socket =
+      socket
+      |> GroupCallEvents.mark_channel_call_inactive(channel)
+      |> maybe_group_call_system_event(
+        channel,
+        dgettext("group_call", "Conference ended in %{channel}.", channel: channel)
+      )
+
+    {:halt, socket}
   end
 
   # ── Catch-all: pass unhandled to next hook ────────────────
@@ -350,6 +386,183 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.ChannelState do
 
   defp append_reason(message, reason),
     do: dgettext("chat", "%{message} (%{reason})", message: message, reason: reason)
+
+  defp maybe_group_call_system_event(socket, channel, message) do
+    if socket.assigns.session.active_channel == channel and !socket.assigns.show_status_tab do
+      system_event(socket, message)
+    else
+      socket
+    end
+  end
+
+  defp group_call_moderation_message(%{
+         action: :mute_all,
+         actor: actor,
+         changed_count: count
+       }) do
+    dngettext(
+      "group_call",
+      "%{actor} muted %{count} conference microphone.",
+      "%{actor} muted %{count} conference microphones.",
+      count,
+      actor: actor
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :camera_off_all,
+         actor: actor,
+         changed_count: count
+       }) do
+    dngettext(
+      "group_call",
+      "%{actor} turned off %{count} conference camera.",
+      "%{actor} turned off %{count} conference cameras.",
+      count,
+      actor: actor
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :unmute_all,
+         actor: actor,
+         changed_count: count
+       }) do
+    dngettext(
+      "group_call",
+      "%{actor} allowed %{count} conference microphone.",
+      "%{actor} allowed %{count} conference microphones.",
+      count,
+      actor: actor
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :camera_on_all,
+         actor: actor,
+         changed_count: count
+       }) do
+    dngettext(
+      "group_call",
+      "%{actor} allowed %{count} conference camera.",
+      "%{actor} allowed %{count} conference cameras.",
+      count,
+      actor: actor
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :participant_muted,
+         actor: actor,
+         target: target
+       }) do
+    dgettext("group_call", "%{actor} muted %{target}'s conference microphone.",
+      actor: actor,
+      target: target
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :participant_unmuted,
+         actor: actor,
+         target: target
+       }) do
+    dgettext("group_call", "%{actor} allowed %{target}'s conference microphone.",
+      actor: actor,
+      target: target
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :participant_camera_blocked,
+         actor: actor,
+         target: target
+       }) do
+    dgettext("group_call", "%{actor} turned off %{target}'s conference camera.",
+      actor: actor,
+      target: target
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :participant_camera_unblocked,
+         actor: actor,
+         target: target
+       }) do
+    dgettext("group_call", "%{actor} allowed %{target}'s conference camera.",
+      actor: actor,
+      target: target
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :screen_share_started,
+         target: target
+       }) do
+    dgettext("group_call", "%{target} started sharing a screen.", target: target)
+  end
+
+  defp group_call_moderation_message(%{
+         action: :screen_share_stopped,
+         target: target
+       }) do
+    dgettext("group_call", "%{target} stopped sharing a screen.", target: target)
+  end
+
+  defp group_call_moderation_message(%{
+         action: :screen_share_blocked,
+         actor: actor,
+         target: target
+       }) do
+    dgettext("group_call", "%{actor} stopped %{target}'s screen share.",
+      actor: actor,
+      target: target
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :screen_share_unblocked,
+         actor: actor,
+         target: target
+       }) do
+    dgettext("group_call", "%{actor} allowed %{target} to share a screen again.",
+      actor: actor,
+      target: target
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :participant_speak_allowed,
+         actor: actor,
+         target: target
+       }) do
+    dgettext("group_call", "%{actor} allowed %{target} to speak.",
+      actor: actor,
+      target: target
+    )
+  end
+
+  defp group_call_moderation_message(%{
+         action: :participant_kicked,
+         actor: actor,
+         target: target
+       }) do
+    dgettext("group_call", "%{actor} removed %{target} from the conference.",
+      actor: actor,
+      target: target
+    )
+  end
+
+  defp group_call_moderation_message(%{action: :lock_call, actor: actor}) do
+    dgettext("group_call", "%{actor} locked the conference.", actor: actor)
+  end
+
+  defp group_call_moderation_message(%{action: :unlock_call, actor: actor}) do
+    dgettext("group_call", "%{actor} unlocked the conference.", actor: actor)
+  end
+
+  defp group_call_moderation_message(_payload),
+    do: dgettext("group_call", "Conference moderation updated.")
 
   defp apply_mode_to_users(users, "+q", params) do
     Enum.map(users, fn user ->

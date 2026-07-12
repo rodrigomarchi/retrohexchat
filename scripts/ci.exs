@@ -6,7 +6,7 @@
 # No compilation needed — this is a standalone .exs script.
 #
 # Pipeline:
-#   Stage 1 (parallel): compile + JS lint + JS tests (independent)
+#   Stage 1: compile first, then JS lint + JS tests in parallel
 #   Stage 2 (parallel, after compile): format + credo + CSS lint + tests + feature tests
 #   Stage 3 (isolated, after stage 2): dialyzer (runs alone to avoid protocol consolidation races)
 #
@@ -73,9 +73,32 @@ defmodule CI do
   # --- stages ---
 
   defp run_stage1(checks, project_root) do
-    stage1_compile = if @compile_check in checks, do: [@compile_check], else: []
     stage1_parallel = Enum.filter(@stage1_independent, &(&1 in checks))
-    run_stage("Stage 1", stage1_compile ++ stage1_parallel, project_root)
+    compile_results = run_stage1_compile(checks, project_root)
+    parallel_results = run_stage1_parallel(checks, compile_results, stage1_parallel, project_root)
+
+    Map.merge(compile_results, parallel_results)
+  end
+
+  defp run_stage1_compile(checks, project_root) do
+    if @compile_check in checks do
+      run_stage("Stage 1a", [@compile_check], project_root)
+    else
+      %{}
+    end
+  end
+
+  defp run_stage1_parallel(_checks, _compile_results, [], _project_root), do: %{}
+
+  defp run_stage1_parallel(checks, compile_results, stage1_parallel, project_root) do
+    compile_passed? = compile_results[@compile_check] == :ok or @compile_check not in checks
+
+    if compile_passed? do
+      run_stage("Stage 1b", stage1_parallel, project_root)
+    else
+      IO.puts("\n  #{c(:yellow)}Skipping Stage 1b — compile failed#{c(:reset)}\n")
+      Map.new(stage1_parallel, fn check -> {check, :skipped} end)
+    end
   end
 
   defp run_stage2(checks, stage1_results, project_root) do

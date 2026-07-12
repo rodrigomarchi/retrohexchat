@@ -3,6 +3,7 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   use RetroHexChatWeb.Component
 
   import RetroHexChatWeb.Components.UI.Button
+  import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
 
   alias RetroHexChatWeb.Icons
 
@@ -41,6 +42,10 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
   attr :group_call, :boolean,
     default: false,
     doc: "Marks a channel tab whose channel has an active conference"
+
+  attr :group_call_summary, :map,
+    default: nil,
+    doc: "Conference summary for the channel tab"
 
   attr :on_click, :any, default: nil, doc: "Tab click callback"
   attr :on_close, :any, default: nil, doc: "Close button callback"
@@ -91,11 +96,14 @@ defmodule RetroHexChatWeb.Components.UI.IrcTabs do
       </span>
       <span
         :if={@group_call}
-        class="w-3 h-3 flex-shrink-0 inline-flex items-center justify-center text-success"
-        title={dgettext("group_call", "Conference active")}
-        data-testid="tab-group-call-glyph"
+        class="flex-shrink-0"
       >
-        <Icons.icon_conference class="w-3 h-3" />
+        <.group_call_channel_glyph
+          channel={@label}
+          summary={@group_call_summary}
+          testid="tab-group-call-glyph"
+          class="h-3"
+        />
       </span>
       <.button
         :if={@closeable}

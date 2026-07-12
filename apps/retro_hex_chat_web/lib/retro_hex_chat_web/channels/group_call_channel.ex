@@ -94,6 +94,19 @@ defmodule RetroHexChatWeb.GroupCallChannel do
     end
   end
 
+  def handle_in("group_call_request_offer", _payload, socket) do
+    with {:ok, participant_id} <- fetch_participant_id(socket),
+         :ok <- check_signal_rate(socket),
+         :ok <- GroupCall.request_offer(socket.assigns.room_token, participant_id) do
+      {:reply, :ok, socket}
+    else
+      {:error, reason} ->
+        payload = %{code: "request_offer_failed", message: error_message(reason)}
+        push(socket, "group_call_error", payload)
+        {:reply, {:error, payload}, socket}
+    end
+  end
+
   def handle_in("group_call_media_state", media_state, socket) when is_map(media_state) do
     with {:ok, participant_id} <- fetch_participant_id(socket),
          :ok <- check_signal_rate(socket),
@@ -103,6 +116,48 @@ defmodule RetroHexChatWeb.GroupCallChannel do
       {:error, reason} ->
         payload = %{code: "media_state_failed", message: error_message(reason)}
         push(socket, "group_call_error", payload)
+        {:reply, {:error, payload}, socket}
+    end
+  end
+
+  def handle_in("group_call_screen_share_state", payload, socket) when is_map(payload) do
+    active? = truthy?(Map.get(payload, "active", Map.get(payload, :active, false)))
+
+    screen_info = %{
+      "track_id" => Map.get(payload, "track_id", Map.get(payload, :track_id)),
+      "stream_id" => Map.get(payload, "stream_id", Map.get(payload, :stream_id))
+    }
+
+    with {:ok, participant_id} <- fetch_participant_id(socket),
+         :ok <- check_signal_rate(socket),
+         {:ok, reply} <-
+           GroupCall.set_screen_share_state(
+             socket.assigns.room_token,
+             participant_id,
+             active?,
+             screen_info
+           ) do
+      {:reply, {:ok, reply}, socket}
+    else
+      {:error, reason} ->
+        payload = %{code: "screen_share_failed", message: error_message(reason)}
+        push(socket, "group_call_error", payload)
+        {:reply, {:error, payload}, socket}
+    end
+  end
+
+  def handle_in("group_call_reaction", payload, socket) when is_map(payload) do
+    reaction = Map.get(payload, "reaction", Map.get(payload, :reaction))
+    actor = %{user_id: socket.assigns.user_id, nickname: socket.assigns.nickname}
+
+    with {:ok, participant_id} <- fetch_participant_id(socket),
+         {:ok, reply} <-
+           GroupCall.send_reaction(socket.assigns.room_token, actor, participant_id, reaction) do
+      {:reply, {:ok, reply}, socket}
+    else
+      {:error, reason} ->
+        payload = %{code: "reaction_failed", message: error_message(reason)}
+        push(socket, "group_call_reaction_error", payload)
         {:reply, {:error, payload}, socket}
     end
   end
@@ -159,6 +214,9 @@ defmodule RetroHexChatWeb.GroupCallChannel do
     RateLimiter.check_signal_rate(socket.assigns.room_token, socket.assigns.user_id)
   end
 
+  defp truthy?(value) when value in [true, "true", "on", "1", 1], do: true
+  defp truthy?(_value), do: false
+
   defp room_payload(room) do
     %{
       id: room.id,
@@ -177,6 +235,8 @@ defmodule RetroHexChatWeb.GroupCallChannel do
   defp error_message(%Ecto.Changeset{}), do: "Invalid group call state"
   defp error_message(:not_joined), do: "Join the group call before signaling"
   defp error_message(:not_found), do: "Group call not found"
+  defp error_message(:invalid_reaction), do: "Reaction is not available"
+  defp error_message(:not_allowed), do: "Reaction is not allowed"
   defp error_message({:rate_limited, seconds}), do: "Rate limited. Try again in #{seconds}s"
   defp error_message(reason) when is_binary(reason), do: reason
   defp error_message(reason), do: inspect(reason)

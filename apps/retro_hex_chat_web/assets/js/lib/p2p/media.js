@@ -453,6 +453,19 @@ export function deriveStats(prev, curr) {
  */
 export async function collectFeatureSnapshot(pc) {
   const stats = await pc.getStats();
+
+  return collectFeatureSnapshotFromReports(stats);
+}
+
+/**
+ * Build the per-feature snapshot from an already collected RTCStatsReport.
+ *
+ * This lets feature hooks reuse one getStats() read for multiple summaries
+ * without adding extra work to the browser hot path.
+ * @param {RTCStatsReport|Map<string, object>} stats
+ * @returns {object} raw per-feature snapshot
+ */
+export function collectFeatureSnapshotFromReports(stats) {
   const snap = {
     timestamp: Date.now(),
     connection: { rtt: 0, availableOutgoing: 0 },

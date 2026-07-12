@@ -33,7 +33,8 @@ defmodule RetroHexChat.GroupCall.Policy do
   def can_join?(registered_nick_id, nickname, room, membership) do
     with :ok <- check_registered(registered_nick_id),
          :ok <- check_member(membership, nickname),
-         :ok <- check_not_terminal(room) do
+         :ok <- check_not_terminal(room),
+         :ok <- check_not_locked(room, membership, nickname) do
       :ok
     end
   end
@@ -113,6 +114,25 @@ defmodule RetroHexChat.GroupCall.Policy do
       :ok
     end
   end
+
+  defp check_not_locked(room, membership, nickname) do
+    if locked?(room) do
+      check_moderator(membership, nickname)
+      |> case do
+        :ok -> :ok
+        {:error, _reason} -> {:error, dgettext("group_call", "Group call is locked")}
+      end
+    else
+      :ok
+    end
+  end
+
+  defp locked?(%{metadata: metadata}) when is_map(metadata) do
+    Map.get(metadata, "locked", Map.get(metadata, :locked)) == true or
+      Map.get(metadata, "admission_locked", Map.get(metadata, :admission_locked)) == true
+  end
+
+  defp locked?(_room), do: false
 
   defp check_moderator(membership, nickname) do
     case Membership.role(membership, nickname) do

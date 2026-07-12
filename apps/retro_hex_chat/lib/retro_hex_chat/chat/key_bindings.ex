@@ -12,7 +12,7 @@ defmodule RetroHexChat.Chat.KeyBindings do
 
   @type binding :: %{key: String.t(), modifiers: [atom()]}
   @type bindings_map :: %{atom() => binding() | nil}
-  @type category :: :navigation | :chat | :formatting | :system
+  @type category :: :navigation | :chat | :conference | :formatting | :system
   @type registry_entry :: %{
           action: atom(),
           category: category(),
@@ -30,6 +30,11 @@ defmodule RetroHexChat.Chat.KeyBindings do
     toggle_highlight_dialog: %{key: "h", modifiers: [:ctrl, :shift]},
     toggle_url_catcher: %{key: "s", modifiers: [:ctrl, :shift]},
     toggle_perform_dialog: %{key: "e", modifiers: [:ctrl, :shift]},
+    group_call_toggle_audio: %{key: "ArrowUp", modifiers: [:ctrl, :shift]},
+    group_call_toggle_video: %{key: "ArrowLeft", modifiers: [:ctrl, :shift]},
+    group_call_leave: %{key: "q", modifiers: [:ctrl, :shift]},
+    group_call_layout_next: %{key: "ArrowRight", modifiers: [:ctrl, :shift]},
+    group_call_focus_next: %{key: "ArrowDown", modifiers: [:ctrl, :shift]},
     open_help: nil,
     toggle_cheatsheet: %{key: "/", modifiers: [:ctrl, :shift]},
     window_next: %{key: "]", modifiers: [:ctrl, :shift]},
@@ -81,6 +86,37 @@ defmodule RetroHexChat.Chat.KeyBindings do
       category: :system,
       label: dgettext_noop("chat", "Open Perform Dialog"),
       description: dgettext_noop("chat", "Open/close auto-perform settings"),
+      customizable: true
+    },
+    # Conference category
+    group_call_toggle_audio: %{
+      category: :conference,
+      label: dgettext_noop("chat", "Toggle Conference Microphone"),
+      description: dgettext_noop("chat", "Mute or unmute your active conference microphone"),
+      customizable: true
+    },
+    group_call_toggle_video: %{
+      category: :conference,
+      label: dgettext_noop("chat", "Toggle Conference Camera"),
+      description: dgettext_noop("chat", "Start or stop your active conference camera"),
+      customizable: true
+    },
+    group_call_leave: %{
+      category: :conference,
+      label: dgettext_noop("chat", "Leave Conference"),
+      description: dgettext_noop("chat", "Open the leave confirmation for the active conference"),
+      customizable: true
+    },
+    group_call_layout_next: %{
+      category: :conference,
+      label: dgettext_noop("chat", "Next Conference Layout"),
+      description: dgettext_noop("chat", "Cycle the active conference layout"),
+      customizable: true
+    },
+    group_call_focus_next: %{
+      category: :conference,
+      label: dgettext_noop("chat", "Focus Next Conference Participant"),
+      description: dgettext_noop("chat", "Move conference focus to the next participant"),
       customizable: true
     },
     open_help: %{
@@ -240,13 +276,15 @@ defmodule RetroHexChat.Chat.KeyBindings do
   @spec category_label(category()) :: String.t()
   def category_label(:navigation), do: dgettext("chat", "Navigation")
   def category_label(:chat), do: dgettext("chat", "Chat")
+  def category_label(:conference), do: dgettext("chat", "Conference")
   def category_label(:formatting), do: dgettext("chat", "Formatting")
   def category_label(:system), do: dgettext("chat", "System")
 
   defp category_order(:navigation), do: 0
   defp category_order(:chat), do: 1
-  defp category_order(:formatting), do: 2
-  defp category_order(:system), do: 3
+  defp category_order(:conference), do: 2
+  defp category_order(:formatting), do: 3
+  defp category_order(:system), do: 4
 
   @spec find_action(bindings_map(), map()) :: atom() | nil
   def find_action(bindings, %{"key" => key} = params) do

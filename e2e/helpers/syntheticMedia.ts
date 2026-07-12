@@ -30,7 +30,7 @@ export async function installSyntheticMedia(ctx: BrowserContext) {
       return destination.stream.getAudioTracks()[0];
     }
 
-    function createSyntheticVideoTrack() {
+    function createSyntheticVideoTrack(label = 'synthetic media') {
       const canvas = document.createElement('canvas');
       canvas.width = 320;
       canvas.height = 240;
@@ -47,7 +47,7 @@ export async function installSyntheticMedia(ctx: BrowserContext) {
         context.fillRect((frame * 7) % canvas.width, 32, 64, 64);
         context.fillStyle = '#ffffff';
         context.font = '16px monospace';
-        context.fillText(`synthetic media ${frame}`, 16, 180);
+        context.fillText(`${label} ${frame}`, 16, 180);
       };
 
       paint();
@@ -76,6 +76,11 @@ export async function installSyntheticMedia(ctx: BrowserContext) {
         mockWindow.__mockGetUserMediaCalls =
           (mockWindow.__mockGetUserMediaCalls || 0) + 1;
 
+        return stream;
+      },
+      getDisplayMedia: async () => {
+        const stream = new MediaStream();
+        stream.addTrack(createSyntheticVideoTrack('synthetic screen'));
         return stream;
       },
       enumerateDevices: async () => [
