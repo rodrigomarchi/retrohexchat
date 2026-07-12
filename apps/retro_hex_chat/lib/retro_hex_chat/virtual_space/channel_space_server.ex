@@ -26,7 +26,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   # Selectable avatar ids. Must stay in sync with `AVATAR_IDS` in the JS atlas
   # (`assets/js/lib/space/sprite_atlas.js`). The first entry is the default the
   # runtime assigns on join, before the player picks a character.
-  @avatars ~w(redtunic_hero sorceress knight archer barbarian rogue cleric monk iso_knight)
+  @avatars ~w(hero knight sorceress archer barbarian rogue cleric monk)
 
   @type participant :: %{
           key: String.t(),

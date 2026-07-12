@@ -1,66 +1,73 @@
 #!/usr/bin/env python3
-"""Compose the 8-direction isometric avatar sheet from PixelLab exports.
+"""Compose an 8-direction isometric avatar sheet from a PixelLab export.
 
-Unlike ``compose_avatars.py`` (the 4-direction top-down class roster), this packs
-a premium **8-direction** character with four animations — walk, idle (breathing),
-attack, sleep — into one sheet the engine addresses via the ``av_iso_knight``
-atlas entry.
+Packs a premium 8-direction character's animations into one sheet the engine
+addresses via an iso avatar atlas entry. Handles whichever of walk/idle/attack/
+sleep actually exist (the roster is built up incrementally as animations land).
 
-Input (raw PixelLab frames, kept in the repo so the sheet recomposes without
+Usage:
+    python3 tools/compose_iso_avatar.py <name>     # default: iso_knight
+
+Input (raw PixelLab frames, kept in the repo so sheets recompose without
 re-spending generations):
-    virtual.space/characters/iso_knight/pixellab/animations/<anim>/<dir>/*.png
-    (walk|idle|attack have all 8 directions; sleep is south-only — a seated pose)
+    virtual.space/characters/<name>/pixellab/animations/<anim>/<dir>/*.png
+    (walk/idle/attack carry all 8 directions; sleep is south-only — a seated pose)
 
 Layout: every frame is cropped to ONE shared vertical window (feet flush to the
-bottom, full 92px width kept so the body stays centred through the attack swing),
-then stacked in direction-major blocks:
-    rows  0- 7  walk    (south, south-east, east, north-east, north,
-    rows  8-15  idle     north-west, west, south-west)
-    rows 16-23  attack
-    row  24     sleep    (south only)
+bottom, full width kept so the body stays centred through the attack swing), then
+stacked in direction-major blocks in the fixed order walk, idle, attack, sleep —
+skipping any animation that has not been generated yet.
 
-Deterministic: same frames in → identical bytes out. Prints the atlas geometry.
+Deterministic: same frames in → identical bytes out. Writes the sheet PNG and a
+sibling ``<name>.geo.json`` (frame size + per-anim/-direction row offsets) so the
+atlas can be generated from data, and prints the same geometry.
 """
 import glob
 import json
 import os
+import sys
 
 from PIL import Image
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-RAW = os.path.join(REPO, "virtual.space/characters/iso_knight/pixellab/animations")
-OUT = os.path.join(REPO, "apps/retro_hex_chat_web/priv/static/images/space/avatars/iso_knight.png")
-
 DIRS8 = ["south", "south-east", "east", "north-east", "north", "north-west", "west", "south-west"]
+ANIM_ORDER = ["walk", "idle", "attack", "sleep"]
 FRAMES = 4  # per animation, per direction
 
 
-def _load(anim, direction):
-    files = sorted(glob.glob(os.path.join(RAW, anim, direction, "*.png")))
+def _load(raw, anim, direction):
+    files = sorted(glob.glob(os.path.join(raw, anim, direction, "*.png")))
     ims = [Image.open(f).convert("RGBA") for f in files]
     if not ims:
-        raise FileNotFoundError(f"no frames for {anim}/{direction}")
-    # Pad/truncate to exactly FRAMES (PixelLab occasionally yields 3 or 5).
-    while len(ims) < FRAMES:
+        return None
+    while len(ims) < FRAMES:  # PixelLab occasionally yields 3 or 5 frames.
         ims.append(ims[-1].copy())
     return ims[:FRAMES]
 
 
-def build():
-    # Gather every frame first so the crop window is shared across the whole sheet.
-    blocks = {
-        "walk": [(_load("walk", d), d) for d in DIRS8],
-        "idle": [(_load("idle", d), d) for d in DIRS8],
-        "attack": [(_load("attack", d), d) for d in DIRS8],
-        "sleep": [(_load("sleep", "south"), "south")],
-    }
+def build(name):
+    raw = os.path.join(REPO, "virtual.space/characters", name, "pixellab/animations")
+    out = os.path.join(
+        REPO, "apps/retro_hex_chat_web/priv/static/images/space/avatars", name + ".png"
+    )
+    geo_out = os.path.join(os.path.dirname(out), name + ".geo.json")
+
+    # Gather whichever animations exist. sleep is south-only; the rest are 8-dir.
+    blocks = {}
+    for anim in ANIM_ORDER:
+        dirs = ["south"] if anim == "sleep" else DIRS8
+        rows = [(ims, d) for d in dirs if (ims := _load(raw, anim, d)) is not None]
+        if rows:
+            blocks[anim] = rows
+    if not blocks:
+        raise SystemExit(f"no animations found under {raw}")
+
     all_frames = [im for rows in blocks.values() for ims, _ in rows for im in ims]
     cw, ch = all_frames[0].size
 
-    # One shared vertical crop: keep the full width (body stays centred through the
-    # asymmetric attack swing) but drop the transparent padding below the feet so
-    # billboarding bottom-centre grounds every pose. Bottom = lowest opaque row over
-    # ALL frames (the standing feet / the seated base), top stays at 0 for headroom.
+    # One shared vertical crop for the whole sheet: keep full width (body stays
+    # centred through the asymmetric attack swing), drop the transparent padding
+    # below the feet so billboarding bottom-centre grounds every pose.
     bottom = 0
     for im in all_frames:
         px = im.load()
@@ -68,34 +75,29 @@ def build():
             if any(px[x, y][3] > 20 for x in range(cw)):
                 bottom = max(bottom, y)
                 break
-    fh = bottom + 1
-    fw = cw
+    fh, fw = bottom + 1, cw
 
-    order = ["walk", "idle", "attack", "sleep"]
-    total_rows = 8 + 8 + 8 + 1
+    present = [a for a in ANIM_ORDER if a in blocks]
+    total_rows = sum(len(blocks[a]) for a in present)
     sheet = Image.new("RGBA", (fw * FRAMES, fh * total_rows), (0, 0, 0, 0))
 
-    geometry = {}
+    geometry = {"frameW": fw, "frameH": fh, "cols": [c * fw for c in range(FRAMES)], "anims": {}}
     row = 0
-    for anim in order:
+    for anim in present:
         rows = {}
         for ims, direction in blocks[anim]:
             for c, im in enumerate(ims):
                 sheet.alpha_composite(im.crop((0, 0, fw, fh)), (c * fw, row * fh))
             rows[direction] = row * fh
             row += 1
-        geometry[anim] = {
-            "frameW": fw,
-            "frameH": fh,
-            "cols": [c * fw for c in range(FRAMES)],
-            "rows": rows,
-        }
+        geometry["anims"][anim] = rows
 
-    os.makedirs(os.path.dirname(OUT), exist_ok=True)
-    sheet.save(OUT)
-    print(f"OK iso avatar: sheet={sheet.size} frame={fw}x{fh} rows={total_rows}")
+    os.makedirs(os.path.dirname(out), exist_ok=True)
+    sheet.save(out)
+    json.dump(geometry, open(geo_out, "w"))
+    print(f"OK {name}: sheet={sheet.size} frame={fw}x{fh} anims={present}")
     print("GEOMETRY " + json.dumps(geometry))
 
 
 if __name__ == "__main__":
-    build()
+    build(sys.argv[1] if len(sys.argv) > 1 else "iso_knight")

@@ -48,10 +48,10 @@ test.describe("End of Time private space", () => {
 
       // Character picker gates the DM canvas.
       await expect(page.getByTestId("space-character-select")).toBeVisible();
-      await page.getByTestId("space-avatar-iso_knight").click();
+      await page.getByTestId("space-avatar-knight").click();
 
       const shell = page.locator(
-        '[data-testid="channel-space-shell"][data-space-mode="direct_message"][data-avatar="iso_knight"]',
+        '[data-testid="channel-space-shell"][data-space-mode="direct_message"][data-avatar="knight"]',
       );
       await expect(shell).toBeVisible();
       const canvas = page.locator('[data-testid="channel-space-shell"] canvas');

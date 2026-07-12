@@ -380,7 +380,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
       assert {:ok, init, socket} = join_channel_space(channel, "alice")
       self_key = init.self_key
-      assert init.snapshot.participants[self_key].avatar == "redtunic_hero"
+      assert init.snapshot.participants[self_key].avatar == "hero"
 
       push(socket, "space_select_avatar", %{"avatar" => "sorceress"})
 
@@ -401,7 +401,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       push(socket, "space_select_avatar", %{"avatar" => "dragon_lord"})
       # Round-trip a benign call so the invalid push is fully processed first.
       {:ok, state} = ChannelSpaceServer.get_state(channel)
-      assert state.participants[init.self_key].avatar == "redtunic_hero"
+      assert state.participants[init.self_key].avatar == "hero"
     end
   end
 

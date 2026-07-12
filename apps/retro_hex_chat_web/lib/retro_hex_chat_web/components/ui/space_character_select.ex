@@ -14,15 +14,14 @@ defmodule RetroHexChatWeb.Components.UI.SpaceCharacterSelect do
   use RetroHexChatWeb, :html
 
   @labels %{
-    "redtunic_hero" => "Hero",
-    "sorceress" => "Sorceress",
+    "hero" => "Hero",
     "knight" => "Knight",
+    "sorceress" => "Sorceress",
     "archer" => "Archer",
     "barbarian" => "Barbarian",
     "rogue" => "Rogue",
     "cleric" => "Cleric",
-    "monk" => "Monk",
-    "iso_knight" => "Knight ⚔"
+    "monk" => "Monk"
   }
 
   attr :avatars, :list, required: true, doc: "Selectable avatar ids (VirtualSpace.avatars/0)"

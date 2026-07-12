@@ -7,11 +7,7 @@ import {
   DIRECTIONS,
 } from "../../../js/lib/space/sprite_atlas.js";
 
-const TILESETS = [
-  { id: "demo_sheet", src: "/images/space/demo_sheet.png", tile: 16, columns: 40 },
-  { id: "character", src: "/images/space/character.png", tile: 16, columns: 17 },
-  { id: "av_knight", src: "/images/space/avatars/knight.png" },
-];
+const TILESETS = [{ id: "demo_sheet", src: "/images/space/demo_sheet.png", tile: 16, columns: 40 }];
 
 const TILES = {
   grass: { ts: "demo_sheet", col: 5, row: 9 },
@@ -27,20 +23,28 @@ function loadedAtlas() {
 }
 
 describe("sprite atlas contract", () => {
-  it("declares the hero, the class avatars, the premium iso knight, their actions, and the facings", () => {
+  it("declares the premium iso roster, its actions, and the 8 iso facings", () => {
     expect(AVATAR_IDS).toEqual([
-      "redtunic_hero",
-      "sorceress",
+      "hero",
       "knight",
+      "sorceress",
       "archer",
       "barbarian",
       "rogue",
       "cleric",
       "monk",
-      "iso_knight",
     ]);
     expect(AVATAR_ACTIONS).toEqual(["walk", "sword", "idle", "sleep"]);
-    expect(DIRECTIONS).toEqual(["down", "up", "left", "right"]);
+    expect(DIRECTIONS).toEqual([
+      "south",
+      "south-east",
+      "east",
+      "north-east",
+      "north",
+      "north-west",
+      "west",
+      "south-west",
+    ]);
   });
 
   it("resolves a tile name into a source rectangle on its sheet", () => {
@@ -100,85 +104,38 @@ describe("sprite atlas contract", () => {
     expect(atlas.hasTile("nope")).toBe(false);
   });
 
-  it("slices the red-tunic hero walk and sword frames by facing", () => {
+  it("slices a walk-only iso avatar by 8-direction facing and frame", () => {
     const atlas = loadedAtlas();
-    // Walk block is at (0,0); down = row 0, frame 0 = col 0.
-    expect(atlas.avatar("redtunic_hero", "down", 0)).toMatchObject({
-      sx: 0,
-      sy: 0,
-      sw: 16,
-      sh: 32,
-    });
-    // up = row offset 4, frame 1 = col 1.
-    expect(atlas.avatar("redtunic_hero", "up", 1)).toMatchObject({ sx: 16, sy: 64 });
-    // Sword block starts at row 8 and uses its own row order: down/up/right/left.
-    expect(atlas.avatar("redtunic_hero", "down", 2, "sword")).toMatchObject({
-      sx: 64,
-      sy: 128,
-      sw: 32,
-      sh: 32,
-    });
-    expect(atlas.avatar("redtunic_hero", "right", 3, "sword")).toMatchObject({
-      sx: 96,
-      sy: 192,
-      sw: 32,
-      sh: 32,
-    });
-    expect(atlas.avatar("redtunic_hero", "up", 1, "sword")).toMatchObject({
-      sx: 32,
-      sy: 160,
-      sw: 32,
-      sh: 32,
-    });
-    expect(atlas.avatar("redtunic_hero", "left", 3, "sword")).toMatchObject({
-      sx: 96,
-      sy: 224,
-      sw: 32,
-      sh: 32,
-    });
-    expect(atlas.avatarFrameCount("redtunic_hero", "walk")).toBe(4);
-    expect(atlas.avatarFrameCount("redtunic_hero", "sword")).toBe(4);
+    // Hero: walk-only, 188×142 frames, one row per iso direction, 4 cols.
+    expect(atlas.avatar("hero", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 142 });
+    expect(atlas.avatar("hero", "south-east", 1)).toMatchObject({ sx: 188, sy: 142 });
+    expect(atlas.avatar("hero", "south-west", 3)).toMatchObject({ sx: 564, sy: 994 });
+    // With no idle/sword/sleep block, any action falls back to walk.
+    expect(atlas.avatar("hero", "south", 0, "sword")).toMatchObject({ sx: 0, sy: 0 });
+    expect(atlas.avatarFrameCount("hero", "walk")).toBe(4);
   });
 
-  it("slices a 36px class avatar from its own sheet by facing and frame", () => {
+  it("slices the fully-animated knight across walk/idle/sword/sleep blocks", () => {
     const atlas = loadedAtlas();
-    // Class sheets are a 4x4 grid of 36px cells: rows down/up/left/right.
-    expect(atlas.avatar("knight", "down", 0)).toMatchObject({
-      sx: 0,
-      sy: 0,
-      sw: 36,
-      sh: 36,
-    });
-    expect(atlas.avatar("knight", "up", 1)).toMatchObject({ sx: 36, sy: 36 });
-    expect(atlas.avatar("knight", "left", 2)).toMatchObject({ sx: 72, sy: 72 });
-    expect(atlas.avatar("knight", "right", 3)).toMatchObject({ sx: 108, sy: 108 });
-    // Attack block lives on rows 4-7 (y 144..252) of the same 36px sheet.
-    expect(atlas.avatar("knight", "down", 0, "sword")).toMatchObject({
-      sx: 0,
-      sy: 144,
-      sw: 36,
-      sh: 36,
-    });
-    expect(atlas.avatar("knight", "right", 2, "sword")).toMatchObject({ sx: 72, sy: 252 });
-    expect(atlas.avatarFrameCount("knight", "walk")).toBe(4);
+    // 188×151 frames; walk rows 0.., idle 1208.., sword(attack) 2416.., sleep 3624.
+    expect(atlas.avatar("knight", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 151 });
+    expect(atlas.avatar("knight", "east", 1, "idle")).toMatchObject({ sx: 188, sy: 1510 });
+    expect(atlas.avatar("knight", "south", 2, "sword")).toMatchObject({ sx: 376, sy: 2416 });
+    // sleep is south-only; any facing resolves to the south row.
+    expect(atlas.avatar("knight", "north", 0, "sleep")).toMatchObject({ sx: 0, sy: 3624 });
     expect(atlas.avatarFrameCount("knight", "sword")).toBe(4);
   });
 
-  it("falls back to the default block for an unknown avatar id", () => {
+  it("falls back to the default hero block for an unknown avatar id", () => {
     const atlas = loadedAtlas();
-    expect(atlas.avatar("who", "down", 0)).toMatchObject({ sx: 0, sy: 0, sw: 16, sh: 32 });
+    expect(atlas.avatar("who", "south", 0)).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 142 });
   });
 
-  it("auto-loads the character sheet so the default hero renders on any map", () => {
-    // The character sheet (and the class sheets) load on creation, independent
-    // of the active map — so bots and anyone on the default avatar always draw.
+  it("auto-loads the roster sheets so the default hero renders on any map", () => {
+    // Every iso avatar sheet loads on creation, independent of the active map — so
+    // bots and anyone on the default avatar always draw.
     const atlas = createSpriteAtlas();
-    expect(atlas.avatar("redtunic_hero", "down")).toMatchObject({
-      sx: 0,
-      sy: 0,
-      sw: 16,
-      sh: 32,
-    });
+    expect(atlas.avatar("hero", "south")).toMatchObject({ sx: 0, sy: 0, sw: 188, sh: 142 });
   });
 
   it("draws board modal art for a known asset id", () => {

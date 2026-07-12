@@ -750,10 +750,13 @@ export class Renderer {
   // facing implied by its most recent step (kept while it stands still).
   _trackMotion(participant, now) {
     const key = participant.key;
+    // A just-seen participant starts idle (breathing), not walking and not asleep:
+    // seed `t` just inside the idle band so it only drifts to sleep after a real
+    // stretch of standing still (ISO_SLEEP_MS from now), never on spawn.
     const m = this._motion.get(key) ?? {
       x: participant.x,
       y: participant.y,
-      t: -1e9,
+      t: now - 1000,
       dir8: "south",
     };
     if (participant.x !== m.x || participant.y !== m.y) {
