@@ -447,17 +447,14 @@ export class Renderer {
 
   // Isometric standing prop: a billboard whose bottom-centre sits on the tile's
   // diamond foot and rises upward, so tall props tower while depth-sorting by
-  // their foot tile. An optional `ox`/`oy` (screen px, scaled) nudges the foot —
-  // e.g. the door sits on its edge's rail line rather than the tile centre.
+  // their foot tile.
   _blitBillboard(ctx, prop, sprite) {
     const scale = this.camera.scale;
     const f = this.projection.footAnchor(prop.x, prop.y, prop.h ?? 0);
     const { x, y } = this.camera.worldToScreen(f.x, f.y);
-    const ox = (prop.ox ?? 0) * scale;
-    const oy = (prop.oy ?? 0) * scale;
     const w = sprite.sw * scale;
     const h = sprite.sh * scale;
-    this._blit(ctx, sprite, Math.round(x + ox - w / 2), Math.round(y + oy - h), scale);
+    this._blit(ctx, sprite, Math.round(x - w / 2), Math.round(y - h), scale);
   }
 
   // Soft elliptical contact shadows under every standing prop and avatar, so
@@ -519,7 +516,10 @@ export class Renderer {
       ctx.restore();
     }
     for (const light of this.map.lights ?? []) {
-      const a = this.projection.floorAnchor(light.x, light.y);
+      // Anchor the pool at the tile's ground centre (foot), not the sprite-box
+      // top-left — otherwise in iso the glow lands half a tile up-left of the
+      // lamp that casts it. Only the iso scene uses lights, so top-down is unaffected.
+      const a = this.projection.footAnchor(light.x, light.y);
       const { x, y } = this.camera.worldToScreen(a.x, a.y);
       const radius = Math.max((light.radius ?? 3) * this.tilePx, 1);
       const color = light.color ?? "ffffff";

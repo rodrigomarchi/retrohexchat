@@ -55,16 +55,22 @@ Key visual facts (the ones that decide fidelity):
 2. ✅ **Railing** (was 🟡, closed 2026-07-11): now taller (h 27) with **dense gold
    spindles between a top+bottom rail and highlighted corner posts with diamond
    finials** — a continuous Victorian wrought-iron fence (`_drawRailingSegment`).
-3. ✅ **Wooden door** (was 🟡, closed 2026-07-11): a PixelLab arched wooden door in
-   a stone frame, set into a suppressed gap in the back-right (`tr`) rail via a
-   per-prop screen offset (`ox/oy`). **Stone staircase intentionally omitted** —
-   CT's stairs bridge platforms; our single floating DM room has nowhere to go.
-4. 🟢 One platform vs three (+ bridges) — acceptable simplification for a 1:1 DM room.
-5. 🟢 Diamond underside vs flat reddish block — intentional stylisation, keep.
+3. ❌ **Wooden door** (tried 2026-07-11, **reverted** same day): a door set into a
+   gap in the back rail read as awkward clutter in the round DM room — removed at
+   the user's call. **Stone staircase also omitted** — CT's stairs bridge
+   platforms; our single floating room has nowhere to go. Lesson: not every CT
+   prop transplants to a one-platform DM scene; the fence + lamp carry the read.
+4. ✅ **Railing height** (2026-07-11): raised (h 27 → 38) — CT's iron fence is tall;
+   the shorter version read as a low garden edge.
+5. ✅ **Lamp light alignment** (2026-07-11): the amber pool is centred on the
+   lamppost's exact foot (light and lamp both at tile 20,12) — it was offset by
+   +½ tile and read as detached from the lamp.
+6. 🟢 One platform vs three (+ bridges) — acceptable simplification for a 1:1 DM room.
+7. 🟢 Diamond underside vs flat reddish block — intentional stylisation, keep.
 
-**Scene now reads ~93–95% CT** (2026-07-11): warm lit cobble plaza, ornate iron
-railing on all four sides, a wooden door in the back fence, lamp + bucket +
-nameplate, adrift in the rippling sea of time.
+**Scene reads ~93–95% CT** (2026-07-11): warm lit cobble plaza, tall ornate iron
+railing on all four sides, lamp casting an aligned amber pool + bucket + nameplate,
+adrift in the rippling sea of time.
 
 See [`ISOMETRIC.md`](ISOMETRIC.md) for how the scene is built and
 [`SCENES.md`](SCENES.md) for the scene catalogue.
