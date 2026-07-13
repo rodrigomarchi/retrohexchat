@@ -2134,7 +2134,7 @@ details:not([open]) .tree-view-marker-closed {
   width: 89px;
   height: 68px;
   background-image: url("/images/space/avatars/iso_rogue.png");
-  background-size: 355px 1700px;
+  background-size: 357px 1700px;
   animation-name: rh-charsel-walk-rogue;
 }
 @keyframes rh-charsel-walk-rogue {
@@ -2142,7 +2142,7 @@ details:not([open]) .tree-view-marker-closed {
     background-position-x: 0;
   }
   to {
-    background-position-x: -355px;
+    background-position-x: -357px;
   }
 }
 .rh-charsel-sprite--cleric {
@@ -2171,6 +2171,10 @@ details:not([open]) .tree-view-marker-closed {
   from {
     background-position-x: 0;
   }
+  to {
+    background-position-x: -357px;
+  }
+}
   to {
     background-position-x: -357px;
   }
