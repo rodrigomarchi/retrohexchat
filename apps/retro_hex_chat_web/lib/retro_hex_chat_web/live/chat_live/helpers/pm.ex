@@ -18,8 +18,8 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   alias RetroHexChatWeb.ChatLive.Components.Composer
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
-  alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
   alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
+  alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
 
   @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
