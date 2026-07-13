@@ -418,25 +418,20 @@ export class Renderer {
     ctx.save();
     ctx.globalAlpha = 0.26;
     ctx.fillStyle = HASH + SHADOW;
+    // Props: a flat ellipse centred on the billboard's diamond foot (its base),
+    // sized to the sprite width.
     for (const prop of stand) {
       const sprite = this.atlas?.tile(prop.tile, now, seedAt(prop.x, prop.y));
       if (!sprite) continue;
-      const ap = this.projection.floorAnchor(prop.x, prop.y);
-      const { x, y } = this.camera.worldToScreen(ap.x, ap.y);
-      const wpx = sprite.sw * scale;
-      const hpx = sprite.sh * scale;
-      this._ellipse(ctx, x + wpx / 2, y + hpx - this.tilePx * 0.15, wpx * 0.32, this.tilePx * 0.24);
+      const f = this.projection.footAnchor(prop.x, prop.y);
+      const { x, y } = this.camera.worldToScreen(f.x, f.y);
+      this._ellipse(ctx, x, y, sprite.sw * scale * 0.3, this.tilePx * 0.16);
     }
+    // Avatars: a contact ellipse under the feet (the diamond foot), so it sits
+    // directly beneath the character whether standing or seated.
     for (const participant of participants.values()) {
-      const av = this.projection.floorAnchor(participant.x, participant.y);
-      const { x, y } = this.camera.worldToScreen(av.x, av.y);
-      this._ellipse(
-        ctx,
-        x + this.tilePx / 2,
-        y + this.tilePx * 0.9,
-        this.tilePx * 0.34,
-        this.tilePx * 0.2,
-      );
+      const { x, footY } = this._avatarAnchor(participant);
+      this._ellipse(ctx, x, footY, this.tilePx * 0.3, this.tilePx * 0.15);
     }
     ctx.restore();
   }
@@ -616,12 +611,31 @@ export class Renderer {
     if (!sprite) return;
     // Premium iso avatars ship oversized art; `sprite.scale` renders it to world size.
     const scale = this.avatarScale * (sprite.scale ?? 1);
-    // Billboard the avatar with its feet on the diamond foot.
+    // Anchor the sprite's opaque FOOT row (not the padded frame bottom) on the
+    // diamond, so the avatar stands on the ground instead of floating above it
+    // by the frame's bottom padding (which varies 1–23px per avatar, and reads
+    // worst on the seated sleep pose).
+    const foot = this.atlas?.avatarBounds?.(participant.avatar)?.foot ?? sprite.sh;
     const f = this.projection.footAnchor(participant.x, participant.y);
     const s = this.camera.worldToScreen(f.x, f.y);
     const aw = sprite.sw * scale;
-    const ah = sprite.sh * scale;
-    this._blit(ctx, sprite, Math.round(s.x - aw / 2), Math.round(s.y - ah), scale);
+    this._blit(ctx, sprite, Math.round(s.x - aw / 2), Math.round(s.y - foot * scale), scale);
+  }
+
+  // Screen anchor for a participant's avatar: the diamond foot (`footY`, where the
+  // feet rest) and the head Y (`headY`, top of the opaque content) so shadows sit
+  // under the feet and name/chat labels hang above the head — both scale-correct
+  // regardless of the avatar's frame padding.
+  _avatarAnchor(participant) {
+    const spr = this.atlas?.avatar(participant.avatar, "south", 0, "idle");
+    const scale = this.avatarScale * (spr?.scale ?? 1);
+    const b = this.atlas?.avatarBounds?.(participant.avatar) ?? {
+      top: 0,
+      foot: spr?.sh ?? this.tilePx,
+    };
+    const f = this.projection.footAnchor(participant.x, participant.y);
+    const s = this.camera.worldToScreen(f.x, f.y);
+    return { x: s.x, footY: s.y, headY: s.y - (b.foot - b.top) * scale };
   }
 
   // Resolve a participant into an animation pose {actionKind, dir, frame}. Premium
@@ -723,37 +737,29 @@ export class Renderer {
 
   _drawLabel(ctx, participant) {
     if (!participant.nickname) return;
-    const { x, y } = this._avatarScreenPos(participant);
+    const { x: cx, headY } = this._avatarAnchor(participant);
     ctx.font = LABEL_FONT;
     ctx.textAlign = "center";
-    const cx = x + this.tilePx / 2;
-    const headY = y - this.tilePx;
     const width = ctx.measureText(participant.nickname).width + 6;
 
     ctx.fillStyle = HASH + LABEL_BG;
-    ctx.fillRect(Math.round(cx - width / 2), Math.round(headY - 12), Math.round(width), 11);
+    ctx.fillRect(Math.round(cx - width / 2), Math.round(headY - 14), Math.round(width), 11);
     ctx.fillStyle = HASH + LABEL_FG;
-    ctx.fillText(participant.nickname, Math.round(cx), Math.round(headY - 3));
+    ctx.fillText(participant.nickname, Math.round(cx), Math.round(headY - 5));
   }
 
   // Speech bubble above the nickname label. The text is drawn with fillText —
   // canvas never interprets markup, so a message can never inject HTML.
   _drawBubble(ctx, participant, text) {
-    const { x, y } = this._avatarScreenPos(participant);
+    const { x: cx, headY } = this._avatarAnchor(participant);
     ctx.font = LABEL_FONT;
     ctx.textAlign = "center";
-    const cx = x + this.tilePx / 2;
     const width = Math.min(ctx.measureText(text).width + 8, this.canvas.width - 4);
-    const top = y - this.tilePx - 26;
+    const top = headY - 30;
 
     ctx.fillStyle = HASH + BUBBLE_BG;
     ctx.fillRect(Math.round(cx - width / 2), Math.round(top), Math.round(width), 13);
     ctx.fillStyle = HASH + BUBBLE_FG;
     ctx.fillText(text, Math.round(cx), Math.round(top + 10));
-  }
-
-  _avatarScreenPos(participant) {
-    const a = this.projection.floorAnchor(participant.x, participant.y);
-    return this.camera.worldToScreen(a.x, a.y);
   }
 }

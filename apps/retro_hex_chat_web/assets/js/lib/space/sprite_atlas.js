@@ -369,6 +369,23 @@ function isoAvatar(id) {
 
 const AVATARS = Object.freeze(Object.fromEntries(ROSTER.map((id) => [id, isoAvatar(id)])));
 
+// Per-avatar content bounds inside the (padded) frame, in native frame px:
+// `top` = the highest opaque row (crown of the head), `foot` = the lowest (the
+// feet / seated base). Measured once from each sheet's idle-south frame. The
+// renderer anchors the FEET (`foot`) on the diamond so avatars don't float, and
+// hangs name/chat labels above `top`. Bottom padding varies a lot per avatar
+// (1–23px), so a single constant can't ground them — these do.
+const AVATAR_BOUNDS = Object.freeze({
+  archer: { top: 48, foot: 140 },
+  barbarian: { top: 49, foot: 134 },
+  cleric: { top: 49, foot: 139 },
+  hero: { top: 49, foot: 140 },
+  knight: { top: 47, foot: 139 },
+  monk: { top: 44, foot: 134 },
+  rogue: { top: 46, foot: 137 },
+  sorceress: { top: 50, foot: 135 },
+});
+
 export const AVATAR_IDS = ROSTER;
 export const AVATAR_ACTIONS = Object.freeze(["walk", "sword", "idle", "sleep"]);
 
@@ -490,6 +507,11 @@ export function createSpriteAtlas(opts = {}) {
         hasSleep: Boolean(desc.sleep),
         scale: desc.scale ?? 1,
       };
+    },
+    // The avatar's opaque content bounds (native frame px) so the renderer can
+    // stand its feet on the ground and hang labels above its head.
+    avatarBounds(id) {
+      return AVATAR_BOUNDS[id] ?? AVATAR_BOUNDS[DEFAULT_AVATAR_ID];
     },
     // Notice-board modal art. This is illustration data (like the SVG icons the
     // style audit excludes); the palette lives here as hex digits with `#`
