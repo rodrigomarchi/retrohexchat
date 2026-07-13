@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   import RetroHexChatWeb.Components.UI.Button
   import RetroHexChatWeb.Components.UI.EmptyState
   import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
+  import RetroHexChatWeb.Components.UI.P2P.SessionBadge
   import RetroHexChatWeb.Components.UI.TreeView
 
   alias RetroHexChatWeb.Icons
@@ -68,6 +69,8 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :disconnected_channels, :list, default: [], doc: "Channels marked disconnected"
   attr :group_call_channels, :list, default: [], doc: "Channels with an active conference"
   attr :group_call_summaries, :map, default: %{}, doc: "Conference summaries keyed by channel"
+  attr :p2p_peer, :string, default: nil, doc: "Peer nick for the active P2P session"
+  attr :p2p_session, :map, default: nil, doc: "Active P2P session read model"
   attr :pm_conversations, :list, default: []
   attr :active_pm, :string, default: nil
   attr :unread_pms, :list, default: []
@@ -88,6 +91,8 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
 
   @spec conversations(map()) :: Phoenix.LiveView.Rendered.t()
   def conversations(assigns) do
+    assigns = assign(assigns, :p2p_peer_key, p2p_peer_key(assigns))
+
     ~H"""
     <div
       class={classes(["flex h-full min-h-0 flex-col", @class])}
@@ -180,6 +185,8 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
               flash={"pm:#{pm}" in @flash_channels}
               muted={"pm:#{pm}" in @muted_channels}
               nick_color={@nick_color_fn && @nick_color_fn.(pm)}
+              p2p={p2p_peer?(@p2p_peer_key, pm)}
+              p2p_session={if p2p_peer?(@p2p_peer_key, pm), do: @p2p_session}
               on_click={@on_pm_click}
             />
           </.tree_view_group>
@@ -307,6 +314,8 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
   attr :flash, :boolean, default: false
   attr :muted, :boolean, default: false
   attr :nick_color, :string, default: nil
+  attr :p2p, :boolean, default: false
+  attr :p2p_session, :map, default: nil
   attr :on_click, :any, default: nil
 
   defp pm_item(assigns) do
@@ -326,7 +335,14 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       data-testid={"pm-#{@nick}"}
     >
       <:icon><Icons.icon_tab_pm class="w-3 h-3" /></:icon>
-      <span class={["truncate", !@active && @nick_color]}>{@nick}</span>
+      <span class={["flex-1 truncate", !@active && @nick_color]}>{@nick}</span>
+      <span :if={@p2p} class="shrink-0">
+        <.p2p_peer_glyph
+          peer={@nick}
+          session={@p2p_session}
+          testid={"pm-p2p-glyph-#{@nick}"}
+        />
+      </span>
       <span
         :if={@unread && !@active && @unread_count > 0}
         class="text-[10px] font-bold bg-link text-white rounded-full px-1 min-w-[16px] text-center shrink-0"
@@ -369,5 +385,28 @@ defmodule RetroHexChatWeb.Components.UI.Conversations do
       </.button>
     </.tree_view_item>
     """
+  end
+
+  defp p2p_peer_key(assigns) do
+    peer = assigns.p2p_peer || value(assigns.p2p_session, :peer_nick)
+    if is_binary(peer), do: String.downcase(peer)
+  end
+
+  defp p2p_peer?(p2p_peer_key, nick) when is_binary(p2p_peer_key) and is_binary(nick) do
+    p2p_peer_key == String.downcase(nick)
+  end
+
+  defp p2p_peer?(_p2p_peer_key, _nick), do: false
+
+  defp value(nil, _key), do: nil
+
+  defp value(map, key) when is_map(map) and is_atom(key) do
+    string_key = Atom.to_string(key)
+
+    cond do
+      Map.has_key?(map, key) -> Map.get(map, key)
+      Map.has_key?(map, string_key) -> Map.get(map, string_key)
+      true -> nil
+    end
   end
 end

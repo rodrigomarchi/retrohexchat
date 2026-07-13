@@ -50,4 +50,20 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsTest do
     assert html =~ "alice"
     assert html =~ "3"
   end
+
+  test "renders the active P2P session glyph on the owning PM row" do
+    html =
+      render_conv(
+        pm_conversations: ["alice", "bob"],
+        p2p_session: %{
+          peer_nick: "Alice",
+          state: :connected,
+          call_summary: %{duration: "00:00:30"}
+        }
+      )
+
+    assert html =~ ~s(data-testid="pm-p2p-glyph-alice")
+    assert html =~ ~s(data-p2p-status="live")
+    refute html =~ ~s(data-testid="pm-p2p-glyph-bob")
+  end
 end

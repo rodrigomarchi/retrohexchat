@@ -92,6 +92,26 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     end
   end
 
+  test "passes P2P activity facets into the peer PM tab glyph" do
+    html =
+      tabs(%{
+        pm_tabs: ["bob", "eve"],
+        p2p_session: %{
+          peer_nick: "BOB",
+          state: :connected,
+          call_summary: %{duration: "00:01:00"},
+          file_summary: %{status: "sending"},
+          game_summary: %{active?: true},
+          turn_only: true,
+          turn_configured: true
+        }
+      })
+
+    assert html =~ ~s(data-testid="tab-p2p-glyph")
+    assert html =~ ~s(data-p2p-status="live")
+    assert html =~ ~s(data-p2p-facets="call,file,game,relay")
+  end
+
   test "does not render sidebar-only PM conversations as tabs" do
     html =
       tabs(%{

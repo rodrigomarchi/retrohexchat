@@ -15,12 +15,8 @@
 
 ## Proximo bloco ativo
 
-Auditoria final + gate amplo:
-
-1. rodar `git diff --check`;
-2. rodar `make ci` antes de qualquer commit;
-3. se o CI apontar regressao, corrigir e registrar aqui;
-4. manter sem commit ate autorizacao explicita.
+Nenhum bloco tecnico aberto apos a auditoria de 2026-07-13. Manter sem commit
+ate autorizacao explicita do Rodrigo.
 
 ## Registro de execucao
 
@@ -260,6 +256,92 @@ Auditoria final + gate amplo:
   - `rtk make ci`
     - resultado: 9/9 checks, 0 falhas, 3m39s apos stash/pull/reaplicar.
 
+### 2026-07-13 - indicador rico P2P no nivel da PM
+
+- Gap visual corrigido:
+  - o indicador P2P deixou de ser apenas um glifo simples na aba e ganhou uma
+    familia PM-level equivalente ao `GroupCall.ChannelBadge`;
+  - a padronizacao ficou restrita a PM/tab/sidebar/topic bar da conversa com o
+    peer, sem publicar estado P2P em canais;
+  - estados explicitos: `invite`, `link`, `ready` e `live`;
+  - facetas explicitas: `call`, `file`, `game` e `relay`.
+- Implementacao:
+  - criado `Components.UI.P2P.SessionBadge` com `p2p_peer_entry/1` rico e
+    `p2p_peer_glyph/1` compacto;
+  - `IrcTabs`, `ChatTabs` e `Conversations` passaram a usar o mesmo componente
+    compacto para PM tab e sidebar;
+  - a topic bar da PM ativa renderiza o entry rico quando a PM pertence ao
+    `@p2p_session.peer_nick`;
+  - adicionado evento explicito `p2p_open_call` para a acao Call do popover;
+  - Help P2P atualizado para citar PM tab, sidebar e topic bar.
+- Gates executados:
+  - `rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/components/ui/p2p/session_badge_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/components/ui/chat/irc_tabs_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/components/chat_tabs_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/components/conversations_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_desktop_shell_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/p2p_session_flow_test.exs`
+    - resultado: 28 testes, 0 falhas, 23 excluidos por tag.
+  - `rtk mix test --include liveview_feature apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/p2p_session_flow_test.exs`
+    - resultado: 23 testes, 0 falhas.
+  - `rtk mix compile --warnings-as-errors`
+    - resultado: passou.
+  - `rtk git diff --check`
+    - resultado: passou.
+
+### 2026-07-13 - auditoria de producao do indicador PM-level
+
+- Auditoria de residuos no diff:
+  - sem `TODO/FIXME/HACK/XXX`;
+  - sem `IO.inspect`, `dbg`, `console.log`;
+  - sem `test.only`, `describe.only`, `it.only` ou `.skip`;
+  - sem SVG inline/emoji nas superficies alteradas.
+- Gap encontrado pelo Playwright:
+  - `chat-p2p.spec.ts` falhava em 5/6 cenarios porque o receptor recebia a PM
+    do convite P2P na sidebar, mas a aba de PM nao era aberta;
+  - a correcao ficou semantica e restrita: somente `pm_activity` incoming de
+    `p2p_invite` abre a aba de PM com `PM.open_pm_tab/2`, sem selecionar a PM e
+    sem alterar a regra de PM comum, que continua sidebar/unread sem tab.
+- Cobertura adicionada:
+  - `session_persistence_test.exs` garante que convite P2P recebido abre aba de
+    PM sem roubar foco;
+  - `irc_tabs_test.exs` garante compatibilidade do glyph P2P low-level sem
+    read model completo.
+- Gates finais executados:
+  - `rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/live/session_persistence_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/p2p_session_flow_test.exs`
+    - resultado: 20 testes, 0 falhas, 23 excluidos por tag.
+  - `rtk mix test --include liveview_feature apps/retro_hex_chat_web/test/retro_hex_chat_web/live/chat_live/p2p_session_flow_test.exs`
+    - resultado: 23 testes, 0 falhas.
+  - `rtk npm test --prefix e2e -- chat-p2p.spec.ts --reporter=dot`
+    - resultado: 6 testes Playwright, 0 falhas.
+  - `rtk make ci`
+    - resultado: 9/9 checks, 0 falhas, 3m34s.
+
+### 2026-07-13 - correcao de layout dos dialogs de pre-join
+
+- Gap visual encontrado antes do commit:
+  - o dialog `Join Channel Conference` podia renderizar a coluna de controles
+    para fora da janela porque o `dialog_body` desktop tinha largura fixa sem
+    aumentar o `Dialog` acima do `md:max-w-lg` default;
+  - a varredura pelo mesmo comportamento encontrou o setup P2P como outro caso
+    equivalente.
+- Correcao aplicada:
+  - `GroupCall.PreJoinDialog` agora declara `md:max-w-[760px]`, body
+    `md:w-[720px]`, grid `260px + minmax(0,1fr)` e paineis shrink-safe;
+  - `P2P.SetupDialog` agora declara `md:max-w-[640px]`, body `md:w-[600px]`,
+    grid `240px + minmax(0,1fr)` e paineis shrink-safe;
+  - `GroupCall.DeviceSelect` passou a usar `min-w-0` no label/select para que
+    nomes longos de devices nao forcem overflow lateral.
+- Gates executados:
+  - `rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/components/ui/group_call/pre_join_dialog_test.exs apps/retro_hex_chat_web/test/retro_hex_chat_web/components/ui/p2p/setup_dialog_test.exs`
+    - resultado: 5 testes, 0 falhas.
+  - `rtk npm test --prefix e2e -- chat-group-call.spec.ts --grep "pre-join dialog keeps" --reporter=dot`
+    - resultado: 1 teste Playwright, 0 falhas; valida desktop e mobile sem
+      overflow horizontal.
+  - `rtk npm test --prefix e2e -- chat-p2p.spec.ts --reporter=dot`
+    - resultado: 6 testes Playwright, 0 falhas.
+  - `rtk mix compile --warnings-as-errors`
+    - resultado: passou.
+  - `rtk git diff --check`
+    - resultado: passou.
+  - `rtk make ci`
+    - resultado: 9/9 checks, 0 falhas, 3m34s.
+
 ## Aprendizados
 
 - A paridade correta nao e copiar a conferencia: o P2P precisa compartilhar a
@@ -298,3 +380,9 @@ Auditoria final + gate amplo:
 - Indicadores de sessao precisam cobrir o ciclo inteiro, nao so o estado feliz
   conectado; convite pendente e conexao em andamento tambem sao estados em que o
   usuario precisa entender onde a sessao vive.
+- Convite P2P e PM comum nao devem ter a mesma politica de abertura: PM comum
+  pode ficar apenas na sidebar para reduzir interrupcao, mas convite P2P carrega
+  uma acao critica de aceitar/declinar e precisa abrir a aba sem roubar foco.
+- Dialogs que usam `dialog_body` com largura fixa precisam declarar tambem a
+  largura maxima do `Dialog`; caso contrario o corpo força overflow visual para
+  fora da janela Win98.

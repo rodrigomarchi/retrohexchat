@@ -122,6 +122,13 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionEvents do
     {:halt, Windows.open(socket, "p2p-games")}
   end
 
+  def handle_event("p2p_open_call", _params, %{assigns: %{p2p_session: %{state: state}}} = socket)
+      when state != :invite_sent do
+    {:halt, Windows.open(socket, "p2p-call")}
+  end
+
+  def handle_event("p2p_open_call", _params, socket), do: {:halt, socket}
+
   # Privacy mode: force every P2P connection through the TURN relay (hides
   # the direct peer IP). Persisted per user; applies from the next
   # (re)signaling round.

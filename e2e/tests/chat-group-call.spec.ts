@@ -409,6 +409,58 @@ async function expectGroupCallLayoutStable(page: Page) {
   expect(metrics.horizontalScrollElements).toEqual([]);
 }
 
+async function expectPrejoinDialogLayoutStable(page: Page) {
+  const metrics = await groupCallPrejoinDialog(page).evaluate((surface) => {
+    const surfaceRect = surface.getBoundingClientRect();
+    const overflowElements: string[] = [];
+
+    for (const element of Array.from(
+      surface.querySelectorAll<HTMLElement>(
+        [
+          '[data-testid="group-call-prejoin-form"]',
+          '[data-testid="group-call-prejoin-preview"]',
+          '[data-testid="group-call-prejoin-audio-input"]',
+          '[data-testid="group-call-prejoin-video-input"]',
+          '[data-testid="group-call-prejoin-audio-output"]',
+          '[data-testid="group-call-prejoin-layout"]',
+          '[data-testid="group-call-prejoin-self-view"]',
+          "section",
+          "label",
+          "select",
+        ].join(","),
+      ),
+    )) {
+      const rect = element.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) continue;
+
+      if (
+        rect.left < surfaceRect.left - 1 ||
+        rect.right > surfaceRect.right + 1
+      ) {
+        overflowElements.push(
+          element.dataset.testid || element.id || element.tagName,
+        );
+      }
+    }
+
+    return {
+      bodyClientWidth: document.documentElement.clientWidth,
+      bodyScrollWidth: document.documentElement.scrollWidth,
+      overflowElements,
+      surfaceClientWidth: surface.clientWidth,
+      surfaceScrollWidth: surface.scrollWidth,
+    };
+  });
+
+  expect(metrics.overflowElements).toEqual([]);
+  expect(metrics.surfaceScrollWidth).toBeLessThanOrEqual(
+    metrics.surfaceClientWidth + 2,
+  );
+  expect(metrics.bodyScrollWidth).toBeLessThanOrEqual(
+    metrics.bodyClientWidth + 2,
+  );
+}
+
 async function participantMediaEnabled(
   page: Page,
   nickname: string,
@@ -472,6 +524,28 @@ async function withConferenceShortcutHeld(
 }
 
 test.describe("Channel group calls", () => {
+  test("pre-join dialog keeps preview and controls inside the window", async ({
+    browser,
+  }) => {
+    const alice = await newGroupCallUser(browser, "gclayout");
+    const channel = uniqueChannel("gcalllayout");
+
+    try {
+      await alice.page.setViewportSize({ width: 1280, height: 720 });
+      await joinChannel(alice, channel);
+
+      await groupCallButton(alice.page).click();
+      await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
+      await expectPrejoinDialogLayoutStable(alice.page);
+
+      await alice.page.setViewportSize({ width: 390, height: 844 });
+      await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
+      await expectPrejoinDialogLayoutStable(alice.page);
+    } finally {
+      await closeGroupCallUsers([alice]);
+    }
+  });
+
   test("conference visual polish renders SVG reactions and captures desktop/mobile windows", async ({
     browser,
   }) => {

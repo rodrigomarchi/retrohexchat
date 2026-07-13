@@ -227,6 +227,10 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       render_click(ctx.view_a, "toolbar_action", %{"action" => "p2p_open_stats"})
       assert render(ctx.view_a) =~ "p2p-stats-window"
 
+      # The PM-level session indicator has an explicit Call action.
+      render_click(ctx.view_a, "p2p_open_call", %{})
+      assert render(ctx.view_a) =~ "p2p-call-window"
+
       # A telemetry sample from the WebRTC hook lands normalized in the panel.
       render_click(ctx.view_a, "lobby_stats", %{"connection" => %{"rtt_ms" => 42}})
       assert p2p_assigns(ctx.view_a).stats.connection.rtt_ms == 42
@@ -535,6 +539,8 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       session = invite(ctx)
 
       assert render(ctx.view_a) =~ ~s(data-testid="tab-p2p-glyph")
+      assert render(ctx.view_a) =~ ~s(data-testid="p2p-peer-entry")
+      assert render(ctx.view_a) =~ ~s(data-testid="pm-p2p-glyph-#{ctx.b.nickname}")
       assert render(ctx.view_a) =~ ~s(data-p2p-state="pending")
 
       accept_invite(ctx.view_b, session.token)

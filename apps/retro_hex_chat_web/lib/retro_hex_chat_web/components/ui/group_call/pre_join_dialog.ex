@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
 
     ~H"""
     <span data-testid="group-call-prejoin-dialog">
-      <.dialog id={@id} show={@show} on_cancel={@on_cancel}>
+      <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="md:max-w-[760px]">
         <.dialog_header
           id={@id}
           title={dgettext("group_call", "Join Channel Conference")}
@@ -48,8 +48,8 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
           class="contents"
           data-testid="group-call-prejoin-form"
         >
-          <.dialog_body class="w-full md:w-[520px]">
-            <div class="grid gap-2 md:grid-cols-[220px_1fr]">
+          <.dialog_body class="box-border w-full md:w-[720px]">
+            <div class="grid min-w-0 gap-2 md:grid-cols-[260px_minmax(0,1fr)]">
               <MediaPreview.media_preview
                 media={@media}
                 prejoin={@prejoin}
@@ -57,7 +57,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
               />
 
               <section class="grid min-w-0 gap-2 text-xs">
-                <div class="border border-border bg-canvas p-2 shadow-retro-sunken">
+                <div class="min-w-0 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <div class="mb-2 flex items-center gap-1 font-bold">
                     <Icons.icon_devices class="h-3.5 w-3.5" />
                     {dgettext("group_call", "Join settings")}
@@ -88,7 +88,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
                   </div>
                 </div>
 
-                <div class="grid gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+                <div class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <DeviceSelect.device_select
                     name="group_call_prejoin[audio_input_id]"
                     value={@device_preferences.audio_input_id}
@@ -118,7 +118,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
                   />
                 </div>
 
-                <div class="grid grid-cols-2 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+                <div class="grid min-w-0 grid-cols-2 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <.simple_select
                     name="group_call_prejoin[layout_mode]"
                     value={Atom.to_string(@layout.mode)}
@@ -204,14 +204,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
 
   defp simple_select(assigns) do
     ~H"""
-    <label class="grid gap-1">
+    <label class="grid min-w-0 gap-1">
       <span class="inline-flex min-w-0 items-center gap-1 font-bold">
         {apply(Icons, @icon, [%{class: "h-3.5 w-3.5 shrink-0"}])}
         <span class="truncate">{@label}</span>
       </span>
       <select
         name={@name}
-        class="h-7 w-full bg-white px-1 text-xs shadow-retro-sunken focus:outline focus:outline-1 focus:outline-foreground"
+        class="h-7 w-full min-w-0 bg-white px-1 text-xs shadow-retro-sunken focus:outline focus:outline-1 focus:outline-foreground"
         data-testid={@testid}
       >
         <option :for={{value, label} <- @options} value={value} selected={value == @value}>

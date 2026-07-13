@@ -40,6 +40,9 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialogTest do
     document = Floki.parse_document!(html)
 
     assert html =~ "Connect with trinity"
+    assert html =~ ~s|md:max-w-[640px]|
+    assert html =~ ~s|md:w-[600px]|
+    assert html =~ ~s|md:grid-cols-[240px_minmax(0,1fr)]|
     assert html =~ ~s(phx-hook="P2PSetupHook")
     assert html =~ ~s(data-testid="p2p-setup-preview")
     assert html =~ "Start with microphone"

@@ -30,12 +30,12 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
     ~s([role="tab"][phx-value-type="pm"][phx-value-label="#{nick}"])
   end
 
-  defp pm_activity(peer, direction \\ :incoming) do
+  defp pm_activity(peer, direction \\ :incoming, type \\ :message) do
     {:pm_activity,
      %{
        peer: peer,
        message_id: uid(),
-       type: :message,
+       type: type,
        timestamp: DateTime.utc_now(),
        direction: direction
      }}
@@ -138,6 +138,18 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       assert has_element?(view, pm_sidebar_selector("NewPerson"))
       assert has_element?(view, ~s([data-testid="pm-unread-badge-NewPerson"]))
       refute has_element?(view, pm_tab_selector("NewPerson"))
+    end
+
+    test "incoming P2P invite opens a PM tab without selecting it", %{conn: conn} do
+      nick = "PI#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      send(view.pid, pm_activity("Caller", :incoming, :p2p_invite))
+
+      assert has_element?(view, pm_sidebar_selector("Caller"))
+      assert has_element?(view, ~s([data-testid="pm-unread-badge-Caller"]))
+      assert has_element?(view, pm_tab_selector("Caller"))
+      assert has_element?(view, ~s(#{pm_tab_selector("Caller")}[aria-selected="false"]))
     end
 
     test "clicking a sidebar PM opens a tab and clears unread", %{conn: conn} do

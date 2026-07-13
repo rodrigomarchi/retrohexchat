@@ -17,14 +17,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.DeviceSelect do
   @spec device_select(map()) :: Phoenix.LiveView.Rendered.t()
   def device_select(assigns) do
     ~H"""
-    <label class="grid gap-1">
+    <label class="grid min-w-0 gap-1">
       <span class="inline-flex min-w-0 items-center gap-1 font-bold">
         {apply(Icons, @icon, [%{class: "h-3.5 w-3.5 shrink-0"}])}
         <span class="truncate">{@label}</span>
       </span>
       <select
         name={@name}
-        class="h-7 w-full bg-white px-1 text-xs shadow-retro-sunken focus:outline focus:outline-1 focus:outline-foreground"
+        class="h-7 w-full min-w-0 bg-white px-1 text-xs shadow-retro-sunken focus:outline focus:outline-1 focus:outline-foreground"
         data-group-call-prejoin-device-select={@kind}
         data-testid={@testid}
       >

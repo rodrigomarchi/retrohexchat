@@ -34,6 +34,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # ── P2P session windows ──────────────────────────────────────
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
   import RetroHexChatWeb.Components.UI.P2P.SetupDialog
+  import RetroHexChatWeb.Components.UI.P2P.SessionBadge
   import RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog
   import RetroHexChatWeb.Components.UI.GroupCall.StatsPanel
 
@@ -959,4 +960,11 @@ defmodule RetroHexChatWeb.App.ChatLive do
   end
 
   defp channel_group_call_summary(_summaries, _group_call, _channel_name), do: nil
+
+  defp p2p_session_for_active_pm(%{peer_nick: peer} = p2p, active_pm)
+       when is_binary(peer) and is_binary(active_pm) do
+    if String.downcase(peer) == String.downcase(active_pm), do: p2p
+  end
+
+  defp p2p_session_for_active_pm(_p2p, _active_pm), do: nil
 end

@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
 
     ~H"""
     <span data-testid="p2p-setup-dialog">
-      <.dialog id={@id} show={@show} on_cancel={@on_cancel}>
+      <.dialog id={@id} show={@show} on_cancel={@on_cancel} class="md:max-w-[640px]">
         <.dialog_header
           id={@id}
           title={setup_title(@outgoing?)}
@@ -54,8 +54,8 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
           class="contents"
           data-testid="p2p-setup-form"
         >
-          <.dialog_body class="w-full md:w-[560px]">
-            <div class="grid gap-2 text-xs md:grid-cols-[220px_1fr]">
+          <.dialog_body class="box-border w-full md:w-[600px]">
+            <div class="grid min-w-0 gap-2 text-xs md:grid-cols-[240px_minmax(0,1fr)]">
               <.setup_preview
                 media={@media}
                 setup={@setup}
@@ -63,7 +63,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
               />
 
               <section class="grid min-w-0 gap-2">
-                <section class="grid gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+                <section class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <div class="flex items-center gap-2">
                     <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
                       <Icons.icon_status_user class="h-5 w-5" />
@@ -79,7 +79,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
                   </div>
                 </section>
 
-                <section class="grid gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+                <section class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <div class="flex items-center gap-1 font-bold">
                     <Icons.icon_devices class="h-3.5 w-3.5" />
                     {dgettext("p2p", "Initial media")}
@@ -108,7 +108,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
                   </div>
                 </section>
 
-                <section class="grid gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+                <section class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <DeviceSelect.device_select
                     name="p2p_setup[audio_input_id]"
                     value={@device_preferences.audio_input_id}
@@ -138,7 +138,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
                   />
                 </section>
 
-                <section class="grid gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+                <section class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <label class="flex items-start gap-2">
                     <input type="hidden" name="p2p_setup[turn_only]" value="false" />
                     <input
