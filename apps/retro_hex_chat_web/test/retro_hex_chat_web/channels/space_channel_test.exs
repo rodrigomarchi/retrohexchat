@@ -442,7 +442,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       vignette: nil,
       sea: nil,
       railings: [],
-      railing_style: %{},
+      railing_posts: [],
       tilesets: [],
       tiles: %{},
       ground: nil,

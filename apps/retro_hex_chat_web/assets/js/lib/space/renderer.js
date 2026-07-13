@@ -326,104 +326,74 @@ export class Renderer {
         draw: () => this._drawAvatar(ctx, participant, now),
       });
     }
-    // Geometric iso railing: one fence segment per platform edge cell, drawn on
-    // the cell's shared diamond edge with its void neighbour — so the segments
-    // abut into ONE continuous fence wrapping the square block's four sides,
-    // depth-sorted (back edges behind avatars, front edges in front).
-    const style = this.map.railingStyle ?? {};
+    // Iso railing: one sheared wall tile per platform edge cell, blitted on the
+    // cell's shared diamond edge with its void neighbour — the tiles abut into
+    // ONE seam-free wrought-iron fence wrapping the four sides, depth-sorted so
+    // back edges (tr/tl) draw behind avatars and front edges (bl/br) in front.
     for (const r of this.map.railings ?? []) {
+      const front = r.edge === "bl" || r.edge === "br";
       items.push({
-        baseline: this.projection.depthKey(r.x, r.y) + 0.25,
-        draw: () => this._drawRailingSegment(ctx, r, style),
+        baseline: this.projection.depthKey(r.x, r.y) + (front ? 0.75 : 0.25),
+        draw: () => this._drawRailingTile(ctx, r),
+      });
+    }
+    for (const p of this.map.railingPosts ?? []) {
+      items.push({
+        baseline: this.projection.depthKey(p.x, p.y) + 0.3,
+        draw: () => this._drawRailingPost(ctx, p),
       });
     }
     items.sort((a, b) => a.baseline - b.baseline);
     for (const item of items) item.draw();
   }
 
-  // The two screen endpoints of a cell's diamond edge shared with a void
-  // neighbour: tr=top→right, tl=top→left, bl=left→bottom, br=right→bottom.
-  _railingEdge(r) {
-    const f = this.projection.footAnchor(r.x, r.y);
-    const s = this.camera.worldToScreen(f.x, f.y);
+  // Blit a cell's sheared iso wall tile onto its shared diamond edge. The tile's
+  // base line was pre-sheared to the 2:1 slope in the author, so its base-left
+  // pixel lands on the edge's near vertex and adjacent cells abut seam-free:
+  //   tr/bl use the down-right tile, tl/br its down-left mirror; tr/tl touch the
+  //   cell Top, bl/br the Left/Bottom vertex. `drop` is the base's screen descent
+  //   over the tile (scale-invariant ratio), so `base` is the native rows down to
+  //   the anchored vertex.
+  _drawRailingTile(ctx, r) {
+    const dr = r.edge === "tr" || r.edge === "bl";
+    const sprite = this.atlas?.tile(dr ? "iso_rail_dr" : "iso_rail_dl");
+    if (!sprite) return;
+    const scale = this.camera.scale;
     const hw = this.projection.hw;
     const hh = this.projection.hh;
-    const T = { x: s.x, y: s.y - hh };
-    const R = { x: s.x + hw, y: s.y };
-    const B = { x: s.x, y: s.y + hh };
-    const L = { x: s.x - hw, y: s.y };
-    return { tr: [T, R], tl: [T, L], bl: [L, B], br: [R, B] }[r.edge];
+    const f = this.projection.footAnchor(r.x, r.y);
+    const s = this.camera.worldToScreen(f.x, f.y);
+    const drop = Math.round((sprite.sw - 1) * (hh / hw));
+    const base = (dr ? sprite.sh - drop - 1 : sprite.sh - 1) * scale;
+    let dx = s.x;
+    let dy = s.y - base;
+    if (r.edge === "tr") dy -= hh;
+    else if (r.edge === "tl") ((dx -= hw), (dy -= hh));
+    else if (r.edge === "bl") dx -= hw;
+    else dy += hh; // br
+    this._blit(ctx, sprite, Math.round(dx), Math.round(dy), scale);
   }
 
-  // An ornate wrought-iron fence run along one edge: a dark stone lip, a bottom
-  // and top gold rail with dense vertical spindles between them, and taller
-  // gold-highlight corner posts capped by diamond finials. Adjacent segments
-  // share endpoints (posts land on every cell boundary) → a seamless, continuous
-  // Victorian-park railing wrapping the whole platform.
-  _drawRailingSegment(ctx, r, style) {
-    const seg = this._railingEdge(r);
-    if (!seg) return;
-    const [a, b] = seg;
-    const h = (style.height ?? 27) * (this.projection.scale ?? 1);
-    const gold = style.color ?? "b98d3e";
-    const goldHi = style.hi ?? "e8c874";
-    const base = style.base ?? "1c1a24";
-    const spindles = style.posts ?? 9;
-    const railLo = h * 0.26; // the lower horizontal rail height
-    const lerp = (t) => ({
-      x: Math.round(a.x + (b.x - a.x) * t),
-      y: Math.round(a.y + (b.y - a.y) * t),
-    });
-    ctx.save();
-    // dark stone lip on the platform edge
-    ctx.strokeStyle = HASH + base;
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(Math.round(a.x), Math.round(a.y));
-    ctx.lineTo(Math.round(b.x), Math.round(b.y));
-    ctx.stroke();
-    // two horizontal rails: a thick top rail + a thin lower rail
-    ctx.strokeStyle = HASH + gold;
-    for (const [off, lw] of [
-      [h, 2],
-      [railLo, 1],
-    ]) {
-      ctx.lineWidth = lw;
-      ctx.beginPath();
-      ctx.moveTo(Math.round(a.x), Math.round(a.y - off));
-      ctx.lineTo(Math.round(b.x), Math.round(b.y - off));
-      ctx.stroke();
-    }
-    // dense thin spindles spanning the two rails
-    ctx.lineWidth = 1;
-    ctx.strokeStyle = HASH + gold;
-    for (let i = 1; i < spindles; i += 1) {
-      const p = lerp(i / spindles);
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y - railLo);
-      ctx.lineTo(p.x, p.y - h);
-      ctx.stroke();
-    }
-    // taller highlighted corner posts with diamond finial caps
-    for (const t of [0, 1]) {
-      const p = lerp(t);
-      ctx.strokeStyle = HASH + goldHi;
-      ctx.lineWidth = 2;
-      ctx.beginPath();
-      ctx.moveTo(p.x, p.y);
-      ctx.lineTo(p.x, p.y - h - 4);
-      ctx.stroke();
-      const fy = p.y - h - 6;
-      ctx.fillStyle = HASH + goldHi;
-      ctx.beginPath();
-      ctx.moveTo(p.x, fy - 2);
-      ctx.lineTo(p.x + 2, fy);
-      ctx.lineTo(p.x, fy + 2);
-      ctx.lineTo(p.x - 2, fy);
-      ctx.closePath();
-      ctx.fill();
-    }
-    ctx.restore();
+  // An ornate golden corner post billboarded on a platform-corner vertex (the
+  // diamond's N/E/S/W tip), bridging the two edge slopes that meet there.
+  _drawRailingPost(ctx, p) {
+    const sprite = this.atlas?.tile("iso_rail_post");
+    if (!sprite) return;
+    const scale = this.camera.scale;
+    const hw = this.projection.hw;
+    const hh = this.projection.hh;
+    const f = this.projection.footAnchor(p.x, p.y);
+    const s = this.camera.worldToScreen(f.x, f.y);
+    const off = { n: [0, -hh], e: [hw, 0], s: [0, hh], w: [-hw, 0] }[p.corner] ?? [0, 0];
+    const vx = s.x + off[0];
+    const vy = s.y + off[1];
+    this._blit(
+      ctx,
+      sprite,
+      Math.round(vx - (sprite.sw * scale) / 2),
+      Math.round(vy - sprite.sh * scale),
+      scale,
+    );
   }
 
   // Isometric standing prop: a billboard whose bottom-centre sits on the tile's

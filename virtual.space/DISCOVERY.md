@@ -52,9 +52,13 @@ Key visual facts (the ones that decide fidelity):
    already tessellated, only the palette was cold). The amber light pool now glows
    *through* warm stone, reading like CT's lit plaza. The literal concentric
    mortar rings are a platform-level feature we approximate with the radial glow.
-2. ✅ **Railing** (was 🟡, closed 2026-07-11): now taller (h 27) with **dense gold
-   spindles between a top+bottom rail and highlighted corner posts with diamond
-   finials** — a continuous Victorian wrought-iron fence (`_drawRailingSegment`).
+2. ✅ **Railing** (was 🟡; reworked 2026-07-13): the code-drawn fence was replaced
+   by **generated iso edge tiles** — a straight PixelLab wrought-iron strip tiled
+   per cell and **sheared onto the 2:1 edge**, with tall **ornate spear-tip posts**
+   (their own billboard) every 3 cells + on the corners. All real pixel art, seam-
+   free around the platform (`_drawRailingTile`/`_drawRailingPost`, authored by
+   `_rail_tiles`). Matches the CT game screenshots; the fan-art S-scroll is still
+   open (ISOMETRIC §7).
 3. ❌ **Wooden door** (tried 2026-07-11, **reverted** same day): a door set into a
    gap in the back rail read as awkward clutter in the round DM room — removed at
    the user's call. **Stone staircase also omitted** — CT's stairs bridge

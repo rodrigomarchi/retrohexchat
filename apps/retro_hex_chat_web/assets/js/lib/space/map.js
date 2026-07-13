@@ -41,10 +41,11 @@ export class SpaceMap {
     this.vignette = definition.vignette ?? null;
     // The cosmic sea abyss behind a floating platform (deep-blue rippling void).
     this.sea = definition.sea ?? null;
-    // Geometric iso railing: edge cells [{x,y,edge}] the renderer draws as one
-    // continuous wrought-iron fence, plus its style (height/colors/posts).
+    // Iso railing: edge cells [{x,y,edge}] the renderer draws by blitting the
+    // matching sheared wall tile so they abut into one seam-free wrought-iron
+    // fence, plus corner posts [{x,y,corner}] capping the four diamond vertices.
     this.railings = Array.isArray(definition.railings) ? definition.railings : [];
-    this.railingStyle = definition.railing_style ?? null;
+    this.railingPosts = Array.isArray(definition.railing_posts) ? definition.railing_posts : [];
     this.spawns = Array.isArray(definition.spawn) ? definition.spawn : [];
     this.labels = Array.isArray(definition.labels) ? definition.labels : [];
 

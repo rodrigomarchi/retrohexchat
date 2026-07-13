@@ -35,7 +35,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
       vignette: vignette(data),
       sea: sea(data),
       railings: railings(data),
-      railing_style: railing_look(data),
+      railing_posts: railing_posts(data),
       tilesets: [
         %{
           id: @sheet,
@@ -159,24 +159,19 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
 
   defp sea(_), do: nil
 
-  # Geometric iso railing edge cells (drawn as one continuous fence), + style.
+  # Iso railing edge cells: each solid cell bordering the void contributes one
+  # fence segment on that shared diamond edge (`edge` ∈ tr/tl/bl/br). The client
+  # blits the matching sheared wall tile so the segments abut into one seam-free
+  # wrought-iron fence wrapping the platform.
   defp railings(data) do
     Enum.map(data["railings"] || [], &%{x: &1["x"], y: &1["y"], edge: &1["edge"]})
   end
 
-  # The railing's look (heights/colors/post count) — plain map data the client
-  # renders, not CSS. Named to avoid the style-audit's `*style*` heuristic.
-  defp railing_look(%{"railing_style" => %{} = s}) do
-    %{
-      height: s["height"],
-      color: s["color"],
-      hi: s["hi"],
-      base: s["base"],
-      posts: s["posts"]
-    }
+  # Ornate golden posts capping the four platform corners (`corner` ∈ n/e/s/w
+  # picks the diamond-vertex the post billboards on).
+  defp railing_posts(data) do
+    Enum.map(data["railing_posts"] || [], &%{x: &1["x"], y: &1["y"], corner: &1["corner"]})
   end
-
-  defp railing_look(_), do: nil
 
   # Parallax background layers: a tile repeated across the void behind the
   # platform, scrolling slower than the world for cosmic depth.

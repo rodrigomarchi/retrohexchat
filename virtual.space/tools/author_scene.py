@@ -31,7 +31,7 @@ W, H = 40, 24
 # clean diamond with STRAIGHT diagonal screen edges — so the railings run
 # continuous, not staircased (a wobbly super-ellipse made the fence stagger).
 # The bevel softens the four points into short corners (CT-like octagon).
-RECT = {"x0": 9, "x1": 31, "y0": 5, "y1": 19, "bevel": 0}
+RECT = {"x0": 8, "x1": 32, "y0": 4, "y1": 20, "bevel": 0}
 SHEET_COLS = 20
 Z_STEP = 16
 
@@ -51,6 +51,86 @@ def _floor_tiles():
     if not tiles:
         raise FileNotFoundError(f"no floor_*.png in {ISO}")
     return tiles
+
+
+def _shear(img, fw, fh, direction):
+    """Project a flat (front-elevation) fence strip onto a diamond edge: shift
+    every column down by ``x*tile_h/tile_w`` so the strip's level base traces the
+    2:1 edge slope while each vertical bar stays vertical (an iso wall, not a
+    staircased billboard). ``dr`` descends left→right, ``dl`` is its mirror."""
+    w, h = img.size
+    drop = round((w - 1) * fh / fw)
+    out = Image.new("RGBA", (w, h + drop), (0, 0, 0, 0))
+    src = img.load()
+    for x in range(w):
+        dy = round(x * fh / fw) if direction == "dr" else round((w - 1 - x) * fh / fw)
+        for y in range(h):
+            p = src[x, y]
+            if p[3]:
+                out.putpixel((x, y + dy), p)
+    return out
+
+
+def _col_mass(im):
+    """Opaque-alpha mass per column — the fence's vertical-bar signal."""
+    px = im.load()
+    return [sum(px[x, y][3] for y in range(im.height)) for x in range(im.width)]
+
+
+def _extend_bars(im, extra):
+    """Make the picket taller without deforming: splice `extra` px of the plain
+    vertical-bar band into the middle (the bars are uniform, so repeating a thin
+    real slice just lengthens them), keeping the finialed top and the bottom rail
+    intact. Bars stay 1:1 native pixels — no stretching."""
+    if extra <= 0:
+        return im
+    w, h = im.size
+    ycut = int(h * 0.58)  # a row down in the plain-bar region, below the finials
+    band = im.crop((0, ycut - 1, w, ycut + 1))  # a 2px bar slice to repeat
+    out = Image.new("RGBA", (w, h + extra), (0, 0, 0, 0))
+    out.alpha_composite(im.crop((0, 0, w, ycut)), (0, 0))
+    for yy in range(ycut, ycut + extra, 2):
+        out.alpha_composite(band, (0, yy))
+    out.alpha_composite(im.crop((0, ycut, w, h)), (0, ycut + extra))
+    return out
+
+
+def _rail_tiles(fw, fh):
+    """Build the golden fence tiles from the native wrought-iron art at its FULL
+    height: pick the picket's repeat period (snapped to a divisor of the cell
+    width so cells abut seam-free), tile ONE period across a cell edge (``fw/2``
+    px), then shear it onto both diamond-edge slopes. The corner post is the
+    strip's own tallest column run. Returns (down-right, down-left, corner post)."""
+    strip = Image.open(os.path.join(ISO, "rail.png")).convert("RGBA")
+    strip = strip.crop(strip.getbbox())  # full fence height, no transparent margin
+    strip = _extend_bars(strip, 14)  # taller picket (closer to the ornate posts)
+    W, H = strip.size
+    cw = fw // 2  # one cell's edge run in px (= half diamond width)
+
+    # Repeat period: strongest autocorrelation lag, snapped to a divisor of cw so
+    # every cell tile abuts its neighbour with identical bar spacing (no banding).
+    mass = _col_mass(strip)
+    mean = sum(mass) / W
+    dev = [m - mean for m in mass]
+    ac = lambda d: sum(dev[x] * dev[x + d] for x in range(W - d))
+    raw = max(range(3, min(16, W // 2)), key=ac)
+    divisors = [d for d in (4, 6, 8, 12) if cw % d == 0] or [g for g in range(2, cw + 1) if cw % g == 0]
+    p = min(divisors, key=lambda d: abs(d - raw))
+
+    # Start the unit at a bar-gap (low column mass) inside the uniform mid-run,
+    # away from any ornate end/centre post, so the tiled seam falls between bars.
+    lo, hi = W // 6, max(W // 6 + p + 1, W - W // 6 - p)
+    x0 = min(range(lo, hi), key=lambda x: mass[x] + mass[x + p])
+    unit = strip.crop((x0, 0, x0 + p, H))
+    flat = Image.new("RGBA", (cw, H), (0, 0, 0, 0))
+    for i in range(cw // p):
+        flat.alpha_composite(unit, (i * p, 0))
+
+    # The ornate spear-tip post is its own native art (a tall billboard capping
+    # corners and punctuating the run at intervals).
+    post = Image.open(os.path.join(ISO, "rail_post.png")).convert("RGBA")
+    post = post.crop(post.getbbox())
+    return _shear(flat, fw, fh, "dr"), _shear(flat, fw, fh, "dl"), post
 
 
 def _cells(w_px, h_px):
@@ -90,7 +170,16 @@ def build():
         vocab[f"iso_floor{i}"] = None
         col = _place(sheet, vocab, f"iso_floor{i}", im, col, 0, anchor="top", native=True)
 
-    # Props (billboarded): railing + reused upright lamp + anim star.
+    # Iso railing tiles: a native wrought-iron strip tiled into a one-cell picket
+    # and sheared onto the diamond edge (base follows the 2:1 slope, every bar
+    # stays vertical). Two mirror variants wrap all four sides seam-to-seam; a
+    # golden post caps each corner. Packed native on the floor row so they blit 1:1.
+    rail_dr, rail_dl, rail_post = _rail_tiles(fw, fh)
+    col = _place(sheet, vocab, "iso_rail_dr", rail_dr, col, 0, anchor="top", native=True)
+    col = _place(sheet, vocab, "iso_rail_dl", rail_dl, col, 0, anchor="top", native=True)
+    col = _place(sheet, vocab, "iso_rail_post", rail_post, col, 0, anchor="top", native=True)
+
+    # Props (billboarded): reused upright lamp + anim star.
     props = {}
     for name, fn in [
         ("iso_lamp", os.path.join(SRC, "lamp.png")),
@@ -175,6 +264,31 @@ def build():
             if not bfull(x + 1, y):
                 rails.append({"x": x, "y": y, "edge": "br"})
 
+    # Ornate spear-tip posts punctuate the fence: one every POST_STEP cells along
+    # each edge, sitting on that edge's near diamond-vertex, plus one hard on each
+    # of the four platform corners. `corner` (n/e/s/w) is the vertex the post
+    # billboards on. Deduped by cell so a corner cell gets a single post.
+    hx0, hx1, hy0, hy1 = hull
+    POST_STEP = 3
+    edge_vertex = {"tr": "n", "tl": "w", "bl": "w", "br": "s"}
+    seen, railing_posts = set(), []
+
+    def add_post(x, y, corner):
+        if (x, y) not in seen:
+            seen.add((x, y))
+            railing_posts.append({"x": x, "y": y, "corner": corner})
+
+    for x, y, corner in [(hx0, hy0, "n"), (hx1, hy0, "e"), (hx1, hy1, "s"), (hx0, hy1, "w")]:
+        add_post(x, y, corner)
+    for edge, corner in edge_vertex.items():
+        cells = sorted(
+            ((r["x"], r["y"]) for r in rails if r["edge"] == edge),
+            key=lambda c: c[0] + c[1],
+        )
+        for i, (x, y) in enumerate(cells):
+            if i % POST_STEP == 0:
+                add_post(x, y, corner)
+
     # Twinkling stars hash-scattered through the void (near the platform so many
     # land on-screen) — keeps the scene alive and fills the abyss with sky.
     stars = [{"x": x, "y": y, "tile": "iso_star", "sort": "flat"}
@@ -196,8 +310,7 @@ def build():
         "vignette": {"color": "04050c", "alpha": 0.78, "inner": 0.36},
         "sea": {"top": "0c1e42", "bottom": "05060f", "band": "1a3d7a", "bands": 9, "amp": 5},
         "railings": rails,
-        "railing_style": {"height": 38, "color": "b98d3e", "hi": "e8c874",
-                          "base": "1c1a24", "posts": 9},
+        "railing_posts": railing_posts,
         "vocab": {k: v for k, v in vocab.items() if v is not None},
         "floor": floor_matrix,
         "decor": decor,
@@ -219,7 +332,7 @@ def build():
     sheet.save(SHEET_OUT)
     json.dump(layout, open(MAP_OUT, "w"))
     print(f"OK iso scene: sheet={sheet.size} diamond={fw}x{fh} floors={nfloor} "
-          f"rails={len(rails)} decor={len(decor)}")
+          f"rails={len(rails)} posts={len(railing_posts)} decor={len(decor)}")
 
 
 if __name__ == "__main__":

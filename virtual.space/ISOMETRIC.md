@@ -94,30 +94,51 @@ through it.
 
 ---
 
-## 3. The railing — GEOMETRY, not sprites (the crux)
+## 3. The railing — ISO EDGE TILES (generated art, sheared to the slope)
 
-Billboard fence *sprites* can never form a clean continuous rim on iso edges: a
-sprite's baked slope never exactly matches the 2:1 edge, so they gap (spaced) or
-stack into a mess (dense). **The platform is a square 3D block; its railing is ONE
-continuous contour wrapping the four top edges, meeting at corners.** So draw it
-**geometrically**, not from art:
+A continuous fence on an iso edge has **two dead ends**: an **upright billboard**
+sprite staircases (its top rail stays horizontal while the diamond edge descends
+at 2:1), and **code-drawn geometry** (the fence this scene shipped with first)
+reads as flat line-art up close — "código deixa a arte feia". The fix is what CT
+itself does: the fence is an **edge-aligned TILE** whose base follows the 2:1
+slope, anchored on the diamond foot exactly like the floor, so neighbours share
+vertices and tessellate **seam-free**.
 
-1. Make the platform a **straight-edged** rectangle (or bevelled octagon) in tile
-   space (`author_scene.py` `RECT`, `bevel:0`) → in iso it projects to a clean
-   diamond with **straight** diagonal screen edges. A wobbly super-ellipse is what
-   makes a fence staircase — never use one for an iso scene with edge decor.
-2. The author emits **edge cells** `railings:[{x,y,edge}]`: each solid cell bordering
-   the void contributes a fence segment on that shared diamond edge
-   (`edge ∈ tr,tl,bl,br`; a corner cell emits two → the fence wraps the corner).
-3. `renderer._drawRailingSegment` draws each on the cell's **exact** diamond-edge
-   endpoints (`_railingEdge`): a dark base rail on the lip + evenly spaced gold posts
-   + a top and mid rail + finial caps. Adjacent segments **share endpoints →
-   seamless**. It participates in `_drawDepthSorted` (baseline `depthKey(x,y)`) so
-   back-edge railings draw **behind** avatars, front-edge **in front**.
+The pipeline (all real PixelLab art — no code-drawn fence):
 
-**General iso lesson:** any edge-aligned decor that must be *continuous* (railings,
-walls, kerbs) = **geometry following the edge**, not tiled/billboarded sprites. Only
-free-standing upright props (lamp, bucket) are billboards.
+1. Keep the platform a **straight-edged** rectangle/octagon in tile space
+   (`author_scene.py` `RECT`, `bevel:0`) → a clean diamond with **straight**
+   screen edges; a super-ellipse would staircase the tiles.
+2. **Generate** a straight **front-elevation** fence strip (PixelLab is good at
+   this — but prompt "uniform repeating, no arch, no gate, no central post" or it
+   composes a *gate*). Generate the ornate **spear-tip post** as its own tall
+   billboard. Both are isolated transparent objects — PixelLab's strength.
+3. `author_scene.py._rail_tiles`: crop to content, pick the picket's repeat
+   **period** (snapped to a divisor of the cell width `tile_w/2` so cells abut
+   with identical spacing), tile ONE period across a cell, and `_shear` it onto
+   each edge slope (column `x` drops `x*tile_h/tile_w` → the base traces the edge
+   while every bar stays vertical). Two mirror tiles `iso_rail_dr`/`iso_rail_dl`
+   wrap all four sides. `_extend_bars` lengthens the picket by **splicing real bar
+   pixels** (never a vertical stretch) when a taller fence is wanted.
+4. Each solid edge cell emits `railings:[{x,y,edge}]`; `renderer._drawRailingTile`
+   blits the matching sheared tile at the cell's near vertex (offset by `edge`),
+   depth-sorted so **back** edges (tr/tl) draw behind avatars, **front** (bl/br)
+   in front.
+5. Ornate posts punctuate the run: `railing_posts:[{x,y,corner}]` — one every N
+   cells along each edge **+ the four corners** — billboarded on the diamond
+   vertex (`renderer._drawRailingPost`). The tall posts carry the ornament
+   PixelLab won't draw at fence scale.
+
+**General iso lesson:** edge-continuous decor (railings, walls, kerbs) = a **tile
+drawn along the diamond edge slope** (base on the foot), tessellated per cell —
+NOT an upright billboard (staircases) and NOT code-drawn geometry (flat line-art).
+Free-standing upright props (lamp, corner post) stay billboards.
+
+**Validate at REAL scale — a zoomed offline preview LIES.** A 3× zoom on a tiny
+6×6 platform flatters a short/plain fence; on the real platform at game scale it
+reads tiny. Render the ACTUAL scene at the game scale (tiles ×2, avatar ×1) with
+an avatar in frame for proportion, or check in-app — height and ornament only read
+honestly against the avatar and the full floor.
 
 ### Depth sorting (`renderer._drawDepthSorted`)
 Iso merges standing props, avatars and railings into one list keyed by
@@ -143,8 +164,10 @@ What the PixelLab tools actually give (empirical):
 - **Upright props (lamp, bucket, gate)**: draw as iso **billboards** — an upright
   object reads correctly in any projection (bottom-centre on the diamond foot). No
   iso-specific art needed; regenerate only for cohesion.
-- **Railings**: DON'T generate — they're geometric (§3). Generated fence sprites
-  fought the edge slope endlessly.
+- **Railings**: DO generate, but as a **straight front-elevation strip + a post**
+  (isolated objects), then the author tiles + shears them onto the edge (§3). Do
+  NOT ask PixelLab for the whole iso-sloped fence — it can't tile a baked slope,
+  and "fence" prompts drift into centred *gates*.
 - Author packs the floor at its **native** size (`author_scene.py` must NOT crop the
   floor tile — the exact 64×32 must survive or tessellation seams appear).
 
@@ -176,5 +199,8 @@ What the PixelLab tools actually give (empirical):
 
 ## 7. Still open / future
 - Bigger cobbles (tool-limited via `create_map_object` — needs a real iso tileset
-  tool or hand-edit). Wooden door + stone stairs in the fence (CT has them). More
-  ornate railing scrollwork.
+  tool or hand-edit). Wooden door + stone stairs in the fence (CT has them).
+- **S-scroll filigree between posts**: PixelLab won't draw the scroll at fence
+  scale (it returns a plain picket), so the ornament currently rides on the tall
+  posts. A dedicated scroll-panel motif spliced into the picket would push closer
+  to the fan-art look (image 2); the game screenshots (1/3) are picket-dominant.
