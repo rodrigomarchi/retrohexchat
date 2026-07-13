@@ -29,7 +29,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
       width: data["width"],
       height: data["height"],
       tile_size: data["tile_size"],
-      projection: data["projection"] || "topdown",
+      projection: data["projection"] || "isometric",
       iso: iso(data),
       slab: slab(data),
       vignette: vignette(data),

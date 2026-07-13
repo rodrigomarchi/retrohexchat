@@ -1,49 +1,57 @@
 # Space sprite tooling
 
-Each virtual-space map ships one composed sprite sheet
-(`virtual.space/*.png`, copied into
+The single virtual-space map (`end_of_time`, isometric) ships one composed
+sprite sheet (`virtual.space/*.png`, copied into
 `apps/retro_hex_chat_web/priv/static/images/space/`) plus a thin Elixir map
-module that declares its tile vocabulary. The client sprite atlas slices the
-sheet with `drawImage`; no pixel data is traced into JS or into the map payload.
+module that declares its tile vocabulary. Both channels and DMs render it. The
+client sprite atlas slices the sheet with `drawImage`; no pixel data is traced
+into JS or into the map payload.
 
-Every map's art is **generated with PixelLab** (Wang tilesets + map-object
-props, in a cohesive flat 16-bit register) and packed into its sheet by a
-per-map `author_*.py` script. The scripts are deterministic and re-read the
-tracked raw art, so a sheet is always reproducible from source.
+The map art is **generated with PixelLab** (a native 64×32 iso floor diamond +
+map-object props as iso billboards) and packed into its sheet by
+`author_scene.py`. The script is deterministic and re-reads the tracked raw art,
+so the sheet is always reproducible from source.
 
 ## Where things live
 
 - **Runtime sheets** — `apps/retro_hex_chat_web/priv/static/images/space/`
-  (`character.png` for the default hero, `endoftime.png`, `millennialfair.png`).
-  A map's `author_*.py` writes its sheet here.
-- **Tile vocabulary** — each map module (`RetroHexChat.VirtualSpace.Maps.*`)
-  owns its own vocab: semantic tile names → `{col, row, w, h, frames?,
-  period_ms?, flip_x?}` on that map's sheet. Maps reference tiles by name; there
-  is no shared cross-map tile catalog.
-- **Avatars** — the red-tunic hero (sliced from `character.png`, 16×32) plus
-  seven PixelLab-authored classes (`avatars/<id>.png`, 36×36), each with a
-  4-direction walk and attack. The generation → composition → integration
+  (`endoftime.png` for the scene; `avatars/iso_<id>.png` for the 8 avatars).
+  `author_scene.py` writes the scene sheet here.
+- **Tile vocabulary** — the map module (`RetroHexChat.VirtualSpace.Maps.EndOfTime`)
+  owns its vocab: semantic tile names → `{col, row, w, h, frames?, period_ms?,
+  flip_x?}` on the sheet. Tiles are referenced by name; there is no shared
+  cross-map tile catalog.
+- **Avatars** — eight premium **8-direction isometric** characters (`hero`,
+  `knight`, `sorceress`, `archer`, `barbarian`, `rogue`, `cleric`, `monk`),
+  authored at **native scale 1**, each with walk + idle + attack (8 facings) and
+  a south seated sleep. Runtime sheets are `avatars/iso_<id>.png` with sibling
+  `iso_<id>.geo.json` geometry. The generation → composition → integration
   pipeline and the "add a new character" recipe are in
-  [`../CHARACTERS.md`](../CHARACTERS.md). Raw generation exports live under
-  `characters/<id>/pixellab/`; `compose_avatars.py` builds the runtime sheets.
+  [`../CHARACTERS.md`](../CHARACTERS.md). Raw exports live under
+  `characters/iso_<id>/pixellab/`.
 
-## The author scripts
+## The scripts
 
-- **`author_scene.py`** — the End of Time DM scene. Reads the raw art (tileset +
-  animated map-object frames) from `../scenes/end_of_time/` and emits the sheet
-  `endoftime.png` plus the layout `priv/maps/end_of_time.json`. The animation
-  pipeline it exercises is documented in [`../ANIMATIONS.md`](../ANIMATIONS.md).
-- **`author_fair.py`** — the Millennial Fair channel scene. Builds the plaza
-  floor, packs the flat 16-bit props (union-bbox, scale-to-fit, off-sheet guard)
-  and emits `millennialfair.png` plus `priv/maps/millennial_fair.json`.
-- **`compose_avatars.py`** — assembles the class-avatar runtime sheets from the
-  PixelLab exports (see [`../CHARACTERS.md`](../CHARACTERS.md)).
+- **`author_scene.py`** — the End of Time scene. Reads the raw art (iso floor
+  tile + animated map-object frames) from `../scenes/end_of_time/` and emits the
+  sheet `endoftime.png` plus the layout `priv/maps/end_of_time.json` (including
+  the iso `slab`/`railings` geometry). The animation pipeline it exercises is
+  documented in [`../ANIMATIONS.md`](../ANIMATIONS.md); the iso build in
+  [`../ISOMETRIC.md`](../ISOMETRIC.md).
+- **`compose_iso_avatar.py`** — composes one 8-direction iso avatar sheet from a
+  PixelLab export. Crops every frame to one shared window, stacks them in
+  direction-major blocks (`walk, idle, attack, sleep`), and writes
+  `avatars/iso_<id>.png` plus `iso_<id>.geo.json` (see
+  [`../CHARACTERS.md`](../CHARACTERS.md)).
+- **`gen_iso_atlas.py`** — reads every `iso_<id>.geo.json` and prints the JS
+  atlas data (`AVATAR_SHEETS` entries + the `ISO_GEO` literal) to paste into
+  `sprite_atlas.js`, so adding a character is a data change.
 
-## Authoring a new map
+## Authoring the scene
 
-The full pipeline for authoring a virtual-space scene — PixelLab Wang-tileset
-floors + map-object props, cohesive flat-art curation, sheet packing, the map
-module and its integration — is in [`../SCENES.md`](../SCENES.md). Copy an
-existing `author_*.py` as the starting point, generate the art with PixelLab,
-pack it, and add the `Maps.<Name>` module to the registry
-(`RetroHexChat.VirtualSpace.Map`).
+The full pipeline for building a virtual-space scene — the iso floor + map-object
+props, cohesive art curation, sheet packing, the map module and its integration —
+is in [`../SCENES.md`](../SCENES.md) and [`../ISOMETRIC.md`](../ISOMETRIC.md).
+The registry currently holds the single `Maps.EndOfTime` module
+(`RetroHexChat.VirtualSpace.Map`); a new scene copies `author_scene.py`, generates
+its art with PixelLab, packs it, and registers its `Maps.<Name>` module.

@@ -36,6 +36,12 @@ function tavernInit(overrides = {}) {
   };
 }
 
+// Screen-space foot point of a tile, given the engine's live camera+projection.
+function footScreen(engine, tx, ty) {
+  const f = engine.camera.projection.footAnchor(tx, ty);
+  return engine.camera.worldToScreen(f.x, f.y);
+}
+
 function buildEngine(overrides = {}) {
   const renderer = { draw: vi.fn(), resize: vi.fn(), destroy: vi.fn() };
   const scheduler = {
@@ -100,28 +106,35 @@ describe("SpaceEngine", () => {
   });
 
   it("finds a rendered participant under a canvas point", () => {
-    const { engine } = buildEngine();
+    const { engine, scheduler } = buildEngine();
     engine.start(tavernInit());
+    scheduler.flush(); // draw once so the camera follows self and world maps onto the canvas
 
-    expect(engine.participantAtCanvasPoint(256, 112)?.nickname).toBe("bob");
-    expect(engine.participantAtCanvasPoint(10, 10)).toBe(null);
+    // Aim just above bob's diamond foot — inside his billboarded hit box.
+    const bob = footScreen(engine, 8, 6);
+    expect(engine.participantAtCanvasPoint(bob.x, bob.y - 30)?.nickname).toBe("bob");
+    expect(engine.participantAtCanvasPoint(5, 5)).toBe(null);
   });
 
   it("hits the participant drawn on top when avatar bounds overlap", () => {
-    const { engine } = buildEngine();
+    const { engine, scheduler } = buildEngine();
     engine.start(
       tavernInit({
         snapshot: {
           serverTime: 1,
           participants: {
             "registered:1": { nickname: "alice", x: 5, y: 5, dir: "down" },
-            "registered:2": { nickname: "bob", x: 5, y: 6, dir: "up" },
+            "registered:2": { nickname: "bob", x: 6, y: 6, dir: "up" },
           },
         },
       }),
     );
+    scheduler.flush();
 
-    expect(engine.participantAtCanvasPoint(160, 120)?.nickname).toBe("bob");
+    // Tiles (5,5) and (6,6) stack on the same iso screen column; bob (larger y)
+    // draws on top, so the seam where their boxes meet resolves to bob.
+    const seam = footScreen(engine, 5, 5);
+    expect(engine.participantAtCanvasPoint(seam.x, seam.y)?.nickname).toBe("bob");
   });
 
   it("applies a delta: moves an existing participant", () => {

@@ -114,7 +114,8 @@ describe("Renderer flipped tiles", () => {
 
     expect(ctx.save).toHaveBeenCalledTimes(1);
     expect(ctx.scale).toHaveBeenCalledWith(-1, 1);
-    expect(ctx.drawImage).toHaveBeenCalledWith(img, 16, 64, 16, 48, -96, 96, 32, 96);
+    // Anchored on the iso floor diamond of tile (2,3); flipX mirrors in place.
+    expect(ctx.drawImage).toHaveBeenCalledWith(img, 16, 64, 16, 48, -928, 352, 32, 96);
     expect(ctx.restore).toHaveBeenCalledTimes(1);
   });
 });
@@ -143,7 +144,7 @@ describe("Renderer depth sorting (walk-behind)", () => {
         {
           key: "registered:1",
           nickname: "",
-          avatar: "redtunic_hero",
+          avatar: "hero",
           x: 4,
           y: avatarY,
           dir: "down",
@@ -180,7 +181,7 @@ describe("Renderer depth sorting (walk-behind)", () => {
     const participants = new Map([
       [
         "registered:1",
-        { key: "registered:1", nickname: "", avatar: "redtunic_hero", x: 4, y: 2, dir: "down" },
+        { key: "registered:1", nickname: "", avatar: "hero", x: 4, y: 2, dir: "down" },
       ],
     ]);
     renderer.draw({ participants, selfKey: "registered:1", bubbles: new Map(), now: 0 });
@@ -268,7 +269,7 @@ describe("Renderer isometric", () => {
       floor,
       decor: [{ x: propXY[0], y: propXY[1], tile: "block", sort: "stand" }],
       participants: new Map([
-        ["k", { key: "k", avatar: "redtunic_hero", x: avatarXY[0], y: avatarXY[1], dir: "down" }],
+        ["k", { key: "k", avatar: "hero", x: avatarXY[0], y: avatarXY[1], dir: "down" }],
       ]),
     });
     return ctx.drawImage.mock.calls
@@ -425,21 +426,22 @@ describe("Renderer avatar actions", () => {
         {
           key: "registered:1",
           nickname: "alice",
-          avatar: "redtunic_hero",
+          avatar: "hero",
           x: 5,
           y: 5,
-          dir: "down",
-          action: { kind: "sword", dir: "left", startedAt: 0, duration: 420 },
+          action: { kind: "sword", startedAt: 0, duration: 420 },
         },
       ],
     ]);
 
     renderer.draw({ participants, selfKey: "registered:1", bubbles: new Map(), now: 210 });
 
-    expect(atlas.avatar).toHaveBeenCalledWith("redtunic_hero", "left", 2, "sword");
+    // Iso avatars face their last movement direction (south when still), not the
+    // action payload; 210/420 of a 4-frame swing → frame 2.
+    expect(atlas.avatar).toHaveBeenCalledWith("hero", "south", 2, "sword");
   });
 
-  it("centers wide sword sprites on the avatar tile", () => {
+  it("billboards a wide sword sprite bottom-centre on the diamond foot", () => {
     const img = { complete: true, naturalWidth: 32 };
     const atlas = {
       tile: () => null,
@@ -453,17 +455,18 @@ describe("Renderer avatar actions", () => {
         {
           key: "registered:1",
           nickname: "",
-          avatar: "redtunic_hero",
+          avatar: "hero",
           x: 5,
           y: 5,
-          dir: "down",
-          action: { kind: "sword", dir: "down", startedAt: 0, duration: 420 },
+          action: { kind: "sword", startedAt: 0, duration: 420 },
         },
       ],
     ]);
 
     renderer.draw({ participants, selfKey: "registered:1", bubbles: new Map(), now: 0 });
 
-    expect(ctx.drawImage).toHaveBeenCalledWith(img, 0, 128, 32, 32, 144, 128, 64, 64);
+    // foot of tile (5,5) → (1024,544); 32×32 sprite at scale 2 billboards to
+    // (992,480), 64×64.
+    expect(ctx.drawImage).toHaveBeenCalledWith(img, 0, 128, 32, 32, 992, 480, 64, 64);
   });
 });

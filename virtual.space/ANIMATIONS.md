@@ -81,8 +81,9 @@ Object animations work **directly on map objects** — no heavyweight review flo
 Check `mcp__pixellab__get_balance` first. The reliable recipe:
 
 1. **`create_map_object`** — transparent-bg object. Generate **generously large**
-   (e.g. 96px) for detail; it's scaled down at pack time (§4). `view: "side"` for
-   furniture (TV), `"high top-down"` for creatures/props (Nu, star).
+   (e.g. 96px) for detail; it's scaled down at pack time (§4). Author upright
+   props `view: "side"` — they read as iso **billboards** bottom-centred on the
+   diamond foot (TV, Nu). Small flat sprites (the twinkling star) sit in the void.
 2. **`animate_object`** — `mode: "v3"` (default; higher quality **and** cheaper
    than `pro`), `frame_count: 6` (any even 4–16), `keep_first_frame: false` (drop
    the reference frame so you get exactly N generated frames). For a 1-direction
@@ -221,7 +222,7 @@ screenshot for the live look. Finish with `make ci` (9/9).
 - **Commit the raw frames** — `scenes/<scene>/anim/<name>/*.png` is tracked
   source art; `author_scene.py` is deterministic and re-reads them.
 
-## 9. More gotchas — from the Millennial Fair (flat 16-bit) pass
+## 9. More gotchas — multi-prop packing & regeneration
 
 - **Sheet must fit the widest strip, or frames flicker.** An animated tile packs
   `frames` cells horizontally, so its strip is `w × frames` tiles wide. If that
@@ -240,25 +241,23 @@ screenshot for the live look. Finish with `make ci` (9/9).
   frames (union-bbox handles alignment; the *prompt* must say "the post stays
   perfectly still").
 - **Subtle beats spectacular.** An over-strong effect prompt ("electricity arcs
-  crackle") gave the telepod huge white bursts that read as a *mortar & pestle*.
-  Prompt for a **faint/small** effect ("a few faint blue sparks flicker at the
-  tip; the body stays perfectly still") and a **clean readable base shape**.
-- **Cohesive flat animations.** Generate the animated object itself in the flat
-  16-bit register (`detail: "low detail"`, `shading: "flat shading"`, native
-  size) — an animation only looks as coherent as the object it animates
-  (see `SCENES.md` §8).
+  crackle") gave a prop huge white bursts that read as junk. Prompt for a
+  **faint/small** effect ("a few faint blue sparks flicker at the tip; the body
+  stays perfectly still") and a **clean readable base shape**.
+- **Animate in the scene's own register.** Generate the animated object with the
+  same `outline`/`shading`/`detail` and native size as the rest of the scene — an
+  animation only looks as coherent as the object it animates (see `SCENES.md` §8).
 - **Animating a map-object directly works.** `animate_object` takes a
   `create_map_object` id (not just character ids); the frames come back under
   `.../objects/<id>/animations/<group>/unknown/{i}.png`.
 - **To animate an existing static prop, regenerate it as an object.** Map
   objects auto-delete after 8h, so the original id is usually gone. Recreate the
-  prop with `create_map_object` (same flat-16-bit params to stay cohesive), then
+  prop with `create_map_object` (same params to stay cohesive), then
   `animate_object`; frame 0 becomes the new static. Judge the regen against the
   current sprite before accepting — swap the `PROPS` source from `foo.png` to
   `anim/foo` and delete the orphaned static PNG.
-- **One coherent breeze beats scattered effects.** When several outdoor props
-  animate at once (flags, tent pennants, foliage), tie them to a *single* wind:
-  scale `period_ms` by the material's weight — light fabric ripples faster
-  (~850–1000 ms), heavy foliage sways slower (~1500–1600 ms). Same physical
-  cause, so the whole scene reads alive instead of twitchy. The per-position
-  seed already desyncs repeated props (every tree/bush out of phase).
+- **One coherent cause beats scattered effects.** When several props animate at
+  once, tie them to a *single* physical cause and scale `period_ms` by weight —
+  light things move faster, heavy things slower. Same cause, so the whole scene
+  reads alive instead of twitchy. The per-position seed already desyncs repeated
+  props (every one out of phase).

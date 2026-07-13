@@ -447,9 +447,9 @@ export function createSpriteAtlas(opts = {}) {
     const block = desc[action] ?? desc.walk;
     const sheet = sheets.get(desc.sheet);
     if (!sheet) return null;
-    // Resolve against the block's own facing keys so 4-dir (down/up/left/right)
-    // and 8-dir (south/east/…) avatars both work; fall back to the first facing
-    // (e.g. sleep is south-only, used for any direction).
+    // Resolve against the block's own facing keys, falling back to the first
+    // facing when a direction is absent (e.g. sleep is south-only, used for any
+    // direction).
     const direction = dir in block.rows ? dir : Object.keys(block.rows)[0];
     const n = block.cols.length;
     const idx = ((Math.trunc(frame) % n) + n) % n;
@@ -481,12 +481,11 @@ export function createSpriteAtlas(opts = {}) {
       const block = desc[action] ?? desc.walk;
       return block.cols.length;
     },
-    // What animation capabilities an avatar has, so the renderer drives 8-dir iso
-    // avatars (facing + idle/sleep states) without changing the 4-dir legacy ones.
+    // What animation capabilities an avatar has, so the renderer's state machine
+    // knows whether to drive the idle/sleep states.
     avatarMeta(id) {
       const desc = AVATARS[id] ?? AVATARS[DEFAULT_AVATAR_ID];
       return {
-        iso: "south" in (desc.walk?.rows ?? {}),
         hasIdle: Boolean(desc.idle),
         hasSleep: Boolean(desc.sleep),
         scale: desc.scale ?? 1,

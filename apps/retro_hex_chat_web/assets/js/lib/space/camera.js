@@ -1,7 +1,7 @@
 /**
  * Camera that follows the local avatar and clamps to the map edges. Works in
  * world pixels and converts to screen space for the renderer. The tile→world
- * mapping (square or diamond) is delegated to an injected `Projection`; the
+ * mapping (the isometric diamond) is delegated to an injected `Projection`; the
  * camera itself is projection-agnostic — `worldToScreen` is a bare offset.
  * @module space/camera
  */
@@ -15,8 +15,8 @@ export class Camera {
   constructor({ tileSize, scale, mapWidth, mapHeight, projection, map }) {
     this.tileSize = tileSize;
     this.scale = scale;
-    // Default to a top-down projection so callers/tests that omit it keep the
-    // historical square-grid behaviour (identical numbers).
+    // Isometric is the only projection; build one from the map's iso params when
+    // a caller doesn't inject its own.
     this.projection = projection ?? createProjection({ map, tileSize, scale, mapWidth, mapHeight });
     const bounds = this.projection.worldBounds();
     this.worldWidth = bounds.width;

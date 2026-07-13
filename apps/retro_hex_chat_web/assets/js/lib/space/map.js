@@ -35,8 +35,8 @@ export class SpaceMap {
     // Parallax background layers (cosmic nebula) drawn behind the floor, offset
     // by the camera times a per-layer scroll factor (< 1) for depth.
     this.parallax = Array.isArray(definition.parallax) ? definition.parallax : [];
-    // Isometric slab thickness (3D side faces) + a screen-space vignette. Null on
-    // top-down maps → no faces, no vignette.
+    // Isometric slab thickness (3D side faces) + a screen-space vignette. Null
+    // when a map defines neither → no faces, no vignette.
     this.slab = definition.slab ?? null;
     this.vignette = definition.vignette ?? null;
     // The cosmic sea abyss behind a floating platform (deep-blue rippling void).

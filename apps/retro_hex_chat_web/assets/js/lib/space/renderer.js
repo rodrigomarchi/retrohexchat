@@ -75,10 +75,8 @@ export class Renderer {
     // The tile→world mapping (square or diamond) lives in the camera's projection.
     this.projection = camera.projection;
     this.tilePx = map.tileSize * camera.scale;
-    // Avatars are drawn at their own scale so they keep a constant on-screen
-    // size regardless of the world scale (which varies with tile resolution:
-    // a 32px-tile map renders at world scale 1, a 16px-tile map at 2). Defaults
-    // to the world scale so callers/tests that omit it behave as before.
+    // Avatars carry their own scale; premium iso art is authored at world size so
+    // it composes 1:1. Defaults to the world scale when a caller omits it.
     this.avatarScale = avatarScale ?? camera.scale;
     // Per-avatar last render position + time, to drive the walk animation.
     this._motion = new Map();
@@ -106,15 +104,11 @@ export class Renderer {
     this._drawSea(ctx, now);
     // Cosmic parallax layers drift behind the floor for depth.
     this._drawParallax(ctx, now);
-    // In iso, flat decor is the distant STARFIELD in the void — draw it BEFORE
-    // the floor so the solid platform/slab occludes any stars behind it (a solid
-    // island can't have stars showing through it). Top-down flat decor (ground
-    // marks) stays on top of the floor.
-    const isoMap = this.projection.kind === "isometric";
-    if (isoMap) this._drawDecorList(ctx, this._flatDecor(), now);
+    // Flat decor is the distant STARFIELD in the void — drawn BEFORE the floor so
+    // the solid platform/slab occludes any stars behind it (a solid island can't
+    // have stars showing through it).
+    this._drawDecorList(ctx, this._flatDecor(), now);
     this._drawFloor(ctx, now);
-    // Flat decor (ground marks) lies under every avatar and prop.
-    if (!isoMap) this._drawDecorList(ctx, this._flatDecor(), now);
     // Soft contact shadows ground props and avatars before they are drawn over.
     this._drawShadows(ctx, state.participants, now);
     // Depth pass: standing props and avatars share one Y-sorted order so an
@@ -144,7 +138,7 @@ export class Renderer {
 
   // The cosmic sea: a deep-blue vertical gradient overlaid with slowly drifting,
   // gently rippling horizontal bands — the Chrono-Trigger End-of-Time abyss the
-  // platform floats in. Absent `sea` → skipped (top-down maps keep the flat void).
+  // platform floats in. Absent `sea` → skipped (the void stays flat).
   _drawSea(ctx, now = 0) {
     const sea = this.map.sea;
     if (!sea) return;
@@ -200,34 +194,10 @@ export class Renderer {
     }
   }
 
-  _drawFloor(ctx, now = 0) {
-    if (this.projection.kind === "isometric") return this._drawFloorIso(ctx, now);
-    const startX = Math.floor(this.camera.x / this.tilePx);
-    const startY = Math.floor(this.camera.y / this.tilePx);
-    const cols = Math.ceil(this.canvas.width / this.tilePx) + 1;
-    const rows = Math.ceil(this.canvas.height / this.tilePx) + 1;
-
-    const ground = this.map.ground ? this.atlas?.tile(this.map.ground) : null;
-
-    for (let ty = startY; ty < startY + rows; ty += 1) {
-      for (let tx = startX; tx < startX + cols; tx += 1) {
-        if (!this.map.inBounds(tx, ty)) continue;
-        const a = this.projection.floorAnchor(tx, ty);
-        const { x, y } = this.camera.worldToScreen(a.x, a.y);
-        const dx = Math.round(x);
-        const dy = Math.round(y);
-        const tileId = this.map.floorTile(tx, ty);
-        // Lay the opaque ground first so transparent props read over it.
-        if (ground && tileId !== this.map.ground) this._blit(ctx, ground, dx, dy);
-        this._blit(ctx, this.atlas?.tile(tileId, now, seedAt(tx, ty)), dx, dy);
-      }
-    }
-  }
-
   // Isometric floor: diamond tiles painted far→near (ascending x+y) so nearer
   // diamonds and slab faces occlude farther ones. Void cells (the ground/`f0000`
   // tile) are skipped so the platform reads as a slab floating in the abyss.
-  _drawFloorIso(ctx, now = 0) {
+  _drawFloor(ctx, now = 0) {
     const ground = this.map.ground;
     const fp = this.projection.tileFootprint;
     // The slab underside (the block tapering to a diamond below) is one shape,
@@ -339,39 +309,33 @@ export class Renderer {
   // prop's base row is its top row plus its sprite height in tiles; an avatar's
   // is its tile row plus one (feet at the bottom of the tile it stands on).
   _drawDepthSorted(ctx, participants, now = 0) {
-    const iso = this.projection.kind === "isometric";
     const items = [];
     for (const prop of this._standDecor()) {
       const sprite = this.atlas?.tile(prop.tile, now, seedAt(prop.x, prop.y));
       if (!sprite) continue;
-      // Top-down foot = sprite bottom row; iso foot = the base tile (depthKey
-      // folds elevation in as a tie-break). Iso props draw as upright billboards.
-      const baseline = iso
-        ? this.projection.depthKey(prop.x, prop.y, prop.h ?? 0)
-        : prop.y + sprite.sh / this.map.tileSize;
-      const draw = iso
-        ? () => this._blitBillboard(ctx, prop, sprite)
-        : () => this._blitProp(ctx, prop, sprite);
-      items.push({ baseline, draw });
+      // Foot = the base tile (depthKey folds elevation in as a tie-break); props
+      // draw as upright billboards rising from their diamond foot.
+      items.push({
+        baseline: this.projection.depthKey(prop.x, prop.y, prop.h ?? 0),
+        draw: () => this._blitBillboard(ctx, prop, sprite),
+      });
     }
     for (const participant of participants.values()) {
-      const baseline = iso
-        ? this.projection.depthKey(participant.x, participant.y) + 0.5
-        : participant.y + 1;
-      items.push({ baseline, draw: () => this._drawAvatar(ctx, participant, now) });
+      items.push({
+        baseline: this.projection.depthKey(participant.x, participant.y) + 0.5,
+        draw: () => this._drawAvatar(ctx, participant, now),
+      });
     }
     // Geometric iso railing: one fence segment per platform edge cell, drawn on
     // the cell's shared diamond edge with its void neighbour — so the segments
     // abut into ONE continuous fence wrapping the square block's four sides,
     // depth-sorted (back edges behind avatars, front edges in front).
-    if (iso) {
-      const style = this.map.railingStyle ?? {};
-      for (const r of this.map.railings ?? []) {
-        items.push({
-          baseline: this.projection.depthKey(r.x, r.y) + 0.25,
-          draw: () => this._drawRailingSegment(ctx, r, style),
-        });
-      }
+    const style = this.map.railingStyle ?? {};
+    for (const r of this.map.railings ?? []) {
+      items.push({
+        baseline: this.projection.depthKey(r.x, r.y) + 0.25,
+        draw: () => this._drawRailingSegment(ctx, r, style),
+      });
     }
     items.sort((a, b) => a.baseline - b.baseline);
     for (const item of items) item.draw();
@@ -534,8 +498,8 @@ export class Renderer {
     }
     for (const light of this.map.lights ?? []) {
       // Anchor the pool at the tile's ground centre (foot), not the sprite-box
-      // top-left — otherwise in iso the glow lands half a tile up-left of the
-      // lamp that casts it. Only the iso scene uses lights, so top-down is unaffected.
+      // top-left — otherwise the glow lands half a tile up-left of the lamp that
+      // casts it.
       // `lift` raises the glow centre up the screen (px) so a source can sit at an
       // elevated emitter — e.g. the halo at a lamppost's head, not its base.
       const a = this.projection.footAnchor(light.x, light.y);
@@ -653,24 +617,13 @@ export class Renderer {
   _drawHologram(ctx, label) {
     const width = Math.max((label.w ?? 1) * this.tilePx, this.tilePx);
     const maxWidth = Math.max(Math.round(width) - 8, 1);
-    // In iso the nameplate centres over its tile (the lamppost) and is raised by
-    // `lift` px so it floats above the lamp, over its light. Top-down keeps the
-    // legacy box-anchored placement.
-    let cx;
-    let ty;
-    if (this.projection.kind === "isometric") {
-      const a = this.projection.footAnchor(label.x ?? 0, label.y ?? 0);
-      const lift = (label.lift ?? 0) * (this.projection.scale ?? 1);
-      const sp = this.camera.worldToScreen(a.x, a.y - lift);
-      cx = Math.round(sp.x);
-      ty = Math.round(sp.y);
-    } else {
-      const height = Math.max((label.h ?? 1) * this.tilePx, this.tilePx);
-      const la = this.projection.floorAnchor(label.x ?? 0, label.y ?? 0);
-      const { x, y } = this.camera.worldToScreen(la.x, la.y);
-      cx = Math.round(x + width / 2);
-      ty = Math.round(y + height / 2 + 4);
-    }
+    // The nameplate centres over its tile (the lamppost) and is raised by `lift`
+    // px so it floats above the lamp, over its light.
+    const a = this.projection.footAnchor(label.x ?? 0, label.y ?? 0);
+    const lift = (label.lift ?? 0) * (this.projection.scale ?? 1);
+    const sp = this.camera.worldToScreen(a.x, a.y - lift);
+    const cx = Math.round(sp.x);
+    const ty = Math.round(sp.y);
 
     ctx.font = HOLO_FONT;
     ctx.textAlign = "center";
@@ -693,38 +646,20 @@ export class Renderer {
     if (!sprite) return;
     // Premium iso avatars ship oversized art; `sprite.scale` renders it to world size.
     const scale = this.avatarScale * (sprite.scale ?? 1);
-    // Isometric: billboard the avatar with its feet on the diamond foot.
-    if (this.projection.kind === "isometric") {
-      const f = this.projection.footAnchor(participant.x, participant.y);
-      const s = this.camera.worldToScreen(f.x, f.y);
-      const aw = sprite.sw * scale;
-      const ah = sprite.sh * scale;
-      this._blit(ctx, sprite, Math.round(s.x - aw / 2), Math.round(s.y - ah), scale);
-      return;
-    }
-    const { x, y } = this._avatarScreenPos(participant);
-    const dw = sprite.sw * scale;
-    const dh = sprite.sh * scale;
-    const dx = x - (dw - this.tilePx) / 2;
-    // Tall sprites sit with their feet on the tile; wider action sprites stay
-    // centered on the avatar tile so the body does not jump during a swing.
-    const dy = dh - this.tilePx;
-    this._blit(ctx, sprite, Math.round(dx), Math.round(y - dy), scale);
+    // Billboard the avatar with its feet on the diamond foot.
+    const f = this.projection.footAnchor(participant.x, participant.y);
+    const s = this.camera.worldToScreen(f.x, f.y);
+    const aw = sprite.sw * scale;
+    const ah = sprite.sh * scale;
+    this._blit(ctx, sprite, Math.round(s.x - aw / 2), Math.round(s.y - ah), scale);
   }
 
-  // Resolve a participant into an animation pose {actionKind, dir, frame}. Legacy
-  // 4-direction avatars keep their walk/sword-or-idle-frame-0 behaviour; premium
+  // Resolve a participant into an animation pose {actionKind, dir, frame}. Premium
   // 8-direction iso avatars face where they move and run a full state machine:
   // attack (sword) > walk (moving) > sleep (long idle) > idle (breathing).
   _avatarPose(participant, now) {
-    const meta = this.atlas?.avatarMeta?.(participant.avatar) ?? { iso: false };
+    const meta = this.atlas?.avatarMeta?.(participant.avatar) ?? {};
     const action = participant.action?.kind === "sword" ? participant.action : null;
-    if (!meta.iso) {
-      const dir = action?.dir ?? participant.dir;
-      return action
-        ? { actionKind: "sword", dir, frame: this._actionFrame(participant, action, now) }
-        : { actionKind: "walk", dir, frame: this._walkFrame(participant, now) };
-    }
     const m = this._trackMotion(participant, now);
     if (action) {
       return {
@@ -807,13 +742,6 @@ export class Renderer {
       sprite.sw * s,
       sprite.sh * s,
     );
-  }
-
-  // Walk frame from recent movement: cycle 0-3 while the render position keeps
-  // changing, settle on the idle frame 0 shortly after it stops.
-  _walkFrame(participant, now) {
-    const m = this._trackMotion(participant, now);
-    return now - m.t < 180 ? Math.floor(now / 130) % 4 : 0;
   }
 
   _actionFrame(participant, action, now) {

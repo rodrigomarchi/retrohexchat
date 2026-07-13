@@ -2,13 +2,13 @@
 
 How to build a **true isometric, 3D-reading** virtual-space scene in this engine —
 a floating platform with thickness, edge railings, depth, and atmosphere — the way
-the **End of Time** DM scene does it (a Chrono-Trigger floating island). Like
-[`SCENES.md`](SCENES.md) (its top-down sibling), almost all of this is hard-won
-empirical knowledge. Read this before building or reworking any iso scene.
+the **End of Time** scene does it (a Chrono-Trigger floating island). Like
+[`SCENES.md`](SCENES.md), almost all of this is hard-won empirical knowledge. Read
+this before building or reworking any scene.
 
 The worked example throughout is **End of Time** (`maps/end_of_time.ex`,
-authored by `tools/author_scene.py`). Millennial Fair stays **top-down** and this
-playbook must never regress it.
+authored by `tools/author_scene.py`) — the single registered map, rendered by
+both channels and DMs. Isometric is the only projection.
 
 The **ground-truth reference** for End of Time (the real SNES area map + its
 distilled anatomy and ranked fidelity gaps) lives in
@@ -25,16 +25,14 @@ The engine renders in two stages, and only the second was ever abstracted:
 - **Stage B — `worldPixel → screen`**: `Camera.worldToScreen = wx − camX`. A bare
   translation. **Projection-agnostic. Never touch it.**
 
-So isometric = extract Stage A into an injectable **`Projection`**
-(`assets/js/lib/space/projection.js`): `TopDownProjection` reproduces the historical
-square math **number-for-number**; `IsoProjection` adds the 2:1 diamond. The camera
-gets one from the map (`createProjection`) and injects it into the renderer/engine.
-Because top-down is reproduced exactly, the existing camera/renderer/engine unit
-tests are the regression net — **top-down scenes cannot move a pixel.**
+So isometric = Stage A lives in an injectable **`Projection`**
+(`assets/js/lib/space/projection.js`): the single `IsoProjection` maps the square
+(x,y) grid onto a 2:1 diamond. `createProjection` always returns it; the camera gets
+one from the map and injects it into the renderer/engine. There is no other
+projection — iso is the only one the engine knows.
 
 **Movement, collision, spawns, zones and the server stay a square (x,y) grid.** The
-diamond is *purely* a rendering projection of that grid. A map opts in with
-`projection: "isometric"`; omit it → `"topdown"` (the default, backward-compatible).
+diamond is *purely* a rendering projection of that grid.
 
 ### The iso math (2:1 diamond, `IsoProjection`)
 ```
@@ -44,28 +42,27 @@ floorAnchor(tx,ty)  = footAnchor − (hw,hh)                        # top-left o
 worldToTile(wx,wy)  : X=wx−originX, Y=wy−originY → tx=(X/hw+Y/hh)/2, ty=(Y/hh−X/hw)/2   # inverse, for hit/click
 depthKey(x,y,h)     = x+y + h*EPS                                 # far→near; height only breaks ties
 ```
-`worldBounds` bounds the projected diamond for the camera clamp. `scale` is derived
-server-side: `space_channel.ex` sends `config.scale = div(32, tile_size)` (a 32px
-tile → scale 1) and a constant `avatar_scale: 2`, so avatars keep on-screen size
-across tile resolutions (`engine.js` reads them; renderer draws avatars at
-`avatarScale`, tiles at `camera.scale`).
+`worldBounds` bounds the projected diamond for the camera clamp. There is one
+resolution: `tile_size` is always **32**, world `scale` is always **1** and
+`avatar_scale` is always **1** (`space_channel.ex` sends them; `engine.js` reads
+them; the renderer draws avatars at `avatarScale`, tiles at `camera.scale`). No
+derived scaling, no dual-resolution system.
 
 ---
 
 ## 1. Map schema (iso fields)
 
-All optional, top-down-safe defaults. `maps/<name>.ex` passes them from the JSON;
-`map.js` exposes them; the renderer consumes them.
+`maps/<name>.ex` passes these from the JSON; `map.js` exposes them; the renderer
+consumes them.
 
 | Field | Meaning |
 |---|---|
-| `projection` | `"isometric"` |
 | `iso:{tile_w,tile_h,z_step,headroom}` | diamond footprint (2:1) + elevation px + top clearance |
 | `slab:{thickness,taper,hull}` | the 3D block: side height, taper 0..1 to a bottom apex, `hull=[minX,maxX,minY,maxY]` of solid cells |
 | `sea:{top,bottom,band,bands,amp}` | procedural deep-blue rippling void |
 | `vignette:{color,alpha,inner}` | screen-space radial multiply framing the void |
 | `railings:[{x,y,edge}]` + `railing_style:{height,color,hi,base,posts}` | the geometric fence (§3) |
-| `lights`,`ambient` | color-math atmosphere (shared with top-down) |
+| `lights`,`ambient` | color-math atmosphere (additive light pools + multiply ambient wash) |
 | `labels` (`hologram` + `lift`) | the DM nameplate floats `lift` px above its tile |
 | `layers.decor` (`sort:"flat"\|"stand"`) | stars (flat, void) / props (stand, billboarded, depth-sorted) |
 
@@ -91,9 +88,9 @@ can't make seamless textures — procedural is the reliable win, and it animates
 (covers the e2e liveness check). Faint twinkling stars (`sort:"flat"`) scatter the
 void.
 
-**Stars are void background:** in iso, flat decor draws **before** the floor so the
-solid slab **occludes** any star behind it. A solid island can't have stars showing
-through it. (Top-down flat decor stays on top of the floor.)
+**Stars are void background:** flat decor draws **before** the floor so the solid
+slab **occludes** any star behind it. A solid island can't have stars showing
+through it.
 
 ---
 
@@ -143,9 +140,9 @@ What the PixelLab tools actually give (empirical):
   **tessellates seam-free**. `create_tiles_pro` isometric only yields ~1:1 (steep,
   wrong for CT's flat 2:1) and ignores `tile_height`. "Bigger cobbles" prompts often
   draw a smaller non-filling patch — keep the plain "round cobbles" one that fills.
-- **Upright props (lamp, bucket, gate)**: reuse **top-down** art as iso **billboards**
-  — an upright object works in any projection (bottom-centre on the diamond foot).
-  No iso-specific art needed; regenerate iso versions only for cohesion.
+- **Upright props (lamp, bucket, gate)**: draw as iso **billboards** — an upright
+  object reads correctly in any projection (bottom-centre on the diamond foot). No
+  iso-specific art needed; regenerate only for cohesion.
 - **Railings**: DON'T generate — they're geometric (§3). Generated fence sprites
   fought the edge slope endlessly.
 - Author packs the floor at its **native** size (`author_scene.py` must NOT crop the
@@ -164,7 +161,7 @@ What the PixelLab tools actually give (empirical):
   hardcoded hex in JS (use named top-level colour consts + the `#`-via-`HASH` trick)
   and **no Elixir function named `*style*`** (it flags them as CSS builders; we used
   `railing_look`). Must be 0 LOW/MEDIUM/HIGH.
-- **map_test** allows `tile_size in [16, 32]`; `ground` must be in `tiles`; spawns
+- **map_test** requires `tile_size` to be `32`; `ground` must be in `tiles`; spawns
   off-collision.
 
 ## 6. Gotchas, distilled
@@ -172,12 +169,12 @@ What the PixelLab tools actually give (empirical):
 - Railing = geometric contour; free props = billboards.
 - Stars/flat-decor draw BEFORE the floor in iso (solid slab occludes them).
 - Never deform aspect ratio; regenerate native (2:1 floor via `create_map_object` 64×32).
-- Avatars are top-down 4-dir billboards on the iso floor (feet on `footAnchor`) — a
-  documented placeholder until iso 8-dir avatars (the "characters" phase).
+- Avatars are native **8-direction iso** sprites (feet on `footAnchor`), authored at
+  scale 1 — the eight iso facings match the diamond (see [`CHARACTERS.md`](CHARACTERS.md)).
 - `make ci` "compile" flakiness = a stale dev-server `_build` lock; kill it.
 - Commit: stage exact paths, never a foreign `catalog.ex`; repo commits direct to main.
 
 ## 7. Still open / future
 - Bigger cobbles (tool-limited via `create_map_object` — needs a real iso tileset
   tool or hand-edit). Wooden door + stone stairs in the fence (CT has them). More
-  ornate railing scrollwork. Iso 8-direction avatars (characters phase).
+  ornate railing scrollwork.

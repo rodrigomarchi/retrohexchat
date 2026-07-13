@@ -11,8 +11,60 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
 
   setup do
     Application.put_env(:retro_hex_chat, :virtual_space_step_ms, 0)
-    on_exit(fn -> Application.delete_env(:retro_hex_chat, :virtual_space_step_ms) end)
+    # Channels render the End of Time in production, which carries no seats, zones
+    # or boards. Inject a fully-walkable iso fixture so these tests exercise the
+    # server's interaction logic against known seat/zone/board coordinates.
+    Application.put_env(:retro_hex_chat, :channel_space_map_override, fixture_map())
+
+    on_exit(fn ->
+      Application.delete_env(:retro_hex_chat, :virtual_space_step_ms)
+      Application.delete_env(:retro_hex_chat, :channel_space_map_override)
+    end)
+
     :ok
+  end
+
+  # A minimal isometric channel map: a 40×24 walkable plane split into a spawn
+  # zone (left) and a plaza (right), with one bench seat and one notice board.
+  defp fixture_map do
+    %{
+      id: "channel_space_fixture",
+      version: 1,
+      width: 40,
+      height: 24,
+      tile_size: 32,
+      projection: "isometric",
+      iso: %{tile_w: 64, tile_h: 32, z_step: 16, headroom: 6},
+      slab: nil,
+      vignette: nil,
+      sea: nil,
+      railings: [],
+      railing_style: %{},
+      tilesets: [],
+      tiles: %{},
+      ground: nil,
+      spawn: [%{x: 6, y: 15, dir: "right"}],
+      layers: %{floor: [], decor: [], above: []},
+      lights: [],
+      ambient: nil,
+      parallax: [],
+      labels: [],
+      collision: [],
+      zones: [
+        %{id: "spawn", kind: "zone", x: 0, y: 0, w: 20, h: 24},
+        %{id: "plaza", kind: "zone", x: 20, y: 0, w: 20, h: 24}
+      ],
+      interactables: [
+        %{
+          id: "notice_board",
+          x: 4,
+          y: 15,
+          title: "Notice board",
+          modal: %{kind: "image", asset: "board_menu_v1"}
+        }
+      ],
+      seats: [%{id: "seat_bench_a", x: 24, y: 11, dir: "down"}]
+    }
   end
 
   defp start_space(nickname \\ "alice") do

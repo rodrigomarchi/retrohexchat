@@ -1,47 +1,9 @@
 import { describe, it, expect } from "vitest";
 
-import {
-  createProjection,
-  TopDownProjection,
-  IsoProjection,
-} from "../../../js/lib/space/projection.js";
-
-describe("TopDownProjection (reproduces historical math)", () => {
-  const p = new TopDownProjection({ tileSize: 16, scale: 2, mapWidth: 20, mapHeight: 15 });
-
-  it("floorAnchor is tile*tilePx (top-left)", () => {
-    expect(p.floorAnchor(2, 3)).toEqual({ x: 64, y: 96 });
-  });
-
-  it("footAnchor is the tile centre in scaled pixels (camera-follow point)", () => {
-    expect(p.footAnchor(2, 3)).toEqual({ x: 80, y: 112 });
-  });
-
-  it("worldToTile inverts floorAnchor", () => {
-    expect(p.worldToTile(64, 96)).toEqual({ x: 2, y: 3 });
-  });
-
-  it("depthKey sorts purely by the front row", () => {
-    expect(p.depthKey(5, 7)).toBe(7);
-  });
-
-  it("worldBounds is mapDims*tilePx", () => {
-    expect(p.worldBounds()).toEqual({ width: 640, height: 480 });
-  });
-
-  it("remapIntent is identity and footprint is the square tile", () => {
-    expect(p.remapIntent({ dx: 1, dy: 0, dir: "right" })).toEqual({ dx: 1, dy: 0, dir: "right" });
-    expect(p.tileFootprint).toEqual({ w: 32, h: 32 });
-  });
-});
+import { createProjection, IsoProjection } from "../../../js/lib/space/projection.js";
 
 describe("createProjection", () => {
-  it("defaults to top-down when the map omits projection", () => {
-    const p = createProjection({ tileSize: 16, scale: 2, mapWidth: 4, mapHeight: 4 });
-    expect(p.kind).toBe("topdown");
-  });
-
-  it("builds an iso projection when the map asks for it", () => {
+  it("builds an iso projection from the map's iso params", () => {
     const p = createProjection({
       map: { projection: "isometric", iso: { tile_w: 64, tile_h: 32, z_step: 16 } },
       scale: 2,
@@ -49,6 +11,14 @@ describe("createProjection", () => {
       mapHeight: 8,
     });
     expect(p.kind).toBe("isometric");
+    expect(p.tileFootprint).toEqual({ w: 128, h: 64 });
+  });
+
+  it("falls back to default diamond params when the map omits iso", () => {
+    const p = createProjection({ scale: 2, mapWidth: 4, mapHeight: 4 });
+    expect(p.kind).toBe("isometric");
+    // tile_w 64 / tile_h 32 defaults → footprint 128×64 at scale 2.
+    expect(p.tileFootprint).toEqual({ w: 128, h: 64 });
   });
 });
 

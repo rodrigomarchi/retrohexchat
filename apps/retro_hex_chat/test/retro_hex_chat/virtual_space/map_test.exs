@@ -5,15 +5,16 @@ defmodule RetroHexChat.VirtualSpace.MapTest do
 
   @moduletag :unit
 
-  @map_ids ~w(end_of_time millennial_fair)
+  @map_ids ~w(end_of_time)
 
   describe "get/1" do
     test "returns a definition for every registry id" do
       for map_id <- @map_ids do
         assert {:ok, definition} = SpaceMap.get(map_id)
         assert definition.id == map_id
-        # 16px (Millennial Fair) or the higher-res 32px End of Time.
-        assert definition.tile_size in [16, 32]
+        # Every map is the premium isometric register at 32px tiles.
+        assert definition.tile_size == 32
+        assert definition.projection == "isometric"
         assert definition.width > 0 and definition.height > 0
         assert definition.spawn != []
       end

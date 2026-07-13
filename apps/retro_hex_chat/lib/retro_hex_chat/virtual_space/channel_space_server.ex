@@ -235,7 +235,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   end
 
   defp init_channel_state(channel_name) do
-    case SpaceMap.get("millennial_fair") do
+    case channel_map() do
       {:error, :unknown_map} ->
         {:stop, :unknown_map}
 
@@ -257,6 +257,16 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
         Logger.info("VirtualSpace channel runtime started: channel=#{channel_name}")
         {:ok, state}
+    end
+  end
+
+  # The channel scene. Production channels render the isometric End of Time; tests
+  # may inject a fixture definition (seats/zones/boards) to exercise interaction
+  # logic the production map doesn't include.
+  defp channel_map do
+    case Application.get_env(:retro_hex_chat, :channel_space_map_override) do
+      nil -> SpaceMap.get("end_of_time")
+      %{} = definition -> {:ok, definition}
     end
   end
 

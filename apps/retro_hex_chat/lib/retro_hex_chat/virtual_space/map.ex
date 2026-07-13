@@ -10,11 +10,9 @@ defmodule RetroHexChat.VirtualSpace.Map do
   """
 
   alias RetroHexChat.VirtualSpace.Maps.EndOfTime
-  alias RetroHexChat.VirtualSpace.Maps.MillennialFair
 
   @maps %{
-    "end_of_time" => EndOfTime,
-    "millennial_fair" => MillennialFair
+    "end_of_time" => EndOfTime
   }
 
   @spec get(String.t()) :: {:ok, map()} | {:error, :unknown_map}

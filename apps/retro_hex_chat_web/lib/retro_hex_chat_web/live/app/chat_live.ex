@@ -734,7 +734,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
       channel_view: :chat,
       space_avatars: RetroHexChat.VirtualSpace.avatars(),
       space_avatar: nil,
-      space_last_avatar: "redtunic_hero",
+      space_last_avatar: hd(RetroHexChat.VirtualSpace.avatars()),
       group_call: nil,
       group_call_channels: MapSet.new(),
       group_call_channel_summaries: %{},

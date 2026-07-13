@@ -156,10 +156,10 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert space_init.version == 1
       assert space_init.channel_name == channel
       assert space_init.self_key == "nick:alice"
-      assert space_init.map.id == "millennial_fair"
+      assert space_init.map.id == "end_of_time"
       assert is_list(space_init.map.collision)
       assert is_list(space_init.map.seats)
-      assert space_init.map.tile_size == 16
+      assert space_init.map.tile_size == 32
       assert is_integer(space_init.snapshot.server_time)
       assert Map.has_key?(space_init.snapshot.participants, "nick:alice")
       assert Map.has_key?(space_init.snapshot.participants, "nick:bob")
@@ -280,7 +280,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
                )
     end
 
-    test "channel spaces expand spawn positions beyond the market square with clearance" do
+    test "channel spaces expand spawn positions beyond the seed spawn with clearance" do
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
 
@@ -407,19 +407,64 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
 
   describe "interactions" do
     test "a space_interact use on a board pushes a space_modal to the requester" do
+      # The production End of Time has no interactables; inject a fixture map with
+      # a notice board so this exercises the channel's interaction round-trip.
+      Application.put_env(:retro_hex_chat, :channel_space_map_override, channel_fixture_map())
+      on_exit(fn -> Application.delete_env(:retro_hex_chat, :channel_space_map_override) end)
+
       channel = unique_channel()
       {:ok, _pid} = start_channel(channel)
       {:ok, _} = Server.join(channel, "alice")
 
       assert {:ok, init, socket} = join_channel_space(channel, "alice")
 
-      # Walk beside the notice_board at (4,17) and interact.
+      # Walk beside the notice_board at (4,15) and interact.
       walk_channel_to(socket, channel, init.self_key, {3, 15})
 
       push(socket, "space_interact", %{"seq" => 1, "kind" => "use", "target_id" => "notice_board"})
 
       assert_push "space_modal", %{asset: "board_menu_v1", title: "Notice board"}
     end
+  end
+
+  # A minimal isometric channel map with a reachable notice board, injected for
+  # interaction tests since the production End of Time carries no interactables.
+  defp channel_fixture_map do
+    %{
+      id: "channel_space_fixture",
+      version: 1,
+      width: 40,
+      height: 24,
+      tile_size: 32,
+      projection: "isometric",
+      iso: %{tile_w: 64, tile_h: 32, z_step: 16, headroom: 6},
+      slab: nil,
+      vignette: nil,
+      sea: nil,
+      railings: [],
+      railing_style: %{},
+      tilesets: [],
+      tiles: %{},
+      ground: nil,
+      spawn: [%{x: 6, y: 15, dir: "right"}],
+      layers: %{floor: [], decor: [], above: []},
+      lights: [],
+      ambient: nil,
+      parallax: [],
+      labels: [],
+      collision: [],
+      zones: [%{id: "spawn", kind: "zone", x: 0, y: 0, w: 40, h: 24}],
+      interactables: [
+        %{
+          id: "notice_board",
+          x: 4,
+          y: 15,
+          title: "Notice board",
+          modal: %{kind: "image", asset: "board_menu_v1"}
+        }
+      ],
+      seats: []
+    }
   end
 
   describe "leave" do
