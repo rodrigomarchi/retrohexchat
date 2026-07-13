@@ -1,131 +1,14 @@
-<div id="connect-root" phx-hook="ConnectFormHook" class="flex flex-col h-screen bg-background">
-  <.desktop id="connect-desktop" persist={false} data-testid="connect-desktop">
-    <:header>
-      <.app_header on_logo_click={show_modal("about-dialog")}>
-        <:panels>
-          <.menu_bar_app
-            id="menubar"
-            phx-hook="MenuBarHook"
-            connected={false}
-            on_action="menu_action"
-          />
-          <.connect_status_bar class="ml-auto" step={@step} />
-        </:panels>
-      </.app_header>
-    </:header>
-
-    <.desktop_window
-      id="connect"
-      title={dgettext("connect", "Connect to RetroHexChat")}
-      pinned
-      default_centered
-      width={448}
-      min_width={320}
-      resizable={false}
-      body_class="p-4"
-      data-testid="connect-window"
-    >
-      <:icon><.icon_connect class="w-4 h-4" /></:icon>
-      <.alert
-        :if={@flash["error"]}
-        variant="destructive"
-        class="mb-4"
-        data-testid="session-alert"
-      >
-        <:icon><.icon_warning /></:icon>
-        <.alert_description>{@flash["error"]}</.alert_description>
-      </.alert>
-
-      <%= case @step do %>
-        <% :nickname -> %>
-          <.nickname_step
-            nickname={@nickname}
-            nickname_error={@nickname_error}
-          />
-        <% :password -> %>
-          <.password_step
-            nickname={@nickname}
-            password={@password}
-            password_error={@password_error}
-          />
-        <% :register -> %>
-          <.register_step
-            nickname={@nickname}
-            password={@password}
-            password_confirm={@password_confirm}
-            password_error={@password_error}
-          />
-      <% end %>
-
-      <div
-        class="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground"
-        data-testid="locale-switcher"
-      >
-        <span>{dgettext("connect", "Language")}</span>
-        <.link
-          :for={{code, label} <- RetroHexChatWeb.I18n.supported_locales()}
-          href={~p"/locale/#{code}?return_to=/connect"}
-          class={[
-            "underline",
-            @locale == code && "font-bold text-text no-underline"
-          ]}
-          data-locale={code}
-        >
-          {label}
-        </.link>
-      </div>
-    </.desktop_window>
-
-    <:taskbar>
-      <.taskbar>
-        <:start>
-          <div class="relative">
-            <.start_button label={dgettext("ui", "Start")}>
-              <:icon><.icon_hex_stone class="h-4 w-4" /></:icon>
-            </.start_button>
-            <.start_menu id="connect-start-menu">
-              <.start_menu_item
-                data-window-open="connect"
-                label={dgettext("connect", "Connect")}
-              >
-                <:icon><.icon_connect class="h-4 w-4" /></:icon>
-              </.start_menu_item>
-              <.start_menu_item
-                phx-click="help_topics"
-                label={dgettext("ui", "Help Topics")}
-                data-testid="connect-start-help-topics"
-              >
-                <:icon><.icon_btn_help_topics class="h-4 w-4" /></:icon>
-              </.start_menu_item>
-              <.start_menu_separator />
-              <.start_menu_item
-                phx-click={show_modal("about-dialog")}
-                label={dgettext("ui", "About RetroHexChat")}
-                data-testid="connect-start-about"
-              >
-                <:icon><.icon_dialog_about class="h-4 w-4" /></:icon>
-              </.start_menu_item>
-            </.start_menu>
-          </div>
-        </:start>
-        <.taskbar_button window="connect" label={dgettext("connect", "Connect")}>
-          <:icon><.icon_connect class="h-4 w-4" /></:icon>
-        </.taskbar_button>
-        <:tray>
-          <.desktop_tray>
-            <span id="connect-tray-clock" phx-hook="ClockHook" class="font-mono tabular-nums">
-            </span>
-          </.desktop_tray>
-        </:tray>
-      </.taskbar>
-    </:taskbar>
-  </.desktop>
-
-  <form id="connect-session-form" action={~p"/chat/session"} method="post" class="hidden">
-    <input type="hidden" name="_csrf_token" value={Plug.CSRFProtection.get_csrf_token()} />
-    <input type="hidden" name="nickname" value={@nickname} />
-    <input :if={@auth_token} type="hidden" name="auth_token" value={@auth_token} />
-    <input type="hidden" name="timezone" id="connect-timezone-input" value="Etc/UTC" />
-  </form>
-  <.about_dialog id="about-dialog" />
-</div>
+<.connect_screen
+  step={@step}
+  nickname={@nickname}
+  nickname_error={@nickname_error}
+  password={@password}
+  password_confirm={@password_confirm}
+  password_error={@password_error}
+  auth_token={@auth_token}
+  flash={@flash}
+  locale={@locale}
+  locales={connect_locale_links()}
+  csrf_token={Plug.CSRFProtection.get_csrf_token()}
+  chat_session_path={~p"/chat/session"}
+/>

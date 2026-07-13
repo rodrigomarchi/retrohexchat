@@ -140,41 +140,4 @@ defmodule RetroHexChatWeb.LandingLive.Install do
     </.landing_layout>
     """
   end
-
-  @clone_text dgettext_noop(
-                "landing",
-                "$ git clone https://github.com/rodrigomarchi/retro_hex_chat.git\n$ cd retro_hex_chat"
-              )
-  @setup_text dgettext_noop("landing", "$ make setup")
-  @run_text dgettext_noop(
-              "landing",
-              "$ make server\n[info] Running RetroHexChatWeb.Endpoint at http://localhost:4000"
-            )
-
-  defp step_clone(assigns) do
-    assigns =
-      assign(assigns, :text, Gettext.dgettext(RetroHexChatWeb.Gettext, "landing", @clone_text))
-
-    ~H"""
-    <pre class="bg-canvas-bg text-canvas-fg p-3 text-xs font-mono overflow-x-auto">{@text}</pre>
-    """
-  end
-
-  defp step_setup(assigns) do
-    assigns =
-      assign(assigns, :text, Gettext.dgettext(RetroHexChatWeb.Gettext, "landing", @setup_text))
-
-    ~H"""
-    <pre class="bg-canvas-bg text-canvas-fg p-3 text-xs font-mono overflow-x-auto">{@text}</pre>
-    """
-  end
-
-  defp step_run(assigns) do
-    assigns =
-      assign(assigns, :text, Gettext.dgettext(RetroHexChatWeb.Gettext, "landing", @run_text))
-
-    ~H"""
-    <pre class="bg-canvas-bg text-canvas-fg p-3 text-xs font-mono overflow-x-auto">{@text}</pre>
-    """
-  end
 end

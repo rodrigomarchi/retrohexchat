@@ -42,7 +42,7 @@ test.describe('Landing public pages', () => {
     await expect(page.locator('#readme-popup')).toBeHidden();
     await expect(page.locator('#readme-popup')).toHaveAttribute('aria-hidden', 'true');
 
-    await page.locator('a[href="/features"]').first().click();
+    await page.locator('a[href="/features"]').filter({ hasText: 'My Chats' }).click();
     await expect(page).toHaveURL(/\/features$/);
     await expect(page.locator('#features-heading')).toBeVisible();
 

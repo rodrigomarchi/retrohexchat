@@ -1,4 +1,4 @@
-defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
+defmodule RetroHexChatWeb.Components.UI.SessionCard do
   @moduledoc """
   Pure function component that renders a rich P2P-lobby session card inside a
   chat message.
@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.SessionCard do
 
   Side-effect free: it reads only the summary map and the viewer `timezone`.
   """
-  use RetroHexChatWeb, :html
+  use RetroHexChatWeb.Component
 
   alias RetroHexChatWeb.App.ChatHelpers
   alias RetroHexChatWeb.Icons

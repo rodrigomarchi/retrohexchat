@@ -59,7 +59,7 @@ Implementacao P2P:
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/app/p2p_stats.ex`
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/p2p/p2p_connection_diagram.ex`
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/dialogs/p2p_confirm_dialog.ex`
-- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/live/chat_live/components/session_card.ex`
+- `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/chat/session_card.ex`
 - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex`
 - `apps/retro_hex_chat_web/assets/js/lib/p2p/rtc_media_hook_factory.js`
 - `apps/retro_hex_chat_web/assets/js/hooks/lobby/lobby_webrtc_hook.js`

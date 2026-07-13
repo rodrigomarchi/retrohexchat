@@ -1,9 +1,9 @@
-defmodule RetroHexChatWeb.ChatLive.Components.SessionCardTest do
+defmodule RetroHexChatWeb.Components.UI.SessionCardTest do
   use RetroHexChatWeb.ConnCase, async: true
 
   import Phoenix.LiveViewTest
 
-  alias RetroHexChatWeb.ChatLive.Components.SessionCard
+  alias RetroHexChatWeb.Components.UI.SessionCard
 
   @moduletag :unit
 

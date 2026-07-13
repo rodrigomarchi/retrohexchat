@@ -614,6 +614,22 @@ This separation is Principle IV and is enforced.
 
 - Build reusable components under `components/ui/**`; screens/dialogs/menus only pass assigns and
   event names. Never write one-off interface code in a LiveView/template for a single feature.
+- **LiveViews are adapters, not visual owners.** A LiveView owns socket assigns, PubSub,
+  authorization, verified routes, browser hooks and event dispatch. If a block mostly answers
+  "how does this look?", move it to `components/ui/**` and pass data, event names and paths in.
+  Accept only thin wrappers in `live/**` when they preserve stream ids, `phx-update`, `@myself`,
+  hook roots or `data-*` contracts consumed by JS/tests.
+- **Shared screens stay composed after refactors.** Connect, Help, Landing and Chat shell chrome
+  follow the same rule as dialogs: desktop shells, taskbars, menu bars, toolbars, empty states,
+  cards and rich rows live in UI modules. Adapters such as `LandingHelpers` or
+  `HelpLive.HelpHelpers` may remain as import-compatible bridges, but they must delegate visual
+  work instead of owning HEEx markup.
+- **Keep route verification at the edge.** UI components may render simple fixed paths, but when a
+  route depends on caller context or must stay verified, the LiveView passes a prepared path
+  (`~p` stays in the adapter). UI components must not reach into socket/session state.
+- **Composition refactors need real gates.** Preserve ids, `data-testid`, events and hooks, then run
+  focused tests for the touched surface plus `make ci` before merging. If Playwright is needed,
+  use the local-only E2E suite deliberately; it is not part of `make ci`.
 - **Enhance an existing component; never fork a parallel dialog/menu.** New channel-config and
   ChanServ tabs extend the existing Channel Central dialog; wiring specs just add a menu entry to
   an already-built dialog. **Reuse a whole stateful component across contexts via

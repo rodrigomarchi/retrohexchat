@@ -120,6 +120,8 @@ test.describe.serial('UI feature shell journeys', () => {
         'Edit',
         'View',
         'Tools',
+        'P2P',
+        'Games',
         'Help',
       ]);
 
@@ -180,7 +182,8 @@ test.describe.serial('UI feature shell journeys', () => {
         'What are you doing? (/me mode)',
       );
       await sender.chat.sendMessage(action);
-      await sender.chat.expectMessageVisible(`* ${sender.nick} ${action}`);
+      await sender.chat.expectMessageVisible(`* ${action}`);
+      await expect(sender.chat.messageNickByText(action, sender.nick)).toBeVisible();
 
       await sender.chat.openNicklistContextMenu(target.nick);
       await sender.page.getByTestId('context-menu-item-context_notice').click();

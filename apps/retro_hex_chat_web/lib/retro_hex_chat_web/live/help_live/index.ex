@@ -16,8 +16,6 @@ defmodule RetroHexChatWeb.HelpLive.Index do
   import RetroHexChatWeb.HelpLive.HelpHelpers
 
   alias RetroHexChat.Chat.HelpTopics
-  alias RetroHexChatWeb.Icons
-
   @default_topic "welcome"
 
   @impl true
@@ -89,48 +87,11 @@ defmodule RetroHexChatWeb.HelpLive.Index do
       search_query={@search_query}
       search_results={@search_results}
     >
-      <div :if={@selected_topic}>
-        <div class="flex items-center gap-2 mb-3 pb-2 border-b border-gray-300">
-          <.help_icon name={@selected_topic.icon} class="w-6 h-6 flex-shrink-0" />
-          <div>
-            <h1 class="text-base font-bold text-text">{@selected_topic.title}</h1>
-            <nav aria-label={dgettext("help", "Breadcrumb")} class="text-xs text-muted-foreground">
-              <.link navigate={~p"/chat/help"} class="hover:underline text-link">
-                {dgettext("help", "Help")}
-              </.link>
-              {" > "}{@selected_topic.category}{" > "}{@selected_topic.title}
-            </nav>
-          </div>
-        </div>
+      <.help_topic :if={@selected_topic} topic={@selected_topic}>
+        <.render_topic_content id={@selected_topic.id} />
+      </.help_topic>
 
-        <article class={[
-          "text-sm leading-relaxed space-y-2",
-          "[&_p]:my-1.5",
-          "[&_pre]:bg-gray-100 [&_pre]:border [&_pre]:border-gray-300 [&_pre]:p-2 [&_pre]:text-xs [&_pre]:overflow-x-auto [&_pre]:my-2",
-          "[&_code]:bg-gray-100 [&_code]:px-0.5 [&_code]:text-xs",
-          "[&_ul]:list-disc [&_ul]:pl-5 [&_ul]:my-1",
-          "[&_ol]:list-decimal [&_ol]:pl-5 [&_ol]:my-1",
-          "[&_li]:my-0.5",
-          "[&_table]:w-full [&_table]:border-collapse [&_table]:text-xs [&_table]:my-2",
-          "[&_th]:border [&_th]:border-gray-300 [&_th]:bg-gray-50 [&_th]:px-2 [&_th]:py-1 [&_th]:text-left [&_th]:font-bold",
-          "[&_td]:border [&_td]:border-gray-300 [&_td]:px-2 [&_td]:py-1"
-        ]}>
-          <.render_topic_content id={@selected_topic.id} />
-        </article>
-
-        <.see_also_section see_also={Map.get(@selected_topic, :see_also, [])} />
-      </div>
-
-      <div :if={!@selected_topic} class="text-center py-12 text-muted-foreground">
-        <Icons.icon_notepad class="w-8 h-8 mx-auto mb-3 opacity-50" />
-        <h2 class="text-base font-bold mb-2 text-text">{dgettext("help", "RetroHexChat Help")}</h2>
-        <p class="text-sm">
-          {dgettext("help", "Select a topic from the navigation pane to get started.")}
-        </p>
-        <p class="text-xs mt-1">
-          {dgettext("help", "Browse by category or open Help Topics from the chat menu.")}
-        </p>
-      </div>
+      <.help_empty_state :if={!@selected_topic} />
     </.help_layout>
     """
   end

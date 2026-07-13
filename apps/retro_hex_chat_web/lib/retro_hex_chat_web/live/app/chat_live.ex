@@ -22,18 +22,18 @@ defmodule RetroHexChatWeb.App.ChatLive do
 
   # ── Chat components ──────────────────────────────────────────
   import RetroHexChatWeb.Components.UI.TopicBar
+  import RetroHexChatWeb.Components.UI.ChatTaskbar
+  import RetroHexChatWeb.Components.UI.ChannelViewSwitcher
   import RetroHexChatWeb.Components.UI.ConnectionStatus
   import RetroHexChatWeb.Components.UI.ActivityIndicator
   import RetroHexChatWeb.Components.UI.SpaceCharacterSelect
 
   # ── Desktop window manager ───────────────────────────────────
   import RetroHexChatWeb.Components.UI.Desktop
-  import RetroHexChatWeb.Components.UI.StartMenuApp
 
   # ── P2P session windows ──────────────────────────────────────
   import RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel
   import RetroHexChatWeb.Components.UI.P2P.SetupDialog
-  import RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge
   import RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog
   import RetroHexChatWeb.Components.UI.GroupCall.StatsPanel
 
