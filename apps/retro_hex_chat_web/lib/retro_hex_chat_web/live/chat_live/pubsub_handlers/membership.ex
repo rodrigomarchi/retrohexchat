@@ -322,14 +322,18 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
 
   defp rename_pm_state(socket, old_nick, new_nick) do
     session = socket.assigns.session
+    open_pm_tabs = socket.assigns[:open_pm_tabs] || []
 
-    if old_nick in session.pm_conversations or session.active_pm == old_nick do
+    if old_nick in session.pm_conversations or old_nick in open_pm_tabs or
+         session.active_pm == old_nick do
       Phoenix.PubSub.unsubscribe(
         RetroHexChat.PubSub,
         "pm:#{PM.pm_topic(session.nickname, old_nick)}"
       )
 
-      PM.ensure_pm_subscription(session.nickname, new_nick)
+      if old_nick in open_pm_tabs or session.active_pm == old_nick do
+        PM.ensure_pm_subscription(session.nickname, new_nick)
+      end
     end
 
     old_pm_key = "pm:#{old_nick}"
@@ -338,6 +342,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
     socket
     |> assign(
       session: Session.rename_pm_conversation(session, old_nick, new_nick),
+      open_pm_tabs: rename_list_value(open_pm_tabs, old_nick, new_nick),
       unread_counts: rename_count_key(socket.assigns.unread_counts, old_pm_key, new_pm_key),
       flash_channels: rename_set_key(socket.assigns.flash_channels, old_pm_key, new_pm_key),
       muted_channels: rename_set_key(socket.assigns.muted_channels, old_pm_key, new_pm_key),
@@ -354,6 +359,15 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Membership do
       {count, updated_counts} ->
         Map.update(updated_counts, new_key, count, &(&1 + count))
     end
+  end
+
+  defp rename_list_value(values, old_value, new_value) do
+    values
+    |> Enum.map(fn
+      ^old_value -> new_value
+      value -> value
+    end)
+    |> Enum.uniq()
   end
 
   defp rename_set_key(set, old_key, new_key) do

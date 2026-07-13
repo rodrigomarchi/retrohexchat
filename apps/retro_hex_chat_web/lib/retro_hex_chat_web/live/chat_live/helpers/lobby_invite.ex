@@ -71,11 +71,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.LobbyInvite do
 
     case Service.send_private_message(session.nickname, target, pm_content, "p2p_invite") do
       {:ok, _pm} ->
-        Phoenix.PubSub.broadcast(
-          RetroHexChat.PubSub,
-          "user:#{target}",
-          {:incoming_pm_notify, %{sender: session.nickname, type: :invite}}
-        )
+        :ok
 
       {:error, _} ->
         :ok

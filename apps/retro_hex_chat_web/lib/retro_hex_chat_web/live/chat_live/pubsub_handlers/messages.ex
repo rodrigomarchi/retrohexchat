@@ -214,22 +214,35 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
-  # ── Incoming PM notification (auto-open + away auto-reply) ──
+  # ── PM activity (sidebar/unread) ───────────────────────────
 
-  def handle_info({:incoming_pm_notify, payload}, socket) do
+  def handle_info({:pm_activity, payload}, socket) do
     session = socket.assigns.session
-    sender = payload.sender
+    peer = Map.get(payload, :peer)
+    direction = Map.get(payload, :direction, :incoming)
     msg_type = private_ignore_type(Map.get(payload, :type, :pm))
 
-    if IgnoreList.ignored?(session.ignore_list, sender, msg_type) do
-      {:halt, socket}
-    else
-      newly_opened? = sender not in session.pm_conversations
-      socket = maybe_auto_open_incoming_pm(socket, session, sender)
-      socket = maybe_mark_new_incoming_pm_unread(socket, session, sender, newly_opened?)
-      socket = PM.maybe_auto_add_to_notify(socket, sender)
-      session = socket.assigns.session
-      {:halt, maybe_away_auto_reply(socket, sender, session)}
+    cond do
+      not is_binary(peer) ->
+        {:halt, socket}
+
+      IgnoreList.ignored?(session.ignore_list, peer, msg_type) ->
+        {:halt, socket}
+
+      true ->
+        socket =
+          socket
+          |> record_pm_activity(peer)
+          |> maybe_mark_pm_activity_unread(peer, direction)
+          |> PM.maybe_auto_add_to_notify(peer)
+
+        session = socket.assigns.session
+
+        if direction == :incoming do
+          {:halt, maybe_away_auto_reply(socket, peer, session)}
+        else
+          {:halt, socket}
+        end
     end
   end
 
@@ -355,19 +368,25 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
         socket
       end
 
-    # Reorder by recency — move to front on every message
-    session = Session.move_pm_to_front(session, other_nick)
-    socket = assign(socket, session: session)
-
-    # Auto-add PM partner to notify list (if enabled)
-    socket = PM.maybe_auto_add_to_notify(socket, other_nick)
-
-    session = socket.assigns.session
-
     if session.active_pm == other_nick do
       MessageViewport.insert(socket, pm_to_stream_item(payload))
     else
-      pm_key = "pm:#{other_nick}"
+      socket
+    end
+  end
+
+  defp record_pm_activity(socket, peer) do
+    session = socket.assigns.session
+    assign(socket, session: Session.add_pm_conversation(session, peer))
+  end
+
+  defp maybe_mark_pm_activity_unread(socket, sender, :incoming) do
+    session = socket.assigns.session
+
+    if session.active_pm == sender do
+      socket
+    else
+      pm_key = "pm:#{sender}"
       unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, pm_key)
 
       socket
@@ -376,29 +395,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers.Messages do
     end
   end
 
-  defp maybe_auto_open_incoming_pm(socket, session, sender) do
-    if sender in session.pm_conversations do
-      socket
-    else
-      PM.ensure_pm_subscription(session.nickname, sender)
-      new_session = Session.add_pm_conversation(session, sender)
-      assign(socket, session: new_session)
-    end
-  end
-
-  defp maybe_mark_new_incoming_pm_unread(socket, _session, sender, true = _newly_opened?) do
-    session = socket.assigns.session
-    pm_key = "pm:#{sender}"
-    unread_counts = UnreadTracker.increment(socket.assigns.unread_counts, pm_key)
-
-    socket
-    |> maybe_notify_pm_unmuted(pm_key, session)
-    |> assign(unread_counts: unread_counts)
-  end
-
-  defp maybe_mark_new_incoming_pm_unread(socket, _session, _sender, false = _newly_opened?) do
-    socket
-  end
+  defp maybe_mark_pm_activity_unread(socket, _sender, _direction), do: socket
 
   defp maybe_notify_pm_unmuted(socket, pm_key, session) do
     if MapSet.member?(socket.assigns.muted_channels, pm_key) do

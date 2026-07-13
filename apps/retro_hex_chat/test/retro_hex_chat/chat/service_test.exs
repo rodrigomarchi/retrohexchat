@@ -46,6 +46,67 @@ defmodule RetroHexChat.Chat.ServiceTest do
       long_content = String.duplicate("a", 1001)
       assert {:error, _} = Service.send_private_message("Alice", "Bob", long_content)
     end
+
+    test "broadcasts the full PM to the conversation topic" do
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "pm:Alice:Bob")
+
+      assert {:ok, pm} = Service.send_private_message("Alice", "Bob", "Hello PM!")
+
+      assert_receive %{
+        event: "new_pm",
+        payload: %{
+          id: id,
+          sender: "Alice",
+          recipient: "Bob",
+          content: "Hello PM!",
+          type: :message
+        }
+      }
+
+      assert id == pm.id
+    end
+
+    test "broadcasts lightweight PM activity to recipient and sender user topics" do
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:Alice")
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:Bob")
+
+      assert {:ok, pm} = Service.send_private_message("Alice", "Bob", "Hello PM!")
+
+      assert_receive {:pm_activity,
+                      %{
+                        peer: "Bob",
+                        message_id: sender_message_id,
+                        type: :message,
+                        direction: :outgoing
+                      }}
+
+      assert_receive {:pm_activity,
+                      %{
+                        peer: "Alice",
+                        message_id: recipient_message_id,
+                        type: :message,
+                        direction: :incoming
+                      }}
+
+      assert sender_message_id == pm.id
+      assert recipient_message_id == pm.id
+    end
+
+    test "broadcasts PM activity for non-default private message types" do
+      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, "user:Bob")
+
+      assert {:ok, pm} = Service.send_private_message("Alice", "Bob", "waves", "action")
+
+      assert_receive {:pm_activity,
+                      %{
+                        peer: "Alice",
+                        message_id: message_id,
+                        type: :action,
+                        direction: :incoming
+                      }}
+
+      assert message_id == pm.id
+    end
   end
 
   describe "send_private_message with mixed-case nicks" do

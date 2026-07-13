@@ -154,12 +154,6 @@ defmodule RetroHexChatWeb.ChatLive.CommandDispatch do
 
     case Service.send_private_message(session.nickname, target, text, "message", opts) do
       {:ok, _pm} ->
-        Phoenix.PubSub.broadcast(
-          RetroHexChat.PubSub,
-          "user:#{target}",
-          {:incoming_pm_notify, %{sender: session.nickname}}
-        )
-
         socket
 
       {:error, reason} ->

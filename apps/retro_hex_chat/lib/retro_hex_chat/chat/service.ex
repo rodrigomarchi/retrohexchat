@@ -115,6 +115,7 @@ defmodule RetroHexChat.Chat.Service do
          {:ok, reply_attrs} <- resolve_reply_attrs(reply_to_id, :pm),
          {:ok, pm} <- do_insert_pm(sender, recipient, content, type, reply_attrs) do
       broadcast_private_message(sender, recipient, pm)
+      broadcast_private_activity(sender, recipient, pm)
       {:ok, pm}
     end
   end
@@ -299,6 +300,39 @@ defmodule RetroHexChat.Chat.Service do
     end
   end
 
+  defp broadcast_private_activity(sender, recipient, pm) do
+    timestamp = pm.inserted_at
+    type = safe_type_atom(pm.type)
+
+    broadcast_user_pm_activity(sender, %{
+      peer: recipient,
+      message_id: pm.id,
+      type: type,
+      timestamp: timestamp,
+      direction: :outgoing
+    })
+
+    broadcast_user_pm_activity(recipient, %{
+      peer: sender,
+      message_id: pm.id,
+      type: type,
+      timestamp: timestamp,
+      direction: :incoming
+    })
+  end
+
+  defp broadcast_user_pm_activity(nickname, payload) do
+    topic = "user:#{nickname}"
+
+    case Phoenix.PubSub.broadcast(RetroHexChat.PubSub, topic, {:pm_activity, payload}) do
+      :ok ->
+        :ok
+
+      {:error, reason} ->
+        Logger.warning("PubSub broadcast to #{topic} failed: #{inspect(reason)}")
+    end
+  end
+
   defp broadcast_message(channel_name, message) do
     payload = %{
       channel: channel_name,
@@ -382,7 +416,7 @@ defmodule RetroHexChat.Chat.Service do
     )
   end
 
-  @known_types ~w(message action system service error notice p2p_invite)a
+  @known_types ~w(message action system service error notice p2p_invite p2p_system)a
   @type_string_to_atom Map.new(@known_types, fn a -> {Atom.to_string(a), a} end)
 
   defp safe_type_atom(type) when is_binary(type) do

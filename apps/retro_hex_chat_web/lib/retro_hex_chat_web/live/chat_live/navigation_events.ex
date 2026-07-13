@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   # ---------------------------------------------------------------------------
 
   defp navigate(socket, direction) do
-    windows = build_window_list(socket.assigns.session)
+    windows = build_window_list(socket.assigns.session, socket.assigns[:open_pm_tabs] || [])
     current = current_window(socket.assigns)
 
     case find_window_index(windows, current) do
@@ -58,7 +58,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   end
 
   defp navigate_to_index(socket, index) when is_integer(index) do
-    windows = build_window_list(socket.assigns.session)
+    windows = build_window_list(socket.assigns.session, socket.assigns[:open_pm_tabs] || [])
     # 1-based index, skip Status tab
     target_idx = index - 1
 
@@ -69,18 +69,12 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
     end
   end
 
-  @spec build_window_list(Session.t()) :: [
+  @spec build_window_list(Session.t(), [String.t()]) :: [
           {:channel, String.t()} | {:pm, String.t()}
         ]
-  def build_window_list(session) do
+  def build_window_list(session, open_pm_tabs) do
     channels = Enum.sort(session.channels) |> Enum.map(&{:channel, &1})
-
-    pms =
-      if session.pm_conversations do
-        Enum.sort(session.pm_conversations) |> Enum.map(&{:pm, &1})
-      else
-        []
-      end
+    pms = Enum.map(open_pm_tabs || [], &{:pm, &1})
 
     channels ++ pms
   end
@@ -137,7 +131,13 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
   end
 
   defp switch_pm(socket, nickname) do
-    session = Session.set_active_pm(socket.assigns.session, nickname)
+    PM.ensure_pm_subscription(socket.assigns.session.nickname, nickname)
+
+    session =
+      socket.assigns.session
+      |> Session.add_pm_conversation(nickname)
+      |> Session.set_active_pm(nickname)
+
     unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, "pm:#{nickname}")
     flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
 
@@ -145,6 +145,7 @@ defmodule RetroHexChatWeb.ChatLive.NavigationEvents do
       do: Process.cancel_timer(socket.assigns.pm_typing_timer)
 
     socket
+    |> PM.open_pm_tab(nickname)
     |> assign(
       session: session,
       unread_counts: unread_counts,

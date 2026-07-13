@@ -25,20 +25,19 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
     render(view)
   end
 
-  defp send_new_pm(view, sender, recipient, content) do
-    msg = %{
-      event: "new_pm",
-      payload: %{
-        id: "pm-#{uid()}",
-        sender: sender,
-        recipient: recipient,
-        content: content,
-        type: :message,
-        timestamp: DateTime.utc_now()
-      }
-    }
+  defp send_pm_activity(view, sender, _recipient, _content) do
+    send(
+      view.pid,
+      {:pm_activity,
+       %{
+         peer: sender,
+         message_id: "pm-#{uid()}",
+         type: :message,
+         timestamp: DateTime.utc_now(),
+         direction: :incoming
+       }}
+    )
 
-    send(view.pid, msg)
     :timer.sleep(5)
     # Flush the async send_update from the message stream island so any
     # push_event from this handler is delivered before the caller asserts.
@@ -62,7 +61,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       # PM flash is enabled by default
-      send_new_pm(view, "Alice", nick, "flash me")
+      send_pm_activity(view, "Alice", nick, "flash me")
 
       # Title flash should be triggered for background PM
       assert_push_event(view, "title_flash_start", %{message: "* New activity"})
@@ -112,7 +111,7 @@ defmodule RetroHexChatWeb.VisualNotificationsTest do
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
       # PM flash is enabled by default — send a background PM
-      send_new_pm(view, "Bob", nick, "title flash test")
+      send_pm_activity(view, "Bob", nick, "title flash test")
 
       assert_push_event(view, "title_flash_start", %{message: "* New activity"})
     end

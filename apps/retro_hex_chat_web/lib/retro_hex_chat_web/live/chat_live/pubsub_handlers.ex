@@ -38,7 +38,7 @@ defmodule RetroHexChatWeb.ChatLive.PubsubHandlers do
   def handle_info(%{event: "new_notice"} = msg, socket),
     do: Messages.handle_info(msg, socket)
 
-  def handle_info({:incoming_pm_notify, _} = msg, socket),
+  def handle_info({:pm_activity, _} = msg, socket),
     do: Messages.handle_info(msg, socket)
 
   def handle_info(%{event: "message_edited"} = msg, socket),

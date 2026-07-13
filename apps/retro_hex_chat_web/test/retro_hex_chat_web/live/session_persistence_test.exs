@@ -24,10 +24,31 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
     pm
   end
 
+  defp pm_sidebar_selector(nick), do: ~s([data-testid="pm-#{nick}"])
+
+  defp pm_tab_selector(nick) do
+    ~s([role="tab"][phx-value-type="pm"][phx-value-label="#{nick}"])
+  end
+
+  defp pm_activity(peer, direction \\ :incoming) do
+    {:pm_activity,
+     %{
+       peer: peer,
+       message_id: uid(),
+       type: :message,
+       timestamp: DateTime.utc_now(),
+       direction: direction
+     }}
+  end
+
+  defp assigns(view), do: :sys.get_state(view.pid).socket.assigns
+
   # ── US1: PM Conversation Restore on Connect ────────────────
 
   describe "US1: PM conversation restore on connect" do
-    test "registered user sees PM partners in conversations on connect", %{conn: conn} do
+    test "registered user sees PM partners in the sidebar, not as tabs, on connect", %{
+      conn: conn
+    } do
       nick = "PR#{uid()}"
       register_and_identify(nick)
 
@@ -35,11 +56,15 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       insert_pm("Bob", nick, "Hey there")
       insert_pm(nick, "Charlie", "Hello Charlie")
 
-      {:ok, _view, html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
+      {:ok, view, html} = live(chat_conn(conn, nick, pre_identified: true), "/chat")
 
-      assert html =~ "Alice"
-      assert html =~ "Bob"
-      assert html =~ "Charlie"
+      assert html =~ ~s(data-testid="pm-Alice")
+      assert html =~ ~s(data-testid="pm-Bob")
+      assert html =~ ~s(data-testid="pm-Charlie")
+
+      refute has_element?(view, pm_tab_selector("Alice"))
+      refute has_element?(view, pm_tab_selector("Bob"))
+      refute has_element?(view, pm_tab_selector("Charlie"))
     end
 
     test "PM partners are ordered by most recent message first", %{conn: conn} do
@@ -99,22 +124,38 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
     end
   end
 
-  # ── US2: Incoming PM Auto-Opens Conversation ───────────────
+  # ── US2: Incoming PM records sidebar activity without auto-opening tabs ───
 
-  describe "US2: incoming PM auto-opens conversation" do
-    test "new contact appears in conversations on incoming PM", %{conn: conn} do
+  describe "US2: incoming PM records sidebar activity without auto-opening tabs" do
+    test "new contact appears in conversations with unread but no tab on PM activity", %{
+      conn: conn
+    } do
       nick = "AO#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      # Receiver gets {:incoming_pm_notify} on user:nick (the actual path for new contacts)
-      send(view.pid, {:incoming_pm_notify, %{sender: "NewPerson"}})
-      html = render(view)
+      send(view.pid, pm_activity("NewPerson"))
 
-      assert html =~ "NewPerson"
-      assert html =~ ~s(data-testid="pm-NewPerson")
+      assert has_element?(view, pm_sidebar_selector("NewPerson"))
+      assert has_element?(view, ~s([data-testid="pm-unread-badge-NewPerson"]))
+      refute has_element?(view, pm_tab_selector("NewPerson"))
     end
 
-    test "existing contact moves to top on incoming PM", %{conn: conn} do
+    test "clicking a sidebar PM opens a tab and clears unread", %{conn: conn} do
+      nick = "OC#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      send(view.pid, pm_activity("NewPerson"))
+
+      view
+      |> element(pm_sidebar_selector("NewPerson"))
+      |> render_click()
+
+      assert has_element?(view, pm_sidebar_selector("NewPerson"))
+      assert has_element?(view, pm_tab_selector("NewPerson"))
+      refute has_element?(view, ~s([data-testid="pm-unread-badge-NewPerson"]))
+    end
+
+    test "existing contact moves to top on incoming PM activity", %{conn: conn} do
       nick = "MT#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -129,20 +170,8 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
       # Alice should be before Bob (Alice added first, then Bob prepended)
       # Actually with prepend: Bob is at head, Alice is second
-      # Now simulate PM from Alice — she should move to top
-      pm_payload = %{
-        event: "new_pm",
-        payload: %{
-          id: uid(),
-          sender: "Alice",
-          recipient: nick,
-          content: "Hello!",
-          type: :message,
-          timestamp: DateTime.utc_now()
-        }
-      }
-
-      send(view.pid, pm_payload)
+      # Now simulate activity from Alice — she should move to top in the sidebar.
+      send(view.pid, pm_activity("Alice"))
       html = render(view)
 
       alice_pos = :binary.match(html, ~s(data-testid="pm-Alice")) |> elem(0)
@@ -150,7 +179,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       assert alice_pos < bob_pos
     end
 
-    test "ignored user does NOT auto-open conversation", %{conn: conn} do
+    test "ignored user does NOT appear in conversations", %{conn: conn} do
       nick = "IG#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -159,41 +188,27 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/ignore IgnoredUser"})
 
-      # Simulate PM from ignored user
-      pm_payload = %{
-        event: "new_pm",
-        payload: %{
-          id: uid(),
-          sender: "IgnoredUser",
-          recipient: nick,
-          content: "You can't see me",
-          type: :message,
-          timestamp: DateTime.utc_now()
-        }
-      }
+      send(view.pid, pm_activity("IgnoredUser"))
 
-      send(view.pid, pm_payload)
-      html = render(view)
-
-      refute html =~ ~s(data-testid="pm-IgnoredUser")
+      refute has_element?(view, pm_sidebar_selector("IgnoredUser"))
+      refute has_element?(view, pm_tab_selector("IgnoredUser"))
     end
   end
 
-  # ── US3: {:incoming_pm_notify} auto-opens PM in conversations ───
+  # ── US3: pm_activity is the lightweight user-topic PM signal ───
 
-  describe "US3: incoming_pm_notify auto-opens PM" do
-    test "{:incoming_pm_notify} from new contact auto-opens PM in conversations", %{conn: conn} do
+  describe "US3: pm_activity updates PM conversations" do
+    test "{:pm_activity, ...} from new contact creates sidebar entry without tab", %{conn: conn} do
       nick = "IN#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
-      # Receiver gets {:incoming_pm_notify} on user:nick (NOT new_pm on pm:sorted)
-      send(view.pid, {:incoming_pm_notify, %{sender: "Dave"}})
-      html = render(view)
+      send(view.pid, pm_activity("Dave"))
 
-      assert html =~ ~s(data-testid="pm-Dave")
+      assert has_element?(view, pm_sidebar_selector("Dave"))
+      refute has_element?(view, pm_tab_selector("Dave"))
     end
 
-    test "{:incoming_pm_notify} from ignored user does NOT auto-open", %{conn: conn} do
+    test "{:pm_activity, ...} from ignored user does NOT create sidebar entry", %{conn: conn} do
       nick = "IX#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -202,13 +217,13 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/ignore BadGuy"})
 
-      send(view.pid, {:incoming_pm_notify, %{sender: "BadGuy"}})
-      html = render(view)
+      send(view.pid, pm_activity("BadGuy"))
 
-      refute html =~ ~s(data-testid="pm-BadGuy")
+      refute has_element?(view, pm_sidebar_selector("BadGuy"))
+      refute has_element?(view, pm_tab_selector("BadGuy"))
     end
 
-    test "{:incoming_pm_notify} from existing contact does NOT duplicate", %{conn: conn} do
+    test "{:pm_activity, ...} from existing contact does NOT duplicate", %{conn: conn} do
       nick = "ND#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -217,8 +232,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/query Dave"})
 
-      # Now get a notify — should NOT create a second entry
-      send(view.pid, {:incoming_pm_notify, %{sender: "Dave"}})
+      send(view.pid, pm_activity("Dave"))
       html = render(view)
 
       # Count occurrences of pm-Dave — should be exactly 1
@@ -230,7 +244,7 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
   # ── US4: PM Conversation Ordering by Recency ───────────────
 
   describe "US4: PM recency ordering" do
-    test "incoming PM reorders conversations by recency", %{conn: conn} do
+    test "incoming PM activity reorders conversations by recency", %{conn: conn} do
       nick = "RO#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -247,21 +261,9 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/query Alice"})
 
-      # Current order: Alice, Bob, Charlie (most recently added first)
-      # Now Charlie sends a PM — should move to top
-      pm_payload = %{
-        event: "new_pm",
-        payload: %{
-          id: uid(),
-          sender: "Charlie",
-          recipient: nick,
-          content: "I'm back!",
-          type: :message,
-          timestamp: DateTime.utc_now()
-        }
-      }
-
-      send(view.pid, pm_payload)
+      # Current order: Alice, Bob, Charlie (most recently added first).
+      # Now Charlie has PM activity — should move to top.
+      send(view.pid, pm_activity("Charlie"))
       html = render(view)
 
       charlie_pos = :binary.match(html, ~s(data-testid="pm-Charlie")) |> elem(0)
@@ -272,8 +274,8 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
 
   # ── Bug fixes: PM close unsubscribe + PM edit context ───
 
-  describe "close_pm_tab unsubscribes from PM topic" do
-    test "closing PM tab stops receiving new_pm events for that conversation", %{conn: conn} do
+  describe "close_pm_tab closes the buffer but keeps the sidebar conversation" do
+    test "closing PM tab keeps sidebar entry and removes only the tab", %{conn: conn} do
       nick = "CU#{uid()}"
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
 
@@ -282,33 +284,100 @@ defmodule RetroHexChatWeb.SessionPersistenceTest do
       |> element(~s([data-testid="chat-input-form"]))
       |> render_submit(%{"input" => "/query Eve"})
 
-      assert render(view) =~ ~s(data-testid="pm-Eve")
+      assert has_element?(view, pm_sidebar_selector("Eve"))
+      assert has_element?(view, pm_tab_selector("Eve"))
 
       # Close PM tab
       view |> render_click("close_pm_tab", %{"nickname" => "Eve"})
-      refute render(view) =~ ~s(data-testid="pm-Eve")
+      assert has_element?(view, pm_sidebar_selector("Eve"))
+      refute has_element?(view, pm_tab_selector("Eve"))
 
-      # Send a new_pm directly — if unsubscribed, apply_new_pm won't fire for stale sub
-      # But incoming_pm_notify on user:nick should still auto-open
-      # The key behavior: no phantom unread for a non-visible tab
-      pm_payload = %{
-        event: "new_pm",
-        payload: %{
-          id: uid(),
-          sender: "Eve",
-          recipient: nick,
-          content: "Are you there?",
-          type: :message,
-          timestamp: DateTime.utc_now()
-        }
-      }
+      send(view.pid, pm_activity("Eve"))
 
-      send(view.pid, pm_payload)
-      html = render(view)
+      assert has_element?(view, pm_sidebar_selector("Eve"))
+      assert has_element?(view, ~s([data-testid="pm-unread-badge-Eve"]))
+      refute has_element?(view, pm_tab_selector("Eve"))
+    end
+  end
 
-      # After unsubscribe, stale new_pm should NOT create phantom unread for closed tab
-      # Eve should NOT appear in conversations (no auto-open from new_pm path)
-      refute html =~ ~s(data-testid="pm-Eve")
+  describe "PM reconnect state" do
+    test "opening a PM tab saves open_pm_tabs in reconnect state", %{conn: conn} do
+      nick = "RS#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Bob"})
+
+      assert_push_event(view, "save_reconnect_state", %{
+        nickname: ^nick,
+        active_pm: "Bob",
+        open_pm_tabs: ["Bob"]
+      })
+    end
+
+    test "restore_session restores only PMs listed in open_pm_tabs", %{conn: conn} do
+      nick = "RT#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      render_hook(view, "restore_session", %{
+        "nickname" => nick,
+        "channels" => ["#lobby"],
+        "active_channel" => nil,
+        "active_pm" => "Bob",
+        "open_pm_tabs" => ["Bob"]
+      })
+
+      send(view.pid, {:execute_rejoin, 1, ["#lobby"]})
+      render(view)
+
+      assert assigns(view).session.active_pm == "Bob"
+      assert has_element?(view, pm_tab_selector("Bob"))
+      assert has_element?(view, pm_sidebar_selector("Bob"))
+    end
+
+    test "restore_session with legacy active_pm but no open_pm_tabs does not open a PM tab", %{
+      conn: conn
+    } do
+      nick = "RL#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      render_hook(view, "restore_session", %{
+        "nickname" => nick,
+        "channels" => ["#lobby"],
+        "active_channel" => nil,
+        "active_pm" => "Bob"
+      })
+
+      send(view.pid, {:execute_rejoin, 1, ["#lobby"]})
+      render(view)
+
+      refute assigns(view).session.active_pm == "Bob"
+      refute has_element?(view, pm_tab_selector("Bob"))
+      refute has_element?(view, pm_sidebar_selector("Bob"))
+    end
+  end
+
+  describe "PM nickname rename state" do
+    test "nick_changed renames sidebar PMs, open tabs and active PM", %{conn: conn} do
+      nick = "RN#{uid()}"
+      {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
+
+      view
+      |> element(~s([data-testid="chat-input-form"]))
+      |> render_submit(%{"input" => "/query Bob"})
+
+      assert has_element?(view, pm_sidebar_selector("Bob"))
+      assert has_element?(view, pm_tab_selector("Bob"))
+
+      send(view.pid, {:nick_changed, %{old_nick: "Bob", new_nick: "Robert"}})
+      render(view)
+
+      assert assigns(view).session.active_pm == "Robert"
+      assert has_element?(view, pm_sidebar_selector("Robert"))
+      assert has_element?(view, pm_tab_selector("Robert"))
+      refute has_element?(view, pm_sidebar_selector("Bob"))
+      refute has_element?(view, pm_tab_selector("Bob"))
     end
   end
 

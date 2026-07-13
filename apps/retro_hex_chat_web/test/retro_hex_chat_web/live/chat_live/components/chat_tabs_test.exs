@@ -12,7 +12,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
       Map.merge(
         %{
           channels: [],
-          pm_conversations: [],
+          pm_tabs: [],
           unread_counts: %{},
           status_unread: false,
           show_status_tab: false,
@@ -34,11 +34,11 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     assert html =~ ~s(aria-selected="true")
   end
 
-  test "renders a tab per channel and PM" do
+  test "renders a tab per channel and open PM" do
     html =
       tabs(%{
         channels: ["#lobby"],
-        pm_conversations: ["bob"],
+        pm_tabs: ["bob"],
         active_channel: "#lobby"
       })
 
@@ -62,7 +62,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
   test "marks a PM unread via the pm: key and applies the nick color" do
     html =
       tabs(%{
-        pm_conversations: ["bob"],
+        pm_tabs: ["bob"],
         unread_counts: %{"pm:bob" => 1},
         nick_color_fn: fn "bob" -> "nick-color-7" end
       })
@@ -81,7 +81,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
     for {state, visual_state, title} <- cases do
       html =
         tabs(%{
-          pm_conversations: ["bob", "eve"],
+          pm_tabs: ["bob", "eve"],
           p2p_peer: "BOB",
           p2p_state: state
         })
@@ -90,5 +90,16 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabsTest do
       assert html =~ ~s(data-p2p-state="#{visual_state}")
       assert html =~ title
     end
+  end
+
+  test "does not render sidebar-only PM conversations as tabs" do
+    html =
+      tabs(%{
+        pm_conversations: ["alice"],
+        pm_tabs: []
+      })
+
+    refute html =~ ~s(phx-value-type="pm")
+    refute html =~ ~s(phx-value-label="alice")
   end
 end

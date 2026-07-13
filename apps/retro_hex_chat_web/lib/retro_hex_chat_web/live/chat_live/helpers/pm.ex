@@ -19,6 +19,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
   alias RetroHexChatWeb.ChatLive.Components.MessageViewport
   alias RetroHexChatWeb.ChatLive.Helpers.Messages
   alias RetroHexChatWeb.ChatLive.Helpers.SessionCard
+  alias RetroHexChatWeb.ChatLive.Helpers.Session, as: SessionHelpers
 
   @spec load_pm_messages_with_pagination(Phoenix.LiveView.Socket.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
@@ -72,16 +73,34 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
       |> Session.set_active_pm(target)
 
     socket
+    |> open_pm_tab(target)
     |> assign(session: new_session, show_status_tab: false)
     |> tap(fn _ -> send_update(Composer, id: Composer.id(), reset_input: true) end)
     |> load_pm_messages_with_pagination(target)
+    |> SessionHelpers.push_reconnect_state()
+  end
+
+  @spec open_pm_tab(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def open_pm_tab(socket, target) when is_binary(target) do
+    open_tabs = socket.assigns[:open_pm_tabs] || []
+    assign(socket, open_pm_tabs: [target | List.delete(open_tabs, target)])
+  end
+
+  @spec close_pm_tab(Phoenix.LiveView.Socket.t(), String.t()) :: Phoenix.LiveView.Socket.t()
+  def close_pm_tab(socket, target) when is_binary(target) do
+    open_tabs = socket.assigns[:open_pm_tabs] || []
+    assign(socket, open_pm_tabs: List.delete(open_tabs, target))
+  end
+
+  @spec pm_tab_open?(Phoenix.LiveView.Socket.t(), String.t()) :: boolean()
+  def pm_tab_open?(socket, target) when is_binary(target) do
+    target in (socket.assigns[:open_pm_tabs] || [])
   end
 
   @spec handle_pm_send(Phoenix.LiveView.Socket.t(), String.t(), String.t()) ::
           Phoenix.LiveView.Socket.t()
   def handle_pm_send(socket, target, content) do
     session = socket.assigns.session
-    ensure_pm_subscription(session.nickname, target)
 
     case Service.send_private_message(session.nickname, target, content) do
       {:ok, _pm} ->
@@ -89,12 +108,6 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.PM do
           session
           |> Session.add_pm_conversation(target)
           |> Session.move_pm_to_front(target)
-
-        Phoenix.PubSub.broadcast(
-          RetroHexChat.PubSub,
-          "user:#{target}",
-          {:incoming_pm_notify, %{sender: session.nickname}}
-        )
 
         socket
         |> assign(session: new_session)

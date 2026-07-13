@@ -356,7 +356,9 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   defp activate_timer_window(socket, {:pm, target_pm}) do
     session = socket.assigns.session
 
-    if target_pm in session.pm_conversations do
+    if PM.pm_tab_open?(socket, target_pm) do
+      PM.ensure_pm_subscription(session.nickname, target_pm)
+
       {:ok,
        assign(socket, session: Session.set_active_pm(session, target_pm), show_status_tab: false)}
     else
@@ -390,7 +392,8 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   defp restore_active_window(socket, {:pm, target_pm}) when is_binary(target_pm) do
     session = socket.assigns.session
 
-    if target_pm in session.pm_conversations do
+    if PM.pm_tab_open?(socket, target_pm) do
+      PM.ensure_pm_subscription(session.nickname, target_pm)
       new_session = Session.set_active_pm(session, target_pm)
 
       socket
@@ -408,12 +411,27 @@ defmodule RetroHexChatWeb.ChatLive.TimerHandlers do
   defp maybe_restore_active_tab(socket) do
     target_channel = socket.assigns[:reconnect_active_channel]
     target_pm = socket.assigns[:reconnect_active_pm]
+    open_pm_tabs = socket.assigns[:reconnect_open_pm_tabs] || []
     session = socket.assigns.session
 
-    socket = assign(socket, reconnect_active_channel: nil, reconnect_active_pm: nil)
+    session =
+      Enum.reduce(open_pm_tabs, session, fn pm, acc ->
+        Session.add_pm_conversation(acc, pm)
+      end)
+
+    Enum.each(open_pm_tabs, &PM.ensure_pm_subscription(session.nickname, &1))
+
+    socket =
+      assign(socket,
+        session: session,
+        open_pm_tabs: open_pm_tabs,
+        reconnect_active_channel: nil,
+        reconnect_active_pm: nil,
+        reconnect_open_pm_tabs: []
+      )
 
     cond do
-      target_pm && target_pm in session.pm_conversations ->
+      target_pm && target_pm in open_pm_tabs ->
         new_session = Session.set_active_pm(session, target_pm)
 
         socket

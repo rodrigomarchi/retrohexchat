@@ -126,13 +126,20 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # -- switch_pm --
 
   def handle_event("switch_pm", %{"nickname" => nickname}, socket) do
-    session = Session.set_active_pm(socket.assigns.session, nickname)
+    PM.ensure_pm_subscription(socket.assigns.session.nickname, nickname)
+
+    session =
+      socket.assigns.session
+      |> Session.add_pm_conversation(nickname)
+      |> Session.set_active_pm(nickname)
+
     unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, "pm:#{nickname}")
     flash = MapSet.delete(socket.assigns.flash_channels, "pm:#{nickname}")
     if socket.assigns.pm_typing_timer, do: Process.cancel_timer(socket.assigns.pm_typing_timer)
 
     {:halt,
      socket
+     |> PM.open_pm_tab(nickname)
      |> assign(
        session: session,
        notice_active: false,
@@ -171,31 +178,43 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   def handle_event("close_pm_tab", %{"nickname" => nickname}, socket) do
     old_session = socket.assigns.session
     topic = "pm:#{PM.pm_topic(old_session.nickname, nickname)}"
-    pm_key = "pm:#{nickname}"
     Phoenix.PubSub.unsubscribe(RetroHexChat.PubSub, topic)
 
-    session = Session.remove_pm_conversation(old_session, nickname)
-    unread_counts = UnreadTracker.reset(socket.assigns.unread_counts, pm_key)
-    flash = MapSet.delete(socket.assigns.flash_channels, pm_key)
+    remaining_pm_tabs = List.delete(socket.assigns[:open_pm_tabs] || [], nickname)
 
-    socket = assign(socket, session: session, unread_counts: unread_counts, flash_channels: flash)
+    {session, show_status_tab} =
+      session_after_pm_tab_close(
+        old_session,
+        nickname,
+        remaining_pm_tabs,
+        socket.assigns.show_status_tab
+      )
 
     socket =
-      if session.active_pm do
-        PM.load_pm_messages_with_pagination(socket, session.active_pm)
-      else
-        if session.active_channel do
+      socket
+      |> assign(
+        session: session,
+        open_pm_tabs: remaining_pm_tabs,
+        show_status_tab: show_status_tab
+      )
+
+    socket =
+      cond do
+        session.active_pm ->
+          PM.load_pm_messages_with_pagination(socket, session.active_pm)
+
+        session.active_channel ->
           socket
           |> load_channel_users(session.active_channel)
           |> load_channel_messages_with_pagination(session.active_channel)
-        else
+
+        show_status_tab ->
           socket
           |> assign(current_topic: nil, current_modes: nil)
           |> MessageViewport.reset([])
-        end
       end
 
-    {:halt, socket}
+    {:halt, push_reconnect_state(socket)}
   end
 
   # -- close_dialog --
@@ -369,6 +388,23 @@ defmodule RetroHexChatWeb.ChatLive.CoreEvents do
   # ---------------------------------------------------------------------------
   # Private helpers
   # ---------------------------------------------------------------------------
+
+  defp session_after_pm_tab_close(session, closed_pm, remaining_pm_tabs, current_status_tab?) do
+    if session.active_pm == closed_pm do
+      cond do
+        next_pm = List.first(remaining_pm_tabs) ->
+          {Session.set_active_pm(session, next_pm), false}
+
+        next_channel = List.first(session.channels) ->
+          {Session.set_active_channel(session, next_channel), false}
+
+        true ->
+          {%{session | active_pm: nil, active_channel: nil}, true}
+      end
+    else
+      {session, current_status_tab?}
+    end
+  end
 
   # Bubbled from the Composer LiveComponent on submit: the component has already
   # applied the action/notice prefix, updated its own history and reset itself;

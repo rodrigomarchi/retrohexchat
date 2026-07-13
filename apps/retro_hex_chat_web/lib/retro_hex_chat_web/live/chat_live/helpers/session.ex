@@ -278,6 +278,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
       channels: session.channels,
       active_channel: session.active_channel,
       active_pm: session.active_pm,
+      open_pm_tabs: socket.assigns[:open_pm_tabs] || [],
       welcomed_channels: MapSet.to_list(session.welcomed_channels || MapSet.new())
     })
   end
@@ -303,12 +304,19 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
     active_channel = Map.get(params, "active_channel")
     active_pm = Map.get(params, "active_pm")
 
+    open_pm_tabs =
+      sanitize_open_pm_tabs(Map.get(params, "open_pm_tabs", []), socket.assigns.session.nickname)
+
     # Restore silently — this path only runs on a reconnect, and surfacing a
     # "Restoring session..." line on every deploy is noise the user never asked for.
     socket =
       socket
       |> restore_welcomed_channels(Map.get(params, "welcomed_channels", []))
-      |> assign(reconnect_active_channel: active_channel, reconnect_active_pm: active_pm)
+      |> assign(
+        reconnect_active_channel: active_channel,
+        reconnect_active_pm: active_pm,
+        reconnect_open_pm_tabs: open_pm_tabs
+      )
 
     if channels != [] do
       Process.send_after(self(), {:execute_rejoin, 0, channels}, 200)
@@ -316,6 +324,15 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Session do
 
     socket
   end
+
+  defp sanitize_open_pm_tabs(tabs, own_nick) when is_list(tabs) do
+    tabs
+    |> Enum.filter(&(is_binary(&1) and String.trim(&1) != "" and &1 != own_nick))
+    |> Enum.uniq()
+    |> Enum.take(20)
+  end
+
+  defp sanitize_open_pm_tabs(_tabs, _own_nick), do: []
 
   defp restore_welcomed_channels(socket, channels) when is_list(channels) do
     session =

@@ -27,20 +27,19 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
     render(view)
   end
 
-  defp send_new_pm(view, sender, recipient, content) do
-    msg = %{
-      event: "new_pm",
-      payload: %{
-        id: "pm-#{uid()}",
-        sender: sender,
-        recipient: recipient,
-        content: content,
-        type: :message,
-        timestamp: DateTime.utc_now()
-      }
-    }
+  defp send_pm_activity(view, sender, _recipient, _content) do
+    send(
+      view.pid,
+      {:pm_activity,
+       %{
+         peer: sender,
+         message_id: "pm-#{uid()}",
+         type: :message,
+         timestamp: DateTime.utc_now(),
+         direction: :incoming
+       }}
+    )
 
-    send(view.pid, msg)
     :timer.sleep(5)
     # Flush the async send_update from the message/membership stream islands so
     # any push_event from this handler is delivered before the caller asserts.
@@ -150,7 +149,7 @@ defmodule RetroHexChatWeb.SoundDispatchTest do
       {:ok, view, _html} = live(chat_conn(conn, nick), "/chat")
       assert_push_event(view, "play_sound", %{type: "chime_short"})
 
-      send_new_pm(view, "Alice", nick, "hey there")
+      send_pm_activity(view, "Alice", nick, "hey there")
 
       assert_push_event(view, "play_sound", %{type: "chime_high"})
     end

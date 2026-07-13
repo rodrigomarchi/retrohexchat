@@ -149,16 +149,7 @@ defmodule RetroHexChatWeb.ChatLive.Helpers.Persistence do
     partners = Queries.list_pm_partners(nick)
     nicks = Enum.map(partners, & &1.nickname)
 
-    Enum.each(nicks, fn partner_nick ->
-      topic = "pm:#{pm_topic(nick, partner_nick)}"
-      Phoenix.PubSub.subscribe(RetroHexChat.PubSub, topic)
-    end)
-
     %{session | pm_conversations: nicks}
-  end
-
-  defp pm_topic(nick_a, nick_b) do
-    [nick_a, nick_b] |> Enum.sort() |> Enum.join(":")
   end
 
   @spec sync_notify_online_status(Session.t()) :: Session.t()

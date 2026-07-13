@@ -18,7 +18,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
   import RetroHexChatWeb.Components.UI.IrcTabs
 
   attr :channels, :list, default: [], doc: "Joined channel names, in order"
-  attr :pm_conversations, :list, default: [], doc: "Open PM nicks, in order"
+  attr :pm_tabs, :list, default: [], doc: "Open PM nicks, in order"
   attr :unread_counts, :map, default: %{}, doc: "Unread counts keyed by channel / \"pm:nick\""
   attr :status_unread, :boolean, default: false
   attr :show_status_tab, :boolean, default: false
@@ -106,7 +106,7 @@ defmodule RetroHexChatWeb.ChatLive.Components.ChatTabs do
     p2p_state = p2p_tab_state(assigns.p2p_state)
 
     pm_tabs =
-      for pm <- assigns.pm_conversations do
+      for pm <- assigns.pm_tabs do
         tab_owns_p2p = p2p_peer == String.downcase(pm)
 
         %{

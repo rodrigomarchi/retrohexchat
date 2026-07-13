@@ -5,6 +5,19 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
 
   @moduletag :liveview
 
+  defp pm_activity(peer) do
+    {:pm_activity,
+     %{
+       peer: peer,
+       message_id: System.unique_integer([:positive]),
+       type: :message,
+       timestamp: DateTime.utc_now(),
+       direction: :incoming
+     }}
+  end
+
+  defp assigns(view), do: :sys.get_state(view.pid).socket.assigns
+
   describe "window_next/window_prev" do
     test "window_next switches to next channel", %{conn: conn} do
       {:ok, view, _html} = live(chat_conn(conn, "WinNext1"), "/chat")
@@ -33,6 +46,32 @@ defmodule RetroHexChatWeb.Live.WindowNavigationTest do
 
       html = render_click(view, "window_prev")
       assert html =~ "chat-messages"
+    end
+
+    test "window navigation skips sidebar-only PMs and includes opened PM tabs", %{conn: conn} do
+      {:ok, view, _html} = live(chat_conn(conn, "WinPm#{uid()}"), "/chat")
+
+      send(view.pid, pm_activity("ClosedPm"))
+      render(view)
+
+      assert has_element?(view, ~s([data-testid="pm-ClosedPm"]))
+      refute has_element?(view, ~s([role="tab"][phx-value-type="pm"][phx-value-label="ClosedPm"]))
+
+      render_click(view, "window_next")
+      refute assigns(view).session.active_pm == "ClosedPm"
+
+      view
+      |> element(~s([data-testid="pm-ClosedPm"]))
+      |> render_click()
+
+      assert assigns(view).session.active_pm == "ClosedPm"
+      assert has_element?(view, ~s([role="tab"][phx-value-type="pm"][phx-value-label="ClosedPm"]))
+
+      render_click(view, "switch_channel", %{"channel" => "#lobby"})
+      assert assigns(view).session.active_channel == "#lobby"
+
+      render_click(view, "window_next")
+      assert assigns(view).session.active_pm == "ClosedPm"
     end
   end
 
