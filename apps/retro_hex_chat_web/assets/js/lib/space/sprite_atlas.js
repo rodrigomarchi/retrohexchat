@@ -65,6 +65,7 @@ const ISO_GEO = {
         west: 3102,
         "south-west": 3243,
       },
+      sleep: { south: 3384 },
     },
   },
   iso_barbarian: {
@@ -102,6 +103,7 @@ const ISO_GEO = {
         west: 3080,
         "south-west": 3220,
       },
+      sleep: { south: 3360 },
     },
   },
   iso_cleric: {
@@ -139,6 +141,7 @@ const ISO_GEO = {
         west: 3168,
         "south-west": 3312,
       },
+      sleep: { south: 3456 },
     },
   },
   iso_hero: {
@@ -176,6 +179,7 @@ const ISO_GEO = {
         west: 3124,
         "south-west": 3266,
       },
+      sleep: { south: 3408 },
     },
   },
   iso_knight: {
@@ -251,6 +255,7 @@ const ISO_GEO = {
         west: 3014,
         "south-west": 3151,
       },
+      sleep: { south: 3288 },
     },
   },
   iso_rogue: {
@@ -288,6 +293,7 @@ const ISO_GEO = {
         west: 3102,
         "south-west": 3243,
       },
+      sleep: { south: 3384 },
     },
   },
   iso_sorceress: {
@@ -325,6 +331,7 @@ const ISO_GEO = {
         west: 3476,
         "south-west": 3634,
       },
+      sleep: { south: 3792 },
     },
   },
 };
