@@ -25,6 +25,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
 
   import RetroHexChatWeb.Components.UI.ContextMenu
   import RetroHexChatWeb.Components.UI.MenuBar
+  import RetroHexChatWeb.Components.UI.LanguageMenu
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
 
   # ── Public ──────────────────────────────────────────
@@ -43,6 +44,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
     default: false,
     doc: "Enables the Games/Arcade item (needs a registered + identified nick)"
 
+  attr :language_return_to, :string, default: "/connect"
   attr :on_action, :any, default: nil
   attr :class, :string, default: nil
   attr :rest, :global
@@ -321,6 +323,8 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
           {dgettext("ui", "Register & identify to play")}
         </.context_menu_label>
       </.menu>
+
+      <.language_menu mode={:app} return_to={@language_return_to} />
 
       <%!-- Help menu (always enabled) --%>
       <.menu label={dgettext("ui", "Help")} disabled={false}>

@@ -11,27 +11,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:282
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:299
-#, elixir-autogen, elixir-format
-msgid "!play"
-msgstr "Chơi"
-
-#: lib/retro_hex_chat_web/live/landing_live/install.ex:144
+#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:137
 #, elixir-autogen, elixir-format
 msgid "$ git clone https://github.com/rodrigomarchi/retro_hex_chat.git\n"
 "$ cd retro_hex_chat"
 msgstr "Tên nhân bản đô-la <ph1> <ph3> <ph3> <b> <b><b> <b>ph4></i>\n"
 "Name"
 
-#: lib/retro_hex_chat_web/live/landing_live/install.ex:149
+#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:142
 #, elixir-autogen, elixir-format
 msgid "$ make server\n"
 "[info] Running RetroHexChatWeb.Endpoint at http://localhost:4000"
 msgstr "Máy chủ tạo $\n"
 "Đang chạy RetroHexChat Web.Endpoint tại <ph1> <ph3> <ph3> <b> <b> <b><b> <b>ph4></i>"
 
-#: lib/retro_hex_chat_web/live/landing_live/install.ex:148
+#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:141
 #, elixir-autogen, elixir-format
 msgid "$ make setup"
 msgstr "Thiết lập làm $"
@@ -61,7 +55,7 @@ msgstr "&<ph0></i>; đóng góp mã"
 msgid "📢 Share with friends"
 msgstr "<b></i> Chia sẻ với bạn bè"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:345
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:490
 #, elixir-autogen, elixir-format
 msgid "“Your data. Your rules. Nobody in between.”"
 msgstr "Dữ liệu của bạn. Luật của anh. Không có ai ở giữa. ”"
@@ -86,38 +80,17 @@ msgstr "& nghèo; Phiên bản 20+"
 msgid "— helping users find each other. Once connected, all data flows directly between browsers via WebRTC."
 msgstr "& Tiền tệ; giúp người dùng tìm nhau. Một khi được kết nối, tất cả dữ liệu sẽ chảy trực tiếp giữa các trình duyệt qua WebTC."
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:299
-#, elixir-autogen, elixir-format
-msgid "— the arcade bot sends you a link to the game lobby. Pick from DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures — all running as"
-msgstr "— robot trò chơi gửi cho bạn một liên kết đến hành lang trò chơi. Chọn từ DOOM, Quake, Wolfenstein 3D, Half- life, và ScummVM phiêu lưu &mdash, tất cả đều chạy như"
-
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:282
-#, elixir-autogen, elixir-format
-msgid "— the bot sends you an arcade link"
-msgstr "— robot gửi cho bạn một liên kết trò chơi điện tử"
-
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:268
 #, elixir-autogen, elixir-format
 msgid ", just like voice calls."
 msgstr "Giống như tiếng gọi."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:205
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:265
-#, elixir-autogen, elixir-format
-msgid "/game @nick"
-msgstr "/game @nick"
-
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:443
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:440
 #, elixir-autogen, elixir-format
 msgid "/help"
 msgstr "/help"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:275
-#, elixir-autogen, elixir-format
-msgid "/join #games"
-msgstr "/join #games"
-
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:374
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:377
 #, elixir-autogen, elixir-format
 msgid "0 object(s)"
 msgstr "0 đối tượng"
@@ -137,37 +110,21 @@ msgstr "18 trò chơi kinh điển qua WebAssembly."
 msgid "18 classic games. Running in your browser."
 msgstr "18 trò chơi kinh điển. Chạy trong trình duyệt của bạn."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:302
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:311
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:299
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:314
 #, elixir-autogen, elixir-format
 msgid "18 games"
 msgstr "18 trò chơi"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:483
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:480
 #, elixir-autogen, elixir-format
 msgid "20+ commands"
 msgstr "Lệnh 20+"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:351
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:496
 #, elixir-autogen, elixir-format
 msgid "2025–2026"
 msgstr "2025 – 2026"
-
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:220
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:276
-#, elixir-autogen, elixir-format
-msgid "28 games"
-msgstr "28 lượt"
-
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:162
-#, elixir-autogen, elixir-format
-msgid "28 multiplayer games via WebRTC."
-msgstr "28 trò chơi nhiều người chơi qua WebTC."
-
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:255
-#, elixir-autogen, elixir-format
-msgid "28 multiplayer games. Right from the chat."
-msgstr "28 trò chơi. Ngay sau cuộc trò chuyện."
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:99
 #, elixir-autogen, elixir-format
@@ -190,7 +147,7 @@ msgstr "VPS xử lý tốt."
 msgid "A corporation"
 msgstr "Name"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:234
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:379
 #, elixir-autogen, elixir-format
 msgid "About"
 msgstr "Giới thiệu"
@@ -200,17 +157,17 @@ msgstr "Giới thiệu"
 msgid "Absolutely. Run a private server, create invite-only channels, and keep all your team’s communication on your own infrastructure. No per-seat pricing, no message limits."
 msgstr "Chắc chắn rồi. Chạy một máy chủ cá nhân, tạo ra các kênh chỉ được mời, và giữ cho tất cả các nhóm của bạn ’ giao tiếp trên cơ sở hạ tầng của riêng bạn. Không giá trị hàng ngày, không giới hạn thông điệp."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:400
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:397
 #, elixir-autogen, elixir-format
 msgid "Accounts, roles, bans, and registration control."
 msgstr "Tài khoản, vai trò, lệnh cấm và kiểm soát đăng ký."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:386
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:383
 #, elixir-autogen, elixir-format
 msgid "Admin Panel"
 msgstr "Bảng Quản trị"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:376
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:373
 #, elixir-autogen, elixir-format
 msgid "Administration"
 msgstr "Quản trị"
@@ -230,7 +187,7 @@ msgstr "BSS"
 msgid "Backend"
 msgstr "Hậu phương"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:410
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:407
 #, elixir-autogen, elixir-format
 msgid "Backup & Restore"
 msgstr "Sao lưu và Phục hồi"
@@ -250,7 +207,7 @@ msgstr "Nền tảng kỹ thuật lớn"
 msgid "Big Tech vs. Retro Hex Chat."
 msgstr "Big Tech đấu với Rtro Hex Chat."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:309
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:306
 #, elixir-autogen, elixir-format
 msgid "Bots"
 msgstr "Bots"
@@ -260,7 +217,7 @@ msgstr "Bots"
 msgid "Boxing"
 msgstr "Hộp"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:240
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:385
 #, elixir-autogen, elixir-format
 msgid "Built with Elixir, Phoenix, and LiveView."
 msgstr "Được xây dựng với Elixir, Phoenix và LiveView."
@@ -270,7 +227,7 @@ msgstr "Được xây dựng với Elixir, Phoenix và LiveView."
 msgid "Built with today’s technology."
 msgstr "Được xây dựng với ngày nay’ công nghệ."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:428
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:425
 #, elixir-autogen, elixir-format
 msgid "Built-in Help"
 msgstr "Trợ giúp xây dựng"
@@ -290,7 +247,7 @@ msgstr "C:\\ Tuỳ chọn"
 msgid "C:\\TRUTH\\"
 msgstr "C:\\TRUTH\\"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:433
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:430
 #, elixir-autogen, elixir-format
 msgid "CHM-style help system built in."
 msgstr "Hệ thống trợ giúp kiểu CHM được xây dựng."
@@ -370,20 +327,21 @@ msgstr "Đóng cửa. Hãy mù quáng tin tưởng họ."
 msgid "Code"
 msgstr "Bộ mã"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:99
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:164
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:282
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:167
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:328
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:427
 #, elixir-autogen, elixir-format
 msgid "Community"
 msgstr "Ghi chú"
 
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:104
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:274
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:44
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:66
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Kết nối"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:265
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:410
 #, elixir-autogen, elixir-format
 msgid "Contribute"
 msgstr "Đóng góp"
@@ -403,7 +361,7 @@ msgstr "Không có chi! Xem"
 msgid "Control"
 msgstr "Ctrl"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:452
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:449
 #, elixir-autogen, elixir-format
 msgid "Cross-referenced “See Also” links"
 msgstr "Tham chiếu chéo “ Xem Cũng ” liên kết"
@@ -428,7 +386,7 @@ msgstr "Dữ liệu được sử dụng cho đào tạo AI?"
 msgid "Database"
 msgstr "Cơ sở dữ liệu"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:332
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:329
 #, elixir-autogen, elixir-format
 msgid "Dice:"
 msgstr "Chất nhuộm:"
@@ -478,13 +436,14 @@ msgstr "Không ghi âm có thể cấm máy chủ ngày mai."
 msgid "Do I need to run my own server?"
 msgstr "Tôi có cần tự điều hành máy chủ không?"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:111
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:176
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:340
 #, elixir-autogen, elixir-format
 msgid "Docs"
 msgstr "Docs"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:277
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:71
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:201
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:422
 #, elixir-autogen, elixir-format
 msgid "Documentation"
 msgstr "Tài liệu"
@@ -540,7 +499,7 @@ msgstr "Comment"
 msgid "Enduro"
 msgstr "Enduro"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:415
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:412
 #, elixir-autogen, elixir-format
 msgid "Export and import your data anytime."
 msgstr "Xuất và nhập dữ liệu bất cứ lúc nào."
@@ -550,13 +509,13 @@ msgstr "Xuất và nhập dữ liệu bất cứ lúc nào."
 msgid "Export, restore, migrate — your data is always accessible."
 msgstr "Xuất, phục hồi, di chuyển & mdash; dữ liệu của bạn luôn luôn dễ truy cập."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:369
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:366
 #, elixir-autogen, elixir-format
 msgid "Extensible"
 msgstr "Mở rộng"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:104
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:171
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:170
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:335
 #, elixir-autogen, elixir-format
 msgid "FAQ"
 msgstr "FAQ"
@@ -571,8 +530,8 @@ msgstr "FAQ — Rtro Hex Chat"
 msgid "FOTAQ"
 msgstr "FOTAQ"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:78
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:143
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:149
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:307
 #, elixir-autogen, elixir-format
 msgid "Features"
 msgstr "Tính năng"
@@ -607,12 +566,12 @@ msgstr "Thường xuyên đặt câu hỏi về Retro Hex Chat: P2P gọi, yêu 
 msgid "Frontend"
 msgstr "Giao diện"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:421
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:418
 #, elixir-autogen, elixir-format
 msgid "Full control"
 msgstr "Hoàn toàn điều khiển"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:391
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:388
 #, elixir-autogen, elixir-format
 msgid "Full dashboard with real-time logs and metrics."
 msgstr "Toàn bộ bảng điều khiển với nhật ký thời gian thực và số đo."
@@ -622,13 +581,13 @@ msgstr "Toàn bộ bảng điều khiển với nhật ký thời gian thực v�
 msgid "Getting Started"
 msgstr "Bắt đầu"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:256
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:401
 #, elixir-autogen, elixir-format
 msgid "GitHub"
 msgstr "GitHub"
 
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:467
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:79
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:322
 #, elixir-autogen, elixir-format
 msgid "GitHub Sponsors"
 msgstr "Nhà tài trợ GitHub"
@@ -658,8 +617,8 @@ msgstr "Giúp Retro Hex Chat sống sót."
 msgid "Hockey"
 msgstr "Hockey"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:71
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:136
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:143
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:300
 #, elixir-autogen, elixir-format
 msgid "How It Works"
 msgstr "Cách hoạt động"
@@ -689,7 +648,7 @@ msgstr "Buổi điều trị hoạt động thế nào?"
 msgid "How is it different from Discord?"
 msgstr "Có gì khác với Discord?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:469
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:466
 #, elixir-autogen, elixir-format
 msgid "IRC Commands"
 msgstr "Lệnh IRC"
@@ -699,13 +658,13 @@ msgstr "Lệnh IRC"
 msgid "If a direct connection isn’t possible (strict firewalls), a"
 msgstr "Nếu một kết nối trực tiếp là’ t có thể (các bức tường lửa phức tạp), a"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:241
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:386
 #, elixir-autogen, elixir-format
 msgid "Inspired by the IRC of the 2000s and the freedom it represented."
 msgstr "Được thôi thúc bởi IRC của những năm 2000 và sự tự do mà nó đại diện."
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:92
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:157
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:161
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:321
 #, elixir-autogen, elixir-format
 msgid "Install"
 msgstr "Cài đặt"
@@ -740,13 +699,7 @@ msgstr "Miễn phí chứ?"
 msgid "Is it secure?"
 msgstr "Có an toàn không?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:274
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:297
-#, elixir-autogen, elixir-format
-msgid "Join"
-msgstr "Tham gia"
-
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:366
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:369
 #, elixir-autogen, elixir-format
 msgid "Just clean code. ✨"
 msgstr "Chỉ cần làm sạch mã."
@@ -756,12 +709,13 @@ msgstr "Chỉ cần làm sạch mã."
 msgid "Learn how Retro Hex Chat works: self-hosted server architecture, WebRTC P2P calls, privacy protections, and security layers."
 msgstr "Học cách Rtro Hex Chat hoạt động: kiến trúc máy chủ tự chủ, các cuộc gọi WebTC P2P, bảo vệ quyền riêng tư, và các lớp bảo vệ."
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:292
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:437
 #, elixir-autogen, elixir-format
 msgid "Legal"
 msgstr "Hợp thức"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:274
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:223
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:419
 #, elixir-autogen, elixir-format
 msgid "License (MIT)"
 msgstr "Giấy phép (MIT)"
@@ -781,7 +735,7 @@ msgstr "Xem thử liên kết với siêu dữ liệu giàu"
 msgid "Live"
 msgstr "Sống"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:340
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:343
 #, elixir-autogen, elixir-format
 msgid "Ln 1, Col 1"
 msgstr "Ln 1, Col 1"
@@ -791,19 +745,19 @@ msgstr "Ln 1, Col 1"
 msgid "MIT"
 msgstr "MIT"
 
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:446
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:501
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:52
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:301
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:356
 #, elixir-autogen, elixir-format
 msgid "MIT License"
 msgstr "Giấy phép MIT"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:350
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:495
 #, elixir-autogen, elixir-format
 msgid "Made by humans"
 msgstr "Được tạo ra bởi con người"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:120
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:284
 #, elixir-autogen, elixir-format
 msgid "Menu"
 msgstr "Trình đơn"
@@ -824,12 +778,12 @@ msgstr "Comment"
 msgid "Messages, users, channels — all stored on your machine."
 msgstr "Thông điệp, người dùng, kênh — tất cả được lưu vào máy."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:404
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:401
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "Bộ điều khiển"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:341
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:338
 #, elixir-autogen, elixir-format
 msgid "Moderation:"
 msgstr "Độ điều hòa:"
@@ -875,7 +829,7 @@ msgstr "Không công ty nào có thể đóng cửa anh."
 msgid "No corporation. No algorithms. No permission needed."
 msgstr "Không công ty. Không thuật toán. Không cần xin phép."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:295
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:292
 #, elixir-autogen, elixir-format
 msgid "No downloads, no plugins — opens in a new window"
 msgstr "Không tải về, không có bổ sung — mở trong cửa sổ mới"
@@ -895,7 +849,7 @@ msgstr "Không theo dõi. Không phân tích. Không thuật toán. Cuộc nói 
 msgid "No tracking. No profiling. No data harvesting. Just a chat server that"
 msgstr "Không theo dõi. Không phân tích. Không thu thập dữ liệu. Chỉ là một máy chủ trò chuyện mà"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:366
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:369
 #, elixir-autogen, elixir-format
 msgid "No trash here."
 msgstr "Không có rác ở đây."
@@ -940,7 +894,7 @@ msgstr "Một máy chủ. Hoàn toàn là của anh."
 msgid "Only you have access to your messages"
 msgstr "Chỉ có bạn mới có quyền truy cập tin nhắn"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:442
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:439
 #, elixir-autogen, elixir-format
 msgid "Open Help Topics or type"
 msgstr "Mở mục lục hay kiểu Trợ giúp"
@@ -996,7 +950,7 @@ msgstr "Nguồn mở:"
 msgid "Other ways to help"
 msgstr "Những cách khác để giúp đỡ"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:479
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:476
 #, elixir-autogen, elixir-format
 msgid "Over 20 commands with smart autocomplete."
 msgstr "Hơn 20 mệnh lệnh với đầy đủ thông minh tự động."
@@ -1067,14 +1021,14 @@ msgstr "Tố"
 msgid "PostgreSQL"
 msgstr "PostgreQL"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:474
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:471
 #, elixir-autogen, elixir-format
 msgid "Powerful IRC-style commands."
 msgstr "Lệnh IRC mạnh mẽ."
 
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:155
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:314
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:77
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:85
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:150
 #, elixir-autogen, elixir-format
 msgid "Privacy"
 msgstr "Riêng tư"
@@ -1096,12 +1050,12 @@ msgstr "So sánh quyền riêng tư — Retro Hex Chat vs Discord, Slack & Teleg
 msgid "Private:"
 msgstr "Riêng:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:314
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:311
 #, elixir-autogen, elixir-format
 msgid "Programmable bots with pluggable capabilities."
 msgstr "Những robot có thể lập trình với khả năng bổ sung."
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:247
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:392
 #, elixir-autogen, elixir-format
 msgid "Project"
 msgstr "Chổi"
@@ -1132,22 +1086,22 @@ msgstr "Quake II"
 msgid "README.txt"
 msgstr "ĐỌCME.txt"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:329
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:332
 #, elixir-autogen, elixir-format
 msgid "README.txt — Notepad"
 msgstr "ĐỌCME.txt — Sổ tay"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:332
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:329
 #, elixir-autogen, elixir-format
 msgid "RPG-style rolling (!roll 2d6+3)"
 msgstr "Name"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:350
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:347
 #, elixir-autogen, elixir-format
 msgid "RSS:"
 msgstr "RSS:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:406
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:403
 #, elixir-autogen, elixir-format
 msgid "Rate limiting, flood protection, and word filters."
 msgstr "Tốc độ giới hạn, bảo vệ lũ lụt và bộ lọc từ."
@@ -1172,11 +1126,6 @@ msgstr "Thời gian thực"
 #, elixir-autogen, elixir-format
 msgid "Real-time Chat"
 msgstr "Tán gẫu thời gian thực"
-
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:21
-#, elixir-autogen, elixir-format
-msgid "Real-time chat, channels, P2P voice/video calls, 28 multiplayer games, "
-msgstr "chat, kênh, giọng nói P2P thực sự. <ph0> cuộc gọi, 28 trò chơi đa người chơi,"
 
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:25
 #, elixir-autogen, elixir-format
@@ -1221,7 +1170,7 @@ msgstr "Retro Hex Chat 100% tình nguyện. Không đầu tư, không quảng c�
 msgid "Retro Hex Chat is MIT-licensed open source software. Contribute, star, share, or sponsor the project on GitHub."
 msgstr "Retro Hex Chat là phần mềm mã nguồn mở do MIT cung cấp. Đóng góp, ngôi sao, chia sẻ hoặc tài trợ cho dự án trên GitHub."
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:239
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:384
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat is free software, licensed under MIT."
 msgstr "Rtro Hex Chat là phần mềm miễn phí, được cấp phép ở MIT."
@@ -1246,22 +1195,22 @@ msgstr "Name"
 msgid "Run your own server. Your data stays with you."
 msgstr "Tự điều hành máy chủ. Dữ liệu của anh sẽ ở lại với anh."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:290
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:287
 #, elixir-autogen, elixir-format
 msgid "Runs entirely in the browser via WebAssembly"
 msgstr "Chạy hoàn toàn trong trình duyệt qua Web Assembly"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:359
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:356
 #, elixir-autogen, elixir-format
 msgid "Scheduler:"
 msgstr "Bộ lập lịch:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:448
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:445
 #, elixir-autogen, elixir-format
 msgid "Searchable topics with keyword matching"
 msgstr "Name"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:310
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:455
 #, elixir-autogen, elixir-format
 msgid "Security"
 msgstr "Bảo mật"
@@ -1281,7 +1230,7 @@ msgstr "An ninh ở mọi tầng lớp."
 msgid "Security layers diagram"
 msgstr "Biểu đồ lớp bảo mật"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:458
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:455
 #, elixir-autogen, elixir-format
 msgid "Self-documented"
 msgstr "Tự biên soạn"
@@ -1362,7 +1311,7 @@ msgstr "Được cất giữ trên máy phục vụ CỦA BẠN, không bao gi�
 msgid "Stored on their servers, mined for ads"
 msgstr "Được lưu trên máy chủ của họ, được khai thác để quảng cáo"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:317
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:462
 #, elixir-autogen, elixir-format
 msgid "Support"
 msgstr "Hỗ trợ"
@@ -1488,23 +1437,22 @@ msgid "Trains their AI, sold to advertisers"
 msgstr "Huấn luyện AI của họ, được bán cho các nhà quảng cáo"
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:93
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:358
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:361
 #, elixir-autogen, elixir-format
 msgid "Trash"
 msgstr "Rác"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:323
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:320
 #, elixir-autogen, elixir-format
 msgid "Trivia:"
 msgstr "Trivia:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:281
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:264
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "Kiểu"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:395
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:392
 #, elixir-autogen, elixir-format
 msgid "User Management"
 msgstr "Quản lý người dùng"
@@ -1539,7 +1487,7 @@ msgstr "Giọng nói gọi — P2P trực tiếp qua WebTC"
 msgid "Want your own server? Three steps."
 msgstr "Muốn máy chủ riêng không? Ba bước."
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:303
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:306
 #, elixir-autogen, elixir-format
 msgid "WebAssembly"
 msgstr "Web Assembly"
@@ -1726,7 +1674,7 @@ msgstr "Quy tắc của anh."
 msgid "Your server, your database"
 msgstr "Máy phục vụ, cơ sở dữ liệu"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:381
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:378
 #, elixir-autogen, elixir-format
 msgid "Your server, your rules."
 msgstr "Máy chủ, luật lệ."
@@ -1735,11 +1683,6 @@ msgstr "Máy chủ, luật lệ."
 #, elixir-autogen, elixir-format
 msgid "Your server. Your conversations. Nobody in between."
 msgstr "Máy chủ của anh. Cuộc nói chuyện của anh. Không có ai ở giữa."
-
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:298
-#, elixir-autogen, elixir-format
-msgid "and type"
-msgstr "và gõ"
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:242
 #, elixir-autogen, elixir-format
@@ -1761,17 +1704,12 @@ msgstr "bcrypt hashing, không bao giờ được cất giữ trong văn bản �
 msgid "between them — encrypted, private, and fast."
 msgstr "giữa họ — mã hóa, tư nhân và nhanh."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:275
-#, elixir-autogen, elixir-format
-msgid "channel ("
-msgstr "Kênh"
-
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "contributing guide"
 msgstr "Hướng dẫn đóng góp"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:350
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:347
 #, elixir-autogen, elixir-format
 msgid "feed monitoring with announcements"
 msgstr "Name"
@@ -1781,7 +1719,7 @@ msgstr "Name"
 msgid "github.com/rodrigomarchi/retro_hex_chat"
 msgstr "gittub.com <ph0></i></i></i></i></i>"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:303
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:306
 #, elixir-autogen, elixir-format
 msgid "in your browser. No downloads."
 msgstr "trong trình duyệt của bạn. Không tải xuống."
@@ -1826,7 +1764,7 @@ msgstr "ai muốn tham gia cũng được."
 msgid "password-gated access"
 msgstr "Truy cập đã mật khẩu"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:323
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:320
 #, elixir-autogen, elixir-format
 msgid "quiz games with leaderboards"
 msgstr "Name"
@@ -1846,7 +1784,7 @@ msgstr "máy phục vụ, không bao giờ để lại"
 msgid "servers, mined for ads"
 msgstr "Name"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:359
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:356
 #, elixir-autogen, elixir-format
 msgid "timed messages and reminders"
 msgstr "Comment"
@@ -1856,14 +1794,14 @@ msgstr "Comment"
 msgid "to challenge anyone. Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
 msgstr "thách thức bất cứ ai. Trò chơi chạy trên HTML5 Canvas với giao thức đồng bộ qua WebTC DataCCChannel & mdash;"
 
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:494
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:503
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:55
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:349
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:358
 #, elixir-autogen, elixir-format
 msgid "v0.1.0"
 msgstr "v0.1.0"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:341
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:338
 #, elixir-autogen, elixir-format
 msgid "word filters and spam detection"
 msgstr "Bộ lọc từ và phát hiện thư rác"
@@ -1923,7 +1861,7 @@ msgstr "Install Retro Hex Chat"
 msgid "Installation guide"
 msgstr "Installation guide"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:331
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:476
 #, elixir-autogen, elixir-format
 msgid "Languages"
 msgstr "Languages"
@@ -1972,3 +1910,89 @@ msgstr "Run your own chat server with WebRTC voice and video calls, multiplayer 
 #, elixir-autogen, elixir-format
 msgid "Set up your own Retro Hex Chat server from source. Clone the repository, run the setup task, start Phoenix, and keep control of your community data."
 msgstr "Set up your own Retro Hex Chat server from source. Clone the repository, run the setup task, start Phoenix, and keep control of your community data."
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:205
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:265
+#, elixir-autogen, elixir-format
+msgid "/p2p @nick"
+msgstr "/p2p @nick"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:220
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:276
+#, elixir-autogen, elixir-format
+msgid "34 games"
+msgstr "34 games"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:162
+#, elixir-autogen, elixir-format
+msgid "34 multiplayer games via WebRTC."
+msgstr "34 multiplayer games via WebRTC."
+
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:255
+#, elixir-autogen, elixir-format
+msgid "34 multiplayer games. Right from the chat."
+msgstr "34 multiplayer games. Right from the chat."
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:276
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:302
+#, elixir-autogen, elixir-format
+msgid "Arcade"
+msgstr "Arcade"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:274
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:298
+#, elixir-autogen, elixir-format
+msgid "Games"
+msgstr "Trò chơi"
+
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:198
+#, elixir-autogen, elixir-format
+msgid "Help"
+msgstr "Trợ giúp"
+
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:139
+#, elixir-autogen, elixir-format
+msgid "Home"
+msgstr "Nhà"
+
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:189
+#, elixir-autogen, elixir-format
+msgid "Navigate"
+msgstr "Navigate"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:274
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:297
+#, elixir-autogen, elixir-format
+msgid "Open the"
+msgstr "Open the"
+
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:74
+#, elixir-autogen, elixir-format
+msgid "Open the app"
+msgstr "Open the app"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:282
+#, elixir-autogen, elixir-format
+msgid "Pick a game — it opens in a new browser window"
+msgstr "Pick a game — it opens in a new browser window"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:21
+#, elixir-autogen, elixir-format
+msgid "Real-time chat, channels, P2P voice/video calls, 34 multiplayer games, "
+msgstr "Real-time chat, channels, P2P voice/video calls, 34 multiplayer games, "
+
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:60
+#, elixir-autogen, elixir-format
+msgid "Start"
+msgstr "Start"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:275
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:298
+#, elixir-autogen, elixir-format
+msgid "menu and choose"
+msgstr "menu and choose"
+
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:302
+#, elixir-autogen, elixir-format
+msgid "— a game picker opens right in the chat. Pick from DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures — all running as"
+msgstr "— a game picker opens right in the chat. Pick from DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures — all running as"

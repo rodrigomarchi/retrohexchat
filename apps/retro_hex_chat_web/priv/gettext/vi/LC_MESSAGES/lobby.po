@@ -1,0 +1,253 @@
+# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: vi; status: enabled; wave: 2.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: vi\n"
+"Language: vi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:109
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:202
+#, elixir-autogen, elixir-format
+msgid "%{peer} is muted"
+msgstr "%{peer} câm"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:88
+#, elixir-autogen, elixir-format
+msgid "%{peer} wants to play %{game}"
+msgstr "%{peer} Muốn chơi %{game}"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:88
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:139
+#, elixir-autogen, elixir-format
+msgid "%{peer}'s camera is off"
+msgstr "%{peer}Máy ảnh tắt"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:70
+#, elixir-autogen, elixir-format
+msgid "%{score} P2"
+msgstr "%{score} P2"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:96
+#, elixir-autogen, elixir-format
+msgid "Accept"
+msgstr "Chấp nhận"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:79
+#, elixir-autogen, elixir-format
+msgid "Back to games"
+msgstr "Quay lại trò chơi"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:70
+#, elixir-autogen, elixir-format
+msgid "Browse files"
+msgstr "Duyệt tập tin"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:150
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:397
+#, elixir-autogen, elixir-format
+msgid "Camera Off"
+msgstr "Tắt máy ảnh"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:149
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:396
+#, elixir-autogen, elixir-format
+msgid "Camera On"
+msgstr "Máy ảnh bật"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:29
+#, elixir-autogen, elixir-format
+msgid "Connect to play a game."
+msgstr "Kết nối với trò chơi."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:28
+#, elixir-autogen, elixir-format
+msgid "Connect to send a file."
+msgstr "Kết nối để gửi một tập tin."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:47
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:60
+#, elixir-autogen, elixir-format
+msgid "Connect to start an audio or video call."
+msgstr "Kết nối để bắt đầu một cuộc gọi âm thanh hoặc video."
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:304
+#, elixir-autogen, elixir-format
+msgid "Could not access your microphone or camera."
+msgstr "Không thể truy cập micro hay máy ảnh của bạn."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:100
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "Xóa"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:168
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:445
+#, elixir-autogen, elixir-format
+msgid "Devices"
+msgstr "Thiết bị"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:160
+#, elixir-autogen, elixir-format
+msgid "Draw."
+msgstr "Hòa."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:59
+#, elixir-autogen, elixir-format
+msgid ""
+"Drop a file here, or browse. Transfers run alongside your call and game."
+msgstr ""
+"Thả tập tin xuống đây, hoặc duyệt qua. Việc chuyển giao chạy dọc theo tiếng "
+"gọi và trò chơi."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:176
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:476
+#, elixir-autogen, elixir-format
+msgid "End call"
+msgstr "Kết thúc cuộc gọi"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:40
+#, elixir-autogen, elixir-format
+msgid "End game"
+msgstr "Trò chơi kết thúc"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_file_island.ex:150
+#, elixir-autogen, elixir-format
+msgid "File transfer completed: %{name}"
+msgstr "Truyền tập tin hoàn tất: %{name}"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:61
+#, elixir-autogen, elixir-format
+msgid "Final Score"
+msgstr "Điểm cuối"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:193
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:525
+#, elixir-autogen, elixir-format
+msgid "Focus"
+msgstr "Tiêu điểm"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:36
+#, elixir-autogen, elixir-format
+msgid "Game in progress"
+msgstr "Trò chơi đang chạy"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_game_island.ex:160
+#, elixir-autogen, elixir-format
+msgid "Game over — %{game}: %{p1} × %{p2}"
+msgstr "Trò chơi kết thúc — %{game}: %{p1} × %{p2}"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:223
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:576
+#, elixir-autogen, elixir-format
+msgid "High quality"
+msgstr "Chất lượng cao"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:239
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:594
+#, elixir-autogen, elixir-format
+msgid "Low quality"
+msgstr "Chất lượng thấp"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:65
+#, elixir-autogen, elixir-format
+msgid "Max: %{size} MB"
+msgstr "Cực đại: %{size} MB"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:211
+#, elixir-autogen, elixir-format
+msgid "Maximize"
+msgstr "Phóng to"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:231
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:585
+#, elixir-autogen, elixir-format
+msgid "Medium quality"
+msgstr "Chất lượng vừa"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#, elixir-autogen, elixir-format
+msgid "Mute"
+msgstr "Mute"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:66
+#, elixir-autogen, elixir-format
+msgid "P1 %{score}"
+msgstr "P1 %{score}"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:161
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:409
+#, elixir-autogen, elixir-format
+msgid "Picture-in-Picture"
+msgstr "Ảnh chụp trong ảnh"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:202
+#, elixir-autogen, elixir-format
+msgid "Side by side"
+msgstr "Bên cạnh"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:265
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:320
+#, elixir-autogen, elixir-format
+msgid "Start audio"
+msgstr "Bắt đầu âm thanh"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:285
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:308
+#, elixir-autogen, elixir-format
+msgid ""
+"Start audio or video — or the peer can, independently. You'll join "
+"automatically."
+msgstr ""
+"Bắt đầu chương trình thu âm hoặc video — hoặc có thể, độc lập. Anh sẽ tự "
+"động tham gia."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:274
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:329
+#, elixir-autogen, elixir-format
+msgid "Start video"
+msgstr "Khởi động video"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:139
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:385
+#, elixir-autogen, elixir-format
+msgid "Turn on camera"
+msgstr "Bật máy ảnh"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:119
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:365
+#, elixir-autogen, elixir-format
+msgid "Turn on microphone"
+msgstr "Bật microphone"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#, elixir-autogen, elixir-format
+msgid "Unmute"
+msgstr "Chưa phân"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:110
+#, elixir-autogen, elixir-format
+msgid "Waiting for %{peer} to accept..."
+msgstr "Đang đợi %{peer} chấp nhận..."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:159
+#, elixir-autogen, elixir-format
+msgid "You lose."
+msgstr "Anh thua rồi."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:158
+#, elixir-autogen, elixir-format
+msgid "You win!"
+msgstr "Anh thắng rồi!"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:68
+#, elixir-autogen, elixir-format
+msgid "×"
+msgstr "& Giờ;"

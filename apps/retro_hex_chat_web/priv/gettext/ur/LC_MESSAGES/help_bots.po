@@ -160,15 +160,10 @@ msgstr "- خوش آمدید،"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:96
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:178
 #, elixir-autogen, elixir-format
 msgid "/bot"
 msgstr "/bot"
-
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
-msgstr "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:83
@@ -176,7 +171,7 @@ msgstr "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:98
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:87
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:186
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:190
 #, elixir-autogen, elixir-format
 msgid "/bot Command Reference"
 msgstr "/bot Command Reference"
@@ -215,11 +210,6 @@ msgstr "/bot create GreeterBot Welcomes new users"
 #, elixir-autogen, elixir-format
 msgid "/bot destroy GreeterBot"
 msgstr "/bot destroy GreeterBot"
-
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:58
-#, elixir-autogen, elixir-format
-msgid "/bot enable GreeterBot /bot disable GreeterBot #random"
-msgstr "/bot enable GreeterBot /bot disable GreeterBot #random"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:42
 #, elixir-autogen, elixir-format
@@ -328,8 +318,8 @@ msgstr "جوابات کی کیفیت ہیں۔"
 msgid "Available trivia categories:"
 msgstr "دستیاب تراویح اقسام:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:109
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:189
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
 #, elixir-autogen, elixir-format
 msgid "Bot Custom Commands"
 msgstr "غیر متصل احکام"
@@ -364,7 +354,7 @@ msgstr "بہت جلد دُعاؤں کو نظرانداز کِیا جا سکتا 
 msgid "Bot names must be 2–16 characters, unique"
 msgstr "بوٹ نام 2–16 حروف، منفرد ہونا چاہیے۔"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:106
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:109
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:106
@@ -396,7 +386,7 @@ msgid "Categories"
 msgstr "کاٹگل"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:108
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:196
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:200
 #, elixir-autogen, elixir-format
 msgid "ChanServ"
 msgstr "چانسو"
@@ -464,9 +454,9 @@ msgstr "تفصیل"
 msgid "Detection Types"
 msgstr "غلط قسم"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:114
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:191
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:195
 #, elixir-autogen, elixir-format
 msgid "Dice"
 msgstr "دیش"
@@ -586,9 +576,9 @@ msgstr "تمام حیاتیاتی خوراک کی فہرست"
 msgid "Managing via Dialog"
 msgstr "ڈائری کے ذریعے انتظام"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:195
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:199
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "جگہ"
@@ -674,9 +664,9 @@ msgstr "بوٹ انتظامیہ کھولو ()"
 msgid "Polling timers automatically reschedule after each poll"
 msgstr "پولنگ ٹائمرز ہر ایک نتیجے کے بعد خودبخود دوبارہ حل کرتے ہیں۔"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:114
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:117
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:194
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:198
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "راس"
@@ -727,9 +717,9 @@ msgstr "چلاو"
 msgid "Schedule Types"
 msgstr "رنگ‌برنگی اقسام"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:113
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:116
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:61
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:197
 #, elixir-autogen, elixir-format
 msgid "Scheduler"
 msgstr "سِدُر"
@@ -751,7 +741,7 @@ msgstr "اسکوئرس دوبارہ تیار کرتا ہے جب نیا چکر ش
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:84
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:184
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:185
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "دیکھیں"
@@ -864,9 +854,9 @@ msgstr "آلات کا انتظام"
 msgid "Triggers must be unique per bot (case-sensitive)"
 msgstr "ٹریگرس منفرد فی بوٹ (cas-senitiive) ہوتا ہے۔"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:115
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:192
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:196
 #, elixir-autogen, elixir-format
 msgid "Trivia"
 msgstr "ٹرائے"
@@ -915,11 +905,6 @@ msgstr "by deferve) اور but اسمِ ساحہ سے قبل داخلی لفظ �
 #, elixir-autogen, elixir-format
 msgid "capability — it processes every message before active capabilities (like dice or trivia). This means:"
 msgstr "یہ ہر پیغام کو عمل میں لانے سے پہلے ( جیسا کہ نقل‌مکانی یا تِرُویا ) کرتا ہے ۔ اس کا مطلب ہے:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:3
-#, elixir-autogen, elixir-format
-msgid "command lets admins and server operators create, configure, and manage bots. Regular users can view bot info and list available commands."
-msgstr "کمانڈ میں ابلاغ اور سرور آپریٹرز کو تخلیق کرنے، کنول کو بنانے اور بوٹوں کا انتظام کرنے دیا جاتا ہے۔ باقاعدہ صارفین بوٹ انفو کو دیکھ سکتے ہیں اور دستیاب کمانڈز کی فہرست دیکھ سکتے ہیں۔"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:21
 #, elixir-autogen, elixir-format
@@ -1189,11 +1174,6 @@ msgstr "— ایک بوٹ کے بارے میں تفصیلی معلومات دک�
 msgid "— Spam detection threshold (default: 3)"
 msgstr "— سپر ہٹیاں ( اُردو: 3 )"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:53
-#, elixir-autogen, elixir-format
-msgid "— Toggle a bot globally, or just for a specific channel."
-msgstr "— پوری دُنیا میں یا صرف خاص چینل کیلئے ۔"
-
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "— the bot's command prefix"
@@ -1354,11 +1334,6 @@ msgstr "کمانڈ جو دستیاب احکام کی فہرست ہے"
 msgid "commands with configurable responses"
 msgstr "جواب کے ساتھ احکام"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
-#, elixir-autogen, elixir-format
-msgid "menu or by typing"
-msgstr "مینو يا با ئيں"
-
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "prefix and are grouped below regular users. They can be kicked or banned from channels like normal users."
@@ -1384,7 +1359,7 @@ msgstr "راؤنڈ شروع کرنا ہوگا"
 msgid "to roll dice"
 msgstr "تنصیب کے لیے"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:178
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:179
 #, elixir-autogen, elixir-format
 msgid "with no arguments (admin only). The dialog shows all bots with a split-view: select a bot on the left to see its details, channels, commands, and event hooks on the right."
 msgstr "جس میں کوئی دلیل نہیں ہے۔ حسابِ ابجد میں تمام بوٹوں کو الگ الگ سے دکھایا گیا ہے : اس کی تفصیلات، چینلوں، کمانڈز اور تقریب کو دائیں جانب دیکھنے کے لیے بائیں جانب ایک بوٹ منتخب کريں"
@@ -1488,3 +1463,34 @@ msgstr "— صارفی شناخت"
 #, elixir-autogen, elixir-format
 msgid "— welcomes users when they join a channel, optionally says goodbye on part"
 msgstr "— کسی چینل میں شامل ہوتے وقت صارفین کو خوش آمدید کہنا چاہئے"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> /bot disable <bot> /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
+msgstr "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> /bot disable <bot> /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "/bot enable GreeterBot /bot disable GreeterBot"
+msgstr "/bot enable GreeterBot /bot disable GreeterBot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:188
+#, elixir-autogen, elixir-format
+msgid "Bot Management Dialog"
+msgstr "بھٹو انتظامیہ (Bot Management)"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "command lets admins and server operators create, configure, and manage bots. Running /bot with no arguments opens Bot Management for admins, while regular users see the bot list."
+msgstr "command lets admins and server operators create, configure, and manage bots. Running /bot with no arguments opens Bot Management for admins, while regular users see the bot list."
+
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
+#, elixir-autogen, elixir-format
+msgid "menu, the toolbar Options dropdown, or by typing"
+msgstr "menu, the toolbar Options dropdown, or by typing"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "— Toggle a bot globally."
+msgstr "— Toggle a bot globally."

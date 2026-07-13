@@ -11,8 +11,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:436
 #: lib/retro_hex_chat_web/components/ui/shell/app_header.ex:74
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:187
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:352
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:178
 #, elixir-autogen, elixir-format
 msgid "About RetroHexChat"
 msgstr "রেট্রোক্‌ পরিচিতি"
@@ -23,26 +25,30 @@ msgstr "রেট্রোক্‌ পরিচিতি"
 msgid "Add"
 msgstr "যোগ করুন"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:106
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:88
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:170
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:38
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:94
 #, elixir-autogen, elixir-format
 msgid "Address Book"
 msgstr "ঠিকানা-বই"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:62
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:150
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:105
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:158
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:169
 #, elixir-autogen, elixir-format
 msgid "Admin Console"
 msgstr "প্রশাসনিক কনসোল"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:149
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:130
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:219
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:70
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:136
 #, elixir-autogen, elixir-format
 msgid "Alias Editor"
 msgstr "উপনাম সম্পাদন ব্যবস্থা"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:161
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:142
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:231
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:80
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:148
 #, elixir-autogen, elixir-format
 msgid "Auto Respond"
 msgstr "সাড়া"
@@ -52,20 +58,23 @@ msgstr "সাড়া"
 msgid "Cancel"
 msgstr "বাতিল"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:124
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:106
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:188
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:54
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:112
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "চ্যানেল মধ্যName"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:75
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:142
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:90
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:60
 #, elixir-autogen, elixir-format
 msgid "Channel List"
 msgstr "চ্যানেলের তালিকা"
 
-#: lib/retro_hex_chat_web/components/ui/layout/dialog.ex:174
-#: lib/retro_hex_chat_web/components/ui/layout/window.ex:132
+#: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:297
+#: lib/retro_hex_chat_web/components/ui/layout/dialog.ex:198
+#: lib/retro_hex_chat_web/components/ui/layout/window.ex:145
 #: lib/retro_hex_chat_web/components/ui/primitives/sheet.ex:145
 #, elixir-autogen, elixir-format
 msgid "Close"
@@ -81,13 +90,14 @@ msgstr "কনফিগারেশন"
 msgid "Connect"
 msgstr "সংযোগ স্থাপন করুন"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:155
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:136
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:225
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:75
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:142
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
 msgstr "স্বনির্বাচিত মেনু"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:55
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:98
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:38
 #, elixir-autogen, elixir-format
 msgid "Disconnect"
@@ -100,23 +110,25 @@ msgstr "বাতিল"
 
 #: lib/retro_hex_chat_web/components/ui/shell/config_form.ex:98
 #: lib/retro_hex_chat_web/components/ui/shell/config_form.ex:118
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:112
 #, elixir-autogen, elixir-format
 msgid "Edit"
 msgstr "সম্পাদনা"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:51
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:57
 #, elixir-autogen, elixir-format
 msgid "File"
 msgstr "ফাইল"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:93
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:78
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:131
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:84
 #, elixir-autogen, elixir-format
 msgid "Find"
 msgstr "অনুসন্ধান"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:143
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:124
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:213
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:65
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:130
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
 msgstr "বন্যা সুরক্ষা"
@@ -131,20 +143,23 @@ msgstr "পরবর্তী পৃষ্ঠায় যান"
 msgid "Go to previous page"
 msgstr "পূর্ববর্তী পৃষ্ঠায় যান"
 
-#: lib/retro_hex_chat_web/components/ui/layout/window.ex:133
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:170
+#: lib/retro_hex_chat_web/components/ui/layout/window.ex:146
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:330
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "সাহায্য"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:174
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:161
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:428
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:333
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:173
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:180
 #, elixir-autogen, elixir-format
 msgid "Help Topics"
 msgstr "সহায়িকার সূচিপত্র"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:112
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:94
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:176
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:48
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:100
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "শব্দ উজ্জ্বল করা হবে"
@@ -154,12 +169,14 @@ msgstr "শব্দ উজ্জ্বল করা হবে"
 msgid "Loading..."
 msgstr "লোড করা হচ্ছে..."
 
-#: lib/retro_hex_chat_web/components/ui/layout/window.ex:130
+#: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:292
+#: lib/retro_hex_chat_web/components/ui/layout/window.ex:143
 #, elixir-autogen, elixir-format
 msgid "Maximize"
 msgstr "বড় করুন"
 
-#: lib/retro_hex_chat_web/components/ui/layout/window.ex:129
+#: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:288
+#: lib/retro_hex_chat_web/components/ui/layout/window.ex:142
 #, elixir-autogen, elixir-format
 msgid "Minimize"
 msgstr "আড়াল করুন"
@@ -205,8 +222,9 @@ msgstr "অপশন"
 msgid "Pagination"
 msgstr "যন্ত্রণা"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:130
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:112
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:200
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:57
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:118
 #, elixir-autogen, elixir-format
 msgid "Perform"
 msgstr "সম্পাদনা"
@@ -221,7 +239,8 @@ msgstr "পূর্ববর্তী"
 msgid "Remove"
 msgstr "মুছে ফেলুন"
 
-#: lib/retro_hex_chat_web/components/ui/layout/window.ex:131
+#: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:284
+#: lib/retro_hex_chat_web/components/ui/layout/window.ex:144
 #, elixir-autogen, elixir-format
 msgid "Restore"
 msgstr "পুনুদ্ধার করুন"
@@ -231,36 +250,39 @@ msgstr "পুনুদ্ধার করুন"
 msgid "Retry"
 msgstr "পুনরায় চেষ্টা করুন"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:180
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:345
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:105
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "শর্ট- কাট শিটComment"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:137
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:118
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:207
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:60
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:124
 #, elixir-autogen, elixir-format
 msgid "Sounds"
 msgstr "শব্দ"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:81
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:148
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:66
 #, elixir-autogen, elixir-format
 msgid "Toggle Conversations"
 msgstr "আলাপন টগল করা হবে"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:87
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:154
 #: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:72
 #, elixir-autogen, elixir-format
 msgid "Toggle Nicklist"
 msgstr "উপনাম প্রদর্শনের মোড পাল্টাও"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:102
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:167
 #, elixir-autogen, elixir-format
 msgid "Tools"
 msgstr "সরঞ্জাম"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:118
-#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:100
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:182
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:95
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:106
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "URL ধরুন"
@@ -271,7 +293,277 @@ msgstr "URL ধরুন"
 msgid "Value"
 msgstr "মান"
 
-#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:71
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:139
 #, elixir-autogen, elixir-format
 msgid "View"
 msgstr "প্রদর্শন"
+
+#: lib/retro_hex_chat_web/components/ui/shell/language_menu.ex:30
+#, elixir-autogen, elixir-format
+msgid "Language"
+msgstr "ভাষা"
+
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:276
+#, elixir-autogen, elixir-format
+msgid "%{count} buddy online"
+msgid_plural "%{count} buddies online"
+msgstr[0] "%{count} বন্ধু অন-লাইন"
+msgstr[1] "%{count} ভাইয়েরা অনলাইন"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:58
+#, elixir-autogen, elixir-format
+msgid "Account"
+msgstr "অ্যাকাউন্ট"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:91
+#, elixir-autogen, elixir-format
+msgid "Account Info"
+msgstr "অ্যাকাউন্ট সংক্রান্ত তথ্য"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:317
+#, elixir-autogen, elixir-format
+msgid "Arcade..."
+msgstr "আর্কেড..."
+
+#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:57
+#, elixir-autogen, elixir-format
+msgid "Away"
+msgstr "অনুপস্থিত"
+
+#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:62
+#, elixir-autogen, elixir-format
+msgid "Back"
+msgstr "পূর্ববর্তী"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:244
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:165
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:161
+#, elixir-autogen, elixir-format
+msgid "Bot Management"
+msgstr "বোট ব্যবস্থাপনা"
+
+#: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:310
+#, elixir-autogen, elixir-format
+msgid "Cascade Windows"
+msgstr "উইন্ডোসমূহ"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:73
+#, elixir-autogen, elixir-format
+msgid "Change Nickname..."
+msgstr "ডাকনাম পরিবর্তন করো..."
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:115
+#, elixir-autogen, elixir-format
+msgid "Clear Window"
+msgstr "উইন্ডো মুছে ফেলুন"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:122
+#, elixir-autogen, elixir-format
+msgid "Copy"
+msgstr "কপি করুন"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:134
+#, elixir-autogen, elixir-format
+msgid "Ctrl+Shift+F"
+msgstr "Ctrl+ Shift+F"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:79
+#, elixir-autogen, elixir-format
+msgid "Edit Profile..."
+msgstr "প্রোফাইল সম্পাদনা..."
+
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:149
+#, elixir-autogen, elixir-format
+msgid "End P2P Session"
+msgstr "P2P সেশন শেষ করো"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:306
+#, elixir-autogen, elixir-format
+msgid "End Session"
+msgstr "সেশানের সমাপ্তি"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:314
+#, elixir-autogen, elixir-format
+msgid "Games"
+msgstr "খেলা"
+
+#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:59
+#, elixir-autogen, elixir-format
+msgid "Guest"
+msgstr "অতিথি"
+
+#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:58
+#, elixir-autogen, elixir-format
+msgid "Identified"
+msgstr "সনাক্ত করা"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:67
+#, elixir-autogen, elixir-format
+msgid "Identify..."
+msgstr "পরিচয় দাও..."
+
+#: lib/retro_hex_chat_web/components/ui/shell/activity_indicator.ex:27
+#, elixir-autogen, elixir-format
+msgid "Loading"
+msgstr "লোড করা হচ্ছে"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:339
+#, elixir-autogen, elixir-format
+msgid "Message of the Day"
+msgstr "আজকের বাণী"
+
+#: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:323
+#, elixir-autogen, elixir-format
+msgid "Minimize All Windows"
+msgstr "সব উইন্ডো আড়াল করুন"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:160
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:43
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:78
+#, elixir-autogen, elixir-format
+msgid "Notify List"
+msgstr "তালিকা ঘোষণা করুন"
+
+#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:26
+#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:27
+#, elixir-autogen, elixir-format
+msgid "Open Account"
+msgstr "অ্যাকাউন্ট খুলুন"
+
+#: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:68
+#, elixir-autogen, elixir-format
+msgid "Opening..."
+msgstr "খোলা হচ্ছে..."
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:252
+#, elixir-autogen, elixir-format
+msgid "P2P"
+msgstr "P2P"
+
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:142
+#, elixir-autogen, elixir-format
+msgid "P2P Statistics"
+msgstr "P2P পরিসংখ্যান"
+
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:269
+#, elixir-autogen, elixir-format
+msgid "P2P call active"
+msgstr "P2P কল সক্রিয়"
+
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:241
+#, elixir-autogen, elixir-format
+msgid "P2P call quality"
+msgstr "P2P কল গুণমান"
+
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:272
+#, elixir-autogen, elixir-format
+msgid "P2P feature active"
+msgstr "P2P বৈশিষ্ট্য সক্রিয়"
+
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:270
+#, elixir-autogen, elixir-format
+msgid "P2P file transfer active"
+msgstr "P2P ফাইল বিনিময়"
+
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:271
+#, elixir-autogen, elixir-format
+msgid "P2P game active"
+msgstr "P2P খেলা সক্রিয়"
+
+#: lib/retro_hex_chat_web/components/ui/shell/status_bar_app.ex:250
+#, elixir-autogen, elixir-format
+msgid "P2P privacy relay active"
+msgstr "P2P গোপনীয়তা রিলেভ সক্রিয়"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:284
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:135
+#, elixir-autogen, elixir-format
+msgid "Play a Game..."
+msgstr "একটি খেলা খেলুন..."
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:323
+#, elixir-autogen, elixir-format
+msgid "Register & identify to play"
+msgstr "যে ফিল্টার আপাতত আছে"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:61
+#, elixir-autogen, elixir-format
+msgid "Register Nickname..."
+msgstr "ডাকনাম:"
+
+#: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:217
+#, elixir-autogen, elixir-format
+msgid "Resize"
+msgstr "মাপ পরিবর্তন"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:277
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:128
+#, elixir-autogen, elixir-format
+msgid "Send a File..."
+msgstr "একটি ফাইল পাঠান..."
+
+#: lib/retro_hex_chat_web/components/ui/shell/account_status.ex:63
+#, elixir-autogen, elixir-format
+msgid "Set Away"
+msgstr "অনুপস্থিত"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:85
+#, elixir-autogen, elixir-format
+msgid "Set Away..."
+msgstr "অনুপস্থিত মান নির্ধারণ করুন..."
+
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:419
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:31
+#, elixir-autogen, elixir-format
+msgid "Start"
+msgstr "আরম্ভ"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:263
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:114
+#, elixir-autogen, elixir-format
+msgid "Start Audio Call"
+msgstr "অডিও কল আরম্ভ করুন"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:270
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:121
+#, elixir-autogen, elixir-format
+msgid "Start Video Call"
+msgstr "ভিডিও কল আরম্ভ করুন"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:256
+#, elixir-autogen, elixir-format
+msgid "Start a P2P Session..."
+msgstr "P2P সেশন আরম্ভ করো..."
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:291
+#, elixir-autogen, elixir-format
+msgid "Statistics"
+msgstr "পরিসংখ্যান"
+
+#: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:314
+#, elixir-autogen, elixir-format
+msgid "Tile Windows Horizontally"
+msgstr "টালি উইন্ডোজ অনুভূমিকভাবে"
+
+#: lib/retro_hex_chat_web/components/ui/layout/desktop.ex:318
+#, elixir-autogen, elixir-format
+msgid "Tile Windows Vertically"
+msgstr "টালি উলম্বভাবে"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:237
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:83
+#: lib/retro_hex_chat_web/components/ui/shell/toolbar_app.ex:154
+#, elixir-autogen, elixir-format
+msgid "Timers"
+msgstr "টাইমার"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:298
+#, elixir-autogen, elixir-format
+msgid "Toggle Privacy Mode"
+msgstr "ব্যক্তিগত মোড টগল করুন"
+
+#: lib/retro_hex_chat_web/components/ui/shell/menu_bar_app.ex:194
+#: lib/retro_hex_chat_web/components/ui/shell/start_menu_app.ex:100
+#, elixir-autogen, elixir-format
+msgid "User Lookup"
+msgstr "ব্যবহারকারীর নাম"

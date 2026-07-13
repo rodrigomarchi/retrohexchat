@@ -86,6 +86,7 @@ defmodule RetroHexChatWeb.HelpLive.Index do
       nav_tab={@nav_tab}
       search_query={@search_query}
       search_results={@search_results}
+      canonical_path={@canonical_path}
     >
       <.help_topic :if={@selected_topic} topic={@selected_topic}>
         <.render_topic_content id={@selected_topic.id} />

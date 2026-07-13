@@ -11,11 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "!play"
-msgstr "彈奏"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:43
@@ -439,7 +434,7 @@ msgid "/admin cs info #general /admin cs transfer #general @NewOwner /admin cs a
 msgstr "/admin cs info #general /admin cs transfer #general @NewOwner /admin cs access #general add sop @TrustedUser /admin cs access #general del aop @OldMod /admin cs drop #abandoned"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:130
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:129
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "/admin debug"
@@ -1137,7 +1132,6 @@ msgid "/op Alice"
 msgstr "/op Alice"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:15
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "/p2p"
@@ -1262,13 +1256,6 @@ msgstr "/setwelcome <message>"
 #, elixir-autogen, elixir-format
 msgid "/setwelcome Welcome to #elixir! Please be respectful and use English."
 msgstr "/setwelcome Welcome to #elixir! Please be respectful and use English."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:129
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "/singleplayer"
-msgstr "/singleplayer"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:39
 #, elixir-autogen, elixir-format
@@ -1905,7 +1892,6 @@ msgstr "輸入要讀取和發送消息的聊天頻道 。 如果這個頻道還�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:29
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:35
@@ -2379,11 +2365,6 @@ msgstr "註冊用戶:自定義菜單在會話中保存"
 msgid "Registered users: list is saved across sessions"
 msgstr "註冊用戶: 列表保存到會話中"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Regular users should join"
-msgstr "常規用戶應加入"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Remove a ban from a user, allowing them to rejoin the channel."
@@ -2443,11 +2424,6 @@ msgstr "重複: 10至86 400秒最小間隔"
 #, elixir-autogen, elixir-format
 msgid "Request to be let into an invite-only (+i) channel. Channel operators see your knock and can choose to invite you in."
 msgstr "請求被允許進入只邀請的(+i)頻道. 頻道操作員看到你的敲門,可以選擇邀請你進來."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "Requirements"
-msgstr "所需經費"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:93
 #, elixir-autogen, elixir-format
@@ -2605,7 +2581,6 @@ msgstr "將命令排在延遲之後運行, 可在正常間隔中選擇重複 。
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:37
@@ -2709,11 +2684,6 @@ msgstr "設置每次連接時自動運行的命令,例如識別與NickServ或加
 msgid "Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Existing connected users are not notified — only new connections see the MOTD. Any previous MOTD is replaced."
 msgstr "設置或替換服務器MOTD. 設置後, 所有新連接的用戶加入時都會在狀態標籤中看到此消息 。 現有連接的用戶沒有被通知——只有新連接看到MOTD. 任何先前的MOTD都被替換."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "Solo Arcade"
-msgstr "獨角街"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:31
@@ -2724,11 +2694,6 @@ msgstr "獨角街"
 #, elixir-autogen, elixir-format
 msgid "Special Messages"
 msgstr "特殊信件"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session from chat. This is an administrator-only command used for direct arcade session creation."
-msgstr "從聊天開始獨唱街機會話. 這是用於直接街機會話創建的僅限管理員的命令 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2797,7 +2762,6 @@ msgstr "子命令"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:7
@@ -3025,11 +2989,6 @@ msgstr "您必須是頻道操作員才能註冊頻道"
 msgid "You must be a registered user to use ChanServ"
 msgstr "您必須是註冊用戶才能使用 ChanServ"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "You must be a server administrator."
-msgstr "您必須是服務器管理員 。"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "You must be in the channel to invite someone to it"
@@ -3049,11 +3008,6 @@ msgstr "您的生物顯示在"
 #, elixir-autogen, elixir-format
 msgid "Your message is delivered privately — only you and the recipient can see it. A PM tab opens on both sides for the conversation. The recipient receives a notification if they have notifications enabled. If you just want to open a PM tab without sending a message, use"
 msgstr "你的信息是私下傳達的,只有你和接收者才能看到。 PM標籤在兩側打開用於對話. 接收者收到通知時,如果通知已啓用。 如果您只是想打開 PM 標籤而不發送消息, 請使用"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Your nickname must be registered and identified."
-msgstr "您的暱稱必須註冊和識別 。"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:30
 #, elixir-autogen, elixir-format
@@ -3079,11 +3033,6 @@ msgstr "訪問 del <ph0\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 #, elixir-autogen, elixir-format
 msgid "action text"
 msgstr "動作文本"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "and type"
-msgstr "類型"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:43
 #, elixir-autogen, elixir-format
@@ -3183,7 +3132,6 @@ msgstr "改爲)"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "instead."
 msgstr "相反。"
@@ -4580,11 +4528,6 @@ msgstr "You cannot open a lobby with yourself."
 msgid "aop add/del/list <nick>"
 msgstr "aop add/del/list <nick>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "creates a lobby and sends the other user a join invitation. Once both of you join, one WebRTC connection is established and stays open. A dock lets either side start audio/video, send files, or propose a game at any time — and several can run together concurrently. Ending one activity keeps the connection alive; the lobby only closes when someone leaves or it goes idle."
-msgstr "creates a lobby and sends the other user a join invitation. Once both of you join, one WebRTC connection is established and stays open. A dock lets either side start audio/video, send files, or propose a game at any time — and several can run together concurrently. Ending one activity keeps the connection alive; the lobby only closes when someone leaves or it goes idle."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "drop"
@@ -4654,3 +4597,8 @@ msgstr "— Optional duration token such as 30s, 5m, 1h, or 1d. Omit for permane
 #, elixir-autogen, elixir-format
 msgid "— The user to open a P2P Lobby with."
 msgstr "— The user to open a P2P Lobby with."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "opens a setup dialog first, so you can preview camera, choose microphone/camera/speaker, pick receive-only, and enable privacy relay before the invite is sent. After you confirm, the other user receives an invite card in your private message. When they accept, the connection is established right there in the chat: the call starts with each side's chosen defaults and the session windows (Call, Files, Games, Statistics) open on the chat desktop. Several activities run together over the one connection; ending one keeps the others alive. Closing any session window disconnects the session (after a confirmation) — minimize to keep it running."
+msgstr "opens a setup dialog first, so you can preview camera, choose microphone/camera/speaker, pick receive-only, and enable privacy relay before the invite is sent. After you confirm, the other user receives an invite card in your private message. When they accept, the connection is established right there in the chat: the call starts with each side's chosen defaults and the session windows (Call, Files, Games, Statistics) open on the chat desktop. Several activities run together over the one connection; ending one keeps the others alive. Closing any session window disconnects the session (after a confirmation) — minimize to keep it running."

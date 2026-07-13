@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:107
+#: lib/retro_hex_chat_web/live/help_live/index.ex:116
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} — Bantuan RetroHexChat"
@@ -108,8 +108,12 @@ msgstr "3. Pilih sandi (minimal 5 karakter) dan klik"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "3. On success, you join the chat already identified — the 60-second identify timer is skipped."
-msgstr "3, saat sukses, kau bergabung dengan percakapan yang sudah diidentifikasi, timer identifikasi 60 detik dilewatkan."
+msgid ""
+"3. On success, you join the chat already identified — the 60-second identify"
+" timer is skipped."
+msgstr ""
+"3, saat sukses, kau bergabung dengan percakapan yang sudah diidentifikasi, "
+"timer identifikasi 60 detik dilewatkan."
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:13
 #, elixir-autogen, elixir-format
@@ -128,23 +132,27 @@ msgstr "4."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "4. Your nickname is registered and you join the chat already identified."
-msgstr "Nama panggilan Anda terdaftar dan Anda bergabung dengan chatting sudah diidentifikasi."
+msgid ""
+"4. Your nickname is registered and you join the chat already identified."
+msgstr ""
+"Nama panggilan Anda terdaftar dan Anda bergabung dengan chatting sudah "
+"diidentifikasi."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "7 days"
 msgstr "7 hari"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:57
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:332
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
 msgstr "Breadcrumb"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:89
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:122
 #, elixir-autogen, elixir-format
 msgid "Browse by category or open Help Topics from the chat menu."
-msgstr "Ramban berdasarkan kategori atau buka Topics Bantuan dari menu obrolan."
+msgstr ""
+"Ramban berdasarkan kategori atau buka Topics Bantuan dari menu obrolan."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:14
 #, elixir-autogen, elixir-format
@@ -169,7 +177,9 @@ msgstr "Kanal"
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Click a nickname in the conversations sidebar user list and select"
-msgstr "Klik sebuah nama panggilan dalam daftar pengguna batang sisi percakapan dan pilih"
+msgstr ""
+"Klik sebuah nama panggilan dalam daftar pengguna batang sisi percakapan dan "
+"pilih"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:28
 #, elixir-autogen, elixir-format
@@ -209,25 +219,38 @@ msgstr "Masuk"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "Every nickname must be registered before entering the chat. When you connect with a new nickname, you'll be asked to choose a password to register it. On future visits, you'll enter your password to log in."
-msgstr "Setiap nama panggilan harus terdaftar sebelum memasuki percakapan. Ketika Anda terhubung dengan nama panggilan baru, Anda akan diminta untuk memilih sandi untuk mendaftarkannya. Pada kunjungan mendatang, Anda akan memasukkan sandi untuk log masuk."
+msgid ""
+"Every nickname must be registered before entering the chat. When you connect"
+" with a new nickname, you'll be asked to choose a password to register it. "
+"On future visits, you'll enter your password to log in."
+msgstr ""
+"Setiap nama panggilan harus terdaftar sebelum memasuki percakapan. Ketika "
+"Anda terhubung dengan nama panggilan baru, Anda akan diminta untuk memilih "
+"sandi untuk mendaftarkannya. Pada kunjungan mendatang, Anda akan memasukkan "
+"sandi untuk log masuk."
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:59
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:79
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:51
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:53
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:334
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:348
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:374
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "Bantuan"
 
-#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:37
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:352
 #, elixir-autogen, elixir-format
 msgid "Help Topics"
 msgstr "Bantuan Topics"
 
-#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:44
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:217
 #, elixir-autogen, elixir-format
 msgid "Help navigation"
 msgstr "Navigasi bantuan"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:106
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:54
+#: lib/retro_hex_chat_web/live/help_live/index.ex:115
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr "Bantuan - RetroHexChat"
@@ -242,7 +265,7 @@ msgstr "Pintas Papan Ketik"
 msgid "Minimum 5 characters, maximum 100 characters"
 msgstr "Minimal 5 karakter, maksimum 100 karakter"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Msg Command"
 msgstr "Perintah Msg"
@@ -285,7 +308,7 @@ msgstr "Aturan Nama Panggilan"
 msgid "Nicknames not used for"
 msgstr "Nama panggilan tidak digunakan untuk"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Notices"
 msgstr "Pemberitahuan"
@@ -305,7 +328,7 @@ msgstr "Aturan Sandi"
 msgid "Query"
 msgstr "Query"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Query Command"
 msgstr "Perintah Query"
@@ -336,35 +359,50 @@ msgstr "Nama panggilan terdaftar"
 msgid "Registration Required"
 msgstr "Pendaftaran Diperlukan"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:84
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:117
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat Help"
 msgstr "Bantuan RetroHexChat"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat handles all authentication directly on the connection screen — no need to run"
-msgstr "RetroHexChat menangani semua otentikasi secara langsung di layar koneksi - tidak perlu dijalankan"
+msgid ""
+"RetroHexChat handles all authentication directly on the connection screen — "
+"no need to run"
+msgstr ""
+"RetroHexChat menangani semua otentikasi secara langsung di layar koneksi - "
+"tidak perlu dijalankan"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:111
+#: lib/retro_hex_chat_web/live/help_live/index.ex:120
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts."
-msgstr "Dokumentasi bantuan RetroHexChat. Pelajari tentang perintah IRC, mode saluran, fitur, dan pintasan papan tik."
+msgid ""
+"RetroHexChat help documentation. Learn about IRC commands, channel modes, "
+"features, and keyboard shortcuts."
+msgstr ""
+"Dokumentasi bantuan RetroHexChat. Pelajari tentang perintah IRC, mode "
+"saluran, fitur, dan pintasan papan tik."
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
-msgstr "RetroHexChat adalah klien IRC berbasis web dengan tampilan dan merasakan retro otentik. Ini mendukung saluran, pesan pribadi, pemformatan teks, layanan nick, dan banyak lagi."
+msgid ""
+"RetroHexChat is a web-based IRC client with an authentic retro look and "
+"feel. It supports channels, private messages, text formatting, nick "
+"services, and much more."
+msgstr ""
+"RetroHexChat adalah klien IRC berbasis web dengan tampilan dan merasakan "
+"retro otentik. Ini mendukung saluran, pesan pribadi, pemformatan teks, "
+"layanan nick, dan banyak lagi."
 
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:141
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "Lihat Juga"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:86
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:119
 #, elixir-autogen, elixir-format
 msgid "Select a topic from the navigation pane to get started."
 msgstr "Pilih topik dari panel navigasi untuk memulai."
@@ -386,8 +424,11 @@ msgstr "Ini membuka tab PM. Alternatif, mengirim pesan tunggal:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "To connect to RetroHexChat, enter a nickname on the connect screen and click"
-msgstr "Untuk menyambung ke RetroHexChat, masukkan nama panggilan pada layar koneksi dan klik"
+msgid ""
+"To connect to RetroHexChat, enter a nickname on the connect screen and click"
+msgstr ""
+"Untuk menyambung ke RetroHexChat, masukkan nama panggilan pada layar koneksi"
+" dan klik"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:11
 #, elixir-autogen, elixir-format
@@ -396,13 +437,20 @@ msgstr "Menggunakan Daftar Pengguna"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "You can send private messages to other users that only the two of you can see."
-msgstr "Anda dapat mengirim pesan pribadi kepada pengguna lain yang hanya Anda berdua dapat melihat."
+msgid ""
+"You can send private messages to other users that only the two of you can "
+"see."
+msgstr ""
+"Anda dapat mengirim pesan pribadi kepada pengguna lain yang hanya Anda "
+"berdua dapat melihat."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "are automatically freed. Connect regularly to keep your registration. See"
-msgstr "secara otomatis dibebaskan. Hubungkan secara teratur untuk menjaga registrasi. Lihat"
+msgid ""
+"are automatically freed. Connect regularly to keep your registration. See"
+msgstr ""
+"secara otomatis dibebaskan. Hubungkan secara teratur untuk menjaga "
+"registrasi. Lihat"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:29
 #, elixir-autogen, elixir-format
@@ -426,8 +474,12 @@ msgstr "secara manual."
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "to open a PM tab. You can also double-click a nickname to open a PM directly."
-msgstr "untuk membuka tab PM. Anda juga dapat dua kali klik nama panggilan untuk membuka PM secara langsung."
+msgid ""
+"to open a PM tab. You can also double-click a nickname to open a PM "
+"directly."
+msgstr ""
+"untuk membuka tab PM. Anda juga dapat dua kali klik nama panggilan untuk "
+"membuka PM secara langsung."
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:19
 #, elixir-autogen, elixir-format
@@ -451,5 +503,105 @@ msgstr "- Sebuah kata sandi muncul. Masukkan sandi dan klik Anda"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "— A registration form appears. Choose a password (minimum 5 characters) and confirm it. Click"
-msgstr "- Sebuah formulir pendaftaran muncul. Pilih sandi (minimal 5 karakter) dan konfirmasi itu. Klik"
+msgid ""
+"— A registration form appears. Choose a password (minimum 5 characters) and "
+"confirm it. Click"
+msgstr ""
+"- Sebuah formulir pendaftaran muncul. Pilih sandi (minimal 5 karakter) dan "
+"konfirmasi itu. Klik"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:35
+#, elixir-autogen, elixir-format
+msgid "%{count} topics"
+msgstr "%{count} topik"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "/notice"
+msgstr "/notice"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:82
+#, elixir-autogen, elixir-format
+msgid "About RetroHexChat"
+msgstr "Tentang RetroHexChat"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:40
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:171
+#, elixir-autogen, elixir-format
+msgid "Back"
+msgstr "Mundur"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:365
+#, elixir-autogen, elixir-format
+msgid "Back to chat"
+msgstr "Kembali ke percakapan"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:56
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:220
+#, elixir-autogen, elixir-format
+msgid "Contents"
+msgstr "Isi"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"For a lightweight message that does not open a PM tab on the recipient's "
+"side, choose Send Notice from a nickname context menu or use"
+msgstr ""
+"Untuk pesan ringan yang tidak membuka tab PM di sisi penerima, pilih "
+"Pemberitahuan Kirim dari menu konteks nama panggilan atau gunakan"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:44
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:179
+#, elixir-autogen, elixir-format
+msgid "Forward"
+msgstr "Maju"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:34
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:183
+#, elixir-autogen, elixir-format
+msgid "Home"
+msgstr "Rumah"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:64
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:221
+#, elixir-autogen, elixir-format
+msgid "Index"
+msgstr "Indeks"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:30
+#, elixir-autogen, elixir-format
+msgid "Navigate"
+msgstr "Navigasi"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:263
+#, elixir-autogen, elixir-format
+msgid "No topics match \"%{query}\"."
+msgstr "Tidak ada topik yang cocok \"%{query}\"."
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Notice Command"
+msgstr "Perintah Pemberitahuan"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:72
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:358
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "Cari"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:196
+#, elixir-autogen, elixir-format
+msgid "Search topics..."
+msgstr "Cari topik..."
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:256
+#, elixir-autogen, elixir-format
+msgid "Type in the search box to find topics."
+msgstr "Ketik dalam kotak pencarian untuk menemukan topik."
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:49
+#, elixir-autogen, elixir-format
+msgid "View"
+msgstr "Tilik"

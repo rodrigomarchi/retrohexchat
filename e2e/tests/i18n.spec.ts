@@ -1,5 +1,10 @@
-import { test, expect } from "@playwright/test";
+import { test, expect, type Page } from "@playwright/test";
 import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+
+async function chooseLanguage(page: Page, locale: string) {
+  await page.getByTestId("language-menu-trigger").click();
+  await page.getByTestId(`language-menu-item-${locale}`).getByRole("link").click();
+}
 
 test.describe("Internationalization", () => {
   test("switches the connect UI between English and pt-BR and persists the selection", async ({
@@ -14,10 +19,7 @@ test.describe("Internationalization", () => {
       "Enter your nickname...",
     );
 
-    await page
-      .getByTestId("locale-switcher")
-      .getByRole("link", { name: "Português (Brasil)" })
-      .click();
+    await chooseLanguage(page, "pt_BR");
 
     await expect(page).toHaveURL(/\/connect$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
@@ -32,10 +34,7 @@ test.describe("Internationalization", () => {
     await expect(page.locator("html")).toHaveAttribute("lang", "pt-BR");
     await expect(page.getByText("Conectar ao RetroHexChat")).toBeVisible();
 
-    await page
-      .getByTestId("locale-switcher")
-      .getByRole("link", { name: "English" })
-      .click();
+    await chooseLanguage(page, "en");
 
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
     await expect(page.getByText("Connect to RetroHexChat")).toBeVisible();
@@ -64,10 +63,7 @@ test.describe("Internationalization", () => {
   test("switches to Arabic with RTL document direction", async ({ page }) => {
     await page.goto("/connect");
 
-    await page
-      .getByTestId("locale-switcher")
-      .getByRole("link", { name: "العربية" })
-      .click();
+    await chooseLanguage(page, "ar");
 
     await expect(page).toHaveURL(/\/connect$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "ar");
@@ -98,5 +94,21 @@ test.describe("Internationalization", () => {
       /Mensagem para #lobby/,
     );
     await expect(page.getByTestId("chat-input-send")).toContainText("Enviar");
+  });
+
+  test("switches language from the chat menu bar", async ({ page }) => {
+    const connect = new ConnectPage(page);
+
+    await page.goto("/connect");
+    await connect.enterNickname(uniqueNickname("i18nchat"));
+    await connect.registerWithPassword("pass12345");
+
+    await expect(page).toHaveURL(/\/chat(\?.*)?$/);
+
+    await chooseLanguage(page, "ar");
+
+    await expect(page).toHaveURL(/\/chat$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", "ar");
+    await expect(page.locator("html")).toHaveAttribute("dir", "rtl");
   });
 });

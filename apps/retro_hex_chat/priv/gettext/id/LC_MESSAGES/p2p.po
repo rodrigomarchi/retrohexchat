@@ -41,20 +41,10 @@ msgstr "Alokasi tidak cocok: alokasi sudah ada"
 msgid "Allocation mismatch: allocation does not exist"
 msgstr "Alokasi tidak cocok: alokasi tidak ada"
 
-#: lib/retro_hex_chat/p2p/policy.ex:64
-#, elixir-autogen, elixir-format
-msgid "An active session already exists with this user"
-msgstr "Sesi aktif sudah ada dengan pengguna ini"
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:110
 #, elixir-autogen, elixir-format
 msgid "Auth failed, invalid MESSAGE-INTEGRITY"
 msgstr "Auth gagal, MESSAGE-INTEGRITY tidak valid"
-
-#: lib/retro_hex_chat/p2p/policy.ex:43
-#, elixir-autogen, elixir-format
-msgid "Cannot create a session with yourself"
-msgstr "Tidak dapat membuat sesi dengan diri sendiri"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:149
 #, elixir-autogen, elixir-format
@@ -70,11 +60,6 @@ msgstr "Nomor saluran diluar dari jangkauan yang diijinkan"
 #, elixir-autogen, elixir-format
 msgid "EVEN-PORT unsupported"
 msgstr "Even- PORT tidak didukung"
-
-#: lib/retro_hex_chat/p2p/service.ex:151
-#, elixir-autogen, elixir-format
-msgid "Failed to create session"
-msgstr "Gagal membuat sesi"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:143
 #, elixir-autogen, elixir-format
@@ -111,16 +96,6 @@ msgstr "Gagal mendekripsi RESERVATION- TOKEN"
 msgid "Failed to decode XOR-PEER-ADDRESS"
 msgstr "Gagal mengawa kode XOR- PEER-ADDRESS"
 
-#: lib/retro_hex_chat/p2p/session_server.ex:168
-#, elixir-autogen, elixir-format
-msgid "Invalid transition from %{state_session_status} to %{new_status_str}"
-msgstr "Transisi tidak valid dari %{state_session_status} ke %{new_status_str}"
-
-#: lib/retro_hex_chat/p2p/session_token.ex:30
-#, elixir-autogen, elixir-format
-msgid "Missing :p2p_token_secret configuration"
-msgstr "Hilang: konfigurasi p2p _ token _ secret"
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:140
 #, elixir-autogen, elixir-format
 msgid "No CHANNEL-NUMBER attribute"
@@ -156,11 +131,6 @@ msgstr "Tidak ada atau salah bentuk REQUESTED-TRANSPORT"
 msgid "No username, nonce or realm attribute"
 msgstr "Tidak ada atribut nama pengguna, nonce atau realm"
 
-#: lib/retro_hex_chat/p2p/session_server.ex:150
-#, elixir-autogen, elixir-format
-msgid "Not a participant"
-msgstr "Bukan peserta"
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:98
 #, elixir-autogen, elixir-format
 msgid "REQUESTED-ADDRESS-FAMILY with IPv6 unsupported"
@@ -176,36 +146,10 @@ msgstr "RESERVATION- TOKEN dan (Even- PORT 124; REQUESTED-FAMILY) dalam pesan"
 msgid "RESERVATION-TOKEN unsupported"
 msgstr "RESERVATION- TOKEN tidak didukung"
 
-#: lib/retro_hex_chat/p2p/policy.ex:101
-#, elixir-autogen, elixir-format
-msgid "Session is no longer active"
-msgstr "Sesi tidak lagi aktif"
-
-#: lib/retro_hex_chat/p2p/service.ex:164
-#, elixir-autogen, elixir-format
-msgid "Session not found"
-msgstr "Sesi tak ditemukan"
-
-#: lib/retro_hex_chat/p2p/service.ex:92
-#: lib/retro_hex_chat/p2p/session_server.ex:46
-#: lib/retro_hex_chat/p2p/session_server.ex:54
-#: lib/retro_hex_chat/p2p/session_server.ex:70
-#: lib/retro_hex_chat/p2p/session_server.ex:460
-#: lib/retro_hex_chat/p2p/session_server.ex:461
-#: lib/retro_hex_chat/p2p/session_server.ex:462
-#, elixir-autogen, elixir-format
-msgid "Session process not running"
-msgstr "Proses sesi tak sedang berjalan"
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:125
 #, elixir-autogen, elixir-format
 msgid "Stale nonce"
 msgstr "Stale nonce"
-
-#: lib/retro_hex_chat/p2p/policy.ex:57
-#, elixir-autogen, elixir-format
-msgid "Target user must be registered"
-msgstr "Pengguna target harus didaftarkan"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:156
 #, elixir-autogen, elixir-format
@@ -217,11 +161,6 @@ msgstr "Galat tak dikenal"
 msgid "Unsupported REQUESTED-TRANSPORT: TCP"
 msgstr "TRANSport: TCP"
 
-#: lib/retro_hex_chat/p2p/policy.ex:85
-#, elixir-autogen, elixir-format
-msgid "User not available"
-msgstr "Pengguna tak tersedia"
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:122
 #, elixir-autogen, elixir-format
 msgid "Username differs from the one used previously"
@@ -232,22 +171,12 @@ msgstr "Nama pengguna berbeda dari yang sebelumnya digunakan"
 msgid "Username timestamp expired"
 msgstr "Stempel waktu pengguna kadaluarsa"
 
-#: lib/retro_hex_chat/p2p/policy.ex:95
-#, elixir-autogen, elixir-format
-msgid "You are not a participant in this session"
-msgstr "Anda bukan peserta dalam sesi ini"
-
-#: lib/retro_hex_chat/p2p/policy.ex:56
-#, elixir-autogen, elixir-format
-msgid "You must be registered to use P2P"
-msgstr "Anda harus terdaftar untuk menggunakan P2P"
-
-#: lib/retro_hex_chat/p2p/p2p.ex:103
+#: lib/retro_hex_chat/p2p/p2p.ex:67
 #, elixir-autogen, elixir-format
 msgid "stun:stun.l.google.com:19302"
 msgstr "stun: stun.l.google.com: 19302"
 
-#: lib/retro_hex_chat/p2p/p2p.ex:93
+#: lib/retro_hex_chat/p2p/p2p.ex:57
 #, elixir-autogen, elixir-format
 msgid "turn:%{relay_ip}:%{listen_port}?transport=udp"
 msgstr "turn:%{relay_ip}:%{listen_port}?transport=udp"

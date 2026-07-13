@@ -118,6 +118,46 @@ modelos extras em tempo de execucao. Os scripts protegem placeholders com tags
 pareadas, por exemplo `<ph0></ph0>`, porque esse formato e preservado melhor
 pelos modelos Argos do que sentinelas soltas.
 
+Para reparos grandes em catalogos existentes, evite uma unica chamada global de
+traducao. Ela demora mais, mistura problemas de varios idiomas e pode reutilizar
+cache com traducoes que perderam placeholders. Prefira lotes por locale e por
+familia de arquivos, validando cada lote antes de seguir:
+
+```sh
+/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_repair_placeholder_mismatches.py apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/*.po
+rm -f /tmp/retro_hex_chat_i18n_fragment_cache.json
+/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_po.py \
+  --cache /tmp/retro_hex_chat_i18n_fragment_cache.json \
+  --locales tr \
+  --protected-mode fragment \
+  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/chat.po \
+  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/dialogs.po \
+  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/group_call.po \
+  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/lobby.po \
+  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/p2p.po \
+  apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/ui.po
+mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings apps/retro_hex_chat_web/priv/gettext/tr/LC_MESSAGES/*.po
+python3 scripts/i18n_source_fallback_check.py --locales tr --fail-on-findings
+```
+
+Quando `zh_hant` entra no lote, instale tambem o conversor OpenCC no ambiente
+temporario:
+
+```sh
+/tmp/retro_hex_chat_i18n_venv/bin/python -m pip install opencc-python-reimplemented
+```
+
+Ordem recomendada para reparo:
+
+1. Rode `i18n_repair_placeholder_mismatches.py` para voltar entradas inseguras
+   ao `msgid` fonte.
+2. Traduza um locale por vez com `--protected-mode fragment` e cache dedicado.
+3. Rode `i18n_placeholder_check.exs` antes de olhar fallback. Fallback em ingles
+   e menos grave que uma traducao sem placeholder.
+4. Rode `i18n_source_fallback_check.py --locales <locale>` e resolva sobras com
+   `scripts/i18n_apply_translation_overrides.py` ou allowlist tecnica explicita.
+5. So depois rode `make i18n.catalog.check` e `make i18n.gettext.check`.
+
 Depois da traducao automatica:
 
 ```sh

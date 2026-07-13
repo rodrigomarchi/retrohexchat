@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:107
+#: lib/retro_hex_chat_web/live/help_live/index.ex:116
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} [ পাদটীকা]"
@@ -108,8 +108,12 @@ msgstr "৩) পাসওয়ার্ড লিখুন (৫ অক্ষর
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "3. On success, you join the chat already identified — the 60-second identify timer is skipped."
-msgstr "৩) সাফল্যে, আপনি ইতিমধ্যেই চ্যাটে যোগ দিয়েছেন- ৬০ সেকেন্ডের পরিচয় পাওয়া টাইমারটি বাদ পড়েছে।"
+msgid ""
+"3. On success, you join the chat already identified — the 60-second identify"
+" timer is skipped."
+msgstr ""
+"৩) সাফল্যে, আপনি ইতিমধ্যেই চ্যাটে যোগ দিয়েছেন- ৬০ সেকেন্ডের পরিচয় পাওয়া "
+"টাইমারটি বাদ পড়েছে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:13
 #, elixir-autogen, elixir-format
@@ -128,7 +132,8 @@ msgstr "৪."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "4. Your nickname is registered and you join the chat already identified."
+msgid ""
+"4. Your nickname is registered and you join the chat already identified."
 msgstr "ডাকনাম ৪."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
@@ -136,12 +141,12 @@ msgstr "ডাকনাম ৪."
 msgid "7 days"
 msgstr "৭ দিন"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:57
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:332
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
 msgstr "বক্রীম"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:89
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:122
 #, elixir-autogen, elixir-format
 msgid "Browse by category or open Help Topics from the chat menu."
 msgstr "আলাপনের ক্ষেত্রে নথিপত্র অথবা সহায়িকা প্রদর্শনের জন্য ব্রাউজ করুন।"
@@ -169,7 +174,9 @@ msgstr "চ্যানেল"
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Click a nickname in the conversations sidebar user list and select"
-msgstr "আলাপনের উইন্ডোর মধ্যে পরিচিত ব্যক্তিদের তালিকা প্রদর্শন করার জন্য একটি নাম নির্বাচন করুন"
+msgstr ""
+"আলাপনের উইন্ডোর মধ্যে পরিচিত ব্যক্তিদের তালিকা প্রদর্শন করার জন্য একটি নাম "
+"নির্বাচন করুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:28
 #, elixir-autogen, elixir-format
@@ -209,25 +216,37 @@ msgstr "লিখুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "Every nickname must be registered before entering the chat. When you connect with a new nickname, you'll be asked to choose a password to register it. On future visits, you'll enter your password to log in."
-msgstr "চ্যাটের আগে প্রতিটি ডাকনাম নিবন্ধন করতে হবে। যখন আপনি একটি নতুন ডাকনামে সংযোগ করেন, আপনাকে একটি পাসওয়ার্ড দিতে হবে। ভবিষ্যতে দেখা করতে, লগ-ইন করতে পাসওয়ার্ড লিখুন।"
+msgid ""
+"Every nickname must be registered before entering the chat. When you connect"
+" with a new nickname, you'll be asked to choose a password to register it. "
+"On future visits, you'll enter your password to log in."
+msgstr ""
+"চ্যাটের আগে প্রতিটি ডাকনাম নিবন্ধন করতে হবে। যখন আপনি একটি নতুন ডাকনামে "
+"সংযোগ করেন, আপনাকে একটি পাসওয়ার্ড দিতে হবে। ভবিষ্যতে দেখা করতে, লগ-ইন করতে "
+"পাসওয়ার্ড লিখুন।"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:59
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:79
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:51
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:53
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:334
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:348
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:374
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "সাহায্য"
 
-#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:37
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:352
 #, elixir-autogen, elixir-format
 msgid "Help Topics"
 msgstr "সহায়িকার সূচিপত্র"
 
-#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:44
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:217
 #, elixir-autogen, elixir-format
 msgid "Help navigation"
 msgstr "সহায়তা"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:106
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:54
+#: lib/retro_hex_chat_web/live/help_live/index.ex:115
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr "সাহায্য — বিপরীত লিঙ্গ"
@@ -242,7 +261,7 @@ msgstr "কি-বোর্ড শর্টকাট"
 msgid "Minimum 5 characters, maximum 100 characters"
 msgstr "সর্বোচ্চ ৫ অক্ষরবিশিষ্ট অক্ষর, শতাংশে ১০০ অক্ষর"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Msg Command"
 msgstr "Msg কমান্ড"
@@ -285,7 +304,7 @@ msgstr "ডাকনামের নিয়মাবলী"
 msgid "Nicknames not used for"
 msgstr "ডাকনাম \"%s\" এর জন্য ব্যবহৃত হয়নি"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Notices"
 msgstr "বিজ্ঞপ্তি"
@@ -305,7 +324,7 @@ msgstr "পাসওয়ার্ডের নিয়মাবলী"
 msgid "Query"
 msgstr "অনুসন্ধান"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Query Command"
 msgstr "কমান্ড অনুসন্ধান"
@@ -336,35 +355,50 @@ msgstr "নিবন্ধিত ডাকনাম"
 msgid "Registration Required"
 msgstr "পশ্চিমা"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:84
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:117
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat Help"
 msgstr "রেট্রো HoxChat সাহায্য"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat handles all authentication directly on the connection screen — no need to run"
-msgstr "রেট্রো HxChat-র সাথে সংযোগ পর্দায় সরাসরি অনুমোদন করা হয় - সংযোগের ক্ষেত্রে কোনো আবশ্যক নয়"
+msgid ""
+"RetroHexChat handles all authentication directly on the connection screen — "
+"no need to run"
+msgstr ""
+"রেট্রো HxChat-র সাথে সংযোগ পর্দায় সরাসরি অনুমোদন করা হয় - সংযোগের ক্ষেত্রে"
+" কোনো আবশ্যক নয়"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:111
+#: lib/retro_hex_chat_web/live/help_live/index.ex:120
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts."
-msgstr "রেট্রো HxChat নথি নথিপত্রের সহায়তা করে। IRC কমান্ড, চ্যানেল মোড, বৈশিষ্ট্য এবং কীবোর্ড শর্টকাট সম্পর্কে শিখুন।"
+msgid ""
+"RetroHexChat help documentation. Learn about IRC commands, channel modes, "
+"features, and keyboard shortcuts."
+msgstr ""
+"রেট্রো HxChat নথি নথিপত্রের সহায়তা করে। IRC কমান্ড, চ্যানেল মোড, বৈশিষ্ট্য "
+"এবং কীবোর্ড শর্টকাট সম্পর্কে শিখুন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
-msgstr "রেট্রো HxChat একটি ওয়েব ভিত্তিক IRC ক্লায়েন্ট যার আসল রেট্রো চেহারা ও অনুভূতি রয়েছে। এটি চ্যানেলের সমর্থন করে, ব্যক্তিগত বার্তা, টেক্সট সংকলন, nick পরিসেবা, এবং আরও অনেক।"
+msgid ""
+"RetroHexChat is a web-based IRC client with an authentic retro look and "
+"feel. It supports channels, private messages, text formatting, nick "
+"services, and much more."
+msgstr ""
+"রেট্রো HxChat একটি ওয়েব ভিত্তিক IRC ক্লায়েন্ট যার আসল রেট্রো চেহারা ও "
+"অনুভূতি রয়েছে। এটি চ্যানেলের সমর্থন করে, ব্যক্তিগত বার্তা, টেক্সট সংকলন, "
+"nick পরিসেবা, এবং আরও অনেক।"
 
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:141
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "অতিরিক্ত পাঠ"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:86
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:119
 #, elixir-autogen, elixir-format
 msgid "Select a topic from the navigation pane to get started."
 msgstr "ন্যাভিগেশন পেইন আরম্ভ করার জন্য একটি বিষয় নির্বাচন করুন।"
@@ -386,8 +420,11 @@ msgstr "এটি একটি প্রধানমন্ত্রী ট্য
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "To connect to RetroHexChat, enter a nickname on the connect screen and click"
-msgstr "রেট্রো HulaChat-র সাথে সংযোগ স্থাপন করার উদ্দেশ্যে পুরোনো উপনাম ও পর্দার মধ্যে সংযোগ স্থাপন করা হয়"
+msgid ""
+"To connect to RetroHexChat, enter a nickname on the connect screen and click"
+msgstr ""
+"রেট্রো HulaChat-র সাথে সংযোগ স্থাপন করার উদ্দেশ্যে পুরোনো উপনাম ও পর্দার "
+"মধ্যে সংযোগ স্থাপন করা হয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:11
 #, elixir-autogen, elixir-format
@@ -396,13 +433,20 @@ msgstr "ব্যবহারকারী তালিকা ব্যবহা�
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "You can send private messages to other users that only the two of you can see."
-msgstr "আপনি শুধুমাত্র যে দু'জন দেখতে পাচ্ছেন, তাদের মধ্যে আপনি ব্যক্তিগত বার্তা পাঠাতে পারেন।"
+msgid ""
+"You can send private messages to other users that only the two of you can "
+"see."
+msgstr ""
+"আপনি শুধুমাত্র যে দু'জন দেখতে পাচ্ছেন, তাদের মধ্যে আপনি ব্যক্তিগত বার্তা "
+"পাঠাতে পারেন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "are automatically freed. Connect regularly to keep your registration. See"
-msgstr "স্বয়ংক্রিয় মুক্তি। আপনার নিবন্ধন বজায় রাখার জন্য নিয়মিতভাবে যোগাযোগ করুন । দেখুন"
+msgid ""
+"are automatically freed. Connect regularly to keep your registration. See"
+msgstr ""
+"স্বয়ংক্রিয় মুক্তি। আপনার নিবন্ধন বজায় রাখার জন্য নিয়মিতভাবে যোগাযোগ করুন"
+" । দেখুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:29
 #, elixir-autogen, elixir-format
@@ -426,8 +470,12 @@ msgstr "স্বয়ং।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "to open a PM tab. You can also double-click a nickname to open a PM directly."
-msgstr "একটি প্রধানমন্ত্রী ট্যাব খোলার জন্য। সরাসরি একটি প্রধানমন্ত্রীকে খোলার জন্য আপনি দুইবার ক্লিক করতে পারেন।"
+msgid ""
+"to open a PM tab. You can also double-click a nickname to open a PM "
+"directly."
+msgstr ""
+"একটি প্রধানমন্ত্রী ট্যাব খোলার জন্য। সরাসরি একটি প্রধানমন্ত্রীকে খোলার জন্য "
+"আপনি দুইবার ক্লিক করতে পারেন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:19
 #, elixir-autogen, elixir-format
@@ -451,5 +499,103 @@ msgstr "— একটি পাসওয়ার্ড প্রম্পট �
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "— A registration form appears. Choose a password (minimum 5 characters) and confirm it. Click"
+msgid ""
+"— A registration form appears. Choose a password (minimum 5 characters) and "
+"confirm it. Click"
 msgstr "( প্রকা. পাসওয়ার্ড বেছে নিন (৫ অক্ষর) এবং নিশ্চিত করুন। ক্লিক করুন"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:35
+#, elixir-autogen, elixir-format
+msgid "%{count} topics"
+msgstr "%{count} বিষয়"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "/notice"
+msgstr "/notice"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:82
+#, elixir-autogen, elixir-format
+msgid "About RetroHexChat"
+msgstr "রেট্রোক্‌ পরিচিতি"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:40
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:171
+#, elixir-autogen, elixir-format
+msgid "Back"
+msgstr "পূর্ববর্তী"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:365
+#, elixir-autogen, elixir-format
+msgid "Back to chat"
+msgstr "%s-এ কল করুন"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:56
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:220
+#, elixir-autogen, elixir-format
+msgid "Contents"
+msgstr "বিষয়বস্তু"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"For a lightweight message that does not open a PM tab on the recipient's "
+"side, choose Send Notice from a nickname context menu or use"
+msgstr ""
+"প্রাপকদের না ফোকাসে কোন পি- জি- আই- ডি বার্তা পাঠানোর জন্য একটি মেনু থেকে "
+"নির্বাচন করুন"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:44
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:179
+#, elixir-autogen, elixir-format
+msgid "Forward"
+msgstr "ফরওয়ার্ড"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:34
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:183
+#, elixir-autogen, elixir-format
+msgid "Home"
+msgstr "হোম"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:64
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:221
+#, elixir-autogen, elixir-format
+msgid "Index"
+msgstr "সূচিপত্র"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:30
+#, elixir-autogen, elixir-format
+msgid "Navigate"
+msgstr "পরিবর্তীত"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:263
+#, elixir-autogen, elixir-format
+msgid "No topics match \"%{query}\"."
+msgstr "কোন বিষয় ম্যাচ না%{query}\"."
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Notice Command"
+msgstr "কমান্ড সংক্রান্ত বিবরণ"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:72
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:358
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "অনুসন্ধান"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:196
+#, elixir-autogen, elixir-format
+msgid "Search topics..."
+msgstr "প্রসঙ্গ অনুসন্ধান..."
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:256
+#, elixir-autogen, elixir-format
+msgid "Type in the search box to find topics."
+msgstr "অনুসন্ধানের বক্স- এর মধ্যে উপস্থিত তথ্য খুঁজুন ।"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:49
+#, elixir-autogen, elixir-format
+msgid "View"
+msgstr "প্রদর্শন"

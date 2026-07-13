@@ -11,11 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:65
-#, elixir-autogen, elixir-format
-msgid "!play"
-msgstr "弹奏"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:326
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:51
 #, elixir-autogen, elixir-format
@@ -29,20 +24,10 @@ msgstr "👨"
 msgid "👩"
 msgstr "👩"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:70
-#, elixir-autogen, elixir-format
-msgid "/game bob"
-msgstr "/game bob"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:346
 #, elixir-autogen, elixir-format
 msgid "18 classic games · Runs in your browser via WebAssembly"
 msgstr "18 个经典游戏 ^ 通过 WebAssembly 在浏览器中运行"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:388
-#, elixir-autogen, elixir-format
-msgid "28 games · Real-time sync · No server"
-msgstr "28 游戏 ^ 实时同步 ^ 没有服务器"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_frost.ex:55
 #, elixir-autogen, elixir-format
@@ -440,11 +425,6 @@ msgstr "P2P 大厅"
 msgid "P2P calls encrypted end-to-end via WebRTC"
 msgstr "P2P通过WebRTC加密端对端呼叫"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:18
-#, elixir-autogen, elixir-format
-msgid "P2P multiplayer games flow: type /game command, join lobby, select game, play via WebRTC DataChannel between two players"
-msgstr "P2P多人游戏流程:类型为/game命令,加入大堂,选择游戏,通过WebRTC DataChannel在两个玩家之间游戏"
-
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:18
 #, elixir-autogen, elixir-format
 msgid "Peer-to-peer connection diagram showing Alice and Bob connected directly via WebRTC, with the server only used for signaling"
@@ -601,11 +581,6 @@ msgstr "服务器脱离循环"
 msgid "Server never sees voice/video data"
 msgstr "服务器从未看到语音/video数据"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
-#, elixir-autogen, elixir-format
-msgid "Solo arcade flow: type !play in #games channel, pick a game from catalog, new window opens, WASM game runs in browser"
-msgstr "Solo 街机流: 类型 ! 在 #games 频道播放, 从目录中选择游戏, 新窗口打开, WASM 游戏在浏览器中运行"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:214
 #, elixir-autogen, elixir-format
 msgid "Star Duel"
@@ -735,3 +710,33 @@ msgstr "* 只连接它们"
 #, elixir-autogen, elixir-format
 msgid "· rate limiting"
 msgstr "限制费率"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:70
+#, elixir-autogen, elixir-format
+msgid "/p2p bob"
+msgstr "/p2p bob"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:388
+#, elixir-autogen, elixir-format
+msgid "34 games · Real-time sync · No server"
+msgstr "34 games · Real-time sync · No server"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:54
+#, elixir-autogen, elixir-format
+msgid "Games menu"
+msgstr "Games menu"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:18
+#, elixir-autogen, elixir-format
+msgid "P2P multiplayer games flow: type /p2p command, join lobby, select game, play via WebRTC DataChannel between two players"
+msgstr "P2P multiplayer games flow: type /p2p command, join lobby, select game, play via WebRTC DataChannel between two players"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
+#, elixir-autogen, elixir-format
+msgid "Solo arcade flow: open the Games menu and choose Arcade, pick a game from the catalog, a new window opens, WASM game runs in browser"
+msgstr "Solo arcade flow: open the Games menu and choose Arcade, pick a game from the catalog, a new window opens, WASM game runs in browser"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:65
+#, elixir-autogen, elixir-format
+msgid "▸ Arcade"
+msgstr "▸ Arcade"

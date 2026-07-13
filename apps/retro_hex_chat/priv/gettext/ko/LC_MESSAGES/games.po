@@ -41,11 +41,6 @@ msgstr "모피의 90 초"
 msgid "90 seconds to score maximum overtakes."
 msgstr "90 초 최대 절전을 점수."
 
-#: lib/retro_hex_chat/games/policy.ex:64
-#, elixir-autogen, elixir-format
-msgid "An active game session already exists with this user"
-msgstr "활성 게임 세션은 이미이 사용자와 존재"
-
 #: lib/retro_hex_chat/games/catalog.ex:372
 #, elixir-autogen, elixir-format
 msgid "Arctic construction race — jump on floating ice blocks to build your igloo. "
@@ -183,11 +178,6 @@ msgstr "총알 반송 뒤"
 msgid "Bullets ricochet once off ceiling/floor. First to 10. Best of 3 rounds."
 msgstr "Bullets ricochet 한 번 천장/floor. 첫 10. 3 라운드의 베스트."
 
-#: lib/retro_hex_chat/games/policy.ex:43
-#, elixir-autogen, elixir-format
-msgid "Cannot start a game with yourself"
-msgstr "게임을 직접 시작할 수 없습니다."
-
 #: lib/retro_hex_chat/games/catalog.ex:244
 #, elixir-autogen, elixir-format
 msgid "Classic co-op Space Invaders — two cannons fighting the same alien waves. "
@@ -258,11 +248,6 @@ msgstr "높은 noon에 끌기"
 msgid "Every point wins a game — no 15-30-40, no deuce. "
 msgstr "모든 포인트는 게임을 이깁니다 — 아니 15-30-40, 아니 저어."
 
-#: lib/retro_hex_chat/games/service.ex:125
-#, elixir-autogen, elixir-format
-msgid "Failed to create session"
-msgstr "세션 만들기"
-
 #: lib/retro_hex_chat/games/catalog.ex:422
 #, elixir-autogen, elixir-format
 msgid "Fast and brutal"
@@ -318,11 +303,6 @@ msgstr "털이 많은"
 msgid "Full set with tiebreak at 6-6. Deuce, advantage, the works."
 msgstr "6-6에 동점으로 가득 차있는 세트. Deuce, 이점, 일."
 
-#: lib/retro_hex_chat/games/policy.ex:101
-#, elixir-autogen, elixir-format
-msgid "Game session is no longer active"
-msgstr "게임 세션은 더 이상 활성화되지 않습니다"
-
 #: lib/retro_hex_chat/games/catalog.ex:279
 #, elixir-autogen, elixir-format
 msgid "Headlights only"
@@ -337,11 +317,6 @@ msgstr "길이나 벽을 파악하고 있습니다. 승리에 상대를 치료."
 #, elixir-autogen, elixir-format
 msgid "Infinite descent — the avalanche never stops accelerating. "
 msgstr "무한한 백열 - avalanche는 가속을 멈추지 않습니다."
-
-#: lib/retro_hex_chat/games/session_server.ex:173
-#, elixir-autogen, elixir-format
-msgid "Invalid transition from %{state_session_status} to %{new_status_str}"
-msgstr "잘못된 전환 %{state_session_status} 으로 %{new_status_str}"
 
 #: lib/retro_hex_chat/games/catalog.ex:353
 #, elixir-autogen, elixir-format
@@ -397,11 +372,6 @@ msgstr "훔치는, 순수한 인종"
 #, elixir-autogen, elixir-format
 msgid "No timer — first to 5 goals wins. Puck speed increases with each goal scored. "
 msgstr "타이머 없음 — 처음 5 목표 승리. Puck 속도는 각 목표 점수로 증가합니다."
-
-#: lib/retro_hex_chat/games/session_server.ex:155
-#, elixir-autogen, elixir-format
-msgid "Not a participant"
-msgstr "참여하지 않음"
 
 #: lib/retro_hex_chat/games/catalog.ex:219
 #, elixir-autogen, elixir-format
@@ -523,22 +493,6 @@ msgstr "같은 gameplay, 단축 형식. 필요 없음."
 msgid "Serve, rally, win"
 msgstr "승리, 랠리, 승리"
 
-#: lib/retro_hex_chat/games/service.ex:131
-#, elixir-autogen, elixir-format
-msgid "Session not found"
-msgstr "찾을 수 없음"
-
-#: lib/retro_hex_chat/games/service.ex:77
-#: lib/retro_hex_chat/games/session_server.ex:43
-#: lib/retro_hex_chat/games/session_server.ex:51
-#: lib/retro_hex_chat/games/session_server.ex:67
-#: lib/retro_hex_chat/games/session_server.ex:449
-#: lib/retro_hex_chat/games/session_server.ex:450
-#: lib/retro_hex_chat/games/session_server.ex:451
-#, elixir-autogen, elixir-format
-msgid "Session process not running"
-msgstr "세션 프로세스가 실행되지 않음"
-
 #: lib/retro_hex_chat/games/catalog.ex:49
 #, elixir-autogen, elixir-format
 msgid "Shots ricochet off walls — use geometry to your advantage."
@@ -553,11 +507,6 @@ msgstr "Split-screen Space Invaders - 외계인은 상대를 보강으로 파괴
 #, elixir-autogen, elixir-format
 msgid "Steal your opponent's blocks for a 2-piece swing. Best of 5 rounds with polar bears, crabs, geese, and clams."
 msgstr "상대의 블록을 2 조각 스윙에 훔칩니다. 극한 곰, 게, 게, geese, 그리고 clams와 5 라운드의 베스트."
-
-#: lib/retro_hex_chat/games/policy.ex:57
-#, elixir-autogen, elixir-format
-msgid "Target user must be registered"
-msgstr "타겟 사용자 등록"
 
 #: lib/retro_hex_chat/games/catalog.ex:438
 #, elixir-autogen, elixir-format
@@ -609,11 +558,6 @@ msgstr "중력 slingshots를 사용하지만, 너무 가까이 비행하고 스�
 msgid "Use the debris for cover — or watch it destroy you. First to 7 wins."
 msgstr "커버에 대 한 파편을 사용 하 여 - 또는 그것을 파괴. 먼저 7 승리."
 
-#: lib/retro_hex_chat/games/policy.ex:85
-#, elixir-autogen, elixir-format
-msgid "User not available"
-msgstr "사용 안함"
-
 #: lib/retro_hex_chat/games/catalog.ex:119
 #, elixir-autogen, elixir-format
 msgid "Versus Breakout battle — each player defends a brick castle with a king inside. "
@@ -648,16 +592,6 @@ msgstr "삶의 실행하기 전에 모든 블록을 파괴하기 위해 함께 �
 #, elixir-autogen, elixir-format
 msgid "Wraparound edges, hyperspace warp (20% death chance), first to 7 wins."
 msgstr "포장 가장자리, 하이퍼 스페이스 날실 (20% 죽음의 기회), 먼저 7 승리."
-
-#: lib/retro_hex_chat/games/policy.ex:95
-#, elixir-autogen, elixir-format
-msgid "You are not a participant in this game session"
-msgstr "이 게임 세션에 참여하지 않습니다."
-
-#: lib/retro_hex_chat/games/policy.ex:56
-#, elixir-autogen, elixir-format
-msgid "You must be registered to play games"
-msgstr "게임에 등록해야합니다"
 
 #: lib/retro_hex_chat/games/catalog.ex:229
 #, elixir-autogen, elixir-format

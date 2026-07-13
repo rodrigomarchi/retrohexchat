@@ -31,16 +31,6 @@ msgstr "%{prefix}%{trigger} — %{description}"
 msgid "  %{prefix}help — Show this help message"
 msgstr "Aide %{prefix} — Afficher ce message d'aide"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be identified to play. Use /ns identify <password> first."
-msgstr "%{author} : vous devez être identifié pour jouer. Utilisez d'abord /ns identify <password>."
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be registered to play. Use /ns register <password> first."
-msgstr "%{author} : vous devez être inscrit pour jouer. Utilisez d'abord /ns register <password>."
-
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:301
 #, elixir-autogen, elixir-format
 msgid "%{base} %{sign} %{modifier} = %{total}"
@@ -63,9 +53,11 @@ msgstr "%{message} (%{reason})"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
 #, elixir-autogen, elixir-format
-msgid "%{prefix}\n"
+msgid ""
+"%{prefix}\n"
 "Round over! %{scores}"
-msgstr "%{prefix}\n"
+msgstr ""
+"%{prefix}\n"
 "Manche terminée ! %{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:375
@@ -118,7 +110,9 @@ msgstr "Une seule lettre"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:185
 #, elixir-autogen, elixir-format
 msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
-msgstr "Un trivia round est déjà en cours ! Utilisez 'trivia stop' pour y mettre fin."
+msgstr ""
+"Un trivia round est déjà en cours ! Utilisez 'trivia stop' pour y mettre "
+"fin."
 
 #: lib/retro_hex_chat/bots/capabilities/game.ex:13
 #, elixir-autogen, elixir-format
@@ -165,7 +159,7 @@ msgstr "Algérie"
 msgid "Alias for roll"
 msgstr "Alias pour rouleau"
 
-#: lib/retro_hex_chat/bots/server.ex:144
+#: lib/retro_hex_chat/bots/server.ex:143
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Déjà en chaîne"
@@ -203,7 +197,8 @@ msgstr "Australie"
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:25
 #, elixir-autogen, elixir-format
 msgid "Auto-moderation — blocked words, spam/flood detection, caps filter"
-msgstr "Modération automatique — mots bloqués, détection spam/flood, filtre caps"
+msgstr ""
+"Modération automatique — mots bloqués, détection spam/flood, filtre caps"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:420
 #, elixir-autogen, elixir-format
@@ -255,7 +250,7 @@ msgstr "Aliens bleus"
 msgid "Bot destroyed"
 msgstr "Bot détruit"
 
-#: lib/retro_hex_chat/bots/server.ex:756
+#: lib/retro_hex_chat/bots/server.ex:745
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "Bot partant"
@@ -591,7 +586,9 @@ msgstr "URL non valide. Il faut commencer par http:// ou https://"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:179
 #, elixir-autogen, elixir-format
 msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
-msgstr "Notation de dés non valide '%{notation}'. Format d'utilisation: NdS, NdS+M, NdSkh/klN"
+msgstr ""
+"Notation de dés non valide '%{notation}'. Format d'utilisation: NdS, NdS+M, "
+"NdSkh/klN"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
 #, elixir-autogen, elixir-format
@@ -834,7 +831,7 @@ msgstr "Pas Sydney"
 msgid "Not Toronto"
 msgstr "Pas Toronto"
 
-#: lib/retro_hex_chat/bots/server.ex:163
+#: lib/retro_hex_chat/bots/server.ex:162
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "Pas dans le canal"
@@ -852,7 +849,9 @@ msgstr "Sur le Nil"
 #: lib/retro_hex_chat/bots/policy.ex:25
 #, elixir-autogen, elixir-format
 msgid "Only admins and server operators can manage bots"
-msgstr "Seuls les administrateurs et les opérateurs de serveur peuvent gérer les robots"
+msgstr ""
+"Seuls les administrateurs et les opérateurs de serveur peuvent gérer les "
+"robots"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:108
 #, elixir-autogen, elixir-format
@@ -1023,12 +1022,15 @@ msgstr "Saturne"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:269
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: daily at %{time} UTC in %{channel}."
-msgstr "L'annexe « %{id} » a été ajoutée : quotidiennement à %{time} UTC dans %{channel}."
+msgstr ""
+"L'annexe « %{id} » a été ajoutée : quotidiennement à %{time} UTC dans "
+"%{channel}."
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:243
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: every %{minutes}min in %{channel}."
-msgstr "L'horaire « %{id} » a été ajouté : chaque %{minutes}min dans %{channel}."
+msgstr ""
+"L'horaire « %{id} » a été ajouté : chaque %{minutes}min dans %{channel}."
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:286
 #, elixir-autogen, elixir-format
@@ -1096,20 +1098,10 @@ msgstr "Asie du Sud"
 msgid "Southern hemisphere"
 msgstr "Hémisphère Sud"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:53
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session"
-msgstr "Démarrer une séance d'arcade en solo"
-
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:138
 #, elixir-autogen, elixir-format
 msgid "Start a trivia round"
 msgstr "Commencez un tour de trivia"
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:22
-#, elixir-autogen, elixir-format
-msgid "Start solo arcade sessions with !play"
-msgstr "Commencez des séances d'arcade en solo avec !play"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
 #, elixir-autogen, elixir-format
@@ -1188,9 +1180,11 @@ msgstr "Tokyo"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
 #, elixir-autogen, elixir-format
-msgid "Trivia started! (%{category}, %{count} questions)\n"
+msgid ""
+"Trivia started! (%{category}, %{count} questions)\n"
 "%{question}"
-msgstr "Quiz lancé ! (%{category}, %{count} questions)\n"
+msgstr ""
+"Quiz lancé ! (%{category}, %{count} questions)\n"
 "%{question}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
@@ -1225,8 +1219,12 @@ msgstr "Utilisation: rss ajouter <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
 #, elixir-autogen, elixir-format
-msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
-msgstr "Utilisation: horaire ajouter intervalle <min> <#channel> <message> OU horaire ajouter quotidiennement <HH:MM> <#channel> <message>"
+msgid ""
+"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
+"daily <HH:MM> <#channel> <message>"
+msgstr ""
+"Utilisation: horaire ajouter intervalle <min> <#channel> <message> OU "
+"horaire ajouter quotidiennement <HH:MM> <#channel> <message>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
 #, elixir-autogen, elixir-format

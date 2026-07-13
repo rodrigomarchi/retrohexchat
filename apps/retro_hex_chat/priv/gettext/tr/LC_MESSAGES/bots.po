@@ -31,16 +31,6 @@ msgstr "%{prefix}%{trigger} - %{description}"
 msgid "  %{prefix}help — Show this help message"
 msgstr "%{prefix}help - Show this help message"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be identified to play. Use /ns identify <password> first."
-msgstr "%{author}: Oynamak için tanımlanmalıdır. /ns ilk önce <password>'i tanımlar."
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be registered to play. Use /ns register <password> first."
-msgstr "%{author}: Oynamak için kayıt olmalısınız. /ns kaydı <password> ilk önce."
-
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:301
 #, elixir-autogen, elixir-format
 msgid "%{base} %{sign} %{modifier} = %{total}"
@@ -63,9 +53,11 @@ msgstr "%{message} (%{reason})"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
 #, elixir-autogen, elixir-format
-msgid "%{prefix}\n"
+msgid ""
+"%{prefix}\n"
 "Round over! %{scores}"
-msgstr "%{prefix}\n"
+msgstr ""
+"%{prefix}\n"
 "Tur bitti! %{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:375
@@ -118,7 +110,9 @@ msgstr "Tek bir mektup"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:185
 #, elixir-autogen, elixir-format
 msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
-msgstr "Bir trivia turu zaten ilerliyor! Bunu sonlandırmak için 'trivia stop' kullanın."
+msgstr ""
+"Bir trivia turu zaten ilerliyor! Bunu sonlandırmak için 'trivia stop' "
+"kullanın."
 
 #: lib/retro_hex_chat/bots/capabilities/game.ex:13
 #, elixir-autogen, elixir-format
@@ -165,7 +159,7 @@ msgstr "Cezayir"
 msgid "Alias for roll"
 msgstr "Alias for roll"
 
-#: lib/retro_hex_chat/bots/server.ex:144
+#: lib/retro_hex_chat/bots/server.ex:143
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Zaten kanalda"
@@ -255,7 +249,7 @@ msgstr "Blue uzaylılar"
 msgid "Bot destroyed"
 msgstr "Bot tahrip etti"
 
-#: lib/retro_hex_chat/bots/server.ex:756
+#: lib/retro_hex_chat/bots/server.ex:745
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "Bot ayrıldı"
@@ -591,7 +585,8 @@ msgstr "Invalid URL. http:// veya https:// ile başlamalı"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:179
 #, elixir-autogen, elixir-format
 msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
-msgstr "Invalid dice notation '%{notation}'. format kullanın: NdS, NdS+M, NdSkh/klN"
+msgstr ""
+"Invalid dice notation '%{notation}'. format kullanın: NdS, NdS+M, NdSkh/klN"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
 #, elixir-autogen, elixir-format
@@ -834,7 +829,7 @@ msgstr "Sydney Değil"
 msgid "Not Toronto"
 msgstr "Değil Toronto Değil"
 
-#: lib/retro_hex_chat/bots/server.ex:163
+#: lib/retro_hex_chat/bots/server.ex:162
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "Kanalda Değil"
@@ -1096,20 +1091,10 @@ msgstr "Güney Asya"
 msgid "Southern hemisphere"
 msgstr "Güney hemisphere"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:53
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session"
-msgstr "Yalnız bir arcade seansı başlatın"
-
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:138
 #, elixir-autogen, elixir-format
 msgid "Start a trivia round"
 msgstr "Bir trivia round başlatın"
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:22
-#, elixir-autogen, elixir-format
-msgid "Start solo arcade sessions with !play"
-msgstr "solo arcade seanslarına başlayın!play"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
 #, elixir-autogen, elixir-format
@@ -1188,9 +1173,11 @@ msgstr "Tokyo Tokyo"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
 #, elixir-autogen, elixir-format
-msgid "Trivia started! (%{category}, %{count} questions)\n"
+msgid ""
+"Trivia started! (%{category}, %{count} questions)\n"
 "%{question}"
-msgstr "Trivia başladı! (%{category}, %{count} soruları)\n"
+msgstr ""
+"Trivia başladı! (%{category}, %{count} soruları)\n"
 "%{question}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
@@ -1225,8 +1212,18 @@ msgstr "Kullanım: rss add <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
 #, elixir-autogen, elixir-format
-msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
-msgstr "Kullanım: schedule add interval <min> <#channel> <message> OR programı günlük <HH:MM> <#channel> <message> <message> <message> <min> <#channel> <HH:MM> <HH:MM> <HH:MM> <#channel> <message> <message> <HH:MM> <message> <HH:MM> <message> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <#channel> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <#channel> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <#channel> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <#channel> <HH:MM> <HH:MM> XPH"
+msgid ""
+"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
+"daily <HH:MM> <#channel> <message>"
+msgstr ""
+"Kullanım: schedule add interval <min> <#channel> <message> OR programı "
+"günlük <HH:MM> <#channel> <message> <message> <message> <min> <#channel> "
+"<HH:MM> <HH:MM> <HH:MM> <#channel> <message> <message> <HH:MM> <message> "
+"<HH:MM> <message> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> "
+"<HH:MM> <#channel> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> "
+"<#channel> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> "
+"<HH:MM> <HH:MM> <HH:MM> <#channel> <HH:MM> <HH:MM> <HH:MM> <HH:MM> <HH:MM> "
+"<HH:MM> <#channel> <HH:MM> <HH:MM> XPH"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
 #, elixir-autogen, elixir-format

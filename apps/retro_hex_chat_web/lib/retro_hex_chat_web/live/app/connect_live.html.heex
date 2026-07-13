@@ -7,8 +7,6 @@
   password_error={@password_error}
   auth_token={@auth_token}
   flash={@flash}
-  locale={@locale}
-  locales={connect_locale_links()}
   csrf_token={Plug.CSRFProtection.get_csrf_token()}
   chat_session_path={~p"/chat/session"}
 />

@@ -24,6 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
   attr :nav_tab, :atom, default: :contents
   attr :search_query, :string, default: ""
   attr :search_results, :list, default: []
+  attr :canonical_path, :string, default: "/chat/help"
   slot :inner_block, required: true
 
   @spec help_layout(map()) :: Phoenix.LiveView.Rendered.t()
@@ -34,7 +35,11 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpViewer do
         <:header>
           <.app_header logo_href="/">
             <:panels>
-              <.help_menu_bar id="help-menubar" phx-hook="MenuBarHook" />
+              <.help_menu_bar
+                id="help-menubar"
+                current_path={@canonical_path}
+                phx-hook="MenuBarHook"
+              />
               <.help_status_bar
                 class="ml-auto"
                 selected_topic={@selected_topic}

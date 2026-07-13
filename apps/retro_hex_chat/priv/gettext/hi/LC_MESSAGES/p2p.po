@@ -41,20 +41,10 @@ msgstr "आवंटन पहले से ही मौजूद है"
 msgid "Allocation mismatch: allocation does not exist"
 msgstr "Allocation mismatch: आवंटन मौजूद नहीं है"
 
-#: lib/retro_hex_chat/p2p/policy.ex:64
-#, elixir-autogen, elixir-format
-msgid "An active session already exists with this user"
-msgstr "एक सक्रिय सत्र पहले से ही इस उपयोगकर्ता के साथ मौजूद है"
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:110
 #, elixir-autogen, elixir-format
 msgid "Auth failed, invalid MESSAGE-INTEGRITY"
 msgstr "Auth विफल रहा, अमान्य MESSAGE-INTEGRITY"
-
-#: lib/retro_hex_chat/p2p/policy.ex:43
-#, elixir-autogen, elixir-format
-msgid "Cannot create a session with yourself"
-msgstr "अपने आप के साथ एक सत्र नहीं बना सकता"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:149
 #, elixir-autogen, elixir-format
@@ -70,11 +60,6 @@ msgstr "चैनल नंबर अनुमति सीमा से बा�
 #, elixir-autogen, elixir-format
 msgid "EVEN-PORT unsupported"
 msgstr "EVEN-PORT असमर्थित"
-
-#: lib/retro_hex_chat/p2p/service.ex:151
-#, elixir-autogen, elixir-format
-msgid "Failed to create session"
-msgstr "सत्र बनाने में विफल"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:143
 #, elixir-autogen, elixir-format
@@ -111,16 +96,6 @@ msgstr "रिज़र्वेशन-टोकेन को डिकोड �
 msgid "Failed to decode XOR-PEER-ADDRESS"
 msgstr "XOR-PEER-ADDRESS को डिकोड करने में विफल"
 
-#: lib/retro_hex_chat/p2p/session_server.ex:168
-#, elixir-autogen, elixir-format
-msgid "Invalid transition from %{state_session_status} to %{new_status_str}"
-msgstr "से अमान्य संक्रमण %{state_session_status} to %{new_status_str}"
-
-#: lib/retro_hex_chat/p2p/session_token.ex:30
-#, elixir-autogen, elixir-format
-msgid "Missing :p2p_token_secret configuration"
-msgstr "मिसिंग: p2p token secret विन्यास"
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:140
 #, elixir-autogen, elixir-format
 msgid "No CHANNEL-NUMBER attribute"
@@ -156,11 +131,6 @@ msgstr "नहीं या विकृत REQUESTED-TRANSPORT"
 msgid "No username, nonce or realm attribute"
 msgstr "कोई उपयोगकर्ता नाम, नोस या रियल्म विशेषता नहीं"
 
-#: lib/retro_hex_chat/p2p/session_server.ex:150
-#, elixir-autogen, elixir-format
-msgid "Not a participant"
-msgstr "प्रतिभागी नहीं"
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:98
 #, elixir-autogen, elixir-format
 msgid "REQUESTED-ADDRESS-FAMILY with IPv6 unsupported"
@@ -176,36 +146,10 @@ msgstr "संदेश में आरक्षण टोकन और (EVEN-P
 msgid "RESERVATION-TOKEN unsupported"
 msgstr "संरक्षण-टोकन समर्थित"
 
-#: lib/retro_hex_chat/p2p/policy.ex:101
-#, elixir-autogen, elixir-format
-msgid "Session is no longer active"
-msgstr "सत्र अब सक्रिय नहीं है"
-
-#: lib/retro_hex_chat/p2p/service.ex:164
-#, elixir-autogen, elixir-format
-msgid "Session not found"
-msgstr "सत्र नहीं मिला"
-
-#: lib/retro_hex_chat/p2p/service.ex:92
-#: lib/retro_hex_chat/p2p/session_server.ex:46
-#: lib/retro_hex_chat/p2p/session_server.ex:54
-#: lib/retro_hex_chat/p2p/session_server.ex:70
-#: lib/retro_hex_chat/p2p/session_server.ex:460
-#: lib/retro_hex_chat/p2p/session_server.ex:461
-#: lib/retro_hex_chat/p2p/session_server.ex:462
-#, elixir-autogen, elixir-format
-msgid "Session process not running"
-msgstr "सत्र प्रक्रिया नहीं चल रही"
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:125
 #, elixir-autogen, elixir-format
 msgid "Stale nonce"
 msgstr "Stale noce"
-
-#: lib/retro_hex_chat/p2p/policy.ex:57
-#, elixir-autogen, elixir-format
-msgid "Target user must be registered"
-msgstr "लक्ष्य उपयोगकर्ता पंजीकृत होना चाहिए"
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:156
 #, elixir-autogen, elixir-format
@@ -217,11 +161,6 @@ msgstr "अज्ञात त्रुटि"
 msgid "Unsupported REQUESTED-TRANSPORT: TCP"
 msgstr "Unsupported REQUESTED-TRANSPORT: TCP"
 
-#: lib/retro_hex_chat/p2p/policy.ex:85
-#, elixir-autogen, elixir-format
-msgid "User not available"
-msgstr "उपयोगकर्ता उपलब्ध नहीं"
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:122
 #, elixir-autogen, elixir-format
 msgid "Username differs from the one used previously"
@@ -232,22 +171,20 @@ msgstr "यूज़रनेम पहले इस्तेमाल किए
 msgid "Username timestamp expired"
 msgstr "उपयोगकर्ता नाम टाइमस्टैम्प समाप्त हो गया"
 
-#: lib/retro_hex_chat/p2p/policy.ex:95
-#, elixir-autogen, elixir-format
-msgid "You are not a participant in this session"
-msgstr "आप इस सत्र में प्रतिभागी नहीं हैं"
-
-#: lib/retro_hex_chat/p2p/policy.ex:56
-#, elixir-autogen, elixir-format
-msgid "You must be registered to use P2P"
-msgstr "आप P2P का उपयोग करने के लिए पंजीकृत होना चाहिए"
-
-#: lib/retro_hex_chat/p2p/p2p.ex:103
+#: lib/retro_hex_chat/p2p/p2p.ex:67
 #, elixir-autogen, elixir-format
 msgid "stun:stun.l.google.com:19302"
 msgstr "Englishالعربية中文(简体)हिन्दी; हिंदीاردو"
 
-#: lib/retro_hex_chat/p2p/p2p.ex:93
+#: lib/retro_hex_chat/p2p/p2p.ex:57
 #, elixir-autogen, elixir-format
 msgid "turn:%{relay_ip}:%{listen_port}?transport=udp"
-msgstr "बारी:%{relay_ip}:%{listen_port}? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?"
+msgstr ""
+"बारी:%{relay_ip}:%{listen_port}? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?"
+" ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?"
+" ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?"
+" ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?"
+" ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?"
+" ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?"
+" ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ? ?"
+" ? ? ? ? ?"

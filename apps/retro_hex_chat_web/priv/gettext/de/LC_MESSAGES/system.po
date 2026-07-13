@@ -32,6 +32,15 @@ msgstr "Datenbank"
 #: lib/retro_hex_chat_web/telemetry.ex:198
 #: lib/retro_hex_chat_web/telemetry.ex:203
 #: lib/retro_hex_chat_web/telemetry.ex:209
+#: lib/retro_hex_chat_web/telemetry.ex:215
+#: lib/retro_hex_chat_web/telemetry.ex:219
+#: lib/retro_hex_chat_web/telemetry.ex:224
+#: lib/retro_hex_chat_web/telemetry.ex:229
+#: lib/retro_hex_chat_web/telemetry.ex:234
+#: lib/retro_hex_chat_web/telemetry.ex:239
+#: lib/retro_hex_chat_web/telemetry.ex:244
+#: lib/retro_hex_chat_web/telemetry.ex:249
+#: lib/retro_hex_chat_web/telemetry.ex:254
 #, elixir-autogen, elixir-format
 msgid "Domain"
 msgstr "Gebiet"
@@ -118,8 +127,11 @@ msgstr "Die Zeit für eine Datenbankverbindung"
 
 #: lib/retro_hex_chat_web/telemetry.ex:104
 #, elixir-autogen, elixir-format
-msgid "The time the connection spent waiting before being checked out for the query"
-msgstr "Die Zeit, in der die Verbindung gewartet wurde, bevor sie auf die Abfrage überprüft wurde"
+msgid ""
+"The time the connection spent waiting before being checked out for the query"
+msgstr ""
+"Die Zeit, in der die Verbindung gewartet wurde, bevor sie auf die Abfrage "
+"überprüft wurde"
 
 #: lib/retro_hex_chat_web/telemetry.ex:114
 #: lib/retro_hex_chat_web/telemetry.ex:118
@@ -318,34 +330,124 @@ msgstr "Anzahl der aktiven virtuellen Raumprozesse"
 #: lib/retro_hex_chat_web/telemetry.ex:191
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.virtual_space.active_count.value"
-msgstr "retro_hex_chat.virtual_space.active_count.value"
+msgstr "retro hex chat.virtual space.active count.value"
 
 #: lib/retro_hex_chat_web/telemetry.ex:197
 #, elixir-autogen, elixir-format
 msgid "Current virtual space participant count by channel"
-msgstr "Current virtual space participant count by channel"
+msgstr "Aktuelle virtuelle Raumteilnehmerzahl nach Kanal"
 
 #: lib/retro_hex_chat_web/telemetry.ex:202
 #, elixir-autogen, elixir-format
 msgid "Number of virtual space movement steps"
-msgstr "Number of virtual space movement steps"
+msgstr "Anzahl virtueller Raumbewegungsschritte"
 
 #: lib/retro_hex_chat_web/telemetry.ex:208
 #, elixir-autogen, elixir-format
 msgid "Virtual space movement input handling duration"
-msgstr "Virtual space movement input handling duration"
+msgstr "Virtuelle Raumbewegung Eingangshandhabungsdauer"
 
 #: lib/retro_hex_chat_web/telemetry.ex:195
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.virtual_space.participant_count.value"
-msgstr "retro_hex_chat.virtual_space.participant_count.value"
+msgstr "retro hex chat.virtual space.participant count.value"
 
 #: lib/retro_hex_chat_web/telemetry.ex:200
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.virtual_space.step.count"
-msgstr "retro_hex_chat.virtual_space.step.count"
+msgstr "retro hex chat.virtual space.step.count"
 
 #: lib/retro_hex_chat_web/telemetry.ex:205
 #, elixir-autogen, elixir-format
 msgid "retro_hex_chat.virtual_space.step.duration"
-msgstr "retro_hex_chat.virtual_space.step.duration"
+msgstr "retro hex chat.virtual space.step.duration"
+
+#: lib/retro_hex_chat_web/telemetry.ex:218
+#, elixir-autogen, elixir-format
+msgid "Number of active group-call peer processes"
+msgstr "Anzahl aktiver Gruppen-Call-Peer-Prozesse"
+
+#: lib/retro_hex_chat_web/telemetry.ex:214
+#, elixir-autogen, elixir-format
+msgid "Number of active group-call room processes"
+msgstr "Anzahl aktiver Gruppenraumprozesse"
+
+#: lib/retro_hex_chat_web/telemetry.ex:223
+#, elixir-autogen, elixir-format
+msgid "Number of group-call join attempts"
+msgstr "Anzahl der Gruppenabrufversuche"
+
+#: lib/retro_hex_chat_web/telemetry.ex:238
+#, elixir-autogen, elixir-format
+msgid "Number of group-call media state updates"
+msgstr "Anzahl der gruppenbezogenen Medien-Zustandsaktualisierungen"
+
+#: lib/retro_hex_chat_web/telemetry.ex:233
+#, elixir-autogen, elixir-format
+msgid "Number of group-call media tracks announced"
+msgstr "Anzahl der angekündigten Gruppen-Call-Medien-Tracks"
+
+#: lib/retro_hex_chat_web/telemetry.ex:243
+#, elixir-autogen, elixir-format
+msgid "Number of group-call moderator media actions"
+msgstr "Anzahl der Gruppen-Call Moderator-Medienaktionen"
+
+#: lib/retro_hex_chat_web/telemetry.ex:248
+#, elixir-autogen, elixir-format
+msgid "Number of group-call participant kick actions"
+msgstr "Anzahl der Gruppen-Call-Teilnehmer-Kickaktionen"
+
+#: lib/retro_hex_chat_web/telemetry.ex:228
+#, elixir-autogen, elixir-format
+msgid "Number of group-call participant leaves"
+msgstr "Anzahl der Teilnehmerblätter"
+
+#: lib/retro_hex_chat_web/telemetry.ex:253
+#, elixir-autogen, elixir-format
+msgid "Number of group-call rooms closed"
+msgstr "Anzahl geschlossener Gruppenräume"
+
+#: lib/retro_hex_chat_web/telemetry.ex:217
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.group_call.active_peers.value"
+msgstr "retro hex chat.group call.active peers.value"
+
+#: lib/retro_hex_chat_web/telemetry.ex:213
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.group_call.active_rooms.value"
+msgstr "retro hex chat.group call.active rooms.value"
+
+#: lib/retro_hex_chat_web/telemetry.ex:221
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.group_call.join.count"
+msgstr "zurück zur Übersicht"
+
+#: lib/retro_hex_chat_web/telemetry.ex:226
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.group_call.leave.count"
+msgstr "retro hex chat.group call.leave.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:241
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.group_call.media_moderated.count"
+msgstr "retro hex chat.group call.media moderated.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:236
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.group_call.media_state.count"
+msgstr "retro hex chat.group call.media state.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:246
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.group_call.participant_kicked.count"
+msgstr "retro hex chat.group call.participant kicked.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:251
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.group_call.room_closed.count"
+msgstr "retro hex chat.group call.room closed.count"
+
+#: lib/retro_hex_chat_web/telemetry.ex:231
+#, elixir-autogen, elixir-format
+msgid "retro_hex_chat.group_call.track_added.count"
+msgstr "retro hex chat.group call.track plus.count"

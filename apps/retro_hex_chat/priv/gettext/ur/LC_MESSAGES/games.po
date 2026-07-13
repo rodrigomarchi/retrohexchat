@@ -41,11 +41,6 @@ msgstr "غصے کے ۹۰ سیکنڈ"
 msgid "90 seconds to score maximum overtakes."
 msgstr "زیادہ اسکور کرنے میں 90 سیکنڈ لگے ۔"
 
-#: lib/retro_hex_chat/games/policy.ex:64
-#, elixir-autogen, elixir-format
-msgid "An active game session already exists with this user"
-msgstr "اس صارف کے ساتھ پہلے ہی فعال کھیل کا سیشن موجود ہے"
-
 #: lib/retro_hex_chat/games/catalog.ex:372
 #, elixir-autogen, elixir-format
 msgid "Arctic construction race — jump on floating ice blocks to build your igloo. "
@@ -183,11 +178,6 @@ msgstr "ریڑھ کی ہڈی"
 msgid "Bullets ricochet once off ceiling/floor. First to 10. Best of 3 rounds."
 msgstr "ایک بار تو اس کی چھت کو ہٹا. پہلے 10. 3 چکروں میں سے بہترین."
 
-#: lib/retro_hex_chat/games/policy.ex:43
-#, elixir-autogen, elixir-format
-msgid "Cannot start a game with yourself"
-msgstr "خود کے ساتھ کھيل شروع نهيں کر سکتا"
-
 #: lib/retro_hex_chat/games/catalog.ex:244
 #, elixir-autogen, elixir-format
 msgid "Classic co-op Space Invaders — two cannons fighting the same alien waves. "
@@ -258,11 +248,6 @@ msgstr "دوپہر کو اُونچی آواز میں پڑھیں"
 msgid "Every point wins a game — no 15-30-40, no deuce. "
 msgstr "ہر پوائنٹ ایک کھیل جیتتا ہے یعنی کوئی 15-30-40 نہیں، کوئی ڈیوس۔"
 
-#: lib/retro_hex_chat/games/service.ex:125
-#, elixir-autogen, elixir-format
-msgid "Failed to create session"
-msgstr "سیشن بنانے میں ناکامی"
-
 #: lib/retro_hex_chat/games/catalog.ex:422
 #, elixir-autogen, elixir-format
 msgid "Fast and brutal"
@@ -318,11 +303,6 @@ msgstr "غصے کے پھندے"
 msgid "Full set with tiebreak at 6-6. Deuce, advantage, the works."
 msgstr "پورا جوڑ کر 6-6 پر باندھ دیا گیا۔ ڈگری، فائدہ، کام."
 
-#: lib/retro_hex_chat/games/policy.ex:101
-#, elixir-autogen, elixir-format
-msgid "Game session is no longer active"
-msgstr "گیم سیشن اب فعال نہیں ہے"
-
 #: lib/retro_hex_chat/games/catalog.ex:279
 #, elixir-autogen, elixir-format
 msgid "Headlights only"
@@ -337,11 +317,6 @@ msgstr "ایک پیچھے یا دیوار کو مارو اور تم باہر ہ�
 #, elixir-autogen, elixir-format
 msgid "Infinite descent — the avalanche never stops accelerating. "
 msgstr "اِس کی وجہ یہ ہے کہ اِن میں سے زیادہ‌تر لوگ اِس بیماری میں مبتلا ہیں ۔"
-
-#: lib/retro_hex_chat/games/session_server.ex:173
-#, elixir-autogen, elixir-format
-msgid "Invalid transition from %{state_session_status} to %{new_status_str}"
-msgstr "غیرمتوقع تبدیلی %{state_session_status} جگہ %{new_status_str}"
 
 #: lib/retro_hex_chat/games/catalog.ex:353
 #, elixir-autogen, elixir-format
@@ -397,11 +372,6 @@ msgstr "کوئی چوری، خالص دوڑ نہیں"
 #, elixir-autogen, elixir-format
 msgid "No timer — first to 5 goals wins. Puck speed increases with each goal scored. "
 msgstr "کوئی بھی مرتبہ — پہلے 5 نشانے جیت نہیں سکتا ۔ پیک کی رفتار ہر ہدف کے ساتھ بڑھتی ہے۔"
-
-#: lib/retro_hex_chat/games/session_server.ex:155
-#, elixir-autogen, elixir-format
-msgid "Not a participant"
-msgstr "کوئی مسئلہ نہیں"
 
 #: lib/retro_hex_chat/games/catalog.ex:219
 #, elixir-autogen, elixir-format
@@ -523,22 +493,6 @@ msgstr "سب سے چھوٹا کھیل کھیل، مختصر شکل. کسی بھ�
 msgid "Serve, rally, win"
 msgstr "خدمت، ریلی، جیت،"
 
-#: lib/retro_hex_chat/games/service.ex:131
-#, elixir-autogen, elixir-format
-msgid "Session not found"
-msgstr "غلطی نہیں پائی گئی"
-
-#: lib/retro_hex_chat/games/service.ex:77
-#: lib/retro_hex_chat/games/session_server.ex:43
-#: lib/retro_hex_chat/games/session_server.ex:51
-#: lib/retro_hex_chat/games/session_server.ex:67
-#: lib/retro_hex_chat/games/session_server.ex:449
-#: lib/retro_hex_chat/games/session_server.ex:450
-#: lib/retro_hex_chat/games/session_server.ex:451
-#, elixir-autogen, elixir-format
-msgid "Session process not running"
-msgstr "کارکردگی کا عمل"
-
 #: lib/retro_hex_chat/games/catalog.ex:49
 #, elixir-autogen, elixir-format
 msgid "Shots ricochet off walls — use geometry to your advantage."
@@ -553,11 +507,6 @@ msgstr "settle-creen Space Invaders — غیر جانبدار افراد آپ ا
 #, elixir-autogen, elixir-format
 msgid "Steal your opponent's blocks for a 2-piece swing. Best of 5 rounds with polar bears, crabs, geese, and clams."
 msgstr "اپنے مخالف کے بلاکوں کو ایک 2 سے اوپر رکھیں. پولُس رسول نے اِس سلسلے میں کہا : ” مَیں نے اِس بات پر غور کِیا کہ مَیں اُن کی مدد کیسے کر سکتا ہوں ۔"
-
-#: lib/retro_hex_chat/games/policy.ex:57
-#, elixir-autogen, elixir-format
-msgid "Target user must be registered"
-msgstr "نئے صارف کو رجسٹر کرنا لازمی ہے"
 
 #: lib/retro_hex_chat/games/catalog.ex:438
 #, elixir-autogen, elixir-format
@@ -609,11 +558,6 @@ msgstr "کشش ثقل (graphic graphics) استعمال کریں، لیکن پر
 msgid "Use the debris for cover — or watch it destroy you. First to 7 wins."
 msgstr "اِس کی وجہ یہ ہے کہ اِس کا مطلب ہے کہ اِس کی وجہ سے اِسے تباہ کر دیا جاتا ہے ۔ سب سے پہلے 7 فتح حاصل کی۔"
 
-#: lib/retro_hex_chat/games/policy.ex:85
-#, elixir-autogen, elixir-format
-msgid "User not available"
-msgstr "صارف دستیاب نہیں ہے"
-
 #: lib/retro_hex_chat/games/catalog.ex:119
 #, elixir-autogen, elixir-format
 msgid "Versus Breakout battle — each player defends a brick castle with a king inside. "
@@ -648,16 +592,6 @@ msgstr "زندگی سے نکلنے سے پہلے تمام بلاکوں کو تب
 #, elixir-autogen, elixir-format
 msgid "Wraparound edges, hyperspace warp (20% death chance), first to 7 wins."
 msgstr "سب سے پہلے 7 سے 7 جیتنے کا موقع ۔"
-
-#: lib/retro_hex_chat/games/policy.ex:95
-#, elixir-autogen, elixir-format
-msgid "You are not a participant in this game session"
-msgstr "آپ اس کھیل سیشن میں حد سے تجاوز نہیں کر رہے ہیں"
-
-#: lib/retro_hex_chat/games/policy.ex:56
-#, elixir-autogen, elixir-format
-msgid "You must be registered to play games"
-msgstr "کھیل کود کے لیے آپ کو نامزد کرنا ہوگا"
 
 #: lib/retro_hex_chat/games/catalog.ex:229
 #, elixir-autogen, elixir-format

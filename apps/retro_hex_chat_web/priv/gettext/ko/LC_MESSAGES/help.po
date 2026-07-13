@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:107
+#: lib/retro_hex_chat_web/live/help_live/index.ex:116
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} — RetroHexChat 도움말"
@@ -108,7 +108,9 @@ msgstr "3. 비밀번호(최소 5자)를 선택하고 클릭"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "3. On success, you join the chat already identified — the 60-second identify timer is skipped."
+msgid ""
+"3. On success, you join the chat already identified — the 60-second identify"
+" timer is skipped."
 msgstr "3. 성공에, 당신은 이미 확인된 채팅에 가입 — 60 초 식별 타이머는 건너 뛰기."
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:13
@@ -128,7 +130,8 @@ msgstr "4. 사용"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "4. Your nickname is registered and you join the chat already identified."
+msgid ""
+"4. Your nickname is registered and you join the chat already identified."
 msgstr "4. 당신의 별명은 등록되고 당신은 이미 확인된 채팅에 가입합니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
@@ -136,12 +139,12 @@ msgstr "4. 당신의 별명은 등록되고 당신은 이미 확인된 채팅에
 msgid "7 days"
 msgstr "7 일"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:57
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:332
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
 msgstr "회사 소개"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:89
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:122
 #, elixir-autogen, elixir-format
 msgid "Browse by category or open Help Topics from the chat menu."
 msgstr "카테고리로 검색하거나 채팅 메뉴에서 도움말 주제를 엽니다."
@@ -209,25 +212,36 @@ msgstr "이름 *"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "Every nickname must be registered before entering the chat. When you connect with a new nickname, you'll be asked to choose a password to register it. On future visits, you'll enter your password to log in."
-msgstr "모든 별명은 채팅을 입력하기 전에 등록해야합니다. 새로운 별명을 연결하면 암호를 선택하여 등록할 수 있습니다. 미래 방문에 로그인하려면 암호를 입력합니다."
+msgid ""
+"Every nickname must be registered before entering the chat. When you connect"
+" with a new nickname, you'll be asked to choose a password to register it. "
+"On future visits, you'll enter your password to log in."
+msgstr ""
+"모든 별명은 채팅을 입력하기 전에 등록해야합니다. 새로운 별명을 연결하면 암호를 선택하여 등록할 수 있습니다. 미래 방문에 로그인하려면 "
+"암호를 입력합니다."
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:59
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:79
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:51
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:53
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:334
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:348
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:374
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "지원하다"
 
-#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:37
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:352
 #, elixir-autogen, elixir-format
 msgid "Help Topics"
 msgstr "도움말 주제"
 
-#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:44
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:217
 #, elixir-autogen, elixir-format
 msgid "Help navigation"
 msgstr "회사 소개"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:106
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:54
+#: lib/retro_hex_chat_web/live/help_live/index.ex:115
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr "도움말 — RetroHexChat"
@@ -242,7 +256,7 @@ msgstr "키보드 단축키"
 msgid "Minimum 5 characters, maximum 100 characters"
 msgstr "최소 5자, 최대 100자"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Msg Command"
 msgstr "Msg 명령"
@@ -285,7 +299,7 @@ msgstr "Nickname 규칙"
 msgid "Nicknames not used for"
 msgstr "Nicknames에 사용되지 않음"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Notices"
 msgstr "공지사항"
@@ -305,7 +319,7 @@ msgstr "비밀번호 규칙"
 msgid "Query"
 msgstr "글쓰기"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Query Command"
 msgstr "Query 명령"
@@ -336,35 +350,45 @@ msgstr "관련 별명"
 msgid "Registration Required"
 msgstr "등록 필수"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:84
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:117
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat Help"
 msgstr "RetroHexChat 도움말"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat handles all authentication directly on the connection screen — no need to run"
+msgid ""
+"RetroHexChat handles all authentication directly on the connection screen — "
+"no need to run"
 msgstr "RetroHexChat은 연결 화면에 직접 모든 인증을 처리합니다 — 실행할 필요가 없습니다"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:111
+#: lib/retro_hex_chat_web/live/help_live/index.ex:120
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts."
+msgid ""
+"RetroHexChat help documentation. Learn about IRC commands, channel modes, "
+"features, and keyboard shortcuts."
 msgstr "RetroHexChat 도움말 문서. IRC 명령, 채널 모드, 기능, 키보드 단축키에 대해 알아보세요."
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
-msgstr "RetroHexChat은 웹 기반 IRC 클라이언트로 정통 복고풍과 느낌. 그것은 채널, 개인 메시지, 텍스트 포맷, 니켈 서비스, 훨씬 더 지원합니다."
+msgid ""
+"RetroHexChat is a web-based IRC client with an authentic retro look and "
+"feel. It supports channels, private messages, text formatting, nick "
+"services, and much more."
+msgstr ""
+"RetroHexChat은 웹 기반 IRC 클라이언트로 정통 복고풍과 느낌. 그것은 채널, 개인 메시지, 텍스트 포맷, 니켈 서비스, 훨씬"
+" 더 지원합니다."
 
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:141
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "더 보기"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:86
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:119
 #, elixir-autogen, elixir-format
 msgid "Select a topic from the navigation pane to get started."
 msgstr "탐색 창에서 주제를 선택하여 시작하십시오."
@@ -386,7 +410,8 @@ msgstr "PM 탭을 엽니다. 또는 단일 메시지를 보냅니다:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "To connect to RetroHexChat, enter a nickname on the connect screen and click"
+msgid ""
+"To connect to RetroHexChat, enter a nickname on the connect screen and click"
 msgstr "RetroHexChat에 연결하려면 연결 화면에 별명을 입력하고 클릭"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:11
@@ -396,12 +421,15 @@ msgstr "사용자 목록 사용"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "You can send private messages to other users that only the two of you can see."
+msgid ""
+"You can send private messages to other users that only the two of you can "
+"see."
 msgstr "당신은 볼 수있는 두 개의 다른 사용자에게 개인 메시지를 보낼 수 있습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "are automatically freed. Connect regularly to keep your registration. See"
+msgid ""
+"are automatically freed. Connect regularly to keep your registration. See"
 msgstr "자동으로 자유롭습니다. 자주 묻는 질문 이름 *"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:29
@@ -426,7 +454,9 @@ msgstr "수동."
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "to open a PM tab. You can also double-click a nickname to open a PM directly."
+msgid ""
+"to open a PM tab. You can also double-click a nickname to open a PM "
+"directly."
 msgstr "PM 탭을 엽니다. 오후를 직접 열려면 별명을 두 번 클릭 할 수 있습니다."
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:19
@@ -451,5 +481,101 @@ msgstr "— 암호 프롬프트가 나타납니다. 비밀번호 입력"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "— A registration form appears. Choose a password (minimum 5 characters) and confirm it. Click"
+msgid ""
+"— A registration form appears. Choose a password (minimum 5 characters) and "
+"confirm it. Click"
 msgstr "— 등록 양식이 나타납니다. 비밀번호 (최소 5자)를 선택하고 확인합니다. 이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:35
+#, elixir-autogen, elixir-format
+msgid "%{count} topics"
+msgstr "%{count} 주제"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "/notice"
+msgstr "/notice"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:82
+#, elixir-autogen, elixir-format
+msgid "About RetroHexChat"
+msgstr "RetroHexChat 소개"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:40
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:171
+#, elixir-autogen, elixir-format
+msgid "Back"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:365
+#, elixir-autogen, elixir-format
+msgid "Back to chat"
+msgstr "채팅하기"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:56
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:220
+#, elixir-autogen, elixir-format
+msgid "Contents"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"For a lightweight message that does not open a PM tab on the recipient's "
+"side, choose Send Notice from a nickname context menu or use"
+msgstr "수신자의 측에 PM 탭을 열지 않는 경량 메시지의 경우, 별명 컨텍스트 메뉴에서 알림을 선택하거나 사용"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:44
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:179
+#, elixir-autogen, elixir-format
+msgid "Forward"
+msgstr "제품정보"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:34
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:183
+#, elixir-autogen, elixir-format
+msgid "Home"
+msgstr "홈 > 제품"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:64
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:221
+#, elixir-autogen, elixir-format
+msgid "Index"
+msgstr "주요사업"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:30
+#, elixir-autogen, elixir-format
+msgid "Navigate"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:263
+#, elixir-autogen, elixir-format
+msgid "No topics match \"%{query}\"."
+msgstr "주제 일치하지 \"%{query}\"."
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Notice Command"
+msgstr "공지사항"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:72
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:358
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:196
+#, elixir-autogen, elixir-format
+msgid "Search topics..."
+msgstr "검색 주제..."
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:256
+#, elixir-autogen, elixir-format
+msgid "Type in the search box to find topics."
+msgstr "검색 상자에 입력하여 주제를 찾을 수 있습니다."
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:49
+#, elixir-autogen, elixir-format
+msgid "View"
+msgstr "- 연혁"

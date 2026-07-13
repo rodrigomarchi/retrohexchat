@@ -52,6 +52,48 @@ defmodule RetroHexChatWeb.LandingLiveTest do
     end
   end
 
+  describe "public locale negotiation" do
+    test "redirects first visits to the browser's localized public URL", %{conn: conn} do
+      conn =
+        conn
+        |> put_req_header("accept-language", "pt-BR,pt;q=0.9,en;q=0.8")
+        |> get("/features")
+
+      assert redirected_to(conn) == "/pt-BR/features"
+      assert get_session(conn, :locale) == "pt_BR"
+    end
+
+    test "redirects unprefixed public pages to an existing non-default preference", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{locale: "pt_BR"})
+        |> put_req_header("accept-language", "en-US,en;q=0.9")
+        |> get("/features")
+
+      assert redirected_to(conn) == "/pt-BR/features"
+      assert get_session(conn, :locale) == "pt_BR"
+    end
+
+    test "localized public pages save the locale preference", %{conn: conn} do
+      conn =
+        conn
+        |> init_test_session(%{})
+        |> get("/pt-BR/features")
+
+      assert html_response(conn, 200) =~ ~s(lang="pt-BR")
+      assert get_session(conn, :locale) == "pt_BR"
+    end
+
+    test "does not redirect sitemap requests by browser locale", %{conn: conn} do
+      conn =
+        conn
+        |> put_req_header("accept-language", "pt-BR,pt;q=0.9,en;q=0.8")
+        |> get("/sitemap.xml")
+
+      assert response(conn, 200) =~ "<urlset"
+    end
+  end
+
   describe "static win98 taskbar" do
     for {path, _heading_id} <- @landing_pages do
       test "GET #{path} renders the taskbar, start menu and page links", %{conn: conn} do

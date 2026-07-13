@@ -11,12 +11,12 @@
 msgid ""
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:594
+#: lib/retro_hex_chat/commands/handlers/bot.ex:576
 #, elixir-autogen, elixir-format
 msgid "  %{command_prefix}%{bot_name} %{trigger} — %{cmd_description_cmd_response}%{status}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:717
+#: lib/retro_hex_chat/commands/handlers/bot.ex:699
 #, elixir-autogen, elixir-format
 msgid "  %{name} [%{status}] — %{description}"
 msgstr ""
@@ -51,7 +51,7 @@ msgstr ""
 msgid "  Created by: %{created_by}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:745
+#: lib/retro_hex_chat/commands/handlers/bot.ex:727
 #, elixir-autogen, elixir-format
 msgid "  Description: %{desc}"
 msgstr ""
@@ -71,12 +71,12 @@ msgstr ""
 msgid "  Status: %{status}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:541
+#: lib/retro_hex_chat/commands/handlers/bot.ex:523
 #, elixir-autogen, elixir-format
 msgid "%{cap_name}.%{field} set to %{display}."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:732
+#: lib/retro_hex_chat/commands/handlers/bot.ex:714
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr ""
@@ -1059,7 +1059,7 @@ msgstr ""
 msgid "Add an auto-respond rule"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr ""
@@ -1067,11 +1067,6 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/announce.ex:39
 #, elixir-autogen, elixir-format
 msgid "Announcement sent to all users."
-msgstr ""
-
-#: lib/retro_hex_chat/commands/handlers/bot.ex:515
-#, elixir-autogen, elixir-format
-msgid "Arcade capability disabled."
 msgstr ""
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:208
@@ -1104,7 +1099,7 @@ msgstr ""
 msgid "Ban user from channel"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:69
+#: lib/retro_hex_chat/commands/registry.ex:68
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr ""
@@ -1141,7 +1136,7 @@ msgstr ""
 msgid "Change your display name. A confirmation dialog appears before the change takes effect.\nRules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\nAllowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\nCannot change to your current nickname or one already in use."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:70
+#: lib/retro_hex_chat/commands/registry.ex:69
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr ""
@@ -1217,7 +1212,7 @@ msgstr ""
 msgid "Command name to view detailed help"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr ""
@@ -1434,11 +1429,6 @@ msgstr ""
 msgid "Invite only"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:18
-#, elixir-autogen, elixir-format
-msgid "Join #games and type !play to start an arcade session."
-msgstr ""
-
 #: lib/retro_hex_chat/commands/handlers/mode.ex:165
 #, elixir-autogen, elixir-format
 msgid "Key"
@@ -1614,7 +1604,7 @@ msgstr ""
 msgid "No MOTD has been set."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:715
+#: lib/retro_hex_chat/commands/handlers/bot.ex:697
 #, elixir-autogen, elixir-format
 msgid "No description"
 msgstr ""
@@ -1640,12 +1630,12 @@ msgstr ""
 msgid "Notices are always routed to the active window."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:714
+#: lib/retro_hex_chat/commands/handlers/bot.ex:696
 #, elixir-autogen, elixir-format
 msgid "OFF"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:714
+#: lib/retro_hex_chat/commands/handlers/bot.ex:696
 #, elixir-autogen, elixir-format
 msgid "ON"
 msgstr ""
@@ -1780,11 +1770,6 @@ msgstr ""
 msgid "Register your nickname with a password"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:42
-#, elixir-autogen, elixir-format
-msgid "Regular users should type !play in #games instead.\n"
-msgstr ""
-
 #: lib/retro_hex_chat/commands/handlers/unban.ex:71
 #, elixir-autogen, elixir-format
 msgid "Remove a ban from a user, allowing them to rejoin the channel."
@@ -1886,11 +1871,6 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/knock.ex:63
 #, elixir-autogen, elixir-format
 msgid "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\nChannel name must start with #."
-msgstr ""
-
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:43
-#, elixir-autogen, elixir-format
-msgid "Requires: server administrator, registered and identified."
 msgstr ""
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:53
@@ -2071,16 +2051,6 @@ msgstr ""
 msgid "Show your notify list"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:41
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session (admin-only debug command).\n"
-msgstr ""
-
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:60
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session (admin-only). Regular users: type !play in #games."
-msgstr ""
-
 #: lib/retro_hex_chat/commands/handlers/timer.ex:108
 #, elixir-autogen, elixir-format
 msgid "Stop a running timer"
@@ -2169,11 +2139,6 @@ msgstr ""
 msgid "Target user"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:17
-#, elixir-autogen, elixir-format
-msgid "This command is reserved for administrators. "
-msgstr ""
-
 #: lib/retro_hex_chat/commands/handlers/slow.ex:75
 #, elixir-autogen, elixir-format
 msgid "Throttle interval in seconds (0 to disable)"
@@ -2239,7 +2204,7 @@ msgstr ""
 msgid "Unknown admin subcommand: %{subcmd}. Try: server, user, channel, ns, cs, debug, log, turn, nuke"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:524
+#: lib/retro_hex_chat/commands/handlers/bot.ex:506
 #, elixir-autogen, elixir-format
 msgid "Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, farewell, "
 msgstr ""
@@ -2526,7 +2491,7 @@ msgstr ""
 msgid "Usage: /whowas <nickname>"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:70
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr ""
@@ -2737,11 +2702,6 @@ msgstr ""
 msgid "You must be identified to use /p2p."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:73
-#, elixir-autogen, elixir-format
-msgid "You must be identified to use /singleplayer."
-msgstr ""
-
 #: lib/retro_hex_chat/commands/policy.ex:27
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use this command"
@@ -2758,11 +2718,6 @@ msgstr ""
 msgid "You must be in a channel to use this command."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:77
-#, elixir-autogen, elixir-format
-msgid "You must be registered to play arcade games."
-msgstr ""
-
 #: lib/retro_hex_chat/commands/handlers/transfer.ex:75
 #: lib/retro_hex_chat/commands/policy.ex:51
 #, elixir-autogen, elixir-format
@@ -2775,7 +2730,7 @@ msgstr ""
 msgid "[BotService] %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:579
+#: lib/retro_hex_chat/commands/handlers/bot.ex:561
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{name} has no custom commands."
 msgstr ""
@@ -2816,9 +2771,9 @@ msgstr ""
 #: lib/retro_hex_chat/commands/handlers/bot.ex:290
 #: lib/retro_hex_chat/commands/handlers/bot.ex:311
 #: lib/retro_hex_chat/commands/handlers/bot.ex:334
-#: lib/retro_hex_chat/commands/handlers/bot.ex:567
-#: lib/retro_hex_chat/commands/handlers/bot.ex:609
-#: lib/retro_hex_chat/commands/handlers/bot.ex:643
+#: lib/retro_hex_chat/commands/handlers/bot.ex:549
+#: lib/retro_hex_chat/commands/handlers/bot.ex:591
+#: lib/retro_hex_chat/commands/handlers/bot.ex:625
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' not found."
 msgstr ""
@@ -2828,27 +2783,27 @@ msgstr ""
 msgid "[BotService] Bot Info: %{name}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:707
+#: lib/retro_hex_chat/commands/handlers/bot.ex:689
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bots:"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:652
+#: lib/retro_hex_chat/commands/handlers/bot.ex:634
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed from %{name}."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:621
+#: lib/retro_hex_chat/commands/handlers/bot.ex:603
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' set for %{name}."
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:585
+#: lib/retro_hex_chat/commands/handlers/bot.ex:567
 #, elixir-autogen, elixir-format
 msgid "[BotService] Commands for %{bot_name}:"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:631
+#: lib/retro_hex_chat/commands/handlers/bot.ex:613
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to add command '%{trigger}': %{message}"
 msgstr ""
@@ -2858,7 +2813,7 @@ msgstr ""
 msgid "[BotService] Failed to create bot: %{message}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:703
+#: lib/retro_hex_chat/commands/handlers/bot.ex:685
 #, elixir-autogen, elixir-format
 msgid "[BotService] No bots configured."
 msgstr ""
@@ -2903,12 +2858,7 @@ msgstr ""
 msgid "[NickServ] %{nickname}: registered %{registered_at}, identified: %{identified}"
 msgstr ""
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:518
-#, elixir-autogen, elixir-format
-msgid "arcade_enabled must be: true or false."
-msgstr ""
-
-#: lib/retro_hex_chat/commands/handlers/bot.ex:529
+#: lib/retro_hex_chat/commands/handlers/bot.ex:511
 #, elixir-autogen, elixir-format
 msgid "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*"
 msgstr ""

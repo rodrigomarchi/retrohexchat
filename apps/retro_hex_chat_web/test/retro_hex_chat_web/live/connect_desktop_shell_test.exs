@@ -43,11 +43,19 @@ defmodule RetroHexChatWeb.ConnectDesktopShellTest do
       refute has_element?(view, "#connect-status-clock")
     end
 
-    test "the sign-in form and locale switcher live inside the window body", %{conn: conn} do
+    test "the sign-in form stays in the window body and language lives in the menu bar", %{
+      conn: conn
+    } do
       {:ok, view, _html} = live(conn, "/connect")
 
       assert has_element?(view, ~s([data-window-id="connect"] form[phx-submit="connect"]))
-      assert has_element?(view, ~s([data-window-id="connect"] [data-testid="locale-switcher"]))
+      refute has_element?(view, ~s([data-window-id="connect"] [data-testid="locale-switcher"]))
+      assert has_element?(view, ~s(#menubar [data-testid="language-menu-item-pt_BR"]))
+
+      assert has_element?(
+               view,
+               ~s(#menubar [data-testid="language-menu-item-pt_BR"] a[href^="/locale/pt_BR"])
+             )
     end
 
     test "the sign-in flow works inside the desktop shell", %{conn: conn} do

@@ -160,15 +160,10 @@ msgstr "Chào mừng đến với"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:96
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:178
 #, elixir-autogen, elixir-format
 msgid "/bot"
 msgstr "/bot"
-
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
-msgstr "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:83
@@ -176,7 +171,7 @@ msgstr "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:98
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:87
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:186
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:190
 #, elixir-autogen, elixir-format
 msgid "/bot Command Reference"
 msgstr "/bot Command Reference"
@@ -215,11 +210,6 @@ msgstr "/bot create GreeterBot Welcomes new users"
 #, elixir-autogen, elixir-format
 msgid "/bot destroy GreeterBot"
 msgstr "/bot destroy GreeterBot"
-
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:58
-#, elixir-autogen, elixir-format
-msgid "/bot enable GreeterBot /bot disable GreeterBot #random"
-msgstr "/bot enable GreeterBot /bot disable GreeterBot #random"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:42
 #, elixir-autogen, elixir-format
@@ -328,8 +318,8 @@ msgstr "Câu trả lời rất nhạy cảm."
 msgid "Available trivia categories:"
 msgstr "Phân loại tiểu sử sẵn sàng:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:109
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:189
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
 #, elixir-autogen, elixir-format
 msgid "Bot Custom Commands"
 msgstr "Lệnh riêng Bot"
@@ -364,7 +354,7 @@ msgstr "Độ nguội được áp dụng — Những lời cầu khẩn nhanh c
 msgid "Bot names must be 2–16 characters, unique"
 msgstr "Tên Bot phải là 2–16 ký tự, độc nhất"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:106
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:109
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:106
@@ -396,7 +386,7 @@ msgid "Categories"
 msgstr "Loại"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:108
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:196
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:200
 #, elixir-autogen, elixir-format
 msgid "ChanServ"
 msgstr "ChanServ"
@@ -464,9 +454,9 @@ msgstr "Mô tả"
 msgid "Detection Types"
 msgstr "Kiểu phát hiện"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:114
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:191
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:195
 #, elixir-autogen, elixir-format
 msgid "Dice"
 msgstr "Chất nhuộm"
@@ -586,9 +576,9 @@ msgstr "Name"
 msgid "Managing via Dialog"
 msgstr "Quản lý thông qua hộp thoại"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:195
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:199
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "Bộ điều khiển"
@@ -674,9 +664,9 @@ msgstr "Mở hộp thoại quản lý Bot"
 msgid "Polling timers automatically reschedule after each poll"
 msgstr "Tự động xếp lại thời gian sau mỗi cuộc thăm dò"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:114
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:117
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:194
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:198
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "Name"
@@ -727,9 +717,9 @@ msgstr "Đang chạy"
 msgid "Schedule Types"
 msgstr "Kiểu lịch"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:113
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:116
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:61
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:197
 #, elixir-autogen, elixir-format
 msgid "Scheduler"
 msgstr "Bộ lập lịch"
@@ -751,7 +741,7 @@ msgstr "Name"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:84
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:184
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:185
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "Xem cũng"
@@ -864,9 +854,9 @@ msgstr "Công cụ quản lý Bot Bot"
 msgid "Triggers must be unique per bot (case-sensitive)"
 msgstr "Các bộ gây nên phải là duy nhất trên mỗi robot (nhật tự)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:115
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:192
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:196
 #, elixir-autogen, elixir-format
 msgid "Trivia"
 msgstr "Trivia"
@@ -915,11 +905,6 @@ msgstr "theo mặc định) và tên robot cần thiết trước khi dùng từ
 #, elixir-autogen, elixir-format
 msgid "capability — it processes every message before active capabilities (like dice or trivia). This means:"
 msgstr "Khả năng — nó xử lý mọi thông điệp trước khả năng hoạt động (như súc sắc hoặc chuyện tầm phào). Nghĩa là:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:3
-#, elixir-autogen, elixir-format
-msgid "command lets admins and server operators create, configure, and manage bots. Regular users can view bot info and list available commands."
-msgstr "lệnh cho phép các quản lý quảng cáo và máy chủ tạo, cấu hình và quản lý robot. Người dùng thường có thể xem thông tin robot và danh sách các lệnh sẵn sàng."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:21
 #, elixir-autogen, elixir-format
@@ -1189,11 +1174,6 @@ msgstr "- Hiển thị chi tiết về một robot. Sẵn sàng cho mọi ngư�
 msgid "— Spam detection threshold (default: 3)"
 msgstr "— ngưỡng phát hiện thư rác (mặc định: 3)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:53
-#, elixir-autogen, elixir-format
-msgid "— Toggle a bot globally, or just for a specific channel."
-msgstr "— Bật tắt một con robot toàn cầu, hoặc chỉ cho một kênh cụ thể."
-
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "— the bot's command prefix"
@@ -1354,11 +1334,6 @@ msgstr "lệnh mà danh sách các lệnh sẵn sàng"
 msgid "commands with configurable responses"
 msgstr "lệnh với câu trả lời cấu hình được"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
-#, elixir-autogen, elixir-format
-msgid "menu or by typing"
-msgstr "trình đơn hay gõ"
-
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "prefix and are grouped below regular users. They can be kicked or banned from channels like normal users."
@@ -1384,7 +1359,7 @@ msgstr "để bắt đầu một vòng"
 msgid "to roll dice"
 msgstr "lăn xúc xắc"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:178
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:179
 #, elixir-autogen, elixir-format
 msgid "with no arguments (admin only). The dialog shows all bots with a split-view: select a bot on the left to see its details, channels, commands, and event hooks on the right."
 msgstr "không có đối số (chỉ có quyền). Hộp thoại hiển thị tất cả các robot với một xem riêng: chọn một robot bên trái để xem chi tiết, kênh, lệnh, và móc sự kiện bên phải."
@@ -1488,3 +1463,34 @@ msgstr "— người dùng- xác định"
 #, elixir-autogen, elixir-format
 msgid "— welcomes users when they join a channel, optionally says goodbye on part"
 msgstr "— chào đón người dùng khi họ tham gia một kênh, một cách tùy chọn nói lời tạm biệt một phần"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> /bot disable <bot> /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
+msgstr "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> /bot disable <bot> /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "/bot enable GreeterBot /bot disable GreeterBot"
+msgstr "/bot enable GreeterBot /bot disable GreeterBot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:188
+#, elixir-autogen, elixir-format
+msgid "Bot Management Dialog"
+msgstr "Hộp thoại quản lý Bot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "command lets admins and server operators create, configure, and manage bots. Running /bot with no arguments opens Bot Management for admins, while regular users see the bot list."
+msgstr "command lets admins and server operators create, configure, and manage bots. Running /bot with no arguments opens Bot Management for admins, while regular users see the bot list."
+
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
+#, elixir-autogen, elixir-format
+msgid "menu, the toolbar Options dropdown, or by typing"
+msgstr "menu, the toolbar Options dropdown, or by typing"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "— Toggle a bot globally."
+msgstr "— Toggle a bot globally."

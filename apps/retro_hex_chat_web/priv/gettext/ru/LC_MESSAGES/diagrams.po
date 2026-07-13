@@ -11,11 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:65
-#, elixir-autogen, elixir-format
-msgid "!play"
-msgstr "играть"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:326
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:51
 #, elixir-autogen, elixir-format
@@ -29,20 +24,10 @@ msgstr "👨"
 msgid "👩"
 msgstr "👩"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:70
-#, elixir-autogen, elixir-format
-msgid "/game bob"
-msgstr "/game bob"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:346
 #, elixir-autogen, elixir-format
 msgid "18 classic games · Runs in your browser via WebAssembly"
 msgstr "18 классических игр · Запускается в браузере через WebAssembly"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:388
-#, elixir-autogen, elixir-format
-msgid "28 games · Real-time sync · No server"
-msgstr "28 игр · Синхронизация в реальном времени · Отсутствие сервера"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_frost.ex:55
 #, elixir-autogen, elixir-format
@@ -84,8 +69,10 @@ msgstr "БАСС"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_breakout.ex:20
 #, elixir-autogen, elixir-format
-msgid "Block Breakers game screen: two paddles with colored block rows between them"
-msgstr "Игровой экран Block Breakers: два весла с цветными рядами блоков между ними"
+msgid ""
+"Block Breakers game screen: two paddles with colored block rows between them"
+msgstr ""
+"Игровой экран Block Breakers: два весла с цветными рядами блоков между ними"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:344
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:73
@@ -220,23 +207,34 @@ msgstr "Экран игры Hex Boxing: два боксёра на ринге, �
 
 #: lib/retro_hex_chat_web/components/diagrams/game_enduro.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Enduro game screen: pseudo-3D road with two racing cars and AI traffic"
-msgstr "Игровой экран Hex Enduro: псевдо-3D дорога с двумя гоночными автомобилями"
+msgid ""
+"Hex Enduro game screen: pseudo-3D road with two racing cars and AI traffic"
+msgstr ""
+"Игровой экран Hex Enduro: псевдо-3D дорога с двумя гоночными автомобилями"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_frost.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Frost game screen: ice blocks floating on water with igloos on shore"
-msgstr "Игровой экран Hex Frost: ледяные блоки, плавающие на воде с иглу на берегу"
+msgid ""
+"Hex Frost game screen: ice blocks floating on water with igloos on shore"
+msgstr ""
+"Игровой экран Hex Frost: ледяные блоки, плавающие на воде с иглу на берегу"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_hockey.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Hockey game screen: ice hockey rink with players, goalies, and a puck"
-msgstr "Хекс Хоккейный игровой экран: хоккейный каток с игроками, голкиперами и шайбой"
+msgid ""
+"Hex Hockey game screen: ice hockey rink with players, goalies, and a puck"
+msgstr ""
+"Хекс Хоккейный игровой экран: хоккейный каток с игроками, голкиперами и "
+"шайбой"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_invaders.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Invaders game screen: split-screen Space Invaders with alien grids on each side"
-msgstr "Игровой экран Hex Invaders: сплит-экран Space Invaders с инопланетными сетками с каждой стороны"
+msgid ""
+"Hex Invaders game screen: split-screen Space Invaders with alien grids on "
+"each side"
+msgstr ""
+"Игровой экран Hex Invaders: сплит-экран Space Invaders с инопланетными "
+"сетками с каждой стороны"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_outlaw.ex:20
 #, elixir-autogen, elixir-format
@@ -250,8 +248,12 @@ msgstr "Хекс Понг"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_pong.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Pong game screen: two paddles and a ball on a dark field with dashed center line"
-msgstr "Экран игры Hex Pong: два весла и мяч на темном поле с пунктирной центральной линией"
+msgid ""
+"Hex Pong game screen: two paddles and a ball on a dark field with dashed "
+"center line"
+msgstr ""
+"Экран игры Hex Pong: два весла и мяч на темном поле с пунктирной центральной"
+" линией"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:280
 #, elixir-autogen, elixir-format
@@ -260,23 +262,34 @@ msgstr "Хекс Понг — Алиса против Боба"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_raid.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Raid game screen: two jets flying through a scrolling river with enemies"
-msgstr "Экран игры Hex Raid: два реактивных самолета пролетают через реку с врагами"
+msgid ""
+"Hex Raid game screen: two jets flying through a scrolling river with enemies"
+msgstr ""
+"Экран игры Hex Raid: два реактивных самолета пролетают через реку с врагами"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_skiing.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Skiing game screen: two skiers descending through trees and slalom gates with avalanche behind"
-msgstr "Игровой экран Hex Skiing: два лыжника, спускающиеся через деревья и ворота слалома с лавиной позади"
+msgid ""
+"Hex Skiing game screen: two skiers descending through trees and slalom gates"
+" with avalanche behind"
+msgstr ""
+"Игровой экран Hex Skiing: два лыжника, спускающиеся через деревья и ворота "
+"слалома с лавиной позади"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_tennis.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Tennis game screen: top-down tennis court with two players and a ball"
+msgid ""
+"Hex Tennis game screen: top-down tennis court with two players and a ball"
 msgstr "Игровой экран Hex Tennis: теннисный корт с двумя игроками и мячом"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_warlords.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Warlords game screen: two castles with brick walls and a fireball bouncing between them"
-msgstr "Игровой экран Hex Warlords: два замка с кирпичными стенами и огненный шар, прыгающий между ними"
+msgid ""
+"Hex Warlords game screen: two castles with brick walls and a fireball "
+"bouncing between them"
+msgstr ""
+"Игровой экран Hex Warlords: два замка с кирпичными стенами и огненный шар, "
+"прыгающий между ними"
 
 #: lib/retro_hex_chat_web/components/diagrams/security.ex:42
 #, elixir-autogen, elixir-format
@@ -295,8 +308,11 @@ msgstr "Легкие тропы"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_trails.ex:20
 #, elixir-autogen, elixir-format
-msgid "Light Trails game screen: two glowing trails on a dark grid, green and cyan"
-msgstr "Экран игры Light Trails: два светящихся следа на темной сетке, зеленый и голубой"
+msgid ""
+"Light Trails game screen: two glowing trails on a dark grid, green and cyan"
+msgstr ""
+"Экран игры Light Trails: два светящихся следа на темной сетке, зеленый и "
+"голубой"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_breakout.ex:50
 #: lib/retro_hex_chat_web/components/diagrams/game_warlords.ex:79
@@ -440,15 +456,15 @@ msgstr "Лобби P2P"
 msgid "P2P calls encrypted end-to-end via WebRTC"
 msgstr "P2P-звонки зашифрованы сквозным путем через WebRTC"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:18
-#, elixir-autogen, elixir-format
-msgid "P2P multiplayer games flow: type /game command, join lobby, select game, play via WebRTC DataChannel between two players"
-msgstr "P2P многопользовательские игры поток: тип /game командовать, вступать в лобби, выбирать игру, играть через WebRTC DataChannel между двумя игроками"
-
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:18
 #, elixir-autogen, elixir-format
-msgid "Peer-to-peer connection diagram showing Alice and Bob connected directly via WebRTC, with the server only used for signaling"
-msgstr "Диаграмма однорангового соединения, показывающая, что Алиса и Боб подключены непосредственно через WebRTC, причем сервер используется только для передачи сигналов."
+msgid ""
+"Peer-to-peer connection diagram showing Alice and Bob connected directly via"
+" WebRTC, with the server only used for signaling"
+msgstr ""
+"Диаграмма однорангового соединения, показывающая, что Алиса и Боб подключены"
+" непосредственно через WebRTC, причем сервер используется только для "
+"передачи сигналов."
 
 #: lib/retro_hex_chat_web/components/diagrams/game_hockey.ex:89
 #, elixir-autogen, elixir-format
@@ -508,7 +524,9 @@ msgstr "Землетрясение II"
 #: lib/retro_hex_chat_web/components/diagrams/arcade_quake2.ex:22
 #, elixir-autogen, elixir-format
 msgid "Quake II arcade logo: metallic Q2 emblem on dark industrial background"
-msgstr "Аркадный логотип Quake II: металлическая эмблема Q2 на темном промышленном фоне"
+msgstr ""
+"Аркадный логотип Quake II: металлическая эмблема Q2 на темном промышленном "
+"фоне"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_quake.ex:22
 #, elixir-autogen, elixir-format
@@ -547,8 +565,12 @@ msgstr "Раунд 4"
 
 #: lib/retro_hex_chat_web/components/diagrams/voice.ex:24
 #, elixir-autogen, elixir-format
-msgid "Retro-style voice call window showing timer, mute, camera, screen share, and end call buttons"
-msgstr "Окно голосового вызова в стиле ретро, показывающее таймер, немое, камеру, общий экран и кнопки вызова конца"
+msgid ""
+"Retro-style voice call window showing timer, mute, camera, screen share, and"
+" end call buttons"
+msgstr ""
+"Окно голосового вызова в стиле ретро, показывающее таймер, немое, камеру, "
+"общий экран и кнопки вызова конца"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_raid.ex:64
 #, elixir-autogen, elixir-format
@@ -568,7 +590,8 @@ msgstr "экран"
 #: lib/retro_hex_chat_web/components/diagrams/arcade_scummvm.ex:22
 #, elixir-autogen, elixir-format
 msgid "ScummVM arcade logo: point and click adventure scene with cursor"
-msgstr "Аркадный логотип ScummVM: точка и клик приключенческой сцены с курсором"
+msgstr ""
+"Аркадный логотип ScummVM: точка и клик приключенческой сцены с курсором"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:79
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:84
@@ -601,11 +624,6 @@ msgstr "Сервер выходит из цикла"
 msgid "Server never sees voice/video data"
 msgstr "Сервер никогда не видит голоса/video данные"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
-#, elixir-autogen, elixir-format
-msgid "Solo arcade flow: type !play in #games channel, pick a game from catalog, new window opens, WASM game runs in browser"
-msgstr "Оригинальное название: Solo arcade flow: Type!play in #games канал, выбрать игру из каталога, открывается новое окно, игра WASM запускается в браузере"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:214
 #, elixir-autogen, elixir-format
 msgid "Star Duel"
@@ -633,8 +651,12 @@ msgstr "Говорить"
 
 #: lib/retro_hex_chat_web/components/diagrams/security.ex:24
 #, elixir-autogen, elixir-format
-msgid "Two security layers: browser to server via HTTPS/WSS with TLS, and browser to browser via DTLS-SRTP for P2P calls"
-msgstr "Два уровня безопасности: браузер на сервер через HTTPS/WSS с TLS и браузером для браузера через DTLS-SRTP для P2P-звонков"
+msgid ""
+"Two security layers: browser to server via HTTPS/WSS with TLS, and browser "
+"to browser via DTLS-SRTP for P2P calls"
+msgstr ""
+"Два уровня безопасности: браузер на сервер через HTTPS/WSS с TLS и браузером"
+" для браузера через DTLS-SRTP для P2P-звонков"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:86
 #, elixir-autogen, elixir-format
@@ -648,8 +670,14 @@ msgstr "Использовать"
 
 #: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:18
 #, elixir-autogen, elixir-format
-msgid "Vertical flowchart showing 4 steps: Alice calls Bob, server exchanges signaling, P2P connection established, then direct data flow with server out of the loop"
-msgstr "Вертикальная блок-схема, показывающая 4 шага: Алиса звонит Бобу, сервер обменивается сигнализацией, устанавливается P2P-соединение, затем прямой поток данных с сервером из цикла"
+msgid ""
+"Vertical flowchart showing 4 steps: Alice calls Bob, server exchanges "
+"signaling, P2P connection established, then direct data flow with server out"
+" of the loop"
+msgstr ""
+"Вертикальная блок-схема, показывающая 4 шага: Алиса звонит Бобу, сервер "
+"обменивается сигнализацией, устанавливается P2P-соединение, затем прямой "
+"поток данных с сервером из цикла"
 
 #: lib/retro_hex_chat_web/components/diagrams/voice.ex:47
 #, elixir-autogen, elixir-format
@@ -693,8 +721,12 @@ msgstr "Wolf3D"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_wolfenstein.ex:22
 #, elixir-autogen, elixir-format
-msgid "Wolfenstein 3D arcade logo: shield emblem in grey tones on dark blue background"
-msgstr "Аркадный логотип Wolfenstein 3D: эмблема щита в серых тонах на темно-синем фоне"
+msgid ""
+"Wolfenstein 3D arcade logo: shield emblem in grey tones on dark blue "
+"background"
+msgstr ""
+"Аркадный логотип Wolfenstein 3D: эмблема щита в серых тонах на темно-синем "
+"фоне"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:64
 #, elixir-autogen, elixir-format
@@ -735,3 +767,41 @@ msgstr "• Соединяют только их"
 #, elixir-autogen, elixir-format
 msgid "· rate limiting"
 msgstr "· Ограничение ставок"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:70
+#, elixir-autogen, elixir-format
+msgid "/p2p bob"
+msgstr "/p2p bob"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:388
+#, elixir-autogen, elixir-format
+msgid "34 games · Real-time sync · No server"
+msgstr "34 игры · Синхронизация в реальном времени · Отсутствие сервера"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:54
+#, elixir-autogen, elixir-format
+msgid "Games menu"
+msgstr "Игровое меню"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"P2P multiplayer games flow: type /p2p command, join lobby, select game, play"
+" via WebRTC DataChannel between two players"
+msgstr ""
+"P2P многопользовательские игры поток: тип /p2p команда, присоединиться к "
+"лобби, выбрать игру, играть через WebRTC DataChannel между двумя игроками"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"Solo arcade flow: open the Games menu and choose Arcade, pick a game from "
+"the catalog, a new window opens, WASM game runs in browser"
+msgstr ""
+"Соло аркадный поток: откройте меню Игр и выберите Arcade, выберите игру из "
+"каталога, откроется новое окно, игра WASM запускается в браузере"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:65
+#, elixir-autogen, elixir-format
+msgid "▸ Arcade"
+msgstr "Аркада / Arcade"

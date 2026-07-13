@@ -11,11 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : 2);\n"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "!play"
-msgstr "играть"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:43
@@ -439,7 +434,7 @@ msgid "/admin cs info #general /admin cs transfer #general @NewOwner /admin cs a
 msgstr "/admin cs info #general /admin cs transfer #general @NewOwner /admin cs access #general add sop @TrustedUser /admin cs access #general del aop @OldMod /admin cs drop #abandoned"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:130
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:129
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "/admin debug"
@@ -1137,7 +1132,6 @@ msgid "/op Alice"
 msgstr "/op Alice"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:15
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "/p2p"
@@ -1262,13 +1256,6 @@ msgstr "/setwelcome <message>"
 #, elixir-autogen, elixir-format
 msgid "/setwelcome Welcome to #elixir! Please be respectful and use English."
 msgstr "/setwelcome Welcome to #elixir! Please be respectful and use English."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:129
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "/singleplayer"
-msgstr "/singleplayer"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:39
 #, elixir-autogen, elixir-format
@@ -1905,7 +1892,6 @@ msgstr "Введите чат-канал для чтения и отправки
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:29
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:35
@@ -2379,11 +2365,6 @@ msgstr "Зарегистрированные пользователи: поль�
 msgid "Registered users: list is saved across sessions"
 msgstr "Зарегистрированные пользователи: список сохраняется во время сеансов"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Regular users should join"
-msgstr "Регулярные пользователи должны присоединиться"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Remove a ban from a user, allowing them to rejoin the channel."
@@ -2443,11 +2424,6 @@ msgstr "Повторение: минимальный интервал от 10 д
 #, elixir-autogen, elixir-format
 msgid "Request to be let into an invite-only (+i) channel. Channel operators see your knock and can choose to invite you in."
 msgstr "Запрос на вход в канал только для приглашений (+i). Операторы канала видят ваш стук и могут пригласить вас."
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "Requirements"
-msgstr "Требования"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:93
 #, elixir-autogen, elixir-format
@@ -2605,7 +2581,6 @@ msgstr "Запланируйте команду для запуска после
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:37
@@ -2709,11 +2684,6 @@ msgstr "Настройка команд, которые автоматическ
 msgid "Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Existing connected users are not notified — only new connections see the MOTD. Any previous MOTD is replaced."
 msgstr "Устанавливает или заменяет сервер MOTD. После его настройки все вновь подключающиеся пользователи увидят это сообщение во вкладке «Статус», когда присоединятся. Существующие подключенные пользователи не уведомляются — только новые соединения видят MOTD. Любая предыдущая модель заменяется."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "Solo Arcade"
-msgstr "Соло Аркада"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:31
@@ -2724,11 +2694,6 @@ msgstr "Соло Аркада"
 #, elixir-autogen, elixir-format
 msgid "Special Messages"
 msgstr "Специальные сообщения"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session from chat. This is an administrator-only command used for direct arcade session creation."
-msgstr "Начните сольную аркадную сессию из чата. Это команда только для администратора, используемая для создания прямой аркадной сессии."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2797,7 +2762,6 @@ msgstr "Подкоманды"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:7
@@ -3025,11 +2989,6 @@ msgstr "Вы должны быть оператором канала для ре
 msgid "You must be a registered user to use ChanServ"
 msgstr "Вы должны быть зарегистрированным пользователем ChanServ."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "You must be a server administrator."
-msgstr "Вы должны быть администратором сервера."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "You must be in the channel to invite someone to it"
@@ -3049,11 +3008,6 @@ msgstr "Ваша биография отображается в"
 #, elixir-autogen, elixir-format
 msgid "Your message is delivered privately — only you and the recipient can see it. A PM tab opens on both sides for the conversation. The recipient receives a notification if they have notifications enabled. If you just want to open a PM tab without sending a message, use"
 msgstr "Ваше сообщение доставляется в частном порядке - только вы и получатель можете его увидеть. Закладка PM открывается с обеих сторон для разговора. Получатель получает уведомление, если у него включены уведомления. Если вы просто хотите открыть вкладку PM без отправки сообщения, используйте"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Your nickname must be registered and identified."
-msgstr "Ваше имя должно быть зарегистрировано и идентифицировано."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:30
 #, elixir-autogen, elixir-format
@@ -3079,11 +3033,6 @@ msgstr "доступ <level> @nick"
 #, elixir-autogen, elixir-format
 msgid "action text"
 msgstr "текст действия"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "and type"
-msgstr "и тип"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:43
 #, elixir-autogen, elixir-format
@@ -3183,7 +3132,6 @@ msgstr "вместо этого"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "instead."
 msgstr "Вместо этого."
@@ -4580,11 +4528,6 @@ msgstr "You cannot open a lobby with yourself."
 msgid "aop add/del/list <nick>"
 msgstr "aop add/del/list <nick>"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "creates a lobby and sends the other user a join invitation. Once both of you join, one WebRTC connection is established and stays open. A dock lets either side start audio/video, send files, or propose a game at any time — and several can run together concurrently. Ending one activity keeps the connection alive; the lobby only closes when someone leaves or it goes idle."
-msgstr "creates a lobby and sends the other user a join invitation. Once both of you join, one WebRTC connection is established and stays open. A dock lets either side start audio/video, send files, or propose a game at any time — and several can run together concurrently. Ending one activity keeps the connection alive; the lobby only closes when someone leaves or it goes idle."
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "drop"
@@ -4654,3 +4597,8 @@ msgstr "— Optional duration token such as 30s, 5m, 1h, or 1d. Omit for permane
 #, elixir-autogen, elixir-format
 msgid "— The user to open a P2P Lobby with."
 msgstr "— The user to open a P2P Lobby with."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "opens a setup dialog first, so you can preview camera, choose microphone/camera/speaker, pick receive-only, and enable privacy relay before the invite is sent. After you confirm, the other user receives an invite card in your private message. When they accept, the connection is established right there in the chat: the call starts with each side's chosen defaults and the session windows (Call, Files, Games, Statistics) open on the chat desktop. Several activities run together over the one connection; ending one keeps the others alive. Closing any session window disconnects the session (after a confirmation) — minimize to keep it running."
+msgstr "opens a setup dialog first, so you can preview camera, choose microphone/camera/speaker, pick receive-only, and enable privacy relay before the invite is sent. After you confirm, the other user receives an invite card in your private message. When they accept, the connection is established right there in the chat: the call starts with each side's chosen defaults and the session windows (Call, Files, Games, Statistics) open on the chat desktop. Several activities run together over the one connection; ending one keeps the others alive. Closing any session window disconnects the session (after a confirmation) — minimize to keep it running."

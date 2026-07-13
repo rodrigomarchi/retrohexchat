@@ -14,9 +14,11 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
 
   import RetroHexChatWeb.Components.UI.MenuBar
   import RetroHexChatWeb.Components.UI.ContextMenu
+  import RetroHexChatWeb.Components.UI.LanguageMenu
   import RetroHexChatWeb.Components.UI.Dialog, only: [show_modal: 1]
 
   attr :id, :string, default: "help-menubar"
+  attr :current_path, :string, default: "/chat/help"
   attr :class, :any, default: nil
   attr :rest, :global
 
@@ -70,6 +72,8 @@ defmodule RetroHexChatWeb.Components.UI.Help.HelpMenuBar do
           {dgettext("help", "Search")}
         </.context_menu_item>
       </.menu>
+
+      <.language_menu mode={:public} current_path={@current_path} />
 
       <%!-- Help menu --%>
       <.menu label={dgettext("help", "Help")}>

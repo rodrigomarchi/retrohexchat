@@ -11,12 +11,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:594
+#: lib/retro_hex_chat/commands/handlers/bot.ex:576
 #, elixir-autogen, elixir-format
-msgid "  %{command_prefix}%{bot_name} %{trigger} — %{cmd_description_cmd_response}%{status}"
-msgstr "  %{command_prefix}%{bot_name} %{trigger} — %{cmd_description_cmd_response}%{status}"
+msgid ""
+"  %{command_prefix}%{bot_name} %{trigger} — "
+"%{cmd_description_cmd_response}%{status}"
+msgstr ""
+"  %{command_prefix}%{bot_name} %{trigger} — "
+"%{cmd_description_cmd_response}%{status}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:717
+#: lib/retro_hex_chat/commands/handlers/bot.ex:699
 #, elixir-autogen, elixir-format
 msgid "  %{name} [%{status}] — %{description}"
 msgstr "  %{name} [%{status}] — %{description}"
@@ -51,7 +55,7 @@ msgstr "  কুলঃ %{cooldown_ms}মিটার"
 msgid "  Created by: %{created_by}"
 msgstr "  তৈরি করেছেন: %{created_by}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:745
+#: lib/retro_hex_chat/commands/handlers/bot.ex:727
 #, elixir-autogen, elixir-format
 msgid "  Description: %{desc}"
 msgstr "  বিবরণ: %{desc}"
@@ -71,12 +75,13 @@ msgstr "  উপসর্গ: %{command_prefix}"
 msgid "  Status: %{status}"
 msgstr "  অবস্থা: %{status}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:541
+#: lib/retro_hex_chat/commands/handlers/bot.ex:523
 #, elixir-autogen, elixir-format
 msgid "%{cap_name}.%{field} set to %{display}."
-msgstr "%{cap_name}.%{field} নির্ধারিত মান ধার্য করার জন্য চিহ্নিত %{display}."
+msgstr ""
+"%{cap_name}.%{field} নির্ধারিত মান ধার্য করার জন্য চিহ্নিত %{display}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:732
+#: lib/retro_hex_chat/commands/handlers/bot.ex:714
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors}"
@@ -1059,7 +1064,7 @@ msgstr "আপনার তালিকা থেকে একটি ব্য�
 msgid "Add an auto-respond rule"
 msgstr "একটি auto-respport সংযোগ যোগ করুন"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "উন্নত"
@@ -1069,11 +1074,6 @@ msgstr "উন্নত"
 msgid "Announcement sent to all users."
 msgstr "ঘোষণা সকল ব্যবহারকারীর কাছে পাঠানো হয়েছে।"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:515
-#, elixir-autogen, elixir-format
-msgid "Arcade capability disabled."
-msgstr "আর্কেড কর্মক্ষমতা নিষ্ক্রিয় করা হয়েছে।"
-
 #: lib/retro_hex_chat/commands/handlers/ns.ex:208
 #, elixir-autogen, elixir-format
 msgid "Authenticate with your registered password"
@@ -1081,16 +1081,22 @@ msgstr "আপনার নিবন্ধিত পাসওয়ার্ড 
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:161
 #, elixir-autogen, elixir-format
-msgid "Automatically run a command when someone joins, leaves, or changes their nickname."
-msgstr "কোনো ব্যবহারকারী যোগ করার সময় স্বয়ংক্রিয়ভাবে একটি কমান্ড সঞ্চালন করুন, বা তাদের ডাকনাম পরিবর্তন করুন।"
+msgid ""
+"Automatically run a command when someone joins, leaves, or changes their "
+"nickname."
+msgstr ""
+"কোনো ব্যবহারকারী যোগ করার সময় স্বয়ংক্রিয়ভাবে একটি কমান্ড সঞ্চালন করুন, বা"
+" তাদের ডাকনাম পরিবর্তন করুন।"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:105
 #, elixir-autogen, elixir-format
-msgid "Automatically run a command when someone joins, leaves, or changes their nickname.\n"
+msgid ""
+"Automatically run a command when someone joins, leaves, or changes their nickname.\n"
 "Subcommands: list, add <trigger> [#channel] <command>, remove <position>. No args opens the dialog.\n"
 "Valid triggers: on_join, on_part, on_nick_change.\n"
 "Use $nick in your command to reference the triggering user. The remove subcommand takes a 0-based index number."
-msgstr "কোনো ব্যবহারকারী যোগ করার সময় স্বয়ংক্রিয়ভাবে একটি কমান্ড সঞ্চালন করুন, বা তাদের ডাকনাম পরিবর্তন করুন।\n"
+msgstr ""
+"কোনো ব্যবহারকারী যোগ করার সময় স্বয়ংক্রিয়ভাবে একটি কমান্ড সঞ্চালন করুন, বা তাদের ডাকনাম পরিবর্তন করুন।\n"
 "সাবcommands: তালিকাভুক্ত করুন, <ffops > [opsp>] <flot > [ffflot; <4\\-2s] <4 ক্ষেত্রে, সরিয়ে ফেলা হবে। কোনো Gargs ডায়লগ খোলা হয়নি।\n"
 "বৈধ ট্রিগার: de join hyperse dovode joice message\n"
 "ব্যবহারকারীর পরিচয় প্রমাণ করতে আপনার কমান্ডে Nnick ব্যবহার করুন । সাব- কমান্ড ০- ভিত্তিক ইন্ডেক্স সংখ্যা ধারণ করে ।"
@@ -1110,7 +1116,7 @@ msgstr "নিষিদ্ধ"
 msgid "Ban user from channel"
 msgstr "চ্যানেল থেকে প্রতিরোধ করা হচ্ছে"
 
-#: lib/retro_hex_chat/commands/registry.ex:69
+#: lib/retro_hex_chat/commands/registry.ex:68
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "মৌলিক"
@@ -1123,8 +1129,10 @@ msgstr "বায়ো টেক্সট (অথবা অপসারণে�
 #: lib/retro_hex_chat/commands/handlers/list.ex:30
 #: lib/retro_hex_chat/commands/handlers/list.ex:50
 #, elixir-autogen, elixir-format
-msgid "Browse all public channels on the server in a sortable, filterable dialog."
-msgstr "সুনির্দিষ্ট, ফিল্টারযোগ্য ডায়লগের মধ্যে উপস্থিত সকল চ্যানেল ব্রাউজ করুন।"
+msgid ""
+"Browse all public channels on the server in a sortable, filterable dialog."
+msgstr ""
+"সুনির্দিষ্ট, ফিল্টারযোগ্য ডায়লগের মধ্যে উপস্থিত সকল চ্যানেল ব্রাউজ করুন।"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:134
 #, elixir-autogen, elixir-format
@@ -1134,30 +1142,38 @@ msgstr "চ্যানটেটেস প্রশাসন (মান, তথ�
 #: lib/retro_hex_chat/commands/handlers/mode.ex:37
 #: lib/retro_hex_chat/commands/handlers/mode.ex:99
 #, elixir-autogen, elixir-format
-msgid "Change channel settings and user privileges using mode flags.\n"
+msgid ""
+"Change channel settings and user privileges using mode flags.\n"
 "Flags: +o (operator), +v (voice), +b (ban), +h (half-op), +m (moderated), +i (invite-only), +t (topic protected), +k (key/password), +l (user limit), +n (no external messages), +j (join throttle), +K (no knock).\n"
 "Requires: channel operator. Half-operators can only set +v/-v. Must be in a channel."
-msgstr "ফ্ল্যাগ সহযোগে চ্যানেল সেটিংস এবং ব্যবহারকারীর অধিকার পরিবর্তন করুন ।\n"
+msgstr ""
+"ফ্ল্যাগ সহযোগে চ্যানেল সেটিংস এবং ব্যবহারকারীর অধিকার পরিবর্তন করুন ।\n"
 "পতাকা: +o (অপবাদ),+v (কোবল), +b), +h (বেল), +h (উল-op), + mped (উপেক্ষাকৃত), +i (উপেক্ষাকৃত),+কে নিরাপত্তা (উপেক্ষা করা),+(কেনো), ++কেনো (ফোন), ++(n), + binn),+(n), ++(n),+(l), + bin),+((n), + Nostz), Nostz), + ++N), Nos (l), ++N), ++jo (j), + run (j), ++N), ++N (j)\n"
 "চ্যানেল অপারেটর প্রয়োজন: %s half-opers শুধুমাত্র +v/v-v সেট করা যাবে।"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:82
 #, elixir-autogen, elixir-format
-msgid "Change your display name in the chat. A confirmation dialog appears before the change takes effect."
-msgstr "আলাপনের মধ্যে নাম পরিবর্তন করুন। পরিবর্তন প্রয়োগ করার পূর্বে একটি নিশ্চিতি ডায়লগ প্রদর্শন করা হবে।"
+msgid ""
+"Change your display name in the chat. A confirmation dialog appears before "
+"the change takes effect."
+msgstr ""
+"আলাপনের মধ্যে নাম পরিবর্তন করুন। পরিবর্তন প্রয়োগ করার পূর্বে একটি নিশ্চিতি "
+"ডায়লগ প্রদর্শন করা হবে।"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:61
 #, elixir-autogen, elixir-format
-msgid "Change your display name. A confirmation dialog appears before the change takes effect.\n"
+msgid ""
+"Change your display name. A confirmation dialog appears before the change takes effect.\n"
 "Rules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\n"
 "Allowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\n"
 "Cannot change to your current nickname or one already in use."
-msgstr "আপনার ডিসপ্লের নাম পরিবর্তন করুন। পরিবর্তন প্রয়োগ করার পূর্বে একটি নিশ্চিতি ডায়লগ প্রদর্শন করা হবে।\n"
+msgstr ""
+"আপনার ডিসপ্লের নাম পরিবর্তন করুন। পরিবর্তন প্রয়োগ করার পূর্বে একটি নিশ্চিতি ডায়লগ প্রদর্শন করা হবে।\n"
 "নিয়মাবলী: ১-১৬ অক্ষর, শূণ্যস্থান নয়। অক্ষর অথবা [[] দিয়ে আরম্ভ হওয়া আবশ্যক।\n"
 "অনুমোদিত অক্ষর: বর্ণ, সংখ্যা, সংখ্যা [/] [/] {} এবং ইন্সটেন্স]।\n"
 "বর্তমানে ব্যবহৃত উপনাম ব্যবহার করা যাবে না অথবা এটি বর্তমানে ব্যবহার করা যাবে না।"
 
-#: lib/retro_hex_chat/commands/registry.ex:70
+#: lib/retro_hex_chat/commands/registry.ex:69
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "চ্যানেল"
@@ -1215,7 +1231,9 @@ msgstr "চ্যানেল স্বাগতম বার্তা"
 #: lib/retro_hex_chat/commands/handlers/clear.ex:30
 #: lib/retro_hex_chat/commands/handlers/clear.ex:50
 #, elixir-autogen, elixir-format
-msgid "Clear all messages from the current chat window, giving you a fresh screen. Cannot be undone."
+msgid ""
+"Clear all messages from the current chat window, giving you a fresh screen. "
+"Cannot be undone."
 msgstr "বর্তমান আড্ডা থেকে সব বার্তা মুছে ফেলুন বাতিল করা সম্ভব নয়।"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:172
@@ -1233,7 +1251,7 @@ msgstr "আপনার সম্পূর্ণ তালিকা মুছে
 msgid "Command name to view detailed help"
 msgstr "বিস্তারিত বিবরণ জানার জন্য ব্যবহৃত কমান্ড"
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "কনফিগারেশন"
@@ -1265,11 +1283,13 @@ msgstr "শর্ট- কাট নির্মাণ করুন যার ফ
 
 #: lib/retro_hex_chat/commands/handlers/alias.ex:68
 #, elixir-autogen, elixir-format
-msgid "Create short command shortcuts that expand into longer commands.\n"
+msgid ""
+"Create short command shortcuts that expand into longer commands.\n"
 "Subcommands: list, add <name> <expansion>, remove <name>. No args opens the dialog.\n"
 "Supports $1-$9 for positional arguments, $nick for your nickname, $chan for current channel.\n"
 "Max 50 aliases. Registered users: persisted. Guests: session-only."
-msgstr "শর্ট- কাট নির্মাণ করুন যার ফলে দীর্ঘ কমান্ডের মধ্যে প্রসারণ করা হবে।\n"
+msgstr ""
+"শর্ট- কাট নির্মাণ করুন যার ফলে দীর্ঘ কমান্ডের মধ্যে প্রসারণ করা হবে।\n"
 "সাবcommands: তালিকা, সংযোজন করো <foption> <fopsplot> <4\\-40\\.com> কোনো Gargs ডায়লগ খোলা হয়নি।\n"
 "অবস্থানগত প্রেরিতর জন্য $9- র সমর্থন, আপনার ডাকনামের জন্য $Nicks, বর্তমান চ্যানেলের জন্য $KSon।\n"
 "ম্যাক্স 50 ছদ্মনাম. নিবন্ধিত ব্যবহারকারীরা: রয়ে গেছে। অতিথিবৃন্দ: শুধুমাত্র সেশন।"
@@ -1277,7 +1297,6 @@ msgstr "শর্ট- কাট নির্মাণ করুন যার ফ
 #: lib/retro_hex_chat/commands/handlers/bot.ex:108
 #, elixir-autogen, elixir-format
 msgid "Create, manage, and configure bots for your channels.\n"
-""
 msgstr "আপনার চ্যানেলের জন্য বোটের পরিচালনা, পরিচালনা এবং কনফিগার করুন।"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:138
@@ -1307,15 +1326,21 @@ msgstr "পাসওয়ার্ড সহযোগে অনুমোদন 
 
 #: lib/retro_hex_chat/commands/handlers/quit.ex:35
 #, elixir-autogen, elixir-format
-msgid "Disconnect from the server and return to the connect screen.\n"
+msgid ""
+"Disconnect from the server and return to the connect screen.\n"
 "Other users see your optional quit message. All channels are left and your session ends."
-msgstr "সার্ভার থেকে সংযোগ বিচ্ছিন্ন করে সংযোগ বিচ্ছিন্ন করুন।\n"
+msgstr ""
+"সার্ভার থেকে সংযোগ বিচ্ছিন্ন করে সংযোগ বিচ্ছিন্ন করুন।\n"
 "অন্যান্য ব্যবহারকারীরা আপনার ঐচ্ছিক বার্তা দেখতে পাবেন। সকল চ্যানেল অবশিষ্ট রয়েছে এবং আপনার সেশন শেষ হয়ে গিয়েছে ।"
 
 #: lib/retro_hex_chat/commands/handlers/quit.ex:56
 #, elixir-autogen, elixir-format
-msgid "Disconnect from the server and return to the connect screen. Other users see your optional quit message."
-msgstr "সার্ভার থেকে সংযোগ বিচ্ছিন্ন করে সংযোগ বিচ্ছিন্ন করুন। অন্যান্য ব্যবহারকারীরা আপনার ঐচ্ছিক বার্তা দেখতে পাবেন।"
+msgid ""
+"Disconnect from the server and return to the connect screen. Other users see"
+" your optional quit message."
+msgstr ""
+"সার্ভার থেকে সংযোগ বিচ্ছিন্ন করে সংযোগ বিচ্ছিন্ন করুন। অন্যান্য "
+"ব্যবহারকারীরা আপনার ঐচ্ছিক বার্তা দেখতে পাবেন।"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:228
 #, elixir-autogen, elixir-format
@@ -1350,10 +1375,12 @@ msgstr "সক্রিয়"
 #: lib/retro_hex_chat/commands/handlers/join.ex:57
 #: lib/retro_hex_chat/commands/handlers/join.ex:81
 #, elixir-autogen, elixir-format
-msgid "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\n"
+msgid ""
+"Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\n"
 "Channel name must start with #, max 50 characters, no spaces.\n"
 "Max 10 channels at once. Password required if channel has +k mode set."
-msgstr "একটি আড্ডা বার্তা পড়ার জন্য একটি আড্ডা চ্যানেল লিখুন। এটি উপস্থিত না থাকলে চ্যানেলটি তৈরি করবে।\n"
+msgstr ""
+"একটি আড্ডা বার্তা পড়ার জন্য একটি আড্ডা চ্যানেল লিখুন। এটি উপস্থিত না থাকলে চ্যানেলটি তৈরি করবে।\n"
 "চ্যানেল নাম অবশ্যই শুরু করতে হবে #, সর্বোচ্চ ৫০ অক্ষর, কোন স্থান নেই।\n"
 "সর্বাধিক ১০ চ্যানেল। পাসওয়ার্ড আবশ্যক হলে +k মোড সক্রিয় করা হবে।"
 
@@ -1379,9 +1406,11 @@ msgstr "ব্যবহারকারীর দ্বারা চ্যান�
 
 #: lib/retro_hex_chat/commands/handlers/op.ex:29
 #, elixir-autogen, elixir-format
-msgid "Give channel operator status to a user. Shortcut for /mode +o <nickname>.\n"
+msgid ""
+"Give channel operator status to a user. Shortcut for /mode +o <nickname>.\n"
 "Requires: channel operator or owner."
-msgstr "ব্যবহারকারীর দ্বারা চ্যানেল অপারেটরের অবস্থা চিহ্নিত করুন। <f12> <fot1> <flot > - এর জন্য শর্টকাট\n"
+msgstr ""
+"ব্যবহারকারীর দ্বারা চ্যানেল অপারেটরের অবস্থা চিহ্নিত করুন। <f12> <fot1> <flot > - এর জন্য শর্টকাট\n"
 "আবশ্যক: চ্যানেল অপারেটর অথবা মালিক।"
 
 #: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:49
@@ -1391,9 +1420,11 @@ msgstr "ব্যবহারকারীর পরিচয়ের অবস�
 
 #: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:29
 #, elixir-autogen, elixir-format
-msgid "Give voice status to a user. Shortcut for /mode +v <nickname>.\n"
+msgid ""
+"Give voice status to a user. Shortcut for /mode +v <nickname>.\n"
 "Requires: half-operator, operator, or owner."
-msgstr "ব্যবহারকারীর পরিচয়ের অবস্থা দিন <f12> <ffFi1> <ffl10> কি-র জন্য শর্টকাট\n"
+msgstr ""
+"ব্যবহারকারীর পরিচয়ের অবস্থা দিন <f12> <ffFi1> <ffl10> কি-র জন্য শর্টকাট\n"
 "আবশ্যক: অর্ধ-অপ অপারেটর, অপারেটর অথবা মালিকানা।"
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:86
@@ -1424,11 +1455,13 @@ msgstr "অভিবাদনের বৈশিষ্ট্য নির্ধ�
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:40
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:121
 #, elixir-autogen, elixir-format
-msgid "Hide messages from a specific user.\n"
+msgid ""
+"Hide messages from a specific user.\n"
 "Types: all (default), messages, pms, actions, notices, invites.\n"
 "Duration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\n"
 "No args: show your ignore list. You cannot ignore yourself."
-msgstr "ব্যবহারকারীর দ্বারা নির্দিষ্ট বার্তা প্রাপ্ত হলে ব্যবহারকারীকে প্রেরিত হবে।\n"
+msgstr ""
+"ব্যবহারকারীর দ্বারা নির্দিষ্ট বার্তা প্রাপ্ত হলে ব্যবহারকারীকে প্রেরিত হবে।\n"
 "ধরন: সকল (ডিফল্ট) বার্তা, বার্তা, কর্ম, বিজ্ঞপ্তি, আমন্ত্রণ জানানো, আমন্ত্রণ।\n"
 "সময়সীমা: Nom (মিনিট), Nh (সময়), d (দিন)। কোনো সময়কাল নির্ধারিত হয়নি = <fot > <0\\-0> হওয়া আবশ্যক।\n"
 "কোনও args: উপেক্ষা তালিকার তালিকা দেখাও নিজেকে ভুলে যেও না।"
@@ -1465,18 +1498,17 @@ msgstr "ভুল প্রেফিক্স।"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:71
 #, elixir-autogen, elixir-format
-msgid "Invalid trigger '%{trigger_str}'. Valid triggers: on_join, on_part, on_nick_change"
-msgstr "অবৈধ ট্রিগার%{trigger_str}সঞ্চালনযোগ্য কর্ম। বৈধ মানগুলি হল: de join view'র মধ্যে যোগ দিন।"
+msgid ""
+"Invalid trigger '%{trigger_str}'. Valid triggers: on_join, on_part, "
+"on_nick_change"
+msgstr ""
+"অবৈধ ট্রিগার%{trigger_str}সঞ্চালনযোগ্য কর্ম। বৈধ মানগুলি হল: de join view'র "
+"মধ্যে যোগ দিন।"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:147
 #, elixir-autogen, elixir-format
 msgid "Invite only"
 msgstr "শুধুমাত্র আমন্ত্রণ জানাও"
-
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:18
-#, elixir-autogen, elixir-format
-msgid "Join #games and type !play to start an arcade session."
-msgstr "<p02/f0> < এবং ধরন দিয়ে একটি আর্কেড সেশন আরম্ভ করুন।"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:165
 #, elixir-autogen, elixir-format
@@ -1485,15 +1517,20 @@ msgstr "কি"
 
 #: lib/retro_hex_chat/commands/handlers/part.ex:76
 #, elixir-autogen, elixir-format
-msgid "Leave the current channel or a specified channel, with an optional parting message shown to others."
-msgstr "বর্তমান চ্যানেল অথবা একটি নির্দিষ্ট চ্যানেলকে অন্য একটি ই- মেইল পাঠানো হয় ।"
+msgid ""
+"Leave the current channel or a specified channel, with an optional parting "
+"message shown to others."
+msgstr ""
+"বর্তমান চ্যানেল অথবা একটি নির্দিষ্ট চ্যানেলকে অন্য একটি ই- মেইল পাঠানো হয় ।"
 
 #: lib/retro_hex_chat/commands/handlers/part.ex:51
 #, elixir-autogen, elixir-format
-msgid "Leave the current channel or a specified channel, with an optional parting message.\n"
+msgid ""
+"Leave the current channel or a specified channel, with an optional parting message.\n"
 "Defaults to current channel. If the first word doesn't start with #, it's treated as the part message.\n"
 "You must be in the channel to leave it."
-msgstr "বর্তমান চ্যানেল অথবা একটি নির্দিষ্ট চ্যানেলকে ঐচ্ছিক অংশ হিসাবে পাঠানো হয় ।\n"
+msgstr ""
+"বর্তমান চ্যানেল অথবা একটি নির্দিষ্ট চ্যানেলকে ঐচ্ছিক অংশ হিসাবে পাঠানো হয় ।\n"
 "ডিফল্ট চ্যানেল রূপে চিহ্নিত করা হবে। যদি প্রথম শব্দটি # শুরু না হয়, তাহলে এটি মূল বার্তা হিসেবে ব্যবহার করা হয়।\n"
 "তোমাকে চ্যানেল থেকে বের হতে হবে।"
 
@@ -1504,10 +1541,12 @@ msgstr "অনলাইন ব্যবহারকারীর বিস্ত�
 
 #: lib/retro_hex_chat/commands/handlers/whois.ex:33
 #, elixir-autogen, elixir-format
-msgid "Look up detailed information about an online user.\n"
+msgid ""
+"Look up detailed information about an online user.\n"
 "Shows: nickname, channels (shared channels highlighted), idle time, away status, bio, and registration status.\n"
 "User must be online. For offline users, use /whowas."
-msgstr "অনলাইন ব্যবহারকারীর বিস্তারিত তথ্য দেখুন।\n"
+msgstr ""
+"অনলাইন ব্যবহারকারীর বিস্তারিত তথ্য দেখুন।\n"
 "ডাকনাম: ডাকনাম, চ্যানেল (শেয়ারিং চ্যানেল), অলস সময়, জীবনী এবং নিবন্ধন অবস্থা চিহ্নিত করা।\n"
 "ব্যবহারকারী আপনার অন-লাইন থাকা আবশ্যক। অফ-লাইন ব্যবহারের জন্য '%s' অ্যাকাউন্টের মধ্যে উপস্থিত থাকা আবশ্যক।"
 
@@ -1518,10 +1557,12 @@ msgstr "সম্প্রতি সংযোগ করা ব্যবহার
 
 #: lib/retro_hex_chat/commands/handlers/whowas.ex:33
 #, elixir-autogen, elixir-format
-msgid "Look up information about a user who recently disconnected.\n"
+msgid ""
+"Look up information about a user who recently disconnected.\n"
 "Shows last seen time, channels, and quit message. Data cached for up to 1 hour.\n"
 "For online users, use /whois instead."
-msgstr "সম্প্রতি সংযোগ করা ব্যবহারকারীর তথ্য অনুসন্ধান করুন ।\n"
+msgstr ""
+"সম্প্রতি সংযোগ করা ব্যবহারকারীর তথ্য অনুসন্ধান করুন ।\n"
 "শেষবার দেখা গেলে, চ্যানেল এবং প্রস্থান করে। ১ ঘন্টা অনুযায়ী তথ্য ক্যাশে করা হয়েছে।\n"
 "অনলাইন ব্যবহারকারীদের জন্য <fol10/f0> ব্যবহার করুন।"
 
@@ -1552,11 +1593,13 @@ msgstr "চ্যানেলের নিবন্ধন এবং চ্যা
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:80
 #, elixir-autogen, elixir-format
-msgid "Manage channel registration and access lists through ChanServ.\n"
+msgid ""
+"Manage channel registration and access lists through ChanServ.\n"
 "Subcommands: register, drop, info, sop/aop/vop add|del|list, help. Must be in a channel.\n"
 "Access hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\n"
 "Register requires channel operator. Drop requires being the channel founder."
-msgstr "চ্যানেলের নিবন্ধন এবং চ্যান সঠিকভাবে নিবন্ধন করুন।\n"
+msgstr ""
+"চ্যানেলের নিবন্ধন এবং চ্যান সঠিকভাবে নিবন্ধন করুন।\n"
 "সাব-কমান্ড: নিবন্ধন, ড্রপ, তথ্য, fpap, wap, egp, egp, wiflotp, [flot1] সহায়তা। নিশ্চয়ই কোন চ্যানেলে আছে.\n"
 "অনুক্রমের ব্যবহার: SOP (সুপার-PCOP) > VOP (autoplOP) - এর সাথে ব্যবহার করুন।\n"
 "Woman চ্যানেল অপারেটর আবশ্যক। এই চ্যানেল প্রতিষ্ঠাতা হওয়া প্রয়োজন।"
@@ -1568,14 +1611,18 @@ msgstr "সুপার-ান্তার তালিকা পরিচাল
 
 #: lib/retro_hex_chat/commands/handlers/away.ex:56
 #, elixir-autogen, elixir-format
-msgid "Mark yourself as temporarily unavailable, with an optional message shown in /whois."
+msgid ""
+"Mark yourself as temporarily unavailable, with an optional message shown in "
+"/whois."
 msgstr "উপলব্ধ নয়, <fot > /frephot; সহ একটি ঐচ্ছিক বার্তা উপলব্ধ হবে।"
 
 #: lib/retro_hex_chat/commands/handlers/away.ex:35
 #, elixir-autogen, elixir-format
-msgid "Mark yourself as temporarily unavailable, with an optional message shown in /whois.\n"
+msgid ""
+"Mark yourself as temporarily unavailable, with an optional message shown in /whois.\n"
 "With a message: sets you as away. Without arguments: clears your away status and marks you as back."
-msgstr "উপলব্ধ নয়, <fot > /frephot; সহ একটি ঐচ্ছিক বার্তা উপলব্ধ হবে।\n"
+msgstr ""
+"উপলব্ধ নয়, <fot > /frephot; সহ একটি ঐচ্ছিক বার্তা উপলব্ধ হবে।\n"
 "বার্তা: যুক্তি ছাড়া: আপনার স্ট্যাটাস দূরে সরিয়ে রাখুন এবং ফিরে যান।"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:418
@@ -1625,10 +1672,12 @@ msgstr "বর্তমান চ্যানেলে একটি ব্যব
 
 #: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:32
 #, elixir-autogen, elixir-format
-msgid "Mute a user in the current channel. They cannot send messages.\n"
+msgid ""
+"Mute a user in the current channel. They cannot send messages.\n"
 "Duration: 30s, 5m, 1h, 1d. Omit for permanent.\n"
 "Requires: channel operator or owner."
-msgstr "বর্তমান চ্যানেলে একটি ব্যবহারকারী নিঃশব্দ করুন । তারা কোন বার্তা পাঠাতে পারবে না।\n"
+msgstr ""
+"বর্তমান চ্যানেলে একটি ব্যবহারকারী নিঃশব্দ করুন । তারা কোন বার্তা পাঠাতে পারবে না।\n"
 "সময়সীমা: ৩০, ৫. স্থায়ী হওয়ার জন্য।\n"
 "আবশ্যক: চ্যানেল অপারেটর অথবা মালিক।"
 
@@ -1677,7 +1726,7 @@ msgstr "ডাকনাম অত্যাধিক লম্বা (mx ১৬ �
 msgid "No MOTD has been set."
 msgstr "কোনও MOTD নির্ধারণ করা হয়নি ।"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:715
+#: lib/retro_hex_chat/commands/handlers/bot.ex:697
 #, elixir-autogen, elixir-format
 msgid "No description"
 msgstr "বিবরণ অনুপস্থিত"
@@ -1703,12 +1752,12 @@ msgstr "বিজ্ঞপ্তি"
 msgid "Notices are always routed to the active window."
 msgstr "লক্ষ্য করুন যে, সবসময় সক্রিয় উইন্ডোর সঙ্গে স্থানান্তর করা হয় ।"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:714
+#: lib/retro_hex_chat/commands/handlers/bot.ex:696
 #, elixir-autogen, elixir-format
 msgid "OFF"
 msgstr "বন্ধ"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:714
+#: lib/retro_hex_chat/commands/handlers/bot.ex:696
 #, elixir-autogen, elixir-format
 msgid "ON"
 msgstr "একা"
@@ -1730,21 +1779,30 @@ msgstr "এই ব্যবহারকারী দ্বারা একটি
 
 #: lib/retro_hex_chat/commands/handlers/query.ex:54
 #, elixir-autogen, elixir-format
-msgid "Open a private message tab with a user without sending any message, unlike /msg."
-msgstr "কোনো বার্তা পাঠাতে না দিয়ে ব্যবহার করে কোনো ব্যবহারকারীর বার্তা খুলুন।"
+msgid ""
+"Open a private message tab with a user without sending any message, unlike "
+"/msg."
+msgstr ""
+"কোনো বার্তা পাঠাতে না দিয়ে ব্যবহার করে কোনো ব্যবহারকারীর বার্তা খুলুন।"
 
 #: lib/retro_hex_chat/commands/handlers/query.ex:33
 #, elixir-autogen, elixir-format
-msgid "Open a private message tab with a user without sending any message, unlike /msg.\n"
+msgid ""
+"Open a private message tab with a user without sending any message, unlike /msg.\n"
 "Nickname is required. If the PM tab already exists, switches to it."
-msgstr "কোনো বার্তা পাঠাতে না দিয়ে ব্যবহার করে কোনো ব্যবহারকারীর বার্তা খুলুন।\n"
+msgstr ""
+"কোনো বার্তা পাঠাতে না দিয়ে ব্যবহার করে কোনো ব্যবহারকারীর বার্তা খুলুন।\n"
 "উপনাম আবশ্যক। যদি প্রধানমন্ত্রী ট্যাব ইতিমধ্যেই বিদ্যমান, এইটি চালু আছে।"
 
 #: lib/retro_hex_chat/commands/handlers/popups.ex:34
 #: lib/retro_hex_chat/commands/handlers/popups.ex:56
 #, elixir-autogen, elixir-format
-msgid "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list and channels."
-msgstr "যোগ করতে স্বনির্বাচিত মেনু ডায়ালগ খোলো, অথবা মেনু থেকে 'পরবর্তী' নির্বাচন করো ।"
+msgid ""
+"Open the Custom Menus dialog to add, edit, or remove custom right-click menu"
+" items for the nick list and channels."
+msgstr ""
+"যোগ করতে স্বনির্বাচিত মেনু ডায়ালগ খোলো, অথবা মেনু থেকে 'পরবর্তী' নির্বাচন "
+"করো ।"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:129
 #, elixir-autogen, elixir-format
@@ -1758,14 +1816,20 @@ msgstr "বার্তার প্রধান অংশ"
 
 #: lib/retro_hex_chat/commands/handlers/ban.ex:76
 #, elixir-autogen, elixir-format
-msgid "Permanently block a user from the channel. The ban persists until removed with /mode -b."
-msgstr "ব্যবহারকারীকে চ্যানেল থেকে স্থায়ীভাবে বন্ধ করতে হবে। এই নিষেধাজ্ঞা এখনো চালু হয়নি যতক্ষণ না <ftward <f0> -b>।"
+msgid ""
+"Permanently block a user from the channel. The ban persists until removed "
+"with /mode -b."
+msgstr ""
+"ব্যবহারকারীকে চ্যানেল থেকে স্থায়ীভাবে বন্ধ করতে হবে। এই নিষেধাজ্ঞা এখনো "
+"চালু হয়নি যতক্ষণ না <ftward <f0> -b>।"
 
 #: lib/retro_hex_chat/commands/handlers/ban.ex:39
 #, elixir-autogen, elixir-format
-msgid "Permanently block a user from the channel. The ban persists until removed with /mode -b.\n"
+msgid ""
+"Permanently block a user from the channel. The ban persists until removed with /mode -b.\n"
 "Requires: channel operator. Must be in a channel."
-msgstr "ব্যবহারকারীকে চ্যানেল থেকে স্থায়ীভাবে বন্ধ করতে হবে। এই নিষেধাজ্ঞা এখনো চালু হয়নি যতক্ষণ না <ftward <f0> -b>।\n"
+msgstr ""
+"ব্যবহারকারীকে চ্যানেল থেকে স্থায়ীভাবে বন্ধ করতে হবে। এই নিষেধাজ্ঞা এখনো চালু হয়নি যতক্ষণ না <ftward <f0> -b>।\n"
 "চ্যানেল অপারেটর প্রয়োজন: %s নিশ্চয়ই কোন চ্যানেলে আছে."
 
 #: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:22
@@ -1829,16 +1893,20 @@ msgstr "প্রাপক (nm অথবা চ্যানেল)"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:173
 #, elixir-autogen, elixir-format
-msgid "Register and protect your nickname with a password through NickServ, the nickname services bot."
+msgid ""
+"Register and protect your nickname with a password through NickServ, the "
+"nickname services bot."
 msgstr "ডাকনামের মাধ্যমে আপনার ডাকনাম নিবন্ধন এবং রক্ষা করুন।"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:85
 #, elixir-autogen, elixir-format
-msgid "Register and protect your nickname with a password through NickServ.\n"
+msgid ""
+"Register and protect your nickname with a password through NickServ.\n"
 "Subcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, help.\n"
 "Register: claims current nickname. Identify: authenticates each session.\n"
 "Ghost: disconnects a stale session using the registered nickname's password."
-msgstr "নিস্ক র সাথে আপনার ডাকনাম নিবন্ধন এবং রক্ষা করুন।\n"
+msgstr ""
+"নিস্ক র সাথে আপনার ডাকনাম নিবন্ধন এবং রক্ষা করুন।\n"
 "সাব-কমান্ড: নিবন্ধন করুন <fotp/ insp05/f254), সনাক্ত করা হবে <fot >, <f\\-7>, ভূত/f7222222 <ff7> <f7\\-7\\p8, [sph], [Q2] <4]\n"
 "নিবন্ধন: বর্তমান ডাকনাম হিসাবে দাবি করা হল । পরিচয় প্রমাণ করো প্রত্যেক সেশন- এ অনুমোদন করো ।\n"
 "ঘোস্ট: নিবন্ধিত ডাকনাম- এর পাসওয়ার্ড ব্যবহার করে একটি পুরনো সেশন বিচ্ছিন্ন করে ।"
@@ -1853,12 +1921,6 @@ msgstr "বর্তমান চ্যানেল নিবন্ধন কর
 msgid "Register your nickname with a password"
 msgstr "আপনার ডাকনাম নিবন্ধন করুন"
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:42
-#, elixir-autogen, elixir-format
-msgid "Regular users should type !play in #games instead.\n"
-""
-msgstr "রেগুলার এক্সপ্রেশন-র পরিবর্তে <folp <0\\-0> হওয়া আবশ্যক।"
-
 #: lib/retro_hex_chat/commands/handlers/unban.ex:71
 #, elixir-autogen, elixir-format
 msgid "Remove a ban from a user, allowing them to rejoin the channel."
@@ -1866,9 +1928,11 @@ msgstr "ব্যবহারকারীকে প্রতিরোধ কর�
 
 #: lib/retro_hex_chat/commands/handlers/unban.ex:37
 #, elixir-autogen, elixir-format
-msgid "Remove a ban from a user, allowing them to rejoin the channel.\n"
+msgid ""
+"Remove a ban from a user, allowing them to rejoin the channel.\n"
 "Requires: channel operator. Must be in a channel."
-msgstr "ব্যবহারকারীকে প্রতিরোধ করার জন্য একটি ব্যবহারকারী থেকে প্রতিরোধ করুন।\n"
+msgstr ""
+"ব্যবহারকারীকে প্রতিরোধ করার জন্য একটি ব্যবহারকারী থেকে প্রতিরোধ করুন।\n"
 "চ্যানেল অপারেটর প্রয়োজন: %s নিশ্চয়ই কোন চ্যানেলে আছে."
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:146
@@ -1883,9 +1947,11 @@ msgstr "কোনো ব্যবহারকারীর দ্বারা চ
 
 #: lib/retro_hex_chat/commands/handlers/unmute.ex:29
 #, elixir-autogen, elixir-format
-msgid "Remove a channel-level mute from a user.\n"
+msgid ""
+"Remove a channel-level mute from a user.\n"
 "Requires: channel operator or owner."
-msgstr "কোনো ব্যবহারকারীর দ্বারা চ্যানেলের লেভেল মুছে ফেলা হবে।\n"
+msgstr ""
+"কোনো ব্যবহারকারীর দ্বারা চ্যানেলের লেভেল মুছে ফেলা হবে।\n"
 "আবশ্যক: চ্যানেল অপারেটর অথবা মালিক।"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:170
@@ -1896,9 +1962,11 @@ msgstr "কমান্ড মুছে ফেলুন"
 #: lib/retro_hex_chat/commands/handlers/kick.ex:39
 #: lib/retro_hex_chat/commands/handlers/kick.ex:79
 #, elixir-autogen, elixir-format
-msgid "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\n"
+msgid ""
+"Remove a user from the channel with an optional reason. They can rejoin unless also banned.\n"
 "Requires: channel operator or half-operator. Must be in a channel."
-msgstr "ঐচ্ছিক কারণে একটি চ্যানেল থেকে একজন ব্যবহারকারীকে সরিয়ে ফেলে। যদি নিষিদ্ধও হয়, তাহলে তারা তা বাতিল করতে পারে।\n"
+msgstr ""
+"ঐচ্ছিক কারণে একটি চ্যানেল থেকে একজন ব্যবহারকারীকে সরিয়ে ফেলে। যদি নিষিদ্ধও হয়, তাহলে তারা তা বাতিল করতে পারে।\n"
 "চ্যানেল অপারেটর অথবা অর্ধ-operর ক্ষেত্রে আবশ্যক। নিশ্চয়ই কোন চ্যানেলে আছে."
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:136
@@ -1923,27 +1991,35 @@ msgstr "ব্যবহারকারীর দ্বারা চ্যান�
 
 #: lib/retro_hex_chat/commands/handlers/deop.ex:29
 #, elixir-autogen, elixir-format
-msgid "Remove channel operator status from a user. Shortcut for /mode -o <nickname>.\n"
+msgid ""
+"Remove channel operator status from a user. Shortcut for /mode -o <nickname>.\n"
 "Requires: channel operator or owner."
-msgstr "ব্যবহারকারীর দ্বারা চ্যানেল অপারেটর অনুসরণ করা হবে। < PS1/f1> - <olf2\\-2> এর জন্য শর্টকাট\n"
+msgstr ""
+"ব্যবহারকারীর দ্বারা চ্যানেল অপারেটর অনুসরণ করা হবে। < PS1/f1> - <olf2\\-2> এর জন্য শর্টকাট\n"
 "আবশ্যক: চ্যানেল অপারেটর অথবা মালিক।"
 
 #: lib/retro_hex_chat/commands/handlers/clear_motd.ex:36
 #: lib/retro_hex_chat/commands/handlers/clear_motd.ex:56
 #, elixir-autogen, elixir-format
-msgid "Remove the server's Message of the Day so new users won't see any MOTD. Admin only."
+msgid ""
+"Remove the server's Message of the Day so new users won't see any MOTD. "
+"Admin only."
 msgstr "সার্ভারের বার্তা মুছে ফেলুন শুধু প্রশাসনিক."
 
 #: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:58
 #, elixir-autogen, elixir-format
-msgid "Remove the welcome message from the current channel so new joiners won't see one."
+msgid ""
+"Remove the welcome message from the current channel so new joiners won't see"
+" one."
 msgstr "বর্তমান চ্যানেল থেকে স্বাগতম বার্তা সরিয়ে ফেলো"
 
 #: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:38
 #, elixir-autogen, elixir-format
-msgid "Remove the welcome message from the current channel so new joiners won't see one.\n"
+msgid ""
+"Remove the welcome message from the current channel so new joiners won't see one.\n"
 "Requires: channel operator. Must be in a channel."
-msgstr "বর্তমান চ্যানেল থেকে স্বাগতম বার্তা সরিয়ে ফেলো\n"
+msgstr ""
+"বর্তমান চ্যানেল থেকে স্বাগতম বার্তা সরিয়ে ফেলো\n"
 "চ্যানেল অপারেটর প্রয়োজন: %s নিশ্চয়ই কোন চ্যানেলে আছে."
 
 #: lib/retro_hex_chat/commands/handlers/unignore.ex:65
@@ -1958,9 +2034,11 @@ msgstr "ব্যবহারকারী থেকে বর্তমান অ
 
 #: lib/retro_hex_chat/commands/handlers/devoice.ex:29
 #, elixir-autogen, elixir-format
-msgid "Remove voice status from a user. Shortcut for /mode -v <nickname>.\n"
+msgid ""
+"Remove voice status from a user. Shortcut for /mode -v <nickname>.\n"
 "Requires: half-operator, operator, or owner."
-msgstr "ব্যবহারকারী থেকে বর্তমান অবস্থা মুছে ফেলুন <f12> -v2 <ff00> এর জন্য শর্টকাট\n"
+msgstr ""
+"ব্যবহারকারী থেকে বর্তমান অবস্থা মুছে ফেলুন <f12> -v2 <ff00> এর জন্য শর্টকাট\n"
 "আবশ্যক: অর্ধ-অপ অপারেটর, অপারেটর অথবা মালিকানা।"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:171
@@ -1971,24 +2049,23 @@ msgstr "কমান্ডের ক্রমবিন্যাস"
 #: lib/retro_hex_chat/commands/handlers/knock.ex:39
 #: lib/retro_hex_chat/commands/handlers/knock.ex:63
 #, elixir-autogen, elixir-format
-msgid "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\n"
+msgid ""
+"Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\n"
 "Channel name must start with #."
-msgstr "আমন্ত্রণ জানানোর অনুরোধ জানানো হচ্ছে শুধুমাত্র (+i) চ্যানেলে। অপারেটর তোমাদের নক দেখে আসতে পারে.\n"
+msgstr ""
+"আমন্ত্রণ জানানোর অনুরোধ জানানো হচ্ছে শুধুমাত্র (+i) চ্যানেলে। অপারেটর তোমাদের নক দেখে আসতে পারে.\n"
 "চ্যানেল নাম শুরু করা আবশ্যক #"
-
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:43
-#, elixir-autogen, elixir-format
-msgid "Requires: server administrator, registered and identified."
-msgstr "প্রয়োজন: সার্ভার, নিবন্ধন ও সনাক্ত করা হয়েছে।"
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:53
 #, elixir-autogen, elixir-format
-msgid "Schedule a command to run after a delay or on a repeating interval.\n"
+msgid ""
+"Schedule a command to run after a delay or on a repeating interval.\n"
 "Create: /timer <name> <seconds> <command>. Repeat: /timer <name> repeat <seconds> <command>.\n"
 "Timers run in the window that was active when they were created and do not switch your current window when they fire.\n"
 "Manage: /timer list, /timer stop <name>.\n"
 "Max 5 timers. One-shot: 1-86400s. Repeat minimum: 10s. Session-only (lost on disconnect)."
-msgstr "একটি বিরতি অথবা পুনরাবৃত্তিের পরে সঞ্চালনের উদ্দেশ্যে সুনির্দিষ্ট কমান্ড উল্লেখ করুন ।\n"
+msgstr ""
+"একটি বিরতি অথবা পুনরাবৃত্তিের পরে সঞ্চালনের উদ্দেশ্যে সুনির্দিষ্ট কমান্ড উল্লেখ করুন ।\n"
 "তৈরি করুন <7\\-7> <fotp/f00> <fpin\\-2\\.92 <fot\\.com>\n"
 "সক্রিয় উইন্ডোর মধ্যে উপস্থিত টাইমারগুলি যখন নির্মাণ করা হয় ও বার্ন করা হলে বর্তমান উইন্ডোর পরিবর্তন করা হয় না ।\n"
 "পরিচালনা: <f১৫/১৫> তালিকা, <f16 > <f16\\-2 > বন্ধ করুন।\n"
@@ -1996,69 +2073,95 @@ msgstr "একটি বিরতি অথবা পুনরাবৃত্ত
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:79
 #, elixir-autogen, elixir-format
-msgid "Schedule a command to run after a delay or on a repeating interval. The command runs in the window that was active when the timer was created."
-msgstr "একটি বিরতি অথবা পুনরাবৃত্তিের পরে সঞ্চালনের উদ্দেশ্যে সুনির্দিষ্ট কমান্ড উল্লেখ করুন । টাইমার আরম্ভের সময় যে কমান্ড সঞ্চালনযোগ্য কমান্ডগুলি সক্রিয় ছিল।"
+msgid ""
+"Schedule a command to run after a delay or on a repeating interval. The "
+"command runs in the window that was active when the timer was created."
+msgstr ""
+"একটি বিরতি অথবা পুনরাবৃত্তিের পরে সঞ্চালনের উদ্দেশ্যে সুনির্দিষ্ট কমান্ড "
+"উল্লেখ করুন । টাইমার আরম্ভের সময় যে কমান্ড সঞ্চালনযোগ্য কমান্ডগুলি সক্রিয় "
+"ছিল।"
 
 #: lib/retro_hex_chat/commands/handlers/invite.ex:44
 #: lib/retro_hex_chat/commands/handlers/invite.ex:75
 #, elixir-autogen, elixir-format
-msgid "Send a channel invitation to another user. Required for invite-only (+i) channels.\n"
+msgid ""
+"Send a channel invitation to another user. Required for invite-only (+i) channels.\n"
 "Defaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n"
 "/invite auto — toggles whether you automatically join channels when invited."
-msgstr "একটি চ্যানেলকে অন্য ব্যবহারকারীর কাছে আমন্ত্রণ জানাও। শুধুমাত্র আমন্ত্রণ জানানোর জন্য (+i) চ্যানেল আবশ্যক।\n"
+msgstr ""
+"একটি চ্যানেলকে অন্য ব্যবহারকারীর কাছে আমন্ত্রণ জানাও। শুধুমাত্র আমন্ত্রণ জানানোর জন্য (+i) চ্যানেল আবশ্যক।\n"
 "'%s' নির্ধারিত না হলে, বর্তমান চ্যানেলের ডিফল্ট মান <f1>। কোনো চ্যানেল উল্লেখ না করার সময় চ্যানেলের মধ্যে উপস্থিত থাকা আবশ্যক।\n"
 "স্বয়ংক্রিয়ভাবে যখন আমন্ত্রণ করা হয় তখন আপনি স্বয়ংক্রিয়ভাবে চ্যানেলে যোগ দিতে পারেন ।"
 
 #: lib/retro_hex_chat/commands/handlers/notice.ex:65
 #, elixir-autogen, elixir-format
-msgid "Send a lightweight notice to a user or channel that doesn't open a PM window on their side."
+msgid ""
+"Send a lightweight notice to a user or channel that doesn't open a PM window"
+" on their side."
 msgstr "কোন ব্যবহারকারী বা চ্যানেলে কোন প্রধানমন্ত্রীর জানালা খোলা নেই।"
 
 #: lib/retro_hex_chat/commands/handlers/wallops.ex:75
 #, elixir-autogen, elixir-format
-msgid "Send a message to all users who opted in to operator announcements via /umode +w."
-msgstr "যারা <f0/f0+w> এর মাধ্যমে অপারেটরদের ঘোষণা করে তাদের কাছে বার্তা পাঠান।"
+msgid ""
+"Send a message to all users who opted in to operator announcements via "
+"/umode +w."
+msgstr ""
+"যারা <f0/f0+w> এর মাধ্যমে অপারেটরদের ঘোষণা করে তাদের কাছে বার্তা পাঠান।"
 
 #: lib/retro_hex_chat/commands/handlers/wallops.ex:54
 #, elixir-autogen, elixir-format
-msgid "Send a message to all users who opted in to operator announcements via /umode +w.\n"
+msgid ""
+"Send a message to all users who opted in to operator announcements via /umode +w.\n"
 "Requires: server operator or server administrator. Message text is required."
-msgstr "যারা <f0/f0+w> এর মাধ্যমে অপারেটরদের ঘোষণা করে তাদের কাছে বার্তা পাঠান।\n"
+msgstr ""
+"যারা <f0/f0+w> এর মাধ্যমে অপারেটরদের ঘোষণা করে তাদের কাছে বার্তা পাঠান।\n"
 "সার্ভার উল্লিখিত হয়নি অথবা অ্যাডমিনিস্ট্রেটরের সাথে যোগাযোগ করুন। টেক্সট বার্তার প্রয়োজন"
 
 #: lib/retro_hex_chat/commands/handlers/notice.ex:41
 #, elixir-autogen, elixir-format
-msgid "Send a notice to a user or channel without opening a PM window on their side.\n"
+msgid ""
+"Send a notice to a user or channel without opening a PM window on their side.\n"
 "Both target and message are required. Target can be a nickname or a #channel."
-msgstr "ব্যবহারকারীকে তাদের পক্ষে প্রধানমন্ত্রীর উইন্ডো খুলতে না করে ব্যবহারকারীর অথবা চ্যানেল প্রেরণ করা হবে।\n"
+msgstr ""
+"ব্যবহারকারীকে তাদের পক্ষে প্রধানমন্ত্রীর উইন্ডো খুলতে না করে ব্যবহারকারীর অথবা চ্যানেল প্রেরণ করা হবে।\n"
 "লক্ষ্য এবং বার্তা আবশ্যক। উদ্দিষ্ট নাম অথবা কোনো উপনাম <fickname\\-0> প্রয়োগ করা যাবে।"
 
 #: lib/retro_hex_chat/commands/handlers/msg.ex:38
 #: lib/retro_hex_chat/commands/handlers/msg.ex:62
 #, elixir-autogen, elixir-format
-msgid "Send a private message to another user, opening a PM conversation tab.\n"
+msgid ""
+"Send a private message to another user, opening a PM conversation tab.\n"
 "Both nickname and message text are required."
-msgstr "আরেকজন ব্যবহারকারীর কাছে একটি ব্যক্তিগত বার্তা পাঠান।\n"
+msgstr ""
+"আরেকজন ব্যবহারকারীর কাছে একটি ব্যক্তিগত বার্তা পাঠান।\n"
 "টুল-টিপ ও টেক্সট উভয় উল্লেখ করা আবশ্যক।"
 
 #: lib/retro_hex_chat/commands/handlers/me.ex:38
 #: lib/retro_hex_chat/commands/handlers/me.ex:59
 #, elixir-autogen, elixir-format
-msgid "Send an action message that appears as '* YourNick does something' to everyone in the channel.\n"
+msgid ""
+"Send an action message that appears as '* YourNick does something' to everyone in the channel.\n"
 "Must be in a channel. Action text is required."
-msgstr "'*' রূপে একটি কর্ম সঞ্চালনের জন্য চ্যানেল থেকে সবাইকে কিছু একটা করতে হবে।\n"
+msgstr ""
+"'*' রূপে একটি কর্ম সঞ্চালনের জন্য চ্যানেল থেকে সবাইকে কিছু একটা করতে হবে।\n"
 "নিশ্চয়ই কোন চ্যানেলে আছে. কর্মের প্রগতির তথ্য আবশ্যক।"
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:75
 #, elixir-autogen, elixir-format
-msgid "Send an urgent broadcast message to every connected user. Bypasses all ignore filters."
-msgstr "সকল সংযুক্ত ব্যবহারকারীকে জরুরী সম্প্রচার বার্তা পাঠান। সবগুলো ফিল্টার উপেক্ষা করে।"
+msgid ""
+"Send an urgent broadcast message to every connected user. Bypasses all "
+"ignore filters."
+msgstr ""
+"সকল সংযুক্ত ব্যবহারকারীকে জরুরী সম্প্রচার বার্তা পাঠান। সবগুলো ফিল্টার "
+"উপেক্ষা করে।"
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:54
 #, elixir-autogen, elixir-format
-msgid "Send an urgent broadcast message to every connected user. Bypasses all ignore filters.\n"
+msgid ""
+"Send an urgent broadcast message to every connected user. Bypasses all ignore filters.\n"
 "Requires: server administrator."
-msgstr "সকল সংযুক্ত ব্যবহারকারীকে জরুরী সম্প্রচার বার্তা পাঠান। সবগুলো ফিল্টার উপেক্ষা করে।\n"
+msgstr ""
+"সকল সংযুক্ত ব্যবহারকারীকে জরুরী সম্প্রচার বার্তা পাঠান। সবগুলো ফিল্টার উপেক্ষা করে।\n"
 "দরকার: অ্যাডমিনিস্ট্রেটরের সাথে যোগাযোগ করুন।"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:91
@@ -2069,7 +2172,6 @@ msgstr "সার্ভার প্রশাসন কমান্ড। প্
 #: lib/retro_hex_chat/commands/handlers/admin.ex:56
 #, elixir-autogen, elixir-format
 msgid "Server administration commands. Requires admin privilege.\n"
-""
 msgstr "সার্ভার প্রশাসন কমান্ড। প্রশাসনের বিশেষ সুবিধা প্রয়োজন."
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:119
@@ -2079,28 +2181,38 @@ msgstr "সার্ভারের তথ্য ও বৈশিষ্ট্য
 
 #: lib/retro_hex_chat/commands/handlers/set_welcome.ex:72
 #, elixir-autogen, elixir-format
-msgid "Set a message shown once to each user when they join the current channel."
-msgstr "বর্তমান চ্যানেলে যোগ দেওয়ার সময় প্রতিটি ব্যবহারকারীর জন্য একটি বার্তা প্রদর্শন করা হবে।"
+msgid ""
+"Set a message shown once to each user when they join the current channel."
+msgstr ""
+"বর্তমান চ্যানেলে যোগ দেওয়ার সময় প্রতিটি ব্যবহারকারীর জন্য একটি বার্তা "
+"প্রদর্শন করা হবে।"
 
 #: lib/retro_hex_chat/commands/handlers/set_welcome.ex:47
 #, elixir-autogen, elixir-format
-msgid "Set a message shown once to each user when they join the current channel.\n"
+msgid ""
+"Set a message shown once to each user when they join the current channel.\n"
 "Requires: channel operator. Must be in a channel.\n"
 "With no args: clears the welcome message (same as /clearwelcome)."
-msgstr "বর্তমান চ্যানেলে যোগ দেওয়ার সময় প্রতিটি ব্যবহারকারীর জন্য একটি বার্তা প্রদর্শন করা হবে।\n"
+msgstr ""
+"বর্তমান চ্যানেলে যোগ দেওয়ার সময় প্রতিটি ব্যবহারকারীর জন্য একটি বার্তা প্রদর্শন করা হবে।\n"
 "চ্যানেল অপারেটর প্রয়োজন: %s নিশ্চয়ই কোন চ্যানেলে আছে.\n"
 "কোনো Gargs: স্বাগতম বার্তা ফাঁকা করে (যেমন <fot > /ff0> ।"
 
 #: lib/retro_hex_chat/commands/handlers/bio.ex:73
 #, elixir-autogen, elixir-format
-msgid "Set a short 'about me' text visible when others look you up with /whois."
-msgstr "'আমার' শীর্ষক একটি সংক্ষিপ্ত টেক্সট প্রদর্শন করা হয় যখন অন্য কিছু আপনাকে <fot >/f0\\-0 > - এ দেখা যাবে ।"
+msgid ""
+"Set a short 'about me' text visible when others look you up with /whois."
+msgstr ""
+"'আমার' শীর্ষক একটি সংক্ষিপ্ত টেক্সট প্রদর্শন করা হয় যখন অন্য কিছু আপনাকে "
+"<fot >/f0\\-0 > - এ দেখা যাবে ।"
 
 #: lib/retro_hex_chat/commands/handlers/bio.ex:48
 #, elixir-autogen, elixir-format
-msgid "Set a short 'about me' text visible when others look you up with /whois.\n"
+msgid ""
+"Set a short 'about me' text visible when others look you up with /whois.\n"
 "Max 200 characters (text beyond this limit is silently truncated). Use /bio to view, /bio clear to remove."
-msgstr "'আমার' শীর্ষক একটি সংক্ষিপ্ত টেক্সট প্রদর্শন করা হয় যখন অন্য কিছু আপনাকে <fot >/f0\\-0 > - এ দেখা যাবে ।\n"
+msgstr ""
+"'আমার' শীর্ষক একটি সংক্ষিপ্ত টেক্সট প্রদর্শন করা হয় যখন অন্য কিছু আপনাকে <fot >/f0\\-0 > - এ দেখা যাবে ।\n"
 "সর্বাধিক ২০০ অক্ষর (শুধুমাত্র এই সীমার মধ্যে) হ্রাস করা হয়েছে । <f12/f1> <server22> এ দেখাতে <ff2> ব্যবহার করুন।"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:166
@@ -2111,22 +2223,28 @@ msgstr "চ্যানেল পাসওয়ার্ড সেট করু
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:117
 #, elixir-autogen, elixir-format
 msgid "Set channels to join automatically every time you connect."
-msgstr "প্রতিবার সংযোগ করার সময় স্বয়ংক্রিয়রূপে চ্যানেলের সাথে সংযোগ স্থাপন করা হবে ।"
+msgstr ""
+"প্রতিবার সংযোগ করার সময় স্বয়ংক্রিয়রূপে চ্যানেলের সাথে সংযোগ স্থাপন করা "
+"হবে ।"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:80
 #, elixir-autogen, elixir-format
-msgid "Set channels to join automatically every time you connect.\n"
+msgid ""
+"Set channels to join automatically every time you connect.\n"
 "Subcommands: list, add <#channel> [key], remove <#channel>, clear. No args opens the Perform dialog.\n"
 "Channel names must start with #. Registered users only."
-msgstr "প্রতিবার সংযোগ করার সময় স্বয়ংক্রিয়রূপে চ্যানেলের সাথে সংযোগ স্থাপন করা হবে ।\n"
+msgstr ""
+"প্রতিবার সংযোগ করার সময় স্বয়ংক্রিয়রূপে চ্যানেলের সাথে সংযোগ স্থাপন করা হবে ।\n"
 "সাবcommands: তালিকা যোগ করুন, <ffops > [kp22], সরিয়ে ফেলা হবে। কোনো Gargs দ্বারা ডায়ালগ খোলা হয় নি ।\n"
 "চ্যানেলের নাম # প্রথমে শুরু করা আবশ্যক। নিবন্ধিত ব্যবহারকারী কেবল।"
 
 #: lib/retro_hex_chat/commands/handlers/slow.ex:47
 #, elixir-autogen, elixir-format
-msgid "Set join throttle on the channel (5 joins per N seconds). Use /slow 0 to disable.\n"
+msgid ""
+"Set join throttle on the channel (5 joins per N seconds). Use /slow 0 to disable.\n"
 "Requires: channel operator or owner."
-msgstr "চ্যানেলে যোগদানের গতি বৃদ্ধি করুন (৫ সেকেন্ড পরে)। <f0\\-2 <f00> নিষ্ক্রিয়/ নিষ্ক্রিয় করো।\n"
+msgstr ""
+"চ্যানেলে যোগদানের গতি বৃদ্ধি করুন (৫ সেকেন্ড পরে)। <f0\\-2 <f00> নিষ্ক্রিয়/ নিষ্ক্রিয় করো।\n"
 "আবশ্যক: চ্যানেল অপারেটর অথবা মালিক।"
 
 #: lib/retro_hex_chat/commands/handlers/slow.ex:67
@@ -2136,28 +2254,38 @@ msgstr "গতি বৃদ্ধি করো. নিষ্ক্রিয় �
 
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:65
 #, elixir-autogen, elixir-format
-msgid "Set the server's Message of the Day shown to all users when they connect."
-msgstr "সব ব্যবহারকারীদের সাথে সংযোগ স্থাপন করার সময় বার্তা প্রদর্শন করা হবে ।"
+msgid ""
+"Set the server's Message of the Day shown to all users when they connect."
+msgstr ""
+"সব ব্যবহারকারীদের সাথে সংযোগ স্থাপন করার সময় বার্তা প্রদর্শন করা হবে ।"
 
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:44
 #, elixir-autogen, elixir-format
-msgid "Set the server's Message of the Day shown to all users when they connect.\n"
+msgid ""
+"Set the server's Message of the Day shown to all users when they connect.\n"
 "Requires: server administrator. Message text is required."
-msgstr "সব ব্যবহারকারীদের সাথে সংযোগ স্থাপন করার সময় বার্তা প্রদর্শন করা হবে ।\n"
+msgstr ""
+"সব ব্যবহারকারীদের সাথে সংযোগ স্থাপন করার সময় বার্তা প্রদর্শন করা হবে ।\n"
 "দরকার: অ্যাডমিনিস্ট্রেটরের সাথে যোগাযোগ করুন। টেক্সট বার্তার প্রয়োজন"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:137
 #, elixir-autogen, elixir-format
-msgid "Set up commands that automatically run every time you connect, like identifying with NickServ."
-msgstr "প্রতিবার সংযোগ স্থাপনের সময় স্বয়ংক্রিয়ভাবে যে কমান্ড চালানো হবে তা নির্ধারণ করুন ।"
+msgid ""
+"Set up commands that automatically run every time you connect, like "
+"identifying with NickServ."
+msgstr ""
+"প্রতিবার সংযোগ স্থাপনের সময় স্বয়ংক্রিয়ভাবে যে কমান্ড চালানো হবে তা "
+"নির্ধারণ করুন ।"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:92
 #, elixir-autogen, elixir-format
-msgid "Set up commands that automatically run every time you connect.\n"
+msgid ""
+"Set up commands that automatically run every time you connect.\n"
 "Subcommands: list, add <command>, remove <index>, move <from> <to>, clear. No args opens the dialog.\n"
 "Common use: /perform add /ns identify mypassword\n"
 "Positions are 0-based index numbers. Passwords are masked in the list display."
-msgstr "প্রতিবার সংযোগ স্থাপনের সময় স্বয়ংক্রিয়ভাবে যে কমান্ড চালানো হবে তা নির্ধারণ করুন ।\n"
+msgstr ""
+"প্রতিবার সংযোগ স্থাপনের সময় স্বয়ংক্রিয়ভাবে যে কমান্ড চালানো হবে তা নির্ধারণ করুন ।\n"
 "সাবcommands: তালিকা যোগ করুন, <fotiffiles > [<flot >, <fflot> মুছে ফেলা হবে, <f00F222> কোনো Gargs ডায়লগ খোলা হয়নি।\n"
 "সাধারণ ব্যবহার: <F8/f88> <f999> আমার পাসওয়ার্ড যোগ করো\n"
 "অবস্থান হল 0-ভিত্তিক ইন্ডেক্স সংখ্যা । তালিকায় চিহ্নিত ডিসপ্লে-র মধ্যে পাসওয়ার্ড প্রদর্শন করা হবে।"
@@ -2202,17 +2330,6 @@ msgstr "স্বয়ংক্রিয় ভাবে তালিকা ত
 msgid "Show your notify list"
 msgstr "প্রদর্শন"
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:41
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session (admin-only debug command).\n"
-""
-msgstr "সোলো আর্কেড সেশান আরম্ভ করুন (শুধুমাত্র ডিবাগ কমান্ড সহযোগে)।"
-
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:60
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session (admin-only). Regular users: type !play in #games."
-msgstr "সোলো আর্কেড সেশন শুরু করো (শুধুমাত্র সিস্টেমের জন্যে)। সাধারণ ব্যবহারকারীর ধরন: <flolp <0\\-0>।"
-
 #: lib/retro_hex_chat/commands/handlers/timer.ex:108
 #, elixir-autogen, elixir-format
 msgid "Stop a running timer"
@@ -2220,14 +2337,20 @@ msgstr "চলমান টাইমার বন্ধ করুন"
 
 #: lib/retro_hex_chat/commands/handlers/unignore.ex:54
 #, elixir-autogen, elixir-format
-msgid "Stop ignoring a user you previously blocked, making their messages visible again."
-msgstr "পূর্বে ব্লক করা ব্যবহারকারীকে উপেক্ষা না করে তাদের বার্তা পুনরায় প্রদর্শন করা হবে।"
+msgid ""
+"Stop ignoring a user you previously blocked, making their messages visible "
+"again."
+msgstr ""
+"পূর্বে ব্লক করা ব্যবহারকারীকে উপেক্ষা না করে তাদের বার্তা পুনরায় প্রদর্শন "
+"করা হবে।"
 
 #: lib/retro_hex_chat/commands/handlers/unignore.ex:31
 #, elixir-autogen, elixir-format
-msgid "Stop ignoring a user you previously blocked, making their messages visible again.\n"
+msgid ""
+"Stop ignoring a user you previously blocked, making their messages visible again.\n"
 "Nickname is required. Use /ignore with no args to see your ignore list first."
-msgstr "পূর্বে ব্লক করা ব্যবহারকারীকে উপেক্ষা না করে তাদের বার্তা পুনরায় প্রদর্শন করা হবে।\n"
+msgstr ""
+"পূর্বে ব্লক করা ব্যবহারকারীকে উপেক্ষা না করে তাদের বার্তা পুনরায় প্রদর্শন করা হবে।\n"
 "উপনাম আবশ্যক। প্রথমে আপনার উপেক্ষাকৃত তালিকা দেখার জন্য <f > <f > ব্যবহার করুন ।"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:107
@@ -2275,14 +2398,18 @@ msgstr "সাব-কমান্ড: নিবন্ধন, সনাক্ত,
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:109
 #, elixir-autogen, elixir-format
-msgid "Subcommands: create, destroy, list, info, join, part, enable, disable, "
-msgstr "সাব-কমান্ড: তৈরি, ধ্বংস, তালিকা তৈরি, যোগ করুন, যোগ, যোগ করুন, নিষ্ক্রিয়, নিষ্ক্রিয় করুন"
+msgid ""
+"Subcommands: create, destroy, list, info, join, part, enable, disable, "
+msgstr ""
+"সাব-কমান্ড: তৈরি, ধ্বংস, তালিকা তৈরি, যোগ করুন, যোগ, যোগ করুন, নিষ্ক্রিয়, "
+"নিষ্ক্রিয় করুন"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:57
 #, elixir-autogen, elixir-format
 msgid "Subcommands: server, user, channel, ns, cs, debug, log, turn, nuke.\n"
-""
-msgstr "Subcommands: সার্ভার, ব্যবহারকারী, চ্যানেল, cs, ডিবাগ, লগ- ইন, ব্যবহারকারীর নাম"
+msgstr ""
+"Subcommands: সার্ভার, ব্যবহারকারী, চ্যানেল, cs, ডিবাগ, লগ- ইন, ব্যবহারকারীর "
+"নাম"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:141
 #, elixir-autogen, elixir-format
@@ -2304,11 +2431,6 @@ msgstr "লক্ষ্য ডাকনাম ( + +o, +v, +b)"
 msgid "Target user"
 msgstr "উদ্দিষ্ট ব্যবহারকারী"
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:17
-#, elixir-autogen, elixir-format
-msgid "This command is reserved for administrators. "
-msgstr "এটি প্রশাসকর জন্য সংরক্ষিত।"
-
 #: lib/retro_hex_chat/commands/handlers/slow.ex:75
 #, elixir-autogen, elixir-format
 msgid "Throttle interval in seconds (0 to disable)"
@@ -2322,14 +2444,17 @@ msgstr "টাইমার নাম"
 #: lib/retro_hex_chat/commands/handlers/umode.ex:76
 #, elixir-autogen, elixir-format
 msgid "Toggle personal user modes that affect what messages you receive."
-msgstr "ওপর দিয়ে আপনার ব্যক্তিগত মোডকে সক্রিয় করে যা আপনার বার্তাকে প্রভাবিত করে।"
+msgstr ""
+"ওপর দিয়ে আপনার ব্যক্তিগত মোডকে সক্রিয় করে যা আপনার বার্তাকে প্রভাবিত করে।"
 
 #: lib/retro_hex_chat/commands/handlers/umode.ex:42
 #, elixir-autogen, elixir-format
-msgid "Toggle personal user modes that affect what messages you receive.\n"
+msgid ""
+"Toggle personal user modes that affect what messages you receive.\n"
 "Available modes: +w (wallops — receive operator broadcast messages), -w (stop receiving).\n"
 "Must start with + or -. Currently only the w (wallops) mode is supported."
-msgstr "ওপর দিয়ে আপনার ব্যক্তিগত মোডকে সক্রিয় করে যা আপনার বার্তাকে প্রভাবিত করে।\n"
+msgstr ""
+"ওপর দিয়ে আপনার ব্যক্তিগত মোডকে সক্রিয় করে যা আপনার বার্তাকে প্রভাবিত করে।\n"
 "ব্যবহারযোগ্য মোড: +w (ওয়ালস্পন্স) - ব্রডকাস্ট বার্তা প্রাপ্ত হয়েছে, -w (বন্ধিত)\n"
 "- এখন শুরু করা আবশ্যক। বর্তমানে শুধুমাত্র সমর্থিত (wallse) মোড সমর্থিত হয়।"
 
@@ -2340,15 +2465,18 @@ msgstr "বিষয় সুরক্ষিত"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:104
 #, elixir-autogen, elixir-format
-msgid "Track when specific users come online or go offline with your buddy list."
+msgid ""
+"Track when specific users come online or go offline with your buddy list."
 msgstr "ব্যবহারকারী যখন অনলাইন হন অথবা আপনার বন্ধু তালিকা থেকে প্রস্থান করুন।"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:77
 #, elixir-autogen, elixir-format
-msgid "Track when specific users come online or go offline with your buddy list.\n"
+msgid ""
+"Track when specific users come online or go offline with your buddy list.\n"
 "Subcommands: add <nick> [note], remove <nick>, edit <nick> <note>, list. No args opens the dialog.\n"
 "Registered users: persisted. Guests: session-only."
-msgstr "ব্যবহারকারী যখন অনলাইন হন অথবা আপনার বন্ধু তালিকা থেকে প্রস্থান করুন।\n"
+msgstr ""
+"ব্যবহারকারী যখন অনলাইন হন অথবা আপনার বন্ধু তালিকা থেকে প্রস্থান করুন।\n"
 "সাবকমান্ড: sphones: <autofflotp/script > [hps], <fotp1> মুছে ফেলা হবে, <file2222/Sphp/EF7> <7\\-7\\-7>। কোনো Gargs ডায়লগ খোলা হয়নি।\n"
 "নিবন্ধিত ব্যবহারকারীরা: রয়ে গেছে। অতিথিবৃন্দ: শুধুমাত্র সেশন।"
 
@@ -2359,17 +2487,20 @@ msgstr "অন্য ব্যবহারকারীর সাথে চ্য
 
 #: lib/retro_hex_chat/commands/handlers/transfer.ex:29
 #, elixir-autogen, elixir-format
-msgid "Transfer channel ownership to another user.\n"
+msgid ""
+"Transfer channel ownership to another user.\n"
 "The new owner gets +q (owner) and you are demoted to operator.\n"
 "Requires: channel owner."
-msgstr "অন্য ব্যবহারকারীর সাথে চ্যানেলের মালিকানা স্থানান্তর করুন ।\n"
+msgstr ""
+"অন্য ব্যবহারকারীর সাথে চ্যানেলের মালিকানা স্থানান্তর করুন ।\n"
 "নতুন মালিক +কে (মালিকানা) পাবেন এবং আপনাকে অপারেটরের জন্য নমুনা করা হয়েছে ।\n"
 "প্রয়োজন: চ্যানেল মালিক।"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:61
 #, elixir-autogen, elixir-format
 msgid "Type /admin <subcommand> for usage details."
-msgstr "ধরন <f12 <fotp1> <ff2> ব্যবহার করুন। বিস্তারিত বিবরণের জন্য ব্যবহার করুন।"
+msgstr ""
+"ধরন <f12 <fotp1> <ff2> ব্যবহার করুন। বিস্তারিত বিবরণের জন্য ব্যবহার করুন।"
 
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:139
 #, elixir-autogen, elixir-format
@@ -2383,13 +2514,20 @@ msgstr "অজানা <f00> <ff00> কমান্ড। ব্যবহার
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:43
 #, elixir-autogen, elixir-format
-msgid "Unknown admin subcommand: %{subcmd}. Try: server, user, channel, ns, cs, debug, log, turn, nuke"
-msgstr "অজ্ঞাত অ্যাডমিন কমান্ড: %{subcmd}; চেষ্টা করুন: সার্ভার, ব্যবহারকারী, ব্যবহারকারী, চ্যানেল, cs, ডিবাগ, লগ- ইন করুন"
+msgid ""
+"Unknown admin subcommand: %{subcmd}. Try: server, user, channel, ns, cs, "
+"debug, log, turn, nuke"
+msgstr ""
+"অজ্ঞাত অ্যাডমিন কমান্ড: %{subcmd}; চেষ্টা করুন: সার্ভার, ব্যবহারকারী, "
+"ব্যবহারকারী, চ্যানেল, cs, ডিবাগ, লগ- ইন করুন"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:524
+#: lib/retro_hex_chat/commands/handlers/bot.ex:506
 #, elixir-autogen, elixir-format
-msgid "Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, farewell, "
-msgstr "অজানা ধরন%{key}'... বৈধ: প্রেফিক্স, ঠান্ডা, বর্ণনা, শুভেচ্ছা, বিদায়, "
+msgid ""
+"Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, "
+"farewell, "
+msgstr ""
+"অজানা ধরন%{key}'... বৈধ: প্রেফিক্স, ঠান্ডা, বর্ণনা, শুভেচ্ছা, বিদায়, "
 
 #: lib/retro_hex_chat/commands/handlers/umode.ex:59
 #, elixir-autogen, elixir-format
@@ -2399,11 +2537,15 @@ msgstr "অজানা ব্যবহারকারী মোড: %{flag}"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:216
 #, elixir-autogen, elixir-format
 msgid "Uptime stats: %{state_stats_messages_handled} msgs handled"
-msgstr "সময় সংক্রান্ত পরিসংখ্যান: %{state_stats_messages_handled} বার্তা প্রজ্জ্বলনName"
+msgstr ""
+"সময় সংক্রান্ত পরিসংখ্যান: %{state_stats_messages_handled} বার্তা "
+"প্রজ্জ্বলনName"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:17
 #, elixir-autogen, elixir-format
-msgid "Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> [args]"
+msgid ""
+"Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> "
+"[args]"
 msgstr "ব্যবহারপ্রণালী: <fot2 <fotif2> <f বরং>"
 
 #: lib/retro_hex_chat/commands/handlers/alias.ex:18
@@ -2438,7 +2580,9 @@ msgstr "ব্যবহারপ্রণালী: <fot > <fot\\.sin1>"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:27
 #, elixir-autogen, elixir-format
-msgid "Usage: /autorespond add <on_join|on_part|on_nick_change> [#channel] <command>"
+msgid ""
+"Usage: /autorespond add <on_join|on_part|on_nick_change> [#channel] "
+"<command>"
 msgstr "ব্যবহার: <f22 <fotp2> <fot\\.sink>"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:23
@@ -2622,7 +2766,9 @@ msgstr "ব্যবহারপ্রণালী: < minister1> [<ff21> <fff2\\
 #: lib/retro_hex_chat/commands/handlers/slow.ex:37
 #, elixir-autogen, elixir-format
 msgid "Usage: /slow <seconds> — must be a positive number (0 to disable)"
-msgstr "ব্যবহারপ্রণালী: <f1\\-1> <fff2\\-22\\.com> একটি ইতিবাচক সংখ্যা হওয়া আবশ্যক - নিষ্ক্রিয় করার জন্য বৈধ মান (০)"
+msgstr ""
+"ব্যবহারপ্রণালী: <f1\\-1> <fff2\\-22\\.com> একটি ইতিবাচক সংখ্যা হওয়া আবশ্যক "
+"- নিষ্ক্রিয় করার জন্য বৈধ মান (০)"
 
 #: lib/retro_hex_chat/commands/handlers/transfer.ex:14
 #, elixir-autogen, elixir-format
@@ -2673,7 +2819,7 @@ msgstr "ব্যবহারপ্রণালী: <fot1> <fotp1>"
 msgid "Usage: /whowas <nickname>"
 msgstr "ব্যবহারপ্রণালী: <fot1> <fotp1>"
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:70
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "ব্যবহারকারী"
@@ -2766,24 +2912,30 @@ msgstr "চ্যানেলের নিবন্ধন তথ্য প্র
 #: lib/retro_hex_chat/commands/handlers/help.ex:42
 #: lib/retro_hex_chat/commands/handlers/help.ex:63
 #, elixir-autogen, elixir-format
-msgid "View help for any command, or browse all available commands.\n"
+msgid ""
+"View help for any command, or browse all available commands.\n"
 "With no args: lists all commands. With a command name: shows detailed help.\n"
 "Also accessible via Help Topics in the toolbar."
-msgstr "কোনো কমান্ডের জন্য সহায়তা দেখুন, অথবা সকল কমান্ড ব্রাউজ করুন।\n"
+msgstr ""
+"কোনো কমান্ডের জন্য সহায়তা দেখুন, অথবা সকল কমান্ড ব্রাউজ করুন।\n"
 "কোনো আর্গুমেন্ট উপস্থিত নেই: সকল কমান্ড উল্লিখিত হয়নি । কমান্ডের সাহায্যে: বিস্তারিত সাহায্য প্রদর্শন করা হবে।\n"
 "টুলবার- এ সহায়ক তথ্যের সহায়িকা প্রদর্শন করতে ব্যবহৃত হয়।"
 
 #: lib/retro_hex_chat/commands/handlers/topic.ex:65
 #, elixir-autogen, elixir-format
-msgid "View or change the channel topic displayed in the topic bar at the top of the channel."
+msgid ""
+"View or change the channel topic displayed in the topic bar at the top of "
+"the channel."
 msgstr "চ্যানেলে প্রধান উইন্ডো প্রদর্শন অথবা পরিবর্তন করুন।"
 
 #: lib/retro_hex_chat/commands/handlers/topic.ex:44
 #, elixir-autogen, elixir-format
-msgid "View or change the channel topic displayed in the topic bar at the top of the channel.\n"
+msgid ""
+"View or change the channel topic displayed in the topic bar at the top of the channel.\n"
 "No args: shows current topic. With text: sets a new topic.\n"
 "Must be in a channel. If channel has +t mode, only operators can change the topic."
-msgstr "চ্যানেলে প্রধান উইন্ডো প্রদর্শন অথবা পরিবর্তন করুন।\n"
+msgstr ""
+"চ্যানেলে প্রধান উইন্ডো প্রদর্শন অথবা পরিবর্তন করুন।\n"
 "কোনও args: বর্তমান বিষয় দেখায় না । টেক্সট: একটি নতুন বিষয় নির্ধারণ করুন।\n"
 "নিশ্চয়ই কোন চ্যানেলে আছে. চ্যানেলের মধ্যে +t মোড উপস্থিত থাকলে শুধুমাত্র অপারেটররা বিষয়টি পরিবর্তন করতে পারবেন।"
 
@@ -2795,7 +2947,9 @@ msgstr "ডাকনামের জন্য নিবন্ধন তথ্য
 #: lib/retro_hex_chat/commands/handlers/motd.ex:34
 #: lib/retro_hex_chat/commands/handlers/motd.ex:54
 #, elixir-autogen, elixir-format
-msgid "View the server's Message of the Day, which is also shown automatically when you connect."
+msgid ""
+"View the server's Message of the Day, which is also shown automatically when"
+" you connect."
 msgstr "সার্ভারের বার্তা দেখাও"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:135
@@ -2810,7 +2964,9 @@ msgstr "ওয়ালপস পাঠানো হয়েছে।"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:114
 #, elixir-autogen, elixir-format
-msgid "Without arguments, opens the Bot Management dialog (admins) or shows bot list."
+msgid ""
+"Without arguments, opens the Bot Management dialog (admins) or shows bot "
+"list."
 msgstr "যুক্তি ছাড়া বোট ব্যবস্থাপনা ডায়ালগ খোলে বা রোবট লিস্ট দেখায়।"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:29
@@ -2885,16 +3041,12 @@ msgstr "চিহ্নিত কমান্ড চালানোর জন্
 #: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:76
 #, elixir-autogen, elixir-format
 msgid "You must be at least a half-operator to use this command"
-msgstr "চিহ্নিত কমান্ড ব্যবহার করার উদ্দেশ্যে অন্তত অর্ধ-half-op অপারেটর আবশ্যক"
+msgstr ""
+"চিহ্নিত কমান্ড ব্যবহার করার উদ্দেশ্যে অন্তত অর্ধ-half-op অপারেটর আবশ্যক"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:85
 #, elixir-autogen, elixir-format
 msgid "You must be identified to use /p2p."
-msgstr "আপনাকে অবশ্যই সনাক্ত করতে হবে <fot2\\-0/f0> ব্যবহার করার জন্য।"
-
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:73
-#, elixir-autogen, elixir-format
-msgid "You must be identified to use /singleplayer."
 msgstr "আপনাকে অবশ্যই সনাক্ত করতে হবে <fot2\\-0/f0> ব্যবহার করার জন্য।"
 
 #: lib/retro_hex_chat/commands/policy.ex:27
@@ -2911,12 +3063,8 @@ msgstr "চিহ্নিত কমান্ড চালানোর জন্
 #: lib/retro_hex_chat/commands/handlers/set_welcome.ex:15
 #, elixir-autogen, elixir-format
 msgid "You must be in a channel to use this command."
-msgstr "চিহ্নিত কমান্ড প্রয়োগ করার জন্য আপনার একটি চ্যানেলে উপস্থিত থাকা আবশ্যক।"
-
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:77
-#, elixir-autogen, elixir-format
-msgid "You must be registered to play arcade games."
-msgstr "আর্কেড খেলার জন্য আপনাকে নিবন্ধন করতে হবে."
+msgstr ""
+"চিহ্নিত কমান্ড প্রয়োগ করার জন্য আপনার একটি চ্যানেলে উপস্থিত থাকা আবশ্যক।"
 
 #: lib/retro_hex_chat/commands/handlers/transfer.ex:75
 #: lib/retro_hex_chat/commands/policy.ex:51
@@ -2930,7 +3078,7 @@ msgstr "চিহ্নিত কমান্ড ব্যবহার করা
 msgid "[BotService] %{message}"
 msgstr "না! %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:579
+#: lib/retro_hex_chat/commands/handlers/bot.ex:561
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{name} has no custom commands."
 msgstr "না! %{name} স্বনির্বাচিত কোনো কমান্ড উপস্থিত নেই।"
@@ -2971,9 +3119,9 @@ msgstr "[বোট সার্ভিস] বোট%{name}বাঁদিকে 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:290
 #: lib/retro_hex_chat/commands/handlers/bot.ex:311
 #: lib/retro_hex_chat/commands/handlers/bot.ex:334
-#: lib/retro_hex_chat/commands/handlers/bot.ex:567
-#: lib/retro_hex_chat/commands/handlers/bot.ex:609
-#: lib/retro_hex_chat/commands/handlers/bot.ex:643
+#: lib/retro_hex_chat/commands/handlers/bot.ex:549
+#: lib/retro_hex_chat/commands/handlers/bot.ex:591
+#: lib/retro_hex_chat/commands/handlers/bot.ex:625
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' not found."
 msgstr "[বোট সার্ভিস] বোট%{name}পাওয়া যায়নি।"
@@ -2983,27 +3131,27 @@ msgstr "[বোট সার্ভিস] বোট%{name}পাওয়া য
 msgid "[BotService] Bot Info: %{name}"
 msgstr "বোট ইনফো: %{name}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:707
+#: lib/retro_hex_chat/commands/handlers/bot.ex:689
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bots:"
 msgstr "না! বোট:"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:652
+#: lib/retro_hex_chat/commands/handlers/bot.ex:634
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed from %{name}."
 msgstr "[Bant সার্ভিস] কমান্ড%{trigger}থেকে অপসারণ করা হয়েছে %{name}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:621
+#: lib/retro_hex_chat/commands/handlers/bot.ex:603
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' set for %{name}."
 msgstr "[Bant সার্ভিস] কমান্ড%{trigger}নির্ধারিত %{name}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:585
+#: lib/retro_hex_chat/commands/handlers/bot.ex:567
 #, elixir-autogen, elixir-format
 msgid "[BotService] Commands for %{bot_name}:"
 msgstr "[Baht সার্ভিস] কমান্ড %{bot_name}:"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:631
+#: lib/retro_hex_chat/commands/handlers/bot.ex:613
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to add command '%{trigger}': %{message}"
 msgstr "না%{trigger}': %{message}"
@@ -3013,7 +3161,7 @@ msgstr "না%{trigger}': %{message}"
 msgid "[BotService] Failed to create bot: %{message}"
 msgstr "না! পাইপ নির্মাণ করতে ব্যর্থ: %s %{message}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:703
+#: lib/retro_hex_chat/commands/handlers/bot.ex:685
 #, elixir-autogen, elixir-format
 msgid "[BotService] No bots configured."
 msgstr "না! কোনো রোবট কনফিগার করা হয়নি।"
@@ -3033,7 +3181,8 @@ msgstr "[চিৎকার] %{message}"
 #: lib/retro_hex_chat/commands/handlers/cs.ex:124
 #, elixir-autogen, elixir-format
 msgid "[ChanServ] %{name}: founder=%{founder}, registered=%{registered_at}"
-msgstr "[চিৎকার] %{name}: প্রতিষ্ঠাতা%{founder}নিবন্ধিত ফাংশান%{registered_at}"
+msgstr ""
+"[চিৎকার] %{name}: প্রতিষ্ঠাতা%{founder}নিবন্ধিত ফাংশান%{registered_at}"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:166
 #, elixir-autogen, elixir-format
@@ -3055,15 +3204,12 @@ msgstr "[নিক] %{message}"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:135
 #, elixir-autogen, elixir-format
-msgid "[NickServ] %{nickname}: registered %{registered_at}, identified: %{identified}"
+msgid ""
+"[NickServ] %{nickname}: registered %{registered_at}, identified: "
+"%{identified}"
 msgstr "[নিক] %{nickname}নিবন্ধিত %{registered_at}সনাক্ত: %{identified}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:518
-#, elixir-autogen, elixir-format
-msgid "arcade_enabled must be: true or false."
-msgstr "আর্কেড সক্রিয় মান true (সত্য) হলে: সত্য অথবা মিথ্যা।"
-
-#: lib/retro_hex_chat/commands/handlers/bot.ex:529
+#: lib/retro_hex_chat/commands/handlers/bot.ex:511
 #, elixir-autogen, elixir-format
 msgid "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*"
 msgstr "sr pons, পাশা *, eglay *, Tav2 *, speak,**, আর্কেড"
@@ -3076,29 +3222,32 @@ msgstr "সার্ভার, ব্যবহারকারী, চ্যা�
 #: lib/retro_hex_chat/commands/handlers/bot.ex:113
 #, elixir-autogen, elixir-format
 msgid "set, commands, addcmd, delcmd, help.\n"
-""
 msgstr "নির্ধারিত কমান্ড, cmd, ডেলcmd, সাহায্য।"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:64
 #, elixir-autogen, elixir-format
-msgid "Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
+msgid ""
+"Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
 "Requires: both users must be registered and identified (/ns identify)."
-msgstr "Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"একটি P2P লবি খুলুন যেটা হোস্ট কল করে, ফাইল ট্রান্সফার, এবং একটি সংযোগের মাধ্যমে একসাথে খেলা যাবে ।\n"
+"আবশ্যক: দু'টি ব্যবহারকারীদেরকে নিবন্ধন করতে হবে এবং সনাক্ত করতে হবে (উদাহরণস্বরূপ <0\\-40}/fffo।"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:43
 #, elixir-autogen, elixir-format
-msgid "Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+msgid ""
+"Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
 "Requires: both users must be registered and identified (/ns identify)."
-msgstr "Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
-"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"একটি P2P লব অন্য ব্যবহারকারীর সাথে খোলা হবে: একটি লাগাতার সংযোগ যে একটি অডিও কল/f02f02 কল, ফাইল ট্রান্সফার, এবং সব সময়ে খেলা হবে।\n"
+"আবশ্যক: দু'টি ব্যবহারকারীকে নিবন্ধন করতে হবে এবং সনাক্ত করতে হবে (<f1\\-1>)।"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
-msgstr "User '%{nickname}' is offline."
+msgstr "ব্যবহারকারী '%{nickname}' অফলাইন।"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:89
 #, elixir-autogen, elixir-format
 msgid "You cannot open a lobby with yourself."
-msgstr "You cannot open a lobby with yourself."
+msgstr "তুমি নিজে লব খুলতে পারবে না।"

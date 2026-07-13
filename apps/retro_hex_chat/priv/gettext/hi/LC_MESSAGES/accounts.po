@@ -56,22 +56,22 @@ msgstr "मारून"
 msgid "Navy"
 msgstr "नौसेना"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:29
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:31
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "उपनाम खाली नहीं हो सकता"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:38
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:40
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "उपनाम में रिक्त स्थान नहीं हो सकते हैं"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:26
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:28
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "उपनाम एक स्ट्रिंग होना चाहिए"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:35
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:37
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "उपनाम एक पत्र या विशेष चरित्र के साथ शुरू होना चाहिए"
@@ -110,3 +110,8 @@ msgstr "सफेद"
 #, elixir-autogen, elixir-format
 msgid "Yellow"
 msgstr "पीला"
+
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:43
+#, elixir-autogen, elixir-format
+msgid "Nickname contains invalid characters"
+msgstr "उपनाम में अमान्य वर्ण शामिल हैं"

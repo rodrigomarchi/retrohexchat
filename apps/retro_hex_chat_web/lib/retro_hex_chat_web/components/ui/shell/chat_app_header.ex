@@ -60,6 +60,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatAppHeader do
           arcade_available={@arcade_available}
           p2p_active={@p2p != nil}
           p2p_turn_available={@p2p_turn_available}
+          language_return_to="/chat"
           on_action={@on_toolbar_action}
         />
         <%!-- The desktop tray owns the clock; the status bar drops its own. --%>

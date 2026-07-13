@@ -41,19 +41,9 @@ msgstr ""
 msgid "Allocation mismatch: allocation does not exist"
 msgstr ""
 
-#: lib/retro_hex_chat/p2p/policy.ex:64
-#, elixir-autogen, elixir-format
-msgid "An active session already exists with this user"
-msgstr ""
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:110
 #, elixir-autogen, elixir-format
 msgid "Auth failed, invalid MESSAGE-INTEGRITY"
-msgstr ""
-
-#: lib/retro_hex_chat/p2p/policy.ex:43
-#, elixir-autogen, elixir-format
-msgid "Cannot create a session with yourself"
 msgstr ""
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:149
@@ -69,11 +59,6 @@ msgstr ""
 #: lib/retro_hex_chat/p2p/turn/utils.ex:101
 #, elixir-autogen, elixir-format
 msgid "EVEN-PORT unsupported"
-msgstr ""
-
-#: lib/retro_hex_chat/p2p/service.ex:151
-#, elixir-autogen, elixir-format
-msgid "Failed to create session"
 msgstr ""
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:143
@@ -111,16 +96,6 @@ msgstr ""
 msgid "Failed to decode XOR-PEER-ADDRESS"
 msgstr ""
 
-#: lib/retro_hex_chat/p2p/session_server.ex:168
-#, elixir-autogen, elixir-format
-msgid "Invalid transition from %{state_session_status} to %{new_status_str}"
-msgstr ""
-
-#: lib/retro_hex_chat/p2p/session_token.ex:30
-#, elixir-autogen, elixir-format
-msgid "Missing :p2p_token_secret configuration"
-msgstr ""
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:140
 #, elixir-autogen, elixir-format
 msgid "No CHANNEL-NUMBER attribute"
@@ -156,11 +131,6 @@ msgstr ""
 msgid "No username, nonce or realm attribute"
 msgstr ""
 
-#: lib/retro_hex_chat/p2p/session_server.ex:150
-#, elixir-autogen, elixir-format
-msgid "Not a participant"
-msgstr ""
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:98
 #, elixir-autogen, elixir-format
 msgid "REQUESTED-ADDRESS-FAMILY with IPv6 unsupported"
@@ -176,35 +146,9 @@ msgstr ""
 msgid "RESERVATION-TOKEN unsupported"
 msgstr ""
 
-#: lib/retro_hex_chat/p2p/policy.ex:101
-#, elixir-autogen, elixir-format
-msgid "Session is no longer active"
-msgstr ""
-
-#: lib/retro_hex_chat/p2p/service.ex:164
-#, elixir-autogen, elixir-format
-msgid "Session not found"
-msgstr ""
-
-#: lib/retro_hex_chat/p2p/service.ex:92
-#: lib/retro_hex_chat/p2p/session_server.ex:46
-#: lib/retro_hex_chat/p2p/session_server.ex:54
-#: lib/retro_hex_chat/p2p/session_server.ex:70
-#: lib/retro_hex_chat/p2p/session_server.ex:460
-#: lib/retro_hex_chat/p2p/session_server.ex:461
-#: lib/retro_hex_chat/p2p/session_server.ex:462
-#, elixir-autogen, elixir-format
-msgid "Session process not running"
-msgstr ""
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:125
 #, elixir-autogen, elixir-format
 msgid "Stale nonce"
-msgstr ""
-
-#: lib/retro_hex_chat/p2p/policy.ex:57
-#, elixir-autogen, elixir-format
-msgid "Target user must be registered"
 msgstr ""
 
 #: lib/retro_hex_chat/p2p/turn/utils.ex:156
@@ -217,11 +161,6 @@ msgstr ""
 msgid "Unsupported REQUESTED-TRANSPORT: TCP"
 msgstr ""
 
-#: lib/retro_hex_chat/p2p/policy.ex:85
-#, elixir-autogen, elixir-format
-msgid "User not available"
-msgstr ""
-
 #: lib/retro_hex_chat/p2p/turn/utils.ex:122
 #, elixir-autogen, elixir-format
 msgid "Username differs from the one used previously"
@@ -232,22 +171,12 @@ msgstr ""
 msgid "Username timestamp expired"
 msgstr ""
 
-#: lib/retro_hex_chat/p2p/policy.ex:95
-#, elixir-autogen, elixir-format
-msgid "You are not a participant in this session"
-msgstr ""
-
-#: lib/retro_hex_chat/p2p/policy.ex:56
-#, elixir-autogen, elixir-format
-msgid "You must be registered to use P2P"
-msgstr ""
-
-#: lib/retro_hex_chat/p2p/p2p.ex:103
+#: lib/retro_hex_chat/p2p/p2p.ex:67
 #, elixir-autogen, elixir-format
 msgid "stun:stun.l.google.com:19302"
 msgstr ""
 
-#: lib/retro_hex_chat/p2p/p2p.ex:93
+#: lib/retro_hex_chat/p2p/p2p.ex:57
 #, elixir-autogen, elixir-format
 msgid "turn:%{relay_ip}:%{listen_port}?transport=udp"
 msgstr ""

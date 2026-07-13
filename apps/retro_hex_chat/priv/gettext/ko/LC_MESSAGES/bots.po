@@ -31,16 +31,6 @@ msgstr "%{prefix}%{trigger} - %{description}"
 msgid "  %{prefix}help — Show this help message"
 msgstr "  %{prefix}도움 — 이 도움말 메시지 표시"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be identified to play. Use /ns identify <password> first."
-msgstr "%{author}: 게임에 식별해야합니다. 제품 정보 /ns 제품정보 <password> 처음."
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be registered to play. Use /ns register <password> first."
-msgstr "%{author}: 게임에 등록해야합니다. 제품 정보 /ns 이름 * <password> 처음."
-
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:301
 #, elixir-autogen, elixir-format
 msgid "%{base} %{sign} %{modifier} = %{total}"
@@ -63,9 +53,11 @@ msgstr "%{message} (%{reason})"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
 #, elixir-autogen, elixir-format
-msgid "%{prefix}\n"
+msgid ""
+"%{prefix}\n"
 "Round over! %{scores}"
-msgstr "%{prefix}\n"
+msgstr ""
+"%{prefix}\n"
 "더 보기 %{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:375
@@ -165,7 +157,7 @@ msgstr "알제리"
 msgid "Alias for roll"
 msgstr "롤의 별명"
 
-#: lib/retro_hex_chat/bots/server.ex:144
+#: lib/retro_hex_chat/bots/server.ex:143
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "채널에서 Already"
@@ -255,7 +247,7 @@ msgstr "파란 외계인"
 msgid "Bot destroyed"
 msgstr "봇 파괴"
 
-#: lib/retro_hex_chat/bots/server.ex:756
+#: lib/retro_hex_chat/bots/server.ex:745
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "봇 떠나기"
@@ -834,7 +826,7 @@ msgstr "시드니"
 msgid "Not Toronto"
 msgstr "토론토"
 
-#: lib/retro_hex_chat/bots/server.ex:163
+#: lib/retro_hex_chat/bots/server.ex:162
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "채널 없음"
@@ -1096,20 +1088,10 @@ msgstr "대한민국"
 msgid "Southern hemisphere"
 msgstr "남반구"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:53
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session"
-msgstr "솔로 아케이드 세션 시작"
-
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:138
 #, elixir-autogen, elixir-format
 msgid "Start a trivia round"
 msgstr "트리 비아 라운드 시작"
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:22
-#, elixir-autogen, elixir-format
-msgid "Start solo arcade sessions with !play"
-msgstr "솔로 아케이드 세션을 시작 !play"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
 #, elixir-autogen, elixir-format
@@ -1188,9 +1170,11 @@ msgstr "도쿄"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
 #, elixir-autogen, elixir-format
-msgid "Trivia started! (%{category}, %{count} questions)\n"
+msgid ""
+"Trivia started! (%{category}, %{count} questions)\n"
 "%{question}"
-msgstr "Trivia 시작! (%{category}, %{count} 질문)\n"
+msgstr ""
+"Trivia 시작! (%{category}, %{count} 질문)\n"
 "%{question}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
@@ -1225,8 +1209,12 @@ msgstr "용법: rss 추가 <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
 #, elixir-autogen, elixir-format
-msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
-msgstr "용법: 일정 추가 간격 <min> <#channel> <message> 자주 묻는 질문 <HH:MM> <#channel> <message>"
+msgid ""
+"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
+"daily <HH:MM> <#channel> <message>"
+msgstr ""
+"용법: 일정 추가 간격 <min> <#channel> <message> 자주 묻는 질문 <HH:MM> <#channel> "
+"<message>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
 #, elixir-autogen, elixir-format

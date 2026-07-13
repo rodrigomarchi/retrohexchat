@@ -11,205 +11,200 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:233
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:187
 #, elixir-autogen, elixir-format
 msgid "1-16 characters"
 msgstr "1-16 karakter"
 
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:253
 #: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:42
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:307
 #, elixir-autogen, elixir-format
 msgid "Authentication"
 msgstr "Otentikasi"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:345
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:420
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:294
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:375
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "Mundur"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:245
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:205
 #, elixir-autogen, elixir-format
 msgid "Case sensitive"
 msgstr "Huruf sensitif"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:386
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:338
 #, elixir-autogen, elixir-format
 msgid "Choose a password (min. 5 characters)..."
 msgstr "Pilih sandi (min. 5 karakter)..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:397
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:349
 #, elixir-autogen, elixir-format
 msgid "Confirm password"
 msgstr "Konfirmasi sandi"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:260
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:349
-#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:89
-#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:111
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:223
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:298
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:423
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:444
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "Sambung"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:46
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:33
 #, elixir-autogen, elixir-format
 msgid "Connect - RetroHexChat"
 msgstr "Sambung - RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:19
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:93
 #, elixir-autogen, elixir-format
 msgid "Connect to RetroHexChat"
 msgstr "Hubungkan ke RetroHexChat"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:270
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:229
 #, elixir-autogen, elixir-format
 msgid "Connecting from another window ends the previous session."
 msgstr "Menyambung dari jendela lain mengakhiri sesi sebelumnya."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:226
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:180
 #, elixir-autogen, elixir-format
 msgid "Enter your nickname..."
 msgstr "Masukkan nama panggilan Anda..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:329
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:278
 #, elixir-autogen, elixir-format
 msgid "Enter your password..."
 msgstr "Masukkan sandi Anda..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:118
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:105
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "Sandi salah"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:64
-#, elixir-autogen, elixir-format
-msgid "Language"
-msgstr "Bahasa"
-
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:236
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:193
 #, elixir-autogen, elixir-format
 msgid "Must start with a letter"
 msgstr "Harus mulai dengan surat"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:217
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:168
 #, elixir-autogen, elixir-format
 msgid "Nickname"
 msgstr "Nama panggilan"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:195
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "Nama panggilan tidak dapat kosong"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:204
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "Nama panggilan tak boleh memuat spasi"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:289
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:236
 #, elixir-autogen, elixir-format
 msgid "Nickname cleanup"
 msgstr "Pembersihan nama panggilan"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:192
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:179
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "Nama panggilan harus berupa string"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:198
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
 msgstr "Nama panggilan harus paling banyak 16 karakter"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:201
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:188
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "Nama panggilan harus dimulai dengan huruf atau karakter khusus"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:291
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:239
 #, elixir-autogen, elixir-format
 msgid "Nicknames unused for 7 days are automatically released."
 msgstr "Nama panggilan tidak digunakan selama 7 hari secara otomatis dirilis."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:242
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:199
 #, elixir-autogen, elixir-format
 msgid "No spaces allowed"
 msgstr "Tidak ada spasi yang diijinkan"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:268
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:228
 #, elixir-autogen, elixir-format
 msgid "One session per nickname"
 msgstr "Satu sesi per nama panggilan"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:321
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:378
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:267
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:327
 #, elixir-autogen, elixir-format
 msgid "Password"
 msgstr "Sandi"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:139
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:126
 #, elixir-autogen, elixir-format
 msgid "Password must be at least 5 characters"
 msgstr "Sandi harus paling tidak 5 karakter"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:143
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:130
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "Sandi tidak cocok"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:428
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:383
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "Register & Sambung"
 
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:313
 #: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:43
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:364
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "Pendaftaran"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:405
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:360
 #, elixir-autogen, elixir-format
 msgid "Repeat your password..."
 msgstr "Ulangi kata sandi Anda..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:63
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:50
 #, elixir-autogen, elixir-format
 msgid "Server banned"
 msgstr "Server dilarang"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:62
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:49
 #, elixir-autogen, elixir-format
 msgid "Session ended"
 msgstr "Sesi berakhir"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:61
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:48
 #, elixir-autogen, elixir-format
 msgid "Session expired"
 msgstr "Sesi berakhir"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:277
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:231
 #, elixir-autogen, elixir-format
 msgid "Session expiry"
 msgstr "Sesi kadaluarsa"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:279
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:232
 #, elixir-autogen, elixir-format
 msgid "Sessions expire after 10 failed reconnection attempts."
 msgstr "Sesi berakhir setelah 10 gagal mencoba koneksi kembali."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:368
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:317
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is available! Choose a password to register it."
 msgstr "Julukan %{nickname} tersedia! Pilih sandi untuk mendaftarkannya."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:311
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:257
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is registered. Please enter your password to continue."
 msgstr "Nama panggilan %{nickname} terdaftar. Silakan masukkan kata sandi Anda untuk melanjutkan."
 
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:165
 #: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:44
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "User Information"
 msgstr "Informasi Pengguna"

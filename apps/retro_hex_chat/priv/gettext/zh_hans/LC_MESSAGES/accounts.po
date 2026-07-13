@@ -56,22 +56,22 @@ msgstr "马龙"
 msgid "Navy"
 msgstr "海军"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:29
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:31
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "昵称不能为空"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:38
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:40
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "昵称不能包含空格"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:26
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:28
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "昵称必须是字符串"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:35
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:37
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "昵称必须从字母或特殊字符开始"
@@ -110,3 +110,8 @@ msgstr "白色"
 #, elixir-autogen, elixir-format
 msgid "Yellow"
 msgstr "黄色"
+
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:43
+#, elixir-autogen, elixir-format
+msgid "Nickname contains invalid characters"
+msgstr "昵称包含无效字符"

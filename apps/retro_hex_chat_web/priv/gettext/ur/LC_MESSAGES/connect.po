@@ -11,205 +11,200 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:233
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:187
 #, elixir-autogen, elixir-format
 msgid "1-16 characters"
 msgstr "1-16 حروف تہجی"
 
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:253
 #: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:42
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:307
 #, elixir-autogen, elixir-format
 msgid "Authentication"
 msgstr "توثیق:"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:345
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:420
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:294
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:375
 #, elixir-autogen, elixir-format
 msgid "Back"
 msgstr "پشت"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:245
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:205
 #, elixir-autogen, elixir-format
 msgid "Case sensitive"
 msgstr "کیس حساس"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:386
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:338
 #, elixir-autogen, elixir-format
 msgid "Choose a password (min. 5 characters)..."
 msgstr "پاس ورڈ منتخب کریں"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:397
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:349
 #, elixir-autogen, elixir-format
 msgid "Confirm password"
 msgstr "پاس ورڈ کی تصدیق کریں"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:260
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:349
-#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:89
-#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:111
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:223
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:298
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:423
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:444
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "پرنٹ"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:46
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:33
 #, elixir-autogen, elixir-format
 msgid "Connect - RetroHexChat"
 msgstr "کنیکٹیکٹ - ریزرو ہیکس‌کٹ"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:19
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:93
 #, elixir-autogen, elixir-format
 msgid "Connect to RetroHexChat"
 msgstr "ریزرو ہیکس‌کٹ سے وابستہ"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:270
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:229
 #, elixir-autogen, elixir-format
 msgid "Connecting from another window ends the previous session."
 msgstr "ایک دوسری ونڈو سے رابطہ کرنا سابقہ سیشن ختم ہوتا ہے."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:226
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:180
 #, elixir-autogen, elixir-format
 msgid "Enter your nickname..."
 msgstr "اپنے پاخانہ میں داخل ہو جاؤ..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:329
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:278
 #, elixir-autogen, elixir-format
 msgid "Enter your password..."
 msgstr "اپنا خفیہ لفظ داخل کرو..."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:118
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:105
 #, elixir-autogen, elixir-format
 msgid "Incorrect password"
 msgstr "خفیہ لفظ پاس ورڈ"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.html.heex:64
-#, elixir-autogen, elixir-format
-msgid "Language"
-msgstr "زبان"
-
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:236
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:193
 #, elixir-autogen, elixir-format
 msgid "Must start with a letter"
 msgstr "خط سے شروع کرنا"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:217
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:168
 #, elixir-autogen, elixir-format
 msgid "Nickname"
 msgstr "نکنام"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:195
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:182
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "نکنام خالی نہیں کیا جا سکتا"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:204
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:191
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "نکنام میں جگہ نہیں دی جاسکتی"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:289
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:236
 #, elixir-autogen, elixir-format
 msgid "Nickname cleanup"
 msgstr "نکنام صفائی"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:192
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:179
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "نکنامو تار ہونا ضروری ہے"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:198
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:185
 #, elixir-autogen, elixir-format
 msgid "Nickname must be at most 16 characters"
 msgstr "Nicnama زیادہ تر 16 حروف پر ہونا ضروری ہے۔"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:201
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:188
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "نکناما کسی خط یا خاص حرف سے شروع ہونا ضروری ہے۔"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:291
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:239
 #, elixir-autogen, elixir-format
 msgid "Nicknames unused for 7 days are automatically released."
 msgstr "7 دن کے لیے نکنام کے انچارج خودبخود آزاد ہو جاتے ہیں۔"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:242
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:199
 #, elixir-autogen, elixir-format
 msgid "No spaces allowed"
 msgstr "کوئی خالی جگہ نہیں"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:268
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:228
 #, elixir-autogen, elixir-format
 msgid "One session per nickname"
 msgstr "ایک سیشن"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:321
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:378
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:267
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:327
 #, elixir-autogen, elixir-format
 msgid "Password"
 msgstr "پاس ورڈ"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:139
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:126
 #, elixir-autogen, elixir-format
 msgid "Password must be at least 5 characters"
 msgstr "پاس ورڈ کم از کم 5 حروف ہونا ضروری ہے"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:143
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:130
 #, elixir-autogen, elixir-format
 msgid "Passwords do not match"
 msgstr "پاس ورڈ میل نہیں کھاتا"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:428
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:383
 #, elixir-autogen, elixir-format
 msgid "Register & Connect"
 msgstr "رجسٹر & اتصال"
 
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:313
 #: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:43
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:364
 #, elixir-autogen, elixir-format
 msgid "Registration"
 msgstr "جگہ"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:405
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:360
 #, elixir-autogen, elixir-format
 msgid "Repeat your password..."
 msgstr "اپنے پاس ورڈ صاف بتائیں"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:63
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:50
 #, elixir-autogen, elixir-format
 msgid "Server banned"
 msgstr "سرور نے پابندی لگا دی"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:62
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:49
 #, elixir-autogen, elixir-format
 msgid "Session ended"
 msgstr "صورتحال ختم ہو گئی"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:61
+#: lib/retro_hex_chat_web/live/app/connect_live.ex:48
 #, elixir-autogen, elixir-format
 msgid "Session expired"
 msgstr "حالات ختم ہو گئے"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:277
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:231
 #, elixir-autogen, elixir-format
 msgid "Session expiry"
 msgstr "نقل و حمل"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:279
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:232
 #, elixir-autogen, elixir-format
 msgid "Sessions expire after 10 failed reconnection attempts."
 msgstr "دس ناکامیوں کے بعد قتل‌وغارت ختم ہو گئی ۔"
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:368
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:317
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is available! Choose a password to register it."
 msgstr "[ تصویر کا حوالہ ] %{nickname} دستیاب ہے! اسے رجسٹر کرنے کے لیے پاس ورڈ منتخب کریں."
 
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:311
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:257
 #, elixir-autogen, elixir-format
 msgid "The nickname %{nickname} is registered. Please enter your password to continue."
 msgstr "[ تصویر کا حوالہ ] %{nickname} رجسٹرڈ ہے. براہ کرم جاری کرنے کے لیے اپنے پاس ورڈ داخل کریں."
 
+#: lib/retro_hex_chat_web/components/ui/connect/connect_screen.ex:165
 #: lib/retro_hex_chat_web/components/ui/shell/connect_status_bar.ex:44
-#: lib/retro_hex_chat_web/live/app/connect_live.ex:214
 #, elixir-autogen, elixir-format
 msgid "User Information"
 msgstr "صارف معلومات"

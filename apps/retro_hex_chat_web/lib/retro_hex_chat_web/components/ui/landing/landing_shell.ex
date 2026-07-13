@@ -10,6 +10,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
   import RetroHexChatWeb.Components.UI.AppHeader
   import RetroHexChatWeb.Components.UI.Window
   import RetroHexChatWeb.Components.UI.MenuBar
+  import RetroHexChatWeb.Components.UI.LanguageMenu
   import RetroHexChatWeb.Components.UI.ContextMenu
 
   alias RetroHexChatWeb.Icons
@@ -182,7 +183,6 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
       assigns
       |> assign(:pages, nav_pages())
       |> assign(:current_path, active_page_path(assigns.active_page))
-      |> assign(:supported_locales, RetroHexChatWeb.I18n.supported_locales())
 
     ~H"""
     <.menu_bar id="landing-menubar" testid="landing-menu-bar" class={@class}>
@@ -225,21 +225,7 @@ defmodule RetroHexChatWeb.Components.UI.Landing.LandingShell do
         </.context_menu_item>
       </.menu>
 
-      <.menu label={dgettext("landing", "Language")}>
-        <.context_menu_item
-          :for={{code, label} <- @supported_locales}
-          data-testid={"landing-menu-lang-#{code}"}
-        >
-          <:icon><Icons.icon_link class="h-[14px] w-[14px]" /></:icon>
-          <a
-            href={RetroHexChatWeb.SEO.localized_path(@current_path, code)}
-            hreflang={RetroHexChatWeb.I18n.Locales.bcp47(code)}
-            class="block flex-1"
-          >
-            {label}
-          </a>
-        </.context_menu_item>
-      </.menu>
+      <.language_menu mode={:public} current_path={@current_path} />
     </.menu_bar>
     """
   end

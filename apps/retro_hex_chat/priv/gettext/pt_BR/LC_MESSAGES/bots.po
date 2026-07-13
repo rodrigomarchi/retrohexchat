@@ -24,22 +24,12 @@ msgstr "  %{id} | %{type} | %{channel} | %{message}"
 #: lib/retro_hex_chat/bots/capabilities/help.ex:72
 #, elixir-autogen, elixir-format
 msgid "  %{prefix}%{trigger} — %{description}"
-msgstr "  %{prefix}%{trigger} — %{description}"
+msgstr "%{prefix}%{trigger} — %{description}"
 
 #: lib/retro_hex_chat/bots/capabilities/help.ex:79
 #, elixir-autogen, elixir-format
 msgid "  %{prefix}help — Show this help message"
 msgstr "  %{prefix}help — Mostrar esta mensagem de ajuda"
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be identified to play. Use /ns identify <password> first."
-msgstr "%{author}: Você deve ser identificado para jogar. Usar o /ns identify <password> primeiro."
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be registered to play. Use /ns register <password> first."
-msgstr "%{author}: Você deve estar registrado para jogar. Usar o /ns register <password> primeiro."
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:301
 #, elixir-autogen, elixir-format
@@ -63,9 +53,11 @@ msgstr "%{message} (%{reason})"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
 #, elixir-autogen, elixir-format
-msgid "%{prefix}\n"
+msgid ""
+"%{prefix}\n"
 "Round over! %{scores}"
-msgstr "%{prefix}\n"
+msgstr ""
+"%{prefix}\n"
 "Virem-se! %{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:375
@@ -118,7 +110,9 @@ msgstr "Uma única letra"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:185
 #, elixir-autogen, elixir-format
 msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
-msgstr "Uma ronda de trivialidades já está em andamento! Use \"trivia stop\" para acabar com isso."
+msgstr ""
+"Uma ronda de trivialidades já está em andamento! Use \"trivia stop\" para "
+"acabar com isso."
 
 #: lib/retro_hex_chat/bots/capabilities/game.ex:13
 #, elixir-autogen, elixir-format
@@ -143,7 +137,7 @@ msgstr "Adicionar um feed RSS"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:465
 #, elixir-autogen, elixir-format
 msgid "Aladdin"
-msgstr "Aladdin"
+msgstr "Aladim"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:239
 #, elixir-autogen, elixir-format
@@ -158,14 +152,14 @@ msgstr "Alexander Graham Bell"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:316
 #, elixir-autogen, elixir-format
 msgid "Algeria"
-msgstr "Algeria"
+msgstr "Argélia"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:82
 #, elixir-autogen, elixir-format
 msgid "Alias for roll"
 msgstr "Apelidos de rolo"
 
-#: lib/retro_hex_chat/bots/server.ex:144
+#: lib/retro_hex_chat/bots/server.ex:143
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "Já no canal"
@@ -198,12 +192,14 @@ msgstr "Au"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:291
 #, elixir-autogen, elixir-format
 msgid "Australia"
-msgstr "Australia"
+msgstr "Austrália"
 
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:25
 #, elixir-autogen, elixir-format
 msgid "Auto-moderation — blocked words, spam/flood detection, caps filter"
-msgstr "Auto-moderação — palavras bloqueadas, detecção de spam/inundação, filtro de tampas"
+msgstr ""
+"Auto-moderação — palavras bloqueadas, detecção de spam/inundação, filtro de "
+"tampas"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:420
 #, elixir-autogen, elixir-format
@@ -218,7 +214,7 @@ msgstr "BEM VM"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:225
 #, elixir-autogen, elixir-format
 msgid "Bastille"
-msgstr "Bastille"
+msgstr "Bastilha"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:384
 #, elixir-autogen, elixir-format
@@ -243,7 +239,7 @@ msgstr "Preto e branco"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:451
 #, elixir-autogen, elixir-format
 msgid "Blocks"
-msgstr "Blocks"
+msgstr "Blocos"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:421
 #, elixir-autogen, elixir-format
@@ -255,7 +251,7 @@ msgstr "Extraterrestres azuis"
 msgid "Bot destroyed"
 msgstr "Bot destruído"
 
-#: lib/retro_hex_chat/bots/server.ex:756
+#: lib/retro_hex_chat/bots/server.ex:745
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "Abandono do Bot"
@@ -328,7 +324,7 @@ msgstr "Território dinamarquês"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:379
 #, elixir-autogen, elixir-format
 msgid "Databases"
-msgstr "Databases"
+msgstr "Bases de dados"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:28
 #, elixir-autogen, elixir-format
@@ -353,7 +349,7 @@ msgstr "Início do século 20"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:461
 #, elixir-autogen, elixir-format
 msgid "Elementary"
-msgstr "Elementary"
+msgstr "Elementar"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:373
 #, elixir-autogen, elixir-format
@@ -409,7 +405,7 @@ msgstr "Resultados finais: %{ranked}"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:334
 #, elixir-autogen, elixir-format
 msgid "Finnish"
-msgstr "Finnish"
+msgstr "Finlandês"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:133
 #, elixir-autogen, elixir-format
@@ -449,7 +445,7 @@ msgstr "Filósofo alemão"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:311
 #, elixir-autogen, elixir-format
 msgid "Greenland"
-msgstr "Greenland"
+msgstr "Gronelândia"
 
 #: lib/retro_hex_chat/bots/capabilities/greeter.ex:17
 #, elixir-autogen, elixir-format
@@ -571,12 +567,12 @@ msgstr "Inca"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:261
 #, elixir-autogen, elixir-format
 msgid "India"
-msgstr "India"
+msgstr "Índia"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:399
 #, elixir-autogen, elixir-format
 msgid "Integration"
-msgstr "Integration"
+msgstr "Integração"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:23
 #, elixir-autogen, elixir-format
@@ -591,7 +587,9 @@ msgstr "URL inválido. Deve começar com http:// or https://"
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:179
 #, elixir-autogen, elixir-format
 msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
-msgstr "Notação de dados inválida '%{notation}'. Formato de utilização: NdS, NdS+M, NdSkh/kIN"
+msgstr ""
+"Notação de dados inválida '%{notation}'. Formato de utilização: NdS, NdS+M, "
+"NdSkh/kIN"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
 #, elixir-autogen, elixir-format
@@ -651,12 +649,12 @@ msgstr "Leonardo da Vinci"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:113
 #, elixir-autogen, elixir-format
 msgid "Lightest"
-msgstr "Lightest"
+msgstr "Mais leve"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:184
 #, elixir-autogen, elixir-format
 msgid "Lighthouse"
-msgstr "Lighthouse"
+msgstr "Farol"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:333
 #, elixir-autogen, elixir-format
@@ -691,7 +689,7 @@ msgstr "Trincheira Mariana"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:50
 #, elixir-autogen, elixir-format
 msgid "Mars"
-msgstr "Mars"
+msgstr "Marte"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:186
 #, elixir-autogen, elixir-format
@@ -706,12 +704,12 @@ msgstr "Máximos horários %{max} alcançados."
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:204
 #, elixir-autogen, elixir-format
 msgid "Mayflower"
-msgstr "Mayflower"
+msgstr "Flor de maio"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:296
 #, elixir-autogen, elixir-format
 msgid "Mediterranean"
-msgstr "Mediterranean"
+msgstr "Mediterrâneo"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:475
 #, elixir-autogen, elixir-format
@@ -741,7 +739,7 @@ msgstr "Canal desaparecido. Uso: rss add <url> <#channel>"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:470
 #, elixir-autogen, elixir-format
 msgid "Monopoly"
-msgstr "Monopoly"
+msgstr "Monopólio"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:26
 #, elixir-autogen, elixir-format
@@ -756,7 +754,7 @@ msgstr "Monte Everest"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:168
 #, elixir-autogen, elixir-format
 msgid "Myco-"
-msgstr "Myco-"
+msgstr "Myco..."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:137
 #, elixir-autogen, elixir-format
@@ -776,7 +774,7 @@ msgstr "Neil Armstrong"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:123
 #, elixir-autogen, elixir-format
 msgid "Neutral"
-msgstr "Neutral"
+msgstr "Neutro"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:143
 #, elixir-autogen, elixir-format
@@ -786,7 +784,7 @@ msgstr "Maçã de Newton"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:251
 #, elixir-autogen, elixir-format
 msgid "Nile"
-msgstr "Nile"
+msgstr "Nilo"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:446
 #, elixir-autogen, elixir-format
@@ -834,7 +832,7 @@ msgstr "Não Sydney"
 msgid "Not Toronto"
 msgstr "Não Toronto"
 
-#: lib/retro_hex_chat/bots/server.ex:163
+#: lib/retro_hex_chat/bots/server.ex:162
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "Não no canal"
@@ -867,7 +865,7 @@ msgstr "Ottawa"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:158
 #, elixir-autogen, elixir-format
 msgid "Outside"
-msgstr "Outside"
+msgstr "Fora"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:81
 #, elixir-autogen, elixir-format
@@ -878,7 +876,7 @@ msgstr "Mais de 200"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:277
 #, elixir-autogen, elixir-format
 msgid "Pacific"
-msgstr "Pacific"
+msgstr "Pacífico"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:20
 #, elixir-autogen, elixir-format
@@ -893,12 +891,12 @@ msgstr "Passar Ir"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:31
 #, elixir-autogen, elixir-format
 msgid "Peaceful"
-msgstr "Peaceful"
+msgstr "Paz"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:185
 #, elixir-autogen, elixir-format
 msgid "Pharos"
-msgstr "Pharos"
+msgstr "Faros"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:389
 #, elixir-autogen, elixir-format
@@ -918,7 +916,7 @@ msgstr "P%{number}/%{total}: %{question}"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:415
 #, elixir-autogen, elixir-format
 msgid "Queen"
-msgstr "Queen"
+msgstr "Rainha"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:411
 #, elixir-autogen, elixir-format
@@ -963,7 +961,7 @@ msgstr "Remover um feed RSS"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:230
 #, elixir-autogen, elixir-format
 msgid "Renaissance"
-msgstr "Renaissance"
+msgstr "Renascimento"
 
 #: lib/retro_hex_chat/bots/capabilities/mention.ex:17
 #, elixir-autogen, elixir-format
@@ -1013,12 +1011,12 @@ msgstr "Roman"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:266
 #, elixir-autogen, elixir-format
 msgid "Sahara"
-msgstr "Sahara"
+msgstr "Saara"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:102
 #, elixir-autogen, elixir-format
 msgid "Saturn"
-msgstr "Saturn"
+msgstr "Saturno"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:269
 #, elixir-autogen, elixir-format
@@ -1058,7 +1056,7 @@ msgstr "Pontuação (Q%{number}/%{total}): Ainda não há pontuações."
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:240
 #, elixir-autogen, elixir-format
 msgid "Scottish"
-msgstr "Scottish"
+msgstr "Escocês"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:460
 #, elixir-autogen, elixir-format
@@ -1078,7 +1076,7 @@ msgstr "Mostrar esta mensagem de ajuda"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:138
 #, elixir-autogen, elixir-format
 msgid "Sodium..."
-msgstr "Sodium..."
+msgstr "Sódio..."
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:245
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:281
@@ -1096,20 +1094,10 @@ msgstr "Sul da Ásia"
 msgid "Southern hemisphere"
 msgstr "hemisfério sul"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:53
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session"
-msgstr "Iniciar uma sessão de arcade solo"
-
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:138
 #, elixir-autogen, elixir-format
 msgid "Start a trivia round"
 msgstr "Iniciar uma ronda de trivialidades"
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:22
-#, elixir-autogen, elixir-format
-msgid "Start solo arcade sessions with !play"
-msgstr "Iniciar sessões de arcade solo com!play"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
 #, elixir-autogen, elixir-format
@@ -1139,7 +1127,7 @@ msgstr "Enviar uma resposta trivial"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:117
 #, elixir-autogen, elixir-format
 msgid "Sun"
-msgstr "Sun"
+msgstr "Sol"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:348
 #, elixir-autogen, elixir-format
@@ -1184,13 +1172,15 @@ msgstr "Acabou o tempo! A resposta foi: %{answer}"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:271
 #, elixir-autogen, elixir-format
 msgid "Tokyo"
-msgstr "Tokyo"
+msgstr "Tóquio"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
 #, elixir-autogen, elixir-format
-msgid "Trivia started! (%{category}, %{count} questions)\n"
+msgid ""
+"Trivia started! (%{category}, %{count} questions)\n"
 "%{question}"
-msgstr "A Trivia começou! (Perguntas %{category}, %{count})\n"
+msgstr ""
+"A Trivia começou! (Perguntas %{category}, %{count})\n"
 "%{question}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
@@ -1225,8 +1215,12 @@ msgstr "Uso: rss add <url> <#channel>"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
 #, elixir-autogen, elixir-format
-msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
-msgstr "Uso: calendário adicionar intervalo <min> <#channel> <mensagem> OU agenda adicionar diário <HH:MM> <#channel> <mensagem>"
+msgid ""
+"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
+"daily <HH:MM> <#channel> <message>"
+msgstr ""
+"Uso: calendário adicionar intervalo <min> <#channel> <mensagem> OU agenda "
+"adicionar diário <HH:MM> <#channel> <mensagem>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
 #, elixir-autogen, elixir-format
@@ -1246,7 +1240,7 @@ msgstr "Vincent van Gogh"
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:369
 #, elixir-autogen, elixir-format
 msgid "Volatile"
-msgstr "Volatile"
+msgstr "Volátil"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:354
 #, elixir-autogen, elixir-format

@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:107
+#: lib/retro_hex_chat_web/live/help_live/index.ex:116
 #, elixir-autogen, elixir-format
 msgid "%{topic} — RetroHexChat Help"
 msgstr "%{topic} - Cứu trợ hô hấp nhân tạo"
@@ -108,8 +108,12 @@ msgstr "3. Chọn một mật khẩu (phần năm ký tự) và nhấn vào"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "3. On success, you join the chat already identified — the 60-second identify timer is skipped."
-msgstr "3. Khi thành công, bạn tham gia vào cuộc trò chuyện đã được xác định — đồng hồ hẹn giờ 60 giây bị bỏ qua."
+msgid ""
+"3. On success, you join the chat already identified — the 60-second identify"
+" timer is skipped."
+msgstr ""
+"3. Khi thành công, bạn tham gia vào cuộc trò chuyện đã được xác định — đồng "
+"hồ hẹn giờ 60 giây bị bỏ qua."
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:13
 #, elixir-autogen, elixir-format
@@ -128,20 +132,23 @@ msgstr "4."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "4. Your nickname is registered and you join the chat already identified."
-msgstr "Biệt danh của bạn được đăng ký và bạn tham gia cuộc trò chuyện đã được xác định."
+msgid ""
+"4. Your nickname is registered and you join the chat already identified."
+msgstr ""
+"Biệt danh của bạn được đăng ký và bạn tham gia cuộc trò chuyện đã được xác "
+"định."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "7 days"
 msgstr "7 ngày"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:57
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:332
 #, elixir-autogen, elixir-format
 msgid "Breadcrumb"
 msgstr "vụn bánh mì"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:89
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:122
 #, elixir-autogen, elixir-format
 msgid "Browse by category or open Help Topics from the chat menu."
 msgstr "Duyệt theo phân loại hoặc mở Trợ giúp Thư mục trong trình đơn chat."
@@ -169,7 +176,9 @@ msgstr "Kênh"
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Click a nickname in the conversations sidebar user list and select"
-msgstr "Nhấn vào một biệt danh trong danh sách người dùng thanh bên cuộc đối thoại và chọn"
+msgstr ""
+"Nhấn vào một biệt danh trong danh sách người dùng thanh bên cuộc đối thoại "
+"và chọn"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:28
 #, elixir-autogen, elixir-format
@@ -209,25 +218,38 @@ msgstr "Vào"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "Every nickname must be registered before entering the chat. When you connect with a new nickname, you'll be asked to choose a password to register it. On future visits, you'll enter your password to log in."
-msgstr "Mọi biệt danh phải được đăng ký trước khi vào cuộc trò chuyện. Khi bạn kết nối với một biệt danh mới, bạn sẽ được yêu cầu phải chọn một mật khẩu để đăng ký nó. Trong những lần viếng thăm sau, anh sẽ nhập mật khẩu để đăng nhập."
+msgid ""
+"Every nickname must be registered before entering the chat. When you connect"
+" with a new nickname, you'll be asked to choose a password to register it. "
+"On future visits, you'll enter your password to log in."
+msgstr ""
+"Mọi biệt danh phải được đăng ký trước khi vào cuộc trò chuyện. Khi bạn kết "
+"nối với một biệt danh mới, bạn sẽ được yêu cầu phải chọn một mật khẩu để "
+"đăng ký nó. Trong những lần viếng thăm sau, anh sẽ nhập mật khẩu để đăng "
+"nhập."
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:59
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:79
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:51
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:53
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:334
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:348
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:374
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "Trợ giúp"
 
-#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:37
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:352
 #, elixir-autogen, elixir-format
 msgid "Help Topics"
 msgstr "Giúp mục lục"
 
-#: lib/retro_hex_chat_web/live/help_live/help_helpers.ex:44
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:217
 #, elixir-autogen, elixir-format
 msgid "Help navigation"
 msgstr "Giúp định hướng"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:106
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:54
+#: lib/retro_hex_chat_web/live/help_live/index.ex:115
 #, elixir-autogen, elixir-format
 msgid "Help — RetroHexChat"
 msgstr "Sự giúp đỡ — Tập đoàn thủy lợi"
@@ -242,7 +264,7 @@ msgstr "Phím tắt"
 msgid "Minimum 5 characters, maximum 100 characters"
 msgstr "Tối thiểu 5 ký tự, 100 ký tự tối đa"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:22
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Msg Command"
 msgstr "Lệnh Msg"
@@ -285,7 +307,7 @@ msgstr "Comment"
 msgid "Nicknames not used for"
 msgstr "Tên hộp thoại không dùng cho"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Notices"
 msgstr "Thông báo"
@@ -305,7 +327,7 @@ msgstr "Quy tắc mật khẩu"
 msgid "Query"
 msgstr "Truy vấn"
 
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "Query Command"
 msgstr "Truy vấn lệnh"
@@ -336,35 +358,50 @@ msgstr "Tên đã đăng ký"
 msgid "Registration Required"
 msgstr "Cần đăng ký"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:84
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:117
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat Help"
 msgstr "Trợ giúp Retro HexChat"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat handles all authentication directly on the connection screen — no need to run"
-msgstr "Retro HexChat xử lý tất cả các xác thực trực tiếp trên màn hình kết nối — không cần chạy"
+msgid ""
+"RetroHexChat handles all authentication directly on the connection screen — "
+"no need to run"
+msgstr ""
+"Retro HexChat xử lý tất cả các xác thực trực tiếp trên màn hình kết nối — "
+"không cần chạy"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:111
+#: lib/retro_hex_chat_web/live/help_live/index.ex:120
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat help documentation. Learn about IRC commands, channel modes, features, and keyboard shortcuts."
-msgstr "Retro HexChat giúp tài liệu. Tìm hiểu về lệnh IRC, chế độ kênh, tính năng và phím tắt."
+msgid ""
+"RetroHexChat help documentation. Learn about IRC commands, channel modes, "
+"features, and keyboard shortcuts."
+msgstr ""
+"Retro HexChat giúp tài liệu. Tìm hiểu về lệnh IRC, chế độ kênh, tính năng và"
+" phím tắt."
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat is a web-based IRC client with an authentic retro look and feel. It supports channels, private messages, text formatting, nick services, and much more."
-msgstr "Retro HexChat là một khách hàng IRC dựa trên web với một cái nhìn ngược lại và cảm nhận. Nó hỗ trợ kênh, tin nhắn riêng, định dạng văn bản, dịch vụ vết tích, và nhiều thông điệp khác nữa."
+msgid ""
+"RetroHexChat is a web-based IRC client with an authentic retro look and "
+"feel. It supports channels, private messages, text formatting, nick "
+"services, and much more."
+msgstr ""
+"Retro HexChat là một khách hàng IRC dựa trên web với một cái nhìn ngược lại "
+"và cảm nhận. Nó hỗ trợ kênh, tin nhắn riêng, định dạng văn bản, dịch vụ vết "
+"tích, và nhiều thông điệp khác nữa."
 
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:141
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:54
-#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:21
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "Xem cũng"
 
-#: lib/retro_hex_chat_web/live/help_live/index.ex:86
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:119
 #, elixir-autogen, elixir-format
 msgid "Select a topic from the navigation pane to get started."
 msgstr "Chọn một chủ đề từ ô điều khiển để bắt đầu."
@@ -377,7 +414,9 @@ msgstr "Bắt đầu nói chuyện"
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "Stored securely with bcrypt hashing — never in plain text"
-msgstr "Được lưu trữ an toàn với mật mã khoai tây — không bao giờ trong văn bản đơn giản"
+msgstr ""
+"Được lưu trữ an toàn với mật mã khoai tây — không bao giờ trong văn bản đơn "
+"giản"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:9
 #, elixir-autogen, elixir-format
@@ -386,8 +425,11 @@ msgstr "Cái này sẽ mở hóa đơn PM. Thay vào đó, gửi một thông đ
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "To connect to RetroHexChat, enter a nickname on the connect screen and click"
-msgstr "Để kết nối đến Retro HexChat, hãy nhập một biệt danh vào màn hình kết nối và nhấn vào"
+msgid ""
+"To connect to RetroHexChat, enter a nickname on the connect screen and click"
+msgstr ""
+"Để kết nối đến Retro HexChat, hãy nhập một biệt danh vào màn hình kết nối và"
+" nhấn vào"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:11
 #, elixir-autogen, elixir-format
@@ -396,12 +438,17 @@ msgstr "Dùng danh sách người dùng"
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "You can send private messages to other users that only the two of you can see."
-msgstr "Bạn có thể gửi tin nhắn riêng cho người dùng khác mà chỉ hai người có thể thấy."
+msgid ""
+"You can send private messages to other users that only the two of you can "
+"see."
+msgstr ""
+"Bạn có thể gửi tin nhắn riêng cho người dùng khác mà chỉ hai người có thể "
+"thấy."
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "are automatically freed. Connect regularly to keep your registration. See"
+msgid ""
+"are automatically freed. Connect regularly to keep your registration. See"
 msgstr "tự do. Kết nối đều đặn để giữ giấy đăng ký. Xem"
 
 #: lib/retro_hex_chat_web/controllers/help_content/connect_authentication.html.heex:29
@@ -426,8 +473,12 @@ msgstr "Bằng tay."
 
 #: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "to open a PM tab. You can also double-click a nickname to open a PM directly."
-msgstr "để mở thẻ PM. Bạn cũng có thể click đôi một biệt danh để mở một PM trực tiếp."
+msgid ""
+"to open a PM tab. You can also double-click a nickname to open a PM "
+"directly."
+msgstr ""
+"để mở thẻ PM. Bạn cũng có thể click đôi một biệt danh để mở một PM trực "
+"tiếp."
 
 #: lib/retro_hex_chat_web/controllers/help_content/welcome.html.heex:19
 #, elixir-autogen, elixir-format
@@ -451,5 +502,104 @@ msgstr "- Có một dấu nhắc mật khẩu. Nhập mật khẩu và nhấn v�
 
 #: lib/retro_hex_chat_web/controllers/help_content/connecting.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "— A registration form appears. Choose a password (minimum 5 characters) and confirm it. Click"
-msgstr "- Có giấy đăng ký. Hãy chọn một mật khẩu (phần năm ký tự) và xác nhận nó. Ấn"
+msgid ""
+"— A registration form appears. Choose a password (minimum 5 characters) and "
+"confirm it. Click"
+msgstr ""
+"- Có giấy đăng ký. Hãy chọn một mật khẩu (phần năm ký tự) và xác nhận nó. Ấn"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_status_bar.ex:35
+#, elixir-autogen, elixir-format
+msgid "%{count} topics"
+msgstr "%{count} chủ đề"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "/notice"
+msgstr "/notice"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:82
+#, elixir-autogen, elixir-format
+msgid "About RetroHexChat"
+msgstr "Giới thiệu về Retro HexChat"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:40
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:171
+#, elixir-autogen, elixir-format
+msgid "Back"
+msgstr "Lùi"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:365
+#, elixir-autogen, elixir-format
+msgid "Back to chat"
+msgstr "Trở lại trò chuyện"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:56
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:220
+#, elixir-autogen, elixir-format
+msgid "Contents"
+msgstr "Nội dung"
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"For a lightweight message that does not open a PM tab on the recipient's "
+"side, choose Send Notice from a nickname context menu or use"
+msgstr ""
+"Đối với một thông điệp nhẹ mà không mở một thẻ PM về phía người nhận, hãy "
+"chọn Gửi thông báo từ trình đơn ngữ cảnh hoặc sử dụng"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:44
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:179
+#, elixir-autogen, elixir-format
+msgid "Forward"
+msgstr "Tới"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:34
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:183
+#, elixir-autogen, elixir-format
+msgid "Home"
+msgstr "Nhà"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:64
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:221
+#, elixir-autogen, elixir-format
+msgid "Index"
+msgstr "Chỉ mục"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:30
+#, elixir-autogen, elixir-format
+msgid "Navigate"
+msgstr "Chuyển"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:263
+#, elixir-autogen, elixir-format
+msgid "No topics match \"%{query}\"."
+msgstr "Không có chủ đề phù hợp với \"%{query}\"."
+
+#: lib/retro_hex_chat_web/controllers/help_content/private_messages.html.heex:31
+#, elixir-autogen, elixir-format
+msgid "Notice Command"
+msgstr "Lệnh thông báo"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:72
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:222
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:358
+#, elixir-autogen, elixir-format
+msgid "Search"
+msgstr "Tìm kiếm"
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:196
+#, elixir-autogen, elixir-format
+msgid "Search topics..."
+msgstr "Tìm kiếm chủ đề..."
+
+#: lib/retro_hex_chat_web/components/ui/help/help_viewer.ex:256
+#, elixir-autogen, elixir-format
+msgid "Type in the search box to find topics."
+msgstr "Gõ vào hộp tìm kiếm để tìm chủ đề."
+
+#: lib/retro_hex_chat_web/components/ui/help/help_menu_bar.ex:49
+#, elixir-autogen, elixir-format
+msgid "View"
+msgstr "Xem"

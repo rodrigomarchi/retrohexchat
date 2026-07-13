@@ -1,0 +1,96 @@
+## This file is a PO Template file.
+##
+## "msgid"s here are often extracted from source code.
+## Add new messages manually only if they're dynamic
+## messages that can't be statically extracted.
+##
+## Run "mix gettext.extract" to bring this file up to
+## date. Leave "msgstr"s empty as changing them here has no
+## effect: edit them in PO (.po) files instead.
+#
+msgid ""
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/policy.ex:81
+#, elixir-autogen, elixir-format
+msgid "An active lobby already exists with this user"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/policy.ex:60
+#, elixir-autogen, elixir-format
+msgid "Cannot create a session with yourself"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/service.ex:134
+#, elixir-autogen, elixir-format
+msgid "Failed to create lobby"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/session_server.ex:220
+#, elixir-autogen, elixir-format
+msgid "Invalid transition from %{from} to %{to}"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/policy.ex:135
+#, elixir-autogen, elixir-format
+msgid "Invite is no longer pending"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/policy.ex:139
+#, elixir-autogen, elixir-format
+msgid "Lobby is no longer active"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/service.ex:140
+#, elixir-autogen, elixir-format
+msgid "Lobby not found"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/session_server.ex:180
+#, elixir-autogen, elixir-format
+msgid "Not a participant"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/policy.ex:120
+#, elixir-autogen, elixir-format
+msgid "Only the invited user can decline"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/policy.ex:128
+#, elixir-autogen, elixir-format
+msgid "Only the inviter can cancel the invite"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/service.ex:117
+#: lib/retro_hex_chat/lobby/session_server.ex:94
+#: lib/retro_hex_chat/lobby/session_server.ex:691
+#: lib/retro_hex_chat/lobby/session_server.ex:692
+#: lib/retro_hex_chat/lobby/session_server.ex:693
+#, elixir-autogen, elixir-format
+msgid "Session process not running"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/policy.ex:74
+#, elixir-autogen, elixir-format
+msgid "Target user must be registered"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/service.ex:171
+#, elixir-autogen, elixir-format
+msgid "Too many lobbies created. Try again in %{minutes} minutes"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/policy.ex:102
+#, elixir-autogen, elixir-format
+msgid "User not available"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/policy.ex:112
+#, elixir-autogen, elixir-format
+msgid "You are not a participant in this lobby"
+msgstr ""
+
+#: lib/retro_hex_chat/lobby/policy.ex:73
+#, elixir-autogen, elixir-format
+msgid "You must be registered to use the lobby"
+msgstr ""

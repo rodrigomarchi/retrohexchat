@@ -11,11 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:65
-#, elixir-autogen, elixir-format
-msgid "!play"
-msgstr "লাফাও!"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:326
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:51
 #, elixir-autogen, elixir-format
@@ -29,20 +24,10 @@ msgstr "👨"
 msgid "👩"
 msgstr "👩"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:70
-#, elixir-autogen, elixir-format
-msgid "/game bob"
-msgstr "/game bob"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:346
 #, elixir-autogen, elixir-format
 msgid "18 classic games · Runs in your browser via WebAssembly"
 msgstr "আপনার ব্রাউজারের মাধ্যমে ১৮টি ক্লাসিক খেলা পরিচালনা করুন"
-
-#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:388
-#, elixir-autogen, elixir-format
-msgid "28 games · Real-time sync · No server"
-msgstr "২৮- টি বাস্তব- টাইম কনফিগারেশন সার্ভার"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_frost.ex:55
 #, elixir-autogen, elixir-format
@@ -84,7 +69,8 @@ msgstr "ক্লিয়ার"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_breakout.ex:20
 #, elixir-autogen, elixir-format
-msgid "Block Breakers game screen: two paddles with colored block rows between them"
+msgid ""
+"Block Breakers game screen: two paddles with colored block rows between them"
 msgstr "Blockrastes খেলা: রঙের সারির দুটি প্যাডেল"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:344
@@ -220,28 +206,38 @@ msgstr "Hox বক্সিং স্ক্রিন: রিং- এর মধ�
 
 #: lib/retro_hex_chat_web/components/diagrams/game_enduro.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Enduro game screen: pseudo-3D road with two racing cars and AI traffic"
-msgstr "হেক্স এন্ডুরো গেম স্ক্রিন: D-৩ডি রাস্তা দু'টি রেস গাড়ি এবং AI ট্রাফিকের মাধ্যমে"
+msgid ""
+"Hex Enduro game screen: pseudo-3D road with two racing cars and AI traffic"
+msgstr ""
+"হেক্স এন্ডুরো গেম স্ক্রিন: D-৩ডি রাস্তা দু'টি রেস গাড়ি এবং AI ট্রাফিকের "
+"মাধ্যমে"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_frost.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Frost game screen: ice blocks floating on water with igloos on shore"
+msgid ""
+"Hex Frost game screen: ice blocks floating on water with igloos on shore"
 msgstr "হিম্‌সেফ গেম স্ক্রিন: তীরে বরফের ব্লক পানিতে ভেসে যাচ্ছে।"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_hockey.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Hockey game screen: ice hockey rink with players, goalies, and a puck"
+msgid ""
+"Hex Hockey game screen: ice hockey rink with players, goalies, and a puck"
 msgstr "হেক্স হোকি খেলা স্ক্রিন: খেলোয়াড়, গোলিস এবং ফাকি দিয়ে আইস হকি পান"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_invaders.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Invaders game screen: split-screen Space Invaders with alien grids on each side"
-msgstr "হেক্স Indavast খেলা পর্দা: প্রতিটি পার্শ্ববর্তী এলিয়েন গ্রিড দ্বারা বিভক্ত স্থান বিভাজন করুন"
+msgid ""
+"Hex Invaders game screen: split-screen Space Invaders with alien grids on "
+"each side"
+msgstr ""
+"হেক্স Indavast খেলা পর্দা: প্রতিটি পার্শ্ববর্তী এলিয়েন গ্রিড দ্বারা বিভক্ত "
+"স্থান বিভাজন করুন"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_outlaw.ex:20
 #, elixir-autogen, elixir-format
 msgid "Hex Outlaw game screen: two gunslingers facing off across a cactus"
-msgstr "হেক্স আউটলবল গেম স্ক্রিন: দু'টি বন্দুকবাজ একটি ক্যাকটাস দিয়ে মুখোমুখি"
+msgstr ""
+"হেক্স আউটলবল গেম স্ক্রিন: দু'টি বন্দুকবাজ একটি ক্যাকটাস দিয়ে মুখোমুখি"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:203
 #, elixir-autogen, elixir-format
@@ -250,8 +246,12 @@ msgstr "হেক্স পঙ"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_pong.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Pong game screen: two paddles and a ball on a dark field with dashed center line"
-msgstr "হেক্স পিয়ং খেলা পর্দা: দুটি প্যাডেল পয়েন্ট এবং কালো লাইনের মাঝে একটি বল বল নিয়ে খেলা"
+msgid ""
+"Hex Pong game screen: two paddles and a ball on a dark field with dashed "
+"center line"
+msgstr ""
+"হেক্স পিয়ং খেলা পর্দা: দুটি প্যাডেল পয়েন্ট এবং কালো লাইনের মাঝে একটি বল বল"
+" নিয়ে খেলা"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:280
 #, elixir-autogen, elixir-format
@@ -260,23 +260,35 @@ msgstr "হেক্স পিয়ং — এলিস বনাম বব"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_raid.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Raid game screen: two jets flying through a scrolling river with enemies"
-msgstr "হেক্স রাইড গেম স্ক্রিন: শত্রুদের সাথে একটি স্ক্রলিং নদীর মাধ্যমে দুটো প্লেন উড়ে যায়"
+msgid ""
+"Hex Raid game screen: two jets flying through a scrolling river with enemies"
+msgstr ""
+"হেক্স রাইড গেম স্ক্রিন: শত্রুদের সাথে একটি স্ক্রলিং নদীর মাধ্যমে দুটো প্লেন "
+"উড়ে যায়"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_skiing.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Skiing game screen: two skiers descending through trees and slalom gates with avalanche behind"
-msgstr "হেক্স সাকিং গেম স্ক্রিন: দুইটা ছোট ছোট মানুষ গাছ আর তালের দরজা দিয়ে নেমে এসেছে।"
+msgid ""
+"Hex Skiing game screen: two skiers descending through trees and slalom gates"
+" with avalanche behind"
+msgstr ""
+"হেক্স সাকিং গেম স্ক্রিন: দুইটা ছোট ছোট মানুষ গাছ আর তালের দরজা দিয়ে নেমে "
+"এসেছে।"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_tennis.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Tennis game screen: top-down tennis court with two players and a ball"
+msgid ""
+"Hex Tennis game screen: top-down tennis court with two players and a ball"
 msgstr "হেক্স টেনিস খেলা পর্দা: টপ টেনিস কোর্ট দুইজন খেলোয়াড় এবং বলের খেলা"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_warlords.ex:20
 #, elixir-autogen, elixir-format
-msgid "Hex Warlords game screen: two castles with brick walls and a fireball bouncing between them"
-msgstr "হেক্স ওয়ারলর্ড্স গেম স্ক্রিন: ইটের দেয়াল এবং তাদের মধ্যকার অগ্নিবলের মাধ্যমে দুটি প্রাসাদ"
+msgid ""
+"Hex Warlords game screen: two castles with brick walls and a fireball "
+"bouncing between them"
+msgstr ""
+"হেক্স ওয়ারলর্ড্স গেম স্ক্রিন: ইটের দেয়াল এবং তাদের মধ্যকার অগ্নিবলের "
+"মাধ্যমে দুটি প্রাসাদ"
 
 #: lib/retro_hex_chat_web/components/diagrams/security.ex:42
 #, elixir-autogen, elixir-format
@@ -295,8 +307,10 @@ msgstr "আলোর গতিপথ"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_trails.ex:20
 #, elixir-autogen, elixir-format
-msgid "Light Trails game screen: two glowing trails on a dark grid, green and cyan"
-msgstr "হালকা পথ পর্দার একটি অংশ: অন্ধকার গ্রিড, সবুজ এবং সায়ান উপর দুই আলোর গতিপথ।"
+msgid ""
+"Light Trails game screen: two glowing trails on a dark grid, green and cyan"
+msgstr ""
+"হালকা পথ পর্দার একটি অংশ: অন্ধকার গ্রিড, সবুজ এবং সায়ান উপর দুই আলোর গতিপথ।"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_breakout.ex:50
 #: lib/retro_hex_chat_web/components/diagrams/game_warlords.ex:79
@@ -440,15 +454,14 @@ msgstr "P2P Lybib"
 msgid "P2P calls encrypted end-to-end via WebRTC"
 msgstr "ওয়েবআরটিসি থেকে P2P কল-এর মাধ্যমে এনক্রিপ্ট করা"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:18
-#, elixir-autogen, elixir-format
-msgid "P2P multiplayer games flow: type /game command, join lobby, select game, play via WebRTC DataChannel between two players"
-msgstr "P2P একাধিক খেলা প্রবাহিত হচ্ছে: ধরন <foff\\/fol0> <, Zolic> কমান্ড, দলগত খেলায় যোগ দিন, ওয়েবআরটি চ্যানেল থেকে দুটি খেলোয়াড়ের মধ্যে খেলা খেলুন"
-
 #: lib/retro_hex_chat_web/components/diagrams/p2p_architecture.ex:18
 #, elixir-autogen, elixir-format
-msgid "Peer-to-peer connection diagram showing Alice and Bob connected directly via WebRTC, with the server only used for signaling"
-msgstr "সমকক্ষ-পেপার সংযোগ ব্যবস্থা এলিস এবং ববের সাথে সরাসরি ওয়েবআরটিসি দ্বারা সংযুক্ত। সার্ভার শুধুমাত্র সিগন্যালের জন্য ব্যবহার করা হয়"
+msgid ""
+"Peer-to-peer connection diagram showing Alice and Bob connected directly via"
+" WebRTC, with the server only used for signaling"
+msgstr ""
+"সমকক্ষ-পেপার সংযোগ ব্যবস্থা এলিস এবং ববের সাথে সরাসরি ওয়েবআরটিসি দ্বারা "
+"সংযুক্ত। সার্ভার শুধুমাত্র সিগন্যালের জন্য ব্যবহার করা হয়"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_hockey.ex:89
 #, elixir-autogen, elixir-format
@@ -513,7 +526,8 @@ msgstr "কোয়েক-২ আর্কেড লোগো: গাঢ় শ
 #: lib/retro_hex_chat_web/components/diagrams/arcade_quake.ex:22
 #, elixir-autogen, elixir-format
 msgid "Quake arcade logo: stylized Q symbol in bronze on dark background"
-msgstr "কোয়েক আর্কেড লোগো: অন্ধকার পটভূমি ব্রোঞ্জের মধ্যে ইমপ্ল্যান্ট কিউ প্রতীক"
+msgstr ""
+"কোয়েক আর্কেড লোগো: অন্ধকার পটভূমি ব্রোঞ্জের মধ্যে ইমপ্ল্যান্ট কিউ প্রতীক"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_quake.ex:60
 #, elixir-autogen, elixir-format
@@ -547,8 +561,12 @@ msgstr "র‍্যাপ ৪"
 
 #: lib/retro_hex_chat_web/components/diagrams/voice.ex:24
 #, elixir-autogen, elixir-format
-msgid "Retro-style voice call window showing timer, mute, camera, screen share, and end call buttons"
-msgstr "বিপরীতমুখী ভয়েস কল স্ক্রীন টাইমার, নিঃশব্দ, ক্যামেরা, স্ক্রীন ভাগ এবং সমাপ্তি"
+msgid ""
+"Retro-style voice call window showing timer, mute, camera, screen share, and"
+" end call buttons"
+msgstr ""
+"বিপরীতমুখী ভয়েস কল স্ক্রীন টাইমার, নিঃশব্দ, ক্যামেরা, স্ক্রীন ভাগ এবং "
+"সমাপ্তি"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_raid.ex:64
 #, elixir-autogen, elixir-format
@@ -568,7 +586,9 @@ msgstr "পর্দা"
 #: lib/retro_hex_chat_web/components/diagrams/arcade_scummvm.ex:22
 #, elixir-autogen, elixir-format
 msgid "ScummVM arcade logo: point and click adventure scene with cursor"
-msgstr "SCMVM আর্কেড লোগো: পয়েন্ট এবং কার্সার দ্বারা বিপজ্জনক দৃশ্যের মাপার ক্লিক করুন"
+msgstr ""
+"SCMVM আর্কেড লোগো: পয়েন্ট এবং কার্সার দ্বারা বিপজ্জনক দৃশ্যের মাপার ক্লিক "
+"করুন"
 
 #: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:79
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:84
@@ -601,11 +621,6 @@ msgstr "সার্ভার লুপ থেকে বাদ গেছে"
 msgid "Server never sees voice/video data"
 msgstr "সার্ভার দ্বারা কোনো ভয়েস বিদ্যমান নেই"
 
-#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
-#, elixir-autogen, elixir-format
-msgid "Solo arcade flow: type !play in #games channel, pick a game from catalog, new window opens, WASM game runs in browser"
-msgstr "সোলো আর্কেড বয়েছে! <fot2\\/f0> চ্যানেলে খেলুন, ক্যাটালগ থেকে একটি খেলা বাছাই করুন, নতুন উইন্ডো খোলা হয়"
-
 #: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:214
 #, elixir-autogen, elixir-format
 msgid "Star Duel"
@@ -633,8 +648,11 @@ msgstr "কথা বলুন"
 
 #: lib/retro_hex_chat_web/components/diagrams/security.ex:24
 #, elixir-autogen, elixir-format
-msgid "Two security layers: browser to server via HTTPS/WSS with TLS, and browser to browser via DTLS-SRTP for P2P calls"
-msgstr "দুটো নিরাপত্তা স্তর: HTTPSQROP <fft2> সহ সার্ভারের সাথে ব্যবহার করা হবে"
+msgid ""
+"Two security layers: browser to server via HTTPS/WSS with TLS, and browser "
+"to browser via DTLS-SRTP for P2P calls"
+msgstr ""
+"দুটো নিরাপত্তা স্তর: HTTPSQROP <fft2> সহ সার্ভারের সাথে ব্যবহার করা হবে"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:86
 #, elixir-autogen, elixir-format
@@ -648,8 +666,13 @@ msgstr "ব্যবহার"
 
 #: lib/retro_hex_chat_web/components/diagrams/p2p_flow.ex:18
 #, elixir-autogen, elixir-format
-msgid "Vertical flowchart showing 4 steps: Alice calls Bob, server exchanges signaling, P2P connection established, then direct data flow with server out of the loop"
-msgstr "উল্লম্ব বয়ে নিয়ে যাওয়ার সময়: অ্যালিস কল বব, সার্ভার সাড়া দেয়, P2P সংযোগ স্থাপন করা হয়, তারপর লুপ থেকে সরাসরি তথ্য প্রবাহের বাইরে থেকে"
+msgid ""
+"Vertical flowchart showing 4 steps: Alice calls Bob, server exchanges "
+"signaling, P2P connection established, then direct data flow with server out"
+" of the loop"
+msgstr ""
+"উল্লম্ব বয়ে নিয়ে যাওয়ার সময়: অ্যালিস কল বব, সার্ভার সাড়া দেয়, P2P "
+"সংযোগ স্থাপন করা হয়, তারপর লুপ থেকে সরাসরি তথ্য প্রবাহের বাইরে থেকে"
 
 #: lib/retro_hex_chat_web/components/diagrams/voice.ex:47
 #, elixir-autogen, elixir-format
@@ -693,7 +716,9 @@ msgstr "উল্ফ ত্রিমাত্রিক"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_wolfenstein.ex:22
 #, elixir-autogen, elixir-format
-msgid "Wolfenstein 3D arcade logo: shield emblem in grey tones on dark blue background"
+msgid ""
+"Wolfenstein 3D arcade logo: shield emblem in grey tones on dark blue "
+"background"
 msgstr "উলফফেন ত্রিমাত্রিক আর্কেড প্রতীক: গাঢ় নীল রঙের নীলতার প্রতীক"
 
 #: lib/retro_hex_chat_web/components/diagrams/arcade_halflife.ex:64
@@ -735,3 +760,41 @@ msgstr "শুধুমাত্র তাদের সংযোগ করে"
 #, elixir-autogen, elixir-format
 msgid "· rate limiting"
 msgstr "হার বৃদ্ধি"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:70
+#, elixir-autogen, elixir-format
+msgid "/p2p bob"
+msgstr "/p2p bob"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:388
+#, elixir-autogen, elixir-format
+msgid "34 games · Real-time sync · No server"
+msgstr "৩৪ খেলা  বিশেষ টাইম- আউট যার কোনো সার্ভার নেই"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:54
+#, elixir-autogen, elixir-format
+msgid "Games menu"
+msgstr "তৈরী / উন্নয়ন"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_p2p_flow.ex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"P2P multiplayer games flow: type /p2p command, join lobby, select game, play"
+" via WebRTC DataChannel between two players"
+msgstr ""
+"P2P একাধিক খেলা প্রবাহিত হচ্ছে: ধরন <foff\\/fol0> <, Zolic> কমান্ড, দলগত "
+"খেলায় যোগ দিন, ওয়েবআরটি চ্যানেল থেকে দুটি খেলোয়াড়ের মধ্যে খেলা খেলুন"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"Solo arcade flow: open the Games menu and choose Arcade, pick a game from "
+"the catalog, a new window opens, WASM game runs in browser"
+msgstr ""
+"সোলো আর্কেড বয়ে চলেছে: খেলা মেনুটি খুলুন এবং আর্কেড বেছে নিন, ক্যাটালগ থেকে"
+" একটি খেলা বেছে নিন, একটি নতুন উইন্ডো খোলা হয়"
+
+#: lib/retro_hex_chat_web/components/diagrams/game_arcade_flow.ex:65
+#, elixir-autogen, elixir-format
+msgid "▸ Arcade"
+msgstr "আর্কেড"

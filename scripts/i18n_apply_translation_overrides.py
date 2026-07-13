@@ -4,10 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import re
 from pathlib import Path
-
-import polib
 
 from i18n_js_catalogs import LOCALE_EXPORTS, read_catalogs, write_catalogs
 
@@ -100,6 +99,314 @@ def t(
 
 
 PO_OVERRIDES = {
+    "Mute user: %{nick}": t(
+        "Benutzer stummschalten: %{nick}",
+        "Silenciar usuario: %{nick}",
+        "Mettre l'utilisateur en sourdine : %{nick}",
+        "Bisukan pengguna: %{nick}",
+        "ユーザーをミュート: %{nick}",
+        "将用户静音：%{nick}",
+        pt_BR="Silenciar usuário: %{nick}",
+        pt_PT="Silenciar utilizador: %{nick}",
+        it="Silenzia utente: %{nick}",
+        pl="Wycisz użytkownika: %{nick}",
+        nl="Gebruiker dempen: %{nick}",
+        ar="كتم المستخدم: %{nick}",
+        ru="Отключить звук пользователя: %{nick}",
+        hi="उपयोगकर्ता म्यूट करें: %{nick}",
+        ko="사용자 음소거: %{nick}",
+        tr="Kullanıcıyı sessize al: %{nick}",
+        vi="Tắt tiếng người dùng: %{nick}",
+        bn="ব্যবহারকারী মিউট করুন: %{nick}",
+        ur="صارف کو خاموش کریں: %{nick}",
+        zh_hant="將使用者靜音：%{nick}",
+    ),
+    "User '%{nickname}' is offline.": t(
+        "Benutzer '%{nickname}' ist offline.",
+        "El usuario '%{nickname}' está desconectado.",
+        "L'utilisateur '%{nickname}' est hors ligne.",
+        "Pengguna '%{nickname}' sedang offline.",
+        "ユーザー '%{nickname}' はオフラインです。",
+        "用户 '%{nickname}' 已离线。",
+        pt_BR="O usuário '%{nickname}' está offline.",
+        pt_PT="O utilizador '%{nickname}' está offline.",
+        it="L'utente '%{nickname}' è offline.",
+        pl="Użytkownik '%{nickname}' jest offline.",
+        nl="Gebruiker '%{nickname}' is offline.",
+        ar="المستخدم '%{nickname}' غير متصل.",
+        ru="Пользователь '%{nickname}' не в сети.",
+        hi="उपयोगकर्ता '%{nickname}' ऑफ़लाइन है।",
+        ko="사용자 '%{nickname}'님은 오프라인입니다.",
+        tr="'%{nickname}' kullanıcısı çevrimdışı.",
+        vi="Người dùng '%{nickname}' đang ngoại tuyến.",
+        bn="ব্যবহারকারী '%{nickname}' অফলাইন।",
+        ur="صارف '%{nickname}' آف لائن ہے۔",
+        zh_hant="使用者 '%{nickname}' 已離線。",
+    ),
+    "Join throttle set to %{seconds} seconds.": t(
+        "Beitrittsdrossel auf %{seconds} Sekunden gesetzt.",
+        "Límite de entrada configurado en %{seconds} segundos.",
+        "Limitation d'entrée réglée à %{seconds} secondes.",
+        "Pembatasan bergabung diatur ke %{seconds} detik.",
+        "参加制限を%{seconds}秒に設定しました。",
+        "加入限流已设置为 %{seconds} 秒。",
+        pt_BR="Limite de entrada definido para %{seconds} segundos.",
+        pt_PT="Limite de entrada definido para %{seconds} segundos.",
+        it="Limite di accesso impostato a %{seconds} secondi.",
+        pl="Limit dołączania ustawiono na %{seconds} sekund.",
+        nl="Deelnamelimiet ingesteld op %{seconds} seconden.",
+        ar="تم ضبط حد الانضمام إلى %{seconds} ثانية.",
+        ru="Ограничение входа установлено на %{seconds} секунд.",
+        hi="जॉइन सीमा %{seconds} सेकंड पर सेट की गई।",
+        ko="참가 제한이 %{seconds}초로 설정되었습니다.",
+        tr="Katılım sınırı %{seconds} saniye olarak ayarlandı.",
+        vi="Giới hạn tham gia đã được đặt thành %{seconds} giây.",
+        bn="যোগদানের সীমা %{seconds} সেকেন্ডে সেট করা হয়েছে।",
+        ur="شمولیت کی حد %{seconds} سیکنڈ پر سیٹ کر دی گئی۔",
+        zh_hant="加入限流已設定為 %{seconds} 秒。",
+    ),
+    "Last Seen: %{target}": t(
+        "Zuletzt gesehen: %{target}",
+        "Visto por última vez: %{target}",
+        "Dernière vue : %{target}",
+        "Terakhir terlihat: %{target}",
+        "最終確認: %{target}",
+        "最后在线：%{target}",
+        pt_BR="Visto por último: %{target}",
+        pt_PT="Visto pela última vez: %{target}",
+        it="Ultima visualizzazione: %{target}",
+        pl="Ostatnio widziany: %{target}",
+        nl="Laatst gezien: %{target}",
+        ar="آخر ظهور: %{target}",
+        ru="Последний визит: %{target}",
+        hi="अंतिम बार देखा गया: %{target}",
+        ko="마지막 접속: %{target}",
+        tr="Son görülme: %{target}",
+        vi="Lần cuối thấy: %{target}",
+        bn="সর্বশেষ দেখা: %{target}",
+        ur="آخری بار دیکھا گیا: %{target}",
+        zh_hant="最後上線：%{target}",
+    ),
+    "Loading %{channel}...": t(
+        "%{channel} wird geladen...",
+        "Cargando %{channel}...",
+        "Chargement de %{channel}...",
+        "Memuat %{channel}...",
+        "%{channel}を読み込み中...",
+        "正在加载 %{channel}...",
+        pt_BR="Carregando %{channel}...",
+        pt_PT="A carregar %{channel}...",
+        it="Caricamento di %{channel}...",
+        pl="Wczytywanie %{channel}...",
+        nl="%{channel} laden...",
+        ar="جارٍ تحميل %{channel}...",
+        ru="Загрузка %{channel}...",
+        hi="%{channel} लोड हो रहा है...",
+        ko="%{channel} 로드 중...",
+        tr="%{channel} yükleniyor...",
+        vi="Đang tải %{channel}...",
+        bn="%{channel} লোড হচ্ছে...",
+        ur="%{channel} لوڈ ہو رہا ہے...",
+        zh_hant="正在載入 %{channel}...",
+    ),
+    "Lobby invite sent to %{target}. Waiting for response...": t(
+        "Lobby-Einladung an %{target} gesendet. Warte auf Antwort...",
+        "Invitación al lobby enviada a %{target}. Esperando respuesta...",
+        "Invitation au lobby envoyée à %{target}. En attente de réponse...",
+        "Undangan lobi dikirim ke %{target}. Menunggu respons...",
+        "ロビー招待を%{target}に送信しました。応答を待っています...",
+        "大厅邀请已发送给 %{target}。正在等待回应...",
+        pt_BR="Convite para o lobby enviado para %{target}. Aguardando resposta...",
+        pt_PT="Convite para o lobby enviado a %{target}. A aguardar resposta...",
+        it="Invito alla lobby inviato a %{target}. In attesa di risposta...",
+        pl="Zaproszenie do lobby wysłano do %{target}. Oczekiwanie na odpowiedź...",
+        nl="Lobby-uitnodiging verzonden naar %{target}. Wachten op antwoord...",
+        ar="تم إرسال دعوة الردهة إلى %{target}. في انتظار الرد...",
+        ru="Приглашение в лобби отправлено %{target}. Ожидание ответа...",
+        hi="लॉबी आमंत्रण %{target} को भेजा गया। उत्तर की प्रतीक्षा है...",
+        ko="로비 초대가 %{target}님에게 전송되었습니다. 응답을 기다리는 중...",
+        tr="Lobi daveti %{target} kullanıcısına gönderildi. Yanıt bekleniyor...",
+        vi="Đã gửi lời mời sảnh đến %{target}. Đang chờ phản hồi...",
+        bn="লবি আমন্ত্রণ %{target}-কে পাঠানো হয়েছে। উত্তরের অপেক্ষায়...",
+        ur="لابی دعوت %{target} کو بھیج دی گئی۔ جواب کا انتظار ہے...",
+        zh_hant="大廳邀請已傳送給 %{target}。正在等待回應...",
+    ),
+    "Notice to %{target}:": t(
+        "Hinweis an %{target}:",
+        "Aviso para %{target}:",
+        "Avis à %{target} :",
+        "Pemberitahuan untuk %{target}:",
+        "%{target}への通知:",
+        "通知 %{target}：",
+        pt_BR="Aviso para %{target}:",
+        pt_PT="Aviso para %{target}:",
+        it="Avviso a %{target}:",
+        pl="Powiadomienie dla %{target}:",
+        nl="Melding aan %{target}:",
+        ar="إشعار إلى %{target}:",
+        ru="Уведомление для %{target}:",
+        hi="%{target} के लिए सूचना:",
+        ko="%{target}님에게 알림:",
+        tr="%{target} için bildirim:",
+        vi="Thông báo tới %{target}:",
+        bn="%{target}-এর জন্য নোটিশ:",
+        ur="%{target} کے لیے نوٹس:",
+        zh_hant="通知 %{target}：",
+    ),
+    "P2P lobby invite from %{from} — /lobby/%{token}": t(
+        "P2P-Lobby-Einladung von %{from} — /lobby/%{token}",
+        "Invitación al lobby P2P de %{from} — /lobby/%{token}",
+        "Invitation au lobby P2P de %{from} — /lobby/%{token}",
+        "Undangan lobi P2P dari %{from} — /lobby/%{token}",
+        "%{from}からのP2Pロビー招待 — /lobby/%{token}",
+        "来自 %{from} 的 P2P 大厅邀请 — /lobby/%{token}",
+        pt_BR="Convite para lobby P2P de %{from} — /lobby/%{token}",
+        pt_PT="Convite para lobby P2P de %{from} — /lobby/%{token}",
+        it="Invito alla lobby P2P da %{from} — /lobby/%{token}",
+        pl="Zaproszenie do lobby P2P od %{from} — /lobby/%{token}",
+        nl="P2P-lobbyuitnodiging van %{from} — /lobby/%{token}",
+        ar="دعوة ردهة P2P من %{from} — /lobby/%{token}",
+        ru="Приглашение в P2P-лобби от %{from} — /lobby/%{token}",
+        hi="%{from} से P2P लॉबी आमंत्रण — /lobby/%{token}",
+        ko="%{from}님의 P2P 로비 초대 — /lobby/%{token}",
+        tr="%{from} tarafından P2P lobi daveti — /lobby/%{token}",
+        vi="Lời mời sảnh P2P từ %{from} — /lobby/%{token}",
+        bn="%{from} থেকে P2P লবি আমন্ত্রণ — /lobby/%{token}",
+        ur="%{from} کی طرف سے P2P لابی دعوت — /lobby/%{token}",
+        zh_hant="來自 %{from} 的 P2P 大廳邀請 — /lobby/%{token}",
+    ),
+    "P2P lobby ready. Join the lobby: /lobby/%{token}": t(
+        "P2P-Lobby bereit. Lobby beitreten: /lobby/%{token}",
+        "Lobby P2P listo. Únete al lobby: /lobby/%{token}",
+        "Lobby P2P prêt. Rejoignez le lobby : /lobby/%{token}",
+        "Lobi P2P siap. Gabung lobi: /lobby/%{token}",
+        "P2Pロビーの準備ができました。ロビーに参加: /lobby/%{token}",
+        "P2P 大厅已就绪。加入大厅：/lobby/%{token}",
+        pt_BR="Lobby P2P pronto. Entrar no lobby: /lobby/%{token}",
+        pt_PT="Lobby P2P pronto. Entrar no lobby: /lobby/%{token}",
+        it="Lobby P2P pronta. Entra nella lobby: /lobby/%{token}",
+        pl="Lobby P2P gotowe. Dołącz do lobby: /lobby/%{token}",
+        nl="P2P-lobby klaar. Neem deel aan de lobby: /lobby/%{token}",
+        ar="ردهة P2P جاهزة. انضم إلى الردهة: /lobby/%{token}",
+        ru="P2P-лобби готово. Присоединиться к лобби: /lobby/%{token}",
+        hi="P2P लॉबी तैयार है। लॉबी में शामिल हों: /lobby/%{token}",
+        ko="P2P 로비가 준비되었습니다. 로비 참가: /lobby/%{token}",
+        tr="P2P lobisi hazır. Lobiye katıl: /lobby/%{token}",
+        vi="Sảnh P2P đã sẵn sàng. Tham gia sảnh: /lobby/%{token}",
+        bn="P2P লবি প্রস্তুত। লবিতে যোগ দিন: /lobby/%{token}",
+        ur="P2P لابی تیار ہے۔ لابی میں شامل ہوں: /lobby/%{token}",
+        zh_hant="P2P 大廳已就緒。加入大廳：/lobby/%{token}",
+    ),
+    "Throttle error: %{message}": t(
+        "Drosselungsfehler: %{message}",
+        "Error de limitación: %{message}",
+        "Erreur de limitation : %{message}",
+        "Kesalahan pembatasan: %{message}",
+        "制限エラー: %{message}",
+        "限流错误：%{message}",
+        pt_BR="Erro de limitação: %{message}",
+        pt_PT="Erro de limitação: %{message}",
+        it="Errore di limitazione: %{message}",
+        pl="Błąd limitu: %{message}",
+        nl="Limietfout: %{message}",
+        ar="خطأ التقييد: %{message}",
+        ru="Ошибка ограничения: %{message}",
+        hi="सीमा त्रुटि: %{message}",
+        ko="제한 오류: %{message}",
+        tr="Sınır hatası: %{message}",
+        vi="Lỗi giới hạn: %{message}",
+        bn="সীমা ত্রুটি: %{message}",
+        ur="حد بندی کی خرابی: %{message}",
+        zh_hant="限流錯誤：%{message}",
+    ),
+    "Welcome error: %{message}": t(
+        "Willkommensfehler: %{message}",
+        "Error de bienvenida: %{message}",
+        "Erreur de bienvenue : %{message}",
+        "Kesalahan sambutan: %{message}",
+        "ウェルカムエラー: %{message}",
+        "欢迎消息错误：%{message}",
+        pt_BR="Erro de boas-vindas: %{message}",
+        pt_PT="Erro de boas-vindas: %{message}",
+        it="Errore di benvenuto: %{message}",
+        pl="Błąd powitania: %{message}",
+        nl="Welkomstfout: %{message}",
+        ar="خطأ الترحيب: %{message}",
+        ru="Ошибка приветствия: %{message}",
+        hi="स्वागत त्रुटि: %{message}",
+        ko="환영 메시지 오류: %{message}",
+        tr="Karşılama hatası: %{message}",
+        vi="Lỗi chào mừng: %{message}",
+        bn="স্বাগত ত্রুটি: %{message}",
+        ur="خوش آمدید کی خرابی: %{message}",
+        zh_hant="歡迎訊息錯誤：%{message}",
+    ),
+    "Whois: %{target}": t(
+        "Whois für %{target}",
+        "Whois de %{target}",
+        "Whois de %{target}",
+        "Whois untuk %{target}",
+        "%{target}のWhois",
+        "%{target} 的 Whois",
+        pt_BR="Whois de %{target}",
+        pt_PT="Whois de %{target}",
+        it="Whois di %{target}",
+        pl="Whois dla %{target}",
+        nl="Whois voor %{target}",
+        ar="Whois لـ %{target}",
+        ru="Whois для %{target}",
+        hi="%{target} के लिए Whois",
+        ko="%{target}님의 Whois",
+        tr="%{target} için Whois",
+        vi="Whois cho %{target}",
+        bn="%{target}-এর Whois",
+        ur="%{target} کے لیے Whois",
+        zh_hant="%{target} 的 Whois",
+    ),
+    "by %{creator}": t(
+        "von %{creator}",
+        "por %{creator}",
+        "par %{creator}",
+        "oleh %{creator}",
+        "%{creator}作成",
+        "由 %{creator} 创建",
+        pt_BR="por %{creator}",
+        pt_PT="por %{creator}",
+        it="di %{creator}",
+        pl="przez %{creator}",
+        nl="door %{creator}",
+        ar="بواسطة %{creator}",
+        ru="от %{creator}",
+        hi="%{creator} द्वारा",
+        ko="%{creator}님 생성",
+        tr="%{creator} tarafından",
+        vi="bởi %{creator}",
+        bn="%{creator} দ্বারা",
+        ur="%{creator} کی طرف سے",
+        zh_hant="由 %{creator} 建立",
+    ),
+    "by %{creator} · with %{peer}": t(
+        "von %{creator} · mit %{peer}",
+        "por %{creator} · con %{peer}",
+        "par %{creator} · avec %{peer}",
+        "oleh %{creator} · dengan %{peer}",
+        "%{creator}作成 · %{peer}と",
+        "由 %{creator} 创建 · 与 %{peer}",
+        pt_BR="por %{creator} · com %{peer}",
+        pt_PT="por %{creator} · com %{peer}",
+        it="di %{creator} · con %{peer}",
+        pl="przez %{creator} · z %{peer}",
+        nl="door %{creator} · met %{peer}",
+        ar="بواسطة %{creator} · مع %{peer}",
+        ru="от %{creator} · с %{peer}",
+        hi="%{creator} द्वारा · %{peer} के साथ",
+        ko="%{creator}님 생성 · %{peer}님과 함께",
+        tr="%{creator} tarafından · %{peer} ile",
+        vi="bởi %{creator} · với %{peer}",
+        bn="%{creator} দ্বারা · %{peer}-এর সাথে",
+        ur="%{creator} کی طرف سے · %{peer} کے ساتھ",
+        zh_hant="由 %{creator} 建立 · 與 %{peer}",
+    ),
     "Call: %{channel}": t(
         "Anruf: %{channel}",
         "Llamada: %{channel}",
@@ -1114,6 +1421,126 @@ PO_WAVE3_OVERRIDES = {
 for source, translations in PO_WAVE3_OVERRIDES.items():
     PO_OVERRIDES.setdefault(source, {}).update(translations)
 
+PO_RESIDUAL_OVERRIDES = {
+    "%{actor} allowed %{count} conference camera.": {
+        "nl": "%{actor} heeft %{count} conferentiecamera toegestaan.",
+    },
+    "%{actor} allowed %{count} conference cameras.": {
+        "nl": "%{actor} heeft %{count} conferentiecamera's toegestaan.",
+    },
+    "%{actor} allowed %{count} conference microphone.": {
+        "nl": "%{actor} heeft %{count} conferentiemicrofoon toegestaan.",
+    },
+    "%{actor} allowed %{count} conference microphones.": {
+        "nl": "%{actor} heeft %{count} conferentiemicrofoons toegestaan.",
+        "zh_hans": "%{actor} 已允许 %{count} 个会议麦克风。",
+        "zh_hant": "%{actor} 已允許 %{count} 個會議麥克風。",
+    },
+    "%{actor} allowed %{target} to speak.": {
+        "ja": "%{actor}が%{target}の発言を許可しました。",
+        "nl": "%{actor} heeft %{target} toestemming gegeven om te spreken.",
+    },
+    "%{actor} allowed %{target}'s conference camera.": {
+        "nl": "%{actor} heeft de conferentiecamera van %{target} toegestaan.",
+    },
+    "%{actor} allowed %{target}'s conference microphone.": {
+        "nl": "%{actor} heeft de conferentiemicrofoon van %{target} toegestaan.",
+    },
+    "%{actor} turned off %{count} conference cameras.": {
+        "ja": "%{actor}が%{count}台の会議カメラをオフにしました。",
+        "nl": "%{actor} heeft %{count} conferentiecamera's uitgeschakeld.",
+    },
+    "%{actor} turned off %{target}'s conference camera.": {
+        "fr": "%{actor} a désactivé la caméra de conférence de %{target}.",
+        "nl": "%{actor} heeft de conferentiecamera van %{target} uitgeschakeld.",
+    },
+    "%{count} buddies online": {
+        "de": "%{count} Freunde online",
+    },
+    "%{count} topics": {
+        "nl": "%{count} onderwerpen",
+    },
+    "%{level} quality: RTT %{rtt} ms, loss %{loss}%, %{bitrate} kbps, %{fps} fps, freezes %{freezes}": {
+        "tr": "%{level} kalitesi: RTT %{rtt} ms, kayıp %{loss}%, %{bitrate} kbps, %{fps} fps, donmalar %{freezes}",
+    },
+    "%{nick} cancelled the P2P invite.": {
+        "ja": "%{nick}がP2P招待をキャンセルしました。",
+    },
+    "%{nick} declined the P2P invite.": {
+        "nl": "%{nick} heeft de P2P-uitnodiging geweigerd.",
+    },
+    "%{peer} declined the P2P invite.": {
+        "nl": "%{peer} heeft de P2P-uitnodiging geweigerd.",
+    },
+    "%{peer} wants to play %{game}": {
+        "ja": "%{peer}が%{game}をプレイしたがっています",
+        "nl": "%{peer} wil %{game} spelen",
+    },
+    "%{peer}'s camera is off": {
+        "pt_BR": "A câmera de %{peer} está desligada",
+        "pt_PT": "A câmara de %{peer} está desligada",
+    },
+    "%{state} conference in %{channel}: %{count}/%{max} participants, %{duration}": {
+        "hi": "%{channel} में %{state} कॉन्फ़्रेंस: %{count}/%{max} प्रतिभागी, %{duration}",
+        "ja": "%{channel}の%{state}会議: %{count}/%{max}人、%{duration}",
+        "nl": "%{state} conferentie in %{channel}: %{count}/%{max} deelnemers, %{duration}",
+    },
+    "%{target} started sharing a screen.": {
+        "zh_hans": "%{target} 开始共享屏幕。",
+        "zh_hant": "%{target} 開始共享螢幕。",
+    },
+    "Allow %{nickname} to speak": {
+        "nl": "%{nickname} toestaan om te spreken",
+    },
+    "Are you sure you want to drop %{channel}? This cannot be undone.": {
+        "zh_hans": "确定要放弃 %{channel} 吗？此操作无法撤销。",
+        "zh_hant": "確定要放棄 %{channel} 嗎？此操作無法復原。",
+    },
+    "Call %{duration}": {
+        "es": "Llamada %{duration}",
+        "id": "Panggilan %{duration}",
+        "pl": "Połączenie %{duration}",
+    },
+    "Game over — %{game}: %{p1} × %{p2}": {
+        "hi": "गेम खत्म — %{game}: %{p1} × %{p2}",
+        "it": "Partita finita — %{game}: %{p1} × %{p2}",
+        "nl": "Spel afgelopen — %{game}: %{p1} × %{p2}",
+    },
+    "Mute all lower-ranked participants in %{channel}? They cannot unmute until a moderator allows their microphone again.": {
+        "tr": "%{channel} kanalındaki tüm düşük rütbeli katılımcılar sessize alınsın mı? Bir moderatör mikrofonlarına tekrar izin verene kadar sesi açamazlar.",
+        "zh_hans": "要将 %{channel} 中所有较低权限的参与者静音吗？在主持人重新允许其麦克风之前，他们无法取消静音。",
+        "zh_hant": "要將 %{channel} 中所有較低權限的參與者靜音嗎？在主持人重新允許其麥克風之前，他們無法取消靜音。",
+    },
+    "P2P session with %{peer}": {
+        "ar": "جلسة P2P مع %{peer}",
+    },
+    "P2P session with %{peer} ended.": {
+        "nl": "P2P-sessie met %{peer} is beëindigd.",
+    },
+    "P2P session with %{peer} — %{facets}. Click to focus": {
+        "nl": "P2P-sessie met %{peer} — %{facets}. Klik om te focussen",
+    },
+    "P2P: waiting for %{peer}...": {
+        "ar": "P2P: في انتظار %{peer}...",
+    },
+    "Remove %{target} from %{channel}? This will ban them from the channel, disconnect them from the conference, and prevent them from rejoining until a channel operator unbans them.": {
+        "zh_hans": "要将 %{target} 从 %{channel} 移除吗？这会将其从频道封禁、断开其会议连接，并阻止其重新加入，直到频道操作员解除封禁。",
+        "zh_hant": "要將 %{target} 從 %{channel} 移除嗎？這會將其從頻道封禁、斷開其會議連線，並阻止其重新加入，直到頻道操作員解除封禁。",
+    },
+    "Screen %{duration}": {
+        "ar": "مشاركة الشاشة %{duration}",
+        "zh_hans": "屏幕共享 %{duration}",
+        "zh_hant": "螢幕分享 %{duration}",
+    },
+    "Transfer ownership of %{channel} to:": {
+        "zh_hans": "将 %{channel} 的所有权转给：",
+        "zh_hant": "將 %{channel} 的所有權轉給：",
+    },
+}
+
+for source, translations in PO_RESIDUAL_OVERRIDES.items():
+    PO_OVERRIDES.setdefault(source, {}).update(translations)
+
 JS_OVERRIDES = {
     "%{0}  Wv:%{1}": {
         "bn": "%{0}  ওয়েভ:%{1}",
@@ -1743,27 +2170,13 @@ def apply_po_overrides(locales: tuple[str, ...], paths: list[str]) -> dict[str, 
         if locale not in locales:
             continue
 
-        po = polib.pofile(str(path))
-        changed = False
+        original = path.read_text(encoding="utf-8")
+        rewritten_text, changed_entries = apply_po_text_overrides(original, locale)
 
-        for entry in po:
-            if entry.obsolete or not entry.msgid:
-                continue
-
-            if entry.msgid_plural:
-                changed_entry = apply_plural_override(entry, locale)
-            else:
-                changed_entry = apply_singular_override(entry, locale)
-
-            if changed_entry and "fuzzy" in entry.flags:
-                entry.flags.remove("fuzzy")
-
-            changed = changed or changed_entry
-            updated += int(changed_entry)
-
-        if changed:
-            po.save(str(path))
+        if changed_entries:
+            path.write_text(rewritten_text, encoding="utf-8")
             rewritten += 1
+            updated += changed_entries
 
     return {"po_files": len(files), "po_rewritten": rewritten, "po_entries": updated}
 
@@ -1786,38 +2199,158 @@ def locale_from_path(path: Path) -> str:
     return parts[parts.index("gettext") + 1]
 
 
-def apply_singular_override(entry, locale: str) -> bool:
-    translated = PO_OVERRIDES.get(entry.msgid, {}).get(locale)
+def apply_po_text_overrides(text: str, locale: str) -> tuple[str, int]:
+    parts = re.split(r"(\n{2,})", text)
+    changed_entries = 0
 
-    if translated is None:
-        return False
+    for index in range(0, len(parts), 2):
+        block = parts[index]
 
-    ensure_placeholders(entry.msgid, translated)
-
-    if entry.msgstr == translated:
-        return False
-
-    entry.msgstr = translated
-    return True
-
-
-def apply_plural_override(entry, locale: str) -> bool:
-    changed = False
-
-    for index in sorted(entry.msgstr_plural.keys()):
-        source = entry.msgid_plural if len(entry.msgstr_plural) == 1 or index > 0 else entry.msgid
-        translated = PO_OVERRIDES.get(source, {}).get(locale)
-
-        if translated is None:
+        if "msgid " not in block or re.search(r"^#~", block, re.MULTILINE):
             continue
 
-        ensure_placeholders(source, translated)
+        entry = parse_po_block(block)
 
-        if entry.msgstr_plural[index] != translated:
-            entry.msgstr_plural[index] = translated
-            changed = True
+        if not entry.get("msgid"):
+            continue
 
-    return changed
+        rewritten, count = apply_po_block_overrides(block, entry, locale)
+
+        if count:
+            parts[index] = rewritten
+            changed_entries += count
+
+    return "".join(parts), changed_entries
+
+
+def parse_po_block(block: str) -> dict:
+    entry: dict = {"msgstr_plural": {}}
+    current: tuple[str, int | None] | None = None
+
+    for line in block.splitlines():
+        parsed = field_line(line)
+
+        if parsed is not None:
+            field, index, value = parsed
+            current = (field, index)
+            set_po_value(entry, field, index, value)
+            continue
+
+        value = continuation_line(line)
+
+        if value is not None and current is not None:
+            append_po_value(entry, current[0], current[1], value)
+
+    return entry
+
+
+def field_line(line: str) -> tuple[str, int | None, str] | None:
+    match = re.match(r'^(msgid_plural|msgid|msgstr)(?:\[(\d+)\])? "(.*)"$', line)
+
+    if match is None:
+        return None
+
+    field, index, value = match.groups()
+    return field, int(index) if index is not None else None, unquote(value)
+
+
+def continuation_line(line: str) -> str | None:
+    match = re.match(r'^"(.*)"$', line)
+    return unquote(match.group(1)) if match else None
+
+
+def set_po_value(entry: dict, field: str, index: int | None, value: str) -> None:
+    if field == "msgstr" and index is not None:
+        entry["msgstr_plural"][index] = value
+    else:
+        entry[field] = value
+
+
+def append_po_value(entry: dict, field: str, index: int | None, value: str) -> None:
+    if field == "msgstr" and index is not None:
+        entry["msgstr_plural"][index] = entry["msgstr_plural"].get(index, "") + value
+    else:
+        entry[field] = entry.get(field, "") + value
+
+
+def unquote(value: str) -> str:
+    return ast.literal_eval(f'"{value}"')
+
+
+def apply_po_block_overrides(block: str, entry: dict, locale: str) -> tuple[str, int]:
+    changed_entries = 0
+
+    if entry.get("msgid_plural"):
+        plural_forms = entry["msgstr_plural"]
+
+        for index in sorted(plural_forms.keys()):
+            source = entry["msgid_plural"] if len(plural_forms) == 1 or index > 0 else entry["msgid"]
+            translated = PO_OVERRIDES.get(source, {}).get(locale)
+
+            if translated is None:
+                continue
+
+            ensure_placeholders(source, translated)
+
+            if plural_forms[index] != translated:
+                block = replace_msgstr(block, translated, index)
+                changed_entries += 1
+    else:
+        translated = PO_OVERRIDES.get(entry["msgid"], {}).get(locale)
+
+        if translated is not None:
+            ensure_placeholders(entry["msgid"], translated)
+
+            if entry.get("msgstr", "") != translated:
+                block = replace_msgstr(block, translated)
+                changed_entries += 1
+
+    if changed_entries:
+        block = clear_fuzzy_flag(block)
+
+    return block, changed_entries
+
+
+def replace_msgstr(block: str, translated: str, index: int | None = None) -> str:
+    field = f"msgstr[{index}]" if index is not None else "msgstr"
+    replacement = f"{field} {po_string(translated)}"
+    lines = block.splitlines()
+
+    for line_index, line in enumerate(lines):
+        if not line.startswith(f"{field} "):
+            continue
+
+        end_index = line_index + 1
+
+        while end_index < len(lines) and re.match(r'^"', lines[end_index]):
+            end_index += 1
+
+        lines[line_index:end_index] = [replacement]
+        return "\n".join(lines)
+
+    raise ValueError(f"could not find {field} in PO entry for {translated!r}")
+
+
+def po_string(value: str) -> str:
+    escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+    return f'"{escaped}"'
+
+
+def clear_fuzzy_flag(block: str) -> str:
+    lines = []
+
+    for line in block.splitlines():
+        if not line.startswith("#,"):
+            lines.append(line)
+            continue
+
+        flags = [flag.strip() for flag in line[2:].split(",") if flag.strip()]
+        flags = [flag for flag in flags if flag != "fuzzy"]
+
+        if flags:
+            lines.append("#, " + ", ".join(flags))
+
+    return "\n".join(lines)
 
 
 def apply_js_overrides(locales: tuple[str, ...]) -> dict[str, int]:

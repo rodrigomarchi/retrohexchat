@@ -56,13 +56,14 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
   """
   attr :label, :string, required: true
   attr :disabled, :boolean, default: false
+  attr :testid, :string, default: nil
   slot :inner_block, required: true, doc: "dropdown items (context_menu_* <li> elements)"
 
   @spec menu(map()) :: Phoenix.LiveView.Rendered.t()
   def menu(assigns) do
     ~H"""
     <div class="relative inline-flex">
-      <.menu_trigger label={@label} disabled={@disabled} />
+      <.menu_trigger label={@label} disabled={@disabled} testid={@testid} />
       <.menu_dropdown :if={!@disabled}>
         {render_slot(@inner_block)}
       </.menu_dropdown>
@@ -74,6 +75,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
 
   attr :label, :string, required: true
   attr :disabled, :boolean, default: false
+  attr :testid, :string, default: nil
 
   defp menu_trigger(assigns) do
     ~H"""
@@ -88,6 +90,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBar do
       ]}
       data-menubar-trigger
       data-disabled={if(@disabled, do: "true", else: "false")}
+      data-testid={@testid}
       aria-haspopup="true"
     >
       {@label}

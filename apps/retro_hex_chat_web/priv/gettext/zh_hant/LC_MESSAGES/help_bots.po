@@ -160,15 +160,10 @@ msgstr ",歡迎"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:2
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:96
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:178
 #, elixir-autogen, elixir-format
 msgid "/bot"
 msgstr "/bot"
-
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:10
-#, elixir-autogen, elixir-format
-msgid "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
-msgstr "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> [channel] /bot disable <bot> [channel] /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:86
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:83
@@ -176,7 +171,7 @@ msgstr "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:98
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:90
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:87
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:186
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:190
 #, elixir-autogen, elixir-format
 msgid "/bot Command Reference"
 msgstr "/bot Command Reference"
@@ -215,11 +210,6 @@ msgstr "/bot create GreeterBot Welcomes new users"
 #, elixir-autogen, elixir-format
 msgid "/bot destroy GreeterBot"
 msgstr "/bot destroy GreeterBot"
-
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:58
-#, elixir-autogen, elixir-format
-msgid "/bot enable GreeterBot /bot disable GreeterBot #random"
-msgstr "/bot enable GreeterBot /bot disable GreeterBot #random"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:42
 #, elixir-autogen, elixir-format
@@ -328,8 +318,8 @@ msgstr "答案對案件不敏感"
 msgid "Available trivia categories:"
 msgstr "可用的三維分類 :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:109
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:189
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
 #, elixir-autogen, elixir-format
 msgid "Bot Custom Commands"
 msgstr "裝瓶自定義命令"
@@ -364,7 +354,7 @@ msgstr "Bot 冷卻應用——快速引用可能被忽略"
 msgid "Bot names must be 2–16 characters, unique"
 msgstr "瓶名必須是 2–16 個字符, 唯一"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:106
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:109
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:85
 #: lib/retro_hex_chat_web/controllers/help_content/bot_dice.html.heex:82
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:106
@@ -396,7 +386,7 @@ msgid "Categories"
 msgstr "類別"
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_moderation.html.heex:108
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:196
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:200
 #, elixir-autogen, elixir-format
 msgid "ChanServ"
 msgstr "陳塞爾夫"
@@ -464,9 +454,9 @@ msgstr "說明"
 msgid "Detection Types"
 msgstr "檢測類型"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:114
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:191
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:195
 #, elixir-autogen, elixir-format
 msgid "Dice"
 msgstr "ice"
@@ -586,9 +576,9 @@ msgstr "列出所有配置的種子"
 msgid "Managing via Dialog"
 msgstr "通過對話框管理"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:115
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:118
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:44
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:195
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:199
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "調和"
@@ -674,9 +664,9 @@ msgstr "打開 Bot 管理對話框( E)"
 msgid "Polling timers automatically reschedule after each poll"
 msgstr "投票計時器在每次投票後自動重新安排"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:114
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:117
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:67
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:194
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:198
 #, elixir-autogen, elixir-format
 msgid "RSS"
 msgstr "簡易新聞聚合"
@@ -727,9 +717,9 @@ msgstr "運行"
 msgid "Schedule Types"
 msgstr "附表類型"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:113
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:116
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:61
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:193
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:197
 #, elixir-autogen, elixir-format
 msgid "Scheduler"
 msgstr "調度器"
@@ -751,7 +741,7 @@ msgstr "新回合開始時重置分數"
 #: lib/retro_hex_chat_web/controllers/help_content/bot_rss.html.heex:95
 #: lib/retro_hex_chat_web/controllers/help_content/bot_scheduler.html.heex:87
 #: lib/retro_hex_chat_web/controllers/help_content/bot_trivia.html.heex:84
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:184
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:185
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "另見"
@@ -864,9 +854,9 @@ msgstr "工具 − 瓶管理"
 msgid "Triggers must be unique per bot (case-sensitive)"
 msgstr "觸發器必須是每個機器人獨有的( 對大小寫敏感)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:112
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:115
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:51
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:192
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:196
 #, elixir-autogen, elixir-format
 msgid "Trivia"
 msgstr "特里維亞"
@@ -915,11 +905,6 @@ msgstr ")和bot名稱在觸發詞前需要. 例如,如果一個名爲\"FAQ\"的�
 #, elixir-autogen, elixir-format
 msgid "capability — it processes every message before active capabilities (like dice or trivia). This means:"
 msgstr "能力——在主動能力(如骰子或三角形)之前處理每個信息. 這意味着:"
-
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:3
-#, elixir-autogen, elixir-format
-msgid "command lets admins and server operators create, configure, and manage bots. Regular users can view bot info and list available commands."
-msgstr "命令允許管理員和服務器操作員創建、配置和管理bots。 常規用戶可以查看bot信息並列出可用的命令."
 
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:21
 #, elixir-autogen, elixir-format
@@ -1189,11 +1174,6 @@ msgstr "——顯示一個機器人的詳細信息. 可供所有用戶使用。"
 msgid "— Spam detection threshold (default: 3)"
 msgstr "——垃圾郵件檢測閾值(默認:3)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:53
-#, elixir-autogen, elixir-format
-msgid "— Toggle a bot globally, or just for a specific channel."
-msgstr "——從全球切換一個機器人,或者只是爲了特定的通道."
-
 #: lib/retro_hex_chat_web/controllers/help_content/bot_custom_commands.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "— the bot's command prefix"
@@ -1354,11 +1334,6 @@ msgstr "列出可用命令的命令"
 msgid "commands with configurable responses"
 msgstr "可配置響應的命令"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
-#, elixir-autogen, elixir-format
-msgid "menu or by typing"
-msgstr "菜單或輸入"
-
 #: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "prefix and are grouped below regular users. They can be kicked or banned from channels like normal users."
@@ -1384,7 +1359,7 @@ msgstr "開始一回合"
 msgid "to roll dice"
 msgstr "擲骰子"
 
-#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:178
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:179
 #, elixir-autogen, elixir-format
 msgid "with no arguments (admin only). The dialog shows all bots with a split-view: select a bot on the left to see its details, channels, commands, and event hooks on the right."
 msgstr "沒有參數(只有管理員)。 對話框顯示所有帶有分割視圖的 bots : 在左邊選擇一個bot 來查看其細節, 通道, 命令, 以及右側的事件鉤子 。"
@@ -1488,3 +1463,34 @@ msgstr "——用戶定義"
 #, elixir-autogen, elixir-format
 msgid "— welcomes users when they join a channel, optionally says goodbye on part"
 msgstr "——歡迎用戶加入頻道時,可選擇部分告別."
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> /bot disable <bot> /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
+msgstr "/bot /bot create <name> [description] /bot destroy <name> /bot list /bot info <name> /bot join <bot> <channel> /bot part <bot> <channel> /bot enable <bot> /bot disable <bot> /bot set <bot> <key> <value> /bot commands <bot> /bot addcmd <bot> <trigger> <response> /bot delcmd <bot> <trigger>"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "/bot enable GreeterBot /bot disable GreeterBot"
+msgstr "/bot enable GreeterBot /bot disable GreeterBot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:107
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:188
+#, elixir-autogen, elixir-format
+msgid "Bot Management Dialog"
+msgstr "Bot 管理對話框"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:3
+#, elixir-autogen, elixir-format
+msgid "command lets admins and server operators create, configure, and manage bots. Running /bot with no arguments opens Bot Management for admins, while regular users see the bot list."
+msgstr "command lets admins and server operators create, configure, and manage bots. Running /bot with no arguments opens Bot Management for admins, while regular users see the bot list."
+
+#: lib/retro_hex_chat_web/controllers/help_content/botservice.html.heex:177
+#, elixir-autogen, elixir-format
+msgid "menu, the toolbar Options dropdown, or by typing"
+msgstr "menu, the toolbar Options dropdown, or by typing"
+
+#: lib/retro_hex_chat_web/controllers/help_content/bot_command.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "— Toggle a bot globally."
+msgstr "— Toggle a bot globally."

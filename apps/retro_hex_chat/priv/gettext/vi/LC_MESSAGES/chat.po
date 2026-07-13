@@ -11,7 +11,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/chat/timer_manager.ex:144
+#: lib/retro_hex_chat/chat/timer_manager.ex:165
 #, elixir-autogen, elixir-format
 msgid "  %{name} (%{type}, %{interval}s) → %{command}"
 msgstr "  %{name} (%{type}, %{interval}s) → %{command}"
@@ -21,10 +21,9 @@ msgstr "  %{name} (%{type}, %{interval}s) → %{command}"
 msgid "1 %{singular}"
 msgstr "1 %{singular}"
 
-#: lib/retro_hex_chat/chat/timer_manager.ex:152
+#: lib/retro_hex_chat/chat/timer_manager.ex:173
 #, elixir-autogen, elixir-format
 msgid "Active timers:\n"
-""
 msgstr "Đồng hồ hẹn giờ hoạt động:"
 
 #: lib/retro_hex_chat/chat/sound_settings.ex:35
@@ -32,7 +31,7 @@ msgstr "Đồng hồ hẹn giờ hoạt động:"
 msgid "Alert"
 msgstr "Báo động"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:405
+#: lib/retro_hex_chat/chat/key_bindings.ex:447
 #, elixir-autogen, elixir-format
 msgid "Alt"
 msgstr "Alt"
@@ -52,7 +51,7 @@ msgstr "Blip"
 msgid "Buzz"
 msgstr "Buzz"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:242
+#: lib/retro_hex_chat/chat/key_bindings.ex:278
 #, elixir-autogen, elixir-format
 msgid "Chat"
 msgstr "Tán gẫu"
@@ -82,12 +81,13 @@ msgstr "Chime Short"
 msgid "Click"
 msgstr "Ấn"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:329
+#: lib/retro_hex_chat/chat/key_bindings.ex:371
 #, elixir-autogen, elixir-format
 msgid "Conflict: %{first_action} and %{second_action} both bound to %{combo}"
-msgstr "Xung đột: %{first_action} và %{second_action} cả hai ràng buộc với %{combo}"
+msgstr ""
+"Xung đột: %{first_action} và %{second_action} cả hai ràng buộc với %{combo}"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:406
+#: lib/retro_hex_chat/chat/key_bindings.ex:448
 #, elixir-autogen, elixir-format
 msgid "Ctrl"
 msgstr "Ctrl"
@@ -107,59 +107,61 @@ msgstr "Đinh Cao."
 msgid "Ding Low"
 msgstr "Ding Low"
 
-#: lib/retro_hex_chat/chat/policy.ex:41
-#: lib/retro_hex_chat/chat/policy.ex:70
+#: lib/retro_hex_chat/chat/policy.ex:41 lib/retro_hex_chat/chat/policy.ex:70
 #, elixir-autogen, elixir-format
 msgid "Edit window has expired."
 msgstr "Sửa cửa sổ đã hết hạn."
 
 #: lib/retro_hex_chat/chat/alias_expander.ex:30
 #, elixir-autogen, elixir-format
-msgid "Expansion must not contain command chaining characters (|, &&, ;, or newlines)"
-msgstr "Sự mở rộng không thể chứa các ký tự chuỗi lệnh (Grain, &&, ; hoặc mới dòng)"
+msgid ""
+"Expansion must not contain command chaining characters (|, &&, ;, or "
+"newlines)"
+msgstr ""
+"Sự mở rộng không thể chứa các ký tự chuỗi lệnh (Grain, &&, ; hoặc mới dòng)"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:243
+#: lib/retro_hex_chat/chat/key_bindings.ex:280
 #, elixir-autogen, elixir-format
 msgid "Formatting"
 msgstr "Định dạng"
 
-#: lib/retro_hex_chat/chat/timer_manager.ex:98
+#: lib/retro_hex_chat/chat/timer_manager.ex:111
 #, elixir-autogen, elixir-format
-msgid "Invalid timer name. Use only letters, numbers, hyphens, underscores (max %{max_name_length} chars)."
-msgstr "Tên đồng hồ hẹn giờ không hợp lệ. Dùng chỉ chữ cái, số, dấu gạch nối, gạch dưới (xx) %{max_name_length} Charles)."
+msgid ""
+"Invalid timer name. Use only letters, numbers, hyphens, underscores (max "
+"%{max_name_length} chars)."
+msgstr ""
+"Tên đồng hồ hẹn giờ không hợp lệ. Dùng chỉ chữ cái, số, dấu gạch nối, gạch "
+"dưới (xx) %{max_name_length} Charles)."
 
-#: lib/retro_hex_chat/chat/policy.ex:18
-#: lib/retro_hex_chat/chat/policy.ex:24
+#: lib/retro_hex_chat/chat/policy.ex:18 lib/retro_hex_chat/chat/policy.ex:24
 #, elixir-autogen, elixir-format
 msgid "Message cannot be empty"
 msgstr "Thông điệp không thể rỗng"
 
-#: lib/retro_hex_chat/chat/policy.ex:38
-#: lib/retro_hex_chat/chat/policy.ex:60
+#: lib/retro_hex_chat/chat/policy.ex:38 lib/retro_hex_chat/chat/policy.ex:60
 #: lib/retro_hex_chat/chat/policy.ex:81
 #, elixir-autogen, elixir-format
 msgid "Message has already been deleted."
 msgstr "Thông điệp đã bị xóa."
 
-#: lib/retro_hex_chat/chat/service.ex:31
-#: lib/retro_hex_chat/chat/service.ex:46
-#: lib/retro_hex_chat/chat/service.ex:67
-#: lib/retro_hex_chat/chat/service.ex:81
+#: lib/retro_hex_chat/chat/service.ex:31 lib/retro_hex_chat/chat/service.ex:46
+#: lib/retro_hex_chat/chat/service.ex:67 lib/retro_hex_chat/chat/service.ex:81
 #, elixir-autogen, elixir-format
 msgid "Message not found."
 msgstr "Không tìm thấy tin nhắn."
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:241
+#: lib/retro_hex_chat/chat/key_bindings.ex:277
 #, elixir-autogen, elixir-format
 msgid "Navigation"
 msgstr "Di chuyển"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:101
+#: lib/retro_hex_chat/chat/key_bindings.ex:137
 #, elixir-autogen, elixir-format
 msgid "Next Window"
 msgstr "Cửa sổ kế"
 
-#: lib/retro_hex_chat/chat/timer_manager.ex:136
+#: lib/retro_hex_chat/chat/timer_manager.ex:157
 #, elixir-autogen, elixir-format
 msgid "No active timers."
 msgstr "Không có đồng hồ hẹn giờ hoạt động."
@@ -174,94 +176,93 @@ msgstr "Không có"
 msgid "Notify"
 msgstr "Thông báo"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:58
+#: lib/retro_hex_chat/chat/key_bindings.ex:63
 #, elixir-autogen, elixir-format
 msgid "Open Address Book"
 msgstr "Sổ địa chỉ"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:88
+#: lib/retro_hex_chat/chat/key_bindings.ex:124
 #, elixir-autogen, elixir-format
 msgid "Open Help"
 msgstr "Mở Trợ giúp"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:70
+#: lib/retro_hex_chat/chat/key_bindings.ex:75
 #, elixir-autogen, elixir-format
 msgid "Open Highlight Dialog"
 msgstr "Hộp thoại tô sáng mở"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:64
+#: lib/retro_hex_chat/chat/key_bindings.ex:69
 #, elixir-autogen, elixir-format
 msgid "Open Ignore List"
 msgstr "Mở danh sách & bỏ qua"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:82
+#: lib/retro_hex_chat/chat/key_bindings.ex:87
 #, elixir-autogen, elixir-format
 msgid "Open Perform Dialog"
 msgstr "Mở hộp thoại"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:76
+#: lib/retro_hex_chat/chat/key_bindings.ex:81
 #, elixir-autogen, elixir-format
 msgid "Open URL Catcher"
 msgstr "Mở bộ bắt URL"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:89
+#: lib/retro_hex_chat/chat/key_bindings.ex:125
 #, elixir-autogen, elixir-format
 msgid "Open the help dialog (menu only)"
 msgstr "Mở hộp thoại trợ giúp (chỉ trình đơn)"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:83
+#: lib/retro_hex_chat/chat/key_bindings.ex:88
 #, elixir-autogen, elixir-format
 msgid "Open/close auto-perform settings"
 msgstr "Thiết lập hiệu ứng tự động Open/close"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:71
+#: lib/retro_hex_chat/chat/key_bindings.ex:76
 #, elixir-autogen, elixir-format
 msgid "Open/close highlight word settings"
 msgstr "Thiết lập từ Open/close tô sáng"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:53
+#: lib/retro_hex_chat/chat/key_bindings.ex:58
 #, elixir-autogen, elixir-format
 msgid "Open/close search bar"
 msgstr "Thanh tìm kiếm Open/close"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:77
+#: lib/retro_hex_chat/chat/key_bindings.ex:82
 #, elixir-autogen, elixir-format
 msgid "Open/close the URL catcher"
 msgstr "Open/close người bắt URL"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:59
+#: lib/retro_hex_chat/chat/key_bindings.ex:64
 #, elixir-autogen, elixir-format
 msgid "Open/close the address book"
 msgstr "Sổ địa chỉ Open/close"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:65
+#: lib/retro_hex_chat/chat/key_bindings.ex:70
 #, elixir-autogen, elixir-format
 msgid "Open/close the ignore list"
 msgstr "Open/close danh sách bỏ qua"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:95
+#: lib/retro_hex_chat/chat/key_bindings.ex:131
 #, elixir-autogen, elixir-format
 msgid "Open/close the keyboard shortcut cheatsheet"
 msgstr "Open/close phím tắt"
 
-#: lib/retro_hex_chat/chat/service.ex:129
-#: lib/retro_hex_chat/chat/service.ex:146
+#: lib/retro_hex_chat/chat/service.ex:130
+#: lib/retro_hex_chat/chat/service.ex:147
 #, elixir-autogen, elixir-format
 msgid "Original message not found."
 msgstr "Không tìm thấy thông điệp gốc."
 
-#: lib/retro_hex_chat/chat/policy.ex:44
-#: lib/retro_hex_chat/chat/policy.ex:109
+#: lib/retro_hex_chat/chat/policy.ex:44 lib/retro_hex_chat/chat/policy.ex:109
 #, elixir-autogen, elixir-format
 msgid "Please wait a few seconds before editing again."
 msgstr "Vui lòng đợi vài giây trước khi chỉnh sửa lại."
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:107
+#: lib/retro_hex_chat/chat/key_bindings.ex:143
 #, elixir-autogen, elixir-format
 msgid "Previous Window"
 msgstr "Cửa sổ trước"
 
-#: lib/retro_hex_chat/chat/timer_manager.ex:127
+#: lib/retro_hex_chat/chat/timer_manager.ex:148
 #, elixir-autogen, elixir-format
 msgid "Repeat interval clamped to minimum %{min_repeat_interval} seconds."
 msgstr "Thời gian lặp lại kẹp ít nhất %{min_repeat_interval} giây."
@@ -271,100 +272,100 @@ msgstr "Thời gian lặp lại kẹp ít nhất %{min_repeat_interval} giây."
 msgid "Ring"
 msgstr "Vòng"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:407
+#: lib/retro_hex_chat/chat/key_bindings.ex:449
 #, elixir-autogen, elixir-format
 msgid "Shift"
 msgstr "Dịch:"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:94
+#: lib/retro_hex_chat/chat/key_bindings.ex:130
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "Phím tắt"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:102
+#: lib/retro_hex_chat/chat/key_bindings.ex:138
 #, elixir-autogen, elixir-format
 msgid "Switch to the next channel or PM"
 msgstr "Chuyển sang kênh tiếp theo"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:108
+#: lib/retro_hex_chat/chat/key_bindings.ex:144
 #, elixir-autogen, elixir-format
 msgid "Switch to the previous channel or PM"
 msgstr "Chuyển sang kênh trước"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:114
+#: lib/retro_hex_chat/chat/key_bindings.ex:150
 #, elixir-autogen, elixir-format
 msgid "Switch to window 1"
 msgstr "Chuyển sang cửa sổ 1"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:120
+#: lib/retro_hex_chat/chat/key_bindings.ex:156
 #, elixir-autogen, elixir-format
 msgid "Switch to window 2"
 msgstr "Chuyển sang cửa sổ 2"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:126
+#: lib/retro_hex_chat/chat/key_bindings.ex:162
 #, elixir-autogen, elixir-format
 msgid "Switch to window 3"
 msgstr "Chuyển sang cửa sổ 3"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:132
+#: lib/retro_hex_chat/chat/key_bindings.ex:168
 #, elixir-autogen, elixir-format
 msgid "Switch to window 4"
 msgstr "Chuyển sang cửa sổ 4"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:138
+#: lib/retro_hex_chat/chat/key_bindings.ex:174
 #, elixir-autogen, elixir-format
 msgid "Switch to window 5"
 msgstr "Chuyển sang cửa sổ 5"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:144
+#: lib/retro_hex_chat/chat/key_bindings.ex:180
 #, elixir-autogen, elixir-format
 msgid "Switch to window 6"
 msgstr "Chuyển sang cửa sổ 6"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:150
+#: lib/retro_hex_chat/chat/key_bindings.ex:186
 #, elixir-autogen, elixir-format
 msgid "Switch to window 7"
 msgstr "Chuyển sang cửa sổ 7"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:156
+#: lib/retro_hex_chat/chat/key_bindings.ex:192
 #, elixir-autogen, elixir-format
 msgid "Switch to window 8"
 msgstr "Chuyển sang cửa sổ 8"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:162
+#: lib/retro_hex_chat/chat/key_bindings.ex:198
 #, elixir-autogen, elixir-format
 msgid "Switch to window 9"
 msgstr "Chuyển sang cửa sổ 9"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:244
+#: lib/retro_hex_chat/chat/key_bindings.ex:281
 #: lib/retro_hex_chat/chat/service.ex:96
 #, elixir-autogen, elixir-format
 msgid "System"
 msgstr "Hệ thống"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:52
+#: lib/retro_hex_chat/chat/key_bindings.ex:57
 #, elixir-autogen, elixir-format
 msgid "Toggle Search"
 msgstr "Bật/ tắt tìm kiếm"
 
-#: lib/retro_hex_chat/chat/timer_manager.ex:76
-#: lib/retro_hex_chat/chat/timer_manager.ex:80
+#: lib/retro_hex_chat/chat/timer_manager.ex:88
+#: lib/retro_hex_chat/chat/timer_manager.ex:92
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> <seconds> <command>"
 msgstr "Sử dụng: /timer <name> <seconds> <command>"
 
-#: lib/retro_hex_chat/chat/timer_manager.ex:17
+#: lib/retro_hex_chat/chat/timer_manager.ex:29
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> [repeat] <seconds> <command>"
 msgstr "Sử dụng: /timer <name>"
 
-#: lib/retro_hex_chat/chat/timer_manager.ex:51
-#: lib/retro_hex_chat/chat/timer_manager.ex:55
+#: lib/retro_hex_chat/chat/timer_manager.ex:63
+#: lib/retro_hex_chat/chat/timer_manager.ex:67
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer <name> repeat <seconds> <command>"
 msgstr "Sử dụng: /timer <name> lặp lại <seconds> <command>"
 
-#: lib/retro_hex_chat/chat/timer_manager.ex:25
+#: lib/retro_hex_chat/chat/timer_manager.ex:37
 #, elixir-autogen, elixir-format
 msgid "Usage: /timer stop <name>"
 msgstr "Sử dụng: /timer dừng <name>"
@@ -374,47 +375,47 @@ msgstr "Sử dụng: /timer dừng <name>"
 msgid "Whoosh"
 msgstr "Whoosh"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:113
+#: lib/retro_hex_chat/chat/key_bindings.ex:149
 #, elixir-autogen, elixir-format
 msgid "Window 1"
 msgstr "Cửa sổ 1"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:119
+#: lib/retro_hex_chat/chat/key_bindings.ex:155
 #, elixir-autogen, elixir-format
 msgid "Window 2"
 msgstr "Cửa sổ 2"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:125
+#: lib/retro_hex_chat/chat/key_bindings.ex:161
 #, elixir-autogen, elixir-format
 msgid "Window 3"
 msgstr "Cửa sổ 3"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:131
+#: lib/retro_hex_chat/chat/key_bindings.ex:167
 #, elixir-autogen, elixir-format
 msgid "Window 4"
 msgstr "Cửa sổ 4"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:137
+#: lib/retro_hex_chat/chat/key_bindings.ex:173
 #, elixir-autogen, elixir-format
 msgid "Window 5"
 msgstr "Cửa sổ 5"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:143
+#: lib/retro_hex_chat/chat/key_bindings.ex:179
 #, elixir-autogen, elixir-format
 msgid "Window 6"
 msgstr "Cửa sổ 6"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:149
+#: lib/retro_hex_chat/chat/key_bindings.ex:185
 #, elixir-autogen, elixir-format
 msgid "Window 7"
 msgstr "Cửa sổ 7"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:155
+#: lib/retro_hex_chat/chat/key_bindings.ex:191
 #, elixir-autogen, elixir-format
 msgid "Window 8"
 msgstr "Cửa sổ 8"
 
-#: lib/retro_hex_chat/chat/key_bindings.ex:161
+#: lib/retro_hex_chat/chat/key_bindings.ex:197
 #, elixir-autogen, elixir-format
 msgid "Window 9"
 msgstr "Cửa sổ 9"
@@ -424,8 +425,7 @@ msgstr "Cửa sổ 9"
 msgid "You cannot delete other users' messages."
 msgstr "Bạn không thể xoá tin nhắn của người dùng khác."
 
-#: lib/retro_hex_chat/chat/policy.ex:35
-#: lib/retro_hex_chat/chat/policy.ex:57
+#: lib/retro_hex_chat/chat/policy.ex:35 lib/retro_hex_chat/chat/policy.ex:57
 #, elixir-autogen, elixir-format
 msgid "You cannot edit other users' messages."
 msgstr "Bạn không thể sửa đổi tin nhắn của người dùng khác."
@@ -440,3 +440,63 @@ msgstr "Vừa nãy"
 #, elixir-autogen, elixir-format
 msgid "less than a minute"
 msgstr "chưa đầy một phút"
+
+#: lib/retro_hex_chat/chat/timer_manager.ex:139
+#, elixir-autogen, elixir-format
+msgid "Command is required"
+msgstr "Cần thiết lệnh"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:279
+#, elixir-autogen, elixir-format
+msgid "Conference"
+msgstr "Hội nghị"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:113
+#, elixir-autogen, elixir-format
+msgid "Cycle the active conference layout"
+msgstr "Name"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:118
+#, elixir-autogen, elixir-format
+msgid "Focus Next Conference Participant"
+msgstr "Tập trung vào phần tham gia hội nghị kế tiếp"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:106
+#, elixir-autogen, elixir-format
+msgid "Leave Conference"
+msgstr "Rời khỏi hội nghị"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:119
+#, elixir-autogen, elixir-format
+msgid "Move conference focus to the next participant"
+msgstr "Di chuyển tập trung hội nghị sang người tham gia tiếp theo"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:95
+#, elixir-autogen, elixir-format
+msgid "Mute or unmute your active conference microphone"
+msgstr "Mua hoặc tháo micro của bạn đang hoạt động"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:112
+#, elixir-autogen, elixir-format
+msgid "Next Conference Layout"
+msgstr "Bố trí họp kế"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:107
+#, elixir-autogen, elixir-format
+msgid "Open the leave confirmation for the active conference"
+msgstr "Mở xác nhận khởi hành cho hội nghị đang diễn ra"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:101
+#, elixir-autogen, elixir-format
+msgid "Start or stop your active conference camera"
+msgstr "Khởi động hoặc dừng máy ảnh hội nghị của bạn"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:100
+#, elixir-autogen, elixir-format
+msgid "Toggle Conference Camera"
+msgstr "Bật/ tắt máy ảnh hội nghị"
+
+#: lib/retro_hex_chat/chat/key_bindings.ex:94
+#, elixir-autogen, elixir-format
+msgid "Toggle Conference Microphone"
+msgstr "Bật/ tắt máy vi âm bàn"

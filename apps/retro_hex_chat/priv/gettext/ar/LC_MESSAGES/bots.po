@@ -31,16 +31,6 @@ msgstr "  %{prefix}%{trigger} — %{description}"
 msgid "  %{prefix}help — Show this help message"
 msgstr "  %{prefix}المساعدة أري رسالة المساعدة هذه"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be identified to play. Use /ns identify <password> first."
-msgstr "%{author}يجب أن يتم التعرف عليك لتلعب الاستخدام /ns تحديد <password> أولاً"
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be registered to play. Use /ns register <password> first."
-msgstr "%{author}يجب أن تكون مسجلاً لتلعب الاستخدام /ns السجل <password> أولاً"
-
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:301
 #, elixir-autogen, elixir-format
 msgid "%{base} %{sign} %{modifier} = %{total}"
@@ -63,9 +53,11 @@ msgstr "%{message} (%{reason})"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
 #, elixir-autogen, elixir-format
-msgid "%{prefix}\n"
+msgid ""
+"%{prefix}\n"
 "Round over! %{scores}"
-msgstr "%{prefix}\n"
+msgstr ""
+"%{prefix}\n"
 "! %{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:375
@@ -165,7 +157,7 @@ msgstr "الجزائر"
 msgid "Alias for roll"
 msgstr "Alias for roll"
 
-#: lib/retro_hex_chat/bots/server.ex:144
+#: lib/retro_hex_chat/bots/server.ex:143
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "بالفعل في القناة"
@@ -255,7 +247,7 @@ msgstr "الأجانب الأزرق"
 msgid "Bot destroyed"
 msgstr "دمر بوت"
 
-#: lib/retro_hex_chat/bots/server.ex:756
+#: lib/retro_hex_chat/bots/server.ex:745
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "ستغادر"
@@ -591,7 +583,8 @@ msgstr "URL غير صالحة. يجب أن يبدأ في الموقع الشبك
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:179
 #, elixir-autogen, elixir-format
 msgid "Invalid dice notation '%{notation}'. Use format: NdS, NdS+M, NdSkh/klN"
-msgstr "\"ملاحظات النرد الفاشلة\"%{notation}نموذج الاستخدام: NdS, NdS+M, NdSkh/klN"
+msgstr ""
+"\"ملاحظات النرد الفاشلة\"%{notation}نموذج الاستخدام: NdS, NdS+M, NdSkh/klN"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
 #, elixir-autogen, elixir-format
@@ -834,7 +827,7 @@ msgstr "ليس سيدني"
 msgid "Not Toronto"
 msgstr "ليس تورنتو"
 
-#: lib/retro_hex_chat/bots/server.ex:163
+#: lib/retro_hex_chat/bots/server.ex:162
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "ليس في القناة"
@@ -1096,20 +1089,10 @@ msgstr "جنوب آسيا"
 msgid "Southern hemisphere"
 msgstr "نصف الكرة الجنوبي"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:53
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session"
-msgstr "ابدأ دورة منفردة"
-
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:138
 #, elixir-autogen, elixir-format
 msgid "Start a trivia round"
 msgstr "ابدأي بجولة"
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:22
-#, elixir-autogen, elixir-format
-msgid "Start solo arcade sessions with !play"
-msgstr "ابدأوا بجلسات العرض المنفردة"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
 #, elixir-autogen, elixir-format
@@ -1188,9 +1171,11 @@ msgstr "طوكيو"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
 #, elixir-autogen, elixir-format
-msgid "Trivia started! (%{category}, %{count} questions)\n"
+msgid ""
+"Trivia started! (%{category}, %{count} questions)\n"
 "%{question}"
-msgstr "بدأت (تريفيا)%{category}, %{count} المسائل)\n"
+msgstr ""
+"بدأت (تريفيا)%{category}, %{count} المسائل)\n"
 "%{question}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
@@ -1225,8 +1210,12 @@ msgstr "Usage: rss add ph0>第ph2< < < < 第ph1 < < < /ph3<"
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
 #, elixir-autogen, elixir-format
-msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
-msgstr "الاستخدام: الجدول الزمني يضاف فترات <min> <#channel> <message> إضافة جدول يومي <HH:MM> <#channel> <message>"
+msgid ""
+"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
+"daily <HH:MM> <#channel> <message>"
+msgstr ""
+"الاستخدام: الجدول الزمني يضاف فترات <min> <#channel> <message> إضافة جدول "
+"يومي <HH:MM> <#channel> <message>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90
 #, elixir-autogen, elixir-format

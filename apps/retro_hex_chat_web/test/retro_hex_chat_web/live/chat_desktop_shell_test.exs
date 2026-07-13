@@ -26,6 +26,12 @@ defmodule RetroHexChatWeb.ChatDesktopShellTest do
       # Header chrome (menu bar + status bar) lives in the desktop header slot,
       # above the workspace.
       assert html =~ ~s(data-testid="status-bar-app")
+      assert has_element?(view, ~s(#menubar [data-testid="language-menu-item-pt_BR"]))
+
+      assert has_element?(
+               view,
+               ~s(#menubar [data-testid="language-menu-item-pt_BR"] a[href^="/locale/pt_BR"])
+             )
     end
 
     test "the chat window is pinned and maximized by default", %{conn: conn} do

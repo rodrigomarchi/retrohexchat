@@ -1,0 +1,249 @@
+# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: zh_hans; status: enabled; wave: 1.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: zh_hans\n"
+"Language: zh_hans\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:109
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:202
+#, elixir-autogen, elixir-format
+msgid "%{peer} is muted"
+msgstr "%{peer} 已变音"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:88
+#, elixir-autogen, elixir-format
+msgid "%{peer} wants to play %{game}"
+msgstr "%{peer}想要播放 %{game}"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:88
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:139
+#, elixir-autogen, elixir-format
+msgid "%{peer}'s camera is off"
+msgstr "%{peer}的相机关闭"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:70
+#, elixir-autogen, elixir-format
+msgid "%{score} P2"
+msgstr "%{score} P2级"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:96
+#, elixir-autogen, elixir-format
+msgid "Accept"
+msgstr "接受"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:79
+#, elixir-autogen, elixir-format
+msgid "Back to games"
+msgstr "回到游戏中"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:70
+#, elixir-autogen, elixir-format
+msgid "Browse files"
+msgstr "浏览文件"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:150
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:397
+#, elixir-autogen, elixir-format
+msgid "Camera Off"
+msgstr "关闭相机"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:149
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:396
+#, elixir-autogen, elixir-format
+msgid "Camera On"
+msgstr "相机打开"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:29
+#, elixir-autogen, elixir-format
+msgid "Connect to play a game."
+msgstr "连接到游戏中 。"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:28
+#, elixir-autogen, elixir-format
+msgid "Connect to send a file."
+msgstr "连接以发送文件 。"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:47
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:60
+#, elixir-autogen, elixir-format
+msgid "Connect to start an audio or video call."
+msgstr "连接开始音频或视频通话."
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_media_island.ex:304
+#, elixir-autogen, elixir-format
+msgid "Could not access your microphone or camera."
+msgstr "无法访问您的麦克风或相机 。"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:100
+#, elixir-autogen, elixir-format
+msgid "Decline"
+msgstr "缩写"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:168
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:445
+#, elixir-autogen, elixir-format
+msgid "Devices"
+msgstr "设备"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:160
+#, elixir-autogen, elixir-format
+msgid "Draw."
+msgstr "画画."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:59
+#, elixir-autogen, elixir-format
+msgid ""
+"Drop a file here, or browse. Transfers run alongside your call and game."
+msgstr "在这里丢弃文件, 或者浏览 。 转帐是随你的电话和游戏一起进行的"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:176
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:476
+#, elixir-autogen, elixir-format
+msgid "End call"
+msgstr "结束呼叫"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:40
+#, elixir-autogen, elixir-format
+msgid "End game"
+msgstr "结束游戏"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_file_island.ex:150
+#, elixir-autogen, elixir-format
+msgid "File transfer completed: %{name}"
+msgstr "文件传输完成: %{name}"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:61
+#, elixir-autogen, elixir-format
+msgid "Final Score"
+msgstr "最后得分数"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:193
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:525
+#, elixir-autogen, elixir-format
+msgid "Focus"
+msgstr "焦点"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:36
+#, elixir-autogen, elixir-format
+msgid "Game in progress"
+msgstr "游戏中"
+
+#: lib/retro_hex_chat_web/live/chat_live/components/p2p_game_island.ex:160
+#, elixir-autogen, elixir-format
+msgid "Game over — %{game}: %{p1} × %{p2}"
+msgstr "游戏过-%{game}:%{p1}×%{p2}"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:223
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:576
+#, elixir-autogen, elixir-format
+msgid "High quality"
+msgstr "高质量"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:239
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:594
+#, elixir-autogen, elixir-format
+msgid "Low quality"
+msgstr "低质量"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:65
+#, elixir-autogen, elixir-format
+msgid "Max: %{size} MB"
+msgstr "最大：%{size} MB"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:211
+#, elixir-autogen, elixir-format
+msgid "Maximize"
+msgstr "最大化"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:231
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:585
+#, elixir-autogen, elixir-format
+msgid "Medium quality"
+msgstr "中等质量"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#, elixir-autogen, elixir-format
+msgid "Mute"
+msgstr "静音"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:66
+#, elixir-autogen, elixir-format
+msgid "P1 %{score}"
+msgstr "P1 %{score} 导弹"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:161
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:409
+#, elixir-autogen, elixir-format
+msgid "Picture-in-Picture"
+msgstr "图片"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:202
+#, elixir-autogen, elixir-format
+msgid "Side by side"
+msgstr "并肩作战"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:265
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:320
+#, elixir-autogen, elixir-format
+msgid "Start audio"
+msgstr "开始音频"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:285
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:308
+#, elixir-autogen, elixir-format
+msgid ""
+"Start audio or video — or the peer can, independently. You'll join "
+"automatically."
+msgstr "启动音频或视频——或对等者可以独立启动. 你会自动加入。"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:274
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:329
+#, elixir-autogen, elixir-format
+msgid "Start video"
+msgstr "开始视频"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:139
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:385
+#, elixir-autogen, elixir-format
+msgid "Turn on camera"
+msgstr "打开相机"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:119
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:365
+#, elixir-autogen, elixir-format
+msgid "Turn on microphone"
+msgstr "打开麦克风"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#, elixir-autogen, elixir-format
+msgid "Unmute"
+msgstr "解开"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:110
+#, elixir-autogen, elixir-format
+msgid "Waiting for %{peer} to accept..."
+msgstr "等待 %{peer} 接受..."
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:159
+#, elixir-autogen, elixir-format
+msgid "You lose."
+msgstr "你输了"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:158
+#, elixir-autogen, elixir-format
+msgid "You win!"
+msgstr "你赢了!"
+
+#: lib/retro_hex_chat_web/components/ui/lobby/game_panel.ex:68
+#, elixir-autogen, elixir-format
+msgid "×"
+msgstr "时间( T);"

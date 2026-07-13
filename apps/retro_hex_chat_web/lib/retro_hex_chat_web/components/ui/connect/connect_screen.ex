@@ -3,8 +3,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   Full visual composition for the pre-auth connect desktop.
 
   The LiveView owns validation, authentication and navigation. This component
-  owns the visual shell: desktop, connect window, step forms, locale switcher,
-  taskbar, hidden session POST form and About dialog.
+  owns the visual shell: desktop, connect window, step forms, taskbar, hidden
+  session POST form and About dialog.
   """
   use RetroHexChatWeb.Component
 
@@ -30,8 +30,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password_error, :string, default: nil
   attr :auth_token, :string, default: nil
   attr :flash, :map, default: %{}
-  attr :locale, :string, default: "en"
-  attr :locales, :list, required: true
   attr :csrf_token, :string, required: true
   attr :chat_session_path, :string, required: true
 
@@ -62,8 +60,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
           password_confirm={@password_confirm}
           password_error={@password_error}
           flash={@flash}
-          locale={@locale}
-          locales={@locales}
         />
 
         <:taskbar>
@@ -89,8 +85,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   attr :password_confirm, :string, required: true
   attr :password_error, :string, default: nil
   attr :flash, :map, default: %{}
-  attr :locale, :string, required: true
-  attr :locales, :list, required: true
 
   defp connect_window(assigns) do
     ~H"""
@@ -124,8 +118,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
         password_confirm={@password_confirm}
         password_error={@password_error}
       />
-
-      <.connect_locale_switcher locale={@locale} locales={@locales} />
     </.desktop_window>
     """
   end
@@ -418,31 +410,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
   defp notice_icon(%{icon: :clock} = assigns), do: ~H"<Icons.icon_clock class={@class} />"
   defp notice_icon(%{icon: :warning} = assigns), do: ~H"<Icons.icon_warning class={@class} />"
   defp notice_icon(assigns), do: ~H"<Icons.icon_connect class={@class} />"
-
-  attr :locale, :string, required: true
-  attr :locales, :list, required: true
-
-  defp connect_locale_switcher(assigns) do
-    ~H"""
-    <div
-      class="mt-4 flex flex-wrap items-center justify-center gap-2 text-xs text-muted-foreground"
-      data-testid="locale-switcher"
-    >
-      <span>{dgettext("connect", "Language")}</span>
-      <.link
-        :for={{code, label, href} <- @locales}
-        href={href}
-        class={[
-          "underline",
-          @locale == code && "font-bold text-text no-underline"
-        ]}
-        data-locale={code}
-      >
-        {label}
-      </.link>
-    </div>
-    """
-  end
 
   defp connect_taskbar(assigns) do
     ~H"""

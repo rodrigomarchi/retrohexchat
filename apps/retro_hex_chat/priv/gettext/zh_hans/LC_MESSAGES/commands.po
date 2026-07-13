@@ -11,12 +11,16 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:594
+#: lib/retro_hex_chat/commands/handlers/bot.ex:576
 #, elixir-autogen, elixir-format
-msgid "  %{command_prefix}%{bot_name} %{trigger} — %{cmd_description_cmd_response}%{status}"
-msgstr "%{command_prefix}%{bot_name} %{trigger} — %{cmd_description_cmd_response}%{status} (英语)."
+msgid ""
+"  %{command_prefix}%{bot_name} %{trigger} — "
+"%{cmd_description_cmd_response}%{status}"
+msgstr ""
+"%{command_prefix}%{bot_name} %{trigger} — "
+"%{cmd_description_cmd_response}%{status} (英语)."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:717
+#: lib/retro_hex_chat/commands/handlers/bot.ex:699
 #, elixir-autogen, elixir-format
 msgid "  %{name} [%{status}] — %{description}"
 msgstr "%{name} [%{status}] — %{description} (英语)."
@@ -51,7 +55,7 @@ msgstr "冷却器: %{cooldown_ms}ms"
 msgid "  Created by: %{created_by}"
 msgstr "创建者: %{created_by}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:745
+#: lib/retro_hex_chat/commands/handlers/bot.ex:727
 #, elixir-autogen, elixir-format
 msgid "  Description: %{desc}"
 msgstr "说明:%{desc}"
@@ -71,12 +75,12 @@ msgstr "前缀: %{command_prefix}"
 msgid "  Status: %{status}"
 msgstr "状况:%{status}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:541
+#: lib/retro_hex_chat/commands/handlers/bot.ex:523
 #, elixir-autogen, elixir-format
 msgid "%{cap_name}.%{field} set to %{display}."
 msgstr "%{cap_name}.%{field}设定为%{display}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:732
+#: lib/retro_hex_chat/commands/handlers/bot.ex:714
 #, elixir-autogen, elixir-format
 msgid "%{field}: %{errors}"
 msgstr "%{field}: %{errors} (英语)."
@@ -1059,7 +1063,7 @@ msgstr "在通知列表中添加一个用户"
 msgid "Add an auto-respond rule"
 msgstr "添加自动对应的规则"
 
-#: lib/retro_hex_chat/commands/registry.ex:73
+#: lib/retro_hex_chat/commands/registry.ex:72
 #, elixir-autogen, elixir-format
 msgid "Advanced"
 msgstr "高级"
@@ -1069,11 +1073,6 @@ msgstr "高级"
 msgid "Announcement sent to all users."
 msgstr "向所有用户发送通知。"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:515
-#, elixir-autogen, elixir-format
-msgid "Arcade capability disabled."
-msgstr "街机能力失效。"
-
 #: lib/retro_hex_chat/commands/handlers/ns.ex:208
 #, elixir-autogen, elixir-format
 msgid "Authenticate with your registered password"
@@ -1081,16 +1080,20 @@ msgstr "使用您的注册密码认证"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:161
 #, elixir-autogen, elixir-format
-msgid "Automatically run a command when someone joins, leaves, or changes their nickname."
+msgid ""
+"Automatically run a command when someone joins, leaves, or changes their "
+"nickname."
 msgstr "当有人加入,离开,或更改他们的昵称时,自动运行一个命令."
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:105
 #, elixir-autogen, elixir-format
-msgid "Automatically run a command when someone joins, leaves, or changes their nickname.\n"
+msgid ""
+"Automatically run a command when someone joins, leaves, or changes their nickname.\n"
 "Subcommands: list, add <trigger> [#channel] <command>, remove <position>. No args opens the dialog.\n"
 "Valid triggers: on_join, on_part, on_nick_change.\n"
 "Use $nick in your command to reference the triggering user. The remove subcommand takes a 0-based index number."
-msgstr "当有人加入,离开,或更改他们的昵称时,自动运行一个命令.\n"
+msgstr ""
+"当有人加入,离开,或更改他们的昵称时,自动运行一个命令.\n"
 "子命令:列表,增加<trigger> [#channel] <command>,删除<position>. 没有参数打开对话框 。\n"
 "有效触发器:在 join,在 part,在 nick change上.\n"
 "在命令中使用$nick来引用触发用户 。 删除子命令需要基于 0 的索引编号 。"
@@ -1110,7 +1113,7 @@ msgstr "禁止"
 msgid "Ban user from channel"
 msgstr "从频道禁止用户"
 
-#: lib/retro_hex_chat/commands/registry.ex:69
+#: lib/retro_hex_chat/commands/registry.ex:68
 #, elixir-autogen, elixir-format
 msgid "Basics"
 msgstr "基本情况"
@@ -1123,7 +1126,8 @@ msgstr "Bio 文本( 或“ 清除” 要删除)"
 #: lib/retro_hex_chat/commands/handlers/list.ex:30
 #: lib/retro_hex_chat/commands/handlers/list.ex:50
 #, elixir-autogen, elixir-format
-msgid "Browse all public channels on the server in a sortable, filterable dialog."
+msgid ""
+"Browse all public channels on the server in a sortable, filterable dialog."
 msgstr "在可排序的可过滤对话框中浏览服务器上的所有公共频道 。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:134
@@ -1134,30 +1138,36 @@ msgstr "ChanServ 管理员( 投放、 信息、 传输、 访问)"
 #: lib/retro_hex_chat/commands/handlers/mode.ex:37
 #: lib/retro_hex_chat/commands/handlers/mode.ex:99
 #, elixir-autogen, elixir-format
-msgid "Change channel settings and user privileges using mode flags.\n"
+msgid ""
+"Change channel settings and user privileges using mode flags.\n"
 "Flags: +o (operator), +v (voice), +b (ban), +h (half-op), +m (moderated), +i (invite-only), +t (topic protected), +k (key/password), +l (user limit), +n (no external messages), +j (join throttle), +K (no knock).\n"
 "Requires: channel operator. Half-operators can only set +v/-v. Must be in a channel."
-msgstr "使用模式旗更改频道设置和用户权限 。\n"
+msgstr ""
+"使用模式旗更改频道设置和用户权限 。\n"
 "旗帜:+o(操作者),+v(声音),+b(ban),+h(半音),+m(调制),+i(只邀请),+t(主题保护),+k(键/password),+l(用户限制),+n(没有外部消息),+j(join prottle),+K(没有敲门).\n"
 "要求:频道操作员. 半操作员只能设置+v/-v. 一定是在频道里"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:82
 #, elixir-autogen, elixir-format
-msgid "Change your display name in the chat. A confirmation dialog appears before the change takes effect."
+msgid ""
+"Change your display name in the chat. A confirmation dialog appears before "
+"the change takes effect."
 msgstr "更改聊天中的显示名称 。 更改生效前会出现确认对话框 。"
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:61
 #, elixir-autogen, elixir-format
-msgid "Change your display name. A confirmation dialog appears before the change takes effect.\n"
+msgid ""
+"Change your display name. A confirmation dialog appears before the change takes effect.\n"
 "Rules: 1-16 characters, no spaces. Must start with a letter or [ ] \\ ^ _ { | }.\n"
 "Allowed characters: letters, numbers, [ ] \\ ^ _ ` { | } and hyphens.\n"
 "Cannot change to your current nickname or one already in use."
-msgstr "更改您的显示名称 。 更改生效前会出现确认对话框 。\n"
+msgstr ""
+"更改您的显示名称 。 更改生效前会出现确认对话框 。\n"
 "规则:1~16个字符,没有空格. 必须从字母或 [ ]\\\\\\\\\\\\\\\\\\\\\\}开始。\n"
 "允许的字符:字母,数字,[ ]\\\\   {{}和连字符.\n"
 "无法更改您的当前昵称 。"
 
-#: lib/retro_hex_chat/commands/registry.ex:70
+#: lib/retro_hex_chat/commands/registry.ex:69
 #, elixir-autogen, elixir-format
 msgid "Channel"
 msgstr "频道"
@@ -1215,7 +1225,9 @@ msgstr "频道欢迎消息"
 #: lib/retro_hex_chat/commands/handlers/clear.ex:30
 #: lib/retro_hex_chat/commands/handlers/clear.ex:50
 #, elixir-autogen, elixir-format
-msgid "Clear all messages from the current chat window, giving you a fresh screen. Cannot be undone."
+msgid ""
+"Clear all messages from the current chat window, giving you a fresh screen. "
+"Cannot be undone."
 msgstr "从当前聊天窗口清除所有消息, 并给您一个新屏幕 。 无法撤销 。"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:172
@@ -1233,7 +1245,7 @@ msgstr "清除全部自动连接列表"
 msgid "Command name to view detailed help"
 msgstr "查看详细帮助的命令名称"
 
-#: lib/retro_hex_chat/commands/registry.ex:72
+#: lib/retro_hex_chat/commands/registry.ex:71
 #, elixir-autogen, elixir-format
 msgid "Configuration"
 msgstr "配置"
@@ -1265,11 +1277,13 @@ msgstr "创建扩展为更长命令的短命令快捷键 。"
 
 #: lib/retro_hex_chat/commands/handlers/alias.ex:68
 #, elixir-autogen, elixir-format
-msgid "Create short command shortcuts that expand into longer commands.\n"
+msgid ""
+"Create short command shortcuts that expand into longer commands.\n"
 "Subcommands: list, add <name> <expansion>, remove <name>. No args opens the dialog.\n"
 "Supports $1-$9 for positional arguments, $nick for your nickname, $chan for current channel.\n"
 "Max 50 aliases. Registered users: persisted. Guests: session-only."
-msgstr "创建扩展为更长命令的短命令快捷键 。\n"
+msgstr ""
+"创建扩展为更长命令的短命令快捷键 。\n"
 "子命令:列表,增加<name> <expansion>,删除<name>. 没有参数打开对话框 。\n"
 "支持$1 - 9 用于位置参数,$nick用于您的昵称,$chan用于当前频道.\n"
 "Max 50别名. 注册用户:持续。 嘉宾:只开会."
@@ -1277,7 +1291,6 @@ msgstr "创建扩展为更长命令的短命令快捷键 。\n"
 #: lib/retro_hex_chat/commands/handlers/bot.ex:108
 #, elixir-autogen, elixir-format
 msgid "Create, manage, and configure bots for your channels.\n"
-""
 msgstr "为您的频道创建、管理和配置 bots 。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:138
@@ -1307,14 +1320,18 @@ msgstr "使用其密码断开一个 stale 会话"
 
 #: lib/retro_hex_chat/commands/handlers/quit.ex:35
 #, elixir-autogen, elixir-format
-msgid "Disconnect from the server and return to the connect screen.\n"
+msgid ""
+"Disconnect from the server and return to the connect screen.\n"
 "Other users see your optional quit message. All channels are left and your session ends."
-msgstr "从服务器上断开连接并返回连接屏幕.\n"
+msgstr ""
+"从服务器上断开连接并返回连接屏幕.\n"
 "其他用户查看您的可选退出消息 。 所有频道都是左侧的,你的会话结束。"
 
 #: lib/retro_hex_chat/commands/handlers/quit.ex:56
 #, elixir-autogen, elixir-format
-msgid "Disconnect from the server and return to the connect screen. Other users see your optional quit message."
+msgid ""
+"Disconnect from the server and return to the connect screen. Other users see"
+" your optional quit message."
 msgstr "从服务器上断开连接并返回连接屏幕. 其他用户查看您的可选退出消息 。"
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:228
@@ -1350,10 +1367,12 @@ msgstr "已启用"
 #: lib/retro_hex_chat/commands/handlers/join.ex:57
 #: lib/retro_hex_chat/commands/handlers/join.ex:81
 #, elixir-autogen, elixir-format
-msgid "Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\n"
+msgid ""
+"Enter a chat channel to read and send messages. Creates the channel if it doesn't exist yet.\n"
 "Channel name must start with #, max 50 characters, no spaces.\n"
 "Max 10 channels at once. Password required if channel has +k mode set."
-msgstr "输入要读取和发送消息的聊天频道 。 如果频道不存在,则创建频道。\n"
+msgstr ""
+"输入要读取和发送消息的聊天频道 。 如果频道不存在,则创建频道。\n"
 "频道名称必须从 # 开始, 最多50个字符, 没有空格 。\n"
 "最大10频道一时. 如果频道有+k模式设置,则需要密码."
 
@@ -1379,9 +1398,11 @@ msgstr "向用户提供频道操作员状态."
 
 #: lib/retro_hex_chat/commands/handlers/op.ex:29
 #, elixir-autogen, elixir-format
-msgid "Give channel operator status to a user. Shortcut for /mode +o <nickname>.\n"
+msgid ""
+"Give channel operator status to a user. Shortcut for /mode +o <nickname>.\n"
 "Requires: channel operator or owner."
-msgstr "向用户提供频道操作员状态. /mode+o <nickname>的快捷键.\n"
+msgstr ""
+"向用户提供频道操作员状态. /mode+o <nickname>的快捷键.\n"
 "要求:频道操作员或所有者."
 
 #: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:49
@@ -1391,9 +1412,11 @@ msgstr "给予用户语音状态."
 
 #: lib/retro_hex_chat/commands/handlers/voice_cmd.ex:29
 #, elixir-autogen, elixir-format
-msgid "Give voice status to a user. Shortcut for /mode +v <nickname>.\n"
+msgid ""
+"Give voice status to a user. Shortcut for /mode +v <nickname>.\n"
 "Requires: half-operator, operator, or owner."
-msgstr "给予用户语音状态. /mode+v <nickname>的快捷键.\n"
+msgstr ""
+"给予用户语音状态. /mode+v <nickname>的快捷键.\n"
 "要求:半操作员、操作员或所有者。"
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:86
@@ -1424,11 +1447,13 @@ msgstr "问候设定为\"%{greeting}\"."
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:40
 #: lib/retro_hex_chat/commands/handlers/ignore.ex:121
 #, elixir-autogen, elixir-format
-msgid "Hide messages from a specific user.\n"
+msgid ""
+"Hide messages from a specific user.\n"
 "Types: all (default), messages, pms, actions, notices, invites.\n"
 "Duration: Nm (minutes), Nh (hours), Nd (days). No duration = permanent until /unignore.\n"
 "No args: show your ignore list. You cannot ignore yourself."
-msgstr "隐藏特定用户的消息 。\n"
+msgstr ""
+"隐藏特定用户的消息 。\n"
 "类型:所有(默认),消息,pms,动作,通知,邀请.\n"
 "期限:Nm(分钟)、Nh(小时)、Nd(天数)。 持续时间=永久至/unignore.\n"
 "无参数: 显示您的忽略列表 。 你不能无视自己。"
@@ -1465,18 +1490,15 @@ msgstr "无效的前缀 。"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:71
 #, elixir-autogen, elixir-format
-msgid "Invalid trigger '%{trigger_str}'. Valid triggers: on_join, on_part, on_nick_change"
+msgid ""
+"Invalid trigger '%{trigger_str}'. Valid triggers: on_join, on_part, "
+"on_nick_change"
 msgstr "无效触发 '%{trigger_str}' 。 有效触发器: 在 join、 part、 nick change上"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:147
 #, elixir-autogen, elixir-format
 msgid "Invite only"
 msgstr "只邀请"
-
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:18
-#, elixir-autogen, elixir-format
-msgid "Join #games and type !play to start an arcade session."
-msgstr "加入 #games 并输入! 播放开始一个街机会话 。"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:165
 #, elixir-autogen, elixir-format
@@ -1485,15 +1507,19 @@ msgstr "密钥"
 
 #: lib/retro_hex_chat/commands/handlers/part.ex:76
 #, elixir-autogen, elixir-format
-msgid "Leave the current channel or a specified channel, with an optional parting message shown to others."
+msgid ""
+"Leave the current channel or a specified channel, with an optional parting "
+"message shown to others."
 msgstr "离开当前频道或指定频道,向他人显示可选的分页消息."
 
 #: lib/retro_hex_chat/commands/handlers/part.ex:51
 #, elixir-autogen, elixir-format
-msgid "Leave the current channel or a specified channel, with an optional parting message.\n"
+msgid ""
+"Leave the current channel or a specified channel, with an optional parting message.\n"
 "Defaults to current channel. If the first word doesn't start with #, it's treated as the part message.\n"
 "You must be in the channel to leave it."
-msgstr "保留当前频道或指定频道,并带有可选的分页消息.\n"
+msgstr ""
+"保留当前频道或指定频道,并带有可选的分页消息.\n"
 "当前频道的默认值 。 如果第一个词不以#开头,则作为部分信息处理.\n"
 "你必须在频道里离开它。"
 
@@ -1504,10 +1530,12 @@ msgstr "查询一个在线用户的详细信息 。"
 
 #: lib/retro_hex_chat/commands/handlers/whois.ex:33
 #, elixir-autogen, elixir-format
-msgid "Look up detailed information about an online user.\n"
+msgid ""
+"Look up detailed information about an online user.\n"
 "Shows: nickname, channels (shared channels highlighted), idle time, away status, bio, and registration status.\n"
 "User must be online. For offline users, use /whowas."
-msgstr "查询一个在线用户的详细信息 。\n"
+msgstr ""
+"查询一个在线用户的详细信息 。\n"
 "显示:昵称,频道(共享频道突出显示),闲暇时间,离开状态,生物状态,以及注册状态.\n"
 "用户必须在线. 对于离线用户,使用/whowas."
 
@@ -1518,10 +1546,12 @@ msgstr "查找最近断开连接的用户信息 。"
 
 #: lib/retro_hex_chat/commands/handlers/whowas.ex:33
 #, elixir-autogen, elixir-format
-msgid "Look up information about a user who recently disconnected.\n"
+msgid ""
+"Look up information about a user who recently disconnected.\n"
 "Shows last seen time, channels, and quit message. Data cached for up to 1 hour.\n"
 "For online users, use /whois instead."
-msgstr "查找最近断开连接的用户信息 。\n"
+msgstr ""
+"查找最近断开连接的用户信息 。\n"
 "显示上次看到的时间、 频道和退出消息 。 数据缓存最多1小时.\n"
 "对于在线用户,使用/whois代替."
 
@@ -1552,11 +1582,13 @@ msgstr "通过ChanServ管理频道注册和访问列表."
 
 #: lib/retro_hex_chat/commands/handlers/cs.ex:80
 #, elixir-autogen, elixir-format
-msgid "Manage channel registration and access lists through ChanServ.\n"
+msgid ""
+"Manage channel registration and access lists through ChanServ.\n"
 "Subcommands: register, drop, info, sop/aop/vop add|del|list, help. Must be in a channel.\n"
 "Access hierarchy: SOP (super-operator) > AOP (auto-operator) > VOP (auto-voice).\n"
 "Register requires channel operator. Drop requires being the channel founder."
-msgstr "通过ChanServ管理频道注册和访问列表.\n"
+msgstr ""
+"通过ChanServ管理频道注册和访问列表.\n"
 "子命令: 注册、 投放、 信息、 sop/aop/vop 添加- del|list, 帮助 。 一定是在频道里\n"
 "访问等级:SOP(超级操作员) > AOP(自动操作员) > VOP(自动语音).\n"
 "注册需要频道操作员. Drop需要成为频道创建者."
@@ -1568,14 +1600,18 @@ msgstr "管理超级操作访问列表"
 
 #: lib/retro_hex_chat/commands/handlers/away.ex:56
 #, elixir-autogen, elixir-format
-msgid "Mark yourself as temporarily unavailable, with an optional message shown in /whois."
+msgid ""
+"Mark yourself as temporarily unavailable, with an optional message shown in "
+"/whois."
 msgstr "在 /whois 中显示可选消息, 将自己标为暂时无法访问 。"
 
 #: lib/retro_hex_chat/commands/handlers/away.ex:35
 #, elixir-autogen, elixir-format
-msgid "Mark yourself as temporarily unavailable, with an optional message shown in /whois.\n"
+msgid ""
+"Mark yourself as temporarily unavailable, with an optional message shown in /whois.\n"
 "With a message: sets you as away. Without arguments: clears your away status and marks you as back."
-msgstr "在 /whois 中显示可选消息, 将自己标为暂时无法访问 。\n"
+msgstr ""
+"在 /whois 中显示可选消息, 将自己标为暂时无法访问 。\n"
 "带个口信 让你离开 没有争论: 清除你离家的状态 并标记你回来。"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:418
@@ -1625,10 +1661,12 @@ msgstr "在当前频道中关闭一个用户 。"
 
 #: lib/retro_hex_chat/commands/handlers/mute_cmd.ex:32
 #, elixir-autogen, elixir-format
-msgid "Mute a user in the current channel. They cannot send messages.\n"
+msgid ""
+"Mute a user in the current channel. They cannot send messages.\n"
 "Duration: 30s, 5m, 1h, 1d. Omit for permanent.\n"
 "Requires: channel operator or owner."
-msgstr "在当前频道中关闭一个用户 。 他们不能发送消息。\n"
+msgstr ""
+"在当前频道中关闭一个用户 。 他们不能发送消息。\n"
 "持续时间:30s,5m,1h,1d. 承认永久。\n"
 "要求:频道操作员或所有者."
 
@@ -1677,7 +1715,7 @@ msgstr "昵称太长( 最多 16 个字符)"
 msgid "No MOTD has been set."
 msgstr "没有设定 MOTD 。"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:715
+#: lib/retro_hex_chat/commands/handlers/bot.ex:697
 #, elixir-autogen, elixir-format
 msgid "No description"
 msgstr "无说明"
@@ -1703,12 +1741,12 @@ msgstr "通知内容"
 msgid "Notices are always routed to the active window."
 msgstr "通知总是被引导到活动窗口。"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:714
+#: lib/retro_hex_chat/commands/handlers/bot.ex:696
 #, elixir-autogen, elixir-format
 msgid "OFF"
 msgstr "关闭"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:714
+#: lib/retro_hex_chat/commands/handlers/bot.ex:696
 #, elixir-autogen, elixir-format
 msgid "ON"
 msgstr "关闭"
@@ -1730,20 +1768,26 @@ msgstr "用此用户打开 PM 标签"
 
 #: lib/retro_hex_chat/commands/handlers/query.ex:54
 #, elixir-autogen, elixir-format
-msgid "Open a private message tab with a user without sending any message, unlike /msg."
+msgid ""
+"Open a private message tab with a user without sending any message, unlike "
+"/msg."
 msgstr "与/msg不同的是,在不发送任何消息的情况下,与用户一起打开私人信件标签."
 
 #: lib/retro_hex_chat/commands/handlers/query.ex:33
 #, elixir-autogen, elixir-format
-msgid "Open a private message tab with a user without sending any message, unlike /msg.\n"
+msgid ""
+"Open a private message tab with a user without sending any message, unlike /msg.\n"
 "Nickname is required. If the PM tab already exists, switches to it."
-msgstr "与/msg不同的是,在不发送任何消息的情况下,与用户一起打开私人信件标签.\n"
+msgstr ""
+"与/msg不同的是,在不发送任何消息的情况下,与用户一起打开私人信件标签.\n"
 "需要昵称 。 如果 PM 标签已经存在, 请切换到它 。"
 
 #: lib/retro_hex_chat/commands/handlers/popups.ex:34
 #: lib/retro_hex_chat/commands/handlers/popups.ex:56
 #, elixir-autogen, elixir-format
-msgid "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list and channels."
+msgid ""
+"Open the Custom Menus dialog to add, edit, or remove custom right-click menu"
+" items for the nick list and channels."
 msgstr "打开自定义菜单对话框添加、编辑或删除自定义右键单击昵称列表和频道的菜单项。"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:129
@@ -1758,14 +1802,18 @@ msgstr "内容"
 
 #: lib/retro_hex_chat/commands/handlers/ban.ex:76
 #, elixir-autogen, elixir-format
-msgid "Permanently block a user from the channel. The ban persists until removed with /mode -b."
+msgid ""
+"Permanently block a user from the channel. The ban persists until removed "
+"with /mode -b."
 msgstr "永久封锁频道的用户 。 禁令一直持续到用/mode -b取消。"
 
 #: lib/retro_hex_chat/commands/handlers/ban.ex:39
 #, elixir-autogen, elixir-format
-msgid "Permanently block a user from the channel. The ban persists until removed with /mode -b.\n"
+msgid ""
+"Permanently block a user from the channel. The ban persists until removed with /mode -b.\n"
 "Requires: channel operator. Must be in a channel."
-msgstr "永久封锁频道的用户 。 禁令一直持续到用/mode -b取消。\n"
+msgstr ""
+"永久封锁频道的用户 。 禁令一直持续到用/mode -b取消。\n"
 "要求:频道操作员. 一定是在频道里"
 
 #: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:22
@@ -1829,16 +1877,20 @@ msgstr "收件人(昵称或频道)"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:173
 #, elixir-autogen, elixir-format
-msgid "Register and protect your nickname with a password through NickServ, the nickname services bot."
+msgid ""
+"Register and protect your nickname with a password through NickServ, the "
+"nickname services bot."
 msgstr "通过昵称服务机器人NickServe的密码注册并保护您的昵称."
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:85
 #, elixir-autogen, elixir-format
-msgid "Register and protect your nickname with a password through NickServ.\n"
+msgid ""
+"Register and protect your nickname with a password through NickServ.\n"
 "Subcommands: register <password>, identify <password>, ghost <nick> <password>, info [nick], drop <password>, help.\n"
 "Register: claims current nickname. Identify: authenticates each session.\n"
 "Ghost: disconnects a stale session using the registered nickname's password."
-msgstr "通过 NickServer 用密码注册并保护您的昵称 。\n"
+msgstr ""
+"通过 NickServer 用密码注册并保护您的昵称 。\n"
 "子命令:注册<password>,识别<password>,幽灵<nick> <password>,信息[nick],投放<password>,帮助.\n"
 "注册:声称目前昵称。 识别:认证每个会话。\n"
 "Ghost:使用注册昵称的密码断开僵硬会话."
@@ -1853,12 +1905,6 @@ msgstr "注册当前频道"
 msgid "Register your nickname with a password"
 msgstr "用密码注册您的昵称"
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:42
-#, elixir-autogen, elixir-format
-msgid "Regular users should type !play in #games instead.\n"
-""
-msgstr "普通用户应该输入!在 #games 中播放。"
-
 #: lib/retro_hex_chat/commands/handlers/unban.ex:71
 #, elixir-autogen, elixir-format
 msgid "Remove a ban from a user, allowing them to rejoin the channel."
@@ -1866,9 +1912,11 @@ msgstr "从用户中删除一个禁止,让他们重新加入频道."
 
 #: lib/retro_hex_chat/commands/handlers/unban.ex:37
 #, elixir-autogen, elixir-format
-msgid "Remove a ban from a user, allowing them to rejoin the channel.\n"
+msgid ""
+"Remove a ban from a user, allowing them to rejoin the channel.\n"
 "Requires: channel operator. Must be in a channel."
-msgstr "从用户中删除一个禁止,让他们重新加入频道.\n"
+msgstr ""
+"从用户中删除一个禁止,让他们重新加入频道.\n"
 "要求:频道操作员. 一定是在频道里"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:146
@@ -1883,9 +1931,11 @@ msgstr "从用户中删除频道级别哑弹 。"
 
 #: lib/retro_hex_chat/commands/handlers/unmute.ex:29
 #, elixir-autogen, elixir-format
-msgid "Remove a channel-level mute from a user.\n"
+msgid ""
+"Remove a channel-level mute from a user.\n"
 "Requires: channel operator or owner."
-msgstr "从用户中删除频道级别哑弹 。\n"
+msgstr ""
+"从用户中删除频道级别哑弹 。\n"
 "要求:频道操作员或所有者."
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:170
@@ -1896,9 +1946,11 @@ msgstr "删除一个执行命令"
 #: lib/retro_hex_chat/commands/handlers/kick.ex:39
 #: lib/retro_hex_chat/commands/handlers/kick.ex:79
 #, elixir-autogen, elixir-format
-msgid "Remove a user from the channel with an optional reason. They can rejoin unless also banned.\n"
+msgid ""
+"Remove a user from the channel with an optional reason. They can rejoin unless also banned.\n"
 "Requires: channel operator or half-operator. Must be in a channel."
-msgstr "用可选的理由从频道中删除一个用户 。 除非也被禁止,否则他们可以重新加入。\n"
+msgstr ""
+"用可选的理由从频道中删除一个用户 。 除非也被禁止,否则他们可以重新加入。\n"
 "要求:频道操作员或半操作员. 一定是在频道里"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:136
@@ -1923,27 +1975,35 @@ msgstr "从用户中删除频道操作员状态 。"
 
 #: lib/retro_hex_chat/commands/handlers/deop.ex:29
 #, elixir-autogen, elixir-format
-msgid "Remove channel operator status from a user. Shortcut for /mode -o <nickname>.\n"
+msgid ""
+"Remove channel operator status from a user. Shortcut for /mode -o <nickname>.\n"
 "Requires: channel operator or owner."
-msgstr "从用户中删除频道操作员状态 。 /mode -o <nickname>的快捷键.\n"
+msgstr ""
+"从用户中删除频道操作员状态 。 /mode -o <nickname>的快捷键.\n"
 "要求:频道操作员或所有者."
 
 #: lib/retro_hex_chat/commands/handlers/clear_motd.ex:36
 #: lib/retro_hex_chat/commands/handlers/clear_motd.ex:56
 #, elixir-autogen, elixir-format
-msgid "Remove the server's Message of the Day so new users won't see any MOTD. Admin only."
+msgid ""
+"Remove the server's Message of the Day so new users won't see any MOTD. "
+"Admin only."
 msgstr "删除服务器的每日消息, 这样新用户就不会看到任何 MOTD 。 仅管管理."
 
 #: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:58
 #, elixir-autogen, elixir-format
-msgid "Remove the welcome message from the current channel so new joiners won't see one."
+msgid ""
+"Remove the welcome message from the current channel so new joiners won't see"
+" one."
 msgstr "从当前频道删除欢迎消息, 这样新加入者不会看到 。"
 
 #: lib/retro_hex_chat/commands/handlers/clear_welcome.ex:38
 #, elixir-autogen, elixir-format
-msgid "Remove the welcome message from the current channel so new joiners won't see one.\n"
+msgid ""
+"Remove the welcome message from the current channel so new joiners won't see one.\n"
 "Requires: channel operator. Must be in a channel."
-msgstr "从当前频道删除欢迎消息, 这样新加入者不会看到 。\n"
+msgstr ""
+"从当前频道删除欢迎消息, 这样新加入者不会看到 。\n"
 "要求:频道操作员. 一定是在频道里"
 
 #: lib/retro_hex_chat/commands/handlers/unignore.ex:65
@@ -1958,9 +2018,11 @@ msgstr "从用户中删除语音状态 。"
 
 #: lib/retro_hex_chat/commands/handlers/devoice.ex:29
 #, elixir-autogen, elixir-format
-msgid "Remove voice status from a user. Shortcut for /mode -v <nickname>.\n"
+msgid ""
+"Remove voice status from a user. Shortcut for /mode -v <nickname>.\n"
 "Requires: half-operator, operator, or owner."
-msgstr "从用户中删除语音状态 。 /mode -v <nickname>的快捷键.\n"
+msgstr ""
+"从用户中删除语音状态 。 /mode -v <nickname>的快捷键.\n"
 "要求:半操作员、操作员或所有者。"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:171
@@ -1971,24 +2033,23 @@ msgstr "重排一个执行命令"
 #: lib/retro_hex_chat/commands/handlers/knock.ex:39
 #: lib/retro_hex_chat/commands/handlers/knock.ex:63
 #, elixir-autogen, elixir-format
-msgid "Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\n"
+msgid ""
+"Request to be let into an invite-only (+i) channel. Operators see your knock and can invite you.\n"
 "Channel name must start with #."
-msgstr "请求被允许进入只邀请的(+i)频道. 接线员看到你的敲门,可以邀请你。\n"
+msgstr ""
+"请求被允许进入只邀请的(+i)频道. 接线员看到你的敲门,可以邀请你。\n"
 "频道名称必须始于 #."
-
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:43
-#, elixir-autogen, elixir-format
-msgid "Requires: server administrator, registered and identified."
-msgstr "要求:服务器管理员,注册和识别."
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:53
 #, elixir-autogen, elixir-format
-msgid "Schedule a command to run after a delay or on a repeating interval.\n"
+msgid ""
+"Schedule a command to run after a delay or on a repeating interval.\n"
 "Create: /timer <name> <seconds> <command>. Repeat: /timer <name> repeat <seconds> <command>.\n"
 "Timers run in the window that was active when they were created and do not switch your current window when they fire.\n"
 "Manage: /timer list, /timer stop <name>.\n"
 "Max 5 timers. One-shot: 1-86400s. Repeat minimum: 10s. Session-only (lost on disconnect)."
-msgstr "将命令安排在延迟或重复间隔后运行 。\n"
+msgstr ""
+"将命令安排在延迟或重复间隔后运行 。\n"
 "创建:/timer <name> <seconds> <command>. 重复:/timer <name>重复<seconds> <command>.\n"
 "计时器在创建时活动的窗口中运行, 并且不会在开火时切换当前窗口 。\n"
 "管理:/timer列表,/timer stop <name>.\n"
@@ -1996,69 +2057,89 @@ msgstr "将命令安排在延迟或重复间隔后运行 。\n"
 
 #: lib/retro_hex_chat/commands/handlers/timer.ex:79
 #, elixir-autogen, elixir-format
-msgid "Schedule a command to run after a delay or on a repeating interval. The command runs in the window that was active when the timer was created."
+msgid ""
+"Schedule a command to run after a delay or on a repeating interval. The "
+"command runs in the window that was active when the timer was created."
 msgstr "将命令安排在延迟或重复间隔后运行 。 命令运行在创建计时器时活动的窗口中."
 
 #: lib/retro_hex_chat/commands/handlers/invite.ex:44
 #: lib/retro_hex_chat/commands/handlers/invite.ex:75
 #, elixir-autogen, elixir-format
-msgid "Send a channel invitation to another user. Required for invite-only (+i) channels.\n"
+msgid ""
+"Send a channel invitation to another user. Required for invite-only (+i) channels.\n"
 "Defaults to current channel if no #channel specified. Must be in a channel when no channel arg given.\n"
 "/invite auto — toggles whether you automatically join channels when invited."
-msgstr "向另一个用户发送频道邀请 。 仅限邀请(+i)频道使用。\n"
+msgstr ""
+"向另一个用户发送频道邀请 。 仅限邀请(+i)频道使用。\n"
 "如果没有指定 #channel, 默认为当前频道 。 没有给出频道参数时, 必须是在频道中 。\n"
 "/invite自动——在邀请时切换是否自动加入频道."
 
 #: lib/retro_hex_chat/commands/handlers/notice.ex:65
 #, elixir-autogen, elixir-format
-msgid "Send a lightweight notice to a user or channel that doesn't open a PM window on their side."
+msgid ""
+"Send a lightweight notice to a user or channel that doesn't open a PM window"
+" on their side."
 msgstr "向用户或频道发送轻量级通知,不会打开他们一侧的PM窗口."
 
 #: lib/retro_hex_chat/commands/handlers/wallops.ex:75
 #, elixir-autogen, elixir-format
-msgid "Send a message to all users who opted in to operator announcements via /umode +w."
+msgid ""
+"Send a message to all users who opted in to operator announcements via "
+"/umode +w."
 msgstr "通过 /umode +w 向所有选择加入操作员通知的用户发送消息."
 
 #: lib/retro_hex_chat/commands/handlers/wallops.ex:54
 #, elixir-autogen, elixir-format
-msgid "Send a message to all users who opted in to operator announcements via /umode +w.\n"
+msgid ""
+"Send a message to all users who opted in to operator announcements via /umode +w.\n"
 "Requires: server operator or server administrator. Message text is required."
-msgstr "通过 /umode +w 向所有选择加入操作员通知的用户发送消息.\n"
+msgstr ""
+"通过 /umode +w 向所有选择加入操作员通知的用户发送消息.\n"
 "要求:服务器操作员或服务器管理员. 需要信件文本 。"
 
 #: lib/retro_hex_chat/commands/handlers/notice.ex:41
 #, elixir-autogen, elixir-format
-msgid "Send a notice to a user or channel without opening a PM window on their side.\n"
+msgid ""
+"Send a notice to a user or channel without opening a PM window on their side.\n"
 "Both target and message are required. Target can be a nickname or a #channel."
-msgstr "向用户或频道发送通知,而不在他们的侧面打开PM窗口.\n"
+msgstr ""
+"向用户或频道发送通知,而不在他们的侧面打开PM窗口.\n"
 "既需要目标,也需要信息。 目标可以是昵称或#channel."
 
 #: lib/retro_hex_chat/commands/handlers/msg.ex:38
 #: lib/retro_hex_chat/commands/handlers/msg.ex:62
 #, elixir-autogen, elixir-format
-msgid "Send a private message to another user, opening a PM conversation tab.\n"
+msgid ""
+"Send a private message to another user, opening a PM conversation tab.\n"
 "Both nickname and message text are required."
-msgstr "向另一个用户发送私人信息,打开PM对话标签.\n"
+msgstr ""
+"向另一个用户发送私人信息,打开PM对话标签.\n"
 "需要昵称和消息文本."
 
 #: lib/retro_hex_chat/commands/handlers/me.ex:38
 #: lib/retro_hex_chat/commands/handlers/me.ex:59
 #, elixir-autogen, elixir-format
-msgid "Send an action message that appears as '* YourNick does something' to everyone in the channel.\n"
+msgid ""
+"Send an action message that appears as '* YourNick does something' to everyone in the channel.\n"
 "Must be in a channel. Action text is required."
-msgstr "发送一个显示为“ * YourNick 做点什么”的动作信息给频道中的每个人 。\n"
+msgstr ""
+"发送一个显示为“ * YourNick 做点什么”的动作信息给频道中的每个人 。\n"
 "一定是在频道里 需要行动案文。"
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:75
 #, elixir-autogen, elixir-format
-msgid "Send an urgent broadcast message to every connected user. Bypasses all ignore filters."
+msgid ""
+"Send an urgent broadcast message to every connected user. Bypasses all "
+"ignore filters."
 msgstr "向每个连接的用户发送紧急广播信息. 绕道都忽略了过滤器."
 
 #: lib/retro_hex_chat/commands/handlers/announce.ex:54
 #, elixir-autogen, elixir-format
-msgid "Send an urgent broadcast message to every connected user. Bypasses all ignore filters.\n"
+msgid ""
+"Send an urgent broadcast message to every connected user. Bypasses all ignore filters.\n"
 "Requires: server administrator."
-msgstr "向每个连接的用户发送紧急广播信息. 绕道都忽略了过滤器.\n"
+msgstr ""
+"向每个连接的用户发送紧急广播信息. 绕道都忽略了过滤器.\n"
 "要求:服务器管理员."
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:91
@@ -2069,7 +2150,6 @@ msgstr "服务器管理命令. 需要管理员特权。"
 #: lib/retro_hex_chat/commands/handlers/admin.ex:56
 #, elixir-autogen, elixir-format
 msgid "Server administration commands. Requires admin privilege.\n"
-""
 msgstr "服务器管理命令. 需要管理员特权。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:119
@@ -2079,28 +2159,34 @@ msgstr "服务器信息和设置"
 
 #: lib/retro_hex_chat/commands/handlers/set_welcome.ex:72
 #, elixir-autogen, elixir-format
-msgid "Set a message shown once to each user when they join the current channel."
+msgid ""
+"Set a message shown once to each user when they join the current channel."
 msgstr "设定每个用户加入当前频道时显示一次的消息 。"
 
 #: lib/retro_hex_chat/commands/handlers/set_welcome.ex:47
 #, elixir-autogen, elixir-format
-msgid "Set a message shown once to each user when they join the current channel.\n"
+msgid ""
+"Set a message shown once to each user when they join the current channel.\n"
 "Requires: channel operator. Must be in a channel.\n"
 "With no args: clears the welcome message (same as /clearwelcome)."
-msgstr "设定每个用户加入当前频道时显示一次的消息 。\n"
+msgstr ""
+"设定每个用户加入当前频道时显示一次的消息 。\n"
 "要求:频道操作员. 一定是在频道里\n"
 "没有参数:清除欢迎信(与/clearwelcome相同)."
 
 #: lib/retro_hex_chat/commands/handlers/bio.ex:73
 #, elixir-autogen, elixir-format
-msgid "Set a short 'about me' text visible when others look you up with /whois."
+msgid ""
+"Set a short 'about me' text visible when others look you up with /whois."
 msgstr "当其他人用 /whois 检查你时, 设置一个“ 关于我” 的短文本可见 。"
 
 #: lib/retro_hex_chat/commands/handlers/bio.ex:48
 #, elixir-autogen, elixir-format
-msgid "Set a short 'about me' text visible when others look you up with /whois.\n"
+msgid ""
+"Set a short 'about me' text visible when others look you up with /whois.\n"
 "Max 200 characters (text beyond this limit is silently truncated). Use /bio to view, /bio clear to remove."
-msgstr "当其他人用 /whois 检查你时, 设置一个“ 关于我” 的短文本可见 。\n"
+msgstr ""
+"当其他人用 /whois 检查你时, 设置一个“ 关于我” 的短文本可见 。\n"
 "最大200个字符(超过此限制的文本是静默的切换). 使用 /bio 查看, /bio 清除."
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:166
@@ -2115,18 +2201,22 @@ msgstr "设定每次连接时自动加入的频道 。"
 
 #: lib/retro_hex_chat/commands/handlers/autojoin.ex:80
 #, elixir-autogen, elixir-format
-msgid "Set channels to join automatically every time you connect.\n"
+msgid ""
+"Set channels to join automatically every time you connect.\n"
 "Subcommands: list, add <#channel> [key], remove <#channel>, clear. No args opens the Perform dialog.\n"
 "Channel names must start with #. Registered users only."
-msgstr "设定每次连接时自动加入的频道 。\n"
+msgstr ""
+"设定每次连接时自动加入的频道 。\n"
 "子命令:列表,加入<#channel>[键],删除<#channel>,清除. 没有参数打开“ 执行” 对话框 。\n"
 "频道名称必须始于 #. 只注册用户."
 
 #: lib/retro_hex_chat/commands/handlers/slow.ex:47
 #, elixir-autogen, elixir-format
-msgid "Set join throttle on the channel (5 joins per N seconds). Use /slow 0 to disable.\n"
+msgid ""
+"Set join throttle on the channel (5 joins per N seconds). Use /slow 0 to disable.\n"
 "Requires: channel operator or owner."
-msgstr "在频道上设定加盟节流阀( 每N秒5个加盟). 使用 /slow 0 来禁用.\n"
+msgstr ""
+"在频道上设定加盟节流阀( 每N秒5个加盟). 使用 /slow 0 来禁用.\n"
 "要求:频道操作员或所有者."
 
 #: lib/retro_hex_chat/commands/handlers/slow.ex:67
@@ -2136,28 +2226,35 @@ msgstr "准备加入油门 0为禁用."
 
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:65
 #, elixir-autogen, elixir-format
-msgid "Set the server's Message of the Day shown to all users when they connect."
+msgid ""
+"Set the server's Message of the Day shown to all users when they connect."
 msgstr "设置服务器连接时向所有用户显示的当日信件 。"
 
 #: lib/retro_hex_chat/commands/handlers/set_motd.ex:44
 #, elixir-autogen, elixir-format
-msgid "Set the server's Message of the Day shown to all users when they connect.\n"
+msgid ""
+"Set the server's Message of the Day shown to all users when they connect.\n"
 "Requires: server administrator. Message text is required."
-msgstr "设置服务器连接时向所有用户显示的当日信件 。\n"
+msgstr ""
+"设置服务器连接时向所有用户显示的当日信件 。\n"
 "要求:服务器管理员. 需要信件文本 。"
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:137
 #, elixir-autogen, elixir-format
-msgid "Set up commands that automatically run every time you connect, like identifying with NickServ."
+msgid ""
+"Set up commands that automatically run every time you connect, like "
+"identifying with NickServ."
 msgstr "设定每次连接时自动运行的命令,比如识别NickServ."
 
 #: lib/retro_hex_chat/commands/handlers/perform.ex:92
 #, elixir-autogen, elixir-format
-msgid "Set up commands that automatically run every time you connect.\n"
+msgid ""
+"Set up commands that automatically run every time you connect.\n"
 "Subcommands: list, add <command>, remove <index>, move <from> <to>, clear. No args opens the dialog.\n"
 "Common use: /perform add /ns identify mypassword\n"
 "Positions are 0-based index numbers. Passwords are masked in the list display."
-msgstr "设置每次连接时自动运行的命令 。\n"
+msgstr ""
+"设置每次连接时自动运行的命令 。\n"
 "子命令:列表,增加<command>,删除<index>,移动<from> <to>,清除. 没有参数打开对话框 。\n"
 "常用: /perform 添加 /ns 识别我的密码字\n"
 "位置为基于0的索引编号. 密码在列表显示中蒙上面具."
@@ -2202,17 +2299,6 @@ msgstr "显示您的自动连接列表"
 msgid "Show your notify list"
 msgstr "显示您的通知列表"
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:41
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session (admin-only debug command).\n"
-""
-msgstr "启动独行街机会话(仅限admin调试命令)."
-
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:60
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session (admin-only). Regular users: type !play in #games."
-msgstr "开始独行街机会话(仅限admin). 普通用户:类型!在#games中播放."
-
 #: lib/retro_hex_chat/commands/handlers/timer.ex:108
 #, elixir-autogen, elixir-format
 msgid "Stop a running timer"
@@ -2220,14 +2306,18 @@ msgstr "停止运行的计时器"
 
 #: lib/retro_hex_chat/commands/handlers/unignore.ex:54
 #, elixir-autogen, elixir-format
-msgid "Stop ignoring a user you previously blocked, making their messages visible again."
+msgid ""
+"Stop ignoring a user you previously blocked, making their messages visible "
+"again."
 msgstr "停止忽略您先前屏蔽的用户, 使其消息再次可见 。"
 
 #: lib/retro_hex_chat/commands/handlers/unignore.ex:31
 #, elixir-autogen, elixir-format
-msgid "Stop ignoring a user you previously blocked, making their messages visible again.\n"
+msgid ""
+"Stop ignoring a user you previously blocked, making their messages visible again.\n"
 "Nickname is required. Use /ignore with no args to see your ignore list first."
-msgstr "停止忽略您先前屏蔽的用户, 使其消息再次可见 。\n"
+msgstr ""
+"停止忽略您先前屏蔽的用户, 使其消息再次可见 。\n"
 "需要昵称 。 使用无参数的 /ignore 首先查看您的忽略列表 。"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:107
@@ -2275,13 +2365,13 @@ msgstr "子命令: 注册、 识别、 幽灵、 信息、 放下"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:109
 #, elixir-autogen, elixir-format
-msgid "Subcommands: create, destroy, list, info, join, part, enable, disable, "
+msgid ""
+"Subcommands: create, destroy, list, info, join, part, enable, disable, "
 msgstr "子命令:创建、销毁、列表、信息、加入、部分、启用、禁用、"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:57
 #, elixir-autogen, elixir-format
 msgid "Subcommands: server, user, channel, ns, cs, debug, log, turn, nuke.\n"
-""
 msgstr "子命令:服务器,用户,频道,ns,cs,调试,日志,转弯,核弹."
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:141
@@ -2304,11 +2394,6 @@ msgstr "目标昵称(用于+o,+v,+b)"
 msgid "Target user"
 msgstr "目标用户"
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:17
-#, elixir-autogen, elixir-format
-msgid "This command is reserved for administrators. "
-msgstr "此命令保留给管理员 。"
-
 #: lib/retro_hex_chat/commands/handlers/slow.ex:75
 #, elixir-autogen, elixir-format
 msgid "Throttle interval in seconds (0 to disable)"
@@ -2326,10 +2411,12 @@ msgstr "切换影响您收到消息的个人用户模式 。"
 
 #: lib/retro_hex_chat/commands/handlers/umode.ex:42
 #, elixir-autogen, elixir-format
-msgid "Toggle personal user modes that affect what messages you receive.\n"
+msgid ""
+"Toggle personal user modes that affect what messages you receive.\n"
 "Available modes: +w (wallops — receive operator broadcast messages), -w (stop receiving).\n"
 "Must start with + or -. Currently only the w (wallops) mode is supported."
-msgstr "切换影响您收到消息的个人用户模式 。\n"
+msgstr ""
+"切换影响您收到消息的个人用户模式 。\n"
 "可用模式: +w( wallops ——接收操作员广播消息),-w(停止接收).\n"
 "必须从 + 或 - 开始。 目前只支持w( wallops) 模式."
 
@@ -2340,15 +2427,18 @@ msgstr "保护主题"
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:104
 #, elixir-autogen, elixir-format
-msgid "Track when specific users come online or go offline with your buddy list."
+msgid ""
+"Track when specific users come online or go offline with your buddy list."
 msgstr "追踪特定用户上线或随好友名单下线时."
 
 #: lib/retro_hex_chat/commands/handlers/notify.ex:77
 #, elixir-autogen, elixir-format
-msgid "Track when specific users come online or go offline with your buddy list.\n"
+msgid ""
+"Track when specific users come online or go offline with your buddy list.\n"
 "Subcommands: add <nick> [note], remove <nick>, edit <nick> <note>, list. No args opens the dialog.\n"
 "Registered users: persisted. Guests: session-only."
-msgstr "追踪特定用户上线或随好友名单下线时.\n"
+msgstr ""
+"追踪特定用户上线或随好友名单下线时.\n"
 "子命令:添加<nick>[注],删除<nick>,编辑<nick> <note>,列表. 没有参数打开对话框 。\n"
 "注册用户:持续。 嘉宾:只开会."
 
@@ -2359,10 +2449,12 @@ msgstr "将频道所有权转移给另一个用户 。"
 
 #: lib/retro_hex_chat/commands/handlers/transfer.ex:29
 #, elixir-autogen, elixir-format
-msgid "Transfer channel ownership to another user.\n"
+msgid ""
+"Transfer channel ownership to another user.\n"
 "The new owner gets +q (owner) and you are demoted to operator.\n"
 "Requires: channel owner."
-msgstr "将频道所有权转移给另一个用户 。\n"
+msgstr ""
+"将频道所有权转移给另一个用户 。\n"
 "新所有者得到+q(所有者),您将被降级为操作员 。\n"
 "要求:频道所有者."
 
@@ -2383,12 +2475,16 @@ msgstr "未知的 /notify 子命令 。 使用: 添加、 删除、 编辑、 �
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:43
 #, elixir-autogen, elixir-format
-msgid "Unknown admin subcommand: %{subcmd}. Try: server, user, channel, ns, cs, debug, log, turn, nuke"
+msgid ""
+"Unknown admin subcommand: %{subcmd}. Try: server, user, channel, ns, cs, "
+"debug, log, turn, nuke"
 msgstr "未知的管理员子命令: %{subcmd}. 尝试:服务器、用户、频道、ns、cs、调试、日志、转弯、核子"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:524
+#: lib/retro_hex_chat/commands/handlers/bot.ex:506
 #, elixir-autogen, elixir-format
-msgid "Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, farewell, "
+msgid ""
+"Unknown setting '%{key}'. Valid: prefix, cooldown, description, greeting, "
+"farewell, "
 msgstr "未知设置“ %{key} ” 。 有效:前缀,冷却,描述,问候,告别,"
 
 #: lib/retro_hex_chat/commands/handlers/umode.ex:59
@@ -2403,8 +2499,12 @@ msgstr "超时数据: 已处理的 %{state_stats_messages_handled} msgs"
 
 #: lib/retro_hex_chat/commands/handlers/admin.ex:17
 #, elixir-autogen, elixir-format
-msgid "Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> [args]"
-msgstr "用法:/admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> [args] (英语)."
+msgid ""
+"Usage: /admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> "
+"[args]"
+msgstr ""
+"用法:/admin <server|user|channel|ns|cs|debug|log|turn|nuke> <subcommand> "
+"[args] (英语)."
 
 #: lib/retro_hex_chat/commands/handlers/alias.ex:18
 #: lib/retro_hex_chat/commands/handlers/alias.ex:19
@@ -2438,8 +2538,11 @@ msgstr "用法: /autojoin 删除 #channel"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:27
 #, elixir-autogen, elixir-format
-msgid "Usage: /autorespond add <on_join|on_part|on_nick_change> [#channel] <command>"
-msgstr "用法:/autorespond 加上<on_join|on_part|on_nick_change> [#channel] <command>"
+msgid ""
+"Usage: /autorespond add <on_join|on_part|on_nick_change> [#channel] "
+"<command>"
+msgstr ""
+"用法:/autorespond 加上<on_join|on_part|on_nick_change> [#channel] <command>"
 
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:23
 #: lib/retro_hex_chat/commands/handlers/auto_respond.ex:35
@@ -2673,7 +2776,7 @@ msgstr "用法:/whois <nickname>"
 msgid "Usage: /whowas <nickname>"
 msgstr "用法:/whowas <nickname>"
 
-#: lib/retro_hex_chat/commands/registry.ex:71
+#: lib/retro_hex_chat/commands/registry.ex:70
 #, elixir-autogen, elixir-format
 msgid "User"
 msgstr "用户"
@@ -2766,24 +2869,30 @@ msgstr "查看频道注册信息"
 #: lib/retro_hex_chat/commands/handlers/help.ex:42
 #: lib/retro_hex_chat/commands/handlers/help.ex:63
 #, elixir-autogen, elixir-format
-msgid "View help for any command, or browse all available commands.\n"
+msgid ""
+"View help for any command, or browse all available commands.\n"
 "With no args: lists all commands. With a command name: shows detailed help.\n"
 "Also accessible via Help Topics in the toolbar."
-msgstr "查看任何命令的帮助, 或浏览所有可用的命令 。\n"
+msgstr ""
+"查看任何命令的帮助, 或浏览所有可用的命令 。\n"
 "没有参数:列出所有命令。 使用命令名: 显示详细的帮助 。\n"
 "也可以通过工具栏中的“帮助主题”访问。"
 
 #: lib/retro_hex_chat/commands/handlers/topic.ex:65
 #, elixir-autogen, elixir-format
-msgid "View or change the channel topic displayed in the topic bar at the top of the channel."
+msgid ""
+"View or change the channel topic displayed in the topic bar at the top of "
+"the channel."
 msgstr "查看或更改频道顶端主题栏显示的频道主题."
 
 #: lib/retro_hex_chat/commands/handlers/topic.ex:44
 #, elixir-autogen, elixir-format
-msgid "View or change the channel topic displayed in the topic bar at the top of the channel.\n"
+msgid ""
+"View or change the channel topic displayed in the topic bar at the top of the channel.\n"
 "No args: shows current topic. With text: sets a new topic.\n"
 "Must be in a channel. If channel has +t mode, only operators can change the topic."
-msgstr "查看或更改频道顶端主题栏显示的频道主题.\n"
+msgstr ""
+"查看或更改频道顶端主题栏显示的频道主题.\n"
 "无参数: 显示当前话题 。 带文字:设置新话题.\n"
 "一定是在频道里 如果频道有+t模式,只有操作员可以更改话题."
 
@@ -2795,7 +2904,9 @@ msgstr "查看昵称的注册信息"
 #: lib/retro_hex_chat/commands/handlers/motd.ex:34
 #: lib/retro_hex_chat/commands/handlers/motd.ex:54
 #, elixir-autogen, elixir-format
-msgid "View the server's Message of the Day, which is also shown automatically when you connect."
+msgid ""
+"View the server's Message of the Day, which is also shown automatically when"
+" you connect."
 msgstr "查看服务器的每日信件, 连接时也会自动显示 。"
 
 #: lib/retro_hex_chat/commands/handlers/mode.ex:135
@@ -2810,7 +2921,9 @@ msgstr "瓦洛普斯派来了"
 
 #: lib/retro_hex_chat/commands/handlers/bot.ex:114
 #, elixir-autogen, elixir-format
-msgid "Without arguments, opens the Bot Management dialog (admins) or shows bot list."
+msgid ""
+"Without arguments, opens the Bot Management dialog (admins) or shows bot "
+"list."
 msgstr "没有参数,请打开Bot管理对话框(admins)或显示bot列表."
 
 #: lib/retro_hex_chat/commands/handlers/nick.ex:29
@@ -2892,11 +3005,6 @@ msgstr "您必须至少是半操作员才能使用此命令"
 msgid "You must be identified to use /p2p."
 msgstr "您必须识别使用 /p2p 。"
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:73
-#, elixir-autogen, elixir-format
-msgid "You must be identified to use /singleplayer."
-msgstr "您必须识别使用 /singleplayer 。"
-
 #: lib/retro_hex_chat/commands/policy.ex:27
 #, elixir-autogen, elixir-format
 msgid "You must be identified with NickServ to use this command"
@@ -2913,11 +3021,6 @@ msgstr "您必须在频道中使用此命令"
 msgid "You must be in a channel to use this command."
 msgstr "您必须在频道中使用此命令 。"
 
-#: lib/retro_hex_chat/commands/handlers/singleplayer.ex:77
-#, elixir-autogen, elixir-format
-msgid "You must be registered to play arcade games."
-msgstr "你必须注册去玩街机游戏"
-
 #: lib/retro_hex_chat/commands/handlers/transfer.ex:75
 #: lib/retro_hex_chat/commands/policy.ex:51
 #, elixir-autogen, elixir-format
@@ -2930,7 +3033,7 @@ msgstr "您必须是频道拥有者使用此命令"
 msgid "[BotService] %{message}"
 msgstr "[业务]%{message}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:579
+#: lib/retro_hex_chat/commands/handlers/bot.ex:561
 #, elixir-autogen, elixir-format
 msgid "[BotService] %{name} has no custom commands."
 msgstr "[BotService]%{name}没有自定义命令."
@@ -2971,9 +3074,9 @@ msgstr "[BotService] 瓶\"%{name}\"离开%{channel}."
 #: lib/retro_hex_chat/commands/handlers/bot.ex:290
 #: lib/retro_hex_chat/commands/handlers/bot.ex:311
 #: lib/retro_hex_chat/commands/handlers/bot.ex:334
-#: lib/retro_hex_chat/commands/handlers/bot.ex:567
-#: lib/retro_hex_chat/commands/handlers/bot.ex:609
-#: lib/retro_hex_chat/commands/handlers/bot.ex:643
+#: lib/retro_hex_chat/commands/handlers/bot.ex:549
+#: lib/retro_hex_chat/commands/handlers/bot.ex:591
+#: lib/retro_hex_chat/commands/handlers/bot.ex:625
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bot '%{name}' not found."
 msgstr "[BotService] 瓶\"%{name}\"没有找到."
@@ -2983,27 +3086,27 @@ msgstr "[BotService] 瓶\"%{name}\"没有找到."
 msgid "[BotService] Bot Info: %{name}"
 msgstr "[BotService] 机器人信息：%{name}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:707
+#: lib/retro_hex_chat/commands/handlers/bot.ex:689
 #, elixir-autogen, elixir-format
 msgid "[BotService] Bots:"
 msgstr "[企业服务] 波兹:"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:652
+#: lib/retro_hex_chat/commands/handlers/bot.ex:634
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' removed from %{name}."
 msgstr "[BotService] 命令 '%{trigger}' 从%{name}中移除."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:621
+#: lib/retro_hex_chat/commands/handlers/bot.ex:603
 #, elixir-autogen, elixir-format
 msgid "[BotService] Command '%{trigger}' set for %{name}."
 msgstr "[BotService] 命令 '%{trigger}' set for %{name}."
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:585
+#: lib/retro_hex_chat/commands/handlers/bot.ex:567
 #, elixir-autogen, elixir-format
 msgid "[BotService] Commands for %{bot_name}:"
 msgstr "%{bot_name}的指令:"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:631
+#: lib/retro_hex_chat/commands/handlers/bot.ex:613
 #, elixir-autogen, elixir-format
 msgid "[BotService] Failed to add command '%{trigger}': %{message}"
 msgstr "[BotService] 无法添加命令 '%{trigger}'：%{message}"
@@ -3013,7 +3116,7 @@ msgstr "[BotService] 无法添加命令 '%{trigger}'：%{message}"
 msgid "[BotService] Failed to create bot: %{message}"
 msgstr "[BotService] 无法创建机器人：%{message}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:703
+#: lib/retro_hex_chat/commands/handlers/bot.ex:685
 #, elixir-autogen, elixir-format
 msgid "[BotService] No bots configured."
 msgstr "[企业服务] 没有配置 bots 。"
@@ -3055,15 +3158,12 @@ msgstr "[尼克塞尔] %{message}"
 
 #: lib/retro_hex_chat/commands/handlers/ns.ex:135
 #, elixir-autogen, elixir-format
-msgid "[NickServ] %{nickname}: registered %{registered_at}, identified: %{identified}"
+msgid ""
+"[NickServ] %{nickname}: registered %{registered_at}, identified: "
+"%{identified}"
 msgstr "[NickServ] %{nickname}：注册于 %{registered_at}，已验证：%{identified}"
 
-#: lib/retro_hex_chat/commands/handlers/bot.ex:518
-#, elixir-autogen, elixir-format
-msgid "arcade_enabled must be: true or false."
-msgstr "街机必须:真假。"
-
-#: lib/retro_hex_chat/commands/handlers/bot.ex:529
+#: lib/retro_hex_chat/commands/handlers/bot.ex:511
 #, elixir-autogen, elixir-format
 msgid "mention_response, dice_*, mod_*, trivia_*, sched_*, rss_*, arcade_*"
 msgstr "提及  response, dice , mod *, trivia *, sched *, rss, arcade *"
@@ -3076,29 +3176,32 @@ msgstr "服务器、用户、频道、ns、cs、调试、日志、转弯或核�
 #: lib/retro_hex_chat/commands/handlers/bot.ex:113
 #, elixir-autogen, elixir-format
 msgid "set, commands, addcmd, delcmd, help.\n"
-""
 msgstr "设置、命令、添加、调试、帮助。"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:64
 #, elixir-autogen, elixir-format
-msgid "Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
+msgid ""
+"Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
 "Requires: both users must be registered and identified (/ns identify)."
-msgstr "Open a P2P lobby that hosts calls, file transfers, and games together over one connection.\n"
-"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"打开一个P2P大堂,通过一个连接,主机呼叫,文件传输,和游戏一起进行.\n"
+"要求:两个用户都必须注册和识别(/ns识别)."
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:43
 #, elixir-autogen, elixir-format
-msgid "Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
+msgid ""
+"Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
 "Requires: both users must be registered and identified (/ns identify)."
-msgstr "Open a P2P lobby with another user: one persistent connection that runs an audio/video call, file transfers, and games all at the same time.\n"
-"Requires: both users must be registered and identified (/ns identify)."
+msgstr ""
+"与另一个用户打开一个P2P大堂:一个持续连接,运行一个音频/video的呼叫,文件传输,以及游戏全部同时运行.\n"
+"要求:两个用户都必须注册和识别(/ns识别)."
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:99
 #, elixir-autogen, elixir-format
 msgid "User '%{nickname}' is offline."
-msgstr "User '%{nickname}' is offline."
+msgstr "用户 '%{nickname}' 已离线。"
 
 #: lib/retro_hex_chat/commands/handlers/lobby.ex:89
 #, elixir-autogen, elixir-format
 msgid "You cannot open a lobby with yourself."
-msgstr "You cannot open a lobby with yourself."
+msgstr "你不能自己开大厅"

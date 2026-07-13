@@ -38,30 +38,39 @@ msgstr "/topic Command"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "/whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode, /timer output."
-msgstr "/whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode, /timer output."
+msgid ""
+"/whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode, "
+"/timer output."
+msgstr ""
+"/whois, /alias, /ignore, /perform, /autojoin, /invite, /kick, /ban, /mode, "
+"/timer output."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "0 White 8 Yellow 1 Black 9 Light Green 2 Navy 10 Teal 3 Green 11 Cyan 4 Red 12 Blue 5 Maroon 13 Magenta 6 Purple 14 Grey 7 Orange 15 Light Grey"
-msgstr "0 Blanc 8 Jaune 1 Noir 9 Vert clair 2 Marine 10 Teal 3 Vert 11 Cyan 4 Rouge 12 Bleu 5 Maroon 13 Magenta 6 Violet 14 Gris 7 Orange 15 Gris clair"
+msgid ""
+"0 White 8 Yellow 1 Black 9 Light Green 2 Navy 10 Teal 3 Green 11 Cyan 4 Red "
+"12 Blue 5 Maroon 13 Magenta 6 Purple 14 Grey 7 Orange 15 Light Grey"
+msgstr ""
+"0 Blanc 8 Jaune 1 Noir 9 Vert clair 2 Marine 10 Teal 3 Vert 11 Cyan 4 Rouge "
+"12 Bleu 5 Maroon 13 Magenta 6 Violet 14 Gris 7 Orange 15 Gris clair"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Active Channel"
 msgstr "Chaîne active"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Add to Contacts:"
 msgstr "Ajouter aux contacts :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "Address Book"
 msgstr "Carnet d'adresses"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:105
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:150
 #, elixir-autogen, elixir-format
 msgid "Alias Editor"
 msgstr "Éditeur Alias"
@@ -69,39 +78,50 @@ msgstr "Éditeur Alias"
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "An empty channel shows a welcome message and tips for getting started."
-msgstr "Un canal vide affiche un message de bienvenue et des conseils pour commencer."
+msgstr ""
+"Un canal vide affiche un message de bienvenue et des conseils pour "
+"commencer."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:12
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:28
 #, elixir-autogen, elixir-format
-msgid "Arrow Down — Next menu item Arrow Up — Previous menu item Enter — Select focused menu item Escape — Close context menu"
-msgstr "Flèche vers le bas — Élément de menu suivant Flèche vers le haut — Élément de menu précédent Entrée — Sélectionnez l'élément de menu ciblé Échapper — Fermer le menu contextuel"
+msgid ""
+"Arrow Down — Next menu item Arrow Up — Previous menu item Enter — Select "
+"focused menu item Escape — Close context menu"
+msgstr ""
+"Flèche vers le bas — Élément de menu suivant Flèche vers le haut — Élément "
+"de menu précédent Entrée — Sélectionnez l'élément de menu ciblé Échapper — "
+"Fermer le menu contextuel"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:14
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:30
 #, elixir-autogen, elixir-format
-msgid "Arrow Down — Next search result (in search bar) Arrow Up — Previous search result (in search bar)"
-msgstr "Arrow Down — Résultat de la recherche suivante (dans la barre de recherche) Arrow Up — Résultat de la recherche précédente (dans la barre de recherche)"
+msgid ""
+"Arrow Down — Next search result (in search bar) Arrow Up — Previous search "
+"result (in search bar)"
+msgstr ""
+"Arrow Down — Résultat de la recherche suivante (dans la barre de recherche) "
+"Arrow Up — Résultat de la recherche précédente (dans la barre de recherche)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Audio Call:"
 msgstr "Appel audio :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:162
 #, elixir-autogen, elixir-format
 msgid "Auto-Respond"
 msgstr "Réponse automatique"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Autocomplete"
 msgstr "Compléter automatiquement"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:134
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:191
 #, elixir-autogen, elixir-format
 msgid "Bell"
 msgstr "Bell"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:21
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Block messages from the user."
 msgstr "Bloquer les messages de l'utilisateur."
@@ -111,7 +131,7 @@ msgstr "Bloquer les messages de l'utilisateur."
 msgid "Blue. Can speak in moderated channels."
 msgstr "Bleu. Peut parler en canaux modérés."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Bold, italic, underline, color, and strip controls."
 msgstr "Bold, italique, souligne, couleur et contrôle des bandes."
@@ -121,12 +141,12 @@ msgstr "Bold, italique, souligne, couleur et contrôle des bandes."
 msgid "Button Groups"
 msgstr "Groupes à boutons"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:120
 #, elixir-autogen, elixir-format
 msgid "Channel Central"
 msgstr "Canal Central"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:68
 #, elixir-autogen, elixir-format
 msgid "Channel List"
 msgstr "Liste des canaux"
@@ -136,35 +156,51 @@ msgstr "Liste des canaux"
 msgid "Channel Messages"
 msgstr "Messages du canal"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Chat Area:"
 msgstr "Zone de discussion :"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:39
 #, elixir-autogen, elixir-format
-msgid "Click a channel or PM to switch to it. Channels with unread messages appear"
-msgstr "Cliquez sur un canal ou un PM pour y passer. Des canaux avec des messages non lus apparaissent"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:1
-#, elixir-autogen, elixir-format
-msgid "Click a nickname in the user list to open the context menu."
-msgstr "Cliquez sur un surnom dans la liste des utilisateurs pour ouvrir le menu contextuel."
+msgid ""
+"Click a channel or PM to switch to it. Channels with unread messages appear"
+msgstr ""
+"Cliquez sur un canal ou un PM pour y passer. Des canaux avec des messages "
+"non lus apparaissent"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:40
 #, elixir-autogen, elixir-format
-msgid "Click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, and Set Nick Color options. Double-click to open a private message."
-msgstr "Cliquez sur un pseudonyme pour accéder à Query, Whois, Kick, Ban, Mode, Ajouter aux contacts, et définir des options Nick Color. Double-cliquez pour ouvrir un message privé."
+msgid ""
+"Click a nickname to access Query, Whois, Kick, Ban, Mode, Add to Contacts, "
+"and Set Nick Color options. Double-click to open a private message."
+msgstr ""
+"Cliquez sur un pseudonyme pour accéder à Query, Whois, Kick, Ban, Mode, "
+"Ajouter aux contacts, et définir des options Nick Color. Double-cliquez pour"
+" ouvrir un message privé."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "Click a tab to switch. The active tab is highlighted. Tabs show close buttons (×) for channels and PMs. Unread tabs appear bold, and highlighted tabs flash."
-msgstr "Cliquez sur un onglet pour changer. L'onglet actif est surligné. Les onglets affichent les boutons de fermeture (×) pour les canaux et les PM. Les onglets non lus apparaissent en gras, et les onglets surlignés clignotent."
+msgid ""
+"Click a tab to switch. The active tab is highlighted. Tabs show close "
+"buttons (×) for channels and PMs. Unread tabs appear bold, and highlighted "
+"tabs flash."
+msgstr ""
+"Cliquez sur un onglet pour changer. L'onglet actif est surligné. Les onglets"
+" affichent les boutons de fermeture (×) pour les canaux et les PM. Les "
+"onglets non lus apparaissent en gras, et les onglets surlignés clignotent."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:63
 #, elixir-autogen, elixir-format
-msgid "Click a username to open the context menu. Double-click to open a private message. Right-click a channel for options (Mark as Read, Mute, Copy Name, Leave, Settings)."
-msgstr "Cliquez sur un nom d'utilisateur pour ouvrir le menu contextuel. Double-cliquez pour ouvrir un message privé. Faites un clic droit sur un canal pour les options (Marquez comme lecture, Mute, Copier le nom, Laisser, Paramètres)."
+msgid ""
+"Click a username to open the context menu. Double-click to open a private "
+"message. Right-click a channel for options (Mark as Read, Mute, Copy Name, "
+"Leave, Settings)."
+msgstr ""
+"Cliquez sur un nom d'utilisateur pour ouvrir le menu contextuel. Double-"
+"cliquez pour ouvrir un message privé. Faites un clic droit sur un canal pour"
+" les options (Marquez comme lecture, Mute, Copier le nom, Laisser, "
+"Paramètres)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:19
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:37
@@ -172,7 +208,7 @@ msgstr "Cliquez sur un nom d'utilisateur pour ouvrir le menu contextuel. Double-
 msgid "Click the"
 msgstr "Cliquez sur le"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:5
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Clipboard"
 msgstr "Clipboard"
@@ -192,7 +228,7 @@ msgstr "Palette de couleur"
 msgid "Colors"
 msgstr "Couleurs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Command Syntax Tooltip"
 msgstr "Commande Syntaxe Tooltip"
@@ -202,12 +238,12 @@ msgstr "Commande Syntaxe Tooltip"
 msgid "Command results:"
 msgstr "Résultats de la commande :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "Connect / Disconnect"
 msgstr "Connexion / déconnexion"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Connection"
 msgstr "Connexion"
@@ -217,59 +253,73 @@ msgstr "Connexion"
 msgid "Context Menu"
 msgstr "Menu contextuel"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:11
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:67
 #, elixir-autogen, elixir-format
 msgid "Context Menus"
 msgstr "Menus contextuels"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:18
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Conversations"
 msgstr "Conversations"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Conversations:"
 msgstr "Conversations :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:6
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Ctrl+C — Copy selected text"
 msgstr "Ctrl+C — Copier le texte sélectionné"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Ctrl+Shift+/ — Shortcut Cheatsheet Ctrl+Shift+F — Find / Search Ctrl+Shift+] — Next Window Ctrl+Shift+[ — Previous Window Ctrl+Shift+1..9 — Switch to Window 1-9 Escape — Close search bar / dialog"
-msgstr "Ctrl+Shift+/ — Feuille de chaleur raccourcie Ctrl+Shift+F — Trouver / Recherche Ctrl+Shift+] — Prochaine fenêtre Ctrl+Shift+[ — Fenêtre précédente Ctrl+Shift+1..9 — Passer à la fenêtre 1-9 Échapper — Fermer la barre de recherche / boîte de dialogue"
-
 #: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:4
 #, elixir-autogen, elixir-format
-msgid "Ctrl+Shift+A — Address Book Ctrl+Shift+H — Highlight Words Ctrl+Shift+G — Ignore List Ctrl+Shift+L — Log Viewer Ctrl+Shift+O — Options Ctrl+Shift+E — Perform Dialog Ctrl+Shift+S — URL Catcher Ctrl+Shift+W — Help"
-msgstr "Ctrl+Shift+A — Carnet d'adresses Ctrl+Shift+H — Highlight Words Ctrl+Shift+G — Ignorer la liste Ctrl+Shift+L — Log Viewer Ctrl+Shift+O — Options Ctrl+Shift+E — Perform Dialog Ctrl+Shift+S — URL Catcher Ctrl+Shift+W — Aide"
+msgid ""
+"Ctrl+Shift+A — Address Book Ctrl+Shift+H — Highlight Words Ctrl+Shift+G — "
+"Ignore List Ctrl+Shift+L — Log Viewer Ctrl+Shift+O — Options Ctrl+Shift+E — "
+"Perform Dialog Ctrl+Shift+S — URL Catcher Ctrl+Shift+W — Help"
+msgstr ""
+"Ctrl+Shift+A — Carnet d'adresses Ctrl+Shift+H — Highlight Words Ctrl+Shift+G"
+" — Ignorer la liste Ctrl+Shift+L — Log Viewer Ctrl+Shift+O — Options "
+"Ctrl+Shift+E — Perform Dialog Ctrl+Shift+S — URL Catcher Ctrl+Shift+W — Aide"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color (opens color picker) Ctrl+Shift+V — Reverse Ctrl+Shift+X — Reset all formatting"
-msgstr "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Couleur (ouvre le sélecteur de couleur) Ctrl+Shift+V — Inverser Ctrl+Shift+X — Réinitialiser tout formatage"
+msgid ""
+"Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline "
+"Ctrl+Shift+D — Color (opens color picker) Ctrl+Shift+V — Reverse "
+"Ctrl+Shift+X — Reset all formatting"
+msgstr ""
+"Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline "
+"Ctrl+Shift+D — Couleur (ouvre le sélecteur de couleur) Ctrl+Shift+V — "
+"Inverser Ctrl+Shift+X — Réinitialiser tout formatage"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:12
 #, elixir-autogen, elixir-format
-msgid "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color Ctrl+Shift+V — Reverse (also in formatting toolbar) Ctrl+Shift+X — Reset formatting (also in formatting toolbar)"
-msgstr "Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline Ctrl+Shift+D — Color Ctrl+Shift+V — Inverser (également dans la barre d'outils de formatage) Ctrl+Shift+X — Réinitialiser le formatage (également dans la barre d'outils de formatage)"
+msgid ""
+"Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline "
+"Ctrl+Shift+D — Color Ctrl+Shift+V — Reverse (also in formatting toolbar) "
+"Ctrl+Shift+X — Reset formatting (also in formatting toolbar)"
+msgstr ""
+"Ctrl+Shift+B — Bold Ctrl+Shift+Y — Italic Ctrl+Shift+U — Underline "
+"Ctrl+Shift+D — Color Ctrl+Shift+V — Inverser (également dans la barre "
+"d'outils de formatage) Ctrl+Shift+X — Réinitialiser le formatage (également "
+"dans la barre d'outils de formatage)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Ctrl+Shift+D"
 msgstr "Ctrl+Shift+D"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:156
 #, elixir-autogen, elixir-format
 msgid "Custom Menus"
 msgstr "Menus personnalisés"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:127
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:184
 #, elixir-autogen, elixir-format
 msgid "DND (Do Not Disturb)"
 msgstr "MDN (Ne dérangez pas)"
@@ -279,30 +329,55 @@ msgstr "MDN (Ne dérangez pas)"
 msgid "Default color."
 msgstr "Couleur par défaut."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Emoji"
 msgstr "Emoji"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "Emoji Picker — Click smiley button in formatting toolbar"
-msgstr "Emoji Picker — Cliquez sur le bouton sourire dans la barre d'outils de formatage"
+msgstr ""
+"Emoji Picker — Cliquez sur le bouton sourire dans la barre d'outils de "
+"formatage"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:28
 #, elixir-autogen, elixir-format
-msgid "Empty state messages disappear automatically when content arrives. The text is not selectable."
-msgstr "Les messages d'état vides disparaissent automatiquement lorsque le contenu arrive. Le texte n'est pas sélectionnable."
+msgid ""
+"Empty state messages disappear automatically when content arrives. The text "
+"is not selectable."
+msgstr ""
+"Les messages d'état vides disparaissent automatiquement lorsque le contenu "
+"arrive. Le texte n'est pas sélectionnable."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:27
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Enhanced History"
 msgstr "Historique amélioré"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:10
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:14
 #, elixir-autogen, elixir-format
-msgid "Enter — Send message / select autocomplete item Shift+Enter — Insert newline in input Up — Edit last message (when input is empty) / command history Up / Down — Command history / navigate autocomplete dropdown Ctrl+Up — Browse history (saves draft) Ctrl+Down — Browse history forward (restores draft) Ctrl+R — Reverse search history Tab — Select autocomplete item / cycle nick completion Escape — Cancel edit mode / dismiss autocomplete / tooltip / — Open command autocomplete (at start of input) @ — Open nick autocomplete (at word boundary) # — Open channel autocomplete (at word boundary)"
-msgstr "Entrer — Envoyer un message / sélectionner un élément autocomplet Shift+Enter — Insérer une nouvelle ligne dans l'entrée En haut — Modifier le dernier message (lorsque l'entrée est vide) / Historique de la commande En haut / En bas — Historique de la commande / Naviguer dans le menu déroulant autocomplet Ctrl+Up — Parcourir l'historique (brefs d'enregistrement) Ctrl+Down — Parcourir l'historique en avant (restauration de l'ébauche) Ctrl+R — Historique de la recherche inversée Tab — Sélectionnez l'élément autocomplete / cycle nick completing Escape — Annuler le mode d'édition / rejeter autocomplete / tooltip / — Ouvrir la commande autocomplete (au début de l'entrée) @ — Ouvrir nick autocomplete (à la limite du mot) # — Ouvrir le canal autocomplete (à la limite du mot)"
+msgid ""
+"Enter — Send message / select autocomplete item Shift+Enter — Insert newline"
+" in input Up — Edit last message (when input is empty) / command history Up "
+"/ Down — Command history / navigate autocomplete dropdown Ctrl+Up — Browse "
+"history (saves draft) Ctrl+Down — Browse history forward (restores draft) "
+"Ctrl+R — Reverse search history Tab — Select autocomplete item / cycle nick "
+"completion Escape — Cancel edit mode / dismiss autocomplete / tooltip / — "
+"Open command autocomplete (at start of input) @ — Open nick autocomplete (at"
+" word boundary) # — Open channel autocomplete (at word boundary)"
+msgstr ""
+"Entrer — Envoyer un message / sélectionner un élément autocomplet "
+"Shift+Enter — Insérer une nouvelle ligne dans l'entrée En haut — Modifier le"
+" dernier message (lorsque l'entrée est vide) / Historique de la commande En "
+"haut / En bas — Historique de la commande / Naviguer dans le menu déroulant "
+"autocomplet Ctrl+Up — Parcourir l'historique (brefs d'enregistrement) "
+"Ctrl+Down — Parcourir l'historique en avant (restauration de l'ébauche) "
+"Ctrl+R — Historique de la recherche inversée Tab — Sélectionnez l'élément "
+"autocomplete / cycle nick completing Escape — Annuler le mode d'édition / "
+"rejeter autocomplete / tooltip / — Ouvrir la commande autocomplete (au début"
+" de l'entrée) @ — Ouvrir nick autocomplete (à la limite du mot) # — Ouvrir "
+"le canal autocomplete (à la limite du mot)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:24
 #, elixir-autogen, elixir-format
@@ -320,30 +395,30 @@ msgstr "Chaque"
 msgid "Features"
 msgstr "Caractéristiques"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:41
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:24
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:58
 #, elixir-autogen, elixir-format
 msgid "Find"
 msgstr "Rechercher"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:144
 #, elixir-autogen, elixir-format
 msgid "Flood Protection"
 msgstr "Protection contre les inondations"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "For PMs, it shows \"Private conversation with <nickname>\". For the Status tab, it shows \"RetroHexChat Status\"."
-msgstr "Pour les PM, il montre « conversation privée avec <nickname> ». Pour l'onglet État, il affiche « État RetroHexChat »."
+msgid ""
+"For PMs, it shows \"Private conversation with <nickname>\". For the Status "
+"tab, it shows \"RetroHexChat Status\"."
+msgstr ""
+"Pour les PM, il montre « conversation privée avec <nickname> ». Pour "
+"l'onglet État, il affiche « État RetroHexChat »."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Formatting Toolbar:"
 msgstr "Barre d'outils de formatage :"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:48
-#, elixir-autogen, elixir-format
-msgid "Give Op (+o) / Give Voice (+v):"
-msgstr "Donner Op (+o) / Donner la voix (+v):"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:21
 #, elixir-autogen, elixir-format
@@ -360,42 +435,47 @@ msgstr "Demi-option (%):"
 msgid "Header"
 msgstr "En-tête"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:142
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:199
 #, elixir-autogen, elixir-format
 msgid "Help"
 msgstr "Aide"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:145
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:202
 #, elixir-autogen, elixir-format
 msgid "Help Topics"
 msgstr "Sujets d'aide"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "Hierarchical navigation (left pane) with channels, inline user list, and PMs."
-msgstr "Navigation hiérarchique (partie gauche) avec canaux, liste d'utilisateurs en ligne et PM."
+msgid ""
+"Hierarchical navigation (left pane) with channels, inline user list, and "
+"PMs."
+msgstr ""
+"Navigation hiérarchique (partie gauche) avec canaux, liste d'utilisateurs en"
+" ligne et PM."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "Highlight Words"
 msgstr "Mettre en évidence les mots"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Ignore / Unignore:"
 msgstr "Ignorer / Unignorer:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "Ignore List"
 msgstr "Ignorer la liste"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Input & Autocomplete"
 msgstr "Entrée & Autocomplete"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:159
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:37
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:219
 #, elixir-autogen, elixir-format
 msgid "Keyboard Shortcuts"
 msgstr "Raccourcis clavier"
@@ -405,7 +485,7 @@ msgstr "Raccourcis clavier"
 msgid "Keyboard Shortcuts:"
 msgstr "Raccourcis clavier:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:50
 #, elixir-autogen, elixir-format
 msgid "Kick / Ban:"
 msgstr "Coup de pied / interdiction :"
@@ -415,12 +495,12 @@ msgstr "Coup de pied / interdiction :"
 msgid "Layout"
 msgstr "Mise en page"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:126
 #, elixir-autogen, elixir-format
 msgid "Log Viewer"
 msgstr "Affichage des journaux"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:14
 #, elixir-autogen, elixir-format
 msgid "Look up user information."
 msgstr "Consultez les informations utilisateur."
@@ -430,7 +510,7 @@ msgstr "Consultez les informations utilisateur."
 msgid "MY CHANNELS"
 msgstr "MES CHANELLES"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:33
 #, elixir-autogen, elixir-format
 msgid "Message display with formatting and clickable URLs."
 msgstr "Affichage des messages avec formatage et URLs cliquables."
@@ -440,12 +520,7 @@ msgstr "Affichage des messages avec formatage et URLs cliquables."
 msgid "Methods"
 msgstr "Méthodes"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:50
-#, elixir-autogen, elixir-format
-msgid "Mode changes (operators only)."
-msgstr "Changements de mode (opérateurs seulement)."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:46
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Moderation (operators only)."
 msgstr "Modération (opérateurs seulement)."
@@ -470,7 +545,7 @@ msgstr "Nicklist"
 msgid "Notes"
 msgstr "Annexe"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:124
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:181
 #, elixir-autogen, elixir-format
 msgid "Notifications"
 msgstr "Notifications"
@@ -480,12 +555,12 @@ msgstr "Notifications"
 msgid "Notifications:"
 msgstr "Notifications:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:5
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:10
 #, elixir-autogen, elixir-format
 msgid "Open a PM with the user."
 msgstr "Ouvrez un PM avec l'utilisateur."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:43
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:48
 #, elixir-autogen, elixir-format
 msgid "Operator Actions"
 msgstr "Actions de l'opérateur"
@@ -495,12 +570,12 @@ msgstr "Actions de l'opérateur"
 msgid "Operators (@):"
 msgstr "Opérateurs (@):"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:2
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Options"
 msgstr "Options"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:17
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Override the display color for this nick."
 msgstr "Surpasser la couleur de l'affichage pour ce pseudo."
@@ -510,20 +585,15 @@ msgstr "Surpasser la couleur de l'affichage pour ce pseudo."
 msgid "Owners (~):"
 msgstr "Propriétaires (~):"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:23
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "P2P Actions (registered users only)"
 msgstr "Actions P2P (utilisateurs enregistrés seulement)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:25
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "P2P Session:"
 msgstr "Séance P2P :"
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:55
-#, elixir-autogen, elixir-format
-msgid "P2P Sessions"
-msgstr "Séances P2P"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:30
 #, elixir-autogen, elixir-format
@@ -535,7 +605,7 @@ msgstr "CHANÈLES POPULAIRES"
 msgid "PRIVATE MESSAGES"
 msgstr "MESSAGES PRIVÉS"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:87
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:132
 #, elixir-autogen, elixir-format
 msgid "Perform"
 msgstr "Exécution"
@@ -555,12 +625,12 @@ msgstr "Appuyez sur"
 msgid "Purple, bold. Channel founders."
 msgstr "Violet, gras. Les fondateurs de Channel."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:4
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Query:"
 msgstr "Demande :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Quick-access buttons for common actions."
 msgstr "Boutons d'accès rapide pour les actions communes."
@@ -577,35 +647,46 @@ msgstr "Régulière:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat supports IRC-compatible text formatting with bold, italic, underline, colors, and more."
-msgstr "RetroHexChat prend en charge le formatage de texte compatible IRC avec gras, italique, souligne, couleurs, et plus encore."
+msgid ""
+"RetroHexChat supports IRC-compatible text formatting with bold, italic, "
+"underline, colors, and more."
+msgstr ""
+"RetroHexChat prend en charge le formatage de texte compatible IRC avec gras,"
+" italique, souligne, couleurs, et plus encore."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat supports the standard 16-color IRC palette for both foreground and background text."
-msgstr "RetroHexChat prend en charge la palette IRC standard 16 couleurs pour le premier plan et le fond."
+msgid ""
+"RetroHexChat supports the standard 16-color IRC palette for both foreground "
+"and background text."
+msgstr ""
+"RetroHexChat prend en charge la palette IRC standard 16 couleurs pour le "
+"premier plan et le fond."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "RetroHexChat uses a classic mIRC-style layout with retro aesthetics."
-msgstr "RetroHexChat utilise une disposition classique de style mIRC avec une esthétique rétro."
+msgstr ""
+"RetroHexChat utilise une disposition classique de style mIRC avec une "
+"esthétique rétro."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Roles"
 msgstr "Rôles"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Save to your address book."
 msgstr "Enregistrer dans votre carnet d'adresses."
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:45
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Search"
 msgstr "Rechercher"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Search Navigation"
 msgstr "Navigation de recherche"
@@ -617,22 +698,28 @@ msgstr "Sections"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:25
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:17
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:52
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:33
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:60
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:65
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:73
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:46
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:43
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:152
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:28
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:209
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "See Also"
 msgstr "Voir aussi"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:36
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Send File:"
 msgstr "Envoyer le fichier & #160;:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:43
 #, elixir-autogen, elixir-format
 msgid "Send a file."
 msgstr "Envoyez un fichier."
@@ -642,12 +729,12 @@ msgstr "Envoyez un fichier."
 msgid "Services:"
 msgstr "Services :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Set Nick Color:"
 msgstr "Définir la couleur Nick & #160;:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:19
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Shortcut Cheatsheet"
 msgstr "Feuilles de chaleur raccourcies"
@@ -655,39 +742,52 @@ msgstr "Feuilles de chaleur raccourcies"
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "Shows \"No URLs captured\" until URLs appear in chat."
-msgstr "Affiche \"Aucun URL capturé\" jusqu'à ce que les URL apparaissent dans le chat."
+msgstr ""
+"Affiche \"Aucun URL capturé\" jusqu'à ce que les URL apparaissent dans le "
+"chat."
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "Shows \"Nobody here\" when you are the only user (or the channel is truly empty)."
-msgstr "Affiche \"Personne ici\" lorsque vous êtes le seul utilisateur (ou que le canal est vraiment vide)."
+msgid ""
+"Shows \"Nobody here\" when you are the only user (or the channel is truly "
+"empty)."
+msgstr ""
+"Affiche \"Personne ici\" lorsque vous êtes le seul utilisateur (ou que le "
+"canal est vraiment vide)."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:15
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "Shows the current channel name, modes, and topic."
 msgstr "Affiche le nom, les modes et le sujet du canal actuel."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:56
 #, elixir-autogen, elixir-format
-msgid "Shows the top 10 channels by user count that you haven't joined yet. Click [+] to join a channel, or click \"Browse All Channels...\" to open the full channel list dialog."
-msgstr "Affiche les 10 meilleurs canaux par utilisateur que vous n'avez pas encore rejoint. Cliquez sur [+] pour rejoindre un canal, ou cliquez sur \"Parcourir tous les canaux...\" pour ouvrir la boîte de dialogue complète de la liste des canaux."
+msgid ""
+"Shows the top 10 channels by user count that you haven't joined yet. Click "
+"[+] to join a channel, or click \"Browse All Channels...\" to open the full "
+"channel list dialog."
+msgstr ""
+"Affiche les 10 meilleurs canaux par utilisateur que vous n'avez pas encore "
+"rejoint. Cliquez sur [+] pour rejoindre un canal, ou cliquez sur \"Parcourir"
+" tous les canaux...\" pour ouvrir la boîte de dialogue complète de la liste "
+"des canaux."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:93
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:138
 #, elixir-autogen, elixir-format
 msgid "Sounds"
 msgstr "Sons"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:26
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "Start a generic P2P session."
 msgstr "Démarrer une session P2P générique."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:34
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Start a video call."
 msgstr "Lancez un appel vidéo."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:30
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "Start an audio call."
 msgstr "Lancez un appel audio."
@@ -697,12 +797,13 @@ msgstr "Lancez un appel audio."
 msgid "Status"
 msgstr "État"
 
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:55
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:45
 #, elixir-autogen, elixir-format
 msgid "Status Bar"
 msgstr "Barre d' état"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Status Bar:"
 msgstr "Barre d'état :"
@@ -712,7 +813,7 @@ msgstr "Barre d'état :"
 msgid "Strip Formatting"
 msgstr "Formatage des bandes"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:11
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "Switch between Status, channels, and PM tabs."
 msgstr "Commuter entre les onglets Statut, canaux et PM."
@@ -722,25 +823,30 @@ msgstr "Commuter entre les onglets Statut, canaux et PM."
 msgid "System events:"
 msgstr "Événements système:"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:39
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:51
 #, elixir-autogen, elixir-format
 msgid "Tab Bar"
 msgstr "Barre des onglets"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:9
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:16
 #, elixir-autogen, elixir-format
 msgid "Tab Bar:"
 msgstr "Barre de l'onglet :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Text Formatting"
 msgstr "Formatage du texte"
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The Conversations sidebar is the left navigation pane showing your channels, inline user list, PMs, and popular channels in three collapsible sections."
-msgstr "La barre latérale Conversations est le panneau de navigation gauche qui montre vos canaux, la liste des utilisateurs en ligne, les PM et les canaux populaires dans trois sections pliables."
+msgid ""
+"The Conversations sidebar is the left navigation pane showing your channels,"
+" inline user list, PMs, and popular channels in three collapsible sections."
+msgstr ""
+"La barre latérale Conversations est le panneau de navigation gauche qui "
+"montre vos canaux, la liste des utilisateurs en ligne, les PM et les canaux "
+"populaires dans trois sections pliables."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:2
 #, elixir-autogen, elixir-format
@@ -749,71 +855,107 @@ msgstr "L'onglet État est le point central d'observation de votre session."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:49
 #, elixir-autogen, elixir-format
-msgid "The active channel is pinned to the top of the My Channels section. Below it, the user list shows all users sorted by role (owner, operator, half-op, voiced, regular), with role icons and colors."
-msgstr "Le canal actif est épinglé au sommet de la section Mes canaux. Ci-dessous, la liste des utilisateurs affiche tous les utilisateurs classés par rôle (propriétaire, opérateur, demi-op, exprimé, régulier), avec des icônes de rôle et des couleurs."
+msgid ""
+"The active channel is pinned to the top of the My Channels section. Below "
+"it, the user list shows all users sorted by role (owner, operator, half-op, "
+"voiced, regular), with role icons and colors."
+msgstr ""
+"Le canal actif est épinglé au sommet de la section Mes canaux. Ci-dessous, "
+"la liste des utilisateurs affiche tous les utilisateurs classés par rôle "
+"(propriétaire, opérateur, demi-op, exprimé, régulier), avec des icônes de "
+"rôle et des couleurs."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:33
 #, elixir-autogen, elixir-format
-msgid "The active channel shows a user count in parentheses next to the channel name, e.g."
-msgstr "Le canal actif affiche un nombre d'utilisateurs entre parenthèses à côté du nom du canal, par exemple."
+msgid ""
+"The active channel shows a user count in parentheses next to the channel "
+"name, e.g."
+msgstr ""
+"Le canal actif affiche un nombre d'utilisateurs entre parenthèses à côté du "
+"nom du canal, par exemple."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "The header shows the title \"Conversations\" and a close button to hide the panel. You can also toggle it via the toolbar."
-msgstr "L'en-tête affiche le titre \"Conversations\" et un bouton de fermeture pour masquer le panneau. Vous pouvez également le basculer via la barre d'outils."
+msgid ""
+"The header shows the title \"Conversations\" and a close button to hide the "
+"panel. You can also toggle it via the toolbar."
+msgstr ""
+"L'en-tête affiche le titre \"Conversations\" et un bouton de fermeture pour "
+"masquer le panneau. Vous pouvez également le basculer via la barre d'outils."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_tab_bar.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The tab bar at the top of the chat area provides another way to switch between the Status tab, channels, and PMs."
-msgstr "La barre d'onglets située en haut de la zone de discussion fournit un autre moyen de basculer entre l'onglet Statut, les canaux et les PM."
+msgid ""
+"The tab bar at the top of the chat area provides another way to switch "
+"between the Status tab, channels, and PMs."
+msgstr ""
+"La barre d'onglets située en haut de la zone de discussion fournit un autre "
+"moyen de basculer entre l'onglet Statut, les canaux et les PM."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The toolbar provides quick access to all RetroHexChat features through icon buttons, organized in six groups separated by dividers."
-msgstr "La barre d'outils fournit un accès rapide à toutes les fonctionnalités de RetroHexChat à travers des boutons d'icônes, organisés en six groupes séparés par des diviseurs."
+msgid ""
+"The toolbar provides quick access to all RetroHexChat features through icon "
+"buttons, organized in six groups separated by dividers."
+msgstr ""
+"La barre d'outils fournit un accès rapide à toutes les fonctionnalités de "
+"RetroHexChat à travers des boutons d'icônes, organisés en six groupes "
+"séparés par des diviseurs."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_topic_bar.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The topic bar appears below the tab bar and shows the current channel name, active modes, and topic text."
-msgstr "La barre des sujets apparaît sous la barre des onglets et affiche le nom du canal actuel, les modes actifs et le texte du sujet."
+msgid ""
+"The topic bar appears below the tab bar and shows the current channel name, "
+"active modes, and topic text."
+msgstr ""
+"La barre des sujets apparaît sous la barre des onglets et affiche le nom du "
+"canal actuel, les modes actifs et le texte du sujet."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "The user list appears in the conversations sidebar (left pane) under the active channel, showing all users sorted by role."
-msgstr "La liste des utilisateurs apparaît dans la barre latérale des conversations (partie gauche) sous le canal actif, montrant tous les utilisateurs triés par rôle."
+msgid ""
+"The user list appears in the conversations sidebar (left pane) under the "
+"active channel, showing all users sorted by role."
+msgstr ""
+"La liste des utilisateurs apparaît dans la barre latérale des conversations "
+"(partie gauche) sous le canal actif, montrant tous les utilisateurs triés "
+"par rôle."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "These items are disabled if the target is not registered or is yourself."
-msgstr "Ces éléments sont désactivés si la cible n'est pas enregistrée ou si elle est vous-même."
+msgid ""
+"These items are disabled if the target is not registered or is yourself."
+msgstr ""
+"Ces éléments sont désactivés si la cible n'est pas enregistrée ou si elle "
+"est vous-même."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "Three collapsible sections with clickable headers (▾/▸ arrows):"
 msgstr "Trois sections pliables avec des en-têtes cliquables (flèches :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "Toggle Conversations"
 msgstr "Basculer les conversations"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "Toggle Nicklist"
 msgstr "Basculer Nicklist"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:6
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "Toolbar:"
 msgstr "Barre d'outils :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:93
 #, elixir-autogen, elixir-format
 msgid "Tools"
 msgstr "Outils"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Topic Bar:"
 msgstr "Barre thématique :"
@@ -824,15 +966,19 @@ msgid "UI Overview"
 msgstr "Aperçu de l'AE"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:24
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "URL Catcher"
 msgstr "Capteur d'URL"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "Use the formatting toolbar below the chat area (B, I, U, Color, Strip buttons)."
-msgstr "Utilisez la barre d'outils de formatage sous la zone de chat (B, I, U, Couleur, Boutons de bande)."
+msgid ""
+"Use the formatting toolbar below the chat area (B, I, U, Color, Strip "
+"buttons)."
+msgstr ""
+"Utilisez la barre d'outils de formatage sous la zone de chat (B, I, U, "
+"Couleur, Boutons de bande)."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:31
 #, elixir-autogen, elixir-format
@@ -844,12 +990,13 @@ msgstr "Nombre d'utilisateurs"
 msgid "User Interactions"
 msgstr "Interactions avec les utilisateurs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:155
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:76
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:212
 #, elixir-autogen, elixir-format
 msgid "User Interface Overview"
 msgstr "Aperçu de l'interface utilisateur"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:40
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:52
 #, elixir-autogen, elixir-format
 msgid "User List"
 msgstr "Liste des utilisateurs"
@@ -857,19 +1004,21 @@ msgstr "Liste des utilisateurs"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_nicklist.html.heex:9
 #, elixir-autogen, elixir-format
 msgid "Users are sorted by role priority and distinguished by icon and color:"
-msgstr "Les utilisateurs sont classés par priorité de rôle et distingués par icône et couleur:"
+msgstr ""
+"Les utilisateurs sont classés par priorité de rôle et distingués par icône "
+"et couleur:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:7
 #, elixir-autogen, elixir-format
 msgid "Using Colors"
 msgstr "Utilisation des couleurs"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:32
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "Video Call:"
 msgstr "Appel vidéo :"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "View"
 msgstr "Affichage"
@@ -886,8 +1035,12 @@ msgstr "Ce qui apparaît dans l'état"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "When a UI container has no content, a friendly placeholder message appears with guidance:"
-msgstr "Lorsqu'un conteneur d'interface utilisateur n'a pas de contenu, un message de placement convivial apparaît avec des conseils :"
+msgid ""
+"When a UI container has no content, a friendly placeholder message appears "
+"with guidance:"
+msgstr ""
+"Lorsqu'un conteneur d'interface utilisateur n'a pas de contenu, un message "
+"de placement convivial apparaît avec des conseils :"
 
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:20
 #, elixir-autogen, elixir-format
@@ -899,7 +1052,7 @@ msgstr "Quand aucun canal n'est joint, montre un indice à utiliser"
 msgid "Whois Command"
 msgstr "Commande Whois"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:7
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Whois:"
 msgstr "Ouais:"
@@ -909,11 +1062,6 @@ msgstr "Ouais:"
 msgid "Windows & Dialogs"
 msgstr "Boîtes de dialogue Windows"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:34
-#, elixir-autogen, elixir-format
-msgid "Your nickname, current channel, and user count."
-msgstr "Votre pseudonyme, votre canal actuel et le nombre d'utilisateurs."
-
 #: lib/retro_hex_chat_web/controllers/help_content/empty_states.html.heex:22
 #, elixir-autogen, elixir-format
 msgid "and an \"Browse channels\" button."
@@ -921,18 +1069,30 @@ msgstr "et un bouton \"Parcourir les canaux\"."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_overview.html.heex:20
 #, elixir-autogen, elixir-format
-msgid "button in the formatting toolbar to strip all formatting from incoming messages."
-msgstr "bouton dans la barre d'outils de formatage pour enlever tout formatage des messages entrants."
+msgid ""
+"button in the formatting toolbar to strip all formatting from incoming "
+"messages."
+msgstr ""
+"bouton dans la barre d'outils de formatage pour enlever tout formatage des "
+"messages entrants."
 
 #: lib/retro_hex_chat_web/controllers/help_content/formatting_colors.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "button in the formatting toolbar, then select a color from the 4×4 picker grid."
-msgstr "bouton dans la barre d'outils de formatage, puis sélectionnez une couleur dans la grille 4×4."
+msgid ""
+"button in the formatting toolbar, then select a color from the 4×4 picker "
+"grid."
+msgstr ""
+"bouton dans la barre d'outils de formatage, puis sélectionnez une couleur "
+"dans la grille 4×4."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:12
 #, elixir-autogen, elixir-format
-msgid "joins, parts, kicks, bans, mode changes, topic changes, nick changes, knocks."
-msgstr "joint, parties, coups de pied, interdictions, changements de mode, changements de sujet, changements de pseudo, frappes."
+msgid ""
+"joins, parts, kicks, bans, mode changes, topic changes, nick changes, "
+"knocks."
+msgstr ""
+"joint, parties, coups de pied, interdictions, changements de mode, "
+"changements de sujet, changements de pseudo, frappes."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:34
 #, elixir-autogen, elixir-format
@@ -947,122 +1107,138 @@ msgstr "ou cliquez sur"
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "permission errors, rate limits, invalid commands, send failures."
-msgstr "erreurs de permission, limites de taux, commandes invalides, envoyer des échecs."
+msgstr ""
+"erreurs de permission, limites de taux, commandes invalides, envoyer des "
+"échecs."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:4
 #, elixir-autogen, elixir-format
-msgid "system event, command result, and error is mirrored here, so you never miss important information even if you are looking at a different channel."
-msgstr "l'événement système, le résultat de commande, et l'erreur est reflété ici, de sorte que vous ne manquez jamais les informations importantes même si vous regardez un autre canal."
+msgid ""
+"system event, command result, and error is mirrored here, so you never miss "
+"important information even if you are looking at a different channel."
+msgstr ""
+"l'événement système, le résultat de commande, et l'erreur est reflété ici, "
+"de sorte que vous ne manquez jamais les informations importantes même si "
+"vous regardez un autre canal."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_status_tab.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "tab in the tab bar or conversations sidebar to view it. Status data is session-only and is not persisted."
-msgstr "onglet dans la barre d'onglets ou la barre latérale des conversations pour l'afficher. Les données d'état ne concernent que la session et ne persistent pas."
+msgid ""
+"tab in the tab bar or conversations sidebar to view it. Status data is "
+"session-only and is not persisted."
+msgstr ""
+"onglet dans la barre d'onglets ou la barre latérale des conversations pour "
+"l'afficher. Les données d'état ne concernent que la session et ne persistent"
+" pas."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:111
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:156
 #, elixir-autogen, elixir-format
 msgid "— Add custom items to context menus."
 msgstr "— Ajouter des éléments personnalisés aux menus contextuels."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "— Browse and join available channels."
-msgstr "— Parcourir et rejoindre les canaux disponibles."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:81
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:126
 #, elixir-autogen, elixir-format
 msgid "— Browse chat history and export logs."
 msgstr "— Parcourez l'historique du chat et exportez les journaux."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:99
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:144
 #, elixir-autogen, elixir-format
 msgid "— Configure anti-flood and auto-ignore settings."
 msgstr "— Configurer les paramètres anti-inondation et auto-ignorer."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:87
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:132
 #, elixir-autogen, elixir-format
 msgid "— Configure auto-perform commands and auto-join channels."
-msgstr "— Configurer les commandes auto-performantes et les canaux auto-joins."
+msgstr ""
+"— Configurer les commandes auto-performantes et les canaux auto-joins."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:117
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:162
 #, elixir-autogen, elixir-format
 msgid "— Configure automatic response rules."
 msgstr "— Configurer les règles de réponse automatique."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:93
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:138
 #, elixir-autogen, elixir-format
 msgid "— Configure sound notifications for events."
 msgstr "— Configurer les notifications sonores pour les événements."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:57
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:102
 #, elixir-autogen, elixir-format
 msgid "— Configure words that trigger message highlighting."
 msgstr "— Configurer les mots qui déclenchent le message en soulignant."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:13
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "— Connect to the server or disconnect from it."
 msgstr "— Se connecter au serveur ou se déconnecter."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:105
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:150
 #, elixir-autogen, elixir-format
 msgid "— Create custom command aliases."
 msgstr "— Créer des alias de commande personnalisés."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:51
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:96
 #, elixir-autogen, elixir-format
 msgid "— Manage contacts, notify list, and nick colors."
 msgstr "— Gérer les contacts, notifier la liste et les couleurs de pseudo."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:108
 #, elixir-autogen, elixir-format
 msgid "— Manage ignored users."
 msgstr "— Gérer les utilisateurs ignorés."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:135
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:192
 #, elixir-autogen, elixir-format
-msgid "— Open the Notification Center. A badge shows the count of unread notifications."
-msgstr "— Ouvrez le centre de notification. Un badge montre le nombre de notifications non lues."
+msgid ""
+"— Open the Notification Center. A badge shows the count of unread "
+"notifications."
+msgstr ""
+"— Ouvrez le centre de notification. Un badge montre le nombre de "
+"notifications non lues."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:41
-#, elixir-autogen, elixir-format
-msgid "— Open the search bar to find text in the current channel."
-msgstr "— Ouvrez la barre de recherche pour trouver du texte dans le canal actuel."
-
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:145
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:202
 #, elixir-autogen, elixir-format
 msgid "— Opens the help page in a new tab."
 msgstr "— Ouvre la page d'aide dans un nouvel onglet."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:29
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:74
 #, elixir-autogen, elixir-format
 msgid "— Show or hide the left-side channel tree."
 msgstr "— Afficher ou cacher l'arbre du chenal gauche."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:35
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:80
 #, elixir-autogen, elixir-format
 msgid "— Show or hide the right-side user list."
 msgstr "— Afficher ou masquer la liste des utilisateurs du côté droit."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:128
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:185
 #, elixir-autogen, elixir-format
-msgid "— Toggle Do Not Disturb mode. When active, notifications are suppressed."
-msgstr "— Toggle Ne pas déranger le mode. Lorsqu'elles sont actives, les notifications sont supprimées."
+msgid ""
+"— Toggle Do Not Disturb mode. When active, notifications are suppressed."
+msgstr ""
+"— Toggle Ne pas déranger le mode. Lorsqu'elles sont actives, les "
+"notifications sont supprimées."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:31
 #, elixir-autogen, elixir-format
-msgid "— Top 10 most active channels you haven't joined (collapsed by default, lazy-loaded on first expand)"
-msgstr "— Top 10 des canaux les plus actifs que vous n'avez pas rejoints (effacé par défaut, chargé en première expansion)"
+msgid ""
+"— Top 10 most active channels you haven't joined (collapsed by default, "
+"lazy-loaded on first expand)"
+msgstr ""
+"— Top 10 des canaux les plus actifs que vous n'avez pas rejoints (effacé par"
+" défaut, chargé en première expansion)"
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:69
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:114
 #, elixir-autogen, elixir-format
 msgid "— View URLs shared across channels."
 msgstr "— Afficher les URLs partagées entre les canaux."
 
-#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:75
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:120
 #, elixir-autogen, elixir-format
 msgid "— View and manage channel settings, bans, and modes."
-msgstr "— Visualiser et gérer les paramètres de canaux, les interdictions et les modes."
+msgstr ""
+"— Visualiser et gérer les paramètres de canaux, les interdictions et les "
+"modes."
 
 #: lib/retro_hex_chat_web/controllers/help_content/ui_conversations.html.heex:24
 #, elixir-autogen, elixir-format
@@ -1073,3 +1249,995 @@ msgstr "— Vos conversations actives avec le PM"
 #, elixir-autogen, elixir-format
 msgid "— Your joined channels with user counts and unread badges"
 msgstr "— Vos canaux connectés avec nombre d'utilisateurs et badges non lus"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "/away"
+msgstr "/away"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "/bio"
+msgstr "/bio"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "/bot Command Reference"
+msgstr "/bot Command Reference"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "/clear"
+msgstr "/clear"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:36
+#, elixir-autogen, elixir-format
+msgid "/clearmotd"
+msgstr "/clearmotd"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:69
+#, elixir-autogen, elixir-format
+msgid "/deop"
+msgstr "/deop"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:71
+#, elixir-autogen, elixir-format
+msgid "/devoice"
+msgstr "/devoice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:20
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:34
+#, elixir-autogen, elixir-format
+msgid "/motd"
+msgstr "/motd"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:72
+#, elixir-autogen, elixir-format
+msgid "/mute"
+msgstr "/mute"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:67
+#, elixir-autogen, elixir-format
+msgid "/nick"
+msgstr "/nick"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:66
+#, elixir-autogen, elixir-format
+msgid "/ns"
+msgstr "/ns"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:68
+#, elixir-autogen, elixir-format
+msgid "/op"
+msgstr "/op"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:35
+#, elixir-autogen, elixir-format
+msgid "/setmotd"
+msgstr "/setmotd"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "/timer Command"
+msgstr "/timer Command"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "/umode"
+msgstr "/umode"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:73
+#, elixir-autogen, elixir-format
+msgid "/unmute"
+msgstr "/unmute"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:70
+#, elixir-autogen, elixir-format
+msgid "/voice"
+msgstr "/voice"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:56
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:232
+#, elixir-autogen, elixir-format
+msgid "Account Dialog"
+msgstr "Boîte de dialogue du compte"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Account Info"
+msgstr "Informations sur le compte"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"Add creates a one-shot or repeating timer. Edit keeps the timer name fixed "
+"and recreates the same timer with the new seconds or command. Repeating "
+"timers require at least 10 seconds."
+msgstr ""
+"Ajouter crée une minuterie à une prise ou une répétition. Editer maintient "
+"le nom du minuteur corrigé et recrée le même chronomètre avec les nouvelles "
+"secondes ou la commande. Les répéteurs nécessitent au moins 10 secondes."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Adding and Editing"
+msgstr "Ajout et édition"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:37
+#, elixir-autogen, elixir-format
+msgid "Admin Console"
+msgstr "Console d'administration"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:33
+#, elixir-autogen, elixir-format
+msgid "Auto Respond"
+msgstr "Réponse automatique"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:174
+#, elixir-autogen, elixir-format
+msgid "Bot Management"
+msgstr "Gestion du bot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:245
+#, elixir-autogen, elixir-format
+msgid "Bot Management Dialog"
+msgstr "Boîte de dialogue de gestion du bot"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Bot Management is the admin window for creating, inspecting, enabling, and "
+"maintaining server-side bots. Open it from Tools > Bot Management, the Start"
+" menu Admin group, the toolbar Options dropdown, or by typing /bot with no "
+"arguments as an admin or server operator. It opens as a desktop window you "
+"can drag, resize, minimize to the taskbar, and close with its title-bar X."
+msgstr ""
+"Bot Management est la fenêtre d'administration pour créer, inspecter, "
+"activer et maintenir les robots côté serveur. Ouvrez-le depuis Tools > Bot "
+"Management, le menu Démarrer Groupe Admin, le menu déroulant Options de la "
+"barre d'outils, ou en tapant /bot sans argument en tant qu'administrateur ou"
+" opérateur de serveur. Il s'ouvre comme une fenêtre de bureau, vous pouvez "
+"glisser, redimensionner, minimiser à la barre des tâches, et fermer avec sa "
+"barre de titre X."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:50
+#, elixir-autogen, elixir-format
+msgid ""
+"Bot Management is visible only to identified server admins and server "
+"operators. Regular users can still list bots, inspect bot info, and view "
+"custom commands with /bot list, /bot info, and /bot commands."
+msgstr ""
+"Bot Management n'est visible que par les administrateurs de serveur et les "
+"opérateurs de serveur identifiés. Les utilisateurs réguliers peuvent encore "
+"lister les bots, inspecter l'information bot et afficher les commandes "
+"personnalisées avec la liste /bot, /bot et /bot."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:62
+#, elixir-autogen, elixir-format
+msgid "BotService Overview"
+msgstr "Aperçu de BotService"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Capabilities Tab"
+msgstr "Onglet Capacités"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:19
+#, elixir-autogen, elixir-format
+msgid "Change Nickname / Edit Profile / Set Away"
+msgstr "Modifier le Pseudo / Modifier le profil / Définir l'écart"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:5
+#, elixir-autogen, elixir-format
+msgid "Channel Conference"
+msgstr "Conférence sur les canaux"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Channels Tab"
+msgstr "Onglet canaux"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "Choose"
+msgstr "Choisir"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:8
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "Clear Window"
+msgstr "Effacer la fenêtre"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:14
+#, elixir-autogen, elixir-format
+msgid "Clear the active window, copy selected chat text, and open Find."
+msgstr ""
+"Effacer la fenêtre active, copier le texte de chat sélectionné et ouvrir "
+"Rechercher."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"Clears all messages from the active channel or private conversation window. "
+"This runs the same action as /clear and cannot be undone."
+msgstr ""
+"Efface tous les messages de la fenêtre de conversation active ou privée. "
+"Cette action est la même que /clear et ne peut être annulée."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:18
+#, elixir-autogen, elixir-format
+msgid "Command Equivalent"
+msgstr "Équivalent de commande"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:48
+#, elixir-autogen, elixir-format
+msgid "Command Mapping"
+msgstr "Cartographie des commandes"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Commands Tab"
+msgstr "Onglet Commandes"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"Copies the current text selection from the chat log to the clipboard. The "
+"item is enabled only when selected text is inside the message log."
+msgstr ""
+"Copie la sélection de texte courante depuis le journal de discussion vers le"
+" presse-papiers. L'élément n'est activé que lorsque le texte sélectionné est"
+" dans le journal des messages."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:16
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "Copy"
+msgstr "Copier"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Ctrl+Shift+/ — Shortcut Cheatsheet Ctrl+Shift+F — Find / Search (Edit > "
+"Find) Ctrl+Shift+] — Next Window Ctrl+Shift+[ — Previous Window "
+"Ctrl+Shift+1..9 — Switch to Window 1-9 Escape — Close search bar / dialog"
+msgstr ""
+"Ctrl+Shift+/ — Feuille de chaleur raccourcie Ctrl+Shift+F — "
+"Trouver/Rechercher (Modifier > Trouver) Ctrl+Shift+] — Prochaine fenêtre "
+"Ctrl+Shift+[ — Fenêtre précédente Ctrl+Shift+1..9 — Passer à la fenêtre 1-9 "
+"Échapper — Fermer la barre de recherche / boîte de dialogue"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:6
+#, elixir-autogen, elixir-format
+msgid ""
+"Ctrl+Shift+ArrowUp — Toggle microphone Ctrl+Shift+ArrowLeft — Toggle camera "
+"Ctrl+Shift+ArrowRight — Next layout Ctrl+Shift+ArrowDown — Focus next "
+"participant Ctrl+Shift+Q — Leave confirmation Hold Ctrl+Shift+Z — Push to "
+"talk while muted"
+msgstr ""
+"Ctrl+Shift+ArrowUp — Microphone toggle Ctrl+Shift+ArrowLeft — Caméra toggle "
+"Ctrl+Shift+ArrowRight — Prochaine mise en page Ctrl+Shift+ArrowDown — Focus "
+"prochain participant Ctrl+Shift+Q — Laisser la confirmation Hold "
+"Ctrl+Shift+Z — Pousser pour parler tout en étant muet"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:215
+#, elixir-autogen, elixir-format
+msgid "Desktop & Windows"
+msgstr "Bureau & Windows"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:6
+#, elixir-autogen, elixir-format
+msgid "Desktop:"
+msgstr "Bureau & #160;:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:43
+#, elixir-autogen, elixir-format
+msgid "Edit"
+msgstr "Modifier"
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:47
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:54
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:224
+#, elixir-autogen, elixir-format
+msgid "Edit Menu"
+msgstr "Modifier le menu"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Edit Menu:"
+msgstr "Modifier le menu & #160;:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Events Tab"
+msgstr "Onglet des événements"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:26
+#, elixir-autogen, elixir-format
+msgid ""
+"Every connected user can view the MOTD. Server administrators can set or "
+"clear it from the Admin Console MOTD tab."
+msgstr ""
+"Chaque utilisateur connecté peut voir le MOTD. Les administrateurs de "
+"serveurs peuvent le définir ou le effacer à partir de l'onglet Console "
+"d'administration MOTD."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:33
+#, elixir-autogen, elixir-format
+msgid ""
+"Every open window gets a taskbar button. Clicking a button focuses or "
+"restores its window; clicking the focused window's button minimizes it."
+msgstr ""
+"Chaque fenêtre ouverte reçoit un bouton de barre de tâches. Cliquer sur un "
+"bouton focalise ou restaure sa fenêtre; cliquer sur le bouton de la fenêtre "
+"focalisée la minimise."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:10
+#, elixir-autogen, elixir-format
+msgid "File > Account"
+msgstr "Fichier > Compte"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "General Tab"
+msgstr "Onglet général"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Give or Remove Op / Voice:"
+msgstr "Donner ou supprimer Op / Voix:"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Help > Message of the Day"
+msgstr "Aide > Message du jour"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:63
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:59
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:237
+#, elixir-autogen, elixir-format
+msgid "Identity & Presence"
+msgstr "Identité & Présence"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "Layout Persistence"
+msgstr "Mise en page Persistance"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "Limits"
+msgstr "Limites"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
+#, elixir-autogen, elixir-format
+msgid "Maximized by default"
+msgstr "Maximisé par défaut"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Maximum 5 active timers per session"
+msgstr "Maximum 5 minuteries actives par session"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Message of the Day opens the current server MOTD from the Help menu and "
+"displays it in the Status tab."
+msgstr ""
+"Le message du jour ouvre le serveur actuel MOTD depuis le menu Aide et "
+"l'affiche dans l'onglet État."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:23
+#, elixir-autogen, elixir-format
+msgid "Minimize"
+msgstr "Minimiser"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:59
+#, elixir-autogen, elixir-format
+msgid "Mute / Unmute (channel):"
+msgstr "Mute / Unmute (canal) :"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:60
+#, elixir-autogen, elixir-format
+msgid ""
+"Mute opens a duration prompt. Leave it blank for a permanent channel mute, "
+"or enter 30s, 5m, 1h, or 1d."
+msgstr ""
+"Mute ouvre une invite de durée. Laissez-le vide pour un canal permanent "
+"muet, ou entrez 30s, 5m, 1h, ou 1d."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:65
+#, elixir-autogen, elixir-format
+msgid "NickServ Overview"
+msgstr "Aperçu de NickServ"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:61
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:86
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:228
+#, elixir-autogen, elixir-format
+msgid "Notify List"
+msgstr "Liste des notifications"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "On a Phone"
+msgstr "Sur un téléphone"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:59
+#, elixir-autogen, elixir-format
+msgid ""
+"On a narrow screen the desktop shows one window at a time: the current "
+"window fills the screen like a phone app. The menu bar, Start button and "
+"taskbar stay put — tap a taskbar button to switch between your open windows."
+" Windows can't be dragged, resized, minimized or maximized here; you just "
+"open, switch and close them. Dialogs and forms fill the screen too, so they "
+"always fit."
+msgstr ""
+"Sur un écran étroit, le bureau affiche une fenêtre à la fois : la fenêtre "
+"actuelle remplit l'écran comme une application téléphonique. La barre de "
+"menus, le bouton Démarrer et la barre des tâches restent mis — appuyez sur "
+"un bouton de barre des tâches pour basculer entre vos fenêtres ouvertes. "
+"Windows ne peut pas être traîné, redimensionné, minimisé ou maximisé ici; "
+"vous juste ouvrez, changez et fermez-les. Les dialogues et les formulaires "
+"remplissent aussi l'écran, donc ils s'adaptent toujours."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "One-shot timers: 1 to 86,400 seconds"
+msgstr "Minuteurs à prise unique: 1 à 86 400 secondes"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Opening"
+msgstr "Ouverture"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:26
+#, elixir-autogen, elixir-format
+msgid ""
+"Opens or closes the in-window Find bar for searching messages. You can also "
+"press Ctrl+Shift+F."
+msgstr ""
+"Ouvre ou ferme la barre de recherche pour rechercher des messages. Vous "
+"pouvez également appuyer sur Ctrl+Shift+F."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "P2P Call Window"
+msgstr "Fenêtre d'appel P2P"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:74
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:82
+#, elixir-autogen, elixir-format
+msgid "P2P Lobby"
+msgstr "Lobby P2P"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:48
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Permissions"
+msgstr "Autorisations"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "Pinned"
+msgstr "Pinnés"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:32
+#, elixir-autogen, elixir-format
+msgid "Presence"
+msgstr "Présence"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:24
+#, elixir-autogen, elixir-format
+msgid "Profile"
+msgstr "Profil"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "Register / Identify"
+msgstr "Registre / Identifier"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"Register claims your current nickname with NickServ. Identify logs this "
+"session into an already registered nickname. The dialog adapts to the "
+"nickname state: unregistered nicknames show Register, registered nicknames "
+"show Identify and Drop registration, and NickServ password errors stay "
+"inline. Advanced Ghost session disconnects a stale session after you enter "
+"that nickname and its password."
+msgstr ""
+"Enregistrer revendique votre surnom actuel avec NickServ. Identifier les "
+"journaux de cette session dans un surnom déjà enregistré. La boîte de "
+"dialogue s'adapte à l'état du pseudonyme : les pseudonymes non enregistrés "
+"s'affichent Register, les pseudonymes enregistrés s'affichent Identification"
+" et Drop inscription, et les erreurs de mot de passe NickServ restent en "
+"ligne. Session avancée Ghost déconnecte une session statique après avoir "
+"entré ce surnom et son mot de passe."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:16
+#, elixir-autogen, elixir-format
+msgid "Register/Login"
+msgstr "Registre/Login"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:25
+#, elixir-autogen, elixir-format
+msgid "Repeating timers: 10 to 86,400 seconds"
+msgstr "Chronomètres répétés : 10 à 86 400 secondes"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"Right-click a nickname in the user list or chat area to open the context "
+"menu."
+msgstr ""
+"Faites un clic droit sur un pseudonyme dans la liste des utilisateurs ou la "
+"zone de discussion pour ouvrir le menu contextuel."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:39
+#, elixir-autogen, elixir-format
+msgid ""
+"Right-click a taskbar button for window commands (Restore, Minimize, "
+"Maximize, Close), or right-click an empty spot on the taskbar to arrange "
+"every open window at once: Cascade, Tile Horizontally or Vertically, and "
+"Minimize All."
+msgstr ""
+"Faites un clic droit sur un bouton de la barre des tâches pour les commandes"
+" de fenêtre (Restaurer, Minimiser, Maximiser, Fermer), ou faites un clic "
+"droit sur un point vide sur la barre des tâches pour organiser chaque "
+"fenêtre ouverte à la fois : Cascade, Tile horizontalement ou verticalement, "
+"et Minimisez Tout."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "Special Messages"
+msgstr "Messages spéciaux"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:49
+#, elixir-autogen, elixir-format
+msgid "Start Menu"
+msgstr "Démarrer le menu"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "Status-Bar Account Widget"
+msgstr "Widget de compte Status-Bar"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:30
+#, elixir-autogen, elixir-format
+msgid "Taskbar"
+msgstr "Barre des tâches"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Account dialog brings nickname identity, profile, presence, and personal"
+" user modes into one place. Open it from the status-bar account widget or "
+"the File > Account menu."
+msgstr ""
+"La boîte de dialogue Compte apporte l'identité du pseudonyme, le profil, la "
+"présence et les modes d'utilisateur personnels en un seul endroit. Ouvrez-le"
+" à partir du widget de compte status-bar ou du fichier > Menu de compte."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:18
+#, elixir-autogen, elixir-format
+msgid ""
+"The Capabilities tab lists each enabled capability and its configuration "
+"values. Admins can turn individual capabilities on or off; changes are "
+"reloaded into the bot process."
+msgstr ""
+"L'onglet Capacités énumère chaque capacité activée et ses valeurs de "
+"configuration. Les administrateurs peuvent activer ou désactiver les "
+"capacités individuelles; les modifications sont rechargées dans le processus"
+" du robot."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:26
+#, elixir-autogen, elixir-format
+msgid ""
+"The Channels tab shows where the bot is configured to join. Admins can add a"
+" channel or remove an existing channel assignment."
+msgstr ""
+"L'onglet Canaux montre où le bot est configuré pour se joindre. Les "
+"administrateurs peuvent ajouter un canal ou supprimer une attribution de "
+"canal existante."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:8
+#, elixir-autogen, elixir-format
+msgid "The Chat Window"
+msgstr "La fenêtre de discussion"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"The Commands tab shows custom command triggers and responses. Admins can add"
+" a new custom command or remove an existing trigger."
+msgstr ""
+"L'onglet Commandes affiche les déclencheurs et les réponses personnalisés. "
+"Admins peut ajouter une nouvelle commande personnalisée ou supprimer un "
+"déclencheur existant."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Edit menu groups message-window actions that work on the current chat "
+"view."
+msgstr ""
+"Le menu Modifier regroupe les actions de fenêtre de message qui fonctionnent"
+" sur la vue de chat actuelle."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:42
+#, elixir-autogen, elixir-format
+msgid ""
+"The Events tab displays the most recent bot event log entries loaded when a "
+"bot is selected."
+msgstr ""
+"L'onglet Événements affiche les plus récentes entrées de journal "
+"d'événements bot chargées lorsqu'un bot est sélectionné."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"The General tab shows the selected bot's name, nickname, command prefix, "
+"enabled state, configured capabilities, and runtime statistics when the bot "
+"process is running. Admins can use the Enable or Disable button to toggle "
+"the bot globally."
+msgstr ""
+"L'onglet Général affiche le nom, le surnom, le préfixe de commande, l'état "
+"activé, les capacités configurées et les statistiques d'exécution lors de "
+"l'exécution du processus bot. Les administrateurs peuvent utiliser le bouton"
+" Activer ou Désactiver pour basculer le robot dans le monde entier."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:51
+#, elixir-autogen, elixir-format
+msgid ""
+"The Start button opens a menu mirroring the menu bar, grouped into Tools, "
+"View, Admin (administrators only) and Help. Both paths do the same thing — "
+"use whichever is closer."
+msgstr ""
+"Le bouton Démarrer ouvre un menu qui reflète la barre de menus, regroupés en"
+" Outils, Affichage, Admin (administrateurs seulement) et Aide. Les deux "
+"chemins font la même chose — utilisez le plus proche."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The Timers window manages session-only scheduled commands. Open it from "
+"Tools > Timers, the Start menu, toolbar Options > Timers, or by typing "
+"/timer with no arguments. It is a desktop window: drag, resize, minimize to "
+"its taskbar button, or press Escape to close it. Closing discards any "
+"unsaved draft."
+msgstr ""
+"La fenêtre des minuteurs gère les commandes programmées uniquement en "
+"session. Ouvrez-le depuis Outils > Chronomètres, menu Démarrer, barre "
+"d'outils Options > Chronomètres, ou en tapant /timer sans arguments. C'est "
+"une fenêtre de bureau: glisser, redimensionner, minimiser à son bouton de "
+"barre de tâches, ou appuyez sur Escape pour la fermer. La clôture rejette "
+"toute ébauche non enregistrée."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:7
+#, elixir-autogen, elixir-format
+msgid ""
+"The chat lives in one pinned window on a Windows-style desktop with a "
+"taskbar, Start menu, and tray clock."
+msgstr ""
+"Le chat vit dans une fenêtre épinglée sur un bureau de style Windows avec "
+"une barre des tâches, le menu Démarrer et l'horloge de plateau."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:2
+#, elixir-autogen, elixir-format
+msgid ""
+"The chat runs on a Windows-style desktop. The whole chat surface — "
+"conversations, tabs, messages, user list and input — lives in one window "
+"over a taskbar, and the familiar menu bar and status bar sit above the "
+"desktop."
+msgstr ""
+"Le chat fonctionne sur un bureau de style Windows. Toute la surface du chat "
+"— conversations, onglets, messages, liste d'utilisateurs et entrée — vit "
+"dans une fenêtre au-dessus d'une barre de tâches, et la barre de menu et la "
+"barre d'état familières s'assoient au-dessus du bureau."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:20
+#, elixir-autogen, elixir-format
+msgid "The menu item runs"
+msgstr "L'élément de menu fonctionne"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:9
+#, elixir-autogen, elixir-format
+msgid ""
+"The table shows each active timer name, interval, repeat mode, next fire "
+"estimate, and command. Select a row to edit or stop that timer."
+msgstr ""
+"Le tableau montre chaque nom de minuteur actif, intervalle, mode de "
+"répétition, estimation du feu suivant, et commande. Sélectionnez une ligne "
+"pour modifier ou arrêter cette minuterie."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:45
+#, elixir-autogen, elixir-format
+msgid "The tray at the right end of the taskbar shows a clock."
+msgstr ""
+"Le plateau situé à l'extrémité droite de la barre des tâches montre une "
+"horloge."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:10
+#, elixir-autogen, elixir-format
+msgid ""
+"The widget shows your current nickname and state: Guest, Identified, or "
+"Away. Click it to open the Account dialog. The adjacent away button quickly "
+"toggles between away and back."
+msgstr ""
+"Le widget affiche votre surnom et votre état actuel: Invité, identifié, ou "
+"Away. Cliquez dessus pour ouvrir la boîte de dialogue Compte. Le bouton "
+"adjacent s'étale rapidement entre l'extérieur et le dos."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:67
+#, elixir-autogen, elixir-format
+msgid ""
+"The window layout — position, size, maximized state — is saved in your "
+"browser and restored on the next visit."
+msgstr ""
+"La disposition de la fenêtre — position, taille, état maximisé — est "
+"enregistrée dans votre navigateur et restaurée lors de la prochaine visite."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:22
+#, elixir-autogen, elixir-format
+msgid ""
+"There is no dedicated keyboard shortcut for User Lookup. Open it from Tools "
+"> User Lookup, a nickname context menu, /whois, or /whowas."
+msgstr ""
+"Il n'y a pas de raccourci clavier dédié pour la recherche utilisateur. "
+"Ouvrez-le depuis Outils > Lookup utilisateur, un menu contextuel surnom, "
+"/whois, ou /whowas."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"There is no dedicated keyboard shortcut for the /me action toggle. Type /me "
+"directly, or click the * button in a channel input."
+msgstr ""
+"Il n'y a pas de raccourci clavier dédié pour l'action /me. Tapez /me "
+"directement, ou cliquez sur le bouton * dans une entrée de canal."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_context_menu.html.heex:55
+#, elixir-autogen, elixir-format
+msgid ""
+"These items change labels based on the target's current role, for example "
+"Give Op (+o) or Remove Op (-o)."
+msgstr ""
+"Ces éléments changent d'étiquettes en fonction du rôle actuel de la cible, "
+"par exemple Donner Op (+o) ou Supprimer Op (-o)."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:7
+#, elixir-autogen, elixir-format
+msgid "Timer List"
+msgstr "Liste des minuteurs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:31
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:168
+#, elixir-autogen, elixir-format
+msgid "Timers"
+msgstr "Chronomètres"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:62
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:241
+#, elixir-autogen, elixir-format
+msgid "Timers Dialog"
+msgstr "Boîte de dialogue des minuteurs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_timers_dialog.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "Timers are lost on disconnect or page reload"
+msgstr ""
+"Les minuteurs sont perdus lors de la déconnexion ou du rechargement de la "
+"page"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_bot_management.html.heex:68
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:79
+#: lib/retro_hex_chat_web/controllers/help_content/ui_edit_menu.html.heex:38
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:53
+#, elixir-autogen, elixir-format
+msgid "Toolbar"
+msgstr "Barre d'outils"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:34
+#, elixir-autogen, elixir-format
+msgid ""
+"Use Presence to set a custom away message or clear away status. Away state "
+"is visible in user lists and whois output."
+msgstr ""
+"Utilisez Présence pour définir un message d'éloignement personnalisé ou "
+"effacer le statut d'éloignement. L'état de sortie est visible dans les "
+"listes d'utilisateurs et la sortie whois."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:26
+#, elixir-autogen, elixir-format
+msgid ""
+"Use Profile to change your nickname or edit your bio. Nickname changes are "
+"validated before the confirmation dialog opens. The bio is shown in /whois "
+"and is limited to 200 characters with a live counter."
+msgstr ""
+"Utilisez Profil pour modifier votre pseudonyme ou modifier votre bio. Les "
+"modifications de Pseudo sont validées avant l'ouverture de la boîte de "
+"dialogue de confirmation. La bio est représentée dans /whois et limitée à "
+"200 caractères avec un compteur en direct."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "User Lookup"
+msgstr "Recherche utilisateur"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:40
+#, elixir-autogen, elixir-format
+msgid "User Modes"
+msgstr "Modes utilisateurs"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:42
+#, elixir-autogen, elixir-format
+msgid ""
+"User Modes currently exposes the wallops (+w) setting, which opts you in to "
+"operator broadcast messages."
+msgstr ""
+"Utilisateur Modes expose actuellement le réglage wallops (+w) qui vous opte "
+"pour les messages de diffusion de l'opérateur."
+
+#: lib/retro_hex_chat_web/controllers/help_content/keyboard_shortcuts.html.heex:8
+#, elixir-autogen, elixir-format
+msgid ""
+"When the P2P Call window is focused: Ctrl+Shift+ArrowUp — Toggle microphone "
+"Ctrl+Shift+ArrowLeft — Toggle camera Ctrl+Shift+ArrowRight — Next layout "
+"Ctrl+Shift+ArrowDown — Cycle self-view Ctrl+Shift+. — Toggle screen share "
+"Ctrl+Shift+Q — End call media"
+msgstr ""
+"Lorsque la fenêtre d'appel P2P est focalisée: Ctrl+Shift+ArrowUp — "
+"Microphone toggle Ctrl+Shift+ArrowLeft — Caméra toggle Ctrl+Shift+ArrowRight"
+" — Prochaine mise en page Ctrl+Shift+ArrowDown — Auto-vue du cycle "
+"Ctrl+Shift+. — Basculer le partage d'écran Ctrl+Shift+Q — Médias d'appel "
+"final"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_overview.html.heex:41
+#, elixir-autogen, elixir-format
+msgid ""
+"Your account state, current channel, user count, online buddy badge, lag, "
+"and mute state."
+msgstr ""
+"Votre état de compte, canal actuel, nombre d'utilisateurs, badge de copain "
+"en ligne, lag, et état muet."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "and"
+msgstr "et"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:21
+#, elixir-autogen, elixir-format
+msgid "and uses the same Status-tab output."
+msgstr "et utilise la même sortie Status-tab."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:54
+#, elixir-autogen, elixir-format
+msgid "for nickname changes"
+msgstr "pour les changements de pseudonyme"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:56
+#, elixir-autogen, elixir-format
+msgid "for presence"
+msgstr "pour la présence"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:55
+#, elixir-autogen, elixir-format
+msgid "for profile text"
+msgstr "pour le texte du profil"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_account_dialog.html.heex:57
+#, elixir-autogen, elixir-format
+msgid "or"
+msgstr "ou"
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_message_of_the_day.html.heex:12
+#, elixir-autogen, elixir-format
+msgid "to re-view the same MOTD that is shown automatically when you connect."
+msgstr ""
+"pour revoir le même MOTD qui s'affiche automatiquement lorsque vous vous "
+"connectez."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:168
+#, elixir-autogen, elixir-format
+msgid "— Add, edit, and stop session-only scheduled commands."
+msgstr ""
+"— Ajouter, modifier et arrêter des commandes programmées pour la session "
+"seulement."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:68
+#, elixir-autogen, elixir-format
+msgid ""
+"— Browse channels, join open rooms, or request access to invite-only (+i) "
+"channels."
+msgstr ""
+"— Parcourez les canaux, rejoignez les salles ouvertes ou demandez l'accès "
+"aux canaux invités (+i)."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:46
+#, elixir-autogen, elixir-format
+msgid "— Clear messages from the active chat window. This cannot be undone."
+msgstr ""
+"— Effacer les messages depuis la fenêtre de chat active. Cela ne peut pas "
+"être annulé."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:52
+#, elixir-autogen, elixir-format
+msgid "— Copy selected chat-log text when a selection exists."
+msgstr ""
+"— Copier le texte du chat-log sélectionné lorsqu'une sélection existe."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:17
+#, elixir-autogen, elixir-format
+msgid ""
+"— On first visit the chat fills the desktop. The restore button (or double-"
+"clicking the title bar) brings it back to a floating window you can drag by "
+"the title bar and resize from any edge or corner."
+msgstr ""
+"— Lors de la première visite du chat remplit le bureau. Le bouton de "
+"restauration (ou double-cliquez sur la barre de titre) le ramène à une "
+"fenêtre flottante que vous pouvez glisser par la barre de titre et "
+"redimensionner à partir de n'importe quel bord ou coin."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:13
+#, elixir-autogen, elixir-format
+msgid "— Open the Account dialog for NickServ registration or login."
+msgstr ""
+"— Ouvrez la boîte de dialogue Compte pour l'enregistrement ou la connexion "
+"de NickServ."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:20
+#, elixir-autogen, elixir-format
+msgid ""
+"— Open the Account dialog tabs for nickname, bio, and presence controls."
+msgstr ""
+"— Ouvrez les onglets de dialogue Compte pour le surnom, la bio et les "
+"contrôles de présence."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:174
+#, elixir-autogen, elixir-format
+msgid ""
+"— Open the admin-only dialog for creating bots, toggling bot status, "
+"assigning channels, and managing custom commands."
+msgstr ""
+"— Ouvrez la boîte de dialogue admin-only pour créer des robots, basculer le "
+"statut bot, assigner des canaux et gérer des commandes personnalisées."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:86
+#, elixir-autogen, elixir-format
+msgid ""
+"— Open the buddy list used to track when selected nicknames come online."
+msgstr ""
+"— Ouvrez la liste des amis utilisés pour suivre les surnoms sélectionnés en "
+"ligne."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:58
+#, elixir-autogen, elixir-format
+msgid "— Open the search bar from Edit > Find or Ctrl+Shift+F."
+msgstr ""
+"— Ouvrez la barre de recherche depuis Édition > Rechercher ou Ctrl+Shift+F."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_toolbar.html.heex:26
+#, elixir-autogen, elixir-format
+msgid "— Runs /ns info for your current nickname."
+msgstr "— Exécute /ns info pour votre surnom actuel."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:23
+#, elixir-autogen, elixir-format
+msgid ""
+"— Sends the chat to its taskbar button; click the button to bring it back."
+msgstr ""
+"— Envoie le chat au bouton de la barre des tâches; cliquez sur le bouton "
+"pour le ramener."
+
+#: lib/retro_hex_chat_web/controllers/help_content/ui_desktop.html.heex:11
+#, elixir-autogen, elixir-format
+msgid "— The chat window cannot be closed; it only minimizes or restores."
+msgstr ""
+"— La fenêtre de chat ne peut pas être fermée; elle minimise ou restaure "
+"seulement."

@@ -11,11 +11,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:18
-#, elixir-autogen, elixir-format
-msgid "!play"
-msgstr "লাফাও!"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:40
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:43
@@ -93,7 +88,9 @@ msgstr "(halfop-pefer) — বা অর্ধ-op অবস্থা (কিক 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:31
 #, elixir-autogen, elixir-format
 msgid "(invite-only) — Users must be invited to join the channel."
-msgstr "(শুধুমাত্র-শুধু) – ব্যবহারকারীদেরকে চ্যানেলে যোগদানের জন্য আমন্ত্রণ জানানো আবশ্যক।"
+msgstr ""
+"(শুধুমাত্র-শুধু) – ব্যবহারকারীদেরকে চ্যানেলে যোগদানের জন্য আমন্ত্রণ জানানো "
+"আবশ্যক।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:57
 #, elixir-autogen, elixir-format
@@ -108,12 +105,18 @@ msgstr "(key) — চ্যানেলের সাথে যোগ দেও�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "(moderated) — Only voiced (+v) users and operators can send messages."
-msgstr "(mode) — শুধুমাত্র ভয়েস (অভি) ব্যবহারকারী এবং অপারেটররা বার্তা পাঠাতে পারবে ।"
+msgstr ""
+"(mode) — শুধুমাত্র ভয়েস (অভি) ব্যবহারকারী এবং অপারেটররা বার্তা পাঠাতে পারবে"
+" ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "(no external messages) — Only channel members can send messages to the channel."
-msgstr "(কোন বার্তা নেই) শুধুমাত্র চ্যানেলের সদস্যরা চ্যানেল থেকে বার্তা পাঠাতে পারেন।"
+msgid ""
+"(no external messages) — Only channel members can send messages to the "
+"channel."
+msgstr ""
+"(কোন বার্তা নেই) শুধুমাত্র চ্যানেলের সদস্যরা চ্যানেল থেকে বার্তা পাঠাতে "
+"পারেন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:63
 #, elixir-autogen, elixir-format
@@ -127,8 +130,11 @@ msgstr "(শুধুমাত্র বার্তা নয়)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:70
 #, elixir-autogen, elixir-format
-msgid "(operator) — Give or remove full operator status (can manage all modes)."
-msgstr "(permorks) - এর সম্পূর্ণ অপারেটরের উপস্থিতি সম্বন্ধে অবগত থাকুন অথবা সকল মোড পরিচালনা করুন ।"
+msgid ""
+"(operator) — Give or remove full operator status (can manage all modes)."
+msgstr ""
+"(permorks) - এর সম্পূর্ণ অপারেটরের উপস্থিতি সম্বন্ধে অবগত থাকুন অথবা সকল মোড"
+" পরিচালনা করুন ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:16
 #, elixir-autogen, elixir-format
@@ -163,12 +169,16 @@ msgstr "(সুপার মতামত)"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "(topic protected) — Only operators can change the channel topic."
-msgstr "(বিষয় সুরক্ষিত) — শুধুমাত্র অপারেটররা চ্যানেল বিষয় পরিবর্তন করতে পারে ।"
+msgstr ""
+"(বিষয় সুরক্ষিত) — শুধুমাত্র অপারেটররা চ্যানেল বিষয় পরিবর্তন করতে পারে ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "(user limit) — Sets the maximum number of users allowed in the channel."
-msgstr "(ব্যবহারকারী সীমা) - চ্যানেলের মধ্যে উপস্থিত ব্যবহারকারীর সর্বোচ্চ সংখ্যা নির্ধারণ করুন ।"
+msgid ""
+"(user limit) — Sets the maximum number of users allowed in the channel."
+msgstr ""
+"(ব্যবহারকারী সীমা) - চ্যানেলের মধ্যে উপস্থিত ব্যবহারকারীর সর্বোচ্চ সংখ্যা "
+"নির্ধারণ করুন ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:84
 #, elixir-autogen, elixir-format
@@ -177,7 +187,9 @@ msgstr "(ভয়েসেস) — বা দূরে থাকুন ( কো
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:35
 #, elixir-autogen, elixir-format
-msgid "(wallops), which opts you in to receiving operator broadcast messages sent via"
+msgid ""
+"(wallops), which opts you in to receiving operator broadcast messages sent "
+"via"
 msgstr "(ওয়ালপ), যা আপনাকে পরিচালনা করে অপারেটরের মাধ্যমে বার্তা গ্রহণ করতে"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:62
@@ -187,18 +199,29 @@ msgstr "যা শেষ হবার নয় এবং নিষিদ ্ �
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:23
 #, elixir-autogen, elixir-format
-msgid ") shows detailed help for that specific command. Use Help Topics from the menu bar to browse and search all help topics."
-msgstr "( যিশা. মেনু থেকে বিষয় সংক্রান্ত তথ্য অনুসন্ধানের সহায়তার জন্য সহায়তা প্রদর্শন করা হবে।"
+msgid ""
+") shows detailed help for that specific command. Use Help Topics from the "
+"menu bar to browse and search all help topics."
+msgstr ""
+"( যিশা. মেনু থেকে বিষয় সংক্রান্ত তথ্য অনুসন্ধানের সহায়তার জন্য সহায়তা "
+"প্রদর্শন করা হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:15
 #, elixir-autogen, elixir-format
 msgid "). The message appears in each recipient's Status tab. Unlike"
-msgstr "- হ্যা. প্রতিটি প্রাপকদের স্ট্যাটাসের মধ্যে বার্তা প্রদর্শিত হবে। এটি নয়"
+msgstr ""
+"- হ্যা. প্রতিটি প্রাপকদের স্ট্যাটাসের মধ্যে বার্তা প্রদর্শিত হবে। এটি নয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "). They are designed for automated messages and informational announcements that shouldn't interrupt the recipient. Channel notices always appear in the channel window. User notices appear according to the recipient's"
-msgstr "- হ্যা. এগুলো তৈরি করা হয়েছে স্বয়ংক্রিয় বার্তা আর তথ্য ঘোষণার জন্য যা প্রাপককে বাধা দিতে হবে না। চ্যানেলের প্রধান উইন্ডোর মধ্যে উপস্থিত চ্যানেল সংখ্যা। প্রাপকের পরিচয় দ্বারা চিহ্নিত ব্যবহারকারী দ্বারা প্রকাশ করা হয়"
+msgid ""
+"). They are designed for automated messages and informational announcements "
+"that shouldn't interrupt the recipient. Channel notices always appear in the"
+" channel window. User notices appear according to the recipient's"
+msgstr ""
+"- হ্যা. এগুলো তৈরি করা হয়েছে স্বয়ংক্রিয় বার্তা আর তথ্য ঘোষণার জন্য যা "
+"প্রাপককে বাধা দিতে হবে না। চ্যানেলের প্রধান উইন্ডোর মধ্যে উপস্থিত চ্যানেল "
+"সংখ্যা। প্রাপকের পরিচয় দ্বারা চিহ্নিত ব্যবহারকারী দ্বারা প্রকাশ করা হয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:5
 #, elixir-autogen, elixir-format
@@ -285,8 +308,15 @@ msgstr "+w"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
 #, elixir-autogen, elixir-format
-msgid ", a confirmation dialog appears asking you to confirm the change. If the target nickname is registered with NickServ, you'll also need to enter the password. Once confirmed, all users in your channels see an announcement that you changed your name."
-msgstr "একটি নিশ্চিত ডায়লগ আপনাকে পরিবর্তন নিশ্চিত করতে বলেছে। নাম নিবন্ধন করা হলে, উপনামের সাথে নিবন্ধন করা আবশ্যক। একবার নিশ্চিত করলে, আপনার চ্যানেলে সকল ব্যবহারকারী আপনার নাম পরিবর্তন করে একটি ঘোষণা দেখতে পাবেন।"
+msgid ""
+", a confirmation dialog appears asking you to confirm the change. If the "
+"target nickname is registered with NickServ, you'll also need to enter the "
+"password. Once confirmed, all users in your channels see an announcement "
+"that you changed your name."
+msgstr ""
+"একটি নিশ্চিত ডায়লগ আপনাকে পরিবর্তন নিশ্চিত করতে বলেছে। নাম নিবন্ধন করা হলে,"
+" উপনামের সাথে নিবন্ধন করা আবশ্যক। একবার নিশ্চিত করলে, আপনার চ্যানেলে সকল "
+"ব্যবহারকারী আপনার নাম পরিবর্তন করে একটি ঘোষণা দেখতে পাবেন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:18
 #, elixir-autogen, elixir-format
@@ -305,7 +335,9 @@ msgstr "তাদের বার্তা আবার আপনার কা�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:2
 #, elixir-autogen, elixir-format
-msgid ", notices don't open a PM window on the recipient's side and don't trigger notification sounds."
+msgid ""
+", notices don't open a PM window on the recipient's side and don't trigger "
+"notification sounds."
 msgstr "প্রাপকের পাশে প্রধানমন্ত্রীর জানালা খুলবেন না আর শব্দও করবেন না।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:44
@@ -316,7 +348,8 @@ msgstr "অথবা"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:2
 #, elixir-autogen, elixir-format
 msgid ", the kicked user can rejoin immediately unless a ban is also set."
-msgstr "ব্যবহারকারী দ্বারা নিষেধাজ্ঞা নির্ধারিত না হলে অবিলম্বে তা বাতিল করা যাবে।"
+msgstr ""
+"ব্যবহারকারী দ্বারা নিষেধাজ্ঞা নির্ধারিত না হলে অবিলম্বে তা বাতিল করা যাবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:5
 #, elixir-autogen, elixir-format
@@ -370,8 +403,13 @@ msgstr "..একই ডিফল্ট ভাবে, দেয়ালগুল
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:22
 #, elixir-autogen, elixir-format
-msgid ". Other channel members see that the user was banned. For registered channels, bans are persisted and survive channel restarts."
-msgstr "অন্যান্য চ্যানেলের সদস্যরা দেখেছেন যে ব্যবহারকারীদের নিষিদ্ধ করা হয়েছে। নিবন্ধিত চ্যানেলগুলোর জন্য নিষেধাজ্ঞা অব্যাহত রাখা হয়েছে এবং চ্যানেল পুনরায় চালু হয়েছে।"
+msgid ""
+". Other channel members see that the user was banned. For registered "
+"channels, bans are persisted and survive channel restarts."
+msgstr ""
+"অন্যান্য চ্যানেলের সদস্যরা দেখেছেন যে ব্যবহারকারীদের নিষিদ্ধ করা হয়েছে। "
+"নিবন্ধিত চ্যানেলগুলোর জন্য নিষেধাজ্ঞা অব্যাহত রাখা হয়েছে এবং চ্যানেল "
+"পুনরায় চালু হয়েছে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:26
 #, elixir-autogen, elixir-format
@@ -380,8 +418,14 @@ msgstr "মনে কর এটা একটা ব্যক্তিগত র�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:43
 #, elixir-autogen, elixir-format
-msgid ". Timer commands run in the window that was active when the timer was created and do not switch your current window when they fire. Creating a timer with the same name as an existing one replaces the old timer."
-msgstr "টাইমার আরম্ভের সময় বন্ধ করার সময় আপনার বর্তমান উইন্ডো বন্ধ করার সময় সমস্যা দেখা দিতে পারে । এক নামের একটি টাইমার তৈরি করা হচ্ছে যা পুরোনো টাইমার ব্যবহার করতে পারে।"
+msgid ""
+". Timer commands run in the window that was active when the timer was "
+"created and do not switch your current window when they fire. Creating a "
+"timer with the same name as an existing one replaces the old timer."
+msgstr ""
+"টাইমার আরম্ভের সময় বন্ধ করার সময় আপনার বর্তমান উইন্ডো বন্ধ করার সময় "
+"সমস্যা দেখা দিতে পারে । এক নামের একটি টাইমার তৈরি করা হচ্ছে যা পুরোনো টাইমার"
+" ব্যবহার করতে পারে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:5
 #, elixir-autogen, elixir-format
@@ -414,13 +458,23 @@ msgstr "/admin channel"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:71
 #, elixir-autogen, elixir-format
-msgid "/admin channel list --search lobby /admin channel info #general /admin channel delete #spam /admin channel purge #general --from @Spammer"
-msgstr "/admin channel list --search lobby /admin channel info #general /admin channel delete #spam /admin channel purge #general --from @Spammer"
+msgid ""
+"/admin channel list --search lobby /admin channel info #general /admin "
+"channel delete #spam /admin channel purge #general --from @Spammer"
+msgstr ""
+"/admin channel list --search lobby /admin channel info #general /admin "
+"channel delete #spam /admin channel purge #general --from @Spammer"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "/admin channel list [--search Q] /admin channel info #<channel> /admin channel create #<channel> /admin channel delete #<channel> /admin channel purge #<channel> [--from @nick] /admin channel banlist #<channel>"
-msgstr "/admin channel list [--search Q] /admin channel info #<channel> /admin channel create #<channel> /admin channel delete #<channel> /admin channel purge #<channel> [--from @nick] /admin channel banlist #<channel>"
+msgid ""
+"/admin channel list [--search Q] /admin channel info #<channel> /admin "
+"channel create #<channel> /admin channel delete #<channel> /admin channel "
+"purge #<channel> [--from @nick] /admin channel banlist #<channel>"
+msgstr ""
+"/admin channel list [--search Q] /admin channel info #<channel> /admin "
+"channel create #<channel> /admin channel delete #<channel> /admin channel "
+"purge #<channel> [--from @nick] /admin channel banlist #<channel>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:32
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:80
@@ -430,16 +484,28 @@ msgstr "/admin cs"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "/admin cs drop #<channel> /admin cs info #<channel> /admin cs transfer #<channel> @<nick> /admin cs access #<channel> /admin cs access #<channel> add <level> @<nick> /admin cs access #<channel> del <level> @<nick>"
-msgstr "/admin cs drop #<channel> /admin cs info #<channel> /admin cs transfer #<channel> @<nick> /admin cs access #<channel> /admin cs access #<channel> add <level> @<nick> /admin cs access #<channel> del <level> @<nick>"
+msgid ""
+"/admin cs drop #<channel> /admin cs info #<channel> /admin cs transfer "
+"#<channel> @<nick> /admin cs access #<channel> /admin cs access #<channel> "
+"add <level> @<nick> /admin cs access #<channel> del <level> @<nick>"
+msgstr ""
+"/admin cs drop #<channel> /admin cs info #<channel> /admin cs transfer "
+"#<channel> @<nick> /admin cs access #<channel> /admin cs access #<channel> "
+"add <level> @<nick> /admin cs access #<channel> del <level> @<nick>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:69
 #, elixir-autogen, elixir-format
-msgid "/admin cs info #general /admin cs transfer #general @NewOwner /admin cs access #general add sop @TrustedUser /admin cs access #general del aop @OldMod /admin cs drop #abandoned"
-msgstr "/admin cs info #general /admin cs transfer #general @NewOwner /admin cs access #general add sop @TrustedUser /admin cs access #general del aop @OldMod /admin cs drop #abandoned"
+msgid ""
+"/admin cs info #general /admin cs transfer #general @NewOwner /admin cs "
+"access #general add sop @TrustedUser /admin cs access #general del aop "
+"@OldMod /admin cs drop #abandoned"
+msgstr ""
+"/admin cs info #general /admin cs transfer #general @NewOwner /admin cs "
+"access #general add sop @TrustedUser /admin cs access #general del aop "
+"@OldMod /admin cs drop #abandoned"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:36
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:130
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:129
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "/admin debug"
@@ -479,13 +545,21 @@ msgstr "/admin ns"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "/admin ns drop @<nick> /admin ns info @<nick> /admin ns resetpass @<nick> <new_password>"
-msgstr "/admin ns drop @<nick> /admin ns info @<nick> /admin ns resetpass @<nick> <new_password>"
+msgid ""
+"/admin ns drop @<nick> /admin ns info @<nick> /admin ns resetpass @<nick> "
+"<new_password>"
+msgstr ""
+"/admin ns drop @<nick> /admin ns info @<nick> /admin ns resetpass @<nick> "
+"<new_password>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "/admin ns info @Alice /admin ns drop @OldAccount /admin ns resetpass @Alice newpassword123"
-msgstr "/admin ns info @Alice /admin ns drop @OldAccount /admin ns resetpass @Alice newpassword123"
+msgid ""
+"/admin ns info @Alice /admin ns drop @OldAccount /admin ns resetpass @Alice "
+"newpassword123"
+msgstr ""
+"/admin ns info @Alice /admin ns drop @OldAccount /admin ns resetpass @Alice "
+"newpassword123"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:14
 #, elixir-autogen, elixir-format
@@ -504,8 +578,12 @@ msgstr "/admin nuke /admin nuke --confirm"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "/admin nuke — See what would be deleted /admin nuke --confirm — Execute the system wipe"
-msgstr "/admin nuke — See what would be deleted /admin nuke --confirm — Execute the system wipe"
+msgid ""
+"/admin nuke — See what would be deleted /admin nuke --confirm — Execute the "
+"system wipe"
+msgstr ""
+"/admin nuke — See what would be deleted /admin nuke --confirm — Execute the "
+"system wipe"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:40
@@ -516,18 +594,34 @@ msgstr "/admin server"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "/admin server info /admin server set <key> <value> /admin server get <key> /admin server settings"
-msgstr "/admin server info /admin server set <key> <value> /admin server get <key> /admin server settings"
+msgid ""
+"/admin server info /admin server set <key> <value> /admin server get <key> "
+"/admin server settings"
+msgstr ""
+"/admin server info /admin server set <key> <value> /admin server get <key> "
+"/admin server settings"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:119
 #, elixir-autogen, elixir-format
-msgid "/admin server info /admin server set server_name \"My IRC Server\" /admin server get registration /admin server settings"
-msgstr "/admin server info /admin server set server_name \"My IRC Server\" /admin server get registration /admin server settings"
+msgid ""
+"/admin server info /admin server set server_name \"My IRC Server\" /admin "
+"server get registration /admin server settings"
+msgstr ""
+"/admin server info /admin server set server_name \"My IRC Server\" /admin "
+"server get registration /admin server settings"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:48
 #, elixir-autogen, elixir-format
-msgid "/admin server info /admin user ban @Spammer --reason Flooding --duration 24h /admin user list --online /admin channel delete #old-channel /admin ns drop @OldNick /admin cs transfer #channel @NewOwner /admin debug memory /admin log --last 20 --user Admin"
-msgstr "/admin server info /admin user ban @Spammer --reason Flooding --duration 24h /admin user list --online /admin channel delete #old-channel /admin ns drop @OldNick /admin cs transfer #channel @NewOwner /admin debug memory /admin log --last 20 --user Admin"
+msgid ""
+"/admin server info /admin user ban @Spammer --reason Flooding --duration 24h"
+" /admin user list --online /admin channel delete #old-channel /admin ns drop"
+" @OldNick /admin cs transfer #channel @NewOwner /admin debug memory /admin "
+"log --last 20 --user Admin"
+msgstr ""
+"/admin server info /admin user ban @Spammer --reason Flooding --duration 24h"
+" /admin user list --online /admin channel delete #old-channel /admin ns drop"
+" @OldNick /admin cs transfer #channel @NewOwner /admin debug memory /admin "
+"log --last 20 --user Admin"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:30
@@ -542,13 +636,31 @@ msgstr "/admin user"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:81
 #, elixir-autogen, elixir-format
-msgid "/admin user list --online /admin user ban @Spammer --reason Flooding --duration 24h /admin user kick @Troll --reason Breaking rules /admin user mute @Noisy --duration 30m /admin user role @Trusted server_operator"
-msgstr "/admin user list --online /admin user ban @Spammer --reason Flooding --duration 24h /admin user kick @Troll --reason Breaking rules /admin user mute @Noisy --duration 30m /admin user role @Trusted server_operator"
+msgid ""
+"/admin user list --online /admin user ban @Spammer --reason Flooding "
+"--duration 24h /admin user kick @Troll --reason Breaking rules /admin user "
+"mute @Noisy --duration 30m /admin user role @Trusted server_operator"
+msgstr ""
+"/admin user list --online /admin user ban @Spammer --reason Flooding "
+"--duration 24h /admin user kick @Troll --reason Breaking rules /admin user "
+"mute @Noisy --duration 30m /admin user role @Trusted server_operator"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "/admin user list [--search Q] [--online] /admin user info @<nick> /admin user ban @<nick> [--reason R] [--duration D] /admin user unban @<nick> /admin user kick @<nick> [--reason R] /admin user mute @<nick> [--duration D] /admin user unmute @<nick> /admin user rename @<nick> <new_nick> /admin user role @<nick> <admin|server_operator|user> /admin user banlist [--search Q]"
-msgstr "/admin user list [--search Q] [--online] /admin user info @<nick> /admin user ban @<nick> [--reason R] [--duration D] /admin user unban @<nick> /admin user kick @<nick> [--reason R] /admin user mute @<nick> [--duration D] /admin user unmute @<nick> /admin user rename @<nick> <new_nick> /admin user role @<nick> <admin|server_operator|user> /admin user banlist [--search Q]"
+msgid ""
+"/admin user list [--search Q] [--online] /admin user info @<nick> /admin "
+"user ban @<nick> [--reason R] [--duration D] /admin user unban @<nick> "
+"/admin user kick @<nick> [--reason R] /admin user mute @<nick> [--duration "
+"D] /admin user unmute @<nick> /admin user rename @<nick> <new_nick> /admin "
+"user role @<nick> <admin|server_operator|user> /admin user banlist [--search"
+" Q]"
+msgstr ""
+"/admin user list [--search Q] [--online] /admin user info @<nick> /admin "
+"user ban @<nick> [--reason R] [--duration D] /admin user unban @<nick> "
+"/admin user kick @<nick> [--reason R] /admin user mute @<nick> [--duration "
+"D] /admin user unmute @<nick> /admin user rename @<nick> <new_nick> /admin "
+"user role @<nick> <admin|server_operator|user> /admin user banlist [--search"
+" Q]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:43
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:50
@@ -566,8 +678,12 @@ msgstr "/alias /alias list /alias add <name> <expansion> /alias remove <name>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:75
 #, elixir-autogen, elixir-format
-msgid "/alias add hi /me says hello everyone! /alias add greet /me waves at $1 /alias add info /whois $1 /alias remove hi /alias list"
-msgstr "/alias add hi /me says hello everyone! /alias add greet /me waves at $1 /alias add info /whois $1 /alias remove hi /alias list"
+msgid ""
+"/alias add hi /me says hello everyone! /alias add greet /me waves at $1 "
+"/alias add info /whois $1 /alias remove hi /alias list"
+msgstr ""
+"/alias add hi /me says hello everyone! /alias add greet /me waves at $1 "
+"/alias add info /whois $1 /alias remove hi /alias list"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:26
 #, elixir-autogen, elixir-format
@@ -587,8 +703,12 @@ msgstr "/announce <message>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:34
 #, elixir-autogen, elixir-format
-msgid "/announce Server will restart at midnight UTC /announce Please read the updated rules in #rules"
-msgstr "/announce Server will restart at midnight UTC /announce Please read the updated rules in #rules"
+msgid ""
+"/announce Server will restart at midnight UTC /announce Please read the "
+"updated rules in #rules"
+msgstr ""
+"/announce Server will restart at midnight UTC /announce Please read the "
+"updated rules in #rules"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:44
@@ -601,13 +721,21 @@ msgstr "/autojoin"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "/autojoin /autojoin list /autojoin add <#channel> [key] /autojoin remove <#channel> /autojoin clear"
-msgstr "/autojoin /autojoin list /autojoin add <#channel> [key] /autojoin remove <#channel> /autojoin clear"
+msgid ""
+"/autojoin /autojoin list /autojoin add <#channel> [key] /autojoin remove "
+"<#channel> /autojoin clear"
+msgstr ""
+"/autojoin /autojoin list /autojoin add <#channel> [key] /autojoin remove "
+"<#channel> /autojoin clear"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:41
 #, elixir-autogen, elixir-format
-msgid "/autojoin list /autojoin add #elixir /autojoin add #secret mykey /autojoin remove #elixir /autojoin clear"
-msgstr "/autojoin list /autojoin add #elixir /autojoin add #secret mykey /autojoin remove #elixir /autojoin clear"
+msgid ""
+"/autojoin list /autojoin add #elixir /autojoin add #secret mykey /autojoin "
+"remove #elixir /autojoin clear"
+msgstr ""
+"/autojoin list /autojoin add #elixir /autojoin add #secret mykey /autojoin "
+"remove #elixir /autojoin clear"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:33
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:117
@@ -617,13 +745,21 @@ msgstr "/autorespond"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "/autorespond /autorespond list /autorespond add <trigger> [#channel] <command> /autorespond remove <position>"
-msgstr "/autorespond /autorespond list /autorespond add <trigger> [#channel] <command> /autorespond remove <position>"
+msgid ""
+"/autorespond /autorespond list /autorespond add <trigger> [#channel] "
+"<command> /autorespond remove <position>"
+msgstr ""
+"/autorespond /autorespond list /autorespond add <trigger> [#channel] "
+"<command> /autorespond remove <position>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:44
 #, elixir-autogen, elixir-format
-msgid "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /say $nick left the channel /autorespond list /autorespond remove 0"
-msgstr "/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add on_part /say $nick left the channel /autorespond list /autorespond remove 0"
+msgid ""
+"/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add "
+"on_part /say $nick left the channel /autorespond list /autorespond remove 0"
+msgstr ""
+"/autorespond add on_join #welcome /notice $nick Welcome! /autorespond add "
+"on_part /say $nick left the channel /autorespond list /autorespond remove 0"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:25
 #, elixir-autogen, elixir-format
@@ -790,13 +926,21 @@ msgstr "/ignore"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "/ignore /ignore <nickname> /ignore <nickname> <type> /ignore <nickname> <type> <duration>"
-msgstr "/ignore /ignore <nickname> /ignore <nickname> <type> /ignore <nickname> <type> <duration>"
+msgid ""
+"/ignore /ignore <nickname> /ignore <nickname> <type> /ignore <nickname> "
+"<type> <duration>"
+msgstr ""
+"/ignore /ignore <nickname> /ignore <nickname> <type> /ignore <nickname> "
+"<type> <duration>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:40
 #, elixir-autogen, elixir-format
-msgid "/ignore /ignore SpamBot /ignore AnnoyingGuy pms /ignore InfoBot notices /ignore LoudPerson all 5m /ignore Troll messages 2h"
-msgstr "/ignore /ignore SpamBot /ignore AnnoyingGuy pms /ignore InfoBot notices /ignore LoudPerson all 5m /ignore Troll messages 2h"
+msgid ""
+"/ignore /ignore SpamBot /ignore AnnoyingGuy pms /ignore InfoBot notices "
+"/ignore LoudPerson all 5m /ignore Troll messages 2h"
+msgstr ""
+"/ignore /ignore SpamBot /ignore AnnoyingGuy pms /ignore InfoBot notices "
+"/ignore LoudPerson all 5m /ignore Troll messages 2h"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:26
@@ -865,8 +1009,12 @@ msgstr "/kick <nickname> [reason]"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:41
 #, elixir-autogen, elixir-format
-msgid "/kick Spammer /kick Spammer Flooding the channel /kick Troll Please follow the rules"
-msgstr "/kick Spammer /kick Spammer Flooding the channel /kick Troll Please follow the rules"
+msgid ""
+"/kick Spammer /kick Spammer Flooding the channel /kick Troll Please follow "
+"the rules"
+msgstr ""
+"/kick Spammer /kick Spammer Flooding the channel /kick Troll Please follow "
+"the rules"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:45
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:43
@@ -942,8 +1090,12 @@ msgstr "/mode +m"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:103
 #, elixir-autogen, elixir-format
-msgid "/mode +m /mode -m /mode +o Alice /mode -o Alice /mode +v Bob /mode +k secretpass /mode -k /mode +l 25 /mode +i /mode +b Troll /mode -b Troll"
-msgstr "/mode +m /mode -m /mode +o Alice /mode -o Alice /mode +v Bob /mode +k secretpass /mode -k /mode +l 25 /mode +i /mode +b Troll /mode -b Troll"
+msgid ""
+"/mode +m /mode -m /mode +o Alice /mode -o Alice /mode +v Bob /mode +k "
+"secretpass /mode -k /mode +l 25 /mode +i /mode +b Troll /mode -b Troll"
+msgstr ""
+"/mode +m /mode -m /mode +o Alice /mode -o Alice /mode +v Bob /mode +k "
+"secretpass /mode -k /mode +l 25 /mode +i /mode +b Troll /mode -b Troll"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:5
 #, elixir-autogen, elixir-format
@@ -1057,8 +1209,12 @@ msgstr "/notice <target> <message>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:48
 #, elixir-autogen, elixir-format
-msgid "/notice Alice Check out #project /notice #elixir Server maintenance in 30 minutes"
-msgstr "/notice Alice Check out #project /notice #elixir Server maintenance in 30 minutes"
+msgid ""
+"/notice Alice Check out #project /notice #elixir Server maintenance in 30 "
+"minutes"
+msgstr ""
+"/notice Alice Check out #project /notice #elixir Server maintenance in 30 "
+"minutes"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:26
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:43
@@ -1078,13 +1234,21 @@ msgstr "/notify"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "/notify /notify add <nickname> [note] /notify remove <nickname> /notify edit <nickname> <note> /notify list"
-msgstr "/notify /notify add <nickname> [note] /notify remove <nickname> /notify edit <nickname> <note> /notify list"
+msgid ""
+"/notify /notify add <nickname> [note] /notify remove <nickname> /notify edit"
+" <nickname> <note> /notify list"
+msgstr ""
+"/notify /notify add <nickname> [note] /notify remove <nickname> /notify edit"
+" <nickname> <note> /notify list"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:33
 #, elixir-autogen, elixir-format
-msgid "/notify add Alice My friend from #elixir /notify add Bob /notify edit Alice Best friend /notify remove Bob /notify list"
-msgstr "/notify add Alice My friend from #elixir /notify add Bob /notify edit Alice Best friend /notify remove Bob /notify list"
+msgid ""
+"/notify add Alice My friend from #elixir /notify add Bob /notify edit Alice "
+"Best friend /notify remove Bob /notify list"
+msgstr ""
+"/notify add Alice My friend from #elixir /notify add Bob /notify edit Alice "
+"Best friend /notify remove Bob /notify list"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:48
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:39
@@ -1115,8 +1279,12 @@ msgstr "/ns register"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:47
 #, elixir-autogen, elixir-format
-msgid "/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice /ns ghost MyNick mySecurePassword /ns drop mySecurePassword"
-msgstr "/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice /ns ghost MyNick mySecurePassword /ns drop mySecurePassword"
+msgid ""
+"/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice "
+"/ns ghost MyNick mySecurePassword /ns drop mySecurePassword"
+msgstr ""
+"/ns register mySecurePassword /ns identify mySecurePassword /ns info Alice "
+"/ns ghost MyNick mySecurePassword /ns drop mySecurePassword"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:27
@@ -1137,7 +1305,6 @@ msgid "/op Alice"
 msgstr "/op Alice"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:15
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:28
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:123
 #, elixir-autogen, elixir-format
 msgid "/p2p"
@@ -1176,8 +1343,12 @@ msgstr "/perform"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:8
 #, elixir-autogen, elixir-format
-msgid "/perform /perform list /perform add <command> /perform remove <position> /perform move <from> <to> /perform clear"
-msgstr "/perform /perform list /perform add <command> /perform remove <position> /perform move <from> <to> /perform clear"
+msgid ""
+"/perform /perform list /perform add <command> /perform remove <position> "
+"/perform move <from> <to> /perform clear"
+msgstr ""
+"/perform /perform list /perform add <command> /perform remove <position> "
+"/perform move <from> <to> /perform clear"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1186,8 +1357,12 @@ msgstr "/perform list"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:37
 #, elixir-autogen, elixir-format
-msgid "/perform list /perform add /ns identify mypassword /perform add /away AFK /perform remove 2 /perform move 3 1 /perform clear"
-msgstr "/perform list /perform add /ns identify mypassword /perform add /away AFK /perform remove 2 /perform move 3 1 /perform clear"
+msgid ""
+"/perform list /perform add /ns identify mypassword /perform add /away AFK "
+"/perform remove 2 /perform move 3 1 /perform clear"
+msgstr ""
+"/perform list /perform add /ns identify mypassword /perform add /away AFK "
+"/perform remove 2 /perform move 3 1 /perform clear"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:80
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:8
@@ -1263,13 +1438,6 @@ msgstr "/setwelcome <message>"
 msgid "/setwelcome Welcome to #elixir! Please be respectful and use English."
 msgstr "/setwelcome Welcome to #elixir! Please be respectful and use English."
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:129
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:9
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:23
-#, elixir-autogen, elixir-format
-msgid "/singleplayer"
-msgstr "/singleplayer"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "/slow /slow 10 /slow 0"
@@ -1295,13 +1463,21 @@ msgstr "/timer"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "/timer <name> <seconds> <command> /timer <name> repeat <seconds> <command> /timer list /timer stop <name>"
-msgstr "/timer <name> <seconds> <command> /timer <name> repeat <seconds> <command> /timer list /timer stop <name>"
+msgid ""
+"/timer <name> <seconds> <command> /timer <name> repeat <seconds> <command> "
+"/timer list /timer stop <name>"
+msgstr ""
+"/timer <name> <seconds> <command> /timer <name> repeat <seconds> <command> "
+"/timer list /timer stop <name>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:61
 #, elixir-autogen, elixir-format
-msgid "/timer remind 1800 /me standup in 30 minutes /timer heartbeat repeat 600 /me is still here /timer list /timer stop heartbeat"
-msgstr "/timer remind 1800 /me standup in 30 minutes /timer heartbeat repeat 600 /me is still here /timer list /timer stop heartbeat"
+msgid ""
+"/timer remind 1800 /me standup in 30 minutes /timer heartbeat repeat 600 /me"
+" is still here /timer list /timer stop heartbeat"
+msgstr ""
+"/timer remind 1800 /me standup in 30 minutes /timer heartbeat repeat 600 /me"
+" is still here /timer list /timer stop heartbeat"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:110
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:18
@@ -1312,8 +1488,12 @@ msgstr "/topic"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:36
 #, elixir-autogen, elixir-format
-msgid "/topic /topic Welcome to #elixir! Today: LiveView discussion /topic Rules: Be respectful, no spam"
-msgstr "/topic /topic Welcome to #elixir! Today: LiveView discussion /topic Rules: Be respectful, no spam"
+msgid ""
+"/topic /topic Welcome to #elixir! Today: LiveView discussion /topic Rules: "
+"Be respectful, no spam"
+msgstr ""
+"/topic /topic Welcome to #elixir! Today: LiveView discussion /topic Rules: "
+"Be respectful, no spam"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:8
 #, elixir-autogen, elixir-format
@@ -1439,8 +1619,12 @@ msgstr "/wallops <message>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:34
 #, elixir-autogen, elixir-format
-msgid "/wallops Server maintenance in 10 minutes /wallops New chat features available — check #announcements"
-msgstr "/wallops Server maintenance in 10 minutes /wallops New chat features available — check #announcements"
+msgid ""
+"/wallops Server maintenance in 10 minutes /wallops New chat features "
+"available — check #announcements"
+msgstr ""
+"/wallops Server maintenance in 10 minutes /wallops New chat features "
+"available — check #announcements"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:34
@@ -1522,8 +1706,16 @@ msgstr "অ্যালায়েস তৈরি করার পরে, ধ�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "After setting a welcome message, any user who joins the channel sees it once per session. If they leave and rejoin, they won't see it again during the same session. The person who set the welcome message does not see it themselves. Each channel has its own independent welcome message."
-msgstr "একটি স্বাগত বার্তা তৈরি করার পরে, যে কোন ব্যবহারকারীকে চ্যানেলটিতে যোগদান করতে হবে। তারা যদি চলে যায়, তাহলে তারা একই সেশন এ আর কখনো এটা দেখতে পাবে না। যে - ব্যক্তি এই বার্তাকে স্বাগত জানান, তিনি নিজে তা দেখেন না । প্রতিটি চ্যানেলের নিজস্ব নিজস্ব নিজস্ব মতামত আছে।"
+msgid ""
+"After setting a welcome message, any user who joins the channel sees it once"
+" per session. If they leave and rejoin, they won't see it again during the "
+"same session. The person who set the welcome message does not see it "
+"themselves. Each channel has its own independent welcome message."
+msgstr ""
+"একটি স্বাগত বার্তা তৈরি করার পরে, যে কোন ব্যবহারকারীকে চ্যানেলটিতে যোগদান "
+"করতে হবে। তারা যদি চলে যায়, তাহলে তারা একই সেশন এ আর কখনো এটা দেখতে পাবে "
+"না। যে - ব্যক্তি এই বার্তাকে স্বাগত জানান, তিনি নিজে তা দেখেন না । প্রতিটি "
+"চ্যানেলের নিজস্ব নিজস্ব নিজস্ব মতামত আছে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:78
 #, elixir-autogen, elixir-format
@@ -1532,7 +1724,8 @@ msgstr "উপনাম:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "Aliases that shadow built-in commands will override them (with a warning)"
+msgid ""
+"Aliases that shadow built-in commands will override them (with a warning)"
 msgstr "যেসব ছায়া তৈরি করা হয়েছে সেগুলো তাদের উপেক্ষা করে (সতর্কতাসহ)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:67
@@ -1551,7 +1744,8 @@ msgstr "অডিট লগে সকল প্রশাসনিক কাজ �
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "An operator cannot kick another operator — only the owner can"
-msgstr "অপারেটরের দ্বারা আর কোনো অপারেটর অবশিষ্ট নেই - শুধুমাত্র মালিক অপারেটর"
+msgstr ""
+"অপারেটরের দ্বারা আর কোনো অপারেটর অবশিষ্ট নেই - শুধুমাত্র মালিক অপারেটর"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:48
 #, elixir-autogen, elixir-format
@@ -1565,8 +1759,13 @@ msgstr "স্বয়ংক্রিয় সংরক্ষণ ব্যব�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Automatically run a command when someone joins a channel, leaves, or changes their nickname. Useful for auto-greeting new users or reacting to events."
-msgstr "কোনো চ্যানেলে যোগদান করার সময় স্বয়ংক্রিয়ভাবে একটি কমান্ড চালানো হয়, ছেড়ে অথবা তাদের ডাকনাম পরিবর্তন করা হয়। স্বয়ংক্রিয়রূপে নতুন ব্যবহারকারী অথবা ইভেন্টের প্রতিক্রিয়া।"
+msgid ""
+"Automatically run a command when someone joins a channel, leaves, or changes"
+" their nickname. Useful for auto-greeting new users or reacting to events."
+msgstr ""
+"কোনো চ্যানেলে যোগদান করার সময় স্বয়ংক্রিয়ভাবে একটি কমান্ড চালানো হয়, "
+"ছেড়ে অথবা তাদের ডাকনাম পরিবর্তন করা হয়। স্বয়ংক্রিয়রূপে নতুন ব্যবহারকারী "
+"অথবা ইভেন্টের প্রতিক্রিয়া।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:16
 #, elixir-autogen, elixir-format
@@ -1591,12 +1790,18 @@ msgstr "আবশ্যক প্রাপক ও বার্তা উল্�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Both you and the target must be registered and identified (via"
-msgstr "আপনি এবং লক্ষ্য দুটি নিবন্ধন এবং সনাক্ত করতে হবে (আপনি ও তা সনাক্ত করতে পারবেন)"
+msgstr ""
+"আপনি এবং লক্ষ্য দুটি নিবন্ধন এবং সনাক্ত করতে হবে (আপনি ও তা সনাক্ত করতে "
+"পারবেন)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Browse all public channels on the server in a sortable, filterable dialog window."
-msgstr "সুনির্দিষ্ট ডায়লগের মধ্যে উপস্থিত সকল উইন্ডোর মধ্যে প্রদর্শনযোগ্য চ্যানেল ব্রাউজ করুন।"
+msgid ""
+"Browse all public channels on the server in a sortable, filterable dialog "
+"window."
+msgstr ""
+"সুনির্দিষ্ট ডায়লগের মধ্যে উপস্থিত সকল উইন্ডোর মধ্যে প্রদর্শনযোগ্য চ্যানেল "
+"ব্রাউজ করুন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:34
 #, elixir-autogen, elixir-format
@@ -1610,7 +1815,8 @@ msgstr "অক্ষর, সংখ্যা, বিশেষ অক্ষর ও
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:32
 #, elixir-autogen, elixir-format
-msgid "Cannot ban users with equal or higher rank (operators cannot ban the owner)"
+msgid ""
+"Cannot ban users with equal or higher rank (operators cannot ban the owner)"
 msgstr "মালিকের চেয়ে সমান অথবা উচ্চ স্তরের ব্যবহারকারীকে নিষিদ্ধ করা যাবে না"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:30
@@ -1680,18 +1886,36 @@ msgstr "চ্যান চীন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "ChanServ is an automated service that manages channel ownership and access. When you register a channel, ChanServ remembers who owns it and who has operator privileges, automatically restoring them when those users join. This prevents channels from becoming \"ownerless\" when operators disconnect."
-msgstr "চ্যানফর নামের একটি স্বয়ংক্রিয় সেবা যা চ্যানেল মালিকানা এবং প্রবেশাধিকার পরিচালনা করে। যখন আপনি একটি চ্যানেল নিবন্ধন করেন, চ্যানফরভ স্মরণ করেন কে তার মালিক এবং কার পরিচালনার সুযোগ রয়েছে, তখন তারা স্বয়ংক্রিয়ভাবে তাদের পুনরুদ্ধার করে। অপারেটর সংযোগ বিচ্ছিন্ন করার সময় চ্যানেল থেকে \"অভিজ্ঞ\" হওয়া থেকে প্রতিরোধ করা হবে।"
+msgid ""
+"ChanServ is an automated service that manages channel ownership and access. "
+"When you register a channel, ChanServ remembers who owns it and who has "
+"operator privileges, automatically restoring them when those users join. "
+"This prevents channels from becoming \"ownerless\" when operators "
+"disconnect."
+msgstr ""
+"চ্যানফর নামের একটি স্বয়ংক্রিয় সেবা যা চ্যানেল মালিকানা এবং প্রবেশাধিকার "
+"পরিচালনা করে। যখন আপনি একটি চ্যানেল নিবন্ধন করেন, চ্যানফরভ স্মরণ করেন কে তার"
+" মালিক এবং কার পরিচালনার সুযোগ রয়েছে, তখন তারা স্বয়ংক্রিয়ভাবে তাদের "
+"পুনরুদ্ধার করে। অপারেটর সংযোগ বিচ্ছিন্ন করার সময় চ্যানেল থেকে \"অভিজ্ঞ\" "
+"হওয়া থেকে প্রতিরোধ করা হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Change channel settings and user privileges using mode flags. Modes control who can speak, who can join, and who has special powers in the channel."
-msgstr "ফ্ল্যাগ সহযোগে চ্যানেল সেটিংস এবং ব্যবহারকারীর অধিকার পরিবর্তন করুন । যারা কথা বলতে পারে, তাদের নিয়ন্ত্রণ করতে পারে এবং চ্যানেলে বিশেষ ক্ষমতা রয়েছে ।"
+msgid ""
+"Change channel settings and user privileges using mode flags. Modes control "
+"who can speak, who can join, and who has special powers in the channel."
+msgstr ""
+"ফ্ল্যাগ সহযোগে চ্যানেল সেটিংস এবং ব্যবহারকারীর অধিকার পরিবর্তন করুন । যারা "
+"কথা বলতে পারে, তাদের নিয়ন্ত্রণ করতে পারে এবং চ্যানেলে বিশেষ ক্ষমতা রয়েছে ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Change your display name in the chat. A confirmation dialog appears before the change takes effect, since changing your nickname starts a new session."
-msgstr "আলাপনের মধ্যে নাম পরিবর্তন করুন। পরিবর্তন প্রয়োগ করার পূর্বে, ব্যবহারকারীর দ্বারা একটি নিশ্চিতি ডায়লগ আরম্ভ করা হবে।"
+msgid ""
+"Change your display name in the chat. A confirmation dialog appears before "
+"the change takes effect, since changing your nickname starts a new session."
+msgstr ""
+"আলাপনের মধ্যে নাম পরিবর্তন করুন। পরিবর্তন প্রয়োগ করার পূর্বে, ব্যবহারকারীর "
+"দ্বারা একটি নিশ্চিতি ডায়লগ আরম্ভ করা হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:47
@@ -1739,18 +1963,31 @@ msgstr "চ্যানেল অপারেটর অথবা মালিক
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Clear all messages from the current chat window, giving you a fresh screen. This cannot be undone."
+msgid ""
+"Clear all messages from the current chat window, giving you a fresh screen. "
+"This cannot be undone."
 msgstr "বর্তমান আড্ডা থেকে সব বার্তা মুছে ফেলুন এই কাজ নাকচ করা যাবে না।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "Clears the server MOTD that is normally displayed to users when they connect. After clearing, the MOTD section is simply skipped during connection. You can set a new MOTD at any time with"
-msgstr "সার্ভার থেকে সর্বধরনের সংযোগ বিচ্ছিন্ন করে দেয়। পরিষ্কার করার পর, FITD বিভাগ সংযোগের সময় সহজেই বাদ যায়। যে কোনো সময়ে আপনি একটি নতুন MOTD সেট করতে পারেন"
+msgid ""
+"Clears the server MOTD that is normally displayed to users when they "
+"connect. After clearing, the MOTD section is simply skipped during "
+"connection. You can set a new MOTD at any time with"
+msgstr ""
+"সার্ভার থেকে সর্বধরনের সংযোগ বিচ্ছিন্ন করে দেয়। পরিষ্কার করার পর, FITD "
+"বিভাগ সংযোগের সময় সহজেই বাদ যায়। যে কোনো সময়ে আপনি একটি নতুন MOTD সেট "
+"করতে পারেন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "Clears the welcome message that is shown to users when they join the current channel. After clearing, no welcome message is displayed until a new one is set with"
-msgstr "বর্তমান চ্যানেলে যোগ দেওয়ার সময় ব্যবহারকারীদেরকে স্বাগতম বার্তা প্রদর্শন করে । পরিষ্কার করার পর, কোন স্বাগতম বার্তা প্রদর্শন করা হবে না"
+msgid ""
+"Clears the welcome message that is shown to users when they join the current"
+" channel. After clearing, no welcome message is displayed until a new one is"
+" set with"
+msgstr ""
+"বর্তমান চ্যানেলে যোগ দেওয়ার সময় ব্যবহারকারীদেরকে স্বাগতম বার্তা প্রদর্শন "
+"করে । পরিষ্কার করার পর, কোন স্বাগতম বার্তা প্রদর্শন করা হবে না"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:62
 #, elixir-autogen, elixir-format
@@ -1774,13 +2011,24 @@ msgstr "পরিচয়-প্রমান প্রক্রিয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Create short command shortcuts that expand into longer commands or messages. For example, create"
-msgstr "দীর্ঘ কমান্ড অথবা বার্তা সমেত সংক্ষিপ্ত কমান্ড শর্ট-কাট তৈরি করুন। যেমন, নির্মাণ"
+msgid ""
+"Create short command shortcuts that expand into longer commands or messages."
+" For example, create"
+msgstr ""
+"দীর্ঘ কমান্ড অথবা বার্তা সমেত সংক্ষিপ্ত কমান্ড শর্ট-কাট তৈরি করুন। যেমন, "
+"নির্মাণ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "Creates or switches to a PM conversation tab with the specified user. No message is sent — it simply opens the window so you can start typing. If you already have a PM tab open with that user, it switches to it. If you want to open the tab"
-msgstr "উল্লেখিত ব্যবহারকারীর সঙ্গে একটা পি- জি- পি কথোপকথন ট্যাবে সেট অথবা পরিবর্তন করে । বার্তা পাঠানো হয়নি । ব্যবহারকারী দ্বারা কোনো পপ- আপ ট্যাব খোলা হলে, সেটি পরিবর্তন করা হবে । ট্যাব খুলতে যদি চাও"
+msgid ""
+"Creates or switches to a PM conversation tab with the specified user. No "
+"message is sent — it simply opens the window so you can start typing. If you"
+" already have a PM tab open with that user, it switches to it. If you want "
+"to open the tab"
+msgstr ""
+"উল্লেখিত ব্যবহারকারীর সঙ্গে একটা পি- জি- পি কথোপকথন ট্যাবে সেট অথবা পরিবর্তন"
+" করে । বার্তা পাঠানো হয়নি । ব্যবহারকারী দ্বারা কোনো পপ- আপ ট্যাব খোলা হলে, "
+"সেটি পরিবর্তন করা হবে । ট্যাব খুলতে যদি চাও"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:30
 #, elixir-autogen, elixir-format
@@ -1794,7 +2042,9 @@ msgstr "DSITRIOP"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:21
 #, elixir-autogen, elixir-format
-msgid "Data is cached for up to the configured retention period after disconnect (default: 1 hour)"
+msgid ""
+"Data is cached for up to the configured retention period after disconnect "
+"(default: 1 hour)"
 msgstr "সংযোগ বিচ্ছিন্ন করার পরে বার্তা ক্যাশে করা হবে (ডিফল্ট: 1)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:35
@@ -1809,8 +2059,12 @@ msgstr "যদি চ্যানেলের মধ্যে +K (কোনো �
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Disconnect from the server and return to the connect screen. Other users see your optional quit message in all channels you were in."
-msgstr "সার্ভার থেকে সংযোগ বিচ্ছিন্ন করে সংযোগ বিচ্ছিন্ন করুন। অন্যান্য ব্যবহারকারীরা আপনার ঐচ্ছিক বার্তা দেখতে পাবেন যে সমস্ত চ্যানেলে আপনি ছিলেন।"
+msgid ""
+"Disconnect from the server and return to the connect screen. Other users see"
+" your optional quit message in all channels you were in."
+msgstr ""
+"সার্ভার থেকে সংযোগ বিচ্ছিন্ন করে সংযোগ বিচ্ছিন্ন করুন। অন্যান্য "
+"ব্যবহারকারীরা আপনার ঐচ্ছিক বার্তা দেখতে পাবেন যে সমস্ত চ্যানেলে আপনি ছিলেন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:39
 #, elixir-autogen, elixir-format
@@ -1844,8 +2098,12 @@ msgstr "প্রতিটি এন্ট্রি:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Enable or disable slow mode (join throttle) in the current channel. This is a shorthand for"
-msgstr "বর্তমান চ্যানেলের মধ্যে সর্বোচ্চ মান সক্রিয় অথবা নিষ্ক্রিয় করুন (p) এটা তোমার জন্য ছোট্ট একটা দান"
+msgid ""
+"Enable or disable slow mode (join throttle) in the current channel. This is "
+"a shorthand for"
+msgstr ""
+"বর্তমান চ্যানেলের মধ্যে সর্বোচ্চ মান সক্রিয় অথবা নিষ্ক্রিয় করুন (p) এটা "
+"তোমার জন্য ছোট্ট একটা দান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:82
 #, elixir-autogen, elixir-format
@@ -1854,8 +2112,12 @@ msgstr "বিশেষ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Enter a chat channel to read and send messages. If the channel doesn't exist yet, it is created and you become its operator."
-msgstr "একটি আড্ডা বার্তা পড়ার জন্য একটি আড্ডা চ্যানেল লিখুন। চ্যানেলের কোনো অস্তিত্ব না থাকলে, এটি তৈরি এবং আপনি অপারেটর হয়ে যাবেন।"
+msgid ""
+"Enter a chat channel to read and send messages. If the channel doesn't exist"
+" yet, it is created and you become its operator."
+msgstr ""
+"একটি আড্ডা বার্তা পড়ার জন্য একটি আড্ডা চ্যানেল লিখুন। চ্যানেলের কোনো "
+"অস্তিত্ব না থাকলে, এটি তৈরি এবং আপনি অপারেটর হয়ে যাবেন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:47
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:70
@@ -1905,7 +2167,6 @@ msgstr "একটি আড্ডা বার্তা পড়ার জন�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:29
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:22
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:35
@@ -1939,13 +2200,20 @@ msgstr "ডাকনাম:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_op.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Give operator status to a user in the current channel. This is a shorthand for"
-msgstr "বর্তমান চ্যানেলের মধ্যে উপস্থিত ব্যবহারকারীর অবস্থা চিহ্নিত করুন। এটা তোমার জন্য ছোট্ট একটা দান"
+msgid ""
+"Give operator status to a user in the current channel. This is a shorthand "
+"for"
+msgstr ""
+"বর্তমান চ্যানেলের মধ্যে উপস্থিত ব্যবহারকারীর অবস্থা চিহ্নিত করুন। এটা তোমার "
+"জন্য ছোট্ট একটা দান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_voice.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Give voice status to a user in the current channel. This is a shorthand for"
-msgstr "বর্তমান চ্যানেলের মধ্যে, ব্যবহারকারীর বর্তমান অবস্থা চিহ্নকারী পংক্তি। এটা তোমার জন্য ছোট্ট একটা দান"
+msgid ""
+"Give voice status to a user in the current channel. This is a shorthand for"
+msgstr ""
+"বর্তমান চ্যানেলের মধ্যে, ব্যবহারকারীর বর্তমান অবস্থা চিহ্নকারী পংক্তি। এটা "
+"তোমার জন্য ছোট্ট একটা দান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:32
 #, elixir-autogen, elixir-format
@@ -1964,8 +2232,13 @@ msgstr "half-op অপারেটর (%s) শুধুমাত্র +v এব
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Hide messages from a specific user. The ignored user is not notified — their messages are silently hidden from your view."
-msgstr "ব্যবহারকারীর দ্বারা নির্দিষ্ট বার্তা প্রাপ্ত হলে ব্যবহারকারীকে প্রেরিত হবে। উপেক্ষা করা ব্যবহারকারীকে জানানো হয়নি — তাদের বার্তা আপনার দৃষ্টির আড়ালে লুকিয়ে রাখা হয়েছে ।"
+msgid ""
+"Hide messages from a specific user. The ignored user is not notified — their"
+" messages are silently hidden from your view."
+msgstr ""
+"ব্যবহারকারীর দ্বারা নির্দিষ্ট বার্তা প্রাপ্ত হলে ব্যবহারকারীকে প্রেরিত হবে। "
+"উপেক্ষা করা ব্যবহারকারীকে জানানো হয়নি — তাদের বার্তা আপনার দৃষ্টির আড়ালে "
+"লুকিয়ে রাখা হয়েছে ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:23
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:16
@@ -2028,8 +2301,12 @@ msgstr "যদি চ্যানেলের মধ্যে +k মোড থ�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:27
 #, elixir-autogen, elixir-format
-msgid "If the channel has +t mode (topic lock), only operators and owners can change the topic"
-msgstr "চ্যানেলের মধ্যে +t মোড (topic) থাকলে, শুধুমাত্র অপারেটর ও মালিকদের দ্বারা বিষয়টি পরিবর্তন করা যাবে"
+msgid ""
+"If the channel has +t mode (topic lock), only operators and owners can "
+"change the topic"
+msgstr ""
+"চ্যানেলের মধ্যে +t মোড (topic) থাকলে, শুধুমাত্র অপারেটর ও মালিকদের দ্বারা "
+"বিষয়টি পরিবর্তন করা যাবে"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:33
 #, elixir-autogen, elixir-format
@@ -2059,8 +2336,12 @@ msgstr "অ্যাকাউন্টের তথ্য ৫ মিনিট �
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Leave the current channel or a specified channel, with an optional parting message that other members will see."
-msgstr "বর্তমান চ্যানেল অথবা একটি নির্দিষ্ট চ্যানেল ছেড়ে দিন, ঐচ্ছিক অংশ হিসাবে অন্য সদস্যদের উপস্থিতি দেখতে পাবেন ।"
+msgid ""
+"Leave the current channel or a specified channel, with an optional parting "
+"message that other members will see."
+msgstr ""
+"বর্তমান চ্যানেল অথবা একটি নির্দিষ্ট চ্যানেল ছেড়ে দিন, ঐচ্ছিক অংশ হিসাবে "
+"অন্য সদস্যদের উপস্থিতি দেখতে পাবেন ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:27
 #, elixir-autogen, elixir-format
@@ -2069,23 +2350,41 @@ msgstr "লগ এন্ট্রি ফর্ম্যাট"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Look up detailed information about an online user, including their channels, idle time, bio, and registration status."
-msgstr "একটি অনলাইন ব্যবহারকারী সম্পর্কে বিস্তারিত তথ্য জানতে চাইলে তাদের চ্যানেল, অলস সময়, বায়ো এবং নিবন্ধন অবস্থা সম্পর্কে বিস্তারিত জানতে পারবেন।"
+msgid ""
+"Look up detailed information about an online user, including their channels,"
+" idle time, bio, and registration status."
+msgstr ""
+"একটি অনলাইন ব্যবহারকারী সম্পর্কে বিস্তারিত তথ্য জানতে চাইলে তাদের চ্যানেল, "
+"অলস সময়, বায়ো এবং নিবন্ধন অবস্থা সম্পর্কে বিস্তারিত জানতে পারবেন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Look up information about a user who recently disconnected, such as when they were last seen and what channels they were in."
-msgstr "সম্প্রতি বিচ্ছিন্ন হওয়া একজন ব্যবহারকারী সম্পর্কে তথ্য দেখুন, যেমন দেখা গেছে তারা কোন চ্যানেলে ছিল।"
+msgid ""
+"Look up information about a user who recently disconnected, such as when "
+"they were last seen and what channels they were in."
+msgstr ""
+"সম্প্রতি বিচ্ছিন্ন হওয়া একজন ব্যবহারকারী সম্পর্কে তথ্য দেখুন, যেমন দেখা "
+"গেছে তারা কোন চ্যানেলে ছিল।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Manage channel registration and access lists through ChanServ, the channel services bot. ChanServ keeps your channel settings safe even when no operators are online."
-msgstr "চ্যানেলের নিবন্ধন এবং চ্যান সঠিকভাবে প্রবেশ করুন, চ্যানেল সার্ভিস বোটের মাধ্যমে। এমনকি যখন কোন অপারেটর অনলাইন থাকে না, তখনও চ্যানফরেস্ট আপনার চ্যানেল সেটিংস নিরাপদ রাখে।"
+msgid ""
+"Manage channel registration and access lists through ChanServ, the channel "
+"services bot. ChanServ keeps your channel settings safe even when no "
+"operators are online."
+msgstr ""
+"চ্যানেলের নিবন্ধন এবং চ্যান সঠিকভাবে প্রবেশ করুন, চ্যানেল সার্ভিস বোটের "
+"মাধ্যমে। এমনকি যখন কোন অপারেটর অনলাইন থাকে না, তখনও চ্যানফরেস্ট আপনার "
+"চ্যানেল সেটিংস নিরাপদ রাখে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Mark yourself as temporarily unavailable, with an optional message explaining why. Other users will see your away status when they look you up."
-msgstr "আপনি কি ব্যাখ্যা করতে পারেন? অন্য ব্যবহারকারীরা আপনার অবস্থা দেখতে পাবেন যখন তারা আপনার দিকে তাকিয়ে থাকে।"
+msgid ""
+"Mark yourself as temporarily unavailable, with an optional message "
+"explaining why. Other users will see your away status when they look you up."
+msgstr ""
+"আপনি কি ব্যাখ্যা করতে পারেন? অন্য ব্যবহারকারীরা আপনার অবস্থা দেখতে পাবেন যখন"
+" তারা আপনার দিকে তাকিয়ে থাকে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:30
 #, elixir-autogen, elixir-format
@@ -2146,8 +2445,12 @@ msgstr "এই অক্ষরটিকে অবশ্যই একটি অ�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Mute a user in the current channel, preventing them from sending messages. Unlike"
-msgstr "বর্তমান চ্যানেলের মধ্যে কোনো ব্যবহারকারীকে নিঃশব্দ করুন, বার্তা পাঠানো থেকে প্রতিরোধ করুন। এটি নয়"
+msgid ""
+"Mute a user in the current channel, preventing them from sending messages. "
+"Unlike"
+msgstr ""
+"বর্তমান চ্যানেলের মধ্যে কোনো ব্যবহারকারীকে নিঃশব্দ করুন, বার্তা পাঠানো থেকে "
+"প্রতিরোধ করুন। এটি নয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:49
 #, elixir-autogen, elixir-format
@@ -2156,18 +2459,35 @@ msgstr "ডাকনাম:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "NickServ administration: drop nick registrations, view info, and reset passwords. Requires server administrator role."
-msgstr "নিকসিউর প্রশাসন: ডাকনাম নিবন্ধন, তথ্য এবং পাসওয়ার্ড রিসেট করুন। স্বয়ংক্রিয়রূপে সার্ভার ভূমিকা প্রয়োজন।"
+msgid ""
+"NickServ administration: drop nick registrations, view info, and reset "
+"passwords. Requires server administrator role."
+msgstr ""
+"নিকসিউর প্রশাসন: ডাকনাম নিবন্ধন, তথ্য এবং পাসওয়ার্ড রিসেট করুন। "
+"স্বয়ংক্রিয়রূপে সার্ভার ভূমিকা প্রয়োজন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "NickServ manages nickname ownership. After registering, you \"identify\" (log in) each session to prove the nickname is yours. This unlocks features like saved preferences, auto-join lists, and channel access lists. If someone else tries to use your registered nickname, they'll be asked for the password."
-msgstr "নিকফেন্ট ডাকনাম মালিকানা পরিচালনা করে। নিবন্ধন করার পর, প্রতিটি সেশনে নাম প্রমাণ করার জন্য আপনার নাম উল্লেখ করা হবে। এর সাহায্যে, পছন্দসই বৈশিষ্ট্য, স্বয়ংক্রিয় ও চ্যানেলের তালিকা সংরক্ষণ করা হয়। অন্য কেউ আপনার নিবন্ধন ডাকনাম ব্যবহার করার চেষ্টা করলে, তাদেরকে পাসওয়ার্ড জানাতে বলা হবে।"
+msgid ""
+"NickServ manages nickname ownership. After registering, you \"identify\" "
+"(log in) each session to prove the nickname is yours. This unlocks features "
+"like saved preferences, auto-join lists, and channel access lists. If "
+"someone else tries to use your registered nickname, they'll be asked for the"
+" password."
+msgstr ""
+"নিকফেন্ট ডাকনাম মালিকানা পরিচালনা করে। নিবন্ধন করার পর, প্রতিটি সেশনে নাম "
+"প্রমাণ করার জন্য আপনার নাম উল্লেখ করা হবে। এর সাহায্যে, পছন্দসই বৈশিষ্ট্য, "
+"স্বয়ংক্রিয় ও চ্যানেলের তালিকা সংরক্ষণ করা হয়। অন্য কেউ আপনার নিবন্ধন "
+"ডাকনাম ব্যবহার করার চেষ্টা করলে, তাদেরকে পাসওয়ার্ড জানাতে বলা হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:111
 #, elixir-autogen, elixir-format
-msgid "Nickname length is a compile-time constant (16 characters) and cannot be changed at runtime"
-msgstr "ডাকনামের দৈর্ঘ্য সম্পূর্ণভাবে সন্নিবেশ করা হয় (১৬ অক্ষর) এবং এতে পরিবর্তন করা যাবে না"
+msgid ""
+"Nickname length is a compile-time constant (16 characters) and cannot be "
+"changed at runtime"
+msgstr ""
+"ডাকনামের দৈর্ঘ্য সম্পূর্ণভাবে সন্নিবেশ করা হয় (১৬ অক্ষর) এবং এতে পরিবর্তন "
+"করা যাবে না"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:28
 #, elixir-autogen, elixir-format
@@ -2194,8 +2514,15 @@ msgstr "তালিকা ঘোষণা করুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:38
 #, elixir-autogen, elixir-format
-msgid "One-shot timers run the command once after the specified delay. Repeating timers run the command every <seconds> indefinitely until stopped. Timer commands support alias expansion, so you can use variables like"
-msgstr "সময় নির্ধারণের পরে একবার সঞ্চালনযোগ্য কর্ম সঞ্চালনের জন্য উল্লিখিত হয়েছে। টাইমার দ্বারা সমস্ত কমান্ডের পুনরাবৃত্তি করা হয় <ffl10n\\phing>/ffF1F00F1/ be be not be be location দ্বারা নির্দিষ্ট করা হয়। টাইমার কমান্ড ব্যাকগ্রাউন্ডেশন সমর্থন করে, আপনি ভেরিয়েবল ব্যবহার করতে পারেন"
+msgid ""
+"One-shot timers run the command once after the specified delay. Repeating "
+"timers run the command every <seconds> indefinitely until stopped. Timer "
+"commands support alias expansion, so you can use variables like"
+msgstr ""
+"সময় নির্ধারণের পরে একবার সঞ্চালনযোগ্য কর্ম সঞ্চালনের জন্য উল্লিখিত হয়েছে। "
+"টাইমার দ্বারা সমস্ত কমান্ডের পুনরাবৃত্তি করা হয় <ffl10n\\phing>/ffF1F00F1/ "
+"be be not be be location দ্বারা নির্দিষ্ট করা হয়। টাইমার কমান্ড "
+"ব্যাকগ্রাউন্ডেশন সমর্থন করে, আপনি ভেরিয়েবল ব্যবহার করতে পারেন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:51
 #, elixir-autogen, elixir-format
@@ -2229,18 +2556,29 @@ msgstr "শুধুমাত্র +wast মোড দ্বারা সক্
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Open a private message tab with a user without sending any message. Unlike"
+msgid ""
+"Open a private message tab with a user without sending any message. Unlike"
 msgstr "বার্তা পাঠানো হলে ব্যবহারকারীকে একটি পৃথক বার্তা পাঠানো হবে। এটি নয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Open the Custom Menus dialog to add, edit, or remove custom right-click menu items for the nick list, channels, and chat messages."
-msgstr "যোগ করতে স্বনির্বাচিত মেনু ডায়ালগ খোলো, অথবা মেনু থেকে 'পরবর্তী' নির্বাচন করো, অথবা মেনু নির্বাচন করো ।"
+msgid ""
+"Open the Custom Menus dialog to add, edit, or remove custom right-click menu"
+" items for the nick list, channels, and chat messages."
+msgstr ""
+"যোগ করতে স্বনির্বাচিত মেনু ডায়ালগ খোলো, অথবা মেনু থেকে 'পরবর্তী' নির্বাচন "
+"করো, অথবা মেনু নির্বাচন করো ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "Opens a dialog where you can customize the right-click context menus. You can add menu items that execute any command when clicked — for example, adding a \"Whois\" item to the nick list that runs"
-msgstr "একটি ডায়ালগ খোলে যেখানে আপনি ডান কনটেক্সট মেনু- এর ডান বাটন ক্লিক করে নির্বাচন করতে পারেন । কোনো কমান্ড ক্লিক করে চিহ্নিত বস্তু যোগ করা যাবে - উদাহরণস্বরূপ, \"কে\" - তে যোগ করা যাবে"
+msgid ""
+"Opens a dialog where you can customize the right-click context menus. You "
+"can add menu items that execute any command when clicked — for example, "
+"adding a \"Whois\" item to the nick list that runs"
+msgstr ""
+"একটি ডায়ালগ খোলে যেখানে আপনি ডান কনটেক্সট মেনু- এর ডান বাটন ক্লিক করে "
+"নির্বাচন করতে পারেন । কোনো কমান্ড ক্লিক করে চিহ্নিত বস্তু যোগ করা যাবে - "
+"উদাহরণস্বরূপ, \"কে\" - তে যোগ করা যাবে"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:11
 #, elixir-autogen, elixir-format
@@ -2300,7 +2638,8 @@ msgstr "নিবন্ধন, সনাক্ত ও ড্রপ-ডাউন 
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:34
 #, elixir-autogen, elixir-format
-msgid "Password resets are audited but the new password is never stored in logs"
+msgid ""
+"Password resets are audited but the new password is never stored in logs"
 msgstr "পাসওয়ার্ড রিসেট করা হয় কিন্তু পুনরায় পাসওয়ার্ড লেখা সম্ভব নয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:44
@@ -2310,13 +2649,22 @@ msgstr "কমান্ড সঞ্চালন করুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "Perform commands execute sequentially when you connect, before auto-join channels are joined. This ensures that commands like"
-msgstr "যখন আপনি সংযোগ করেন তখন কমান্ড সঞ্চালনার জন্য সুনির্দিষ্ট কমান্ড প্রয়োগ করুন । এটি নিশ্চিত করার জন্য চিহ্নিত কমান্ড"
+msgid ""
+"Perform commands execute sequentially when you connect, before auto-join "
+"channels are joined. This ensures that commands like"
+msgstr ""
+"যখন আপনি সংযোগ করেন তখন কমান্ড সঞ্চালনার জন্য সুনির্দিষ্ট কমান্ড প্রয়োগ "
+"করুন । এটি নিশ্চিত করার জন্য চিহ্নিত কমান্ড"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Permanently block a user from the current channel. The banned user is immediately removed and cannot rejoin until the ban is lifted."
-msgstr "বর্তমান চ্যানেল থেকে একটি ব্যবহারকারীকে স্থায়ীভাবে বন্ধ করতে হবে। নিষিদ্ধ ব্যবহারকারী অবিলম্বে অপসারণ করা হয়েছে এবং নিষেধাজ্ঞা প্রত্যাহার না করে সরিয়ে ফেলা সম্ভব নয়।"
+msgid ""
+"Permanently block a user from the current channel. The banned user is "
+"immediately removed and cannot rejoin until the ban is lifted."
+msgstr ""
+"বর্তমান চ্যানেল থেকে একটি ব্যবহারকারীকে স্থায়ীভাবে বন্ধ করতে হবে। নিষিদ্ধ "
+"ব্যবহারকারী অবিলম্বে অপসারণ করা হয়েছে এবং নিষেধাজ্ঞা প্রত্যাহার না করে "
+"সরিয়ে ফেলা সম্ভব নয়।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:42
 #, elixir-autogen, elixir-format
@@ -2331,8 +2679,11 @@ msgstr "বার্তার মূল অংশ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:62
 #, elixir-autogen, elixir-format
-msgid "Purge only affects stored messages (already-rendered messages stay until page reload)"
-msgstr "শুধুমাত্র লগ-ইনের মাধ্যমে বার্তা পাঠানো হবে (শুধুমাত্র প্রেরিত বার্তা)"
+msgid ""
+"Purge only affects stored messages (already-rendered messages stay until "
+"page reload)"
+msgstr ""
+"শুধুমাত্র লগ-ইনের মাধ্যমে বার্তা পাঠানো হবে (শুধুমাত্র প্রেরিত বার্তা)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:36
 #, elixir-autogen, elixir-format
@@ -2341,28 +2692,42 @@ msgstr "প্রতি সেকেন্ডে একবারের জন্
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:56
 #, elixir-autogen, elixir-format
-msgid "Recursive aliases (A calls B calls A) are detected and rejected (max 5 levels)"
-msgstr "রিকার্সিভ অ্যালায়েস (A B\" কল করা হয়েছে) এবং বাতিল করা হয়েছে (x 5 স্তর)"
+msgid ""
+"Recursive aliases (A calls B calls A) are detected and rejected (max 5 "
+"levels)"
+msgstr ""
+"রিকার্সিভ অ্যালায়েস (A B\" কল করা হয়েছে) এবং বাতিল করা হয়েছে (x 5 স্তর)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Register and protect your nickname with a password through NickServ, the nickname services bot. Once registered, nobody else can use your name."
-msgstr "ডাকনামের মাধ্যমে আপনার ডাকনাম নিবন্ধন এবং রক্ষা করুন। একবার নিবন্ধন করলে, আর কেউ আপনার নাম ব্যবহার করতে পারবে না।"
+msgid ""
+"Register and protect your nickname with a password through NickServ, the "
+"nickname services bot. Once registered, nobody else can use your name."
+msgstr ""
+"ডাকনামের মাধ্যমে আপনার ডাকনাম নিবন্ধন এবং রক্ষা করুন। একবার নিবন্ধন করলে, আর"
+" কেউ আপনার নাম ব্যবহার করতে পারবে না।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Registered users only — guests cannot save auto-join lists"
-msgstr "নিবন্ধিত ব্যবহারকারীরা - শুধুমাত্র অতিথিরা স্বয়ংক্রিয় ভাবে তালিকা সংরক্ষণ করতে পারবেন না"
+msgstr ""
+"নিবন্ধিত ব্যবহারকারীরা - শুধুমাত্র অতিথিরা স্বয়ংক্রিয় ভাবে তালিকা সংরক্ষণ "
+"করতে পারবেন না"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:39
 #, elixir-autogen, elixir-format
 msgid "Registered users only — rules are persisted across sessions"
-msgstr "নিবন্ধিত ব্যবহারকারীদের মধ্যে শুধুমাত্র নিবন্ধিত ব্যবহারকারীরা - সেশানের চারপাশে নিয়ম প্রযোজ্য"
+msgstr ""
+"নিবন্ধিত ব্যবহারকারীদের মধ্যে শুধুমাত্র নিবন্ধিত ব্যবহারকারীরা - সেশানের "
+"চারপাশে নিয়ম প্রযোজ্য"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:68
 #, elixir-autogen, elixir-format
-msgid "Registered users: aliases are saved across sessions. Guests: session-only"
-msgstr "নিবন্ধিত ব্যবহারকারীদের: সেশনের মধ্যে ছদ্মনাম সংরক্ষিত রয়েছে । অতিথি: শুধুমাত্র সেশান"
+msgid ""
+"Registered users: aliases are saved across sessions. Guests: session-only"
+msgstr ""
+"নিবন্ধিত ব্যবহারকারীদের: সেশনের মধ্যে ছদ্মনাম সংরক্ষিত রয়েছে । অতিথি: "
+"শুধুমাত্র সেশান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:31
 #, elixir-autogen, elixir-format
@@ -2372,17 +2737,13 @@ msgstr "নিবন্ধিত ব্যবহারকারীদের ত�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "Registered users: custom menus are saved across sessions"
-msgstr "নিবন্ধিত ব্যবহারকারী: প্রতিটি সেশনের জন্য স্বনির্বাচিত মেনু সংরক্ষণ করা হবে"
+msgstr ""
+"নিবন্ধিত ব্যবহারকারী: প্রতিটি সেশনের জন্য স্বনির্বাচিত মেনু সংরক্ষণ করা হবে"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "Registered users: list is saved across sessions"
 msgstr "নিবন্ধিত ব্যবহারকারী তালিকা সংরক্ষিত আছে"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "Regular users should join"
-msgstr "ব্যবহারকারীদের সাথে সংযোগ স্থাপন করা আবশ্যক"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2391,8 +2752,10 @@ msgstr "ব্যবহারকারীকে প্রতিরোধ কর�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unmute.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Remove a channel mute from a user, allowing them to send messages again."
-msgstr "কোনো ব্যবহারকারীর কাছ থেকে একটি চ্যানেলের নিঃশব্দে বার্তা প্রেরণ করুন।"
+msgid ""
+"Remove a channel mute from a user, allowing them to send messages again."
+msgstr ""
+"কোনো ব্যবহারকারীর কাছ থেকে একটি চ্যানেলের নিঃশব্দে বার্তা প্রেরণ করুন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2401,38 +2764,74 @@ msgstr "চ্যানেল থেকে একটি ব্যবহারক
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Remove operator status from a user in the current channel. This is a shorthand for"
-msgstr "বর্তমান চ্যানেলের মধ্যে উপস্থিত ব্যবহারকারীর থেকে প্রাপ্ত অপারেটর মুছে ফেলুন। এটা তোমার জন্য ছোট্ট একটা দান"
+msgid ""
+"Remove operator status from a user in the current channel. This is a "
+"shorthand for"
+msgstr ""
+"বর্তমান চ্যানেলের মধ্যে উপস্থিত ব্যবহারকারীর থেকে প্রাপ্ত অপারেটর মুছে "
+"ফেলুন। এটা তোমার জন্য ছোট্ট একটা দান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Remove the server's Message of the Day so that new users connecting won't see any MOTD."
+msgid ""
+"Remove the server's Message of the Day so that new users connecting won't "
+"see any MOTD."
 msgstr "সার্ভারের বার্তা মুছে ফেলুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Remove the welcome message from the current channel so that new users joining won't see one."
-msgstr "বর্তমান চ্যানেল থেকে স্বাগতম বার্তা সরিয়ে নিন যাতে নতুন ব্যবহারকারীর পরিচয় পাওয়া না যায় ।"
+msgid ""
+"Remove the welcome message from the current channel so that new users "
+"joining won't see one."
+msgstr ""
+"বর্তমান চ্যানেল থেকে স্বাগতম বার্তা সরিয়ে নিন যাতে নতুন ব্যবহারকারীর পরিচয়"
+" পাওয়া না যায় ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_devoice.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Remove voice status from a user in the current channel. This is a shorthand for"
-msgstr "বর্তমান চ্যানেলের মধ্যে উপস্থিত ব্যবহারকারীর থেকে বর্তমান পংক্তি মুছে ফেলুন। এটা তোমার জন্য ছোট্ট একটা দান"
+msgid ""
+"Remove voice status from a user in the current channel. This is a shorthand "
+"for"
+msgstr ""
+"বর্তমান চ্যানেলের মধ্যে উপস্থিত ব্যবহারকারীর থেকে বর্তমান পংক্তি মুছে ফেলুন।"
+" এটা তোমার জন্য ছোট্ট একটা দান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "Removes all visible messages from whichever window you're currently viewing — a channel, a PM conversation, or the Status tab. This only affects your screen; other users' windows are not changed. The messages are gone permanently and cannot be recovered by scrolling up."
-msgstr "সকল প্রদর্শিত উইন্ডো থেকে সকল বার্তা মুছে ফেলা হবে । বর্তমানে আপনি একটি চ্যানেল, একটি প্রধানমন্ত্রী কথোপকথন, বা স্ট্যাটাস ট্যাব- এ চলে যান । এটি শুধুমাত্র আপনার স্ক্রীনটিকে প্রভাবিত করে; অন্যান্য ব্যবহারকারীদেরকে উইন্ডো পরিবর্তন করা যাবে না। প্রেরিত বার্তা স্থায়ীরূপে উদ্ধার করা যাবে না ও পুনরুদ্ধার করা সম্ভব নয়।"
+msgid ""
+"Removes all visible messages from whichever window you're currently viewing "
+"— a channel, a PM conversation, or the Status tab. This only affects your "
+"screen; other users' windows are not changed. The messages are gone "
+"permanently and cannot be recovered by scrolling up."
+msgstr ""
+"সকল প্রদর্শিত উইন্ডো থেকে সকল বার্তা মুছে ফেলা হবে । বর্তমানে আপনি একটি "
+"চ্যানেল, একটি প্রধানমন্ত্রী কথোপকথন, বা স্ট্যাটাস ট্যাব- এ চলে যান । এটি "
+"শুধুমাত্র আপনার স্ক্রীনটিকে প্রভাবিত করে; অন্যান্য ব্যবহারকারীদেরকে উইন্ডো "
+"পরিবর্তন করা যাবে না। প্রেরিত বার্তা স্থায়ীরূপে উদ্ধার করা যাবে না ও "
+"পুনরুদ্ধার করা সম্ভব নয়।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unban.html.heex:10
 #, elixir-autogen, elixir-format
-msgid "Removes the ban entry for the specified user. Once unbanned, the user can rejoin the channel normally. For registered channels, the unban is persisted. You can also unban using"
-msgstr "ব্যবহারকারী নির্ধারিত এন্ট্রি সরিয়ে ফেলুন। একবারই অনন্দিত না হয়ে ব্যবহারকারী চ্যানেলগুলিকে স্বাভাবিক ভাবে দেখতে পারেন। নিবন্ধিত চ্যানেলগুলোর জন্য, এই অসাংবিধান এখনো চলছে। আপনি ব্যবহার করেও যেতে পারেন"
+msgid ""
+"Removes the ban entry for the specified user. Once unbanned, the user can "
+"rejoin the channel normally. For registered channels, the unban is "
+"persisted. You can also unban using"
+msgstr ""
+"ব্যবহারকারী নির্ধারিত এন্ট্রি সরিয়ে ফেলুন। একবারই অনন্দিত না হয়ে "
+"ব্যবহারকারী চ্যানেলগুলিকে স্বাভাবিক ভাবে দেখতে পারেন। নিবন্ধিত চ্যানেলগুলোর "
+"জন্য, এই অসাংবিধান এখনো চলছে। আপনি ব্যবহার করেও যেতে পারেন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "Removes the user from your ignore list. Their messages, PMs, actions, and invites (whichever were being blocked) will be visible again immediately. To see who you're currently ignoring, run"
-msgstr "উপেক্ষা করার জন্য চিহ্নিত ব্যবহারকারীর তালিকা থেকে মুছে ফেলুন। তাদের বার্তা, পিএম-এর কাজ, কাজ এবং আমন্ত্রণ জানানো (যা কখনো বন্ধ করা হয়েছে) অবিলম্বে আবার বন্ধ করা হবে। বর্তমানে আপনি উপেক্ষা করা হচ্ছে, উপেক্ষা করার জন্য চিহ্নিত কমান্ড"
+msgid ""
+"Removes the user from your ignore list. Their messages, PMs, actions, and "
+"invites (whichever were being blocked) will be visible again immediately. To"
+" see who you're currently ignoring, run"
+msgstr ""
+"উপেক্ষা করার জন্য চিহ্নিত ব্যবহারকারীর তালিকা থেকে মুছে ফেলুন। তাদের বার্তা,"
+" পিএম-এর কাজ, কাজ এবং আমন্ত্রণ জানানো (যা কখনো বন্ধ করা হয়েছে) অবিলম্বে "
+"আবার বন্ধ করা হবে। বর্তমানে আপনি উপেক্ষা করা হচ্ছে, উপেক্ষা করার জন্য "
+"চিহ্নিত কমান্ড"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:52
 #, elixir-autogen, elixir-format
@@ -2441,13 +2840,12 @@ msgstr "পুনরাবৃত্তি: ১০, ১০০,৪০০ সেক
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Request to be let into an invite-only (+i) channel. Channel operators see your knock and can choose to invite you in."
-msgstr "আমন্ত্রণ জানানোর অনুরোধ জানানো হচ্ছে শুধুমাত্র (+i) চ্যানেলে। চ্যানেল অপারেটররা আপনার নক দেখে তাতে আপনাকে আমন্ত্রণ জানাতে পারেন।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:11
-#, elixir-autogen, elixir-format
-msgid "Requirements"
-msgstr "আবশ্যক মান"
+msgid ""
+"Request to be let into an invite-only (+i) channel. Channel operators see "
+"your knock and can choose to invite you in."
+msgstr ""
+"আমন্ত্রণ জানানোর অনুরোধ জানানো হচ্ছে শুধুমাত্র (+i) চ্যানেলে। চ্যানেল "
+"অপারেটররা আপনার নক দেখে তাতে আপনাকে আমন্ত্রণ জানাতে পারেন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:93
 #, elixir-autogen, elixir-format
@@ -2553,8 +2951,13 @@ msgstr "চলমান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Schedule a command to run after a delay, optionally repeating at a regular interval. Useful for reminders, periodic announcements, and automated tasks."
-msgstr "একটি নির্দিষ্ট সময় অতিবাহিত হওয়ার পরে সঞ্চালনের উদ্দেশ্যে কমান্ড উল্লেখ করুন, একটি নিয়মিত বিরতি । অ্যালার্মের, নিয়মিত ঘোষণা এবং স্বয়ংক্রিয়রূপে চিহ্নিত।"
+msgid ""
+"Schedule a command to run after a delay, optionally repeating at a regular "
+"interval. Useful for reminders, periodic announcements, and automated tasks."
+msgstr ""
+"একটি নির্দিষ্ট সময় অতিবাহিত হওয়ার পরে সঞ্চালনের উদ্দেশ্যে কমান্ড উল্লেখ "
+"করুন, একটি নিয়মিত বিরতি । অ্যালার্মের, নিয়মিত ঘোষণা এবং স্বয়ংক্রিয়রূপে "
+"চিহ্নিত।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:60
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:73
@@ -2605,7 +3008,6 @@ msgstr "একটি নির্দিষ্ট সময় অতিবাহ
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:31
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:25
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:41
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:62
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:37
@@ -2625,38 +3027,64 @@ msgstr "অতিরিক্ত পাঠ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Send a channel invitation to another user. This is required for invite-only (+i) channels where users cannot join on their own."
-msgstr "একটি চ্যানেলকে অন্য ব্যবহারকারীর কাছে আমন্ত্রণ জানাও। এর জন্য শুধু আমন্ত্রণের জন্য (+) চ্যানেলগুলোর প্রয়োজন, যেখানে ব্যবহারকারীরা নিজেরা যোগ দিতে পারেন না।"
+msgid ""
+"Send a channel invitation to another user. This is required for invite-only "
+"(+i) channels where users cannot join on their own."
+msgstr ""
+"একটি চ্যানেলকে অন্য ব্যবহারকারীর কাছে আমন্ত্রণ জানাও। এর জন্য শুধু "
+"আমন্ত্রণের জন্য (+) চ্যানেলগুলোর প্রয়োজন, যেখানে ব্যবহারকারীরা নিজেরা যোগ "
+"দিতে পারেন না।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Send a lightweight notice to a user or channel. Unlike"
-msgstr "ব্যবহারকারীর অথবা চ্যানেল থেকে একটি লাইটওয়েট বিজ্ঞপ্তি পাঠাও। এটি নয়"
+msgstr ""
+"ব্যবহারকারীর অথবা চ্যানেল থেকে একটি লাইটওয়েট বিজ্ঞপ্তি পাঠাও। এটি নয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Send a message to all users who have opted in to receive operator announcements by enabling +w user mode."
-msgstr "সকল ব্যবহারকারীকে একটি বার্তা পাঠান, যারা +wic মোড দ্বারা অপারেটরের ঘোষণা গ্রহণ করেছে।"
+msgid ""
+"Send a message to all users who have opted in to receive operator "
+"announcements by enabling +w user mode."
+msgstr ""
+"সকল ব্যবহারকারীকে একটি বার্তা পাঠান, যারা +wic মোড দ্বারা অপারেটরের ঘোষণা "
+"গ্রহণ করেছে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Send a private message to another user. This opens a PM conversation tab for both of you."
-msgstr "অন্য কোনো ব্যবহারকারীকে গোপনীয় বার্তা পাঠানো হবে। তোমাদের দুজনের জন্যই এটিএম কথোপকথনের ট্যাব খোলে।"
+msgid ""
+"Send a private message to another user. This opens a PM conversation tab for"
+" both of you."
+msgstr ""
+"অন্য কোনো ব্যবহারকারীকে গোপনীয় বার্তা পাঠানো হবে। তোমাদের দুজনের জন্যই "
+"এটিএম কথোপকথনের ট্যাব খোলে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Send an action message that describes what you're doing. It appears to everyone in the channel as"
-msgstr "আপনি কি করছেন সে সম্পর্কে একটি বার্তা পাঠান। এটি সবাইকে চ্যানেলের মধ্যে দেখতে পাচ্ছি"
+msgid ""
+"Send an action message that describes what you're doing. It appears to "
+"everyone in the channel as"
+msgstr ""
+"আপনি কি করছেন সে সম্পর্কে একটি বার্তা পাঠান। এটি সবাইকে চ্যানেলের মধ্যে "
+"দেখতে পাচ্ছি"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Send an urgent broadcast message to every connected user. This is for critical server-wide announcements that everyone must see."
-msgstr "সকল সংযুক্ত ব্যবহারকারীকে জরুরী সম্প্রচার বার্তা পাঠান। এর জন্য দায়ী সার্ভার- ব্যাপী ঘোষণার জন্য সবাইকে দেখতে হবে।"
+msgid ""
+"Send an urgent broadcast message to every connected user. This is for "
+"critical server-wide announcements that everyone must see."
+msgstr ""
+"সকল সংযুক্ত ব্যবহারকারীকে জরুরী সম্প্রচার বার্তা পাঠান। এর জন্য দায়ী "
+"সার্ভার- ব্যাপী ঘোষণার জন্য সবাইকে দেখতে হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Server administration commands for managing users, channels, services, and settings. Only available to server administrators and operators."
-msgstr "সার্ভার ব্যবহারকারীদের, চ্যানেল, সার্ভিস এবং বৈশিষ্ট্য পরিচালনার জন্য প্রশাসন কমান্ডসমূহ। শুধুমাত্র সার্ভার ও অপারেটরদের তালিকা উপলব্ধ রয়েছে।"
+msgid ""
+"Server administration commands for managing users, channels, services, and "
+"settings. Only available to server administrators and operators."
+msgstr ""
+"সার্ভার ব্যবহারকারীদের, চ্যানেল, সার্ভিস এবং বৈশিষ্ট্য পরিচালনার জন্য "
+"প্রশাসন কমান্ডসমূহ। শুধুমাত্র সার্ভার ও অপারেটরদের তালিকা উপলব্ধ রয়েছে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:18
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:20
@@ -2667,12 +3095,18 @@ msgstr "শুধুমাত্র সার্ভার"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "Server administrator only — regular users cannot send announcements"
-msgstr "সার্ভার অ্যাডমিনস্ট্রেটর শুধুমাত্র সাধারণ ব্যবহারকারীদের দ্বারা ঘোষণা প্রদান করা সম্ভব হবে না"
+msgstr ""
+"সার্ভার অ্যাডমিনস্ট্রেটর শুধুমাত্র সাধারণ ব্যবহারকারীদের দ্বারা ঘোষণা প্রদান"
+" করা সম্ভব হবে না"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Server debug tools for viewing runtime information about the BEAM VM. Requires server administrator role. Read-only, no side effects."
-msgstr "VM সম্পর্কিত তথ্য প্রদর্শনে সার্ভার ডিবাগ টুল স্বয়ংক্রিয়রূপে সার্ভার ভূমিকা প্রয়োজন। শুধু পড়া, কোন পার্শ্ব ইফেক্ট না."
+msgid ""
+"Server debug tools for viewing runtime information about the BEAM VM. "
+"Requires server administrator role. Read-only, no side effects."
+msgstr ""
+"VM সম্পর্কিত তথ্য প্রদর্শনে সার্ভার ডিবাগ টুল স্বয়ংক্রিয়রূপে সার্ভার "
+"ভূমিকা প্রয়োজন। শুধু পড়া, কোন পার্শ্ব ইফেক্ট না."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:30
 #, elixir-autogen, elixir-format
@@ -2681,8 +3115,12 @@ msgstr "সার্ভার অপারেটর অথবা এই মু�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Set a message shown once to each user when they join the current channel. Great for posting rules or helpful information for newcomers."
-msgstr "বর্তমান চ্যানেলে যোগ দেওয়ার সময় প্রতিটি ব্যবহারকারীর জন্য একটি বার্তা প্রদর্শন করা হবে। নতুন নিয়ম বা সাহায্যকারী তথ্য পোস্ট করার জন্য দারুণ।"
+msgid ""
+"Set a message shown once to each user when they join the current channel. "
+"Great for posting rules or helpful information for newcomers."
+msgstr ""
+"বর্তমান চ্যানেলে যোগ দেওয়ার সময় প্রতিটি ব্যবহারকারীর জন্য একটি বার্তা "
+"প্রদর্শন করা হবে। নতুন নিয়ম বা সাহায্যকারী তথ্য পোস্ট করার জন্য দারুণ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:2
 #, elixir-autogen, elixir-format
@@ -2691,28 +3129,41 @@ msgstr "\"আমার\" নামক একটি সংক্ষিপ্ত �
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Set channels to join automatically every time you connect, so you never have to manually rejoin your favorite rooms."
-msgstr "প্রতিবার সংযোগ স্থাপনের জন্য চ্যানেলগুলিকে স্বয়ংক্রিয়ভাবে যোগ দিতে হবে, এর ফলে আপনার পছন্দের রুমগুলো কখনো পরিবর্তন করা হবে না ।"
+msgid ""
+"Set channels to join automatically every time you connect, so you never have"
+" to manually rejoin your favorite rooms."
+msgstr ""
+"প্রতিবার সংযোগ স্থাপনের জন্য চ্যানেলগুলিকে স্বয়ংক্রিয়ভাবে যোগ দিতে হবে, এর"
+" ফলে আপনার পছন্দের রুমগুলো কখনো পরিবর্তন করা হবে না ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Set the server's Message of the Day — a welcome message shown to all users when they connect."
+msgid ""
+"Set the server's Message of the Day — a welcome message shown to all users "
+"when they connect."
 msgstr "এই বার্তাটি প্রেরণ করা হচ্ছে..."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Set up commands that automatically run every time you connect, like identifying with NickServ or joining channels."
-msgstr "যে কমান্ড সঞ্চালনার সময় স্বয়ংক্রিয়ভাবে সংযোগ স্থাপন করা হবে তা নির্ধারণ করুন, যেমন, নিকQovocle অথবা চ্যানেলের সাথে সংযোগ স্থাপন করুন ।"
+msgid ""
+"Set up commands that automatically run every time you connect, like "
+"identifying with NickServ or joining channels."
+msgstr ""
+"যে কমান্ড সঞ্চালনার সময় স্বয়ংক্রিয়ভাবে সংযোগ স্থাপন করা হবে তা নির্ধারণ "
+"করুন, যেমন, নিকQovocle অথবা চ্যানেলের সাথে সংযোগ স্থাপন করুন ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "Sets or replaces the server MOTD. After setting it, all newly connecting users will see this message in the Status tab when they join. Existing connected users are not notified — only new connections see the MOTD. Any previous MOTD is replaced."
-msgstr "সার্ভার MOTSD ব্যবহার করে টি প্রতিস্থাপন বা প্রতিস্থাপন করে । এটি নির্ধারণ করার পরে, সকল নতুন সংযোগ বিচ্ছিন্ন করলে ব্যবহারকারীকে স্ট্যাটাস- এ যোগ করা হবে । সংযুক্ত ব্যবহারকারীদের জানানো হয় না — শুধুমাত্র MOTD দেখার জন্য নতুন সংযোগ পাওয়া যাচ্ছে । পূর্ববর্তী MOTD প্রতিস্থাপন করা হয়েছে।"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:27
-#, elixir-autogen, elixir-format
-msgid "Solo Arcade"
-msgstr "সলো আর্কেডName"
+msgid ""
+"Sets or replaces the server MOTD. After setting it, all newly connecting "
+"users will see this message in the Status tab when they join. Existing "
+"connected users are not notified — only new connections see the MOTD. Any "
+"previous MOTD is replaced."
+msgstr ""
+"সার্ভার MOTSD ব্যবহার করে টি প্রতিস্থাপন বা প্রতিস্থাপন করে । এটি নির্ধারণ "
+"করার পরে, সকল নতুন সংযোগ বিচ্ছিন্ন করলে ব্যবহারকারীকে স্ট্যাটাস- এ যোগ করা "
+"হবে । সংযুক্ত ব্যবহারকারীদের জানানো হয় না — শুধুমাত্র MOTD দেখার জন্য নতুন "
+"সংযোগ পাওয়া যাচ্ছে । পূর্ববর্তী MOTD প্রতিস্থাপন করা হয়েছে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:44
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearmotd.html.heex:28
@@ -2725,15 +3176,11 @@ msgstr "সলো আর্কেডName"
 msgid "Special Messages"
 msgstr "বিশেষ বার্তা"
 
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:2
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session from chat. This is an administrator-only command used for direct arcade session creation."
-msgstr "চ্যাট থেকে একটি সলো আর্কেড সেশন শুরু করো। এটি শুধুমাত্র সরাসরি আর্কেড সেশান নির্মাণের জন্য ব্যবহার করা হয়।"
-
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Stop ignoring a user you previously blocked with"
-msgstr "পূর্বে পরিদর্শিত ব্যবহারকারী দ্বারা কোনো ব্যবহারকারীকে উপেক্ষা করা হবে না"
+msgstr ""
+"পূর্বে পরিদর্শিত ব্যবহারকারী দ্বারা কোনো ব্যবহারকারীকে উপেক্ষা করা হবে না"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:11
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:11
@@ -2797,7 +3244,6 @@ msgstr "সাব- কমান্ড"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:7
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:7
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:8
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:9
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:14
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:7
@@ -2821,8 +3267,17 @@ msgstr "এটা হতে পারেনা।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_announce.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "The announcement appears in each user's currently active window with distinctive bold styling. Unlike regular messages, announcements bypass all ignore filters — every connected user will see it regardless of their ignore settings. Use this for important server-wide notices like scheduled maintenance or rule changes."
-msgstr "প্রতিটি ব্যবহারকারীর বর্তমানে সক্রিয় উইন্ডোর মধ্যে এই ঘোষণাটি দৃশ্যমান। নিয়মিত বার্তার বিপরীতে, সকল উপেক্ষা ফিল্টার এড়িয়ে যাওয়া হবে- প্রতিটি সংযুক্ত ব্যবহারকারীকেই তা উপেক্ষা করা হবে। গুরুত্বপূর্ণ সার্ভার- wide-  হে দিশা নির্ধারণের জন্য এটি ব্যবহার করুন ।"
+msgid ""
+"The announcement appears in each user's currently active window with "
+"distinctive bold styling. Unlike regular messages, announcements bypass all "
+"ignore filters — every connected user will see it regardless of their ignore"
+" settings. Use this for important server-wide notices like scheduled "
+"maintenance or rule changes."
+msgstr ""
+"প্রতিটি ব্যবহারকারীর বর্তমানে সক্রিয় উইন্ডোর মধ্যে এই ঘোষণাটি দৃশ্যমান। "
+"নিয়মিত বার্তার বিপরীতে, সকল উপেক্ষা ফিল্টার এড়িয়ে যাওয়া হবে- প্রতিটি "
+"সংযুক্ত ব্যবহারকারীকেই তা উপেক্ষা করা হবে। গুরুত্বপূর্ণ সার্ভার- wide-  হে "
+"দিশা নির্ধারণের জন্য এটি ব্যবহার করুন ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:33
 #, elixir-autogen, elixir-format
@@ -2836,13 +3291,27 @@ msgstr "কমান্ডের ক্ষেত্রে বৈধ কমান
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:21
 #, elixir-autogen, elixir-format
-msgid "The current channel owner gives up ownership to the specified user. The previous owner is automatically set as an operator. If the channel is registered, the ChanServ access list is updated accordingly."
-msgstr "বর্তমান চ্যানেলের মালিক, ব্যবহারকারীর মালিকানা নির্দিষ্ট করে দেন । পূর্ববর্তী মালিক স্বয়ংক্রিয়ভাবে অপারেটর হিসেবে স্বয়ংক্রিয়ভাবে নামের সেট করা হয়। যদি চ্যানেলটি নিবন্ধন করা হয়, তাহলে চ্যানফরেস্টের তালিকা পুনরায় আপডেট করা হবে।"
+msgid ""
+"The current channel owner gives up ownership to the specified user. The "
+"previous owner is automatically set as an operator. If the channel is "
+"registered, the ChanServ access list is updated accordingly."
+msgstr ""
+"বর্তমান চ্যানেলের মালিক, ব্যবহারকারীর মালিকানা নির্দিষ্ট করে দেন । "
+"পূর্ববর্তী মালিক স্বয়ংক্রিয়ভাবে অপারেটর হিসেবে স্বয়ংক্রিয়ভাবে নামের সেট "
+"করা হয়। যদি চ্যানেলটি নিবন্ধন করা হয়, তাহলে চ্যানফরেস্টের তালিকা পুনরায় "
+"আপডেট করা হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:26
 #, elixir-autogen, elixir-format
-msgid "The muted user cannot send messages in the channel but can still read them. If a duration is specified, the mute automatically expires after that time. Channel operators and above can mute users with lower rank."
-msgstr "নিঃশব্দ ব্যবহারকারী একটি চ্যানেলে প্রেরণ করতে পারবেন না কিন্তু সেগুলি পড়া যাবে না। মান নির্ধারিত হলে, কোনো সময়ের পরে নিঃশব্দ অবস্থা উৎপন্ন হবে। চ্যানেল অপারেটর এবং উপরের চ্যানেল অপারেটররা নিম্ন মানের নিঃশব্দ ব্যবহারকারীদের কাছে আসতে পারে।"
+msgid ""
+"The muted user cannot send messages in the channel but can still read them. "
+"If a duration is specified, the mute automatically expires after that time. "
+"Channel operators and above can mute users with lower rank."
+msgstr ""
+"নিঃশব্দ ব্যবহারকারী একটি চ্যানেলে প্রেরণ করতে পারবেন না কিন্তু সেগুলি পড়া "
+"যাবে না। মান নির্ধারিত হলে, কোনো সময়ের পরে নিঃশব্দ অবস্থা উৎপন্ন হবে। "
+"চ্যানেল অপারেটর এবং উপরের চ্যানেল অপারেটররা নিম্ন মানের নিঃশব্দ "
+"ব্যবহারকারীদের কাছে আসতে পারে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:31
 #, elixir-autogen, elixir-format
@@ -2862,18 +3331,33 @@ msgstr "উদ্দিষ্ট চ্যানেলটি চ্যানে�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "The user is immediately removed from the channel. All channel members see the kick along with the optional reason message. The kicked user can rejoin the channel immediately unless they are also banned. If you want to permanently prevent someone from returning, use"
-msgstr "ব্যবহারকারী দ্বারা চ্যানেল থেকে সরিয়ে ফেলা হয়েছে। সকল চ্যানেলের সদস্যরা ঐচ্ছিক কারণ সহ কিক দেখতে পান। ব্যবহারকারী এই চ্যানেলটিকে অবিলম্বে বন্ধ করে দিতে পারেন যদি না তারা নিষিদ্ধ হয়। যদি আপনি স্থায়ীভাবে কাউকে ফেরত দিতে চান, তাহলে ব্যবহার করুন"
+msgid ""
+"The user is immediately removed from the channel. All channel members see "
+"the kick along with the optional reason message. The kicked user can rejoin "
+"the channel immediately unless they are also banned. If you want to "
+"permanently prevent someone from returning, use"
+msgstr ""
+"ব্যবহারকারী দ্বারা চ্যানেল থেকে সরিয়ে ফেলা হয়েছে। সকল চ্যানেলের সদস্যরা "
+"ঐচ্ছিক কারণ সহ কিক দেখতে পান। ব্যবহারকারী এই চ্যানেলটিকে অবিলম্বে বন্ধ করে "
+"দিতে পারেন যদি না তারা নিষিদ্ধ হয়। যদি আপনি স্থায়ীভাবে কাউকে ফেরত দিতে "
+"চান, তাহলে ব্যবহার করুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "The user is kicked from the channel and a ban is set, preventing them from rejoining. The ban stays in effect until a channel operator removes it using"
-msgstr "ব্যবহারকারীকে চ্যানেল থেকে বিতাড়ন করা হয়েছে আর নিষিদ্ধ করা হয়েছে তাদের প্রতিরোধ করতে। চ্যানেল অপারেটর দ্বারা এটি বর্জন করা হবে যতক্ষণ না প্রতিরোধ করা হয়"
+msgid ""
+"The user is kicked from the channel and a ban is set, preventing them from "
+"rejoining. The ban stays in effect until a channel operator removes it using"
+msgstr ""
+"ব্যবহারকারীকে চ্যানেল থেকে বিতাড়ন করা হয়েছে আর নিষিদ্ধ করা হয়েছে তাদের "
+"প্রতিরোধ করতে। চ্যানেল অপারেটর দ্বারা এটি বর্জন করা হবে যতক্ষণ না প্রতিরোধ "
+"করা হয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "The user must be online (for offline users, use"
-msgstr "অফ-লাইন অবস্থায় থাকা আবশ্যক (এই ব্যবহারকারীদের জন্য অফ-লাইন অবস্থায় থাকা আবশ্যক)"
+msgstr ""
+"অফ-লাইন অবস্থায় থাকা আবশ্যক (এই ব্যবহারকারীদের জন্য অফ-লাইন অবস্থায় থাকা "
+"আবশ্যক)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:26
 #, elixir-autogen, elixir-format
@@ -2892,8 +3376,10 @@ msgstr "সময়- সংরক্ষক"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:54
 #, elixir-autogen, elixir-format
-msgid "Timers are session-only — they do not survive page reload or disconnect"
-msgstr "টাইমার কেবল সেশান-র মাধ্যমে — তারা পুনরায় লোড অথবা বিচ্ছিন্ন করা সম্ভব নয়"
+msgid ""
+"Timers are session-only — they do not survive page reload or disconnect"
+msgstr ""
+"টাইমার কেবল সেশান-র মাধ্যমে — তারা পুনরায় লোড অথবা বিচ্ছিন্ন করা সম্ভব নয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:38
 #, elixir-autogen, elixir-format
@@ -2902,18 +3388,30 @@ msgstr "নিষিদ্ধ করতে, ব্যবহৃত"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Toggle personal user modes that affect what messages you receive. User modes are settings that apply to you, not to a channel."
-msgstr "ব্যবহারকারী দ্বারা আপনার ব্যক্তিগত মোড প্রভাবিত হলে যে বার্তাকে প্রভাবিত হবে। ব্যবহারকারীর মোড, কোনো চ্যানেলের জন্য প্রয়োগ করা হয় না ।"
+msgid ""
+"Toggle personal user modes that affect what messages you receive. User modes"
+" are settings that apply to you, not to a channel."
+msgstr ""
+"ব্যবহারকারী দ্বারা আপনার ব্যক্তিগত মোড প্রভাবিত হলে যে বার্তাকে প্রভাবিত "
+"হবে। ব্যবহারকারীর মোড, কোনো চ্যানেলের জন্য প্রয়োগ করা হয় না ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Track when specific users come online or go offline. Build a buddy list so you never miss when your friends connect."
-msgstr "কোনো সুনির্দিষ্ট ব্যবহারকারী অন-লাইন এলে অথবা অফলাইনে চলে যান। আপনার বন্ধু একটি তালিকা তৈরি করুন যাতে আপনার বন্ধু যখন আপনার বন্ধু সংযুক্ত হয় না."
+msgid ""
+"Track when specific users come online or go offline. Build a buddy list so "
+"you never miss when your friends connect."
+msgstr ""
+"কোনো সুনির্দিষ্ট ব্যবহারকারী অন-লাইন এলে অথবা অফলাইনে চলে যান। আপনার বন্ধু "
+"একটি তালিকা তৈরি করুন যাতে আপনার বন্ধু যখন আপনার বন্ধু সংযুক্ত হয় না."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Transfer channel ownership to another user. The current owner is demoted to operator and the target becomes the new owner."
-msgstr "অন্য ব্যবহারকারীর সাথে চ্যানেলের মালিকানা স্থানান্তর করুন । বর্তমান মালিককে অপারেটরদের প্রতি আকৃষ্ট করা হয় আর লক্ষ্যটি নতুন মালিকের।"
+msgid ""
+"Transfer channel ownership to another user. The current owner is demoted to "
+"operator and the target becomes the new owner."
+msgstr ""
+"অন্য ব্যবহারকারীর সাথে চ্যানেলের মালিকানা স্থানান্তর করুন । বর্তমান মালিককে "
+"অপারেটরদের প্রতি আকৃষ্ট করা হয় আর লক্ষ্যটি নতুন মালিকের।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:100
 #, elixir-autogen, elixir-format
@@ -2927,8 +3425,12 @@ msgstr "ব্যবহারকারীর মালিকানাধীন �
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:30
 #, elixir-autogen, elixir-format
-msgid "User modes are personal settings that only affect you. Currently, the only available user mode is"
-msgstr "ব্যবহারকারীর মোড হল ব্যক্তিগত সেটিংস যা শুধুমাত্র আপনাকে প্রভাবিত করবে । বর্তমানে, শুধুমাত্র ব্যবহারকারীর দ্বারা উপলব্ধ"
+msgid ""
+"User modes are personal settings that only affect you. Currently, the only "
+"available user mode is"
+msgstr ""
+"ব্যবহারকারীর মোড হল ব্যক্তিগত সেটিংস যা শুধুমাত্র আপনাকে প্রভাবিত করবে । "
+"বর্তমানে, শুধুমাত্র ব্যবহারকারীর দ্বারা উপলব্ধ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:46
 #, elixir-autogen, elixir-format
@@ -2937,23 +3439,35 @@ msgstr "ব্যবহারকারী মোড বিচ্ছিন্ন 
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "View help for any command, or browse all available commands. Your gateway to learning how RetroHexChat works."
-msgstr "কোনো কমান্ডের জন্য সহায়তা দেখুন, অথবা সকল কমান্ড ব্রাউজ করুন। রেট্রো HexChat এর কাজ শেখা তোমার গেটওয়ে।"
+msgid ""
+"View help for any command, or browse all available commands. Your gateway to"
+" learning how RetroHexChat works."
+msgstr ""
+"কোনো কমান্ডের জন্য সহায়তা দেখুন, অথবা সকল কমান্ড ব্রাউজ করুন। রেট্রো "
+"HexChat এর কাজ শেখা তোমার গেটওয়ে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "View or change the channel topic — the text displayed in the topic bar at the top of the channel window."
-msgstr "বর্তমান চ্যানেলের মধ্যে প্রদর্শিত চ্যানেলের বিষয়বস্তু অথবা পরিবর্তন করুন, উইন্ডোটির মূল স্থানে প্রদর্শিত হবে।"
+msgid ""
+"View or change the channel topic — the text displayed in the topic bar at "
+"the top of the channel window."
+msgstr ""
+"বর্তমান চ্যানেলের মধ্যে প্রদর্শিত চ্যানেলের বিষয়বস্তু অথবা পরিবর্তন করুন, "
+"উইন্ডোটির মূল স্থানে প্রদর্শিত হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "View the server's Message of the Day — a welcome message from the server administrators that is also shown automatically when you first connect."
+msgid ""
+"View the server's Message of the Day — a welcome message from the server "
+"administrators that is also shown automatically when you first connect."
 msgstr "সার্ভার থেকে আপনার বার্তার বার্তা প্রদর্শন করে ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "Wallops messages are delivered to all users who have enabled the"
-msgstr "সক্রিয় যেসব ব্যবহারকারীকে সক্রিয় করা হয়েছে, সেই সকল ব্যবহারকারীদের জন্য ওয়ালফাপ বার্তা পাঠানো হবে"
+msgstr ""
+"সক্রিয় যেসব ব্যবহারকারীকে সক্রিয় করা হয়েছে, সেই সকল ব্যবহারকারীদের জন্য "
+"ওয়ালফাপ বার্তা পাঠানো হবে"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:27
 #, elixir-autogen, elixir-format
@@ -2962,28 +3476,60 @@ msgstr "কি অপরিবর্তিত রয়েছে"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_slow.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "When enabled, new joins are throttled to prevent flooding. The mode allows a limited number of joins per time window. Use"
-msgstr "সক্রিয় থাকলে, নতুন যোগদানের গতি বেড়ে যায় বন্যা প্রতিরোধ করতে। এই মোডটি কোনো প্রতি উইন্ডোর মধ্যে অন্তর্ভুক্ত হওয়ার সংখ্যা । ব্যবহার"
+msgid ""
+"When enabled, new joins are throttled to prevent flooding. The mode allows a"
+" limited number of joins per time window. Use"
+msgstr ""
+"সক্রিয় থাকলে, নতুন যোগদানের গতি বেড়ে যায় বন্যা প্রতিরোধ করতে। এই মোডটি "
+"কোনো প্রতি উইন্ডোর মধ্যে অন্তর্ভুক্ত হওয়ার সংখ্যা । ব্যবহার"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "When someone on your notify list connects or disconnects, you receive a notification in the Status tab. You can add personal notes to help remember who each person is. Running"
-msgstr "সংযোগ বিচ্ছিন্ন অথবা বিচ্ছিন্ন করা হলে, স্ট্যাটাস স্ট্যাটাস তালিকায় কোনো ব্যক্তি যোগ করতে পারবেন। ( ১ করি. চলমান"
+msgid ""
+"When someone on your notify list connects or disconnects, you receive a "
+"notification in the Status tab. You can add personal notes to help remember "
+"who each person is. Running"
+msgstr ""
+"সংযোগ বিচ্ছিন্ন অথবা বিচ্ছিন্ন করা হলে, স্ট্যাটাস স্ট্যাটাস তালিকায় কোনো "
+"ব্যক্তি যোগ করতে পারবেন। ( ১ করি. চলমান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "When the specified event occurs (and optionally in the specified channel), the command is executed automatically. For example, you can greet anyone who joins #welcome with a notice. Running"
-msgstr "নির্ধারিত ইভেন্টে (এবং সুনির্দিষ্ট চ্যানেলে উল্লেখ করা হলে, কমান্ড স্বয়ংক্রিয়ভাবে সঞ্চালন করা হবে)। উদাহরণস্বরূপ, আপনি এমন কাউকে শুভেচ্ছা জানাতে পারেন যারা <fflol/f0\\-0 <fff0\\p0\\ -এ যোগদান করতে পারেন। চলমান"
+msgid ""
+"When the specified event occurs (and optionally in the specified channel), "
+"the command is executed automatically. For example, you can greet anyone who"
+" joins #welcome with a notice. Running"
+msgstr ""
+"নির্ধারিত ইভেন্টে (এবং সুনির্দিষ্ট চ্যানেলে উল্লেখ করা হলে, কমান্ড "
+"স্বয়ংক্রিয়ভাবে সঞ্চালন করা হবে)। উদাহরণস্বরূপ, আপনি এমন কাউকে শুভেচ্ছা "
+"জানাতে পারেন যারা <fflol/f0\\-0 <fff0\\p0\\ -এ যোগদান করতে পারেন। চলমান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "When you connect to the server, your auto-join channels are joined automatically after all perform commands finish. This ensures things like NickServ identification happen before joining channels. When you use"
-msgstr "সার্ভারে সংযোগ স্থাপন করা হলে, স্বয়ংক্রিয় ভাবে সকল কমান্ড সমাপ্ত করার পরে নিজের স্বয়ংক্রিয় ভাবে সংযুক্ত করা হবে । চ্যানেলে যোগ দেওয়ার আগে নিক এক্সপেরিমেন্টের মত ঘটনা নিশ্চিত করুন। যখন আপনি ব্যবহার"
+msgid ""
+"When you connect to the server, your auto-join channels are joined "
+"automatically after all perform commands finish. This ensures things like "
+"NickServ identification happen before joining channels. When you use"
+msgstr ""
+"সার্ভারে সংযোগ স্থাপন করা হলে, স্বয়ংক্রিয় ভাবে সকল কমান্ড সমাপ্ত করার পরে "
+"নিজের স্বয়ংক্রিয় ভাবে সংযুক্ত করা হবে । চ্যানেলে যোগ দেওয়ার আগে নিক "
+"এক্সপেরিমেন্টের মত ঘটনা নিশ্চিত করুন। যখন আপনি ব্যবহার"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_join.html.heex:17
 #, elixir-autogen, elixir-format
-msgid "When you join a channel, a new tab opens and you can see messages and participate in the conversation. If the channel doesn't exist, it is created automatically and you become its first operator (giving you control over channel settings). For registered users, joining a channel automatically adds it to your auto-join list so it's rejoined on your next connection."
-msgstr "যখন আপনি একটি চ্যানেলে যোগ দেবেন, একটি নতুন ট্যাব খোলা থাকবে এবং আপনি বার্তাটি দেখতে পাবেন এবং আলোচনায় অংশ নিতে পারবেন। চ্যানেলের কোনো উপস্থিত না থাকলে, শুধুমাত্র স্বয়ংক্রিয়ভাবে নির্মাণ করা হয় ও প্রথম অপারেটর হিসাবে (এই চ্যানেলের জন্য ওপর নির্ভরশীল)। নিবন্ধিত ব্যবহারকারীদের জন্য, একটি চ্যানেলে স্বয়ংক্রিয়ভাবে যোগ দিন যাতে আপনার স্বয়ংক্রিয় যোগদানের তালিকায় যোগ দেয়।"
+msgid ""
+"When you join a channel, a new tab opens and you can see messages and "
+"participate in the conversation. If the channel doesn't exist, it is created"
+" automatically and you become its first operator (giving you control over "
+"channel settings). For registered users, joining a channel automatically "
+"adds it to your auto-join list so it's rejoined on your next connection."
+msgstr ""
+"যখন আপনি একটি চ্যানেলে যোগ দেবেন, একটি নতুন ট্যাব খোলা থাকবে এবং আপনি "
+"বার্তাটি দেখতে পাবেন এবং আলোচনায় অংশ নিতে পারবেন। চ্যানেলের কোনো উপস্থিত না"
+" থাকলে, শুধুমাত্র স্বয়ংক্রিয়ভাবে নির্মাণ করা হয় ও প্রথম অপারেটর হিসাবে "
+"(এই চ্যানেলের জন্য ওপর নির্ভরশীল)। নিবন্ধিত ব্যবহারকারীদের জন্য, একটি "
+"চ্যানেলে স্বয়ংক্রিয়ভাবে যোগ দিন যাতে আপনার স্বয়ংক্রিয় যোগদানের তালিকায় "
+"যোগ দেয়।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_nick.html.heex:13
 #, elixir-autogen, elixir-format
@@ -2992,8 +3538,12 @@ msgstr "যখন আপনি রান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "When you set an away message, your status changes to \"away\" in the user list. Anyone who uses"
-msgstr "ব্যবহারকারী দ্বারা আপনার বার্তা প্রাপ্ত হলে ব্যবহারকারীকে সূচিত করা হবে। যে কেউ ব্যবহার করে"
+msgid ""
+"When you set an away message, your status changes to \"away\" in the user "
+"list. Anyone who uses"
+msgstr ""
+"ব্যবহারকারী দ্বারা আপনার বার্তা প্রাপ্ত হলে ব্যবহারকারীকে সূচিত করা হবে। যে "
+"কেউ ব্যবহার করে"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:32
 #, elixir-autogen, elixir-format
@@ -3002,13 +3552,29 @@ msgstr "+t ছাড়া, যে কোন চ্যানেলের সদ�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_quit.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "You are disconnected from the server and returned to the connect screen. All your channel memberships end, and other users see a quit notification with your optional message. Your session is fully ended — to rejoin, you'll need to connect again from the connect screen."
-msgstr "সার্ভারে সাথে সংযোগ বিচ্ছিন্ন হয়েছে ও পর্দা %s-র সাথে সংযোগ বিচ্ছিন্ন হয়েছে। আপনাদের সকল চ্যানেল সদস্যপদ শেষ হয়ে গেছে, এবং অন্যান্য ব্যবহারকারীরা আপনার ঐচ্ছিক বার্তাটির মাধ্যমে বন্ধ করে দিন। আপনার সেশনটি সম্পূর্ণভাবে শেষ হয়ে গেছে - এর ফলে আপনি এখন সংযোগ করতে পারবেন।"
+msgid ""
+"You are disconnected from the server and returned to the connect screen. All"
+" your channel memberships end, and other users see a quit notification with "
+"your optional message. Your session is fully ended — to rejoin, you'll need "
+"to connect again from the connect screen."
+msgstr ""
+"সার্ভারে সাথে সংযোগ বিচ্ছিন্ন হয়েছে ও পর্দা %s-র সাথে সংযোগ বিচ্ছিন্ন "
+"হয়েছে। আপনাদের সকল চ্যানেল সদস্যপদ শেষ হয়ে গেছে, এবং অন্যান্য "
+"ব্যবহারকারীরা আপনার ঐচ্ছিক বার্তাটির মাধ্যমে বন্ধ করে দিন। আপনার সেশনটি "
+"সম্পূর্ণভাবে শেষ হয়ে গেছে - এর ফলে আপনি এখন সংযোগ করতে পারবেন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:20
 #, elixir-autogen, elixir-format
-msgid "You exit the channel and other members see that you left, along with your optional message. The channel tab is closed. For registered users, leaving a channel automatically removes it from your auto-join list, so it won't be rejoined on your next connection."
-msgstr "আপনি চ্যানেল থেকে প্রস্থান করেন এবং অন্যান্য সদস্যরা দেখতে পাবেন যে আপনি চলে গেছেন, আপনার ঐচ্ছিক বার্তা সহ। চ্যানেল বন্ধ করা হচ্ছে। নিবন্ধিত ব্যবহারকারীদের জন্য, একটি চ্যানেল থেকে স্বয়ংক্রিয়ভাবে মুছে ফেলা হবে না, তাই আপনার পরবর্তী সংযোগে এটি ভাগ করা হবে না।"
+msgid ""
+"You exit the channel and other members see that you left, along with your "
+"optional message. The channel tab is closed. For registered users, leaving a"
+" channel automatically removes it from your auto-join list, so it won't be "
+"rejoined on your next connection."
+msgstr ""
+"আপনি চ্যানেল থেকে প্রস্থান করেন এবং অন্যান্য সদস্যরা দেখতে পাবেন যে আপনি চলে"
+" গেছেন, আপনার ঐচ্ছিক বার্তা সহ। চ্যানেল বন্ধ করা হচ্ছে। নিবন্ধিত "
+"ব্যবহারকারীদের জন্য, একটি চ্যানেল থেকে স্বয়ংক্রিয়ভাবে মুছে ফেলা হবে না, "
+"তাই আপনার পরবর্তী সংযোগে এটি ভাগ করা হবে না।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clearwelcome.html.heex:18
 #, elixir-autogen, elixir-format
@@ -3024,11 +3590,6 @@ msgstr "আপনাকে একটি চ্যানেলে নিবন্
 #, elixir-autogen, elixir-format
 msgid "You must be a registered user to use ChanServ"
 msgstr "ব্যবহারের জন্য একটি নিবন্ধিত ব্যবহারকারী থাকা আবশ্যক"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:13
-#, elixir-autogen, elixir-format
-msgid "You must be a server administrator."
-msgstr "আপনি অবশ্যই সার্ভার হতে চান।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:36
 #, elixir-autogen, elixir-format
@@ -3047,13 +3608,16 @@ msgstr "আপনার জীবন লিখিত"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "Your message is delivered privately — only you and the recipient can see it. A PM tab opens on both sides for the conversation. The recipient receives a notification if they have notifications enabled. If you just want to open a PM tab without sending a message, use"
-msgstr "আপনার বার্তা ব্যক্তিগতভাবে বিতরণ করা হয়েছে । আলোচনার জন্য উভয় পক্ষের একটি প্রধানমন্ত্রী ট্যাব খোলা হয়েছে। বিজ্ঞপ্তিস্থলের ক্ষেত্রে ঘোষনাসূচক শব্দ বাজানো হবে। বার্তা প্রেরণের সময় যদি আপনি একটি প্রধানমন্ত্রী ট্যাব খুলতে চান, তবে এটি চালু করুন"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:14
-#, elixir-autogen, elixir-format
-msgid "Your nickname must be registered and identified."
-msgstr "আপনার ডাকনাম নিবন্ধন করা এবং সনাক্ত করা আবশ্যক।"
+msgid ""
+"Your message is delivered privately — only you and the recipient can see it."
+" A PM tab opens on both sides for the conversation. The recipient receives a"
+" notification if they have notifications enabled. If you just want to open a"
+" PM tab without sending a message, use"
+msgstr ""
+"আপনার বার্তা ব্যক্তিগতভাবে বিতরণ করা হয়েছে । আলোচনার জন্য উভয় পক্ষের একটি "
+"প্রধানমন্ত্রী ট্যাব খোলা হয়েছে। বিজ্ঞপ্তিস্থলের ক্ষেত্রে ঘোষনাসূচক শব্দ "
+"বাজানো হবে। বার্তা প্রেরণের সময় যদি আপনি একটি প্রধানমন্ত্রী ট্যাব খুলতে "
+"চান, তবে এটি চালু করুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:30
 #, elixir-autogen, elixir-format
@@ -3079,11 +3643,6 @@ msgstr "ডেল <fot > <autofot\\.sink1> ব্যবহার করুন"
 #, elixir-autogen, elixir-format
 msgid "action text"
 msgstr "টেক্সট সংক্রান্ত কর্ম"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:17
-#, elixir-autogen, elixir-format
-msgid "and type"
-msgstr "ধরন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:43
 #, elixir-autogen, elixir-format
@@ -3183,7 +3742,6 @@ msgstr "এর পরিবর্তে"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_kick.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_msg.html.heex:27
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:23
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_singleplayer.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "instead."
 msgstr "এর পরিবর্তে।"
@@ -3241,7 +3799,9 @@ msgstr "এই চ্যানেলের জন্য অনুরোধ ক�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "run first, so you're identified before entering channels. Passwords in"
-msgstr "প্রথমে সঞ্চালনের পূর্বে চ্যানেল সনাক্ত করা হবে, প্রথমে চিহ্নিত করা হবে । পাসওয়ার্ড"
+msgstr ""
+"প্রথমে সঞ্চালনের পূর্বে চ্যানেল সনাক্ত করা হবে, প্রথমে চিহ্নিত করা হবে । "
+"পাসওয়ার্ড"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_query.html.heex:21
 #, elixir-autogen, elixir-format
@@ -3280,8 +3840,12 @@ msgstr "নিষ্ক্রিয় করার জন্য মান।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "to enter a channel, it is automatically added to your auto-join list. When you use"
-msgstr "চ্যানেলের মধ্যে যোগ করার জন্য এটি স্বয়ংক্রিয়ভাবে যোগ করা হয় । যখন আপনি ব্যবহার"
+msgid ""
+"to enter a channel, it is automatically added to your auto-join list. When "
+"you use"
+msgstr ""
+"চ্যানেলের মধ্যে যোগ করার জন্য এটি স্বয়ংক্রিয়ভাবে যোগ করা হয় । যখন আপনি "
+"ব্যবহার"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:27
 #, elixir-autogen, elixir-format
@@ -3305,8 +3869,12 @@ msgstr "একটি নির্দিষ্ট ব্যবহারকার�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "toggles your personal preference for automatically joining channels when someone invites you."
-msgstr "কেউ আপনাকে আমন্ত্রণ করলে স্বয়ংক্রিয় ভাবে যোগদানের জন্য ব্যক্তিগত পছন্দ টগল করা হবে।"
+msgid ""
+"toggles your personal preference for automatically joining channels when "
+"someone invites you."
+msgstr ""
+"কেউ আপনাকে আমন্ত্রণ করলে স্বয়ংক্রিয় ভাবে যোগদানের জন্য ব্যক্তিগত পছন্দ টগল"
+" করা হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:15
 #, elixir-autogen, elixir-format
@@ -3350,18 +3918,25 @@ msgstr "ব্যবহারকারী অ্যাকাউন্টসম�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_popups.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "when you right-click a user. Custom menu items appear alongside the built-in items in the context menus."
-msgstr "যখন আপনি ডান দিকে যান, তখন ব্যবহারকারী আপনার সাথে যোগ করুন। প্রসঙ্গ মেনুর মধ্যে নির্মিত মেনুর বস্তুর সাথে প্রস্তাবিত বস্তু প্রদর্শন করা হবে।"
+msgid ""
+"when you right-click a user. Custom menu items appear alongside the built-in"
+" items in the context menus."
+msgstr ""
+"যখন আপনি ডান দিকে যান, তখন ব্যবহারকারী আপনার সাথে যোগ করুন। প্রসঙ্গ মেনুর "
+"মধ্যে নির্মিত মেনুর বস্তুর সাথে প্রস্তাবিত বস্তু প্রদর্শন করা হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:6
 #, elixir-autogen, elixir-format
 msgid "which moderates the entire channel, this targets a specific user."
-msgstr "যা সমগ্র চ্যানেলকে প্রভাবিত করে, এটি একটি নির্দিষ্ট ব্যবহারকারীর লক্ষ্য."
+msgstr ""
+"যা সমগ্র চ্যানেলকে প্রভাবিত করে, এটি একটি নির্দিষ্ট ব্যবহারকারীর লক্ষ্য."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "will send the action message. You can use variables in expansions:"
-msgstr "কর্ম সংক্রান্ত তথ্য প্রেরিত হবে। ব্যাক- আপ- এ আপনি ভেরিয়েবল ব্যবহার করতে পারেন:"
+msgstr ""
+"কর্ম সংক্রান্ত তথ্য প্রেরিত হবে। ব্যাক- আপ- এ আপনি ভেরিয়েবল ব্যবহার করতে "
+"পারেন:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_alias.html.heex:29
 #, elixir-autogen, elixir-format
@@ -3370,13 +3945,25 @@ msgstr "প্রসারসহ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:20
 #, elixir-autogen, elixir-format
-msgid "with no arguments displays a categorized list of all available commands with brief descriptions. Adding a command name (like"
-msgstr "সংক্ষিপ্ত বিবরণের সাথে উপলব্ধ সকল কমান্ডের তালিকা প্রদর্শন করা হবে। কমান্ড যোগ করো"
+msgid ""
+"with no arguments displays a categorized list of all available commands with"
+" brief descriptions. Adding a command name (like"
+msgstr ""
+"সংক্ষিপ্ত বিবরণের সাথে উপলব্ধ সকল কমান্ডের তালিকা প্রদর্শন করা হবে। কমান্ড "
+"যোগ করো"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "with no arguments displays the current channel topic and who set it. Providing text sets a new topic that appears in the topic bar at the top of the channel for all members to see. The topic bar is always visible, making it a good place for channel rules, links, or the current discussion subject."
-msgstr "বর্তমান চ্যানেলের কোনো ধরনের আর্গুমেন্ট উপস্থিত নেই ও এটি নির্ধারণ করে। নতুন লেখা স্থাপন করা হলে, চ্যানেলের উপরের অংশে উপস্থিত সকল সদস্যের জন্য এটি দৃশ্যমান হবে । বিষয়টি সবসময় দৃশ্যমান হয়, এটাকে চ্যানেল নিয়মাবলী, লিঙ্ক বা বর্তমান আলোচনার জন্য একটি ভালো জায়গা করে তোলে।"
+msgid ""
+"with no arguments displays the current channel topic and who set it. "
+"Providing text sets a new topic that appears in the topic bar at the top of "
+"the channel for all members to see. The topic bar is always visible, making "
+"it a good place for channel rules, links, or the current discussion subject."
+msgstr ""
+"বর্তমান চ্যানেলের কোনো ধরনের আর্গুমেন্ট উপস্থিত নেই ও এটি নির্ধারণ করে। নতুন"
+" লেখা স্থাপন করা হলে, চ্যানেলের উপরের অংশে উপস্থিত সকল সদস্যের জন্য এটি "
+"দৃশ্যমান হবে । বিষয়টি সবসময় দৃশ্যমান হয়, এটাকে চ্যানেল নিয়মাবলী, লিঙ্ক "
+"বা বর্তমান আলোচনার জন্য একটি ভালো জায়গা করে তোলে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_unignore.html.heex:18
 #, elixir-autogen, elixir-format
@@ -3391,7 +3978,9 @@ msgstr "কোনো ধরনের আর্গুমেন্ট উপস্
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:29
 #, elixir-autogen, elixir-format
 msgid "with no arguments opens the Auto-Join dialog."
-msgstr "স্বয়ংক্রিয়ভাবে স্বয়ংক্রিয়- যোগ ডায়ালগ খোলার জন্য কোনো আর্গুমেন্ট উপস্থিত নেই ।"
+msgstr ""
+"স্বয়ংক্রিয়ভাবে স্বয়ংক্রিয়- যোগ ডায়ালগ খোলার জন্য কোনো আর্গুমেন্ট "
+"উপস্থিত নেই ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:34
 #, elixir-autogen, elixir-format
@@ -3400,8 +3989,11 @@ msgstr "স্বয়ংক্রিয়-সংযোগ ডায়লগ 
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notify.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "with no arguments opens the Notify List dialog where you can manage your list visually."
-msgstr "তালিকা প্রদর্শনকারী ডায়লগ বক্সের ক্ষেত্রে কোনো আর্গুমেন্ট উপস্থিত নেই।"
+msgid ""
+"with no arguments opens the Notify List dialog where you can manage your "
+"list visually."
+msgstr ""
+"তালিকা প্রদর্শনকারী ডায়লগ বক্সের ক্ষেত্রে কোনো আর্গুমেন্ট উপস্থিত নেই।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_perform.html.heex:34
 #, elixir-autogen, elixir-format
@@ -3410,28 +4002,52 @@ msgstr "ডায়লগ বক্সের মধ্যে কোনো আ�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:21
 #, elixir-autogen, elixir-format
-msgid "with no arguments shows your current bio. If your text exceeds 200 characters, it is automatically truncated with a warning. When no bio is set, the bio field simply doesn't appear in"
-msgstr "আপনার বর্তমান জীবন নিয়ে কোন যুক্তি দেখান নি। আপনার টেক্সটের দৈর্ঘ্য ২০০ অক্ষর বেশি হয়ে গেছে, ফলে স্বয়ংক্রিয়ভাবে পরিবর্তিত হয়ে গেছে। যখন কোন বায়োভার নির্ধারণ করা হয় না, বায়ো মাঠ কেবল দেখা যায় না"
+msgid ""
+"with no arguments shows your current bio. If your text exceeds 200 "
+"characters, it is automatically truncated with a warning. When no bio is "
+"set, the bio field simply doesn't appear in"
+msgstr ""
+"আপনার বর্তমান জীবন নিয়ে কোন যুক্তি দেখান নি। আপনার টেক্সটের দৈর্ঘ্য ২০০ "
+"অক্ষর বেশি হয়ে গেছে, ফলে স্বয়ংক্রিয়ভাবে পরিবর্তিত হয়ে গেছে। যখন কোন "
+"বায়োভার নির্ধারণ করা হয় না, বায়ো মাঠ কেবল দেখা যায় না"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:28
 #, elixir-autogen, elixir-format
-msgid "with no arguments shows your current ignore list. When you ignore someone, their specified content types are silently hidden from your view. They receive no notification that they're being ignored. Timed ignores automatically expire after the specified duration."
-msgstr "আপনার বর্তমান উপেক্ষা তালিকায় কোনো আর্গুমেন্ট উপস্থিত নেই । যখন আপনি কাউকে উপেক্ষা করেন, তখন তাদের নির্দিষ্ট ধরনের বিষয়বস্তু আপনার দৃষ্টির আড়ালে লুকিয়ে থাকে । তারা কোন ঘোষণা পায় না যে তাদেরকে উপেক্ষা করা হচ্ছে। নির্দিষ্ট সময়ের পরে উপেক্ষা করার সময়সীমা অতিক্রান্ত হয়েছে।"
+msgid ""
+"with no arguments shows your current ignore list. When you ignore someone, "
+"their specified content types are silently hidden from your view. They "
+"receive no notification that they're being ignored. Timed ignores "
+"automatically expire after the specified duration."
+msgstr ""
+"আপনার বর্তমান উপেক্ষা তালিকায় কোনো আর্গুমেন্ট উপস্থিত নেই । যখন আপনি কাউকে "
+"উপেক্ষা করেন, তখন তাদের নির্দিষ্ট ধরনের বিষয়বস্তু আপনার দৃষ্টির আড়ালে "
+"লুকিয়ে থাকে । তারা কোন ঘোষণা পায় না যে তাদেরকে উপেক্ষা করা হচ্ছে। "
+"নির্দিষ্ট সময়ের পরে উপেক্ষা করার সময়সীমা অতিক্রান্ত হয়েছে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:25
 #, elixir-autogen, elixir-format
-msgid "with no message. Your away status is session-scoped — it resets when you disconnect."
-msgstr "কোন মেসেজ ছাড়াই. আপনার স্ট্যাটাস হচ্ছে সেশানের বিচ্ছিন্ন করা । সংযোগ বিচ্ছিন্ন করার সময় পুনরায় নির্ধারণ করুন ।"
+msgid ""
+"with no message. Your away status is session-scoped — it resets when you "
+"disconnect."
+msgstr ""
+"কোন মেসেজ ছাড়াই. আপনার স্ট্যাটাস হচ্ছে সেশানের বিচ্ছিন্ন করা । সংযোগ "
+"বিচ্ছিন্ন করার সময় পুনরায় নির্ধারণ করুন ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:23
 #, elixir-autogen, elixir-format
-msgid "with special formatting. Action messages support the same text formatting as regular messages (bold, italic, colors, etc.)."
+msgid ""
+"with special formatting. Action messages support the same text formatting as"
+" regular messages (bold, italic, colors, etc.)."
 msgstr "একটা বিশেষ জিনিস। কাজ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:23
 #, elixir-autogen, elixir-format
-msgid "won't see them. This makes wallops suitable for non-critical operator announcements."
-msgstr "তাদের দেখতে পাবে না। এটা অপূর্ণ অপারেটরদের ঘোষণার জন্য দেওয়ালের জন্য উপযুক্ত।"
+msgid ""
+"won't see them. This makes wallops suitable for non-critical operator "
+"announcements."
+msgstr ""
+"তাদের দেখতে পাবে না। এটা অপূর্ণ অপারেটরদের ঘোষণার জন্য দেওয়ালের জন্য "
+"উপযুক্ত।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:12
 #, elixir-autogen, elixir-format
@@ -3456,7 +4072,9 @@ msgstr "- নির্দিষ্ট স্তরের (ssop, opop, opop,)"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "— Add this keyword to make the timer repeat every <seconds>."
-msgstr "* এই শব্দগুলি দ্বারা টাইমার পুনরাবৃত্তি করতে এই কী দ্বারা প্রদর্শন করা হয়।<f1\\-F1>।"
+msgstr ""
+"* এই শব্দগুলি দ্বারা টাইমার পুনরাবৃত্তি করতে এই কী দ্বারা প্রদর্শন করা "
+"হয়।<f1\\-F1>।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:30
 #, elixir-autogen, elixir-format
@@ -3525,12 +4143,19 @@ msgstr "[ অধ্যয়ন প্রশ্নাবলি] ব্যবহ�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:27
 #, elixir-autogen, elixir-format
-msgid "— Disconnect another session using a registered nickname after proving you know its password (if you got disconnected and your old session is still lingering)."
-msgstr "— একটি নিবন্ধিত ডাকনাম ব্যবহার করে সংযোগ বিচ্ছিন্ন করুন যখন আপনি এর পাসওয়ার্ড জানতে পারবেন (যদি আপনি বিচ্ছিন্ন হয়ে যান এবং আপনার পুরনো সেশনটি এখনো চালু থাকে)।"
+msgid ""
+"— Disconnect another session using a registered nickname after proving you "
+"know its password (if you got disconnected and your old session is still "
+"lingering)."
+msgstr ""
+"— একটি নিবন্ধিত ডাকনাম ব্যবহার করে সংযোগ বিচ্ছিন্ন করুন যখন আপনি এর "
+"পাসওয়ার্ড জানতে পারবেন (যদি আপনি বিচ্ছিন্ন হয়ে যান এবং আপনার পুরনো সেশনটি "
+"এখনো চালু থাকে)।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:43
 #, elixir-autogen, elixir-format
-msgid "— Display name of the server (shown in welcome message and server info)"
+msgid ""
+"— Display name of the server (shown in welcome message and server info)"
 msgstr "সার্ভার- এ প্রাপ্ত বার্তা (বার্তার বার্তা ও সার্ভারের মধ্যে প্রদর্শন)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:91
@@ -3596,11 +4221,14 @@ msgstr "— সম্পূর্ণ অডিট চিহ্ন (শেষ ল
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:37
 #, elixir-autogen, elixir-format
 msgid "— Globally mute (cannot send messages anywhere). Supports"
-msgstr "— সার্বজনীনভাবে নীরব (এখানে কোন বার্তা প্রেরণ করা হয়নি)। Hula সহায়তা"
+msgstr ""
+"— সার্বজনীনভাবে নীরব (এখানে কোন বার্তা প্রেরণ করা হয়নি)। Hula সহায়তা"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:75
 #, elixir-autogen, elixir-format
-msgid "— How long recently disconnected user records stay available (default: 3600, range: 1-86400)"
+msgid ""
+"— How long recently disconnected user records stay available (default: 3600,"
+" range: 1-86400)"
 msgstr "(ডিফল্ট: ১."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ignore.html.heex:20
@@ -3630,8 +4258,10 @@ msgstr "তালিকা - সক্রিয় সার্ভারে প�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:22
 #, elixir-autogen, elixir-format
-msgid "— List all active TURN allocations with client addresses and relay ports"
-msgstr "* সব সক্রিয় ত্রুকরদের তালিকা, ক্লায়েন্ট ঠিকানা এবং রিলে পোর্টের মাধ্যমে"
+msgid ""
+"— List all active TURN allocations with client addresses and relay ports"
+msgstr ""
+"* সব সক্রিয় ত্রুকরদের তালিকা, ক্লায়েন্ট ঠিকানা এবং রিলে পোর্টের মাধ্যমে"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:32
 #, elixir-autogen, elixir-format
@@ -3655,7 +4285,9 @@ msgstr "- এই সেশনের জন্য আপনার নিবন্
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:63
 #, elixir-autogen, elixir-format
-msgid "— Maximum number of channels a user can join (default: 10, must be a positive integer)"
+msgid ""
+"— Maximum number of channels a user can join (default: 10, must be a "
+"positive integer)"
 msgstr "- যে সংখ্যক চ্যানেল যোগদান করবে (ডিফল্ট: ১০, ১০)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:29
@@ -3670,8 +4302,12 @@ msgstr "— ঐচ্ছিক চ্যানেল ফিল্টার। �
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_help.html.heex:12
 #, elixir-autogen, elixir-format
-msgid "— Optional command name (without the / prefix). If omitted, shows a list of all commands."
-msgstr "— ঐচ্ছিক কমান্ডের নাম ( / উপপদ ব্যতীত) যদি তা না হয়, তাহলে সব কমান্ডের তালিকা দেখাবে।"
+msgid ""
+"— Optional command name (without the / prefix). If omitted, shows a list of "
+"all commands."
+msgstr ""
+"— ঐচ্ছিক কমান্ডের নাম ( / উপপদ ব্যতীত) যদি তা না হয়, তাহলে সব কমান্ডের "
+"তালিকা দেখাবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_part.html.heex:16
 #, elixir-autogen, elixir-format
@@ -3690,8 +4326,11 @@ msgstr "— ঐচ্ছিক বার্তা ব্যাখ্যা ক�
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "— Optional message to include with your knock (e.g., who referred you)."
-msgstr "* — আপনার দরজায় নক (যেমন, আপনার নাম উল্লেখ করা) সহ ঐচ্ছিক বার্তা (যেমন, আপনি উল্লেখ করেছেন) ।"
+msgid ""
+"— Optional message to include with your knock (e.g., who referred you)."
+msgstr ""
+"* — আপনার দরজায় নক (যেমন, আপনার নাম উল্লেখ করা) সহ ঐচ্ছিক বার্তা (যেমন, "
+"আপনি উল্লেখ করেছেন) ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autojoin.html.heex:13
 #, elixir-autogen, elixir-format
@@ -3706,7 +4345,8 @@ msgstr "চ্যানেল উল্লেখ করার জন্য এ�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "— Optional reason for being away. If omitted, clears your away status."
-msgstr "— ঐচ্ছিক কারণ যদি না পার হয়ে যায়, তাহলে আপনার স্ট্যাটাস পরিষ্কার করে দিন।"
+msgstr ""
+"— ঐচ্ছিক কারণ যদি না পার হয়ে যায়, তাহলে আপনার স্ট্যাটাস পরিষ্কার করে দিন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:13
 #, elixir-autogen, elixir-format
@@ -3730,13 +4370,19 @@ msgstr "ক্রমবিবর্তন কমান্ডের জন্য 
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "— Preview mode: shows a count of records per table that will be deleted. No data is modified."
+msgid ""
+"— Preview mode: shows a count of records per table that will be deleted. No "
+"data is modified."
 msgstr "— প্রাকদর্শন মোড তথ্য পরিবর্তন করা হয়নি।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "— Receive wallops messages (broadcast messages from server operators). These appear in the Status tab."
-msgstr "( সার্ভার অপারেটরদের কাছ থেকে বার্তা গ্রহণ করুন) এই অবস্থা স্ট্যাটাস- বারের মধ্যে প্রদর্শিত হবে ।"
+msgid ""
+"— Receive wallops messages (broadcast messages from server operators). These"
+" appear in the Status tab."
+msgstr ""
+"( সার্ভার অপারেটরদের কাছ থেকে বার্তা গ্রহণ করুন) এই অবস্থা স্ট্যাটাস- বারের "
+"মধ্যে প্রদর্শিত হবে ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ns.html.heex:19
 #, elixir-autogen, elixir-format
@@ -3760,13 +4406,19 @@ msgstr "— সার্বজনীন নিঃশব্দ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:16
 #, elixir-autogen, elixir-format
-msgid "— Required for some modes (nickname for +o/+h/+v/+b, key for +k, number for +l/+j)."
-msgstr "কিছু মোড - কিছু মোডের জন্য (+++++++/++B), ++-এর জন্য কী-এর জন্য প্রয়োজন +++++B"
+msgid ""
+"— Required for some modes (nickname for +o/+h/+v/+b, key for +k, number for "
+"+l/+j)."
+msgstr ""
+"কিছু মোড - কিছু মোডের জন্য (+++++++/++B), ++-এর জন্য কী-এর জন্য প্রয়োজন "
+"+++++B"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_ns.html.heex:23
 #, elixir-autogen, elixir-format
 msgid "— Reset a user's password (the new password is NOT logged)"
-msgstr "- ব্যবহারকারীর পাসওয়ার্ড পুনরায় নির্ধারণ করুন ( নতুন পাসওয়ার্ড লগ-ইন না করা হয়নি)"
+msgstr ""
+"- ব্যবহারকারীর পাসওয়ার্ড পুনরায় নির্ধারণ করুন ( নতুন পাসওয়ার্ড লগ-ইন না "
+"করা হয়নি)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_autorespond.html.heex:25
 #, elixir-autogen, elixir-format
@@ -3776,7 +4428,8 @@ msgstr "- ক্রমিক সংখ্যা"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:25
 #, elixir-autogen, elixir-format
 msgid "— Server ban (user cannot connect). Supports"
-msgstr "— সার্ভার নিষেধাজ্ঞা (ব্যবহারকারী সংযোগ স্থাপন করা যাচ্ছে না)। Hula সহায়তা"
+msgstr ""
+"— সার্ভার নিষেধাজ্ঞা (ব্যবহারকারী সংযোগ স্থাপন করা যাচ্ছে না)। Hula সহায়তা"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:39
 #, elixir-autogen, elixir-format
@@ -3786,7 +4439,8 @@ msgstr "- সার্ভার কনফিগারেশন"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:49
 #, elixir-autogen, elixir-format
 msgid "— Server description text (shown in server info)"
-msgstr "- সার্ভার- এ বর্ণনামূলক টেক্সট বর্ণনা (ডিফল্ট বিবরণ হিসাবে প্রদর্শন করা হবে)"
+msgstr ""
+"- সার্ভার- এ বর্ণনামূলক টেক্সট বর্ণনা (ডিফল্ট বিবরণ হিসাবে প্রদর্শন করা হবে)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin.html.heex:15
 #, elixir-autogen, elixir-format
@@ -3805,28 +4459,40 @@ msgstr "নাম — ছদ্মনাম (লেচার, সংখ্যা
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_debug.html.heex:27
 #, elixir-autogen, elixir-format
-msgid "— Show BEAM VM memory usage breakdown (total, processes, atoms, binary, ETS)"
-msgstr "[স] VM মেমরি বিভাজন করে প্রদর্শন করা হবে, পৃথকীকরণ প্রক্রিয়া, পারমাণবিক, বাইনারি, এ."
+msgid ""
+"— Show BEAM VM memory usage breakdown (total, processes, atoms, binary, ETS)"
+msgstr ""
+"[স] VM মেমরি বিভাজন করে প্রদর্শন করা হবে, পৃথকীকরণ প্রক্রিয়া, পারমাণবিক, "
+"বাইনারি, এ."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:15
 #, elixir-autogen, elixir-format
-msgid "— Show TURN server overview: relay IP, listeners, active allocations, port usage"
-msgstr "— Turn সার্ভারের বর্ণনা প্রদর্শন করো: IP, শ্রোতা, সক্রিয় সংযোগ ব্যবহার, পোর্ট ব্যবহার"
+msgid ""
+"— Show TURN server overview: relay IP, listeners, active allocations, port "
+"usage"
+msgstr ""
+"— Turn সার্ভারের বর্ণনা প্রদর্শন করো: IP, শ্রোতা, সক্রিয় সংযোগ ব্যবহার, "
+"পোর্ট ব্যবহার"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "— Show detailed channel info: members, modes, topic, bans"
-msgstr "— বিস্তারিত চ্যানেল বিস্তারিত তথ্য দেখান: সদস্যরা, মোড, বিষয়, নিষেধাজ্ঞা"
+msgstr ""
+"— বিস্তারিত চ্যানেল বিস্তারিত তথ্য দেখান: সদস্যরা, মোড, বিষয়, নিষেধাজ্ঞা"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "— Show detailed user info (registration, status, channels)"
-msgstr "- ব্যবহারকারীর বিস্তারিত তথ্য প্রদর্শন করা হবে (এর অবস্থা, অবস্থা, চ্যানেল"
+msgstr ""
+"- ব্যবহারকারীর বিস্তারিত তথ্য প্রদর্শন করা হবে (এর অবস্থা, অবস্থা, চ্যানেল"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:14
 #, elixir-autogen, elixir-format
-msgid "— Show server stats: online users, active channels, registered nicks, uptime"
-msgstr "* সার্ভার পরিসংখ্যান প্রদর্শন করা হবে: অনলাইন ব্যবহারকারী, সক্রিয় চ্যানেল, নিবন্ধিত ডাকনাম, সময়:"
+msgid ""
+"— Show server stats: online users, active channels, registered nicks, uptime"
+msgstr ""
+"* সার্ভার পরিসংখ্যান প্রদর্শন করা হবে: অনলাইন ব্যবহারকারী, সক্রিয় চ্যানেল, "
+"নিবন্ধিত ডাকনাম, সময়:"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:14
 #, elixir-autogen, elixir-format
@@ -3846,7 +4512,8 @@ msgstr "— দেওয়ালের বার্তা পাওয়া �
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:13
 #, elixir-autogen, elixir-format
 msgid "— Target channel (defaults to your current channel)."
-msgstr "- উদ্দিষ্ট চ্যানেল - বর্তমান চ্যানেলের মধ্যে চিহ্নিত করা হবে (ডিফল্টরূপে)"
+msgstr ""
+"- উদ্দিষ্ট চ্যানেল - বর্তমান চ্যানেলের মধ্যে চিহ্নিত করা হবে (ডিফল্টরূপে)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setmotd.html.heex:10
 #, elixir-autogen, elixir-format
@@ -3881,7 +4548,8 @@ msgstr "— শুধুমাত্র আমন্ত্রণকারী চ
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mode.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "— The mode letter to set (+) or remove (-). See the list below."
-msgstr "তৈরি করার জন্য ব্যবহারযোগ্য মোড (EZ অথবা সরিয়ে ফেলার জন্য) নিচে দেখুন।"
+msgstr ""
+"তৈরি করার জন্য ব্যবহারযোগ্য মোড (EZ অথবা সরিয়ে ফেলার জন্য) নিচে দেখুন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_topic.html.heex:11
 #, elixir-autogen, elixir-format
@@ -4007,7 +4675,9 @@ msgstr "ব্যবহারকারীদের সাথে যোগদা�
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:17
 #, elixir-autogen, elixir-format
 msgid "— Toggle whether you auto-join channels when you receive invitations."
-msgstr "চালু করার সময় সরাসরি আমন্ত্রণ গ্রহণ করার জন্য স্বয়ংক্রিয়ভাবে চ্যানেল চালু করুন ।"
+msgstr ""
+"চালু করার সময় সরাসরি আমন্ত্রণ গ্রহণ করার জন্য স্বয়ংক্রিয়ভাবে চ্যানেল চালু"
+" করুন ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:26
 #, elixir-autogen, elixir-format
@@ -4122,8 +4792,12 @@ msgstr "P2P"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "RetroHexChat supports the following slash commands. Type them in the chat input and press Enter."
-msgstr "পুরোনো HexChat দ্বারা নিম্নলিখিত কমান্ড সমর্থন করা হয়। আলাপনের মধ্যে হলে সেগুলির নাম লিখুন ও এইখানে লিখুন।"
+msgid ""
+"RetroHexChat supports the following slash commands. Type them in the chat "
+"input and press Enter."
+msgstr ""
+"পুরোনো HexChat দ্বারা নিম্নলিখিত কমান্ড সমর্থন করা হয়। আলাপনের মধ্যে হলে "
+"সেগুলির নাম লিখুন ও এইখানে লিখুন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:87
 #, elixir-autogen, elixir-format
@@ -4287,43 +4961,55 @@ msgstr "- প্রদর্শন <fot> <fot\\. কোনো চ্যানে
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:14
 #, elixir-autogen, elixir-format
-msgid "). Routing is fixed to the active window. Channel notices always go to the channel window. Running"
-msgstr "). Routing is fixed to the active window. Channel notices always go to the channel window. Running"
+msgid ""
+"). Routing is fixed to the active window. Channel notices always go to the "
+"channel window. Running"
+msgstr ""
+"- হ্যা. নিষ্ক্রিয় উইন্ডোর সমস্ত অবস্থান নির্দিষ্ট করা হয়েছে । চ্যানেলের "
+"প্রধান উইন্ডোর মধ্যে উপস্থিত চ্যানেল সংখ্যা। চলমান"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:38
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Operators (get operator on join)."
-msgstr "- Manage Auto Operators (get operator on join)."
+msgstr "- অটো অপারেটরের ক্ষেত্রে (jectorpers) পরিচালনা করুন ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "- Manage Auto Voice (get voice on join)."
-msgstr "- Manage Auto Voice (get voice on join)."
+msgstr "- অটো ভয়েসের মাধ্যমে (যোগাযোগ করুন)।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "- Manage Super Operators (can manage AOP and VOP lists)."
-msgstr "- Manage Super Operators (can manage AOP and VOP lists)."
+msgstr "- সুপার অপারেটর ব্যবস্থাপনা করুন (এপি ও ভিওপির তালিকা পরিচালনা করুন)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:19
 #, elixir-autogen, elixir-format
-msgid "- Register and claim ownership of the current channel (you must be operator)."
-msgstr "- Register and claim ownership of the current channel (you must be operator)."
+msgid ""
+"- Register and claim ownership of the current channel (you must be "
+"operator)."
+msgstr ""
+"- নিবন্ধন এবং বর্তমান চ্যানেলের মালিকানা দাবি করুন (আপনি অবশ্যই অপারেটর হতে "
+"হবে)।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "- Unregister the current channel, giving up ownership."
-msgstr "- Unregister the current channel, giving up ownership."
+msgstr "- বর্তমান চ্যানেলটার মালিকানা ছেড়ে দাও."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:30
 #, elixir-autogen, elixir-format
 msgid "- View current-channel registration details."
-msgstr "- View current-channel registration details."
+msgstr "- বর্তমান-চ্যানেল নিবন্ধনের বিস্তারিত দেখুন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:51
 #, elixir-autogen, elixir-format
-msgid "/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs vop add Bob /cs drop"
-msgstr "/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs vop add Bob /cs drop"
+msgid ""
+"/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs "
+"vop add Bob /cs drop"
+msgstr ""
+"/join #mychannel /cs register /cs info /cs aop add Alice /cs aop list /cs "
+"vop add Bob /cs drop"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:40
 #, elixir-autogen, elixir-format
@@ -4337,7 +5023,7 @@ msgstr "/mute Spammer /mute Spammer 30m"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:57
 #, elixir-autogen, elixir-format
 msgid "Account Dialog"
-msgstr "Account Dialog"
+msgstr "অ্যাকাউন্ট ডায়লগ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:78
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:76
@@ -4354,12 +5040,12 @@ msgstr "প্রশাসনিক কনসোল"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "Admin Console Channels Tab"
-msgstr "Admin Console Channels Tab"
+msgstr "প্রশাসনিক কনসোল চ্যানেল ট্যাব"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:54
 #, elixir-autogen, elixir-format
 msgid "Admin Console Users Tab"
-msgstr "Admin Console Users Tab"
+msgstr "প্রশাসনিক কনসোল ব্যবহারকারী"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:66
 #, elixir-autogen, elixir-format
@@ -4373,13 +5059,21 @@ msgstr "সাড়া"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "ChanServ administration: drop channel registrations, transfer founders, and manage access lists. The Admin Console Channels tab provides command-backed ChanServ info, drop, transfer, access list, add, and remove controls. Requires server administrator role."
-msgstr "ChanServ administration: drop channel registrations, transfer founders, and manage access lists. The Admin Console Channels tab provides command-backed ChanServ info, drop, transfer, access list, add, and remove controls. Requires server administrator role."
+msgid ""
+"ChanServ administration: drop channel registrations, transfer founders, and "
+"manage access lists. The Admin Console Channels tab provides command-backed "
+"ChanServ info, drop, transfer, access list, add, and remove controls. "
+"Requires server administrator role."
+msgstr ""
+"চ্যানটেম্প প্রশাসন: চ্যানেলের নিবন্ধন বাতিল করুন, প্রতিষ্ঠাতাদের স্থানান্তর "
+"এবং তালিকা পরিচালনা করুন। প্রশাসনিক কনসোল চ্যানেল ট্যাব দ্বারা কমান্ড-ব্যাক "
+"করা তথ্য সরবরাহ করা হয়, ড্রপ, তালিকাভুক্ত, যোগ করুন, যোগ, এবং অপসারণ করুন। "
+"স্বয়ংক্রিয়রূপে সার্ভার ভূমিকা প্রয়োজন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:59
 #, elixir-autogen, elixir-format
 msgid "Channel Central Registration Tab"
-msgstr "Channel Central Registration Tab"
+msgstr "চ্যানেল মধ্য নিবন্ধন ট্যাব"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:49
 #, elixir-autogen, elixir-format
@@ -4390,7 +5084,7 @@ msgstr "চ্যানেলের আমন্ত্রণ জানান"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_setwelcome.html.heex:34
 #, elixir-autogen, elixir-format
 msgid "Channel Welcome Message"
-msgstr "Channel Welcome Message"
+msgstr "চ্যানেলের বার্তা"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_ban.html.heex:50
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_deop.html.heex:30
@@ -4406,18 +5100,36 @@ msgstr "কনটেক্সট মেনু"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "Displays comprehensive information about the user in a result card. You can see: their channels, shared channels, how long they've been online, how long they've been idle, their away message (if set), their bio (if set), whether they're registered with NickServ, and client details (browser, OS, screen resolution, language, and timezone) when available. You can also trigger"
-msgstr "Displays comprehensive information about the user in a result card. You can see: their channels, shared channels, how long they've been online, how long they've been idle, their away message (if set), their bio (if set), whether they're registered with NickServ, and client details (browser, OS, screen resolution, language, and timezone) when available. You can also trigger"
+msgid ""
+"Displays comprehensive information about the user in a result card. You can "
+"see: their channels, shared channels, how long they've been online, how long"
+" they've been idle, their away message (if set), their bio (if set), whether"
+" they're registered with NickServ, and client details (browser, OS, screen "
+"resolution, language, and timezone) when available. You can also trigger"
+msgstr ""
+"ফলাফল ফলাফলের মাধ্যমে ব্যবহারকারীর সম্বন্ধে বিস্তারিত তথ্য প্রদর্শন করা হয় "
+"। আপনি দেখতে পাবেন: তাদের চ্যানেলগুলো, শেয়ার করা চ্যানেল, কত সময় ধরে তারা "
+"অনলাইনে ছিল, তাদের বার্তা (যদি সেট করা থাকে), তাদের জীবন (যদি সেট থাকে), "
+"নিকসফরের সাথে নিবন্ধন করা হয়, এবং ক্লায়েন্টের বিস্তারিত তথ্য (ব্যাখ্যা), "
+"পর্দার পর্দা, এবং কখন কখন সময় থাকবে। আপনি ট্রিগারও করতে পারেন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "Displays the current server MOTD in the Status tab. The MOTD is shown automatically when you connect, and you can re-view it at any time with /motd or Help > Message of the Day. If no MOTD has been set by the administrators, you'll see a \"No MOTD has been set\" message."
-msgstr "Displays the current server MOTD in the Status tab. The MOTD is shown automatically when you connect, and you can re-view it at any time with /motd or Help > Message of the Day. If no MOTD has been set by the administrators, you'll see a \"No MOTD has been set\" message."
+msgid ""
+"Displays the current server MOTD in the Status tab. The MOTD is shown "
+"automatically when you connect, and you can re-view it at any time with "
+"/motd or Help > Message of the Day. If no MOTD has been set by the "
+"administrators, you'll see a \"No MOTD has been set\" message."
+msgstr ""
+"স্ট্যাটাস ট্যাবে বর্তমান সার্ভার MOD প্রদর্শন করা হয়। সংযোগ স্থাপনের সময় "
+"MOTD প্রদর্শন করা হয়। কোনো সময় আপনি এটি পুনরায় প্রদর্শন করতে পারেন "
+"http://fo.0/f0 > অথবা সাহায্য বার্তা। যদি কোন MOTD নির্ধারণ করা না থাকে, "
+"তাহলে আপনি \"MOTD\" বার্তার সাথে যুক্ত নন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_clear.html.heex:20
 #, elixir-autogen, elixir-format
 msgid "Edit Menu"
-msgstr "Edit Menu"
+msgstr "মেনু সম্পাদন করুন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_away.html.heex:42
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_bio.html.heex:46
@@ -4426,52 +5138,121 @@ msgstr "Edit Menu"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_umode.html.heex:61
 #, elixir-autogen, elixir-format
 msgid "Identity & Presence"
-msgstr "Identity & Presence"
+msgstr "পরিচয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_me.html.heex:29
 #, elixir-autogen, elixir-format
-msgid "In a channel window, use the * action toggle beside the chat input to send the next message as /me without typing the command. The toggle resets after that message is sent."
-msgstr "In a channel window, use the * action toggle beside the chat input to send the next message as /me without typing the command. The toggle resets after that message is sent."
+msgid ""
+"In a channel window, use the * action toggle beside the chat input to send "
+"the next message as /me without typing the command. The toggle resets after "
+"that message is sent."
+msgstr ""
+"একটি চ্যানেলের মধ্যে, আলাপনের উইন্ডো পুনরায় উল্লেখ না করে আড্ডা উইন্ডোর "
+"মধ্যে কর্ম প্রয়োগ করা হবে। বার্তা পাঠের পরে রি-সেট করা হবে ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Manage server channels: list, view details, create, delete, purge messages, and view bans. The Admin Console Channels tab provides command-backed list, search, Info, Create, Delete, Purge, and banlist controls. Requires server administrator role."
-msgstr "Manage server channels: list, view details, create, delete, purge messages, and view bans. The Admin Console Channels tab provides command-backed list, search, Info, Create, Delete, Purge, and banlist controls. Requires server administrator role."
+msgid ""
+"Manage server channels: list, view details, create, delete, purge messages, "
+"and view bans. The Admin Console Channels tab provides command-backed list, "
+"search, Info, Create, Delete, Purge, and banlist controls. Requires server "
+"administrator role."
+msgstr ""
+"সার্ভারের তালিকা পরিচালনা: বিস্তারিত, বর্ণনা, অপসারণ, বার্তা মুছে, অপসারণ ও "
+"প্রদর্শন করুন। প্রশাসনিক কনসোল চ্যানেল ট্যাব, অনুসন্ধান, তথ্য, নির্মাণ, "
+"অপসারণ, এবং নিষিদ্ধ তালিকা সরবরাহ করে। স্বয়ংক্রিয়রূপে সার্ভার ভূমিকা "
+"প্রয়োজন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Manage server users: list, view details, ban, kick, mute, rename, assign roles, and run NickServ admin actions. The Admin Console Users tab provides command-backed list, search, banlist, Info, moderation, account, role, and NickServ controls. Requires server administrator role."
-msgstr "Manage server users: list, view details, ban, kick, mute, rename, assign roles, and run NickServ admin actions. The Admin Console Users tab provides command-backed list, search, banlist, Info, moderation, account, role, and NickServ controls. Requires server administrator role."
+msgid ""
+"Manage server users: list, view details, ban, kick, mute, rename, assign "
+"roles, and run NickServ admin actions. The Admin Console Users tab provides "
+"command-backed list, search, banlist, Info, moderation, account, role, and "
+"NickServ controls. Requires server administrator role."
+msgstr ""
+"সার্ভার ব্যবহারকারীদের তালিকা পরিচালনা করুন, বিস্তারিত বিবরণ প্রদর্শন করুন, "
+"kick, নিঃশব্দ, নাম, উল্লেখ, এবং নিকটেমস্ট্রেটর কর্ম সঞ্চালন করুন। প্রশাসনিক "
+"কনসোল ব্যবহারকারীদের ট্যাব তালিকা সরবরাহ করে, অনুসন্ধান, নিষিদ্ধ তালিকা, "
+"ইনফোলিস্ট, তথ্য, হিসাব, ভূমিকা, এবং নিক্ট্রস নিয়ন্ত্রণ। স্বয়ংক্রিয়রূপে "
+"সার্ভার ভূমিকা প্রয়োজন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_motd.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "Message of the Day Menu"
-msgstr "Message of the Day Menu"
+msgstr "দিনের বার্তা"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_channel.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "Open File → Admin Console, then choose Channels to refresh /admin channel list snapshots, filter by search text, inspect a channel with /admin channel info, create a channel with /admin channel create, delete a channel with /admin channel delete, purge messages with /admin channel purge, and review /admin channel banlist output for the selected channel. Delete and purge forms require typing the channel name to confirm."
-msgstr "Open File → Admin Console, then choose Channels to refresh /admin channel list snapshots, filter by search text, inspect a channel with /admin channel info, create a channel with /admin channel create, delete a channel with /admin channel delete, purge messages with /admin channel purge, and review /admin channel banlist output for the selected channel. Delete and purge forms require typing the channel name to confirm."
+msgid ""
+"Open File → Admin Console, then choose Channels to refresh /admin channel "
+"list snapshots, filter by search text, inspect a channel with /admin channel"
+" info, create a channel with /admin channel create, delete a channel with "
+"/admin channel delete, purge messages with /admin channel purge, and review "
+"/admin channel banlist output for the selected channel. Delete and purge "
+"forms require typing the channel name to confirm."
+msgstr ""
+"ফাইল খোলা হবে, <fot > /frefresploop <file21> সহযোগে চ্যানেলের মধ্যে উপস্থিত "
+"একটি চ্যানেল প্রদর্শন করা হবে, <file21> থেকে একটি চ্যানেল নির্মাণ করা হবে, "
+"<ff22> <fff25> <4> সহযোগে চ্যানেলের সাথে একটি চ্যানেল নির্মাণ করা হবে। "
+"নিশ্চিত করার জন্য চ্যানেল- এর নাম টাইপ করতে এবং অপসারণের জন্য ফর্মের ধরন "
+"টাইপ করতে হবে ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_cs.html.heex:50
 #, elixir-autogen, elixir-format
-msgid "Open File → Admin Console, then choose Channels to run /admin cs info, drop, transfer, access, access add, and access del without typing the commands. Drop registration requires typing the channel name to confirm."
-msgstr "Open File → Admin Console, then choose Channels to run /admin cs info, drop, transfer, access, access add, and access del without typing the commands. Drop registration requires typing the channel name to confirm."
+msgid ""
+"Open File → Admin Console, then choose Channels to run /admin cs info, drop,"
+" transfer, access, access add, and access del without typing the commands. "
+"Drop registration requires typing the channel name to confirm."
+msgstr ""
+"খোলা ফাইল, তারপর চ্যানেল খুলুন <ffol/foc0>, ড্রপ-ডাউন, তালিকাভুক্ত, এবং "
+"কমান্ড ছাড়া প্রবেশ করান। নিবন্ধনের জন্য চ্যানেলের নাম উল্লেখ করা আবশ্যক।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:57
 #, elixir-autogen, elixir-format
-msgid "Open File → Admin Console, then choose Users to refresh /admin user list snapshots, apply search and online-only filters, inspect a nick with /admin user info, review /admin user banlist output, confirm ban/unban, kick, mute, or unmute actions, rename users, set server roles, and run /admin ns info/drop/resetpass without typing the commands."
-msgstr "Open File → Admin Console, then choose Users to refresh /admin user list snapshots, apply search and online-only filters, inspect a nick with /admin user info, review /admin user banlist output, confirm ban/unban, kick, mute, or unmute actions, rename users, set server roles, and run /admin ns info/drop/resetpass without typing the commands."
+msgid ""
+"Open File → Admin Console, then choose Users to refresh /admin user list "
+"snapshots, apply search and online-only filters, inspect a nick with /admin "
+"user info, review /admin user banlist output, confirm ban/unban, kick, mute,"
+" or unmute actions, rename users, set server roles, and run /admin ns "
+"info/drop/resetpass without typing the commands."
+msgstr ""
+"ফাইল খোলা হবে । এর পর ব্যবহারকারীদেরকে <fotp/Op2> করো <fot>, অনুসন্ধান ও "
+"অনলাইন ফিল্টার করা হয়, কোনো ব্যবহারকারীর নাম প্রদর্শন করা হবে অথবা "
+"<fotp/f1> থেকে এটি পরীক্ষা করে দেখতে দেওয়া হবে। <file225> ব্যবহারকারীর "
+"ক্ষেত্রে, <f25> অথবা <f> বস্তু অচিরেই উপেক্ষা করা হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Open a P2P Lobby with another user: a single persistent peer-to-peer connection that hosts every feature at once — an audio or video call, file transfers, and games — all running at the same time."
-msgstr "Open a P2P Lobby with another user: a single persistent peer-to-peer connection that hosts every feature at once — an audio or video call, file transfers, and games — all running at the same time."
+msgid ""
+"Open a P2P Lobby with another user: a single persistent peer-to-peer "
+"connection that hosts every feature at once — an audio or video call, file "
+"transfers, and games — all running at the same time."
+msgstr ""
+"একটি P2P Lobiby অন্য একজন ব্যবহারকারী দিয়ে খোলো: একটি স্ব-প্রতিষ্ঠিত সহযোগী"
+" যে সকল বৈশিষ্ট্য একসাথে থাকে - অডিও বা ভিডিও কল, ফাইল স্থানান্তর এবং খেলা "
+"একই সময়ে চলমান।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_list.html.heex:11
 #, elixir-autogen, elixir-format
-msgid "Opens the Channel List dialog as an inline overlay showing all available channels with their user counts and topics. You can filter channels by name or topic using the search box. Click the Join button next to an open channel to join it directly. Invite-only (+i) channels show a +i badge; when you select one you are not already in, Join changes to Request Access... and opens a knock request dialog. Secret (+s) channels are completely hidden from the list. Private (+p) channels show their name but not their topic. Press Escape or click Close to dismiss the dialog."
-msgstr "Opens the Channel List dialog as an inline overlay showing all available channels with their user counts and topics. You can filter channels by name or topic using the search box. Click the Join button next to an open channel to join it directly. Invite-only (+i) channels show a +i badge; when you select one you are not already in, Join changes to Request Access... and opens a knock request dialog. Secret (+s) channels are completely hidden from the list. Private (+p) channels show their name but not their topic. Press Escape or click Close to dismiss the dialog."
+msgid ""
+"Opens the Channel List dialog as an inline overlay showing all available "
+"channels with their user counts and topics. You can filter channels by name "
+"or topic using the search box. Click the Join button next to an open channel"
+" to join it directly. Invite-only (+i) channels show a +i badge; when you "
+"select one you are not already in, Join changes to Request Access... and "
+"opens a knock request dialog. Secret (+s) channels are completely hidden "
+"from the list. Private (+p) channels show their name but not their topic. "
+"Press Escape or click Close to dismiss the dialog."
+msgstr ""
+"একটি আন-লক করুনের মাধ্যমে উপলব্ধ সকল চ্যানেলের তালিকা প্রদর্শন করা হবে। "
+"অনুসন্ধানের নাম অথবা নাম সহযোগে ফিল্টার করা যাবে। কোনো চ্যানেলে সরাসরি যোগ "
+"করার জন্য সংশ্লিষ্ট বাটনে ক্লিক করুন । শুধুমাত্র আমন্ত্রণপত্র (+) চ্যানেল "
+"একটি +i ব্যাজ দেখায়; যখন আপনি নির্বাচন করেন যে কোন একটি নির্বাচন করা হয়নি,"
+" আপনি ইতিমধ্যে যোগ দিন অনুরোধের অধিকার... এবং একটি নক অনুরোধ ডায়ালগ খুলুন ।"
+" গোপন (+s) চ্যানেলগুলো তালিকা থেকে সম্পূর্ণ আড়াল করা হয়েছে। ব্যক্তিগত (+p)"
+" চ্যানেল দ্বারা তাদের নাম প্রদর্শন করা হয় কিন্তু তাদের বিষয়বস্তু নয়। "
+"ডায়লগ বন্ধ করার জন্য লগ-আউট করে ক্লিক করুন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:32
 #, elixir-autogen, elixir-format
@@ -4480,8 +5261,15 @@ msgstr "P2P Lybib"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_log.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "Query the audit log of all admin actions from /admin log or the Admin Console Audit Log tab. Every state-changing admin command is automatically recorded with timestamp, actor, action, and target."
-msgstr "Query the audit log of all admin actions from /admin log or the Admin Console Audit Log tab. Every state-changing admin command is automatically recorded with timestamp, actor, action, and target."
+msgid ""
+"Query the audit log of all admin actions from /admin log or the Admin "
+"Console Audit Log tab. Every state-changing admin command is automatically "
+"recorded with timestamp, actor, action, and target."
+msgstr ""
+"<fotp\\/f00F21/ বা প্রশাসনিক কনসোলের লগ থেকে সকল অ্যাডমিন সংক্রান্ত লগ "
+"অনুসন্ধান করা হয়। প্রতিটি রাষ্ট্র পরিবর্তনকারী প্রশাসন কমান্ড "
+"স্বয়ংক্রিয়ভাবে সময়ের চিহ্ন, অভিনেতা, কর্ম এবং লক্ষ্য দ্বারা রেকর্ড করা "
+"হয়।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:8
 #, elixir-autogen, elixir-format
@@ -4497,58 +5285,95 @@ msgstr "অনুসন্ধান"
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_wallops.html.heex:41
 #, elixir-autogen, elixir-format
 msgid "Server Broadcasts"
-msgstr "Server Broadcasts"
+msgstr "সার্ভারের ব্রডকাস্ট"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:2
 #, elixir-autogen, elixir-format
 msgid "Show where incoming notices from other users appear on your screen."
-msgstr "Show where incoming notices from other users appear on your screen."
+msgstr ""
+"অন্য ব্যবহারকারীদের দ্বারা আপনার পর্দার মধ্যে উপস্থিত পরিচিত ব্যক্তিদের "
+"তালিকা প্রদর্শন করা হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:13
 #, elixir-autogen, elixir-format
-msgid "Shows information about a user who has disconnected within the configured retention period in a Last Seen result card: their last seen time, which channels they were in, and their quit message (if they provided one). This is useful when you notice someone has left and want to know when and why. Lookups are case-insensitive. If no record exists, a \"no whowas information available\" message is shown."
-msgstr "Shows information about a user who has disconnected within the configured retention period in a Last Seen result card: their last seen time, which channels they were in, and their quit message (if they provided one). This is useful when you notice someone has left and want to know when and why. Lookups are case-insensitive. If no record exists, a \"no whowas information available\" message is shown."
+msgid ""
+"Shows information about a user who has disconnected within the configured "
+"retention period in a Last Seen result card: their last seen time, which "
+"channels they were in, and their quit message (if they provided one). This "
+"is useful when you notice someone has left and want to know when and why. "
+"Lookups are case-insensitive. If no record exists, a \"no whowas information"
+" available\" message is shown."
+msgstr ""
+"কনফিগারকৃত তালিকার মধ্যে অন্তর্ভুক্ত করা ব্যবহারকারীর তথ্য প্রদর্শিত হবে। "
+"সর্বশেষ প্রকাশিত কার্ডের মাধ্যমে কনফিগার করা তথ্য বিশিষ্ট ব্যবহারকারীর তথ্য "
+"প্রদর্শন করা হয়: তাদের শেষ সময় দেখা, এবং তাদের প্রস্থান করা বার্তা (যদি "
+"তারা কোন একটিও প্রদান করে)। কেউ না কেউ চলে গেলে এটা কাজে লাগবে। খুঁজে পাওয়া"
+" যায় কিনা। যদি কোন রেকর্ড না পাওয়া যায়, তবে \"কোনো\" তথ্য পাওয়া যাচ্ছে "
+"না।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_user.html.heex:67
 #, elixir-autogen, elixir-format
-msgid "The Users tab disables the admin role choice unless the viewer is a configured root admin"
-msgstr "The Users tab disables the admin role choice unless the viewer is a configured root admin"
+msgid ""
+"The Users tab disables the admin role choice unless the viewer is a "
+"configured root admin"
+msgstr ""
+"ব্যবহারকারী ট্যাব দ্বারা স্বয়ংক্রিয়রূপে বুকমার্ক ব্যবস্থা নিষ্ক্রিয় করা "
+"হবে"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_invite.html.heex:24
 #, elixir-autogen, elixir-format
-msgid "The invited user receives a popup dialog with options to Join or Decline the invitation. The invitation expires after 5 minutes if not acted upon. For invite-only (+i) channels, only channel operators can send invites. Operators can also right-click a nick in the nicklist and choose Invite to Channel... to open a channel picker without typing the command. Using"
-msgstr "The invited user receives a popup dialog with options to Join or Decline the invitation. The invitation expires after 5 minutes if not acted upon. For invite-only (+i) channels, only channel operators can send invites. Operators can also right-click a nick in the nicklist and choose Invite to Channel... to open a channel picker without typing the command. Using"
+msgid ""
+"The invited user receives a popup dialog with options to Join or Decline the"
+" invitation. The invitation expires after 5 minutes if not acted upon. For "
+"invite-only (+i) channels, only channel operators can send invites. "
+"Operators can also right-click a nick in the nicklist and choose Invite to "
+"Channel... to open a channel picker without typing the command. Using"
+msgstr ""
+"আমন্ত্রণকৃত ব্যবহারকারী যোগদানের জন্য অথবা আমন্ত্রণে সাড়া দিতে একটি পপ-আপ "
+"ডায়লগ পান। ৫ মিনিট পরে এই আমন্ত্রণের মেয়াদ শেষ হয়ে যাবে। শুধুমাত্র (+) "
+"চ্যানেলগুলোকে আমন্ত্রণ জানানোর জন্য কেবল চ্যানেল অপারেটররা পাঠাতে পারেন। "
+"Coicklist-তে ডাকনাম ক্লিক করে চ্যানেলতে আমন্ত্রণ জানানো যাবে... কমান্ড না "
+"টাইপ না করে চ্যানেলগুলোকে টাইপ না করে খোলার জন্য। ব্যবহার করা হচ্ছে"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:26
 #, elixir-autogen, elixir-format
 msgid "The target must be online."
-msgstr "The target must be online."
+msgstr "লক্ষ্য অবশ্যই অনলাইন হতে হবে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "This displays the delivery policy for user-targeted notices (sent via"
-msgstr "This displays the delivery policy for user-targeted notices (sent via"
+msgstr ""
+"ব্যবহারকারী দ্বারা চিহ্নিত stand posted প্রদর্শন ব্যবস্থা এই প্রদর্শন করা "
+"হয় (এর মাধ্যমে)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:65
 #, elixir-autogen, elixir-format
 msgid "Timers Dialog"
-msgstr "Timers Dialog"
+msgstr "টাইমার ডায়ালগ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:30
 #, elixir-autogen, elixir-format
-msgid "To send a user notice from the UI, right-click a nickname in the nicklist or in chat and choose Send Notice. The main input switches to a one-shot notice composer."
-msgstr "To send a user notice from the UI, right-click a nickname in the nicklist or in chat and choose Send Notice. The main input switches to a one-shot notice composer."
+msgid ""
+"To send a user notice from the UI, right-click a nickname in the nicklist or"
+" in chat and choose Send Notice. The main input switches to a one-shot "
+"notice composer."
+msgstr ""
+"ব্যবহারকারীর কাছ থেকে কোনো ব্যবহারকারী নির্বাচন করা হলে, উপনাম অথবা আলাপনের "
+"স্থানে একটি উপনাম প্রয়োগ করার উদ্দেশ্যে চিহ্নিত ব্যবহারকারীর নাম নির্বাচন "
+"করুন। প্রধান ইনপুট টুল-বার দ্বারা একটি hot-র উইন্ডো পরিচালন ব্যবস্থা প্রয়োগ"
+" করা হয়।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_transfer.html.heex:42
 #, elixir-autogen, elixir-format
 msgid "Transfer Ownership"
-msgstr "Transfer Ownership"
+msgstr "স্থানান্তরের মালিকানা"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:38
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whowas.html.heex:35
 #, elixir-autogen, elixir-format
 msgid "User Lookup"
-msgstr "User Lookup"
+msgstr "ব্যবহারকারীর নাম"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:34
 #, elixir-autogen, elixir-format
@@ -4557,100 +5382,159 @@ msgstr "ভিডিও কল ( V)"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_turn.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "View TURN server status, active allocations, and relay port usage from /admin turn or the Admin Console TURN tab. Requires server administrator role. Read-only, no side effects."
-msgstr "View TURN server status, active allocations, and relay port usage from /admin turn or the Admin Console TURN tab. Requires server administrator role. Read-only, no side effects."
+msgid ""
+"View TURN server status, active allocations, and relay port usage from "
+"/admin turn or the Admin Console TURN tab. Requires server administrator "
+"role. Read-only, no side effects."
+msgstr ""
+"TurN সার্ভার, সক্রিয় সংযোগগুলির প্রদর্শন করুন, এবং <ff0\\-2> থেকে "
+"রি-ডাইরেক্ট পোর্ট নির্বাচন করুন। স্বয়ংক্রিয়রূপে সার্ভার ভূমিকা প্রয়োজন। "
+"শুধু পড়া, কোন পার্শ্ব ইফেক্ট না."
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_server.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "View server information and manage server settings from /admin server or the Admin Console Server Settings tab. Requires server administrator role."
-msgstr "View server information and manage server settings from /admin server or the Admin Console Server Settings tab. Requires server administrator role."
+msgid ""
+"View server information and manage server settings from /admin server or the"
+" Admin Console Server Settings tab. Requires server administrator role."
+msgstr ""
+"সার্ভার থেকে তথ্য প্রদর্শন ও পরিচালনার সার্ভার। সার্ভার দ্বারা Xproject2 "
+"অথবা অ্যাডমিন সার্ভার সংক্রান্ত তথ্য আহরণ করা হবে। স্বয়ংক্রিয়রূপে সার্ভার "
+"ভূমিকা প্রয়োজন।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_knock.html.heex:23
 #, elixir-autogen, elixir-format
-msgid "When you knock on a channel, all operators and owners in that channel receive a notification showing your nickname and optional message. The Channel List marks invite-only channels with a +i badge and changes Join to Request Access..., which opens the same knock request flow with an optional 200-character message. Operators can then decide whether to invite you using"
-msgstr "When you knock on a channel, all operators and owners in that channel receive a notification showing your nickname and optional message. The Channel List marks invite-only channels with a +i badge and changes Join to Request Access..., which opens the same knock request flow with an optional 200-character message. Operators can then decide whether to invite you using"
+msgid ""
+"When you knock on a channel, all operators and owners in that channel "
+"receive a notification showing your nickname and optional message. The "
+"Channel List marks invite-only channels with a +i badge and changes Join to "
+"Request Access..., which opens the same knock request flow with an optional "
+"200-character message. Operators can then decide whether to invite you using"
+msgstr ""
+"কোনো চ্যানেলে নক করলে, চ্যানেলের সকল অপারেটর এবং মালিক আপনার ডাকনাম এবং "
+"ঐচ্ছিক বার্তা প্রদর্শন করে। চ্যানেলের তালিকা একটি +i ব্যাজ এবং অনুরোধের "
+"ক্ষেত্রে পরিবর্তন সাধন করার জন্য শুধুমাত্র একটি চ্যানেল চিহ্নিত করা হয়. "
+"অপারেটর তাহলে আপনি ব্যবহার করে আমন্ত্রণ জানাতে সিদ্ধান্ত নিতে পারেন"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "You cannot open a lobby with yourself."
-msgstr "You cannot open a lobby with yourself."
+msgstr "তুমি নিজে লব খুলতে পারবে না।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:36
 #, elixir-autogen, elixir-format
 msgid "aop add/del/list <nick>"
-msgstr "aop add/del/list <nick>"
-
-#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
-#, elixir-autogen, elixir-format
-msgid "creates a lobby and sends the other user a join invitation. Once both of you join, one WebRTC connection is established and stays open. A dock lets either side start audio/video, send files, or propose a game at any time — and several can run together concurrently. Ending one activity keeps the connection alive; the lobby only closes when someone leaves or it goes idle."
-msgstr "creates a lobby and sends the other user a join invitation. Once both of you join, one WebRTC connection is established and stays open. A dock lets either side start audio/video, send files, or propose a game at any time — and several can run together concurrently. Ending one activity keeps the connection alive; the lobby only closes when someone leaves or it goes idle."
+msgstr "VOF2 <fotp1> <fff2\\-2>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:24
 #, elixir-autogen, elixir-format
 msgid "drop"
-msgstr "drop"
+msgstr "ড্রপ"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_whois.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "from the User Lookup dialog or by right-clicking a nickname in the nick list or chat area. You can look up yourself too."
-msgstr "from the User Lookup dialog or by right-clicking a nickname in the nick list or chat area. You can look up yourself too."
+msgid ""
+"from the User Lookup dialog or by right-clicking a nickname in the nick list"
+" or chat area. You can look up yourself too."
+msgstr ""
+"ব্যবহারকারীর ডায়লগ বক্স থেকে ব্যবহারকারীর নাম অথবা তালিকার উপর মাউসের "
+"ডানদিকের বাটন ক্লিক করুন। তুমিও নিজেকে দেখতে পারো।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:28
 #, elixir-autogen, elixir-format
 msgid "info"
-msgstr "info"
+msgstr "তথ্য"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:27
 #, elixir-autogen, elixir-format
 msgid "policy. User notices are routed to the active window."
-msgstr "policy. User notices are routed to the active window."
+msgstr "পলিসি. ব্যবহারকারী বিজ্ঞপ্তি সক্রিয় উইণ্ডোতে স্থানান্তর করা হয় ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:18
 #, elixir-autogen, elixir-format
 msgid "register"
-msgstr "register"
+msgstr "রেজিস্টার"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice_routing.html.heex:19
 #, elixir-autogen, elixir-format
 msgid "shows the current policy."
-msgstr "shows the current policy."
+msgstr "বর্তমান নীতি দেখায়।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_notice.html.heex:44
 #, elixir-autogen, elixir-format
 msgid "shows the fixed active-window routing policy"
-msgstr "shows the fixed active-window routing policy"
+msgstr "সক্রিয় উইন্ডো সংক্রান্ত নীতি দেখায়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:32
 #, elixir-autogen, elixir-format
 msgid "sop add/del/list <nick>"
-msgstr "sop add/del/list <nick>"
+msgstr "অত্যন্ত যোগ করুন < `gak1\\22/fff2 <ff\\@ffff2>"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_cs.html.heex:40
 #, elixir-autogen, elixir-format
 msgid "vop add/del/list <nick>"
-msgstr "vop add/del/list <nick>"
+msgstr "vopps যোগ করুন<Ctrl 1\\-22/ffind2-এ উপলব্ধ করা হয়"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_timer.html.heex:9
 #, elixir-autogen, elixir-format
-msgid "with no arguments to open the Timers dialog. You can also open it from Tools > Timers or toolbar Options > Timers."
-msgstr "with no arguments to open the Timers dialog. You can also open it from Tools > Timers or toolbar Options > Timers."
+msgid ""
+"with no arguments to open the Timers dialog. You can also open it from Tools"
+" > Timers or toolbar Options > Timers."
+msgstr ""
+"টাইমার ডায়লগ খোলার উদ্দেশ্যে কোনো আর্গুমেন্ট উপস্থিত নেই। অতিরিক্ত সামগ্রী "
+"থেকে এটি খুলতে পারবেন > টাইমার অথবা টুলবার অপশন; টাইমার"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_admin_nuke.html.heex:2
 #, elixir-autogen, elixir-format
-msgid "— Factory reset the entire system. Destroys all data (users, channels, messages, preferences, bots, P2P sessions) except admin roles, audit logs, server bans, and server settings. Requires server administrator role. The Admin Console Danger Zone tab requires typing the server name before execution."
-msgstr "— Factory reset the entire system. Destroys all data (users, channels, messages, preferences, bots, P2P sessions) except admin roles, audit logs, server bans, and server settings. Requires server administrator role. The Admin Console Danger Zone tab requires typing the server name before execution."
+msgid ""
+"— Factory reset the entire system. Destroys all data (users, channels, "
+"messages, preferences, bots, P2P sessions) except admin roles, audit logs, "
+"server bans, and server settings. Requires server administrator role. The "
+"Admin Console Danger Zone tab requires typing the server name before "
+"execution."
+msgstr ""
+"— ফ্যাক্টরি সমগ্র সিস্টেম রিসেট করে । সকল তথ্য মুছে ফেলা হবে (ব্যবহারকারী, "
+"চ্যানেল, পছন্দ, নির্বাচন, P2P সেশন), প্রশাসনের ভূমিকা, পর্যবেক্ষণ করা, "
+"সার্ভার, এবং সার্ভার সংক্রান্ত সমস্ত তথ্য মুছে ফেলা হবে। স্বয়ংক্রিয়রূপে "
+"সার্ভার ভূমিকা প্রয়োজন। প্রশাসনিক কনসোল DCSS জোন ট্যাবের নাম পরিবর্তনের "
+"জন্য এক্স- সার্ভার প্রয়োজন ।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/commands_overview.html.heex:124
 #, elixir-autogen, elixir-format
 msgid "— Open the P2P Lobby (call, files, and games)"
-msgstr "— Open the P2P Lobby (call, files, and games)"
+msgstr "— P2P Lobby, ফাইল এবং খেলা"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_mute.html.heex:18
 #, elixir-autogen, elixir-format
-msgid "— Optional duration token such as 30s, 5m, 1h, or 1d. Omit for permanent mute."
-msgstr "— Optional duration token such as 30s, 5m, 1h, or 1d. Omit for permanent mute."
+msgid ""
+"— Optional duration token such as 30s, 5m, 1h, or 1d. Omit for permanent "
+"mute."
+msgstr ""
+"* — ঐচ্ছিক সময়ের গণনা যেমন ৩০, ৫ম, ১ বা ১ অধ্যায় । স্থায়ী নিঃশব্দে।"
 
 #: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:11
 #, elixir-autogen, elixir-format
 msgid "— The user to open a P2P Lobby with."
-msgstr "— The user to open a P2P Lobby with."
+msgstr "* ব্যবহারকারী একটি পি."
+
+#: lib/retro_hex_chat_web/controllers/help_content/cmd_p2p.html.heex:16
+#, elixir-autogen, elixir-format
+msgid ""
+"opens a setup dialog first, so you can preview camera, choose "
+"microphone/camera/speaker, pick receive-only, and enable privacy relay "
+"before the invite is sent. After you confirm, the other user receives an "
+"invite card in your private message. When they accept, the connection is "
+"established right there in the chat: the call starts with each side's chosen"
+" defaults and the session windows (Call, Files, Games, Statistics) open on "
+"the chat desktop. Several activities run together over the one connection; "
+"ending one keeps the others alive. Closing any session window disconnects "
+"the session (after a confirmation) — minimize to keep it running."
+msgstr ""
+"সেট- আপ ডায়ালগ প্রথমে প্রদর্শিত হবে, যার ফলে আপনি প্রাকদর্শন ক্যামেরা "
+"নির্বাচন করতে পারেন, http://fffotif/ff1.1/f1F1, শুধুমাত্র গ্রহণের পূর্বে "
+"গোপনীয়তা রি-চার্জ করুন। আপনি নিশ্চিত হওয়ার পর অন্য ব্যবহারকারী আপনার "
+"ব্যক্তিগত বার্তায় একটি কার্ড পায়। যখন তারা গ্রহণ করে, সংযোগটি ঠিক আছে: একে"
+" অপরের সাথে সংযোগ স্থাপন করা হয় এবং প্রত্যেক পক্ষ থেকে ডিফল্ট সেশন এবং "
+"সেশনগুলি (কাস, গেম, পরিসংখ্যান, ইত্যাদি) খোলো । একটা সংযোগের ওপর বেশ কয়েকটি"
+" কার্যক্রম একসঙ্গে কাজ করে; শেষ হয় অন্যদের জীবিত রাখে । কোন সেশন উইন্ডো "
+"বন্ধ করে দিলে সেটি সেশন বন্ধ হয়ে যাবে ( ঘোষনা করা হবে) - এর ফলে রেখে দেওয়া"
+" হবে ।"

@@ -56,22 +56,22 @@ msgstr "Maroon"
 msgid "Navy"
 msgstr "Hải quân"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:29
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:31
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot be empty"
 msgstr "Tên hộp thoại rỗng"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:38
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:40
 #, elixir-autogen, elixir-format
 msgid "Nickname cannot contain spaces"
 msgstr "Tên hộp thoại không thể chứa dấu cách"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:26
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:28
 #, elixir-autogen, elixir-format
 msgid "Nickname must be a string"
 msgstr "Biệt danh phải là chuỗi"
 
-#: lib/retro_hex_chat/accounts/nickname_validator.ex:35
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:37
 #, elixir-autogen, elixir-format
 msgid "Nickname must start with a letter or special character"
 msgstr "Biệt danh phải bắt đầu với chữ cái hay ký tự đặc biệt"
@@ -110,3 +110,8 @@ msgstr "Trắng"
 #, elixir-autogen, elixir-format
 msgid "Yellow"
 msgstr "Vàng"
+
+#: lib/retro_hex_chat/accounts/nickname_validator.ex:43
+#, elixir-autogen, elixir-format
+msgid "Nickname contains invalid characters"
+msgstr "Biệt danh chứa ký tự không hợp lệ"

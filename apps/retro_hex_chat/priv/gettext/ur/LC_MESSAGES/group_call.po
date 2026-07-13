@@ -11,62 +11,67 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat/group_call/policy.ex:70
-#: lib/retro_hex_chat/group_call/policy.ex:76
+#: lib/retro_hex_chat/group_call/policy.ex:71
+#: lib/retro_hex_chat/group_call/policy.ex:77
 #, elixir-autogen, elixir-format
 msgid "Channel is required"
 msgstr "چینل لازمی ہے۔"
 
-#: lib/retro_hex_chat/group_call.ex:60
+#: lib/retro_hex_chat/group_call.ex:64
 #, elixir-autogen, elixir-format
 msgid "Channel not found"
 msgstr "چینل نہیں پائی گئی"
 
-#: lib/retro_hex_chat/group_call.ex:51
+#: lib/retro_hex_chat/group_call.ex:55
 #, elixir-autogen, elixir-format
 msgid "Could not create group call"
 msgstr "گروپ نہیں بنایا جاسکتا"
 
-#: lib/retro_hex_chat/group_call.ex:55
+#: lib/retro_hex_chat/group_call.ex:59
 #, elixir-autogen, elixir-format
 msgid "Could not start group call"
 msgstr "گروپ شروع نہیں کیا جاسکتا"
 
-#: lib/retro_hex_chat/group_call/policy.ex:111
+#: lib/retro_hex_chat/group_call/policy.ex:112
 #, elixir-autogen, elixir-format
 msgid "Group call is no longer active"
 msgstr "گروپ کال اب فعال نہیں ہے۔"
 
-#: lib/retro_hex_chat/group_call.ex:64
+#: lib/retro_hex_chat/group_call.ex:68
 #, elixir-autogen, elixir-format
 msgid "Group call rate limit reached. Try again in %{count} second."
 msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
 msgstr[0] "گروپ شرح حدیث کہلاتا ہے۔ دوبارہ کوشش کریں %{count} دوم."
 msgstr[1] "گروپ شرح حدیث کہلاتا ہے۔ دوبارہ کوشش کریں %{count} سیکنڈ"
 
-#: lib/retro_hex_chat/group_call.ex:237
+#: lib/retro_hex_chat/group_call.ex:397
 #, elixir-autogen, elixir-format
 msgid "Group calls are disabled"
 msgstr "گروپ معطل ہے"
 
-#: lib/retro_hex_chat/group_call/policy.ex:123
-#: lib/retro_hex_chat/group_call/policy.ex:126
+#: lib/retro_hex_chat/group_call/policy.ex:143
+#: lib/retro_hex_chat/group_call/policy.ex:146
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges"
 msgstr "ذمہ‌داریوں میں"
 
-#: lib/retro_hex_chat/group_call/policy.ex:103
+#: lib/retro_hex_chat/group_call/policy.ex:104
 #, elixir-autogen, elixir-format
 msgid "This channel already has an active group call"
 msgstr "یہ چینل پہلے ہی فعال گروپ کال رکھتا ہے۔"
 
-#: lib/retro_hex_chat/group_call/policy.ex:97
+#: lib/retro_hex_chat/group_call/policy.ex:98
 #, elixir-autogen, elixir-format
 msgid "You are not in this channel"
 msgstr "آپ اس چینل میں نہیں ہیں"
 
-#: lib/retro_hex_chat/group_call/policy.ex:79
-#: lib/retro_hex_chat/group_call/policy.ex:89
+#: lib/retro_hex_chat/group_call/policy.ex:80
+#: lib/retro_hex_chat/group_call/policy.ex:90
 #, elixir-autogen, elixir-format
 msgid "You must be registered to use group calls"
 msgstr "گروپ کال استعمال کرنے کے لیے آپ کو رجسٹرڈ کرنا ہوگا"
+
+#: lib/retro_hex_chat/group_call/policy.ex:123
+#, elixir-autogen, elixir-format
+msgid "Group call is locked"
+msgstr "گروپ کال بند ہے۔"

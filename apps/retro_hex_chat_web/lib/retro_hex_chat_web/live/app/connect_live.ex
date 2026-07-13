@@ -192,9 +192,4 @@ defmodule RetroHexChatWeb.App.ConnectLive do
 
   defp translate_nickname_error(message), do: message
 
-  defp connect_locale_links do
-    Enum.map(RetroHexChatWeb.I18n.supported_locales(), fn {code, label} ->
-      {code, label, ~p"/locale/#{code}?return_to=/connect"}
-    end)
-  end
 end

@@ -11,27 +11,25 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:282
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:299
+#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:137
 #, elixir-autogen, elixir-format
-msgid "!play"
-msgstr "·"
-
-#: lib/retro_hex_chat_web/live/landing_live/install.ex:144
-#, elixir-autogen, elixir-format
-msgid "$ git clone https://github.com/rodrigomarchi/retro_hex_chat.git\n"
+msgid ""
+"$ git clone https://github.com/rodrigomarchi/retro_hex_chat.git\n"
 "$ cd retro_hex_chat"
-msgstr "$ git 클론 <ph1></ph1사이트맵/ph2·\n"
+msgstr ""
+"$ git 클론 <ph1></ph1사이트맵/ph2·\n"
 "$ CD 복고풍 hex chat"
 
-#: lib/retro_hex_chat_web/live/landing_live/install.ex:149
+#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:142
 #, elixir-autogen, elixir-format
-msgid "$ make server\n"
+msgid ""
+"$ make server\n"
 "[info] Running RetroHexChatWeb.Endpoint at http://localhost:4000"
-msgstr "$ 서버 만들기\n"
+msgstr ""
+"$ 서버 만들기\n"
 "[info] RetroHexChatWeb.Endpoint 실행 <ph1></ph1사이트맵/ph2>"
 
-#: lib/retro_hex_chat_web/live/landing_live/install.ex:148
+#: lib/retro_hex_chat_web/components/ui/landing/landing_mockups.ex:141
 #, elixir-autogen, elixir-format
 msgid "$ make setup"
 msgstr "$ 설정"
@@ -61,7 +59,7 @@ msgstr "💻 기여 코드"
 msgid "📢 Share with friends"
 msgstr "📢 친구와 공유"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:345
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:490
 #, elixir-autogen, elixir-format
 msgid "“Your data. Your rules. Nobody in between.”"
 msgstr "“당신의 자료. 당신의 규칙. 간에 아무도. ·"
@@ -83,48 +81,31 @@ msgstr "— 버전 20+"
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:100
 #, elixir-autogen, elixir-format
-msgid "— helping users find each other. Once connected, all data flows directly between browsers via WebRTC."
+msgid ""
+"— helping users find each other. Once connected, all data flows directly "
+"between browsers via WebRTC."
 msgstr "— 사용자가 서로 찾을 수 있도록 도와줍니다. 연결된 모든 데이터는 WebRTC를 통해 브라우저간에 직접 흐릅니다."
-
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:299
-#, elixir-autogen, elixir-format
-msgid "— the arcade bot sends you a link to the game lobby. Pick from DOOM, Quake, Wolfenstein 3D, Half-Life, and ScummVM adventures — all running as"
-msgstr "— 아케이드 봇은 게임 로비에 링크를 보냅니다. DOOM, Quake, Wolfenstein 3D, Half-Life 및 ScummVM 모험 &mdash에서 선택; 모든 실행으로"
-
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:282
-#, elixir-autogen, elixir-format
-msgid "— the bot sends you an arcade link"
-msgstr "— 봇은 아케이드 링크를 보내"
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:268
 #, elixir-autogen, elixir-format
 msgid ", just like voice calls."
 msgstr ", 그냥 음성 통화처럼."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:205
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:265
-#, elixir-autogen, elixir-format
-msgid "/game @nick"
-msgstr "/game @nick"
-
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:443
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:440
 #, elixir-autogen, elixir-format
 msgid "/help"
 msgstr "/help"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:275
-#, elixir-autogen, elixir-format
-msgid "/join #games"
-msgstr "/join #games"
-
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:374
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:377
 #, elixir-autogen, elixir-format
 msgid "0 object(s)"
 msgstr "0 객체(s)"
 
 #: lib/retro_hex_chat_web/live/landing_live/features.ex:25
 #, elixir-autogen, elixir-format
-msgid "18 classic arcade games, programmable bots, IRC-style commands, and built-in help."
+msgid ""
+"18 classic arcade games, programmable bots, IRC-style commands, and built-in"
+" help."
 msgstr "18 클래식 아케이드 게임, 프로그래밍 가능한 봇, IRC 스타일 명령 및 내장 도움말."
 
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:232
@@ -137,37 +118,21 @@ msgstr "WebAssembly를 통해 18 고전적인 게임."
 msgid "18 classic games. Running in your browser."
 msgstr "18 클래식 게임. 브라우저에서 실행."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:302
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:311
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:299
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:314
 #, elixir-autogen, elixir-format
 msgid "18 games"
 msgstr "18 게임"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:483
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:480
 #, elixir-autogen, elixir-format
 msgid "20+ commands"
 msgstr "20+ 명령"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:351
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:496
 #, elixir-autogen, elixir-format
 msgid "2025–2026"
 msgstr "2025– 2026년"
-
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:220
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:276
-#, elixir-autogen, elixir-format
-msgid "28 games"
-msgstr "28 게임"
-
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:162
-#, elixir-autogen, elixir-format
-msgid "28 multiplayer games via WebRTC."
-msgstr "28 멀티 플레이어 게임 WebRTC를 통해."
-
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:255
-#, elixir-autogen, elixir-format
-msgid "28 multiplayer games. Right from the chat."
-msgstr "28 멀티 플레이어 게임. 채팅에서 오른쪽."
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:99
 #, elixir-autogen, elixir-format
@@ -190,35 +155,43 @@ msgstr "A $5/month VPS는 그냥 잘 처리합니다."
 msgid "A corporation"
 msgstr "기업정보"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:234
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:379
 #, elixir-autogen, elixir-format
 msgid "About"
 msgstr "제품정보"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:200
 #, elixir-autogen, elixir-format
-msgid "Absolutely. Run a private server, create invite-only channels, and keep all your team’s communication on your own infrastructure. No per-seat pricing, no message limits."
-msgstr "자주 묻는 질문 개인 서버를 실행하고 초대 전용 채널을 만들고 모든 팀 및 했음을 유지; 자신의 인프라에 대한 통신. 가격 없음, 메시지 제한 없음."
+msgid ""
+"Absolutely. Run a private server, create invite-only channels, and keep all "
+"your team’s communication on your own infrastructure. No per-seat pricing, "
+"no message limits."
+msgstr ""
+"자주 묻는 질문 개인 서버를 실행하고 초대 전용 채널을 만들고 모든 팀 및 했음을 유지; 자신의 인프라에 대한 통신. 가격 없음, 메시지"
+" 제한 없음."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:400
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:397
 #, elixir-autogen, elixir-format
 msgid "Accounts, roles, bans, and registration control."
 msgstr "계정, 역할, 금지 및 등록 관리."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:386
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:383
 #, elixir-autogen, elixir-format
 msgid "Admin Panel"
 msgstr "관리자 패널"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:376
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:373
 #, elixir-autogen, elixir-format
 msgid "Administration"
 msgstr "주요사업"
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:60
 #, elixir-autogen, elixir-format
-msgid "Anyone can run a server. Install it on a $5/month VPS, a Raspberry Pi, or your own hardware. You control everything."
-msgstr "누구나 서버를 실행할 수 있습니다. 설치 $5/month VPS, Raspberry Pi 또는 자체 하드웨어. 모든 것을 제어합니다."
+msgid ""
+"Anyone can run a server. Install it on a $5/month VPS, a Raspberry Pi, or "
+"your own hardware. You control everything."
+msgstr ""
+"누구나 서버를 실행할 수 있습니다. 설치 $5/month VPS, Raspberry Pi 또는 자체 하드웨어. 모든 것을 제어합니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:254
 #, elixir-autogen, elixir-format
@@ -230,7 +203,7 @@ msgstr "사이트맵"
 msgid "Backend"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:410
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:407
 #, elixir-autogen, elixir-format
 msgid "Backup & Restore"
 msgstr "백업 및 복원"
@@ -250,7 +223,7 @@ msgstr "큰 기술 플랫폼"
 msgid "Big Tech vs. Retro Hex Chat."
 msgstr "큰 기술 대 Retro Hex 채팅."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:309
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:306
 #, elixir-autogen, elixir-format
 msgid "Bots"
 msgstr "로그아웃"
@@ -260,7 +233,7 @@ msgstr "로그아웃"
 msgid "Boxing"
 msgstr "회사 소개"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:240
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:385
 #, elixir-autogen, elixir-format
 msgid "Built with Elixir, Phoenix, and LiveView."
 msgstr "Elixir, Phoenix 및 LiveView로 내장."
@@ -270,7 +243,7 @@ msgstr "Elixir, Phoenix 및 LiveView로 내장."
 msgid "Built with today’s technology."
 msgstr "today’s 기술로 건축하는."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:428
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:425
 #, elixir-autogen, elixir-format
 msgid "Built-in Help"
 msgstr "내장 도움말"
@@ -290,7 +263,7 @@ msgstr "C:\\SETUP\\install server.exe 설치"
 msgid "C:\\TRUTH\\"
 msgstr "C:\\TRUTH\\에"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:433
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:430
 #, elixir-autogen, elixir-format
 msgid "CHM-style help system built in."
 msgstr "CHM 작풍 도움 체계에서 건축하는."
@@ -342,13 +315,21 @@ msgstr "채널은 채팅 룸입니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:155
 #, elixir-autogen, elixir-format
-msgid "Check out our contributing guide on GitHub! We accept code, documentation, translation, design, testing, and bug reports. Issues marked “good first issue” are a great place to start."
-msgstr "GitHub의 기여 가이드를 확인하십시오! 우리는 코드, 문서, 번역, 디자인, 테스트 및 버그 보고서를 받아들입니다. 표시된 문제 “좋은 첫 번째 문제” 시작 하는 좋은 장소입니다."
+msgid ""
+"Check out our contributing guide on GitHub! We accept code, documentation, "
+"translation, design, testing, and bug reports. Issues marked “good first "
+"issue” are a great place to start."
+msgstr ""
+"GitHub의 기여 가이드를 확인하십시오! 우리는 코드, 문서, 번역, 디자인, 테스트 및 버그 보고서를 받아들입니다. 표시된 문제 "
+"“좋은 첫 번째 문제” 시작 하는 좋은 장소입니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/install.ex:20
 #, elixir-autogen, elixir-format
-msgid "Clone, setup, and run your own Retro Hex Chat server in three simple steps. System requirements and getting started guide."
-msgstr "Clone, 설정, 그리고 세 가지 간단한 단계에 자신의 Retro Hex 채팅 서버를 실행. 시스템 요구 사항 및 시작 가이드."
+msgid ""
+"Clone, setup, and run your own Retro Hex Chat server in three simple steps. "
+"System requirements and getting started guide."
+msgstr ""
+"Clone, 설정, 그리고 세 가지 간단한 단계에 자신의 Retro Hex 채팅 서버를 실행. 시스템 요구 사항 및 시작 가이드."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:45
 #, elixir-autogen, elixir-format
@@ -370,20 +351,21 @@ msgstr "영업시간 그들을 장님으로 신뢰하십시오."
 msgid "Code"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:99
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:164
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:282
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:167
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:328
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:427
 #, elixir-autogen, elixir-format
 msgid "Community"
 msgstr "- 연혁"
 
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:104
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:274
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:44
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:66
 #, elixir-autogen, elixir-format
 msgid "Connect"
 msgstr "연결하기"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:265
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:410
 #, elixir-autogen, elixir-format
 msgid "Contribute"
 msgstr "계정 만들기"
@@ -403,7 +385,7 @@ msgstr "기여는 환영합니다! 이름 *"
 msgid "Control"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:452
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:449
 #, elixir-autogen, elixir-format
 msgid "Cross-referenced “See Also” links"
 msgstr "Cross-referenced “See also” 링크"
@@ -428,7 +410,7 @@ msgstr "AI 교육에 사용되는 데이터?"
 msgid "Database"
 msgstr "관련 기사"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:332
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:329
 #, elixir-autogen, elixir-format
 msgid "Dice:"
 msgstr "냄새:"
@@ -478,13 +460,14 @@ msgstr "Discord는 내일 서버를 금지할 수 있습니다."
 msgid "Do I need to run my own server?"
 msgstr "서버가 실행해야 하나요?"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:111
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:176
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:340
 #, elixir-autogen, elixir-format
 msgid "Docs"
 msgstr "사이트맵"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:277
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:71
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:201
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:422
 #, elixir-autogen, elixir-format
 msgid "Documentation"
 msgstr "회사연혁"
@@ -511,8 +494,13 @@ msgstr "언어 선택"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:140
 #, elixir-autogen, elixir-format
-msgid "Elixir and Phoenix on the backend, PostgreSQL for data, a retro design system for the classic look, WebSocket for real-time messaging, and WebRTC for P2P. Everything is open source."
-msgstr "Backend, PostgreSQL에 Elixir 및 Phoenix 데이터, 고전적 인 모습을위한 복고풍 디자인 시스템, 실시간 메시징을위한 WebSocket, P2P를위한 WebRTC. 모든 것이 오픈 소스입니다."
+msgid ""
+"Elixir and Phoenix on the backend, PostgreSQL for data, a retro design "
+"system for the classic look, WebSocket for real-time messaging, and WebRTC "
+"for P2P. Everything is open source."
+msgstr ""
+"Backend, PostgreSQL에 Elixir 및 Phoenix 데이터, 고전적 인 모습을위한 복고풍 디자인 시스템, 실시간 "
+"메시징을위한 WebSocket, P2P를위한 WebRTC. 모든 것이 오픈 소스입니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:130
 #, elixir-autogen, elixir-format
@@ -540,7 +528,7 @@ msgstr "TURN 릴레이 fallback로 암호화된 엔드 투 엔드"
 msgid "Enduro"
 msgstr "로드 중 ..."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:415
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:412
 #, elixir-autogen, elixir-format
 msgid "Export and import your data anytime."
 msgstr "데이터를 언제든지 내보내고 가져올 수 있습니다."
@@ -550,13 +538,13 @@ msgstr "데이터를 언제든지 내보내고 가져올 수 있습니다."
 msgid "Export, restore, migrate — your data is always accessible."
 msgstr "수출, 복원, Migrate — 귀하의 데이터는 항상 액세스 할 수 있습니다."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:369
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:366
 #, elixir-autogen, elixir-format
 msgid "Extensible"
 msgstr "옵션 정보"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:104
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:171
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:170
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:335
 #, elixir-autogen, elixir-format
 msgid "FAQ"
 msgstr "제품 정보"
@@ -571,8 +559,8 @@ msgstr "FAQ — 레트로 헥스 채팅"
 msgid "FOTAQ"
 msgstr "사이트맵"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:78
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:143
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:149
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:307
 #, elixir-autogen, elixir-format
 msgid "Features"
 msgstr "주요 특징"
@@ -599,7 +587,9 @@ msgstr "무료 소프트웨어. 당신의 영원히."
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.ex:21
 #, elixir-autogen, elixir-format
-msgid "Frequently asked questions about Retro Hex Chat: P2P calls, server requirements, security, contributing, and more."
+msgid ""
+"Frequently asked questions about Retro Hex Chat: P2P calls, server "
+"requirements, security, contributing, and more."
 msgstr "Retro Hex Chat에 대한 자주 묻는 질문: P2P 통화, 서버 요구 사항, 보안, 기여, 그리고 더."
 
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:139
@@ -607,12 +597,12 @@ msgstr "Retro Hex Chat에 대한 자주 묻는 질문: P2P 통화, 서버 요구
 msgid "Frontend"
 msgstr "회사 소개"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:421
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:418
 #, elixir-autogen, elixir-format
 msgid "Full control"
 msgstr "공급 능력"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:391
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:388
 #, elixir-autogen, elixir-format
 msgid "Full dashboard with real-time logs and metrics."
 msgstr "실시간 로그 및 메트릭으로 전체 대시보드."
@@ -622,13 +612,13 @@ msgstr "실시간 로그 및 메트릭으로 전체 대시보드."
 msgid "Getting Started"
 msgstr "시작하기"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:256
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:401
 #, elixir-autogen, elixir-format
 msgid "GitHub"
 msgstr "프로젝트"
 
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:467
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:79
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:322
 #, elixir-autogen, elixir-format
 msgid "GitHub Sponsors"
 msgstr "GitHub 스폰서"
@@ -658,8 +648,8 @@ msgstr "Retro Hex Chat을 살아야 합니다."
 msgid "Hockey"
 msgstr "스낵 바"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:71
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:136
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:143
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:300
 #, elixir-autogen, elixir-format
 msgid "How It Works"
 msgstr "어떻게 작동하나요?"
@@ -689,7 +679,7 @@ msgstr "세션은 어떻게 작동합니까?"
 msgid "How is it different from Discord?"
 msgstr "Discord에서 어떻게 다른가요?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:469
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:466
 #, elixir-autogen, elixir-format
 msgid "IRC Commands"
 msgstr "IRC 명령"
@@ -699,13 +689,13 @@ msgstr "IRC 명령"
 msgid "If a direct connection isn’t possible (strict firewalls), a"
 msgstr "직접 연결이&rsquo인 경우, 가능한 (strict Firewalls), a"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:241
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:386
 #, elixir-autogen, elixir-format
 msgid "Inspired by the IRC of the 2000s and the freedom it represented."
 msgstr "2000년대의 IRC와 자유에 의해 영감을 얻었다."
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:92
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:157
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:161
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:321
 #, elixir-autogen, elixir-format
 msgid "Install"
 msgstr "설치하기"
@@ -740,28 +730,27 @@ msgstr "무료인가요?"
 msgid "Is it secure?"
 msgstr "안전합니까?"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:274
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:297
-#, elixir-autogen, elixir-format
-msgid "Join"
-msgstr "이름 *"
-
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:366
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:369
 #, elixir-autogen, elixir-format
 msgid "Just clean code. ✨"
 msgstr "그냥 깨끗한 코드. ✨"
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.ex:22
 #, elixir-autogen, elixir-format
-msgid "Learn how Retro Hex Chat works: self-hosted server architecture, WebRTC P2P calls, privacy protections, and security layers."
-msgstr "Retro Hex Chat은 어떻게 작동합니까? 자체 호스팅 서버 아키텍처, WebRTC P2P 통화, 개인 정보 보호 보호 및 보안 레이어."
+msgid ""
+"Learn how Retro Hex Chat works: self-hosted server architecture, WebRTC P2P "
+"calls, privacy protections, and security layers."
+msgstr ""
+"Retro Hex Chat은 어떻게 작동합니까? 자체 호스팅 서버 아키텍처, WebRTC P2P 통화, 개인 정보 보호 보호 및 보안 "
+"레이어."
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:292
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:437
 #, elixir-autogen, elixir-format
 msgid "Legal"
 msgstr "이름 *"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:274
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:223
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:419
 #, elixir-autogen, elixir-format
 msgid "License (MIT)"
 msgstr "라이센스 (MIT)"
@@ -781,7 +770,7 @@ msgstr "풍부한 metadata와 링크 미리보기"
 msgid "Live"
 msgstr "한국어"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:340
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:343
 #, elixir-autogen, elixir-format
 msgid "Ln 1, Col 1"
 msgstr "Ln 1, 콜 1"
@@ -791,19 +780,19 @@ msgstr "Ln 1, 콜 1"
 msgid "MIT"
 msgstr "사이트맵"
 
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:446
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:501
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:52
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:301
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:356
 #, elixir-autogen, elixir-format
 msgid "MIT License"
 msgstr "MIT 라이센스"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:350
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:495
 #, elixir-autogen, elixir-format
 msgid "Made by humans"
 msgstr "인간에 의해 만들어"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:120
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:284
 #, elixir-autogen, elixir-format
 msgid "Menu"
 msgstr "* 이름"
@@ -824,12 +813,12 @@ msgstr "메시지 저장"
 msgid "Messages, users, channels — all stored on your machine."
 msgstr "메시지, 사용자, 채널 — 모든 컴퓨터에 저장."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:404
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:401
 #, elixir-autogen, elixir-format
 msgid "Moderation"
 msgstr "회사연혁"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:341
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:338
 #, elixir-autogen, elixir-format
 msgid "Moderation:"
 msgstr "형태:"
@@ -875,7 +864,7 @@ msgstr "기업은 당신을 아래로 폐쇄할 수 있습니다."
 msgid "No corporation. No algorithms. No permission needed."
 msgstr "회사 없음. 알고리즘 없음. 자주 묻는 질문"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:295
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:292
 #, elixir-autogen, elixir-format
 msgid "No downloads, no plugins — opens in a new window"
 msgstr "다운로드 없음, 플러그인 없음 — 새로운 창에서 열립니다"
@@ -895,7 +884,7 @@ msgstr "추적 없음. 없음. 알고리즘 없음. 당신의 대화는"
 msgid "No tracking. No profiling. No data harvesting. Just a chat server that"
 msgstr "추적 없음. 없음. 자료 수확 없음. 채팅 서버"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:366
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:369
 #, elixir-autogen, elixir-format
 msgid "No trash here."
 msgstr "여기에 쓰레기 없음."
@@ -912,7 +901,9 @@ msgstr "노드.js"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:47
 #, elixir-autogen, elixir-format
-msgid "Not necessarily! You can create an account on any public server. Running your own server is for those who want total control."
+msgid ""
+"Not necessarily! You can create an account on any public server. Running "
+"your own server is for those who want total control."
 msgstr "견적 요청 공용 서버에서 계정을 만들 수 있습니다. 자신의 서버를 실행하는 것은 총 제어를 원하는 사람들을 위해."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:185
@@ -922,8 +913,15 @@ msgstr "자주 묻는 질문"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:77
 #, elixir-autogen, elixir-format
-msgid "On Discord, your data lives on their servers and your communities can be removed at any time. On Retro Hex Chat, you control your data, voice and video calls go directly between users via P2P, and the code is open source — you can audit every line."
-msgstr "Discord에서 데이터는 서버에서 생활하며 커뮤니티는 언제든지 제거될 수 있습니다. Retro Hex Chat에서는, 당신은 당신의 자료, 음성 및 영상 통화를 P2P를 통해 사용자 사이 직접 통제하고, 부호는 오픈 소스 &mdash입니다; 당신은 각 선을 감사할 수 있습니다."
+msgid ""
+"On Discord, your data lives on their servers and your communities can be "
+"removed at any time. On Retro Hex Chat, you control your data, voice and "
+"video calls go directly between users via P2P, and the code is open source —"
+" you can audit every line."
+msgstr ""
+"Discord에서 데이터는 서버에서 생활하며 커뮤니티는 언제든지 제거될 수 있습니다. Retro Hex Chat에서는, 당신은 당신의 "
+"자료, 음성 및 영상 통화를 P2P를 통해 사용자 사이 직접 통제하고, 부호는 오픈 소스 &mdash입니다; 당신은 각 선을 감사할 수 "
+"있습니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:142
 #, elixir-autogen, elixir-format
@@ -940,7 +938,7 @@ msgstr "1개의 서버. 모든 제품"
 msgid "Only you have access to your messages"
 msgstr "메시지에 접근할 수 있습니다."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:442
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:439
 #, elixir-autogen, elixir-format
 msgid "Open Help Topics or type"
 msgstr "자주 묻는 질문"
@@ -996,7 +994,7 @@ msgstr "오픈 소스:"
 msgid "Other ways to help"
 msgstr "다른 방법 도움이"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:479
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:476
 #, elixir-autogen, elixir-format
 msgid "Over 20 commands with smart autocomplete."
 msgstr "smart autocomplete를 가진 20의 명령 이상."
@@ -1008,8 +1006,15 @@ msgstr "P2P"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:32
 #, elixir-autogen, elixir-format
-msgid "P2P (peer-to-peer) means data goes directly between users without passing through a server. Retro Hex Chat uses WebRTC for voice calls, video calls, and file transfers. The server only helps users find each other (signaling), then steps out of the way."
-msgstr "P2P (peer-to-peer)는 서버를 통과하지 않고 사용자가 직접 데이터를 의미합니다. Retro Hex Chat은 음성 통화, 비디오 통화 및 파일 전송을 위해 WebRTC를 사용합니다. 서버는 사용자가 서로를 찾을 수 있도록 도와줍니다 (signaling), 그런 다음 방법의 단계."
+msgid ""
+"P2P (peer-to-peer) means data goes directly between users without passing "
+"through a server. Retro Hex Chat uses WebRTC for voice calls, video calls, "
+"and file transfers. The server only helps users find each other (signaling),"
+" then steps out of the way."
+msgstr ""
+"P2P (peer-to-peer)는 서버를 통과하지 않고 사용자가 직접 데이터를 의미합니다. Retro Hex Chat은 음성 통화, "
+"비디오 통화 및 파일 전송을 위해 WebRTC를 사용합니다. 서버는 사용자가 서로를 찾을 수 있도록 도와줍니다 (signaling), "
+"그런 다음 방법의 단계."
 
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:114
 #, elixir-autogen, elixir-format
@@ -1067,14 +1072,14 @@ msgstr "주 메뉴"
 msgid "PostgreSQL"
 msgstr "프로젝트"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:474
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:471
 #, elixir-autogen, elixir-format
 msgid "Powerful IRC-style commands."
 msgstr "강력한 IRC 스타일 명령."
 
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:155
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:314
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:77
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:85
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:150
 #, elixir-autogen, elixir-format
 msgid "Privacy"
 msgstr "제품 정보"
@@ -1096,12 +1101,12 @@ msgstr "개인정보 비교 — Retro Hex Chat vs Discord, Slack & Telegram"
 msgid "Private:"
 msgstr "개인:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:314
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:311
 #, elixir-autogen, elixir-format
 msgid "Programmable bots with pluggable capabilities."
 msgstr "Pluggable 기능을 가진 풀그릴 bots."
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:247
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:392
 #, elixir-autogen, elixir-format
 msgid "Project"
 msgstr "회사연혁"
@@ -1132,22 +1137,22 @@ msgstr "케익 II"
 msgid "README.txt"
 msgstr "다운로드"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:329
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:332
 #, elixir-autogen, elixir-format
 msgid "README.txt — Notepad"
 msgstr "README.txt - 메모장"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:332
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:329
 #, elixir-autogen, elixir-format
 msgid "RPG-style rolling (!roll 2d6+3)"
 msgstr "RPG 스타일 롤링 (! 롤 2d6 + 3)"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:350
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:347
 #, elixir-autogen, elixir-format
 msgid "RSS:"
 msgstr "RSS 피드"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:406
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:403
 #, elixir-autogen, elixir-format
 msgid "Rate limiting, flood protection, and word filters."
 msgstr "비율 제한, 홍수 보호 및 워드 필터."
@@ -1172,11 +1177,6 @@ msgstr "실시간"
 #, elixir-autogen, elixir-format
 msgid "Real-time Chat"
 msgstr "실시간 채팅"
-
-#: lib/retro_hex_chat_web/live/landing_live/features.ex:21
-#, elixir-autogen, elixir-format
-msgid "Real-time chat, channels, P2P voice/video calls, 28 multiplayer games, "
-msgstr "실시간 채팅, 채널, P2P 음성/video 전화, 28 멀티 플레이어 게임, "
 
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:25
 #, elixir-autogen, elixir-format
@@ -1213,15 +1213,23 @@ msgstr "레트로 헥스 채팅"
 
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:71
 #, elixir-autogen, elixir-format
-msgid "Retro Hex Chat is 100% volunteer-driven. No investors, no ads, no data collection. If you believe in this project, consider supporting it:"
-msgstr "레트로 헥스 채팅은 100 %의 자원 봉사자입니다. 투자자 없음, 광고 없음, 데이터 수집 없음. 이 프로젝트에서 믿는다면, 그것을 지원하는 것을 고려하십시오:"
+msgid ""
+"Retro Hex Chat is 100% volunteer-driven. No investors, no ads, no data "
+"collection. If you believe in this project, consider supporting it:"
+msgstr ""
+"레트로 헥스 채팅은 100 %의 자원 봉사자입니다. 투자자 없음, 광고 없음, 데이터 수집 없음. 이 프로젝트에서 믿는다면, 그것을 "
+"지원하는 것을 고려하십시오:"
 
 #: lib/retro_hex_chat_web/live/landing_live/community.ex:20
 #, elixir-autogen, elixir-format
-msgid "Retro Hex Chat is MIT-licensed open source software. Contribute, star, share, or sponsor the project on GitHub."
-msgstr "Retro Hex Chat은 MIT 라이센스 오픈 소스 소프트웨어입니다. 기여, 스타, 공유, 또는 GitHub에서 프로젝트를 후원합니다."
+msgid ""
+"Retro Hex Chat is MIT-licensed open source software. Contribute, star, "
+"share, or sponsor the project on GitHub."
+msgstr ""
+"Retro Hex Chat은 MIT 라이센스 오픈 소스 소프트웨어입니다. 기여, 스타, 공유, 또는 GitHub에서 프로젝트를 "
+"후원합니다."
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:239
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:384
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat is free software, licensed under MIT."
 msgstr "Retro Hex Chat은 무료 소프트웨어입니다, MIT의 밑에 허가."
@@ -1246,22 +1254,22 @@ msgstr "서버를 통해 경로"
 msgid "Run your own server. Your data stays with you."
 msgstr "서버 실행 귀하의 데이터는 당신과 함께 제공됩니다."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:290
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:287
 #, elixir-autogen, elixir-format
 msgid "Runs entirely in the browser via WebAssembly"
 msgstr "WebAssembly를 통해 브라우저에서 완전히 실행"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:359
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:356
 #, elixir-autogen, elixir-format
 msgid "Scheduler:"
 msgstr "스케줄러:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:448
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:445
 #, elixir-autogen, elixir-format
 msgid "Searchable topics with keyword matching"
 msgstr "키워드 일치하는 검색 가능한 주제"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:310
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:455
 #, elixir-autogen, elixir-format
 msgid "Security"
 msgstr "보안 보안"
@@ -1281,7 +1289,7 @@ msgstr "각 층에 보안."
 msgid "Security layers diagram"
 msgstr "안전 층 도표"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:458
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:455
 #, elixir-autogen, elixir-format
 msgid "Self-documented"
 msgstr "자동 문서"
@@ -1303,7 +1311,9 @@ msgstr "Side-by-side 비교"
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.ex:21
 #, elixir-autogen, elixir-format
-msgid "Side-by-side privacy comparison: data ownership, call routing, message access, AI training, and source code transparency."
+msgid ""
+"Side-by-side privacy comparison: data ownership, call routing, message "
+"access, AI training, and source code transparency."
 msgstr "개인 정보 보호 비교 : 데이터 소유권, 전화 라우팅, 메시지 액세스, AI 훈련 및 소스 코드 투명성."
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:131
@@ -1362,7 +1372,7 @@ msgstr "서버에 저장, 결코 떠나지"
 msgid "Stored on their servers, mined for ads"
 msgstr "서버에 저장, 광고를 위해 mined"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:317
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:462
 #, elixir-autogen, elixir-format
 msgid "Support"
 msgstr "지원하다"
@@ -1434,7 +1444,9 @@ msgstr "서버만 핸들"
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:230
 #, elixir-autogen, elixir-format
-msgid "The server only introduces users. Once connected, voice, video, and files flow"
+msgid ""
+"The server only introduces users. Once connected, voice, video, and files "
+"flow"
 msgstr "서버는 사용자를 소개합니다. 연결되면 음성, 비디오 및 파일 흐름"
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:152
@@ -1469,7 +1481,9 @@ msgstr "스레드, 배열 된 답변 및 직접 메시지"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:170
 #, elixir-autogen, elixir-format
-msgid "Through GitHub Sponsors. Every contribution, no matter how small, helps keep the project alive and in active development."
+msgid ""
+"Through GitHub Sponsors. Every contribution, no matter how small, helps keep"
+" the project alive and in active development."
 msgstr "GitHub 스폰서를 통해. 모든 기여는 작지만 프로젝트가 살아있고 활발한 발전을 유지하는 데 도움이됩니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:101
@@ -1488,23 +1502,22 @@ msgid "Trains their AI, sold to advertisers"
 msgstr "AI를 훈련, 광고주에 판매"
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:93
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:358
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:361
 #, elixir-autogen, elixir-format
 msgid "Trash"
 msgstr "정보 수집"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:323
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:320
 #, elixir-autogen, elixir-format
 msgid "Trivia:"
 msgstr "Trivia:"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:281
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:264
 #, elixir-autogen, elixir-format
 msgid "Type"
 msgstr "제품정보"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:395
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:392
 #, elixir-autogen, elixir-format
 msgid "User Management"
 msgstr "사용자 관리"
@@ -1539,7 +1552,7 @@ msgstr "음성 통화 — WebRTC를 통해 직접 P2P"
 msgid "Want your own server? Three steps."
 msgstr "자신의 서버를 원하십니까? 3 단계."
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:303
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:306
 #, elixir-autogen, elixir-format
 msgid "WebAssembly"
 msgstr "웹 조립"
@@ -1601,7 +1614,9 @@ msgstr "예 — 그들은"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:185
 #, elixir-autogen, elixir-format
-msgid "Yes! The interface is responsive and works on any modern browser. Native apps are planned for the future."
+msgid ""
+"Yes! The interface is responsive and works on any modern browser. Native "
+"apps are planned for the future."
 msgstr "예! 인터페이스는 모든 현대 브라우저에서 반응하고 작동한다. 네이티브 앱은 미래에 대한 계획입니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:196
@@ -1611,13 +1626,23 @@ msgstr "예, 언제든지"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:62
 #, elixir-autogen, elixir-format
-msgid "Yes, the software is 100% free and open source (MIT). If you run your own server, you only pay for hosting (a $5/month VPS is enough)."
-msgstr "예, 소프트웨어는 100 % 무료 및 오픈 소스 (MIT)입니다. 자신의 서버를 실행하면 호스팅 비용을 지불합니다 (a $5/month VPS는 충분합니다."
+msgid ""
+"Yes, the software is 100% free and open source (MIT). If you run your own "
+"server, you only pay for hosting (a $5/month VPS is enough)."
+msgstr ""
+"예, 소프트웨어는 100 % 무료 및 오픈 소스 (MIT)입니다. 자신의 서버를 실행하면 호스팅 비용을 지불합니다 (a $5/month "
+"VPS는 충분합니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:107
 #, elixir-autogen, elixir-format
-msgid "Yes. Server connections use HTTPS/WSS with TLS encryption. P2P calls are encrypted end-to-end via DTLS-SRTP (built into WebRTC). Passwords are hashed with bcrypt. And the code is open source — anyone can audit it for vulnerabilities."
-msgstr "예. 서버 연결 사용 HTTPS/WSS TLS 암호화. P2P 통화는 DTLS-SRTP(WebRTC)를 통해 암호화된 엔드 투 엔드입니다. 비밀번호는 bcrypt로 해시됩니다. 그리고 코드는 오픈 소스 — 누구나 취약점에 감사 할 수 있습니다."
+msgid ""
+"Yes. Server connections use HTTPS/WSS with TLS encryption. P2P calls are "
+"encrypted end-to-end via DTLS-SRTP (built into WebRTC). Passwords are hashed"
+" with bcrypt. And the code is open source — anyone can audit it for "
+"vulnerabilities."
+msgstr ""
+"예. 서버 연결 사용 HTTPS/WSS TLS 암호화. P2P 통화는 DTLS-SRTP(WebRTC)를 통해 암호화된 엔드 투 "
+"엔드입니다. 비밀번호는 bcrypt로 해시됩니다. 그리고 코드는 오픈 소스 — 누구나 취약점에 감사 할 수 있습니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:145
 #, elixir-autogen, elixir-format
@@ -1672,8 +1697,13 @@ msgstr "귀하의 데이터"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:92
 #, elixir-autogen, elixir-format
-msgid "Your data lives in your PostgreSQL database. Regular backups mean you can restore on any new machine. Active P2P calls continue working even if the server has a brief interruption, since they connect directly between users."
-msgstr "귀하의 데이터는 PostgreSQL 데이터베이스에 살고 있습니다. 일반 백업은 새로운 기계에 복원 할 수 있습니다. Active P2P 호출은 서버가 간단한 중단을 가지고 있기 때문에 사용자가 직접 연결합니다."
+msgid ""
+"Your data lives in your PostgreSQL database. Regular backups mean you can "
+"restore on any new machine. Active P2P calls continue working even if the "
+"server has a brief interruption, since they connect directly between users."
+msgstr ""
+"귀하의 데이터는 PostgreSQL 데이터베이스에 살고 있습니다. 일반 백업은 새로운 기계에 복원 할 수 있습니다. Active P2P "
+"호출은 서버가 간단한 중단을 가지고 있기 때문에 사용자가 직접 연결합니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:89
 #, elixir-autogen, elixir-format
@@ -1726,7 +1756,7 @@ msgstr "당신의 규칙"
 msgid "Your server, your database"
 msgstr "서버, 데이터베이스"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:381
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:378
 #, elixir-autogen, elixir-format
 msgid "Your server, your rules."
 msgstr "서버, 규칙."
@@ -1736,11 +1766,6 @@ msgstr "서버, 규칙."
 msgid "Your server. Your conversations. Nobody in between."
 msgstr "서버. 당신의 대화. 간에 아무도."
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:298
-#, elixir-autogen, elixir-format
-msgid "and type"
-msgstr "그리고 유형"
-
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:242
 #, elixir-autogen, elixir-format
 msgid "anyone can audit the code. No backdoors."
@@ -1748,8 +1773,17 @@ msgstr "누구든지 코드를 감사할 수 있습니다. 뒷문 없음."
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:216
 #, elixir-autogen, elixir-format
-msgid "at a time. If you connect from another browser or tab, the previous session is automatically disconnected. If your connection drops, the client attempts to reconnect up to 10 times with exponential backoff. After all attempts fail, the session expires and you’re redirected to the login screen. Registered nicknames are protected by password — only the owner can connect with that nick."
-msgstr "시간. 다른 브라우저 또는 탭에서 연결하면 이전 세션이 자동으로 차단됩니다. 연결이 떨어지면 클라이언트가 exponential 백 오프를 사용하여 최대 10 배로 연결하려고 시도합니다. 모든 시도가 실패한 후 세션이 만료되고 you’re redirected to the login screen. 등록 된 별명은 암호 &mdash에 의해 보호됩니다; 소유자 만 해당 니켈과 연결할 수 있습니다."
+msgid ""
+"at a time. If you connect from another browser or tab, the previous session "
+"is automatically disconnected. If your connection drops, the client attempts"
+" to reconnect up to 10 times with exponential backoff. After all attempts "
+"fail, the session expires and you’re redirected to the login screen. "
+"Registered nicknames are protected by password — only the owner can connect "
+"with that nick."
+msgstr ""
+"시간. 다른 브라우저 또는 탭에서 연결하면 이전 세션이 자동으로 차단됩니다. 연결이 떨어지면 클라이언트가 exponential 백 오프를"
+" 사용하여 최대 10 배로 연결하려고 시도합니다. 모든 시도가 실패한 후 세션이 만료되고 you’re redirected to the "
+"login screen. 등록 된 별명은 암호 &mdash에 의해 보호됩니다; 소유자 만 해당 니켈과 연결할 수 있습니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:238
 #, elixir-autogen, elixir-format
@@ -1761,17 +1795,12 @@ msgstr "bcrypt 해싱, 일반 텍스트에 저장하지 마십시오."
 msgid "between them — encrypted, private, and fast."
 msgstr "그들 사이 — 암호화, 개인, 그리고 빠른."
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:275
-#, elixir-autogen, elixir-format
-msgid "channel ("
-msgstr "채널 ("
-
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:47
 #, elixir-autogen, elixir-format
 msgid "contributing guide"
 msgstr "관련기관"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:350
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:347
 #, elixir-autogen, elixir-format
 msgid "feed monitoring with announcements"
 msgstr "공지사항"
@@ -1781,7 +1810,7 @@ msgstr "공지사항"
 msgid "github.com/rodrigomarchi/retro_hex_chat"
 msgstr "사이트 맵/rodrigomarchi/retro_hex_chat"
 
-#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:303
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:306
 #, elixir-autogen, elixir-format
 msgid "in your browser. No downloads."
 msgstr "브라우저에서. 다운로드 없음."
@@ -1826,7 +1855,7 @@ msgstr "가입하고 싶은 분에게 열려."
 msgid "password-gated access"
 msgstr "비밀번호"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:323
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:320
 #, elixir-autogen, elixir-format
 msgid "quiz games with leaderboards"
 msgstr "quiz 게임 리더 보드"
@@ -1846,24 +1875,26 @@ msgstr "서버, 결코 떠나지"
 msgid "servers, mined for ads"
 msgstr "서버, 광고를 위해 mined"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:359
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:356
 #, elixir-autogen, elixir-format
 msgid "timed messages and reminders"
 msgstr "메시지 및 알림"
 
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:265
 #, elixir-autogen, elixir-format
-msgid "to challenge anyone. Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
+msgid ""
+"to challenge anyone. Games run on HTML5 Canvas with state synced via WebRTC "
+"DataChannel —"
 msgstr "누구나 도전합니다. WebRTC DataChannel &mdash를 통해 동기화된 HTML5 캔버스에서 게임 실행;"
 
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:494
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:503
 #: lib/retro_hex_chat_web/live/landing_live/index.html.heex:55
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:349
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:358
 #, elixir-autogen, elixir-format
 msgid "v0.1.0"
 msgstr "v0.1.0"
 
-#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:341
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:338
 #, elixir-autogen, elixir-format
 msgid "word filters and spam detection"
 msgstr "워드 필터 및 스팸 감지"
@@ -1875,100 +1906,224 @@ msgstr "당신의 사업"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:7
 #, elixir-autogen, elixir-format
-msgid "Answers to common questions about peer-to-peer calls, self-hosting, server requirements, security, mobile support, contributing, and project sponsorship."
-msgstr "Answers to common questions about peer-to-peer calls, self-hosting, server requirements, security, mobile support, contributing, and project sponsorship."
+msgid ""
+"Answers to common questions about peer-to-peer calls, self-hosting, server "
+"requirements, security, mobile support, contributing, and project "
+"sponsorship."
+msgstr ""
+"피어 투 피어 통화, 셀프 호스팅, 서버 요구 사항, 보안, 모바일 지원, 기여 및 프로젝트 후원에 대한 일반적인 질문에 대한 답변."
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Architecture overview"
-msgstr "Architecture overview"
+msgstr "건축 개요"
 
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Community overview"
-msgstr "Community overview"
+msgstr "커뮤니티 개요"
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:7
 #, elixir-autogen, elixir-format
-msgid "Compare Retro Hex Chat with corporate chat platforms across server ownership, message storage, call routing, AI training, source code access, and community control."
-msgstr "Compare Retro Hex Chat with corporate chat platforms across server ownership, message storage, call routing, AI training, source code access, and community control."
+msgid ""
+"Compare Retro Hex Chat with corporate chat platforms across server "
+"ownership, message storage, call routing, AI training, source code access, "
+"and community control."
+msgstr ""
+"서버 소유권, 메시지 저장, 전화 라우팅, AI 훈련, 소스 코드 액세스 및 지역 사회 관리 전반에 걸쳐 기업의 채팅 플랫폼과 Retro"
+" Hex 채팅 비교."
 
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:7
 #, elixir-autogen, elixir-format
-msgid "Explore the public chat features: real-time channels, direct P2P voice and video calls, file transfer, games, bots, IRC-style commands, and built-in help."
-msgstr "Explore the public chat features: real-time channels, direct P2P voice and video calls, file transfer, games, bots, IRC-style commands, and built-in help."
+msgid ""
+"Explore the public chat features: real-time channels, direct P2P voice and "
+"video calls, file transfer, games, bots, IRC-style commands, and built-in "
+"help."
+msgstr ""
+"공개 채팅 기능을 살펴보십시오: 실시간 채널, 직접 P2P 음성 및 비디오 통화, 파일 전송, 게임, 봇, IRC 스타일 명령 및 내장 "
+"도움말."
 
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Feature overview"
-msgstr "Feature overview"
+msgstr "기능 개요"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Frequently asked questions"
-msgstr "Frequently asked questions"
+msgstr "자주 묻는 질문"
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "How Retro Hex Chat Works"
-msgstr "How Retro Hex Chat Works"
+msgstr "Retro Hex 채팅이 작동하는 방법"
 
 #: lib/retro_hex_chat_web/live/landing_live/install.ex:34
 #, elixir-autogen, elixir-format
 msgid "Install Retro Hex Chat"
-msgstr "Install Retro Hex Chat"
+msgstr "Retro Hex 채팅 설치"
 
 #: lib/retro_hex_chat_web/live/landing_live/install.ex:41
 #, elixir-autogen, elixir-format
 msgid "Installation guide"
-msgstr "Installation guide"
+msgstr "설치 가이드"
 
-#: lib/retro_hex_chat_web/live/landing_live/landing_helpers.ex:331
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:476
 #, elixir-autogen, elixir-format
 msgid "Languages"
-msgstr "Languages"
+msgstr "한국어"
 
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Open Source and Community"
-msgstr "Open Source and Community"
+msgstr "오픈 소스 및 커뮤니티"
 
 #: lib/retro_hex_chat_web/live/landing_live/privacy.html.heex:12
 #, elixir-autogen, elixir-format
 msgid "Privacy overview"
-msgstr "Privacy overview"
+msgstr "자주 묻는 질문"
 
 #: lib/retro_hex_chat_web/live/landing_live/faq.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat FAQ"
-msgstr "Retro Hex Chat FAQ"
+msgstr "레트로 헥스 채팅 FAQ"
 
 #: lib/retro_hex_chat_web/live/landing_live/features.html.heex:5
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat Features"
-msgstr "Retro Hex Chat Features"
+msgstr "Retro Hex 채팅 기능"
 
 #: lib/retro_hex_chat_web/live/landing_live/how_it_works.html.heex:7
 #, elixir-autogen, elixir-format
-msgid "Retro Hex Chat combines a self-hosted Phoenix server with WebRTC peer-to-peer connections, so your community keeps its data while calls, files, and games can flow directly between browsers."
-msgstr "Retro Hex Chat combines a self-hosted Phoenix server with WebRTC peer-to-peer connections, so your community keeps its data while calls, files, and games can flow directly between browsers."
+msgid ""
+"Retro Hex Chat combines a self-hosted Phoenix server with WebRTC peer-to-"
+"peer connections, so your community keeps its data while calls, files, and "
+"games can flow directly between browsers."
+msgstr ""
+"Retro Hex Chat은 WebRTC 피어 투 피어 연결을 통해 자체 호스팅 된 Phoenix 서버를 결합하므로 커뮤니티는 통화, "
+"파일 및 게임이 브라우저간에 직접 흐를 수 있도록 데이터를 유지합니다."
 
 #: lib/retro_hex_chat_web/live/landing_live/community.html.heex:7
 #, elixir-autogen, elixir-format
-msgid "Retro Hex Chat is MIT-licensed open source software. Follow the repository, contribute code or translations, report issues, or sponsor continued development."
-msgstr "Retro Hex Chat is MIT-licensed open source software. Follow the repository, contribute code or translations, report issues, or sponsor continued development."
+msgid ""
+"Retro Hex Chat is MIT-licensed open source software. Follow the repository, "
+"contribute code or translations, report issues, or sponsor continued "
+"development."
+msgstr ""
+"Retro Hex Chat은 MIT 라이센스 오픈 소스 소프트웨어입니다. 저장소를 따라, 코드 또는 번역, 보고서 문제, 또는 후원 계속"
+" 개발 기여."
 
 #: lib/retro_hex_chat_web/live/landing_live/index.ex:19
 #, elixir-autogen, elixir-format
 msgid "Retro Hex Chat — Self-hosted chat with P2P calls"
-msgstr "Retro Hex Chat — Self-hosted chat with P2P calls"
+msgstr "Retro Hex Chat — P2P 통화와 자체 호스팅 채팅"
 
 #: lib/retro_hex_chat_web/live/landing_live/index.ex:21
 #, elixir-autogen, elixir-format
-msgid "Run your own chat server with WebRTC voice and video calls, multiplayer games, bots, and IRC-style channels. Open source, self-hosted, and MIT licensed."
-msgstr "Run your own chat server with WebRTC voice and video calls, multiplayer games, bots, and IRC-style channels. Open source, self-hosted, and MIT licensed."
+msgid ""
+"Run your own chat server with WebRTC voice and video calls, multiplayer "
+"games, bots, and IRC-style channels. Open source, self-hosted, and MIT "
+"licensed."
+msgstr ""
+"WebRTC 음성 및 비디오 통화, 멀티 플레이어 게임, 봇 및 IRC 스타일 채널을 사용하여 자신의 채팅 서버를 실행하십시오. 오픈 "
+"소스, 자체 호스팅 및 MIT 라이센스."
 
 #: lib/retro_hex_chat_web/live/landing_live/install.ex:36
 #, elixir-autogen, elixir-format
-msgid "Set up your own Retro Hex Chat server from source. Clone the repository, run the setup task, start Phoenix, and keep control of your community data."
-msgstr "Set up your own Retro Hex Chat server from source. Clone the repository, run the setup task, start Phoenix, and keep control of your community data."
+msgid ""
+"Set up your own Retro Hex Chat server from source. Clone the repository, run"
+" the setup task, start Phoenix, and keep control of your community data."
+msgstr ""
+"자신의 Retro Hex 채팅 서버를 소스에서 설정. 저장소를 복제, 설정 작업을 실행, 피닉스를 시작, 그리고 당신의 커뮤니티 데이터의"
+" 제어를 유지."
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:205
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:265
+#, elixir-autogen, elixir-format
+msgid "/p2p @nick"
+msgstr "/p2p @nick"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:220
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:276
+#, elixir-autogen, elixir-format
+msgid "34 games"
+msgstr "34 게임"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:162
+#, elixir-autogen, elixir-format
+msgid "34 multiplayer games via WebRTC."
+msgstr "웹RTC를 통해 34 멀티 플레이어 게임."
+
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:255
+#, elixir-autogen, elixir-format
+msgid "34 multiplayer games. Right from the chat."
+msgstr "34 멀티 플레이어 게임. 채팅에서 오른쪽."
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:276
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:302
+#, elixir-autogen, elixir-format
+msgid "Arcade"
+msgstr "주요 특징"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:274
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:298
+#, elixir-autogen, elixir-format
+msgid "Games"
+msgstr "이름 *"
+
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:198
+#, elixir-autogen, elixir-format
+msgid "Help"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:139
+#, elixir-autogen, elixir-format
+msgid "Home"
+msgstr "홈 > 제품"
+
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:189
+#, elixir-autogen, elixir-format
+msgid "Navigate"
+msgstr "비밀번호"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:274
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:297
+#, elixir-autogen, elixir-format
+msgid "Open the"
+msgstr "자주 묻는 질문"
+
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:74
+#, elixir-autogen, elixir-format
+msgid "Open the app"
+msgstr "앱 열기"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:282
+#, elixir-autogen, elixir-format
+msgid "Pick a game — it opens in a new browser window"
+msgstr "게임 선택 — 새로운 브라우저 창에서 열립니다"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.ex:21
+#, elixir-autogen, elixir-format
+msgid ""
+"Real-time chat, channels, P2P voice/video calls, 34 multiplayer games, "
+msgstr "실시간 채팅, 채널, P2P 음성/video 통화, 34 멀티플레이어 게임,"
+
+#: lib/retro_hex_chat_web/components/ui/landing/landing_shell.ex:60
+#, elixir-autogen, elixir-format
+msgid "Start"
+msgstr "지원하다"
+
+#: lib/retro_hex_chat_web/live/landing_live/features.html.heex:275
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:298
+#, elixir-autogen, elixir-format
+msgid "menu and choose"
+msgstr "메뉴 및 선택"
+
+#: lib/retro_hex_chat_web/live/landing_live/index.html.heex:302
+#, elixir-autogen, elixir-format
+msgid ""
+"— a game picker opens right in the chat. Pick from DOOM, Quake, Wolfenstein "
+"3D, Half-Life, and ScummVM adventures — all running as"
+msgstr ""
+"— 게임 피커는 채팅에서 오른쪽을 엽니 다. DOOM, Quake, Wolfenstein 3D, Half-Life 및 ScummVM "
+"모험에서 선택 - 모든 실행"

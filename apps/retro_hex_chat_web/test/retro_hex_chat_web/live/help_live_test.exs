@@ -48,6 +48,17 @@ defmodule RetroHexChatWeb.HelpLiveTest do
       assert html =~ "/quit"
     end
 
+    test "renders language menu links that preserve the current topic", %{conn: conn} do
+      {:ok, view, _html} = live(conn, "/chat/help/commands-overview")
+
+      assert has_element?(view, ~s(#help-menubar [data-testid="language-menu-item-pt_BR"]))
+
+      assert has_element?(
+               view,
+               ~s(#help-menubar [data-testid="language-menu-item-pt_BR"] a[href="/pt-BR/chat/help/commands-overview"])
+             )
+    end
+
     test "renders keyboard shortcuts topic", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/chat/help/keyboard-shortcuts")
 

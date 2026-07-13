@@ -31,16 +31,6 @@ msgstr "  %{prefix}%{trigger} — %{description}"
 msgid "  %{prefix}help — Show this help message"
 msgstr "  %{prefix}সাহায্য এই সহায়তা বার্তা প্রদর্শন করুন"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:94
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be identified to play. Use /ns identify <password> first."
-msgstr "%{author}: আপনাকে অবশ্যই খেলতে হবে । ব্যবহার /ns ফিল্টার লগ প্রদর্শক/ph0প্রথমে >"
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:107
-#, elixir-autogen, elixir-format
-msgid "%{author}: You must be registered to play. Use /ns register <password> first."
-msgstr "%{author}: আপনাকে অবশ্যই খেলার জন্য নিবন্ধিত হতে হবে । ব্যবহার /ns রেজিস্টার করা হবে/ph0প্রথমে >"
-
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:301
 #, elixir-autogen, elixir-format
 msgid "%{base} %{sign} %{modifier} = %{total}"
@@ -63,9 +53,11 @@ msgstr "%{message} (%{reason})"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:280
 #, elixir-autogen, elixir-format
-msgid "%{prefix}\n"
+msgid ""
+"%{prefix}\n"
 "Round over! %{scores}"
-msgstr "%{prefix}\n"
+msgstr ""
+"%{prefix}\n"
 "রাউন্ড শেষ! %{scores}"
 
 #: lib/retro_hex_chat/bots/capabilities/rss.ex:375
@@ -118,7 +110,9 @@ msgstr "একটি চিঠি"
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:185
 #, elixir-autogen, elixir-format
 msgid "A trivia round is already in progress! Use 'trivia stop' to end it."
-msgstr "একটা ট্রিভিয়া রাউন্ড ইতোমধ্যে চলছে! এটা শেষ করতে 'ট্রিভিয়া বন্ধ' ব্যবহার করুন।"
+msgstr ""
+"একটা ট্রিভিয়া রাউন্ড ইতোমধ্যে চলছে! এটা শেষ করতে 'ট্রিভিয়া বন্ধ' ব্যবহার "
+"করুন।"
 
 #: lib/retro_hex_chat/bots/capabilities/game.ex:13
 #, elixir-autogen, elixir-format
@@ -165,7 +159,7 @@ msgstr "আলজেরিয়া"
 msgid "Alias for roll"
 msgstr "রোলের জন্য উপনাম"
 
-#: lib/retro_hex_chat/bots/server.ex:144
+#: lib/retro_hex_chat/bots/server.ex:143
 #, elixir-autogen, elixir-format
 msgid "Already in channel"
 msgstr "চ্যানেল মধ্যে বর্তমানে উপস্থিত রয়েছে"
@@ -203,7 +197,9 @@ msgstr "অস্ট্রেলিয়া"
 #: lib/retro_hex_chat/bots/capabilities/moderation.ex:25
 #, elixir-autogen, elixir-format
 msgid "Auto-moderation — blocked words, spam/flood detection, caps filter"
-msgstr "স্বয়ংক্রিয়ভাবে পরিবর্তিতকরণ - শব্দ ব্লক করা হয়েছে, স্প্যাম <ftplict/f0>, ফিল্টার প্রয়োগ করা হবে"
+msgstr ""
+"স্বয়ংক্রিয়ভাবে পরিবর্তিতকরণ - শব্দ ব্লক করা হয়েছে, স্প্যাম <ftplict/f0>, "
+"ফিল্টার প্রয়োগ করা হবে"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:420
 #, elixir-autogen, elixir-format
@@ -255,7 +251,7 @@ msgstr "নীল এলিয়েন"
 msgid "Bot destroyed"
 msgstr "বোট নষ্ট হয়েছে"
 
-#: lib/retro_hex_chat/bots/server.ex:756
+#: lib/retro_hex_chat/bots/server.ex:745
 #, elixir-autogen, elixir-format
 msgid "Bot leaving"
 msgstr "বোট ত্যাগ"
@@ -596,7 +592,8 @@ msgstr "অবৈধ পাশা\"।%{notation}'. ফর্ম্যাট: Nd
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:275
 #, elixir-autogen, elixir-format
 msgid "Invalid time format. Use HH:MM (24h UTC)."
-msgstr "সময়ের বিন্যাস বৈধ নয়। এইচ. এস. টি.: জি.এম (২৪এইচ. টি. সি.) ব্যবহার করুন।"
+msgstr ""
+"সময়ের বিন্যাস বৈধ নয়। এইচ. এস. টি.: জি.এম (২৪এইচ. টি. সি.) ব্যবহার করুন।"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:425
 #, elixir-autogen, elixir-format
@@ -834,7 +831,7 @@ msgstr "সিডনি"
 msgid "Not Toronto"
 msgstr "টরোন্টো নয়"
 
-#: lib/retro_hex_chat/bots/server.ex:163
+#: lib/retro_hex_chat/bots/server.ex:162
 #, elixir-autogen, elixir-format
 msgid "Not in channel"
 msgstr "চ্যানেল নয়"
@@ -993,7 +990,9 @@ msgstr "পাশা গড়িয়ে দিন (যেমন 2d6, 2.0+5, 4
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:265
 #, elixir-autogen, elixir-format
 msgid "Rolling %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
-msgstr "পরিবর্তন বাতিল করা হচ্ছে %{notation}: %{rolls} %{sign} %{modifier} = %{total}"
+msgstr ""
+"পরিবর্তন বাতিল করা হচ্ছে %{notation}: %{rolls} %{sign} %{modifier} = "
+"%{total}"
 
 #: lib/retro_hex_chat/bots/capabilities/dice.ex:257
 #, elixir-autogen, elixir-format
@@ -1023,7 +1022,9 @@ msgstr "শনিগ্রহ (স্যাটার্ন)"
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:269
 #, elixir-autogen, elixir-format
 msgid "Schedule '%{id}' added: daily at %{time} UTC in %{channel}."
-msgstr "নির্ধারিত সময়%{id}এর সাথে বলা হয়েছে: প্রতিদিন %{time} ইনপুটের পদ্ধতিUTC %{channel}."
+msgstr ""
+"নির্ধারিত সময়%{id}এর সাথে বলা হয়েছে: প্রতিদিন %{time} ইনপুটের পদ্ধতিUTC "
+"%{channel}."
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:243
 #, elixir-autogen, elixir-format
@@ -1096,20 +1097,10 @@ msgstr "দক্ষিণ এশিয়া"
 msgid "Southern hemisphere"
 msgstr "দক্ষিণ গোলার্ধ"
 
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:53
-#, elixir-autogen, elixir-format
-msgid "Start a solo arcade session"
-msgstr "সোলো আর্কেড সেশন আরম্ভ করুন"
-
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:138
 #, elixir-autogen, elixir-format
 msgid "Start a trivia round"
 msgstr "ট্রিভিয়া রাউন্ড শুরু করো"
-
-#: lib/retro_hex_chat/bots/capabilities/arcade.ex:22
-#, elixir-autogen, elixir-format
-msgid "Start solo arcade sessions with !play"
-msgstr "Solo আর্কেড সেশন শুরু করো!"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:272
 #, elixir-autogen, elixir-format
@@ -1188,9 +1179,11 @@ msgstr "টোকিও"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:212
 #, elixir-autogen, elixir-format
-msgid "Trivia started! (%{category}, %{count} questions)\n"
+msgid ""
+"Trivia started! (%{category}, %{count} questions)\n"
 "%{question}"
-msgstr "ট্রিভিয়া শুরু করেছে!%{category}, %{count} প্রশ্ন\n"
+msgstr ""
+"ট্রিভিয়া শুরু করেছে!%{category}, %{count} প্রশ্ন\n"
 "%{question}"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia.ex:230
@@ -1225,7 +1218,9 @@ msgstr "ব্যবহার প্রণালী: sssp উদ ক্ষেত
 
 #: lib/retro_hex_chat/bots/capabilities/scheduler.ex:215
 #, elixir-autogen, elixir-format
-msgid "Usage: schedule add interval <min> <#channel> <message> OR schedule add daily <HH:MM> <#channel> <message>"
+msgid ""
+"Usage: schedule add interval <min> <#channel> <message> OR schedule add "
+"daily <HH:MM> <#channel> <message>"
 msgstr "ব্যবহারপ্রণালী: Shrphinp/fresphysphysphys <fot; <7\\-2\\phortphorkphy>"
 
 #: lib/retro_hex_chat/bots/capabilities/trivia/question_bank.ex:90

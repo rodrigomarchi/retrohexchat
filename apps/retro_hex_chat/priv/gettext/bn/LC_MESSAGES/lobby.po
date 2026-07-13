@@ -1,0 +1,97 @@
+# "msgid"s in this file come from lobby.pot.  Do not add, change, or remove msgids manually. Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.  Locale: bn; status: enabled; wave: 3.
+msgid ""
+msgstr ""
+"Project-Id-Version: RetroHexChat\n"
+"PO-Revision-Date: 2026-05-31 00:00+0000\n"
+"Last-Translator: RetroHexChat Team\n"
+"Language-Team: bn\n"
+"Language: bn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: lib/retro_hex_chat/lobby/policy.ex:81
+#, elixir-autogen, elixir-format
+msgid "An active lobby already exists with this user"
+msgstr ""
+"একটি সক্রিয় লব বর্তমানে এই ব্যবহারকারী দ্বারা বর্তমানে উপস্থিত রয়েছে"
+
+#: lib/retro_hex_chat/lobby/policy.ex:60
+#, elixir-autogen, elixir-format
+msgid "Cannot create a session with yourself"
+msgstr "আপনার সাথে একটি সেশন ডিরেক্টরি তৈরি করা যাচ্ছে না"
+
+#: lib/retro_hex_chat/lobby/service.ex:134
+#, elixir-autogen, elixir-format
+msgid "Failed to create lobby"
+msgstr "লব তৈরি করতে ব্যর্থ"
+
+#: lib/retro_hex_chat/lobby/session_server.ex:220
+#, elixir-autogen, elixir-format
+msgid "Invalid transition from %{from} to %{to}"
+msgstr "অবৈধ থেকে রূপান্তর %{from} চিহ্নিত স্থানে চলুন %{to}"
+
+#: lib/retro_hex_chat/lobby/policy.ex:135
+#, elixir-autogen, elixir-format
+msgid "Invite is no longer pending"
+msgstr "আমন্ত্রণ আর স্থগিত করা হয় না"
+
+#: lib/retro_hex_chat/lobby/policy.ex:139
+#, elixir-autogen, elixir-format
+msgid "Lobby is no longer active"
+msgstr "লেবি এখন আর সক্রিয় নেই"
+
+#: lib/retro_hex_chat/lobby/service.ex:140
+#, elixir-autogen, elixir-format
+msgid "Lobby not found"
+msgstr "Zyvi পাওয়া যায়নি"
+
+#: lib/retro_hex_chat/lobby/session_server.ex:180
+#, elixir-autogen, elixir-format
+msgid "Not a participant"
+msgstr "অংশগ্রহণকারী নয়"
+
+#: lib/retro_hex_chat/lobby/policy.ex:120
+#, elixir-autogen, elixir-format
+msgid "Only the invited user can decline"
+msgstr "শুধুমাত্র আমন্ত্রণকারী ব্যবহারকারীকে হ্রাস করতে পারে"
+
+#: lib/retro_hex_chat/lobby/policy.ex:128
+#, elixir-autogen, elixir-format
+msgid "Only the inviter can cancel the invite"
+msgstr "শুধুমাত্র আমন্ত্রণকারী কল বাতিল করতে পারেন"
+
+#: lib/retro_hex_chat/lobby/service.ex:117
+#: lib/retro_hex_chat/lobby/session_server.ex:94
+#: lib/retro_hex_chat/lobby/session_server.ex:691
+#: lib/retro_hex_chat/lobby/session_server.ex:692
+#: lib/retro_hex_chat/lobby/session_server.ex:693
+#, elixir-autogen, elixir-format
+msgid "Session process not running"
+msgstr "সেশন চলছে না"
+
+#: lib/retro_hex_chat/lobby/policy.ex:74
+#, elixir-autogen, elixir-format
+msgid "Target user must be registered"
+msgstr "লক্ষ্য ব্যবহারকারীর নিবন্ধন করা আবশ্যক"
+
+#: lib/retro_hex_chat/lobby/service.ex:171
+#, elixir-autogen, elixir-format
+msgid "Too many lobbies created. Try again in %{minutes} minutes"
+msgstr "অনেক আবর্জনা তৈরি। পুনরায় প্রচেষ্টা করুন %{minutes} মিনিট"
+
+#: lib/retro_hex_chat/lobby/policy.ex:102
+#, elixir-autogen, elixir-format
+msgid "User not available"
+msgstr "ব্যবহারকারী উপস্থিত নয়"
+
+#: lib/retro_hex_chat/lobby/policy.ex:112
+#, elixir-autogen, elixir-format
+msgid "You are not a participant in this lobby"
+msgstr "আপনি এই লবিতে অংশগ্রহণকারী নন"
+
+#: lib/retro_hex_chat/lobby/policy.ex:73
+#, elixir-autogen, elixir-format
+msgid "You must be registered to use the lobby"
+msgstr "আপনি লব ব্যবহার করতে হবে"

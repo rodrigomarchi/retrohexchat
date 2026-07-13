@@ -11,33 +11,33 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/retro_hex_chat/group_call/policy.ex:70
-#: lib/retro_hex_chat/group_call/policy.ex:76
+#: lib/retro_hex_chat/group_call/policy.ex:71
+#: lib/retro_hex_chat/group_call/policy.ex:77
 #, elixir-autogen, elixir-format
 msgid "Channel is required"
 msgstr "Canale è richiesto"
 
-#: lib/retro_hex_chat/group_call.ex:60
+#: lib/retro_hex_chat/group_call.ex:64
 #, elixir-autogen, elixir-format
 msgid "Channel not found"
 msgstr "Canale non trovato"
 
-#: lib/retro_hex_chat/group_call.ex:51
+#: lib/retro_hex_chat/group_call.ex:55
 #, elixir-autogen, elixir-format
 msgid "Could not create group call"
 msgstr "Non è possibile creare chiamate di gruppo"
 
-#: lib/retro_hex_chat/group_call.ex:55
+#: lib/retro_hex_chat/group_call.ex:59
 #, elixir-autogen, elixir-format
 msgid "Could not start group call"
 msgstr "Non potrebbe iniziare la chiamata di gruppo"
 
-#: lib/retro_hex_chat/group_call/policy.ex:111
+#: lib/retro_hex_chat/group_call/policy.ex:112
 #, elixir-autogen, elixir-format
 msgid "Group call is no longer active"
 msgstr "La chiamata di gruppo non è più attiva"
 
-#: lib/retro_hex_chat/group_call.ex:64
+#: lib/retro_hex_chat/group_call.ex:68
 #, elixir-autogen, elixir-format
 msgid "Group call rate limit reached. Try again in %{count} second."
 msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
@@ -48,29 +48,34 @@ msgstr[1] ""
 "Limiti di tasso di chiamata di gruppo raggiunto. Prova di nuovo %{count} "
 "secondi."
 
-#: lib/retro_hex_chat/group_call.ex:237
+#: lib/retro_hex_chat/group_call.ex:397
 #, elixir-autogen, elixir-format
 msgid "Group calls are disabled"
 msgstr "Chiamate di gruppo disattivate"
 
-#: lib/retro_hex_chat/group_call/policy.ex:123
-#: lib/retro_hex_chat/group_call/policy.ex:126
+#: lib/retro_hex_chat/group_call/policy.ex:143
+#: lib/retro_hex_chat/group_call/policy.ex:146
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges"
 msgstr "privilegi insufficienti"
 
-#: lib/retro_hex_chat/group_call/policy.ex:103
+#: lib/retro_hex_chat/group_call/policy.ex:104
 #, elixir-autogen, elixir-format
 msgid "This channel already has an active group call"
 msgstr "Questo canale ha già una chiamata di gruppo attiva"
 
-#: lib/retro_hex_chat/group_call/policy.ex:97
+#: lib/retro_hex_chat/group_call/policy.ex:98
 #, elixir-autogen, elixir-format
 msgid "You are not in this channel"
 msgstr "Tu non sei in questo canale"
 
-#: lib/retro_hex_chat/group_call/policy.ex:79
-#: lib/retro_hex_chat/group_call/policy.ex:89
+#: lib/retro_hex_chat/group_call/policy.ex:80
+#: lib/retro_hex_chat/group_call/policy.ex:90
 #, elixir-autogen, elixir-format
 msgid "You must be registered to use group calls"
 msgstr "Devi essere registrato per usare le chiamate di gruppo"
+
+#: lib/retro_hex_chat/group_call/policy.ex:123
+#, elixir-autogen, elixir-format
+msgid "Group call is locked"
+msgstr "La chiamata di gruppo è bloccata"

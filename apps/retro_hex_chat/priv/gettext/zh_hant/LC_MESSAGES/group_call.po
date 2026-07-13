@@ -11,61 +11,66 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: lib/retro_hex_chat/group_call/policy.ex:70
-#: lib/retro_hex_chat/group_call/policy.ex:76
+#: lib/retro_hex_chat/group_call/policy.ex:71
+#: lib/retro_hex_chat/group_call/policy.ex:77
 #, elixir-autogen, elixir-format
 msgid "Channel is required"
 msgstr "需要頻道"
 
-#: lib/retro_hex_chat/group_call.ex:60
+#: lib/retro_hex_chat/group_call.ex:64
 #, elixir-autogen, elixir-format
 msgid "Channel not found"
 msgstr "找不到頻道"
 
-#: lib/retro_hex_chat/group_call.ex:51
+#: lib/retro_hex_chat/group_call.ex:55
 #, elixir-autogen, elixir-format
 msgid "Could not create group call"
 msgstr "無法創建分組呼叫"
 
-#: lib/retro_hex_chat/group_call.ex:55
+#: lib/retro_hex_chat/group_call.ex:59
 #, elixir-autogen, elixir-format
 msgid "Could not start group call"
 msgstr "無法啓動分組呼叫"
 
-#: lib/retro_hex_chat/group_call/policy.ex:111
+#: lib/retro_hex_chat/group_call/policy.ex:112
 #, elixir-autogen, elixir-format
 msgid "Group call is no longer active"
 msgstr "組呼叫已停止"
 
-#: lib/retro_hex_chat/group_call.ex:64
+#: lib/retro_hex_chat/group_call.ex:68
 #, elixir-autogen, elixir-format
 msgid "Group call rate limit reached. Try again in %{count} second."
 msgid_plural "Group call rate limit reached. Try again in %{count} seconds."
 msgstr[0] "已達到分組呼叫率限制 。 再來一次 %{count} 秒數。"
 
-#: lib/retro_hex_chat/group_call.ex:237
+#: lib/retro_hex_chat/group_call.ex:397
 #, elixir-autogen, elixir-format
 msgid "Group calls are disabled"
 msgstr "組呼叫已禁用"
 
-#: lib/retro_hex_chat/group_call/policy.ex:123
-#: lib/retro_hex_chat/group_call/policy.ex:126
+#: lib/retro_hex_chat/group_call/policy.ex:143
+#: lib/retro_hex_chat/group_call/policy.ex:146
 #, elixir-autogen, elixir-format
 msgid "Insufficient privileges"
 msgstr "權限不足"
 
-#: lib/retro_hex_chat/group_call/policy.ex:103
+#: lib/retro_hex_chat/group_call/policy.ex:104
 #, elixir-autogen, elixir-format
 msgid "This channel already has an active group call"
 msgstr "此頻道已經有一個活動組呼叫"
 
-#: lib/retro_hex_chat/group_call/policy.ex:97
+#: lib/retro_hex_chat/group_call/policy.ex:98
 #, elixir-autogen, elixir-format
 msgid "You are not in this channel"
 msgstr "你不在這頻道里"
 
-#: lib/retro_hex_chat/group_call/policy.ex:79
-#: lib/retro_hex_chat/group_call/policy.ex:89
+#: lib/retro_hex_chat/group_call/policy.ex:80
+#: lib/retro_hex_chat/group_call/policy.ex:90
 #, elixir-autogen, elixir-format
 msgid "You must be registered to use group calls"
 msgstr "您必須註冊才能使用分組呼叫"
+
+#: lib/retro_hex_chat/group_call/policy.ex:123
+#, elixir-autogen, elixir-format
+msgid "Group call is locked"
+msgstr "分組呼叫已鎖定"
