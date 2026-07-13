@@ -90,11 +90,10 @@ def build():
         vocab[f"iso_floor{i}"] = None
         col = _place(sheet, vocab, f"iso_floor{i}", im, col, 0, anchor="top", native=True)
 
-    # Props (billboarded): railing + reused upright lamp/gate/bucket + anim star.
+    # Props (billboarded): railing + reused upright lamp + anim star.
     props = {}
     for name, fn in [
         ("iso_lamp", os.path.join(SRC, "lamp.png")),
-        ("iso_bucket", os.path.join(SRC, "bucket.png")),
     ]:
         if os.path.exists(fn):
             props[name] = _crop(Image.open(fn).convert("RGBA"))
@@ -184,7 +183,6 @@ def build():
 
     decor = stars + [
         {"x": 20, "y": 12, "tile": "iso_lamp", "sort": "stand"},
-        {"x": 17, "y": 13, "tile": "iso_bucket", "sort": "stand"},
     ]
 
     collision = [{"x": x, "y": y, "w": 1, "h": 1, "kind": "void"}
