@@ -191,5 +191,4 @@ defmodule RetroHexChatWeb.App.ConnectLive do
     do: dgettext("connect", "Nickname cannot contain spaces")
 
   defp translate_nickname_error(message), do: message
-
 end

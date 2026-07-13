@@ -327,7 +327,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       <.language_menu mode={:app} return_to={@language_return_to} />
 
       <%!-- Help menu (always enabled) --%>
-      <.menu label={dgettext("ui", "Help")} disabled={false}>
+      <.menu label={dgettext("ui", "Help")} disabled={false} testid="app-menu-help-trigger">
         <.menu_item
           icon_fn={:icon_btn_help_topics}
           label={dgettext("ui", "Help Topics")}

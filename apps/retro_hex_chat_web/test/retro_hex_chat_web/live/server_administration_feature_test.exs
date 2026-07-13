@@ -32,8 +32,13 @@ defmodule RetroHexChatWeb.ServerAdministrationFeatureTest do
       help_section =
         document
         |> Floki.find("nav > div")
-        |> Enum.at(6)
+        |> Enum.find(fn section ->
+          section
+          |> Floki.find(~s(button[data-testid="app-menu-help-trigger"]))
+          |> Enum.any?()
+        end)
 
+      assert help_section
       assert "show_motd" in menu_actions(help_section)
       assert Floki.raw_html(help_section) =~ "Message of the Day"
     end
