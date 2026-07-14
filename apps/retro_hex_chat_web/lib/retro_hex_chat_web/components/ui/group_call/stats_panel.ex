@@ -14,7 +14,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
   @spec group_call_stats_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def group_call_stats_panel(assigns) do
     ~H"""
-    <div class="flex min-h-0 flex-col gap-2 text-xs" data-testid="group-call-stats-panel">
+    <div
+      id="group-call-stats-scroll-preserver"
+      phx-hook="PreserveScrollHook"
+      data-preserve-scroll-target="parent"
+      class="flex min-h-0 flex-col gap-2 text-xs"
+      data-testid="group-call-stats-panel"
+    >
       <div class="shadow-retro-field bg-canvas p-2">
         <div class="flex items-center justify-between gap-2">
           <div class="flex min-w-0 items-center gap-2">

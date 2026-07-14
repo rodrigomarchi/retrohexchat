@@ -43,7 +43,13 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
   @spec lobby_network_panel(map()) :: Phoenix.LiveView.Rendered.t()
   def lobby_network_panel(assigns) do
     ~H"""
-    <div class="lobby__stats flex flex-col gap-2" data-testid="lobby-network-panel">
+    <div
+      id="p2p-stats-scroll-preserver"
+      phx-hook="PreserveScrollHook"
+      data-preserve-scroll-target="parent"
+      class="lobby__stats flex flex-col gap-2"
+      data-testid="lobby-network-panel"
+    >
       <.session_header
         peer_nick={@peer_nick}
         peer_online={@peer_online}
