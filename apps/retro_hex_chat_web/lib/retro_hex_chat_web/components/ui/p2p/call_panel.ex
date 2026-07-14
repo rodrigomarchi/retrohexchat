@@ -53,7 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         data-testid="p2p-call-disconnected"
       >
         <span class="flex h-10 w-10 items-center justify-center bg-canvas shadow-retro-sunken">
-          <Icons.icon_p2p class="h-6 w-6" />
+          <Icons.icon_protocol_p2p_compact class="h-6 w-6" />
         </span>
         <div class="font-bold">{dgettext("p2p", "P2P media is offline")}</div>
         <p class="max-w-[28rem] text-muted-foreground">
@@ -148,7 +148,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
                   :if={@peer_screen_sharing}
                   class="h-3.5 w-3.5 shrink-0 text-warning"
                 />
-                <Icons.icon_p2p :if={!@peer_screen_sharing} class="h-3.5 w-3.5 shrink-0" />
+                <Icons.icon_protocol_p2p_compact
+                  :if={!@peer_screen_sharing}
+                  class="h-3.5 w-3.5 shrink-0"
+                />
                 <span class="truncate">{peer_label(@peer_nick)}</span>
                 <Icons.icon_mute :if={@peer_muted} class="h-3.5 w-3.5 shrink-0 text-warning" />
                 <Icons.icon_camera_off
@@ -237,7 +240,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
       data-testid="p2p-call-header"
     >
       <div class="flex min-w-0 items-center gap-2">
-        <Icons.icon_p2p class="h-4 w-4 shrink-0" />
+        <Icons.icon_protocol_p2p_compact class="h-4 w-4 shrink-0" />
         <div class="min-w-0">
           <div class="truncate font-bold leading-4">
             {dgettext("p2p", "Direct call with %{peer}", peer: peer_label(@peer_nick))}
@@ -335,7 +338,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
           <Icons.icon_camera class="h-4 w-4" />
         </.toolbar_button>
         <span class="ml-1 inline-flex items-center gap-1 text-muted-foreground">
-          <Icons.icon_p2p class="h-3.5 w-3.5" />
+          <Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5" />
           {peer_label(@peer_nick)}
         </span>
       </.toolbar>

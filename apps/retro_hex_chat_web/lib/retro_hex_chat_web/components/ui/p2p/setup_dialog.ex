@@ -42,7 +42,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
           title={setup_title(@outgoing?)}
           on_close={@on_cancel}
         >
-          <:icon><Icons.icon_p2p class="h-4 w-4" /></:icon>
+          <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
         </.dialog_header>
 
         <.form
@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
                 <section class="grid min-w-0 gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <div class="flex items-center gap-2">
                     <span class="flex h-9 w-9 shrink-0 items-center justify-center bg-surface shadow-retro-sunken">
-                      <Icons.icon_status_user class="h-5 w-5" />
+                      <Icons.icon_protocol_p2p_compact class="h-6 w-6" />
                     </span>
                     <div class="min-w-0">
                       <div class="font-bold">
@@ -76,6 +76,16 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
                         {setup_description(@outgoing?)}
                       </p>
                     </div>
+                  </div>
+                </section>
+
+                <section class="flex min-w-0 items-center gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+                  <Icons.icon_protocol_p2p class="h-16 w-24 shrink-0" />
+                  <div class="min-w-0">
+                    <div class="font-bold">{dgettext("p2p", "Direct P2P topology")}</div>
+                    <p class="text-muted-foreground">
+                      {protocol_description(@turn_only)}
+                    </p>
                   </div>
                 </section>
 
@@ -312,6 +322,21 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SetupDialog do
     dgettext(
       "p2p",
       "The private message, files, games and statistics become available after you join."
+    )
+  end
+
+  @spec protocol_description(boolean()) :: String.t()
+  defp protocol_description(true) do
+    dgettext(
+      "p2p",
+      "Your browser uses the relay path for this session, while the session still stays one-to-one."
+    )
+  end
+
+  defp protocol_description(false) do
+    dgettext(
+      "p2p",
+      "When the network allows it, packets travel browser-to-browser instead of through the conference server."
     )
   end
 

@@ -100,7 +100,9 @@ defmodule RetroHexChatWeb.Components.UI.ActivityIndicator do
   defp activity_icon(%{icon: :file} = assigns), do: ~H"<Icons.icon_file_send class={@class} />"
   defp activity_icon(%{icon: :game} = assigns), do: ~H"<Icons.icon_joystick class={@class} />"
   defp activity_icon(%{icon: :media} = assigns), do: ~H"<Icons.icon_camera class={@class} />"
-  defp activity_icon(%{icon: :p2p} = assigns), do: ~H"<Icons.icon_p2p class={@class} />"
+
+  defp activity_icon(%{icon: :p2p} = assigns),
+    do: ~H"<Icons.icon_protocol_p2p_compact class={@class} />"
 
   defp activity_icon(%{icon: :status_signal} = assigns),
     do: ~H"<Icons.icon_status_signal class={@class} />"

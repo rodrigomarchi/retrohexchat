@@ -360,7 +360,11 @@ defmodule RetroHexChatWeb.Components.UI.P2PConnectionDiagram do
         }
 
       _ ->
-        %{id: "call-init", label: dgettext("p2p", "Starting call..."), icon: :icon_p2p}
+        %{
+          id: "call-init",
+          label: dgettext("p2p", "Starting call..."),
+          icon: :icon_protocol_p2p_compact
+        }
     end
   end
 

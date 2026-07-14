@@ -252,7 +252,7 @@ defmodule RetroHexChatWeb.Components.UI.MenuBarApp do
       <.menu label={dgettext("ui", "P2P")} disabled={!@connected}>
         <.menu_item
           :if={!@p2p_active}
-          icon_fn={:icon_p2p}
+          icon_fn={:icon_protocol_p2p_compact}
           label={dgettext("ui", "Start a P2P Session...")}
           action="p2p_how_to_start"
           on_action={@on_action}

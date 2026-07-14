@@ -137,7 +137,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       }
       phx-value-nick={@target_nick}
     >
-      <:icon><Icons.icon_p2p class="w-[14px] h-[14px]" /></:icon>
+      <:icon><Icons.icon_protocol_p2p_compact class="w-[14px] h-[14px]" /></:icon>
       {dgettext("chat", "P2P Lobby")}
     </.context_menu_item>
     <%!-- Op actions (only if viewer is op and not targeting self) --%>

@@ -131,7 +131,7 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
   end
 
   defp mode_icon(:end), do: :icon_phone_end
-  defp mode_icon(:close), do: :icon_p2p
+  defp mode_icon(:close), do: :icon_protocol_p2p_compact
   defp mode_icon(:switch), do: :icon_btn_join
 
   defp confirm_icon(:switch), do: :icon_btn_join
@@ -156,7 +156,10 @@ defmodule RetroHexChatWeb.Components.UI.P2PConfirmDialog do
     [
       %{icon: :icon_phone_end, label: dgettext("dialogs", "The whole P2P session disconnects")},
       %{icon: :icon_win_minimize, label: dgettext("dialogs", "Minimize to keep it running")},
-      %{icon: :icon_p2p, label: dgettext("dialogs", "Only one P2P session can be active")}
+      %{
+        icon: :icon_protocol_p2p_compact,
+        label: dgettext("dialogs", "Only one P2P session can be active")
+      }
     ]
   end
 

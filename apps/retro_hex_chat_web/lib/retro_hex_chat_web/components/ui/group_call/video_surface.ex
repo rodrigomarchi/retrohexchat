@@ -52,7 +52,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
           data-group-call-remote-placeholder
           data-testid="group-call-remote-placeholder"
         >
-          <Icons.icon_conference class="h-6 w-6 shrink-0 text-primary" />
+          <Icons.icon_protocol_conference_compact class="h-6 w-6 shrink-0 text-primary" />
           <span class="font-bold text-foreground">
             {dgettext("group_call", "Waiting for participants")}
           </span>

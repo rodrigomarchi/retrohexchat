@@ -24,7 +24,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.StatsPanel do
       <div class="shadow-retro-field bg-canvas p-2">
         <div class="flex items-center justify-between gap-2">
           <div class="flex min-w-0 items-center gap-2">
-            <Icons.icon_conference class="h-5 w-5 shrink-0" />
+            <Icons.icon_protocol_conference class="h-12 w-[72px] shrink-0" />
             <div class="min-w-0">
               <div class="truncate font-bold">{@call.channel_name}</div>
               <div class="flex min-w-0 items-center gap-2 text-muted-foreground">

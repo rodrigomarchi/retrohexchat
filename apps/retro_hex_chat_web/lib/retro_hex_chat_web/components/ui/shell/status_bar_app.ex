@@ -112,7 +112,7 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
           aria-label={@group_call.title}
           data-testid="status-bar-group-call"
         >
-          <Icons.icon_conference class="w-3 h-3 shrink-0" />
+          <Icons.icon_protocol_conference_compact class="w-3 h-3 shrink-0" />
           <span class="truncate text-xs">{@group_call.label}</span>
         </button>
         <button
@@ -136,7 +136,7 @@ defmodule RetroHexChatWeb.Components.UI.StatusBarApp do
           aria-label={@p2p.title}
           data-testid="status-bar-p2p"
         >
-          <Icons.icon_p2p class="w-3 h-3 shrink-0" />
+          <Icons.icon_protocol_p2p_compact class="w-3 h-3 shrink-0" />
           <span class="truncate text-xs">{@p2p.label}</span>
           <.p2p_badges p2p={@p2p} />
         </button>

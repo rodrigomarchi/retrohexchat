@@ -40,7 +40,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
         disabled={!@identified}
         data-testid="group-call-open"
       >
-        <Icons.icon_conference class="h-3.5 w-3.5 shrink-0" />
+        <Icons.icon_protocol_conference_compact class="h-3.5 w-3.5 shrink-0" />
         <span>{dgettext("group_call", "Call")}</span>
         <span
           :if={@active}
@@ -89,7 +89,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
           <div class="flex items-start justify-between gap-2 border-b border-border pb-1">
             <div class="min-w-0">
               <div class="flex items-center gap-1 font-bold">
-                <Icons.icon_conference class="h-3.5 w-3.5 shrink-0" />
+                <Icons.icon_protocol_conference_compact class="h-3.5 w-3.5 shrink-0" />
                 <span class="truncate">{@channel}</span>
               </div>
               <div class="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
@@ -180,7 +180,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ChannelBadge do
       data-state={Atom.to_string(@state)}
       data-participant-count={@participant_count}
     >
-      <Icons.icon_conference class="h-3.5 w-3.5" />
+      <Icons.icon_protocol_conference_compact class="h-3.5 w-3.5" />
       <span :if={@participant_count > 0} class="text-[9px] font-bold leading-none">
         {@participant_count}
       </span>

@@ -115,7 +115,7 @@ defmodule RetroHexChatWeb.Components.UI.SessionCard do
   attr :class, :string, default: nil
 
   defp subject_icon(assigns) do
-    ~H"<Icons.icon_p2p class={@class} />"
+    ~H"<Icons.icon_protocol_p2p_compact class={@class} />"
   end
 
   # ── Title / subtitle / status ───────────────────────────────

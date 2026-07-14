@@ -519,7 +519,7 @@
       height={420}
       data-testid="p2p-stats-window"
     >
-      <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>
+      <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
       <.lobby_network_panel
         stats={@p2p_session.stats}
         info_open={@p2p_session.info_open}
@@ -649,7 +649,7 @@
       body_class="flex min-h-0 flex-col p-2"
       data-testid="group-call-stats-window"
     >
-      <:icon><Icons.icon_webrtc class="h-4 w-4" /></:icon>
+      <:icon><Icons.icon_protocol_conference_compact class="h-4 w-4" /></:icon>
       <.group_call_stats_panel call={@group_call} stats={@group_call.stats} />
     </.desktop_window>
 
@@ -672,7 +672,7 @@
       body_class="h-full min-h-0 overflow-hidden p-1"
       data-testid="group-call-window"
     >
-      <:icon><Icons.icon_conference class="h-4 w-4" /></:icon>
+      <:icon><Icons.icon_protocol_conference_compact class="h-4 w-4" /></:icon>
       <.live_component
         module={RetroHexChatWeb.ChatLive.Components.GroupCallPanel}
         id={RetroHexChatWeb.ChatLive.Components.GroupCallPanel.id()}

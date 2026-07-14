@@ -108,7 +108,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <div class="flex min-h-8 shrink-0 flex-wrap items-center justify-between gap-1 border border-border bg-surface px-2 py-1 shadow-retro-sunken">
       <div class="flex min-w-0 items-center gap-2">
-        <Icons.icon_conference class="h-4 w-4 shrink-0" />
+        <Icons.icon_protocol_conference_compact class="h-4 w-4 shrink-0" />
         <div class="min-w-0">
           <div class="truncate font-bold leading-4">{channel_name(@call)}</div>
           <div class="flex min-w-0 items-center gap-2 text-[10px] leading-3 text-muted-foreground">
@@ -305,7 +305,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       data-testid="group-call-mini-header"
     >
       <div class="flex min-w-0 items-center gap-2">
-        <Icons.icon_conference class="h-4 w-4 shrink-0" />
+        <Icons.icon_protocol_conference_compact class="h-4 w-4 shrink-0" />
         <div class="min-w-0">
           <div class="truncate font-bold leading-4">{channel_name(@call)}</div>
           <div class="flex min-w-0 items-center gap-2 text-[10px] leading-3 text-muted-foreground">

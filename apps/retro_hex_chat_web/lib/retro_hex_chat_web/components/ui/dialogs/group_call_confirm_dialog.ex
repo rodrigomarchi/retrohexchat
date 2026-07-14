@@ -158,7 +158,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCallConfirmDialog do
   end
 
   defp mode_icon(:leave), do: :icon_phone_end
-  defp mode_icon(:close), do: :icon_conference
+  defp mode_icon(:close), do: :icon_protocol_conference_compact
   defp mode_icon(:switch), do: :icon_btn_join
   defp mode_icon(:end_call), do: :icon_phone_end
   defp mode_icon(:kick_participant), do: :icon_ban

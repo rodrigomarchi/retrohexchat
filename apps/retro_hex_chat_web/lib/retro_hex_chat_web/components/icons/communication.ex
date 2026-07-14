@@ -75,6 +75,220 @@ defmodule RetroHexChatWeb.Icons.Communication do
 
   attr :class, :string, default: nil
 
+  @spec icon_protocol_p2p(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_protocol_p2p(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 96 64" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x=".5" y=".5" width="95" height="63" fill="#dfdfdf" stroke="#000000" stroke-width="1" />
+      <path d="M1.5 1.5 H94.5 M1.5 1.5 V62.5" stroke="#ffffff" stroke-width="1" />
+      <path d="M1.5 62.5 H94.5 M94.5 1.5 V62.5" stroke="#808080" stroke-width="1" />
+
+      <g fill="none" stroke-linecap="square">
+        <path d="M31 24 H61" stroke="#000000" stroke-width="6" />
+        <path d="M65 41 H35" stroke="#000000" stroke-width="6" />
+        <path d="M31 24 H61" stroke="#008000" stroke-width="4" />
+        <path d="M65 41 H35" stroke="#806000" stroke-width="4" />
+        <path d="M31 23 H61" stroke="#00ff00" stroke-width="1" />
+        <path d="M65 40 H35" stroke="#ffd700" stroke-width="1" />
+      </g>
+
+      <path d="M58 18 L69 24 L58 30 Z" fill="#00a000" stroke="#000000" stroke-width="1.5" />
+      <path d="M38 35 L27 41 L38 47 Z" fill="#ffd700" stroke="#000000" stroke-width="1.5" />
+      <g stroke="#000000" stroke-width="1">
+        <rect x="41" y="20" width="6" height="6" fill="#ffd700" />
+        <rect x="51" y="20" width="6" height="6" fill="#ffd700" />
+        <rect x="49" y="37" width="6" height="6" fill="#ffffff" />
+        <rect x="39" y="37" width="6" height="6" fill="#ffffff" />
+      </g>
+
+      <g>
+        <rect x="6" y="18" width="24" height="30" fill="#000000" transform="translate(1 1)" />
+        <rect x="66" y="18" width="24" height="30" fill="#000000" transform="translate(1 1)" />
+        <rect x="6" y="18" width="24" height="30" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <rect x="66" y="18" width="24" height="30" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <rect x="8" y="20" width="20" height="5" fill="#000080" />
+        <rect x="68" y="20" width="20" height="5" fill="#000080" />
+        <rect x="9" y="21" width="2" height="2" fill="#ff0000" />
+        <rect x="12" y="21" width="2" height="2" fill="#ffd700" />
+        <rect x="15" y="21" width="2" height="2" fill="#00ff00" />
+        <rect x="69" y="21" width="2" height="2" fill="#ff0000" />
+        <rect x="72" y="21" width="2" height="2" fill="#ffd700" />
+        <rect x="75" y="21" width="2" height="2" fill="#00ff00" />
+        <rect x="8" y="27" width="20" height="17" fill="#008080" stroke="#000000" stroke-width="1" />
+        <rect x="68" y="27" width="20" height="17" fill="#008080" stroke="#000000" stroke-width="1" />
+        <path d="M10 30 H23 M10 35 H25 M10 40 H20" stroke="#ffffff" stroke-width="1.5" />
+        <path d="M70 30 H83 M70 35 H85 M70 40 H80" stroke="#ffffff" stroke-width="1.5" />
+      </g>
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_protocol_conference(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_protocol_conference(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 96 64" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x=".5" y=".5" width="95" height="63" fill="#dfdfdf" stroke="#000000" stroke-width="1" />
+      <path d="M1.5 1.5 H94.5 M1.5 1.5 V62.5" stroke="#ffffff" stroke-width="1" />
+      <path d="M1.5 62.5 H94.5 M94.5 1.5 V62.5" stroke="#808080" stroke-width="1" />
+
+      <g fill="none" stroke-linecap="square">
+        <path d="M31 25 H42" stroke="#000000" stroke-width="6" />
+        <path d="M42 41 H31" stroke="#000000" stroke-width="6" />
+        <path d="M66 18 L55 26" stroke="#000000" stroke-width="6" />
+        <path d="M56 33 L67 25" stroke="#000000" stroke-width="6" />
+        <path d="M66 46 L55 38" stroke="#000000" stroke-width="6" />
+        <path d="M56 31 L67 39" stroke="#000000" stroke-width="6" />
+        <path d="M31 25 H42" stroke="#008000" stroke-width="4" />
+        <path d="M42 41 H31" stroke="#806000" stroke-width="4" />
+        <path d="M66 18 L55 26" stroke="#008000" stroke-width="4" />
+        <path d="M56 33 L67 25" stroke="#806000" stroke-width="4" />
+        <path d="M66 46 L55 38" stroke="#008000" stroke-width="4" />
+        <path d="M56 31 L67 39" stroke="#806000" stroke-width="4" />
+      </g>
+
+      <path d="M39 19 L48 25 L39 31 Z" fill="#00a000" stroke="#000000" stroke-width="1.5" />
+      <path d="M34 35 L25 41 L34 47 Z" fill="#ffd700" stroke="#000000" stroke-width="1.5" />
+      <path d="M58 23 L48 30 L47 19 Z" fill="#00a000" stroke="#000000" stroke-width="1.5" />
+      <path d="M65 29 L75 22 L76 33 Z" fill="#ffd700" stroke="#000000" stroke-width="1.5" />
+      <path d="M58 41 L48 34 L47 45 Z" fill="#00a000" stroke="#000000" stroke-width="1.5" />
+      <path d="M65 35 L75 42 L76 31 Z" fill="#ffd700" stroke="#000000" stroke-width="1.5" />
+
+      <g stroke="#000000" stroke-width="1">
+        <rect x="35" y="22" width="6" height="6" fill="#ffd700" />
+        <rect x="35" y="38" width="6" height="6" fill="#ffffff" />
+        <rect x="58" y="20" width="6" height="6" fill="#ffd700" />
+        <rect x="59" y="36" width="6" height="6" fill="#ffffff" />
+      </g>
+
+      <g>
+        <rect x="6" y="18" width="24" height="30" fill="#000000" transform="translate(1 1)" />
+        <rect x="6" y="18" width="24" height="30" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <rect x="8" y="20" width="20" height="5" fill="#000080" />
+        <rect x="9" y="21" width="2" height="2" fill="#ff0000" />
+        <rect x="12" y="21" width="2" height="2" fill="#ffd700" />
+        <rect x="15" y="21" width="2" height="2" fill="#00ff00" />
+        <rect x="8" y="27" width="20" height="17" fill="#008080" stroke="#000000" stroke-width="1" />
+        <path d="M10 30 H23 M10 35 H25 M10 40 H20" stroke="#ffffff" stroke-width="1.5" />
+      </g>
+
+      <g>
+        <rect x="42" y="18" width="14" height="30" fill="#000000" transform="translate(1 1)" />
+        <rect x="42" y="18" width="14" height="30" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <path d="M43 19 H55 M43 19 V47" stroke="#ffffff" stroke-width="1" />
+        <rect x="45" y="24" width="8" height="4" fill="#008000" stroke="#000000" stroke-width="1" />
+        <rect x="45" y="33" width="8" height="4" fill="#ffd700" stroke="#000000" stroke-width="1" />
+        <rect x="45" y="42" width="8" height="2" fill="#808080" stroke="#000000" stroke-width="1" />
+      </g>
+
+      <g>
+        <rect x="66" y="7" width="24" height="24" fill="#000000" transform="translate(1 1)" />
+        <rect x="66" y="35" width="24" height="24" fill="#000000" transform="translate(1 1)" />
+        <rect x="66" y="7" width="24" height="24" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <rect x="66" y="35" width="24" height="24" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+        <rect x="68" y="9" width="20" height="5" fill="#000080" />
+        <rect x="68" y="37" width="20" height="5" fill="#000080" />
+        <rect x="69" y="10" width="2" height="2" fill="#ff0000" />
+        <rect x="72" y="10" width="2" height="2" fill="#ffd700" />
+        <rect x="69" y="38" width="2" height="2" fill="#ff0000" />
+        <rect x="72" y="38" width="2" height="2" fill="#ffd700" />
+        <rect x="68" y="16" width="20" height="11" fill="#008080" stroke="#000000" stroke-width="1" />
+        <rect x="68" y="44" width="20" height="11" fill="#008080" stroke="#000000" stroke-width="1" />
+        <path d="M70 19 H83 M70 23 H80" stroke="#ffffff" stroke-width="1.5" />
+        <path d="M70 47 H83 M70 51 H80" stroke="#ffffff" stroke-width="1.5" />
+      </g>
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_protocol_p2p_compact(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_protocol_p2p_compact(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 48 48" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x=".5" y=".5" width="47" height="47" fill="#dfdfdf" stroke="#000000" stroke-width="1" />
+      <path d="M1.5 1.5 H46.5 M1.5 1.5 V46.5" stroke="#ffffff" stroke-width="1" />
+      <path d="M1.5 46.5 H46.5 M46.5 1.5 V46.5" stroke="#808080" stroke-width="1" />
+
+      <path d="M15 18 H33" stroke="#000000" stroke-width="5" />
+      <path d="M33 31 H15" stroke="#000000" stroke-width="5" />
+      <path d="M15 18 H33" stroke="#008000" stroke-width="3" />
+      <path d="M33 31 H15" stroke="#806000" stroke-width="3" />
+      <path d="M30 13 L39 18 L30 23 Z" fill="#00a000" stroke="#000000" stroke-width="1.5" />
+      <path d="M18 26 L9 31 L18 36 Z" fill="#ffd700" stroke="#000000" stroke-width="1.5" />
+
+      <rect x="20" y="15" width="5" height="5" fill="#ffd700" stroke="#000000" stroke-width="1" />
+      <rect x="23" y="28" width="5" height="5" fill="#ffffff" stroke="#000000" stroke-width="1" />
+      <rect x="3" y="14" width="13" height="21" fill="#000000" transform="translate(1 1)" />
+      <rect x="32" y="14" width="13" height="21" fill="#000000" transform="translate(1 1)" />
+      <rect x="3" y="14" width="13" height="21" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <rect x="32" y="14" width="13" height="21" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <rect x="5" y="16" width="9" height="3" fill="#000080" />
+      <rect x="34" y="16" width="9" height="3" fill="#000080" />
+      <rect x="5" y="21" width="9" height="10" fill="#008080" stroke="#000000" stroke-width="1" />
+      <rect x="34" y="21" width="9" height="10" fill="#008080" stroke="#000000" stroke-width="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_protocol_conference_compact(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_protocol_conference_compact(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 48 48" shape-rendering="crispEdges" aria-hidden="true">
+      <rect x=".5" y=".5" width="47" height="47" fill="#dfdfdf" stroke="#000000" stroke-width="1" />
+      <path d="M1.5 1.5 H46.5 M1.5 1.5 V46.5" stroke="#ffffff" stroke-width="1" />
+      <path d="M1.5 46.5 H46.5 M46.5 1.5 V46.5" stroke="#808080" stroke-width="1" />
+
+      <g stroke="#000000" stroke-width="5" stroke-linecap="square">
+        <path d="M15 19 H21" />
+        <path d="M21 31 H15" />
+        <path d="M34 13 L27 20" />
+        <path d="M28 27 L35 20" />
+        <path d="M34 36 L27 29" />
+        <path d="M28 24 L35 31" />
+      </g>
+      <g stroke="#008000" stroke-width="3" stroke-linecap="square">
+        <path d="M15 19 H21" />
+        <path d="M34 13 L27 20" />
+        <path d="M34 36 L27 29" />
+      </g>
+      <g stroke="#806000" stroke-width="3" stroke-linecap="square">
+        <path d="M21 31 H15" />
+        <path d="M28 27 L35 20" />
+        <path d="M28 24 L35 31" />
+      </g>
+
+      <path d="M19 15 L25 19 L19 23 Z" fill="#00a000" stroke="#000000" stroke-width="1" />
+      <path d="M17 27 L11 31 L17 35 Z" fill="#ffd700" stroke="#000000" stroke-width="1" />
+      <rect x="3" y="15" width="13" height="20" fill="#000000" transform="translate(1 1)" />
+      <rect x="3" y="15" width="13" height="20" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <rect x="5" y="17" width="9" height="3" fill="#000080" />
+      <rect x="5" y="22" width="9" height="9" fill="#008080" stroke="#000000" stroke-width="1" />
+
+      <rect x="20" y="17" width="9" height="18" fill="#000000" transform="translate(1 1)" />
+      <rect x="20" y="17" width="9" height="18" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <path d="M21 18 H28 M21 18 V34" stroke="#ffffff" stroke-width="1" />
+      <rect x="22" y="21" width="5" height="3" fill="#008000" stroke="#000000" stroke-width="1" />
+      <rect x="22" y="28" width="5" height="3" fill="#ffd700" stroke="#000000" stroke-width="1" />
+
+      <rect x="33" y="5" width="12" height="16" fill="#000000" transform="translate(1 1)" />
+      <rect x="33" y="28" width="12" height="16" fill="#000000" transform="translate(1 1)" />
+      <rect x="33" y="5" width="12" height="16" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <rect x="33" y="28" width="12" height="16" fill="#c0c0c0" stroke="#000000" stroke-width="1.5" />
+      <rect x="35" y="7" width="8" height="3" fill="#000080" />
+      <rect x="35" y="30" width="8" height="3" fill="#000080" />
+      <rect x="35" y="12" width="8" height="5" fill="#008080" stroke="#000000" stroke-width="1" />
+      <rect x="35" y="35" width="8" height="5" fill="#008080" stroke="#000000" stroke-width="1" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
   @spec icon_chat(map()) :: Phoenix.LiveView.Rendered.t()
   def icon_chat(assigns) do
     ~H"""

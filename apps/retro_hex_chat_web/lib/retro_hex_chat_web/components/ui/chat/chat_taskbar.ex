@@ -90,7 +90,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         window="p2p-stats"
         label={dgettext("chat", "P2P Statistics")}
       >
-        <:icon><Icons.icon_status_signal class="h-4 w-4" /></:icon>
+        <:icon><Icons.icon_protocol_p2p_compact class="h-4 w-4" /></:icon>
       </.taskbar_button>
       <.taskbar_button
         :if={p2p_ready?(@p2p_session)}
@@ -112,7 +112,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         label={dgettext("group_call", "Conference Statistics")}
         data-testid="group-call-stats-taskbar"
       >
-        <:icon><Icons.icon_webrtc class="h-4 w-4" /></:icon>
+        <:icon><Icons.icon_protocol_conference_compact class="h-4 w-4" /></:icon>
       </.taskbar_button>
       <.taskbar_button
         :if={@group_call}
@@ -120,7 +120,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatTaskbar do
         label={group_call_label(@group_call)}
         data-testid="group-call-taskbar"
       >
-        <:icon><Icons.icon_conference class="h-4 w-4" /></:icon>
+        <:icon><Icons.icon_protocol_conference_compact class="h-4 w-4" /></:icon>
       </.taskbar_button>
       <.taskbar_button
         :if={@p2p_session && window_open?(@open_windows, "p2p-games")}

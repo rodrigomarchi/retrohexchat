@@ -36,7 +36,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
           title={dgettext("group_call", "Join Channel Conference")}
           on_close={@on_cancel}
         >
-          <:icon><Icons.icon_conference class="h-4 w-4" /></:icon>
+          <:icon><Icons.icon_protocol_conference_compact class="h-4 w-4" /></:icon>
         </.dialog_header>
 
         <.form
@@ -57,6 +57,19 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.PreJoinDialog do
               />
 
               <section class="grid min-w-0 gap-2 text-xs">
+                <div class="flex min-w-0 items-center gap-2 border border-border bg-canvas p-2 shadow-retro-sunken">
+                  <Icons.icon_protocol_conference class="h-16 w-24 shrink-0" />
+                  <div class="min-w-0">
+                    <div class="font-bold">{dgettext("group_call", "Conference topology")}</div>
+                    <p class="text-muted-foreground">
+                      {dgettext(
+                        "group_call",
+                        "Each browser sends media to the room server; the server routes streams to the other participants."
+                      )}
+                    </p>
+                  </div>
+                </div>
+
                 <div class="min-w-0 border border-border bg-canvas p-2 shadow-retro-sunken">
                   <div class="mb-2 flex items-center gap-1 font-bold">
                     <Icons.icon_devices class="h-3.5 w-3.5" />

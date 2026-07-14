@@ -48,7 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
         data-p2p-status={Atom.to_string(@status)}
         data-p2p-facets={facets_value(@facets)}
       >
-        <Icons.icon_p2p class="h-3.5 w-3.5 shrink-0" />
+        <Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" />
         <span>{dgettext("p2p", "P2P")}</span>
         <span
           class={[
@@ -106,7 +106,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
           <div class="flex items-start justify-between gap-2 border-b border-border pb-1">
             <div class="min-w-0">
               <div class="flex items-center gap-1 font-bold">
-                <Icons.icon_p2p class="h-3.5 w-3.5 shrink-0" />
+                <Icons.icon_protocol_p2p_compact class="h-3.5 w-3.5 shrink-0" />
                 <span class="truncate">{@peer}</span>
               </div>
               <div class="mt-0.5 flex items-center gap-1 text-[10px] text-muted-foreground">
@@ -135,7 +135,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
 
           <div class="mt-2 shadow-retro-sunken bg-white p-1">
             <div class="mb-1 flex items-center gap-1 text-[10px] font-bold uppercase">
-              <Icons.icon_p2p class="h-3 w-3" />
+              <Icons.icon_protocol_p2p_compact class="h-3 w-3" />
               <span>{dgettext("p2p", "P2P activity")}</span>
             </div>
             <div class="flex flex-wrap gap-1">
@@ -161,7 +161,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
               class="flex h-6 items-center justify-center gap-1 shadow-retro-raised bg-surface px-2 text-xs font-bold focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
               data-testid="p2p-peer-open-call"
             >
-              <Icons.icon_conference class="h-3.5 w-3.5" />
+              <Icons.icon_camera class="h-3.5 w-3.5" />
               <span>{dgettext("p2p", "Call")}</span>
             </button>
             <button
@@ -225,7 +225,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
       data-p2p-status={Atom.to_string(@status)}
       data-p2p-facets={facets_value(@facets)}
     >
-      <Icons.icon_p2p class="h-3 w-3" />
+      <Icons.icon_protocol_p2p_compact class="h-3 w-3" />
       <span
         class={[
           "absolute bottom-0 right-0 h-1.5 w-1.5 border border-border",
@@ -246,7 +246,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.SessionBadge do
   defp facet_icon(%{facet: :call} = assigns) do
     ~H"""
     <span class="inline-flex" data-testid={@testid}>
-      <Icons.icon_conference class={@class} />
+      <Icons.icon_camera class={@class} />
     </span>
     """
   end

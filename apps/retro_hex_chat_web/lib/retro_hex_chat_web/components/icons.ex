@@ -118,6 +118,10 @@ defmodule RetroHexChatWeb.Icons do
   # ── Communication ───────────────────────────────────────
   defdelegate icon_p2p(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_p2p_route(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_protocol_p2p(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_protocol_conference(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_protocol_p2p_compact(assigns), to: RetroHexChatWeb.Icons.Communication
+  defdelegate icon_protocol_conference_compact(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_chat(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_channels(assigns), to: RetroHexChatWeb.Icons.Communication
   defdelegate icon_globe(assigns), to: RetroHexChatWeb.Icons.Communication

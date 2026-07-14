@@ -66,7 +66,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
           <.stats_tab
             builder={builder}
             value="network"
-            icon={:icon_p2p}
+            icon={:icon_protocol_p2p_compact}
             label={dgettext("p2p", "Network")}
           />
           <.stats_tab
@@ -339,7 +339,7 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.LobbyNetworkPanel do
       <div class="flex min-w-0 flex-wrap items-center justify-between gap-2">
         <div class="flex min-w-0 items-center gap-2">
           <span class="flex h-8 w-8 shrink-0 items-center justify-center bg-canvas shadow-retro-sunken">
-            <Icons.icon_p2p class="h-5 w-5" />
+            <Icons.icon_protocol_p2p_compact class="h-5 w-5" />
           </span>
           <div class="min-w-0">
             <div class="truncate font-bold leading-4">
