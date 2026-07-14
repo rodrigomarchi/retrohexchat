@@ -11,7 +11,8 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
   @moduletag timeout: 60_000
 
   @video_packet_burst 40
-  @min_forwarded_video_packets 12
+  @audio_packet_burst 40
+  @min_forwarded_packets 12
 
   setup do
     previous_port_range = Application.get_env(:retro_hex_chat, :sfu_ice_port_range)
@@ -55,6 +56,8 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       assert_remote_video_track(:alice)
       assert_remote_video_track(:bob)
+      assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
+      assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 1)
 
       send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
       assert_video_rtp_counts([:alice])
@@ -84,6 +87,8 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       assert_remote_video_track(:alice)
       assert_remote_video_track(:bob)
+      assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
+      assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 1)
 
       send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
       assert_video_rtp_counts([:alice])
@@ -112,9 +117,13 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       carol_client = start_synthetic_peer(ctx, carol, :carol)
       assert_participant_connected(carol_client.participant_id)
 
-      assert_remote_video_track(:alice)
-      assert_remote_video_track(:bob)
-      assert_remote_video_track(:carol)
+      assert_remote_track_count(:alice, :video, 2)
+      assert_remote_track_count(:bob, :video, 2)
+      assert_remote_track_count(:carol, :video, 2)
+
+      assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 2)
+      assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 2)
+      assert_eventually_server_stats_subscriber_count(ctx.token, carol_client.participant_id, 2)
 
       drain_probe_rtp()
 
@@ -134,6 +143,163 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 2)
       assert_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 2)
       assert_server_stats_subscriber_count(ctx.token, carol_client.participant_id, 2)
+    after
+      stop_all_synthetic_peers()
+    end
+
+    test "keeps the transceiver graph sane when four participants join concurrently" do
+      ctx = create_call_with_member("burst", "alice")
+      bob = create_registered_nick(unique_nick("bob"))
+      carol = create_registered_nick(unique_nick("carol"))
+      dave = create_registered_nick(unique_nick("dave"))
+      {:ok, _state} = Server.join(ctx.channel, bob.nickname, nil, identified: true)
+      {:ok, _state} = Server.join(ctx.channel, carol.nickname, nil, identified: true)
+      {:ok, _state} = Server.join(ctx.channel, dave.nickname, nil, identified: true)
+
+      peers = %{
+        alice: spawn_synthetic_peer(ctx, ctx.nick, :alice),
+        bob: spawn_synthetic_peer(ctx, bob, :bob),
+        carol: spawn_synthetic_peer(ctx, carol, :carol),
+        dave: spawn_synthetic_peer(ctx, dave, :dave)
+      }
+
+      participants = await_joined_participants(Map.keys(peers))
+
+      Enum.each(participants, fn {_name, participant_id} ->
+        assert_participant_connected(participant_id)
+      end)
+
+      assert_remote_track_count(:alice, :video, 3)
+      assert_remote_track_count(:bob, :video, 3)
+      assert_remote_track_count(:carol, :video, 3)
+      assert_remote_track_count(:dave, :video, 3)
+
+      Enum.each(participants, fn {_name, participant_id} ->
+        assert_eventually_server_stats_subscriber_count(ctx.token, participant_id, 3)
+        assert_eventually_server_transceiver_shape(ctx.room.id, participant_id, 3)
+      end)
+    after
+      stop_all_synthetic_peers()
+    end
+
+    test "keeps video routes healthy when one participant joins without camera" do
+      ctx = create_call_with_member("novideo", "alice")
+      bob = create_registered_nick(unique_nick("bob"))
+      carol = create_registered_nick(unique_nick("carol"))
+      {:ok, _state} = Server.join(ctx.channel, bob.nickname, nil, identified: true)
+      {:ok, _state} = Server.join(ctx.channel, carol.nickname, nil, identified: true)
+
+      alice_client = start_synthetic_peer(ctx, ctx.nick, :alice)
+      assert_participant_connected(alice_client.participant_id)
+
+      bob_client = start_synthetic_peer(ctx, bob, :bob, media: %{audio: true, video: false})
+      assert_participant_connected(bob_client.participant_id)
+
+      carol_client = start_synthetic_peer(ctx, carol, :carol)
+      assert_participant_connected(carol_client.participant_id)
+
+      assert_remote_video_track(:alice)
+      assert_remote_video_track(:bob)
+      assert_remote_video_track(:carol)
+
+      drain_probe_rtp()
+
+      send(bob_client.pid, {:send_rtp, :audio, @audio_packet_burst})
+      assert_audio_rtp_counts([:alice, :carol])
+
+      drain_probe_rtp()
+
+      send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_receive {:sfu_probe, :bob, :missing_local_track, :video}, 1_000
+      refute_rtp_for([:alice, :carol], :video)
+
+      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_video_rtp_counts([:bob, :carol])
+
+      drain_probe_rtp()
+
+      send(carol_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_video_rtp_counts([:alice, :bob])
+    after
+      stop_all_synthetic_peers()
+    end
+
+    test "keeps remaining media routes healthy after a participant leaves" do
+      ctx = create_call_with_member("leave", "alice")
+      bob = create_registered_nick(unique_nick("bob"))
+      carol = create_registered_nick(unique_nick("carol"))
+      {:ok, _state} = Server.join(ctx.channel, bob.nickname, nil, identified: true)
+      {:ok, _state} = Server.join(ctx.channel, carol.nickname, nil, identified: true)
+
+      alice_client = start_synthetic_peer(ctx, ctx.nick, :alice)
+      assert_participant_connected(alice_client.participant_id)
+
+      bob_client = start_synthetic_peer(ctx, bob, :bob)
+      assert_participant_connected(bob_client.participant_id)
+
+      carol_client = start_synthetic_peer(ctx, carol, :carol)
+      assert_participant_connected(carol_client.participant_id)
+
+      assert_remote_video_track(:alice)
+      assert_remote_video_track(:bob)
+      assert_remote_video_track(:carol)
+
+      drain_probe_messages()
+
+      :ok = GroupCall.leave_call(ctx.token, bob_client.participant_id, "left")
+
+      assert_receive {:sfu_probe, :alice, :answered_offer}, 10_000
+      assert_receive {:sfu_probe, :carol, :answered_offer}, 10_000
+
+      assert_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
+      assert_server_stats_subscriber_count(ctx.token, carol_client.participant_id, 1)
+
+      drain_probe_rtp()
+
+      send(carol_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_video_rtp_counts([:alice])
+
+      drain_probe_rtp()
+
+      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_video_rtp_counts([:carol])
+    after
+      stop_all_synthetic_peers()
+    end
+
+    test "keeps media alive after an explicit offer request with ICE restart" do
+      ctx = create_call_with_member("restart", "alice")
+      bob = create_registered_nick(unique_nick("bob"))
+      {:ok, _state} = Server.join(ctx.channel, bob.nickname, nil, identified: true)
+
+      alice_client = start_synthetic_peer(ctx, ctx.nick, :alice)
+      assert_participant_connected(alice_client.participant_id)
+
+      bob_client = start_synthetic_peer(ctx, bob, :bob)
+      assert_participant_connected(bob_client.participant_id)
+
+      assert_remote_video_track(:alice)
+      assert_remote_video_track(:bob)
+      assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
+      assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 1)
+
+      send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_video_rtp_counts([:alice])
+
+      drain_probe_messages()
+
+      :ok = GroupCall.request_offer(ctx.token, alice_client.participant_id)
+      assert_receive {:sfu_probe, :alice, :answered_offer}, 10_000
+
+      drain_probe_rtp()
+
+      send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_video_rtp_counts([:alice])
+
+      drain_probe_rtp()
+
+      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_video_rtp_counts([:bob])
     after
       stop_all_synthetic_peers()
     end
@@ -190,7 +356,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     %{channel: channel, nick: nick, room: room, token: token}
   end
 
-  defp start_synthetic_peer(ctx, nick, name) do
+  defp spawn_synthetic_peer(ctx, nick, name, opts \\ []) do
     parent = self()
 
     pid =
@@ -198,15 +364,51 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
         __MODULE__.SyntheticPeer.run(parent, %{
           name: name,
           token: ctx.token,
-          actor: %{user_id: nick.id, nickname: nick.nickname}
+          actor: %{user_id: nick.id, nickname: nick.nickname},
+          media: Keyword.get(opts, :media, %{audio: true, video: true})
         })
       end)
 
     Process.put(:"#{name}_probe", pid)
 
+    %{pid: pid}
+  end
+
+  defp start_synthetic_peer(ctx, nick, name, opts \\ []) do
+    peer = spawn_synthetic_peer(ctx, nick, name, opts)
+
     assert_receive {:sfu_probe, ^name, :joined, participant_id}, 10_000
 
-    %{pid: pid, participant_id: participant_id}
+    Map.put(peer, :participant_id, participant_id)
+  end
+
+  defp await_joined_participants(names) do
+    deadline = System.monotonic_time(:millisecond) + 10_000
+    await_joined_participants(names, %{}, deadline)
+  end
+
+  defp await_joined_participants(names, participants, deadline) do
+    if map_size(participants) == length(names) do
+      participants
+    else
+      remaining = max(deadline - System.monotonic_time(:millisecond), 0)
+
+      receive do
+        {:sfu_probe, name, :joined, participant_id} ->
+          if name in names do
+            await_joined_participants(
+              names,
+              Map.put(participants, name, participant_id),
+              deadline
+            )
+          else
+            await_joined_participants(names, participants, deadline)
+          end
+      after
+        remaining ->
+          flunk("expected participants to join; joined=#{inspect(participants)}")
+      end
+    end
   end
 
   defp stop_synthetic_peer(nil), do: :ok
@@ -216,7 +418,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
   end
 
   defp stop_all_synthetic_peers do
-    [:alice_probe, :bob_probe, :carol_probe]
+    [:alice_probe, :bob_probe, :carol_probe, :dave_probe]
     |> Enum.each(fn key -> stop_synthetic_peer(Process.get(key)) end)
   end
 
@@ -231,6 +433,27 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
   defp assert_remote_video_track(name) do
     assert_receive {:sfu_probe, ^name, :track, :video, _track_id}, 10_000
+  end
+
+  defp assert_remote_track_count(name, kind, count, timeout \\ 10_000) do
+    deadline = System.monotonic_time(:millisecond) + timeout
+    await_remote_track_count(name, kind, count, 0, deadline)
+  end
+
+  defp await_remote_track_count(_name, _kind, expected, current, _deadline)
+       when current >= expected,
+       do: :ok
+
+  defp await_remote_track_count(name, kind, expected, current, deadline) do
+    remaining = max(deadline - System.monotonic_time(:millisecond), 0)
+
+    receive do
+      {:sfu_probe, ^name, :track, ^kind, _track_id} ->
+        await_remote_track_count(name, kind, expected, current + 1, deadline)
+    after
+      remaining ->
+        flunk("expected #{name} to receive #{expected} #{kind} tracks; received=#{current}")
+    end
   end
 
   defp assert_server_stats_route(token, publisher_id, subscriber_id) do
@@ -257,9 +480,58 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
            "expected publisher #{publisher_id} to have at least #{count} subscribers; peers=#{inspect(peers)}"
   end
 
+  defp assert_eventually_server_stats_subscriber_count(token, publisher_id, count) do
+    wait_until(
+      fn ->
+        {:ok, %{server_stats: %{peers: peers}}} = GroupCall.get_summary(token)
+
+        Enum.any?(peers, fn peer ->
+          peer.participant_id == publisher_id and peer.subscriber_count >= count
+        end)
+      end,
+      500
+    )
+  end
+
+  defp assert_eventually_server_transceiver_shape(room_id, participant_id, outbound_peer_count) do
+    wait_until(
+      fn ->
+        with {:ok, peer_pid} <- Registry.lookup_peer({:peer, room_id, participant_id}),
+             %{pc: pc} <- :sys.get_state(peer_pid) do
+          transceivers = ExWebRTC.PeerConnection.get_transceivers(pc)
+
+          transceiver_count(transceivers, :recvonly, :video) == 1 and
+            transceiver_count(transceivers, :recvonly, :audio) == 1 and
+            transceiver_count(transceivers, :sendonly, :video) == outbound_peer_count and
+            transceiver_count(transceivers, :sendonly, :audio) == outbound_peer_count
+        else
+          _other -> false
+        end
+      end,
+      500
+    )
+  end
+
+  defp transceiver_count(transceivers, direction, kind) do
+    Enum.count(transceivers, fn transceiver ->
+      transceiver.direction == direction and transceiver.kind == kind
+    end)
+  end
+
   defp drain_probe_rtp do
     receive do
       {:sfu_probe, _name, :rtp, _kind, _track_id, _sequence} -> drain_probe_rtp()
+    after
+      0 -> :ok
+    end
+  end
+
+  defp drain_probe_messages do
+    receive do
+      {:sfu_probe, _name, _event} -> drain_probe_messages()
+      {:sfu_probe, _name, _event, _payload} -> drain_probe_messages()
+      {:sfu_probe, _name, _event, _payload1, _payload2} -> drain_probe_messages()
+      {:sfu_probe, _name, _event, _payload1, _payload2, _payload3} -> drain_probe_messages()
     after
       0 -> :ok
     end
@@ -273,25 +545,33 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     end
   end
 
-  defp assert_video_rtp_counts(names, min_count \\ @min_forwarded_video_packets, timeout \\ 5_000) do
-    deadline = System.monotonic_time(:millisecond) + timeout
-    counts = Map.new(names, &{&1, 0})
-    await_video_rtp_counts(counts, min_count, deadline)
+  defp assert_video_rtp_counts(names, min_count \\ @min_forwarded_packets, timeout \\ 5_000) do
+    assert_rtp_counts(names, :video, min_count, timeout)
   end
 
-  defp await_video_rtp_counts(counts, min_count, deadline) do
+  defp assert_audio_rtp_counts(names, min_count \\ @min_forwarded_packets, timeout \\ 5_000) do
+    assert_rtp_counts(names, :audio, min_count, timeout)
+  end
+
+  defp assert_rtp_counts(names, kind, min_count, timeout) do
+    deadline = System.monotonic_time(:millisecond) + timeout
+    counts = Map.new(names, &{&1, 0})
+    await_rtp_counts(counts, kind, min_count, deadline)
+  end
+
+  defp await_rtp_counts(counts, kind, min_count, deadline) do
     if Enum.all?(counts, fn {_name, count} -> count >= min_count end) do
       :ok
     else
-      await_pending_video_rtp_counts(counts, min_count, deadline)
+      await_pending_rtp_counts(counts, kind, min_count, deadline)
     end
   end
 
-  defp await_pending_video_rtp_counts(counts, min_count, deadline) do
+  defp await_pending_rtp_counts(counts, kind, min_count, deadline) do
     remaining = max(deadline - System.monotonic_time(:millisecond), 0)
 
     receive do
-      {:sfu_probe, name, :rtp, :video, _track_id, _sequence} ->
+      {:sfu_probe, name, :rtp, ^kind, _track_id, _sequence} ->
         counts =
           if Map.has_key?(counts, name) do
             Map.update!(counts, name, &(&1 + 1))
@@ -299,15 +579,31 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
             counts
           end
 
-        await_video_rtp_counts(counts, min_count, deadline)
+        await_rtp_counts(counts, kind, min_count, deadline)
 
       _other ->
-        await_pending_video_rtp_counts(counts, min_count, deadline)
+        await_pending_rtp_counts(counts, kind, min_count, deadline)
     after
       remaining ->
         flunk(
-          "expected at least #{min_count} video RTP packets per target; counts=#{inspect(counts)}"
+          "expected at least #{min_count} #{kind} RTP packets per target; counts=#{inspect(counts)}"
         )
+    end
+  end
+
+  defp refute_rtp_for(names, kind, timeout \\ 500) do
+    receive do
+      {:sfu_probe, name, :rtp, ^kind, _track_id, sequence} ->
+        if name in names do
+          flunk("expected no #{kind} RTP for #{name}; received sequence=#{sequence}")
+        else
+          refute_rtp_for(names, kind, timeout)
+        end
+
+      _other ->
+        refute_rtp_for(names, kind, timeout)
+    after
+      timeout -> :ok
     end
   end
 
@@ -327,8 +623,11 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
   defmodule SyntheticPeer do
     alias ExRTP.Packet
+    alias ExRTP.Packet.Extension.SourceDescription
     alias ExWebRTC.{ICECandidate, MediaStreamTrack, PeerConnection, SessionDescription}
     alias RetroHexChat.GroupCall
+
+    @mid_uri "urn:ietf:params:rtp-hdrext:sdes:mid"
 
     def run(parent, config) do
       Process.flag(:trap_exit, true)
@@ -344,6 +643,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
         )
 
       stream_id = "synthetic-#{config.name}-#{System.unique_integer([:positive])}"
+      media = Map.merge(%{audio: true, video: true}, Map.get(config, :media, %{}))
 
       state = %{
         parent: parent,
@@ -356,8 +656,8 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
         pending_remote_candidates: [],
         last_offer_sdp: nil,
         local_tracks: %{
-          audio: MediaStreamTrack.new(:audio, [stream_id]),
-          video: MediaStreamTrack.new(:video, [stream_id])
+          audio: maybe_new_track(:audio, stream_id, media.audio),
+          video: maybe_new_track(:video, stream_id, media.video)
         },
         remote_tracks: %{audio: [], video: []},
         sequence: %{audio: 1, video: 1}
@@ -384,7 +684,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
           loop(state)
 
         {:ex_webrtc, pc, {:ice_candidate, candidate}} when pc == state.pc ->
-          :ok =
+          _ =
             GroupCall.add_ice_candidate(
               state.token,
               state.participant_id,
@@ -465,8 +765,12 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     defp ensure_local_tracks(%{local_tracks_added?: true} = state), do: state
 
     defp ensure_local_tracks(state) do
-      {:ok, _sender} = PeerConnection.add_track(state.pc, state.local_tracks.audio)
-      {:ok, _sender} = PeerConnection.add_track(state.pc, state.local_tracks.video)
+      Enum.each([:audio, :video], fn kind ->
+        if track = state.local_tracks[kind] do
+          {:ok, _sender} = PeerConnection.add_track(state.pc, track)
+        end
+      end)
+
       %{state | local_tracks_added?: true}
     end
 
@@ -494,10 +798,24 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     end
 
     defp send_rtp(state, kind, count) do
+      unless state.local_tracks[kind] do
+        send(state.parent, {:sfu_probe, state.name, :missing_local_track, kind})
+        state
+      else
+        do_send_rtp(state, kind, count)
+      end
+    end
+
+    defp do_send_rtp(state, kind, count) do
       start_sequence = state.sequence[kind]
+      rtp_context = rtp_context_for_kind(state, kind)
 
       Enum.each(start_sequence..(start_sequence + count - 1), fn sequence ->
-        PeerConnection.send_rtp(state.pc, state.local_tracks[kind].id, packet(kind, sequence))
+        PeerConnection.send_rtp(
+          state.pc,
+          state.local_tracks[kind].id,
+          packet(kind, sequence, rtp_context)
+        )
       end)
 
       put_in(state.sequence[kind], start_sequence + count)
@@ -513,30 +831,104 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       end
     end
 
-    defp packet(:audio, sequence) do
+    defp packet(:audio, sequence, %{payload_type: payload_type} = rtp_context) do
       Packet.new(<<1, 2, rem(sequence, 255)>>,
-        payload_type: 111,
+        payload_type: payload_type,
         sequence_number: sequence,
         timestamp: sequence * 960,
         ssrc: 11_111
       )
+      |> add_mid_extension(rtp_context)
     end
 
-    defp packet(:video, sequence) do
+    defp packet(:video, sequence, %{payload_type: payload_type} = rtp_context) do
       Packet.new(<<0x10, 0, rem(sequence, 255), 0x80>>,
-        payload_type: 96,
+        payload_type: payload_type,
         sequence_number: sequence,
         timestamp: sequence * 3_000,
         ssrc: 22_222
       )
+      |> add_mid_extension(rtp_context)
     end
 
     defp kind_for_track(state, track_id) do
       cond do
-        track_id == state.local_tracks.audio.id -> :audio
-        track_id == state.local_tracks.video.id -> :video
-        true -> :video
+        local_track?(state, :audio, track_id) -> :audio
+        local_track?(state, :video, track_id) -> :video
+        track_id in state.remote_tracks.audio -> :audio
+        track_id in state.remote_tracks.video -> :video
+        true -> :unknown
       end
     end
+
+    defp local_track?(state, kind, track_id) do
+      case state.local_tracks[kind] do
+        %{id: ^track_id} -> true
+        _other -> false
+      end
+    end
+
+    defp rtp_context_for_kind(state, kind) do
+      track = state.local_tracks[kind]
+      default_context = %{payload_type: default_payload_type(kind), mid: nil, mid_ext_id: nil}
+
+      PeerConnection.get_transceivers(state.pc)
+      |> Enum.find_value(default_context, fn
+        %{sender: %{track: %{id: track_id}, codec: %{payload_type: payload_type}}}
+        when track != nil and track_id == track.id ->
+          %{
+            payload_type: payload_type,
+            mid: track_mid_for_kind(state, kind),
+            mid_ext_id: mid_extension_id_for_kind(state, kind)
+          }
+
+        _other ->
+          false
+      end)
+    end
+
+    defp track_mid_for_kind(state, kind) do
+      track = state.local_tracks[kind]
+
+      PeerConnection.get_transceivers(state.pc)
+      |> Enum.find_value(fn
+        %{sender: %{track: %{id: track_id}}, mid: mid}
+        when track != nil and track_id == track.id ->
+          mid
+
+        _other ->
+          nil
+      end)
+    end
+
+    defp mid_extension_id_for_kind(state, kind) do
+      track = state.local_tracks[kind]
+
+      PeerConnection.get_transceivers(state.pc)
+      |> Enum.find_value(fn
+        %{sender: %{track: %{id: track_id}}, header_extensions: header_extensions}
+        when track != nil and track_id == track.id ->
+          Enum.find_value(header_extensions, fn
+            %{id: id, uri: @mid_uri} -> id
+            _other -> nil
+          end)
+
+        _other ->
+          nil
+      end)
+    end
+
+    defp add_mid_extension(packet, %{mid: mid, mid_ext_id: id})
+         when is_binary(mid) and is_integer(id) do
+      Packet.add_extension(packet, SourceDescription.to_raw(SourceDescription.new(mid, :mid), id))
+    end
+
+    defp add_mid_extension(packet, _rtp_context), do: packet
+
+    defp default_payload_type(:audio), do: 111
+    defp default_payload_type(:video), do: 96
+
+    defp maybe_new_track(_kind, _stream_id, false), do: nil
+    defp maybe_new_track(kind, stream_id, _enabled?), do: MediaStreamTrack.new(kind, [stream_id])
   end
 end

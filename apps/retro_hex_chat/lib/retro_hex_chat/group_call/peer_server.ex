@@ -361,7 +361,11 @@ defmodule RetroHexChat.GroupCall.PeerServer do
   end
 
   defp add_peer(state, participant_id) do
-    put_in(state.outbound_tracks[participant_id], add_outbound_track_pair(state.pc))
+    if Map.has_key?(state.outbound_tracks, participant_id) do
+      state
+    else
+      put_in(state.outbound_tracks[participant_id], add_outbound_track_pair(state.pc))
+    end
   end
 
   defp remove_peer(state, participant_id) do
