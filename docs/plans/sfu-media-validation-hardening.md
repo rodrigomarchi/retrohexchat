@@ -46,12 +46,13 @@ O harness atual fica em:
 | Terceiro participante entra depois | `basic_test.exs` join gradual | `keeps media fanout healthy when a third participant joins late` | Concluido |
 | Quatro participantes entram ao mesmo tempo | `basic_test.exs` all-at-once | `keeps the transceiver graph sane when four participants join concurrently` | Concluido para sinalizacao/topologia |
 | Um participante sem camera | `basic_test.exs` mixed devices | `keeps video routes healthy when one participant joins without camera` | Concluido |
+| Todos audio-only, gradual e concorrente | `no_video_test.exs` | `keeps audio-only routes healthy when participants gradually join and leave`; `keeps audio-only routing sane when four participants join concurrently` | Concluido; expôs normalizacao de IDs de track |
 | Participante sai e rotas restantes seguem vivas | `basic_test.exs` leave gradual | `keeps remaining media routes healthy after a participant leaves` | Concluido |
 | Offer/ICE restart explicito | Nexus ICE restart pattern | `keeps media alive after an explicit offer request with ICE restart` | Concluido |
 
 ## Backlog priorizado
 
-### P0. Todos audio-only
+### P0. Todos audio-only - concluido em 2026-07-14
 
 Referencia:
 
@@ -80,6 +81,14 @@ Implementacao sugerida:
 - Estender `sfu_media_path_test.exs`.
 - Reusar `SyntheticPeer` com `media` configuravel.
 - Adicionar helper `assert_no_remote_track_count(name, :video, timeout)`.
+
+Resultado:
+
+- Implementados cenarios gradual/leave e concorrente.
+- Bug exposto: tracks sinteticas com IDs numericos eram encaminhadas via RTP,
+  mas falhavam na persistencia como `webrtc_track_id` string.
+- Fix: `PeerServer` normaliza `webrtc_track_id` e `stream_id` para string no
+  payload enviado ao `RoomServer`, mantendo o ID bruto no caminho RTP.
 
 ### P0. Camera -> screen share -> camera mantendo RTP
 

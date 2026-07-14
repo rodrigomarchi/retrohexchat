@@ -224,6 +224,149 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       stop_all_synthetic_peers()
     end
 
+    test "keeps audio-only routes healthy when participants gradually join and leave" do
+      ctx = create_call_with_member("audioonly", "alice")
+      bob = create_registered_nick(unique_nick("bob"))
+      carol = create_registered_nick(unique_nick("carol"))
+      {:ok, _state} = Server.join(ctx.channel, bob.nickname, nil, identified: true)
+      {:ok, _state} = Server.join(ctx.channel, carol.nickname, nil, identified: true)
+
+      alice_client = start_synthetic_peer(ctx, ctx.nick, :alice, media: audio_only_media())
+      assert_participant_connected(alice_client.participant_id)
+
+      bob_client = start_synthetic_peer(ctx, bob, :bob, media: audio_only_media())
+      assert_participant_connected(bob_client.participant_id)
+
+      carol_client = start_synthetic_peer(ctx, carol, :carol, media: audio_only_media())
+      assert_participant_connected(carol_client.participant_id)
+
+      assert_remote_track_count(:alice, :audio, 2)
+      assert_remote_track_count(:bob, :audio, 2)
+      assert_remote_track_count(:carol, :audio, 2)
+
+      assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 2)
+      assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 2)
+      assert_eventually_server_stats_subscriber_count(ctx.token, carol_client.participant_id, 2)
+
+      drain_probe_rtp()
+
+      send(carol_client.pid, {:send_rtp, :audio, @audio_packet_burst})
+      assert_audio_rtp_counts([:alice, :bob])
+
+      drain_probe_rtp()
+
+      send(alice_client.pid, {:send_rtp, :audio, @audio_packet_burst})
+      assert_audio_rtp_counts([:bob, :carol])
+
+      drain_probe_rtp()
+
+      send(bob_client.pid, {:send_rtp, :audio, @audio_packet_burst})
+      assert_audio_rtp_counts([:alice, :carol])
+
+      assert_eventually_active_track_counts(ctx.room.id, %{audio: 3, video: 0})
+
+      drain_probe_rtp()
+
+      Enum.each([alice_client, bob_client, carol_client], fn client ->
+        send(client.pid, {:send_rtp, :video, @video_packet_burst})
+      end)
+
+      assert_missing_local_track(:alice, :video)
+      assert_missing_local_track(:bob, :video)
+      assert_missing_local_track(:carol, :video)
+      refute_rtp_for([:alice, :bob, :carol], :video)
+
+      drain_probe_messages()
+
+      :ok = GroupCall.leave_call(ctx.token, bob_client.participant_id, "left")
+
+      assert_receive {:sfu_probe, :alice, :answered_offer}, 10_000
+      assert_receive {:sfu_probe, :carol, :answered_offer}, 10_000
+
+      assert_eventually_active_track_counts(ctx.room.id, %{audio: 2, video: 0})
+      assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
+      assert_eventually_server_stats_subscriber_count(ctx.token, carol_client.participant_id, 1)
+
+      drain_probe_rtp()
+
+      send(carol_client.pid, {:send_rtp, :audio, @audio_packet_burst})
+      assert_audio_rtp_counts([:alice])
+
+      drain_probe_rtp()
+
+      send(alice_client.pid, {:send_rtp, :audio, @audio_packet_burst})
+      assert_audio_rtp_counts([:carol])
+    after
+      stop_all_synthetic_peers()
+    end
+
+    test "keeps audio-only routing sane when four participants join concurrently" do
+      ctx = create_call_with_member("aoburst", "alice")
+      bob = create_registered_nick(unique_nick("bob"))
+      carol = create_registered_nick(unique_nick("carol"))
+      dave = create_registered_nick(unique_nick("dave"))
+      {:ok, _state} = Server.join(ctx.channel, bob.nickname, nil, identified: true)
+      {:ok, _state} = Server.join(ctx.channel, carol.nickname, nil, identified: true)
+      {:ok, _state} = Server.join(ctx.channel, dave.nickname, nil, identified: true)
+
+      peers = %{
+        alice: spawn_synthetic_peer(ctx, ctx.nick, :alice, media: audio_only_media()),
+        bob: spawn_synthetic_peer(ctx, bob, :bob, media: audio_only_media()),
+        carol: spawn_synthetic_peer(ctx, carol, :carol, media: audio_only_media()),
+        dave: spawn_synthetic_peer(ctx, dave, :dave, media: audio_only_media())
+      }
+
+      participants = await_joined_participants(Map.keys(peers))
+
+      Enum.each(participants, fn {_name, participant_id} ->
+        assert_participant_connected(participant_id)
+      end)
+
+      assert_remote_track_count(:alice, :audio, 3)
+      assert_remote_track_count(:bob, :audio, 3)
+      assert_remote_track_count(:carol, :audio, 3)
+      assert_remote_track_count(:dave, :audio, 3)
+
+      Enum.each(participants, fn {_name, participant_id} ->
+        assert_eventually_server_stats_subscriber_count(ctx.token, participant_id, 3)
+        assert_eventually_server_transceiver_shape(ctx.room.id, participant_id, 3)
+      end)
+
+      drain_probe_rtp()
+
+      send(peers.dave.pid, {:send_rtp, :audio, @audio_packet_burst})
+      assert_audio_rtp_counts([:alice, :bob, :carol])
+
+      drain_probe_rtp()
+
+      send(peers.alice.pid, {:send_rtp, :audio, @audio_packet_burst})
+      assert_audio_rtp_counts([:bob, :carol, :dave])
+
+      drain_probe_rtp()
+
+      send(peers.bob.pid, {:send_rtp, :audio, @audio_packet_burst})
+      assert_audio_rtp_counts([:alice, :carol, :dave])
+
+      drain_probe_rtp()
+
+      send(peers.carol.pid, {:send_rtp, :audio, @audio_packet_burst})
+      assert_audio_rtp_counts([:alice, :bob, :dave])
+
+      assert_eventually_active_track_counts(ctx.room.id, %{audio: 4, video: 0})
+
+      Enum.each(Map.values(peers), fn peer ->
+        send(peer.pid, {:send_rtp, :video, @video_packet_burst})
+      end)
+
+      assert_missing_local_track(:alice, :video)
+      assert_missing_local_track(:bob, :video)
+      assert_missing_local_track(:carol, :video)
+      assert_missing_local_track(:dave, :video)
+      refute_rtp_for([:alice, :bob, :carol, :dave], :video)
+    after
+      stop_all_synthetic_peers()
+    end
+
     test "keeps remaining media routes healthy after a participant leaves" do
       ctx = create_call_with_member("leave", "alice")
       bob = create_registered_nick(unique_nick("bob"))
@@ -310,6 +453,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
   defp uid, do: System.unique_integer([:positive])
   defp unique_nick(prefix), do: "#{prefix}#{uid()}" |> String.slice(0, 16)
+  defp audio_only_media, do: %{audio: true, video: false}
 
   defp create_registered_nick(nickname) do
     {:ok, nick} =
@@ -518,6 +662,36 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     end)
   end
 
+  defp assert_eventually_active_track_counts(room_id, expected_counts) do
+    wait_until(fn -> active_track_counts_match?(room_id, expected_counts) end, 500)
+  rescue
+    error in ExUnit.AssertionError ->
+      active_tracks = Queries.list_active_tracks(room_id)
+      counts = active_track_counts(active_tracks)
+
+      reraise %ExUnit.AssertionError{
+                error
+                | message:
+                    "#{error.message}; expected_counts=#{inspect(expected_counts)} actual_counts=#{inspect(counts)} tracks=#{inspect(active_tracks)}"
+              },
+              __STACKTRACE__
+  end
+
+  defp active_track_counts_match?(room_id, expected_counts) do
+    room_id
+    |> Queries.list_active_tracks()
+    |> active_track_counts()
+    |> then(fn counts ->
+      Enum.all?(expected_counts, fn {kind, expected_count} ->
+        Map.get(counts, Atom.to_string(kind), 0) == expected_count
+      end)
+    end)
+  end
+
+  defp active_track_counts(active_tracks) do
+    Enum.frequencies_by(active_tracks, & &1.kind)
+  end
+
   defp drain_probe_rtp do
     receive do
       {:sfu_probe, _name, :rtp, _kind, _track_id, _sequence} -> drain_probe_rtp()
@@ -543,6 +717,10 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     after
       0 -> :ok
     end
+  end
+
+  defp assert_missing_local_track(name, kind) do
+    assert_receive {:sfu_probe, ^name, :missing_local_track, ^kind}, 1_000
   end
 
   defp assert_video_rtp_counts(names, min_count \\ @min_forwarded_packets, timeout \\ 5_000) do

@@ -281,8 +281,8 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     :ok =
       RoomServer.track_added(state.room_pid, state.participant.id, %{
         kind: kind,
-        webrtc_track_id: track.id,
-        stream_id: List.first(track.streams || []),
+        webrtc_track_id: string_id(track.id),
+        stream_id: string_id(List.first(track.streams || [])),
         codec: nil
       })
 
@@ -466,6 +466,9 @@ defmodule RetroHexChat.GroupCall.PeerServer do
       {participant_id, tracks}
     end)
   end
+
+  defp string_id(nil), do: nil
+  defp string_id(value), do: to_string(value)
 
   defp route_pli_feedback(state, {track_id, %{__struct__: ExRTCP.Packet.PayloadFeedback.PLI}}) do
     case publisher_for_outbound_video(state.outbound_tracks, track_id) do
