@@ -602,9 +602,10 @@ describe("Quality Monitoring", () => {
         setParameters: vi.fn(),
       };
 
-      await applySenderProfile(sender);
+      const applied = await applySenderProfile(sender);
 
       const setParams = sender.setParameters.mock.calls[0][0];
+      expect(applied).toBe(true);
       expect(setParams.encodings[0].maxBitrate).toBe(400_000);
       expect(setParams.encodings[0].maxFramerate).toBe(15);
     });
@@ -617,9 +618,10 @@ describe("Quality Monitoring", () => {
         setParameters: vi.fn(),
       };
 
-      await applySenderProfile(sender, "screen");
+      const applied = await applySenderProfile(sender, "screen");
 
       const setParams = sender.setParameters.mock.calls[0][0];
+      expect(applied).toBe(true);
       expect(setParams.encodings[0].maxBitrate).toBe(800_000);
       expect(setParams.encodings[0].maxFramerate).toBe(10);
     });
@@ -632,10 +634,34 @@ describe("Quality Monitoring", () => {
         setParameters: vi.fn(),
       };
 
-      await applySenderProfile(sender);
+      const applied = await applySenderProfile(sender);
 
       const setParams = sender.setParameters.mock.calls[0][0];
+      expect(applied).toBe(true);
       expect(setParams.encodings[0].maxBitrate).toBe(40_000);
+    });
+
+    it("does not reject when the browser refuses sender parameters", async () => {
+      const sender = {
+        track: { kind: "video" },
+        getParameters: () => ({ encodings: [{}] }),
+        setParameters: vi.fn().mockRejectedValue(new DOMException("busy", "InvalidStateError")),
+      };
+
+      await expect(applySenderProfile(sender)).resolves.toBe(false);
+    });
+
+    it("does not reject when sender parameters cannot be read", async () => {
+      const sender = {
+        track: { kind: "video" },
+        getParameters: vi.fn(() => {
+          throw new DOMException("closed", "InvalidStateError");
+        }),
+        setParameters: vi.fn(),
+      };
+
+      await expect(applySenderProfile(sender)).resolves.toBe(false);
+      expect(sender.setParameters).not.toHaveBeenCalled();
     });
   });
 

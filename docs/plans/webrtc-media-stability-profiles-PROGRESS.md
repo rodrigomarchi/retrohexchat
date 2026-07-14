@@ -85,6 +85,11 @@
   mesmo fallback do P2P.
 - `applyMediaProfile()` nao tinha teste direto. Foi adicionado teste para
   garantir que todos os senders ativos recebem o perfil `stable` ao iniciar.
+- Incidente em producao apos a primeira entrega: a conferencia entrou em
+  `media_negotiation_failed`/`signaling_failed`. O ponto suspeito era o
+  frontend tratar `RTCRtpSender.setParameters()` como obrigatorio durante a
+  resposta ao offer do SFU. A correcao transformou caps de sender em best-effort:
+  se o browser recusar `getParameters/setParameters`, a SDP answer continua.
 
 ### 2026-07-14 - validacoes finais
 
@@ -113,6 +118,16 @@
   - repetido apos centralizar `contentHint="detail"` em `acquireDisplayMedia()`;
   - resultado: 137 arquivos JS, 3854 testes, formatacao ok, lint ok e contrato
     de hooks ok.
+- `rtk npm test -- test/lib/p2p/media.test.js test/hooks/group_call/group_call_webrtc_hook.test.js`
+  - resultado: 2 arquivos, 92 testes, 0 falhas;
+  - cobre o caso em que `setParameters()` falha durante a negociacao SFU e mesmo
+    assim o cliente envia `group_call_answer`.
+- `rtk npm test && rtk npm run format:check && rtk npm run lint && rtk npm run lint:hooks`
+  - resultado: 137 arquivos JS, 3857 testes, formatacao ok, lint ok e contrato
+    de hooks ok.
+- `rtk npm test -- tests/chat-group-call.spec.ts -g "two identified channel users join the same SFU call and exchange decoded video frames"`
+  - executado em `e2e/`;
+  - resultado: 1 teste Playwright/Chromium, 0 falhas.
 
 ## Aprendizados consolidados
 
@@ -133,6 +148,10 @@
 - Hints de screen share pertencem ao helper de captura, porque P2P e
   conferencia compartilham o mesmo comportamento e ambos precisam cobrir tambem
   o fallback de constraints.
+- `RTCRtpSender.setParameters()` nao pode ser uma pre-condicao de negociacao.
+  Ele e util para estabilidade, mas precisa ser best-effort porque browsers
+  reais podem rejeitar caps dependendo do estado do transceiver ou do suporte a
+  campos de encoding.
 - Testes de WebRTC que verificam troca de track devem mockar tambem
   `RTCRtpSender.getParameters/setParameters`; sem isso eles nao expõem regressao
   nos limites de envio.

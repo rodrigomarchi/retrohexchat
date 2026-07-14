@@ -408,6 +408,52 @@ describe("GroupCallWebRTCHook media fallback", () => {
     });
   });
 
+  it("answers an offer when sender profile caps are rejected by the browser", async () => {
+    const hook = setupHook();
+    hook.pc = null;
+    const audioTrack = { kind: "audio", enabled: true, contentHint: "" };
+    const videoTrack = { kind: "video", enabled: true, contentHint: "" };
+    const stream = {
+      getTracks: vi.fn(() => [audioTrack, videoTrack]),
+      getAudioTracks: vi.fn(() => [audioTrack]),
+      getVideoTracks: vi.fn(() => [videoTrack]),
+    };
+    const senders = [];
+    const pc = new MockPeerConnection();
+
+    pc.addTrack = vi.fn((track) => {
+      const sender = {
+        track,
+        getParameters: vi.fn(() => ({ encodings: [{}] })),
+        setParameters: vi.fn().mockRejectedValue(new DOMException("busy", "InvalidStateError")),
+      };
+      senders.push(sender);
+      return sender;
+    });
+    pc.getSenders = vi.fn(() => senders);
+
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        getUserMedia: vi.fn().mockResolvedValue(stream),
+      },
+    });
+    vi.stubGlobal("RTCPeerConnection", function RTCPeerConnectionMock() {
+      return pc;
+    });
+
+    await hook._handleOffer({ sdp: "offer-sdp", ice_servers: [] });
+
+    expect(pc.createAnswer).toHaveBeenCalled();
+    expect(hook.channel.push).toHaveBeenCalledWith("group_call_answer", {
+      sdp: "answer-sdp",
+    });
+    expect(hook.pushEvent).not.toHaveBeenCalledWith(
+      "group_call_client_error",
+      expect.objectContaining({ code: "media_negotiation_failed" }),
+    );
+  });
+
   it("serializes different offers on the same peer connection", async () => {
     const hook = setupNegotiationHook();
     const pc = new MockPeerConnection();

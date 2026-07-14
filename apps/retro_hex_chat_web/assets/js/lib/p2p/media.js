@@ -782,15 +782,27 @@ export function applyTrackHints(stream, profileName = DEFAULT_MEDIA_PROFILE) {
 
 /**
  * Apply one fixed media profile to a single RTP sender.
+ *
+ * Sender caps are best-effort: browsers may reject setParameters while a
+ * transceiver is still being negotiated or when an encoding field is not
+ * supported. Capture constraints still keep the call conservative, so caps must
+ * never abort SDP negotiation.
+ *
  * @param {RTCRtpSender} sender
  * @param {"stable"|"low"|"high"|"screen"} profileName
- * @returns {Promise<void>}
+ * @returns {Promise<boolean>} true when the sender accepted the profile
  */
 export async function applySenderProfile(sender, profileName = DEFAULT_MEDIA_PROFILE) {
-  if (!sender?.track || typeof sender.setParameters !== "function") return;
+  if (!sender?.track || typeof sender.setParameters !== "function") return false;
 
   const profile = mediaProfile(profileName);
-  const params = typeof sender.getParameters === "function" ? sender.getParameters() : {};
+  let params;
+
+  try {
+    params = typeof sender.getParameters === "function" ? sender.getParameters() : {};
+  } catch {
+    return false;
+  }
 
   if (!params.encodings || params.encodings.length === 0) {
     params.encodings = [{}];
@@ -807,7 +819,12 @@ export async function applySenderProfile(sender, profileName = DEFAULT_MEDIA_PRO
     }
   });
 
-  await sender.setParameters(params);
+  try {
+    await sender.setParameters(params);
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 /**
