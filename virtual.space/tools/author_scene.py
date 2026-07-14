@@ -46,11 +46,11 @@ BRIDGES = {
     "bridge_e": {"x0": 60, "x1": 65, "y0": 35, "y1": 36},
 }
 SOLIDS = {**PLATFORMS, **BRIDGES}
-# One lamppost per platform centre (except the north platform — lit by the
-# Matrix nook's TV — and the east platform — lit by the DeLorean's fire
-# trails); the central one anchors the spawns, the lights and the DM
-# nameplate.
-LAMPS = [(48, 36), (48, 58), (17, 36)]
+# One lamppost per platform centre; themed platforms carry their own light
+# (north: the Matrix TV; east: the DeLorean fire trails; west: the Balrog's
+# inferno vs Gandalf's staff). The central lamp anchors the spawns, the
+# lights and the DM nameplate.
+LAMPS = [(48, 36), (48, 58)]
 # Animated props (real PixelLab frames, packed as horizontal strips):
 # name -> (frames folder under scenes/end_of_time/, block w×h in cells,
 # period_ms, flip_x). The Matrix nook on the north platform: Morpheus (west
@@ -68,6 +68,13 @@ ANIM_PROPS = {
     "eot_tv": ("anim/tv", 2, 3, 420, False, None),
     "eot_delorean": ("anim/delorean", 5, 4, 1200, False, None),
     "eot_fire": ("anim/fire", 2, 2, 660, False, "dl"),
+    # West platform: the Balrog's SILHOUETTE is a single static frame (v3
+    # cannot hold a 240px subject still — it reshapes wings/pose per frame);
+    # the living fire is a separate flames-only wall animated at his feet.
+    # Gandalf's staff crystal flares in slow cold pulses.
+    "eot_balrog": ("anim/balrog", 8, 7, 1000, False, None),
+    "eot_balrogfire": ("anim/balrogfire", 4, 2, 660, False, None),
+    "eot_gandalf": ("anim/gandalf", 2, 4, 1600, False, None),
 }
 # Matrix nook placement: decor anchor tile + solid ground footprint. The TV
 # sits on the pair's perpendicular bisector pushed north — (46,10) projects
@@ -81,6 +88,14 @@ FURNITURE = [
     # the camera — whoever walks in from the west bridge sees the burning
     # wheel trails leading up to it.
     ("eot_delorean", 79, 33, {"x": 77, "y": 32, "w": 4, "h": 2}),
+    # West platform: the Balrog rises at the back-north corner, wings over the
+    # void; Gandalf stands his ground between the monster and the bridge —
+    # "you shall not pass", literally guarding the crossing.
+    ("eot_balrog", 11, 31, {"x": 9, "y": 30, "w": 5, "h": 2}),
+    # Same anchor tile as the Balrog: listed after him, the flames draw in
+    # front, rising from INSIDE his painted fire pool (one blaze, not two).
+    ("eot_balrogfire", 11, 31, {"x": 11, "y": 32, "w": 2, "h": 1}),
+    ("eot_gandalf", 19, 35, {"x": 19, "y": 35, "w": 1, "h": 1}),
 ]
 # The two burning wheel trails behind the rear tyres, running down-left along
 # the car's travel axis (tile steps (0,+1) = the sheared streak's 2:1 slope).
@@ -89,7 +104,7 @@ FURNITURE = [
 # 3.5px from the rear tyre's measured ground contact; the left-wheel line is
 # one perpendicular step (-1,0) away.
 FIRE_TRAIL = [(78, 35), (78, 36), (78, 37), (79, 35), (79, 36), (79, 37)]
-SHEET_COLS = 30
+SHEET_COLS = 36
 Z_STEP = 16
 
 
@@ -448,6 +463,17 @@ def build():
     # tubes tint the car's rear pale blue.
     lights.append({"x": 78, "y": 36, "radius": 2.2, "color": "ff9a4d", "blend": "add"})
     lights.append({"x": 79, "y": 36, "radius": 2.0, "color": "ff8a3d", "blend": "add"})
+    # West platform: the Balrog's inferno vs the cold white point of Gandalf's
+    # staff crystal.
+    lights.append({"x": 11, "y": 31, "radius": 3.2, "color": "ff7a2d", "blend": "add"})
+    lights.append({"x": 11, "y": 31, "lift": 24, "radius": 1.6, "color": "ffb060",
+                   "blend": "add"})
+    # The staff halo sits ON the crystal: measured from the packed frames'
+    # union window, the crystal centroid is +4px right / 75px above Gandalf's
+    # foot. The fractional tile (+0.078,-0.078) keeps the depth row and adds
+    # the +4px screen-x.
+    lights.append({"x": 19.078, "y": 34.922, "lift": 75, "radius": 1.1,
+                   "color": "e8f4ff", "blend": "add"})
     lights.append({"x": 79, "y": 33, "lift": 40, "radius": 1.1, "color": "a8c8ff",
                    "blend": "add"})
 

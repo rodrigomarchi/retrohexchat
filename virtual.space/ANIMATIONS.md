@@ -173,6 +173,9 @@ scene (the Matrix nook + sky):
 | `eot_tv` (off-air static) | 6 | 420 | fast snow crackle |
 | `eot_delorean` (flux pulse) | 6 | 1200 | rhythmic blue glow on the rear deck |
 | `eot_fire` (wheel trails) | 6 | 660 | lively flame flicker |
+| `eot_balrog` (static body) | 1 | — | obsidian demon; all its fire is the blaze below |
+| `eot_balrogfire` (blaze) | 6 | 660 | fierce fire wall at the Balrog's feet |
+| `eot_gandalf` (staff flare) | 6 | 1600 | slow cold pulse of the crystal |
 | `iso_star` (script-drawn) | 4 | 1100 | twinkle |
 
 Reference values from the pre-iso scene (props long gone, tuning still useful):
@@ -311,6 +314,20 @@ placement and the live look. Finish with `make ci` (9/9).
   client whose Space tab predates a repack still renders the OLD layout (the
   map rides the join payload); a placement fix looks "even more wrong" on a
   stale session. Reopen the Space tab / reload, then judge.
+- **v3 cannot hold a large complex subject still (~240px).** Animating the
+  Balrog re-imagined wings/pose/palette every frame — twice, even with a
+  pixel-identical stillness prompt. Props that animated cleanly were ≤136px.
+  Fallback that works: keep the big body as a SINGLE static frame and animate
+  a separate small flames-only overlay at its base (fire alone on a small
+  canvas is rock-solid). Corollary: if all visible fire must animate, the
+  static art must carry NO painted flames — regenerate it flame-free rather
+  than pairing dead fire with living fire.
+- **Lights ride fractional tiles.** `footAnchor` is linear in (x,y), so a
+  light at `x: 19.078, y: 34.922` lands ±px-precise on an emitter (Gandalf's
+  staff crystal). Measure the emitter's centroid in the packed frames' UNION
+  window (the animation's flare widens the bbox — a static-frame estimate
+  lands the halo off the crystal), then keep `x+y` constant to preserve the
+  depth row.
 - **Stale `mix phx.digest` artifacts poison the served bundle.** Leftover
   `app.js.gz`/`app-<hash>.js` in `priv/static/assets` are served in preference
   to the fresh esbuild `app.js` (Plug.Static serves the precompressed file
