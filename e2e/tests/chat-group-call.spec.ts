@@ -45,6 +45,14 @@ function groupCallPrejoinRetry(page: Page) {
   return page.getByTestId("group-call-prejoin-retry");
 }
 
+function groupCallPrejoinPreviewVideo(page: Page) {
+  return page.getByTestId("group-call-prejoin-video");
+}
+
+function groupCallPrejoinEmpty(page: Page) {
+  return page.getByTestId("group-call-prejoin-empty");
+}
+
 function groupCallStatsWindow(page: Page) {
   return page.getByTestId("group-call-stats-window");
 }
@@ -548,6 +556,27 @@ async function expectPrejoinDialogLayoutStable(page: Page) {
   );
 }
 
+async function expectPrejoinCameraPreviewLive(page: Page) {
+  await expect(groupCallPrejoinPreviewVideo(page)).toBeVisible();
+  await expect
+    .poll(
+      () =>
+        groupCallPrejoinPreviewVideo(page).evaluate((video) => {
+          const stream = (video as HTMLVideoElement)
+            .srcObject as MediaStream | null;
+          return (
+            !!stream &&
+            stream
+              .getVideoTracks()
+              .some((track) => track.readyState === "live" && track.enabled)
+          );
+        }),
+      { timeout: 10_000 },
+    )
+    .toBe(true);
+  await expect(groupCallPrejoinEmpty(page)).toBeHidden();
+}
+
 async function participantMediaEnabled(
   page: Page,
   nickname: string,
@@ -623,10 +652,12 @@ test.describe("Channel group calls", () => {
 
       await groupCallButton(alice.page).click();
       await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
+      await expectPrejoinCameraPreviewLive(alice.page);
       await expectPrejoinDialogLayoutStable(alice.page);
 
       await alice.page.setViewportSize({ width: 390, height: 844 });
       await expect(groupCallPrejoinDialog(alice.page)).toBeVisible();
+      await expectPrejoinCameraPreviewLive(alice.page);
       await expectPrejoinDialogLayoutStable(alice.page);
     } finally {
       await closeGroupCallUsers([alice]);

@@ -18,6 +18,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
 
     ~H"""
     <span
+      :if={@level != :unknown}
       class={[
         "flex h-5 w-5 items-center justify-center shadow-retro-sunken",
         quality_class(@level)
@@ -32,7 +33,6 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ParticipantQualityBadge do
       <Icons.icon_quality_medium :if={@level == :fair} class="h-3 w-3" />
       <Icons.icon_quality_low :if={@level == :poor} class="h-3 w-3" />
       <Icons.icon_btn_timers :if={@level == :reconnecting} class="h-3 w-3" />
-      <Icons.icon_warning :if={@level == :unknown} class="h-3 w-3" />
     </span>
     """
   end

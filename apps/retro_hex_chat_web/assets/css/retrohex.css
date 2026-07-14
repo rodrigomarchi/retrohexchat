@@ -328,6 +328,10 @@ body {
     inset -1px -1px #808080;
 }
 
+.group-call-video-badge[hidden] {
+  display: none;
+}
+
 .group-call-video-tile[data-media-audio="false"] [data-group-call-audio-badge],
 .group-call-video-tile[data-media-audio="false"] [data-group-call-local-audio-badge],
 .group-call-video-tile[data-media-video="false"] [data-group-call-video-badge],

@@ -94,6 +94,10 @@ function setupLayoutHook() {
               <span data-group-call-video-badge>
                 <svg data-test-icon="remote-camera"></svg>
               </span>
+              <span data-group-call-quality-badge data-quality-level="unknown" hidden>
+                <svg data-quality-icon="high"></svg>
+                <svg data-quality-icon="low"></svg>
+              </span>
             </span>
           </div>
         </div>
@@ -868,8 +872,11 @@ describe("GroupCallWebRTCHook media fallback", () => {
     );
 
     const tile = hook.el.querySelector('[data-stream-id="stream-456"]');
+    const qualityBadge = tile.querySelector("[data-group-call-quality-badge]");
     expect(tile.dataset.activeSpeaker).toBe("true");
     expect(tile.dataset.qualityLevel).toBe("excellent");
+    expect(qualityBadge.hidden).toBe(false);
+    expect(qualityBadge.title).toContain("Excellent");
   });
 
   it("accepts an instrumented participant quality event for deterministic UI checks", () => {
@@ -887,6 +894,9 @@ describe("GroupCallWebRTCHook media fallback", () => {
       tracks: [{ id: 2, participant_id: 456, stream_id: "stream-456" }],
     });
     hook._attachRemoteStream({ id: "stream-456" });
+    const tileBeforeQuality = hook.el.querySelector('[data-stream-id="stream-456"]');
+    expect(tileBeforeQuality.querySelector("[data-group-call-quality-badge]").hidden).toBe(true);
+
     hook.participantQualityEventHandler = (event) => {
       const payload = event.detail || {};
       hook._syncParticipantQualityState(payload);
@@ -916,8 +926,10 @@ describe("GroupCallWebRTCHook media fallback", () => {
     );
 
     const tile = hook.el.querySelector('[data-stream-id="stream-456"]');
+    const qualityBadge = tile.querySelector("[data-group-call-quality-badge]");
     expect(tile.dataset.activeSpeaker).toBe("true");
     expect(tile.dataset.qualityLevel).toBe("poor");
+    expect(qualityBadge.hidden).toBe(false);
     expect(hook.pushEvent).toHaveBeenCalledWith(
       "group_call_participant_quality",
       expect.objectContaining({ active_speaker_participant_id: "456" }),

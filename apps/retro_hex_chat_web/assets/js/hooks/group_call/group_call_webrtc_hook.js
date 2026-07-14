@@ -1782,9 +1782,12 @@ const GroupCallWebRTCHook = {
 
     const qualityBadge = tile.querySelector("[data-group-call-quality-badge]");
     if (qualityBadge) {
+      qualityBadge.hidden = !quality || level === "unknown";
       qualityBadge.dataset.qualityLevel = level;
-      qualityBadge.title = this._participantQualityTitle(quality);
-      qualityBadge.setAttribute("aria-label", this._participantQualityTitle(quality));
+      const qualityTitle =
+        quality && level !== "unknown" ? this._participantQualityTitle(quality) : "";
+      qualityBadge.title = qualityTitle;
+      qualityBadge.setAttribute("aria-label", qualityTitle);
     }
 
     const speakerBadge = tile.querySelector("[data-group-call-active-speaker-badge]");
@@ -1795,7 +1798,7 @@ const GroupCallWebRTCHook = {
   },
 
   _participantQualityTitle(quality) {
-    if (!quality) return "Quality unknown";
+    if (!quality) return "";
 
     return `${quality.label}: RTT ${quality.rtt_ms} ms, loss ${quality.loss_pct}%, ${quality.bitrate_kbps} kbps, ${quality.fps} fps`;
   },

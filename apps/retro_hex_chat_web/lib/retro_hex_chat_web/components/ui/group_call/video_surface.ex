@@ -184,6 +184,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
                   class="group-call-video-badge"
                   data-group-call-quality-badge
                   data-quality-level="unknown"
+                  hidden
                   title={dgettext("group_call", "Quality unknown")}
                   aria-label={dgettext("group_call", "Quality unknown")}
                 >

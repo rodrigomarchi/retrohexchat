@@ -1145,6 +1145,11 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
         ]
       })
 
+      refute has_element?(
+               view,
+               ~s([data-testid="group-call-participant-quality-456"])
+             )
+
       render_click(view, "group_call_participant_quality", %{
         "active_speaker_participant_id" => 456,
         "participants" => [

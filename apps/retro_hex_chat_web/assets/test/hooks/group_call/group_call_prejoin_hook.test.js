@@ -204,6 +204,57 @@ describe("GroupCallPreJoinHook", () => {
       audio: expect.objectContaining({ deviceId: { exact: "mic-1" } }),
       video: expect.objectContaining({ deviceId: { exact: "cam-1" } }),
     });
+    expect(
+      document.querySelector("[data-group-call-prejoin-empty]").classList.contains("hidden"),
+    ).toBe(true);
+  });
+
+  it("keeps the active camera preview visible after LiveView refreshes preview markup", async () => {
+    const stream = streamFixture();
+    const getUserMedia = vi.fn(async () => stream);
+
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        enumerateDevices: vi.fn(async () => [
+          { kind: "audioinput", deviceId: "mic-1", label: "Desk Mic" },
+          { kind: "videoinput", deviceId: "cam-1", label: "Desk Cam" },
+        ]),
+        getUserMedia,
+      },
+    });
+
+    const hook = formFixture();
+    hook.mounted();
+    await flushPromises();
+
+    expect(document.querySelector("[data-group-call-prejoin-video]").srcObject).toBe(stream);
+    expect(
+      document.querySelector("[data-group-call-prejoin-empty]").classList.contains("hidden"),
+    ).toBe(true);
+
+    hook.el.innerHTML = `
+      <span data-group-call-prejoin-device-state>
+        <span data-group-call-prejoin-device-state-text>Checking devices</span>
+      </span>
+      <video data-group-call-prejoin-video></video>
+      <div data-group-call-prejoin-empty>
+        <span data-group-call-prejoin-empty-text>Camera preview is off</span>
+      </div>
+      <div data-group-call-prejoin-warning class="hidden">
+        <span data-group-call-prejoin-warning-text></span>
+        <button type="button" data-group-call-prejoin-retry>Retry</button>
+      </div>
+    `;
+
+    hook.updated();
+    await flushPromises();
+
+    expect(getUserMedia).toHaveBeenCalledTimes(1);
+    expect(document.querySelector("[data-group-call-prejoin-video]").srcObject).toBe(stream);
+    expect(
+      document.querySelector("[data-group-call-prejoin-empty]").classList.contains("hidden"),
+    ).toBe(true);
   });
 
   it("shows an actionable permission warning and retries the same preview constraints", async () => {

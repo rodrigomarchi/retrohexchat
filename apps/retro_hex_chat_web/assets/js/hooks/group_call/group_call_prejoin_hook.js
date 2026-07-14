@@ -91,7 +91,10 @@ const GroupCallPreJoinHook = {
     const run = ++this.previewRun;
     const force = options.force === true;
 
-    if (key === this.previewKey && !force) return;
+    if (key === this.previewKey && !force) {
+      this._syncPreviewDom(preferences);
+      return;
+    }
 
     this.previewKey = key;
     this._clearWarning();
@@ -113,20 +116,7 @@ const GroupCallPreJoinHook = {
       this._stopPreview();
       this.previewStream = stream;
 
-      if (this.video) {
-        this.video.srcObject = stream;
-        this.video.muted = true;
-        this.video.playsInline = true;
-
-        if (preferences.audio_output_id) {
-          await setSinkId(this.video, preferences.audio_output_id).catch(() => false);
-        }
-      }
-
-      this._showEmpty(
-        stream.getVideoTracks().length === 0,
-        preferences.video ? t("Camera preview unavailable") : t("Camera preview is off"),
-      );
+      await this._attachPreviewStream(stream, preferences);
     } catch (error) {
       if (run !== this.previewRun) return;
 
@@ -145,6 +135,34 @@ const GroupCallPreJoinHook = {
 
     if (this.video) {
       this.video.srcObject = null;
+    }
+  },
+
+  async _attachPreviewStream(stream, preferences) {
+    if (this.video) {
+      this.video.srcObject = stream;
+      this.video.muted = true;
+      this.video.playsInline = true;
+
+      if (preferences.audio_output_id) {
+        await setSinkId(this.video, preferences.audio_output_id).catch(() => false);
+      }
+    }
+
+    this._showEmpty(
+      stream.getVideoTracks().length === 0,
+      preferences.video ? t("Camera preview unavailable") : t("Camera preview is off"),
+    );
+  },
+
+  _syncPreviewDom(preferences) {
+    if (this.previewStream) {
+      this._attachPreviewStream(this.previewStream, preferences);
+      return;
+    }
+
+    if (!preferences.audio && !preferences.video) {
+      this._showEmpty(true, t("Joining receive-only"));
     }
   },
 
