@@ -409,13 +409,17 @@ def build():
     # Every lamppost casts light as TWO stacked glows so it reads as emitting
     # from the lantern head, not the pole base: a soft pool on the ground + a
     # tight bright halo lifted up to the lantern head. The north platform has
-    # no lamp — the Matrix nook lives in the ambient dusk, lit by the TV's own
-    # bright static screen (no light-pool overlay).
+    # no lamp — the Matrix nook is lit by the CRT alone: a dim cool pool spills
+    # on the floor IN FRONT of the set (toward the pair) + a tight pale halo at
+    # screen height. Deliberately faint — a television in the dark, not a lamp.
     lights = []
     for x, y in LAMPS:
         lights.append({"x": x, "y": y, "radius": 4.2, "color": "ffd591", "blend": "add"})
         lights.append({"x": x, "y": y, "lift": 152, "radius": 1.6, "color": "ffe6a8",
                        "blend": "add"})
+    lights.append({"x": 47, "y": 11, "radius": 2.6, "color": "7d9cc9", "blend": "add"})
+    lights.append({"x": 46, "y": 10, "lift": 46, "radius": 1.1, "color": "a9c4e8",
+                   "blend": "add"})
 
     zones = [{"id": name, "kind": "platform", "x": r["x0"], "y": r["y0"],
               "w": r["x1"] - r["x0"] + 1, "h": r["y1"] - r["y0"] + 1}
