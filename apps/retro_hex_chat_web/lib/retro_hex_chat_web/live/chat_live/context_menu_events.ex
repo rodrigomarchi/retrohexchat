@@ -49,8 +49,8 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChatWeb.ChatLive.CommandDispatch
 
   alias RetroHexChatWeb.ChatLive.Components.{
-    ConversationsContextMenu,
     Composer,
+    ConversationsContextMenu,
     InviteChannelPickerDialog,
     MuteDurationDialog,
     UserContextMenus
