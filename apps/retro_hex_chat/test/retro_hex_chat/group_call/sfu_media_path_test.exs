@@ -1430,11 +1430,13 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     end
 
     defp send_rtp(state, kind, count) do
-      unless state.local_tracks[kind] do
-        send(state.parent, {:sfu_probe, state.name, :missing_local_track, kind})
-        state
-      else
-        do_send_rtp(state, kind, count)
+      case state.local_tracks[kind] do
+        nil ->
+          send(state.parent, {:sfu_probe, state.name, :missing_local_track, kind})
+          state
+
+        _track ->
+          do_send_rtp(state, kind, count)
       end
     end
 
@@ -1484,11 +1486,13 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     end
 
     defp send_rtp_sequence(state, kind, sequences) do
-      unless state.local_tracks[kind] do
-        send(state.parent, {:sfu_probe, state.name, :missing_local_track, kind})
-        state
-      else
-        do_send_rtp_sequence(state, kind, sequences)
+      case state.local_tracks[kind] do
+        nil ->
+          send(state.parent, {:sfu_probe, state.name, :missing_local_track, kind})
+          state
+
+        _track ->
+          do_send_rtp_sequence(state, kind, sequences)
       end
     end
 
