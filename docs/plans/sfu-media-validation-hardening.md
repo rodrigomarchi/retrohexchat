@@ -24,6 +24,18 @@ O harness atual fica em:
 | `apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs` | Lifecycle de room/participant/track, policy, reconnect, moderacao e metadata |
 | `apps/retro_hex_chat_web/assets/test/hooks/group_call/group_call_webrtc_hook.test.js` | Comportamento do hook de browser sem midia real |
 
+## Camadas de cobertura
+
+O cliente sintetico em Elixir nao substitui o cliente JavaScript real. Ele e
+uma sonda controlada para isolar o media server/SFU e o contrato de signaling
+sem depender de browser, DOM, permissoes de device, autoplay ou renderizacao.
+
+| Camada | O que prova | O que nao prova |
+|---|---|---|
+| Harness Elixir com `ExWebRTC` | SFU, renegociacao server-side, transceiver shape, RTP/RTCP, cleanup de peers/tracks, contrato Phoenix/domain | Estado visual do hook, comportamento de `RTCPeerConnection` no browser, autoplay/render, `getStats()` real do browser |
+| Testes JS do hook | State machine do cliente, chamadas ao canal, cleanup de streams/tracks, uso de `replaceTrack`/stats no codigo real | Forwarding real de RTP pelo SFU |
+| Smoke browser-real sob demanda | Integra SFU + cliente JS + browser engine + decode/render/stats | Nao deve virar gate rapido; serve para diagnostico e regressao de alto nivel |
+
 ## Referencias locais
 
 | Referencia | Arquivo local | O que extrair |
@@ -39,17 +51,18 @@ O harness atual fica em:
 
 ## Cobertura ja implementada
 
-| Cenario | Referencia | Teste no Retro | Status |
-|---|---|---|---|
-| Dois peers, video RTP bilateral | `basic_test.exs` | `forwards RTP video both ways between two synthetic WebRTC clients` | Concluido |
-| PLI do viewer para publisher | Nexus `Peer` + RTCP flow | `routes subscriber PLI feedback to the video publisher` | Concluido |
-| Terceiro participante entra depois | `basic_test.exs` join gradual | `keeps media fanout healthy when a third participant joins late` | Concluido |
-| Quatro participantes entram ao mesmo tempo | `basic_test.exs` all-at-once | `keeps the transceiver graph sane when four participants join concurrently` | Concluido para sinalizacao/topologia |
-| Um participante sem camera | `basic_test.exs` mixed devices | `keeps video routes healthy when one participant joins without camera` | Concluido |
-| Todos audio-only, gradual e concorrente | `no_video_test.exs` | `keeps audio-only routes healthy when participants gradually join and leave`; `keeps audio-only routing sane when four participants join concurrently` | Concluido; expôs normalizacao de IDs de track |
-| Camera -> screen share -> camera | `metadata_test.exs`, hook `replaceTrack`, ExWebRTC `replace_track/3` | `keeps video RTP flowing while replacing camera with screen share and back` | Concluido |
-| Participante sai e rotas restantes seguem vivas | `basic_test.exs` leave gradual | `keeps remaining media routes healthy after a participant leaves` | Concluido |
-| Offer/ICE restart explicito | Nexus ICE restart pattern | `keeps media alive after an explicit offer request with ICE restart` | Concluido |
+| Cenario | Referencia | Teste no Retro | Camada principal | Status |
+|---|---|---|---|---|
+| Dois peers, video RTP bilateral | `basic_test.exs` | `forwards RTP video both ways between two synthetic WebRTC clients` | Backend/SFU | Concluido |
+| PLI do viewer para publisher | Nexus `Peer` + RTCP flow | `routes subscriber PLI feedback to the video publisher` | Backend/SFU | Concluido |
+| Terceiro participante entra depois | `basic_test.exs` join gradual | `keeps media fanout healthy when a third participant joins late` | Backend/SFU | Concluido |
+| Quatro participantes entram ao mesmo tempo | `basic_test.exs` all-at-once | `keeps the transceiver graph sane when four participants join concurrently` | Backend/SFU | Concluido para sinalizacao/topologia |
+| Um participante sem camera | `basic_test.exs` mixed devices | `keeps video routes healthy when one participant joins without camera` | Backend/SFU | Concluido |
+| Todos audio-only, gradual e concorrente | `no_video_test.exs` | `keeps audio-only routes healthy when participants gradually join and leave`; `keeps audio-only routing sane when four participants join concurrently` | Backend/SFU | Concluido; expôs normalizacao de IDs de track |
+| Camera -> screen share -> camera | `metadata_test.exs`, hook `replaceTrack`, ExWebRTC `replace_track/3` | `keeps video RTP flowing while replacing camera with screen share and back` | Backend/SFU com contrato usado pelo JS | Concluido |
+| Churn join/leave/rejoin | `basic_test.exs`, Nexus `Room`/`Peer` | `keeps media and transceivers coherent through join leave and rejoin churn` | Backend/SFU | Concluido |
+| Participante sai e rotas restantes seguem vivas | `basic_test.exs` leave gradual | `keeps remaining media routes healthy after a participant leaves` | Backend/SFU | Concluido |
+| Offer/ICE restart explicito | Nexus ICE restart pattern | `keeps media alive after an explicit offer request with ICE restart` | Backend/SFU | Concluido |
 
 ## Backlog priorizado
 
@@ -131,11 +144,13 @@ Resultado:
 - Validado `camera -> screen -> camera` no `RoomServer`, metadata de screen e
   ausencia de transceivers extras.
 
-### P0. Churn longo de join/leave/rejoin
+### P0. Churn longo de join/leave/rejoin - concluido em 2026-07-14
 
 Referencia:
 
 - `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/integration_test/test_videoroom/test/integration/basic_test.exs`
+- `/Users/rodrigo/src/elixir-webrtc-apps/nexus/lib/nexus/room.ex`
+- `/Users/rodrigo/src/elixir-webrtc-apps/nexus/lib/nexus/peer.ex`
 
 O que testar:
 
@@ -162,6 +177,19 @@ Implementacao sugerida:
 - Criar teste unico com loop curto, nao property.
 - Reusar `assert_eventually_server_transceiver_shape/3`.
 - Adicionar helper `refute_registered_peer(room_id, participant_id)`.
+
+Resultado:
+
+- Implementado cenario com alice/bob/carol, saida de bob, entrada de dave,
+  reentrada de bob com novo `participant_id`, saida de carol e RTP validado
+  entre os peers vivos depois de cada renegociacao.
+- Validado cleanup de `PeerRegistry`, ausencia de tracks ativas do participante
+  que saiu, `subscriber_count` e forma de transceivers coerentes em cada fase.
+- Nenhum bug novo de runtime foi exposto; o bloco aumentou cobertura para a
+  area de maior risco de corrida.
+- O harness de audio foi ajustado para amostrar rajadas repetidas em cenarios
+  graduais, seguindo o padrao das referencias que usam warmup antes de medir
+  midia/stats.
 
 ### P1. RTP impairment: buracos, duplicados, reorder e burst irregular
 
@@ -262,7 +290,7 @@ Implementacao sugerida:
 - `runtime_test.exs` para estado persistido.
 - Channel test para evento consolidado.
 
-### P2. Browser-real smoke script
+### P2. Browser-real smoke script e paridade do cliente JS
 
 Referencia:
 
@@ -273,6 +301,9 @@ O que testar:
 - Script opcional que sobe um browser fake media contra servidor real/local.
 - Dois ou tres clients entram em uma chamada real.
 - Coleta `getStats()` e verifica frames/bytes crescendo.
+- Validar que o hook JavaScript real consome os mesmos contratos ja exercitados
+  pelo harness Elixir: offer/answer, ICE restart, `replaceTrack`, leave/rejoin,
+  cleanup de tracks e stats.
 
 Aceite:
 
@@ -324,7 +355,9 @@ Para cada item do backlog:
 ```bash
 rtk mix format <arquivos alterados>
 rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs
-rtk sh -c 'for i in 1 2 3; do mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs || exit $?; done'
+rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed <seed-1>
+rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed <seed-2>
+rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed <seed-3>
 rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs apps/retro_hex_chat/test/retro_hex_chat/group_call/rtp_forwarder_test.exs
 rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs
 ```

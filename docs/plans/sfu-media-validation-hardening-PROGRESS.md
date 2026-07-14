@@ -12,7 +12,7 @@
 |---|---|---|
 | P0.1 | Todos audio-only | CONCLUIDA (2026-07-14) |
 | P0.2 | Camera -> screen share -> camera mantendo RTP | CONCLUIDA (2026-07-14) |
-| P0.3 | Churn longo de join/leave/rejoin | PENDENTE |
+| P0.3 | Churn longo de join/leave/rejoin | CONCLUIDA (2026-07-14) |
 | P1.1 | RTP impairment: buracos, duplicados, reorder e burst irregular | PENDENTE |
 | P1.2 | Stats ponta a ponta | PENDENTE |
 | P1.3 | ICE candidate stale/late durante leave e restart | PENDENTE |
@@ -132,6 +132,72 @@
     test` paralelo no mesmo build dir.
 - Proximo bloco: P0.3 churn longo de join/leave/rejoin.
 
+### 2026-07-14 - P0.3 leitura de implementacao antes de continuar
+
+- Implementacoes e testes lidos antes de editar:
+  - `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/integration_test/test_videoroom/test/integration/basic_test.exs`;
+  - `/Users/rodrigo/src/elixir-webrtc-apps/nexus/lib/nexus/room.ex`;
+  - `/Users/rodrigo/src/elixir-webrtc-apps/nexus/lib/nexus/peer.ex`;
+  - `apps/retro_hex_chat/lib/retro_hex_chat/group_call/room_server.ex`;
+  - `apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs`.
+- Padroes confirmados:
+  - Fishjam valida join gradual, warmup de midia e leave um por vez, sempre
+    revalidando os peers restantes;
+  - Nexus move peers de `pending` para ativos apenas apos readiness e remove
+    peers com `DOWN`, propagando `peer_removed` para os demais;
+  - Nexus remove tracks/transceivers outbound ligados ao peer que saiu e so
+    encaminha RTP de tracks inbound conhecidas;
+  - no Retro, `RoomServer.leave_participant/3` termina o peer, remove registry,
+    encerra tracks ativas e notifica os peers restantes.
+- Decisao para P0.3:
+  - testar uma sequencia deterministica curta, nao property/random;
+  - validar shape de SFU e cleanup apos cada fase antes de medir RTP;
+  - nao usar fallback por payload ou inferencia de track, mantendo o contrato
+    explicito observado nas referencias.
+
+### 2026-07-14 - P0.3 concluido
+
+- Adicionado cenario em
+  `apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs`:
+  - alice/bob/carol entram e recebem tracks remotas esperadas;
+  - video de carol chega a alice e bob;
+  - bob sai e deixa de existir no `PeerRegistry`;
+  - tracks ativas de bob somem;
+  - alice e carol renegociam e continuam recebendo RTP;
+  - dave entra e o shape do SFU volta para 3 peers;
+  - bob reentra com novo `participant_id`;
+  - carol sai;
+  - os peers vivos seguem com `subscriber_count`, transceivers e RTP coerentes.
+- Helpers adicionados:
+  - `assert_live_sfu_shape/2` para casar `subscriber_count` e transceivers com
+    o numero de peers vivos;
+  - `prime_video_track/2` para criar a track inbound antes de medir fanout;
+  - `assert_peer_unregistered/2` e `assert_no_active_tracks_for/2` para cleanup.
+- Ajuste de estabilidade no harness:
+  - asserts de audio em cenarios graduais agora usam rajadas repetidas e
+    acumulam RTP por janela curta;
+  - isso segue o padrao das referencias, que validam midia com warmup/amostras,
+    e evita que uma unica rajada sintetica meca o momento de criacao da track
+    em vez do estado estavel do SFU.
+- Problema novo exposto:
+  - nenhum bug novo no runtime/SFU; este bloco aumentou cobertura de churn e
+    removeu flake do harness de audio.
+- Verificacoes:
+  - `rtk mix format apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs`: ok;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed 404725`: 11 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed 598474`: 11 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed 927311`: 11 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed 731209`: 11 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs apps/retro_hex_chat/test/retro_hex_chat/group_call/rtp_forwarder_test.exs`: 23 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs`: 4 testes, 0 falhas.
+- Aprendizado:
+  - o harness Elixir fortalece principalmente backend/SFU e contrato de
+    protocolo; ele nao prova sozinho o comportamento do cliente JavaScript real;
+  - cenarios que dependem de state machine do hook, renderizacao, `getStats()`
+    do browser, cleanup de DOM/MediaStreams e engine real precisam de testes JS
+    ou smoke browser-real complementares.
+- Proximo bloco: P1.1 RTP impairment.
+
 ## Aprendizados consolidados
 
 - O harness headless com `ExWebRTC` e suficiente para expor bugs de
@@ -151,13 +217,18 @@
   testar o artefato do gerador sintetico. Para concorrencia, preferir topologia,
   subscriber count e tracks persistidas; fanout RTP completo fica nos cenarios
   graduais ou no futuro smoke browser-real.
+- Separar a matriz por camada evita conclusoes erradas: harness Elixir cobre
+  media server/SFU e contrato de protocolo; cliente JavaScript real ainda
+  precisa de paridade para `RTCPeerConnection`, hook, stats e render.
 
 ## Comandos de verificacao por bloco
 
 ```bash
 rtk mix format <arquivos alterados>
 rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs
-rtk sh -c 'for i in 1 2 3; do mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs || exit $?; done'
+rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed <seed-1>
+rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed <seed-2>
+rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed <seed-3>
 rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs apps/retro_hex_chat/test/retro_hex_chat/group_call/rtp_forwarder_test.exs
 rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs
 ```
