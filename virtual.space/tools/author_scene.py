@@ -46,10 +46,11 @@ BRIDGES = {
     "bridge_e": {"x0": 60, "x1": 65, "y0": 35, "y1": 36},
 }
 SOLIDS = {**PLATFORMS, **BRIDGES}
-# One lamppost per platform centre (except the north platform — the Matrix
-# nook's TV is its light source); the central one anchors the spawns, the
-# lights and the DM nameplate.
-LAMPS = [(48, 36), (48, 58), (17, 36), (78, 36)]
+# One lamppost per platform centre (except the north platform — lit by the
+# Matrix nook's TV — and the east platform — lit by the DeLorean's fire
+# trails); the central one anchors the spawns, the lights and the DM
+# nameplate.
+LAMPS = [(48, 36), (48, 58), (17, 36)]
 # Animated props (real PixelLab frames, packed as horizontal strips):
 # name -> (frames folder under scenes/end_of_time/, block w×h in cells,
 # period_ms, flip_x). The Matrix nook on the north platform: Morpheus (west
@@ -57,10 +58,16 @@ LAMPS = [(48, 36), (48, 58), (17, 36), (78, 36)]
 # east) and Neo (east seat, his `west` rotation facing west) breathe facing
 # EACH OTHER in red wingback armchairs, with the vintage CRT flickering static
 # to the north between them — the Construct loading-room framing.
+# name -> (folder, block w×h in cells, period_ms, flip_x, shear). `shear`
+# ("dl"/"dr"/None) projects a flat horizontal streak onto the 2:1 diamond
+# slope — the railing lesson applied to decor: ground-hugging trails (the
+# DeLorean fire) must FOLLOW the iso axis or they stack as horizontal dashes.
 ANIM_PROPS = {
-    "eot_morpheus": ("anim/morpheus", 3, 3, 2000, False),
-    "eot_neo": ("anim/neo", 3, 3, 2200, False),
-    "eot_tv": ("anim/tv", 2, 3, 420, False),
+    "eot_morpheus": ("anim/morpheus", 3, 3, 2000, False, None),
+    "eot_neo": ("anim/neo", 3, 3, 2200, False, None),
+    "eot_tv": ("anim/tv", 2, 3, 420, False, None),
+    "eot_delorean": ("anim/delorean", 5, 4, 1200, False, None),
+    "eot_fire": ("anim/fire", 2, 2, 660, False, "dl"),
 }
 # Matrix nook placement: decor anchor tile + solid ground footprint. The TV
 # sits on the pair's perpendicular bisector pushed north — (46,10) projects
@@ -70,8 +77,19 @@ FURNITURE = [
     ("eot_tv", 46, 10, {"x": 45, "y": 9, "w": 2, "h": 2}),
     ("eot_morpheus", 45, 13, {"x": 44, "y": 13, "w": 2, "h": 2}),
     ("eot_neo", 51, 13, {"x": 51, "y": 13, "w": 2, "h": 2}),
+    # East platform: the DeLorean races away to the north-east, rear 3/4 to
+    # the camera — whoever walks in from the west bridge sees the burning
+    # wheel trails leading up to it.
+    ("eot_delorean", 79, 33, {"x": 77, "y": 32, "w": 4, "h": 2}),
 ]
-SHEET_COLS = 24
+# The two burning wheel trails behind the rear tyres, running down-left along
+# the car's travel axis (tile steps (0,+1) = the sheared streak's 2:1 slope).
+# Fire cells are solid — nobody stands in a fire.
+# Solved analytically: the sheared base's up-right END of tile (79,35) lands
+# 3.5px from the rear tyre's measured ground contact; the left-wheel line is
+# one perpendicular step (-1,0) away.
+FIRE_TRAIL = [(78, 35), (78, 36), (78, 37), (79, 35), (79, 36), (79, 37)]
+SHEET_COLS = 30
 Z_STEP = 16
 
 
@@ -194,7 +212,7 @@ def _place(sheet, vocab, name, im, col, row, anchor="bottom", native=False):
     return col + w
 
 
-def _pack_anim(sheet, vocab, name, folder, w, h, period_ms, flip, row):
+def _pack_anim(sheet, vocab, name, folder, w, h, period_ms, flip, shear, fw, fh, row):
     """Pack an animated prop as a horizontal frame strip at (0, row).
 
     The rules that keep a "still" prop still (ANIMATIONS.md §4): every frame is
@@ -221,6 +239,8 @@ def _pack_anim(sheet, vocab, name, folder, w, h, period_ms, flip, row):
     scale = min(1.0, bw / uw, bh / uh)
     for i, im in enumerate(ims):
         crop = im.crop(union)
+        if shear:
+            crop = _shear(crop, fw, fh, shear)
         if scale < 1.0:
             crop = crop.resize((max(1, round(uw * scale)), max(1, round(uh * scale))),
                                Image.NEAREST)
@@ -293,8 +313,9 @@ def build():
     # Animated props (Matrix nook): one horizontal strip per prop, stacked
     # below the star row.
     arow = srow + 1
-    for name, (folder, w, h, period_ms, flip) in ANIM_PROPS.items():
-        arow = _pack_anim(sheet, vocab, name, folder, w, h, period_ms, flip, arow)
+    for name, (folder, w, h, period_ms, flip, shear) in ANIM_PROPS.items():
+        arow = _pack_anim(sheet, vocab, name, folder, w, h, period_ms, flip, shear,
+                          fw, fh, arow)
 
     # ── Layout ──────────────────────────────────────────────────────
     def _in(r, x, y):
@@ -387,6 +408,8 @@ def build():
         {"x": x, "y": y, "tile": "iso_lamp", "sort": "stand"} for x, y in LAMPS
     ] + [
         {"x": x, "y": y, "tile": name, "sort": "stand"} for name, x, y, _fp in FURNITURE
+    ] + [
+        {"x": x, "y": y, "tile": "eot_fire", "sort": "stand"} for x, y in FIRE_TRAIL
     ]
 
     # Collision is the void — the complement of the solid cross — plus the
@@ -405,6 +428,7 @@ def build():
                 x += 1
             collision.append({"x": x0, "y": y, "w": x - x0, "h": 1, "kind": "void"})
     collision += [dict(fp, kind="prop") for _name, _x, _y, fp in FURNITURE]
+    collision += [{"x": x, "y": y, "w": 1, "h": 1, "kind": "prop"} for x, y in FIRE_TRAIL]
 
     # Every lamppost casts light as TWO stacked glows so it reads as emitting
     # from the lantern head, not the pole base: a soft pool on the ground + a
@@ -419,6 +443,12 @@ def build():
                        "blend": "add"})
     lights.append({"x": 47, "y": 11, "radius": 2.6, "color": "7d9cc9", "blend": "add"})
     lights.append({"x": 46, "y": 10, "lift": 46, "radius": 1.1, "color": "a9c4e8",
+                   "blend": "add"})
+    # East platform: the burning trails light the ground warm, and the flux
+    # tubes tint the car's rear pale blue.
+    lights.append({"x": 78, "y": 36, "radius": 2.2, "color": "ff9a4d", "blend": "add"})
+    lights.append({"x": 79, "y": 36, "radius": 2.0, "color": "ff8a3d", "blend": "add"})
+    lights.append({"x": 79, "y": 33, "lift": 40, "radius": 1.1, "color": "a8c8ff",
                    "blend": "add"})
 
     zones = [{"id": name, "kind": "platform", "x": r["x0"], "y": r["y0"],

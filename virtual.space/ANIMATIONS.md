@@ -171,6 +171,8 @@ scene (the Matrix nook + sky):
 | `eot_morpheus` (breathing) | 8 | 2000 | slow calm breath |
 | `eot_neo` (breathing) | 8 | 2200 | slow breath, desynced from Morpheus |
 | `eot_tv` (off-air static) | 6 | 420 | fast snow crackle |
+| `eot_delorean` (flux pulse) | 6 | 1200 | rhythmic blue glow on the rear deck |
+| `eot_fire` (wheel trails) | 6 | 660 | lively flame flicker |
 | `iso_star` (script-drawn) | 4 | 1100 | twinkle |
 
 Reference values from the pre-iso scene (props long gone, tuning still useful):
@@ -295,6 +297,20 @@ placement and the live look. Finish with `make ci` (9/9).
   zlib → server-side "broken data stream"). Prefer description-only or
   `style_image_base64` with a string that already round-tripped; verify odd
   server decode errors against the reported byte count before blaming the file.
+- **Ground-hugging trails must be SHEARED onto the 2:1 slope.** The railing
+  lesson applies to animated decor: a flat horizontal streak (the DeLorean's
+  burning wheel trails) placed along the diamond axis stacks as horizontal
+  dashes unless each frame is `_shear`ed (the `shear` field in `ANIM_PROPS`).
+  Consecutive tiles at `(0,±1)` steps then continue the line seam-free.
+- **Align trail ends by MEASURING, not eyeballing.** To land a trail on its
+  emitter (fire on the rear tyres), extract the contact point from the art
+  (darkest ground-touching cluster), project both through the exact
+  footAnchor/pack math offline, and solve the start tile numerically — three
+  eyeballed placements missed before one measured placement hit within 4px.
+- **The map ships at `space_init` — reload before judging placement.** A
+  client whose Space tab predates a repack still renders the OLD layout (the
+  map rides the join payload); a placement fix looks "even more wrong" on a
+  stale session. Reopen the Space tab / reload, then judge.
 - **Stale `mix phx.digest` artifacts poison the served bundle.** Leftover
   `app.js.gz`/`app-<hash>.js` in `priv/static/assets` are served in preference
   to the fresh esbuild `app.js` (Plug.Static serves the precompressed file
