@@ -54,8 +54,8 @@ defmodule RetroHexChat.VirtualSpace.DirectMessageSpaceTest do
     ctx = start_private_space(participants, local)
 
     assert ctx.joined.map.id == "end_of_time"
-    assert ctx.joined.map.width == 40
-    assert ctx.joined.map.height == 24
+    assert ctx.joined.map.width == 96
+    assert ctx.joined.map.height == 72
     assert ctx.joined.participant.key == participant_key(local)
 
     snapshot_participants = ctx.joined.snapshot.participants

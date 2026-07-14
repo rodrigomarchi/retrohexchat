@@ -1,20 +1,23 @@
 defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
   @moduledoc """
-  End of Time: the cozy two-person scene behind every private conversation.
+  End of Time: the scene behind every channel and private conversation.
 
-  An **isometric** dark cobblestone platform floating in a starry void — an
-  ornate golden railing runs the back edges receding into the abyss, a lamppost
-  pools amber light where the two participants gather, the Gate glows at the top,
-  the secret bucket rests nearby. The platform reads as a solid 3D slab (visible
-  side faces) framed by a vignette. Faithful to the Chrono Trigger "End of Time".
+  An **isometric** cross of five equal cobblestone platforms floating in a
+  starry void — the central room plus one satellite per cardinal side, joined
+  by railed stone bridges. An ornate golden railing wraps every edge, a
+  lamppost pools amber light at each platform's centre, and the central lamp
+  anchors the spawns and the DM nameplate. Each block reads as a solid 3D slab
+  (visible side faces) framed by a vignette. Faithful to the Chrono Trigger
+  "End of Time" — the real area is square platforms adrift in a dark sea,
+  joined by bridges.
 
-  This is the first `projection: "isometric"` map; the client renders it via the
-  diamond `Projection` seam (see `SCENES.md`). The whole scene is authored by
-  `virtual.space/tools/author_scene.py`, which packs the PixelLab art into
-  `/images/space/endoftime.png` and emits the layout (diamond floor matrix, edge
-  railings, decor, collision, lights, slab, vignette, iso params) as
-  `priv/maps/end_of_time.json`. This module loads that JSON and shapes it into
-  the shared map protocol — no pixel data, the client slices the sheet at runtime.
+  The client renders it via the diamond `Projection` seam (see `SCENES.md`).
+  The whole scene is authored by `virtual.space/tools/author_scene.py`, which
+  packs the PixelLab art into `/images/space/endoftime.png` and emits the
+  layout (diamond floor matrix, edge railings, decor, collision, lights, slabs,
+  vignette, iso params) as `priv/maps/end_of_time.json`. This module loads that
+  JSON and shapes it into the shared map protocol — no pixel data, the client
+  slices the sheet at runtime.
   """
 
   @sheet "endoftime"
@@ -31,7 +34,7 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
       tile_size: data["tile_size"],
       projection: data["projection"] || "isometric",
       iso: iso(data),
-      slab: slab(data),
+      slabs: slabs(data),
       vignette: vignette(data),
       sea: sea(data),
       railings: railings(data),
@@ -131,13 +134,16 @@ defmodule RetroHexChat.VirtualSpace.Maps.EndOfTime do
 
   defp iso(_), do: nil
 
-  # Isometric slab: 3D thickness + `taper` (0..1, how far the underside pulls to a
-  # centre apex → a diamond point below) over the platform `hull` [minX,maxX,minY,maxY].
-  defp slab(%{"slab" => %{} = s}) do
-    %{thickness: s["thickness"], taper: s["taper"], hull: s["hull"]}
+  # Isometric slabs: one 3D underside per solid block (platform or bridge) —
+  # thickness in height units and `taper` (0..1, how far the underside pulls to
+  # a centre apex → a diamond point below) over the block's `hull`
+  # [minX,maxX,minY,maxY]. The client draws them far→near.
+  defp slabs(data) do
+    Enum.map(
+      data["slabs"] || [],
+      &%{thickness: &1["thickness"], taper: &1["taper"], hull: &1["hull"]}
+    )
   end
-
-  defp slab(_), do: nil
 
   # Screen-space vignette darkening the void frame, or nil.
   defp vignette(%{"vignette" => %{} = v}) do

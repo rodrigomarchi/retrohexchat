@@ -58,7 +58,7 @@ consumes them.
 | Field | Meaning |
 |---|---|
 | `iso:{tile_w,tile_h,z_step,headroom}` | diamond footprint (2:1) + elevation px + top clearance |
-| `slab:{thickness,taper,hull}` | the 3D block: side height, taper 0..1 to a bottom apex, `hull=[minX,maxX,minY,maxY]` of solid cells |
+| `slabs:[{thickness,taper,hull}]` | one 3D block per platform/bridge: side height, taper 0..1 to a bottom apex (0 = straight prism, the bridge look), `hull=[minX,maxX,minY,maxY]` of that block's cells |
 | `sea:{top,bottom,band,bands,amp}` | procedural deep-blue rippling void |
 | `vignette:{color,alpha,inner}` | screen-space radial multiply framing the void |
 | `railings:[{x,y,edge}]` + `railing_style:{height,color,hi,base,posts}` | the geometric fence (§3) |
@@ -71,16 +71,19 @@ rectangle/octagon in tile space (see §3) — never an organic super-ellipse.
 
 ---
 
-## 2. The floating 3D slab (`renderer._drawSlabUnderside`)
+## 2. The floating 3D slabs (`renderer._drawSlabUnderside`)
 
-The platform is a solid block, drawn as ONE shape (not per-tile) before the floor
-tiles so the top surface seats over its rim. From the `slab.hull` corners it projects
-the four platform vertices, then draws the **two camera-facing front faces**
-(front-left, front-right) extruded down by `thickness*z_step` and pulled toward a
-centre **apex** by `taper` (0..1). `taper≈0.8` → the block narrows to a **diamond
-point below** — a floating gem, not a flat prism. Only the two front faces are
-visible; top/back are hidden. A `vignette` + the `sea` complete the "floating in the
-abyss" read.
+Each platform/bridge is a solid block, drawn as ONE shape per block (not
+per-tile) before the floor tiles so every top surface seats over its own rim.
+The map carries a `slabs` list; the renderer sorts it **far→near by each hull's
+front corner** (`hull[1]+hull[3]`) so a nearer block's faces paint over a
+farther block's. Per block, from the `hull` corners it projects the four
+vertices, then draws the **two camera-facing front faces** (front-left,
+front-right) extruded down by `thickness*z_step` and pulled toward a centre
+**apex** by `taper` (0..1). `taper≈0.8` → the block narrows to a **diamond
+point below** — a floating gem; `taper 0` → a straight thin prism (the stone
+bridges). Only the two front faces are visible; top/back are hidden. A
+`vignette` + the `sea` complete the "floating in the abyss" read.
 
 **The void is procedural** (`renderer._drawSea`): a deep-blue vertical gradient +
 slowly drifting, gently rippling horizontal bands (wavy filled paths). Map objects

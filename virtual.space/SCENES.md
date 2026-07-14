@@ -127,7 +127,7 @@ It emits the tile **vocab** (`name → {col,row,w,h,wpx?,hpx?,frames?,
 period_ms?,flip_x?}`) plus the full layout into `priv/maps/<name>.json`:
 `floor`, `decor` (painter order: stars, then props), `collision` (off-platform
 void cells — block solid prop footprints too when adding furniture; the current
-scene blocks none), `spawn`, `zones`, `labels`, and the iso `slab`/`railings`
+scene blocks none), `spawn`, `zones`, `labels`, and the iso `slabs`/`railings`
 geometry.
 
 > **No runtime procedural animation on the platform.** There is no baked glow or
@@ -172,8 +172,9 @@ Wire it up:
 2. **Generate** (§2): calibrate a floor tile + a prop, then batch. Save raw art to
    `virtual.space/scenes/<name>/`.
 3. **Author** (§3): extend/copy `author_scene.py` — platform shape, packing, layout,
-   slab/railing geometry. It writes the sheet + `priv/maps/<name>.json`. Eyeball
-   `scene_preview.png`.
+   slabs/railing geometry. It writes the sheet + `priv/maps/<name>.json`. Eyeball
+   it via the Playwright screenshot (`e2e/test-results/end-of-time.png`, see §5
+   of [`ISOMETRIC.md`](ISOMETRIC.md)).
 4. **Module** (§4): a thin `Maps.<Name>` loading the JSON; register in `map.ex`;
    point the consumer.
 5. **Tests**: add the id to `map_test.exs` `@map_ids`; update any consumer test
@@ -268,8 +269,9 @@ do this every rebuild:
   non-empty (see `ANIMATIONS.md` — widen `SHEET_COLS`, and keep a guard).
 
 > **Seats/zones/boards need a map that defines them.** End of Time is currently a
-> bare walkable platform — it declares no seats, zones or interactive boards, so
-> channels render it as an open floor. Tests that exercise seat/zone/board logic
+> bare walkable cross of platforms — it declares no seats or interactive boards
+> (zones only name the five platforms), so channels render it as open floor.
+> Tests that exercise seat/zone/board logic
 > inject their own **fixture map**; they are not coupled to End of Time's coords.
 
 ## 9. Isometric projection (End of Time)
@@ -293,7 +295,7 @@ Iso map fields:
 | Field | Meaning |
 |---|---|
 | `iso: {tile_w, tile_h, z_step, headroom}` | diamond footprint (the art's native size, currently 48×20) + elevation px |
-| `slab: {thickness}` | 3D side-face height (height units) → the floating slab |
+| `slabs: [{thickness,taper,hull}]` | one 3D block per platform/bridge → the floating slabs |
 | `vignette: {color, alpha, inner}` | screen-space radial multiply framing the void |
 | `layers.decor` `sort:"stand"` | props/railings billboard on the diamond foot, depth-sorted by `x+y` |
 

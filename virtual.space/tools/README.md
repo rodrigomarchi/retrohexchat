@@ -35,7 +35,7 @@ raw art, so the sheet is always reproducible from source.
 - **`author_scene.py`** — the End of Time scene. Reads the raw art (the native
   iso floor variations, the railing strip + post, the lamp) from
   `../scenes/end_of_time/` and emits the sheet `endoftime.png` plus the layout
-  `priv/maps/end_of_time.json` (including the iso `slab`/`railings` geometry).
+  `priv/maps/end_of_time.json` (including the iso `slabs`/`railings` geometry).
   Its only animated strip today is the script-drawn `iso_star` (see the status
   note atop [`../ANIMATIONS.md`](../ANIMATIONS.md)); the iso build is in
   [`../ISOMETRIC.md`](../ISOMETRIC.md).

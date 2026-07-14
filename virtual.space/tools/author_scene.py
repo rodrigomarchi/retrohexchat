@@ -26,12 +26,29 @@ SHEET_OUT = os.path.join(
 MAP_OUT = os.path.join(REPO, "apps", "retro_hex_chat/priv/maps/end_of_time.json")
 
 T = 32                 # sheet addressing cell (tile_size); scale = 32/T = 1
-W, H = 40, 24
-# A beveled-rectangle (octagon) platform in TILE space. In iso this projects to a
-# clean diamond with STRAIGHT diagonal screen edges — so the railings run
-# continuous, not staircased (a wobbly super-ellipse made the fence stagger).
-# The bevel softens the four points into short corners (CT-like octagon).
-RECT = {"x0": 8, "x1": 32, "y0": 4, "y1": 20, "bevel": 0}
+W, H = 96, 72
+# Five equal platforms in a cross — the CT End of Time is several square
+# platforms adrift in the sea, joined by bridges: the original room at the
+# centre and one satellite per cardinal side, each linked by a 2-cell-wide
+# bridge. Every rect is an inclusive CELL range {x0,x1,y0,y1}; straight edges
+# keep the railings continuous (a super-ellipse staircases the fence).
+PLATFORMS = {
+    "center": {"x0": 36, "x1": 59, "y0": 28, "y1": 43},
+    "north": {"x0": 36, "x1": 59, "y0": 6, "y1": 21},
+    "south": {"x0": 36, "x1": 59, "y0": 50, "y1": 65},
+    "west": {"x0": 6, "x1": 29, "y0": 28, "y1": 43},
+    "east": {"x0": 66, "x1": 89, "y0": 28, "y1": 43},
+}
+BRIDGES = {
+    "bridge_n": {"x0": 47, "x1": 48, "y0": 22, "y1": 27},
+    "bridge_s": {"x0": 47, "x1": 48, "y0": 44, "y1": 49},
+    "bridge_w": {"x0": 30, "x1": 35, "y0": 35, "y1": 36},
+    "bridge_e": {"x0": 60, "x1": 65, "y0": 35, "y1": 36},
+}
+SOLIDS = {**PLATFORMS, **BRIDGES}
+# One lamppost per platform centre; the central one anchors the spawns, the
+# lights and the DM nameplate.
+LAMPS = [(48, 36), (48, 13), (48, 58), (17, 36), (78, 36)]
 SHEET_COLS = 20
 Z_STEP = 16
 
@@ -208,28 +225,23 @@ def build():
     vocab["iso_star"] = {"col": 0, "row": srow, "w": 1, "h": 1, "frames": 4, "period_ms": 1100}
 
     # ── Layout ──────────────────────────────────────────────────────
-    # Vertex mask: a beveled rectangle → clean straight edges (no smoothing pass;
-    # the shape is already geometric, unlike the old super-ellipse).
-    def raw(x, y):
-        r = RECT
-        if not (r["x0"] <= x <= r["x1"] and r["y0"] <= y <= r["y1"]):
-            return 0
-        b = r["bevel"]
-        dxl, dxr = x - r["x0"], r["x1"] - x
-        dyt, dyb = y - r["y0"], r["y1"] - y
-        if dxl + dyt < b or dxr + dyt < b or dxl + dyb < b or dxr + dyb < b:
-            return 0
-        return 1
-    g = [[raw(x, y) for x in range(W + 1)] for y in range(H + 1)]
+    def _in(r, x, y):
+        return r["x0"] <= x <= r["x1"] and r["y0"] <= y <= r["y1"]
 
     def full(x, y):
-        return g[y][x] and g[y][x + 1] and g[y + 1][x] and g[y + 1][x + 1]
+        return any(_in(r, x, y) for r in SOLIDS.values())
 
-    # Solid-cell bounding rect (the platform hull) — the renderer draws the slab
-    # underside from it, converging to a diamond point below.
-    solid_cells = [(x, y) for y in range(H) for x in range(W) if full(x, y)]
-    hull = [min(c[0] for c in solid_cells), max(c[0] for c in solid_cells),
-            min(c[1] for c in solid_cells), max(c[1] for c in solid_cells)]
+    def _hull(r):
+        return [r["x0"], r["x1"], r["y0"], r["y1"]]
+
+    # One 3D underside per solid block: platforms taper to a floating-gem apex,
+    # bridges stay thin straight prisms (taper 0) so they read as stone walkways
+    # slung between the islands. The renderer draws them far→near.
+    slabs = [
+        {"thickness": 10, "taper": 0.78, "hull": _hull(r)} for r in PLATFORMS.values()
+    ] + [
+        {"thickness": 3, "taper": 0.0, "hull": _hull(r)} for r in BRIDGES.values()
+    ]
 
     nfloor = len([k for k in vocab if k.startswith("iso_floor")])
     def _h(x, y):
@@ -264,11 +276,11 @@ def build():
             if not bfull(x + 1, y):
                 rails.append({"x": x, "y": y, "edge": "br"})
 
-    # Ornate spear-tip posts punctuate the fence: one every POST_STEP cells along
-    # each edge, sitting on that edge's near diamond-vertex, plus one hard on each
-    # of the four platform corners. `corner` (n/e/s/w) is the vertex the post
-    # billboards on. Deduped by cell so a corner cell gets a single post.
-    hx0, hx1, hy0, hy1 = hull
+    # Ornate spear-tip posts punctuate the fence: one on each platform's four
+    # hull corners, plus one every POST_STEP cells along each block's own edge
+    # runs (bridges included) so the spacing restarts per block and flanks the
+    # bridge openings. `corner` (n/e/s/w) is the vertex the post billboards on.
+    # Deduped by cell so a corner cell gets a single post.
     POST_STEP = 3
     edge_vertex = {"tr": "n", "tl": "w", "bl": "w", "br": "s"}
     seen, railing_posts = set(), []
@@ -278,16 +290,20 @@ def build():
             seen.add((x, y))
             railing_posts.append({"x": x, "y": y, "corner": corner})
 
-    for x, y, corner in [(hx0, hy0, "n"), (hx1, hy0, "e"), (hx1, hy1, "s"), (hx0, hy1, "w")]:
-        add_post(x, y, corner)
-    for edge, corner in edge_vertex.items():
-        cells = sorted(
-            ((r["x"], r["y"]) for r in rails if r["edge"] == edge),
-            key=lambda c: c[0] + c[1],
-        )
-        for i, (x, y) in enumerate(cells):
-            if i % POST_STEP == 0:
-                add_post(x, y, corner)
+    for r in PLATFORMS.values():
+        x0, x1, y0, y1 = r["x0"], r["x1"], r["y0"], r["y1"]
+        for x, y, corner in [(x0, y0, "n"), (x1, y0, "e"), (x1, y1, "s"), (x0, y1, "w")]:
+            add_post(x, y, corner)
+    for region in SOLIDS.values():
+        for edge, corner in edge_vertex.items():
+            cells = sorted(
+                ((c["x"], c["y"]) for c in rails
+                 if c["edge"] == edge and _in(region, c["x"], c["y"])),
+                key=lambda c: c[0] + c[1],
+            )
+            for i, (x, y) in enumerate(cells):
+                if i % POST_STEP == 0:
+                    add_post(x, y, corner)
 
     # Twinkling stars hash-scattered through the void (near the platform so many
     # land on-screen) — keeps the scene alive and fills the abyss with sky.
@@ -296,17 +312,45 @@ def build():
              if not full(x, y) and _h(x, y) % 13 == 0]
 
     decor = stars + [
-        {"x": 20, "y": 12, "tile": "iso_lamp", "sort": "stand"},
+        {"x": x, "y": y, "tile": "iso_lamp", "sort": "stand"} for x, y in LAMPS
     ]
 
-    collision = [{"x": x, "y": y, "w": 1, "h": 1, "kind": "void"}
-                 for y in range(H) for x in range(W) if not full(x, y)]
+    # Collision is the void — the complement of the solid cross. Emitted as
+    # merged per-row runs (not 1×1 cells) so the space_init payload stays small
+    # on a big map; the server expands rects into its blocked MapSet anyway.
+    collision = []
+    for y in range(H):
+        x = 0
+        while x < W:
+            if full(x, y):
+                x += 1
+                continue
+            x0 = x
+            while x < W and not full(x, y):
+                x += 1
+            collision.append({"x": x0, "y": y, "w": x - x0, "h": 1, "kind": "void"})
+
+    # Every lamppost casts light as TWO stacked glows so it reads as emitting
+    # from the lantern head, not the pole base: a soft pool on the ground + a
+    # tight bright halo lifted up to the lantern head.
+    lights = []
+    for x, y in LAMPS:
+        lights.append({"x": x, "y": y, "radius": 4.2, "color": "ffd591", "blend": "add"})
+        lights.append({"x": x, "y": y, "lift": 152, "radius": 1.6, "color": "ffe6a8",
+                       "blend": "add"})
+
+    zones = [{"id": name, "kind": "platform", "x": r["x0"], "y": r["y0"],
+              "w": r["x1"] - r["x0"] + 1, "h": r["y1"] - r["y0"] + 1}
+             for name, r in PLATFORMS.items()]
+
+    spawn = [{"x": 46, "y": 36, "dir": "right"}, {"x": 50, "y": 36, "dir": "left"}]
+    _validate(full, spawn, LAMPS)
 
     layout = {
         "width": W, "height": H, "tile_size": T, "ground": "g", "columns": SHEET_COLS,
         "projection": "isometric",
         "iso": {"tile_w": fw, "tile_h": fh, "z_step": Z_STEP, "headroom": 8},
-        "slab": {"thickness": 10, "taper": 0.78, "hull": hull},
+        "slabs": slabs,
         "vignette": {"color": "04050c", "alpha": 0.78, "inner": 0.36},
         "sea": {"top": "0c1e42", "bottom": "05060f", "band": "1a3d7a", "bands": 9, "amp": 5},
         "railings": rails,
@@ -315,24 +359,40 @@ def build():
         "floor": floor_matrix,
         "decor": decor,
         "collision": collision,
-        "spawn": [{"x": 18, "y": 12, "dir": "right"}, {"x": 22, "y": 12, "dir": "left"}],
-        # The lamppost (decor at 20,12) casts light as TWO stacked glows so it reads
-        # as emitting from the lantern head, not the pole base: a soft pool on the
-        # ground + a tight bright halo lifted ~106px up to the lantern head.
-        "lights": [
-            {"x": 20, "y": 12, "radius": 4.2, "color": "ffd591", "blend": "add"},
-            {"x": 20, "y": 12, "lift": 152, "radius": 1.6, "color": "ffe6a8", "blend": "add"},
-        ],
+        "spawn": spawn,
+        "lights": lights,
         "ambient": {"color": "1a2036", "alpha": 0.42},
-        "zones": [{"id": "eot", "kind": "private", "x": 6, "y": 4, "w": 28, "h": 16}],
+        "zones": zones,
         # The DM nameplate floats above the central lamppost, over its light.
         "labels": [{"id": "dm_nameplate", "kind": "hologram",
-                    "x": 20, "y": 12, "w": 6, "h": 1, "text": "", "lift": 150}],
+                    "x": 48, "y": 36, "w": 6, "h": 1, "text": "", "lift": 150}],
     }
     sheet.save(SHEET_OUT)
     json.dump(layout, open(MAP_OUT, "w"))
     print(f"OK iso scene: sheet={sheet.size} diamond={fw}x{fh} floors={nfloor} "
-          f"rails={len(rails)} posts={len(railing_posts)} decor={len(decor)}")
+          f"platforms={len(PLATFORMS)} bridges={len(BRIDGES)} rails={len(rails)} "
+          f"posts={len(railing_posts)} decor={len(decor)} collision={len(collision)}")
+
+
+def _validate(full, spawn, lamps):
+    """Assert the authored layout before writing it: spawns on walkable stone and
+    every platform (each lamp tile) BFS-reachable from the first spawn — a bridge
+    misaligned by one cell would strand a whole platform silently."""
+    for s in spawn:
+        if not full(s["x"], s["y"]):
+            raise AssertionError(f"spawn {s} is not on walkable stone")
+    start = (spawn[0]["x"], spawn[0]["y"])
+    seen = {start}
+    frontier = [start]
+    while frontier:
+        x, y = frontier.pop()
+        for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
+            if 0 <= nx < W and 0 <= ny < H and (nx, ny) not in seen and full(nx, ny):
+                seen.add((nx, ny))
+                frontier.append((nx, ny))
+    for lx, ly in lamps:
+        if (lx, ly) not in seen:
+            raise AssertionError(f"lamp platform at {(lx, ly)} is unreachable from spawn")
 
 
 if __name__ == "__main__":

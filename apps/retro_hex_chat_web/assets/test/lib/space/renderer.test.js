@@ -194,7 +194,7 @@ describe("Renderer isometric", () => {
   const img = { complete: true, naturalWidth: 64 };
   // Build a small iso map; tile sprites encode x+y in their source-y so draw
   // order is legible. Void ("g") tiles are skipped so the platform floats.
-  function isoBuild({ floor, decor = [], participants = new Map(), slab, vignette, sea }) {
+  function isoBuild({ floor, decor = [], participants = new Map(), slab, slabs, vignette, sea }) {
     const ctx = mockCtx();
     const canvas = { width: 640, height: 480, getContext: () => ctx };
     const def = {
@@ -212,6 +212,7 @@ describe("Renderer isometric", () => {
       interactables: [],
       labels: [],
       slab,
+      slabs,
       vignette,
       sea,
       layers: { floor, decor, above: [] },
@@ -288,17 +289,38 @@ describe("Renderer isometric", () => {
     expect(isoDepthOrder([3, 3], [0, 0])).toEqual(["avatar", "prop"]);
   });
 
-  it("draws the slab underside (front faces) when the map has a slab hull", () => {
+  it("draws the slab undersides (front faces) when the map has slabs", () => {
     const floor = [
       ["d0", "d0", "d0"],
       ["d0", "d0", "d0"],
       ["d0", "d0", "d0"],
     ];
-    const withSlab = isoBuild({ floor, slab: { thickness: 4, taper: 0.6, hull: [0, 2, 0, 2] } });
+    const withSlab = isoBuild({ floor, slabs: [{ thickness: 4, taper: 0.6, hull: [0, 2, 0, 2] }] });
     const withoutSlab = isoBuild({ floor });
     // The underside faces are the only polygons (moveTo); floor/props are blits.
     expect(withSlab.moveTo.mock.calls.length).toBeGreaterThan(0);
     expect(withoutSlab.moveTo.mock.calls.length).toBe(0);
+  });
+
+  it("draws multiple slabs far→near so a nearer block paints over a farther one", () => {
+    const floor = [
+      ["d0", "g", "g"],
+      ["g", "g", "g"],
+      ["g", "g", "d0"],
+    ];
+    const near = { thickness: 2, taper: 0, hull: [2, 2, 2, 2] };
+    const far = { thickness: 2, taper: 0, hull: [0, 0, 0, 0] };
+    const ctx = isoBuild({ floor, slabs: [near, far] });
+    // Two front faces per slab → 4 polygons; the far slab (smaller hull front
+    // corner) must draw first, and its vertices sit higher on screen (smaller y).
+    expect(ctx.moveTo.mock.calls.length).toBe(4);
+    expect(ctx.moveTo.mock.calls[0][1]).toBeLessThan(ctx.moveTo.mock.calls[2][1]);
+  });
+
+  it("wraps a legacy single `slab` payload into the slabs list", () => {
+    const floor = [["d0"]];
+    const ctx = isoBuild({ floor, slab: { thickness: 4, taper: 0.6, hull: [0, 0, 0, 0] } });
+    expect(ctx.moveTo.mock.calls.length).toBe(2);
   });
 
   it("draws the cosmic sea (linear gradient + ripple bands) when the map defines one", () => {

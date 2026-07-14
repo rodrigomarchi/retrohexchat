@@ -197,8 +197,8 @@ await page.waitForTimeout(1300);
 expect(await canvasSignature(canvas)).not.toBe(before);   // frames advanced
 ```
 
-Also eyeball `scene_preview.png` (one frame) for placement, then the E2E
-screenshot for the live look. Finish with `make ci` (9/9).
+Also eyeball the E2E screenshot (`e2e/test-results/end-of-time.png`) for
+placement and the live look. Finish with `make ci` (9/9).
 
 ---
 
@@ -214,7 +214,7 @@ screenshot for the live look. Finish with `make ci` (9/9).
    `SCALE_TO_FIT`. Bump the sheet height if the new strip doesn't fit. Remove
    the prop's static entry if you're replacing one.
 4. **Place** it in the script's decor list (and block its footprint in
-   `collision` if solid); re-run `author_scene.py`; eyeball `scene_preview.png`.
+   `collision` if solid); re-run `author_scene.py`; eyeball the E2E screenshot.
 5. **Verify**: `map_test.exs`, the E2E motion assertion + screenshot, `make ci`.
 
 ---

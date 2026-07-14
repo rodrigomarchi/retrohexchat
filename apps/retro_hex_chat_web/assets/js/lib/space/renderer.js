@@ -200,8 +200,8 @@ export class Renderer {
   _drawFloor(ctx, now = 0) {
     const ground = this.map.ground;
     const fp = this.projection.tileFootprint;
-    // The slab underside (the block tapering to a diamond below) is one shape,
-    // drawn before the top tiles so the surface seats cleanly over its rim.
+    // The slab undersides (each block tapering below its platform) draw before
+    // the top tiles so every surface seats cleanly over its own rim.
     this._drawSlabUnderside(ctx);
     for (const { x: tx, y: ty } of this._isoTileOrder()) {
       const tileId = this.map.floorTile(tx, ty);
@@ -220,14 +220,23 @@ export class Renderer {
     }
   }
 
-  // The platform's 3D underside: the four hull corners projected, with the two
+  // The 3D undersides of every solid block (platforms and bridges), drawn
+  // far→near by each hull's front corner so a nearer block's faces paint over a
+  // farther block's.
+  _drawSlabUnderside(ctx) {
+    const slabs = this.map.slabs ?? [];
+    if (slabs.length === 0) return;
+    const byDepth = [...slabs].sort((a, b) => a.hull[1] + a.hull[3] - (b.hull[1] + b.hull[3]));
+    for (const slab of byDepth) this._drawSlab(ctx, slab);
+  }
+
+  // One block's underside: the four hull corners projected, with the two
   // camera-facing front faces (front-left, front-right) extruded down and pulled
   // toward a centre apex by `taper` — so the block reads as a solid island that
-  // narrows to a diamond point below (taper=1 → a sharp point). `slab.hull` is the
-  // [minX,maxX,minY,maxY] of solid cells.
-  _drawSlabUnderside(ctx) {
-    const slab = this.map.slab;
-    if (!slab?.hull) return;
+  // narrows to a diamond point below (taper=1 → a sharp point; taper=0 → a
+  // straight prism, the bridge look). `hull` is the [minX,maxX,minY,maxY] of the
+  // block's solid cells.
+  _drawSlab(ctx, slab) {
     const [sx0, sx1, sy0, sy1] = slab.hull;
     const depth = (slab.thickness ?? 0) * (this.projection.zs ?? 0);
     const taper = slab.taper ?? 0;

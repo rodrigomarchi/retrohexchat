@@ -73,7 +73,11 @@ Key visual facts (the ones that decide fidelity):
    lamp now casts **two stacked additive glows**: a soft ground pool + a tight
    bright halo `lift`ed ~106px up to the lantern head (new `light.lift` field, px).
    Reads as source-on-top, light-on-ground.
-6. 🟢 One platform vs three (+ bridges) — acceptable simplification for a 1:1 DM room.
+6. ✅ One platform vs several + bridges (was 🟢 "acceptable simplification";
+   closed 2026-07-14): the scene is now a **cross of five equal platforms joined
+   by railed 2-cell stone bridges** — central hub + one satellite per cardinal
+   side, each with its own lamp — matching the real area's multi-platform
+   anatomy (and then some).
 7. 🟢 Diamond underside vs flat reddish block — intentional stylisation, keep.
 
 **Scene reads ~93–95% CT** (2026-07-11): warm lit cobble plaza, tall ornate iron

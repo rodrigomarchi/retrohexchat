@@ -216,8 +216,8 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert space_init.channel_name == space_id
       assert space_init.self_key == participant_key(local)
       assert space_init.map.id == "end_of_time"
-      assert space_init.map.width == 40
-      assert space_init.map.height == 24
+      assert space_init.map.width == 96
+      assert space_init.map.height == 72
 
       expected_label = "#{local} + #{peer}"
 
@@ -438,7 +438,7 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       tile_size: 32,
       projection: "isometric",
       iso: %{tile_w: 64, tile_h: 32, z_step: 16, headroom: 6},
-      slab: nil,
+      slabs: [],
       vignette: nil,
       sea: nil,
       railings: [],

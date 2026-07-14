@@ -35,9 +35,10 @@ export class SpaceMap {
     // Parallax background layers (cosmic nebula) drawn behind the floor, offset
     // by the camera times a per-layer scroll factor (< 1) for depth.
     this.parallax = Array.isArray(definition.parallax) ? definition.parallax : [];
-    // Isometric slab thickness (3D side faces) + a screen-space vignette. Null
-    // when a map defines neither → no faces, no vignette.
-    this.slab = definition.slab ?? null;
+    // Isometric slabs: one 3D underside {hull, thickness, taper} per solid
+    // block (platforms, bridges). A legacy single `slab` wraps into the list;
+    // empty when a map defines none → no side faces. Vignette is screen-space.
+    this.slabs = normalizeSlabs(definition);
     this.vignette = definition.vignette ?? null;
     // The cosmic sea abyss behind a floating platform (deep-blue rippling void).
     this.sea = definition.sea ?? null;
@@ -113,6 +114,11 @@ export class SpaceMap {
     if (!spawn) return { x: 0, y: 0, dir: "down" };
     return { x: spawn.x, y: spawn.y, dir: spawn.dir ?? "down" };
   }
+}
+
+function normalizeSlabs(definition) {
+  if (Array.isArray(definition.slabs)) return definition.slabs.filter((s) => s?.hull);
+  return definition.slab?.hull ? [definition.slab] : [];
 }
 
 function buildCollisionSet(rects) {

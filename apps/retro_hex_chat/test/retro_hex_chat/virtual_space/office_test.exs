@@ -35,7 +35,7 @@ defmodule RetroHexChat.VirtualSpace.OfficeTest do
       tile_size: 32,
       projection: "isometric",
       iso: %{tile_w: 64, tile_h: 32, z_step: 16, headroom: 6},
-      slab: nil,
+      slabs: [],
       vignette: nil,
       sea: nil,
       railings: [],
