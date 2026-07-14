@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -14,14 +14,14 @@ function uniqueHighlightWord(): string {
     .slice(2, 5)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'hl') {
+async function signedInUser(page: Page, prefix = "hl") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -29,7 +29,7 @@ async function signedInUser(page: Page, prefix = 'hl') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'hl',
+  prefix = "hl",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -38,13 +38,13 @@ async function newSignedInUser(
   return { ...user, ctx };
 }
 
-test.describe('Highlight words dialog', () => {
-  test('adds, edits, removes a word and highlights matching inbound messages (U1)', async ({
+test.describe("Highlight words dialog", () => {
+  test("adds, edits, removes a word and highlights matching inbound messages (U1)", async ({
     browser,
     page,
   }) => {
-    const alice = await signedInUser(page, 'hla');
-    const bob = await newSignedInUser(browser, 'hlb');
+    const alice = await signedInUser(page, "hla");
+    const bob = await newSignedInUser(browser, "hlb");
     const word = uniqueHighlightWord();
     const highlightedText = `please notice ${word} from another user`;
     const plainText = `after remove ${word} should be plain`;
@@ -58,22 +58,26 @@ test.describe('Highlight words dialog', () => {
       await alice.chat.editHighlightWordColor(word, 9);
       await expect(alice.chat.highlightWordColor(word)).toHaveClass(/irc-bg-9/);
 
-      await alice.chat.highlightDialog.locator('[data-window-control="close"]').click();
+      await alice.chat.highlightDialog
+        .locator('[data-window-control="close"]')
+        .click();
       await expect(alice.chat.highlightDialog).toBeHidden();
 
       await bob.chat.sendMessage(highlightedText);
       const highlightedRow = alice.chat.messageRowByText(highlightedText);
       await expect(highlightedRow).toBeVisible({ timeout: 10_000 });
       await expect(highlightedRow).toHaveAttribute(
-        'data-testid',
-        'highlighted-message',
+        "data-testid",
+        "highlighted-message",
       );
       await expect(highlightedRow).toHaveClass(/chat-message--highlighted/);
       await expect(highlightedRow).toHaveClass(/irc-bg-9/);
 
       await alice.chat.openHighlightDialogFromMenu();
       await alice.chat.removeHighlightWord(word);
-      await alice.chat.highlightDialog.locator('[data-window-control="close"]').click();
+      await alice.chat.highlightDialog
+        .locator('[data-window-control="close"]')
+        .click();
       await expect(alice.chat.highlightDialog).toBeHidden();
 
       await bob.chat.sendMessage(plainText);

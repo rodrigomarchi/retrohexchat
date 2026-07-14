@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 // Reproduces what a user sees when the server restarts during a deploy: the
 // LiveView socket drops, the reconnect UI escalates, and — when the socket comes
@@ -11,25 +11,25 @@ import { ChatPage } from '../pages/ChatPage';
 // the deploy reconnect triggers on the server, so it is a deterministic proxy for
 // the cold remount (no flaky server-restart / heartbeat-timeout dependency).
 
-async function signedInUser(page: Page, prefix = 'depl') {
+async function signedInUser(page: Page, prefix = "depl") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
 }
 
-test.describe('Deploy reconnect', () => {
+test.describe("Deploy reconnect", () => {
   // ── The client-side outage UX ──────────────────────────────────────────
   // A routine deploy is a short outage: the user should see the unobtrusive
   // banner, but NOT get trapped behind the full-screen "Connection Lost" modal
   // (which now only escalates after a much longer wait).
-  test('a short outage shows the banner but not the intrusive modal (BA1)', async ({
+  test("a short outage shows the banner but not the intrusive modal (BA1)", async ({
     browser,
   }) => {
     test.setTimeout(45_000);
@@ -55,7 +55,7 @@ test.describe('Deploy reconnect', () => {
         /reconnect-overlay--visible/,
       );
       await page.screenshot({
-        path: 'test-results/deploy-reconnect-banner.png',
+        path: "test-results/deploy-reconnect-banner.png",
         fullPage: true,
       });
 
@@ -75,7 +75,7 @@ test.describe('Deploy reconnect', () => {
   // The bug: a reconnect is NOT seamless. The cold remount replays the login
   // sequence, so the user sees "* Restoring session…" and a fresh #lobby join
   // burst every deploy. A reconnect should restore the session silently.
-  test('a cold remount must not replay the login sequence (BA2)', async ({
+  test("a cold remount must not replay the login sequence (BA2)", async ({
     browser,
   }) => {
     test.setTimeout(45_000);
@@ -93,7 +93,7 @@ test.describe('Deploy reconnect', () => {
       await page.reload();
       await chat.waitUntilConnected();
       await page.screenshot({
-        path: 'test-results/deploy-reconnect-after.png',
+        path: "test-results/deploy-reconnect-after.png",
         fullPage: true,
       });
 

@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,14 +8,14 @@ type TestUser = {
   nick: string;
 };
 
-async function signedInUser(page: Page, prefix = 'e2e') {
+async function signedInUser(page: Page, prefix = "e2e") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -23,7 +23,7 @@ async function signedInUser(page: Page, prefix = 'e2e') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'e2e',
+  prefix = "e2e",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -36,12 +36,12 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Notify list commands', () => {
-  test('UI entry points open Notify List and status bar buddy badge (J19)', async ({
+test.describe("Notify list commands", () => {
+  test("UI entry points open Notify List and status bar buddy badge (J19)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'ntfuia');
-    const bob = await newSignedInUser(browser, 'ntfuib');
+    const alice = await newSignedInUser(browser, "ntfuia");
+    const bob = await newSignedInUser(browser, "ntfuib");
 
     try {
       await expect(alice.chat.statusBarNotifyBadge).toHaveCount(0);
@@ -58,25 +58,25 @@ test.describe('Notify list commands', () => {
 
       await expect(alice.chat.statusBarNotifyBadge).toBeVisible();
       await expect(alice.chat.statusBarNotifyBadge).toHaveAttribute(
-        'title',
-        '1 buddy online',
+        "title",
+        "1 buddy online",
       );
-      await expect(alice.chat.statusBarNotifyBadge).toContainText('1');
+      await expect(alice.chat.statusBarNotifyBadge).toContainText("1");
 
       await alice.chat.statusBarNotifyBadge.click();
       await expect(alice.chat.notifyListDialog).toBeVisible();
-      await expect(alice.chat.notifyListRow(bob.nick)).toContainText('Online');
+      await expect(alice.chat.notifyListRow(bob.nick)).toContainText("Online");
     } finally {
       await closeUsers([alice, bob]);
     }
   });
 
-  test('/notify add tracks online and offline buddy status changes (J15)', async ({
+  test("/notify add tracks online and offline buddy status changes (J15)", async ({
     browser,
   }) => {
     const users: TestUser[] = [];
-    const alice = await newSignedInUser(browser, 'ntfa');
-    const bobNick = uniqueNickname('ntfb');
+    const alice = await newSignedInUser(browser, "ntfa");
+    const bobNick = uniqueNickname("ntfb");
     users.push(alice);
 
     try {
@@ -94,7 +94,7 @@ test.describe('Notify list commands', () => {
 
       await bobConnect.open();
       await bobConnect.enterNickname(bobNick);
-      await bobConnect.registerWithPassword('pass12345');
+      await bobConnect.registerWithPassword("pass12345");
       await bobChat.waitUntilConnected();
 
       await alice.chat.expectStatusMessageVisible(
@@ -113,11 +113,11 @@ test.describe('Notify list commands', () => {
     }
   });
 
-  test('/notify edit/list/remove updates command output and dialogs (J16)', async ({
+  test("/notify edit/list/remove updates command output and dialogs (J16)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'ntfc');
-    const targetNick = uniqueNickname('ntfd');
+    const alice = await newSignedInUser(browser, "ntfc");
+    const targetNick = uniqueNickname("ntfd");
     const firstNote = `first-note-${Date.now().toString(36)}`;
     const editedNote = `edited-note-${Date.now().toString(36)}`;
 
@@ -129,7 +129,7 @@ test.describe('Notify list commands', () => {
         `Added ${targetNick} to notify list`,
       );
 
-      await alice.chat.sendMessage('/notify list');
+      await alice.chat.sendMessage("/notify list");
       await alice.chat.expectStatusMessageVisible(
         `${targetNick} [offline] - ${firstNote}`,
       );
@@ -139,18 +139,18 @@ test.describe('Notify list commands', () => {
         `Updated note for ${targetNick}`,
       );
 
-      await alice.chat.sendMessage('/notify list');
+      await alice.chat.sendMessage("/notify list");
       await alice.chat.expectStatusMessageVisible(
         `${targetNick} [offline] - ${editedNote}`,
       );
 
-      await alice.chat.sendMessage('/notify');
+      await alice.chat.sendMessage("/notify");
       await expect(alice.chat.notifyListDialog).toBeVisible();
       await expect(alice.chat.notifyListRow(targetNick)).toContainText(
         targetNick,
       );
       await expect(alice.chat.notifyListRow(targetNick)).toContainText(
-        'Offline',
+        "Offline",
       );
       await alice.chat.closeNotifyList();
 
@@ -160,7 +160,7 @@ test.describe('Notify list commands', () => {
         editedNote,
       );
       await expect(alice.chat.addressBookNotifyRow(targetNick)).toContainText(
-        'Offline',
+        "Offline",
       );
       await alice.chat.closeAddressBook();
 
@@ -169,9 +169,9 @@ test.describe('Notify list commands', () => {
         `Removed ${targetNick} from notify list`,
       );
 
-      await alice.chat.sendMessage('/clear');
-      await alice.chat.sendMessage('/notify list');
-      await alice.chat.expectStatusMessageVisible('Your notify list is empty');
+      await alice.chat.sendMessage("/clear");
+      await alice.chat.sendMessage("/notify list");
+      await alice.chat.expectStatusMessageVisible("Your notify list is empty");
 
       await alice.chat.openAddressBookFromMenu();
       await alice.chat.switchAddressBookToNotifyTab();

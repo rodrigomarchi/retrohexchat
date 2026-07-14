@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-test.describe('Basic chat commands', () => {
-  test('/me <action> renders as an action-style line containing the user nick (A4)', async ({
+test.describe("Basic chat commands", () => {
+  test("/me <action> renders as an action-style line containing the user nick (A4)", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);
@@ -12,7 +12,7 @@ test.describe('Basic chat commands', () => {
 
     await connect.open();
     await connect.enterNickname(nick);
-    await connect.registerWithPassword('pass12345');
+    await connect.registerWithPassword("pass12345");
     await chat.waitUntilConnected();
 
     const action = `dances ${Date.now()}`;

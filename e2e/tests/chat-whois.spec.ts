@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'whois'): string {
+function uniqueChannel(prefix = "whois"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'e2e') {
+async function signedInUser(page: Page, prefix = "e2e") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'e2e') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'e2e',
+  prefix = "e2e",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -37,8 +37,8 @@ async function newSignedInUser(
 }
 
 async function setupTwoUsersInChannel(browser: Browser, channel: string) {
-  const alice = await newSignedInUser(browser, 'wisa');
-  const bob = await newSignedInUser(browser, 'wisb');
+  const alice = await newSignedInUser(browser, "wisa");
+  const bob = await newSignedInUser(browser, "wisb");
 
   await alice.chat.sendMessage(`/join ${channel}`);
   await alice.chat.expectTabVisible(channel);
@@ -56,11 +56,11 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Whois and bio commands', () => {
-  test('/bio appears in another user whois and /bio clear removes it (J10)', async ({
+test.describe("Whois and bio commands", () => {
+  test("/bio appears in another user whois and /bio clear removes it (J10)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('bio');
+    const channel = uniqueChannel("bio");
     const { alice, bob } = await setupTwoUsersInChannel(browser, channel);
     const bio = `bio-${Date.now()}`;
 
@@ -70,24 +70,24 @@ test.describe('Whois and bio commands', () => {
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
       await alice.chat.expectWhoisCard(bob.nick);
-      await alice.chat.expectLookupCardField('Bio', bio);
+      await alice.chat.expectLookupCardField("Bio", bio);
       await alice.chat.closeLookupResult();
 
-      await bob.chat.sendMessage('/bio clear');
-      await bob.chat.expectMessageVisible('Bio cleared.');
+      await bob.chat.sendMessage("/bio clear");
+      await bob.chat.expectMessageVisible("Bio cleared.");
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
       await alice.chat.expectWhoisCard(bob.nick);
-      await alice.chat.expectLookupCardMissingField('Bio');
+      await alice.chat.expectLookupCardMissingField("Bio");
     } finally {
       await closeUsers([alice, bob]);
     }
   });
 
-  test('/whois shows online metadata, shared channels, registered state, away, and bio (J11)', async ({
+  test("/whois shows online metadata, shared channels, registered state, away, and bio (J11)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('meta');
+    const channel = uniqueChannel("meta");
     const { alice, bob } = await setupTwoUsersInChannel(browser, channel);
     const bio = `whois-bio-${Date.now()}`;
     const away = `whois-away-${Date.now()}`;
@@ -101,23 +101,23 @@ test.describe('Whois and bio commands', () => {
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
 
       await alice.chat.expectWhoisCard(bob.nick);
-      await expect(alice.chat.lookupResultCard).toContainText('Online for');
-      await expect(alice.chat.lookupResultCard).toContainText('Idle for');
-      await alice.chat.expectLookupCardField('Channels', channel);
-      await alice.chat.expectLookupCardField('Shared channels', channel);
-      await alice.chat.expectLookupCardField('Registered', 'Yes');
-      await alice.chat.expectLookupCardField('Away', away);
-      await alice.chat.expectLookupCardField('Bio', bio);
+      await expect(alice.chat.lookupResultCard).toContainText("Online for");
+      await expect(alice.chat.lookupResultCard).toContainText("Idle for");
+      await alice.chat.expectLookupCardField("Channels", channel);
+      await alice.chat.expectLookupCardField("Shared channels", channel);
+      await alice.chat.expectLookupCardField("Registered", "Yes");
+      await alice.chat.expectLookupCardField("Away", away);
+      await alice.chat.expectLookupCardField("Bio", bio);
     } finally {
       await closeUsers([alice, bob]);
     }
   });
 
-  test('/whois missingNick shows a not-online message (J12)', async ({
+  test("/whois missingNick shows a not-online message (J12)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'wism');
-    const missingNick = uniqueNickname('ghost');
+    const alice = await newSignedInUser(browser, "wism");
+    const missingNick = uniqueNickname("ghost");
 
     try {
       await alice.chat.sendMessage(`/whois ${missingNick}`);

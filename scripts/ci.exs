@@ -35,7 +35,7 @@ defmodule CI do
       cmd: "npm",
       args: ["test", "--prefix", "apps/retro_hex_chat_web/assets"]
     },
-    "format" => %{label: "Format", cmd: "mix", args: ["format", "--check-formatted"]},
+    "format" => %{label: "Format", cmd: "make", args: ["format.check"]},
     "credo" => %{label: "Credo", cmd: "mix", args: ["credo", "--strict"]},
     "test" => %{label: "Tests", cmd: "mix", args: ["test"]},
     "test_feature" => %{

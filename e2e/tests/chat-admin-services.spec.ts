@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'admsvc'): string {
+function uniqueChannel(prefix = "admsvc"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'e2e') {
+async function signedInUser(page: Page, prefix = "e2e") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'e2e') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'e2e',
+  prefix = "e2e",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -57,12 +57,12 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Admin service commands', () => {
-  test('/admin ns info/resetpass/drop manages NickServ registrations (K11)', async ({
+test.describe("Admin service commands", () => {
+  test("/admin ns info/resetpass/drop manages NickServ registrations (K11)", async ({
     browser,
   }) => {
-    const admin = await knownSignedInUser(browser, 'TestAdmin', 'adminpass1');
-    const target = await newSignedInUser(browser, 'ans');
+    const admin = await knownSignedInUser(browser, "TestAdmin", "adminpass1");
+    const target = await newSignedInUser(browser, "ans");
     const resetPassword = `reset-${Date.now().toString(36)}`;
     const reloginUsers: TestUser[] = [];
 
@@ -71,7 +71,7 @@ test.describe('Admin service commands', () => {
 
       await admin.chat.sendMessage(`/admin ns info ${target.nick}`);
       await admin.chat.expectMessageVisible(`*** [NickServ] ${target.nick}`);
-      await admin.chat.expectMessageVisible('Registered:');
+      await admin.chat.expectMessageVisible("Registered:");
 
       await admin.chat.sendMessage(
         `/admin ns resetpass ${target.nick} ${resetPassword}`,
@@ -103,19 +103,19 @@ test.describe('Admin service commands', () => {
     }
   });
 
-  test('/admin cs info/access/transfer/drop manages ChanServ registrations (K12)', async ({
+  test("/admin cs info/access/transfer/drop manages ChanServ registrations (K12)", async ({
     browser,
   }) => {
-    const admin = await knownSignedInUser(browser, 'TestAdmin', 'adminpass1');
-    const founder = await newSignedInUser(browser, 'acs');
-    const newFounder = await newSignedInUser(browser, 'acf');
-    const accessUser = await newSignedInUser(browser, 'aca');
-    const channel = uniqueChannel('admcs');
+    const admin = await knownSignedInUser(browser, "TestAdmin", "adminpass1");
+    const founder = await newSignedInUser(browser, "acs");
+    const newFounder = await newSignedInUser(browser, "acf");
+    const accessUser = await newSignedInUser(browser, "aca");
+    const channel = uniqueChannel("admcs");
 
     try {
       await founder.chat.sendMessage(`/join ${channel}`);
       await founder.chat.expectTabVisible(channel);
-      await founder.chat.sendMessage('/cs register');
+      await founder.chat.sendMessage("/cs register");
       await founder.chat.expectMessageVisible(
         `[ChanServ] Channel ${channel} registered by ${founder.nick}`,
       );
@@ -130,7 +130,9 @@ test.describe('Admin service commands', () => {
       await admin.chat.expectMessageVisible(`${accessUser.nick} [aop]`);
 
       await admin.chat.sendMessage(`/admin cs access ${channel}`);
-      await admin.chat.expectMessageVisible(`*** Access List for ${channel} ***`);
+      await admin.chat.expectMessageVisible(
+        `*** Access List for ${channel} ***`,
+      );
       await admin.chat.expectMessageVisible(`${accessUser.nick} [aop]`);
 
       await admin.chat.sendMessage(

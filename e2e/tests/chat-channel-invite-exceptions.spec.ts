@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,11 +8,11 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'invex'): string {
+function uniqueChannel(prefix = "invex"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-function uniqueNickBase(prefix = 'x5ex'): string {
+function uniqueNickBase(prefix = "x5ex"): string {
   return `${prefix}${Math.random().toString(36).slice(2, 8)}`;
 }
 
@@ -22,7 +22,7 @@ async function signedInUser(page: Page, nick: string) {
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -43,11 +43,11 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Channel invite exceptions', () => {
-  test('matching invite exception allows invite-only join and removal restores the restriction (X5)', async ({
+test.describe("Channel invite exceptions", () => {
+  test("matching invite exception allows invite-only join and removal restores the restriction (X5)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('x5invex');
+    const channel = uniqueChannel("x5invex");
     const nickBase = uniqueNickBase();
     const owner = await newSignedInUser(browser, `${nickBase}op`);
     const excepted = await newSignedInUser(browser, `${nickBase}ok`);
@@ -58,7 +58,7 @@ test.describe('Channel invite exceptions', () => {
       await owner.chat.sendMessage(`/join ${channel}`);
       await owner.chat.expectTabVisible(channel);
 
-      await owner.chat.sendMessage('/mode +i');
+      await owner.chat.sendMessage("/mode +i");
       await owner.chat.expectMessageVisible(`${owner.nick} sets mode +i`);
 
       await owner.chat.openChannelCentralFromMenu();
@@ -70,7 +70,7 @@ test.describe('Channel invite exceptions', () => {
       await owner.chat.expectNickInList(excepted.nick);
 
       await blocked.chat.sendMessage(`/join ${channel}`);
-      await blocked.chat.expectMessageVisible('Channel is invite-only (+i)');
+      await blocked.chat.expectMessageVisible("Channel is invite-only (+i)");
       await blocked.chat.expectTabHidden(channel);
 
       await excepted.chat.sendMessage(`/part ${channel}`);
@@ -82,7 +82,7 @@ test.describe('Channel invite exceptions', () => {
       await owner.chat.closeChannelCentral();
 
       await excepted.chat.sendMessage(`/join ${channel}`);
-      await excepted.chat.expectMessageVisible('Channel is invite-only (+i)');
+      await excepted.chat.expectMessageVisible("Channel is invite-only (+i)");
       await excepted.chat.expectTabHidden(channel);
     } finally {
       await closeUsers([owner, excepted, blocked]);

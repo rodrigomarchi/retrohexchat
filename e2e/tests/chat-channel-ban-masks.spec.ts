@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'banmask'): string {
+function uniqueChannel(prefix = "banmask"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'banmask') {
+async function signedInUser(page: Page, prefix = "banmask") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -31,7 +31,7 @@ async function signedInUserWithNick(page: Page, nick: string) {
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -39,7 +39,7 @@ async function signedInUserWithNick(page: Page, nick: string) {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'banmask',
+  prefix = "banmask",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -63,14 +63,14 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Channel ban masks', () => {
-  test('wildcard hostmask bans block matching nicks and spare non-matching nicks (X3)', async ({
+test.describe("Channel ban masks", () => {
+  test("wildcard hostmask bans block matching nicks and spare non-matching nicks (X3)", async ({
     browser,
   }) => {
-    const owner = await newSignedInUser(browser, 'x3own');
-    const matchingNick = uniqueNickname('x3mask');
-    const free = await newSignedInUser(browser, 'x3free');
-    const channel = uniqueChannel('x3ban');
+    const owner = await newSignedInUser(browser, "x3own");
+    const matchingNick = uniqueNickname("x3mask");
+    const free = await newSignedInUser(browser, "x3free");
+    const channel = uniqueChannel("x3ban");
     const banPrefix = matchingNick.slice(0, matchingNick.length - 2);
     const banMask = `${banPrefix}*!*@*`;
     const users = [owner, free];
@@ -86,7 +86,9 @@ test.describe('Channel ban masks', () => {
       users.push(matching);
 
       await matching.chat.sendMessage(`/join ${channel}`);
-      await matching.chat.expectMessageVisible(`You are banned from ${channel}`);
+      await matching.chat.expectMessageVisible(
+        `You are banned from ${channel}`,
+      );
       await matching.chat.expectTabHidden(channel);
 
       await free.chat.sendMessage(`/join ${channel}`);

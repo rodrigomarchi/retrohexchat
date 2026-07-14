@@ -1,9 +1,16 @@
-import { Browser, BrowserContext, Locator, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import {
+  Browser,
+  BrowserContext,
+  Locator,
+  Page,
+  test,
+  expect,
+} from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
 type TestUser = {
   chat: ChatPage;
@@ -12,15 +19,15 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'sec'): string {
+function uniqueChannel(prefix = "sec"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-function uniqueBotName(prefix = 'secbot'): string {
+function uniqueBotName(prefix = "secbot"): string {
   return `${prefix}${Math.random().toString(36).slice(2, 8)}`;
 }
 
-function uniqueAlias(prefix = 'sec'): string {
+function uniqueAlias(prefix = "sec"): string {
   return `${prefix}${Math.random().toString(36).slice(2, 8)}`;
 }
 
@@ -30,7 +37,7 @@ function xssPayload(marker: string): string {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'sec',
+  prefix = "sec",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -40,7 +47,7 @@ async function newSignedInUser(
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
   await armXssGuard(page);
 
@@ -71,7 +78,7 @@ async function closeUsers(users: TestUser[]) {
 
 async function armXssGuard(page: Page) {
   await page.evaluate(() => {
-    (window as Window & { __e2eXss?: string }).__e2eXss = 'clean';
+    (window as Window & { __e2eXss?: string }).__e2eXss = "clean";
   });
 }
 
@@ -81,7 +88,7 @@ async function expectNoScriptRan(page: Page) {
     .poll(() =>
       page.evaluate(() => (window as Window & { __e2eXss?: string }).__e2eXss),
     )
-    .toBe('clean');
+    .toBe("clean");
 }
 
 async function expectEscapedInRoot(root: Locator, marker: string) {
@@ -89,7 +96,7 @@ async function expectEscapedInRoot(root: Locator, marker: string) {
     timeout: 10_000,
   });
   await expect(root.locator(`[data-e2e-xss="${marker}"]`)).toHaveCount(0);
-  await expect(root.locator('script')).toHaveCount(0);
+  await expect(root.locator("script")).toHaveCount(0);
 }
 
 async function expectEscapedMessage(user: TestUser, marker: string) {
@@ -97,7 +104,7 @@ async function expectEscapedMessage(user: TestUser, marker: string) {
 
   await expect(row).toBeVisible({ timeout: 10_000 });
   await expect(row.locator(`[data-e2e-xss="${marker}"]`)).toHaveCount(0);
-  await expect(row.locator('script')).toHaveCount(0);
+  await expect(row.locator("script")).toHaveCount(0);
   await expectNoScriptRan(user.page);
 }
 
@@ -109,19 +116,21 @@ async function joinChannel(user: TestUser, channel: string) {
 
 async function cleanupBot(admin: TestUser, botName: string, channel?: string) {
   if (channel) {
-    await admin.chat.sendMessage(`/bot part ${botName} ${channel}`).catch(() => {});
+    await admin.chat
+      .sendMessage(`/bot part ${botName} ${channel}`)
+      .catch(() => {});
   }
 
   await admin.chat.sendMessage(`/bot destroy ${botName}`).catch(() => {});
 }
 
-test.describe('Security escaping', () => {
-  test('regular chat messages render HTML/script content as inert text (R1)', async ({
+test.describe("Security escaping", () => {
+  test("regular chat messages render HTML/script content as inert text (R1)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'sxsa');
-    const bob = await newSignedInUser(browser, 'sxsb');
-    const channel = uniqueChannel('xssmsg');
+    const alice = await newSignedInUser(browser, "sxsa");
+    const bob = await newSignedInUser(browser, "sxsb");
+    const channel = uniqueChannel("xssmsg");
     const marker = `xssmsg-${Date.now()}`;
     const payload = xssPayload(marker);
 
@@ -138,13 +147,13 @@ test.describe('Security escaping', () => {
     }
   });
 
-  test('topic, channel welcome, and MOTD escape HTML/script content (R2)', async ({
+  test("topic, channel welcome, and MOTD escape HTML/script content (R2)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const owner = await newSignedInUser(browser, 'sxtp');
-    const joiner = await newSignedInUser(browser, 'sxwj');
-    const channel = uniqueChannel('xsstw');
+    const owner = await newSignedInUser(browser, "sxtp");
+    const joiner = await newSignedInUser(browser, "sxwj");
+    const channel = uniqueChannel("xsstw");
     const topicMarker = `xsstopic-${Date.now()}`;
     const welcomeMarker = `xsswelcome-${Date.now()}`;
     const motdMarker = `xssmotd-${Date.now()}`;
@@ -157,30 +166,32 @@ test.describe('Security escaping', () => {
       await expectNoScriptRan(owner.page);
 
       await owner.chat.sendMessage(`/setwelcome ${xssPayload(welcomeMarker)}`);
-      await owner.chat.expectMessageVisible(`Welcome message for ${channel} has been set.`);
+      await owner.chat.expectMessageVisible(
+        `Welcome message for ${channel} has been set.`,
+      );
 
       await joinChannel(joiner, channel);
       await expectEscapedMessage(joiner, welcomeMarker);
 
       await admin.chat.sendMessage(`/setmotd ${xssPayload(motdMarker)}`);
-      await admin.chat.expectMessageVisible('MOTD has been updated.');
-      await admin.chat.sendMessage('/motd');
+      await admin.chat.expectMessageVisible("MOTD has been updated.");
+      await admin.chat.sendMessage("/motd");
       await admin.chat.switchToStatusTab();
       await expectEscapedInRoot(admin.chat.statusMessageList, motdMarker);
       await expectNoScriptRan(admin.page);
     } finally {
-      await owner.chat.sendMessage('/clearwelcome').catch(() => {});
-      await admin.chat.sendMessage('/clearmotd').catch(() => {});
+      await owner.chat.sendMessage("/clearwelcome").catch(() => {});
+      await admin.chat.sendMessage("/clearmotd").catch(() => {});
       await closeUsers([admin, owner, joiner]);
     }
   });
 
-  test('away and bio text remain escaped in status and whois output (R2)', async ({
+  test("away and bio text remain escaped in status and whois output (R2)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'sxwa');
-    const bob = await newSignedInUser(browser, 'sxwb');
-    const channel = uniqueChannel('xsswhois');
+    const alice = await newSignedInUser(browser, "sxwa");
+    const bob = await newSignedInUser(browser, "sxwb");
+    const channel = uniqueChannel("xsswhois");
     const awayMarker = `xssaway-${Date.now()}`;
     const bioMarker = `xssbio-${Date.now()}`;
 
@@ -202,15 +213,15 @@ test.describe('Security escaping', () => {
     }
   });
 
-  test('alias, bot response, and autorespond output escape HTML/script content (R2)', async ({
+  test("alias, bot response, and autorespond output escape HTML/script content (R2)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const owner = await newSignedInUser(browser, 'sxao');
-    const visitor = await newSignedInUser(browser, 'sxav');
-    const channel = uniqueChannel('xssauto');
-    const aliasName = uniqueAlias('xssa');
-    const botName = uniqueBotName('xssb');
+    const owner = await newSignedInUser(browser, "sxao");
+    const visitor = await newSignedInUser(browser, "sxav");
+    const channel = uniqueChannel("xssauto");
+    const aliasName = uniqueAlias("xssa");
+    const botName = uniqueBotName("xssb");
     const trigger = `ping${Math.random().toString(36).slice(2, 6)}`;
     const aliasMarker = `xssalias-${Date.now()}`;
     const botMarker = `xssbot-${Date.now()}`;
@@ -220,7 +231,9 @@ test.describe('Security escaping', () => {
       await joinChannel(owner, channel);
       await joinChannel(admin, channel);
 
-      await owner.chat.sendMessage(`/alias add ${aliasName} /me ${xssPayload(aliasMarker)}`);
+      await owner.chat.sendMessage(
+        `/alias add ${aliasName} /me ${xssPayload(aliasMarker)}`,
+      );
       await owner.chat.expectMessageVisible(`* Alias /${aliasName} created`);
       await owner.chat.sendMessage(`/${aliasName}`);
       await expectEscapedMessage(owner, aliasMarker);
@@ -233,7 +246,9 @@ test.describe('Security escaping', () => {
       await admin.chat.expectMessageVisible(
         `[BotService] Bot '${botName}' joined ${channel}.`,
       );
-      await admin.chat.sendMessage(`/bot addcmd ${botName} ${trigger} ${xssPayload(botMarker)}`);
+      await admin.chat.sendMessage(
+        `/bot addcmd ${botName} ${trigger} ${xssPayload(botMarker)}`,
+      );
       await admin.chat.expectMessageVisible(
         `[BotService] Command '${trigger}' set for ${botName}.`,
       );
@@ -245,12 +260,12 @@ test.describe('Security escaping', () => {
       await owner.chat.sendMessage(
         `/autorespond add on_join ${channel} /notice $nick ${xssPayload(autorespondMarker)}`,
       );
-      await owner.chat.expectMessageVisible('Auto-respond rule added: on_join');
+      await owner.chat.expectMessageVisible("Auto-respond rule added: on_join");
 
       await joinChannel(visitor, channel);
       await expectEscapedMessage(visitor, autorespondMarker);
     } finally {
-      await owner.chat.sendMessage('/autorespond remove 0').catch(() => {});
+      await owner.chat.sendMessage("/autorespond remove 0").catch(() => {});
       await cleanupBot(admin, botName, channel);
       await closeUsers([admin, owner, visitor]);
     }

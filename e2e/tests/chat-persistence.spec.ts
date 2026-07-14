@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type ChatUser = {
   context: BrowserContext;
@@ -20,7 +20,7 @@ async function createRegisteredUser(
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
-  const password = 'pass12345';
+  const password = "pass12345";
 
   await connect.open();
   await connect.enterNickname(nick);
@@ -45,13 +45,13 @@ async function expectTabBefore(chat: ChatPage, left: string, right: string) {
   expect(leftBox!.x).toBeLessThan(rightBox!.x);
 }
 
-test.describe('Chat persistence', () => {
-  test('registered PM partners restore on reconnect ordered by recency (P1)', async ({
+test.describe("Chat persistence", () => {
+  test("registered PM partners restore on reconnect ordered by recency (P1)", async ({
     browser,
   }) => {
-    const alice = await createRegisteredUser(browser, 'pma');
-    const bob = await createRegisteredUser(browser, 'pmb');
-    const carol = await createRegisteredUser(browser, 'pmc');
+    const alice = await createRegisteredUser(browser, "pma");
+    const bob = await createRegisteredUser(browser, "pmb");
+    const carol = await createRegisteredUser(browser, "pmc");
 
     try {
       const bobMessage = `persist bob ${Date.now()}`;
@@ -84,19 +84,19 @@ test.describe('Chat persistence', () => {
     }
   });
 
-  test('guest PM partners do not restore after reconnect (P2)', async ({
+  test("guest PM partners do not restore after reconnect (P2)", async ({
     browser,
   }) => {
-    const alice = await createRegisteredUser(browser, 'pga');
-    const bob = await createRegisteredUser(browser, 'pgb');
+    const alice = await createRegisteredUser(browser, "pga");
+    const bob = await createRegisteredUser(browser, "pgb");
 
     try {
-      const guestNick = uniqueNickname('pgg');
+      const guestNick = uniqueNickname("pgg");
       const guestMessage = `guest pm ${Date.now()}`;
 
       await alice.chat.sendMessage(`/nick ${guestNick}`);
-      await expect(alice.page.getByTestId('nick-change-dialog')).toBeVisible();
-      await alice.page.getByTestId('nick-change-confirm').click();
+      await expect(alice.page.getByTestId("nick-change-dialog")).toBeVisible();
+      await alice.page.getByTestId("nick-change-confirm").click();
       await alice.chat.waitUntilConnected();
       await expect(alice.chat.nicklistItem(guestNick)).toBeVisible();
 

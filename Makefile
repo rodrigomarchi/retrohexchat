@@ -15,6 +15,9 @@
 
 DOMAIN_APP = apps/retro_hex_chat
 WEB_APP    = apps/retro_hex_chat_web
+E2E_DIR    = e2e
+PRETTIER   = $(WEB_APP)/assets/node_modules/.bin/prettier
+E2E_FORMAT_SOURCES = $(E2E_DIR)/*.json $(E2E_DIR)/*.ts $(E2E_DIR)/helpers $(E2E_DIR)/pages $(E2E_DIR)/tests
 I18N_REQUIRED_LOCALES = pt_BR,es,fr,de,ja,zh_hans,id,ar,ru,hi,ko,tr,vi,bn,ur,zh_hant,pt_PT,it,pl,nl
 
 ifneq (,$(wildcard .env))
@@ -205,9 +208,18 @@ lint: format.check credo dialyzer lint.js lint.hooks lint.css lint.bundle ## Run
 format: ## Auto-format all source files
 	mix format
 	npm run format --prefix $(WEB_APP)/assets
+	$(MAKE) format.e2e
 
 format.check: ## Check formatting without modifying files
 	mix format --check-formatted
+	npm run format:check --prefix $(WEB_APP)/assets
+	$(MAKE) format.e2e.check
+
+format.e2e: ## Auto-format Playwright E2E sources
+	$(PRETTIER) --write $(E2E_FORMAT_SOURCES)
+
+format.e2e.check: ## Check Playwright E2E formatting
+	$(PRETTIER) --check $(E2E_FORMAT_SOURCES)
 
 credo: ## Run Credo linter (strict mode)
 	mix credo --strict

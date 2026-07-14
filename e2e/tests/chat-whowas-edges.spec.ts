@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,14 +8,14 @@ type TestUser = {
   nick: string;
 };
 
-async function signedInUser(page: Page, prefix = 'whowasedge') {
+async function signedInUser(page: Page, prefix = "whowasedge") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -23,7 +23,7 @@ async function signedInUser(page: Page, prefix = 'whowasedge') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'whowasedge',
+  prefix = "whowasedge",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -39,10 +39,10 @@ async function signedInAdmin(browser: Browser): Promise<TestUser> {
   const chat = new ChatPage(page);
 
   await connect.open();
-  await connect.signIn('TestAdmin', 'adminpass1');
+  await connect.signIn("TestAdmin", "adminpass1");
   await chat.waitUntilConnected();
 
-  return { chat, ctx, nick: 'TestAdmin' };
+  return { chat, ctx, nick: "TestAdmin" };
 }
 
 async function closeUsers(users: TestUser[]) {
@@ -58,18 +58,18 @@ async function latestTextSince(chat: ChatPage, start: number): Promise<string> {
     (rows, firstNewRow) =>
       rows
         .slice(firstNewRow)
-        .map((row) => row.textContent || '')
-        .join('\n'),
+        .map((row) => row.textContent || "")
+        .join("\n"),
     start,
   );
 }
 
-test.describe('Whowas edge cases', () => {
-  test('/whowas for an online user points to /whois for current info (W5)', async ({
+test.describe("Whowas edge cases", () => {
+  test("/whowas for an online user points to /whois for current info (W5)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'w5a');
-    const bob = await newSignedInUser(browser, 'w5b');
+    const alice = await newSignedInUser(browser, "w5a");
+    const bob = await newSignedInUser(browser, "w5b");
 
     try {
       await alice.chat.sendMessage(`/whowas ${bob.nick}`);
@@ -82,15 +82,15 @@ test.describe('Whowas edge cases', () => {
     }
   });
 
-  test('/whowas records expire after configured retention (W6)', async ({
+  test("/whowas records expire after configured retention (W6)", async ({
     browser,
   }) => {
     const admin = await signedInAdmin(browser);
-    const target = await newSignedInUser(browser, 'w6t');
+    const target = await newSignedInUser(browser, "w6t");
 
     try {
       await admin.chat.sendMessage(
-        '/admin server set whowas_retention_seconds 5',
+        "/admin server set whowas_retention_seconds 5",
       );
       await admin.chat.expectMessageVisible(
         "Server setting 'whowas_retention_seconds' set to '5'.",
@@ -102,7 +102,7 @@ test.describe('Whowas edge cases', () => {
       await admin.chat.expectMessageVisible(
         `----- Whowas: ${target.nick} -----`,
       );
-      await admin.chat.expectMessageVisible('Last seen:');
+      await admin.chat.expectMessageVisible("Last seen:");
 
       await admin.chat.page.waitForTimeout(6_000);
 
@@ -119,7 +119,7 @@ test.describe('Whowas edge cases', () => {
       expect(expiredText).not.toContain(`----- Whowas: ${target.nick} -----`);
     } finally {
       await admin.chat
-        .sendMessage('/admin server set whowas_retention_seconds 3600')
+        .sendMessage("/admin server set whowas_retention_seconds 3600")
         .catch(() => undefined);
       await closeUsers([admin, target]);
     }

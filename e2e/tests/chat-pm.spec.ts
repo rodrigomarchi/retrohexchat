@@ -1,15 +1,15 @@
-import { test, expect, Browser } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { test, expect, Browser } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 async function setupTwoUsers(browser: Browser) {
   const ctxA = await browser.newContext();
   const ctxB = await browser.newContext();
   const pageA = await ctxA.newPage();
   const pageB = await ctxB.newPage();
-  const nickA = uniqueNickname('a');
-  const nickB = uniqueNickname('b');
-  const pw = 'pass12345';
+  const nickA = uniqueNickname("a");
+  const nickB = uniqueNickname("b");
+  const pw = "pass12345";
 
   const connA = new ConnectPage(pageA);
   const chatA = new ChatPage(pageA);
@@ -28,8 +28,8 @@ async function setupTwoUsers(browser: Browser) {
   return { ctxA, ctxB, chatA, chatB, nickA, nickB };
 }
 
-test.describe('Private messages', () => {
-  test('/msg <bob> hi opens a PM tab and sends the message (D1)', async ({
+test.describe("Private messages", () => {
+  test("/msg <bob> hi opens a PM tab and sends the message (D1)", async ({
     browser,
   }) => {
     const { ctxA, ctxB, chatA, nickB } = await setupTwoUsers(browser);
@@ -50,10 +50,11 @@ test.describe('Private messages', () => {
     }
   });
 
-  test('recipient sees the PM in a new tab labeled with the sender nick (D2)', async ({
+  test("recipient sees the PM in a new tab labeled with the sender nick (D2)", async ({
     browser,
   }) => {
-    const { ctxA, ctxB, chatA, chatB, nickA, nickB } = await setupTwoUsers(browser);
+    const { ctxA, ctxB, chatA, chatB, nickA, nickB } =
+      await setupTwoUsers(browser);
     try {
       const text = `pm-incoming-${Date.now()}`;
       await chatA.sendMessage(`/msg ${nickB} ${text}`);
@@ -68,10 +69,11 @@ test.describe('Private messages', () => {
     }
   });
 
-  test('reply from B updates A’s PM tab with the response (D3)', async ({
+  test("reply from B updates A’s PM tab with the response (D3)", async ({
     browser,
   }) => {
-    const { ctxA, ctxB, chatA, chatB, nickA, nickB } = await setupTwoUsers(browser);
+    const { ctxA, ctxB, chatA, chatB, nickA, nickB } =
+      await setupTwoUsers(browser);
     try {
       const greeting = `pm-greet-${Date.now()}`;
       const reply = `pm-reply-${Date.now()}`;
@@ -95,7 +97,7 @@ test.describe('Private messages', () => {
     }
   });
 
-  test('closing the PM tab removes it from the tablist (D4)', async ({
+  test("closing the PM tab removes it from the tablist (D4)", async ({
     browser,
   }) => {
     const { ctxA, ctxB, chatA, nickB } = await setupTwoUsers(browser);

@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'conv'): string {
+function uniqueChannel(prefix = "conv"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'conv') {
+async function signedInUser(page: Page, prefix = "conv") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'conv') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'conv',
+  prefix = "conv",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -40,14 +40,14 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Conversations sidebar', () => {
-  test('section collapse survives unread rerender without changing active tab (V1)', async ({
+test.describe("Conversations sidebar", () => {
+  test("section collapse survives unread rerender without changing active tab (V1)", async ({
     browser,
   }) => {
-    const channelA = uniqueChannel('conva');
-    const channelB = uniqueChannel('convb');
-    const alice = await newSignedInUser(browser, 'cva');
-    const bob = await newSignedInUser(browser, 'cvb');
+    const channelA = uniqueChannel("conva");
+    const channelB = uniqueChannel("convb");
+    const alice = await newSignedInUser(browser, "cva");
+    const bob = await newSignedInUser(browser, "cvb");
     const unreadMessage = `collapsed-sidebar-unread-${Date.now()}`;
 
     try {
@@ -65,19 +65,19 @@ test.describe('Conversations sidebar', () => {
       await alice.chat.expectTabSelected(channelA);
       await bob.chat.switchToTab(channelB);
 
-      await alice.chat.expectConversationSectionExpanded('channels', true);
-      await alice.chat.toggleConversationSection('channels');
-      await alice.chat.expectConversationSectionExpanded('channels', false);
+      await alice.chat.expectConversationSectionExpanded("channels", true);
+      await alice.chat.toggleConversationSection("channels");
+      await alice.chat.expectConversationSectionExpanded("channels", false);
       await alice.chat.expectTabSelected(channelA);
 
       await bob.chat.sendMessage(unreadMessage);
 
-      await alice.chat.expectConversationSectionExpanded('channels', false);
+      await alice.chat.expectConversationSectionExpanded("channels", false);
       await alice.chat.expectTabSelected(channelA);
       await alice.chat.expectMessageHidden(unreadMessage);
 
-      await alice.chat.toggleConversationSection('channels');
-      await alice.chat.expectConversationSectionExpanded('channels', true);
+      await alice.chat.toggleConversationSection("channels");
+      await alice.chat.expectConversationSectionExpanded("channels", true);
       await expect(alice.chat.channelConversationItem(channelA)).toBeVisible();
       await expect(alice.chat.channelConversationItem(channelB)).toBeVisible();
       await expect(alice.chat.channelUnreadBadge(channelB)).toBeVisible();
@@ -87,33 +87,37 @@ test.describe('Conversations sidebar', () => {
     }
   });
 
-  test('popular channel item joins and switches channel through the sidebar', async ({
+  test("popular channel item joins and switches channel through the sidebar", async ({
     browser,
   }) => {
-    const popularChannel = uniqueChannel('popular');
-    const alice = await newSignedInUser(browser, 'cpa');
-    const bob = await newSignedInUser(browser, 'cpb');
+    const popularChannel = uniqueChannel("popular");
+    const alice = await newSignedInUser(browser, "cpa");
+    const bob = await newSignedInUser(browser, "cpb");
 
     try {
       await bob.chat.sendMessage(`/join ${popularChannel}`);
       await bob.chat.expectTabVisible(popularChannel);
 
       await alice.chat.joinPopularChannel(popularChannel);
-      await expect(alice.chat.channelConversationItem(popularChannel)).toBeVisible();
-      await expect(alice.chat.popularChannelItem(popularChannel)).toHaveCount(0);
+      await expect(
+        alice.chat.channelConversationItem(popularChannel),
+      ).toBeVisible();
+      await expect(alice.chat.popularChannelItem(popularChannel)).toHaveCount(
+        0,
+      );
     } finally {
       await closeUsers([alice, bob]);
     }
   });
 
-  test('browse all channels from sidebar preserves channel list search pre-state (V3)', async ({
+  test("browse all channels from sidebar preserves channel list search pre-state (V3)", async ({
     browser,
   }) => {
-    const homeChannel = uniqueChannel('home');
-    const targetChannel = uniqueChannel('browse');
+    const homeChannel = uniqueChannel("home");
+    const targetChannel = uniqueChannel("browse");
     const searchTerm = targetChannel.slice(1);
-    const alice = await newSignedInUser(browser, 'cba');
-    const bob = await newSignedInUser(browser, 'cbb');
+    const alice = await newSignedInUser(browser, "cba");
+    const bob = await newSignedInUser(browser, "cbb");
 
     try {
       await bob.chat.sendMessage(`/join ${targetChannel}`);
@@ -123,7 +127,7 @@ test.describe('Conversations sidebar', () => {
       await alice.chat.expectTabVisible(homeChannel);
       await alice.chat.expectTabSelected(homeChannel);
 
-      await alice.chat.sendMessage('/list');
+      await alice.chat.sendMessage("/list");
       await expect(alice.chat.channelListDialog).toBeVisible();
       await expect(alice.chat.channelListJoinButton).toBeDisabled();
       await alice.chat.channelListSearch.fill(searchTerm);

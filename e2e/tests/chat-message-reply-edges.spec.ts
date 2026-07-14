@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'reply'): string {
+function uniqueChannel(prefix = "reply"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'reply') {
+async function signedInUser(page: Page, prefix = "reply") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'reply') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'reply',
+  prefix = "reply",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -37,8 +37,8 @@ async function newSignedInUser(
 }
 
 async function setupReply(browser: Browser, channel: string) {
-  const alice = await newSignedInUser(browser, 'rpla');
-  const bob = await newSignedInUser(browser, 'rplb');
+  const alice = await newSignedInUser(browser, "rpla");
+  const bob = await newSignedInUser(browser, "rplb");
   const parent = `reply-parent-${Date.now()}`;
   const reply = `reply-child-${Date.now()}`;
 
@@ -67,7 +67,7 @@ async function closeUsers(users: TestUser[]) {
 }
 
 async function sendPasteLines(chat: ChatPage, lines: string[]) {
-  await chat.pasteText(lines.join('\n'));
+  await chat.pasteText(lines.join("\n"));
   await expect(chat.pasteConfirmSendButton).toBeVisible();
   await chat.pasteConfirmSendButton.click();
   await expect(chat.pasteConfirmSendButton).toBeHidden();
@@ -85,22 +85,24 @@ async function isRowInsideMessageViewport(chat: ChatPage, text: string) {
   });
 }
 
-test.describe('Reply edge cases', () => {
-  test('reply preview updates when the parent message is edited (S3)', async ({
+test.describe("Reply edge cases", () => {
+  test("reply preview updates when the parent message is edited (S3)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('rpledit');
+    const channel = uniqueChannel("rpledit");
     const { alice, bob, parent, reply } = await setupReply(browser, channel);
     const updatedParent = `reply-parent-updated-${Date.now()}`;
 
     try {
-      const replyBlock = bob.chat.messageRowByText(reply).getByTestId('reply-block');
+      const replyBlock = bob.chat
+        .messageRowByText(reply)
+        .getByTestId("reply-block");
       await expect(replyBlock).toContainText(parent);
 
-      await alice.chat.chatInput.press('ArrowUp');
+      await alice.chat.chatInput.press("ArrowUp");
       await expect(alice.chat.chatInput).toHaveValue(parent);
       await alice.chat.chatInput.fill(updatedParent);
-      await alice.chat.chatInput.press('Enter');
+      await alice.chat.chatInput.press("Enter");
 
       await alice.chat.expectMessageVisible(updatedParent);
       await bob.chat.expectMessageVisible(updatedParent);
@@ -111,14 +113,16 @@ test.describe('Reply edge cases', () => {
     }
   });
 
-  test('reply preview shows deleted state when the parent message is deleted (S4)', async ({
+  test("reply preview shows deleted state when the parent message is deleted (S4)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('rpldel');
+    const channel = uniqueChannel("rpldel");
     const { alice, bob, parent, reply } = await setupReply(browser, channel);
 
     try {
-      const replyBlock = bob.chat.messageRowByText(reply).getByTestId('reply-block');
+      const replyBlock = bob.chat
+        .messageRowByText(reply)
+        .getByTestId("reply-block");
       await expect(replyBlock).toContainText(parent);
 
       await alice.chat.openMessageContextMenu(parent);
@@ -126,27 +130,32 @@ test.describe('Reply edge cases', () => {
       await expect(alice.chat.deleteConfirmButton).toBeVisible();
       await alice.chat.deleteConfirmButton.click();
 
-      await expect(alice.chat.messageList.getByTestId('deleted-message')).toBeVisible();
-      await expect(bob.chat.messageList.getByTestId('deleted-message')).toBeVisible();
-      await expect(replyBlock).toContainText('[message deleted]');
+      await expect(
+        alice.chat.messageList.getByTestId("deleted-message"),
+      ).toBeVisible();
+      await expect(
+        bob.chat.messageList.getByTestId("deleted-message"),
+      ).toBeVisible();
+      await expect(replyBlock).toContainText("[message deleted]");
       await expect(replyBlock).not.toContainText(parent);
     } finally {
       await closeUsers([alice, bob]);
     }
   });
 
-  test('clicking a reply parent link scrolls to the loaded parent message (S5)', async ({
+  test("clicking a reply parent link scrolls to the loaded parent message (S5)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('rplscroll');
-    const alice = await newSignedInUser(browser, 'rpsa');
-    const bob = await newSignedInUser(browser, 'rpsb');
+    const channel = uniqueChannel("rplscroll");
+    const alice = await newSignedInUser(browser, "rpsa");
+    const bob = await newSignedInUser(browser, "rpsb");
     const marker = Date.now();
     const parent = `reply-scroll-parent-${marker}`;
     const reply = `reply-scroll-child-${marker}`;
     const fillerLines = Array.from(
       { length: 35 },
-      (_, index) => `reply-scroll-filler-${marker}-${String(index + 1).padStart(2, '0')}`,
+      (_, index) =>
+        `reply-scroll-filler-${marker}-${String(index + 1).padStart(2, "0")}`,
     );
 
     try {
@@ -169,17 +178,23 @@ test.describe('Reply edge cases', () => {
 
       await bob.chat.sendMessage(reply);
       await bob.chat.scrollMessagesToBottom();
-      const replyBlock = bob.chat.messageRowByText(reply).getByTestId('reply-block');
+      const replyBlock = bob.chat
+        .messageRowByText(reply)
+        .getByTestId("reply-block");
       const parentRow = bob.chat.messageRowByText(parent);
 
       await expect(replyBlock).toBeVisible();
       await expect(parentRow).toBeVisible();
-      await expect.poll(() => isRowInsideMessageViewport(bob.chat, parent)).toBe(false);
+      await expect
+        .poll(() => isRowInsideMessageViewport(bob.chat, parent))
+        .toBe(false);
 
       await replyBlock.click();
 
       await expect(parentRow).toHaveClass(/scroll-highlight/);
-      await expect.poll(() => isRowInsideMessageViewport(bob.chat, parent)).toBe(true);
+      await expect
+        .poll(() => isRowInsideMessageViewport(bob.chat, parent))
+        .toBe(true);
     } finally {
       await closeUsers([alice, bob]);
     }

@@ -1,22 +1,22 @@
-import { Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-async function signedInUser(page: Page, prefix = 'abclr') {
+async function signedInUser(page: Page, prefix = "abclr") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
 }
 
-test.describe('Address Book nick colors', () => {
-  test('edit and remove immediately update existing and future chat rows (U13)', async ({
+test.describe("Address Book nick colors", () => {
+  test("edit and remove immediately update existing and future chat rows (U13)", async ({
     page,
   }) => {
     const { chat, nick } = await signedInUser(page);

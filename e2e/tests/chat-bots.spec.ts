@@ -1,9 +1,9 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
 type TestUser = {
   chat: ChatPage;
@@ -12,17 +12,17 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'bot'): string {
+function uniqueChannel(prefix = "bot"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-function uniqueBotName(prefix = 'bot'): string {
+function uniqueBotName(prefix = "bot"): string {
   return `${prefix}${Math.random().toString(36).slice(2, 8)}`;
 }
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'bot',
+  prefix = "bot",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -32,7 +32,7 @@ async function newSignedInUser(
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, ctx, page, nick };
@@ -61,7 +61,9 @@ async function closeUsers(users: TestUser[]) {
 
 async function cleanupBot(admin: TestUser, botName: string, channel?: string) {
   if (channel) {
-    await admin.chat.sendMessage(`/bot part ${botName} ${channel}`).catch(() => {});
+    await admin.chat
+      .sendMessage(`/bot part ${botName} ${channel}`)
+      .catch(() => {});
   }
 
   await admin.chat.sendMessage(`/bot destroy ${botName}`).catch(() => {});
@@ -74,7 +76,11 @@ async function createBot(admin: TestUser, botName: string) {
   );
 }
 
-async function createBotInChannel(admin: TestUser, botName: string, channel: string) {
+async function createBotInChannel(
+  admin: TestUser,
+  botName: string,
+  channel: string,
+) {
   await admin.chat.sendMessage(`/join ${channel}`);
   await admin.chat.expectTabVisible(channel);
   await admin.chat.switchToTab(channel);
@@ -86,34 +92,38 @@ async function createBotInChannel(admin: TestUser, botName: string, channel: str
   );
 }
 
-test.describe.serial('Bot commands', () => {
-  test('non-admin /bot lists bots, admin /bot opens management dialog (M14)', async ({
+test.describe.serial("Bot commands", () => {
+  test("non-admin /bot lists bots, admin /bot opens management dialog (M14)", async ({
     browser,
   }) => {
-    const user = await newSignedInUser(browser, 'botu');
+    const user = await newSignedInUser(browser, "botu");
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
 
     try {
-      await user.chat.sendMessage('/bot');
+      await user.chat.sendMessage("/bot");
       await expect(
-        user.chat.messageList.getByText('[BotService]', { exact: false }).first(),
+        user.chat.messageList
+          .getByText("[BotService]", { exact: false })
+          .first(),
       ).toBeVisible();
 
-      await admin.chat.sendMessage('/bot');
+      await admin.chat.sendMessage("/bot");
       await expect(admin.chat.botManagementDialog).toBeVisible();
-      await expect(admin.chat.botManagementDialog).toContainText('Bot Management');
+      await expect(admin.chat.botManagementDialog).toContainText(
+        "Bot Management",
+      );
       await expect(admin.chat.botList).toHaveCount(1);
     } finally {
       await closeUsers([user, admin]);
     }
   });
 
-  test('admin creates a bot, joins it to a channel, and sees it in nicklist (M15)', async ({
+  test("admin creates a bot, joins it to a channel, and sees it in nicklist (M15)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const botName = uniqueBotName('botj');
-    const channel = uniqueChannel('botj');
+    const botName = uniqueBotName("botj");
+    const channel = uniqueChannel("botj");
 
     try {
       await createBotInChannel(admin, botName, channel);
@@ -124,28 +134,32 @@ test.describe.serial('Bot commands', () => {
     }
   });
 
-  test('bot custom command add/list/invoke/delete works through slash command (M16)', async ({
+  test("bot custom command add/list/invoke/delete works through slash command (M16)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const botName = uniqueBotName('botc');
-    const channel = uniqueChannel('botc');
+    const botName = uniqueBotName("botc");
+    const channel = uniqueChannel("botc");
     const trigger = `ping${Math.random().toString(36).slice(2, 6)}`;
     const response = `bot-response-${Date.now()} {nickname} {channel}`;
     const renderedResponse = response
-      .replace('{nickname}', ADMIN_NICK)
-      .replace('{channel}', channel);
+      .replace("{nickname}", ADMIN_NICK)
+      .replace("{channel}", channel);
 
     try {
       await createBotInChannel(admin, botName, channel);
 
-      await admin.chat.sendMessage(`/bot addcmd ${botName} ${trigger} ${response}`);
+      await admin.chat.sendMessage(
+        `/bot addcmd ${botName} ${trigger} ${response}`,
+      );
       await admin.chat.expectMessageVisible(
         `[BotService] Command '${trigger}' set for ${botName}.`,
       );
 
       await admin.chat.sendMessage(`/bot commands ${botName}`);
-      await admin.chat.expectMessageVisible(`[BotService] Commands for ${botName}:`);
+      await admin.chat.expectMessageVisible(
+        `[BotService] Commands for ${botName}:`,
+      );
       await admin.chat.expectMessageVisible(trigger);
 
       await admin.chat.sendMessage(`!${trigger}`);
@@ -166,12 +180,12 @@ test.describe.serial('Bot commands', () => {
     }
   });
 
-  test('bot enable/disable/destroy changes response behavior and cleans up bot (M17)', async ({
+  test("bot enable/disable/destroy changes response behavior and cleans up bot (M17)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const botName = uniqueBotName('bote');
-    const channel = uniqueChannel('bote');
+    const botName = uniqueBotName("bote");
+    const channel = uniqueChannel("bote");
     const mentionResponse = `Hi ${ADMIN_NICK}! Try !help for my commands.`;
 
     try {
@@ -179,33 +193,47 @@ test.describe.serial('Bot commands', () => {
       await admin.chat.expectNickInList(botName);
 
       await admin.chat.sendMessage(`/bot set ${botName} cooldown 500`);
-      await admin.chat.expectMessageVisible('[BotService] Cooldown set to 500ms.');
+      await admin.chat.expectMessageVisible(
+        "[BotService] Cooldown set to 500ms.",
+      );
 
       await admin.chat.sendMessage(`hello ${botName}`);
       await admin.chat.expectMessageVisible(mentionResponse);
 
       await admin.chat.sendMessage(`/bot disable ${botName}`);
-      await admin.chat.expectMessageVisible(`[BotService] Bot '${botName}' disabled.`);
+      await admin.chat.expectMessageVisible(
+        `[BotService] Bot '${botName}' disabled.`,
+      );
 
-      const mentionResponses = admin.chat.messageList.getByText(mentionResponse, {
-        exact: false,
-      });
+      const mentionResponses = admin.chat.messageList.getByText(
+        mentionResponse,
+        {
+          exact: false,
+        },
+      );
       const responseCountBeforeDisabledMention = await mentionResponses.count();
 
       await admin.chat.sendMessage(`still there ${botName}`);
-      await expect(mentionResponses).toHaveCount(responseCountBeforeDisabledMention, {
-        timeout: 1_000,
-      });
+      await expect(mentionResponses).toHaveCount(
+        responseCountBeforeDisabledMention,
+        {
+          timeout: 1_000,
+        },
+      );
 
       await admin.chat.sendMessage(`/bot enable ${botName}`);
-      await admin.chat.expectMessageVisible(`[BotService] Bot '${botName}' enabled.`);
+      await admin.chat.expectMessageVisible(
+        `[BotService] Bot '${botName}' enabled.`,
+      );
       await admin.page.waitForTimeout(600);
 
       await admin.chat.sendMessage(`back again ${botName}`);
       await admin.chat.expectMessageVisible(mentionResponse);
 
       await admin.chat.sendMessage(`/bot destroy ${botName}`);
-      await admin.chat.expectMessageVisible(`[BotService] Bot '${botName}' destroyed.`);
+      await admin.chat.expectMessageVisible(
+        `[BotService] Bot '${botName}' destroyed.`,
+      );
       await admin.chat.expectNickNotInList(botName);
     } finally {
       await cleanupBot(admin, botName, channel);

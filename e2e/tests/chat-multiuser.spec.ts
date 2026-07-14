@@ -1,6 +1,6 @@
-import { test, expect, Browser } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { test, expect, Browser } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 // Common setup for two-user multi-context specs in Group B. Both users
 // register fresh nicks and land on the default #lobby channel.
@@ -9,9 +9,9 @@ async function setupTwoUsers(browser: Browser) {
   const ctxB = await browser.newContext();
   const pageA = await ctxA.newPage();
   const pageB = await ctxB.newPage();
-  const nickA = uniqueNickname('a');
-  const nickB = uniqueNickname('b');
-  const pw = 'pass12345';
+  const nickA = uniqueNickname("a");
+  const nickB = uniqueNickname("b");
+  const pw = "pass12345";
 
   const connA = new ConnectPage(pageA);
   const chatA = new ChatPage(pageA);
@@ -30,8 +30,8 @@ async function setupTwoUsers(browser: Browser) {
   return { ctxA, ctxB, pageA, pageB, chatA, chatB, nickA, nickB };
 }
 
-test.describe('Multi-user real-time chat', () => {
-  test('A sends a message → B sees it in real time in #lobby (B1)', async ({
+test.describe("Multi-user real-time chat", () => {
+  test("A sends a message → B sees it in real time in #lobby (B1)", async ({
     browser,
   }) => {
     const { ctxA, ctxB, chatA, chatB } = await setupTwoUsers(browser);
@@ -58,16 +58,16 @@ test.describe('Multi-user real-time chat', () => {
       const connA = new ConnectPage(pageA);
       const chatA = new ChatPage(pageA);
       await connA.open();
-      await connA.enterNickname(uniqueNickname('a'));
-      await connA.registerWithPassword('pass12345');
+      await connA.enterNickname(uniqueNickname("a"));
+      await connA.registerWithPassword("pass12345");
       await chatA.waitUntilConnected();
 
-      const nickB = uniqueNickname('b');
+      const nickB = uniqueNickname("b");
       const connB = new ConnectPage(pageB);
       const chatB = new ChatPage(pageB);
       await connB.open();
       await connB.enterNickname(nickB);
-      await connB.registerWithPassword('pass12345');
+      await connB.registerWithPassword("pass12345");
       await chatB.waitUntilConnected();
 
       // pubsub_handlers/membership emits "<nick> has joined the channel"

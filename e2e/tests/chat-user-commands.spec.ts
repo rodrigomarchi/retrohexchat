@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,14 +8,14 @@ type TestUser = {
   nick: string;
 };
 
-async function signedInUser(page: Page, prefix = 'e2e') {
+async function signedInUser(page: Page, prefix = "e2e") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -23,7 +23,7 @@ async function signedInUser(page: Page, prefix = 'e2e') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'e2e',
+  prefix = "e2e",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -36,12 +36,12 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('User commands', () => {
-  test('/query opens an empty PM tab without notifying the target (J1)', async ({
+test.describe("User commands", () => {
+  test("/query opens an empty PM tab without notifying the target (J1)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'qrya');
-    const bob = await newSignedInUser(browser, 'qryb');
+    const alice = await newSignedInUser(browser, "qrya");
+    const bob = await newSignedInUser(browser, "qryb");
 
     try {
       await alice.chat.sendMessage(`/query ${bob.nick}`);

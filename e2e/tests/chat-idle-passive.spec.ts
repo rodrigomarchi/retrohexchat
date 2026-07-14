@@ -5,9 +5,9 @@ import {
   Page,
   expect,
   test,
-} from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+} from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -15,14 +15,14 @@ type TestUser = {
   nick: string;
 };
 
-async function signedInUser(page: Page, prefix = 'idlepassive') {
+async function signedInUser(page: Page, prefix = "idlepassive") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -30,7 +30,7 @@ async function signedInUser(page: Page, prefix = 'idlepassive') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'idlepassive',
+  prefix = "idlepassive",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -54,21 +54,21 @@ async function waitForIdleMinute(chat: ChatPage) {
 }
 
 function latestIdleRow(chat: ChatPage) {
-  return chat.messageRows.filter({ hasText: 'Idle for:' }).last();
+  return chat.messageRows.filter({ hasText: "Idle for:" }).last();
 }
 
 async function expectLatestIdle(chat: ChatPage, text: string) {
   await expect(latestIdleRow(chat)).toContainText(`Idle for: ${text}`);
 }
 
-test.describe('Idle passive interactions', () => {
-  test('switching tabs, opening dialogs, and hovering nicklist do not reset idle (W11)', async ({
+test.describe("Idle passive interactions", () => {
+  test("switching tabs, opening dialogs, and hovering nicklist do not reset idle (W11)", async ({
     browser,
   }) => {
     test.setTimeout(180_000);
 
-    const alice = await newSignedInUser(browser, 'w11a');
-    const bob = await newSignedInUser(browser, 'w11b');
+    const alice = await newSignedInUser(browser, "w11a");
+    const bob = await newSignedInUser(browser, "w11b");
 
     try {
       await alice.chat.expectNickInList(bob.nick);
@@ -77,10 +77,10 @@ test.describe('Idle passive interactions', () => {
       await waitForIdleMinute(bob.chat);
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectLatestIdle(alice.chat, '1 minute');
+      await expectLatestIdle(alice.chat, "1 minute");
 
       await bob.chat.switchToStatusTab();
-      await bob.chat.switchToTab('#lobby');
+      await bob.chat.switchToTab("#lobby");
 
       await openMenuItem(bob.chat.helpMenuTrigger, bob.chat.aboutMenuItem);
       await expect(bob.chat.aboutDialog).toBeVisible();
@@ -90,7 +90,7 @@ test.describe('Idle passive interactions', () => {
       await bob.chat.openNickHoverCard(alice.nick);
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectLatestIdle(alice.chat, '1 minute');
+      await expectLatestIdle(alice.chat, "1 minute");
     } finally {
       await closeUsers([alice, bob]);
     }

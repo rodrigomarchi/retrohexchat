@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'ignore'): string {
+function uniqueChannel(prefix = "ignore"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'e2e') {
+async function signedInUser(page: Page, prefix = "e2e") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'e2e') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'e2e',
+  prefix = "e2e",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -37,8 +37,8 @@ async function newSignedInUser(
 }
 
 async function setupTwoUsersInChannel(browser: Browser, channel: string) {
-  const alice = await newSignedInUser(browser, 'igna');
-  const bob = await newSignedInUser(browser, 'ignb');
+  const alice = await newSignedInUser(browser, "igna");
+  const bob = await newSignedInUser(browser, "ignb");
 
   await alice.chat.sendMessage(`/join ${channel}`);
   await alice.chat.expectTabVisible(channel);
@@ -56,12 +56,12 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Ignore commands', () => {
-  test('/ignore bob all hides channel messages, actions, PMs, notices, and invites (J5)', async ({
+test.describe("Ignore commands", () => {
+  test("/ignore bob all hides channel messages, actions, PMs, notices, and invites (J5)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('all');
-    const inviteChannel = uniqueChannel('allinv');
+    const channel = uniqueChannel("all");
+    const inviteChannel = uniqueChannel("allinv");
     const { alice, bob } = await setupTwoUsersInChannel(browser, channel);
     const channelText = `ignore-all-message-${Date.now()}`;
     const actionText = `ignore-all-action-${Date.now()}`;
@@ -87,7 +87,7 @@ test.describe('Ignore commands', () => {
       await alice.chat.expectMessageHidden(noticeText);
 
       await bob.chat.sendMessage(`/join ${inviteChannel}`);
-      await bob.chat.sendMessage('/mode +i');
+      await bob.chat.sendMessage("/mode +i");
       await bob.chat.sendMessage(`/invite ${alice.nick}`);
       await bob.chat.expectMessageVisible(
         `* Inviting ${alice.nick} to ${inviteChannel}`,
@@ -98,10 +98,10 @@ test.describe('Ignore commands', () => {
     }
   });
 
-  test('type-specific ignore separates channel messages from PMs (J6)', async ({
+  test("type-specific ignore separates channel messages from PMs (J6)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('types');
+    const channel = uniqueChannel("types");
     const { alice, bob } = await setupTwoUsersInChannel(browser, channel);
     const hiddenChannelText = `ignore-messages-channel-${Date.now()}`;
     const visiblePmText = `ignore-messages-pm-${Date.now()}`;
@@ -139,10 +139,10 @@ test.describe('Ignore commands', () => {
     }
   });
 
-  test('/ignore lists entries and /unignore restores visibility (J7)', async ({
+  test("/ignore lists entries and /unignore restores visibility (J7)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('list');
+    const channel = uniqueChannel("list");
     const { alice, bob } = await setupTwoUsersInChannel(browser, channel);
     const hiddenText = `ignore-list-hidden-${Date.now()}`;
     const restoredText = `ignore-list-restored-${Date.now()}`;
@@ -153,7 +153,7 @@ test.describe('Ignore commands', () => {
         `* ${bob.nick} is now ignored (messages)`,
       );
 
-      await alice.chat.sendMessage('/ignore');
+      await alice.chat.sendMessage("/ignore");
       await alice.chat.expectMessageVisible(`${bob.nick} [messages]`);
 
       await bob.chat.sendMessage(hiddenText);
@@ -171,12 +171,12 @@ test.describe('Ignore commands', () => {
     }
   });
 
-  test('/ignore with duration expires and restores visibility (J9)', async ({
+  test("/ignore with duration expires and restores visibility (J9)", async ({
     browser,
   }) => {
     test.setTimeout(100_000);
 
-    const channel = uniqueChannel('expiry');
+    const channel = uniqueChannel("expiry");
     const { alice, bob } = await setupTwoUsersInChannel(browser, channel);
     const hiddenText = `ignore-expiry-hidden-${Date.now()}`;
     const restoredText = `ignore-expiry-restored-${Date.now()}`;
@@ -202,14 +202,14 @@ test.describe('Ignore commands', () => {
     }
   });
 
-  test('/ignore <ownnick> shows a self-ignore error (J8)', async ({
+  test("/ignore <ownnick> shows a self-ignore error (J8)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'selfign');
+    const alice = await newSignedInUser(browser, "selfign");
 
     try {
       await alice.chat.sendMessage(`/ignore ${alice.nick}`);
-      await alice.chat.expectMessageVisible('You cannot ignore yourself');
+      await alice.chat.expectMessageVisible("You cannot ignore yourself");
     } finally {
       await closeUsers([alice]);
     }

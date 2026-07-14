@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -10,22 +10,22 @@ type TestUser = {
   password: string;
 };
 
-function uniqueAlias(prefix = 'autoalias'): string {
+function uniqueAlias(prefix = "autoalias"): string {
   return `${prefix}${Math.random().toString(36).slice(2, 8)}`;
 }
 
-function uniqueChannel(prefix = 'autocomp'): string {
+function uniqueChannel(prefix = "autocomp"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-function uniqueTimer(prefix = 'autocomp'): string {
+function uniqueTimer(prefix = "autocomp"): string {
   return `${prefix}${Math.random().toString(36).slice(2, 8)}`;
 }
 
 async function newSignedInUser(
   browser: Browser,
   prefix: string,
-  password = 'pass12345',
+  password = "pass12345",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page: Page = await ctx.newPage();
@@ -49,23 +49,25 @@ async function reconnectRegisteredUser(user: TestUser) {
   await user.chat.waitUntilConnected();
 }
 
-test.describe('Automation composition', () => {
-  test('aliases expand consistently inside timer, perform, and autorespond commands (Y11)', async ({
+test.describe("Automation composition", () => {
+  test("aliases expand consistently inside timer, perform, and autorespond commands (Y11)", async ({
     browser,
   }) => {
-    const owner = await newSignedInUser(browser, 'y11own');
-    const visitor = await newSignedInUser(browser, 'y11vis');
-    const timerAlias = uniqueAlias('tm');
-    const performAlias = uniqueAlias('pf');
-    const respondAlias = uniqueAlias('ar');
-    const timerName = uniqueTimer('y11');
-    const channel = uniqueChannel('y11ar');
+    const owner = await newSignedInUser(browser, "y11own");
+    const visitor = await newSignedInUser(browser, "y11vis");
+    const timerAlias = uniqueAlias("tm");
+    const performAlias = uniqueAlias("pf");
+    const respondAlias = uniqueAlias("ar");
+    const timerName = uniqueTimer("y11");
+    const channel = uniqueChannel("y11ar");
     const timerMarker = `alias-timer-${Date.now()}`;
     const performMarker = `alias-perform-${Date.now()}`;
     const respondMarker = `alias-autorespond-${Date.now()}`;
 
     try {
-      await owner.chat.sendMessage(`/alias add ${timerAlias} /me ${timerMarker}`);
+      await owner.chat.sendMessage(
+        `/alias add ${timerAlias} /me ${timerMarker}`,
+      );
       await owner.chat.expectMessageVisible(`* Alias /${timerAlias} created`);
 
       await owner.chat.sendMessage(
@@ -97,13 +99,13 @@ test.describe('Automation composition', () => {
       await owner.chat.sendMessage(
         `/autorespond add on_join ${channel} /${respondAlias} $nick`,
       );
-      await owner.chat.expectMessageVisible('Auto-respond rule added: on_join');
+      await owner.chat.expectMessageVisible("Auto-respond rule added: on_join");
 
       await visitor.chat.sendMessage(`/join ${channel}`);
       await visitor.chat.expectTabVisible(channel);
       await visitor.chat.expectMessageVisible(respondMarker, 15_000);
     } finally {
-      await owner.chat.sendMessage('/autorespond remove 0').catch(() => {});
+      await owner.chat.sendMessage("/autorespond remove 0").catch(() => {});
       await owner.ctx.close();
       await visitor.ctx.close();
     }

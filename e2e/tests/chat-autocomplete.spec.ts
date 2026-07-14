@@ -1,14 +1,17 @@
-import { test, Browser } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { test, Browser } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-async function signedInUser(page: import('@playwright/test').Page, prefix = 'e2e') {
+async function signedInUser(
+  page: import("@playwright/test").Page,
+  prefix = "e2e",
+) {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
   return { chat, nick };
 }
@@ -19,8 +22,8 @@ async function setupTwoUsers(browser: Browser) {
   const pageA = await ctxA.newPage();
   const pageB = await ctxB.newPage();
 
-  const userA = await signedInUser(pageA, 'a');
-  const userB = await signedInUser(pageB, 'b');
+  const userA = await signedInUser(pageA, "a");
+  const userB = await signedInUser(pageB, "b");
 
   return {
     ctxA,
@@ -32,13 +35,13 @@ async function setupTwoUsers(browser: Browser) {
   };
 }
 
-test.describe('Autocomplete', () => {
-  test('typing @ plus a nick prefix shows matching channel nicks (F3)', async ({
+test.describe("Autocomplete", () => {
+  test("typing @ plus a nick prefix shows matching channel nicks (F3)", async ({
     browser,
   }) => {
     const { ctxA, ctxB, chatA, nickB } = await setupTwoUsers(browser);
     try {
-      await chatA.switchToTab('#lobby');
+      await chatA.switchToTab("#lobby");
       await chatA.expectNickInList(nickB);
 
       await chatA.chatInput.click();
@@ -51,15 +54,15 @@ test.describe('Autocomplete', () => {
     }
   });
 
-  test('typing /jo shows command autocomplete suggestions (F4)', async ({
+  test("typing /jo shows command autocomplete suggestions (F4)", async ({
     page,
   }) => {
     const { chat } = await signedInUser(page);
 
     await chat.chatInput.click();
-    await chat.chatInput.pressSequentially('/jo');
+    await chat.chatInput.pressSequentially("/jo");
 
-    await chat.expectAutocompleteContains('/join');
-    await chat.expectAutocompleteContains('/autojoin');
+    await chat.expectAutocompleteContains("/join");
+    await chat.expectAutocompleteContains("/autojoin");
   });
 });

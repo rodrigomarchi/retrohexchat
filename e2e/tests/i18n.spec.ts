@@ -3,7 +3,10 @@ import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 
 async function chooseLanguage(page: Page, locale: string) {
   await page.getByTestId("language-menu-trigger").click();
-  await page.getByTestId(`language-menu-item-${locale}`).getByRole("link").click();
+  await page
+    .getByTestId(`language-menu-item-${locale}`)
+    .getByRole("link")
+    .click();
 }
 
 test.describe("Internationalization", () => {

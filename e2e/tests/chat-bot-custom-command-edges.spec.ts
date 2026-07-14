@@ -1,9 +1,9 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
 type TestUser = {
   chat: ChatPage;
@@ -14,11 +14,11 @@ type TestUser = {
   password: string;
 };
 
-function uniqueBotName(prefix = 'botcmd'): string {
+function uniqueBotName(prefix = "botcmd"): string {
   return `${prefix}${Math.random().toString(36).slice(2, 8)}`;
 }
 
-function uniqueChannel(prefix = 'botcmd'): string {
+function uniqueChannel(prefix = "botcmd"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
@@ -42,8 +42,8 @@ async function knownSignedInUser(
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'botcmd',
-  password = 'pass12345',
+  prefix = "botcmd",
+  password = "pass12345",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -62,7 +62,7 @@ async function newSignedInUser(
 
 async function armXssGuard(page: Page) {
   await page.evaluate(() => {
-    (window as Window & { __e2eXss?: string }).__e2eXss = 'clean';
+    (window as Window & { __e2eXss?: string }).__e2eXss = "clean";
   });
 }
 
@@ -72,22 +72,24 @@ async function expectNoScriptRan(page: Page) {
     .poll(() =>
       page.evaluate(() => (window as Window & { __e2eXss?: string }).__e2eXss),
     )
-    .toBe('clean');
+    .toBe("clean");
 }
 
 async function cleanupBot(admin: TestUser, botName: string, channel: string) {
-  await admin.chat.sendMessage(`/bot part ${botName} ${channel}`).catch(() => {});
+  await admin.chat
+    .sendMessage(`/bot part ${botName} ${channel}`)
+    .catch(() => {});
   await admin.chat.sendMessage(`/bot destroy ${botName}`).catch(() => {});
 }
 
-test.describe('Bot custom command edges', () => {
-  test('custom command variables and special characters render correctly and escaped (Y3)', async ({
+test.describe("Bot custom command edges", () => {
+  test("custom command variables and special characters render correctly and escaped (Y3)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const operator = await newSignedInUser(browser, 'y3op', 'botpass123');
-    const botName = uniqueBotName('y3bot');
-    const channel = uniqueChannel('y3bot');
+    const operator = await newSignedInUser(browser, "y3op", "botpass123");
+    const botName = uniqueBotName("y3bot");
+    const channel = uniqueChannel("y3bot");
     const trigger = `edge${Math.random().toString(36).slice(2, 6)}`;
     const marker = `y3-marker-${Date.now()}`;
     const payload = `<span data-e2e-y3="${marker}">"& ${marker}`;
@@ -108,7 +110,9 @@ test.describe('Bot custom command edges', () => {
       await operator.chat.sendMessage(`/join ${channel}`);
       await operator.chat.expectTabVisible(channel);
 
-      await operator.chat.sendMessage(`/bot create ${botName} E2E bot ${botName}`);
+      await operator.chat.sendMessage(
+        `/bot create ${botName} E2E bot ${botName}`,
+      );
       await operator.chat.expectMessageVisible(
         `[BotService] Bot '${botName}' created successfully.`,
       );
@@ -129,9 +133,9 @@ test.describe('Bot custom command edges', () => {
       await expect(row).toBeVisible({ timeout: 10_000 });
       await expect(row).toContainText(operator.nick);
       await expect(row).toContainText(channel);
-      await expect(row).toContainText('<span');
+      await expect(row).toContainText("<span");
       await expect(row.locator(`[data-e2e-y3="${marker}"]`)).toHaveCount(0);
-      await expect(row.locator('script')).toHaveCount(0);
+      await expect(row.locator("script")).toHaveCount(0);
       await expectNoScriptRan(operator.page);
     } finally {
       await cleanupBot(operator, botName, channel);

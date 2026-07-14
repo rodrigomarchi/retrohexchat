@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -11,7 +11,7 @@ type TestUser = {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'emoji',
+  prefix = "emoji",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page: Page = await ctx.newPage();
@@ -21,34 +21,34 @@ async function newSignedInUser(
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, ctx, page, nick };
 }
 
-test.describe('Emoji picker', () => {
-  test('opens, searches, inserts an emoji, and closes (O1)', async ({
+test.describe("Emoji picker", () => {
+  test("opens, searches, inserts an emoji, and closes (O1)", async ({
     browser,
   }) => {
-    const user = await newSignedInUser(browser, 'emoji');
+    const user = await newSignedInUser(browser, "emoji");
 
     try {
       await user.chat.openEmojiPicker();
 
-      await user.chat.emojiPickerSearch.fill('dog');
-      await expect(user.chat.emojiButton('🐶')).toBeVisible({
+      await user.chat.emojiPickerSearch.fill("dog");
+      await expect(user.chat.emojiButton("🐶")).toBeVisible({
         timeout: 10_000,
       });
-      await expect(user.chat.emojiButton('😀')).toHaveCount(0);
+      await expect(user.chat.emojiButton("😀")).toHaveCount(0);
 
-      await user.chat.emojiButton('🐶').click();
+      await user.chat.emojiButton("🐶").click();
 
       await expect(user.chat.emojiPicker).toHaveCount(0);
-      await expect(user.chat.chatInput).toHaveValue('🐶');
+      await expect(user.chat.chatInput).toHaveValue("🐶");
 
       await user.chat.openEmojiPicker();
-      await user.page.keyboard.press('Escape');
+      await user.page.keyboard.press("Escape");
       await expect(user.chat.emojiPicker).toHaveCount(0);
     } finally {
       await user.ctx.close();

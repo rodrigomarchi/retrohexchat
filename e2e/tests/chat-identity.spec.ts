@@ -1,17 +1,17 @@
-import { test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-test.describe('Identity and status commands', () => {
-  test('/nick <new> opens the change dialog and switches nickname (E1)', async ({
+test.describe("Identity and status commands", () => {
+  test("/nick <new> opens the change dialog and switches nickname (E1)", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);
     const chat = new ChatPage(page);
-    const oldNick = uniqueNickname('a');
+    const oldNick = uniqueNickname("a");
     await connect.open();
     await connect.enterNickname(oldNick);
-    await connect.registerWithPassword('pass12345');
+    await connect.registerWithPassword("pass12345");
     await chat.waitUntilConnected();
 
     // Confirm the user is in the channel under the original nick.
@@ -19,14 +19,14 @@ test.describe('Identity and status commands', () => {
 
     // Pick a brand-new (unregistered) target nick. The dialog for an
     // unregistered target shows no password field; just confirm.
-    const newNick = uniqueNickname('b');
+    const newNick = uniqueNickname("b");
     await chat.sendMessage(`/nick ${newNick}`);
 
-    const dialog = page.getByTestId('nick-change-dialog');
+    const dialog = page.getByTestId("nick-change-dialog");
     await expect(dialog).toBeVisible();
     await expect(dialog).toContainText(newNick);
 
-    await page.getByTestId('nick-change-confirm').click();
+    await page.getByTestId("nick-change-confirm").click();
 
     // After the dialog confirms, the JS hook submits the hidden form to
     // /chat/session with the new nick; the LiveView re-mounts. The new
@@ -35,14 +35,14 @@ test.describe('Identity and status commands', () => {
     await expect(chat.nicklistItem(oldNick)).toHaveCount(0);
   });
 
-  test('/away <msg> then /away toggles the away status messages (E2)', async ({
+  test("/away <msg> then /away toggles the away status messages (E2)", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);
     const chat = new ChatPage(page);
     await connect.open();
     await connect.enterNickname(uniqueNickname());
-    await connect.registerWithPassword('pass12345');
+    await connect.registerWithPassword("pass12345");
     await chat.waitUntilConnected();
 
     const awayMsg = `at-lunch-${Date.now()}`;
@@ -52,7 +52,7 @@ test.describe('Identity and status commands', () => {
     await chat.expectMessageVisible(`You are now away: ${awayMsg}`);
 
     // Clearing flips the system message.
-    await chat.sendMessage('/away');
-    await chat.expectMessageVisible('You are no longer away');
+    await chat.sendMessage("/away");
+    await chat.expectMessageVisible("You are no longer away");
   });
 });

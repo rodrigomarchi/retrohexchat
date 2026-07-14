@@ -1,9 +1,9 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
 type TestUser = {
   chat: ChatPage;
@@ -14,14 +14,14 @@ type TestUser = {
   password: string;
 };
 
-function uniqueChannel(prefix = 'adm'): string {
+function uniqueChannel(prefix = "adm"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'adm',
-  password = 'pass12345',
+  prefix = "adm",
+  password = "pass12345",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -58,24 +58,24 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe.serial('Admin user commands', () => {
-  test('/admin user list/info/banlist display targeted rows (M4)', async ({
+test.describe.serial("Admin user commands", () => {
+  test("/admin user list/info/banlist display targeted rows (M4)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const target = await newSignedInUser(browser, 'adml');
-    const bannedNick = uniqueNickname('banl');
+    const target = await newSignedInUser(browser, "adml");
+    const bannedNick = uniqueNickname("banl");
     const banReason = `banlist-${Date.now()}`;
 
     try {
       await admin.chat.sendMessage(`/admin user list --search ${target.nick}`);
-      await admin.chat.expectMessageVisible('*** User List (1 results) ***');
+      await admin.chat.expectMessageVisible("*** User List (1 results) ***");
       await admin.chat.expectMessageVisible(`${target.nick} [registered]`);
 
       await admin.chat.sendMessage(`/admin user info ${target.nick}`);
       await admin.chat.expectMessageVisible(`*** User: ${target.nick}`);
-      await admin.chat.expectMessageVisible('Registered:');
-      await admin.chat.expectMessageVisible('Online: true');
+      await admin.chat.expectMessageVisible("Registered:");
+      await admin.chat.expectMessageVisible("Online: true");
 
       await admin.chat.sendMessage(
         `/admin user ban ${bannedNick} --reason ${banReason}`,
@@ -84,9 +84,11 @@ test.describe.serial('Admin user commands', () => {
         `${bannedNick} has been server-banned permanently.`,
       );
 
-      await admin.chat.sendMessage('/clear');
-      await admin.chat.sendMessage(`/admin user banlist --search ${bannedNick}`);
-      await admin.chat.expectMessageVisible('*** Server Ban List (1) ***');
+      await admin.chat.sendMessage("/clear");
+      await admin.chat.sendMessage(
+        `/admin user banlist --search ${bannedNick}`,
+      );
+      await admin.chat.expectMessageVisible("*** Server Ban List (1) ***");
       await admin.chat.expectMessageVisible(bannedNick);
       await admin.chat.expectMessageVisible(banReason);
     } finally {
@@ -95,11 +97,11 @@ test.describe.serial('Admin user commands', () => {
     }
   });
 
-  test('/admin user kick force-disconnects target; target can reconnect (M5)', async ({
+  test("/admin user kick force-disconnects target; target can reconnect (M5)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const victim = await newSignedInUser(browser, 'admk', 'kickpass123');
+    const victim = await newSignedInUser(browser, "admk", "kickpass123");
     const reason = `admin-kick-${Date.now()}`;
 
     try {
@@ -111,7 +113,7 @@ test.describe.serial('Admin user commands', () => {
       );
 
       await expect(victim.page).toHaveURL(/\/connect\?reason=/);
-      await expect(victim.page.getByTestId('session-alert')).toContainText(
+      await expect(victim.page.getByTestId("session-alert")).toContainText(
         reason,
       );
 
@@ -124,12 +126,12 @@ test.describe.serial('Admin user commands', () => {
     }
   });
 
-  test('/admin user mute blocks sends; unmute restores sends (M6)', async ({
+  test("/admin user mute blocks sends; unmute restores sends (M6)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const target = await newSignedInUser(browser, 'admm');
-    const channel = uniqueChannel('mute');
+    const target = await newSignedInUser(browser, "admm");
+    const channel = uniqueChannel("mute");
     const blockedText = `muted-send-${Date.now()}`;
     const restoredText = `unmuted-send-${Date.now()}`;
 
@@ -143,19 +145,19 @@ test.describe.serial('Admin user commands', () => {
         `${target.nick} has been muted permanently.`,
       );
       await target.chat.expectMessageVisible(
-        'You have been muted by an administrator',
+        "You have been muted by an administrator",
       );
 
       await target.chat.sendMessage(blockedText);
       await target.chat.expectMessageVisible(
-        'You are muted by an administrator',
+        "You are muted by an administrator",
       );
       await target.chat.expectMessageHidden(blockedText);
 
       await admin.chat.sendMessage(`/admin user unmute ${target.nick}`);
       await admin.chat.expectMessageVisible(`${target.nick} has been unmuted.`);
       await target.chat.expectMessageVisible(
-        'You have been unmuted by an administrator.',
+        "You have been unmuted by an administrator.",
       );
 
       await target.chat.sendMessage(restoredText);
@@ -166,14 +168,14 @@ test.describe.serial('Admin user commands', () => {
     }
   });
 
-  test('/admin user rename updates target session and channel nicklists (M7)', async ({
+  test("/admin user rename updates target session and channel nicklists (M7)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const target = await newSignedInUser(browser, 'admr');
-    const observer = await newSignedInUser(browser, 'admo');
-    const channel = uniqueChannel('rename');
-    const newNick = uniqueNickname('admrn');
+    const target = await newSignedInUser(browser, "admr");
+    const observer = await newSignedInUser(browser, "admo");
+    const channel = uniqueChannel("rename");
+    const newNick = uniqueNickname("admrn");
 
     try {
       await target.chat.sendMessage(`/join ${channel}`);
@@ -201,24 +203,24 @@ test.describe.serial('Admin user commands', () => {
     }
   });
 
-  test('/admin user role validates root-admin and non-admin restrictions (M8)', async ({
+  test("/admin user role validates root-admin and non-admin restrictions (M8)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const regular = await newSignedInUser(browser, 'admu');
-    const target = await newSignedInUser(browser, 'admt');
+    const regular = await newSignedInUser(browser, "admu");
+    const target = await newSignedInUser(browser, "admt");
 
     try {
       await admin.chat.sendMessage(`/admin user role ${target.nick} admin`);
       await admin.chat.expectMessageVisible(
-        'Only root admins can promote users to admin',
+        "Only root admins can promote users to admin",
       );
 
       await regular.chat.sendMessage(
         `/admin user role ${target.nick} server_operator`,
       );
       await regular.chat.expectMessageVisible(
-        'You must be a server administrator to use this command',
+        "You must be a server administrator to use this command",
       );
     } finally {
       await closeUsers([admin, regular, target]);

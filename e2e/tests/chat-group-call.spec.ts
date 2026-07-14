@@ -174,7 +174,9 @@ function groupCallReaction(page: Page, reaction: string) {
 }
 
 function groupCallReactionIcon(page: Page, reaction: string) {
-  return page.getByTestId(`group-call-reaction-icon-${reaction}`).locator("svg");
+  return page
+    .getByTestId(`group-call-reaction-icon-${reaction}`)
+    .locator("svg");
 }
 
 function groupCallClearFocus(page: Page) {
@@ -683,13 +685,7 @@ test.describe("Channel group calls", () => {
         "Receive-only mode",
       );
 
-      for (const reaction of [
-        "heart",
-        "thumbs_up",
-        "clap",
-        "laugh",
-        "wow",
-      ]) {
+      for (const reaction of ["heart", "thumbs_up", "clap", "laugh", "wow"]) {
         await expect(groupCallReactionIcon(alice.page, reaction)).toHaveCount(
           1,
         );
@@ -1100,8 +1096,12 @@ test.describe("Channel group calls", () => {
         "data-video",
         "false",
       );
-      await expect.poll(() => localTrackEnabled(alice.page, "audio")).toBe(null);
-      await expect.poll(() => localTrackEnabled(alice.page, "video")).toBe(null);
+      await expect
+        .poll(() => localTrackEnabled(alice.page, "audio"))
+        .toBe(null);
+      await expect
+        .poll(() => localTrackEnabled(alice.page, "video"))
+        .toBe(null);
     } finally {
       await closeGroupCallUsers([alice]);
     }

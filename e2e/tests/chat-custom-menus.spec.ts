@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'pop'): string {
+function uniqueChannel(prefix = "pop"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'pop') {
+async function signedInUser(page: Page, prefix = "pop") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'pop') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'pop',
+  prefix = "pop",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -40,13 +40,13 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Custom menus', () => {
-  test('/popups creates custom nicklist and channel menu commands that execute (L18)', async ({
+test.describe("Custom menus", () => {
+  test("/popups creates custom nicklist and channel menu commands that execute (L18)", async ({
     browser,
   }) => {
-    const owner = await newSignedInUser(browser, 'popa');
-    const peer = await newSignedInUser(browser, 'popb');
-    const channel = uniqueChannel('pop');
+    const owner = await newSignedInUser(browser, "popa");
+    const peer = await newSignedInUser(browser, "popb");
+    const channel = uniqueChannel("pop");
     const stamp = Date.now();
     const nickLabel = `Nick Notice ${stamp}`;
     const channelLabel = `Channel Action ${stamp}`;
@@ -63,18 +63,18 @@ test.describe('Custom menus', () => {
 
       await owner.chat.openCustomMenusDialogFromCommand();
       await owner.chat.addCustomMenuItem(
-        'Nicklist',
+        "Nicklist",
         nickLabel,
         `/notice $1 ${nickText} $1`,
       );
       await owner.chat.addCustomMenuItem(
-        'Channel',
+        "Channel",
         channelLabel,
         `/me ${channelText} $1`,
       );
       await owner.chat.closeCustomMenusDialog();
 
-      await owner.chat.nicklistItem(peer.nick).click({ button: 'right' });
+      await owner.chat.nicklistItem(peer.nick).click({ button: "right" });
       await expect(owner.chat.customContextMenuItem(nickLabel)).toBeVisible();
       await owner.chat.customContextMenuItem(nickLabel).click();
       await peer.chat.expectMessageVisible(`${nickText} ${peer.nick}`, 15_000);

@@ -1,21 +1,21 @@
-import { Browser, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-function uniqueChannel(prefix = 'welcome'): string {
+function uniqueChannel(prefix = "welcome"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
 async function signedInUser(
-  page: import('@playwright/test').Page,
-  prefix = 'e2e',
+  page: import("@playwright/test").Page,
+  prefix = "e2e",
 ) {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
   return { chat, nick };
 }
@@ -26,8 +26,8 @@ async function setupOwnerAndJoiner(browser: Browser) {
   const ownerPage = await ownerContext.newPage();
   const joinerPage = await joinerContext.newPage();
 
-  const owner = await signedInUser(ownerPage, 'owner');
-  const joiner = await signedInUser(joinerPage, 'joiner');
+  const owner = await signedInUser(ownerPage, "owner");
+  const joiner = await signedInUser(joinerPage, "joiner");
 
   return {
     ownerContext,
@@ -37,11 +37,11 @@ async function setupOwnerAndJoiner(browser: Browser) {
   };
 }
 
-test.describe('Channel welcome messages', () => {
-  test('/setwelcome shows a channel welcome once per joiner session (H9)', async ({
+test.describe("Channel welcome messages", () => {
+  test("/setwelcome shows a channel welcome once per joiner session (H9)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('welcome');
+    const channel = uniqueChannel("welcome");
     const welcome = `Welcome once ${Date.now()}`;
     const { ownerContext, joinerContext, ownerChat, joinerChat } =
       await setupOwnerAndJoiner(browser);
@@ -58,7 +58,7 @@ test.describe('Channel welcome messages', () => {
       await joinerChat.expectTabVisible(channel);
       await joinerChat.expectMessageVisible(`[Welcome] ${welcome}`);
       const welcomeMessages = joinerChat.messageList
-        .locator('[data-message-id]')
+        .locator("[data-message-id]")
         .filter({ hasText: `[Welcome] ${welcome}` });
       await expect(welcomeMessages).toHaveCount(1);
 
@@ -73,10 +73,10 @@ test.describe('Channel welcome messages', () => {
     }
   });
 
-  test('/clearwelcome stops the channel welcome for later joiners (H10)', async ({
+  test("/clearwelcome stops the channel welcome for later joiners (H10)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('clearwelcome');
+    const channel = uniqueChannel("clearwelcome");
     const welcome = `Cleared welcome ${Date.now()}`;
     const { ownerContext, joinerContext, ownerChat, joinerChat } =
       await setupOwnerAndJoiner(browser);
@@ -89,7 +89,7 @@ test.describe('Channel welcome messages', () => {
         `Welcome message for ${channel} has been set.`,
       );
 
-      await ownerChat.sendMessage('/clearwelcome');
+      await ownerChat.sendMessage("/clearwelcome");
       await ownerChat.expectMessageVisible(
         `Welcome message for ${channel} has been cleared.`,
       );

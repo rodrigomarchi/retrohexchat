@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'nswhois'): string {
+function uniqueChannel(prefix = "nswhois"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'nswhois') {
+async function signedInUser(page: Page, prefix = "nswhois") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'nswhois') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'nswhois',
+  prefix = "nswhois",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -40,15 +40,14 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-
-test.describe('NickServ whois realtime state', () => {
-  test('registering and dropping NickServ state updates another user whois without reconnect (W4)', async ({
+test.describe("NickServ whois realtime state", () => {
+  test("registering and dropping NickServ state updates another user whois without reconnect (W4)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'w4a');
-    const bob = await newSignedInUser(browser, 'w4b');
-    const channel = uniqueChannel('nswhois');
-    const nick = uniqueNickname('w4nick');
+    const alice = await newSignedInUser(browser, "w4a");
+    const bob = await newSignedInUser(browser, "w4b");
+    const channel = uniqueChannel("nswhois");
+    const nick = uniqueNickname("w4nick");
     const password = `pw-${Date.now().toString(36)}`;
 
     try {
@@ -66,7 +65,7 @@ test.describe('NickServ whois realtime state', () => {
 
       await bob.chat.sendMessage(`/whois ${nick}`);
       await bob.chat.expectWhoisCard(nick);
-      await bob.chat.expectLookupCardField('Registered', 'No');
+      await bob.chat.expectLookupCardField("Registered", "No");
       await bob.chat.closeLookupResult();
 
       await alice.chat.sendMessage(`/ns register ${password}`);
@@ -76,7 +75,7 @@ test.describe('NickServ whois realtime state', () => {
 
       await bob.chat.sendMessage(`/whois ${nick}`);
       await bob.chat.expectWhoisCard(nick);
-      await bob.chat.expectLookupCardField('Registered', 'Yes');
+      await bob.chat.expectLookupCardField("Registered", "Yes");
       await bob.chat.closeLookupResult();
 
       await alice.chat.sendMessage(`/ns drop ${password}`);
@@ -86,7 +85,7 @@ test.describe('NickServ whois realtime state', () => {
 
       await bob.chat.sendMessage(`/whois ${nick}`);
       await bob.chat.expectWhoisCard(nick);
-      await bob.chat.expectLookupCardField('Registered', 'No');
+      await bob.chat.expectLookupCardField("Registered", "No");
       await bob.chat.closeLookupResult();
     } finally {
       await closeUsers([alice, bob]);

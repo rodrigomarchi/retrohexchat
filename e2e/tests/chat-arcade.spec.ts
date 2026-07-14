@@ -1,9 +1,9 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
 type TestUser = {
   chat: ChatPage;
@@ -28,8 +28,8 @@ async function knownSignedInUser(
   return { chat, ctx, page };
 }
 
-test.describe('In-chat Arcade', () => {
-  test('Games → Arcade opens the game-picker window and previews a game', async ({
+test.describe("In-chat Arcade", () => {
+  test("Games → Arcade opens the game-picker window and previews a game", async ({
     browser,
   }) => {
     const user = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
@@ -38,13 +38,13 @@ test.describe('In-chat Arcade', () => {
       await user.chat.openArcadeFromGamesMenu();
 
       // The game grid is rendered inside the managed window.
-      const doomTile = user.page.getByTestId('solo-game-doom_shareware');
+      const doomTile = user.page.getByTestId("solo-game-doom_shareware");
       await expect(doomTile).toBeVisible();
 
       // Previewing a game reveals its Start control (about/controls/tips panel).
       await doomTile.click();
       await expect(
-        user.page.getByTestId('solo-game-start-doom_shareware'),
+        user.page.getByTestId("solo-game-start-doom_shareware"),
       ).toBeVisible();
     } finally {
       await user.ctx.close();

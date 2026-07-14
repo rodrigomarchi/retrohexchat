@@ -1,14 +1,14 @@
-import { test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 // TestAdmin is hard-coded in config/e2e.exs as a server administrator.
 // Once it registers with NickServ it is automatically identified and
 // gains admin powers (ServerRoles.admin? returns true).
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
-test.describe('Admin ban', () => {
+test.describe("Admin ban", () => {
   test('admin /admin user ban -> victim force-disconnected with "Server banned" banner (M)', async ({
     browser,
   }) => {
@@ -18,7 +18,7 @@ test.describe('Admin ban', () => {
     const pageVictim = await ctxVictim.newPage();
 
     const victimNick = uniqueNickname();
-    const victimPw = 'victimpw123';
+    const victimPw = "victimpw123";
 
     try {
       // Admin connects (signIn handles both first-time register and
@@ -45,9 +45,9 @@ test.describe('Admin ban', () => {
       // Victim's membership pubsub_handler redirects through
       // /chat/session/clear -> /connect?reason=<message>.
       await expect(pageVictim).toHaveURL(/\/connect\?reason=/);
-      const banner = pageVictim.getByTestId('session-alert');
+      const banner = pageVictim.getByTestId("session-alert");
       await expect(banner).toBeVisible();
-      await expect(banner).toContainText('Server banned');
+      await expect(banner).toContainText("Server banned");
     } finally {
       await ctxAdmin.close();
       await ctxVictim.close();

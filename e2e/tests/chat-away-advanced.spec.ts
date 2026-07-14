@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,14 +8,14 @@ type TestUser = {
   nick: string;
 };
 
-async function signedInUser(page: Page, prefix = 'e2e') {
+async function signedInUser(page: Page, prefix = "e2e") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -23,7 +23,7 @@ async function signedInUser(page: Page, prefix = 'e2e') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'e2e',
+  prefix = "e2e",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -36,12 +36,12 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Away advanced behavior', () => {
-  test('/away appears in /whois and sends a PM auto-reply once (J13)', async ({
+test.describe("Away advanced behavior", () => {
+  test("/away appears in /whois and sends a PM auto-reply once (J13)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'awya');
-    const bob = await newSignedInUser(browser, 'awyb');
+    const alice = await newSignedInUser(browser, "awya");
+    const bob = await newSignedInUser(browser, "awyb");
     const away = `away-auto-${Date.now()}`;
     const ping = `away-ping-${Date.now()}`;
 

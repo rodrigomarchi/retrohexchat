@@ -1,9 +1,9 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
 type TestUser = {
   chat: ChatPage;
@@ -13,7 +13,7 @@ type TestUser = {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'ann',
+  prefix = "ann",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page: Page = await ctx.newPage();
@@ -23,7 +23,7 @@ async function newSignedInUser(
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, ctx, nick };
@@ -50,18 +50,18 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Announcements', () => {
-  test('/announce broadcasts to connected users and bypasses ignore filters (M18)', async ({
+test.describe("Announcements", () => {
+  test("/announce broadcasts to connected users and bypasses ignore filters (M18)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const alice = await newSignedInUser(browser, 'anna');
+    const alice = await newSignedInUser(browser, "anna");
     const hiddenText = `ignored-admin-message-${Date.now()}`;
     const announcement = `global-announcement-${Date.now()}`;
 
     try {
-      await admin.chat.switchToTab('#lobby');
-      await alice.chat.switchToTab('#lobby');
+      await admin.chat.switchToTab("#lobby");
+      await alice.chat.switchToTab("#lobby");
       await alice.chat.expectNickInList(ADMIN_NICK);
 
       await alice.chat.sendMessage(`/ignore ${ADMIN_NICK} all`);
@@ -73,7 +73,7 @@ test.describe('Announcements', () => {
       await alice.chat.expectMessageHidden(hiddenText);
 
       await admin.chat.sendMessage(`/announce ${announcement}`);
-      await admin.chat.expectMessageVisible('Announcement sent to all users.');
+      await admin.chat.expectMessageVisible("Announcement sent to all users.");
       await admin.chat.expectMessageVisible(announcement);
       await alice.chat.expectMessageVisible(announcement);
     } finally {

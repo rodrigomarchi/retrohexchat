@@ -5,22 +5,22 @@ import {
   Page,
   test,
   expect,
-} from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+} from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-function uniqueChannel(prefix = 'hist'): string {
+function uniqueChannel(prefix = "hist"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'hist') {
+async function signedInUser(page: Page, prefix = "hist") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -34,7 +34,7 @@ type TestUser = {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'hist',
+  prefix = "hist",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -51,20 +51,23 @@ function markerRows(chat: ChatPage, marker: string): Locator {
   return chat.messageRows.filter({ hasText: marker });
 }
 
-function markerTokens(texts: string[], marker: string): Set<string | undefined> {
+function markerTokens(
+  texts: string[],
+  marker: string,
+): Set<string | undefined> {
   return new Set(
     texts.map((text) => text.match(new RegExp(`${marker}-\\d{2}`))?.[0]),
   );
 }
 
 async function pasteLines(chat: ChatPage, lines: string[]) {
-  await chat.pasteText(lines.join('\n'));
+  await chat.pasteText(lines.join("\n"));
   await expect(chat.pasteConfirmSendButton).toBeVisible();
   await chat.pasteConfirmSendButton.click();
 }
 
-test.describe('Chat history pagination', () => {
-  test('channel scroll loads older history without duplicate messages (P10)', async ({
+test.describe("Chat history pagination", () => {
+  test("channel scroll loads older history without duplicate messages (P10)", async ({
     page,
   }) => {
     test.setTimeout(60_000);
@@ -74,7 +77,7 @@ test.describe('Chat history pagination', () => {
     const marker = `chan-history-${Date.now()}`;
     const lines = Array.from(
       { length: 60 },
-      (_, index) => `${marker}-${String(index + 1).padStart(2, '0')}`,
+      (_, index) => `${marker}-${String(index + 1).padStart(2, "0")}`,
     );
 
     await chat.sendMessage(`/join ${channel}`);
@@ -85,7 +88,7 @@ test.describe('Chat history pagination', () => {
       timeout: 30_000,
     });
 
-    await chat.switchToTab('#lobby');
+    await chat.switchToTab("#lobby");
     await chat.switchToTab(channel);
 
     await expect(markerRows(chat, marker)).toHaveCount(50);
@@ -106,19 +109,19 @@ test.describe('Chat history pagination', () => {
     expect(texts[texts.length - 1]).toContain(lines[59]);
   });
 
-  test('PM scroll loads older history without duplicate messages (P10)', async ({
+  test("PM scroll loads older history without duplicate messages (P10)", async ({
     browser,
   }) => {
     test.setTimeout(90_000);
 
-    const alice = await newSignedInUser(browser, 'phia');
-    const bob = await newSignedInUser(browser, 'phib');
+    const alice = await newSignedInUser(browser, "phia");
+    const bob = await newSignedInUser(browser, "phib");
 
     try {
       const marker = `pm-history-${Date.now()}`;
       const lines = Array.from(
         { length: 60 },
-        (_, index) => `${marker}-${String(index + 1).padStart(2, '0')}`,
+        (_, index) => `${marker}-${String(index + 1).padStart(2, "0")}`,
       );
 
       await alice.chat.sendMessage(`/query ${bob.nick}`);
@@ -129,7 +132,7 @@ test.describe('Chat history pagination', () => {
         timeout: 30_000,
       });
 
-      await alice.chat.switchToTab('#lobby');
+      await alice.chat.switchToTab("#lobby");
       await alice.chat.switchToTab(bob.nick);
 
       await expect(markerRows(alice.chat, marker)).toHaveCount(50);

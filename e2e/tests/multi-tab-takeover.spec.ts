@@ -1,9 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-test.describe('Multi-tab takeover', () => {
-  test('same nick connecting from a second context kicks the first (K)', async ({
+test.describe("Multi-tab takeover", () => {
+  test("same nick connecting from a second context kicks the first (K)", async ({
     browser,
   }) => {
     // Two separate browser contexts so they don't share cookies/session.
@@ -13,7 +13,7 @@ test.describe('Multi-tab takeover', () => {
     const pageB = await ctxB.newPage();
 
     const nick = uniqueNickname();
-    const pw = 'testpass123';
+    const pw = "testpass123";
 
     try {
       // Phase 1: A registers the nick and enters chat.
@@ -38,10 +38,10 @@ test.describe('Multi-tab takeover', () => {
       // /chat/session/clear -> /connect?reason=<message>. The reason
       // message contains "Session ended — logged in from another window".
       await expect(pageA).toHaveURL(/\/connect\?reason=/);
-      const banner = pageA.getByTestId('session-alert');
+      const banner = pageA.getByTestId("session-alert");
       await expect(banner).toBeVisible();
-      await expect(banner).toContainText('Session ended');
-      await expect(banner).toContainText('logged in from another window');
+      await expect(banner).toContainText("Session ended");
+      await expect(banner).toContainText("logged in from another window");
     } finally {
       await ctxA.close();
       await ctxB.close();

@@ -1,9 +1,9 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
 type TestUser = {
   chat: ChatPage;
@@ -16,8 +16,8 @@ type TestUser = {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'admaudit',
-  password = 'pass12345',
+  prefix = "admaudit",
+  password = "pass12345",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -54,12 +54,12 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Admin audit log', () => {
-  test('audit log shows actor, target, action, and reason for admin user ban (X15)', async ({
+test.describe("Admin audit log", () => {
+  test("audit log shows actor, target, action, and reason for admin user ban (X15)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const target = await newSignedInUser(browser, 'x15audit', 'auditpass123');
+    const target = await newSignedInUser(browser, "x15audit", "auditpass123");
     const reason = `x15-audit-${Date.now()}`;
 
     try {
@@ -72,9 +72,11 @@ test.describe('Admin audit log', () => {
 
       await admin.chat.sendMessage(`/admin log --user ${ADMIN_NICK} --last 10`);
 
-      const auditRow = admin.chat.messageRows.filter({ hasText: reason }).last();
+      const auditRow = admin.chat.messageRows
+        .filter({ hasText: reason })
+        .last();
       await expect(auditRow).toContainText(ADMIN_NICK);
-      await expect(auditRow).toContainText('user.ban');
+      await expect(auditRow).toContainText("user.ban");
       await expect(auditRow).toContainText(`user:${target.nick}`);
       await expect(auditRow).toContainText(`reason: ${reason}`);
     } finally {

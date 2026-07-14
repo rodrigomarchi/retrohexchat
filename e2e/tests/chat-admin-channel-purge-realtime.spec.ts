@@ -1,9 +1,9 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
 type TestUser = {
   chat: ChatPage;
@@ -11,13 +11,13 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'admpurge'): string {
+function uniqueChannel(prefix = "admpurge"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'admpurge',
+  prefix = "admpurge",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -27,7 +27,7 @@ async function newSignedInUser(
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, ctx, nick };
@@ -54,14 +54,14 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Admin channel purge realtime', () => {
-  test('purging an open channel removes visible history for all open clients (X11)', async ({
+test.describe("Admin channel purge realtime", () => {
+  test("purging an open channel removes visible history for all open clients (X11)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const alice = await newSignedInUser(browser, 'x11alice');
-    const bob = await newSignedInUser(browser, 'x11bob');
-    const channel = uniqueChannel('x11purge');
+    const alice = await newSignedInUser(browser, "x11alice");
+    const bob = await newSignedInUser(browser, "x11bob");
+    const channel = uniqueChannel("x11purge");
     const aliceText = `x11-alice-${Date.now()}`;
     const bobText = `x11-bob-${Date.now()}`;
 

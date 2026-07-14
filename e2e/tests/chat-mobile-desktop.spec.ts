@@ -1,37 +1,37 @@
-import { Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 // A phone-sized viewport (below the 720px stacking breakpoint).
 const PHONE = { width: 375, height: 720 };
 
-async function signedInUser(page: Page, prefix = 'mob') {
+async function signedInUser(page: Page, prefix = "mob") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
 }
 
-test.describe('chat desktop on a phone (stacked single-window)', () => {
+test.describe("chat desktop on a phone (stacked single-window)", () => {
   test.use({ viewport: PHONE });
 
-  test('shows one fullscreen window at a time, switched via the taskbar', async ({
+  test("shows one fullscreen window at a time, switched via the taskbar", async ({
     page,
   }) => {
     const { chat } = await signedInUser(page);
 
-    const desktop = page.getByTestId('chat-desktop');
-    const workspace = desktop.locator('.desktop__workspace');
-    const chatWindow = page.getByTestId('chat-window');
-    const timersWindow = page.getByTestId('timers-window');
-    const menuBar = page.getByTestId('menu-bar');
-    const startButton = page.locator('[data-window-start]');
+    const desktop = page.getByTestId("chat-desktop");
+    const workspace = desktop.locator(".desktop__workspace");
+    const chatWindow = page.getByTestId("chat-window");
+    const timersWindow = page.getByTestId("timers-window");
+    const menuBar = page.getByTestId("menu-bar");
+    const startButton = page.locator("[data-window-start]");
     const chatTaskbarBtn = page.locator('[data-window-taskbar="chat"]');
     const timersTaskbarBtn = page.locator('[data-window-taskbar="timers"]');
 

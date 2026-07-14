@@ -1,8 +1,8 @@
-import { Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-function uniqueChannel(prefix = 'ardlg'): string {
+function uniqueChannel(prefix = "ardlg"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
@@ -11,15 +11,15 @@ async function signedInUser(page: Page) {
   const chat = new ChatPage(page);
 
   await connect.open();
-  await connect.enterNickname(uniqueNickname('ardlg'));
-  await connect.registerWithPassword('pass12345');
+  await connect.enterNickname(uniqueNickname("ardlg"));
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return chat;
 }
 
-test.describe('Autorespond dialog', () => {
-  test('add, edit, toggle, delete, and field validation mirror slash output (U8)', async ({
+test.describe("Autorespond dialog", () => {
+  test("add, edit, toggle, delete, and field validation mirror slash output (U8)", async ({
     page,
   }) => {
     const chat = await signedInUser(page);
@@ -32,34 +32,38 @@ test.describe('Autorespond dialog', () => {
     await chat.openAutorespondDialogFromMenu();
 
     await chat.startAutorespondAdd();
-    await chat.fillAutorespondDraft('not-a-channel', initialCommand);
+    await chat.fillAutorespondDraft("not-a-channel", initialCommand);
     await chat.saveAutorespondDraft();
     await expect(chat.autorespondEditForm).toContainText(
-      'Channel filter must start with #',
+      "Channel filter must start with #",
     );
 
-    await chat.fillAutorespondDraft(channel, '');
+    await chat.fillAutorespondDraft(channel, "");
     await chat.saveAutorespondDraft();
-    await expect(chat.autorespondEditForm).toContainText('Command is required');
+    await expect(chat.autorespondEditForm).toContainText("Command is required");
 
     await chat.fillAutorespondDraft(channel, `${initialCommand} && /quit`);
     await chat.saveAutorespondDraft();
     await expect(chat.autorespondEditForm).toContainText(
-      'Command must not contain chaining',
+      "Command must not contain chaining",
     );
 
     await chat.fillAutorespondDraft(channel, initialCommand);
     await chat.saveAutorespondDraft();
     await expect(chat.autorespondEditForm).toBeHidden();
-    await expect(chat.autorespondRuleRow(initialCommand)).toContainText(channel);
+    await expect(chat.autorespondRuleRow(initialCommand)).toContainText(
+      channel,
+    );
 
     await chat.autorespondRuleToggle(initialCommand).click();
     await expect(chat.autorespondRuleToggle(initialCommand)).not.toBeChecked();
-    await chat.autorespondDialog.locator('[data-window-control="close"]').click();
+    await chat.autorespondDialog
+      .locator('[data-window-control="close"]')
+      .click();
     await expect(chat.autorespondDialog).toBeHidden();
 
-    await chat.sendMessage('/clear');
-    await chat.sendMessage('/autorespond list');
+    await chat.sendMessage("/clear");
+    await chat.sendMessage("/autorespond list");
     await chat.expectMessageVisible(`0: [OFF] on_join ${channel}`);
     await chat.expectMessageVisible(initialText);
 
@@ -67,21 +71,25 @@ test.describe('Autorespond dialog', () => {
     await chat.editAutorespondRule(initialCommand, editedCommand);
     await chat.autorespondRuleToggle(editedCommand).click();
     await expect(chat.autorespondRuleToggle(editedCommand)).toBeChecked();
-    await chat.autorespondDialog.locator('[data-window-control="close"]').click();
+    await chat.autorespondDialog
+      .locator('[data-window-control="close"]')
+      .click();
     await expect(chat.autorespondDialog).toBeHidden();
 
-    await chat.sendMessage('/clear');
-    await chat.sendMessage('/autorespond list');
+    await chat.sendMessage("/clear");
+    await chat.sendMessage("/autorespond list");
     await chat.expectMessageVisible(`0: [ON] on_join ${channel}`);
     await chat.expectMessageVisible(editedText);
 
     await chat.openAutorespondDialogFromMenu();
     await chat.removeAutorespondRule(editedCommand);
-    await chat.autorespondDialog.locator('[data-window-control="close"]').click();
+    await chat.autorespondDialog
+      .locator('[data-window-control="close"]')
+      .click();
     await expect(chat.autorespondDialog).toBeHidden();
 
-    await chat.sendMessage('/clear');
-    await chat.sendMessage('/autorespond list');
-    await chat.expectMessageVisible('No auto-respond rules configured.');
+    await chat.sendMessage("/clear");
+    await chat.sendMessage("/autorespond list");
+    await chat.expectMessageVisible("No auto-respond rules configured.");
   });
 });

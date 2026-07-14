@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'nickedge'): string {
+function uniqueChannel(prefix = "nickedge"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'nickedge') {
+async function signedInUser(page: Page, prefix = "nickedge") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'nickedge') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'nickedge',
+  prefix = "nickedge",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -40,13 +40,13 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Nick change edge cases', () => {
-  test('nick collision shows an error and preserves both sessions and channel membership (W2)', async ({
+test.describe("Nick change edge cases", () => {
+  test("nick collision shows an error and preserves both sessions and channel membership (W2)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('nickcol');
-    const alice = await newSignedInUser(browser, 'w2a');
-    const bob = await newSignedInUser(browser, 'w2b');
+    const channel = uniqueChannel("nickcol");
+    const alice = await newSignedInUser(browser, "w2a");
+    const bob = await newSignedInUser(browser, "w2b");
     const aliceAfterText = `nick-collision-alice-${Date.now()}`;
     const bobAfterText = `nick-collision-bob-${Date.now()}`;
 

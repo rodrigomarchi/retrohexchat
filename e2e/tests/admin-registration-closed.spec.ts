@@ -1,17 +1,17 @@
-import { test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
-import { resetRegistrationOpen } from '../helpers/e2eState';
+import { test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
+import { resetRegistrationOpen } from "../helpers/e2eState";
 
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
-test.describe('Admin closes registration', () => {
+test.describe("Admin closes registration", () => {
   test.afterAll(() => {
     resetRegistrationOpen();
   });
 
-  test('/admin server set registration closed blocks new registrations (N)', async ({
+  test("/admin server set registration closed blocks new registrations (N)", async ({
     browser,
   }) => {
     const ctxAdmin = await browser.newContext();
@@ -20,7 +20,7 @@ test.describe('Admin closes registration', () => {
     const pageNewUser = await ctxNewUser.newPage();
 
     const newUserNick = uniqueNickname();
-    const newUserPw = 'pass12345';
+    const newUserPw = "pass12345";
 
     try {
       const adminConnect = new ConnectPage(pageAdmin);
@@ -31,7 +31,7 @@ test.describe('Admin closes registration', () => {
 
       try {
         // Close registration.
-        await adminChat.sendMessage('/admin server set registration closed');
+        await adminChat.sendMessage("/admin server set registration closed");
         // Give the LV a moment to apply the setting before the new user
         // hits the register endpoint.
         await pageAdmin.waitForTimeout(500);
@@ -48,12 +48,12 @@ test.describe('Admin closes registration', () => {
         // NickServ.register returns the closed-registration error which
         // ConnectLive surfaces on the :register step.
         await expect(userConnect.registerError).toContainText(
-          'Registration is currently closed',
+          "Registration is currently closed",
         );
       } finally {
         // ALWAYS re-open registration so this destructive test doesn't
         // leak state into subsequent runs/specs.
-        await adminChat.sendMessage('/admin server set registration open');
+        await adminChat.sendMessage("/admin server set registration open");
         await adminChat.expectMessageVisible(
           "Server setting 'registration' set to 'open'.",
         );

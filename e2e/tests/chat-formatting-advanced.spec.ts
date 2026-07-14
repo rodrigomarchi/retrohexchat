@@ -5,9 +5,9 @@ import {
   test,
   expect,
   Locator,
-} from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+} from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -20,15 +20,15 @@ async function signedInUser(page: Page) {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   await connect.open();
-  await connect.enterNickname(uniqueNickname('fmt'));
-  await connect.registerWithPassword('pass12345');
+  await connect.enterNickname(uniqueNickname("fmt"));
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
   return chat;
 }
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'fmt',
+  prefix = "fmt",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page: Page = await ctx.newPage();
@@ -38,7 +38,7 @@ async function newSignedInUser(
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, ctx, page, nick };
@@ -53,7 +53,7 @@ async function expectButtonInserts(
   button: Locator,
   code: string,
 ) {
-  await chat.chatInput.fill('');
+  await chat.chatInput.fill("");
   await button.click();
   await expect(chat.chatInput).toHaveValue(code);
   await expect(chat.chatInput).toBeFocused();
@@ -66,40 +66,40 @@ function formattedMessageRow(chat: ChatPage, marker: string): Locator {
 async function expectRenderedFormatting(chat: ChatPage, marker: string) {
   const row = formattedMessageRow(chat, marker);
   await expect(row).toBeVisible();
-  await expect(row.locator('.irc-bold')).toContainText(`bold-${marker}`);
-  await expect(row.locator('.irc-fg-4')).toContainText(`red-${marker}`);
+  await expect(row.locator(".irc-bold")).toContainText(`bold-${marker}`);
+  await expect(row.locator(".irc-fg-4")).toContainText(`red-${marker}`);
 }
 
 async function expectStrippedFormatting(chat: ChatPage, marker: string) {
   const row = formattedMessageRow(chat, marker);
   await expect(row).toContainText(`bold-${marker} red-${marker}`);
-  await expect(row.locator('.irc-bold')).toHaveCount(0);
-  await expect(row.locator('.irc-fg-4')).toHaveCount(0);
+  await expect(row.locator(".irc-bold")).toHaveCount(0);
+  await expect(row.locator(".irc-fg-4")).toHaveCount(0);
 }
 
-test.describe('Advanced formatting toolbar', () => {
-  test('format buttons insert IRC italic, underline, color, reverse, and reset codes (O2)', async ({
+test.describe("Advanced formatting toolbar", () => {
+  test("format buttons insert IRC italic, underline, color, reverse, and reset codes (O2)", async ({
     page,
   }) => {
     const chat = await signedInUser(page);
 
-    await expectButtonInserts(chat, chat.formatItalicButton, '\x1D');
-    await expectButtonInserts(chat, chat.formatUnderlineButton, '\x1F');
-    await expectButtonInserts(chat, chat.formatReverseButton, '\x16');
-    await expectButtonInserts(chat, chat.formatResetButton, '\x0F');
+    await expectButtonInserts(chat, chat.formatItalicButton, "\x1D");
+    await expectButtonInserts(chat, chat.formatUnderlineButton, "\x1F");
+    await expectButtonInserts(chat, chat.formatReverseButton, "\x16");
+    await expectButtonInserts(chat, chat.formatResetButton, "\x0F");
 
-    await chat.chatInput.fill('');
+    await chat.chatInput.fill("");
     await chat.formatColorButton.click();
     await chat.formatColorSwatch(4).click();
-    await expect(chat.chatInput).toHaveValue('\x034');
+    await expect(chat.chatInput).toHaveValue("\x034");
     await expect(chat.chatInput).toBeFocused();
   });
 
-  test('strip formatting toggle affects sent and received formatted messages (O3)', async ({
+  test("strip formatting toggle affects sent and received formatted messages (O3)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'fmta');
-    const bob = await newSignedInUser(browser, 'fmtb');
+    const alice = await newSignedInUser(browser, "fmta");
+    const bob = await newSignedInUser(browser, "fmtb");
     const marker = `strip-${Date.now()}`;
 
     try {

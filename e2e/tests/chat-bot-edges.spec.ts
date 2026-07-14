@@ -1,9 +1,9 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-const ADMIN_NICK = 'TestAdmin';
-const ADMIN_PW = 'adminpass1';
+const ADMIN_NICK = "TestAdmin";
+const ADMIN_PW = "adminpass1";
 
 type TestUser = {
   chat: ChatPage;
@@ -12,11 +12,11 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueBotName(prefix = 'botedge'): string {
+function uniqueBotName(prefix = "botedge"): string {
   return `${prefix}${Math.random().toString(36).slice(2, 8)}`;
 }
 
-function uniqueChannel(prefix = 'botedge'): string {
+function uniqueChannel(prefix = "botedge"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
@@ -41,14 +41,14 @@ async function cleanupBot(admin: TestUser, botName: string) {
   await admin.chat.sendMessage(`/bot destroy ${botName}`).catch(() => {});
 }
 
-test.describe('Bot edge cases', () => {
-  test('duplicate bot name and nickname validation stays clear and leaves one list row (Y1)', async ({
+test.describe("Bot edge cases", () => {
+  test("duplicate bot name and nickname validation stays clear and leaves one list row (Y1)", async ({
     browser,
   }) => {
     const admin = await knownSignedInUser(browser, ADMIN_NICK, ADMIN_PW);
-    const botName = uniqueBotName('y1bot');
-    const secondBotName = uniqueBotName('y1alt');
-    const channel = uniqueChannel('y1bot');
+    const botName = uniqueBotName("y1bot");
+    const secondBotName = uniqueBotName("y1alt");
+    const channel = uniqueChannel("y1bot");
 
     try {
       await admin.chat.sendMessage(`/join ${channel}`);
@@ -62,15 +62,15 @@ test.describe('Bot edge cases', () => {
 
       await admin.chat.sendMessage(`/bot create ${botName} duplicate`);
       await admin.chat.expectMessageVisible(
-        '[BotService] Failed to create bot: name: has already been taken',
+        "[BotService] Failed to create bot: name: has already been taken",
       );
 
-      await admin.chat.sendMessage('/bot');
+      await admin.chat.sendMessage("/bot");
       await expect(admin.chat.botManagementDialog).toBeVisible();
       await admin.chat.openNewBotDialog();
       await admin.chat.newBotNameInput.fill(secondBotName);
       await admin.chat.newBotNicknameInput.fill(botName);
-      await admin.chat.newBotDescriptionInput.fill('Duplicate nickname check');
+      await admin.chat.newBotDescriptionInput.fill("Duplicate nickname check");
       await admin.chat.newBotCreateButton.click();
 
       await admin.chat.expectMessageVisible(

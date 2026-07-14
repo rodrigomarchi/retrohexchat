@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'srstate'): string {
+function uniqueChannel(prefix = "srstate"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'srstate') {
+async function signedInUser(page: Page, prefix = "srstate") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'srstate') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'srstate',
+  prefix = "srstate",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -40,16 +40,20 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-async function expectSearchCount(chat: ChatPage, current: number, total: number) {
+async function expectSearchCount(
+  chat: ChatPage,
+  current: number,
+  total: number,
+) {
   await expect(chat.searchBarCount).toHaveText(`${current}/${total}`);
 }
 
-test.describe('Search window state across tabs', () => {
-  test('search closes on channel, PM, and Status switches while preserving last query (S9)', async ({
+test.describe("Search window state across tabs", () => {
+  test("search closes on channel, PM, and Status switches while preserving last query (S9)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'srsta');
-    const bob = await newSignedInUser(browser, 'srstb');
+    const alice = await newSignedInUser(browser, "srsta");
+    const bob = await newSignedInUser(browser, "srstb");
     const channel = uniqueChannel();
     const marker = Date.now();
     const channelNeedle = `search-state-channel-${marker}`;

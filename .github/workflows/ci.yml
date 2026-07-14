@@ -111,7 +111,7 @@ jobs:
         continue-on-error: true
         run: |
           set -o pipefail
-          mix format --check-formatted 2>&1 | tee /tmp/format_output.txt
+          make format.check 2>&1 | tee /tmp/format_output.txt
 
       - name: Credo
         id: credo

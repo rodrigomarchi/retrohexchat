@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,14 +8,14 @@ type TestUser = {
   nick: string;
 };
 
-async function signedInUser(page: Page, prefix = 'e2e') {
+async function signedInUser(page: Page, prefix = "e2e") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -23,7 +23,7 @@ async function signedInUser(page: Page, prefix = 'e2e') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'e2e',
+  prefix = "e2e",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -57,15 +57,15 @@ async function closeUsers(users: TestUser[]) {
 async function expectStatusResponse(chat: ChatPage, text: string) {
   await chat.switchToStatusTab();
   await chat.expectStatusMessageVisible(text);
-  await chat.switchToTab('#lobby');
+  await chat.switchToTab("#lobby");
 }
 
-test.describe('NickServ commands', () => {
-  test('/nick then /ns register, identify, info, and drop cover nickname lifecycle (K1-K3)', async ({
+test.describe("NickServ commands", () => {
+  test("/nick then /ns register, identify, info, and drop cover nickname lifecycle (K1-K3)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'nsbase');
-    const registeredNick = uniqueNickname('nsreg');
+    const alice = await newSignedInUser(browser, "nsbase");
+    const registeredNick = uniqueNickname("nsreg");
     const password = `pw-${Date.now().toString(36)}`;
 
     try {
@@ -80,14 +80,16 @@ test.describe('NickServ commands', () => {
         `[NickServ] Nickname ${registeredNick} registered successfully`,
       );
 
-      await alice.chat.sendMessage('/ns info');
+      await alice.chat.sendMessage("/ns info");
       await alice.chat.switchToStatusTab();
-      await alice.chat.expectStatusMessageVisible(`[NickServ] ${registeredNick}:`);
-      await alice.chat.expectStatusMessageVisible('identified: true');
-      await alice.chat.switchToTab('#lobby');
+      await alice.chat.expectStatusMessageVisible(
+        `[NickServ] ${registeredNick}:`,
+      );
+      await alice.chat.expectStatusMessageVisible("identified: true");
+      await alice.chat.switchToTab("#lobby");
 
-      await alice.chat.sendMessage('/ns identify wrong-password');
-      await expectStatusResponse(alice.chat, '[NickServ] Invalid password');
+      await alice.chat.sendMessage("/ns identify wrong-password");
+      await expectStatusResponse(alice.chat, "[NickServ] Invalid password");
 
       await alice.chat.sendMessage(`/ns identify ${password}`);
       await expectStatusResponse(
@@ -95,8 +97,8 @@ test.describe('NickServ commands', () => {
         `[NickServ] You are now identified as ${registeredNick}`,
       );
 
-      await alice.chat.sendMessage('/ns drop wrong-password');
-      await expectStatusResponse(alice.chat, '[NickServ] Invalid password');
+      await alice.chat.sendMessage("/ns drop wrong-password");
+      await expectStatusResponse(alice.chat, "[NickServ] Invalid password");
 
       await alice.chat.sendMessage(`/ns drop ${password}`);
       await expectStatusResponse(
@@ -104,7 +106,7 @@ test.describe('NickServ commands', () => {
         `[NickServ] Registration for ${registeredNick} dropped`,
       );
 
-      await alice.chat.sendMessage('/ns info');
+      await alice.chat.sendMessage("/ns info");
       await expectStatusResponse(
         alice.chat,
         `[NickServ] Nickname ${registeredNick} is not registered`,
@@ -114,13 +116,13 @@ test.describe('NickServ commands', () => {
     }
   });
 
-  test('/nick to a registered nickname requires the NickServ password (K5)', async ({
+  test("/nick to a registered nickname requires the NickServ password (K5)", async ({
     browser,
   }) => {
-    const targetNick = uniqueNickname('nstgt');
+    const targetNick = uniqueNickname("nstgt");
     const targetPassword = `pw-${Date.now().toString(36)}`;
     const owner = await registeredNick(browser, targetNick, targetPassword);
-    const alice = await newSignedInUser(browser, 'nschg');
+    const alice = await newSignedInUser(browser, "nschg");
 
     try {
       await owner.chat.disconnect();
@@ -131,9 +133,9 @@ test.describe('NickServ commands', () => {
       await expect(alice.chat.nickChangeDialog).toContainText(targetNick);
       await expect(alice.chat.nickChangePassword).toBeVisible();
 
-      await alice.chat.confirmNickChange('wrong-password');
+      await alice.chat.confirmNickChange("wrong-password");
       await expect(alice.chat.nickChangeError).toContainText(
-        'Incorrect password',
+        "Incorrect password",
       );
       await alice.chat.expectNickInList(alice.nick);
       await alice.chat.expectNickNotInList(targetNick);
@@ -146,17 +148,19 @@ test.describe('NickServ commands', () => {
     }
   });
 
-  test('/ns ghost requires the target password and disconnects the stale session (K4)', async ({
+  test("/ns ghost requires the target password and disconnects the stale session (K4)", async ({
     browser,
   }) => {
-    const targetNick = uniqueNickname('nsghost');
+    const targetNick = uniqueNickname("nsghost");
     const targetPassword = `pw-${Date.now().toString(36)}`;
     const target = await registeredNick(browser, targetNick, targetPassword);
-    const requester = await newSignedInUser(browser, 'nsreq');
+    const requester = await newSignedInUser(browser, "nsreq");
 
     try {
-      await requester.chat.sendMessage(`/ns ghost ${targetNick} wrong-password`);
-      await requester.chat.expectMessageVisible('[NickServ] Invalid password');
+      await requester.chat.sendMessage(
+        `/ns ghost ${targetNick} wrong-password`,
+      );
+      await requester.chat.expectMessageVisible("[NickServ] Invalid password");
       await expect(target.chat.page).toHaveURL(/\/chat(\?.*)?$/);
 
       await requester.chat.sendMessage(

@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -9,7 +9,7 @@ type TestUser = {
   page: Page;
 };
 
-function uniqueChannel(prefix = 'muteconv'): string {
+function uniqueChannel(prefix = "muteconv"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
@@ -22,11 +22,13 @@ async function installAudioSpy(page: Page) {
 
     class FakeOscillatorNode {
       frequency = new FakeAudioParam();
-      type = 'sine';
+      type = "sine";
 
       connect() {}
       start() {
-        (window as unknown as { __soundStartCount: number }).__soundStartCount += 1;
+        (
+          window as unknown as { __soundStartCount: number }
+        ).__soundStartCount += 1;
       }
       stop() {}
     }
@@ -51,15 +53,16 @@ async function installAudioSpy(page: Page) {
     }
 
     (window as unknown as { __soundStartCount: number }).__soundStartCount = 0;
-    (window as unknown as { AudioContext: typeof FakeAudioContext }).AudioContext =
-      FakeAudioContext;
+    (
+      window as unknown as { AudioContext: typeof FakeAudioContext }
+    ).AudioContext = FakeAudioContext;
     (
       window as unknown as { webkitAudioContext: typeof FakeAudioContext }
     ).webkitAudioContext = FakeAudioContext;
   });
 }
 
-async function signedInUser(page: Page, prefix = 'muteconv', spyAudio = false) {
+async function signedInUser(page: Page, prefix = "muteconv", spyAudio = false) {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
@@ -70,7 +73,7 @@ async function signedInUser(page: Page, prefix = 'muteconv', spyAudio = false) {
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -78,7 +81,7 @@ async function signedInUser(page: Page, prefix = 'muteconv', spyAudio = false) {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'muteconv',
+  prefix = "muteconv",
   spyAudio = false,
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
@@ -103,7 +106,9 @@ async function expectNoSoundStarts(page: Page) {
   await expect
     .poll(() =>
       page.evaluate(
-        () => (window as unknown as { __soundStartCount: number }).__soundStartCount,
+        () =>
+          (window as unknown as { __soundStartCount: number })
+            .__soundStartCount,
       ),
     )
     .toBe(0);
@@ -114,22 +119,22 @@ async function expectNoTitleFlash(page: Page, stableTitle: string) {
   await expect(page).toHaveTitle(stableTitle);
 }
 
-async function enableSoundAndFlash(chat: ChatPage, event: 'message' | 'pm') {
+async function enableSoundAndFlash(chat: ChatPage, event: "message" | "pm") {
   await chat.openSoundSettingsFromMenu();
-  await chat.selectSound(event, 'Beep');
+  await chat.selectSound(event, "Beep");
   await chat.setSoundFlash(event, true);
-  await chat.soundSettingsDialog.getByRole('button', { name: 'OK' }).click();
+  await chat.soundSettingsDialog.getByRole("button", { name: "OK" }).click();
   await expect(chat.soundSettingsDialog).toBeHidden();
 }
 
-test.describe('Conversation mute notifications', () => {
-  test('muted channel suppresses sound and title flash while keeping unread indicators (V5)', async ({
+test.describe("Conversation mute notifications", () => {
+  test("muted channel suppresses sound and title flash while keeping unread indicators (V5)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('mutec');
+    const channel = uniqueChannel("mutec");
     const message = `muted-channel-notify-${Date.now()}`;
-    const alice = await newSignedInUser(browser, 'v5ca');
-    const bob = await newSignedInUser(browser, 'v5cb', true);
+    const alice = await newSignedInUser(browser, "v5ca");
+    const bob = await newSignedInUser(browser, "v5cb", true);
 
     try {
       await alice.chat.sendMessage(`/join ${channel}`);
@@ -137,13 +142,13 @@ test.describe('Conversation mute notifications', () => {
 
       await bob.chat.sendMessage(`/join ${channel}`);
       await bob.chat.expectTabVisible(channel);
-      await bob.chat.switchToTab('#lobby');
-      await bob.chat.expectTabSelected('#lobby');
+      await bob.chat.switchToTab("#lobby");
+      await bob.chat.expectTabSelected("#lobby");
 
-      await enableSoundAndFlash(bob.chat, 'message');
+      await enableSoundAndFlash(bob.chat, "message");
       await bob.chat.openConversationContextMenu(channel);
       await expect(bob.chat.conversationsMuteMenuItem).toContainText(
-        'Mute Channel',
+        "Mute Channel",
       );
       await bob.chat.conversationsMuteMenuItem.click();
       await bob.chat.expectChannelConversationMuted(channel, true);
@@ -152,10 +157,10 @@ test.describe('Conversation mute notifications', () => {
       await resetNotificationSpies(bob.page);
       await alice.chat.sendMessage(message);
 
-      await bob.chat.expectTabSelected('#lobby');
+      await bob.chat.expectTabSelected("#lobby");
       await bob.chat.expectTabUnread(channel, true);
       await bob.chat.expectChannelConversationUnread(channel, true);
-      await expect(bob.chat.channelUnreadBadge(channel)).toHaveText('1');
+      await expect(bob.chat.channelUnreadBadge(channel)).toHaveText("1");
       await bob.chat.expectChannelConversationMuted(channel, true);
       await bob.chat.expectMessageHidden(message);
       await expectNoSoundStarts(bob.page);
@@ -165,22 +170,22 @@ test.describe('Conversation mute notifications', () => {
     }
   });
 
-  test('muted PM suppresses sound and title flash while keeping unread indicators (V5)', async ({
+  test("muted PM suppresses sound and title flash while keeping unread indicators (V5)", async ({
     browser,
   }) => {
     const message = `muted-pm-notify-${Date.now()}`;
-    const alice = await newSignedInUser(browser, 'v5pa');
-    const bob = await newSignedInUser(browser, 'v5pb', true);
+    const alice = await newSignedInUser(browser, "v5pa");
+    const bob = await newSignedInUser(browser, "v5pb", true);
 
     try {
       await bob.chat.sendMessage(`/query ${alice.nick}`);
       await bob.chat.expectTabVisible(alice.nick);
-      await bob.chat.switchToTab('#lobby');
-      await bob.chat.expectTabSelected('#lobby');
+      await bob.chat.switchToTab("#lobby");
+      await bob.chat.expectTabSelected("#lobby");
 
-      await enableSoundAndFlash(bob.chat, 'pm');
+      await enableSoundAndFlash(bob.chat, "pm");
       await bob.chat.openPmConversationContextMenu(alice.nick);
-      await expect(bob.chat.conversationsMuteMenuItem).toContainText('Mute PM');
+      await expect(bob.chat.conversationsMuteMenuItem).toContainText("Mute PM");
       await bob.chat.conversationsMuteMenuItem.click();
       await bob.chat.expectPmConversationMuted(alice.nick, true);
 
@@ -188,10 +193,10 @@ test.describe('Conversation mute notifications', () => {
       await resetNotificationSpies(bob.page);
       await alice.chat.sendMessage(`/msg ${bob.nick} ${message}`);
 
-      await bob.chat.expectTabSelected('#lobby');
+      await bob.chat.expectTabSelected("#lobby");
       await bob.chat.expectTabUnread(alice.nick, true);
       await bob.chat.expectPmConversationUnread(alice.nick, true);
-      await expect(bob.chat.pmUnreadBadge(alice.nick)).toHaveText('1');
+      await expect(bob.chat.pmUnreadBadge(alice.nick)).toHaveText("1");
       await bob.chat.expectPmConversationMuted(alice.nick, true);
       await bob.chat.expectMessageHidden(message);
       await expectNoSoundStarts(bob.page);

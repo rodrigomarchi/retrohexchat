@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'nickrt'): string {
+function uniqueChannel(prefix = "nickrt"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'nickrt') {
+async function signedInUser(page: Page, prefix = "nickrt") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'nickrt') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'nickrt',
+  prefix = "nickrt",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -40,14 +40,14 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Realtime nick changes', () => {
-  test('remote nick change updates nicklist, PM labels, sidebar, and future attribution (W1)', async ({
+test.describe("Realtime nick changes", () => {
+  test("remote nick change updates nicklist, PM labels, sidebar, and future attribution (W1)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('nickrt');
-    const alice = await newSignedInUser(browser, 'w1a');
-    const bob = await newSignedInUser(browser, 'w1b');
-    const newAliceNick = uniqueNickname('w1new');
+    const channel = uniqueChannel("nickrt");
+    const alice = await newSignedInUser(browser, "w1a");
+    const bob = await newSignedInUser(browser, "w1b");
+    const newAliceNick = uniqueNickname("w1new");
     const channelMessage = `nickrt-channel-${Date.now()}`;
     const pmMessage = `nickrt-pm-${Date.now()}`;
 

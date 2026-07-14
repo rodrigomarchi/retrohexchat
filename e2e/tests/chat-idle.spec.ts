@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, expect, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, expect, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,14 +8,14 @@ type TestUser = {
   nick: string;
 };
 
-async function signedInUser(page: Page, prefix = 'idle') {
+async function signedInUser(page: Page, prefix = "idle") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -23,7 +23,7 @@ async function signedInUser(page: Page, prefix = 'idle') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'idle',
+  prefix = "idle",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -41,21 +41,21 @@ async function waitForIdleMinute(chat: ChatPage) {
 }
 
 function latestIdleRow(chat: ChatPage) {
-  return chat.messageRows.filter({ hasText: 'Idle for:' }).last();
+  return chat.messageRows.filter({ hasText: "Idle for:" }).last();
 }
 
 async function expectLatestIdle(chat: ChatPage, text: string) {
   await expect(latestIdleRow(chat)).toContainText(`Idle for: ${text}`);
 }
 
-test.describe('Idle tracking', () => {
-  test('/whois idle increases with inactivity and resets after command and message (P11)', async ({
+test.describe("Idle tracking", () => {
+  test("/whois idle increases with inactivity and resets after command and message (P11)", async ({
     browser,
   }) => {
     test.setTimeout(180_000);
 
-    const alice = await newSignedInUser(browser, 'idla');
-    const bob = await newSignedInUser(browser, 'idlb');
+    const alice = await newSignedInUser(browser, "idla");
+    const bob = await newSignedInUser(browser, "idlb");
 
     try {
       await alice.chat.expectNickInList(bob.nick);
@@ -64,12 +64,12 @@ test.describe('Idle tracking', () => {
       await waitForIdleMinute(bob.chat);
 
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectLatestIdle(alice.chat, '1 minute');
+      await expectLatestIdle(alice.chat, "1 minute");
 
-      await bob.chat.sendMessage('/help');
-      await bob.chat.expectMessageVisible('Available commands:');
+      await bob.chat.sendMessage("/help");
+      await bob.chat.expectMessageVisible("Available commands:");
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectLatestIdle(alice.chat, 'less than a minute');
+      await expectLatestIdle(alice.chat, "less than a minute");
 
       await waitForIdleMinute(bob.chat);
 
@@ -77,7 +77,7 @@ test.describe('Idle tracking', () => {
       await bob.chat.sendMessage(message);
       await alice.chat.expectMessageVisible(message);
       await alice.chat.sendMessage(`/whois ${bob.nick}`);
-      await expectLatestIdle(alice.chat, 'less than a minute');
+      await expectLatestIdle(alice.chat, "less than a minute");
     } finally {
       await closeUsers([alice, bob]);
     }

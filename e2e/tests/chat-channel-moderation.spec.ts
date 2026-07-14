@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,24 +8,24 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'mod'): string {
+function uniqueChannel(prefix = "mod"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'e2e') {
+async function signedInUser(page: Page, prefix = "e2e") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
   return { chat, nick };
 }
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'e2e',
+  prefix = "e2e",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -34,8 +34,8 @@ async function newSignedInUser(
 }
 
 async function setupTwoUsersInChannel(browser: Browser, channel: string) {
-  const owner = await newSignedInUser(browser, 'own');
-  const regular = await newSignedInUser(browser, 'reg');
+  const owner = await newSignedInUser(browser, "own");
+  const regular = await newSignedInUser(browser, "reg");
 
   await owner.chat.sendMessage(`/join ${channel}`);
   await owner.chat.expectTabVisible(channel);
@@ -53,11 +53,11 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Channel moderation', () => {
-  test('/ban removes and blocks a user until /unban allows rejoin (I11)', async ({
+test.describe("Channel moderation", () => {
+  test("/ban removes and blocks a user until /unban allows rejoin (I11)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('ban');
+    const channel = uniqueChannel("ban");
     const reason = `ban-${Date.now()}`;
     const { owner, regular } = await setupTwoUsersInChannel(browser, channel);
 
@@ -71,7 +71,7 @@ test.describe('Channel moderation', () => {
       await regular.chat.expectTabHidden(channel);
       await regular.chat.dismissKickDialog();
 
-      await regular.chat.switchToTab('#lobby');
+      await regular.chat.switchToTab("#lobby");
       await regular.chat.sendMessage(`/join ${channel}`);
       await regular.chat.expectMessageVisible(`You are banned from ${channel}`);
       await regular.chat.expectTabHidden(channel);
@@ -89,10 +89,10 @@ test.describe('Channel moderation', () => {
     }
   });
 
-  test('/kick removes the target channel tab and broadcasts the reason (I12)', async ({
+  test("/kick removes the target channel tab and broadcasts the reason (I12)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('kick');
+    const channel = uniqueChannel("kick");
     const reason = `kick-${Date.now()}`;
     const { owner, regular } = await setupTwoUsersInChannel(browser, channel);
 
@@ -110,10 +110,10 @@ test.describe('Channel moderation', () => {
     }
   });
 
-  test('/mute blocks channel messages and /unmute restores sending (I13)', async ({
+  test("/mute blocks channel messages and /unmute restores sending (I13)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('mute');
+    const channel = uniqueChannel("mute");
     const { owner, regular } = await setupTwoUsersInChannel(browser, channel);
     const mutedMessage = `muted-${Date.now()}`;
     const restoredMessage = `unmuted-${Date.now()}`;
@@ -128,7 +128,7 @@ test.describe('Channel moderation', () => {
       );
 
       await regular.chat.sendMessage(mutedMessage);
-      await regular.chat.expectMessageVisible('You are muted in this channel');
+      await regular.chat.expectMessageVisible("You are muted in this channel");
       await owner.chat.expectMessageHidden(mutedMessage);
 
       await owner.chat.sendMessage(`/unmute ${regular.nick}`);

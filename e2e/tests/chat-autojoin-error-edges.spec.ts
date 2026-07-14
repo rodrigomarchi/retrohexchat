@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -10,14 +10,14 @@ type TestUser = {
   password: string;
 };
 
-function uniqueChannel(prefix = 'ajerr'): string {
+function uniqueChannel(prefix = "ajerr"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
 async function newSignedInUser(
   browser: Browser,
   prefix: string,
-  password = 'pass12345',
+  password = "pass12345",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page: Page = await ctx.newPage();
@@ -41,14 +41,14 @@ async function reconnectRegisteredUser(user: TestUser) {
   await user.chat.waitUntilConnected();
 }
 
-test.describe('Auto-join error edges', () => {
-  test('failed autojoin on reconnect reports error and later channels still join (Y9)', async ({
+test.describe("Auto-join error edges", () => {
+  test("failed autojoin on reconnect reports error and later channels still join (Y9)", async ({
     browser,
   }) => {
-    const owner = await newSignedInUser(browser, 'y9own');
-    const guest = await newSignedInUser(browser, 'y9guest');
-    const lockedChannel = uniqueChannel('y9lock');
-    const validChannel = uniqueChannel('y9valid');
+    const owner = await newSignedInUser(browser, "y9own");
+    const guest = await newSignedInUser(browser, "y9guest");
+    const lockedChannel = uniqueChannel("y9lock");
+    const validChannel = uniqueChannel("y9valid");
     const key = `key${Date.now()}`;
 
     try {
@@ -71,14 +71,14 @@ test.describe('Auto-join error edges', () => {
       await reconnectRegisteredUser(guest);
 
       await guest.chat.expectTabVisible(validChannel);
-      await guest.chat.expectTabSelected('#lobby');
+      await guest.chat.expectTabSelected("#lobby");
       await guest.chat.expectTabHidden(lockedChannel);
 
       await guest.chat.switchToStatusTab();
       await guest.chat.expectStatusMessageVisible(
         `* Auto-joining ${lockedChannel}...`,
       );
-      await guest.chat.expectStatusMessageVisible('Bad channel key (+k)');
+      await guest.chat.expectStatusMessageVisible("Bad channel key (+k)");
       await guest.chat.expectStatusMessageVisible(
         `* Auto-joining ${validChannel}...`,
       );

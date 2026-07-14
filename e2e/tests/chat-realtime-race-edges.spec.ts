@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'race'): string {
+function uniqueChannel(prefix = "race"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'race') {
+async function signedInUser(page: Page, prefix = "race") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'race') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'race',
+  prefix = "race",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -40,14 +40,14 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Realtime race edges', () => {
-  test('rapid nick change plus channel message leaves no stale old nick tabs or attribution (Y12)', async ({
+test.describe("Realtime race edges", () => {
+  test("rapid nick change plus channel message leaves no stale old nick tabs or attribution (Y12)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'y12a');
-    const bob = await newSignedInUser(browser, 'y12b');
-    const channel = uniqueChannel('y12');
-    const newAliceNick = uniqueNickname('y12new');
+    const alice = await newSignedInUser(browser, "y12a");
+    const bob = await newSignedInUser(browser, "y12b");
+    const channel = uniqueChannel("y12");
+    const newAliceNick = uniqueNickname("y12new");
     const marker = `race-after-nick-${Date.now()}`;
 
     try {
@@ -71,8 +71,12 @@ test.describe('Realtime race edges', () => {
       await alice.chat.sendMessage(marker);
 
       await bob.chat.expectMessageVisible(marker, 15_000);
-      await expect(bob.chat.messageNickByText(marker, newAliceNick)).toBeVisible();
-      await expect(bob.chat.messageNickByText(marker, alice.nick)).toHaveCount(0);
+      await expect(
+        bob.chat.messageNickByText(marker, newAliceNick),
+      ).toBeVisible();
+      await expect(bob.chat.messageNickByText(marker, alice.nick)).toHaveCount(
+        0,
+      );
       await bob.chat.expectNickInList(newAliceNick);
       await bob.chat.expectNickNotInList(alice.nick);
       await bob.chat.expectTabHidden(alice.nick);

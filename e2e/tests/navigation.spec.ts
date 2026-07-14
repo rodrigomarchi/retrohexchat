@@ -1,8 +1,8 @@
-import { test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
+import { test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
 
-test.describe('Connect navigation', () => {
-  test('Back from :register returns to :nickname and preserves the nick (G)', async ({
+test.describe("Connect navigation", () => {
+  test("Back from :register returns to :nickname and preserves the nick (G)", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);

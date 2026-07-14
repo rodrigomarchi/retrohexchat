@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,24 +8,24 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'knock'): string {
+function uniqueChannel(prefix = "knock"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'e2e') {
+async function signedInUser(page: Page, prefix = "e2e") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
   return { chat, nick };
 }
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'e2e',
+  prefix = "e2e",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -37,18 +37,18 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Channel knock', () => {
-  test('/knock notifies channel operators and repeated knocks are throttled (I15)', async ({
+test.describe("Channel knock", () => {
+  test("/knock notifies channel operators and repeated knocks are throttled (I15)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('knock');
-    const owner = await newSignedInUser(browser, 'own');
-    const guest = await newSignedInUser(browser, 'nok');
+    const channel = uniqueChannel("knock");
+    const owner = await newSignedInUser(browser, "own");
+    const guest = await newSignedInUser(browser, "nok");
     const message = `please-${Date.now()}`;
 
     try {
       await owner.chat.sendMessage(`/join ${channel}`);
-      await owner.chat.sendMessage('/mode +i');
+      await owner.chat.sendMessage("/mode +i");
 
       await guest.chat.sendMessage(`/knock ${channel} ${message}`);
 
@@ -66,25 +66,25 @@ test.describe('Channel knock', () => {
     }
   });
 
-  test('/mode +K disables knock and /mode -K allows it again (I16)', async ({
+  test("/mode +K disables knock and /mode -K allows it again (I16)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('noknock');
-    const owner = await newSignedInUser(browser, 'own');
-    const guest = await newSignedInUser(browser, 'nok');
+    const channel = uniqueChannel("noknock");
+    const owner = await newSignedInUser(browser, "own");
+    const guest = await newSignedInUser(browser, "nok");
     const message = `after-${Date.now()}`;
 
     try {
       await owner.chat.sendMessage(`/join ${channel}`);
-      await owner.chat.sendMessage('/mode +i');
-      await owner.chat.sendMessage('/mode +K');
+      await owner.chat.sendMessage("/mode +i");
+      await owner.chat.sendMessage("/mode +K");
 
       await guest.chat.sendMessage(`/knock ${channel} blocked`);
       await guest.chat.expectMessageVisible(
-        'Knocking is disabled for this channel',
+        "Knocking is disabled for this channel",
       );
 
-      await owner.chat.sendMessage('/mode -K');
+      await owner.chat.sendMessage("/mode -K");
       await guest.chat.sendMessage(`/knock ${channel} ${message}`);
 
       await guest.chat.expectMessageVisible(`Knock sent to ${channel}`);

@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'ccex'): string {
+function uniqueChannel(prefix = "ccex"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'ccex') {
+async function signedInUser(page: Page, prefix = "ccex") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'ccex') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'ccex',
+  prefix = "ccex",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -40,16 +40,16 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Channel Central exceptions', () => {
-  test('ban and invite exception add/remove flows affect join behavior (U15)', async ({
+test.describe("Channel Central exceptions", () => {
+  test("ban and invite exception add/remove flows affect join behavior (U15)", async ({
     browser,
   }) => {
     test.setTimeout(90_000);
 
-    const channel = uniqueChannel('ccex');
-    const owner = await newSignedInUser(browser, 'cown');
-    const banned = await newSignedInUser(browser, 'cban');
-    const invited = await newSignedInUser(browser, 'cinv');
+    const channel = uniqueChannel("ccex");
+    const owner = await newSignedInUser(browser, "cown");
+    const banned = await newSignedInUser(browser, "cban");
+    const invited = await newSignedInUser(browser, "cinv");
 
     try {
       await owner.chat.sendMessage(`/join ${channel}`);
@@ -87,7 +87,7 @@ test.describe('Channel Central exceptions', () => {
       await owner.chat.closeChannelCentral();
 
       await invited.chat.sendMessage(`/join ${channel}`);
-      await invited.chat.expectMessageVisible('Channel is invite-only (+i)');
+      await invited.chat.expectMessageVisible("Channel is invite-only (+i)");
       await invited.chat.expectTabHidden(channel);
 
       await owner.chat.openChannelCentralFromMenu();
@@ -106,7 +106,7 @@ test.describe('Channel Central exceptions', () => {
       await owner.chat.closeChannelCentral();
 
       await invited.chat.sendMessage(`/join ${channel}`);
-      await invited.chat.expectMessageVisible('Channel is invite-only (+i)');
+      await invited.chat.expectMessageVisible("Channel is invite-only (+i)");
       await invited.chat.expectTabHidden(channel);
     } finally {
       await closeUsers([owner, banned, invited]);

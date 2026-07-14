@@ -1,21 +1,21 @@
-import { Browser, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
-function uniqueChannel(prefix = 'quit'): string {
+function uniqueChannel(prefix = "quit"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
 async function signedInUser(
-  page: import('@playwright/test').Page,
-  prefix = 'e2e',
+  page: import("@playwright/test").Page,
+  prefix = "e2e",
 ) {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
   return { chat, nick };
 }
@@ -26,8 +26,8 @@ async function setupTwoUsersInChannel(browser: Browser, channel: string) {
   const pageA = await ctxA.newPage();
   const pageB = await ctxB.newPage();
 
-  const userA = await signedInUser(pageA, 'qa');
-  const userB = await signedInUser(pageB, 'qb');
+  const userA = await signedInUser(pageA, "qa");
+  const userB = await signedInUser(pageB, "qb");
 
   await userA.chat.sendMessage(`/join ${channel}`);
   await userA.chat.expectTabVisible(channel);
@@ -47,11 +47,11 @@ async function setupTwoUsersInChannel(browser: Browser, channel: string) {
   };
 }
 
-test.describe('Quit command', () => {
-  test('/quit reason navigates self to connect and broadcasts the reason (H12)', async ({
+test.describe("Quit command", () => {
+  test("/quit reason navigates self to connect and broadcasts the reason (H12)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('quit');
+    const channel = uniqueChannel("quit");
     const reason = `quit-${Date.now()}`;
     const { ctxA, ctxB, pageB, chatA, chatB, nickB } =
       await setupTwoUsersInChannel(browser, channel);

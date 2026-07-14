@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,11 +8,11 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'timerctx'): string {
+function uniqueChannel(prefix = "timerctx"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-function uniqueTimer(prefix = 'tmctx'): string {
+function uniqueTimer(prefix = "tmctx"): string {
   return `${prefix}${Math.random().toString(36).slice(2, 8)}`;
 }
 
@@ -28,21 +28,21 @@ async function newSignedInUser(
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, ctx, nick };
 }
 
-test.describe('Timer window context', () => {
-  test('timer output targets the creation window while another tab is active (Y5)', async ({
+test.describe("Timer window context", () => {
+  test("timer output targets the creation window while another tab is active (Y5)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'y5a');
-    const bob = await newSignedInUser(browser, 'y5b');
-    const origin = uniqueChannel('y5src');
-    const active = uniqueChannel('y5dst');
-    const timerName = uniqueTimer('y5');
+    const alice = await newSignedInUser(browser, "y5a");
+    const bob = await newSignedInUser(browser, "y5b");
+    const origin = uniqueChannel("y5src");
+    const active = uniqueChannel("y5dst");
+    const timerName = uniqueTimer("y5");
     const marker = `timer-window-${Date.now()}`;
 
     try {
@@ -72,14 +72,14 @@ test.describe('Timer window context', () => {
     }
   });
 
-  test('timer command that opens a PM tab does not switch the active tab (Y6)', async ({
+  test("timer command that opens a PM tab does not switch the active tab (Y6)", async ({
     browser,
   }) => {
-    const alice = await newSignedInUser(browser, 'y6a');
-    const bob = await newSignedInUser(browser, 'y6b');
-    const origin = uniqueChannel('y6src');
-    const active = uniqueChannel('y6dst');
-    const timerName = uniqueTimer('y6');
+    const alice = await newSignedInUser(browser, "y6a");
+    const bob = await newSignedInUser(browser, "y6b");
+    const origin = uniqueChannel("y6src");
+    const active = uniqueChannel("y6dst");
+    const timerName = uniqueTimer("y6");
 
     try {
       await alice.chat.sendMessage(`/join ${origin}`);

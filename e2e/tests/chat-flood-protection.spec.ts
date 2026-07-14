@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,7 +8,7 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'flood'): string {
+function uniqueChannel(prefix = "flood"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
@@ -19,13 +19,16 @@ async function signedInUser(page: Page, prefix: string) {
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
 }
 
-async function newSignedInUser(browser: Browser, prefix: string): Promise<TestUser> {
+async function newSignedInUser(
+  browser: Browser,
+  prefix: string,
+): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
   const user = await signedInUser(page, prefix);
@@ -44,7 +47,7 @@ async function joinChannel(user: TestUser, channel: string) {
 }
 
 async function sendPasteLines(chat: ChatPage, lines: string[]) {
-  await chat.pasteText(lines.join('\n'));
+  await chat.pasteText(lines.join("\n"));
   await expect(chat.pasteConfirmSendButton).toBeVisible();
   await chat.pasteConfirmSendButton.click();
   await expect(chat.pasteConfirmSendButton).toBeHidden();
@@ -52,52 +55,60 @@ async function sendPasteLines(chat: ChatPage, lines: string[]) {
 
 async function saveStrictFloodProtection(chat: ChatPage) {
   await chat.openFloodProtectionFromToolsMenu();
-  await chat.floodThresholdInput.fill('3');
-  await chat.floodWindowInput.fill('15');
-  await chat.floodAutoIgnoreDurationInput.fill('5');
+  await chat.floodThresholdInput.fill("3");
+  await chat.floodWindowInput.fill("15");
+  await chat.floodAutoIgnoreDurationInput.fill("5");
   await chat.floodSaveButton.click();
-  await chat.expectMessageVisible('* Flood protection settings saved');
+  await chat.expectMessageVisible("* Flood protection settings saved");
 }
 
 async function resetFloodProtectionDefaults(chat: ChatPage) {
   await chat.openFloodProtectionFromToolsMenu();
   await chat.floodResetDefaultsButton.click();
-  await chat.expectMessageVisible('* Flood protection settings reset to defaults');
+  await chat.expectMessageVisible(
+    "* Flood protection settings reset to defaults",
+  );
 
   await chat.openFloodProtectionFromToolsMenu();
-  await expect(chat.floodThresholdInput).toHaveValue('10');
-  await expect(chat.floodWindowInput).toHaveValue('15');
-  await expect(chat.floodAutoIgnoreDurationInput).toHaveValue('300');
+  await expect(chat.floodThresholdInput).toHaveValue("10");
+  await expect(chat.floodWindowInput).toHaveValue("15");
+  await expect(chat.floodAutoIgnoreDurationInput).toHaveValue("300");
 }
 
 async function cancelStrictFloodProtectionDraft(chat: ChatPage) {
   await chat.openFloodProtectionFromToolsMenu();
-  await chat.floodThresholdInput.fill('3');
-  await chat.floodWindowInput.fill('15');
-  await chat.floodAutoIgnoreDurationInput.fill('5');
-  await chat.floodProtectionDialog.getByRole('button', { name: 'Cancel' }).click();
+  await chat.floodThresholdInput.fill("3");
+  await chat.floodWindowInput.fill("15");
+  await chat.floodAutoIgnoreDurationInput.fill("5");
+  await chat.floodProtectionDialog
+    .getByRole("button", { name: "Cancel" })
+    .click();
   await expect(chat.floodProtectionDialog).toBeHidden();
 
   await chat.openFloodProtectionFromToolsMenu();
-  await expect(chat.floodThresholdInput).toHaveValue('10');
-  await expect(chat.floodWindowInput).toHaveValue('15');
-  await expect(chat.floodAutoIgnoreDurationInput).toHaveValue('300');
-  await chat.floodProtectionDialog.getByRole('button', { name: 'Cancel' }).click();
+  await expect(chat.floodThresholdInput).toHaveValue("10");
+  await expect(chat.floodWindowInput).toHaveValue("15");
+  await expect(chat.floodAutoIgnoreDurationInput).toHaveValue("300");
+  await chat.floodProtectionDialog
+    .getByRole("button", { name: "Cancel" })
+    .click();
   await expect(chat.floodProtectionDialog).toBeHidden();
 }
 
-test.describe('Flood protection settings', () => {
-  test('settings affect rapid paste behavior and reset restores defaults (R8)', async ({
+test.describe("Flood protection settings", () => {
+  test("settings affect rapid paste behavior and reset restores defaults (R8)", async ({
     browser,
   }) => {
     const channel = uniqueChannel();
-    const alice = await newSignedInUser(browser, 'flooda');
-    const bob = await newSignedInUser(browser, 'floodb');
-    const charlie = await newSignedInUser(browser, 'floodc');
+    const alice = await newSignedInUser(browser, "flooda");
+    const bob = await newSignedInUser(browser, "floodb");
+    const charlie = await newSignedInUser(browser, "floodc");
     const strictMarker = `strict-flood-${Date.now()}`;
     const defaultMarker = `default-flood-${Date.now()}`;
     const strictLines = [1, 2, 3].map((index) => `${strictMarker}-${index}`);
-    const defaultLines = [1, 2, 3, 4].map((index) => `${defaultMarker}-${index}`);
+    const defaultLines = [1, 2, 3, 4].map(
+      (index) => `${defaultMarker}-${index}`,
+    );
 
     try {
       await joinChannel(alice, channel);
@@ -134,12 +145,12 @@ test.describe('Flood protection settings', () => {
     }
   });
 
-  test('cancel discards flood protection edits before they affect paste behavior (U5)', async ({
+  test("cancel discards flood protection edits before they affect paste behavior (U5)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('floodcancel');
-    const alice = await newSignedInUser(browser, 'flca');
-    const bob = await newSignedInUser(browser, 'flcb');
+    const channel = uniqueChannel("floodcancel");
+    const alice = await newSignedInUser(browser, "flca");
+    const bob = await newSignedInUser(browser, "flcb");
     const marker = `cancelled-flood-${Date.now()}`;
     const lines = [1, 2, 3, 4].map((index) => `${marker}-${index}`);
 

@@ -1,4 +1,4 @@
-import { Page, Locator, expect } from '@playwright/test';
+import { Page, Locator, expect } from "@playwright/test";
 
 // Page Object for the app ConnectLive flow at /connect.
 // Mirrors the three steps in the LiveView state machine: :nickname, :register,
@@ -22,22 +22,25 @@ export class ConnectPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.nicknameInput = page.locator('#nickname');
-    this.connectButton = page.getByTestId('connect-btn');
-    this.backButton = page.getByTestId('back-btn');
+    this.nicknameInput = page.locator("#nickname");
+    this.connectButton = page.getByTestId("connect-btn");
+    this.backButton = page.getByTestId("back-btn");
     // The validation error is the only .text-destructive paragraph inside
     // the :nickname step form (phx-submit=connect).
-    this.nicknameError = page
-      .locator('form[phx-submit="connect"] p.text-destructive');
-    this.registerPasswordInput = page.locator('#reg-password');
-    this.registerPasswordConfirmInput = page.locator('#reg-password-confirm');
-    this.registerButton = page.getByTestId('register-btn');
-    this.registerError = page
-      .locator('form[phx-submit="register"] p.text-destructive');
-    this.authPasswordInput = page.locator('#password');
-    this.authButton = page.getByTestId('auth-btn');
-    this.authError = page
-      .locator('form[phx-submit="authenticate"] p.text-destructive');
+    this.nicknameError = page.locator(
+      'form[phx-submit="connect"] p.text-destructive',
+    );
+    this.registerPasswordInput = page.locator("#reg-password");
+    this.registerPasswordConfirmInput = page.locator("#reg-password-confirm");
+    this.registerButton = page.getByTestId("register-btn");
+    this.registerError = page.locator(
+      'form[phx-submit="register"] p.text-destructive',
+    );
+    this.authPasswordInput = page.locator("#password");
+    this.authButton = page.getByTestId("auth-btn");
+    this.authError = page.locator(
+      'form[phx-submit="authenticate"] p.text-destructive',
+    );
   }
 
   // Click the "Back" button (visible in :register and :password steps).
@@ -62,12 +65,12 @@ export class ConnectPage {
     // this localStorage flag (STORAGE_KEYS.SUPPRESSED) on mount.
     await this.page.addInitScript(() => {
       try {
-        window.localStorage.setItem('retro_hex_chat_tips_suppressed', 'true');
+        window.localStorage.setItem("retro_hex_chat_tips_suppressed", "true");
       } catch {
         /* localStorage unavailable — ignore */
       }
     });
-    await this.page.goto('/connect');
+    await this.page.goto("/connect");
     await expect(this.nicknameInput).toBeVisible();
   }
 
@@ -83,8 +86,8 @@ export class ConnectPage {
     await expect(this.registerPasswordInput).toBeVisible();
 
     for (let attempt = 0; attempt < 3; attempt++) {
-      await this.registerPasswordInput.fill('');
-      await this.registerPasswordConfirmInput.fill('');
+      await this.registerPasswordInput.fill("");
+      await this.registerPasswordConfirmInput.fill("");
       await this.registerPasswordInput.fill(password);
       await this.registerPasswordConfirmInput.fill(password);
       await this.page.waitForTimeout(100);
@@ -115,10 +118,10 @@ export class ConnectPage {
   // to auth if the nick already exists in the e2e database.
   async signIn(nick: string, password: string) {
     await this.enterNickname(nick);
-    const stepInput = this.page.locator('#reg-password, #password').first();
+    const stepInput = this.page.locator("#reg-password, #password").first();
     await expect(stepInput).toBeVisible();
 
-    if ((await stepInput.getAttribute('id')) === 'reg-password') {
+    if ((await stepInput.getAttribute("id")) === "reg-password") {
       await this.registerWithPassword(password);
     } else {
       await this.authenticateWithPassword(password);
@@ -131,7 +134,7 @@ export class ConnectPage {
 //   - 1–16 chars
 //   - no spaces
 // And is unique enough to avoid collisions across runs without a DB reset.
-export function uniqueNickname(prefix = 'e2e'): string {
+export function uniqueNickname(prefix = "e2e"): string {
   const rand = Math.random().toString(36).slice(2, 8);
   return `${prefix}${rand}`;
 }

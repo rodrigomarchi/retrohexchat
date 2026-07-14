@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test } from '@playwright/test';
-import { ConnectPage } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test } from "@playwright/test";
+import { ConnectPage } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,11 +8,11 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'banex'): string {
+function uniqueChannel(prefix = "banex"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-function uniqueNickBase(prefix = 'x4ex'): string {
+function uniqueNickBase(prefix = "x4ex"): string {
   return `${prefix}${Math.random().toString(36).slice(2, 8)}`;
 }
 
@@ -22,7 +22,7 @@ async function signedInUser(page: Page, nick: string) {
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -43,11 +43,11 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('Channel ban exceptions', () => {
-  test('matching ban exception overrides wildcard ban and removal restores the ban (X4)', async ({
+test.describe("Channel ban exceptions", () => {
+  test("matching ban exception overrides wildcard ban and removal restores the ban (X4)", async ({
     browser,
   }) => {
-    const channel = uniqueChannel('x4banex');
+    const channel = uniqueChannel("x4banex");
     const nickBase = uniqueNickBase();
     const owner = await newSignedInUser(browser, `${nickBase}op`);
     const excepted = await newSignedInUser(browser, `${nickBase}ok`);
@@ -83,7 +83,9 @@ test.describe('Channel ban exceptions', () => {
       await owner.chat.closeChannelCentral();
 
       await excepted.chat.sendMessage(`/join ${channel}`);
-      await excepted.chat.expectMessageVisible(`You are banned from ${channel}`);
+      await excepted.chat.expectMessageVisible(
+        `You are banned from ${channel}`,
+      );
       await excepted.chat.expectTabHidden(channel);
     } finally {
       await closeUsers([owner, excepted, blocked]);

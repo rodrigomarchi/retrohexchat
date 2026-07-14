@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'nsdlg'): string {
+function uniqueChannel(prefix = "nsdlg"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'nsdlg') {
+async function signedInUser(page: Page, prefix = "nsdlg") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'nsdlg') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'nsdlg',
+  prefix = "nsdlg",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -58,15 +58,15 @@ async function closeUsers(users: TestUser[]) {
   await Promise.all(users.map((user) => user.ctx.close()));
 }
 
-test.describe('NickServ dialog edge cases', () => {
-  test('registered nick password dialog cancel keeps old nickname and chat input usable (W3)', async ({
+test.describe("NickServ dialog edge cases", () => {
+  test("registered nick password dialog cancel keeps old nickname and chat input usable (W3)", async ({
     browser,
   }) => {
-    const targetNick = uniqueNickname('w3tgt');
+    const targetNick = uniqueNickname("w3tgt");
     const targetPassword = `pw-${Date.now().toString(36)}`;
     const target = await registeredNick(browser, targetNick, targetPassword);
-    const alice = await newSignedInUser(browser, 'w3a');
-    const channel = uniqueChannel('nscancel');
+    const alice = await newSignedInUser(browser, "w3a");
+    const channel = uniqueChannel("nscancel");
     const afterCancelText = `nickserv-cancel-${Date.now()}`;
 
     try {

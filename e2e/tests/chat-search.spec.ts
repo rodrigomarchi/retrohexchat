@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, test, expect } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, test, expect } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -8,18 +8,18 @@ type TestUser = {
   nick: string;
 };
 
-function uniqueChannel(prefix = 'search'): string {
+function uniqueChannel(prefix = "search"): string {
   return `#${prefix}${Math.random().toString(36).slice(2, 9)}`;
 }
 
-async function signedInUser(page: Page, prefix = 'srch') {
+async function signedInUser(page: Page, prefix = "srch") {
   const connect = new ConnectPage(page);
   const chat = new ChatPage(page);
   const nick = uniqueNickname(prefix);
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, nick };
@@ -27,7 +27,7 @@ async function signedInUser(page: Page, prefix = 'srch') {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'srch',
+  prefix = "srch",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   const page = await ctx.newPage();
@@ -37,8 +37,8 @@ async function newSignedInUser(
 }
 
 async function setupTwoUsersInChannel(browser: Browser, channel: string) {
-  const alice = await newSignedInUser(browser, 'sra');
-  const bob = await newSignedInUser(browser, 'srb');
+  const alice = await newSignedInUser(browser, "sra");
+  const bob = await newSignedInUser(browser, "srb");
 
   await alice.chat.sendMessage(`/join ${channel}`);
   await alice.chat.expectTabVisible(channel);
@@ -54,16 +54,20 @@ async function setupTwoUsersInChannel(browser: Browser, channel: string) {
 
 function activeHighlightRow(chat: ChatPage) {
   return chat.searchActiveHighlight.locator(
-    'xpath=ancestor::*[@data-message-id][1]',
+    "xpath=ancestor::*[@data-message-id][1]",
   );
 }
 
-async function expectSearchCount(chat: ChatPage, current: number, total: number) {
+async function expectSearchCount(
+  chat: ChatPage,
+  current: number,
+  total: number,
+) {
   await expect(chat.searchBarCount).toHaveText(`${current}/${total}`);
 }
 
-test.describe('Chat search bar', () => {
-  test('opens from Edit > Find, highlights matches, navigates, and reports invalid regex (O6)', async ({
+test.describe("Chat search bar", () => {
+  test("opens from Edit > Find, highlights matches, navigates, and reports invalid regex (O6)", async ({
     page,
   }) => {
     const { chat } = await signedInUser(page);
@@ -92,13 +96,13 @@ test.describe('Chat search bar', () => {
     await expect(activeHighlightRow(chat)).toContainText(first);
 
     await chat.searchBarRegex.click();
-    await chat.searchBarInput.fill('[');
+    await chat.searchBarInput.fill("[");
 
-    await expect(chat.searchBar).toContainText('Invalid regex');
+    await expect(chat.searchBar).toContainText("Invalid regex");
     await expect(chat.searchHighlights).toHaveCount(0);
   });
 
-  test('case-sensitive, regex, my-mentions, and history options stay active while search remains open (O7)', async ({
+  test("case-sensitive, regex, my-mentions, and history options stay active while search remains open (O7)", async ({
     browser,
   }) => {
     const channel = uniqueChannel();
@@ -139,7 +143,9 @@ test.describe('Chat search bar', () => {
 
       await bob.chat.sendMessage(`${mentionNeedle} for ${alice.nick}`);
       await bob.chat.sendMessage(`${mentionNeedle} for nobody`);
-      await alice.chat.expectMessageVisible(`${mentionNeedle} for ${alice.nick}`);
+      await alice.chat.expectMessageVisible(
+        `${mentionNeedle} for ${alice.nick}`,
+      );
       await alice.chat.expectMessageVisible(`${mentionNeedle} for nobody`);
 
       await alice.chat.searchBarInput.fill(mentionNeedle);

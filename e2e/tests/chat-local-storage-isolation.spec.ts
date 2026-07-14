@@ -1,6 +1,6 @@
-import { Browser, BrowserContext, Page, expect, test } from '@playwright/test';
-import { ConnectPage, uniqueNickname } from '../pages/ConnectPage';
-import { ChatPage } from '../pages/ChatPage';
+import { Browser, BrowserContext, Page, expect, test } from "@playwright/test";
+import { ConnectPage, uniqueNickname } from "../pages/ConnectPage";
+import { ChatPage } from "../pages/ChatPage";
 
 type TestUser = {
   chat: ChatPage;
@@ -18,11 +18,13 @@ async function installAudioSpy(ctx: BrowserContext) {
 
     class FakeOscillatorNode {
       frequency = new FakeAudioParam();
-      type = 'sine';
+      type = "sine";
 
       connect() {}
       start() {
-        (window as unknown as { __soundStartCount: number }).__soundStartCount += 1;
+        (
+          window as unknown as { __soundStartCount: number }
+        ).__soundStartCount += 1;
       }
       stop() {}
     }
@@ -47,8 +49,9 @@ async function installAudioSpy(ctx: BrowserContext) {
     }
 
     (window as unknown as { __soundStartCount: number }).__soundStartCount = 0;
-    (window as unknown as { AudioContext: typeof FakeAudioContext }).AudioContext =
-      FakeAudioContext;
+    (
+      window as unknown as { AudioContext: typeof FakeAudioContext }
+    ).AudioContext = FakeAudioContext;
     (
       window as unknown as { webkitAudioContext: typeof FakeAudioContext }
     ).webkitAudioContext = FakeAudioContext;
@@ -57,7 +60,7 @@ async function installAudioSpy(ctx: BrowserContext) {
 
 async function newSignedInUser(
   browser: Browser,
-  prefix = 'aa8',
+  prefix = "aa8",
 ): Promise<TestUser> {
   const ctx = await browser.newContext();
   await installAudioSpy(ctx);
@@ -68,7 +71,7 @@ async function newSignedInUser(
 
   await connect.open();
   await connect.enterNickname(nick);
-  await connect.registerWithPassword('pass12345');
+  await connect.registerWithPassword("pass12345");
   await chat.waitUntilConnected();
 
   return { chat, ctx, page, nick };
@@ -88,7 +91,9 @@ async function expectSoundStarts(page: Page, count: number) {
   await expect
     .poll(() =>
       page.evaluate(
-        () => (window as unknown as { __soundStartCount: number }).__soundStartCount,
+        () =>
+          (window as unknown as { __soundStartCount: number })
+            .__soundStartCount,
       ),
     )
     .toBe(count);
@@ -101,54 +106,56 @@ async function expectNoSoundStarts(page: Page) {
 
 async function expectMuteStorage(page: Page, value: string | null) {
   await expect
-    .poll(() => page.evaluate(() => localStorage.getItem('retro_hex_chat_mute')))
+    .poll(() =>
+      page.evaluate(() => localStorage.getItem("retro_hex_chat_mute")),
+    )
     .toBe(value);
 }
 
-test.describe('Local browser storage isolation', () => {
-  test('mute localStorage survives reload but does not leak across browser contexts (AA8)', async ({
+test.describe("Local browser storage isolation", () => {
+  test("mute localStorage survives reload but does not leak across browser contexts (AA8)", async ({
     browser,
   }) => {
-    const mutedUser = await newSignedInUser(browser, 'aa8m');
-    const isolatedUser = await newSignedInUser(browser, 'aa8i');
+    const mutedUser = await newSignedInUser(browser, "aa8m");
+    const isolatedUser = await newSignedInUser(browser, "aa8i");
 
     try {
       await expect(mutedUser.chat.statusBarMuteToggle).toHaveAttribute(
-        'aria-label',
-        'Mute',
+        "aria-label",
+        "Mute",
       );
       await mutedUser.chat.statusBarMuteToggle.click();
       await expect(mutedUser.chat.statusBarMuteToggle).toHaveAttribute(
-        'aria-label',
-        'Unmute',
+        "aria-label",
+        "Unmute",
       );
-      await expectMuteStorage(mutedUser.page, 'true');
+      await expectMuteStorage(mutedUser.page, "true");
 
       await mutedUser.page.reload();
       await mutedUser.chat.waitUntilConnected();
       await expect(mutedUser.chat.statusBarMuteToggle).toHaveAttribute(
-        'aria-label',
-        'Unmute',
+        "aria-label",
+        "Unmute",
       );
-      await expectMuteStorage(mutedUser.page, 'true');
+      await expectMuteStorage(mutedUser.page, "true");
 
       await mutedUser.chat.openSoundSettingsFromMenu();
       await resetAudioSpy(mutedUser.page);
-      await mutedUser.chat.soundPreviewButton('message').click();
+      await mutedUser.chat.soundPreviewButton("message").click();
       await expectNoSoundStarts(mutedUser.page);
       await mutedUser.chat.soundSettingsDialog
-        .getByRole('button', { name: 'Cancel' })
+        .getByRole("button", { name: "Cancel" })
         .click();
 
       await expect(isolatedUser.chat.statusBarMuteToggle).toHaveAttribute(
-        'aria-label',
-        'Mute',
+        "aria-label",
+        "Mute",
       );
       await expectMuteStorage(isolatedUser.page, null);
 
       await isolatedUser.chat.openSoundSettingsFromMenu();
       await resetAudioSpy(isolatedUser.page);
-      await isolatedUser.chat.soundPreviewButton('message').click();
+      await isolatedUser.chat.soundPreviewButton("message").click();
       await expectSoundStarts(isolatedUser.page, 1);
     } finally {
       await closeUsers([mutedUser, isolatedUser]);
