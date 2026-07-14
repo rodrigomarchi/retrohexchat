@@ -10,14 +10,14 @@ mechanism was built for: flickering fire braziers, a swirling portal, flame-lit
 lamps, an off-air-static CRT, a breathing Nu, and an infinite twinkling
 starfield — every one a PixelLab animation the engine cycled.
 
-> **Status (2026-07-13): that prop set is gone.** The isometric rebuild of End
-> of Time ([`ISOMETRIC.md`](ISOMETRIC.md)) replaced the scene and none of those
-> animated props were carried over. Today the scene's only animated tile is
-> `iso_star` (4 frames, 1100 ms), and `author_scene.py` draws its sparkle frames
-> itself at build time — the PixelLab star frames in
-> `scenes/end_of_time/anim/star/` are tracked but currently unused. The engine
-> mechanism (§1–§2) and the generation/packing rules (§3–§4, §8–§9) remain fully
-> valid: this document is the playbook for re-animating the iso scene.
+> **Status (2026-07-14): the iso scene animates again.** The isometric rebuild
+> (2026-07-13) had dropped every pre-iso animated prop; the **Matrix nook** on
+> the north platform brought real PixelLab animation back: `eot_morpheus` and
+> `eot_neo` breathe in their armchairs (8 frames each) and `eot_tv` flickers
+> static (6 frames), all packed by `author_scene.py`'s `ANIM_PROPS`. The
+> `iso_star` sparkle (4 frames, 1100 ms) is still drawn by the script at build
+> time — the PixelLab star frames in `scenes/end_of_time/anim/star/` remain
+> tracked but unused (accepted stopgap).
 
 > **Platform rule: no runtime procedural animation.** Motion is always frames
 > baked into the sheet, cycled on a clock — never runtime-drawn
@@ -112,13 +112,12 @@ Under load a generation can take 5–7 min instead of 30–90 s; poll `get_objec
 
 ## 4. Packing frames into the sheet — `author_scene.py`
 
-Animated props are declared in an `ANIM_PROPS` table (`name → (folder, col, row,
-w, h, period_ms)`) and packed as a **horizontal frame strip** from `(col,row)`.
-The sheet grows taller to hold the strips; each entry emits
-`vocab[name] = {col,row,w,h,frames,period_ms}`. (The current iso
-`author_scene.py` carries no `ANIM_PROPS`/`SCALE_TO_FIT` — the tables went with
-the pre-iso scene; reintroduce them per this section when animating the iso
-scene.) Two rules are non-negotiable:
+Animated props are declared in the `ANIM_PROPS` table (`name → (folder, block
+w×h in cells, period_ms, flip_x)`) and packed as a **horizontal frame strip**,
+one stacked below another under the star row. Each entry emits
+`vocab[name] = {col,row,w,h,frames,period_ms,flip_x?}`, and the packer guards
+that `w*frames ≤ SHEET_COLS` and that every packed frame cell is non-empty.
+Two rules are non-negotiable:
 
 ### 4a. Union-bbox packing — the wobble killer
 
@@ -162,11 +161,19 @@ bright near stars over the dense far field for depth ("infinite sky").
 
 ---
 
-## 5. Tuning & the pre-iso End of Time inventory
+## 5. Tuning & the animated inventory
 
-`period_ms` sets the mood — fast crackle vs. slow breath. Reference values from
-the pre-iso scene (these props no longer exist; the current iso scene ships only
-`iso_star`, 4 frames / 1100 ms):
+`period_ms` sets the mood — fast crackle vs. slow breath. The current iso
+scene (the Matrix nook + sky):
+
+| Prop | frames | period_ms | feel |
+|---|---|---|---|
+| `eot_morpheus` (breathing) | 8 | 2000 | slow calm breath |
+| `eot_neo` (breathing) | 8 | 2200 | slow breath, desynced from Morpheus |
+| `eot_tv` (off-air static) | 6 | 420 | fast snow crackle |
+| `iso_star` (script-drawn) | 4 | 1100 | twinkle |
+
+Reference values from the pre-iso scene (props long gone, tuning still useful):
 
 | Prop | frames | period_ms | feel |
 |---|---|---|---|
@@ -274,6 +281,27 @@ placement and the live look. Finish with `make ci` (9/9).
   `animate_object`; frame 0 becomes the new static. Judge the regen against the
   current sprite before accepting — swap the `PROPS` source from `foo.png` to
   `anim/foo` and delete the orphaned static PNG.
+- **Orientation is won with `create_8_direction_object`, not prompts.** Prompts
+  will not reliably turn a composed subject (a seated character kept coming out
+  frontal through five phrasings). Generate the composite as an 8-direction
+  object (~25 generations), pick the rotation that realises the composition
+  (e.g. the `east`/`west` seated profiles for a facing pair — better than
+  `flip_x`, each side is its own character), then `animate_object` with
+  `directions: [<that one>]` so you only pay for the facings you ship. The
+  frame URLs use an internal animation id — read them from `get_object`, don't
+  guess the group id.
+- **Huge base64 reference payloads corrupt in transit.** Hand-relaying a 6-9KB
+  `reference_image_base64` through chat flips characters (same length, broken
+  zlib → server-side "broken data stream"). Prefer description-only or
+  `style_image_base64` with a string that already round-tripped; verify odd
+  server decode errors against the reported byte count before blaming the file.
+- **Stale `mix phx.digest` artifacts poison the served bundle.** Leftover
+  `app.js.gz`/`app-<hash>.js` in `priv/static/assets` are served in preference
+  to the fresh esbuild `app.js` (Plug.Static serves the precompressed file
+  without checking freshness) — the game then renders with YESTERDAY'S
+  renderer and any fix looks unshipped (misplaced prop shadows haunted a whole
+  session this way). Purge `*.gz` + digested files from `priv/static` when the
+  browser contradicts the source.
 - **One coherent cause beats scattered effects.** When several props animate at
   once, tie them to a *single* physical cause and scale `period_ms` by weight —
   light things move faster, heavy things slower. Same cause, so the whole scene

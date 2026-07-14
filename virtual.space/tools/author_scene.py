@@ -46,10 +46,32 @@ BRIDGES = {
     "bridge_e": {"x0": 60, "x1": 65, "y0": 35, "y1": 36},
 }
 SOLIDS = {**PLATFORMS, **BRIDGES}
-# One lamppost per platform centre; the central one anchors the spawns, the
+# One lamppost per platform centre (except the north platform — the Matrix
+# nook's TV is its light source); the central one anchors the spawns, the
 # lights and the DM nameplate.
-LAMPS = [(48, 36), (48, 13), (48, 58), (17, 36), (78, 36)]
-SHEET_COLS = 20
+LAMPS = [(48, 36), (48, 58), (17, 36), (78, 36)]
+# Animated props (real PixelLab frames, packed as horizontal strips):
+# name -> (frames folder under scenes/end_of_time/, block w×h in cells,
+# period_ms, flip_x). The Matrix nook on the north platform: Morpheus (west
+# seat, the `east` rotation of his 8-direction set — a seated profile facing
+# east) and Neo (east seat, his `west` rotation facing west) breathe facing
+# EACH OTHER in red wingback armchairs, with the vintage CRT flickering static
+# to the north between them — the Construct loading-room framing.
+ANIM_PROPS = {
+    "eot_morpheus": ("anim/morpheus", 3, 3, 2000, False),
+    "eot_neo": ("anim/neo", 3, 3, 2200, False),
+    "eot_tv": ("anim/tv", 2, 3, 420, False),
+}
+# Matrix nook placement: decor anchor tile + solid ground footprint. The TV
+# sits on the pair's perpendicular bisector pushed north — (46,10) projects
+# ~95px from EACH chair base (equidistant, not merely mid-x) and two tiles
+# behind their row — the Construct loading-room framing.
+FURNITURE = [
+    ("eot_tv", 46, 10, {"x": 45, "y": 9, "w": 2, "h": 2}),
+    ("eot_morpheus", 45, 13, {"x": 44, "y": 13, "w": 2, "h": 2}),
+    ("eot_neo", 51, 13, {"x": 51, "y": 13, "w": 2, "h": 2}),
+]
+SHEET_COLS = 24
 Z_STEP = 16
 
 
@@ -172,6 +194,50 @@ def _place(sheet, vocab, name, im, col, row, anchor="bottom", native=False):
     return col + w
 
 
+def _pack_anim(sheet, vocab, name, folder, w, h, period_ms, flip, row):
+    """Pack an animated prop as a horizontal frame strip at (0, row).
+
+    The rules that keep a "still" prop still (ANIMATIONS.md §4): every frame is
+    cropped to ONE shared union bbox (per-frame crops wobble the base), content
+    larger than the block is scaled preserving aspect (never cropped), and each
+    frame is bottom-centre anchored like a standing prop.
+    """
+    import glob
+    files = sorted(glob.glob(os.path.join(SRC, folder, "*.png")),
+                   key=lambda p: int(os.path.splitext(os.path.basename(p))[0]))
+    if not files:
+        raise FileNotFoundError(f"no frames in {folder}")
+    ims = [Image.open(f).convert("RGBA") for f in files]
+    if w * len(ims) > SHEET_COLS:
+        raise AssertionError(
+            f"{name}: strip {w}x{len(ims)} frames = {w * len(ims)} cols > {SHEET_COLS}")
+    boxes = [im.getbbox() for im in ims]
+    if any(b is None for b in boxes):
+        raise AssertionError(f"{name}: an empty frame slipped in")
+    union = (min(b[0] for b in boxes), min(b[1] for b in boxes),
+             max(b[2] for b in boxes), max(b[3] for b in boxes))
+    bw, bh = w * T, h * T
+    uw, uh = union[2] - union[0], union[3] - union[1]
+    scale = min(1.0, bw / uw, bh / uh)
+    for i, im in enumerate(ims):
+        crop = im.crop(union)
+        if scale < 1.0:
+            crop = crop.resize((max(1, round(uw * scale)), max(1, round(uh * scale))),
+                               Image.NEAREST)
+        block = Image.new("RGBA", (bw, bh), (0, 0, 0, 0))
+        block.alpha_composite(crop, ((bw - crop.width) // 2, bh - crop.height))
+        sheet.alpha_composite(block, (i * w * T, row * T))
+        # the cheapest blink check: the packed cell must hold pixels
+        if sheet.crop((i * w * T, row * T, (i + 1) * w * T, (row + h) * T)).getbbox() is None:
+            raise AssertionError(f"{name}: frame {i} packed empty")
+    entry = {"col": 0, "row": row, "w": w, "h": h,
+             "frames": len(ims), "period_ms": period_ms}
+    if flip:
+        entry["flip_x"] = True
+    vocab[name] = entry
+    return row + h
+
+
 def build():
     floor = _floor_tiles()
     fw, fh = floor[0].size                       # native diamond size (2:1 or 1:1)
@@ -223,6 +289,12 @@ def build():
         ImageDraw.Draw(star).ellipse([c - r, c - r, c + r, c + r], fill=(232, 238, 255, 255))
         sheet.alpha_composite(star, (i * T, srow * T))
     vocab["iso_star"] = {"col": 0, "row": srow, "w": 1, "h": 1, "frames": 4, "period_ms": 1100}
+
+    # Animated props (Matrix nook): one horizontal strip per prop, stacked
+    # below the star row.
+    arow = srow + 1
+    for name, (folder, w, h, period_ms, flip) in ANIM_PROPS.items():
+        arow = _pack_anim(sheet, vocab, name, folder, w, h, period_ms, flip, arow)
 
     # ── Layout ──────────────────────────────────────────────────────
     def _in(r, x, y):
@@ -313,11 +385,14 @@ def build():
 
     decor = stars + [
         {"x": x, "y": y, "tile": "iso_lamp", "sort": "stand"} for x, y in LAMPS
+    ] + [
+        {"x": x, "y": y, "tile": name, "sort": "stand"} for name, x, y, _fp in FURNITURE
     ]
 
-    # Collision is the void — the complement of the solid cross. Emitted as
-    # merged per-row runs (not 1×1 cells) so the space_init payload stays small
-    # on a big map; the server expands rects into its blocked MapSet anyway.
+    # Collision is the void — the complement of the solid cross — plus the
+    # furniture ground footprints. Void is emitted as merged per-row runs (not
+    # 1×1 cells) so the space_init payload stays small on a big map; the server
+    # expands rects into its blocked MapSet anyway.
     collision = []
     for y in range(H):
         x = 0
@@ -329,10 +404,13 @@ def build():
             while x < W and not full(x, y):
                 x += 1
             collision.append({"x": x0, "y": y, "w": x - x0, "h": 1, "kind": "void"})
+    collision += [dict(fp, kind="prop") for _name, _x, _y, fp in FURNITURE]
 
     # Every lamppost casts light as TWO stacked glows so it reads as emitting
     # from the lantern head, not the pole base: a soft pool on the ground + a
-    # tight bright halo lifted up to the lantern head.
+    # tight bright halo lifted up to the lantern head. The north platform has
+    # no lamp — the Matrix nook lives in the ambient dusk, lit by the TV's own
+    # bright static screen (no light-pool overlay).
     lights = []
     for x, y in LAMPS:
         lights.append({"x": x, "y": y, "radius": 4.2, "color": "ffd591", "blend": "add"})
@@ -344,7 +422,7 @@ def build():
              for name, r in PLATFORMS.items()]
 
     spawn = [{"x": 46, "y": 36, "dir": "right"}, {"x": 50, "y": 36, "dir": "left"}]
-    _validate(full, spawn, LAMPS)
+    _validate(full, spawn, collision)
 
     layout = {
         "width": W, "height": H, "tile_size": T, "ground": "g", "columns": SHEET_COLS,
@@ -374,25 +452,33 @@ def build():
           f"posts={len(railing_posts)} decor={len(decor)} collision={len(collision)}")
 
 
-def _validate(full, spawn, lamps):
-    """Assert the authored layout before writing it: spawns on walkable stone and
-    every platform (each lamp tile) BFS-reachable from the first spawn — a bridge
-    misaligned by one cell would strand a whole platform silently."""
+def _validate(full, spawn, collision):
+    """Assert the authored layout before writing it: spawns on walkable ground
+    and every platform centre BFS-reachable from the first spawn over the real
+    collision set (void + furniture) — a bridge misaligned by one cell or a
+    prop dropped across a corridor would strand a whole platform silently."""
+    blocked = {(r["x"] + dx, r["y"] + dy)
+               for r in collision for dx in range(r["w"]) for dy in range(r["h"])}
+
+    def walkable(x, y):
+        return 0 <= x < W and 0 <= y < H and full(x, y) and (x, y) not in blocked
+
     for s in spawn:
-        if not full(s["x"], s["y"]):
-            raise AssertionError(f"spawn {s} is not on walkable stone")
+        if not walkable(s["x"], s["y"]):
+            raise AssertionError(f"spawn {s} is not on walkable ground")
     start = (spawn[0]["x"], spawn[0]["y"])
     seen = {start}
     frontier = [start]
     while frontier:
         x, y = frontier.pop()
         for nx, ny in ((x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)):
-            if 0 <= nx < W and 0 <= ny < H and (nx, ny) not in seen and full(nx, ny):
+            if (nx, ny) not in seen and walkable(nx, ny):
                 seen.add((nx, ny))
                 frontier.append((nx, ny))
-    for lx, ly in lamps:
-        if (lx, ly) not in seen:
-            raise AssertionError(f"lamp platform at {(lx, ly)} is unreachable from spawn")
+    for r in PLATFORMS.values():
+        cx, cy = (r["x0"] + r["x1"]) // 2, (r["y0"] + r["y1"]) // 2
+        if (cx, cy) not in seen:
+            raise AssertionError(f"platform centre {(cx, cy)} is unreachable from spawn")
 
 
 if __name__ == "__main__":

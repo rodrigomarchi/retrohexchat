@@ -211,12 +211,13 @@ Wire it up:
 
 ## 7. Decorating props — patterns from the End of Time set
 
-- **Facing pairs via `flip_x`** — generate ONE side-profile prop (view `side`,
-  "facing right"), then emit two vocab entries pointing at the same sheet rect,
-  the second with `flip_x: true`. The renderer mirrors it, so the pair faces
-  each other (the pre-iso Matrix armchairs — the prop is gone, the pattern
-  stands). The Elixir `tiles/0` must copy `flip_x`
-  onto the rect, and `author_scene.py`'s preview must flip too or it lies.
+- **Facing pairs: 8-direction rotations beat `flip_x`.** For two DIFFERENT
+  characters facing each other (the Matrix nook), generate each as a
+  `create_8_direction_object` and use the opposing rotations (`east` seated
+  profile for the west seat, `west` for the east seat) — prompts alone won't
+  turn a seated composition, and each side keeps its own identity. `flip_x`
+  (two vocab entries on one rect, the second mirrored) still serves identical
+  props; the Elixir `tiles/0` must copy `flip_x` onto the rect.
 - **Dynamic text on a prop → the `hologram` label** — the built-in
   `table_nameplate` draws a wooden plaque, which won't sit inside a stone/tech
   artifact. A `hologram` label kind (in `renderer.js`) draws glowing cyan text
