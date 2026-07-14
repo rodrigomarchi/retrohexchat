@@ -90,7 +90,10 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanelTest do
     assert html =~ ~s(data-testid="p2p-call-reaction-heart")
     assert html =~ ~s(data-testid="p2p-call-reaction-thumbs_up")
     assert html =~ ~s(phx-click="send_call_reaction")
-    assert html =~ ~s(phx-value-preset="high")
+    refute html =~ ~s(phx-value-preset=)
+    refute html =~ "High quality"
+    refute html =~ "Medium quality"
+    refute html =~ "Low quality"
     assert html =~ ~s(data-testid="lobby-call-quality")
     assert html =~ "00:01:02"
     assert html =~ ~s(data-device-kind="audioinput")

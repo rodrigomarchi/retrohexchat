@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import {
   getAudioConstraints,
   getVideoConstraints,
+  getScreenShareConstraints,
   categorizeMediaError,
   acquireMedia,
   acquireDisplayMedia,
@@ -17,6 +18,9 @@ import {
   BITRATE_PRESETS,
   QUALITY_LABELS,
   applyBitratePreset,
+  applyMediaProfile,
+  applySenderProfile,
+  applyTrackHints,
   enumerateDevices,
   switchAudioInput,
   switchVideoInput,
@@ -30,11 +34,13 @@ import {
 
 describe("Media Acquisition", () => {
   describe("getAudioConstraints", () => {
-    it("returns echo cancellation and noise suppression", () => {
+    it("returns stable mono voice constraints", () => {
       const constraints = getAudioConstraints();
       expect(constraints).toEqual({
         echoCancellation: true,
         noiseSuppression: true,
+        autoGainControl: true,
+        channelCount: { ideal: 1 },
       });
     });
 
@@ -42,17 +48,20 @@ describe("Media Acquisition", () => {
       expect(getAudioConstraints("mic-1")).toEqual({
         echoCancellation: true,
         noiseSuppression: true,
+        autoGainControl: true,
+        channelCount: { ideal: 1 },
         deviceId: { exact: "mic-1" },
       });
     });
   });
 
   describe("getVideoConstraints", () => {
-    it("returns 640x480 user-facing camera constraints", () => {
+    it("returns stable 360p 15fps camera constraints", () => {
       const constraints = getVideoConstraints();
       expect(constraints).toEqual({
         width: { ideal: 640 },
-        height: { ideal: 480 },
+        height: { ideal: 360 },
+        frameRate: { ideal: 15, max: 15 },
         facingMode: "user",
       });
     });
@@ -60,9 +69,32 @@ describe("Media Acquisition", () => {
     it("adds an exact video device when provided", () => {
       expect(getVideoConstraints("cam-1")).toEqual({
         width: { ideal: 640 },
-        height: { ideal: 480 },
+        height: { ideal: 360 },
+        frameRate: { ideal: 15, max: 15 },
         facingMode: "user",
         deviceId: { exact: "cam-1" },
+      });
+    });
+
+    it("returns lower camera constraints for the low profile", () => {
+      expect(getVideoConstraints("", "low")).toEqual({
+        width: { ideal: 480 },
+        height: { ideal: 270 },
+        frameRate: { ideal: 15, max: 15 },
+        facingMode: "user",
+      });
+    });
+  });
+
+  describe("getScreenShareConstraints", () => {
+    it("limits display capture size and frame rate", () => {
+      expect(getScreenShareConstraints()).toEqual({
+        video: {
+          width: { max: 1280 },
+          height: { max: 720 },
+          frameRate: { ideal: 5, max: 10 },
+        },
+        audio: false,
       });
     });
   });
@@ -168,14 +200,48 @@ describe("Media Acquisition", () => {
 
   describe("acquireDisplayMedia", () => {
     it("returns display media on success", async () => {
-      const mockStream = { getTracks: () => [] };
+      const video = { contentHint: "" };
+      const mockStream = {
+        getAudioTracks: () => [],
+        getVideoTracks: () => [video],
+        getTracks: () => [video],
+      };
       navigator.mediaDevices = {
         getDisplayMedia: vi.fn().mockResolvedValue(mockStream),
       };
 
       const stream = await acquireDisplayMedia();
       expect(stream).toBe(mockStream);
+      expect(video.contentHint).toBe("detail");
       expect(navigator.mediaDevices.getDisplayMedia).toHaveBeenCalledWith({
+        video: {
+          width: { max: 1280 },
+          height: { max: 720 },
+          frameRate: { ideal: 5, max: 10 },
+        },
+        audio: false,
+      });
+    });
+
+    it("falls back to unconstrained display media when screen constraints fail", async () => {
+      const video = { contentHint: "" };
+      const mockStream = {
+        getAudioTracks: () => [],
+        getVideoTracks: () => [video],
+        getTracks: () => [video],
+      };
+      navigator.mediaDevices = {
+        getDisplayMedia: vi
+          .fn()
+          .mockRejectedValueOnce(new DOMException("Too strict", "OverconstrainedError"))
+          .mockResolvedValueOnce(mockStream),
+      };
+
+      const stream = await acquireDisplayMedia();
+
+      expect(stream).toBe(mockStream);
+      expect(video.contentHint).toBe("detail");
+      expect(navigator.mediaDevices.getDisplayMedia).toHaveBeenLastCalledWith({
         video: true,
         audio: false,
       });
@@ -456,17 +522,47 @@ describe("Quality Monitoring", () => {
   });
 
   describe("BITRATE_PRESETS", () => {
-    it("has high preset with 1.5Mbps video", () => {
-      expect(BITRATE_PRESETS.high.video).toBe(1_500_000);
-      expect(BITRATE_PRESETS.high.audio).toBe(128_000);
+    it("has conservative high preset values", () => {
+      expect(BITRATE_PRESETS.high.video).toBe(700_000);
+      expect(BITRATE_PRESETS.high.audio).toBe(64_000);
     });
 
-    it("has medium preset with 500Kbps video", () => {
-      expect(BITRATE_PRESETS.medium.video).toBe(500_000);
+    it("has medium preset with stable default values", () => {
+      expect(BITRATE_PRESETS.medium.video).toBe(400_000);
+      expect(BITRATE_PRESETS.medium.audio).toBe(40_000);
     });
 
-    it("has low preset with 150Kbps video", () => {
-      expect(BITRATE_PRESETS.low.video).toBe(150_000);
+    it("has low preset for constrained networks", () => {
+      expect(BITRATE_PRESETS.low.video).toBe(250_000);
+      expect(BITRATE_PRESETS.low.audio).toBe(32_000);
+    });
+  });
+
+  describe("applyTrackHints", () => {
+    it("marks voice and camera tracks with stable hints", () => {
+      const audio = { contentHint: "" };
+      const video = { contentHint: "" };
+      const stream = {
+        getAudioTracks: () => [audio],
+        getVideoTracks: () => [video],
+      };
+
+      applyTrackHints(stream);
+
+      expect(audio.contentHint).toBe("speech");
+      expect(video.contentHint).toBe("motion");
+    });
+
+    it("marks screen tracks for detail", () => {
+      const video = { contentHint: "" };
+      const stream = {
+        getAudioTracks: () => [],
+        getVideoTracks: () => [video],
+      };
+
+      applyTrackHints(stream, "screen");
+
+      expect(video.contentHint).toBe("detail");
     });
   });
 
@@ -492,7 +588,79 @@ describe("Quality Monitoring", () => {
       await applyBitratePreset(pc, "low");
       expect(sender.setParameters).toHaveBeenCalled();
       const setParams = sender.setParameters.mock.calls[0][0];
-      expect(setParams.encodings[0].maxBitrate).toBe(150_000);
+      expect(setParams.encodings[0].maxBitrate).toBe(250_000);
+      expect(setParams.encodings[0].maxFramerate).toBe(15);
+    });
+  });
+
+  describe("applySenderProfile", () => {
+    it("sets stable video bitrate and max frame rate", async () => {
+      const params = { encodings: [{}] };
+      const sender = {
+        track: { kind: "video" },
+        getParameters: () => params,
+        setParameters: vi.fn(),
+      };
+
+      await applySenderProfile(sender);
+
+      const setParams = sender.setParameters.mock.calls[0][0];
+      expect(setParams.encodings[0].maxBitrate).toBe(400_000);
+      expect(setParams.encodings[0].maxFramerate).toBe(15);
+    });
+
+    it("sets screen share bitrate and max frame rate", async () => {
+      const params = { encodings: [{}] };
+      const sender = {
+        track: { kind: "video" },
+        getParameters: () => params,
+        setParameters: vi.fn(),
+      };
+
+      await applySenderProfile(sender, "screen");
+
+      const setParams = sender.setParameters.mock.calls[0][0];
+      expect(setParams.encodings[0].maxBitrate).toBe(800_000);
+      expect(setParams.encodings[0].maxFramerate).toBe(10);
+    });
+
+    it("sets stable audio bitrate", async () => {
+      const params = { encodings: [{}] };
+      const sender = {
+        track: { kind: "audio" },
+        getParameters: () => params,
+        setParameters: vi.fn(),
+      };
+
+      await applySenderProfile(sender);
+
+      const setParams = sender.setParameters.mock.calls[0][0];
+      expect(setParams.encodings[0].maxBitrate).toBe(40_000);
+    });
+  });
+
+  describe("applyMediaProfile", () => {
+    it("applies the stable profile to every active sender", async () => {
+      const audioParams = { encodings: [{}] };
+      const videoParams = { encodings: [{}] };
+      const audioSender = {
+        track: { kind: "audio" },
+        getParameters: () => audioParams,
+        setParameters: vi.fn(),
+      };
+      const videoSender = {
+        track: { kind: "video" },
+        getParameters: () => videoParams,
+        setParameters: vi.fn(),
+      };
+      const pc = { getSenders: () => [audioSender, videoSender] };
+
+      await applyMediaProfile(pc);
+
+      expect(audioSender.setParameters.mock.calls[0][0].encodings[0].maxBitrate).toBe(40_000);
+      const videoEncoding = videoSender.setParameters.mock.calls[0][0].encodings[0];
+      expect(videoEncoding.maxBitrate).toBe(400_000);
+      expect(videoEncoding.maxFramerate).toBe(15);
     });
   });
 });

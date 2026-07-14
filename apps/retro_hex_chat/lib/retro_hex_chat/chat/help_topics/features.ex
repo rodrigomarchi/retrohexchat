@@ -1042,8 +1042,6 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         category: dgettext("help", "P2P & Calls"),
         keywords: [
           "quality",
-          "bitrate",
-          "preset",
           "indicator",
           "bars"
         ],
@@ -1051,7 +1049,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "Monitor and adjust call quality with bitrate presets and real-time quality indicators. See also: Network Statistics."
+            "Monitor call quality with real-time quality indicators. See also: Network Statistics."
           )
       },
       %{

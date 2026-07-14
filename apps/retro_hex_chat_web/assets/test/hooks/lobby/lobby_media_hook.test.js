@@ -188,7 +188,13 @@ describe("LobbyMediaHook auto-join", () => {
     hook = ctx.hook;
 
     const cameraTrack = { id: "camera-track", kind: "video", readyState: "live", stop: vi.fn() };
-    const screenTrack = { id: "screen-track", kind: "video", readyState: "live", stop: vi.fn() };
+    const screenTrack = {
+      id: "screen-track",
+      kind: "video",
+      contentHint: "",
+      readyState: "live",
+      stop: vi.fn(),
+    };
     const screenStream = {
       id: "screen-stream",
       getVideoTracks: vi.fn(() => [screenTrack]),
@@ -206,6 +212,8 @@ describe("LobbyMediaHook auto-join", () => {
       replaceTrack: vi.fn(async (track) => {
         sender.track = track;
       }),
+      getParameters: vi.fn(() => ({ encodings: [{}] })),
+      setParameters: vi.fn(),
     };
 
     Object.defineProperty(navigator, "mediaDevices", {
@@ -225,10 +233,18 @@ describe("LobbyMediaHook auto-join", () => {
     await hook._toggleScreenShare();
 
     expect(navigator.mediaDevices.getDisplayMedia).toHaveBeenCalledWith({
-      video: true,
+      video: {
+        width: { max: 1280 },
+        height: { max: 720 },
+        frameRate: { ideal: 5, max: 10 },
+      },
       audio: false,
     });
     expect(sender.replaceTrack).toHaveBeenCalledWith(screenTrack);
+    expect(sender.setParameters.mock.calls[0][0].encodings[0]).toEqual(
+      expect.objectContaining({ maxBitrate: 800_000, maxFramerate: 10 }),
+    );
+    expect(screenTrack.contentHint).toBe("detail");
     expect(localStream.removeTrack).toHaveBeenCalledWith(cameraTrack);
     expect(localStream.addTrack).toHaveBeenCalledWith(screenTrack);
     expect(localVideo.srcObject).toBe(localStream);
@@ -247,6 +263,9 @@ describe("LobbyMediaHook auto-join", () => {
     await hook._toggleScreenShare();
 
     expect(sender.replaceTrack).toHaveBeenCalledWith(cameraTrack);
+    expect(sender.setParameters.mock.calls.at(-1)[0].encodings[0]).toEqual(
+      expect.objectContaining({ maxBitrate: 400_000, maxFramerate: 15 }),
+    );
     expect(localStream.removeTrack).toHaveBeenCalledWith(screenTrack);
     expect(localStream.addTrack).toHaveBeenCalledWith(cameraTrack);
     expect(screenTrack.stop).toHaveBeenCalled();

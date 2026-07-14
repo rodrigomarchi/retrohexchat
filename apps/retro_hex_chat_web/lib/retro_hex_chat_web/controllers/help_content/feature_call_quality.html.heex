@@ -1,4 +1,4 @@
-<p>{dgettext("help_p2p", "Monitor and adjust connection quality during calls.")}</p>
+<p>{dgettext("help_p2p", "Monitor connection quality during calls.")}</p>
 <.help_h4 icon={:icon_quality_high}>{dgettext("help_p2p", "Quality Indicator")}</.help_h4>
 <p>{dgettext("help_p2p", "The 4 bars indicate connection quality:")}</p>
 <ul>
@@ -7,12 +7,12 @@
   <li>{dgettext("help_p2p", "2 yellow bars — Fair")}</li>
   <li>{dgettext("help_p2p", "1 red bar — Poor")}</li>
 </ul>
-<.help_h4 icon={:icon_quality_high}>{dgettext("help_p2p", "Manual Quality Adjustment")}</.help_h4>
+<.help_h4 icon={:icon_quality_high}>{dgettext("help_p2p", "Stable Defaults")}</.help_h4>
 <p>
-  {dgettext("help_p2p", "Use the")} <strong>{dgettext("help_p2p", "High")}</strong>
-  {dgettext("help_p2p", "(1.5 Mbps),")} <strong>{dgettext("help_p2p", "Medium")}</strong>
-  {dgettext("help_p2p", "(500 Kbps), or")} <strong>{dgettext("help_p2p", "Low")}</strong>
-  {dgettext("help_p2p", "(150 Kbps) buttons to adjust the bitrate manually.")}
+  {dgettext(
+    "help_p2p",
+    "Calls use conservative audio and video limits by default to favor stability over maximum image quality."
+  )}
 </p>
 <.help_h4 icon={:icon_tab_control}>{dgettext("help_p2p", "Automatic Adaptation")}</.help_h4>
 <p>

@@ -508,7 +508,7 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
     <.toolbar
       variant="compact"
       class="flex-wrap gap-1 border border-border px-1 py-1 shadow-retro-sunken"
-      aria-label={dgettext("p2p", "P2P layout and quality")}
+      aria-label={dgettext("p2p", "P2P layout")}
       data-testid="p2p-call-layout-controls"
     >
       <.toolbar_button
@@ -570,34 +570,6 @@ defmodule RetroHexChatWeb.Components.UI.P2P.CallPanel do
         data-testid="p2p-call-self-view-toggle"
       >
         <Icons.icon_pip class="h-4 w-4" />
-      </.toolbar_button>
-      <.toolbar_separator variant="compact" />
-      <.toolbar_button
-        label={dgettext("lobby", "High quality")}
-        variant="compact"
-        phx-click="media_select_preset"
-        phx-value-preset="high"
-        data-testid="p2p-call-quality-high"
-      >
-        <Icons.icon_quality_high class="h-4 w-4" />
-      </.toolbar_button>
-      <.toolbar_button
-        label={dgettext("lobby", "Medium quality")}
-        variant="compact"
-        phx-click="media_select_preset"
-        phx-value-preset="medium"
-        data-testid="p2p-call-quality-medium"
-      >
-        <Icons.icon_quality_medium class="h-4 w-4" />
-      </.toolbar_button>
-      <.toolbar_button
-        label={dgettext("lobby", "Low quality")}
-        variant="compact"
-        phx-click="media_select_preset"
-        phx-value-preset="low"
-        data-testid="p2p-call-quality-low"
-      >
-        <Icons.icon_quality_low class="h-4 w-4" />
       </.toolbar_button>
     </.toolbar>
     """

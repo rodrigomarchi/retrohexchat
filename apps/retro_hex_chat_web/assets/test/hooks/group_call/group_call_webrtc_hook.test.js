@@ -884,6 +884,7 @@ describe("GroupCallWebRTCHook media fallback", () => {
     const screenTrack = {
       id: "screen-track",
       kind: "video",
+      contentHint: "",
       readyState: "live",
       stop: vi.fn(() => {
         screenTrack.readyState = "ended";
@@ -900,6 +901,8 @@ describe("GroupCallWebRTCHook media fallback", () => {
       replaceTrack: vi.fn(async (track) => {
         sender.track = track;
       }),
+      getParameters: vi.fn(() => ({ encodings: [{}] })),
+      setParameters: vi.fn(),
     };
 
     hook.participantId = 123;
@@ -920,10 +923,18 @@ describe("GroupCallWebRTCHook media fallback", () => {
     const localTile = hook.el.querySelector("[data-group-call-local-tile]");
 
     expect(navigator.mediaDevices.getDisplayMedia).toHaveBeenCalledWith({
-      video: true,
+      video: {
+        width: { max: 1280 },
+        height: { max: 720 },
+        frameRate: { ideal: 5, max: 10 },
+      },
       audio: false,
     });
     expect(sender.replaceTrack).toHaveBeenCalledWith(screenTrack);
+    expect(sender.setParameters.mock.calls[0][0].encodings[0]).toEqual(
+      expect.objectContaining({ maxBitrate: 800_000, maxFramerate: 10 }),
+    );
+    expect(screenTrack.contentHint).toBe("detail");
     expect(localVideo.srcObject).toBe(screenStream);
     expect(localTile.dataset.mediaScreen).toBe("true");
     expect(localTile.dataset.trackSource).toBe("screen");
@@ -944,6 +955,9 @@ describe("GroupCallWebRTCHook media fallback", () => {
     await hook._stopScreenShare("browser_ended");
 
     expect(sender.replaceTrack).toHaveBeenLastCalledWith(cameraTrack);
+    expect(sender.setParameters.mock.calls.at(-1)[0].encodings[0]).toEqual(
+      expect.objectContaining({ maxBitrate: 400_000, maxFramerate: 15 }),
+    );
     expect(screenTrack.stop).toHaveBeenCalled();
     expect(localVideo.srcObject).toBe(hook.localStream);
     expect(localTile.dataset.mediaScreen).toBe("false");
@@ -1000,6 +1014,8 @@ describe("GroupCallWebRTCHook media fallback", () => {
       replaceTrack: vi.fn(async (track) => {
         sender.track = track;
       }),
+      getParameters: vi.fn(() => ({ encodings: [{}] })),
+      setParameters: vi.fn(),
     };
 
     hook.participantId = 123;
@@ -1015,6 +1031,9 @@ describe("GroupCallWebRTCHook media fallback", () => {
 
     expect(hook.screenShareBlocked).toBe(true);
     expect(sender.replaceTrack).toHaveBeenCalledWith(cameraTrack);
+    expect(sender.setParameters.mock.calls.at(-1)[0].encodings[0]).toEqual(
+      expect.objectContaining({ maxBitrate: 400_000, maxFramerate: 15 }),
+    );
     expect(screenTrack.stop).toHaveBeenCalled();
     expect(hook.channel.push).toHaveBeenCalledWith(
       "group_call_screen_share_state",

@@ -10,6 +10,7 @@ import {
   acquireDisplayMedia,
   getAudioConstraints,
   getVideoConstraints,
+  getScreenShareConstraints,
   addMediaTracks,
   removeMediaTracks,
   toggleTrack,
@@ -18,6 +19,8 @@ import {
   getStatsSnapshot,
   deriveStats,
   applyBitratePreset,
+  applyMediaProfile,
+  applySenderProfile,
   setCodecPreferences,
   enumerateDevices,
   switchAudioInput,
@@ -338,6 +341,7 @@ export function createRtcMediaHook(configInput) {
 
       this.senders = addMediaTracks(this.pc, this.localStream);
       setCodecPreferences(this.pc);
+      await applyMediaProfile(this.pc);
 
       this.callType = type;
       this.inCall = true;
@@ -403,6 +407,7 @@ export function createRtcMediaHook(configInput) {
         this.localStream.addTrack(track);
         const sender = this.pc.addTrack(track, this.localStream);
         this.senders.push(sender);
+        await applySenderProfile(sender);
 
         this.audioOn = true;
         this.muted = false;
@@ -451,6 +456,7 @@ export function createRtcMediaHook(configInput) {
         this.localStream.addTrack(track);
         const sender = this.pc.addTrack(track, this.localStream);
         this.senders.push(sender);
+        await applySenderProfile(sender);
 
         this.videoOn = true;
         this.cameraOff = false;
@@ -693,7 +699,7 @@ export function createRtcMediaHook(configInput) {
 
       let screenStream;
       try {
-        screenStream = await acquireDisplayMedia({ video: true, audio: false });
+        screenStream = await acquireDisplayMedia(getScreenShareConstraints());
       } catch (error) {
         this._push(config.clientEvents.deviceFallback, {
           message: error.message || t("Screen sharing was cancelled or denied."),
@@ -716,12 +722,14 @@ export function createRtcMediaHook(configInput) {
       try {
         if (!this.localStream) this.localStream = new MediaStream();
 
+        let sender = videoSender;
         if (videoSender) {
           await videoSender.replaceTrack(screenTrack);
         } else {
-          const sender = this.pc.addTrack(screenTrack, this.localStream);
+          sender = this.pc.addTrack(screenTrack, this.localStream);
           this.senders.push(sender);
         }
+        await applySenderProfile(sender, "screen");
 
         if (previousVideoTrack) {
           this.localStream.removeTrack(previousVideoTrack);
@@ -772,6 +780,7 @@ export function createRtcMediaHook(configInput) {
       try {
         if (sender && previousVideoTrack && previousVideoTrack.readyState !== "ended") {
           await sender.replaceTrack(previousVideoTrack);
+          await applySenderProfile(sender);
           if (this.localStream) {
             if (track) this.localStream.removeTrack(track);
             this.localStream.addTrack(previousVideoTrack);
@@ -860,6 +869,7 @@ export function createRtcMediaHook(configInput) {
         this.localStream.addTrack(videoTrack);
         const sender = this.pc.addTrack(videoTrack, this.localStream);
         this.senders.push(sender);
+        await applySenderProfile(sender);
 
         this.callType = "video";
         this.videoOn = true;

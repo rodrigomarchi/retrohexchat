@@ -8,9 +8,14 @@ import { Socket } from "phoenix";
 import { t } from "../../lib/i18n.js";
 import { log } from "../../lib/logger.js";
 import {
+  acquireDisplayMedia,
   collectFeatureSnapshotFromReports,
   deriveFeatureStats,
+  applyMediaProfile,
+  applySenderProfile,
+  applyTrackHints,
   getAudioConstraints,
+  getScreenShareConstraints,
   getVideoConstraints,
   setSinkId,
 } from "../../lib/p2p/media.js";
@@ -337,6 +342,7 @@ const GroupCallWebRTCHook = {
 
     try {
       this.localStream = await navigator.mediaDevices.getUserMedia(this._captureConstraints());
+      applyTrackHints(this.localStream);
     } catch (error) {
       log.warn("[group-call] media capture failed, answering recvonly", error);
       this._notifyWarning(
@@ -355,6 +361,7 @@ const GroupCallWebRTCHook = {
       }
     }
 
+    await applyMediaProfile(this.pc);
     this._attachLocalStream(this.localStream);
     this._applyMediaEnabled();
   },
@@ -1142,10 +1149,7 @@ const GroupCallWebRTCHook = {
     let stream;
 
     try {
-      stream = await navigator.mediaDevices.getDisplayMedia({
-        video: true,
-        audio: false,
-      });
+      stream = await acquireDisplayMedia(getScreenShareConstraints());
     } catch (error) {
       log.warn("[group-call] screen capture failed", error);
       this._notifyWarning(t("Screen sharing was cancelled or denied."), "screen_capture_failed");
@@ -1165,6 +1169,7 @@ const GroupCallWebRTCHook = {
 
     try {
       await sender.replaceTrack(track);
+      await applySenderProfile(sender, "screen");
     } catch (error) {
       log.warn("[group-call] screen replaceTrack failed", error);
       this._stopStream(stream);
@@ -1195,6 +1200,7 @@ const GroupCallWebRTCHook = {
     try {
       if (sender?.replaceTrack) {
         await sender.replaceTrack(this.cameraVideoTrack || null);
+        await applySenderProfile(sender);
       }
     } catch (error) {
       log.warn("[group-call] unable to restore camera track after screen share", error);

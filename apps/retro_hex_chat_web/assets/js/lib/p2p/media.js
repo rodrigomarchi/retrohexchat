@@ -14,33 +14,137 @@ export const QUALITY_LABELS = {
   poor: t("Poor"),
 };
 
+export const DEFAULT_MEDIA_PROFILE = "stable";
+export const SCREEN_MEDIA_PROFILE = "screen";
+
+export const MEDIA_PROFILES = {
+  stable: {
+    audio: {
+      echoCancellation: true,
+      noiseSuppression: true,
+      autoGainControl: true,
+      channelCount: { ideal: 1 },
+    },
+    camera: {
+      width: { ideal: 640 },
+      height: { ideal: 360 },
+      frameRate: { ideal: 15, max: 15 },
+      facingMode: "user",
+    },
+    send: {
+      audioBitrate: 40_000,
+      videoBitrate: 400_000,
+      maxFramerate: 15,
+    },
+    hints: {
+      audio: "speech",
+      video: "motion",
+    },
+  },
+  low: {
+    camera: {
+      width: { ideal: 480 },
+      height: { ideal: 270 },
+      frameRate: { ideal: 15, max: 15 },
+      facingMode: "user",
+    },
+    send: {
+      audioBitrate: 32_000,
+      videoBitrate: 250_000,
+      maxFramerate: 15,
+    },
+  },
+  high: {
+    camera: {
+      width: { ideal: 640 },
+      height: { ideal: 360 },
+      frameRate: { ideal: 24, max: 30 },
+      facingMode: "user",
+    },
+    send: {
+      audioBitrate: 64_000,
+      videoBitrate: 700_000,
+      maxFramerate: 30,
+    },
+  },
+  screen: {
+    display: {
+      width: { max: 1280 },
+      height: { max: 720 },
+      frameRate: { ideal: 5, max: 10 },
+    },
+    send: {
+      videoBitrate: 800_000,
+      maxFramerate: 10,
+    },
+    hints: {
+      video: "detail",
+    },
+  },
+};
+
 /**
- * Bitrate presets for manual quality adjustment.
+ * Bitrate presets retained for internal events. User-facing quality switching is
+ * currently hidden; calls start with the stable profile automatically.
  */
 export const BITRATE_PRESETS = {
-  high: { video: 1_500_000, audio: 128_000 },
-  medium: { video: 500_000, audio: 64_000 },
-  low: { video: 150_000, audio: 32_000 },
+  high: { video: 700_000, audio: 64_000 },
+  medium: { video: 400_000, audio: 40_000 },
+  low: { video: 250_000, audio: 32_000 },
 };
 
 // --- Media Acquisition ---
 
+function mediaProfile(profileName = DEFAULT_MEDIA_PROFILE) {
+  return MEDIA_PROFILES[profileName] || MEDIA_PROFILES[DEFAULT_MEDIA_PROFILE];
+}
+
+function cloneConstraintValue(value) {
+  if (!value || typeof value !== "object") return value;
+  if (Array.isArray(value)) return value.map(cloneConstraintValue);
+
+  return Object.fromEntries(
+    Object.entries(value).map(([key, child]) => [key, cloneConstraintValue(child)]),
+  );
+}
+
+function cloneConstraints(constraints) {
+  return cloneConstraintValue(constraints);
+}
+
 /**
- * Standard audio constraints with echo cancellation.
+ * Stable audio constraints for voice calls.
  * @returns {MediaTrackConstraints}
  */
-export function getAudioConstraints(deviceId = "") {
-  const constraints = { echoCancellation: true, noiseSuppression: true };
+export function getAudioConstraints(deviceId = "", profileName = DEFAULT_MEDIA_PROFILE) {
+  const profile = mediaProfile(profileName);
+  const constraints = {
+    ...cloneConstraints(MEDIA_PROFILES.stable.audio),
+    ...cloneConstraints(profile.audio || {}),
+  };
   return deviceId ? { ...constraints, deviceId: { exact: deviceId } } : constraints;
 }
 
 /**
- * Standard video constraints for 640x480.
+ * Stable camera constraints for calls.
  * @returns {MediaTrackConstraints}
  */
-export function getVideoConstraints(deviceId = "") {
-  const constraints = { width: { ideal: 640 }, height: { ideal: 480 }, facingMode: "user" };
+export function getVideoConstraints(deviceId = "", profileName = DEFAULT_MEDIA_PROFILE) {
+  const profile = mediaProfile(profileName);
+  const constraints = cloneConstraints(profile.camera || MEDIA_PROFILES.stable.camera);
   return deviceId ? { ...constraints, deviceId: { exact: deviceId } } : constraints;
+}
+
+/**
+ * Stable display capture constraints for screen sharing.
+ * @returns {DisplayMediaStreamOptions}
+ */
+export function getScreenShareConstraints(profileName = SCREEN_MEDIA_PROFILE) {
+  const profile = mediaProfile(profileName);
+  return {
+    video: cloneConstraints(profile.display || MEDIA_PROFILES.screen.display),
+    audio: false,
+  };
 }
 
 /**
@@ -95,7 +199,9 @@ export function categorizeMediaError(error, constraints = {}) {
  */
 export async function acquireMedia(constraints) {
   try {
-    return await navigator.mediaDevices.getUserMedia(constraints);
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+    applyTrackHints(stream);
+    return stream;
   } catch (error) {
     throw categorizeMediaError(error, constraints);
   }
@@ -106,7 +212,7 @@ export async function acquireMedia(constraints) {
  * @param {DisplayMediaStreamOptions} constraints
  * @returns {Promise<MediaStream>}
  */
-export async function acquireDisplayMedia(constraints = { video: true, audio: false }) {
+export async function acquireDisplayMedia(constraints = getScreenShareConstraints()) {
   if (!navigator.mediaDevices?.getDisplayMedia) {
     throw {
       code: "screen_unsupported",
@@ -115,8 +221,20 @@ export async function acquireDisplayMedia(constraints = { video: true, audio: fa
   }
 
   try {
-    return await navigator.mediaDevices.getDisplayMedia(constraints);
-  } catch {
+    const stream = await navigator.mediaDevices.getDisplayMedia(constraints);
+    applyTrackHints(stream, SCREEN_MEDIA_PROFILE);
+    return stream;
+  } catch (error) {
+    if (error?.name === "OverconstrainedError" && constraints?.video !== true) {
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+        applyTrackHints(stream, SCREEN_MEDIA_PROFILE);
+        return stream;
+      } catch {
+        // Fall through to the user-facing error below.
+      }
+    }
+
     throw {
       code: "screen_denied",
       message: t("Screen sharing was cancelled or denied."),
@@ -133,6 +251,7 @@ export async function acquireDisplayMedia(constraints = { video: true, audio: fa
  * @returns {RTCRtpSender[]}
  */
 export function addMediaTracks(pc, stream) {
+  applyTrackHints(stream);
   return stream.getTracks().map((track) => pc.addTrack(track, stream));
 }
 
@@ -219,10 +338,12 @@ export async function switchAudioInput(stream, senders, deviceId) {
   const newStream = await navigator.mediaDevices.getUserMedia({
     audio: getAudioConstraints(deviceId),
   });
+  applyTrackHints(newStream);
   const newTrack = newStream.getAudioTracks()[0];
   const audioSender = senders.find((s) => s.track && s.track.kind === "audio");
   if (audioSender) {
     await replaceTrack(audioSender, newTrack);
+    await applySenderProfile(audioSender);
   }
   // Stop old audio track
   stream.getAudioTracks().forEach((t) => t.stop());
@@ -242,10 +363,12 @@ export async function switchVideoInput(stream, senders, deviceId) {
   const newStream = await navigator.mediaDevices.getUserMedia({
     video: getVideoConstraints(deviceId),
   });
+  applyTrackHints(newStream);
   const newTrack = newStream.getVideoTracks()[0];
   const videoSender = senders.find((s) => s.track && s.track.kind === "video");
   if (videoSender) {
     await replaceTrack(videoSender, newTrack);
+    await applySenderProfile(videoSender);
   }
   stream.getVideoTracks().forEach((t) => t.stop());
   stream.getVideoTracks().forEach((t) => stream.removeTrack(t));
@@ -641,6 +764,67 @@ export function deriveFeatureStats(prev, curr) {
 }
 
 /**
+ * Apply media content hints to the tracks in a stream.
+ * @param {MediaStream} stream
+ * @param {"stable"|"low"|"high"|"screen"} profileName
+ */
+export function applyTrackHints(stream, profileName = DEFAULT_MEDIA_PROFILE) {
+  const profile = mediaProfile(profileName);
+
+  for (const track of stream?.getAudioTracks?.() || []) {
+    if ("contentHint" in track) track.contentHint = profile.hints?.audio || "speech";
+  }
+
+  for (const track of stream?.getVideoTracks?.() || []) {
+    if ("contentHint" in track) track.contentHint = profile.hints?.video || "motion";
+  }
+}
+
+/**
+ * Apply one fixed media profile to a single RTP sender.
+ * @param {RTCRtpSender} sender
+ * @param {"stable"|"low"|"high"|"screen"} profileName
+ * @returns {Promise<void>}
+ */
+export async function applySenderProfile(sender, profileName = DEFAULT_MEDIA_PROFILE) {
+  if (!sender?.track || typeof sender.setParameters !== "function") return;
+
+  const profile = mediaProfile(profileName);
+  const params = typeof sender.getParameters === "function" ? sender.getParameters() : {};
+
+  if (!params.encodings || params.encodings.length === 0) {
+    params.encodings = [{}];
+  }
+
+  const send = profile.send || MEDIA_PROFILES.stable.send;
+  const maxBitrate = sender.track.kind === "video" ? send.videoBitrate : send.audioBitrate;
+
+  params.encodings.forEach((encoding) => {
+    if (maxBitrate) encoding.maxBitrate = maxBitrate;
+
+    if (sender.track.kind === "video" && send.maxFramerate) {
+      encoding.maxFramerate = send.maxFramerate;
+    }
+  });
+
+  await sender.setParameters(params);
+}
+
+/**
+ * Apply one fixed media profile to all active RTP senders.
+ * @param {RTCPeerConnection} pc
+ * @param {"stable"|"low"|"high"|"screen"} profileName
+ * @returns {Promise<void>}
+ */
+export async function applyMediaProfile(pc, profileName = DEFAULT_MEDIA_PROFILE) {
+  if (!pc?.getSenders) return;
+
+  for (const sender of pc.getSenders()) {
+    await applySenderProfile(sender, profileName);
+  }
+}
+
+/**
  * Apply a bitrate preset to all senders on the peer connection.
  * @param {RTCPeerConnection} pc
  * @param {"high"|"medium"|"low"} preset
@@ -660,6 +844,9 @@ export async function applyBitratePreset(pc, preset) {
     const maxBitrate = sender.track.kind === "video" ? limits.video : limits.audio;
     params.encodings.forEach((encoding) => {
       encoding.maxBitrate = maxBitrate;
+      if (sender.track.kind === "video") {
+        encoding.maxFramerate = preset === "high" ? 30 : 15;
+      }
     });
     await sender.setParameters(params);
   }

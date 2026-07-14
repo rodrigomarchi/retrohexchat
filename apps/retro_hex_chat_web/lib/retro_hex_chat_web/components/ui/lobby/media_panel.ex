@@ -5,8 +5,8 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
 
   Hosts the `LobbyMediaHook` (mounted once the connection is up and kept mounted for
   the whole session) plus the call surface: video grid, mute/camera/PiP/devices
-  controls, layout switch, quality presets and device selectors. Composed from the
-  toolbar primitives and the icon facade.
+  controls, layout switch, quality indicators and device selectors. Composed from
+  the toolbar primitives and the icon facade.
 
   Media is *self-controlled*: each peer starts/stops their own mic and camera
   independently. The call surface therefore renders whenever EITHER side has media
@@ -215,33 +215,6 @@ defmodule RetroHexChatWeb.Components.UI.Lobby.MediaPanel do
               phx-value-layout="maximized"
             >
               <Icons.icon_layout_maximize class="h-4 w-4" />
-            </.toolbar_button>
-            <%!-- Quality-cap presets: user-chosen bitrate ceilings (High/Medium/Low),
-                 distinct from the measured HUD meter over the video. --%>
-            <.toolbar_separator variant="compact" />
-            <.toolbar_button
-              label={dgettext("lobby", "High quality")}
-              variant="compact"
-              phx-click="media_select_preset"
-              phx-value-preset="high"
-            >
-              <Icons.icon_quality_high class="h-4 w-4" />
-            </.toolbar_button>
-            <.toolbar_button
-              label={dgettext("lobby", "Medium quality")}
-              variant="compact"
-              phx-click="media_select_preset"
-              phx-value-preset="medium"
-            >
-              <Icons.icon_quality_medium class="h-4 w-4" />
-            </.toolbar_button>
-            <.toolbar_button
-              label={dgettext("lobby", "Low quality")}
-              variant="compact"
-              phx-click="media_select_preset"
-              phx-value-preset="low"
-            >
-              <Icons.icon_quality_low class="h-4 w-4" />
             </.toolbar_button>
           </.toolbar>
 
