@@ -8,7 +8,7 @@ export class ConnectPage {
   readonly nicknameInput: Locator;
   readonly connectButton: Locator;
   readonly backButton: Locator;
-  // :nickname step error feedback (validate event, debounced 300ms)
+  // :nickname step error feedback after submitting an invalid nickname.
   readonly nicknameError: Locator;
   // :register step (brand-new nickname)
   readonly registerPasswordInput: Locator;
@@ -49,13 +49,9 @@ export class ConnectPage {
     await expect(this.nicknameInput).toBeVisible();
   }
 
-  // Type into the nickname field WITHOUT submitting — useful for asserting
-  // validation behavior. Waits past the 300ms phx-debounce so the
-  // server-side validate event has fired and any error has rendered.
+  // Type into the nickname field WITHOUT submitting.
   async typeNickname(nick: string) {
     await this.nicknameInput.fill(nick);
-    // The LiveView phx-debounce is 300ms; allow a bit of slack.
-    await this.page.waitForTimeout(400);
   }
 
   async open() {
@@ -76,8 +72,6 @@ export class ConnectPage {
 
   async enterNickname(nick: string) {
     await this.nicknameInput.fill(nick);
-    // phx-debounce=300ms on the validate event — wait for the connect button
-    // to clear validation state before clicking.
     await expect(this.connectButton).toBeEnabled();
     await this.connectButton.click();
   }

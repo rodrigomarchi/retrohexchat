@@ -51,16 +51,6 @@ defmodule RetroHexChatWeb.App.ConnectLive do
   defp reason_to_message(reason), do: reason
 
   @impl true
-  def handle_event("validate", %{"nickname" => nickname}, socket) do
-    error =
-      case validate_nickname(nickname) do
-        :ok -> nil
-        {:error, msg} -> msg
-      end
-
-    {:noreply, assign(socket, nickname: nickname, nickname_error: error)}
-  end
-
   def handle_event("connect", %{"nickname" => nickname}, socket) do
     case validate_nickname(nickname) do
       :ok ->
@@ -79,12 +69,8 @@ defmodule RetroHexChatWeb.App.ConnectLive do
         end
 
       {:error, msg} ->
-        {:noreply, assign(socket, nickname_error: msg)}
+        {:noreply, assign(socket, nickname: nickname, nickname_error: msg)}
     end
-  end
-
-  def handle_event("validate_password", %{"password" => password}, socket) do
-    {:noreply, assign(socket, password: password, password_error: nil)}
   end
 
   def handle_event("authenticate", %{"password" => password}, socket) do
@@ -106,14 +92,6 @@ defmodule RetroHexChatWeb.App.ConnectLive do
     end
   end
 
-  def handle_event("validate_register", params, socket) do
-    password = Map.get(params, "password", "")
-    password_confirm = Map.get(params, "password_confirm", "")
-
-    {:noreply,
-     assign(socket, password: password, password_confirm: password_confirm, password_error: nil)}
-  end
-
   def handle_event("register", params, socket) do
     password = Map.get(params, "password", "")
     password_confirm = Map.get(params, "password_confirm", "")
@@ -123,11 +101,18 @@ defmodule RetroHexChatWeb.App.ConnectLive do
       String.length(password) < 5 ->
         {:noreply,
          assign(socket,
+           password: password,
+           password_confirm: password_confirm,
            password_error: dgettext("connect", "Password must be at least 5 characters")
          )}
 
       password != password_confirm ->
-        {:noreply, assign(socket, password_error: dgettext("connect", "Passwords do not match"))}
+        {:noreply,
+         assign(socket,
+           password: password,
+           password_confirm: password_confirm,
+           password_error: dgettext("connect", "Passwords do not match")
+         )}
 
       true ->
         case NickServ.register(nickname, password) do
@@ -141,7 +126,12 @@ defmodule RetroHexChatWeb.App.ConnectLive do
              |> push_event("submit_connect", %{})}
 
           {:error, msg} ->
-            {:noreply, assign(socket, password_error: msg)}
+            {:noreply,
+             assign(socket,
+               password: password,
+               password_confirm: password_confirm,
+               password_error: msg
+             )}
         end
     end
   end

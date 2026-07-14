@@ -53,8 +53,8 @@ test.describe("Returning user (registered nick)", () => {
     await connect.authButton.click();
     await expect(connect.authError).toContainText("Incorrect password");
 
-    // The server clears the password field on failure; typing the right
-    // one fires validate_password which also clears the error.
+    // The server clears the password field on failure; retrying with the
+    // correct password submits once and then navigates to chat.
     await connect.authPasswordInput.fill(pw);
     await connect.authButton.click();
 

@@ -161,7 +161,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
 
   defp connect_nickname_step(assigns) do
     ~H"""
-    <form phx-submit="connect" phx-change="validate">
+    <form phx-submit="connect">
       <.retro_fieldset legend={dgettext("connect", "User Information")}>
         <.field_row stacked>
           <.label for="nickname">
@@ -177,8 +177,8 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
             value={@nickname}
             maxlength="16"
             autocomplete="off"
+            required
             placeholder={dgettext("connect", "Enter your nickname...")}
-            phx-debounce="300"
             phx-mounted={JS.focus()}
           />
         </.field_row>
@@ -217,7 +217,6 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
         <.button
           type="submit"
           data-testid="connect-btn"
-          disabled={@nickname_error != nil or @nickname == ""}
         >
           <:icon><Icons.icon_connect /></:icon>
           {dgettext("connect", "Connect")}
@@ -249,7 +248,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
 
   defp connect_password_step(assigns) do
     ~H"""
-    <form phx-submit="authenticate" phx-change="validate_password" autocomplete="off">
+    <form phx-submit="authenticate" autocomplete="off">
       <.retro_fieldset legend={dgettext("connect", "Authentication")}>
         <.alert class="mb-3">
           <:icon><Icons.icon_shield /></:icon>
@@ -277,6 +276,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
             value={@password}
             placeholder={dgettext("connect", "Enter your password...")}
             autocomplete="off"
+            required
             data-1p-ignore
             data-lpignore="true"
             data-bwignore="true"
@@ -293,7 +293,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
           <:icon><Icons.icon_btn_prev /></:icon>
           {dgettext("connect", "Back")}
         </.button>
-        <.button type="submit" data-testid="auth-btn" disabled={@password == ""}>
+        <.button type="submit" data-testid="auth-btn">
           <:icon><Icons.icon_connect /></:icon>
           {dgettext("connect", "Connect")}
         </.button>
@@ -309,7 +309,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
 
   defp connect_register_step(assigns) do
     ~H"""
-    <form phx-submit="register" phx-change="validate_register" autocomplete="off">
+    <form phx-submit="register" autocomplete="off">
       <.retro_fieldset legend={dgettext("connect", "Registration")}>
         <.alert class="mb-3">
           <:icon><Icons.icon_checkmark /></:icon>
@@ -337,6 +337,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
             value={@password}
             placeholder={dgettext("connect", "Choose a password (min. 5 characters)...")}
             autocomplete="off"
+            required
             data-1p-ignore
             data-lpignore="true"
             data-bwignore="true"
@@ -359,6 +360,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
             value={@password_confirm}
             placeholder={dgettext("connect", "Repeat your password...")}
             autocomplete="off"
+            required
             data-1p-ignore
             data-lpignore="true"
             data-bwignore="true"
@@ -374,11 +376,7 @@ defmodule RetroHexChatWeb.Components.UI.ConnectScreen do
           <:icon><Icons.icon_btn_prev /></:icon>
           {dgettext("connect", "Back")}
         </.button>
-        <.button
-          type="submit"
-          data-testid="register-btn"
-          disabled={@password == "" or @password_confirm == ""}
-        >
+        <.button type="submit" data-testid="register-btn">
           <:icon><Icons.icon_connect /></:icon>
           {dgettext("connect", "Register & Connect")}
         </.button>

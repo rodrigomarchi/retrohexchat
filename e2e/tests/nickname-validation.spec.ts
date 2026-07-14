@@ -2,13 +2,19 @@ import { test, expect } from "@playwright/test";
 import { ConnectPage } from "../pages/ConnectPage";
 
 test.describe("Nickname validation", () => {
-  test("empty nickname keeps the Connect button disabled (C1)", async ({
+  test("empty nickname is blocked by browser validation (C1)", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);
     await connect.open();
     await expect(connect.nicknameInput).toHaveValue("");
-    await expect(connect.connectButton).toBeDisabled();
+    await expect(connect.connectButton).toBeEnabled();
+    await expect(connect.nicknameInput).toHaveAttribute("required", "");
+    expect(
+      await connect.nicknameInput.evaluate(
+        (input) => (input as HTMLInputElement).validity.valueMissing,
+      ),
+    ).toBe(true);
   });
 
   test("input enforces 16-char maxlength on nickname (C2)", async ({
@@ -22,27 +28,29 @@ test.describe("Nickname validation", () => {
     expect(value.length).toBe(16);
   });
 
-  test("nickname with a space shows inline error and disables Connect (C3)", async ({
+  test("nickname with a space shows inline error after submit (C3)", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);
     await connect.open();
     await connect.typeNickname("bad nick");
+    await connect.connectButton.click();
     await expect(connect.nicknameError).toContainText(
       "Nickname cannot contain spaces",
     );
-    await expect(connect.connectButton).toBeDisabled();
+    await expect(connect.connectButton).toBeEnabled();
   });
 
-  test("nickname starting with a digit shows inline error (C4)", async ({
+  test("nickname starting with a digit shows inline error after submit (C4)", async ({
     page,
   }) => {
     const connect = new ConnectPage(page);
     await connect.open();
     await connect.typeNickname("1invalid");
+    await connect.connectButton.click();
     await expect(connect.nicknameError).toContainText(
       "Nickname must start with a letter or special character",
     );
-    await expect(connect.connectButton).toBeDisabled();
+    await expect(connect.connectButton).toBeEnabled();
   });
 });
