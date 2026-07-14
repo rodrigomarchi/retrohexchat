@@ -5,15 +5,26 @@ art** — no runtime procedural animation. Read this before animating anything i
 space. Like [`SCENES.md`](SCENES.md) and [`CHARACTERS.md`](CHARACTERS.md), most of
 this is hard-won empirical knowledge.
 
-The worked example throughout is the **End of Time** DM scene: flickering fire
-braziers, a swirling portal, flame-lit lamps, an off-air-static CRT, a breathing
-Nu, and an infinite twinkling starfield — every one a PixelLab animation the
-engine cycles.
+The worked example throughout is the **pre-isometric End of Time** DM scene this
+mechanism was built for: flickering fire braziers, a swirling portal, flame-lit
+lamps, an off-air-static CRT, a breathing Nu, and an infinite twinkling
+starfield — every one a PixelLab animation the engine cycled.
 
-> **Platform rule: zero procedural animation.** Motion is always real generated
-> frames cycled on a clock — never runtime-drawn twinkle/glow/noise. The early
-> procedural POC (canvas-drawn stars, a baked radial lamp-glow) was removed. Even
-> the "background sky" twinkle uses shrunk real star art, not drawn dots.
+> **Status (2026-07-13): that prop set is gone.** The isometric rebuild of End
+> of Time ([`ISOMETRIC.md`](ISOMETRIC.md)) replaced the scene and none of those
+> animated props were carried over. Today the scene's only animated tile is
+> `iso_star` (4 frames, 1100 ms), and `author_scene.py` draws its sparkle frames
+> itself at build time — the PixelLab star frames in
+> `scenes/end_of_time/anim/star/` are tracked but currently unused. The engine
+> mechanism (§1–§2) and the generation/packing rules (§3–§4, §8–§9) remain fully
+> valid: this document is the playbook for re-animating the iso scene.
+
+> **Platform rule: no runtime procedural animation.** Motion is always frames
+> baked into the sheet, cycled on a clock — never runtime-drawn
+> twinkle/glow/noise (the sole exception is the procedural sea behind the slab,
+> [`ISOMETRIC.md`](ISOMETRIC.md) §2). The frames should be real generated art;
+> the script-drawn `iso_star` sparkle is an accepted stopgap from the iso
+> rebuild.
 
 ---
 
@@ -101,10 +112,13 @@ Under load a generation can take 5–7 min instead of 30–90 s; poll `get_objec
 
 ## 4. Packing frames into the sheet — `author_scene.py`
 
-Animated props are declared in `ANIM_PROPS` (`name → (folder, col, row, w, h,
-period_ms)`) and packed as a **horizontal frame strip** from `(col,row)`. The
-sheet grows taller to hold the strips; each entry emits
-`vocab[name] = {col,row,w,h,frames,period_ms}`. Two rules are non-negotiable:
+Animated props are declared in an `ANIM_PROPS` table (`name → (folder, col, row,
+w, h, period_ms)`) and packed as a **horizontal frame strip** from `(col,row)`.
+The sheet grows taller to hold the strips; each entry emits
+`vocab[name] = {col,row,w,h,frames,period_ms}`. (The current iso
+`author_scene.py` carries no `ANIM_PROPS`/`SCALE_TO_FIT` — the tables went with
+the pre-iso scene; reintroduce them per this section when animating the iso
+scene.) Two rules are non-negotiable:
 
 ### 4a. Union-bbox packing — the wobble killer
 
@@ -133,8 +147,9 @@ uw, uh = union[2]-union[0], union[3]-union[1]
 scale  = fit/max(uw,uh) if fit else min(1.0, bw/uw, bh/uh)   # fit = tiny pinpoint
 ```
 
-This is backward-compatible: fire/lamp/portal/star already fit (scale = 1), so
-their packing is unchanged.
+This is backward-compatible: anything that already fits its block keeps scale 1
+and its packing is unchanged (in the pre-iso scene, fire/lamp/portal/star all
+did).
 
 ### 4c. Reuse one animation at multiple sizes
 
@@ -147,9 +162,11 @@ bright near stars over the dense far field for depth ("infinite sky").
 
 ---
 
-## 5. Tuning & the End of Time inventory
+## 5. Tuning & the pre-iso End of Time inventory
 
-`period_ms` sets the mood — fast crackle vs. slow breath:
+`period_ms` sets the mood — fast crackle vs. slow breath. Reference values from
+the pre-iso scene (these props no longer exist; the current iso scene ships only
+`iso_star`, 4 frames / 1100 ms):
 
 | Prop | frames | period_ms | feel |
 |---|---|---|---|
@@ -192,11 +209,12 @@ screenshot for the live look. Finish with `make ci` (9/9).
 2. **Inspect the frames** — print each frame's `size`/`getbbox()`. Drop any
    **junk frame** (a fully-opaque `alpha 255` frame renders as a solid square —
    PixelLab occasionally emits these); keep the clean subset (§8).
-3. **Declare** it in `ANIM_PROPS` with a sheet slot + `period_ms`; if it should
-   be a shrunk pinpoint, add it to `SCALE_TO_FIT`. Bump the sheet height if the
-   new strip doesn't fit. Remove the prop's static entry if you're replacing one.
-4. **Place** it in `DECOR` (and its footprint in `SOLID`); re-run
-   `author_scene.py`; eyeball `scene_preview.png`.
+3. **Declare** it in `ANIM_PROPS` (reintroducing the table + strip packing if
+   absent — §4) with a sheet slot + `period_ms`; a shrunk pinpoint goes through
+   `SCALE_TO_FIT`. Bump the sheet height if the new strip doesn't fit. Remove
+   the prop's static entry if you're replacing one.
+4. **Place** it in the script's decor list (and block its footprint in
+   `collision` if solid); re-run `author_scene.py`; eyeball `scene_preview.png`.
 5. **Verify**: `map_test.exs`, the E2E motion assertion + screenshot, `make ci`.
 
 ---

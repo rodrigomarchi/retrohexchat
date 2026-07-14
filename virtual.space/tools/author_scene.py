@@ -2,8 +2,8 @@
 """Author the ISOMETRIC "End of Time" DM scene (P3+).
 
 Reads real iso art from ``virtual.space/scenes/end_of_time/iso/`` — the diamond
-cobblestone floor variations, an ornate golden railing, and the reused upright
-props (lamp/gate/bucket, billboarded on the iso floor) — and emits the packed
+cobblestone floor variations and an ornate golden railing strip + post — plus
+the upright lamp (billboarded on the iso floor), and emits the packed
 sheet + an isometric ``end_of_time.json`` (diamond floor matrix, edge railings,
 slab thickness, vignette, amber lamp pool, twinkling stars).
 

@@ -52,25 +52,29 @@ Python tool that writes JSON to `priv/maps/<name>.json`, and the module loads it
 
 ## 2. Generating scene art (PixelLab MCP)
 
-The scene is **isometric** (a 2:1 diamond floor + a floating 3D slab). Check
+The scene is **isometric** (a flat diamond floor + a floating 3D slab). Check
 `mcp__pixellab__get_balance` first. The full iso art pipeline — the inviolable
-aspect-ratio rule, why `create_map_object` at exact 64×32 beats
-`create_tiles_pro`, geometric railings, the procedural sea — lives in
+aspect-ratio rule, why `create_map_object` at an exact flat canvas beats
+`create_tiles_pro`, the sheared railing tiles, the procedural sea — lives in
 [`ISOMETRIC.md`](ISOMETRIC.md) §4. The essentials:
 
-### 2a. Floor diamond — `create_map_object` at exact 64×32
+### 2a. Floor diamond — `create_map_object` at an exact flat canvas
 
-The 2:1 cobblestone diamond is a single `create_map_object` at an **exact 64×32**
-canvas ("diamond … fills the entire rhombus"): transparent corners + a filled
-centre that **tessellates seam-free**. `create_tiles_pro` isometric only yields
-~1:1 diamonds (too steep for the flat 2:1 CT look) and ignores `tile_height`, so
-it is NOT used for the floor. The author must **never crop** the floor tile — the
-exact 64×32 must survive or tessellation seams appear.
+The flat cobblestone diamond is a single `create_map_object` at an **exact
+flat-2:1-class** canvas ("diamond … fills the entire rhombus"): transparent
+corners + a filled centre that **tessellates seam-free**. The shipped floor
+variations (`iso/floor_0..3.png`) are **48×20 native**; the projection reads
+`iso.tile_w/tile_h` from the art's own size, so whatever exact canvas you
+generate at is the diamond the engine tessellates (the original 64×32
+calibration also worked). `create_tiles_pro` isometric only yields ~1:1 diamonds
+(too steep for the flat CT look) and ignores `tile_height`, so it is NOT used
+for the floor. The author must **never crop or resize** the floor tile — the
+exact native canvas must survive or tessellation seams appear.
 
 ### 2b. Props — `create_map_object` as iso billboards
 
-Standalone transparent-background objects, ~15–30s each. Upright props (lamp,
-pillar, bucket, signpost) are drawn as **iso billboards** — an upright object
+Standalone transparent-background objects, ~15–30s each. Upright props (e.g.
+lamp, pillar, signpost) are drawn as **iso billboards** — an upright object
 reads correctly in any projection, bottom-centred on the diamond foot, so no
 iso-specific art is needed:
 
@@ -94,13 +98,14 @@ Calibrate ONE floor tile + ONE prop, eyeball them, then batch the rest.
 
 ## 3. Composition
 
-### The floor — one tessellating diamond
+### The floor — a few tessellating diamond variations
 
-The iso floor is a **single** 2:1 diamond tile repeated over the platform cells —
-no Wang autotiling, no corner LUT. The tile's transparent corners let neighbours
-interlock seam-free. Cells off the platform carry no floor (the `ground`/void tile
-is skipped so the slab floats). The starry sky's *life* comes from scattered real
-**animated star props**, not tile variants — see [`ANIMATIONS.md`](ANIMATIONS.md).
+The iso floor is a small set of same-size diamond variations (currently 4,
+`iso_floor0..3`, hash-picked per cell) — no Wang autotiling, no corner LUT. The
+tiles' transparent corners let neighbours interlock seam-free. Cells off the
+platform carry no floor (the `ground`/void tile is skipped so the slab floats).
+The starry sky's *life* comes from scattered **animated star tiles** — see
+[`ANIMATIONS.md`](ANIMATIONS.md) (currently the script-drawn `iso_star`).
 
 ### The shape → floor matrix
 
@@ -112,20 +117,25 @@ a plain square H×W grid; solid cells get the floor diamond, the rest are void.
 ### The packed sheet
 
 `author_scene.py` packs everything into one 32px sheet
-(`priv/static/images/space/<name>.png`): the floor diamond (packed at its native
-64×32, **never cropped**) + the static props (each **bottom-center anchored** in
-its `w×h` tile block) + the **animated props** as horizontal frame strips (see
+(`priv/static/images/space/<name>.png`): the floor variations (packed at their
+native size, recorded as `wpx/hpx`, **never cropped**) + the sheared railing
+tiles and post + the static props (each **bottom-center anchored** in its `w×h`
+tile block) + any **animated tiles** as horizontal frame strips (see
 [`ANIMATIONS.md`](ANIMATIONS.md) for the packing rules — union bbox,
-scale-to-fit). It emits the tile **vocab** (`name → {col,row,w,h,frames?,
+scale-to-fit; the current scene's only strip is the script-drawn `iso_star`).
+It emits the tile **vocab** (`name → {col,row,w,h,wpx?,hpx?,frames?,
 period_ms?,flip_x?}`) plus the full layout into `priv/maps/<name>.json`:
-`floor`, `decor` (painter order: far stars, then near stars, then props),
-`collision` (solid prop footprints + off-platform cells), `spawn`, `zones`,
-`labels`, and the iso `slab`/`railings` geometry.
+`floor`, `decor` (painter order: stars, then props), `collision` (off-platform
+void cells — block solid prop footprints too when adding furniture; the current
+scene blocks none), `spawn`, `zones`, `labels`, and the iso `slab`/`railings`
+geometry.
 
-> **No procedural animation on the platform.** There is no baked glow or
-> runtime-drawn motion; all movement is real generated frames cycled by the
-> engine ([`ANIMATIONS.md`](ANIMATIONS.md)). The one exception is the procedural
-> sea/void behind the floating slab (see [`ISOMETRIC.md`](ISOMETRIC.md) §2).
+> **No runtime procedural animation on the platform.** There is no baked glow or
+> runtime-drawn motion; movement is frames baked in the sheet, cycled by the
+> engine ([`ANIMATIONS.md`](ANIMATIONS.md)). Exceptions today: the procedural
+> sea/void behind the floating slab ([`ISOMETRIC.md`](ISOMETRIC.md) §2) and the
+> `iso_star` frames, drawn by the author script at build time (a stopgap — see
+> the status note atop `ANIMATIONS.md`).
 
 Raw art lives in `virtual.space/scenes/<name>/`; the tool reads it and is
 deterministic — re-run after regenerating any art.
@@ -179,9 +189,10 @@ Wire it up:
 
 - **Straight platform edges** (rect/octagon), never a super-ellipse — else the
   geometric railings staircase ([`ISOMETRIC.md`](ISOMETRIC.md) §3).
-- **The floor is one native 64×32 diamond, never cropped** — a cropped tile
-  breaks seam-free tessellation.
-- **Void life comes from animated star props** — hash-scatter real animated stars
+- **The floor tiles are native-size diamonds (currently 48×20), never
+  cropped/resized** — a cropped tile breaks seam-free tessellation; the
+  projection reads the diamond ratio from the art.
+- **Void life comes from animated star tiles** — hash-scatter animated stars
   over the void for a twinkling sky ([`ANIMATIONS.md`](ANIMATIONS.md)); the sea
   behind the slab is procedural ([`ISOMETRIC.md`](ISOMETRIC.md) §2).
 - **Upright props are iso billboards** — bottom-center them in their tile block so
@@ -202,7 +213,8 @@ Wire it up:
 - **Facing pairs via `flip_x`** — generate ONE side-profile prop (view `side`,
   "facing right"), then emit two vocab entries pointing at the same sheet rect,
   the second with `flip_x: true`. The renderer mirrors it, so the pair faces
-  each other (the Matrix armchairs). The Elixir `tiles/0` must copy `flip_x`
+  each other (the pre-iso Matrix armchairs — the prop is gone, the pattern
+  stands). The Elixir `tiles/0` must copy `flip_x`
   onto the rect, and `author_scene.py`'s preview must flip too or it lies.
 - **Dynamic text on a prop → the `hologram` label** — the built-in
   `table_nameplate` draws a wooden plaque, which won't sit inside a stone/tech
@@ -280,22 +292,24 @@ Iso map fields:
 
 | Field | Meaning |
 |---|---|
-| `iso: {tile_w, tile_h, z_step, headroom}` | diamond footprint (64×32 = 2:1) + elevation px |
+| `iso: {tile_w, tile_h, z_step, headroom}` | diamond footprint (the art's native size, currently 48×20) + elevation px |
 | `slab: {thickness}` | 3D side-face height (height units) → the floating slab |
 | `vignette: {color, alpha, inner}` | screen-space radial multiply framing the void |
 | `layers.decor` `sort:"stand"` | props/railings billboard on the diamond foot, depth-sorted by `x+y` |
 
 Hard-won iso lessons:
 - **Ratio is native, never deformed.** `create_tiles_pro` isometric yields ~1:1
-  diamonds (too steep for CT's flat 2:1) and ignores `tile_height`. The reliable 2:1
-  cobblestone diamond came from **`create_map_object` at exact 64×32** (transparent
-  corners → tessellates seam-free). The author must NOT crop the floor tile.
+  diamonds (too steep for CT's flat look) and ignores `tile_height`. The reliable
+  flat cobblestone diamond came from **`create_map_object` at an exact flat
+  canvas** (transparent corners → tessellates seam-free; shipped floors are
+  48×20 native, and the projection reads the ratio from the art). The author
+  must NOT crop the floor tile.
 - **Iso floor** is drawn far→near (`x+y`), skipping the `ground`/void tile so the slab
   floats; **slab faces** are dark extruded quads on boundary tiles.
 - **Railings** are drawn **geometrically** along the platform edges — a continuous
   contour on the exact diamond-edge endpoints, not billboard sprites (a baked slope
   never matches the 2:1 edge). See [`ISOMETRIC.md`](ISOMETRIC.md) §3.
-- **Reuse** upright props (lamp/gate/bucket) as iso billboards — bottom-centre on the
+- **Reuse** upright props (the lamp today) as iso billboards — bottom-centre on the
   diamond foot; an upright object reads correctly in any projection.
 - Depth is keyed by `projection.depthKey` (base tile `x+y`, height a tie-break) so
   back-edge railings draw behind avatars, front-edge in front.

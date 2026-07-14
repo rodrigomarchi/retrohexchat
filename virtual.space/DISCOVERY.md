@@ -77,8 +77,9 @@ Key visual facts (the ones that decide fidelity):
 7. 🟢 Diamond underside vs flat reddish block — intentional stylisation, keep.
 
 **Scene reads ~93–95% CT** (2026-07-11): warm lit cobble plaza, tall ornate iron
-railing on all four sides, lamp casting an aligned amber pool + bucket + nameplate,
-adrift in the rippling sea of time.
+railing on all four sides, lamp casting an aligned amber pool + the holographic
+nameplate, adrift in the rippling sea of time. (The bucket prop was cut
+2026-07-13 — the fence + lamp carry the read.)
 
 See [`ISOMETRIC.md`](ISOMETRIC.md) for how the scene is built and
 [`SCENES.md`](SCENES.md) for the scene catalogue.

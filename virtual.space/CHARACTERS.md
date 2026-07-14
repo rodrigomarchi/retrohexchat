@@ -14,7 +14,7 @@ avatar anymore.
 
 ## 1. What exists
 
-Players choose a character when they enter a channel's Space (a 4×2 picker).
+Players choose a character when they enter a Space — channel or DM (a 4×2 picker).
 The roster is **8 iso avatars**, all built by this pipeline:
 
 | id | role | sheet |

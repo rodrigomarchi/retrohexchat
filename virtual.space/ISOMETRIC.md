@@ -36,7 +36,7 @@ diamond is *purely* a rendering projection of that grid.
 
 ### The iso math (2:1 diamond, `IsoProjection`)
 ```
-hw = tile_w*scale/2 ; hh = tile_h*scale/2 ; zs = z_step*scale     # tile_w:tile_h = 2:1 (e.g. 64:32)
+hw = tile_w*scale/2 ; hh = tile_h*scale/2 ; zs = z_step*scale     # tile_w:tile_h from the art's native size (currently 48:20)
 footAnchor(tx,ty,h) = { x:(tx−ty)*hw + originX,  y:(tx+ty)*hh + originY − h*zs }   # diamond CENTRE (feet)
 floorAnchor(tx,ty)  = footAnchor − (hw,hh)                        # top-left of the TW×TH sprite box
 worldToTile(wx,wy)  : X=wx−originX, Y=wy−originY → tx=(X/hw+Y/hh)/2, ty=(Y/hh−X/hw)/2   # inverse, for hit/click
@@ -136,9 +136,9 @@ Free-standing upright props (lamp, corner post) stay billboards.
 
 **Validate at REAL scale — a zoomed offline preview LIES.** A 3× zoom on a tiny
 6×6 platform flatters a short/plain fence; on the real platform at game scale it
-reads tiny. Render the ACTUAL scene at the game scale (tiles ×2, avatar ×1) with
-an avatar in frame for proportion, or check in-app — height and ornament only read
-honestly against the avatar and the full floor.
+reads tiny. Render the ACTUAL scene at the game scale (scale 1 — tiles and
+avatar both native) with an avatar in frame for proportion, or check in-app —
+height and ornament only read honestly against the avatar and the full floor.
 
 ### Depth sorting (`renderer._drawDepthSorted`)
 Iso merges standing props, avatars and railings into one list keyed by
@@ -156,12 +156,14 @@ Squashing a 1:1 tile to 2:1 flattens the pixels and reads as junk up close. See 
 memory `no-aspect-ratio-deform`.
 
 What the PixelLab tools actually give (empirical):
-- **Floor diamond (2:1)**: `create_map_object` at an **exact 64×32** with "diamond
-  … fills the entire rhombus" → transparent corners + filled centre that
-  **tessellates seam-free**. `create_tiles_pro` isometric only yields ~1:1 (steep,
-  wrong for CT's flat 2:1) and ignores `tile_height`. "Bigger cobbles" prompts often
+- **Floor diamond (flat)**: `create_map_object` at an **exact flat canvas** with
+  "diamond … fills the entire rhombus" → transparent corners + filled centre that
+  **tessellates seam-free**. The shipped floors are **48×20 native** (the 64×32
+  calibration also worked); the projection reads `iso.tile_w/tile_h` from the
+  art's own size. `create_tiles_pro` isometric only yields ~1:1 (steep, wrong for
+  CT's flat look) and ignores `tile_height`. "Bigger cobbles" prompts often
   draw a smaller non-filling patch — keep the plain "round cobbles" one that fills.
-- **Upright props (lamp, bucket, gate)**: draw as iso **billboards** — an upright
+- **Upright props (e.g. the lamp)**: draw as iso **billboards** — an upright
   object reads correctly in any projection (bottom-centre on the diamond foot). No
   iso-specific art needed; regenerate only for cohesion.
 - **Railings**: DO generate, but as a **straight front-elevation strip + a post**
@@ -169,7 +171,8 @@ What the PixelLab tools actually give (empirical):
   NOT ask PixelLab for the whole iso-sloped fence — it can't tile a baked slope,
   and "fence" prompts drift into centred *gates*.
 - Author packs the floor at its **native** size (`author_scene.py` must NOT crop the
-  floor tile — the exact 64×32 must survive or tessellation seams appear).
+  floor tile — the exact native canvas (48×20 today) must survive or tessellation
+  seams appear).
 
 ---
 
@@ -191,7 +194,9 @@ What the PixelLab tools actually give (empirical):
 - Straight platform edges (rect/octagon), never a super-ellipse — else railings step.
 - Railing = geometric contour; free props = billboards.
 - Stars/flat-decor draw BEFORE the floor in iso (solid slab occludes them).
-- Never deform aspect ratio; regenerate native (2:1 floor via `create_map_object` 64×32).
+- Never deform aspect ratio; regenerate native (flat floor via `create_map_object`
+  at an exact flat canvas — shipped floors are 48×20; the projection reads the
+  ratio from the art).
 - Avatars are native **8-direction iso** sprites (feet on `footAnchor`), authored at
   scale 1 — the eight iso facings match the diamond (see [`CHARACTERS.md`](CHARACTERS.md)).
 - `make ci` "compile" flakiness = a stale dev-server `_build` lock; kill it.
@@ -199,7 +204,9 @@ What the PixelLab tools actually give (empirical):
 
 ## 7. Still open / future
 - Bigger cobbles (tool-limited via `create_map_object` — needs a real iso tileset
-  tool or hand-edit). Wooden door + stone stairs in the fence (CT has them).
+  tool or hand-edit). The wooden door was tried and **reverted** at the user's
+  call, and the stone stairs deliberately omitted ([`DISCOVERY.md`](DISCOVERY.md)
+  gap 3) — don't revisit either without an explicit ask.
 - **S-scroll filigree between posts**: PixelLab won't draw the scroll at fence
   scale (it returns a plain picket), so the ornament currently rides on the tall
   posts. A dedicated scroll-panel motif spliced into the picket would push closer
