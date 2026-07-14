@@ -136,6 +136,14 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
   defp codec_for(:audio), do: "opus"
   defp codec_for(:video), do: "vp8"
 
+  defp ice_candidate(seq \\ 1) do
+    %{
+      "candidate" => "candidate:#{seq} 1 udp 2122260223 127.0.0.1 #{54_320 + seq} typ host",
+      "sdpMid" => "0",
+      "sdpMLineIndex" => 0
+    }
+  end
+
   defp wait_until(fun, retries \\ 50) do
     case fun.() do
       true ->
@@ -275,11 +283,7 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
       ctx = create_call_with_member("icequeue", "member")
       payload = join_call(ctx)
 
-      candidate = %{
-        "candidate" => "candidate:1 1 udp 2122260223 127.0.0.1 54321 typ host",
-        "sdpMid" => "0",
-        "sdpMLineIndex" => 0
-      }
+      candidate = ice_candidate()
 
       assert :ok = GroupCall.add_ice_candidate(ctx.token, payload.participant.id, candidate)
 
@@ -293,6 +297,47 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
       end)
 
       assert [^candidate] = :sys.get_state(peer_pid).pending_remote_candidates
+    end
+
+    test "rejects ICE candidates that arrive after participant leave" do
+      ctx = create_call_with_member("icelate", "member")
+      payload = join_call(ctx)
+      participant_id = payload.participant.id
+
+      assert :ok = GroupCall.leave_call(ctx.token, participant_id, "left")
+
+      wait_until(fn ->
+        Registry.lookup_peer({:peer, ctx.room.id, participant_id}) == {:error, :not_found}
+      end)
+
+      assert {:error, :not_found} =
+               GroupCall.add_ice_candidate(ctx.token, participant_id, ice_candidate(2))
+    end
+
+    test "keeps ICE candidates queued while retry offer is still pending" do
+      ctx = create_call_with_member("icestale", "member")
+      payload = join_call(ctx)
+      participant_id = payload.participant.id
+      first_candidate = ice_candidate(1)
+      stale_candidate = ice_candidate(2)
+
+      assert :ok = GroupCall.add_ice_candidate(ctx.token, participant_id, first_candidate)
+      assert :ok = GroupCall.request_offer(ctx.token, participant_id)
+
+      assert_receive {:"$gen_cast",
+                      {:group_call_push, "group_call_offer", %{participant_id: ^participant_id}}},
+                     2_000
+
+      assert :ok = GroupCall.add_ice_candidate(ctx.token, participant_id, stale_candidate)
+
+      {:ok, peer_pid} = Registry.lookup_peer({:peer, ctx.room.id, participant_id})
+
+      wait_until(fn ->
+        case :sys.get_state(peer_pid).pending_remote_candidates do
+          [^stale_candidate, ^first_candidate] -> true
+          _other -> false
+        end
+      end)
     end
 
     test "request_offer sends a fresh ICE restart offer for retry" do
@@ -374,6 +419,37 @@ defmodule RetroHexChat.GroupCall.RuntimeTest do
 
       wait_until(fn -> Queries.get_room(ctx.room.id).status == "closed" end)
       assert Queries.get_room(ctx.room.id).status == "closed"
+    end
+
+    test "preserves track metadata supplied with immediate track announcement" do
+      ctx = create_call_with_member("trackmeta", "member")
+      late = create_registered_nick(unique_nick("late"))
+      payload = join_call(ctx)
+      metadata = %{"label" => "updatedMetadataOnStart", "role" => "presenter"}
+
+      {:ok, room_pid} = Registry.lookup_room({:room, ctx.token})
+
+      :ok =
+        RoomServer.track_added(room_pid, payload.participant.id, %{
+          kind: :video,
+          webrtc_track_id: "video-#{uid()}",
+          stream_id: "stream-#{uid()}",
+          codec: "vp8",
+          metadata: metadata
+        })
+
+      assert_receive {:"$gen_cast",
+                      {:group_call_push, "group_call_track_added",
+                       %{track: %{id: track_id, metadata: ^metadata}}}},
+                     2_000
+
+      assert Queries.get_track(track_id).metadata == metadata
+
+      {:ok, _state} = Server.join(ctx.channel, late.nickname, nil, identified: true)
+      _late_payload = join_call(ctx, late)
+
+      assert {:ok, %{tracks: tracks}} = GroupCall.get_summary(ctx.token)
+      assert Enum.any?(tracks, &(&1.id == track_id and &1.metadata == metadata))
     end
 
     test "updates the active video track source during screen share lifecycle" do

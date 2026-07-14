@@ -15,9 +15,9 @@
 | P0.3 | Churn longo de join/leave/rejoin | CONCLUIDA (2026-07-14) |
 | P1.1 | RTP impairment: buracos, duplicados, reorder e burst irregular | CONCLUIDA (2026-07-14) |
 | P1.2 | Stats ponta a ponta | CONCLUIDA (2026-07-14) |
-| P1.3 | ICE candidate stale/late durante leave e restart | PENDENTE |
-| P2.1 | Metadata de track imediatamente apos adicionar track | PENDENTE |
-| P2.2 | Browser-real smoke script | PENDENTE |
+| P1.3 | ICE candidate stale/late durante leave e restart | CONCLUIDA (2026-07-14) |
+| P2.1 | Metadata de track imediatamente apos adicionar track | CONCLUIDA (2026-07-14) |
+| P2.2 | Browser-real smoke script | CONCLUIDA (2026-07-14) |
 | P3.1 | Simulcast/RID | ADIADO - depende de feature |
 
 ## Execucao
@@ -278,6 +278,80 @@
   - `rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs`: 4 testes, 0 falhas.
 - Proximo bloco: P1.3 ICE candidate stale/late durante leave e restart.
 
+### 2026-07-14 - P1.3 ICE stale/late concluido
+
+- Referencias/implementacoes lidas:
+  - `/Users/rodrigo/src/elixir-webrtc-apps/nexus/assets/js/home.js`;
+  - `/Users/rodrigo/src/elixir-webrtc-apps/nexus/lib/nexus/peer.ex`;
+  - `apps/retro_hex_chat/lib/retro_hex_chat/group_call/peer_server.ex`;
+  - `apps/retro_hex_chat/lib/retro_hex_chat/group_call/room_server.ex`;
+  - `apps/retro_hex_chat_web/lib/retro_hex_chat_web/channels/group_call_channel.ex`.
+- Testes adicionados:
+  - `rejects ICE candidates that arrive after participant leave`;
+  - `keeps ICE candidates queued while retry offer is still pending`.
+- Resultado:
+  - nenhum bug novo no runtime; o comportamento atual ja rejeitava candidato
+    depois de leave com `{:error, :not_found}` e mantinha candidato na fila
+    enquanto havia offer pendente.
+- Aprendizado:
+  - sem identificador de geracao de offer no protocolo atual, o contrato seguro
+    e nao corromper signaling state: candidato em `have_local_offer` fica
+    enfileirado; candidato sem peer vivo e rejeitado.
+
+### 2026-07-14 - P2.1 metadata imediata de track concluido
+
+- Referencias/implementacoes lidas:
+  - `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/integration_test/test_videoroom/test/integration/metadata_test.exs`;
+  - `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/integration_test/test_videoroom/assets/src/room.ts`;
+  - `apps/retro_hex_chat/lib/retro_hex_chat/group_call/room_server.ex`;
+  - `apps/retro_hex_chat/lib/retro_hex_chat/group_call/schema/track.ex`.
+- Teste adicionado:
+  - `preserves track metadata supplied with immediate track announcement`.
+- Falha antes do fix:
+  - evento `group_call_track_added` trazia track sem metadata;
+  - `RoomServer.track_added/3` montava attrs sem `track_info.metadata`.
+- Correcao aplicada:
+  - metadata inicial da track e persistida quando `track_info.metadata` e mapa;
+  - `track_payload/1` inclui `metadata`, entao eventos e summaries ativos
+    carregam o estado final;
+  - participante que entra depois recebe a metadata via `GroupCall.get_summary/1`.
+- Verificacoes:
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs`: 22 testes, 0 falhas antes de P2.1; depois P2.1 isolado passou;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs apps/retro_hex_chat/test/retro_hex_chat/group_call/rtp_forwarder_test.exs`: 41 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs`: 4 testes, 0 falhas;
+  - `rtk npm test -- test/hooks/group_call/group_call_webrtc_hook.test.js`: 28 testes, 0 falhas.
+- Verificacao final ampla deste bloco:
+  - `rtk mix test`: `retro_hex_chat` com 15 properties, 2725 testes, 0 falhas;
+    `retro_hex_chat_web` com 770 testes, 0 falhas;
+  - `rtk npm test`: 137 arquivos, 3845 testes, 0 falhas.
+
+### 2026-07-14 - P2.2 browser-real smoke concluido
+
+- Correcao do mapeamento:
+  - o repo ja tem Playwright em `e2e/`;
+  - portanto o smoke browser-real nao precisa nascer como script separado para
+    o fluxo local, pode ser uma extensao do spec de conferencia existente.
+- Implementacao:
+  - `e2e/tests/chat-group-call.spec.ts` ganhou snapshot de video remoto usando
+    `HTMLVideoElement.getVideoPlaybackQuality().totalVideoFrames`, com fallback
+    para contadores equivalentes do browser;
+  - o teste
+    `two identified channel users join the same SFU call and exchange decoded video frames`
+    agora exige track remota `live`, dimensoes de video carregadas, frames
+    decodificados crescendo e video nao pausado nos dois lados;
+  - isso valida cliente JavaScript real, Chromium, fake media, SFU local,
+    renderizacao de `<video>` e janela de stats no mesmo fluxo.
+- Resultado:
+  - nao expôs bug novo;
+  - fechou a lacuna que o harness Elixir nao cobre: a possibilidade de track
+    remota viva, mas renderizacao/decodificacao travando no cliente real.
+- Verificacao:
+  - `rtk mix format apps/retro_hex_chat/lib/retro_hex_chat/group_call/room_server.ex apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs`: ok;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs apps/retro_hex_chat/test/retro_hex_chat/group_call/rtp_forwarder_test.exs`: 41 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs`: 4 testes, 0 falhas;
+  - `rtk npm test -- test/hooks/group_call/group_call_webrtc_hook.test.js` em `apps/retro_hex_chat_web/assets`: 28 testes, 0 falhas;
+  - `rtk npm test -- --grep "two identified channel users join the same SFU call and exchange decoded video frames"` em `e2e/`: 1 teste, 0 falhas.
+
 ## Aprendizados consolidados
 
 - O harness headless com `ExWebRTC` e suficiente para expor bugs de
@@ -303,6 +377,9 @@
 - Referencia de munger importa para testes de rede ruim: o caminho puro deve
   validar numeros originais; o caminho SFU real pode reescrever sequencias e
   deve ser validado por entrega, unicidade e deltas de stats.
+- Para o sintoma "vejo so alguns frames remotos", uma assercao de track `live`
+  e insuficiente; o smoke browser-real precisa observar frames decodificados
+  crescendo no elemento de video.
 
 ## Comandos de verificacao por bloco
 

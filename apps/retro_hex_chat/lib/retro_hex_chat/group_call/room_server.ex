@@ -1008,6 +1008,7 @@ defmodule RetroHexChat.GroupCall.RoomServer do
           stream_id: track_info.stream_id,
           status: "active",
           codec: track_info.codec,
+          metadata: track_metadata(track_info),
           announced_at: now,
           activated_at: now
         }
@@ -1578,6 +1579,9 @@ defmodule RetroHexChat.GroupCall.RoomServer do
   defp existing_metadata(%{metadata: metadata}) when is_map(metadata), do: metadata
   defp existing_metadata(_track), do: %{}
 
+  defp track_metadata(%{metadata: metadata}) when is_map(metadata), do: metadata
+  defp track_metadata(_track_info), do: %{}
+
   defp broadcast_channel_call_ended(room, reason) do
     Phoenix.PubSub.broadcast(@pubsub, "channel:#{room.channel_name}", {
       :group_call_ended,
@@ -2144,7 +2148,8 @@ defmodule RetroHexChat.GroupCall.RoomServer do
       source: track.source,
       status: track.status,
       webrtc_track_id: track.webrtc_track_id,
-      stream_id: track.stream_id
+      stream_id: track.stream_id,
+      metadata: existing_metadata(track)
     }
   end
 

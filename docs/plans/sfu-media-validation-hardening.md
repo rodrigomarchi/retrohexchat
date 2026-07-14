@@ -8,13 +8,14 @@
 
 ## Resultado atual
 
-Tres problemas reais ja foram expostos pela bateria headless:
+Quatro problemas reais ja foram expostos pela bateria headless:
 
 | Problema | Evidencia | Correcao |
 |---|---|---|
 | PLI do subscriber nao chegava ao publisher correto | Teste `routes subscriber PLI feedback to the video publisher` falhava antes do fix | Commit `e26071ed Fix SFU keyframe request routing` |
 | Joins concorrentes podiam duplicar transceivers `sendonly` para o mesmo peer | Teste de 4 participantes concorrentes mostrou forma de transceiver maior que o esperado | Commit `594e3b43 Stress SFU media negotiation edge cases` |
 | Pacotes RTP atrasados que preenchiam gaps pequenos eram descartados | Testes `forwards late packets that fill small sequence gaps once` e `keeps gap cache across RTP sequence rollover` falharam antes do fix | `RTPForwarder` agora mantem cache curta de gaps por midia |
+| Metadata inicial de track era descartada | Teste `preserves track metadata supplied with immediate track announcement` falhava antes do fix | `RoomServer.track_added/3` persiste e publica `track_info.metadata` |
 
 O harness atual fica em:
 
@@ -24,6 +25,7 @@ O harness atual fica em:
 | `apps/retro_hex_chat/test/retro_hex_chat/group_call/rtp_forwarder_test.exs` | Regras puras de RTP forwarding, duplicados e rollover |
 | `apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs` | Lifecycle de room/participant/track, policy, reconnect, moderacao e metadata |
 | `apps/retro_hex_chat_web/assets/test/hooks/group_call/group_call_webrtc_hook.test.js` | Comportamento do hook de browser sem midia real |
+| `e2e/tests/chat-group-call.spec.ts` | Smoke browser-real com cliente JavaScript, Chromium, SFU local e frames remotos decodificados |
 
 ## Camadas de cobertura
 
@@ -64,6 +66,9 @@ sem depender de browser, DOM, permissoes de device, autoplay ou renderizacao.
 | Churn join/leave/rejoin | `basic_test.exs`, Nexus `Room`/`Peer` | `keeps media and transceivers coherent through join leave and rejoin churn` | Backend/SFU | Concluido |
 | RTP gaps/duplicados/reorder | Fishjam `RTPMunger`, `containerised_test.exs` | `RTPForwarderTest`; `keeps forwarding video RTP through gaps duplicates and reorder` | Backend/SFU | Concluido; expôs cache de gaps ausente |
 | Server RTP stats por delta | Fishjam/browser stats, live_ex_webrtc `processStats` | `reports monotonic server RTP stats while video flows` | Backend/SFU stats | Concluido |
+| ICE late/stale | Nexus ICE flow, Retro queue before answer | `rejects ICE candidates that arrive after participant leave`; `keeps ICE candidates queued while retry offer is still pending` | Backend/protocolo | Concluido |
+| Metadata imediata de track | Fishjam `metadata_test.exs` | `preserves track metadata supplied with immediate track announcement` | Backend/summary consumido pelo JS | Concluido; expôs metadata inicial descartada |
+| Browser-real com frames decodificados | `headless_client.js`, Playwright fake media | `two identified channel users join the same SFU call and exchange decoded video frames` | Cliente JS real + SFU | Concluido; nao expôs bug novo |
 | Participante sai e rotas restantes seguem vivas | `basic_test.exs` leave gradual | `keeps remaining media routes healthy after a participant leaves` | Backend/SFU | Concluido |
 | Offer/ICE restart explicito | Nexus ICE restart pattern | `keeps media alive after an explicit offer request with ICE restart` | Backend/SFU | Concluido |
 
@@ -270,7 +275,7 @@ Resultado:
   das referencias browser-side que calculam bitrate/loss por diferenca entre
   amostras.
 
-### P1. ICE candidate stale/late durante leave e restart
+### P1. ICE candidate stale/late durante leave e restart - concluido em 2026-07-14
 
 Referencia:
 
@@ -295,7 +300,15 @@ Implementacao sugerida:
 - Parte fica em `runtime_test.exs`.
 - Parte pode ficar no `SyntheticPeer`, enviando candidate atrasado apos `leave`.
 
-### P2. Metadata de track imediatamente apos adicionar track
+Resultado:
+
+- Adicionados testes de runtime para candidato depois de `leave` e candidato
+  chegando enquanto retry offer ainda esta pendente.
+- O comportamento atual ja era seguro: candidato depois de leave retorna
+  `{:error, :not_found}` e candidato durante offer pendente permanece na fila.
+- O bloco virou cobertura de regressao do contrato do dominio/canal.
+
+### P2. Metadata de track imediatamente apos adicionar track - concluido em 2026-07-14
 
 Referencia:
 
@@ -317,11 +330,40 @@ Implementacao sugerida:
 - `runtime_test.exs` para estado persistido.
 - Channel test para evento consolidado.
 
-### P2. Browser-real smoke script e paridade do cliente JS
+Resultado:
+
+- Bug exposto: `RoomServer.track_added/3` ignorava `track_info.metadata`.
+- Fix: metadata inicial da track agora e persistida, emitida no
+  `group_call_track_added` e incluida no summary ativo da sala.
+- Validado que um participante que entra depois ve a track com metadata final
+  via `GroupCall.get_summary/1`.
+
+### P2. Browser-real smoke script e paridade do cliente JS - concluido em 2026-07-14
 
 Referencia:
 
 - `/Users/rodrigo/src/elixir-webrtc-apps/broadcaster/headless_client.js`
+- `e2e/helpers/syntheticMedia.ts`
+- `e2e/tests/chat-group-call.spec.ts`
+
+Resultado:
+
+- Teste unitario do hook JS foi executado:
+  `rtk npm test -- test/hooks/group_call/group_call_webrtc_hook.test.js`
+  com 28 testes passando.
+- O smoke browser-real foi implementado no Playwright existente:
+  `two identified channel users join the same SFU call and exchange decoded video frames`.
+- O teste sobe o app em `MIX_ENV=e2e`, cria dois Chromiums com fake media,
+  entra na chamada SFU real e exige:
+  - track remota `live`;
+  - dimensoes de video carregadas;
+  - contador de frames decodificados crescendo nos dois lados;
+  - janela de stats do cliente ainda consumindo dados do backend.
+- Nao entrou no gate rapido; e um smoke sob demanda para diagnostico/regressao
+  de alto nivel.
+- Rodado com:
+  `rtk npm test -- --grep "two identified channel users join the same SFU call and exchange decoded video frames"`
+  em `e2e/`: 1 teste, 0 falhas.
 
 O que testar:
 
@@ -337,12 +379,16 @@ Aceite:
 - Nao entra no gate rapido do `mix test`.
 - Rodavel sob demanda para validar decode/render real, quando o headless BEAM
   nao for suficiente.
+- Frames remotos decodificados crescem em ambos os lados; uma track apenas
+  `live` nao basta como prova de render continuo.
 
 Implementacao sugerida:
 
-- `scripts/group_call_sfu_probe.mjs`.
-- Parametros por env: `BASE_URL`, `CHANNEL`, `USERS`, `DURATION_MS`.
-- Usar fake device/fake UI quando browser suportar.
+- Manter o smoke no Playwright E2E existente enquanto ele precisar login/UI
+  reais do produto.
+- Se for necessario rodar contra ambiente remoto sem fluxo de UI, criar depois
+  um `scripts/group_call_sfu_probe.mjs` com `BASE_URL`, `CHANNEL`, `USERS` e
+  `DURATION_MS`, reaproveitando os mesmos criterios de frame/stats.
 
 ### P3. Simulcast/RID
 

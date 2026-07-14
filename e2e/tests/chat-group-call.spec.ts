@@ -206,6 +206,16 @@ function remoteVideoTile(page: Page) {
 const remoteTileVideoSelector =
   '[data-group-call-video-tile][data-local="false"] video';
 
+type RemoteVideoPlaybackSnapshot = {
+  frameCount: number;
+  currentTimeMs: number;
+  paused: boolean;
+  readyState: number;
+  trackReadyState: string | null;
+  videoHeight: number;
+  videoWidth: number;
+};
+
 async function remoteVideoLive(page: Page) {
   return page.evaluate((selector) => {
     const videos = Array.from(
@@ -219,6 +229,83 @@ async function remoteVideoLive(page: Page) {
       return !!track && track.readyState === "live";
     });
   }, remoteTileVideoSelector);
+}
+
+async function remoteVideoPlaybackSnapshot(
+  page: Page,
+): Promise<RemoteVideoPlaybackSnapshot | null> {
+  return page.evaluate((selector) => {
+    const videos = Array.from(
+      document.querySelectorAll<HTMLVideoElement>(selector),
+    );
+
+    const snapshots = videos
+      .map((video) => {
+        const stream = video.srcObject as MediaStream | null;
+        const track = stream?.getVideoTracks()[0] || null;
+        const videoWithCounters = video as HTMLVideoElement & {
+          mozDecodedFrames?: number;
+          webkitDecodedFrameCount?: number;
+        };
+        const quality = video.getVideoPlaybackQuality?.();
+        const frameCount = Math.max(
+          Number(quality?.totalVideoFrames || 0),
+          Number(videoWithCounters.webkitDecodedFrameCount || 0),
+          Number(videoWithCounters.mozDecodedFrames || 0),
+        );
+
+        return {
+          frameCount,
+          currentTimeMs: Math.round(video.currentTime * 1000),
+          paused: video.paused,
+          readyState: video.readyState,
+          trackReadyState: track?.readyState || null,
+          videoHeight: video.videoHeight,
+          videoWidth: video.videoWidth,
+        };
+      })
+      .filter((snapshot) => snapshot.trackReadyState === "live")
+      .sort((a, b) => b.frameCount - a.frameCount);
+
+    return snapshots[0] || null;
+  }, remoteTileVideoSelector);
+}
+
+async function expectRemoteVideoFramesToAdvance(page: Page, label: string) {
+  let baseline: RemoteVideoPlaybackSnapshot | null = null;
+
+  await expect
+    .poll(
+      async () => {
+        baseline = await remoteVideoPlaybackSnapshot(page);
+
+        return (
+          !!baseline &&
+          baseline.trackReadyState === "live" &&
+          baseline.videoWidth > 0 &&
+          baseline.videoHeight > 0
+        );
+      },
+      { timeout: 30_000 },
+    )
+    .toBe(true);
+
+  const baselineFrameCount = baseline?.frameCount || 0;
+
+  await expect
+    .poll(
+      async () => {
+        const current = await remoteVideoPlaybackSnapshot(page);
+        if (!current || current.trackReadyState !== "live") return -1;
+
+        return current.frameCount - baselineFrameCount;
+      },
+      { intervals: [500, 1_000, 2_000], timeout: 15_000 },
+    )
+    .toBeGreaterThanOrEqual(3);
+
+  const current = await remoteVideoPlaybackSnapshot(page);
+  expect(current?.paused, `${label} remote video is paused`).toBe(false);
 }
 
 async function remoteVideoIdentity(page: Page) {
@@ -596,7 +683,7 @@ test.describe("Channel group calls", () => {
     }
   });
 
-  test("two identified channel users join the same SFU call and exchange video", async ({
+  test("two identified channel users join the same SFU call and exchange decoded video frames", async ({
     browser,
   }) => {
     const alice = await newGroupCallUser(browser, "gca");
@@ -640,6 +727,8 @@ test.describe("Channel group calls", () => {
       await expect
         .poll(() => remoteVideoLive(bob.page), { timeout: 30_000 })
         .toBe(true);
+      await expectRemoteVideoFramesToAdvance(alice.page, "Alice");
+      await expectRemoteVideoFramesToAdvance(bob.page, "Bob");
 
       await expect(
         alice.page.getByTestId("group-call-participants"),
