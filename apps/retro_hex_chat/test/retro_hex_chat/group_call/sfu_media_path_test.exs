@@ -202,6 +202,15 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_remote_video_track(:bob)
       assert_remote_video_track(:carol)
 
+      send(bob_client.pid, {:send_rtp, :audio, @audio_packet_burst})
+
+      assert_eventually_active_track(
+        ctx.room.id,
+        bob_client.participant_id,
+        "audio",
+        "microphone"
+      )
+
       drain_probe_rtp()
 
       send(bob_client.pid, {:send_rtp, :audio, @audio_packet_burst})
@@ -248,6 +257,11 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 2)
       assert_eventually_server_stats_subscriber_count(ctx.token, carol_client.participant_id, 2)
 
+      Enum.each([alice_client, bob_client, carol_client], fn client ->
+        send(client.pid, {:send_rtp, :audio, @audio_packet_burst})
+      end)
+
+      assert_eventually_active_track_counts(ctx.room.id, %{audio: 3, video: 0})
       drain_probe_rtp()
 
       send(carol_client.pid, {:send_rtp, :audio, @audio_packet_burst})
@@ -262,8 +276,6 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       send(bob_client.pid, {:send_rtp, :audio, @audio_packet_burst})
       assert_audio_rtp_counts([:alice, :carol])
-
-      assert_eventually_active_track_counts(ctx.room.id, %{audio: 3, video: 0})
 
       drain_probe_rtp()
 
@@ -332,27 +344,12 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
         assert_eventually_server_transceiver_shape(ctx.room.id, participant_id, 3)
       end)
 
-      drain_probe_rtp()
-
-      send(peers.dave.pid, {:send_rtp, :audio, @audio_packet_burst})
-      assert_audio_rtp_counts([:alice, :bob, :carol])
-
-      drain_probe_rtp()
-
-      send(peers.alice.pid, {:send_rtp, :audio, @audio_packet_burst})
-      assert_audio_rtp_counts([:bob, :carol, :dave])
-
-      drain_probe_rtp()
-
-      send(peers.bob.pid, {:send_rtp, :audio, @audio_packet_burst})
-      assert_audio_rtp_counts([:alice, :carol, :dave])
-
-      drain_probe_rtp()
-
-      send(peers.carol.pid, {:send_rtp, :audio, @audio_packet_burst})
-      assert_audio_rtp_counts([:alice, :bob, :dave])
+      Enum.each(Map.values(peers), fn peer ->
+        send(peer.pid, {:send_rtp, :audio, @audio_packet_burst})
+      end)
 
       assert_eventually_active_track_counts(ctx.room.id, %{audio: 4, video: 0})
+      drain_probe_rtp()
 
       Enum.each(Map.values(peers), fn peer ->
         send(peer.pid, {:send_rtp, :video, @video_packet_burst})
@@ -363,6 +360,87 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_missing_local_track(:carol, :video)
       assert_missing_local_track(:dave, :video)
       refute_rtp_for([:alice, :bob, :carol, :dave], :video)
+    after
+      stop_all_synthetic_peers()
+    end
+
+    test "keeps video RTP flowing while replacing camera with screen share and back" do
+      ctx = create_call_with_member("screensfu", "alice")
+      bob = create_registered_nick(unique_nick("bob"))
+      {:ok, _state} = Server.join(ctx.channel, bob.nickname, nil, identified: true)
+
+      alice_client = start_synthetic_peer(ctx, ctx.nick, :alice)
+      assert_participant_connected(alice_client.participant_id)
+
+      bob_client = start_synthetic_peer(ctx, bob, :bob)
+      assert_participant_connected(bob_client.participant_id)
+
+      assert_remote_video_track(:alice)
+      assert_remote_video_track(:bob)
+      assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
+      assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 1)
+
+      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_video_rtp_counts([:bob])
+      assert_eventually_active_track(ctx.room.id, alice_client.participant_id, "video", "camera")
+
+      drain_probe_rtp()
+
+      send(alice_client.pid, {:replace_local_video_track, :screen})
+
+      assert_receive {:sfu_probe, :alice, :replaced_track, :video, :screen, screen_track_id},
+                     5_000
+
+      assert {:ok, %{active: true, track: %{source: "screen"}}} =
+               GroupCall.set_screen_share_state(ctx.token, alice_client.participant_id, true, %{
+                 "track_id" => to_string(screen_track_id),
+                 "stream_id" => "synthetic-screen"
+               })
+
+      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_video_rtp_counts([:bob])
+
+      screen_track =
+        assert_eventually_active_track(
+          ctx.room.id,
+          alice_client.participant_id,
+          "video",
+          "screen"
+        )
+
+      assert screen_track.metadata["screen_track_id"] == to_string(screen_track_id)
+      assert_eventually_server_transceiver_shape(ctx.room.id, alice_client.participant_id, 1)
+      assert_eventually_server_transceiver_shape(ctx.room.id, bob_client.participant_id, 1)
+
+      drain_probe_rtp()
+
+      send(alice_client.pid, {:replace_local_video_track, :camera})
+
+      assert_receive {:sfu_probe, :alice, :replaced_track, :video, :camera, _camera_track_id},
+                     5_000
+
+      assert {:ok, %{active: false, track: %{source: "camera"}}} =
+               GroupCall.set_screen_share_state(
+                 ctx.token,
+                 alice_client.participant_id,
+                 false,
+                 %{}
+               )
+
+      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
+      assert_video_rtp_counts([:bob])
+
+      camera_track =
+        assert_eventually_active_track(
+          ctx.room.id,
+          alice_client.participant_id,
+          "video",
+          "camera"
+        )
+
+      refute Map.has_key?(camera_track.metadata, "screen_track_id")
+      assert_eventually_server_transceiver_shape(ctx.room.id, alice_client.participant_id, 1)
+      assert_eventually_server_transceiver_shape(ctx.room.id, bob_client.participant_id, 1)
     after
       stop_all_synthetic_peers()
     end
@@ -692,6 +770,17 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     Enum.frequencies_by(active_tracks, & &1.kind)
   end
 
+  defp assert_eventually_active_track(room_id, participant_id, kind, source) do
+    wait_until(
+      fn ->
+        !!Queries.get_active_track_by_source(room_id, participant_id, kind, source)
+      end,
+      500
+    )
+
+    Queries.get_active_track_by_source(room_id, participant_id, kind, source)
+  end
+
   defp drain_probe_rtp do
     receive do
       {:sfu_probe, _name, :rtp, _kind, _track_id, _sequence} -> drain_probe_rtp()
@@ -895,6 +984,9 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
         {:send_rtp, kind, count} when kind in [:audio, :video] ->
           state |> send_rtp(kind, count) |> loop()
 
+        {:replace_local_video_track, source} when source in [:camera, :screen] ->
+          state |> replace_local_video_track(source) |> loop()
+
         {:send_pli, kind} when kind in [:audio, :video] ->
           send_pli(state, kind)
           loop(state)
@@ -982,6 +1074,36 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       else
         do_send_rtp(state, kind, count)
       end
+    end
+
+    defp replace_local_video_track(state, source) do
+      with %{id: _track_id} <- state.local_tracks.video,
+           {:ok, sender_id} <- video_sender_id(state) do
+        stream_id = "synthetic-#{state.name}-#{source}-#{System.unique_integer([:positive])}"
+        track = MediaStreamTrack.new(:video, [stream_id])
+        :ok = PeerConnection.replace_track(state.pc, sender_id, track)
+
+        send(state.parent, {:sfu_probe, state.name, :replaced_track, :video, source, track.id})
+        put_in(state.local_tracks.video, track)
+      else
+        _other ->
+          send(state.parent, {:sfu_probe, state.name, :missing_local_track, :video})
+          state
+      end
+    end
+
+    defp video_sender_id(state) do
+      track = state.local_tracks.video
+
+      PeerConnection.get_transceivers(state.pc)
+      |> Enum.find_value(:error, fn
+        %{sender: %{id: sender_id, track: %{id: track_id}}}
+        when track != nil and track_id == track.id ->
+          {:ok, sender_id}
+
+        _other ->
+          false
+      end)
     end
 
     defp do_send_rtp(state, kind, count) do

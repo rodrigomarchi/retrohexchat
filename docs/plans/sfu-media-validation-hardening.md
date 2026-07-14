@@ -47,6 +47,7 @@ O harness atual fica em:
 | Quatro participantes entram ao mesmo tempo | `basic_test.exs` all-at-once | `keeps the transceiver graph sane when four participants join concurrently` | Concluido para sinalizacao/topologia |
 | Um participante sem camera | `basic_test.exs` mixed devices | `keeps video routes healthy when one participant joins without camera` | Concluido |
 | Todos audio-only, gradual e concorrente | `no_video_test.exs` | `keeps audio-only routes healthy when participants gradually join and leave`; `keeps audio-only routing sane when four participants join concurrently` | Concluido; expôs normalizacao de IDs de track |
+| Camera -> screen share -> camera | `metadata_test.exs`, hook `replaceTrack`, ExWebRTC `replace_track/3` | `keeps video RTP flowing while replacing camera with screen share and back` | Concluido |
 | Participante sai e rotas restantes seguem vivas | `basic_test.exs` leave gradual | `keeps remaining media routes healthy after a participant leaves` | Concluido |
 | Offer/ICE restart explicito | Nexus ICE restart pattern | `keeps media alive after an explicit offer request with ICE restart` | Concluido |
 
@@ -90,7 +91,7 @@ Resultado:
 - Fix: `PeerServer` normaliza `webrtc_track_id` e `stream_id` para string no
   payload enviado ao `RoomServer`, mantendo o ID bruto no caminho RTP.
 
-### P0. Camera -> screen share -> camera mantendo RTP
+### P0. Camera -> screen share -> camera mantendo RTP - concluido em 2026-07-14
 
 Referencia:
 
@@ -121,6 +122,14 @@ Implementacao sugerida:
 - Criar novo `MediaStreamTrack.new(:video, [stream_id])`, substituir no sender
   de video e continuar sequencia RTP.
 - Chamar `GroupCall.set_screen_share_state/4` no teste para validar metadata.
+
+Resultado:
+
+- Implementado com `PeerConnection.replace_track/3`, seguindo o comportamento
+  do hook browser que usa `sender.replaceTrack(track)`.
+- Validado RTP de video antes, durante e depois do screen share.
+- Validado `camera -> screen -> camera` no `RoomServer`, metadata de screen e
+  ausencia de transceivers extras.
 
 ### P0. Churn longo de join/leave/rejoin
 
@@ -303,11 +312,14 @@ O que testar quando existir suporte:
 Para cada item do backlog:
 
 1. Ler a referencia local indicada.
-2. Escrever ou ampliar teste menor que exponha o risco no Retro.
-3. Rodar o teste antes do fix quando possivel e registrar a falha no comentario
+2. Ler a implementacao correspondente na referencia, nao apenas o teste.
+3. Registrar no progresso qual padrao sera copiado/adaptado e qual padrao nao
+   sera usado.
+4. Escrever ou ampliar teste menor que exponha o risco no Retro.
+5. Rodar o teste antes do fix quando possivel e registrar a falha no comentario
    de progresso.
-4. Corrigir o menor ponto necessario no runtime.
-5. Rodar:
+6. Corrigir o menor ponto necessario no runtime.
+7. Rodar:
 
 ```bash
 rtk mix format <arquivos alterados>
@@ -317,9 +329,19 @@ rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs
 rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs
 ```
 
-6. Atualizar este documento: marcar status, escrever bug exposto ou justificar
+8. Atualizar este documento: marcar status, escrever bug exposto ou justificar
    por que o teste so aumentou cobertura.
-7. Fazer commit pequeno com teste + fix.
+9. Fazer commit pequeno com teste + fix.
+
+## Padroes de implementacao das referencias
+
+| Padrao | Referencia | Aplicacao no Retro |
+|---|---|---|
+| Encaminhar RTP somente depois de conhecer o track inbound | `elixir-webrtc-apps/nexus/lib/nexus/peer.ex` | Nao inferir tipo por payload como fallback generico; preferir preparar o teste/fluxo para esperar `:track` ou usar warmup |
+| Servidor prealoca transceivers outbound e assina peers apos answer | `elixir-webrtc-apps/nexus/lib/nexus/peer.ex` | Validar forma de transceivers e `subscriber_count` em joins concorrentes |
+| `replaceTrack` nao cria nova m-line | `apps/retro_hex_chat_web/assets/js/hooks/group_call/group_call_webrtc_hook.js` e `ex_webrtc/lib/ex_webrtc/peer_connection.ex` | Testar screen share via `PeerConnection.replace_track/3` no peer sintetico, mantendo transceiver shape |
+| Testes browser usam warmup antes de stats | `fishjam-cloud-membrane_rtc_engine/.../basic_test.exs` e `no_video_test.exs` | Em headless, usar priming de RTP antes de medir fanout quando a primeira rajada pode criar a track |
+| Metadata de track e evento de midia sao fluxos separados | `fishjam-cloud-membrane_rtc_engine/.../room.ts` e `metadata_test.exs` | Validar source/metadata pelo `RoomServer` e RTP pelo harness; nao misturar uma coisa como prova unica da outra |
 
 ## Ordem sugerida
 
