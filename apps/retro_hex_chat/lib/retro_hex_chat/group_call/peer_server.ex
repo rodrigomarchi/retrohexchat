@@ -192,6 +192,11 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     {:noreply, put_in(state.peer_tracks[participant_id], RTPForwarder.prepare(spec))}
   end
 
+  def handle_cast(:request_keyframe, state) do
+    request_keyframe_for_source(state)
+    {:noreply, state}
+  end
+
   def handle_cast({:peer_added, participant_id}, %{participant: %{id: participant_id}} = state) do
     {:noreply, state}
   end
@@ -306,11 +311,7 @@ defmodule RetroHexChat.GroupCall.PeerServer do
 
   def handle_info({:ex_webrtc, pc, {:rtcp, packets}}, %{pc: pc} = state) do
     Enum.each(packets, fn packet ->
-      if pli_feedback_packet?(packet) do
-        request_keyframe_for_source(state)
-      else
-        :ok
-      end
+      route_pli_feedback(state, packet)
     end)
 
     {:noreply, state}
@@ -462,10 +463,30 @@ defmodule RetroHexChat.GroupCall.PeerServer do
     end)
   end
 
-  defp pli_feedback_packet?({_track_id, %{__struct__: ExRTCP.Packet.PayloadFeedback.PLI}}),
-    do: true
+  defp route_pli_feedback(state, {track_id, %{__struct__: ExRTCP.Packet.PayloadFeedback.PLI}}) do
+    case publisher_for_outbound_video(state.outbound_tracks, track_id) do
+      {:ok, participant_id} ->
+        request_keyframe_from_publisher(state.room_id, participant_id)
 
-  defp pli_feedback_packet?(_packet), do: false
+      :error ->
+        request_keyframe_for_source(state)
+    end
+  end
+
+  defp route_pli_feedback(_state, _packet), do: :ok
+
+  defp publisher_for_outbound_video(outbound_tracks, track_id) do
+    Enum.find_value(outbound_tracks, :error, fn {participant_id, spec} ->
+      if spec.video == track_id, do: {:ok, participant_id}, else: false
+    end)
+  end
+
+  defp request_keyframe_from_publisher(room_id, participant_id) do
+    case Registry.lookup_peer({:peer, room_id, participant_id}) do
+      {:ok, pid} -> notify(pid, :request_keyframe)
+      {:error, :not_found} -> :ok
+    end
+  end
 
   defp request_keyframe_for_source(state) do
     if state.inbound_video_ready? and state.inbound_tracks.video do
