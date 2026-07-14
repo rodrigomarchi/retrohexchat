@@ -8,12 +8,13 @@
 
 ## Resultado atual
 
-Dois problemas reais ja foram expostos pela bateria headless:
+Tres problemas reais ja foram expostos pela bateria headless:
 
 | Problema | Evidencia | Correcao |
 |---|---|---|
 | PLI do subscriber nao chegava ao publisher correto | Teste `routes subscriber PLI feedback to the video publisher` falhava antes do fix | Commit `e26071ed Fix SFU keyframe request routing` |
 | Joins concorrentes podiam duplicar transceivers `sendonly` para o mesmo peer | Teste de 4 participantes concorrentes mostrou forma de transceiver maior que o esperado | Commit `594e3b43 Stress SFU media negotiation edge cases` |
+| Pacotes RTP atrasados que preenchiam gaps pequenos eram descartados | Testes `forwards late packets that fill small sequence gaps once` e `keeps gap cache across RTP sequence rollover` falharam antes do fix | `RTPForwarder` agora mantem cache curta de gaps por midia |
 
 O harness atual fica em:
 
@@ -61,6 +62,8 @@ sem depender de browser, DOM, permissoes de device, autoplay ou renderizacao.
 | Todos audio-only, gradual e concorrente | `no_video_test.exs` | `keeps audio-only routes healthy when participants gradually join and leave`; `keeps audio-only routing sane when four participants join concurrently` | Backend/SFU | Concluido; expôs normalizacao de IDs de track |
 | Camera -> screen share -> camera | `metadata_test.exs`, hook `replaceTrack`, ExWebRTC `replace_track/3` | `keeps video RTP flowing while replacing camera with screen share and back` | Backend/SFU com contrato usado pelo JS | Concluido |
 | Churn join/leave/rejoin | `basic_test.exs`, Nexus `Room`/`Peer` | `keeps media and transceivers coherent through join leave and rejoin churn` | Backend/SFU | Concluido |
+| RTP gaps/duplicados/reorder | Fishjam `RTPMunger`, `containerised_test.exs` | `RTPForwarderTest`; `keeps forwarding video RTP through gaps duplicates and reorder` | Backend/SFU | Concluido; expôs cache de gaps ausente |
+| Server RTP stats por delta | Fishjam/browser stats, live_ex_webrtc `processStats` | `reports monotonic server RTP stats while video flows` | Backend/SFU stats | Concluido |
 | Participante sai e rotas restantes seguem vivas | `basic_test.exs` leave gradual | `keeps remaining media routes healthy after a participant leaves` | Backend/SFU | Concluido |
 | Offer/ICE restart explicito | Nexus ICE restart pattern | `keeps media alive after an explicit offer request with ICE restart` | Backend/SFU | Concluido |
 
@@ -191,11 +194,13 @@ Resultado:
   graduais, seguindo o padrao das referencias que usam warmup antes de medir
   midia/stats.
 
-### P1. RTP impairment: buracos, duplicados, reorder e burst irregular
+### P1. RTP impairment: buracos, duplicados, reorder e burst irregular - concluido em 2026-07-14
 
 Referencia:
 
 - `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/integration_test/test_videoroom/test/integration/containerised_test.exs`
+- `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/lib/ex_webrtc/rtp_munger.ex`
+- `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/lib/ex_webrtc/rtp_munger/cache.ex`
 - `apps/retro_hex_chat/test/retro_hex_chat/group_call/rtp_forwarder_test.exs`
 
 O que testar:
@@ -218,7 +223,20 @@ Implementacao sugerida:
 - No media path, validar eventos de RTP recebidos pelos subscribers.
 - No `RTPForwarder`, manter testes puros para edge cases de sequencia.
 
-### P1. Stats ponta a ponta
+Resultado:
+
+- Adicionados testes puros para gap pequeno, duplicado e rollover.
+- Bug exposto: `RTPForwarder` descartava pacote atrasado que preenchia gap
+  pequeno, enquanto a referencia Fishjam guarda mapeamento de gaps para aceitar
+  esse pacote uma vez.
+- Fix: `RTPForwarder` mantem `missing_rtp_sequences` por kind, com janela curta
+  de 64 sequencias, aceita late gap uma vez, descarta duplicados/stale e limpa a
+  cache por janela.
+- Harness SFU passou a suportar envio de sequencias RTP explicitas para validar
+  o caminho real. Como o SFU reescreve sequencias para continuidade, o teste de
+  media path valida contagem/unicidade; o teste puro valida os numeros originais.
+
+### P1. Stats ponta a ponta - concluido em 2026-07-14
 
 Referencia:
 
@@ -242,6 +260,15 @@ Implementacao sugerida:
 
 - Criar helper `sample_server_rtp_stats(token, participant_id)`.
 - Comparar delta antes/depois de burst, sem depender de valor exato.
+
+Resultado:
+
+- Adicionado teste `reports monotonic server RTP stats while video flows`.
+- Validado que RTP recebido pelo publisher aumenta `inbound_rtp`, RTP enviado
+  ao subscriber aumenta `outbound_rtp` e os totais de sala crescem por delta.
+- O teste usa duas amostras sucessivas e exige monotonicidade, seguindo o estilo
+  das referencias browser-side que calculam bitrate/loss por diferenca entre
+  amostras.
 
 ### P1. ICE candidate stale/late durante leave e restart
 

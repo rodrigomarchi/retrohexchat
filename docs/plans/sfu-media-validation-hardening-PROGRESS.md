@@ -13,8 +13,8 @@
 | P0.1 | Todos audio-only | CONCLUIDA (2026-07-14) |
 | P0.2 | Camera -> screen share -> camera mantendo RTP | CONCLUIDA (2026-07-14) |
 | P0.3 | Churn longo de join/leave/rejoin | CONCLUIDA (2026-07-14) |
-| P1.1 | RTP impairment: buracos, duplicados, reorder e burst irregular | PENDENTE |
-| P1.2 | Stats ponta a ponta | PENDENTE |
+| P1.1 | RTP impairment: buracos, duplicados, reorder e burst irregular | CONCLUIDA (2026-07-14) |
+| P1.2 | Stats ponta a ponta | CONCLUIDA (2026-07-14) |
 | P1.3 | ICE candidate stale/late durante leave e restart | PENDENTE |
 | P2.1 | Metadata de track imediatamente apos adicionar track | PENDENTE |
 | P2.2 | Browser-real smoke script | PENDENTE |
@@ -198,6 +198,86 @@
     ou smoke browser-real complementares.
 - Proximo bloco: P1.1 RTP impairment.
 
+### 2026-07-14 - P1.1/P1.2 leitura de implementacao antes de continuar
+
+- Implementacoes e testes lidos antes de editar:
+  - `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/integration_test/test_videoroom/test/integration/containerised_test.exs`;
+  - `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/lib/ex_webrtc/rtp_munger.ex`;
+  - `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/lib/ex_webrtc/rtp_munger/cache.ex`;
+  - `/Users/rodrigo/src/fishjam-cloud-membrane_rtc_engine/ex_webrtc/integration_test/test_videoroom/assets/src/stats.ts`;
+  - `/Users/rodrigo/src/live_ex_webrtc/assets/publisher.js`;
+  - `apps/retro_hex_chat/lib/retro_hex_chat/group_call/rtp_forwarder.ex`;
+  - `apps/retro_hex_chat/lib/retro_hex_chat/group_call/peer_server.ex`;
+  - `apps/retro_hex_chat/lib/retro_hex_chat/group_call/room_server.ex`.
+- Padroes confirmados:
+  - Fishjam mede degradacao por stats/frames depois de warmup e compara deltas,
+    nao valores absolutos;
+  - Fishjam `RTPMunger` guarda cache curta de gaps para aceitar pacote
+    out-of-order que chega depois de um salto de sequencia;
+  - live_ex_webrtc calcula bitrate/loss por diferenca entre amostras de
+    `getStats()`;
+  - o Retro agrega `inbound_rtp`, `outbound_rtp` e totais server-side via
+    `PeerServer.stats/1` e `RoomServer.server_stats_payload/1`.
+- Decisao para P1:
+  - usar testes puros do `RTPForwarder` para validar numeros originais de
+    sequencia, duplicado e rollover;
+  - usar harness SFU para validar o caminho real, aceitando que o SFU reescreve
+    sequencias para continuidade;
+  - validar stats por crescimento/monotonicidade, nao por valor exato.
+
+### 2026-07-14 - P1.1 RTP impairment concluido
+
+- Testes adicionados em
+  `apps/retro_hex_chat/test/retro_hex_chat/group_call/rtp_forwarder_test.exs`:
+  - `forwards late packets that fill small sequence gaps once`;
+  - `keeps gap cache across RTP sequence rollover`.
+- Falha antes do fix:
+  - gap pequeno: esperado `[100, 102, 101, 103]`, recebido `[100, 102, 103]`;
+  - rollover: esperado `[65534, 1, 65535, 0, 2]`, recebido `[65534, 1, 2]`.
+- Correcao aplicada:
+  - `RTPForwarder` agora mantem `missing_rtp_sequences` por media kind;
+  - quando um pacote futuro abre gap pequeno, as sequencias ausentes entram em
+    uma cache de ate 64 posicoes;
+  - pacote atrasado que preenche gap e encaminhado uma vez;
+  - duplicados e pacotes stale continuam descartados;
+  - `reset_kind/2` limpa tambem a cache de gaps.
+- Teste SFU adicionado:
+  - `keeps forwarding video RTP through gaps duplicates and reorder`;
+  - o `SyntheticPeer` aceita `{:send_rtp_sequence, kind, sequences}`;
+  - 5 envios irregulares viram 4 pacotes unicos no subscriber, sem quinto
+    pacote duplicado.
+- Aprendizado:
+  - no caminho real, o SFU/munger reescreve sequencias para continuidade; por
+    isso o teste headless valida contagem/unicidade, enquanto o teste puro valida
+    os numeros originais.
+
+### 2026-07-14 - P1.2 stats ponta a ponta concluido
+
+- Teste adicionado em
+  `apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs`:
+  - `reports monotonic server RTP stats while video flows`.
+- O que valida:
+  - publisher envia video;
+  - subscriber recebe todos os pacotes esperados;
+  - `inbound_rtp.packets` do publisher cresce;
+  - `outbound_rtp.packets` do subscriber cresce;
+  - totais de sala `inbound_packets` e `outbound_packets` crescem;
+  - segunda amostra nao regride em relacao a primeira.
+- Ajustes de estabilidade relacionados:
+  - testes de join tardio e leave passaram a primar tracks antes de medir fanout,
+    alinhando o harness ao warmup das referencias;
+  - no leave, o peer que saiu agora e parado e o teste valida cleanup de
+    `PeerRegistry`, tracks ativas e shape dos peers vivos antes de medir RTP.
+- Verificacoes:
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/rtp_forwarder_test.exs`: 5 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs`: 13 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed 404725`: 13 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed 927311`: 13 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/sfu_media_path_test.exs --seed 731209`: 13 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat/test/retro_hex_chat/group_call/rtp_forwarder_test.exs apps/retro_hex_chat/test/retro_hex_chat/group_call/runtime_test.exs`: 25 testes, 0 falhas;
+  - `rtk mix test apps/retro_hex_chat_web/test/retro_hex_chat_web/channels/group_call_channel_test.exs`: 4 testes, 0 falhas.
+- Proximo bloco: P1.3 ICE candidate stale/late durante leave e restart.
+
 ## Aprendizados consolidados
 
 - O harness headless com `ExWebRTC` e suficiente para expor bugs de
@@ -220,6 +300,9 @@
 - Separar a matriz por camada evita conclusoes erradas: harness Elixir cobre
   media server/SFU e contrato de protocolo; cliente JavaScript real ainda
   precisa de paridade para `RTCPeerConnection`, hook, stats e render.
+- Referencia de munger importa para testes de rede ruim: o caminho puro deve
+  validar numeros originais; o caminho SFU real pode reescrever sequencias e
+  deve ser validado por entrega, unicidade e deltas de stats.
 
 ## Comandos de verificacao por bloco
 

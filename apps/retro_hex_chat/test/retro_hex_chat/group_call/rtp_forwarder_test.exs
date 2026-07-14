@@ -62,6 +62,30 @@ defmodule RetroHexChat.GroupCall.RTPForwarderTest do
     assert_receive {:forwarded, "audio-track", 0}
   end
 
+  test "forwards late packets that fill small sequence gaps once" do
+    spec = RTPForwarder.prepare(%{video: "video-track"})
+
+    {_spec, forwarded} = forward_sequences(spec, :video, [100, 102, 101, 101, 103])
+
+    assert forwarded == [100, 102, 101, 103]
+  end
+
+  test "keeps gap cache across RTP sequence rollover" do
+    spec = RTPForwarder.prepare(%{audio: "audio-track"})
+
+    {_spec, forwarded} =
+      forward_sequences(spec, :audio, [
+        @max_sequence - 1,
+        1,
+        @max_sequence,
+        0,
+        @max_sequence,
+        2
+      ])
+
+    assert forwarded == [@max_sequence - 1, 1, @max_sequence, 0, 2]
+  end
+
   defp packet(sequence_number) do
     Packet.new(<<1, 2, 3>>,
       payload_type: 96,
@@ -69,5 +93,26 @@ defmodule RetroHexChat.GroupCall.RTPForwarderTest do
       timestamp: sequence_number * 3_000,
       ssrc: 1234
     )
+  end
+
+  defp forward_sequences(spec, kind, sequences) do
+    owner = self()
+
+    spec =
+      Enum.reduce(sequences, spec, fn sequence, spec ->
+        RTPForwarder.forward(spec, kind, packet(sequence), fn _track_id, forwarded ->
+          send(owner, {:forwarded, forwarded.sequence_number})
+        end)
+      end)
+
+    {spec, collect_forwarded([])}
+  end
+
+  defp collect_forwarded(acc) do
+    receive do
+      {:forwarded, sequence} -> collect_forwarded([sequence | acc])
+    after
+      0 -> Enum.reverse(acc)
+    end
   end
 end
