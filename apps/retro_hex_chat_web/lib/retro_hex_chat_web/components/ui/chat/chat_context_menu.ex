@@ -52,6 +52,7 @@ defmodule RetroHexChatWeb.Components.UI.ChatContextMenu do
       y={@y}
       reposition
       class={@class}
+      on_close="close_chat_context_menu"
       {@rest}
     >
       <%= case @type do %>

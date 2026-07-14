@@ -54,6 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.ConversationsContextMenu do
       position="absolute"
       reposition
       class={@class}
+      on_close="close_conversations_context_menu"
       {@rest}
     >
       <%!-- Mark as Read --%>

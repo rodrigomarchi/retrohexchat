@@ -73,11 +73,14 @@ defmodule RetroHexChatWeb.Components.UI.Dialog do
           id={"#{@id}-wrap"}
           phx-window-keydown={!@lock && close_modal(@on_cancel, @id)}
           phx-key="escape"
-          phx-click-away={!@lock && close_modal(@on_cancel, @id)}
           class={classes(["w-full max-w-none md:max-w-lg p-0 md:p-4", @class])}
         >
           <%!-- Window frame (Win98 3D border) --%>
-          <div id={"#{@id}-surface"} class={scope_frame_classes(@scope)}>
+          <div
+            id={"#{@id}-surface"}
+            class={scope_frame_classes(@scope)}
+            phx-click-away={!@lock && close_modal(@on_cancel, @id)}
+          >
             {render_slot(@inner_block)}
           </div>
         </.focus_wrap>

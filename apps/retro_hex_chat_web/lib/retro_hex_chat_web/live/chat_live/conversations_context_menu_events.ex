@@ -18,13 +18,19 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
 
   alias RetroHexChat.Chat.UnreadTracker
   alias RetroHexChatWeb.ChatLive.ChannelCentralEvents
-  alias RetroHexChatWeb.ChatLive.Components.ConversationsContextMenu
+
+  alias RetroHexChatWeb.ChatLive.Components.{
+    ConversationsContextMenu,
+    UserContextMenus
+  }
 
   # ── Context menu ─────────────────────────────────────────
 
   def handle_event("channel_right_click", %{"channel" => channel} = params, socket) do
     {:halt,
-     put_conv_menu(socket,
+     socket
+     |> close_user_context_menus()
+     |> put_conv_menu(
        visible: true,
        x: params["x"] || 0,
        y: params["y"] || 0,
@@ -36,7 +42,9 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
 
   def handle_event("pm_right_click", %{"nick" => nick} = params, socket) do
     {:halt,
-     put_conv_menu(socket,
+     socket
+     |> close_user_context_menus()
+     |> put_conv_menu(
        visible: true,
        x: params["x"] || 0,
        y: params["y"] || 0,
@@ -111,6 +119,17 @@ defmodule RetroHexChatWeb.ChatLive.ConversationsContextMenuEvents do
 
   defp close_conversations_menu(socket) do
     put_conv_menu(socket, visible: false, x: 0, y: 0, type: :channel, channel: nil, nick: nil)
+  end
+
+  defp close_user_context_menus(socket) do
+    send_update(UserContextMenus,
+      id: UserContextMenus.id(),
+      chat_context_menu: UserContextMenus.chat_closed(),
+      context_menu: UserContextMenus.nick_closed(),
+      show_context_color_picker: false
+    )
+
+    socket
   end
 
   defp conversation_key(%{"type" => "pm", "nick" => nick}) when is_binary(nick), do: "pm:#{nick}"

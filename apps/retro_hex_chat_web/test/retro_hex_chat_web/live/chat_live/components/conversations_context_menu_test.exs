@@ -34,6 +34,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.ConversationsContextMenuTest do
       })
 
     assert html =~ "#lobby"
+    assert html =~ ~s(phx-click-away="close_conversations_context_menu")
+    assert html =~ ~s(phx-window-keydown="close_conversations_context_menu")
   end
 
   test "derives is_muted from the muted_channels read-model" do

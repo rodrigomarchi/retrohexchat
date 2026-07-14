@@ -42,6 +42,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenusTest do
 
     assert html =~ "context-menu-item-context_query"
     assert html =~ "bob"
+    assert html =~ ~s(phx-click-away="close_context_menu")
+    assert html =~ ~s(phx-window-keydown="close_context_menu")
   end
 
   test "renders the chat menu open for a nick target" do
@@ -62,6 +64,8 @@ defmodule RetroHexChatWeb.ChatLive.Components.UserContextMenusTest do
       })
 
     assert html =~ "carol"
+    assert html =~ ~s(phx-click-away="close_chat_context_menu")
+    assert html =~ ~s(phx-window-keydown="close_chat_context_menu")
   end
 
   test "derives is_target_self (own nick disables Query) from session" do

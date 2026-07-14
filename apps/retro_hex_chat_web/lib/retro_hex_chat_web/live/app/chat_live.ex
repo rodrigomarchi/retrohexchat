@@ -63,6 +63,7 @@ defmodule RetroHexChatWeb.App.ChatLive do
   alias RetroHexChatWeb.App.SessionHelpers
   alias RetroHexChatWeb.ChatLive
   alias RetroHexChatWeb.ChatLive.ChatContext
+  alias RetroHexChatWeb.ChatLive.Components.{ConversationsContextMenu, UserContextMenus}
   alias RetroHexChatWeb.Icons
   alias RetroHexChatWeb.Timezone
 
@@ -283,6 +284,10 @@ defmodule RetroHexChatWeb.App.ChatLive do
     else
       {:noreply, socket}
     end
+  end
+
+  def handle_event("close_all_context_menus", _params, socket) do
+    {:noreply, close_all_context_menus(socket)}
   end
 
   # Context menus — components emit v1 event names directly
@@ -515,6 +520,27 @@ defmodule RetroHexChatWeb.App.ChatLive do
   # Template is in chat_live.html.heex (auto-detected by Phoenix)
 
   # ── Private helpers ───────────────────────────────────────────
+
+  defp close_all_context_menus(socket) do
+    send_update(UserContextMenus,
+      id: UserContextMenus.id(),
+      chat_context_menu: UserContextMenus.chat_closed(),
+      context_menu: UserContextMenus.nick_closed(),
+      show_context_color_picker: false
+    )
+
+    send_update(ConversationsContextMenu,
+      id: ConversationsContextMenu.id(),
+      visible: false,
+      x: 0,
+      y: 0,
+      type: :channel,
+      channel: nil,
+      nick: nil
+    )
+
+    socket
+  end
 
   @spec validate_session_nickname(String.t() | nil) :: :ok | {:error, String.t()}
   defp validate_session_nickname(nil), do: {:error, dgettext("chat", "No nickname in session")}

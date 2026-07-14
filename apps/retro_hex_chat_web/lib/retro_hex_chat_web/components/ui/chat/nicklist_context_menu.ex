@@ -48,6 +48,7 @@ defmodule RetroHexChatWeb.Components.UI.NicklistContextMenu do
       y={@y}
       reposition
       class={@class}
+      on_close="close_context_menu"
       {@rest}
     >
       <%!-- Core actions --%>

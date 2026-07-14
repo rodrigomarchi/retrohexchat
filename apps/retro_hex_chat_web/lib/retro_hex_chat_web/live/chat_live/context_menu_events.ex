@@ -49,6 +49,7 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
   alias RetroHexChatWeb.ChatLive.CommandDispatch
 
   alias RetroHexChatWeb.ChatLive.Components.{
+    ConversationsContextMenu,
     Composer,
     InviteChannelPickerDialog,
     MuteDurationDialog,
@@ -65,14 +66,18 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
       {:halt, socket}
     else
       {:halt,
-       put_menu(socket,
+       socket
+       |> close_conversations_context_menu()
+       |> put_menu(
          context_menu: %{
            visible: true,
            x: params["x"] || 0,
            y: params["y"] || 0,
            target_nick: nick,
            is_target_registered: NickServ.registered?(nick)
-         }
+         },
+         chat_context_menu: UserContextMenus.chat_closed(),
+         show_context_color_picker: false
        )}
     end
   end
@@ -700,7 +705,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         do: NickServ.registered?(target_nick),
         else: false
 
-    put_menu(socket,
+    socket
+    |> close_conversations_context_menu()
+    |> put_menu(
       chat_context_menu: %{
         visible: true,
         type: type,
@@ -712,7 +719,9 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
         target_message: target_message,
         has_selection: params["has_selection"] == true,
         is_target_registered: is_target_registered
-      }
+      },
+      context_menu: UserContextMenus.nick_closed(),
+      show_context_color_picker: false
     )
   end
 
@@ -747,6 +756,20 @@ defmodule RetroHexChatWeb.ChatLive.ContextMenuEvents do
 
   defp put_menu(socket, attrs) do
     send_update(UserContextMenus, [id: UserContextMenus.id()] ++ attrs)
+    socket
+  end
+
+  defp close_conversations_context_menu(socket) do
+    send_update(ConversationsContextMenu,
+      id: ConversationsContextMenu.id(),
+      visible: false,
+      x: 0,
+      y: 0,
+      type: :channel,
+      channel: nil,
+      nick: nil
+    )
+
     socket
   end
 

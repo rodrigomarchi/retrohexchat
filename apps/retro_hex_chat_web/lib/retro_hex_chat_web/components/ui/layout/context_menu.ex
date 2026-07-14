@@ -35,6 +35,10 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
     default: false,
     doc: "Clamp within the viewport (flip left/up) via the MenuReposition hook"
 
+  attr :on_close, :any,
+    default: nil,
+    doc: "JS command or event name used for click-away and Escape dismissal"
+
   attr :class, :string, default: nil
   attr :rest, :global
   slot :inner_block, required: true
@@ -54,6 +58,9 @@ defmodule RetroHexChatWeb.Components.UI.ContextMenu do
       }
       style={"left: #{@x}px; top: #{@y}px;"}
       phx-hook={@reposition && "MenuRepositionHook"}
+      phx-click-away={@on_close}
+      phx-window-keydown={@on_close}
+      phx-key={@on_close && "escape"}
       data-testid={"context-menu-#{@id}"}
       data-escape-guard
       {@rest}
