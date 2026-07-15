@@ -395,6 +395,48 @@ describe("SpaceCanvasHook implementation", () => {
     expect(input.detach).toHaveBeenCalled();
   });
 
+  it("wires the virtual pad to the shared input controller when the pad is present", () => {
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      destroy: vi.fn(),
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    const input = { attach: vi.fn(), detach: vi.fn() };
+    const pad = { attach: vi.fn(), detach: vi.fn() };
+    let padOpts;
+
+    const ctx = mountContext();
+    const padRoot = document.createElement("div");
+    padRoot.setAttribute("data-space-pad", "");
+    ctx.el.appendChild(padRoot);
+
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({
+          socketFactory: () => socket,
+          engineFactory: () => engine,
+          inputFactory: () => input,
+          padFactory: (opts) => {
+            padOpts = opts;
+            return pad;
+          },
+        }),
+      ),
+      ctx,
+    );
+
+    hook.mounted();
+    expect(padOpts.root).toBe(padRoot);
+    expect(padOpts.input).toBe(input);
+    expect(pad.attach).toHaveBeenCalled();
+
+    hook.destroyed();
+    expect(pad.detach).toHaveBeenCalled();
+  });
+
   it("wires held-intent polling and auto-step pushes into the engine", () => {
     const engine = {
       start: vi.fn(),

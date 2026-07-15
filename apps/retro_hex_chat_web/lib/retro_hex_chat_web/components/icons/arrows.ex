@@ -250,4 +250,51 @@ defmodule RetroHexChatWeb.Icons.Arrows do
     </svg>
     """
   end
+
+  # 8-bit D-pad arrows for the virtual space pad. Drawn in currentColor so the
+  # pad's CSS drives the color (dark pad, light glyphs).
+
+  attr :class, :string, default: nil
+
+  @spec icon_pad_up(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_pad_up(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="8,3 13,10 3,10" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_pad_down(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_pad_down(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="8,13 3,6 13,6" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_pad_left(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_pad_left(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="3,8 10,3 10,13" fill="currentColor" />
+    </svg>
+    """
+  end
+
+  attr :class, :string, default: nil
+
+  @spec icon_pad_right(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_pad_right(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <polygon points="13,8 6,3 6,13" fill="currentColor" />
+    </svg>
+    """
+  end
 end

@@ -141,6 +141,18 @@ All SVGs extracted and organized in the SVG consolidation effort.
 | `icon_laugh` | Pixel laughing-face reaction for channel conferences **[DONE]** |
 | `icon_sparkle` | Pixel sparkle reaction for channel conferences **[DONE]** |
 | `icon_pin` | Push pin for pinned conference participants **[DONE]** |
+| `icon_sword` | 8-bit upright sword (currentColor) for the space virtual pad attack button **[DONE]** |
+
+### Arrows
+
+`apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/icons/arrows.ex`
+
+| Function | Description |
+|----------|-------------|
+| `icon_pad_up` | 8-bit D-pad up triangle (currentColor) for the space virtual pad **[DONE]** |
+| `icon_pad_down` | 8-bit D-pad down triangle (currentColor) for the space virtual pad **[DONE]** |
+| `icon_pad_left` | 8-bit D-pad left triangle (currentColor) for the space virtual pad **[DONE]** |
+| `icon_pad_right` | 8-bit D-pad right triangle (currentColor) for the space virtual pad **[DONE]** |
 
 ### Code
 

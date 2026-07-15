@@ -94,6 +94,39 @@ describe("InputController", () => {
     expect(intents).toHaveLength(0);
   });
 
+  it("presses and releases virtual directions like held keys", () => {
+    controller.pressDirection("right");
+    expect(intents).toEqual([{ dx: 1, dy: 0, dir: "right" }]);
+    expect(controller.currentIntent()).toEqual({ dx: 1, dy: 0, dir: "right" });
+
+    // A held virtual press does not re-emit (parity with keydown coalescing).
+    controller.pressDirection("right");
+    expect(intents).toHaveLength(1);
+
+    controller.releaseDirection("right");
+    expect(controller.currentIntent()).toBe(null);
+  });
+
+  it("mixes virtual and keyboard sources: most recent press wins", () => {
+    window.dispatchEvent(keydown("ArrowUp"));
+    controller.pressDirection("left");
+    expect(controller.currentIntent()).toEqual({ dx: -1, dy: 0, dir: "left" });
+
+    controller.releaseDirection("left");
+    expect(controller.currentIntent()).toEqual({ dx: 0, dy: -1, dir: "up" });
+  });
+
+  it("ignores unknown virtual directions and actions", () => {
+    const actions = [];
+    const c = new InputController({ onAction: (a) => actions.push(a) });
+    c.pressDirection("diagonal");
+    expect(c.currentIntent()).toBe(null);
+
+    c.triggerAction("attack");
+    c.triggerAction("dance");
+    expect(actions).toEqual(["attack"]);
+  });
+
   it("emits action intents for Space (attack), e (interact) and f (sit), coalesced and focus-aware", () => {
     const actions = [];
     const c = new InputController({ onAction: (a) => actions.push(a) });

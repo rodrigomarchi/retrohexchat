@@ -667,4 +667,28 @@ defmodule RetroHexChatWeb.Icons.Symbols do
     </svg>
     """
   end
+
+  # -- Sword (16×16) --
+  # 8-bit upright sword for the virtual space attack button. Drawn in
+  # currentColor so the pad's CSS drives the color.
+
+  attr :class, :string, default: nil
+
+  @spec icon_sword(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_sword(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <!-- Tip -->
+      <polygon points="8,0 10,3 6,3" fill="currentColor" />
+      <!-- Blade -->
+      <rect x="7" y="3" width="2" height="7" fill="currentColor" />
+      <!-- Crossguard -->
+      <rect x="4" y="10" width="8" height="2" fill="currentColor" />
+      <!-- Grip -->
+      <rect x="7" y="12" width="2" height="3" fill="currentColor" />
+      <!-- Pommel -->
+      <rect x="6" y="15" width="4" height="1" fill="currentColor" />
+    </svg>
+    """
+  end
 end

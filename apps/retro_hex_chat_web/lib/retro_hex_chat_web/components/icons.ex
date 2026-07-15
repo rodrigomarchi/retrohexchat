@@ -268,6 +268,10 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_chevron_down(assigns), to: RetroHexChatWeb.Icons.Arrows
   defdelegate icon_chevron_right(assigns), to: RetroHexChatWeb.Icons.Arrows
   defdelegate icon_chevron_left(assigns), to: RetroHexChatWeb.Icons.Arrows
+  defdelegate icon_pad_up(assigns), to: RetroHexChatWeb.Icons.Arrows
+  defdelegate icon_pad_down(assigns), to: RetroHexChatWeb.Icons.Arrows
+  defdelegate icon_pad_left(assigns), to: RetroHexChatWeb.Icons.Arrows
+  defdelegate icon_pad_right(assigns), to: RetroHexChatWeb.Icons.Arrows
 
   # ── Marks ───────────────────────────────────────────────
   defdelegate icon_btn_add(assigns), to: RetroHexChatWeb.Icons.Marks
@@ -411,6 +415,7 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_btn_page(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_btn_trash(assigns), to: RetroHexChatWeb.Icons.Files
   defdelegate icon_btn_star(assigns), to: RetroHexChatWeb.Icons.Symbols
+  defdelegate icon_sword(assigns), to: RetroHexChatWeb.Icons.Symbols
   defdelegate icon_btn_play(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_btn_info(assigns), to: RetroHexChatWeb.Icons.Alerts
   defdelegate icon_btn_link(assigns), to: RetroHexChatWeb.Icons.Communication

@@ -15,6 +15,7 @@ import { Socket } from "phoenix";
 
 import { SpaceEngine } from "../../lib/space/engine.js";
 import { InputController } from "../../lib/space/input.js";
+import { VirtualPadController } from "../../lib/space/virtual_pad.js";
 import { ModalController } from "../../lib/space/modal.js";
 import { interactTarget } from "../../lib/space/interactions.js";
 import { seatTarget } from "../../lib/space/seating.js";
@@ -35,13 +36,14 @@ const RENDER_SCALE = 2;
 /**
  * Build the hook implementation. Socket/engine/input construction is injectable
  * so the wiring can be unit-tested without a live server or a real canvas.
- * @param {{socketFactory?: Function, engineFactory?: Function, inputFactory?: Function}} [deps]
+ * @param {{socketFactory?: Function, engineFactory?: Function, inputFactory?: Function, padFactory?: Function}} [deps]
  * @returns {object} LiveView hook implementation
  */
 export function createSpaceCanvasHook(deps = {}) {
   const socketFactory = deps.socketFactory ?? defaultSocketFactory;
   const engineFactory = deps.engineFactory ?? defaultEngineFactory;
   const inputFactory = deps.inputFactory ?? defaultInputFactory;
+  const padFactory = deps.padFactory ?? defaultPadFactory;
 
   return {
     mounted() {
@@ -95,6 +97,13 @@ export function createSpaceCanvasHook(deps = {}) {
         onAction: (action) => this._onAction(action),
       });
       this._input.attach();
+
+      // The on-screen pad (mobile/mouse) feeds the same InputController, so a
+      // held pad button walks exactly like a held key.
+      const padRoot = this.el.querySelector("[data-space-pad]");
+      this._pad = padRoot ? padFactory({ root: padRoot, input: this._input }) : null;
+      this._pad?.attach();
+
       this._attachPointerEvents();
 
       this._modal = new ModalController({ onChange: (m) => this._renderModal(m) });
@@ -130,6 +139,7 @@ export function createSpaceCanvasHook(deps = {}) {
 
     destroyed() {
       this._detachPointerEvents();
+      this._pad?.detach();
       this._input?.detach();
       this._modal?.detach();
       cancelNickHoverTimer();
@@ -137,6 +147,7 @@ export function createSpaceCanvasHook(deps = {}) {
       this._engine?.destroy();
       this._channel?.leave();
       this._socket?.disconnect();
+      this._pad = null;
       this._input = null;
       this._modal = null;
       this._resizeObserver = null;
@@ -368,6 +379,10 @@ function defaultEngineFactory(options) {
 
 function defaultInputFactory(options) {
   return new InputController(options);
+}
+
+function defaultPadFactory(options) {
+  return new VirtualPadController(options);
 }
 
 function csrfToken() {
