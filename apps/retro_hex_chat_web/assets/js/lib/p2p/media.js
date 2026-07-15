@@ -398,6 +398,175 @@ export async function setSinkId(element, deviceId) {
   return true;
 }
 
+const MEDIA_VERIFY_DELAY_MS = 1800;
+const MEDIA_VERIFY_RETRY_DELAY_MS = 900;
+
+function hasVideoTracks(stream) {
+  return (stream?.getVideoTracks?.() || []).length > 0;
+}
+
+function isRealMediaElement(element) {
+  return typeof HTMLMediaElement === "undefined" || element instanceof HTMLMediaElement;
+}
+
+function liveVideoTracks(stream) {
+  return (stream?.getVideoTracks?.() || []).filter((track) => track.readyState !== "ended");
+}
+
+function mediaElementToken() {
+  return `${Date.now()}:${Math.random().toString(36).slice(2)}`;
+}
+
+function clearMediaElementVerifyTimer(element) {
+  if (element?._rhcMediaVerifyTimer) {
+    clearTimeout(element._rhcMediaVerifyTimer);
+    element._rhcMediaVerifyTimer = null;
+  }
+}
+
+function isCurrentMediaAttachment(element, token, stream) {
+  return element?._rhcMediaAttachmentToken === token && element.srcObject === stream;
+}
+
+function videoStallReason(element, stream) {
+  const tracks = liveVideoTracks(stream);
+
+  if (tracks.length === 0) return null;
+  if (tracks.some((track) => track.muted === true)) return "track-muted";
+
+  const readyState = typeof element.readyState === "number" ? element.readyState : 0;
+  const hasCurrentData =
+    typeof HTMLMediaElement === "undefined" ||
+    readyState >= (HTMLMediaElement.HAVE_CURRENT_DATA || 2);
+  const hasDimensions = Number(element.videoWidth || 0) > 0 || Number(element.videoHeight || 0) > 0;
+
+  if (!hasCurrentData) return "not-ready";
+  if (!hasDimensions) return "no-video-dimensions";
+
+  return null;
+}
+
+function startMediaElementPlayback(element, token, stream, options = {}) {
+  if (!element || !isCurrentMediaAttachment(element, token, stream)) return;
+  if (typeof element.play !== "function") return;
+
+  try {
+    const result = element.play();
+
+    if (result && typeof result.catch === "function") {
+      result.catch((error) => {
+        if (!isCurrentMediaAttachment(element, token, stream)) return;
+        options.onPlaybackError?.(error);
+      });
+    }
+  } catch (error) {
+    if (!isCurrentMediaAttachment(element, token, stream)) return;
+    options.onPlaybackError?.(error);
+  }
+}
+
+function scheduleMediaElementVerification(
+  element,
+  token,
+  stream,
+  options = {},
+  delayMs,
+  attempt = 0,
+) {
+  if (!hasVideoTracks(stream) || options.verifyVideo === false) return;
+  if (!isRealMediaElement(element)) return;
+
+  clearMediaElementVerifyTimer(element);
+  element._rhcMediaVerifyTimer = setTimeout(() => {
+    element._rhcMediaVerifyTimer = null;
+
+    if (!isCurrentMediaAttachment(element, token, stream)) return;
+
+    const reason = videoStallReason(element, stream);
+    if (!reason) return;
+
+    options.onVideoStalled?.({ reason, element, stream });
+
+    if (options.reattachOnStall === false) return;
+
+    element.srcObject = null;
+    element.srcObject = stream;
+    startMediaElementPlayback(element, token, stream, options);
+
+    if (attempt < 1) {
+      scheduleMediaElementVerification(
+        element,
+        token,
+        stream,
+        options,
+        MEDIA_VERIFY_RETRY_DELAY_MS,
+        attempt + 1,
+      );
+    }
+  }, delayMs);
+  element._rhcMediaVerifyTimer.unref?.();
+}
+
+/**
+ * Attach a MediaStream to a media element and defensively start playback.
+ *
+ * Browser media elements can stay visually black when a stream is attached while
+ * permission prompts, LiveView patches, or autoplay policies are still settling.
+ * This helper centralizes the DOM contract used by P2P and group calls: assign
+ * the stream, request playback, and reattach once if a video track is live but
+ * the element still has no renderable frame after a short grace period.
+ *
+ * @param {HTMLMediaElement} element
+ * @param {MediaStream | null} stream
+ * @param {object} options
+ * @returns {{ attached: boolean, changed: boolean }}
+ */
+export function attachMediaStream(element, stream, options = {}) {
+  if (!element) return { attached: false, changed: false };
+
+  if (typeof options.muted === "boolean") element.muted = options.muted;
+  if (options.autoplay !== false) element.autoplay = true;
+  if (options.playsInline !== false) {
+    element.playsInline = true;
+    element.setAttribute?.("playsinline", "");
+  }
+
+  if (!stream) {
+    clearMediaElementVerifyTimer(element);
+    const changed = element.srcObject !== null;
+    element._rhcMediaAttachmentToken = mediaElementToken();
+    element._rhcMediaAttachedStream = null;
+    element.srcObject = null;
+    return { attached: true, changed };
+  }
+
+  const changed = element.srcObject !== stream;
+  const existingToken = element._rhcMediaAttachmentToken;
+
+  if (!changed && element._rhcMediaAttachedStream === stream && existingToken) {
+    queueMicrotask(() => {
+      startMediaElementPlayback(element, existingToken, stream, options);
+    });
+    return { attached: true, changed: false };
+  }
+
+  clearMediaElementVerifyTimer(element);
+  const token = mediaElementToken();
+  element._rhcMediaAttachmentToken = token;
+  element._rhcMediaAttachedStream = stream;
+
+  if (changed) {
+    element.srcObject = stream;
+  }
+
+  queueMicrotask(() => {
+    startMediaElementPlayback(element, token, stream, options);
+    scheduleMediaElementVerification(element, token, stream, options, MEDIA_VERIFY_DELAY_MS);
+  });
+
+  return { attached: true, changed };
+}
+
 // --- Quality Monitoring ---
 
 /**

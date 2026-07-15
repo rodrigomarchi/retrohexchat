@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import {
   getAudioConstraints,
   getVideoConstraints,
@@ -28,6 +28,7 @@ import {
   supportsPiP,
   togglePiP,
   setCodecPreferences,
+  attachMediaStream,
 } from "../../../js/lib/p2p/media.js";
 
 // --- Media Acquisition (T009) ---
@@ -772,6 +773,84 @@ describe("Device Management", () => {
       const result = supportsSetSinkId();
       expect(typeof result).toBe("boolean");
     });
+  });
+});
+
+// --- Media Element Attachment ---
+
+describe("Media Element Attachment", () => {
+  beforeEach(() => {
+    vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    vi.useRealTimers();
+  });
+
+  function streamFixture({ video = false } = {}) {
+    const videoTrack = { kind: "video", readyState: "live", muted: false };
+
+    return {
+      getTracks: () => (video ? [videoTrack] : []),
+      getAudioTracks: () => [],
+      getVideoTracks: () => (video ? [videoTrack] : []),
+    };
+  }
+
+  it("attaches a stream and starts playback without reassigning the same stream", async () => {
+    const video = document.createElement("video");
+    const stream = streamFixture();
+    const play = vi.spyOn(video, "play").mockResolvedValue(undefined);
+
+    const first = attachMediaStream(video, stream, { muted: true });
+    await Promise.resolve();
+
+    expect(first).toEqual({ attached: true, changed: true });
+    expect(video.srcObject).toBe(stream);
+    expect(video.muted).toBe(true);
+    expect(video.autoplay).toBe(true);
+    expect(video.playsInline).toBe(true);
+    expect(play).toHaveBeenCalledTimes(1);
+
+    const second = attachMediaStream(video, stream, { muted: true });
+    await Promise.resolve();
+
+    expect(second).toEqual({ attached: true, changed: false });
+    expect(video.srcObject).toBe(stream);
+    expect(play).toHaveBeenCalledTimes(2);
+  });
+
+  it("clears srcObject when detaching media", () => {
+    const video = document.createElement("video");
+    const stream = streamFixture();
+
+    attachMediaStream(video, stream);
+    expect(video.srcObject).toBe(stream);
+
+    attachMediaStream(video, null);
+    expect(video.srcObject).toBe(null);
+  });
+
+  it("reports a stalled video element after the grace period", async () => {
+    vi.useFakeTimers();
+    const video = document.createElement("video");
+    const stream = streamFixture({ video: true });
+    const onVideoStalled = vi.fn();
+    vi.spyOn(video, "play").mockResolvedValue(undefined);
+
+    attachMediaStream(video, stream, { onVideoStalled });
+    await Promise.resolve();
+    vi.advanceTimersByTime(1800);
+
+    expect(onVideoStalled).toHaveBeenCalledWith(
+      expect.objectContaining({
+        reason: "not-ready",
+        element: video,
+        stream,
+      }),
+    );
+    expect(video.srcObject).toBe(stream);
   });
 });
 

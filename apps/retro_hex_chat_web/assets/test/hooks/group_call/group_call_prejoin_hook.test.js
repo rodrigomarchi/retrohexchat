@@ -119,9 +119,11 @@ async function flushPromises() {
 describe("GroupCallPreJoinHook", () => {
   beforeEach(() => {
     storage = mockLocalStorage();
+    vi.spyOn(HTMLMediaElement.prototype, "play").mockResolvedValue(undefined);
   });
 
   afterEach(() => {
+    vi.restoreAllMocks();
     vi.unstubAllGlobals();
     storage.restore();
     document.body.innerHTML = "";
@@ -255,6 +257,42 @@ describe("GroupCallPreJoinHook", () => {
     expect(
       document.querySelector("[data-group-call-prejoin-empty]").classList.contains("hidden"),
     ).toBe(true);
+  });
+
+  it("keeps a pending permission prompt alive across LiveView refreshes", async () => {
+    const stream = streamFixture();
+    let resolveMedia;
+    const pendingMedia = new Promise((resolve) => {
+      resolveMedia = resolve;
+    });
+    const getUserMedia = vi.fn(() => pendingMedia);
+
+    Object.defineProperty(navigator, "mediaDevices", {
+      configurable: true,
+      value: {
+        enumerateDevices: vi.fn(async () => [
+          { kind: "audioinput", deviceId: "mic-1", label: "Desk Mic" },
+          { kind: "videoinput", deviceId: "cam-1", label: "Desk Cam" },
+        ]),
+        getUserMedia,
+      },
+    });
+
+    const hook = formFixture();
+    hook.mounted();
+    await flushPromises();
+
+    hook.updated();
+    await flushPromises();
+
+    expect(getUserMedia).toHaveBeenCalledTimes(1);
+
+    resolveMedia(stream);
+    await flushPromises();
+
+    expect(document.querySelector("[data-group-call-prejoin-video]").srcObject).toBe(stream);
+    expect(stream.getTracks()[0].stop).not.toHaveBeenCalled();
+    expect(stream.getTracks()[1].stop).not.toHaveBeenCalled();
   });
 
   it("shows an actionable permission warning and retries the same preview constraints", async () => {

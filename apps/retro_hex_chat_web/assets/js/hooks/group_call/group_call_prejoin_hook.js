@@ -1,5 +1,6 @@
 import {
   acquireMedia,
+  attachMediaStream,
   enumerateDevices,
   getAudioConstraints,
   getVideoConstraints,
@@ -17,6 +18,7 @@ const GroupCallPreJoinHook = {
     this._refreshElements();
     this.previewStream = null;
     this.previewKey = null;
+    this.previewPendingKey = null;
     this.previewRun = 0;
     this.storageKey = this._storageKey();
 
@@ -28,7 +30,7 @@ const GroupCallPreJoinHook = {
 
     this._onSubmit = () => {
       this._savePreferences();
-      this._stopPreview();
+      this._cancelPreview();
     };
 
     this._onRetry = () => this._startPreview({ force: true });
@@ -58,7 +60,7 @@ const GroupCallPreJoinHook = {
     this.form?.removeEventListener("input", this._onChange);
     this.form?.removeEventListener("submit", this._onSubmit);
     this.retry?.removeEventListener("click", this._onRetry);
-    this._stopPreview();
+    this._cancelPreview();
   },
 
   async _listDevices() {
@@ -88,19 +90,22 @@ const GroupCallPreJoinHook = {
     const preferences = this._preferencesFromForm();
     const constraints = this._constraints(preferences);
     const key = JSON.stringify(constraints);
-    const run = ++this.previewRun;
     const force = options.force === true;
 
     if (key === this.previewKey && !force) {
+      if (this.previewPendingKey === key) return;
       this._syncPreviewDom(preferences);
       return;
     }
 
+    const run = ++this.previewRun;
     this.previewKey = key;
+    this.previewPendingKey = key;
     this._clearWarning();
 
     if (!constraints.audio && !constraints.video) {
       this._stopPreview();
+      this.previewPendingKey = null;
       this._setDeviceState(t("Receive-only"));
       this._showEmpty(true, t("Joining receive-only"));
       return;
@@ -113,6 +118,7 @@ const GroupCallPreJoinHook = {
         return;
       }
 
+      this.previewPendingKey = null;
       this._stopPreview();
       this.previewStream = stream;
 
@@ -121,6 +127,7 @@ const GroupCallPreJoinHook = {
       if (run !== this.previewRun) return;
 
       log.warn("[group-call-prejoin] preview failed", error);
+      this.previewPendingKey = null;
       this._stopPreview();
       this._showEmpty(true, t("Camera preview unavailable"));
       this._showWarning(this._previewFailureMessage(error, preferences));
@@ -134,15 +141,28 @@ const GroupCallPreJoinHook = {
     }
 
     if (this.video) {
-      this.video.srcObject = null;
+      attachMediaStream(this.video, null);
     }
+  },
+
+  _cancelPreview() {
+    this.previewRun += 1;
+    this.previewPendingKey = null;
+    this._stopPreview();
   },
 
   async _attachPreviewStream(stream, preferences) {
     if (this.video) {
-      this.video.srcObject = stream;
-      this.video.muted = true;
-      this.video.playsInline = true;
+      attachMediaStream(this.video, stream, {
+        muted: true,
+        onPlaybackError: (error) => {
+          log.warn("[group-call-prejoin] preview playback failed", error);
+          this._showWarning(t("Camera preview is blocked by the browser. Retry the preview."));
+        },
+        onVideoStalled: ({ reason }) => {
+          log.warn("[group-call-prejoin] preview video stalled", { reason });
+        },
+      });
 
       if (preferences.audio_output_id) {
         await setSinkId(this.video, preferences.audio_output_id).catch(() => false);
