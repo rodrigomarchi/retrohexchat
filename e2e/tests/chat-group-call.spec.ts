@@ -377,7 +377,9 @@ async function openParticipantActions(page: Page, nickname: string) {
   const menu = row.locator("details").first();
 
   if ((await menu.getAttribute("open")) === null) {
-    await row.locator('[data-testid^="group-call-participant-actions-"]').click();
+    await row
+      .locator('[data-testid^="group-call-participant-actions-"]')
+      .click();
   }
 }
 
