@@ -298,12 +298,11 @@ Stage 1 (parallel):       Stage 2 (parallel, after compile):
 
 ## Production Deployment
 
-RetroHexChat runs on two environments (`Sun` for production, `Moon` for staging). The deploy pipeline runs CI first, then deploys both in parallel.
+RetroHexChat deploys to one production server: `Sun`. The standard deploy pipeline
+runs CI first, then publishes the release for DeployEx on that server.
 
 ```bash
-make deploy         # CI + deploy both environments
-make deploy.sun     # CI + deploy production only
-make deploy.moon    # CI + deploy staging only
+make deploy         # CI + deploy production (Sun)
 make deploy.skip-ci # deploy without CI (use only if CI was just run)
 ```
 
@@ -314,8 +313,9 @@ SECRET_KEY_BASE=     # mix phx.gen.secret
 DATABASE_URL=        # postgresql://user:pass@host/dbname
 TURN_SECRET=         # 64-byte random string for TURN auth
 TURN_NONCE_SECRET=   # 64-byte random string for nonce signing
+DEPLOY_USER=         # SSH user on the production server
 SUN_IP=              # production server IP
-MOON_IP=             # staging server IP
+SSH_PORT=2222        # SSH port, optional; defaults to 2222
 ```
 
 ### Ports

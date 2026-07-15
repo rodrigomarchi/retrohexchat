@@ -6,7 +6,7 @@
 #
 # Usage:
 #   elixir scripts/deploy_all.exs                  # CI + deploy Sun (REF=main)
-#   elixir scripts/deploy_all.exs --ref sun-tag     # deploy specific ref
+#   elixir scripts/deploy_all.exs --ref release-tag # deploy specific ref
 #   elixir scripts/deploy_all.exs --skip-ci         # skip CI (already validated)
 
 defmodule DeployAll do
@@ -94,15 +94,11 @@ defmodule DeployAll do
     IO.write(output)
 
     if exit_code == 0 do
-      IO.puts(
-        "    #{c(:green)}✓#{c(:reset)} CI passed #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}\n"
-      )
+      IO.puts("    #{c(:green)}✓#{c(:reset)} CI passed #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}\n")
 
       true
     else
-      IO.puts(
-        "    #{c(:red)}✗#{c(:reset)} CI failed #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}\n"
-      )
+      IO.puts("    #{c(:red)}✗#{c(:reset)} CI failed #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}\n")
 
       false
     end
@@ -147,15 +143,11 @@ defmodule DeployAll do
       elapsed = System.monotonic_time(:millisecond) - start
 
       if ssh_exit == 0 do
-        IO.puts(
-          "    #{c(:green)}✓#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}"
-        )
+        IO.puts("    #{c(:green)}✓#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}")
 
         :ok
       else
-        IO.puts(
-          "    #{c(:red)}✗#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}"
-        )
+        IO.puts("    #{c(:red)}✗#{c(:reset)} #{label} #{c(:dim)}(#{fmt(elapsed)})#{c(:reset)}")
 
         print_failure_output(label, ssh_output)
         :fail

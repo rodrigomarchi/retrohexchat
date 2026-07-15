@@ -6,7 +6,7 @@ set -euo pipefail
 #
 # Usage:  bash deploy.sh <git-ref>
 #         bash deploy.sh main
-#         bash deploy.sh sun-2026-02-18.01
+#         bash deploy.sh release-2026-02-18.01
 #
 # This script runs ON the server (Sun / production). It:
 #   1. Checks out the requested git ref

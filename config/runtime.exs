@@ -2,8 +2,7 @@ import Config
 
 # Plausible analytics environment label, surfaced to the browser via a
 # <meta name="plausible-env"> tag in root.html.heex. The bundled tracker
-# attaches it as a `env` prop to every event so the same Plausible site
-# can serve both staging and production.
+# attaches it as an `env` prop to every event.
 config :retro_hex_chat_web, :plausible_env, System.get_env("APP_ENV", "prod")
 
 config :retro_hex_chat_web,

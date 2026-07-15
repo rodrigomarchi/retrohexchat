@@ -74,12 +74,12 @@ describe("createPlausibleTracker", () => {
   });
 
   it("posts a pageview via sendBeacon with the configured domain", () => {
-    const { win } = makeWin("https://moon.retrohexchat.app/chat");
+    const { win } = makeWin("https://retrohexchat.app/chat");
     const { doc } = makeDoc("https://t.co/abc");
     const sendBeacon = vi.fn().mockReturnValue(true);
 
     const tracker = createPlausibleTracker({
-      domain: "moon.retrohexchat.app",
+      domain: "retrohexchat.app",
       win,
       doc,
       sendBeacon,
@@ -94,12 +94,12 @@ describe("createPlausibleTracker", () => {
   });
 
   it("falls back to fetch when sendBeacon is unavailable", async () => {
-    const { win } = makeWin("https://moon.retrohexchat.app/");
+    const { win } = makeWin("https://retrohexchat.app/");
     const { doc } = makeDoc();
     const fetchImpl = vi.fn().mockResolvedValue(new Response(null));
 
     const tracker = createPlausibleTracker({
-      domain: "moon.retrohexchat.app",
+      domain: "retrohexchat.app",
       win,
       doc,
       sendBeacon: null,
@@ -116,8 +116,8 @@ describe("createPlausibleTracker", () => {
     const body = JSON.parse(init.body);
     expect(body).toMatchObject({
       name: "Room: Join",
-      domain: "moon.retrohexchat.app",
-      url: "https://moon.retrohexchat.app/",
+      domain: "retrohexchat.app",
+      url: "https://retrohexchat.app/",
       props: { room: "general" },
     });
   });
@@ -150,7 +150,7 @@ describe("createPlausibleTracker", () => {
     const fetchImpl = vi.fn();
 
     const tracker = createPlausibleTracker({
-      domain: "moon.retrohexchat.app",
+      domain: "retrohexchat.app",
       win,
       doc,
       sendBeacon,
@@ -165,12 +165,12 @@ describe("createPlausibleTracker", () => {
   });
 
   it("attachAutoTracking fires pageviews on patch/redirect with URL change", () => {
-    const { win, dispatch } = makeWin("https://moon.retrohexchat.app/");
+    const { win, dispatch } = makeWin("https://retrohexchat.app/");
     const { doc } = makeDoc();
     const sendBeacon = vi.fn().mockReturnValue(true);
 
     const tracker = createPlausibleTracker({
-      domain: "moon.retrohexchat.app",
+      domain: "retrohexchat.app",
       win,
       doc,
       sendBeacon,
@@ -184,12 +184,12 @@ describe("createPlausibleTracker", () => {
     expect(sendBeacon).toHaveBeenCalledTimes(1);
 
     // Different URL → pageview.
-    win._setHref("https://moon.retrohexchat.app/chat");
+    win._setHref("https://retrohexchat.app/chat");
     dispatch("phx:page-loading-stop", { kind: "redirect" });
     expect(sendBeacon).toHaveBeenCalledTimes(2);
 
     // Non-tracked kind (initial mount) → ignored.
-    win._setHref("https://moon.retrohexchat.app/connect");
+    win._setHref("https://retrohexchat.app/connect");
     dispatch("phx:page-loading-stop", { kind: "initial" });
     expect(sendBeacon).toHaveBeenCalledTimes(2);
 
@@ -197,14 +197,14 @@ describe("createPlausibleTracker", () => {
   });
 
   it("attachAutoTracking emits Outbound Link: Click for cross-host anchors", () => {
-    const { win } = makeWin("https://moon.retrohexchat.app/");
+    const { win } = makeWin("https://retrohexchat.app/");
     const { doc, dispatchClick } = makeDoc();
     // Use the fetch fallback so we can inspect the body as a string without
     // Blob-text APIs that vary by jsdom version.
     const fetchImpl = vi.fn().mockResolvedValue(new Response(null));
 
     const tracker = createPlausibleTracker({
-      domain: "moon.retrohexchat.app",
+      domain: "retrohexchat.app",
       win,
       doc,
       sendBeacon: null,
@@ -215,7 +215,7 @@ describe("createPlausibleTracker", () => {
     fetchImpl.mockClear(); // drop the initial pageview
 
     dispatchClick("https://github.com/rodrigomarchi");
-    dispatchClick("https://moon.retrohexchat.app/internal"); // same host → ignored
+    dispatchClick("https://retrohexchat.app/internal"); // same host → ignored
     dispatchClick("mailto:hi@example.com"); // non-http → ignored
 
     expect(fetchImpl).toHaveBeenCalledTimes(1);
