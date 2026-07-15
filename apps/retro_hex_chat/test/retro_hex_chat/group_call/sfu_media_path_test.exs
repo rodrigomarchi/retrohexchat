@@ -59,11 +59,9 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
       assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 1)
 
-      send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice])
+      send_and_assert_video_rtp_counts(bob_client, [:alice])
 
-      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:bob])
+      send_and_assert_video_rtp_counts(alice_client, [:bob])
 
       assert_server_stats_route(ctx.token, alice_client.participant_id, bob_client.participant_id)
       assert_server_stats_route(ctx.token, bob_client.participant_id, alice_client.participant_id)
@@ -179,8 +177,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
       assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 1)
 
-      send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice])
+      send_and_assert_video_rtp_counts(bob_client, [:alice])
       drain_probe_rtcp()
 
       send(alice_client.pid, {:send_pli, :video})
@@ -216,18 +213,15 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       prime_video_track(ctx, bob_client)
       prime_video_track(ctx, carol_client)
 
-      send(carol_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice, :bob])
+      send_and_assert_video_rtp_counts(carol_client, [:alice, :bob])
 
       drain_probe_rtp()
 
-      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:bob, :carol])
+      send_and_assert_video_rtp_counts(alice_client, [:bob, :carol])
 
       drain_probe_rtp()
 
-      send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice, :carol])
+      send_and_assert_video_rtp_counts(bob_client, [:alice, :carol])
 
       assert_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 2)
       assert_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 2)
@@ -316,13 +310,11 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_receive {:sfu_probe, :bob, :missing_local_track, :video}, 1_000
       refute_rtp_for([:alice, :carol], :video)
 
-      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:bob, :carol])
+      send_and_assert_video_rtp_counts(alice_client, [:bob, :carol])
 
       drain_probe_rtp()
 
-      send(carol_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice, :bob])
+      send_and_assert_video_rtp_counts(carol_client, [:alice, :bob])
     after
       stop_all_synthetic_peers()
     end
@@ -469,8 +461,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
       assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 1)
 
-      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:bob])
+      send_and_assert_video_rtp_counts(alice_client, [:bob])
       assert_eventually_active_track(ctx.room.id, alice_client.participant_id, "video", "camera")
 
       drain_probe_rtp()
@@ -486,8 +477,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
                  "stream_id" => "synthetic-screen"
                })
 
-      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:bob])
+      send_and_assert_video_rtp_counts(alice_client, [:bob])
 
       screen_track =
         assert_eventually_active_track(
@@ -516,8 +506,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
                  %{}
                )
 
-      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:bob])
+      send_and_assert_video_rtp_counts(alice_client, [:bob])
 
       camera_track =
         assert_eventually_active_track(
@@ -561,8 +550,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       prime_video_track(ctx, bob_client)
       prime_video_track(ctx, carol_client)
 
-      send(carol_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice, :bob])
+      send_and_assert_video_rtp_counts(carol_client, [:alice, :bob])
 
       drain_probe_messages()
 
@@ -577,8 +565,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       drain_probe_rtp()
 
-      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:carol])
+      send_and_assert_video_rtp_counts(alice_client, [:carol])
 
       drain_probe_messages()
 
@@ -592,8 +579,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       prime_video_track(ctx, dave_client)
 
-      send(dave_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice, :carol])
+      send_and_assert_video_rtp_counts(dave_client, [:alice, :carol])
 
       drain_probe_messages()
 
@@ -609,8 +595,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       prime_video_track(ctx, bob_rejoined)
 
-      send(bob_rejoined.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice, :carol, :dave])
+      send_and_assert_video_rtp_counts(bob_rejoined, [:alice, :carol, :dave])
 
       drain_probe_messages()
 
@@ -626,8 +611,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       drain_probe_rtp()
 
-      send(dave_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice, :bob])
+      send_and_assert_video_rtp_counts(dave_client, [:alice, :bob])
     after
       stop_all_synthetic_peers()
     end
@@ -671,13 +655,11 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       drain_probe_rtp()
 
-      send(carol_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice])
+      send_and_assert_video_rtp_counts(carol_client, [:alice])
 
       drain_probe_rtp()
 
-      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:carol])
+      send_and_assert_video_rtp_counts(alice_client, [:carol])
     after
       stop_all_synthetic_peers()
     end
@@ -698,8 +680,7 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       assert_eventually_server_stats_subscriber_count(ctx.token, alice_client.participant_id, 1)
       assert_eventually_server_stats_subscriber_count(ctx.token, bob_client.participant_id, 1)
 
-      send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice])
+      send_and_assert_video_rtp_counts(bob_client, [:alice])
 
       drain_probe_messages()
 
@@ -713,13 +694,11 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
 
       drain_probe_rtp()
 
-      send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:alice])
+      send_and_assert_video_rtp_counts(bob_client, [:alice])
 
       drain_probe_rtp()
 
-      send(alice_client.pid, {:send_rtp, :video, @video_packet_burst})
-      assert_video_rtp_counts([:bob])
+      send_and_assert_video_rtp_counts(alice_client, [:bob])
     after
       stop_all_synthetic_peers()
     end
@@ -1096,8 +1075,12 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     assert_receive {:sfu_probe, ^name, :missing_local_track, ^kind}, 1_000
   end
 
-  defp assert_video_rtp_counts(names, min_count \\ @min_forwarded_packets, timeout \\ 5_000) do
-    assert_rtp_counts(names, :video, min_count, timeout)
+  defp send_and_assert_video_rtp_counts(client, names) do
+    counts = Map.new(names, &{&1, 0})
+    counts = send_and_collect_rtp_counts(client.pid, :video, counts, @min_forwarded_packets, 5)
+
+    assert Enum.all?(counts, fn {_name, count} -> count >= @min_forwarded_packets end),
+           "expected at least #{@min_forwarded_packets} video RTP packets per target; counts=#{inspect(counts)}"
   end
 
   defp send_and_assert_audio_rtp_counts(client, names) do
@@ -1158,12 +1141,6 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
     end
   end
 
-  defp assert_rtp_counts(names, kind, min_count, timeout) do
-    deadline = System.monotonic_time(:millisecond) + timeout
-    counts = Map.new(names, &{&1, 0})
-    await_rtp_counts(counts, kind, min_count, deadline)
-  end
-
   defp assert_rtp_packet_count(name, kind, expected_count, timeout \\ 5_000) do
     deadline = System.monotonic_time(:millisecond) + timeout
     await_rtp_sequences(name, kind, expected_count, [], deadline)
@@ -1186,38 +1163,6 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       remaining ->
         flunk(
           "expected #{name} to receive #{expected_count} #{kind} RTP packets; received=#{inspect(Enum.reverse(sequences))}"
-        )
-    end
-  end
-
-  defp await_rtp_counts(counts, kind, min_count, deadline) do
-    if Enum.all?(counts, fn {_name, count} -> count >= min_count end) do
-      :ok
-    else
-      await_pending_rtp_counts(counts, kind, min_count, deadline)
-    end
-  end
-
-  defp await_pending_rtp_counts(counts, kind, min_count, deadline) do
-    remaining = max(deadline - System.monotonic_time(:millisecond), 0)
-
-    receive do
-      {:sfu_probe, name, :rtp, ^kind, _track_id, _sequence} ->
-        counts =
-          if Map.has_key?(counts, name) do
-            Map.update!(counts, name, &(&1 + 1))
-          else
-            counts
-          end
-
-        await_rtp_counts(counts, kind, min_count, deadline)
-
-      _other ->
-        await_pending_rtp_counts(counts, kind, min_count, deadline)
-    after
-      remaining ->
-        flunk(
-          "expected at least #{min_count} #{kind} RTP packets per target; counts=#{inspect(counts)}"
         )
     end
   end
