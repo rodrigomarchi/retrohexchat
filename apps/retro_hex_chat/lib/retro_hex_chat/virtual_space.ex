@@ -62,6 +62,9 @@ defmodule RetroHexChat.VirtualSpace do
   @spec avatars() :: [String.t()]
   defdelegate avatars(), to: ChannelSpaceServer
 
+  @spec step_ms() :: non_neg_integer()
+  defdelegate step_ms(), to: ChannelSpaceServer
+
   @spec select_avatar(String.t(), String.t(), String.t()) :: :ok | {:error, atom()}
   defdelegate select_avatar(channel_name, participant_key, avatar), to: ChannelSpaceServer
 

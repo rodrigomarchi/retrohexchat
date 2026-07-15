@@ -1,8 +1,9 @@
 /**
  * Keyboard input for the virtual space. Maps arrow keys and WASD to cardinal
- * step intents, coalesces auto-repeat (a held key fires once until released),
- * and stays out of the way while a text field is focused so chat typing never
- * moves the avatar.
+ * step intents: the first keydown emits immediately, OS auto-repeat is ignored
+ * (its delay/rate are OS-dependent), and continuous held movement is driven by
+ * the engine polling `currentIntent()` each frame instead. Stays out of the way
+ * while a text field is focused so chat typing never moves the avatar.
  * @module space/input
  */
 

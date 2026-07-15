@@ -75,6 +75,10 @@ export function createSpaceCanvasHook(deps = {}) {
             this._hideLoading();
           }
         },
+        // The engine's render loop polls the held direction and paces repeat
+        // steps to the server cadence, so holding a key walks continuously.
+        getHeldIntent: () => this._input?.currentIntent() ?? null,
+        onStep: (step) => this._channel?.push(CLIENT_EVENTS.INPUT, step),
       });
 
       // Size the canvas backing store to its laid-out box and keep it in sync,

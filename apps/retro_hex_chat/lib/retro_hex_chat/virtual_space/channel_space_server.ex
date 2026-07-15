@@ -22,6 +22,11 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
 
   @pubsub RetroHexChat.PubSub
   @action_cooldown_ms 250
+  # Clients pace held-key steps to `step_ms/0`; network jitter can compress the
+  # inter-arrival of two well-paced steps below the nominal cadence, and without
+  # a small allowance those steps would be silently dropped and the client's
+  # prediction would rubber-band.
+  @cooldown_jitter_tolerance_ms 30
 
   # Selectable avatar ids. Must stay in sync with `AVATAR_IDS` in the JS atlas
   # (`assets/js/lib/space/sprite_atlas.js`). The first entry is the default the
@@ -160,6 +165,13 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   @doc "The canonical list of selectable avatar ids (in sync with the JS atlas)."
   @spec avatars() :: [String.t()]
   def avatars, do: @avatars
+
+  @doc """
+  The movement cooldown (ms per step). Shared with clients via the `space_init`
+  config so they pace held-key repeat steps to the rate the server accepts.
+  """
+  @spec step_ms() :: non_neg_integer()
+  def step_ms, do: Application.get_env(:retro_hex_chat, :virtual_space_step_ms, 150)
 
   @spec select_avatar(String.t(), String.t(), String.t()) ::
           :ok | {:error, select_avatar_error()}
@@ -994,7 +1006,7 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   defp cooldown_elapsed?(participant) do
     case participant.last_input_at do
       nil -> true
-      last -> mono_ms() - last >= step_ms()
+      last -> mono_ms() - last >= step_ms() - @cooldown_jitter_tolerance_ms
     end
   end
 
@@ -1006,8 +1018,6 @@ defmodule RetroHexChat.VirtualSpace.ChannelSpaceServer do
   end
 
   defp mono_ms, do: System.monotonic_time(:millisecond)
-
-  defp step_ms, do: Application.get_env(:retro_hex_chat, :virtual_space_step_ms, 150)
 
   defp pick_spawn(state) do
     occupied =

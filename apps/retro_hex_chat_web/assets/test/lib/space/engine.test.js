@@ -251,7 +251,10 @@ describe("SpaceEngine local prediction and reconciliation", () => {
 
   it("confirms via seq_ack and discards acknowledged predictions", () => {
     const engine = startedEngine();
+    let clock = 0;
+    engine.setClock(() => clock);
     engine.predict({ dx: 1, dy: 0, dir: "right" }); // seq 1 -> x=6
+    clock += 150; // step cooldown
     engine.predict({ dx: 1, dy: 0, dir: "right" }); // seq 2 -> x=7
     expect(engine.pendingCount()).toBe(2);
 
@@ -287,6 +290,32 @@ describe("SpaceEngine local prediction and reconciliation", () => {
     expect(engine.participant("registered:1").x).toBe(x);
   });
 
+  it("refuses a second predict inside the step cooldown and buffers it", () => {
+    const engine = startedEngine();
+    let clock = 0;
+    engine.setClock(() => clock);
+
+    expect(engine.predict({ dx: 1, dy: 0, dir: "right" }).moved).toBe(true);
+    clock = 100;
+    expect(engine.predict({ dx: 1, dy: 0, dir: "right" }).moved).toBe(false);
+    expect(engine.participant("registered:1").x).toBe(6);
+    expect(engine.pendingCount()).toBe(1);
+
+    clock = 150;
+    expect(engine.predict({ dx: 1, dy: 0, dir: "right" }).moved).toBe(true);
+    expect(engine.participant("registered:1").x).toBe(7);
+  });
+
+  it("honors a custom step cadence from the init config", () => {
+    const engine = startedEngine({ config: { scale: 2, step_ms: 50 } });
+    let clock = 0;
+    engine.setClock(() => clock);
+
+    expect(engine.predict({ dx: 1, dy: 0, dir: "right" }).moved).toBe(true);
+    clock = 50;
+    expect(engine.predict({ dx: 1, dy: 0, dir: "right" }).moved).toBe(true);
+  });
+
   it("interpolates a remote participant's move over time", () => {
     const engine = startedEngine();
     let clock = 0;
@@ -308,6 +337,142 @@ describe("SpaceEngine local prediction and reconciliation", () => {
 
     const settled = engine.renderPosition("registered:2", 1000);
     expect(settled.x).toBe(9);
+  });
+});
+
+describe("SpaceEngine held-key movement", () => {
+  it("auto-steps at the server cadence while a direction is held", () => {
+    let held = { dx: 1, dy: 0, dir: "right" };
+    const onStep = vi.fn();
+    const { engine, scheduler } = buildEngine({ getHeldIntent: () => held, onStep });
+    let clock = 0;
+    engine.setClock(() => clock);
+    engine.start(tavernInit());
+
+    // First frame steps immediately (no prior step).
+    scheduler.flush();
+    expect(onStep).toHaveBeenCalledTimes(1);
+    expect(engine.participant("registered:1").x).toBe(6);
+
+    // Frames inside the cooldown do not step again.
+    clock = 100;
+    scheduler.flush();
+    expect(onStep).toHaveBeenCalledTimes(1);
+
+    // The cooldown elapses: the held key fires the next step.
+    clock = 150;
+    scheduler.flush();
+    expect(onStep).toHaveBeenCalledTimes(2);
+    expect(onStep).toHaveBeenLastCalledWith({ seq: 2, dx: 1, dy: 0 });
+    expect(engine.participant("registered:1").x).toBe(7);
+
+    // Releasing the key stops the walk.
+    held = null;
+    clock = 400;
+    scheduler.flush();
+    expect(onStep).toHaveBeenCalledTimes(2);
+  });
+
+  it("replays a tap that landed inside the cooldown once it expires", () => {
+    const onStep = vi.fn();
+    const { engine, scheduler } = buildEngine({ onStep });
+    let clock = 0;
+    engine.setClock(() => clock);
+    engine.start(tavernInit());
+
+    expect(engine.predict({ dx: 1, dy: 0, dir: "right" }).moved).toBe(true);
+    clock = 100;
+    expect(engine.predict({ dx: 1, dy: 0, dir: "right" }).moved).toBe(false);
+
+    clock = 150;
+    scheduler.flush();
+    expect(onStep).toHaveBeenCalledWith({ seq: 2, dx: 1, dy: 0 });
+    expect(engine.participant("registered:1").x).toBe(7);
+  });
+
+  it("expires a stale buffered tap instead of replaying it much later", () => {
+    const onStep = vi.fn();
+    const { engine, scheduler } = buildEngine({ onStep });
+    let clock = 0;
+    engine.setClock(() => clock);
+    engine.start(tavernInit());
+
+    engine.predict({ dx: 1, dy: 0, dir: "right" });
+    clock = 100;
+    engine.predict({ dx: 1, dy: 0, dir: "right" }); // buffered at t=100
+
+    clock = 400; // long past freshness (stepMs after the tap)
+    scheduler.flush();
+    expect(onStep).not.toHaveBeenCalled();
+    expect(engine.participant("registered:1").x).toBe(6);
+  });
+});
+
+describe("SpaceEngine self interpolation", () => {
+  function clockedEngine() {
+    const built = buildEngine();
+    let clock = 0;
+    built.engine.setClock(() => clock);
+    built.engine.start(tavernInit());
+    return { ...built, setNow: (t) => (clock = t) };
+  }
+
+  it("glides the self avatar between tiles instead of teleporting", () => {
+    const { engine, setNow } = clockedEngine();
+
+    engine.predict({ dx: 1, dy: 0, dir: "right" });
+    expect(engine.participant("registered:1").x).toBe(6); // logical tile is immediate
+
+    setNow(75);
+    const mid = engine.renderPosition("registered:1", 75);
+    expect(mid.x).toBeGreaterThan(5);
+    expect(mid.x).toBeLessThan(6);
+
+    setNow(200);
+    expect(engine.renderPosition("registered:1", 200).x).toBe(6);
+  });
+
+  it("glides back to the server tile when a prediction is rolled back", () => {
+    const { engine, setNow } = clockedEngine();
+
+    engine.predict({ dx: 1, dy: 0, dir: "right" }); // seq 1 -> optimistic x=6
+    setNow(150);
+
+    // Server rejects: acks seq 1 but reports the old tile.
+    engine.applyDelta({
+      serverTime: 2,
+      seqAck: { "registered:1": 1 },
+      updates: { "registered:1": { x: 5, y: 5, dir: "right" } },
+      joined: {},
+      left: [],
+    });
+    expect(engine.participant("registered:1").x).toBe(5);
+
+    // The correction tweens back instead of snapping.
+    const mid = engine.renderPosition("registered:1", 225);
+    expect(mid.x).toBeGreaterThan(5);
+    expect(mid.x).toBeLessThan(6);
+    expect(engine.renderPosition("registered:1", 500).x).toBe(5);
+  });
+
+  it("keeps the camera on the gliding self position each frame", () => {
+    const { engine, scheduler, setNow } = clockedEngine();
+    scheduler.flush();
+    const before = engine.camera.x;
+
+    engine.predict({ dx: 1, dy: 0, dir: "right" });
+    setNow(75);
+    scheduler.flush();
+    const mid = engine.camera.x;
+
+    setNow(200);
+    scheduler.flush();
+    const settled = engine.camera.x;
+
+    // Iso +x steps move the foot anchor right on screen; the camera tracks the
+    // tween through an intermediate position rather than jumping a whole tile.
+    expect(mid).toBeGreaterThan(before);
+    expect(mid).toBeLessThan(settled);
   });
 });
 

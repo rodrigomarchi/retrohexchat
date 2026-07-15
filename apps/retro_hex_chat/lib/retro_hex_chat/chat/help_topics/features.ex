@@ -3143,7 +3143,7 @@ defmodule RetroHexChat.Chat.HelpTopics.Features do
         description:
           dgettext(
             "help",
-            "A multiplayer 8-bit virtual space built into every channel: people in the channel can switch from Chat to Space, walk around the shared map, and keep using the same channel conversation."
+            "A multiplayer 8-bit virtual space built into every channel: people in the channel can switch from Chat to Space, walk around the shared map, and keep using the same channel conversation. Move with the Arrow keys or WASD — tap for a single step or hold a key to walk continuously; E interacts, F sits and Space swings."
           ),
         see_also: ["feature-choose-character"]
       },

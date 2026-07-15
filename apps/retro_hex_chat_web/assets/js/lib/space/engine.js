@@ -7,7 +7,14 @@
  * it immediately and is queued as pending until the server acks the seq; on ack
  * the confirmed prediction is dropped and any still-pending steps are re-applied
  * over the authoritative base, rolling back cleanly when the server rejects a
- * move. Remote avatars are interpolated between tiles so their movement glides.
+ * move. All avatars (self included) are interpolated between tiles so movement
+ * glides, and the camera follows the self glide.
+ *
+ * Steps are paced to the server's per-participant cooldown (`step_ms` from the
+ * init config): `predict` refuses a step until the cooldown elapses, and the
+ * render loop re-fires held/buffered intents each frame, so holding a key walks
+ * continuously at exactly the rate the server accepts — no silent server drops,
+ * no reconciliation rubber-banding.
  * @module space/engine
  */
 
@@ -24,6 +31,9 @@ import { Interpolator } from "./interpolation.js";
 import { ChatState } from "./chat.js";
 
 const ACTION_DURATION_MS = 420;
+// Server step cadence fallback when the init config omits `step_ms`. Must match
+// the `:virtual_space_step_ms` default in the Elixir config.
+const DEFAULT_STEP_MS = 150;
 
 export class SpaceEngine {
   /**
@@ -34,14 +44,29 @@ export class SpaceEngine {
    * @param {Function} [opts.requestFrame] frame scheduler
    * @param {Function} [opts.cancelFrame]
    * @param {Function} [opts.onFrameRendered] called after each draw completes
+   * @param {Function} [opts.getHeldIntent] returns the currently-held direction
+   *   intent (or null); polled each frame to drive continuous movement
+   * @param {Function} [opts.onStep] called with the wire payload of each step
+   *   the render loop predicts (held or buffered intents)
    */
-  constructor({ canvas, atlas, renderer, requestFrame, cancelFrame, onFrameRendered } = {}) {
+  constructor({
+    canvas,
+    atlas,
+    renderer,
+    requestFrame,
+    cancelFrame,
+    onFrameRendered,
+    getHeldIntent,
+    onStep,
+  } = {}) {
     this.canvas = canvas;
     this.atlas = atlas;
     this._injectedRenderer = renderer ?? null;
     this._requestFrame = requestFrame ?? ((cb) => window.requestAnimationFrame(cb));
     this._cancelFrame = cancelFrame ?? ((id) => window.cancelAnimationFrame(id));
     this._onFrameRendered = typeof onFrameRendered === "function" ? onFrameRendered : null;
+    this._getHeldIntent = typeof getHeldIntent === "function" ? getHeldIntent : null;
+    this._onStep = typeof onStep === "function" ? onStep : null;
 
     this.selfKey = null;
     this.map = null;
@@ -54,8 +79,17 @@ export class SpaceEngine {
     this._pending = [];
     // Authoritative base position of the self avatar (server truth).
     this._selfBase = null;
-    // Remote interpolation.
+    // Step pacing: mirrors the server's per-participant cooldown so a client
+    // never sends a step the server would silently drop.
+    this._stepMs = DEFAULT_STEP_MS;
+    this._lastStepAt = null;
+    // A tap that landed mid-cooldown; replayed by the render loop once the
+    // cooldown expires so rapid taps walk at full cadence instead of dropping.
+    this._bufferedIntent = null;
+    // Remote interpolation, plus a self tween so the local avatar glides
+    // between predicted tiles instead of teleporting.
     this._interp = new Interpolator();
+    this._selfInterp = new Interpolator();
     // Ephemeral speech bubbles derived from public channel messages.
     this._chat = new ChatState();
     // Ephemeral visual-only actions such as sword swings.
@@ -86,6 +120,8 @@ export class SpaceEngine {
     // Premium iso art is authored at world size, so avatars render native 1:1;
     // the avatar scale falls back to the world scale when the server omits it.
     this._avatarScale = init.config?.avatar_scale ?? scale;
+    const stepMs = Number.parseInt(init.config?.step_ms, 10);
+    this._stepMs = Number.isFinite(stepMs) && stepMs >= 0 ? stepMs : DEFAULT_STEP_MS;
     this.camera = new Camera({
       tileSize: this.map.tileSize,
       scale,
@@ -121,13 +157,17 @@ export class SpaceEngine {
     const normalized = normalizeSnapshot(snapshot);
     this.participants = new Map();
     this._pending = [];
-    this._interp = new Interpolator();
+    // Tween over the step cadence so back-to-back steps read as one continuous
+    // glide (a shorter tween would finish early and stutter between steps).
+    this._interp = new Interpolator({ duration: this._stepMs });
+    this._selfInterp = new Interpolator({ duration: this._stepMs });
     this._actions.clear();
 
     for (const [key, participant] of Object.entries(normalized.participants)) {
       this.participants.set(key, participant);
       if (key === this.selfKey) {
         this._selfBase = { x: participant.x, y: participant.y };
+        this._selfInterp.reset(key, participant.x, participant.y);
       } else {
         this._interp.reset(key, participant.x, participant.y);
       }
@@ -169,13 +209,21 @@ export class SpaceEngine {
   /**
    * Predict a local step: move the self avatar immediately if the target tile
    * is free locally (same map as the server), queue it as pending, and return
-   * the wire payload for the caller to push. A locally-blocked step is dropped.
+   * the wire payload for the caller to push. A locally-blocked step is dropped;
+   * a step inside the server cooldown window is buffered and replayed by the
+   * render loop once the cooldown expires.
    * @param {{dx:number,dy:number,dir:string}} intent
    * @returns {{moved:boolean, seq?:number, dx?:number, dy?:number, dir?:string}}
    */
   predict(intent) {
     const self = this.selfKey ? this.participants.get(this.selfKey) : null;
     if (!self) return { moved: false };
+
+    const now = this._clock();
+    if (this._lastStepAt !== null && now - this._lastStepAt < this._stepMs) {
+      this._bufferedIntent = { intent, at: now };
+      return { moved: false };
+    }
 
     // The projection may remap which key drives which grid axis (iso rotates the
     // D-pad); prediction/reconciliation stay grid-blind after this.
@@ -185,9 +233,11 @@ export class SpaceEngine {
     if (this.map?.isBlocked(nx, ny)) return { moved: false };
 
     const seq = (this._selfSeq += 1);
+    this._lastStepAt = now;
+    this._bufferedIntent = null;
     this._pending.push({ seq, dx: intent.dx, dy: intent.dy });
     this.participants.set(this.selfKey, { ...self, x: nx, y: ny, dir: intent.dir, moving: true });
-    this._recenter();
+    this._selfInterp.moveTo(this.selfKey, nx, ny, now);
 
     return { moved: true, seq, dx: intent.dx, dy: intent.dy, dir: intent.dir };
   }
@@ -252,15 +302,15 @@ export class SpaceEngine {
   }
 
   /**
-   * Render-space tile position at `now`: predicted for self, interpolated for
-   * remotes, falling back to the last known tile.
+   * Render-space tile position at `now`: interpolated for self (toward the
+   * predicted tile) and remotes alike, falling back to the last known tile.
    * @returns {{x:number,y:number}|null}
    */
   renderPosition(key, now) {
     const participant = this.participants.get(key);
     if (!participant) return null;
-    if (key === this.selfKey) return { x: participant.x, y: participant.y };
-    return this._interp.position(key, now) ?? { x: participant.x, y: participant.y };
+    const interp = key === this.selfKey ? this._selfInterp : this._interp;
+    return interp.position(key, now) ?? { x: participant.x, y: participant.y };
   }
 
   /** @returns {object|null} participant by key. */
@@ -370,6 +420,12 @@ export class SpaceEngine {
       // character); keep it rather than dropping every non-position field.
       avatar: serverPos.avatar ?? self.avatar,
     });
+
+    // A rejected move lands the self avatar on a different tile than predicted;
+    // glide back to it instead of teleporting so corrections read gently.
+    if (x !== (self.x ?? x) || y !== (self.y ?? y)) {
+      this._selfInterp.moveTo(this.selfKey, x, y, this._clock());
+    }
   }
 
   _applyRemoteUpdate(key, update, now) {
@@ -420,8 +476,31 @@ export class SpaceEngine {
 
   _frame() {
     if (!this.running) return;
+    this._autoStep();
     this._draw();
     this._rafId = this._requestFrame(this._frame);
+  }
+
+  // Re-fire the held direction (or a tap buffered mid-cooldown) once per frame;
+  // `predict` paces the actual steps to the server cadence, so holding a key
+  // walks continuously at exactly the rate the server accepts.
+  _autoStep() {
+    const intent = this._getHeldIntent?.() ?? this._takeBufferedIntent();
+    if (!intent) return;
+    const result = this.predict(intent);
+    if (result.moved) {
+      this._onStep?.({ seq: result.seq, dx: result.dx, dy: result.dy });
+    }
+  }
+
+  // Consume the buffered tap if it is still fresh (a stale one means the player
+  // stopped tapping; replaying it seconds later would feel like ghost input).
+  _takeBufferedIntent() {
+    const buffered = this._bufferedIntent;
+    if (!buffered) return null;
+    this._bufferedIntent = null;
+    if (this._clock() - buffered.at > this._stepMs) return null;
+    return buffered.intent;
   }
 
   _draw() {
@@ -430,6 +509,7 @@ export class SpaceEngine {
     const bubbles = new Map();
     for (const [key, participant] of this.participants) {
       const pos = this.renderPosition(key, now);
+      if (key === this.selfKey) this.camera?.follow(pos.x, pos.y);
       rendered.set(key, {
         ...participant,
         x: pos.x,

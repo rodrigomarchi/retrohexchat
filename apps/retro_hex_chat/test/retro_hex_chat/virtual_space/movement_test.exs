@@ -156,6 +156,19 @@ defmodule RetroHexChat.VirtualSpace.MovementTest do
       assert {^x, ^y, _} = pos(ctx.channel_name, ctx.key)
     end
 
+    test "a well-paced step arriving slightly early is absorbed by the jitter tolerance" do
+      # With the cadence at exactly the 30ms jitter tolerance, an immediate
+      # second step lands "early" by less than the tolerance and must pass.
+      Application.put_env(:retro_hex_chat, :virtual_space_step_ms, 30)
+      ctx = start_space()
+      {x0, y0, _} = pos(ctx.channel_name, ctx.key)
+
+      assert :ok = ChannelSpaceServer.input(ctx.channel_name, ctx.key, %{seq: 1, dx: 1, dy: 0})
+      assert :ok = ChannelSpaceServer.input(ctx.channel_name, ctx.key, %{seq: 2, dx: 1, dy: 0})
+
+      assert pos(ctx.channel_name, ctx.key) == {x0 + 2, y0, "right"}
+    end
+
     test "input from an absent participant is ignored" do
       ctx = start_space()
 

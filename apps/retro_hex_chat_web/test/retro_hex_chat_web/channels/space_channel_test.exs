@@ -160,6 +160,8 @@ defmodule RetroHexChatWeb.SpaceChannelTest do
       assert is_list(space_init.map.collision)
       assert is_list(space_init.map.seats)
       assert space_init.map.tile_size == 32
+      # The client paces held-key repeat steps to the server's step cooldown.
+      assert space_init.config.step_ms == RetroHexChat.VirtualSpace.step_ms()
       assert is_integer(space_init.snapshot.server_time)
       assert Map.has_key?(space_init.snapshot.participants, "nick:alice")
       assert Map.has_key?(space_init.snapshot.participants, "nick:bob")

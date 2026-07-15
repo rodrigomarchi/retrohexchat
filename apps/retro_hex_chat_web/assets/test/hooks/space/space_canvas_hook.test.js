@@ -395,6 +395,47 @@ describe("SpaceCanvasHook implementation", () => {
     expect(input.detach).toHaveBeenCalled();
   });
 
+  it("wires held-intent polling and auto-step pushes into the engine", () => {
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      destroy: vi.fn(),
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    const input = {
+      attach: vi.fn(),
+      detach: vi.fn(),
+      currentIntent: vi.fn(() => ({ dx: 1, dy: 0, dir: "right" })),
+    };
+    let engineOpts;
+
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({
+          socketFactory: () => socket,
+          engineFactory: (opts) => {
+            engineOpts = opts;
+            return engine;
+          },
+          inputFactory: () => input,
+        }),
+      ),
+      mountContext(),
+    );
+
+    hook.mounted();
+
+    // The engine polls the input controller's held direction each frame...
+    expect(engineOpts.getHeldIntent()).toEqual({ dx: 1, dy: 0, dir: "right" });
+    // ...and pushes every step its render loop predicts.
+    engineOpts.onStep({ seq: 3, dx: 1, dy: 0 });
+    expect(channel.push).toHaveBeenCalledWith("space_input", { seq: 3, dx: 1, dy: 0 });
+
+    hook.destroyed();
+  });
+
   it("plays a local attack and broadcasts a visual space action", () => {
     const engine = {
       start: vi.fn(),

@@ -225,6 +225,8 @@ defmodule RetroHexChatWeb.SpaceChannel do
         # authored at world size, so the whole scene renders native 1:1.
         scale: 1,
         avatar_scale: 1,
+        # Movement cooldown; the client paces held-key repeat steps to this.
+        step_ms: VirtualSpace.step_ms(),
         text_chat: "global"
       },
       snapshot: result.snapshot
