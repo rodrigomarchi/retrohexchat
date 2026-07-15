@@ -293,6 +293,8 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_win_minimize(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_win_maximize(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_win_restore(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_fullscreen_enter(assigns), to: RetroHexChatWeb.Icons.Marks
+  defdelegate icon_fullscreen_exit(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_win_help(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_win_cascade(assigns), to: RetroHexChatWeb.Icons.Marks
   defdelegate icon_win_tile_h(assigns), to: RetroHexChatWeb.Icons.Marks

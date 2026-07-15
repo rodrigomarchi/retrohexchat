@@ -437,6 +437,46 @@ describe("SpaceCanvasHook implementation", () => {
     expect(pad.detach).toHaveBeenCalled();
   });
 
+  it("wires the fullscreen toggle against the shell element", () => {
+    const engine = {
+      start: vi.fn(),
+      applyDelta: vi.fn(),
+      applySnapshot: vi.fn(),
+      destroy: vi.fn(),
+    };
+    const channel = fakeChannel();
+    const socket = fakeSocket(channel);
+    const fullscreen = { attach: vi.fn(), detach: vi.fn() };
+    let fullscreenOpts;
+
+    const ctx = mountContext();
+    const toggle = document.createElement("button");
+    toggle.setAttribute("data-space-fullscreen-toggle", "");
+    ctx.el.appendChild(toggle);
+
+    const hook = Object.assign(
+      Object.create(
+        createSpaceCanvasHook({
+          socketFactory: () => socket,
+          engineFactory: () => engine,
+          fullscreenFactory: (opts) => {
+            fullscreenOpts = opts;
+            return fullscreen;
+          },
+        }),
+      ),
+      ctx,
+    );
+
+    hook.mounted();
+    expect(fullscreenOpts.button).toBe(toggle);
+    expect(fullscreenOpts.target).toBe(ctx.el);
+    expect(fullscreen.attach).toHaveBeenCalled();
+
+    hook.destroyed();
+    expect(fullscreen.detach).toHaveBeenCalled();
+  });
+
   it("wires held-intent polling and auto-step pushes into the engine", () => {
     const engine = {
       start: vi.fn(),

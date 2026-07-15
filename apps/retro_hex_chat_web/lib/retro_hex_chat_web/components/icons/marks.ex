@@ -345,6 +345,38 @@ defmodule RetroHexChatWeb.Icons.Marks do
     """
   end
 
+  @doc "Fullscreen enter — corner brackets expanding outward (currentColor)."
+  attr :class, :string, default: nil
+
+  @spec icon_fullscreen_enter(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fullscreen_enter(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M2 2h5v2H4v3H2zM9 2h5v5h-2V4H9zM2 9h2v3h3v2H2zM12 9h2v5H9v-2h3z"
+      />
+    </svg>
+    """
+  end
+
+  @doc "Fullscreen exit — windowed-mode square outline (currentColor)."
+  attr :class, :string, default: nil
+
+  @spec icon_fullscreen_exit(map()) :: Phoenix.LiveView.Rendered.t()
+  def icon_fullscreen_exit(assigns) do
+    ~H"""
+    <svg class={@class} viewBox="0 0 16 16" shape-rendering="crispEdges" aria-hidden="true">
+      <path
+        fill="currentColor"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M13 3H3v10h10V3zM11 6H5v5h6V6z"
+      />
+    </svg>
+    """
+  end
+
   @doc "Win98 window help control — question mark."
   attr :class, :string, default: nil
 

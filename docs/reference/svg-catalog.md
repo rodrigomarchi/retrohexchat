@@ -143,6 +143,15 @@ All SVGs extracted and organized in the SVG consolidation effort.
 | `icon_pin` | Push pin for pinned conference participants **[DONE]** |
 | `icon_sword` | 8-bit upright sword (currentColor) for the space virtual pad attack button **[DONE]** |
 
+### Marks
+
+`apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/icons/marks.ex`
+
+| Function | Description |
+|----------|-------------|
+| `icon_fullscreen_enter` | Corner brackets expanding outward (currentColor) for the space fullscreen toggle **[DONE]** |
+| `icon_fullscreen_exit` | Windowed-mode square outline (currentColor) for the space fullscreen toggle **[DONE]** |
+
 ### Arrows
 
 `apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/icons/arrows.ex`

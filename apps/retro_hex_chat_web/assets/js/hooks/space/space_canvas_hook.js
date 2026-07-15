@@ -14,6 +14,7 @@ import { log } from "../../lib/logger.js";
 import { Socket } from "phoenix";
 
 import { SpaceEngine } from "../../lib/space/engine.js";
+import { FullscreenToggleController } from "../../lib/space/fullscreen.js";
 import { InputController } from "../../lib/space/input.js";
 import { VirtualPadController } from "../../lib/space/virtual_pad.js";
 import { ModalController } from "../../lib/space/modal.js";
@@ -36,7 +37,7 @@ const RENDER_SCALE = 2;
 /**
  * Build the hook implementation. Socket/engine/input construction is injectable
  * so the wiring can be unit-tested without a live server or a real canvas.
- * @param {{socketFactory?: Function, engineFactory?: Function, inputFactory?: Function, padFactory?: Function}} [deps]
+ * @param {{socketFactory?: Function, engineFactory?: Function, inputFactory?: Function, padFactory?: Function, fullscreenFactory?: Function}} [deps]
  * @returns {object} LiveView hook implementation
  */
 export function createSpaceCanvasHook(deps = {}) {
@@ -44,6 +45,7 @@ export function createSpaceCanvasHook(deps = {}) {
   const engineFactory = deps.engineFactory ?? defaultEngineFactory;
   const inputFactory = deps.inputFactory ?? defaultInputFactory;
   const padFactory = deps.padFactory ?? defaultPadFactory;
+  const fullscreenFactory = deps.fullscreenFactory ?? defaultFullscreenFactory;
 
   return {
     mounted() {
@@ -104,6 +106,14 @@ export function createSpaceCanvasHook(deps = {}) {
       this._pad = padRoot ? padFactory({ root: padRoot, input: this._input }) : null;
       this._pad?.attach();
 
+      // Fullscreen presents the whole shell (canvas + overlays); the existing
+      // ResizeObserver re-fits the canvas when the shell size jumps.
+      const fullscreenButton = this.el.querySelector("[data-space-fullscreen-toggle]");
+      this._fullscreen = fullscreenButton
+        ? fullscreenFactory({ button: fullscreenButton, target: this.el })
+        : null;
+      this._fullscreen?.attach();
+
       this._attachPointerEvents();
 
       this._modal = new ModalController({ onChange: (m) => this._renderModal(m) });
@@ -139,6 +149,7 @@ export function createSpaceCanvasHook(deps = {}) {
 
     destroyed() {
       this._detachPointerEvents();
+      this._fullscreen?.detach();
       this._pad?.detach();
       this._input?.detach();
       this._modal?.detach();
@@ -147,6 +158,7 @@ export function createSpaceCanvasHook(deps = {}) {
       this._engine?.destroy();
       this._channel?.leave();
       this._socket?.disconnect();
+      this._fullscreen = null;
       this._pad = null;
       this._input = null;
       this._modal = null;
@@ -383,6 +395,10 @@ function defaultInputFactory(options) {
 
 function defaultPadFactory(options) {
   return new VirtualPadController(options);
+}
+
+function defaultFullscreenFactory(options) {
+  return new FullscreenToggleController(options);
 }
 
 function csrfToken() {
