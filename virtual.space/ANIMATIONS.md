@@ -176,6 +176,8 @@ scene (the Matrix nook + sky):
 | `eot_balrog` (static body) | 1 | — | obsidian demon; all its fire is the blaze below |
 | `eot_balrogfire` (blaze) | 6 | 660 | fierce fire wall at the Balrog's feet |
 | `eot_gandalf` (staff flare) | 6 | 1600 | slow cold pulse of the crystal |
+| `eot_goku` (charging) | 6 | 1400 | hair/gi fluttering in the energy current |
+| `eot_dama` (spirit bomb) | 6 | 900 | plasma churn, rim wisps, pulsing core |
 | `iso_star` (script-drawn) | 4 | 1100 | twinkle |
 
 Reference values from the pre-iso scene (props long gone, tuning still useful):
@@ -322,6 +324,18 @@ placement and the live look. Finish with `make ci` (9/9).
   canvas is rock-solid). Corollary: if all visible fire must animate, the
   static art must carry NO painted flames — regenerate it flame-free rather
   than pairing dead fire with living fire.
+- **Floating props: anchor on the NW diagonal, skip collision.** A prop at
+  Goku's tile + `(-k,-k)` projects straight UP on screen (`x-y` constant,
+  `x+y` shrinks) — the Spirit Bomb hangs 120px above his hands with no ground
+  footprint, so players walk beneath it (the `FLOATING` list in
+  `author_scene.py`). Its lower `x+y` also draws it behind the character for
+  free. Verify a "same size, same position" prompt held by diffing the alpha
+  SILHOUETTE across frames (interior churn can be 30%+ while the outline
+  stays ≤6% — that's a swirl, not a wobble).
+- **The sheet grows DOWN, not square.** `SHEET_COLS` (width) only needs the
+  widest strip; `SHEET_ROWS` tracks the stacked strip rows. The pack guard
+  catches an overflow as "frame packed empty" — raise `SHEET_ROWS`, not the
+  width.
 - **Lights ride fractional tiles.** `footAnchor` is linear in (x,y), so a
   light at `x: 19.078, y: 34.922` lands ±px-precise on an emitter (Gandalf's
   staff crystal). Measure the emitter's centroid in the packed frames' UNION

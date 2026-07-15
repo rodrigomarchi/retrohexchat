@@ -46,11 +46,11 @@ BRIDGES = {
     "bridge_e": {"x0": 60, "x1": 65, "y0": 35, "y1": 36},
 }
 SOLIDS = {**PLATFORMS, **BRIDGES}
-# One lamppost per platform centre; themed platforms carry their own light
+# Only the hub keeps a lamppost; every themed platform carries its own light
 # (north: the Matrix TV; east: the DeLorean fire trails; west: the Balrog's
-# inferno vs Gandalf's staff). The central lamp anchors the spawns, the
-# lights and the DM nameplate.
-LAMPS = [(48, 36), (48, 58)]
+# inferno vs Gandalf's staff; south: the Spirit Bomb's cold radiance). The
+# central lamp anchors the spawns, the lights and the DM nameplate.
+LAMPS = [(48, 36)]
 # Animated props (real PixelLab frames, packed as horizontal strips):
 # name -> (frames folder under scenes/end_of_time/, block w×h in cells,
 # period_ms, flip_x). The Matrix nook on the north platform: Morpheus (west
@@ -75,6 +75,11 @@ ANIM_PROPS = {
     "eot_balrog": ("anim/balrog", 8, 7, 1000, False, None),
     "eot_balrogfire": ("anim/balrogfire", 4, 2, 660, False, None),
     "eot_gandalf": ("anim/gandalf", 2, 4, 1600, False, None),
+    # South platform (static-first): Goku gathers a Spirit Bomb — the giant
+    # sphere is its own prop floating overhead (anchored NW so it hangs
+    # straight above him on screen), sidestepping the big-subject v3 limit.
+    "eot_goku": ("anim/goku", 3, 4, 1400, False, None),
+    "eot_dama": ("anim/dama", 4, 5, 900, False, None),
 }
 # Matrix nook placement: decor anchor tile + solid ground footprint. The TV
 # sits on the pair's perpendicular bisector pushed north — (46,10) projects
@@ -96,7 +101,13 @@ FURNITURE = [
     # front, rising from INSIDE his painted fire pool (one blaze, not two).
     ("eot_balrogfire", 11, 31, {"x": 11, "y": 32, "w": 2, "h": 1}),
     ("eot_gandalf", 19, 35, {"x": 19, "y": 35, "w": 1, "h": 1}),
+    # South platform: Goku braced at the centre-south, arms to the sky.
+    ("eot_goku", 48, 58, {"x": 48, "y": 58, "w": 2, "h": 1}),
 ]
+# Floating decor: drawn like standing props but with NO ground footprint —
+# the Spirit Bomb hangs overhead (6 diagonal tiles NW of Goku = 120px straight
+# up on screen) and players walk beneath it.
+FLOATING = [("eot_dama", 42, 52)]
 # The two burning wheel trails behind the rear tyres, running down-left along
 # the car's travel axis (tile steps (0,+1) = the sheared streak's 2:1 slope).
 # Fire cells are solid — nobody stands in a fire.
@@ -105,6 +116,9 @@ FURNITURE = [
 # one perpendicular step (-1,0) away.
 FIRE_TRAIL = [(78, 35), (78, 36), (78, 37), (79, 35), (79, 36), (79, 37)]
 SHEET_COLS = 36
+# The sheet grows DOWN as animated strips stack; width only needs the widest
+# strip (the DeLorean's 30 cells), height the sum of all strip rows.
+SHEET_ROWS = 45
 Z_STEP = 16
 
 
@@ -277,9 +291,9 @@ def build():
     floor = _floor_tiles()
     fw, fh = floor[0].size                       # native diamond size (2:1 or 1:1)
     hw, hh = fw / 2, fh / 2
-    sheet = Image.new("RGBA", (SHEET_COLS * T, SHEET_COLS * T), (0, 0, 0, 0))
+    sheet = Image.new("RGBA", (SHEET_COLS * T, SHEET_ROWS * T), (0, 0, 0, 0))
     vocab = {}
-    vocab["g"] = {"col": SHEET_COLS - 1, "row": SHEET_COLS - 1, "w": 1, "h": 1}  # transparent void
+    vocab["g"] = {"col": SHEET_COLS - 1, "row": SHEET_ROWS - 1, "w": 1, "h": 1}  # transparent void
 
     # Floor variations laid top-anchored on a row.
     col = 0
@@ -425,6 +439,8 @@ def build():
         {"x": x, "y": y, "tile": name, "sort": "stand"} for name, x, y, _fp in FURNITURE
     ] + [
         {"x": x, "y": y, "tile": "eot_fire", "sort": "stand"} for x, y in FIRE_TRAIL
+    ] + [
+        {"x": x, "y": y, "tile": name, "sort": "stand"} for name, x, y in FLOATING
     ]
 
     # Collision is the void — the complement of the solid cross — plus the
@@ -474,6 +490,11 @@ def build():
     # the +4px screen-x.
     lights.append({"x": 19.078, "y": 34.922, "lift": 75, "radius": 1.1,
                    "color": "e8f4ff", "blend": "add"})
+    # South platform: the gathered Spirit Bomb washes the whole plaza in cold
+    # blue-white light — a soft wide pool below + a bright halo on the sphere.
+    lights.append({"x": 48, "y": 58, "radius": 3.6, "color": "9fd4ff", "blend": "add"})
+    lights.append({"x": 42, "y": 52, "lift": 65, "radius": 2.2, "color": "d9f2ff",
+                   "blend": "add"})
     lights.append({"x": 79, "y": 33, "lift": 40, "radius": 1.1, "color": "a8c8ff",
                    "blend": "add"})
 
