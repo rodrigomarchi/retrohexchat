@@ -19,6 +19,8 @@ defmodule RetroHexChatWeb.Components.Diagrams do
   | `Diagrams.P2pArchitecture` | P2P architecture diagram                   |
   | `Diagrams.Security`        | Encryption layers and protocol diagram     |
   | `Diagrams.Voice`           | Voice/video call mockup                    |
+  | `Diagrams.ChatWorkspace`   | Persistent chat workspace diagram          |
+  | `Diagrams.ConferenceTopology` | Channel conference topology diagram      |
   | `Diagrams.GameP2pFlow`     | P2P multiplayer game flow                  |
   | `Diagrams.GameArcadeFlow`  | Solo arcade game flow                      |
   | `Diagrams.GameScreens`     | Shared `win98_chrome/1` helper only        |
@@ -39,6 +41,13 @@ defmodule RetroHexChatWeb.Components.Diagrams do
 
   # ── Voice ─────────────────────────────────────────
   defdelegate diagram_voice_call_mockup(assigns), to: RetroHexChatWeb.Components.Diagrams.Voice
+
+  # ── Conversation Modes ────────────────────────────
+  defdelegate diagram_chat_workspace(assigns),
+    to: RetroHexChatWeb.Components.Diagrams.ChatWorkspace
+
+  defdelegate diagram_conference_topology(assigns),
+    to: RetroHexChatWeb.Components.Diagrams.ConferenceTopology
 
   # ── Game Flows ────────────────────────────────────
   defdelegate diagram_p2p_games(assigns), to: RetroHexChatWeb.Components.Diagrams.GameP2pFlow

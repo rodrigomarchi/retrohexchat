@@ -213,6 +213,31 @@ defmodule RetroHexChatWeb.LandingLiveTest do
       assert Floki.attribute(wordmark, "height") == ["120"]
     end
 
+    test "renders rich chat, space, and conference visuals", %{conn: conn} do
+      conn = get(conn, "/")
+      document = html_response(conn, 200) |> Floki.parse_document!()
+
+      section = Floki.find(document, ~s(section[aria-labelledby="conversation-modes-heading"]))
+
+      assert section != []
+      assert Floki.find(section, ~s([aria-label="Persistent chat workspace diagram"])) != []
+      assert Floki.find(section, ~s([aria-label="Channel conference topology diagram"])) != []
+
+      space_image =
+        Floki.find(section, ~s(img[src="/images/landing/space_end_of_time_showcase.png"]))
+
+      assert space_image != []
+
+      assert Floki.attribute(space_image, "alt") == [
+               "End of Time Space map with avatars and in-world chat bubbles"
+             ]
+
+      section_text = Floki.text(section)
+      assert section_text =~ "Channels, DMs, bots, commands, replies"
+      assert section_text =~ "Space renders that same conversation as a live map"
+      assert section_text =~ "Conference keeps media inside the channel"
+    end
+
     test "uses static data attributes for progressive interactions", %{conn: conn} do
       conn = get(conn, "/")
       body = html_response(conn, 200)
@@ -245,6 +270,18 @@ defmodule RetroHexChatWeb.LandingLiveTest do
     test "GET /features has unique page title", %{conn: conn} do
       {:ok, _view, html} = live(conn, "/features")
       assert html =~ "Features"
+    end
+
+    test "GET /features shows space and conference feature visuals", %{conn: conn} do
+      conn = get(conn, "/features")
+      document = html_response(conn, 200) |> Floki.parse_document!()
+
+      assert Floki.find(
+               document,
+               ~s(img[src="/images/landing/space_end_of_time_showcase.png"])
+             ) != []
+
+      assert Floki.find(document, ~s([aria-label="Channel conference topology diagram"])) != []
     end
 
     test "GET /privacy has unique page title", %{conn: conn} do

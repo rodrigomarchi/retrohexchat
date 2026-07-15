@@ -276,42 +276,67 @@
           {dgettext("landing", "Chat, Space, or Conference — switch without leaving the channel.")}
         </h2>
 
-        <div class="grid md:grid-cols-3 gap-3">
+        <div class="grid lg:grid-cols-3 gap-3">
           <div class="shadow-retro-field bg-white p-3 text-sm">
-            <div class="flex items-center gap-2 font-bold mb-1">
+            <div class="flex items-center gap-2 font-bold mb-2">
               <Icons.icon_chat class="w-4 h-4" />
               {dgettext("landing", "Chat")}
             </div>
-            <p class="text-xs">
+            <div
+              class="shadow-retro-field bg-[#20232b] p-2 mb-2"
+              aria-label={dgettext("landing", "Persistent chat workspace diagram")}
+            >
+              <.diagram_chat_workspace class="w-full mx-auto" />
+            </div>
+            <p class="text-xs leading-relaxed">
               {dgettext(
                 "landing",
-                "Classic real-time channels, direct messages, replies, reactions, and command-driven moderation."
+                "Channels, DMs, bots, commands, replies, reactions, and moderation stay in one durable conversation history."
               )}
             </p>
           </div>
 
           <div class="shadow-retro-field bg-white p-3 text-sm">
-            <div class="flex items-center gap-2 font-bold mb-1">
+            <div class="flex items-center gap-2 font-bold mb-2">
               <Icons.icon_group_view class="w-4 h-4" />
               {dgettext("landing", "Space")}
             </div>
-            <p class="text-xs">
+            <div class="shadow-retro-field bg-black p-1 mb-2">
+              <img
+                src="/images/landing/space_end_of_time_showcase.png"
+                alt={
+                  dgettext(
+                    "landing",
+                    "End of Time Space map with avatars and in-world chat bubbles"
+                  )
+                }
+                class="block w-full h-auto"
+                loading="lazy"
+              />
+            </div>
+            <p class="text-xs leading-relaxed">
               {dgettext(
                 "landing",
-                "Walk around the same conversation as an avatar in a shared 8-bit map for channels and DMs."
+                "Space renders that same conversation as a live map: avatars move, messages bubble in-world, and the channel or DM stays the source of truth."
               )}
             </p>
           </div>
 
           <div class="shadow-retro-field bg-white p-3 text-sm">
-            <div class="flex items-center gap-2 font-bold mb-1">
+            <div class="flex items-center gap-2 font-bold mb-2">
               <Icons.icon_conference class="w-4 h-4" />
               {dgettext("landing", "Conference")}
             </div>
-            <p class="text-xs">
+            <div
+              class="shadow-retro-field bg-[#20232b] p-2 mb-2"
+              aria-label={dgettext("landing", "Channel conference topology diagram")}
+            >
+              <.diagram_conference_topology class="w-full mx-auto" />
+            </div>
+            <p class="text-xs leading-relaxed">
               {dgettext(
                 "landing",
-                "Start a channel call with audio, video, screen sharing, reactions, hand raise, and moderator controls."
+                "Conference keeps media inside the channel: participants join from the room, operators moderate, and your SFU routes the streams."
               )}
             </p>
           </div>

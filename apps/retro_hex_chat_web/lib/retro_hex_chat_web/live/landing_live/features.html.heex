@@ -120,25 +120,18 @@
           <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Every channel can become a shared 8-bit room.")}
           </h2>
-          <div class="shadow-retro-field bg-white p-3 mb-2">
-            <div class="grid grid-cols-4 gap-2 justify-items-center">
-              <div class="flex flex-col items-center gap-0.5">
-                <Icons.icon_group_view class="w-8 h-8" />
-                <span class="text-[9px]">{dgettext("landing", "Space")}</span>
-              </div>
-              <div class="flex flex-col items-center gap-0.5">
-                <Icons.icon_chat class="w-8 h-8" />
-                <span class="text-[9px]">{dgettext("landing", "Chat")}</span>
-              </div>
-              <div class="flex flex-col items-center gap-0.5">
-                <Icons.icon_channels class="w-8 h-8" />
-                <span class="text-[9px]">{dgettext("landing", "Channel")}</span>
-              </div>
-              <div class="flex flex-col items-center gap-0.5">
-                <Icons.icon_p2p class="w-8 h-8" />
-                <span class="text-[9px]">{dgettext("landing", "DM")}</span>
-              </div>
-            </div>
+          <div class="shadow-retro-field bg-black p-1 mb-2">
+            <img
+              src="/images/landing/space_end_of_time_showcase.png"
+              alt={
+                dgettext(
+                  "landing",
+                  "End of Time Space map with avatars and in-world chat bubbles"
+                )
+              }
+              class="block w-full h-auto"
+              loading="lazy"
+            />
           </div>
           <div class="space-y-1.5">
             <div class="flex items-start gap-2 text-xs">
@@ -189,25 +182,11 @@
           <h2 class="text-sm font-bold mb-2">
             {dgettext("landing", "Group calls live inside channels.")}
           </h2>
-          <div class="shadow-retro-field bg-white p-3 mb-2">
-            <div class="grid grid-cols-4 gap-2 justify-items-center">
-              <div class="flex flex-col items-center gap-0.5">
-                <Icons.icon_conference class="w-8 h-8" />
-                <span class="text-[9px]">{dgettext("landing", "Call")}</span>
-              </div>
-              <div class="flex flex-col items-center gap-0.5">
-                <Icons.icon_call_screen_share class="w-8 h-8" />
-                <span class="text-[9px]">{dgettext("landing", "Share")}</span>
-              </div>
-              <div class="flex flex-col items-center gap-0.5">
-                <Icons.icon_call_raise_hand class="w-8 h-8" />
-                <span class="text-[9px]">{dgettext("landing", "Hand")}</span>
-              </div>
-              <div class="flex flex-col items-center gap-0.5">
-                <Icons.icon_call_reactions class="w-8 h-8" />
-                <span class="text-[9px]">{dgettext("landing", "React")}</span>
-              </div>
-            </div>
+          <div
+            class="shadow-retro-field bg-[#20232b] p-2 mb-2"
+            aria-label={dgettext("landing", "Channel conference topology diagram")}
+          >
+            <.diagram_conference_topology class="w-full max-w-lg mx-auto" />
           </div>
           <div class="space-y-1.5">
             <div class="flex items-start gap-2 text-xs">
