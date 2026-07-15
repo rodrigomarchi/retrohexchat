@@ -706,6 +706,11 @@ defmodule RetroHexChat.GroupCall.SFUMediaPathTest do
       :ok = GroupCall.request_offer(ctx.token, alice_client.participant_id)
       assert_receive {:sfu_probe, :alice, :answered_offer}, 10_000
 
+      # The answer only completes signaling; the restarted ICE transport drops
+      # packets until connectivity re-establishes, so wait for the peer to come
+      # back before bursting a finite packet train through it.
+      assert_receive {:sfu_probe, :alice, :connection_state, :connected}, 10_000
+
       drain_probe_rtp()
 
       send(bob_client.pid, {:send_rtp, :video, @video_packet_burst})
