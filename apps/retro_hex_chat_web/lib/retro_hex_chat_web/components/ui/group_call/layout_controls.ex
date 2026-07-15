@@ -7,21 +7,24 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
   """
   use RetroHexChatWeb.Component
 
-  alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Icons.CallControls
 
   attr :call, :map, default: nil
   attr :on_layout_mode, :any, default: "group_call_layout_mode"
   attr :on_toggle_sidebar, :any, default: "group_call_toggle_sidebar"
   attr :on_cycle_self_view, :any, default: "group_call_cycle_self_view"
   attr :on_clear_focus, :any, default: "group_call_clear_focus"
+  attr :orientation, :string, values: ~w(horizontal vertical), default: "horizontal"
+  attr :class, :any, default: nil
 
   @spec layout_controls(map()) :: Phoenix.LiveView.Rendered.t()
   def layout_controls(assigns) do
     ~H"""
     <div
-      class="flex shrink-0 items-center gap-px"
+      class={layout_controls_class(@orientation, @class)}
       role="toolbar"
       aria-label={dgettext("group_call", "Conference layout controls")}
+      data-orientation={@orientation}
       data-testid="group-call-layout-controls"
     >
       <.layout_button
@@ -31,7 +34,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         label={dgettext("group_call", "Auto layout")}
         testid="group-call-layout-auto"
       >
-        <Icons.icon_layout_maximize class="h-3.5 w-3.5" />
+        <CallControls.icon_call_layout_auto class="h-8 w-8" />
       </.layout_button>
 
       <.layout_button
@@ -41,7 +44,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         label={dgettext("group_call", "Grid layout")}
         testid="group-call-layout-grid"
       >
-        <Icons.icon_layout_side_by_side class="h-3.5 w-3.5" />
+        <CallControls.icon_call_layout_split class="h-8 w-8" />
       </.layout_button>
 
       <.layout_button
@@ -51,7 +54,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         label={dgettext("group_call", "Focus layout")}
         testid="group-call-layout-focus"
       >
-        <Icons.icon_layout_focus class="h-3.5 w-3.5" />
+        <CallControls.icon_call_layout_focus class="h-8 w-8" />
       </.layout_button>
 
       <.layout_button
@@ -61,7 +64,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         label={dgettext("group_call", "Speaker layout")}
         testid="group-call-layout-speaker"
       >
-        <Icons.icon_microphone class="h-3.5 w-3.5" />
+        <CallControls.icon_call_layout_speaker class="h-8 w-8" />
       </.layout_button>
 
       <button
@@ -73,7 +76,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         aria-pressed={to_string(sidebar_open?(@call))}
         data-testid="group-call-layout-sidebar"
       >
-        <Icons.icon_tab_nicklist class="h-3.5 w-3.5" />
+        <CallControls.icon_call_participants class="h-8 w-8" />
       </button>
 
       <button
@@ -85,7 +88,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         data-self-view={self_view(@call)}
         data-testid="group-call-self-view-toggle"
       >
-        <Icons.icon_pip class="h-3.5 w-3.5" />
+        <CallControls.icon_call_self_view class="h-8 w-8" />
       </button>
 
       <button
@@ -97,7 +100,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
         title={dgettext("group_call", "Clear focused participant")}
         data-testid="group-call-clear-focus"
       >
-        <Icons.icon_close class="h-3.5 w-3.5" />
+        <CallControls.icon_call_close class="h-8 w-8" />
       </button>
     </div>
     """
@@ -132,9 +135,23 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.LayoutControls do
 
   defp control_button_class(selected?) do
     classes([
-      "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
+      "flex h-10 w-10 min-w-[2.5rem] items-center justify-center bg-surface shadow-retro-raised",
       "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
       selected? && "bg-muted shadow-retro-sunken"
+    ])
+  end
+
+  defp layout_controls_class("vertical", extra) do
+    classes([
+      "flex shrink-0 flex-row flex-wrap gap-1 lg:flex-col",
+      extra
+    ])
+  end
+
+  defp layout_controls_class(_horizontal, extra) do
+    classes([
+      "flex shrink-0 flex-wrap items-center gap-1",
+      extra
     ])
   end
 

@@ -570,6 +570,7 @@
       :if={@p2p_session && @p2p_session.state != :invite_sent}
       id="p2p-call"
       persist_geometry={false}
+      default_maximized
       title={
         if @p2p_session.peer_nick in [nil, ""],
           do: dgettext("chat", "P2P Call"),
@@ -660,6 +661,7 @@
       :if={@group_call}
       id="group-call"
       persist_geometry={false}
+      default_maximized
       title={@group_call.channel_name || dgettext("group_call", "Group Call")}
       open
       on_close="group_call_window_close"

@@ -40,6 +40,42 @@ All SVGs extracted and organized in the SVG consolidation effort.
 | `icon_game_invaders` | Hex Invaders — Space Invader silhouette **[DONE]** |
 | `icon_game_generic` | Generic gamepad (fallback) **[DONE]** |
 
+### Icons.CallControls (64x64 source, 32/64 rendered)
+
+`apps/retro_hex_chat_web/lib/retro_hex_chat_web/components/icons/call_controls.ex`
+
+| Function | Description |
+|----------|-------------|
+| `icon_call_microphone` | Detailed call microphone **[DONE]** |
+| `icon_call_mute` | Muted microphone with red slash **[DONE]** |
+| `icon_call_camera` | Detailed call camera **[DONE]** |
+| `icon_call_camera_off` | Disabled camera with red slash **[DONE]** |
+| `icon_call_screen_share` | Monitor with share arrow **[DONE]** |
+| `icon_call_phone_end` | Destructive hang-up phone **[DONE]** |
+| `icon_call_pip` | Picture-in-picture monitor **[DONE]** |
+| `icon_call_devices` | Device selector with signal waves **[DONE]** |
+| `icon_call_layout_auto` | Auto/grid layout control **[DONE]** |
+| `icon_call_layout_focus` | Focus layout control **[DONE]** |
+| `icon_call_layout_split` | Split/grid layout control **[DONE]** |
+| `icon_call_layout_speaker` | Speaker layout control **[DONE]** |
+| `icon_call_layout_compact` | Compact layout control **[DONE]** |
+| `icon_call_self_view` | Self-view/PiP control **[DONE]** |
+| `icon_call_stats` | Conference/P2P statistics bars **[DONE]** |
+| `icon_call_mini` | Minimize call window **[DONE]** |
+| `icon_call_expand` | Expand call window **[DONE]** |
+| `icon_call_webrtc` | WebRTC connection nodes **[DONE]** |
+| `icon_call_reactions` | Reaction flyout trigger **[DONE]** |
+| `icon_call_more` | Participant action flyout trigger **[DONE]** |
+| `icon_call_raise_hand` | Raise-hand control **[DONE]** |
+| `icon_call_participants` | Participants control **[DONE]** |
+| `icon_call_lock` | Conference lock/moderation shield **[DONE]** |
+| `icon_call_close` | Clear/close focus control **[DONE]** |
+| `icon_call_reaction_heart` | Call heart reaction **[DONE]** |
+| `icon_call_reaction_thumbs_up` | Call thumbs-up reaction **[DONE]** |
+| `icon_call_reaction_clap` | Call clap reaction **[DONE]** |
+| `icon_call_reaction_laugh` | Call laugh reaction **[DONE]** |
+| `icon_call_reaction_sparkle` | Call sparkle reaction **[DONE]** |
+
 ## New Icons in Existing Submodules (16x16)
 
 ### Communication

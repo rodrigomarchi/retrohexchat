@@ -16,6 +16,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   }
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Icons.CallControls
 
   attr :id, :string, required: true
   attr :call, :map, default: nil
@@ -83,20 +84,40 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         on_leave={@on_leave}
       />
 
-      <div class={main_grid_class(@call)}>
-        <VideoSurface.video_surface call={@call} />
-        <.participant_list
-          :if={sidebar_open?(@call) && !mini_mode?(@call)}
+      <div class={workspace_class(@call)}>
+        <.conference_view_rail
+          :if={@call && !mini_mode?(@call)}
           call={@call}
-          on_moderate_audio={@on_moderate_audio}
-          on_moderate_video={@on_moderate_video}
-          on_moderate_screen={@on_moderate_screen}
-          on_allow_speak={@on_allow_speak}
-          on_kick_participant={@on_kick_participant}
-          on_focus_participant={@on_focus_participant}
-          on_toggle_pin_participant={@on_toggle_pin_participant}
+          on_layout_mode={@on_layout_mode}
+          on_toggle_sidebar={@on_toggle_sidebar}
+          on_cycle_self_view={@on_cycle_self_view}
+          on_clear_focus={@on_clear_focus}
         />
+
+        <div class={main_grid_class(@call)}>
+          <VideoSurface.video_surface call={@call} />
+          <.participant_list
+            :if={sidebar_open?(@call) && !mini_mode?(@call)}
+            call={@call}
+            on_moderate_audio={@on_moderate_audio}
+            on_moderate_video={@on_moderate_video}
+            on_moderate_screen={@on_moderate_screen}
+            on_allow_speak={@on_allow_speak}
+            on_kick_participant={@on_kick_participant}
+            on_focus_participant={@on_focus_participant}
+            on_toggle_pin_participant={@on_toggle_pin_participant}
+          />
+        </div>
       </div>
+
+      <.conference_bottom_controls
+        :if={@call && !mini_mode?(@call)}
+        call={@call}
+        on_toggle_audio={@on_toggle_audio}
+        on_toggle_video={@on_toggle_video}
+        on_toggle_hand={@on_toggle_hand}
+        on_leave={@on_leave}
+      />
 
       <.call_error call={@call} on_retry={@on_retry} on_leave={@on_leave} />
       <.call_warning call={@call} on_leave={@on_leave} />
@@ -108,7 +129,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <div class="flex min-h-8 shrink-0 flex-wrap items-center justify-between gap-1 border border-border bg-surface px-2 py-1 shadow-retro-sunken">
       <div class="flex min-w-0 items-center gap-2">
-        <Icons.icon_protocol_conference_compact class="h-4 w-4 shrink-0" />
+        <Icons.icon_protocol_conference_compact class="h-8 w-8 shrink-0" />
         <div class="min-w-0">
           <div class="truncate font-bold leading-4">{channel_name(@call)}</div>
           <div class="flex min-w-0 items-center gap-2 text-[10px] leading-3 text-muted-foreground">
@@ -117,15 +138,15 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
               aria-live="polite"
               data-testid="group-call-status-announcer"
             >
-              <Icons.icon_status_signal class={["h-3 w-3 shrink-0", status_icon_class(@call)]} />
+              <Icons.icon_status_signal class={["h-8 w-8 shrink-0", status_icon_class(@call)]} />
               <span class="truncate">{status_label(@call)}</span>
             </span>
             <span class="inline-flex items-center gap-1">
-              <Icons.icon_status_user class="h-3 w-3 shrink-0" />
+              <Icons.icon_status_user class="h-8 w-8 shrink-0" />
               {participant_count(@call)}
             </span>
             <span class="inline-flex items-center gap-1">
-              <Icons.icon_webrtc class="h-3 w-3 shrink-0" />
+              <CallControls.icon_call_webrtc class="h-8 w-8 shrink-0" />
               {track_count(@call)}
             </span>
           </div>
@@ -133,167 +154,137 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       </div>
 
       <div
-        class="flex max-w-full shrink-0 flex-wrap items-center justify-end gap-px"
+        class="flex max-w-full shrink-0 flex-wrap items-center justify-end gap-1"
         role="toolbar"
-        aria-label={dgettext("group_call", "Conference controls")}
+        aria-label={dgettext("group_call", "Conference window controls")}
       >
-        <LayoutControls.layout_controls
-          call={@call}
-          on_layout_mode={@on_layout_mode}
-          on_toggle_sidebar={@on_toggle_sidebar}
-          on_cycle_self_view={@on_cycle_self_view}
-          on_clear_focus={@on_clear_focus}
-        />
-
-        <button
-          type="button"
+        <.group_call_button
+          label={dgettext("group_call", "Dock conference statistics")}
           phx-click={@on_dock_stats}
-          class={[
-            "mr-1 flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          ]}
-          aria-label={dgettext("group_call", "Dock conference statistics")}
-          title={dgettext("group_call", "Dock conference statistics")}
           data-testid="group-call-dock-stats"
         >
-          <Icons.icon_webrtc class="h-3.5 w-3.5" />
-        </button>
+          <CallControls.icon_call_stats class="h-8 w-8" />
+        </.group_call_button>
 
-        <button
-          type="button"
+        <.group_call_button
+          label={dgettext("group_call", "Switch to compact conference mode")}
+          pressed={mini_mode?(@call)}
           phx-click={@on_toggle_mini}
-          class={[
-            "mr-1 flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          ]}
-          aria-label={dgettext("group_call", "Switch to compact conference mode")}
-          title={dgettext("group_call", "Switch to compact conference mode")}
-          aria-pressed={to_string(mini_mode?(@call))}
           data-testid="group-call-mini-toggle"
         >
-          <Icons.icon_win_minimize class="h-3.5 w-3.5" />
-        </button>
-        <button
+          <CallControls.icon_call_mini class="h-8 w-8" />
+        </.group_call_button>
+        <.group_call_button
           :if={can_moderate_call?(@call)}
-          type="button"
+          label={dgettext("group_call", "End group call")}
+          tone="danger"
           phx-click={@on_close_room}
-          class={[
-            "mr-1 flex h-6 w-7 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          ]}
-          aria-label={dgettext("group_call", "End group call")}
-          title={dgettext("group_call", "End group call")}
           data-testid="group-call-close-room"
         >
-          <Icons.icon_phone_end class="h-3.5 w-3.5" />
-        </button>
-        <button
+          <CallControls.icon_call_phone_end class="h-8 w-8" />
+        </.group_call_button>
+        <.group_call_button
           :if={can_moderate_call?(@call)}
-          type="button"
+          label={lock_title(@call)}
+          active={locked?(@call)}
+          pressed={locked?(@call)}
           phx-click={@on_toggle_lock}
-          class={[
-            "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-            locked?(@call) && "bg-warning shadow-retro-sunken"
-          ]}
-          aria-label={lock_title(@call)}
-          title={lock_title(@call)}
-          aria-pressed={to_string(locked?(@call))}
           data-testid="group-call-lock-toggle"
         >
-          <Icons.icon_shield class="h-3.5 w-3.5" />
-        </button>
-        <button
+          <CallControls.icon_call_lock class="h-8 w-8" />
+        </.group_call_button>
+        <.group_call_button
           :if={can_moderate_call?(@call)}
-          type="button"
+          label={dgettext("group_call", "Mute all lower-ranked participants")}
           phx-click={@on_mute_all}
-          class={[
-            "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          ]}
-          aria-label={dgettext("group_call", "Mute all lower-ranked participants")}
-          title={dgettext("group_call", "Mute all lower-ranked participants")}
           data-testid="group-call-mute-all"
         >
-          <Icons.icon_mute class="h-3.5 w-3.5" />
-        </button>
-        <button
+          <CallControls.icon_call_mute class="h-8 w-8" />
+        </.group_call_button>
+        <.group_call_button
           :if={can_moderate_call?(@call)}
-          type="button"
+          label={dgettext("group_call", "Turn off all lower-ranked cameras")}
           phx-click={@on_camera_off_all}
-          class={[
-            "mr-1 flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          ]}
-          aria-label={dgettext("group_call", "Turn off all lower-ranked cameras")}
-          title={dgettext("group_call", "Turn off all lower-ranked cameras")}
           data-testid="group-call-camera-off-all"
         >
-          <Icons.icon_camera_off class="h-3.5 w-3.5" />
-        </button>
-        <button
-          type="button"
-          phx-click={@on_toggle_audio}
-          class={[
-            "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-            !media_enabled?(@call, :audio) && "bg-muted shadow-retro-sunken"
-          ]}
-          aria-label={dgettext("group_call", "Toggle microphone")}
-          title={dgettext("group_call", "Toggle microphone")}
-          aria-pressed={to_string(media_enabled?(@call, :audio))}
-          data-testid="group-call-audio-toggle"
-        >
-          <Icons.icon_microphone :if={media_enabled?(@call, :audio)} class="h-3.5 w-3.5" />
-          <Icons.icon_mute :if={!media_enabled?(@call, :audio)} class="h-3.5 w-3.5" />
-        </button>
-        <button
-          type="button"
-          phx-click={@on_toggle_video}
-          class={[
-            "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-            !media_enabled?(@call, :video) && "bg-muted shadow-retro-sunken"
-          ]}
-          aria-label={dgettext("group_call", "Toggle camera")}
-          title={dgettext("group_call", "Toggle camera")}
-          aria-pressed={to_string(media_enabled?(@call, :video))}
-          data-testid="group-call-video-toggle"
-        >
-          <Icons.icon_camera :if={media_enabled?(@call, :video)} class="h-3.5 w-3.5" />
-          <Icons.icon_camera_off :if={!media_enabled?(@call, :video)} class="h-3.5 w-3.5" />
-        </button>
-        <button
-          type="button"
-          phx-click={@on_toggle_hand}
-          class={[
-            "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-            hand_raised?(@call) && "bg-warning shadow-retro-sunken"
-          ]}
-          aria-label={hand_toggle_title(@call)}
-          title={hand_toggle_title(@call)}
-          aria-pressed={to_string(hand_raised?(@call))}
-          data-testid="group-call-hand-toggle"
-        >
-          <Icons.icon_raise_hand class="h-3.5 w-3.5" />
-        </button>
-        <ScreenShareControl.screen_share_control call={@call} />
-        <.reaction_controls call={@call} />
-        <button
-          type="button"
-          phx-click={@on_leave}
-          class={[
-            "ml-1 flex h-6 w-7 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          ]}
-          aria-label={dgettext("group_call", "Leave group call")}
-          title={dgettext("group_call", "Leave group call")}
-          data-testid="group-call-leave"
-        >
-          <Icons.icon_phone_end class="h-3.5 w-3.5" />
-        </button>
+          <CallControls.icon_call_camera_off class="h-8 w-8" />
+        </.group_call_button>
       </div>
+    </div>
+    """
+  end
+
+  defp conference_view_rail(assigns) do
+    ~H"""
+    <div
+      class="flex shrink-0 flex-row flex-wrap content-start gap-1 border border-border bg-surface p-1 shadow-retro-sunken lg:flex-col"
+      role="group"
+      aria-label={dgettext("group_call", "Conference view controls")}
+      data-testid="group-call-view-rail"
+    >
+      <LayoutControls.layout_controls
+        call={@call}
+        orientation="vertical"
+        on_layout_mode={@on_layout_mode}
+        on_toggle_sidebar={@on_toggle_sidebar}
+        on_cycle_self_view={@on_cycle_self_view}
+        on_clear_focus={@on_clear_focus}
+      />
+    </div>
+    """
+  end
+
+  defp conference_bottom_controls(assigns) do
+    ~H"""
+    <div
+      class="flex shrink-0 flex-wrap items-center justify-center gap-2 border border-border bg-surface px-2 py-2 shadow-retro-sunken"
+      role="toolbar"
+      aria-label={dgettext("group_call", "Conference media controls")}
+      data-testid="group-call-media-controls"
+    >
+      <.group_call_button
+        label={dgettext("group_call", "Toggle microphone")}
+        active={!media_enabled?(@call, :audio)}
+        pressed={media_enabled?(@call, :audio)}
+        phx-click={@on_toggle_audio}
+        data-testid="group-call-audio-toggle"
+      >
+        <CallControls.icon_call_microphone :if={media_enabled?(@call, :audio)} class="h-8 w-8" />
+        <CallControls.icon_call_mute :if={!media_enabled?(@call, :audio)} class="h-8 w-8" />
+      </.group_call_button>
+
+      <.group_call_button
+        label={dgettext("group_call", "Toggle camera")}
+        active={!media_enabled?(@call, :video)}
+        pressed={media_enabled?(@call, :video)}
+        phx-click={@on_toggle_video}
+        data-testid="group-call-video-toggle"
+      >
+        <CallControls.icon_call_camera :if={media_enabled?(@call, :video)} class="h-8 w-8" />
+        <CallControls.icon_call_camera_off :if={!media_enabled?(@call, :video)} class="h-8 w-8" />
+      </.group_call_button>
+
+      <.group_call_button
+        label={hand_toggle_title(@call)}
+        active={hand_raised?(@call)}
+        pressed={hand_raised?(@call)}
+        phx-click={@on_toggle_hand}
+        data-testid="group-call-hand-toggle"
+      >
+        <CallControls.icon_call_raise_hand class="h-8 w-8" />
+      </.group_call_button>
+
+      <ScreenShareControl.screen_share_control call={@call} />
+      <.reaction_controls call={@call} />
+
+      <.group_call_button
+        label={dgettext("group_call", "Leave group call")}
+        tone="danger"
+        phx-click={@on_leave}
+        data-testid="group-call-leave"
+      >
+        <CallControls.icon_call_phone_end class="h-8 w-8" />
+      </.group_call_button>
     </div>
     """
   end
@@ -305,7 +296,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       data-testid="group-call-mini-header"
     >
       <div class="flex min-w-0 items-center gap-2">
-        <Icons.icon_protocol_conference_compact class="h-4 w-4 shrink-0" />
+        <Icons.icon_protocol_conference_compact class="h-8 w-8 shrink-0" />
         <div class="min-w-0">
           <div class="truncate font-bold leading-4">{channel_name(@call)}</div>
           <div class="flex min-w-0 items-center gap-2 text-[10px] leading-3 text-muted-foreground">
@@ -314,11 +305,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
               aria-live="polite"
               data-testid="group-call-mini-status-announcer"
             >
-              <Icons.icon_status_signal class={["h-3 w-3 shrink-0", status_icon_class(@call)]} />
+              <Icons.icon_status_signal class={["h-8 w-8 shrink-0", status_icon_class(@call)]} />
               <span class="truncate">{status_label(@call)}</span>
             </span>
             <span class="inline-flex items-center gap-1">
-              <Icons.icon_status_user class="h-3 w-3 shrink-0" />
+              <Icons.icon_status_user class="h-8 w-8 shrink-0" />
               {participant_count(@call)}
             </span>
           </div>
@@ -326,78 +317,92 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       </div>
 
       <div
-        class="flex shrink-0 items-center gap-px"
+        class="flex shrink-0 flex-wrap items-center justify-end gap-1"
         role="toolbar"
         aria-label={dgettext("group_call", "Compact conference controls")}
       >
-        <button
-          type="button"
+        <.group_call_button
+          label={dgettext("group_call", "Toggle microphone")}
+          active={!media_enabled?(@call, :audio)}
+          pressed={media_enabled?(@call, :audio)}
           phx-click={@on_toggle_audio}
-          class={[
-            "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-            !media_enabled?(@call, :audio) && "bg-muted shadow-retro-sunken"
-          ]}
-          aria-label={dgettext("group_call", "Toggle microphone")}
-          title={dgettext("group_call", "Toggle microphone")}
-          aria-pressed={to_string(media_enabled?(@call, :audio))}
           data-testid="group-call-mini-audio-toggle"
         >
-          <Icons.icon_microphone :if={media_enabled?(@call, :audio)} class="h-3.5 w-3.5" />
-          <Icons.icon_mute :if={!media_enabled?(@call, :audio)} class="h-3.5 w-3.5" />
-        </button>
-        <button
-          type="button"
+          <CallControls.icon_call_microphone :if={media_enabled?(@call, :audio)} class="h-8 w-8" />
+          <CallControls.icon_call_mute :if={!media_enabled?(@call, :audio)} class="h-8 w-8" />
+        </.group_call_button>
+        <.group_call_button
+          label={dgettext("group_call", "Toggle camera")}
+          active={!media_enabled?(@call, :video)}
+          pressed={media_enabled?(@call, :video)}
           phx-click={@on_toggle_video}
-          class={[
-            "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
-            !media_enabled?(@call, :video) && "bg-muted shadow-retro-sunken"
-          ]}
-          aria-label={dgettext("group_call", "Toggle camera")}
-          title={dgettext("group_call", "Toggle camera")}
-          aria-pressed={to_string(media_enabled?(@call, :video))}
           data-testid="group-call-mini-video-toggle"
         >
-          <Icons.icon_camera :if={media_enabled?(@call, :video)} class="h-3.5 w-3.5" />
-          <Icons.icon_camera_off :if={!media_enabled?(@call, :video)} class="h-3.5 w-3.5" />
-        </button>
-        <button
-          type="button"
+          <CallControls.icon_call_camera :if={media_enabled?(@call, :video)} class="h-8 w-8" />
+          <CallControls.icon_call_camera_off :if={!media_enabled?(@call, :video)} class="h-8 w-8" />
+        </.group_call_button>
+        <.group_call_button
+          label={dgettext("group_call", "Expand conference")}
+          pressed={mini_mode?(@call)}
           phx-click={@on_toggle_mini}
-          class={[
-            "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          ]}
-          aria-label={dgettext("group_call", "Expand conference")}
-          title={dgettext("group_call", "Expand conference")}
-          aria-pressed={to_string(mini_mode?(@call))}
           data-testid="group-call-mini-expand"
         >
-          <Icons.icon_win_restore class="h-3.5 w-3.5" />
-        </button>
-        <button
-          type="button"
+          <CallControls.icon_call_expand class="h-8 w-8" />
+        </.group_call_button>
+        <.group_call_button
+          label={dgettext("group_call", "Leave group call")}
+          tone="danger"
           phx-click={@on_leave}
-          class={[
-            "ml-1 flex h-6 w-7 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-raised",
-            "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
-          ]}
-          aria-label={dgettext("group_call", "Leave group call")}
-          title={dgettext("group_call", "Leave group call")}
           data-testid="group-call-mini-leave"
         >
-          <Icons.icon_phone_end class="h-3.5 w-3.5" />
-        </button>
+          <CallControls.icon_call_phone_end class="h-8 w-8" />
+        </.group_call_button>
       </div>
     </div>
     """
   end
 
+  attr :label, :string, required: true
+  attr :active, :boolean, default: false
+  attr :pressed, :any, default: nil
+  attr :tone, :string, values: ~w(default danger), default: "default"
+  attr :class, :any, default: nil
+  attr :rest, :global
+  slot :inner_block, required: true
+
+  defp group_call_button(assigns) do
+    ~H"""
+    <button
+      type="button"
+      title={@label}
+      aria-label={@label}
+      aria-pressed={aria_pressed(@pressed)}
+      class={group_call_button_class(@active, @tone, @class)}
+      {@rest}
+    >
+      {render_slot(@inner_block)}
+    </button>
+    """
+  end
+
+  defp group_call_button_class(active?, tone, extra) do
+    classes([
+      "flex h-10 w-10 min-w-[2.5rem] items-center justify-center border border-transparent bg-surface p-0 shadow-retro-raised",
+      "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
+      active? && "bg-muted shadow-retro-sunken",
+      tone == "danger" && "bg-destructive text-destructive-foreground",
+      extra
+    ])
+  end
+
+  defp aria_pressed(nil), do: nil
+  defp aria_pressed(value) when is_binary(value), do: value
+  defp aria_pressed(value), do: to_string(value)
+
   defp reaction_controls(assigns) do
     ~H"""
     <div
-      class="mx-1 flex shrink-0 items-center gap-px border-l border-border pl-1"
+      class="mx-1 flex shrink-0 flex-wrap items-center gap-1 border-l border-border pl-2"
       role="toolbar"
       aria-label={dgettext("group_call", "Conference reactions")}
       data-testid="group-call-reactions"
@@ -407,35 +412,35 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         reaction="heart"
         label={dgettext("group_call", "Send heart reaction")}
       >
-        <Icons.icon_heart class="h-3.5 w-3.5" />
+        <CallControls.icon_call_reaction_heart class="h-8 w-8" />
       </.reaction_button>
       <.reaction_button
         call={@call}
         reaction="thumbs_up"
         label={dgettext("group_call", "Send thumbs up reaction")}
       >
-        <Icons.icon_thumbs_up class="h-3.5 w-3.5" />
+        <CallControls.icon_call_reaction_thumbs_up class="h-8 w-8" />
       </.reaction_button>
       <.reaction_button
         call={@call}
         reaction="clap"
         label={dgettext("group_call", "Send clap reaction")}
       >
-        <Icons.icon_clap class="h-3.5 w-3.5" />
+        <CallControls.icon_call_reaction_clap class="h-8 w-8" />
       </.reaction_button>
       <.reaction_button
         call={@call}
         reaction="laugh"
         label={dgettext("group_call", "Send laugh reaction")}
       >
-        <Icons.icon_laugh class="h-3.5 w-3.5" />
+        <CallControls.icon_call_reaction_laugh class="h-8 w-8" />
       </.reaction_button>
       <.reaction_button
         call={@call}
         reaction="wow"
         label={dgettext("group_call", "Send sparkle reaction")}
       >
-        <Icons.icon_sparkle class="h-3.5 w-3.5" />
+        <CallControls.icon_call_reaction_sparkle class="h-8 w-8" />
       </.reaction_button>
     </div>
     """
@@ -451,7 +456,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     <button
       type="button"
       class={[
-        "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
+        "flex h-10 w-10 min-w-[2.5rem] items-center justify-center bg-surface shadow-retro-raised",
         "text-[13px] leading-none focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
       ]}
       data-group-call-reaction={@reaction}
@@ -468,7 +473,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
         <%= if @inner_block != [] do %>
           {render_slot(@inner_block)}
         <% else %>
-          <Icons.icon_star class="h-3.5 w-3.5" />
+          <Icons.icon_star class="h-8 w-8" />
         <% end %>
       </span>
     </button>
@@ -482,13 +487,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       role="complementary"
       aria-label={dgettext("group_call", "Conference participants")}
     >
-      <div class="flex h-7 shrink-0 items-center justify-between border-b border-border px-2">
+      <div class="flex min-h-10 shrink-0 items-center justify-between border-b border-border px-2">
         <span class="inline-flex min-w-0 items-center gap-1 font-bold">
-          <Icons.icon_community class="h-3.5 w-3.5 shrink-0" />
+          <CallControls.icon_call_participants class="h-8 w-8 shrink-0" />
           <span class="truncate">{dgettext("group_call", "Participants")}</span>
         </span>
         <span class="inline-flex items-center gap-1 text-muted-foreground">
-          <Icons.icon_status_user class="h-3 w-3 shrink-0" />
+          <Icons.icon_status_user class="h-8 w-8 shrink-0" />
           {participant_count(@call)}
         </span>
       </div>
@@ -543,7 +548,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     >
       <div class="mb-1 flex items-center justify-between gap-1 text-[10px] font-bold uppercase">
         <span class="inline-flex min-w-0 items-center gap-1">
-          <Icons.icon_raise_hand class="h-3 w-3 shrink-0" />
+          <CallControls.icon_call_raise_hand class="h-8 w-8 shrink-0" />
           <span class="truncate">{dgettext("group_call", "Requests to speak")}</span>
         </span>
         <span>{length(@raised_participants)}</span>
@@ -564,13 +569,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
             type="button"
             phx-click={@on_allow_speak}
             phx-value-participant-id={participant.id}
-            class="flex h-5 shrink-0 items-center gap-1 bg-surface px-1 shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+            class="flex h-10 min-w-[2.5rem] shrink-0 items-center justify-center bg-surface px-1 shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
             title={allow_speak_title(participant)}
             aria-label={allow_speak_title(participant)}
             data-testid={"group-call-queue-allow-speak-#{participant.id}"}
           >
-            <Icons.icon_microphone class="h-3 w-3" />
-            <Icons.icon_check_thin class="h-3 w-3" />
+            <CallControls.icon_call_raise_hand class="h-8 w-8" />
           </button>
         </div>
       </div>
@@ -603,7 +607,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     >
       <div class="min-w-0">
         <div class="flex min-w-0 items-center gap-1">
-          {apply(Icons, participant_role_icon(@participant), [%{class: "h-3.5 w-3.5 shrink-0"}])}
+          {apply(Icons, participant_role_icon(@participant), [%{class: "h-8 w-8 shrink-0"}])}
           <span class="truncate font-bold">{@participant.nickname}</span>
           <ActiveSpeakerRing.active_speaker_badge
             participant_id={@participant.id}
@@ -611,16 +615,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           />
           <span
             :if={participant_hand_raised?(@participant)}
-            class="inline-flex h-4 shrink-0 items-center gap-px border border-warning bg-warning-light px-1 text-[9px] font-bold text-foreground shadow-retro-status"
+            class="inline-flex h-8 min-w-8 shrink-0 items-center justify-center border border-warning bg-warning-light px-1 text-[9px] font-bold text-foreground shadow-retro-status"
             title={dgettext("group_call", "Hand raised")}
             aria-label={dgettext("group_call", "Hand raised")}
             data-testid={"group-call-participant-hand-#{@participant.id}"}
           >
-            <Icons.icon_raise_hand class="h-3 w-3" />
+            <CallControls.icon_call_raise_hand class="h-8 w-8" />
           </span>
           <span
             :if={@latest_reaction}
-            class="group-call-participant-reaction inline-flex h-5 min-w-5 shrink-0 items-center justify-center border border-border bg-warning-light px-1 leading-none shadow-retro-status"
+            class="group-call-participant-reaction inline-flex h-8 min-w-8 shrink-0 items-center justify-center border border-border bg-warning-light px-1 leading-none shadow-retro-status"
             title={participant_reaction_title(@latest_reaction)}
             aria-label={participant_reaction_title(@latest_reaction)}
             data-testid={"group-call-participant-reaction-#{@participant.id}"}
@@ -631,22 +635,71 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
               aria-hidden="true"
               data-testid={"group-call-participant-reaction-icon-#{@participant.id}"}
             >
-              {apply(Icons, reaction_icon(@latest_reaction.reaction), [%{class: "h-3.5 w-3.5"}])}
+              {apply(Icons, reaction_icon(@latest_reaction.reaction), [%{class: "h-8 w-8"}])}
             </span>
           </span>
         </div>
         <div class="flex min-w-0 items-center gap-1 truncate text-[10px] text-muted-foreground">
-          {apply(Icons, participant_status_icon(@participant), [%{class: "h-3 w-3 shrink-0"}])}
+          {apply(Icons, participant_status_icon(@participant), [%{class: "h-8 w-8 shrink-0"}])}
           <span class="truncate">{participant_status(@participant)}</span>
         </div>
       </div>
-      <div class="flex items-center gap-px">
+      <div class="flex shrink-0 items-start gap-1">
+        <div
+          class="grid grid-cols-2 gap-1"
+          role="group"
+          aria-label={dgettext("group_call", "Participant media state")}
+        >
+          <.participant_media_indicator participant={@participant} kind={:audio} />
+          <.participant_media_indicator participant={@participant} kind={:video} />
+          <.participant_media_indicator participant={@participant} kind={:screen} />
+          <ParticipantQualityBadge.participant_quality_badge
+            participant_id={@participant.id}
+            quality={@quality}
+          />
+        </div>
+        <.participant_controls_menu
+          call={@call}
+          participant={@participant}
+          on_focus_participant={@on_focus_participant}
+          on_toggle_pin_participant={@on_toggle_pin_participant}
+          on_allow_speak={@on_allow_speak}
+          on_moderate_audio={@on_moderate_audio}
+          on_moderate_video={@on_moderate_video}
+          on_moderate_screen={@on_moderate_screen}
+          on_kick_participant={@on_kick_participant}
+        />
+      </div>
+    </div>
+    """
+  end
+
+  defp participant_controls_menu(assigns) do
+    ~H"""
+    <details class="relative shrink-0">
+      <summary
+        class={[
+          group_call_button_class(false, "default", nil),
+          "list-none [&::-webkit-details-marker]:hidden"
+        ]}
+        title={dgettext("group_call", "Participant actions")}
+        aria-label={dgettext("group_call", "Participant actions")}
+        data-testid={"group-call-participant-actions-#{@participant.id}"}
+      >
+        <CallControls.icon_call_more class="h-8 w-8" />
+      </summary>
+
+      <div
+        class="absolute right-0 top-full z-40 mt-1 grid w-[8.75rem] grid-cols-3 gap-1 border border-border bg-surface p-1 shadow-retro-raised"
+        role="toolbar"
+        aria-label={dgettext("group_call", "Participant actions")}
+      >
         <button
           type="button"
           phx-click={@on_focus_participant}
           phx-value-participant-id={@participant.id}
           class={[
-            "flex h-5 w-5 items-center justify-center bg-surface shadow-retro-raised",
+            "flex h-10 w-10 items-center justify-center bg-surface shadow-retro-raised",
             "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
             focused_participant?(@call, @participant) && "bg-muted shadow-retro-sunken"
           ]}
@@ -655,14 +708,14 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           aria-pressed={to_string(focused_participant?(@call, @participant))}
           data-testid={"group-call-participant-focus-#{@participant.id}"}
         >
-          <Icons.icon_layout_focus class="h-3 w-3" />
+          <CallControls.icon_call_layout_focus class="h-8 w-8" />
         </button>
         <button
           type="button"
           phx-click={@on_toggle_pin_participant}
           phx-value-participant-id={@participant.id}
           class={[
-            "flex h-5 w-5 items-center justify-center bg-surface shadow-retro-raised",
+            "flex h-10 w-10 items-center justify-center bg-surface shadow-retro-raised",
             "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
             pinned_participant?(@call, @participant) && "bg-warning-light shadow-retro-sunken"
           ]}
@@ -671,7 +724,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           aria-pressed={to_string(pinned_participant?(@call, @participant))}
           data-testid={"group-call-participant-pin-#{@participant.id}"}
         >
-          <Icons.icon_pin class="h-3 w-3" />
+          <Icons.icon_pin class="h-8 w-8" />
         </button>
         <button
           :if={
@@ -680,72 +733,74 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           type="button"
           phx-click={@on_allow_speak}
           phx-value-participant-id={@participant.id}
-          class="flex h-5 w-5 items-center justify-center bg-warning-light shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+          class="flex h-10 w-10 items-center justify-center bg-warning-light shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           title={allow_speak_title(@participant)}
           aria-label={allow_speak_title(@participant)}
           data-testid={"group-call-participant-allow-speak-#{@participant.id}"}
         >
-          <Icons.icon_raise_hand class="h-3 w-3" />
+          <CallControls.icon_call_raise_hand class="h-8 w-8" />
         </button>
         <button
           :if={can_moderate_participant?(@call, @participant)}
           type="button"
           phx-click={@on_moderate_audio}
           phx-value-participant-id={@participant.id}
-          class="flex h-5 w-5 items-center justify-center bg-surface shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+          class="flex h-10 w-10 items-center justify-center bg-surface shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           title={moderate_audio_title(@participant)}
           aria-label={moderate_audio_title(@participant)}
           data-testid={"group-call-participant-audio-moderate-#{@participant.id}"}
         >
-          <Icons.icon_mute :if={participant_media?(@participant, :audio)} class="h-3 w-3" />
-          <Icons.icon_microphone :if={!participant_media?(@participant, :audio)} class="h-3 w-3" />
+          <CallControls.icon_call_mute :if={participant_media?(@participant, :audio)} class="h-8 w-8" />
+          <CallControls.icon_call_microphone
+            :if={!participant_media?(@participant, :audio)}
+            class="h-8 w-8"
+          />
         </button>
         <button
           :if={can_moderate_video_participant?(@call, @participant)}
           type="button"
           phx-click={@on_moderate_video}
           phx-value-participant-id={@participant.id}
-          class="flex h-5 w-5 items-center justify-center bg-surface shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+          class="flex h-10 w-10 items-center justify-center bg-surface shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           title={moderate_video_title(@participant)}
           aria-label={moderate_video_title(@participant)}
           data-testid={"group-call-participant-video-moderate-#{@participant.id}"}
         >
-          <Icons.icon_camera_off :if={participant_media?(@participant, :video)} class="h-3 w-3" />
-          <Icons.icon_camera :if={!participant_media?(@participant, :video)} class="h-3 w-3" />
+          <CallControls.icon_call_camera_off
+            :if={participant_media?(@participant, :video)}
+            class="h-8 w-8"
+          />
+          <CallControls.icon_call_camera
+            :if={!participant_media?(@participant, :video)}
+            class="h-8 w-8"
+          />
         </button>
         <button
           :if={can_moderate_screen_participant?(@call, @participant)}
           type="button"
           phx-click={@on_moderate_screen}
           phx-value-participant-id={@participant.id}
-          class="flex h-5 w-5 items-center justify-center bg-surface shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+          class="flex h-10 w-10 items-center justify-center bg-surface shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           title={moderate_screen_title(@participant)}
           aria-label={moderate_screen_title(@participant)}
           data-testid={"group-call-participant-screen-moderate-#{@participant.id}"}
         >
-          <Icons.icon_screen_share class="h-3 w-3" />
+          <CallControls.icon_call_screen_share class="h-8 w-8" />
         </button>
         <button
           :if={can_remove_participant?(@call, @participant)}
           type="button"
           phx-click={@on_kick_participant}
           phx-value-participant-id={@participant.id}
-          class="flex h-5 w-5 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+          class="flex h-10 w-10 items-center justify-center bg-destructive text-destructive-foreground shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           title={dgettext("group_call", "Remove from conference and ban from channel")}
           aria-label={dgettext("group_call", "Remove from conference and ban from channel")}
           data-testid={"group-call-participant-kick-#{@participant.id}"}
         >
-          <Icons.icon_ban class="h-3 w-3" />
+          <Icons.icon_ban class="h-8 w-8" />
         </button>
-        <.participant_media_indicator participant={@participant} kind={:audio} />
-        <.participant_media_indicator participant={@participant} kind={:video} />
-        <.participant_media_indicator participant={@participant} kind={:screen} />
-        <ParticipantQualityBadge.participant_quality_badge
-          participant_id={@participant.id}
-          quality={@quality}
-        />
       </div>
-    </div>
+    </details>
     """
   end
 
@@ -758,7 +813,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     ~H"""
     <span
       class={[
-        "flex h-5 w-5 items-center justify-center shadow-retro-sunken",
+        "flex h-10 w-10 items-center justify-center shadow-retro-sunken",
         @enabled && "bg-surface",
         !@enabled && "bg-muted text-muted-foreground",
         @moderated && "bg-destructive text-destructive-foreground"
@@ -771,11 +826,11 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       data-media-enabled={to_string(@enabled)}
       data-media-moderated={to_string(@moderated)}
     >
-      <Icons.icon_microphone :if={@kind == :audio && @enabled} class="h-3 w-3" />
-      <Icons.icon_mute :if={@kind == :audio && !@enabled} class="h-3 w-3" />
-      <Icons.icon_camera :if={@kind == :video && @enabled} class="h-3 w-3" />
-      <Icons.icon_camera_off :if={@kind == :video && !@enabled} class="h-3 w-3" />
-      <Icons.icon_screen_share :if={@kind == :screen} class="h-3 w-3" />
+      <CallControls.icon_call_microphone :if={@kind == :audio && @enabled} class="h-8 w-8" />
+      <CallControls.icon_call_mute :if={@kind == :audio && !@enabled} class="h-8 w-8" />
+      <CallControls.icon_call_camera :if={@kind == :video && @enabled} class="h-8 w-8" />
+      <CallControls.icon_call_camera_off :if={@kind == :video && !@enabled} class="h-8 w-8" />
+      <CallControls.icon_call_screen_share :if={@kind == :screen} class="h-8 w-8" />
     </span>
     """
   end
@@ -790,7 +845,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       data-testid="group-call-error"
     >
       <div class="flex min-w-0 items-start gap-2">
-        <Icons.icon_warning class="mt-[1px] h-4 w-4 shrink-0" />
+        <Icons.icon_warning class="mt-[1px] h-8 w-8 shrink-0" />
         <div class="min-w-0">
           <div class="font-bold leading-4" data-testid="group-call-error-title">
             {dgettext("group_call", "Connection needs attention")}
@@ -805,23 +860,23 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
           :if={retry_available?(@call)}
           type="button"
           phx-click={@on_retry}
-          class="flex h-5 shrink-0 items-center gap-1 bg-surface px-1 text-foreground shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+          class="flex h-10 shrink-0 items-center gap-1 bg-surface px-2 text-foreground shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           title={dgettext("group_call", "Retry media connection")}
           aria-label={dgettext("group_call", "Retry media connection")}
           data-testid="group-call-retry"
         >
-          <Icons.icon_btn_refresh class="h-3 w-3" />
+          <Icons.icon_btn_refresh class="h-8 w-8" />
           <span class="text-[10px] font-bold">{dgettext("group_call", "Retry")}</span>
         </button>
         <button
           type="button"
           phx-click={@on_leave}
-          class="flex h-5 shrink-0 items-center gap-1 bg-destructive px-1 text-destructive-foreground shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+          class="flex h-10 shrink-0 items-center gap-1 bg-destructive px-2 text-destructive-foreground shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
           title={dgettext("group_call", "Leave conference")}
           aria-label={dgettext("group_call", "Leave conference")}
           data-testid="group-call-leave-from-error"
         >
-          <Icons.icon_phone_end class="h-3 w-3" />
+          <CallControls.icon_call_phone_end class="h-8 w-8" />
           <span class="text-[10px] font-bold">{dgettext("group_call", "Leave")}</span>
         </button>
       </div>
@@ -839,7 +894,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       data-testid="group-call-warning"
     >
       <div class="flex min-w-0 items-start gap-2">
-        <Icons.icon_warning class="mt-[1px] h-4 w-4 shrink-0 text-warning" />
+        <Icons.icon_warning class="mt-[1px] h-8 w-8 shrink-0 text-warning" />
         <div class="min-w-0">
           <div class="font-bold leading-4" data-testid="group-call-warning-title">
             {dgettext("group_call", "Media warning")}
@@ -852,12 +907,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
       <button
         type="button"
         phx-click={@on_leave}
-        class="flex h-5 shrink-0 items-center gap-1 bg-surface px-1 text-foreground shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+        class="flex h-10 shrink-0 items-center gap-1 bg-surface px-2 text-foreground shadow-retro-raised focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
         title={dgettext("group_call", "Leave conference")}
         aria-label={dgettext("group_call", "Leave conference")}
         data-testid="group-call-leave-from-warning"
       >
-        <Icons.icon_phone_end class="h-3 w-3" />
+        <CallControls.icon_call_phone_end class="h-8 w-8" />
         <span class="text-[10px] font-bold">{dgettext("group_call", "Leave")}</span>
       </button>
     </div>
@@ -884,8 +939,16 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
   defp main_grid_class(call) do
     classes([
       "grid min-h-0 flex-1 gap-1",
-      sidebar_open?(call) && !mini_mode?(call) && "grid-cols-[minmax(0,1fr)_12rem]",
+      sidebar_open?(call) && !mini_mode?(call) && "grid-cols-[minmax(0,1fr)_14rem]",
       (mini_mode?(call) || !sidebar_open?(call)) && "grid-cols-1"
+    ])
+  end
+
+  defp workspace_class(call) do
+    classes([
+      "grid min-h-0 flex-1 gap-1",
+      !mini_mode?(call) && "grid-cols-1 lg:grid-cols-[3.25rem_minmax(0,1fr)]",
+      mini_mode?(call) && "grid-cols-1"
     ])
   end
 
@@ -1173,12 +1236,12 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.Panel do
     )
   end
 
-  defp reaction_icon("heart"), do: :icon_heart
-  defp reaction_icon("thumbs_up"), do: :icon_thumbs_up
-  defp reaction_icon("clap"), do: :icon_clap
-  defp reaction_icon("laugh"), do: :icon_laugh
-  defp reaction_icon("wow"), do: :icon_sparkle
-  defp reaction_icon(_reaction), do: :icon_sparkle
+  defp reaction_icon("heart"), do: :icon_call_reaction_heart
+  defp reaction_icon("thumbs_up"), do: :icon_call_reaction_thumbs_up
+  defp reaction_icon("clap"), do: :icon_call_reaction_clap
+  defp reaction_icon("laugh"), do: :icon_call_reaction_laugh
+  defp reaction_icon("wow"), do: :icon_call_reaction_sparkle
+  defp reaction_icon(_reaction), do: :icon_call_reaction_sparkle
 
   defp participant_media_title(participant, :audio) do
     cond do

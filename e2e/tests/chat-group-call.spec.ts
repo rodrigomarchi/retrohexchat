@@ -372,6 +372,15 @@ function participantRow(page: Page, nickname: string) {
   });
 }
 
+async function openParticipantActions(page: Page, nickname: string) {
+  const row = participantRow(page, nickname);
+  const menu = row.locator("details").first();
+
+  if ((await menu.getAttribute("open")) === null) {
+    await row.locator('[data-testid^="group-call-participant-actions-"]').click();
+  }
+}
+
 function participantPinButton(page: Page, nickname: string) {
   return participantRow(page, nickname).getByRole("button", {
     name: /Pin participant|Unpin participant/,
@@ -380,7 +389,7 @@ function participantPinButton(page: Page, nickname: string) {
 
 function participantReactionBadge(page: Page, nickname: string) {
   return participantRow(page, nickname).locator(
-    '[data-testid^="group-call-participant-reaction-"]',
+    '[data-testid^="group-call-participant-reaction-"][data-reaction]',
   );
 }
 
@@ -1135,6 +1144,7 @@ test.describe("Channel group calls", () => {
         })
         .toBe("true");
 
+      await openParticipantActions(alice.page, bob.nick);
       await participantCameraModerationButton(alice.page, bob.nick).click();
 
       await expect
@@ -1158,6 +1168,7 @@ test.describe("Channel group calls", () => {
         "false",
       );
 
+      await openParticipantActions(alice.page, bob.nick);
       await participantCameraModerationButton(alice.page, bob.nick).click();
 
       await expect
@@ -1535,7 +1546,9 @@ test.describe("Channel group calls", () => {
         .poll(() => remoteVideoIdentity(alice.page))
         .toEqual(initialRemote);
 
+      await openParticipantActions(alice.page, bob.nick);
       await participantPinButton(alice.page, bob.nick).click();
+      await openParticipantActions(alice.page, bob.nick);
       await expect(participantPinButton(alice.page, bob.nick)).toHaveAttribute(
         "aria-pressed",
         "true",
@@ -2124,6 +2137,7 @@ test.describe("Channel group calls", () => {
         )
         .toBe("screen");
 
+      await openParticipantActions(alice.page, bob.nick);
       await participantScreenModerationButton(alice.page, bob.nick).click();
 
       await expect(groupCallScreenShareToggle(bob.page)).toHaveAttribute(
@@ -2142,6 +2156,7 @@ test.describe("Channel group calls", () => {
         )
         .not.toBe("screen");
 
+      await openParticipantActions(alice.page, bob.nick);
       await participantScreenModerationButton(alice.page, bob.nick).click();
       await expect(groupCallScreenShareToggle(bob.page)).toBeEnabled({
         timeout: 10_000,

@@ -233,12 +233,12 @@ body {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 4px;
-  min-height: 1.4rem;
+  gap: 6px;
+  min-height: 2.4rem;
   border: 1px solid #000000;
   background: #c0c0c0;
   color: #222222;
-  padding: 1px 3px;
+  padding: 2px 4px;
   box-shadow:
     inset 1px 1px #ffffff,
     inset -1px -1px #808080;
@@ -247,7 +247,7 @@ body {
 .group-call-video-tile__badges {
   display: inline-flex;
   align-items: center;
-  gap: 2px;
+  gap: 4px;
 }
 
 .group-call-reaction-stack {
@@ -317,8 +317,8 @@ body {
 
 .group-call-video-badge {
   display: inline-flex;
-  width: 1rem;
-  height: 1rem;
+  width: 2rem;
+  height: 2rem;
   align-items: center;
   justify-content: center;
   background: #dfdfdf;

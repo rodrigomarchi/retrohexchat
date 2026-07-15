@@ -7,7 +7,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
   """
   use RetroHexChatWeb.Component
 
-  alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Icons.CallControls
 
   attr :call, :map, required: true
 
@@ -17,7 +17,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
     <button
       type="button"
       class={[
-        "flex h-6 w-7 items-center justify-center bg-surface shadow-retro-raised",
+        "flex h-10 w-10 min-w-[2.5rem] items-center justify-center bg-surface shadow-retro-raised",
         "focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground",
         screen_share_active?(@call) && "bg-muted shadow-retro-sunken text-primary",
         screen_share_blocked?(@call) &&
@@ -30,7 +30,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.ScreenShareControl do
       data-group-call-screen-share-for={@call.token}
       data-testid="group-call-screen-share-toggle"
     >
-      <Icons.icon_screen_share class="h-3.5 w-3.5" />
+      <CallControls.icon_call_screen_share class="h-8 w-8" />
     </button>
     """
   end

@@ -14,6 +14,7 @@ defmodule RetroHexChatWeb.Icons do
   | `Icons.People`   | Users, contacts, social                       |
   | `Icons.Communication` | Chat, channels, networking               |
   | `Icons.Media`    | Audio, video, devices, quality                |
+  | `Icons.CallControls` | 64x64 P2P/conference video controls      |
   | `Icons.Files`    | Documents, folders, clipboard                 |
   | `Icons.Hardware` | Servers, databases, platforms                 |
   | `Icons.Code`     | Terminal, scripting, automation               |
@@ -166,6 +167,37 @@ defmodule RetroHexChatWeb.Icons do
   defdelegate icon_quality_low(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_dialog_sound(assigns), to: RetroHexChatWeb.Icons.Media
   defdelegate icon_btn_sounds(assigns), to: RetroHexChatWeb.Icons.Media
+
+  # -- CallControls: P2P/conference video windows --
+  defdelegate icon_call_microphone(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_mute(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_camera(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_camera_off(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_screen_share(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_phone_end(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_pip(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_devices(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_layout_auto(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_layout_focus(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_layout_split(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_layout_speaker(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_layout_compact(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_self_view(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_stats(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_mini(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_expand(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_webrtc(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_reactions(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_more(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_raise_hand(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_participants(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_lock(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_close(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_reaction_heart(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_reaction_thumbs_up(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_reaction_clap(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_reaction_laugh(assigns), to: RetroHexChatWeb.Icons.CallControls
+  defdelegate icon_call_reaction_sparkle(assigns), to: RetroHexChatWeb.Icons.CallControls
 
   # ── Files ───────────────────────────────────────────────
   defdelegate icon_folder(assigns), to: RetroHexChatWeb.Icons.Files

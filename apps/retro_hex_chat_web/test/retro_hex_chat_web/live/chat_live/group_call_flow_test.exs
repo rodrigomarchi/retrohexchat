@@ -181,7 +181,7 @@ defmodule RetroHexChatWeb.ChatLive.GroupCallFlowTest do
 
       assert has_element?(
                view,
-               ~s([data-testid="group-call-window"][data-window-initial-open="true"])
+               ~s([data-testid="group-call-window"][data-window-initial-open="true"][data-window-default-maximized="true"])
              )
 
       assert has_element?(view, ~s([data-testid="group-call-stats-window"]))

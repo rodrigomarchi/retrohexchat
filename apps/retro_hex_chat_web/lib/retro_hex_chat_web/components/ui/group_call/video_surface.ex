@@ -9,6 +9,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
   use RetroHexChatWeb.Component
 
   alias RetroHexChatWeb.Icons
+  alias RetroHexChatWeb.Icons.CallControls
 
   attr :call, :map, default: nil
 
@@ -52,7 +53,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
           data-group-call-remote-placeholder
           data-testid="group-call-remote-placeholder"
         >
-          <Icons.icon_protocol_conference_compact class="h-6 w-6 shrink-0 text-primary" />
+          <Icons.icon_protocol_conference_compact class="h-16 w-16 shrink-0 text-primary" />
           <span class="font-bold text-foreground">
             {dgettext("group_call", "Waiting for participants")}
           </span>
@@ -100,7 +101,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
             data-group-call-local-empty
             data-testid="group-call-local-empty"
           >
-            <Icons.icon_camera_off class="h-6 w-6 shrink-0" />
+            <CallControls.icon_call_camera_off class="h-16 w-16 shrink-0" />
             <span class="font-bold" data-group-call-local-empty-title>
               {local_empty_title(@call)}
             </span>
@@ -113,13 +114,13 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
             <span class="truncate font-bold" data-group-call-local-name>{@call.nickname}</span>
             <span class="group-call-video-tile__badges">
               <span class="group-call-video-badge" data-group-call-local-audio-badge>
-                <Icons.icon_microphone class="h-3 w-3" />
+                <CallControls.icon_call_microphone class="h-8 w-8" />
               </span>
               <span class="group-call-video-badge" data-group-call-local-video-badge>
-                <Icons.icon_camera class="h-3 w-3" />
+                <CallControls.icon_call_camera class="h-8 w-8" />
               </span>
               <span class="group-call-video-badge" data-group-call-local-screen-badge>
-                <Icons.icon_screen_share class="h-3 w-3" />
+                <CallControls.icon_call_screen_share class="h-8 w-8" />
               </span>
             </span>
           </div>
@@ -142,7 +143,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
           >
             <div class="group-call-video-tile__nameplate">
               <span class="inline-flex min-w-0 items-center gap-1 truncate font-bold">
-                <Icons.icon_status_user class="h-3 w-3 shrink-0" />
+                <Icons.icon_status_user class="h-8 w-8 shrink-0" />
                 <span class="truncate" data-group-call-tile-name>
                   {dgettext("group_call", "Remote")}
                 </span>
@@ -154,7 +155,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
                   title={dgettext("group_call", "Remote microphone")}
                   aria-label={dgettext("group_call", "Remote microphone")}
                 >
-                  <Icons.icon_microphone class="h-3 w-3" />
+                  <CallControls.icon_call_microphone class="h-8 w-8" />
                 </span>
                 <span
                   class="group-call-video-badge"
@@ -162,7 +163,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
                   title={dgettext("group_call", "Remote camera")}
                   aria-label={dgettext("group_call", "Remote camera")}
                 >
-                  <Icons.icon_camera class="h-3 w-3" />
+                  <CallControls.icon_call_camera class="h-8 w-8" />
                 </span>
                 <span
                   class="group-call-video-badge"
@@ -170,7 +171,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
                   title={dgettext("group_call", "Remote screen share")}
                   aria-label={dgettext("group_call", "Remote screen share")}
                 >
-                  <Icons.icon_screen_share class="h-3 w-3" />
+                  <CallControls.icon_call_screen_share class="h-8 w-8" />
                 </span>
                 <span
                   class="group-call-video-badge"
@@ -178,7 +179,7 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
                   title={dgettext("group_call", "Not speaking")}
                   aria-label={dgettext("group_call", "Not speaking")}
                 >
-                  <Icons.icon_microphone class="h-3 w-3" />
+                  <CallControls.icon_call_microphone class="h-8 w-8" />
                 </span>
                 <span
                   class="group-call-video-badge"
@@ -188,15 +189,15 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
                   title={dgettext("group_call", "Quality unknown")}
                   aria-label={dgettext("group_call", "Quality unknown")}
                 >
-                  <span data-quality-icon="high"><Icons.icon_quality_high class="h-3 w-3" /></span>
+                  <span data-quality-icon="high"><Icons.icon_quality_high class="h-8 w-8" /></span>
                   <span data-quality-icon="medium">
-                    <Icons.icon_quality_medium class="h-3 w-3" />
+                    <Icons.icon_quality_medium class="h-8 w-8" />
                   </span>
-                  <span data-quality-icon="low"><Icons.icon_quality_low class="h-3 w-3" /></span>
+                  <span data-quality-icon="low"><Icons.icon_quality_low class="h-8 w-8" /></span>
                   <span data-quality-icon="reconnecting">
-                    <Icons.icon_btn_timers class="h-3 w-3" />
+                    <Icons.icon_btn_timers class="h-8 w-8" />
                   </span>
-                  <span data-quality-icon="unknown"><Icons.icon_warning class="h-3 w-3" /></span>
+                  <span data-quality-icon="unknown"><Icons.icon_warning class="h-8 w-8" /></span>
                 </span>
               </span>
             </div>
@@ -205,27 +206,27 @@ defmodule RetroHexChatWeb.Components.UI.GroupCall.VideoSurface do
 
         <template data-group-call-reaction-icon-template="heart">
           <span class="inline-flex items-center justify-center" aria-hidden="true">
-            <Icons.icon_heart class="h-4 w-4" />
+            <CallControls.icon_call_reaction_heart class="h-8 w-8" />
           </span>
         </template>
         <template data-group-call-reaction-icon-template="thumbs_up">
           <span class="inline-flex items-center justify-center" aria-hidden="true">
-            <Icons.icon_thumbs_up class="h-4 w-4" />
+            <CallControls.icon_call_reaction_thumbs_up class="h-8 w-8" />
           </span>
         </template>
         <template data-group-call-reaction-icon-template="clap">
           <span class="inline-flex items-center justify-center" aria-hidden="true">
-            <Icons.icon_clap class="h-4 w-4" />
+            <CallControls.icon_call_reaction_clap class="h-8 w-8" />
           </span>
         </template>
         <template data-group-call-reaction-icon-template="laugh">
           <span class="inline-flex items-center justify-center" aria-hidden="true">
-            <Icons.icon_laugh class="h-4 w-4" />
+            <CallControls.icon_call_reaction_laugh class="h-8 w-8" />
           </span>
         </template>
         <template data-group-call-reaction-icon-template="wow">
           <span class="inline-flex items-center justify-center" aria-hidden="true">
-            <Icons.icon_sparkle class="h-4 w-4" />
+            <CallControls.icon_call_reaction_sparkle class="h-8 w-8" />
           </span>
         </template>
       </div>

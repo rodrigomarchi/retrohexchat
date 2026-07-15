@@ -231,6 +231,11 @@ defmodule RetroHexChatWeb.ChatLive.P2PSessionFlowTest do
       render_click(ctx.view_a, "p2p_open_call", %{})
       assert render(ctx.view_a) =~ "p2p-call-window"
 
+      assert has_element?(
+               ctx.view_a,
+               ~s([data-testid="p2p-call-window"][data-window-default-maximized="true"])
+             )
+
       # A telemetry sample from the WebRTC hook lands normalized in the panel.
       render_click(ctx.view_a, "lobby_stats", %{"connection" => %{"rtt_ms" => 42}})
       assert p2p_assigns(ctx.view_a).stats.connection.rtt_ms == 42
