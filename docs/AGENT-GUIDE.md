@@ -834,6 +834,10 @@ There is exactly ONE hook registration pattern; do not reintroduce local choice 
   `config/i18n_locales.exs` (Gettext dir code, BCP47 tag, Open Graph locale, native name, text
   direction, `Plural-Forms`, rollout wave/status). See `docs/reference/i18n-catalogs.md` for the
   catalog conventions and the locale roster.
+- **Refresh Gettext with the standard scoped flow.** Use `make i18n.gettext.extract` to refresh
+  `.pot` templates, then `make i18n.gettext.merge DOMAINS=<domain> [APP=web|domain]` to merge the
+  affected `.po` files. Do not use the global rebuild for routine feature work; it requires
+  `CONFIRM_GLOBAL_REBUILD=1` and is reserved for broad catalog refactors.
 - **JS i18n catalogs are lazy-loaded** (dynamic `import()` in `lib/i18n.js`) while `t()`/`jt()`
   stay synchronous at call sites — one of the approved dynamic-import boundaries (§15).
 - **Localized public URL model.** Default English is **unprefixed** (`/features`); non-default

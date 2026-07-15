@@ -31,7 +31,37 @@
                 <p class="text-sm">
                   {dgettext(
                     "landing",
-                    "P2P (peer-to-peer) means data goes directly between users without passing through a server. Retro Hex Chat uses WebRTC for voice calls, video calls, and file transfers. The server only helps users find each other (signaling), then steps out of the way."
+                    "P2P (peer-to-peer) means data goes directly between users without passing through the chat server. Retro Hex Chat uses WebRTC P2P for private calls, file transfers, and multiplayer game sessions. The server helps users find each other (signaling), then the private session runs browser-to-browser when the network allows it."
+                  )}
+                </p>
+              </.accordion_content>
+            </.accordion_item>
+
+            <.accordion_item>
+              <.accordion_trigger group="faq-start">
+                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+                {dgettext("landing", "What are Spaces?")}
+              </.accordion_trigger>
+              <.accordion_content>
+                <p class="text-sm">
+                  {dgettext(
+                    "landing",
+                    "Spaces are shared 8-bit map views attached to channels and direct messages. You choose an avatar, move around the same conversation, and see chat messages as in-map bubbles. They do not create a separate chat room; they visualize the conversation you are already in."
+                  )}
+                </p>
+              </.accordion_content>
+            </.accordion_item>
+
+            <.accordion_item>
+              <.accordion_trigger group="faq-start">
+                <:icon><Icons.icon_question class="w-4 h-4" /></:icon>
+                {dgettext("landing", "Are channel conferences P2P?")}
+              </.accordion_trigger>
+              <.accordion_content>
+                <p class="text-sm">
+                  {dgettext(
+                    "landing",
+                    "No. Private 1:1 calls are P2P, but channel conferences use a self-hosted SFU/room server. Each browser sends media to your server, and your server routes streams to the other participants. That makes group calls practical while keeping infrastructure under your control."
                   )}
                 </p>
               </.accordion_content>
@@ -76,7 +106,7 @@
                 <p class="text-sm">
                   {dgettext(
                     "landing",
-                    "On Discord, your data lives on their servers and your communities can be removed at any time. On Retro Hex Chat, you control your data, voice and video calls go directly between users via P2P, and the code is open source — you can audit every line."
+                    "On Discord, your data lives on their servers and your communities can be removed at any time. On Retro Hex Chat, you control your server and database, private sessions can run directly between users via P2P, channel conferences run on your own infrastructure, and the code is open source — you can audit every line."
                   )}
                 </p>
               </.accordion_content>
@@ -91,7 +121,7 @@
                 <p class="text-sm">
                   {dgettext(
                     "landing",
-                    "Your data lives in your PostgreSQL database. Regular backups mean you can restore on any new machine. Active P2P calls continue working even if the server has a brief interruption, since they connect directly between users."
+                    "Your data lives in your PostgreSQL database. Regular backups mean you can restore on any new machine. Active private P2P sessions may keep working through brief server interruptions because they connect directly between users; chat, Spaces, and channel conferences depend on the server and reconnect when it returns."
                   )}
                 </p>
               </.accordion_content>
@@ -106,7 +136,7 @@
                 <p class="text-sm">
                   {dgettext(
                     "landing",
-                    "Yes. Server connections use HTTPS/WSS with TLS encryption. P2P calls are encrypted end-to-end via DTLS-SRTP (built into WebRTC). Passwords are hashed with bcrypt. And the code is open source — anyone can audit it for vulnerabilities."
+                    "Yes. Server connections use HTTPS/WSS with TLS encryption. Private P2P calls use WebRTC transport encryption, channel conferences use WebRTC media through your self-hosted room server, and passwords are hashed with bcrypt. The code is open source, so anyone can audit it."
                   )}
                 </p>
               </.accordion_content>
@@ -115,7 +145,7 @@
         </.window_body>
         <.window_status_bar>
           <.window_status_bar_field grow>
-            {dgettext("landing", "6 questions")}
+            {dgettext("landing", "8 questions")}
           </.window_status_bar_field>
         </.window_status_bar>
       </.window>
@@ -139,7 +169,7 @@
                 <p class="text-sm">
                   {dgettext(
                     "landing",
-                    "Elixir and Phoenix on the backend, PostgreSQL for data, a retro design system for the classic look, WebSocket for real-time messaging, and WebRTC for P2P. Everything is open source."
+                    "Elixir and Phoenix on the backend, PostgreSQL for data, Phoenix Channels for real-time messaging, Vanilla JS and Canvas for Spaces, WebRTC for private P2P sessions, and a self-hosted SFU for channel conferences. Everything is open source."
                   )}
                 </p>
               </.accordion_content>

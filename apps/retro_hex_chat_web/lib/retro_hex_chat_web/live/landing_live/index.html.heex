@@ -21,7 +21,10 @@
           </h1>
 
           <p class="text-sm mb-2">
-            {dgettext("landing", "Your server. Your conversations. Nobody in between.")}<br />
+            {dgettext(
+              "landing",
+              "Your server. Your conversations. Your rooms, calls, and spaces."
+            )}<br />
             {dgettext("landing", "Built with today’s technology.")}
           </p>
 
@@ -29,7 +32,7 @@
             {dgettext("landing", "Run your own server. Your data stays with you.")}<br />
             {dgettext(
               "landing",
-              "Voice and video calls go directly between users — no middleman."
+              "Chat, Spaces, private P2P calls, channel conferences, and retro games."
             )}<br />
             {dgettext("landing", "No corporation. No algorithms. No permission needed.")}<br />
             <strong>{dgettext("landing", "Your data. Your rules. Your community.")}</strong>
@@ -181,8 +184,25 @@
             <li class="flex items-start gap-2">
               <Icons.icon_p2p class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                <strong>{dgettext("landing", "P2P voice and video calls.")}</strong>
-                {dgettext("landing", "Direct between users via WebRTC — no middleman.")}
+                <strong>{dgettext("landing", "Private P2P calls and files.")}</strong>
+                {dgettext("landing", "Direct between users via WebRTC, with TURN fallback.")}
+              </span>
+            </li>
+            <li class="flex items-start gap-2">
+              <Icons.icon_conference class="w-4 h-4 shrink-0 mt-0.5" />
+              <span>
+                <strong>{dgettext("landing", "Channel conferences.")}</strong>
+                {dgettext(
+                  "landing",
+                  "Group audio, video, screen share, and moderation on your own server."
+                )}
+              </span>
+            </li>
+            <li class="flex items-start gap-2">
+              <Icons.icon_group_view class="w-4 h-4 shrink-0 mt-0.5" />
+              <span>
+                <strong>{dgettext("landing", "Virtual Spaces.")}</strong>
+                {dgettext("landing", "Turn any channel or DM into a shared 8-bit room.")}
               </span>
             </li>
             <li class="flex items-start gap-2">
@@ -214,7 +234,7 @@
     <%!-- ══════════════ P2P DIAGRAM ══════════════ --%>
     <.window class="mb-4">
       <.window_title_bar
-        title={dgettext("landing", "Direct connection. No middleman.")}
+        title={dgettext("landing", "Private P2P. No media middleman.")}
         controls={[:close]}
       >
         <:icon><Icons.icon_p2p class="w-4 h-4" /></:icon>
@@ -229,7 +249,7 @@
         <p class="text-sm text-center">
           {dgettext(
             "landing",
-            "The server only introduces users. Once connected, voice, video, and files flow"
+            "For private 1:1 sessions, the server only introduces users. Once connected, calls, files, and multiplayer game data flow"
           )} <strong>directly</strong>
           {dgettext("landing", "between them — encrypted, private, and fast.")}
         </p>
@@ -237,6 +257,72 @@
       <.window_status_bar>
         <.window_status_bar_field grow>
           <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext("landing", "Got it")}
+        </.window_status_bar_field>
+      </.window_status_bar>
+    </.window>
+  </section>
+
+  <%!-- ══════════════ CONVERSATION MODES ══════════════ --%>
+  <section class="m-4" aria-labelledby="conversation-modes-heading">
+    <.window>
+      <.window_title_bar
+        title={dgettext("landing", "Three ways to be together")}
+        controls={[:close]}
+      >
+        <:icon><Icons.icon_channels class="w-4 h-4" /></:icon>
+      </.window_title_bar>
+      <.window_body>
+        <h2 id="conversation-modes-heading" class="text-sm font-bold mb-3">
+          {dgettext("landing", "Chat, Space, or Conference — switch without leaving the channel.")}
+        </h2>
+
+        <div class="grid md:grid-cols-3 gap-3">
+          <div class="shadow-retro-field bg-white p-3 text-sm">
+            <div class="flex items-center gap-2 font-bold mb-1">
+              <Icons.icon_chat class="w-4 h-4" />
+              {dgettext("landing", "Chat")}
+            </div>
+            <p class="text-xs">
+              {dgettext(
+                "landing",
+                "Classic real-time channels, direct messages, replies, reactions, and command-driven moderation."
+              )}
+            </p>
+          </div>
+
+          <div class="shadow-retro-field bg-white p-3 text-sm">
+            <div class="flex items-center gap-2 font-bold mb-1">
+              <Icons.icon_group_view class="w-4 h-4" />
+              {dgettext("landing", "Space")}
+            </div>
+            <p class="text-xs">
+              {dgettext(
+                "landing",
+                "Walk around the same conversation as an avatar in a shared 8-bit map for channels and DMs."
+              )}
+            </p>
+          </div>
+
+          <div class="shadow-retro-field bg-white p-3 text-sm">
+            <div class="flex items-center gap-2 font-bold mb-1">
+              <Icons.icon_conference class="w-4 h-4" />
+              {dgettext("landing", "Conference")}
+            </div>
+            <p class="text-xs">
+              {dgettext(
+                "landing",
+                "Start a channel call with audio, video, screen sharing, reactions, hand raise, and moderator controls."
+              )}
+            </p>
+          </div>
+        </div>
+      </.window_body>
+      <.window_status_bar>
+        <.window_status_bar_field grow>
+          <Icons.icon_checkmark class="w-3 h-3 inline" /> {dgettext(
+            "landing",
+            "Chat / Space / Conference"
+          )}
         </.window_status_bar_field>
       </.window_status_bar>
     </.window>
@@ -267,7 +353,7 @@
               "to challenge anyone. Games run on HTML5 Canvas with state synced via WebRTC DataChannel —"
             )} <strong>{dgettext("landing", "no server involvement")}</strong>{dgettext(
               "landing",
-              ", just like voice calls."
+              ", just like private P2P calls."
             )}
           </p>
         </.window_body>

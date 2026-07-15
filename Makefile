@@ -5,7 +5,7 @@
        test.cover.all test.domain test.web test.failed test.seed test.file test.line \
        test.js test.js.watch \
        ci ci.quick \
-       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.rebuild i18n.gettext.check \
+       i18n.audit i18n.audit.check i18n.status i18n.catalog.check i18n.catalog.size.check i18n.placeholder.check i18n.source-fallback.check i18n.locales.add i18n.wave1.add i18n.gettext.extract i18n.gettext.merge i18n.gettext.rebuild i18n.gettext.check \
        lint format format.check credo dialyzer lint.js lint.js.fix lint.css lint.bundle precommit compile \
        assets.setup assets.build assets.deploy \
        clean clean.deps clean.build clean.all \
@@ -282,11 +282,16 @@ i18n.locales.add: ## Generate Gettext catalogs for LOCALES=es,fr or WAVE=1
 i18n.wave1.add: ## Generate Gettext catalogs for the first expansion wave
 	elixir scripts/i18n_add_locales.exs --wave 1
 
-i18n.gettext.extract: ## Extract and merge Gettext catalogs for all apps
-	elixir scripts/i18n_rebuild_domain_catalogs.exs
+i18n.gettext.extract: ## Extract Gettext POT templates for all apps
+	cd $(DOMAIN_APP) && mix gettext.extract
+	cd $(WEB_APP) && mix gettext.extract
 
-i18n.gettext.rebuild: ## Rebuild domainized Gettext catalogs and preserve translations
-	elixir scripts/i18n_rebuild_domain_catalogs.exs
+i18n.gettext.merge: ## Merge selected Gettext domains into PO catalogs; use DOMAINS=landing APP=web LOCALES=pt_BR,es
+	elixir scripts/i18n_merge_domain_catalogs.exs $$(test -n "$(APP)" && echo --app "$(APP)") $$(test -n "$(DOMAINS)" && echo --domains "$(DOMAINS)") $$(test -n "$(LOCALES)" && echo --locales "$(LOCALES)") $$(test "$(NO_FUZZY)" = "1" && echo --no-fuzzy)
+
+i18n.gettext.rebuild: ## Rebuild all Gettext PO catalogs; requires CONFIRM_GLOBAL_REBUILD=1
+	test "$(CONFIRM_GLOBAL_REBUILD)" = "1" || (echo "Refusing global i18n rebuild. Re-run with CONFIRM_GLOBAL_REBUILD=1." && exit 2)
+	elixir scripts/i18n_rebuild_domain_catalogs.exs --confirm-global-rebuild
 
 i18n.gettext.check: ## Verify Gettext catalogs are up to date for all apps
 	cd $(DOMAIN_APP) && mix gettext.extract --check-up-to-date

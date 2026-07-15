@@ -66,6 +66,7 @@ def repair_singular(entry) -> bool:
         return False
 
     entry.msgstr = entry.msgid
+    mark_fuzzy(entry)
     return True
 
 
@@ -81,11 +82,19 @@ def repair_plural(entry) -> bool:
             entry.msgstr_plural[index] = source
             changed = True
 
+    if changed:
+        mark_fuzzy(entry)
+
     return changed
 
 
 def placeholders(value: str) -> set[str]:
     return set(PLACEHOLDER_RE.findall(value or ""))
+
+
+def mark_fuzzy(entry) -> None:
+    if "fuzzy" not in entry.flags:
+        entry.flags.append("fuzzy")
 
 
 if __name__ == "__main__":

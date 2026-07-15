@@ -20,7 +20,7 @@ defmodule RetroHexChatWeb.LandingLive.Faq do
        page_description:
          dgettext(
            "landing",
-           "Frequently asked questions about Retro Hex Chat: P2P calls, server requirements, security, contributing, and more."
+           "Frequently asked questions about Retro Hex Chat: Spaces, private P2P calls, channel conferences, server requirements, security, contributing, and more."
          )
      )}
   end

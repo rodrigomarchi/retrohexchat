@@ -10,7 +10,7 @@
 
 RetroHexChat is a **fully-featured IRC client built with Elixir + Phoenix LiveView**, styled after classic mIRC and the Windows 98 desktop era. Not ironically. Just faithfully.
 
-It has 65 slash commands, multi-user presence, NickServ/ChanServ services, P2P voice calls via an embedded TURN server, and 24+ classic games (DOOM, Quake, Wolfenstein) running via WASM — all inside a single chat interface with zero JavaScript frameworks.
+It has 54 slash commands, multi-user presence, NickServ/ChanServ services, virtual Spaces, private P2P calls and files, channel conferences via a self-hosted SFU, 34 multiplayer games, and 18 classic single-player games running via WASM — all inside a single chat interface with zero JavaScript frameworks.
 
 ---
 
@@ -23,7 +23,7 @@ Full channel modes, persistent bans, role hierarchy (Owner / Op / Half-op / Voic
 3D bevels, blue gradient title bars, monospace fonts, MDI layout, beveled dialogs with OK/Cancel/Apply. Not an accent. Not a theme option. The entire UI was built around this aesthetic from the first commit.
 
 **The arcade is real.**
-You can open a game window inside the chat and play DOOM: Knee-Deep in the Dead, Quake, Wolfenstein 3D, or 20+ other classic games via WebAssembly engines without leaving the app. Two users can invite each other to a multiplayer game session via P2P WebRTC.
+You can open a game window inside the chat and play DOOM: Knee-Deep in the Dead, Quake, Quake II, Wolfenstein 3D, Half-Life: Uplink, or ScummVM adventures via WebAssembly engines without leaving the app. Two users can also invite each other to one of 34 multiplayer game sessions via P2P WebRTC.
 
 **The architecture is production-grade.**
 Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are unaffected. Message history uses cursor-based pagination with GIN trigram indexes for full-text search. 706 JavaScript tests. 9-check parallel CI pipeline at ~64s. Zero ignored Credo warnings. All public functions spec'd with Dialyzer.
@@ -94,7 +94,7 @@ Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are u
 
 ### UI & Keyboard
 
-- **Command palette** — `Ctrl+/` to browse all 65 slash commands with descriptions
+- **Command palette** — `Ctrl+/` to browse all 54 slash commands with descriptions
 - **Nick completion** — `Tab` autocomplete in message input
 - **Message history** — `↑`/`↓` to navigate previous messages
 - **Context menu** — Right-click users: Query, Whois, Kick, Ban, Op, Voice, Ignore, Nick Color, Contacts
@@ -104,15 +104,22 @@ Each IRC channel runs as an isolated OTP GenServer. If one crashes, others are u
 - **Log viewer** — Search, filter, and export history as TXT or HTML
 - **Multi-line paste** — Safe dialog for bulk text input
 
-### P2P (WebRTC + Embedded TURN Server)
+### Private P2P (WebRTC + Embedded TURN Server)
 
-- **Voice/video calls** — Direct peer-to-peer, automatic relay via embedded TURN server
+- **Voice/video calls** — Private peer-to-peer sessions, automatic relay via embedded TURN server
 - **File transfer** — Send files between users via WebRTC DataChannel
 - **250 concurrent sessions** — Ephemeral port pool (49152–49651 UDP)
 - **Mutual consent** — Both users must accept before any session begins
 - **ICE fallback** — Google STUN if TURN not configured
 
-### Arcade (Single-player + Multiplayer)
+### Spaces & Channel Conferences
+
+- **Virtual Spaces** — Switch any channel or DM from Chat to Space and walk the same conversation as an avatar on a shared 8-bit map
+- **Server-validated movement** — The browser sends inputs; the server validates movement, collision, seating, and interactions before broadcasting deltas
+- **Channel conferences** — Group audio/video calls live inside channels with pre-join devices, screen sharing, reactions, hand raise, layouts, and moderator controls
+- **Self-hosted SFU** — Private calls are P2P, while channel conferences route media through your own server so group calls remain practical
+
+### Arcade (18 Single-player + 34 Multiplayer)
 
 Single-player games run via WebAssembly engines directly in the browser. No installs, no plugins.
 
@@ -128,11 +135,11 @@ Single-player games run via WebAssembly engines directly in the browser. No inst
 | HacX: Twitch 'n Kill | Cyberpunk total conversion |
 | REKKR: Sunken Land | Viking-themed, hand-drawn art style |
 
-**Quake engine (Qwasm)** — Quake Episode 1 + 8 variants and custom maps
+**Quake engines** — Quake shareware, LibreQuake, and Quake II shareware
 
-**Other** — Wolfenstein 3D, Half-Life, ScummVM classic point-and-click adventures
+**Other** — Wolfenstein 3D, Half-Life: Uplink, and ScummVM classic point-and-click adventures
 
-**Multiplayer game sessions** — Invite another user via P2P, choose a game, play in a shared WASM canvas over WebRTC DataChannel. Bilateral accept flow, time-limited tokens, spectator support.
+**Multiplayer game sessions** — Invite another user via P2P, choose from 34 two-player games, and sync gameplay over WebRTC DataChannel. Bilateral accept flow and time-limited tokens.
 
 ---
 
@@ -152,7 +159,7 @@ RetroHexChat is a **Phoenix umbrella application** with strict compile-time sepa
 │                                                          │
 │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌────────────┐  │
 │  │ Accounts │ │   Chat   │ │ Channels │ │  Commands  │  │
-│  │ Sessions │ │ Messages │ │ Server   │ │ 65 handlers│  │
+│  │ Sessions │ │ Messages │ │ Server   │ │ 54 handlers│  │
 │  │ NickValid│ │ History  │ │ Modes    │ │ Parser     │  │
 │  └──────────┘ └──────────┘ └──────────┘ └────────────┘  │
 │                                                          │
@@ -331,7 +338,7 @@ retro_hex_chat/
 │   │   │   ├── accounts/            # Sessions, nickname validation
 │   │   │   ├── channels/            # GenServer per channel, modes, policy
 │   │   │   ├── chat/                # Messages, history, search, highlights
-│   │   │   ├── commands/            # Parser, dispatcher, 65 handlers
+│   │   │   ├── commands/            # Parser, dispatcher, 54 handlers
 │   │   │   ├── p2p/                 # WebRTC signaling, TURN credentials
 │   │   │   ├── presence/            # Phoenix.Presence tracker
 │   │   │   ├── prom_ex.ex           # Core PromEx collector; Ecto starts before Repo

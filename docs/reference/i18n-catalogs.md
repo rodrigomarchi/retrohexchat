@@ -73,10 +73,29 @@ que reexporta esses arquivos para o runtime e para os testes.
 Depois de mudar strings traduziveis:
 
 ```sh
-make i18n.gettext.rebuild
+make i18n.gettext.extract
+make i18n.gettext.merge DOMAINS=landing
 make i18n.catalog.check
 make i18n.gettext.check
 ```
+
+`i18n.gettext.extract` segue o fluxo padrao do Gettext e atualiza apenas os
+templates `.pot`. `i18n.gettext.merge` chama `mix gettext.merge` arquivo por
+arquivo para os dominios selecionados, preservando traducoes e marcando fuzzy
+quando o Gettext achar uma correspondencia aproximada. Use `APP=web` ou
+`APP=domain` para limitar o app, e `LOCALES=pt_BR,es` para limitar locales.
+
+Para traduzir ou reparar um diff especifico, passe sempre paths explicitos aos
+scripts de traducao/reparo. Exemplo:
+
+```sh
+/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_po.py \
+  --locales pt_BR,es,fr \
+  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
+```
+
+Evite rodar scripts de traducao ou reparo sem paths quando a intencao for
+atualizar apenas uma feature ou dominio.
 
 Para adicionar uma onda:
 
@@ -104,9 +123,14 @@ for pkg in package.get_available_packages():
     if pkg.from_code == "en" and pkg.to_code in wanted:
         package.install_from_path(pkg.download())
 PY
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_po.py --locales es,fr,de
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_js.py --locales es,fr,de
+/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_machine_translate_po.py \
+  --locales es,fr,de \
+  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
 ```
+
+Para catalogos JavaScript, rode `scripts/i18n_machine_translate_js.py` apenas
+quando a mudanca realmente tocar os catalogos de browser em
+`apps/retro_hex_chat_web/assets/js/lib/i18n_catalogs`.
 
 `scripts/i18n_machine_translate_js.py`, `scripts/i18n_apply_translation_overrides.py`,
 `scripts/i18n_repair_js_catalog_placeholders.py` e
@@ -158,16 +182,27 @@ Ordem recomendada para reparo:
    `scripts/i18n_apply_translation_overrides.py` ou allowlist tecnica explicita.
 5. So depois rode `make i18n.catalog.check` e `make i18n.gettext.check`.
 
-Depois da traducao automatica:
+Depois da traducao automatica de um dominio especifico, valide o mesmo conjunto
+de arquivos que foi traduzido:
 
 ```sh
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_repair_placeholder_mismatches.py
-/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_apply_translation_overrides.py --locales pt_BR,es,fr,de,ja,zh_hans,id,ar,ru,hi,ko,tr,vi
-elixir scripts/i18n_normalize_po_headers.exs
-make i18n.placeholder.check
-make i18n.source-fallback.check
+/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_repair_placeholder_mismatches.py \
+  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
+/tmp/retro_hex_chat_i18n_venv/bin/python scripts/i18n_apply_translation_overrides.py \
+  --locales pt_BR,es,fr,de,ja,zh_hans,id,ar,ru,hi,ko,tr,vi,bn,ur,zh_hant,pt_PT,it,pl,nl \
+  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
+mix run --no-start scripts/i18n_placeholder_check.exs --fail-on-findings \
+  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
+python3 scripts/i18n_source_fallback_check.py \
+  --locales pt_BR,es,fr,de,ja,zh_hans,id,ar,ru,hi,ko,tr,vi,bn,ur,zh_hant,pt_PT,it,pl,nl \
+  --fail-on-findings \
+  apps/retro_hex_chat_web/priv/gettext/*/LC_MESSAGES/landing.po
 make i18n.catalog.check
 ```
+
+`make i18n.catalog.check` continua global de proposito: ele e a barreira final
+contra qualquer pendencia em locale habilitado. Os comandos anteriores devem ser
+escopados ao dominio/feature em trabalho.
 
 `scripts/i18n_apply_translation_overrides.py` e a memoria manual para strings
 que a traducao automatica costuma deixar em ingles ou traduzir mal por causa de
@@ -179,9 +214,10 @@ Para refatoracoes grandes:
 ```sh
 elixir scripts/i18n_domainize_gettext_calls.exs
 elixir scripts/i18n_split_help_domains.exs
-make i18n.gettext.rebuild
+make i18n.gettext.rebuild CONFIRM_GLOBAL_REBUILD=1
 ```
 
 `scripts/i18n_rehydrate_domain_translations.exs` reconstrui os `.po` a partir
 dos `.pot` atuais e copia traducoes ja existentes por `msgid`. Isso evita
-perder traducoes quando um texto muda apenas de dominio.
+perder traducoes quando um texto muda apenas de dominio, mas deve ser reservado
+para refatoracoes amplas porque reescreve catalogos inteiros.

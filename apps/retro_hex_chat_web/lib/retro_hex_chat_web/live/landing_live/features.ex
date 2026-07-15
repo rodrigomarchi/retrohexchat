@@ -20,12 +20,8 @@ defmodule RetroHexChatWeb.LandingLive.Features do
        page_description:
          dgettext(
            "landing",
-           "Real-time chat, channels, P2P voice/video calls, 34 multiplayer games, "
-         ) <>
-           dgettext(
-             "landing",
-             "18 classic arcade games, programmable bots, IRC-style commands, and built-in help."
-           )
+           "Explore real-time channels, Spaces, private P2P calls, channel conferences, 34 multiplayer games, 18 arcade games, bots, commands, and help."
+         )
      )}
   end
 end

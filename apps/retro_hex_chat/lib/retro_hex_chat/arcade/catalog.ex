@@ -1,7 +1,8 @@
 defmodule RetroHexChat.Arcade.Catalog do
   @moduledoc """
   Registry of available single-player arcade games.
-  Each game maps to a WASM engine (Doom via Dwasm, Quake via Qwasm) with specific game data.
+  Each game maps to a WASM engine (Doom, Quake, Quake II, Wolfenstein 3D,
+  Half-Life, or ScummVM) with specific game data.
   """
 
   use Gettext, backend: RetroHexChat.Gettext

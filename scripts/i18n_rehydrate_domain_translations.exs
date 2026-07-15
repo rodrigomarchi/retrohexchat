@@ -28,6 +28,8 @@ defmodule I18nRehydrateDomainTranslations do
   }
 
   def main(args) do
+    require_explicit_scope!(args)
+
     for app <- @apps, locale <- I18nLocaleHelpers.locales_from_args(args) do
       index = translation_index(app, locale.code)
 
@@ -36,6 +38,31 @@ defmodule I18nRehydrateDomainTranslations do
       |> Path.wildcard()
       |> Enum.sort()
       |> Enum.each(&rehydrate_catalog(&1, app, locale, index))
+    end
+  end
+
+  defp require_explicit_scope!(args) do
+    {opts, _paths, _invalid} =
+      OptionParser.parse(args,
+        strict: [
+          locale: :string,
+          locales: :string,
+          wave: :integer,
+          all: :boolean,
+          confirm_global_rebuild: :boolean
+        ]
+      )
+
+    scoped? = opts[:locale] || opts[:locales] || opts[:wave]
+    confirmed_global? = opts[:all] == true && opts[:confirm_global_rebuild] == true
+
+    unless scoped? || confirmed_global? do
+      IO.puts(
+        :stderr,
+        "Refusing unscoped i18n rehydrate. Use --locales/--wave, or --all --confirm-global-rebuild."
+      )
+
+      System.halt(2)
     end
   end
 
@@ -69,7 +96,7 @@ defmodule I18nRehydrateDomainTranslations do
     msgstr =
       case lookup(index, message) || manual_translation(locale.code, msgid) do
         nil when locale.code == "en" -> [msgid]
-        nil -> [msgid]
+        nil -> [""]
         value when is_binary(value) -> [value]
         value when is_list(value) -> value
       end
@@ -83,7 +110,8 @@ defmodule I18nRehydrateDomainTranslations do
 
     msgstr =
       case lookup(index, message) do
-        nil -> default_plural_msgstr(locale, msgid, msgid_plural)
+        nil when locale.code == "en" -> default_plural_msgstr(locale, msgid, msgid_plural)
+        nil -> empty_plural_msgstr(locale)
         value -> normalize_plural_msgstr(locale, value, msgid, msgid_plural)
       end
 
@@ -101,6 +129,13 @@ defmodule I18nRehydrateDomainTranslations do
       0 -> {0, [msgid]}
       index -> {index, [msgid_plural]}
     end)
+  end
+
+  defp empty_plural_msgstr(locale) do
+    locale
+    |> nplurals()
+    |> plural_indexes()
+    |> Map.new(fn index -> {index, [""]} end)
   end
 
   defp normalize_plural_msgstr(locale, value, msgid, msgid_plural) do
@@ -159,7 +194,11 @@ defmodule I18nRehydrateDomainTranslations do
   end
 
   defp git_catalog_paths(app, locale) do
-    case System.cmd("git", ["ls-tree", "-r", "--name-only", "HEAD", "#{app}/priv/gettext/#{locale}/LC_MESSAGES"], stderr_to_stdout: true) do
+    case System.cmd(
+           "git",
+           ["ls-tree", "-r", "--name-only", "HEAD", "#{app}/priv/gettext/#{locale}/LC_MESSAGES"],
+           stderr_to_stdout: true
+         ) do
       {paths, 0} ->
         paths
         |> String.split("\n", trim: true)
@@ -202,7 +241,6 @@ defmodule I18nRehydrateDomainTranslations do
 
   defp string(nil), do: ""
   defp string(value), do: IO.iodata_to_binary(value)
-
 end
 
 I18nRehydrateDomainTranslations.main(System.argv())

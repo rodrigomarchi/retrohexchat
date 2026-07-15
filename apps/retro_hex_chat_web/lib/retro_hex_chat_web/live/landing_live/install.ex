@@ -121,9 +121,24 @@ defmodule RetroHexChatWeb.LandingLive.Install do
                   </strong>
                   {dgettext("landing", "— Version 20+")}
                 </div>
+                <div class="shadow-retro-field bg-white p-3 text-sm">
+                  <strong>
+                    <Icons.icon_conference class="w-4 h-4 inline" /> {dgettext(
+                      "landing",
+                      "Conference media"
+                    )}
+                  </strong>
+                  {dgettext(
+                    "landing",
+                    "— Open the SFU UDP port range 50000–50100 for channel conferences"
+                  )}
+                </div>
               </div>
               <p class="text-sm mt-3">
-                {dgettext("landing", "A $5/month VPS handles it just fine.")}
+                {dgettext(
+                  "landing",
+                  "A $5/month VPS handles a small server; conferences need reachable UDP media ports."
+                )}
               </p>
             </.window_body>
             <.window_status_bar>

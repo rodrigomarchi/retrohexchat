@@ -2,7 +2,7 @@ defmodule RetroHexChat.Games.Catalog do
   @moduledoc """
   Registry of available P2P games.
   Each game has an id, name, description, and icon identifier.
-  All games are real-time action for two players (28 games total).
+  All games are real-time action for two players (34 games total).
   """
 
   use Gettext, backend: RetroHexChat.Gettext

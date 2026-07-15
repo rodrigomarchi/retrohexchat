@@ -1,7 +1,7 @@
 defmodule RetroHexChat.Arcade do
   @moduledoc """
   Public API for the Arcade bounded context.
-  Single-player WASM games (Doom, Quake) with isolated session management.
+  Single-player WASM games with isolated session management.
   """
 
   alias RetroHexChat.Arcade.{Catalog, Content, Queries, Service}

@@ -17,11 +17,11 @@ defmodule RetroHexChatWeb.LandingLive.HowItWorks do
        active_page: :how_it_works,
        canonical_path: "/how-it-works",
        page_title:
-         dgettext("landing", "How Retro Hex Chat Works — Server, P2P, Privacy & Security"),
+         dgettext("landing", "How Retro Hex Chat Works — Server, Spaces, Calls & Privacy"),
        page_description:
          dgettext(
            "landing",
-           "Learn how Retro Hex Chat works: self-hosted server architecture, WebRTC P2P calls, privacy protections, and security layers."
+           "Learn how Retro Hex Chat works: self-hosted chat, virtual Spaces, private WebRTC P2P sessions, channel conferences, privacy, and security."
          )
      )}
   end

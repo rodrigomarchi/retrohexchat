@@ -81,7 +81,10 @@
             <li class="flex items-start gap-2">
               <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
               <span>
-                {dgettext("landing", "Calls go direct P2P — server never sees them")}
+                {dgettext(
+                  "landing",
+                  "Private calls go direct P2P; channel conferences stay on your infrastructure"
+                )}
               </span>
             </li>
             <li class="flex items-start gap-2">
@@ -100,7 +103,9 @@
             </li>
             <li class="flex items-start gap-2">
               <Icons.icon_checkmark class="w-4 h-4 shrink-0 mt-0.5" />
-              <span>{dgettext("landing", "Only you have access to your messages")}</span>
+              <span>
+                {dgettext("landing", "Your server operator controls message access and retention")}
+              </span>
             </li>
           </ul>
         </.window_body>
@@ -163,7 +168,10 @@
                   {dgettext("landing", "Routed through their servers")}
                 </td>
                 <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "Direct P2P via WebRTC")}
+                  {dgettext(
+                    "landing",
+                    "Private P2P via WebRTC; channel conferences via your self-hosted SFU"
+                  )}
                 </td>
               </tr>
               <tr>
@@ -174,7 +182,7 @@
                   {dgettext("landing", "Yes — and they do")}
                 </td>
                 <td class="p-1 border-b border-gray-200">
-                  {dgettext("landing", "No — only you have access")}
+                  {dgettext("landing", "Access is controlled by your own server and policies")}
                 </td>
               </tr>
               <tr>

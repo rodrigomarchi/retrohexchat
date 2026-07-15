@@ -18,7 +18,13 @@ defmodule I18nLocaleHelpers do
   def locales_from_args(args, default_locales \\ enabled_locales()) do
     {opts, _paths, _invalid} =
       OptionParser.parse(args,
-        strict: [locale: :string, locales: :string, wave: :integer, all: :boolean]
+        strict: [
+          locale: :string,
+          locales: :string,
+          wave: :integer,
+          all: :boolean,
+          confirm_global_rebuild: :boolean
+        ]
       )
 
     cond do
@@ -70,7 +76,7 @@ defmodule I18nLocaleHelpers do
         ~s( "msgid"s in this file come from #{domain}.pot.),
         " ",
         " Do not add, change, or remove msgids manually.",
-        " Use mix gettext.extract --merge and the i18n scripts to refresh catalogs.",
+        " Use make i18n.gettext.extract and make i18n.gettext.merge DOMAINS=#{domain} to refresh catalogs.",
         " ",
         " Locale: #{locale.code}; status: #{locale.status}; wave: #{locale.wave}."
       ]

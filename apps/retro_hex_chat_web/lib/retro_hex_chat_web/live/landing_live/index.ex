@@ -16,11 +16,12 @@ defmodule RetroHexChatWeb.LandingLive.Index do
      assign(socket,
        active_page: :home,
        canonical_path: "/",
-       page_title: dgettext("landing", "Retro Hex Chat — Self-hosted chat with P2P calls"),
+       page_title:
+         dgettext("landing", "Retro Hex Chat — Self-hosted chat, spaces, calls and games"),
        page_description:
          dgettext(
            "landing",
-           "Run your own chat server with WebRTC voice and video calls, multiplayer games, bots, and IRC-style channels. Open source, self-hosted, and MIT licensed."
+           "Run your own chat server with channels, virtual spaces, private P2P calls, channel conferences, bots, and retro games. Open source, self-hosted, and MIT licensed."
          )
      )}
   end

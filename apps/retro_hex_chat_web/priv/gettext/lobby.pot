@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:109
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:202
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:217
 #, elixir-autogen, elixir-format
 msgid "%{peer} is muted"
 msgstr ""
@@ -23,7 +23,7 @@ msgid "%{peer} wants to play %{game}"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:88
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:139
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:147
 #, elixir-autogen, elixir-format
 msgid "%{peer}'s camera is off"
 msgstr ""
@@ -49,13 +49,13 @@ msgid "Browse files"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:150
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:397
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:407
 #, elixir-autogen, elixir-format
 msgid "Camera Off"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:149
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:396
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:406
 #, elixir-autogen, elixir-format
 msgid "Camera On"
 msgstr ""
@@ -71,7 +71,7 @@ msgid "Connect to send a file."
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:47
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:60
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:59
 #, elixir-autogen, elixir-format
 msgid "Connect to start an audio or video call."
 msgstr ""
@@ -87,7 +87,10 @@ msgid "Decline"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:168
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:445
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:505
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:732
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:733
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:736
 #, elixir-autogen, elixir-format
 msgid "Devices"
 msgstr ""
@@ -103,7 +106,7 @@ msgid "Drop a file here, or browse. Transfers run alongside your call and game."
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:176
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:476
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:455
 #, elixir-autogen, elixir-format
 msgid "End call"
 msgstr ""
@@ -124,7 +127,7 @@ msgid "Final Score"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:193
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:525
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:554
 #, elixir-autogen, elixir-format
 msgid "Focus"
 msgstr ""
@@ -139,18 +142,6 @@ msgstr ""
 msgid "Game over — %{game}: %{p1} × %{p2}"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:223
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:576
-#, elixir-autogen, elixir-format
-msgid "High quality"
-msgstr ""
-
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:239
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:594
-#, elixir-autogen, elixir-format
-msgid "Low quality"
-msgstr ""
-
 #: lib/retro_hex_chat_web/components/ui/lobby/file_panel.ex:65
 #, elixir-autogen, elixir-format
 msgid "Max: %{size} MB"
@@ -161,14 +152,8 @@ msgstr ""
 msgid "Maximize"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:231
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:585
-#, elixir-autogen, elixir-format
-msgid "Medium quality"
-msgstr ""
-
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:385
 #, elixir-autogen, elixir-format
 msgid "Mute"
 msgstr ""
@@ -179,7 +164,7 @@ msgid "P1 %{score}"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:161
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:409
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:498
 #, elixir-autogen, elixir-format
 msgid "Picture-in-Picture"
 msgstr ""
@@ -189,38 +174,38 @@ msgstr ""
 msgid "Side by side"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:265
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:320
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:238
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:336
 #, elixir-autogen, elixir-format
 msgid "Start audio"
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:285
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:308
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:258
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:323
 #, elixir-autogen, elixir-format
 msgid "Start audio or video — or the peer can, independently. You'll join automatically."
 msgstr ""
 
-#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:274
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:329
+#: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:247
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:344
 #, elixir-autogen, elixir-format
 msgid "Start video"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:139
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:385
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:396
 #, elixir-autogen, elixir-format
 msgid "Turn on camera"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:119
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:365
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:377
 #, elixir-autogen, elixir-format
 msgid "Turn on microphone"
 msgstr ""
 
 #: lib/retro_hex_chat_web/components/ui/lobby/media_panel.ex:128
-#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:374
+#: lib/retro_hex_chat_web/components/ui/p2p/call_panel.ex:385
 #, elixir-autogen, elixir-format
 msgid "Unmute"
 msgstr ""

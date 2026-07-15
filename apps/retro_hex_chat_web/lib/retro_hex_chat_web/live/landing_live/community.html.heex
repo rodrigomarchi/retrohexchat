@@ -123,7 +123,7 @@
         <:icon><Icons.icon_server class="w-4 h-4" /></:icon>
       </.window_title_bar>
       <.window_body>
-        <div class="grid sm:grid-cols-5 gap-2">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-7 gap-2">
           <div class="shadow-retro-field bg-white p-2 text-xs text-center">
             <Icons.icon_elixir class="w-6 h-6 mx-auto mb-1" />
             <strong>{dgettext("landing", "Backend")}</strong>
@@ -137,17 +137,27 @@
           <div class="shadow-retro-field bg-white p-2 text-xs text-center">
             <Icons.icon_palette class="w-6 h-6 mx-auto mb-1" />
             <strong>{dgettext("landing", "Frontend")}</strong>
-            <br /> {dgettext("landing", "Retro CSS, Vanilla JS")}
+            <br /> {dgettext("landing", "Retro CSS, Vanilla JS, Canvas")}
           </div>
           <div class="shadow-retro-field bg-white p-2 text-xs text-center">
             <Icons.icon_websocket class="w-6 h-6 mx-auto mb-1" />
             <strong>{dgettext("landing", "Real-time")}</strong>
-            <br /> {dgettext("landing", "Phoenix Channels")}
+            <br /> {dgettext("landing", "Phoenix Channels, PubSub")}
+          </div>
+          <div class="shadow-retro-field bg-white p-2 text-xs text-center">
+            <Icons.icon_group_view class="w-6 h-6 mx-auto mb-1" />
+            <strong>{dgettext("landing", "Spaces")}</strong>
+            <br /> {dgettext("landing", "Canvas map runtime")}
           </div>
           <div class="shadow-retro-field bg-white p-2 text-xs text-center">
             <Icons.icon_webrtc class="w-6 h-6 mx-auto mb-1" />
-            <strong>{dgettext("landing", "P2P")}</strong>
-            <br /> {dgettext("landing", "WebRTC")}
+            <strong>{dgettext("landing", "Private P2P")}</strong>
+            <br /> {dgettext("landing", "WebRTC sessions")}
+          </div>
+          <div class="shadow-retro-field bg-white p-2 text-xs text-center">
+            <Icons.icon_conference class="w-6 h-6 mx-auto mb-1" />
+            <strong>{dgettext("landing", "Conferences")}</strong>
+            <br /> {dgettext("landing", "Self-hosted WebRTC SFU")}
           </div>
         </div>
       </.window_body>

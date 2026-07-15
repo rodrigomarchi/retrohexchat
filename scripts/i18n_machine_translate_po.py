@@ -21,6 +21,7 @@ from argostranslate import translate
 
 
 LOCALE_TO_ARGOS = {
+    "en": "en",
     "ar": "ar",
     "bn": "bn",
     "es": "es",
@@ -56,6 +57,11 @@ WORD_RE = re.compile(r"[A-Za-z][A-Za-z']+")
 BATCH_SEPARATOR = "ZXQI18NSEPZXQ"
 PROTECTED_MODE = "batch"
 OPENCC_CONVERTER = None
+
+
+class IdentityTranslator:
+    def translate(self, text: str) -> str:
+        return text
 
 
 def parse_args() -> argparse.Namespace:
@@ -135,9 +141,6 @@ def main() -> int:
                 changed = True
                 translated_entries += 1
 
-            if "fuzzy" in entry.flags:
-                entry.flags.remove("fuzzy")
-
         if changed:
             po.save(str(path))
             rewritten += 1
@@ -169,6 +172,9 @@ def locale_from_path(path: Path) -> str:
 
 
 def translator_for(to_code: str):
+    if to_code == "en":
+        return IdentityTranslator()
+
     installed_languages = translate.get_installed_languages()
     from_language = next(language for language in installed_languages if language.code == "en")
     to_language = next(language for language in installed_languages if language.code == to_code)
@@ -176,10 +182,11 @@ def translator_for(to_code: str):
 
 
 def translate_singular_entry(entry, locale: str, translator, cache: dict, overwrite: bool) -> bool:
-    if not should_translate(entry.msgstr, entry.msgid, overwrite):
+    if not should_translate(entry.msgstr, entry.msgid, overwrite, fuzzy=is_fuzzy(entry)):
         return False
 
     entry.msgstr = translate_text(entry.msgid, locale, translator, cache)
+    clear_fuzzy(entry)
     return True
 
 
@@ -190,9 +197,18 @@ def translate_plural_entry(entry, locale: str, translator, cache: dict, overwrit
     for index, source in source_by_index.items():
         current = entry.msgstr_plural.get(index, "")
 
-        if should_translate(current, source, overwrite, fallback_sources={entry.msgid, entry.msgid_plural}):
+        if should_translate(
+            current,
+            source,
+            overwrite,
+            fuzzy=is_fuzzy(entry),
+            fallback_sources={entry.msgid, entry.msgid_plural},
+        ):
             entry.msgstr_plural[index] = translate_text(source, locale, translator, cache)
             changed = True
+
+    if changed:
+        clear_fuzzy(entry)
 
     return changed
 
@@ -214,10 +230,11 @@ def pending_sources(po, locale: str, overwrite: bool) -> list[str]:
                     current,
                     source,
                     overwrite,
+                    fuzzy=is_fuzzy(entry),
                     fallback_sources={entry.msgid, entry.msgid_plural},
                 ):
                     sources.append(source)
-        elif should_translate(entry.msgstr, entry.msgid, overwrite):
+        elif should_translate(entry.msgstr, entry.msgid, overwrite, fuzzy=is_fuzzy(entry)):
             sources.append(entry.msgid)
 
     return list(dict.fromkeys(sources))
@@ -237,13 +254,23 @@ def should_translate(
     current: str,
     source: str,
     overwrite: bool,
+    fuzzy: bool = False,
     fallback_sources: set[str] | None = None,
 ) -> bool:
     if overwrite:
         return True
 
     fallback_sources = fallback_sources or {source}
-    return current == "" or current in fallback_sources
+    return fuzzy or current == "" or current in fallback_sources
+
+
+def is_fuzzy(entry) -> bool:
+    return "fuzzy" in entry.flags
+
+
+def clear_fuzzy(entry) -> None:
+    if "fuzzy" in entry.flags:
+        entry.flags.remove("fuzzy")
 
 
 def translate_text(text: str, locale: str, translator, cache: dict) -> str:
