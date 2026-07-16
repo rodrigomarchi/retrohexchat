@@ -52,6 +52,15 @@ retro-fieldset
 toolbar-group
 tree-view-marker-closed
 tree-view-marker-open
+# Chat mobile shell/components — used from live/app and components/ui paths that
+# are intentionally skipped by the consistency scanner.
+autocomplete-item
+chat-app-root
+chat-channel-link
+chat-input-send-label
+chat-message
+chat-mobile-action
+chat-sidebar-overlay
 # P2P/game media components — used by components/ui/* files (skipped by template scanner)
 activity-indicator__*
 game-media*
@@ -135,6 +144,8 @@ chat-reply-btn
 chat-timestamp
 connection-banner--visible
 reconnect-overlay--visible
+# Viewport detection hook toggles this semantic root class; no direct styling today.
+rhc-mobile-viewport
 conversations-join-flash
 dialog-overlay
 disabled
